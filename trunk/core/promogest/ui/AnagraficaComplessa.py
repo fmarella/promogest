@@ -392,6 +392,7 @@ class Anagrafica(GladeWidget):
         raise NotImplementedError
 
     def on_records_print_activate(self, widget):
+        print "AHHIHIHIHIHIHIHIHIHIHIHIHIHIHIHIHIHI"
         self._handlePrinting(pdfGenerator=self.reportHandler, report=True)
 
     def on_Stampa_Frontaline_clicked(self, widget):

@@ -313,7 +313,7 @@
                 <property name="can_focus">False</property>
                 <property name="tooltip_text" translatable="yes">Genera un file PDF con il dettaglio del record selezionato</property>
                 <property name="use_action_appearance">False</property>
-                <property name="label" translatable="yes">Stampa selezione</property>
+                <property name="label" translatable="yes">Stampa</property>
                 <property name="use_underline">True</property>
                 <property name="stock_id">gtk-print</property>
                 <signal name="clicked" handler="on_selected_record_print_activate" swapped="no"/>
@@ -338,7 +338,7 @@
                 <property name="can_focus">False</property>
                 <property name="tooltip_text" translatable="yes">Mostra un report a partire dai risultati nella ricerca</property>
                 <property name="use_action_appearance">False</property>
-                <property name="label" translatable="yes">Report a video</property>
+                <property name="label" translatable="yes">Report a video e Stampa</property>
                 <property name="use_underline">True</property>
                 <property name="icon_widget">image7</property>
                 <signal name="clicked" handler="on_records_print_on_screen_activate" swapped="no"/>
@@ -354,6 +354,8 @@
                 <property name="can_focus">False</property>
                 <property name="tooltip_text" translatable="yes">Genera un report in formato PDF per i risultati della ricerca</property>
                 <property name="use_action_appearance">False</property>
+                <property name="visible_horizontal">False</property>
+                <property name="visible_vertical">False</property>
                 <property name="label" translatable="yes">Stampa</property>
                 <property name="use_underline">True</property>
                 <property name="stock_id">gtk-print</property>
