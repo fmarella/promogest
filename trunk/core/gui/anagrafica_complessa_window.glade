@@ -336,7 +336,7 @@
               <object class="GtkToolButton" id="records_print_on_screen_button">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="tooltip_text" translatable="yes">Mostra un report a partire dai risultati nella ricerca</property>
+                <property name="tooltip_text" translatable="yes">Mostra un report a partire dai risultati nella ricerca e poi permette di stamparlo</property>
                 <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">Report a video e Stampa</property>
                 <property name="use_underline">True</property>

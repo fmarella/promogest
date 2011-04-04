@@ -86,7 +86,7 @@ class AnagraficaVettoriEdit(AnagraficaEdit):
         self.partita_iva_entry.set_text(self.dao.partita_iva or '')
 
 
-    def saveDao(self):
+    def saveDao(self, tipo=None):
         self.dao.codice = self.codice_entry.get_text()
         self.dao.codice = omogeneousCode(section="Vettori", string=self.dao.codice )
         self.dao.ragione_sociale = self.ragione_sociale_entry.get_text()
