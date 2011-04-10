@@ -389,7 +389,7 @@ def ckd(dao):
             if "TestataDocumento" in classe:
                 if records > 50: stopp = True
             if "Listino" in classe:
-                if records > 1: stopp = True
+                if records > 4: stopp = True
             if "Promemoria" in classe:
                 if records > 5: stopp = True
             if "PrimaNota" in classe:
@@ -399,7 +399,7 @@ def ckd(dao):
             if "Articolo" in classe:
                 if records > 500: stopp = True
             if "Banca" in classe:
-                if records > 1: stopp = True
+                if records > 3: stopp = True
             if "Contatto" in classe:
                 if records > 35: stopp = True
             if "CategoriaArticolo" in classe:
@@ -411,11 +411,11 @@ def ckd(dao):
             if "Fornitore" in classe:
                 if records > 10: stopp = True
             if "Magazzino" in classe:
-                if records > 1: stopp = True
+                if records > 2: stopp = True
             if "Pagamento" in classe:
                 if records > 3: stopp = True
             if "Vettore" in classe:
-                if records > 1: stopp = True
+                if records > 3: stopp = True
             if "Colore" in classe:
                 if records > 5: stopp = True
             if "Taglia" in classe:
