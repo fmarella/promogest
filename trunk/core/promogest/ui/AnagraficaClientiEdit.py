@@ -475,6 +475,7 @@ class AnagraficaClientiEdit(AnagraficaEdit):
         showAnagraficaRichiamata(self.dialogTopLevel, anagWindow,
                 toggleButton)
         anag.filter.id_cliente_filter_customcombobox.setId(self.dao.id)
+        anag.filter.solo_contabili_check.set_active(True)
         anag.filter.refresh()
 
     def on_promemoria_togglebutton_toggled(self, toggleButton):

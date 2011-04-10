@@ -62,10 +62,10 @@ class AnagraficaReport(object):
         self.description = description
         self.defaultFileName = defaultFileName
         self._htmlTemplate = [os.path.join('report-templates'),htmlTemplate + '.html']
-        if templatesDir:
-            self._slaTemplate = templatesDir + sxwTemplate + '.sla'
-        else:
-            self._slaTemplate = Environment.reportTemplatesDir + sxwTemplate + '.sla'
+#        if templatesDir:
+#            self._slaTemplate = templatesDir + sxwTemplate + '.sla'
+#        else:
+#            self._slaTemplate = Environment.reportTemplatesDir + sxwTemplate + '.sla'
         #self.htmlName = htmlTemplate + '.html'
         self.objects = None
         self._slaTemplateObj = None
@@ -80,7 +80,6 @@ class AnagraficaReport(object):
         """
         azienda = Azienda().getRecord(id=Environment.azienda)
         versione = scribusVersion(self._slaTemplate)
-        print "OHOHOHHHO", Environment.new_print_enjine
         if not Environment.new_print_enjine:
             if self._slaTemplateObj is None:
                 self._slaTemplateObj = SlaTpl2Sla(slaFileName=self._slaTemplate,
@@ -118,7 +117,7 @@ class AnagraficaReport(object):
 
     def buildPreviewWidget(self):
         """Build and return GladeWidget-derived component for print
-        preview
+        preview.
         """
         return AnagraficaPrintPreview(anagrafica=self._anagrafica,
                                       windowTitle=self.description,

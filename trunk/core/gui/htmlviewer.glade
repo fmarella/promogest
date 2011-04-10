@@ -2,10 +2,16 @@
 <interface>
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy project-wide -->
+  <object class="GtkImage" id="crea_csv">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-execute</property>
+  </object>
   <object class="GtkDialog" id="visualizzatore_html">
     <property name="width_request">780</property>
     <property name="height_request">500</property>
     <property name="visible">True</property>
+    <property name="can_focus">False</property>
     <property name="border_width">5</property>
     <property name="title" translatable="yes">""</property>
     <property name="modal">True</property>
@@ -16,33 +22,36 @@
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox1">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="spacing">2</property>
-        <child>
-          <object class="GtkScrolledWindow" id="html_scrolledwindow">
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="hscrollbar_policy">automatic</property>
-            <property name="vscrollbar_policy">automatic</property>
-            <child>
-              <placeholder/>
-            </child>
-          </object>
-          <packing>
-            <property name="position">1</property>
-          </packing>
-        </child>
         <child internal-child="action_area">
           <object class="GtkHButtonBox" id="dialog-action_area1">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="layout_style">end</property>
+            <child>
+              <object class="GtkProgressBar" id="pbar">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="pack_type">end</property>
+                <property name="position">0</property>
+                <property name="secondary">True</property>
+              </packing>
+            </child>
             <child>
               <object class="GtkButton" id="csv_button">
                 <property name="label" translatable="yes">CREA CSV</property>
                 <property name="visible">True</property>
+                <property name="sensitive">False</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <property name="use_action_appearance">False</property>
                 <property name="image">crea_csv</property>
-                <signal name="clicked" handler="on_csv_button_clicked"/>
+                <signal name="clicked" handler="on_csv_button_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -52,13 +61,14 @@
             </child>
             <child>
               <object class="GtkButton" id="pdf_button">
-                <property name="label" translatable="yes">CREA PDF</property>
+                <property name="label">gtk-print</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="tooltip_text" translatable="yes">Genera il pdf della distinta</property>
-                <property name="image">crea_pdf</property>
-                <signal name="clicked" handler="on_pdf_button_clicked"/>
+                <property name="use_action_appearance">False</property>
+                <property name="use_stock">True</property>
+                <signal name="clicked" handler="on_pdf_button_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -73,9 +83,10 @@
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="tooltip_text" translatable="yes">Chiudi la finestra</property>
+                <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
-                <signal name="clicked" handler="on_quit_button_clicked"/>
-                <signal name="clicked" handler="on_print_on_screen_dialog_delete_event"/>
+                <signal name="clicked" handler="on_quit_button_clicked" swapped="no"/>
+                <signal name="clicked" handler="on_print_on_screen_dialog_delete_event" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -83,21 +94,28 @@
                 <property name="position">3</property>
               </packing>
             </child>
-            <child>
-              <object class="GtkProgressBar" id="pbar">
-                <property name="visible">True</property>
-              </object>
-              <packing>
-                <property name="pack_type">end</property>
-                <property name="position">0</property>
-                <property name="secondary">True</property>
-              </packing>
-            </child>
           </object>
           <packing>
             <property name="expand">False</property>
+            <property name="fill">True</property>
             <property name="pack_type">end</property>
             <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkScrolledWindow" id="html_scrolledwindow">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="hscrollbar_policy">automatic</property>
+            <property name="vscrollbar_policy">automatic</property>
+            <child>
+              <placeholder/>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
           </packing>
         </child>
       </object>
@@ -107,13 +125,5 @@
       <action-widget response="0">pdf_button</action-widget>
       <action-widget response="0">quit_button</action-widget>
     </action-widgets>
-  </object>
-  <object class="GtkImage" id="crea_csv">
-    <property name="visible">True</property>
-    <property name="stock">gtk-execute</property>
-  </object>
-  <object class="GtkImage" id="crea_pdf">
-    <property name="visible">True</property>
-    <property name="stock">gtk-execute</property>
   </object>
 </interface>

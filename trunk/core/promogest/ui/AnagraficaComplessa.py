@@ -515,9 +515,12 @@ class Anagrafica(GladeWidget):
                         dao = self.filter.getSelectedDao()
                         data = dao.data_documento
                         operationName = dao.operazione
+                        intestatario = dao.intestatario[0:15].replace(" ","_") or ""
                         self._pdfName = operationName + \
                                         '_' +\
                                         str(dao.numero) +\
+                                        '_' +\
+                                        intestatario + \
                                         '_' +\
                                         data.strftime('%d-%m-%Y')
                     elif pdfGenerator.defaultFileName == 'promemoria':
@@ -576,8 +579,10 @@ class Anagrafica(GladeWidget):
             t.start()
 
     def on_records_print_on_screen_activate(self, widget):
+        """ Questo segnale rimanda a AnagraficaComplessaReport
+        che a sua volta rimanda a AnagraficaComplessaPrineterPreview che
+        si occupa della visualizzazione e della stampa"""
         previewDialog = self.reportHandler.buildPreviewWidget()
-#        previewDialog.getTopLevel().show_all()
 
     def on_records_print_progress_dialog_response(self, dialog, responseId):
         if responseId == gtk.RESPONSE_CANCEL:

@@ -329,6 +329,7 @@ class AnagraficaFornitoriEdit(AnagraficaEdit):
         anagWindow = anag.getTopLevel()
         showAnagraficaRichiamata(self.dialogTopLevel, anagWindow, toggleButton)
         anag.filter.id_fornitore_filter_customcombobox.setId(self.dao.id)
+        anag.filter.solo_contabili_check.set_active(True)
         anag.filter.refresh()
 
 

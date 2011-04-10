@@ -87,6 +87,18 @@ class ConfiguraWindow(GladeWidget):
             self.feed_check.set_active(1)
 
         try:
+            curr = setconf("Valuta", "valuta_curr")
+            if curr =="€":
+                self.euro_radio.set_active(1)
+            elif curr =="$":
+                self.dollaro_radio.set_active(1)
+            elif curr =="£":
+                self.sterlina_radio.set_active(1)
+        except:
+            self.euro_radio.set_active(1)
+
+
+        try:
             self.vettore_codice_upper_check.set_active(int(setconf("Vettori", "vettore_codice_upper")))
         except:
             self.vettore_codice_upper_check.set_active(1)
@@ -168,6 +180,17 @@ class ConfiguraWindow(GladeWidget):
         g[0].value = str(self.vettore_struttura_codice_entry.get_text())
         g[0].tipo = "str"
         Environment.session.add(g[0])
+
+        g = SetConf().select(key="valuta_curr", section="Valuta")
+        if self.euro_radio.get_active():
+            g[0].value = "€"
+        elif self.dollaro_radio.get_active():
+            g[0].value = "$"
+        elif self.sterlina_radio.get_active():
+            g[0].value = "£"
+        g[0].tipo = "str"
+        Environment.session.add(g[0])
+
 
         self.documenti_setup_page._saveSetup()
         self.articoli_setup_page._saveSetup()

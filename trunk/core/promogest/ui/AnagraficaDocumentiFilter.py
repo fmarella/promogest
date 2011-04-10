@@ -74,7 +74,7 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         if column.get_name() == "numero_column":
             return self._changeOrderBy(column,(None,TestataDocumento.numero))
         if column.get_name() == "data_column":
-            return self._changeOrderBy(column,(None,TestataDocumento.data_documento))
+            return self._changeOrderBy(column,(None,"data_documento"))
         if column.get_name() == "tipo_documento_column":
             return self._changeOrderBy(column,(None,TestataDocumento.operazione))
 
@@ -99,7 +99,7 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         self.id_fornitore_filter_customcombobox.set_active(0)
         self.id_agente_filter_customcombobox.set_active(0)
         if posso("PA"):
-            self.stato_documento_filter_combobox.set_active(1)
+            self.tutto_radio.set_active(1)
         if posso("GN"):
             self.a_data_inizio_noleggio_filter_entry.set_text('')
             self.da_data_inizio_noleggio_filter_entry.set_text('')
@@ -123,17 +123,18 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         idCliente = self.id_cliente_filter_customcombobox.getId()
         idFornitore = self.id_fornitore_filter_customcombobox.getId()
         idAgente = self.id_agente_filter_customcombobox._id
-        statoDocumento = self.stato_documento_filter_combobox.get_active()
-        if statoDocumento == -1 or statoDocumento == 0:
+        if self.tutto_radio.get_active():
             statoDocumento = None
-        elif statoDocumento == 1:
-            statoDocumento = None
-        elif statoDocumento == 2:
-            statoDocumento = bool(False)
-        elif statoDocumento == 3:
+        elif self.saldato_radio.get_active():
             statoDocumento = bool(True)
         else:
-            statoDocumento = None
+            statoDocumento = bool(False)
+
+        if self.solo_contabili_check.get_active():
+            soloContabili = bool(True)
+        else:
+            soloContabili=None
+
         idArticolo = self.id_articolo_filter_customcombobox.getId()
         #genero il dizionario dei filtri
         self.filterDict = {"daNumero":daNumero,
@@ -149,7 +150,9 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
                             "idFornitore":idFornitore,
                             "idAgente":idAgente,
                             "statoDocumento":statoDocumento,
-                            "idArticolo":idArticolo}
+                            "idArticolo":idArticolo,
+                            "soloContabili":soloContabili}
+
         if posso("GN"):
             daDataInizioNoleggio = stringToDate(self.da_data_inizio_noleggio_filter_entry.get_text())
             aDataInizioNoleggio = stringToDate(self.a_data_inizio_noleggio_filter_entry.get_text())
@@ -174,15 +177,14 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
                                                 batchSize=batchSize,
                                                 filterDict = self.filterDict)
         self._filterClosure = filterClosure
-        #self._allResultForHtml = self.runFilter(offset=None, batchSize=None)
         tdos = self.runFilter()
-#        self.xptDaoList = self.runFilter(offset=None, batchSize=None)
         self.filter_listore.clear()
+
         for t in tdos:
             totali = t.totali
-            totaleImponibile = mN(t._totaleImponibileScontato,2) or 0
-            totaleImposta = mN(t._totaleImpostaScontata,2) or 0
-            totale = mN(t._totaleScontato,2) or 0
+            totaleImponibile = mNLC(t._totaleImponibileScontato,2) or 0
+            totaleImposta = mNLC(t._totaleImpostaScontata,2) or 0
+            totale = mNLC(t._totaleScontato,2) or 0
             col = None
             if posso("PA") and t.documento_saldato == 1:
                 documento_saldato_filter = "Si"

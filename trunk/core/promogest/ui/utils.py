@@ -2243,6 +2243,33 @@ def mN(value,decimal=None):
     newvalue= Decimal(str(value).strip()).quantize(Decimal(decimals), rounding=ROUND_HALF_UP)
     return newvalue
 
+
+def mNLC(value,decimal=None, curr="€ "):
+    """
+    Per il momento ritorna mN, da implementare la localizzazione
+    anche solo di valuta
+    """
+    value = mN(value, decimal=decimal)
+    curr = setconf("Valuta", "valuta_curr")
+    dp =","
+    sep="."
+    if curr =="$" or curr=="£":
+        dp="."
+        sep=","
+    elif curr =="€":
+        dp=","
+        sep="."
+
+    return italianizza(value, decimal=decimal,curr=curr+" ", dp=dp, sep=sep)
+
+def mNL(value,decimal=None):
+    """
+    Per il momento ritorna mN, da implementare la localizzazione
+    anche solo di valuta
+    """
+    value = mN(value, decimal=decimal)
+    return italianizza(value, decimal=decimal)
+
 def deItalianizza(value):
     if type("stringa") == type(value):
         if "€" in str(value):
@@ -2371,6 +2398,24 @@ def calcolaTotali(daos):
     """
     Preleva i dati del totale del dao e ne fa un dizionario
     """
+
+    plus = ["Fattura vendita","DDT vendita","Preventivo","Vendita dettaglio",
+    "Preventivo dettaglio","Ordine a magazzino",
+"Ordine beni strumentali","Fattura pro-forma","Fattura differita vendita",
+    "Fattura accompagnatoria","Scarico venduto da cassa","Ordine da cliente",
+    "Ordine a fornitore",]
+
+    minus =["Fattura acquisto","Fattura differita acquisto",
+            "Nota di credito a cliente",
+            "Nota di credito da fornitore","DDT acquisto",
+            "DDT reso da cliente",
+            "DDT reso a fornitore",]
+
+#"Scarico per uso interno",
+#"Scarico per deterioramento o rottura",
+#"Scarico per omaggio",
+#"Carico per inventario",
+
     totale_imponibile_non_scontato = 0
     totale_imponibile_scontato = 0
     totale_non_base_imponibile = 0
@@ -2381,40 +2426,68 @@ def calcolaTotali(daos):
     totale_sospeso = 0
     totale_pagato = 0
     for tot in daos:
+        ope = leggiOperazione(tot.operazione)
         try:
-            totale_imponibile_non_scontato = totale_imponibile_non_scontato + tot._totaleImponibile
+            if tot.operazione in minus:
+                totale_imponibile_non_scontato -= tot._totaleImponibile
+            elif tot.operazione in plus:
+                totale_imponibile_non_scontato += tot._totaleImponibile
         except:
             pass
         try:
-            totale_imposta_non_scontata=totale_imposta_non_scontata +tot._totaleImposta
+            if tot.operazione in minus:
+                totale_imposta_non_scontata -= tot._totaleImposta
+            elif tot.operazione in plus:
+                totale_imposta_non_scontata += tot._totaleImposta
         except:
             pass
         try:
-            totale_non_base_imponibile=totale_non_base_imponibile+tot._totaleNonBaseImponibile
+            if tot.operazione in minus:
+                totale_non_base_imponibile -= tot._totaleNonBaseImponibile
+            elif tot.operazione in plus:
+                totale_non_base_imponibile += tot._totaleNonBaseImponibile
         except:
             pass
         try:
-            totale_non_scontato=totale_non_scontato+tot._totaleNonScontato
+            if tot.operazione in minus:
+                totale_non_scontato -= tot._totaleNonScontato
+            elif tot.operazione in plus:
+                totale_non_scontato += tot._totaleNonScontato
         except:
             pass
         try:
-            totale_scontato=totale_scontato+tot._totaleScontato
+            if tot.operazione in minus:
+                totale_scontato -= tot._totaleScontato
+            elif tot.operazione in plus:
+                totale_scontato += tot._totaleScontato
         except:
             pass
         try:
-            totale_imponibile_scontato=totale_imponibile_scontato+tot._totaleImponibileScontato
+            if tot.operazione in minus:
+                totale_imponibile_scontato -= tot._totaleImponibileScontato
+            elif tot.operazione in plus:
+                totale_imponibile_scontato += tot._totaleImponibileScontato
         except:
             pass
         try:
-            totale_imposta_scontata=totale_imposta_scontata+tot._totaleImpostaScontata
+            if tot.operazione in minus:
+                totale_imposta_scontata -= tot._totaleImpostaScontata
+            elif tot.operazione in plus:
+                totale_imposta_scontata += tot._totaleImpostaScontata
         except:
             pass
         try:
-            totale_sospeso=totale_sospeso+tot.totale_sospeso
+            if tot.operazione in minus:
+                totale_sospeso -= tot.totale_sospeso
+            elif tot.operazione in plus:
+                totale_sospeso += tot.totale_sospeso
         except:
             pass
         try:
-            totale_pagato=totale_pagato+tot.totale_pagato
+            if tot.operazione in minus:
+                totale_pagato -= tot.totale_pagato
+            elif tot.operazione in plus:
+                totale_pagato += tot.totale_pagato
         except:
             pass
     totaliGenerali = { "totale_imponibile_non_scontato":totale_imponibile_non_scontato,

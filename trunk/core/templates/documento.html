@@ -4,31 +4,29 @@
     {% if dao %}
     <table>
         <tr>
-            <td class="report-header"><h3> Registro: <strong> {{(dao.registro_numerazione).replace("_"," ").capitalize()}}</strong></h3></td>
-            <td class="report-header"><h3>Numero: <strong>{{dao.numero}} {{dao.parte|nonone}}</strong></h3></td>
-    	</tr>
-    </table>
+            <td colspan="3" style="font-size:18px;" class="report-header"><h3>Numero: <strong>{{dao.numero}} {{dao.parte|nonone}}</strong></h3></td>
 
-    <table cellpadding="0" cellspacing="0" border="0">
+            <td class="report-header">Tipo: <strong> {{(dao.registro_numerazione).replace("_"," ").capitalize()}}</strong></td>
+    	</tr>
         <tr>
-            <td colspan="4" class="table-header">Dati documento</td></tr>
-        <tr>
-            <td class="even-detail">Operazione</td>
-            <td class="odd-detail">
+            <td style="width:100px;" class="even-detail">Operazione</td>
+            <td style="font-size:18px;;width:250px;" class="odd-detail">
                 <strong> {{dao.operazione}}</strong></td>
             <td class="even-detail">Data documento</td>
             <td class="odd-detail"><strong>{{utils.dateToString(dao.data_documento)}}</strong></td>
         </tr>
         <tr >
-            <td class="even-detail">Cliente</td>
+
                 {% if dao.id_cliente %}
-            <td class="odd-detail"><strong>{{dao.intestatario}}</strong></td>
+                <td class="even-detail">Cliente</td>
+            <td colspan="3" style="font-size:16px;" class="odd-detail"><strong>{{dao.intestatario}}</strong></td>
                 {% endif %}
         </tr>
         <tr >
-            <td class="even-detail">Fornitore</td>
+
             {% if dao.id_fornitore %}
-                <td class="odd-detail"><strong>{{dao.intestatario}}</strong></td>
+             <td class="even-detail">Fornitore</td>
+                <td colspan="3" style="font-size:16px;" class="odd-detail"><strong>{{dao.intestatario}}</strong></td>
             {% endif %}
         </tr>
     </table>
@@ -38,18 +36,19 @@
                     <td colspan="8" class="table-header">TOTALI DOCUMENTO</td>
                 </tr>
                 <tr>
-                    <td class="even-detail">TOTALE IMPONIBILE LORDO:</td>
-                    <td class="odd-detail"><strong> {{ utils.mN(dao._totaleImponibile,2)}}</strong></td>
+                    <td class="even-detail">IMPONIBILE LORDO:</td>
+                    <td style="width:70px;" class="odd-detail"><strong>{{utils.mNLC(dao._totaleImponibile,2)}}</strong></td>
+
                     <td class="even-detail">SCONTO TESTATA DOCUMENTO:</td>
                     <td class="odd-detail"><strong> {{ utils.getStringaSconti(utils.getScontiFromDao(dao.sconti, dao.applicazione_sconti)[0])}}{{ utils.getScontiFromDao(dao.sconti, dao.applicazione_sconti)[1]}}</strong></td>
-                    <td class="even-detail">TOTALE IMPONIBILE:</td>
-                    <td class="odd-detail"><strong> {{ utils.mN(dao._totaleImponibileScontato,2)}}</strong></td>
-                    <td class="even-detail">TOTALE IMPOSTA:</td>
-                    <td class="odd-detail"><strong>{{ utils.mN(dao._totaleImpostaScontata,2)}}</strong></td>
+                    <td class="even-detail">IMPONIBILE:</td>
+                    <td style="width:70px;" class="odd-detail"><strong> {{ utils.mNLC(dao._totaleImponibileScontato,2)}}</strong></td>
+                    <td class="even-detail">IMPOSTA:</td>
+                    <td style="width:70px;" class="odd-detail"><strong>{{ utils.mNLC(dao._totaleImpostaScontata,2)}}</strong></td>
                 </tr>
                 <tr>
-                    <td  class="even-detail">TOTALE DOCUMENTO:</td>
-                    <td colspan="7"class="odd-detail" style="font-size:20px;color:blue;"><strong>{{utils.mN(dao._totaleScontato,2)}}</strong></td>
+                    <td  class="even-detail">TOTALE:</td>
+                    <td colspan="7"class="odd-detail" style="font-size:20px;color:blue;"><strong>{{utils.mNLC(dao._totaleScontato,2)}}</strong></td>
                 </tr>
 </table>
     <br />
@@ -79,9 +78,9 @@
                 <td class="odd-detail"><b><a href="program:/articoloId={{riga.id_articolo}}">{{riga.codice_articolo}}</a></b></td>
                 <td class="odd-detail">{{riga.descrizione|nonone}}</td>
                 <td class="odd-detail" colspan="2">{{riga.listino}}</td>
-                <td class="odd-number" colspan="2">€{{utils.mN(riga.valore_unitario_lordo,2)}}</td>
+                <td class="odd-number" colspan="2">{{utils.mNLC(riga.valore_unitario_lordo,2)}}</td>
                 <td class="odd-detail" colspan="2">{{utils.getStringaSconti(utils.getScontiFromDao(riga.sconti)[0])}}</td>
-                <td class="odd-number" colspan="2">€{{utils.mN(riga.valore_unitario_netto,2)}}</td>
+                <td class="odd-number" colspan="2">{{utils.mNLC(riga.valore_unitario_netto,2)}}</td>
                 <td class="odd-number" colspan="2" >{{utils.mN(riga.quantita,2)}}</td>
                 {% if riga.moltiplicatore > 1 %}
                 <td class="odd-number" colspan="2">{{riga.multiplo}} ( {{utils.mN(riga.moltiplicatore,2)}} )</td>
@@ -89,7 +88,7 @@
                 <td class="odd-number" colspan="2"></td>
                 {% endif %}
                 <td class="odd-number" colspan="2">{{riga.percentuale_iva|int}}</td>
-                <td class="odd-number" colspan="3">€<strong>{{utils.mN(( riga.quantita*  riga.moltiplicatore * riga.valore_unitario_netto ),2)}}<strong></td>
+                <td class="odd-number" colspan="3"><strong>{{utils.mNLC(( riga.quantita*  riga.moltiplicatore * riga.valore_unitario_netto ),2)}}<strong></td>
             </tr>
             {% endfor %}
         </table>
@@ -135,11 +134,11 @@
             <td class="even-detail" colspan="2">Totale Sospeso</td>
             <td class="odd-detail">
                 <strong py:if="conf.hasPagamenti == True">
-                    <strong>{{utils.mN(dao.totale_sospeso|nonone,2)}}</strong></strong></td>
+                    <strong>{{utils.mNLC(dao.totale_sospeso|nonone,2)}}</strong></strong></td>
             <td class="even-detail" colspan="2">Totale Pagato</td>
             <td class="odd-detail">
                 <strong py:if="conf.hasPagamenti == True">
-                    <strong>{{utils.mN(dao.totale_pagato|nonone,2)}}</strong></strong></td>
+                    <strong>{{utils.mNLC(dao.totale_pagato|nonone,2)}}</strong></strong></td>
         </tr>
     </table>
 	<table cellpadding="0" cellspacing="0" border="0">

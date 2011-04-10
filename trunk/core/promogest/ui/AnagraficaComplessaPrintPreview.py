@@ -62,14 +62,17 @@ class AnagraficaPrintPreview(GladeWidget):
         self._anagrafica = anagrafica
 
         self.bodyWidget = FilterWidget(owner=self, resultsElement='html')
+        self.bodyWidget.filter_navigation_hbox.destroy()
+        self.bodyWidget.info_label.set_markup("INSERT INFO")
         self.html_scrolledwindow.add_with_viewport(self.bodyWidget.getTopLevel())
-#        self.bodyWidget.filter_body_label.set_no_show_all(True)
-#        self.bodyWidget.filter_body_label.set_property('visible', False)
 
         self.print_on_screen_html = self.bodyWidget.resultsElement
         self._gtkHtmlDocuments = None # Will be filled later
         self._previewTemplate = previewTemplate
         self.html = createHtmlObj(self)
+
+        #Prendo tutti i dati dalla finestra di filtraggio, compresi i dati
+        # di ordinamento e di batchSize
         self._changeOrderBy = self.bodyWidget._changeOrderBy
         self.orderBy = self.bodyWidget.orderBy
         self.batchSize = self.bodyWidget.batchSize
@@ -77,19 +80,18 @@ class AnagraficaPrintPreview(GladeWidget):
         self.numRecords = self.bodyWidget.numRecords
         self._filterClosure = self._anagrafica.filter._filterClosure
         self._filterCountClosure = self._anagrafica.filter._filterCountClosure
-        #self._allResultForHtml = self._anagrafica.filter._allResultForHtml
-#        self.visualizzatore_html.set_transient_for(self._anagrafica.getTopLevel())
+
         self.placeWindow(self.visualizzatore_html)
 
+#        self.codBar_combo = gtk.combo_box_new_text()
+#        self.codBar_combo.append_text("Genera Pdf Anteprima Html")
+#        self.codBar_combo.append_text("Genera CSV da Anteprima Html")
+#        self.bodyWidget.hbox1.pack_start(self.codBar_combo)
+#        self.codBar_combo.connect('changed', self.on_generic_combobox_changed )
 
-        self.codBar_combo = gtk.combo_box_new_text()
-        self.codBar_combo.append_text("Genera Pdf Anteprima Html")
-        self.codBar_combo.append_text("Genera CSV da Anteprima Html")
-        self.bodyWidget.hbox1.pack_start(self.codBar_combo)
-        self.codBar_combo.connect('changed', self.on_generic_combobox_changed )
-
-        self.bodyWidget.generic_button.set_no_show_all(True)
+#        self.bodyWidget.generic_button.set_no_show_all(True)
         self.bodyWidget.generic_button.set_property('visible', False)
+
         #generaButton = self.bodyWidget.generic_button
         #generaButton.connect('clicked', self.on_generic_button_clicked )
         #generaButton.set_label("Genera Pdf Anteprima Html")
@@ -100,13 +102,18 @@ class AnagraficaPrintPreview(GladeWidget):
         try:
             import ho.pisa as pisa
         except:
-            print "ERRORE NELL'IMPORT DI PISA"
+            messageInfo(msg="""ERRORE nell'import di una libreria
+necessaria alla creazione del pdf, su linux installare "pisa" su
+windows è consigliato reinstallare il programma
+o contattare l'assistenza""")
 #                import pisaLib.ho.pisa as pisa
             return
-        f = self.html_code
+        f = self.html_code.replace("€","&#8364;")
         g = file(Environment.tempDir+".temp.pdf", "wb")
+        pbar(self.pbar,pulse=True,text="GENERAZIONE STAMPA ATTENDERE")
         pdf = pisa.CreatePDF(str(f),g)
         g .close()
+        pbar(self.pbar,stop=True)
         anag = PrintDialogHandler(self,self.windowTitle)
         anagWindow = anag.getTopLevel()
         returnWindow = self.bodyWidget.getTopLevel().get_toplevel()
@@ -152,7 +159,7 @@ class AnagraficaPrintPreview(GladeWidget):
         daos = self.bodyWidget.runFilter(offset=None, batchSize=None,
                                          filterClosure=self._filterClosure)
         self.numRecords = self.bodyWidget.countFilterResults(self._filterCountClosure)
-        self._refreshPageCount()
+#        self._refreshPageCount()
         pageData = {}
         self.html_code = "<html><body></body></html>"
         if daos:

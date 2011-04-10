@@ -947,8 +947,10 @@ class TestataDocumento(Dao):
         params['session'].delete(self)
         params['session'].commit()
 
-
     def filter_values(self,k,v):
+        contabili = ["Fattura vendita", "Fattura acquisto","Nota di credito a cliente",
+            "Nota di credito da fornitore","Fattura accompagnatoria",
+             "Vendita dettaglio","Fattura differita vendita", "Fattura differita acquisto"]
         if k == 'daNumero':
             dic = {k:testata_documento.c.numero >= v}
         elif k == 'aNumero':
@@ -965,6 +967,8 @@ class TestataDocumento(Dao):
             dic = {k:testata_documento.c.protocollo.ilike("%"+v+"%")}
         elif k == 'idOperazione':
             dic = {k:testata_documento.c.operazione == v}
+        elif k == 'soloContabili':
+            dic = {k:testata_documento.c.operazione.in_(contabili)}
         elif k == 'idMagazzino':
             dic = {k:testata_movi.c.id.in_(select([RigaMovimento.id_testata_movimento],and_(
                                         testata_movi.c.id_testata_documento == testata_documento.c.id,

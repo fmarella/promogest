@@ -2,23 +2,25 @@
 
     body {
         background-color: white;
-        font-family: monospace;
+/*        font-family: monospace;*/
     }
 
     table {
         width: 98%;
     }
 
-    tr.row {
+    tr {
         border-bottom : 1px solid black;
     }
 
     td {
         padding-left: 4px;
+        font-size: 1.1em;
     }
 
     td.detail {
         padding-left: 2px;
+        font-size: 12px;
     }
 
     td.left {
@@ -31,7 +33,7 @@
         padding-left: 4px;
         font-weight: normal;
         font-style: normal;
-        font-size: 1.1em;
+        font-size: 1.3em;
         padding: 4px;
     }
 
@@ -73,43 +75,4 @@
     width: auto;
 }
 
-/*#container #footer {*/
-/*    background-image: url("gui/bkg_footer.png");*/
-/*    background-repeat: repeat;*/
-/*    position: relative;*/
-/*    width: auto;*/
-/*    font-family: Arial;*/
-/*    font-size: 10px;*/
-/*    color: #333333;*/
-/*    height: 21px;*/
-/*}*/
-/*#container #rigaheader {*/
-/*    background-image: url("gui/bkg_footer.png");*/
-/*    background-repeat: repeat;*/
-/*    position: relative;*/
-/*    width: auto;*/
-/*    height: 15px;*/
-/*}*/
-/*#container #head {*/
-/*    height: 70px;*/
-/*}*/
-/*#container #head #testo {*/
-/*    position: relative;*/
-/*    top: -40px;*/
-/*    left: 80px;*/
-/*    width: 80%;*/
-/*    font-family: Arial;*/
-/*    font-size: 24px;*/
-/*    color: #666666;*/
-/*    font-weight: bold;*/
-/*}*/
-/*#container #head #img {*/
-/*    height: 48px;*/
-/*    width: 48px;*/
-/*    background-repeat: no-repeat;*/
-/*    position: relative;*/
-/*    left: 20px;*/
-/*    top: 5px;*/
-/*    padding-top: 10px;*/
-/*}*/
 </style>

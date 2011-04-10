@@ -182,6 +182,21 @@ if not bb:
     kbb.date = datetime.datetime.now()
     session.add(kbb)
 
+bb = SetConf().select(key="valuta_curr", section="Valuta")
+if not bb:
+    kbb = SetConf()
+    kbb.key = "valuta_curr"
+    kbb.value ="€"
+    kbb.section = "Valuta"
+    kbb.tipo_section = "Generico"
+    kbb.description = "Vvaluta"
+    kbb.active = True
+    kbb.tipo = "str"
+    kbb.date = datetime.datetime.now()
+    session.add(kbb)
+
+
+
 bb = SetConf().select(key="vettore_codice_upper", section="Vettori")
 if not bb:
     kbb = SetConf()
