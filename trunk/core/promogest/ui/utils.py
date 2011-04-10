@@ -2403,11 +2403,11 @@ def calcolaTotali(daos):
     "Preventivo dettaglio","Ordine a magazzino",
 "Ordine beni strumentali","Fattura pro-forma","Fattura differita vendita",
     "Fattura accompagnatoria","Scarico venduto da cassa","Ordine da cliente",
-    "Ordine a fornitore",]
+    "Ordine a fornitore","DDT acquisto",
+    "Fattura acquisto","Fattura differita acquisto",]
 
-    minus =["Fattura acquisto","Fattura differita acquisto",
-            "Nota di credito a cliente",
-            "Nota di credito da fornitore","DDT acquisto",
+    minus =[ "Nota di credito a cliente",
+            "Nota di credito da fornitore",
             "DDT reso da cliente",
             "DDT reso a fornitore",]
 
