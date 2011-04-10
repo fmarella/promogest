@@ -20,6 +20,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
+import os
 import gtk
 from promogest import Environment
 from GladeWidget import GladeWidget
@@ -147,7 +148,7 @@ class ConfiguraWindow(GladeWidget):
             Environment.conf.save()
         else:
             d = SetConf().select(key="cartella_predefinita", section="General")
-            d[0].value = str(self.path_label.get_text())
+            d[0].value = str(self.path_label.get_text()+os.sep)
             d[0].tipo = "str"
             Environment.session.add(d[0])
 
