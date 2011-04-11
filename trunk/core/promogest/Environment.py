@@ -27,11 +27,12 @@ import os
 import shutil
 import glob
 import getopt, sys
+import sqlalchemy
+SAVER = sqlalchemy.__version__ 
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from sqlalchemy.interfaces import PoolListener
 #from sqlalchemy import event
-from sqlalchemy.event import listen
 
 #from sqlalchemy.pool import NullPool
 from sqlalchemy.interfaces import ConnectionProxy
@@ -504,12 +505,13 @@ def my_on_connect(dbapi_con, con_record):
 if tipodb == "sqlite":
     azienda = None
     mainSchema = None
-    #engine =create_engine("sqlite:///"+startdir()+"db",listeners=[SetTextFactory()],proxy=MyProxy())
-    engine =create_engine("sqlite:///"+startdir()+"db",encoding='utf-8',proxy=MyProxy())
-    listen(engine, 'connect', my_on_connect)
-#    engine =create_engine("sqlite:///"+startdir()+"db",proxy=MyProxy())
-    #engine.connect().connection.connection.text_factory = str
-    #engine.raw_connection().connection.text_factory = str
+    if SAVER >= "0.7":
+        print "SA 0.7"
+        from sqlalchemy.event import listen
+        engine =create_engine("sqlite:///"+startdir()+"db",encoding='utf-8',proxy=MyProxy())
+        listen(engine, 'connect', my_on_connect)
+    else:
+        engine =create_engine("sqlite:///"+startdir()+"db",listeners=[SetTextFactory()],proxy=MyProxy())
 else:
     mainSchema = "promogest2"
     engine = _pg8000()
