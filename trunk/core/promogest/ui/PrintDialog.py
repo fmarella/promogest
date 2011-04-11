@@ -13,8 +13,7 @@ import os, sys, threading, os.path
 from utilsCombobox import *
 from promogest import Environment
 from GladeWidget import GladeWidget
-from reportlab.graphics.shapes import Drawing, String
-from reportlab.graphics import renderPM
+
 
 class PrintDialogHandler(GladeWidget):
 
