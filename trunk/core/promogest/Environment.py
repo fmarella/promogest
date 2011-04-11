@@ -30,6 +30,8 @@ import getopt, sys
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from sqlalchemy.interfaces import PoolListener
+from sqlalchemy import event
+
 #from sqlalchemy.pool import NullPool
 from sqlalchemy.interfaces import ConnectionProxy
 from sqlalchemy.exc import *
@@ -498,8 +500,10 @@ class SetTextFactory(PoolListener):
 if tipodb == "sqlite":
     azienda = None
     mainSchema = None
-    engine =create_engine("sqlite:///"+startdir()+"db",listeners=[SetTextFactory()],proxy=MyProxy())
+    #engine =create_engine("sqlite:///"+startdir()+"db",listeners=[SetTextFactory()],proxy=MyProxy())
+    engine =create_engine("sqlite:///"+startdir()+"db",proxy=MyProxy())
 #    engine =create_engine("sqlite:///"+startdir()+"db",proxy=MyProxy())
+    engine.connect().connection.connection.text_factory = str
 else:
     mainSchema = "promogest2"
     engine = _pg8000()
