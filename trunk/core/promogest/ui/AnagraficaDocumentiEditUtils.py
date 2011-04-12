@@ -370,11 +370,10 @@ def calcolaTotalePart(anaedit, dao=None):
     else:
         anaedit.metodo_pagamento_label.set_markup('<b><span foreground="black" size="16000">'+str("NESSUNO?")+'</span></b>')
 
-    model = anaedit.riepiloghi_iva_treeview.get_model()
-    model.clear()
+    anaedit.liststore_iva.clear()
     for k in castellettoIva.keys():
         if k !=0:
-            model.append((str(mN(k,1)),
+            anaedit.liststore_iva.append((str(mN(k,1)),
                             (str(mN(castellettoIva[k]['imponibile'],2))),
                             (str(mN(castellettoIva[k]['imposta'],2))),))
 

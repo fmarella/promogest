@@ -144,7 +144,7 @@ class ConfiguraWindow(GladeWidget):
             if  hasattr(Environment.conf, "Documenti") and not hasattr(Environment.conf.Documenti, "cartella_predefinita"):
                 setattr(Environment.conf.Documenti,"cartella_predefinita",Environment.documentsDir)
                 Environment.conf.save()
-            Environment.conf.Documenti.cartella_predefinita = str(self.path_label.get_text())
+            Environment.conf.Documenti.cartella_predefinita = str(self.path_label.get_text()+os.sep)
             Environment.conf.save()
         else:
             d = SetConf().select(key="cartella_predefinita", section="General")

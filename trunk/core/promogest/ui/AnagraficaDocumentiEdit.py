@@ -46,6 +46,7 @@ from promogest.dao.Cliente import Cliente
 from promogest.dao.Multiplo import Multiplo
 from promogest.dao.Pagamento import Pagamento
 from promogest.dao.AliquotaIva import AliquotaIva
+#from promogest.dao.RigaRitenutaAcconto import RigaRitenutaAcconto
 from promogest.modules.PrimaNota.dao.TestataPrimaNota import TestataPrimaNota
 
 from utils import *
@@ -216,7 +217,10 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                                 "totale": 0,
                                 "codiceArticoloFornitore": '',
                                 "prezzoNettoUltimo": 0,
-                                "quantita_minima": None}
+                                "quantita_minima": None,
+                                "ritAccPercentuale": 0,
+                                "rivalsaPercentuale": 0,
+                                "ritCaProvvigionale": 0,}
         if posso("SM"):
             AnagraficaDocumentiEditSuMisuraExt.azzeraRiga(self,numero)
         if posso("PW"):
@@ -252,7 +256,10 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                                 "totale": rigatampone['totale'],
                                 "codiceArticoloFornitore": rigatampone['codiceArticoloFornitore'],
                                 "prezzoNettoUltimo": rigatampone['prezzoNettoUltimo'],
-                                "quantita_minima": rigatampone['quantita_minima']}
+                                "quantita_minima": rigatampone['quantita_minima'],
+                                "ritAccPercentuale": rigatampone['ritAccPercentuale'],
+                                "rivalsaPercentuale": rigatampone['rivalsaPercentuale'],
+                                "ritCaProvvigionale": rigatampone['ritCaProvvigionale'],}
         if posso("SM"):
             AnagraficaDocumentiEditSuMisuraExt.azzeraRigaPartial(self,numero, rigatampone)
 
@@ -278,7 +285,9 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self.totale_riga_label.set_text('0')
         self.giacenza_label.set_text('0')
         self.quantitaMinima_label.set_text('0')
-
+        self.ritenuta_percentuale_entry.set_text('')
+        self.rivalsa_percentuale_entry.set_text('')
+        self.provvigionale_check.set_active(False)
         if posso("PW"):
             AnagraficaDocumentiEditPromoWearExt.setLabelInfo(self)
 
