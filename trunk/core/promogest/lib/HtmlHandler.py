@@ -131,6 +131,7 @@ def apriAnagraficaPromemoriaEdit(promemoriaId):
 
 def _on_navigation_requested(view, frame, req, data=None):
     uri = req.get_uri()
+    print "SIAMO QUIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII"   , uri
     if uri.startswith("program:/"):
         agg = uri.split("/")[1]
         if "articoloId" in agg:
@@ -148,6 +149,8 @@ def _on_navigation_requested(view, frame, req, data=None):
         elif "testataDocumentoId" in agg:
             exec(agg)
             apriTestataDocumentoEdit(testataDocumentoId)
+    elif uri.startswith("http://"):
+        linkOpen(uri)
     else:
         return False
     return True
@@ -179,7 +182,6 @@ def renderTemplate(pageData):
     return html
 
 def _on_html_request_url(document, url, stream):
-
     def render():
         try:
             f = open(url, 'rb')
@@ -211,6 +213,7 @@ def _on_html_link_clicked(url, link):
     return True
 
 if not WEBKIT:
+    """ gtkhtml23"""
     document = gtkhtml2.Document()
     document.connect('request_url', _on_html_request_url)
     document.connect('link_clicked', _on_html_link_clicked)
@@ -230,14 +233,7 @@ def renderHTML(widget, html):
             widget.set_settings(c)
         except:
             print " VERSIONE DI WEBKIT NON AGGIORNATA... KARMIC?"
-#        framme =  widget.get_main_frame()
-#        print "PPPPPPPPPPPPPPPPPP", framme, dir(framme)
-#        framme.print_full(gtk.PrintOperation(), gtk.PRINT_OPERATION_ACTION_PRINT_PREVIEW)
         widget.load_html_string(html, "file:///"+sys.path[0]+os.sep)
-#        print dir(widget)
-#        widget.web_frame_print_full(GTK_PRINT_OPERATION_ACTION_EXPORT, )
-#        widget.load_string(html,"text/html","utf-8", "file:///")
-#        widget.set_editable(True)
         widget.show()
     else:
         document.open_stream('text/html')
