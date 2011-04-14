@@ -14,7 +14,7 @@
             <tr class="row">
                 <td class="detail">{{dao.codice}}</td>
                 <td class="detail">{{dao.ragione_sociale}}</td>
-                <td class="detail">{{(dao.cognome + dao.nome)}}</td>
+                <td class="detail">{{(dao.cognome or "") + (dao.nome or "")}}</td>
                 <td class="detail">{{dao.sede_operativa_indirizzo}}</td>
                 <td class="detail">{{dao.sede_operativa_localita}}</td>
                 <td class="detail">{{dao.sede_operativa_provincia}}</td>
