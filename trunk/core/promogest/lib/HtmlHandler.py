@@ -131,7 +131,6 @@ def apriAnagraficaPromemoriaEdit(promemoriaId):
 
 def _on_navigation_requested(view, frame, req, data=None):
     uri = req.get_uri()
-    print "SIAMO QUIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII"   , uri
     if uri.startswith("program:/"):
         agg = uri.split("/")[1]
         if "articoloId" in agg:
@@ -157,11 +156,7 @@ def _on_navigation_requested(view, frame, req, data=None):
 
 def createHtmlObj(mainWidget,widget=None):
     try:
-#    def _on_hovering_over_link(widget, title,uri,userdata):
-#        print "OOOOOIJJJJJJJJJJJJJJJJJJJJJ", widget, title, uri, userdata
         a= WebView()
-#        print dir(a)
-#    a.connect('hovering-over-link', _on_hovering_over_link,a)
         a.connect('navigation-requested', _on_navigation_requested,a)
         return a
     except:
