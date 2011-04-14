@@ -706,7 +706,7 @@ def hidePromoWear(ui):
 def hideSuMisura(ui):
     """funzione per SuMisura .....rimuove dalla vista quando modulo è disattivato
     """
-    ui.sumisura_frame.destroy()
+    ui.sumisura_hbox.destroy()
     ui.moltiplicatore_entry.destroy()
     ui.label_moltiplicatore.hide()
 
