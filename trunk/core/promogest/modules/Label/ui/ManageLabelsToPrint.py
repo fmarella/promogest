@@ -188,7 +188,11 @@ class ManageLabelsToPrint(GladeWidget):
     def ricercaListino(self):
         """ check if there is a priceList like setted on configure file
         """
-        pricelist = Listino().select(denominazione = Environment.conf.VenditaDettaglio.listino,
+        try:
+            pp = Environment.conf.VenditaDettaglio.listino
+        except:
+            pp = None
+        pricelist = Listino().select(denominazione = pp ,
                                     offset = None,
                                     batchSize = None)
 
