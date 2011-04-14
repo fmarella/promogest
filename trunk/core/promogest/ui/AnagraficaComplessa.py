@@ -392,7 +392,6 @@ class Anagrafica(GladeWidget):
         raise NotImplementedError
 
     def on_records_print_activate(self, widget):
-        print "AHHIHIHIHIHIHIHIHIHIHIHIHIHIHIHIHIHI"
         self._handlePrinting(pdfGenerator=self.reportHandler, report=True)
 
     def on_Stampa_Frontaline_clicked(self, widget):
@@ -702,6 +701,7 @@ Grazie!""")
         """ Qui gestiamo l'apertura
         """
         pdfFile = os.path.join(self._folder + self._pdfName +'.pdf')
+        print "PDFFFFFFFFFFFFFFFFFFFFFFFFFFFF", pdfFile
         self.pdfFile = pdfFile
         self.tryToSavePdf(pdfFile)
         try:

@@ -9,6 +9,7 @@
 import os
 import math
 import pprint
+from promogest.ui.utils import setconf
 import xml.etree.cElementTree as ElementTree
 from promogest import Environment
 from promogest.lib import Sla2pdfUtils
@@ -453,8 +454,10 @@ class SlaTpl2Sla(object):
         rows = int(self.tablesPropertie['rows'])
         sumRows = Sla2pdfUtils.sumRowsFunc(heights,rows)
         sumColumns = Sla2pdfUtils.sumColumnsFunc(widths,columns)
-        otherColumn = sumColumns +Environment.sistemaColonnaFrontaline
-        sumRows = sumRows + Environment.sistemaRigaFrontaline
+
+        otherColumn = sumColumns +(int(setconf("Label", "sistemacolonnafrontaline")) or 0)
+        sumRows = sumRows + (int(setconf("Label", "sistemarigafrontaline")) or 0)
+
         self.pageYpos = float(numPages[0].get('PAGEYPOS'))
         self.pageXpos = float(numPages[0].get('PAGEXPOS'))
         self.pageHeight = float(numPages[0].get('PAGEHEIGHT'))

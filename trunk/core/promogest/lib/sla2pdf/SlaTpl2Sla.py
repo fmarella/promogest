@@ -25,6 +25,7 @@ import math
 import operator
 import xml.etree.cElementTree as ElementTree
 from promogest import Environment
+from promogest.ui.utils import setconf
 import Sla2pdfUtils
 from SlaParser import SlaParser
 SHOWZERORIGA = False
@@ -609,8 +610,8 @@ class SlaTpl2Sla(SlaParser):
 
         sumRows = reduce(operator.add, heights[:rows])
         sumColumns = reduce(operator.add, widths[:columns])
-        otherColumn = sumColumns +Environment.sistemaColonnaFrontaline
-        otherRows = sumRows + Environment.sistemaRigaFrontaline
+        otherColumn = sumColumns + (int(setconf("Label", "sistemacolonnafrontaline")) or 0)
+        otherRows = sumRows + (int(setconf("Label", "sistemarigafrontaline")) or 0)
 
         pageYpos = float(numPages[0].get('PAGEYPOS'))
         pageXpos = float(numPages[0].get('PAGEXPOS'))

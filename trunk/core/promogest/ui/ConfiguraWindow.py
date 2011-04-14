@@ -29,6 +29,7 @@ from promogest.ui.AnagraficaArticoliSetup import AnagraficaArticoliSetup
 from promogest.ui.AnagraficaClientiSetup import AnagraficaClientiSetup
 from promogest.ui.AnagraficaFornitoriSetup import AnagraficaFornitoriSetup
 from promogest.modules.PrimaNota.ui.AnagraficaPrimaNotaSetup import AnagraficaPrimaNotaSetup
+from promogest.modules.Label.ui.AnagraficaLabelSetup import AnagraficaLabelSetup
 from ParametriFrame import ParametriFrame
 from promogest.dao.Setconf import SetConf
 from promogest.ui.utils import setconf, messageInfo
@@ -67,6 +68,9 @@ class ConfiguraWindow(GladeWidget):
 
         self.primanota_setup_page = AnagraficaPrimaNotaSetup(self)
         self.setup_notebook.append_page(self.primanota_setup_page._anagrafica_primanota_setup_frame, self.primanota_setup_page.primanota_setup_page_label)
+
+        self.label_setup_page = AnagraficaLabelSetup(self)
+        self.setup_notebook.append_page(self.label_setup_page._anagrafica_label_setup_frame, self.label_setup_page.label_setup_page_label)
 
         self._refresh()
 
@@ -115,6 +119,7 @@ class ConfiguraWindow(GladeWidget):
         self.clienti_setup_page._refresh()
         self.fornitori_setup_page._refresh()
         self.primanota_setup_page._refresh()
+        self.label_setup_page._refresh()
 
     def on_salva_button_clicked(self, button_salva):
 
@@ -198,6 +203,7 @@ class ConfiguraWindow(GladeWidget):
         self.clienti_setup_page._saveSetup()
         self.fornitori_setup_page._saveSetup()
         self.primanota_setup_page._saveSetup()
+        self.label_setup_page._saveSetup()
 
         Environment.session.commit()
         confList = SetConf().select(batchSize=None)

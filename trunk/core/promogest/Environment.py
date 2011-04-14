@@ -28,7 +28,7 @@ import shutil
 import glob
 import getopt, sys
 import sqlalchemy
-SAVER = sqlalchemy.__version__ 
+SAVER = sqlalchemy.__version__
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from sqlalchemy.interfaces import PoolListener
@@ -77,8 +77,6 @@ cliente_predefinito = None
 tipo_documento_predefinito = None
 multilinelimit = None
 mltext = None
-sistemaColonnaFrontaline = None
-sistemaRigaFrontaline = None
 bordoDestro = None
 bordoSinistro = None
 feedCache = ""
@@ -305,7 +303,7 @@ except IOError:
 def set_configuration(company=None, year = None):
     global conf,connection, exceptionHandler, promogestDir, feed,  emailcompose,\
                 emailmittente, smtpServer, \
-                multilinelimit, mltext, sistemaColonnaFrontaline, sistemaRigaFrontaline,\
+                multilinelimit, mltext,\
                 imagesDir, labelTemplatesDir, templatesDir, documentsDir, reportTemplatesDir,\
                 bordoDestro, bordoSinistro, magazzini, listini, tempDir
 
@@ -501,7 +499,7 @@ class SetTextFactory(PoolListener):
 
 def my_on_connect(dbapi_con, con_record):
     dbapi_con.text_factory = str
-    
+
 if tipodb == "sqlite":
     azienda = None
     mainSchema = None
