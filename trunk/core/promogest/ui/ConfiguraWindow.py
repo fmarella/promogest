@@ -168,12 +168,12 @@ class ConfiguraWindow(GladeWidget):
         Environment.session.add(f[0])
 
         g = SetConf().select(key="decimals", section="Numbers")
-        g[0].value = str(self.decimals_entry.get_text())
+        g[0].value = str(self.decimals_entry.get_text()) or "2"
         g[0].tipo = "int"
         Environment.session.add(g[0])
 
         f = SetConf().select(key="batch_size", section="Numbers")
-        f[0].value = str(self.batch_size_entry.get_text())
+        f[0].value = str(self.batch_size_entry.get_text()) or "3"
         f[0].tipo = "int"
         Environment.session.add(f[0])
 

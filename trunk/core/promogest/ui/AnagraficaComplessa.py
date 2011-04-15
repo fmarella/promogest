@@ -701,7 +701,6 @@ Grazie!""")
         """ Qui gestiamo l'apertura
         """
         pdfFile = os.path.join(self._folder + self._pdfName +'.pdf')
-        print "PDFFFFFFFFFFFFFFFFFFFFFFFFFFFF", pdfFile
         self.pdfFile = pdfFile
         self.tryToSavePdf(pdfFile)
         try:
