@@ -101,19 +101,19 @@ class ADRNotebookPage(GladeWidget):
         self.id_categoria_trasporto_adr_customcombobox.combobox.set_active(self.dao_articolo_adr.id_categoria_trasporto or -1)
 
     def adrSaveDao(self):
-        if (self.numero_un_adr_entry.get_text() == ''):
-            obligatoryField(None, self.numero_un_adr_entry,
-                            "Inserire il numero UN!")
+#        if (self.numero_un_adr_entry.get_text() == ''):
+#            obligatoryField(None, self.numero_un_adr_entry,
+#                            "Inserire il numero UN!")
 
-        if findIdFromCombobox(self.id_gruppo_imballaggio_adr_customcombobox.combobox) is None:
-            obligatoryField(None,
-                            self.id_gruppo_imballaggio_adr_customcombobox,
-                            "Inserire il numero gruppo imballaggio!")
+#        if findIdFromCombobox(self.id_gruppo_imballaggio_adr_customcombobox.combobox) is None:
+#            obligatoryField(None,
+#                            self.id_gruppo_imballaggio_adr_customcombobox,
+#                            "Inserire il numero gruppo imballaggio!")
 
-        if findIdFromCombobox(self.id_categoria_trasporto_adr_customcombobox.combobox) is None:
-            obligatoryField(None,
-                            self.id_categoria_trasporto_adr_customcombobox,
-                            "Inserire la categoria di trasporto!")
+#        if findIdFromCombobox(self.id_categoria_trasporto_adr_customcombobox.combobox) is None:
+#            obligatoryField(None,
+#                            self.id_categoria_trasporto_adr_customcombobox,
+#                            "Inserire la categoria di trasporto!")
 
         self.dao_articolo_adr.numero_un = self.numero_un_adr_entry.get_text()
         self.dao_articolo_adr.id_gruppo_imballaggio = self.id_gruppo_imballaggio_adr_customcombobox.combobox.get_active()

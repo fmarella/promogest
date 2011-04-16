@@ -143,7 +143,6 @@ class Sla2Pdf_ng(SlaParser):
             cellpict = celle[v].get('PFILE')
             cellIMGHeight = celle[v].get('HEIGHT')
             cellIMGWidth = celle[v].get('WIDTH')
-#            print "CELLEEEEEEEEEEEEE", celle[v].get('PCOLOR2'), type(celle[v].get('PCOLOR2'))
             bordoriga = False
             if (celle[v].get('BottomLine') == "1" and celle[v].get('TopLine') == "1" and\
                         celle[v].get('LeftLine') =="1" and celle[v].get('RightLine') == "1"):

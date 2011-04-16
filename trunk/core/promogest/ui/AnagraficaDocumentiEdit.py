@@ -1328,7 +1328,6 @@ del documento.
         self.articolo_matchato = model[iter][1]
         self.articolo_entry.set_position(-1)
 
-
     def ricercaArticolo(self):
         def on_ricerca_articolo_hide(anagWindow, anag):
             if anag.dao is None:

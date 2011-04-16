@@ -83,13 +83,7 @@ class AnagraficaPrintPreview(GladeWidget):
 
         self.placeWindow(self.visualizzatore_html)
 
-#        self.codBar_combo = gtk.combo_box_new_text()
-#        self.codBar_combo.append_text("Genera Pdf Anteprima Html")
-#        self.codBar_combo.append_text("Genera CSV da Anteprima Html")
-#        self.bodyWidget.hbox1.pack_start(self.codBar_combo)
-#        self.codBar_combo.connect('changed', self.on_generic_combobox_changed )
 
-#        self.bodyWidget.generic_button.set_no_show_all(True)
         self.bodyWidget.generic_button.set_property('visible', False)
 
         #generaButton = self.bodyWidget.generic_button

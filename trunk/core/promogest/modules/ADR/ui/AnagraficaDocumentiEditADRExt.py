@@ -56,7 +56,7 @@ def getADRArticolo(id):
     return _articoloADR
 
 
-MSG_ADR = "\nTrasporto{0} superante i limiti liberi prescritti al 1.1.3.6"
+MSG_ADR = "\nTrasporto non superante i limiti liberi prescritti al 1.1.3.6"
 
 def calcolaLimiteTrasportoADR(anagrafica, artADR, **kwargs):
     """Calcola se viene superato il limite massimo di esenzione
@@ -74,6 +74,9 @@ def calcolaLimiteTrasportoADR(anagrafica, artADR, **kwargs):
     qta = 0.0
     if 'qta' in kwargs:
         qta = kwargs['qta']
+
+    if artADR.numero_un == '':
+        return
 
     # il gruppo imballaggio non esiste, inseriamo direttamente il numero un & co
     if not artADR.gruppo_imballaggio in anagrafica.dati_adr:
@@ -130,10 +133,8 @@ def calcolaLimiteTrasportoADR(anagrafica, artADR, **kwargs):
         tt2+=t2
     _buf += T_DOC_SUM_ADR.format(tt1,tt2)
 
-    if sup:
-        _buf += MSG_ADR.format("")
-    else:
-        _buf += MSG_ADR.format(" non")
+    if not sup:
+        _buf += MSG_ADR
 
     anagrafica.summary_adr_label.set_text(_buf)
 
