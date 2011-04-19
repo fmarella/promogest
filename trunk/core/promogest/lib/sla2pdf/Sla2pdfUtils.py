@@ -162,7 +162,7 @@ def createbarcode(ch):
         except:
             bcd= None
         return bcd
-    if len(data)==8:
+    if len(data[1])==8:
         bcd = create("EAN8", data)
     if not bcd:
         for tipo in ['EAN13','EAN8','Extended93','Standard39','QR','Extended39','FIM','USPS_4State',
