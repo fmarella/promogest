@@ -2478,18 +2478,31 @@ def calcolaTotali(daos):
             pass
         try:
             if tot.operazione in minus:
-                totale_sospeso -= tot.totale_sospeso
+                if tot.documento_saldato:
+                    totale_sospeso -= 0
+                else:
+                    totale_sospeso -= tot.totale_sospeso
             elif tot.operazione in plus:
-                totale_sospeso += tot.totale_sospeso
+                if tot.documento_saldato:
+                    totale_sospeso += 0
+                else:
+                    totale_sospeso += tot.totale_sospeso
         except:
             pass
         try:
             if tot.operazione in minus:
-                totale_pagato -= tot.totale_pagato
+                if tot.documento_saldato:
+                    totale_pagato -= tot._totaleScontato
+                else:
+                    totale_pagato -= tot.totale_pagato
             elif tot.operazione in plus:
-                totale_pagato += tot.totale_pagato
+                if tot.documento_saldato:
+                    totale_pagato += tot._totaleScontato
+                else:
+                    totale_pagato += tot.totale_pagato
         except:
             pass
+
     totaliGenerali = { "totale_imponibile_non_scontato":totale_imponibile_non_scontato,
                         "totale_imponibile_scontato":totale_imponibile_scontato,
                         "totale_imposta_scontata":totale_imposta_scontata,
