@@ -162,14 +162,16 @@ def createbarcode(ch):
         except:
             bcd= None
         return bcd
-
-    for tipo in ['EAN13','EAN8','Extended93','Standard39','QR','Extended39','FIM','USPS_4State',
-                    'Codabar','MSI','POSTNET','Code11','Standard93','I2of5','Code128']:
-        bcd = create(tipo, data)
-        if not bcd:
-            continue
-        else:
-            return bcd
+    if len(data)==8:
+        bcd = create("EAN8", data)
+    if not bcs:
+        for tipo in ['EAN13','EAN8','Extended93','Standard39','QR','Extended39','FIM','USPS_4State',
+                        'Codabar','MSI','POSTNET','Code11','Standard93','I2of5','Code128']:
+            bcd = create(tipo, data)
+            if not bcd:
+                continue
+            else:
+                return bcd
     print " NON SONO RIUSCITO AD ELABORARE IL CODICE A BARRE", data
     return bcd
 
