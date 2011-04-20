@@ -25,6 +25,8 @@ from promogest.ui.AnagraficaComplessaReport import AnagraficaReport
 from promogest.ui.AnagraficaComplessaHtml import AnagraficaHtml
 from promogest.ui.AnagraficaFornitoriEdit import AnagraficaFornitoriEdit
 from promogest.ui.AnagraficaFornitoriFilter import AnagraficaFornitoriFilter
+from promogest.modules.Contatti.dao.ContattoFornitore import ContattoFornitore
+from promogest.dao.TestataDocumento import TestataDocumento
 from promogest.dao.DaoUtils import *
 from utils import *
 from utilsCombobox import *
@@ -44,6 +46,34 @@ class AnagraficaFornitori(Anagrafica):
                             aziendaStr=aziendaStr)
         self.records_file_export.set_sensitive(True)
         self.duplica_button.set_sensitive(False)
+
+    def on_record_delete_activate(self, widget):
+        dao = self.filter.getSelectedDao()
+        tdoc = TestataDocumento().select(idFornitore=dao.id, batchSize=None)
+        if tdoc:
+            messageInfo(msg= "CI SONO DOCUMENTI LEGATI A QUESTO FORNITORE\nNON E' POSSIBILE RIMUOVERLO")
+            return
+        dialog = gtk.MessageDialog(self.getTopLevel(),
+                                   gtk.DIALOG_MODAL
+                                   | gtk.DIALOG_DESTROY_WITH_PARENT,
+                                   gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO,
+                                   'Confermi l\'eliminazione ?')
+
+        response = dialog.run()
+        dialog.destroy()
+        if response !=  gtk.RESPONSE_YES:
+            return
+        dao = self.filter.getSelectedDao()
+        cnnt = ContattoFornitore().select(idFornitore=dao.id, batchSize=None)
+        if cnnt:
+            for c in cnnt:
+                for l in c.recapiti:
+                    l.delete()
+                c.delete()
+        dao.delete()
+        self.filter.refresh()
+        self.htmlHandler.setDao(None)
+        self.setFocus()
 
 
 class AnagraficaFornitoriHtml(AnagraficaHtml):

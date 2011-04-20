@@ -31,8 +31,10 @@ from promogest import Environment
 from promogest.dao.Cliente import Cliente
 from promogest.dao.PersonaGiuridica import PersonaGiuridica_
 from promogest.dao.ClienteCategoriaCliente import ClienteCategoriaCliente
+from promogest.modules.Contatti.dao.ContattoCliente import ContattoCliente
 from promogest.ui.AnagraficaClientiEdit import AnagraficaClientiEdit
 from promogest.ui.AnagraficaClientiFilter import AnagraficaClientiFilter
+from promogest.dao.TestataDocumento import TestataDocumento
 from promogest.dao.DaoUtils import *
 from utils import *
 from utilsCombobox import *
@@ -53,6 +55,11 @@ class AnagraficaClienti(Anagrafica):
         self.records_file_export.set_sensitive(True)
 
     def on_record_delete_activate(self, widget):
+        dao = self.filter.getSelectedDao()
+        tdoc = TestataDocumento().select(idCliente=dao.id, batchSize=None)
+        if tdoc:
+            messageInfo(msg= "CI SONO DOCUMENTI LEGATI A QUESTO CLIENTE\nNON E' POSSIBILE RIMUOVERLO")
+            return
         dialog = gtk.MessageDialog(self.getTopLevel(),
                                    gtk.DIALOG_MODAL
                                    | gtk.DIALOG_DESTROY_WITH_PARENT,
@@ -68,11 +75,27 @@ class AnagraficaClienti(Anagrafica):
         #chiedere se si vuole rimuovere ugualmente tutto, nel caso procedere
         #davvero alla rimozione ed a quel punto gestire il "delete" a livello di
         #dao
-        dao = self.filter.getSelectedDao()
-#        dao.delete()
-#        self.filter.refresh()
-#        self.htmlHandler.setDao(None)
-#        self.setFocus()
+
+        #try:
+        if posso("IP"):
+            cltip = TestataInfoPeso().select(idCliente=dao.id, batchSize=None)
+            if cltip:
+                for l in cltip:
+                    l.delete()
+            clcg = ClienteGeneralita().select(IdCliente = dao.id, batchSize=None)
+            if clcg:
+                for l in clcg:
+                    l.delete()
+        cnnt = ContattoCliente().select(idCliente=dao.id, batchSize=None)
+        if cnnt:
+            for c in cnnt:
+                for l in c.recapiti:
+                    l.delete()
+                c.delete()
+        dao.delete()
+        self.filter.refresh()
+        self.htmlHandler.setDao(None)
+        self.setFocus()
 
 
 
