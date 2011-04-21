@@ -3,8 +3,9 @@
 #    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
-#    Author: Francesco Meloni  <francesco@promotux.it>
-#    Author: Andrea Argiolas   <andrea@promotux.it>
+#    Authors: Francesco Meloni  <francesco@promotux.it>
+#             Andrea Argiolas   <andrea@promotux.it>
+#             Francesco Marella <francesco.marella@gmail.com>
 #    This file is part of Promogest.
 
 #    Promogest is free software: you can redistribute it and/or modify
@@ -60,10 +61,12 @@ class AnagraficaFornitoriEdit(AnagraficaEdit):
         self.id_magazzino_customcombobox.connect('clicked',
                                                  on_id_magazzino_customcombobox_clicked)
 
+        self.fornitore_insegna = setconf("Fornitori", "fornitore_insegna")
+        if not self.fornitore_insegna:
+            self.insegna_entry.destroy()
+            self.insegna_label.destroy()
         self.nome_entry.destroy()
         self.cognome_entry.destroy()
-        self.insegna_entry.destroy()
-        self.insegna_label.destroy()
         self.cognome_label.destroy()
         self.nome_label.destroy()
 
@@ -98,7 +101,8 @@ class AnagraficaFornitoriEdit(AnagraficaEdit):
             rag_soc = ""
         self.codice_entry.set_text(self.dao.codice or '')
         self.ragione_sociale_entry.set_text(rag_soc)
-#        self.insegna_entry.set_text(self.dao.insegna or '')
+        if self.fornitore_insegna:
+            self.insegna_entry.set_text(self.dao.insegna or '')
 #        self.cognome_entry.set_text(self.dao.cognome or '')
 #        self.nome_entry.set_text(self.dao.nome or '')
         self.indirizzo_sede_operativa_entry.set_text(self.dao.sede_operativa_indirizzo or '')
@@ -152,7 +156,8 @@ class AnagraficaFornitoriEdit(AnagraficaEdit):
         self.dao.codice = self.codice_entry.get_text().upper()
 #        self.dao.codice = omogeneousCode(section="Fornitori", string=self.dao.codice )
         self.dao.ragione_sociale = self.ragione_sociale_entry.get_text()
-#        self.dao.insegna = self.insegna_entry.get_text()
+        if self.fornitore_insegna:
+            self.dao.insegna = self.insegna_entry.get_text()
 #        self.dao.cognome= self.cognome_entry.get_text()
 #        self.dao.nome = self.nome_entry.get_text()
         if (self.dao.codice and (self.dao.ragione_sociale or self.dao.insegna or self.dao.cognome or self.dao.nome)) =='':

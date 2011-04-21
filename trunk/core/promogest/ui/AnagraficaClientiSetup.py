@@ -3,7 +3,8 @@
 #    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
-# Author: Francesco Meloni <francesco@promotux.it
+# Authors: Francesco Meloni <francesco@promotux.it>
+#          Francesco Marella <francesco.marella@gmail.com>
 
 #    This file is part of Promogest.
 
@@ -55,9 +56,9 @@ class AnagraficaClientiSetup(GladeWidget):
         except:
             self.clienti_codice_upper_check.set_active(1)
         try:
-            self.clienti_nome_cognome_check.set_active(int(setconf("Clienti", "cliente_nome_cognome")))
+            self.clienti_insegna_check.set_active(int(setconf("Clienti", "cliente_insegna")))
         except:
-            self.clienti_nome_cognome_check.set_active(0)
+            self.clienti_insegna_check.set_active(0)
         self.clienti_struttura_codice_entry.set_text(str(setconf("Clienti", "cliente_struttura_codice")))
 
     def _saveSetup(self):
@@ -71,7 +72,19 @@ class AnagraficaClientiSetup(GladeWidget):
         c[0].value = str(self.clienti_codice_upper_check.get_active())
         c[0].tipo = "bool"
         Environment.session.add(c[0])
-        c = SetConf().select(key="cliente_nome_cognome", section="Clienti")
-        c[0].value = str(self.clienti_nome_cognome_check.get_active())
-        c[0].tipo = "bool"
-        Environment.session.add(c[0])
+
+        c = SetConf().select(key="cliente_insegna", section="Clienti")
+        if c:
+            c = c[0]
+        else:
+            c = SetConf()
+        c.key = "cliente_insegna"
+        c.section = "Clienti"
+        c.value = str(self.clienti_insegna_check.get_active())
+        c.tipo = "bool"
+        c.description = "visualizzare il campo per insegna"
+        c.tipo_section = "Generico"
+        c.active = True
+        c.visible = True
+        c.date = datetime.datetime.now()
+        Environment.session.add(c)
