@@ -29,6 +29,7 @@ except:
             schema = params['schema'])
     setconf.create(checkfirst=True)
 
+
 class SetConf(Dao):
 
     def __init__(self, req= None, arg=None):

@@ -101,7 +101,7 @@ class InfoPesoNotebookPage(GladeWidget):
                     self.peso_pesata_entry,
                     'Inserire un peso !')
 
-        if float(mgrassa.replace(",","."))+float(mmagraeacqua.replace(",",".")) > float(peso.replace(",",".")+float(0.1)):
+        if float(mgrassa.replace(",","."))+float(mmagraeacqua.replace(",",".")) > float(peso.replace(",","."))+float(0.1):
             messageInfo(msg = "ATTENZIONE! La somma di M.GRASSA , M.MAGRA e ACQUA\n è superiore al peso totale")
             return
 
