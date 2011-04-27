@@ -1,11 +1,27 @@
 # -*- coding: utf-8 -*-
 
-# Promogest
-#
-# Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
-# Author: Dr astico (Pinna Marco) <zoccolodignu@gmail.com>
-# Author:M3nt0r3  <m3nt0r3@gmail.com>
-#
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux
+#                        di Francesco Meloni snc - http://www.promotux.it/
+
+#    Author: Francesco Meloni  <francesco@promotux.it>
+#    Author: Dr astico (Pinna Marco) <zoccolodignu@gmail.com>
+
+#    This file is part of Promogest.
+
+#    Promogest is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 2 of the License, or
+#    (at your option) any later version.
+
+#    Promogest is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+
+#    You should have received a copy of the GNU General Public License
+#    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
+
+
 
 import os
 import gtk
@@ -318,7 +334,7 @@ def fillSchedaLavorazioneFromEmail(ui):
         text = email.readlines()
         email.close()
     except:
-        print "ATTENZIONEEEEEEEEEEEE!!!! FILE EMAIL NON PRESENTE"
+        messageInfo(msg="ATTENZIONEEEEEEEEEEEE!!!! FILE EMAIL NON PRESENTE")
     for line in text:
         line = line.decode('iso-8859-1', 'replace').encode('utf8')
         lista = line.split(":")
@@ -452,6 +468,8 @@ def fillSchedaLavorazioneFromEmail(ui):
             codParte = lista[1].strip().split("(")[0].strip()[1:-1].replace("Art.",'')[1:-1]
             quantitaParte = lista[2].strip().split("-")[0].strip()[2:-2]
             print "CODICE PARTECIPAZIONE", codParte, quantitaParte
+            if not codParte:
+                messageInfo(msg="ATTENZIONE! CODICE PARTECIPAZIONE NON PRESENTE????")
         elif campo == "CODICE INVITO":
             codInvito = lista[1].strip().split("(")[0].strip()[1:-1].replace("Art.",'')[1:-1]
             quantitaInvito = lista[2].strip().split("-")[0].strip()[2:-2]
