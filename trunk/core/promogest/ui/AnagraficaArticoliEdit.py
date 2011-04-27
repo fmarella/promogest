@@ -238,6 +238,8 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
             obligatoryField(self.dialogTopLevel,
                             self.id_unita_base_combobox,
                             msg='Campo obbligatorio !\n\nUnita\' base')
+
+
         pbar(self.dialog.pbar,parziale=1, totale=4)
         if posso("PW") and (articleType(self.dao) == "plus" or self.plus_radiobutton.get_active()):
             articoloTagliaColore = ArticoloTagliaColore()
@@ -327,6 +329,8 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
         cod=checkCodiceDuplicato(codice=self.dao.codice,id=self.dao.id, tipo="Articolo")
         if not cod:
             raise Exception, 'Operation aborted campo obbligatorio'
+        else:
+            raise Exception, 'Operation aborted codice articolo duplicato'
         self.dao.denominazione = self.denominazione_entry.get_text()
         if posso("GN"):
             self.dao.divisore_noleggio_value_set = self.divisore_noleggio_entry.get_text()
