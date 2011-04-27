@@ -11,8 +11,8 @@ margin: 1cm;
 <th style="width:70px;">NUMERO</th>
 <th style="width:90px;">DATA</th>
 <tr>
-<td style="width:70px;text-align:center;"><strong>{{dao.numero}}</strong></td>
-<td style="width:90px;text-align:center;"><strong>{{utils.dateToString(dao.data_inizio)}}</strong></td>
+<td style="width:70px;text-align:center;font-size:10px;"><strong>{{dao.numero}}</strong></td>
+<td style="width:90px;text-align:center;font-size:10px;"><strong>{{utils.dateToString(dao.data_inizio)}}</strong></td>
 </tr>
 </table>
 {% if dao.righeprimanota|length >1 %}
@@ -26,18 +26,18 @@ margin: 1cm;
 
         {% for riga in dao.righeprimanota %}
         <tr >
-          <td style="width:80%;" class="odd-detail">{{riga.denominazione}}</td>
+          <td style="width:80%;font-size:14px;" class="odd-detail">{{riga.denominazione}}</td>
             {% if riga.segno =="entrata" %}
-                <td style="color:green;width:80px;text-align:center;" class="odd-detail">{{utils.mNLC(riga.valore,2)}}</td>
+                <td style="color:green;width:80px;text-align:center;font-size:14px;" class="odd-detail">{{utils.mNLC(riga.valore,2)}}</td>
             {% elif riga.segno =="uscita" %}
-            <td style="color:red;width:80px;text-align:center;" class="odd-detail">-{{utils.mNLC(riga.valore,2)}}</td>
+            <td style="color:red;width:80px;text-align:center;font-size:14px;" class="odd-detail">-{{utils.mNLC(riga.valore,2)}}</td>
             {% endif %}
             {% if riga.tipo =="banca" %}
-                <td style="color:blue;width:80px;text-align:center;" class="odd-detail">{{(riga.tipo)}}</td>
+                <td style="color:blue;width:80px;text-align:center;font-size:14px;" class="odd-detail">{{(riga.tipo)}}</td>
             {% elif riga.tipo =="cassa" %}
-            <td style="color:orange;width:80px;text-align:center;" class="odd-detail">{{riga.tipo}}</td>
+            <td style="color:orange;width:80px;text-align:center;font-size:14px;" class="odd-detail">{{riga.tipo}}</td>
             {% endif %}
-              <td style="width:10%;" class="odd-detail">{{riga.banca[0:30]}}</td>
+              <td style="width:10%;font-size:10px;" class="odd-detail">{{riga.banca[0:30]}}</td>
         </tr>
         {% endfor %}
                 {% if dao.righeprimanota|length==1 %}
@@ -52,23 +52,23 @@ margin: 1cm;
 {% set tot_gen= utils.calcolaSaldoGeneralePrimaNota() %}
 <tr>
         <td style="width:120px;">TOTALE ENTRATE CASSA</td>
-<td style="color:green;width:90px;text-align:right;" > {{utils.mNLC(tot["tot_entrate_cassa"],2)}}</td>
+<td style="color:green;width:90px;text-align:right;font-size:12px" > {{utils.mNLC(tot["tot_entrate_cassa"],2)}}</td>
 </tr>
 <tr>
         <td style="width:120px;">TOTALE USCITE CASSA</td>
-        <td style="color:red;width:90px;text-align:right;"> {{utils.mNLC(tot["tot_uscite_cassa"],2)}}</td>
+        <td style="color:red;width:90px;text-align:right;font-size:12px"> {{utils.mNLC(tot["tot_uscite_cassa"],2)}}</td>
 </tr>
 <tr>
         <td style="width:120px;">TOTALE ENTRATE BANCA</td>
-        <td style="color:green;width:90px;text-align:right;"> {{utils.mNLC(tot["tot_entrate_banca"],2)}}</td>
+        <td style="color:green;width:90px;text-align:right;font-size:12px"> {{utils.mNLC(tot["tot_entrate_banca"],2)}}</td>
 </tr>
 <tr>
         <td style="width:120px;">TOTALE USCITE BANCA</td>
-        <td style="color:red;width:90px;text-align:right;"> {{utils.mNLC(tot["tot_uscite_banca"],2)}}</td>
+        <td style="color:red;width:90px;text-align:right;font-size:12px"> {{utils.mNLC(tot["tot_uscite_banca"],2)}}</td>
 </tr>
 <tr>
         <td style="width:120px;"><b>TOTALE ENTRATE</b></td>
-        <td style="color:green;width:90px;text-align:right;"> {{utils.mNLC(tot["tot_entrate"],2)}}</td>
+        <td style="color:green;width:90px;text-align:right;font-size:12px"> {{utils.mNLC(tot["tot_entrate"],2)}}</td>
 </tr>
 <tr>
         <td style="width:120px;"><b>TOTALE USCITE</b></td>
