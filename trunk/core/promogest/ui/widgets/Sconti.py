@@ -111,7 +111,7 @@ class Sconti(GladeWidget):
 
 
     def on_confirm_button_clicked(self, widget):
-        if (float(self.valore_entry.get_text()) == 0):
+        if self.valore_entry.get_text() and float(self.valore_entry.get_text()) == 0:
             self.show_message('Inserire lo sconto !')
             self.valore_entry.grab_focus()
             return
