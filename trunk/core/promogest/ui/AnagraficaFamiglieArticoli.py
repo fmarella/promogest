@@ -60,6 +60,8 @@ class AnagraficaFamiglieArticoli(Anagrafica):
             return
 
         dao = self.filter.getSelectedDao()
+        if not dao:
+            return
         usata = Articolo().select(idFamiglia=dao.id, batchSize=None)
         if usata:
             msg = """NON è possibile cancellare questa FAMIGLIA ARTICOLO
