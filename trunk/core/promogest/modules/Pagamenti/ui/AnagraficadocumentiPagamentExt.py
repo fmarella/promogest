@@ -121,7 +121,6 @@ def ricalcola_sospeso_e_pagato(anaedit):
     Pagamenti(anaedit).ricalcola_sospeso_e_pagato()
 
 def connectEntryPag(anaedit):
-    print "PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP"
     #come sempre c'è questo inutile palleggiamento
     anaedit.data_pagamento_prima_scadenza_entry.entry.connect('changed',
             anaedit.on_data_pagamento_prima_scadenza_entry_changed)
