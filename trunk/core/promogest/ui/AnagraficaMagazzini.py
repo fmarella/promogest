@@ -180,6 +180,16 @@ class AnagraficaMagazziniEdit(AnagraficaEdit):
         if (self.denominazione_entry.get_text() == ''):
             obligatoryField(self.dialogTopLevel, self.denominazione_entry)
 
+
+        daoEsistente = Magazzino().select(denominazione=self.denominazione_entry.get_text())
+        if daoEsistente:
+            messageInfo(msg="""ATTENZIONE!!
+Un magazzino con lo stesso nome esiste già
+Verrà aggiornata la precedente.""")
+            del self.dao
+            self.dao = daoEsistente[0]
+
+
         self.dao.denominazione = self.denominazione_entry.get_text()
         self.dao.indirizzo = self.indirizzo_entry.get_text()
         self.dao.localita = self.localita_entry.get_text()
