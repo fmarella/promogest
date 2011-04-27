@@ -401,6 +401,17 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
             obligatoryField(self.dialogTopLevel, self.id_articolo_customcombobox)
 
         listin = findIdFromCombobox(self.id_listino_customcombobox.combobox)
+
+        daoEsistente = ListinoArticolo().select(idListino=listin, idArticolo =self.id_articolo_customcombobox.getId(),
+                                                dataListinoArticolo = datetime.datetime.today())
+        if daoEsistente:
+            messageInfo(msg="""ATTENZIONE!!
+Un listino articolo con lo stesso riferimento a data,
+listino ed articolo esiste già
+Verrà aggiornato il precedente.""")
+            del self.dao
+            self.dao = daoEsistente[0]
+
         self.dao.id_listino = listin
         self.dao.id_articolo = self.id_articolo_customcombobox.getId()
 
