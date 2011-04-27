@@ -2100,18 +2100,18 @@ L'anno di lavoro e l'anno di creazione documento non corrispondono.
         numeroSEL = TestataDocumento().select(complexFilter=(and_(TestataDocumento.data_documento.between(datetime.date(int(date), 1, 1), datetime.date(int(date) + 1, 1, 1)) ,
                         TestataDocumento.registro_numerazione==registrovalue)), batchSize=None)
     if numeroSEL:
-        numero = max([p.numero for p in numeroSEL]) +1
+        numero = max([p.numero for p in numeroSEL])
+        if numero:
+            try:
+                numero = int(numero) +1
+            except:
+                Environment.pg2log.info("INCREMENTO DELLA NUMERAZIONE DOCUMENTO NON RIUSCITA")
     else:
         numero = 1
     return (numero, registrovalue)
 
 def idArticoloFromFornitura(k,v):
     """
-    FIXME
-    @param k:
-    @type k:
-    @param v:
-    @type v:
     """
     from promogest.dao.Fornitura import Fornitura
     codiciArtForFiltered =  Environment.params["session"]\
@@ -2122,9 +2122,6 @@ def idArticoloFromFornitura(k,v):
 
 def getCategorieContatto(id=None):
     """
-    FIXME
-    @param id=None:
-    @type id=None:
     """
     from promogest.modules.Contatti.dao.ContattoCategoriaContatto import ContattoCategoriaContatto
     dbCategorieContatto = ContattoCategoriaContatto().select(id=id,
@@ -2133,9 +2130,6 @@ def getCategorieContatto(id=None):
 
 def getRecapitiContatto(id=None):
     """
-    FIXME
-    @param id=None:
-    @type id=None:
     """
     from promogest.modules.Contatti.dao.RecapitoContatto import RecapitoContatto
     if id:
