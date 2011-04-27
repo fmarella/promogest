@@ -101,6 +101,8 @@ class Listino(Dao):
             dic= {k:listinoT.c.denominazione.ilike("%"+v+"%")}
         elif k=='denominazioneEM':
             dic= {k:listinoT.c.denominazione ==v}
+        elif k=='dataListino':
+            dic= {k:listinoT.c.data_listino ==v}
         return  dic[k]
 
 listinoT=Table('listino', params['metadata'],schema = params['schema'],autoload=True)
