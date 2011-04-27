@@ -20,7 +20,7 @@ class PrintDialogHandler(GladeWidget):
     def __init__(self,anacomplex,nome, pdfGenerator=None, report=None, daos=None, label=None, tempFile=None ):
         GladeWidget.__init__(self, 'records_print_dialog',fileName='records_print_dialog.glade')
         try:
-            self._pdfName = nome.replace(" ","_") + '_report_' + time.strftime('%d-%m-%Y')
+            self._pdfName = nome.replace(" ","_").replace("\n","_") + '_report_' + time.strftime('%d-%m-%Y')
         except:
             self._pdfName = "generic labels"+ time.strftime('%d-%m-%Y')
         self._folder = setconf("General", "cartella_predefinita") or ""
