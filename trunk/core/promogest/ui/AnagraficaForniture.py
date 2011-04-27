@@ -495,8 +495,22 @@ class AnagraficaFornitureEdit(AnagraficaEdit):
         if (self.data_prezzo_entry.get_text() == ''):
             obligatoryField(self.dialogTopLevel, self.data_prezzo_entry)
 
+        daoEsistente = Fornitura().select(idArticolo=self.id_articolo_customcombobox.getId(),
+                                            idFornitore= self.id_fornitore_customcombobox.getId(),
+                                            dataPrezzo = stringToDateTime(self.data_prezzo_entry.get_text()))
+        if daoEsistente:
+            messageInfo(msg="""ATTENZIONE!!
+Una fornitura con lo stesso fornitore
+e la stessa data prezzo per questo articolo
+esiste già. Si presume sia la stessa fornitura
+per cui verrà aggiornata la precedente.""")
+            del self.dao
+            self.dao = daoEsistente[0]
+
         self.dao.id_articolo = self.id_articolo_customcombobox.getId()
         self.dao.id_fornitore = self.id_fornitore_customcombobox.getId()
+        self.dao.data_prezzo = stringToDate(self.data_prezzo_entry.get_text())
+        self.dao.data_fornitura = stringToDate(self.data_fornitura_entry.get_text())
         self.dao.codice_articolo_fornitore = self.codice_articolo_fornitore_entry.get_text()
         self.dao.id_multiplo = findIdFromCombobox(self.id_multiplo_customcombobox.combobox)
         self.dao.prezzo_lordo = float(self.prezzo_lordo_entry.get_text())
@@ -505,8 +519,6 @@ class AnagraficaFornitureEdit(AnagraficaEdit):
         self.dao.tempo_arrivo_merce = int(self.tempo_arrivo_merce_entry.get_text() or 1)
         self.dao.fornitore_preferenziale = self.fornitore_preferenziale_checkbutton.get_active()
         self.dao.percentuale_iva = float(self._percentualeIva)
-        self.dao.data_fornitura = stringToDate(self.data_fornitura_entry.get_text())
-        self.dao.data_prezzo = stringToDate(self.data_prezzo_entry.get_text())
 
         sconti = []
         self.dao.applicazione_sconti = self.sconti_widget.getApplicazione()
@@ -518,6 +530,10 @@ class AnagraficaFornitureEdit(AnagraficaEdit):
             sconti.append(daoSconto)
 
         self.dao.sconti = sconti
+
+
+
+
         self.dao.persist()
 
 

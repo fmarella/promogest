@@ -1605,7 +1605,7 @@ def stringToDateTime(stringa):
         except:
             try:
                 d = time.strptime(stringa, "%d/%m/%Y")
-                data = datetime.time(d[0], d[1], d[2])
+                data = datetime.datetime(d[0], d[1], d[2])
 #            messageInfo(msg= "LA DATA E' IN QUALCHE MODO ERRATA O INCOMPLETA")
             except:
                 data=None

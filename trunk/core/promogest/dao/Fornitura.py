@@ -143,6 +143,8 @@ class Fornitura(Dao):
             dic = {k:fornitura.c.id_articolo.in_(v)}
         elif k == 'daDataPrezzo':
             dic = {k:fornitura.c.data_prezzo >= v}
+        elif k == 'dataPrezzo':
+            dic = {k:fornitura.c.data_prezzo == v}
         elif k == 'aDataPrezzo':
             dic = {k:fornitura.c.data_prezzo <= v}
         elif k == 'daDataFornitura':
