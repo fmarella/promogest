@@ -33,6 +33,7 @@ from promogest.dao.Listino import Listino
 from promogest.dao.ListinoCategoriaCliente import ListinoCategoriaCliente
 from promogest.dao.ListinoMagazzino import ListinoMagazzino
 from promogest.dao.ListinoComplessoListino import ListinoComplessoListino
+from promogest.dao.ListinoArticolo import ListinoArticolo
 from promogest.ui.AnagraficaVariazioniListini import AnagraficaVariazioniListini
 from utils import *
 from utilsCombobox import *
@@ -63,9 +64,13 @@ class AnagraficaListini(Anagrafica):
 
         from DuplicazioneListino import DuplicazioneListino
         anag = DuplicazioneListino(dao, self)
-#        anag.run()
-#        showAnagraficaRichiamata(self.getTopLevel(), anag.getTopLevel(), None, self.filter.refresh)
 
+    def on_record_delete_activate(self, widget):
+        dao = self.filter.getSelectedDao()
+        tdoc = ListinoArticolo().select(idListino=dao.id, batchSize=None)
+        if tdoc:
+            messageInfo(msg= "ATTENZIONE!\n CI SONO DEGLI ARTICOLI CHE COMPONGONO\n QUESTO LISTINO NON E' POSSIBILE RIMUOVERLO")
+            return
 
 
 class AnagraficaListiniFilter(AnagraficaFilter):
