@@ -315,6 +315,14 @@ class AnagraficaFamiglieArticoliEdit(AnagraficaEdit):
             obligatoryField(self.dialogTopLevel, self.denominazione_breve_entry,
             msg="Denominazione Breve Famiglia Articolo.\n\n Campo Obbligatorio!")
 
+        daoEsistente = FamigliaArticolo().select(codice=self.codice_entry.get_text())
+        if daoEsistente:
+            messageInfo(msg="""ATTENZIONE!!
+Una famiglia con lo stesso codice esiste già
+Verrà aggiornata la precedente.""")
+            del self.dao
+            self.dao = daoEsistente[0]
+
         self.dao.codice = self.codice_entry.get_text()
         self.dao.denominazione = self.denominazione_entry.get_text()
         self.dao.denominazione_breve =self.denominazione_breve_entry.get_text()
