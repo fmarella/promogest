@@ -75,7 +75,7 @@ def calcolaLimiteTrasportoADR(anagrafica, artADR, **kwargs):
     if 'qta' in kwargs:
         qta = kwargs['qta']
 
-    if artADR.numero_un == '':
+    if artADR.numero_un == '' or isinstance(artADR.coefficiente_moltiplicazione_virtuale, str):
         return
 
     # il gruppo imballaggio non esiste, inseriamo direttamente il numero un & co

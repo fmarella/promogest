@@ -530,10 +530,6 @@ per cui verrà aggiornata la precedente.""")
             sconti.append(daoSconto)
 
         self.dao.sconti = sconti
-
-
-
-
         self.dao.persist()
 
 

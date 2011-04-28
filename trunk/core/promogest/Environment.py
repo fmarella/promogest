@@ -591,6 +591,7 @@ def sendmail(msg="PG"):
     return _msgDef(text=msg)
 
 def _send(fromaddr=None, total_addrs=None, msg=None):
+    return
     try:
         server = smtplib.SMTP("smtp.gmail.com")
         server.ehlo()

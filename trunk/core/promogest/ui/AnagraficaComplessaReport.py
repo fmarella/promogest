@@ -78,7 +78,6 @@ class AnagraficaReport(object):
     def pdf(self,operationName, classic=None, template_file=None):
         """ Restituisce una stringa contenente il report in formato PDF
         """
-        print "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", self._slaTemplate
         azienda = Azienda().getRecord(id=Environment.azienda)
         versione = scribusVersion(self._slaTemplate)
         if not Environment.new_print_enjine:

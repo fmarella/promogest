@@ -238,8 +238,6 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
             obligatoryField(self.dialogTopLevel,
                             self.id_unita_base_combobox,
                             msg='Campo obbligatorio !\n\nUnita\' base')
-
-
         pbar(self.dialog.pbar,parziale=1, totale=4)
         if posso("PW") and (articleType(self.dao) == "plus" or self.plus_radiobutton.get_active()):
             articoloTagliaColore = ArticoloTagliaColore()
@@ -389,13 +387,13 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
         pbar(self.dialog.pbar,parziale=3, totale=4)
         self.dao.persist()
         if posso("ADR"):
-            dao_articolo_adr = self.adr_page.adrSaveDao()
-            dao_articolo_adr.id_articolo = self.dao.id
-            dao_articolo_adr.persist()
+            if self.adr_page.isArticoloADR():
+                dao_articolo_adr = self.adr_page.adrSaveDao()
+                dao_articolo_adr.id_articolo = self.dao.id
+                dao_articolo_adr.persist()
+        self.dao.persist()
         pbar(self.dialog.pbar,parziale=4, totale=4)
         pbar(self.dialog.pbar,stop=True)
-
-
 
         if self._duplicatedDaoId is not None:
             self.duplicaListini()

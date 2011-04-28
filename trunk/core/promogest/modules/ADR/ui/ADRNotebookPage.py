@@ -43,7 +43,7 @@ class ADRNotebookPage(GladeWidget):
         self.rowBackGround = None
         self.ana = mainnn
         self.aziendaStr = azienda or ""
-        self.editRiga = None
+        self.dao_articolo_adr = None
         self.draw()
 
     def draw(self):
@@ -68,7 +68,6 @@ class ADRNotebookPage(GladeWidget):
                                  id_galleria_adr_customcombobox_clicked)
 
         self._clear()
-        pass
 
     def _clear(self):
         self.numero_un_adr_entry.set_text("")
@@ -80,7 +79,6 @@ class ADRNotebookPage(GladeWidget):
 
     def adrSetDao(self, dao):
         """ Estensione del SetDao principale"""
-        self.editRiga = None
         if not dao.id:
             self.dao_articolo_adr = ArticoloADR()
         else:
@@ -92,13 +90,13 @@ class ADRNotebookPage(GladeWidget):
         self.adr_refresh()
 
     def adr_refresh(self):
-        self.editRiga = None
-        self.numero_un_adr_entry.set_text(self.dao_articolo_adr.numero_un or "")
-        self.id_gruppo_imballaggio_adr_customcombobox.combobox.set_active(self.dao_articolo_adr.id_gruppo_imballaggio or -1)
-        self.id_codice_classificazione_adr_customcombobox.combobox.set_active(self.dao_articolo_adr.id_codice_classificazione or -1)
-        self.id_classe_pericolo_adr_customcombobox.combobox.set_active(self.dao_articolo_adr.id_classe or -1)
-        self.id_galleria_adr_customcombobox.combobox.set_active(self.dao_articolo_adr.id_galleria or -1)
-        self.id_categoria_trasporto_adr_customcombobox.combobox.set_active(self.dao_articolo_adr.id_categoria_trasporto or -1)
+        if self.dao_articolo_adr:
+            self.numero_un_adr_entry.set_text(self.dao_articolo_adr.numero_un or "")
+            self.id_gruppo_imballaggio_adr_customcombobox.combobox.set_active(self.dao_articolo_adr.id_gruppo_imballaggio or -1)
+            self.id_codice_classificazione_adr_customcombobox.combobox.set_active(self.dao_articolo_adr.id_codice_classificazione or -1)
+            self.id_classe_pericolo_adr_customcombobox.combobox.set_active(self.dao_articolo_adr.id_classe or -1)
+            self.id_galleria_adr_customcombobox.combobox.set_active(self.dao_articolo_adr.id_galleria or -1)
+            self.id_categoria_trasporto_adr_customcombobox.combobox.set_active(self.dao_articolo_adr.id_categoria_trasporto or -1)
 
     def adrSaveDao(self):
 #        if (self.numero_un_adr_entry.get_text() == ''):
@@ -123,6 +121,9 @@ class ADRNotebookPage(GladeWidget):
         self.dao_articolo_adr.id_categoria_trasporto = self.id_categoria_trasporto_adr_customcombobox.combobox.get_active()
 
         return self.dao_articolo_adr
+
+    def isArticoloADR(self):
+        return self.numero_un_adr_entry.get_text() != ""
 
 # Categoria trasporto
  

@@ -134,6 +134,9 @@ class AnagraficaArticoli(Anagrafica):
         self.editElement.dao.id_stato_articolo = dao.id_stato_articolo
         self.editElement.dao.quantita_minima = dao.quantita_minima
 
+        if posso("ADR"):
+            self.editElement.adr_page.adrSetDao(self.editElement.dao)
+
         if self.editElement._codiceByFamiglia:
             self.editElement.dao.codice = promogest.dao.Articolo.getNuovoCodiceArticolo(idFamiglia=dao.id_famiglia_articolo)
         else:
