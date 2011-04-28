@@ -114,7 +114,7 @@
                     </child>
                     <child>
                       <object class="GtkImageMenuItem" id="records_print_on_screen_menu">
-                        <property name="label">Stampa selezione</property>
+                        <property name="label">Report A video e Stampa</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_action_appearance">False</property>
@@ -122,18 +122,6 @@
                         <property name="image">image5</property>
                         <property name="use_stock">False</property>
                         <signal name="activate" handler="on_records_print_on_screen_activate" swapped="no"/>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkImageMenuItem" id="records_print_menu">
-                        <property name="label">Stampa</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="use_action_appearance">False</property>
-                        <property name="use_underline">True</property>
-                        <property name="image">image6</property>
-                        <property name="use_stock">False</property>
-                        <signal name="activate" handler="on_records_print_activate" swapped="no"/>
                       </object>
                     </child>
                     <child>
