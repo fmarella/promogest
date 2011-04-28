@@ -327,8 +327,8 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
         cod=checkCodiceDuplicato(codice=self.dao.codice,id=self.dao.id, tipo="Articolo")
         if not cod:
             raise Exception, 'Operation aborted campo obbligatorio'
-        else:
-            raise Exception, 'Operation aborted codice articolo duplicato'
+        #else:
+            #raise Exception, 'Operation aborted codice articolo duplicato'
         self.dao.denominazione = self.denominazione_entry.get_text()
         if posso("GN"):
             self.dao.divisore_noleggio_value_set = self.divisore_noleggio_entry.get_text()
@@ -537,7 +537,6 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
         from promogest.dao.ListinoArticolo import ListinoArticolo
         listini = ListinoArticolo().select(idArticolo = self._duplicatedDaoId)
         for listino in listini:
-            print "VEDIAMOOOOOO", listino.sconto_vendita_ingrosso, listino.sconto_vendita_dettaglio, self._duplicatedDaoId, self.dao.id
             daoLA = ListinoArticolo()
             daoLA.id_listino = listino.id_listino
             daoLA.id_articolo = self.dao.id
