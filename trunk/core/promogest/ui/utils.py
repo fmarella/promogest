@@ -2626,6 +2626,30 @@ def messageInfo(msg="Messaggio generico"):
     dialoggg.run()
     dialoggg.destroy()
 
+
+def YesNoDialog(msg="MESSAGGIO", transient=None,show_entry=False ):
+    dialog = gtk.MessageDialog(transient,
+                           gtk.DIALOG_MODAL
+                           | gtk.DIALOG_DESTROY_WITH_PARENT,
+                           gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO,
+                           msg)
+    __entry_codi = gtk.Entry()
+    dialog.vbox.pack_start(__entry_codi)
+    if show_entry:
+        __entry_codi.show()
+    response = dialog.run()
+    entry_text = __entry_codi.get_text()
+    dialog.destroy()
+    if response == -8:
+        if show_entry:
+            return (True, entry_text)
+        return True
+    else:
+        return False
+    return response
+
+
+
 def deaccenta(riga=None):
     """ questa funzione elimina gli accenti magari non graditi in alcuni casi"""
     nkfd_form = unicodedata.normalize('NFKD', unicode(riga))

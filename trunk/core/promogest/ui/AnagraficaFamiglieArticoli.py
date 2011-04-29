@@ -21,7 +21,6 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 
-import gtk
 from AnagraficaComplessa import Anagrafica
 from promogest.ui.AnagraficaComplessaFilter import AnagraficaFilter
 from promogest.ui.AnagraficaComplessaEdit import AnagraficaEdit
@@ -49,16 +48,9 @@ class AnagraficaFamiglieArticoli(Anagrafica):
         self.duplica_button.set_sensitive(False)
 
     def on_record_delete_activate(self, widget):
-        dialog = gtk.MessageDialog(self.getTopLevel(),
-                                   gtk.DIALOG_MODAL
-                                   | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                   gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO,
-                                   'Confermi l\'eliminazione ?')
-        response = dialog.run()
-        dialog.destroy()
-        if response !=  gtk.RESPONSE_YES:
+        delete = YesNoDialog(msg='Confermi l\'eliminazione ?', transient=self.getTopLevel())
+        if not delete:
             return
-
         dao = self.filter.getSelectedDao()
         if not dao:
             return
@@ -75,32 +67,17 @@ Inserite il codice ( Esattamente come è scritto) della famiglia di destinazione
 qui sotto e premete SI
 L'operazione è irreversibile, retroattiva e potrebbe impiegare qualche minuto.
 """
-            dialog = gtk.MessageDialog(self.getTopLevel(),
-                                   gtk.DIALOG_MODAL
-                                   | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                   gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO,
-                                   msg)
-            __entry_codi = gtk.Entry()
-            dialog.vbox.pack_start(__entry_codi)
-            __entry_codi.show()
-            response = dialog.run()
-
-            if response !=  gtk.RESPONSE_YES:
-                dialog.destroy()
-                return
-            else:
-#                print "WBUMMMMM", __entry_codi.get_text()
-                famm = FamigliaArticolo().select(codice = __entry_codi.get_text())
+            move = YesNoDialog(msg=msg, transient=self.getTopLevel(), show_entry=True)
+            if move[0]:
+                famm = FamigliaArticolo().select(codice = move[1])
                 if famm:
                     idfam = famm[0].id
                     isfather = FamigliaArticolo().select(idPadre =idfam)
                     if isfather:
                         messageInfo(msg = "Cancellare prima i figli,\n questa è una famiglia padre non vuota ")
-                        dialog.destroy()
                         return
                 else:
                     messageInfo(msg = "NON è stato possibile trovare la famiglia\n di passaggio, non faccio niente")
-                    dialog.destroy()
                     return
                 for u in usata:
                     u.id_famiglia_articolo = idfam
@@ -128,47 +105,7 @@ class AnagraficaFamiglieArticoliFilter(AnagraficaFilter):
 
 
     def draw(self):
-        # Colonne della Treeview per il filtro
-        treeview = self._anagrafica.anagrafica_filter_treeview
-
-        renderer = gtk.CellRendererText()
-        column = gtk.TreeViewColumn('Codice', renderer, text=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(False)
-        column.set_resizable(True)
-        column.set_expand(False)
-        treeview.append_column(column)
-
-        renderer = gtk.CellRendererText()
-        column = gtk.TreeViewColumn('Descrizione breve', renderer, text=2)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(False)
-        column.set_resizable(True)
-        column.set_expand(False)
-        treeview.append_column(column)
-
-        renderer = gtk.CellRendererText()
-        column = gtk.TreeViewColumn('Descrizione', renderer, text=3)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(False)
-        column.set_resizable(True)
-        column.set_expand(True)
-        treeview.append_column(column)
-
-        renderer = gtk.CellRendererPixbuf()
-        column = gtk.TreeViewColumn('', renderer, pixbuf=4)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(False)
-        column.set_resizable(False)
-        column.set_expand(False)
-        treeview.append_column(column)
-
-        treeview.set_search_column(1)
-
-        self._treeViewModel = gtk.TreeStore(object, str, str, str, gtk.gdk.Pixbuf)
-        self._anagrafica.anagrafica_filter_treeview.set_model(self._treeViewModel)
-
-        self.refresh()
+        self.clear()
 
 
     def clear(self):
@@ -197,14 +134,14 @@ class AnagraficaFamiglieArticoliFilter(AnagraficaFilter):
 
         fams = self.runFilter()
 
-        self._treeViewModel.clear()
+        self.filter_listore.clear()
 
         padri= FamigliaArticolo().fathers()
 
         def recurse(padre,f):
             """ funzione di recursione per ogni figlio di ogni padre """
             for s in f.children:
-                figlio1 = self._treeViewModel.append(padre, (s,
+                figlio1 = self.filter_listore.append(padre, (s,
                                                     (s.codice or ''),
                                                     (s.denominazione_breve or ''),
                                                     (s.denominazione or ''),
@@ -216,7 +153,7 @@ class AnagraficaFamiglieArticoliFilter(AnagraficaFilter):
                 f.id_padre= None
                 f.persist()
             if not f.parent:
-                padre = self._treeViewModel.append(None, (f,
+                padre = self.filter_listore.append(None, (f,
                                                         (f.codice or ''),
                                                         (f.denominazione_breve or ''),
                                                         (f.denominazione or ''),
@@ -224,31 +161,28 @@ class AnagraficaFamiglieArticoliFilter(AnagraficaFilter):
                 if f.children:
                     recurse(padre,f)
 
-        self._anagrafica.anagrafica_filter_treeview.set_model(self._treeViewModel)
-        self._anagrafica.anagrafica_filter_treeview.collapse_all()
+        #self._anagrafica.anagrafica_filter_treeview.set_model(self._treeViewModel)
+        #self._anagrafica.anagrafica_filter_treeview.collapse_all()
 
         denominazione = emptyStringToNone(self.denominazione_filter_entry.get_text())
         codice = emptyStringToNone(self.codice_filter_entry.get_text())
         if not (denominazione is None) or not (codice is None):
-            self._treeViewModel.foreach(self.selectFilter, (denominazione, codice))
+            self.filter_listore.foreach(self.selectFilter, (denominazione, codice))
 
 
     def selectFilter(self, model, path, iter, (denominazione, codice)):
         #Seleziona elementi che concordano con il filtro
-        c = model.get_value(iter, 0)
+        c = self.filter_listore.get_value(iter, 0)
         found = False
         if denominazione is not None:
             found = (denominazione.upper() in c.denominazione.upper())
         if codice is not None:
             found = found or (codice.upper() in c.codice.upper())
         if found:
-            image = gtk.Image()
-            anagPixbuf = image.render_icon(gtk.STOCK_GO_BACK,
-                                           gtk.ICON_SIZE_BUTTON)
-            model.set_value(iter, 4, anagPixbuf)
+            self.filter_listore.set_value(iter, 4, "<<<")
             self._anagrafica.anagrafica_filter_treeview.expand_to_path(path)
         else:
-            model.set_value(iter, 4, None)
+            self.filter_listore.set_value(iter, 4, "")
 
 
 
