@@ -19,9 +19,6 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-import gtk
-import gobject
-
 from promogest import Environment
 from promogest.dao.Banca import Banca
 #from promogest.lib.ControlloIBAN import *
@@ -109,11 +106,7 @@ class AnagraficaBancheEdit(GladeWidget):
             msg = """Attenzione! NON e' stato inserito nessun IBAN
 Proseguire comunque?
 """
-            dialog = gtk.MessageDialog(self.getTopLevel(), gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                               gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO, msg)
-            response = dialog.run()
-            dialog.destroy()
-            if response == gtk.RESPONSE_YES:
+            if YesNoDialog(msg=msg, transient=self.getTopLevel()):
                 self.dao.persist()
 
 

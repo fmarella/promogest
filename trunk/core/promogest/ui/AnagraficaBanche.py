@@ -21,7 +21,6 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 import gtk
-import gobject
 
 from AnagraficaSemplice import Anagrafica, AnagraficaDetail, AnagraficaFilter
 from promogest import Environment
@@ -148,60 +147,15 @@ class AnagraficaBancheDetail(AnagraficaDetail):
     """ Dettaglio dell'anagrafica delle banche """
 
     def __init__(self, anagrafica):
-#        GladeWidget.__init__(self,
-#                                  'anagrafica_banche_edit_vbox',
-#                                 fileName='_anagrafica_banche_edit.glade')
-#        self.show_all()
         pass
 
 
     def setDao(self, dao):
         if dao is None:
             self.dao = Banca()
-#                self._anagrafica._newRow((self.dao, '', '', '', '', '', '', ''))
-#                self._refresh()
         else:
             self.dao = dao
 
     def updateDao(self):
         self.dao = Banca().getRecord(id= self.dao.id)
-#        self._refresh()
 
-#    def _refresh(self):
-#        sel = self._anagrafica.anagrafica_treeview.get_selection()
-#        (model, iterator) = sel.get_selected()
-#        if self.dao.iban is not None:
-#            iban = IBAN(self.dao.iban)
-#            model.set_value(iterator, 4, iban.abi or '')
-#            model.set_value(iterator, 5, iban.cab or '')
-#            model.set_value(iterator, 6, iban.cin or '')
-#            model.set_value(iterator, 7, iban.account or '')
-
-#        model.set_value(iterator, 0, self.dao)
-#        model.set_value(iterator, 1, self.dao.denominazione)
-#        model.set_value(iterator, 2, self.dao.agenzia)
-#        model.set_value(iterator, 3, self.dao.iban)
-
-#    def saveDao(self):
-#        sel = self._anagrafica.anagrafica_treeview.get_selection()
-#        (model, iterator) = sel.get_selected()
-#        denominazione = model.get_value(iterator, 1) or ''
-#        agenzia = model.get_value(iterator, 2) or ''
-#        iban = model.get_value(iterator, 3) or ''
-#        if (denominazione == ''):
-#            obligatoryField(self._anagrafica.getTopLevel(), self._anagrafica.anagrafica_treeview)
-#            return
-#        elif (iban == ''):
-#            obligatoryField(self._anagrafica.getTopLevel(), self._anagrafica.anagrafica_treeview)
-#            return
-#        self.dao.denominazione = denominazione
-#        self.dao.agenzia = agenzia
-#        iban = IBAN(iban)
-#        if iban.iban == -1:
-#            model.set_value(iterator, 3, '')
-#            return
-#        self.dao.iban = iban.iban
-#        self.dao.persist()
-
-#    def deleteDao(self):
-#        self.dao.delete()
