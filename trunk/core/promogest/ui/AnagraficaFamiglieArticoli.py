@@ -176,10 +176,12 @@ class AnagraficaFamiglieArticoliFilter(AnagraficaFilter):
         if codice is not None:
             found = found or (codice.upper() in c.codice.upper())
         if found:
-            self.filter_listore.set_value(iter, 4, "<<<")
+            ah =self.marcatore.get_stock()
+            anagPixbuf = self.marcatore.render_icon(ah[0],ah[1], None)
+            self.filter_listore.set_value(iter, 4, anagPixbuf)
             self._anagrafica.anagrafica_filter_treeview.expand_to_path(path)
         else:
-            self.filter_listore.set_value(iter, 4, "")
+            self.filter_listore.set_value(iter, 4, None)
 
 
 

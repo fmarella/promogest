@@ -274,9 +274,9 @@
     <child>
       <object class="GtkTreeViewColumn" id="treeviewcolumn1">
         <child>
-          <object class="GtkCellRendererText" id="cellrenderertext1"/>
+          <object class="GtkCellRendererPixbuf" id="cellrendererpixbuf1"/>
           <attributes>
-            <attribute name="text">4</attribute>
+            <attribute name="pixbuf">4</attribute>
           </attributes>
         </child>
       </object>
@@ -292,8 +292,13 @@
       <column type="gchararray"/>
       <!-- column-name gchararray3 -->
       <column type="gchararray"/>
-      <!-- column-name gchararray4 -->
-      <column type="gchararray"/>
+      <!-- column-name GdkPixbuf1 -->
+      <column type="GdkPixbuf"/>
     </columns>
+  </object>
+  <object class="GtkImage" id="marcatore">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-go-back</property>
   </object>
 </interface>
