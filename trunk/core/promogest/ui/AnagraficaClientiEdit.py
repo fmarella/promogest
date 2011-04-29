@@ -6,7 +6,7 @@
 #    Authors: Francesco Meloni  <francesco@promotux.it>
 #             Andrea Argiolas <andrea@promotux.it>
 #             Francesco Marella <francesco.marella@gmail.com>
-             
+
 #    This file is part of Promogest.
 
 #    Promogest is free software: you can redistribute it and/or modify
@@ -287,10 +287,7 @@ class AnagraficaClientiEdit(AnagraficaEdit):
         if (self.dao.codice and (self.dao.ragione_sociale or self.dao.insegna or self.dao.cognome or self.dao.nome)) =='':
             msg="""Il codice è obbligatorio.
     Inserire anche ragione sociale / cognome e nome """
-            dialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                               gtk.MESSAGE_INFO, gtk.BUTTONS_OK, msg)
-            dialog.run()
-            dialog.destroy()
+            messageInfo(msg=msg)
             raise Exception, 'Operation aborted Campo minimo cliente non inserito'
         self.dao.sede_operativa_indirizzo = self.indirizzo_sede_operativa_entry.get_text()
         self.dao.sede_operativa_cap = self.cap_sede_operativa_entry.get_text()
@@ -461,14 +458,7 @@ class AnagraficaClientiEdit(AnagraficaEdit):
 
         if self.dao.id is None:
             msg = 'Prima di poter visualizzare la registrazione documenti occorre salvare il cliente.\n Salvare? '
-            dialog = gtk.MessageDialog(self.dialogTopLevel,
-                    gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                    gtk.MESSAGE_QUESTION,
-                    gtk.BUTTONS_YES_NO,
-                    msg)
-            response = dialog.run()
-            dialog.destroy()
-            if response == gtk.RESPONSE_YES:
+            if YesNoDialog(msg=msg, transient=self.dialogTopLevel):
                 self.on_anagrafica_complessa_detail_dialog_response(
                         self.dialogTopLevel, gtk.RESPONSE_APPLY)
             else:
@@ -491,13 +481,7 @@ class AnagraficaClientiEdit(AnagraficaEdit):
         if posso("PR"):
             if self.dao.id is None:
                 msg = 'Prima di poter inserire i contatti occorre salvare il cliente.\n Salvare ?'
-                dialog = gtk.MessageDialog(self.dialogTopLevel,
-                        gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                        gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO,
-                        msg)
-                response = dialog.run()
-                dialog.destroy()
-                if response == gtk.RESPONSE_YES:
+                if YesNoDialog(msg=msg, transient=self.dialogTopLevel):
                     self.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, gtk.RESPONSE_APPLY)
                 else:
                     toggleButton.set_active(False)
@@ -525,13 +509,7 @@ class AnagraficaClientiEdit(AnagraficaEdit):
         if posso("CN"):
             if self.dao.id is None:
                 msg = 'Prima di poter inserire i contatti occorre salvare il cliente.\n Salvare ?'
-                dialog = gtk.MessageDialog(self.dialogTopLevel,
-                        gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                        gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO,
-                        msg)
-                response = dialog.run()
-                dialog.destroy()
-                if response == gtk.RESPONSE_YES:
+                if YesNoDialog(msg=msg, transient=self.dialogTopLevel):
                     self.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, gtk.RESPONSE_APPLY)
                 else:
                     toggleButton.set_active(False)
@@ -553,11 +531,7 @@ class AnagraficaClientiEdit(AnagraficaEdit):
 
         if self.dao.id is None:
             msg = 'Prima di poter inserire le destinazioni merce occorre salvare il cliente.\n Salvare ?'
-            dialog = gtk.MessageDialog(self.dialogTopLevel, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                       gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO, msg)
-            response = dialog.run()
-            dialog.destroy()
-            if response == gtk.RESPONSE_YES:
+            if YesNoDialog(msg=msg, transient=self.dialogTopLevel):
                 self.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, gtk.RESPONSE_APPLY)
             else:
                 toggleButton.set_active(False)
@@ -574,25 +548,3 @@ class AnagraficaClientiEdit(AnagraficaEdit):
         from promogest.dao.ListinoCategoriaCliente import ListinoCategoriaCliente
         from promogest.dao.ListinoMagazzino import ListinoMagazzino
         listino = findIdFromCombobox(self.id_listino_customcombobox.combobox)
-        #FIXME : ricontrollare
-        #if listino is not None:
-            #categoriaOk = True
-            #magazzinoOk = True
-            #model = self.categorie_treeview.get_model()
-            #categorie = set(c[0] for c in model if c[3] != 'deleted')
-            #categorieListino = set(c.id_categoria_cliente for c in ListinoCategoriaCliente()\
-                                        #.select(idListino=listino,batchSize=None, orderBy="id_listino"))
-            #categoriaOk = len(categorieListino.intersection(categorie)) > 0
-            #magazzino = findIdFromCombobox(self.id_magazzino_customcombobox.combobox)
-            #if magazzino is not None:
-                #magazziniListino = set(m.id_magazzino for m in ListinoMagazzino()\
-                                        #.select(idListino=listino,batchSize=None, orderBy="id_listino"))
-                #magazzinoOk = (magazzino in magazziniListino)
-            #if not(categoriaOk and magazzinoOk):
-                #msg = 'Il listino inserito non sembra compatibile con il magazzino e le categorie indicate.\nContinuare ?'
-                #dialog = gtk.MessageDialog(self.dialogTopLevel, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                           #gtk.MESSAGE_WARNING, gtk.BUTTONS_YES_NO, msg)
-                #response = dialog.run()
-                #dialog.destroy()
-                #if response != gtk.RESPONSE_YES:
-                    #raise Exception, 'Operation aborted'

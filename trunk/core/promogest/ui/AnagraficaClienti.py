@@ -20,7 +20,6 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-import gtk
 from sqlalchemy.orm import join
 from sqlalchemy import or_
 from AnagraficaComplessa import Anagrafica
@@ -60,15 +59,7 @@ class AnagraficaClienti(Anagrafica):
         if tdoc:
             messageInfo(msg= "CI SONO DOCUMENTI LEGATI A QUESTO CLIENTE\nNON E' POSSIBILE RIMUOVERLO")
             return
-        dialog = gtk.MessageDialog(self.getTopLevel(),
-                                   gtk.DIALOG_MODAL
-                                   | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                   gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO,
-                                   'Confermi l\'eliminazione ?')
-
-        response = dialog.run()
-        dialog.destroy()
-        if response !=  gtk.RESPONSE_YES:
+        if YesNoDialog(msg='Confermi l\'eliminazione ?', transient=self.getTopLevel()):
             return
 
         #verificare se ci sono relazioni con documenti o con contatti o recapiti
