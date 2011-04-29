@@ -53,15 +53,7 @@ class AnagraficaFornitori(Anagrafica):
         if tdoc:
             messageInfo(msg= "CI SONO DOCUMENTI LEGATI A QUESTO FORNITORE\nNON E' POSSIBILE RIMUOVERLO")
             return
-        dialog = gtk.MessageDialog(self.getTopLevel(),
-                                   gtk.DIALOG_MODAL
-                                   | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                   gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO,
-                                   'Confermi l\'eliminazione ?')
-
-        response = dialog.run()
-        dialog.destroy()
-        if response !=  gtk.RESPONSE_YES:
+        if YesNoDialog(msg='Confermi l\'eliminazione ?', transient=self.getTopLevel()):
             return
         dao = self.filter.getSelectedDao()
         cnnt = ContattoFornitore().select(idFornitore=dao.id, batchSize=None)

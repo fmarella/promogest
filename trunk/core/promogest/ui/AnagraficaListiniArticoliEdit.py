@@ -177,11 +177,7 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
         else:
             if przD != przI:
                 msg = 'Attenzione! Aggiornare anche il listino ingrosso ?'
-                dialog = gtk.MessageDialog(self.dialogTopLevel, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                           gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO, msg)
-                response = dialog.run()
-                dialog.destroy()
-                if response == gtk.RESPONSE_YES:
+                if YesNoDialog(msg=msg, transient=self.dialogTopLevel):
                     self.prezzo_ingrosso_entry.set_text(self.nformat % przD)
                     self.prezzo_ingrosso_ivato_label.set_text(self.prezzo_dettaglio_entry.get_text())
         return False
@@ -235,11 +231,7 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
         else:
             if przI != przD:
                 msg = 'Attenzione! Aggiornare anche il listino dettaglio ?'
-                dialog = gtk.MessageDialog(self.dialogTopLevel, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                           gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO, msg)
-                response = dialog.run()
-                dialog.destroy()
-                if response == gtk.RESPONSE_YES:
+                if YesNoDialog(msg=msg, transient=self.dialogTopLevel):
                     self.prezzo_dettaglio_entry.set_text(self.nformat % przI)
                     self.prezzo_dettaglio_noiva_label.set_text(self.prezzo_ingrosso_entry.get_text())
         return False
@@ -419,11 +411,7 @@ Verrà aggiornato il precedente.""")
             articolo = Articolo().getRecord(id=self.dao.id_articolo)
             if articleType(articolo) == "father":
                 msg = 'Attenzione! Si sta aggiungengo un Articolo Padre, creare le voci listino anche delle varianti?'
-                dialog = gtk.MessageDialog(self.dialogTopLevel, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                           gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO, msg)
-                response = dialog.run()
-                dialog.destroy()
-                if response == gtk.RESPONSE_YES:
+                if YesNoDialog(msg=msg, transient=self.dialogTopLevel):
                     Environment.pg2log.info("CREO LE ENTRY DELLE VARIANTI DI LISTINO PERCHE' SI STA INSERENDO UN PADRE")
                     for art in articolo.articoliVarianti:
                         daoVariante = ListinoArticolo().select(idListino=listin,

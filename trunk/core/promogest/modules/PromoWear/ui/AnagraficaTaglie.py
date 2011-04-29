@@ -268,14 +268,7 @@ class AnagraficaTaglieEdit(AnagraficaEdit):
             if len(gts) > 1:
                 msg = ('La taglia e\' collegata a diversi gruppi taglia:\n' +
                        'la modifica sara\' visibile su tutti i gruppi taglia ai quali la taglia e\' legata.\n\nContinuare ?')
-                dialog = gtk.MessageDialog(self.dialogTopLevel,
-                                           gtk.DIALOG_MODAL
-                                           | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                           gtk.MESSAGE_QUESTION,
-                                           gtk.BUTTONS_YES_NO, msg)
-                response = dialog.run()
-                dialog.destroy()
-                if response != gtk.RESPONSE_YES:
+                if YesNoDialog(msg=msg, transient=self.dialogTopLevel):
                     raise Exception, 'Operation aborted: Errore in taglie'
 
         # Controllo se esiste gia' la taglia

@@ -171,15 +171,7 @@ class Anagrafica(GladeWidget):
 
     def on_record_delete_activate(self, widget):
         """ Eliminazione record """
-        dialog = gtk.MessageDialog(self.getTopLevel(),
-                                   gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                   gtk.MESSAGE_QUESTION,
-                                   gtk.BUTTONS_YES_NO,
-                                   'Confermi l\'eliminazione ?')
-
-        response = dialog.run()
-        dialog.destroy()
-        if response !=  gtk.RESPONSE_YES:
+        if YesNoDialog(msg='Confermi l\'eliminazione ?', transient=self.getTopLevel()):
             self.anagrafica_treeview.grab_focus()
             return
 

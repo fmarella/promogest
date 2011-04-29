@@ -570,11 +570,7 @@ Verrà aggiornato il precedente.""")
 
         if self.dao.id is None:
             msg = 'Prima di poter inserire gli articoli occorre salvare il listino.\n Salvare ?'
-            dialog = gtk.MessageDialog(self.dialogTopLevel, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                       gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO, msg)
-            response = dialog.run()
-            dialog.destroy()
-            if response == gtk.RESPONSE_YES:
+            if YesNoDialog(msg=msg, transient=self.dialogTopLevel):
                 self.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, gtk.RESPONSE_APPLY)
             else:
                 toggleButton.set_active(False)
@@ -599,11 +595,7 @@ Verrà aggiornato il precedente.""")
 
         if self.dao.id is None:
             msg = 'Prima di poter filtrare gli articoli occorre salvare il listino.\n Salvare ?'
-            dialog = gtk.MessageDialog(self.dialogTopLevel, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                       gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO, msg)
-            response = dialog.run()
-            dialog.destroy()
-            if response == gtk.RESPONSE_YES:
+            if YesNoDialog(msg=msg, transient=self.dialogTopLevel):
                 self.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, gtk.RESPONSE_APPLY)
             else:
                 toggleButton.set_active(False)

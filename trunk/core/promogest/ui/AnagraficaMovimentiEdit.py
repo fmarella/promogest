@@ -885,11 +885,7 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
 
         if costoVariato:
             msg = "Il prezzo di acquisto e' stato variato:\n si desidera aggiornare i listini di vendita ?"
-            dialog = gtk.MessageDialog(self.dialogTopLevel, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                       gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO, msg)
-            response = dialog.run()
-            dialog.destroy()
-            if response == gtk.RESPONSE_YES:
+            if YesNoDialog(msg=msg, transient=self.dialogTopLevel):
                 self.on_variazione_listini_button_clicked(self.variazione_listini_button)
         self._righe[self._numRiga]["prezzoNettoUltimo"] = mN(self._righe[0]["prezzoNetto"])
         self.nuovaRiga()
@@ -1303,12 +1299,7 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
         FIXME
         """
         msg = 'Attenzione! Si sta per variare i riferimenti primari del movimento.\n Continuare ?'
-        dialog = gtk.MessageDialog(self.dialogTopLevel,
-                                    gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                    gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO, msg)
-        response = dialog.run()
-        dialog.destroy()
-        if response == gtk.RESPONSE_YES:
+        if YesNoDialog(msg=msg, transient=self.dialogTopLevel):
             self.data_movimento_entry.set_sensitive(True)
             self.numero_movimento_entry.set_sensitive(True)
             self.data_movimento_entry.grab_focus()

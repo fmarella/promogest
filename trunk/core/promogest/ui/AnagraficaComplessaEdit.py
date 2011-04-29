@@ -135,16 +135,8 @@ class AnagraficaEdit(GladeWidget):
             self._anagrafica.filter.refresh()
             self._anagrafica.filter.selectCurrentDao()
 
-
     def on_anagrafica_complessa_detail_dialog_close(self, dialog, event=None):
-        dialog = gtk.MessageDialog(self.dialogTopLevel,
-                                   gtk.DIALOG_MODAL
-                                   | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                   gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO,
-                                   'Confermi la chiusura ?')
-        response = dialog.run()
-        dialog.destroy()
-        if response ==  gtk.RESPONSE_YES:
+        if YesNoDialog(msg='Confermi la chiusura ?', transient=self.dialogTopLevel):
             self.setVisible(False)
         else:
             return True

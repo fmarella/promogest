@@ -514,15 +514,7 @@ class GestioneInventario(RicercaComplessaArticoli):
     relative alle voci di inventario filtrate e selezionate.
         Confermi la cancellazione ?
         """
-        dialog = gtk.MessageDialog(self.getTopLevel(),
-                                gtk.DIALOG_MODAL
-                                | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO,
-                                msg)
-
-        response = dialog.run()
-        dialog.destroy()
-        if response == gtk.RESPONSE_YES:
+        if YesNoDialog(msg=msg, transient=self.getTopLevel()):
             for i in  self.inventariati_filtrati_tutti:
                 i.quantita = 0
                 Environment.session.add(i)
@@ -544,15 +536,7 @@ class GestioneInventario(RicercaComplessaArticoli):
     se sei sicuro di quel che stai per fare.
         Confermi la cancellazione ?
         """
-        dialog = gtk.MessageDialog(self.getTopLevel(),
-                                gtk.DIALOG_MODAL
-                                | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO,
-                                msg)
-
-        response = dialog.run()
-        dialog.destroy()
-        if response == gtk.RESPONSE_YES:
+        if YesNoDialog(msg=msg, transient=self.getTopLevel()):
             print "cancello TUTTO IL MOVIMENTO INVENTARIO"
             idMagazzino = findIdFromCombobox(self.additional_filter.id_magazzino_filter_combobox2)
             sel2 = Environment.params['session']\
@@ -587,15 +571,7 @@ class GestioneInventario(RicercaComplessaArticoli):
         msg = """Stiamo per aggiungere le giacenze,
         si dovranno sovrascrivere quelle già presenti?
             """
-        dialog = gtk.MessageDialog(self.getTopLevel(),
-                                gtk.DIALOG_MODAL
-                                | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO,
-                                msg)
-
-        response = dialog.run()
-        dialog.destroy()
-        if response == gtk.RESPONSE_YES:
+        if YesNoDialog(msg=msg, transient=self.getTopLevel()):
             sovrascrivi = True
 
         idMagazzino = findIdFromCombobox(self.additional_filter.id_magazzino_filter_combobox2)
@@ -855,13 +831,8 @@ class GestioneInventario(RicercaComplessaArticoli):
             idMagazzino = findIdFromCombobox(self.additional_filter.id_magazzino_filter_combobox2)
             sel = Inventario().select(anno=self.annoScorso,
                                     idMagazzino=idMagazzino, batchSize=None)
-            dialog = gtk.MessageDialog(self.getTopLevel(), gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                   gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO, 'Tengo conto degli sconti alla vendita?')
-
-            response = dialog.run()
-            dialog.destroy()
             noSconti = False
-            if response !=  gtk.RESPONSE_YES:
+            if YesNoDialog(msg='Tengo conto degli sconti alla vendita?', transient=self.getTopLevel()):
                 noSconti = True
             listino = Environment.conf.VenditaDettaglio.listino
             idListino = Listino().select(denominazioneEM = listino)
@@ -1057,11 +1028,7 @@ class GestioneInventario(RicercaComplessaArticoli):
 
         msg = ("Attenzione !\n\nEventuali altri movimenti che sono stati creati devono essere eliminati manualmente.\n" +
                "Creare il movimento di carico per inventario ? ")
-        dialog = gtk.MessageDialog(self.getTopLevel(), gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                   gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO, msg)
-        response = dialog.run()
-        dialog.destroy()
-        if response == gtk.RESPONSE_YES:
+        if YesNoDialog(msg=msg, transient=self.getTopLevel()):
             blocSize = 500
             conteggia = Inventario().count(anno=self.annoScorso,
                                         idMagazzino=idMagazzino,
@@ -1138,29 +1105,15 @@ class GestioneInventario(RicercaComplessaArticoli):
                 testata.righeMovimento = righe
                 testata.persist()
 
-            dialog = gtk.MessageDialog(self.getTopLevel(), gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                       gtk.MESSAGE_INFO, gtk.BUTTONS_OK, '\nElaborazione terminata !')
-            response = dialog.run()
-            dialog.destroy()
+            messageInfo(msg='\nElaborazione terminata !')
 
     def confermaValorizzazione(self):
         """ Chiede conferma per la modifica dei dati """
-        dialog = gtk.MessageDialog(self.getTopLevel(),
-                                   gtk.DIALOG_MODAL
-                                   | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                   gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO,
-                                   'Confermi l\'elaborazione ?')
-
-        response = dialog.run()
-        dialog.destroy()
-        return (response == gtk.RESPONSE_YES)
+        return YesNoDialog(msg='Confermi l\'eliminazione ?', transient=self.getTopLevel())
 
     def fineElaborazione(self):
         """ Messaggio di fine elaborazione """
-        dialog = gtk.MessageDialog(self.getTopLevel(), gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                   gtk.MESSAGE_INFO, gtk.BUTTONS_OK, '\nElaborazione terminata !')
-        response = dialog.run()
-        dialog.destroy()
+        messageInfo(msg='\nElaborazione terminata !')
 
     def on_chiudi_button_clicked(self, button):
         """ Uscita dalla maschera """

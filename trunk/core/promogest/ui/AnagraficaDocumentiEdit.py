@@ -795,12 +795,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
        Vuoi che la DATA UTILIZZATA SIA 31/12/%s?
 
         """ %str(Environment.workingYear)
-            dialog = gtk.MessageDialog(None,
-                        gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                        gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO, msg)
-            response = dialog.run()
-            dialog.destroy()
-            if response == gtk.RESPONSE_YES:
+            if YesNoDialog(msg=msg, transient=None):
                 self.dao.data_documento = stringToDate("31/12/"+Environment.workingYear)
 
         if self.dao.id is not None and self.numero_documento_entry.get_text() != '0':
@@ -1538,11 +1533,7 @@ del documento.
     def on_edit_date_and_number_button_clicked(self, toggleButton):
         """ This permit to change the date of the document """
         msg = 'Attenzione! Si sta per variare i riferimenti primari del documento.\n Continuare ?'
-        dialog = gtk.MessageDialog(self.dialogTopLevel, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                   gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO, msg)
-        response = dialog.run()
-        dialog.destroy()
-        if response == gtk.RESPONSE_YES:
+        if YesNoDialog(msg=msg, transient=self.dialogTopLevel):
             self.data_documento_entry.set_sensitive(True)
             self.numero_documento_entry.set_sensitive(True)
             self.data_documento_entry.grab_focus()
@@ -1871,11 +1862,7 @@ del documento.
             return
         if self.dao.documento_saldato:
             msg = 'Attenzione! Stai per riaprire un documento già saldato.\n Continuare ?'
-            dialog = gtk.MessageDialog(self.dialogTopLevel, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                       gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO, msg)
-            response = dialog.run()
-            dialog.destroy()
-            if response == gtk.RESPONSE_YES:
+            if YesNoDialog(msg=msg, transient=self.dialogTopLevel):
                 self.stato_label.set_markup('<b><span foreground="#B40000" size="24000">APERTO</span></b>')
             else:
                 return

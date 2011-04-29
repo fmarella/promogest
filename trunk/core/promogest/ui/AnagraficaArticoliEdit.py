@@ -398,14 +398,7 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
 
         if self.dao.id is None:
             msg = 'Prima di poter inserire i codici a barre occorre salvare l\' articolo.\n Salvare ?'
-            dialog = gtk.MessageDialog(self.dialogTopLevel,
-                                       gtk.DIALOG_MODAL
-                                       | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                       gtk.MESSAGE_QUESTION,
-                                       gtk.BUTTONS_YES_NO, msg)
-            response = dialog.run()
-            dialog.destroy()
-            if response == gtk.RESPONSE_YES:
+            if YesNoDialog(msg=msg, transient=self.dialogTopLevel):
                 self.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, gtk.RESPONSE_APPLY)
             else:
                 toggleButton.set_active(False)
@@ -424,14 +417,7 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
 
         if self.dao.id is None:
             msg = 'Prima di poter inserire i multipli occorre salvare l\' articolo.\n Salvare ?'
-            dialog = gtk.MessageDialog(self.dialogTopLevel,
-                                       gtk.DIALOG_MODAL
-                                       | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                       gtk.MESSAGE_QUESTION,
-                                       gtk.BUTTONS_YES_NO, msg)
-            response = dialog.run()
-            dialog.destroy()
-            if response == gtk.RESPONSE_YES:
+            if YesNoDialog(msg=msg, transient=self.dialogTopLevel):
                 self.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, gtk.RESPONSE_APPLY)
             else:
                 toggleButton.set_active(False)
@@ -450,14 +436,7 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
 
         if self.dao.id is None:
             msg = 'Prima di poter inserire i dati di stoccaggio occorre salvare l\' articolo.\n Salvare ?'
-            dialog = gtk.MessageDialog(self.dialogTopLevel,
-                                       gtk.DIALOG_MODAL
-                                       | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                       gtk.MESSAGE_QUESTION,
-                                       gtk.BUTTONS_YES_NO, msg)
-            response = dialog.run()
-            dialog.destroy()
-            if response == gtk.RESPONSE_YES:
+            if YesNoDialog(msg=msg, transient=self.dialogTopLevel):
                 self.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, gtk.RESPONSE_APPLY)
             else:
                 toggleButton.set_active(False)
@@ -477,14 +456,8 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
         if self.dao.id is None:
             msg = ('Prima di poter inserire le forniture occorre '
                    + 'salvare l\' articolo.\n Salvare ?')
-            dialog = gtk.MessageDialog(self.dialogTopLevel,
-                                       gtk.DIALOG_MODAL
-                                       | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                       gtk.MESSAGE_QUESTION,
-                                       gtk.BUTTONS_YES_NO, msg)
-            response = dialog.run()
-            dialog.destroy()
-            if response == gtk.RESPONSE_YES:
+
+            if YesNoDialog(msg=msg, transient=self.dialogTopLevel):
                 self.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, gtk.RESPONSE_APPLY)
             else:
                 toggleButton.set_active(False)
@@ -503,14 +476,7 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
 
         if self.dao.id is None:
             msg = 'Prima di poter inserire i listini occorre salvare l\' articolo.\n Salvare ?'
-            dialog = gtk.MessageDialog(self.dialogTopLevel,
-                                       gtk.DIALOG_MODAL
-                                       | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                       gtk.MESSAGE_QUESTION,
-                                       gtk.BUTTONS_YES_NO, msg)
-            response = dialog.run()
-            dialog.destroy()
-            if response == gtk.RESPONSE_YES:
+            if YesNoDialog(msg=msg, transient=self.dialogTopLevel):
                 self.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, gtk.RESPONSE_APPLY)
             else:
                 toggleButton.set_active(False)
@@ -587,14 +553,7 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
                     msg = """ATTENZIONE: Si sta modificando un Tipo Articolo
 da PLUS a NORMALE questo comporta la perdita
 dei dati accessori. Continuare?"""
-                    dialog = gtk.MessageDialog(self.dialogTopLevel,
-                                        gtk.DIALOG_MODAL
-                                        | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                        gtk.MESSAGE_QUESTION,
-                                        gtk.BUTTONS_YES_NO, msg)
-                    response = dialog.run()
-                    dialog.destroy()
-                    if response == gtk.RESPONSE_YES:
+                    if YesNoDialog(msg=msg, transient=self.dialogTopLevel):
                         #self.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, gtk.RESPONSE_APPLY)
                         self.id_anno_combobox.set_active(-1)
                         self.id_genere_combobox.set_active(-1)
@@ -667,14 +626,7 @@ dei dati accessori. Continuare?"""
         idGenere = findIdFromCombobox(self.id_genere_combobox)
         if self.dao.id is None or self.dao is None:
             msg = 'Prima di poter inserire taglie, colori e codici a barre occorre salvare l\' articolo.\n Salvare ?'
-            dialog = gtk.MessageDialog(self.dialogTopLevel,
-                                       gtk.DIALOG_MODAL
-                                       | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                       gtk.MESSAGE_QUESTION,
-                                       gtk.BUTTONS_YES_NO, msg)
-            response = dialog.run()
-            dialog.destroy()
-            if response == gtk.RESPONSE_YES:
+            if YesNoDialog(msg=msg, transient=self.dialogTopLevel):
                 try:
                     self.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, gtk.RESPONSE_APPLY)
                 except:

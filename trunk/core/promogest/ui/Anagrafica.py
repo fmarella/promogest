@@ -133,12 +133,7 @@ class Anagrafica(GladeWidget):
 
 
     def on_record_delete_activate(self, widget):
-        dialog = gtk.MessageDialog(self.getTopLevel(), gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                   gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO, 'Confermi l\'eliminazione ?')
-
-        response = dialog.run()
-        dialog.destroy()
-        if response !=  gtk.RESPONSE_YES:
+        if YesNoDialog(msg='Confermi l\'eliminazione ?', transient=self.getTopLevel()):
             return
 
         self.detail.deleteDao()
@@ -191,12 +186,7 @@ class Anagrafica(GladeWidget):
 
 
     def on_record_cancel_activate(self, widget):
-        dialog = gtk.MessageDialog(self.getTopLevel(), gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                   gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO, 'Abbandonare le modifiche ?')
-
-        response = dialog.run()
-        dialog.destroy()
-        if response !=  gtk.RESPONSE_YES:
+        if YesNoDialog(msg='Abbandonare le modifiche ?', transient=self.getTopLevel()):
             return
 
         self.detail.clear()

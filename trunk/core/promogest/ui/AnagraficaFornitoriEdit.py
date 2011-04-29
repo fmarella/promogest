@@ -164,10 +164,7 @@ class AnagraficaFornitoriEdit(AnagraficaEdit):
             msg="""Il codice è obbligatorio.
     Inserire almeno un campo a scelta tra:
     ragione sociale, insegna, cognome o nome """
-            dialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                               gtk.MESSAGE_INFO, gtk.BUTTONS_OK, msg)
-            dialog.run()
-            dialog.destroy()
+            messageInfo(msg=msg)
             raise Exception, 'Operation aborted: Codice Fornitore obbligatorio'
         self.dao.sede_operativa_indirizzo = self.indirizzo_sede_operativa_entry.get_text()
         self.dao.sede_operativa_cap = self.cap_sede_operativa_entry.get_text()
@@ -315,14 +312,7 @@ class AnagraficaFornitoriEdit(AnagraficaEdit):
 
         if self.dao.id is None:
             msg = 'Prima di poter visualizzare la registrazione documenti occorre salvare il fornitore.\n Salvare? '
-            dialog = gtk.MessageDialog(self.dialogTopLevel,
-                gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                gtk.MESSAGE_QUESTION,
-                gtk.BUTTONS_YES_NO, msg)
-            response = dialog.run()
-            dialog.destroy()
-
-            if response == gtk.RESPONSE_YES:
+            if YesNoDialog(msg=msg, transient=self.dialogTopLevel):
                 self.on_anagrafica_complessa_detail_dialog_response(
                     self.dialogTopLevel, gtk.RESPONSE_APPLY)
             else:
@@ -345,13 +335,7 @@ class AnagraficaFornitoriEdit(AnagraficaEdit):
         if posso("PR"):
             if self.dao.id is None:
                 msg = 'Prima di poter inserire i contatti occorre salvare il Fornitore.\n Salvare ?'
-                dialog = gtk.MessageDialog(self.dialogTopLevel,
-                        gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                        gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO,
-                        msg)
-                response = dialog.run()
-                dialog.destroy()
-                if response == gtk.RESPONSE_YES:
+                if YesNoDialog(msg=msg, transient=self.dialogTopLevel):
                     self.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, gtk.RESPONSE_APPLY)
                 else:
                     toggleButton.set_active(False)
@@ -382,11 +366,7 @@ class AnagraficaFornitoriEdit(AnagraficaEdit):
 
             if self.dao.id is None:
                 msg = 'Prima di poter inserire i contatti occorre salvare il fornitore.\n Salvare ?'
-                dialog = gtk.MessageDialog(self.dialogTopLevel, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                        gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO, msg)
-                response = dialog.run()
-                dialog.destroy()
-                if response == gtk.RESPONSE_YES:
+                if YesNoDialog(msg=msg, transient=self.dialogTopLevel):
                     self.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, gtk.RESPONSE_APPLY)
                 else:
                     toggleButton.set_active(False)
@@ -408,11 +388,7 @@ class AnagraficaFornitoriEdit(AnagraficaEdit):
 
         if self.dao.id is None:
             msg = 'Prima di poter inserire delle forniture occorre salvare il fornitore.\n Salvare ?'
-            dialog = gtk.MessageDialog(self.dialogTopLevel, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                       gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO, msg)
-            response = dialog.run()
-            dialog.destroy()
-            if response == gtk.RESPONSE_YES:
+            if YesNoDialog(msg=msg, transient=self.dialogTopLevel):
                 self.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, gtk.RESPONSE_APPLY)
             else:
                 toggleButton.set_active(False)

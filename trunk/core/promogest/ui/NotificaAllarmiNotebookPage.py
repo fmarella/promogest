@@ -125,15 +125,8 @@ class NotificaAllarmiNotebookPage(GladeWidget):
         viene(vengono) eliminato(i) l'allarme(i) selezionato(i) nella treeview
         """
         count = self.maino.notifica_allarmi.alarm_notify_treeview.get_selection().count_selected_rows()
-        dialog = gtk.MessageDialog(None,
-                                   gtk.DIALOG_MODAL
-                                   | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                   gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO,
-                                   'Sono stati selezionati '+str(count)+' allarmi.\nConfermi l\'eliminazione?')
-
-        response = dialog.run()
-        dialog.destroy()
-        if response ==  gtk.RESPONSE_YES:
+        msg= 'Sono stati selezionati '+str(count)+' allarmi.\nConfermi l\'eliminazione?'
+        if YesNoDialog(msg=msg, transient=None):
             (model, indexes)= self.maino.notifica_allarmi.alarm_notify_treeview.get_selection().get_selected_rows()
             rows = []
             for index in indexes:

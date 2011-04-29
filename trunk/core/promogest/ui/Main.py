@@ -44,7 +44,7 @@ from promogest.ui.SendEmail import SendEmail
 from promogest.ui.PrintDialog import PrintDialogHandler
 from utils import hasAction, fencemsg, aggiorna, updateScadenzePromemoria,\
          setconf, dateTimeToString, dateToString, \
-         orda, posso, messageInfo, installId
+         orda, posso, messageInfo, installId , YesNoDialog
 from utilsCombobox import *
 from ParametriFrame import ParametriFrame
 from SetConf import SetConfUI
@@ -842,12 +842,7 @@ UNA VOLTA PREMUTO TERMINATA LA PROCEDURA
 CHIUDERE E RIAVVIARE IL PROGRAMMA
 
 PROCEDERE ALL'INSTALLAZIONE DEL MODULO PROMOWEAR? """
-        dialog = gtk.MessageDialog(self.getTopLevel(), gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                   gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO, msg)
-
-        response = dialog.run()
-        dialog.destroy()
-        if response !=  gtk.RESPONSE_YES:
+        if YesNoDialog(msg=msg, transient=self.getTopLevel()):
             return
         if not hasattr(Environment.conf,"PromoWear"):
             Environment.conf.add_section("PromoWear")
@@ -893,28 +888,13 @@ PROCEDERE ALL'INSTALLAZIONE DEL MODULO PROMOWEAR? """
         on_main_window_key_press_eventPart(self,widget, event)
 
     def on_disconnect(self, widget=None):
-        dialog = gtk.MessageDialog(self.getTopLevel(),
-                                   gtk.DIALOG_MODAL
-                                   | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                   gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO,
-                                   'Confermi la disconnessione?')
-        response = dialog.run()
-        dialog.destroy()
-        if response ==  gtk.RESPONSE_YES:
+        if YesNoDialog(msg='Confermi l\'eliminazione ?', transient=self.getTopLevel()):
             self.destroy()
         else:
             return
 
     def on_quit(self, widget=None):
-        dialog = gtk.MessageDialog(self.getTopLevel(),
-                                   gtk.DIALOG_MODAL
-                                   | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                   gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO,
-                                   'Confermi la chiusura?')
-
-        response = dialog.run()
-        dialog.destroy()
-        if response ==  gtk.RESPONSE_YES:
+        if YesNoDialog(msg='Confermi la chiusura?', transient=self.getTopLevel()):
             self.hide()
             gtk.main_quit()
         else:
