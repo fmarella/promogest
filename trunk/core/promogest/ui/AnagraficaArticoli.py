@@ -67,11 +67,7 @@ class AnagraficaArticoli(Anagrafica):
         if dao:
             if dao.cancellato:
                 msg = "L'articolo risulta eliminato.\nSi desidera riattivare l'articolo ?"
-                dialog = gtk.MessageDialog(self.getTopLevel(), gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                           gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO, msg)
-                response = dialog.run()
-                dialog.destroy()
-                if response == gtk.RESPONSE_YES:
+                if YesNoDialog(msg=msg, transient=self.getTopLevel()):
                     daoArticolo = Articolo().getRecord(id= dao.id)
                     daoArticolo.cancellato = False
                     daoArticolo.persist()
@@ -96,11 +92,7 @@ class AnagraficaArticoli(Anagrafica):
                 # le varianti non si possono duplicare !!!
                 #articoloTagliaColore = dao.articoloTagliaColore
                 if dao.id_articolo_padre is not None:
-                    msg = "Attenzione !\n\n Le varianti non sono duplicabili !"
-                    dialog = gtk.MessageDialog(self.getTopLevel(), gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                            gtk.MESSAGE_QUESTION, gtk.BUTTONS_OK, msg)
-                    response = dialog.run()
-                    dialog.destroy()
+                    messageInfo(msg="Attenzione !\n\n Le varianti non sono duplicabili !")
                     return
 
         #copia dei dati del vecchio articolo nel nuovo
@@ -145,15 +137,7 @@ class AnagraficaArticoli(Anagrafica):
         self.editElement.setVisible(True)
         self.editElement._refresh()
         msg = 'Si desidera duplicare anche tutti i listini dell\' articolo scelto ?'
-        dialog = gtk.MessageDialog(self.editElement.dialogTopLevel,
-                                   gtk.DIALOG_MODAL
-                                   | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                   gtk.MESSAGE_QUESTION,
-                                   gtk.BUTTONS_YES_NO, msg)
-
-        response = dialog.run()
-        dialog.destroy()
-        if response != gtk.RESPONSE_YES:
+        if YesNoDialog(msg=msg, transient=self.editElement.dialogTopLevel):
             self.editElement._duplicatedDaoId = None
 
 
