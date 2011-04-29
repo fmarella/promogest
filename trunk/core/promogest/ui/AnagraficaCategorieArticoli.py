@@ -169,6 +169,11 @@ class AnagraficaCategorieArticoliDetail(AnagraficaDetail):
 
 
     def deleteDao(self):
+
+        delete = YesNoDialog(msg='Confermi l\'eliminazione ?', transient=self.getTopLevel())
+        if not delete:
+            return
+
         usata = Articolo().select(idCategoria=self.dao.id, batchSize=None)
         if usata:
             msg = """NON è possibile cancellare questa CATEGORIA ARTICOLO
@@ -182,31 +187,17 @@ Inserite la descrizione breve ( Esattamente come è scritta) della categoria di 
 qui sotto e premete SI
 L'operazione è irreversibile,retroattiva e potrebbe impiegare qualche minuto
 """
-            dialog = gtk.MessageDialog(None,
-                                   gtk.DIALOG_MODAL
-                                   | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                   gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO,
-                                   msg)
-            __entry_codi = gtk.Entry()
-            dialog.vbox.pack_start(__entry_codi)
-            __entry_codi.show()
-            response = dialog.run()
-
-            if response !=  gtk.RESPONSE_YES:
-                dialog.destroy()
-                return
-            else:
-                cate = CategoriaArticolo().select(denominazioneBreveEM = __entry_codi.get_text())
+            move = YesNoDialog(msg=msg, transient=self.getTopLevel(), show_entry=True)
+            if move[0]:
+                cate = CategoriaArticolo().select(denominazioneBreveEM = move[1])
                 if cate:
                     idcat = cate[0].id
                 else:
                     messageInfo(msg = "NON è stato possibile trovare la categoria\n di passaggio, non faccio niente")
-                    dialog.destroy()
                     return
                 for u in usata:
                     u.id_categoria_articolo = idcat
                     u.persist()
-                dialog.destroy()
                 self.dao.delete()
         else:
             self.dao.delete()

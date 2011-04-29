@@ -1944,14 +1944,6 @@ def checkCodFisc(codfis):
         msg = 'Attenzione Codice Fiscale formalmente scorretto\nInserire comunque?!!!'
         messageInfo(msg=msg)
         return True
-#        dialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-#                                gtk.MESSAGE_INFO, gtk.BUTTONS_OK_CANCEL, msg)
-#        response = dialog.run()
-#        dialog.destroy()
-#        if response == gtk.RESPONSE_NONE or response == gtk.RESPONSE_CANCEL:
-#            return False
-#        elif response == gtk.RESPONSE_OK:
-#            return True
 
 def checkPartIva(partitaIVA):
     """
@@ -1959,21 +1951,6 @@ def checkPartIva(partitaIVA):
     @param partitaIVA:
     @type partitaIVA:
     """
-#    def dialog():
-#        """
-#        FIXME
-#        @param :
-#        @type :
-#        """
-
-#        dialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-#                                gtk.MESSAGE_INFO, gtk.BUTTONS_OK_CANCEL, msg)
-#        response = dialog.run()
-#        dialog.destroy()
-#        if response == gtk.RESPONSE_NONE or response == gtk.RESPONSE_CANCEL:
-#            return False
-#        elif response == gtk.RESPONSE_OK:
-#            return True
 
     n_Val = 0
     n_Som1 = 0

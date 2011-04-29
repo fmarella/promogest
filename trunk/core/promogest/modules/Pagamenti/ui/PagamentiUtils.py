@@ -37,10 +37,10 @@ class Pagamenti(object):
         Se action e` False, disattiva e pulisce i campi riguardanti la prima scadenza.
         """
 
-        if disable == True:
+        if disable:
             self.anagrafica.data_acconto_entry.set_sensitive(action)
             self.anagrafica.importo_acconto_scadenza_entry.set_sensitive(action)
-        if action == False:
+        if not action:
             self.anagrafica.data_acconto_entry.set_text("")
             self.anagrafica.importo_acconto_scadenza_entry.set_text("")
 
@@ -51,14 +51,14 @@ class Pagamenti(object):
         Se action e` False, disattiva e pulisce i campi riguardanti la prima scadenza.
         """
 
-        if disable == True:
+        if disable:
             self.anagrafica.data_acconto_entry.set_sensitive(action)
             self.anagrafica.data_prima_scadenza_entry.set_sensitive(action)
 #            self.anagrafica.primo_pagamento_entry.set_sensitive(action)
             self.anagrafica.data_pagamento_prima_scadenza_entry.set_sensitive(action)
             self.anagrafica.importo_acconto_scadenza_entry.set_sensitive(action)
             self.anagrafica.importo_prima_scadenza_entry.set_sensitive(action)
-        if action == False:
+        if not action:
             self.anagrafica.data_acconto_entry.set_text("")
             self.anagrafica.data_prima_scadenza_entry.set_text("")
 #            self.anagrafica.primo_pagamento_entry.set_text("")
@@ -72,12 +72,12 @@ class Pagamenti(object):
         Se action e` False, disattiva e pulisce i campi riguardanti la seconda scadenza.
         """
 
-        if disable == True:
+        if disable:
             self.anagrafica.data_seconda_scadenza_entry.set_sensitive(action)
             self.anagrafica.importo_seconda_scadenza_entry.set_sensitive(action)
 #            self.anagrafica.secondo_pagamento_entry.set_sensitive(action)
             self.anagrafica.data_pagamento_seconda_scadenza_entry.set_sensitive(action)
-        if action == False:
+        if not action:
             self.anagrafica.data_seconda_scadenza_entry.set_text("")
             self.anagrafica.importo_seconda_scadenza_entry.set_text("")
 #            self.anagrafica.secondo_pagamento_entry.set_text("")
@@ -89,12 +89,12 @@ class Pagamenti(object):
         Se action e` False, disattiva e pulisce i campi riguardanti la terza scadenza.
         """
 
-        if disable == True:
+        if disable:
             self.anagrafica.data_terza_scadenza_entry.set_sensitive(action)
             self.anagrafica.importo_terza_scadenza_entry.set_sensitive(action)
 #            self.anagrafica.terzo_pagamento_entry.set_sensitive(action)
             self.anagrafica.data_pagamento_terza_scadenza_entry.set_sensitive(action)
-        if action == False:
+        if not action:
             self.anagrafica.data_terza_scadenza_entry.set_text("")
             self.anagrafica.importo_terza_scadenza_entry.set_text("")
 #            self.anagrafica.terzo_pagamento_entry.set_text("")
@@ -106,12 +106,12 @@ class Pagamenti(object):
         Se action e` False, disattiva e pulisce i campi riguardanti la quarta scadenza.
         """
 
-        if disable == True:
+        if disable:
             self.anagrafica.data_quarta_scadenza_entry.set_sensitive(action)
             self.anagrafica.importo_quarta_scadenza_entry.set_sensitive(action)
 #            self.anagrafica.quarto_pagamento_entry.set_sensitive(action)
             self.anagrafica.data_pagamento_quarta_scadenza_entry.set_sensitive(action)
-        if action == False:
+        if not action:
             self.anagrafica.data_quarta_scadenza_entry.set_text("")
             self.anagrafica.importo_quarta_scadenza_entry.set_text("")
 #            self.anagrafica.quarto_pagamento_entry.set_text("")
@@ -306,11 +306,8 @@ un importo in sospeso. Il documento, per poter essere collegato, deve essere com
             msg = """Attenzione! L'importo in sospeso è pari a 0 e
 l'importo pagato è uguale al totale documento.
 Procedere con la "chiusura" del Pagamento?"""
-            dialog = gtk.MessageDialog(self.anagrafica.dialogTopLevel, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                               gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO, msg)
-            response = dialog.run()
-            dialog.destroy()
-            if response == gtk.RESPONSE_YES:
+            procedi = YesNoDialog(msg=msg, transient=self.getTopLevel())
+            if procedi:
                 self.anagrafica.stato_label.set_markup('<b><span foreground="#338000" size="24000">PAGATO</span></b>')
 
     def attiva_scadenze(self):
@@ -339,7 +336,7 @@ Procedere con la "chiusura" del Pagamento?"""
                 fine_mese = False
             else:
                 fine_mese = True
-            print "SCADENZEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE", scadenze
+
 #            self.anagrafica.primo_pagamento_entry.set_text(scadenze[0] + scadenze[1] + " gg")
 
             findComboboxRowFromStr(self.anagrafica.id_pagamento_prima_scadenza_customcombobox.combobox, paga,2)

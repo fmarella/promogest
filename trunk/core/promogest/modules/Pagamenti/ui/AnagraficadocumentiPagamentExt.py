@@ -35,11 +35,8 @@ def on_pulisci_scadenza_button_clicked(anaedit,button):
     Pulisce tutti i campi relativi alla tab pagamenti
     """
     msg = 'Attenzione! Stai per rimuovere i riferimenti già inseriti. Continuare?'
-    dialog = gtk.MessageDialog(anaedit.dialogTopLevel, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                               gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO, msg)
-    response = dialog.run()
-    dialog.destroy()
-    if response == gtk.RESPONSE_YES:
+    procedi = YesNoDialog(msg=msg, transient=self.getTopLevel())
+    if procedi:
         Pagamenti(anaedit).attiva_prima_scadenza(False,False)
         Pagamenti(anaedit).attiva_seconda_scadenza(False,False)
         Pagamenti(anaedit).attiva_terza_scadenza(False,False)
@@ -159,11 +156,8 @@ def on_chiudi_pagamento_documento_button_clicked(anaedit, button):
     (anaedit.importo_acconto_scadenza_entry.get_text() =="" or \
     anaedit.importo_acconto_scadenza_entry.get_text() ==str(0)):
         msg = 'Attenzione! Stai per chiudere un documento dove non figura incassato niente.\n Continuare ?'
-        dialog = gtk.MessageDialog(anaedit.dialogTopLevel, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                   gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO, msg)
-        response = dialog.run()
-        dialog.destroy()
-        if response == gtk.RESPONSE_YES:
+        procedi = YesNoDialog(msg=msg, transient=self.getTopLevel())
+        if procedi:
             anaedit.stato_label.set_markup('<b><span foreground="#338000" size="24000">PAGATO</span></b>')
             anaedit.chiudi_pagamento_documento_button.set_sensitive(False)
             anaedit.apri_pagamento_documento_button.set_sensitive(True)
@@ -174,11 +168,8 @@ def on_chiudi_pagamento_documento_button_clicked(anaedit, button):
 def on_apri_pagamento_documento_button_clicked(anaedit, button):
     """ Riapri o apri il pagamento"""
     msg = 'Attenzione! Stai per riaprire un documento considerato già pagato.\n Continuare ?'
-    dialog = gtk.MessageDialog(anaedit.dialogTopLevel, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                               gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO, msg)
-    response = dialog.run()
-    dialog.destroy()
-    if response == gtk.RESPONSE_YES:
+    procedi = YesNoDialog(msg=msg, transient=self.getTopLevel())
+    if procedi:
         anaedit.stato_label.set_markup('<b><span foreground="#B40000" size="24000">APERTO</span></b>')
         anaedit.apri_pagamento_documento_button.set_sensitive(False)
         anaedit.chiudi_pagamento_documento_button.set_sensitive(True)

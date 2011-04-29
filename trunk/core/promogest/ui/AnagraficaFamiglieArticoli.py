@@ -161,9 +161,6 @@ class AnagraficaFamiglieArticoliFilter(AnagraficaFilter):
                 if f.children:
                     recurse(padre,f)
 
-        #self._anagrafica.anagrafica_filter_treeview.set_model(self._treeViewModel)
-        #self._anagrafica.anagrafica_filter_treeview.collapse_all()
-
         denominazione = emptyStringToNone(self.denominazione_filter_entry.get_text())
         codice = emptyStringToNone(self.codice_filter_entry.get_text())
         if not (denominazione is None) or not (codice is None):
