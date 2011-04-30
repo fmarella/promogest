@@ -58,7 +58,6 @@ class Anagrafica(GladeWidget):
 
         self.anagrafica_treeview = self.bodyWidget.resultsElement
         self._treeViewModel = None
-        self.column = None
         self._rowEditingPath = None
         self._tabPressed = False
 
