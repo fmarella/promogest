@@ -19,7 +19,6 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-import gtk
 from AnagraficaSemplice import Anagrafica, AnagraficaDetail, AnagraficaFilter
 from promogest.dao.CategoriaArticolo import CategoriaArticolo
 from promogest.dao.Articolo import Articolo
@@ -42,7 +41,6 @@ class AnagraficaCategorieArticoli(Anagrafica):
         self.filter.descrizione_column.get_cell_renderers()[0].set_data('max_length', 200)
         self.filter.descrizione_breve_column.get_cell_renderers()[0].set_data('max_length', 10)
         self._treeViewModel = self.filter.filter_listore
-
         self.refresh()
 
     def refresh(self):
@@ -80,6 +78,13 @@ class AnagraficaCategorieArticoliFilter(AnagraficaFilter):
                                   'anagrafica_categorie_articoli_filter_table',
                                   gladeFile='_anagrafica_categorie_articoli_elements.glade')
         self._widgetFirstFocus = self.denominazione_filter_entry
+
+    def _reOrderBy(self, column):
+        if column.get_name() == "descrizione_column":
+            return self._anagrafica._changeOrderBy(column,(None,CategoriaArticolo.denominazione))
+        if column.get_name() == "descrizione_breve_column":
+            return self._anagrafica._changeOrderBy(column,(None,CategoriaArticolo.denominazione_breve))
+
 
     def clear(self):
         # Annullamento filtro
@@ -137,7 +142,6 @@ class AnagraficaCategorieArticoliDetail(AnagraficaDetail):
 
 
     def deleteDao(self):
-
         usata = Articolo().select(idCategoria=self.dao.id, batchSize=None)
         if usata:
             msg = """NON è possibile cancellare questa CATEGORIA ARTICOLO
