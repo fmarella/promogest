@@ -32,12 +32,12 @@ class DuplicaInFattura(object):
                 response = self.advertise(msg)
                 if tipo=="fattura" and response == gtk.RESPONSE_YES:
                     if not self.dao.fattura:
-                        self.ui.on_anagrafica_complessa_detail_dialog_response(self.ui.dialogTopLevel, gtk.RESPONSE_APPLY)
+                        self.ui.on_anagrafica_complessa_detail_dialog_response(self.ui.dialogTopLevel, -10)
                         idFattura = self.creaFatturaDaScheda()
                         self.dao.ricevuta_associata = TestataDocumento().getRecord(id=idFattura).numero
                         self.ui.n_documento_entry.set_text(str(self.dao.ricevuta_associata))
                         self.dao.fattura = True
-                        self.ui.on_anagrafica_complessa_detail_dialog_response(self.ui.dialogTopLevel, gtk.RESPONSE_APPLY)
+                        self.ui.on_anagrafica_complessa_detail_dialog_response(self.ui.dialogTopLevel, -10)
                         self.ui._refresh()
                     else:
                         if self.dao.ricevuta_associata is not None:
@@ -46,12 +46,12 @@ class DuplicaInFattura(object):
                     return
                 elif tipo=="movimento" and response == gtk.RESPONSE_YES:
                     if not self.dao.fattura:
-                        self.ui.on_anagrafica_complessa_detail_dialog_response(self.ui.dialogTopLevel, gtk.RESPONSE_APPLY)
+                        self.ui.on_anagrafica_complessa_detail_dialog_response(self.ui.dialogTopLevel, -10)
                         idMovimento = self.creaMovimentoDaScheda(operazione=operazione)
                         self.dao.ricevuta_associata = TestataMovimento().getRecord(id=idMovimento).numero
                         self.ui.n_documento_entry.set_text(str(self.dao.ricevuta_associata))
                         self.dao.fattura = True
-                        self.ui.on_anagrafica_complessa_detail_dialog_response(self.ui.dialogTopLevel, gtk.RESPONSE_APPLY)
+                        self.ui.on_anagrafica_complessa_detail_dialog_response(self.ui.dialogTopLevel, -10)
                         self.ui._refresh()
                     else:
                         #TODO: check this part
@@ -62,22 +62,22 @@ class DuplicaInFattura(object):
                     return
             else:
                 if tipo=="fattura" and not self.dao.fattura:
-                    self.ui.on_anagrafica_complessa_detail_dialog_response(self.ui.dialogTopLevel, gtk.RESPONSE_APPLY)
+                    self.ui.on_anagrafica_complessa_detail_dialog_response(self.ui.dialogTopLevel, -10)
                     idFattura = self.creaFatturaDaScheda()
                     self.dao.ricevuta_associata = TestataDocumento().getRecord(id=idFattura).numero
                     self.ui.n_documento_entry.set_text(str(self.dao.ricevuta_associata))
                     self.dao.fattura = True
-                    self.ui.on_anagrafica_complessa_detail_dialog_response(self.ui.dialogTopLevel, gtk.RESPONSE_APPLY)
+                    self.ui.on_anagrafica_complessa_detail_dialog_response(self.ui.dialogTopLevel, -10)
                     self.ui._refresh()
                     return
                 elif tipo=="movimento":
                     if not self.dao.fattura:
-                        self.ui.on_anagrafica_complessa_detail_dialog_response(self.ui.dialogTopLevel, gtk.RESPONSE_APPLY)
+                        self.ui.on_anagrafica_complessa_detail_dialog_response(self.ui.dialogTopLevel, -10)
                         idMovimento = self.creaMovimentoDaScheda(operazione=operazione)
                         self.dao.ricevuta_associata = TestataMovimento().getRecord(id=idMovimento).numero
                         self.ui.n_documento_entry.set_text(str(self.dao.ricevuta_associata))
                         self.dao.fattura = True
-                        self.ui.on_anagrafica_complessa_detail_dialog_response(self.ui.dialogTopLevel, gtk.RESPONSE_APPLY)
+                        self.ui.on_anagrafica_complessa_detail_dialog_response(self.ui.dialogTopLevel, -10)
                         self.ui._refresh()
                     else:
                         #TODO: check this part

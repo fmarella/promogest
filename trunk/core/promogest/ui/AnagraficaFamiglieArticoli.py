@@ -192,6 +192,8 @@ class AnagraficaFamiglieArticoliHtml(AnagraficaHtml):
 
 
 
+
+
 class AnagraficaFamiglieArticoliReport(AnagraficaReport):
     def __init__(self, anagrafica):
         AnagraficaReport.__init__(self, anagrafica=anagrafica,

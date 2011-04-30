@@ -571,7 +571,7 @@ Verrà aggiornato il precedente.""")
         if self.dao.id is None:
             msg = 'Prima di poter inserire gli articoli occorre salvare il listino.\n Salvare ?'
             if YesNoDialog(msg=msg, transient=self.dialogTopLevel):
-                self.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, gtk.RESPONSE_APPLY)
+                self.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, -10)
             else:
                 toggleButton.set_active(False)
                 return
@@ -596,7 +596,7 @@ Verrà aggiornato il precedente.""")
         if self.dao.id is None:
             msg = 'Prima di poter filtrare gli articoli occorre salvare il listino.\n Salvare ?'
             if YesNoDialog(msg=msg, transient=self.dialogTopLevel):
-                self.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, gtk.RESPONSE_APPLY)
+                self.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, -10)
             else:
                 toggleButton.set_active(False)
                 return

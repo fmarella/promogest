@@ -205,7 +205,7 @@ Verrà aggiornata la precedente.""")
             if self.dao.id is None:
                 msg = 'Prima di poter inserire i contatti occorre salvare il magazzino.\n Salvare ?'
                 if YesNoDialog(msg=msg, transient=self.dialogTopLevel):
-                    self.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, gtk.RESPONSE_APPLY)
+                    self.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, -10)
                 else:
                     toggleButton.set_active(False)
                     return

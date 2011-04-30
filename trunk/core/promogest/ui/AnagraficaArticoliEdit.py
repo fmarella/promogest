@@ -302,12 +302,7 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
             if articoloTagliaColore.id_taglia or articoloTagliaColore.id_colore:
                 msg =""" ATTENZIONE: Articolo Padre Taglia e Colore NON
     può avere Colore o Taglia propri."""
-                overDialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL
-                                                    | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                                        gtk.MESSAGE_ERROR,
-                                                        gtk.BUTTONS_CANCEL, msg)
-                response = overDialog.run()
-                overDialog.destroy()
+                messageInfo(msg=msg)
                 return
             articoloTagliaColore.id_anno = findIdFromCombobox(self.id_anno_combobox)
             articoloTagliaColore.id_stagione = findIdFromCombobox(self.id_stagione_combobox)
@@ -399,7 +394,7 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
         if self.dao.id is None:
             msg = 'Prima di poter inserire i codici a barre occorre salvare l\' articolo.\n Salvare ?'
             if YesNoDialog(msg=msg, transient=self.dialogTopLevel):
-                self.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, gtk.RESPONSE_APPLY)
+                self.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, -10)
             else:
                 toggleButton.set_active(False)
                 return
@@ -418,7 +413,7 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
         if self.dao.id is None:
             msg = 'Prima di poter inserire i multipli occorre salvare l\' articolo.\n Salvare ?'
             if YesNoDialog(msg=msg, transient=self.dialogTopLevel):
-                self.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, gtk.RESPONSE_APPLY)
+                self.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, -10)
             else:
                 toggleButton.set_active(False)
                 return
@@ -437,7 +432,7 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
         if self.dao.id is None:
             msg = 'Prima di poter inserire i dati di stoccaggio occorre salvare l\' articolo.\n Salvare ?'
             if YesNoDialog(msg=msg, transient=self.dialogTopLevel):
-                self.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, gtk.RESPONSE_APPLY)
+                self.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, -10)
             else:
                 toggleButton.set_active(False)
                 return
@@ -458,7 +453,7 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
                    + 'salvare l\' articolo.\n Salvare ?')
 
             if YesNoDialog(msg=msg, transient=self.dialogTopLevel):
-                self.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, gtk.RESPONSE_APPLY)
+                self.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, -10)
             else:
                 toggleButton.set_active(False)
                 return
@@ -477,7 +472,7 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
         if self.dao.id is None:
             msg = 'Prima di poter inserire i listini occorre salvare l\' articolo.\n Salvare ?'
             if YesNoDialog(msg=msg, transient=self.dialogTopLevel):
-                self.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, gtk.RESPONSE_APPLY)
+                self.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, -10)
             else:
                 toggleButton.set_active(False)
                 return
@@ -554,7 +549,7 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
 da PLUS a NORMALE questo comporta la perdita
 dei dati accessori. Continuare?"""
                     if YesNoDialog(msg=msg, transient=self.dialogTopLevel):
-                        #self.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, gtk.RESPONSE_APPLY)
+                        #self.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, -10)
                         self.id_anno_combobox.set_active(-1)
                         self.id_genere_combobox.set_active(-1)
                         self.id_stagione_combobox.set_active(-1)
@@ -628,7 +623,7 @@ dei dati accessori. Continuare?"""
             msg = 'Prima di poter inserire taglie, colori e codici a barre occorre salvare l\' articolo.\n Salvare ?'
             if YesNoDialog(msg=msg, transient=self.dialogTopLevel):
                 try:
-                    self.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, gtk.RESPONSE_APPLY)
+                    self.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, -10)
                 except:
                     toggleButton.set_active(False)
                     return

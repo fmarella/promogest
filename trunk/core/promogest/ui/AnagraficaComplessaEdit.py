@@ -24,7 +24,6 @@
 
 import time
 import gtk
-import gobject
 import os
 import sys
 import threading
@@ -117,21 +116,21 @@ class AnagraficaEdit(GladeWidget):
 
     def on_ok_button_grab_focus(self, button):
         if self.dialog.ok_button.is_focus():
-            self.on_anagrafica_complessa_detail_dialog_response(self.dialog, gtk.RESPONSE_OK)
+            self.on_anagrafica_complessa_detail_dialog_response(self.dialog, -5)
 
     def on_anagrafica_complessa_detail_dialog_response(self, dialog, responseId):
         """ Main function connected with ok applica and cancel in Anagrafica Edit"""
-        if responseId == gtk.RESPONSE_CANCEL:
+        if responseId == -6:  #cancel
             #self.clearDao()
             self.setVisible(False)
-        elif responseId == gtk.RESPONSE_OK:
-            self.saveDao(tipo=gtk.RESPONSE_OK)
+        elif responseId == -5:
+            self.saveDao(tipo=-5) #ok
             self._anagrafica.filter.refresh()
             self._anagrafica.filter.selectCurrentDao()
             self._anagrafica.filter.getSelectedDao()
             self.setVisible(False)
-        elif responseId == gtk.RESPONSE_APPLY:
-            self.saveDao(tipo=gtk.RESPONSE_APPLY)
+        elif responseId == -10:
+            self.saveDao(tipo=-10) #apply
             self._anagrafica.filter.refresh()
             self._anagrafica.filter.selectCurrentDao()
 
