@@ -5,6 +5,7 @@
 # Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
 # Author: Alceste Scalas <alceste@promotux.it>
 #         Andrea Argiolas <andrea@promotux.it>
+#         Francesco Meloni <francesco@promotux.it>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -26,7 +27,7 @@ from GladeWidget import GladeWidget
 from promogest.ui.widgets.FilterWidget import FilterWidget
 from promogest.ui.SendEmail import SendEmail
 import Login
-from promogest.ui.utils import setconf
+from promogest.ui.utils import setconf, YesNoDialog
 from promogest import Environment
 
 
@@ -49,6 +50,7 @@ class Anagrafica(GladeWidget):
         self.bodyWidget.generic_button.set_property('visible', False)
 
         self.filter = self.bodyWidget.filtersElement
+
         self.filterTopLevel = self.filter.getTopLevel()
         self.filterTopLevel.set_sensitive(True)
 
@@ -56,13 +58,9 @@ class Anagrafica(GladeWidget):
 
         self.anagrafica_treeview = self.bodyWidget.resultsElement
         self._treeViewModel = None
-
+        self.column = None
         self._rowEditingPath = None
         self._tabPressed = False
-        self._endModifyToolTip = gtk.Tooltips()
-        self._endModifyToolTip.set_tip(self.anagrafica_treeview,
-                                                        "Seleziona, inserici o  modifica il campo desiderato ")
-        self._endModifyToolTip.disable()
 
         # mapping fields and methods from bodyWidget to this class
         self.anagrafica_filter_navigation_hbox = self.bodyWidget.filter_navigation_hbox
@@ -140,7 +138,6 @@ class Anagrafica(GladeWidget):
         else:
             self.detail.setDao(None)
         if self._windowName == 'AnagraficaBanche':
-#            print "passi qui.....", dir(self)
             from AnagraficaBancheEdit import AnagraficaBancheEdit
             anag = AnagraficaBancheEdit(self, codice=codice)
 #            anag.set_transient_for(self.getTopLevel())
@@ -171,10 +168,9 @@ class Anagrafica(GladeWidget):
 
     def on_record_delete_activate(self, widget):
         """ Eliminazione record """
-        if YesNoDialog(msg='Confermi l\'eliminazione ?', transient=self.getTopLevel()):
+        if not YesNoDialog(msg='Confermi l\'eliminazione ?', transient=None):
             self.anagrafica_treeview.grab_focus()
             return
-
         self.detail.deleteDao()
         self.refresh()
 
@@ -200,7 +196,6 @@ class Anagrafica(GladeWidget):
         self.record_delete_button.set_sensitive(False)
         self.record_delete_menu.set_sensitive(False)
 
-        self.setToolTip(False)
         self.setFocus()
 
 
@@ -237,7 +232,6 @@ class Anagrafica(GladeWidget):
         self.record_delete_button.set_sensitive(False)
         self.record_delete_menu.set_sensitive(False)
 
-        self.setToolTip(False)
         self.setFocus()
 
 
@@ -285,7 +279,6 @@ class Anagrafica(GladeWidget):
         self.record_delete_button.set_sensitive(False)
         self.record_delete_menu.set_sensitive(False)
 
-        self.setToolTip(False)
         self.setFocus()
 
     def on_export_csv_button_clicked(self, button):
@@ -382,14 +375,6 @@ class Anagrafica(GladeWidget):
             widget.grab_focus()
 
 
-    def setToolTip(self, flag=False):
-        """ Abilita o disabilita il tooltip """
-        if flag:
-            self._endModifyToolTip.enable()
-        else:
-            self._endModifyToolTip.disable()
-
-
     def on_filter_treeview_row_activated(self, treeview, path, column):
         """ Gestisce la conferma della riga """
         if self._rowEditingPath is None:
@@ -406,7 +391,6 @@ class Anagrafica(GladeWidget):
                 row = model[iterator]
                 if row.path != self._rowEditingPath:
                     sel.select_path(self._rowEditingPath)
-                    self.setToolTip(True)
                 return
         else:
             if iterator is None:
@@ -418,7 +402,6 @@ class Anagrafica(GladeWidget):
 
             self.record_edit_button.set_sensitive(True)
             self.record_edit_menu.set_sensitive(True)
-            self._endModifyToolTip.disable()
 
     def on_filter_treeview_selection_changed(self, selection):
         pass
@@ -444,11 +427,12 @@ class Anagrafica(GladeWidget):
             self._tabPressed = True
 
 
-    def on_column_edited(self, cell, path, value, treeview, editNext=True):
+    def on_column_edited(self, cell, path, value, treeview, editNext=True, column = None):
         """ Gestisce l'immagazzinamento dei valori nelle celle """
         model = treeview.get_model()
         iterator = model.get_iter(path)
-        column = cell.get_data('column')
+        if column is None:
+            column = cell.get_data('column')
         row = model[iterator]
         if row.path == self._rowEditingPath:
             if cell.__class__ is gtk.CellRendererText:
@@ -548,6 +532,19 @@ class AnagraficaFilter(GladeWidget):
         self._anagrafica = anagrafica
         self._widgetFirstFocus = None
 
+    def on_column_edited(self,cellrenderertext, path, new_text ,editNext=True):
+        column = None
+        colonne = self.anagrafica_semplice_treeview.get_columns()
+        for col in colonne:
+            if col.cell_get_position(cellrenderertext):
+                column = colonne.index(col)
+                break
+        self._anagrafica.on_column_edited(cell=cellrenderertext,
+                path=path,
+                value=new_text,
+                treeview=self.anagrafica_semplice_treeview,
+                editNext=True,
+                column=column)
 
     def refresh(self):
         """ Aggiorna il l'elenco dell'anagrafica in base ai parametri impostati """

@@ -366,11 +366,14 @@ class FilterWidget(GladeWidget):
 
     def getTreeViewFilterResultsWidget(self):
         """ Return a treeview widget for filter results
-        AGGIUNTA: il passaggio alla costruzione delle treeview
+
+        ATTENZIONE: il passaggio alla costruzione delle treeview
         con glade porta ad una piccola rivoluzione, verifichiamo che non
         arrivi dal glade una treeview altrimenti ne creiamo una"""
         if  hasattr(self._owner,"anagrafica_filter_treeview"):
             treeview = self._owner.anagrafica_filter_treeview
+        if hasattr(self.filtersElement,"anagrafica_semplice_treeview"):
+            treeview = self.filtersElement.anagrafica_semplice_treeview
         else:
             treeview = gtk.TreeView()
 

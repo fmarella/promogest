@@ -53,7 +53,7 @@ class AnagraficaFornitori(Anagrafica):
         if tdoc:
             messageInfo(msg= "CI SONO DOCUMENTI LEGATI A QUESTO FORNITORE\nNON E' POSSIBILE RIMUOVERLO")
             return
-        if YesNoDialog(msg='Confermi l\'eliminazione ?', transient=self.getTopLevel()):
+        if not YesNoDialog(msg='Confermi l\'eliminazione ?', transient=self.getTopLevel()):
             return
         dao = self.filter.getSelectedDao()
         cnnt = ContattoFornitore().select(idFornitore=dao.id, batchSize=None)

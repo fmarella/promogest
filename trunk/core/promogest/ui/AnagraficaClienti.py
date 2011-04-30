@@ -59,7 +59,7 @@ class AnagraficaClienti(Anagrafica):
         if tdoc:
             messageInfo(msg= "CI SONO DOCUMENTI LEGATI A QUESTO CLIENTE\nNON E' POSSIBILE RIMUOVERLO")
             return
-        if YesNoDialog(msg='Confermi l\'eliminazione ?', transient=self.getTopLevel()):
+        if not YesNoDialog(msg='Confermi l\'eliminazione ?', transient=self.getTopLevel()):
             return
 
         #verificare se ci sono relazioni con documenti o con contatti o recapiti

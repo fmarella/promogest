@@ -356,7 +356,7 @@ class Anagrafica(GladeWidget):
         self.setFocus()
 
     def on_record_delete_activate(self, widget):
-        if YesNoDialog(msg='Confermi l\'eliminazione ?', transient=self.getTopLevel()):
+        if not YesNoDialog(msg='Confermi l\'eliminazione ?', transient=self.getTopLevel()):
             return
 
         dao = self.filter.getSelectedDao()

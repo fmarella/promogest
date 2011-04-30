@@ -37,42 +37,13 @@ class AnagraficaCategorieArticoli(Anagrafica):
 
 
     def draw(self):
-        # Colonne della Treeview per il filtro/modifica
-        treeview = self.anagrafica_treeview
-
-        renderer = gtk.CellRendererText()
-        renderer.set_property('editable', False)
-        renderer.connect('edited', self.on_column_edited, treeview, True)
-        renderer.set_data('column', 0)
-        renderer.set_data('max_length', 200)
-        column = gtk.TreeViewColumn('Descrizione', renderer, text=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, (None,'denominazione'))
-        column.set_resizable(True)
-        column.set_expand(True)
-        treeview.append_column(column)
-
-        renderer = gtk.CellRendererText()
-        renderer.set_property('editable', False)
-        renderer.connect('edited', self.on_column_edited, treeview, False)
-        renderer.set_data('column', 1)
-        renderer.set_data('max_length', 10)
-        column = gtk.TreeViewColumn('Descrizione breve', renderer, text=2)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, (None,'denominazione_breve'))
-        column.set_resizable(True)
-        column.set_expand(False)
-        treeview.append_column(column)
-
-        treeview.set_search_column(1)
-
-        self._treeViewModel = gtk.ListStore(object, str, str)
-        treeview.set_model(self._treeViewModel)
+        """ Facoltativo ma suggerito per indicare la lunghezza massima della cella
+        """
+        self.filter.descrizione_column.get_cell_renderers()[0].set_data('max_length', 200)
+        self.filter.descrizione_breve_column.get_cell_renderers()[0].set_data('max_length', 10)
+        self._treeViewModel = self.filter.filter_listore
 
         self.refresh()
-
 
     def refresh(self):
         # Aggiornamento TreeView
@@ -100,7 +71,6 @@ class AnagraficaCategorieArticoli(Anagrafica):
                                         (c.denominazione_breve or '')))
 
 
-
 class AnagraficaCategorieArticoliFilter(AnagraficaFilter):
     """ Filtro per la ricerca nell'anagrafica delle categorie articoli """
 
@@ -110,7 +80,6 @@ class AnagraficaCategorieArticoliFilter(AnagraficaFilter):
                                   'anagrafica_categorie_articoli_filter_table',
                                   gladeFile='_anagrafica_categorie_articoli_elements.glade')
         self._widgetFirstFocus = self.denominazione_filter_entry
-
 
     def clear(self):
         # Annullamento filtro
@@ -153,7 +122,6 @@ class AnagraficaCategorieArticoliDetail(AnagraficaDetail):
             model.set_value(iterator, 1, self.dao.denominazione)
             model.set_value(iterator, 2, self.dao.denominazione_breve)
 
-
     def saveDao(self):
         sel = self._anagrafica.anagrafica_treeview.get_selection()
         (model, iterator) = sel.get_selected()
@@ -170,10 +138,6 @@ class AnagraficaCategorieArticoliDetail(AnagraficaDetail):
 
     def deleteDao(self):
 
-        delete = YesNoDialog(msg='Confermi l\'eliminazione ?', transient=self.getTopLevel())
-        if not delete:
-            return
-
         usata = Articolo().select(idCategoria=self.dao.id, batchSize=None)
         if usata:
             msg = """NON è possibile cancellare questa CATEGORIA ARTICOLO
@@ -187,7 +151,7 @@ Inserite la descrizione breve ( Esattamente come è scritta) della categoria di 
 qui sotto e premete SI
 L'operazione è irreversibile,retroattiva e potrebbe impiegare qualche minuto
 """
-            move = YesNoDialog(msg=msg, transient=self.getTopLevel(), show_entry=True)
+            move = YesNoDialog(msg=msg, transient=None, show_entry=True)
             if move[0]:
                 cate = CategoriaArticolo().select(denominazioneBreveEM = move[1])
                 if cate:
