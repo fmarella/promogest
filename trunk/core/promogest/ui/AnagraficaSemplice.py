@@ -36,7 +36,8 @@ class Anagrafica(GladeWidget):
 
     def __init__(self, windowTitle, recordMenuLabel,
                  filterElement, detailElement, gladeFile=None):
-        GladeWidget.__init__(self, 'anagrafica_semplice_window', fileName= 'anagrafica_semplice_window.glade')
+        GladeWidget.__init__(self, 'anagrafica_semplice_window', 
+                                fileName= 'anagrafica_semplice_window.glade')
         Environment.windowGroup.append(self.anagrafica_semplice_window)
         self.anagrafica_semplice_window.set_title(windowTitle)
         self.record_menu.get_child().set_label(recordMenuLabel)
@@ -139,8 +140,6 @@ class Anagrafica(GladeWidget):
         if self._windowName == 'AnagraficaBanche':
             from AnagraficaBancheEdit import AnagraficaBancheEdit
             anag = AnagraficaBancheEdit(self, codice=codice)
-#            anag.set_transient_for(self.getTopLevel())
-#            anag.show_all()
             return
         self.filterTopLevel.set_sensitive(False)
         self.anagrafica_filter_navigation_hbox.set_sensitive(False)
@@ -384,7 +383,6 @@ class Anagrafica(GladeWidget):
         """ Gestisce lo spostamento tra le righe """
         sel = self.anagrafica_treeview.get_selection()
         (model, iterator) = sel.get_selected()
-
         if self._rowEditingPath is not None:
             if iterator:
                 row = model[iterator]
@@ -456,7 +454,7 @@ class Anagrafica(GladeWidget):
         (model, iterator) = sel.get_selected()
         columns = self.anagrafica_treeview.get_columns()
         for c in columns:
-            renderers = c.get_cell_renderers()
+            renderers = c.get_cells()
             for r in renderers:
                 if r.__class__ is gtk.CellRendererText:
                     r.set_property('editable', flag)
@@ -525,8 +523,10 @@ class Anagrafica(GladeWidget):
 class AnagraficaFilter(GladeWidget):
     """ Filtro per la ricerca nell'anagrafica """
 
-    def __init__(self, anagrafica, rootWidget, gladeFile=None,module=False):
-        GladeWidget.__init__(self, rootWidget, fileName=gladeFile,isModule=module)
+    def __init__(self, anagrafica, rootWidget,
+                                    gladeFile=None,module=False):
+        GladeWidget.__init__(self, rootWidget,
+                        fileName=gladeFile,isModule=module)
 
         self._anagrafica = anagrafica
         self._widgetFirstFocus = None

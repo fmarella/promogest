@@ -36,10 +36,11 @@ class AnagraficaCategorieArticoli(Anagrafica):
 
 
     def draw(self):
-        """ Facoltativo ma suggerito per indicare la lunghezza massima della cella
+        """ Facoltativo ma suggerito per indicare la lunghezza
+        massima della cella di testo
         """
-        self.filter.descrizione_column.get_cell_renderers()[0].set_data('max_length', 200)
-        self.filter.descrizione_breve_column.get_cell_renderers()[0].set_data('max_length', 10)
+        self.filter.descrizione_column.get_cells()[0].set_data('max_length', 200)
+        self.filter.descrizione_breve_column.get_cells()[0].set_data('max_length', 10)
         self._treeViewModel = self.filter.filter_listore
         self.refresh()
 
@@ -93,14 +94,13 @@ class AnagraficaCategorieArticoliFilter(AnagraficaFilter):
         self._anagrafica.refresh()
 
 
-
 class AnagraficaCategorieArticoliDetail(AnagraficaDetail):
     """ Dettaglio dell'anagrafica delle categorie articoli """
 
     def __init__(self, anagrafica):
         AnagraficaDetail.__init__(self,
-                                  anagrafica,
-                                  gladeFile='_anagrafica_categorie_articoli_elements.glade')
+            anagrafica,
+            gladeFile='_anagrafica_categorie_articoli_elements.glade')
 
 
     def setDao(self, dao):
