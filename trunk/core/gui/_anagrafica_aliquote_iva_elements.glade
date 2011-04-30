@@ -373,6 +373,8 @@ quando presente</property>
       <column type="gchararray"/>
       <!-- column-name gchararray2 -->
       <column type="gchararray"/>
+      <!-- column-name gchararray3 -->
+      <column type="gchararray"/>
     </columns>
   </object>
 </interface>

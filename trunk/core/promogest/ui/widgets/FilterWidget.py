@@ -372,7 +372,7 @@ class FilterWidget(GladeWidget):
         arrivi dal glade una treeview altrimenti ne creiamo una"""
         if  hasattr(self._owner,"anagrafica_filter_treeview"):
             treeview = self._owner.anagrafica_filter_treeview
-        if hasattr(self.filtersElement,"anagrafica_semplice_treeview"):
+        elif hasattr(self.filtersElement,"anagrafica_semplice_treeview"):
             treeview = self.filtersElement.anagrafica_semplice_treeview
         else:
             treeview = gtk.TreeView()
