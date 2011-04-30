@@ -1,14 +1,25 @@
 # -*- coding: utf-8 -*-
 
-# Promogest
-#
-# Copyright (C) 2005-2009 by Promotux Informatica - http://www.promotux.it/
-# Author: Andrea Argiolas <andrea@promotux.it>
-# Author: Francesco "m3nt0r3" Meloni  <francesco@promotux.it>
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux
+#                        di Francesco Meloni snc - http://www.promotux.it/
 
+#    Author: Francesco Meloni  <francesco@promotux.it>
+#    Author: Andrea Argiolas   <andrea@promotux.it>
+#    This file is part of Promogest.
 
-import gtk
-import gobject
+#    Promogest is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 2 of the License, or
+#    (at your option) any later version.
+
+#    Promogest is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+
+#    You should have received a copy of the GNU General Public License
+#    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
+
 from AnagraficaSemplice import Anagrafica, AnagraficaDetail, AnagraficaFilter
 from promogest import Environment
 from promogest.dao.CategoriaFornitore import CategoriaFornitore
@@ -27,27 +38,11 @@ class AnagraficaCategorieFornitori(Anagrafica):
 
 
     def draw(self):
-        # Colonne della Treeview per il filtro/modifica
-        treeview = self.anagrafica_treeview
-
-        renderer = gtk.CellRendererText()
-        renderer.set_property('editable', False)
-        renderer.connect('edited', self.on_column_edited, treeview, False)
-        renderer.set_data('column', 0)
-        renderer.set_data('max_length', 200)
-        column = gtk.TreeViewColumn('Descrizione', renderer, text=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, (None, 'denominazione'))
-        column.set_resizable(True)
-        column.set_expand(True)
-        treeview.append_column(column)
-
-        treeview.set_search_column(1)
-
-        self._treeViewModel = gtk.ListStore(object, str)
-        treeview.set_model(self._treeViewModel)
-
+        """ Facoltativo ma suggerito per indicare la lunghezza
+        massima della cella di testo
+        """
+        self.filter.descrizione_column.get_cells()[0].set_data('max_length', 200)
+        self._treeViewModel = self.filter.filter_listore
         self.refresh()
 
 
@@ -87,6 +82,9 @@ class AnagraficaCategorieFornitoriFilter(AnagraficaFilter):
                                   gladeFile='_anagrafica_categorie_fornitori_elements.glade')
         self._widgetFirstFocus = self.denominazione_filter_entry
 
+    def _reOrderBy(self, column):
+        if column.get_name() == "descrizione_column":
+            return self._anagrafica._changeOrderBy(column,(None,CategoriaFornitore.denominazione))
 
     def clear(self):
         # Annullamento filtro
