@@ -36,54 +36,12 @@ class AnagraficaPagamenti(Anagrafica):
                             AnagraficaPagamentiDetail(self))
 
     def draw(self):
-        # Colonne della Treeview per il filtro
-        treeview = self.anagrafica_treeview
-
-        renderer = gtk.CellRendererText()
-        renderer.set_property('editable', False)
-        renderer.connect('edited', self.on_column_edited, treeview, False)
-        renderer.set_data('column', 0)
-        renderer.set_data('max_length', 200)
-        column = gtk.TreeViewColumn('Denominazione', renderer, text=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, (None, 'denominazione'))
-        column.set_resizable(True)
-        column.set_expand(True)
-
-        treeview.append_column(column)
-
-        self.lsmodel = gtk.ListStore(str)
-        self.lsmodel.append(["cassa"])
-        self.lsmodel.append(["banca"])
-
-        cellcombo1= gtk.CellRendererCombo()
-        cellcombo1.set_property("editable", True)
-        cellcombo1.set_property("visible", True)
-        cellcombo1.set_property("text-column", 0)
-        cellcombo1.set_property("editable", True)
-        cellcombo1.set_property("has-entry", False)
-        cellcombo1.set_property("model", self.lsmodel)
-        cellcombo1.connect('edited', self.on_column_listinoRiga_edited, treeview, True)
-
-        column = gtk.TreeViewColumn('tipo', cellcombo1, text=2)
-        column.set_clickable(True)
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(60)
-
-        treeview.append_column(column)
-
-        treeview.set_search_column(1)
-
-        self._treeViewModel = gtk.ListStore(object, str,str)
-        treeview.set_model(self._treeViewModel)
-
+        """ Facoltativo ma suggerito per indicare la lunghezza
+        massima della cella di testo
+        """
+        #self.filter.descrizione_column.get_cells()[0].set_data('max_length', 200)
+        self._treeViewModel = self.filter.filter_listore
         self.refresh()
-
-    def on_column_listinoRiga_edited(self, cell, path, value, treeview, editNext=True):
-        model = treeview.get_model()
-        model[path][2] = value
 
     def refresh(self):
         # Aggiornamento TreeView
@@ -120,6 +78,17 @@ class AnagraficaPagamentiFilter(AnagraficaFilter):
                           'anagrafica_pagamenti_filter_table',
                           gladeFile='_anagrafica_pagamenti_elements.glade')
         self._widgetFirstFocus = self.denominazione_filter_entry
+
+
+    def on_tipologia_changed(self, combo, path_string, new_iter):
+        valore = self.tipologia_listore.get_value(new_iter,0)
+        model = self.filter_listore
+        model[path_string][2] = valore
+        #self._anagrafica.anagrafica_treeview_set_edit(False)
+
+    def on_filter_treeview_row_activated(self, treeview, path, iter):
+        print "AAOAOAO"
+        pass
 
     def clear(self):
         # Annullamento filtro

@@ -36,7 +36,7 @@ class Anagrafica(GladeWidget):
 
     def __init__(self, windowTitle, recordMenuLabel,
                  filterElement, detailElement, gladeFile=None):
-        GladeWidget.__init__(self, 'anagrafica_semplice_window', 
+        GladeWidget.__init__(self, 'anagrafica_semplice_window',
                                 fileName= 'anagrafica_semplice_window.glade')
         Environment.windowGroup.append(self.anagrafica_semplice_window)
         self.anagrafica_semplice_window.set_title(windowTitle)
