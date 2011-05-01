@@ -111,7 +111,7 @@
                         </child>
                         <child>
                           <object class="GtkCheckButton" id="data_consegna_check">
-                            <property name="label" translatable="yes">Inserisci data consegna</property>
+                            <property name="label" translatable="yes">Inserisci data consegna dei singoli DDT</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">False</property>
@@ -126,7 +126,7 @@
                         </child>
                         <child>
                           <object class="GtkCheckButton" id="note_check">
-                            <property name="label" translatable="yes">Inserisci Note DDT</property>
+                            <property name="label" translatable="yes">Inserisci Note dei singoli DDT</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">False</property>
@@ -141,9 +141,8 @@
                         </child>
                         <child>
                           <object class="GtkCheckButton" id="no_row_check">
-                            <property name="label" translatable="yes">Inserisci Righe del singolo DDT</property>
+                            <property name="label" translatable="yes">Inserisci dettaglio Righe del singolo DDT</property>
                             <property name="visible">True</property>
-                            <property name="sensitive">False</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">False</property>
                             <property name="use_action_appearance">False</property>

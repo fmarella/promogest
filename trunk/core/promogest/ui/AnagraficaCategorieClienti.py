@@ -21,10 +21,7 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 from AnagraficaSemplice import Anagrafica, AnagraficaDetail, AnagraficaFilter
-
-from promogest import Environment
 from promogest.dao.CategoriaCliente import CategoriaCliente
-
 from utils import *
 from utilsCombobox import *
 

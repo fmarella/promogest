@@ -375,10 +375,11 @@ class TestataDocumento(Dao):
         self._totaleImpostaScontata = totaleImpostaScontata
         self._castellettoIva = []
         for k in castellettoIva.keys():
-            if k !=0:
-                dictCastellettoIva = castellettoIva[k]
-                dictCastellettoIva['aliquota'] = k
-                self._castellettoIva.append(dictCastellettoIva)
+            #print "KAPPPAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", k
+            #if k !=0:
+            dictCastellettoIva = castellettoIva[k]
+            dictCastellettoIva['aliquota'] = k
+            self._castellettoIva.append(dictCastellettoIva)
         return None
 
     totali = property(_getTotaliDocumento, )

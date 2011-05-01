@@ -170,19 +170,18 @@ class FatturazioneDifferita(GladeWidget):
                                             dao_da_fatturare.inizio_trasporto)
                         if self.note_check.get_active() and dao_da_fatturare.note_pie_pagina != "":
                             riga_riferimento = riga_riferimento+ "\n"+ dao_da_fatturare.note_pie_pagina
+                        if self.no_row_check.get_active():
+                            daoRiga = RigaDocumento()
+                            daoRiga.descrizione = riga_riferimento
+                            daoRiga.quantita = 0.0
+                            daoRiga.valore_unitario_lordo = 0.0
+                            daoRiga.percentuale_iva = 0.0
+                            daoRiga.moltiplicatore = 0.0
+                            daoRiga.valore_unitario_netto = 0.0
+                            daoRiga.scontiRigaDocumento = []
+                            righe.append(daoRiga)
 
-                        daoRiga = RigaDocumento()
-    #                    daoRiga.id_testata_documento = newDao.id
-                        daoRiga.descrizione = riga_riferimento
-                        daoRiga.quantita = 0.0
-                        daoRiga.valore_unitario_lordo = 0.0
-                        daoRiga.percentuale_iva = 0.0
-                        daoRiga.moltiplicatore = 0.0
-                        daoRiga.valore_unitario_netto = 0.0
-                        daoRiga.scontiRigaDocumento = []
-                        righe.append(daoRiga)
-#                        if self.dettaglio_check.get_active():
-                        if 1==1:
+
                             for r in dao_da_fatturare.righe:
                                 daoRiga = RigaDocumento()
                                 daoRiga.id_articolo = r.id_articolo
@@ -204,6 +203,28 @@ class FatturazioneDifferita(GladeWidget):
                                     daoSconto.tipo_sconto = s.tipo_sconto
                                     sconti.append(daoSconto)
                                 daoRiga.scontiRigaDocumento = sconti
+                                righe.append(daoRiga)
+                        else:
+                            #percentuale_iva = (dao_da_fatturare._totaleScontato - dao_da_fatturare._totaleImponibileScontato) *100 / dao_da_fatturare._totaleScontato
+                            dao_da_fatturare.totali
+                            daoRiga = RigaDocumento()
+                            daoRiga.descrizione = riga_riferimento
+                            daoRiga.quantita = 0
+                            daoRiga.valore_unitario_lordo = 0
+                            daoRiga.percentuale_iva = 0
+                            daoRiga.moltiplicatore = 0
+                            daoRiga.valore_unitario_netto = 0
+                            daoRiga.scontiRigaDocumento = []
+                            righe.append(daoRiga)
+                            for t in dao_da_fatturare._castellettoIva:
+                                daoRiga = RigaDocumento()
+                                daoRiga.descrizione = ".       Articoli con aliquota IVA: "+str(mN(t["percentuale"],1))+"%"
+                                daoRiga.quantita = 1
+                                daoRiga.valore_unitario_lordo = t["totale"]
+                                daoRiga.percentuale_iva = t["percentuale"]
+                                daoRiga.moltiplicatore = 0
+                                daoRiga.valore_unitario_netto = t["imponibile"]
+                                daoRiga.scontiRigaDocumento = []
                                 righe.append(daoRiga)
                         ddt_id.append(dao_da_fatturare.id)
                 if righe:

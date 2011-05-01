@@ -1,31 +1,29 @@
 # -*- coding: utf-8 -*-
 
-# Promogest
-#
-# Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
-# Author: Andrea Argiolas <andrea@promotux.it>
-# Author: Francesco "M3nt0r3" Meloni  <francesco@promotux.it>
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010, 2011 by Promotux
+#                        di Francesco Meloni snc - http://www.promotux.it/
+
+#    Author: Francesco Meloni  <francesco@promotux.it>
+#    This file is part of Promogest.
+
+#    Promogest is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 2 of the License, or
+#    (at your option) any later version.
+
+#    Promogest is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+
+#    You should have received a copy of the GNU General Public License
+#    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
+
 
 import gtk
 from AnagraficaSemplice import Anagrafica, AnagraficaDetail, AnagraficaFilter
-from promogest import Environment
 from promogest.dao.Pagamento import Pagamento
-
-from utils import prepareFilterString, fenceDialog, obligatoryField
+from utils import prepareFilterString, obligatoryField
 
 
 class AnagraficaPagamenti(Anagrafica):
@@ -52,11 +50,13 @@ class AnagraficaPagamenti(Anagrafica):
         column.connect("clicked", self._changeOrderBy, (None, 'denominazione'))
         column.set_resizable(True)
         column.set_expand(True)
+
         treeview.append_column(column)
 
         self.lsmodel = gtk.ListStore(str)
         self.lsmodel.append(["cassa"])
         self.lsmodel.append(["banca"])
+
         cellcombo1= gtk.CellRendererCombo()
         cellcombo1.set_property("editable", True)
         cellcombo1.set_property("visible", True)
@@ -65,11 +65,13 @@ class AnagraficaPagamenti(Anagrafica):
         cellcombo1.set_property("has-entry", False)
         cellcombo1.set_property("model", self.lsmodel)
         cellcombo1.connect('edited', self.on_column_listinoRiga_edited, treeview, True)
+
         column = gtk.TreeViewColumn('tipo', cellcombo1, text=2)
         column.set_clickable(True)
         column.set_resizable(True)
         column.set_expand(False)
         column.set_min_width(60)
+
         treeview.append_column(column)
 
         treeview.set_search_column(1)
