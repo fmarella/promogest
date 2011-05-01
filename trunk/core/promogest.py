@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding=utf-8 -*-
 # -*- coding: utf-8 -*-
 
 #    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux
@@ -21,7 +22,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-
+# coding=utf-8
 import os
 import sys
 

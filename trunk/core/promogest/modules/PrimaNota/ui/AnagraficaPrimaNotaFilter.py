@@ -19,7 +19,6 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-import gtk
 from decimal import *
 from promogest.ui.AnagraficaComplessaFilter import AnagraficaFilter
 from promogest.modules.PrimaNota.dao.TestataPrimaNota import TestataPrimaNota
