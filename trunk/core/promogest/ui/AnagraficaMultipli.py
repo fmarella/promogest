@@ -1,41 +1,33 @@
 # -*- coding: utf-8 -*-
 
-# Promogest
-#
-# Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
-# Author: Andrea Argiolas <andrea@promotux.it>
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-#!/usr/local/bin/python
-# coding: UTF-8
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux
+#                        di Francesco Meloni snc - http://www.promotux.it/
 
-import gtk
-import gobject
+#    Author: Francesco Meloni  <francesco@promotux.it>
+#    Author: Andrea Argiolas   <andrea@promotux.it>
+#    This file is part of Promogest.
 
-from AnagraficaComplessa import Anagrafica
+#    Promogest is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 2 of the License, or
+#    (at your option) any later version.
+
+#    Promogest is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+
+#    You should have received a copy of the GNU General Public License
+#    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
+
+from promogest.ui.AnagraficaComplessa import Anagrafica
 from promogest.ui.AnagraficaComplessaEdit import AnagraficaEdit
 from promogest.ui.AnagraficaComplessaReport import AnagraficaReport
 from promogest.ui.AnagraficaComplessaHtml import AnagraficaHtml
 from promogest.ui.AnagraficaComplessaFilter import AnagraficaFilter
 
 from promogest import Environment
-from promogest.dao.Dao import Dao
-import promogest.dao.Multiplo
 from promogest.dao.Multiplo import Multiplo
-import promogest.dao.Articolo
-from promogest.dao.Articolo import Articolo
 
 from utils import *
 from utilsCombobox import fillComboboxUnitaBase, findIdFromCombobox
@@ -66,10 +58,7 @@ class AnagraficaMultipli(Anagrafica):
         dao = self.filter.getSelectedDao()
         if self._idArticolo is not None and dao.id_unita_base is not None:
             msg = "Il multiplo e' generico !!"
-            dialog = gtk.MessageDialog(self.getTopLevel(), gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                       gtk.MESSAGE_INFO, gtk.BUTTONS_OK, msg)
-            response = dialog.run()
-            dialog.destroy()
+            messageInfo(msg=msg)
             return
 
         Anagrafica.on_record_edit_activate(self, widget, path, column)
@@ -86,64 +75,15 @@ class AnagraficaMultipliFilter(AnagraficaFilter):
                                   gladeFile='_anagrafica_multipli_elements.glade')
         self._widgetFirstFocus = self.denominazione_filter_entry
 
-
     def draw(self):
-        # Colonne della Treeview per il filtro
-        treeview = self._anagrafica.anagrafica_filter_treeview
-        renderer = gtk.CellRendererText()
+        self._treeViewModel = self.filter_listore
+        self.clear()
 
-        column = gtk.TreeViewColumn('Descrizione', renderer, text=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, (None,'denominazione'))
-        column.set_resizable(True)
-        column.set_expand(True)
-        column.set_min_width(200)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Descrizione breve', renderer, text=2)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.connect('clicked', self._changeOrderBy, (None, 'denominazione_breve'))
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(100)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Moltiplicatore', renderer, text=3)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.connect('clicked', self._changeOrderBy, (None, 'moltiplicatore'))
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(100)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Unita'' base', renderer, text=4)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.connect('clicked', self._changeOrderBy, (None, 'id_unita_base'))
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(100)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Articolo Associato', renderer, text=5)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.connect('clicked', self._changeOrderBy, (None, 'id_articolo'))
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(100)
-        treeview.append_column(column)
-
-        treeview.set_search_column(1)
-
-        self._treeViewModel = gtk.ListStore(object, str, str, str, str, str)
-        self._anagrafica.anagrafica_filter_treeview.set_model(self._treeViewModel)
-
-        self.refresh()
-
+    def _reOrderBy(self, column):
+        if column.get_name() == "descrizione_column":
+            return self._changeOrderBy(column,(None,Multiplo.denominazione))
+        if column.get_name() == "descrizione_breve_column":
+            return self._changeOrderBy(column,(None,Multiplo.denominazione_breve))
 
     def clear(self):
         # Annullamento filtro
