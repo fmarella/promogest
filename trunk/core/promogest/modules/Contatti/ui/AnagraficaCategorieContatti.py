@@ -20,7 +20,6 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-import gtk
 from promogest.ui.AnagraficaSemplice import Anagrafica, AnagraficaDetail, AnagraficaFilter
 from promogest.modules.Contatti.dao.CategoriaContatto import CategoriaContatto
 from promogest.ui.utils import *
@@ -36,26 +35,11 @@ class AnagraficaCategorieContatti(Anagrafica):
                             AnagraficaCategorieContattiDetail(self))
 
     def draw(self):
-        # Colonne della Treeview per il filtro/modifica
-        treeview = self.anagrafica_treeview
-
-        renderer = gtk.CellRendererText()
-        renderer.set_property('editable', False)
-        renderer.connect('edited', self.on_column_edited, treeview, False)
-        renderer.set_data('column', 0)
-        column = gtk.TreeViewColumn('Descrizione', renderer, text=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, (None,'denominazione'))
-        column.set_resizable(True)
-        column.set_expand(True)
-        treeview.append_column(column)
-
-        treeview.set_search_column(1)
-
-        self._treeViewModel = gtk.ListStore(object, str)
-        treeview.set_model(self._treeViewModel)
-
+        """ Facoltativo ma suggerito per indicare la lunghezza
+        massima della cella di testo
+        """
+        self.filter.descrizione_column.get_cells()[0].set_data('max_length', 200)
+        self._treeViewModel = self.filter.filter_listore
         self.refresh()
 
     def refresh(self):
@@ -94,6 +78,9 @@ class AnagraficaCategorieContattiFilter(AnagraficaFilter):
                                    module=True)
         self._widgetFirstFocus = self.denominazione_filter_entry
 
+    def _reOrderBy(self, column):
+        if column.get_name() == "descrizione_column":
+            return self._anagrafica._changeOrderBy(column,(None,CategoriaContatto.denominazione))
 
     def clear(self):
         # Annullamento filtro

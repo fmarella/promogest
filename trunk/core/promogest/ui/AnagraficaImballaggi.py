@@ -20,14 +20,9 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-import gtk
-import gobject
-
 from AnagraficaSemplice import Anagrafica, AnagraficaDetail, AnagraficaFilter
-
 from promogest import Environment
 from promogest.dao.Imballaggio import Imballaggio
-
 from utils import *
 
 
@@ -40,31 +35,13 @@ class AnagraficaImballaggi(Anagrafica):
                             AnagraficaImballaggiFilter(self),
                             AnagraficaImballaggiDetail(self))
 
-
     def draw(self):
-        """ Colonne della Treeview per il filtro"""
-        treeview = self.anagrafica_treeview
-
-        renderer = gtk.CellRendererText()
-        renderer.set_property('editable', False)
-        renderer.connect('edited', self.on_column_edited, treeview, False)
-        renderer.set_data('column', 0)
-        renderer.set_data('max_length', 200)
-        column = gtk.TreeViewColumn('Denominazione', renderer, text=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, (None,'denominazione'))
-        column.set_resizable(True)
-        column.set_expand(True)
-        treeview.append_column(column)
-
-        treeview.set_search_column(1)
-
-        self._treeViewModel = gtk.ListStore(gobject.TYPE_PYOBJECT, str)
-        treeview.set_model(self._treeViewModel)
-
+        """ Facoltativo ma suggerito per indicare la lunghezza
+        massima della cella di testo
+        """
+        self.filter.descrizione_column.get_cells()[0].set_data('max_length', 200)
+        self._treeViewModel = self.filter.filter_listore
         self.refresh()
-
 
     def refresh(self):
         # Aggiornamento TreeView
@@ -92,7 +69,6 @@ class AnagraficaImballaggi(Anagrafica):
                                         (i.denominazione or '')))
 
 
-
 class AnagraficaImballaggiFilter(AnagraficaFilter):
     """ Filtro per la ricerca nell'anagrafica degli imballaggi """
 
@@ -103,6 +79,9 @@ class AnagraficaImballaggiFilter(AnagraficaFilter):
                                   gladeFile='_anagrafica_imballaggi_elements.glade')
         self._widgetFirstFocus = self.denominazione_filter_entry
 
+    def _reOrderBy(self, column):
+        if column.get_name() == "descrizione_column":
+            return self._anagrafica._changeOrderBy(column,(None,Imballaggio.denominazione))
 
     def clear(self):
         # Annullamento filtro
@@ -111,14 +90,12 @@ class AnagraficaImballaggiFilter(AnagraficaFilter):
         self._anagrafica.refresh()
 
 
-
 class AnagraficaImballaggiDetail(AnagraficaDetail):
     """ Dettaglio dell'anagrafica degli imballaggi """
 
     def __init__(self, anagrafica):
         AnagraficaDetail.__init__(self,
                                   anagrafica, gladeFile='_anagrafica_imballaggi_elements.glade')
-
 
     def setDao(self, dao):
         if dao is None:
@@ -135,14 +112,12 @@ class AnagraficaImballaggiDetail(AnagraficaDetail):
         #self.dao = self.imb.record
         self._refresh()
 
-
     def _refresh(self):
         sel = self._anagrafica.anagrafica_treeview.get_selection()
         (model, iterator) = sel.get_selected()
         if iterator and self.dao:
             model.set_value(iterator, 0, self.dao)
             model.set_value(iterator, 1, self.dao.denominazione)
-
 
     def saveDao(self):
         sel = self._anagrafica.anagrafica_treeview.get_selection()
@@ -152,7 +127,6 @@ class AnagraficaImballaggiDetail(AnagraficaDetail):
             obligatoryField(self._anagrafica.getTopLevel(), self._anagrafica.anagrafica_treeview)
         self.dao.denominazione = denominazione
         self.dao.persist()
-
 
     def deleteDao(self):
         self.dao.delete()
