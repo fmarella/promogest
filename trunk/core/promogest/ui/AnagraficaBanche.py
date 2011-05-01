@@ -20,8 +20,6 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-import gtk
-
 from AnagraficaSemplice import Anagrafica, AnagraficaDetail, AnagraficaFilter
 from promogest import Environment
 from promogest.dao.Banca import Banca
@@ -41,53 +39,10 @@ class AnagraficaBanche(Anagrafica):
 
 
     def draw(self):
-        # Colonne della Treeview per il filtro
-        treeview = self.anagrafica_treeview
-
-        renderer = gtk.CellRendererText()
-        renderer.set_property('editable', False)
-        renderer.connect('edited', self.on_column_edited, treeview, True)
-        renderer.set_data('column', 0)
-        renderer.set_data('max_length', 200)
-        column = gtk.TreeViewColumn('Denominazione', renderer, text=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, (None,'denominazione'))
-        column.set_resizable(True)
-        column.set_expand(True)
-        treeview.append_column(column)
-
-        renderer = gtk.CellRendererText()
-        renderer.set_property('editable', False)
-        renderer.connect('edited', self.on_column_edited, treeview, True)
-        renderer.set_data('column', 1)
-        renderer.set_data('max_length', 200)
-        column = gtk.TreeViewColumn('Agenzia', renderer, text=2)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, (None,'agenzia'))
-        column.set_resizable(True)
-        column.set_expand(True)
-        treeview.append_column(column)
-
-        renderer = gtk.CellRendererText()
-        renderer.set_property('editable', False)
-        renderer.connect('edited', self.on_column_edited, treeview, True)
-        renderer.set_data('column', 2)
-        renderer.set_data('max_length', 30)
-        column = gtk.TreeViewColumn('IBAN', renderer, text=3)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, (None,'iban'))
-        column.set_resizable(True)
-        column.set_expand(True)
-        treeview.append_column(column)
-
-        treeview.set_search_column(1)
-
-        self._treeViewModel = gtk.ListStore(object, str, str, str)
-        treeview.set_model(self._treeViewModel)
-
+        self.filter.denominazione_column.get_cells()[0].set_data('max_length', 200)
+        self.filter.agenzia_column.get_cells()[0].set_data('max_length', 200)
+        self.filter.iban_column.get_cells()[0].set_data('max_length', 30)
+        self._treeViewModel = self.filter.filter_listore
         self.refresh()
 
 
@@ -134,6 +89,13 @@ class AnagraficaBancheFilter(AnagraficaFilter):
                                   gladeFile='_anagrafica_banche_elements.glade')
         self._widgetFirstFocus = self.denominazione_filter_entry
 
+    def _reOrderBy(self, column):
+        if column.get_name() == "denominazione_column":
+            return self._anagrafica._changeOrderBy(column,(None,Banca.denominazione))
+        elif column.get_name() == "agenzia_column":
+            return self._anagrafica._changeOrderBy(column,(None,Banca.agenzia))
+        elif column.get_name() == "iban_column":
+            return self._anagrafica._changeOrderBy(column,(None,Banca.iban))
 
     def clear(self):
         # Annullamento filtro
