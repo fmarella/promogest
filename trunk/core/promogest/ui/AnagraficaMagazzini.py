@@ -21,9 +21,6 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 
-import gtk
-import gobject
-
 from AnagraficaComplessa import Anagrafica
 from promogest.ui.AnagraficaComplessaFilter import AnagraficaFilter
 from promogest.ui.AnagraficaComplessaEdit import AnagraficaEdit
@@ -63,29 +60,12 @@ class AnagraficaMagazziniFilter(AnagraficaFilter):
 
 
     def draw(self, cplx=False):
-        # Colonne della Treeview per il filtro
-        treeview = self._anagrafica.anagrafica_filter_treeview
-        renderer = gtk.CellRendererText()
-
-        column = gtk.TreeViewColumn('Descrizione', renderer, text=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, (None, 'denominazione'))
-        column.set_resizable(True)
-        column.set_expand(False)
-        treeview.append_column(column)
-
-        treeview.set_search_column(1)
-
-        self._treeViewModel = gtk.ListStore(gobject.TYPE_PYOBJECT, str)
-        self._anagrafica.anagrafica_filter_treeview.set_model(self._treeViewModel)
-
-        if self._anagrafica._denominazione is not None:
+        ## Colonne della Treeview per il filtro
+        if self._anagrafica._denominazione:
             self.denominazione_filter_entry.set_text(self._anagrafica._denominazione)
-
+        self._treeViewModel = self.filter_listore
         self.refresh()
-
-        if self._anagrafica._denominazione is not None:
+        if self._anagrafica._denominazione:
             self._anagrafica.anagrafica_filter_treeview.grab_focus()
 
     def clear(self):

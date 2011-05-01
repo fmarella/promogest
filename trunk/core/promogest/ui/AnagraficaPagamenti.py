@@ -20,7 +20,7 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 
-import gtk
+
 from AnagraficaSemplice import Anagrafica, AnagraficaDetail, AnagraficaFilter
 from promogest.dao.Pagamento import Pagamento
 from utils import prepareFilterString, obligatoryField
@@ -85,10 +85,6 @@ class AnagraficaPagamentiFilter(AnagraficaFilter):
         model = self.filter_listore
         model[path_string][2] = valore
         #self._anagrafica.anagrafica_treeview_set_edit(False)
-
-    def on_filter_treeview_row_activated(self, treeview, path, iter):
-        print "AAOAOAO"
-        pass
 
     def clear(self):
         # Annullamento filtro
