@@ -490,13 +490,6 @@ class Main(GladeWidget):
         frame = AnagrafichePrincipaliFrame(self.main_window, self.aziendaStr, modules=self.anagrafiche_modules)
         return frame.getTopLevel()
 
-    def create_listini_frame(self):
-        if not hasAction(actionID=9):return
-        if self.currentFrame is not None:
-            self.main_hbox.remove(self.currentFrame)
-        frame = ListiniFrame(self.main_window, self.aziendaStr)
-        return frame.getTopLevel()
-
     def create_registrazioni_frame(self):
         if not hasAction(actionID=2):return
         if self.currentFrame is not None:
@@ -907,9 +900,8 @@ PROCEDERE ALL'INSTALLAZIONE DEL MODULO PROMOWEAR? """
         self.elenco_magazzini_page = ElencoMagazzini(self, self.aziendaStr).draw()
         self.main_notebook.append_page(self.elenco_magazzini_page.elenco_magazzini_frame, self.elenco_magazzini_page.magazzini_label)
 
-        mm = gtk.Label()
-        mm.set_markup("<b>LISTINI</b>")
-        self.main_notebook.append_page(self.create_listini_frame(),mm)
+        self.elenco_listini_page = ElencoListini(self, self.aziendaStr).draw()
+        self.main_notebook.append_page(self.elenco_listini_page.elenco_listini_frame,self.elenco_listini_page.elenco_listini_label)
 
         self.calendar_page = CalendarNotebookPage(self, self.aziendaStr).draw()
         calendar_page_label = gtk.Label()
@@ -961,14 +953,6 @@ class RegistrazioniFrame(GladeWidget):
         anag = AnagraficaDocumenti(aziendaStr=self.aziendaStr)
 
         showAnagrafica(self.mainWindow, anag, toggleButton)
-
-
-class ListiniFrame(ElencoListini):
-    """ Frame per la gestione dei listini
-    """
-    def __init__(self, mainWindow,azs):
-        self.mainWindow = mainWindow
-        ElencoListini.__init__(self, self.mainWindow,azs)
 
 def on_anagrafica_destroyed(anagrafica_window, argList):
     mainWindow = argList[0]
