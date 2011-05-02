@@ -88,7 +88,9 @@
         <property name="title" translatable="yes">Denominazione</property>
         <property name="clickable">True</property>
         <child>
-          <object class="GtkCellRendererText" id="cellrenderertext_200"/>
+          <object class="GtkCellRendererText" id="cellrenderertext_200">
+            <signal name="edited" handler="on_column_edited" swapped="no"/>
+          </object>
           <attributes>
             <attribute name="text">1</attribute>
           </attributes>
