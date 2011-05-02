@@ -1,19 +1,22 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <!-- interface-requires gtk+ 2.6 -->
+  <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy toplevel-contextual -->
   <object class="GtkFrame" id="elenco_magazzini_frame">
     <property name="visible">True</property>
+    <property name="can_focus">False</property>
     <property name="label_xalign">0</property>
     <child>
       <object class="GtkAlignment" id="alignment125">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="left_padding">5</property>
         <property name="right_padding">5</property>
         <child>
           <object class="GtkVBox" id="vbox12">
             <property name="width_request">680</property>
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="spacing">5</property>
             <child>
               <object class="GtkScrolledWindow" id="scrolledwindow14">
@@ -24,14 +27,41 @@
                 <property name="shadow_type">in</property>
                 <child>
                   <object class="GtkTreeView" id="elenco_magazzini_treeview">
-                    <property name="width_request">600</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <signal name="cursor_changed" handler="on_elenco_magazzini_treeview_cursor_changed"/>
+                    <property name="model">elenco_magazzini_listore</property>
+                    <property name="headers_clickable">False</property>
+                    <property name="search_column">1</property>
+                    <signal name="cursor-changed" handler="on_elenco_magazzini_treeview_cursor_changed" swapped="no"/>
+                    <child>
+                      <object class="GtkTreeViewColumn" id="denominazione_column">
+                        <property name="title" translatable="yes">Denominazione</property>
+                        <property name="expand">True</property>
+                        <child>
+                          <object class="GtkCellRendererText" id="cellrenderertext2"/>
+                          <attributes>
+                            <attribute name="text">1</attribute>
+                          </attributes>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkTreeViewColumn" id="localita_column">
+                        <property name="title" translatable="yes">Località</property>
+                        <child>
+                          <object class="GtkCellRendererText" id="cellrenderertext3"/>
+                          <attributes>
+                            <attribute name="text">2</attribute>
+                          </attributes>
+                        </child>
+                      </object>
+                    </child>
                   </object>
                 </child>
               </object>
               <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
                 <property name="padding">5</property>
                 <property name="position">0</property>
               </packing>
@@ -39,6 +69,7 @@
             <child>
               <object class="GtkHBox" id="hbox117">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <property name="spacing">5</property>
                 <child>
                   <object class="GtkToggleButton" id="magazzini_togglebutton">
@@ -47,8 +78,9 @@ Magazzino</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="image">image1</property>
-                    <signal name="clicked" handler="on_magazzini_togglebutton_clicked"/>
+                    <signal name="clicked" handler="on_magazzini_togglebutton_clicked" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -63,8 +95,9 @@ Magazzino</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="image">image2</property>
-                    <signal name="clicked" handler="on_stoccaggi_togglebutton_clicked"/>
+                    <signal name="clicked" handler="on_stoccaggi_togglebutton_clicked" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -79,8 +112,9 @@ Magazzino</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="image">image3</property>
-                    <signal name="clicked" handler="on_movimenti_togglebutton_clicked"/>
+                    <signal name="clicked" handler="on_movimenti_togglebutton_clicked" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -94,8 +128,9 @@ Magazzino</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="image">image4</property>
-                    <signal name="clicked" handler="on_inventario_togglebutton_clicked"/>
+                    <signal name="clicked" handler="on_inventario_togglebutton_clicked" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -109,6 +144,7 @@ Magazzino</property>
               </object>
               <packing>
                 <property name="expand">False</property>
+                <property name="fill">True</property>
                 <property name="padding">5</property>
                 <property name="position">1</property>
               </packing>
@@ -120,26 +156,47 @@ Magazzino</property>
     <child type="label">
       <object class="GtkLabel" id="label245">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xpad">5</property>
         <property name="label" translatable="yes">Elenco magazzini</property>
         <property name="use_markup">True</property>
       </object>
     </child>
   </object>
+  <object class="GtkListStore" id="elenco_magazzini_listore">
+    <columns>
+      <!-- column-name PyObject1 -->
+      <column type="PyObject"/>
+      <!-- column-name gchararray1 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray2 -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
   <object class="GtkImage" id="image1">
     <property name="visible">True</property>
+    <property name="can_focus">False</property>
     <property name="pixbuf">anagrafica_magazzino24x24.png</property>
   </object>
   <object class="GtkImage" id="image2">
     <property name="visible">True</property>
+    <property name="can_focus">False</property>
     <property name="pixbuf">stoccaggio24x24.png</property>
   </object>
   <object class="GtkImage" id="image3">
     <property name="visible">True</property>
+    <property name="can_focus">False</property>
     <property name="pixbuf">movimenti_magazzino24x24.png</property>
   </object>
   <object class="GtkImage" id="image4">
     <property name="visible">True</property>
+    <property name="can_focus">False</property>
     <property name="pixbuf">inventario24x24.png</property>
+  </object>
+  <object class="GtkLabel" id="magazzini_label">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="label" translatable="yes">&lt;b&gt;MAGAZZINI&lt;/b&gt;</property>
+    <property name="use_markup">True</property>
   </object>
 </interface>

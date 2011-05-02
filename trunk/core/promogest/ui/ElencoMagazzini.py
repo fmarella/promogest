@@ -20,56 +20,25 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-import gtk
-import gobject
 from GladeWidget import GladeWidget
-
-from promogest import Environment
 from promogest.dao.Magazzino import Magazzino
-
 from utils import *
-
 
 
 class ElencoMagazzini(GladeWidget):
     """ Elenco magazzini """
 
     def __init__(self, mainWindow,aziendaStr):
+        GladeWidget.__init__(self, 'elenco_magazzini_frame', fileName='_elenco_magazzini_elements.glade')
         self._mainWindow = mainWindow
         self.aziendaStr = aziendaStr
         self._currentDao = None
-        GladeWidget.__init__(self, 'elenco_magazzini_frame', fileName='_elenco_magazzini_elements.glade')
         self.orderBy = 'denominazione'
         self.draw()
 
     def draw(self):
-        # Colonne della Treeview dell' elenco
-        treeview = self.elenco_magazzini_treeview
-        renderer = gtk.CellRendererText()
-
-        column = gtk.TreeViewColumn('Denominazione', renderer, text=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, 'denominazione')
-        column.set_resizable(True)
-        column.set_expand(True)
-        column.set_min_width(250)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Localita', renderer, text=2)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, 'localita')
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(150)
-        treeview.append_column(column)
-
-        treeview.set_search_column(1)
-
-        model = gtk.ListStore(gobject.TYPE_PYOBJECT, str, str)
-        treeview.set_model(model)
         self.refresh()
+        return self
 
     def show_all(self):
         """ Visualizza/aggiorna tutta la struttura dell'elenco """
@@ -77,18 +46,14 @@ class ElencoMagazzini(GladeWidget):
 
     def refresh(self):
         # Aggiornamento Treeview
-        model = self.elenco_magazzini_treeview.get_model()
-        model.clear()
+        self.elenco_magazzini_listore.clear()
 
         mags = Magazzino().select(offset=None, batchSize=None)
         for m in mags:
-            model.append((m,
+            self.elenco_magazzini_listore.append((m,
                           (m.denominazione or ''),
                           (m.localita or '')))
 
-    def _changeOrderBy(self, widget, campi):
-        self.orderBy = campi
-        self.refresh()
 
     def on_elenco_magazzini_treeview_cursor_changed(self, treeview):
         sel = treeview.get_selection()
@@ -107,8 +72,13 @@ class ElencoMagazzini(GladeWidget):
         from AnagraficaMagazzini import AnagraficaMagazzini
         anag = AnagraficaMagazzini(denominazione, self.aziendaStr)
         anagWindow = anag.getTopLevel()
+        returnWindow = self.getTopLevel().get_toplevel()
+        anagWindow.set_transient_for(returnWindow)
+        anagWindow.show_all()
+        if toggleButton.get_active():
+            toggleButton.set_active(False)
 
-        showAnagraficaRichiamata(self._mainWindow, anagWindow, toggleButton, self.refresh)
+        #showAnagraficaRichiamata(self._mainWindow, anagWindow, toggleButton, self.refresh)
 
 
     def on_stoccaggi_togglebutton_clicked(self, toggleButton):
@@ -122,8 +92,12 @@ class ElencoMagazzini(GladeWidget):
         from AnagraficaStoccaggi import AnagraficaStoccaggi
         anag = AnagraficaStoccaggi(None, idMagazzino, self.aziendaStr)
         anagWindow = anag.getTopLevel()
-
-        showAnagraficaRichiamata(self._mainWindow, anagWindow, toggleButton, self.refresh)
+        returnWindow = self.getTopLevel().get_toplevel()
+        anagWindow.set_transient_for(returnWindow)
+        anagWindow.show_all()
+        #showAnagraficaRichiamata(self._mainWindow, anagWindow, toggleButton, self.refresh)
+        if toggleButton.get_active():
+            toggleButton.set_active(False)
 
 
     def on_movimenti_togglebutton_clicked(self, toggleButton):
@@ -137,8 +111,12 @@ class ElencoMagazzini(GladeWidget):
         from AnagraficaMovimenti import AnagraficaMovimenti
         anag = AnagraficaMovimenti(idMagazzino, self.aziendaStr)
         anagWindow = anag.getTopLevel()
-
-        showAnagraficaRichiamata(self._mainWindow, anagWindow, toggleButton, self.refresh)
+        returnWindow = self.getTopLevel().get_toplevel()
+        anagWindow.set_transient_for(returnWindow)
+        anagWindow.show_all()
+        #showAnagraficaRichiamata(self._mainWindow, anagWindow, toggleButton, self.refresh)
+        if toggleButton.get_active():
+            toggleButton.set_active(False)
 
 
     def on_inventario_togglebutton_clicked(self, toggleButton):
@@ -153,8 +131,13 @@ class ElencoMagazzini(GladeWidget):
                 from promogest.modules.Inventario.ui.GestioneInventario import GestioneInventario
                 anag = GestioneInventario(idMagazzino)
                 anagWindow = anag.getTopLevel()
+                returnWindow = self.getTopLevel().get_toplevel()
+                anagWindow.set_transient_for(returnWindow)
+                anagWindow.show_all()
+                #showAnagraficaRichiamata(self._mainWindow, anagWindow, toggleButton, self.refresh)
+                if toggleButton.get_active():
+                    toggleButton.set_active(False)
 
-                showAnagraficaRichiamata(self._mainWindow, anagWindow, toggleButton, self.refresh)
             else:
                 toggleButton.set_active(False)
                 obligatoryField(self._mainWindow,

@@ -201,7 +201,6 @@ class Main(GladeWidget):
         self._refresh()
 
     def on_main_iconview_select(self, icon_view, model=None):
-        ll = gtk.Label()
 
         selected = icon_view.get_selected_items()
         if len(selected) == 0:
@@ -489,13 +488,6 @@ class Main(GladeWidget):
 #        if self.currentFrame is not None:
 #            self.main_hbox.remove(self.currentFrame)
         frame = AnagrafichePrincipaliFrame(self.main_window, self.aziendaStr, modules=self.anagrafiche_modules)
-        return frame.getTopLevel()
-
-    def create_magazzini_frame(self):
-        if not hasAction(actionID=12):return
-        if self.currentFrame is not None:
-            self.main_hbox.remove(self.currentFrame)
-        frame = MagazziniFrame(self.main_window, self.aziendaStr)
         return frame.getTopLevel()
 
     def create_listini_frame(self):
@@ -912,9 +904,8 @@ PROCEDERE ALL'INSTALLAZIONE DEL MODULO PROMOWEAR? """
 
         self.pp = checkPan(self)
 
-        ll = gtk.Label()
-        ll.set_markup("<b>MAGAZZINI</b>")
-        self.main_notebook.append_page(self.create_magazzini_frame(),ll)
+        self.elenco_magazzini_page = ElencoMagazzini(self, self.aziendaStr).draw()
+        self.main_notebook.append_page(self.elenco_magazzini_page.elenco_magazzini_frame, self.elenco_magazzini_page.magazzini_label)
 
         mm = gtk.Label()
         mm.set_markup("<b>LISTINI</b>")
@@ -952,14 +943,6 @@ PROCEDERE ALL'INSTALLAZIONE DEL MODULO PROMOWEAR? """
 class MainWindowFrame(VistaPrincipale):
     def __init__(self, mainWindow, azs):
         VistaPrincipale.__init__(self, self.mainWindow, azs)
-
-
-class MagazziniFrame(ElencoMagazzini):
-    """ Frame per la gestione dei magazzini
-    """
-    def __init__(self, mainWindow, azs):
-        self.mainWindow = mainWindow
-        ElencoMagazzini.__init__(self, self.mainWindow, azs)
 
 
 class RegistrazioniFrame(GladeWidget):
