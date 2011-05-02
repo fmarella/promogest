@@ -75,8 +75,9 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         textStatusBar = "     PromoGest2 - Vendita Dettaglio - by PromoTUX Informatica - 800034561 - www.promogest.me - info@PromoTUX.it      "
         context_id = self.vendita_dettaglio_statusbar.get_context_id("vendita_dettaglio_window")
         self.vendita_dettaglio_statusbar.push(context_id, textStatusBar)
-        azienda = Azienda().getRecord(id=Environment.params["schema"])
-        self.logo_articolo.set_from_file(azienda.percorso_immagine)
+        azienda = Azienda().getRecord(id=Environment.azienda)
+        if azienda:
+            self.logo_articolo.set_from_file(azienda.percorso_immagine)
         self.createPopupMenu()
         #nascondo i dati riga e le info aggiuntive
         self.dati_riga_frame.destroy()
