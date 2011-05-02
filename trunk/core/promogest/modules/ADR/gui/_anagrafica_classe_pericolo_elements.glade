@@ -26,6 +26,10 @@
         <property name="visible">True</property>
         <property name="can_focus">True</property>
         <property name="invisible_char">●</property>
+        <property name="primary_icon_activatable">False</property>
+        <property name="secondary_icon_activatable">False</property>
+        <property name="primary_icon_sensitive">True</property>
+        <property name="secondary_icon_sensitive">True</property>
       </object>
       <packing>
         <property name="left_attach">1</property>
@@ -57,6 +61,10 @@
         <property name="visible">True</property>
         <property name="can_focus">True</property>
         <property name="invisible_char">●</property>
+        <property name="primary_icon_activatable">False</property>
+        <property name="secondary_icon_activatable">False</property>
+        <property name="primary_icon_sensitive">True</property>
+        <property name="secondary_icon_sensitive">True</property>
         <signal name="key-press-event" handler="on_campo_filter_entry_key_press_event" swapped="no"/>
       </object>
       <packing>
@@ -66,5 +74,36 @@
         <property name="y_options"></property>
       </packing>
     </child>
+  </object>
+  <object class="GtkTreeView" id="anagrafica_semplice_treeview">
+    <property name="visible">True</property>
+    <property name="can_focus">True</property>
+    <property name="border_width">1</property>
+    <property name="model">filter_listore</property>
+    <property name="search_column">1</property>
+    <property name="enable_grid_lines">both</property>
+    <child>
+      <object class="GtkTreeViewColumn" id="denominazione_column">
+        <property name="resizable">True</property>
+        <property name="title" translatable="yes">Denominazione</property>
+        <property name="clickable">True</property>
+        <child>
+          <object class="GtkCellRendererText" id="cellrenderertext_200">
+            <signal name="edited" handler="on_column_edited" swapped="no"/>
+          </object>
+          <attributes>
+            <attribute name="text">1</attribute>
+          </attributes>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkListStore" id="filter_listore">
+    <columns>
+      <!-- column-name PyObject1 -->
+      <column type="PyObject"/>
+      <!-- column-name gchararray1 -->
+      <column type="gchararray"/>
+    </columns>
   </object>
 </interface>
