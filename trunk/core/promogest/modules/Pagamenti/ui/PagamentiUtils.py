@@ -306,7 +306,7 @@ un importo in sospeso. Il documento, per poter essere collegato, deve essere com
             msg = """Attenzione! L'importo in sospeso è pari a 0 e
 l'importo pagato è uguale al totale documento.
 Procedere con la "chiusura" del Pagamento?"""
-            procedi = YesNoDialog(msg=msg, transient=self.getTopLevel())
+            procedi = YesNoDialog(msg=msg, transient=None)
             if procedi:
                 self.anagrafica.stato_label.set_markup('<b><span foreground="#338000" size="24000">PAGATO</span></b>')
 
