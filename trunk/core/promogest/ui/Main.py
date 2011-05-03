@@ -118,22 +118,20 @@ class Main(GladeWidget):
         self.updates()
 
     def show(self):
-        """ Visualizza la finestra """
+        """ Visualizza la finestra
+        """
+        #documenti_image = self.documenti_image.get_image()
         self.anno_lavoro_label.set_markup('<b>Anno di lavoro:   ' + \
                                         Environment.workingYear + '</b>')
-        model = gtk.ListStore(int, str, gtk.gdk.Pixbuf, object)
-
-        pbuf = gtk.gdk.pixbuf_new_from_file(Environment.conf.guiDir + 'documento48x48.png')
-        model.append([3, "Documenti\n(Fatture,DDT\nPreventivi)", pbuf, None])
-
-        pbuf = gtk.gdk.pixbuf_new_from_file(Environment.conf.guiDir + 'primanota_48X48.png')
-        model.append([4, "Prima Nota", pbuf, None])
-
-        pbuf = gtk.gdk.pixbuf_new_from_file(Environment.conf.guiDir + 'promemoria48x48.png')
-        model.append([5, "Promemoria", pbuf, None])
-
-        pbuf = gtk.gdk.pixbuf_new_from_file(Environment.conf.guiDir + 'gest_commessa48X48.png')
-        model.append([10, "Gestione\nCommesse", pbuf, None])
+        model = self.iconview_listore
+        model.append([3, "Documenti\n(Fatture,DDT\nPreventivi)",
+                        self.documenti_image.get_pixbuf(), None])
+        model.append([4, "Prima Nota",
+                        self.primanota_image.get_pixbuf(), None])
+        model.append([5, "Promemoria",
+                        self.promemoria_image.get_pixbuf(), None])
+        model.append([10, "Gestione\nCommesse",
+                        self.gest_commesse_image.get_pixbuf(), None])
 
         # right vertical icon list  adding modules
 #        model_right = gtk.ListStore(int, str, gtk.gdk.Pixbuf, object)
@@ -159,8 +157,8 @@ class Main(GladeWidget):
         self.main_iconview.set_model(model)
         self.main_iconview.set_text_column(1)
         self.main_iconview.set_pixbuf_column(2)
-        self.main_iconview.connect('selection-changed',
-                                   self.on_main_iconview_select, model)
+        #self.main_iconview.connect('selection-changed',
+                                   #self.on_main_iconview_select, model)
 
         self.main_iconview.set_columns(1)
         self.main_iconview.set_item_width(95)
@@ -206,7 +204,7 @@ class Main(GladeWidget):
         if len(selected) == 0:
             return
         i = selected[0][0]
-        selection = model[i][0]
+        selection = self.iconview_listore[i][0]
 
         if selection == 3:
             #self.currentFrame = self.create_registrazioni_frame()
@@ -247,8 +245,8 @@ class Main(GladeWidget):
             return
         else:
             i = selected[0][0]
-            selection = model[i][0]
-            module = model[i][3]
+            selection = self.iconview_listore[i][0]
+            module = self.iconview_listore[i][3]
 
             if self.currentFrame is not None:
                 self.main_hbox.remove(self.currentFrame)

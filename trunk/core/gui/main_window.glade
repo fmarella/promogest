@@ -32,6 +32,11 @@
     <property name="can_focus">False</property>
     <property name="pixbuf">duplica24x24.png</property>
   </object>
+  <object class="GtkImage" id="documenti_image">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">documento48x48.png</property>
+  </object>
   <object class="GtkImage" id="email_image">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -51,6 +56,23 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="pixbuf">fornitore24x24.png</property>
+  </object>
+  <object class="GtkImage" id="gest_commesse_image">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">gest_commessa48X48.png</property>
+  </object>
+  <object class="GtkListStore" id="iconview_listore">
+    <columns>
+      <!-- column-name gint1 -->
+      <column type="gint"/>
+      <!-- column-name gchararray1 -->
+      <column type="gchararray"/>
+      <!-- column-name GdkPixbuf1 -->
+      <column type="GdkPixbuf"/>
+      <!-- column-name PyObject1 -->
+      <column type="PyObject"/>
+    </columns>
   </object>
   <object class="GtkImage" id="image1">
     <property name="visible">True</property>
@@ -377,10 +399,12 @@ articoli per un certo </property>
                   <object class="GtkIconView" id="main_iconview">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
+                    <property name="model">iconview_listore</property>
                     <property name="row_spacing">2</property>
                     <property name="column_spacing">2</property>
                     <property name="margin">2</property>
                     <property name="item_padding">0</property>
+                    <signal name="selection-changed" handler="on_main_iconview_select" swapped="no"/>
                   </object>
                 </child>
               </object>
@@ -1671,6 +1695,16 @@ Rosso: PromoGest2 Da Aggiornare</property>
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="pixbuf">duplica24x24.png</property>
+  </object>
+  <object class="GtkImage" id="primanota_image">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">primanota_48X48.png</property>
+  </object>
+  <object class="GtkImage" id="promemoria_image">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">promemoria48x48.png</property>
   </object>
   <object class="GtkImage" id="promemoria_image1">
     <property name="visible">True</property>
