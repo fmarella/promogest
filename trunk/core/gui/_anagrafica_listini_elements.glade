@@ -3,6 +3,11 @@
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-requires pythonplugin 0.0 -->
   <!-- interface-naming-policy toplevel-contextual -->
+  <object class="GtkImage" id="add_image">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-add</property>
+  </object>
   <object class="GtkTable" id="anagrafica_listini_detail_table">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -172,7 +177,30 @@ associati all'inizio</property>
           <object class="GtkTreeView" id="listino_complesso_treeview">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
+            <property name="model">listino_complesso_listore</property>
             <signal name="cursor-changed" handler="on_listino_complesso_treeview_cursor_changed" swapped="no"/>
+            <child>
+              <object class="GtkTreeViewColumn" id="treeviewcolumn4">
+                <property name="title" translatable="yes">Listino Associato</property>
+                <property name="expand">True</property>
+                <child>
+                  <object class="GtkCellRendererPixbuf" id="cellrendererpixbuf4"/>
+                  <attributes>
+                    <attribute name="pixbuf">1</attribute>
+                  </attributes>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkTreeViewColumn" id="treeviewcolumn5">
+                <child>
+                  <object class="GtkCellRendererPixbuf" id="cellrendererpixbuf3"/>
+                  <attributes>
+                    <attribute name="pixbuf">2</attribute>
+                  </attributes>
+                </child>
+              </object>
+            </child>
           </object>
         </child>
       </object>
@@ -222,7 +250,30 @@ associati all'inizio</property>
           <object class="GtkTreeView" id="categorie_treeview">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
+            <property name="model">categorie_listore</property>
             <signal name="cursor-changed" handler="on_categorie_treeview_cursor_changed" swapped="no"/>
+            <child>
+              <object class="GtkTreeViewColumn" id="categoria_column">
+                <property name="title" translatable="yes">Categoria</property>
+                <property name="expand">True</property>
+                <child>
+                  <object class="GtkCellRendererText" id="cellrenderertext1"/>
+                  <attributes>
+                    <attribute name="text">1</attribute>
+                  </attributes>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkTreeViewColumn" id="treeviewcolumn2">
+                <child>
+                  <object class="GtkCellRendererPixbuf" id="cellrendererpixbuf1"/>
+                  <attributes>
+                    <attribute name="pixbuf">2</attribute>
+                  </attributes>
+                </child>
+              </object>
+            </child>
           </object>
         </child>
       </object>
@@ -566,7 +617,30 @@ dettagliata del listino
           <object class="GtkTreeView" id="magazzini_treeview">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
+            <property name="model">magazzino_listore</property>
             <signal name="cursor-changed" handler="on_magazzini_treeview_cursor_changed" swapped="no"/>
+            <child>
+              <object class="GtkTreeViewColumn" id="treeviewcolumn1">
+                <property name="title" translatable="yes">Magazzino</property>
+                <property name="expand">True</property>
+                <child>
+                  <object class="GtkCellRendererText" id="cellrenderertext2"/>
+                  <attributes>
+                    <attribute name="text">1</attribute>
+                  </attributes>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkTreeViewColumn" id="treeviewcolumn3">
+                <child>
+                  <object class="GtkCellRendererPixbuf" id="cellrendererpixbuf2"/>
+                  <attributes>
+                    <attribute name="pixbuf">2</attribute>
+                  </attributes>
+                </child>
+              </object>
+            </child>
           </object>
         </child>
       </object>
@@ -764,5 +838,46 @@ per inserirne uno nuovo
     <child>
       <placeholder/>
     </child>
+  </object>
+  <object class="GtkListStore" id="categorie_listore">
+    <columns>
+      <!-- column-name gint1 -->
+      <column type="gint"/>
+      <!-- column-name gchararray1 -->
+      <column type="gchararray"/>
+      <!-- column-name GdkPixbuf1 -->
+      <column type="GdkPixbuf"/>
+      <!-- column-name gchararray2 -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
+  <object class="GtkListStore" id="listino_complesso_listore">
+    <columns>
+      <!-- column-name gint1 -->
+      <column type="gint"/>
+      <!-- column-name gchararray1 -->
+      <column type="gchararray"/>
+      <!-- column-name GdkPixbuf1 -->
+      <column type="GdkPixbuf"/>
+      <!-- column-name gchararray2 -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
+  <object class="GtkListStore" id="magazzino_listore">
+    <columns>
+      <!-- column-name gint1 -->
+      <column type="gint"/>
+      <!-- column-name gchararray1 -->
+      <column type="gchararray"/>
+      <!-- column-name GdkPixbuf1 -->
+      <column type="GdkPixbuf"/>
+      <!-- column-name gchararray2 -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
+  <object class="GtkImage" id="remove_image">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-remove</property>
   </object>
 </interface>

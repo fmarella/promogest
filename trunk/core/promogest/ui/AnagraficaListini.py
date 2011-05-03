@@ -20,9 +20,6 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-import gtk
-#from sqlalchemy import *
-#from sqlalchemy.orm import *
 from AnagraficaComplessa import Anagrafica
 from promogest.ui.AnagraficaComplessaEdit import AnagraficaEdit
 from promogest.ui.AnagraficaComplessaReport import AnagraficaReport
@@ -85,12 +82,9 @@ class AnagraficaListiniFilter(AnagraficaFilter):
 
     def draw(self, cplx=False):
         # Colonne della Treeview per il filtro
-        self._treeViewModel = self.filter_listore
         if self._anagrafica._denominazione:
             self.denominazione_filter_entry.set_text(self._anagrafica._denominazione)
-
         self.refresh()
-
         if self._anagrafica._denominazione:
             self._anagrafica.anagrafica_filter_treeview.grab_focus()
 
@@ -107,26 +101,19 @@ class AnagraficaListiniFilter(AnagraficaFilter):
             return Listino().count(denominazione=denominazione)
 
         self._filterCountClosure = filterCountClosure
-
         self.numRecords = self.countFilterResults()
-
         self._refreshPageCount()
-
         # Let's save the current search as a closure
         def filterClosure(offset, batchSize):
             return Listino().select(denominazione=denominazione,
                                                 orderBy=self.orderBy,
                                                 offset=offset,
                                                 batchSize=batchSize)
-
         self._filterClosure = filterClosure
-
         liss = self.runFilter()
-
-        self._treeViewModel.clear()
-
+        self.filter_listore.clear()
         for l in liss:
-            self._treeViewModel.append((l,
+            self.filter_listore.append((l,
                                         (l.denominazione or ''),
                                         (l.descrizione or ''),
                                         dateToString(l.data_listino)))
@@ -157,80 +144,22 @@ class AnagraficaListiniEdit(AnagraficaEdit):
                                   'Dati listino',
                                   gladeFile='_anagrafica_listini_elements.glade')
         self._widgetFirstFocus = self.denominazione_entry
+        add_image =self.add_image.get_stock()
+        self.addpix = self.add_image.render_icon(add_image[0],add_image[1], None)
+        remove_image =self.remove_image.get_stock()
+        self.removepix = self.remove_image.render_icon(remove_image[0],remove_image[1], None)
 
     def draw(self, cplx=False):
         #Elenco categorie
-        rendererText = gtk.CellRendererText()
-        column = gtk.TreeViewColumn('Categoria', rendererText, text=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(False)
-        column.set_resizable(True)
-        column.set_expand(True)
-        self.categorie_treeview.append_column(column)
-
-        rendererPixbuf = gtk.CellRendererPixbuf()
-        column = gtk.TreeViewColumn('', rendererPixbuf, pixbuf=2)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(False)
-        column.set_resizable(False)
-        column.set_expand(False)
-        column.set_min_width(20)
-        self.categorie_treeview.append_column(column)
-
-        model = gtk.ListStore(int, str, gtk.gdk.Pixbuf, str)
-        self.categorie_treeview.set_model(model)
-
-        #Elenco magazzini
-        rendererText = gtk.CellRendererText()
-        column = gtk.TreeViewColumn('Magazzino', rendererText, text=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(False)
-        column.set_resizable(True)
-        column.set_expand(True)
-        self.magazzini_treeview.append_column(column)
-
-        rendererPixbuf = gtk.CellRendererPixbuf()
-        column = gtk.TreeViewColumn('', rendererPixbuf, pixbuf=2)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(False)
-        column.set_resizable(False)
-        column.set_expand(False)
-        column.set_min_width(20)
-        self.magazzini_treeview.append_column(column)
-
-        model = gtk.ListStore(int, str, gtk.gdk.Pixbuf, str)
-        self.magazzini_treeview.set_model(model)
-
-        #Elenco listinicomplessi
-        rendererText = gtk.CellRendererText()
-        column = gtk.TreeViewColumn('Listino Associato', rendererText, text=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(False)
-        column.set_resizable(True)
-        column.set_expand(True)
-        self.listino_complesso_treeview.append_column(column)
-
-        rendererPixbuf = gtk.CellRendererPixbuf()
-        column = gtk.TreeViewColumn('', rendererPixbuf, pixbuf=2)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(False)
-        column.set_resizable(False)
-        column.set_expand(False)
-        column.set_min_width(20)
-        self.listino_complesso_treeview.append_column(column)
-
-        model = gtk.ListStore(int, str, gtk.gdk.Pixbuf, str)
-        self.listino_complesso_treeview.set_model(model)
-
         fillComboboxCategorieClienti(self.id_categoria_cliente_customcombobox.combobox)
         self.id_categoria_cliente_customcombobox.connect('clicked',
-                                                         on_id_categoria_cliente_customcombobox_clicked)
+                    on_id_categoria_cliente_customcombobox_clicked)
         fillComboboxMagazzini(self.id_magazzino_customcombobox.combobox)
         self.id_magazzino_customcombobox.connect('clicked',
-                                                 on_id_magazzino_customcombobox_clicked)
+                    on_id_magazzino_customcombobox_clicked)
         fillComboboxListini(self.id_listino_customcombobox.combobox)
         self.id_listino_customcombobox.connect('clicked',
-                                                 on_id_listino_customcombobox_clicked)
+                    on_id_listino_customcombobox_clicked)
 
     def setDao(self, dao):
         if dao is None:
@@ -326,13 +255,12 @@ Verrà aggiornato il precedente.""")
         self.dao.data_listino = stringToDate(self.data_listino_entry.get_text())
 
         self.dao.persist()
-        model = self.categorie_treeview.get_model()
         cleanListinoCategoriaCliente = ListinoCategoriaCliente()\
                                             .select(idListino=self.dao.id,
                                             batchSize=None)
         for lcc in cleanListinoCategoriaCliente:
             lcc.delete()
-        for c in model:
+        for c in self.categorie_listore:
             if c[3] == 'deleted':
                 pass
             else:
@@ -341,13 +269,12 @@ Verrà aggiornato il precedente.""")
                 daoListinoCategoriaCliente.id_categoria_cliente = c[0]
                 daoListinoCategoriaCliente.persist()
 
-        model = self.magazzini_treeview.get_model()
         cleanMagazzini = ListinoMagazzino()\
                                             .select(idListino=self.dao.id,
                                             batchSize=None)
         for mag in cleanMagazzini:
             mag.delete()
-        for m in model:
+        for m in self.magazzino_listore:
             if m[3] == 'deleted':
                 pass
             else:
@@ -356,12 +283,11 @@ Verrà aggiornato il precedente.""")
                 daoListinoMagazzino.id_magazzino = m[0]
                 daoListinoMagazzino.persist()
 
-        model = self.listino_complesso_treeview.get_model()
         cleanListini = ListinoComplessoListino().select(idListinoComplesso=self.dao.id,
                                                         batchSize=None)
         for lis in cleanListini:
             lis.delete()
-        for l in model:
+        for l in self.listino_complesso_listore:
             if l[3] == 'deleted':
                 pass
             else:
@@ -380,97 +306,72 @@ Verrà aggiornato il precedente.""")
         id = findIdFromCombobox(self.id_categoria_cliente_customcombobox.combobox)
         if id is not None:
             categoria = findStrFromCombobox(self.id_categoria_cliente_customcombobox.combobox, 2)
-            model = self.categorie_treeview.get_model()
-            for c in model:
+            for c in self.categorie_listore:
                 if c[0] == id:
                     return
-            image = gtk.Image()
-            anagPixbuf = image.render_icon(gtk.STOCK_ADD,
-                                           gtk.ICON_SIZE_BUTTON)
-            model.append((id, categoria, anagPixbuf, 'added'))
+            self.categorie_listore.append((id, categoria, self.addpix, 'added'))
         self.categorie_treeview.get_selection().unselect_all()
 
     def on_add_row_magazzino_button_clicked(self, widget):
         id = findIdFromCombobox(self.id_magazzino_customcombobox.combobox)
-        if id is not None:
+        if id:
             magazzino = findStrFromCombobox(self.id_magazzino_customcombobox.combobox, 2)
-            model = self.magazzini_treeview.get_model()
-            for m in model:
+            for m in self.magazzino_listore:
                 if m[0] == id:
                     return
-            image = gtk.Image()
-            anagPixbuf = image.render_icon(gtk.STOCK_ADD,
-                                           gtk.ICON_SIZE_BUTTON)
-            model.append((id, magazzino, anagPixbuf, 'added'))
+            self.magazzino_listore.append((id, magazzino, self.addpix, 'added'))
         self.magazzini_treeview.get_selection().unselect_all()
 
     def on_add_row_listino_complesso_button_clicked(self, widget):
         id = findIdFromCombobox(self.id_listino_customcombobox.combobox)
-        if id is not None:
+        if id:
             listino = findStrFromCombobox(self.id_listino_customcombobox.combobox, 2)
-            model = self.listino_complesso_treeview.get_model()
-            for m in model:
+            for m in self.listino_complesso_listore:
                 if m[0] == id:
                     return
-            image = gtk.Image()
-            anagPixbuf = image.render_icon(gtk.STOCK_ADD,
-                                           gtk.ICON_SIZE_BUTTON)
-            model.append((id, listino, anagPixbuf, 'added'))
+            self.listino_complesso_listore.append((id, listino, self.addpix, 'added'))
         self.listino_complesso_treeview.get_selection().unselect_all()
 
     def on_delete_row_categoria_button_clicked(self, widget):
         id = findIdFromCombobox(self.id_categoria_cliente_customcombobox.combobox)
-        if id is not None:
-            image = gtk.Image()
-            anagPixbuf = image.render_icon(gtk.STOCK_REMOVE,
-                                           gtk.ICON_SIZE_BUTTON)
-            model = self.categorie_treeview.get_model()
-            for c in model:
+        if id:
+            for c in self.categorie_listore:
                 if c[0] == id:
                     if c[2] is None:
-                        c[2] = anagPixbuf
+                        c[2] = self.removepix
                         c[3] = 'deleted'
                     else:
-                        model.remove(c.iter)
+                        self.categorie_listore.remove(c.iter)
         self.categorie_treeview.get_selection().unselect_all()
 
     def on_delete_row_magazzino_button_clicked(self, widget):
         id = findIdFromCombobox(self.id_magazzino_customcombobox.combobox)
-        if id is not None:
-            image = gtk.Image()
-            anagPixbuf = image.render_icon(gtk.STOCK_REMOVE,
-                                           gtk.ICON_SIZE_BUTTON)
-            model = self.magazzini_treeview.get_model()
-            for m in model:
+        if id:
+            for m in self.magazzino_listore:
                 if m[0] == id:
                     if m[2] is None:
-                        m[2] = anagPixbuf
+                        m[2] = self.removepix
                         m[3] = 'deleted'
                     else:
-                        model.remove(m.iter)
+                        self.magazzini_listore.remove(m.iter)
         self.magazzini_treeview.get_selection().unselect_all()
 
     def on_delete_row_listino_complesso_button_clicked(self, widget):
         id = findIdFromCombobox(self.id_listino_customcombobox.combobox)
-        if id is not None:
-            image = gtk.Image()
-            anagPixbuf = image.render_icon(gtk.STOCK_REMOVE,
-                                           gtk.ICON_SIZE_BUTTON)
-            model = self.listino_complesso_treeview.get_model()
-            for m in model:
+        if id:
+            for m in self.listino_complesso_listore:
                 if m[0] == id:
                     if m[2] is None:
-                        m[2] = anagPixbuf
+                        m[2] = self.removepix
                         m[3] = 'deleted'
                     else:
-                        model.remove(m.iter)
+                        self.listino_complesso_listore.remove(m.iter)
         self.listino_complesso_treeview.get_selection().unselect_all()
 
     def on_undelete_row_categoria_button_clicked(self, widget):
         id = findIdFromCombobox(self.id_categoria_cliente_customcombobox.combobox)
-        if id is not None:
-            model = self.categorie_treeview.get_model()
-            for c in model:
+        if id:
+            for c in self.categorie_listore:
                 if c[0] == id:
                     if c[3] == 'deleted':
                         c[2] = None
@@ -479,9 +380,8 @@ Verrà aggiornato il precedente.""")
 
     def on_undelete_row_magazzino_button_clicked(self, widget):
         id = findIdFromCombobox(self.id_magazzino_customcombobox.combobox)
-        if id is not None:
-            model = self.magazzini_treeview.get_model()
-            for m in model:
+        if id:
+            for m in self.magazzini_listore:
                 if m[0] == id:
                     if m[3] == 'deleted':
                         m[2] = None
@@ -490,9 +390,8 @@ Verrà aggiornato il precedente.""")
 
     def on_undelete_row_listino_complesso_button_clicked(self, widget):
         id = findIdFromCombobox(self.id_listino_customcombobox.combobox)
-        if id is not None:
-            model = self.listino_complesso_treeview.get_model()
-            for m in model:
+        if id:
+            for m in self.listino_complesso_listore:
                 if m[0] == id:
                     if m[3] == 'deleted':
                         m[2] = None
@@ -547,7 +446,6 @@ Verrà aggiornato il precedente.""")
         from AnagraficaListiniArticoli import AnagraficaListiniArticoli
         anag = AnagraficaListiniArticoli(idListino=self.dao.id)
 #        anagWindow = anag.getTopLevel()
-
 #        showAnagraficaRichiamata(self.dialogTopLevel, anagWindow, toggleButton)
 
 
