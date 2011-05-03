@@ -16,8 +16,8 @@
 <tr><td width="55%">
         <table cellpadding="0" cellspacing="0" border="0">
             <tr>
-		<td colspan="2" class="table-header">Riepilogo</td>
-	    </tr>
+        <td colspan="2" class="table-header">Riepilogo</td>
+        </tr>
             <tr>
                 <td width="130px" class="odd-detail">Descrizione</td>
                 <td class="odd-detail" style="font-size:14pt"><strong>{{dao.denominazione}}</strong></td>
@@ -144,8 +144,8 @@
                 <tr><td colspan="4" class="table-header">PRESENTE NEI LISTINI:</td></tr>
                 {% for li in utils.getListiniArticolo(dao.id) %}
             <tr>
-                <td colspan="4" class="odd-detail"><b>{{utils.leggiListino(li.id_listino, li.id_articolo)["denominazione"]}}:</b>&nbsp;&nbsp;<b>PR. DETTAGLIO: € </b>{{utils.leggiListino(li.id_listino, li.id_articolo)["prezzoDettaglio"]}}&nbsp;
-                <b>PR. INGROSSO: € </b>{{utils.leggiListino(li.id_listino, li.id_articolo)["prezzoIngrosso"]}}&nbsp;</strong>
+                <td colspan="4" class="odd-detail"><b>{{utils.leggiListino(li.id_listino, li.id_articolo)["denominazione"]}}:</b>&nbsp;&nbsp;<b>PR. DETTAGLIO:  </b>{{utils.mNLC(utils.leggiListino(li.id_listino, li.id_articolo)["prezzoDettaglio"],2)}}&nbsp;
+                <b>PR. INGROSSO:  </b>{{utils.mNLC(utils.leggiListino(li.id_listino, li.id_articolo)["prezzoIngrosso"],2)}}&nbsp;</strong>
                 <lr></td>
                 {% endfor %}
             </tr>
