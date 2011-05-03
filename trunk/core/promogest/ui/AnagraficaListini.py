@@ -85,45 +85,13 @@ class AnagraficaListiniFilter(AnagraficaFilter):
 
     def draw(self, cplx=False):
         # Colonne della Treeview per il filtro
-        treeview = self._anagrafica.anagrafica_filter_treeview
-        renderer = gtk.CellRendererText()
-
-        column = gtk.TreeViewColumn('Denominazione', renderer, text=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, (None, 'denominazione'))
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(150)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Descrizione', renderer, text=2)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, (None, 'descrizione'))
-        column.set_resizable(True)
-        column.set_expand(True)
-        column.set_min_width(200)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Data listino', renderer, text=3)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, (None, 'data_listino'))
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(100)
-        treeview.append_column(column)
-
-        self._treeViewModel = gtk.ListStore(object, str, str, str)
-        self._anagrafica.anagrafica_filter_treeview.set_model(self._treeViewModel)
-
-        if self._anagrafica._denominazione is not None:
+        self._treeViewModel = self.filter_listore
+        if self._anagrafica._denominazione:
             self.denominazione_filter_entry.set_text(self._anagrafica._denominazione)
 
         self.refresh()
 
-        if self._anagrafica._denominazione is not None:
+        if self._anagrafica._denominazione:
             self._anagrafica.anagrafica_filter_treeview.grab_focus()
 
     def clear(self):

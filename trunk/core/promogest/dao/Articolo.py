@@ -453,7 +453,7 @@ class Articolo(Dao):
             if self.divisore_noleggio_value_set and self.id:
                 div_nol = ArticoloGestioneNoleggio().getRecord(id=self.id)
                 if div_nol:
-                        div_nol.value = self.divisore_noleggio_value_set
+                        div_nol.divisore_noleggio_value = self.divisore_noleggio_value_set
                         params["session"].add(div_nol)
                 else:
                     div_nol = ArticoloGestioneNoleggio()

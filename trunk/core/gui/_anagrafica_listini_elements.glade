@@ -5,6 +5,7 @@
   <!-- interface-naming-policy toplevel-contextual -->
   <object class="GtkTable" id="anagrafica_listini_detail_table">
     <property name="visible">True</property>
+    <property name="can_focus">False</property>
     <property name="border_width">6</property>
     <property name="n_rows">15</property>
     <property name="n_columns">3</property>
@@ -22,19 +23,23 @@ far prevalere. Utile per esempio quando
 si usa la vendita al dettaglio ed un articoli 
 può essere presente in più listini e si deve decidere
 quale usare per la vendita</property>
-        <signal name="toggled" handler="on_check_pricelist_togglebutton_toggled"/>
+        <property name="use_action_appearance">False</property>
+        <signal name="toggled" handler="on_check_pricelist_togglebutton_toggled" swapped="no"/>
         <child>
           <object class="GtkAlignment" id="alignment4">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="xscale">0</property>
             <property name="yscale">0</property>
             <child>
               <object class="GtkHBox" id="hbox5">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <property name="spacing">2</property>
                 <child>
                   <object class="GtkImage" id="image4">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <property name="pixbuf">articolo24x24.png</property>
                   </object>
                   <packing>
@@ -46,6 +51,7 @@ quale usare per la vendita</property>
                 <child>
                   <object class="GtkLabel" id="label6">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <property name="label" translatable="yes">Controllo art. duplicati</property>
                     <property name="use_underline">True</property>
                   </object>
@@ -71,6 +77,7 @@ quale usare per la vendita</property>
     <child>
       <object class="GtkHBox" id="hbox1____">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="border_width">5</property>
         <property name="homogeneous">True</property>
         <child>
@@ -82,8 +89,9 @@ quale usare per la vendita</property>
             <property name="tooltip_text" translatable="yes">Aggiunge un listino alla composizione 
 del listino complesso: ES: il listino vendita dettaglio 
 può essere composto da cinque o sei listini distinti</property>
+            <property name="use_action_appearance">False</property>
             <property name="use_stock">True</property>
-            <signal name="clicked" handler="on_add_row_listino_complesso_button_clicked"/>
+            <signal name="clicked" handler="on_add_row_listino_complesso_button_clicked" swapped="no"/>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -99,8 +107,9 @@ può essere composto da cinque o sei listini distinti</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="tooltip_text" translatable="yes">Rimuove un listino associato</property>
+            <property name="use_action_appearance">False</property>
             <property name="use_stock">True</property>
-            <signal name="clicked" handler="on_delete_row_listino_complesso_button_clicked"/>
+            <signal name="clicked" handler="on_delete_row_listino_complesso_button_clicked" swapped="no"/>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -117,8 +126,9 @@ può essere composto da cinque o sei listini distinti</property>
             <property name="receives_default">True</property>
             <property name="tooltip_text" translatable="yes">Riporta la situazione dei listini 
 associati all'inizio</property>
+            <property name="use_action_appearance">False</property>
             <property name="use_stock">True</property>
-            <signal name="clicked" handler="on_undelete_row_listino_complesso_button_clicked"/>
+            <signal name="clicked" handler="on_undelete_row_listino_complesso_button_clicked" swapped="no"/>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -139,6 +149,7 @@ associati all'inizio</property>
     <child>
       <object class="GtkLabel" id="label2">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="label" translatable="yes">Listino</property>
       </object>
@@ -161,7 +172,7 @@ associati all'inizio</property>
           <object class="GtkTreeView" id="listino_complesso_treeview">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <signal name="cursor_changed" handler="on_listino_complesso_treeview_cursor_changed"/>
+            <signal name="cursor-changed" handler="on_listino_complesso_treeview_cursor_changed" swapped="no"/>
           </object>
         </child>
       </object>
@@ -175,6 +186,7 @@ associati all'inizio</property>
     <child>
       <object class="GtkLabel" id="label1">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="label" translatable="yes">Listino Complesso</property>
       </object>
@@ -189,6 +201,7 @@ associati all'inizio</property>
     <child>
       <object class="GtkHSeparator" id="hseparator2">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
       </object>
       <packing>
         <property name="right_attach">3</property>
@@ -209,7 +222,7 @@ associati all'inizio</property>
           <object class="GtkTreeView" id="categorie_treeview">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <signal name="cursor_changed" handler="on_categorie_treeview_cursor_changed"/>
+            <signal name="cursor-changed" handler="on_categorie_treeview_cursor_changed" swapped="no"/>
           </object>
         </child>
       </object>
@@ -227,6 +240,10 @@ associati all'inizio</property>
         <property name="tooltip_text" translatable="yes">Inserire la denominazione 
 del listino</property>
         <property name="invisible_char">●</property>
+        <property name="primary_icon_activatable">False</property>
+        <property name="secondary_icon_activatable">False</property>
+        <property name="primary_icon_sensitive">True</property>
+        <property name="secondary_icon_sensitive">True</property>
       </object>
       <packing>
         <property name="left_attach">1</property>
@@ -239,12 +256,14 @@ del listino</property>
       <object class="GtkAlignment" id="alignment143">
         <property name="width_request">120</property>
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="yalign">0</property>
         <property name="xscale">0</property>
         <child>
           <object class="DateWidget" id="data_listino_entry">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="tooltip_text" translatable="yes">Selezionare la data di inserimento
 del listino </property>
           </object>
@@ -262,6 +281,7 @@ del listino </property>
     <child>
       <object class="GtkAlignment" id="alignment176">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">1</property>
         <property name="xscale">0</property>
         <child>
@@ -272,19 +292,23 @@ del listino </property>
             <property name="tooltip_text" translatable="yes">Usare questo pulsante per accedere 
 alla finestra di inserimento articoli 
 nel listino articolo appena creato</property>
-            <signal name="clicked" handler="on_listini_articoli_togglebutton_clicked"/>
+            <property name="use_action_appearance">False</property>
+            <signal name="clicked" handler="on_listini_articoli_togglebutton_clicked" swapped="no"/>
             <child>
               <object class="GtkAlignment" id="alignment177">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <property name="xscale">0</property>
                 <property name="yscale">0</property>
                 <child>
                   <object class="GtkHBox" id="hbox149">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <property name="spacing">2</property>
                     <child>
                       <object class="GtkImage" id="image103">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="pixbuf">composizione_listino24x24.png</property>
                       </object>
                       <packing>
@@ -296,6 +320,7 @@ nel listino articolo appena creato</property>
                     <child>
                       <object class="GtkLabel" id="label343">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Composizione articoli listino</property>
                         <property name="use_markup">True</property>
                         <property name="use_underline">True</property>
@@ -323,6 +348,7 @@ nel listino articolo appena creato</property>
     <child>
       <object class="GtkHBox" id="hbox139">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="border_width">5</property>
         <property name="homogeneous">True</property>
         <child>
@@ -333,8 +359,9 @@ nel listino articolo appena creato</property>
             <property name="receives_default">True</property>
             <property name="tooltip_text" translatable="yes">Aggiungi un magazzino 
 associato</property>
+            <property name="use_action_appearance">False</property>
             <property name="use_stock">True</property>
-            <signal name="clicked" handler="on_add_row_magazzino_button_clicked"/>
+            <signal name="clicked" handler="on_add_row_magazzino_button_clicked" swapped="no"/>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -351,8 +378,9 @@ associato</property>
             <property name="receives_default">True</property>
             <property name="tooltip_text" translatable="yes">Elimina un Magazzino 
 associato </property>
+            <property name="use_action_appearance">False</property>
             <property name="use_stock">True</property>
-            <signal name="clicked" handler="on_delete_row_magazzino_button_clicked"/>
+            <signal name="clicked" handler="on_delete_row_magazzino_button_clicked" swapped="no"/>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -369,8 +397,9 @@ associato </property>
             <property name="receives_default">True</property>
             <property name="tooltip_text" translatable="yes">Riporta la situazione 
 dei magazzini associati all'inizio</property>
+            <property name="use_action_appearance">False</property>
             <property name="use_stock">True</property>
-            <signal name="clicked" handler="on_undelete_row_magazzino_button_clicked"/>
+            <signal name="clicked" handler="on_undelete_row_magazzino_button_clicked" swapped="no"/>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -391,6 +420,7 @@ dei magazzini associati all'inizio</property>
     <child>
       <object class="GtkHBox" id="hbox135">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="border_width">5</property>
         <property name="homogeneous">True</property>
         <child>
@@ -403,8 +433,9 @@ dei magazzini associati all'inizio</property>
 cliente. Se il cliente è inserito in quella categoria
 si troverà preselezionato il listino durante 
 la creazione di un movimento o di un documento</property>
+            <property name="use_action_appearance">False</property>
             <property name="use_stock">True</property>
-            <signal name="clicked" handler="on_add_row_categoria_button_clicked"/>
+            <signal name="clicked" handler="on_add_row_categoria_button_clicked" swapped="no"/>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -420,8 +451,9 @@ la creazione di un movimento o di un documento</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="tooltip_text" translatable="yes">Rimuovi associazione cliente </property>
+            <property name="use_action_appearance">False</property>
             <property name="use_stock">True</property>
-            <signal name="clicked" handler="on_delete_row_categoria_button_clicked"/>
+            <signal name="clicked" handler="on_delete_row_categoria_button_clicked" swapped="no"/>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -436,8 +468,9 @@ la creazione di un movimento o di un documento</property>
             <property name="sensitive">False</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
+            <property name="use_action_appearance">False</property>
             <property name="use_stock">True</property>
-            <signal name="clicked" handler="on_undelete_row_categoria_button_clicked"/>
+            <signal name="clicked" handler="on_undelete_row_categoria_button_clicked" swapped="no"/>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -458,6 +491,7 @@ la creazione di un movimento o di un documento</property>
     <child>
       <object class="GtkLabel" id="data_listino_label">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="label" translatable="yes">&lt;b&gt;Data listino&lt;/b&gt;</property>
         <property name="use_markup">True</property>
@@ -473,6 +507,7 @@ la creazione di un movimento o di un documento</property>
     <child>
       <object class="GtkLabel" id="denominazione_listino_label">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="label" translatable="yes">&lt;b&gt;Denominazione&lt;/b&gt;</property>
         <property name="use_markup">True</property>
@@ -491,6 +526,10 @@ la creazione di un movimento o di un documento</property>
 dettagliata del listino 
 400 caratteri a disposizione</property>
         <property name="invisible_char">●</property>
+        <property name="primary_icon_activatable">False</property>
+        <property name="secondary_icon_activatable">False</property>
+        <property name="primary_icon_sensitive">True</property>
+        <property name="secondary_icon_sensitive">True</property>
       </object>
       <packing>
         <property name="left_attach">1</property>
@@ -504,6 +543,7 @@ dettagliata del listino
     <child>
       <object class="GtkLabel" id="label325">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="label" translatable="yes">Magazzino</property>
       </object>
@@ -526,7 +566,7 @@ dettagliata del listino
           <object class="GtkTreeView" id="magazzini_treeview">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <signal name="cursor_changed" handler="on_magazzini_treeview_cursor_changed"/>
+            <signal name="cursor-changed" handler="on_magazzini_treeview_cursor_changed" swapped="no"/>
           </object>
         </child>
       </object>
@@ -540,6 +580,7 @@ dettagliata del listino
     <child>
       <object class="GtkLabel" id="magazzini_associati_label">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="label" translatable="yes">Magazzini associati</property>
       </object>
@@ -554,6 +595,7 @@ dettagliata del listino
     <child>
       <object class="GtkLabel" id="categoria_listino_label">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="label" translatable="yes">Categoria</property>
       </object>
@@ -568,6 +610,7 @@ dettagliata del listino
     <child>
       <object class="GtkLabel" id="categorie_clienti_associati_label">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="label" translatable="yes">Categorie clienti associate</property>
       </object>
@@ -582,6 +625,7 @@ dettagliata del listino
     <child>
       <object class="GtkLabel" id="descrizione_listino_label">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="label" translatable="yes">&lt;b&gt;Descrizione&lt;/b&gt;</property>
         <property name="use_markup">True</property>
@@ -597,6 +641,7 @@ dettagliata del listino
     <child>
       <object class="GtkHSeparator" id="hseparator9">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
       </object>
       <packing>
         <property name="right_attach">3</property>
@@ -609,6 +654,7 @@ dettagliata del listino
     <child>
       <object class="GtkHSeparator" id="hseparator1">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
       </object>
       <packing>
         <property name="right_attach">3</property>
@@ -673,6 +719,7 @@ per inserirne uno nuovo
     <child>
       <object class="GtkHBox" id="hbox1">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <child>
           <placeholder/>
         </child>
@@ -682,9 +729,12 @@ per inserirne uno nuovo
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
-            <signal name="toggled" handler="on_variazioni_togglebutton_toggled"/>
+            <property name="use_action_appearance">False</property>
+            <signal name="toggled" handler="on_variazioni_togglebutton_toggled" swapped="no"/>
           </object>
           <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
             <property name="position">1</property>
           </packing>
         </child>
