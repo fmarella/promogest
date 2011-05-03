@@ -20,8 +20,6 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-import gtk
-import gobject
 from promogest.ui.AnagraficaComplessa import Anagrafica
 from promogest.ui.AnagraficaComplessaFilter import AnagraficaFilter
 from promogest.ui.AnagraficaComplessaEdit import AnagraficaEdit
@@ -58,43 +56,12 @@ class AnagraficaCategoriaTrasportoFilter(AnagraficaFilter):
         self._widgetFirstFocus = self.denominazione_filter_entry
 
     def draw(self):
-        # Colonne della Treeview per il filtro
-        treeview = self._anagrafica.anagrafica_filter_treeview
-        renderer = gtk.CellRendererText()
+        self._treeViewModel = self.filter_listore
+        self.clear()
 
-        column = gtk.TreeViewColumn('Descrizione', renderer, text=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, (None, 'denominazione'))
-        column.set_resizable(True)
-        column.set_expand(True)
-        column.set_min_width(100)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Quantità massima trasportabile', renderer, text=2)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.connect('clicked', self._changeOrderBy, (None, 'quantita_massima_trasportabile'))
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(100)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Coefficiente moltiplicazione virtuale', renderer, text=3)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.connect('clicked', self._changeOrderBy, (None, 'coefficiente_moltiplicazione_virtuale'))
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(100)
-        treeview.append_column(column)
-
-        treeview.set_search_column(1)
-
-        self._treeViewModel = gtk.ListStore(gobject.TYPE_PYOBJECT, str, str, str)
-        self._anagrafica.anagrafica_filter_treeview.set_model(self._treeViewModel)
-
-        self.refresh()
+    def _reOrderBy(self, column):
+        if column.get_name() == "denominazione_column":
+            return self._changeOrderBy(column, (None, CategoriaTrasporto.denominazione))
 
     def clear(self):
         # Annullamento filtro
@@ -192,7 +159,6 @@ class AnagraficaCategoriaTrasportoEdit(AnagraficaEdit):
         if (self.coefficiente_moltiplicazione_virtuale_entry.get_text() == ''):
             obligatoryField(self.dialogTopLevel, self.coefficiente_moltiplicazione_virtuale_entry)
 
-        # TODO: convertire i dati letti (stringhe) nei formati dei campi nel database?
         self.dao.denominazione = self.denominazione_entry.get_text()
         self.dao.quantita_massima_trasportabile = self.quantita_massima_trasportabile_entry.get_text()
         self.dao.coefficiente_moltiplicazione_virtuale = self.coefficiente_moltiplicazione_virtuale_entry.get_text()
