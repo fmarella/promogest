@@ -825,7 +825,7 @@ UNA VOLTA PREMUTO TERMINATA LA PROCEDURA
 CHIUDERE E RIAVVIARE IL PROGRAMMA
 
 PROCEDERE ALL'INSTALLAZIONE DEL MODULO PROMOWEAR? """
-        if YesNoDialog(msg=msg, transient=self.getTopLevel()):
+        if not YesNoDialog(msg=msg, transient=self.getTopLevel()):
             return
         if not hasattr(Environment.conf,"PromoWear"):
             Environment.conf.add_section("PromoWear")
