@@ -37,8 +37,7 @@ except:
 def checkPan(main):
     print "TIPO PG", Environment.tipo_pg, Environment.modulesList, ("FULL" not in Environment.modulesList)
     for a in Environment.modulesList:
-        if "FULL" in a or "STANDARD" in a or "PRO" in a:
-            print "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", a
+        if ("FULL" in a) or ("STANDARD" in a) or ("PRO" in a):
             text = "OPZIONE: <b>%s</b>" %(Environment.tipo_pg)
             main.pan_label_info.set_markup(text)
             Environment.pg2log.info(text)
@@ -72,6 +71,11 @@ def checkPan(main):
                     a.value = "True"
                     a.active = True
                     a.persist()
+                #tables = [t.name for t in Environment.params["metadata"].sorted_tables]
+                #if "testata_scontrino" not in tables:
+                    #from promogest.modules.VenditaDettaglio.data.VenditaDettaglioDB import *
+                    #msg = " TABELLE AGGIUNTE, RIAVVIARE IL PROGRAMMA "
+                    #messageInfo(msg=msg, transient=self.getTopLevel())
 
             return
     if  Environment.tipodb!="postgresql":

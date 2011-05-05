@@ -9,9 +9,11 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
+from promogest.ui.utils import setconf
 #from promogest.dao.Dao import Dao
 
-if hasattr(conf, 'VenditaDettaglio'):
+if hasattr(conf, 'VenditaDettaglio') or\
+        setconf("VenditaDettaglio","mod_enable",value="yes"):
     #if conf.VenditaDettaglio.primoavvio=="yes":
 
     posTable = Table('pos', params['metadata'],

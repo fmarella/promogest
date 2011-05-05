@@ -832,8 +832,7 @@ IL MODULO VENDITA DETTAGLIO
 Procedere all'installazione del modulo PromoShop? """
         if not YesNoDialog(msg=msg, transient=self.getTopLevel()):
             return
-        if not setconf("Modulo", "VenditaDettaglio"):
-
+        if not setconf("VenditaDettaglio", "mod_enable"):
             a = SetConf()
             a.section = "VenditaDettaglio"
             a.tipo_section ="Modulo"
@@ -861,8 +860,13 @@ Procedere all'installazione del modulo PromoShop? """
             a.value = "True"
             a.active = True
             a.persist()
-
-
+            #tables = [t.name for t in Environment.params["metadata"].sorted_tables]
+            #if "testata_scontrino" not in tables:
+                #from promogest.modules.VenditaDettaglio.data.VenditaDettaglioDB import *
+                #msg = " TABELLE AGGIUNTE, RIAVVIARE IL PROGRAMMA "
+                #messageInfo(msg=msg)
+        else:
+            messageInfo(msg="RISULTA GIA' ATTIVATO")
 
     def on_ricmedio_activate(self, widget):
         """ entry Menu statistiche Ricarico medio """

@@ -98,19 +98,18 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         if hasattr(Environment.conf, "VenditaDettaglio"):
             if hasattr(Environment.conf.VenditaDettaglio, "magazzino"):
                 findComboboxRowFromStr(self.ao_magazzino_combobox, Environment.conf.VenditaDettaglio.magazzino,2)
-        maga = setconf("VenditaDettaglio", "magazzino_vendita")
-        if maga:
-            findComboboxRowFromId(self.ao_magazzino_combobox, maga)
-
+        elif setconf("VenditaDettaglio", "magazzino_vendita"):
+            findComboboxRowFromId(self.ao_magazzino_combobox, setconf("VenditaDettaglio", "magazzino_vendita"))
+        else:
+            messageInfo(msg="Selezionare un magazzino")
         fillComboboxPos(self.ao_punto_cassa_combobox)
         if hasattr(Environment.conf, "VenditaDettaglio"):
             if hasattr(Environment.conf.VenditaDettaglio, "puntocassa"):
                 findComboboxRowFromStr(self.ao_punto_cassa_combobox, Environment.conf.VenditaDettaglio.puntocassa,2)
-        puntoca = setconf("VenditaDettaglio", "punto_cassa")
-        if puntoca:
-            findComboboxRowFromId(self.ao_punto_cassa_combobox,puntoca)
+        elif setconf("VenditaDettaglio", "punto_cassa"):
+            findComboboxRowFromId(self.ao_punto_cassa_combobox,setconf("VenditaDettaglio", "punto_cassa"))
         else:
-            messageInfo(msg="AGGIUNGERE E SELEZIONARE UN PUNTO CASSA")
+            messageInfo(msg="Aggiungere e selezionare un punto cassa\ndal menu opzioni presente nella finestra di vendita ")
         self.altre_opzioni_dialog.set_transient_for(self.topLevelWindow)
         self.altre_opzioni_dialog.show_all()
         self.altre_opzioni_dialog.run()
@@ -155,6 +154,16 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             if a:
                 a[0].value = self.idMagazzino
                 a[0].persist()
+            else:
+                a = SetConf()
+                a.section = "VenditaDettaglio"
+                a.tipo_section ="Modulo"
+                a.description = "magazzino ventta"
+                a.tipo = "int"
+                a.key = "magazzino_vendita"
+                a.value = self.idMagazzino
+                a.active = True
+                a.persist()
 #        if not self.idPuntoCassa:
 #            obligatoryField(None, widget=None, msg="Punto Cassa Obbligatorio")
 #            return
@@ -255,18 +264,22 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         """ jolly key è F9, richiama ed inserisce l'articolo definito nel configure"""
         keyname = gtk.gdk.keyval_name(event.keyval)
         if keyname == 'F9':
-            #try:
-            if hasattr(Environment.conf, "VenditaDettaglio"):
-                codice = Environment.conf.VenditaDettaglio.jolly
-            else:
-                articoloId = setconf("VenditaDettaglio", "jolly")
-                if articoloId:
-                    codice = Articolo().getRecord(id=articoloId).codice
-            self.search_item(codice=codice, fnove=True)
-            #except:
-                #Environment.pg2log.info("ARTICOLO JOLLY NON SETTATO NEL CONFIGURE NELLA SEZIONE [VenditaDettaglio]")
+            try:
+                if hasattr(Environment.conf, "VenditaDettaglio"):
+                    codice = Environment.conf.VenditaDettaglio.jolly
+                else:
+                    articoloId = setconf("VenditaDettaglio", "jolly")
+                    codice = None
+                    if articoloId:
+                        codice = Articolo().getRecord(id=articoloId).codice
+                if not codice:
+                    messageInfo(msg="ARTICOLO JOLLY NON SELEZIONATO")
+                self.search_item(codice=codice, fnove=True)
+            except:
+                Environment.pg2log.info("ARTICOLO JOLLY NON SETTATO NEL CONFIGURE NELLA SEZIONE [VenditaDettaglio]")
 
     def fnovewidget(self,codice=None, destroy=None):
+
         if destroy:
             prezzo1 = self.prezzo_f9_entry.get_text()
             quantita1 = self.quantita_f9_entry.get_text()
@@ -305,18 +318,19 @@ class AnagraficaVenditaDettaglio(GladeWidget):
                                 valorigenerici=[], descrizione=None,
                                 fnove=False):
         # Ricerca articolo per barcode
-        if codiceABarre is not None:
+        if codiceABarre:
             arts = Articolo().select(codiceABarre = codiceABarre,
                                                  offset = None,
                                                  batchSize = None)
-        elif codice is not None:
+        elif codice:
             arts = Articolo().select(codice = codice,
                                                  offset = None,
                                                  batchSize = None)
-        elif descrizione is not None:
+        elif descrizione:
             arts = Articolo().select(denominazione = descrizione,
                                                  offset = None,
                                                  batchSize = None)
+
         if len(arts) == 1:
             idArticolo = arts[0].id
             codice = arts[0].codice or ''

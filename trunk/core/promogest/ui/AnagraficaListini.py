@@ -445,8 +445,8 @@ Verrà aggiornato il precedente.""")
 
         from AnagraficaListiniArticoli import AnagraficaListiniArticoli
         anag = AnagraficaListiniArticoli(idListino=self.dao.id)
-#        anagWindow = anag.getTopLevel()
-#        showAnagraficaRichiamata(self.dialogTopLevel, anagWindow, toggleButton)
+        anagWindow = anag.getTopLevel()
+        showAnagraficaRichiamata(self.dialogTopLevel, anagWindow, toggleButton)
 
 
     def on_variazioni_togglebutton_toggled(self, toggleButton):
