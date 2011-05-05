@@ -816,7 +816,7 @@ Procedere all'installazione del modulo PromoWear? """
             if "colore" not in tables and "taglia" not in tables:
                 from promogest.modules.PromoWear.data.PromoWearDB import *
                 msg = " TABELLE AGGIUNTE, RIAVVIARE IL PROGRAMMA "
-                messageInfo(msg=msg, transient=self.getTopLevel())
+                messageInfo(msg=msg)
         else:
             msg= "PULSANTE DI TEST GIA' PREMUTO"
             messageInfo(msg=msg, transient=self.getTopLevel())
