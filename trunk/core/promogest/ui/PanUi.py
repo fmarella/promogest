@@ -37,7 +37,8 @@ except:
 def checkPan(main):
     print "TIPO PG", Environment.tipo_pg, Environment.modulesList, ("FULL" not in Environment.modulesList)
     for a in Environment.modulesList:
-        if "FULL" or "STANDARD" or "PRO" in a:
+        if "FULL" in a or "STANDARD" in a or "PRO" in a:
+            print "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", a
             text = "OPZIONE: <b>%s</b>" %(Environment.tipo_pg)
             main.pan_label_info.set_markup(text)
             Environment.pg2log.info(text)
