@@ -149,9 +149,9 @@ def startdir():
     return promogestStartDir
 
 
-def messageInfo(msg="Messaggio generico"):
+def messageInfo(msg="Messaggio generico", transient=None):
     """generic msg dialog """
-    dialoggg = gtk.MessageDialog(None,
+    dialoggg = gtk.MessageDialog(transient,
                         gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
                         gtk.MESSAGE_INFO,
                         gtk.BUTTONS_OK,
