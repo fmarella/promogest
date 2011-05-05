@@ -21,7 +21,6 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 import os
-import gtk
 from promogest import Environment
 from GladeWidget import GladeWidget
 from promogest.ui.AnagraficaDocumentiSetup import AnagraficaDocumentiSetup
@@ -32,7 +31,7 @@ from promogest.modules.PrimaNota.ui.AnagraficaPrimaNotaSetup import AnagraficaPr
 from promogest.modules.Label.ui.AnagraficaLabelSetup import AnagraficaLabelSetup
 from ParametriFrame import ParametriFrame
 from promogest.dao.Setconf import SetConf
-from promogest.ui.utils import setconf, messageInfo
+from promogest.ui.utils import setconf, messageInfo, posso
 
 class ConfiguraWindow(GladeWidget):
 
@@ -71,6 +70,10 @@ class ConfiguraWindow(GladeWidget):
 
         self.label_setup_page = AnagraficaLabelSetup(self)
         self.setup_notebook.append_page(self.label_setup_page._anagrafica_label_setup_frame, self.label_setup_page.label_setup_page_label)
+        if posso("VD"):
+            from promogest.modules.VenditaDettaglio.ui.AnagraficaVenditadettaglioSetup import VenditadettaglioSetup
+            self.vendita_dettaglio_setup_page = VenditadettaglioSetup(self)
+            self.setup_notebook.append_page(self.vendita_dettaglio_setup_page._vendita_dettaglio_setup_frame, self.vendita_dettaglio_setup_page.venditadettaglio_setup_page_label)
 
         self._refresh()
 
@@ -120,6 +123,8 @@ class ConfiguraWindow(GladeWidget):
         self.fornitori_setup_page._refresh()
         self.primanota_setup_page._refresh()
         self.label_setup_page._refresh()
+        if posso("VD"):
+            self.vendita_dettaglio_setup_page._refresh()
 
     def on_salva_button_clicked(self, button_salva):
 
@@ -204,6 +209,8 @@ class ConfiguraWindow(GladeWidget):
         self.fornitori_setup_page._saveSetup()
         self.primanota_setup_page._saveSetup()
         self.label_setup_page._saveSetup()
+        if posso("VD"):
+            self.vendita_dettaglio_setup_page._saveSetup()
 
         Environment.session.commit()
         confList = SetConf().select(batchSize=None)

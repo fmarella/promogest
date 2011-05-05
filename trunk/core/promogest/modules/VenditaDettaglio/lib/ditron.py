@@ -1,9 +1,24 @@
 # -*- coding: utf-8 -*-
 
-# Promogest
-#
-# Copyright (C) 2005-2010 by Promotux Informatica - http://www.promotux.it/
-# Author: Francesco Meloni <francescoo@promotux.it>
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux
+#                        di Francesco Meloni snc - http://www.promotux.it/
+
+#    Author: Francesco Meloni  <francesco@promotux.it>
+
+#    This file is part of Promogest.
+
+#    Promogest is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 2 of the License, or
+#    (at your option) any later version.
+
+#    Promogest is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+
+#    You should have received a copy of the GNU General Public License
+#    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 from promogest import Environment
 import datetime
@@ -19,11 +34,15 @@ class Ditron(object):
     TODO: ripulire ed astrarre maggiormente
     """
     def __init__(self):
+        try: # vecchio stile ...adattamento ai dati in setconf
+            self.path = Environment.conf.VenditaDettaglio.export_path
+        except: # prendo la cartella temp standard
+            self.path = tempDir
         pass
 
     def create_export_file(self, daoScontrino=None):
         # Genero nome file
-        filename = Environment.conf.VenditaDettaglio.export_path\
+        filename = self.path\
                             + str(daoScontrino.id)\
                             + datetime.datetime.today().strftime('%d_%m_%Y_%H_%M_%S')
         f = file(filename, 'w')
@@ -115,7 +134,7 @@ class Ditron(object):
         return filename
 
     def stampa_della_affluenza_oraria(self):
-        filename = Environment.conf.VenditaDettaglio.export_path\
+        filename = self.path\
                      + 'stampa_della_affluenza_oraria_'\
                      + datetime.datetime.today().strftime('%d_%m_%Y_%H_%M_%S')
         f = file(filename, 'w')
@@ -125,7 +144,7 @@ class Ditron(object):
         self.sendToPrint(filename)
 
     def stampa_del_periodico_articoli(self):
-        filename = Environment.conf.VenditaDettaglio.export_path\
+        filename = self.path\
                      + 'stampa_del_periodico_articoli_'\
                      + datetime.datetime.today().strftime('%d_%m_%Y_%H_%M_%S')
         f = file(filename, 'w')
@@ -135,7 +154,7 @@ class Ditron(object):
         self.sendToPrint(filename)
 
     def stampa_del_periodico_reparti(self):
-        filename = Environment.conf.VenditaDettaglio.export_path\
+        filename = self.path\
                      + 'stampa_del_periodico_reparti_'\
                      + datetime.datetime.today().strftime('%d_%m_%Y_%H_%M_%S')
         f = file(filename, 'w')
@@ -145,7 +164,7 @@ class Ditron(object):
         self.sendToPrint(filename)
 
     def stampa_del_periodico_cassa(self):
-        filename = Environment.conf.VenditaDettaglio.export_path\
+        filename = self.path\
                      + 'stampa_del_periodico_cassa_'\
                      + datetime.datetime.today().strftime('%d_%m_%Y_%H_%M_%S')
         f = file(filename, 'w')
@@ -155,7 +174,7 @@ class Ditron(object):
         self.sendToPrint(filename)
 
     def stampa_del_giornale_breve(self):
-        filename = Environment.conf.VenditaDettaglio.export_path\
+        filename = self.path\
                     + 'stampa_del_giornale_breve_'\
                     + datetime.datetime.today().strftime('%d_%m_%Y_%H_%M_%S')
         f = file(filename, 'w')
@@ -187,10 +206,4 @@ class Ditron(object):
                 string_message = string_message + s + "\n"
 
             # Mostro messaggio di errore
-            dialog = gtk.MessageDialog(None,
-                                       gtk.DIALOG_MODAL
-                                       | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                       gtk.MESSAGE_ERROR, gtk.BUTTONS_OK,
-                                       string_message)
-            response = dialog.run()
-            dialog.destroy()
+            messageInfo(msg="ERRORE NELL'INVIO ALLA STAMPANTE FISCALE")

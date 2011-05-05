@@ -786,21 +786,22 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         # Creo il file
         filescontrino = self.create_export_file(dao)
         # Mando comando alle casse
+        if hasattr(Environment.conf, "VenditaDettaglio"):
+            if not(hasattr(Environment.conf.VenditaDettaglio,'disabilita_stampa') and \
+                    Environment.conf.VenditaDettaglio.disabilita_stampa == 'yes'):
+                program_launch = Environment.conf.VenditaDettaglio.driver_command
+                program_params = (' ' + filescontrino + ' ' +
+                                  Environment.conf.VenditaDettaglio.serial_device)
 
-        if not(hasattr(Environment.conf.VenditaDettaglio,'disabilita_stampa') and Environment.conf.VenditaDettaglio.disabilita_stampa == 'yes'):
-            program_launch = Environment.conf.VenditaDettaglio.driver_command
-            program_params = (' ' + filescontrino + ' ' +
-                              Environment.conf.VenditaDettaglio.serial_device)
-
-            if os.name == 'nt':
-                exportingProcessPid = os.spawnl(os.P_NOWAIT, program_launch, program_params)
-                id, ret_value = os.waitpid(exportingProcessPid, 0)
-                ret_value = ret_value >> 8
-            else:
-                command = program_launch + program_params
-                process = popen2.Popen3(command, True)
-                message = process.childerr.readlines()
-                ret_value = process.wait()
+                if os.name == 'nt':
+                    exportingProcessPid = os.spawnl(os.P_NOWAIT, program_launch, program_params)
+                    id, ret_value = os.waitpid(exportingProcessPid, 0)
+                    ret_value = ret_value >> 8
+                else:
+                    command = program_launch + program_params
+                    process = popen2.Popen3(command, True)
+                    message = process.childerr.readlines()
+                    ret_value = process.wait()
         else:
             ret_value = 0
 

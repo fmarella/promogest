@@ -2593,9 +2593,9 @@ def aggiorna(anag):
         dialogg.run()
         dialogg.destroy()
 
-def messageInfo(msg="Messaggio generico"):
+def messageInfo(msg="Messaggio generico", transient=None):
     """generic msg dialog """
-    dialoggg = gtk.MessageDialog(None,
+    dialoggg = gtk.MessageDialog(transient,
                         gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
                         gtk.MESSAGE_INFO,
                         gtk.BUTTONS_OK)
@@ -2941,6 +2941,7 @@ def posso(mod=None):
         if "PRO FULL" in moduli: return True
     if mod == "PW" or mod=="PromoWear":
         if "PromoWear" in moduli:return True
+        if "+W" in moduli:return True
     if mod == "AG":
         if "Agenti" in moduli: return True
         if "ONE FULL" in moduli :return True
@@ -2950,6 +2951,7 @@ def posso(mod=None):
         if "GestioneNoleggio" in moduli: return True
     if mod == "VD" or mod=="VenditaDettaglio":
         if "VenditaDettaglio" in moduli:return True
+        if "+S" in moduli:return True
     if mod == "DB":
         if "DistintaBase" in moduli: return True
     if mod == "CN" or mod=="Contatti":

@@ -35,25 +35,58 @@ except:
     None
 
 def checkPan(main):
-    print "TIPO PG", Environment.tipo_pg, Environment.modulesList
-    if  ("ONE STANDARD" not in Environment.modulesList) and \
-        ("ONE FULL" not in Environment.modulesList) and \
-        ("PRO BASIC" not in Environment.modulesList) and \
-        ("PRO STANDARD" not in  Environment.modulesList) and\
-        ("PRO FULL" not in  Environment.modulesList) and\
-        (Environment.tipodb!="postgresql"):
+    print "TIPO PG", Environment.tipo_pg, Environment.modulesList, ("FULL" not in Environment.modulesList)
+    for a in Environment.modulesList:
+        if "FULL" or "STANDARD" or "PRO" in a:
+            text = "OPZIONE: <b>%s</b>" %(Environment.tipo_pg)
+            main.pan_label_info.set_markup(text)
+            Environment.pg2log.info(text)
+            if "+S" in a:
+                print "ATTIVARE SHOP"
+                if not setconf("VenditaDettaglio","mod_enable",value="yes"):
+                    a = SetConf()
+                    a.section = "VenditaDettaglio"
+                    a.tipo_section ="Modulo"
+                    a.description = "Modulo Vendita Dettaglio"
+                    a.tipo = "bool"
+                    a.key = "mod_enable"
+                    a.value = "yes"
+                    a.persist()
+
+                    a = SetConf()
+                    a.section = "VenditaDettaglio"
+                    a.tipo_section ="Modulo"
+                    a.description = "Nome del movimento generato"
+                    a.tipo = "str"
+                    a.key = "operazione"
+                    a.value = "Scarico venduto da cassa"
+                    a.persist()
+
+                    a = SetConf()
+                    a.section = "VenditaDettaglio"
+                    a.tipo_section ="Modulo"
+                    a.description = "disabilita_stampa"
+                    a.tipo = "bool"
+                    a.key = "disabilita_stampa"
+                    a.value = "True"
+                    a.active = True
+                    a.persist()
+
+            return
+    if  Environment.tipodb!="postgresql":
         print "PASSI QUI"
         pp = PanUi(main).draw()
         a = gtk.Label()
         a.set_text("OPZIONI MODULI")
         main.main_notebook.prepend_page(pp.pan_frame, a)
         main.main_notebook.set_current_page(0)
-        text = "OPZIONE:<b>%s!</b>" %("ONE BASIC")
+        text = "OPZIONE: <b>%s!</b>" %("ONE BASIC")
         main.pan_label_info.set_markup(text)
         return pp
     else:
-        text = "OPZIONE:<b>%s!</b>" %(Environment.tipo_pg)
+        text = "OPZIONE: <b>%s</b>" %(Environment.tipo_pg)
         main.pan_label_info.set_markup(text)
+        Environment.pg2log.info(text)
 #        main.main_notebook.set_current_page(4)
 
 

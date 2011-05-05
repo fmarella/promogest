@@ -38,17 +38,23 @@ class GestioneChiusuraFiscale(GladeWidget):
 
     def draw(self):
         fillComboboxMagazzini(self.chiusura_id_magazzino_combobox)
-        if hasattr(Environment.conf.VenditaDettaglio, "magazzino"):
-            findComboboxRowFromStr(self.chiusura_id_magazzino_combobox, Environment.conf.VenditaDettaglio.magazzino,2)
+        if hasattr(Environment.conf, "VenditaDettaglio"):
+            if hasattr(Environment.conf.VenditaDettaglio, "magazzino"):
+                findComboboxRowFromStr(self.chiusura_id_magazzino_combobox, Environment.conf.VenditaDettaglio.magazzino,2)
+        elif setconf("VenditaDettaglio", "magazzino_vendita"):
+            findComboboxRowFromId(self.chiusura_id_magazzino_combobox, setconf("VenditaDettaglio", "magazzino_vendita"))
         fillComboboxPos(self.chiusura_id_pos_combobox)
-        if hasattr(Environment.conf.VenditaDettaglio, "puntocassa"):
-            findComboboxRowFromStr(self.chiusura_id_pos_combobox, Environment.conf.VenditaDettaglio.puntocassa,2)
+        if hasattr(Environment.conf, "VenditaDettaglio"):
+            if hasattr(Environment.conf.VenditaDettaglio, "puntocassa"):
+                findComboboxRowFromStr(self.chiusura_id_pos_combobox, Environment.conf.VenditaDettaglio.puntocassa,2)
+        elif setconf("VenditaDettaglio", "punto_cassa"):
+            findComboboxRowFromId(self.chiusura_id_pos_combobox,setconf("VenditaDettaglio", "punto_cassa"))
         self.chiusura_datetime_entry.show_all()
         self.chiusura_datetime_entry.setNow()
 
     def on_ok_chiusura_button_clicked(self, button):
         # controllo se vi e` gia` stata una chiusura
-        data = stringToDate(self.chiusura_datetime_entry.get_text())
+        data = stringToDateTime(self.chiusura_datetime_entry.get_text())
         self.idPuntoCassa = findIdFromCombobox(self.chiusura_id_pos_combobox)
         self.idMagazzino = findIdFromCombobox(self.chiusura_id_magazzino_combobox)
         chiusure = ChiusuraFiscale().select( dataChiusura = data,
@@ -56,7 +62,7 @@ class GestioneChiusuraFiscale(GladeWidget):
                                             idMagazzino = self.idMagazzino,
                                             idPuntoCassa = self.idPuntoCassa,
                                             batchSize = None)
-        if len(chiusure) != 0:
+        if chiusure :
             dialog = gtk.MessageDialog(self.getTopLevel(),
                                        gtk.DIALOG_MODAL
                                        | gtk.DIALOG_DESTROY_WITH_PARENT,
@@ -120,7 +126,10 @@ class GestioneChiusuraFiscale(GladeWidget):
             nomePuntoCassa = " "
 
         daoMovimento = TestataMovimento()
-        daoMovimento.operazione = Environment.conf.VenditaDettaglio.operazione
+        if hasattr(Environment.conf, "VenditaDettaglio"):
+            daoMovimento.operazione = Environment.conf.VenditaDettaglio.operazione
+        else:
+            daoMovimento.operazione = setconf("VenditaDettaglio", "operazione")
         daoMovimento.data_movimento = datefirst
         daoMovimento.note_interne = """Movimento chiusura fiscale  magazzino: %s, punto cassa: %s """ %(str(nomeMagazzino),str(nomePuntoCassa))
         righeMovimento = []
@@ -166,20 +175,24 @@ class GestioneChiusuraFiscale(GladeWidget):
         # Creo il file
         filechiusura = self.create_fiscal_close_file()
         # Mando comando alle casse
-        if not(hasattr(Environment.conf.VenditaDettaglio,'disabilita_stampa_chiusura') and Environment.conf.VenditaDettaglio.disabilita_stampa_chiusura == 'yes'):
-            program_launch = Environment.conf.VenditaDettaglio.driver_command
-            program_params = (' ' + filechiusura + ' ' +
-                              Environment.conf.VenditaDettaglio.serial_device)
+        if hasattr(Environment.conf, "VenditaDettaglio"):
+            if not(hasattr(Environment.conf.VenditaDettaglio,'disabilita_stampa_chiusura') and \
+                    Environment.conf.VenditaDettaglio.disabilita_stampa_chiusura == 'yes'):
+                program_launch = Environment.conf.VenditaDettaglio.driver_command
+                program_params = (' ' + filechiusura + ' ' +
+                                  Environment.conf.VenditaDettaglio.serial_device)
 
-            if os.name == 'nt':
-                exportingProcessPid = os.spawnl(os.P_NOWAIT, program_launch, program_params)
-                id, ret_value = os.waitpid(exportingProcessPid, 0)
-                ret_value = ret_value >> 8
-            else:
-                command = program_launch + program_params
-                process = popen2.Popen3(command, True)
-                message = process.childerr.readlines()
-                ret_value = process.wait()
+                if os.name == 'nt':
+                    exportingProcessPid = os.spawnl(os.P_NOWAIT, program_launch, program_params)
+                    id, ret_value = os.waitpid(exportingProcessPid, 0)
+                    ret_value = ret_value >> 8
+                else:
+                    command = program_launch + program_params
+                    process = popen2.Popen3(command, True)
+                    message = process.childerr.readlines()
+                    ret_value = process.wait()
+        elif setconf("VenditaDettaglio", "disabilita_stampa_chiusura"):
+            ret_value = 0
         else:
             ret_value = 0
 
@@ -217,7 +230,11 @@ class GestioneChiusuraFiscale(GladeWidget):
 
     def create_fiscal_close_file(self):
         # Genero nome file
-        filename = Environment.conf.VenditaDettaglio.export_path + 'fiscal_close_' + datetime.date.today().strftime('%d_%m_%Y_%H_%M_%S')
+        try: # vecchio stile ...adattamento ai dati in setconf
+            path = Environment.conf.VenditaDettaglio.export_path
+        except: # prendo la cartella temp standard
+            path = Environment.tempDir
+        filename = path + 'fiscal_close_' + datetime.date.today().strftime('%d_%m_%Y_%H_%M_%S')
         f = file(filename,'w')
         stringa = '51                00000000002..\r\n'
         f.write(stringa)

@@ -162,11 +162,17 @@ class GestioneScontrini(GladeWidget):
         else:
             self.filters.a_data_filter_entry.set_text(self_aData)
         fillComboboxMagazzini(self.filters.id_magazzino_filter_combobox)
-        if hasattr(Environment.conf.VenditaDettaglio, "magazzino"):
-            findComboboxRowFromStr(self.filters.id_magazzino_filter_combobox, Environment.conf.VenditaDettaglio.magazzino,2)
         fillComboboxPos(self.filters.id_pos_filter_combobox)
-        if hasattr(Environment.conf.VenditaDettaglio, "puntocassa"):
-            findComboboxRowFromStr(self.filters.id_pos_filter_combobox, Environment.conf.VenditaDettaglio.puntocassa,2)
+        if hasattr(Environment.conf, "VenditaDettaglio"):
+            if hasattr(Environment.conf.VenditaDettaglio, "magazzino"):
+                findComboboxRowFromStr(self.filters.id_magazzino_filter_combobox, Environment.conf.VenditaDettaglio.magazzino,2)
+            if hasattr(Environment.conf.VenditaDettaglio, "puntocassa"):
+                findComboboxRowFromStr(self.filters.id_pos_filter_combobox, Environment.conf.VenditaDettaglio.puntocassa,2)
+        else:
+            if setconf("VenditaDettaglio", "magazzino_vendita"):
+                findComboboxRowFromId(self.filters.id_magazzino_filter_combobox,setconf("VenditaDettaglio", "magazzino_vendita"))
+            if setconf("VenditaDettaglio", "punto_cassa"):
+                findComboboxRowFromId(self.filters.id_pos_filter_combobox, setconf("VenditaDettaglio", "punto_cassa"))
 
 
         self.refreshHtml()
@@ -175,10 +181,16 @@ class GestioneScontrini(GladeWidget):
     def clear(self):
         # Annullamento filtro
         self.filters.id_articolo_filter_customcombobox.set_active(0)
-        if hasattr(Environment.conf.VenditaDettaglio, "magazzino"):
-            findComboboxRowFromStr(self.filters.id_magazzino_filter_combobox, Environment.conf.VenditaDettaglio.magazzino,2)
-        if hasattr(Environment.conf.VenditaDettaglio, "puntocassa"):
-            findComboboxRowFromStr(self.filters.id_pos_filter_combobox, Environment.conf.VenditaDettaglio.puntocassa,2)
+        if hasattr(Environment.conf, "VenditaDettaglio"):
+            if hasattr(Environment.conf.VenditaDettaglio, "magazzino"):
+                findComboboxRowFromStr(self.filters.id_magazzino_filter_combobox, Environment.conf.VenditaDettaglio.magazzino,2)
+            if hasattr(Environment.conf.VenditaDettaglio, "puntocassa"):
+                findComboboxRowFromStr(self.filters.id_pos_filter_combobox, Environment.conf.VenditaDettaglio.puntocassa,2)
+        else:
+            if setconf("VenditaDettaglio", "magazzino_vendita"):
+                findComboboxRowFromId(self.filters.id_magazzino_filter_combobox,setconf("VenditaDettaglio", "magazzino_vendita"))
+            if setconf("VenditaDettaglio", "punto_cassa"):
+                findComboboxRowFromId(self.filters.id_pos_filter_combobox, setconf("VenditaDettaglio", "punto_cassa"))
 
         self.filters.da_data_filter_entry.setNow()
         self.filters.a_data_filter_entry.setNow()
@@ -284,7 +296,7 @@ TOT CARTA:<b>%s</b> - TOT ASSEGNI:<b>%s</b> - TOT CONT.:<b>%s</b> - TOT SCONTI:<
         if self.dao:
             pageData = {
                     "file": "scontrino.html",
-                    "dao" :self.dao
+                    "dao" :self.dao,
                     }
             html = renderTemplate(pageData)
         renderHTML(self.detail,html)

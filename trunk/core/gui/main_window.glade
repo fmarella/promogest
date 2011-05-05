@@ -346,7 +346,7 @@ articoli per un certo </property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_action_appearance">False</property>
-                        <property name="label" translatable="yes">Vedi la licenza</property>
+                        <property name="label" translatable="yes">Licenza</property>
                         <property name="use_underline">True</property>
                         <signal name="activate" handler="on_licenza_menu_activate" swapped="no"/>
                       </object>
@@ -369,6 +369,16 @@ articoli per un certo </property>
                         <property name="label" translatable="yes">Manuale online</property>
                         <property name="use_underline">True</property>
                         <signal name="activate" handler="on_manuale_online_activate" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="menuitem1">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
+                        <property name="label" translatable="yes">Registrati sul sito</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate-item" handler="on_registrati_button_clicked" swapped="no"/>
                       </object>
                     </child>
                   </object>
@@ -444,6 +454,9 @@ articoli per un certo </property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
+                                <property name="tooltip_text" translatable="yes">Accesso all'anagrafica degli articoli. 
+Creazione, modifica e cancellazione 
+degli Articoli in uso nel gestionale</property>
                                 <property name="use_action_appearance">False</property>
                                 <property name="image">image1</property>
                                 <property name="use_underline">True</property>
@@ -478,6 +491,10 @@ articoli per un certo </property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
+                                <property name="tooltip_text" translatable="yes">Accesso all'anagrafica clienti 
+Creazione, modifica e cancellazione 
+dei clienti sia come persona fisica 
+che come persona giuridica</property>
                                 <property name="use_action_appearance">False</property>
                                 <property name="image">image3</property>
                                 <property name="use_underline">True</property>
@@ -1550,41 +1567,56 @@ articoli per un certo </property>
               </packing>
             </child>
             <child>
-              <object class="GtkButton" id="registrati_button">
-                <property name="label" translatable="yes">Registrati sul sito</property>
+              <object class="GtkLabel" id="pan_label_info">
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
-                <property name="image">regstrati_image</property>
-                <signal name="clicked" handler="on_registrati_button_clicked" swapped="no"/>
+                <property name="can_focus">False</property>
+                <property name="tooltip_text" translatable="yes">Questa etichetta fornisce indicazione 
+su quale tipologia di Promogest 
+stai usando </property>
+                <property name="xalign">0.05000000074505806</property>
+                <property name="xpad">20</property>
+                <property name="label" translatable="yes">&lt;b&gt;NOVITÀ&lt;/b&gt; PAN E BASIC</property>
+                <property name="use_markup">True</property>
+                <property name="track_visited_links">False</property>
               </object>
               <packing>
                 <property name="expand">False</property>
-                <property name="fill">False</property>
+                <property name="fill">True</property>
                 <property name="position">3</property>
               </packing>
             </child>
             <child>
-              <object class="GtkLabel" id="pan_label_info">
+              <object class="GtkButton" id="test_promoshop_button">
+                <property name="label" translatable="yes">PROVA PromoShop</property>
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">&lt;b&gt;NOVITÀ&lt;/b&gt; PAN E BASIC</property>
-                <property name="use_markup">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="tooltip_text" translatable="yes">Il modulo PromoShop Attiva una interfaccia 
+di vendita al dettaglio studiata per un uso con 
+lettore di codici a barre e per la generazione di scontrini 
+da gestire se necessario attraverso la stampa
+con registratore di cassa. </property>
+                <property name="use_action_appearance">False</property>
+                <property name="image">shop_image</property>
+                <property name="use_underline">True</property>
+                <signal name="clicked" handler="on_test_promoshop_button_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">False</property>
-                <property name="padding">3</property>
                 <property name="position">4</property>
               </packing>
             </child>
             <child>
               <object class="GtkButton" id="test_promowear_button">
-                <property name="label" translatable="yes">PROVA PROMOWEAR</property>
+                <property name="label" translatable="yes">PROVA PromoWear</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <property name="tooltip_text" translatable="yes">Il Modulo PromoWear aggiunge al promoGest la possibilità 
+di gestire taglie e colori , stagioni, annualità, generi ed altri attributi
+per gli articoli secondo una logica di articoli principali 
+( o padri)  e varianti ( o figli )</property>
                 <property name="use_action_appearance">False</property>
                 <property name="image">prova_promowear_image</property>
                 <signal name="clicked" handler="on_test_promowear_button_clicked" swapped="no"/>
@@ -1726,9 +1758,19 @@ Rosso: PromoGest2 Da Aggiornare</property>
     <property name="can_focus">False</property>
     <property name="pixbuf">taglia_colore16x16.png</property>
   </object>
+  <object class="GtkImage" id="prova_promowear_image1">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">taglia_colore16x16.png</property>
+  </object>
   <object class="GtkImage" id="regstrati_image">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="stock">gtk-edit</property>
+  </object>
+  <object class="GtkImage" id="shop_image">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">vendita24x24.png</property>
   </object>
 </interface>

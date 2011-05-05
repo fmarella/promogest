@@ -9,6 +9,7 @@ import gtk
 from promogest.dao.Magazzino import Magazzino
 from promogest import Environment
 from promogest.ui.utilsCombobox import fillComboboxCCardType
+from promogest.ui.utils import setconf
 
 def drawPart(anag):
     accelGroup = gtk.AccelGroup()
@@ -186,14 +187,16 @@ def drawPart(anag):
     anag.id_listino = anag.ricercaListino()
 
     # Ricerca magazzino
-    magalist = Magazzino().select(denominazione = Environment.conf.VenditaDettaglio.magazzino,
+    if hasattr(Environment.conf, "VenditaDettaglio"):
+        magalist = Magazzino().select(denominazione = Environment.conf.VenditaDettaglio.magazzino,
                                     offset = None,
                                     batchSize = None)
-
-    if len(magalist) > 0:
-        anag.id_magazzino = magalist[0].id
+        if len(magalist) > 0:
+            anag.id_magazzino = magalist[0].id
+        else:
+            anag.id_magazzino = None
     else:
-        anag.id_magazzino = None
+        anag.id_magazzino = setconf("VenditaDettaglio", "magazzino_vendita")
 
     # Vado in stato di ricerca
     anag._state = 'search'

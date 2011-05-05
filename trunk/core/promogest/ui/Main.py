@@ -114,6 +114,7 @@ class Main(GladeWidget):
         if Environment.tipodb =="postgresql":
 #            self.whatcant_button.destroy()
             self.test_promowear_button.destroy()
+            self.test_promoshop_button.destroy()
         self.addNoteBookPage()
         self.updates()
 
@@ -731,13 +732,7 @@ promogest2 IN /HOME/NOMEUTENTE/ O IN C:/UTENTI/NOMEUTENTE"""
     %s.zip
 
     ATTENZIONE!!!! la procedura potrebbe richiedere diversi minuti.""" %(st, nameDump)
-            dialogg = gtk.MessageDialog(self.getTopLevel(),
-                                    gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                    gtk.MESSAGE_INFO,
-                                    gtk.BUTTONS_OK,
-                                    msgg)
-            dialogg.run()
-            dialogg.destroy()
+            messageInfo(msg= msgg, transient=self.getTopLevel())
             #if response == gtk.RESPONSE_OK:
             st= Environment.startdir()
 
@@ -777,26 +772,14 @@ promogest2 IN /HOME/NOMEUTENTE/ O IN C:/UTENTI/NOMEUTENTE"""
             msg = 'Codice installazione:\n\n' + str(codice)
         except:
             msg = 'Impossibile generare il codice !!!'
-        dialog = gtk.MessageDialog(self.getTopLevel(),
-                                   gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                   gtk.MESSAGE_INFO,
-                                   gtk.BUTTONS_OK,
-                                   msg)
-        dialog.run()
-        dialog.destroy()
+        messageInfo(msg= msg, transient=self.getTopLevel())
 
     def on_send_Email_activate(self, widget):
         sendemail = SendEmail()
 
     def on_master_sincro_db_activate(self, widget):
         msg ="SERVER NON ANCORA IMPLEMENTATO"
-        dialog = gtk.MessageDialog(self.getTopLevel(),
-                                gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                gtk.MESSAGE_INFO,
-                                gtk.BUTTONS_OK,
-                                msg)
-        dialog.run()
-        dialog.destroy()
+        messageInfo(msg= msg, transient=self.getTopLevel())
 
     def on_client_sincro_db_activate(self, widget):
         if posso("SD") and Environment.conf.SincroDB.tipo =="client":
@@ -807,24 +790,20 @@ promogest2 IN /HOME/NOMEUTENTE/ O IN C:/UTENTI/NOMEUTENTE"""
             print "PASSIQUI"
 
     def on_test_promowear_button_clicked(self, button):
-        msg = """ATTENZIONE!! ATTENZIONE!! ATTENZIONE!!
-
+        msg = """ATTENZIONE!!
 QUESTA FUNZIONALITÀ È STATA AGGIUNTA PER
-PERMETTERE DI PROVARE IL PROMOGEST2 ONE BASIC CON
+PERMETTERE DI PROVARE IL PROMOGEST ONE BASIC CON
 IL MODULO TAGLIA E COLORE PROMOWEAR
 QUESTO MODULO SERVE A CHI DEVE GESTIRE
 UNA ATTIVITÀ CHE MOVIMENTA E VENDE
 ABBIGLIAMENTO O CALZATURE.
 L'OPERAZIONE È IRREVERSIBILE,AGGIUNGE DIVERSE
-TABELLE NEL DATABASE E NUOVE INTERAFFCE UTENTE
+TABELLE NEL DATABASE E NUOVE INTERFACCE UTENTE
 DEDICATE,NON CAUSA PERDITA DI DATI
 MA NON È CONSIGLIATO FARLO SE NON
 NE AVETE BISOGNO
 
-UNA VOLTA PREMUTO TERMINATA LA PROCEDURA
-CHIUDERE E RIAVVIARE IL PROGRAMMA
-
-PROCEDERE ALL'INSTALLAZIONE DEL MODULO PROMOWEAR? """
+Procedere all'installazione del modulo PromoWear? """
         if not YesNoDialog(msg=msg, transient=self.getTopLevel()):
             return
         if not hasattr(Environment.conf,"PromoWear"):
@@ -837,17 +816,53 @@ PROCEDERE ALL'INSTALLAZIONE DEL MODULO PROMOWEAR? """
             if "colore" not in tables and "taglia" not in tables:
                 from promogest.modules.PromoWear.data.PromoWearDB import *
                 msg = " TABELLE AGGIUNTE, RIAVVIARE IL PROGRAMMA "
-                dialog = gtk.MessageDialog(self.getTopLevel(),
-                                   gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                   gtk.MESSAGE_INFO,
-                                   gtk.BUTTONS_OK,
-                                   msg)
-                dialog.run()
-                dialog.destroy()
+                messageInfo(msg=msg, transient=self.getTopLevel())
         else:
-#            tables = [t.name for t in Environment.params["metadata"].sorted_tables]
-#            if "colore" in tables and "taglia" in tables:
-            print "Pulsante di test già premuto"
+            msg= "PULSANTE DI TEST GIA' PREMUTO"
+            messageInfo(msg=msg, transient=self.getTopLevel())
+
+
+    def on_test_promoshop_button_clicked(self, button):
+        from promogest.dao.Setconf import SetConf
+        msg = """ATTENZIONE!!
+QUESTA FUNZIONALITÀ È STATA AGGIUNTA PER
+PERMETTERE DI PROVARE IL PROMOGEST ONE BASIC CON
+IL MODULO VENDITA DETTAGLIO
+
+Procedere all'installazione del modulo PromoShop? """
+        if not YesNoDialog(msg=msg, transient=self.getTopLevel()):
+            return
+        if not setconf("Modulo", "VenditaDettaglio"):
+
+            a = SetConf()
+            a.section = "VenditaDettaglio"
+            a.tipo_section ="Modulo"
+            a.description = "Modulo Vendita Dettaglio"
+            a.tipo = "bool"
+            a.key = "mod_enable"
+            a.value = "yes"
+            a.persist()
+
+            a = SetConf()
+            a.section = "VenditaDettaglio"
+            a.tipo_section ="Modulo"
+            a.description = "Nome del movimento generato"
+            a.tipo = "str"
+            a.key = "operazione"
+            a.value = "Scarico venduto da cassa"
+            a.persist()
+
+            a = SetConf()
+            a.section = "VenditaDettaglio"
+            a.tipo_section ="Modulo"
+            a.description = "disabilita_stampa"
+            a.tipo = "bool"
+            a.key = "disabilita_stampa"
+            a.value = "True"
+            a.active = True
+            a.persist()
+
+
 
     def on_ricmedio_activate(self, widget):
         """ entry Menu statistiche Ricarico medio """

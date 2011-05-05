@@ -30,32 +30,37 @@ from promogest.modules.VenditaDettaglio.dao.TestataScontrino import TestataScont
 from promogest.modules.VenditaDettaglio.dao.RigaScontrino import RigaScontrino
 from promogest.modules.VenditaDettaglio.dao.ScontoRigaScontrino import ScontoRigaScontrino
 from promogest.modules.VenditaDettaglio.dao.ScontoTestataScontrino import ScontoTestataScontrino
-from  promogest.dao.Azienda import Azienda
+from promogest.dao.Azienda import Azienda
 from promogest.dao.Articolo import Articolo
 from promogest.dao.Listino import Listino
+from promogest.dao.Setconf import SetConf
 from promogest.dao.ListinoArticolo import ListinoArticolo
 from GestioneScontrini import GestioneScontrini
 from GestioneChiusuraFiscale import GestioneChiusuraFiscale
 from venditaDettaglioUiPart import drawPart
 from VenditaDettaglioUtils import fillComboboxPos
 
-if hasattr(Environment.conf.VenditaDettaglio,"backend") and\
-    Environment.conf.VenditaDettaglio.backend.upper() =="OLIVETTI" and\
-    Environment.conf.VenditaDettaglio.disabilita_stampa == 'no':
-    from promogest.modules.VenditaDettaglio.lib.olivetti import ElaExecute
-#    print "DRIVER OLIVETTI ANCORA DA FARE"
-    DRIVER = "E"
-elif hasattr(Environment.conf.VenditaDettaglio,"backend") and\
-    Environment.conf.VenditaDettaglio.backend.capitalize() == "DITRON" and\
-    Environment.conf.VenditaDettaglio.disabilita_stampa == 'no':
-    from promogest.modules.VenditaDettaglio.lib.ditron import Ditron
-    DRIVER = "D"
-elif Environment.conf.VenditaDettaglio.disabilita_stampa == 'yes':
+if hasattr(Environment.conf, "VenditaDettaglio"):
+    if hasattr(Environment.conf.VenditaDettaglio,"backend") and\
+        Environment.conf.VenditaDettaglio.backend.upper() =="OLIVETTI" and\
+        Environment.conf.VenditaDettaglio.disabilita_stampa == 'no':
+        from promogest.modules.VenditaDettaglio.lib.olivetti import ElaExecute
+    #    print "DRIVER OLIVETTI ANCORA DA FARE"
+        DRIVER = "E"
+    elif hasattr(Environment.conf.VenditaDettaglio,"backend") and\
+        Environment.conf.VenditaDettaglio.backend.capitalize() == "DITRON" and\
+        Environment.conf.VenditaDettaglio.disabilita_stampa == 'no':
+        from promogest.modules.VenditaDettaglio.lib.ditron import Ditron
+        DRIVER = "D"
+    elif Environment.conf.VenditaDettaglio.disabilita_stampa == 'yes':
+        DRIVER = None
+    else:
+        print "ERRORE NELLA DEFINIZIONE DEL BACKEND"
+        from promogest.modules.VenditaDettaglio.lib.ditron import Ditron
+        DRIVER = "D"
+elif setconf("VenditaDettaglio","disabilita_stampa"):
     DRIVER = None
-else:
-    print "ERRORE NELLA DEFINIZIONE DEL BACKEND"
-    from promogest.modules.VenditaDettaglio.lib.ditron import Ditron
-    DRIVER = "D"
+
 
 class AnagraficaVenditaDettaglio(GladeWidget):
     """ Frame per la gestione delle vendite a dettaglio """
@@ -72,7 +77,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         self._currentRow = {}
         self._simboloPercentuale = '%'
         self._simboloEuro = '€'
-        textStatusBar = "     PromoGest2 - Vendita Dettaglio - by PromoTUX Informatica - 800034561 - www.promogest.me - info@PromoTUX.it      "
+        textStatusBar = "     PromoGest - Vendita Dettaglio - by PromoTUX Informatica - www.promogest.me - info@PromoTUX.it      "
         context_id = self.vendita_dettaglio_statusbar.get_context_id("vendita_dettaglio_window")
         self.vendita_dettaglio_statusbar.push(context_id, textStatusBar)
         azienda = Azienda().getRecord(id=Environment.azienda)
@@ -90,15 +95,24 @@ class AnagraficaVenditaDettaglio(GladeWidget):
 
     def altreopzionishow(self):
         fillComboboxMagazzini(self.ao_magazzino_combobox)
-        if hasattr(Environment.conf.VenditaDettaglio, "magazzino"):
-            findComboboxRowFromStr(self.ao_magazzino_combobox, Environment.conf.VenditaDettaglio.magazzino,2)
+        if hasattr(Environment.conf, "VenditaDettaglio"):
+            if hasattr(Environment.conf.VenditaDettaglio, "magazzino"):
+                findComboboxRowFromStr(self.ao_magazzino_combobox, Environment.conf.VenditaDettaglio.magazzino,2)
+        maga = setconf("VenditaDettaglio", "magazzino_vendita")
+        if maga:
+            findComboboxRowFromId(self.ao_magazzino_combobox, maga)
+
         fillComboboxPos(self.ao_punto_cassa_combobox)
-        if hasattr(Environment.conf.VenditaDettaglio, "puntocassa"):
-            findComboboxRowFromStr(self.ao_punto_cassa_combobox, Environment.conf.VenditaDettaglio.puntocassa,2)
+        if hasattr(Environment.conf, "VenditaDettaglio"):
+            if hasattr(Environment.conf.VenditaDettaglio, "puntocassa"):
+                findComboboxRowFromStr(self.ao_punto_cassa_combobox, Environment.conf.VenditaDettaglio.puntocassa,2)
+        puntoca = setconf("VenditaDettaglio", "punto_cassa")
+        if puntoca:
+            findComboboxRowFromId(self.ao_punto_cassa_combobox,puntoca)
+        else:
+            messageInfo(msg="AGGIUNGERE E SELEZIONARE UN PUNTO CASSA")
         self.altre_opzioni_dialog.set_transient_for(self.topLevelWindow)
         self.altre_opzioni_dialog.show_all()
-#        print dir(self)
-
         self.altre_opzioni_dialog.run()
 
     def draw(self):
@@ -118,9 +132,29 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         self.idMagazzino = findIdFromCombobox(self.ao_magazzino_combobox)
         strPuntoCassa = findStrFromCombobox(self.ao_punto_cassa_combobox,2)
         strMagazzino = findStrFromCombobox(self.ao_magazzino_combobox,2)
-        Environment.conf.VenditaDettaglio.puntocassa = strPuntoCassa
-        Environment.conf.VenditaDettaglio.magazzino = strMagazzino
-        Environment.conf.save()
+        if hasattr(Environment.conf, "VenditaDettaglio"):
+            Environment.conf.VenditaDettaglio.puntocassa = strPuntoCassa
+            Environment.conf.VenditaDettaglio.magazzino = strMagazzino
+            Environment.conf.save()
+        else:
+            a = SetConf().select(section="VenditaDettaglio", key="punto_cassa")
+            if a:
+                a[0].value = self.idPuntoCassa
+                a[0].persist()
+            else:
+                a = SetConf()
+                a.section = "VenditaDettaglio"
+                a.tipo_section ="Modulo"
+                a.description = "punto cassa"
+                a.tipo = "int"
+                a.key = "punto_cassa"
+                a.value = self.idPuntoCassa
+                a.active = True
+                a.persist()
+            a = SetConf().select(section="VenditaDettaglio", key="magazzino_vendita")
+            if a:
+                a[0].value = self.idMagazzino
+                a[0].persist()
 #        if not self.idPuntoCassa:
 #            obligatoryField(None, widget=None, msg="Punto Cassa Obbligatorio")
 #            return
@@ -221,11 +255,16 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         """ jolly key è F9, richiama ed inserisce l'articolo definito nel configure"""
         keyname = gtk.gdk.keyval_name(event.keyval)
         if keyname == 'F9':
-            try:
+            #try:
+            if hasattr(Environment.conf, "VenditaDettaglio"):
                 codice = Environment.conf.VenditaDettaglio.jolly
-                self.search_item(codice=codice, fnove=True)
-            except:
-                Environment.pg2log.info("ARTICOLO JOLLY NON SETTATO NEL CONFIGURE NELLA SEZIONE [VenditaDettaglio]")
+            else:
+                articoloId = setconf("VenditaDettaglio", "jolly")
+                if articoloId:
+                    codice = Articolo().getRecord(id=articoloId).codice
+            self.search_item(codice=codice, fnove=True)
+            #except:
+                #Environment.pg2log.info("ARTICOLO JOLLY NON SETTATO NEL CONFIGURE NELLA SEZIONE [VenditaDettaglio]")
 
     def fnovewidget(self,codice=None, destroy=None):
         if destroy:
@@ -822,12 +861,9 @@ class AnagraficaVenditaDettaglio(GladeWidget):
                                quantita)
 
             self.prezzo_entry.grab_focus()
-            try:
-                if Environment.conf.VenditaDettaglio.direct_confirm == "yes":
-                    self.on_confirm_button_clicked(self.getTopLevel())
-                    self.refreshTotal()
-            except:
-                pass
+            self.on_confirm_button_clicked(self.getTopLevel())
+            self.refreshTotal()
+
 
         from promogest.ui.RicercaComplessaArticoli import RicercaComplessaArticoli
         codiceABarre = self.codice_a_barre_entry.get_text()
@@ -855,10 +891,12 @@ class AnagraficaVenditaDettaglio(GladeWidget):
     def ricercaListino(self):
         """ check if there is a priceList like setted on configure file
         """
-        pricelist = Listino().select(denominazione = Environment.conf.VenditaDettaglio.listino,
-                                    offset = None,
-                                    batchSize = None)
-
+        if hasattr(Environment.conf, "VenditaDettaglio"):
+            pricelist = Listino().select(denominazione = Environment.conf.VenditaDettaglio.listino,
+                                        offset = None,
+                                        batchSize = None)
+        else:
+            pricelist = Listino().select(id=setconf("VenditaDettaglio", "listino_vendita"))
         if pricelist:
             id_listino = pricelist[0].id
         else:
@@ -981,7 +1019,11 @@ class AnagraficaVenditaDettaglio(GladeWidget):
 
     def on_apri_cassetto_button_clicked(self, button):
         if DRIVER =="E":
-            filename = Environment.conf.VenditaDettaglio.export_path+\
+            try: # vecchio stile ...adattamento ai dati in setconf
+                path = Environment.conf.VenditaDettaglio.export_path
+            except: # prendo la cartella temp standard
+                path = tempDir
+            filename = path+\
                                 "apri_cassetto.txt"
             f = file(filename, 'w')
             f.write("912;1\n")

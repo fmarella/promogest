@@ -25,6 +25,7 @@ from promogest.ui.GladeWidget import GladeWidget
 from promogest.ui.utils import *
 from promogest import Environment
 from promogest.dao.CategoriaArticolo import CategoriaArticolo
+from promogest.dao.Magazzino import Magazzino
 from promogest.modules.VenditaDettaglio.dao.ChiusuraFiscale import ChiusuraFiscale
 from promogest.lib.HtmlHandler import createHtmlObj, renderTemplate, renderHTML
 from promogest.ui.PrintDialog import PrintDialogHandler
@@ -129,6 +130,12 @@ class Distinta(GladeWidget):
                 parziali.append((cate,catelist))
                 catelist= []
             partz = self.aggiungiTotaliXRiga(parziali)
+            if hasattr(Environment.conf, "VenditaDettaglio"):
+                magazzino = Environment.conf.VenditaDettaglio.magazzino
+            else:
+                magdao = setconf("VenditaDettaglio", "magazzino_vendita")
+                if magdao:
+                    magazzino = Magazzino().getRecord(id=magdao).denominazione
 
             pageData = {
                     "file": "distinta_giornaliera.html",
@@ -136,7 +143,8 @@ class Distinta(GladeWidget):
                     "totali": totali,
                     "dataeora": dataeora,
                     "ragione_sociale": ragione_sociale,
-                    "aperto": aperto
+                    "aperto": aperto,
+                    "magazzino":magazzino
                     }
             self.html = renderTemplate(pageData)
         renderHTML(self.detail,self.html)
