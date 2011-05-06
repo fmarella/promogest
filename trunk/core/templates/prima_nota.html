@@ -23,11 +23,11 @@
 
         {% for riga in dao.righeprimanota %}
         <tr >
-            <td class="odd-detail">{{riga.denominazione}}</td>
+            <td class="odd-detail">{{riga.denominazione|replace("\\n"," ")}}</td>
             {% if riga.segno =="entrata" %}
-                <td style="color:green;width:80px;text-align:center;" class="odd-detail">{{(utils.italianizza(utils.mN(riga.valore,2),2))}}</td>
+                <td style="color:green;width:80px;text-align:center;" class="odd-detail">{{utils.mNLC(riga.valore,2)}}</td>
             {% elif riga.segno =="uscita" %}
-            <td style="color:red;width:80px;text-align:center;" class="odd-detail">-{{utils.italianizza(utils.mN(riga.valore,2),2)}}</td>
+            <td style="color:red;width:80px;text-align:center;" class="odd-detail">-{{utils.mNLC(riga.valore,2)}}</td>
             {% endif %}
             {% if riga.tipo =="banca" %}
                 <td style="color:blue;width:80px;text-align:center;" class="odd-detail">{{(riga.tipo)}}</td>
@@ -45,34 +45,34 @@
 <table style="width:280px;">
 <tr>
         <td style="width:100px;"><b>TOTALE ENTRATE CASSA</b></td>
-<td style="color:green;width:70px;" >{{utils.italianizza(utils.mN(dao.totali["tot_entrate_cassa"],2),2)}}</td>
+<td style="color:green;width:70px;" >{{utils.mNLC(dao.totali["tot_entrate_cassa"],2)}}</td>
 </tr>
 <tr>
         <td style="width:100px;"><b>TOTALE USCITE CASSA</b></td>
-        <td style="color:red;width:70px;">{{utils.italianizza(utils.mN(dao.totali["tot_uscite_cassa"],2),2)}}</td>
+        <td style="color:red;width:70px;">{{utils.mNLC(dao.totali["tot_uscite_cassa"],2)}}</td>
 </tr>
 <tr>
         <td style="width:100px;"><b>TOTALE ENTRATE BANCA</b></td>
-        <td style="color:green;width:70px;">{{utils.italianizza(utils.mN(dao.totali["tot_entrate_banca"],2),2)}}</td>
+        <td style="color:green;width:70px;">{{utils.mNLC(dao.totali["tot_entrate_banca"],2)}}</td>
 </tr>
 <tr>
         <td style="width:100px;"><b>TOTALE USCITE BANCA</b></td>
-        <td style="color:red;width:70px;">{{utils.italianizza(utils.mN(dao.totali["tot_uscite_banca"],2),2)}}</td>
+        <td style="color:red;width:70px;">{{utils.mNLC(dao.totali["tot_uscite_banca"],2)}}</td>
 </tr>
 <tr>
         <td style="width:100px;"><b>TOTALE ENTRATE</b></td>
-        <td style="color:green;width:70px;">{{utils.italianizza(utils.mN(dao.totali["tot_entrate"],2),2)}}</td>
+        <td style="color:green;width:70px;">{{utils.mNLC(dao.totali["tot_entrate"],2)}}</td>
 </tr>
 <tr>
         <td style="width:100px;"><b>TOTALE USCITE</b></td>
-        <td style="color:red;width:70px;">{{utils.italianizza(utils.mN(dao.totali["tot_uscite"],2),2)}}</td>
+        <td style="color:red;width:70px;">{{utils.mNLC(dao.totali["tot_uscite"],2)}}</td>
 </tr>
 <tr>
         <td style="width:100px;"><b>SALDO</b></td>
         {% if dao.totali["totale"] > 0 %}
-        <td style="color:green;width:70px;"><b>{{utils.italianizza(utils.mN(dao.totali["totale"],2),2)}}</b></td>
+        <td style="color:green;width:70px;"><b>{{utils.mNLC(dao.totali["totale"],2)}}</b></td>
         {% else %}
-        <td style="color:red;width:70px;" ><b>{{utils.italianizza(utils.mN(dao.totali["totale"],2),2)}}</b></td>
+        <td style="color:red;width:70px;" ><b>{{utils.mNLC(dao.totali["totale"],2)}}</b></td>
          {% endif %}
 </tr>
 </table>

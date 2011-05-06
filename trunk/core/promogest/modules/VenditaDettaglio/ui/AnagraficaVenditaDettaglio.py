@@ -875,9 +875,12 @@ class AnagraficaVenditaDettaglio(GladeWidget):
                                quantita)
 
             self.prezzo_entry.grab_focus()
-            self.on_confirm_button_clicked(self.getTopLevel())
-            self.refreshTotal()
-
+            try:
+                if Environment.conf.VenditaDettaglio.direct_confirm == "yes":
+                    self.on_confirm_button_clicked(self.getTopLevel())
+                    self.refreshTotal()
+            except:
+                pass
 
         from promogest.ui.RicercaComplessaArticoli import RicercaComplessaArticoli
         codiceABarre = self.codice_a_barre_entry.get_text()
@@ -1036,7 +1039,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             try: # vecchio stile ...adattamento ai dati in setconf
                 path = Environment.conf.VenditaDettaglio.export_path
             except: # prendo la cartella temp standard
-                path = tempDir
+                path = Environment.tempDir
             filename = path+\
                                 "apri_cassetto.txt"
             f = file(filename, 'w')

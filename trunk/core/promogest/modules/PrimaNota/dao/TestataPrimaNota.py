@@ -86,20 +86,27 @@ class TestataPrimaNota(Dao):
             dic = {k:testataprimanota.c.numero >= v}
         elif k == 'aNumero':
             dic = {k:testataprimanota.c.numero <= v}
-#        elif k == 'datafinecheck':
-#            dic = {k:testataprimanota.c.data_fine == None}
-#        elif k == 'datafine':
-#            dic = {k:testataprimanota.c.data_fine == v}
         elif k == 'numero':
             dic = {k:testataprimanota.c.numero == v}
         elif k == 'daDataInizio':
             dic = {k:testataprimanota.c.data_inizio >= v}
         elif k== 'aDataInizio':
             dic = {k:testataprimanota.c.data_inizio <= v}
-#        elif k == 'daDataFine':
-#            dic = {k:testataprimanota.c.data_fine >= v}
-#        elif k== 'aDataFine':
-#            dic = {k:testataprimanota.c.data_fine <= v}
+        elif k== 'tipoCassa':
+            dic = {k:and_(testataprimanota.c.id== RigaPrimaNota.id_testata_prima_nota,
+                            RigaPrimaNota.tipo !="cassa")}
+        elif k== 'tipoBanca':
+            dic = {k:and_(testataprimanota.c.id== RigaPrimaNota.id_testata_prima_nota,
+                            RigaPrimaNota.tipo !="banca")}
+        elif k== 'idBanca':
+            dic = {k:and_(testataprimanota.c.id== RigaPrimaNota.id_testata_prima_nota,
+                            RigaPrimaNota.id_banca ==v)}
+        elif k== 'segnoEntrate':
+            dic = {k:and_(testataprimanota.c.id== RigaPrimaNota.id_testata_prima_nota,
+                            RigaPrimaNota.segno !="entrata")}
+        elif k== 'segnoUscite':
+            dic = {k:and_(testataprimanota.c.id== RigaPrimaNota.id_testata_prima_nota,
+                            RigaPrimaNota.segno !="uscita")}
         return  dic[k]
 
     def righePrimaNotaDel(self,id=None):

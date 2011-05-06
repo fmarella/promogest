@@ -39,6 +39,7 @@ class AnagraficaPrimaNotaFilter(AnagraficaFilter):
                           module=True)
         self._widgetFirstFocus = self.a_numero_filter_entry
         self.da_data_inizio_datetimewidget.set_text('01/01/' + Environment.workingYear)
+        fillComboboxBanche(self.id_banche_filter_combobox, short=20)
         self.aggiornamento=False
 
 
@@ -95,12 +96,22 @@ class AnagraficaPrimaNotaFilter(AnagraficaFilter):
             Environment.session.add(kbb)
         Environment.session.commit()
 
+    def on_banca_filter_check_clicked(self,check):
+        if self.banca_filter_check.get_active():
+            self.id_banche_filter_combobox.set_sensitive(True)
+        else:
+            self.id_banche_filter_combobox.set_active(0)
+            self.id_banche_filter_combobox.set_sensitive(False)
+
+
     def clear(self):
         # Annullamento filtro
         self.da_data_inizio_datetimewidget.set_text('01/01/' + Environment.workingYear)
         self.a_numero_filter_entry.set_text('')
         self.da_numero_filter_entry.set_text('')
         self.a_data_inizio_datetimewidget.set_text('')
+        self.id_banche_filter_combobox.set_active(0)
+
         self.refresh()
 
     def refresh(self):
@@ -109,13 +120,40 @@ class AnagraficaPrimaNotaFilter(AnagraficaFilter):
         danumero = prepareFilterString(self.da_numero_filter_entry.get_text())
         da_data_inizio = stringToDate(self.da_data_inizio_datetimewidget.get_text())
         a_data_inizio = stringToDate(self.a_data_inizio_datetimewidget.get_text())
+        tipo_banca = self.banca_filter_check.get_active()
+        if not tipo_banca:
+            tipoBanca = "banca"
+        else:
+            tipoBanca = None
+        tipo_cassa = self.cassa_filter_check.get_active()
+        if not tipo_cassa:
+            tipoCassa = "cassa"
+        else:
+            tipoCassa = None
+
+        segno_entrate = self.entrate_filter_check.get_active()
+        if not segno_entrate:
+            segnoEntrate = "entrata"
+        else:
+            segnoEntrate = None
+        segno_uscite = self.uscite_filter_check.get_active()
+        if not segno_uscite:
+            segnoUscite = "uscita"
+        else:
+            segnoUscite = None
+
+        banca = findIdFromCombobox(self.id_banche_filter_combobox)
 
         def filterCountClosure():
             return TestataPrimaNota().count(aNumero=anumero,
                                 daNumero=danumero,
                                 daDataInizio=da_data_inizio,
                                 aDataInizio=a_data_inizio,
-                                                            )
+                                tipoCassa = tipoCassa,
+                                tipoBanca = tipoBanca,
+                                segnoEntrate = segnoEntrate,
+                                segnoUscite = segnoUscite,
+                                idBanca = banca)
         self._filterCountClosure = filterCountClosure
 
         self.numRecords = self.countFilterResults()
@@ -125,11 +163,16 @@ class AnagraficaPrimaNotaFilter(AnagraficaFilter):
         def filterClosure(offset, batchSize):
             return TestataPrimaNota().select(aNumero=anumero,
                                             daNumero=danumero,
-                                             daDataInizio=da_data_inizio,
-                                             aDataInizio=a_data_inizio,
-                                             orderBy=self.orderBy,
-                                             offset=offset,
-                                             batchSize=batchSize)
+                                            daDataInizio=da_data_inizio,
+                                            aDataInizio=a_data_inizio,
+                                            tipoCassa = tipoCassa,
+                                            tipoBanca = tipoBanca,
+                                            segnoEntrate = segnoEntrate,
+                                            segnoUscite = segnoUscite,
+                                            idBanca = banca,
+                                            orderBy=self.orderBy,
+                                            offset=offset,
+                                            batchSize=batchSize)
 
         self._filterClosure = filterClosure
 

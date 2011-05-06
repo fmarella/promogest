@@ -385,13 +385,12 @@ def ckd(dao):
     if "ONE BASIC" in Environment.modulesList or \
                             "PRO BASIC" in Environment.modulesList:
         if Environment.tipodb =="sqlite":
+            records = Environment.session.query(dao.__class__).count()
             for a in Environment.modulesList:
                 if "+S" not in a:
                     if "TestataScontrino" in classe:
                         print "SHOP LIMITATO"
                         if records > 20: stopp = True
-
-            records = Environment.session.query(dao.__class__).count()
             if "TestataDocumento" in classe:
                 if records > 50: stopp = True
             if "Listino" in classe:

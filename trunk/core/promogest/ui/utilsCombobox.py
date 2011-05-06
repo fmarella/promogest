@@ -754,7 +754,7 @@ def fillModelCombobox(combobox):
     combobox.add_attribute(renderer, 'text', 0)
     combobox.set_model(model)
 
-def fillComboboxBanche(combobox, filter=False):
+def fillComboboxBanche(combobox, filter=False, short=1000):
     """
     Crea elenco delle banche
     """
@@ -768,7 +768,7 @@ def fillComboboxBanche(combobox, filter=False):
         emptyRow = '< Tutti >'
     model.append((None, 0, emptyRow))
     for b in bans:
-        model.append((b, b.id, (b.denominazione  or '')))
+        model.append((b, b.id, (b.denominazione[0:short]  or '')))
 
     combobox.clear()
     renderer = gtk.CellRendererText()
