@@ -72,6 +72,17 @@
       </object>
     </child>
     <child>
+      <object class="GtkTreeViewColumn" id="treeviewcolumn1">
+        <property name="title" translatable="yes">Rif.Banca</property>
+        <child>
+          <object class="GtkCellRendererText" id="cellrenderertext6"/>
+          <attributes>
+            <attribute name="text">7</attribute>
+          </attributes>
+        </child>
+      </object>
+    </child>
+    <child>
       <object class="GtkTreeViewColumn" id="treeviewcolumn5">
         <property name="resizable">True</property>
         <property name="title" translatable="yes">Note</property>
@@ -79,7 +90,7 @@
         <child>
           <object class="GtkCellRendererText" id="cellrenderertext14"/>
           <attributes>
-            <attribute name="text">7</attribute>
+            <attribute name="text">8</attribute>
           </attributes>
         </child>
       </object>
@@ -946,6 +957,8 @@ Descrizione di più operazioni</property>
       <!-- column-name gchararray7 -->
       <column type="gchararray"/>
       <!-- column-name gchararray8 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray9 -->
       <column type="gchararray"/>
     </columns>
   </object>

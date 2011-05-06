@@ -197,27 +197,33 @@ class AnagraficaPrimaNotaFilter(AnagraficaFilter):
                     tipo = i.righeprimanota[0].tipo
                 else:
                     tipo = "misto"
+                banca = i.righeprimanota[0].banca[0:15] or ""
             elif len(i.righeprimanota) ==1:
                 denom = i.righeprimanota[0].denominazione
                 note = i.note
                 tipo = i.righeprimanota[0].tipo
+                banca = i.righeprimanota[0].banca[0:15] or ""
             else:
                 print "ATTENZIONE TESTATA PRIMA NOTA SENZA RIGHE", i, i.note, i.data_inizio
                 denom ="SENZARIGHE"
                 note = i.note
+                banca = ""
+
+
 
             if tipo =="cassa":
                 col_tipo = "#FFF2C7"
             elif tipo=="banca":
                 col_tipo = "#CFF5FF"
             else:
-                col_tipo = ""
+                col_tipo = None
             self.primanota_filter_listore.append((i, col_valore,
                                         (str(i.numero) or ''),
                                         (dateToString(i.data_inizio) or ''),
                                         denom or '',
-                                        (str(italianizza(mN(i.totali["totale"],2),2)) or "0"),
+                                        (str(mNLC(i.totali["totale"],2)) or "0"),
                                         tipo,
+                                        banca,
                                         note or "",
                                         col_tipo
                                         ))
