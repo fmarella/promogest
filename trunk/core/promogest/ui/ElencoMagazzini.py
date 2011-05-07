@@ -140,7 +140,7 @@ class ElencoMagazzini(GladeWidget):
 
             else:
                 toggleButton.set_active(False)
-                obligatoryField(self._mainWindow,
+                obligatoryField(None,
                                 None,
                                 '\nSelezionare un magazzino !')
         else:

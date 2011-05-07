@@ -208,16 +208,14 @@ class AnagraficaPrimaNotaFilter(AnagraficaFilter):
                 denom ="SENZARIGHE"
                 note = i.note
                 banca = ""
-
-
-
             if tipo =="cassa":
                 col_tipo = "#FFF2C7"
             elif tipo=="banca":
                 col_tipo = "#CFF5FF"
             else:
-                col_tipo = None
-            self.primanota_filter_listore.append((i, col_valore,
+                col_tipo = ""
+            self.primanota_filter_listore.append((i,
+                                        col_valore,
                                         (str(i.numero) or ''),
                                         (dateToString(i.data_inizio) or ''),
                                         denom or '',
