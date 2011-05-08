@@ -319,7 +319,7 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
             #raise Exception, 'Operation aborted codice articolo duplicato'
         self.dao.denominazione = self.denominazione_entry.get_text()
         if posso("GN"):
-            self.dao.divisore_noleggio_value_set = self.divisore_noleggio_entry.get_text()
+            self.dao.divisore_noleggio_value_set = self.divisore_noleggio_entry.get_text().strip()
         self.dao.id_aliquota_iva = findIdFromCombobox(self.id_aliquota_iva_customcombobox.combobox)
         self.dao.id_famiglia_articolo = findIdFromCombobox(self.id_famiglia_articolo_customcombobox.combobox)
         self.dao.id_categoria_articolo = findIdFromCombobox(self.id_categoria_articolo_customcombobox.combobox)
