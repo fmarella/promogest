@@ -513,6 +513,11 @@ class Articolo(Dao):
             for l in la:
                 l.delete()
 #        try:
+        if posso("GN"):
+            from promogest.modules.GestioneNoleggio.dao.ArticoloGestioneNoleggio import ArticoloGestioneNoleggio
+            artGN = ArticoloGestioneNoleggio().select(idArticolo=self.id)
+            if artGN:
+                params["session"].delete(artGN[0])
         params["session"].commit()
         Environment.pg2log.info("DELETE ARTICOLO" )
 #        except:
