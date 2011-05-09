@@ -150,7 +150,8 @@ o contattare l'assistenza""")
     def refresh(self):
         """ show the html page in the custom widget"""
         self.bodyWidget.orderBy = self.orderBy
-        daos = self.bodyWidget.runFilter(offset=None, batchSize=None,
+        daos = self.bodyWidget.runFilter(offset=None,
+                                        batchSize=None,
                                          filterClosure=self._filterClosure)
         self.numRecords = self.bodyWidget.countFilterResults(self._filterCountClosure)
 #        self._refreshPageCount()

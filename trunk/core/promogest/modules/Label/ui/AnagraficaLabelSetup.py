@@ -64,7 +64,11 @@ class AnagraficaLabelSetup(GladeWidget):
         d.key = "sistemarigafrontaline"
         d.section = "Label"
         d.tipo = "int"
-        d.value = self.sistemarigafrontaline_entry.get_text() or "0"
+        if self.sistemarigafrontaline_entry.get_text() =="":
+            valore = "1"
+        else:
+            valore = self.sistemarigafrontaline_entry.get_text()
+        d.value =  valore
         d.description = "parametro di allineamento riga in label"
         d.tipo_section = "Generico"
         d.active = True
@@ -80,7 +84,11 @@ class AnagraficaLabelSetup(GladeWidget):
         d.key = "sistemacolonnafrontaline"
         d.section = "Label"
         d.tipo = "int"
-        d.value = self.sistemarigafrontaline_entry.get_text() or "0"
+        if self.sistemarigafrontaline_entry.get_text() == "":
+            valore = "1"
+        else:
+            valore = self.sistemarigafrontaline_entry.get_text()
+        d.value =  valore
         d.description = "parametro di allineamento colonna in label"
         d.tipo_section = "Generico"
         d.active = True

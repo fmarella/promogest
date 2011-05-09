@@ -145,6 +145,7 @@ class AnagraficaPrimaNotaFilter(AnagraficaFilter):
         banca = findIdFromCombobox(self.id_banche_filter_combobox)
 
         def filterCountClosure():
+            banca = findIdFromCombobox(self.id_banche_filter_combobox)
             return TestataPrimaNota().count(aNumero=anumero,
                                 daNumero=danumero,
                                 daDataInizio=da_data_inizio,
@@ -161,6 +162,7 @@ class AnagraficaPrimaNotaFilter(AnagraficaFilter):
 
         # Let's save the current search as a closure
         def filterClosure(offset, batchSize):
+            banca = findIdFromCombobox(self.id_banche_filter_combobox)
             return TestataPrimaNota().select(aNumero=anumero,
                                             daNumero=danumero,
                                             daDataInizio=da_data_inizio,

@@ -53,6 +53,7 @@
         <child>
           <object class="GtkCellRendererText" id="cellrenderertext11"/>
           <attributes>
+            <attribute name="cell-background">1</attribute>
             <attribute name="text">5</attribute>
           </attributes>
         </child>
@@ -64,7 +65,7 @@
         <child>
           <object class="GtkCellRendererText" id="cellrenderertext12"/>
           <attributes>
-            <attribute name="cell-background">8</attribute>
+            <attribute name="cell-background">9</attribute>
             <attribute name="text">6</attribute>
           </attributes>
         </child>
