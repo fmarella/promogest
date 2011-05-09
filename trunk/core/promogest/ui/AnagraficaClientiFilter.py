@@ -126,11 +126,10 @@ class AnagraficaClientiFilter(AnagraficaFilter):
         self.filter_listore.clear()
 
         for c in clis:
-            pvcf = ''
-            if (c.ragione_sociale or '') == '':
-                pvcf = (c.codice_fiscale or '')
-            else:
+            if c.partita_iva != '':
                 pvcf = (c.partita_iva or '')
+            else:
+                pvcf = (c.codice_fiscale or '')
             self.filter_listore.append((c,
                                         (c.codice or ''),
                                         (c.ragione_sociale or ''),
