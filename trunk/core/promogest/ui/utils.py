@@ -2371,7 +2371,7 @@ def calcolaTotali(daos):
     """
 
     plus = ["Fattura vendita","DDT vendita","Preventivo","Vendita dettaglio",
-    "Preventivo dettaglio","Ordine a magazzino","Vendita dettaglio CORSO", "Vendita dettaglio SANTIAGO"
+    "Preventivo dettaglio","Ordine a magazzino","Vendita dettaglio CORSO", "Vendita dettaglio SANTIAGO",
 "Ordine beni strumentali","Fattura pro-forma","Fattura differita vendita",
     "Fattura accompagnatoria","Scarico venduto da cassa","Ordine da cliente",
     "Ordine a fornitore","DDT acquisto",
