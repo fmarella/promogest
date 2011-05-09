@@ -846,7 +846,7 @@ def calcolaSaldoGeneralePrimaNota():
         tpn= TestataPrimaNota().select(batchSize=None)
         riporto = 0
     tot = calcolaTotaliPrimeNote(tpn)
-    tot["totale_con_riporto"] = tot["totale"] + Decimal(str(riporto))
+    #tot["totale_con_riporto"] = tot["totale"] + Decimal(str(riporto))
     return tot
 
 def calcolaTotaliPrimeNote(daos):
@@ -862,13 +862,12 @@ def calcolaTotaliPrimeNote(daos):
         tot_entrate_banca += dao.totali["tot_entrate_banca"]
         tot_uscite_cassa += dao.totali["tot_uscite_cassa"]
         tot_uscite_banca += dao.totali["tot_uscite_banca"]
-    tot_entrate = tot_entrate_cassa+tot_entrate_banca
-    tot_uscite = tot_uscite_cassa+tot_uscite_banca
-    totale = tot_entrate+tot_uscite
+    saldo_cassa = tot_entrate_cassa + tot_uscite_cassa
+    saldo_banca = tot_entrate_banca + tot_uscite_banca
+
     totalii = {
-            "totale": totale,
-            "tot_entrate": tot_entrate,
-            "tot_uscite": tot_uscite,
+            "saldo_cassa": saldo_cassa,
+            "saldo_banca": saldo_banca,
             "tot_entrate_banca": tot_entrate_banca,
             "tot_entrate_cassa": tot_entrate_cassa,
             "tot_uscite_banca": tot_uscite_banca,
