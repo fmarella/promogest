@@ -2939,6 +2939,11 @@ def posso(mod=None):
         if "ONE FULL" in moduli :return True
         if "PRO STANDARD" in moduli: return True
         if "PRO FULL" in moduli: return True
+        if "PRO FULL +A" in moduli: return True
+        if "PRO FULL +W" in moduli: return True
+        if "PRO FULL +W +S" in moduli: return True
+        if "PRO FULL +S" in moduli: return True
+        if "PRO FULL +W +S +A" in moduli: return True
     if mod == "PW" or mod=="PromoWear":
         if "PromoWear" in moduli:return True
         if "+W" in moduli:return True
@@ -2973,14 +2978,29 @@ def posso(mod=None):
         if "Inventario"  in moduli: return True
         if "ONE FULL" in moduli: return True
         if "PRO FULL" in moduli: return True
+        if "PRO FULL +A" in moduli: return True
+        if "PRO FULL +W" in moduli: return True
+        if "PRO FULL +W +S" in moduli: return True
+        if "PRO FULL +S" in moduli: return True
+        if "PRO FULL +W +S +A" in moduli: return True
     if mod == "IPL":
         if "ImportPriceList" in moduli:return True
         if "ONE FULL" in moduli: return True
         if "PRO FULL" in moduli: return True
+        if "PRO FULL +A" in moduli: return True
+        if "PRO FULL +W" in moduli: return True
+        if "PRO FULL +W +S" in moduli: return True
+        if "PRO FULL +S" in moduli: return True
+        if "PRO FULL +W +S +A" in moduli: return True
     if mod == "LA":
         if "Label" in moduli: return True
         if "ONE FULL" in moduli: return True
         if "PRO FULL" in moduli: return True
+        if "PRO FULL +A" in moduli: return True
+        if "PRO FULL +W" in moduli: return True
+        if "PRO FULL +W +S" in moduli: return True
+        if "PRO FULL +S" in moduli: return True
+        if "PRO FULL +W +S +A" in moduli: return True
     if mod == "SM":
         if "SuMisura" in moduli: return True
     if mod == "IP":
@@ -3005,6 +3025,11 @@ def posso(mod=None):
         if "STA" in moduli: return True
         if "ONE FULL" in moduli: return True
         if "PRO FULL" in moduli: return True
+        if "PRO FULL +A" in moduli: return True
+        if "PRO FULL +W" in moduli: return True
+        if "PRO FULL +W +S" in moduli: return True
+        if "PRO FULL +S" in moduli: return True
+        if "PRO FULL +W +S +A" in moduli: return True
     if mod == "SD":
         if "SincroDB" in moduli :return True
     if mod == "GC" or mod =="GestioneCommesse":
