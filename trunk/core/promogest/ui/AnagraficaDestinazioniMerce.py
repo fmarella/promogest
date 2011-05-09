@@ -19,20 +19,13 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
-import gtk
-import gobject
-
-from AnagraficaComplessa import Anagrafica
+from promogest.ui.AnagraficaComplessa import Anagrafica
 from promogest.ui.AnagraficaComplessaEdit import AnagraficaEdit
 from promogest.ui.AnagraficaComplessaReport import AnagraficaReport
 from promogest.ui.AnagraficaComplessaHtml import AnagraficaHtml
 from promogest.ui.AnagraficaComplessaFilter import AnagraficaFilter
-
-from promogest import Environment
 from promogest.dao.DestinazioneMerce import DestinazioneMerce
-
-from utils import *
-
+from promogest.ui.utils import *
 
 
 class AnagraficaDestinazioniMerce(Anagrafica):
@@ -65,44 +58,16 @@ class AnagraficaDestinazioniMerceFilter(AnagraficaFilter):
 
 
     def draw(self, cplx=False):
-        # Colonne della Treeview per il filtro
-        treeview = self._anagrafica.anagrafica_filter_treeview
-        renderer = gtk.CellRendererText()
-
-        column = gtk.TreeViewColumn('Denominazione', renderer, text=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, (None, 'denominazione'))
-        column.set_resizable(True)
-        column.set_expand(True)
-        column.set_min_width(250)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Indirizzo', renderer, text=2)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, (None, 'indirizzo'))
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(200)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Località', renderer, text=3)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, (None, 'localita'))
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(200)
-        treeview.append_column(column)
-
-        treeview.set_search_column(1)
-
-        self._treeViewModel = gtk.ListStore(object, str, str, str)
-        self._anagrafica.anagrafica_filter_treeview.set_model(self._treeViewModel)
-
+        self._treeViewModel = self.filter_listore
         self.refresh()
-
+        
+    def _reOrderBy(self, column):
+        if column.get_name() == "denominazione_column":
+            return self._changeOrderBy(column, (None, DestinazioneMerce.denominazione))
+        elif column.get_name() == "indirizzo_column":
+            return self._changeOrderBy(column, (None, DestinazioneMerce.indirizzo))
+        elif column.get_name() == "localita_column":
+            return self._changeOrderBy(column, (None, DestinazioneMerce.localita))
 
     def clear(self):
         # Annullamento filtro
