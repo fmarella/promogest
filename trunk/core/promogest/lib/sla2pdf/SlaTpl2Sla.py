@@ -729,7 +729,7 @@ class SlaTpl2Sla(SlaParser):
                         else:
                             value = self.objects[index][tagsKeys] or ""
                         if function in self.formatFunctions and "X" not in parameter:
-                            resolvedTag = self.callFunction(function, str(value), int(parameter))
+                            resolvedTag = self.callFunction(function, value, parameter)
                             value = ch.replace(tags[tagsKeys]['completeTag'], resolvedTag)
                         else:
                             value = str(value)
