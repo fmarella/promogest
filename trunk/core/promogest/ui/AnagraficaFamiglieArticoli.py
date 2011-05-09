@@ -143,8 +143,8 @@ class AnagraficaFamiglieArticoliFilter(AnagraficaFilter):
             for s in f.children:
                 figlio1 = self.filter_listore.append(padre, (s,
                                                     (s.codice or ''),
-                                                    (s.denominazione_breve or ''),
                                                     (s.denominazione or ''),
+                                                    (s.denominazione_breve or ''),
                                                     None))
                 recurse(figlio1,s)
 
@@ -155,8 +155,8 @@ class AnagraficaFamiglieArticoliFilter(AnagraficaFilter):
             if not f.parent:
                 padre = self.filter_listore.append(None, (f,
                                                         (f.codice or ''),
-                                                        (f.denominazione_breve or ''),
                                                         (f.denominazione or ''),
+                                                        (f.denominazione_breve or ''),
                                                         None))
                 if f.children:
                     recurse(padre,f)
