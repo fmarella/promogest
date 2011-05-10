@@ -47,6 +47,7 @@ if posso("PW"):
 if posso("ADR"):
     from promogest.modules.ADR.ui.ADRNotebookPage import ADRNotebookPage
 
+
 class AnagraficaArticoliEdit(AnagraficaEdit):
     """ Modifica un record dell'anagrafica degli articoli """
 
@@ -320,6 +321,9 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
         self.dao.denominazione = self.denominazione_entry.get_text()
         if posso("GN"):
             self.dao.divisore_noleggio_value_set = self.divisore_noleggio_entry.get_text().strip()
+        if posso("ADR"):
+            articoloADR = self.adr_page.adrSaveDao()
+            self.dao.articoloADR = articoloADR
         self.dao.id_aliquota_iva = findIdFromCombobox(self.id_aliquota_iva_customcombobox.combobox)
         self.dao.id_famiglia_articolo = findIdFromCombobox(self.id_famiglia_articolo_customcombobox.combobox)
         self.dao.id_categoria_articolo = findIdFromCombobox(self.id_categoria_articolo_customcombobox.combobox)
@@ -374,12 +378,6 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
         self.dao.url_immagine = self.url_articolo_entry.get_text()
         pbar(self.dialog.pbar,parziale=3, totale=4)
         self.dao.persist()
-        if posso("ADR"):
-            if self.adr_page.isArticoloADR():
-                dao_articolo_adr = self.adr_page.adrSaveDao()
-                dao_articolo_adr.id_articolo = self.dao.id
-                dao_articolo_adr.persist()
-        #self.dao.persist()
         pbar(self.dialog.pbar,parziale=4, totale=4)
         pbar(self.dialog.pbar,stop=True)
 

@@ -46,6 +46,9 @@ if hasattr(conf, "PromoWear") and getattr(conf.PromoWear,'mod_enable')=="yes":
     from promogest.modules.PromoWear.dao.GruppoTaglia import GruppoTaglia
     from promogest.modules.PromoWear.dao.StagioneAbbigliamento import StagioneAbbigliamento
     from promogest.modules.PromoWear.dao.GenereAbbigliamento import GenereAbbigliamento
+    
+if posso("ADR"):
+    from promogest.modules.ADR.dao.ArticoloADR import ArticoloADR
 
 
 class Articolo(Dao):
@@ -480,6 +483,16 @@ class Articolo(Dao):
                         #self.saveToAppLog(var)
             except:
                 print "ARTICOLO NORMALE SENZA TAGLIE O COLORI"
+                
+        if posso("ADR"):
+            if self.articoloADR and self.id:
+                articoloADR = ArticoloADR().getRecord(id=self.id)
+                if articoloADR:
+                        articoloADR.delete()
+                self.articoloADR.id_articolo = self.id
+                params["session"].add(self.articoloADR)
+                self.save_update()
+        
         params["session"].commit()
 
     def delete(self):
