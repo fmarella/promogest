@@ -27,7 +27,7 @@ from reportlab.platypus import  Paragraph
 from reportlab.lib.styles import ParagraphStyle
 from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_RIGHT
 from reportlab.lib.pagesizes import cm
-
+from promogest.ui.utils import mNL, mNLC, mN, italianizza, deItalianizza
 try:
     from reportlab.graphics.barcode.common import *
     from reportlab.graphics.barcode.usps import *
@@ -221,6 +221,18 @@ def approxValue(value, decimals):
     value = float(value)
     return ((value != '' and value is not None) and (format % (value or 0.0)) or '')
 
+#def approxValueIt(value, decimals):
+    #"""
+    #Approximate the floating point values of the element with the
+    #given number of decimals
+    #"""
+    #format = '%%.%df' % decimals
+    ##print value
+    #value = float(value)
+    #if value !="" and value is not None:
+        #return italianizza((format % (value)),decimal=decimals)
+    #else:
+        #return "0"
 def approxValueIt(value, decimals):
     """
     Approximate the floating point values of the element with the
@@ -229,10 +241,13 @@ def approxValueIt(value, decimals):
     format = '%%.%df' % decimals
     #print value
     value = float(value)
-    if value !="" and value is not None:
-        return italianizza((format % (value)),decimal=decimals)
+    if value and value !="":
+        return mNLC(value,decimal=decimals)
     else:
         return "0"
+
+
+
 
 def itformatValue(value,tronca=True):
     """
