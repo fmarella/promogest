@@ -73,7 +73,7 @@ class AnagraficaPrimaNotaFilter(AnagraficaFilter):
         if not bb:
             kbb = SetConf()
             kbb.key = "valore_saldo_parziale_primanota"
-            kbb.value =str(tot["totale"])
+            kbb.value = "0" #str(tot["totale"])
             kbb.section = "Primanota"
             kbb.tipo_section = "Generico"
             kbb.description = "Valore Saldo parziale prima nota"
