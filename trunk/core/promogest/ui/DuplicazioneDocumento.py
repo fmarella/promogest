@@ -3,7 +3,8 @@
 #    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
-#    Author: Francesco Meloni  <francesco@promotux.it>
+#    Authors: Francesco Meloni  <francesco@promotux.it>
+#             Francesco Marella <francesco.marella@gmail.com>
 
 #    This file is part of Promogest.
 
@@ -176,7 +177,8 @@ class DuplicazioneDocumento(GladeWidget):
             else:
                 daoRiga.id_magazzino = r.id_magazzino
             daoRiga.descrizione = r.descrizione
-
+            # Copia il campo iva
+            daoRiga.id_iva = r.id_iva
             #ricalcola prezzi
             indice_prezzo_combobox = self.id_prezzo_combobox.get_model()[self.id_prezzo_combobox.get_active()][1]
             if  indice_prezzo_combobox == 0:
