@@ -486,9 +486,9 @@ class Articolo(Dao):
                 
         if posso("ADR"):
             if self.articoloADR and self.id:
-                articoloADR = ArticoloADR().getRecord(id=self.id)
+                articoloADR = ArticoloADR().select(id_articolo=self.id)
                 if articoloADR:
-                        articoloADR.delete()
+                        articoloADR[0].delete()
                 self.articoloADR.id_articolo = self.id
                 params["session"].add(self.articoloADR)
                 self.save_update()
@@ -520,6 +520,10 @@ class Articolo(Dao):
                 atc = ArticoloTagliaColore().getRecord(id=self.id)
                 if atc:
                     atc.delete()
+            if posso('ADR'):
+                artADR = ArticoloADR().select(id_articolo=self.id)
+                if artADR:
+                    params["session"].delete(artADR[0])
             params["session"].delete(self)
         la = ListinoArticolo().select(idArticolo= self.id)
         if la:
