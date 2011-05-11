@@ -153,7 +153,7 @@ def createbarcode(ch):
     """'Standard39','QR','Extended39','EAN13','FIM','EAN8','Extended93','USPS_4State'
     'Codabar' 'MSI' 'POSTNET' 'Code11' 'Standard93' 'I2of5' 'Code128' """
     data = ch.split(';')
-    print "DATA for Barcode", ch,data
+    #print "DATA for Barcode", ch,data
     #print "CODICE A BARRE " , data[1]
     bcd = False
     def create(tipo, data):
