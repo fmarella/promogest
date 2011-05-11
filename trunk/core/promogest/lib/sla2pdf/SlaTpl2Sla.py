@@ -612,8 +612,8 @@ class SlaTpl2Sla(SlaParser):
 
         sumRows = reduce(operator.add, heights[:rows])
         sumColumns = reduce(operator.add, widths[:columns])
-        otherColumn = sumColumns + (int(setconf("Label", "sistemacolonnafrontaline")) or 0)
-        otherRows = sumRows + (int(setconf("Label", "sistemarigafrontaline")) or 0)
+        otherColumn = sumColumns + (int(setconf("Label", "sistemacolonnafrontaline") or 0))
+        otherRows = sumRows + (int(setconf("Label", "sistemarigafrontaline") or 0 ))
 
         pageYpos = float(numPages[0].get('PAGEYPOS'))
         pageXpos = float(numPages[0].get('PAGEXPOS'))
