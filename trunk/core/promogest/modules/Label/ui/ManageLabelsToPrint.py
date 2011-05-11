@@ -192,15 +192,19 @@ class ManageLabelsToPrint(GladeWidget):
             pp = Environment.conf.VenditaDettaglio.listino
         except:
             pp = None
-        pricelist = Listino().select(denominazione = pp ,
-                                    offset = None,
-                                    batchSize = None)
+        if pp:
+            pricelist = Listino().select(denominazione = pp ,
+                                        offset = None,
+                                        batchSize = None)
+        else:
+            return None
 
         if pricelist:
             id_listino = pricelist[0].id
         else:
             id_listino = None
         return id_listino
+
 
     def prezzoVenditaDettaglio(self, dao):
         """Funzione importante perchè restituisce
