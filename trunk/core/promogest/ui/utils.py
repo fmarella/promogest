@@ -362,6 +362,7 @@ def leggiListino(idListino=None, idArticolo=None):
     listinoDict = {"denominazione": "",
                     "prezzoIngrosso": 0,
                     "prezzoDettaglio": 0,
+                    "ultimoCosto":0,
                     "complesso": False,
                     "sottoListiniID": [],
                     "scontiDettaglio":[],
@@ -439,6 +440,7 @@ def leggiListino(idListino=None, idArticolo=None):
                 if daoListinoArticolo:
                     _prezzoIngrosso = daoListinoArticolo.prezzo_ingrosso
                     _prezzoDettaglio = daoListinoArticolo.prezzo_dettaglio
+                    _ultimoCosto = daoListinoArticolo.ultimo_costo
                     _scontiDettaglio = daoListinoArticolo.sconto_vendita_dettaglio
                     _scontiIngrosso = daoListinoArticolo.sconto_vendita_ingrosso
                     _applicazioneDettaglio = daoListinoArticolo.applicazione_sconti_dettaglio
@@ -446,6 +448,7 @@ def leggiListino(idListino=None, idArticolo=None):
 
                     listinoDict["prezzoIngrosso"] = _prezzoIngrosso
                     listinoDict["prezzoDettaglio"] = _prezzoDettaglio
+                    listinoDict["ultimoCosto"] = _ultimoCosto
                     listinoDict["scontiDettaglio"] = _scontiDettaglio
                     listinoDict["scontiIngrosso"] = _scontiIngrosso
                     listinoDict['applicazioneScontiDettaglio'] = _applicazioneDettaglio

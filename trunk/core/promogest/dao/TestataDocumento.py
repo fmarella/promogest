@@ -262,6 +262,7 @@ class TestataDocumento(Dao):
         totaleImpostaScontata = Decimal(0)
         totaleImponibileScontato = Decimal(0)
         totaleEsclusoBaseImponibile = Decimal(0)
+        totaleRicaricatoLordo = Decimal(0)
         totaleScontato = Decimal(0)
         castellettoIva = {}
 
@@ -271,6 +272,11 @@ class TestataDocumento(Dao):
             # FIXME: added for supporting dumb rows when printing
             if riga is None:
                 continue
+            if riga.id_articolo and riga.id_listino:
+                from promogest.ui.utils import leggiListino
+                ll = leggiListino(riga.id_listino, riga.id_articolo)
+                #print ll["prezzoDettaglio"], ll["prezzoIngrosso"], ll["ultimoCosto"], (riga.valore_unitario_netto - ll["ultimoCosto"]), totaleRicaricatoLordo
+                totaleRicaricatoLordo += (riga.valore_unitario_netto - ll["ultimoCosto"])
             if not riga.moltiplicatore:
                 riga.moltiplicatore = 1
             percentualeIvaRiga = Decimal(riga.percentuale_iva)
@@ -371,6 +377,9 @@ class TestataDocumento(Dao):
         self._totaleImponibile = totaleImponibile
         self._totaleNonBaseImponibile = totaleEsclusoBaseImponibile
         self._totaleImposta = totaleImposta
+        self._totaleRicaricatoLordo = totaleRicaricatoLordo
+        self._totaleRicaricatoImponibile = Decimal(totaleRicaricatoLordo)/(1+Decimal(20)/100)
+        self._totaleRicaricatoIva = totaleRicaricatoLordo - self._totaleRicaricatoImponibile
         self._totaleImponibileScontato = totaleImponibileScontato
         self._totaleImpostaScontata = totaleImpostaScontata
         self._castellettoIva = []
