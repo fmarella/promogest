@@ -121,6 +121,7 @@ class AnagraficaPrimaNotaFilter(AnagraficaFilter):
         da_data_inizio = stringToDate(self.da_data_inizio_datetimewidget.get_text())
         a_data_inizio = stringToDate(self.a_data_inizio_datetimewidget.get_text())
         tipo_banca = self.banca_filter_check.get_active()
+        tipo = None
         if not tipo_banca:
             tipoBanca = "banca"
         else:
