@@ -381,7 +381,7 @@ class TestataDocumento(Dao):
         self._totaleRicaricatoImponibile = Decimal(totaleRicaricatoLordo)/(1+Decimal(20)/100)
         self._totaleRicaricatoIva = totaleRicaricatoLordo - self._totaleRicaricatoImponibile
         self._totaleImponibileScontato = totaleImponibileScontato
-        self._totaleOggetti = self._totaleImponibileScontato - self._totaleRicaricatoImponibile
+        self._totaleOggetti = self._totaleImponibileScontato - self._totaleRicaricatoLordo
         self._totaleImpostaScontata = totaleImpostaScontata
         self._castellettoIva = []
         for k in castellettoIva.keys():
