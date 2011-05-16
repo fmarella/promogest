@@ -836,6 +836,21 @@ def on_combobox_fornitore_search_clicked(combobox, callName=None):
     elif callName is not None:
         callName()
 
+
+def permalinkaTitle(string):
+    import unicodedata
+    string = unicodedata.normalize("NFKD",string).encode('ascii','ignore').strip().lower()
+    test = "_".join(string.split())
+    badchar = []
+    for char in test:
+        if char not in "qwertyuiopasdfghjklzxcvbnm1234567890-_":
+            badchar.append(char)
+    if badchar:
+        for ch in badchar:
+            test = test.replace(str(ch),"")
+    return test
+
+
 def calcolaSaldoGeneralePrimaNota():
     from promogest.modules.PrimaNota.dao.TestataPrimaNota import TestataPrimaNota
     #TODO Aggiungere una opzione in setconf con una data ed un saldo di partenza

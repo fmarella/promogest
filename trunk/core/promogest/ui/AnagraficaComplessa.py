@@ -506,7 +506,8 @@ class Anagrafica(GladeWidget):
                         dao = self.filter.getSelectedDao()
                         data = dao.data_documento
                         operationName = dao.operazione
-                        intestatario = dao.intestatario[0:15].replace(" ","_").replace("\\n","") or ""
+                        intestatario = permalinkaTitle(dao.intestatario)[0:15] or ""
+                        #intestatario = dao.intestatario[0:15].replace(" ","_").replace("\\n","") or ""
                         self._pdfName = operationName + \
                                         '_' +\
                                         str(dao.numero) +\
