@@ -153,6 +153,10 @@ class AnagraficaFornitoriEdit(AnagraficaEdit):
 
 
     def saveDao(self, tipo=None):
+        if (self.ragione_sociale_entry.get_text() == ''):
+            obligatoryField(self.dialogTopLevel,
+                            self.ragione_sociale_entry,
+                            msg='Campo obbligatorio !\n\nRagione sociale')
         self.dao.codice = self.codice_entry.get_text().upper()
 #        self.dao.codice = omogeneousCode(section="Fornitori", string=self.dao.codice )
         self.dao.ragione_sociale = self.ragione_sociale_entry.get_text()

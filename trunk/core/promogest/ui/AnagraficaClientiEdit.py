@@ -278,6 +278,10 @@ class AnagraficaClientiEdit(AnagraficaEdit):
             model.append([c.id_categoria_cliente, c.categoria_cliente.denominazione, None, None])
 
     def saveDao(self, tipo=None):
+        if (self.ragione_sociale_entry.get_text() == ''):
+            obligatoryField(self.dialogTopLevel,
+                            self.ragione_sociale_entry,
+                            msg='Campo obbligatorio !\n\nRagione sociale')
         self.verificaListino()
         self.dao.codice = self.codice_entry.get_text().upper()
         self.dao.codice = omogeneousCode(section="Clienti", string=self.dao.codice )
