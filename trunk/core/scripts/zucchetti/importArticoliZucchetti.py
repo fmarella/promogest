@@ -113,7 +113,7 @@ class GenericFillData(object):
         config = ConfigParser.RawConfigParser()
         config.read('zucchetti.cfg')
         self.azienda =  config.get("PRO","azienda")
-        self.db_name = config.get("PRO","azienda")
+        self.db_name = config.get("PRO","db_name")
         self.port = config.getint("PRO","port")
         self.tipo = config.get("TypeDB","tipo")
         self.user = config.get("PRO","user")
