@@ -3,7 +3,8 @@
 #    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010, 2011 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
-# Author: Francesco Meloni <francesco@promotux.it
+# Authors: Francesco Meloni <francesco@promotux.it>
+#          Francesco Marella <francesco.marella@gmail.com>
 
 #    This file is part of Promogest.
 
@@ -45,8 +46,25 @@ class AnagraficaPrimaNotaSetup(GladeWidget):
         """
         Carichiamo i dati in interfaccia
         """
-        return
+        try:
+            self.aggiungi_partita_iva_check.set_active(int(setconf("PrimaNota", "aggiungi_partita_iva")))
+        except:
+            self.aggiungi_partita_iva_check.set_active(0)
 
     def _saveSetup(self):
         """ Salviamo i dati modificati in interfaccia """
-        return
+        c = SetConf().select(key="aggiungi_partita_iva", section="PrimaNota")
+        if c:
+            c = c[0]
+        else:
+            c = SetConf()
+        c.key = "aggiungi_partita_iva"
+        c.section = "PrimaNota"
+        c.value = str(self.aggiungi_partita_iva_check.get_active())
+        c.tipo = "bool"
+        c.description = "Aggiungere la partita IVA di un cliente/fornitore in descrizione operazione"
+        c.tipo_section = "Generico"
+        c.active = True
+        c.visible = True
+        c.date = datetime.datetime.now()
+        Environment.session.add(c)

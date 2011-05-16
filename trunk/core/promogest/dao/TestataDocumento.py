@@ -3,7 +3,8 @@
 #    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
-# Author: Francesco Meloni <francesco@promotux.it>
+# Authors: Francesco Meloni <francesco@promotux.it>
+#          Francesco Marella <francesco.marella@gmail.com>
 
 #    This file is part of Promogest.
 
@@ -248,6 +249,22 @@ class TestataDocumento(Dao):
             return ''
 
     intestatario = property(_getIntestatario, )
+    
+    def _getPartitaIva(self):
+        """
+        Restituisce la partita iva del cliente o fornitore
+        """
+        if setconf("PrimaNota", "aggiungi_partita_iva"):
+            if self.id_cliente is not None:
+                    return '; P.I: {0}'.format(self.partita_iva_cliente)
+            elif self.id_fornitore is not None:
+                    return '; P.I: {0}'.format(self.partita_iva_fornitore)
+            else:
+                return ''
+        else:
+            return ''
+
+    partitaIva = property(_getPartitaIva, )
 
 
     def _getTotaliDocumento(self):
@@ -555,10 +572,10 @@ class TestataDocumento(Dao):
                     elif scad.numero_scadenza == 4:
                         tipo_pag = "QUARTA RATA"
                     if ope["segno"] == "-":
-                        stringa = "%s N.%s del. %s a %s ,  %s"    %(self.operazione, str(self.numero), dateToString(self.data_documento), self.intestatario, tipo_pag)
+                        stringa = "%s N.%s del. %s a %s %s,  %s"    %(self.operazione, str(self.numero), dateToString(self.data_documento), self.intestatario, self.partitaIva, tipo_pag)
                         segno = "entrata"
                     else:
-                        stringa = "%s N.%s del. %s da %s, %s"    %(self.operazione, str(self.numero), dateToString(self.data_documento), self.intestatario, tipo_pag)
+                        stringa = "%s N.%s del. %s da %s %s, %s"    %(self.operazione, str(self.numero), dateToString(self.data_documento), self.intestatario, self.partitaIva, tipo_pag)
                         segno = "uscita"
 
                     tpn = TestataPrimaNota()

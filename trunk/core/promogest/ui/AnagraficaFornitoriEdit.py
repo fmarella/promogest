@@ -113,6 +113,8 @@ class AnagraficaFornitoriEdit(AnagraficaEdit):
         self.provincia_sede_legale_entry.set_text(self.dao.sede_legale_provincia or '')
         self.codice_fiscale_entry.set_text(self.dao.codice_fiscale or '')
         self.partita_iva_entry.set_text(self.dao.partita_iva or '')
+        text_buffer = self.note_textview.get_buffer()
+        text_buffer.set_text(self.dao.note or '')
         findComboboxRowFromId(self.id_categoria_fornitore_customcombobox.combobox,
                               self.dao.id_categoria_fornitore)
         findComboboxRowFromId(self.id_pagamento_customcombobox.combobox,
@@ -173,6 +175,8 @@ class AnagraficaFornitoriEdit(AnagraficaEdit):
         self.dao.sede_legale_localita = self.localita_sede_legale_entry.get_text()
         self.dao.sede_legale_provincia = self.provincia_sede_legale_entry.get_text()
         self.dao.codice_fiscale = self.codice_fiscale_entry.get_text()
+        text_buffer = self.note_textview.get_buffer()
+        self.dao.note = text_buffer.get_text(*text_buffer.get_bounds())
         if self.dao.codice_fiscale != '':
             codfis = checkCodFisc(self.dao.codice_fiscale)
             if not codfis:

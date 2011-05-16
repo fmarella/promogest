@@ -219,6 +219,8 @@ class AnagraficaClientiEdit(AnagraficaEdit):
         self.provincia_sede_legale_entry.set_text(self.dao.sede_legale_provincia or '')
         self.codice_fiscale_entry.set_text(self.dao.codice_fiscale or '')
         self.partita_iva_entry.set_text(self.dao.partita_iva or '')
+        text_buffer = self.note_textview.get_buffer()
+        text_buffer.set_text(self.dao.note or '')
 
         self.id_categoria_cliente_customcombobox.combobox.set_active(-1)
         self._refreshCategorie()
@@ -299,6 +301,8 @@ class AnagraficaClientiEdit(AnagraficaEdit):
         self.dao.sede_legale_provincia = self.provincia_sede_legale_entry.get_text()
         self.dao.codice_fiscale = self.codice_fiscale_entry.get_text()
         self.dao.partita_iva = self.partita_iva_entry.get_text()
+        text_buffer = self.note_textview.get_buffer()
+        self.dao.note = text_buffer.get_text(*text_buffer.get_bounds())
         if self.dao.partita_iva != '':
             partiva = checkPartIva(self.dao.partita_iva)
             if not partiva:
