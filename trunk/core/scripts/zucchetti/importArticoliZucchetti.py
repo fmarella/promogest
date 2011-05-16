@@ -204,7 +204,7 @@ class GenericFillData(object):
             elif um =="GR" or um =="KG":
                 umid =4
             a.id_unita_base = umid
-            a.id_categoria = 1
+            a.id_categoria_articolo = 1
             a.cancellato = False
             sqlalchemy.ext.sqlsoup.Session.add(a)
         sqlalchemy.ext.sqlsoup.Session.commit()

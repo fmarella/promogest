@@ -839,7 +839,10 @@ def on_combobox_fornitore_search_clicked(combobox, callName=None):
 
 def permalinkaTitle(string):
     import unicodedata
-    string = unicodedata.normalize("NFKD",string).encode('ascii','ignore').strip().lower()
+    try:
+        string = unicodedata.normalize("NFKD",string).encode('ascii','ignore').strip().lower()
+    except:
+        string = string.replace(" ","_").strip().lower()
     test = "_".join(string.split())
     badchar = []
     for char in test:
