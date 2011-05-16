@@ -36,47 +36,6 @@ from optparse import OptionParser
 
 import csv
 
-"""
-    #CAMPI CSV CLIENTI Easyfatt:
-
-        #0  "Cod."; =  Clienti:string
-        #1  "Denominazione"; = Clienti:string
-        #2  "Indirizzo";  =  Clienti:string.  Sede_legale_indirizzo
-        #3  "Cap"; = Clienti:string Sede_legale_cap
-        #4  "Città"; Clienti:string Sede_legale_citta
-        #5  "Prov."; Clienti:string Sede_legale_provincia
-        #6  "Regione"; Clienti: strig Sede_legale_regione
-        #7  "Nazione"; Clienti: string  nazione
-        #8  "Partita Iva"; Clienti :string
-        #9  "Codice fiscale"; Clienti: string
-        #10 "Extra 1"; NO
-        #11 "Extra 2"; NO
-        #12 "Note";  NO
-        #13 "Listino";  Cliente integer  id_listino
-        #14 "Sconti";   CHE VUOL DIRE ....
-        #15 "Banca";    Clienti id_banca
-        #16 "Ns Banca"; NO
-        #17 "Agente"; NO
-        #18 "Rit. acconto?"; NO
-        #19 "Pagamento";  id_pagamento
-        #20 "Fatt. con Iva"; ???  RIFERIMENTO A CLIENTE DETTAGLIO ... Interessante....
-        #21 "Rif. Persona"; ??? CHE VUOL DIRE ?
-
-        #22 "Tel.";  Recapito Telefono
-        #23 "Cell";  Recapito Cellulare
-        #24 "Fax";   Recapito Fax
-        #25 "Desc. Tel. 2";  SU PG NON SERVE
-        #26 "Tel. 2"; Recapito Telefono
-        #27 "Desc. Tel. 3";  SU PG NON SERVE
-        #28 "Tel. 3"; Recapito Telefono
-        #29 "e-mail";  Recapito Email
-        #30 "Home page"; Recapito Sito
-        #31 "Login web"; NO
-        #32 "Conto reg."; ??????????
-        #33 "Note doc." ??????????
-"""
-
-
 def stringToDate(stringa):
     """
     Converte una stringa in data
@@ -114,7 +73,7 @@ class GenericFillData(object):
         config.read('zucchetti.cfg')
         self.azienda =  config.get("PRO","azienda")
         self.db_name = config.get("PRO","db_name")
-        self.port = config.getint("PRO","port")
+        self.port = config.get("PRO","port")
         self.tipo = config.get("TypeDB","tipo")
         self.user = config.get("PRO","user")
         self.password = config.get("PRO","password")
