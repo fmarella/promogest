@@ -58,6 +58,28 @@
                       </object>
                     </child>
                     <child>
+                      <object class="GtkImageMenuItem" id="duplica_in_fornitore">
+                        <property name="label" translatable="yes">Duplica in Fornitore</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
+                        <property name="image">image11</property>
+                        <property name="use_stock">False</property>
+                        <signal name="activate" handler="on_duplica_in_fornitore_activate_item" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkImageMenuItem" id="duplica_in_cliente">
+                        <property name="label" translatable="yes">Duplica in Cliente</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
+                        <property name="image">image12</property>
+                        <property name="use_stock">False</property>
+                        <signal name="activate" handler="on_duplica_in_cliente_activate_item" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
                       <object class="GtkSeparatorMenuItem" id="separatore1">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
@@ -655,6 +677,16 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="pixbuf">calc24x24.png</property>
+  </object>
+  <object class="GtkImage" id="image11">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-copy</property>
+  </object>
+  <object class="GtkImage" id="image12">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-copy</property>
   </object>
   <object class="GtkImage" id="image2">
     <property name="visible">True</property>

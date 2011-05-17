@@ -52,6 +52,7 @@ class AnagraficaClienti(Anagrafica):
                             editElement=AnagraficaClientiEdit(self),
                             aziendaStr=aziendaStr)
         self.records_file_export.set_sensitive(True)
+        self.duplica_in_fornitore.set_sensitive(True)
 
     def on_record_delete_activate(self, widget):
         dao = self.filter.getSelectedDao()
@@ -88,6 +89,71 @@ class AnagraficaClienti(Anagrafica):
         self.htmlHandler.setDao(None)
         self.setFocus()
 
+    def on_duplica_in_fornitore_activate_item(self, widget):
+        dao = self.filter.getSelectedDao()
+        if not dao:
+            messageInfo(msg="SELEZIONARE UN CLIENTE")
+            return
+        import promogest.dao.Fornitore
+        from promogest.dao.Fornitore import Fornitore
+        from promogest.modules.Contatti.dao.ContattoFornitore import ContattoFornitore
+        from promogest.modules.Contatti.dao.RecapitoContatto import RecapitoContatto
+        from promogest.modules.Contatti.dao.Contatto import Contatto
+        d = Fornitore()
+
+        d.codice = promogest.dao.Fornitore.getNuovoCodiceFornitore()
+        d.ragione_sociale = dao.ragione_sociale
+        d.insegna = dao.insegna
+        d.cognome = dao.cognome
+        d.nome = dao.nome
+        d.sede_operativa_indirizzo= dao.sede_operativa_indirizzo
+        d.sede_operativa_cap = dao.sede_operativa_cap
+        d.sede_operativa_localita = dao.sede_operativa_localita
+        d.sede_operativa_provincia = dao.sede_operativa_provincia
+        d.sede_legale_indirizzo = dao.sede_legale_indirizzo
+        d.sede_legale_cap = dao.sede_legale_cap
+        d.sede_legale_localita = dao.sede_legale_localita
+        d.sede_legale_provincia = dao.sede_legale_provincia
+        d.codice_fiscale = dao.codice_fiscale
+        d.note = dao.note
+        d.partita_iva = dao.partita_iva
+        #dao.id_categoria_fornitore
+        d.id_pagamento = dao.id_pagamento
+        d.id_magazzino = dao.id_magazzino
+        d.nazione = dao.nazione
+        d.persist()
+        #SEzione dedicata ai contatti/recapiti principali
+        dao_contatto = ContattoFornitore()
+        if Environment.tipo_eng =="sqlite":
+            forMaxId = Contatto().select(batchSize=None)
+            if not forMaxId:
+                dao_contatto.id = 1
+            else:
+                idss = []
+                for l in forMaxId:
+                    idss.append(l.id)
+                dao_contatto.id = (max(idss)) +1
+        appa = ""
+        if d.ragione_sociale:
+            appa = appa +" "+d.ragione_sociale
+        if d.cognome:
+            appa = appa+" " +d.cognome
+        dao_contatto.cognome = appa
+        if d.nome:
+            dao_contatto.nome = d.nome
+        dao_contatto.tipo_contatto ="fornitore"
+        dao_contatto.id_fornitore =d.id
+        dao_contatto.persist()
+
+
+        contatti = getRecapitiCliente(dao.id)
+        for c in contatti:
+            reco = RecapitoContatto()
+            reco.id_contatto = dao_contatto.id
+            reco.tipo_recapito = c.tipo_recapito
+            reco.recapito = c.recapito
+            reco.persist()
+        messageInfo(msg="CLIENTE DUPLICATO IN FORNITORE")
 
 
 class AnagraficaClientiHtml(AnagraficaHtml):

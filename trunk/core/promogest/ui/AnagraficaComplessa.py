@@ -83,6 +83,8 @@ class Anagrafica(GladeWidget):
         self.duplica_button.set_sensitive(False)
         self.record_edit_button.set_sensitive(False)
         self.record_edit_menu.set_sensitive(False)
+        self.duplica_in_cliente.set_sensitive(False)
+        self.duplica_in_fornitore.set_sensitive(False)
 #        self.record_duplicate_menu.set_property('visible', False)
 #        self.record_duplicate_menu.set_no_show_all(True)
         self.record_duplicate_menu.set_sensitive(False)
