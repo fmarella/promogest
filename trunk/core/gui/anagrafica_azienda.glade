@@ -4,12 +4,14 @@
   <!-- interface-requires pythonplugin 0.0 -->
   <!-- interface-naming-policy toplevel-contextual -->
   <object class="GtkWindow" id="anagrafica_azienda">
+    <property name="can_focus">False</property>
     <property name="title" translatable="yes">Dati Azienda</property>
     <property name="modal">True</property>
     <property name="icon">promogest.png</property>
     <child>
       <object class="GtkTable" id="anagrafica_aziende_detail_table">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="border_width">6</property>
         <property name="n_rows">25</property>
         <property name="n_columns">6</property>
@@ -17,6 +19,7 @@
         <child>
           <object class="GtkStatusbar" id="statusbar1">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="spacing">2</property>
           </object>
           <packing>
@@ -29,6 +32,7 @@
         <child>
           <object class="GtkHSeparator" id="hseparator18">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
           </object>
           <packing>
             <property name="left_attach">1</property>
@@ -42,6 +46,7 @@
         <child>
           <object class="GtkLabel" id="label100">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="xalign">0</property>
             <property name="xpad">10</property>
             <property name="label" translatable="yes">Numero</property>
@@ -61,6 +66,10 @@
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="max_length">50</property>
+            <property name="primary_icon_activatable">False</property>
+            <property name="secondary_icon_activatable">False</property>
+            <property name="primary_icon_sensitive">True</property>
+            <property name="secondary_icon_sensitive">True</property>
           </object>
           <packing>
             <property name="left_attach">3</property>
@@ -73,6 +82,7 @@
         <child>
           <object class="GtkLabel" id="label99">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="xalign">0</property>
             <property name="label" translatable="yes">Partita I.V.A.</property>
           </object>
@@ -91,6 +101,10 @@
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="max_length">50</property>
+            <property name="primary_icon_activatable">False</property>
+            <property name="secondary_icon_activatable">False</property>
+            <property name="primary_icon_sensitive">True</property>
+            <property name="secondary_icon_sensitive">True</property>
           </object>
           <packing>
             <property name="left_attach">3</property>
@@ -104,6 +118,7 @@
         <child>
           <object class="GtkLabel" id="label98">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="xalign">0</property>
             <property name="xpad">10</property>
             <property name="label" translatable="yes">Codice REA</property>
@@ -120,6 +135,7 @@
         <child>
           <object class="GtkAlignment" id="alignment56">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="xalign">1</property>
             <property name="xscale">0</property>
             <child>
@@ -127,19 +143,23 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <signal name="toggled" handler="on_contatti_togglebutton_toggled"/>
+                <property name="use_action_appearance">False</property>
+                <signal name="toggled" handler="on_contatti_togglebutton_toggled" swapped="no"/>
                 <child>
                   <object class="GtkAlignment" id="alignment57">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <property name="xscale">0</property>
                     <property name="yscale">0</property>
                     <child>
                       <object class="GtkHBox" id="hbox25">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="spacing">2</property>
                         <child>
                           <object class="GtkImage" id="image9">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="pixbuf">contatto24x24.png</property>
                           </object>
                           <packing>
@@ -151,6 +171,7 @@
                         <child>
                           <object class="GtkLabel" id="label97">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="label" translatable="yes">Contatti</property>
                             <property name="use_underline">True</property>
                           </object>
@@ -178,6 +199,7 @@
         <child>
           <object class="GtkHSeparator" id="hseparator17">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
           </object>
           <packing>
             <property name="right_attach">6</property>
@@ -190,6 +212,7 @@
         <child>
           <object class="GtkLabel" id="label96">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="xalign">0</property>
             <property name="label" translatable="yes">Ragione Sociale</property>
           </object>
@@ -204,6 +227,7 @@
         <child>
           <object class="GtkLabel" id="label95">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="xalign">0</property>
             <property name="label" translatable="yes">Indirizzo</property>
           </object>
@@ -218,6 +242,7 @@
         <child>
           <object class="GtkLabel" id="label94">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="xalign">0</property>
             <property name="label" translatable="yes">Codice fiscale</property>
           </object>
@@ -232,6 +257,7 @@
         <child>
           <object class="GtkLabel" id="label93">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="xalign">0</property>
             <property name="label" translatable="yes">Denominazione</property>
           </object>
@@ -244,6 +270,7 @@
         <child>
           <object class="GtkLabel" id="label92">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="xalign">0</property>
             <property name="label" translatable="yes">Sede operativa</property>
             <property name="use_markup">True</property>
@@ -259,6 +286,7 @@
         <child>
           <object class="GtkLabel" id="label91">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="xalign">0</property>
             <property name="label" translatable="yes">Numero</property>
           </object>
@@ -275,6 +303,7 @@
         <child>
           <object class="GtkLabel" id="label90">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="xalign">0</property>
             <property name="label" translatable="yes">Localita'</property>
           </object>
@@ -289,6 +318,7 @@
         <child>
           <object class="GtkHSeparator" id="hseparator16">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
           </object>
           <packing>
             <property name="right_attach">6</property>
@@ -301,6 +331,7 @@
         <child>
           <object class="GtkLabel" id="label89">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="xalign">0</property>
             <property name="label" translatable="yes">Sede legale</property>
           </object>
@@ -315,6 +346,7 @@
         <child>
           <object class="GtkLabel" id="label88">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="xalign">0</property>
             <property name="label" translatable="yes">Indirizzo</property>
           </object>
@@ -329,6 +361,7 @@
         <child>
           <object class="GtkLabel" id="label87">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="xalign">0</property>
             <property name="label" translatable="yes">Numero</property>
           </object>
@@ -345,6 +378,7 @@
         <child>
           <object class="GtkLabel" id="label86">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="xalign">0</property>
             <property name="label" translatable="yes">Localita'</property>
           </object>
@@ -359,6 +393,7 @@
         <child>
           <object class="GtkLabel" id="label85">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="xalign">0</property>
             <property name="label" translatable="yes">Provincia</property>
           </object>
@@ -375,6 +410,7 @@
         <child>
           <object class="GtkLabel" id="label84">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="xalign">0</property>
             <property name="label" translatable="yes">Provincia</property>
           </object>
@@ -391,6 +427,7 @@
         <child>
           <object class="GtkHSeparator" id="hseparator15">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
           </object>
           <packing>
             <property name="right_attach">6</property>
@@ -403,6 +440,7 @@
         <child>
           <object class="GtkLabel" id="label83">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="xalign">0</property>
             <property name="xpad">10</property>
             <property name="label" translatable="yes">Matricola INPS</property>
@@ -417,6 +455,7 @@
         <child>
           <object class="GtkLabel" id="label82">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="xalign">0</property>
             <property name="xpad">10</property>
             <property name="label" translatable="yes">Numero conto</property>
@@ -431,6 +470,7 @@
         <child>
           <object class="GtkLabel" id="label81">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="xalign">0</property>
             <property name="xpad">10</property>
             <property name="label" translatable="yes">Logo</property>
@@ -448,10 +488,13 @@
             <property name="can_focus">True</property>
             <property name="max_length">100</property>
             <property name="secondary_icon_stock">gtk-clear</property>
+            <property name="primary_icon_activatable">False</property>
+            <property name="secondary_icon_activatable">False</property>
+            <property name="primary_icon_sensitive">True</property>
             <property name="secondary_icon_sensitive">True</property>
-            <signal name="focus_in_event" handler="on_focus_in_event"/>
-            <signal name="focus_out_event" handler="on_focus_out_event"/>
-            <signal name="icon_press" handler="on_icon_press"/>
+            <signal name="icon-press" handler="on_icon_press" swapped="no"/>
+            <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
+            <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
           </object>
           <packing>
             <property name="left_attach">1</property>
@@ -465,6 +508,10 @@
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="max_length">100</property>
+            <property name="primary_icon_activatable">False</property>
+            <property name="secondary_icon_activatable">False</property>
+            <property name="primary_icon_sensitive">True</property>
+            <property name="secondary_icon_sensitive">True</property>
           </object>
           <packing>
             <property name="left_attach">1</property>
@@ -481,8 +528,11 @@
             <property name="can_focus">True</property>
             <property name="max_length">200</property>
             <property name="secondary_icon_stock">gtk-clear</property>
+            <property name="primary_icon_activatable">False</property>
+            <property name="secondary_icon_activatable">False</property>
+            <property name="primary_icon_sensitive">True</property>
             <property name="secondary_icon_sensitive">True</property>
-            <signal name="icon_press" handler="on_icon_press"/>
+            <signal name="icon-press" handler="on_icon_press" swapped="no"/>
           </object>
           <packing>
             <property name="left_attach">1</property>
@@ -499,6 +549,10 @@
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="max_length">10</property>
+            <property name="primary_icon_activatable">False</property>
+            <property name="secondary_icon_activatable">False</property>
+            <property name="primary_icon_sensitive">True</property>
+            <property name="secondary_icon_sensitive">True</property>
           </object>
           <packing>
             <property name="left_attach">5</property>
@@ -514,6 +568,10 @@
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="max_length">100</property>
+            <property name="primary_icon_activatable">False</property>
+            <property name="secondary_icon_activatable">False</property>
+            <property name="primary_icon_sensitive">True</property>
+            <property name="secondary_icon_sensitive">True</property>
           </object>
           <packing>
             <property name="left_attach">1</property>
@@ -530,9 +588,11 @@
             <property name="can_focus">True</property>
             <property name="max_length">200</property>
             <property name="secondary_icon_stock">gtk-clear</property>
+            <property name="primary_icon_activatable">False</property>
             <property name="secondary_icon_activatable">True</property>
+            <property name="primary_icon_sensitive">True</property>
             <property name="secondary_icon_sensitive">True</property>
-            <signal name="icon_press" handler="on_icon_press"/>
+            <signal name="icon-press" handler="on_icon_press" swapped="no"/>
           </object>
           <packing>
             <property name="left_attach">1</property>
@@ -546,14 +606,19 @@
         <child>
           <object class="GtkAlignment" id="alignment55">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="xalign">0</property>
             <property name="xscale">0</property>
             <child>
               <object class="GtkEntry" id="provincia_sede_operativa_entry">
-                <property name="width_request">30</property>
+                <property name="width_request">120</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="max_length">4</property>
+                <property name="primary_icon_activatable">False</property>
+                <property name="secondary_icon_activatable">False</property>
+                <property name="primary_icon_sensitive">True</property>
+                <property name="secondary_icon_sensitive">True</property>
               </object>
             </child>
           </object>
@@ -572,6 +637,10 @@
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="max_length">10</property>
+            <property name="primary_icon_activatable">False</property>
+            <property name="secondary_icon_activatable">False</property>
+            <property name="primary_icon_sensitive">True</property>
+            <property name="secondary_icon_sensitive">True</property>
           </object>
           <packing>
             <property name="left_attach">5</property>
@@ -588,9 +657,11 @@
             <property name="can_focus">True</property>
             <property name="max_length">100</property>
             <property name="secondary_icon_stock">gtk-clear</property>
+            <property name="primary_icon_activatable">False</property>
             <property name="secondary_icon_activatable">True</property>
+            <property name="primary_icon_sensitive">True</property>
             <property name="secondary_icon_sensitive">True</property>
-            <signal name="icon_press" handler="on_icon_press"/>
+            <signal name="icon-press" handler="on_icon_press" swapped="no"/>
           </object>
           <packing>
             <property name="left_attach">1</property>
@@ -604,14 +675,19 @@
         <child>
           <object class="GtkAlignment" id="alignment54">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="xalign">0</property>
             <property name="xscale">0</property>
             <child>
               <object class="GtkEntry" id="provincia_sede_legale_entry">
-                <property name="width_request">30</property>
+                <property name="width_request">120</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="max_length">4</property>
+                <property name="primary_icon_activatable">False</property>
+                <property name="secondary_icon_activatable">False</property>
+                <property name="primary_icon_sensitive">True</property>
+                <property name="secondary_icon_sensitive">True</property>
               </object>
             </child>
           </object>
@@ -627,6 +703,7 @@
         <child>
           <object class="GtkAlignment" id="alignment53">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="xalign">0</property>
             <property name="xscale">0.5</property>
             <child>
@@ -634,8 +711,12 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="max_length">16</property>
-                <signal name="focus_out_event" handler="on_entry_focus_out_event"/>
-                <signal name="focus_in_event" handler="on_entry_focus_in_event"/>
+                <property name="primary_icon_activatable">False</property>
+                <property name="secondary_icon_activatable">False</property>
+                <property name="primary_icon_sensitive">True</property>
+                <property name="secondary_icon_sensitive">True</property>
+                <signal name="focus-out-event" handler="on_entry_focus_out_event" swapped="no"/>
+                <signal name="focus-in-event" handler="on_entry_focus_in_event" swapped="no"/>
               </object>
             </child>
           </object>
@@ -653,6 +734,10 @@
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="max_length">20</property>
+            <property name="primary_icon_activatable">False</property>
+            <property name="secondary_icon_activatable">False</property>
+            <property name="primary_icon_sensitive">True</property>
+            <property name="secondary_icon_sensitive">True</property>
           </object>
           <packing>
             <property name="left_attach">1</property>
@@ -668,6 +753,10 @@
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="max_length">50</property>
+            <property name="primary_icon_activatable">False</property>
+            <property name="secondary_icon_activatable">False</property>
+            <property name="primary_icon_sensitive">True</property>
+            <property name="secondary_icon_sensitive">True</property>
           </object>
           <packing>
             <property name="left_attach">1</property>
@@ -681,6 +770,7 @@
         <child>
           <object class="GtkLabel" id="label80">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="xalign">0</property>
             <property name="label" translatable="yes">Iscrizione CCIAA</property>
           </object>
@@ -695,6 +785,7 @@
         <child>
           <object class="GtkLabel" id="label79">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="xalign">0</property>
             <property name="xpad">10</property>
             <property name="label" translatable="yes">Numero</property>
@@ -711,6 +802,7 @@
         <child>
           <object class="GtkLabel" id="label78">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="xalign">0</property>
             <property name="label" translatable="yes">Iscrizione Tribunale</property>
           </object>
@@ -725,6 +817,7 @@
         <child>
           <object class="GtkHSeparator" id="hseparator14">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
           </object>
           <packing>
             <property name="left_attach">1</property>
@@ -739,6 +832,7 @@
           <object class="GtkAlignment" id="alignment52">
             <property name="width_request">100</property>
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="xalign">0</property>
             <property name="xscale">0</property>
             <child>
@@ -757,10 +851,12 @@
         <child>
           <object class="GtkHBox" id="hbox24">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="homogeneous">True</property>
             <child>
               <object class="GtkLabel" id="label74">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <property name="xalign">0</property>
                 <property name="xpad">10</property>
                 <property name="label" translatable="yes">CIN</property>
@@ -774,6 +870,7 @@
             <child>
               <object class="GtkAlignment" id="alignment49">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <property name="xalign">0</property>
                 <property name="xscale">0</property>
                 <child>
@@ -782,16 +879,23 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="max_length">1</property>
+                    <property name="primary_icon_activatable">False</property>
+                    <property name="secondary_icon_activatable">False</property>
+                    <property name="primary_icon_sensitive">True</property>
+                    <property name="secondary_icon_sensitive">True</property>
                   </object>
                 </child>
               </object>
               <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
                 <property name="position">1</property>
               </packing>
             </child>
             <child>
               <object class="GtkLabel" id="label75">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <property name="xalign">0</property>
                 <property name="xpad">10</property>
                 <property name="label" translatable="yes">ABI</property>
@@ -805,6 +909,7 @@
             <child>
               <object class="GtkAlignment" id="alignment50">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <property name="xalign">0</property>
                 <property name="xscale">0</property>
                 <child>
@@ -813,16 +918,23 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="max_length">5</property>
+                    <property name="primary_icon_activatable">False</property>
+                    <property name="secondary_icon_activatable">False</property>
+                    <property name="primary_icon_sensitive">True</property>
+                    <property name="secondary_icon_sensitive">True</property>
                   </object>
                 </child>
               </object>
               <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
                 <property name="position">3</property>
               </packing>
             </child>
             <child>
               <object class="GtkLabel" id="label76">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <property name="xalign">0</property>
                 <property name="xpad">10</property>
                 <property name="label" translatable="yes">CAB</property>
@@ -836,6 +948,7 @@
             <child>
               <object class="GtkAlignment" id="alignment51">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <property name="xalign">0</property>
                 <property name="xscale">0</property>
                 <child>
@@ -844,10 +957,16 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="max_length">5</property>
+                    <property name="primary_icon_activatable">False</property>
+                    <property name="secondary_icon_activatable">False</property>
+                    <property name="primary_icon_sensitive">True</property>
+                    <property name="secondary_icon_sensitive">True</property>
                   </object>
                 </child>
               </object>
               <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
                 <property name="position">5</property>
               </packing>
             </child>
@@ -864,6 +983,7 @@
         <child>
           <object class="GtkHButtonBox" id="hbuttonbox3">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="layout_style">end</property>
             <child>
               <object class="GtkButton" id="apply_button">
@@ -871,19 +991,23 @@
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
                 <property name="receives_default">True</property>
-                <signal name="clicked" handler="on_apply_button_clicked"/>
+                <property name="use_action_appearance">False</property>
+                <signal name="clicked" handler="on_apply_button_clicked" swapped="no"/>
                 <child>
                   <object class="GtkAlignment" id="alignment530">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <property name="xscale">0</property>
                     <property name="yscale">0</property>
                     <child>
                       <object class="GtkHBox" id="hbox398">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="spacing">2</property>
                         <child>
                           <object class="GtkImage" id="image439">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="pixbuf">conferma16x16.png</property>
                           </object>
                           <packing>
@@ -895,6 +1019,7 @@
                         <child>
                           <object class="GtkLabel" id="label3485">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="label">_Ok</property>
                             <property name="use_underline">True</property>
                           </object>
@@ -921,19 +1046,23 @@
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
                 <property name="receives_default">True</property>
-                <signal name="clicked" handler="on_cancel_button_clicked"/>
+                <property name="use_action_appearance">False</property>
+                <signal name="clicked" handler="on_cancel_button_clicked" swapped="no"/>
                 <child>
                   <object class="GtkAlignment" id="alignment48">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <property name="xscale">0</property>
                     <property name="yscale">0</property>
                     <child>
                       <object class="GtkHBox" id="hbox23">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="spacing">2</property>
                         <child>
                           <object class="GtkImage" id="image8">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="pixbuf">ripristina16x16.png</property>
                           </object>
                           <packing>
@@ -945,6 +1074,7 @@
                         <child>
                           <object class="GtkLabel" id="label73">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="label">Ripristina</property>
                             <property name="use_underline">True</property>
                           </object>
@@ -971,19 +1101,23 @@
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
                 <property name="receives_default">True</property>
-                <signal name="clicked" handler="on_close_button_clicked"/>
+                <property name="use_action_appearance">False</property>
+                <signal name="clicked" handler="on_close_button_clicked" swapped="no"/>
                 <child>
                   <object class="GtkAlignment" id="alignment1">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <property name="xscale">0</property>
                     <property name="yscale">0</property>
                     <child>
                       <object class="GtkHBox" id="hbox1">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="spacing">2</property>
                         <child>
                           <object class="GtkImage" id="image1">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="pixbuf">annulla2nd16x16.png</property>
                           </object>
                           <packing>
@@ -995,6 +1129,7 @@
                         <child>
                           <object class="GtkLabel" id="label1">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="label">Chiudi</property>
                             <property name="use_underline">True</property>
                           </object>
@@ -1030,6 +1165,10 @@
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="max_length">50</property>
+            <property name="primary_icon_activatable">False</property>
+            <property name="secondary_icon_activatable">False</property>
+            <property name="primary_icon_sensitive">True</property>
+            <property name="secondary_icon_sensitive">True</property>
           </object>
           <packing>
             <property name="left_attach">3</property>
@@ -1042,14 +1181,17 @@
         <child>
           <object class="GtkAlignment" id="alignment45">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="xalign">0</property>
             <property name="xscale">0</property>
             <child>
               <object class="GtkHBox" id="hbox20">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <child>
                   <object class="GtkLabel" id="label71">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <property name="xalign">0</property>
                     <property name="xpad">10</property>
                     <property name="label" translatable="yes">Data</property>
@@ -1064,16 +1206,19 @@
                   <object class="GtkAlignment" id="alignment46">
                     <property name="width_request">120</property>
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <property name="xalign">0</property>
                     <property name="xscale">0</property>
                     <child>
                       <object class="DateWidget" id="data_iscrizione_cciaa_entry">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                       </object>
                     </child>
                   </object>
                   <packing>
                     <property name="expand">False</property>
+                    <property name="fill">True</property>
                     <property name="position">1</property>
                   </packing>
                 </child>
@@ -1092,14 +1237,17 @@
         <child>
           <object class="GtkAlignment" id="alignment43">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="xalign">0</property>
             <property name="xscale">0</property>
             <child>
               <object class="GtkHBox" id="hbox19">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <child>
                   <object class="GtkLabel" id="label70">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <property name="xalign">0</property>
                     <property name="xpad">10</property>
                     <property name="label" translatable="yes">Data</property>
@@ -1114,16 +1262,19 @@
                   <object class="GtkAlignment" id="alignment44">
                     <property name="width_request">120</property>
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <property name="xalign">0</property>
                     <property name="xscale">0</property>
                     <child>
                       <object class="DateWidget" id="data_iscrizione_tribunale_entry">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                       </object>
                     </child>
                   </object>
                   <packing>
                     <property name="expand">False</property>
+                    <property name="fill">True</property>
                     <property name="position">1</property>
                   </packing>
                 </child>
@@ -1142,15 +1293,18 @@
         <child>
           <object class="GtkAlignment" id="alignment41">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="xalign">0</property>
             <property name="xscale">0</property>
             <child>
               <object class="GtkHBox" id="hbox18">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <property name="spacing">5</property>
                 <child>
                   <object class="GtkLabel" id="label69">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <property name="xalign">0</property>
                     <property name="label" translatable="yes">C.A.P.</property>
                   </object>
@@ -1165,18 +1319,25 @@
                   <object class="GtkAlignment" id="alignment42">
                     <property name="width_request">50</property>
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <property name="xalign">0</property>
                     <property name="xscale">0</property>
                     <child>
                       <object class="UnsignedIntegerEntryField" id="cap_sede_operativa_entry">
+                        <property name="width_request">180</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="invisible_char">●</property>
+                        <property name="primary_icon_activatable">False</property>
+                        <property name="secondary_icon_activatable">False</property>
+                        <property name="primary_icon_sensitive">True</property>
+                        <property name="secondary_icon_sensitive">True</property>
                       </object>
                     </child>
                   </object>
                   <packing>
                     <property name="expand">False</property>
+                    <property name="fill">True</property>
                     <property name="position">1</property>
                   </packing>
                 </child>
@@ -1195,15 +1356,18 @@
         <child>
           <object class="GtkAlignment" id="alignment39">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="xalign">0</property>
             <property name="xscale">0</property>
             <child>
               <object class="GtkHBox" id="hbox17">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <property name="spacing">5</property>
                 <child>
                   <object class="GtkLabel" id="label68">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <property name="xalign">0</property>
                     <property name="label" translatable="yes">C.A.P.</property>
                   </object>
@@ -1218,18 +1382,25 @@
                   <object class="GtkAlignment" id="alignment40">
                     <property name="width_request">50</property>
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <property name="xalign">0</property>
                     <property name="xscale">0</property>
                     <child>
                       <object class="UnsignedIntegerEntryField" id="cap_sede_legale_entry">
+                        <property name="width_request">180</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="invisible_char">●</property>
+                        <property name="primary_icon_activatable">False</property>
+                        <property name="secondary_icon_activatable">False</property>
+                        <property name="primary_icon_sensitive">True</property>
+                        <property name="secondary_icon_sensitive">True</property>
                       </object>
                     </child>
                   </object>
                   <packing>
                     <property name="expand">False</property>
+                    <property name="fill">True</property>
                     <property name="position">1</property>
                   </packing>
                 </child>
@@ -1251,9 +1422,11 @@
             <property name="can_focus">True</property>
             <property name="invisible_char">●</property>
             <property name="secondary_icon_stock">gtk-clear</property>
+            <property name="primary_icon_activatable">False</property>
             <property name="secondary_icon_activatable">True</property>
+            <property name="primary_icon_sensitive">True</property>
             <property name="secondary_icon_sensitive">True</property>
-            <signal name="icon_press" handler="on_icon_press"/>
+            <signal name="icon-press" handler="on_icon_press" swapped="no"/>
           </object>
           <packing>
             <property name="left_attach">3</property>
@@ -1265,6 +1438,7 @@
         <child>
           <object class="GtkLabel" id="label77">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="xalign">0</property>
             <property name="xpad">10</property>
             <property name="label" translatable="yes">IBAN</property>
@@ -1282,6 +1456,10 @@
             <property name="can_focus">True</property>
             <property name="max_length">50</property>
             <property name="invisible_char">●</property>
+            <property name="primary_icon_activatable">False</property>
+            <property name="secondary_icon_activatable">False</property>
+            <property name="primary_icon_sensitive">True</property>
+            <property name="secondary_icon_sensitive">True</property>
           </object>
           <packing>
             <property name="left_attach">1</property>
@@ -1294,6 +1472,7 @@
         <child>
           <object class="GtkLabel" id="path_label">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="label" translatable="yes">path_label</property>
           </object>
           <packing>
@@ -1306,15 +1485,19 @@
         <child>
           <object class="GtkHBox" id="hbox2">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <child>
               <object class="GtkButton" id="logo_button">
                 <property name="label" translatable="yes">seleziona logo</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <signal name="clicked" handler="on_logo_button_clicked"/>
+                <property name="use_action_appearance">False</property>
+                <signal name="clicked" handler="on_logo_button_clicked" swapped="no"/>
               </object>
               <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
                 <property name="position">0</property>
               </packing>
             </child>
@@ -1324,10 +1507,13 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
-                <signal name="clicked" handler="on_rimuovi_logo_clicked"/>
+                <signal name="clicked" handler="on_rimuovi_logo_clicked" swapped="no"/>
               </object>
               <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
                 <property name="position">1</property>
               </packing>
             </child>
@@ -1345,6 +1531,7 @@
             <property name="width_request">348</property>
             <property name="height_request">73</property>
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="label_xalign">0</property>
             <property name="shadow_type">in</property>
             <child>
@@ -1352,6 +1539,7 @@
                 <property name="width_request">340</property>
                 <property name="height_request">72</property>
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <property name="stock">gtk-zoom-fit</property>
               </object>
             </child>
@@ -1368,6 +1556,7 @@
         <child>
           <object class="GtkLabel" id="label2">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="label" translatable="yes">La dimensione del logo consigliata è di 
 circa 350 X 70 px 
 oppure 258x66pt
@@ -1480,7 +1669,9 @@ l'anteprima qui di fianco</property>
       </object>
     </child>
   </object>
+  <object class="GtkFileFilter" id="filefilter1"/>
   <object class="GtkFileChooserDialog" id="logo_filechooserdialog">
+    <property name="can_focus">False</property>
     <property name="border_width">5</property>
     <property name="modal">True</property>
     <property name="window_position">center-always</property>
@@ -1489,14 +1680,16 @@ l'anteprima qui di fianco</property>
     <property name="transient_for">anagrafica_azienda</property>
     <property name="do_overwrite_confirmation">True</property>
     <property name="preview_widget_active">False</property>
-    <signal name="file_activated" handler="on_logo_filechooserdialog_file_activated"/>
+    <signal name="file-activated" handler="on_logo_filechooserdialog_file_activated" swapped="no"/>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox1">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="spacing">2</property>
         <child internal-child="action_area">
           <object class="GtkHButtonBox" id="dialog-action_area1">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="layout_style">end</property>
             <child>
               <object class="GtkButton" id="chiudi_button">
@@ -1504,8 +1697,9 @@ l'anteprima qui di fianco</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
-                <signal name="clicked" handler="on_chiudi_button_clicked"/>
+                <signal name="clicked" handler="on_chiudi_button_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -1519,8 +1713,9 @@ l'anteprima qui di fianco</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
-                <signal name="clicked" handler="on_apri_button_clicked"/>
+                <signal name="clicked" handler="on_apri_button_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -1531,6 +1726,7 @@ l'anteprima qui di fianco</property>
           </object>
           <packing>
             <property name="expand">False</property>
+            <property name="fill">True</property>
             <property name="pack_type">end</property>
             <property name="position">0</property>
           </packing>
@@ -1542,5 +1738,4 @@ l'anteprima qui di fianco</property>
       <action-widget response="0">apri_button</action-widget>
     </action-widgets>
   </object>
-  <object class="GtkFileFilter" id="filefilter1"/>
 </interface>
