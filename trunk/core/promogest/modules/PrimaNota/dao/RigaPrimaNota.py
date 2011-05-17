@@ -62,7 +62,7 @@ except:
 
     rigaprimanota = Table('riga_prima_nota', params["metadata"],
             Column('id', Integer, primary_key=True),
-            Column('denominazione', String(300), nullable=False),
+            Column('denominazione', String(400), nullable=False),
             Column('id_testata_prima_nota', Integer,
                 ForeignKey(primanotaFK, onupdate="CASCADE", ondelete="CASCADE")),
             Column('id_testata_documento', Integer,

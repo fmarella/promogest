@@ -95,6 +95,9 @@ class TestataPrimaNota(Dao):
         elif k== 'tipoCassa':
             dic = {k:and_(testataprimanota.c.id== RigaPrimaNota.id_testata_prima_nota,
                             RigaPrimaNota.tipo !="cassa")}
+        elif k== 'denominazione':
+            dic = {k:and_(testataprimanota.c.id== RigaPrimaNota.id_testata_prima_nota,
+                            RigaPrimaNota.denominazione.ilike("%"+v+"%"))}
         elif k== 'tipoBanca':
             dic = {k:and_(testataprimanota.c.id== RigaPrimaNota.id_testata_prima_nota,
                             RigaPrimaNota.tipo !="banca")}

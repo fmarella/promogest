@@ -109,6 +109,7 @@ class AnagraficaPrimaNotaFilter(AnagraficaFilter):
         self.da_data_inizio_datetimewidget.set_text('01/01/' + Environment.workingYear)
         self.a_numero_filter_entry.set_text('')
         self.da_numero_filter_entry.set_text('')
+        self.denominazione_filter_entry.set_text('')
         self.a_data_inizio_datetimewidget.set_text('')
         self.id_banche_filter_combobox.set_active(0)
 
@@ -120,6 +121,7 @@ class AnagraficaPrimaNotaFilter(AnagraficaFilter):
         danumero = prepareFilterString(self.da_numero_filter_entry.get_text())
         da_data_inizio = stringToDate(self.da_data_inizio_datetimewidget.get_text())
         a_data_inizio = stringToDate(self.a_data_inizio_datetimewidget.get_text())
+        deno = prepareFilterString(self.denominazione_filter_entry.get_text())
         tipo_banca = self.banca_filter_check.get_active()
         tipo = None
         if not tipo_banca:
@@ -155,6 +157,7 @@ class AnagraficaPrimaNotaFilter(AnagraficaFilter):
                                 tipoBanca = tipoBanca,
                                 segnoEntrate = segnoEntrate,
                                 segnoUscite = segnoUscite,
+                                denominazione = deno,
                                 idBanca = banca)
         self._filterCountClosure = filterCountClosure
 
@@ -172,6 +175,7 @@ class AnagraficaPrimaNotaFilter(AnagraficaFilter):
                                             tipoBanca = tipoBanca,
                                             segnoEntrate = segnoEntrate,
                                             segnoUscite = segnoUscite,
+                                            denominazione = deno,
                                             idBanca = banca,
                                             orderBy=self.orderBy,
                                             offset=offset,
