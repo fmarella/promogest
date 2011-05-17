@@ -250,22 +250,23 @@ class TestataDocumento(Dao):
 
     intestatario = property(_getIntestatario, )
     
-    def _getPartitaIva(self):
+    def _getPI_CF(self):
         """
-        Restituisce la partita iva del cliente o fornitore
+        Restituisce la partita iva e/o il codice fiscale del cliente o fornitore.
         """
         if setconf("PrimaNota", "aggiungi_partita_iva"):
-            if self.id_cliente is not None:
-                    return '; P.I: {0}'.format(self.partita_iva_cliente)
-            elif self.id_fornitore is not None:
-                    return '; P.I: {0}'.format(self.partita_iva_fornitore)
+            pi = self.partita_iva_cliente or self.partita_iva_fornitore
+            cf = self.codice_fiscale_cliente or self.codice_fiscale_fornitore
+            if  (pi != cf) and ((pi and cf) != ''):
+                return '; P.I: {0}'.format(pi) + '; C.F: {0}'.format(cf)
+            elif pi:
+                return '; P.I: {0}'.format(pi)
+            elif cf:
+                return '; C.F: {0}'.format(cf)
             else:
                 return ''
         else:
             return ''
-
-    partitaIva = property(_getPartitaIva, )
-
 
     def _getTotaliDocumento(self):
         """ funzione di calcolo dei totali documento """
@@ -571,12 +572,14 @@ class TestataDocumento(Dao):
                         tipo_pag = "TERZA RATA"
                     elif scad.numero_scadenza == 4:
                         tipo_pag = "QUARTA RATA"
+                    stringa = "%s N.%s del. %s " %(self.operazione, str(self.numero), dateToString(self.data_documento))
                     if ope["segno"] == "-":
-                        stringa = "%s N.%s del. %s a %s %s,  %s"    %(self.operazione, str(self.numero), dateToString(self.data_documento), self.intestatario, self.partitaIva, tipo_pag)
+                        stringa += 'a '
                         segno = "entrata"
                     else:
-                        stringa = "%s N.%s del. %s da %s %s, %s"    %(self.operazione, str(self.numero), dateToString(self.data_documento), self.intestatario, self.partitaIva, tipo_pag)
+                        stringa += 'da '
                         segno = "uscita"
+                    stringa += "%s %s, %s" %(self.intestatario, self._getPI_CF(), tipo_pag)
 
                     tpn = TestataPrimaNota()
                     tpn.data_inizio = scad.data_pagamento

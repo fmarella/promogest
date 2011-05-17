@@ -62,7 +62,7 @@ class AnagraficaPrimaNotaSetup(GladeWidget):
         c.section = "PrimaNota"
         c.value = str(self.aggiungi_partita_iva_check.get_active())
         c.tipo = "bool"
-        c.description = "Aggiungere la partita IVA di un cliente/fornitore in descrizione operazione"
+        c.description = "Aggiungere la partita IVA di un cliente/fornitore e/o il codice fiscale di un cliente in descrizione operazione"
         c.tipo_section = "Generico"
         c.active = True
         c.visible = True
