@@ -38,7 +38,7 @@ from promogest.ui.PrintDialog import PrintDialogHandler
 
 class ManageLabelsToPrint(GladeWidget):
 
-    def __init__(self, mainWindow=None,daos=None):
+    def __init__(self, mainWindow=None,daos=None, art=None):
         """Widget di transizione per visualizzare e confermare gli oggetti
             preparati per la stampa ( Multi_dialog.glade tab 1)
         """
@@ -60,6 +60,7 @@ class ManageLabelsToPrint(GladeWidget):
         self.articolo_matchato = None
         self.ricerca = "ricerca_codice_a_barre_button" # ATTENZIONE ...scorciatoia ... check non gestite
         self.daos = daos
+        self.art = art
 
 #        fillComboboxListini(self.listino_combobox, True)
         self.draw()
@@ -74,6 +75,11 @@ class ManageLabelsToPrint(GladeWidget):
             self._treeViewModel = self.label_liststore # gtk.ListStore(object,str,str,str,str,str)
         self.labels_treeview.set_model(self._treeViewModel)
         fillComboboxMagazzini(self.id_magazzino_label_combobox, True)
+        if self.art:
+            self.selected_articolo_entry.set_text(self.art.denominazione)
+            fillComboboxListiniFiltrati(self.id_listino_combobox,idArticolo = self.art.id)
+        else:
+            fillComboboxListini(self.id_listino_combobox, True)
         self.id_magazzino_label_combobox.set_active(0)
         modek = self.select_template_combobox.get_model()
         path=Environment.labelTemplatesDir  # insert the path to the directory of interest
@@ -184,10 +190,12 @@ class ManageLabelsToPrint(GladeWidget):
                                             str(self.prezzoVenditaDettaglio(dao)),
                                             quantita,
                                             ))
+                self.art = None
 
     def ricercaListino(self):
         """ check if there is a priceList like setted on configure file
         """
+
         try:
             pp = Environment.conf.VenditaDettaglio.listino
         except:
@@ -235,12 +243,20 @@ class ManageLabelsToPrint(GladeWidget):
         print "OKOKOK"
 
     def on_add_button_clicked(self, button=None):
-        if self.articolo_entry.get_text() =="":
+        if self.articolo_entry.get_text() =="" and self.selected_articolo_entry=="":
             return
-        idListino = findIdFromCombobox(self.listino_combobox)
+        idListino = findIdFromCombobox(self.id_listino_combobox)
         self.articolo_entry.set_text("")
-        if self.articolo_matchato:
-            artilist = ListinoArticolo().select(idListino=idListino, idArticolo=self.articolo_matchato.id)
+        artilist=[]
+        idart = None
+        if self.art:
+            idart = self.art.id
+        elif self.articolo_matchato:
+            idart = self.articolo_matchato.id
+        if idart:
+            artilist = ListinoArticolo().select(idListino=idListino, idArticolo=idart)
+            #self.art = None
+            self.selected_articolo_entry.set_text("")
             if artilist:
                 self.daos.append(artilist[0])
                 self.articolo_matchato = None

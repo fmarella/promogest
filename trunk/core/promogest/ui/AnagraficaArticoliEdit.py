@@ -481,6 +481,46 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
 
         showAnagraficaRichiamata(self.dialogTopLevel, anagWindow, toggleButton)
 
+    def on_label_togglebutton_clicked(self, toggleButton):
+        if not(toggleButton.get_active()):
+            toggleButton.set_active(False)
+            return
+
+        if self.dao.id is None:
+            msg = 'Prima di poter stampare una label occorre salvare l\' articolo.\n Salvare ?'
+            if YesNoDialog(msg=msg, transient=self.dialogTopLevel):
+                self.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, -10)
+            else:
+                toggleButton.set_active(False)
+                return
+
+        if self.dao.codice_a_barre is None:
+            msg = 'Prima di poter stampare una label occorre aggiungere un codice a barre ?'
+            messageInfo(msg = msg)
+            toggleButton.set_active(False)
+            return
+
+        if posso("LA"):
+            from promogest.modules.Label.ui.ManageLabelsToPrint import ManageLabelsToPrint
+            a = ManageLabelsToPrint(mainWindow=self,daos=[], art=self.dao)
+            anagWindow = a.getTopLevel()
+            returnWindow = self.getTopLevel().get_toplevel()
+            anagWindow.set_transient_for(returnWindow)
+            anagWindow.show_all()
+        else:
+            fencemsg()
+        toggleButton.set_active(False)
+
+
+        #from AnagraficaListiniArticoli import AnagraficaListiniArticoli
+        #anag = AnagraficaListiniArticoli(self.dao.id)
+        #anagWindow = anag.getTopLevel()
+
+        #showAnagraficaRichiamata(self.dialogTopLevel, anagWindow, toggleButton)
+
+
+
+
     def duplicaListini(self):
         """ Duplica i listini relativi ad un articolo scelto su un nuovo articolo """
         if self._duplicatedDaoId is None:

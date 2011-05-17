@@ -2039,6 +2039,7 @@ ed assegnare loro recapiti telefonici, contatti  skype o msn. </property>
             <property name="border_width">1</property>
             <property name="hscrollbar_policy">automatic</property>
             <property name="vscrollbar_policy">automatic</property>
+            <property name="shadow_type">in</property>
             <child>
               <object class="GtkTextView" id="note_textview">
                 <property name="visible">True</property>
