@@ -85,6 +85,8 @@ class Contatto(Dao):
             dic = {k:and_(contatto.c.id == RecapitoContatto.id_contatto,RecapitoContatto.recapito.ilike("%"+v+"%")) }
         elif k == 'tipoRecapito':
             dic = {k:and_(contatto.c.id == RecapitoContatto.id_contatto,RecapitoContatto.tipo_recapito.contains(v))}
+        elif k == 'idCategoria':
+            dic = {k:and_(contatto.c.id == ContattoCategoriaContatto.id_contatto, ContattoCategoriaContatto.id_categoria_contatto == v)}
         return dic[k]
 
     def delete(self, multiple=False, record = True):
@@ -109,5 +111,5 @@ contatto=Table('contatto',
 
 std_mapper=mapper(Contatto, contatto,properties={
     'recapito' : relation(RecapitoContatto, backref=backref('contatto')),
-    "contatto_cat_cont": relation(ContattoCategoriaContatto,backref=backref("contatto")),
+    "contatto_cat_cont": relation(ContattoCategoriaContatto, backref=backref("contatto")),
     }, order_by=contatto.c.id)
