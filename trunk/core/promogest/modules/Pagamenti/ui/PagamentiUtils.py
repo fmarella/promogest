@@ -133,7 +133,7 @@ class Pagamenti(object):
         importotot = importodoc - acconto - importo_primo_doc - importo_secondo_doc
 
         pagamenti = self.IsPagamentoMultiplo(self.anagrafica.id_pagamento_customcombobox.combobox)
-        importorate = [0, 0, 0, 0]
+        importorate = []
         if type(pagamenti) == list:
             if pagamenti != None:
                 n_pagamenti = (len(pagamenti) - 1) / 2
@@ -145,10 +145,13 @@ class Pagamenti(object):
             n_pagamenti = 1
             importorate[0] = importotot
 
-        self.anagrafica.importo_prima_scadenza_entry.set_text("%.2f" % importorate[0])
-        self.anagrafica.importo_seconda_scadenza_entry.set_text("%.2f" % importorate[1])
-        self.anagrafica.importo_terza_scadenza_entry.set_text("%.2f" % importorate[2])
-        self.anagrafica.importo_quarta_scadenza_entry.set_text("%.2f" % importorate[3])
+        try:
+            self.anagrafica.importo_prima_scadenza_entry.set_text("%.2f" % importorate[0])
+            self.anagrafica.importo_seconda_scadenza_entry.set_text("%.2f" % importorate[1])
+            self.anagrafica.importo_terza_scadenza_entry.set_text("%.2f" % importorate[2])
+            self.anagrafica.importo_quarta_scadenza_entry.set_text("%.2f" % importorate[3])
+        except IndexError:
+            pass
 
         if n_pagamenti == 3:
             self.anagrafica.importo_quarta_scadenza_entry.set_text("")
