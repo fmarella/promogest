@@ -41,6 +41,7 @@ except:
                         Column('provvigionale', Boolean,nullable=False),
                         Column('ritenuta_percentuale',Numeric(8,4),nullable=True),
                         Column('rivalsa_percentuale',Numeric(8,4),nullable=True),
+                        Column('inarcassa_percentuale',Numeric(8,4),nullable=True),
                         Column('id_riga',Integer,ForeignKey(rigaFK, onupdate="CASCADE", ondelete="RESTRICT"),nullable=False),
                         UniqueConstraint('id_riga'),
                         schema=params['schema'])
@@ -55,6 +56,8 @@ class RigaRitenutaAcconto(Dao):
     def filter_values(self,k,v):
         if k == 'id':
             dic= {k:ritenutaaccontoriga.c.id ==v}
+        elif k == 'idRiga':
+            dic= {k:ritenutaaccontoriga.c.id_riga ==v}
         return  dic[k]
 
 std_mapper = mapper(RigaRitenutaAcconto, ritenutaaccontoriga,properties={

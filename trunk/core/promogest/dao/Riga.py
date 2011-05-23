@@ -38,6 +38,10 @@ if "id_iva" not in [c.name for c in riga.columns]:
     col = Column('id_iva', Integer)
     col.create(riga)
 
+if "id_riga_padre" not in [c.name for c in riga.columns]:
+    col = Column('id_riga_padre', Integer)
+    col.create(riga)
+
 class Riga(Dao):
     """ Mapper to handle the Row Table """
     def __init__(self, arg=None):
@@ -46,9 +50,9 @@ class Riga(Dao):
     def filter_values(self,k,v):
         """ Filtro del Mapper Riga"""
         if k=='descrizione':
-            dic= {  k : riga.c.descrizione.ilike("%"+v+"%")}
+            dic= {k: riga.c.descrizione.ilike("%"+v+"%")}
         elif k=="id_articolo":
-            dic={k:riga.c.id_articolo==v}
+            dic={k: riga.c.id_articolo==v}
         return  dic[k]
 
     def __magazzino(self):

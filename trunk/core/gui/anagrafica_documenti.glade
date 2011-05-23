@@ -2150,7 +2150,6 @@
                                 <child>
                                   <object class="GtkFrame" id="rit_acc_frame">
                                     <property name="visible">True</property>
-                                    <property name="sensitive">False</property>
                                     <property name="can_focus">False</property>
                                     <property name="label_xalign">0</property>
                                     <property name="shadow_type">in</property>
@@ -2182,12 +2181,11 @@
                                                   </packing>
                                                 </child>
                                                 <child>
-                                                  <object class="UnsignedDecimalEntryField" id="ritenuta_percentuale_entry">
-                                                    <property name="width_request">80</property>
+                                                  <object class="UnsignedIntegerEntryField" id="ritenuta_percentuale_entry">
+                                                    <property name="width_request">60</property>
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">True</property>
-                                                    <property name="invisible_char">●</property>
-                                                    <property name="text" translatable="yes">0.000     </property>
+                                                    <property name="invisible_char">•</property>
                                                     <property name="secondary_icon_stock">gtk-clear</property>
                                                     <property name="primary_icon_activatable">False</property>
                                                     <property name="secondary_icon_activatable">True</property>
@@ -2198,6 +2196,18 @@
                                                     <property name="expand">False</property>
                                                     <property name="fill">False</property>
                                                     <property name="position">1</property>
+                                                  </packing>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkLabel" id="label6">
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">False</property>
+                                                    <property name="label" translatable="yes">%</property>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="expand">False</property>
+                                                    <property name="fill">False</property>
+                                                    <property name="position">2</property>
                                                   </packing>
                                                 </child>
                                               </object>
@@ -2226,12 +2236,11 @@
                                                   </packing>
                                                 </child>
                                                 <child>
-                                                  <object class="UnsignedDecimalEntryField" id="rivalsa_percentuale_entry">
-                                                    <property name="width_request">80</property>
+                                                  <object class="UnsignedIntegerEntryField" id="rivalsa_percentuale_entry">
+                                                    <property name="width_request">60</property>
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">True</property>
-                                                    <property name="invisible_char">●</property>
-                                                    <property name="text" translatable="yes">0.000     </property>
+                                                    <property name="invisible_char">•</property>
                                                     <property name="secondary_icon_stock">gtk-clear</property>
                                                     <property name="primary_icon_activatable">False</property>
                                                     <property name="secondary_icon_activatable">True</property>
@@ -2244,11 +2253,78 @@
                                                     <property name="position">1</property>
                                                   </packing>
                                                 </child>
+                                                <child>
+                                                  <object class="GtkLabel" id="label3">
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">False</property>
+                                                    <property name="label" translatable="yes">%</property>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="expand">False</property>
+                                                    <property name="fill">False</property>
+                                                    <property name="position">2</property>
+                                                  </packing>
+                                                </child>
                                               </object>
                                               <packing>
                                                 <property name="expand">False</property>
                                                 <property name="fill">False</property>
                                                 <property name="position">1</property>
+                                              </packing>
+                                            </child>
+                                            <child>
+                                              <object class="GtkHBox" id="hbox27">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">False</property>
+                                                <child>
+                                                  <object class="GtkLabel" id="inarcassa_label">
+                                                    <property name="width_request">70</property>
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">False</property>
+                                                    <property name="xalign">0.0099999997764825821</property>
+                                                    <property name="label" translatable="yes">Inarcassa</property>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="expand">False</property>
+                                                    <property name="fill">False</property>
+                                                    <property name="position">0</property>
+                                                  </packing>
+                                                </child>
+                                                <child>
+                                                  <object class="UnsignedIntegerEntryField" id="inarcassa_entry">
+                                                    <property name="width_request">60</property>
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">True</property>
+                                                    <property name="invisible_char">•</property>
+                                                    <property name="secondary_icon_stock">gtk-clear</property>
+                                                    <property name="primary_icon_activatable">False</property>
+                                                    <property name="secondary_icon_activatable">True</property>
+                                                    <property name="primary_icon_sensitive">True</property>
+                                                    <property name="secondary_icon_sensitive">True</property>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="expand">False</property>
+                                                    <property name="fill">False</property>
+                                                    <property name="position">1</property>
+                                                  </packing>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkLabel" id="label2">
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">False</property>
+                                                    <property name="label" translatable="yes">%</property>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="expand">False</property>
+                                                    <property name="fill">False</property>
+                                                    <property name="position">2</property>
+                                                  </packing>
+                                                </child>
+                                              </object>
+                                              <packing>
+                                                <property name="expand">False</property>
+                                                <property name="fill">False</property>
+                                                <property name="position">2</property>
                                               </packing>
                                             </child>
                                             <child>
@@ -2263,7 +2339,7 @@
                                               <packing>
                                                 <property name="expand">False</property>
                                                 <property name="fill">False</property>
-                                                <property name="position">2</property>
+                                                <property name="position">3</property>
                                               </packing>
                                             </child>
                                           </object>
@@ -2373,7 +2449,7 @@
                   <object class="GtkLabel" id="label490">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="label" translatable="yes">&lt;b&gt;Dettaglio Riga in inserimento&lt;/b&gt;</property>
+                    <property name="label" translatable="yes">&lt;b&gt;DETTAGLIO RIGA&lt;/b&gt;</property>
                     <property name="use_markup">True</property>
                   </object>
                 </child>
@@ -2547,7 +2623,7 @@
                                   <object class="GtkLabel" id="label185">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
-                                    <property name="label" translatable="yes">Conferma &lt;b&gt;RIGA&lt;/b&gt; e pulisci (&lt;b&gt;F4&lt;/b&gt;)</property>
+                                    <property name="label" translatable="yes">Aggiungi &lt;b&gt;RIGA&lt;/b&gt; e pulisci (&lt;b&gt;F4&lt;/b&gt;)</property>
                                     <property name="use_markup">True</property>
                                     <property name="use_underline">True</property>
                                   </object>
@@ -5737,5 +5813,20 @@ Automaticamente</property>
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="stock">gtk-clear</property>
+  </object>
+  <object class="GtkListStore" id="ricerca_art_listore">
+    <columns>
+      <!-- column-name gchararray1 -->
+      <column type="gchararray"/>
+      <!-- column-name PyObject1 -->
+      <column type="PyObject"/>
+    </columns>
+  </object>
+  <object class="GtkEntryCompletion" id="ricerca_articolo_entrycompletition">
+    <property name="model">ricerca_art_listore</property>
+    <property name="minimum_key_length">2</property>
+    <property name="text_column">0</property>
+    <property name="inline_completion">True</property>
+    <signal name="match-selected" handler="on_completion_match" swapped="no"/>
   </object>
 </interface>

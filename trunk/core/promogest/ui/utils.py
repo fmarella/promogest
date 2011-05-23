@@ -2968,6 +2968,7 @@ def posso(mod=None):
     if mod == "RA":
         if "RuoliAzioni"in moduli: return True
         if "ONE FULL" in moduli :return True
+        if "ONE FULL +A" in moduli: return True
         if "PRO STANDARD" in moduli: return True
         if "PRO FULL" in moduli: return True
         if "PRO FULL +A" in moduli: return True
@@ -2995,16 +2996,41 @@ def posso(mod=None):
         if "ONE BASIC" in moduli : return True
         if "ONE STANDARD" in moduli: return True
         if "ONE FULL" in moduli: return True
+        if "ONE FULL +A" in moduli: return True
         if "PRO BASIC" in moduli : return True
         if "PRO STANDARD" in moduli: return True
         if "PRO FULL" in moduli: return True
+        if "PRO STANDARD +W" in moduli: return True
+        if "PRO STANDARD +S" in moduli: return True
+        if "PRO STANDARD +W +S" in moduli: return True
+        if "PRO STANDARD +W +S +A" in moduli: return True
+        if "PRO STANDARD +A" in moduli: return True
+        if "PRO FULL" in moduli: return True
+        if "PRO FULL +A" in moduli: return True
+        if "PRO FULL +W" in moduli: return True
+        if "PRO FULL +W +S" in moduli: return True
+        if "PRO FULL +S" in moduli: return True
+        if "PRO FULL +W +S +A" in moduli: return True
     if mod == "PR" or mod=="Promemoria":
         if "Promemoria" in moduli:return True
         if "ONE BASIC" in moduli : return True
-        if "PRO BASIC" in moduli : return True
         if "ONE STANDARD" in moduli: return True
         if "ONE FULL" in moduli: return True
+        if "ONE FULL +A" in moduli: return True
+        if "PRO BASIC" in moduli : return True
         if "PRO STANDARD" in moduli: return True
+        if "PRO FULL" in moduli: return True
+        if "PRO STANDARD +W" in moduli: return True
+        if "PRO STANDARD +S" in moduli: return True
+        if "PRO STANDARD +W +S" in moduli: return True
+        if "PRO STANDARD +W +S +A" in moduli: return True
+        if "PRO STANDARD +A" in moduli: return True
+        if "PRO FULL" in moduli: return True
+        if "PRO FULL +A" in moduli: return True
+        if "PRO FULL +W" in moduli: return True
+        if "PRO FULL +W +S" in moduli: return True
+        if "PRO FULL +S" in moduli: return True
+        if "PRO FULL +W +S +A" in moduli: return True
     if mod == "IN":
         if "Inventario"  in moduli: return True
         if "ONE FULL" in moduli: return True
@@ -3040,21 +3066,61 @@ def posso(mod=None):
         if "Pagamenti" in moduli: return True
         if "ONE BASIC" in moduli: return True
         if "ONE STANDARD" in moduli: return True
+        if "ONE BASIC" in moduli : return True
+        if "ONE STANDARD" in moduli: return True
         if "ONE FULL" in moduli: return True
-        if "PRO BASIC" in moduli: return True
+        if "ONE FULL +A" in moduli: return True
+        if "PRO BASIC" in moduli : return True
         if "PRO STANDARD" in moduli: return True
         if "PRO FULL" in moduli: return True
+        if "PRO STANDARD +W" in moduli: return True
+        if "PRO STANDARD +S" in moduli: return True
+        if "PRO STANDARD +W +S" in moduli: return True
+        if "PRO STANDARD +W +S +A" in moduli: return True
+        if "PRO STANDARD +A" in moduli: return True
+        if "PRO FULL" in moduli: return True
+        if "PRO FULL +A" in moduli: return True
+        if "PRO FULL +W" in moduli: return True
+        if "PRO FULL +W +S" in moduli: return True
+        if "PRO FULL +S" in moduli: return True
+        if "PRO FULL +W +S +A" in moduli: return True
     if mod == "PN" or mod=="PrimaNota":
         if "PrimaNota" in moduli: return True
         if "ONE BASIC" in moduli: return True
         if "ONE STANDARD" in moduli: return True
+        if "ONE BASIC" in moduli : return True
+        if "ONE STANDARD" in moduli: return True
         if "ONE FULL" in moduli: return True
-        if "PRO BASIC" in moduli: return True
+        if "ONE FULL +A" in moduli: return True
+        if "PRO BASIC" in moduli : return True
         if "PRO STANDARD" in moduli: return True
         if "PRO FULL" in moduli: return True
+        if "PRO STANDARD +W" in moduli: return True
+        if "PRO STANDARD +S" in moduli: return True
+        if "PRO STANDARD +W +S" in moduli: return True
+        if "PRO STANDARD +W +S +A" in moduli: return True
+        if "PRO STANDARD +A" in moduli: return True
+        if "PRO FULL" in moduli: return True
+        if "PRO FULL +A" in moduli: return True
+        if "PRO FULL +W" in moduli: return True
+        if "PRO FULL +W +S" in moduli: return True
+        if "PRO FULL +S" in moduli: return True
+        if "PRO FULL +W +S +A" in moduli: return True
     if mod == "STA":
         if "STA" in moduli: return True
         if "ONE FULL" in moduli: return True
+        if "ONE BASIC" in moduli : return True
+        if "ONE STANDARD" in moduli: return True
+        if "ONE FULL" in moduli: return True
+        if "ONE FULL +A" in moduli: return True
+        if "PRO BASIC" in moduli : return True
+        if "PRO STANDARD" in moduli: return True
+        if "PRO FULL" in moduli: return True
+        if "PRO STANDARD +W" in moduli: return True
+        if "PRO STANDARD +S" in moduli: return True
+        if "PRO STANDARD +W +S" in moduli: return True
+        if "PRO STANDARD +W +S +A" in moduli: return True
+        if "PRO STANDARD +A" in moduli: return True
         if "PRO FULL" in moduli: return True
         if "PRO FULL +A" in moduli: return True
         if "PRO FULL +W" in moduli: return True

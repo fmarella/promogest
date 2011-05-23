@@ -684,6 +684,7 @@ class Main(GladeWidget):
                 k.active = True
                 k.date = datetime.datetime.now()
                 k.persist()
+                messageInfo(msg="ATTIVAZIONE EFFETTUATA, RIAVVIARE IL PROMOGEST")
         dialog.destroy()
 
 

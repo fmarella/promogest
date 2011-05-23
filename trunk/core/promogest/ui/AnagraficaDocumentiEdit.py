@@ -116,12 +116,8 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self.tagliaColoreRigheList = None
         # Inizializziamo i moduli in interfaccia!
         #self.draw()
-        self.completion = gtk.EntryCompletion()
+        self.completion = self.ricerca_articolo_entrycompletition
         self.completion.set_match_func(self.match_func)
-        self.completion.connect("match-selected",
-                                            self.on_completion_match)
-        listore = gtk.ListStore(str, object)
-        self.completion.set_model(listore)
         self.completion.set_text_column(0)
         self.articolo_entry.set_completion(self.completion)
         self.sepric = "  ~  "
@@ -164,7 +160,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         if type(ivaobj) != type("CIAO"):
             iva = ivaobj.percentuale
             if iva == "" or iva == "0":
-                self.showMessage(msg="ATTENZIONE IVA a 0%")
+                messageInfo(msg="ATTENZIONE IVA a 0%")
             else:
                 prezzoLordo = self.prezzo_lordo_entry.get_text()
 #                print "PREZZO LORDO " , prezzoLordo
@@ -177,7 +173,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         """ controlliamo prima di effettuare una ricerca che il magazzino sia
         selezionato per rendere la ricerca possibile e corretta"""
         if not findIdFromCombobox(self.id_magazzino_combobox) and self.checkMAGAZZINO:
-            self.showMessage(msg="ATTENZIONE! \n SELEZIONARE UN MAGAZZINO\n PER UNA RICERCA CORRETTA")
+            messageInfo(msg="ATTENZIONE! \n SELEZIONARE UN MAGAZZINO\n PER UNA RICERCA CORRETTA")
             self.id_magazzino_combobox.grab_focus()
             self.checkMAGAZZINO = False
 
@@ -220,7 +216,8 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                                 "quantita_minima": None,
                                 "ritAccPercentuale": 0,
                                 "rivalsaPercentuale": 0,
-                                "ritCaProvvigionale": 0,}
+                                "ritCaProvvigionale": False,
+                                "ritInarCassa":0}
         if posso("SM"):
             AnagraficaDocumentiEditSuMisuraExt.azzeraRiga(self,numero)
         if posso("PW"):
@@ -259,7 +256,8 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                                 "quantita_minima": rigatampone['quantita_minima'],
                                 "ritAccPercentuale": rigatampone['ritAccPercentuale'],
                                 "rivalsaPercentuale": rigatampone['rivalsaPercentuale'],
-                                "ritCaProvvigionale": rigatampone['ritCaProvvigionale'],}
+                                "ritCaProvvigionale": rigatampone['ritCaProvvigionale'],
+                                "ritInarCassa": rigatampone['ritInarCassa']}
         if posso("SM"):
             AnagraficaDocumentiEditSuMisuraExt.azzeraRigaPartial(self,numero, rigatampone)
 
@@ -290,13 +288,10 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self.provvigionale_check.set_active(False)
         if posso("PW"):
             AnagraficaDocumentiEditPromoWearExt.setLabelInfo(self)
-
         if posso("SM"):
             AnagraficaDocumentiEditSuMisuraExt.setLabels(self)
-
         if posso("GN"):
             AnagraficaDocumentiEditGestioneNoleggioExt.setLabels(self)
-
         if posso("PA"):
             AnagraficadocumentiPagamentExt.nuovaRiga(self)
             AnagraficadocumentiPagamentExt.attiva_prima_scadenza(self,False, True)
@@ -352,13 +347,11 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                 findComboboxRowFromId(self.id_listino_customcombobox.combobox, self._id_listino)
 
     def on_id_multiplo_customcombobox_button_clicked(self, widget, toggleButton):
-        """ FIXME
-        """
+        """ FIXME """
         on_id_multiplo_customcombobox_clicked(widget, toggleButton, self._righe[0]["idArticolo"])
 
     def on_id_multiplo_customcombobox_changed(self, combobox):
-        """ FIXME
-        """
+        """ FIXME """
         if self._loading:
             return
         self._righe[0]["idMultiplo"] = findIdFromCombobox(self.id_multiplo_customcombobox.combobox)
@@ -940,6 +933,20 @@ del documento.
                 daoMisura.moltiplicatore = float(self._righe[i]["molt_pezzi"] or 0)
                 daoRiga.misura_pezzo = [daoMisura]
             #righe[i]=daoRiga
+            ### Sezion dedicata alla gestione della ritenuta d'acconto
+            ### della rivalsa e dela inarcassa
+            #"ritAccPercentuale": 0, "rivalsaPercentuale": 0,
+            #"ritCaProvvigionale": False, "ritInarCassa":0
+            if self._righe[i]["ritAccPercentuale"] != 0 or \
+                self._righe[i]["rivalsaPercentuale"] != 0 or \
+                self._righe[i]["ritCaProvvigionale"] == True or \
+                self._righe[i]["ritInarCassa"] !=0:
+                daoRiteAcc = RigaRitenutaAcconto()
+                daoRiteAcc.provvigionale = self._righe[i]["ritCaProvvigionale"]
+                daoRiteAcc.ritenuta_percentuale = float(self._righe[i]["ritAccPercentuale"] or 0)
+                daoRiteAcc.rivalsa_percentuale = float(self.rivalsa_percentuale_entry.get_text())
+                daoRiteAcc.inarcassa_percentuale = float(self.inarcassa_entry.get_text())
+                daoRiga.ritenute = [daoRiteAcc]
             righeDocumento.append(daoRiga)
         self.dao.righeDocumento = righeDocumento
         if posso("PA"):
@@ -1081,34 +1088,33 @@ del documento.
         """
         self.checkMAGAZZINO = False
         if self.NoRowUsableArticle:
-            self.showMessage('ARTICOLO NON USABILE IN UNA RIGA IN QUANTO ARTICOLO PRINCIPALE O PADRE!')
+            messageInfo('ARTICOLO NON USABILE IN UNA RIGA IN QUANTO ARTICOLO PRINCIPALE O PADRE!')
             return
 
         self._righe[0]["idMagazzino"] = findIdFromCombobox(self.id_magazzino_combobox)
         magazzino = leggiMagazzino(self._righe[0]["idMagazzino"])
-        #magazzino = Magazzino().getRecord(id=self._righe[0]["idMagazzino"])
         self._righe[0]["magazzino"] = magazzino['denominazione']
 
         if (self.data_documento_entry.get_text() == ''):
-            self.showMessage('Inserire la data del documento !')
+            messageInfo('Inserire la data del documento !')
             return
 
         if (findIdFromCombobox(self.id_operazione_combobox) is None):
-            self.showMessage('Inserire il tipo di documento !')
+            messageInfo('Inserire il tipo di documento !')
             return
 
         if (self.id_persona_giuridica_customcombobox.getId() is None):
-            self.showMessage('Inserire l\'intestatario del documento !')
+            messageInfo('Inserire l\'intestatario del documento !')
             return
 
         if ((self._righe[0]["idMagazzino"] is not None) and
                 (self._righe[0]["idArticolo"] is None)):
-            self.showMessage('Inserire l\'articolo !')
+            messageInfo('Inserire l\'articolo !')
             return
 
         if ((self._righe[0]["idArticolo"] is not None) and
                 (self._righe[0]["idMagazzino"] is None)):
-            self.showMessage('Inserire il magazzino !')
+            messageInfo('Inserire il magazzino !')
             return
         self.on_show_totali_riga()
         costoVariato = (self._tipoPersonaGiuridica == "fornitore" and self._righe[0]["idArticolo"] is not None and
@@ -1123,6 +1129,20 @@ del documento.
             inserisci = False
         # memorizzazione delle parti descrittive (liberamente modificabili)
         self._righe[0]["descrizione"] = self.descrizione_entry.get_text()
+
+        if self.ritenuta_percentuale_entry.get_text():
+            self._righe[0]["ritAccPercentuale"] = self.ritenuta_percentuale_entry.get_text()
+            print "RIGA CON RITENUTA"
+        if self.rivalsa_percentuale_entry.get_text():
+            self._righe[0]["rivalsaPercentuale"] = self.rivalsa_percentuale_entry.get_text()
+            print "RIGA CON RIVALSA"
+        if self.inarcassa_entry.get_text():
+            self._righe[0]["ritInarCassa"] = self.inarcassa_entry.get_text()
+            print "INARCASSA"
+        if self.provvigionale_check.get_active():
+            self._righe[0]["ritCaProvvigionale"] = self.provvigionale_check.get_active()
+            print "E' di tipo provvigionale"
+
 
         if posso("ADR"):
             artADR = AnagraficaDocumentiEditADRExt.getADRArticolo(self._righe[0]["idArticolo"])
@@ -1144,6 +1164,8 @@ del documento.
             self._righe[0]["altezza"] = self.altezza_entry.get_text()
             self._righe[0]["larghezza"] = self.larghezza_entry.get_text()
             self._righe[0]["molt_pezzi"] = self.moltiplicatore_entry.get_text()
+
+
         self._righe[self._numRiga]["idRiga"] = self._righe[0]["idRiga"]
         self._righe[self._numRiga]["idMagazzino"] = self._righe[0]["idMagazzino"]
         self._righe[self._numRiga]["magazzino"] = self._righe[0]["magazzino"]
@@ -1184,7 +1206,6 @@ del documento.
         if inserisci is False:
             if self._iteratorRiga is None:
                 return
-#            print "ITERATOREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE", self._iteratorRiga
             #self.modelRiga.set_value(self._iteratorRiga, 0, self._righe[self._numRiga]["magazzino"])
             self.modelRiga.set_value(self._iteratorRiga, 1, self._righe[self._numRiga]["magazzino"])
             self.modelRiga.set_value(self._iteratorRiga, 2, self._righe[self._numRiga]["codiceArticolo"])
@@ -1268,9 +1289,10 @@ del documento.
         stringa = text.get_text()
         if self.mattu:
             text.set_text(stringa.split(self.sepric)[0])
-        model = gtk.ListStore(str,object)
-        vediamo = self.completion.get_model()
-        vediamo.clear()
+        #model = gtk.ListStore(str,object)
+        #vediamo = self.completion.get_model()
+        #vediamo.clear()
+        self.ricerca_art_listore.clear()
         art = []
         # evita la ricerca per stringhe vuote o più corte di due caratteri
         if stringa ==[] or len(stringa)<2:
@@ -1306,8 +1328,8 @@ del documento.
             if self.ricerca == "ricerca_codice_a_barre_button":
                 cb = m.codice_a_barre
                 compl_string = bloccoInformazioni+self.sepric+cb
-            model.append([compl_string,m])
-        self.completion.set_model(model)
+            self.ricerca_art_listore.append([compl_string,m])
+        #self.completion.set_model(model)
 
     def match_func(self, completion, key, iter):
         model = self.completion.get_model()
@@ -1333,15 +1355,15 @@ del documento.
             self.mostraArticolo(anag.dao.id)
 
         if (self.data_documento_entry.get_text() == ''):
-            self.showMessage('Inserire la data del documento !')
+            messageInfo('Inserire la data del documento !')
             return
 
-        if (findIdFromCombobox(self.id_operazione_combobox) is None):
-            self.showMessage('Inserire il tipo di documento !')
+        if findIdFromCombobox(self.id_operazione_combobox) is None:
+            messageInfo('Inserire il tipo di documento !')
             return
 
         if (findIdFromCombobox(self.id_magazzino_combobox) is None):
-            self.showMessage('Inserire il magazzino !')
+            messageInfo('Inserire il magazzino !')
             return
 
         codice = None
@@ -1584,30 +1606,6 @@ del documento.
     def on_search_row_button_clicked(self, widget):
         self.ricercaArticolo()
 
-#    def on_ricerca_codice_button_clicked(self, widget):
-#        """ """
-#        if self.ricerca_codice_button.get_active()  and not self.cplx:
-#            self.cplx=False
-#            self.ricercaArticolo()
-
-#    def on_ricerca_codice_a_barre_button_clicked(self, widget):
-#        """ """
-#        if self.ricerca_codice_a_barre_button.get_active()  and not self.cplx:
-#            self.cplx=False
-#            self.ricercaArticolo()
-
-#    def on_ricerca_descrizione_button_clicked(self, widget):
-#        """ """
-#        if self.ricerca_descrizione_button.get_active()  and not self.cplx:
-#            self.cplx=False
-#            self.ricercaArticolo()
-
-#    def on_ricerca_codice_articolo_fornitore_button_clicked(self, widget):
-#        """ """
-#        if self.ricerca_codice_articolo_fornitore_button.get_active() and self.cplx:
-#            self.cplx=False
-#            self.ricercaArticolo()
-
     def on_storico_costi_button_clicked(self, toggleButton):
         """ """
         from StoricoForniture import StoricoForniture
@@ -1633,7 +1631,7 @@ del documento.
     def on_variazione_listini_button_clicked(self, toggleButton):
         """ """
         if self._righe[0]["idArticolo"] is None:
-            self.showMessage('Selezionare un articolo !')
+            messageInfo('Selezionare un articolo !')
             return
 
         from VariazioneListini import VariazioneListini
@@ -1817,7 +1815,7 @@ del documento.
                 self.rent_checkbutton.set_active(True)
             else:
                 msg =  "ERRORE NELLA DURATA DEL NOLEGGIO\nNON PUO' ESSERE ZERO O NEGATIVA"
-                self.showMessage(msg)
+                messageInfo(msg=msg)
 
     #NOTEBOOK FINE TAB 3
 
@@ -1936,15 +1934,6 @@ del documento.
         AnagraficadocumentiPagamentExt.on_pulisci_quarta_rata_button_clicked(self, button)
 
     # NOTEBOOK FINE TAB 3
-
-
-    def showMessage(self, msg):
-        """ Generic Show dialog func """
-        dialog = gtk.MessageDialog(None,
-                                    gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                   gtk.MESSAGE_INFO, gtk.BUTTONS_OK, msg)
-        dialog.run()
-        dialog.destroy()
 
     def on_avvertimento_sconti_button_clicked(self, button):
         self.notebook.set_current_page(2)
