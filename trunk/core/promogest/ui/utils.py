@@ -2215,7 +2215,7 @@ def sanitizer(value):
 def dividi_in_rate(totale, nrate):
     """Divide un importo in rate
     """
-    totale = Decimal(totale)
+    totale = Decimal(str(totale))
     somma = Decimal(0)
     rate = []
     for i in range(nrate):

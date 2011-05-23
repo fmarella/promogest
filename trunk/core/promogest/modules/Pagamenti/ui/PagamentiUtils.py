@@ -133,7 +133,7 @@ class Pagamenti(object):
         importotot = importodoc - acconto - importo_primo_doc - importo_secondo_doc
 
         pagamenti = self.IsPagamentoMultiplo(self.anagrafica.id_pagamento_customcombobox.combobox)
-        importorate = []
+        importorate = [0, 0, 0, 0]
         if type(pagamenti) == list:
             if pagamenti != None:
                 n_pagamenti = (len(pagamenti) - 1) / 2
