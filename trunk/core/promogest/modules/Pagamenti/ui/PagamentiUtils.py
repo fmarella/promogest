@@ -139,8 +139,8 @@ class Pagamenti(object):
                 n_pagamenti = (len(pagamenti) - 1) / 2
                 importorate = dividi_in_rate(importotot, n_pagamenti)
             else:
-               n_pagamenti = 1
-               importorate[0] = importotot
+                n_pagamenti = 1
+                importorate[0] = importotot
         else:
             n_pagamenti = 1
             importorate[0] = importotot
