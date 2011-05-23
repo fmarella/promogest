@@ -2212,6 +2212,17 @@ def sanitizer(value):
         value = value.replace(",", ".")
     return value
 
+def dividi_in_rate(totale, nrate):
+    """Divide un importo in rate
+    """
+    totale = Decimal(totale)
+    somma = Decimal(0)
+    rate = []
+    for i in range(nrate):
+        rate.append(mN(totale / nrate, 2))
+        somma += mN(rate[i], 2)
+    rate[nrate-1] = rate[0] - mN(somma - totale, 2)
+    return rate
 
 def mN(value,decimal=None):
     """
