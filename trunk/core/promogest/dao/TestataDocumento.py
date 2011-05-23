@@ -294,7 +294,7 @@ class TestataDocumento(Dao):
                 from promogest.ui.utils import leggiListino
                 ll = leggiListino(riga.id_listino, riga.id_articolo)
                 #print ll["prezzoDettaglio"], ll["prezzoIngrosso"], ll["ultimoCosto"], (riga.valore_unitario_netto - ll["ultimoCosto"]), totaleRicaricatoLordo
-                totaleRicaricatoLordo += (Decimal(str(riga.valore_unitario_netto) or 0) - ll["ultimoCosto"])
+                totaleRicaricatoLordo += (Decimal(riga.valore_unitario_netto or 0) - ll["ultimoCosto"])
             if not riga.moltiplicatore:
                 riga.moltiplicatore = 1
             percentualeIvaRiga = Decimal(riga.percentuale_iva)
