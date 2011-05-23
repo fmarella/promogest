@@ -249,7 +249,7 @@ class TestataDocumento(Dao):
             return ''
 
     intestatario = property(_getIntestatario, )
-    
+
     def _getPI_CF(self):
         """
         Restituisce la partita iva e/o il codice fiscale del cliente o fornitore.
@@ -294,7 +294,7 @@ class TestataDocumento(Dao):
                 from promogest.ui.utils import leggiListino
                 ll = leggiListino(riga.id_listino, riga.id_articolo)
                 #print ll["prezzoDettaglio"], ll["prezzoIngrosso"], ll["ultimoCosto"], (riga.valore_unitario_netto - ll["ultimoCosto"]), totaleRicaricatoLordo
-                totaleRicaricatoLordo += (riga.valore_unitario_netto - ll["ultimoCosto"])
+                totaleRicaricatoLordo += (Decimal(str(riga.valore_unitario_netto or 0) - ll["ultimoCosto"])
             if not riga.moltiplicatore:
                 riga.moltiplicatore = 1
             percentualeIvaRiga = Decimal(riga.percentuale_iva)
