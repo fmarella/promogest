@@ -189,6 +189,10 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         """
         Azzera i campi del dizionario privato delle righe, alla riga
         indicata (o alla 0-esima)
+        "ritAccPercentuale": 0,
+        "rivalsaPercentuale": 0,
+        "ritCaProvvigionale": False,
+        "ritInarCassa":0
         """
         self._righe[numero] = {"idRiga": None,
                                 "idMagazzino": None,
@@ -214,10 +218,8 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                                 "codiceArticoloFornitore": '',
                                 "prezzoNettoUltimo": 0,
                                 "quantita_minima": None,
-                                "ritAccPercentuale": 0,
-                                "rivalsaPercentuale": 0,
-                                "ritCaProvvigionale": False,
-                                "ritInarCassa":0}
+                                "ritenute" : []
+                                }
         if posso("SM"):
             AnagraficaDocumentiEditSuMisuraExt.azzeraRiga(self,numero)
         if posso("PW"):
@@ -254,10 +256,8 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                                 "codiceArticoloFornitore": rigatampone['codiceArticoloFornitore'],
                                 "prezzoNettoUltimo": rigatampone['prezzoNettoUltimo'],
                                 "quantita_minima": rigatampone['quantita_minima'],
-                                "ritAccPercentuale": rigatampone['ritAccPercentuale'],
-                                "rivalsaPercentuale": rigatampone['rivalsaPercentuale'],
-                                "ritCaProvvigionale": rigatampone['ritCaProvvigionale'],
-                                "ritInarCassa": rigatampone['ritInarCassa']}
+                                "ritenute" : rigatampone['ritenute'],
+                                }
         if posso("SM"):
             AnagraficaDocumentiEditSuMisuraExt.azzeraRigaPartial(self,numero, rigatampone)
 
@@ -593,13 +593,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                     ivaart = art.id_aliquota_iva
                     daoiva = AliquotaIva().select(percentuale=riga.percentuale_iva)
                     if daoiva:
-#                        if ivaart == daoiva[0].id:
                         idiva = daoiva[0].id
-#                        else:
-#                            print "CHIEDIAMO CONFERMA", art.denominazione
-#                    else:
-#                        print "mandiamo un avviso. è un articolo registrato ma non ha iva"
-#                        idiva = None
                 else:
                     if riga.percentuale_iva != 0:
                         #riga descrittiva
@@ -937,16 +931,13 @@ del documento.
             ### della rivalsa e dela inarcassa
             #"ritAccPercentuale": 0, "rivalsaPercentuale": 0,
             #"ritCaProvvigionale": False, "ritInarCassa":0
-            if self._righe[i]["ritAccPercentuale"] != 0 or \
-                self._righe[i]["rivalsaPercentuale"] != 0 or \
-                self._righe[i]["ritCaProvvigionale"] == True or \
-                self._righe[i]["ritInarCassa"] !=0:
+            if self._righe[i]["ritenute"]:
                 daoRiteAcc = RigaRitenutaAcconto()
-                daoRiteAcc.provvigionale = self._righe[i]["ritCaProvvigionale"]
-                daoRiteAcc.ritenuta_percentuale = float(self._righe[i]["ritAccPercentuale"] or 0)
-                daoRiteAcc.rivalsa_percentuale = float(self.rivalsa_percentuale_entry.get_text())
-                daoRiteAcc.inarcassa_percentuale = float(self.inarcassa_entry.get_text())
-                daoRiga.ritenute = [daoRiteAcc]
+                daoRiteAcc.provvigionale = self._righe[i]["ritenute"]["ritCaProvvigionale"]
+                daoRiteAcc.ritenuta_percentuale = float(self._righe[i]["ritenute"]["ritAccPercentuale"] or 0)
+                daoRiteAcc.rivalsa_percentuale = float(self._righe[i]["ritenute"]["rivalsaPercentuale"] or 0)
+                daoRiteAcc.inarcassa_percentuale = float(self._righe[i]["ritenute"]["ritInarCassa"] or 0)
+                daoRiga.ritenute = daoRiteAcc
             righeDocumento.append(daoRiga)
         self.dao.righeDocumento = righeDocumento
         if posso("PA"):

@@ -9,7 +9,6 @@ tipodb = sqlite
 pw = No
 [RuoliAzioni]
 mod_enable=yes
-
 [Magazzini]
 mod_enable=Yes
 

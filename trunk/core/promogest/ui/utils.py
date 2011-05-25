@@ -2970,63 +2970,65 @@ def posso(mod=None):
         if "ONE" in a or "PRO" in a:
             moduli = a.split(" ")
     if mod == "RA":
-        if "RuoliAzioni"in moduli: return True
+        if "RuoliAzioni"in modulis: return True
         if "FULL" in moduli :return True
         #if "PRO STANDARD" in moduli: return True
     if mod == "PW" or mod=="PromoWear":
-        if "PromoWear" in moduli:return True
+        if "PromoWear" in modulis:return True
         if "+W" in moduli:return True
     if mod == "AG":
-        if "Agenti" in moduli: return True
+        if "Agenti" in modulis: return True
         if "FULL" in moduli :return True
         if "STANDARD" in moduli: return True
     if mod == "GN":
-        if "GestioneNoleggio" in moduli: return True
+        if "GestioneNoleggio" in modulis: return True
     if mod == "VD" or mod=="VenditaDettaglio":
-        if "VenditaDettaglio" in moduli:return True
+        if "VenditaDettaglio" in modulis:return True
         if "+S" in moduli:return True
     if mod == "DB":
         if "DistintaBase" in moduli: return True
     if mod == "CN" or mod=="Contatti":
-        if "Contatti" in moduli:return True
+        if "Contatti" in modulis:return True
         if "BASIC" in moduli : return True
         if "STANDARD" in moduli: return True
         if "FULL" in moduli: return True
     if mod == "PR" or mod=="Promemoria":
-        if "Promemoria" in moduli:return True
+        if "Promemoria" in modulis:return True
         if "BASIC" in moduli : return True
         if "STANDARD" in moduli: return True
         if "FULL" in moduli: return True
     if mod == "IN":
-        if "Inventario"  in moduli: return True
+        if "Inventario"  in modulis: return True
         if "FULL" in moduli: return True
     if mod == "IPL":
-        if "ImportPriceList" in moduli:return True
+        if "ImportPriceList" in modulis:return True
         if "FULL" in moduli: return True
     if mod == "LA":
-        if "Label" in moduli: return True
+        if "Label" in modulis: return True
         if "FULL" in moduli: return True
     if mod == "SM":
-        if "SuMisura" in moduli: return True
+        if "SuMisura" in modulis: return True
     if mod == "IP":
-        if "InfoPeso" in moduli: return True
+        if "InfoPeso" in modulis: return True
     if mod == "PA" or mod=="Pagamenti":
-        if "Pagamenti" in moduli: return True
+        if "Pagamenti" in modulis: return True
         if "BASIC" in moduli: return True
         if "STANDARD" in moduli: return True
         if "FULL" in moduli: return True
     if mod == "PN" or mod=="PrimaNota":
-        if "PrimaNota" in moduli: return True
+        if "PrimaNota" in modulis: return True
         if "BASIC" in moduli: return True
         if "STANDARD" in moduli: return True
         if "FULL" in moduli: return True
     if mod == "STA":
-        if "STA" in moduli: return True
+        if "STA" in modulis: return True
         if "FULL" in moduli: return True
     if mod == "SD":
-        if "SincroDB" in moduli :return True
+        if "SincroDB" in modulis :return True
+    if mod == "SL":
+        if "SchedaLavorazione" in modulis :return True
     if mod == "GC" or mod =="GestioneCommesse":
-        if "GestioneCommesse" in moduli :return True
+        if "GestioneCommesse" in modulis :return True
         if "BASIC" in moduli: return True
         if "STANDARD" in moduli: return True
         if "FULL" in moduli: return True
