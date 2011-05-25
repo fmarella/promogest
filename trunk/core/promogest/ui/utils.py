@@ -2026,7 +2026,7 @@ def omogeneousCode(section=None, string = None):
 
 def hasAction(actionID=None):
     """
-    La moduòlarizzazione richiede che
+    La modularizzazione richiede che
     quando il modulo non è presente o non è attivato
     la risposta sia sempre true perchè essendoci solo
     admin ha de facto tutti i privilegi

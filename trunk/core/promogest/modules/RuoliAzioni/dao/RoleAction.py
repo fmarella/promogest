@@ -41,11 +41,6 @@ except:
             Column('id_action', Integer, ForeignKey('action.id'),primary_key=True),
             useexisting=True)
         roleaction.create(checkfirst=True)
-        s= select([roleaction.c.id_role]).execute().fetchall()
-        if (1,) not in s or s ==[]:
-            ruolieazioni = roleaction.insert()
-            for i in range(1,15):
-                ruolieazioni.execute(id_role = 1, id_action =i)
 
 class RoleAction(Dao):
     """ RoleAction class database functions  """
@@ -67,3 +62,17 @@ std_mapper = mapper(RoleAction, roleaction, properties={
             'role':relation(Role, backref='roleaction'),
             'action':relation(Action, backref='roleaction'),
                 }, order_by=roleaction.c.id_role)
+
+idAdmin = Role().select(name ="Admin")
+if not idAdmin:
+    print "ATTENZIONE NON e' PRESENTE UN ADMIN"
+else:
+    idadmin = idAdmin[0].id
+    ac = Action().select(batchSize=None)
+    for a in ac:
+        ra = RoleAction().select(id_role=idadmin,id_action=a.id, batchSize=None)
+        if not ra:
+            aa = RoleAction()
+            aa.id_role = idadmin
+            aa.id_action = a.id
+            aa.persist()

@@ -220,7 +220,7 @@ class Main(GladeWidget):
             icon_view.unselect_all()
             return
         elif selection == 4:
-            if not hasAction(actionID=2):
+            if not hasAction(actionID=15):
                 return
             from promogest.modules.PrimaNota.ui.AnagraficaPrimaNota import AnagraficaPrimaNota
             anag = AnagraficaPrimaNota(aziendaStr=self.aziendaStr)

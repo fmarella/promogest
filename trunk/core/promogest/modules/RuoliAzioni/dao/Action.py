@@ -59,13 +59,24 @@ except:
             azioni.execute(denominazione_breve = "PROMEMORIA", denominazione = "Accesso alla sezione promemoria")
             azioni.execute(denominazione_breve = "CONFIGURAZIONE", denominazione = "Puo' effettuare modifiche alla configurazione")
 
+
 class Action(Dao):
 
     def __init__(self, arg=None):
         Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):
-        dic= {  'denominazione' : action.c.denominazione.ilike("%"+v+"%")}
+        if k =="denominazione":
+            dic= {k: action.c.denominazione.ilike("%"+v+"%")}
+        elif k == "denominazione_breve":
+            dic= {k: action.c.denominazione_breve ==v}
         return  dic[k]
 
 std_mapper = mapper(Action, action, order_by=action.c.id)
+
+pn = Action().select(denominazione_breve = "PRIMANOTA")
+if not pn:
+    a = Action()
+    a.denominazione_breve = "PRIMANOTA"
+    a.denominazione =  "Accesso alla sezione prima nota cassa"
+    a.persist()
