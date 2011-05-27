@@ -2972,6 +2972,7 @@ def posso(mod=None):
     if mod == "RA":
         if "RuoliAzioni"in modulis: return True
         if "FULL" in moduli :return True
+        if "STANDARD" in moduli: return True
         #if "PRO STANDARD" in moduli: return True
     if mod == "PW" or mod=="PromoWear":
         if "PromoWear" in modulis:return True
