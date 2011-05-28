@@ -546,7 +546,6 @@ params = {'engine': engine ,
         'heightdetail': 110 ,
         'usernameLoggedList':userdata}
 
-
  # Parametri localizzazione formati
 loc = locale.setlocale(locale.LC_ALL, '')
 conf.windowsrc = os.path.expanduser('~') + os.sep + 'promogest2/windowsrc.xml'
@@ -569,6 +568,10 @@ handler.setFormatter(formatter)
 pg2log.addHandler(handler)
 pg2log.info("\n\n<<<<<<<<<<<  AVVIO PROMOGEST >>>>>>>>>>")
 
+def sendmail(msg="PG"):
+    msg = str(promogestDir) +"  "+str(rev_locale) +"  "+str(rev_remota)
+    return _msgDef(text=msg)
+
 def _msgDef(text="", html="",img="", subject=""):
     msgg = MIMEMultipart()
     msgg['Subject'] = azienda+"  "+str(datetime.datetime.now().strftime('%d_%m_%Y_%H_%M'))
@@ -576,19 +579,16 @@ def _msgDef(text="", html="",img="", subject=""):
     msgg['To'] = "promogestlogs@gmail.com"
     msgg.attach(MIMEText(text))
 #        fp = open(self.stname, 'rb')
-    part = MIMEBase('application','octet-stream')
+#    part = MIMEBase('application','octet-stream')
+    part = MIMEText('text/plain')
     fp =open(LOG_FILENAME, 'rb')
     part.set_payload(fp.read())
     fp.close()
-    Encoders.encode_base64(part)
-    part.add_header('Content-Disposition','attachment', filename=LOG_FILENAME)
+#    Encoders.encode_base64(part)
+    part.add_header('Content-Disposition','attachment', filename="pg2.log")
     msgg.attach(part)
 
     _send(fromaddr="promogestlogs@gmail.com", total_addrs="promogestlogs@gmail.com", msg=msgg)
-
-def sendmail(msg="PG"):
-    msg = str(promogestDir) +"  "+str(rev_locale) +"  "+str(rev_remota)
-    return _msgDef(text=msg)
 
 def _send(fromaddr=None, total_addrs=None, msg=None):
     try:
@@ -603,6 +603,7 @@ def _send(fromaddr=None, total_addrs=None, msg=None):
 
 def hook(et, ev, eb):
     import traceback
+    sendmail()
     if "Operation aborted" in str(ev):
         return
     if "ATTENZIONE, TENTATIVO DI SALVATAGGIO SENZA RIGHE?????" in ev:
@@ -613,3 +614,4 @@ def hook(et, ev, eb):
     print "UN ERRORE È STATO INTERCETTATO E LOGGATO, SI CONSIGLIA DI RIAVVIARE E DI CONTATTARE L'ASSISTENZA \n\nPREMERE CTRL+C PER CHIUDERE"
     sendmail()
 sys.excepthook = hook
+
