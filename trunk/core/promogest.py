@@ -134,22 +134,23 @@ if __name__ == '__main__':
             import socket
             import sys
             import gtk
-            try:
-                s = socket.socket()
-                host = socket.gethostname()
-                port = 35636    #make sure this port is not used on this system
-                s.bind((host, port))
-                BigBang()
-            except Exception as e:
-                print "EEEEEEE", e
-                dialog = gtk.MessageDialog(None,
-                                           gtk.DIALOG_MODAL
-                                           | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                           gtk.MESSAGE_WARNING, gtk.BUTTONS_OK,
-                                           "Un altro PromoGest ONE risulta già aperto\n\n")
-                response = dialog.run()
-                dialog.destroy()
-                sys.exit()
+#            try:
+#                s = socket.socket()
+#                host = socket.gethostname()
+#                port = 34639    #make sure this port is not used on this system
+#                s.bind((host, port))
+            BigBang()
+#            except Exception as e:
+#                print "EEEEEEE", e
+#                dialog = gtk.MessageDialog(None,
+#                                           gtk.DIALOG_MODAL
+#                                           | gtk.DIALOG_DESTROY_WITH_PARENT,
+#                                           gtk.MESSAGE_WARNING, gtk.BUTTONS_OK,
+#                                           "Un altro PromoGest ONE risulta già aperto\n\n")
+#                response = dialog.run()
+#                dialog.destroy()
+#                raise
+#                sys.exit()
         else:
             BigBang()
     except:
