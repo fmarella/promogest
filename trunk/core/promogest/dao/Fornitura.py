@@ -180,4 +180,4 @@ std_mapper = mapper(Fornitura,fornitura, properties={
         "sconto_fornitura": relation(ScontoFornitura, backref="fornitura"),
         "forni" : relation(Fornitore,primaryjoin=fornitura.c.id_fornitore==fornitor.c.id),
         #"arti" : relation(Articolo,primaryjoin=fornitura.c.id_articolo==Articolo.id, backref=backref("artic", uselist=False)),
-                }, order_by=fornitura.c.id)
+                }, order_by=[fornitura.c.data_fornitura,fornitura.c.id_fornitore])
