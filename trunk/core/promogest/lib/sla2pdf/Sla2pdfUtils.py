@@ -244,10 +244,7 @@ def approxValueIt(value, decimals):
     if value and value !="":
         return mNLC(value,decimal=decimals)
     else:
-        return "0"
-
-
-
+        return ""
 
 def itformatValue(value,tronca=True):
     """
