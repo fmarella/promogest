@@ -827,7 +827,6 @@
                               <object class="GtkNotebook" id="riga_notebook">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="tab_pos">left</property>
                                 <child>
                                   <object class="GtkHBox" id="hbox244">
                                     <property name="visible">True</property>
