@@ -6,7 +6,7 @@
   <object class="GtkTable" id="anagrafica_documenti_filter_table">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="n_rows">16</property>
+    <property name="n_rows">12</property>
     <property name="n_columns">2</property>
     <property name="column_spacing">3</property>
     <property name="row_spacing">1</property>
@@ -158,28 +158,6 @@
         <property name="right_attach">2</property>
         <property name="top_attach">2</property>
         <property name="bottom_attach">3</property>
-        <property name="x_options">GTK_SHRINK | GTK_FILL</property>
-        <property name="y_options"></property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkEntry" id="protocollo_entry">
-        <property name="visible">True</property>
-        <property name="can_focus">True</property>
-        <property name="invisible_char">•</property>
-        <property name="primary_icon_activatable">False</property>
-        <property name="secondary_icon_activatable">False</property>
-        <property name="primary_icon_sensitive">True</property>
-        <property name="secondary_icon_sensitive">True</property>
-        <signal name="key-press-event" handler="on_campo_filter_entry_key_press_event" swapped="no"/>
-        <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
-        <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
-      </object>
-      <packing>
-        <property name="left_attach">1</property>
-        <property name="right_attach">2</property>
-        <property name="top_attach">4</property>
-        <property name="bottom_attach">5</property>
         <property name="x_options">GTK_SHRINK | GTK_FILL</property>
         <property name="y_options"></property>
       </packing>
@@ -487,8 +465,8 @@
       </object>
       <packing>
         <property name="right_attach">2</property>
-        <property name="top_attach">12</property>
-        <property name="bottom_attach">13</property>
+        <property name="top_attach">11</property>
+        <property name="bottom_attach">12</property>
         <property name="y_options"></property>
         <property name="x_padding">1</property>
         <property name="y_padding">3</property>
@@ -703,6 +681,12 @@
             <property name="position">2</property>
           </packing>
         </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
       </object>
       <packing>
         <property name="left_attach">1</property>
@@ -714,70 +698,100 @@
       </packing>
     </child>
     <child>
-      <object class="GtkLabel" id="solo_contabili_label">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="xalign">0</property>
-        <property name="label" translatable="yes">Solo Contabili</property>
-      </object>
-      <packing>
-        <property name="top_attach">9</property>
-        <property name="bottom_attach">10</property>
-        <property name="x_options">GTK_FILL</property>
-        <property name="y_options"></property>
-        <property name="x_padding">1</property>
-      </packing>
+      <placeholder/>
     </child>
     <child>
-      <object class="GtkCheckButton" id="solo_contabili_check">
+      <placeholder/>
+    </child>
+    <child>
+      <object class="GtkHBox" id="hbox1">
         <property name="visible">True</property>
-        <property name="can_focus">True</property>
-        <property name="receives_default">False</property>
-        <property name="tooltip_text" translatable="yes">Filtra i documenti lasciando solo :
-"Fattura vendita",
-"Fattura acquisto",
-"Nota di credito a cliente",
-"Nota di credito da fornitore",
-"Fattura accompagnatoria",
-"Vendita dettaglio",
-"Fattura differita vendita", 
-"Fattura differita acquisto"</property>
-        <property name="use_action_appearance">False</property>
-        <property name="draw_indicator">True</property>
+        <property name="can_focus">False</property>
+        <child>
+          <object class="GtkEntry" id="protocollo_entry">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="invisible_char">•</property>
+            <property name="invisible_char_set">True</property>
+            <property name="primary_icon_activatable">False</property>
+            <property name="secondary_icon_activatable">False</property>
+            <property name="primary_icon_sensitive">True</property>
+            <property name="secondary_icon_sensitive">True</property>
+            <signal name="key-press-event" handler="on_campo_filter_entry_key_press_event" swapped="no"/>
+            <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
+            <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="solo_contabili_label">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="xalign">0</property>
+            <property name="xpad">2</property>
+            <property name="label" translatable="yes">&lt;b&gt;Solo Doc Contabili&lt;/b&gt;</property>
+            <property name="use_markup">True</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkCheckButton" id="solo_contabili_check">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">False</property>
+            <property name="use_action_appearance">False</property>
+            <property name="draw_indicator">True</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
       </object>
       <packing>
         <property name="left_attach">1</property>
         <property name="right_attach">2</property>
-        <property name="top_attach">9</property>
-        <property name="bottom_attach">10</property>
-        <property name="x_options">GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="top_attach">4</property>
+        <property name="bottom_attach">5</property>
       </packing>
     </child>
-    <child>
-      <placeholder/>
-    </child>
-    <child>
-      <placeholder/>
-    </child>
-    <child>
-      <placeholder/>
-    </child>
-    <child>
-      <placeholder/>
-    </child>
-    <child>
-      <placeholder/>
-    </child>
-    <child>
-      <placeholder/>
-    </child>
-    <child>
-      <placeholder/>
-    </child>
-    <child>
-      <placeholder/>
-    </child>
+  </object>
+  <object class="GtkListStore" id="filter_listore">
+    <columns>
+      <!-- column-name PyObject1 -->
+      <column type="PyObject"/>
+      <!-- column-name gchararray1 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray2 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray3 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray4 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray5 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray6 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray7 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray8 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray9 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray10 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray11 -->
+      <column type="gchararray"/>
+    </columns>
   </object>
   <object class="GtkTreeView" id="anagrafica_filter_treeview">
     <property name="visible">True</property>
@@ -929,34 +943,6 @@
         </child>
       </object>
     </child>
-  </object>
-  <object class="GtkListStore" id="filter_listore">
-    <columns>
-      <!-- column-name PyObject1 -->
-      <column type="PyObject"/>
-      <!-- column-name gchararray1 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray2 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray3 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray4 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray5 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray6 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray7 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray8 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray9 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray10 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray11 -->
-      <column type="gchararray"/>
-    </columns>
   </object>
   <object class="GtkListStore" id="liststore1">
     <columns>

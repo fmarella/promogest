@@ -175,21 +175,17 @@ def drawPart(anaedit):
     """ ATTENZIONE schifezza per tamponare il bug di gtk 2.17 numero :
         Bug 607492 - widget.get_name(): semirisolto!!!! """
     crit = setconf("Documenti", "ricerca_per")
+    anaedit.ricerca = crit
     if crit == 'codice':
-        anaedit.ricerca_codice_button.set_active(True)
-        anaedit.ricerca = gtk.Buildable.get_name(anaedit.ricerca_codice_button)
+        anaedit.ricerca_criterio_combobox.set_active(0)
     elif crit == 'codice_a_barre':
-        anaedit.ricerca_codice_a_barre_button.set_active(True)
-        anaedit.ricerca = gtk.Buildable.get_name(anaedit.ricerca_codice_a_barre_button)
+        anaedit.ricerca_criterio_combobox.set_active(1)
     elif crit == 'descrizione':
-        anaedit.ricerca_descrizione_button.set_active(True)
-        anaedit.ricerca = gtk.Buildable.get_name(anaedit.ricerca_descrizione_button)
+        anaedit.ricerca_criterio_combobox.set_active(2)
     elif crit == 'codice_articolo_fornitore':
-        anaedit.ricerca_codice_articolo_fornitore_button.set_active(True)
-        anaedit.ricerca = gtk.Buildable.get_name(anaedit.ricerca_codice_articolo_fornitore_button)
+        anaedit.ricerca_criterio_combobox.set_active(3)
     if not anaedit.ricerca:
-        anaedit.ricerca_codice_button.set_active(True)
-        anaedit.ricerca = gtk.Buildable.get_name(anaedit.ricerca_codice_button)
+        anaedit.ricerca_criterio_combobox.set_active(2)
 
     anaedit.id_persona_giuridica_customcombobox.setSingleValue()
     anaedit.id_persona_giuridica_customcombobox.setOnChangedCall(anaedit.persona_giuridica_changed)
@@ -543,6 +539,10 @@ def mostraArticoloPart(anaedit, id, art=None):
         anaedit.articolo_entry.set_text('')
         anaedit.descrizione_entry.set_text('')
         anaedit.codice_articolo_fornitore_entry.set_text('')
+        anaedit.numero_lotto_entry.set_text("")
+        anaedit.data_scadenza_datewidget.set_text('')
+        anaedit.ordine_minimo_entry.set_text('')
+        anaedit.tempo_arrivo_merce_entry.set_text('')
 #        anaedit.percentuale_iva_entry.set_text('0')
         anaedit.id_iva_customcombobox.combobox.set_active(-1)
         anaedit.id_multiplo_customcombobox.combobox.clear()

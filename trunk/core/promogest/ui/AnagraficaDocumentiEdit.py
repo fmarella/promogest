@@ -272,6 +272,10 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self.unitaBaseLabel.set_text('')
         self.descrizione_entry.set_text('')
         self.codice_articolo_fornitore_entry.set_text('')
+        self.numero_lotto_entry.set_text("")
+        self.data_scadenza_datewidget.set_text('')
+        self.ordine_minimo_entry.set_text('')
+        self.tempo_arrivo_merce_entry.set_text('')
         self.id_iva_customcombobox.combobox.set_active(-1)
 #        self.percentuale_iva_entry.set_text('0')
         self.id_multiplo_customcombobox.combobox.clear()
@@ -316,7 +320,9 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
 
 
     def nuovaRigaNoClean(self, rigatampone=None):
-        """ Prepara per l'inserimento di una nuova riga seza cancellare i campi """
+        """ Prepara per l'inserimento di una nuova riga seza cancellare i campi
+        TODO: aggiungere campi fornitura"""
+
         self._numRiga = 0
         self.azzeraRigaPartial(0, rigatampone=rigatampone)
         self.unitaBaseLabel.set_text(rigatampone['unitaBase'])
@@ -1288,22 +1294,22 @@ del documento.
         # evita la ricerca per stringhe vuote o più corte di due caratteri
         if stringa ==[] or len(stringa)<2:
             return
-        if self.ricerca == "ricerca_codice_button":
+        if self.ricerca == "codice":
             if len(text.get_text()) <3:
                 art = Articolo().select(codice=stringa, batchSize=20)
             else:
                 art = Articolo().select(codice=stringa, batchSize=50)
-        elif self.ricerca == "ricerca_descrizione_button":
+        elif self.ricerca == "descrizione":
             if len(text.get_text()) <3:
                 art = Articolo().select(denominazione=stringa, batchSize=20)
             else:
                 art = Articolo().select(denominazione=stringa, batchSize=50)
-        elif self.ricerca == "ricerca_codice_a_barre_button":
+        elif self.ricerca == "codice_a_barre":
             if len(text.get_text()) <7:
                 art = Articolo().select(codiceABarre=stringa, batchSize=10)
             else:
                 art = Articolo().select(codiceABarre=stringa, batchSize=40)
-        elif self.ricerca == "ricerca_codice_articolo_fornitore_button":
+        elif self.ricerca == "codice_articolo_fornitore_button":
             if len(text.get_text()) <3:
                 art = Articolo().select(codiceArticoloFornitore=stringa, batchSize=10)
             else:
@@ -1313,10 +1319,10 @@ del documento.
             den = m.denominazione
             bloccoInformazioni = codice_art+self.sepric+den
             compl_string = bloccoInformazioni
-            if self.ricerca == "ricerca_codice_articolo_fornitore_button":
+            if self.ricerca == "codice_articolo_fornitore":
                 caf = m.codice_articolo_fornitore
                 compl_string = bloccoInformazioni+self.sepric+caf
-            if self.ricerca == "ricerca_codice_a_barre_button":
+            if self.ricerca == "codice_a_barre":
                 cb = m.codice_a_barre
                 compl_string = bloccoInformazioni+self.sepric+cb
             self.ricerca_art_listore.append([compl_string,m])
@@ -1335,6 +1341,18 @@ del documento.
         self.mattu = True
         self.articolo_matchato = model[iter][1]
         self.articolo_entry.set_position(-1)
+
+
+    def on_ricerca_criterio_combobox_changed(self, combobox):
+        if combobox.get_active() ==0:
+            self.ricerca = "codice"
+        elif combobox.get_active() ==1:
+            self.ricerca = "codice_a_barre"
+        elif combobox.get_active() ==2:
+            self.ricerca = "descrizione"
+        elif combobox.get_active() == 3:
+            self.ricerca = "codice_articolo_fornitore"
+
 
     def ricercaArticolo(self):
         def on_ricerca_articolo_hide(anagWindow, anag):
@@ -1362,14 +1380,14 @@ del documento.
         denominazione = None
         codiceArticoloFornitore = None
         join = None
-        if self.ricerca_codice_button.get_active():
+        if self.ricerca_criterio_combobox.get_active() == 1:
             codice = self.articolo_entry.get_text()
             if Environment.tipo_eng =="sqlite":
                 orderBy = "articolo.codice"
             else:
                 orderBy = Environment.params["schema"]+".articolo.codice"
                 batchSize = setconf("Numbers", "batch_size")
-        elif self.ricerca_codice_a_barre_button.get_active():
+        elif self.ricerca_criterio_combobox.get_active() == 2:
             codiceABarre = self.articolo_entry.get_text()
             join= Articolo.cod_barre
             if Environment.tipo_eng =="sqlite":
@@ -1377,14 +1395,14 @@ del documento.
             else:
                 orderBy = Environment.params["schema"]+".codice_a_barre_articolo.codice"
             batchSize = setconf("Numbers", "batch_size")
-        elif self.ricerca_descrizione_button.get_active():
+        elif self.ricerca_criterio_combobox.get_active() == 3:
             denominazione = self.articolo_entry.get_text()
             if Environment.tipo_eng =="sqlite":
                 orderBy = "articolo.denominazione"
             else:
                 orderBy = Environment.params["schema"]+".articolo.denominazione"
             batchSize = setconf("Numbers", "batch_size")
-        elif self.ricerca_codice_articolo_fornitore_button.get_active():
+        elif self.ricerca_criterio_combobox.get_active() == 4:
             codiceArticoloFornitore = self.articolo_entry.get_text()
             join= Articolo.fornitur
             if Environment.tipo_eng =="sqlite":
@@ -1588,7 +1606,6 @@ del documento.
     def on_articolo_entry_key_press_event(self, widget, event):
         """ """
         keyname = gtk.gdk.keyval_name(event.keyval)
-#        print "KEYNAMEEEEEE", keyname
         if self.mattu and keyname == 'Return' or keyname == 'KP_Enter':
             self.ricercaArticolo()
         if keyname == 'F3':
@@ -1676,6 +1693,15 @@ del documento.
             self.prz_netto_label.set_text('Costo netto')
             self.codice_articolo_fornitore_label.set_property('visible', True)
             self.codice_articolo_fornitore_entry.set_property('visible', True)
+            self.numero_lotto_label.set_property('visible', True)
+            self.numero_lotto_entry.set_property('visible', True)
+            self.data_scadenza_label.set_property('visible', True)
+            self.data_scadenza_datewidget.set_property('visible', True)
+            self.ordine_minimo_label.set_property('visible', True)
+            self.ordine_minimo_entry.set_property('visible', True)
+            self.tempo_arrivo_merce_label.set_property('visible', True)
+            self.tempo_arrivo_merce_entry.set_property('visible', True)
+
             self.protocollo_label.set_property('visible', True)
             self.protocollo_entry1.set_property('visible', True)
             self.numero_documento_label.set_text('N. reg.')
@@ -1689,6 +1715,15 @@ del documento.
             self.prz_netto_label.set_text('Prezzo netto')
             self.codice_articolo_fornitore_label.set_property('visible', False)
             self.codice_articolo_fornitore_entry.set_property('visible', False)
+            self.numero_lotto_label.set_property('visible', False)
+            self.numero_lotto_entry.set_property('visible', False)
+            self.data_scadenza_label.set_property('visible', False)
+            self.data_scadenza_datewidget.set_property('visible', False)
+            self.ordine_minimo_label.set_property('visible', False)
+            self.ordine_minimo_entry.set_property('visible', False)
+            self.tempo_arrivo_merce_label.set_property('visible', False)
+            self.tempo_arrivo_merce_entry.set_property('visible', False)
+
             self.protocollo_label.set_property('visible', False)
             self.protocollo_entry1.set_property('visible', False)
             self.numero_documento_label.set_text('Numero')
@@ -1699,8 +1734,16 @@ del documento.
             self.id_listino_customcombobox.set_property('visible', True)
             self.prz_lordo_label.set_text('Prezzo')
             self.prz_netto_label.set_text('Prezzo netto')
-            self.codice_articolo_fornitore_label.set_property('visible', False)
+            #self.codice_articolo_fornitore_label.set_property('visible', False)
             self.codice_articolo_fornitore_entry.set_property('visible', False)
+            self.numero_lotto_label.set_property('visible', False)
+            self.numero_lotto_entry.set_property('visible', False)
+            self.data_scadenza_label.set_property('visible', False)
+            self.data_scadenza_datewidget.set_property('visible', False)
+            self.ordine_minimo_label.set_property('visible', False)
+            self.ordine_minimo_entry.set_property('visible', False)
+            self.tempo_arrivo_merce_label.set_property('visible', False)
+            self.tempo_arrivo_merce_entry.set_property('visible', False)
             self.protocollo_label.set_property('visible', False)
             self.protocollo_entry1.set_property('visible', False)
             self.numero_documento_label.set_text('Numero')
@@ -1941,9 +1984,3 @@ del documento.
     def on_descrizione_entry_icon_press(self,entry, position,event ):
         if position.real == 1:
             self.descrizione_entry.set_text("")
-
-    def on_codice_item_toggled(self,toggled):
-        """ ATTENZIONE schifezza per tamponare il bug di gtk 2.17 numero :
-        Bug 607492 - widget.get_name() """
-        if toggled.get_active():
-            self.ricerca = gtk.Buildable.get_name(toggled)

@@ -169,8 +169,8 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
         self.prezzo_dettaglio_noiva_label.set_text(self.nformat % calcolaPrezzoIva(
                                         self.prezzo_dettaglio_entry.get_text(),
                                         ((-1)*self._percentualeIva)))
-        przD = float(self.prezzo_dettaglio_noiva_label.get_text())
-        przI = float(self.prezzo_ingrosso_entry.get_text())
+        przD = float(self.prezzo_dettaglio_noiva_label.get_text() or 0)
+        przI = float(self.prezzo_ingrosso_entry.get_text() or 0)
         if przI == float(0):
             self.prezzo_ingrosso_entry.set_text(self.nformat % przD)
             self.prezzo_ingrosso_ivato_label.set_text(self.prezzo_dettaglio_entry.get_text())

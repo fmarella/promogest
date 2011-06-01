@@ -53,12 +53,15 @@ Su windows dovrebbe bastare inserire lo script nelle operazioni pianificate
 all'orario prescelto
 """
 
-
+#SU WINDOWS SPOSTARE E LANCIARE LO SCRIPT DALLA CARTELLA BIN dentro c:\programmi\postgresql\9.0
+# aggiungere .exe al pg_dump
 
 # questa è la cartella in cui si andranno a copiare i backup
 # creare una cartella e mettere il percorso completo qui
 #Mettere lo / alla fine del percorso
 WORKING_DIRECTORY = "/home/vete/pg-bkp/" #cambiare ma prima creare la cartella
+#su windows ha bisogno dei doppi slash sempre!!!
+
 
 #CARTELLA DI LAVORO DEL PROMOGEST
 #Normalmente è /home/tuahome/pg2
