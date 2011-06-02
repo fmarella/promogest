@@ -1380,6 +1380,7 @@ del documento.
         denominazione = None
         codiceArticoloFornitore = None
         join = None
+        orderBy = None
         if self.ricerca_criterio_combobox.get_active() == 1:
             codice = self.articolo_entry.get_text()
             if Environment.tipo_eng =="sqlite":

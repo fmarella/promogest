@@ -827,6 +827,8 @@
                               <object class="GtkNotebook" id="riga_notebook">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
+                                <property name="enable_popup">True</property>
+                                <property name="homogeneous">True</property>
                                 <child>
                                   <object class="GtkHBox" id="hbox244">
                                     <property name="visible">True</property>
