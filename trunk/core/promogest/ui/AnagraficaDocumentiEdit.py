@@ -1381,14 +1381,14 @@ del documento.
         codiceArticoloFornitore = None
         join = None
         orderBy = None
-        if self.ricerca_criterio_combobox.get_active() == 1:
+        if self.ricerca_criterio_combobox.get_active() == 0:
             codice = self.articolo_entry.get_text()
             if Environment.tipo_eng =="sqlite":
                 orderBy = "articolo.codice"
             else:
                 orderBy = Environment.params["schema"]+".articolo.codice"
                 batchSize = setconf("Numbers", "batch_size")
-        elif self.ricerca_criterio_combobox.get_active() == 2:
+        elif self.ricerca_criterio_combobox.get_active() == 1:
             codiceABarre = self.articolo_entry.get_text()
             join= Articolo.cod_barre
             if Environment.tipo_eng =="sqlite":
@@ -1396,14 +1396,14 @@ del documento.
             else:
                 orderBy = Environment.params["schema"]+".codice_a_barre_articolo.codice"
             batchSize = setconf("Numbers", "batch_size")
-        elif self.ricerca_criterio_combobox.get_active() == 3:
+        elif self.ricerca_criterio_combobox.get_active() == 2:
             denominazione = self.articolo_entry.get_text()
             if Environment.tipo_eng =="sqlite":
                 orderBy = "articolo.denominazione"
             else:
                 orderBy = Environment.params["schema"]+".articolo.denominazione"
             batchSize = setconf("Numbers", "batch_size")
-        elif self.ricerca_criterio_combobox.get_active() == 4:
+        elif self.ricerca_criterio_combobox.get_active() == 3:
             codiceArticoloFornitore = self.articolo_entry.get_text()
             join= Articolo.fornitur
             if Environment.tipo_eng =="sqlite":
