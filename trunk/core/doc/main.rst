@@ -2,7 +2,7 @@
 Finestra Principale
 ===================
 
-.. image:: finestra_main_pg2.png
+.. image:: http://www.promogest.me/templates/media/finestra_main_pg2.png
 
 
 Barra degli strumenti

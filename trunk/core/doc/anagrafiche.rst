@@ -2,7 +2,7 @@
 Anagrafiche
 ============
 
-.. image:: finestra_anagrafiche_pg2.png
+.. image:: http://www.promogest.me/templates/media/finestra_anagrafiche_pg2.png
 
 primo capitolo
 ==============
