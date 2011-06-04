@@ -34,6 +34,6 @@ per velocizzare il lavoro.
   info
 
 
-.. versionadded:: 1800
+.. versionadded:: 1802
 
-.. versionchanged:: 1800
+.. versionchanged:: 1802
