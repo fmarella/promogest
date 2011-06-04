@@ -28,20 +28,20 @@ import gobject
 import xml.etree.cElementTree as ElementTree
 
 from promogest import Environment
-from widgets.UnsignedDecimalEntryField import UnsignedDecimalEntryField
-from widgets.SignedDecimalEntryField import SignedDecimalEntryField
-from widgets.UnsignedMoneyEntryField import UnsignedMoneyEntryField
-from widgets.SignedMoneyEntryField import SignedMoneyEntryField
-from widgets.UnsignedIntegerEntryField import UnsignedIntegerEntryField
-from widgets.SignedIntegerEntryField import SignedIntegerEntryField
-from widgets.DateEntryField import DateEntryField
-from widgets.DateTimeEntryField import DateTimeEntryField
-from widgets.DateWidget import DateWidget
-from widgets.DateTimeWidget import DateTimeWidget
-from widgets.CustomComboBoxModify import CustomComboBoxModify
-from widgets.CustomComboBoxSearch import CustomComboBoxSearch
-from widgets.ScontiWidget import ScontiWidget
-from widgets.ScontoWidget import ScontoWidget
+from promogest.ui.widgets.UnsignedDecimalEntryField import UnsignedDecimalEntryField
+from promogest.ui.widgets.SignedDecimalEntryField import SignedDecimalEntryField
+from promogest.ui.widgets.UnsignedMoneyEntryField import UnsignedMoneyEntryField
+from promogest.ui.widgets.SignedMoneyEntryField import SignedMoneyEntryField
+from promogest.ui.widgets.UnsignedIntegerEntryField import UnsignedIntegerEntryField
+from promogest.ui.widgets.SignedIntegerEntryField import SignedIntegerEntryField
+from promogest.ui.widgets.DateEntryField import DateEntryField
+from promogest.ui.widgets.DateTimeEntryField import DateTimeEntryField
+from promogest.ui.widgets.DateWidget import DateWidget
+from promogest.ui.widgets.DateTimeWidget import DateTimeWidget
+from promogest.ui.widgets.CustomComboBoxModify import CustomComboBoxModify
+from promogest.ui.widgets.CustomComboBoxSearch import CustomComboBoxSearch
+from promogest.ui.widgets.ScontiWidget import ScontiWidget
+from promogest.ui.widgets.ScontoWidget import ScontoWidget
 
 
 #from promogest.lib.HtmlTextView import HtmlTextView

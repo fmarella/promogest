@@ -1,14 +1,12 @@
-===========================
-Main ( Finestra Principale)
-===========================
-
-Screen:
+===================
+Finestra Principale
+===================
 
 .. image:: finestra_main_pg2.png
 
 
-Toolbar
-=======
+Barra degli strumenti
+=====================
 
 #. Menu
 Questa è l'area dei menu con la descrizione delle diverse voci
@@ -31,8 +29,9 @@ Area Sezioni principali ( sinistra)
 Area sezioni Modulari ( destra )
 ================================
 
-statusbar
-=========
+Barra di stato
+==============
+
 Contiene, partendo da sinistra un'area di notifica di eventuali aggiornamenti disponibili con un "pallino" che può essere verde ( non ci sono aggiornamenti ) o rosso
 ( ci sono aggiornamenti).
 

@@ -28,7 +28,7 @@ class ElaExecute(object):
 #1325 ; 30,43 ; TRANCIO MORTADELLA DOLCE ; 1 ; 5,646 x 5,39
     def create_export_file(self, daoScontrino=None):
         # Genero nome file
-        filename = Environment.conf.VenditaDettaglio.export_path\
+        filename = Environment.tempDir\
                             + str(daoScontrino.id)\
                             + datetime.datetime.today().strftime('%d_%m_%Y_%H_%M_%S')+".txt"
         f = file(filename, 'w')
@@ -49,7 +49,7 @@ class ElaExecute(object):
                 f.write(stringa)
             elif quantita != 1:
                 # quantita' non unitaria
-                stringa = "1325;"+str(quantita*riga.prezzo)+";"+deaccenta(riga.descrizione[:16])+"; ;"+ str(quantita) +"x"+ str(riga.prezzo)+"\n"
+                stringa = "1325;"+str(quantita*riga.prezzo)+" ; "+deaccenta(riga.descrizione[:16])+" ; ; "+ str(quantita) +"x"+ str(riga.prezzo)+"\n"
                 f.write(stringa)
 
 
@@ -63,15 +63,15 @@ class ElaExecute(object):
 #            reparto = str(reparto).zfill(2)
 
             elif not (riga.quantita < 0):
-                stringa = "1325;"+str(riga.prezzo)+";"+deaccenta(riga.descrizione[:16])+"\n"
+                stringa = "1325 ; "+str(riga.prezzo).replace(".",",")+" ; "+deaccenta(riga.descrizione[:16])+"\n"
                 f.write(stringa)
                 if riga.sconti:
                     for sconto in riga.sconti:
                         if sconto.valore != 0:
                             if sconto.tipo_sconto == 'percentuale':
-                                stringa="1327;"+str(riga.prezzo-riga.prezzo_scontato) +";%s%%\n" %str(sconto.valore)
+                                stringa="1327 ; "+str(riga.prezzo-riga.prezzo_scontato) +" ; %s%%\n" %str(sconto.valore).replace(".",",")
                             else:
-                                stringa="1327;"+ str(sconto.valore * quantita)+";%s euro\n" % (str(sconto.valore * quantita))
+                                stringa="1327 ; "+ str(sconto.valore * quantita)+" ; %s euro\n" % (str(sconto.valore * quantita).replace(".",","))
                             f.write(stringa)
             else:
                 # per i resi, nello scontrino, si scrive direttamente il prezzo scontato (limitazione cassa)
@@ -82,34 +82,36 @@ class ElaExecute(object):
         if daoScontrino.totale_scontrino < daoScontrino.totale_subtotale and\
                                              daoScontrino.totale_sconto > 0:
             if daoScontrino.tipo_sconto_scontrino =='percentuale':
-                stringa="1327;"+str(daoScontrino.totale_subtotale-daoScontrino.totale_scontrino) +";%s%%\n" %str(daoScontrino.totale_sconto)
+                stringa="1327 ; "+str(daoScontrino.totale_subtotale-daoScontrino.totale_scontrino) +" ; %s%%\n" %str(daoScontrino.totale_sconto).replace(".",",")
                 f.write(stringa)
             else:
-                stringa="1327;"+ str(daoScontrino.totale_sconto)+";%s euro\n" %str(daoScontrino.totale_sconto)
+                stringa="1327 ; "+ str(daoScontrino.totale_sconto)+";%s euro\n" %str(daoScontrino.totale_sconto)
                 f.write(stringa)
         if daoScontrino.totale_contanti == 0 and daoScontrino.totale_assegni == 0 and daoScontrino.totale_carta_credito == 0:
             totale_contanti = daoScontrino.totale_scontrino
-            f.write("1329;"+str(totale_contanti)+";Contanti\n")
+            f.write("1329 ; "+str(totale_contanti).replace(".",",")+";Contanti\n")
         elif daoScontrino.totale_contanti and daoScontrino.totale_assegni == 0 and daoScontrino.totale_carta_credito == 0:
             totale_contanti = daoScontrino.totale_contanti
-            f.write("1329;"+str(totale_contanti)+";Contanti\n")
+            f.write("1329 ; "+str(totale_contanti).replace(".",",")+";Contanti\n")
         elif daoScontrino.totale_contanti == 0 and daoScontrino.totale_assegni != 0 and daoScontrino.totale_carta_credito == 0:
-            f.write("1329;;Assegno\n")
+            f.write("1329 ; ; Assegno\n")
         elif daoScontrino.totale_contanti == 0 and daoScontrino.totale_carta_credito != 0 and daoScontrino.totale_assegni == 0:
-            f.write("1329;;Carta/Bancomat\n")
+            f.write("1329 ; ; Carta/Bancomat\n")
         else:
             print "SITUAZIONE POCO CHIARA METTO UN VALORE SEMPLICE "
             f.write("1329\n")
 
         f.write("1323\n")
-        f.write("912;1\n")
+        f.write("912 ; 1\n")
         f.close()
-        g = file(filename, 'rb')
         self.copyToInDir(filename)
-        g.close()
 
         return filename
 
     def copyToInDir(self, filename):
-        print "filename", filename
-        shutil.copy(filename, "/opt/ela_execute/in/")
+        #shutil.copy(filename, "/opt/ela_execute/in/")
+        if hasattr(Environment.conf, "VenditaDettaglio"):
+            if hasattr(Environment.conf.VenditaDettaglio,"export_path"):
+                path = Environment.conf.VenditaDettaglio.export_path
+                print "filename 111111111111111111111111111111", filename, path
+                shutil.move(filename, path)

@@ -20,6 +20,11 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
+
+"""Login
+
+"""
+
 import hashlib
 import os
 import sys
@@ -34,7 +39,7 @@ import random
 import threading
 import webbrowser
 #from  subprocess import *
-from GladeApp import GladeApp
+from promogest.ui.GladeApp import GladeApp
 from promogest import Environment
 from promogest.dao.User import User
 from promogest.dao.Azienda import Azienda
@@ -61,12 +66,11 @@ from promogest.ui.StatusBar import Pg2StatusIcon
 class Login(GladeApp):
 
     def __init__(self, debugSQL=None, debugALL=None, shop=False):
-        """
-        Login windows
-        @param debugSQL=None: not used at this moment
-        @type debugSQL=None: Boolean
-        @param debugALL=None: not used at this moment
-        @type debugALL=None: Boolean
+        """Inizializza la finestra di login
+        
+        :param debugSQL: boolean, non utilizzato
+        :param debugALL: boolean, non utilizzato
+        :param shop: default False
         """
 
         statu = Pg2StatusIcon()
@@ -81,6 +85,8 @@ class Login(GladeApp):
         self.getTopLevel().show_all()
 
     def draw(self):
+        """Disegna la finestra di login
+        """
         model = gtk.ListStore(str, str)
         model.clear()
         usrs = User().select(batchSize = None)
@@ -125,6 +131,10 @@ class Login(GladeApp):
 
 
     def on_logo_button_clicked(self, button):
+        """Apre il sito web del PromoGest
+
+        :param button: il tasto che ha generato l'evento
+        """
         webbrowser.open_new_tab(self.urll)
 
 
@@ -156,14 +166,16 @@ class Login(GladeApp):
 
 
     def feddretreive(self):
-        """ FIXME """
+        """Carica il feed RSS
+        """
         d = feedparser.parse("http://www.promogest.me/newsfeed")
         Environment.feedAll = d
         return
 
     def on_azienda_comboboxentry_changed(self, combo):
-        """
-        company combobox manage
+        """Imposta il nome dell'azienda
+        
+        :param combo: la combobox che ha generato l'evento
         """
         index = combo.get_active()
         if index >= 0:
@@ -284,8 +296,9 @@ class Login(GladeApp):
                 do_login = False
 
     def on_aggiorna_button_clicked(self, widget):
-        """
-        Upgrande button signal clicked
+        """Evento associato alla richiesta di aggiornamento
+
+        :param widget: il widget che ha generato l'evento
         """
         aggiorna(self)
 
@@ -317,8 +330,9 @@ class Login(GladeApp):
 
 
     def importModulesFromDir(self, modules_dir):
-            """
-            Check the modules directory and automatically try to load all available modules
+            """Check the modules directory and automatically try to load
+            all available modules
+            
             """
             #global jinja_env
             Environment.modulesList=[Environment.tipo_pg]
@@ -356,8 +370,10 @@ class Login(GladeApp):
             self.groupModulesByType()
 
     def on_login_window_key_press_event(self, widget, event):
-        """
-        key press signal on login window
+        """Gestisce la pressione di alcuni tasti nella finestra di login
+
+        :param widget: -
+        :param event: -
         """
         if event.type == gtk.gdk.KEY_PRESS:
             if event.state & gtk.gdk.CONTROL_MASK:
@@ -368,8 +384,8 @@ class Login(GladeApp):
                     self.on_button_login_clicked()
 
 def on_main_window_closed(main_window, login_window):
-    """
-    main windows close event in login windows
+    """Evento associato alla chiusura della finestra di login
+    
     """
     login_window.show()
     Environment.windowGroup.append(login_window)

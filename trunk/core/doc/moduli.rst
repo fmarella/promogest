@@ -1,9 +1,8 @@
-===========================
+======
 Moduli
-===========================
+======
+
 Considerazioni generali di base sul modulo di Gestione Negozio:
-
-
 
 Gestione Negozio ( Vendita Dettaglio)
 =====================================
@@ -44,6 +43,7 @@ Area Sezioni principali ( sinistra)
 Area sezioni Modulari ( destra )
 ================================
 
-statusbar
-=========
- Questa è la pagina di intriduzione alla documentazione
+Barra di stato
+==============
+
+ Questa è la pagina di introduzione alla documentazione

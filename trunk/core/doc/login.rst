@@ -2,16 +2,16 @@
 Login
 =====
 
-Iniziamo da uno screenshots.
+Effettuare il login è il primo semplice passo per l'utilizzo di PromoGest.
 
 Come effettuare il login
-==========================
+========================
 
 
 .. image:: finestra_login_pg2.png
 
 
-Come potete vedere la finestra è composta di *tre parti*:
+La finestra è composta di *tre parti* principali:
 
 #. La **prima** è quella dello splash che in realtà viene scelto in maniera casuale tra otto immagini differenti.
    Vi potete trovare i dati del programma ed alcuni riferimenti per contattare l'assistenza o reperire informazioni sul web

@@ -42,8 +42,7 @@ from VenditaDettaglioUtils import fillComboboxPos
 
 if hasattr(Environment.conf, "VenditaDettaglio"):
     if hasattr(Environment.conf.VenditaDettaglio,"backend") and\
-        Environment.conf.VenditaDettaglio.backend.upper() =="OLIVETTI" and\
-        Environment.conf.VenditaDettaglio.disabilita_stampa == 'no':
+        Environment.conf.VenditaDettaglio.backend.upper() =="OLIVETTI":
         from promogest.modules.VenditaDettaglio.lib.olivetti import ElaExecute
     #    print "DRIVER OLIVETTI ANCORA DA FARE"
         DRIVER = "E"
@@ -60,7 +59,6 @@ if hasattr(Environment.conf, "VenditaDettaglio"):
         DRIVER = "D"
 elif setconf("VenditaDettaglio","disabilita_stampa"):
     DRIVER = None
-
 
 class AnagraficaVenditaDettaglio(GladeWidget):
     """ Frame per la gestione delle vendite a dettaglio """
@@ -266,7 +264,14 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         if keyname == 'F9':
             try:
                 if hasattr(Environment.conf, "VenditaDettaglio"):
-                    codice = Environment.conf.VenditaDettaglio.jolly
+                    if hasattr(Environment.conf.VenditaDettaglio,"jolly"):
+                        codice = Environment.conf.VenditaDettaglio.jolly
+                    else:
+                        articoloId = setconf("VenditaDettaglio", "jolly")
+                        codice = None
+                        if articoloId:
+                            codice = Articolo().getRecord(id=articoloId).codice
+
                 else:
                     articoloId = setconf("VenditaDettaglio", "jolly")
                     codice = None
@@ -909,9 +914,13 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         """ check if there is a priceList like setted on configure file
         """
         if hasattr(Environment.conf, "VenditaDettaglio"):
-            pricelist = Listino().select(denominazione = Environment.conf.VenditaDettaglio.listino,
+            if hasattr(Environment.conf.VenditaDettaglio,"listino"):
+                pricelist = Listino().select(denominazione = Environment.conf.VenditaDettaglio.listino,
                                         offset = None,
                                         batchSize = None)
+            else:
+                pricelist = Listino().select(id=setconf("VenditaDettaglio", "listino_vendita"))
+
         else:
             pricelist = Listino().select(id=setconf("VenditaDettaglio", "listino_vendita"))
         if pricelist:
