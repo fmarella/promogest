@@ -78,7 +78,7 @@ exclude_patterns = ['_build']
 
 # If true, sectionauthor and moduleauthor directives will be shown in the
 # output. They are ignored by default.
-#show_authors = False
+show_authors = True
 
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = 'sphinx'
@@ -192,7 +192,7 @@ htmlhelp_basename = 'PromoGest'
 # -- Options for LaTeX output --------------------------------------------------
 
 # The paper size ('letter' or 'a4').
-#latex_paper_size = 'letter'
+latex_paper_size = 'a4'
 
 # The font size ('10pt', '11pt' or '12pt').
 #latex_font_size = '10pt'
@@ -206,7 +206,7 @@ latex_documents = [
 
 # The name of an image file (relative to this directory) to place at the top of
 # the title page.
-#latex_logo = None
+latex_logo = "logo_promogest.png"
 
 # For "manual" documents, if this is true, then toplevel headings are parts,
 # not chapters.
@@ -216,7 +216,7 @@ latex_documents = [
 #latex_show_pagerefs = False
 
 # If true, show URL addresses after external links.
-#latex_show_urls = False
+#latex_show_urls = True
 
 # Additional stuff for the LaTeX preamble.
 #latex_preamble = ''
@@ -227,7 +227,7 @@ latex_documents = [
 # If false, no module index is generated.
 #latex_domain_indices = True
 
-
+print "POTREMMO SCARICARE LE IMMAGINI QUI"
 # -- Options for manual page output --------------------------------------------
 
 # One entry per manual page. List of tuples

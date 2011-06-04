@@ -9,7 +9,7 @@ Come effettuare il login
 
 
 .. image:: http://www.promogest.me/templates/media/finestra_login_pg2.png
-
+   :target: http://www.promogest.me/templates/media/finestra_login_pg2.png 
 
 La finestra è composta di *tre parti* principali:
 
