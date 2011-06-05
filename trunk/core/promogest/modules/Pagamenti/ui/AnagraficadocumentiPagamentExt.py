@@ -50,7 +50,7 @@ def on_seleziona_prima_nota_button_clicked(anaedit, button):
             response = Pagamenti(anaedit).impostaDocumentoCollegato(
                     int(anaedit.numero_primo_documento_entry.get_text()))
     else:
-        anaedit.showMessage("Inserisci il numero del documento")
+        messageInfo(msg="Inserisci il numero del documento")
         response = False
 
     if response != False:
@@ -66,7 +66,7 @@ def on_seleziona_seconda_nota_button_clicked(anaedit, button):
         response = Pagamenti(anaedit).impostaDocumentoCollegato(
                 int(anaedit.numero_secondo_documento_entry.get_text()))
     else:
-        anaedit.showMessage("Inserisci il numero del documento")
+        messageInfo(msg="Inserisci il numero del documento")
         response = False
     if response != False:
         Pagamenti(anaedit).importo_primo_documento_entry.set_text(str(response))
