@@ -25,9 +25,11 @@ Area bottoni ai riferimenti esterni
 
 Area Sezioni principali ( sinistra)
 ===================================
-
-Area sezioni Modulari ( destra )
-================================
+* Documenti
+* Prima nota
+* Gestione commesse
+* Promemoria
+* Vendita dettaglio
 
 Barra di stato
 ==============

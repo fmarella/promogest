@@ -18,6 +18,7 @@ La finestra è composta di *tre parti* principali:
 #. La **seconda** è quella della scelta dell'azienda, in questo caso una azienda di testing, ma nel vostro sarà
    o aziendaDemo oppure avrà la vostra ragione sociale. Poco sotto dovrete inserire il vostro username ed la vostra password
    se non sono stato modificati quelli di default sono **username** admin e **password** admin
-#. La **terza** sezione contiene tre bottoni per l'aggiornamento periodico del programma,
-   per la chiusura e per la connessione al database e l'ingresso vero e proprio nell'applicazione.
-
+#. La **terza** sezione contiene tre bottoni:
+ * per l'aggiornamento periodico del programma, daeffettuarsi ogni volta che si riavvia il programma. 
+ * per la connessione al database da considerarsi anche come ingresso vero e proprio nell'applicazione.
+ * per la chiusura
