@@ -2948,7 +2948,7 @@ def scribusVersion(slafile):
     slaversion = root.get('Version')
     Environment.pg2log.info( "FILE SLA DA VERIFICARE PRIMA DLLA STAMPA "+ slafile)
     Environment.pg2log.info("VERSIONE SLA  "+ str(slaversion))
-    if slaversion in ("1.3.6", "1.3.7", "1.3.8", "1.3.9","1.4.0"):
+    if slaversion in ("1.3.6", "1.3.7", "1.3.8", "1.3.9","1.4.0","1.4.0.rc2","1.4.0.rc3","1.4.0.rc4"):
         Environment.new_print_enjine=True
         return True
     elif slaversion in ("1.3.5.1", "1.3.5svn"):
@@ -2962,6 +2962,9 @@ def scribusVersion(slafile):
     elif slaversion in ("1.3.3","1.3.3.6cvs"):
         Environment.new_print_enjine = False
         return False
+    else:
+        Environment.new_print_enjine=True
+        return True
 
 def posso(mod=None):
     moduli = ""
