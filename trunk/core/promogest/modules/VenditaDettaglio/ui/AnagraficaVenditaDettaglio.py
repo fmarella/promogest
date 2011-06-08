@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010, 2011
 #by Promotux di Francesco Meloni snc - http://www.promotux.it/
 
 # Author: Francesco Meloni <francesco@promotux.it>
@@ -30,6 +30,7 @@ from promogest.modules.VenditaDettaglio.dao.TestataScontrino import TestataScont
 from promogest.modules.VenditaDettaglio.dao.RigaScontrino import RigaScontrino
 from promogest.modules.VenditaDettaglio.dao.ScontoRigaScontrino import ScontoRigaScontrino
 from promogest.modules.VenditaDettaglio.dao.ScontoTestataScontrino import ScontoTestataScontrino
+from promogest.modules.VenditaDettaglio.dao.TestataScontrinoCliente import TestataScontrinoCliente
 from promogest.dao.Azienda import Azienda
 from promogest.dao.Articolo import Articolo
 from promogest.dao.Listino import Listino
@@ -75,7 +76,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         self._currentRow = {}
         self._simboloPercentuale = '%'
         self._simboloEuro = '€'
-        textStatusBar = "     PromoGest - Vendita Dettaglio - by PromoTUX Informatica - www.promogest.me - info@PromoTUX.it      "
+        textStatusBar = "     PromoGest - Vendita Dettaglio - by PromoTUX Informatica - www.promogest.me - info@promotux.it      "
         context_id = self.vendita_dettaglio_statusbar.get_context_id("vendita_dettaglio_window")
         self.vendita_dettaglio_statusbar.push(context_id, textStatusBar)
         azienda = Azienda().getRecord(id=Environment.azienda)
@@ -716,6 +717,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         self.codice_a_barre_entry.grab_focus()
 
     def on_total_button_clicked(self, button):
+        """ Funzione di salvataggio dello scontrino"""
         self.refreshTotal()
 
         dao = TestataScontrino()
@@ -734,13 +736,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
 
         if dao.totale_scontrino < 0:
             msg = 'Attenzione!\n\nIl totale non puo\' essere negativo !'
-            dialog = gtk.MessageDialog(self.getTopLevel(),
-                                       gtk.DIALOG_MODAL
-                                       | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                       gtk.MESSAGE_ERROR, gtk.BUTTONS_OK,
-                                       msg)
-            response = dialog.run()
-            dialog.destroy()
+            messageInfo(msg=msg)
             return
 
         # Creo dao testata_scontrino
@@ -805,9 +801,14 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             daoRiga.sconti=listarighesconto
             righe.append(daoRiga)
 
-        # Aggiungo righe e salvo dao
+        # Aggiungo righe e salvo dao testata scontrino
         dao.righe = righe
         dao.persist()
+        if self.id_cliente_customcombobox.getId():
+            a = TestataScontrinoCliente()
+            a.id_cliente =  self.id_cliente_customcombobox.getId()
+            a.id_testata_scontrino = dao.id
+            a.persist()
         # Creo il file e lo stampo
         if DRIVER and not self.no_print_toggled.get_active():
             print "SIAMO QUI PRONTI A MANDARE LO SCONTRINO IN CASSA"
@@ -828,6 +829,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         self.righe_label.set_markup('<b> [ 0 ] Righe scontrino</b>')
         self.codice_a_barre_entry.grab_focus()
         self._state = 'search'
+        self.id_cliente_customcombobox.set_active(0)
         self.codice_a_barre_entry.grab_focus()
 
 #    def on_chiusura_fiscale_activate(self, widget):

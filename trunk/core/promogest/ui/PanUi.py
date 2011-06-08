@@ -71,12 +71,6 @@ def checkPan(main):
                     a.value = "True"
                     a.active = True
                     a.persist()
-                #tables = [t.name for t in Environment.params["metadata"].sorted_tables]
-                #if "testata_scontrino" not in tables:
-                    #from promogest.modules.VenditaDettaglio.data.VenditaDettaglioDB import *
-                    #msg = " TABELLE AGGIUNTE, RIAVVIARE IL PROGRAMMA "
-                    #messageInfo(msg=msg, transient=self.getTopLevel())
-
             return
     if  Environment.tipodb!="postgresql":
         print "PASSI QUI"

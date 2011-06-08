@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010, 2011  by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -64,92 +64,69 @@ class GestioneScontrini(GladeWidget):
 
     def draw(self):
 
-        self.filterss = FilterWidget(owner=self, filtersElement=GladeWidget(rootWidget='scontrini_filter_table',
-            fileName="VenditaDettaglio/gui/_scontrini_emessi_elements.glade", isModule=True))
+        self.filterss = FilterWidget(
+                            owner=self,
+                            filtersElement=GladeWidget(
+                            rootWidget='scontrini_filter_table',
+                            fileName="VenditaDettaglio/gui/_scontrini_emessi_elements.glade",
+                            isModule=True),
+                            #resultsElement="scontrino"
+                            )
         self.filters = self.filterss.filtersElement
         self.filterTopLevel = self.filterss.getTopLevel()
-        self.main_hpaned.pack1(self.filterTopLevel)
 
-        sw = gtk.ScrolledWindow()
-        sw.set_policy(hscrollbar_policy = gtk.POLICY_AUTOMATIC,
-                            vscrollbar_policy = gtk.POLICY_AUTOMATIC)
-        #createHtmlObj(self)
+        filterElement = self.filterss.filter_frame
+        filterElement.unparent()
+        self.filter_viewport.add(filterElement)
+        self.anagrafica_hpaned.set_position(350)
+
+        resultElement = self.filterss.filter_list_vbox
+        resultElement.unparent()
+        self.anagrafica_results_viewport.add(resultElement)
         self.detail = createHtmlObj(self)
-        sw.add(self.detail)
-        self.main_hpaned.pack2(sw)
-
-        self.filterss.filter_scrolledwindow.set_policy(hscrollbar_policy = gtk.POLICY_AUTOMATIC,
-                                                     vscrollbar_policy = gtk.POLICY_AUTOMATIC)
-        self.filterss.filter_body_label.set_markup('<b>Elenco scontrini</b>')
-        self.filterss.filter_body_label.set_property('visible', True)
-
+        self.detail_scrolled.add(self.detail)
         self.filterss.hbox1.destroy()
-        self.quit_button.connect('clicked', self.on_scontrini_window_close)
-        # Colonne della Treeview per il filtro
-        treeview = self.filterss.resultsElement
-        model = self.filterss._treeViewModel = gtk.ListStore(object, str, str, str, str, str, str, str)
 
-        rendererSx = gtk.CellRendererText()
-        rendererDx = gtk.CellRendererText()
-        rendererDx.set_property('xalign', 1)
+#
+        #column = gtk.TreeViewColumn('Data', rendererSx, text=1)
+        #column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        #column.set_clickable(True)
+        #column.connect("clicked", self.filterss._changeOrderBy, (None, 'data_inserimento'))
+        #column.set_resizable(True)
+        #column.set_expand(True)
+        #treeview.append_column(column)
+#
+        #column = gtk.TreeViewColumn('Totale', rendererDx, text=2)
+        #column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        #column.set_clickable(True)
+        #column.connect("clicked", self.filterss._changeOrderBy, (None, 'totale_scontrino'))
+        #column.set_resizable(True)
+        #column.set_expand(False)
+        #treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('Data', rendererSx, text=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.connect("clicked", self.filterss._changeOrderBy, (None, 'data_inserimento'))
-        column.set_resizable(True)
-        column.set_expand(True)
-        treeview.append_column(column)
+        #column = gtk.TreeViewColumn('Contanti', rendererDx, text=3)
+        #column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        #column.set_clickable(True)
+        #column.connect("clicked", self.filterss._changeOrderBy, (None, 'totale_contanti'))
+        #column.set_resizable(True)
+        #column.set_expand(False)
+        #treeview.append_column(column)
+#
+        #column = gtk.TreeViewColumn('Assegni', rendererDx, text=4)
+        #column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        #column.set_clickable(True)
+        #column.connect("clicked", self.filterss._changeOrderBy, (None, 'totale_assegni'))
+        #column.set_resizable(True)
+        #column.set_expand(False)
+        #treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('Totale', rendererDx, text=2)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.connect("clicked", self.filterss._changeOrderBy, (None, 'totale_scontrino'))
-        column.set_resizable(True)
-        column.set_expand(False)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Contanti', rendererDx, text=3)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.connect("clicked", self.filterss._changeOrderBy, (None, 'totale_contanti'))
-        column.set_resizable(True)
-        column.set_expand(False)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Assegni', rendererDx, text=4)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.connect("clicked", self.filterss._changeOrderBy, (None, 'totale_assegni'))
-        column.set_resizable(True)
-        column.set_expand(False)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('C di Cr', rendererDx, text=5)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.connect("clicked", self.filterss._changeOrderBy, (None, 'totale_carta_credito'))
-        column.set_resizable(True)
-        column.set_expand(False)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Data M.M.', rendererSx, text=6)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(False)
-        #column.connect("clicked", self.filterss._changeOrderBy, 'data_movimento')
-        column.set_resizable(True)
-        column.set_expand(False)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('N° M.M.', rendererSx, text=7)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(False)
-        #column.connect("clicked", self.filterss._changeOrderBy, 'numero_movimento')
-        column.set_resizable(True)
-        column.set_expand(False)
-        treeview.append_column(column)
-
-        treeview.set_model(model)
+        #column = gtk.TreeViewColumn('C di Cr', rendererDx, text=5)
+        #column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        #column.set_clickable(True)
+        #column.connect("clicked", self.filterss._changeOrderBy, (None, 'totale_carta_credito'))
+        #column.set_resizable(True)
+        #column.set_expand(False)
+        #treeview.append_column(column)
 
         self.filters.id_articolo_filter_customcombobox.setId(self._idArticolo)
 
@@ -181,6 +158,7 @@ class GestioneScontrini(GladeWidget):
     def clear(self):
         # Annullamento filtro
         self.filters.id_articolo_filter_customcombobox.set_active(0)
+        self.filters.id_cliente_search_customcombobox.set_active(0)
         if hasattr(Environment.conf, "VenditaDettaglio"):
             if hasattr(Environment.conf.VenditaDettaglio, "magazzino"):
                 findComboboxRowFromStr(self.filters.id_magazzino_filter_combobox, Environment.conf.VenditaDettaglio.magazzino,2)
@@ -204,11 +182,13 @@ class GestioneScontrini(GladeWidget):
         aData = stringToDateBumped(self.filters.a_data_filter_entry.get_text())
         idPuntoCassa = findIdFromCombobox(self.filters.id_pos_filter_combobox)
         idMagazzino = findIdFromCombobox(self.filters.id_magazzino_filter_combobox)
+        idCliente =  self.filters.id_cliente_search_customcombobox.getId()
         self.filterss.numRecords = TestataScontrino().count(idArticolo=idArticolo,
                                                                       daData=daData,
                                                                       aData=aData,
                                                                       idMagazzino = idMagazzino,
-                                                                      idPuntoCassa = idPuntoCassa)
+                                                                      idPuntoCassa = idPuntoCassa,
+                                                                      idCliente = idCliente)
         self.filterss._refreshPageCount()
 
         scos = TestataScontrino().select( orderBy=self.filterss.orderBy,
@@ -217,19 +197,23 @@ class GestioneScontrini(GladeWidget):
                                                      aData=aData,
                                                      idMagazzino = idMagazzino,
                                                      idPuntoCassa = idPuntoCassa,
+                                                     idCliente = idCliente,
                                                      offset=self.filterss.offset,
                                                      batchSize=self.filterss.batchSize)
 
-        self.filterss._treeViewModel.clear()
-
+        #self.filterss._treeViewModel.clear()
+        self.rows_listore.clear()
         for s in scos:
-            totale = mN(s.totale_scontrino) or 0
-            contanti = mN(s.totale_contanti) or 0
-            assegni = mN(s.totale_assegni) or 0
-            carta = mN(s.totale_carta_credito) or 0
-            self.filterss._treeViewModel.append((s, dateTimeToString(s.data_inserimento).replace(" "," Ore: "), totale,
-                                               contanti, assegni, carta,
-                                               dateToString(s.data_movimento), str(s.numero_movimento or '')))
+            totale = mNLC(s.totale_scontrino,2) or 0
+            contanti = mNLC(s.totale_contanti,2) or 0
+            assegni = mNLC(s.totale_assegni,2) or 0
+            carta = mNLC(s.totale_carta_credito,2) or 0
+            self.rows_listore.append((s,
+                                    dateTimeToString(s.data_inserimento).replace(" "," Ore: "),
+                                    totale,
+                                    contanti, assegni, carta,
+                                    dateToString(s.data_movimento),
+                                    str(s.numero_movimento or '')))
 
         scos_no_batchSize = TestataScontrino().select( orderBy=self.filterss.orderBy,
                                                      idArticolo=idArticolo,
@@ -237,6 +221,7 @@ class GestioneScontrini(GladeWidget):
                                                      idPuntoCassa = idPuntoCassa,
                                                      daData=daData,
                                                      aData=aData,
+                                                     idCliente=idCliente,
                                                      offset=None,
                                                      batchSize=None)
         self.scontrini = scos_no_batchSize
@@ -266,8 +251,7 @@ class GestioneScontrini(GladeWidget):
             totcont += m.totale_contanti
             totnum += 1
         self.filterss.label1.set_text("")
-        stringa = """GENERALE:<b><span foreground="black" size="20000">%s</span></b> - NUM. SCONTRINI:<b><span foreground="black" size="18000">%s</span></b>
-TOT CARTA:<b>%s</b> - TOT ASSEGNI:<b>%s</b> - TOT CONT.:<b>%s</b> - TOT SCONTI:<b>%s</b> - """ %(mN(tot), totnum, mN(totccr), mN(totass), mN(totcont), mN(tot_sconti) )
+        stringa = """GENERALE:<b><span foreground="black" size="20000">%s</span></b> - NUM. SCONTRINI:<b><span foreground="black" size="18000">%s</span></b> TOT CARTA:<b>%s</b> - TOT ASSEGNI:<b>%s</b> - TOT CONT.:<b>%s</b> - TOT SCONTI:<b>%s</b> - """ %(mNLC(tot,2), totnum, mNLC(totccr,2), mNLC(totass,2), mNLC(totcont,2), mNLC(tot_sconti,2) )
         self.filterss.info_label.set_markup(str(stringa))
 
 
@@ -301,11 +285,6 @@ TOT CARTA:<b>%s</b> - TOT ASSEGNI:<b>%s</b> - TOT CONT.:<b>%s</b> - TOT SCONTI:<
             html = renderTemplate(pageData)
         renderHTML(self.detail,html)
 
-    #def on_quit_button_clicked(self, widget, event=None):
-        #self.destroy()
-        #return None
-
-
     def on_scontrini_window_close(self, widget, event=None):
         self.destroy()
         return None
@@ -332,7 +311,7 @@ TOT CARTA:<b>%s</b> - TOT ASSEGNI:<b>%s</b> - TOT CONT.:<b>%s</b> - TOT SCONTI:<
                 if self.dao.numero_movimento:
                     messageInfo(msg= """Esiste già un movimento abbinato di chiusura per scarico da cassa,
         l'operazione è comunque impossibile
-        Rivolgersi all'assasistenza""")
+        Rivolgersi all'assistenza""")
                 else:
                     Environment.pg2log.info("CANCELLO UNO SCONTRINO DAL PG2 ")
                     self.dao.delete()

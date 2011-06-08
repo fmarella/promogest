@@ -31,6 +31,7 @@ from promogest.dao.Magazzino import Magazzino
 from promogest.dao.User import User
 from promogest.modules.VenditaDettaglio.dao.RigaScontrino import RigaScontrino
 from promogest.modules.VenditaDettaglio.dao.ScontoTestataScontrino import ScontoTestataScontrino
+from promogest.modules.VenditaDettaglio.dao.TestataScontrinoCliente import TestataScontrinoCliente
 from promogest.modules.VenditaDettaglio.dao.Pos import Pos
 from promogest.ui.utils import *
 
@@ -110,6 +111,8 @@ class TestataScontrino(Dao):
             dic = {k: and_(testata_scontrino.c.id==riga_scontrinoo.c.id_testata_scontrino, riga_scontrinoo.c.id_articolo==v)}
         elif k=='idArticoloList':
             dic={ k :and_(testata_scontrino.c.id==riga_scontrinoo.c.id_testata_scontrino, riga_scontrinoo.c.id_articolo.in_(v))}
+        elif k=='idCliente':
+            dic={ k :and_(testata_scontrino.c.id==TestataScontrinoCliente.id_testata_scontrino, TestataScontrinoCliente.id_cliente ==v)}
         return  dic[k]
 
     def update(self):
@@ -141,7 +144,7 @@ class TestataScontrino(Dao):
                 for scontisutot in self.scontiSuTotale:
                     scontisutot.id_testata_scontrino = self.id
                     scontisutot.persist()
-        params['session'].flush()
+        #params['session'].flush()
 
     def scontiTestataScontrinoDel(self, id=None):
         """
