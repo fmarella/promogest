@@ -15,7 +15,7 @@ In parte vengono seguiti i percorsi naturali fatti durante l'utilizzo quotidiano
 
 Verranno indicate le funzionalità del PromoGest2 ( abbreviato Pg2 ) con esempi pratici e con una descrizione
 dettagliata delle finestre, il loro utilizzo e la definizione degli shortcut ( combinazioni di tasti ) utili
-per velocizzare il lavoro. 
+per velocizzare il lavoro.
 
 .. toctree::
   :maxdepth: 2
@@ -34,6 +34,6 @@ per velocizzare il lavoro.
   info
 
 
-.. versionadded:: 1802
 
-.. versionchanged:: 1802
+
+.. versionchanged:: 1809

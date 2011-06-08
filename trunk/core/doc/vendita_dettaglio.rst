@@ -62,13 +62,18 @@ Questa immagine ci mostra come viene gestito dal promogest la vendita di un arti
 Gestione scontrini
 __________________
 
-Questa è la finestra dello storico Scontrini. Vediamo un'area di ricerca sulla sinistra con sotto una visione di una lista di scontrini e le informazioni relative ai diversi totali e parziali.
+Questa è la finestra dello *storico Scontrini*.
+Vediamo un'area di ricerca sulla sinistra con sotto una visione di una lista di scontrini e le informazioni relative ai diversi totali e parziali.
 
-A destra poi c'è un riepilogo dello scontrino con tutte le informazioni. IN basso sono presenti anche dei bottoni tra cui quello di Reso prelevando le informazioni da uno scontrino già salvato, la cancellazione scontrino ( da effettuare solo se si ha ben chiaro cosa si sta facendo ) e lo storno.
+A destra poi c'è un *riepilogo dello scontrino* con tutte le informazioni. IN basso sono presenti anche dei bottoni tra cui quello di Reso prelevando le informazioni da uno scontrino già salvato, la cancellazione scontrino ( da effettuare solo se si ha ben chiaro cosa si sta facendo ) e lo storno.
 
 .. image:: http://dl.dropbox.com/u/8630608/venditaDettaglio/Scontrini%20Emessi_013.jpeg
  :target: http://dl.dropbox.com/u/8630608/venditaDettaglio/Scontrini%20Emessi_013.jpeg
  :width: 700 px
+
+.. versionadded:: 1802
+E' stata aggiunta la possibilità di filtrare per *cliente* in modo da poter sapere quali vendite sono state abbinate
+ad un determinato *cliente* in un determinato arco temporale
 
 Questa è la distinta di fine giornata.
 ______________________________________
