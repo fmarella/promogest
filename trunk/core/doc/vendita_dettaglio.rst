@@ -105,11 +105,15 @@ ________________________________________________________
  :target:  http://dl.dropbox.com/u/8630608/venditaDettaglio/Chart%20statistiche%20PromoGest2_017.jpeg
  :width: 700 px
 
+DITRON
+______
 Questa è l'immagine di una Ditron ZIP, registratore di cassa ampiamente collaudato con il nostro gestionale. Ma sono supportate anche le casse olivetti. ( per altre marche contattateci pure a assistenza@promotux.it)
 
 .. image::  http://dl.dropbox.com/u/8630608/venditaDettaglio/zip.jpg
  :target: http://dl.dropbox.com/u/8630608/venditaDettaglio/zip.jpg
 
+OLIVETTI
+________
 .. image::  http://www.promogest.me/templates/media/20090625%20Listino%20Nettuna%20250%20Olivetti0003-2.jpg
  :target: http://www.promogest.me/templates/media/20090625%20Listino%20Nettuna%20250%20Olivetti0003-2.jpg
 
