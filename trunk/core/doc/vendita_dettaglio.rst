@@ -110,9 +110,23 @@ Questa è l'immagine di una Ditron ZIP, registratore di cassa ampiamente collaud
 .. image::  http://dl.dropbox.com/u/8630608/venditaDettaglio/zip.jpg
  :target: http://dl.dropbox.com/u/8630608/venditaDettaglio/zip.jpg
 
-Ricordiamo che il modulo PromoSHOP ONE o PRO ha un costo di euro 100 + iva ed è acquistabile direttamente dal sito internet del promoGest
+.. image::  http://www.promogest.me/templates/media/20090625%20Listino%20Nettuna%20250%20Olivetti0003-2.jpg
+ :target: http://www.promogest.me/templates/media/20090625%20Listino%20Nettuna%20250%20Olivetti0003-2.jpg
 
-Elenco degli shortcut:
+E' stato poi migliorato il sistema di collegamento nella vendita al dettaglio o gestione negozio con i misuratori fiscali OLIVETTI, l'utilizzo del driver ELAEXECUTE ( Testato sia su windows che su linux fedora e linux ubuntu) ci permette di collegare al momento questi misuratori fiscali:
+
+ * NETTUNA 200
+ * NETTUNA 400
+ * NETTUNA 500
+ * NETTUNA 600
+ * PRT100 FISCALE
+ * NETTUNA JET
+ * NETTUNA 700
+ * NETTUNA 300
+ * PRT200 FISCALE
+ * NETTUNA  250
+
+*Elenco degli shortcut:*
  * F4 Attiva lo sconto su totale
  * F5 Attiva la chiusura scontrino e invio alla cassa ( pos)
  * F6 Calcola i totali parziali considerando anche gli sconti
