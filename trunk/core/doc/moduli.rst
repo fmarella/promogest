@@ -2,8 +2,8 @@
 Moduli
 ======
 
-:doc:`vendita_dettaglio`
-========================
+:doc:`Vendita Dettaglio ( PromoSHOP ) <vendita_dettaglio>`
+===========================================================
 
 
 Area Promemoria e allarmi
