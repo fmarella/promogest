@@ -7,7 +7,7 @@ PromoGest
 
 
 .. warning::
- Questo Manuale è un "workin' progress" e lo vedrete crescere quodianamente. Per contributi o consigli info@promotux.it
+ Manuale ancora in lavorazione
 
 Indice delle sezioni divise per macro argomenti.
 
