@@ -1021,16 +1021,15 @@ class TestataDocumento(Dao):
             dic = {k:testata_documento.c.id_agente == v}
         elif k == 'statoDocumento':
             dic = {k:testata_documento.c.documento_saldato == v}
-        elif k == 'idArticolo':
-            #DA VERIFICARE ...SU MOVIMENTO FUNZIONA MA SU DOCUMENTO NO
+        elif k == 'idArticoloMov':
             dic = {k: and_(v ==Riga.id_articolo,
                     riga.c.id==RigaMovimento.id,
                     RigaMovimento.id_testata_movimento == TestataMovimento.id,
-                    TestataMovimento.id_testata_documento == testata_documento.c.id,
-                        )}
-#            dic = {k:and_(v ==Riga.id_articolo,
-#                        riga.c.id==RigaDocumento.id,
-#                        RigaDocumento.id_testata_documento == testata_documento.c.id)}
+                    TestataMovimento.id_testata_documento == testata_documento.c.id)}
+        elif k == 'idArticoloDoc':
+            dic = {k: and_(v==Riga.id_articolo,
+                    Riga.id==RigaDocumento.id,
+                    RigaDocumento.id_testata_documento == TestataDocumento.id)}
         elif (hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes") or ("GestioneNoleggio" in Environment.modulesList):
             if k == 'daDataInizioNoleggio':
                 dic = {k:and_(testata_documento.c.id == TestataGestioneNoleggio.id_testata_documento,

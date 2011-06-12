@@ -150,7 +150,6 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
                             "idFornitore":idFornitore,
                             "idAgente":idAgente,
                             "statoDocumento":statoDocumento,
-                            "idArticolo":idArticolo,
                             "soloContabili":soloContabili}
 
         if posso("GN"):
@@ -164,6 +163,10 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
                                     aDataFineNoleggio = aDataFineNoleggio)
 
         def filterCountClosure():
+            if idArticolo:
+                a = TestataDocumento().count(filterDict = self.filterDict,idArticoloMov=idArticolo) or 0
+                b = TestataDocumento().count(filterDict = self.filterDict,idArticoloDoc=idArticolo) or 0
+                return a+b
             return TestataDocumento().count(filterDict = self.filterDict)
 
         self._filterCountClosure = filterCountClosure
@@ -172,6 +175,23 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
 
         # Let's save the current search as a closure
         def filterClosure(offset, batchSize):
+            """ questo trucchetto su idArticolo è stato necessario perchè
+            l'articolo puà essere sia in righe documento che in righe movimento
+            e la query "percorre strade" diverse che unite in una sola query
+            con "OR_" anche se con i join diventava molto lenta,
+            così invece sembra non perdere in velocità """
+            if idArticolo:
+                a = TestataDocumento().select(orderBy=self.orderBy,
+                                                offset=offset,
+                                                idArticoloMov=idArticolo,
+                                                batchSize=batchSize,
+                                                filterDict = self.filterDict) or []
+                b = TestataDocumento().select(orderBy=self.orderBy,
+                                                offset=offset,
+                                                idArticoloDoc=idArticolo,
+                                                batchSize=batchSize,
+                                                filterDict = self.filterDict) or []
+                return a+b
             return TestataDocumento().select(orderBy=self.orderBy,
                                                 offset=offset,
                                                 batchSize=batchSize,
