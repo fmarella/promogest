@@ -71,15 +71,15 @@ Questa è la finestra dello *storico Scontrini*.
 Notiamo subito una divisione in tree aree:
 In alto a sinistra abbiamo l'area di ricerca in cui possiamo selezionare tra uno o più fra i seguenti criteri:
  * Articolo. Per sapere quando è stato venduto un determinato articolo, verrà infatti visualizzato l'elenco
- degli scontrini in cui l'articolo è presente
+   degli scontrini in cui l'articolo è presente
  * Da data - a Data. Due campi che permettono di selezionare un arco temporale di ricerca
  * Mag/ PV. Qui possiamo filtrare per tutti gli scontrini emessi in un determinato punto vendita
  * Punto Cassa. Simile al PV ma relativo al singolo punto cassa all'interno del PV
  * Cliente. novità. Permette di sapere quali scontrini sono stati effettuati ad un determinato cliente se, chiaramente
- gli è stato assegnato lo scontrino stesso
+   gli è stato assegnato lo scontrino stesso
 
-La seconda area a destra è quella dell'anteprima dello scontrino selezionato
-La terza area è quella dell'elenco dei risultati. Ci sono diverse colonne per una visione veloce delle informazioni relative al singolo scontrino.
+La seconda area a destra è quella dell'anteprima dello scontrino selezionato.
+La terza è quella dell'elenco dei risultati. Ci sono diverse colonne per una visione veloce delle informazioni relative al singolo scontrino.
 
 In aggiunta a queste tre aree possiamo vedere diversi bottoni e combobox:
  * Cliente
