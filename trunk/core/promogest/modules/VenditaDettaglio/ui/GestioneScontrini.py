@@ -91,7 +91,8 @@ class GestioneScontrini(GladeWidget):
         self.detail = createHtmlObj(self)
         self.detail_scrolled.add(self.detail)
         self.filterss.hbox1.destroy()
-
+        self.filterss.filter_info_hbox.show()
+        self.filterss.filter_info_label.set_text("")
         self.filters.id_articolo_filter_customcombobox.setId(self._idArticolo)
 
         if self._daData is None:
@@ -225,7 +226,7 @@ class GestioneScontrini(GladeWidget):
             totass += m.totale_assegni
             totcont += m.totale_contanti
             totnum += 1
-        self.filterss.label1.set_text("")
+        #self.filterss.label1.set_text("")
         stringa = """GENERALE:<b><span foreground="black" size="20000">%s</span></b> - NUM. SCONTRINI:<b><span foreground="black" size="18000">%s</span></b> TOT CARTA:<b>%s</b> - TOT ASSEGNI:<b>%s</b> - TOT CONT.:<b>%s</b> - TOT SCONTI:<b>%s</b> - """ %(mNLC(tot,2), totnum, mNLC(totccr,2), mNLC(totass,2), mNLC(totcont,2), mNLC(tot_sconti,2) )
         self.filterss.info_label.set_markup(str(stringa))
 

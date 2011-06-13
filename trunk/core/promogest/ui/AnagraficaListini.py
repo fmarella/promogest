@@ -69,7 +69,6 @@ class AnagraficaListini(Anagrafica):
             messageInfo(msg= "ATTENZIONE!\n CI SONO DEGLI ARTICOLI CHE COMPONGONO\n QUESTO LISTINO NON E' POSSIBILE RIMUOVERLO")
             return
 
-
 class AnagraficaListiniFilter(AnagraficaFilter):
     """ Filtro per la ricerca nell'anagrafica dei listini """
 
