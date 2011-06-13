@@ -1021,7 +1021,7 @@ class TestataDocumento(Dao):
             dic = {k:testata_documento.c.id_agente == v}
         elif k == 'statoDocumento':
             dic = {k:testata_documento.c.documento_saldato == v}
-        elif k == 'idArticoloMov':
+        elif k == 'idArticoloMov' or k == "idArticolo":
             dic = {k: and_(v ==Riga.id_articolo,
                     riga.c.id==RigaMovimento.id,
                     RigaMovimento.id_testata_movimento == TestataMovimento.id,
