@@ -47,8 +47,8 @@ C'è poi un bottone di uscita ed uno che riporta la dicitura scontrini che vedre
 
 Tutte le operazioni si possono svolgere senza l'ausilio del mouse tramite l'uso di comodi shortcut da tastiera e l'uso di tasti funzione.
 
-.. image:: http://dl.dropbox.com/u/8630608/venditaDettaglio/Vendita%20al%20dettaglio_012.jpeg
- :target: http://dl.dropbox.com/u/8630608/venditaDettaglio/Vendita%20al%20dettaglio_012.jpeg
+.. image:: http://www.promogest.me/templates/media/Vendita%20al%20dettaglio_002.png
+ :target: http://www.promogest.me/templates/media/Vendita%20al%20dettaglio_002.png
  :width: 700 px
 
 
@@ -63,17 +63,34 @@ Gestione scontrini
 __________________
 
 Questa è la finestra dello *storico Scontrini*.
-Vediamo un'area di ricerca sulla sinistra con sotto una visione di una lista di scontrini e le informazioni relative ai diversi totali e parziali.
 
-A destra poi c'è un *riepilogo dello scontrino* con tutte le informazioni. IN basso sono presenti anche dei bottoni tra cui quello di Reso prelevando le informazioni da uno scontrino già salvato, la cancellazione scontrino ( da effettuare solo se si ha ben chiaro cosa si sta facendo ) e lo storno.
-
-.. image:: http://dl.dropbox.com/u/8630608/venditaDettaglio/Scontrini%20Emessi_013.jpeg
- :target: http://dl.dropbox.com/u/8630608/venditaDettaglio/Scontrini%20Emessi_013.jpeg
+.. image:: http://www.promogest.me/templates/media/Scontrini%20Emessi_003.png
+ :target: http://www.promogest.me/templates/media/Scontrini%20Emessi_003.png
  :width: 700 px
 
-.. versionadded:: 1802
-E' stata aggiunta la possibilità di filtrare per *cliente* in modo da poter sapere quali vendite sono state abbinate
-ad un determinato *cliente* in un determinato arco temporale
+Notiamo subito una divisione in tree aree:
+In alto a sinistra abbiamo l'area di ricerca in cui possiamo selezionare tra uno o più fra i seguenti criteri:
+ * Articolo. Per sapere quando è stato venduto un determinato articolo, verrà infatti visualizzato l'elenco
+ degli scontrini in cui l'articolo è presente
+ * Da data - a Data. Due campi che permettono di selezionare un arco temporale di ricerca
+ * Mag/ PV. Qui possiamo filtrare per tutti gli scontrini emessi in un determinato punto vendita
+ * Punto Cassa. Simile al PV ma relativo al singolo punto cassa all'interno del PV
+ * Cliente. novità. Permette di sapere quali scontrini sono stati effettuati ad un determinato cliente se, chiaramente
+ gli è stato assegnato lo scontrino stesso
+
+La seconda area a destra è quella dell'anteprima dello scontrino selezionato
+La terza area è quella dell'elenco dei risultati. Ci sono diverse colonne per una visione veloce delle informazioni relative al singolo scontrino.
+
+In aggiunta a queste tre aree possiamo vedere diversi bottoni e combobox:
+ * Cliente
+ * Tipo Operazione
+ * Crea Fattura
+ * Reso
+ * Elimina
+ * Storno
+ * Chiudi
+
+TODO: scrivere dei singoli bottoni!
 
 Questa è la distinta di fine giornata.
 ______________________________________
