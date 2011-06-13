@@ -424,6 +424,7 @@ class GestioneScontrini(GladeWidget):
             RIGA SCONTRINO:
             id, prezzo, prezzo_scontato, quantita,
             descrizione, id_testata_scontrino, id_articolo
+            TODO: Vanno gestiti gli sconti
             """
         if not self.daoTse:
             messageInfo(msg="Nessuno scontrino selezionato")
@@ -437,6 +438,8 @@ class GestioneScontrini(GladeWidget):
             else:
                 messageInfo(msg="Scontrino selezionato, ma nessun cliente assegnato")
             return
+        if not findStrFromCombobox(self.operazione_combobox,0):
+            obligatoryField(self.getTopLevel(), self.operazione_combobox)
         one_day = datetime.timedelta(days=1)
         proviamo = datetime.datetime(self.daoTse.data_inserimento.year,self.daoTse.data_inserimento.month,
         self.daoTse.data_inserimento.day)
