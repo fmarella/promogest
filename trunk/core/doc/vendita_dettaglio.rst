@@ -1,13 +1,17 @@
+.. _vendita_dettaglio:
+
+
 =====================================
 Gestione Negozio ( Vendita Dettaglio)
 =====================================
-|today|
 
 Descrizione Breve:
 ==================
 
 Interfaccia di vendita tramite codice a barre o codice articolo per operatore di cassa.
 Preposta alla vendita al dettaglio ed alla emissione di uno scontrino fiscale, quando vi è un collegamento diretto con un misuratore fiscale.
+
+E' stata attivata una procedura facilitata per testare il modulo di Gestione negozio anche nella vostra **ONE BASIC**, per sapere come procedere potete leggere questa pagina :ref:`testpromoshop`
 
 Dettaglio:
 ==========
@@ -26,8 +30,8 @@ Come prima cosa ci verrà proposta una finestra di dialogo che ci chiederà di s
 .. image:: http://dl.dropbox.com/u/8630608/venditaDettaglio/Attenzione_004.jpeg
  :target: http://dl.dropbox.com/u/8630608/venditaDettaglio/Attenzione_004.jpeg
 
-Quella di seguito è la interfaccia principale di lavoro.
-________________________________________________________
+Interfaccia principale di vendita.
+__________________________________
 
 Nella parte superiore abbiamo le tre aree di ricerca diretta. La prima sarà quella dedicata al codice a barre, la troveremo sempre selezionata allingresso del modulo, dopo l'inserimento di una riga o dopo la chiusura di uno scontrino. Le altre due permettono una ricerca più classica e meno veloce per codice articolo e per descrizione. C'è comunque anche la possibilità di ricerca usando la classica finestra di ricerca complessa presente in altre parti dell'applicazione.
 
@@ -79,7 +83,7 @@ In alto a sinistra abbiamo l'area di ricerca in cui possiamo selezionare tra uno
    gli è stato assegnato lo scontrino stesso
 
 La seconda area a destra è quella dell'anteprima dello scontrino selezionato.
-La terza è quella dell'elenco dei risultati. Ci sono diverse colonne per una visione veloce delle informazioni relative al singolo scontrino.
+La terza    è quella dell'elenco dei risultati. Ci sono diverse colonne per una visione veloce delle informazioni relative al singolo scontrino.
 
 In aggiunta a queste tre aree possiamo vedere diversi bottoni e combobox:
  * Cliente
