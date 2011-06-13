@@ -29,6 +29,7 @@ from promogest.dao.TestataMovimento import TestataMovimento
 from promogest.dao.CCardType import CCardType
 from promogest.dao.Magazzino import Magazzino
 from promogest.dao.User import User
+from promogest.dao.Cliente import Cliente
 from promogest.modules.VenditaDettaglio.dao.RigaScontrino import RigaScontrino
 from promogest.modules.VenditaDettaglio.dao.ScontoTestataScontrino import ScontoTestataScontrino
 from promogest.modules.VenditaDettaglio.dao.TestataScontrinoCliente import TestataScontrinoCliente
@@ -46,6 +47,7 @@ class TestataScontrino(Dao):
         self.__dbScontiScontrino = []
         self.__righeScontrino = []
         self.__scontiTestataScontrino = []
+        self.__idCliTs = None
 
     def _getRigheScontrino(self):
         self.__dbRigheScontrino = RigaScontrino().select(idTestataScontrino=self.id, batchSize=None)
@@ -56,6 +58,21 @@ class TestataScontrino(Dao):
         self.__righeScontrino = value
 
     righe = property(_getRigheScontrino, _setRigheScontrino)
+
+    def _idClienteTestata(self):
+        self.__idCliTs = TestataScontrinoCliente().select(id_testata_scontrino = self.id)
+        if self.__idCliTs:
+            return self.__idCliTs[0].id_cliente
+        else:
+            return None
+    id_cliente_testata_scontrino = property(_idClienteTestata)
+
+    def _clienteTestata(self):
+        if self._idClienteTestata():
+            return Cliente().getRecord(id=self._idClienteTestata())
+        else:
+            return None
+    cliente_testata_scontrino = property(_clienteTestata)
 
     def _dataMovimento(self):
         if self.testatamovimento: return self.testatamovimento.data_movimento

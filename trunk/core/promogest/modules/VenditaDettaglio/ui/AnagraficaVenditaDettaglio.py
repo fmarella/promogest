@@ -1132,9 +1132,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         quit_item = gtk.MenuItem("Annulla")
         # Add them to the menu
         self.file_menu.append(open_item)
-        #self.file_menu.append(save_item)
         self.file_menu.append(quit_item)
-        # Attach the callback functions to the activate signal
         open_item.connect_object("activate", self.on_confirm_button_clicked, "file.open")
         #save_item.connect_object("activate", self.on_empty_button_clicked, "file.save")
         quit_item.connect_object("activate", self.on_cancel_button_clicked, "file.quit")

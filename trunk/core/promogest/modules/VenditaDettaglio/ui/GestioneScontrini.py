@@ -31,10 +31,14 @@ from promogest.modules.VenditaDettaglio.dao.TestataScontrino import TestataScont
 from promogest.modules.VenditaDettaglio.dao.RigaScontrino import RigaScontrino
 from promogest.modules.VenditaDettaglio.dao.ScontoRigaScontrino import ScontoRigaScontrino
 from promogest.modules.VenditaDettaglio.ui.Distinta import Distinta
+from promogest.modules.VenditaDettaglio.dao.TestataScontrinoCliente import TestataScontrinoCliente
 from promogest.ui.widgets.FilterWidget import FilterWidget
 from promogest.dao.Inventario import Inventario
 from promogest.dao.Magazzino import Magazzino
 from promogest.dao.Articolo import Articolo
+from promogest.dao.TestataDocumento import TestataDocumento
+from promogest.dao.RigaDocumento import RigaDocumento
+from promogest.dao.Listino import Listino
 from promogest.ui.utils import *
 from promogest.ui import utils
 from promogest.modules.VenditaDettaglio.ui.VenditaDettaglioUtils import fillComboboxPos
@@ -54,6 +58,7 @@ class GestioneScontrini(GladeWidget):
         self._righe = righe
         self._htmlTemplate = None
         self.dao = None
+        self.daoTse = None
 
         GladeWidget.__init__(self, 'scontrini_emessi',
                 fileName="VenditaDettaglio/gui/scontrini_emessi.glade", isModule=True)
@@ -87,47 +92,6 @@ class GestioneScontrini(GladeWidget):
         self.detail_scrolled.add(self.detail)
         self.filterss.hbox1.destroy()
 
-#
-        #column = gtk.TreeViewColumn('Data', rendererSx, text=1)
-        #column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        #column.set_clickable(True)
-        #column.connect("clicked", self.filterss._changeOrderBy, (None, 'data_inserimento'))
-        #column.set_resizable(True)
-        #column.set_expand(True)
-        #treeview.append_column(column)
-#
-        #column = gtk.TreeViewColumn('Totale', rendererDx, text=2)
-        #column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        #column.set_clickable(True)
-        #column.connect("clicked", self.filterss._changeOrderBy, (None, 'totale_scontrino'))
-        #column.set_resizable(True)
-        #column.set_expand(False)
-        #treeview.append_column(column)
-
-        #column = gtk.TreeViewColumn('Contanti', rendererDx, text=3)
-        #column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        #column.set_clickable(True)
-        #column.connect("clicked", self.filterss._changeOrderBy, (None, 'totale_contanti'))
-        #column.set_resizable(True)
-        #column.set_expand(False)
-        #treeview.append_column(column)
-#
-        #column = gtk.TreeViewColumn('Assegni', rendererDx, text=4)
-        #column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        #column.set_clickable(True)
-        #column.connect("clicked", self.filterss._changeOrderBy, (None, 'totale_assegni'))
-        #column.set_resizable(True)
-        #column.set_expand(False)
-        #treeview.append_column(column)
-
-        #column = gtk.TreeViewColumn('C di Cr', rendererDx, text=5)
-        #column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        #column.set_clickable(True)
-        #column.connect("clicked", self.filterss._changeOrderBy, (None, 'totale_carta_credito'))
-        #column.set_resizable(True)
-        #column.set_expand(False)
-        #treeview.append_column(column)
-
         self.filters.id_articolo_filter_customcombobox.setId(self._idArticolo)
 
         if self._daData is None:
@@ -151,9 +115,20 @@ class GestioneScontrini(GladeWidget):
             if setconf("VenditaDettaglio", "punto_cassa"):
                 findComboboxRowFromId(self.filters.id_pos_filter_combobox, setconf("VenditaDettaglio", "punto_cassa"))
 
-
         self.refreshHtml()
         self.refresh()
+
+    def _reOrderBy(self, column):
+        if column.get_name() == "data_column":
+            return self.filterss._changeOrderBy(column,(None,TestataScontrino.data_inserimento))
+        if column.get_name() == "totale_column":
+            return self.filterss._changeOrderBy(column,(None,TestataScontrino.totale_scontrino))
+        if column.get_name() == "contanti_column":
+            return self.filterss._changeOrderBy(column,(None,TestataScontrino.totale_contanti))
+        if column.get_name() == "assegni_column":
+            return self.filterss._changeOrderBy(column,(None,TestataScontrino.totale_assegni))
+        if column.get_name() == "cdicredito_column":
+            return self.filterss._changeOrderBy(column,(None,TestataScontrino.totale_carta_credito))
 
     def clear(self):
         # Annullamento filtro
@@ -271,8 +246,28 @@ class GestioneScontrini(GladeWidget):
         pass
 
     def on_filter_treeview_selection_changed(self, treeSelection):
-        # Not used here
-        pass
+        (model, iterator) = treeSelection.get_selected()
+        if iterator:
+            self.crea_fattura_button.set_sensitive(True)
+            self.id_cliente_emessi_customcombobox.set_sensitive(True)
+            self.operazione_combobox.set_sensitive(True)
+            self.daoTse = model.get_value(iterator, 0)
+            if model.get_value(iterator, 0).id_cliente_testata_scontrino:
+                a = model.get_value(iterator, 0).id_cliente_testata_scontrino
+                self.id_cliente_emessi_customcombobox.setId(a)
+            else:
+                self.id_cliente_emessi_customcombobox.set_active(0)
+                self.operazione_combobox.set_active(0)
+                #self.crea_fattura_button.set_sensitive(False)
+                #self.id_cliente_emessi_customcombobox.set_sensitive(False)
+                #self.operazione_combobox.set_sensitive(False)
+                #self.daoTse = None
+        else:
+            self.id_cliente_emessi_customcombobox.set_active(0)
+            self.crea_fattura_button.set_sensitive(False)
+            self.id_cliente_emessi_customcombobox.set_sensitive(False)
+            self.operazione_combobox.set_sensitive(False)
+            self.daoTse = None
 
     def refreshHtml(self, dao=None):
         pageData = {}
@@ -399,3 +394,133 @@ class GestioneScontrini(GladeWidget):
         gest = Distinta(righe = self.scontrini)
         gestWnd = gest.getTopLevel()
         showAnagraficaRichiamata(self.getTopLevel(), gestWnd, None, None)
+
+    def ricercaListino(self):
+        """ check if there is a priceList like setted on configure file
+        """
+        if hasattr(Environment.conf, "VenditaDettaglio"):
+            if hasattr(Environment.conf.VenditaDettaglio,"listino"):
+                pricelist = Listino().select(denominazione = Environment.conf.VenditaDettaglio.listino,
+                                        offset = None,
+                                        batchSize = None)
+            else:
+                pricelist = Listino().select(id=setconf("VenditaDettaglio", "listino_vendita"))
+
+        else:
+            pricelist = Listino().select(id=setconf("VenditaDettaglio", "listino_vendita"))
+        if pricelist:
+            id_listino = pricelist[0].id
+        else:
+            id_listino = None
+        return id_listino
+
+    def on_crea_fattura_button_clicked(self, button):
+        """ RIGA DOCUMENTO:
+            id, valore_unitario_netto, valore_unitario_lordo,
+            quantita, moltiplicatore, applicazione_sconti,
+            percentuale_iva, descrizione, id_articolo, id_magazzino,
+            id_multiplo, id_listino, id_iva, id_riga_padre
+
+            RIGA SCONTRINO:
+            id, prezzo, prezzo_scontato, quantita,
+            descrizione, id_testata_scontrino, id_articolo
+            """
+        if not self.daoTse:
+            messageInfo(msg="Nessuno scontrino selezionato")
+            return
+        if self.daoTse and not self.daoTse.id_cliente_testata_scontrino:
+            if self.id_cliente_emessi_customcombobox.getId():
+                a = TestataScontrinoCliente()
+                a.id_cliente =  self.id_cliente_emessi_customcombobox.getId()
+                a.id_testata_scontrino = self.daoTse.id
+                a.persist()
+            else:
+                messageInfo(msg="Scontrino selezionato, ma nessun cliente assegnato")
+            return
+        one_day = datetime.timedelta(days=1)
+        proviamo = datetime.datetime(self.daoTse.data_inserimento.year,self.daoTse.data_inserimento.month,
+        self.daoTse.data_inserimento.day)
+        listascontrini = TestataScontrino().select(daData=proviamo, aData=proviamo+one_day, batchSize=None, orderBy="data_inserimento")
+        a = [i for i,x in enumerate(listascontrini) if x == self.daoTse]
+        if a:
+            a = a[0]
+        else:
+            a=0
+        posizione= a + 1
+        note = "Rif. Scontrino" + " n. " + str(posizione) + " del " + dateToString(self.daoTse.data_inserimento)
+
+        newDao = TestataDocumento()
+        newDao.data_documento = stringToDate(self.daoTse.data_inserimento)
+        newDao.operazione = findStrFromCombobox(self.operazione_combobox,0)
+        newDao.id_cliente = self.id_cliente_emessi_customcombobox.getId()
+        newDao.note_pie_pagina = note
+        #newDao.applicazione_sconti = self.dao.applicazione_sconti
+        #sconti = []
+        #sco = self.dao.sconti or []
+        scontiRigaDocumento=[]
+        scontiSuTotale=[]
+        righeDocumento=[]
+        #for s in sco:
+            #daoSconto = ScontoTestataDocumento()
+            #daoSconto.valore = s.valore
+            #daoSconto.tipo_sconto = s.tipo_sconto
+            #scontiSuTotale.append(daoSconto)
+        newDao.scontiSuTotale = scontiSuTotale
+        #righe = []
+        rig = self.daoTse.righe
+        for r in rig:
+            daoRiga = RigaDocumento()
+            daoRiga.id_testata_documento = newDao.id
+            daoRiga.id_articolo = r.id_articolo
+            daoRiga.id_magazzino = self.daoTse.id_magazzino
+            daoRiga.descrizione = r.descrizione
+            # Copia il campo iva
+            arto = leggiArticolo(r.id_articolo)
+            daoRiga.id_iva = arto["idAliquotaIva"]
+            #ricalcola prezzi
+            daoRiga.id_listino = self.ricercaListino()
+            imponibile = float(r.prezzo)/(1+float(arto["percentualeAliquotaIva"])/100)
+            imponibile_scontato = float(r.prezzo_scontato)/(1+float(arto["percentualeAliquotaIva"])/100)
+            daoRiga.valore_unitario_lordo = imponibile or 0
+            daoRiga.valore_unitario_netto =  imponibile_scontato
+
+            daoRiga.percentuale_iva = arto["percentualeAliquotaIva"]
+
+            #daoRiga.applicazione_sconti = r.applicazione_sconti
+            daoRiga.quantita = r.quantita
+            daoRiga.id_multiplo = None
+            daoRiga.moltiplicatore = 1
+            #sconti = []
+            scontiRigaDocumento = []
+            #sco = r.sconti
+            #for s in sco:
+                #daoSconto = ScontoRigaDocumento()
+                #daoSconto.valore = s.valore
+                #daoSconto.tipo_sconto = s.tipo_sconto
+                #scontiRigaDocumento.append(daoSconto)
+            daoRiga.scontiRigaDocumento = scontiRigaDocumento
+            righeDocumento.append(daoRiga)
+
+        newDao.righeDocumento = righeDocumento
+
+        tipoid = findStrFromCombobox(self.operazione_combobox,0)
+        #tipo = Operazione().getRecord(id=tipoid)
+        #if not newDao.numero:
+        valori = numeroRegistroGet(tipo=tipoid, date=self.daoTse.data_inserimento)
+        newDao.numero = valori[0]
+        newDao.registro_numerazione= valori[1]
+        newDao.persist()
+
+        res = TestataDocumento().getRecord(id=newDao.id)
+
+        msg = "Documento creato da scontrino !\n\nIl nuovo documento e' il n. " + str(res.numero) + " del " + dateToString(res.data_documento) + " (" + newDao.operazione + ")\n" + "Lo vuoi modificare?"
+        if YesNoDialog(msg=msg, transient=self.getTopLevel()):
+            from promogest.ui.AnagraficaDocumenti import AnagraficaDocumenti
+            anag = AnagraficaDocumenti()
+            anagWindow = anag.getTopLevel()
+            anagWindow.show_all()
+            anag.editElement.setVisible(True)
+            anag.editElement.setDao(newDao)
+            anag.editElement.id_persona_giuridica_customcombobox.set_sensitive(True)
+            anag.editElement.setFocus()
+        self.destroy()

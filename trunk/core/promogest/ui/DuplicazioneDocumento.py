@@ -304,18 +304,12 @@ class DuplicazioneDocumento(GladeWidget):
         res = TestataDocumento().getRecord(id=newDao.id)
 
         msg = "Nuovo documento creato !\n\nIl nuovo documento e' il n. " + str(res.numero) + " del " + dateToString(res.data_documento) + " (" + newDao.operazione + ")\n" + "Lo vuoi modificare?"
-        dialog = gtk.MessageDialog(self.getTopLevel(), gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                  gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO, msg)
-        response = dialog.run()
-
-        if response == gtk.RESPONSE_YES:
+        if YesNoDialog(msg=msg, transient=self.getTopLevel()):
           self.anagrafica_documenti.editElement.setVisible(True)
           self.anagrafica_documenti.editElement.setDao(newDao)
-
           self.anagrafica_documenti.editElement.id_persona_giuridica_customcombobox.set_sensitive(True)
           self.anagrafica_documenti.editElement.setFocus()
 
-        dialog.destroy()
         self.destroy()
 
     def on_id_operazione_combobox_changed(self, widget, event=None):

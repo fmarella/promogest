@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <requires lib="gtk+" version="2.16"/>
+  <!-- interface-requires pythonplugin 0.0 -->
   <!-- interface-naming-policy project-wide -->
   <object class="GtkTreeView" id="anagrafica_filter_treeview">
     <property name="visible">True</property>
@@ -8,9 +9,11 @@
     <property name="model">rows_listore</property>
     <property name="search_column">1</property>
     <property name="enable_grid_lines">both</property>
+    <signal name="row-activated" handler="anagrafica_filter_treeview_row_activated_cb" swapped="no"/>
     <child>
-      <object class="GtkTreeViewColumn" id="treeviewcolumn1">
+      <object class="GtkTreeViewColumn" id="data_column">
         <property name="title" translatable="yes">DATA</property>
+        <property name="clickable">True</property>
         <child>
           <object class="GtkCellRendererText" id="cellrenderertext1"/>
           <attributes>
@@ -20,9 +23,10 @@
       </object>
     </child>
     <child>
-      <object class="GtkTreeViewColumn" id="treeviewcolumn2">
+      <object class="GtkTreeViewColumn" id="totale_column">
         <property name="resizable">True</property>
         <property name="title" translatable="yes">TOTALE SCONTRINO</property>
+        <property name="clickable">True</property>
         <child>
           <object class="GtkCellRendererText" id="totale_cellrenderertext"/>
           <attributes>
@@ -32,8 +36,9 @@
       </object>
     </child>
     <child>
-      <object class="GtkTreeViewColumn" id="treeviewcolumn3">
+      <object class="GtkTreeViewColumn" id="contanti_column">
         <property name="title" translatable="yes">CONTANTI</property>
+        <property name="clickable">True</property>
         <child>
           <object class="GtkCellRendererText" id="cellrenderertext3">
             <property name="alignment">right</property>
@@ -45,8 +50,9 @@
       </object>
     </child>
     <child>
-      <object class="GtkTreeViewColumn" id="treeviewcolumn4">
+      <object class="GtkTreeViewColumn" id="assegni_column">
         <property name="title" translatable="yes">ASSEGNI</property>
+        <property name="clickable">True</property>
         <child>
           <object class="GtkCellRendererText" id="cellrenderertext4">
             <property name="xalign">1</property>
@@ -59,8 +65,9 @@
       </object>
     </child>
     <child>
-      <object class="GtkTreeViewColumn" id="treeviewcolumn5">
+      <object class="GtkTreeViewColumn" id="cdicredito_column">
         <property name="title" translatable="yes">C.DI.CRE</property>
+        <property name="clickable">True</property>
         <child>
           <object class="GtkCellRendererText" id="cellrenderertext5">
             <property name="xalign">1</property>
@@ -119,6 +126,23 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="stock">gtk-jump-to</property>
+  </object>
+  <object class="GtkListStore" id="operazione_listore">
+    <columns>
+      <!-- column-name gchararray1 -->
+      <column type="gchararray"/>
+    </columns>
+    <data>
+      <row>
+        <col id="0" translatable="yes"></col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Fattura vendita</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Fattura accompagnatoria</col>
+      </row>
+    </data>
   </object>
   <object class="GtkListStore" id="rows_listore">
     <columns>
@@ -275,87 +299,6 @@
             <property name="position">1</property>
           </packing>
         </child>
-        <child internal-child="action_area">
-          <object class="GtkHButtonBox" id="dialog-action_area1">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <child>
-              <object class="GtkButton" id="rhesus_button">
-                <property name="label" translatable="yes">Reso</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="can_default">True</property>
-                <property name="receives_default">True</property>
-                <property name="tooltip_text" translatable="yes">Effettua il RESO degli articoli presenti nello scontrino</property>
-                <property name="use_action_appearance">False</property>
-                <signal name="clicked" handler="on_rhesus_button_clicked" swapped="no"/>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton" id="delete_button">
-                <property name="label">gtk-delete</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="tooltip_text" translatable="yes">Elimina lo scontrino SOLO dal PromoGest2</property>
-                <property name="use_action_appearance">False</property>
-                <property name="use_stock">True</property>
-                <signal name="clicked" handler="on_delete_button_clicked" swapped="no"/>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
-                <property name="position">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton" id="storno_button">
-                <property name="label" translatable="yes">Storno</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="tooltip_text" translatable="yes">Storna lo scontrino corrente</property>
-                <property name="use_action_appearance">False</property>
-                <signal name="clicked" handler="on_storno_button_clicked" swapped="no"/>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
-                <property name="position">2</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton" id="quit_button">
-                <property name="label">gtk-close</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="can_default">True</property>
-                <property name="receives_default">True</property>
-                <property name="tooltip_text" translatable="yes">Chiude la finestra corrente</property>
-                <property name="use_action_appearance">False</property>
-                <property name="use_stock">True</property>
-                <signal name="clicked" handler="on_scontrini_window_close" swapped="no"/>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
-                <property name="pack_type">end</property>
-                <property name="position">3</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="pack_type">end</property>
-            <property name="position">2</property>
-          </packing>
-        </child>
         <child>
           <object class="GtkVBox" id="main_vbox">
             <property name="visible">True</property>
@@ -428,16 +371,178 @@
           <packing>
             <property name="expand">True</property>
             <property name="fill">True</property>
-            <property name="position">3</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+        <child internal-child="action_area">
+          <object class="GtkHButtonBox" id="dialog-action_area1">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="layout_style">center</property>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="pack_type">end</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkHBox" id="hbox1">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <child>
+              <object class="GtkLabel" id="crea_fattura_label">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Cliente a cui fatturare</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="ClienteSearchWidget" id="id_cliente_emessi_customcombobox">
+                <property name="visible">True</property>
+                <property name="sensitive">False</property>
+                <property name="can_focus">True</property>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkComboBox" id="operazione_combobox">
+                <property name="visible">True</property>
+                <property name="sensitive">False</property>
+                <property name="can_focus">False</property>
+                <property name="model">operazione_listore</property>
+                <child>
+                  <object class="GtkCellRendererText" id="cellrenderertext2"/>
+                  <attributes>
+                    <attribute name="text">0</attribute>
+                  </attributes>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="crea_fattura_button">
+                <property name="label" translatable="yes">Crea Fattura</property>
+                <property name="visible">True</property>
+                <property name="sensitive">False</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_action_appearance">False</property>
+                <signal name="clicked" handler="on_crea_fattura_button_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">3</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="rhesus_button">
+                <property name="label" translatable="yes">Reso</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="can_default">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_action_appearance">False</property>
+                <signal name="clicked" handler="on_rhesus_button_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">4</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="delete_button">
+                <property name="label">gtk-delete</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_action_appearance">False</property>
+                <property name="use_stock">True</property>
+                <signal name="clicked" handler="on_delete_button_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">5</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="storno_button">
+                <property name="label" translatable="yes">Storno</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_action_appearance">False</property>
+                <signal name="clicked" handler="on_storno_button_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">6</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="quit_button">
+                <property name="label">gtk-close</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="can_default">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_action_appearance">False</property>
+                <property name="use_stock">True</property>
+                <signal name="clicked" handler="on_scontrini_window_close" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">7</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">4</property>
           </packing>
         </child>
       </object>
     </child>
-    <action-widgets>
-      <action-widget response="0">rhesus_button</action-widget>
-      <action-widget response="0">delete_button</action-widget>
-      <action-widget response="0">storno_button</action-widget>
-      <action-widget response="0">quit_button</action-widget>
-    </action-widgets>
   </object>
 </interface>
