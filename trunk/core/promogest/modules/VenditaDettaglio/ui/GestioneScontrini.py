@@ -439,7 +439,7 @@ class GestioneScontrini(GladeWidget):
                 messageInfo(msg="Scontrino selezionato, ma nessun cliente assegnato")
             return
         if not findStrFromCombobox(self.operazione_combobox,0):
-            obligatoryField(self.getTopLevel(), self.operazione_combobox)
+            obligatoryField(self.getTopLevel(), self.operazione_combobox, msg="SELEZIONA IL TIPO DOCUMENTO")
         one_day = datetime.timedelta(days=1)
         proviamo = datetime.datetime(self.daoTse.data_inserimento.year,self.daoTse.data_inserimento.month,
         self.daoTse.data_inserimento.day)
