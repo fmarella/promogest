@@ -5,14 +5,6 @@
 Gestione Negozio ( Vendita Dettaglio)
 =====================================
 
-Descrizione Breve:
-==================
-
-Interfaccia di vendita tramite codice a barre o codice articolo per operatore di cassa.
-Preposta alla vendita al dettaglio ed alla emissione di uno scontrino fiscale, quando vi è un collegamento diretto con un misuratore fiscale.
-
-E' stata attivata una procedura facilitata per testare il modulo di Gestione negozio anche nella vostra **ONE BASIC**, per sapere come procedere potete leggere questa pagina :ref:`testpromoshop`
-
 Dettaglio:
 ==========
 

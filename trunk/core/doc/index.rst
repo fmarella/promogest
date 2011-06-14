@@ -18,7 +18,7 @@ dettagliata delle finestre, il loro utilizzo e la definizione degli shortcut ( c
 per velocizzare il lavoro.
 
 .. toctree::
-  :maxdepth: 2
+  :maxdepth: 3
   :numbered:
 
   premessa
@@ -36,4 +36,5 @@ per velocizzare il lavoro.
 
 
 
-.. versionchanged:: 1809
+.. versionchanged:: 1824
+.. sectionauthor:: Francesco Meloni <francesco@promotux.it>

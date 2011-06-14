@@ -37,41 +37,42 @@ except:
 def checkPan(main):
     print "TIPO PG", Environment.tipo_pg, Environment.modulesList, ("FULL" not in Environment.modulesList)
     for a in Environment.modulesList:
-        if ("FULL" in a) or ("STANDARD" in a) or ("PRO" in a):
-            text = "OPZIONE: <b>%s</b>" %(Environment.tipo_pg)
-            main.pan_label_info.set_markup(text)
-            Environment.pg2log.info(text)
-            if "+S" in a:
-                print "ATTIVARE SHOP"
-                if not setconf("VenditaDettaglio","mod_enable",value="yes"):
-                    a = SetConf()
-                    a.section = "VenditaDettaglio"
-                    a.tipo_section ="Modulo"
-                    a.description = "Modulo Vendita Dettaglio"
-                    a.tipo = "bool"
-                    a.key = "mod_enable"
-                    a.value = "yes"
-                    a.persist()
+        if a:
+            if ("FULL" in a) or ("STANDARD" in a) or ("PRO" in a):
+                text = "OPZIONE: <b>%s</b>" %(Environment.tipo_pg)
+                main.pan_label_info.set_markup(text)
+                Environment.pg2log.info(text)
+                if "+S" in a:
+                    print "ATTIVARE SHOP"
+                    if not setconf("VenditaDettaglio","mod_enable",value="yes"):
+                        a = SetConf()
+                        a.section = "VenditaDettaglio"
+                        a.tipo_section ="Modulo"
+                        a.description = "Modulo Vendita Dettaglio"
+                        a.tipo = "bool"
+                        a.key = "mod_enable"
+                        a.value = "yes"
+                        a.persist()
 
-                    a = SetConf()
-                    a.section = "VenditaDettaglio"
-                    a.tipo_section ="Modulo"
-                    a.description = "Nome del movimento generato"
-                    a.tipo = "str"
-                    a.key = "operazione"
-                    a.value = "Scarico venduto da cassa"
-                    a.persist()
+                        a = SetConf()
+                        a.section = "VenditaDettaglio"
+                        a.tipo_section ="Modulo"
+                        a.description = "Nome del movimento generato"
+                        a.tipo = "str"
+                        a.key = "operazione"
+                        a.value = "Scarico venduto da cassa"
+                        a.persist()
 
-                    a = SetConf()
-                    a.section = "VenditaDettaglio"
-                    a.tipo_section ="Modulo"
-                    a.description = "disabilita_stampa"
-                    a.tipo = "bool"
-                    a.key = "disabilita_stampa"
-                    a.value = "True"
-                    a.active = True
-                    a.persist()
-            return
+                        a = SetConf()
+                        a.section = "VenditaDettaglio"
+                        a.tipo_section ="Modulo"
+                        a.description = "disabilita_stampa"
+                        a.tipo = "bool"
+                        a.key = "disabilita_stampa"
+                        a.value = "True"
+                        a.active = True
+                        a.persist()
+                return
     if  Environment.tipodb!="postgresql":
         print "PASSI QUI"
         pp = PanUi(main).draw()

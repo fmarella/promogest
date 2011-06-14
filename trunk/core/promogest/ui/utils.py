@@ -2970,8 +2970,9 @@ def posso(mod=None):
     moduli = ""
     modulis = Environment.modulesList
     for a in modulis:
-        if "ONE" in a or "PRO" in a:
-            moduli = a.split(" ")
+        if a:
+            if "ONE" in a or "PRO" in a:
+                moduli = a.split(" ")
     if mod == "RA":
         if "RuoliAzioni"in modulis: return True
         if "FULL" in moduli :return True

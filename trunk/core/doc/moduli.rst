@@ -2,8 +2,14 @@
 Moduli
 ======
 
-:doc:`Vendita Dettaglio ( PromoSHOP ) <vendita_dettaglio>`
-===========================================================
+
+Vendita a dettaglio
+===================
+Interfaccia di vendita tramite **codice a barre** o :strong:`codice articolo` per operatore di cassa.
+Modulo con sezione dedicata alla emissione di uno **scontrino fiscale**, quando vi è un collegamento diretto con un misuratore fiscale.
+Vai al dettaglio del modulo :ref:`vendita_dettaglio`
+
+E' stata attivata una :strong:`procedura facilitata` per testare il modulo di Gestione negozio anche nella vostra **ONE BASIC**, per sapere come procedere potete leggere questa pagina :ref:`testpromoshop`
 
 
 Area Promemoria e allarmi
