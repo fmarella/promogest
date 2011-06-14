@@ -295,6 +295,9 @@ class TestataDocumento(Dao):
                 ll = leggiListino(riga.id_listino, riga.id_articolo)
                 #print ll["prezzoDettaglio"], ll["prezzoIngrosso"], ll["ultimoCosto"], (riga.valore_unitario_netto - ll["ultimoCosto"]), totaleRicaricatoLordo
                 totaleRicaricatoLordo += (Decimal(riga.valore_unitario_netto or 0) - ll["ultimoCosto"])
+            elif riga.id_articolo and not riga.id_listino:
+                lf = leggiFornitura(riga.id_articolo)
+                totaleRicaricatoLordo += (Decimal(riga.valore_unitario_netto or 0) - lf["prezzoNetto"])
             if not riga.moltiplicatore:
                 riga.moltiplicatore = 1
             percentualeIvaRiga = Decimal(riga.percentuale_iva)
