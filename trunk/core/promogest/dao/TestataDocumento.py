@@ -392,8 +392,8 @@ class TestataDocumento(Dao):
 
             totaleScontato = mN(totaleImponibileScontato,2) + mN(totaleImpostaScontata,2)
 
-        self._totaleNonScontato = mN(totaleImponibile,2) +mN(totaleImposta,2)
-        self._totaleScontato = mN(totaleImponibileScontato,2) + mN(totaleImpostaScontata,2)
+        self._totaleNonScontato = mN(totaleImponibile,2) +mN(totaleImposta,2) + mN(totaleEsclusoBaseImponibile,2)
+        self._totaleScontato = mN(totaleImponibileScontato,2) + mN(totaleImpostaScontata,2) +mN(totaleEsclusoBaseImponibile,2)
         self._totaleImponibile = totaleImponibile
         self._totaleNonBaseImponibile = totaleEsclusoBaseImponibile
         self._totaleImposta = totaleImposta
