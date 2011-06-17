@@ -154,7 +154,7 @@ class RicercaDocumentiFilter(RicercaFilter):
             column.set_min_width(200)
             treeview.append_column(column)
         else:
-            self.stato_documento_filter_combobox.destroy()
+            #self.stato_documento_filter_combobox.destroy()
             self.statoDocumento_label.destroy()
 
         self._treeViewModel = gtk.ListStore(object, str, str, str, str, str, str, str, str, str, str,str)
@@ -197,8 +197,8 @@ class RicercaDocumentiFilter(RicercaFilter):
         self.id_cliente_filter_customcombobox.set_active(0)
         self.id_fornitore_filter_customcombobox.set_active(0)
         self.id_agente_filter_customcombobox.set_active(0)
-        if posso("PA"):
-            self.stato_documento_filter_combobox.set_active(-1)
+        #if posso("PA"):
+            #self.stato_documento_filter_combobox.set_active(-1)
         if posso("GN"):
             self.a_data_inizio_noleggio_filter_entry.set_text('')
             self.da_data_inizio_noleggio_filter_entry.set_text('')
@@ -241,17 +241,12 @@ class RicercaDocumentiFilter(RicercaFilter):
         idCliente = self.id_cliente_filter_customcombobox.getId()
         idFornitore = self.id_fornitore_filter_customcombobox.getId()
         idAgente = self.id_agente_filter_customcombobox._id
-        statoDocumento = self.stato_documento_filter_combobox.get_active()
-        if statoDocumento == -1 or statoDocumento == 0:
+        if self.tutto_radio.get_active():
             statoDocumento = None
-        elif statoDocumento == 1:
-            statoDocumento = and_("FALSE", "TRUE")
-        elif statoDocumento == 2:
-            statoDocumento = "FALSE"
-        elif statoDocumento == 3:
-            statoDocumento = "TRUE"
+        elif self.saldato_radio.get_active():
+            statoDocumento = bool(True)
         else:
-            statoDocumento = None
+            statoDocumento = bool(False)
         idArticolo = self.id_articolo_filter_customcombobox.getId()
         #genero il dizionario dei filtri
         self.filterDict = {"daNumero":daNumero ,
