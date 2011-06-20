@@ -45,7 +45,7 @@ def stringToDate(stringa):
     else:
         try:
             d = time.strptime(stringa, "%d/%m/%Y")
-            data = datetime.date(d[0], d[1], d[2])
+            data = datetime(d[0], d[1], d[2])
         except Exception:
             data=None
         return data
@@ -134,9 +134,11 @@ class GenericFillData(object):
             elif dati[0] =="arcodart" and dati[1] == "ardesart":
                 print "TABELLA ARTICOLO"
                 return "articolo"
-            elif dati[0] == "arcodart" and dati[0] == "lscodlis":
-                print "TABELLA LISTINO"
+            elif dati[0] == "arcodart" and dati[1] == "lscodlis":
+                print "TABELLA LISTINO ARTICOLO"
                 return "listino_articolo"
+            else:
+                print "ATTENZIONE TABELLA NON RICONOSCIUTA"
 
     def fillFamigliaArticolo(self, spamReaderList):
         """ SCHEMA CONVERSIONE gruppo merceologico:
@@ -219,8 +221,8 @@ class GenericFillData(object):
         """
         for row in spamReaderList:
             a = self.pg_db_dest.articolo.filter_by(codice=row[0]).all()
-            if not f:
-                print "FAMIGLIA NON PRESENTE"
+            if not a:
+                print "ARTICOLO NON PRESENTE"
                 del a
                 continue
             else:
@@ -231,33 +233,13 @@ class GenericFillData(object):
                 b = self.pg_db_dest.listino_articolo()
             else:
                 b = a[0]
-
-            f = self.pg_db_dest.famiglia_articolo.filter_by(codice=row[2]).all()
-            if not f:
-                print "FAMIGLIA NON PRESENTE"
-                del a
-                continue
-            a.id_famiglia_articolo = f[0].id
-            g = self.pg_db_dest.aliquota_iva.filter_by(percentuale=float(row[6])).one()
-            if not g:
-                print "ATTENZIONE AGGIHNGERE IVA AL %s" %row[6]
-                raise Exception("ATTENZIONE AGGIHNGERE IVA AL %s") %row[6]
-            else:
-                iva = g.id
-            a.id_aliquota_iva = iva
-            um = row[7]
-            if um =="LT":
-                umid = 3
-            elif um == "MT":
-                umid =2
-            elif um =="NR":
-                umid = 5
-            elif um =="GR" or um =="KG":
-                umid =4
-            a.id_unita_base = umid
-            a.id_categoria = 1
-            a.cancellato = False
-            sqlalchemy.ext.sqlsoup.Session.add(a)
+            print row[2][0:-5],row[3].replace(",",".")
+            b.id_listino = int(row[1])
+            b.id_articolo = idArticolo
+            b.prezzo_ingrosso = float(row[3].replace(",",".") or "0")
+            b.data_listino_articolo =  stringToDate(row[2][0:-5])
+            b.listino_attuale = True
+            sqlalchemy.ext.sqlsoup.Session.add(b)
         sqlalchemy.ext.sqlsoup.Session.commit()
 
 
