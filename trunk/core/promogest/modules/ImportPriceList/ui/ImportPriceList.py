@@ -271,4 +271,4 @@ del formato del file e riprovare""" % str(rowcount+1)
         self.destroy()
         if self._mainWindow not in Environment.windowGroup:
             Environment.windowGroup.append(self._mainWindow)
-        self._mainWindow.show_all()
+        #self._mainWindow.show_all()
