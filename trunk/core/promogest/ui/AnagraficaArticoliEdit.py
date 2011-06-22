@@ -86,39 +86,29 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
             self.frame_promowear.set_sensitive(False)
             self.codici_a_barre_togglebutton.set_sensitive(True)
             self.taglie_colori_togglebutton.set_sensitive(False)
-            #Popola combobox gruppi taglia
             fillComboboxGruppiTaglia(self.id_gruppo_taglia_customcombobox.combobox)
             self.id_gruppo_taglia_customcombobox.connect('clicked',
                                                          on_id_gruppo_taglia_customcombobox_clicked)
-            #Popola combobox taglie
             fillComboboxTaglie(self.id_taglia_customcombobox.combobox)
             self.id_taglia_customcombobox.connect('clicked',
                                                   self.on_id_taglia_customcombobox_clicked)
-            #Popola combobox colori
             fillComboboxColori(self.id_colore_customcombobox.combobox)
             self.id_colore_customcombobox.connect('clicked',
                                                   self.on_id_colore_customcombobox_clicked)
-            #Popola combobox modelli
             fillComboboxModelli(self.id_modello_customcombobox.combobox)
             self.id_modello_customcombobox.connect('clicked',
                                                   on_id_modello_customcombobox_clicked)
-            #Popola combobox anni
             fillComboboxAnniAbbigliamento(self.id_anno_combobox)
-            #Popola combobox stagioni
             fillComboboxStagioniAbbigliamento(self.id_stagione_combobox)
-            #Popola combobox generi
             fillComboboxGeneriAbbigliamento(self.id_genere_combobox)
 
         #combo e draw della parte normale dell'applicazione  ...
-        #Popola combobox aliquote iva
         fillComboboxAliquoteIva(self.id_aliquota_iva_customcombobox.combobox)
         self.id_aliquota_iva_customcombobox.connect('clicked',
                                             on_id_aliquota_iva_customcombobox_clicked)
-        #Popola combobox categorie articolo
         fillComboboxCategorieArticoli(self.id_categoria_articolo_customcombobox.combobox)
         self.id_categoria_articolo_customcombobox.connect('clicked',
                                             on_id_categoria_articolo_customcombobox_clicked)
-        #Popola combobox famiglie articolo
         fillComboboxFamiglieArticoli(self.id_famiglia_articolo_customcombobox.combobox)
         self.id_famiglia_articolo_customcombobox.connect('clicked',
                                             on_id_famiglia_articolo_customcombobox_clicked)
@@ -440,6 +430,29 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
         anagWindow = anag.getTopLevel()
 
         showAnagraficaRichiamata(self.dialogTopLevel, anagWindow, toggleButton)
+
+
+    def on_kit_master_togglebutton_toggled(self, toggleButton):
+        if not(toggleButton.get_active()):
+            toggleButton.set_active(False)
+            return
+
+        if self.dao.id is None:
+            msg = ('Prima di poter creare un kit occorre '
+                   + 'salvare l\' articolo.\n Salvare ?')
+
+            if YesNoDialog(msg=msg, transient=self.dialogTopLevel):
+                self.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, -10)
+            else:
+                toggleButton.set_active(False)
+                return
+
+        from promogest.modules.GestioneKit.ui.KitMaster import KitMaster
+        anag = KitMaster(self.dao)
+        anagWindow = anag.getTopLevel()
+
+        showAnagraficaRichiamata(self.dialogTopLevel, anagWindow, toggleButton)
+
 
     def on_forniture_togglebutton_clicked(self, toggleButton):
         if not(toggleButton.get_active()):

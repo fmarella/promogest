@@ -253,7 +253,4 @@ class GestioneChiusuraFiscale(GladeWidget):
 
     def fineElaborazione(self):
         """ Messaggio di fine elaborazione """
-        dialog = gtk.MessageDialog(self.getTopLevel(), gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                   gtk.MESSAGE_INFO, gtk.BUTTONS_OK, '\nElaborazione terminata !')
-        response = dialog.run()
-        dialog.destroy()
+        messageInfo(msg="Elaborazione terminata")

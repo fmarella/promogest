@@ -26,6 +26,7 @@ from promogest.Environment import *
 from Dao import Dao
 from promogest.dao.DaoUtils import giacenzaArticolo
 from promogest import Environment
+from promogest.modules.GestioneKit.dao.ArticoloKit import ArticoloKit
 from Imballaggio import Imballaggio
 from AliquotaIva import AliquotaIva
 from StatoArticolo import StatoArticolo
@@ -49,6 +50,7 @@ if hasattr(conf, "PromoWear") and getattr(conf.PromoWear,'mod_enable')=="yes":
 
 if posso("ADR"):
     from promogest.modules.ADR.dao.ArticoloADR import ArticoloADR
+
 
 
 class Articolo(Dao):
@@ -108,6 +110,19 @@ class Articolo(Dao):
             else:
                 return ""
 #            return forni.codice_articolo_fornitore or ""
+
+
+    @property
+    def articoli_kit(self):
+
+        arti =ArticoloKit().select(idArticoloWrapper=self.id,batchSize=None)
+        return arti
+
+    @property
+    def componente_in_kit(self):
+        #from promogest.modules.GestioneKit.dao.ArticoloKit import ArticoloKit
+        arti =ArticoloKit().select(idArticoloFiller=self.id,batchSize=None)
+        return arti
 
     @property
     def imballaggio(self):
