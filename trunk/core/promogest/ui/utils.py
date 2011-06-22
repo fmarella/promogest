@@ -446,9 +446,9 @@ def leggiListino(idListino=None, idArticolo=None):
                     _applicazioneDettaglio = daoListinoArticolo.applicazione_sconti_dettaglio
                     _applicazioneIngrosso = daoListinoArticolo.applicazione_sconti_ingrosso
 
-                    listinoDict["prezzoIngrosso"] = _prezzoIngrosso
-                    listinoDict["prezzoDettaglio"] = _prezzoDettaglio
-                    listinoDict["ultimoCosto"] = _ultimoCosto
+                    listinoDict["prezzoIngrosso"] = _prezzoIngrosso or 0
+                    listinoDict["prezzoDettaglio"] = _prezzoDettaglio or 0
+                    listinoDict["ultimoCosto"] = _ultimoCosto or 0
                     listinoDict["scontiDettaglio"] = _scontiDettaglio
                     listinoDict["scontiIngrosso"] = _scontiIngrosso
                     listinoDict['applicazioneScontiDettaglio'] = _applicazioneDettaglio
