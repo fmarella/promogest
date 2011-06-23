@@ -21,10 +21,9 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 from promogest import Environment
-import promogest.ui.Login
+#import promogest.ui.Login
 from promogest.modules.VenditaDettaglio.data.VenditaDettaglioDB import *
 from promogest.modules.VenditaDettaglio.ui.AnagraficaVenditaDettaglio import AnagraficaVenditaDettaglio
-
 MODULES_NAME = "VenditaDettaglio"
 MODULES_FOR_EXPORT = ['VenditaDettaglio']
 GUI_DIR = Environment.cartella_moduli+'/VenditaDettaglio/gui/'
