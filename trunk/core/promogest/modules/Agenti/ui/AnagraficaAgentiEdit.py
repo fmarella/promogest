@@ -3,8 +3,10 @@
 #    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
-#    Author: Francesco Meloni  <francesco@promotux.it>
-#    Author: Andrea Argiolas   <andrea@promotux.it>
+#    Authors: Francesco Meloni  <francesco@promotux.it>
+#             Andrea Argiolas   <andrea@promotux.it>
+#             Francesco Marella <francesco.marella@gmail.com>
+
 #    This file is part of Promogest.
 
 #    Promogest is free software: you can redistribute it and/or modify
@@ -20,7 +22,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-import gtk
+
 from promogest.ui.AnagraficaComplessaEdit import AnagraficaEdit
 from promogest import Environment
 from promogest.modules.Agenti.dao.Agente import Agente, getNuovoCodiceAgente
@@ -108,10 +110,7 @@ class AnagraficaAgentiEdit(AnagraficaEdit):
             msg="""Il codice è obbligatorio!
     Inserire almeno un campo a scelta tra:
     ragione sociale, insegna, cognome o nome """
-            dialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                               gtk.MESSAGE_INFO, gtk.BUTTONS_OK, msg)
-            dialog.run()
-            dialog.destroy()
+            messageInfo(msg)
             return
         self.dao.sede_operativa_indirizzo = self.indirizzo_sede_operativa_entry.get_text()
         self.dao.sede_operativa_cap = self.cap_sede_operativa_entry.get_text()

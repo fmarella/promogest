@@ -3,8 +3,10 @@
 #    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
-#    Author: Francesco Meloni  <francesco@promotux.it>
-#    Author: Andrea Argiolas   <andrea@promotux.it>
+#    Authors: Francesco Meloni  <francesco@promotux.it>
+#             Andrea Argiolas   <andrea@promotux.it>
+#             Francesco Marella <francesco.marella@gmail.com>
+
 #    This file is part of Promogest.
 
 #    Promogest is free software: you can redistribute it and/or modify
@@ -20,7 +22,6 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-import gtk
 
 from promogest.ui.AnagraficaComplessa import Anagrafica
 from promogest.ui.AnagraficaComplessaReport import AnagraficaReport

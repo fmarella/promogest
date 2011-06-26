@@ -1,24 +1,38 @@
 # -*- coding: utf-8 -*-
 
-# Promogest
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010, 2011 by Promotux
+#                        di Francesco Meloni snc - http://www.promotux.it/
+
+#    Authors: Francesco Meloni  <francesco@promotux.it>
+#             Francesco Marella <francesco.marella@gmail.com>
 #
-# Copyright (C) 2009 by Promotux Informatica - http://www.promotux.it/
-# Author: Francesco Meloni  <francesco@promotux.it>
+#    This file is part of Promogest.
+
+#    Promogest is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 2 of the License, or
+#    (at your option) any later version.
+
+#    Promogest is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+
+#    You should have received a copy of the GNU General Public License
+#    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 import gtk
-import gobject
 
 from promogest.ui.AnagraficaComplessa import Anagrafica
 from promogest.ui.AnagraficaComplessaFilter import AnagraficaFilter
 from promogest.ui.AnagraficaComplessaEdit import AnagraficaEdit
 from promogest.ui.AnagraficaComplessaReport import AnagraficaReport
 from promogest.ui.AnagraficaComplessaHtml import AnagraficaHtml
-
 from promogest import Environment
 from promogest.dao.Articolo import Articolo
 from promogest.modules.DistintaBase.dao.AssociazioneArticolo import AssociazioneArticolo
-
 from promogest.ui.utils import *
+
 
 class AnagraficaDistintaBase(Anagrafica):
     """
@@ -48,86 +62,30 @@ class AnagraficaDistintaBaseFilter(AnagraficaFilter):
         self.articoliprincipaliList = []
 
     def draw(self, cplx=False):
-
-        treeview = self._anagrafica.anagrafica_filter_treeview
-
-        renderer = gtk.CellRendererText()
-        column = gtk.TreeViewColumn('Codice', renderer, text=2, background=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, (None,'codice'))
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(100)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Descrizione', renderer, text=3, background=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, (None,'denominazione'))
-        column.set_resizable(True)
-        column.set_expand(True)
-        column.set_min_width(100)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Produttore', renderer, text=4, background=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, (None, 'produttore'))
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(100)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Codice a barre', renderer, text=5, background=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        from promogest.dao.CodiceABarreArticolo import CodiceABarreArticolo
-        column.connect("clicked", self._changeOrderBy, (CodiceABarreArticolo,CodiceABarreArticolo.codice))
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(100)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Codice articolo fornitore', renderer, text=6, background=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, 'codice_articolo_fornitore')
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(100)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Famiglia', renderer, text=7, background=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        from promogest.dao.FamigliaArticolo import FamigliaArticolo
-        column.connect("clicked", self._changeOrderBy, (FamigliaArticolo,FamigliaArticolo.denominazione))
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(100)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Categoria', renderer, text=8, background=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        from promogest.dao.CategoriaArticolo import CategoriaArticolo
-        column.connect("clicked", self._changeOrderBy, (CategoriaArticolo,CategoriaArticolo.denominazione))
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(100)
-        treeview.append_column(column)
-
-        treeview.set_search_column(2)
-
-        self._treeViewModel = gtk.ListStore(object, str, str, str, str, str, str, str, str)
-        self._anagrafica.anagrafica_filter_treeview.set_model(self._treeViewModel)
-
+        self._treeViewModel = self._anagrafica.anagrafica_filter_treeview.get_model()
         self.clear()
+
+    def _reOrderBy(self, column):
+        if column.get_name() == "codice_column":
+            return self._changeOrderBy(column, (None, 'codice'))
+        elif column.get_name() == "denominazione_column":
+            return self._changeOrderBy(column, (None, 'denominazione'))
+        elif column.get_name() == "produttore_column":
+            return self._changeOrderBy(column, (None, 'produttore'))
+        elif column.get_name() == "codice_a_barre_articolo_column":
+            from promogest.dao.CodiceABarreArticolo import CodiceABarreArticolo
+            return self._changeOrderBy(column, (CodiceABarreArticolo, CodiceABarreArticolo.codice))
+        elif column.get_name() == "codice_articolo_fornitore_column":
+            return self._changeOrderBy(column, (None, 'codice_articolo_fornitore'))
+        elif column.get_name() == "famiglia_articolo_column":
+            from promogest.dao.FamigliaArticolo import FamigliaArticolo
+            return self._changeOrderBy(column, (FamigliaArticolo, FamigliaArticolo.denominazione))
+        else:  # column.get_name() == "categoria_articolo_column":
+            from promogest.dao.CategoriaArticolo import CategoriaArticolo
+            return self._changeOrderBy(column, (CategoriaArticolo, CategoriaArticolo.denominazione))
 
     def _refresh_filter_comboboxes(self, widget=None):
         self.refresh()
-
 
     def clear(self):
         """Annullamento filtro"""
@@ -249,47 +207,7 @@ class AnagraficaDistintaBaseEdit(AnagraficaEdit):
         self.articoliAssociatiList = []
 
     def draw(self, cplx=False):
-        treeview = self.articoli_associati_treeview
-
-        renderer = gtk.CellRendererText()
-        column = gtk.TreeViewColumn('Codice', renderer, text=2, background=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(100)
-        treeview.append_column(column)
-
-        renderer = gtk.CellRendererText()
-        column = gtk.TreeViewColumn('Descrizione', renderer, text=3, background=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(300)
-        treeview.append_column(column)
-
-        cellspin = gtk.CellRendererSpin()
-        cellspin.set_property("editable", True)
-        cellspin.set_property("visible", True)
-        adjustment = gtk.Adjustment(1, 1, 1000,1,2)
-        cellspin.set_property("adjustment", adjustment)
-        cellspin.set_property("digits",3)
-        cellspin.set_property("climb-rate",3)
-        cellspin.connect('edited', self.on_column_quantita_edited, treeview, True)
-        column = gtk.TreeViewColumn('Quantità', cellspin, text=4)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        #column.set_clickable(True)
-        #column.connect("clicked", self._changeOrderBy, 'denominazione')
-        column.set_resizable(True)
-        column.set_expand(True)
-        column.set_min_width(40)
-        treeview.append_column(column)
-
-        treeview.set_search_column(2)
-        self._assTreeViewModel = gtk.ListStore(object, str, str, str,str)
-        self.articoli_associati_treeview.set_model(self._assTreeViewModel)
-
+        self._assTreeViewModel = articoli_associati_liststore
 
     def on_column_quantita_edited(self, cell, path, value, treeview, editNext=True):
         """ Function ti set the value quantita edit in the cell"""

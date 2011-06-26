@@ -227,7 +227,7 @@ latex_logo = "logo_promogest.png"
 # If false, no module index is generated.
 #latex_domain_indices = True
 
-print "POTREMMO SCARICARE LE IMMAGINI QUI"
+
 # -- Options for manual page output --------------------------------------------
 
 # One entry per manual page. List of tuples
