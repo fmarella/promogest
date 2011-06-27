@@ -3,9 +3,10 @@
 #    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
-# Author: Alceste Scalas <alceste@promotux.it>
-# Author: Andrea Argiolas <andrea@promotux.it>
-# Author: Francesco Meloni <francesco@promotux.it
+#    Author: Alceste Scalas <alceste@promotux.it>
+#    Author: Andrea Argiolas <andrea@promotux.it>
+#    Author: Francesco Meloni <francesco@promotux.it
+#    Author: Francesco Marella <francesco.marella@gmail.com>
 
 #    This file is part of Promogest.
 
@@ -29,13 +30,13 @@ import sys
 import threading
 import os.path
 from promogest.Environment import conf
-from GladeWidget import GladeWidget
+from promogest.ui.GladeWidget import GladeWidget
 from promogest.ui.widgets.FilterWidget import FilterWidget
 from promogest.lib.XmlGenerator import XlsXmlGenerator
 from promogest.lib.CsvGenerator import CsvFileGenerator
-from utils import *
+from promogest.ui.utils import *
 import Login
-import subprocess ,shlex
+import subprocess, shlex
 from promogest import Environment
 from calendar import Calendar
 #if Environment.new_print_enjine:
@@ -48,6 +49,7 @@ from promogest.lib.SlaTpl2Sla import SlaTpl2Sla
 from promogest.ui.SendEmail import SendEmail
 from promogest.lib.HtmlHandler import createHtmlObj, renderTemplate, renderHTML
 from promogest.dao.Azienda import Azienda
+from promogest.ui.gtk_compat import *
 
 
 class AnagraficaEdit(GladeWidget):
@@ -116,21 +118,21 @@ class AnagraficaEdit(GladeWidget):
 
     def on_ok_button_grab_focus(self, button):
         if self.dialog.ok_button.is_focus():
-            self.on_anagrafica_complessa_detail_dialog_response(self.dialog, -5)
+            self.on_anagrafica_complessa_detail_dialog_response(self.dialog, GTK_RESPONSE_OK)
 
     def on_anagrafica_complessa_detail_dialog_response(self, dialog, responseId):
         """ Main function connected with ok applica and cancel in Anagrafica Edit"""
-        if responseId == -6:  #cancel
+        if responseId == GTK_RESPONSE_CANCEL:
             #self.clearDao()
             self.setVisible(False)
-        elif responseId == -5:
-            self.saveDao(tipo=-5) #ok
+        elif responseId == GTK_RESPONSE_OK:
+            self.saveDao(tipo=GTK_RESPONSE_OK)
             self._anagrafica.filter.refresh()
             self._anagrafica.filter.selectCurrentDao()
             self._anagrafica.filter.getSelectedDao()
             self.setVisible(False)
-        elif responseId == -10:
-            self.saveDao(tipo=-10) #apply
+        elif responseId == GTK_RESPONSE_APPLY:
+            self.saveDao(tipo=GTK_RESPONSE_APPLY)
             self._anagrafica.filter.refresh()
             self._anagrafica.filter.selectCurrentDao()
 

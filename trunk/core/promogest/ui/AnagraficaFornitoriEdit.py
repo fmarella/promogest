@@ -29,8 +29,9 @@ from promogest.modules.Contatti.dao.ContattoFornitore import ContattoFornitore
 from promogest.modules.Contatti.dao.RecapitoContatto import RecapitoContatto
 from promogest.modules.Contatti.dao.Contatto import Contatto
 from promogest.dao.DaoUtils import *
-from utils import *
-from utilsCombobox import *
+from promogest.ui.utils import *
+from promogest.ui.utilsCombobox import *
+from promogest.ui.gtk_compat import *
 
 
 class AnagraficaFornitoriEdit(AnagraficaEdit):
@@ -320,7 +321,7 @@ class AnagraficaFornitoriEdit(AnagraficaEdit):
             msg = 'Prima di poter visualizzare la registrazione documenti occorre salvare il fornitore.\n Salvare? '
             if YesNoDialog(msg=msg, transient=self.dialogTopLevel):
                 self.on_anagrafica_complessa_detail_dialog_response(
-                    self.dialogTopLevel, -10)
+                    self.dialogTopLevel, GTK_RESPONSE_APPLY)
             else:
                 toggleButton.set_active(False)
                 return
@@ -342,7 +343,7 @@ class AnagraficaFornitoriEdit(AnagraficaEdit):
             if self.dao.id is None:
                 msg = 'Prima di poter inserire i contatti occorre salvare il Fornitore.\n Salvare ?'
                 if YesNoDialog(msg=msg, transient=self.dialogTopLevel):
-                    self.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, -10)
+                    self.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, GTK_RESPONSE_APPLY)
                 else:
                     toggleButton.set_active(False)
                     return
@@ -373,7 +374,7 @@ class AnagraficaFornitoriEdit(AnagraficaEdit):
             if self.dao.id is None:
                 msg = 'Prima di poter inserire i contatti occorre salvare il fornitore.\n Salvare ?'
                 if YesNoDialog(msg=msg, transient=self.dialogTopLevel):
-                    self.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, -10)
+                    self.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, GTK_RESPONSE_APPLY)
                 else:
                     toggleButton.set_active(False)
                     return
@@ -395,7 +396,7 @@ class AnagraficaFornitoriEdit(AnagraficaEdit):
         if self.dao.id is None:
             msg = 'Prima di poter inserire delle forniture occorre salvare il fornitore.\n Salvare ?'
             if YesNoDialog(msg=msg, transient=self.dialogTopLevel):
-                self.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, -10)
+                self.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, GTK_RESPONSE_APPLY)
             else:
                 toggleButton.set_active(False)
                 return

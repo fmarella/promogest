@@ -29,8 +29,9 @@ from promogest.ui.AnagraficaComplessaHtml import AnagraficaHtml
 from promogest import Environment
 from promogest.dao.Magazzino import Magazzino
 
-from utils import *
-from utilsCombobox import *
+from promogest.ui.utils import *
+from promogest.ui.utilsCombobox import *
+from promogest.ui.gtk_compat import *
 
 
 class AnagraficaMagazzini(Anagrafica):
@@ -185,7 +186,7 @@ Verrà aggiornata la precedente.""")
             if self.dao.id is None:
                 msg = 'Prima di poter inserire i contatti occorre salvare il magazzino.\n Salvare ?'
                 if YesNoDialog(msg=msg, transient=self.dialogTopLevel):
-                    self.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, -10)
+                    self.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, GTK_RESPONSE_APPLY)
                 else:
                     toggleButton.set_active(False)
                     return

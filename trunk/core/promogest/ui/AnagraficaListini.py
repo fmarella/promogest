@@ -34,8 +34,8 @@ from promogest.dao.ListinoMagazzino import ListinoMagazzino
 from promogest.dao.ListinoComplessoListino import ListinoComplessoListino
 from promogest.dao.ListinoArticolo import ListinoArticolo
 from promogest.ui.AnagraficaVariazioniListini import AnagraficaVariazioniListini
-from utils import *
-from utilsCombobox import *
+from promogest.ui.utils import *
+from promogest.ui.utilsCombobox import *
 
 
 class AnagraficaListini(Anagrafica):
