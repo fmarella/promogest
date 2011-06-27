@@ -19,7 +19,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
-import gtk
+from promogest.ui.gtk_compat import *
 from CustomComboBoxSearch import CustomComboBoxSearch
 from promogest.ui.utils import leggiCliente, leggiFornitore
 
@@ -82,7 +82,7 @@ class PersonaGiuridicaSearchWidget(CustomComboBoxSearch):
                 from promogest.ui.RicercaComplessaFornitori import RicercaComplessaFornitori
                 self._ricerca = RicercaComplessaFornitori()
             if not self._filter:
-                self._ricerca.setTreeViewSelectionType(gtk.SELECTION_SINGLE)
+                self._ricerca.setTreeViewSelectionType(GTK_SELECTIONMODE_SINGLE)
             #else:
                 #self._ricerca.refresh()
             anagWindow = self._ricerca.getTopLevel()

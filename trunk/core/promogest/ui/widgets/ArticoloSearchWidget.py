@@ -21,7 +21,7 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 
-import gtk
+from promogest.ui.gtk_compat import *
 from promogest import Environment
 
 from CustomComboBoxSearch import CustomComboBoxSearch
@@ -78,7 +78,7 @@ class ArticoloSearchWidget(CustomComboBoxSearch):
             self._ricerca = RicercaComplessaArticoli(listinoFissato=Environment.listinoFissato)
             Environment.listinoFissato = None
             if not self._filter:
-                self._ricerca.setTreeViewSelectionType(gtk.SELECTION_SINGLE)
+                self._ricerca.setTreeViewSelectionType(GTK_SELECTIONMODE_SINGLE)
 #            else:
 #                self._ricerca.refresh()
             anagWindow = self._ricerca.getTopLevel()

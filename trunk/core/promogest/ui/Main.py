@@ -68,8 +68,12 @@ from widgets.PersonaGiuridicaSearchWidget import PersonaGiuridicaSearchWidget
 if posso("GN"):
     from promogest.modules.GestioneNoleggio.dao.TestataGestioneNoleggio \
                             import TestataGestioneNoleggio
+
 try:
-    from webkit import WebView
+    if Environment.pg3:
+        from gi.repository.WebKit import WebView
+    else:
+        from webkit import WebView
     WEBKIT = True
 except:
     WEBKIT = False

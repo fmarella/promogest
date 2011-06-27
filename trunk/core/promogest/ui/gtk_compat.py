@@ -65,6 +65,7 @@ if not Environment.pg3:
         GTK_BUTTON_BOX_SPREAD =  gtk.BUTTONBOX_SPREAD
 
         GOBJECT_SIGNAL_RUNLAST = gobject.SIGNAL_RUN_LAST
+        GTK_COLUMN_GROWN_ONLY =  gtk.TREE_VIEW_COLUMN_GROW_ONLY
 
     except ImportError:
         pass
@@ -114,3 +115,5 @@ else:
     GTK_BUTTON_BOX_SPREAD = gtk.ButtonBoxStyle.SPREAD
 
     GOBJECT_SIGNAL_RUNLAST = gobject.SignalFlags.RUN_LAST
+
+    GTK_COLUMN_GROWN_ONLY =  gtk.TreeViewColumnSizing.GROW_ONLY

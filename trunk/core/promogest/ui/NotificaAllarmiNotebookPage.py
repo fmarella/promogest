@@ -19,7 +19,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
-import gtk
+from promogest.ui.gtk_compat import *
 from promogest.ui.utils import *
 #from promogest.dao.Setconf import SetConf
 from promogest import Environment
@@ -64,7 +64,7 @@ class NotificaAllarmiNotebookPage(GladeWidget):
         rendererCtr.set_property('xalign', 0.5)
 
         column = gtk.TreeViewColumn('Data Scadenza', rendererCtr, text=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.set_resizable(True)
         column.set_expand(False)
@@ -72,7 +72,7 @@ class NotificaAllarmiNotebookPage(GladeWidget):
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('Oggetto', renderer, text=2)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.set_resizable(True)
         column.set_expand(False)
@@ -80,7 +80,7 @@ class NotificaAllarmiNotebookPage(GladeWidget):
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('Descrizione', renderer, text=3)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.set_resizable(True)
         column.set_expand(False)
@@ -88,7 +88,7 @@ class NotificaAllarmiNotebookPage(GladeWidget):
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('Incaricato', rendererCtr, text=4)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.set_resizable(True)
         column.set_expand(False)
@@ -96,7 +96,7 @@ class NotificaAllarmiNotebookPage(GladeWidget):
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('Autore', rendererCtr, text=5)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.set_resizable(True)
         column.set_expand(False)
@@ -104,7 +104,7 @@ class NotificaAllarmiNotebookPage(GladeWidget):
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('Annotazioni', renderer, text=6)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.set_resizable(True)
         column.set_expand(False)

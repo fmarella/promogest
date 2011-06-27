@@ -20,7 +20,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-import gtk
+from promogest.ui.gtk_compat import *
 
 from AnagraficaComplessa import Anagrafica
 from promogest.ui.AnagraficaComplessaEdit import AnagraficaEdit
@@ -411,7 +411,7 @@ class AnagraficaPromemoriaEdit(AnagraficaEdit):
         if combobox.child.get_text() == stringClienti:
             from RicercaComplessaClienti import RicercaComplessaClienti
             anag = RicercaComplessaClienti()
-            anag.setTreeViewSelectionType(gtk.SELECTION_SINGLE)
+            anag.setTreeViewSelectionType(GTK_SELECTIONMODE_SINGLE)
             anagWindow = anag.getTopLevel()
             anagWindow.connect("hide", refresh_combobox, 'cliente')
             returnWindow = combobox.get_toplevel()
@@ -420,7 +420,7 @@ class AnagraficaPromemoriaEdit(AnagraficaEdit):
         elif combobox.child.get_text() == stringFornitori:
             from RicercaComplessaFornitori import RicercaComplessaFornitori
             anag = RicercaComplessaFornitori()
-            anag.setTreeViewSelectionType(gtk.SELECTION_SINGLE)
+            anag.setTreeViewSelectionType(GTK_SELECTIONMODE_SINGLE)
             anagWindow = anag.getTopLevel()
             anagWindow.connect("hide", refresh_combobox, 'fornitore')
             returnWindow = combobox.get_toplevel()

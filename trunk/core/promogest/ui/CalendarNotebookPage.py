@@ -36,7 +36,10 @@ except:
 #    import pisaLib.ho.pisa as pisa
 
 try:
-    from webkit import WebView
+    if Environment.pg3:
+        from gi.repository.WebKit import WebView
+    else:
+        from webkit import WebView
     WEBKIT = True
 except:
     WEBKIT = False

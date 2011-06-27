@@ -5,7 +5,7 @@
 # Copyright (C) 2005-2008 by Promotux Informatica - http://www.promotux.it/
 # Author: Francesco Meloni  <francesco@promotux.it>
 
-import gtk
+from promogest.ui.gtk_compat import *
 from CustomComboBoxSearch import CustomComboBoxSearch
 from promogest.ui.utils import leggiCliente
 
@@ -58,7 +58,7 @@ class ClienteSearchWidget(CustomComboBoxSearch):
                 from promogest.ui.RicercaComplessaClienti import RicercaComplessaClienti
                 self._ricerca = RicercaComplessaClienti()
                 if not self._filter:
-                    self._ricerca.setTreeViewSelectionType(gtk.SELECTION_SINGLE)
+                    self._ricerca.setTreeViewSelectionType(GTK_SELECTIONMODE_SINGLE)
             else:
                 self._ricerca.refresh()
             anagWindow = self._ricerca.getTopLevel()

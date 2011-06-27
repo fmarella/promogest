@@ -85,6 +85,8 @@ class BigBang(object):
                             dest="configDir")
         (options, args) = parser.parse_args()
         if options.pg3_classi ==True:
+            reload(sys)
+            sys.setdefaultencoding('utf-8')
             from promogest import pg3_check
             pg3_check.pg3_cla = True
         from promogest import Environment
