@@ -22,13 +22,22 @@
 # we have to try pygtk first, then fall back to GI; if we have a too old GI
 # (without require_version()), we can't import pygtk on top of gi.repo.Gtk.
 
+from promogest import Environment
+if Environment.pg3:
+    try:
+        import gi
+        gi.require_version('Gdk', '3.0')
+        gi.require_version('Gtk', '3.0')
+        from gi.repository import Gdk as gdk
+        from gi.repository import Gtk as gtk
+        from gi.repository import Pango as pango
+        pygtk = None
 
-try:
-    import pygtk
-    pygtk.require('2.0')
-    import gtk
-    from gtk import gdk as gdk
-    import pango
+        # these are hacks until we fully switch to GI
+        PANGO_ALIGN_LEFT = pango.TabAlign.LEFT
+        GTK_RESPONSE_OK = gtk.ResponseType.OK
+        gtk_status_icon_new = gtk.StatusIcon.new_from_file
+        pango_tabarray_new = pango.TabArray.new
 
     PANGO_ALIGN_LEFT = pango.TAB_LEFT
     GTK_RESPONSE_OK = gtk.RESPONSE_OK
@@ -37,18 +46,14 @@ try:
     gtk_status_icon_new = gtk.status_icon_new_from_file
     pango_tabarray_new = pango.TabArray
 
-    GDK_EVENTTYPE_BUTTON_PRESS = gdk.BUTTON_PRESS
-    GDK_EVENTTYPE_2BUTTON_PRESS = gdk._2BUTTON_PRESS
-    GDK_EVENTTYPE_3BUTTON_PRESS = gdk._3BUTTON_PRESS
+        PANGO_ALIGN_LEFT = pango.TAB_LEFT
+        GTK_RESPONSE_OK = gtk.RESPONSE_OK
+        gtk_status_icon_new = gtk.status_icon_new_from_file
+        pango_tabarray_new = pango.TabArray
 
-except ImportError:
-    import gi
-    gi.require_version('Gdk', '3.0')
-    gi.require_version('Gtk', '3.0')
-    from gi.repository import Gdk as gdk
-    from gi.repository import Gtk as gtk
-    from gi.repository import Pango as pango
-    pygtk = None
+        GDK_EVENTTYPE_BUTTON_PRESS = gdk.BUTTON_PRESS
+        GDK_EVENTTYPE_2BUTTON_PRESS = gdk._2BUTTON_PRESS
+        GDK_EVENTTYPE_3BUTTON_PRESS = gdk._3BUTTON_PRESS
 
     # these are hacks until we fully switch to GI
     PANGO_ALIGN_LEFT = pango.TabAlign.LEFT
