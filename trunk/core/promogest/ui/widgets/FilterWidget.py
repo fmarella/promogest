@@ -83,7 +83,7 @@ class FilterWidget(GladeWidget):
         """
         self.filtersElement = filtersElement
         self.filtersElementTopLevel = self.filtersElement.getTopLevel()
-        self.filter_frame_vbox.pack_start(self.filtersElementTopLevel)
+        self.filter_frame_vbox.pack_start(self.filtersElementTopLevel, False, False, 0)
         self.filtersElementTopLevel.set_sensitive(True)
 
     def _setResultsElement(self, widgetType):
