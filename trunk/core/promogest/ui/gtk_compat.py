@@ -57,6 +57,10 @@ if not Environment.pg3:
         GTK_STATE_NORMAL = gtk.STATE_NORMAL
         GDK_COLOR_PARSE = gtk.gdk.color_parse
 
+        GDK_PIXBUF_NEW_FROM_FILE = gtk.gdk.pixbuf_new_from_file
+        GTK_WIN_POS_CENTER_ON_PARENT = gtk.WIN_POS_CENTER_ON_PARENT
+        GTK_BUTTON_BOX_SPREAD =  gtk.BUTTONBOX_SPREAD
+
     except ImportError:
         pass
 
@@ -67,6 +71,7 @@ else:
     from gi.repository import Gdk as gdk
     from gi.repository import Gtk as gtk
     from gi.repository import Pango as pango
+    from gi.repository import GdkPixbuf
     pygtk = None
 
     # these are hacks until we fully switch to GI
@@ -96,3 +101,7 @@ else:
 
     GTK_STATE_NORMAL = gtk.StateType.NORMAL
     GDK_COLOR_PARSE = gdk.color_parse
+
+    GDK_PIXBUF_NEW_FROM_FILE = GdkPixbuf.Pixbuf.new_from_file
+    GTK_WIN_POS_CENTER_ON_PARENT = gtk.WindowPosition.CENTER_ON_PARENT
+    GTK_BUTTON_BOX_SPREAD = gtk.ButtonBoxStyle.SPREAD

@@ -19,7 +19,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
-import gtk
+from promogest.ui.gtk_compat import *
 import time, datetime
 from DateTimeEntryField import DateTimeEntryField
 from promogest import Environment
@@ -34,7 +34,7 @@ class DateTimeWidget(gtk.HBox):
         self.button.set_property("can-focus", False)
         image = gtk.Image()
         #pbuf = gtk.gdk.pixbuf_new_from_file(Environment.conf.guiDir + 'calendario16x16.png')
-        pbuf = gtk.gdk.pixbuf_new_from_file(Environment.conf.guiDir + 'calendario16x16.png')
+        pbuf = GDK_PIXBUF_NEW_FROM_FILE(Environment.conf.guiDir + 'calendario16x16.png')
         image.set_from_pixbuf(pbuf)
         self.button.add(image)
         self.pack_start(self.entry, True, True, 0)
@@ -86,7 +86,7 @@ class DateTimeWidget(gtk.HBox):
         window.set_size_request(300, 360)
         window.set_modal(True)
         window.set_transient_for(self.get_toplevel())
-        window.set_position(gtk.WIN_POS_CENTER_ON_PARENT)
+        window.set_position(GTK_WIN_POS_CENTER_ON_PARENT)
         window.set_title('Selezione data e ora')
         window.connect("destroy", on_destroy)
         vbox = gtk.VBox()
@@ -151,7 +151,7 @@ class DateTimeWidget(gtk.HBox):
         bbox.add(buttonCorrente)
         bbox.add(buttonOk)
         bbox.add(buttonAnnulla)
-        bbox.set_layout(gtk.BUTTONBOX_SPREAD)
+        bbox.set_layout(GTK_BUTTON_BOX_SPREAD)
         vbox.pack_start(bbox, False, False, 5)
 
         window.add(vbox)
