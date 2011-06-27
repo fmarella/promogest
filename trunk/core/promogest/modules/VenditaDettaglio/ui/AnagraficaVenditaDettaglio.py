@@ -523,7 +523,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         # controllo che il prezzo non sia nullo
         if self._currentRow['prezzo'] == 0:
             messageWarning(msg="<b>ATTENZIONE:\n</b>Inserire un prezzo all'articolo",
-                self.getTopLevel())
+                transient= self.getTopLevel())
             #self.prezzo_entry.grab_focus()
             self._state == 'editing'
             #return
