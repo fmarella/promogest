@@ -1799,8 +1799,8 @@ def obligatoryField(window, widget=None, msg=None):
     """
     if msg is None:
         msg = 'Campo obbligatorio !'
-    dialog = gtk.MessageDialog(window, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                               gtk.MESSAGE_INFO, gtk.BUTTONS_OK, msg)
+    dialog = gtk.MessageDialog(window, GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
+                               GTK_DIALOG_MESSAGE_INFO, GTK_BUTTON_OK, msg)
     dialog.run()
     dialog.destroy()
     if widget is not None:
@@ -1815,7 +1815,7 @@ def showComplexQuestion(parentWindow, message):
     """
     dialog = gtk.Dialog('Attenzione',
                         parentWindow,
-                        gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+                        GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
                         None)
     hbox = gtk.HBox()
     image = gtk.image_new_from_stock(gtk.STOCK_DIALOG_QUESTION, gtk.ICON_SIZE_DIALOG)
@@ -1842,7 +1842,7 @@ def showComplexQuestion(parentWindow, message):
     imageNone, labelNone = hboxNone.get_children()
     labelNone.set_text('N_o a tutti')
     labelNone.set_use_underline(True)
-    dialog.add_action_widget(buttonYes, gtk.RESPONSE_YES)
+    dialog.add_action_widget(buttonYes, GTK_RESPONSE_YES)
     dialog.add_action_widget(buttonNo, gtk.RESPONSE_NO)
     dialog.add_action_widget(buttonAll, gtk.RESPONSE_APPLY)
     dialog.add_action_widget(buttonNone, gtk.RESPONSE_REJECT)
@@ -2040,8 +2040,8 @@ def hasAction(actionID=None):
         return True
     else:
         dialog = gtk.MessageDialog( None,
-                                gtk.DIALOG_MODAL |
-                                gtk.DIALOG_DESTROY_WITH_PARENT,
+                                GTK_DIALOG_MODAL |
+                                GTK_DIALOG_DESTROY_WITH_PARENT,
                                 gtk.MESSAGE_WARNING, gtk.BUTTONS_OK,
                                 "Permesso negato! L'azione richiesta non è tra quelle che ti son consentite")
         response = dialog.run()
@@ -2065,11 +2065,11 @@ L'anno di lavoro e l'anno di creazione documento non corrispondono.
 
     """ %str(Environment.workingYear)
         dialog = gtk.MessageDialog(None,
-                    gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                    gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO, msg)
+                    GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
+                    GTK_DIALOG_MESSAGE_QUESTION, GTK_BUTTON_YES_NO, msg)
         response = dialog.run()
         dialog.destroy()
-        if response == gtk.RESPONSE_YES:
+        if response == GTK_RESPONSE_YES:
             date = Environment.workingYear
 
     numeri = []
@@ -2194,7 +2194,7 @@ def checkCodiceDuplicato(codice=None,id=None,tipo=None):
     Codice %s : %s  è già presente
     Inserirne un altro o premere il bottone "G"enera""" %(tipo,codice)
         dialog = gtk.MessageDialog(None,
-                                gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+                                GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
                                 gtk.MESSAGE_INFO,
                                 gtk.BUTTONS_OK,
                                 msg)
@@ -2528,8 +2528,8 @@ def fenceDialog():
         sendemail = SendEmail()
 
     dialog = gtk.MessageDialog(None,
-                                gtk.DIALOG_MODAL
-                                | gtk.DIALOG_DESTROY_WITH_PARENT,
+                                GTK_DIALOG_MODAL
+                                | GTK_DIALOG_DESTROY_WITH_PARENT,
                                 gtk.MESSAGE_INFO, gtk.BUTTONS_OK)
     image = gtk.Image()
     image.set_from_file("./gui/messaggio_avviso.png")
@@ -2575,11 +2575,11 @@ def aggiorna(anag):
 
     Volete aggiornare adesso? """ %(str(rl), str(rr))
             dialog = gtk.MessageDialog(None,
-                    gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                    gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO, msg)
+                    GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
+                    GTK_DIALOG_MESSAGE_QUESTION, GTK_BUTTON_YES_NO, msg)
             response = dialog.run()
             dialog.destroy()
-            if response == gtk.RESPONSE_YES:
+            if response == GTK_RESPONSE_YES:
                 try:
                     client.update( '.' )
                     msgg = "TUTTO OK AGGIORNAMENTO EFFETTUATO\n\n IL PROMOGEST VERRA' CHIUSO PER UN RIAVVIO"
@@ -2596,7 +2596,7 @@ def aggiorna(anag):
                     Environment.pg2log.info("EFFETTUATO AGGIORNAMENTO ANDATO MALE")
                     ok = False
                 dialogg = gtk.MessageDialog(anag.getTopLevel(),
-                                    gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+                                    GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
                                     gtk.MESSAGE_INFO,
                                     gtk.BUTTONS_OK,
                                     msgg)
@@ -2607,7 +2607,7 @@ def aggiorna(anag):
         else:
             msggg = "Il PromoGest è già aggiornato all'ultima versione ( %s) \n Riprova in un altro momento\n\nGrazie" %(str(rl))
             dialoggg = gtk.MessageDialog(anag.getTopLevel(),
-                                gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+                                GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
                                 gtk.MESSAGE_INFO,
                                 gtk.BUTTONS_OK,
                                 msggg)
@@ -2617,7 +2617,7 @@ def aggiorna(anag):
         msgg = "ERRORE AGGIORNAMENTO FORSE NON C'E' CONNESSIONE \nO DEVI ASPETTARE ANCORA QUALCHE SECONDO E RIPROVARE"
         Environment.pg2log.info("SISTEMA  NON IN LINEA PER AGGIORNAMENTO")
         dialogg = gtk.MessageDialog(anag.getTopLevel(),
-                        gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+                        GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
                         gtk.MESSAGE_INFO,
                         gtk.BUTTONS_OK,
                         msgg)
@@ -2637,7 +2637,7 @@ def messageInfo(msg="Messaggio generico", transient=None):
 def messageError(msg="Messaggio generico", transient=None):
     """generic msg dialog """
     dialoggg = gtk.MessageDialog(transient,
-                        gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+                        GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
                         gtk.MESSAGE_ERROR,
                         gtk.BUTTONS_CANCEL)
     dialoggg.set_markup(msg)
