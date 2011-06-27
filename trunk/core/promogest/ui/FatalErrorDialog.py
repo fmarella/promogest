@@ -19,7 +19,11 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
-import gtk
+from promogest import Environment
+if Environment.pg3:
+    from gi.repository import Gtk as gtk
+else:
+    import gtk
 from GladeWidget import GladeWidget
 from promogest.ui.SendEmail import SendEmail
 
@@ -27,14 +31,7 @@ class FatalErrorDialog(GladeWidget):
     """ Dialog for showing a fatal error message """
     def __init__(self, message):
         self.message = message
-        #if "duplicate key value violates unique constraint" or "una chiave duplicata viola il vincolo" in self.message:
-            #msg="""Il Valore inserito è già presente nel database!"""
-            #dialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                               #gtk.MESSAGE_INFO, gtk.BUTTONS_OK, msg)
-            #dialog.run()
-            #dialog.destroy()
-            #return
-        #else:
+
         msg ="""ATTENZIONE !!
 Si è verificato un errore non recuperabile
 e l'applicazione verrà chiusa, si prega di contattare

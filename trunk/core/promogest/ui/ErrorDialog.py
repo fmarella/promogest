@@ -19,7 +19,6 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
-import gtk
 from GladeWidget import GladeWidget
 from promogest.ui.SendEmail import SendEmail
 
@@ -27,14 +26,6 @@ class ErrorDialog(GladeWidget):
     """ Dialog for showing a fatal error message """
     def __init__(self, message):
         self.message = message
-        #if "duplicate key value violates unique constraint" or "una chiave duplicata viola il vincolo" in self.message:
-            #msg="""Il Valore inserito è già presente nel database!"""
-            #dialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                               #gtk.MESSAGE_INFO, gtk.BUTTONS_OK, msg)
-            #dialog.run()
-            #dialog.destroy()
-            #return
-        #else:
         GladeWidget.__init__(self, 'error_dialog')
         self.error_dialog_label.set_text(message)
 

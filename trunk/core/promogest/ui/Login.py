@@ -33,7 +33,6 @@ if Environment.pg3:
     from gi.repository import Gtk
 else:
     import gtk
-print "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
 import datetime
 import random
 import threading
@@ -41,7 +40,7 @@ import webbrowser
 from promogest.ui.GladeApp import GladeApp
 from promogest.dao.User import User
 from promogest.dao.Azienda import Azienda
-#from GtkExceptionHandler import GtkExceptionHandler
+from GtkExceptionHandler import GtkExceptionHandler
 from utils import hasAction, checkAggiorna, aggiorna, \
                                 checkInstallation, setconf, posso, installId, messageInfo
 from utilsCombobox import findComboboxRowFromStr
@@ -77,7 +76,7 @@ class Login(GladeApp):
         self.modules = {}
         self.shop =shop
         GladeApp.__init__(self, 'login_window')
-        #Environment.exceptionHandler = GtkExceptionHandler()
+        Environment.exceptionHandler = GtkExceptionHandler()
         checkAggiorna()
         self.draw()
         self.getTopLevel().show_all()
