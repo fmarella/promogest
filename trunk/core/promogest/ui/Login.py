@@ -93,6 +93,7 @@ class Login(GladeApp):
                 ultima_azienda = a.schemaa
             self.azienda_combobox_listore.append((a.schemaa, a.denominazione))
         self.azienda_comboboxentry.set_model(self.azienda_combobox_listore)
+        self.azienda_comboboxentry.set_text_column(0)
         Environment.windowGroup.append(self.getTopLevel())
 
         self.splashHandler()
@@ -110,6 +111,7 @@ class Login(GladeApp):
         for a in usrs:
             self.username_combobox_listore.append((a.username, a.email))
         self.username_comboxentry.set_model(self.username_combobox_listore)
+        self.username_comboxentry.set_text_column(0)
         self.username_comboxentry.grab_focus()
         data = datetime.datetime.now()
         self.anno_lavoro_spinbutton.set_value(data.year)
