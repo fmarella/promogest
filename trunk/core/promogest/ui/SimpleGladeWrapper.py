@@ -100,17 +100,16 @@ class SimpleGladeWrapper:
             sets two attributes (foo and bar) to glade_app.
         """
         gl = None
+        pp = './gui/'
+        prefix = ""
         if Environment.pg3:
-            pp = './gui3/'
-        else:
-            pp = './gui/'
-
+            prefix = "pg3_"
         if (path is None) or (path == pp):
-            gladeFile = pp+ root +".glade"
+            gladeFile = pp+prefix+root +".glade"
             if os.path.exists(gladeFile):
                 self.glade_path = gladeFile
             else:
-                self.glade_path = pp+"promogest.glade"
+                self.glade_path = pp+prefix+"promogest.glade"
             self.glade = None
         else:
             if os.path.isfile(path):

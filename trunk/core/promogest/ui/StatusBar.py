@@ -21,7 +21,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 import hashlib
-import gtk
+from promogest.ui.gtk_compat import *
 import datetime
 from  subprocess import *
 from promogest import Environment
@@ -53,23 +53,23 @@ class Pg2StatusIcon(gtk.StatusIcon):
             </ui>
         '''
 
-        actions = [
-            ('Menu',  None, 'Menu'),
-            ('Preferences', gtk.STOCK_PREFERENCES, '_Preferences...', None,
-                                'tooltip preferences', self.on_preferences),
-            ('About', gtk.STOCK_ABOUT, '_About', None, 'tooltip About',
-                                 self.on_about),
-            ('Exit', gtk.STOCK_QUIT, '_Exit', None, 'tooltip Exit',
-                                 self.on_close)
-            ]
-        actionGroup = gtk.ActionGroup("Actions")
-        actionGroup.add_actions(actions)
-        self.manager = gtk.UIManager()
-        self.manager.insert_action_group(actionGroup, 0)
-        self.manager.add_ui_from_string(menu)
-        self.menu = self.manager.get_widget('/Menubar/Menu/About').props.parent
-        self.set_from_file(Environment.conf.guiDir + 'logo_promogest_piccolo.png')
-        self.set_tooltip('Promogest, il Gestionale open source per la tua azienda')
+        #actions = [
+            #('Menu',  None, 'Menu'),
+            #('Preferences', gtk.STOCK_PREFERENCES, '_Preferences...', None,
+                                #'tooltip preferences', self.on_preferences),
+            #('About', gtk.STOCK_ABOUT, '_About', None, 'tooltip About',
+                                 #self.on_about),
+            #('Exit', gtk.STOCK_QUIT, '_Exit', None, 'tooltip Exit',
+                                 #self.on_close)
+            #]
+        #actionGroup = gtk.ActionGroup("Actions")
+        #actionGroup.add_actions(actions)
+        #self.manager = gtk.UIManager()
+        #self.manager.insert_action_group(actionGroup, 0)
+        #self.manager.add_ui_from_string(menu)
+        #self.menu = self.manager.get_widget('/Menubar/Menu/About').props.parent
+        #self.set_from_file(Environment.conf.guiDir + 'logo_promogest_piccolo.png')
+        #self.set_tooltip('Promogest, il Gestionale open source per la tua azienda')
         self.connect('activate', self.on_activate)
         self.connect('popup-menu', self.on_popup_menu)
 
@@ -108,7 +108,7 @@ class Pg2StatusIcon(gtk.StatusIcon):
         about.set_website("http://www.promogest.me")
         about.set_authors(["Francesco <francesco@promotux.it>"])
         try:
-            about.set_logo(gtk.gdk.pixbuf_new_from_file(Environment.conf.guiDir + 'logo_promogest_piccolo.png'))
+            about.set_logo(GDK_PIXBUF_NEW_FROM_FILE(Environment.conf.guiDir + 'logo_promogest_piccolo.png'))
         except:
             pass
         about.set_comments("Gestionale multipiattaforma per la tua impresa")

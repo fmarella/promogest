@@ -22,11 +22,16 @@
 
 import os
 import sys
-import gtk
-import gobject
+from promogest.ui.gtk_compat import *
 from threading import Timer
+from promogest import Environment
 try:
-    from webkit import WebView, WebSettings
+    if Environment.pg3:
+        from gi.repository.WebKit import WebView
+        from gi.repository.WebKit import WebSettings
+    else:
+        from webkit import WebView
+        from webkit import WebSettings
     WEBKIT = True
 except:
     import gtkhtml2
@@ -34,7 +39,6 @@ except:
 #from HtmlTextView import HtmlTextView
 import urllib2
 import webbrowser
-from promogest import Environment
 from  promogest.ui import utils
 from jinja2 import Environment  as Env
 from jinja2 import FileSystemLoader,FileSystemBytecodeCache,environmentfilter, Markup, escape

@@ -4,6 +4,7 @@
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Marella <francesco.marella@gmail.com>
+#    Author: Francesco Meloni  <francesco@promotux.it>
 
 #    Promogest is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
