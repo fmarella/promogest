@@ -39,7 +39,7 @@ class SignedMoneyEntryField(CustomEntryField):
 
 
     def my_key_press_event(self, widget, event):
-        keyname = keyval_name(event.keyval)
+        keyname = gdk_keyval_name(event.keyval)
         if keyname not in self.acceptedKeys:
             return True
         s = self.get_text()
