@@ -6,6 +6,7 @@
 # Author: Alceste Scalas <alceste@promotux.it>
 # Author: Andrea Argiolas <andrea@promotux.it>
 # Author: Francesco Meloni  <francesco@promotux.it>
+# Author: Francesco Marella <francesco.marella@gmail.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -24,8 +25,7 @@
 from SimpleGladeWrapper import SimpleGladeWrapper
 import os
 from promogest import Environment
-
-import gtk
+from promogest.ui.gtk_compat import *
 import xml.etree.cElementTree as ElementTree
 
 from promogest.ui.widgets.UnsignedDecimalEntryField import UnsignedDecimalEntryField
@@ -151,10 +151,10 @@ class GladeWidget(SimpleGladeApp):
             #print "right click"
 
         # was it a multiple click?
-        if event.type == gtk.gdk.BUTTON_PRESS:
+        if event.type == GDK_EVENTTYPE_BUTTON_PRESS:
             pass
             #print "single click"
-        elif event.type == gtk.gdk._2BUTTON_PRESS:
+        elif event.type == GDK_EVENTTYPE_2BUTTON_PRESS:
             testo = widget.get_text()
             if testo.isupper():
                 uppertext = testo.lower()
@@ -162,7 +162,7 @@ class GladeWidget(SimpleGladeApp):
                 uppertext = testo.upper()
             widget.set_text(uppertext)
             #print "double click"
-        elif event.type == gtk.gdk._3BUTTON_PRESS:
+        elif event.type == GDK_EVENTTYPE_3BUTTON_PRESS:
             testo = widget.get_text()
             capitalizetext = testo.capitalize()
             widget.set_text(capitalizetext)
