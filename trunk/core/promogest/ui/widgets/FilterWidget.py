@@ -51,7 +51,7 @@ class FilterWidget(GladeWidget):
         self._firstFocusWidget = None
         if self._owner.__class__.__name__ != "GestioneScontrini":
             self.filter_info_hbox.destroy() # c'è una label dentro ...ma serve al momento solo in gestione scontrini
-        self.filter_current_page_entry.set_alignment(xalign=1)
+        #self.filter_current_page_entry.set_alignment(xalign=1)
         self.filter_current_page_entry.connect('key_press_event',
                             self.on_filter_current_page_entry_key_event)
 

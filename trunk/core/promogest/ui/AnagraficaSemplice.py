@@ -21,8 +21,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
-import gtk
-import gobject
+from promogest.ui.gtk_compat import *
 from GladeWidget import GladeWidget
 from promogest.ui.widgets.FilterWidget import FilterWidget
 from promogest.ui.SendEmail import SendEmail
@@ -87,7 +86,7 @@ class Anagrafica(GladeWidget):
         creditsDialog.getTopLevel().set_transient_for(self.getTopLevel())
         creditsDialog.getTopLevel().show_all()
         response = creditsDialog.credits_dialog.run()
-        if response == gtk.RESPONSE_OK:
+        if response == GTK_RESPONSE_OK:
             creditsDialog.credits_dialog.destroy()
 
     def on_send_Email_activate(self, widget):
@@ -110,7 +109,7 @@ class Anagrafica(GladeWidget):
         licenzaDialog.licenza_textview.set_buffer(textBuffer)
         licenzaDialog.getTopLevel().show_all()
         response = licenzaDialog.licenza_dialog.run()
-        if response == gtk.RESPONSE_OK:
+        if response == GTK_RESPONSE_OK:
             licenzaDialog.licenza_dialog.destroy()
 
 
@@ -123,13 +122,7 @@ class Anagrafica(GladeWidget):
             msg = 'Codice installazione:\n\n' + str(md5.new(content).hexdigest().upper())
         except:
             msg = 'Impossibile generare il codice !!!'
-        dialog = gtk.MessageDialog(self.getTopLevel(),
-                                   gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                   gtk.MESSAGE_INFO,
-                                   gtk.BUTTONS_OK,
-                                   msg)
-        dialog.run()
-        dialog.destroy()
+        messageInfo(msg=msg)
 
     def on_record_new_activate(self, widget,codice=None):
         """ Nuovo record """
@@ -246,7 +239,7 @@ class Anagrafica(GladeWidget):
 
         response = dialog.run()
         dialog.destroy()
-        if response != gtk.RESPONSE_YES:
+        if response != GTK_RESPONSE_YES:
             self.anagrafica_treeview.grab_focus()
             return
 
@@ -299,7 +292,7 @@ class Anagrafica(GladeWidget):
 
         response = dialog.run()
         dialog.destroy()
-        if response != gtk.RESPONSE_YES:
+        if response != GTK_RESPONSE_YES:
             self.anagrafica_treeview.grab_focus()
             self.anagrafica_treeview_set_edit(True)
             return
