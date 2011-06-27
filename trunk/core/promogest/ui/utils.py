@@ -2645,6 +2645,17 @@ def messageError(msg="Messaggio generico", transient=None):
     dialoggg.destroy()
     return response
 
+def messageWarning(msg="Messaggio generico", transient=None):
+    """generic msg dialog """
+    dialoggg = gtk.MessageDialog(transient,
+                        gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+                        gtk.MESSAGE_WARNING,
+                        gtk.BUTTONS_OK)
+    dialoggg.set_markup(msg)
+    response = dialoggg.run()
+    dialoggg.destroy()
+    return response
+
 
 def YesNoDialog(msg="MESSAGGIO", transient=None,show_entry=False ):
     dialog = gtk.MessageDialog(transient,

@@ -40,6 +40,7 @@ from GestioneScontrini import GestioneScontrini
 from GestioneChiusuraFiscale import GestioneChiusuraFiscale
 from venditaDettaglioUiPart import drawPart
 from VenditaDettaglioUtils import fillComboboxPos
+from promogest.ui.gtk_compat import *
 
 if hasattr(Environment.conf, "VenditaDettaglio"):
     if hasattr(Environment.conf.VenditaDettaglio,"backend") and\
@@ -261,7 +262,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
 
     def on_vendita_dettaglio_window_key_press_event(self, widget, event):
         """ jolly key è F9, richiama ed inserisce l'articolo definito nel configure"""
-        keyname = gtk.gdk.keyval_name(event.keyval)
+        keyname = gdk_keyval_name(event.keyval)
         if keyname == 'F9':
             try:
                 if hasattr(Environment.conf, "VenditaDettaglio"):
@@ -521,13 +522,8 @@ class AnagraficaVenditaDettaglio(GladeWidget):
     def on_confirm_button_clicked(self, button):
         # controllo che il prezzo non sia nullo
         if self._currentRow['prezzo'] == 0:
-            dialog = gtk.MessageDialog(self.getTopLevel(),
-                                       gtk.DIALOG_MODAL
-                                       | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                       gtk.MESSAGE_WARNING, gtk.BUTTONS_OK)
-            dialog.set_markup("<b>ATTENZIONE:\n</b>Inserire un prezzo all'articolo")
-            response = dialog.run()
-            dialog.destroy()
+            messageWarning(msg="<b>ATTENZIONE:\n</b>Inserire un prezzo all'articolo",
+                self.getTopLevel())
             #self.prezzo_entry.grab_focus()
             self._state == 'editing'
             #return
@@ -896,7 +892,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         anag = RicercaComplessaArticoli(codiceABarre = codiceABarre,
                                         codice = codice,
                                         denominazione=descrizione)
-        anag.setTreeViewSelectionType(gtk.SELECTION_SINGLE)
+        anag.setTreeViewSelectionType(GTK_SELECTION_SINGLE)
         anagWindow = anag.getTopLevel()
         anagWindow.connect("hide",
                            on_ricerca_articolo_hide, anag)
@@ -992,14 +988,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
 
     def on_vendita_dettaglio_window_close(self, widget, event=None):
         if self.shop:
-            dialog = gtk.MessageDialog(self.getTopLevel(),
-                                   gtk.DIALOG_MODAL
-                                   | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                   gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO,
-                                   'Confermi la chiusura?')
-            response = dialog.run()
-            dialog.destroy()
-            if response ==  gtk.RESPONSE_YES:
+            if YesNoDialog('Confermi la chiusura?', self.getTopLevel()):
                 self.hide()
                 Environment.pg2log.info("CHIUDO IL MODULO DI GESTIONE NEGOZIO APERTO CON SHOP")
                 gtk.main_quit()

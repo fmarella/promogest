@@ -7,7 +7,7 @@
 # Author: Francesco Meloni <francescoo@promotux.it>
 
 from promogest.ui.utils import *
-import gtk, gobject
+import gtk
 import os, popen2
 import gtkhtml2
 from promogest.dao.DaoUtils import giacenzaSel
