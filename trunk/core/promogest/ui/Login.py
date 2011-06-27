@@ -28,22 +28,20 @@
 import hashlib
 import os
 import sys
-import gtk
-try:
-    settings = gtk.settings_get_default()
-    gtk.Settings.set_long_property(settings, "gtk-button-images", 1, "main")
-except:
-    print "Aggiunta icone non ha funzionato"
+from promogest import Environment
+if Environment.pg3:
+    from gi.repository import Gtk
+else:
+    import gtk
+print "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
 import datetime
 import random
 import threading
 import webbrowser
-#from  subprocess import *
 from promogest.ui.GladeApp import GladeApp
-from promogest import Environment
 from promogest.dao.User import User
 from promogest.dao.Azienda import Azienda
-from GtkExceptionHandler import GtkExceptionHandler
+#from GtkExceptionHandler import GtkExceptionHandler
 from utils import hasAction, checkAggiorna, aggiorna, \
                                 checkInstallation, setconf, posso, installId, messageInfo
 from utilsCombobox import findComboboxRowFromStr
@@ -67,7 +65,7 @@ class Login(GladeApp):
 
     def __init__(self, debugSQL=None, debugALL=None, shop=False):
         """Inizializza la finestra di login
-        
+
         :param debugSQL: boolean, non utilizzato
         :param debugALL: boolean, non utilizzato
         :param shop: default False
@@ -79,7 +77,7 @@ class Login(GladeApp):
         self.modules = {}
         self.shop =shop
         GladeApp.__init__(self, 'login_window')
-        Environment.exceptionHandler = GtkExceptionHandler()
+        #Environment.exceptionHandler = GtkExceptionHandler()
         checkAggiorna()
         self.draw()
         self.getTopLevel().show_all()
@@ -87,44 +85,31 @@ class Login(GladeApp):
     def draw(self):
         """Disegna la finestra di login
         """
-        model = gtk.ListStore(str, str)
-        model.clear()
+        self.azienda_combobox_listore.clear()
         usrs = User().select(batchSize = None)
         azs = Azienda().select(batchSize = None, orderBy=Azienda.schemaa)
         ultima_azienda = None
         for a in azs:
             if a.tipo_schemaa == "last":
                 ultima_azienda = a.schemaa
-            model.append((a.schemaa, a.denominazione))
+            self.azienda_combobox_listore.append((a.schemaa, a.denominazione))
 
         Environment.windowGroup.append(self.getTopLevel())
 
         self.splashHandler()
         dateTimeLabel = datetime.datetime.now().strftime('%d/%m/%Y  %H:%M')
         self.date_label.set_text(dateTimeLabel)
-        renderer = gtk.CellRendererText()
-        self.azienda_comboboxentry.pack_start(renderer, True)
-        self.azienda_comboboxentry.add_attribute(renderer, 'text', 0)
-        self.azienda_comboboxentry.set_model(model)
-        self.azienda_comboboxentry.set_text_column(0)
         if ultima_azienda:
-            for r in model:
+            for r in self.azienda_combobox_listore:
                 if r[0] == ultima_azienda:
                     self.azienda_comboboxentry.set_active_iter(r.iter)
         else:
             self.azienda_comboboxentry.set_active(0)
         #ATTENZIONE METTO COME RUOLO ADMIN PER IL MOMENTO RICONTROLLARE
-        model_usr = gtk.ListStore(str, str)
-        model_usr.clear()
-        for a in usrs:
-            model_usr.append((a.username, a.email))
 
-        renderer_usr = gtk.CellRendererText()
-        self.username_comboxentry.pack_start(renderer_usr, True)
-        self.username_comboxentry.add_attribute(renderer_usr, 'text', 0)
-        self.username_comboxentry.add_attribute(renderer_usr, 'text', 1)
-        self.username_comboxentry.set_model(model_usr)
-        self.username_comboxentry.set_text_column(0)
+        self.username_combobox_listore.clear()
+        for a in usrs:
+            self.username_combobox_listore.append((a.username, a.email))
         self.username_comboxentry.grab_focus()
         data = datetime.datetime.now()
         self.anno_lavoro_spinbutton.set_value(data.year)
@@ -174,7 +159,7 @@ class Login(GladeApp):
 
     def on_azienda_comboboxentry_changed(self, combo):
         """Imposta il nome dell'azienda
-        
+
         :param combo: la combobox che ha generato l'evento
         """
         index = combo.get_active()
@@ -191,47 +176,24 @@ class Login(GladeApp):
         password = self.password_entry.get_text()
         do_login = True
         if username=='' or password=='':
-            dialog = gtk.MessageDialog(self.getTopLevel(),
-                                       gtk.DIALOG_MODAL
-                                       | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                       gtk.MESSAGE_WARNING, gtk.BUTTONS_OK,
-                                       'Inserire nome utente e password')
-            response = dialog.run()
-            dialog.destroy()
+            messageInfo(msg='Inserire nome utente e password')
             do_login = False
         elif self.azienda_comboboxentry.child.get_text() == '':
-            dialog = gtk.MessageDialog(self.getTopLevel(),
-                                       gtk.DIALOG_MODAL
-                                       | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                       gtk.MESSAGE_WARNING, gtk.BUTTONS_OK,
-                                       "Occorre selezionare un'azienda")
-            response = dialog.run()
-            dialog.destroy()
+            messageInfo(msg="Occorre selezionare un'azienda")
             do_login = False
         else:
             self.azienda = self.azienda_comboboxentry.child.get_text()
             findComboboxRowFromStr(self.azienda_comboboxentry, self.azienda, 0)
             found = self.azienda_comboboxentry.get_active() != -1
             if not found:
-                dialog = gtk.MessageDialog(self.getTopLevel(),
-                                        gtk.DIALOG_MODAL
-                                        | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                        gtk.MESSAGE_WARNING, gtk.BUTTONS_OK,
-                                        "Selezionare un'azienda esistente")
-                response = dialog.run()
-                dialog.destroy()
+                messageInfo(msg="Selezionare un'azienda esistente")
                 do_login = False
         if do_login: #superati i check di login
             users = User().select(username=username,
                         password=hashlib.md5(username+password).hexdigest())
             if len(users) ==1:
                 if users[0].active == False:
-                    dialog = gtk.MessageDialog(self.getTopLevel(),
-                                    gtk.DIALOG_MODAL
-                                    | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                    gtk.MESSAGE_WARNING, gtk.BUTTONS_OK,
-                                    'Utente Presente Ma non ATTIVO')
-                    response = dialog.run()
+                    messageInfo(msg='Utente Presente Ma non ATTIVO')
                     dialog.destroy()
                     #saveAppLog(action="login", status=False,value=username)
                     do_login = False
@@ -285,13 +247,7 @@ class Login(GladeApp):
                     else:
                         do_login=False
             else:
-                dialog = gtk.MessageDialog(self.getTopLevel(),
-                                    gtk.DIALOG_MODAL
-                                    | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                    gtk.MESSAGE_WARNING, gtk.BUTTONS_OK,
-                                    'Nome utente o password errati')
-                response = dialog.run()
-                dialog.destroy()
+                messageInfo(msg='Nome utente o password errati')
                 #saveAppLog(action="login", status=False,value=username)
                 do_login = False
 
@@ -332,7 +288,7 @@ class Login(GladeApp):
     def importModulesFromDir(self, modules_dir):
             """Check the modules directory and automatically try to load
             all available modules
-            
+
             """
             #global jinja_env
             Environment.modulesList=[Environment.tipo_pg]
@@ -375,17 +331,30 @@ class Login(GladeApp):
         :param widget: -
         :param event: -
         """
-        if event.type == gtk.gdk.KEY_PRESS:
-            if event.state & gtk.gdk.CONTROL_MASK:
-                key = str(gtk.gdk.keyval_name(event.keyval))
-                if key.upper() == "L":
-                    self.username_comboxentry.set_active(0)
-                    self.password_entry.set_text('admin')
-                    self.on_button_login_clicked()
+        if Environment.pg3:
+            if event.type == Gdk.EventType.KEY_PRESS:
+                if event.get_state() & Gdk.ModifierType.CONTROL_MASK:
+                    key = str(Gdk.keyval_name(event.keyval))
+                    if key.upper() == "L":
+                        self.username_comboxentry.set_active(0)
+                        self.password_entry.set_text('admin')
+                        self.on_button_login_clicked()
+        else:
+            if event.type == gtk.gdk.KEY_PRESS:
+                if event.state & gtk.gdk.CONTROL_MASK:
+                    key = str(gtk.gdk.keyval_name(event.keyval))
+                    if key.upper() == "L":
+                        self.username_comboxentry.set_active(0)
+                        self.password_entry.set_text('admin')
+                        self.on_button_login_clicked()
+
+
+
+
 
 def on_main_window_closed(main_window, login_window):
     """Evento associato alla chiusura della finestra di login
-    
+
     """
     login_window.show()
     Environment.windowGroup.append(login_window)

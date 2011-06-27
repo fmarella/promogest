@@ -27,7 +27,6 @@ import os
 import sys
 
 from optparse import OptionParser
-from promogest import Environment
 #from promogest.lib.UpdateDB import *
 from config import Config
 
@@ -55,6 +54,12 @@ class BigBang(object):
                             default="False",
                             #type="string",
                             dest="debugALL")
+        parser.add_option("-3", "--pg3",
+                            action="store_true",
+                            help="Per mettere il debug al massimo",
+                            default="False",
+                            #type="string",
+                            dest="pg3_classi")
         parser.add_option("-t", "--tipoDB",
                             action="store",
                             help="Permette di cambiare backend DB da sqlite a postgresql",
@@ -79,6 +84,10 @@ class BigBang(object):
                             type="string",
                             dest="configDir")
         (options, args) = parser.parse_args()
+        if options.pg3_classi ==True:
+            from promogest import pg3_check
+            pg3_check.pg3_cla = True
+        from promogest import Environment
         if options.debugDao == True:
             Environment.debugDao = True
         elif options.debugFilter == True:
@@ -118,6 +127,7 @@ class BigBang(object):
             Environment.debugDao = True
             Environment.debugFilter = True
             Environment.debugSQL = True
+
         Environment.shop = False
         from promogest.ui.Login import Login
         login = Login()
@@ -129,17 +139,17 @@ if __name__ == '__main__':
     promogestStartDir = os.path.expanduser('~') + os.sep + default + os.sep
     configFile = promogestStartDir + 'configure'
     conf = Config(configFile)
-    try:
-        if conf.Database.tipodb =="sqlite":
-            import socket
-            import sys
-            import gtk
+    #try:
+        #if conf.Database.tipodb =="sqlite":
+            #import socket
+            #import sys
+            #import gtk
 #            try:
 #                s = socket.socket()
 #                host = socket.gethostname()
 #                port = 34639    #make sure this port is not used on this system
 #                s.bind((host, port))
-            BigBang()
+            #BigBang()
 #            except Exception as e:
 #                print "EEEEEEE", e
 #                dialog = gtk.MessageDialog(None,
@@ -151,8 +161,8 @@ if __name__ == '__main__':
 #                dialog.destroy()
 #                raise
 #                sys.exit()
-        else:
-            BigBang()
-    except:
-        BigBang()
-#    BigBang()
+        #else:
+            #BigBang()
+    #except:
+        #BigBang()
+    BigBang()

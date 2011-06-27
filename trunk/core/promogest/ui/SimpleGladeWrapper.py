@@ -27,8 +27,11 @@ import sys
 import re
 
 import tokenize
-import gtk
-#import gtk.glade
+from promogest import Environment
+if Environment.pg3:
+    from gi.repository import Gtk as gtk
+else:
+    import gtk
 import weakref
 import inspect
 import os.path, glob, zipfile, warnings
@@ -97,12 +100,17 @@ class SimpleGladeWrapper:
             sets two attributes (foo and bar) to glade_app.
         """
         gl = None
-        if (path is None) or (path == './gui/'):
-            gladeFile = "./gui/"+ root +".glade"
+        if Environment.pg3:
+            pp = './gui3/'
+        else:
+            pp = './gui/'
+
+        if (path is None) or (path == pp):
+            gladeFile = pp+ root +".glade"
             if os.path.exists(gladeFile):
                 self.glade_path = gladeFile
             else:
-                self.glade_path = "./gui/promogest.glade"
+                self.glade_path = pp+"promogest.glade"
             self.glade = None
         else:
             if os.path.isfile(path):

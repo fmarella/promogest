@@ -2,17 +2,27 @@
 <interface>
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy toplevel-contextual -->
-  <object class="GtkImage" id="image1">
-    <property name="visible">True</property>
-    <property name="stock">gtk-execute</property>
-  </object>
   <object class="GtkAdjustment" id="adjustment1">
-    <property name="value">2010</property>
     <property name="lower">2000</property>
     <property name="upper">2050</property>
+    <property name="value">2010</property>
     <property name="step_increment">1</property>
   </object>
+  <object class="GtkListStore" id="azienda_combobox_listore">
+    <columns>
+      <!-- column-name gchararray1 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray2 -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
+  <object class="GtkImage" id="image1">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-execute</property>
+  </object>
   <object class="GtkDialog" id="login_window">
+    <property name="can_focus">False</property>
     <property name="title" translatable="yes">Accesso a PromoGest2 "MentoR" </property>
     <property name="resizable">False</property>
     <property name="modal">True</property>
@@ -23,36 +33,132 @@
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox2">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="spacing">3</property>
+        <child internal-child="action_area">
+          <object class="GtkHButtonBox" id="dialog-action_area2">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="layout_style">end</property>
+            <child>
+              <object class="GtkLinkButton" id="help_button">
+                <property name="label">gtk-help</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="has_tooltip">True</property>
+                <property name="use_action_appearance">False</property>
+                <property name="use_stock">True</property>
+                <property name="uri">http://help.promotux.it</property>
+                <signal name="clicked" handler="on_help_button_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">-1</property>
+                <property name="secondary">True</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="aggiorna_button">
+                <property name="label">Aggiornato?</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">False</property>
+                <property name="use_action_appearance">False</property>
+                <property name="image">image1</property>
+                <property name="use_underline">True</property>
+                <signal name="clicked" handler="on_aggiorna_button_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="pack_type">end</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="button_quit">
+                <property name="label">gtk-quit</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="receives_default">False</property>
+                <property name="tooltip_text" translatable="yes">Uscita</property>
+                <property name="use_action_appearance">False</property>
+                <property name="use_stock">True</property>
+                <signal name="clicked" handler="gtk_main_quit" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="pack_type">end</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="button_login">
+                <property name="label">gtk-connect</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="can_default">True</property>
+                <property name="has_default">True</property>
+                <property name="receives_default">False</property>
+                <property name="tooltip_text" translatable="yes">Connessione al promogest</property>
+                <property name="use_action_appearance">False</property>
+                <property name="use_stock">True</property>
+                <accelerator key="F2" signal="clicked"/>
+                <signal name="clicked" handler="on_button_login_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="pack_type">end</property>
+                <property name="position">3</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
         <child>
           <object class="GtkButton" id="logo_button">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
+            <property name="use_action_appearance">False</property>
             <property name="xalign">0</property>
             <property name="yalign">0</property>
-            <signal name="clicked" handler="on_logo_button_clicked"/>
+            <signal name="clicked" handler="on_logo_button_clicked" swapped="no"/>
             <child>
               <object class="GtkImage" id="splash_image">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                 <property name="stock">gtk-missing-image</property>
               </object>
             </child>
           </object>
           <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
             <property name="position">2</property>
           </packing>
         </child>
         <child>
           <object class="GtkHBox" id="login_hbox">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="border_width">6</property>
             <property name="spacing">12</property>
-            <signal name="key_press_event" handler="on_login_window_key_press_event"/>
+            <signal name="key-press-event" handler="on_login_window_key_press_event" swapped="no"/>
             <child>
               <object class="GtkImage" id="logo_image">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <property name="yalign">0</property>
                 <property name="xpad">5</property>
                 <property name="ypad">3</property>
@@ -67,10 +173,12 @@
             <child>
               <object class="GtkVBox" id="login_parameters_vbox">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <property name="spacing">6</property>
                 <child>
                   <object class="GtkLabel" id="login_tipo_label">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <property name="label" translatable="yes">&lt;span weight="bold" size="larger"&gt;PromoGest&lt;/span&gt;
 </property>
                     <property name="use_markup">True</property>
@@ -86,6 +194,7 @@
                 <child>
                   <object class="GtkLabel" id="logina_label">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <property name="xalign">0</property>
                     <property name="label" translatable="yes">Inserire i dati di accesso:</property>
                   </object>
@@ -98,6 +207,7 @@
                 <child>
                   <object class="GtkTable" id="table1">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <property name="n_rows">4</property>
                     <property name="n_columns">2</property>
                     <property name="column_spacing">6</property>
@@ -105,9 +215,11 @@
                     <child>
                       <object class="GtkHBox" id="hbox1">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <child>
                           <object class="GtkAlignment" id="alignment481">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="xalign">0</property>
                             <property name="xscale">0</property>
                             <child>
@@ -116,26 +228,34 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="tooltip_text" translatable="yes">Seleziona l'anno di lavoro </property>
+                                <property name="primary_icon_activatable">False</property>
+                                <property name="secondary_icon_activatable">False</property>
+                                <property name="primary_icon_sensitive">True</property>
+                                <property name="secondary_icon_sensitive">True</property>
                                 <property name="adjustment">adjustment1</property>
                                 <property name="climb_rate">1</property>
                                 <property name="numeric">True</property>
-                                <signal name="focus_out_event" handler="on_focus_out_event"/>
-                                <signal name="focus_in_event" handler="on_focus_in_event"/>
+                                <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
+                                <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
                               </object>
                             </child>
                           </object>
                           <packing>
                             <property name="expand">False</property>
+                            <property name="fill">True</property>
                             <property name="position">0</property>
                           </packing>
                         </child>
                         <child>
                           <object class="GtkLabel" id="date_label">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="label" translatable="yes">label</property>
                             <property name="use_markup">True</property>
                           </object>
                           <packing>
+                            <property name="expand">True</property>
+                            <property name="fill">True</property>
                             <property name="position">1</property>
                           </packing>
                         </child>
@@ -150,19 +270,36 @@
                     <child>
                       <object class="GtkComboBoxEntry" id="username_comboxentry">
                         <property name="visible">True</property>
-                        <signal name="focus_in_event" handler="on_focus_in_event"/>
-                        <signal name="focus_out_event" handler="on_focus_out_event"/>
+                        <property name="can_focus">False</property>
+                        <property name="model">username_combobox_listore</property>
+                        <property name="text_column">0</property>
+                        <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
+                        <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
+                        <child internal-child="entry">
+                          <object class="GtkEntry" id="comboboxentry-entry2">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="has_focus">True</property>
+                            <property name="primary_icon_activatable">False</property>
+                            <property name="secondary_icon_activatable">False</property>
+                            <property name="primary_icon_sensitive">True</property>
+                            <property name="secondary_icon_sensitive">True</property>
+                          </object>
+                        </child>
                       </object>
                       <packing>
                         <property name="left_attach">1</property>
                         <property name="right_attach">2</property>
                         <property name="top_attach">1</property>
                         <property name="bottom_attach">2</property>
+                        <property name="x_options">GTK_FILL</property>
+                        <property name="y_options"></property>
                       </packing>
                     </child>
                     <child>
                       <object class="GtkLabel" id="label684">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="xalign">0</property>
                         <property name="label" translatable="yes">Anno di lavoro:</property>
                       </object>
@@ -176,8 +313,20 @@
                     <child>
                       <object class="GtkComboBoxEntry" id="azienda_comboboxentry">
                         <property name="visible">True</property>
-                        <signal name="focus_in_event" handler="on_focus_in_event"/>
-                        <signal name="focus_out_event" handler="on_focus_out_event"/>
+                        <property name="can_focus">False</property>
+                        <property name="model">azienda_combobox_listore</property>
+                        <property name="text_column">0</property>
+                        <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
+                        <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
+                        <child internal-child="entry">
+                          <object class="GtkEntry" id="comboboxentry-entry4">
+                            <property name="can_focus">False</property>
+                            <property name="primary_icon_activatable">False</property>
+                            <property name="secondary_icon_activatable">False</property>
+                            <property name="primary_icon_sensitive">True</property>
+                            <property name="secondary_icon_sensitive">True</property>
+                          </object>
+                        </child>
                       </object>
                       <packing>
                         <property name="left_attach">1</property>
@@ -188,6 +337,7 @@
                     <child>
                       <object class="GtkLabel" id="label32">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="xalign">0</property>
                         <property name="label" translatable="yes">Password:</property>
                       </object>
@@ -201,6 +351,7 @@
                     <child>
                       <object class="GtkLabel" id="label31">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="xalign">0</property>
                         <property name="label" translatable="yes">Nome utente:</property>
                       </object>
@@ -214,6 +365,7 @@
                     <child>
                       <object class="GtkLabel" id="label30">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="xalign">0</property>
                         <property name="label" translatable="yes">Azienda:</property>
                       </object>
@@ -228,6 +380,10 @@
                         <property name="can_focus">True</property>
                         <property name="visibility">False</property>
                         <property name="invisible_char">●</property>
+                        <property name="primary_icon_activatable">False</property>
+                        <property name="secondary_icon_activatable">False</property>
+                        <property name="primary_icon_sensitive">True</property>
+                        <property name="secondary_icon_sensitive">True</property>
                       </object>
                       <packing>
                         <property name="left_attach">1</property>
@@ -245,6 +401,8 @@
                 </child>
               </object>
               <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
                 <property name="pack_type">end</property>
                 <property name="position">1</property>
               </packing>
@@ -257,88 +415,6 @@
             <property name="position">2</property>
           </packing>
         </child>
-        <child internal-child="action_area">
-          <object class="GtkHButtonBox" id="dialog-action_area2">
-            <property name="visible">True</property>
-            <property name="layout_style">end</property>
-            <child>
-              <object class="GtkLinkButton" id="help_button">
-                <property name="label">gtk-help</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="has_tooltip">True</property>
-                <property name="use_stock">True</property>
-                <property name="uri">http://help.promotux.it</property>
-                <signal name="clicked" handler="on_help_button_clicked"/>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
-                <property name="position">-1</property>
-                <property name="secondary">True</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton" id="button_login">
-                <property name="label">gtk-connect</property>
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="can_default">True</property>
-                <property name="has_default">True</property>
-                <property name="receives_default">False</property>
-                <property name="tooltip_text" translatable="yes">Connessione al promogest</property>
-                <property name="use_stock">True</property>
-                <signal name="clicked" handler="on_button_login_clicked"/>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
-                <property name="pack_type">end</property>
-                <property name="position">3</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton" id="button_quit">
-                <property name="label">gtk-quit</property>
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="receives_default">False</property>
-                <property name="tooltip_text" translatable="yes">Uscita</property>
-                <property name="use_stock">True</property>
-                <signal name="clicked" handler="gtk_main_quit"/>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
-                <property name="pack_type">end</property>
-                <property name="position">2</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton" id="aggiorna_button">
-                <property name="label">Aggiornato?</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">False</property>
-                <property name="image">image1</property>
-                <property name="use_underline">True</property>
-                <signal name="clicked" handler="on_aggiorna_button_clicked"/>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
-                <property name="pack_type">end</property>
-                <property name="position">1</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="pack_type">end</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
       </object>
     </child>
     <action-widgets>
@@ -347,5 +423,13 @@
       <action-widget response="0">button_quit</action-widget>
       <action-widget response="-11">aggiorna_button</action-widget>
     </action-widgets>
+  </object>
+  <object class="GtkListStore" id="username_combobox_listore">
+    <columns>
+      <!-- column-name gchararray1 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray2 -->
+      <column type="gchararray"/>
+    </columns>
   </object>
 </interface>

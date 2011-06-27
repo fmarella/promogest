@@ -21,7 +21,7 @@
 
 
 from SimpleGladeApp import SimpleGladeApp
-import gtk, gobject
+#import gtk, gobject
 from promogest import Environment
 
 class GladeApp(SimpleGladeApp):

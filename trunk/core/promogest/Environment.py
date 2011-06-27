@@ -20,9 +20,22 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
+
+from promogest import pg3_check
+pg3 = pg3_check.pg3_cla
+
+
 import locale
 from config import Config
-import gtk
+if pg3:
+    from gi.repository import Gtk as gtk
+else:
+    import gtk
+try:
+    settings = gtk.settings_get_default()
+    gtk.Settings.set_long_property(settings, "gtk-button-images", 1, "main")
+except:
+    print "Aggiunta icone non ha funzionato"
 import os
 import shutil
 import glob
@@ -149,7 +162,7 @@ def startdir():
     return promogestStartDir
 
 
-def messageInfo(msg="Messaggio generico", transient=None):
+def messageInfoEnv(msg="Messaggio generico", transient=None):
     """generic msg dialog """
     dialoggg = gtk.MessageDialog(transient,
                         gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
@@ -170,32 +183,32 @@ class MyProxy(ConnectionProxy):
         except OperationalError as e:
             # Handle this exception
 #            print("ATTENZIONE:OperationalError",e)
-            messageInfo(msg="UN ERRORE È STATO INTERCETTATO E SEGNALATO: "+e.message)
+            messageInfoEnv(msg="UN ERRORE È STATO INTERCETTATO E SEGNALATO: "+e.message)
 #            pass
         except IntegrityError as e:
             # Handle this exception
 #            print("ATTENZIONE:IntegrityError",e)
-            messageInfo(msg="IntegrityError UN ERRORE È STATO INTERCETTATO E SEGNALATO: "+e.message)
+            messageInfoEnv(msg="IntegrityError UN ERRORE È STATO INTERCETTATO E SEGNALATO: "+e.message)
             session.rollback()
         except ProgrammingError as e:
             # Handle this exception
 #            print("ATTENZIONE:ProgrammingError",e)
-            messageInfo(msg="UN ERRORE È STATO INTERCETTATO E SEGNALATO: "+e.message)
+            messageInfoEnv(msg="UN ERRORE È STATO INTERCETTATO E SEGNALATO: "+e.message)
             session.rollback()
         except InvalidRequestError as e:
             # Handle this exception
 #            print("ATTENZIONE:InvalidRequestError",e)
-            messageInfo(msg="UN ERRORE È STATO INTERCETTATO E SEGNALATO: "+e.message)
+            messageInfoEnv(msg="UN ERRORE È STATO INTERCETTATO E SEGNALATO: "+e.message)
             session.rollback()
         except AssertionError as e:
             # Handle this exception
 #            print("ATTENZIONE:AssertionError",e)
-            messageInfo(msg="UN ERRORE È STATO INTERCETTATO E SEGNALATO\n Possibile tentativo di cancellazione di un dato\n collegato ad altri dati fondamentali: "+e.message)
+            messageInfoEnv(msg="UN ERRORE È STATO INTERCETTATO E SEGNALATO\n Possibile tentativo di cancellazione di un dato\n collegato ad altri dati fondamentali: "+e.message)
             session.rollback()
         except ValueError as e:
             # Handle this exception
 #            print("ATTENZIONE:ValueError",e)
-            messageInfo(msg="Risulta inserito un Valore non corretto. Ricontrolla: "+e.message)
+            messageInfoEnv(msg="Risulta inserito un Valore non corretto. Ricontrolla: "+e.message)
             session.rollback()
 
 
@@ -239,7 +252,7 @@ def connect():
                             password=password, database=database)
     except Exception, e:
         a= "CONNESSIONE AL DATABASE PRO NON RIUSCITA.\n DETTAGLIO ERRORE: [%s]" % ( e,)
-        messageInfo(msg=a)
+        messageInfoEnv(msg=a)
         exit( )
     if a:
         return a
@@ -613,3 +626,4 @@ def hook(et, ev, eb):
     print "UN ERRORE È STATO INTERCETTATO E LOGGATO, SI CONSIGLIA DI RIAVVIARE E DI CONTATTARE L'ASSISTENZA \n\nPREMERE CTRL+C PER CHIUDERE  \n"+"\n  ".join(list(traceback.format_exception(et, ev, eb)))
     sendmail()
 sys.excepthook = hook
+
