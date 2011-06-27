@@ -90,7 +90,8 @@ class Login(GladeApp):
                 ultima_azienda = a.schemaa
             self.azienda_combobox_listore.append((a.schemaa, a.denominazione))
         self.azienda_comboboxentry.set_model(self.azienda_combobox_listore)
-        #self.azienda_comboboxentry.set_text_column(0)
+        if not Environment.pg3: #necessario per windows, non va bene in gtk3
+            self.azienda_comboboxentry.set_text_column(0)
         Environment.windowGroup.append(self.getTopLevel())
 
         self.splashHandler()
@@ -108,7 +109,8 @@ class Login(GladeApp):
         for a in usrs:
             self.username_combobox_listore.append((a.username, a.email))
         self.username_comboxentry.set_model(self.username_combobox_listore)
-        #self.username_comboxentry.set_text_column(0)
+        if not Environment.pg3:  #necessario per windows
+            self.username_comboxentry.set_text_column(0)
         self.username_comboxentry.grab_focus()
         data = datetime.datetime.now()
         self.anno_lavoro_spinbutton.set_value(data.year)
@@ -171,17 +173,19 @@ class Login(GladeApp):
     def on_button_login_clicked(self, button=None):
         """
         """
-        username = self.username_comboxentry.child.get_text()
+        #username = self.username_comboxentry.child.get_text()
+        username = self.username_comboxentry.get_child().get_text()
         password = self.password_entry.get_text()
         do_login = True
         if username=='' or password=='':
             messageInfo(msg='Inserire nome utente e password')
             do_login = False
-        elif self.azienda_comboboxentry.child.get_text() == '':
+        elif self.azienda_comboboxentry.get_child().get_text() == '':
             messageInfo(msg="Occorre selezionare un'azienda")
             do_login = False
         else:
-            self.azienda = self.azienda_comboboxentry.child.get_text()
+            #self.azienda = self.azienda_comboboxentry.child.get_text()
+            self.azienda = self.azienda_comboboxentry.get_child().get_text()
             findComboboxRowFromStr(self.azienda_comboboxentry, self.azienda, 0)
             found = self.azienda_comboboxentry.get_active() != -1
             if not found:
