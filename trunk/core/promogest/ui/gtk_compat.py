@@ -62,6 +62,6 @@ else:
     gtk_status_icon_new = gtk.StatusIcon.new_from_file
     pango_tabarray_new = pango.TabArray.new
 
-    GDK_EVENTTYPE_BUTTON_PRESS = Gdk.EventType.BUTTON_PRESS
-    GDK_EVENTTYPE_2BUTTON_PRESS = Gdk.EventType._2BUTTON_PRESS
-    GDK_EVENTTYPE_3BUTTON_PRESS = Gdk.EventType._3BUTTON_PRESS
+    GDK_EVENTTYPE_BUTTON_PRESS = gdk.EventType.BUTTON_PRESS
+    GDK_EVENTTYPE_2BUTTON_PRESS = gdk.EventType._2BUTTON_PRESS
+    GDK_EVENTTYPE_3BUTTON_PRESS = gdk.EventType._3BUTTON_PRESS
