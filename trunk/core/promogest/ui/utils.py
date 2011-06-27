@@ -2627,9 +2627,9 @@ def aggiorna(anag):
 def messageInfo(msg="Messaggio generico", transient=None):
     """generic msg dialog """
     dialoggg = gtk.MessageDialog(transient,
-                        gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                        gtk.MESSAGE_INFO,
-                        gtk.BUTTONS_OK)
+                        GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
+                        GTK_DIALOG_MESSAGE_INFO,
+                        GTK_BUTTON_OK)
     dialoggg.set_markup(msg)
     dialoggg.run()
     dialoggg.destroy()
@@ -2648,9 +2648,9 @@ def messageError(msg="Messaggio generico", transient=None):
 def messageWarning(msg="Messaggio generico", transient=None):
     """generic msg dialog """
     dialoggg = gtk.MessageDialog(transient,
-                        gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                        gtk.MESSAGE_WARNING,
-                        gtk.BUTTONS_OK)
+                        GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
+                        GTK_DIALOG_MESSAGE_WARNING,
+                        GTK_BUTTON_OK)
     dialoggg.set_markup(msg)
     response = dialoggg.run()
     dialoggg.destroy()
@@ -2659,12 +2659,12 @@ def messageWarning(msg="Messaggio generico", transient=None):
 
 def YesNoDialog(msg="MESSAGGIO", transient=None,show_entry=False ):
     dialog = gtk.MessageDialog(transient,
-                           gtk.DIALOG_MODAL
-                           | gtk.DIALOG_DESTROY_WITH_PARENT,
-                           gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO,
+                           GTK_DIALOG_MODAL
+                           | GTK_DIALOG_DESTROY_WITH_PARENT,
+                           GTK_DIALOG_MESSAGE_QUESTION, GTK_BUTTON_YES_NO,
                            msg)
     __entry_codi = gtk.Entry()
-    dialog.vbox.pack_start(__entry_codi)
+    dialog.vbox.pack_start(__entry_codi, False, False, 0)
     if show_entry:
         __entry_codi.show()
     response = dialog.run()

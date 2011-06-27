@@ -40,6 +40,15 @@ if not Environment.pg3:
         GTK_RESPONSE_APPLY = gtk.RESPONSE_APPLY
         GTK_RESPONSE_DELETE_EVENT = gtk.RESPONSE_DELETE_EVENT
         GTK_RESPONSE_YES = gtk.RESPONSE_YES
+        GTK_DIALOG_MODAL = gtk.DIALOG_MODAL
+        GTK_DIALOG_DESTROY_WITH_PARENT = gtk.DIALOG_DESTROY_WITH_PARENT
+        GTK_DIALOG_MESSAGE_INFO = gtk.MESSAGE_INFO
+        GTK_DIALOG_MESSAGE_QUESTION = gtk.MESSAGE_QUESTION
+        GTK_DIALOG_MESSAGE_WARNING = gtk.MESSAGE_WARNING
+        GTK_BUTTON_OK = gtk.BUTTONS_OK
+        GTK_BUTTON_YES_NO = gtk.BUTTONS_YES_NO
+
+
         gtk_status_icon_new = gtk.status_icon_new_from_file
         pango_tabarray_new = pango.TabArray
         gdk_keyval_name = gtk.gdk.keyval_name
@@ -89,6 +98,15 @@ else:
     GTK_RESPONSE_APPLY = gtk.ResponseType.APPLY
     GTK_RESPONSE_DELETE_EVENT = gtk.ResponseType.DELETE_EVENT
     GTK_RESPONSE_YES = gtk.ResponseType.YES
+    GTK_DIALOG_MODAL = gtk.DialogFlags.MODAL
+    GTK_DIALOG_DESTROY_WITH_PARENT = gtk.DialogFlags.DESTROY_WITH_PARENT
+    GTK_DIALOG_MESSAGE_INFO = gtk.MessageType.INFO
+    GTK_DIALOG_MESSAGE_QUESTION = gtk.MessageType.QUESTION
+    GTK_DIALOG_MESSAGE_WARNING = gtk.MessageType.WARNING
+    GTK_BUTTON_OK = gtk.ButtonsType.OK
+    GTK_BUTTON_YES_NO = gtk.ButtonsType.YES_NO
+
+
     gtk_status_icon_new = gtk.StatusIcon.new_from_file
     pango_tabarray_new = pango.TabArray.new
     gdk_keyval_name = gdk.keyval_name
