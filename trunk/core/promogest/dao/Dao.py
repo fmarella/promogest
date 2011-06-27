@@ -19,7 +19,6 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-import gtk
 import datetime
 import hashlib
 import sqlalchemy
@@ -213,12 +212,7 @@ class Dao(object):
     rincontrollare i campi e riprovare
     Grazie!
     """ %e
-            overDialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL
-                                                | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                                    gtk.MESSAGE_ERROR,
-                                                    gtk.BUTTONS_CANCEL, msg)
-            response = overDialog.run()
-            overDialog.destroy()
+            messageInfoEnv(msg=msg)
             pg2log.info("ERRORE IN DAO COMMIT  "+str(e))
             params["session"].rollback()
 #            params["session"].clear()
