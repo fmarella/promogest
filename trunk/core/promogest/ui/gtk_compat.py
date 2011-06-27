@@ -39,6 +39,7 @@ if not Environment.pg3:
         GTK_RESPONSE_YES = gtk.RESPONSE_YES
         gtk_status_icon_new = gtk.status_icon_new_from_file
         pango_tabarray_new = pango.TabArray
+        keyval_name = gtk.gdk.keyval_name
 
         GDK_EVENTTYPE_BUTTON_PRESS = gdk.BUTTON_PRESS
         GDK_EVENTTYPE_2BUTTON_PRESS = gdk._2BUTTON_PRESS
@@ -71,6 +72,7 @@ else:
     GTK_RESPONSE_YES = gtk.ResponseType.YES
     gtk_status_icon_new = gtk.StatusIcon.new_from_file
     pango_tabarray_new = pango.TabArray.new
+    keyval_name = gdk.keyval_name
 
     GDK_EVENTTYPE_BUTTON_PRESS = gdk.EventType.BUTTON_PRESS
     GDK_EVENTTYPE_2BUTTON_PRESS = gdk.EventType._2BUTTON_PRESS
