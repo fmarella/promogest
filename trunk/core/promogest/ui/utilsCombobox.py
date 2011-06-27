@@ -22,9 +22,8 @@
 
 import gobject, os, decimal
 from decimal import *
-import pygtk
-pygtk.require('2.0')
-import gtk
+from promogest.ui.gtk_compat import *
+#import gtk
 import time, datetime
 from promogest import Environment
 
@@ -1174,7 +1173,7 @@ def on_main_window_key_press_eventPart(ui,widget, event):
 #        if event.type == gtk.gdk.KEY_PRESS:
 #            if event.state & gtk.gdk.CONTROL_MASK and (
 #                (event.state & gtk.gdk.MOD2_MASK) or (event.state & gtk.gdk.MOD1_MASK)):
-#                if gtk.gdk.keyval_name(event.keyval) == "m":
+#                if gdk_keyval_name(event.keyval) == "m":
 #                    # easter egg
 
 #                    def menuitem_response(game):

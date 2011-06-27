@@ -27,9 +27,9 @@ from threading import Timer
 import hashlib
 from calendar import Calendar
 from decimal import *
-import pygtk
-pygtk.require('2.0')
-import gtk
+
+from promogest.ui.gtk_compat import *
+#import gtk
 import threading
 import time
 import datetime

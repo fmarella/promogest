@@ -29,10 +29,7 @@ import hashlib
 import os
 import sys
 from promogest import Environment
-if Environment.pg3:
-    from gi.repository import Gtk
-else:
-    import gtk
+from promogest.ui.gtk_compat import *
 import datetime
 import random
 import threading
@@ -333,25 +330,13 @@ class Login(GladeApp):
         :param widget: -
         :param event: -
         """
-        if Environment.pg3:
-            if event.type == Gdk.EventType.KEY_PRESS:
-                if event.get_state() & Gdk.ModifierType.CONTROL_MASK:
-                    key = str(Gdk.keyval_name(event.keyval))
-                    if key.upper() == "L":
-                        self.username_comboxentry.set_active(0)
-                        self.password_entry.set_text('admin')
-                        self.on_button_login_clicked()
-        else:
-            if event.type == gtk.gdk.KEY_PRESS:
-                if event.state & gtk.gdk.CONTROL_MASK:
-                    key = str(gtk.gdk.keyval_name(event.keyval))
-                    if key.upper() == "L":
-                        self.username_comboxentry.set_active(0)
-                        self.password_entry.set_text('admin')
-                        self.on_button_login_clicked()
-
-
-
+        if event.type == GDK_EVENTTYPE_KEY_PRESS:
+            if event.get_state() & GDK_CONTROL_MASK:
+                key = str(gdk_keyval_name(event.keyval))
+                if key.upper() == "L":
+                    self.username_comboxentry.set_active(0)
+                    self.password_entry.set_text('admin')
+                    self.on_button_login_clicked()
 
 
 def on_main_window_closed(main_window, login_window):

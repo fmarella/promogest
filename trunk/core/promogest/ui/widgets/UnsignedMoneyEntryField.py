@@ -20,7 +20,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
-import gtk
+from promogest.ui.gtk_compat import *
 from CustomEntryField import CustomEntryField
 from promogest import Environment
 from promogest.ui.utils import mN, setconf
@@ -38,7 +38,7 @@ class UnsignedMoneyEntryField(CustomEntryField):
 
 
     def my_key_press_event(self, widget, event):
-        keyname = gtk.gdk.keyval_name(event.keyval)
+        keyname = gdk_keyval_name(event.keyval)
 #        print " PASSIAMO DI QUI"
         if keyname not in self.acceptedKeys:
             return True

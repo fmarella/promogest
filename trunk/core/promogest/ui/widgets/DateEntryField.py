@@ -19,7 +19,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
-import gtk
+from promogest.ui.gtk_compat import *
 import time, datetime
 import string
 from CustomEntryField import CustomEntryField
@@ -38,7 +38,7 @@ class DateEntryField(CustomEntryField):
 
 
     def my_key_press_event(self, widget, event):
-        keyname = gtk.gdk.keyval_name(event.keyval)
+        keyname = gdk_keyval_name(event.keyval)
         if keyname not in self.acceptedKeys:
             return True
         data = widget.get_text()

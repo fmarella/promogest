@@ -39,17 +39,23 @@ if not Environment.pg3:
         GTK_RESPONSE_YES = gtk.RESPONSE_YES
         gtk_status_icon_new = gtk.status_icon_new_from_file
         pango_tabarray_new = pango.TabArray
-        keyval_name = gtk.gdk.keyval_name
+        gdk_keyval_name = gtk.gdk.keyval_name
 
         GDK_EVENTTYPE_BUTTON_PRESS = gdk.BUTTON_PRESS
         GDK_EVENTTYPE_2BUTTON_PRESS = gdk._2BUTTON_PRESS
         GDK_EVENTTYPE_3BUTTON_PRESS = gdk._3BUTTON_PRESS
+
+        GDK_EVENTTYPE_KEY_PRESS = gtk.gdk.KEY_PRESS
+        GDK_CONTROL_MASK = gtk.gdk.CONTROL_MASK
 
         GDK_KEY_F5 = gtk.keysyms.F5
         GTK_ACCEL_VISIBLE = gtk.ACCEL_VISIBLE
 
         GTK_SELECTIONMODE_SINGLE = gtk.SELECTION_SINGLE
         GTK_SELECTIONMODE_MULTIPLE = gtk.SELECTION_MULTIPLE
+
+        GTK_STATE_NORMAL = gtk.STATE_NORMAL
+        GDK_COLOR_PARSE = gtk.gdk.color_parse
 
     except ImportError:
         pass
@@ -72,14 +78,21 @@ else:
     GTK_RESPONSE_YES = gtk.ResponseType.YES
     gtk_status_icon_new = gtk.StatusIcon.new_from_file
     pango_tabarray_new = pango.TabArray.new
-    keyval_name = gdk.keyval_name
+    gdk_keyval_name = gdk.keyval_name
+
 
     GDK_EVENTTYPE_BUTTON_PRESS = gdk.EventType.BUTTON_PRESS
     GDK_EVENTTYPE_2BUTTON_PRESS = gdk.EventType._2BUTTON_PRESS
     GDK_EVENTTYPE_3BUTTON_PRESS = gdk.EventType._3BUTTON_PRESS
+
+    GDK_EVENTTYPE_KEY_PRESS = gdk.EventType.KEY_PRESS
+    GDK_CONTROL_MASK = gdk.ModifierType.CONTROL_MASK
 
     GDK_KEY_F5 = gdk.KEY_F5
     GTK_ACCEL_VISIBLE = gtk.AccelFlags.VISIBLE
 
     GTK_SELECTIONMODE_SINGLE = gtk.SelectionMode.SINGLE
     GTK_SELECTIONMODE_MULTIPLE = gtk.SelectionMode.MULTIPLE
+
+    GTK_STATE_NORMAL = gtk.StateType.NORMAL
+    GDK_COLOR_PARSE = gdk.color_parse

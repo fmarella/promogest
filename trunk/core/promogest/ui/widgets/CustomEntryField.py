@@ -2,11 +2,28 @@
 
 # Promogest
 #
-# Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
+# Copyright (C) 2005-2010 by Promotux Informatica - http://www.promotux.it/
 # Author: Andrea Argiolas <andrea@promotux.it>
+# Author: Francesco Meloni  <francesco@promotux.it>
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 
-import gtk
+
+from promogest.ui.gtk_compat import *
+
 
 class CustomEntryField(gtk.Entry):
 
@@ -58,14 +75,14 @@ class CustomEntryField(gtk.Entry):
         except:
             #print "DEFINIRE NELLA SEZIONE DOCUMENTI UN COLORE PER LE ENTRY CON color_text = #FFFFFF"
             color_text = "black"
-        widget.modify_base(gtk.STATE_NORMAL, gtk.gdk.color_parse(color_base))
-        widget.modify_text(gtk.STATE_NORMAL, gtk.gdk.color_parse(color_text))
+        widget.modify_base(GTK_STATE_NORMAL, GDK_COLOR_PARSE(color_base))
+        widget.modify_text(GTK_STATE_NORMAL, GDK_COLOR_PARSE(color_text))
 
     def on_focus_out_event(self, widget, event):
-        #widget.modify_fg(gtk.STATE_NORMAL, gtk.gdk.color_parse("blue"))
-        #widget.modify_bg(gtk.STATE_NORMAL, gtk.gdk.color_parse("red"))
-        widget.modify_base(gtk.STATE_NORMAL, gtk.gdk.color_parse("white"))
-        widget.modify_text(gtk.STATE_NORMAL, gtk.gdk.color_parse("black"))
+        #widget.modify_fg(GTK_STATE_NORMAL, GDK_COLOR_PARSE("blue"))
+        #widget.modify_bg(GTK_STATE_NORMAL, GDK_COLOR_PARSE("red"))
+        widget.modify_base(GTK_STATE_NORMAL, GDK_COLOR_PARSE("white"))
+        widget.modify_text(GTK_STATE_NORMAL, GDK_COLOR_PARSE("black"))
 
     def my_key_press_event(self, widget, event):
         pass
