@@ -23,11 +23,11 @@
 
 from SimpleGladeWrapper import SimpleGladeWrapper
 import os
+from promogest import Environment
+
 import gtk
-import gobject
 import xml.etree.cElementTree as ElementTree
 
-from promogest import Environment
 from promogest.ui.widgets.UnsignedDecimalEntryField import UnsignedDecimalEntryField
 from promogest.ui.widgets.SignedDecimalEntryField import SignedDecimalEntryField
 from promogest.ui.widgets.UnsignedMoneyEntryField import UnsignedMoneyEntryField
