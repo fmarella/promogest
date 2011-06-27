@@ -24,7 +24,6 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 import time
-import gtk
 import os
 import sys
 import threading
@@ -74,10 +73,7 @@ class AnagraficaEdit(GladeWidget):
             self.dialogTopLevel = self.dialog.getTopLevel()
             self.dialogTopLevel.set_title(self._windowTitle)
             self.dialogTopLevel.vbox.pack_start(self.getTopLevel())
-            accelGroup = gtk.AccelGroup()
-            self.dialogTopLevel.add_accel_group(accelGroup)
-            self.dialog.ok_button.add_accelerator('grab_focus', accelGroup, gtk.keysyms.F5, 0, gtk.ACCEL_VISIBLE)
-            self.dialog.ok_button.connect('grab_focus',self.on_ok_button_grab_focus)
+            self.dialog.ok_button.connect('grab_focus', self.on_ok_button_grab_focus)
             Environment.windowGroup.append(self.dialogTopLevel)
             self.dialogTopLevel.set_transient_for(self._anagrafica.getTopLevel())
             self.placeWindow(self.dialogTopLevel)
