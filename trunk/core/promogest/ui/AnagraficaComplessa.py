@@ -30,13 +30,13 @@ import sys
 import threading
 import os.path
 from promogest.Environment import conf
-from GladeWidget import GladeWidget
+from promogest.ui.GladeWidget import GladeWidget
 from promogest.ui.widgets.FilterWidget import FilterWidget
 from promogest.lib.XmlGenerator import XlsXmlGenerator
 from promogest.lib.CsvGenerator import CsvFileGenerator
-from utils import *
-import Login
-import subprocess ,shlex
+from promogest.ui.utils import *
+import subprocess
+import shlex
 from promogest import Environment
 from calendar import Calendar
 #if Environment.new_print_enjine:
@@ -45,10 +45,11 @@ from promogest.lib.sla2pdf.SlaTpl2Sla import SlaTpl2Sla as SlaTpl2Sla_ng
 from promogest.lib.SlaTpl2Sla import SlaTpl2Sla
 #else:
 
-
 from promogest.ui.SendEmail import SendEmail
 from promogest.lib.HtmlHandler import createHtmlObj, renderTemplate, renderHTML
 from promogest.dao.Azienda import Azienda
+
+from promogest.ui.gtk_compat import *
 
 
 class Anagrafica(GladeWidget):
@@ -116,17 +117,6 @@ class Anagrafica(GladeWidget):
 
         gladeWidget.build()
 
-        accelGroup = gtk.AccelGroup()
-        self.getTopLevel().add_accel_group(accelGroup)
-        self.bodyWidget.filter_clear_button.add_accelerator('clicked',
-                            accelGroup, gtk.keysyms.Escape, 0, gtk.ACCEL_VISIBLE)
-        self.bodyWidget.filter_search_button.add_accelerator('clicked',
-                            accelGroup, gtk.keysyms.F3, 0, gtk.ACCEL_VISIBLE)
-#        self.bodyWidget.filter_search_button.add_accelerator('clicked',
-#                            accelGroup, gtk.keysyms.KP_Enter, 0, gtk.ACCEL_VISIBLE)
-#        self.bodyWidget.filter_search_button.add_accelerator('clicked',
-#                            accelGroup, gtk.keysyms.Return, 0, gtk.ACCEL_VISIBLE)
-
     def _setHtmlHandler(self, htmlHandler):
         self.htmlHandler = htmlHandler
         html = """<html><body></body></html>"""
@@ -169,10 +159,10 @@ class Anagrafica(GladeWidget):
                                             None,
                                             gtk.FILE_CHOOSER_ACTION_SAVE,
                                             (gtk.STOCK_CANCEL,
-                                                gtk.RESPONSE_CANCEL,
+                                                GTK_RESPONSE_CANCEL,
                                                 gtk.STOCK_SAVE,
-                                            gtk.RESPONSE_OK))
-        saveDialog.set_default_response(gtk.RESPONSE_OK)
+                                            GTK_RESPONSE_OK))
+        saveDialog.set_default_response(GTK_RESPONSE_OK)
 
         self.__homeFolder = setconf("General", "cartella_predefinita") or ""
         if self.__homeFolder == '':
@@ -217,7 +207,7 @@ class Anagrafica(GladeWidget):
         values = self.set_data_list(data_export)
         saveDialog.show_all()
         response = saveDialog.run()
-        if response == gtk.RESPONSE_OK:
+        if response == GTK_RESPONSE_OK:
             (fileType,file_name) = on_typeComboBox_changed(typeComboBox,
                                                             saveDialog,
                                                             currentName,
@@ -238,7 +228,7 @@ class Anagrafica(GladeWidget):
                 #xmlFile.close_sheet()
                 xmlFile.XlsXmlFooter()
             saveDialog.destroy()
-        elif response == gtk.RESPONSE_CANCEL:
+        elif response == GTK_RESPONSE_CANCEL:
             saveDialog.destroy()
 
     def on_credits_menu_activate(self, widget):
@@ -246,7 +236,7 @@ class Anagrafica(GladeWidget):
         creditsDialog.getTopLevel().set_transient_for(self.getTopLevel())
         creditsDialog.getTopLevel().show_all()
         response = creditsDialog.credits_dialog.run()
-        if response == gtk.RESPONSE_OK:
+        if response == GTK_RESPONSE_OK:
             creditsDialog.credits_dialog.destroy()
 
     def on_send_Email_activate(self, widget):
@@ -268,7 +258,7 @@ class Anagrafica(GladeWidget):
         licenzaDialog.licenza_textview.set_buffer(textBuffer)
         licenzaDialog.getTopLevel().show_all()
         response = licenzaDialog.licenza_dialog.run()
-        if response == gtk.RESPONSE_OK:
+        if response == GTK_RESPONSE_OK:
             licenzaDialog.licenza_dialog.destroy()
 
     def on_seriale_menu_activate(self, widget):
@@ -280,19 +270,13 @@ class Anagrafica(GladeWidget):
             msg = 'Codice installazione:\n\n' + str(md5.new(content).hexdigest().upper())
         except:
             msg = 'Impossibile generare il codice !!!'
-        dialog = gtk.MessageDialog(self.getTopLevel(),
-                                   gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                   gtk.MESSAGE_INFO,
-                                   gtk.BUTTONS_OK,
-                                   msg)
-        dialog.run()
-        dialog.destroy()
+        messageInfo(msg=msg)
 
     def on_anagrafica_filter_treeview_cursor_changed(self, treeview=None):
         sel = self.anagrafica_filter_treeview.get_selection()
-        if sel.get_mode() == gtk.SELECTION_MULTIPLE:
+        if sel.get_mode() == GTK_SELECTIONMODE_MULTIPLE:
             return
-        elif sel.get_mode() == gtk.SELECTION_SINGLE:
+        elif sel.get_mode() == GTK_SELECTIONMODE_SINGLE:
             (model, iterator) = sel.get_selected()
             if iterator is not None:
                 self.dao = model.get_value(iterator, 0)
@@ -321,7 +305,7 @@ class Anagrafica(GladeWidget):
         sel = treeSelection
         self.daoSelection = []
         self.dao = None
-        if sel.get_mode() == gtk.SELECTION_MULTIPLE:
+        if sel.get_mode() == GTK_SELECTIONMODE_MULTIPLE:
             model, iterator = sel.get_selected_rows()
             count = sel.count_selected_rows()
             if count > 1:
@@ -579,7 +563,7 @@ class Anagrafica(GladeWidget):
         previewDialog = self.reportHandler.buildPreviewWidget()
 
     def on_records_print_progress_dialog_response(self, dialog, responseId):
-        if responseId == gtk.RESPONSE_CANCEL:
+        if responseId == GTK_RESPONSE_CANCEL:
             self.__cancelOperation = True
 
             #self.__pdfGenerator.cancelOperation()
@@ -636,12 +620,7 @@ class Anagrafica(GladeWidget):
         except:
             msg = """Errore nel salvataggio!
 Verificare i permessi della cartella"""
-            overDialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL
-                                            | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                                gtk.MESSAGE_ERROR,
-                                                gtk.BUTTONS_CANCEL, msg)
-            response = overDialog.run()
-            overDialog.destroy()
+            messageError(msg=msg)
             return
 
     def on_send_email_button_clicked(self, widget):
@@ -708,9 +687,9 @@ Grazie!""")
                                            parent=dialog,
                                            action=gtk.FILE_CHOOSER_ACTION_SAVE,
                                            buttons=(gtk.STOCK_CANCEL,
-                                                    gtk.RESPONSE_CANCEL,
+                                                    GTK_RESPONSE_CANCEL,
                                                     gtk.STOCK_SAVE,
-                                                    gtk.RESPONSE_OK),
+                                                    GTK_RESPONSE_OK),
                                            backend=None)
         fileDialog.set_current_name(self._pdfName+".pdf")
         fileDialog.set_current_folder(self._folder)
@@ -729,9 +708,9 @@ Grazie!""")
 
         response = fileDialog.run()
         # FIXME: handle errors here
-        if ( (response == gtk.RESPONSE_CANCEL) or ( response == gtk.RESPONSE_DELETE_EVENT)) :
+        if ( (response == GTK_RESPONSE_CANCEL) or ( response == GTK_RESPONSE_DELETE_EVENT)) :
             pass
-        elif response == gtk.RESPONSE_OK:
+        elif response == GTK_RESPONSE_OK:
             filename = fileDialog.get_filename()
 
             #modifiche
@@ -743,24 +722,18 @@ Grazie!""")
 
                 if os.path.exists(filename):
                     msg = 'Il file "%s" esiste.  Sovrascrivere?' % filename
-                    overDialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL
-                                                | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                                gtk.MESSAGE_QUESTION,
-                                                gtk.BUTTONS_YES_NO, msg)
-                    response = overDialog.run()
-                    overDialog.destroy()
-                    if response == gtk.RESPONSE_YES:
+                    if YesNoDialog(msg=msg, transient=self.getTopLevel()):
                         can_save = 1
                         #overwrite the file if user click  yes
                         break
                     else:
                         response =  fileDialog.run()
-                        if response == gtk.RESPONSE_CANCEL or response == gtk.RESPONSE_DELETE_EVENT:
+                        if response == GTK_RESPONSE_CANCEL or response == GTK_RESPONSE_DELETE_EVENT:
                             #exit but don't save the file
                             esci = True
                             can_save = 0
                             break
-                        elif response == gtk.RESPONSE_OK:
+                        elif response == GTK_RESPONSE_OK:
                             filename = fileDialog.get_filename()
                 else:
                     can_save = 1
@@ -777,22 +750,16 @@ Grazie!""")
                         except:
                             msg = """Errore nel salvataggio!
     Verificare i permessi della cartella"""
-                            overDialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL
-                                                | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                                gtk.MESSAGE_ERROR,
-                                                gtk.BUTTONS_CANCEL, msg)
-                            response = overDialog.run()
-                            #overDialog.destroy()
-                            if response == gtk.RESPONSE_CANCEL or \
-                                            response == gtk.RESPONSE_DELETE_EVENT:
-                                overDialog.destroy()
+                            response = messageError(msg=msg)
+                            if response == GTK_RESPONSE_CANCEL or \
+                                            response == GTK_RESPONSE_DELETE_EVENT:
                                 response = fileDialog.run()
-                                if response == gtk.RESPONSE_CANCEL or \
-                                            response == gtk.RESPONSE_DELETE_EVENT:
+                                if response == GTK_RESPONSE_CANCEL or \
+                                            response == GTK_RESPONSE_DELETE_EVENT:
                                     #exit but don't save the file
                                     esci  = True
                                     break
-                                elif response == gtk.RESPONSE_OK:
+                                elif response == GTK_RESPONSE_OK:
                                     filename = fileDialog.get_filename()
                                     break
 

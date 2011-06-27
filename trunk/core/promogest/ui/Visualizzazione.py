@@ -20,12 +20,9 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-import gtk
-from GladeWidget import GladeWidget
+from promogest.ui.GladeWidget import GladeWidget
 from promogest.ui.widgets.FilterWidget import FilterWidget
-
-from utils import *
-
+from promogest.ui.utils import *
 
 
 class Visualizzazione(GladeWidget):
@@ -56,12 +53,6 @@ class Visualizzazione(GladeWidget):
         self._treeViewModel = None
 
         gladeWidget.build()
-
-        accelGroup = gtk.AccelGroup()
-        self.getTopLevel().add_accel_group(accelGroup)
-        self.bodyWidget.filter_clear_button.add_accelerator('clicked', accelGroup, gtk.keysyms.Escape, 0, gtk.ACCEL_VISIBLE)
-        self.bodyWidget.filter_search_button.add_accelerator('clicked', accelGroup, gtk.keysyms.F3, 0, gtk.ACCEL_VISIBLE)
-
 
     def show_all(self):
         """ Visualizza/aggiorna tutta la struttura della visualizzazione """

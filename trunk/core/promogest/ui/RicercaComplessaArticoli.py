@@ -117,11 +117,6 @@ class RicercaComplessaArticoli(RicercaComplessa):
         self.filter.filter_clear_button.connect('clicked', self.on_filter_clear_button_clicked)
         self.filter.filter_search_button.connect('clicked', self.on_filter_search_button_clicked)
 
-        accelGroup = gtk.AccelGroup()
-        self.getTopLevel().add_accel_group(accelGroup)
-        self.filter.filter_clear_button.add_accelerator('clicked', accelGroup, gtk.keysyms.Escape, 0, gtk.ACCEL_VISIBLE)
-        self.filter.filter_search_button.add_accelerator('clicked', accelGroup, gtk.keysyms.F3, 0, gtk.ACCEL_VISIBLE)
-
         self.draw()
         self.setInitialSearch()
 

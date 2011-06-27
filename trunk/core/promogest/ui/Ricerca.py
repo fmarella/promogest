@@ -20,15 +20,13 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 import gtk
-import os, os.path
-from GladeWidget import GladeWidget
+import os
+from promogest.ui.GladeWidget import GladeWidget
 from promogest.ui.widgets.FilterWidget import FilterWidget
-import Login
-from utils import *
+from promogest.ui.utils import *
 from promogest import Environment
-import utils
-from jinja2 import Environment  as Env
-from jinja2 import FileSystemLoader,FileSystemBytecodeCache
+from jinja2 import Environment as Env
+from jinja2 import FileSystemLoader, FileSystemBytecodeCache
 
 
 class Ricerca(GladeWidget):
@@ -62,11 +60,6 @@ class Ricerca(GladeWidget):
         self._treeViewModel = None
 
         gladeWidget.build()
-
-        accelGroup = gtk.AccelGroup()
-        self.getTopLevel().add_accel_group(accelGroup)
-        self.bodyWidget.filter_clear_button.add_accelerator('clicked', accelGroup, gtk.keysyms.Escape, 0, gtk.ACCEL_VISIBLE)
-        self.bodyWidget.filter_search_button.add_accelerator('clicked', accelGroup, gtk.keysyms.F3, 0, gtk.ACCEL_VISIBLE)
 
     def _setHtmlHandler(self, htmlHandler):
         #self.htmlHandler = htmlHandler

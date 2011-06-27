@@ -115,11 +115,6 @@ class RicercaComplessaClienti(RicercaComplessa):
         self.filter.filter_clear_button.connect('clicked', self.on_filter_clear_button_clicked)
         self.filter.filter_search_button.connect('clicked', self.on_filter_search_button_clicked)
 
-        accelGroup = gtk.AccelGroup()
-        self.getTopLevel().add_accel_group(accelGroup)
-        self.filter.filter_clear_button.add_accelerator('clicked', accelGroup, gtk.keysyms.Escape, 0, gtk.ACCEL_VISIBLE)
-        self.filter.filter_search_button.add_accelerator('clicked', accelGroup, gtk.keysyms.F3, 0, gtk.ACCEL_VISIBLE)
-
         self.draw()
 
         self.setInitialSearch()
@@ -155,7 +150,7 @@ class RicercaComplessaClienti(RicercaComplessa):
         column.set_expand(False)
         treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('Localita\'', renderer, text=4)
+        column = gtk.TreeViewColumn("Località", renderer, text=4)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
         column.connect("clicked", self.filter._changeOrderBy,(None, 'sede_legale_localita'))
@@ -687,7 +682,7 @@ class RicercaClientiFilter(GladeWidget):
         renderer.connect('edited', self.onColumnEdited, treeview)
         renderer.set_data('model_index', 2)
         renderer.set_data('column', 3)
-        column = gtk.TreeViewColumn('Localita\'', renderer, text=2)
+        column = gtk.TreeViewColumn("Località", renderer, text=2)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(False)
         column.set_resizable(True)
@@ -1532,7 +1527,7 @@ class RicercaClientiFilter(GladeWidget):
 
             value = self.localita_filter_entry.get_text()
             if value != '':
-                testo += '  Localita\':\n'
+                testo += '  Località:\n'
                 testo += '       ' + value + '\n'
 
             value = self.codice_fiscale_filter_entry.get_text()
