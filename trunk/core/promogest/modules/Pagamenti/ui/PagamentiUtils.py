@@ -187,12 +187,12 @@ class Pagamenti(object):
             importo_secondo_riferimento) - importotot
         if differenza_importi == 0 - importotot:
             if messaggio:
-                self.anagrafica.showMessage("Importo delle rate non inserite")
+                messageInfo(msg="Importo delle rate non inserite")
             return True
 
         elif differenza_importi != 0:
             if messaggio:
-                self.anagrafica.showMessage("""ATTENZIONE!
+                messageInfo(msg="""ATTENZIONE!
 La somma degli importi che Lei ha inserito come rate nelle scadenze
 non corrisponde al totale del documento. La invitiamo a ricontrollare.
 Ricordiamo inoltre che allo stato attuale e` impossibile salvare il documento.
@@ -200,7 +200,7 @@ Per l'esattezza, l'errore e` di %.2f""" % differenza_importi)
             return False
         else:
             if messaggio:
-                self.anagrafica.showMessage("Gli importi inseriti come rate corrispondono con il totale del documento")
+                messageInfo(msg="Gli importi inseriti come rate corrispondono con il totale del documento")
             return True
 
     def getDocumentoCollegato(self, numerodocumento):
@@ -255,7 +255,7 @@ Per l'esattezza, l'errore e` di %.2f""" % differenza_importi)
         data_documento = daoTestata.data_documento
 
         if totale_sospeso != 0:
-            self.anagrafica.showMessage("""Attenzione. Risulta che il documento da Lei scelto abbia ancora
+            messageError(msg="""Attenzione. Risulta che il documento da Lei scelto abbia ancora
 un importo in sospeso. Il documento, per poter essere collegato, deve essere completamente saldato""")
             return False
 
