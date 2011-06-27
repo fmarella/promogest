@@ -4,6 +4,7 @@
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
+#    Author: Francesco Marella <francesco.marella@gmail.com>
 
 #    This file is part of Promogest.
 
@@ -21,6 +22,7 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 from AnagraficaComplessa import Anagrafica
+from promogest.ui.gtk_compat import *
 from promogest.ui.AnagraficaComplessaEdit import AnagraficaEdit
 from promogest.ui.AnagraficaComplessaReport import AnagraficaReport
 from promogest.ui.AnagraficaComplessaHtml import AnagraficaHtml
@@ -437,7 +439,7 @@ Verrà aggiornato il precedente.""")
         if self.dao.id is None:
             msg = 'Prima di poter inserire gli articoli occorre salvare il listino.\n Salvare ?'
             if YesNoDialog(msg=msg, transient=self.dialogTopLevel):
-                self.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, -10)
+                self.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, GTK_RESPONSE_APPLY)
             else:
                 toggleButton.set_active(False)
                 return
@@ -461,7 +463,7 @@ Verrà aggiornato il precedente.""")
         if self.dao.id is None:
             msg = 'Prima di poter filtrare gli articoli occorre salvare il listino.\n Salvare ?'
             if YesNoDialog(msg=msg, transient=self.dialogTopLevel):
-                self.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, -10)
+                self.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, GTK_RESPONSE_APPLY)
             else:
                 toggleButton.set_active(False)
                 return

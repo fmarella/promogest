@@ -32,6 +32,8 @@ try:
 
     PANGO_ALIGN_LEFT = pango.TAB_LEFT
     GTK_RESPONSE_OK = gtk.RESPONSE_OK
+    GTK_RESPONSE_CANCEL = gtk.RESPONSE_CANCEL
+    GTK_RESPONSE_APPLY = gtk.RESPONSE_APPLY
     gtk_status_icon_new = gtk.status_icon_new_from_file
     pango_tabarray_new = pango.TabArray
 
@@ -51,6 +53,8 @@ except ImportError:
     # these are hacks until we fully switch to GI
     PANGO_ALIGN_LEFT = pango.TabAlign.LEFT
     GTK_RESPONSE_OK = gtk.ResponseType.OK
+    GTK_RESPONSE_CANCEL = gtk.ResponseType.CANCEL
+    GTK_RESPONSE_APPLY = gtk.ResponseType.APPLY
     gtk_status_icon_new = gtk.StatusIcon.new_from_file
     pango_tabarray_new = pango.TabArray.new
 
