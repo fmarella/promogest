@@ -22,8 +22,6 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-
-import gtk
 from promogest.ui.AnagraficaComplessaEdit import AnagraficaEdit
 from promogest.ui.gtk_compat import *
 from promogest import Environment
@@ -130,9 +128,7 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
 
         if posso("ADR"):
             self.adr_page = ADRNotebookPage(self, "")
-            self.adr_page_label = gtk.Label()
-            self.adr_page_label.set_markup("Dati ADR")
-            self.notebook1.append_page(self.adr_page.adr_frame, self.adr_page_label)
+            self.notebook1.append_page(self.adr_page.adr_frame, self.adr_page.adr_page_label)
 
 
     def setDao(self, dao):
