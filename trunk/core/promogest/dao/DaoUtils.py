@@ -23,7 +23,6 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest import Environment
 import datetime
-import gtk
 
 def giacenzaSel(year=None, idMagazzino=None, idArticolo=None,allMag= None):
     """
@@ -430,36 +429,9 @@ def ckd(dao):
     DALLA VERSIONE ONE BASIC GRATUITA PER QUESTA OPERAZIONE, ACQUISTA
     LA VERSIONE "ONE STANDARD" PER ELIMINARE TUTTI I LIMITI
     O LA "ONE FULL" PER ATTIVARE ANCHE TUTTI I MODULI"""
-                dialoggg = gtk.MessageDialog(None,
-                        gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                        gtk.MESSAGE_INFO,
-                        gtk.BUTTONS_OK,
-                        msg)
-                dialoggg.run()
-                dialoggg.destroy()
+                Environment.messageInfoEnv(msg=msg)
                 Environment.params["session"].rollback()
                 return False
-    #    elif "ONE STANDARD" in Environment.modulesList:
-    #        records = Environment.session.query(dao.__class__).count()
-    #        if "TestataDocumento" in classe:
-    #            if records > 50: stopp = True
-    #        print "VERSIONE STANDARD", classe
-
-    #    else:
-    #        print " TUTTO OK PUOI ANDARE"
         else:
-#            import gtk
-#            msg = """ATTENZIONE!! MESSAGGIO DI AVVISO!
-#SEI UN CLIENTE CON INSTALLAZIONE PRO MA NON HAI UN PROFILO ATTIVO
-#CONTATTACI A assistenza@promotux.it PER AVERE IL TUO CODICE INSTALLAZIONE
-#GRAZIE
-#"""
-#            dialoggg = gtk.MessageDialog(None,
-#                                gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-#                                gtk.MESSAGE_INFO,
-#                                gtk.BUTTONS_OK)
-#            dialoggg.set_markup(msg)
-#            dialoggg.run()
-#            dialoggg.destroy()
             return True
     return True

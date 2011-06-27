@@ -4,6 +4,7 @@
 #
 # Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
 # Author: Andrea Argiolas <andrea@promotux.it>
+# Author: Francesco Meloni  <francesco@promotux.it>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -19,7 +20,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
-import gtk
+from promogest.ui.gtk_compat import *
 from SignedDecimalEntryField import SignedDecimalEntryField
 
 class ScontoWidget(gtk.HBox):
@@ -29,7 +30,6 @@ class ScontoWidget(gtk.HBox):
 
     def __init__(self, str1=None, str2=None, int1=None, int2=None):
         gtk.HBox.__init__(self, False, 0)
-#        print "BOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOH"
         self.entry = SignedDecimalEntryField(str1, str2, int1, int2)
         self.entry.connect("key_press_event", self.do_key_press_event)
         self.entry.connect("focus_out_event", self.do_focus_out_event)
@@ -53,7 +53,7 @@ class ScontoWidget(gtk.HBox):
 
 
     def do_key_press_event(self, widget, event):
-        keyname = gtk.gdk.keyval_name(event.keyval)
+        keyname = GDK_PIXBUF_NEW_FROM_FILE(event.keyval)
 #        print "AHAHAAHAHAHAHAAHAH", keyname
         if keyname not in self.entry.acceptedKeys:
             return True

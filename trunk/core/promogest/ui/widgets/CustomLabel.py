@@ -4,6 +4,7 @@
 #
 # Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
 # Author: Andrea Argiolas <andrea@promotux.it>
+# Author: Francesco Meloni  <francesco@promotux.it>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -19,13 +20,14 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
-import gtk
-import gobject
+from promogest.ui.gtk_compat import *
 from promogest import Environment
 
 class CustomLabel(gtk.HBox):
 
-    __gsignals__ = {'clicked' : (gobject.SIGNAL_RUN_LAST, gobject.TYPE_OBJECT, (gobject.TYPE_OBJECT, ) )}
+    __gsignals__ = {'clicked' : (GOBJECT_SIGNAL_RUNLAST,
+                            gobject.TYPE_OBJECT,
+                            (gobject.TYPE_OBJECT, ) )}
 
     def __init__(self, buttonText=None, labelText=None):
         self._id = None
@@ -37,7 +39,7 @@ class CustomLabel(gtk.HBox):
         self.button = gtk.ToggleButton()
         hbox = gtk.HBox(False, 3)
         self.image = gtk.Image()
-        pbuf = gtk.gdk.pixbuf_new_from_file(Environment.conf.guiDir + 'modifica16x16.png')
+        pbuf = GDK_PIXBUF_NEW_FROM_FILE(Environment.conf.guiDir + 'modifica16x16.png')
         self.image.set_from_pixbuf(pbuf)
         hbox.pack_start(self.image, False, False, 0)
         self.buttonLabel = gtk.Label()

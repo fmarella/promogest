@@ -30,6 +30,7 @@ if not Environment.pg3:
         import gtk
         from gtk import gdk as gdk
         import pango
+        import gobject
 
         PANGO_ALIGN_LEFT = pango.TAB_LEFT
         GTK_RESPONSE_OK = gtk.RESPONSE_OK
@@ -61,6 +62,8 @@ if not Environment.pg3:
         GTK_WIN_POS_CENTER_ON_PARENT = gtk.WIN_POS_CENTER_ON_PARENT
         GTK_BUTTON_BOX_SPREAD =  gtk.BUTTONBOX_SPREAD
 
+        GOBJECT_SIGNAL_RUNLAST = gobject.SIGNAL_RUN_LAST
+
     except ImportError:
         pass
 
@@ -72,6 +75,7 @@ else:
     from gi.repository import Gtk as gtk
     from gi.repository import Pango as pango
     from gi.repository import GdkPixbuf
+    from gi.repository import GObject as gobject
     pygtk = None
 
     # these are hacks until we fully switch to GI
@@ -105,3 +109,5 @@ else:
     GDK_PIXBUF_NEW_FROM_FILE = GdkPixbuf.Pixbuf.new_from_file
     GTK_WIN_POS_CENTER_ON_PARENT = gtk.WindowPosition.CENTER_ON_PARENT
     GTK_BUTTON_BOX_SPREAD = gtk.ButtonBoxStyle.SPREAD
+
+    GOBJECT_SIGNAL_RUNLAST = gobject.SignalFlags.RUN_LAST

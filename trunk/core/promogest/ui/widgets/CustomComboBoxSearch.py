@@ -4,6 +4,7 @@
 #
 # Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
 # Author: Andrea Argiolas <andrea@promotux.it>
+# Author: Francesco Meloni  <francesco@promotux.it>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -19,8 +20,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
-import gtk
-import gobject
+from promogest.ui.gtk_compat import *
 #from promogest.ui.utils import
 
 class CustomComboBoxSearch(gtk.ComboBox):
@@ -101,9 +101,9 @@ class CustomComboBoxSearch(gtk.ComboBox):
     def draw(self, filter=True, idType=None):
         self.__rebuildList = True
         if idType == 'str':
-            model = gtk.ListStore(str, str, str, gobject.TYPE_PYOBJECT)
+            model = gtk.ListStore(str, str, str, object)
         else:
-            model = gtk.ListStore(str, int, str, gobject.TYPE_PYOBJECT)
+            model = gtk.ListStore(str, int, str, object)
         self.set_model(model)
         model.clear()
         if filter:

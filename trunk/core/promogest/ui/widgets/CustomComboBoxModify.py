@@ -19,14 +19,13 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
-import gtk
-import gobject
+from promogest.ui.gtk_compat import *
 from promogest import Environment
 
 
 class CustomComboBoxModify(gtk.HBox):
     __gtype_name__ = 'CustomComboBoxModify'
-    __gsignals__ = {'clicked' : (gobject.SIGNAL_RUN_LAST,
+    __gsignals__ = {'clicked' : (GOBJECT_SIGNAL_RUNLAST,
                                  gobject.TYPE_OBJECT,
                                  (gobject.TYPE_OBJECT, ) )}
 
@@ -38,7 +37,7 @@ class CustomComboBoxModify(gtk.HBox):
         self.button = gtk.ToggleButton()
         self.button.set_property("can-focus", True)
         image = gtk.Image()
-        pbuf = gtk.gdk.pixbuf_new_from_file(Environment.conf.guiDir + 'modifica16x16.png')
+        pbuf = GDK_PIXBUF_NEW_FROM_FILE(Environment.conf.guiDir + 'modifica16x16.png')
         image.set_from_pixbuf(pbuf)
         self.button.add(image)
         self.pack_start(self.combobox, True, True, 0)
@@ -61,7 +60,7 @@ class CustomComboBoxModify(gtk.HBox):
 
 
     def do_combobox_key_press_event(self, combobox, event):
-        keyname = gtk.gdk.keyval_name(event.keyval)
+        keyname = gdk_keyval_name(event.keyval)
         if keyname == 'Escape':
             combobox.set_active(-1)
 

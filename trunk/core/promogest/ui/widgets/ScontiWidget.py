@@ -1,11 +1,25 @@
 # -*- coding: utf-8 -*-
 
-"""
-    Promogest
-    Copyright (C) 2008 by Promotux Informatica - http://www.promotux.it/
-"""
+# Promogest
+#
+# Copyright (C) 2005 -2011 by Promotux Informatica - http://www.promotux.it/
+# Author: Francesco Meloni  <francesco@promotux.it>
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
-import gtk
+from promogest.ui.gtk_compat import *
 from CustomLabel import CustomLabel
 from promogest import Environment
 from promogest.ui.utils import mN, setconf
@@ -15,7 +29,7 @@ class ScontiWidget(CustomLabel):
     __gtype_name__ = 'ScontiWidget'
     def __init__(self, str1=None, str2=None):
         CustomLabel.__init__(self, str1, str2)
-        pbuf = gtk.gdk.pixbuf_new_from_file(Environment.conf.guiDir + 'sconti16x16.png')
+        pbuf = GDK_PIXBUF_NEW_FROM_FILE(Environment.conf.guiDir + 'sconti16x16.png')
         self.image.set_from_pixbuf(pbuf)
 
         self._scontiPercentuali = True

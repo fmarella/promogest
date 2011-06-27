@@ -21,7 +21,8 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 import hashlib
-import gtk, gobject
+
+from promogest.ui.gtk_compat import *
 import os
 from datetime import datetime, timedelta
 from promogest import Environment
@@ -95,13 +96,7 @@ class SendEmail(GladeWidget):
         if self.bodytext == "" or self.sobject == ""  or self.fromm == "" or self.obj == "":
             msg = """Alcuni campi mancanti, sei pregato di ricontrollare e compilare
             il form in ogni sua parte, Grazie"""
-            dialog = gtk.MessageDialog(self.getTopLevel(),
-                                           gtk.DIALOG_MODAL
-                                           | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                           gtk.MESSAGE_INFO, gtk.BUTTONS_OK,
-                                           msg)
-            dialog.run()
-            dialog.destroy()
+            messageInfo(msg=msg)
         else:
             self.sendMailFunc()
             self.hide()
@@ -158,20 +153,8 @@ Bcc: %s
             msg = """Invio della email riuscito!!!
             grazie per la segnalazione
              """
-            dialog = gtk.MessageDialog(self.getTopLevel(),
-                                           gtk.DIALOG_MODAL
-                                           | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                           gtk.MESSAGE_INFO, gtk.BUTTONS_OK,
-                                           msg)
-            dialog.run()
-            dialog.destroy()
+            messageInfo(msg=msg)
         except:
             msg = """Invio non riuscito!!!
             Riprovare in un altro momento """
-            dialog = gtk.MessageDialog(self.getTopLevel(),
-                                           gtk.DIALOG_MODAL
-                                           | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                           gtk.MESSAGE_INFO, gtk.BUTTONS_OK,
-                                           msg)
-            dialog.run()
-            dialog.destroy()
+            messageInfo(msg=msg)
