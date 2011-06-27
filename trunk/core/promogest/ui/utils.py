@@ -1843,9 +1843,9 @@ def showComplexQuestion(parentWindow, message):
     labelNone.set_text('N_o a tutti')
     labelNone.set_use_underline(True)
     dialog.add_action_widget(buttonYes, GTK_RESPONSE_YES)
-    dialog.add_action_widget(buttonNo, gtk.RESPONSE_NO)
-    dialog.add_action_widget(buttonAll, gtk.RESPONSE_APPLY)
-    dialog.add_action_widget(buttonNone, gtk.RESPONSE_REJECT)
+    dialog.add_action_widget(buttonNo, GTK_RESPONSE_NO)
+    dialog.add_action_widget(buttonAll, GTK_RESPONSE_APPLY)
+    dialog.add_action_widget(buttonNone, GTK_RESPONSE_REJECT)
 
     dialog.show_all()
     result = dialog.run()
@@ -2042,7 +2042,7 @@ def hasAction(actionID=None):
         dialog = gtk.MessageDialog( None,
                                 GTK_DIALOG_MODAL |
                                 GTK_DIALOG_DESTROY_WITH_PARENT,
-                                gtk.MESSAGE_WARNING, gtk.BUTTONS_OK,
+                                GTK_DIALOG_MESSAGE_WARNING, GTK_BUTTON_OK,
                                 "Permesso negato! L'azione richiesta non è tra quelle che ti son consentite")
         response = dialog.run()
         dialog.destroy()
@@ -2195,8 +2195,8 @@ def checkCodiceDuplicato(codice=None,id=None,tipo=None):
     Inserirne un altro o premere il bottone "G"enera""" %(tipo,codice)
         dialog = gtk.MessageDialog(None,
                                 GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
-                                gtk.MESSAGE_INFO,
-                                gtk.BUTTONS_OK,
+                                GTK_DIALOG_MESSAGE_INFO,
+                                GTK_BUTTON_OK,
                                 msg)
         dialog.run()
         dialog.destroy()
@@ -2530,7 +2530,7 @@ def fenceDialog():
     dialog = gtk.MessageDialog(None,
                                 GTK_DIALOG_MODAL
                                 | GTK_DIALOG_DESTROY_WITH_PARENT,
-                                gtk.MESSAGE_INFO, gtk.BUTTONS_OK)
+                                GTK_DIALOG_MESSAGE_INFO, GTK_BUTTON_OK)
     image = gtk.Image()
     image.set_from_file("./gui/messaggio_avviso.png")
     image.show()
@@ -2597,8 +2597,8 @@ def aggiorna(anag):
                     ok = False
                 dialogg = gtk.MessageDialog(anag.getTopLevel(),
                                     GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
-                                    gtk.MESSAGE_INFO,
-                                    gtk.BUTTONS_OK,
+                                    GTK_DIALOG_MESSAGE_INFO,
+                                    GTK_BUTTON_OK,
                                     msgg)
                 dialogg.run()
                 dialogg.destroy()
@@ -2608,8 +2608,8 @@ def aggiorna(anag):
             msggg = "Il PromoGest è già aggiornato all'ultima versione ( %s) \n Riprova in un altro momento\n\nGrazie" %(str(rl))
             dialoggg = gtk.MessageDialog(anag.getTopLevel(),
                                 GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
-                                gtk.MESSAGE_INFO,
-                                gtk.BUTTONS_OK,
+                                GTK_DIALOG_MESSAGE_INFO,
+                                GTK_BUTTON_OK,
                                 msggg)
             dialoggg.run()
             dialoggg.destroy()
@@ -2618,8 +2618,8 @@ def aggiorna(anag):
         Environment.pg2log.info("SISTEMA  NON IN LINEA PER AGGIORNAMENTO")
         dialogg = gtk.MessageDialog(anag.getTopLevel(),
                         GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
-                        gtk.MESSAGE_INFO,
-                        gtk.BUTTONS_OK,
+                        GTK_DIALOG_MESSAGE_INFO,
+                        GTK_BUTTON_OK,
                         msgg)
         dialogg.run()
         dialogg.destroy()
