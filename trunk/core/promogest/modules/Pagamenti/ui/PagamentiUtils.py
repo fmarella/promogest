@@ -230,10 +230,10 @@ Per l'esattezza, l'errore e` di %.2f""" % differenza_importi)
                                             idFornitore=idFornitore)
 
         if len(result) > 1:
-            self.anagrafica.showMessage("Sono stati trovati piu` di un documento. Hai scovato un bug :D")
+            messageInfo(msg= "Sono stati trovati piu` di un documento. Hai scovato un bug :D")
             return False
         elif len(result) == 0:
-            self.anagrafica.showMessage("Non e' stato trovato nessun documento con il numero specificato")
+            messageInfo(msg="Non e' stato trovato nessun documento con il numero specificato")
             return False
         else:
             return result
