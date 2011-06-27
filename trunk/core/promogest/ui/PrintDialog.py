@@ -20,7 +20,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-import gtk
+from promogest.ui.gtk_compat import *
 from utils import *
 import subprocess
 import os, sys, threading, os.path
@@ -63,12 +63,7 @@ class PrintDialogHandler(GladeWidget):
         except:
             msg = """Errore nel salvataggio!
 Verificare i permessi della cartella"""
-            overDialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL
-                                            | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                                gtk.MESSAGE_ERROR,
-                                                gtk.BUTTONS_CANCEL, msg)
-            response = overDialog.run()
-            overDialog.destroy()
+            messageError(msg=msg)
             return
 
     def on_send_email_button_clicked(self, widget):
@@ -120,9 +115,9 @@ Verificare i permessi della cartella"""
                                            parent=dialog,
                                            action=gtk.FILE_CHOOSER_ACTION_SAVE,
                                            buttons=(gtk.STOCK_CANCEL,
-                                                    gtk.RESPONSE_CANCEL,
+                                                    GTK_RESPONSE_CANCEL,
                                                     gtk.STOCK_SAVE,
-                                                    gtk.RESPONSE_OK),
+                                                    GTK_RESPONSE_OK),
                                            backend=None)
         fileDialog.set_current_name(self._pdfName+".pdf")
         fileDialog.set_current_folder(self._folder)
@@ -141,9 +136,9 @@ Verificare i permessi della cartella"""
 
         response = fileDialog.run()
         # FIXME: handle errors here
-        if ( (response == gtk.RESPONSE_CANCEL) or ( response == gtk.RESPONSE_DELETE_EVENT)) :
+        if ( (response == GTK_RESPONSE_CANCEL) or ( response == gtk.RESPONSE_DELETE_EVENT)) :
             pass
-        elif response == gtk.RESPONSE_OK:
+        elif response == GTK_RESPONSE_OK:
             filename = fileDialog.get_filename()
 
             #modifiche
@@ -201,7 +196,7 @@ Verificare i permessi della cartella"""
                                     #exit but don't save the file
                                     esci  = True
                                     break
-                                elif response == gtk.RESPONSE_OK:
+                                elif response == GTK_RESPONSE_OK:
                                     filename = fileDialog.get_filename()
                                     break
 

@@ -23,8 +23,7 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 import time
-import gtk
-import gobject
+#from promogest.ui.gtk_compat import *
 import os
 import sys
 import threading

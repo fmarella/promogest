@@ -35,6 +35,7 @@ if not Environment.pg3:
 
         PANGO_ALIGN_LEFT = pango.TAB_LEFT
         GTK_RESPONSE_OK = gtk.RESPONSE_OK
+        GTK_RESPONSE_CLOSE = gtk.RESPONSE_CLOSE
         GTK_RESPONSE_CANCEL = gtk.RESPONSE_CANCEL
         GTK_RESPONSE_APPLY = gtk.RESPONSE_APPLY
         GTK_RESPONSE_DELETE_EVENT = gtk.RESPONSE_DELETE_EVENT
@@ -82,6 +83,7 @@ else:
     # these are hacks until we fully switch to GI
     PANGO_ALIGN_LEFT = pango.TabAlign.LEFT
     GTK_RESPONSE_OK = gtk.ResponseType.OK
+    GTK_RESPONSE_CLOSE = gtk.ResponseType.CLOSE
     GTK_RESPONSE_CANCEL = gtk.ResponseType.CANCEL
     GTK_RESPONSE_APPLY = gtk.ResponseType.APPLY
     GTK_RESPONSE_DELETE_EVENT = gtk.ResponseType.DELETE_EVENT

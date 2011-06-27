@@ -23,8 +23,7 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 import time
-import gtk
-import gobject
+from promogest.ui.gtk_compat import *
 import os
 import sys
 import threading
@@ -173,7 +172,7 @@ class AnagraficaFilter(GladeWidget):
 
     def getSelectedDao(self):
         treeViewSelection = self._anagrafica.anagrafica_filter_treeview.get_selection()
-        if treeViewSelection.get_mode() != gtk.SELECTION_MULTIPLE:
+        if treeViewSelection.get_mode() != GTK_SELECTIONMODE_MULTIPLE:
             (model, iterator) = treeViewSelection.get_selected()
             if iterator is not None:
                 dao = model.get_value(iterator, 0)

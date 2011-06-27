@@ -23,8 +23,7 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 import time
-import gtk
-import gobject
+from promogest.ui.gtk_compat import *
 import os
 import sys
 import threading
@@ -167,7 +166,7 @@ o contattare l'assistenza""")
         renderHTML(self.print_on_screen_html,self.html_code)
 
     def on_print_on_screen_dialog_response(self, dialog, responseId):
-        if responseId == gtk.RESPONSE_CLOSE:
+        if responseId == GTK_RESPONSE_CLOSE:
             self.on_print_on_screen_dialog_delete_event()
 
     def on_print_on_screen_dialog_delete_event(self, dialog=None, event=None):

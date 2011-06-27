@@ -19,7 +19,6 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
-import gtk
 import webbrowser
 from promogest.ui.utils import *
 from promogest.dao.Setconf import SetConf
@@ -30,9 +29,13 @@ from promogest.lib import feedparser
 from promogest.ui.SendEmail import SendEmail
 
 try:
-    from webkit import WebView
+    if Environment.pg3:
+        from gi.repository.WebKit import WebView
+    else:
+        from webkit import WebView
     WEBKIT = True
 except:
+    import gtkhtml2
     WEBKIT = False
 
 class NewsNotebookPage(GladeWidget):

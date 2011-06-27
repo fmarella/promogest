@@ -21,7 +21,7 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 import locale
-import gtk, gobject
+from promogest.ui.gtk_compat import *
 import hashlib
 import os
 from  subprocess import *

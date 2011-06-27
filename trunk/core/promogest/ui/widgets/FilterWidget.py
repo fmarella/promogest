@@ -21,7 +21,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-import gtk
+from promogest.ui.gtk_compat import *
 import math
 import sqlalchemy
 from promogest import Environment
@@ -125,7 +125,7 @@ class FilterWidget(GladeWidget):
         """
         Confirm or erase filter's parameters from keyboard
         """
-        keyname = gtk.gdk.keyval_name(event.keyval)
+        keyname = gdk_keyval_name(event.keyval)
 
         if keyname == 'Escape':
             self.on_filter_clear_button_clicked(widget)
@@ -165,7 +165,7 @@ class FilterWidget(GladeWidget):
         """
         Confirms page indication
         """
-        keyname = gtk.gdk.keyval_name(event.keyval)
+        keyname = gdk_keyval_name(event.keyval)
         if keyname == 'Return' or keyname == 'KP_Enter':
             page = int(self.filter_current_page_entry.get_text())
             self.gotoPage(int(page))

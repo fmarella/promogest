@@ -21,7 +21,7 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 import locale
-import gtk
+from promogest.ui.gtk_compat import *
 import hashlib
 import os
 import glob
@@ -144,13 +144,13 @@ class Main(GladeWidget):
                 showAnagrafica(self.getTopLevel(), anag, mainClass=self)
                 #icon_view.unselect_all()
                 return
-            pbuf = gtk.gdk.pixbuf_new_from_file(currModule['guiDir']+ currModule['module'].VIEW_TYPE[2])
+            pbuf = GDK_PIXBUF_NEW_FROM_FILE(currModule['guiDir']+ currModule['module'].VIEW_TYPE[2])
             row = (ind, currModule['module'].VIEW_TYPE[1], pbuf, currModule['module'])
             model.append(row)
             ind += 1
         for mod in self.frame_modules.keys():
             currModule = self.frame_modules[mod]
-            pbuf = gtk.gdk.pixbuf_new_from_file(currModule['guiDir']+ currModule['module'].VIEW_TYPE[2])
+            pbuf = GDK_PIXBUF_NEW_FROM_FILE(currModule['guiDir']+ currModule['module'].VIEW_TYPE[2])
             row =(ind, currModule['module'].VIEW_TYPE[1], pbuf, currModule['module'])
             model.append(row)
             ind += 1
@@ -560,13 +560,7 @@ class Main(GladeWidget):
                 msg = "MODULO CORRETTAMENTE INSTALLATO, CHIUDERE L'APPLICAZIONE\nED AGGIUNGERE I PARAMETRI NECESSARI\n"
             else:
                 msg ="ATTENZIONE, MODULO NON INSTALLATO, CORROTTO O NON CORRETTO, CONTATTARE L'ASSISTENZA"
-            dialog = gtk.MessageDialog(self.getTopLevel(),
-                                   gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                   gtk.MESSAGE_INFO,
-                                   gtk.BUTTONS_OK,
-                                   msg)
-            dialog.run()
-            dialog.destroy()
+            messageInfo(msg=msg)
                 #self.path_file_entry.set_text(filename)
             fileDialog.destroy()
 
@@ -704,7 +698,7 @@ class Main(GladeWidget):
         licenzaDialog.licenza_textview.set_buffer(textBuffer)
         licenzaDialog.getTopLevel().show_all()
         response = licenzaDialog.licenza_dialog.run()
-        if response == gtk.RESPONSE_OK:
+        if response == GTK_RESPONSE_OK:
             licenzaDialog.licenza_dialog.destroy()
 
     def on_manuale_online_activate(self, widget):
