@@ -1211,7 +1211,7 @@ def on_main_window_key_press_eventPart(ui,widget, event):
 #                            item.show()
 #                    utilities_menu.popup(None, None, None, 3, event.time)
 #                    return True
-        if gtk.gdk.keyval_name(event.keyval) == "t":
+        if gdk_keyval_name(event.keyval) == "t":
             import random
             msg= """
 Il Promogest2  ha generato per te due sestine
@@ -1225,13 +1225,11 @@ I Numeri:   %s
             %s
 """ %(str(random.sample(xrange(90), 6))[1:-1],str(random.sample(xrange(90), 6))[1:-1])
             dialog = gtk.MessageDialog(ui.getTopLevel(),
-                               gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                               gtk.MESSAGE_INFO,
-                               gtk.BUTTONS_OK,
+                               GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
+                               GTK_DIALOG_MESSAGE_INFO,
+                              GTK_BUTTON_OK,
                                msg)
             dialog.run()
             dialog.destroy()
 
         return True
-#        else:
-#            return False
