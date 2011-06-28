@@ -72,8 +72,7 @@ class AnagraficaClientiEdit(AnagraficaEdit):
         column.set_min_width(20)
         self.categorie_treeview.append_column(column)
 
-        model = gtk.ListStore(int, str, gtk.gdk.Pixbuf, str)
-        self.categorie_treeview.set_model(model)
+        self.categorie_treeview.set_model(self.categorie_liststore)
 
         fillComboBoxNazione(self.nazione_combobox, default="Italia")
 
