@@ -1826,7 +1826,7 @@ def showComplexQuestion(parentWindow, message):
     label.set_padding(15,10)
     hbox.pack_start(image, False, False, 0)
     hbox.pack_start(label, True, True, 0)
-    dialog.vbox.pack_start(hbox, True, True, 0)
+    dialog.get_content_area().pack_start(hbox, True, True, 0)
 
     buttonYes = gtk.Button(stock=gtk.STOCK_YES)
     buttonNo = gtk.Button(stock=gtk.STOCK_NO)
@@ -1889,7 +1889,7 @@ def insertFileTypeChooser(filechooser,typeList):
     combobox.set_model(cb_model)
     hbox1.pack_start(combobox, False, False, 5)
 ##    fc_vbox.pack_start(hbox2)
-    filechooser.vbox.pack_end(fc_vbox, False, False, 10)
+    filechooser.get_content_area().pack_end(fc_vbox, False, False, 10)
     return combobox
 
 def multilinedirtywork( param):

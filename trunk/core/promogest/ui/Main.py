@@ -590,7 +590,7 @@ class Main(GladeWidget):
         label.set_markup("<b>   Inserisci codice   </b>")
         hbox.pack_start(label)
         hbox.pack_start(entry___)
-        dialog.vbox.pack_start(hbox)
+        dialog.get_content_area().pack_start(hbox)
         dialog.show_all()
         response = dialog.run()
         codice = entry___.get_text()

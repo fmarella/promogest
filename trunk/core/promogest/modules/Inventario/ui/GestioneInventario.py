@@ -804,7 +804,7 @@ class GestioneInventario(RicercaComplessaArticoli):
         label.set_padding(15, 10)
         hbox.pack_start(image, False, False, 0)
         hbox.pack_start(label, True, True, 0)
-        dialog.vbox.pack_start(hbox, True, True, 0)
+        dialog.get_content_area().pack_start(hbox, True, True, 0)
 
         buttonAcquistoUltimo = gtk.Button(label = 'Ultimo prezzo\n di acquisto')
         buttonAcquistoUltimo.connect('clicked', self.on_buttonAcquistoUltimo_clicked)
