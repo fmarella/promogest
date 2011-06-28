@@ -117,6 +117,8 @@ class SimpleGladeWrapper:
                 self.glade_path = path
             elif isModule:
                 self.glade_path = './promogest/modules/'+path
+                file_glade = prefix+os.path.split(self.glade_path)[1]
+                self.glade_path = os.path.join(os.path.split(self.glade_path)[0],file_glade)
             else:
                 glade_dir = os.path.dirname( sys.argv[0] )
                 self.glade_path = os.path.join(glade_dir, path)

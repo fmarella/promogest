@@ -21,7 +21,7 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 from decimal import *
-import gtk
+from promogest.ui.gtk_compat import *
 import os
 from promogest import Environment
 from promogest.ui.GladeWidget import GladeWidget
@@ -48,7 +48,7 @@ class ManageLabelsToPrint(GladeWidget):
         self.apply_button.destroy()
         self.mainWindow = mainWindow
         self.completion = gtk.EntryCompletion()
-        self.completion.set_match_func(self.match_func)
+        self.completion.set_match_func(self.match_func, None)
         self.completion.connect("match-selected",
                                             self.on_completion_match)
         listore = gtk.ListStore(str, object)
