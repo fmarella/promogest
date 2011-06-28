@@ -27,12 +27,7 @@ import re
 
 import tokenize
 from promogest import Environment
-if Environment.pg3:
-    from gi.repository import Gtk
-    from gi.repository import Gdk
-else:
-    import gtk
-
+from promogest.ui.gtk_compat import *
 import weakref
 import inspect
 from SimpleGladeWrapper import SimpleGladeWrapper

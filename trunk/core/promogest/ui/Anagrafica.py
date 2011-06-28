@@ -56,7 +56,7 @@ class Anagrafica(GladeWidget):
     def _setFilterElement(self, gladeWidget):
         self.filter = gladeWidget
         self.filterTopLevel = gladeWidget.getTopLevel()
-        self.anagrafica_filter_vbox.pack_start(self.filterTopLevel)
+        self.anagrafica_filter_vbox.pack_start(self.filterTopLevel, True, True, 0)
         self.filter.setSensitive(True)
 
 

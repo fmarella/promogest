@@ -84,8 +84,6 @@ def fillComboboxTipiAliquoteIva(combobox, filter=False):
     combobox.pack_start(renderer, True)
     combobox.add_attribute(renderer, 'text', 2)
     combobox.set_model(model)
-    if combobox.__class__ is gtk.ComboBoxEntry:
-        combobox.set_text_column(2)
 
 def fillComboboxCategorieArticoli(combobox, filter=False):
     """
@@ -108,8 +106,6 @@ def fillComboboxCategorieArticoli(combobox, filter=False):
     combobox.pack_start(renderer, True)
     combobox.add_attribute(renderer, 'text', 2)
     combobox.set_model(model)
-    if combobox.__class__ is gtk.ComboBoxEntry:
-        combobox.set_text_column(2)
 
 def fillComboboxCCardType(combobox, filter=False):
     """
@@ -132,8 +128,6 @@ def fillComboboxCCardType(combobox, filter=False):
     combobox.pack_start(renderer, True)
     combobox.add_attribute(renderer, 'text', 2)
     combobox.set_model(model)
-    if combobox.__class__ is gtk.ComboBoxEntry:
-        combobox.set_text_column(2)
 
 def fillComboboxFamiglieArticoli(combobox, filter=False, ignore=[]):
     """
@@ -168,8 +162,6 @@ def fillComboboxFamiglieArticoli(combobox, filter=False, ignore=[]):
     combobox.pack_start(renderer, True)
     combobox.add_attribute(renderer, 'text', 2)
     combobox.set_model(model)
-    if combobox.__class__ is gtk.ComboBoxEntry:
-        combobox.set_text_column(2)
 
 def fillComboboxImballaggi(combobox, filter=False):
     """
@@ -191,8 +183,7 @@ def fillComboboxImballaggi(combobox, filter=False):
     combobox.pack_start(renderer, True)
     combobox.add_attribute(renderer, 'text', 2)
     combobox.set_model(model)
-    if combobox.__class__ is gtk.ComboBoxEntry:
-        combobox.set_text_column(2)
+
 
 def fillComboboxStatiArticoli(combobox, filter=False):
     """ Crea l'elenco degli stati articoli """
@@ -212,8 +203,7 @@ def fillComboboxStatiArticoli(combobox, filter=False):
     combobox.pack_start(renderer, True)
     combobox.add_attribute(renderer, 'text', 2)
     combobox.set_model(model)
-    if combobox.__class__ is gtk.ComboBoxEntry:
-        combobox.set_text_column(2)
+
 
 def fillComboboxUnitaBase(combobox, filter=False):
     """ Crea l'elenco delle unita base """
@@ -234,8 +224,7 @@ def fillComboboxUnitaBase(combobox, filter=False):
     combobox.pack_start(renderer, True)
     combobox.add_attribute(renderer, 'text', 2)
     combobox.set_model(model)
-    if (not Environment.pg3) and combobox.__class__ is gtk.ComboBoxEntry:
-        combobox.set_text_column(2)
+
 
 def fillComboboxRole(combobox, filter=False):
     """
@@ -258,8 +247,7 @@ def fillComboboxRole(combobox, filter=False):
     combobox.pack_start(renderer, True)
     combobox.add_attribute(renderer, 'text', 2)
     combobox.set_model(model)
-    if combobox.__class__ is gtk.ComboBoxEntry:
-        combobox.set_text_column(2)
+
 
 def fillComboboxLang(combobox, filter=False):
     """
@@ -282,8 +270,6 @@ def fillComboboxLang(combobox, filter=False):
     combobox.pack_start(renderer, True)
     combobox.add_attribute(renderer, 'text', 2)
     combobox.set_model(model)
-    if combobox.__class__ is gtk.ComboBoxEntry:
-        combobox.set_text_column(2)
 
 
 def fillComboboxUnitaFisica(combobox, tipo):
@@ -305,8 +291,6 @@ def fillComboboxUnitaFisica(combobox, tipo):
     combobox.pack_start(renderer, True)
     combobox.add_attribute(renderer, 'text', 0)
     combobox.set_model(model)
-    if combobox.__class__ is gtk.ComboBoxEntry:
-        combobox.set_text_column(0)
 
 
 def fillComboboxCategorieClienti(combobox, filter=False):
@@ -330,8 +314,7 @@ def fillComboboxCategorieClienti(combobox, filter=False):
     combobox.pack_start(renderer, True)
     combobox.add_attribute(renderer, 'text', 2)
     combobox.set_model(model)
-    if combobox.__class__ is gtk.ComboBoxEntry:
-        combobox.set_text_column(2)
+
 
 def fillComboboxCategorieContatti(combobox, filter=False):
     """
@@ -354,8 +337,7 @@ def fillComboboxCategorieContatti(combobox, filter=False):
     combobox.pack_start(renderer, True)
     combobox.add_attribute(renderer, 'text', 2)
     combobox.set_model(model)
-    if combobox.__class__ is gtk.ComboBoxEntry:
-        combobox.set_text_column(2)
+
 
 def fillComboboxCategorieFornitori(combobox, filter=False):
     """
@@ -377,8 +359,7 @@ def fillComboboxCategorieFornitori(combobox, filter=False):
     combobox.pack_start(renderer, True)
     combobox.add_attribute(renderer, 'text', 2)
     combobox.set_model(model)
-    if combobox.__class__ is gtk.ComboBoxEntry:
-        combobox.set_text_column(2)
+
 
 def fillComboboxStadioCommessa(combobox, filter=False):
     """ Riempi combo degli stadi commessa """
@@ -398,9 +379,6 @@ def fillComboboxStadioCommessa(combobox, filter=False):
     combobox.pack_start(renderer, True)
     combobox.add_attribute(renderer, 'text', 2)
     combobox.set_model(model)
-    if combobox.__class__ is gtk.ComboBoxEntry:
-        combobox.set_text_column(2)
-
 
 
 def fillComboboxMultipli(combobox, idArticolo=None, noSottoMultipli=False, filter=False):
@@ -428,8 +406,6 @@ def fillComboboxMultipli(combobox, idArticolo=None, noSottoMultipli=False, filte
     combobox.pack_start(renderer, True)
     combobox.add_attribute(renderer, 'text', 2)
     combobox.set_model(model)
-    if combobox.__class__ is gtk.ComboBoxEntry:
-        combobox.set_text_column(2)
 
 
 def fillComboboxListini(combobox, filter=False):
@@ -453,8 +429,7 @@ def fillComboboxListini(combobox, filter=False):
     combobox.pack_start(renderer, True)
     combobox.add_attribute(renderer, 'text', 2)
     combobox.set_model(model)
-    if combobox.__class__ is gtk.ComboBoxEntry:
-        combobox.set_text_column(2)
+
 
 def fillComboboxListiniComplessi(combobox,idListinoComplesso=None, filter=False):
     """
@@ -477,8 +452,6 @@ def fillComboboxListiniComplessi(combobox,idListinoComplesso=None, filter=False)
     combobox.pack_start(renderer, True)
     combobox.add_attribute(renderer, 'text', 2)
     combobox.set_model(model)
-    if combobox.__class__ is gtk.ComboBoxEntry:
-        combobox.set_text_column(2)
 
 
 def listinoCandidateSel(OrderBy=None,idArticolo=None,idMagazzino=None,idCliente=None):
@@ -580,8 +553,7 @@ def fillComboboxListiniFiltrati(combobox, idArticolo=None, idMagazzino=None, idC
     combobox.pack_start(renderer, True)
     combobox.add_attribute(renderer, 'text', 2)
     combobox.set_model(model)
-    #if combobox.__class__ is gtk.ComboBoxEntry:
-        #combobox.set_text_column(2)
+
 
 def fillComboboxFornitori(combobox,filter=False, noempty=False):
     """ Crea l'elenco dei fornitori in una combo """
@@ -602,8 +574,6 @@ def fillComboboxFornitori(combobox,filter=False, noempty=False):
     combobox.pack_start(renderer, True)
     combobox.add_attribute(renderer, 'text', 2)
     combobox.set_model(model)
-    if combobox.__class__ is gtk.ComboBoxEntry:
-        combobox.set_text_column(2)
 
 def fillComboboxMagazzini(combobox, filter=False, noempty=False):
     """  Crea l'elenco dei magazzini  """
@@ -624,8 +594,6 @@ def fillComboboxMagazzini(combobox, filter=False, noempty=False):
     combobox.pack_start(renderer, True)
     combobox.add_attribute(renderer, 'text', 2)
     combobox.set_model(model)
-    if combobox.__class__ is gtk.ComboBoxEntry:
-        combobox.set_text_column(2)
 
 def fillComboboxOperazioni(combobox, tipo=None, filter=False):
     """
@@ -650,8 +618,6 @@ def fillComboboxOperazioni(combobox, tipo=None, filter=False):
     combobox.pack_start(renderer, True)
     combobox.add_attribute(renderer, 'text', 2)
     combobox.set_model(model)
-    if combobox.__class__ is gtk.ComboBoxEntry:
-        combobox.set_text_column(2)
 
 
 def fillComboboxTipiRecapito(combobox):
@@ -663,8 +629,7 @@ def fillComboboxTipiRecapito(combobox):
     combobox.pack_start(renderer, True)
     combobox.add_attribute(renderer, 'text', 0)
     combobox.set_model(model)
-    if combobox.__class__ is gtk.ComboBoxEntry:
-        combobox.set_text_column(0)
+
 
 def fillModelTipiRecapito():
     """ Crea l'elenco dei tipi di recapito per i contatti  """
@@ -694,8 +659,6 @@ def fillComboboxAziende(combobox, filter=False):
     combobox.pack_start(renderer, True)
     combobox.add_attribute(renderer, 'text', 2)
     combobox.set_model(model)
-    if combobox.__class__ is gtk.ComboBoxEntry:
-        combobox.set_text_column(2)
 
 def fillComboboxPagamenti(combobox, filter=False):
     """ Crea l'elenco dei pagamenti  """
@@ -715,8 +678,7 @@ def fillComboboxPagamenti(combobox, filter=False):
     combobox.pack_start(renderer, True)
     combobox.add_attribute(renderer, 'text', 2)
     combobox.set_model(model)
-    if combobox.__class__ is gtk.ComboBoxEntry:
-        combobox.set_text_column(2)
+
 
 def getModelsName():
     """Scans all xml files in models directory.
@@ -774,8 +736,7 @@ def fillComboboxBanche(combobox, filter=False, short=1000):
     combobox.pack_start(renderer, True)
     combobox.add_attribute(renderer, 'text', 2)
     combobox.set_model(model)
-    if combobox.__class__ is gtk.ComboBoxEntry:
-        combobox.set_text_column(2)
+
 
 def fillComboboxCausaliTrasporto(combobox, filter=False):
     """ Crea elenco delle causali di trasporto  """
