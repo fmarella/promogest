@@ -20,7 +20,6 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-import gtk
 
 from promogest.ui.AnagraficaComplessaFilter import AnagraficaFilter
 from promogest.dao.PersonaGiuridica import PersonaGiuridica_
