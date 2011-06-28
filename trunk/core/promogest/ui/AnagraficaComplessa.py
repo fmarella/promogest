@@ -23,8 +23,6 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 import time
-#import gtk
-#import gobject
 from promogest.ui.gtk_compat import *
 import os
 import sys
@@ -49,8 +47,6 @@ from promogest.lib.SlaTpl2Sla import SlaTpl2Sla
 from promogest.ui.SendEmail import SendEmail
 from promogest.lib.HtmlHandler import createHtmlObj, renderTemplate, renderHTML
 from promogest.dao.Azienda import Azienda
-
-from promogest.ui.gtk_compat import *
 
 
 class Anagrafica(GladeWidget):
