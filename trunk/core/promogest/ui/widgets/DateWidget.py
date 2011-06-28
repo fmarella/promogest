@@ -29,7 +29,7 @@ class DateWidget(gtk.HBox):
     __gtype_name__ = 'DateWidget'
     def __init__(self, str1=None, str2=None, int1=None, int2=None, futurecheck=None):
         self.futurecheck = futurecheck
-        gtk.HBox.__init__(self, False, 0)
+        gtk.HBox.__init__(self)
         self.entry = DateEntryField(str1, str2, int1, int2)
         self.button = gtk.ToggleButton()
         self.button.set_property("can-focus", False)
