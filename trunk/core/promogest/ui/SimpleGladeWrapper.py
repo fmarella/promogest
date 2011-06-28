@@ -234,9 +234,10 @@ class SimpleGladeWrapper:
         entry.connect("icon-press", self.on_icon_press)
         entry.connect("focus-in-event", self.on_focus_in_event)
         entry.connect("focus-out-event", self.on_focus_out_event)
-        entry.set_property("secondary_icon_stock", "gtk-clear")
-        entry.set_property("secondary_icon_activatable", True)
-        entry.set_property("secondary_icon_sensitive", True)
+        if gtk.Buildable.get_name(entry) != "password_entry":
+            entry.set_property("secondary_icon_stock", "gtk-clear")
+            entry.set_property("secondary_icon_activatable", True)
+            entry.set_property("secondary_icon_sensitive", True)
 
     def on_icon_press(self, widget,position,event):
         pass

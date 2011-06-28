@@ -178,7 +178,7 @@ class SimpleGladeApp(SimpleGladeWrapper):
             #widget.modify_base(GTK_STATE_NORMAL, gdk.Color(color_base))
             #widget.modify_text(GTK_STATE_NORMAL, gdk.color_parse(gdk.Color(color_text)))
 
-            widget.modify_base(GTK_STATE_NORMAL, gdk.color_parse(color_base)[1])
+            widget.modify_base(GTK_STATE_NORMAL, gdk.color_parse(color_base)[1].to_string())
             widget.modify_text(GTK_STATE_NORMAL, gdk.color_parse(color_text)[1])
         else:
             print "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", gtk.gdk.color_parse(color_text)
