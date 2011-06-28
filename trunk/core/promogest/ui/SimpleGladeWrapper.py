@@ -106,7 +106,7 @@ class SimpleGladeWrapper:
             prefix = "pg3_"
         if (path is None) or (path == pp):
             gladeFile = pp+prefix+root +".glade"
-            print "GLADE FILEEEEEEEEEEEEEEEEEEEEEE", gladeFile
+            print "GLADE FILE", gladeFile
             if os.path.exists(gladeFile):
                 self.glade_path = gladeFile
             else:
