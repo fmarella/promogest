@@ -3,7 +3,8 @@
 #    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
-# Author: Francesco Meloni <francesco@promotux.it
+#    Author: Francesco Meloni <francesco@promotux.it
+#    Author: Francesco Marella <francesco.marella@gmail.com>
 
 #    This file is part of Promogest.
 
@@ -23,7 +24,7 @@
 from promogest.ui.utils import *
 from promogest.dao.Setconf import SetConf
 from promogest import Environment
-from GladeWidget import GladeWidget
+from promogest.ui.GladeWidget import GladeWidget
 
 
 class AnagraficaArticoliSetup(GladeWidget):

@@ -22,15 +22,14 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-from GladeWidget import GladeWidget
-
+from promogest.ui.GladeWidget import GladeWidget
 from promogest import Environment
 from promogest.dao.Articolo import Articolo
 from promogest.dao.CodiceABarreArticolo import CodiceABarreArticolo
 import promogest.dao.ListinoArticolo
 from promogest.dao.ListinoArticolo import ListinoArticolo
-from utils import *
-from utilsCombobox import *
+from promogest.ui.utils import *
+from promogest.ui.utilsCombobox import *
 import datetime
 
 

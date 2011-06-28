@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010, 2011 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
 #    Author: Andrea Argiolas  <andrea@promotux.it>
+#    Author: Francesco Marella <francesco.marella@gmail.com>
+
 #    This file is part of Promogest.
 
 #    Promogest is free software: you can redistribute it and/or modify
@@ -20,15 +22,12 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-from GladeWidget import GladeWidget
+from promogest.ui.GladeWidget import GladeWidget
 import Image
 import os
 from promogest import Environment
 from promogest.dao.Azienda import Azienda
-
-from utils import dateToString, stringToDate, checkCodFisc, checkPartIva, showAnagraficaRichiamata, fenceDialog, setconf, posso
-#from utilsCombobox import *
-
+from promogest.ui.utils import dateToString, stringToDate, checkCodFisc, checkPartIva, showAnagraficaRichiamata, fenceDialog, setconf, posso
 
 
 class AnagraficaAziende(GladeWidget):

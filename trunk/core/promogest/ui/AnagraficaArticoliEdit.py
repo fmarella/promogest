@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010, 2011 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -29,8 +29,8 @@ from promogest import Environment
 import promogest.dao.Fornitura
 import promogest.dao.Articolo
 from promogest.dao.Articolo import Articolo
-from utils import *
-from utilsCombobox import *
+from promogest.ui.utils import *
+from promogest.ui.utilsCombobox import *
 from promogest.dao.ScontoVenditaDettaglio import ScontoVenditaDettaglio
 from promogest.dao.ScontoVenditaIngrosso import ScontoVenditaIngrosso
 
