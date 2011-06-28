@@ -22,7 +22,7 @@
 
 import math
 
-import gtk
+from promogest.ui.gtk_compat import *
 from GladeWidget import GladeWidget
 import Login
 
@@ -102,7 +102,7 @@ class Anagrafica(GladeWidget):
 
 
     def on_anagrafica_current_page_entry_key_press_event(self, widget, event):
-        keyname = gtk.gdk.keyval_name(event.keyval)
+        keyname = gdk_keyval_name(event.keyval)
         if keyname == 'Return' or keyname == 'KP_Enter':
             pagina = int(self.anagrafica_current_page_entry.get_text())
             self.filter.gotoPage(int(pagina))
@@ -213,12 +213,7 @@ class Anagrafica(GladeWidget):
 
 
     def on_record_undo_activate(self, widget):
-        dialog = gtk.MessageDialog(self.getTopLevel(), gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                   gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO, 'Cancellare le modifiche ?')
-
-        response = dialog.run()
-        dialog.destroy()
-        if response !=  gtk.RESPONSE_YES:
+        if YesNoDialog(msg='Cancellare le modifiche ?', transient=self.getTopLevel()):
             return
 
         self.detail.setSensitive(True)
@@ -306,14 +301,7 @@ class Anagrafica(GladeWidget):
 
     def on_anagrafica_window_close(self, widget, event=None):
         if self.detail._isSensitive:
-            dialog = gtk.MessageDialog(self.getTopLevel(),
-                                       gtk.DIALOG_MODAL
-                                       | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                       gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO,
-                                       'Confermi la chiusura ?')
-            response = dialog.run()
-            dialog.destroy()
-            if response ==  gtk.RESPONSE_YES:
+            if YesNoDialog(msg='Confermi la chiusura ?', transient=self.getTopLevel()):
                 self.anagrafica_window.destroy()
             else:
                 return True
@@ -418,7 +406,7 @@ class AnagraficaFilter(GladeWidget):
 
     def on_campo_filter_entry_key_press_event(self, widget, event):
         """ Conferma o eliminazione parametri filtro da tastiera"""
-        keyname = gtk.gdk.keyval_name(event.keyval)
+        keyname = gdk_keyval_name(event.keyval)
 
         if keyname == 'Escape':
             self._anagrafica.on_anagrafica_filter_clear_button_clicked(widget)

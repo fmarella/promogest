@@ -21,7 +21,6 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 from promogest.ui.utils import *
-import gtk
 from  subprocess import *
 from datetime import datetime
 from promogest import Environment

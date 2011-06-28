@@ -20,21 +20,21 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-import gtk
-from GladeWidget import GladeWidget
-from AnagraficaComplessa import Anagrafica
+from promogest.ui.gtk_compat import *
+from promogest.ui.GladeWidget import GladeWidget
+from promogest.ui.AnagraficaComplessa import Anagrafica
 from promogest.ui.AnagraficaComplessaFilter import AnagraficaFilter
 from promogest.ui.AnagraficaComplessaReport import AnagraficaReport
 from promogest.ui.AnagraficaComplessaHtml import AnagraficaHtml
-from AnagraficaArticoliEdit import AnagraficaArticoliEdit
+from promogest.ui.AnagraficaArticoliEdit import AnagraficaArticoliEdit
 from promogest import Environment
 
 import promogest.dao.Articolo
 from promogest.dao.Articolo import Articolo
 import promogest.dao.Fornitura
 
-from utils import *
-from utilsCombobox import *
+from promogest.ui.utils import *
+from promogest.ui.utilsCombobox import *
 if posso("PW"):
     from promogest.modules.PromoWear.ui.PromowearUtils import *
     from promogest.modules.PromoWear.dao.ArticoloTagliaColore import ArticoloTagliaColore
