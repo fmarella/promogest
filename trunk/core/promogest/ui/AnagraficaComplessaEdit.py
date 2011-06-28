@@ -72,7 +72,7 @@ class AnagraficaEdit(GladeWidget):
                                       callbacks_proxy=self)
             self.dialogTopLevel = self.dialog.getTopLevel()
             self.dialogTopLevel.set_title(self._windowTitle)
-            self.dialogTopLevel.vbox.pack_start(self.getTopLevel())
+            self.dialogTopLevel.get_content_area().pack_start(self.getTopLevel(), True, True, 0)
             self.dialog.ok_button.connect('grab_focus', self.on_ok_button_grab_focus)
             Environment.windowGroup.append(self.dialogTopLevel)
             self.dialogTopLevel.set_transient_for(self._anagrafica.getTopLevel())
@@ -81,7 +81,7 @@ class AnagraficaEdit(GladeWidget):
             self.setFocus()
         else:
             Environment.windowGroup.remove(self.dialogTopLevel)
-            self.dialogTopLevel.vbox.remove(self.getTopLevel())
+            self.dialogTopLevel.get_content_area().remove(self.getTopLevel())
             self.on_top_level_closed()
             self.dialogTopLevel.destroy()
 

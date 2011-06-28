@@ -2665,7 +2665,7 @@ def YesNoDialog(msg="MESSAGGIO", transient=None,show_entry=False ):
                            msg)
     __entry_codi = gtk.Entry()
     #print "DIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIR", dir(dialog)
-    dialog.vbox.pack_start(__entry_codi, False, False, 0)
+    dialog.get_content_area().pack_start(__entry_codi, False, False, 0)
     if show_entry:
         __entry_codi.show()
     response = dialog.run()

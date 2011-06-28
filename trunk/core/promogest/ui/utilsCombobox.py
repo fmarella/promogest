@@ -234,7 +234,7 @@ def fillComboboxUnitaBase(combobox, filter=False):
     combobox.pack_start(renderer, True)
     combobox.add_attribute(renderer, 'text', 2)
     combobox.set_model(model)
-    if combobox.__class__ is gtk.ComboBoxEntry:
+    if (not Environment.pg3) and combobox.__class__ is gtk.ComboBoxEntry:
         combobox.set_text_column(2)
 
 def fillComboboxRole(combobox, filter=False):
