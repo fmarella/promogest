@@ -616,11 +616,15 @@ def _send(fromaddr=None, total_addrs=None, msg=None):
 
 def hook(et, ev, eb):
     import traceback
+    print "EEEEEEEEEEV", ev
     if "Operation aborted" in str(ev):
         return
     if "ATTENZIONE, TENTATIVO DI SALVATAGGIO SENZA RIGHE?????" in ev:
         return
     if "[Errno 9] Bad file descriptor" in ev:
+        return
+    if "Handler" in str(ev):
+        print "ATTENZIONE!!! MANCA L'HANDLER", ev
         return
     pg2log.info("\n  ".join (["Error occurred: traceback follows"]+list(traceback.format_exception(et, ev, eb))))
     print "UN ERRORE È STATO INTERCETTATO E LOGGATO, SI CONSIGLIA DI RIAVVIARE E DI CONTATTARE L'ASSISTENZA \n\nPREMERE CTRL+C PER CHIUDERE  \n"+"\n  ".join(list(traceback.format_exception(et, ev, eb)))
