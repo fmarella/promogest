@@ -31,7 +31,7 @@ class CustomComboBoxModify(gtk.HBox):
 
     def __init__(self):
         from promogest.ui.utils import setconf
-        gtk.HBox.__init__(self, False, 0)
+        gtk.HBox.__init__(self)
         self.combobox = gtk.ComboBox()
         self.combobox.set_property("can-focus", True)
         self.button = gtk.ToggleButton()
