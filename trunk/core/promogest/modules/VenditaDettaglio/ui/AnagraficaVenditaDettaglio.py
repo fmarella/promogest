@@ -891,7 +891,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         anag = RicercaComplessaArticoli(codiceABarre = codiceABarre,
                                         codice = codice,
                                         denominazione=descrizione)
-        anag.setTreeViewSelectionType(GTK_SELECTION_SINGLE)
+        anag.setTreeViewSelectionType(GTK_SELECTIONMODE_SINGLE)
         anagWindow = anag.getTopLevel()
         anagWindow.connect("hide",
                            on_ricerca_articolo_hide, anag)
