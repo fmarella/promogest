@@ -5,6 +5,8 @@
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
 #    Author: Andrea Argiolas   <andrea@promotux.it>
+#    Author: Francesco Marella <francesco.marella@gmail.com>
+
 #    This file is part of Promogest.
 
 #    Promogest is free software: you can redistribute it and/or modify
@@ -20,7 +22,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-from AnagraficaComplessa import Anagrafica
+from promogest.ui.AnagraficaComplessa import Anagrafica
 from promogest.ui.AnagraficaComplessaReport import AnagraficaReport
 from promogest.ui.AnagraficaComplessaHtml import AnagraficaHtml
 from promogest.ui.AnagraficaFornitoriEdit import AnagraficaFornitoriEdit
@@ -28,8 +30,8 @@ from promogest.ui.AnagraficaFornitoriFilter import AnagraficaFornitoriFilter
 from promogest.modules.Contatti.dao.ContattoFornitore import ContattoFornitore
 from promogest.dao.TestataDocumento import TestataDocumento
 from promogest.dao.DaoUtils import *
-from utils import *
-from utilsCombobox import *
+from promogest.ui.utils import *
+from promogest.ui.utilsCombobox import *
 
 
 class AnagraficaFornitori(Anagrafica):
