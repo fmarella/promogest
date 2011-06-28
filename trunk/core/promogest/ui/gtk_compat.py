@@ -87,6 +87,7 @@ else:
     gi.require_version('Gtk', '3.0')
     from gi.repository import Gdk as gdk
     from gi.repository import Gtk as gtk
+    from gi.repository import GObject as gobject
     from gi.repository import Pango as pango
     from gi.repository import GdkPixbuf
     from gi.repository import GObject as gobject
