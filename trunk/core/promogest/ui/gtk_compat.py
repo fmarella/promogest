@@ -135,6 +135,7 @@ else:
     GTK_SELECTIONMODE_MULTIPLE = gtk.SelectionMode.MULTIPLE
 
     GTK_STATE_NORMAL = gtk.StateType.NORMAL
+
     GDK_COLOR_PARSE = gdk.color_parse
 
     GDK_PIXBUF_NEW_FROM_FILE = GdkPixbuf.Pixbuf.new_from_file
