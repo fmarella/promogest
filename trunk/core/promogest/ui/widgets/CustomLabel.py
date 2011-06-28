@@ -35,9 +35,9 @@ class CustomLabel(gtk.HBox):
         self._buttonText = buttonText or ''
         self._labelText = labelText or ''
 
-        gtk.HBox.__init__(self, False, 0)
+        gtk.HBox.__init__(self)
         self.button = gtk.ToggleButton()
-        hbox = gtk.HBox(False, 3)
+        hbox = gtk.HBox()
         self.image = gtk.Image()
         pbuf = GDK_PIXBUF_NEW_FROM_FILE(Environment.conf.guiDir + 'modifica16x16.png')
         self.image.set_from_pixbuf(pbuf)

@@ -19,8 +19,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-import gtk
-import gobject
+from promogest.ui.gtk_compat import *
 from AnagraficaComplessa import Anagrafica
 from promogest.ui.AnagraficaComplessaEdit import AnagraficaEdit
 from promogest.ui.AnagraficaComplessaReport import AnagraficaReport
@@ -99,7 +98,7 @@ class AnagraficaVariazioniListiniFilter(AnagraficaFilter):
 
         treeview.set_search_column(1)
 
-        self._treeViewModel = gtk.ListStore(gobject.TYPE_PYOBJECT, str,str, str, str, str)
+        self._treeViewModel = gtk.ListStore(object, str,str, str, str, str)
         self._anagrafica.anagrafica_filter_treeview.set_model(self._treeViewModel)
 
         self.refresh()

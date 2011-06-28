@@ -23,8 +23,6 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 import time
-import gtk
-import gobject
 import os
 import sys
 import threading

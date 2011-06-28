@@ -21,7 +21,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-import gtk
+from promogest.ui.gtk_compat import *
 from promogest.ui.AnagraficaComplessaFilter import AnagraficaFilter
 
 from promogest import Environment
@@ -56,7 +56,7 @@ class AnagraficaListiniArticoliFilter(AnagraficaFilter):
         rendererDx.set_property('xalign', 1)
 
         column = gtk.TreeViewColumn('Listino', rendererSx, text=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.connect("clicked", self._changeOrderBy, (None,'id_listino'))
         column.set_resizable(False)
@@ -65,7 +65,7 @@ class AnagraficaListiniArticoliFilter(AnagraficaFilter):
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('Codice articolo', rendererSx, text=2)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
         column.connect("clicked", self._changeOrderBy, (None, 'codice_articolo'))
         column.set_resizable(True)
@@ -74,7 +74,7 @@ class AnagraficaListiniArticoliFilter(AnagraficaFilter):
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('Articolo', rendererSx, text=3)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
         column.connect("clicked", self._changeOrderBy, (None, 'id_articolo'))
         column.set_resizable(True)
@@ -83,7 +83,7 @@ class AnagraficaListiniArticoliFilter(AnagraficaFilter):
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('Data variazione', rendererSx, text=4)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.connect("clicked", self._changeOrderBy, (None,'data_listino_articolo'))
         column.set_resizable(True)
@@ -92,7 +92,7 @@ class AnagraficaListiniArticoliFilter(AnagraficaFilter):
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('Prezzo dettaglio', rendererDx, text=5)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.connect("clicked", self._changeOrderBy, (None, 'prezzo_dettaglio'))
         column.set_resizable(True)
@@ -101,7 +101,7 @@ class AnagraficaListiniArticoliFilter(AnagraficaFilter):
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('Prezzo ingrosso', rendererDx, text=6)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.connect("clicked", self._changeOrderBy, (None, 'prezzo_ingrosso'))
         column.set_resizable(True)

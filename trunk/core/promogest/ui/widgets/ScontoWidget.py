@@ -29,7 +29,7 @@ class ScontoWidget(gtk.HBox):
     discountTypeChars = ('p', 'P', 'v', 'V')
 
     def __init__(self, str1=None, str2=None, int1=None, int2=None):
-        gtk.HBox.__init__(self, False, 0)
+        gtk.HBox.__init__(self)
         self.entry = SignedDecimalEntryField(str1, str2, int1, int2)
         self.entry.connect("key_press_event", self.do_key_press_event)
         self.entry.connect("focus_out_event", self.do_focus_out_event)

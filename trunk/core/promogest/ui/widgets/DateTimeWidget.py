@@ -28,7 +28,7 @@ class DateTimeWidget(gtk.HBox):
 # datetimeentryfield con possibilita' di scelta dal calendario e dall'orario
     __gtype_name__ = 'DateTimeWidget'
     def __init__(self, str1=None, str2=None, int1=None, int2=None):
-        gtk.HBox.__init__(self, False, 0)
+        gtk.HBox.__init__(self)
         self.entry = DateTimeEntryField()
         self.button = gtk.ToggleButton()
         self.button.set_property("can-focus", False)

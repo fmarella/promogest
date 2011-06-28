@@ -21,7 +21,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-import gtk
+from promogest.ui.gtk_compat import *
 import datetime
 from promogest.ui.AnagraficaComplessaEdit import AnagraficaEdit
 
@@ -87,7 +87,7 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
 
     def confermaCalcolaPercentualiDettaglio(self, widget=None, event=None):
         """ confermaCalcolaPercentualiDettaglio """
-        keyname = gtk.gdk.keyval_name(event.keyval)
+        keyname = gdk_keyval_name(event.keyval)
         if keyname == 'Return' or keyname == 'KP_Enter':
             self.calcolaPercentualiDettaglio()
 
@@ -102,7 +102,7 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
 
     def confermaCalcolaPercentualiIngrosso(self, widget=None, event=None):
         """        """
-        keyname = gtk.gdk.keyval_name(event.keyval)
+        keyname = gdk_keyval_name(event.keyval)
         if keyname == 'Return' or keyname == 'KP_Enter':
             self.calcolaPercentualiIngrosso()
 
@@ -119,7 +119,7 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
 
     def confermaAggiornaDaCosto(self, widget=None, event=None):
         """        """
-        keyname = gtk.gdk.keyval_name(event.keyval)
+        keyname = gdk_keyval_name(event.keyval)
         if keyname == 'Return' or keyname == 'KP_Enter':
             self.aggiornaDaCosto()
 
@@ -140,7 +140,7 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
 
     def confermaCalcolaDettaglioDaRicarico(self, widget=None, event=None):
         """        """
-        keyname = gtk.gdk.keyval_name(event.keyval)
+        keyname = gdk_keyval_name(event.keyval)
         if keyname == 'Return' or keyname == 'KP_Enter':
             self.calcolaDettaglioDaRicarico()
 
@@ -160,7 +160,7 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
 
     def confermaCalcolaDettaglioDaMargine(self, widget=None, event=None):
         """        """
-        keyname = gtk.gdk.keyval_name(event.keyval)
+        keyname = gdk_keyval_name(event.keyval)
         if keyname == 'Return' or keyname == 'KP_Enter':
             self.calcolaDettaglioDaMargine()
 
@@ -196,7 +196,7 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
 
     def confermaCalcolaIngrossoDaRicarico(self, widget=None, event=None):
         """        """
-        keyname = gtk.gdk.keyval_name(event.keyval)
+        keyname = gdk_keyval_name(event.keyval)
         if keyname == 'Return' or keyname == 'KP_Enter':
             self.calcolaIngrossoDaRicarico()
 
@@ -214,7 +214,7 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
 
     def confermaCalcolaIngrossoDaMargine(self, widget=None, event=None):
         """        """
-        keyname = gtk.gdk.keyval_name(event.keyval)
+        keyname = gdk_keyval_name(event.keyval)
         if keyname == 'Return' or keyname == 'KP_Enter':
             self.calcolaIngrossoDaMargine()
 

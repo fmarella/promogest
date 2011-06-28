@@ -1873,7 +1873,7 @@ def insertFileTypeChooser(filechooser,typeList):
     @type typeList:
     """
     fc_vbox = gtk.VBox(True, spacing=5)
-    hbox1 = gtk.HBox(False,10)
+    hbox1 = gtk.HBox()
     label = gtk.Label()
     label.set_markup(str='<b><u>Salva in formato</u></b>')
     hbox1.pack_start(label, False, False, 5)
