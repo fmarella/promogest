@@ -347,8 +347,8 @@ def calcolaTotalePart(anaedit, dao=None):
             totaleImpostaScontata += Decimal(castellettoIva[k]['imposta'])
 
         totaleScontato = mN(totaleImponibileScontato,2) + mN(totaleImpostaScontata,2)
-    anaedit.totale_generale_label.set_text(str(mN(totaleImponibile,2) + mN(totaleImposta,2)))
-    anaedit.totale_generale_riepiloghi_label.set_text(str(mN(totaleImponibile,2) + mN(totaleImposta,2)))
+    anaedit.totale_generale_label.set_text(str(mN(totaleImponibile,2) + mN(totaleImposta,2)+mN(totaleEsclusoBaseImponibile,2) ))
+    anaedit.totale_generale_riepiloghi_label.set_text(str(mN(totaleImponibile,2) + mN(totaleImposta,2)+mN(totaleEsclusoBaseImponibile,2)))
     anaedit.totale_imponibile_label.set_text(str(mN(totaleImponibileScontato, 2)))
     anaedit.totale_imponibile_riepiloghi_label.set_text(str(mN(totaleImponibile,2)))
     anaedit.totale_imposta_label.set_text(str(mN(totaleImpostaScontata, 2)))
