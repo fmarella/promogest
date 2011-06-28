@@ -4,6 +4,7 @@
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
+#    Author: Francesco Marella <francesco.marella@gmail.com>
 
 #    This file is part of Promogest.
 
@@ -25,11 +26,11 @@ from AnagraficaComplessa import Anagrafica
 from promogest.ui.AnagraficaComplessaReport import AnagraficaReport
 from promogest.ui.AnagraficaComplessaHtml import AnagraficaHtml
 from promogest import Environment
-from AnagraficaDocumentiFilter import AnagraficaDocumentiFilter
-from AnagraficaDocumentiEdit import AnagraficaDocumentiEdit
+from promogest.ui.AnagraficaDocumentiFilter import AnagraficaDocumentiFilter
+from promogest.ui.AnagraficaDocumentiEdit import AnagraficaDocumentiEdit
 from promogest.modules.Pagamenti.dao.TestataDocumentoScadenza import TestataDocumentoScadenza
 from promogest.dao.TestataDocumento import TestataDocumento
-from utils import *
+from promogest.ui.utils import *
 
 
 class AnagraficaDocumenti(Anagrafica):

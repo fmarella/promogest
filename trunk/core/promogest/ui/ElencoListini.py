@@ -4,6 +4,7 @@
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
+#    Author: Francesco Marella <francesco.marella@gmail.com>
 
 #    This file is part of Promogest.
 
@@ -20,13 +21,10 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-from GladeWidget import GladeWidget
-
 from promogest import Environment
 from promogest.dao.Listino import Listino
-
-from utils import *
-
+from promogest.ui.GladeWidget import GladeWidget
+from promogest.ui.utils import *
 
 
 class ElencoListini(GladeWidget):
