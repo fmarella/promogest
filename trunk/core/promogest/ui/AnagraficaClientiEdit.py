@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010, 2011 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
-#    Authors: Francesco Meloni  <francesco@promotux.it>
-#             Andrea Argiolas <andrea@promotux.it>
-#             Francesco Marella <francesco.marella@gmail.com>
+#    Author: Francesco Meloni  <francesco@promotux.it>
+#    Author: Andrea Argiolas <andrea@promotux.it>
+#    Author: Francesco Marella <francesco.marella@gmail.com>
 
 #    This file is part of Promogest.
 
@@ -22,7 +22,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-import gtk
+from promogest.ui.gtk_compat import *
 from promogest.ui.AnagraficaComplessaEdit import AnagraficaEdit
 import promogest.dao.Cliente
 from promogest import Environment
@@ -32,8 +32,9 @@ from promogest.modules.Contatti.dao.ContattoCliente import ContattoCliente
 from promogest.modules.Contatti.dao.RecapitoContatto import RecapitoContatto
 from promogest.modules.Contatti.dao.Contatto import Contatto
 from promogest.dao.DaoUtils import *
-from utils import *
-from utilsCombobox import *
+from promogest.ui.utils import *
+from promogest.ui.utilsCombobox import *
+
 if posso("IP"):
     from promogest.modules.InfoPeso.ui.InfoPesoNotebookPage import InfoPesoNotebookPage
 
@@ -56,7 +57,7 @@ class AnagraficaClientiEdit(AnagraficaEdit):
         #Elenco categorie
         rendererText = gtk.CellRendererText()
         column = gtk.TreeViewColumn('Categoria', rendererText, text=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
         column.set_resizable(True)
         column.set_expand(True)
@@ -64,7 +65,7 @@ class AnagraficaClientiEdit(AnagraficaEdit):
 
         rendererPixbuf = gtk.CellRendererPixbuf()
         column = gtk.TreeViewColumn('', rendererPixbuf, pixbuf=2)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
         column.set_resizable(False)
         column.set_expand(False)
@@ -104,10 +105,8 @@ class AnagraficaClientiEdit(AnagraficaEdit):
 #        if not setconf(key="INFOPESO", section="General"):
         if posso("IP"):
             self.infopeso_page = InfoPesoNotebookPage(self, "")
-            self.infopeso_page_label = gtk.Label()
-            self.infopeso_page_label.set_markup("<b>INFO PESO</b>")
-            self.anagrafica_clienti_detail_notebook.append_page(self.infopeso_page.infopeso_frame, self.infopeso_page_label)
-
+            self.anagrafica_clienti_detail_notebook.append_page(self.infopeso_page.infopeso_frame,
+                self.infopeso_page.infopeso_page_label)
 
 
     def on_categorie_clienti_add_row_button_clicked(self, widget):
@@ -122,8 +121,7 @@ class AnagraficaClientiEdit(AnagraficaEdit):
                 if c[0] == id:
                     return
             image = gtk.Image()
-            anagPixbuf = image.render_icon(gtk.STOCK_ADD,
-                                               gtk.ICON_SIZE_BUTTON)
+            anagPixbuf = image.render_icon(gtk.STOCK_ADD, GTK_ICON_SIZE_BUTTON)
             model.append((id, categoria, anagPixbuf, 'added'))
         self.categorie_treeview.get_selection().unselect_all()
 
@@ -134,8 +132,7 @@ class AnagraficaClientiEdit(AnagraficaEdit):
         id = findIdFromCombobox(self.id_categoria_cliente_customcombobox.combobox)
         if id is not None:
             image = gtk.Image()
-            anagPixbuf = image.render_icon(gtk.STOCK_REMOVE,
-                                           gtk.ICON_SIZE_BUTTON)
+            anagPixbuf = image.render_icon(gtk.STOCK_REMOVE, GTK_ICON_SIZE_BUTTON)
             model = self.categorie_treeview.get_model()
             for c in model:
                 if c[0] == id:
@@ -468,7 +465,7 @@ class AnagraficaClientiEdit(AnagraficaEdit):
             msg = 'Prima di poter visualizzare la registrazione documenti occorre salvare il cliente.\n Salvare? '
             if YesNoDialog(msg=msg, transient=self.dialogTopLevel):
                 self.on_anagrafica_complessa_detail_dialog_response(
-                        self.dialogTopLevel, gtk.RESPONSE_APPLY)
+                        self.dialogTopLevel, GTK_RESPONSE_APPLY)
             else:
                 toggleButton.set_active(False)
                 return
@@ -490,7 +487,7 @@ class AnagraficaClientiEdit(AnagraficaEdit):
             if self.dao.id is None:
                 msg = 'Prima di poter inserire i contatti occorre salvare il cliente.\n Salvare ?'
                 if YesNoDialog(msg=msg, transient=self.dialogTopLevel):
-                    self.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, gtk.RESPONSE_APPLY)
+                    self.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, GTK_RESPONSE_APPLY)
                 else:
                     toggleButton.set_active(False)
                     return
@@ -518,7 +515,7 @@ class AnagraficaClientiEdit(AnagraficaEdit):
             if self.dao.id is None:
                 msg = 'Prima di poter inserire i contatti occorre salvare il cliente.\n Salvare ?'
                 if YesNoDialog(msg=msg, transient=self.dialogTopLevel):
-                    self.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, gtk.RESPONSE_APPLY)
+                    self.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, GTK_RESPONSE_APPLY)
                 else:
                     toggleButton.set_active(False)
                     return
@@ -540,7 +537,7 @@ class AnagraficaClientiEdit(AnagraficaEdit):
         if self.dao.id is None:
             msg = 'Prima di poter inserire le destinazioni merce occorre salvare il cliente.\n Salvare ?'
             if YesNoDialog(msg=msg, transient=self.dialogTopLevel):
-                self.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, gtk.RESPONSE_APPLY)
+                self.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, GTK_RESPONSE_APPLY)
             else:
                 toggleButton.set_active(False)
                 return

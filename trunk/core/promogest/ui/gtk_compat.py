@@ -80,6 +80,8 @@ if not Environment.pg3:
         GOBJECT_SIGNAL_RUNLAST = gobject.SIGNAL_RUN_LAST
         GTK_COLUMN_GROWN_ONLY =  gtk.TREE_VIEW_COLUMN_GROW_ONLY
 
+        GTK_ICON_SIZE_BUTTON = gtk.ICON_SIZE_BUTTON
+
     except ImportError:
         pass
 
@@ -142,3 +144,6 @@ else:
     GOBJECT_SIGNAL_RUNLAST = gobject.SignalFlags.RUN_LAST
 
     GTK_COLUMN_GROWN_ONLY =  gtk.TreeViewColumnSizing.GROW_ONLY
+
+    GTK_ICON_SIZE_BUTTON = gtk.IconSize.BUTTON
+

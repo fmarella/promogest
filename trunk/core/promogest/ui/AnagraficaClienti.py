@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010, 2011 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
 #    Author: Andrea Argiolas <andrea@promotux.it>
+#    Author: Francesco Marella <francesco.marella@gmail.com>
+
 #    This file is part of Promogest.
 
 #    Promogest is free software: you can redistribute it and/or modify
@@ -22,7 +24,7 @@
 
 from sqlalchemy.orm import join
 from sqlalchemy import or_
-from AnagraficaComplessa import Anagrafica
+from promogest.ui.AnagraficaComplessa import Anagrafica
 from promogest.ui.AnagraficaComplessaReport import AnagraficaReport
 from promogest.ui.AnagraficaComplessaHtml import AnagraficaHtml
 import promogest.dao.Cliente
@@ -35,8 +37,8 @@ from promogest.ui.AnagraficaClientiEdit import AnagraficaClientiEdit
 from promogest.ui.AnagraficaClientiFilter import AnagraficaClientiFilter
 from promogest.dao.TestataDocumento import TestataDocumento
 from promogest.dao.DaoUtils import *
-from utils import *
-from utilsCombobox import *
+from promogest.ui.utils import *
+from promogest.ui.utilsCombobox import *
 
 
 class AnagraficaClienti(Anagrafica):
