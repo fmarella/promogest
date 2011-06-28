@@ -616,7 +616,6 @@ def _send(fromaddr=None, total_addrs=None, msg=None):
 
 def hook(et, ev, eb):
     import traceback
-    print "EEEEEEEEEEV", ev
     if "Operation aborted" in str(ev):
         return
     if "ATTENZIONE, TENTATIVO DI SALVATAGGIO SENZA RIGHE?????" in ev:
