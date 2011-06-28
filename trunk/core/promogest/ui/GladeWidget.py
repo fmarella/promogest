@@ -51,7 +51,12 @@ class GladeWidget(SimpleGladeApp):
     """ Classe base per i widget creati utilizzando Glade 2 """
 
     def __init__(self, rootWidget, fileName=None, callbacks_proxy=None, isModule=False):
+        prefix = ""
+        if Environment.pg3:
+            prefix = "pg3_"
         if not isModule:
+            if fileName:
+                fileName = prefix+fileName
             glade_path = './gui/'+(fileName or '')
         else:
             glade_path = fileName

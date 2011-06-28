@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk+" version="2.16"/>
+  <object class="GtkFrame" id="elenco_listini_frame">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="label_xalign">0</property>
+    <child>
+      <object class="GtkAlignment" id="alignment125">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="left_padding">5</property>
+        <property name="right_padding">5</property>
+        <child>
+          <object class="GtkVBox" id="vbox12">
+            <property name="width_request">680</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="spacing">5</property>
+            <child>
+              <object class="GtkScrolledWindow" id="scrolledwindow14">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="shadow_type">in</property>
+                <child>
+                  <object class="GtkTreeView" id="elenco_listini_treeview">
+                    <property name="width_request">500</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="model">elenco_listini_listore</property>
+                    <property name="enable_grid_lines">both</property>
+                    <property name="tooltip_column">1</property>
+                    <signal name="cursor-changed" handler="on_elenco_listini_treeview_cursor_changed" swapped="no"/>
+                    <signal name="row-activated" handler="on_elenco_listini_treeview_row_activated" swapped="no"/>
+                    <child internal-child="selection">
+                      <object class="GtkTreeSelection" id="treeview-selection1"/>
+                    </child>
+                    <child>
+                      <object class="GtkTreeViewColumn" id="denominazione_column">
+                        <property name="title" translatable="yes">Denominazione</property>
+                        <child>
+                          <object class="GtkCellRendererText" id="cellrenderertext1"/>
+                          <attributes>
+                            <attribute name="text">1</attribute>
+                          </attributes>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkTreeViewColumn" id="descrizione_column">
+                        <property name="title" translatable="yes">Descrizione</property>
+                        <child>
+                          <object class="GtkCellRendererText" id="cellrenderertext2"/>
+                          <attributes>
+                            <attribute name="text">2</attribute>
+                          </attributes>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkTreeViewColumn" id="data_listino_column">
+                        <property name="title" translatable="yes">Data Listino</property>
+                        <child>
+                          <object class="GtkCellRendererText" id="cellrenderertext3"/>
+                          <attributes>
+                            <attribute name="text">3</attribute>
+                          </attributes>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="padding">5</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkHBox" id="hbox117">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="spacing">5</property>
+                <child>
+                  <object class="GtkToggleButton" id="listini_togglebutton">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="tooltip_text" translatable="yes">Gestione dei Listini
+Ricordiamo che nella 
+versione lite senza opzioni attivate è possibile avere un solo 
+listino di vendita </property>
+                    <property name="use_action_appearance">False</property>
+                    <signal name="clicked" handler="on_listini_togglebutton_clicked" swapped="no"/>
+                    <child>
+                      <object class="GtkAlignment" id="alignment126">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="xscale">0</property>
+                        <property name="yscale">0</property>
+                        <child>
+                          <object class="GtkHBox" id="hbox118">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="spacing">2</property>
+                            <child>
+                              <object class="GtkImage" id="image77">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="pixbuf">anagrafica_listino24x24.png</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel" id="label246">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="label" translatable="yes">Anagrafica
+listino</property>
+                                <property name="use_underline">True</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
+                                <property name="position">1</property>
+                              </packing>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkToggleButton" id="articoli_listino_togglebutton">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="tooltip_text" translatable="yes">Composizione dei listini
+con l'inserimento degli 
+articoli presenti in anagrafica</property>
+                    <property name="use_action_appearance">False</property>
+                    <signal name="clicked" handler="on_articoli_listino_togglebutton_clicked" swapped="no"/>
+                    <child>
+                      <object class="GtkAlignment" id="alignment127">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="xscale">0</property>
+                        <property name="yscale">0</property>
+                        <child>
+                          <object class="GtkHBox" id="hbox119">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="spacing">2</property>
+                            <child>
+                              <object class="GtkImage" id="image78">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="pixbuf">composizione_listino24x24.png</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel" id="label247">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="label" translatable="yes">Composizione
+listino</property>
+                                <property name="use_underline">True</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
+                                <property name="position">1</property>
+                              </packing>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkToggleButton" id="importazione_listini_togglebutton">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                    <property name="tooltip_text" translatable="yes">Accesso al modulo 
+di importazione listini e creazione 
+anagrafica articolo.
+Accetta file csv</property>
+                    <property name="use_action_appearance">False</property>
+                    <signal name="clicked" handler="on_importazione_listini_togglebutton_clicked" swapped="no"/>
+                    <child>
+                      <object class="GtkAlignment" id="alignment7">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                        <child>
+                          <object class="GtkHBox" id="hbox13">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                            <child>
+                              <object class="GtkImage" id="image7">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                                <property name="pixbuf">importazione_listino24x24.png</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel" id="label8">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                                <property name="label" translatable="yes">Importazione
+listino</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
+                                <property name="position">1</property>
+                              </packing>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkToggleButton" id="stampa_frontaline_togglebutton">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                    <property name="tooltip_text" translatable="yes">Interfaccia di creazione delle frontaline
+o label per la vendita, con prezzo, iva e 
+codici a barre. Serve un modulo 
+apposito per averne pieno accesso</property>
+                    <property name="use_action_appearance">False</property>
+                    <signal name="clicked" handler="on_stampa_frontaline_togglebutton_clicked" swapped="no"/>
+                    <child>
+                      <object class="GtkAlignment" id="alignment1">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                        <child>
+                          <object class="GtkHBox" id="hbox1">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                            <child>
+                              <object class="GtkImage" id="image1">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                                <property name="stock">gtk-convert</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel" id="label1">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                                <property name="label" translatable="yes">Stampa 
+frontaline</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
+                                <property name="position">1</property>
+                              </packing>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">3</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="padding">5</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child type="label">
+      <object class="GtkLabel" id="label245">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="xpad">5</property>
+        <property name="label" translatable="yes">&lt;b&gt; Elenco listini &lt;/b&gt;</property>
+        <property name="use_markup">True</property>
+      </object>
+    </child>
+  </object>
+  <object class="GtkLabel" id="elenco_listini_label">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="label" translatable="yes">&lt;b&gt;LISTINI&lt;/b&gt;</property>
+    <property name="use_markup">True</property>
+  </object>
+  <object class="GtkListStore" id="elenco_listini_listore">
+    <columns>
+      <!-- column-name PyObject1 -->
+      <column type="PyObject"/>
+      <!-- column-name gchararray1 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray2 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray3 -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
+</interface>
