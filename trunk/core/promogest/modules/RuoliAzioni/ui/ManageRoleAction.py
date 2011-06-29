@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010, 2011 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
+#    Author: Francesco Marella <francesco.marella@gmail.com>
 
 #    This file is part of Promogest.
 
@@ -20,13 +21,13 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-import gtk, gobject
 from promogest import Environment
 from promogest.ui.GladeWidget import GladeWidget
 from promogest.modules.RuoliAzioni.dao.Action import Action
 from promogest.modules.RuoliAzioni.dao.RoleAction import RoleAction
 from promogest.ui.utilsCombobox import *
 from promogest.ui.utils import *
+from promogest.ui.gtk_compat import *
 
 
 class ManageRuoloAzioni(GladeWidget):
@@ -59,7 +60,7 @@ class ManageRuoloAzioni(GladeWidget):
         renderer.set_data('column', 0)
         renderer.set_data('max_length', 5)
         column = gtk.TreeViewColumn('Den. breve', renderer, text=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         #column.set_clickable(True)
         column.set_resizable(True)
         column.set_expand(True)
@@ -71,7 +72,7 @@ class ManageRuoloAzioni(GladeWidget):
         renderer.set_data('column', 0)
         renderer.set_data('max_length', 200)
         column = gtk.TreeViewColumn('Denominazione', renderer, text=2)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         #column.set_clickable(True)
         column.set_resizable(True)
         column.set_expand(True)
@@ -82,13 +83,13 @@ class ManageRuoloAzioni(GladeWidget):
         renderer.connect('toggled', self.on_column_edited, None, treeview)
         #renderer.set_active(False)
         column = gtk.TreeViewColumn('Attiva/Disattiva', renderer, active=3)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
         column.set_resizable(True)
         column.set_expand(False)
         treeview.append_column(column)
 
-        self._treeViewModel = gtk.ListStore(object, str,str,bool)
+        self._treeViewModel = gtk.ListStore(object, str, str, bool)
         treeview.set_model(self._treeViewModel)
 
         treeview.set_search_column(1)
@@ -124,7 +125,7 @@ class ManageRuoloAzioni(GladeWidget):
                 act= False
             else:
                 act=True
-            self._treeViewModel.append([i,i.denominazione or '',i.denominazione_breve or '',act])
+            self._treeViewModel.append([i, i.denominazione or '', i.denominazione_breve or '', act])
 
     def saveDao(self):
         model = self.anagrafica_treeview_role.get_model()
@@ -134,8 +135,8 @@ class ManageRuoloAzioni(GladeWidget):
                 self.dao.id_role = self.idRole
                 self.dao.id_action = row[0].id
                 self.dao.persist()
-            elif not row[3] and not RoleAction().select(id_role =self.idRole,id_action=row[0].id) ==[]:
+            elif not row[3] and not RoleAction().select(id_role=self.idRole,id_action=row[0].id) ==[]:
                 if self.idRole != 1:
-                    riga= RoleAction().select(id_role =self.idRole,id_action=row[0].id)[0]
+                    riga= RoleAction().select(id_role=self.idRole,id_action=row[0].id)[0]
                     riga.delete()
         return
