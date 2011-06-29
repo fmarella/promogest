@@ -278,7 +278,7 @@ class Main(GladeWidget):
                 module_button.set_image(module_butt_image)
                 module_button.set_label(module[1]['module'].VIEW_TYPE[1])
                 module_button.connect('clicked', self.on_module_button_clicked)
-                self.anagrafiche_moduli_vbox.pack_start(module_button, False, False)
+                self.anagrafiche_moduli_vbox.pack_start(module_button, False, False, 0)
             return
         else:
             return
