@@ -378,6 +378,7 @@
               <object class="GtkViewport" id="anagrafica_viewport">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <signal name="key-press-event" handler="on_filter_treeview_keypress_event" swapped="no"/>
                 <child>
                   <placeholder/>
                 </child>

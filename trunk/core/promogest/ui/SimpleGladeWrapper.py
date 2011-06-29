@@ -226,7 +226,7 @@ class SimpleGladeWrapper:
                         setattr(self, widget_api_name, widget)
                     if widget.__gtype__.name == "GtkTreeViewColumn":
                         widget.connect("clicked", self._reOrderBy)
-#                    print "WIDGET NON WIDGET", widget.get_name(), widget, dir(widget)
+                    #print "WIDGET NON WIDGET", widget.get_name(), widget
                 except:
                     pass
 

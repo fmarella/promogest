@@ -533,12 +533,26 @@ class AnagraficaFilter(GladeWidget):
         self._widgetFirstFocus = None
 
     def on_column_edited(self,cellrenderertext, path, new_text ,editNext=True):
+        """ Tentativo di automazzare il calcolo del posizionamento
+        della colonna dentro la treeview, apparentemente non si sa
+        quando si edita una cella a quale colonna appartenga e cmq
+        in che posizione quella colonna si trovi, andrea a suo tempo
+        aveva forzato il posizionamento con una property ad hoc.
+        Soluzione che sembra funzionare anche con pygi
+        col.cell_get_position(cellrenderertext) restituisce None
+        su pygtk quando non è la colonna in cui è presente la cellrenderer
+        mentre su pygi c'è sempre una tupla di due valori
+        quando però non è la colonna coinvola sono a zero o negativi
+        per cui mi basta verificare che uno o entrambi  ivalori siano
+        maggiori di zero per considerare la colonna corretta
+        MONITORARE"""
         column = None
         colonne = self.anagrafica_semplice_treeview.get_columns()
         for col in colonne:
-            if col.cell_get_position(cellrenderertext):
+            if col.cell_get_position(cellrenderertext) and (col.cell_get_position(cellrenderertext)[0] > 0 or col.cell_get_position(cellrenderertext)[1] > 0) :
                 column = colonne.index(col)
                 break
+        #column = cellrenderertext.get_data('column') or 0
         self._anagrafica.on_column_edited(cell=cellrenderertext,
                 path=path,
                 value=new_text,

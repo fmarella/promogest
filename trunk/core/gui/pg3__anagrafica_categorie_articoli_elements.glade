@@ -143,6 +143,7 @@
     <child>
       <object class="GtkTreeViewColumn" id="descrizione_breve_column">
         <property name="resizable">True</property>
+        <property name="sizing">autosize</property>
         <property name="title" translatable="yes">Descrizione Breve</property>
         <property name="clickable">True</property>
         <property name="sort_indicator">True</property>
