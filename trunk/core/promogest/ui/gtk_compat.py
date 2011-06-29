@@ -1,6 +1,6 @@
 # -*- coding: utf8 -*-
 
-#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010, 2011 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Marella <francesco.marella@gmail.com>
@@ -79,6 +79,7 @@ if not Environment.pg3:
 
         GOBJECT_SIGNAL_RUNLAST = gobject.SIGNAL_RUN_LAST
         GTK_COLUMN_GROWN_ONLY =  gtk.TREE_VIEW_COLUMN_GROW_ONLY
+        GTK_COLUMN_FIXED = gtk.TREE_VIEW_COLUMN_FIXED
 
         GTK_ICON_SIZE_BUTTON = gtk.ICON_SIZE_BUTTON
 
@@ -145,6 +146,7 @@ else:
     GOBJECT_SIGNAL_RUNLAST = gobject.SignalFlags.RUN_LAST
 
     GTK_COLUMN_GROWN_ONLY =  gtk.TreeViewColumnSizing.GROW_ONLY
+    GTK_COLUMN_FIXED = gtk.TreeViewColumnSizing.FIXED
 
     GTK_ICON_SIZE_BUTTON = gtk.IconSize.BUTTON
 
