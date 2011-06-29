@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 
 
-#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux di Francesco Meloni snc - http://www.promotux.it/
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010, 2011 by Promotux
+#                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: JJDaNiMoTh <jjdanimoth@gmail.com>
 #    Author: Dr astico  (Marco Pinna)<marco@promotux.it>
 #    Author: Francesco Meloni  <francesco@promotux.it>
+#    Author: Francesco Marella <francesco.marella@gmail.com>
 
 #    This file is part of Promogest.
 
@@ -22,8 +24,6 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-
-import gobject
 import datetime
 from decimal import *
 import string
@@ -57,6 +57,7 @@ from promogest.dao.TestataDocumento import TestataDocumento
 from promogest.ui.GladeWidget import GladeWidget
 from promogest.ui.utils import *
 from promogest.ui.utilsCombobox import *
+from promogest.ui.gtk_compat import *
 from SchedaLavorazioneUtils import *
 from widgets.SchedeOrdinazioniEditWidget import SchedeOrdinazioniEditWidget
 from DuplicaInFattura import DuplicaInFattura
@@ -112,7 +113,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
         renderer.set_data('column', 0)
         renderer.set_data('min_length', 150)
         column = gtk.TreeViewColumn('Codice articolo', renderer, text=2)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_FIXED)
+        column.set_sizing(GTK_COLUMN_FIXED)
         column.set_clickable(False)
         column.set_resizable(False)
         column.set_expand(False)
@@ -127,7 +128,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
         renderer.set_data('max_length', 200)
         renderer.set_data('column', 1)
         column = gtk.TreeViewColumn('Descrizione', renderer, text=3)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_FIXED)
+        column.set_sizing(GTK_COLUMN_FIXED)
         column.set_clickable(False)
         column.set_resizable(True)
         column.set_expand(True)
@@ -140,7 +141,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
         renderer.set_property('xalign', 0.5)
         renderer.set_data('min_length', 50)
         column = gtk.TreeViewColumn('U.M.', renderer, text=4)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_FIXED)
+        column.set_sizing(GTK_COLUMN_FIXED)
         column.set_clickable(False)
         column.set_resizable(False)
         column.set_expand(False)
@@ -158,7 +159,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
         renderer.connect('edited', self.on_column_quantita_edited, treeview, False)
 
         column = gtk.TreeViewColumn('Q.ta', renderer, text=5)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_FIXED)
+        column.set_sizing(GTK_COLUMN_FIXED)
         column.set_clickable(False)
         column.set_resizable(False)
         column.set_expand(False)
@@ -173,7 +174,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
         renderer.set_data('column', 4)
         renderer.set_data('max_length', 200)
         column = gtk.TreeViewColumn('Prezzo lordo', renderer, text=6)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_FIXED)
+        column.set_sizing(GTK_COLUMN_FIXED)
         column.set_clickable(False)
         column.set_resizable(False)
         column.set_expand(False)
@@ -186,7 +187,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
         renderer.set_data('column', 5)
         renderer.set_data('max_length', 200)
         column = gtk.TreeViewColumn('Prezzo netto', renderer, text=7)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_FIXED)
+        column.set_sizing(GTK_COLUMN_FIXED)
         column.set_clickable(False)
         column.set_resizable(False)
         column.set_expand(False)
@@ -198,7 +199,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
         renderer.set_data('column', 6)
         renderer.set_property('xalign', 1)
         column = gtk.TreeViewColumn('Totale', renderer, text=8)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_FIXED)
+        column.set_sizing(GTK_COLUMN_FIXED)
         column.set_clickable(False)
         column.set_resizable(False)
         column.set_expand(False)
@@ -526,8 +527,8 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
                     elif len(result) > 1:
                         response = self.advertise("Attenzione! sono state individuate piu' schede lavorazione con questo numero.\nSi consiglia una verifica della situazione. Continuare comunque?")
                     else:
-                        response = gtk.RESPONSE_YES
-                    if response != gtk.RESPONSE_YES:
+                        response = GTK_RESPONSE_YES
+                    if response != GTK_RESPONSE_YES:
                         return
                     else:
                         self.dao.numero = int(self.numero_scheda_entry.get_text())
@@ -643,12 +644,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
                 #scontiSuTotale[self.dao]=daoSconto
                 scontiSuTotale.append(daoSconto)
         else:
-            msg="ATTENZIONE!! NESSUNO SCONTO INSERITO"
-            dialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL | gtk.
-                                        DIALOG_DESTROY_WITH_PARENT,
-                                        gtk.MESSAGE_INFO, gtk.BUTTONS_OK, msg)
-            dialog.run()
-            dialog.destroy()
+            messageInfo(msg="ATTENZIONE!! NESSUNO SCONTO INSERITO", transient=None)
         self.dao.scontiSuTotale = scontiSuTotale
         self.scontiTEMP = scontiSuTotale
         pbar(self.dialog.pbar,parziale=3, totale=4)
@@ -698,12 +694,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
                 self._refresh()
                 return
             else:
-                msg="Nessuna Associazione di articoli e' stata ancora inserita"
-                dialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL | gtk.
-                                                                DIALOG_DESTROY_WITH_PARENT,
-                                                                gtk.MESSAGE_INFO, gtk.BUTTONS_OK, msg)
-                dialog.run()
-                dialog.destroy()
+                messageInfo(msg="Nessuna Associazione di articoli e' stata ancora inserita", transient=None)
                 if self.associazione_articoli_comboboxentry.get_property("can-focus"):
                     self.associazione_articoli_comboboxentry.grab_focus()
 
@@ -843,7 +834,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
                                         codice=codice,
                                         codiceABarre=codiceABarre,
                                         codiceArticoloFornitore=codiceArticoloFornitore)
-        anag.setTreeViewSelectionType(gtk.SELECTION_SINGLE)
+        anag.setTreeViewSelectionType(GTK_SELECTIONMODE_SINGLE)
 
         anagWindow = anag.getTopLevel()
         anagWindow.connect("hide",
@@ -1055,14 +1046,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
         showAnagraficaRichiamata(None, anagWindow, button, self._refresh)
 
     def advertise(self, msg):
-        dialog = gtk.MessageDialog(self.dialogTopLevel,
-                                   gtk.DIALOG_MODAL
-                                   | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                   gtk.MESSAGE_QUESTION,
-                                   gtk.BUTTONS_YES_NO, msg)
-        response = dialog.run()
-        dialog.destroy()
-        return response
+        return YesNoDialog(msg=msg, transient=self.dialogTopLevel)
 
     def on_anag_clienti_button_clicked(self, button):
         anag = AnagraficaClienti()

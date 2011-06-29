@@ -1,13 +1,30 @@
 # -*- coding: utf-8 -*-
 
-# Promogest
-#
-# Copyright (C) 2005-2009 by Promotux Informatica - http://www.promotux.it/
-# Author: Dr astico (Pinna Marco) <zoccolodignu@gmail.com>
-# Author: Francesco <francesco@promotux.it>
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010, 2011 by Promotux
+#                        di Francesco Meloni snc - http://www.promotux.it/
+
+#    Author: Dr astico  (Marco Pinna)<marco@promotux.it>
+#    Author: Francesco Meloni  <francesco@promotux.it>
+#    Author: Francesco Marella <francesco.marella@gmail.com>
+
+#    This file is part of Promogest.
+
+#    Promogest is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 2 of the License, or
+#    (at your option) any later version.
+
+#    Promogest is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+
+#    You should have received a copy of the GNU General Public License
+#    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 from promogest.Environment import *
 from promogest.ui.utils import *
+from promogest.ui.gtk_compat import *
 from promogest.dao.RigaDocumento import RigaDocumento
 from promogest.dao.DestinazioneMerce import DestinazioneMerce
 from promogest.dao.TestataDocumento import TestataDocumento
@@ -30,7 +47,7 @@ class DuplicaInFattura(object):
             if self.dao.id is None:
                 msg = "Prima di poter generare la fattura di questa scheda e' necessario salvarla .\n Salvare ?"
                 response = self.advertise(msg)
-                if tipo=="fattura" and response == gtk.RESPONSE_YES:
+                if tipo=="fattura" and response == GTK_RESPONSE_YES:
                     if not self.dao.fattura:
                         self.ui.on_anagrafica_complessa_detail_dialog_response(self.ui.dialogTopLevel, -10)
                         idFattura = self.creaFatturaDaScheda()
@@ -44,7 +61,7 @@ class DuplicaInFattura(object):
                             ricevuta_num = self.dao.ricevuta_associata
                             self.advertise("La presente scheda ha gia' generato una fattura (numero "+ricevuta_num+").")
                     return
-                elif tipo=="movimento" and response == gtk.RESPONSE_YES:
+                elif tipo=="movimento" and response == GTK_RESPONSE_YES:
                     if not self.dao.fattura:
                         self.ui.on_anagrafica_complessa_detail_dialog_response(self.ui.dialogTopLevel, -10)
                         idMovimento = self.creaMovimentoDaScheda(operazione=operazione)
@@ -227,11 +244,4 @@ class DuplicaInFattura(object):
         return daoTestataFattura.id
 
     def advertise(self, msg):
-        dialog = gtk.MessageDialog(self.ui.dialogTopLevel,
-                                   gtk.DIALOG_MODAL
-                                   | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                   gtk.MESSAGE_QUESTION,
-                                   gtk.BUTTONS_YES_NO, msg)
-        response = dialog.run()
-        dialog.destroy()
-        return response
+        return YesNoDialog(msg=msg, transient=self.ui.dialogTopLevel)

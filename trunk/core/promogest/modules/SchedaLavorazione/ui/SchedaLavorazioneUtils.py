@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010, 2011 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
 #    Author: Dr astico (Pinna Marco) <zoccolodignu@gmail.com>
+#    Author: Francesco Marella <francesco.marella@gmail.com>
 
 #    This file is part of Promogest.
 
@@ -21,14 +22,12 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-
-
 import os
-import gtk
 import string, re, time, datetime, decimal
 from decimal import *
 from promogest import Environment
-from  promogest.ui.utils import *
+from promogest.ui.utils import *
+from promogest.ui.gtk_compat import *
 from promogest.modules.SchedaLavorazione.dao.SchedaOrdinazione import SchedaOrdinazione
 from promogest.modules.SchedaLavorazione.dao.ColoreStampa import ColoreStampa
 from promogest.modules.SchedaLavorazione.dao.CarattereStampa import CarattereStampa
@@ -38,6 +37,7 @@ from promogest.modules.SchedaLavorazione.dao.ScontoSchedaOrdinazione import Scon
 from promogest.modules.SchedaLavorazione.dao.PromemoriaSchedaOrdinazione import PromemoriaSchedaOrdinazione
 from promogest.dao.ListinoArticolo import ListinoArticolo
 from promogest.dao.Articolo import Articolo
+
 
 def fillComboboxColoreStampa(combobox, filter=False):
     """
@@ -61,8 +61,8 @@ def fillComboboxColoreStampa(combobox, filter=False):
     combobox.pack_start(renderer, True)
     combobox.add_attribute(renderer, 'text', 2)
     combobox.set_model(model)
-    if combobox.__class__ is gtk.ComboBoxEntry:
-        combobox.set_text_column(2)
+#    if combobox.__class__ is gtk.ComboBoxEntry:
+#        combobox.set_text_column(2)
 
 def fillComboboxCarattereStampa(combobox, filter=False):
     """
@@ -86,8 +86,8 @@ def fillComboboxCarattereStampa(combobox, filter=False):
     combobox.pack_start(renderer, True)
     combobox.add_attribute(renderer, 'text', 2)
     combobox.set_model(model)
-    if combobox.__class__ is gtk.ComboBoxEntry:
-        combobox.set_text_column(2)
+#    if combobox.__class__ is gtk.ComboBoxEntry:
+#        combobox.set_text_column(2)
 
 
 def fillComboboxAssociazioneArticoli(combobox, search_string=None):
@@ -95,7 +95,7 @@ def fillComboboxAssociazioneArticoli(combobox, search_string=None):
     Riempie la combobox di selezione delle associazioni di articoli.
     Se la lista risultante ha un solo elemento, questo viene automaticamente selezionato.
     """
-    model = gtk.ListStore(object,str,str)
+    model = gtk.ListStore(object, str, str)
     model.clear()
     liss = Articolo().select(node =True,
                             codiceEM=search_string,
