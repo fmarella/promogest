@@ -59,8 +59,6 @@ def fillComboboxAliquoteIva(combobox, filter=False):
     combobox.add_attribute(renderer, 'text', 2)
     combobox.set_wrap_width(1)
     combobox.set_model(model)
-    if combobox.__class__ is gtk.ComboBoxEntry:
-        combobox.set_text_column(2)
 
 
 def fillComboboxTipiAliquoteIva(combobox, filter=False):
