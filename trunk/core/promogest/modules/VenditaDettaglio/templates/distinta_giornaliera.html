@@ -110,19 +110,19 @@ aperta : </B>{{pageData['aperto']}}
             <P>Contanti LORDO</P>
         </TD>
         <TD WIDTH=10%>
-            <P>{{pageData['totali']["tot_cont"]}}</P>
+            <P>{{utils.mNLC(pageData['totali']["tot_cont"],2)}}</P>
         </TD>
         <TD WIDTH=27%>
             <P>Contanti RESTO</P>
         </TD>
         <TD WIDTH=11%>
-            <P> {{pageData['totali']["tot_cont_resto"]}}</P>
+            <P> {{utils.mNLC(pageData['totali']["tot_cont_resto"],2)}}</P>
         </TD>
         <TD WIDTH=13%>
             <P>Contanti NETTO</P>
         </TD>
         <TD WIDTH=16%>
-            <P>{{pageData['totali']["tot_cont_netto"]}}</P>
+            <P>{{utils.mNLC(pageData['totali']["tot_cont_netto"],2)}}</P>
         </TD>
     </TR>
     <TR VALIGN=TOP>
@@ -130,7 +130,7 @@ aperta : </B>{{pageData['aperto']}}
             <P>Assegni</P>
         </TD>
         <TD WIDTH=10%>
-            <P>{{pageData['totali']["tot_ass"]}}</P>
+            <P>{{utils.mNLC(pageData['totali']["tot_ass"],2)}}</P>
         </TD>
         <TD WIDTH=27%>
             <P>Resi e Storni</P>
@@ -150,13 +150,13 @@ aperta : </B>{{pageData['aperto']}}
             <P>C.Credito e POS</P>
         </TD>
         <TD WIDTH=10%>
-            <P>{{pageData['totali']["tot_ccr"]}}</P>
+            <P>{{utils.mNLC(pageData['totali']["tot_ccr"],2)}}</P>
         </TD>
         <TD WIDTH=27%>
             <P>Tot sconti su totale</P>
         </TD>
         <TD WIDTH=11%>
-            <P>{{pageData['totali']["tot_sconti"]}}</P>
+            <P>{{utils.mNLC(pageData['totali']["tot_sconti"],2)}}</P>
         </TD>
         <TD WIDTH=13%>
             <P><B>TOTALE</B>
