@@ -74,7 +74,18 @@ class Distinta(GladeWidget):
                 totcont_netto += m.totale_scontrino
             totcont += m.totale_contanti
             totnum += 1
-        return (mN(tot),mN(totcont), mN(totccr), mN(totass),mN(tot_sconti), totnum, mN(totcont_resto), mN(totcont_netto) )
+        totali = {
+            "tot" : mN(tot,2),
+            "tot_cont": mN(totcont,2),
+            "tot_ccr": mN(totccr,2),
+            "tot_ass": mN(totass,2),
+            "tot_sconti": mN(tot_sconti,2),
+            "tot_num": mN(totnum,0),
+            "tot_cont_resto": mN(totcont_resto,2),
+            "tot_cont_netto": mN(totcont_netto,2)
+        }
+        #return (mN(tot),mN(totcont), mN(totccr), mN(totass),mN(tot_sconti), totnum, mN(totcont_resto), mN(totcont_netto) )
+        return totali
 
     def calcolasconto(self, dao):
         if dao.sconti[0].tipo_sconto=="valore":
@@ -136,7 +147,26 @@ class Distinta(GladeWidget):
                 magdao = setconf("VenditaDettaglio", "magazzino_vendita")
                 if magdao:
                     magazzino = Magazzino().getRecord(id=magdao).denominazione
-
+            castellettoIva = {}
+            for s in self._scontrini:
+                for r in s.righe:
+                    a = leggiArticolo(r.id_articolo)
+                    ali = a["percentualeAliquotaIva"]
+                    prezzo_scontato = r.prezzo_scontato * r.quantita
+                    imponibile = float(prezzo_scontato)/(1+float(ali)/100)
+                    iva = float(prezzo_scontato) - imponibile
+                    if ali not in castellettoIva.keys():
+                        castellettoIva[ali] = {'percentuale': ali,
+                                               'imponibile': imponibile,
+                                                'imposta': iva,
+                                                'totale': prezzo_scontato
+                                                }
+                    else:
+                        castellettoIva[ali]['percentuale'] = ali
+                        castellettoIva[ali]['imponibile'] += imponibile
+                        castellettoIva[ali]['imposta'] += iva
+                        castellettoIva[ali]['totale'] += prezzo_scontato
+            #print "CASTELLETOOOOOOOOOOOOOOOOOOOOOOOOOOO", castellettoIva
             pageData = {
                     "file": "distinta_giornaliera.html",
                     "parziali": partz,
@@ -144,7 +174,8 @@ class Distinta(GladeWidget):
                     "dataeora": dataeora,
                     "ragione_sociale": ragione_sociale,
                     "aperto": aperto,
-                    "magazzino":magazzino
+                    "magazzino":magazzino,
+                    "castellettoIva": castellettoIva
                     }
             self.html = renderTemplate(pageData)
         renderHTML(self.detail,self.html)

@@ -27,8 +27,8 @@ aperta : </B>{{pageData['aperto']}}
 </P>
 <P STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P STYLE="margin-bottom: 0cm"><B>Parziali per categorie</B>:{% for t
-in pageData['parziali'] %}
+<P STYLE="margin-bottom: 0cm"><B>Parziali per categorie</B>:
+{% for t in pageData['parziali'] %}
 </P>
 <TABLE WIDTH=100% BORDER=1 BORDERCOLOR="#000000" CELLPADDING=4 CELLSPACING=0>
     <COL WIDTH=23*>
@@ -76,6 +76,27 @@ in pageData['parziali'] %}
 </P>
 <P STYLE="margin-bottom: 0.5cm"><BR><BR>
 </P>
+
+<P STYLE="margin-bottom: 0cm"><FONT SIZE=4><B>RIEPILOGO PER REPARTI IVA:</B></FONT></P>
+<TABLE WIDTH=100% BORDER=1 BORDERCOLOR="#000000" CELLPADDING=4 CELLSPACING=0>
+    {% for k in pageData['castellettoIva'] %}
+    <TR VALIGN=TOP>
+        <TD WIDTH=23%>
+            <P>TOTALE REPARTO IVA {{utils.mN(pageData['castellettoIva'][k]["percentuale"],0)}}%</P>
+        </TD>
+        <TD WIDTH=10%>
+            <P>{{utils.mNLC(pageData['castellettoIva'][k]["imponibile"],2)}}</P>
+        </TD>
+        <TD WIDTH=10%>
+            <P>{{utils.mNLC(pageData['castellettoIva'][k]["imposta"],2)}}</P>
+        </TD>
+        <TD WIDTH=10%>
+            <P>{{utils.mNLC(pageData['castellettoIva'][k]["totale"],2)}}</P>
+        </TD>
+    </TR>
+    {% endfor %}
+</TABLE>
+
 <P STYLE="margin-bottom: 0cm"><FONT SIZE=4><B>RIEPILOGO TOTALI:</B></FONT></P>
 <TABLE WIDTH=100% BORDER=1 BORDERCOLOR="#000000" CELLPADDING=4 CELLSPACING=0>
     <COL WIDTH=59*>
@@ -89,19 +110,19 @@ in pageData['parziali'] %}
             <P>Contanti LORDO</P>
         </TD>
         <TD WIDTH=10%>
-            <P>{{pageData['totali'][1]}}</P>
+            <P>{{pageData['totali']["tot_cont"]}}</P>
         </TD>
         <TD WIDTH=27%>
             <P>Contanti RESTO</P>
         </TD>
         <TD WIDTH=11%>
-            <P> {{pageData['totali'][6]}}</P>
+            <P> {{pageData['totali']["tot_cont_resto"]}}</P>
         </TD>
         <TD WIDTH=13%>
             <P>Contanti NETTO</P>
         </TD>
         <TD WIDTH=16%>
-            <P>{{pageData['totali'][7]}}</P>
+            <P>{{pageData['totali']["tot_cont_netto"]}}</P>
         </TD>
     </TR>
     <TR VALIGN=TOP>
@@ -109,7 +130,7 @@ in pageData['parziali'] %}
             <P>Assegni</P>
         </TD>
         <TD WIDTH=10%>
-            <P>{{pageData['totali'][3]}}</P>
+            <P>{{pageData['totali']["tot_ass"]}}</P>
         </TD>
         <TD WIDTH=27%>
             <P>Resi e Storni</P>
@@ -121,7 +142,7 @@ in pageData['parziali'] %}
             <P>Num scontrini</P>
         </TD>
         <TD WIDTH=16%>
-            <P>{{pageData['totali'][5]}}</P>
+            <P>{{utils.mN(pageData['totali']["tot_num"],0)}}</P>
         </TD>
     </TR>
     <TR VALIGN=TOP>
@@ -129,20 +150,20 @@ in pageData['parziali'] %}
             <P>C.Credito e POS</P>
         </TD>
         <TD WIDTH=10%>
-            <P>{{pageData['totali'][2]}}</P>
+            <P>{{pageData['totali']["tot_ccr"]}}</P>
         </TD>
         <TD WIDTH=27%>
             <P>Tot sconti su totale</P>
         </TD>
         <TD WIDTH=11%>
-            <P>{{pageData['totali'][4]}}</P>
+            <P>{{pageData['totali']["tot_sconti"]}}</P>
         </TD>
         <TD WIDTH=13%>
             <P><B>TOTALE</B>
             </P>
         </TD>
         <TD WIDTH=16% BGCOLOR="#00ae00">
-            <P><FONT SIZE=4><B>{{pageData['totali'][0]}}</B></FONT></P>
+            <P><FONT SIZE=4><B>{{utils.mNLC(pageData['totali']["tot"],2)}}</B></FONT></P>
         </TD>
     </TR>
 </TABLE>

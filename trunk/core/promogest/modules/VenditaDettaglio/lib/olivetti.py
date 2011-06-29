@@ -32,7 +32,7 @@ class ElaExecute(object):
                             + str(daoScontrino.id)\
                             + datetime.datetime.today().strftime('%d_%m_%Y_%H_%M_%S')+".txt"
         f = file(filename, 'w')
-        print "DAO SCRONRTINOOOOOOOOOOOOO2", daoScontrino , daoScontrino.__dict__
+        #print "DAO SCRONRTINOOOOOOOOOOOOO2", daoScontrino , daoScontrino.__dict__
         # nel file scontrino i resi vengono vengono messi alla fine (limitazione cassa) DITRON
         righe = []
 #        for riga in daoScontrino.righe:
@@ -113,5 +113,5 @@ class ElaExecute(object):
         if hasattr(Environment.conf, "VenditaDettaglio"):
             if hasattr(Environment.conf.VenditaDettaglio,"export_path"):
                 path = Environment.conf.VenditaDettaglio.export_path
-                print "filename 111111111111111111111111111111", filename, path
+                #print "filename 111111111111111111111111111111", filename, path
                 shutil.move(filename, path)
