@@ -114,7 +114,7 @@ class GestioneTaglieColori(GladeWidget):
         cellspin.set_property('activatable', True)
         cellspin.connect('toggled', self.on_column_selected_edited, self.treeview, True)
         column = gtk.TreeViewColumn('Seleziona', cellspin)
-        column.add_attribute( cellspin, "active", 1)
+        column.add_attribute(cellspin, "active", 1)
         column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_resizable(True)
         #column.set_expand(True)
@@ -143,7 +143,7 @@ class GestioneTaglieColori(GladeWidget):
         column.set_min_width(50)
         self.treeview.append_column(column)
 
-        self._treeViewModel = gtk.TreeStore(object,bool,str,str, str, str, object)
+        self._treeViewModel = gtk.TreeStore(object, bool, str, str, str, str, object)
         self.treeview.set_model(self._treeViewModel)
         self.head_color.set_active(True)
         self.only_variation.set_active(True)

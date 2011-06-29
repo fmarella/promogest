@@ -293,7 +293,7 @@ def fillComboboxListiniFiltrati(combobox, idArticolo=None, idMagazzino=None, idC
     """
     Crea l'elenco dei listini
     """
-    model = gtk.ListStore(gobject.TYPE_PYOBJECT, int, str)
+    model = gtk.ListStore(object, int, str)
     liss = Environment.connection.execStoredProcedure('ListinoCandidateSel',
                                                       (None, idArticolo, idMagazzino, idCliente))
 
@@ -404,7 +404,7 @@ def fillComboboxTaglie(combobox, filter=False, idGruppoTaglia=None, ignore=[]):
 def fillComboboxColori(combobox, filter=False, ignore=[]):
     # Crea l'elenco dei colori, ignorando quelli presenti nella lista ignore
 
-    model = gtk.ListStore(gobject.TYPE_PYOBJECT, int, str)
+    model = gtk.ListStore(object, int, str)
     cols = Colore().select( denominazione=None,
                                        orderBy = None,
                                        offset = None,

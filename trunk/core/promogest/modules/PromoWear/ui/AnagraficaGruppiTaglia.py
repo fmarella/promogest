@@ -72,7 +72,7 @@ class AnagraficaGruppiTaglia(Anagrafica):
         treeview.append_column(column)
         treeview.set_search_column(1)
         # Model: Dao, denominazione, denominazione_breve, sensitive
-        self._treeViewModel = gtk.ListStore(gobject.TYPE_PYOBJECT, str, str, bool)
+        self._treeViewModel = gtk.ListStore(object, str, str, bool)
         treeview.set_model(self._treeViewModel)
 
         self.refresh()
