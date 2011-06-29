@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010, 2011 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
+#    Author: Francesco Marella <francesco.marella@gmail.com>
 
 #    This file is part of Promogest.
 
@@ -20,7 +21,6 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-import gtk
 from promogest.ui.AnagraficaComplessa import Anagrafica
 from promogest.ui.AnagraficaComplessaEdit import AnagraficaEdit
 from promogest.ui.AnagraficaComplessaReport import AnagraficaReport
@@ -31,6 +31,7 @@ from promogest.modules.PromoWear.dao.GruppoTaglia import GruppoTaglia
 from promogest.modules.PromoWear.dao.GruppoTagliaTaglia import GruppoTagliaTaglia
 from promogest.modules.PromoWear.ui.PromowearUtils import *
 from promogest.ui.utils import *
+from promogest.ui.gtk_compat import *
 
 
 class AnagraficaTaglie(Anagrafica):
@@ -95,7 +96,7 @@ class AnagraficaTaglieFilter(AnagraficaFilter):
 
         renderer = gtk.CellRendererText()
         column = gtk.TreeViewColumn('Descrizione', renderer, text=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
         column.set_resizable(True)
         column.set_expand(True)
@@ -103,7 +104,7 @@ class AnagraficaTaglieFilter(AnagraficaFilter):
 
         renderer = gtk.CellRendererText()
         column = gtk.TreeViewColumn('Descrizione breve', renderer, text=2)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
         column.set_resizable(True)
         column.set_expand(False)
@@ -111,7 +112,7 @@ class AnagraficaTaglieFilter(AnagraficaFilter):
 
         renderer = gtk.CellRendererPixbuf()
         column = gtk.TreeViewColumn('', renderer, pixbuf=3)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
         column.set_resizable(False)
         column.set_expand(False)
@@ -187,7 +188,7 @@ class AnagraficaTaglieFilter(AnagraficaFilter):
         if found:
             image = gtk.Image()
             anagPixbuf = image.render_icon(gtk.STOCK_GO_BACK,
-                                           gtk.ICON_SIZE_BUTTON)
+                                           GTK_ICON_SIZE_BUTTON)
             model.set_value(iter, 3, anagPixbuf)
             self._anagrafica.anagrafica_filter_treeview.expand_to_path(path)
         else:

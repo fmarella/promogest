@@ -1,11 +1,26 @@
 # -*- coding: utf-8 -*-
 
-"""
- Promogest
- Copyright (C) 2005-2008 by Promotux Informatica - http://www.promotux.it/
- Author: Francesco Meloni <francesco@promotux.it>
- License: GNU GPLv2
-"""
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010, 2011 by Promotux
+#                        di Francesco Meloni snc - http://www.promotux.it/
+
+#    Author: Francesco Meloni  <francesco@promotux.it>
+#    Author: Francesco Marella <francesco.marella@gmail.com>
+
+#    This file is part of Promogest.
+
+#    Promogest is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 2 of the License, or
+#    (at your option) any later version.
+
+#    Promogest is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+
+#    You should have received a copy of the GNU General Public License
+#    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
+
 from promogest.ui.RicercaComplessa import parseModel, onColumnEdited, columnSelectAll
 from promogest.modules.PromoWear.dao.Colore import Colore
 from promogest.modules.PromoWear.dao.Taglia import Taglia
@@ -23,7 +38,7 @@ def drawPromoWearPart(anaarti, renderer):
 
 
     column = gtk.TreeViewColumn('Gruppo taglia', renderer, text=9, background=1)
-    column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+    column.set_sizing(GTK_COLUMN_GROWN_ONLY)
     column.set_clickable(False)
     column.connect("clicked", anaarti.filter._changeOrderBy, (GruppoTaglia, GruppoTaglia.denominazione))
     column.set_resizable(True)
@@ -32,7 +47,7 @@ def drawPromoWearPart(anaarti, renderer):
     treeview.append_column(column)
 
     column = gtk.TreeViewColumn('Taglia', renderer, text=10, background=1)
-    column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+    column.set_sizing(GTK_COLUMN_GROWN_ONLY)
     column.set_clickable(False)
     column.connect("clicked", anaarti.filter._changeOrderBy, (Taglia, Taglia.denominazione))
     column.set_resizable(True)
@@ -41,7 +56,7 @@ def drawPromoWearPart(anaarti, renderer):
     treeview.append_column(column)
 
     column = gtk.TreeViewColumn('Colore', renderer, text=11, background=1)
-    column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+    column.set_sizing(GTK_COLUMN_GROWN_ONLY)
     column.set_clickable(False)
     column.connect("clicked", anaarti.filter._changeOrderBy, (Colore, Colore.denominazione))
     column.set_resizable(True)
@@ -50,7 +65,7 @@ def drawPromoWearPart(anaarti, renderer):
     treeview.append_column(column)
 
     column = gtk.TreeViewColumn('Anno', renderer, text=12, background=1)
-    column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+    column.set_sizing(GTK_COLUMN_GROWN_ONLY)
     column.set_clickable(False)
     column.connect("clicked", anaarti.filter._changeOrderBy, (AnnoAbbigliamento,AnnoAbbigliamento.denominazione))
     column.set_resizable(True)
@@ -59,7 +74,7 @@ def drawPromoWearPart(anaarti, renderer):
     treeview.append_column(column)
 
     column = gtk.TreeViewColumn('Stagione', renderer, text=13, background=1)
-    column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+    column.set_sizing(GTK_COLUMN_GROWN_ONLY)
     column.set_clickable(False)
     column.connect("clicked", anaarti.filter._changeOrderBy, (StagioneAbbigliamento,StagioneAbbigliamento.denominazione))
     column.set_resizable(True)
@@ -68,7 +83,7 @@ def drawPromoWearPart(anaarti, renderer):
     treeview.append_column(column)
 
     column = gtk.TreeViewColumn('Genere', renderer, text=14, background=1)
-    column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+    column.set_sizing(GTK_COLUMN_GROWN_ONLY)
     column.set_clickable(False)
     column.connect("clicked", anaarti.filter._changeOrderBy, (None, "genere"))
     column.set_resizable(True)
@@ -144,7 +159,7 @@ def drawGruppoTagliaTreeView(anaarti):
     renderer.set_data('column', 1)
     column = gtk.TreeViewColumn('Includi', renderer, active=0)
     column.connect("clicked", anaarti.columnSelectAll, treeview)
-    column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+    column.set_sizing(GTK_COLUMN_GROWN_ONLY)
     column.set_clickable(True)
     column.set_resizable(True)
     column.set_expand(False)
@@ -152,7 +167,7 @@ def drawGruppoTagliaTreeView(anaarti):
 
     renderer = gtk.CellRendererText()
     column = gtk.TreeViewColumn('Descrizione breve', renderer, text=3)
-    column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+    column.set_sizing(GTK_COLUMN_GROWN_ONLY)
     column.set_clickable(False)
     column.set_resizable(True)
     column.set_expand(False)
@@ -160,7 +175,7 @@ def drawGruppoTagliaTreeView(anaarti):
 
     renderer = gtk.CellRendererText()
     column = gtk.TreeViewColumn('Descrizione', renderer, text=4)
-    column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+    column.set_sizing(GTK_COLUMN_GROWN_ONLY)
     column.set_clickable(False)
     column.set_resizable(True)
     column.set_expand(True)
@@ -202,7 +217,7 @@ def drawTagliaTreeView(anaarti):
     renderer.set_data('column', 1)
     column = gtk.TreeViewColumn('Includi', renderer, active=0)
     column.connect("clicked", anaarti.columnSelectAll, treeview)
-    column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+    column.set_sizing(GTK_COLUMN_GROWN_ONLY)
     column.set_clickable(True)
     column.set_resizable(True)
     column.set_expand(False)
@@ -210,7 +225,7 @@ def drawTagliaTreeView(anaarti):
 
     renderer = gtk.CellRendererText()
     column = gtk.TreeViewColumn('Descrizione breve', renderer, text=3)
-    column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+    column.set_sizing(GTK_COLUMN_GROWN_ONLY)
     column.set_clickable(False)
     column.set_resizable(True)
     column.set_expand(False)
@@ -218,7 +233,7 @@ def drawTagliaTreeView(anaarti):
 
     renderer = gtk.CellRendererText()
     column = gtk.TreeViewColumn('Descrizione', renderer, text=4)
-    column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+    column.set_sizing(GTK_COLUMN_GROWN_ONLY)
     column.set_clickable(False)
     column.set_resizable(True)
     column.set_expand(True)
@@ -259,7 +274,7 @@ def drawColoreTreeView(anaarti):
     renderer.set_data('column', 1)
     column = gtk.TreeViewColumn('Includi', renderer, active=0)
     column.connect("clicked", anaarti.columnSelectAll, treeview)
-    column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+    column.set_sizing(GTK_COLUMN_GROWN_ONLY)
     column.set_clickable(True)
     column.set_resizable(True)
     column.set_expand(False)
@@ -267,7 +282,7 @@ def drawColoreTreeView(anaarti):
 
     renderer = gtk.CellRendererText()
     column = gtk.TreeViewColumn('Descrizione breve', renderer, text=3)
-    column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+    column.set_sizing(GTK_COLUMN_GROWN_ONLY)
     column.set_clickable(False)
     column.set_resizable(True)
     column.set_expand(False)
@@ -275,7 +290,7 @@ def drawColoreTreeView(anaarti):
 
     renderer = gtk.CellRendererText()
     column = gtk.TreeViewColumn('Descrizione', renderer, text=4)
-    column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+    column.set_sizing(GTK_COLUMN_GROWN_ONLY)
     column.set_clickable(False)
     column.set_resizable(True)
     column.set_expand(True)
@@ -317,7 +332,7 @@ def drawAnnoTreeView(anaarti):
     renderer.set_data('column', 1)
     column = gtk.TreeViewColumn('Includi', renderer, active=0)
     column.connect("clicked", anaarti.columnSelectAll, treeview)
-    column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+    column.set_sizing(GTK_COLUMN_GROWN_ONLY)
     column.set_clickable(True)
     column.set_resizable(True)
     column.set_expand(False)
@@ -325,7 +340,7 @@ def drawAnnoTreeView(anaarti):
 
     renderer = gtk.CellRendererText()
     column = gtk.TreeViewColumn('Descrizione', renderer, text=3)
-    column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+    column.set_sizing(GTK_COLUMN_GROWN_ONLY)
     column.set_clickable(False)
     column.set_resizable(True)
     column.set_expand(True)
@@ -370,7 +385,7 @@ def drawCutSizeTreeView(anaarti):
     renderer.set_data('column', 1)
     column = gtk.TreeViewColumn('Includi', renderer, active=0)
     column.connect("clicked", anaarti.columnSelectAll, treeview)
-    column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+    column.set_sizing(GTK_COLUMN_GROWN_ONLY)
     column.set_clickable(True)
     column.set_resizable(True)
     column.set_expand(False)
@@ -378,7 +393,7 @@ def drawCutSizeTreeView(anaarti):
 
     renderer = gtk.CellRendererText()
     column = gtk.TreeViewColumn('Descrizione', renderer, text=2)
-    column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+    column.set_sizing(GTK_COLUMN_GROWN_ONLY)
     column.set_clickable(False)
     column.set_resizable(True)
     column.set_expand(True)
@@ -413,7 +428,7 @@ def drawStagioneTreeView(anaarti):
     renderer.set_data('column', 1)
     column = gtk.TreeViewColumn('Includi', renderer, active=0)
     column.connect("clicked", anaarti.columnSelectAll, treeview)
-    column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+    column.set_sizing(GTK_COLUMN_GROWN_ONLY)
     column.set_clickable(True)
     column.set_resizable(True)
     column.set_expand(False)
@@ -421,7 +436,7 @@ def drawStagioneTreeView(anaarti):
 
     renderer = gtk.CellRendererText()
     column = gtk.TreeViewColumn('Descrizione', renderer, text=3)
-    column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+    column.set_sizing(GTK_COLUMN_GROWN_ONLY)
     column.set_clickable(False)
     column.set_resizable(True)
     column.set_expand(True)
@@ -467,7 +482,7 @@ def drawGenereTreeView(anaarti):
     renderer.set_data('column', 1)
     column = gtk.TreeViewColumn('Includi', renderer, active=0)
     column.connect("clicked", anaarti.columnSelectAll, treeview)
-    column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+    column.set_sizing(GTK_COLUMN_GROWN_ONLY)
     column.set_clickable(True)
     column.set_resizable(True)
     column.set_expand(False)
@@ -475,7 +490,7 @@ def drawGenereTreeView(anaarti):
 
     renderer = gtk.CellRendererText()
     column = gtk.TreeViewColumn('Descrizione', renderer, text=3)
-    column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+    column.set_sizing(GTK_COLUMN_GROWN_ONLY)
     column.set_clickable(False)
     column.set_resizable(True)
     column.set_expand(True)

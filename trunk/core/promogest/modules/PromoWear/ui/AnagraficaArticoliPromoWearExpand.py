@@ -1,14 +1,29 @@
 # -*- coding: utf-8 -*-
 
-# Promogest
-#
-# Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
-# Author: Francesco Meloni <francesco@promotux.it>
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010, 2011 by Promotux
+#                        di Francesco Meloni snc - http://www.promotux.it/
 
-import gtk
-import gobject
+#    Author: Francesco Meloni  <francesco@promotux.it>
+#    Author: Francesco Marella <francesco.marella@gmail.com>
+
+#    This file is part of Promogest.
+
+#    Promogest is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 2 of the License, or
+#    (at your option) any later version.
+
+#    Promogest is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+
+#    You should have received a copy of the GNU General Public License
+#    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
+
 from promogest import Environment
 from promogest.ui.utils import *
+from promogest.ui.gtk_compat import *
 from promogest.modules.PromoWear.ui.PromowearUtils import *
 from promogest.modules.PromoWear.dao.ArticoloTagliaColore import ArticoloTagliaColore
 from promogest.dao.Articolo import Articolo
@@ -17,7 +32,7 @@ def treeViewExpand(gtkgui, treeview, renderer):
     """ Expand the normal article treeview """
     if posso("PW"):
         column = gtk.TreeViewColumn('Gruppo taglia', renderer, text=9, background=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
         column.connect("clicked", gtkgui._changeOrderBy, (ArticoloTagliaColore, ArticoloTagliaColore.id_gruppo_taglia))
         column.set_resizable(True)
@@ -26,7 +41,7 @@ def treeViewExpand(gtkgui, treeview, renderer):
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('Modello', renderer, text=10, background=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
         column.connect("clicked", gtkgui._changeOrderBy, (None, Articolo.denominazione_modello))
         column.set_resizable(True)
@@ -35,7 +50,7 @@ def treeViewExpand(gtkgui, treeview, renderer):
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('Taglia', renderer, text=11, background=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
         column.connect("clicked", gtkgui._changeOrderBy, (None,Articolo.denominazione_taglia))
         column.set_resizable(True)
@@ -44,7 +59,7 @@ def treeViewExpand(gtkgui, treeview, renderer):
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('Colore', renderer, text=12, background=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
         column.connect("clicked", gtkgui._changeOrderBy, 'denominazione_colore')
         column.set_resizable(True)
@@ -53,7 +68,7 @@ def treeViewExpand(gtkgui, treeview, renderer):
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('Anno', renderer, text=13, background=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.connect("clicked", gtkgui._changeOrderBy, 'anno')
         column.set_resizable(True)
@@ -62,7 +77,7 @@ def treeViewExpand(gtkgui, treeview, renderer):
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('Stagione', renderer, text=14, background=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
         column.connect("clicked", gtkgui._changeOrderBy, 'stagione')
         column.set_resizable(True)
@@ -71,7 +86,7 @@ def treeViewExpand(gtkgui, treeview, renderer):
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('Genere', renderer, text=15, background=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
         column.connect("clicked", gtkgui._changeOrderBy, 'genere')
         column.set_resizable(True)
@@ -251,13 +266,8 @@ def articleTypeGuiManage(anagrafica, dao, new):
         gtkgui.memo_wear.set_text("""ARTICOLO NUOVO""")
         print "ARTICOLO NEW"
     else:
-        msg = "ATTENZIONE LA TIPOLOGIA DI ARTICOLO NON E' CONTEMPLATA"
-        overDialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL
-                                            | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                                gtk.MESSAGE_ERROR,
-                                                gtk.BUTTONS_CANCEL, msg)
-        response = overDialog.run()
-        overDialog.destroy()
+        messageError(msg="ATTENZIONE LA TIPOLOGIA DI ARTICOLO NON E' CONTEMPLATA",
+                     transient=None)
         return
 
 

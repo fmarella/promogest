@@ -1,16 +1,32 @@
 # -*- coding: utf-8 -*-
 
-# Promogest
-#
-# Copyright (C) 2007 by Promotux Informatica - http://www.promotux.it/
-# Author:  Francesco Meloni  "Vete" <francesco@promotux.it.com>
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010, 2011 by Promotux
+#                        di Francesco Meloni snc - http://www.promotux.it/
+
+#    Author: Francesco Meloni  <francesco@promotux.it>
+#    Author: Francesco Marella <francesco.marella@gmail.com>
+
+#    This file is part of Promogest.
+
+#    Promogest is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 2 of the License, or
+#    (at your option) any later version.
+
+#    Promogest is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+
+#    You should have received a copy of the GNU General Public License
+#    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 import operator
 from decimal import *
-import gtk
 from promogest import Environment
 from promogest.ui.GladeWidget import GladeWidget
 from promogest.ui.utils import *
+from promogest.ui.gtk_compat import *
 from promogest.modules.PromoWear.ui.PromowearUtils import leggiArticoloPromoWear,\
                                                      leggiFornituraPromoWear
 
@@ -57,7 +73,7 @@ class ManageSizeAndColor(GladeWidget):
         rendererSx = gtk.CellRendererText()
 
         column = gtk.TreeViewColumn("Taglia", rendererSx, text=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.connect("clicked", self.refresh, 'Taglia')
         column.set_resizable(True)
@@ -66,7 +82,7 @@ class ManageSizeAndColor(GladeWidget):
         self.treeview.append_column(column)
 
         column = gtk.TreeViewColumn("Colore", rendererSx, text=2)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.connect("clicked", self.refresh, 'Colore')
         column.set_resizable(True)
@@ -83,7 +99,7 @@ class ManageSizeAndColor(GladeWidget):
         cellspin.set_property("climb-rate",3)
         cellspin.connect('edited', self.on_column_quantita_edited, self.treeview, True)
         column = gtk.TreeViewColumn('Quantità', cellspin, text=3)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_resizable(True)
         column.set_expand(True)
         column.set_min_width(40)
@@ -99,7 +115,7 @@ class ManageSizeAndColor(GladeWidget):
         cellspin.set_property("climb-rate",3)
         cellspin.connect('edited', self.on_column_prezzo_edited, self.treeview, True)
         column = gtk.TreeViewColumn('Prezzo', cellspin, text=4)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_resizable(True)
         column.set_expand(True)
         column.set_min_width(60)
@@ -110,14 +126,14 @@ class ManageSizeAndColor(GladeWidget):
         celltext.set_property("visible", True)
         celltext.connect('edited', self.on_column_sconto_edited, self.treeview, True)
         column = gtk.TreeViewColumn('Sconto', celltext, text=5)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_resizable(True)
         column.set_expand(True)
         column.set_min_width(50)
         self.treeview.append_column(column)
 
         column = gtk.TreeViewColumn("Prezzo Netto", rendererSx, text=6)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_resizable(True)
         column.set_expand(True)
         column.set_min_width(60)
@@ -125,7 +141,7 @@ class ManageSizeAndColor(GladeWidget):
 
 
         column = gtk.TreeViewColumn("Denominazione", rendererSx, text=7)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_resizable(True)
         column.set_expand(True)
         column.set_min_width(80)
