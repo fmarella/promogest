@@ -6,7 +6,6 @@
 # Author: Andrea Argiolas <andrea@promotux.it>
 
 
-import gtk
 from promogest import Environment
 from sqlalchemy import *
 from sqlalchemy.orm import *
@@ -15,6 +14,7 @@ from promogest.dao.Articolo import Articolo
 from promogest.dao.Fornitura import Fornitura
 from promogest.dao.CodiceABarreArticolo import CodiceABarreArticolo
 from promogest.dao.Dao import Dao
+from promogest.ui.utils import YesNoDialog
 
 if hasattr(conf, "PromoWear") and getattr(conf.PromoWear,'mod_enable')=="yes":
     from promogest.modules.PromoWear.dao.Colore import Colore
@@ -160,11 +160,7 @@ class Inventario(Dao):
             # richiesta di generazione dell'inventario
             msg = ("Non e' presente nessun caricamento di inventario nell'anno di lavoro:\n\n" +
                 "si desidera generarne uno ?")
-            dialog = gtk.MessageDialog(window, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                    gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO, msg)
-            response = dialog.run()
-            dialog.destroy()
-            if response == gtk.RESPONSE_YES:
+            if YesNoDialog(msg=msg, transient=window):
                 from TestataMovimento import TestataMovimento
                 from RigaMovimento import RigaMovimento
                 from Riga import Riga
@@ -203,10 +199,7 @@ class Inventario(Dao):
                 msg = ("Generazione completata.\n\nEffettuare le dovute modifiche dall'apposita maschera\n" +
                     "di caricamento inventario dopo aver fatto i rilevamenti\n" +
                     "delle merci nei magazzini.\n")
-                dialog = gtk.MessageDialog(window, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                        gtk.MESSAGE_INFO, gtk.BUTTONS_OK, msg)
-                response = dialog.run()
-                dialog.destroy()
+                messageInfoEnv(msg=msg)
 
 inventario=Table('inventario',params['metadata'],schema = params['schema'],autoload=True)
 std_mapper = mapper(Inventario, inventario,properties={

@@ -20,7 +20,6 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-import gtk
 import os, popen2
 
 from promogest.dao.DaoUtils import giacenzaSel
@@ -296,14 +295,7 @@ class GestioneScontrini(GladeWidget):
     Si sta per cancellare uno scontrino, L'operazione
     è irreversibile per cui dovete essere sicuri di
     quel che state facendo. VUOI CANCELLARLO?"""
-            dialog = gtk.MessageDialog(self.getTopLevel(),
-                                   gtk.DIALOG_MODAL
-                                   | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                   gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO,
-                                   msg)
-            response = dialog.run()
-            dialog.destroy()
-            if response ==  gtk.RESPONSE_YES:
+            if YesNoDialog(msg=msg, transient=self.getTopLevel()):
                 if self.dao.numero_movimento:
                     messageInfo(msg= """Esiste già un movimento abbinato di chiusura per scarico da cassa,
         l'operazione è comunque impossibile
@@ -356,14 +348,7 @@ class GestioneScontrini(GladeWidget):
             è stata aggiunta per corprire una casistica specifica
             di "aggiornamento della tabella inventario
             rispetto al venduto al dettaglio vuoi farlo??"""
-        dialog = gtk.MessageDialog(self.getTopLevel(),
-                               gtk.DIALOG_MODAL
-                               | gtk.DIALOG_DESTROY_WITH_PARENT,
-                               gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO,
-                               msg)
-        response = dialog.run()
-        dialog.destroy()
-        if response ==  gtk.RESPONSE_YES:
+        if YesNoDialog(msg=msg, transient=self.getTopLevel()):
             if posso("IN"):
                 idMagazzinosel = Magazzino().select(denominazione = Environment.conf.VenditaDettaglio.magazzino)
                 if Environment.conf.VenditaDettaglio.jolly:

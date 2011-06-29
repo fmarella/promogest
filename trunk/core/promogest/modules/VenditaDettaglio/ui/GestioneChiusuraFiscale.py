@@ -5,7 +5,6 @@
 # Copyright (C) 2005-2008 by Promotux Informatica - http://www.promotux.it/
 # Author: Francesco Meloni <francesco@promotux.it>
 
-import gtk
 import os, popen2
 from datetime import datetime
 from promogest import Environment
@@ -63,13 +62,8 @@ class GestioneChiusuraFiscale(GladeWidget):
                                             idPuntoCassa = self.idPuntoCassa,
                                             batchSize = None)
         if chiusure :
-            dialog = gtk.MessageDialog(self.getTopLevel(),
-                                       gtk.DIALOG_MODAL
-                                       | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                       gtk.MESSAGE_ERROR, gtk.BUTTONS_OK)
-            dialog.set_markup("<b>ATTENZIONE:\n La chiusura odierna e` gia' stata effettuata</b>")
-            response = dialog.run()
-            dialog.destroy()
+            msg = "ATTENZIONE:\n La chiusura odierna e` gia' stata effettuata"
+            messageError(msg=msg, transient =self.getTopLevel())
             return
         self.close_day(self.idMagazzino, data)
 
@@ -204,13 +198,7 @@ class GestioneChiusuraFiscale(GladeWidget):
                 string_message = string_message + s + "\n"
 
             # Mostro messaggio di errore
-            dialog = gtk.MessageDialog(self.gladeobj.getTopLevel(),
-                                       gtk.DIALOG_MODAL
-                                       | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                       gtk.MESSAGE_ERROR, gtk.BUTTONS_OK,
-                                       string_message)
-            response = dialog.run()
-            dialog.destroy()
+            messageError(msg=string_message, transient=self.gladeobj.getTopLevel())
             # Elimino il movimento e la chiusura
             daoChiusura.delete()
             daoChiusura = None

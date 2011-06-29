@@ -20,7 +20,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-import gtk
+from promogest.ui.gtk_compat import *
 import os
 from datetime import datetime
 from promogest.ui.RicercaComplessaArticoli import RicercaComplessaArticoli
@@ -139,7 +139,7 @@ class GestioneInventario(RicercaComplessaArticoli):
         cellspin.set_property('xalign', 1)
         cellspin.connect('edited', self.on_column_quantita_edited, treeview, True)
         column = gtk.TreeViewColumn('Quantità', cellspin, text=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.connect("clicked", self.filter._changeOrderBy, (None, Inventario.quantita))
         column.set_resizable(True)
@@ -159,7 +159,7 @@ class GestioneInventario(RicercaComplessaArticoli):
         cellspin1.connect('edited', self.on_column_valore_unitario_edited, treeview, True)
 
         column = gtk.TreeViewColumn('Val. unitario', cellspin1, text=2)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.connect("clicked", self.filter._changeOrderBy, (None, Inventario.valore_unitario))
         column.set_resizable(True)
@@ -168,7 +168,7 @@ class GestioneInventario(RicercaComplessaArticoli):
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('U/B', rendererSx, text=3)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
 #        column.set_clickable(True)
 #        column.connect("clicked", self.filter._changeOrderBy, (Articolo, Articolo.unita_base))
         column.set_resizable(False)
@@ -177,7 +177,7 @@ class GestioneInventario(RicercaComplessaArticoli):
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('Valorizza', rendererSx, text=4)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
 #        column.connect("clicked", self.filter._changeOrderBy, 'denominazione_breve_unita_base')
         column.set_resizable(False)
@@ -186,7 +186,7 @@ class GestioneInventario(RicercaComplessaArticoli):
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('Data agg', rendererSx, text=5)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.connect("clicked", self.filter._changeOrderBy, (None, Inventario.data_aggiornamento))
         column.set_resizable(True)
@@ -195,7 +195,7 @@ class GestioneInventario(RicercaComplessaArticoli):
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('Cod. ART', rendererSx, text=6)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.connect("clicked", self.filter._changeOrderBy,(Articolo, Articolo.codice))
         column.set_resizable(True)
@@ -204,7 +204,7 @@ class GestioneInventario(RicercaComplessaArticoli):
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('Descriz', rendererSx, text=7)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.connect("clicked", self.filter._changeOrderBy, (Articolo, Articolo.denominazione))
         column.set_resizable(True)
@@ -213,7 +213,7 @@ class GestioneInventario(RicercaComplessaArticoli):
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('C Barre', rendererSx, text=8)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
         column.connect("clicked", self.filter._changeOrderBy, (None, 'produttore'))
         column.set_resizable(True)
@@ -221,7 +221,7 @@ class GestioneInventario(RicercaComplessaArticoli):
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('Produttore', rendererSx, text=9)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.connect("clicked", self.filter._changeOrderBy, 'produttore')
         column.set_resizable(True)
@@ -229,7 +229,7 @@ class GestioneInventario(RicercaComplessaArticoli):
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('Famiglia', rendererSx, text=10)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.connect("clicked", self.filter._changeOrderBy, 'denominazione_famiglia')
         column.set_resizable(True)
@@ -237,7 +237,7 @@ class GestioneInventario(RicercaComplessaArticoli):
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('Categoria', rendererSx, text=11)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.connect("clicked", self.filter._changeOrderBy, 'denominazione_categoria')
         column.set_resizable(True)
@@ -245,7 +245,7 @@ class GestioneInventario(RicercaComplessaArticoli):
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('Cod arti forn', rendererSx, text=12)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.connect("clicked", self.filter._changeOrderBy, 'codice_articolo_fornitore')
         column.set_resizable(True)
