@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux di Francesco Meloni snc - http://www.promotux.it/
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010, 2011 by Promotux
+#                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
 #    Author: Andrea Argiolas <andrea@promotux.it>
+#    Author: Francesco Marella <francesco.marella@gmail.com>
 
 #    This file is part of Promogest.
 
@@ -43,6 +45,7 @@ if posso("PW"):
     from promogest.modules.PromoWear.ui.PromowearUtils import *
     from promogest.modules.PromoWear.ui import AnagraficaArticoliPromoWearExpand
 
+
 class GestioneInventario(RicercaComplessaArticoli):
     """ Gestione inventario di magazzino """
 
@@ -75,9 +78,9 @@ class GestioneInventario(RicercaComplessaArticoli):
 
         # aggiunta dei filtri propri e della parte di dettaglio
 #        ricerca_semplice_articoli_filter_vbox
-        self.filters.ricerca_semplice_articoli_filter_vbox.pack_start(self.additional_filter.getTopLevel(), expand=False)
+        self.filters.ricerca_semplice_articoli_filter_vbox.pack_start(self.additional_filter.getTopLevel(), False, True, 0)
         self.filters.ricerca_semplice_articoli_filter_vbox.reorder_child(self.additional_filter.getTopLevel(), 0)
-        self.results_vbox.pack_start(self._modifica.getTopLevel(), expand=False)
+        self.results_vbox.pack_start(self._modifica.getTopLevel(), False, True, 0)
 
         self.additional_filter.id_magazzino_filter_combobox2.connect('changed',
                                                                     self.on_filter_field_changed)
@@ -420,7 +423,7 @@ class GestioneInventario(RicercaComplessaArticoli):
     def _changeTreeViewSelectionType(self):
         """ Imposta la modalita' di selezione nella treeview ad una sola riga """
         selection = self.filter.resultsElement.get_selection()
-        selection.set_mode(gtk.SELECTION_SINGLE)
+        selection.set_mode(GTK_SELECTIONMODE_SINGLE)
 
     def on_filter_field_changed(self, widget=None, event=None):
         """ Aggiorna il testo del riepilogo perche' almeno uno dei filtri propri e' cambiato """
@@ -601,12 +604,7 @@ class GestioneInventario(RicercaComplessaArticoli):
                                     idMagazzino=idMagazzino)
 
         if res:
-            dialog = gtk.MessageDialog(self.getTopLevel(),
-                            gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                            gtk.MESSAGE_INFO, gtk.BUTTONS_OK,
-                            '\nElaborazione Impossibile !')
-            response = dialog.run()
-            dialog.destroy()
+            messageInfo(msg='\nElaborazione Impossibile !', transient=self.getTopLevel())
             return
         else:
             giacenza = 0
@@ -711,11 +709,11 @@ class GestioneInventario(RicercaComplessaArticoli):
 
         fileDialog = gtk.FileChooserDialog(title='Esportazione inventario ',
                                            parent=self.getTopLevel(),
-                                           action=gtk.FILE_CHOOSER_ACTION_SAVE,
+                                           action=GTK_FILE_CHOOSER_ACTION_SAVE,
                                            buttons=(gtk.STOCK_CANCEL,
-                                                    gtk.RESPONSE_CANCEL,
+                                                    GTK_RESPONSE_CANCEL,
                                                     gtk.STOCK_SAVE,
-                                                    gtk.RESPONSE_OK),
+                                                    GTK_RESPONSE_OK),
                                            backend=None)
 
 
@@ -735,7 +733,7 @@ class GestioneInventario(RicercaComplessaArticoli):
         fileDialog.set_current_name('inv_' + Environment.workingYear + '.csv')
 
         response = fileDialog.run()
-        if response == gtk.RESPONSE_OK:
+        if response == GTK_RESPONSE_OK:
             filename = fileDialog.get_filename()
             fileDialog.destroy()
 
@@ -793,13 +791,13 @@ class GestioneInventario(RicercaComplessaArticoli):
         """ Valorizzazione inventario (modifica automatica del valore unitario) """
         dialog = gtk.Dialog('Attenzione',
                             self.getTopLevel(),
-                            gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+                            GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
                             None)
         hbox = gtk.HBox()
-        image = gtk.image_new_from_stock(gtk.STOCK_DIALOG_QUESTION, gtk.ICON_SIZE_DIALOG)
+        image = GTK_IMAGE_NEW_FROM_STOCK(gtk.STOCK_DIALOG_QUESTION, GTK_ICON_SIZE_BUTTON)
         image.set_padding(10, 10)
         label = gtk.Label('Verranno aggiornati i valori unitari non ancora\nspecificati secondo la modalita\' scelta.')
-        label.set_justify(gtk.JUSTIFY_LEFT)
+        label.set_justify(GTK_JUSTIFICATION_LEFT)
         label.set_alignment(0, 0)
         label.set_padding(15, 10)
         hbox.pack_start(image, False, False, 0)
@@ -816,11 +814,11 @@ class GestioneInventario(RicercaComplessaArticoli):
         buttonVenditaMedio.connect('clicked', self.on_buttonVenditaMedio_clicked)
         buttonVenditaDaListino = gtk.Button(label = 'Prezzo da listino\n di vendita')
         buttonVenditaDaListino.connect('clicked', self.on_buttonVenditaDaListino_clicked)
-        dialog.action_area.pack_start(buttonAcquistoUltimo)
-        dialog.action_area.pack_start(buttonVenditaUltimo)
-        dialog.action_area.pack_start(buttonAcquistoMedio)
-        dialog.action_area.pack_start(buttonVenditaMedio)
-        dialog.action_area.pack_start(buttonVenditaDaListino)
+        dialog.get_action_area().pack_start(buttonAcquistoUltimo, True, True, 0)
+        dialog.get_action_area().pack_start(buttonVenditaUltimo, True, True, 0)
+        dialog.get_action_area().pack_start(buttonAcquistoMedio, True, True, 0)
+        dialog.get_action_area().pack_start(buttonVenditaMedio, True, True, 0)
+        dialog.get_action_area().pack_start(buttonVenditaDaListino, True, True, 0)
 
         dialog.show_all()
         result = dialog.run()

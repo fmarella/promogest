@@ -59,6 +59,8 @@ if not Environment.pg3:
 
         GTK_COMBOBOXTEXT = gtk.combo_box_new_text
 
+        GTK_IMAGE_NEW_FROM_STOCK = gtk.image_new_from_stock
+
         GDK_EVENTTYPE_BUTTON_PRESS = gdk.BUTTON_PRESS
         GDK_EVENTTYPE_2BUTTON_PRESS = gdk._2BUTTON_PRESS
         GDK_EVENTTYPE_3BUTTON_PRESS = gdk._3BUTTON_PRESS
@@ -101,6 +103,8 @@ if not Environment.pg3:
 
         GTK_WRAPMODE_WORD = gtk.WRAP_WORD
 
+        GTK_FILE_CHOOSER_ACTION_SAVE = gtk.FILE_CHOOSER_ACTION_SAVE
+
     except ImportError:
         pass
 
@@ -140,6 +144,8 @@ else:
     gdk_keyval_name = gdk.keyval_name
 
     GTK_COMBOBOXTEXT = gtk.ComboBoxText
+
+    GTK_IMAGE_NEW_FROM_STOCK = gtk.Image.new_from_stock
 
     GDK_EVENTTYPE_BUTTON_PRESS = gdk.EventType.BUTTON_PRESS
     GDK_EVENTTYPE_2BUTTON_PRESS = gdk.EventType._2BUTTON_PRESS
@@ -182,4 +188,6 @@ else:
     GTK_WINDOWTYPE_TOPLEVEL = gtk.WindowType.TOPLEVEL
 
     GTK_WRAPMODE_WORD = gtk.WrapMode.WORD
+
+    GTK_FILE_CHOOSER_ACTION_SAVE = gtk.FileChooserAction.SAVE
 
