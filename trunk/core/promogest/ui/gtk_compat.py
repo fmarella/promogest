@@ -139,8 +139,7 @@ else:
     pango_tabarray_new = pango.TabArray.new
     gdk_keyval_name = gdk.keyval_name
 
-    GTK_COMBOBOXTEXT = Gtk.ComboBoxText
-
+    GTK_COMBOBOXTEXT = gtk.ComboBoxText
 
     GDK_EVENTTYPE_BUTTON_PRESS = gdk.EventType.BUTTON_PRESS
     GDK_EVENTTYPE_2BUTTON_PRESS = gdk.EventType._2BUTTON_PRESS
