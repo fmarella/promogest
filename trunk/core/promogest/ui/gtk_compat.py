@@ -90,6 +90,15 @@ if not Environment.pg3:
         GTK_ATTACHOPTIONS_FILL = gtk.FILL
         GTK_ATTACHOPTIONS_EXPAND =  gtk.EXPAND
 
+        GTK_POLICYTYPE_AUTOMATIC = gtk.POLICY_AUTOMATIC
+        GTK_POLICYTYPE_ALWAYS = gtk.POLICY_ALWAYS
+
+        GTK_JUSTIFICATION_LEFT = gtk.JUSTIFY_LEFT
+
+        GTK_WINDOWTYPE_TOPLEVEL = gtk.WINDOW_TOPLEVEL
+
+        GTK_WRAPMODE_WORD = gtk.WRAP_WORD
+
     except ImportError:
         pass
 
@@ -163,4 +172,11 @@ else:
 
     GTK_ATTACHOPTIONS_FILL = gtk.AttachOptions.FILL
     GTK_ATTACHOPTIONS_EXPAND =  gtk.AttachOptions.EXPAND
+
+    GTK_POLICYTYPE_AUTOMATIC = Gtk.PolicyType.AUTOMATIC
+    GTK_JUSTIFICATION_LEFT = Gtk.Justification.LEFT
+
+    GTK_WINDOWTYPE_TOPLEVEL = Gtk.WindowType.TOPLEVEL
+
+    GTK_WRAPMODE_WORD = Gtk.WrapMode.WORD
 
