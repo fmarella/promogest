@@ -1,19 +1,34 @@
 # -*- coding: utf-8 -*-
 
-# Promogest
-#
-# Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
-# Author: Andrea Argiolas <andrea@promotux.it>
-# Author: Francesco Meloni  <francesco@promotux.it>
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010, 2011 by Promotux
+#                        di Francesco Meloni snc - http://www.promotux.it/
+
+#    Author: Francesco Meloni  <francesco@promotux.it>
+#    Author: Andrea Argiolas  <andrea@promotux.it>
+#    Author: Francesco Marella <francesco.marella@gmail.com>
+
+#    This file is part of Promogest.
+
+#    Promogest is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 2 of the License, or
+#    (at your option) any later version.
+
+#    Promogest is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+
+#    You should have received a copy of the GNU General Public License
+#    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 import matplotlib.pyplot as plt
-import gtk
 from matplotlib.figure import Figure
 from numpy import arange, sin, pi
-
 from matplotlib.backends.backend_gtkagg import FigureCanvasGTKAgg as FigureCanvas
-
 from matplotlib.backends.backend_gtkagg import NavigationToolbar2GTKAgg as NavigationToolbar
+
+from promogest.ui.gtk_compat import *
 
 class chartViewer():
     def __init__(self,widget, func= None, scontrini = None):
@@ -32,17 +47,17 @@ class chartViewer():
 
         win.add(vbox)
         sw = gtk.ScrolledWindow()
-        vbox.pack_start(sw)
+        vbox.pack_start(sw, True, True, 0)
         sw.set_border_width (10)
-        sw.set_policy (hscrollbar_policy=gtk.POLICY_AUTOMATIC,
-               vscrollbar_policy=gtk.POLICY_ALWAYS)
+        sw.set_policy (hscrollbar_policy=GTK_POLICYTYPE_AUTOMATIC,
+               vscrollbar_policy=GTK_POLICYTYPE_ALWAYS)
 
         canvas = FigureCanvas(self.fig)  # a gtk.DrawingArea
 
         sw.add_with_viewport (canvas)
         toolbar = NavigationToolbar(canvas, win)
         toolbar.set_message(func)
-        vbox.pack_start(toolbar, False, False)
+        vbox.pack_start(toolbar, False, False, 0)
         win.set_modal(True)
         win.set_transient_for(widget)
         win.show_all()

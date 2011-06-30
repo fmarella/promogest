@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010, 2011 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
+#    Author: Francesco Marella <francesco.marella@gmail.com>
 
 #    This file is part of Promogest.
 
@@ -21,7 +22,6 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 import os
-import gtk
 import csv
 import datetime
 from promogest.ui.GladeWidget import GladeWidget
@@ -33,6 +33,7 @@ from promogest.dao.Magazzino import Magazzino
 from promogest.dao.Stoccaggio import Stoccaggio
 from promogest.ui.utils import *
 from promogest.ui.utilsCombobox import *
+from promogest.ui.gtk_compat import *
 from promogest.dao.DaoUtils import *
 
 
@@ -154,7 +155,4 @@ class StatisticheMagazzino(GladeWidget):
                     paramRigga = paramRigga + [colore, anno, gruppoTaglia, genere, taglia,stagione]
                 c.writerow(paramRigga)
 
-        dialog = gtk.MessageDialog(self.getTopLevel(), gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                   gtk.MESSAGE_INFO, gtk.BUTTONS_OK, '\n\nEsportazione terminata !')
-        dialog.run()
-        dialog.destroy()
+        messageInfo(msg='\n\nEsportazione terminata !', transient=self.getTopLevel())
