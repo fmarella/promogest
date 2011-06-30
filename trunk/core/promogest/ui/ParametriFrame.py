@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010, 2011 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
 #    Author: Alceste Scalas  <alceste@promotux.it>
+#    Author: Francesco Marella <francesco.marella@gmail.com>
+
 #    This file is part of Promogest.
 
 #    Promogest is free software: you can redistribute it and/or modify
@@ -21,19 +23,19 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 import locale
-from promogest.ui.gtk_compat import *
 import hashlib
 import os
 from  subprocess import *
 import threading, os, signal
 from promogest import Environment
-from GladeWidget import GladeWidget
-from ElencoMagazzini import ElencoMagazzini
-from ElencoListini import ElencoListini
-from VistaPrincipale import VistaPrincipale
+from promogest.ui.GladeWidget import GladeWidget
+from promogest.ui.ElencoMagazzini import ElencoMagazzini
+from promogest.ui.ElencoListini import ElencoListini
+from promogest.ui.VistaPrincipale import VistaPrincipale
 from promogest.ui.SendEmail import SendEmail
-from utils import hasAction,fenceDialog
-from utilsCombobox import *
+from promogest.ui.utils import hasAction, fenceDialog
+from promogest.ui.utilsCombobox import *
+from promogest.ui.gtk_compat import *
 import Login
 
 
@@ -67,9 +69,9 @@ class ParametriFrame(GladeWidget):
                 module_button.set_label(module[1]['module'].VIEW_TYPE[1])
                 module_button.connect('clicked', self.on_module_button_clicked)
                 self.table10.attach(module_button,current_column, current_column+1,\
-                                                current_row,current_row+1,xoptions=gtk.EXPAND|gtk.FILL,\
-                                                yoptions=gtk.FILL)
-                #self.vbox1.pack_start(module_button, False, False)
+                                                current_row,current_row+1,
+                                                xoptions=GTK_ATTACHOPTIONS_EXPAND|GTK_ATTACHOPTIONS_FILL,\
+                                                yoptions=GTK_ATTACHOPTIONS_FILL)
                 current_row += 1
             return
         else:
