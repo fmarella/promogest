@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010, 2011 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
+#    Author: Francesco Marella <francesco.marella@gmail.com>
 
 #    This file is part of Promogest.
 
@@ -21,7 +22,6 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 import locale
-from promogest.ui.gtk_compat import *
 import hashlib
 import os
 import glob
@@ -36,16 +36,17 @@ from datetime import datetime
 import webbrowser
 from  subprocess import *
 from promogest import Environment
-from GladeWidget import GladeWidget
-from ElencoMagazzini import ElencoMagazzini
-from ElencoListini import ElencoListini
-from VistaPrincipale import VistaPrincipale
+from promogest.ui.GladeWidget import GladeWidget
+from promogest.ui.ElencoMagazzini import ElencoMagazzini
+from promogest.ui.ElencoListini import ElencoListini
+from promogest.ui.VistaPrincipale import VistaPrincipale
 from promogest.ui.SendEmail import SendEmail
 from promogest.ui.PrintDialog import PrintDialogHandler
-from utils import hasAction, fencemsg, aggiorna, updateScadenzePromemoria,\
+from promogest.ui.utils import hasAction, fencemsg, aggiorna, updateScadenzePromemoria,\
          setconf, dateTimeToString, dateToString, \
          orda, posso, messageInfo, installId , YesNoDialog
-from utilsCombobox import *
+from promogest.ui.utilsCombobox import *
+from promogest.ui.gtk_compat import *
 from ParametriFrame import ParametriFrame
 from SetConf import SetConfUI
 from AnagraficaPrincipaleFrame import AnagrafichePrincipaliFrame
@@ -53,7 +54,7 @@ from AnagraficaPrincipaleFrame import AnagrafichePrincipaliFrame
 import promogest.dao.Promemoria
 from promogest.dao.Promemoria import Promemoria
 from promogest.dao.VariazioneListino import VariazioneListino
-from ConfiguraWindow import ConfiguraWindow
+from promogest.ui.ConfiguraWindow import ConfiguraWindow
 from promogest.ui.PanUi import PanUi, checkPan
 from promogest.ui.AzioniVelociNotebookPage import AzioniVelociNotebookPage
 from promogest.ui.NewsNotebookPage import NewsNotebookPage
@@ -61,10 +62,10 @@ from promogest.ui.CalendarNotebookPage import CalendarNotebookPage
 from promogest.ui.NotificaAllarmiNotebookPage import NotificaAllarmiNotebookPage
 
 #inizializzano il customwidget
-from widgets.ArticoloSearchWidget import ArticoloSearchWidget
-from widgets.ClienteSearchWidget import ClienteSearchWidget
-from widgets.FornitoreSearchWidget import FornitoreSearchWidget
-from widgets.PersonaGiuridicaSearchWidget import PersonaGiuridicaSearchWidget
+from promogest.ui.widgets.ArticoloSearchWidget import ArticoloSearchWidget
+from promogest.ui.widgets.ClienteSearchWidget import ClienteSearchWidget
+from promogest.ui.widgets.FornitoreSearchWidget import FornitoreSearchWidget
+from promogest.ui.widgets.PersonaGiuridicaSearchWidget import PersonaGiuridicaSearchWidget
 if posso("GN"):
     from promogest.modules.GestioneNoleggio.dao.TestataGestioneNoleggio \
                             import TestataGestioneNoleggio
@@ -594,9 +595,9 @@ class Main(GladeWidget):
 
         label = gtk.Label()
         label.set_markup("<b>   Inserisci codice   </b>")
-        hbox.pack_start(label)
-        hbox.pack_start(entry___)
-        dialog.get_content_area().pack_start(hbox)
+        hbox.pack_start(label, True, True, 0)
+        hbox.pack_start(entry___, True, True, 0)
+        dialog.get_content_area().pack_start(hbox, True, True, 0)
         dialog.show_all()
         response = dialog.run()
         codice = entry___.get_text()

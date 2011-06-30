@@ -5,6 +5,8 @@
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
 #    Author: Andrea Argiolas   <andrea@promotux.it>
+#    Author: Francesco Marella <francesco.marella@gmail.com>
+
 #    This file is part of Promogest.
 
 #    Promogest is free software: you can redistribute it and/or modify
@@ -20,15 +22,13 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-import gtk
-
-from AnagraficaSemplice import Anagrafica, AnagraficaDetail, AnagraficaFilter
-
+from promogest.ui.AnagraficaSemplice import Anagrafica, AnagraficaDetail, AnagraficaFilter
 from promogest import Environment
 from promogest.dao.CodiceABarreArticolo import CodiceABarreArticolo
+from promogest.ui.utils import *
+from promogest.ui.utilsCombobox import *
+from promogest.ui.gtk_compat import *
 
-from utils import *
-from utilsCombobox import *
 
 class AnagraficaCodiciABarreArticoli(Anagrafica):
     """ Anagrafica codici a barre """
@@ -51,7 +51,7 @@ class AnagraficaCodiciABarreArticoli(Anagrafica):
         renderer.set_data('column', 0)
         renderer.set_data('max_length', 200)
         column = gtk.TreeViewColumn('Codice a barre', renderer, text=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.set_resizable(True)
         column.set_expand(True)
@@ -62,7 +62,7 @@ class AnagraficaCodiciABarreArticoli(Anagrafica):
         renderer.connect('toggled', self.on_column_edited, None, treeview)
         renderer.set_data('column', 1)
         column = gtk.TreeViewColumn('Primario', renderer, active=2)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
         column.set_resizable(True)
         column.set_expand(False)
@@ -71,11 +71,11 @@ class AnagraficaCodiciABarreArticoli(Anagrafica):
         self._treeViewModel = gtk.ListStore(object, str, bool)
         treeview.set_model(self._treeViewModel)
 
-        self.codBar_combo = gtk.combo_box_new_text()
+        self.codBar_combo = GTK_COMBOBOXTEXT()
         self.codBar_combo.append_text("Crea Codice Random Ean13 ")
         self.codBar_combo.append_text("Crea Codice Random Ean8 ")
-        self.bodyWidget.hbox1.pack_start(self.codBar_combo)
-        self.codBar_combo.connect('changed', self.on_generic_combobox_changed )
+        self.bodyWidget.hbox1.pack_start(self.codBar_combo, True, True, 0)
+        self.codBar_combo.connect('changed', self.on_generic_combobox_changed)
 
         treeview.set_search_column(1)
 
@@ -208,11 +208,5 @@ class AnagraficaCodiciABarreArticoliDetail(AnagraficaDetail):
             if bars[0].id_articolo != self._anagrafica._idArticolo:
                 articolo = leggiArticolo(bars[0].id_articolo)
                 msg = "Codice gia' assegnato all'articolo: \n\nCod. " + articolo["codice"] + " (" + articolo["denominazione"] + ")"
-                dialog = gtk.MessageDialog(self._anagrafica.getTopLevel(),
-                                           gtk.DIALOG_MODAL
-                                           | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                           gtk.MESSAGE_INFO, gtk.BUTTONS_OK,
-                                           msg)
-                dialog.run()
-                dialog.destroy()
+                messageInfo(msg=msg, transient=self._anagrafica.getTopLevel())
                 raise Exception, 'Operation aborted: Cod Barre già assegnato'

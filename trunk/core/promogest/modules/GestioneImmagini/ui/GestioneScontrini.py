@@ -1,11 +1,26 @@
 # -*- coding: utf-8 -*-
 
-# Promogest
-#
-# Copyright (C) 2005-2008 by Promotux Informatica - http://www.promotux.it/
-# Author: Francesco Meloni <francescoo@promotux.it>
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010, 2011 by Promotux
+#                        di Francesco Meloni snc - http://www.promotux.it/
 
-import gtk, gobject
+#    Author: Francesco Marella <francesco.marella@gmail.com>
+#    Author: Francesco Meloni  <francesco@promotux.it>
+
+#    This file is part of Promogest.
+
+#    Promogest is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 2 of the License, or
+#    (at your option) any later version.
+
+#    Promogest is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+
+#    You should have received a copy of the GNU General Public License
+#    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
+
 import os, popen2
 import gtkhtml2
 from promogest.dao.DaoUtils import giacenzaSel
@@ -17,9 +32,9 @@ from promogest.modules.VenditaDettaglio.dao.RigaScontrino import RigaScontrino
 from promogest.modules.VenditaDettaglio.dao.ScontoRigaScontrino import ScontoRigaScontrino
 from promogest.ui.widgets.FilterWidget import FilterWidget
 from promogest.ui.utils import *
-from promogest.ui import utils
+from promogest.ui.gtk_compat import *
 from jinja2 import Environment  as Env
-from jinja2 import FileSystemLoader,FileSystemBytecodeCache
+from jinja2 import FileSystemLoader, FileSystemBytecodeCache
 
 
 class GestioneScontrini(GladeWidget):
@@ -52,8 +67,8 @@ class GestioneScontrini(GladeWidget):
         label.set_text('_Reso')
         label.set_use_underline(True)
         quit_button = gtk.Button(stock=gtk.STOCK_QUIT)
-        self.main_hbuttonbox.pack_start(rhesus_button)
-        self.main_hbuttonbox.pack_end(quit_button)
+        self.main_hbuttonbox.pack_start(rhesus_button, True, True, 0)
+        self.main_hbuttonbox.pack_end(quit_button, True, True, 0)
         #self._window.add_action_widget(rhesus_button, gtk.RESPONSE_APPLY)
         #self._window.add_action_widget(quit_button, gtk.RESPONSE_CANCEL)
 
@@ -73,8 +88,8 @@ class GestioneScontrini(GladeWidget):
         self.detailTopLevel = self.detail.getTopLevel()
         main_hpaned.pack2(self.detailTopLevel)
 
-        self.filterss.filter_scrolledwindow.set_policy(hscrollbar_policy = gtk.POLICY_AUTOMATIC,
-                                                     vscrollbar_policy = gtk.POLICY_AUTOMATIC)
+        self.filterss.filter_scrolledwindow.set_policy(hscrollbar_policy = GTK_POLICYTYPE_AUTOMATIC,
+                                                     vscrollbar_policy = GTK_POLICYTYPE_AUTOMATIC)
         self.filterss.filter_body_label.set_markup('<b>Elenco scontrini</b>')
         self.filterss.filter_body_label.set_property('visible', True)
 
@@ -88,7 +103,7 @@ class GestioneScontrini(GladeWidget):
         rendererDx.set_property('xalign', 1)
 
         column = gtk.TreeViewColumn('Data', rendererSx, text=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.connect("clicked", self.filterss._changeOrderBy, 'data_inserimento, id')
         column.set_resizable(True)
@@ -96,35 +111,35 @@ class GestioneScontrini(GladeWidget):
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('Totale', rendererDx, text=2)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
         column.set_resizable(True)
         column.set_expand(False)
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('Contanti', rendererDx, text=3)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
         column.set_resizable(True)
         column.set_expand(False)
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('Assegni', rendererDx, text=4)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
         column.set_resizable(True)
         column.set_expand(False)
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('C di Cr', rendererDx, text=5)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
         column.set_resizable(True)
         column.set_expand(False)
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('Data M.M.', rendererSx, text=6)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.connect("clicked", self.filterss._changeOrderBy, 'data_movimento')
         column.set_resizable(True)
@@ -132,7 +147,7 @@ class GestioneScontrini(GladeWidget):
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('N° M.M.', rendererSx, text=7)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.connect("clicked", self.filterss._changeOrderBy, 'numero_movimento')
         column.set_resizable(True)

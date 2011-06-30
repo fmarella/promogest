@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010, 2011 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
+#    Author: Francesco Marella <francesco.marella@gmail.com>
 
 #    This file is part of Promogest.
 
@@ -20,13 +21,12 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-import gtk
-import gobject
-from RicercaComplessa import RicercaComplessa
+from promogest.ui.gtk_compat import *
+from promogest.ui.RicercaComplessa import RicercaComplessa
 from sqlalchemy import and_, or_, not_
-from RicercaComplessa import analyze_treeview_key_press_event
-from RicercaComplessa import parseModel, onColumnEdited, columnSelectAll
-from RicercaComplessa import optimizeString, insertTreeViewRow, deleteTreeViewRow, clearWhereString
+from promogest.ui.RicercaComplessa import analyze_treeview_key_press_event
+from promogest.ui.RicercaComplessa import parseModel, onColumnEdited, columnSelectAll
+from promogest.ui.RicercaComplessa import optimizeString, insertTreeViewRow, deleteTreeViewRow, clearWhereString
 
 from promogest import Environment
 import promogest.dao.Cliente
@@ -42,9 +42,8 @@ from promogest.dao.Listino import Listino
 import Login
 from promogest.ui.GladeWidget import GladeWidget
 
-from utils import prepareFilterString, showAnagraficaRichiamata
-from utilsCombobox import fillComboboxCategorieClienti, findIdFromCombobox
-
+from promogest.ui.utils import prepareFilterString, showAnagraficaRichiamata
+from promogest.ui.utilsCombobox import fillComboboxCategorieClienti, findIdFromCombobox
 
 
 class RicercaComplessaClienti(RicercaComplessa):
@@ -100,7 +99,7 @@ class RicercaComplessaClienti(RicercaComplessa):
         resultElement = self.filter.filter_list_vbox
         resultElement.unparent()
         self.results_vbox = gtk.VBox()
-        self.results_vbox.pack_start(resultElement)
+        self.results_vbox.pack_start(resultElement, True, True, 0)
         self.ricerca_hpaned.pack2(self.results_vbox, resize=True, shrink=False)
 
         self.ricerca_hpaned.set_position(360)
@@ -127,7 +126,7 @@ class RicercaComplessaClienti(RicercaComplessa):
         renderer = gtk.CellRendererText()
 
         column = gtk.TreeViewColumn('Codice', renderer, text=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.connect("clicked", self.filter._changeOrderBy, (None,'codice'))
         column.set_resizable(True)
@@ -135,7 +134,7 @@ class RicercaComplessaClienti(RicercaComplessa):
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('Ragione sociale', renderer, text=2)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.connect("clicked", self.filter._changeOrderBy, (None,'ragione_sociale'))
         column.set_resizable(True)
@@ -143,7 +142,7 @@ class RicercaComplessaClienti(RicercaComplessa):
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('Cognome e nome', renderer, text=3)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.connect("clicked", self.filter._changeOrderBy,(None, 'cognome'))
         column.set_resizable(True)
@@ -151,7 +150,7 @@ class RicercaComplessaClienti(RicercaComplessa):
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn("Località", renderer, text=4)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.connect("clicked", self.filter._changeOrderBy,(None, 'sede_legale_localita'))
         column.set_resizable(True)
@@ -159,7 +158,7 @@ class RicercaComplessaClienti(RicercaComplessa):
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('Partita IVA/Codice fiscale', renderer, text=5)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
         column.set_resizable(True)
         column.set_expand(False)
@@ -446,7 +445,7 @@ class RicercaClientiFilter(GladeWidget):
         renderer.set_data('column', 1)
         column = gtk.TreeViewColumn('Includi', renderer, active=0)
         column.connect("clicked", self.columnSelectAll, treeview)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
 #        column.set_clickable(True)
         column.set_resizable(True)
         column.set_expand(False)
@@ -459,7 +458,7 @@ class RicercaClientiFilter(GladeWidget):
         renderer.set_data('column', 2)
         column = gtk.TreeViewColumn('Escludi', renderer, active=1)
         column.connect("clicked", self.columnSelectAll, treeview)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
 #        column.set_clickable(True)
         column.set_resizable(True)
         column.set_expand(False)
@@ -471,7 +470,7 @@ class RicercaClientiFilter(GladeWidget):
         renderer.set_data('model_index', 2)
         renderer.set_data('column', 3)
         column = gtk.TreeViewColumn('Ragione sociale', renderer, text=2)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
         column.set_resizable(True)
         column.set_expand(True)
@@ -499,7 +498,7 @@ class RicercaClientiFilter(GladeWidget):
         renderer.set_data('column', 1)
         column = gtk.TreeViewColumn('Includi', renderer, active=0)
         column.connect("clicked", self.columnSelectAll, treeview)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
 #        column.set_clickable(True)
         column.set_resizable(True)
         column.set_expand(False)
@@ -512,7 +511,7 @@ class RicercaClientiFilter(GladeWidget):
         renderer.set_data('column', 2)
         column = gtk.TreeViewColumn('Escludi', renderer, active=1)
         column.connect("clicked", self.columnSelectAll, treeview)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
 #        column.set_clickable(True)
         column.set_resizable(True)
         column.set_expand(False)
@@ -524,7 +523,7 @@ class RicercaClientiFilter(GladeWidget):
         renderer.set_data('model_index', 2)
         renderer.set_data('column', 3)
         column = gtk.TreeViewColumn('Insegna', renderer, text=2)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
 #        column.set_clickable(False)
         column.set_resizable(True)
         column.set_expand(True)
@@ -552,7 +551,7 @@ class RicercaClientiFilter(GladeWidget):
         renderer.set_data('column', 1)
         column = gtk.TreeViewColumn('Includi', renderer, active=0)
         column.connect("clicked", self.columnSelectAll, treeview)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.set_resizable(True)
         column.set_expand(False)
@@ -565,7 +564,7 @@ class RicercaClientiFilter(GladeWidget):
         renderer.set_data('column', 2)
         column = gtk.TreeViewColumn('Escludi', renderer, active=1)
         column.connect("clicked", self.columnSelectAll, treeview)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.set_resizable(True)
         column.set_expand(False)
@@ -577,7 +576,7 @@ class RicercaClientiFilter(GladeWidget):
         renderer.set_data('model_index', 2)
         renderer.set_data('column', 3)
         column = gtk.TreeViewColumn('Cognome e nome', renderer, text=2)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
         column.set_resizable(True)
         column.set_expand(True)
@@ -605,7 +604,7 @@ class RicercaClientiFilter(GladeWidget):
         renderer.set_data('column', 1)
         column = gtk.TreeViewColumn('Includi', renderer, active=0)
         column.connect("clicked", self.columnSelectAll, treeview)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.set_resizable(True)
         column.set_expand(False)
@@ -618,7 +617,7 @@ class RicercaClientiFilter(GladeWidget):
         renderer.set_data('column', 2)
         column = gtk.TreeViewColumn('Escludi', renderer, active=1)
         column.connect("clicked", self.columnSelectAll, treeview)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.set_resizable(True)
         column.set_expand(False)
@@ -630,7 +629,7 @@ class RicercaClientiFilter(GladeWidget):
         renderer.set_data('model_index', 2)
         renderer.set_data('column', 3)
         column = gtk.TreeViewColumn('Codice', renderer, text=2)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
         column.set_resizable(True)
         column.set_expand(True)
@@ -658,7 +657,7 @@ class RicercaClientiFilter(GladeWidget):
         renderer.set_data('column', 1)
         column = gtk.TreeViewColumn('Includi', renderer, active=0)
         column.connect("clicked", self.columnSelectAll, treeview)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.set_resizable(True)
         column.set_expand(False)
@@ -671,7 +670,7 @@ class RicercaClientiFilter(GladeWidget):
         renderer.set_data('column', 2)
         column = gtk.TreeViewColumn('Escludi', renderer, active=1)
         column.connect("clicked", self.columnSelectAll, treeview)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.set_resizable(True)
         column.set_expand(False)
@@ -683,7 +682,7 @@ class RicercaClientiFilter(GladeWidget):
         renderer.set_data('model_index', 2)
         renderer.set_data('column', 3)
         column = gtk.TreeViewColumn("Località", renderer, text=2)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
         column.set_resizable(True)
         column.set_expand(True)
@@ -711,7 +710,7 @@ class RicercaClientiFilter(GladeWidget):
         renderer.set_data('column', 1)
         column = gtk.TreeViewColumn('Includi', renderer, active=0)
         column.connect("clicked", self.columnSelectAll, treeview)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.set_resizable(True)
         column.set_expand(False)
@@ -724,7 +723,7 @@ class RicercaClientiFilter(GladeWidget):
         renderer.set_data('column', 2)
         column = gtk.TreeViewColumn('Escludi', renderer, active=1)
         column.connect("clicked", self.columnSelectAll, treeview)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.set_resizable(True)
         column.set_expand(False)
@@ -736,7 +735,7 @@ class RicercaClientiFilter(GladeWidget):
         renderer.set_data('model_index', 2)
         renderer.set_data('column', 3)
         column = gtk.TreeViewColumn('Indirizzo', renderer, text=2)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
         column.set_resizable(True)
         column.set_expand(True)
@@ -764,7 +763,7 @@ class RicercaClientiFilter(GladeWidget):
         renderer.set_data('column', 1)
         column = gtk.TreeViewColumn('Includi', renderer, active=0)
         column.connect("clicked", self.columnSelectAll, treeview)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.set_resizable(True)
         column.set_expand(False)
@@ -777,7 +776,7 @@ class RicercaClientiFilter(GladeWidget):
         renderer.set_data('column', 2)
         column = gtk.TreeViewColumn('Escludi', renderer, active=1)
         column.connect("clicked", self.columnSelectAll, treeview)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.set_resizable(True)
         column.set_expand(False)
@@ -789,7 +788,7 @@ class RicercaClientiFilter(GladeWidget):
         renderer.set_data('model_index', 2)
         renderer.set_data('column', 3)
         column = gtk.TreeViewColumn('Codice fiscale', renderer, text=2)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
         column.set_resizable(True)
         column.set_expand(True)
@@ -817,7 +816,7 @@ class RicercaClientiFilter(GladeWidget):
         renderer.set_data('column', 1)
         column = gtk.TreeViewColumn('Includi', renderer, active=0)
         column.connect("clicked", self.columnSelectAll, treeview)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.set_resizable(True)
         column.set_expand(False)
@@ -830,7 +829,7 @@ class RicercaClientiFilter(GladeWidget):
         renderer.set_data('column', 2)
         column = gtk.TreeViewColumn('Escludi', renderer, active=1)
         column.connect("clicked", self.columnSelectAll, treeview)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.set_resizable(True)
         column.set_expand(False)
@@ -842,7 +841,7 @@ class RicercaClientiFilter(GladeWidget):
         renderer.set_data('model_index', 2)
         renderer.set_data('column', 3)
         column = gtk.TreeViewColumn('Partita I.V.A.', renderer, text=2)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
         column.set_resizable(True)
         column.set_expand(True)
@@ -870,7 +869,7 @@ class RicercaClientiFilter(GladeWidget):
         renderer.set_data('column', 1)
         column = gtk.TreeViewColumn('Includi', renderer, active=0)
         column.connect("clicked", self.columnSelectAll, treeview)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.set_resizable(True)
         column.set_expand(False)
@@ -878,7 +877,7 @@ class RicercaClientiFilter(GladeWidget):
 
         renderer = gtk.CellRendererText()
         column = gtk.TreeViewColumn('Descrizione', renderer, text=3)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
         column.set_resizable(True)
         column.set_expand(True)
@@ -917,7 +916,7 @@ class RicercaClientiFilter(GladeWidget):
         renderer.set_data('column', 1)
         column = gtk.TreeViewColumn('Includi', renderer, active=0)
         column.connect("clicked", self.columnSelectAll, treeview)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.set_resizable(True)
         column.set_expand(False)
@@ -925,7 +924,7 @@ class RicercaClientiFilter(GladeWidget):
 
         renderer = gtk.CellRendererText()
         column = gtk.TreeViewColumn('Descrizione', renderer, text=3)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
         column.set_resizable(True)
         column.set_expand(False)
@@ -964,7 +963,7 @@ class RicercaClientiFilter(GladeWidget):
         renderer.set_data('column', 1)
         column = gtk.TreeViewColumn('Includi', renderer, active=0)
         column.connect("clicked", self.columnSelectAll, treeview)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.set_resizable(True)
         column.set_expand(False)
@@ -972,7 +971,7 @@ class RicercaClientiFilter(GladeWidget):
 
         renderer = gtk.CellRendererText()
         column = gtk.TreeViewColumn('Descrizione', renderer, text=3)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
         column.set_resizable(True)
         column.set_expand(False)
@@ -1011,7 +1010,7 @@ class RicercaClientiFilter(GladeWidget):
         renderer.set_data('column', 1)
         column = gtk.TreeViewColumn('Includi', renderer, active=0)
         column.connect("clicked", self.columnSelectAll, treeview)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.set_resizable(True)
         column.set_expand(False)
@@ -1019,7 +1018,7 @@ class RicercaClientiFilter(GladeWidget):
 
         renderer = gtk.CellRendererText()
         column = gtk.TreeViewColumn('Descrizione', renderer, text=3)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
         column.set_resizable(True)
         column.set_expand(False)
@@ -1170,7 +1169,7 @@ class RicercaClientiFilter(GladeWidget):
         self.setRiepilogoCliente()
 
     def on_ragione_sociale_cliente_filter_treeview_key_press_event(self, widget, event):
-        keyname = gtk.gdk.keyval_name(event.keyval)
+        keyname = gdk_keyval_name(event.keyval)
         return analyze_treeview_key_press_event(widget,
                                                 keyname,
                                                 self.insertRagioneSociale,
@@ -1179,7 +1178,7 @@ class RicercaClientiFilter(GladeWidget):
 
 
     def on_insegna_cliente_filter_treeview_key_press_event(self, widget, event):
-        keyname = gtk.gdk.keyval_name(event.keyval)
+        keyname = gdk_keyval_name(event.keyval)
         return analyze_treeview_key_press_event(widget,
                                                 keyname,
                                                 self.insertInsegna,
@@ -1188,7 +1187,7 @@ class RicercaClientiFilter(GladeWidget):
 
 
     def on_cognome_nome_cliente_filter_treeview_key_press_event(self, widget, event):
-        keyname = gtk.gdk.keyval_name(event.keyval)
+        keyname = gdk_keyval_name(event.keyval)
         return analyze_treeview_key_press_event(widget,
                                                 keyname,
                                                 self.insertCognomeNome,
@@ -1197,7 +1196,7 @@ class RicercaClientiFilter(GladeWidget):
 
 
     def on_codice_cliente_filter_treeview_key_press_event(self, widget, event):
-        keyname = gtk.gdk.keyval_name(event.keyval)
+        keyname = gdk_keyval_name(event.keyval)
         return analyze_treeview_key_press_event(widget,
                                                 keyname,
                                                 self.insertCodice,
@@ -1206,7 +1205,7 @@ class RicercaClientiFilter(GladeWidget):
 
 
     def on_localita_cliente_filter_treeview_key_press_event(self, widget, event):
-        keyname = gtk.gdk.keyval_name(event.keyval)
+        keyname = gdk_keyval_name(event.keyval)
         return analyze_treeview_key_press_event(widget,
                                                 keyname,
                                                 self.insertLocalita,
@@ -1215,7 +1214,7 @@ class RicercaClientiFilter(GladeWidget):
 
 
     def on_indirizzo_cliente_filter_treeview_key_press_event(self, widget, event):
-        keyname = gtk.gdk.keyval_name(event.keyval)
+        keyname = gdk_keyval_name(event.keyval)
         return analyze_treeview_key_press_event(widget,
                                                 keyname,
                                                 self.insertIndirizzo,
@@ -1224,7 +1223,7 @@ class RicercaClientiFilter(GladeWidget):
 
 
     def on_codice_fiscale_cliente_filter_treeview_key_press_event(self, widget, event):
-        keyname = gtk.gdk.keyval_name(event.keyval)
+        keyname = gdk_keyval_name(event.keyval)
         return analyze_treeview_key_press_event(widget,
                                                 keyname,
                                                 self.insertCodiceFiscale,
@@ -1233,7 +1232,7 @@ class RicercaClientiFilter(GladeWidget):
 
 
     def on_partita_iva_cliente_filter_treeview_key_press_event(self, widget, event):
-        keyname = gtk.gdk.keyval_name(event.keyval)
+        keyname = gdk_keyval_name(event.keyval)
         return analyze_treeview_key_press_event(widget,
                                                 keyname,
                                                 self.insertPartitaIva,
@@ -1346,7 +1345,7 @@ class RicercaClientiFilter(GladeWidget):
 
     def on_campo_filter_entry_key_press_event(self, widget, event):
         """ Conferma parametri filtro x ricerca semplice da tastiera """
-        keyname = gtk.gdk.keyval_name(event.keyval)
+        keyname = gdk_keyval_name(event.keyval)
 
         if keyname == 'Return' or keyname == 'KP_Enter':
             self._parentObject.refresh()

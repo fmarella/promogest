@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010, 2011 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -21,20 +21,21 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 import locale
-from promogest.ui.gtk_compat import *
 import hashlib
 import os
 from  subprocess import *
 import threading, os, signal
 from promogest import Environment
-from GladeWidget import GladeWidget
-from ElencoMagazzini import ElencoMagazzini
-from ElencoListini import ElencoListini
-from VistaPrincipale import VistaPrincipale
+from promogest.ui.GladeWidget import GladeWidget
+from promogest.ui.ElencoMagazzini import ElencoMagazzini
+from promogest.ui.ElencoListini import ElencoListini
+from promogest.ui.VistaPrincipale import VistaPrincipale
 from promogest.ui.SendEmail import SendEmail
-from utils import hasAction,fenceDialog
-from utilsCombobox import *
+from promogest.ui.utils import hasAction, fenceDialog
+from promogest.ui.utilsCombobox import *
+from promogest.ui.gtk_compat import *
 import Login
+
 
 class AnagrafichePrincipaliFrame(GladeWidget):
     """ Frame per la gestione delle anagrafiche principali """
@@ -56,7 +57,7 @@ class AnagrafichePrincipaliFrame(GladeWidget):
                 module_button.set_image(module_butt_image)
                 module_button.set_label(module[1]['module'].VIEW_TYPE[1])
                 module_button.connect('clicked', self.on_module_button_clicked)
-                self.anagrafiche_moduli_vbox.pack_start(module_button, False, False)
+                self.anagrafiche_moduli_vbox.pack_start(module_button, False, False, 0)
             return
         else:
             return
@@ -133,7 +134,7 @@ class AnagrafichePrincipaliFrame(GladeWidget):
 
 def on_anagrafica_destroyed(anagrafica_window, argList):
     mainWindow = argList[0]
-    anagraficaButton= argList[1]
+    anagraficaButton = argList[1]
     mainClass = argList[2]
     if anagrafica_window in Environment.windowGroup:
         Environment.windowGroup.remove(anagrafica_window)

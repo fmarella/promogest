@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010, 2011 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
 #    Author: Andrea Argiolas  <andrea@promotux.it>
+#    Author: Francesco Marella <francesco.marella@gmail.com>
+
 #    This file is part of Promogest.
 
 #    Promogest is free software: you can redistribute it and/or modify
@@ -24,14 +26,14 @@ from promogest.ui.gtk_compat import *
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from sqlalchemy import and_, or_
-from RicercaComplessa import RicercaComplessa
-from RicercaComplessa import analyze_treeview_key_press_event
-from RicercaComplessa import parseModel, onColumnEdited, columnSelectAll
-from RicercaComplessa import optimizeString, insertTreeViewRow, deleteTreeViewRow, clearWhereString
+from promogest.ui.RicercaComplessa import RicercaComplessa
+from promogest.ui.RicercaComplessa import analyze_treeview_key_press_event
+from promogest.ui.RicercaComplessa import parseModel, onColumnEdited, columnSelectAll
+from promogest.ui.RicercaComplessa import optimizeString, insertTreeViewRow, deleteTreeViewRow, clearWhereString
 from promogest.ui.GladeWidget import GladeWidget
 import Login
-from utils import *
-from utilsCombobox import *
+from promogest.ui.utils import *
+from promogest.ui.utilsCombobox import *
 from promogest import Environment
 from promogest.dao.UnitaBase import UnitaBase
 from promogest.dao.Articolo import Articolo
@@ -101,7 +103,7 @@ class RicercaComplessaArticoli(RicercaComplessa):
         resultElement = self.filter.filter_list_vbox
         resultElement.unparent()
         self.results_vbox = gtk.VBox()
-        self.results_vbox.pack_start(resultElement)
+        self.results_vbox.pack_start(resultElement, True, True, 0)
         self.ricerca_hpaned.pack2(self.results_vbox, resize=True, shrink=False)
 
         self.ricerca_hpaned.set_position(360)
@@ -326,7 +328,7 @@ class RicercaArticoliFilter(GladeWidget):
 
         GladeWidget.__init__(self, 'anagrafica_articoli_filter_vbox',
                             fileName='_anagrafica_articoli_elements.glade')
-        self.ricerca_semplice_articoli_filter_vbox.pack_start(self.anagrafica_articoli_filter_table)
+        self.ricerca_semplice_articoli_filter_vbox.pack_start(self.anagrafica_articoli_filter_table, True, True, 0)
         self.viewport1.add(self.ricerca_avanzata_articoli_filter_filters_frame)
         #ATTENZIONE: Sicuramente qui ci sono da riaggiungere  le tabelle alla vbox
 
