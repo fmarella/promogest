@@ -933,7 +933,7 @@ class AnagraficaContattiEdit(AnagraficaEdit):
         self.dao.ruolo = self.ruolo_comboboxentry.child.get_text()
         self.dao.descrizione = self.descrizione_comboboxentry.child.get_text()
         textBuffer = self.note_textview.get_buffer()
-        self.dao.note = textBuffer.get_text(textBuffer.get_start_iter(), textBuffer.get_end_iter())
+        self.dao.note = textBuffer.get_text(textBuffer.get_start_iter(), textBuffer.get_end_iter(),True)
         if Environment.tipo_eng =="sqlite" and not self.dao.id:
             forMaxId = Contatto().select(batchSize=None)
             if not forMaxId:

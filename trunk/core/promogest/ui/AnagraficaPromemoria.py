@@ -163,10 +163,10 @@ class AnagraficaPromemoriaFilter(AnagraficaFilter):
         self.oggetto_filter_entry.set_text('')
         fillComboboxIncaricatiPromemoria(self.incaricato_combobox_filter_entry)
         self.incaricato_combobox_filter_entry.set_active(-1)
-        self.incaricato_combobox_filter_entry.child.set_text('')
+        self.incaricato_combobox_filter_entry.get_child().set_text('')
         fillComboboxAutoriPromemoria(self.autore_combobox_filter_entry)
         self.autore_combobox_filter_entry.set_active(-1)
-        self.autore_combobox_filter_entry.child.set_text('')
+        self.autore_combobox_filter_entry.get_child().set_text('')
         self.descrizione_filter_entry.set_text('')
         self.annotazione_filter_entry.set_text('')
         self.riferimento_filter_entry.set_text(self.pg or '')
@@ -326,8 +326,8 @@ class AnagraficaPromemoriaEdit(AnagraficaEdit):
     def _refresh(self):
         self.data_scadenza_entry.set_text(dateTimeToString(self.dao.data_scadenza) or '')
         self.oggetto_entry.set_text(self.dao.oggetto or '')
-        self.incaricato_combobox_entry.child.set_text(self.dao.incaricato or '')
-        self.autore_combobox_entry.child.set_text(self.dao.autore or '')
+        self.incaricato_combobox_entry.get_child().set_text(self.dao.incaricato or '')
+        self.autore_combobox_entry.get_child().set_text(self.dao.autore or '')
         self.descrizione_textview.get_buffer().set_text(self.dao.descrizione or '')
 #        static = self.dao.annotazione or "test"
 #        pageData = {"file": "promemoria_annotazioni.html",
@@ -336,7 +336,7 @@ class AnagraficaPromemoriaEdit(AnagraficaEdit):
 #        self.hhttmmll = renderTemplate(pageData)
 #        renderHTML(self.annotazioneHTML,self.hhttmmll)
         self.annotazione_textview.get_buffer().set_text(self.dao.annotazione or '')
-        self.riferimento_combobox_entry.child.set_text(self.dao.riferimento or '')
+        self.riferimento_combobox_entry.get_child().set_text(self.dao.riferimento or '')
         self.giorni_preavviso_entry.set_text(str(self.dao.giorni_preavviso or ''))
         self.in_scadenza_checkbutton.set_active(self.dao.in_scadenza or False)
 #        self.setPreavvisoSpinLimit()
@@ -370,9 +370,9 @@ class AnagraficaPromemoriaEdit(AnagraficaEdit):
         self.dao.incaricato = self.incaricato_combobox_entry.get_active_text()
         self.dao.autore = self.autore_combobox_entry.get_active_text()
         textBuffer = self.descrizione_textview.get_buffer()
-        self.dao.descrizione = textBuffer.get_text(textBuffer.get_start_iter(), textBuffer.get_end_iter())
+        self.dao.descrizione = textBuffer.get_text(textBuffer.get_start_iter(), textBuffer.get_end_iter(),True)
         textBuffer = self.annotazione_textview.get_buffer()
-        self.dao.annotazione = textBuffer.get_text(textBuffer.get_start_iter(), textBuffer.get_end_iter())
+        self.dao.annotazione = textBuffer.get_text(textBuffer.get_start_iter(), textBuffer.get_end_iter(),True)
         self.dao.riferimento = self.riferimento_combobox_entry.get_active_text()
         if self.giorni_preavviso_entry.get_text() == '':
             self.giorni_preavviso_entry.set_text('0')
@@ -403,12 +403,12 @@ class AnagraficaPromemoriaEdit(AnagraficaEdit):
                 res = leggiContatto(id)
 
             if res.has_key("ragioneSociale") and res["ragioneSociale"] != '':
-                self.riferimento_combobox_entry.child.set_text(res["ragioneSociale"])
+                self.riferimento_combobox_entry.get_child().set_text(res["ragioneSociale"])
             else:
-                self.riferimento_combobox_entry.child.set_text(res["cognome"] + ' ' + res["nome"])
+                self.riferimento_combobox_entry.get_child().set_text(res["cognome"] + ' ' + res["nome"])
             anag.on_ricerca_window_close(self)
 
-        if combobox.child.get_text() == stringClienti:
+        if combobox.get_child().get_text() == stringClienti:
             from RicercaComplessaClienti import RicercaComplessaClienti
             anag = RicercaComplessaClienti()
             anag.setTreeViewSelectionType(GTK_SELECTIONMODE_SINGLE)
@@ -417,7 +417,7 @@ class AnagraficaPromemoriaEdit(AnagraficaEdit):
             returnWindow = combobox.get_toplevel()
             anagWindow.set_transient_for(returnWindow)
             anag.show_all()
-        elif combobox.child.get_text() == stringFornitori:
+        elif combobox.get_child().get_text() == stringFornitori:
             from RicercaComplessaFornitori import RicercaComplessaFornitori
             anag = RicercaComplessaFornitori()
             anag.setTreeViewSelectionType(GTK_SELECTIONMODE_SINGLE)
@@ -426,7 +426,7 @@ class AnagraficaPromemoriaEdit(AnagraficaEdit):
             returnWindow = combobox.get_toplevel()
             anagWindow.set_transient_for(returnWindow)
             anag.show_all()
-        elif combobox.child.get_text() == stringContatti:
+        elif combobox.get_child().get_text() == stringContatti:
             if posso("CN"):
                 from promogest.modules.Contatti.ui.RicercaContatti import RicercaContatti
                 anag = RicercaContatti()

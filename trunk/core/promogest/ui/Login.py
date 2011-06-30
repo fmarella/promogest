@@ -165,7 +165,7 @@ class Login(GladeApp):
         """
         index = combo.get_active()
         if index >= 0:
-            combo.child.set_text(combo.get_model()[index][0])
+            combo.get_child().set_text(combo.get_model()[index][0])
 
     def on_help_button_clicked(self, button):
         return

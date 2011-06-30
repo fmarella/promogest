@@ -613,7 +613,7 @@ def on_multi_line_button_clickedPart(anaedit, widget):
 
     def on_ok_button_clicked(button):
         text = textBuffer.get_text(textBuffer.get_start_iter(),
-                                    textBuffer.get_end_iter())
+                                    textBuffer.get_end_iter(),True)
 
         anaedit.descrizione_entry.set_text(text)
         vediamo = anaedit.descrizione_entry.get_text()

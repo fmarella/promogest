@@ -81,7 +81,7 @@ class SendEmail(GladeWidget):
     def on_send_button_clicked(self,button):
         textBuffer = self.emailBody_textview.get_buffer()
         self.bodytext = textBuffer.get_text(textBuffer.get_start_iter(),
-                                            textBuffer.get_end_iter())
+                                            textBuffer.get_end_iter(),True)
         try:
             if not self.sobject:
                 self.sobject= self.object_email_entry.get_text()

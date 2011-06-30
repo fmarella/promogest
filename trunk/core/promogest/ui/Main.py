@@ -208,7 +208,10 @@ class Main(GladeWidget):
         selected = icon_view.get_selected_items()
         if len(selected) == 0:
             return
-        i = selected[0][0]
+        if Environment.pg3:
+            i = selected[0]
+        else:
+            i = selected[0][0]
         selection = self.iconview_listore[i][0]
 
         if selection == 3:
@@ -249,7 +252,10 @@ class Main(GladeWidget):
             icon_view.unselect_all()
             return
         else:
-            i = selected[0][0]
+            if Environment.pg3:
+                i = selected[0]
+            else:
+                i = selected[0][0]
             selection = self.iconview_listore[i][0]
             module = self.iconview_listore[i][3]
 

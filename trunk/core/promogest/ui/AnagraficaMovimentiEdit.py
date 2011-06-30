@@ -686,7 +686,7 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
             self.dao.id_fornitore = None
 
         textBuffer = self.note_interne_textview.get_buffer()
-        self.dao.note_interne = textBuffer.get_text(textBuffer.get_start_iter(), textBuffer.get_end_iter())
+        self.dao.note_interne = textBuffer.get_text(textBuffer.get_start_iter(), textBuffer.get_end_iter(),True)
         righeMovimento = []
         scontiRigheMovimento= []
         #righe = []

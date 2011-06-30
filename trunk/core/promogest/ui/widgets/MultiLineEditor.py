@@ -133,7 +133,7 @@ class MultiLineEditor(GladeWidget):
     def close_application(self, widget):
         textBuffer = self.textview.get_buffer()
         Environment.mltext = textBuffer.get_text(textBuffer.get_start_iter(),
-                                            textBuffer.get_end_iter())
+                                            textBuffer.get_end_iter(),True)
         self.window.destroy()
 
     #def run(self):

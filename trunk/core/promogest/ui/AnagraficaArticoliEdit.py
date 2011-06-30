@@ -172,10 +172,10 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
         findComboboxRowFromId(self.id_imballaggio_customcombobox.combobox,
                               self.dao.id_imballaggio)
         self.produttore_entry.set_text(self.dao.produttore or '')
-        self.unita_dimensioni_comboboxentry.child.set_text(self.dao.unita_dimensioni or '')
-        self.unita_volume_comboboxentry.child.set_text(self.dao.unita_volume
+        self.unita_dimensioni_comboboxentry.get_child().set_text(self.dao.unita_dimensioni or '')
+        self.unita_volume_comboboxentry.get_child().set_text(self.dao.unita_volume
                                                        or '')
-        self.unita_peso_comboboxentry.child.set_text(self.dao.unita_peso or '')
+        self.unita_peso_comboboxentry.get_child().set_text(self.dao.unita_peso or '')
         self.lunghezza_entry.set_text('%-6.3f' % float(self.dao.lunghezza or 0))
         self.larghezza_entry.set_text('%-6.3f' % float(self.dao.larghezza or 0))
         self.altezza_entry.set_text('%-6.3f' % float(self.dao.altezza or 0))
@@ -320,9 +320,9 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
         self.dao.id_stato_articolo = findIdFromCombobox(self.id_stato_articolo_combobox)
         self.dao.id_imballaggio = findIdFromCombobox(self.id_imballaggio_customcombobox.combobox)
         self.dao.produttore = self.produttore_entry.get_text()
-        self.dao.unita_dimensioni = self.unita_dimensioni_comboboxentry.child.get_text()
-        self.dao.unita_volume = self.unita_volume_comboboxentry.child.get_text()
-        self.dao.unita_peso = self.unita_peso_comboboxentry.child.get_text()
+        self.dao.unita_dimensioni = self.unita_dimensioni_comboboxentry.get_child().get_text()
+        self.dao.unita_volume = self.unita_volume_comboboxentry.get_child().get_text()
+        self.dao.unita_peso = self.unita_peso_comboboxentry.get_child().get_text()
         try:
             self.dao.lunghezza = float(self.lunghezza_entry.get_text())
         except:
@@ -358,7 +358,7 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
         self.dao.descrizione_listino = self.descrizione_listino_entry.get_text()
         textBuffer = self.note_textview.get_buffer()
         self.dao.note = textBuffer.get_text(textBuffer.get_start_iter(),
-                                            textBuffer.get_end_iter())
+                                            textBuffer.get_end_iter(),True)
         self.dao.sospeso = self.sospeso_checkbutton.get_active()
         if self.dao.cancellato == None:
             self.dao.cancellato = False

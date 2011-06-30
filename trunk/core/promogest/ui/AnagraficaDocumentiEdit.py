@@ -513,15 +513,15 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         insertComboboxSearchAgente(self.id_agente_customcombobox,
                                                         self.dao.id_agente)
         self.protocollo_entry1.set_text(self.dao.protocollo or '')
-        self.note_pie_pagina_comboboxentry.child.set_text(self.dao.note_pie_pagina or '')
+        self.note_pie_pagina_comboboxentry.get_child().set_text(self.dao.note_pie_pagina or '')
         textBuffer = self.note_interne_textview.get_buffer()
         if self.dao.note_interne is not None:
             textBuffer.set_text(self.dao.note_interne)
         else:
             textBuffer.set_text('')
         self.note_interne_textview.set_buffer(textBuffer)
-        self.causale_trasporto_comboboxentry.child.set_text(self.dao.causale_trasporto or '')
-        self.aspetto_esteriore_beni_comboboxentry.child.set_text(self.dao.aspetto_esteriore_beni or '')
+        self.causale_trasporto_comboboxentry.get_child().set_text(self.dao.causale_trasporto or '')
+        self.aspetto_esteriore_beni_comboboxentry.get_child().set_text(self.dao.aspetto_esteriore_beni or '')
         self.inizio_trasporto_entry.set_text(dateTimeToString(self.dao.inizio_trasporto))
         self.fine_trasporto_entry.set_text(dateTimeToString(self.dao.fine_trasporto))
         self.id_vettore_customcombobox.refresh(clear=True, filter=False)
@@ -840,8 +840,8 @@ del documento.
         self.dao.id_aliquota_iva_esenzione = findIdFromCombobox(self.id_aliquota_iva_esenzione_customcombobox.combobox)
         self.dao.id_agente = self.id_agente_customcombobox._id
         self.dao.protocollo = self.protocollo_entry1.get_text()
-        self.dao.causale_trasporto = self.causale_trasporto_comboboxentry.child.get_text()
-        self.dao.aspetto_esteriore_beni = self.aspetto_esteriore_beni_comboboxentry.child.get_text()
+        self.dao.causale_trasporto = self.causale_trasporto_comboboxentry.get_child().get_text()
+        self.dao.aspetto_esteriore_beni = self.aspetto_esteriore_beni_comboboxentry.get_child().get_text()
         self.dao.inizio_trasporto = stringToDateTime(self.inizio_trasporto_entry.get_text())
         self.dao.fine_trasporto = stringToDateTime(self.fine_trasporto_entry.get_text())
 
@@ -867,7 +867,7 @@ del documento.
         self.dao.totale_colli = float(self.totale_colli_entry.get_text() or 0)
         self.dao.totale_peso = self.totale_peso_entry.get_text()
         textBuffer = self.note_interne_textview.get_buffer()
-        self.dao.note_interne = textBuffer.get_text(textBuffer.get_start_iter(), textBuffer.get_end_iter())
+        self.dao.note_interne = textBuffer.get_text(textBuffer.get_start_iter(), textBuffer.get_end_iter(),True)
         self.dao.note_pie_pagina = self.note_pie_pagina_comboboxentry.get_active_text()
         self.dao.applicazione_sconti = self.sconti_testata_widget.getApplicazione()
         if posso("GN"):
