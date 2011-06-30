@@ -64,6 +64,10 @@ if not Environment.pg3:
         GDK_EVENTTYPE_KEY_PRESS = gtk.gdk.KEY_PRESS
         GDK_CONTROL_MASK = gtk.gdk.CONTROL_MASK
 
+        GDK_KEY_F1 = gtk.keysyms.F1
+        GDK_KEY_F2 = gtk.keysyms.F2
+        GDK_KEY_F3 = gtk.keysyms.F3
+        GDK_KEY_F4 = gtk.keysyms.F4
         GDK_KEY_F5 = gtk.keysyms.F5
         GTK_ACCEL_VISIBLE = gtk.ACCEL_VISIBLE
 
@@ -129,6 +133,10 @@ else:
     GDK_EVENTTYPE_KEY_PRESS = gdk.EventType.KEY_PRESS
     GDK_CONTROL_MASK = gdk.ModifierType.CONTROL_MASK
 
+    GDK_KEY_F1 = gdk.KEY_F1
+    GDK_KEY_F2 = gdk.KEY_F2
+    GDK_KEY_F3 = gdk.KEY_F3
+    GDK_KEY_F4 = gdk.KEY_F4
     GDK_KEY_F5 = gdk.KEY_F5
     GTK_ACCEL_VISIBLE = gtk.AccelFlags.VISIBLE
 

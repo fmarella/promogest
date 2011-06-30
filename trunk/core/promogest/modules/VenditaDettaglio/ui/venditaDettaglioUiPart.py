@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
 #    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010, 2011
-#by Promotux di Francesco Meloni snc - http://www.promotux.it/
+#    by Promotux di Francesco Meloni snc - http://www.promotux.it/
 
-# Author: Francesco Meloni <francesco@promotux.it>
+#    Author: Francesco Meloni <francesco@promotux.it>
+#    Author: Francesco Marella <francesco.marella@gmail.com>
 
 #    This file is part of Promogest.
 
@@ -20,23 +21,24 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-import gtk
 from promogest.dao.Magazzino import Magazzino
 from promogest import Environment
 from promogest.ui.utilsCombobox import fillComboboxCCardType
 from promogest.ui.utils import setconf
+from promogest.ui.gtk_compat import *
+
 
 def drawPart(anag):
     accelGroup = gtk.AccelGroup()
     anag.getTopLevel().add_accel_group(accelGroup)
     anag.contanti_radio_button.add_accelerator('clicked', accelGroup,
-                                        gtk.keysyms.F1, 0, gtk.ACCEL_VISIBLE)
+                                        GDK_KEY_F1, 0, gtk.ACCEL_VISIBLE)
     anag.assegni_radio_button.add_accelerator('clicked', accelGroup,
-                                        gtk.keysyms.F2, 0, gtk.ACCEL_VISIBLE)
+                                        GDK_KEY_F2, 0, gtk.ACCEL_VISIBLE)
     anag.carta_di_credito_radio_button.add_accelerator('clicked', accelGroup,
-                                        gtk.keysyms.F3, 0, gtk.ACCEL_VISIBLE)
+                                        GDK_KEY_F3, 0, gtk.ACCEL_VISIBLE)
     anag.total_button.add_accelerator('grab_focus', accelGroup,
-                                        gtk.keysyms.F5, 0, gtk.ACCEL_VISIBLE)
+                                        GDK_KEY_F5, 0, gtk.ACCEL_VISIBLE)
     anag.total_button.set_focus_on_click(False)
 
     # Costruisco treeview scontrino
@@ -59,7 +61,7 @@ def drawPart(anag):
     cellcombo1.connect('edited', anag.on_column_listinoRiga_edited,
                                                             treeview, True)
     column = gtk.TreeViewColumn('List.', cellcombo1, text=1, background=10,font=11)
-    column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+    column.set_sizing(GTK_COLUMN_GROWN_ONLY)
     column.set_clickable(True)
     column.set_resizable(True)
     column.set_expand(False)
@@ -67,7 +69,7 @@ def drawPart(anag):
     treeview.append_column(column)
 
     column = gtk.TreeViewColumn('Codice a barre', rendererSx, text=2,background=10,font=11)
-    column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+    column.set_sizing(GTK_COLUMN_GROWN_ONLY)
     column.set_clickable(False)
     column.set_resizable(True)
     column.set_expand(False)
@@ -75,7 +77,7 @@ def drawPart(anag):
     treeview.append_column(column)
 
     column = gtk.TreeViewColumn('Codice', rendererSx, text=3, background=10,font=11)
-    column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+    column.set_sizing(GTK_COLUMN_GROWN_ONLY)
     column.set_clickable(False)
     column.set_resizable(True)
     column.set_expand(False)
@@ -88,7 +90,7 @@ def drawPart(anag):
     cellrendererDescrizione.connect('edited',
                         anag.on_column_descrizione_edited, treeview, True)
     column = gtk.TreeViewColumn('Descrizione', cellrendererDescrizione, text=4,background=10, font=11)
-    column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+    column.set_sizing(GTK_COLUMN_GROWN_ONLY)
     column.set_clickable(True)
     rendererSx.connect('edited', anag.on_column_descrizione_edited,
                                                             treeview, True)
@@ -108,7 +110,7 @@ def drawPart(anag):
 
     cellspin.connect('edited', anag.on_column_prezzo_edited, treeview, True)
     column = gtk.TreeViewColumn('Prezzo', cellspin, text=5, background=10, font=11)
-    column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+    column.set_sizing(GTK_COLUMN_GROWN_ONLY)
     #column.set_clickable(False)
     column.set_resizable(True)
     column.set_expand(False)
@@ -125,7 +127,7 @@ def drawPart(anag):
     cellspinsconto.connect('edited', anag.on_column_sconto_edited,
                                                             treeview, True)
     column = gtk.TreeViewColumn('Sconto', cellspinsconto, text=6,background=10,font=11)
-    column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+    column.set_sizing(GTK_COLUMN_GROWN_ONLY)
     column.set_clickable(True)
     column.set_resizable(True)
     column.set_expand(False)
@@ -145,7 +147,7 @@ def drawPart(anag):
     cellcombo.set_property("model", lsmodel)
     cellcombo.connect('edited', anag.on_column_tipo_edited, treeview, True)
     column = gtk.TreeViewColumn('Tipo', cellcombo, text=7,background=10,font=11)
-    column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+    column.set_sizing(GTK_COLUMN_GROWN_ONLY)
     column.set_clickable(True)
     column.set_resizable(True)
     column.set_expand(False)
@@ -153,7 +155,7 @@ def drawPart(anag):
     treeview.append_column(column)
 
     column = gtk.TreeViewColumn('Pr.Scont', rendererDx, text=8,background=10,font=11)
-    column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+    column.set_sizing(GTK_COLUMN_GROWN_ONLY)
     column.set_clickable(False)
     column.set_resizable(True)
     column.set_expand(False)
@@ -169,7 +171,7 @@ def drawPart(anag):
     cellspin.set_property("climb-rate", 3)
     cellspin.connect('edited', anag.on_column_quantita_edited, treeview, True)
     column = gtk.TreeViewColumn('Quantità', cellspin, text=9,background=10,font=11)
-    column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+    column.set_sizing(GTK_COLUMN_GROWN_ONLY)
     #column.set_clickable(False)
     column.set_resizable(True)
     column.set_expand(False)
