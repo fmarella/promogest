@@ -57,6 +57,8 @@ if not Environment.pg3:
         pango_tabarray_new = pango.TabArray
         gdk_keyval_name = gtk.gdk.keyval_name
 
+        GTK_COMBOBOXTEXT = gtk.combo_box_new_text
+
         GDK_EVENTTYPE_BUTTON_PRESS = gdk.BUTTON_PRESS
         GDK_EVENTTYPE_2BUTTON_PRESS = gdk._2BUTTON_PRESS
         GDK_EVENTTYPE_3BUTTON_PRESS = gdk._3BUTTON_PRESS
@@ -136,6 +138,8 @@ else:
     gtk_status_icon_new = gtk.StatusIcon.new_from_file
     pango_tabarray_new = pango.TabArray.new
     gdk_keyval_name = gdk.keyval_name
+
+    GTK_COMBOBOXTEXT = Gtk.ComboBoxText
 
 
     GDK_EVENTTYPE_BUTTON_PRESS = gdk.EventType.BUTTON_PRESS
