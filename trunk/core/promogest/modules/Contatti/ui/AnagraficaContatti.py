@@ -82,7 +82,7 @@ class AnagraficaContattiFilter(AnagraficaFilter):
         renderer = gtk.CellRendererText()
 
         column = gtk.TreeViewColumn('Cognome - Nome', renderer, text=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.connect("clicked", self._changeOrderBy,
                                             (None, Contatto.cognome))
@@ -92,7 +92,7 @@ class AnagraficaContattiFilter(AnagraficaFilter):
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('Ruolo', renderer, text=2)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.connect("clicked", self._changeOrderBy, (None, Contatto.ruolo))
         column.set_resizable(True)
@@ -101,7 +101,7 @@ class AnagraficaContattiFilter(AnagraficaFilter):
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('Descrizione', renderer, text=3)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.connect("clicked", self._changeOrderBy,
                                             (None, Contatto.descrizione))
@@ -111,7 +111,7 @@ class AnagraficaContattiFilter(AnagraficaFilter):
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('Relativo a', renderer, text=4)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
         column.set_resizable(True)
         column.set_expand(True)
@@ -170,7 +170,7 @@ class AnagraficaContattiFilter(AnagraficaFilter):
         self.ruolo_filter_entry.set_text('')
         self.descrizione_filter_entry.set_text('')
         self.recapito_filter_entry.set_text('')
-        self.tipo_recapito_filter_comboboxentry.child.set_text('')
+        self.tipo_recapito_filter_comboboxentry.get_child().set_text('')
         self.id_categoria_contatto_filter_combobox.set_active(0)
         self.refresh()
 
@@ -181,7 +181,7 @@ class AnagraficaContattiFilter(AnagraficaFilter):
         ruolo = prepareFilterString(self.ruolo_filter_entry.get_text())
         descrizione = prepareFilterString(self.descrizione_filter_entry.get_text())
         recapito = prepareFilterString(self.recapito_filter_entry.get_text())
-        tipoRecapito = prepareFilterString(self.tipo_recapito_filter_comboboxentry.child.get_text())
+        tipoRecapito = prepareFilterString(self.tipo_recapito_filter_comboboxentry.get_child().get_text())
         idCategoria = findIdFromCombobox(self.id_categoria_contatto_filter_combobox)
         if self.cliente_filter_radiobutton.get_active():
             # CONTATTO CLIENTE
@@ -474,7 +474,7 @@ class AnagraficaContattiEdit(AnagraficaEdit):
 
         rendererText = gtk.CellRendererText()
         column = gtk.TreeViewColumn('Categoria', rendererText, text=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
         column.set_resizable(True)
         column.set_expand(True)
@@ -482,7 +482,7 @@ class AnagraficaContattiEdit(AnagraficaEdit):
 
         rendererPixbuf = gtk.CellRendererPixbuf()
         column = gtk.TreeViewColumn('', rendererPixbuf, pixbuf=2)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
         column.set_resizable(False)
         column.set_expand(False)
@@ -503,7 +503,7 @@ class AnagraficaContattiEdit(AnagraficaEdit):
         rendererCombo.set_data('column', 0)
         column = gtk.TreeViewColumn('Tipo', rendererCombo, text=1)
         column.set_clickable(False)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_resizable(True)
         column.set_expand(False)
         column.set_min_width(200)
@@ -515,14 +515,14 @@ class AnagraficaContattiEdit(AnagraficaEdit):
         rendererText.set_data('column', 1)
         column = gtk.TreeViewColumn('Recapito', rendererText, text=2)
         column.set_clickable(False)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_resizable(True)
         column.set_expand(True)
         self.recapiti_treeview.append_column(column)
 
         rendererPixbuf = gtk.CellRendererPixbuf()
         column = gtk.TreeViewColumn('', rendererPixbuf, pixbuf=3)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
         column.set_resizable(False)
         column.set_expand(False)
@@ -793,8 +793,8 @@ class AnagraficaContattiEdit(AnagraficaEdit):
                                         self.dao.schema_azienda)
         self.cognome_entry.set_text(self.dao.cognome or '')
         self.nome_entry.set_text(self.dao.nome or '')
-        self.ruolo_comboboxentry.child.set_text(self.dao.ruolo or '')
-        self.descrizione_comboboxentry.child.set_text(self.dao.descrizione or '')
+        self.ruolo_comboboxentry.get_child().set_text(self.dao.ruolo or '')
+        self.descrizione_comboboxentry.get_child().set_text(self.dao.descrizione or '')
         textBuffer = self.note_textview.get_buffer()
         if self.dao.note is not None:
             textBuffer.set_text(self.dao.note)
@@ -930,7 +930,7 @@ class AnagraficaContattiEdit(AnagraficaEdit):
 
         self.dao.cognome = self.cognome_entry.get_text()
         self.dao.nome = self.nome_entry.get_text()
-        self.dao.ruolo = self.ruolo_comboboxentry.child.get_text()
+        self.dao.ruolo = self.ruolo_comboboxentry.get_child().get_text()
         self.dao.descrizione = self.descrizione_comboboxentry.child.get_text()
         textBuffer = self.note_textview.get_buffer()
         self.dao.note = textBuffer.get_text(textBuffer.get_start_iter(), textBuffer.get_end_iter(),True)
