@@ -128,8 +128,6 @@ def fillComboboxCategoriaTrasporto(combobox, filter=False):
     combobox.pack_start(renderer, True)
     combobox.add_attribute(renderer, 'text', 2)
     combobox.set_model(model)
-    if combobox.__class__ is gtk.ComboBoxEntry:
-        combobox.set_text_column(2)
 
 
 def id_categoria_trasporto_customcombobox_clicked(widget, button):
@@ -173,8 +171,6 @@ def fillComboboxCodiceClassificazione(combobox, filter=False):
     combobox.pack_start(renderer, True)
     combobox.add_attribute(renderer, 'text', 2)
     combobox.set_model(model)
-    if combobox.__class__ is gtk.ComboBoxEntry:
-        combobox.set_text_column(2)
 
 def id_codice_classificazione_customcombobox_clicked(widget, button):
     """
@@ -217,8 +213,6 @@ def fillComboboxGruppoImballaggio(combobox, filter=False):
     combobox.pack_start(renderer, True)
     combobox.add_attribute(renderer, 'text', 2)
     combobox.set_model(model)
-    if combobox.__class__ is gtk.ComboBoxEntry:
-        combobox.set_text_column(2)
 
 def id_gruppo_imballaggio_adr_customcombobox_clicked(widget, button):
     """
@@ -261,8 +255,6 @@ def fillComboboxClassePericolo(combobox, filter=False):
     combobox.pack_start(renderer, True)
     combobox.add_attribute(renderer, 'text', 2)
     combobox.set_model(model)
-    if combobox.__class__ is gtk.ComboBoxEntry:
-        combobox.set_text_column(2)
 
 def id_classe_pericolo_adr_customcombobox_clicked(widget, button):
     """
@@ -305,8 +297,6 @@ def fillComboboxGalleria(combobox, filter=False):
     combobox.pack_start(renderer, True)
     combobox.add_attribute(renderer, 'text', 2)
     combobox.set_model(model)
-    if combobox.__class__ is gtk.ComboBoxEntry:
-        combobox.set_text_column(2)
 
 def id_galleria_adr_customcombobox_clicked(widget, button):
     """
