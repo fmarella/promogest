@@ -87,6 +87,9 @@ if not Environment.pg3:
 
         GTK_ICON_SIZE_BUTTON = gtk.ICON_SIZE_BUTTON
 
+        GTK_ATTACHOPTIONS_FILL = gtk.FILL
+        GTK_ATTACHOPTIONS_EXPAND =  gtk.EXPAND
+
     except ImportError:
         pass
 
@@ -157,4 +160,7 @@ else:
     GTK_COLUMN_FIXED = gtk.TreeViewColumnSizing.FIXED
 
     GTK_ICON_SIZE_BUTTON = gtk.IconSize.BUTTON
+
+    GTK_ATTACHOPTIONS_FILL = gtk.AttachOptions.FILL
+    GTK_ATTACHOPTIONS_EXPAND =  gtk.AttachOptions.EXPAND
 
