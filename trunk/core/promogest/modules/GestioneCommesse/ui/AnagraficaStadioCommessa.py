@@ -20,7 +20,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-import gtk
+from promogest.ui.gtk_compat import *
 from promogest.ui.AnagraficaSemplice import Anagrafica,\
                                     AnagraficaDetail,AnagraficaFilter
 from promogest import Environment
@@ -49,7 +49,7 @@ class AnagraficaStadioCommessa(Anagrafica):
         renderer.set_data('max_length', 200)
         column = gtk.TreeViewColumn('Denominazione', renderer, text=1,
                                     sensitive=3)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.connect("clicked", self._changeOrderBy, (None, 'denominazione'))
         column.set_resizable(True)

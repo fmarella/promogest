@@ -339,7 +339,7 @@ class AnagraficaCommesseEdit(AnagraficaEdit):
                         str(dc),
                         note_riga,
                         self.dao_class,
-                        self.dao_id)
+                        str(self.dao_id))
         if self.editRiga:
             if riga.dao_class=="TestataDocumento":
                 td = TestataDocumento().getRecord(id=riga.id_dao)
