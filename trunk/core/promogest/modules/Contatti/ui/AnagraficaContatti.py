@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010,2011 by Promotux
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010, 2011 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
+#    Author: Francesco Marella <francesco.marella@gmail.com>
 
 #    This file is part of Promogest.
 
@@ -20,7 +21,6 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-#import gtk
 from promogest.ui.gtk_compat import *
 
 from promogest.ui.AnagraficaComplessa import Anagrafica
@@ -469,7 +469,7 @@ class AnagraficaContattiEdit(AnagraficaEdit):
                                                           on_id_categoria_contatto_customcombobox_clicked)
 
         #Elenco categorie
-        model = gtk.ListStore(int, str, gtk.gdk.Pixbuf, str)
+        model = self.categorie_liststore
         self.categorie_treeview.set_model(model)
 
         rendererText = gtk.CellRendererText()
@@ -490,7 +490,7 @@ class AnagraficaContattiEdit(AnagraficaEdit):
         self.categorie_treeview.append_column(column)
 
         #Elenco recapiti
-        model = gtk.ListStore(int, str, str, gtk.gdk.Pixbuf, str)
+        model = self.recapiti_liststore
         self.recapiti_treeview.set_model(model)
 
         rendererCombo = gtk.CellRendererCombo()
@@ -570,7 +570,7 @@ class AnagraficaContattiEdit(AnagraficaEdit):
                     return
             image = gtk.Image()
             anagPixbuf = image.render_icon(gtk.STOCK_ADD,
-                                           gtk.ICON_SIZE_BUTTON)
+                                           GTK_ICON_SIZE_BUTTON)
             model.append((id, categoria, anagPixbuf, 'added'))
         self.categorie_treeview.get_selection().unselect_all()
 
@@ -580,7 +580,7 @@ class AnagraficaContattiEdit(AnagraficaEdit):
         if id is not None:
             image = gtk.Image()
             anagPixbuf = image.render_icon(gtk.STOCK_REMOVE,
-                                           gtk.ICON_SIZE_BUTTON)
+                                           GTK_ICON_SIZE_BUTTON)
             model = self.categorie_treeview.get_model()
             for c in model:
                 if c[0] == id:
@@ -646,7 +646,7 @@ class AnagraficaContattiEdit(AnagraficaEdit):
 
             image = gtk.Image()
             anagPixbuf = image.render_icon(gtk.STOCK_ADD,
-                                           gtk.ICON_SIZE_BUTTON)
+                                           GTK_ICON_SIZE_BUTTON)
         model.set_value(iterator, column+1, value)
         model.set_value(iterator, 3, anagPixbuf)
         model.set_value(iterator, 4, operation)
@@ -678,7 +678,7 @@ class AnagraficaContattiEdit(AnagraficaEdit):
             if not new:
                 image = gtk.Image()
                 anagPixbuf = image.render_icon(gtk.STOCK_REMOVE,
-                                               gtk.ICON_SIZE_BUTTON)
+                                               GTK_ICON_SIZE_BUTTON)
                 operation = 'deleted'
                 model.set_value(iterator, 3, anagPixbuf)
                 model.set_value(iterator, 4, operation)

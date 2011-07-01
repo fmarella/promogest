@@ -3,42 +3,9 @@
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-requires pythonplugin 0.0 -->
   <!-- interface-naming-policy toplevel-contextual -->
-  <object class="GtkListStore" id="liststore1">
-    <columns>
-      <!-- column-name item -->
-      <column type="gchararray"/>
-    </columns>
-    <data>
-      <row>
-        <col id="0" translatable="yes">Amministrazione</col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">Segreteria</col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">Commerciale</col>
-      </row>
-      <row>
-        <col id="0" translatable="yes"></col>
-      </row>
-    </data>
-  </object>
-  <object class="GtkListStore" id="liststore2">
-    <columns>
-      <!-- column-name item -->
-      <column type="gchararray"/>
-    </columns>
-    <data>
-      <row>
-        <col id="0" translatable="yes">Aziendale</col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">Personale</col>
-      </row>
-    </data>
-  </object>
   <object class="GtkTable" id="anagrafica_contatti_detail_table">
     <property name="visible">True</property>
+    <property name="can_focus">False</property>
     <property name="border_width">6</property>
     <property name="n_rows">11</property>
     <property name="n_columns">2</property>
@@ -75,6 +42,10 @@ relative al contatto</property>
         <property name="can_focus">True</property>
         <property name="tooltip_text" translatable="yes">Cognome Contatto</property>
         <property name="invisible_char">●</property>
+        <property name="primary_icon_activatable">False</property>
+        <property name="secondary_icon_activatable">False</property>
+        <property name="primary_icon_sensitive">True</property>
+        <property name="secondary_icon_sensitive">True</property>
       </object>
       <packing>
         <property name="left_attach">1</property>
@@ -91,6 +62,10 @@ relative al contatto</property>
         <property name="can_focus">True</property>
         <property name="tooltip_text" translatable="yes">Nome contatto</property>
         <property name="invisible_char">●</property>
+        <property name="primary_icon_activatable">False</property>
+        <property name="secondary_icon_activatable">False</property>
+        <property name="primary_icon_sensitive">True</property>
+        <property name="secondary_icon_sensitive">True</property>
       </object>
       <packing>
         <property name="left_attach">1</property>
@@ -104,6 +79,7 @@ relative al contatto</property>
     <child>
       <object class="GtkComboBoxEntry" id="descrizione_comboboxentry">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="can_default">True</property>
         <property name="tooltip_text" translatable="yes">Tipo contatto:
 Aziendale di norma si riferisce direttamente una ragione sociale
@@ -116,6 +92,15 @@ Personale di norma si rfiersce ad una persona fisica legata alla ragione sociale
             <attribute name="alignment">0</attribute>
             <attribute name="text">0</attribute>
           </attributes>
+        </child>
+        <child internal-child="entry">
+          <object class="GtkEntry" id="comboboxentry-entry2">
+            <property name="can_focus">False</property>
+            <property name="primary_icon_activatable">False</property>
+            <property name="secondary_icon_activatable">False</property>
+            <property name="primary_icon_sensitive">True</property>
+            <property name="secondary_icon_sensitive">True</property>
+          </object>
         </child>
       </object>
       <packing>
@@ -130,6 +115,7 @@ Personale di norma si rfiersce ad una persona fisica legata alla ragione sociale
     <child>
       <object class="GtkHSeparator" id="hseparator3">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
       </object>
       <packing>
         <property name="right_attach">2</property>
@@ -140,6 +126,7 @@ Personale di norma si rfiersce ad una persona fisica legata alla ragione sociale
     <child>
       <object class="GtkHSeparator" id="hseparator10">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
       </object>
       <packing>
         <property name="right_attach">2</property>
@@ -152,6 +139,7 @@ Personale di norma si rfiersce ad una persona fisica legata alla ragione sociale
     <child>
       <object class="GtkLabel" id="appartenenza_label">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="label" translatable="yes">-</property>
       </object>
@@ -165,6 +153,7 @@ Personale di norma si rfiersce ad una persona fisica legata alla ragione sociale
     <child>
       <object class="GtkComboBoxEntry" id="ruolo_comboboxentry">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="can_default">True</property>
         <property name="model">liststore1</property>
         <property name="text_column">0</property>
@@ -174,6 +163,15 @@ Personale di norma si rfiersce ad una persona fisica legata alla ragione sociale
             <attribute name="alignment">0</attribute>
             <attribute name="text">0</attribute>
           </attributes>
+        </child>
+        <child internal-child="entry">
+          <object class="GtkEntry" id="comboboxentry-entry4">
+            <property name="can_focus">False</property>
+            <property name="primary_icon_activatable">False</property>
+            <property name="secondary_icon_activatable">False</property>
+            <property name="primary_icon_sensitive">True</property>
+            <property name="secondary_icon_sensitive">True</property>
+          </object>
         </child>
       </object>
       <packing>
@@ -188,6 +186,7 @@ Personale di norma si rfiersce ad una persona fisica legata alla ragione sociale
     <child>
       <object class="GtkHBox" id="hbox113">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="homogeneous">True</property>
         <child>
           <object class="GtkRadioButton" id="cliente_radiobutton">
@@ -196,6 +195,7 @@ Personale di norma si rfiersce ad una persona fisica legata alla ragione sociale
             <property name="can_focus">True</property>
             <property name="receives_default">False</property>
             <property name="tooltip_text" translatable="yes">Contatti relativi ad un cliente</property>
+            <property name="use_action_appearance">False</property>
             <property name="use_underline">True</property>
             <property name="active">True</property>
             <property name="draw_indicator">True</property>
@@ -213,6 +213,7 @@ Personale di norma si rfiersce ad una persona fisica legata alla ragione sociale
             <property name="can_focus">True</property>
             <property name="receives_default">False</property>
             <property name="tooltip_text" translatable="yes">Contatti relativi ad un fornitore</property>
+            <property name="use_action_appearance">False</property>
             <property name="use_underline">True</property>
             <property name="draw_indicator">True</property>
             <property name="group">cliente_radiobutton</property>
@@ -230,6 +231,7 @@ Personale di norma si rfiersce ad una persona fisica legata alla ragione sociale
             <property name="can_focus">True</property>
             <property name="receives_default">False</property>
             <property name="tooltip_text" translatable="yes">Contatti relativi al magazzino</property>
+            <property name="use_action_appearance">False</property>
             <property name="use_underline">True</property>
             <property name="draw_indicator">True</property>
             <property name="group">cliente_radiobutton</property>
@@ -247,6 +249,7 @@ Personale di norma si rfiersce ad una persona fisica legata alla ragione sociale
             <property name="can_focus">True</property>
             <property name="receives_default">False</property>
             <property name="tooltip_text" translatable="yes">Contatti legati alla prorpria azienda</property>
+            <property name="use_action_appearance">False</property>
             <property name="use_underline">True</property>
             <property name="draw_indicator">True</property>
             <property name="group">cliente_radiobutton</property>
@@ -266,6 +269,7 @@ Personale di norma si rfiersce ad una persona fisica legata alla ragione sociale
             <property name="tooltip_text" translatable="yes">Contatto che non è legato a
 nessuna tipologia precedente 
 es: L'assicuratore</property>
+            <property name="use_action_appearance">False</property>
             <property name="use_underline">True</property>
             <property name="draw_indicator">True</property>
             <property name="group">cliente_radiobutton</property>
@@ -288,6 +292,7 @@ es: L'assicuratore</property>
     <child>
       <object class="GtkLabel" id="cognome_label">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="label" translatable="yes">Cognome</property>
       </object>
@@ -301,6 +306,7 @@ es: L'assicuratore</property>
     <child>
       <object class="GtkLabel" id="nome_label">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="label" translatable="yes">Nome</property>
       </object>
@@ -314,6 +320,7 @@ es: L'assicuratore</property>
     <child>
       <object class="GtkLabel" id="ruolo_label">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="label" translatable="yes">Ruolo</property>
       </object>
@@ -327,6 +334,7 @@ es: L'assicuratore</property>
     <child>
       <object class="GtkLabel" id="tipologia_label">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="label" translatable="yes">Tipologia</property>
       </object>
@@ -340,6 +348,7 @@ es: L'assicuratore</property>
     <child>
       <object class="GtkLabel" id="note_label">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="label" translatable="yes">Note</property>
       </object>
@@ -353,21 +362,26 @@ es: L'assicuratore</property>
     <child>
       <object class="GtkFrame" id="categorie_frame">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="border_width">1</property>
         <property name="label_xalign">0</property>
         <child>
           <object class="GtkAlignment" id="alignment259">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="left_padding">12</property>
             <child>
               <object class="GtkVBox" id="categorie_vbox">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <child>
                   <object class="GtkHBox" id="hbox229">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <child>
                       <object class="GtkLabel" id="label475">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="xalign">0</property>
                         <property name="label" translatable="yes">Categoria</property>
                       </object>
@@ -382,6 +396,7 @@ es: L'assicuratore</property>
                       <object class="GtkAlignment" id="alignment298">
                         <property name="width_request">150</property>
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="xalign">0</property>
                         <child>
                           <object class="CustomComboBoxModify" id="id_categoria_contatto_customcombobox">
@@ -391,6 +406,8 @@ es: L'assicuratore</property>
                         </child>
                       </object>
                       <packing>
+                        <property name="expand">True</property>
+                        <property name="fill">True</property>
                         <property name="position">1</property>
                       </packing>
                     </child>
@@ -400,8 +417,9 @@ es: L'assicuratore</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="use_stock">True</property>
-                        <signal name="clicked" handler="on_categorie_contatti_add_row_button_clicked"/>
+                        <signal name="clicked" handler="on_categorie_contatti_add_row_button_clicked" swapped="no"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -417,8 +435,9 @@ es: L'assicuratore</property>
                         <property name="sensitive">False</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="use_stock">True</property>
-                        <signal name="clicked" handler="on_categorie_contatti_delete_row_button_clicked"/>
+                        <signal name="clicked" handler="on_categorie_contatti_delete_row_button_clicked" swapped="no"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -434,8 +453,9 @@ es: L'assicuratore</property>
                         <property name="sensitive">False</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="use_stock">True</property>
-                        <signal name="clicked" handler="on_categorie_contatti_undelete_row_button_clicked"/>
+                        <signal name="clicked" handler="on_categorie_contatti_undelete_row_button_clicked" swapped="no"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -463,11 +483,14 @@ es: L'assicuratore</property>
                       <object class="GtkTreeView" id="categorie_treeview">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <signal name="cursor_changed" handler="on_categorie_treeview_cursor_changed"/>
+                        <property name="model">categorie_liststore</property>
+                        <signal name="cursor-changed" handler="on_categorie_treeview_cursor_changed" swapped="no"/>
                       </object>
                     </child>
                   </object>
                   <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
                     <property name="padding">3</property>
                     <property name="position">1</property>
                   </packing>
@@ -479,6 +502,7 @@ es: L'assicuratore</property>
         <child type="label">
           <object class="GtkLabel" id="label479">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="label" translatable="yes">Categorie</property>
             <property name="use_markup">True</property>
           </object>
@@ -494,23 +518,30 @@ es: L'assicuratore</property>
     <child>
       <object class="GtkFrame" id="frame5">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="border_width">1</property>
         <property name="label_xalign">0</property>
         <child>
           <object class="GtkAlignment" id="alignment260">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="left_padding">12</property>
             <child>
               <object class="GtkVBox" id="vbox25">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <child>
                   <object class="GtkHBox" id="hbox354">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <child>
                       <object class="GtkHSeparator" id="hseparator34">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                       </object>
                       <packing>
+                        <property name="expand">True</property>
+                        <property name="fill">True</property>
                         <property name="padding">4</property>
                         <property name="position">0</property>
                       </packing>
@@ -521,8 +552,9 @@ es: L'assicuratore</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="use_stock">True</property>
-                        <signal name="clicked" handler="on_recapiti_add_row_button_clicked"/>
+                        <signal name="clicked" handler="on_recapiti_add_row_button_clicked" swapped="no"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -538,8 +570,9 @@ es: L'assicuratore</property>
                         <property name="sensitive">False</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="use_stock">True</property>
-                        <signal name="clicked" handler="on_recapiti_delete_row_button_clicked"/>
+                        <signal name="clicked" handler="on_recapiti_delete_row_button_clicked" swapped="no"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -555,8 +588,9 @@ es: L'assicuratore</property>
                         <property name="sensitive">False</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="use_stock">True</property>
-                        <signal name="clicked" handler="on_recapiti_undelete_row_button_clicked"/>
+                        <signal name="clicked" handler="on_recapiti_undelete_row_button_clicked" swapped="no"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -585,12 +619,15 @@ es: L'assicuratore</property>
                       <object class="GtkTreeView" id="recapiti_treeview">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <signal name="key_press_event" handler="on_recapiti_treeview_key_press_event"/>
-                        <signal name="cursor_changed" handler="on_recapiti_treeview_cursor_changed"/>
+                        <property name="model">recapiti_liststore</property>
+                        <signal name="cursor-changed" handler="on_recapiti_treeview_cursor_changed" swapped="no"/>
+                        <signal name="key-press-event" handler="on_recapiti_treeview_key_press_event" swapped="no"/>
                       </object>
                     </child>
                   </object>
                   <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
                     <property name="padding">3</property>
                     <property name="position">1</property>
                   </packing>
@@ -602,6 +639,7 @@ es: L'assicuratore</property>
         <child type="label">
           <object class="GtkLabel" id="label480">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="label" translatable="yes">Recapiti</property>
             <property name="use_markup">True</property>
           </object>
@@ -630,6 +668,7 @@ es: L'assicuratore</property>
   </object>
   <object class="GtkTable" id="anagrafica_contatti_filter_table">
     <property name="visible">True</property>
+    <property name="can_focus">False</property>
     <property name="n_rows">11</property>
     <property name="n_columns">2</property>
     <child>
@@ -637,7 +676,11 @@ es: L'assicuratore</property>
         <property name="visible">True</property>
         <property name="can_focus">True</property>
         <property name="invisible_char">●</property>
-        <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
+        <property name="primary_icon_activatable">False</property>
+        <property name="secondary_icon_activatable">False</property>
+        <property name="primary_icon_sensitive">True</property>
+        <property name="secondary_icon_sensitive">True</property>
+        <signal name="key-press-event" handler="on_campo_filter_entry_key_press_event" swapped="no"/>
       </object>
       <packing>
         <property name="left_attach">1</property>
@@ -653,7 +696,11 @@ es: L'assicuratore</property>
         <property name="visible">True</property>
         <property name="can_focus">True</property>
         <property name="invisible_char">●</property>
-        <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
+        <property name="primary_icon_activatable">False</property>
+        <property name="secondary_icon_activatable">False</property>
+        <property name="primary_icon_sensitive">True</property>
+        <property name="secondary_icon_sensitive">True</property>
+        <signal name="key-press-event" handler="on_campo_filter_entry_key_press_event" swapped="no"/>
       </object>
       <packing>
         <property name="left_attach">1</property>
@@ -669,7 +716,11 @@ es: L'assicuratore</property>
         <property name="visible">True</property>
         <property name="can_focus">True</property>
         <property name="invisible_char">●</property>
-        <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
+        <property name="primary_icon_activatable">False</property>
+        <property name="secondary_icon_activatable">False</property>
+        <property name="primary_icon_sensitive">True</property>
+        <property name="secondary_icon_sensitive">True</property>
+        <signal name="key-press-event" handler="on_campo_filter_entry_key_press_event" swapped="no"/>
       </object>
       <packing>
         <property name="left_attach">1</property>
@@ -683,6 +734,7 @@ es: L'assicuratore</property>
     <child>
       <object class="GtkLabel" id="label209">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="label" translatable="yes">Cognome - Nome</property>
       </object>
@@ -697,6 +749,7 @@ es: L'assicuratore</property>
     <child>
       <object class="GtkLabel" id="label210">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="label" translatable="yes">Ruolo</property>
       </object>
@@ -711,6 +764,7 @@ es: L'assicuratore</property>
     <child>
       <object class="GtkLabel" id="label211">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="label" translatable="yes">Descrizione</property>
       </object>
@@ -727,7 +781,11 @@ es: L'assicuratore</property>
         <property name="visible">True</property>
         <property name="can_focus">True</property>
         <property name="invisible_char">●</property>
-        <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
+        <property name="primary_icon_activatable">False</property>
+        <property name="secondary_icon_activatable">False</property>
+        <property name="primary_icon_sensitive">True</property>
+        <property name="secondary_icon_sensitive">True</property>
+        <signal name="key-press-event" handler="on_campo_filter_entry_key_press_event" swapped="no"/>
       </object>
       <packing>
         <property name="left_attach">1</property>
@@ -769,7 +827,17 @@ es: L'assicuratore</property>
     <child>
       <object class="GtkComboBoxEntry" id="tipo_recapito_filter_comboboxentry">
         <property name="visible">True</property>
-        <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
+        <property name="can_focus">False</property>
+        <signal name="key-press-event" handler="on_campo_filter_entry_key_press_event" swapped="no"/>
+        <child internal-child="entry">
+          <object class="GtkEntry" id="comboboxentry-entry6">
+            <property name="can_focus">False</property>
+            <property name="primary_icon_activatable">False</property>
+            <property name="secondary_icon_activatable">False</property>
+            <property name="primary_icon_sensitive">True</property>
+            <property name="secondary_icon_sensitive">True</property>
+          </object>
+        </child>
       </object>
       <packing>
         <property name="left_attach">1</property>
@@ -783,6 +851,7 @@ es: L'assicuratore</property>
     <child>
       <object class="GtkComboBox" id="id_categoria_contatto_filter_combobox">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
       </object>
       <packing>
         <property name="left_attach">1</property>
@@ -799,6 +868,7 @@ es: L'assicuratore</property>
         <property name="visible">True</property>
         <property name="can_focus">True</property>
         <property name="receives_default">False</property>
+        <property name="use_action_appearance">False</property>
         <property name="use_underline">True</property>
         <property name="active">True</property>
         <property name="draw_indicator">True</property>
@@ -815,6 +885,7 @@ es: L'assicuratore</property>
         <property name="visible">True</property>
         <property name="can_focus">True</property>
         <property name="receives_default">False</property>
+        <property name="use_action_appearance">False</property>
         <property name="use_underline">True</property>
         <property name="draw_indicator">True</property>
         <property name="group">cliente_filter_radiobutton</property>
@@ -833,6 +904,7 @@ es: L'assicuratore</property>
         <property name="visible">True</property>
         <property name="can_focus">True</property>
         <property name="receives_default">False</property>
+        <property name="use_action_appearance">False</property>
         <property name="use_underline">True</property>
         <property name="draw_indicator">True</property>
         <property name="group">cliente_filter_radiobutton</property>
@@ -851,6 +923,7 @@ es: L'assicuratore</property>
         <property name="visible">True</property>
         <property name="can_focus">True</property>
         <property name="receives_default">False</property>
+        <property name="use_action_appearance">False</property>
         <property name="use_underline">True</property>
         <property name="draw_indicator">True</property>
         <property name="group">cliente_filter_radiobutton</property>
@@ -869,6 +942,7 @@ es: L'assicuratore</property>
         <property name="visible">True</property>
         <property name="can_focus">True</property>
         <property name="receives_default">False</property>
+        <property name="use_action_appearance">False</property>
         <property name="use_underline">True</property>
         <property name="draw_indicator">True</property>
         <property name="group">cliente_filter_radiobutton</property>
@@ -884,6 +958,7 @@ es: L'assicuratore</property>
     <child>
       <object class="GtkLabel" id="label552">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="label" translatable="yes">Recapito</property>
       </object>
@@ -898,6 +973,7 @@ es: L'assicuratore</property>
     <child>
       <object class="GtkLabel" id="label553">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="label" translatable="yes">Tipo recapito</property>
       </object>
@@ -912,6 +988,7 @@ es: L'assicuratore</property>
     <child>
       <object class="GtkLabel" id="label554">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="label" translatable="yes">Categoria</property>
       </object>
@@ -948,5 +1025,65 @@ es: L'assicuratore</property>
     <child>
       <placeholder/>
     </child>
+  </object>
+  <object class="GtkListStore" id="categorie_liststore">
+    <columns>
+      <!-- column-name gint1 -->
+      <column type="gint"/>
+      <!-- column-name gchararray1 -->
+      <column type="gchararray"/>
+      <!-- column-name GdkPixbuf1 -->
+      <column type="GdkPixbuf"/>
+      <!-- column-name gchararray2 -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
+  <object class="GtkListStore" id="liststore1">
+    <columns>
+      <!-- column-name item -->
+      <column type="gchararray"/>
+    </columns>
+    <data>
+      <row>
+        <col id="0" translatable="yes">Amministrazione</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Segreteria</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Commerciale</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes"></col>
+      </row>
+    </data>
+  </object>
+  <object class="GtkListStore" id="liststore2">
+    <columns>
+      <!-- column-name item -->
+      <column type="gchararray"/>
+    </columns>
+    <data>
+      <row>
+        <col id="0" translatable="yes">Aziendale</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Personale</col>
+      </row>
+    </data>
+  </object>
+  <object class="GtkListStore" id="recapiti_liststore">
+    <columns>
+      <!-- column-name gint1 -->
+      <column type="gint"/>
+      <!-- column-name gchararray1 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray2 -->
+      <column type="gchararray"/>
+      <!-- column-name GdkPixbuf1 -->
+      <column type="GdkPixbuf"/>
+      <!-- column-name gchararray3 -->
+      <column type="gchararray"/>
+    </columns>
   </object>
 </interface>

@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010,2011 by Promotux
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010, 2011 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
+#    Author: Francesco Marella <francesco.marella@gmail.com>
 
 #    This file is part of Promogest.
 
@@ -20,8 +21,6 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-import gtk
-import gobject
 from promogest.ui.Ricerca import Ricerca, RicercaFilter, RicercaHtml
 
 from promogest import Environment
@@ -32,7 +31,7 @@ from promogest.modules.Contatti.dao.ContattoAzienda import ContattoAzienda
 from promogest.modules.Contatti.dao.ContattoMagazzino import ContattoMagazzino
 
 from promogest.ui.utils import *
-
+from promogest.ui.gtk_compat import *
 
 
 class RicercaContatti(Ricerca):
@@ -79,7 +78,7 @@ class RicercaContattiFilter(RicercaFilter):
         renderer = gtk.CellRendererText()
 
         column = gtk.TreeViewColumn('Cognome - Nome', renderer,text=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROW_ONLY)
         column.set_clickable(True)
         column.connect("clicked", self._changeOrderBy, 'cognome')
         column.set_resizable(True)
@@ -87,7 +86,7 @@ class RicercaContattiFilter(RicercaFilter):
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('Ruolo', renderer,text=2)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROW_ONLY)
         column.set_clickable(True)
         column.connect("clicked", self._changeOrderBy, 'ruolo')
         column.set_resizable(True)
@@ -95,7 +94,7 @@ class RicercaContattiFilter(RicercaFilter):
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('Descrizione', renderer,text=3)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROW_ONLY)
         column.set_clickable(True)
         column.connect("clicked", self._changeOrderBy, 'descrizione')
         column.set_resizable(True)
@@ -103,7 +102,7 @@ class RicercaContattiFilter(RicercaFilter):
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('Relativo a', renderer,text=4)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROW_ONLY)
         column.set_clickable(True)
         column.set_resizable(True)
         column.set_expand(True)
@@ -111,7 +110,7 @@ class RicercaContattiFilter(RicercaFilter):
 
         treeview.set_search_column(1)
 
-        self._treeViewModel = gtk.ListStore(gobject.TYPE_PYOBJECT, str, str, str, str)
+        self._treeViewModel = gtk.ListStore(object, str, str, str, str)
         self._ricerca.ricerca_filter_treeview.set_model(self._treeViewModel)
 
         fillComboboxMagazzini(self.id_magazzino_filter_combobox, True)
