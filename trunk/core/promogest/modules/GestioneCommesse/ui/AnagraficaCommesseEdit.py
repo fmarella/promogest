@@ -20,7 +20,7 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 import sys
-import gtk
+#import gtk
 import gobject
 from decimal import *
 from promogest import Environment
@@ -63,41 +63,41 @@ class AnagraficaCommesseEdit(AnagraficaEdit):
 #        self.id_banca_customcombobox.set_sensitive(False)
 
     def draw(self, cplx=False):
-        treeview = self.riga_commessa_treeview
-        renderer = gtk.CellRendererText()
+        #treeview = self.riga_commessa_treeview
+        #renderer = gtk.CellRendererText()
 
-        column = gtk.TreeViewColumn('Numero', renderer, text=1, background=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(50)
-        treeview.append_column(column)
+        #column = gtk.TreeViewColumn('Numero', renderer, text=1, background=1)
+        #column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        #column.set_resizable(True)
+        #column.set_expand(False)
+        #column.set_min_width(50)
+        #treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('Data', renderer, text=2, background=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(100)
-        treeview.append_column(column)
+        #column = gtk.TreeViewColumn('Data', renderer, text=2, background=1)
+        #column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        #column.set_resizable(True)
+        #column.set_expand(False)
+        #column.set_min_width(100)
+        #treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('Titolo', renderer, text=3, background=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-#        column.set_clickable(True)
-        column.set_resizable(True)
-        column.set_expand(True)
-        column.set_min_width(100)
-        treeview.append_column(column)
+        #column = gtk.TreeViewColumn('Titolo', renderer, text=3, background=1)
+        #column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+##        column.set_clickable(True)
+        #column.set_resizable(True)
+        #column.set_expand(True)
+        #column.set_min_width(100)
+        #treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('Tipo', renderer, text=4, background=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(100)
-        treeview.append_column(column)
+        #column = gtk.TreeViewColumn('Tipo', renderer, text=4, background=1)
+        #column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        #column.set_resizable(True)
+        #column.set_expand(False)
+        #column.set_min_width(100)
+        #treeview.append_column(column)
 
-        treeview.set_search_column(1)
-        self._rigaModel = gtk.ListStore(gobject.TYPE_PYOBJECT, str,str, str, str,str, str, str )
-        self.riga_commessa_treeview.set_model(self._rigaModel)
+        #treeview.set_search_column(1)
+        #self._rigaModel = gtk.ListStore(object, str,str, str, str,str, str, str )
+        #self.riga_commessa_treeview.set_model(self._rigaModel)
         fillComboboxStadioCommessa(self.stadio_commessa_combobox.combobox)
         self.stadio_commessa_combobox.connect('clicked',
                                             on_stadio_commessa_combobox_clicked)
