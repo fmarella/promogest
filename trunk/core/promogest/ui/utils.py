@@ -29,7 +29,6 @@ from calendar import Calendar
 from decimal import *
 
 from promogest.ui.gtk_compat import *
-#import gtk
 import threading
 import time
 import datetime

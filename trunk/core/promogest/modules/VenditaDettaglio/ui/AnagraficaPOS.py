@@ -1,13 +1,25 @@
 # -*- coding: utf-8 -*-
 
-"""
- Promogest
- Copyright (C) 2005-2008 by Promotux Informatica - http://www.promotux.it/
- Author: Francesco Meloni <francesco@promotux.it>
- License: GNU GPLv2
-"""
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010, 2011 by Promotux
+#                       di Francesco Meloni snc - http://www.promotux.it/
 
-import gtk
+#    Author: Francesco Meloni  <francesco@promotux.it>
+#    This file is part of Promogest.
+
+#    Promogest is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 2 of the License, or
+#    (at your option) any later version.
+
+#    Promogest is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+
+#    You should have received a copy of the GNU General Public License
+#    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
+
+from promogest.ui.gtk_compat import *
 from promogest.ui.AnagraficaSemplice import Anagrafica, AnagraficaDetail, AnagraficaFilter
 from promogest import Environment
 from promogest.modules.VenditaDettaglio.dao.Pos import Pos
@@ -35,7 +47,7 @@ class AnagraficaPos(Anagrafica):
         renderer.set_data('column', 0)
         renderer.set_data('max_length', 200)
         column = gtk.TreeViewColumn('Descrizione', renderer, text=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.connect("clicked", self._changeOrderBy, (None,'denominazione'))
         column.set_resizable(True)
@@ -48,7 +60,7 @@ class AnagraficaPos(Anagrafica):
         renderer.set_data('column', 1)
         renderer.set_data('max_length', 10)
         column = gtk.TreeViewColumn('Descrizione breve', renderer, text=2)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.connect("clicked", self._changeOrderBy, (None,'denominazione_breve'))
         column.set_resizable(True)
