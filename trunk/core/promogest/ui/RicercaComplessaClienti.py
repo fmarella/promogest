@@ -238,7 +238,7 @@ class RicercaComplessaClienti(RicercaComplessa):
         selection = self.filter.resultsElement.get_selection()
         if self._ricerca._tipoRicerca == 'semplice':
             # solo se la ricerca e' semplice si puo' selezionare una riga
-            selection.set_mode(GTK_SELECTIONMODE_SINGLE
+            selection.set_mode(GTK_SELECTIONMODE_SINGLE)
         else:
             selection.set_mode(GTK_SELECTIONMODE_NONE)
 
