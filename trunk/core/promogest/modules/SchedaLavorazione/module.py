@@ -4,7 +4,6 @@
 #
 # Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
 
-import gtk, gobject
 from promogest import Environment
 from promogest.ui.GladeWidget import GladeWidget
 from promogest.modules.SchedaLavorazione.data.SchedeLavorazioneDB import *
