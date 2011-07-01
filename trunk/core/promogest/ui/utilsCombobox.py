@@ -755,18 +755,13 @@ def fillComboboxCausaliTrasporto(combobox, filter=False):
     combobox.pack_start(renderer, True)
     combobox.add_attribute(renderer, 'text', 1)
     combobox.set_model(model)
-    print "MODEL", len(model)
-    if combobox.__class__ is gtk.ComboBoxEntry:
-        combobox.set_text_column(1)
+    if not Environment.pg3:
+        if combobox.__class__ is gtk.ComboBoxEntry:
+            combobox.set_text_column(1)
 
 def fillComboboxAspettoEsterioreBeni(combobox, filter=False):
     """ Crea elenco degli aspetti esteriori beni """
     from promogest.dao.TestataDocumento import TestataDocumento
-    #res = TestataDocumento().select(batchSize=None, offset=None,orderBy='aspetto_esteriore_beni')
-    #queryString = ('SELECT DISTINCT aspetto_esteriore_beni FROM ' + Environment.connection._schemaAzienda + '.testata_documento ORDER BY aspetto_esteriore_beni')
-    #argList = []
-    #Environment.connection._cursor.execute(queryString, argList)
-    #res = Environment.connection._cursor.fetchall()
     res = Environment.params['session'].query(TestataDocumento.aspetto_esteriore_beni).distinct()
     model = gtk.ListStore(object, str)
     #res = []
@@ -783,8 +778,9 @@ def fillComboboxAspettoEsterioreBeni(combobox, filter=False):
     combobox.pack_start(renderer, True)
     combobox.add_attribute(renderer, 'text', 1)
     combobox.set_model(model)
-    if combobox.__class__ is gtk.ComboBoxEntry:
-        combobox.set_text_column(1)
+    if not Environment.pg3:
+        if combobox.__class__ is gtk.ComboBoxEntry:
+            combobox.set_text_column(1)
 
 def fillComboboxPortoTrasporto(combobox):
     """ Crea l'elenco dei porti trasporto """
@@ -796,8 +792,9 @@ def fillComboboxPortoTrasporto(combobox):
     combobox.pack_start(renderer, True)
     combobox.add_attribute(renderer, 'text', 1)
     combobox.set_model(model)
-    if combobox.__class__ is gtk.ComboBoxEntry:
-        combobox.set_text_column(1)
+    if not Environment.pg3:
+        if combobox.__class__ is gtk.ComboBoxEntry:
+            combobox.set_text_column(1)
 
 def fillComboboxDestinazioniMerce(combobox, idCliente=None, filter=False):
     """ Crea l'elenco delle destinazioni merce """
@@ -817,8 +814,9 @@ def fillComboboxDestinazioniMerce(combobox, idCliente=None, filter=False):
     combobox.pack_start(renderer, True)
     combobox.add_attribute(renderer, 'text', 2)
     combobox.set_model(model)
-    if combobox.__class__ is gtk.ComboBoxEntry:
-        combobox.set_text_column(2)
+    if not Environment.pg3:
+        if combobox.__class__ is gtk.ComboBoxEntry:
+            combobox.set_text_column(2)
 
 def fillComboboxAutoriPromemoria(combobox):
     """ Crea l'elenco degli autori gia'inseriti """
@@ -833,8 +831,9 @@ def fillComboboxAutoriPromemoria(combobox):
     combobox.pack_start(renderer, True)
     combobox.add_attribute(renderer, 'text', 0)
     combobox.set_model(model)
-    if combobox.__class__ is gtk.ComboBoxEntry:
-        combobox.set_text_column(0)
+    if not Environment.pg3:
+        if combobox.__class__ is gtk.ComboBoxEntry:
+            combobox.set_text_column(0)
 
 def fillComboboxNotePiePaginaTestataDocumento(combobox):
     """ Crea l'elenco degli autori gia'inseriti """
@@ -851,8 +850,9 @@ def fillComboboxNotePiePaginaTestataDocumento(combobox):
     combobox.pack_start(renderer, True)
     combobox.add_attribute(renderer, 'text', 0)
     combobox.set_model(model)
-    if combobox.__class__ is gtk.ComboBoxEntry:
-        combobox.set_text_column(0)
+    if not Environment.pg3:
+        if combobox.__class__ is gtk.ComboBoxEntry:
+            combobox.set_text_column(0)
 
 
 
@@ -876,8 +876,9 @@ def fillComboboxIncaricatiPromemoria(combobox):
     combobox.pack_start(renderer, True)
     combobox.add_attribute(renderer, 'text', 0)
     combobox.set_model(model)
-    if combobox.__class__ is gtk.ComboBoxEntry:
-        combobox.set_text_column(0)
+    if not Environment.pg3:
+        if combobox.__class__ is gtk.ComboBoxEntry:
+            combobox.set_text_column(0)
 
 
 # Operazioni su lookup combobox

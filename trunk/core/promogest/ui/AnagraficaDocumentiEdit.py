@@ -25,7 +25,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-import gtk
+from promogest.ui.gtk_compat import *
 import datetime
 
 from promogest import Environment
@@ -117,7 +117,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         # Inizializziamo i moduli in interfaccia!
         #self.draw()
         self.completion = self.ricerca_articolo_entrycompletition
-        self.completion.set_match_func(self.match_func)
+        self.completion.set_match_func(self.match_func,None)
         self.completion.set_text_column(0)
         self.articolo_entry.set_completion(self.completion)
         self.sepric = "  ~  "
@@ -179,7 +179,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
 
     def on_anagrafica_documenti_detail_vbox_key_press_event(self, widget=None, event=None):
         """ Mappiamo un po' di tasti su ana documenti"""
-        keyname = gtk.gdk.keyval_name(event.keyval)
+        keyname = gdk_keyval_name(event.keyval)
         if keyname == 'F4':  # confermo e pulisco
             self.on_confirm_row_button_clicked(widget=None)
         elif keyname == 'F6':  # confermo e non pulisco
@@ -757,7 +757,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
     def saveDao(self, tipo=None):
         """ Salvataggio del Dao
         """
-        if posso("ADR") and tipo==gtk.RESPONSE_OK:
+        if posso("ADR") and tipo==GTK_RESPONSE_OK:
             AnagraficaDocumentiEditADRExt.sposta_sommario_in_tabella(self)
         scontiRigaDocumentoList = {}
         if not(len(self._righe) > 1):
@@ -811,19 +811,10 @@ l'anno di esercizio indicato nella data
 del documento.
     Continuare comunque?""" % numero
 
-                    dialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                    gtk.MESSAGE_INFO, gtk.BUTTONS_OK_CANCEL, msg)
-                    response = dialog.run()
-                    dialog.destroy()
-                    if response == gtk.RESPONSE_NONE or response == gtk.RESPONSE_CANCEL:
-                        return
-                    elif response == gtk.RESPONSE_OK:
-                        #nothing to do about it.
+                    if YesNoDialog(msg=msg, transient=None):
                         print """si è deciso di salvare un documento il cui numero
             è già stato usato per un altro. questo comporterà
             l 'esistenza di due documenti con lo stesso numero!"""
-
-
                 self.dao.numero = numero
         self.dao.operazione = self._operazione
         pbar(self.dialog.pbar,parziale=1, totale=4)
@@ -1251,20 +1242,20 @@ del documento.
             if not(self._variazioneListiniResponse == 'all' or self._variazioneListiniResponse == 'none'):
                 msg = 'Il prezzo di acquisto e\' stato variato:\n\n   si desidera aggiornare i listini di vendita ?'
                 response = showComplexQuestion(self.dialogTopLevel, msg)
-                if response == gtk.RESPONSE_YES:
+                if response == GTK_RESPONSE_YES:
                     self._variazioneListiniResponse = 'yes'
                     #la richiesta verra' riproposta per la successiva variante o articolo
                     self._variazioneListiniShow = True
-                elif response == gtk.RESPONSE_NO:
+                elif response == GTK_RESPONSE_NO:
                     self._variazioneListiniResponse = 'no'
                     #la richiesta verra' riproposta per la successiva variante o articolo
                     self._variazioneListiniShow = False
-                elif response == gtk.RESPONSE_APPLY:
+                elif response == GTK_RESPONSE_APPLY:
                     self._variazioneListiniResponse = 'all'
                     #la richiesta non verra' riproposta per la successiva variante o articolo
                     #ma per il prossimo articolo padre si'
                     self._variazioneListiniShow = True
-                elif response == gtk.RESPONSE_REJECT:
+                elif response == GTK_RESPONSE_REJECT:
                     self._variazioneListiniResponse = 'none'
                     #la richiesta non verra' riproposta per la successiva variante o articolo
                     #ma per il prossimo articolo padre si'
@@ -1434,7 +1425,7 @@ del documento.
                                             codice=codice,
                                             codiceABarre=codiceABarre,
                                             codiceArticoloFornitore=codiceArticoloFornitore)
-            anag.setTreeViewSelectionType(gtk.SELECTION_SINGLE)
+            anag.setTreeViewSelectionType(GTK_SELECTIONMODE_SINGLE)
 
             anagWindow = anag.getTopLevel()
             anagWindow.connect("hide",
@@ -1606,7 +1597,7 @@ del documento.
 
     def on_articolo_entry_key_press_event(self, widget, event):
         """ """
-        keyname = gtk.gdk.keyval_name(event.keyval)
+        keyname = gdk_keyval_name(event.keyval)
         if self.mattu and keyname == 'Return' or keyname == 'KP_Enter':
             self.ricercaArticolo()
         if keyname == 'F3':

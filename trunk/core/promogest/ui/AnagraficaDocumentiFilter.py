@@ -24,7 +24,7 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 
-import gtk
+from promogest.ui.gtk_compat import *
 from promogest.ui.AnagraficaComplessaFilter import AnagraficaFilter
 from utils import *
 from promogest.dao.TestataDocumento import TestataDocumento
@@ -51,7 +51,7 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         Disegna colonne della Treeview per il filtro
         """
         treeselection = self.anagrafica_filter_treeview.get_selection()
-        treeselection.set_mode(gtk.SELECTION_MULTIPLE)
+        treeselection.set_mode(GTK_SELECTIONMODE_MULTIPLE)
 
         fillComboboxOperazioni(self.id_operazione_filter_combobox, 'documento',True)
         self.id_operazione_filter_combobox.set_active(0)
