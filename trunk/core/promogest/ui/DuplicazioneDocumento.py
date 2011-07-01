@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010, 2011 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
-#    Authors: Francesco Meloni  <francesco@promotux.it>
-#             Francesco Marella <francesco.marella@gmail.com>
+#    Author: Francesco Meloni  <francesco@promotux.it>
+#    Author: Francesco Marella <francesco.marella@gmail.com>
 
 #    This file is part of Promogest.
 
@@ -21,9 +21,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-import gtk
-from GladeWidget import GladeWidget
-
+from promogest.ui.GladeWidget import GladeWidget
 from promogest import Environment
 from promogest.dao.TestataDocumento import TestataDocumento
 from promogest.dao.Magazzino import Magazzino
@@ -34,11 +32,12 @@ from promogest.dao.ScontoRigaDocumento import ScontoRigaDocumento
 from promogest.dao.ScontoTestataDocumento import ScontoTestataDocumento
 from promogest.dao.Operazione import Operazione
 from promogest.dao.Fornitura import Fornitura
-from AnagraficaDocumenti import *
+from promogest.ui.AnagraficaDocumenti import *
 if posso("PA"):
     import promogest.modules.Pagamenti.dao.TestataDocumentoScadenza
     from promogest.modules.Pagamenti.dao.TestataDocumentoScadenza import TestataDocumentoScadenza
-from utils import *
+from promogest.ui.utils import *
+from promogest.ui.gtk_compat import *
 
 
 class DuplicazioneDocumento(GladeWidget):
