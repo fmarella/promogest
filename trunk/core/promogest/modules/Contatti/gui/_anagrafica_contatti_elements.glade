@@ -828,6 +828,7 @@ es: L'assicuratore</property>
       <object class="GtkComboBoxEntry" id="tipo_recapito_filter_comboboxentry">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
+        <property name="text_column">0</property>
         <signal name="key-press-event" handler="on_campo_filter_entry_key_press_event" swapped="no"/>
         <child internal-child="entry">
           <object class="GtkEntry" id="comboboxentry-entry6">
