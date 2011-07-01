@@ -117,7 +117,10 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         # Inizializziamo i moduli in interfaccia!
         #self.draw()
         self.completion = self.ricerca_articolo_entrycompletition
-        self.completion.set_match_func(self.match_func,None)
+        if Environment.pg3:
+            self.completion.set_match_func(self.match_func,None)
+        else:
+            self.completion.set_match_func(self.match_func)
         self.completion.set_text_column(0)
         self.articolo_entry.set_completion(self.completion)
         self.sepric = "  ~  "

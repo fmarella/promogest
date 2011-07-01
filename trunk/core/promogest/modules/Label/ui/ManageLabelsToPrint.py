@@ -48,7 +48,10 @@ class ManageLabelsToPrint(GladeWidget):
         self.apply_button.destroy()
         self.mainWindow = mainWindow
         self.completion = gtk.EntryCompletion()
-        self.completion.set_match_func(self.match_func, None)
+        if Environment.pg3:
+            self.completion.set_match_func(self.match_func,None)
+        else:
+            self.completion.set_match_func(self.match_func)
         self.completion.connect("match-selected",
                                             self.on_completion_match)
         listore = gtk.ListStore(str, object)
