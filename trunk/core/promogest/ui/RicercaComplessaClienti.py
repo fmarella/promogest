@@ -238,9 +238,9 @@ class RicercaComplessaClienti(RicercaComplessa):
         selection = self.filter.resultsElement.get_selection()
         if self._ricerca._tipoRicerca == 'semplice':
             # solo se la ricerca e' semplice si puo' selezionare una riga
-            selection.set_mode(gtk.SELECTION_SINGLE)
+            selection.set_mode(GTK_SELECTIONMODE_SINGLE
         else:
-            selection.set_mode(gtk.SELECTION_NONE)
+            selection.set_mode(GTK_SELECTIONMODE_NONE)
 
     def on_filter_entry_changed(self, text):
         stringa = text.get_text()
@@ -251,7 +251,7 @@ class RicercaComplessaClienti(RicercaComplessa):
     def setTreeViewSelectionType(self, mode=None):
         self._fixedSelectionTreeViewType = True
         if mode is not None:
-            if mode in (gtk.SELECTION_SINGLE, gtk.SELECTION_MULTIPLE, gtk.SELECTION_NONE):
+            if mode in (GTK_SELECTIONMODE_SINGLE, GTK_SELECTIONMODE_MULTIPLE, GTK_SELECTIONMODE_NONE):
                 selection = self.filter.resultsElement.get_selection()
                 selection.set_mode(mode)
 
@@ -263,7 +263,7 @@ class RicercaComplessaClienti(RicercaComplessa):
         else:
             selection = self.filter.resultsElement.get_selection()
             selectionMode = selection.get_mode()
-            if selectionMode == gtk.SELECTION_SINGLE:
+            if selectionMode == GTK_SELECTIONMODE_SINGLE:
                 return self.dao
             elif self._ricerca.resultsCount == 1:
                 treeview = self.filter.resultsElement
@@ -284,7 +284,7 @@ class RicercaComplessaClienti(RicercaComplessa):
         else:
             selection = self.filter.resultsElement.get_selection()
             selectionMode = selection.get_mode()
-            if (selectionMode == gtk.SELECTION_SINGLE):
+            if (selectionMode == GTK_SELECTIONMODE_SINGLE):
                 if self.dao is not None:
                     return 1
                 else:

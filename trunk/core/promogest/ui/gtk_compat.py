@@ -77,6 +77,7 @@ if not Environment.pg3:
 
         GTK_SELECTIONMODE_SINGLE = gtk.SELECTION_SINGLE
         GTK_SELECTIONMODE_MULTIPLE = gtk.SELECTION_MULTIPLE
+        GTK_SELECTIONMODE_NONE = gtk.SELECTION_NONE
 
         GTK_STATE_NORMAL = gtk.STATE_NORMAL
         GDK_COLOR_PARSE = gtk.gdk.color_parse
@@ -163,6 +164,7 @@ else:
 
     GTK_SELECTIONMODE_SINGLE = gtk.SelectionMode.SINGLE
     GTK_SELECTIONMODE_MULTIPLE = gtk.SelectionMode.MULTIPLE
+    GTK_SELECTIONMODE_NONE = gtk.SelectionMode.NONE
 
     GTK_STATE_NORMAL = gtk.StateType.NORMAL
 

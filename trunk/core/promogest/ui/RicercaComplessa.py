@@ -48,8 +48,6 @@ class RicercaComplessa(GladeWidget):
 
         self.filter.filter_body_label.set_no_show_all(True)
         self.filter.filter_body_label.set_property('visible', False)
-        self.filter.filter_scrolledwindow.set_policy(hscrollbar_policy = gtk.POLICY_AUTOMATIC,
-                                                     vscrollbar_policy = gtk.POLICY_AUTOMATIC)
 
         self.window.set_title(windowTitle)
 
