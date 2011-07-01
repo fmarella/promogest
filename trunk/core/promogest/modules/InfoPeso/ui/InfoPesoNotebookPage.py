@@ -90,7 +90,7 @@ class InfoPesoNotebookPage(GladeWidget):
         mmagraeacqua = self.massa_magra_e_acqua_entry.get_text() or "0"
         acqua = self.acqua_entry.get_text() or "0"
         bufferNoteRiga= self.note_riga_pesata_textview.get_buffer()
-        note_riga = bufferNoteRiga.get_text(bufferNoteRiga.get_start_iter(), bufferNoteRiga.get_end_iter()) or ""
+        note_riga = bufferNoteRiga.get_text(bufferNoteRiga.get_start_iter(), bufferNoteRiga.get_end_iter(),True) or ""
 
         if not data_pesata:
             obligatoryField(None,
@@ -270,7 +270,7 @@ class InfoPesoNotebookPage(GladeWidget):
         self.dao_testata_infopeso.data_fine = stringToDate(self.data_fine_datewidget.get_text())
         self.dao_testata_infopeso.privacy = self.privacy_check.get_active()
         bufferNote= self.note_textview.get_buffer()
-        self.dao_testata_infopeso.note = bufferNote.get_text(bufferNote.get_start_iter(), bufferNote.get_end_iter()) or ""
+        self.dao_testata_infopeso.note = bufferNote.get_text(bufferNote.get_start_iter(), bufferNote.get_end_iter(),True) or ""
         self.dao_testata_infopeso.citta = self.citta_centro_entry.get_text()
 
         self.dao_generalita_infopeso.data_nascita = stringToDate(self.data_nascita_datewidget.get_text())

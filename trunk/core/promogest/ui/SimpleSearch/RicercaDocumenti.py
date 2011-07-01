@@ -20,8 +20,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-import gtk
-import gobject
+from promogest.ui.gtk_compat import *
 from promogest.ui.Ricerca import Ricerca, RicercaFilter
 from promogest.dao.TestataDocumento import TestataDocumento
 from promogest.ui.utils import *
@@ -61,104 +60,103 @@ class RicercaDocumentiFilter(RicercaFilter):
 
     def draw(self):
         # Colonne della Treeview per il filtro
-        treeview = self._ricerca.ricerca_filter_treeview
+        #treeview = self._ricerca.ricerca_filter_treeview
         # impostazione permanente della selezione multipla dei record in treeview
-        treeselection = treeview.get_selection()
-#        treeselection.set_mode(gtk.SELECTION_MULTIPLE)
+        #treeselection = treeview.get_selection()
 
-        rendererSx = gtk.CellRendererText()
-        rendererDx = gtk.CellRendererText()
-        rendererDx.set_property('xalign', 1)
+        #rendererSx = gtk.CellRendererText()
+        #rendererDx = gtk.CellRendererText()
+        #rendererDx.set_property('xalign', 1)
 
-        column = gtk.TreeViewColumn('Data', rendererSx, text=1, background=10)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, (None, 'data_documento'))
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(100)
-        treeview.append_column(column)
+        #column = gtk.TreeViewColumn('Data', rendererSx, text=1, background=10)
+        #column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        #column.set_clickable(True)
+        #column.connect("clicked", self._changeOrderBy, (None, 'data_documento'))
+        #column.set_resizable(True)
+        #column.set_expand(False)
+        #column.set_min_width(100)
+        #treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('Numero', rendererSx, text=2, background=10)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, (TestataDocumento,TestataDocumento.numero))
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(100)
-        treeview.append_column(column)
+        #column = gtk.TreeViewColumn('Numero', rendererSx, text=2, background=10)
+        #column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        #column.set_clickable(True)
+        #column.connect("clicked", self._changeOrderBy, (TestataDocumento,TestataDocumento.numero))
+        #column.set_resizable(True)
+        #column.set_expand(False)
+        #column.set_min_width(100)
+        #treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('Tipo documento', rendererSx, text=3, background=10)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, (None, 'operazione'))
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(150)
-        treeview.append_column(column)
+        #column = gtk.TreeViewColumn('Tipo documento', rendererSx, text=3, background=10)
+        #column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        #column.set_clickable(True)
+        #column.connect("clicked", self._changeOrderBy, (None, 'operazione'))
+        #column.set_resizable(True)
+        #column.set_expand(False)
+        #column.set_min_width(150)
+        #treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('Cliente / Fornitore', rendererSx, text=4, background=10)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(False)
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(250)
-        treeview.append_column(column)
+        #column = gtk.TreeViewColumn('Cliente / Fornitore', rendererSx, text=4, background=10)
+        #column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        #column.set_clickable(False)
+        #column.set_resizable(True)
+        #column.set_expand(False)
+        #column.set_min_width(250)
+        #treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('Rif. doc. fornitore', rendererSx, text=5, background=10)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, (None, 'protocollo'))
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(100)
-        treeview.append_column(column)
+        #column = gtk.TreeViewColumn('Rif. doc. fornitore', rendererSx, text=5, background=10)
+        #column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        #column.set_clickable(True)
+        #column.connect("clicked", self._changeOrderBy, (None, 'protocollo'))
+        #column.set_resizable(True)
+        #column.set_expand(False)
+        #column.set_min_width(100)
+        #treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('Imponibile', rendererDx, text=6, background=10)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(False)
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(100)
-        treeview.append_column(column)
+        #column = gtk.TreeViewColumn('Imponibile', rendererDx, text=6, background=10)
+        #column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        #column.set_clickable(False)
+        #column.set_resizable(True)
+        #column.set_expand(False)
+        #column.set_min_width(100)
+        #treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('Imposta', rendererDx, text=7, background=10)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(False)
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(100)
-        treeview.append_column(column)
+        #column = gtk.TreeViewColumn('Imposta', rendererDx, text=7, background=10)
+        #column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        #column.set_clickable(False)
+        #column.set_resizable(True)
+        #column.set_expand(False)
+        #column.set_min_width(100)
+        #treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('Totale', rendererDx, text=8, background=10)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(False)
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(100)
-        treeview.append_column(column)
+        #column = gtk.TreeViewColumn('Totale', rendererDx, text=8, background=10)
+        #column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        #column.set_clickable(False)
+        #column.set_resizable(True)
+        #column.set_expand(False)
+        #column.set_min_width(100)
+        #treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('Note interne', rendererSx, text=9, background=10)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(False)
-        column.set_resizable(True)
-        column.set_expand(True)
-        column.set_min_width(200)
-        treeview.append_column(column)
-        if posso("PA"):
-            column = gtk.TreeViewColumn('Saldato', rendererSx, text=11, background=10)
-            column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-            column.set_clickable(False)
-            column.set_resizable(True)
-            column.set_expand(True)
-            column.set_min_width(200)
-            treeview.append_column(column)
-        else:
-            #self.stato_documento_filter_combobox.destroy()
-            self.statoDocumento_label.destroy()
+        #column = gtk.TreeViewColumn('Note interne', rendererSx, text=9, background=10)
+        #column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        #column.set_clickable(False)
+        #column.set_resizable(True)
+        #column.set_expand(True)
+        #column.set_min_width(200)
+        #treeview.append_column(column)
+        #if posso("PA"):
+            #column = gtk.TreeViewColumn('Saldato', rendererSx, text=11, background=10)
+            #column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+            #column.set_clickable(False)
+            #column.set_resizable(True)
+            #column.set_expand(True)
+            #column.set_min_width(200)
+            #treeview.append_column(column)
+        #else:
+            ##self.stato_documento_filter_combobox.destroy()
+            #self.statoDocumento_label.destroy()
 
-        self._treeViewModel = gtk.ListStore(object, str, str, str, str, str, str, str, str, str, str,str)
-        self._ricerca.ricerca_filter_treeview.set_model(self._treeViewModel)
+        #self._treeViewModel = gtk.ListStore(object, str, str, str, str, str, str, str, str, str, str,str)
+        #self._ricerca.ricerca_filter_treeview.set_model(self._treeViewModel)
 
         fillComboboxOperazioni(self.id_operazione_filter_combobox, 'documento',True)
         self.id_operazione_filter_combobox.set_active(0)
@@ -290,7 +288,8 @@ class RicercaDocumentiFilter(RicercaFilter):
         #self._allResultForHtml = self.runFilter(offset=None, batchSize=None)
         tdos = self.runFilter()
 #        self.xptDaoList = self.runFilter(offset=None, batchSize=None)
-        self._treeViewModel.clear()
+        print dir(self), dir(self._ricerca)
+        self.filter_listore.clear()
         for t in tdos:
             totali = t.totali
             totaleImponibile = mN(t._totaleImponibileScontato,2) or 0
@@ -311,15 +310,15 @@ class RicercaDocumentiFilter(RicercaFilter):
                     col = None
             else:
                 documento_saldato_filter = ''
-            self._treeViewModel.append((t,
+            self.filter_listore.append((t,
                                     dateToString(t.data_documento),
-                                    (t.numero or 0),
+                                    (str(t.numero) or str(0)),
                                     (t.operazione or ''),
                                     (t.intestatario or ''),
-                                    (t.protocollo or ''),
-                                    totaleImponibile,
-                                    totaleImposta,
-                                    totale,
+                                    (str(t.protocollo) or ''),
+                                    str(totaleImponibile),
+                                    str(totaleImposta),
+                                    str(totale),
                                     (t.note_interne or ''),
                                     col,
                                     (documento_saldato_filter or '')

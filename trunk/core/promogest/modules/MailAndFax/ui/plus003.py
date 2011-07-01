@@ -355,7 +355,7 @@ class SpamFrame(GladeWidget):
         message.epilogue = ''
 
         buffer = self.plain_textview.get_buffer()
-        msg = MIMEText(buffer.get_text(buffer.get_start_iter(), buffer.get_end_iter())
+        msg = MIMEText(buffer.get_text(buffer.get_start_iter(), buffer.get_end_iter(),True)
                 ,_subtype='plain')
         msg.set_charset('iso-8859-15')
         msg.add_header('Content-Disposition', 'inline')

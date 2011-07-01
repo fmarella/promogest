@@ -20,8 +20,6 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 import sys
-#import gtk
-import gobject
 from decimal import *
 from promogest import Environment
 from promogest.ui.AnagraficaComplessaEdit import AnagraficaEdit
@@ -310,7 +308,7 @@ class AnagraficaCommesseEdit(AnagraficaEdit):
         if not titolo_riga:
             titolo_riga = self.info_dao_label.get_text()
         bufferNoteRiga= self.riga_testo.get_buffer()
-        note_riga = bufferNoteRiga.get_text(bufferNoteRiga.get_start_iter(), bufferNoteRiga.get_end_iter()) or ""
+        note_riga = bufferNoteRiga.get_text(bufferNoteRiga.get_start_iter(), bufferNoteRiga.get_end_iter(),True) or ""
         if self.dao_temp:
             self.dao_id = self.dao_temp.id
             self.dao_class = self.dao_temp.__class__.__name__
@@ -425,7 +423,7 @@ class AnagraficaCommesseEdit(AnagraficaEdit):
             obligatoryField(self.dialogTopLevel, self.titolo_commessa_entry,
             msg="Campo obbligatorio: TITOLO COMMESSA!")
         bufferNoteRiga= self.commessa_testo.get_buffer()
-        self.dao.note = bufferNoteRiga.get_text(bufferNoteRiga.get_start_iter(), bufferNoteRiga.get_end_iter()) or ""
+        self.dao.note = bufferNoteRiga.get_text(bufferNoteRiga.get_start_iter(), bufferNoteRiga.get_end_iter(),True) or ""
         self.dao.righecommessa = righe_
         self.dao.id_stadio_commessa = findIdFromCombobox(self.stadio_commessa_combobox.combobox)
         self.dao.id_cliente = findIdFromCombobox(self.id_cliente_combobox)
