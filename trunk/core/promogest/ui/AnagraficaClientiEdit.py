@@ -55,24 +55,6 @@ class AnagraficaClientiEdit(AnagraficaEdit):
         self.id_categoria_cliente_customcombobox.connect('clicked',
                                                          on_id_categoria_cliente_customcombobox_clicked)
         #Elenco categorie
-        #rendererText = gtk.CellRendererText()
-        #column = gtk.TreeViewColumn('Categoria', rendererText, text=1)
-        #column.set_sizing(GTK_COLUMN_GROWN_ONLY)
-        #column.set_clickable(False)
-        #column.set_resizable(True)
-        #column.set_expand(True)
-        #self.categorie_treeview.append_column(column)
-
-        #rendererPixbuf = gtk.CellRendererPixbuf()
-        #column = gtk.TreeViewColumn('', rendererPixbuf, pixbuf=2)
-        #column.set_sizing(GTK_COLUMN_GROWN_ONLY)
-        #column.set_clickable(False)
-        #column.set_resizable(False)
-        #column.set_expand(False)
-        #column.set_min_width(20)
-        #self.categorie_treeview.append_column(column)
-
-        #self.categorie_treeview.set_model(self.categorie_listore)
 
         fillComboBoxNazione(self.nazione_combobox, default="Italia")
 
@@ -143,7 +125,7 @@ class AnagraficaClientiEdit(AnagraficaEdit):
             model = self.categorie_treeview.get_model()
             for c in model:
                 if c[0] == id:
-                    if c[2] is not anagPixbuf:
+                    if c[2] is None:
                         c[2] = anagPixbuf
                         c[3] = 'deleted'
                     else:
