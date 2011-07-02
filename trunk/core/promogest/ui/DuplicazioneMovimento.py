@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010, 2011 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
-# Author: Alceste Scalas <alceste@promotux.it>
-# Author: Andrea Argiolas <andrea@promotux.it>
-# Author: Francesco Meloni <francesco@promotux.it
+#    Author: Alceste Scalas <alceste@promotux.it>
+#    Author: Andrea Argiolas <andrea@promotux.it>
+#    Author: Francesco Meloni <francesco@promotux.it
+#    Author: Francesco Marella <francesco.marella@gmail.com>
 
 #    This file is part of Promogest.
 
@@ -22,9 +23,6 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-import gtk
-from GladeWidget import GladeWidget
-
 from promogest import Environment
 from promogest.dao.TestataMovimento import TestataMovimento
 from promogest.dao.Magazzino import Magazzino
@@ -33,12 +31,14 @@ from promogest.dao.ListinoArticolo import ListinoArticolo
 from promogest.dao.RigaMovimento import RigaMovimento
 from promogest.dao.ScontoRigaMovimento import ScontoRigaMovimento
 from promogest.dao.Operazione import Operazione
-from AnagraficaDocumenti import *
-from utils import *
+from promogest.ui.AnagraficaDocumenti import *
+from promogest.ui.GladeWidget import GladeWidget
+from promogest.ui.utils import *
+from promogest.ui.gtk_compat import *
+
 if posso("PA"):
     import promogest.modules.Pagamenti.dao.TestataDocumentoScadenza
     from promogest.modules.Pagamenti.dao.TestataDocumentoScadenza import TestataDocumentoScadenza
-
 
 
 class DuplicazioneMovimento(GladeWidget):
@@ -182,11 +182,7 @@ class DuplicazioneMovimento(GladeWidget):
 #        res = TestataMovimento(newDao.id)
 
         msg = "Nuovo movimento creato !\n\nIl nuovo movimento e' il n. " + str(newDao.numero) + " del " + dateToString(newDao.data_movimento) + " (" + newDao.operazione + ")"
-        dialog = gtk.MessageDialog(self.getTopLevel(), gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                   gtk.MESSAGE_INFO, gtk.BUTTONS_OK, msg)
-        response = dialog.run()
-        dialog.destroy()
-
+        messageInfo(msg=msg, transient=self.getTopLevel())
         self.destroy()
 
     def on_id_operazione_combobox_changed(self, widget, event=None):

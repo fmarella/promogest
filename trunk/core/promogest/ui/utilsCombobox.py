@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010, 2011 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
+#    Author: Francesco Marella <francesco.marella@gmail.com>
 
 #    This file is part of Promogest.
 
@@ -20,10 +21,10 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-import gobject, os, decimal
+import os
+import decimal
 from decimal import *
 from promogest.ui.gtk_compat import *
-#import gtk
 import time, datetime
 from promogest import Environment
 
@@ -342,7 +343,7 @@ def fillComboboxCategorieFornitori(combobox, filter=False):
     Crea l'elenco delle categorie fornitori
     """
     from promogest.dao.CategoriaFornitore import CategoriaFornitore
-    model = gtk.ListStore(gobject.TYPE_PYOBJECT, int, str)
+    model = gtk.ListStore(object, int, str)
     cats = CategoriaFornitore().select(offset=None,batchSize=None)
     if not filter:
         emptyRow = ''
@@ -362,7 +363,7 @@ def fillComboboxCategorieFornitori(combobox, filter=False):
 def fillComboboxStadioCommessa(combobox, filter=False):
     """ Riempi combo degli stadi commessa """
     from promogest.modules.GestioneCommesse.dao.StadioCommessa import StadioCommessa
-    model = gtk.ListStore(gobject.TYPE_PYOBJECT, int, str)
+    model = gtk.ListStore(object, int, str)
     stcom = StadioCommessa().select(batchSize=None)
     if not filter:
         emptyRow = ''
@@ -556,7 +557,7 @@ def fillComboboxListiniFiltrati(combobox, idArticolo=None, idMagazzino=None, idC
 def fillComboboxFornitori(combobox,filter=False, noempty=False):
     """ Crea l'elenco dei fornitori in una combo """
     from promogest.dao.Fornitore import Fornitore
-    model = gtk.ListStore(gobject.TYPE_PYOBJECT, int, str)
+    model = gtk.ListStore(object, int, str)
     forns = Fornitore().select(offset=None,batchSize=None)
     if not noempty:
         if not filter:
@@ -784,7 +785,7 @@ def fillComboboxAspettoEsterioreBeni(combobox, filter=False):
 
 def fillComboboxPortoTrasporto(combobox):
     """ Crea l'elenco dei porti trasporto """
-    model = gtk.ListStore(gobject.TYPE_STRING)
+    model = gtk.ListStore(str)
     model.append(('Franco'))
     model.append(('Assegnato'))
     combobox.clear()
