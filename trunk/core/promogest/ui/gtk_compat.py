@@ -66,6 +66,8 @@ if not Environment.pg3:
         GDK_EVENTTYPE_3BUTTON_PRESS = gdk._3BUTTON_PRESS
 
         GDK_EVENTTYPE_KEY_PRESS = gtk.gdk.KEY_PRESS
+        GDK_EVENTTYPE_FOCUS_CHANGE =   gtk.gdk.FOCUS_CHANGE
+        GDK_EVENT = gtk.gdk.Event
         GDK_CONTROL_MASK = gtk.gdk.CONTROL_MASK
 
         GDK_KEY_F1 = gtk.keysyms.F1
@@ -154,6 +156,10 @@ else:
     GDK_EVENTTYPE_3BUTTON_PRESS = gdk.EventType._3BUTTON_PRESS
 
     GDK_EVENTTYPE_KEY_PRESS = gdk.EventType.KEY_PRESS
+    GDK_EVENTTYPE_FOCUS_CHANGE =   gdk.EventType.FOCUS_CHANGE
+    GDK_EVENT = gdk.Event
+
+
     GDK_CONTROL_MASK = gdk.ModifierType.CONTROL_MASK
 
     GDK_KEY_F1 = gdk.KEY_F1

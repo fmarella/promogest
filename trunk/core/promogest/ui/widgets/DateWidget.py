@@ -169,7 +169,11 @@ class DateWidget(gtk.HBox):
 
 
     def my_focus_out_event(self, entry, event):
-        self.emit('focus_out_event', event)
+        #self.emit('focus_out_event', event)
+        event = GDK_EVENT(GDK_EVENTTYPE_FOCUS_CHANGE)
+        event.window = entry.get_window()  # the gtk.gdk.Window of the widget
+        event.send_event = True  # this means you sent the event explicitly
+        event.in_ = False  # False for focus out, True for focus in
 
 
 #gobject.type_register(DateWidget)
