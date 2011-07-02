@@ -20,7 +20,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
-import gtk
+from promogest.ui.gtk_compat import *
 from promogest.ui.utils import *
 from promogest import Environment
 from promogest.ui.GladeWidget import GladeWidget
@@ -304,8 +304,6 @@ def fillComboboxTipoTrattamento(combobox, filter=False):
     combobox.pack_start(renderer, True)
     combobox.add_attribute(renderer, 'text', 2)
     combobox.set_model(model)
-    if combobox.__class__ is gtk.ComboBoxEntry:
-        combobox.set_text_column(2)
 
 
 def on_id_tipo_trattamento_customcombobox_clicked(widget, button):

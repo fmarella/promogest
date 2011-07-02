@@ -5,7 +5,7 @@
 # Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
 # Author: Andrea Argiolas <andrea@promotux.it>
 
-import gtk
+from promogest.ui.gtk_compat import *
 from promogest.ui.GladeWidget import GladeWidget
 from promogest.ui.utils import *
 from promogest import Environment
@@ -40,14 +40,14 @@ class Sconti(GladeWidget):
         rendererDx.set_property('xalign', 1)
 
         column = gtk.TreeViewColumn('Sconto', rendererDx, text=0)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
         column.set_resizable(True)
         column.set_expand(False)
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('Tipo', rendererSx, text=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
         column.set_resizable(True)
         column.set_expand(True)
@@ -104,7 +104,7 @@ class Sconti(GladeWidget):
 
 
     def on_valore_entry_key_press_event(self, widget, event):
-        keyname = gtk.gdk.keyval_name(event.keyval)
+        keyname = gdk_keyval_name(event.keyval)
         if keyname == 'Return' or keyname == 'KP_Enter':
             self.confirm_button.grab_focus()
             self.on_confirm_button_clicked(widget)
@@ -112,13 +112,13 @@ class Sconti(GladeWidget):
 
     def on_confirm_button_clicked(self, widget):
         if self.valore_entry.get_text() and float(self.valore_entry.get_text()) == 0:
-            self.show_message('Inserire lo sconto !')
+            messageInfo(msg='Inserire lo sconto !')
             self.valore_entry.grab_focus()
             return
 
         if (not(self.percentuale_radiobutton.get_active()) and
             not(self.valore_radiobutton.get_active())):
-            self.show_message('Inserire il tipo !')
+            messageInfo(msg='Inserire il tipo !')
             self.self.percentuale_radiobutton.grab_focus()
             return
 
@@ -167,7 +167,7 @@ class Sconti(GladeWidget):
                 valore = ('%-10.' + str(decimals) + 'f') % float(r[0])
                 self.listSconti.append({"valore": valore.strip(), "tipo": tipo})
             except:
-                self.show_message('Valori non corretti:' + r[0] + ', ' + r[1] + ' !')
+                messageError(msg='Valori non corretti:' + r[0] + ', ' + r[1] + ' !')
                 return
         self.sconti_window.hide()
 
@@ -175,10 +175,3 @@ class Sconti(GladeWidget):
     def on_sconti_window_close(self, widget, event=None):
         self.sconti_window.destroy()
         return None
-
-
-    def show_message(self, msg):
-        dialog = gtk.MessageDialog(self.getTopLevel(), gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                   gtk.MESSAGE_ERROR, gtk.BUTTONS_OK, msg)
-        dialog.run()
-        dialog.destroy()

@@ -45,7 +45,6 @@ from promogest.lib.SlaTpl2Sla import SlaTpl2Sla
 
 
 from promogest.ui.SendEmail import SendEmail
-from promogest.lib.HtmlHandler import createHtmlObj, renderTemplate, renderHTML
 from promogest.dao.Azienda import Azienda
 
 

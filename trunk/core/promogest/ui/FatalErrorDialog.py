@@ -22,10 +22,7 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 from promogest import Environment
-if Environment.pg3:
-    from gi.repository import Gtk as gtk
-else:
-    import gtk
+from promogest.ui.gtk_compat import *
 from promogest.ui.GladeWidget import GladeWidget
 from promogest.ui.SendEmail import SendEmail
 

@@ -50,7 +50,6 @@ from promogest.ui.gtk_compat import *
 from ParametriFrame import ParametriFrame
 from SetConf import SetConfUI
 from AnagraficaPrincipaleFrame import AnagrafichePrincipaliFrame
-#from promogest.lib.HtmlHandler import createHtmlObj, renderTemplate, renderHTML
 import promogest.dao.Promemoria
 from promogest.dao.Promemoria import Promemoria
 from promogest.dao.VariazioneListino import VariazioneListino
