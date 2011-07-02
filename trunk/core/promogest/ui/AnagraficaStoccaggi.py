@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010, 2011 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
+#    Author: Francesco Marella <francesco.marella@gmail.com>
 
 #    This file is part of Promogest.
 
@@ -20,9 +21,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-import gtk
-
-from AnagraficaComplessa import Anagrafica
+from promogest.ui.AnagraficaComplessa import Anagrafica
 from promogest.ui.AnagraficaComplessaEdit import AnagraficaEdit
 from promogest.ui.AnagraficaComplessaReport import AnagraficaReport
 from promogest.ui.AnagraficaComplessaHtml import AnagraficaHtml
@@ -31,11 +30,14 @@ from promogest.ui.AnagraficaComplessaFilter import AnagraficaFilter
 from promogest import Environment
 from promogest.dao.Stoccaggio import Stoccaggio
 
-from utils import *
-from utilsCombobox import *
+from promogest.ui.utils import *
+from promogest.ui.utilsCombobox import *
+from promogest.ui.gtk_compat import *
+
 if posso("PW"):
     from promogest.modules.PromoWear.ui.PromowearUtils import *
     from promogest.modules.PromoWear.ui import AnagraficaArticoliPromoWearExpand
+
 
 class AnagraficaStoccaggi(Anagrafica):
     """ Anagrafica stoccaggi articoli """
@@ -76,7 +78,7 @@ class AnagraficaStoccaggiFilter(AnagraficaFilter):
         rendererSx = gtk.CellRendererText()
 
         column = gtk.TreeViewColumn('Magazzino', rendererSx, text=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.connect("clicked", self._changeOrderBy,("Magazzino", 'denominazione'))
         column.set_resizable(True)
@@ -85,7 +87,7 @@ class AnagraficaStoccaggiFilter(AnagraficaFilter):
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('Codice articolo', rendererSx, text=2)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.connect("clicked", self._changeOrderBy,("Articolo", 'codice'))
         column.set_resizable(True)
@@ -94,7 +96,7 @@ class AnagraficaStoccaggiFilter(AnagraficaFilter):
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('Codice a Barre', rendererSx, text=3)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
         column.connect("clicked", self._changeOrderBy,("Articolo", 'codice'))
         column.set_resizable(True)
@@ -103,7 +105,7 @@ class AnagraficaStoccaggiFilter(AnagraficaFilter):
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('Articolo', rendererSx, text=4)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.connect("clicked", self._changeOrderBy, ("Articolo", 'denominazione'))
         column.set_resizable(True)
@@ -112,7 +114,7 @@ class AnagraficaStoccaggiFilter(AnagraficaFilter):
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('Giacenza', rendererSx, text=5)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
         column.connect("clicked", self._changeOrderBy, 'articolo')
         column.set_resizable(True)

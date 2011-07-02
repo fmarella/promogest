@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010, 2011 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
-# Author: Francesco Meloni <francesco@promotux.it>
+#    Author: Francesco Meloni <francesco@promotux.it>
+#    Author: Francesco Marella <francesco.marella@gmail.com>
 
 #    This file is part of Promogest.
 
@@ -20,11 +21,9 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-import gtk
 import datetime
-#from decimal import *
 from promogest.ui.AnagraficaComplessaEdit import AnagraficaEdit
-from AnagraficaDocumentiEditUtils import *
+from promogest.ui.AnagraficaDocumentiEditUtils import *
 from promogest import Environment
 from promogest.dao.TestataMovimento import TestataMovimento
 from promogest.dao.TestataDocumento import TestataDocumento
@@ -32,11 +31,13 @@ from promogest.dao.RigaMovimento import RigaMovimento
 from promogest.dao.ScontoRigaMovimento import ScontoRigaMovimento
 from promogest.dao.Articolo import Articolo
 from promogest.dao.Fornitore import Fornitore
-from utils import *
-from utilsCombobox import *
+from promogest.ui.utils import *
+from promogest.ui.utilsCombobox import *
+from promogest.ui.gtk_compat import *
 
 if posso("PW"):
     from promogest.modules.PromoWear.ui import AnagraficaDocumentiEditPromoWearExt
+
 
 class AnagraficaMovimentiEdit(AnagraficaEdit):
 
@@ -172,84 +173,84 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
         rendererDx.set_property('xalign', 1)
 
         column = gtk.TreeViewColumn('Magazzino', rendererSx, text=0)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
         column.set_resizable(True)
         column.set_expand(False)
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('Codice articolo', rendererSx, text=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
         column.set_resizable(True)
         column.set_expand(False)
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('Descrizione', rendererSx, text=2)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
         column.set_resizable(True)
         column.set_expand(True)
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('% IVA', rendererDx, text=3)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
         column.set_resizable(True)
         column.set_expand(False)
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('U.M.', rendererSx, text=4)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
         column.set_resizable(True)
         column.set_expand(False)
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('Multiplo', rendererSx, text=5)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
         column.set_resizable(True)
         column.set_expand(False)
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('Listino', rendererSx, text=6)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
         column.set_resizable(True)
         column.set_expand(False)
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('Quantita''', rendererDx, text=7)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
         column.set_resizable(True)
         column.set_expand(False)
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('Prezzo lordo', rendererDx, text=8)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
         column.set_resizable(True)
         column.set_expand(False)
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('Sconti', rendererSx, text=9)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
         column.set_resizable(True)
         column.set_expand(False)
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('Prezzo netto', rendererDx, text=10)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
         column.set_resizable(True)
         column.set_expand(False)
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('Totale', rendererDx, text=11)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
         column.set_resizable(True)
         column.set_expand(False)
@@ -311,7 +312,7 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
         rendererText = gtk.CellRendererText()
 
         column = gtk.TreeViewColumn('Aliquota I.V.A.', rendererText, text=0)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
         column.set_resizable(True)
         column.set_expand(True)
@@ -321,14 +322,14 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
         rendererText.set_property('xalign', 1)
 
         column = gtk.TreeViewColumn('Imponibile', rendererText, text=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
         column.set_resizable(True)
         column.set_expand(True)
         self.riepiloghi_iva_treeview.append_column(column)
 
         column = gtk.TreeViewColumn('Imposta', rendererText, text=2)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
         column.set_resizable(True)
         column.set_expand(True)
@@ -943,7 +944,7 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
         """
         FIXME
         """
-        keyname = gtk.gdk.keyval_name(event.keyval)
+        keyname = gdk_keyval_name(event.keyval)
         if keyname == 'Return' or keyname == 'KP_Enter':
             self.ricercaArticolo()
 
@@ -1037,7 +1038,7 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
                                             codice=codice,
                                             codiceABarre=codiceABarre,
                                             codiceArticoloFornitore=codiceArticoloFornitore)
-            anag.setTreeViewSelectionType(gtk.SELECTION_SINGLE)
+            anag.setTreeViewSelectionType(GTK_SELECTIONMODE_SINGLE)
             anagWindow = anag.getTopLevel()
             anagWindow.connect("hide",
                                on_ricerca_articolo_hide,
@@ -1235,10 +1236,7 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
         """
         Generico dialog di messaggio
         """
-        dialog = gtk.MessageDialog(self.dialogTopLevel, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                   gtk.MESSAGE_INFO, gtk.BUTTONS_OK, msg)
-        dialog.run()
-        dialog.destroy()
+        messageInfo(msg=msg, transient=self.dialogTopLevel)
 
 
     def on_storico_costi_button_clicked(self, toggleButton):

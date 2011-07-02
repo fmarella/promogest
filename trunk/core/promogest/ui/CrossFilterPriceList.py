@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010, 2011 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
 #    Author: Andrea Argiolas  <andrea@promotux.it>
+#    Author: Francesco Marella <francesco.marella@gmail.com>
+
 #    This file is part of Promogest.
 
 #    Promogest is free software: you can redistribute it and/or modify
@@ -20,8 +22,6 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-import gtk
-import gobject
 from sets import Set
 
 from promogest.ui.GladeWidget import GladeWidget
@@ -32,6 +32,8 @@ from promogest.dao.ListinoArticolo import ListinoArticolo
 from promogest.dao.CodiceABarreArticolo import CodiceABarreArticolo
 from promogest.dao.ListinoComplessoArticoloPrevalente import ListinoComplessoArticoloPrevalente
 from promogest.ui.utils import *
+from promogest.ui.gtk_compat import *
+
 
 class CrossFilterPriceList(GladeWidget):
 
@@ -64,7 +66,7 @@ class CrossFilterPriceList(GladeWidget):
         rendererDx.set_property('xalign', 1)
 
         column = gtk.TreeViewColumn('Listino', rendererSx, text=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         #column.connect("clicked", self._changeOrderBy, 'id_listino')
         column.set_resizable(False)
@@ -73,7 +75,7 @@ class CrossFilterPriceList(GladeWidget):
         treeview_duplicated.append_column(column)
 
         column = gtk.TreeViewColumn('Codice articolo', rendererSx, text=2)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
         #column.connect("clicked", self._changeOrderBy, 'codice_articolo')
         column.set_resizable(True)
@@ -82,7 +84,7 @@ class CrossFilterPriceList(GladeWidget):
         treeview_duplicated.append_column(column)
 
         column = gtk.TreeViewColumn('Articolo', rendererSx, text=3)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
         #column.connect("clicked", self._changeOrderBy, 'id_articolo')
         column.set_resizable(True)
@@ -91,7 +93,7 @@ class CrossFilterPriceList(GladeWidget):
         treeview_duplicated.append_column(column)
 
         column = gtk.TreeViewColumn('Data variazione', rendererSx, text=4)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         #column.connect("clicked", self._changeOrderBy, 'data_listino_articolo')
         column.set_resizable(True)
@@ -100,7 +102,7 @@ class CrossFilterPriceList(GladeWidget):
         treeview_duplicated.append_column(column)
 
         column = gtk.TreeViewColumn('Prezzo dettaglio', rendererDx, text=5)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         #column.connect("clicked", self._changeOrderBy, 'prezzo_dettaglio')
         column.set_resizable(True)
@@ -109,7 +111,7 @@ class CrossFilterPriceList(GladeWidget):
         treeview_duplicated.append_column(column)
 
         column = gtk.TreeViewColumn('Prezzo ingrosso', rendererDx, text=6)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         #column.connect("clicked", self._changeOrderBy, 'prezzo_ingrosso')
         column.set_resizable(True)
@@ -126,7 +128,7 @@ class CrossFilterPriceList(GladeWidget):
         rendererDx.set_property('xalign', 1)
 
         column = gtk.TreeViewColumn('Listino', rendererSx, text=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         #column.connect("clicked", self._changeOrderBy, 'id_listino')
         column.set_resizable(False)
@@ -135,7 +137,7 @@ class CrossFilterPriceList(GladeWidget):
         treeview_option.append_column(column)
 
         column = gtk.TreeViewColumn('Codice articolo', rendererSx, text=2)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
         #column.connect("clicked", self._changeOrderBy, 'codice_articolo')
         column.set_resizable(True)
@@ -144,7 +146,7 @@ class CrossFilterPriceList(GladeWidget):
         treeview_option.append_column(column)
 
         column = gtk.TreeViewColumn('Articolo', rendererSx, text=3)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
         #column.connect("clicked", self._changeOrderBy, 'id_articolo')
         column.set_resizable(True)
@@ -153,7 +155,7 @@ class CrossFilterPriceList(GladeWidget):
         treeview_option.append_column(column)
 
         column = gtk.TreeViewColumn('Data variazione', rendererSx, text=4)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         #column.connect("clicked", self._changeOrderBy, 'data_listino_articolo')
         column.set_resizable(True)
@@ -162,7 +164,7 @@ class CrossFilterPriceList(GladeWidget):
         treeview_option.append_column(column)
 
         column = gtk.TreeViewColumn('Prezzo dettaglio', rendererDx, text=5)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         #column.connect("clicked", self._changeOrderBy, 'prezzo_dettaglio')
         column.set_resizable(True)
@@ -171,7 +173,7 @@ class CrossFilterPriceList(GladeWidget):
         treeview_option.append_column(column)
 
         column = gtk.TreeViewColumn('Prezzo ingrosso', rendererDx, text=6)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         #column.connect("clicked", self._changeOrderBy, 'prezzo_ingrosso')
         column.set_resizable(True)
@@ -189,7 +191,7 @@ class CrossFilterPriceList(GladeWidget):
         rendererDx.set_property('xalign', 1)
 
         column = gtk.TreeViewColumn('Listino', rendererSx, text=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         #column.connect("clicked", self._changeOrderBy, 'id_listino')
         column.set_resizable(False)
@@ -198,7 +200,7 @@ class CrossFilterPriceList(GladeWidget):
         treeview_filtered.append_column(column)
 
         column = gtk.TreeViewColumn('Codice articolo', rendererSx, text=2)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
         #column.connect("clicked", self._changeOrderBy, 'codice_articolo')
         column.set_resizable(True)
@@ -207,7 +209,7 @@ class CrossFilterPriceList(GladeWidget):
         treeview_filtered.append_column(column)
 
         column = gtk.TreeViewColumn('Articolo', rendererSx, text=3)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
         #column.connect("clicked", self._changeOrderBy, 'id_articolo')
         column.set_resizable(True)
@@ -216,7 +218,7 @@ class CrossFilterPriceList(GladeWidget):
         treeview_filtered.append_column(column)
 
         column = gtk.TreeViewColumn('Data variazione', rendererSx, text=4)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         #column.connect("clicked", self._changeOrderBy, 'data_listino_articolo')
         column.set_resizable(True)
@@ -225,7 +227,7 @@ class CrossFilterPriceList(GladeWidget):
         treeview_filtered.append_column(column)
 
         column = gtk.TreeViewColumn('Prezzo dettaglio', rendererDx, text=5)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         #column.connect("clicked", self._changeOrderBy, 'prezzo_dettaglio')
         column.set_resizable(True)
@@ -234,7 +236,7 @@ class CrossFilterPriceList(GladeWidget):
         treeview_filtered.append_column(column)
 
         column = gtk.TreeViewColumn('Prezzo ingrosso', rendererDx, text=6)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         #column.connect("clicked", self._changeOrderBy, 'prezzo_ingrosso')
         column.set_resizable(True)

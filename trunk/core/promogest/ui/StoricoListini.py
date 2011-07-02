@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010, 2011 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
 #    Author: Andrea Argiolas  <andrea@promotux.it>
+#    Author: Francesco Marella <francesco.marella@gmail.com>
+
 #    This file is part of Promogest.
 
 #    Promogest is free software: you can redistribute it and/or modify
@@ -20,13 +22,12 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-import gtk
-from Visualizzazione import Visualizzazione, VisualizzazioneFilter
+from promogest.ui.Visualizzazione import Visualizzazione, VisualizzazioneFilter
 from sqlalchemy.orm import mapper, join
 from promogest import Environment
 from promogest.dao.ListinoArticolo import ListinoArticolo
 
-from utils import stringToDate, fillComboboxListini, findIdFromCombobox,\
+from promogest.ui.utils import stringToDate, fillComboboxListini, findIdFromCombobox,\
             calcolaRicarico, calcolaMargine, dateToString, setconf, mN
 
 
@@ -63,7 +64,7 @@ class StoricoListiniFilter(VisualizzazioneFilter):
         rendererDx.set_property('xalign', 1)
 
         column = gtk.TreeViewColumn('Listino', rendererSx, text=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
 #        column.set_clickable(True)
 #        column.connect("clicked", self._changeOrderBy,
 #                                        (self.joinT, Listino.denominazione))
@@ -72,7 +73,7 @@ class StoricoListiniFilter(VisualizzazioneFilter):
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('Data listino', rendererSx, text=2)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
 #        column.set_clickable(True)
 #        column.connect("clicked", self._changeOrderBy,
 #                                        (self.joinT, Listino.data_listino))
@@ -82,7 +83,7 @@ class StoricoListiniFilter(VisualizzazioneFilter):
 
         column = gtk.TreeViewColumn('Prezzo dettaglio (ivato)',
                                                         rendererDx, text=3)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.connect("clicked", self._changeOrderBy,
                                                 (None, 'prezzo_dettaglio'))
@@ -91,20 +92,20 @@ class StoricoListiniFilter(VisualizzazioneFilter):
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('% Ricarico', rendererDx, text=4)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_resizable(True)
         column.set_expand(False)
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('% Margine', rendererDx, text=5)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_resizable(True)
         column.set_expand(False)
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('Prezzo ingrosso (non ivato)',
                                                     rendererDx, text=6)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.connect("clicked", self._changeOrderBy,
                                                 (None, 'prezzo_dettaglio'))
@@ -113,20 +114,20 @@ class StoricoListiniFilter(VisualizzazioneFilter):
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('% Ricarico', rendererDx, text=7)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_resizable(True)
         column.set_expand(False)
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('% Margine', rendererDx, text=8)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_resizable(True)
         column.set_expand(False)
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('Costo base (non ivato)',
                                                         rendererDx, text=9)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.connect("clicked", self._changeOrderBy, (None, 'ultimo_costo'))
         column.set_resizable(True)
@@ -160,12 +161,7 @@ class StoricoListiniFilter(VisualizzazioneFilter):
         idArticolo = self.id_articolo_filter_customcombobox1.getId()
         if idArticolo is None:
             self._treeViewModel.clear()
-            dialog = gtk.MessageDialog(self._visualizzazione.getTopLevel(),
-                                       gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                       gtk.MESSAGE_INFO, gtk.BUTTONS_OK,
-                                       'Selezionare un articolo !')
-            dialog.run()
-            dialog.destroy()
+            messageInfo(transient=self._visualizzazione.getTopLevel(), msg='Selezionare un articolo !')
             return
 
         idListino = findIdFromCombobox(self.id_listino_filter_combobox1)

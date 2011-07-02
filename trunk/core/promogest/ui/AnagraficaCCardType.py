@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010, 2011 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
+#    Author: Francesco Marella <francesco.marella@gmail.com>
+
 #    This file is part of Promogest.
 
 #    Promogest is free software: you can redistribute it and/or modify
@@ -19,12 +21,11 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-import gtk
 from promogest.ui.AnagraficaSemplice import Anagrafica, AnagraficaDetail, AnagraficaFilter
 from promogest import Environment
 from promogest.dao.CCardType import CCardType
-
 from promogest.ui.utils import *
+from promogest.ui.gtk_compat import *
 
 
 class AnagraficaCCardType(Anagrafica):
@@ -47,7 +48,7 @@ class AnagraficaCCardType(Anagrafica):
         renderer.set_data('column', 0)
         renderer.set_data('max_length', 200)
         column = gtk.TreeViewColumn('Descrizione', renderer, text=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.connect("clicked", self._changeOrderBy, (None,'denominazione'))
         column.set_resizable(True)
@@ -60,7 +61,7 @@ class AnagraficaCCardType(Anagrafica):
         renderer.set_data('column', 1)
         renderer.set_data('max_length', 10)
         column = gtk.TreeViewColumn('Descrizione breve', renderer, text=2)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.connect("clicked", self._changeOrderBy, (None,'denominazione_breve'))
         column.set_resizable(True)
