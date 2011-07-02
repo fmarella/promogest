@@ -332,9 +332,9 @@ class AnagraficaVenditaDettaglio(GladeWidget):
 
     def fnovewidget(self):
         dialog = gtk.MessageDialog(self.getTopLevel(),
-                                   gtk.DIALOG_MODAL
-                                   | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                   gtk.MESSAGE_INFO, gtk.BUTTONS_OK)
+                                   GTK_DIALOG_MODAL,
+                                   | GTK_DIALOG_DESTROY_WITH_PARENT,
+                                   GTK_DIALOG_MESSAGE_INFO , GTK_BUTTONS_OK)
         dialog.set_markup("""<b>ARTICOLO GENERICO</b>: Inserire Quantità e Prezzo""")
         hbox = gtk.HBox()
         entry = self.createSignedDecimalEntryField(None,None,10,0)
@@ -565,9 +565,9 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         # controllo che il prezzo non sia nullo
         if self._currentRow['prezzo'] == 0:
             dialog = gtk.MessageDialog(self.getTopLevel(),
-                                       gtk.DIALOG_MODAL
-                                       | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                       gtk.MESSAGE_WARNING, gtk.BUTTONS_OK)
+                                       GTK_DIALOG_MODAL
+                                       | GTK_DIALOG_DESTROY_WITH_PARENT,
+                                       GTK_DIALOG_MESSAGE_WARNING, GTK_BUTTONS_OK)
             dialog.set_markup("<b>ATTENZIONE:\n</b>Inserire un prezzo all'articolo")
             response = dialog.run()
             dialog.destroy()
@@ -728,13 +728,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         totale_scontrino = mN(self.refreshTotal())
         if totale_scontrino < 0:
             msg = 'Attenzione!\n\nIl totale non puo\' essere negativo !'
-            dialog = gtk.MessageDialog(self.getTopLevel(),
-                                       gtk.DIALOG_MODAL
-                                       | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                       gtk.MESSAGE_ERROR, gtk.BUTTONS_OK,
-                                       msg)
-            response = dialog.run()
-            dialog.destroy()
+            messageError(msg=msg, transient=self.getTopLevel())
             return
 
         # Creo dao testata_scontrino
@@ -829,13 +823,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
                 string_message = string_message + s + "\n"
 
             # Mostro messaggio di errore
-            dialog = gtk.MessageDialog(self.getTopLevel(),
-                                       gtk.DIALOG_MODAL
-                                       | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                       gtk.MESSAGE_ERROR, gtk.BUTTONS_OK,
-                                       string_message)
-            response = dialog.run()
-            dialog.destroy()
+            messageError(msg=string_message, transient=self.getTopLevel())
             # Elimino lo scontrino
             dao.delete()
 
@@ -998,13 +986,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
                 string_message = string_message + s + "\n"
 
             # Mostro messaggio di errore
-            dialog = gtk.MessageDialog(self.getTopLevel(),
-                                       gtk.DIALOG_MODAL
-                                       | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                       gtk.MESSAGE_ERROR, gtk.BUTTONS_OK,
-                                       string_message)
-            response = dialog.run()
-            dialog.destroy()
+            messageError(msg=string_message, transient=self.getTopLevel())
 
     def ricercaArticolo(self):
 
@@ -1066,7 +1048,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         anag = RicercaComplessaArticoli(codiceABarre = codiceABarre,
                                         codice = codice,
                                         denominazione=descrizione)
-        anag.setTreeViewSelectionType(gtk.SELECTION_SINGLE)
+        anag.setTreeViewSelectionType(GTK_SELECTIONMODE_SINGLE)
         anagWindow = anag.getTopLevel()
         anagWindow.connect("hide",
                            on_ricerca_articolo_hide, anag)

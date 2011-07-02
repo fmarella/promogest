@@ -4,6 +4,8 @@
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
+#    Author: Francesco Marella <francesco.marella@gmail.com>
+
 #    This file is part of Promogest.
 
 #    Promogest is free software: you can redistribute it and/or modify
@@ -19,7 +21,6 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-import gtk
 import os, popen2
 from datetime import datetime, timedelta
 from promogest import Environment
@@ -35,6 +36,8 @@ from promogest.modules.VenditaDettaglio.dao.ScontoRigaScontrino import ScontoRig
 from promogest.modules.VenditaDettaglio.dao.ChiusuraFiscale import ChiusuraFiscale
 from promogest.ui.widgets.FilterWidget import FilterWidget
 from promogest.ui.utils import *
+from promogest.ui.gtk_compat import *
+
 
 class GestioneChiusuraFiscale(object):
     """ Classe per la gestione degli scontrini emessi """
@@ -45,9 +48,9 @@ class GestioneChiusuraFiscale(object):
 
     def chiusuraDialog(self, widget, idMagazzino):
         dialog = gtk.MessageDialog(self.gladeobj.getTopLevel(),
-                                   gtk.DIALOG_MODAL
-                                   | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                   gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO)
+                                   GTK_DIALOG_MODAL
+                                   | GTK_DIALOG_DESTROY_WITH_PARENT,
+                                   GTK_DIALOG_MESSAGE_QUESTION, GTK_BUTTONS_YES_NO)
         dialog.set_markup("""<b>ATTENZIONE</b>: Chiusura fiscale!
     Confermi la data?
     Se non sai cosa stai facendo lascia la data odierna impostata
@@ -60,7 +63,7 @@ class GestioneChiusuraFiscale(object):
         dialog.show_all()
         response = dialog.run()
         dialog.destroy()
-        if response ==  gtk.RESPONSE_YES:
+        if response ==  GTK_RESPONSE_YES:
             # controllo se vi e` gia` stata una chiusura
             data = stringToDate(entry.get_text())
             chiusure = ChiusuraFiscale().select( dataChiusura = data,
@@ -68,9 +71,9 @@ class GestioneChiusuraFiscale(object):
                                                 batchSize = None)
             if len(chiusure) != 0:
                 dialog = gtk.MessageDialog(self.gladeobj.getTopLevel(),
-                                           gtk.DIALOG_MODAL
-                                           | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                           gtk.MESSAGE_ERROR, gtk.BUTTONS_OK)
+                                           GTK_DIALOG_MODAL
+                                           | GTK_DIALOG_DESTROY_WITH_PARENT,
+                                           GTK_DIALOG_MESSAGE_ERROR, GTK_BUTTONS_OK)
                 dialog.set_markup("<b>ATTENZIONE:\n La chiusura odierna e` gia' stata effettuata</b>")
                 response = dialog.run()
                 dialog.destroy()
@@ -162,13 +165,7 @@ class GestioneChiusuraFiscale(object):
                 string_message = string_message + s + "\n"
 
             # Mostro messaggio di errore
-            dialog = gtk.MessageDialog(self.gladeobj.getTopLevel(),
-                                       gtk.DIALOG_MODAL
-                                       | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                       gtk.MESSAGE_ERROR, gtk.BUTTONS_OK,
-                                       string_message)
-            response = dialog.run()
-            dialog.destroy()
+            messageError(transient=self.gladeobj.getTopLevel(), msg=string_message)
             # Elimino il movimento e la chiusura
             daoChiusura.delete()
             daoChiusura = None
