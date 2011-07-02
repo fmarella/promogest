@@ -3,8 +3,8 @@
 #    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010, 2011 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
-#    Authors: Dr astico (Pinna Marco) <zoccolodignu@gmail.com>
-#             Francesco Marella <francesco.marella@gmail.com>
+#    Author: Dr astico (Pinna Marco) <zoccolodignu@gmail.com>
+#    Author: Francesco Marella <francesco.marella@gmail.com>
 #
 #    This file is part of Promogest.
 
@@ -21,8 +21,8 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-import gtk
 from promogest import Environment
+from promogest.ui.gtk_compat import *
 
 
 def fillComboboxDistintaBase(combobox, search_string=None):

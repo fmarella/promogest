@@ -4,6 +4,8 @@
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
+#    Author: Francesco Marella <francesco.marella@gmail.com>
+
 #    This file is part of Promogest.
 
 #    Promogest is free software: you can redistribute it and/or modify
@@ -20,7 +22,7 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 from promogest.ui.utils import *
-import gtk
+from promogest.ui.gtk_compat import *
 import os, popen2
 import gtkhtml2
 from promogest.dao.DaoUtils import giacenzaSel
@@ -43,6 +45,7 @@ from promogest.dao.ListinoArticolo import ListinoArticolo
 from promogest.ui.widgets.FilterWidget import FilterWidget
 from GestioneScontrini import GestioneScontrini
 from GestioneChiusuraFiscale import GestioneChiusuraFiscale
+
 
 class AnagraficaVenditaDettaglio(GladeWidget):
     """ Frame per la gestione delle vendite a dettaglio """
@@ -69,10 +72,10 @@ class AnagraficaVenditaDettaglio(GladeWidget):
     def draw(self):
         accelGroup = gtk.AccelGroup()
         self.getTopLevel().add_accel_group(accelGroup)
-        self.contanti_radio_button.add_accelerator('clicked', accelGroup, gtk.keysyms.F1, 0, gtk.ACCEL_VISIBLE)
-        self.assegni_radio_button.add_accelerator('clicked', accelGroup, gtk.keysyms.F2, 0, gtk.ACCEL_VISIBLE)
-        self.carta_di_credito_radio_button.add_accelerator('clicked', accelGroup, gtk.keysyms.F3, 0, gtk.ACCEL_VISIBLE)
-        self.total_button.add_accelerator('grab_focus', accelGroup, gtk.keysyms.F5, 0, gtk.ACCEL_VISIBLE)
+        self.contanti_radio_button.add_accelerator('clicked', accelGroup, GDK_KEY_F1 , 0, GTK_ACCEL_VISIBLE)
+        self.assegni_radio_button.add_accelerator('clicked', accelGroup, GDK_KEY_F2, 0, GTK_ACCEL_VISIBLE)
+        self.carta_di_credito_radio_button.add_accelerator('clicked', accelGroup, GDK_KEY_F3, 0, GTK_ACCEL_VISIBLE)
+        self.total_button.add_accelerator('grab_focus', accelGroup, GDK_KEY_F5, 0, GTK_ACCEL_VISIBLE)
         self.total_button.set_focus_on_click(False)
 
         # Costruisco treeview scontrino
@@ -83,7 +86,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         rendererDx = gtk.CellRendererText()
         rendererDx.set_property('xalign', 1)
 
-        self.lsmodel = gtk.ListStore(int,str)
+        self.lsmodel = gtk.ListStore(int, str)
         cellcombo1= gtk.CellRendererCombo()
         cellcombo1.set_property("editable", True)
         cellcombo1.set_property("visible", True)
@@ -93,7 +96,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         cellcombo1.set_property("model", self.lsmodel)
         cellcombo1.connect('edited', self.on_column_listinoRiga_edited, treeview, True)
         column = gtk.TreeViewColumn('List.', cellcombo1, text=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.set_resizable(True)
         column.set_expand(False)
@@ -101,7 +104,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('Codice a barre', rendererSx, text=2)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
         column.set_resizable(True)
         column.set_expand(False)
@@ -109,7 +112,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('Codice', rendererSx, text=3)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
         column.set_resizable(True)
         column.set_expand(False)
@@ -121,7 +124,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         cellrendererDescrizione.set_property("visible", True)
         cellrendererDescrizione.connect('edited', self.on_column_descrizione_edited, treeview, True)
         column = gtk.TreeViewColumn('Descrizione', cellrendererDescrizione, text=4)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         rendererSx.connect('edited', self.on_column_descrizione_edited, treeview, True)
         column.set_resizable(True)
@@ -140,7 +143,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
 
         cellspin.connect('edited', self.on_column_prezzo_edited, treeview, True)
         column = gtk.TreeViewColumn('Prezzo', cellspin, text=5,foreground=4, background=2)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         #column.set_clickable(False)
         column.set_resizable(True)
         column.set_expand(False)
@@ -156,7 +159,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         #cellspin.set_property("climb-rate",3)
         cellspinsconto.connect('edited', self.on_column_sconto_edited, treeview, True)
         column = gtk.TreeViewColumn('Sconto', cellspinsconto, text=6)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.set_resizable(True)
         column.set_expand(False)
@@ -176,7 +179,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         cellcombo.set_property("model", lsmodel)
         cellcombo.connect('edited', self.on_column_tipo_edited, treeview, True)
         column = gtk.TreeViewColumn('Tipo', cellcombo, text=7)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.set_resizable(True)
         column.set_expand(False)
@@ -184,7 +187,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('Pr.Scont', rendererDx, text=8)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
         column.set_resizable(True)
         column.set_expand(False)
@@ -200,7 +203,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         cellspin.set_property("climb-rate",3)
         cellspin.connect('edited', self.on_column_quantita_edited, treeview, True)
         column = gtk.TreeViewColumn('Quantità', cellspin, text=9)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         #column.set_clickable(False)
         column.set_resizable(True)
         column.set_expand(False)
@@ -318,7 +321,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
 
     def on_vendita_dettaglio_window_key_press_event(self,widget, event):
         """ jolly key è F9, richiama ed inserisce l'articolo definito nel configure"""
-        keyname = gtk.gdk.keyval_name(event.keyval)
+        keyname = gdk_keyval_name(event.keyval)
         if keyname == 'F9':
             try:
                 codice = Environment.conf.VenditaDettaglio.jolly
