@@ -1424,6 +1424,7 @@ per inserirne</property>
                             <child>
                               <object class="GtkTreeViewColumn" id="treeviewcolumn2">
                                 <property name="sizing">fixed</property>
+                                <property name="fixed_width">20</property>
                                 <child>
                                   <object class="GtkCellRendererPixbuf" id="cellrendererpixbuf1"/>
                                   <attributes>
