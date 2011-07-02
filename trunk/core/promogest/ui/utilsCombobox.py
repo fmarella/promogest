@@ -392,13 +392,13 @@ def fillComboboxMultipli(combobox, idArticolo=None, noSottoMultipli=False, filte
         emptyRow = ''
     else:
         emptyRow = '< Tutti >'
-    model.append((None, 0, emptyRow, 0))
+    model.append((None, 0, emptyRow, float(0)))
 
     if noSottoMultipli:
         muls = [ item for item in muls if item.moltiplicatore > 1 ]
 
     for m in muls:
-        model.append((m, m.id, m.denominazione_breve, m.moltiplicatore))
+        model.append((m, m.id, m.denominazione_breve, float(m.moltiplicatore or 0)))
 
     combobox.clear()
     renderer = gtk.CellRendererText()
