@@ -104,6 +104,7 @@ if not Environment.pg3:
 
         GTK_WRAPMODE_WORD = gtk.WRAP_WORD
 
+        GTK_FILE_CHOOSER_ACTION_OPEN = gtk.FILE_CHOOSER_ACTION_OPEN
         GTK_FILE_CHOOSER_ACTION_SAVE = gtk.FILE_CHOOSER_ACTION_SAVE
 
     except ImportError:
@@ -191,5 +192,6 @@ else:
 
     GTK_WRAPMODE_WORD = gtk.WrapMode.WORD
 
+    GTK_FILE_CHOOSER_ACTION_OPEN = gtk.FileChooserAction.OPEN
     GTK_FILE_CHOOSER_ACTION_SAVE = gtk.FileChooserAction.SAVE
 

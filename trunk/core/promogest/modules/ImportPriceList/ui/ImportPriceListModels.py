@@ -1,14 +1,30 @@
 # -*- coding: utf-8 -*-
 
-# Promogest
-#
-# Copyright (C) 2007 by Promotux Informatica - http://www.promotux.it/
-# Author:  Marco Pinna "Dr astico" <zoccolodignu@gmail.com>
-# Author:  Francesco Meloni  "Vete" <francesco@promotux.it.com>
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010, 2011 by Promotux
+#                        di Francesco Meloni snc - http://www.promotux.it/
+
+#    Author: Marco Pinna "Dr astico" <zoccolodignu@gmail.com>
+#    Author: Francesco Meloni <francesco@promotux.it>
+#    Author: Francesco Marella <francesco.marella@gmail.com>
+
+#    This file is part of Promogest.
+
+#    Promogest is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 2 of the License, or
+#    (at your option) any later version.
+
+#    Promogest is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+
+#    You should have received a copy of the GNU General Public License
+#    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
+
 
 import re
 from decimal import *
-import gtk
 import os
 from promogest import Environment
 import promogest.ui.AnagraficaListini
@@ -21,6 +37,7 @@ from promogest.ui.AnagraficaCategorieArticoli import AnagraficaCategorieArticoli
 from promogest.ui.AnagraficaFamiglieArticoli import AnagraficaFamiglieArticoli
 from promogest.ui.utils import *
 from promogest.ui.utilsCombobox import fillModelCombobox
+from promogest.ui.gtk_compat import *
 
 from fieldsDict import *
 from PriceListModel import PriceListModel
@@ -57,7 +74,7 @@ class ImportPriceListModels(GladeWidget):
         renderer = gtk.CellRendererText()
 
         column = gtk.TreeViewColumn('Campo', renderer, text=0)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_FIXED)
+        column.set_sizing(GTK_COLUMN_FIXED)
         column.set_clickable(True)
         column.set_resizable(True)
         column.set_expand(True)
@@ -310,11 +327,11 @@ class ImportPriceListModels(GladeWidget):
         self.checkObligatoryFields()
         fileDialog = gtk.FileChooserDialog(title='Salvataggio modello',
                                            parent=self.getTopLevel(),
-                                           action=gtk.FILE_CHOOSER_ACTION_SAVE,
+                                           action=GTK_FILE_CHOOSER_ACTION_SAVE,
                                            buttons=(gtk.STOCK_CANCEL,
-                                                    gtk.RESPONSE_CANCEL,
+                                                    GTK_RESPONSE_CANCEL,
                                                     gtk.STOCK_SAVE,
-                                                    gtk.RESPONSE_OK),
+                                                    GTK_RESPONSE_OK),
                                            backend=None)
         folder = ''
         try:
@@ -332,7 +349,7 @@ class ImportPriceListModels(GladeWidget):
 
         response = fileDialog.run()
 
-        if response == gtk.RESPONSE_OK:
+        if response == GTK_RESPONSE_OK:
             filename = fileDialog.get_filename()
 
             self.priceListModel

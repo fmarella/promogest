@@ -1,14 +1,29 @@
 # -*- coding: utf-8 -*-
 
-# Promogest
-#
-# Copyright (C) 2007 by Promotux Informatica - http://www.promotux.it/
-# Author:  Marco Pinna "Dr astico" <zoccolodignu@gmail.com>
-# Author:  Francesco Meloni  "Vete" <francesco@promotux.it.com>
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010, 2011 by Promotux
+#                        di Francesco Meloni snc - http://www.promotux.it/
+
+#    Author: Marco Pinna "Dr astico" <zoccolodignu@gmail.com>
+#    Author: Francesco Meloni  <francesco@promotux.it>
+#    Author: Francesco Marella <francesco.marella@gmail.com>
+
+#    This file is part of Promogest.
+
+#    Promogest is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 2 of the License, or
+#    (at your option) any later version.
+
+#    Promogest is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+
+#    You should have received a copy of the GNU General Public License
+#    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 import string
 from decimal import *
-import gtk
 from promogest import Environment
 from promogest.ui.GladeWidget import GladeWidget
 import promogest.ui.AnagraficaListini
@@ -18,6 +33,7 @@ from promogest.ui.AnagraficaListini import AnagraficaListini
 from promogest.ui.AnagraficaFornitori import AnagraficaFornitori
 from promogest.ui.utils import *
 from promogest.ui.utilsCombobox import fillModelCombobox, fillComboboxListini
+from promogest.ui.gtk_compat import *
 import promogest.ui.Login
 from promogest.modules.ImportPriceList.ui.ImportPriceListPreview import ImportPreview
 from fieldsDict import *
@@ -97,12 +113,7 @@ class ImportPriceList(GladeWidget):
             csvPriceListFile = open(self.file_name, 'r')
         except:
             msg = 'Impossibile aprire il file CSV selezionato.'
-            overDialog = gtk.MessageDialog(self.getTopLevel(),
-                           gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                           gtk.MESSAGE_ERROR,
-                           gtk.BUTTONS_CANCEL, msg)
-            response = overDialog.run()
-            overDialog.destroy()
+            messageError(msg=msg, transient=self.getTopLevel())
             return
         self.modelFields = priceListModel._fields
         startFromRow = int(priceListModel._skipFirstLine)
@@ -111,12 +122,7 @@ class ImportPriceList(GladeWidget):
         except:
             msg = 'Impossibile leggere il file "'+self.file_name+\
                                 '".\nIl file potrebbe essere corrotto'
-            overDialog = gtk.MessageDialog(self.getTopLevel(),
-                           gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                           gtk.MESSAGE_ERROR,
-                           gtk.BUTTONS_CANCEL, msg)
-            response = overDialog.run()
-            overDialog.destroy()
+            messageError(msg=msg, transient=self.getTopLevel())
             return
         if priceListModel._skipFirstColumn:
             modelFields = []
@@ -164,12 +170,7 @@ I campi indicati nel modello non coincidono (in numero)
 con quelli realmente presenti nel documento alla
 riga %s Verificare il modello definito o la validità
 del formato del file e riprovare""" % str(rowcount+1)
-                overDialog = gtk.MessageDialog(self.getTopLevel(),
-                           gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                           gtk.MESSAGE_ERROR,
-                           gtk.BUTTONS_CANCEL, msg)
-                response = overDialog.run()
-                overDialog.destroy()
+                messageError(msg=msg, transient=self.getTopLevel())
                 return
         self.window.hide()
         anag = ImportPreview(self.window, table, priceListModel, _priceList,
@@ -197,11 +198,11 @@ del formato del file e riprovare""" % str(rowcount+1)
         """
         fileDialog = gtk.FileChooserDialog(title='Importazione listino',
                                            parent=self.getTopLevel(),
-                                           action=gtk.FILE_CHOOSER_ACTION_OPEN,
+                                           action=GTK_FILE_CHOOSER_ACTION_OPEN,
                                            buttons=(gtk.STOCK_CANCEL,
-                                                    gtk.RESPONSE_CANCEL,
+                                                    GTK_RESPONSE_CANCEL,
                                                     gtk.STOCK_OK,
-                                                    gtk.RESPONSE_OK),
+                                                    GTK_RESPONSE_OK),
                                            backend=None)
         fltr = gtk.FileFilter()
         #fltr.add_mime_type('application/csv')
@@ -214,7 +215,7 @@ del formato del file e riprovare""" % str(rowcount+1)
         fileDialog.add_filter(fltr)
 
         response = fileDialog.run()
-        if response == gtk.RESPONSE_OK:
+        if response == GTK_RESPONSE_OK:
             filename = fileDialog.get_filename()
             self.path_file_entry.set_text(filename)
         fileDialog.destroy()

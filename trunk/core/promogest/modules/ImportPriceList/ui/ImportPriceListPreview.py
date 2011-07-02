@@ -1,20 +1,36 @@
 # -*- coding: utf-8 -*-
 
-# Promogest
-#
-# Copyright (C) 2007 by Promotux Informatica - http://www.promotux.it/
-# Author:  Marco Pinna "Dr astico" <zoccolodignu@gmail.com>
-# Author:  Francesco Meloni  "Vete" <francesco@promotux.it.com>
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010, 2011 by Promotux
+#                        di Francesco Meloni snc - http://www.promotux.it/
+
+#    Author: Marco Pinna "Dr astico" <zoccolodignu@gmail.com>
+#    Author: Francesco Meloni  <francesco@promotux.it>
+#    Author: Francesco Marella <francesco.marella@gmail.com>
+
+#    This file is part of Promogest.
+
+#    Promogest is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 2 of the License, or
+#    (at your option) any later version.
+
+#    Promogest is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+
+#    You should have received a copy of the GNU General Public License
+#    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 import csv
 from decimal import *
-import gtk
 from promogest import Environment
 from promogest.ui.GladeWidget import GladeWidget
 import promogest.ui.AnagraficaListini
 import promogest.ui.Main
 from promogest.ui.Main import *
 from promogest.ui.utils import *
+from promogest.ui.gtk_compat import *
 import promogest.ui.Login
 from ProductFromCSV import ProductFromCsv
 from fieldsDict import *
@@ -54,7 +70,7 @@ class ImportPreview(GladeWidget):
         nc = 0
         for f in fields:
             column = gtk.TreeViewColumn(f, rendererSx, text=nc)
-            column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+            column.set_sizing(GTK_COLUMN_GROWN_ONLY)
             column.set_clickable(False)
             column.set_resizable(True)
             column.set_expand(True)
@@ -93,12 +109,7 @@ class ImportPreview(GladeWidget):
             msg = """Si è verificato un errore nel salvataggio dei dati di qualche prodotto.
 È stato creato un nuovo file CSV con questi prodotti nella cartella documenti.
 Verificare gli errori nel file e ritentare l'importazione"""
-            overDialog = gtk.MessageDialog(self.getTopLevel(),
-                           gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                           gtk.MESSAGE_ERROR,
-                           gtk.BUTTONS_CANCEL, msg)
-            response = overDialog.run()
-            overDialog.destroy()
+            messageError(msg=msg, transient=self.getTopLevel())
             savedlines = savedlines - err_count
         print u'Import Procedure completed.'
         print u'Articoli salvati: '+str(savedlines)
@@ -107,23 +118,13 @@ Verificare gli errori nel file e ritentare l'importazione"""
         if savedlines > 0:
             msg = u'Operazione completata.\nsono stati importati/aggiornati '+\
                                                 str(savedlines)+' articoli.'
-            overDialog = gtk.MessageDialog(self.getTopLevel(),
-                            gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,\
-                            gtk.MESSAGE_INFO,
-                            gtk.BUTTONS_OK, msg)
-            response = overDialog.run()
-            overDialog.destroy()
+            messageInfo(msg=msg, transient=self.getTopLevel())
             self.window.destroy()
             self._mainWindow.show_all()
         else:
             msg = u'Nessun articolo aggiornato/importato.'
-            overDialog = gtk.MessageDialog(self.getTopLevel(),
-                            gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,\
-                            gtk.MESSAGE_INFO,
-                            gtk.BUTTONS_OK, msg)
-            response = overDialog.run()
-            overDialog.destroy()
-        if response == gtk.BUTTONS_OK:
+            messageInfo(msg=msg, transient=self.getTopLevel())
+        if response == GTK_BUTTONS_OK:
             self.window.destroy()
             self._mainWindow.show_all()
         else:
