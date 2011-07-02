@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010, 2011 by Promotux
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
+#    Author: Francesco Marella <francesco.marella@gmail.com>
+
 #    This file is part of Promogest.
 
 #    Promogest is free software: you can redistribute it and/or modify
@@ -19,12 +21,12 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-import gtk
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import params
 import datetime
 from sqlalchemy.ext.serializer import loads, dumps
+from promogest.ui.utils import messageError
 
 
 class ApplicationLog(object):
@@ -52,12 +54,7 @@ Qui sotto viene riportato l'errore di sistema:
 %s
 ( normalmente il campo in errore è tra "virgolette")
 """ %e
-            overDialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL
-                                                | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                                    gtk.MESSAGE_ERROR,
-                                                    gtk.BUTTONS_CANCEL, msg)
-            response = overDialog.run()
-            overDialog.destroy()
+            messageError(msg=msg, transient=None)
             print "ERRORE", e
             params["session"].rollback()
             return False
