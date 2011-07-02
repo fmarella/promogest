@@ -28,10 +28,7 @@ import re
 
 import tokenize
 from promogest import Environment
-if Environment.pg3:
-    from gi.repository import Gtk as gtk
-else:
-    import gtk
+from promogest.ui.gtk_compat import *
 import weakref
 import inspect
 import os.path, glob, zipfile, warnings
