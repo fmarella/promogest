@@ -138,9 +138,9 @@ class BigBang(object):
 
 if __name__ == '__main__':
     default='promogest2'
-    promogestStartDir = os.path.expanduser('~') + os.sep + default + os.sep
-    configFile = promogestStartDir + 'configure'
-    conf = Config(configFile)
+    #promogestStartDir = os.path.expanduser('~') + os.sep + default + os.sep
+    #configFile = promogestStartDir + 'configure'
+    #conf = Config(configFile)
     #try:
         #if conf.Database.tipodb =="sqlite":
             #import socket
