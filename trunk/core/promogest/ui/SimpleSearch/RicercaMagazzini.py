@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010, 2011 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
+#    Author: Francesco Marella <francesco.marella@gmail.com>
 
 #    This file is part of Promogest.
 
@@ -20,12 +21,11 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-import gtk
-import gobject
 from promogest.ui.Ricerca import Ricerca, RicercaFilter
 from promogest import Environment
 from promogest.dao.Magazzino import Magazzino
 from promogest.ui.utils import *
+from promogest.ui.gtk_compat import *
 
 
 class RicercaMagazzini(Ricerca):
@@ -70,7 +70,7 @@ class RicercaMagazziniFilter(RicercaFilter):
         renderer = gtk.CellRendererText()
 
         column = gtk.TreeViewColumn('Denominazione', renderer, text=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.connect("clicked", self._changeOrderBy, 'denominazione')
         column.set_resizable(True)
@@ -78,7 +78,7 @@ class RicercaMagazziniFilter(RicercaFilter):
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('Indirizzo', renderer,text=2)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.connect("clicked", self._changeOrderBy, 'indirizzo')
         column.set_resizable(True)
@@ -86,7 +86,7 @@ class RicercaMagazziniFilter(RicercaFilter):
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('Localita', renderer,text=3)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.connect("clicked", self._changeOrderBy, 'localita')
         column.set_resizable(True)

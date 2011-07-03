@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010,2011 by Promotux
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010, 2011 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
+#    Author: Francesco Marella <francesco.marella@gmail.com>
 
 #    This file is part of Promogest.
 
@@ -20,11 +21,11 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-from promogest.ui.gtk_compat import *
 from promogest.ui.Ricerca import Ricerca, RicercaFilter
 from promogest.dao.TestataDocumento import TestataDocumento
 from promogest.ui.utils import *
 from promogest.ui.utilsCombobox import *
+from promogest.ui.gtk_compat import *
 
 
 class RicercaDocumenti(Ricerca):

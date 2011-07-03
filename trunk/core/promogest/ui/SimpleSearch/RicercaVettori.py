@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010, 2011 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
+#    Author: Francesco Marella <francesco.marella@gmail.com>
 
 #    This file is part of Promogest.
 
@@ -20,10 +21,11 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-import gtk
 from promogest.ui.Ricerca import Ricerca, RicercaFilter
 from promogest.dao.Vettore import Vettore
 from promogest.ui.utils import *
+from promogest.ui.gtk_compat import *
+
 
 class RicercaVettori(Ricerca):
     """ Ricerca vettori """
@@ -66,7 +68,7 @@ class RicercaVettoriFilter(RicercaFilter):
         renderer = gtk.CellRendererText()
 
         column = gtk.TreeViewColumn('Codice', renderer,text=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.connect("clicked", self._changeOrderBy, (None,'codice'))
         column.set_resizable(True)
@@ -74,7 +76,7 @@ class RicercaVettoriFilter(RicercaFilter):
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('Ragione Sociale', renderer, text=2)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.connect("clicked", self._changeOrderBy, (None,'ragione_sociale'))
         column.set_resizable(True)
@@ -82,7 +84,7 @@ class RicercaVettoriFilter(RicercaFilter):
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('Cognome - Nome', renderer,text=3)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.connect("clicked", self._changeOrderBy, (None,'cognome, nome'))
         column.set_resizable(True)
@@ -90,7 +92,7 @@ class RicercaVettoriFilter(RicercaFilter):
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('Localita', renderer,text=4)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.connect("clicked", self._changeOrderBy, (None,'sede_operativa_localita'))
         column.set_resizable(True)

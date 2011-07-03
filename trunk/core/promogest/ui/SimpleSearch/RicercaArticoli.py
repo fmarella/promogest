@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010, 2011 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
-#    Author  Andrea Argiolas   <andrea@promotux.it>
+#    Author:  Andrea Argiolas   <andrea@promotux.it>
+#    Author: Francesco Marella <francesco.marella@gmail.com>
 
 #    This file is part of Promogest.
 
@@ -21,18 +22,12 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-
-import gtk
-import gobject
 from promogest.ui.Ricerca import Ricerca, RicercaFilter
 
 from promogest import Environment
-#from promogest.dao.Dao import Dao
-#import promogest.dao.Articolo
 from promogest.dao.Articolo import Articolo
-
 from promogest.ui.utils import *
-
+from promogest.ui.gtk_compat import *
 
 
 class RicercaArticoli(Ricerca):
@@ -70,8 +65,6 @@ class RicercaArticoli(Ricerca):
 
         anag.on_record_new_activate(anag.record_new_button)
 
-
-
 class RicercaArticoliFilter(RicercaFilter):
     """ Filtro per la ricerca degli articoli """
 
@@ -90,7 +83,7 @@ class RicercaArticoliFilter(RicercaFilter):
         renderer = gtk.CellRendererText()
 
         column = gtk.TreeViewColumn('Codice', renderer, text=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.connect("clicked", self._changeOrderBy, (None, 'codice'))
         column.set_resizable(True)
@@ -98,7 +91,7 @@ class RicercaArticoliFilter(RicercaFilter):
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('Descrizione', renderer, text=2)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.connect("clicked", self._changeOrderBy, (None, 'denominazione'))
         column.set_resizable(True)
@@ -106,7 +99,7 @@ class RicercaArticoliFilter(RicercaFilter):
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('Produttore', renderer, text=3)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.connect("clicked", self._changeOrderBy, 'produttore')
         column.set_resizable(True)
@@ -114,7 +107,7 @@ class RicercaArticoliFilter(RicercaFilter):
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('Codice a barre', renderer, text=4)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.connect("clicked", self._changeOrderBy, 'codice_a_barre')
         column.set_resizable(True)
@@ -122,7 +115,7 @@ class RicercaArticoliFilter(RicercaFilter):
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('Codice articolo fornitore', renderer, text=5)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.connect("clicked", self._changeOrderBy, 'codice_articolo_fornitore')
         column.set_resizable(True)
