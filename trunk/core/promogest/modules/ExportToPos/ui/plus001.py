@@ -1,15 +1,32 @@
 # -*- coding: iso-8859-15 -*-
 
-# Promogest
-#
-# Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
-# Author: Alessandro Scano <alessandro@promotux.it>
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010, 2011 by Promotux
+#                        di Francesco Meloni snc - http://www.promotux.it/
 
-import gtk, gobject, os, threading
+#    Author: Alessandro Scano <alessandro@promotux.it>
+#    Author: Francesco Marella <francesco.marella@gmail.com>
+
+#    This file is part of Promogest.
+
+#    Promogest is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 2 of the License, or
+#    (at your option) any later version.
+
+#    Promogest is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+
+#    You should have received a copy of the GNU General Public License
+#    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
+
+import os, threading
 from promogest import Environment
 from promogest.ui.GladeWidget import GladeWidget
 from promogest.ui.utilsCombobox import fillComboboxMagazzini
-
+from promogest.ui.gtk_compat import *
+from promogest.ui.utils import *
 
 class CasseFrame(GladeWidget):
     """ Frame per la gestione della comunicazione  """
@@ -102,13 +119,7 @@ class CasseFrame(GladeWidget):
             return False
 
         if self.magazzino is None:
-            dialog = gtk.MessageDialog(self.mainWindow,
-                                        gtk.DIALOG_MODAL
-                                        | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                        gtk.MESSAGE_WARNING, gtk.BUTTONS_OK,
-                                        "Occorre selezionare un magazzino")
-            response = dialog.run()
-            dialog.destroy()
+            messageWarning(msg="Occorre selezionare un magazzino", transient=self.mainWindow)
             toggleButton.set_property('active', False)
             return
 
@@ -154,7 +165,7 @@ class CasseFrame(GladeWidget):
 
 
     def on_exporting_file_progress_dialog_response(self, dialog, responseId):
-        if responseId == gtk.RESPONSE_CANCEL:
+        if responseId == GTK_RESPONSE_CANCEL:
             if self.__pulseSourceTag is not None:
                 gobject.source_remove(self.__pulseSourceTag)
                 os.kill(self.__exportingProcessPid,signal.SIGKILL)
@@ -162,7 +173,7 @@ class CasseFrame(GladeWidget):
 
 
     def on_importing_file_progress_dialog_response(self, dialog, responseId):
-        if responseId == gtk.RESPONSE_CANCEL:
+        if responseId == GTK_RESPONSE_CANCEL:
             if self.__pulseSourceTag is not None:
                 gobject.source_remove(self.__pulseSourceTag)
                 os.kill(self.__importingProcessPid,signal.SIGKILL)

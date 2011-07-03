@@ -1,25 +1,27 @@
 # -*- coding: iso-8859-15 -*-
 
-# Promogest
-#
-# Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
-# Author: Alceste Scalas <alceste@promotux.it>
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010, 2011 by Promotux
+#                        di Francesco Meloni snc - http://www.promotux.it/
 
-import gtk, gobject, threading
+#    Author: Alceste Scalas <alceste@promotux.it>
+#    Author: Francesco Marella <francesco.marella@gmail.com>
+
+#    This file is part of Promogest.
+
+#    Promogest is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 2 of the License, or
+#    (at your option) any later version.
+
+#    Promogest is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+
+#    You should have received a copy of the GNU General Public License
+#    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
+
+import threading
 import smtplib, mimetypes, popen2, os
 from promogest import Environment
 from promogest.ui.GladeWidget import GladeWidget
@@ -30,7 +32,7 @@ from email.MIMEBase import MIMEBase
 from email.MIMEMultipart import MIMEMultipart
 from email.MIMEImage import MIMEImage
 from email.MIMEText import MIMEText
-
+from promogest.ui.gtk_compat import *
 
 
 class SpamFrame(GladeWidget):
@@ -45,7 +47,7 @@ class SpamFrame(GladeWidget):
         treeview = self.category_treeview
         renderer = gtk.CellRendererText()
         column = gtk.TreeViewColumn('Categoria', renderer, text=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
         column.set_resizable(True)
         column.set_expand(False)
@@ -56,7 +58,7 @@ class SpamFrame(GladeWidget):
         treeview = self.sendfax_category_treeview
         renderer = gtk.CellRendererText()
         column = gtk.TreeViewColumn('Categoria', renderer, text=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
         column.set_resizable(True)
         column.set_expand(False)
@@ -70,7 +72,7 @@ class SpamFrame(GladeWidget):
         renderer = gtk.CellRendererText()
 
         column = gtk.TreeViewColumn('Nome file', renderer, text=0)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
         column.set_resizable(True)
         column.set_expand(False)
@@ -83,7 +85,7 @@ class SpamFrame(GladeWidget):
         treeview = self.contact_treeview
         renderer = gtk.CellRendererText()
         column = gtk.TreeViewColumn('Contatto', renderer, text=0)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
         column.set_resizable(True)
         column.set_expand(False)
@@ -92,7 +94,7 @@ class SpamFrame(GladeWidget):
 
         renderer = gtk.CellRendererText()
         column = gtk.TreeViewColumn('E-Mail', renderer, text=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
         column.set_resizable(True)
         column.set_expand(False)
@@ -103,7 +105,7 @@ class SpamFrame(GladeWidget):
         treeview = self.contact_fax_treeview
         renderer = gtk.CellRendererText()
         column = gtk.TreeViewColumn('Contatto', renderer, text=0)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
         column.set_resizable(True)
         column.set_expand(False)
@@ -112,7 +114,7 @@ class SpamFrame(GladeWidget):
 
         renderer = gtk.CellRendererText()
         column = gtk.TreeViewColumn('Fax', renderer, text=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
         column.set_resizable(True)
         column.set_expand(False)
@@ -190,18 +192,18 @@ class SpamFrame(GladeWidget):
     def on_button_open_attach_clicked(self, button):
         fileDialog = gtk.FileChooserDialog(title='Scegli attachment',
                             parent=self.mainWindow.getTopLevel(),
-                            action=gtk.FILE_CHOOSER_ACTION_OPEN,
-                             buttons=(gtk.STOCK_CANCEL
-                                ,gtk.RESPONSE_CANCEL,gtk.STOCK_OPEN,gtk.RESPONSE_OK))
+                            action=GTK_FILE_CHOOSER_ACTION_OPEN,
+                             buttons=(gtk.STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+                                      gtk.STOCK_OPEN, GTK_RESPONSE_OK))
         response = fileDialog.run()
-        if response == gtk.RESPONSE_OK:
+        if response == GTK_RESPONSE_OK:
             filename = fileDialog.get_filename()
             fileDialog.destroy()
             for f in self.attachment_treeview.get_model():
                 if f[0] == filename:
                     return
             self.attachment_treeview.get_model().append((filename,))
-        elif response == gtk.RESPONSE_CANCEL:
+        elif response == GTK_RESPONSE_CANCEL:
             fileDialog.destroy()
 
 
@@ -215,9 +217,9 @@ class SpamFrame(GladeWidget):
     def on_sendfax_open_button_clicked(self, button):
         fileDialog = gtk.FileChooserDialog(title='Scegli file',
                             parent=self.mainWindow.getTopLevel(),
-                            action=gtk.FILE_CHOOSER_ACTION_OPEN,
-                             buttons=(gtk.STOCK_CANCEL
-                                ,gtk.RESPONSE_CANCEL,gtk.STOCK_OPEN,gtk.RESPONSE_OK))
+                            action=GTK_FILE_CHOOSER_ACTION_OPEN,
+                             buttons=(gtk.STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+                                      gtk.STOCK_OPEN, GTK_RESPONSE_OK))
 
         filter = gtk.FileFilter()
         filter.set_name("Immagini TIFF")
@@ -242,11 +244,11 @@ class SpamFrame(GladeWidget):
         fileDialog.add_filter(filter)
 
         response = fileDialog.run()
-        if response == gtk.RESPONSE_OK:
+        if response == GTK_RESPONSE_OK:
             filename = fileDialog.get_filename()
             fileDialog.destroy()
             self.sendfax_file_entry.set_text(filename)
-        elif response == gtk.RESPONSE_CANCEL:
+        elif response == GTK_RESPONSE_CANCEL:
             fileDialog.destroy()
 
 
@@ -254,9 +256,9 @@ class SpamFrame(GladeWidget):
         # controllo se e` stato inserito il soggetto
         if self.subject_textentry.get_text() == '':
             dialog = gtk.MessageDialog(self.mainWindow.getTopLevel(),
-                                        gtk.DIALOG_MODAL
-                                        | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                        gtk.MESSAGE_WARNING, gtk.BUTTONS_OK)
+                                        GTK_DIALOG_MODAL
+                                        | GTK_DIALOG_DESTROY_WITH_PARENT,
+                                        GTK_DIALOG_MESSAGE_WARNING, GTK_BUTTONS_OK)
             dialog.set_markup("<b>ATTENZIONE: </b>Inserire il soggetto")
             response = dialog.run()
             dialog.destroy()
@@ -264,9 +266,9 @@ class SpamFrame(GladeWidget):
         # controllo se e` stato inserito del testo
         if self.plain_textview.get_buffer().get_char_count() == 0:
             dialog = gtk.MessageDialog(self.mainWindow.getTopLevel(),
-                                        gtk.DIALOG_MODAL
-                                        | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                        gtk.MESSAGE_WARNING, gtk.BUTTONS_OK)
+                                        GTK_DIALOG_MODAL
+                                        | GTK_DIALOG_DESTROY_WITH_PARENT,
+                                        GTK_DIALOG_MESSAGE_WARNING, GTK_BUTTONS_OK)
             dialog.set_markup("<b>ATTENZIONE: </b>Inserire il testo del messaggio")
             response = dialog.run()
             dialog.destroy()
@@ -274,9 +276,9 @@ class SpamFrame(GladeWidget):
         # controllo se e` stato inserita almeno una categoria od almeno un contatto
         elif len(self.category_treeview.get_model()) ==0 and len(self.contact_treeview.get_model()) == 0:
             dialog = gtk.MessageDialog(self.mainWindow.getTopLevel(),
-                                        gtk.DIALOG_MODAL
-                                        | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                        gtk.MESSAGE_WARNING, gtk.BUTTONS_OK)
+                                        GTK_DIALOG_MODAL
+                                        | GTK_DIALOG_DESTROY_WITH_PARENT,
+                                        GTK_DIALOG_MESSAGE_WARNING, GTK_BUTTONS_OK)
             dialog.set_markup(
                 "<b>ATTENZIONE: </b>Specificare almeno una categoria od un contatto a cui spedire")
             response = dialog.run()
@@ -290,9 +292,9 @@ class SpamFrame(GladeWidget):
         # controllo se e` stato inserito il file
         if self.sendfax_file_entry.get_text() == '':
             dialog = gtk.MessageDialog(self.mainWindow.getTopLevel(),
-                                        gtk.DIALOG_MODAL
-                                        | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                        gtk.MESSAGE_WARNING, gtk.BUTTONS_OK)
+                                        GTK_DIALOG_MODAL
+                                        | GTK_DIALOG_DESTROY_WITH_PARENT,
+                                        GTK_DIALOG_MESSAGE_WARNING, GTK_BUTTONS_OK)
             dialog.set_markup("<b>ATTENZIONE: </b>Scegliere il file")
             response = dialog.run()
             dialog.destroy()
@@ -301,9 +303,9 @@ class SpamFrame(GladeWidget):
         elif len(self.sendfax_category_treeview.get_model()) == 0 and len(
             self.contact_fax_treeview.get_model()) == 0:
             dialog = gtk.MessageDialog(self.mainWindow.getTopLevel(),
-                                        gtk.DIALOG_MODAL
-                                        | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                        gtk.MESSAGE_WARNING, gtk.BUTTONS_OK)
+                                        GTK_DIALOG_MODAL
+                                        | GTK_DIALOG_DESTROY_WITH_PARENT,
+                                        GTK_DIALOG_MESSAGE_WARNING, GTK_BUTTONS_OK)
             dialog.set_markup("<b>ATTENZIONE: </b>Specificare almeno una categoria od un contatto a cui spedire")
             response = dialog.run()
             dialog.destroy()
@@ -581,7 +583,7 @@ class SpamFrame(GladeWidget):
 
 
     def on_sending_mail_progress_dialog_response(self, dialog, responseId):
-        if responseId == gtk.RESPONSE_CANCEL:
+        if responseId == GTK_RESPONSE_CANCEL:
             if self.__pulseSourceTag is not None:
                 gobject.source_remove(self.__pulseSourceTag)
             self.__cancelOperation = True
@@ -589,7 +591,7 @@ class SpamFrame(GladeWidget):
 
 
     def on_sending_fax_progress_dialog_response(self, dialog, responseId):
-        if responseId == gtk.RESPONSE_CANCEL:
+        if responseId == GTK_RESPONSE_CANCEL:
             if self.__pulseSourceTag is not None:
                 gobject.source_remove(self.__pulseSourceTag)
             self.__cancelOperation = True
@@ -612,9 +614,9 @@ class SpamFrame(GladeWidget):
 
             if email is None:
                 dialog = gtk.MessageDialog(self.mainWindow.getTopLevel(),
-                                        gtk.DIALOG_MODAL
-                                        | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                        gtk.MESSAGE_WARNING, gtk.BUTTONS_OK)
+                                        GTK_DIALOG_MODAL
+                                        | GTK_DIALOG_DESTROY_WITH_PARENT,
+                                        GTK_DIALOG_MESSAGE_WARNING, GTK_BUTTONS_OK)
                 dialog.set_markup("<b>ATTENZIONE: </b>Questo contatto non dispone di un E-Mail")
                 response = dialog.run()
                 dialog.destroy()
@@ -637,9 +639,9 @@ class SpamFrame(GladeWidget):
 
             if fax is None:
                 dialog = gtk.MessageDialog(self.mainWindow.getTopLevel(),
-                                        gtk.DIALOG_MODAL
-                                        | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                        gtk.MESSAGE_WARNING, gtk.BUTTONS_OK)
+                                        GTK_DIALOG_MODAL
+                                        | GTK_DIALOG_DESTROY_WITH_PARENT,
+                                        GTK_DIALOG_MESSAGE_WARNING, GTK_BUTTONS_OK)
                 dialog.set_markup("<b>ATTENZIONE: </b>Questo contatto non dispone di un numero Fax")
                 response = dialog.run()
                 dialog.destroy()
