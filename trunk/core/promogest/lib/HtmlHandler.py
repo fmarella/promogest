@@ -22,11 +22,15 @@
 
 import os
 import sys
-import gtk
-import gobject
+from promogest.ui.gtk_compat import *
 from threading import Timer
 try:
-    from webkit import WebView, WebSettings
+    if Environment.pg3:
+        from gi.repository.WebKit import WebView
+        from gi.repository.WebKit import WebSettings
+    else:
+        from webkit import WebView
+        from webkit import WebSettings
     WEBKIT = True
 except:
     import gtkhtml2
