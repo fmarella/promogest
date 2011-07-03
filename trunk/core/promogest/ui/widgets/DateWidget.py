@@ -1,28 +1,32 @@
 # -*- coding: utf-8 -*-
 
-# Promogest
-#
-# Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
-# Author: Andrea Argiolas <andrea@promotux.it>
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010, 2011 by Promotux
+#                        di Francesco Meloni snc - http://www.promotux.it/
+
+#    Author: Andrea Argiolas <andrea@promotux.it>
+#    Author: Francesco Meloni  <francesco@promotux.it>
+#    Author: Francesco Marella <francesco.marella@gmail.com>
+
+#    This file is part of Promogest.
+
+#    Promogest is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 2 of the License, or
+#    (at your option) any later version.
+
+#    Promogest is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+
+#    You should have received a copy of the GNU General Public License
+#    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 from promogest.ui.gtk_compat import *
 import time, datetime
 from DateEntryField import DateEntryField
 from promogest import Environment
+
 
 class DateWidget(gtk.HBox):
 # dateentryfield con possibilita' di scelta dal calendario
@@ -57,11 +61,11 @@ class DateWidget(gtk.HBox):
                 data = datetime.datetime.now()
                 if (year, month+1, day)>(data.year,data.month,data.day) and self.futurecheck==None:
                     msg = "Attenzione, hai selezionato una data futura\nSi desidera forzare la scelta ?"
-                    dialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                        gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO, msg)
+                    dialog = gtk.MessageDialog(None, GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
+                                        GTK_DIALOG_MESSAGE_QUESTION, GTK_BUTTONS_YES_NO, msg)
                     response = dialog.run()
                     dialog.destroy()
-                    if response == gtk.RESPONSE_YES:
+                    if response == GTK_RESPONSE_YES:
                         day = '%02d' % int(day)
                         month = '%02d' % int(month + 1)
                         year = '%04d' % int(year)
