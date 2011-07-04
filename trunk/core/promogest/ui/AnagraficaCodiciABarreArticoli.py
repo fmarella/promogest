@@ -154,9 +154,9 @@ class AnagraficaCodiciABarreArticoliDetail(AnagraficaDetail):
             self.dao.id_articolo = self._anagrafica._idArticolo
             if codice:
                 self.dao.codice = codice
-                self._anagrafica._newRow((self.dao, codice, ''))
+                self._anagrafica._newRow((self.dao, codice, False))
             else:
-                self._anagrafica._newRow((self.dao, '', ''))
+                self._anagrafica._newRow((self.dao, '', False))
             self._refresh()
         else:
             self.dao = dao
