@@ -530,11 +530,11 @@ class Main(GladeWidget):
         return
         fileDialog = gtk.FileChooserDialog(title='Importazione modulo',
                                            parent=self.getTopLevel(),
-                                           action=gtk.FILE_CHOOSER_ACTION_OPEN,
+                                           action=GTK_FILE_CHOOSER_ACTION_OPEN,
                                            buttons=(gtk.STOCK_CANCEL,
-                                                    gtk.RESPONSE_CANCEL,
+                                                    GTK_RESPONSE_CANCEL,
                                                     gtk.STOCK_OK,
-                                                    gtk.RESPONSE_OK),
+                                                    GTK_RESPONSE_OK),
                                            backend=None)
         fltr = gtk.FileFilter()
         fltr.add_pattern('*.pg2')
@@ -546,7 +546,7 @@ class Main(GladeWidget):
         fileDialog.add_filter(fltr)
         n = ""
         response = fileDialog.run()
-        if response == gtk.RESPONSE_OK:
+        if response == GTK_RESPONSE_OK:
             filename = fileDialog.get_filename()
             f = open(filename)
             r = f.readline()
@@ -579,7 +579,7 @@ class Main(GladeWidget):
         creditsDialog.getTopLevel().set_transient_for(self.getTopLevel())
         creditsDialog.getTopLevel().show_all()
         response = creditsDialog.credits_dialog.run()
-        if response == gtk.RESPONSE_OK:
+        if response == GTK_RESPONSE_OK:
             creditsDialog.credits_dialog.destroy()
 
     def on_inserimento_codice_activate(self,widget):
