@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010, 2011 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
+#    Author: Francesco Marella <francesco.marella@gmail.com>
 
 #    This file is part of Promogest.
 
@@ -1817,10 +1818,10 @@ def showComplexQuestion(parentWindow, message):
                         GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
                         None)
     hbox = gtk.HBox()
-    image = gtk.image_new_from_stock(gtk.STOCK_DIALOG_QUESTION, gtk.ICON_SIZE_DIALOG)
+    image = GTK_IMAGE_NEW_FROM_STOCK(gtk.STOCK_DIALOG_QUESTION, GTK_ICON_SIZE_DIALOG)
     image.set_padding(10,10)
     label = gtk.Label(message)
-    label.set_justify(gtk.JUSTIFY_LEFT)
+    label.set_justify(GTK_JUSTIFICATION_LEFT)
     label.set_alignment(0,0)
     label.set_padding(15,10)
     hbox.pack_start(image, False, False, 0)
@@ -1856,7 +1857,7 @@ def destroy_event(window):
     """
     Send a 'destroy-event' to the specified gtk.Window
     """
-    event = gtk.gdk.Event(gtk.gdk.DESTROY)
+    event = GDK_EVENT(GDK_EVENT_DESTROY)
 
     event.send_event = True
     event.window = window.window
