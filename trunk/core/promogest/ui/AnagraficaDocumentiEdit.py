@@ -114,6 +114,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self.noleggio = True
         self.oneshot = False
         self.tagliaColoreRigheList = None
+        self.visualizza_prezzo_alternativo = False
         # Inizializziamo i moduli in interfaccia!
         #self.draw()
         self.completion = self.ricerca_articolo_entrycompletition
@@ -158,7 +159,6 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
     def on_scorporo_button_clicked(self, button):
         """ Bottone con una "s" minuscola, che permette di effettuare "al volo"
         lo scorporo di un valore finale nel campo prezzo """
-#        iva = self.percentuale_iva_entry.get_text().strip()
         ivaobj = findStrFromCombobox(self.id_iva_customcombobox.combobox,0)
         if type(ivaobj) != type("CIAO"):
             iva = ivaobj.percentuale
@@ -166,11 +166,21 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                 messageInfo(msg="ATTENZIONE IVA a 0%")
             else:
                 prezzoLordo = self.prezzo_lordo_entry.get_text()
-#                print "PREZZO LORDO " , prezzoLordo
                 imponibile = float(prezzoLordo)/(1+float(iva)/100)
-#                print "IMPONIBILE", mN(str(imponibile))
                 self.prezzo_lordo_entry.set_text(str(mN(str(imponibile))))
                 self.prezzo_lordo_entry.grab_focus()
+
+    def on_switch_prezzo_button_clicked(self, button):
+        idListino = findIdFromCombobox(self.id_listino_customcombobox.combobox)
+        idArticolo = self._righe[0]["idArticolo"]
+        prezzi = leggiListino(idListino, idArticolo)
+        if not self.visualizza_prezzo_alternativo:
+            self.prezzo_lordo_entry.set_text(str(prezzi["prezzoDettaglio"]))
+            self.visualizza_prezzo_alternativo = True
+        else:
+            self.prezzo_lordo_entry.set_text(str(prezzi["prezzoIngrosso"]))
+            self.visualizza_prezzo_alternativo = False
+
 
     def on_articolo_entry_focus_in_event(self, widget, event):
         """ controlliamo prima di effettuare una ricerca che il magazzino sia

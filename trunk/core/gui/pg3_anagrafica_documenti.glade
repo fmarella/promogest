@@ -1134,6 +1134,21 @@
                                                             <property name="position">1</property>
                                                           </packing>
                                                         </child>
+                                                        <child>
+                                                          <object class="GtkButton" id="switch_prezzo_button">
+                                                            <property name="label" translatable="yes">I/D</property>
+                                                            <property name="visible">True</property>
+                                                            <property name="can_focus">True</property>
+                                                            <property name="receives_default">True</property>
+                                                            <property name="use_action_appearance">False</property>
+                                                            <signal name="clicked" handler="on_switch_prezzo_button_clicked" swapped="no"/>
+                                                          </object>
+                                                          <packing>
+                                                            <property name="expand">False</property>
+                                                            <property name="fill">False</property>
+                                                            <property name="position">2</property>
+                                                          </packing>
+                                                        </child>
                                                       </object>
                                                       <packing>
                                                         <property name="top_attach">1</property>
@@ -3751,24 +3766,6 @@ _
               </packing>
             </child>
             <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
               <object class="GtkComboBox" id="causale_trasporto_comboboxentry">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
@@ -3854,6 +3851,24 @@ _
                 <property name="x_options">GTK_FILL</property>
                 <property name="y_options"></property>
               </packing>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
             </child>
           </object>
           <packing>
