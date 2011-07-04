@@ -38,7 +38,7 @@ class ManageRuoloAzioni(GladeWidget):
                                 fileName= 'RuoliAzioni/gui/roleaction.glade',
                                 isModule=True)
         self.placeWindow(self.getTopLevel())
-        self.getTopLevel().set_modal(modal=True)
+        self.getTopLevel().set_modal(True)
         self.getTopLevel().show_all()
         self.titolo.set_markup("""
         Questa finestra permette di abbinare ad un ruolo
