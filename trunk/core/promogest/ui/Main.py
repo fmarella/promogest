@@ -585,9 +585,9 @@ class Main(GladeWidget):
     def on_inserimento_codice_activate(self,widget):
         from promogest.dao.Setconf import SetConf
         dialog = gtk.MessageDialog(self.getTopLevel(),
-                                   gtk.DIALOG_MODAL
-                                   | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                   gtk.MESSAGE_INFO, gtk.BUTTONS_OK)
+                                   GTK_DIALOG_MODAL
+                                   | GTK_DIALOG_DESTROY_WITH_PARENT,
+                                   GTK_DIALOG_MESSAGE_INFO, GTK_BUTTON_OK)
         dialog.set_markup("""<b>                CODICE ATTIVAZIONE PACCHETTO               </b>""")
         hbox = gtk.HBox()
         entry___ = gtk.Entry()
