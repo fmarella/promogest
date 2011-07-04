@@ -68,6 +68,7 @@ if not Environment.pg3:
         GDK_EVENTTYPE_KEY_PRESS = gtk.gdk.KEY_PRESS
         GDK_EVENTTYPE_FOCUS_CHANGE =   gtk.gdk.FOCUS_CHANGE
         GDK_EVENT = gtk.gdk.Event
+        GDK_EVENT_DESTROY = gtk.gdk.DESTROY
         GDK_CONTROL_MASK = gtk.gdk.CONTROL_MASK
 
         GDK_KEY_F1 = gtk.keysyms.F1
@@ -93,6 +94,7 @@ if not Environment.pg3:
         GTK_COLUMN_FIXED = gtk.TREE_VIEW_COLUMN_FIXED
 
         GTK_ICON_SIZE_BUTTON = gtk.ICON_SIZE_BUTTON
+        GTK_ICON_SIZE_DIALOG = gtk.ICON_SIZE_DIALOG
 
         GTK_ATTACHOPTIONS_FILL = gtk.FILL
         GTK_ATTACHOPTIONS_EXPAND =  gtk.EXPAND
@@ -158,6 +160,7 @@ else:
     GDK_EVENTTYPE_KEY_PRESS = gdk.EventType.KEY_PRESS
     GDK_EVENTTYPE_FOCUS_CHANGE =   gdk.EventType.FOCUS_CHANGE
     GDK_EVENT = gdk.Event
+    GDK_EVENT_DESTROY = gdk.EventType.DESTROY
 
 
     GDK_CONTROL_MASK = gdk.ModifierType.CONTROL_MASK
@@ -187,6 +190,7 @@ else:
     GTK_COLUMN_FIXED = gtk.TreeViewColumnSizing.FIXED
 
     GTK_ICON_SIZE_BUTTON = gtk.IconSize.BUTTON
+    GTK_ICON_SIZE_DIALOG = gtk.IconSize.DIALOG
 
     GTK_ATTACHOPTIONS_FILL = gtk.AttachOptions.FILL
     GTK_ATTACHOPTIONS_EXPAND =  gtk.AttachOptions.EXPAND
