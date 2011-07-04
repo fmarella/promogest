@@ -120,7 +120,7 @@ class AnagraficaTaglieFilter(AnagraficaFilter):
 
         treeview.set_search_column(1)
 
-        self._treeViewModel = gtk.TreeStore(object, str, str, gtk.gdk.Pixbuf)
+        self._treeViewModel = self.anagrafica_filter_treestore
         self._anagrafica.anagrafica_filter_treeview.set_model(self._treeViewModel)
         self.refresh()
 
