@@ -5,6 +5,7 @@
 # Copyright (C) 2005-2010 by Promotux Informatica - http://www.promotux.it/
 # Author: Francesco Meloni <francescoo@promotux.it>
 
+import os
 import datetime
 from promogest import Environment
 from promogest.ui.utils import *
@@ -114,4 +115,5 @@ class ElaExecute(object):
             if hasattr(Environment.conf.VenditaDettaglio,"export_path"):
                 path = Environment.conf.VenditaDettaglio.export_path
                 #print "filename 111111111111111111111111111111", filename, path
-                shutil.move(filename, path)
+                if not os.path.exists(filename)
+                    shutil.move(filename, path)
