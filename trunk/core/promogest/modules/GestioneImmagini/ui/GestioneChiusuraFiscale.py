@@ -50,7 +50,7 @@ class GestioneChiusuraFiscale(object):
         dialog = gtk.MessageDialog(self.gladeobj.getTopLevel(),
                                    GTK_DIALOG_MODAL
                                    | GTK_DIALOG_DESTROY_WITH_PARENT,
-                                   GTK_DIALOG_MESSAGE_QUESTION, GTK_BUTTONS_YES_NO)
+                                   GTK_DIALOG_MESSAGE_QUESTION, GTK_BUTTON_YES_NO)
         dialog.set_markup("""<b>ATTENZIONE</b>: Chiusura fiscale!
     Confermi la data?
     Se non sai cosa stai facendo lascia la data odierna impostata
