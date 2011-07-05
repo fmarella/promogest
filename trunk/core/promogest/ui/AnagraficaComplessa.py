@@ -114,6 +114,17 @@ class Anagrafica(GladeWidget):
 
         gladeWidget.build()
 
+        accelGroup = gtk.AccelGroup()
+        self.getTopLevel().add_accel_group(accelGroup)
+        self.bodyWidget.filter_clear_button.add_accelerator('clicked',
+                            accelGroup, GDK_KEY_ESCAPE, 0, GTK_ACCEL_VISIBLE)
+        self.bodyWidget.filter_search_button.add_accelerator('clicked',
+                            accelGroup, GDK_KEY_F3, 0, GTK_ACCEL_VISIBLE)
+#        self.bodyWidget.filter_search_button.add_accelerator('clicked',
+#                            accelGroup, gtk.keysyms.KP_Enter, 0, gtk.ACCEL_VISIBLE)
+#        self.bodyWidget.filter_search_button.add_accelerator('clicked',
+#                            accelGroup, gtk.keysyms.Return, 0, gtk.ACCEL_VISIBLE)
+
     def _setHtmlHandler(self, htmlHandler):
         self.htmlHandler = htmlHandler
         html = """<html><body></body></html>"""

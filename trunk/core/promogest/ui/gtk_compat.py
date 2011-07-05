@@ -76,6 +76,7 @@ if not Environment.pg3:
         GDK_KEY_F3 = gtk.keysyms.F3
         GDK_KEY_F4 = gtk.keysyms.F4
         GDK_KEY_F5 = gtk.keysyms.F5
+        GDK_KEY_ESCAPE = gtk.keysyms.Escape
         GTK_ACCEL_VISIBLE = gtk.ACCEL_VISIBLE
 
         GTK_SELECTIONMODE_SINGLE = gtk.SELECTION_SINGLE
@@ -170,6 +171,7 @@ else:
     GDK_KEY_F3 = gdk.KEY_F3
     GDK_KEY_F4 = gdk.KEY_F4
     GDK_KEY_F5 = gdk.KEY_F5
+    GDK_KEY_ESCAPE = gdk.KEY_Escape
     GTK_ACCEL_VISIBLE = gtk.AccelFlags.VISIBLE
 
     GTK_SELECTIONMODE_SINGLE = gtk.SelectionMode.SINGLE
