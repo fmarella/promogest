@@ -1042,11 +1042,11 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             filename = path+\
                                 "apri_cassetto.txt"
             f = file(filename, 'w')
-            f.write("912;1\n")
+            f.write("912 ; 1\n")
             f.close()
             #g = file(filename, 'rb')
             #g.close()
-            ElaExecute().copyToInDir(filename)
+            return ElaExecute().copyToInDir(filename)
 
 
     def creaScontrinoReso(self):
