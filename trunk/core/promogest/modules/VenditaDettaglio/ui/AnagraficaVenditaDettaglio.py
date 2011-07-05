@@ -1044,9 +1044,10 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             f = file(filename, 'w')
             f.write("912;1\n")
             f.close()
-            g = file(filename, 'rb')
+            #g = file(filename, 'rb')
+            #g.close()
             ElaExecute().copyToInDir(filename)
-            g.close()
+
 
     def creaScontrinoReso(self):
         treeview = self.scontrino_treeview
