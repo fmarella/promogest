@@ -115,5 +115,5 @@ class ElaExecute(object):
             if hasattr(Environment.conf.VenditaDettaglio,"export_path"):
                 path = Environment.conf.VenditaDettaglio.export_path
                 #print "filename 111111111111111111111111111111", filename, path
-                if not os.path.exists(filename)
+                if not os.path.exists(filename):
                     shutil.move(filename, path)
