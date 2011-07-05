@@ -760,6 +760,29 @@ def fillComboboxCausaliTrasporto(combobox, filter=False):
         if combobox.__class__ is gtk.ComboBoxEntry:
             combobox.set_text_column(1)
 
+def fillComboboxProduttori(combobox, filter=False):
+    """ Crea elenco dei produttori  """
+    from promogest.dao.Articolo import Articolo
+    res = Environment.params['session'].query(Articolo.produttore).distinct()
+    model = gtk.ListStore(object, str)
+    #res = []
+    if not filter:
+        emptyRow = ''
+    else:
+        emptyRow = '< Tutti >'
+    model.append((None, emptyRow))
+    for t in res:
+        model.append((t, (t.produttore or '')[0:30]))
+
+    combobox.clear()
+    renderer = gtk.CellRendererText()
+    combobox.pack_start(renderer, True)
+    combobox.add_attribute(renderer, 'text', 1)
+    combobox.set_model(model)
+    if not Environment.pg3:
+        if combobox.__class__ is gtk.ComboBoxEntry:
+            combobox.set_text_column(1)
+
 def fillComboboxAspettoEsterioreBeni(combobox, filter=False):
     """ Crea elenco degli aspetti esteriori beni """
     from promogest.dao.TestataDocumento import TestataDocumento

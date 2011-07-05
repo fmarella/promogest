@@ -126,6 +126,8 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
         fillComboboxUnitaFisica(self.unita_volume_comboboxentry,'volume')
         fillComboboxUnitaFisica(self.unita_peso_comboboxentry,'peso')
 
+        fillComboboxProduttori(self.produttore_comboboxentry)
+
         if posso("ADR"):
             self.adr_page = ADRNotebookPage(self, "")
             self.notebook1.append_page(self.adr_page.adr_frame, self.adr_page.adr_page_label)
@@ -171,7 +173,7 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
                               self.dao.id_stato_articolo)
         findComboboxRowFromId(self.id_imballaggio_customcombobox.combobox,
                               self.dao.id_imballaggio)
-        self.produttore_entry.set_text(self.dao.produttore or '')
+        self.produttore_comboboxentry.get_child().set_text(self.dao.produttore or '')
         self.unita_dimensioni_comboboxentry.get_child().set_text(self.dao.unita_dimensioni or '')
         self.unita_volume_comboboxentry.get_child().set_text(self.dao.unita_volume
                                                        or '')
@@ -276,12 +278,12 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
                             ar.denominazione= self.denominazione_entry.get_text() +" "+ ar.denominazione_breve_taglia + ' ' + ar.denominazione_breve_colore
                             ar.persist()
 
-            if self.dao.produttore != self.produttore_entry.get_text():
+            if self.dao.produttore != self.produttore_comboboxentry.get_child().get_text():
                 msg = """ATTENZIONE Il  produttore di un articolo padre è cambiata, vuoi riportare la modifica anche ai suoi figli?"""
                 if YesNoDialog(msg=msg, transient=None):
                     if self.dao.articoliVarianti:
                         for ar in self.dao.articoliVarianti:
-                            ar.produttore= self.produttore_entry.get_text()
+                            ar.produttore = self.produttore_comboboxentry.get_child().get_text()
                             ar.persist()
 
             articoloTagliaColore = ArticoloTagliaColore()
@@ -319,7 +321,7 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
         self.dao.id_unita_base = findIdFromCombobox(self.id_unita_base_combobox)
         self.dao.id_stato_articolo = findIdFromCombobox(self.id_stato_articolo_combobox)
         self.dao.id_imballaggio = findIdFromCombobox(self.id_imballaggio_customcombobox.combobox)
-        self.dao.produttore = self.produttore_entry.get_text()
+        self.dao.produttore = self.produttore_comboboxentry.get_child().get_text()
         self.dao.unita_dimensioni = self.unita_dimensioni_comboboxentry.get_child().get_text()
         self.dao.unita_volume = self.unita_volume_comboboxentry.get_child().get_text()
         self.dao.unita_peso = self.unita_peso_comboboxentry.get_child().get_text()
