@@ -62,7 +62,7 @@ class DateWidget(gtk.HBox):
                 if (year, month+1, day)>(data.year,data.month,data.day) and self.futurecheck==None:
                     msg = "Attenzione, hai selezionato una data futura\nSi desidera forzare la scelta ?"
                     dialog = gtk.MessageDialog(None, GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
-                                        GTK_DIALOG_MESSAGE_QUESTION, GTK_BUTTONS_YES_NO, msg)
+                                        GTK_DIALOG_MESSAGE_QUESTION, GTK_BUTTON_YES_NO, msg)
                     response = dialog.run()
                     dialog.destroy()
                     if response == GTK_RESPONSE_YES:
@@ -103,7 +103,7 @@ class DateWidget(gtk.HBox):
         window.set_size_request(300, 260)
         window.set_modal(True)
         window.set_transient_for(self.get_toplevel())
-        window.set_position(GTK_WIN_POS_CENTER_ON_PARENT )
+        window.set_position(GTK_WIN_POS_CENTER_ON_PARENT)
         window.set_title('Selezione data')
         window.connect("destroy", on_destroy)
         vbox = gtk.VBox()
