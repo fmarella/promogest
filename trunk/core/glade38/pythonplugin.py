@@ -24,7 +24,7 @@
 import sys, os
 
 path = os.path.split(os.path.dirname(__file__))[0]
-core_path = os.path.join(os.path.split(os.path.abspath(os.path.split(os.path.dirname(__file__))[0]))[0], "core")
+core_path = os.path.join(os.path.split(os.path.abspath(path))[0], "core")
 sys.path.append(core_path)
 from promogest import Environment
 Environment.conf.guiDir = path+"/core/gui/"
