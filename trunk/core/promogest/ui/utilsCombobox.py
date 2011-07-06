@@ -763,7 +763,7 @@ def fillComboboxCausaliTrasporto(combobox, filter=False):
 def fillComboboxProduttori(combobox, filter=False):
     """ Crea elenco dei produttori  """
     from promogest.dao.Articolo import Articolo
-    res = Environment.params['session'].query(Articolo.produttore).distinct()
+    res = Environment.params['session'].query(Articolo.produttore).distinct().order_by(Articolo.produttore)
     model = gtk.ListStore(object, str)
     #res = []
     if not filter:
