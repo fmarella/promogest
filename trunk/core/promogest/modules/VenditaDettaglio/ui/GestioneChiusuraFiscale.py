@@ -48,7 +48,7 @@ class GestioneChiusuraFiscale(GladeWidget):
                 findComboboxRowFromStr(self.chiusura_id_pos_combobox, Environment.conf.VenditaDettaglio.puntocassa,2)
         elif setconf("VenditaDettaglio", "punto_cassa"):
             findComboboxRowFromId(self.chiusura_id_pos_combobox,setconf("VenditaDettaglio", "punto_cassa"))
-        self.chiusura_date_datewidget.show_all()
+        #self.chiusura_date_datewidget.show_all()
         self.chiusura_date_datewidget.setNow()
 
     def on_ok_chiusura_button_clicked(self, button):

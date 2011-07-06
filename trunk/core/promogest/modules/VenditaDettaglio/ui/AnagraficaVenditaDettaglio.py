@@ -1013,6 +1013,11 @@ class AnagraficaVenditaDettaglio(GladeWidget):
 #        if DRIVER=="D":
         anag = GestioneChiusuraFiscale(self) #.chiusuraDialog(widget, self.id_magazzino)
         #anag.set_transient_for(self)
+        anagWindow = anag.getTopLevel()
+        #anagWindow.connect("destroy", on_anagrafica_destroyed, [window, button,mainClass])
+        #anagWindow.connect("hide", on_anagrafica_destroyed, [window, button,mainClass])
+        anagWindow.set_transient_for(self.getTopLevel())
+        anagWindow.show_all()
 
     def on_stampa_del_giornale_breve_activate(self, widget):
         if DRIVER =="D":
