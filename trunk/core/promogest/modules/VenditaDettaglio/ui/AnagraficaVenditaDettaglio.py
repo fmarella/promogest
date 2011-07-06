@@ -1011,7 +1011,8 @@ class AnagraficaVenditaDettaglio(GladeWidget):
 
     def on_chiusura_fiscale_activate(self, widget):
 #        if DRIVER=="D":
-        GestioneChiusuraFiscale(self) #.chiusuraDialog(widget, self.id_magazzino)
+        anag = GestioneChiusuraFiscale(self) #.chiusuraDialog(widget, self.id_magazzino)
+        #anag.set_transient_for(self)
 
     def on_stampa_del_giornale_breve_activate(self, widget):
         if DRIVER =="D":

@@ -25,7 +25,7 @@ from promogest.modules.VenditaDettaglio.dao.Pos import Pos
 
 class GestioneChiusuraFiscale(GladeWidget):
     """ Classe per la gestione degli scontrini emessi """
-    def __init__(self,gladeobj):
+    def __init__(self, gladeobj):
         GladeWidget.__init__(self, 'chiusura_dialog',
                 fileName='VenditaDettaglio/gui/chiusura_fine_giornata.glade',
                 isModule=True)
@@ -48,12 +48,12 @@ class GestioneChiusuraFiscale(GladeWidget):
                 findComboboxRowFromStr(self.chiusura_id_pos_combobox, Environment.conf.VenditaDettaglio.puntocassa,2)
         elif setconf("VenditaDettaglio", "punto_cassa"):
             findComboboxRowFromId(self.chiusura_id_pos_combobox,setconf("VenditaDettaglio", "punto_cassa"))
-        self.chiusura_datetime_entry.show_all()
-        self.chiusura_datetime_entry.setNow()
+        self.chiusura_date_datewidget.show_all()
+        self.chiusura_date_datewidget.setNow()
 
     def on_ok_chiusura_button_clicked(self, button):
         # controllo se vi e` gia` stata una chiusura
-        data = stringToDateTime(self.chiusura_datetime_entry.get_text())
+        data = stringToDateTime(self.chiusura_date_datewidget.get_text())
         self.idPuntoCassa = findIdFromCombobox(self.chiusura_id_pos_combobox)
         self.idMagazzino = findIdFromCombobox(self.chiusura_id_magazzino_combobox)
         chiusure = ChiusuraFiscale().select( dataChiusura = data,
@@ -106,6 +106,7 @@ class GestioneChiusuraFiscale(GladeWidget):
                                             batchSize = None)
         ##Environment.pg2log.info( "SCONTRINI PRODOTTI IN GIORNATA N° %s dettaglio: %s" ) %(str(len(scontrini)or""), str(scontrini)or"")
         # Creo nuovo movimento
+        print "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB"
         if self.idMagazzino:
             mag = Magazzino().getRecord(id=self.idMagazzino)
             if mag:
@@ -185,6 +186,8 @@ class GestioneChiusuraFiscale(GladeWidget):
                     process = popen2.Popen3(command, True)
                     message = process.childerr.readlines()
                     ret_value = process.wait()
+            else:
+                ret_value = 0
         elif setconf("VenditaDettaglio", "disabilita_stampa_chiusura"):
             ret_value = 0
         else:
