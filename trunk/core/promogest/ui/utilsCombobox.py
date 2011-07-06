@@ -760,7 +760,7 @@ def fillComboboxCausaliTrasporto(combobox, filter=False):
         if combobox.__class__ is gtk.ComboBoxEntry:
             combobox.set_text_column(1)
 
-def fillComboboxProduttori(combobox, filter=False):
+def fillComboboxProduttori(combobox):
     """ Crea elenco dei produttori  """
     from promogest.dao.Articolo import Articolo
     res = Environment.params['session'].query(Articolo.produttore).order_by(Articolo.produttore).distinct()
@@ -769,12 +769,6 @@ def fillComboboxProduttori(combobox, filter=False):
         if b.produttore.strip() not in ll:
             ll.append(b.produttore)
     model = gtk.ListStore(str)
-    #res = []
-    if not filter:
-        emptyRow = ''
-    else:
-        emptyRow = '< Tutti >'
-    model.append((emptyRow,))
     for t in ll:
         model.append((t[0:30] or '',))
 

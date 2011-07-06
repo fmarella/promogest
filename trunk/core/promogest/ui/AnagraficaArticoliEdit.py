@@ -173,6 +173,7 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
                               self.dao.id_stato_articolo)
         findComboboxRowFromId(self.id_imballaggio_customcombobox.combobox,
                               self.dao.id_imballaggio)
+        fillComboboxProduttori(self.produttore_comboboxentry)
         self.produttore_comboboxentry.get_child().set_text(self.dao.produttore or '')
         self.unita_dimensioni_comboboxentry.get_child().set_text(self.dao.unita_dimensioni or '')
         self.unita_volume_comboboxentry.get_child().set_text(self.dao.unita_volume
