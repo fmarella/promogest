@@ -763,25 +763,29 @@ def fillComboboxCausaliTrasporto(combobox, filter=False):
 def fillComboboxProduttori(combobox, filter=False):
     """ Crea elenco dei produttori  """
     from promogest.dao.Articolo import Articolo
-    res = Environment.params['session'].query(Articolo.produttore).distinct().order_by(Articolo.produttore)
-    model = gtk.ListStore(object, str)
+    res = Environment.params['session'].query(Articolo.produttore).order_by(Articolo.produttore).distinct()
+    ll = []
+    for b in res:
+        if b.produttore.strip() not in ll:
+            ll.append(b.produttore)
+    model = gtk.ListStore(str)
     #res = []
     if not filter:
         emptyRow = ''
     else:
         emptyRow = '< Tutti >'
-    model.append((None, emptyRow))
-    for t in res:
-        model.append((t, (t.produttore or '')[0:30]))
+    model.append((emptyRow,))
+    for t in ll:
+        model.append((t[0:30] or '',))
 
     combobox.clear()
     renderer = gtk.CellRendererText()
     combobox.pack_start(renderer, True)
-    combobox.add_attribute(renderer, 'text', 1)
+    combobox.add_attribute(renderer, 'text', 0)
     combobox.set_model(model)
     if not Environment.pg3:
         if combobox.__class__ is gtk.ComboBoxEntry:
-            combobox.set_text_column(1)
+            combobox.set_text_column(0)
 
 def fillComboboxAspettoEsterioreBeni(combobox, filter=False):
     """ Crea elenco degli aspetti esteriori beni """
