@@ -146,24 +146,24 @@ class GestioneChiusuraFiscale(GladeWidget):
         # Creo il file
         filechiusura = self.create_fiscal_close_file()
         # Mando comando alle casse
-        if hasattr(Environment.conf, "VenditaDettaglio"):
-            if not(hasattr(Environment.conf.VenditaDettaglio,'disabilita_stampa_chiusura') and \
-                    Environment.conf.VenditaDettaglio.disabilita_stampa_chiusura == 'yes'):
-                program_launch = Environment.conf.VenditaDettaglio.driver_command
-                program_params = (' ' + filechiusura + ' ' +
-                                  Environment.conf.VenditaDettaglio.serial_device)
+        #if hasattr(Environment.conf, "VenditaDettaglio"):
+            #if not(hasattr(Environment.conf.VenditaDettaglio,'disabilita_stampa_chiusura') and \
+                    #Environment.conf.VenditaDettaglio.disabilita_stampa_chiusura == 'yes'):
+                #program_launch = Environment.conf.VenditaDettaglio.driver_command
+                #program_params = (' ' + filechiusura + ' ' +
+                                  #Environment.conf.VenditaDettaglio.serial_device)
 
-                if os.name == 'nt':
-                    exportingProcessPid = os.spawnl(os.P_NOWAIT, program_launch, program_params)
-                    id, ret_value = os.waitpid(exportingProcessPid, 0)
-                    ret_value = ret_value >> 8
-                else:
-                    command = program_launch + program_params
-                    process = popen2.Popen3(command, True)
-                    message = process.childerr.readlines()
-                    ret_value = process.wait()
-            else:
-                ret_value = 0
+                #if os.name == 'nt':
+                    #exportingProcessPid = os.spawnl(os.P_NOWAIT, program_launch, program_params)
+                    #id, ret_value = os.waitpid(exportingProcessPid, 0)
+                    #ret_value = ret_value >> 8
+                #else:
+                    #command = program_launch + program_params
+                    #process = popen2.Popen3(command, True)
+                    #message = process.childerr.readlines()
+                    #ret_value = process.wait()
+            #else:
+                #ret_value = 0
         elif setconf("VenditaDettaglio", "disabilita_stampa_chiusura"):
             ret_value = 0
         else:
