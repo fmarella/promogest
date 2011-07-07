@@ -164,7 +164,7 @@ class GestioneChiusuraFiscale(GladeWidget):
                     #ret_value = process.wait()
             #else:
                 #ret_value = 0
-        elif setconf("VenditaDettaglio", "disabilita_stampa_chiusura"):
+        if setconf("VenditaDettaglio", "disabilita_stampa_chiusura"):
             ret_value = 0
         else:
             ret_value = 0
