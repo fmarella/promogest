@@ -1161,7 +1161,7 @@ def on_anagrafica_destroyed(anagrafica_window, argList):
 
 def showAnagrafica(window, anag, button=None, mainClass=None):
     anagWindow = anag.getTopLevel()
-    anagWindow.connect("destroy", on_anagrafica_destroyed, [window, button,mainClass])
+    #anagWindow.connect("destroy", on_anagrafica_destroyed, [window, button,mainClass])
     #anagWindow.connect("hide", on_anagrafica_destroyed, [window, button,mainClass])
     anagWindow.set_transient_for(window)
     anagWindow.show_all()

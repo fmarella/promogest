@@ -29,13 +29,13 @@ class GestioneChiusuraFiscale(GladeWidget):
         GladeWidget.__init__(self, 'chiusura_dialog',
                 fileName='VenditaDettaglio/gui/chiusura_fine_giornata.glade',
                 isModule=True)
-        self.draw()
-#        self.run()
         self.gladeobj = gladeobj
         self.idMagazzino = None
         self.idPuntoCassa = None
+        self.__draw()
 
-    def draw(self):
+
+    def __draw(self):
         fillComboboxMagazzini(self.chiusura_id_magazzino_combobox)
         if hasattr(Environment.conf, "VenditaDettaglio"):
             if hasattr(Environment.conf.VenditaDettaglio, "magazzino"):
@@ -48,12 +48,11 @@ class GestioneChiusuraFiscale(GladeWidget):
                 findComboboxRowFromStr(self.chiusura_id_pos_combobox, Environment.conf.VenditaDettaglio.puntocassa,2)
         elif setconf("VenditaDettaglio", "punto_cassa"):
             findComboboxRowFromId(self.chiusura_id_pos_combobox,setconf("VenditaDettaglio", "punto_cassa"))
-        #self.chiusura_date_datewidget.show_all()
         self.chiusura_date_datewidget.setNow()
 
     def on_ok_chiusura_button_clicked(self, button):
         # controllo se vi e` gia` stata una chiusura
-        data = stringToDateTime(self.chiusura_date_datewidget.get_text())
+        data = stringToDate(self.chiusura_date_datewidget.get_text())
         self.idPuntoCassa = findIdFromCombobox(self.chiusura_id_pos_combobox)
         self.idMagazzino = findIdFromCombobox(self.chiusura_id_magazzino_combobox)
         chiusure = ChiusuraFiscale().select( dataChiusura = data,
@@ -70,28 +69,6 @@ class GestioneChiusuraFiscale(GladeWidget):
     def on_no_chiusura_button_clicked(self, button):
         self.chiusura_dialog.hide()
 
-#    def chiusuraDialog(self, widget, idMagazzino):
-
-#            # controllo se vi e` gia` stata una chiusura
-#            data = stringToDate(entry.get_text())
-#            chiusure = ChiusuraFiscale().select( dataChiusura = data,
-#                                                offset = None,
-#                                                idMagazzino = self.gladeobj.idMagazzino,
-#                                                idPuntoCassa = self.gladeobj.idPuntoCassa,
-#                                                batchSize = None)
-#            if len(chiusure) != 0:
-#                dialog = gtk.MessageDialog(self.gladeobj.getTopLevel(),
-#                                           gtk.DIALOG_MODAL
-#                                           | gtk.DIALOG_DESTROY_WITH_PARENT,
-#                                           gtk.MESSAGE_ERROR, gtk.BUTTONS_OK)
-#                dialog.set_markup("<b>ATTENZIONE:\n La chiusura odierna e` gia' stata effettuata</b>")
-#                response = dialog.run()
-#                dialog.destroy()
-#                return
-#            self.close_day(idMagazzino, data)
-#        else:
-#            return
-
     def close_day(self, idMagazzino, data):
         # Seleziono scontrini della giornata
 
@@ -106,7 +83,6 @@ class GestioneChiusuraFiscale(GladeWidget):
                                             batchSize = None)
         ##Environment.pg2log.info( "SCONTRINI PRODOTTI IN GIORNATA N° %s dettaglio: %s" ) %(str(len(scontrini)or""), str(scontrini)or"")
         # Creo nuovo movimento
-        print "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB"
         if self.idMagazzino:
             mag = Magazzino().getRecord(id=self.idMagazzino)
             if mag:

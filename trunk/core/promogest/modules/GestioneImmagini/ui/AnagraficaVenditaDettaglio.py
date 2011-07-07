@@ -840,9 +840,9 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         self.righe_label.set_markup('<b> [ 0 ] Righe scontrino</b>')
         self._state = 'search'
 
-    def on_chiusura_fiscale_activate(self, widget):
+    #def on_chiusura_fiscale_activate(self, widget):
         # Chiedo conferma
-        GestioneChiusuraFiscale(self).chiusuraDialog(widget, self.id_magazzino)
+        #GestioneChiusuraFiscale(self).chiusuraDialog(widget, self.id_magazzino)
 
     def create_export_file(self, daoScontrino):
         # Genero nome file

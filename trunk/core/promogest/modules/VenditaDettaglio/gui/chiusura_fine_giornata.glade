@@ -5,12 +5,14 @@
   <!-- interface-naming-policy project-wide -->
   <object class="GtkWindow" id="chiusura_dialog">
     <property name="can_focus">False</property>
+    <property name="border_width">10</property>
     <property name="modal">True</property>
     <property name="window_position">center</property>
     <child>
       <object class="GtkVBox" id="vbox1">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
+        <property name="spacing">2</property>
         <child>
           <object class="GtkLabel" id="chiusura_label">
             <property name="visible">True</property>
@@ -31,7 +33,7 @@ odierna impostata e contatta la Promotux</property>
           </packing>
         </child>
         <child>
-          <object class="GtkHBox" id="hbox3">
+          <object class="GtkHBox" id="hbox3_____">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <child>
