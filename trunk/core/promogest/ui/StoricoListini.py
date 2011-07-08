@@ -22,6 +22,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
+from promogest.ui.gtk_compat import *
 from promogest.ui.Visualizzazione import Visualizzazione, VisualizzazioneFilter
 from sqlalchemy.orm import mapper, join
 from promogest import Environment

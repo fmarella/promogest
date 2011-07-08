@@ -54,48 +54,9 @@ class AnagraficaCommesseEdit(AnagraficaEdit):
         self.dao_id = None
         self.num = None
         self.aziendaStr = Environment.azienda
-#        self.rotazione = setconf("rotazione_primanota","Primanota")
-#        fillComboboxBanche(self.id_banca_customcombobox.combobox)
-#        self.id_banca_customcombobox.connect('clicked',
-#                                 on_id_banca_customcombobox_clicked)
-#        self.id_banca_customcombobox.set_sensitive(False)
 
     def draw(self, cplx=False):
-        #treeview = self.riga_commessa_treeview
-        #renderer = gtk.CellRendererText()
 
-        #column = gtk.TreeViewColumn('Numero', renderer, text=1, background=1)
-        #column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        #column.set_resizable(True)
-        #column.set_expand(False)
-        #column.set_min_width(50)
-        #treeview.append_column(column)
-
-        #column = gtk.TreeViewColumn('Data', renderer, text=2, background=1)
-        #column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        #column.set_resizable(True)
-        #column.set_expand(False)
-        #column.set_min_width(100)
-        #treeview.append_column(column)
-
-        #column = gtk.TreeViewColumn('Titolo', renderer, text=3, background=1)
-        #column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-##        column.set_clickable(True)
-        #column.set_resizable(True)
-        #column.set_expand(True)
-        #column.set_min_width(100)
-        #treeview.append_column(column)
-
-        #column = gtk.TreeViewColumn('Tipo', renderer, text=4, background=1)
-        #column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        #column.set_resizable(True)
-        #column.set_expand(False)
-        #column.set_min_width(100)
-        #treeview.append_column(column)
-
-        #treeview.set_search_column(1)
-        #self._rigaModel = gtk.ListStore(object, str,str, str, str,str, str, str )
-        #self.riga_commessa_treeview.set_model(self._rigaModel)
         fillComboboxStadioCommessa(self.stadio_commessa_combobox.combobox)
         self.stadio_commessa_combobox.connect('clicked',
                                             on_stadio_commessa_combobox_clicked)

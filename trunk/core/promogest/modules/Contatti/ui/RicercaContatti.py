@@ -78,7 +78,7 @@ class RicercaContattiFilter(RicercaFilter):
         renderer = gtk.CellRendererText()
 
         column = gtk.TreeViewColumn('Cognome - Nome', renderer,text=1)
-        column.set_sizing(GTK_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.connect("clicked", self._changeOrderBy, 'cognome')
         column.set_resizable(True)
@@ -86,7 +86,7 @@ class RicercaContattiFilter(RicercaFilter):
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('Ruolo', renderer,text=2)
-        column.set_sizing(GTK_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.connect("clicked", self._changeOrderBy, 'ruolo')
         column.set_resizable(True)
@@ -94,7 +94,7 @@ class RicercaContattiFilter(RicercaFilter):
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('Descrizione', renderer,text=3)
-        column.set_sizing(GTK_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.connect("clicked", self._changeOrderBy, 'descrizione')
         column.set_resizable(True)
@@ -102,7 +102,7 @@ class RicercaContattiFilter(RicercaFilter):
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('Relativo a', renderer,text=4)
-        column.set_sizing(GTK_COLUMN_GROW_ONLY)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.set_resizable(True)
         column.set_expand(True)

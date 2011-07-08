@@ -190,7 +190,6 @@ class RicercaDocumentiFilter(RicercaFilter):
         #self._allResultForHtml = self.runFilter(offset=None, batchSize=None)
         tdos = self.runFilter()
 #        self.xptDaoList = self.runFilter(offset=None, batchSize=None)
-        print dir(self), dir(self._ricerca)
         self.filter_listore.clear()
         for t in tdos:
             totali = t.totali

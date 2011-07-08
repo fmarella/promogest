@@ -64,7 +64,7 @@ class AnagraficaCommesseReport(AnagraficaReport):
 
     def __init__(self, anagrafica):
         AnagraficaReport.__init__(self, anagrafica=anagrafica,
-                                  description='Elenco delle Prime Note Cassa',
+                                  description='Elenco delle commesse',
                                   defaultFileName='commessa',
                                   htmlTemplate='commessa',
                                   sxwTemplate='commessa')
