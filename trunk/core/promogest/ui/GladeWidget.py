@@ -86,13 +86,12 @@ class GladeWidget(SimpleGladeApp):
         """ Imports size and position of the window """
 
         self.isWindowPlaced = True
-        self.width = None
-        self.height = None
-        self.left = None
-        self.top = None
-
-        file = open(self._defaultWindowAttributesFile, "r")
+        self.width = 300
+        self.height = 200
+        self.left = 100
+        self.top = 100
         try:
+            file = open(self._defaultWindowAttributesFile, "r")
             doc = ElementTree.parse(file)
             file.close()
             elem = doc.getroot()
@@ -124,10 +123,10 @@ class GladeWidget(SimpleGladeApp):
             obj = elem.find(self._windowName)
         else:
             obj = ElementTree.SubElement(elem,self._windowName)
-        obj.set("width", str(self.width) or "")
-        obj.set("height", str(self.height) or "")
-        obj.set("left", str(self.left) or "")
-        obj.set("top", str(self.top) or "")
+        obj.set("width", str(self.width) or "300")
+        obj.set("height", str(self.height) or "200")
+        obj.set("left", str(self.left) or "100")
+        obj.set("top", str(self.top) or "100")
         doc.write(self._defaultWindowAttributesFile)
 
 
@@ -138,8 +137,12 @@ class GladeWidget(SimpleGladeApp):
             self._loadWindowAttributes()
             if self.width is not None and self.height is not None:
                 self.topLevelWindow.resize(self.width, self.height)
+            else:
+                self.topLevelWindow.resize("300", "200")
             if self.left is not None and self.top is not None:
                 self.topLevelWindow.move(self.left, self.top)
+            else:
+                self.topLevelWindow.move("100", "100")
 
     def on_number_insert_text(self,editable, new_text, new_text_length, position):
         #print new_text, new_text_length, new_text.isdigit()
