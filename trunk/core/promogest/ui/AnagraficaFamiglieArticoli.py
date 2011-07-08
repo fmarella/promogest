@@ -82,7 +82,6 @@ L'operazione è irreversibile, retroattiva e potrebbe impiegare qualche minuto.
                 for u in usata:
                     u.id_famiglia_articolo = idfam
                     u.persist()
-                dialog.destroy()
                 dao.delete()
                 self.htmlHandler.setDao(None)
         else:
