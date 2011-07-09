@@ -310,7 +310,7 @@ class Main(GladeWidget):
     def on_forniture_button_clicked(self, toggleButton):
         if toggleButton.get_property('active') is False:
             return
-        from AnagraficaForniture import AnagraficaForniture
+        from promogest.ui.anagForniture.AnagraficaForniture import AnagraficaForniture
         anag = AnagraficaForniture(aziendaStr=self.aziendaStr)
         showAnagrafica(self.getTopLevel(), anag, toggleButton, mainClass=self)
 
