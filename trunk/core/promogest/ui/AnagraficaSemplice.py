@@ -28,7 +28,7 @@ from promogest.ui.GladeWidget import GladeWidget
 from promogest.ui.widgets.FilterWidget import FilterWidget
 from promogest.ui.SendEmail import SendEmail
 import Login
-from promogest.ui.utils import setconf, YesNoDialog
+from promogest.ui.utils import *
 from promogest import Environment
 
 
