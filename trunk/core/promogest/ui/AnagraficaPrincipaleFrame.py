@@ -86,7 +86,7 @@ class AnagrafichePrincipaliFrame(GladeWidget):
         if toggleButton.get_property('active') is False:
             return
 
-        from AnagraficaForniture import AnagraficaForniture
+        from promogest.ui.anagForniture.AnagraficaForniture import AnagraficaForniture
         anag = AnagraficaForniture(aziendaStr=self.aziendaStr)
 
         showAnagrafica(self.mainWindow, anag, toggleButton)

@@ -49,7 +49,6 @@ class AnagraficaFornitureEdit(AnagraficaEdit):
         self.taglia_colore_table.set_no_show_all(True)
         self.number_format = '%-14.'+ str(setconf("Numbers", "decimals")) +'f'
 
-
     def draw(self,cplx=False):
         self.id_articolo_customcombobox.setSingleValue()
         self.id_articolo_customcombobox.setOnChangedCall(self.on_id_articolo_customcombobox_changed)
@@ -64,14 +63,14 @@ class AnagraficaFornitureEdit(AnagraficaEdit):
             res = self.id_articolo_customcombobox.getData()
             self.descrizione_breve_aliquota_iva_label.set_text(res["denominazioneBreveAliquotaIva"])
             self._percentualeIva = res["percentualeAliquotaIva"]
-            self.percentuale_aliquota_iva_label.set_text('%5.2f' % self._percentualeIva + ' %')
+            self.percentuale_aliquota_iva_label.set_text(str(mN(self._percentualeIva,0)) + ' %')
         if self._anagrafica._fornitoreFissato:
             self.id_fornitore_customcombobox.setId(self._anagrafica._idFornitore)
             self.id_fornitore_customcombobox.set_sensitive(False)
 
-        fillComboboxMultipli(self.id_multiplo_customcombobox.combobox, self.id_articolo_customcombobox.getId())
-        self.id_multiplo_customcombobox.connect('clicked',
-                                                self.on_id_multiplo_customcombobox_button_clicked)
+        #fillComboboxMultipli(self.id_multiplo_customcombobox.combobox, self.id_articolo_customcombobox.getId())
+        #self.id_multiplo_customcombobox.connect('clicked',
+                                                #self.on_id_multiplo_customcombobox_button_clicked)
 
         self.prezzo_lordo_entry.connect('focus_out_event', self._calcolaPrezzoNetto)
 
@@ -86,7 +85,7 @@ class AnagraficaFornitureEdit(AnagraficaEdit):
             self.descrizione_breve_aliquota_iva_label.set_text(res["denominazioneBreveAliquotaIva"])
             self._percentualeIva = res["percentualeAliquotaIva"]
             self.percentuale_aliquota_iva_label.set_text('%5.2f' % self._percentualeIva + ' %')
-            fillComboboxMultipli(self.id_multiplo_customcombobox.combobox, self.id_articolo_customcombobox.getId())
+            #fillComboboxMultipli(self.id_multiplo_customcombobox.combobox, self.id_articolo_customcombobox.getId())
             if posso("PW"):
                 self._refreshTagliaColore(res["id"])
 
@@ -131,9 +130,9 @@ class AnagraficaFornitureEdit(AnagraficaEdit):
         self.fornitore_preferenziale_checkbutton.set_active(self.dao.fornitore_preferenziale or False)
         self.data_fornitura_entry.set_text(dateToString(self.dao.data_fornitura))
         self.data_prezzo_entry.set_text(dateToString(self.dao.data_prezzo))
-        fillComboboxMultipli(self.id_multiplo_customcombobox.combobox, self.id_articolo_customcombobox.getId())
-        findComboboxRowFromId(self.id_multiplo_customcombobox.combobox,
-                              self.dao.id_multiplo)
+        #fillComboboxMultipli(self.id_multiplo_customcombobox.combobox, self.id_articolo_customcombobox.getId())
+        #findComboboxRowFromId(self.id_multiplo_customcombobox.combobox,
+                              #self.dao.id_multiplo)
         self.sconti_widget.setValues(self.dao.sconti, self.dao.applicazione_sconti)
         self._calcolaPrezzoNetto()
         if posso("PW"):
@@ -209,7 +208,7 @@ per cui verrà aggiornata la precedente.""")
         self.dao.data_prezzo = stringToDate(self.data_prezzo_entry.get_text())
         self.dao.data_fornitura = stringToDate(self.data_fornitura_entry.get_text())
         self.dao.codice_articolo_fornitore = self.codice_articolo_fornitore_entry.get_text()
-        self.dao.id_multiplo = findIdFromCombobox(self.id_multiplo_customcombobox.combobox)
+        #self.dao.id_multiplo = findIdFromCombobox(self.id_multiplo_customcombobox.combobox)
         self.dao.prezzo_lordo = float(self.prezzo_lordo_entry.get_text())
         self.dao.prezzo_netto = float(self.prezzo_netto_label.get_text())
         self.dao.scorta_minima = int(self.scorta_minima_entry.get_text() or 1)

@@ -1245,7 +1245,7 @@ def on_id_fornitura_customcombobox_clicked(widget, button, idArticolo, idFornito
     if widget.button.get_property('active') is False:
         return
 
-    from AnagraficaForniture import AnagraficaForniture
+    from promogest.ui.anagForniture.AnagraficaForniture import AnagraficaForniture
     anag = AnagraficaForniture(idArticolo, idFornitore)
 
     anagWindow = anag.getTopLevel()

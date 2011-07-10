@@ -471,7 +471,7 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
                 toggleButton.set_active(False)
                 return
 
-        from AnagraficaForniture import AnagraficaForniture
+        from promogest.ui.anagForniture.AnagraficaForniture import AnagraficaForniture
         anag = AnagraficaForniture(self.dao.id)
         anagWindow = anag.getTopLevel()
 
