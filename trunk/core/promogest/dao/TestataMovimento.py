@@ -227,15 +227,18 @@ class TestataMovimento(Dao):
                             # nessuna fornitura utilizzabile, ne creo una nuova (alcuni dati mancheranno)
                             #pg2log.info("NESSUNA FORNITURA UTILIZZABILE, NE CREO UNA NUOVA (ALCUNI DATI MANCHERANNO)")
                             daoFornitura = Fornitura()
-                        if riga.ordine_minimo:
+                        if hasattr(riga, "ordine_minimo") and riga.ordine_minimo:
                             daoFornitura.scorta_minima = int(riga.ordine_minimo)
                         #daoFornitura.id_multiplo = None
-                        if riga.tempo_arrivo:
+                        if hasattr(riga, "tempo_arrivo") and riga.tempo_arrivo:
                             daoFornitura.tempo_arrivo_merce = int(riga.tempo_arrivo)
                         daoFornitura.fornitore_preferenziale = True
-                        daoFornitura.numero_lotto = riga.numero_lotto or ""
-                        daoFornitura.data_scadenza = stringToDate(riga.data_scadenza) or None
-                        daoFornitura.data_prezzo = stringToDate(riga.data_prezzo) or self.data_movimento
+                        if hasattr(riga,"numero_lotto"):
+                            daoFornitura.numero_lotto = riga.numero_lotto or ""
+                        if hasattr(riga, "data_scadenza"):
+                            daoFornitura.data_scadenza = stringToDate(riga.data_scadenza) or None
+                        if hasattr(riga,"data_prezzo"):
+                            daoFornitura.data_prezzo = stringToDate(riga.data_prezzo) or self.data_movimento
 
                         daoFornitura.id_fornitore = self.id_fornitore
                         daoFornitura.id_articolo = riga.id_articolo
