@@ -22,7 +22,7 @@
 from promogest.ui.utils import *
 from promogest.dao.Setconf import SetConf
 from promogest import Environment
-from GladeWidget import GladeWidget
+from promogest.ui.GladeWidget import GladeWidget
 
 
 class AnagraficaDocumentiSetup(GladeWidget):

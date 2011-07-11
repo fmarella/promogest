@@ -23,7 +23,7 @@
 
 import datetime
 from promogest.ui.AnagraficaComplessaEdit import AnagraficaEdit
-from promogest.ui.AnagraficaDocumentiEditUtils import *
+from promogest.ui.anagDocumenti.AnagraficaDocumentiEditUtils import *
 from promogest import Environment
 from promogest.dao.TestataMovimento import TestataMovimento
 from promogest.dao.TestataDocumento import TestataDocumento

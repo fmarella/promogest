@@ -27,7 +27,7 @@ from promogest.ui.AnagraficaComplessaHtml import AnagraficaHtml
 
 from AnagraficaMovimentiEdit import AnagraficaMovimentiEdit
 from AnagraficaMovimentiFilter import AnagraficaMovimentiFilter
-from AnagraficaDocumentiEditUtils import *
+from promogest.ui.anagDocumenti.AnagraficaDocumentiEditUtils import *
 from utils import *
 from utilsCombobox import *
 

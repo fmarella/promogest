@@ -26,10 +26,10 @@
 
 from promogest.ui.gtk_compat import *
 from promogest.ui.AnagraficaComplessaFilter import AnagraficaFilter
-from utils import *
+from promogest.ui.utils import *
 from promogest.dao.TestataDocumento import TestataDocumento
 import datetime
-from utilsCombobox import *
+from promogest.ui.utilsCombobox import *
 from promogest import Environment
 
 class AnagraficaDocumentiFilter(AnagraficaFilter):

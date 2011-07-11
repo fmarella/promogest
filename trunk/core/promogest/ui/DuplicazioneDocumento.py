@@ -32,7 +32,7 @@ from promogest.dao.ScontoRigaDocumento import ScontoRigaDocumento
 from promogest.dao.ScontoTestataDocumento import ScontoTestataDocumento
 from promogest.dao.Operazione import Operazione
 from promogest.dao.Fornitura import Fornitura
-from promogest.ui.AnagraficaDocumenti import *
+from promogest.ui.anagDocumenti.AnagraficaDocumenti import *
 if posso("PA"):
     import promogest.modules.Pagamenti.dao.TestataDocumentoScadenza
     from promogest.modules.Pagamenti.dao.TestataDocumentoScadenza import TestataDocumentoScadenza

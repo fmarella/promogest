@@ -221,7 +221,7 @@ class Main(GladeWidget):
             # pulsante nel frame registrazioni
             if not hasAction(actionID=2):
                 return
-            from AnagraficaDocumenti import AnagraficaDocumenti
+            from promogest.ui.anagDocumenti.AnagraficaDocumenti import AnagraficaDocumenti
             anag = AnagraficaDocumenti(aziendaStr=self.aziendaStr)
             showAnagrafica(self.getTopLevel(), anag, mainClass=self)
             icon_view.unselect_all()
@@ -971,7 +971,7 @@ class RegistrazioniFrame(GladeWidget):
         if toggleButton.get_property('active') is False:
             return
         if not hasAction(actionID=2):return
-        from AnagraficaDocumenti import AnagraficaDocumenti
+        from promogest.ui.anagDocumenti.AnagraficaDocumenti import AnagraficaDocumenti
         anag = AnagraficaDocumenti(aziendaStr=self.aziendaStr)
 
         showAnagrafica(self.mainWindow, anag, toggleButton)

@@ -125,7 +125,7 @@ class AzioniVelociNotebookPage(GladeWidget):
 
     def nuovoDocumento(self, kind):
         if not hasAction(actionID=2):return
-        from AnagraficaDocumenti import AnagraficaDocumenti
+        from promogest.ui.anagDocumenti.AnagraficaDocumenti import AnagraficaDocumenti
         #from utils import findComboboxRowFromStr
 #        self.aziendaStr = Environment.azienda
         anag = AnagraficaDocumenti()

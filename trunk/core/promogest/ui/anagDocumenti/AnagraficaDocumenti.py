@@ -22,12 +22,12 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 
-from AnagraficaComplessa import Anagrafica
+from promogest.ui.AnagraficaComplessa import Anagrafica
 from promogest.ui.AnagraficaComplessaReport import AnagraficaReport
 from promogest.ui.AnagraficaComplessaHtml import AnagraficaHtml
 from promogest import Environment
-from promogest.ui.AnagraficaDocumentiFilter import AnagraficaDocumentiFilter
-from promogest.ui.AnagraficaDocumentiEdit import AnagraficaDocumentiEdit
+from promogest.ui.anagDocumenti.AnagraficaDocumentiFilter import AnagraficaDocumentiFilter
+from promogest.ui.anagDocumenti.AnagraficaDocumentiEdit import AnagraficaDocumentiEdit
 from promogest.modules.Pagamenti.dao.TestataDocumentoScadenza import TestataDocumentoScadenza
 from promogest.dao.TestataDocumento import TestataDocumento
 from promogest.ui.utils import *
@@ -62,12 +62,12 @@ class AnagraficaDocumenti(Anagrafica):
         if dao is None:
             return
 
-        from DuplicazioneDocumento import DuplicazioneDocumento
+        from promogest.ui.DuplicazioneDocumento import DuplicazioneDocumento
         anag = DuplicazioneDocumento(dao, self)
         showAnagraficaRichiamata(self.getTopLevel(), anag.getTopLevel(), None, self.filter.refresh)
 
     def on_record_fattura_button_clicked(self, button=None):
-        from FatturazioneDifferita import FatturazioneDifferita
+        from promogest.ui.FatturazioneDifferita import FatturazioneDifferita
         anag = FatturazioneDifferita(self.anagrafica_filter_treeview.get_selection())
         showAnagraficaRichiamata(self.getTopLevel(), anag.getTopLevel(), button=None, callName=self.filter.refresh)
 

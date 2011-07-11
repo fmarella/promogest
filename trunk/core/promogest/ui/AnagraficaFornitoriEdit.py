@@ -326,7 +326,7 @@ class AnagraficaFornitoriEdit(AnagraficaEdit):
                 toggleButton.set_active(False)
                 return
 
-        from AnagraficaDocumenti import AnagraficaDocumenti
+        from promogest.ui.anagDocumenti.AnagraficaDocumenti import AnagraficaDocumenti
         anag = AnagraficaDocumenti()
         anagWindow = anag.getTopLevel()
         showAnagraficaRichiamata(self.dialogTopLevel, anagWindow, toggleButton)

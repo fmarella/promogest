@@ -30,7 +30,7 @@ import datetime
 
 from promogest import Environment
 from promogest.ui.AnagraficaComplessaEdit import AnagraficaEdit
-from AnagraficaDocumentiEditUtils import *
+from promogest.ui.anagDocumenti.AnagraficaDocumentiEditUtils import *
 
 from promogest.dao.TestataDocumento import TestataDocumento
 from promogest.dao.TestataMovimento import TestataMovimento
@@ -49,8 +49,8 @@ from promogest.dao.AliquotaIva import AliquotaIva
 #from promogest.dao.RigaRitenutaAcconto import RigaRitenutaAcconto
 from promogest.modules.PrimaNota.dao.TestataPrimaNota import TestataPrimaNota
 
-from utils import *
-from utilsCombobox import *
+from promogest.ui.utils import *
+from promogest.ui.utilsCombobox import *
 from promogest.dao.DaoUtils import giacenzaArticolo
 
 if posso("PW"):
@@ -1480,7 +1480,7 @@ del documento.
             self.mostraArticolo(arts[0].id)
             self.articolo_matchato = None
         else:
-            from RicercaComplessaArticoli import RicercaComplessaArticoli
+            from promogest.ui.RicercaComplessaArticoli import RicercaComplessaArticoli
             anag = RicercaComplessaArticoli(denominazione=denominazione,
                                             codice=codice,
                                             codiceABarre=codiceABarre,
@@ -1668,7 +1668,7 @@ del documento.
 
     def on_storico_costi_button_clicked(self, toggleButton):
         """ """
-        from StoricoForniture import StoricoForniture
+        from promogest.ui.StoricoForniture import StoricoForniture
         idArticolo = self._righe[0]["idArticolo"]
         if self._tipoPersonaGiuridica == "fornitore":
             idFornitore = self.id_persona_giuridica_customcombobox.getId()
@@ -1681,7 +1681,7 @@ del documento.
 
     def on_storico_listini_button_clicked(self, toggleButton):
         """ """
-        from StoricoListini import StoricoListini
+        from promogest.ui.StoricoListini import StoricoListini
         idArticolo = self._righe[0]["idArticolo"]
         anag = StoricoListini(idArticolo)
         anagWindow = anag.getTopLevel()
@@ -1694,7 +1694,7 @@ del documento.
             messageInfo('Selezionare un articolo !')
             return
 
-        from VariazioneListini import VariazioneListini
+        from promogest.ui.VariazioneListini import VariazioneListini
         idArticolo = self._righe[0]["idArticolo"]
         costoNuovo = None
         costoUltimo = None

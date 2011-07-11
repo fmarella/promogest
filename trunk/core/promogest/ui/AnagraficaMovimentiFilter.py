@@ -22,7 +22,7 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 from promogest.ui.AnagraficaComplessaFilter import AnagraficaFilter
-from promogest.ui.AnagraficaDocumentiEditUtils import *
+from promogest.ui.anagDocumenti.AnagraficaDocumentiEditUtils import *
 from promogest import Environment
 from promogest.dao.TestataMovimento import TestataMovimento
 from promogest.ui.utils import *
