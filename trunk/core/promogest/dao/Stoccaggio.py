@@ -14,6 +14,7 @@ from promogest.Environment import params, workingYear, conf
 from Dao import Dao
 from Articolo import Articolo
 from Magazzino import Magazzino
+from promogest.dao.Fornitura import Fornitura
 from promogest.dao.CodiceABarreArticolo import CodiceABarreArticolo
 from DaoUtils import giacenzaSel
 from promogest.ui.utils import mN, posso
