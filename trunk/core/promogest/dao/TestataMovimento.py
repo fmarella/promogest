@@ -111,11 +111,6 @@ class TestataMovimento(Dao):
             if riga.id_magazzino not in __numeroMagazzini:
                 __numeroMagazzini.append(riga.id_magazzino)
         return len(__numeroMagazzini)
-        #if len(self.righe) > 0 and self.id:
-            #mov_query = params['session'].query(RigaMovimento.id).filter(RigaMovimento.id_testata_movimento == self.id)
-            #doc_query = params['session'].query(RigaDocumento.id).filter(RigaDocumento.id_testata_documento == self.id)
-            #res = params['session'].query(Riga.id_magazzino).filter(or_(Riga.id.in_(mov_query),Riga.id.in_(doc_query))).distinct().count()
-            #return res
 
     numeroMagazzini = property(_getNumeroMagazzini)
 
@@ -157,11 +152,7 @@ class TestataMovimento(Dao):
                             Riga.id==RigaMovimento.id,
                             Articolo.id ==Riga.id_articolo,
                            Articolo.id ==v)}
-#        elif k == 'idArticoloList':
-#            dic = {k:and_(Articolo.id ==Riga.id_articolo,
-#                           Riga.id==RigaMovimento.id,
-#                           RigaMovimento.id_testata_movimento == TestataMovimento.id,
-#                           Articolo.id.in_(v))}
+
         return  dic[k]
 
     def righeMovimentoDel(self,id=None):
@@ -210,7 +201,7 @@ class TestataMovimento(Dao):
                     #salvataggio riga
                     riga.persist()
                     #print "DOPO il persist della riga", tempo()
-                    if self.id_fornitore is not None and riga.id_articolo:
+                    if self.id_fornitore     and riga.id_articolo:
                         """aggiornamento forniture cerca la fornitura relativa al fornitore
                             con data <= alla data del movimento"""
                         fors = Fornitura().select(idArticolo=riga.id_articolo,
@@ -232,14 +223,19 @@ class TestataMovimento(Dao):
                                     copio alcuni dati dalla fornitura piu' prossima"""
                                 #pg2log.info("CREO UNA NUOVA FORNITURA CON DATA_PREZZO PARI ALLA DATA DEL MOVIMENTO COPIO ALCUNI DATI DALLA FORNITURA PIU' PROSSIMA")
                                 daoFornitura = Fornitura()
-                                daoFornitura.scorta_minima = fors[0].scorta_minima
-                                daoFornitura.id_multiplo = fors[0].id_multiplo
-                                daoFornitura.tempo_arrivo_merce = fors[0].tempo_arrivo_merce
-                                daoFornitura.fornitore_preferenziale = fors[0].fornitore_preferenziale
                         else:
                             # nessuna fornitura utilizzabile, ne creo una nuova (alcuni dati mancheranno)
                             #pg2log.info("NESSUNA FORNITURA UTILIZZABILE, NE CREO UNA NUOVA (ALCUNI DATI MANCHERANNO)")
                             daoFornitura = Fornitura()
+                        if riga.ordine_minimo:
+                            daoFornitura.scorta_minima = int(riga.ordine_minimo)
+                        #daoFornitura.id_multiplo = None
+                        if riga.tempo_arrivo:
+                            daoFornitura.tempo_arrivo_merce = int(riga.tempo_arrivo)
+                        daoFornitura.fornitore_preferenziale = True
+                        daoFornitura.numero_lotto = riga.numero_lotto or ""
+                        daoFornitura.data_scadenza = stringToDate(riga.data_scadenza) or None
+                        daoFornitura.data_prezzo = stringToDate(riga.data_prezzo) or self.data_movimento
 
                         daoFornitura.id_fornitore = self.id_fornitore
                         daoFornitura.id_articolo = riga.id_articolo
@@ -248,7 +244,6 @@ class TestataMovimento(Dao):
                                 daoFornitura.data_fornitura = self.data_movimento
                         else:
                             daoFornitura.data_fornitura = self.data_movimento
-                        daoFornitura.data_prezzo = self.data_movimento
                         if "_RigaMovimento__codiceArticoloFornitore" in riga.__dict__:
                             daoFornitura.codice_articolo_fornitore = riga.__dict__["_RigaMovimento__codiceArticoloFornitore"]
                         daoFornitura.prezzo_lordo = riga.valore_unitario_lordo
@@ -268,7 +263,6 @@ class TestataMovimento(Dao):
                     params["session"].commit()
                 #print "DOPO il for generale di riga movimento", tempo()
             self.__righeMovimento = []
-            #params["session"].flush()
 
 #riga=Table('riga',params['metadata'],schema = params['schema'],autoload=True)
 testata_mov=Table('testata_movimento', params['metadata'],schema = params['schema'],autoload=True)

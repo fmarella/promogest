@@ -26,6 +26,7 @@ from Dao import Dao
 from Multiplo import Multiplo
 from ScontoFornitura import ScontoFornitura
 from Fornitore import Fornitore
+from migrate import *
 
 
 class Fornitura(Dao):
@@ -158,6 +159,12 @@ fornitura=Table('fornitura', params['metadata'], schema = params['schema'], auto
 fornitor=Table('fornitore', params['metadata'], schema = params['schema'], autoload=True)
 multip=Table('multiplo', params['metadata'], schema = params['schema'], autoload=True)
 
+if "numero_lotto" not in [c.name for c in fornitura.columns]:
+    col = Column('numero_lotto', String(200))
+    col.create(fornitura)
+if "data_scadenza" not in [c.name for c in fornitura.columns]:
+    col = Column('data_scadenza', DateTime)
+    col.create(fornitura)
 
 std_mapper = mapper(Fornitura,fornitura, properties={
         "multi": relation(Multiplo,primaryjoin=fornitura.c.id_multiplo==multip.c.id),

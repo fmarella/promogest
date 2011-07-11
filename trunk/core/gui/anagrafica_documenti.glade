@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <requires lib="gtk+" version="2.16"/>
   <!-- interface-requires pythonplugin 0.0 -->
+  <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy toplevel-contextual -->
   <object class="GtkVBox" id="anagrafica_documenti_detail_vbox">
     <property name="visible">True</property>
@@ -1879,7 +1879,7 @@
                                                     </child>
                                                     <child>
                                                       <object class="GtkEntry" id="codice_articolo_fornitore_entry">
-                                                        <property name="width_request">420</property>
+                                                        <property name="width_request">160</property>
                                                         <property name="visible">True</property>
                                                         <property name="can_focus">True</property>
                                                         <property name="invisible_char">●</property>
@@ -1901,10 +1901,44 @@
                                                       </packing>
                                                     </child>
                                                     <child>
-                                                      <placeholder/>
-                                                    </child>
-                                                    <child>
-                                                      <placeholder/>
+                                                      <object class="GtkHBox" id="hbox4">
+                                                        <property name="visible">True</property>
+                                                        <property name="can_focus">False</property>
+                                                        <child>
+                                                          <object class="GtkLabel" id="data_prezzo_label">
+                                                            <property name="width_request">110</property>
+                                                            <property name="visible">True</property>
+                                                            <property name="can_focus">False</property>
+                                                            <property name="xalign">0</property>
+                                                            <property name="label" translatable="yes">Data prezzo</property>
+                                                          </object>
+                                                          <packing>
+                                                            <property name="expand">False</property>
+                                                            <property name="fill">False</property>
+                                                            <property name="position">0</property>
+                                                          </packing>
+                                                        </child>
+                                                        <child>
+                                                          <object class="DateWidget" id="data_prezzo_datewidget">
+                                                            <property name="width_request">160</property>
+                                                            <property name="visible">True</property>
+                                                            <property name="can_focus">False</property>
+                                                            <child>
+                                                            <placeholder/>
+                                                            </child>
+                                                          </object>
+                                                          <packing>
+                                                            <property name="expand">False</property>
+                                                            <property name="fill">False</property>
+                                                            <property name="position">1</property>
+                                                          </packing>
+                                                        </child>
+                                                      </object>
+                                                      <packing>
+                                                        <property name="expand">False</property>
+                                                        <property name="fill">False</property>
+                                                        <property name="position">2</property>
+                                                      </packing>
                                                     </child>
                                                   </object>
                                                   <packing>
@@ -2009,13 +2043,11 @@
                                                       </packing>
                                                     </child>
                                                     <child>
-                                                      <object class="UnsignedDecimalEntryField" id="ordine_minimo_entry">
+                                                      <object class="UnsignedIntegerEntryField" id="ordine_minimo_entry">
                                                         <property name="width_request">160</property>
                                                         <property name="visible">True</property>
                                                         <property name="can_focus">True</property>
-                                                        <property name="invisible_char">●</property>
-                                                        <property name="text" translatable="yes">0.00      </property>
-                                                        <property name="invisible_char_set">True</property>
+                                                        <property name="invisible_char">•</property>
                                                         <property name="secondary_icon_stock">gtk-clear</property>
                                                         <property name="primary_icon_activatable">False</property>
                                                         <property name="secondary_icon_activatable">True</property>
@@ -2024,7 +2056,7 @@
                                                       </object>
                                                       <packing>
                                                         <property name="expand">False</property>
-                                                        <property name="fill">False</property>
+                                                        <property name="fill">True</property>
                                                         <property name="position">1</property>
                                                       </packing>
                                                     </child>

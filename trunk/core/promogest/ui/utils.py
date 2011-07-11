@@ -468,6 +468,11 @@ def leggiFornitura(idArticolo, idFornitore=None, data=None, noPreferenziale=Fals
     _sconti = []
     _applicazioneSconti = 'scalare'
     _codiceArticoloFornitore = ''
+    _numeroLottoArticoloFornitura = None
+    _dataScadenzaArticoloFornitura = None
+    _dataPrezzoFornitura = None
+    _ordineMinimoFornitura = None
+    _tempoArrivoFornitura = None
 
     if (idArticolo is not None):
         fors = Fornitura().select(idArticolo=idArticolo,
@@ -500,6 +505,11 @@ def leggiFornitura(idArticolo, idFornitore=None, data=None, noPreferenziale=Fals
             _prezzoLordo = fornitura.prezzo_lordo or 0
             _prezzoNetto = _prezzoLordo
             _applicazioneSconti = fornitura.applicazione_sconti
+            _numeroLottoArticoloFornitura = fornitura.numero_lotto or None
+            _dataScadenzaArticoloFornitura = dateToString(fornitura.data_scadenza) or None
+            _dataPrezzoFornitura = dateToString(fornitura.data_prezzo) or None
+            _ordineMinimoFornitura = fornitura.scorta_minima or None
+            _tempoArrivoFornitura = fornitura.tempo_arrivo_merce or None
 
             idFornitura = fornitura.id
             if idFornitura is not None:
@@ -521,7 +531,14 @@ def leggiFornitura(idArticolo, idFornitore=None, data=None, noPreferenziale=Fals
             "prezzoNetto": _prezzoNetto,
             "sconti": _sconti,
             "applicazioneSconti": _applicazioneSconti,
-            "codiceArticoloFornitore": _codiceArticoloFornitore}
+            "codiceArticoloFornitore": _codiceArticoloFornitore,
+            "numeroLottoArticoloFornitura": _numeroLottoArticoloFornitura,
+            "dataScadenzaArticoloFornitura": _dataScadenzaArticoloFornitura,
+            "dataPrezzoFornitura": _dataPrezzoFornitura,
+            "ordineMinimoFornitura": _ordineMinimoFornitura,
+            "tempoArrivoFornitura": _tempoArrivoFornitura
+
+            }
 
 
 def leggiOperazione(id):

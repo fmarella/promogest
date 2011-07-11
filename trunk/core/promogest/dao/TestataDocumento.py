@@ -516,6 +516,12 @@ class TestataDocumento(Dao):
                     daoRigaMovimento.id_magazzino = row.id_magazzino
                     daoRigaMovimento.id_articolo = row.id_articolo
                     daoRigaMovimento.id_multiplo = row.id_multiplo
+                    # riporti di attributi agganciati all'oggetto temporaneamente
+                    setattr(daoRigaMovimento,"numero_lotto",row.numero_lotto)
+                    setattr(daoRigaMovimento,"data_scadenza",row.data_scadenza)
+                    setattr(daoRigaMovimento,"data_prezzo",row.data_prezzo)
+                    setattr(daoRigaMovimento,"ordine_minimo",row.ordine_minimo)
+                    setattr(daoRigaMovimento,"tempo_arrivo",row.tempo_arrivo)
                     daoRigaMovimento.codiceArticoloFornitore = row.__dict__["_RigaDocumento__codiceArticoloFornitore"]
                     if (hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes") or ("GestioneNoleggio" in Environment.modulesList):
                         daoRigaMovimento.prezzo_acquisto_noleggio = row.prezzo_acquisto_noleggio
@@ -568,7 +574,7 @@ class TestataDocumento(Dao):
                     if scad.numero_scadenza == 0:
                         tipo_pag = "ACCONTO"
                     elif scad.numero_scadenza == 1:
-                        tipo_pag = "PRIMA RATA"
+                        tipo_pag = "-"
                     elif scad.numero_scadenza == 2:
                         tipo_pag = "SECONDA RATA"
                     elif scad.numero_scadenza == 3:

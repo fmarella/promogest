@@ -231,7 +231,12 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                                 "codiceArticoloFornitore": '',
                                 "prezzoNettoUltimo": 0,
                                 "quantita_minima": None,
-                                "ritenute" : []
+                                "ritenute" : [],
+                                "numeroLottoArticoloFornitura":None,
+                                "dataScadenzaArticoloFornitura":None,
+                                "dataPrezzoFornitura":None,
+                                "ordineMinimoFornitura":None,
+                                "tempoArrivoFornitura":None,
                                 }
         if posso("SM"):
             AnagraficaDocumentiEditSuMisuraExt.azzeraRiga(self,numero)
@@ -289,6 +294,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self.data_scadenza_datewidget.set_text('')
         self.ordine_minimo_entry.set_text('')
         self.tempo_arrivo_merce_entry.set_text('')
+        self.data_prezzo_datewidget.set_text('')
         self.id_iva_customcombobox.combobox.set_active(-1)
 #        self.percentuale_iva_entry.set_text('0')
         self.id_multiplo_customcombobox.combobox.clear()
@@ -665,6 +671,11 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             if self._tipoPersonaGiuridica == "fornitore":
                 fornitura = leggiFornitura(riga.id_articolo, self.dao.id_fornitore, self.dao.data_documento, True)
                 self._righe[0]["codiceArticoloFornitore"] = fornitura["codiceArticoloFornitore"] #or articolo["codicearticolofornitore"]
+                self._righe[0]["numeroLottoArticoloFornitura"] = fornitura["numeroLottoArticoloFornitura"]
+                self._righe[0]["dataScadenzaArticoloFornitura"] = fornitura["dataScadenzaArticoloFornitura"]
+                self._righe[0]["dataPrezzoFornitura"] = fornitura["dataPrezzoFornitura"]
+                self._righe[0]["ordineMinimoFornitura"] = fornitura["ordineMinimoFornitura"]
+                self._righe[0]["tempoArrivoFornitura"] = fornitura["tempoArrivoFornitura"]
 
             self._righe.append(self._righe[0])
             rigadoc= self._righe[j]
@@ -899,6 +910,14 @@ del documento.
             daoRiga.id_magazzino = self._righe[i]["idMagazzino"]
             daoRiga.descrizione = self._righe[i]["descrizione"]
             daoRiga.codiceArticoloFornitore = self._righe[i]["codiceArticoloFornitore"]
+            #aggancio degli attributi all'oggetto riga per portarli in salvataggio
+            # alla fornitura...
+            setattr(daoRiga,"numero_lotto",self._righe[i]["numeroLottoArticoloFornitura"])
+            setattr(daoRiga,"data_scadenza",self._righe[i]["dataScadenzaArticoloFornitura"])
+            setattr(daoRiga,"data_prezzo",self._righe[i]["dataPrezzoFornitura"])
+            setattr(daoRiga,"ordine_minimo",self._righe[i]["ordineMinimoFornitura"])
+            setattr(daoRiga,"tempo_arrivo",self._righe[i]["tempoArrivoFornitura"])
+
             daoRiga.id_listino = self._righe[i]["idListino"]
             daoRiga.percentuale_iva = self._righe[i]["percentualeIva"]
             daoRiga.id_iva = self._righe[i]["idAliquotaIva"]
@@ -1020,6 +1039,13 @@ del documento.
         self._righe[0]["codiceArticolo"] = self._righe[self._numRiga]["codiceArticolo"]
         self._righe[0]["descrizione"] = self._righe[self._numRiga]["descrizione"]
         self._righe[0]["codiceArticoloFornitore"] = self._righe[self._numRiga]["codiceArticoloFornitore"]
+
+        self._righe[0]["numeroLottoArticoloFornitura"] = self._righe[self._numRiga]["numeroLottoArticoloFornitura"]
+        self._righe[0]["dataScadenzaArticoloFornitura"] = self._righe[self._numRiga]["dataScadenzaArticoloFornitura"]
+        self._righe[0]["dataPrezzoFornitura"] = self._righe[self._numRiga]["dataPrezzoFornitura"]
+        self._righe[0]["ordineMinimoFornitura"] = self._righe[self._numRiga]["ordineMinimoFornitura"]
+        self._righe[0]["tempoArrivoFornitura"] = self._righe[self._numRiga]["tempoArrivoFornitura"]
+
         self._righe[0]["idUnitaBase"] = self._righe[self._numRiga]["idUnitaBase"]
         self._righe[0]["unitaBase"] = self._righe[self._numRiga]["unitaBase"]
         self._righe[0]["idMultiplo"] = self._righe[self._numRiga]["idMultiplo"]
@@ -1057,6 +1083,12 @@ del documento.
         self.codice_articolo_fornitore_entry.set_text(self._righe[0]["codiceArticoloFornitore"])
         findComboboxRowFromId(self.id_iva_customcombobox.combobox, self._righe[0]["idAliquotaIva"])
 #        self.percentuale_iva_entry.set_text(str(self._righe[0]["percentualeIva"]).strip())
+
+        self.numero_lotto_entry.set_text(self._righe[0]["numeroLottoArticoloFornitura"] or "")
+        self.data_scadenza_datewidget.set_text(self._righe[0]["dataScadenzaArticoloFornitura"] or "")
+        self.data_prezzo_datewidget.set_text(self._righe[0]["dataPrezzoFornitura"] or "")
+        self.ordine_minimo_entry.set_text(str(self._righe[0]["ordineMinimoFornitura"] or ""))
+        self.tempo_arrivo_merce_entry.set_text(str(self._righe[0]["tempoArrivoFornitura"] or ""))
 
         self.sconti_widget.setValues(self._righe[0]["sconti"], self._righe[0]["applicazioneSconti"], False)
         self.quantita_entry.set_text(str(self._righe[0]["quantita"]))
@@ -1154,6 +1186,13 @@ del documento.
                     AnagraficaDocumentiEditADRExt.calcolaLimiteTrasportoADR(self, artADR, azione='agg', qta=self.last_qta)
 
         self._righe[0]["codiceArticoloFornitore"] = self.codice_articolo_fornitore_entry.get_text()
+        self._righe[0]["numeroLottoArticoloFornitura"] = self.numero_lotto_entry.get_text()
+        self._righe[0]["dataScadenzaArticoloFornitura"] = self.data_scadenza_datewidget.get_text()
+        self._righe[0]["dataPrezzoFornitura"] = self.data_prezzo_datewidget.get_text()
+        self._righe[0]["ordineMinimoFornitura"] = self.ordine_minimo_entry.get_text()
+        self._righe[0]["tempoArrivoFornitura"] = self.tempo_arrivo_merce_entry.get_text()
+
+
         totale = self._righe[0]["totale"]
         # CONTROLLI DI Gestione NOLEGGIO
         if posso("GN") and self.noleggio:
@@ -1174,6 +1213,13 @@ del documento.
         self._righe[self._numRiga]["codiceArticolo"] = self._righe[0]["codiceArticolo"]
         self._righe[self._numRiga]["descrizione"] = self._righe[0]["descrizione"]
         self._righe[self._numRiga]["codiceArticoloFornitore"] = self._righe[0]["codiceArticoloFornitore"]
+
+        self._righe[self._numRiga]["numeroLottoArticoloFornitura"] = self._righe[0]["numeroLottoArticoloFornitura"]
+        self._righe[self._numRiga]["dataScadenzaArticoloFornitura"] = self._righe[0]["dataScadenzaArticoloFornitura"]
+        self._righe[self._numRiga]["dataPrezzoFornitura"] = self._righe[0]["dataPrezzoFornitura"]
+        self._righe[self._numRiga]["ordineMinimoFornitura"] = self._righe[0]["ordineMinimoFornitura"]
+        self._righe[self._numRiga]["tempoArrivoFornitura"] = self._righe[0]["tempoArrivoFornitura"]
+
         self._righe[self._numRiga]["percentualeIva"] = self._righe[0]["percentualeIva"]
         self._righe[self._numRiga]["idAliquotaIva"] = self._righe[0]["idAliquotaIva"]
         self._righe[self._numRiga]["idUnitaBase"] = self._righe[0]["idUnitaBase"]
@@ -1188,6 +1234,7 @@ del documento.
         self._righe[self._numRiga]["applicazioneSconti"] = self._righe[0]["applicazioneSconti"]
         self._righe[self._numRiga]["sconti"] = self._righe[0]["sconti"]
         self._righe[self._numRiga]["prezzoNetto"] = self._righe[0]["prezzoNetto"]
+
         if posso("GN") and self.noleggio:
             self._righe[self._numRiga]["divisore_noleggio"] = self._righe[0]["divisore_noleggio"]
             if "prezzo_acquisto" in self._righe[0]:

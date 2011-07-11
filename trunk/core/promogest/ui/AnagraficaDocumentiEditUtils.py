@@ -541,6 +541,7 @@ def mostraArticoloPart(anaedit, id, art=None):
         anaedit.codice_articolo_fornitore_entry.set_text('')
         anaedit.numero_lotto_entry.set_text("")
         anaedit.data_scadenza_datewidget.set_text('')
+        anaedit.data_prezzo_datewidget.set_text('')
         anaedit.ordine_minimo_entry.set_text('')
         anaedit.tempo_arrivo_merce_entry.set_text('')
 #        anaedit.percentuale_iva_entry.set_text('0')
