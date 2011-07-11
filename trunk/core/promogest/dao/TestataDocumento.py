@@ -517,11 +517,11 @@ class TestataDocumento(Dao):
                     daoRigaMovimento.id_articolo = row.id_articolo
                     daoRigaMovimento.id_multiplo = row.id_multiplo
                     # riporti di attributi agganciati all'oggetto temporaneamente
-                    setattr(daoRigaMovimento,"numero_lotto",row.numero_lotto)
-                    setattr(daoRigaMovimento,"data_scadenza",row.data_scadenza)
-                    setattr(daoRigaMovimento,"data_prezzo",row.data_prezzo)
-                    setattr(daoRigaMovimento,"ordine_minimo",row.ordine_minimo)
-                    setattr(daoRigaMovimento,"tempo_arrivo",row.tempo_arrivo)
+                    setattr(daoRigaMovimento,"numero_lotto",row.numero_lotto or None)
+                    setattr(daoRigaMovimento,"data_scadenza",row.data_scadenza or None)
+                    setattr(daoRigaMovimento,"data_prezzo",row.data_prezzo or None)
+                    setattr(daoRigaMovimento,"ordine_minimo",row.ordine_minimo or None)
+                    setattr(daoRigaMovimento,"tempo_arrivo",row.tempo_arrivo or None)
                     daoRigaMovimento.codiceArticoloFornitore = row.__dict__["_RigaDocumento__codiceArticoloFornitore"]
                     if (hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes") or ("GestioneNoleggio" in Environment.modulesList):
                         daoRigaMovimento.prezzo_acquisto_noleggio = row.prezzo_acquisto_noleggio
