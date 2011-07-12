@@ -201,17 +201,20 @@ class TestataMovimento(Dao):
                     #salvataggio riga
                     riga.persist()
                     #print "DOPO il persist della riga", tempo()
-                    if self.id_fornitore     and riga.id_articolo:
+                    if self.id_fornitore and riga.id_articolo:
+                        if hasattr(riga,"data_prezzo"):
+                            data_prezzo = stringToDateTime(riga.data_prezzo) or stringToDateTime(self.data_movimento)
+                            #print "DATAPREZZOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO", data_prezzo
                         """aggiornamento forniture cerca la fornitura relativa al fornitore
                             con data <= alla data del movimento"""
                         fors = Fornitura().select(idArticolo=riga.id_articolo,
                                                     idFornitore=self.id_fornitore,
                                                     daDataPrezzo=None,
-                                                    aDataPrezzo=self.data_movimento,
+                                                    aDataPrezzo=   data_prezzo,
                                                     orderBy = 'data_prezzo DESC',
                                                     offset = None,
                                                     batchSize = None)
-                        #print "DOPO dopo FORS", tempo()
+                        #print "DOPO dopo FORS", fors
                         daoFornitura = None
                         if fors:
                             if fors[0].data_prezzo == self.data_movimento:
@@ -238,7 +241,7 @@ class TestataMovimento(Dao):
                         if hasattr(riga, "data_scadenza"):
                             daoFornitura.data_scadenza = stringToDate(riga.data_scadenza) or None
                         if hasattr(riga,"data_prezzo"):
-                            daoFornitura.data_prezzo = stringToDate(riga.data_prezzo) or self.data_movimento
+                            daoFornitura.data_prezzo = stringToDateTime(riga.data_prezzo) or stringToDateTime(self.data_movimento)
 
                         daoFornitura.id_fornitore = self.id_fornitore
                         daoFornitura.id_articolo = riga.id_articolo
