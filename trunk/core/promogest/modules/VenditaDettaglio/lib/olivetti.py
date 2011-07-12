@@ -112,11 +112,6 @@ class ElaExecute(object):
     def copyToInDir(self, filename):
         #shutil.copy(filename, "/opt/ela_execute/in/")
         #if hasattr(Environment.conf, "VenditaDettaglio"):
-        if hasattr(Environment.conf.VenditaDettaglio,"export_path"):
-            path = Environment.conf.VenditaDettaglio.export_path
-            #print "filename 111111111111111111111111111111", filename, path
-                #if not os.path.exists(filename):
-            try:
-                shutil.move(filename, path)
-            except:
-                print "IL FILE C?è GIà"
+        #if hasattr(Environment.conf.VenditaDettaglio,"export_path"):
+        path = Environment.conf.VenditaDettaglio.export_path
+        shutil.move(filename, path)
