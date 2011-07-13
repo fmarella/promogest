@@ -204,6 +204,8 @@ class TestataMovimento(Dao):
                     if self.id_fornitore and riga.id_articolo:
                         if hasattr(riga,"data_prezzo"):
                             data_prezzo = stringToDateTime(riga.data_prezzo) or stringToDateTime(self.data_movimento)
+                        else:
+                            data_prezzo = stringToDateTime(self.data_movimento)
                             #print "DATAPREZZOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO", data_prezzo
                         """aggiornamento forniture cerca la fornitura relativa al fornitore
                             con data <= alla data del movimento"""
