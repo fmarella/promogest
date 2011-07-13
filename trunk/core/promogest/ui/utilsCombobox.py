@@ -766,7 +766,7 @@ def fillComboboxProduttori(combobox):
     res = Environment.params['session'].query(Articolo.produttore).order_by(Articolo.produttore).distinct()
     ll = []
     for b in res:
-        if b and b.produttore.strip() not in ll:
+        if b and b.produttore not in ll:
             ll.append(b.produttore)
     model = gtk.ListStore(str)
     for t in ll:
