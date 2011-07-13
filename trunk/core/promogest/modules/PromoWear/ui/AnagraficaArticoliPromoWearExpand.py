@@ -169,7 +169,7 @@ def articleTypeGuiManage(anagrafica, dao, new):
         #gtkgui.id_famiglia_articolo_customcombobox.set_sensitive(False)
         #gtkgui.id_categoria_articolo_customcombobox.set_sensitive(False)
         gtkgui.id_unita_base_combobox.set_sensitive(False)
-        gtkgui.produttore_entry.set_sensitive(False)
+        gtkgui.produttore_comboboxentry.set_sensitive(False)
 
     elif articleType(dao) == "father":
         """ Articolo principale in quando id_articolo_padre è vuoto
@@ -204,7 +204,7 @@ def articleTypeGuiManage(anagrafica, dao, new):
         gtkgui.denominazione_modello_label.set_property('visible', False)
         gtkgui.denominazione_gruppo_taglia_label.set_property('visible', False)
         gtkgui.denominazione_stagione_anno_label.set_property('visible', False)
-        gtkgui.produttore_entry.set_sensitive(True)
+        gtkgui.produttore_comboboxentry.set_sensitive(True)
 
 
     elif articleType(dao) == "normal":
