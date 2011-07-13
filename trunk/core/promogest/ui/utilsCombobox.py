@@ -52,7 +52,7 @@ def fillComboboxAliquoteIva(combobox, filter=False):
         emptyRow = '< Tutti >'
     model.append((None, 0, emptyRow))
     for i in ivas:
-        model.append((i, i.id, i.denominazione))
+        model.append((i, i.id, i.denominazione_breve))
 
     combobox.clear()
     renderer = gtk.CellRendererText()
