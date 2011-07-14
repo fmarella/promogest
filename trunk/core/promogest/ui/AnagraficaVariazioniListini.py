@@ -251,7 +251,7 @@ class AnagraficaVariazioniListiniEdit(AnagraficaEdit):
         self.priorita_checkbutton.set_active(self.dao.priorita or True)
 
 
-    def saveDao(self):
+    def saveDao(self, tipo=None):
         if (self.denominazione_entry.get_text() == ''):
             obligatoryField(self.dialogTopLevel, self.denominazione_entry)
 

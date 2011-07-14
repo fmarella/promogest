@@ -41,9 +41,9 @@ class DuplicazioneListino(GladeWidget):
 #        self.anagrafica_listini = anagraficaListino
         GladeWidget.__init__(self, 'duplicazione_listino_window',
                                     'duplicazione_listino.glade')
-#        self.placeWindow(self.getTopLevel())
+        self.placeWindow(self.getTopLevel())
 #        self.getTopLevel().set_transient_for(anagraficaListino.getTopLevel())
-        self.getTopLevel().show_all()
+        #self.getTopLevel().show_all()
         self.dati_vecchio_listino_label.set_text(self.dao.denominazione + \
                         " DEL: "+ dateTimeToString(self.dao.data_listino))
 

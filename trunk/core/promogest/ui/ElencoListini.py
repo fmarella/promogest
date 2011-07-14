@@ -34,7 +34,8 @@ class ElencoListini(GladeWidget):
         self._mainWindow = mainWindow
         self.aziendaStr = aziendaStr
         self._currentDao = None
-        GladeWidget.__init__(self, 'elenco_listini_frame', fileName='_elenco_listini_elements.glade')
+        GladeWidget.__init__(self, 'elenco_listini_frame',
+                        fileName='_elenco_listini_elements.glade')
         self.orderBy = 'denominazione'
 
     def draw(self):

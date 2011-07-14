@@ -63,6 +63,15 @@ class AnagraficaListini(Anagrafica):
 
         from DuplicazioneListino import DuplicazioneListino
         anag = DuplicazioneListino(dao, self)
+        #anag = GestioneChiusuraFiscale(self) #.chiusuraDialog(widget, self.id_magazzino)
+        #anag.set_transient_for(self)
+        anagWindow = anag.getTopLevel()
+        #anagWindow.connect("destroy", on_anagrafica_destroyed, [window, button,mainClass])
+        #anagWindow.connect("hide", on_anagrafica_destroyed, [window, button,mainClass])
+        anagWindow.set_transient_for(self.getTopLevel())
+        anagWindow.show_all()
+
+
 
     def on_record_delete_activate(self, widget):
         dao = self.filter.getSelectedDao()

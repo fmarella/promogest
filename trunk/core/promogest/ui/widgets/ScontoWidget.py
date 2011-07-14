@@ -56,7 +56,7 @@ class ScontoWidget(gtk.HBox):
 
 
     def do_key_press_event(self, widget, event):
-        keyname = GDK_PIXBUF_NEW_FROM_FILE(event.keyval)
+        keyname = gdk_keyval_name(event.keyval)
 #        print "AHAHAAHAHAHAHAAHAH", keyname
         if keyname not in self.entry.acceptedKeys:
             return True
