@@ -521,6 +521,8 @@ class TestataDocumento(Dao):
                         setattr(daoRigaMovimento,"numero_lotto",row.numero_lotto or None)
                     if hasattr(row, "data_scadenza"):
                         setattr(daoRigaMovimento,"data_scadenza",row.data_scadenza or None)
+                    if hasattr(row, "data_produzione"):
+                        setattr(daoRigaMovimento,"data_produzione",row.data_produzione or None)
                     if hasattr(row, "data_prezzo"):
                         setattr(daoRigaMovimento,"data_prezzo",row.data_prezzo or None)
                     if hasattr(row, "ordine_minimo"):
