@@ -48,8 +48,10 @@ class AnagraficaPrimaNotaFilter(AnagraficaFilter):
         pns = TestataPrimaNota().select(batchSize=None)
         for i in pns:
             self.checkOldPN(i)
-        if not setconf("Primanota", "valore_saldo_parziale_primanota") and \
-            not setconf("Primanota", "data_saldo_parziale_primanota"):
+        if not setconf("Primanota", "valore_saldo_parziale_cassa_primanota") and \
+            not setconf("Primanota", "data_saldo_parziale_cassa_primanota") and \
+            not setconf("Primanota", "valore_saldo_parziale_banca_primanota") and \
+            not setconf("Primanota", "data_saldo_parziale_banca_primanota"):
             self.inizializzaValoriPrimaNotaSaldo()
 
         stringa = "<b>Per i totali parziali e complessivi usare 'report a video'</b>"
@@ -66,14 +68,14 @@ class AnagraficaPrimaNotaFilter(AnagraficaFilter):
 
     def inizializzaValoriPrimaNotaSaldo(self):
         messageInfo(msg="Nessun riporto settato, imposto uno standard al primo gennaio")
-        tpn= TestataPrimaNota().select(aDataInizio=stringToDate('01/01/' + Environment.workingYear), batchSize=None)
-        tot = calcolaTotaliPrimeNote(tpn)
+        tpn = TestataPrimaNota().select(aDataInizio=stringToDate('01/01/' + Environment.workingYear), batchSize=None)
+        tot = calcolaTotaliPrimeNote(tpn, tpn, 0, 0)
 
-        bb = SetConf().select(key="valore_saldo_parziale_primanota", section="Primanota")
+        bb = SetConf().select(key="valore_saldo_parziale_cassa_primanota", section="Primanota")
         if not bb:
             kbb = SetConf()
-            kbb.key = "valore_saldo_parziale_primanota"
-            kbb.value = "0" #str(tot["totale"])
+            kbb.key = "valore_saldo_parziale_cassa_primanota"
+            kbb.value = 0 #str(tot["saldo_cassa"])
             kbb.section = "Primanota"
             kbb.tipo_section = "Generico"
             kbb.description = "Valore Saldo parziale prima nota"
@@ -82,10 +84,36 @@ class AnagraficaPrimaNotaFilter(AnagraficaFilter):
             kbb.date = datetime.datetime.now()
             Environment.session.add(kbb)
 
-        bb = SetConf().select(key="data_saldo_parziale_primanota", section="Primanota")
+        bb = SetConf().select(key="data_saldo_parziale_cassa_primanota", section="Primanota")
         if not bb:
             kbb = SetConf()
-            kbb.key = "data_saldo_parziale_primanota"
+            kbb.key = "data_saldo_parziale_cassa_primanota"
+            kbb.value = '01/01/' + Environment.workingYear
+            kbb.section = "Primanota"
+            kbb.tipo_section = "Generico"
+            kbb.description = "Valore Saldo parziale prima nota"
+            kbb.active = True
+            kbb.tipo = "date"
+            kbb.date = datetime.datetime.now()
+            Environment.session.add(kbb)
+
+        bb = SetConf().select(key="valore_saldo_parziale_banca_primanota", section="Primanota")
+        if not bb:
+            kbb = SetConf()
+            kbb.key = "valore_saldo_parziale_banca_primanota"
+            kbb.value = 0 #str(tot["saldo_banca"])
+            kbb.section = "Primanota"
+            kbb.tipo_section = "Generico"
+            kbb.description = "Valore Saldo parziale prima nota"
+            kbb.active = True
+            kbb.tipo = "float"
+            kbb.date = datetime.datetime.now()
+            Environment.session.add(kbb)
+
+        bb = SetConf().select(key="data_saldo_parziale_banca_primanota", section="Primanota")
+        if not bb:
+            kbb = SetConf()
+            kbb.key = "data_saldo_parziale_banca_primanota"
             kbb.value = '01/01/' + Environment.workingYear
             kbb.section = "Primanota"
             kbb.tipo_section = "Generico"

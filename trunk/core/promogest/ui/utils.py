@@ -876,18 +876,27 @@ def calcolaSaldoGeneralePrimaNota():
     #TODO Aggiungere una opzione in setconf con una data ed un saldo di partenza
 #        valore = 0
 
-    data_riporto = setconf("Primanota", "data_saldo_parziale_primanota")
-    if data_riporto:
-        tpn= TestataPrimaNota().select(daDataInizio=stringToDate(data_riporto), batchSize=None)
-        riporto = setconf("Primanota", "valore_saldo_parziale_primanota")
+    data_riporto_cassa = setconf("Primanota", "data_saldo_parziale_cassa_primanota")
+    riporto_cassa = 0
+    if data_riporto_cassa:
+        tpn_cassa = TestataPrimaNota().select(daDataInizio=stringToDate(data_riporto_cassa), batchSize=None)
+        riporto_cassa = setconf("Primanota", "valore_saldo_parziale_cassa_primanota")
     else:
-        tpn= TestataPrimaNota().select(batchSize=None)
-        riporto = 0
-    tot = calcolaTotaliPrimeNote(tpn)
-    #tot["totale_con_riporto"] = tot["totale"] + Decimal(str(riporto))
+        tpn_cassa = TestataPrimaNota().select(batchSize=None)
+
+    data_riporto_banca = setconf("Primanota", "data_saldo_parziale_banca_primanota")
+    riporto_banca = 0
+    if data_riporto_banca:
+        tpn_banca = TestataPrimaNota().select(daDataInizio=stringToDate(data_riporto_banca), batchSize=None)
+        riporto_banca = setconf("Primanota", "valore_saldo_parziale_banca_primanota")
+    else:
+        tpn_banca = TestataPrimaNota().select(batchSize=None)
+
+    tot = calcolaTotaliPrimeNote(tpn_cassa, tpn_banca, riporto_cassa, riporto_banca)
+    #tot["riporto_di_cassa"] = tot["totale"] + Decimal(str(riporto))
     return tot
 
-def calcolaTotaliPrimeNote(daos):
+def calcolaTotaliPrimeNote(daos1, daos2, riporto_cassa, riporto_banca):
     totale = 0
     tot_entrate = 0
     tot_uscite = 0
@@ -895,13 +904,18 @@ def calcolaTotaliPrimeNote(daos):
     tot_entrate_banca = 0
     tot_uscite_cassa = 0
     tot_uscite_banca = 0
-    for dao in daos:
+    for dao in daos1:
         tot_entrate_cassa += dao.totali["tot_entrate_cassa"]
-        tot_entrate_banca += dao.totali["tot_entrate_banca"]
+        #tot_entrate_banca += dao.totali["tot_entrate_banca"]
         tot_uscite_cassa += dao.totali["tot_uscite_cassa"]
+        #tot_uscite_banca += dao.totali["tot_uscite_banca"]
+    for dao in daos2:
+        #tot_entrate_cassa += dao.totali["tot_entrate_cassa"]
+        tot_entrate_banca += dao.totali["tot_entrate_banca"]
+        #tot_uscite_cassa += dao.totali["tot_uscite_cassa"]
         tot_uscite_banca += dao.totali["tot_uscite_banca"]
-    saldo_cassa = tot_entrate_cassa + tot_uscite_cassa
-    saldo_banca = tot_entrate_banca + tot_uscite_banca
+    saldo_cassa = tot_entrate_cassa + tot_uscite_cassa + Decimal(str(riporto_cassa))
+    saldo_banca = tot_entrate_banca + tot_uscite_banca + Decimal(str(riporto_banca))
 
     totalii = {
             "saldo_cassa": saldo_cassa,
