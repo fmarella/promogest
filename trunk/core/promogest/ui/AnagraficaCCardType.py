@@ -153,7 +153,7 @@ class AnagraficaCCardTypeDetail(AnagraficaDetail):
         model.set_value(iterator, 2, self.dao.denominazione_breve)
 
 
-    def saveDao(self):
+    def saveDao(self, tipo=None):
         sel = self._anagrafica.anagrafica_treeview.get_selection()
         (model, iterator) = sel.get_selected()
         denominazione = model.get_value(iterator, 1) or ''
