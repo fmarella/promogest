@@ -133,7 +133,7 @@ class AnagraficaStatiArticoliDetail(AnagraficaDetail):
         self.denominazione_entry.set_text(self.dao.denominazione or '')
 
 
-    def saveDao(self):
+    def saveDao(self, tipo=None):
         self.dao.denominazione = self.denominazione_entry.get_text()
         self.dao.persist()
 
