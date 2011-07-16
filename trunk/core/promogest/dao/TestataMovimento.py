@@ -219,7 +219,7 @@ class TestataMovimento(Dao):
                         #print "DOPO dopo FORS", fors
                         daoFornitura = None
                         if fors:
-                            if fors[0].data_prezzo == self.data_movimento:
+                            if fors[0].data_prezzo == data_prezzo:
                                 # ha trovato una fornitura con stessa data: aggiorno questa fornitura
                                 #pg2log.info("TROVATO UNA FORNITURA CON STESSA DATA: AGGIORNO QUESTA FORNITURA")
                                 daoFornitura = Fornitura().getRecord(id=fors[0].id)
@@ -242,6 +242,8 @@ class TestataMovimento(Dao):
                             daoFornitura.numero_lotto = riga.numero_lotto or ""
                         if hasattr(riga, "data_scadenza"):
                             daoFornitura.data_scadenza = stringToDate(riga.data_scadenza) or None
+                        if hasattr(riga, "data_produzione"):
+                            daoFornitura.data_produzione = stringToDate(riga.data_produzione) or None
                         if hasattr(riga,"data_prezzo"):
                             daoFornitura.data_prezzo = stringToDateTime(riga.data_prezzo) or stringToDateTime(self.data_movimento)
 
