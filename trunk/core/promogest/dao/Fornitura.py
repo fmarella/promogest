@@ -165,6 +165,9 @@ if "numero_lotto" not in [c.name for c in fornitura.columns]:
 if "data_scadenza" not in [c.name for c in fornitura.columns]:
     col = Column('data_scadenza', DateTime)
     col.create(fornitura)
+if "data_produzione" not in [c.name for c in fornitura.columns]:
+    col = Column('data_produzione', DateTime)
+    col.create(fornitura)
 
 std_mapper = mapper(Fornitura,fornitura, properties={
         "multi": relation(Multiplo,primaryjoin=fornitura.c.id_multiplo==multip.c.id),
