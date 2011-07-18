@@ -901,32 +901,24 @@ def calcolaSaldoGeneralePrimaNota():
 def calcolaSaldoPeriodoPrimaNota():
     from promogest.modules.PrimaNota.dao.TestataPrimaNota import TestataPrimaNota
 
-    a = Environment.da_data_inizio_primanota
+    a = Environment.a_data_inizio_primanota
     if not a:
         return None
 
     tpn = TestataPrimaNota().select(daDataInizio=stringToDate('01/01/' + Environment.workingYear), aDataInizio=stringToDate(a), batchSize=None)
-    return calcolaTotaliPrimeNote(tpn, None, None)
+    return calcolaTotaliPrimeNote(tpn, None)
 
 def getDataFiltroPrimaNota():
     return Environment.a_data_inizio_primanota
 
-def calcolaTotaliPrimeNote(daos1, daos2=None, totali=None):
+def calcolaTotaliPrimeNote(daos1, daos2=None):
 #    totale = 0
-    if not totali:
-#        tot_entrate = 0
-#        tot_uscite = 0
-        tot_entrate_cassa = 0
-        tot_entrate_banca = 0
-        tot_uscite_cassa = 0
-        tot_uscite_banca = 0
-    else:
-#        tot_entrate = totali['']
-#        tot_uscite = totali['']
-        tot_entrate_cassa = totali['tot_entrate_cassa']
-        tot_entrate_banca = totali['tot_entrate_banca']
-        tot_uscite_cassa = totali['tot_uscite_cassa']
-        tot_uscite_banca = totali['tot_uscite_banca']
+    tot_entrate = 0
+    tot_uscite = 0
+    tot_entrate_cassa = 0
+    tot_entrate_banca = 0
+    tot_uscite_cassa = 0
+    tot_uscite_banca = 0
     riporto_cassa = setconf("Primanota", "valore_saldo_parziale_cassa_primanota") or 0
     riporto_banca = setconf("Primanota", "valore_saldo_parziale_banca_primanota") or 0
     for dao in daos1:
