@@ -46,10 +46,10 @@ class AnagraficaPrimaNotaSetup(GladeWidget):
         """
         Carichiamo i dati in interfaccia
         """
-        self.data_cassa_DateWidget.set_text(str(setconf("PrimaNota", "data_saldo_parziale_cassa_primanota")))
-        self.valore_cassa_SignedMoneyEntryField.set_text(str(setconf("PrimaNota", "valore_saldo_parziale_cassa_primanota")))
-        self.data_banca_DateWidget.set_text(str(setconf("PrimaNota", "data_saldo_parziale_banca_primanota")))
-        self.valore_banca_SignedMoneyEntryField.set_text(str(setconf("PrimaNota", "valore_saldo_parziale_banca_primanota")))
+        self.data_cassa_DateWidget.set_text(str(setconf("PrimaNota", "data_saldo_parziale_cassa_primanota") or '01/01/' + Environment.workingYear))
+        self.valore_cassa_SignedMoneyEntryField.set_text(str(setconf("PrimaNota", "valore_saldo_parziale_cassa_primanota") or 0.0))
+        self.data_banca_DateWidget.set_text(str(setconf("PrimaNota", "data_saldo_parziale_banca_primanota") or '01/01/' + Environment.workingYear))
+        self.valore_banca_SignedMoneyEntryField.set_text(str(setconf("PrimaNota", "valore_saldo_parziale_banca_primanota") or 0.0))
 
         try:
             self.aggiungi_partita_iva_check.set_active(int(setconf("PrimaNota", "aggiungi_partita_iva")))
