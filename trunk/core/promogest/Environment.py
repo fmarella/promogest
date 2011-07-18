@@ -119,6 +119,9 @@ tipo_pg = None
 cartella_moduli = 'promogest/modules'
 totale_pn_con_riporto = 0
 
+da_data_inizio_primanota = None
+a_data_inizio_primanota = None
+
 
 hapag = ["Fattura accompagnatoria","Fattura acquisto","Fattura differita acquisto",
 "Fattura differita vendita","Fattura vendita","Ricevuta Fiscale","Vendita dettaglio",
