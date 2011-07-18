@@ -901,7 +901,7 @@ def calcolaSaldoGeneralePrimaNota():
 def calcolaSaldoPeriodoPrimaNota():
     from promogest.modules.PrimaNota.dao.TestataPrimaNota import TestataPrimaNota
 
-    a = Environment.a_data_inizio_primanota
+    a = Environment.da_data_inizio_primanota
     if not a:
         return None
 
