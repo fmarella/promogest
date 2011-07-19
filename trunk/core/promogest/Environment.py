@@ -23,6 +23,8 @@
 
 from promogest import pg3_check
 pg3 = pg3_check.pg3_cla
+aziendaforce = pg3_check.aziendaforce
+tipodbforce = pg3_check.tipodbforce
 
 
 import locale
@@ -480,12 +482,18 @@ Grazie per aver scelto il PromoGest""" %str(promogestDir)
 
     importDebug = True
 
-azienda=conf.Database.azienda
+if aziendaforce:
+    azienda = aziendaforce
+else:
+    azienda=conf.Database.azienda
 
-try:
-    tipodb = conf.Database.tipodb
-except:
-    tipodb = "postgresql"
+if tipodbforce:
+    tipodb = tipodbforce
+else:
+    try:
+        tipodb = conf.Database.tipodb
+    except:
+        tipodb = "postgresql"
 try:
     pw = conf.Database.pw
 except:

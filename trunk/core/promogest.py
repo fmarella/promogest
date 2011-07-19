@@ -40,6 +40,7 @@ class BigBang(object):
                 -a   --debugALL Per mettere il debug al massimo
                 -t   --tipoDB  Permette, quando possibile da modificare il DB
                         sottostante ( opzioni possibili: "sqlite" , "postgresql")
+                -r  --rapid-start Per decidere da riga di comando sia tipo db che azienda usare azienda@tipodatabase
                 """
         parser = OptionParser(usage=usage)
         parser.add_option("-d", "--debugDao",
@@ -83,12 +84,20 @@ class BigBang(object):
                             default="False",
                             type="string",
                             dest="configDir")
+        parser.add_option("-r","--rapid-start",
+                            help="Per decidere da riga di comando sia tipo db che azienda usare azienda@tipodatabase",
+                            default="False",
+                            type="string",
+                            dest="RapidStart")
         (options, args) = parser.parse_args()
+        from promogest import pg3_check
         if options.pg3_classi ==True:
             reload(sys)
             sys.setdefaultencoding('utf-8')
-            from promogest import pg3_check
             pg3_check.pg3_cla = True
+        if "@" in options.RapidStart:
+            pg3_check.aziendaforce = options.RapidStart.split("@")[0]
+            pg3_check.tipodbforce = options.RapidStart.split("@")[1]
         from promogest import Environment
         if options.debugDao == True:
             Environment.debugDao = True

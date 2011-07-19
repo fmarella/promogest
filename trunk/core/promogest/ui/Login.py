@@ -97,6 +97,8 @@ class Login(GladeApp):
         self.splashHandler()
         dateTimeLabel = datetime.datetime.now().strftime('%d/%m/%Y  %H:%M')
         self.date_label.set_text(dateTimeLabel)
+        if Environment.aziendaforce:
+            ultima_azienda = Environment.aziendaforce
         if ultima_azienda:
             for r in self.azienda_combobox_listore:
                 if r[0] == ultima_azienda:
