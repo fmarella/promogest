@@ -511,7 +511,10 @@ class SlaTpl2Sla(SlaParser):
                                 ch = ch.replace(tags[k]['completeTag'], resolvedTag)
                                 if ch.count('€') >1:
                                     ch = ch.replace('€', '', 1)
-                                itext.set('CH', ch.decode())
+                                try:
+                                    itext.set('CH', ch.decode())
+                                except:
+                                    itext.set('CH', ch)
             iterator += 1
 
 
