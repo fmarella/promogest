@@ -45,9 +45,9 @@ class AnagraficaPrimaNotaFilter(AnagraficaFilter):
 
     def draw(self):
         """ """
-        pns = TestataPrimaNota().select(batchSize=None)
-        for i in pns:
-            self.checkOldPN(i)
+        #pns = TestataPrimaNota().select(batchSize=None)
+        #for i in pns:
+            #self.checkOldPN(i)
         if not setconf("Primanota", "valore_saldo_parziale_cassa_primanota") and \
             not setconf("Primanota", "data_saldo_parziale_cassa_primanota") and \
             not setconf("Primanota", "valore_saldo_parziale_banca_primanota") and \
