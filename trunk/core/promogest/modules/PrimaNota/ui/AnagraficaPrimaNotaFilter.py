@@ -75,7 +75,7 @@ class AnagraficaPrimaNotaFilter(AnagraficaFilter):
         if not bb:
             kbb = SetConf()
             kbb.key = "valore_saldo_parziale_cassa_primanota"
-            kbb.value = 0 #str(tot["saldo_cassa"])
+            kbb.value = 0.0 #str(tot["saldo_cassa"])
             kbb.section = "PrimaNota"
             kbb.tipo_section = "Generico"
             kbb.description = "Valore saldo parziale cassa prima nota"
@@ -101,7 +101,7 @@ class AnagraficaPrimaNotaFilter(AnagraficaFilter):
         if not bb:
             kbb = SetConf()
             kbb.key = "valore_saldo_parziale_banca_primanota"
-            kbb.value = 0 #str(tot["saldo_banca"])
+            kbb.value = 0.0 #str(tot["saldo_banca"])
             kbb.section = "PrimaNota"
             kbb.tipo_section = "Generico"
             kbb.description = "Valore saldo parziale banca prima nota"
