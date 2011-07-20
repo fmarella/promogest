@@ -76,9 +76,9 @@ class AnagraficaPrimaNotaFilter(AnagraficaFilter):
             kbb = SetConf()
             kbb.key = "valore_saldo_parziale_cassa_primanota"
             kbb.value = 0 #str(tot["saldo_cassa"])
-            kbb.section = "Primanota"
+            kbb.section = "PrimaNota"
             kbb.tipo_section = "Generico"
-            kbb.description = "Valore Saldo parziale prima nota"
+            kbb.description = "Valore saldo parziale cassa prima nota"
             kbb.active = True
             kbb.tipo = "float"
             kbb.date = datetime.datetime.now()
@@ -89,9 +89,9 @@ class AnagraficaPrimaNotaFilter(AnagraficaFilter):
             kbb = SetConf()
             kbb.key = "data_saldo_parziale_cassa_primanota"
             kbb.value = '01/01/' + Environment.workingYear
-            kbb.section = "Primanota"
+            kbb.section = "PrimaNota"
             kbb.tipo_section = "Generico"
-            kbb.description = "Valore Saldo parziale prima nota"
+            kbb.description = "Valore saldo parziale cassa prima nota"
             kbb.active = True
             kbb.tipo = "date"
             kbb.date = datetime.datetime.now()
@@ -102,9 +102,9 @@ class AnagraficaPrimaNotaFilter(AnagraficaFilter):
             kbb = SetConf()
             kbb.key = "valore_saldo_parziale_banca_primanota"
             kbb.value = 0 #str(tot["saldo_banca"])
-            kbb.section = "Primanota"
+            kbb.section = "PrimaNota"
             kbb.tipo_section = "Generico"
-            kbb.description = "Valore Saldo parziale prima nota"
+            kbb.description = "Valore saldo parziale banca prima nota"
             kbb.active = True
             kbb.tipo = "float"
             kbb.date = datetime.datetime.now()
@@ -115,9 +115,9 @@ class AnagraficaPrimaNotaFilter(AnagraficaFilter):
             kbb = SetConf()
             kbb.key = "data_saldo_parziale_banca_primanota"
             kbb.value = '01/01/' + Environment.workingYear
-            kbb.section = "Primanota"
+            kbb.section = "PrimaNota"
             kbb.tipo_section = "Generico"
-            kbb.description = "Valore Saldo parziale prima nota"
+            kbb.description = "Data saldo parziale banca prima nota"
             kbb.active = True
             kbb.tipo = "date"
             kbb.date = datetime.datetime.now()
