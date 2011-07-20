@@ -48,10 +48,10 @@ class AnagraficaPrimaNotaFilter(AnagraficaFilter):
         #pns = TestataPrimaNota().select(batchSize=None)
         #for i in pns:
             #self.checkOldPN(i)
-        if not setconf("Primanota", "valore_saldo_parziale_cassa_primanota") and \
-            not setconf("Primanota", "data_saldo_parziale_cassa_primanota") and \
-            not setconf("Primanota", "valore_saldo_parziale_banca_primanota") and \
-            not setconf("Primanota", "data_saldo_parziale_banca_primanota"):
+        if not setconf("PrimaNota", "valore_saldo_parziale_cassa_primanota") and \
+            not setconf("PrimaNota", "data_saldo_parziale_cassa_primanota") and \
+            not setconf("PrimaNota", "valore_saldo_parziale_banca_primanota") and \
+            not setconf("PrimaNota", "data_saldo_parziale_banca_primanota"):
             self.inizializzaValoriPrimaNotaSaldo()
 
         stringa = "<b>Per i totali parziali e complessivi usare 'report a video'</b>"
