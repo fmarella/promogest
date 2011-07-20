@@ -71,7 +71,7 @@ class AnagraficaPrimaNotaFilter(AnagraficaFilter):
         tpn = TestataPrimaNota().select(aDataInizio=stringToDate('01/01/' + Environment.workingYear), batchSize=None)
         tot = calcolaTotaliPrimeNote(tpn, tpn)
 
-        bb = SetConf().select(key="valore_saldo_parziale_cassa_primanota", section="Primanota")
+        bb = SetConf().select(key="valore_saldo_parziale_cassa_primanota", section="PrimaNota")
         if not bb:
             kbb = SetConf()
             kbb.key = "valore_saldo_parziale_cassa_primanota"
@@ -84,7 +84,7 @@ class AnagraficaPrimaNotaFilter(AnagraficaFilter):
             kbb.date = datetime.datetime.now()
             Environment.session.add(kbb)
 
-        bb = SetConf().select(key="data_saldo_parziale_cassa_primanota", section="Primanota")
+        bb = SetConf().select(key="data_saldo_parziale_cassa_primanota", section="PrimaNota")
         if not bb:
             kbb = SetConf()
             kbb.key = "data_saldo_parziale_cassa_primanota"
@@ -97,7 +97,7 @@ class AnagraficaPrimaNotaFilter(AnagraficaFilter):
             kbb.date = datetime.datetime.now()
             Environment.session.add(kbb)
 
-        bb = SetConf().select(key="valore_saldo_parziale_banca_primanota", section="Primanota")
+        bb = SetConf().select(key="valore_saldo_parziale_banca_primanota", section="PrimaNota")
         if not bb:
             kbb = SetConf()
             kbb.key = "valore_saldo_parziale_banca_primanota"
@@ -110,7 +110,7 @@ class AnagraficaPrimaNotaFilter(AnagraficaFilter):
             kbb.date = datetime.datetime.now()
             Environment.session.add(kbb)
 
-        bb = SetConf().select(key="data_saldo_parziale_banca_primanota", section="Primanota")
+        bb = SetConf().select(key="data_saldo_parziale_banca_primanota", section="PrimaNota")
         if not bb:
             kbb = SetConf()
             kbb.key = "data_saldo_parziale_banca_primanota"
