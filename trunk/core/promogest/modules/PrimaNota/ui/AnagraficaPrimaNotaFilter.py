@@ -69,7 +69,7 @@ class AnagraficaPrimaNotaFilter(AnagraficaFilter):
     def inizializzaValoriPrimaNotaSaldo(self):
         messageInfo(msg="Nessun riporto settato, imposto uno standard al primo gennaio")
         tpn = TestataPrimaNota().select(aDataInizio=stringToDate('01/01/' + Environment.workingYear), batchSize=None)
-        #tot = calcolaTotaliPrimeNote(tpn, tpn, 0, 0)
+        tot = calcolaTotaliPrimeNote(tpn, tpn)
 
         bb = SetConf().select(key="valore_saldo_parziale_cassa_primanota", section="Primanota")
         if not bb:

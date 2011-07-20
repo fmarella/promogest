@@ -59,7 +59,7 @@ class AnagraficaPrimaNotaSetup(GladeWidget):
         self.vecchia_data_cassa = str(self.data_cassa_DateWidget.get_text()).strip()
         self.vecchio_valore_cassa = str(self.valore_cassa_SignedMoneyEntryField.get_text()).strip()
         self.vecchia_data_banca = str(self.data_banca_DateWidget.get_text()).strip()
-        self.vecchio_valore_banca = str(self.valore_banca_SignedMoneyEntryField.get_text()).strip()
+        self.vecchio_valore_banca = str(self.valore_banca_SignedMoneyEntryField.get_text()).strip()            
 
     def _saveSetup(self):
         """ Salviamo i dati modificati in interfaccia """

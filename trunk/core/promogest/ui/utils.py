@@ -876,19 +876,19 @@ def calcolaSaldoGeneralePrimaNota():
     #TODO Aggiungere una opzione in setconf con una data ed un saldo di partenza
 #        valore = 0
 
-    data_riporto_cassa = setconf("Primanota", "data_saldo_parziale_cassa_primanota")
+    data_riporto_cassa = setconf("PrimaNota", "data_saldo_parziale_cassa_primanota")
     riporto_cassa = 0
     if data_riporto_cassa:
         tpn_cassa = TestataPrimaNota().select(daDataInizio=stringToDate(data_riporto_cassa), batchSize=None)
-        riporto_cassa = setconf("Primanota", "valore_saldo_parziale_cassa_primanota")
+        riporto_cassa = setconf("PrimaNota", "valore_saldo_parziale_cassa_primanota")
     else:
         tpn_cassa = TestataPrimaNota().select(batchSize=None)
 
-    data_riporto_banca = setconf("Primanota", "data_saldo_parziale_banca_primanota")
+    data_riporto_banca = setconf("PrimaNota", "data_saldo_parziale_banca_primanota")
     riporto_banca = 0
     if data_riporto_banca:
         tpn_banca = TestataPrimaNota().select(daDataInizio=stringToDate(data_riporto_banca), batchSize=None)
-        riporto_banca = setconf("Primanota", "valore_saldo_parziale_banca_primanota")
+        riporto_banca = setconf("PrimaNota", "valore_saldo_parziale_banca_primanota")
     else:
         tpn_banca = TestataPrimaNota().select(batchSize=None)
 
@@ -911,6 +911,12 @@ def calcolaSaldoPeriodoPrimaNota():
 def getDataFiltroPrimaNota():
     return Environment.a_data_inizio_primanota
 
+def getRiportoBanca():
+    return str(setconf("PrimaNota", "valore_saldo_parziale_banca_primanota"))
+
+def getRiportoCassa():
+    return str(setconf("PrimaNota", "valore_saldo_parziale_cassa_primanota"))
+
 def calcolaTotaliPrimeNote(daos1, daos2=None):
 #    totale = 0
     tot_entrate = 0
@@ -919,8 +925,8 @@ def calcolaTotaliPrimeNote(daos1, daos2=None):
     tot_entrate_banca = 0
     tot_uscite_cassa = 0
     tot_uscite_banca = 0
-    riporto_cassa = setconf("Primanota", "valore_saldo_parziale_cassa_primanota") or 0
-    riporto_banca = setconf("Primanota", "valore_saldo_parziale_banca_primanota") or 0
+    riporto_cassa = setconf("PrimaNota", "valore_saldo_parziale_cassa_primanota") or 0
+    riporto_banca = setconf("PrimaNota", "valore_saldo_parziale_banca_primanota") or 0
     for dao in daos1:
         tot_entrate_cassa += dao.totali["tot_entrate_cassa"]
         tot_uscite_cassa += dao.totali["tot_uscite_cassa"]
