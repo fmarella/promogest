@@ -37,16 +37,29 @@ class DateWidget(gtk.HBox):
         self.entry = DateEntryField(str1, str2, int1, int2)
         self.button = gtk.ToggleButton()
         self.button.set_property("can-focus", False)
+        self.button2 = gtk.Button()
+        self.button2.set_property("can-focus", False)
         image = gtk.Image()
         pbuf = GDK_PIXBUF_NEW_FROM_FILE(Environment.conf.guiDir + 'calendario16x16.png')
         image.set_from_pixbuf(pbuf)
+        image2 = gtk.Image()
+        pbuf2 = GDK_PIXBUF_NEW_FROM_FILE(Environment.conf.guiDir + 'conferma12x12.png')
+        image2.set_from_pixbuf(pbuf2)
         self.button.add(image)
+        self.button2.add(image2)
         self.pack_start(self.entry, True, True, 0)
         self.pack_start(self.button, False, False, 0)
+        self.pack_start(self.button2, False, False, 0)
         self.button.connect('clicked', self.my_button_clicked)
+        self.button2.connect('clicked', self.insert_today)
         self.connect("show", self.on_show)
         self.entry.connect('focus_out_event', self.my_focus_out_event)
 
+
+
+    def insert_today(self, button):
+        current = datetime.datetime.now()
+        self.entry.set_text(str(current.day) + '/' + str(current.month) + '/' + str(current.year))
 
     def my_button_clicked(self, button):
 
