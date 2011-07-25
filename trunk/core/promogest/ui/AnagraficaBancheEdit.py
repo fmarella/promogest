@@ -73,8 +73,7 @@ class AnagraficaBancheEdit(GladeWidget):
             self.info_label.set_markup(str(err))
             return False
         else:
-            self.info_label.set_markup("""
-    <b>IBAN CORRETTO!</b>
+            self.info_label.set_markup("""<b>IBAN CORRETTO!</b>
 
     NAZIONE: <b>%s</b>  CODE: <b>%s</b> CHECKSUM: <b>%s</b>
     DATI BANCA: <b>%s</b>  ( CIN: <b>%s</b>, ABI: <b>%s</b>, CAB : <b>%s</b> )
