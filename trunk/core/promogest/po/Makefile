@@ -13,8 +13,8 @@ CATALOGS = $(shell ls *.po)
 FMTCATALOGS = $(patsubst %.po,%.mo,$(CATALOGS))
 
 PYFILES  = $(wildcard ../ui/*.py) $(wildcard ../ui/anag*/*.py) $(wildcard ../ui/SimpleSearch/*.py) \
- $(wildcard ../ui/widgets/*.py) $(wildcard ../modules/ADR/ui/*.py) 
-GLADEFILES = $(wildcard ../../gui/*.glade) $(wildcard ../modules/ADR/gui/*.glade) 
+ $(wildcard ../ui/widgets/*.py) $(wildcard ../modules/*/ui/*.py) 
+GLADEFILES = $(wildcard ../../gui/*.glade) $(wildcard ../modules/*/gui/*.glade) 
 POTFILES  = $(PYFILES) $(GLADEFILES)
 
 all: $(NLSPACKAGE).pot $(FMTCATALOGS)

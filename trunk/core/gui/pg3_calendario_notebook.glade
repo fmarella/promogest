@@ -182,7 +182,7 @@
             </child>
             <child>
               <object class="GtkButton" id="menomesi_calendar_button">
-                <property name="label" translatable="yes">&lt;&lt;</property>
+                <property name="label">&lt;&lt;</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -197,7 +197,7 @@
             </child>
             <child>
               <object class="GtkButton" id="menogiorni_calendar_button">
-                <property name="label" translatable="yes">&lt;</property>
+                <property name="label">&lt;</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -227,7 +227,7 @@
             </child>
             <child>
               <object class="GtkButton" id="piugiorni_calendar_button">
-                <property name="label" translatable="yes">&gt;</property>
+                <property name="label">&gt;</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -242,7 +242,7 @@
             </child>
             <child>
               <object class="GtkButton" id="piumesi_calendar_button">
-                <property name="label" translatable="yes">&gt;&gt;</property>
+                <property name="label">&gt;&gt;</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -327,8 +327,10 @@
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-        <property name="label" translatable="yes">&lt;b&gt;CALENDAR -PLANNING -SCADENZIARIO&lt;/b&gt;</property>
-        <property name="use_markup">True</property>
+        <property name="label" translatable="yes">CALENDAR - PLANNING - SCADENZIARIO</property>
+        <attributes>
+          <attribute name="weight" value="bold"/>
+        </attributes>
       </object>
     </child>
   </object>
