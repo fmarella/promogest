@@ -37,29 +37,6 @@ from promogest import Environment
 __version__ = "1.0"
 __author__ = 'Sandino "tigrux" Flores-Moreno'
 
-def bindtextdomain(app_name, locale_dir=None):
-    """
-    Bind the domain represented by app_name to the locale directory locale_dir.
-    It has the effect of loading translations, enabling applications for different
-    languages.
-
-    app_name:
-        a domain to look for translations, tipically the name of an application.
-
-    locale_dir:
-        a directory with locales like locale_dir/lang_isocode/LC_MESSAGES/app_name.mo
-        If omitted or None, then the current binding for app_name is used.
-    """
-    try:
-        import locale
-        import gettext
-        locale.setlocale(locale.LC_ALL, "")
-        gtk.glade.bindtextdomain(app_name, locale_dir)
-        gettext.install(app_name, locale_dir, unicode=1)
-    except (IOError,locale.Error), e:
-        print "Warning", app_name, e
-        __builtins__.__dict__["_"] = lambda x : x
-
 
 class SimpleGladeWrapper:
 
@@ -127,6 +104,7 @@ class SimpleGladeWrapper:
         if not gl:
             gl = gtk.Builder()
             #self.builda = gtk.Buildable()
+        gl.set_translation_domain("promogest")
         gl.add_from_file(self.glade_path)
 #        print "FILE GLADE:"+str(self.glade_path)
 #        Environment.pg2log.info("FILE GLADE:"+str(self.glade_path))
