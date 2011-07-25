@@ -247,7 +247,7 @@
   <object class="GtkTable" id="anagrafica_banche_filter_table">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="n_rows">3</property>
+    <property name="n_rows">5</property>
     <property name="n_columns">2</property>
     <child>
       <object class="GtkLabel" id="label34">
@@ -350,18 +350,76 @@
         <property name="y_options"></property>
       </packing>
     </child>
-  </object>
-  <object class="GtkListStore" id="filter_listore">
-    <columns>
-      <!-- column-name PyObject1 -->
-      <column type="PyObject"/>
-      <!-- column-name gchararray1 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray2 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray3 -->
-      <column type="gchararray"/>
-    </columns>
+    <child>
+      <object class="GtkEntry" id="abi_filter_entry">
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="invisible_char">●</property>
+        <property name="invisible_char_set">True</property>
+        <property name="primary_icon_activatable">False</property>
+        <property name="secondary_icon_activatable">False</property>
+        <property name="primary_icon_sensitive">True</property>
+        <property name="secondary_icon_sensitive">True</property>
+      </object>
+      <packing>
+        <property name="left_attach">1</property>
+        <property name="right_attach">2</property>
+        <property name="top_attach">3</property>
+        <property name="bottom_attach">4</property>
+        <property name="x_options">GTK_SHRINK | GTK_FILL</property>
+        <property name="y_options"></property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkEntry" id="cab_filter_entry">
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="invisible_char">●</property>
+        <property name="invisible_char_set">True</property>
+        <property name="primary_icon_activatable">False</property>
+        <property name="secondary_icon_activatable">False</property>
+        <property name="primary_icon_sensitive">True</property>
+        <property name="secondary_icon_sensitive">True</property>
+      </object>
+      <packing>
+        <property name="left_attach">1</property>
+        <property name="right_attach">2</property>
+        <property name="top_attach">4</property>
+        <property name="bottom_attach">5</property>
+        <property name="x_options">GTK_SHRINK | GTK_FILL</property>
+        <property name="y_options"></property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkLabel" id="label1">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="xalign">0</property>
+        <property name="label" translatable="yes">ABI</property>
+      </object>
+      <packing>
+        <property name="top_attach">3</property>
+        <property name="bottom_attach">4</property>
+        <property name="x_options">GTK_FILL</property>
+        <property name="y_options"></property>
+        <property name="x_padding">10</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkLabel" id="label2">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="xalign">0</property>
+        <property name="label" translatable="yes">CAB</property>
+      </object>
+      <packing>
+        <property name="top_attach">4</property>
+        <property name="bottom_attach">5</property>
+        <property name="x_options">GTK_FILL</property>
+        <property name="y_options"></property>
+        <property name="x_padding">10</property>
+      </packing>
+    </child>
   </object>
   <object class="GtkTreeView" id="anagrafica_semplice_treeview">
     <property name="visible">True</property>
@@ -415,5 +473,43 @@
         </child>
       </object>
     </child>
+    <child>
+      <object class="GtkTreeViewColumn" id="abi_column">
+        <property name="title" translatable="yes">ABI</property>
+        <child>
+          <object class="GtkCellRendererText" id="cellrenderertext2"/>
+          <attributes>
+            <attribute name="text">4</attribute>
+          </attributes>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkTreeViewColumn" id="cab_column">
+        <property name="title" translatable="yes">CAB</property>
+        <child>
+          <object class="GtkCellRendererText" id="cellrenderertext3"/>
+          <attributes>
+            <attribute name="text">5</attribute>
+          </attributes>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkListStore" id="filter_listore">
+    <columns>
+      <!-- column-name PyObject1 -->
+      <column type="PyObject"/>
+      <!-- column-name gchararray1 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray2 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray3 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray4 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray5 -->
+      <column type="gchararray"/>
+    </columns>
   </object>
 </interface>

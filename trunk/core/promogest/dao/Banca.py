@@ -35,6 +35,10 @@ class Banca(Dao):
             dic= {  k : banca.c.denominazione.ilike("%"+v+"%")}
         elif k == 'iban':
             dic = {k: banca.c.iban.ilike("%"+v+"%")}
+        elif k == 'abi':
+            dic = {k: banca.c.abi.ilike("%"+v+"%")}
+        elif k == 'cab':
+            dic = {k: banca.c.cab.ilike("%"+v+"%")}
         elif k == 'agenzia':
             dic = {k:banca.c.agenzia.ilike("%"+v+"%")}
         return  dic[k]

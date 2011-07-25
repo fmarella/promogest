@@ -5,6 +5,8 @@
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
 #    Author: Andrea Argiolas  <andrea@promotux.it>
+#    Author: Francesco Marella <francesco.marella@gmail.com>
+
 #    This file is part of Promogest.
 
 #    Promogest is free software: you can redistribute it and/or modify
@@ -20,13 +22,14 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-from AnagraficaSemplice import Anagrafica, AnagraficaDetail, AnagraficaFilter
+from promogest.ui.AnagraficaSemplice import Anagrafica, AnagraficaDetail, AnagraficaFilter
 from promogest import Environment
 from promogest.dao.Banca import Banca
 from promogest.lib.ControlloIBAN import *
-from GladeWidget import GladeWidget
-from utils import *
-from utilsCombobox import *
+from promogest.ui.GladeWidget import GladeWidget
+from promogest.ui.utils import *
+from promogest.ui.utilsCombobox import *
+
 
 class AnagraficaBanche(Anagrafica):
     """ Anagrafica banche """
@@ -42,6 +45,8 @@ class AnagraficaBanche(Anagrafica):
         self.filter.denominazione_column.get_cells()[0].set_data('max_length', 200)
         self.filter.agenzia_column.get_cells()[0].set_data('max_length', 200)
         self.filter.iban_column.get_cells()[0].set_data('max_length', 30)
+        self.filter.abi_column.get_cells()[0].set_data('max_length', 30)
+        self.filter.cab_column.get_cells()[0].set_data('max_length', 30)
         self._treeViewModel = self.filter.filter_listore
         self.refresh()
 
@@ -51,9 +56,13 @@ class AnagraficaBanche(Anagrafica):
         denominazione = prepareFilterString(self.filter.denominazione_filter_entry.get_text())
         agenzia = prepareFilterString(self.filter.agenzia_filter_entry.get_text())
         iban = prepareFilterString(self.filter.iban_filter_entry.get_text())
+        abi = prepareFilterString(self.filter.abi_filter_entry.get_text())
+        cab = prepareFilterString(self.filter.cab_filter_entry.get_text())
         self.numRecords = Banca().count( denominazione=denominazione,
                                                     agenzia=agenzia,
-                                                    iban=iban)
+                                                    iban=iban,
+                                                    abi=abi,
+                                                    cab=cab)
         self._refreshPageCount()
 
         # Let's save the current search as a closure
@@ -61,6 +70,8 @@ class AnagraficaBanche(Anagrafica):
             return Banca().select(denominazione=denominazione,
                                             agenzia=agenzia,
                                             iban=iban,
+                                            abi=abi,
+                                            cab=cab,
                                             orderBy=self.orderBy,
                                             offset=self.offset,
                                             batchSize=self.batchSize)
@@ -77,7 +88,9 @@ class AnagraficaBanche(Anagrafica):
             self._treeViewModel.append((b,
                                         (b.denominazione or ''),
                                         (b.agenzia or ''),
-                                        (b.iban or '')))
+                                        (b.iban or ''),
+                                        (b.abi or ''),
+                                        (b.cab or '')))
 
 class AnagraficaBancheFilter(AnagraficaFilter):
     """ Filtro per la ricerca nell'anagrafica delle banche """
@@ -102,6 +115,8 @@ class AnagraficaBancheFilter(AnagraficaFilter):
         self.denominazione_filter_entry.set_text('')
         self.agenzia_filter_entry.set_text('')
         self.iban_filter_entry.set_text('')
+        self.abi_filter_entry.set_text('')
+        self.cab_filter_entry.set_text('')
         self.denominazione_filter_entry.grab_focus()
         self._anagrafica.refresh()
 

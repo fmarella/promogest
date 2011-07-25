@@ -4,6 +4,8 @@
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
+#    Author: Francesco Marella <francesco.marella@gmail.com>
+
 #    This file is part of Promogest.
 
 #    Promogest is free software: you can redistribute it and/or modify
@@ -23,9 +25,9 @@ from promogest import Environment
 from promogest.dao.Banca import Banca
 #from promogest.lib.ControlloIBAN import *
 from promogest.lib.iban import country_data, check_iban, IBANError
-from GladeWidget import GladeWidget
-from utils import *
-from utilsCombobox import *
+from promogest.ui.GladeWidget import GladeWidget
+from promogest.ui.utils import *
+from promogest.ui.utilsCombobox import *
 
 
 class AnagraficaBancheEdit(GladeWidget):
@@ -56,6 +58,8 @@ class AnagraficaBancheEdit(GladeWidget):
             self.denominazione_banca_entry.set_text(str(self.dao.denominazione))
             self.agenzia_entry.set_text(str(self.dao.agenzia))
             self.iban_entry.set_text(str(self.dao.iban))
+            self.abi_entry.set_text(str(self.dao.abi))
+            self.cab_entry.set_text(str(self.dao.cab))
             self.checkIban()
 
     def on_calcola_da_iban_button_clicked(self, button):
@@ -89,6 +93,8 @@ class AnagraficaBancheEdit(GladeWidget):
         denominazione = self.denominazione_banca_entry.get_text()
         agenzia = self.agenzia_entry.get_text()
         iban = self.iban_entry.get_text()
+        abi = self.abi_entry.get_text()
+        cab = self.cab_entry.get_text()
         if not denominazione :
             obligatoryField(self.anagrafica.getTopLevel(), self.denominazione_banca_entry)
             return
@@ -97,6 +103,8 @@ class AnagraficaBancheEdit(GladeWidget):
 #            return
         self.dao.denominazione = denominazione
         self.dao.agenzia = agenzia
+        self.dao.abi = abi
+        self.dao.cab = cab
         ib =  self.checkIban()
         if ib:
             self.dao.iban = ib
