@@ -1231,7 +1231,7 @@ del documento.
         self._righe[self._numRiga]["dataPrezzoFornitura"] = self._righe[0]["dataPrezzoFornitura"]
         self._righe[self._numRiga]["ordineMinimoFornitura"] = self._righe[0]["ordineMinimoFornitura"]
         self._righe[self._numRiga]["tempoArrivoFornitura"] = self._righe[0]["tempoArrivoFornitura"]
-        self._righe[self._numRiga]["rigaMovimentoFornituraList"] = self._righe[0]["rigaMovimentoFornituraList"]
+        #self._righe[self._numRiga]["rigaMovimentoFornituraList"] = self._righe[0]["rigaMovimentoFornituraList"]
 
         self._righe[self._numRiga]["percentualeIva"] = self._righe[0]["percentualeIva"]
         self._righe[self._numRiga]["idAliquotaIva"] = self._righe[0]["idAliquotaIva"]
