@@ -923,7 +923,8 @@ del documento.
             setattr(daoRiga,"data_prezzo",self._righe[i]["dataPrezzoFornitura"])
             setattr(daoRiga,"ordine_minimo",self._righe[i]["ordineMinimoFornitura"])
             setattr(daoRiga,"tempo_arrivo",self._righe[i]["tempoArrivoFornitura"])
-            setattr(daoRiga,"righe_movimento_fornitura",self._righe[i]["rigaMovimentoFornituraList"])
+            if "rigaMovimentoFornituraList" in self._righe[i]:
+                setattr(daoRiga,"righe_movimento_fornitura",self._righe[i]["rigaMovimentoFornituraList"])
 
             daoRiga.id_listino = self._righe[i]["idListino"]
             daoRiga.percentuale_iva = self._righe[i]["percentualeIva"]
