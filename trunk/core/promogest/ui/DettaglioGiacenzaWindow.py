@@ -83,7 +83,6 @@ class DettaglioGiacenzaWindow(GladeWidget):
         model = self.dettaglio_giacenza_listore
         for m in model:
             if m[0] and m[7] not in self.rigamovimentofornituralist:
-                print "DA AGGIUNGERE", m, m[7]
                 self.rigamovimentofornituralist.append(m[7])
         self.mainWindow._righe[0]["rigaMovimentoFornituraList"] = self.rigamovimentofornituralist
         self.getTopLevel().destroy()
@@ -97,7 +96,6 @@ class DettaglioGiacenzaWindow(GladeWidget):
         # Aggiornamento TreeView
         self.dettaglio_giacenza_listore.clear()
         arti = RigaMovimentoFornitura().select(idArticolo=self.idArticolo, batchSize=None)
-        print "artttttti", arti
         a = leggiArticolo(self.idArticolo)
         for i in arti:
             boleann = False
@@ -106,7 +104,6 @@ class DettaglioGiacenzaWindow(GladeWidget):
             elif i.id_riga_movimento_vendita and self.idRiga != i.id_riga_movimento_vendita:
                 print "CONTINUE"
                 continue
-            print  boleann
             idrigamov = RigaMovimento().getRecord(i.id_riga_movimento_acquisto)
             movi = TestataMovimento().getRecord(id= idrigamov.id_testata_movimento)
             if i in self.rigamovimentofornituralist:
@@ -118,7 +115,6 @@ class DettaglioGiacenzaWindow(GladeWidget):
                                         dateToString(i.forni.data_fornitura),
                                         dateToString(i.forni.data_produzione),
                                         "",i))
-        print dir(self.dettaglio_giacenza_listore)
         testo = a["codice"]+"-"+a["denominazione"] +"\n\n STAI VENDENDO " + str(int(self.quantita)) +" ARTICOLI \n CE NE SONO " + str(int(len(self.dettaglio_giacenza_listore)))
         self.articolo_info_label.set_text(testo)
 

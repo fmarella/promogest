@@ -166,7 +166,6 @@ class TestataMovimento(Dao):
                                     batchSize = None)
         if row:
             self.rmfv = RigaMovimentoFornitura().select(idRigaMovimentoVenditaBool = True, batchSize=None)
-            print "QUI SEI PIENOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO", self.rmfv
             if self.rmfv:
                 print "QUESTO ARTICOLO è stato venduto", len(self.rmfv), "volte"
             for r in row:
@@ -211,13 +210,11 @@ class TestataMovimento(Dao):
                     #salvataggio riga
                     riga.persist()
                     #print "DOPO il persist della riga", tempo()
-                    print "QUANTIAAAAAAAAAAAAAAAAAAAAAAAAA", riga.quantita
                     if self.id_fornitore and riga.id_articolo:
                         if hasattr(riga,"data_prezzo"):
                             data_prezzo = stringToDateTime(riga.data_prezzo) or stringToDateTime(self.data_movimento)
                         else:
                             data_prezzo = stringToDateTime(self.data_movimento)
-                            #print "DATAPREZZOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO", data_prezzo
                         """aggiornamento forniture cerca la fornitura relativa al fornitore
                             con data <= alla data del movimento"""
                         fors = Fornitura().select(idArticolo=riga.id_articolo,
@@ -295,7 +292,6 @@ class TestataMovimento(Dao):
                         params["session"].commit()
                     else:
                         if hasattr(riga,"righe_movimento_fornitura"):
-                            print "ECCOCIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII", riga.righe_movimento_fornitura
                             if riga.righe_movimento_fornitura:
                                 precedentiRighe= RigaMovimentoFornitura().select(idRigaMovimentoVendita=riga.id, batchSize=None)
                                 if precedentiRighe:
