@@ -267,6 +267,7 @@ class Sla2Pdf_ng(object):
         return fontSize
 
     def fontNameFunc(self, itext, monocell=False):
+        print "BOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOH"
         if self.version:
             fontName = Sla2pdfUtils.getPdfFontName(str(itext.get('FONT')))
         else:

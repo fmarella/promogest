@@ -323,10 +323,23 @@ class Sla2Pdf_ng(SlaParser):
         return fontSize
 
     def fontNameFunc(self, itext, monocell=False,v=None,trail=None):
+        bold = False
+        try:
+            ch = itext.get('CH')
+            if "<b>" in ch:
+                bold=True
+        except:
+            bold= False
         if self.version:
-            fontName = Sla2pdfUtils.getPdfFontName(str(itext.get('FONT')))
+            if bold:
+                fontName = Sla2pdfUtils.getPdfFontName(str(itext.get('FONT')+"-bold"))
+            else:
+                fontName = Sla2pdfUtils.getPdfFontName(str(itext.get('FONT')))
         else:
-            fontName = Sla2pdfUtils.getPdfFontName(str(itext.get('CFONT')))
+            if bold:
+                fontName = Sla2pdfUtils.getPdfFontName(str(itext.get('CFONT')+"-bold"))
+            else:
+                fontName = Sla2pdfUtils.getPdfFontName(str(itext.get('CFONT')))
         return fontName
 
     def alignmentFunc(self,paras, v, monocell=False, reiter=False, trail=None):
@@ -391,6 +404,8 @@ class Sla2Pdf_ng(SlaParser):
                 ch = itext.get('CH')
         else:
             itext = None
+        ch = ch.replace("<b>","")
+        ch = ch.replace("</b>","")
         return [ch, itext]
 
     def slaStyleDefault(self):
