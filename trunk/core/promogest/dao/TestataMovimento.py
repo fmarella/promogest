@@ -164,6 +164,7 @@ class TestataMovimento(Dao):
         row = RigaMovimento().select(idTestataMovimento= id,
                                     offset = None,
                                     batchSize = None)
+        self.rmfv= None
         if row:
             self.rmfv = RigaMovimentoFornitura().select(idRigaMovimentoVenditaBool = True, batchSize=None)
             if self.rmfv:
