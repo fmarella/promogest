@@ -1833,17 +1833,13 @@
                                                     </child>
                                                     <child>
                                                       <object class="GtkEntry" id="codice_articolo_fornitore_entry">
-                                                        <property name="width_request">420</property>
+                                                        <property name="width_request">160</property>
                                                         <property name="visible">True</property>
                                                         <property name="can_focus">True</property>
                                                         <property name="invisible_char">●</property>
                                                         <property name="invisible_char_set">True</property>
                                                         <property name="secondary_icon_stock">gtk-clear</property>
                                                         <property name="primary_icon_activatable">False</property>
-                                                        <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
-                                                        <signal name="icon-press" handler="on_icon_press" swapped="no"/>
-                                                        <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
-                                                        <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
                                                       </object>
                                                       <packing>
                                                         <property name="expand">False</property>
@@ -1852,10 +1848,41 @@
                                                       </packing>
                                                     </child>
                                                     <child>
-                                                      <placeholder/>
-                                                    </child>
-                                                    <child>
-                                                      <placeholder/>
+                                                      <object class="GtkHBox" id="hbox4">
+                                                        <property name="visible">True</property>
+                                                        <property name="can_focus">False</property>
+                                                        <child>
+                                                          <object class="GtkLabel" id="data_prezzo_label">
+                                                            <property name="width_request">110</property>
+                                                            <property name="visible">True</property>
+                                                            <property name="can_focus">False</property>
+                                                            <property name="xalign">0</property>
+                                                            <property name="label" translatable="yes">Data prezzo</property>
+                                                          </object>
+                                                          <packing>
+                                                            <property name="expand">False</property>
+                                                            <property name="fill">False</property>
+                                                            <property name="position">0</property>
+                                                          </packing>
+                                                        </child>
+                                                        <child>
+                                                          <object class="DateWidget" id="data_prezzo_datewidget">
+                                                            <property name="width_request">160</property>
+                                                            <property name="visible">True</property>
+                                                            <property name="can_focus">False</property>
+                                                          </object>
+                                                          <packing>
+                                                            <property name="expand">False</property>
+                                                            <property name="fill">False</property>
+                                                            <property name="position">1</property>
+                                                          </packing>
+                                                        </child>
+                                                      </object>
+                                                      <packing>
+                                                        <property name="expand">False</property>
+                                                        <property name="fill">False</property>
+                                                        <property name="position">2</property>
+                                                      </packing>
                                                     </child>
                                                   </object>
                                                   <packing>
@@ -1941,6 +1968,62 @@
                                                   </packing>
                                                 </child>
                                                 <child>
+                                                  <object class="GtkHBox" id="hbox45">
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">False</property>
+                                                    <child>
+                                                      <object class="GtkLabel" id="data_produzione_label">
+                                                        <property name="width_request">110</property>
+                                                        <property name="visible">True</property>
+                                                        <property name="can_focus">False</property>
+                                                        <property name="xalign">0.10000000149011612</property>
+                                                        <property name="label" translatable="yes">Data produz</property>
+                                                      </object>
+                                                      <packing>
+                                                        <property name="expand">False</property>
+                                                        <property name="fill">False</property>
+                                                        <property name="position">0</property>
+                                                      </packing>
+                                                    </child>
+                                                    <child>
+                                                      <object class="DateWidget" id="data_produzione_datewidget">
+                                                        <property name="width_request">160</property>
+                                                        <property name="visible">True</property>
+                                                        <property name="can_focus">False</property>
+                                                      </object>
+                                                      <packing>
+                                                        <property name="expand">False</property>
+                                                        <property name="fill">False</property>
+                                                        <property name="position">1</property>
+                                                      </packing>
+                                                    </child>
+                                                    <child>
+                                                      <placeholder/>
+                                                    </child>
+                                                    <child>
+                                                      <object class="GtkToggleButton" id="dettaglio_giacenza_togglebutton">
+                                                        <property name="label" translatable="yes">DETTAGLIO GIACENZA</property>
+                                                        <property name="visible">True</property>
+                                                        <property name="can_focus">True</property>
+                                                        <property name="receives_default">True</property>
+                                                        <property name="use_action_appearance">False</property>
+                                                        <property name="image">info_dg_image</property>
+                                                        <signal name="toggled" handler="on_dettaglio_giacenza_togglebutton_toggled" swapped="no"/>
+                                                      </object>
+                                                      <packing>
+                                                        <property name="expand">True</property>
+                                                        <property name="fill">True</property>
+                                                        <property name="position">3</property>
+                                                      </packing>
+                                                    </child>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="expand">False</property>
+                                                    <property name="fill">False</property>
+                                                    <property name="position">2</property>
+                                                  </packing>
+                                                </child>
+                                                <child>
                                                   <object class="GtkHBox" id="hbox39">
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">False</property>
@@ -1958,19 +2041,18 @@
                                                       </packing>
                                                     </child>
                                                     <child>
-                                                      <object class="UnsignedDecimalEntryField" id="ordine_minimo_entry">
+                                                      <object class="UnsignedIntegerEntryField" id="ordine_minimo_entry">
                                                         <property name="width_request">160</property>
                                                         <property name="visible">True</property>
                                                         <property name="can_focus">True</property>
-                                                        <property name="invisible_char">●</property>
-                                                        <property name="text" translatable="yes">0.00      </property>
+                                                        <property name="invisible_char">•</property>
                                                         <property name="invisible_char_set">True</property>
                                                         <property name="secondary_icon_stock">gtk-clear</property>
                                                         <property name="primary_icon_activatable">False</property>
                                                       </object>
                                                       <packing>
                                                         <property name="expand">False</property>
-                                                        <property name="fill">False</property>
+                                                        <property name="fill">True</property>
                                                         <property name="position">1</property>
                                                       </packing>
                                                     </child>
@@ -2007,11 +2089,8 @@
                                                   <packing>
                                                     <property name="expand">False</property>
                                                     <property name="fill">False</property>
-                                                    <property name="position">2</property>
+                                                    <property name="position">3</property>
                                                   </packing>
-                                                </child>
-                                                <child>
-                                                  <placeholder/>
                                                 </child>
                                               </object>
                                             </child>
@@ -5955,6 +6034,11 @@ _
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="stock">gtk-execute</property>
+  </object>
+  <object class="GtkImage" id="info_dg_image">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-info</property>
   </object>
   <object class="GtkListStore" id="liststore1">
     <columns>

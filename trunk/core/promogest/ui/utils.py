@@ -470,6 +470,7 @@ def leggiFornitura(idArticolo, idFornitore=None, data=None, noPreferenziale=Fals
     _codiceArticoloFornitore = ''
     _numeroLottoArticoloFornitura = None
     _dataScadenzaArticoloFornitura = None
+    _dataProduzioneArticoloFornitura = None
     _dataPrezzoFornitura = None
     _ordineMinimoFornitura = None
     _tempoArrivoFornitura = None
@@ -507,6 +508,7 @@ def leggiFornitura(idArticolo, idFornitore=None, data=None, noPreferenziale=Fals
             _applicazioneSconti = fornitura.applicazione_sconti
             _numeroLottoArticoloFornitura = fornitura.numero_lotto or None
             _dataScadenzaArticoloFornitura = dateToString(fornitura.data_scadenza) or None
+            _dataProduzioneArticoloFornitura = dateToString(fornitura.data_produzione) or None
             _dataPrezzoFornitura = dateToString(fornitura.data_prezzo) or None
             _ordineMinimoFornitura = fornitura.scorta_minima or None
             _tempoArrivoFornitura = fornitura.tempo_arrivo_merce or None
@@ -534,6 +536,7 @@ def leggiFornitura(idArticolo, idFornitore=None, data=None, noPreferenziale=Fals
             "codiceArticoloFornitore": _codiceArticoloFornitore,
             "numeroLottoArticoloFornitura": _numeroLottoArticoloFornitura,
             "dataScadenzaArticoloFornitura": _dataScadenzaArticoloFornitura,
+            "dataProduzioneArticoloFornitura": _dataProduzioneArticoloFornitura,
             "dataPrezzoFornitura": _dataPrezzoFornitura,
             "ordineMinimoFornitura": _ordineMinimoFornitura,
             "tempoArrivoFornitura": _tempoArrivoFornitura
@@ -1948,12 +1951,28 @@ def insertFileTypeChooser(filechooser,typeList):
     filechooser.get_content_area().pack_end(fc_vbox, False, False, 10)
     return combobox
 
+
+def modificaLottiScadenze(riga):
+    from promogest.dao.RigaMovimentoFornitura import RigaMovimentoFornitura
+    aa = RigaMovimentoFornitura().select(idRigaMovimentoVendita = riga["id"], batchSize=None)
+    ll = riga["descrizione"]
+    if aa:
+        l = ""
+        for a in aa:
+            l += "\n Lotto %s Data sc %s " %(a.forni.numero_lotto,dateToString(a.forni.data_scadenza))
+        ll += l
+    return ll
+
+
 def multilinedirtywork( param):
     """
     Funzione che gestisce la suddivisione in multirighe
     """
     for i in param:
         try:
+            for z in i["righe"]:
+                z["descrizione"] = modificaLottiScadenze(z)
+
             lista = i['righe']
             for x in lista:
                 if len(x["descrizione"]) > int(setconf("Multilinea","multilinealimite"))\
@@ -1962,17 +1981,29 @@ def multilinedirtywork( param):
                     wrapper.width = int(setconf("Multilinea","multilinealimite"))
                     x["descrizione"] = "\n".join(wrapper.wrap(x["descrizione"]))
 
+                #if '\n' in x["descrizione"]:
+                    #desc= x["descrizione"].split("\n")
+                    #o = lista.index(x)
+                    #lista.remove(x)
+                    #lung = len(desc)-1
+                    #for d in desc:
+                        #p = desc.index(d)
+                        #c = x.copy()
+                        #if p < lung:
+                            #for k,v in c.iteritems():
+                                #c[k] = ""
+                        #c["descrizione"] = str(d).strip()
+                        #lista.insert(o+p,c)
                 if '\n' in x["descrizione"]:
                     desc= x["descrizione"].split("\n")
-                    o = lista.index(x)
-                    lista.remove(x)
+                    o = lista.index(x) # posizione della righa fra le righe
+                    x["descrizione"] = desc[0]
                     lung = len(desc)-1
-                    for d in desc:
+                    for d in desc[1:]:
                         p = desc.index(d)
                         c = x.copy()
-                        if p < lung:
-                            for k,v in c.iteritems():
-                                c[k] = ""
+                        for k,v in c.iteritems():
+                            c[k] = ""
                         c["descrizione"] = str(d).strip()
                         lista.insert(o+p,c)
         except:

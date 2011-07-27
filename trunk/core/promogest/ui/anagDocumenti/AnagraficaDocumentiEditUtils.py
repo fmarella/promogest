@@ -30,6 +30,8 @@ from promogest.dao.Articolo import Articolo
 from promogest.dao.AliquotaIva import AliquotaIva
 from promogest.dao.DaoUtils import giacenzaArticolo
 from promogest.dao.Pagamento import Pagamento
+from promogest.dao.Fornitura import Fornitura
+from promogest.dao.TestataMovimento import TestataMovimento
 
 if posso("PW"):
     from promogest.modules.PromoWear.ui import AnagraficaDocumentiEditPromoWearExt
@@ -381,6 +383,7 @@ def mostraArticoloPart(anaedit, id, art=None):
     data = stringToDate(anaedit.data_documento_entry.get_text())
     # articolo c'è
     if id is not None:
+        #anaedit.dettaglio_giacenza_togglebutton.set_property("sensible", True)
         fillComboboxMultipli(anaedit.id_multiplo_customcombobox.combobox, id, True)
         articolo = leggiArticolo(id)
         if posso("PW"):
@@ -409,6 +412,7 @@ def mostraArticoloPart(anaedit, id, art=None):
             anaedit._righe[0]["idUnitaBase"] = articolo["idUnitaBase"]
             anaedit._righe[0]["unitaBase"] = articolo["unitaBase"]
             anaedit.unitaBaseLabel.set_text(anaedit._righe[0]["unitaBase"])
+            print " FIN QUI SIAMO AL CAZZEGGIO "
             if ((anaedit._fonteValore == "acquisto_iva") or  (anaedit._fonteValore == "acquisto_senza_iva")):
                 costoLordo = str(articolo['valori']["prezzoLordo"])
                 if costoLordo:
@@ -436,7 +440,6 @@ def mostraArticoloPart(anaedit, id, art=None):
                 if anaedit._righe[0]["quantita"]:
                     anaedit.calcolaTotaleRiga()
             elif anaedit._fonteValore == "vendita_iva":
-
                 costoLordo = str(articolo['valori']["prezzoDettaglio"])
                 if costoLordo:
                     costoLordo = costoLordo.replace(',','.')
@@ -477,6 +480,7 @@ def mostraArticoloPart(anaedit, id, art=None):
         anaedit._righe[0]["codiceArticolo"] = articolo["codice"]
         anaedit.articolo_entry.set_text(anaedit._righe[0]["codiceArticolo"])
         anaedit._righe[0]["descrizione"] = articolo["denominazione"]
+        #lottiDataScadenza(idArticolo = id, data=data)
         if posso("ADR"):
             artADR = AnagraficaDocumentiEditADRExt.getADRArticolo(id)
             if artADR:
@@ -541,6 +545,7 @@ def mostraArticoloPart(anaedit, id, art=None):
         anaedit.codice_articolo_fornitore_entry.set_text('')
         anaedit.numero_lotto_entry.set_text("")
         anaedit.data_scadenza_datewidget.set_text('')
+        anaedit.data_produzione_datewidget.set_text('')
         anaedit.data_prezzo_datewidget.set_text('')
         anaedit.ordine_minimo_entry.set_text('')
         anaedit.tempo_arrivo_merce_entry.set_text('')

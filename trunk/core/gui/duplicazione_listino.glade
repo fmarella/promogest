@@ -4,6 +4,8 @@
   <!-- interface-requires pythonplugin 0.0 -->
   <!-- interface-naming-policy toplevel-contextual -->
   <object class="GtkWindow" id="duplicazione_listino_window">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
     <property name="title" translatable="yes">Duplicazione listino</property>
     <property name="resizable">False</property>
     <property name="modal">True</property>
@@ -12,31 +14,36 @@
     <property name="icon">promogest.png</property>
     <property name="urgency_hint">True</property>
     <property name="gravity">center</property>
-    <signal name="destroy_event" handler="on_duplicazione_listino_window_destroy_event"/>
-    <signal name="delete_event" handler="on_duplicazione_listino_window_delete_event"/>
+    <signal name="destroy-event" handler="on_duplicazione_listino_window_destroy_event" swapped="no"/>
+    <signal name="delete-event" handler="on_duplicazione_listino_window_delete_event" swapped="no"/>
     <child>
       <object class="GtkVBox" id="duplica_listino_vbox">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <child>
           <object class="GtkFrame" id="duplica_listino_frame">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="border_width">5</property>
             <property name="label_xalign">0</property>
             <child>
               <object class="GtkAlignment" id="alignment317">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <property name="border_width">5</property>
                 <property name="left_padding">5</property>
                 <property name="right_padding">5</property>
                 <child>
                   <object class="GtkTable" id="duplica_listino_table">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <property name="n_rows">8</property>
                     <property name="n_columns">2</property>
                     <property name="row_spacing">2</property>
                     <child>
                       <object class="GtkLabel" id="nome_listino_duplicato_label_label">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="xalign">0</property>
                         <property name="label" translatable="yes">Denominazione</property>
                       </object>
@@ -51,6 +58,7 @@
                     <child>
                       <object class="GtkLabel" id="data_listino_duplicato_label_label">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="xalign">0</property>
                         <property name="label" translatable="yes">Data</property>
                       </object>
@@ -65,6 +73,7 @@
                     <child>
                       <object class="GtkLabel" id="descrizione_listino_duplicat_label">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="xalign">0</property>
                         <property name="yalign">0.44999998807907104</property>
                         <property name="label" translatable="yes">Descrizione</property>
@@ -80,6 +89,7 @@
                     <child>
                       <object class="GtkLabel" id="sconti_label">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="tooltip_text" translatable="yes">Inserire qui eventuali sconti a variazione del listino 
 originale. </property>
                         <property name="xalign">0</property>
@@ -98,6 +108,10 @@ originale. </property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="invisible_char">●</property>
+                        <property name="primary_icon_activatable">False</property>
+                        <property name="secondary_icon_activatable">False</property>
+                        <property name="primary_icon_sensitive">True</property>
+                        <property name="secondary_icon_sensitive">True</property>
                       </object>
                       <packing>
                         <property name="left_attach">1</property>
@@ -111,6 +125,10 @@ originale. </property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="invisible_char">●</property>
+                        <property name="primary_icon_activatable">False</property>
+                        <property name="secondary_icon_activatable">False</property>
+                        <property name="primary_icon_sensitive">True</property>
+                        <property name="secondary_icon_sensitive">True</property>
                       </object>
                       <packing>
                         <property name="left_attach">1</property>
@@ -122,6 +140,7 @@ originale. </property>
                     <child>
                       <object class="ScontoWidget" id="duplica_listini_scontowidget">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                       </object>
                       <packing>
                         <property name="left_attach">1</property>
@@ -133,17 +152,20 @@ originale. </property>
                     <child>
                       <object class="DateWidget" id="data_listino_duplicato_entry">
                         <property name="visible">True</property>
+                        <property name="can_focus">True</property>
                       </object>
                       <packing>
                         <property name="left_attach">1</property>
                         <property name="right_attach">2</property>
                         <property name="top_attach">3</property>
                         <property name="bottom_attach">4</property>
+                        <property name="y_options"></property>
                       </packing>
                     </child>
                     <child>
                       <object class="GtkLabel" id="listino_origine_label">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="xalign">0.029999999329447746</property>
                         <property name="label" translatable="yes">Listino d'origine:</property>
                       </object>
@@ -151,6 +173,7 @@ originale. </property>
                     <child>
                       <object class="GtkLabel" id="dati_vecchio_listino_label">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="xalign">0.019999999552965164</property>
                         <property name="label" translatable="yes">.</property>
                       </object>
@@ -165,6 +188,7 @@ originale. </property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="draw_indicator">True</property>
                       </object>
                       <packing>
@@ -180,6 +204,7 @@ originale. </property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="draw_indicator">True</property>
                       </object>
                       <packing>
@@ -195,6 +220,7 @@ originale. </property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="active">True</property>
                         <property name="draw_indicator">True</property>
                       </object>
@@ -210,6 +236,7 @@ originale. </property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="active">True</property>
                         <property name="draw_indicator">True</property>
                         <property name="group">plus_radio</property>
@@ -229,6 +256,7 @@ originale. </property>
             <child type="label">
               <object class="GtkLabel" id="riferimenti_listino">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <property name="label" translatable="yes">&lt;b&gt;Indicare i riferimenti del listino da duplicare&lt;/b&gt;</property>
                 <property name="use_markup">True</property>
               </object>
@@ -236,51 +264,80 @@ originale. </property>
           </object>
           <packing>
             <property name="expand">False</property>
+            <property name="fill">True</property>
             <property name="position">0</property>
           </packing>
         </child>
         <child>
           <object class="GtkHSeparator" id="hseparator29">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
           </object>
           <packing>
             <property name="expand">False</property>
+            <property name="fill">True</property>
             <property name="position">1</property>
           </packing>
         </child>
         <child>
-          <object class="GtkHButtonBox" id="hbuttonbox9">
+          <object class="GtkHBox" id="hbox1">
             <property name="visible">True</property>
-            <property name="border_width">3</property>
-            <property name="layout_style">end</property>
+            <property name="can_focus">False</property>
             <child>
-              <object class="GtkButton" id="chiudi_button">
-                <property name="label">gtk-close</property>
+              <object class="GtkHButtonBox" id="hbuttonbox9">
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="use_stock">True</property>
-                <signal name="clicked" handler="on_chiudi_button_clicked"/>
+                <property name="can_focus">False</property>
+                <property name="border_width">3</property>
+                <property name="layout_style">end</property>
+                <child>
+                  <object class="GtkButton" id="chiudi_button">
+                    <property name="label">gtk-close</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="use_action_appearance">False</property>
+                    <property name="use_stock">True</property>
+                    <signal name="clicked" handler="on_chiudi_button_clicked" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="confirms_button">
+                    <property name="label">gtk-ok</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="can_default">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="use_action_appearance">False</property>
+                    <property name="use_stock">True</property>
+                    <signal name="clicked" handler="on_confirms_button_clicked" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
               </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">False</property>
+                <property name="pack_type">end</property>
                 <property name="position">0</property>
               </packing>
             </child>
             <child>
-              <object class="GtkButton" id="confirms_button">
-                <property name="label">gtk-ok</property>
+              <object class="GtkProgressBar" id="pbar">
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="can_default">True</property>
-                <property name="receives_default">False</property>
-                <property name="use_stock">True</property>
-                <signal name="clicked" handler="on_confirms_button_clicked"/>
+                <property name="can_focus">False</property>
               </object>
               <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
                 <property name="position">1</property>
               </packing>
             </child>

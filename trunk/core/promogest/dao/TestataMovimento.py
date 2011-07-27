@@ -26,10 +26,11 @@ from promogest.Environment import *
 from Dao import Dao
 from DaoUtils import *
 from promogest.dao.Articolo import Articolo
-from Multiplo import Multiplo
-from RigaMovimento import RigaMovimento
-from RigaDocumento import RigaDocumento
-from Riga import Riga
+from promogest.dao.Multiplo import Multiplo
+from promogest.dao.RigaMovimento import RigaMovimento
+from promogest.dao.RigaDocumento import RigaDocumento
+from promogest.dao.Riga import Riga
+from promogest.dao.RigaMovimentoFornitura import RigaMovimentoFornitura
 from promogest.ui.utils import numeroRegistroGet
 from Fornitore import Fornitore
 from Cliente import Cliente
@@ -164,6 +165,10 @@ class TestataMovimento(Dao):
                                     offset = None,
                                     batchSize = None)
         if row:
+            self.rmfv = RigaMovimentoFornitura().select(idRigaMovimentoVenditaBool = True, batchSize=None)
+            print "QUI SEI PIENOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO", self.rmfv
+            if self.rmfv:
+                print "QUESTO ARTICOLO è stato venduto", len(self.rmfv), "volte"
             for r in row:
                 if posso("SM"):
                     mp = MisuraPezzo().select(idRiga=r.id, batchSize=None)
@@ -171,6 +176,11 @@ class TestataMovimento(Dao):
                         for m in mp:
                             params['session'].delete(m)
                         params["session"].commit()
+                rmfa = RigaMovimentoFornitura().select(idRigaMovimentoAcquisto = r.id, batchSize=None)
+                if rmfa:
+                    for f in rmfa:
+                        params['session'].delete(f)
+                    params["session"].commit()
                 params['session'].delete(r)
             params["session"].commit()
         return True
@@ -201,6 +211,7 @@ class TestataMovimento(Dao):
                     #salvataggio riga
                     riga.persist()
                     #print "DOPO il persist della riga", tempo()
+                    print "QUANTIAAAAAAAAAAAAAAAAAAAAAAAAA", riga.quantita
                     if self.id_fornitore and riga.id_articolo:
                         if hasattr(riga,"data_prezzo"):
                             data_prezzo = stringToDateTime(riga.data_prezzo) or stringToDateTime(self.data_movimento)
@@ -245,7 +256,7 @@ class TestataMovimento(Dao):
                         if hasattr(riga, "data_produzione"):
                             daoFornitura.data_produzione = stringToDate(riga.data_produzione) or None
                         if hasattr(riga,"data_prezzo"):
-                            daoFornitura.data_prezzo = stringToDateTime(riga.data_prezzo) or stringToDateTime(self.data_movimento)
+                            daoFornitura.data_prezzo = data_prezzo
 
                         daoFornitura.id_fornitore = self.id_fornitore
                         daoFornitura.id_articolo = riga.id_articolo
@@ -271,6 +282,32 @@ class TestataMovimento(Dao):
                         daoFornitura.sconti = sconti
                         params["session"].add(daoFornitura)
                     params["session"].commit()
+                    if self.id_fornitore and riga.id_articolo:
+                        for q in range(1,riga.quantita):
+                            a = RigaMovimentoFornitura()
+                            a.id_articolo = riga.id_articolo
+                            a.id_riga_movimento_acquisto = riga.id
+                            if self.rmfv and self.rmfv[0].id_articolo==riga.id_articolo and self.rmfv[0].id_fornitura == daoFornitura.id:
+                                a.id_riga_movimento_vendita = self.rmfv[0].id_riga_movimento_vendita
+                                del self.rmfv[0]
+                            a.id_fornitura = daoFornitura.id
+                            params["session"].add(a)
+                        params["session"].commit()
+                    else:
+                        if hasattr(riga,"righe_movimento_fornitura"):
+                            print "ECCOCIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII", riga.righe_movimento_fornitura
+                            if riga.righe_movimento_fornitura:
+                                precedentiRighe= RigaMovimentoFornitura().select(idRigaMovimentoVendita=riga.id, batchSize=None)
+                                if precedentiRighe:
+                                    for p in precedentiRighe:
+                                        p.id_riga_movimento_vendita = None
+                                        params["session"].add(p)
+                                    params["session"].commit()
+                                for r in riga.righe_movimento_fornitura:
+                                    r.id_riga_movimento_vendita = riga.id
+                                    params["session"].add(r)
+                                params["session"].commit()
+                        print "E una vendita"
                 #print "DOPO il for generale di riga movimento", tempo()
             self.__righeMovimento = []
 

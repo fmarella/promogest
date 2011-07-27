@@ -276,7 +276,6 @@ class RigaMovimento(Dao):
             params["session"].commit()
             return True
 
-
     def persist(self):
 
         params["session"].add(self)

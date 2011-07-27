@@ -48,7 +48,7 @@ from promogest.dao.Pagamento import Pagamento
 from promogest.dao.AliquotaIva import AliquotaIva
 #from promogest.dao.RigaRitenutaAcconto import RigaRitenutaAcconto
 from promogest.modules.PrimaNota.dao.TestataPrimaNota import TestataPrimaNota
-
+from promogest.ui.DettaglioGiacenzaWindow import DettaglioGiacenzaWindow
 from promogest.ui.utils import *
 from promogest.ui.utilsCombobox import *
 from promogest.dao.DaoUtils import giacenzaArticolo
@@ -234,9 +234,11 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                                 "ritenute" : [],
                                 "numeroLottoArticoloFornitura":None,
                                 "dataScadenzaArticoloFornitura":None,
+                                "dataProduzioneArticoloFornitura":None,
                                 "dataPrezzoFornitura":None,
                                 "ordineMinimoFornitura":None,
                                 "tempoArrivoFornitura":None,
+                                "rigaMovimentoFornituraList":[],
                                 }
         if posso("SM"):
             AnagraficaDocumentiEditSuMisuraExt.azzeraRiga(self,numero)
@@ -292,6 +294,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self.codice_articolo_fornitore_entry.set_text('')
         self.numero_lotto_entry.set_text("")
         self.data_scadenza_datewidget.set_text('')
+        self.data_produzione_datewidget.set_text('')
         self.ordine_minimo_entry.set_text('')
         self.tempo_arrivo_merce_entry.set_text('')
         self.data_prezzo_datewidget.set_text('')
@@ -673,9 +676,11 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                 self._righe[0]["codiceArticoloFornitore"] = fornitura["codiceArticoloFornitore"] #or articolo["codicearticolofornitore"]
                 self._righe[0]["numeroLottoArticoloFornitura"] = fornitura["numeroLottoArticoloFornitura"]
                 self._righe[0]["dataScadenzaArticoloFornitura"] = fornitura["dataScadenzaArticoloFornitura"]
+                self._righe[0]["dataProduzioneArticoloFornitura"] = fornitura["dataProduzioneArticoloFornitura"]
                 self._righe[0]["dataPrezzoFornitura"] = fornitura["dataPrezzoFornitura"]
                 self._righe[0]["ordineMinimoFornitura"] = fornitura["ordineMinimoFornitura"]
                 self._righe[0]["tempoArrivoFornitura"] = fornitura["tempoArrivoFornitura"]
+                #TODO: AGGIUNGERE UN RICHIAMO A RIGAMOVIMENTOFORNITURA CON I DATI PRESI DAL DB
 
             self._righe.append(self._righe[0])
             rigadoc= self._righe[j]
@@ -914,9 +919,11 @@ del documento.
             # alla fornitura...
             setattr(daoRiga,"numero_lotto",self._righe[i]["numeroLottoArticoloFornitura"])
             setattr(daoRiga,"data_scadenza",self._righe[i]["dataScadenzaArticoloFornitura"])
+            setattr(daoRiga,"data_produzione",self._righe[i]["dataProduzioneArticoloFornitura"])
             setattr(daoRiga,"data_prezzo",self._righe[i]["dataPrezzoFornitura"])
             setattr(daoRiga,"ordine_minimo",self._righe[i]["ordineMinimoFornitura"])
             setattr(daoRiga,"tempo_arrivo",self._righe[i]["tempoArrivoFornitura"])
+            setattr(daoRiga,"righe_movimento_fornitura",self._righe[i]["rigaMovimentoFornituraList"])
 
             daoRiga.id_listino = self._righe[i]["idListino"]
             daoRiga.percentuale_iva = self._righe[i]["percentualeIva"]
@@ -1042,9 +1049,11 @@ del documento.
 
         self._righe[0]["numeroLottoArticoloFornitura"] = self._righe[self._numRiga]["numeroLottoArticoloFornitura"]
         self._righe[0]["dataScadenzaArticoloFornitura"] = self._righe[self._numRiga]["dataScadenzaArticoloFornitura"]
+        self._righe[0]["dataProduzioneArticoloFornitura"] = self._righe[self._numRiga]["dataProduzioneArticoloFornitura"]
         self._righe[0]["dataPrezzoFornitura"] = self._righe[self._numRiga]["dataPrezzoFornitura"]
         self._righe[0]["ordineMinimoFornitura"] = self._righe[self._numRiga]["ordineMinimoFornitura"]
         self._righe[0]["tempoArrivoFornitura"] = self._righe[self._numRiga]["tempoArrivoFornitura"]
+        self._righe[0]["rigaMovimentoFornituraList"] = self._righe[self._numRiga]["rigaMovimentoFornituraList"]
 
         self._righe[0]["idUnitaBase"] = self._righe[self._numRiga]["idUnitaBase"]
         self._righe[0]["unitaBase"] = self._righe[self._numRiga]["unitaBase"]
@@ -1086,6 +1095,7 @@ del documento.
 
         self.numero_lotto_entry.set_text(self._righe[0]["numeroLottoArticoloFornitura"] or "")
         self.data_scadenza_datewidget.set_text(self._righe[0]["dataScadenzaArticoloFornitura"] or "")
+        self.data_produzione_datewidget.set_text(self._righe[0]["dataProduzioneArticoloFornitura"] or "")
         self.data_prezzo_datewidget.set_text(self._righe[0]["dataPrezzoFornitura"] or "")
         self.ordine_minimo_entry.set_text(str(self._righe[0]["ordineMinimoFornitura"] or ""))
         self.tempo_arrivo_merce_entry.set_text(str(self._righe[0]["tempoArrivoFornitura"] or ""))
@@ -1188,6 +1198,7 @@ del documento.
         self._righe[0]["codiceArticoloFornitore"] = self.codice_articolo_fornitore_entry.get_text()
         self._righe[0]["numeroLottoArticoloFornitura"] = self.numero_lotto_entry.get_text()
         self._righe[0]["dataScadenzaArticoloFornitura"] = self.data_scadenza_datewidget.get_text()
+        self._righe[0]["dataProduzioneArticoloFornitura"] = self.data_produzione_datewidget.get_text()
         self._righe[0]["dataPrezzoFornitura"] = self.data_prezzo_datewidget.get_text()
         self._righe[0]["ordineMinimoFornitura"] = self.ordine_minimo_entry.get_text()
         self._righe[0]["tempoArrivoFornitura"] = self.tempo_arrivo_merce_entry.get_text()
@@ -1216,9 +1227,11 @@ del documento.
 
         self._righe[self._numRiga]["numeroLottoArticoloFornitura"] = self._righe[0]["numeroLottoArticoloFornitura"]
         self._righe[self._numRiga]["dataScadenzaArticoloFornitura"] = self._righe[0]["dataScadenzaArticoloFornitura"]
+        self._righe[self._numRiga]["dataProduzioneArticoloFornitura"] = self._righe[0]["dataProduzioneArticoloFornitura"]
         self._righe[self._numRiga]["dataPrezzoFornitura"] = self._righe[0]["dataPrezzoFornitura"]
         self._righe[self._numRiga]["ordineMinimoFornitura"] = self._righe[0]["ordineMinimoFornitura"]
         self._righe[self._numRiga]["tempoArrivoFornitura"] = self._righe[0]["tempoArrivoFornitura"]
+        self._righe[self._numRiga]["rigaMovimentoFornituraList"] = self._righe[0]["rigaMovimentoFornituraList"]
 
         self._righe[self._numRiga]["percentualeIva"] = self._righe[0]["percentualeIva"]
         self._righe[self._numRiga]["idAliquotaIva"] = self._righe[0]["idAliquotaIva"]
@@ -1747,12 +1760,17 @@ del documento.
             self.codice_articolo_fornitore_entry.set_property('visible', True)
             self.numero_lotto_label.set_property('visible', True)
             self.numero_lotto_entry.set_property('visible', True)
+            self.data_prezzo_label.set_property('visible', True)
+            self.data_prezzo_datewidget.set_property('visible', True)
             self.data_scadenza_label.set_property('visible', True)
             self.data_scadenza_datewidget.set_property('visible', True)
+            self.data_produzione_label.set_property('visible', True)
+            self.data_produzione_datewidget.set_property('visible', True)
             self.ordine_minimo_label.set_property('visible', True)
             self.ordine_minimo_entry.set_property('visible', True)
             self.tempo_arrivo_merce_label.set_property('visible', True)
             self.tempo_arrivo_merce_entry.set_property('visible', True)
+            self.dettaglio_giacenza_togglebutton.set_property("visible", False)
 
             self.protocollo_label.set_property('visible', True)
             self.protocollo_entry1.set_property('visible', True)
@@ -1769,12 +1787,17 @@ del documento.
             self.codice_articolo_fornitore_entry.set_property('visible', False)
             self.numero_lotto_label.set_property('visible', False)
             self.numero_lotto_entry.set_property('visible', False)
+            self.data_prezzo_label.set_property('visible', False)
+            self.data_prezzo_datewidget.set_property('visible', False)
             self.data_scadenza_label.set_property('visible', False)
             self.data_scadenza_datewidget.set_property('visible', False)
+            self.data_produzione_label.set_property('visible', False)
+            self.data_produzione_datewidget.set_property('visible', False)
             self.ordine_minimo_label.set_property('visible', False)
             self.ordine_minimo_entry.set_property('visible', False)
             self.tempo_arrivo_merce_label.set_property('visible', False)
             self.tempo_arrivo_merce_entry.set_property('visible', False)
+            self.dettaglio_giacenza_togglebutton.set_property("visible", True)
 
             self.protocollo_label.set_property('visible', False)
             self.protocollo_entry1.set_property('visible', False)
@@ -1790,18 +1813,44 @@ del documento.
             self.codice_articolo_fornitore_entry.set_property('visible', False)
             self.numero_lotto_label.set_property('visible', False)
             self.numero_lotto_entry.set_property('visible', False)
+            self.data_prezzo_label.set_property('visible', False)
+            self.data_prezzo_datewidget.set_property('visible', False)
             self.data_scadenza_label.set_property('visible', False)
             self.data_scadenza_datewidget.set_property('visible', False)
+            self.data_produzione_label.set_property('visible', False)
+            self.data_produzione_datewidget.set_property('visible', False)
             self.ordine_minimo_label.set_property('visible', False)
             self.ordine_minimo_entry.set_property('visible', False)
             self.tempo_arrivo_merce_label.set_property('visible', False)
             self.tempo_arrivo_merce_entry.set_property('visible', False)
+            self.dettaglio_giacenza_togglebutton.set_property("visible", True)
+            #self.dettaglio_giacenza_togglebutton.set_property("sensible", False)
             self.protocollo_label.set_property('visible', False)
             self.protocollo_entry1.set_property('visible', False)
             self.numero_documento_label.set_text('Numero')
 
         self.persona_giuridica_changed()
         self.data_documento_entry.grab_focus()
+
+
+    def on_dettaglio_giacenza_togglebutton_toggled(self, toggleButton):
+        if not(toggleButton.get_active()):
+            toggleButton.set_active(False)
+            return
+        idArt =  self._righe[0]["idArticolo"]
+        if not idArt:
+            messageInfo(msg="NESSUN ARTICOLO o RIGA SELEZIONATO")
+            toggleButton.set_active(False)
+            return
+        a = DettaglioGiacenzaWindow(mainWindow=self,
+                                    riga= self._righe[0])
+        anagWindow = a.getTopLevel()
+        returnWindow = self.getTopLevel().get_toplevel()
+        anagWindow.set_transient_for(returnWindow)
+        anagWindow.show_all()
+        toggleButton.set_active(False)
+
+
 
     def persona_giuridica_changed(self):
         if self._loading:

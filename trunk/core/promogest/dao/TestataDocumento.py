@@ -45,6 +45,7 @@ from promogest.modules.PrimaNota.dao.TestataPrimaNota import TestataPrimaNota
 from promogest.modules.PrimaNota.dao.RigaPrimaNota import RigaPrimaNota
 from promogest.modules.PrimaNota.dao.RigaPrimaNotaTestataDocumentoScadenza import RigaPrimaNotaTestataDocumentoScadenza
 from ScontoRigaMovimento import ScontoRigaMovimento
+from promogest.dao.RigaMovimentoFornitura import RigaMovimentoFornitura
 from promogest.modules.Pagamenti.dao.TestataDocumentoScadenza import TestataDocumentoScadenza
 from promogest.dao.InformazioniFatturazioneDocumento import InformazioniFatturazioneDocumento
 
@@ -529,6 +530,8 @@ class TestataDocumento(Dao):
                         setattr(daoRigaMovimento,"ordine_minimo",row.ordine_minimo or None)
                     if hasattr(row, "tempo_arrivo"):
                         setattr(daoRigaMovimento,"tempo_arrivo",row.tempo_arrivo or None)
+                    if hasattr(row, "righe_movimento_fornitura"):
+                        setattr(daoRigaMovimento,"righe_movimento_fornitura", row.righe_movimento_fornitura or None)
                     daoRigaMovimento.codiceArticoloFornitore = row.__dict__["_RigaDocumento__codiceArticoloFornitore"]
                     if (hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes") or ("GestioneNoleggio" in Environment.modulesList):
                         daoRigaMovimento.prezzo_acquisto_noleggio = row.prezzo_acquisto_noleggio
@@ -993,6 +996,12 @@ class TestataDocumento(Dao):
                     for m in mp:
                         params['session'].delete(m)
                     params["session"].commit()
+        for r in self.righe:
+            precedentiRighe= RigaMovimentoFornitura().select(idRigaMovimentoVendita=r.id, batchSize=None)
+            if precedentiRighe:
+                for p in precedentiRighe:
+                    p.id_riga_movimento_vendita = None
+                    params["session"].add(p)
         params['session'].delete(self)
         params['session'].commit()
 

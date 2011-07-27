@@ -148,11 +148,8 @@ class AnagraficaHtml(object):
         print "DAO", self.dao.__class__.__name__
 
         if self.dao.__class__.__name__ in Environment.fromHtmlLits:
-#            try:
             import ho.pisa as pisa
-#            except:
-#                print "ERRORE NELL'IMPORT DI PISA"
-#            return
+
             f = self.hh
             g = file(Environment.tempDir+".temp.pdf", "wb")
             pdf = pisa.CreatePDF(str(f),g)
@@ -168,7 +165,7 @@ class AnagraficaHtml(object):
                 from promogest.modules.NumerazioneComplessa.jnet import numerazioneJnet
                 param[0]["numero"]= numerazioneJnet(self.dao)
         except:
-            print "hack jnet ...correggere!!!"
+            print ""
         if azienda:
             azidict = azienda.dictionary(complete=True)
             for a,b in azidict.items():

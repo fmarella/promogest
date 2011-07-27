@@ -36,9 +36,10 @@ def giacenzaSel(year=None, idMagazzino=None, idArticolo=None,allMag= None):
     @param allMag=: Tutti i magazzini ( utile per l'html )
     @type allMag=: bool
     """
-    from TestataMovimento import TestataMovimento
-    from RigaMovimento import RigaMovimento
-    from Riga import Riga
+    from promogest.dao.TestataMovimento import TestataMovimento
+    from promogest.dao.RigaMovimento import RigaMovimento
+    from promogest.dao.Riga import Riga
+    from promogest.dao.Fornitura import Fornitura
     from promogest.dao.Magazzino import Magazzino
     if allMag:
         magazzini = Environment.params["session"].query(Magazzino.id).all()
@@ -47,16 +48,23 @@ def giacenzaSel(year=None, idMagazzino=None, idArticolo=None,allMag= None):
             return []
         else:
             magazzini = magazzini[0]
-    else:
-        magazzini = [idMagazzino]
-    righeArticoloMovimentate= Environment.params["session"]\
-            .query(RigaMovimento,TestataMovimento)\
-            .filter(TestataMovimento.data_movimento.between(datetime.date(int(year), 1, 1), datetime.date(int(year) + 1, 1, 1)))\
-            .filter(RigaMovimento.id_testata_movimento == TestataMovimento.id)\
-            .filter(Riga.id_articolo==idArticolo)\
-            .filter(Riga.id_magazzino.in_(magazzini))\
-            .all()
+        righeArticoloMovimentate= Environment.params["session"]\
+                .query(RigaMovimento,TestataMovimento)\
+                .filter(TestataMovimento.data_movimento.between(datetime.date(int(year), 1, 1), datetime.date(int(year) + 1, 1, 1)))\
+                .filter(RigaMovimento.id_testata_movimento == TestataMovimento.id)\
+                .filter(Riga.id_articolo==idArticolo)\
+                .filter(Riga.id_magazzino.in_(magazzini))\
+                .all()
 
+    else:
+        magazzini = idMagazzino
+        righeArticoloMovimentate= Environment.params["session"]\
+                .query(RigaMovimento,TestataMovimento)\
+                .filter(TestataMovimento.data_movimento.between(datetime.date(int(year), 1, 1), datetime.date(int(year) + 1, 1, 1)))\
+                .filter(RigaMovimento.id_testata_movimento == TestataMovimento.id)\
+                .filter(Riga.id_articolo==idArticolo)\
+                .filter(Riga.id_magazzino ==magazzini)\
+                .all()
     lista = []
     for ram in righeArticoloMovimentate:
 
@@ -72,7 +80,18 @@ def giacenzaSel(year=None, idMagazzino=None, idArticolo=None,allMag= None):
             valore= giacenza*valunine
             return (giacenza, valore)
 
-        diz = {"numero":ram[1].numero,
+        def addFornitura(data=None):
+            return Fornitura().select(idArticolo = idArticolo,dataFornitura=data)
+
+        if ram[1].segnoOperazione =="+":
+            fornitura = addFornitura(data=ram[1].data_movimento)
+        else:
+            fornitura = None
+
+        diz = {"daoRigaMovimento": ram[0],
+                "daoTestataMovimento":ram[1],
+                "numero":ram[1].numero,
+                "fornitura": fornitura,
                 "data_movimento":ram[1].data_movimento,
                 "operazione":ram[1].operazione,
                 "id_articolo":ram[0].id_articolo,

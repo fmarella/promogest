@@ -151,7 +151,7 @@ class Anagrafica(GladeWidget):
 
     def on_records_file_export_clicked(self, widget):
         dao = self.editElement.setDao(None)
-        print "DAOO", dao
+        #print "DAOO", dao
 #        data = self.set_export_data()
 #        data_export = self.filter.xptDaoList
 
