@@ -124,12 +124,9 @@ Verificare gli errori nel file e ritentare l'importazione"""
         else:
             msg = u'Nessun articolo aggiornato/importato.'
             messageInfo(msg=msg, transient=self.getTopLevel())
-        if response == GTK_BUTTONS_OK:
             self.window.destroy()
             self._mainWindow.show_all()
-        else:
-            self.window.destroy()
-            self._mainWindow.show_all()
+
 
     def on_import_preview_window_close(self, widget, event=None):
         self.window.destroy()
