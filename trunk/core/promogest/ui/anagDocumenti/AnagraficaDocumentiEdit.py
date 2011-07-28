@@ -1054,7 +1054,8 @@ del documento.
         self._righe[0]["dataPrezzoFornitura"] = self._righe[self._numRiga]["dataPrezzoFornitura"]
         self._righe[0]["ordineMinimoFornitura"] = self._righe[self._numRiga]["ordineMinimoFornitura"]
         self._righe[0]["tempoArrivoFornitura"] = self._righe[self._numRiga]["tempoArrivoFornitura"]
-        self._righe[0]["rigaMovimentoFornituraList"] = self._righe[self._numRiga]["rigaMovimentoFornituraList"]
+        if "rigaMovimentoFornituraList" in self._righe[self._numRiga]:
+            self._righe[0]["rigaMovimentoFornituraList"] = self._righe[self._numRiga]["rigaMovimentoFornituraList"]
 
         self._righe[0]["idUnitaBase"] = self._righe[self._numRiga]["idUnitaBase"]
         self._righe[0]["unitaBase"] = self._righe[self._numRiga]["unitaBase"]
@@ -1232,7 +1233,8 @@ del documento.
         self._righe[self._numRiga]["dataPrezzoFornitura"] = self._righe[0]["dataPrezzoFornitura"]
         self._righe[self._numRiga]["ordineMinimoFornitura"] = self._righe[0]["ordineMinimoFornitura"]
         self._righe[self._numRiga]["tempoArrivoFornitura"] = self._righe[0]["tempoArrivoFornitura"]
-        #self._righe[self._numRiga]["rigaMovimentoFornituraList"] = self._righe[0]["rigaMovimentoFornituraList"]
+        if "rigaMovimentoFornituraList" in self._righe[0]:
+            self._righe[self._numRiga]["rigaMovimentoFornituraList"] = self._righe[0]["rigaMovimentoFornituraList"]
 
         self._righe[self._numRiga]["percentualeIva"] = self._righe[0]["percentualeIva"]
         self._righe[self._numRiga]["idAliquotaIva"] = self._righe[0]["idAliquotaIva"]
