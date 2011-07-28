@@ -921,9 +921,7 @@ def getRiportoCassa():
     return str(setconf("PrimaNota", "valore_saldo_parziale_cassa_primanota"))
 
 def calcolaTotaliPrimeNote(daos1, daos2=None):
-#    totale = 0
-    tot_entrate = 0
-    tot_uscite = 0
+    """Calcola i totali delle entrate e delle uscite di cassa o di banca"""
     tot_entrate_cassa = 0
     tot_entrate_banca = 0
     tot_uscite_cassa = 0
