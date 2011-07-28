@@ -181,6 +181,12 @@ class TestataMovimento(Dao):
                     for f in rmfa:
                         params['session'].delete(f)
                     params["session"].commit()
+                precedentiRighe= RigaMovimentoFornitura().select(idRigaMovimentoVendita=r.id, batchSize=None)
+                if precedentiRighe:
+                    for p in precedentiRighe:
+                        p.id_riga_movimento_vendita = None
+                        params["session"].add(p)
+                    params['session'].commit()
                 params['session'].delete(r)
             params["session"].commit()
         return True

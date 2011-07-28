@@ -1002,6 +1002,7 @@ class TestataDocumento(Dao):
                 for p in precedentiRighe:
                     p.id_riga_movimento_vendita = None
                     params["session"].add(p)
+                params['session'].commit()
         params['session'].delete(self)
         params['session'].commit()
 
