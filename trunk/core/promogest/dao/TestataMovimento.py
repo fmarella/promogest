@@ -304,7 +304,7 @@ class TestataMovimento(Dao):
                                     r.id_riga_movimento_vendita = riga.id
                                     params["session"].add(r)
                                 params["session"].commit()
-                        print "E una vendita"
+                        #print "E una vendita"
                 #print "DOPO il for generale di riga movimento", tempo()
             self.__righeMovimento = []
 
