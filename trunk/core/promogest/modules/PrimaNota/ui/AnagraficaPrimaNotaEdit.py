@@ -95,7 +95,9 @@ class AnagraficaPrimaNotaEdit(AnagraficaEdit):
                 col_tipo = ""
             banca = ""
             if r.id_banca:
-                banca = Banca().getRecord(id=r.id_banca).denominazione
+                _banca = Banca().getRecord(id=r.id_banca)
+                if _banca:
+                    banca = _banca.denominazione
             self.primanota_riga_listore.append((r,
                                                 r.denominazione,
                                                 str(valore),
