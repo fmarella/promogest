@@ -176,7 +176,9 @@ class AnagraficaPrimaNotaEdit(AnagraficaEdit):
         riga.id_banca = findIdFromCombobox(self.id_banca_customcombobox.combobox)
         banca = ""
         if riga.id_banca:
-            banca = Banca().getRecord(id=riga.id_banca).denominazione
+            _banca = Banca().getRecord(id=riga.id_banca)
+            if _banca:
+                banca = _banca.denominazione
         dati = (riga,
                         denominazione,
                         str(mN(valore,2)),
