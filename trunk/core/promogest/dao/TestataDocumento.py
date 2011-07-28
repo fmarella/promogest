@@ -591,14 +591,15 @@ class TestataDocumento(Dao):
                         tipo_pag = "TERZA RATA"
                     elif scad.numero_scadenza == 4:
                         tipo_pag = "QUARTA RATA"
-                    stringa = "%s N.%s del. %s " %(self.operazione, str(self.numero), dateToString(self.data_documento))
+                    stringa = "%s %s Rif.interni N.%s del. %s " %(self.operazione, self.protocollo, str(self.numero), dateToString(self.data_documento))
                     if ope["segno"] == "-":
                         stringa += 'a '
                         segno = "entrata"
                     else:
                         stringa += 'da '
                         segno = "uscita"
-                    stringa += "%s %s, %s" %(self.intestatario, self._getPI_CF(), tipo_pag)
+                    str_importo_doc = "Importo doc. %s " % self._totaleScontato
+                    stringa += "%s \n%s%s, %s" %(self.intestatario, str_importo_doc, self._getPI_CF(), tipo_pag)
 
                     tpn = TestataPrimaNota()
                     tpn.data_inizio = scad.data_pagamento
