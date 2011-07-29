@@ -2959,9 +2959,7 @@ def dateToOrdinal(anno):
     ccccc = Calendar().yeardatescalendar(int(Environment.workingYear))
     for cccc in ccccc:
         for ccc in cccc:
-            print "DEDEDEDEDEDEDE",  ccc
             for cc in ccc:
-                print "SSSSSSSSSSSS", cc
                 for c in cc:
                     if c.year==int(Environment.workingYear) and c.toordinal() not in dd:
                         dd.append((c.toordinal(),c))

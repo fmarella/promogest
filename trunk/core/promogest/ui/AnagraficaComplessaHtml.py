@@ -77,6 +77,9 @@ class AnagraficaHtml(object):
         """ Aggiorna la vista HTML """
         self._refresh()
 
+    def variations(self):
+        return self.dao
+
     def _refresh(self):
         """ show the html page in the custom widget"""
         pageData = {}
@@ -111,6 +114,7 @@ class AnagraficaHtml(object):
                                             "tipo":"data_documento",
                                             "colore":"#AFEEEE"},d.day))
                 calendarioDatetime = Calendar().yeardatescalendar(int(Environment.workingYear))
+        self.dao = self.variations()
         pageData = {
                 "file" :self.defaultFileName+".html",
                 "dao":self.dao,

@@ -102,7 +102,6 @@ class DettaglioGiacenzaWindow(GladeWidget):
             if i.id_riga_movimento_vendita and self.idRiga == i.id_riga_movimento_vendita:
                 boleann = True
             elif i.id_riga_movimento_vendita and self.idRiga != i.id_riga_movimento_vendita:
-                print "CONTINUE"
                 continue
             idrigamov = RigaMovimento().getRecord(i.id_riga_movimento_acquisto)
             movi = TestataMovimento().getRecord(id= idrigamov.id_testata_movimento)

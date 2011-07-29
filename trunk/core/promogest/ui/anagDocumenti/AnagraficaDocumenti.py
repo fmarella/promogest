@@ -91,6 +91,23 @@ class AnagraficaDocumentiHtml(AnagraficaHtml):
         AnagraficaHtml.__init__(self, anagrafica, 'documento',
                                 'Documento')
 
+    def variations(self):
+        from promogest.dao.RigaMovimentoFornitura import RigaMovimentoFornitura
+        for r in self.dao.righe:
+            if self.dao.id_fornitore and r.id_articolo:
+                aa = RigaMovimentoFornitura().select(idRigaMovimentoAcquisto=r.id, batchSize=None)
+            else:
+                aa = RigaMovimentoFornitura().select(idRigaMovimentoVendita=r.id, batchSize=None)
+            ll = r.descrizione
+            if aa:
+                l = ""
+                for a in aa:
+                    l += "<br /> Lotto %s Data Sc. %s " %(a.forni.numero_lotto,dateToString(a.forni.data_scadenza))
+                ll += l
+                r.descrizione = ll
+
+        return self.dao
+
 
 class AnagraficaDocumentiReport(AnagraficaReport):
     def __init__(self, anagrafica):
