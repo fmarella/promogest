@@ -1,9 +1,8 @@
 INSTALL= /usr/bin/install -c
 INSTALL_PROGRAM= ${INSTALL}
 INSTALL_DATA= ${INSTALL} -m 644
-INSTALLNLSDIR=$(DESTDIR)/usr/share/locale
+INSTALLNLSDIR=$(DESTDIR)/locale
 top_srcdir = "."
-
 
 MSGMERGE = intltool-update -x --gettext-package=$(NLSPACKAGE) --dist
 
@@ -12,9 +11,15 @@ NLSPACKAGE = promogest
 CATALOGS = $(shell ls *.po)
 FMTCATALOGS = $(patsubst %.po,%.mo,$(CATALOGS))
 
-PYFILES  = $(wildcard ../ui/*.py) $(wildcard ../ui/anag*/*.py) $(wildcard ../ui/SimpleSearch/*.py) \
- $(wildcard ../ui/widgets/*.py) $(wildcard ../modules/*/ui/*.py) 
-GLADEFILES = $(wildcard ../../gui/*.glade) $(wildcard ../modules/*/gui/*.glade) 
+PYFILES  = $(wildcard ../promogest/ui/*.py) \
+ $(wildcard ../promogest/ui/anag*/*.py) \
+ $(wildcard ../promogest/ui/SimpleSearch/*.py) \
+ $(wildcard ../promogest/ui/widgets/*.py) \
+ $(wildcard ../promogest/modules/*/ui/*.py) 
+
+GLADEFILES = $(wildcard ../gui/*.glade) \
+ $(wildcard ../promogest/modules/*/gui/*.glade) 
+
 POTFILES  = $(PYFILES) $(GLADEFILES)
 
 all: $(NLSPACKAGE).pot $(FMTCATALOGS)
