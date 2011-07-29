@@ -49,6 +49,7 @@ from promogest.dao.AliquotaIva import AliquotaIva
 #from promogest.dao.RigaRitenutaAcconto import RigaRitenutaAcconto
 from promogest.modules.PrimaNota.dao.TestataPrimaNota import TestataPrimaNota
 from promogest.ui.DettaglioGiacenzaWindow import DettaglioGiacenzaWindow
+from promogest.dao.RigaMovimentoFornitura import RigaMovimentoFornitura
 from promogest.ui.utils import *
 from promogest.ui.utilsCombobox import *
 from promogest.dao.DaoUtils import giacenzaArticolo
@@ -680,6 +681,11 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                 self._righe[0]["dataPrezzoFornitura"] = fornitura["dataPrezzoFornitura"]
                 self._righe[0]["ordineMinimoFornitura"] = fornitura["ordineMinimoFornitura"]
                 self._righe[0]["tempoArrivoFornitura"] = fornitura["tempoArrivoFornitura"]
+            else:
+                if self._righe[0]["idRiga"] and not self._righe[0]["rigaMovimentoFornituraList"]:
+                    self._righe[0]["rigaMovimentoFornituraList"] = RigaMovimentoFornitura().select(idRigaMovimentoVendita=self._righe[0]["idRiga"], batchSize=None)
+                else:
+                    self._righe[0]["rigaMovimentoFornituraList"] = []
                 #TODO: AGGIUNGERE UN RICHIAMO A RIGAMOVIMENTOFORNITURA CON I DATI PRESI DAL DB
 
             self._righe.append(self._righe[0])

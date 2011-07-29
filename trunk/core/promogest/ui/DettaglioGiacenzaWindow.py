@@ -79,10 +79,10 @@ class DettaglioGiacenzaWindow(GladeWidget):
         #return model[active][0]
 
     def on_dg_ok_button_clicked(self,button):
-
+        self.rigamovimentofornituralist = []
         model = self.dettaglio_giacenza_listore
         for m in model:
-            if m[0] and m[7] not in self.rigamovimentofornituralist:
+            if m[0]:
                 self.rigamovimentofornituralist.append(m[7])
         self.mainWindow._righe[0]["rigaMovimentoFornituraList"] = self.rigamovimentofornituralist
         self.getTopLevel().destroy()
