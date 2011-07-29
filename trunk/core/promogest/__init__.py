@@ -37,8 +37,11 @@ def bindtextdomain(app_name, locale_dir=None):
     # installa _() e ngettext() builtin
     gettext.install(app_name, localedir=locale_dir, unicode=True,
                     names=("ngettext",))
-    locale.bindtextdomain(app_name, locale_dir)
-    locale.bind_textdomain_codeset(app_name, "UTF-8")
+    try:
+        locale.bindtextdomain(app_name, locale_dir)
+        locale.bind_textdomain_codeset(app_name, "UTF-8")
+    except AttributeError:
+        pass
 
     try:
         locale.setlocale(locale.LC_ALL, "")
