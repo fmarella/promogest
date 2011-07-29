@@ -114,7 +114,7 @@ class AnagraficaHtml(object):
                                             "tipo":"data_documento",
                                             "colore":"#AFEEEE"},d.day))
                 calendarioDatetime = Calendar().yeardatescalendar(int(Environment.workingYear))
-        self.dao = self.variations()
+        #self.dao = self.variations()
         pageData = {
                 "file" :self.defaultFileName+".html",
                 "dao":self.dao,

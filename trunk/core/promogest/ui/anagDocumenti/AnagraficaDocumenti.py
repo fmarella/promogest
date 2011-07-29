@@ -104,7 +104,7 @@ class AnagraficaDocumentiHtml(AnagraficaHtml):
                 for a in aa:
                     lottostr = ""
                     scadstr = ""
-                    if a.forni.numero_lotto != "":
+                    if a.forni.numero_lotto and a.forni.numero_lotto != "" :
                         lotto = a.forni.numero_lotto
                         if lotto:
                             lottostr = "<br /> Lotto %s  - " %lotto
