@@ -91,7 +91,7 @@ class BigBang(object):
                             dest="RapidStart")
         (options, args) = parser.parse_args()
         from promogest import pg3_check, bindtextdomain
-        bindtextdomain('promogest', locale_dir=None)
+        bindtextdomain('promogest', locale_dir='./po/locale')
         if options.pg3_classi ==True:
             reload(sys)
             sys.setdefaultencoding('utf-8')
