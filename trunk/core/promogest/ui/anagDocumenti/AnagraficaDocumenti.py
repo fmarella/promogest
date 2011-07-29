@@ -94,13 +94,15 @@ class AnagraficaDocumentiHtml(AnagraficaHtml):
     def variations(self):
         from promogest.dao.RigaMovimentoFornitura import RigaMovimentoFornitura
         for r in self.dao.righe:
+            l = ""
+            setattr(r, "aggiuntalottoindescrizione",l)
             if self.dao.id_fornitore and r.id_articolo:
                 aa = RigaMovimentoFornitura().select(idRigaMovimentoAcquisto=r.id, batchSize=None)
             else:
                 aa = RigaMovimentoFornitura().select(idRigaMovimentoVendita=r.id, batchSize=None)
-            ll = r.descrizione
+            #ll = r.descrizione
             if aa:
-                l = ""
+
                 for a in aa:
                     lottostr = ""
                     scadstr = ""
@@ -113,8 +115,8 @@ class AnagraficaDocumentiHtml(AnagraficaHtml):
                         if scad:
                             scadstr = "Data Sc. %s"  %scad
                     l += lottostr + scadstr
-                ll += l
-                r.descrizione = ll
+                #ll += l
+                setattr(r, "aggiuntalottoindescrizione",l)
 
         return self.dao
 
