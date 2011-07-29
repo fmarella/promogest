@@ -102,7 +102,17 @@ class AnagraficaDocumentiHtml(AnagraficaHtml):
             if aa:
                 l = ""
                 for a in aa:
-                    l += "<br /> Lotto %s Data Sc. %s " %(a.forni.numero_lotto,dateToString(a.forni.data_scadenza))
+                    lottostr = ""
+                    scadstr = ""
+                    if a.forni.numero_lotto != "":
+                        lotto = a.forni.numero_lotto
+                        if lotto:
+                            lottostr = "<br /> Lotto %s  - " %lotto
+                    if a.forni.data_scadenza:
+                        scad = " "+ dateToString(a.forni.data_scadenza)
+                        if scad:
+                            scadstr = "Data Sc. %s"  %scad
+                    l += lottostr + scadstr
                 ll += l
                 r.descrizione = ll
 
