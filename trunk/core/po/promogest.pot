@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-07-30 21:48+0200\n"
+"POT-Creation-Date: 2011-07-30 22:06+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,8 +17,224 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../promogest/ui/Login.py:183
+#: ../promogest/ui/Login.py:182
 msgid "Inserire nome utente e password"
+msgstr ""
+
+#: ../promogest/ui/Login.py:185
+msgid "Occorre selezionare un'azienda"
+msgstr ""
+
+#: ../promogest/ui/Login.py:193
+msgid "Selezionare un'azienda esistente"
+msgstr ""
+
+#: ../promogest/ui/Login.py:200
+msgid "Utente Presente Ma non ATTIVO"
+msgstr ""
+
+#: ../promogest/ui/Login.py:254
+msgid "Nome utente o password errati"
+msgstr ""
+
+#: ../promogest/ui/Main.py:88
+msgid "*** PromoGest2 *** Azienda : "
+msgstr ""
+
+#: ../promogest/ui/Main.py:89
+msgid "  *** Utente : "
+msgstr ""
+
+#. documenti_image = self.documenti_image.get_image()
+#: ../promogest/ui/Main.py:129
+msgid "<b>Anno di lavoro:   "
+msgstr ""
+
+#: ../promogest/ui/Main.py:132
+msgid ""
+"Documenti\n"
+"(Fatture,DDT\n"
+"Preventivi)"
+msgstr ""
+
+#: ../promogest/ui/Main.py:134
+msgid "Prima Nota"
+msgstr ""
+
+#: ../promogest/ui/Main.py:136 ../gui/azioni_veloce_notebook.glade.h:14
+#: ../gui/_anagrafica_clienti_elements.glade.h:84
+#: ../gui/pg3_azioni_veloce_notebook.glade.h:14
+#: ../gui/news_notebook.glade.h:15
+#: ../gui/pg3__anagrafica_clienti_elements.glade.h:84
+#: ../gui/_anagrafica_fornitori_elements.glade.h:36
+#: ../gui/pg3_news_notebook.glade.h:15
+#: ../gui/pg3__anagrafica_fornitori_elements.glade.h:36
+msgid "Promemoria"
+msgstr ""
+
+#: ../promogest/ui/Main.py:138
+msgid ""
+"Gestione\n"
+"Commesse"
+msgstr ""
+
+#: ../promogest/ui/Main.py:531
+msgid "Importazione modulo"
+msgstr ""
+
+#: ../promogest/ui/Main.py:570
+msgid ""
+"MODULO CORRETTAMENTE INSTALLATO, CHIUDERE L'APPLICAZIONE\n"
+"ED AGGIUNGERE I PARAMETRI NECESSARI\n"
+msgstr ""
+
+#: ../promogest/ui/Main.py:572
+msgid ""
+"ATTENZIONE, MODULO NON INSTALLATO, CORROTTO O NON CORRETTO, CONTATTARE "
+"L'ASSISTENZA"
+msgstr ""
+
+#: ../promogest/ui/Main.py:596
+msgid "<b>   Inserisci codice   </b>"
+msgstr ""
+
+#: ../promogest/ui/Main.py:615
+msgid "NOME AZIENDA MODIFICATO"
+msgstr ""
+
+#: ../promogest/ui/Main.py:619
+msgid "VECCHIO NOME AZIENDA NON TROVATO"
+msgstr ""
+
+#: ../promogest/ui/Main.py:624
+msgid "POSSIBILE SOLO CON LA VERSIONE ONE"
+msgstr ""
+
+#: ../promogest/ui/Main.py:637
+msgid "ERRORE ATTIVAZIONE MODULO"
+msgstr ""
+
+#: ../promogest/ui/Main.py:654
+msgid "MODULO O OPZIONE MODIFICATO attivato o disattivato"
+msgstr ""
+
+#: ../promogest/ui/Main.py:667
+msgid ""
+"REGISTRO NUMERAZIONE MODIFICATO\n"
+"\n"
+"RIAVVIARE"
+msgstr ""
+
+#: ../promogest/ui/Main.py:671
+msgid ""
+"REGISTRO DA ASSEGNARE NON TROVATO O CORRETTO\n"
+"\n"
+" RIPROVARE"
+msgstr ""
+
+#: ../promogest/ui/Main.py:674
+msgid ""
+"OPERAZIONE NON CORRETTA E NON TROVATA\n"
+"\n"
+"RIPROVARE"
+msgstr ""
+
+#: ../promogest/ui/Main.py:691
+msgid "ATTIVAZIONE EFFETTUATA, RIAVVIARE IL PROMOGEST"
+msgstr ""
+
+#: ../promogest/ui/Main.py:704
+msgid "Lavori in corso ...."
+msgstr ""
+
+#: ../promogest/ui/Main.py:777
+msgid ""
+"Codice installazione:\n"
+"\n"
+msgstr ""
+
+#: ../promogest/ui/Main.py:779
+msgid "Impossibile generare il codice !!!"
+msgstr ""
+
+#: ../promogest/ui/Main.py:786
+msgid "SERVER NON ANCORA IMPLEMENTATO"
+msgstr ""
+
+#: ../promogest/ui/Main.py:798
+msgid ""
+"ATTENZIONE!!\n"
+"QUESTA FUNZIONALITÀ È STATA AGGIUNTA PER\n"
+"PERMETTERE DI PROVARE IL PROMOGEST ONE BASIC CON\n"
+"IL MODULO TAGLIA E COLORE PROMOWEAR\n"
+"QUESTO MODULO SERVE A CHI DEVE GESTIRE\n"
+"UNA ATTIVITÀ CHE MOVIMENTA E VENDE\n"
+"ABBIGLIAMENTO O CALZATURE.\n"
+"L'OPERAZIONE È IRREVERSIBILE,AGGIUNGE DIVERSE\n"
+"TABELLE NEL DATABASE E NUOVE INTERFACCE UTENTE\n"
+"DEDICATE,NON CAUSA PERDITA DI DATI\n"
+"MA NON È CONSIGLIATO FARLO SE NON\n"
+"NE AVETE BISOGNO\n"
+"\n"
+"Procedere all'installazione del modulo PromoWear? "
+msgstr ""
+
+#: ../promogest/ui/Main.py:823
+msgid " TABELLE AGGIUNTE, RIAVVIARE IL PROGRAMMA "
+msgstr ""
+
+#: ../promogest/ui/Main.py:826
+msgid "PULSANTE DI TEST GIA' PREMUTO"
+msgstr ""
+
+#: ../promogest/ui/Main.py:832
+msgid ""
+"ATTENZIONE!!\n"
+"QUESTA FUNZIONALITÀ È STATA AGGIUNTA PER\n"
+"PERMETTERE DI PROVARE IL PROMOGEST ONE BASIC CON\n"
+"IL MODULO VENDITA DETTAGLIO\n"
+"\n"
+"Procedere all'installazione del modulo PromoShop? "
+msgstr ""
+
+#: ../promogest/ui/Main.py:874
+msgid "RISULTA GIA' ATTIVATO"
+msgstr ""
+
+#: ../promogest/ui/Main.py:880
+msgid "RICARICO MEDIO e INFLUENZA SULLE VENDITE"
+msgstr ""
+
+#: ../promogest/ui/Main.py:899
+msgid "Confermi l'eliminazione ?"
+msgstr ""
+
+#: ../promogest/ui/Main.py:905
+msgid "Confermi la chiusura?"
+msgstr ""
+
+#: ../promogest/ui/Main.py:923
+msgid "<b>NEWS/A.VEL</b>"
+msgstr ""
+
+#: ../promogest/ui/Main.py:937
+msgid "<b>CALENDARIO</b>"
+msgstr ""
+
+#: ../promogest/ui/Main.py:942
+msgid "<b>NOTIFICA ALLARMI</b>"
+msgstr ""
+
+#: ../promogest/ui/Main.py:953
+msgid "    PromoGest2 - 070 8649705 - www.promogest.me - info@promotux.it     "
+msgstr ""
+
+#: ../promogest/ui/Main.py:959
+msgid "DA AGGIORNARE!!! "
+msgstr ""
+
+#: ../promogest/ui/Main.py:962
+msgid "AGGIORNATO "
 msgstr ""
 
 #. -*- coding: utf-8 -*-
@@ -2164,17 +2380,6 @@ msgstr ""
 #: ../gui/pg3_azioni_veloce_notebook.glade.h:13
 #: ../gui/news_notebook.glade.h:14 ../gui/pg3_news_notebook.glade.h:14
 msgid "Preventivo"
-msgstr ""
-
-#: ../gui/azioni_veloce_notebook.glade.h:14
-#: ../gui/_anagrafica_clienti_elements.glade.h:84
-#: ../gui/pg3_azioni_veloce_notebook.glade.h:14
-#: ../gui/news_notebook.glade.h:15
-#: ../gui/pg3__anagrafica_clienti_elements.glade.h:84
-#: ../gui/_anagrafica_fornitori_elements.glade.h:36
-#: ../gui/pg3_news_notebook.glade.h:15
-#: ../gui/pg3__anagrafica_fornitori_elements.glade.h:36
-msgid "Promemoria"
 msgstr ""
 
 #: ../gui/azioni_veloce_notebook.glade.h:15

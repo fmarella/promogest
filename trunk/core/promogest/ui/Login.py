@@ -131,7 +131,6 @@ class Login(GladeApp):
         if (data > datetime.datetime(data.year,12,15) and data < datetime.datetime(data.year,12,31)) or \
             (data < datetime.datetime(data.year,1,10) and data > datetime.datetime(data.year,1,1)) :
             randomFile = random.sample([1, 2, 3, 4, 5,6], 1)[0]
-            print "RANDOM FILE NUMERO", randomFile
             fileSplashImage = Environment.conf.guiDir + "natale["+str(randomFile)+"].png"
             if Environment.engine.name == "sqlite":
                 self.login_tipo_label.set_markup("<b>PromoGest 'ONE'</b>")
@@ -183,7 +182,7 @@ class Login(GladeApp):
             messageInfo(msg=_('Inserire nome utente e password'))
             do_login = False
         elif self.azienda_comboboxentry.get_child().get_text() == '':
-            messageInfo(msg="Occorre selezionare un'azienda")
+            messageInfo(msg=_("Occorre selezionare un'azienda"))
             do_login = False
         else:
             #self.azienda = self.azienda_comboboxentry.child.get_text()
@@ -191,14 +190,14 @@ class Login(GladeApp):
             findComboboxRowFromStr(self.azienda_comboboxentry, self.azienda, 0)
             found = self.azienda_comboboxentry.get_active() != -1
             if not found:
-                messageInfo(msg="Selezionare un'azienda esistente")
+                messageInfo(msg=_("Selezionare un'azienda esistente"))
                 do_login = False
         if do_login: #superati i check di login
             users = User().select(username=username,
                         password=hashlib.md5(username+password).hexdigest())
             if len(users) ==1:
                 if users[0].active == False:
-                    messageInfo(msg='Utente Presente Ma non ATTIVO')
+                    messageInfo(msg=_('Utente Presente Ma non ATTIVO'))
                     dialog.destroy()
                     #saveAppLog(action="login", status=False,value=username)
                     do_login = False
@@ -252,7 +251,7 @@ class Login(GladeApp):
                     else:
                         do_login=False
             else:
-                messageInfo(msg='Nome utente o password errati')
+                messageInfo(msg=_('Nome utente o password errati'))
                 #saveAppLog(action="login", status=False,value=username)
                 do_login = False
 

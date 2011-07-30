@@ -85,8 +85,8 @@ class Main(GladeWidget):
                 anagrafiche_dirette_modules, frame_modules, permanent_frames):
 
         GladeWidget.__init__(self, 'main_window')
-        self.main_window.set_title('*** PromoGest2 *** Azienda : '+aziendaStr+\
-                                '  *** Utente : '+\
+        self.main_window.set_title(_('*** PromoGest2 *** Azienda : ')+aziendaStr+\
+                                _('  *** Utente : ')+\
                                 Environment.params['usernameLoggedList'][1]+\
                                 ' ***')
         self.aziendaStr = aziendaStr
@@ -126,16 +126,16 @@ class Main(GladeWidget):
         """ Visualizza la finestra
         """
         #documenti_image = self.documenti_image.get_image()
-        self.anno_lavoro_label.set_markup('<b>Anno di lavoro:   ' + \
+        self.anno_lavoro_label.set_markup(_('<b>Anno di lavoro:   ') + \
                                         Environment.workingYear + '</b>')
         model = self.iconview_listore
-        model.append([3, "Documenti\n(Fatture,DDT\nPreventivi)",
+        model.append([3, _("Documenti\n(Fatture,DDT\nPreventivi)"),
                         self.documenti_image.get_pixbuf(), None])
-        model.append([4, "Prima Nota",
+        model.append([4, _("Prima Nota"),
                         self.primanota_image.get_pixbuf(), None])
-        model.append([5, "Promemoria",
+        model.append([5, _("Promemoria"),
                         self.promemoria_image.get_pixbuf(), None])
-        model.append([10, "Gestione\nCommesse",
+        model.append([10, _("Gestione\nCommesse"),
                         self.gest_commesse_image.get_pixbuf(), None])
 
         # right vertical icon list  adding modules
@@ -528,7 +528,7 @@ class Main(GladeWidget):
 
     def on_importa_modulo_activate(self, widget):
         return
-        fileDialog = gtk.FileChooserDialog(title='Importazione modulo',
+        fileDialog = gtk.FileChooserDialog(title=_('Importazione modulo'),
                                            parent=self.getTopLevel(),
                                            action=GTK_FILE_CHOOSER_ACTION_OPEN,
                                            buttons=(gtk.STOCK_CANCEL,
@@ -567,9 +567,9 @@ class Main(GladeWidget):
                     g.write(a)
                 g.close()
                 f.close()
-                msg = "MODULO CORRETTAMENTE INSTALLATO, CHIUDERE L'APPLICAZIONE\nED AGGIUNGERE I PARAMETRI NECESSARI\n"
+                msg = _("MODULO CORRETTAMENTE INSTALLATO, CHIUDERE L'APPLICAZIONE\nED AGGIUNGERE I PARAMETRI NECESSARI\n")
             else:
-                msg ="ATTENZIONE, MODULO NON INSTALLATO, CORROTTO O NON CORRETTO, CONTATTARE L'ASSISTENZA"
+                msg = _("ATTENZIONE, MODULO NON INSTALLATO, CORROTTO O NON CORRETTO, CONTATTARE L'ASSISTENZA")
             messageInfo(msg=msg)
                 #self.path_file_entry.set_text(filename)
             fileDialog.destroy()
@@ -593,7 +593,7 @@ class Main(GladeWidget):
         entry___ = gtk.Entry()
 
         label = gtk.Label()
-        label.set_markup("<b>   Inserisci codice   </b>")
+        label.set_markup(_("<b>   Inserisci codice   </b>"))
         hbox.pack_start(label, True, True, 0)
         hbox.pack_start(entry___, True, True, 0)
         dialog.get_content_area().pack_start(hbox, True, True, 0)
@@ -612,16 +612,16 @@ class Main(GladeWidget):
                     if aa:
                         aa[0].schemaa = newnameazienda.strip()
                         aa[0].persist()
-                        messageInfo(msg="NOME AZIENDA MODIFICATO")
+                        messageInfo(msg = _("NOME AZIENDA MODIFICATO"))
                         dialog.destroy()
                         return
                     else:
-                        messageInfo(msg="VECCHIO NOME AZIENDA NON TROVATO")
+                        messageInfo(msg = _("VECCHIO NOME AZIENDA NON TROVATO"))
                         dialog.destroy()
                         return
                     return
                 else:
-                    messageInfo(msg="POSSIBILE SOLO CON LA VERSIONE ONE")
+                    messageInfo(msg = _("POSSIBILE SOLO CON LA VERSIONE ONE"))
                     dialog.destroy()
                     return
             elif d[1] == "modulo":
@@ -634,7 +634,7 @@ class Main(GladeWidget):
                 key = d[8]  # mod_enable
                 value = d[9] # yes or no
                 if section not in Environment.modules_folders:
-                    messageInfo(msg="ERRORE ATTIVAZIONE MODULO")
+                    messageInfo(msg = _("ERRORE ATTIVAZIONE MODULO"))
                     return
                 dao = SetConf().select(key=key,section=section)
                 if dao:
@@ -651,7 +651,7 @@ class Main(GladeWidget):
                 d.visible = visible
                 d.date = datetime.datetime.now()
                 d.persist()
-                messageInfo(msg="MODULO O OPZIONE MODIFICATO attivato o disattivato")
+                messageInfo(msg=_("MODULO O OPZIONE MODIFICATO attivato o disattivato"))
                 dialog.destroy()
                 return
             elif d[1] =="registro":
@@ -664,14 +664,14 @@ class Main(GladeWidget):
                     if b:
                         a.value = registro_da_assegnare
                         a.persist()
-                        messageInfo(msg="REGISTRO NUMERAZIONE MODIFICATO\n\nRIAVVIARE")
+                        messageInfo(msg=_("REGISTRO NUMERAZIONE MODIFICATO\n\nRIAVVIARE"))
                         dialog.destroy()
                         return True
                     else:
-                        messageInfo(msg="REGISTRO DA ASSEGNARE NON TROVATO O CORRETTO\n\n RIPROVARE")
+                        messageInfo(msg=_("REGISTRO DA ASSEGNARE NON TROVATO O CORRETTO\n\n RIPROVARE"))
                         return False
                 else:
-                    messageInfo(msg="OPERAZIONE NON CORRETTA E NON TROVATA\n\nRIPROVARE")
+                    messageInfo(msg=_("OPERAZIONE NON CORRETTA E NON TROVATA\n\nRIPROVARE"))
                     return False
         else:
             sets = SetConf().select(key="install_code",section="Master")
@@ -688,7 +688,7 @@ class Main(GladeWidget):
                 k.active = True
                 k.date = datetime.datetime.now()
                 k.persist()
-                messageInfo(msg="ATTIVAZIONE EFFETTUATA, RIAVVIARE IL PROMOGEST")
+                messageInfo(msg=_("ATTIVAZIONE EFFETTUATA, RIAVVIARE IL PROMOGEST"))
         dialog.destroy()
 
 
@@ -701,7 +701,7 @@ class Main(GladeWidget):
             for l in lines:
                 licenseText += l
         except:
-            licenseText = 'Lavori in corso ....'
+            licenseText = _('Lavori in corso ....')
             print 'License file not found (LICENSE).'
         textBuffer = licenzaDialog.licenza_textview.get_buffer()
         textBuffer.set_text(licenseText)
@@ -774,16 +774,16 @@ promogest2 IN /HOME/NOMEUTENTE/ O IN C:/UTENTI/NOMEUTENTE"""
         try:
             data = SetConf().select(key="install_code",section="Master")
             codice = data[0].value
-            msg = 'Codice installazione:\n\n' + str(codice)
+            msg = _('Codice installazione:\n\n') + str(codice)
         except:
-            msg = 'Impossibile generare il codice !!!'
+            msg = _('Impossibile generare il codice !!!')
         messageInfo(msg= msg, transient=self.getTopLevel())
 
     def on_send_Email_activate(self, widget):
         sendemail = SendEmail()
 
     def on_master_sincro_db_activate(self, widget):
-        msg ="SERVER NON ANCORA IMPLEMENTATO"
+        msg = _("SERVER NON ANCORA IMPLEMENTATO")
         messageInfo(msg= msg, transient=self.getTopLevel())
 
     def on_client_sincro_db_activate(self, widget):
@@ -795,7 +795,7 @@ promogest2 IN /HOME/NOMEUTENTE/ O IN C:/UTENTI/NOMEUTENTE"""
             print "PASSIQUI"
 
     def on_test_promowear_button_clicked(self, button):
-        msg = """ATTENZIONE!!
+        msg = _("""ATTENZIONE!!
 QUESTA FUNZIONALITÀ È STATA AGGIUNTA PER
 PERMETTERE DI PROVARE IL PROMOGEST ONE BASIC CON
 IL MODULO TAGLIA E COLORE PROMOWEAR
@@ -808,7 +808,7 @@ DEDICATE,NON CAUSA PERDITA DI DATI
 MA NON È CONSIGLIATO FARLO SE NON
 NE AVETE BISOGNO
 
-Procedere all'installazione del modulo PromoWear? """
+Procedere all'installazione del modulo PromoWear? """)
         if not YesNoDialog(msg=msg, transient=self.getTopLevel()):
             return
         if not hasattr(Environment.conf,"PromoWear"):
@@ -820,21 +820,21 @@ Procedere all'installazione del modulo PromoWear? """
             tables = [t.name for t in Environment.params["metadata"].sorted_tables]
             if "colore" not in tables and "taglia" not in tables:
                 from promogest.modules.PromoWear.data.PromoWearDB import *
-                msg = " TABELLE AGGIUNTE, RIAVVIARE IL PROGRAMMA "
+                msg = _(" TABELLE AGGIUNTE, RIAVVIARE IL PROGRAMMA ")
                 messageInfo(msg=msg)
         else:
-            msg= "PULSANTE DI TEST GIA' PREMUTO"
+            msg= _("PULSANTE DI TEST GIA' PREMUTO")
             messageInfo(msg=msg, transient=self.getTopLevel())
 
 
     def on_test_promoshop_button_clicked(self, button):
         from promogest.dao.Setconf import SetConf
-        msg = """ATTENZIONE!!
+        msg = _("""ATTENZIONE!!
 QUESTA FUNZIONALITÀ È STATA AGGIUNTA PER
 PERMETTERE DI PROVARE IL PROMOGEST ONE BASIC CON
 IL MODULO VENDITA DETTAGLIO
 
-Procedere all'installazione del modulo PromoShop? """
+Procedere all'installazione del modulo PromoShop? """)
         if not YesNoDialog(msg=msg, transient=self.getTopLevel()):
             return
         if not setconf("VenditaDettaglio", "mod_enable"):
@@ -871,12 +871,13 @@ Procedere all'installazione del modulo PromoShop? """
                 #msg = " TABELLE AGGIUNTE, RIAVVIARE IL PROGRAMMA "
                 #messageInfo(msg=msg)
         else:
-            messageInfo(msg="RISULTA GIA' ATTIVATO")
+            messageInfo(msg=_("RISULTA GIA' ATTIVATO"))
 
     def on_ricmedio_activate(self, widget):
         """ entry Menu statistiche Ricarico medio """
         from promogest.modules.Statistiche.ui.StatisticaGenerale import StatisticaGenerale
-        anag = StatisticaGenerale(idMagazzino=None, nome="RICARICO MEDIO e INFLUENZA SULLE VENDITE")
+        anag = StatisticaGenerale(idMagazzino=None,
+                        nome=_("RICARICO MEDIO e INFLUENZA SULLE VENDITE"))
         anagWindow = anag.getTopLevel()
 
     def on_controllo_fatturato_activate(self, widget):
@@ -895,13 +896,13 @@ Procedere all'installazione del modulo PromoShop? """
         on_main_window_key_press_eventPart(self,widget, event)
 
     def on_disconnect(self, widget=None):
-        if YesNoDialog(msg='Confermi l\'eliminazione ?', transient=self.getTopLevel()):
+        if YesNoDialog(msg=_('Confermi l\'eliminazione ?'), transient=self.getTopLevel()):
             self.destroy()
         else:
             return
 
     def on_quit(self, widget=None):
-        if YesNoDialog(msg='Confermi la chiusura?', transient=self.getTopLevel()):
+        if YesNoDialog(msg=_('Confermi la chiusura?'), transient=self.getTopLevel()):
             self.hide()
             gtk.main_quit()
         else:
@@ -919,7 +920,7 @@ Procedere all'installazione del modulo PromoShop? """
         if WEBKIT:
             self.nn = NewsNotebookPage(self, self.aziendaStr).draw()
             n = gtk.Label()
-            n.set_markup("<b>NEWS/A.VEL</b>")
+            n.set_markup(_("<b>NEWS/A.VEL</b>"))
             ind = self.main_notebook.append_page(self.nn.notizie_frame, n)
             self.main_notebook.set_current_page(ind)
 
@@ -933,12 +934,12 @@ Procedere all'installazione del modulo PromoShop? """
 
         self.calendar_page = CalendarNotebookPage(self, self.aziendaStr).draw()
         calendar_page_label = gtk.Label()
-        calendar_page_label.set_markup("<b>CALENDARIO</b>")
+        calendar_page_label.set_markup(_("<b>CALENDARIO</b>"))
         self.main_notebook.append_page(self.calendar_page.calendario_frame, calendar_page_label)
 
         self.notifica_allarmi = NotificaAllarmiNotebookPage(self, self.aziendaStr)
         notifica_allarmi_label = gtk.Label()
-        notifica_allarmi_label.set_markup("<b>NOTIFICA ALLARMI</b>")
+        notifica_allarmi_label.set_markup(_("<b>NOTIFICA ALLARMI</b>"))
         self.main_notebook.append_page(self.notifica_allarmi.notifica_allarmi_frame, notifica_allarmi_label)
 
 #        azioni_veloci_page = AzioniVelociNotebookPage(self, self.aziendaStr).draw()
@@ -949,16 +950,16 @@ Procedere all'installazione del modulo PromoShop? """
 
 
     def statusBarHandler(self):
-        textStatusBar = "    PromoGest2 - 070 8649705 - www.promogest.me - info@promotux.it     "
+        textStatusBar = _("    PromoGest2 - 070 8649705 - www.promogest.me - info@promotux.it     ")
         context_id =  self.pg2_statusbar.get_context_id("main_window")
         self.pg2_statusbar.push(context_id,textStatusBar)
 
         if Environment.rev_locale < Environment.rev_remota:
             self.active_img.set_from_file("gui/active_off.png")
-            self.aggiornamento_label.set_label("DA AGGIORNARE!!! ")
+            self.aggiornamento_label.set_label(_("DA AGGIORNARE!!! "))
         else:
             self.active_img.set_from_file("gui/active_on.png")
-            self.aggiornamento_label.set_label("AGGIORNATO ")
+            self.aggiornamento_label.set_label(_("AGGIORNATO "))
 
 class MainWindowFrame(VistaPrincipale):
     def __init__(self, mainWindow, azs):
