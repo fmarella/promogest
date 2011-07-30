@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: promogest\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/promogest/updates/list\n"
-"POT-Creation-Date: 2011-07-30 11:48+0200\n"
-"PO-Revision-Date: 2011-07-30 10:41+0000\n"
+"POT-Creation-Date: 2011-07-30 22:06+0200\n"
+"PO-Revision-Date: 2011-07-30 23:16+0000\n"
 "Last-Translator: promotux <info@promotux.it>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -17,9 +17,226 @@ msgstr ""
 "Language: en\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
-#: ../promogest/ui/Login.py:183
+#: ../promogest/ui/Login.py:182
 msgid "Inserire nome utente e password"
 msgstr "Enter your username and password"
+
+#: ../promogest/ui/Login.py:185
+msgid "Occorre selezionare un'azienda"
+msgstr ""
+
+#: ../promogest/ui/Login.py:193
+msgid "Selezionare un'azienda esistente"
+msgstr ""
+
+#: ../promogest/ui/Login.py:200
+msgid "Utente Presente Ma non ATTIVO"
+msgstr ""
+
+#: ../promogest/ui/Login.py:254
+msgid "Nome utente o password errati"
+msgstr ""
+
+#: ../promogest/ui/Main.py:88
+msgid "*** PromoGest2 *** Azienda : "
+msgstr ""
+
+#: ../promogest/ui/Main.py:89
+msgid "  *** Utente : "
+msgstr ""
+
+#. documenti_image = self.documenti_image.get_image()
+#: ../promogest/ui/Main.py:129
+msgid "<b>Anno di lavoro:   "
+msgstr ""
+
+#: ../promogest/ui/Main.py:132
+msgid ""
+"Documenti\n"
+"(Fatture,DDT\n"
+"Preventivi)"
+msgstr ""
+
+#: ../promogest/ui/Main.py:134
+msgid "Prima Nota"
+msgstr ""
+
+#: ../promogest/ui/Main.py:136 ../gui/azioni_veloce_notebook.glade.h:14
+#: ../gui/_anagrafica_clienti_elements.glade.h:84
+#: ../gui/pg3_azioni_veloce_notebook.glade.h:14
+#: ../gui/news_notebook.glade.h:15
+#: ../gui/pg3__anagrafica_clienti_elements.glade.h:84
+#: ../gui/_anagrafica_fornitori_elements.glade.h:36
+#: ../gui/pg3_news_notebook.glade.h:15
+#: ../gui/pg3__anagrafica_fornitori_elements.glade.h:36
+msgid "Promemoria"
+msgstr ""
+
+#: ../promogest/ui/Main.py:138
+msgid ""
+"Gestione\n"
+"Commesse"
+msgstr ""
+
+#: ../promogest/ui/Main.py:531
+msgid "Importazione modulo"
+msgstr ""
+
+#: ../promogest/ui/Main.py:570
+msgid ""
+"MODULO CORRETTAMENTE INSTALLATO, CHIUDERE L'APPLICAZIONE\n"
+"ED AGGIUNGERE I PARAMETRI NECESSARI\n"
+msgstr ""
+
+#: ../promogest/ui/Main.py:572
+msgid ""
+"ATTENZIONE, MODULO NON INSTALLATO, CORROTTO O NON CORRETTO, CONTATTARE "
+"L'ASSISTENZA"
+msgstr ""
+
+#: ../promogest/ui/Main.py:596
+msgid "<b>   Inserisci codice   </b>"
+msgstr ""
+
+#: ../promogest/ui/Main.py:615
+msgid "NOME AZIENDA MODIFICATO"
+msgstr ""
+
+#: ../promogest/ui/Main.py:619
+msgid "VECCHIO NOME AZIENDA NON TROVATO"
+msgstr ""
+
+#: ../promogest/ui/Main.py:624
+msgid "POSSIBILE SOLO CON LA VERSIONE ONE"
+msgstr ""
+
+#: ../promogest/ui/Main.py:637
+msgid "ERRORE ATTIVAZIONE MODULO"
+msgstr ""
+
+#: ../promogest/ui/Main.py:654
+msgid "MODULO O OPZIONE MODIFICATO attivato o disattivato"
+msgstr ""
+
+#: ../promogest/ui/Main.py:667
+msgid ""
+"REGISTRO NUMERAZIONE MODIFICATO\n"
+"\n"
+"RIAVVIARE"
+msgstr ""
+
+#: ../promogest/ui/Main.py:671
+msgid ""
+"REGISTRO DA ASSEGNARE NON TROVATO O CORRETTO\n"
+"\n"
+" RIPROVARE"
+msgstr ""
+
+#: ../promogest/ui/Main.py:674
+msgid ""
+"OPERAZIONE NON CORRETTA E NON TROVATA\n"
+"\n"
+"RIPROVARE"
+msgstr ""
+
+#: ../promogest/ui/Main.py:691
+msgid "ATTIVAZIONE EFFETTUATA, RIAVVIARE IL PROMOGEST"
+msgstr ""
+
+#: ../promogest/ui/Main.py:704
+msgid "Lavori in corso ...."
+msgstr ""
+
+#: ../promogest/ui/Main.py:777
+msgid ""
+"Codice installazione:\n"
+"\n"
+msgstr ""
+
+#: ../promogest/ui/Main.py:779
+msgid "Impossibile generare il codice !!!"
+msgstr ""
+
+#: ../promogest/ui/Main.py:786
+msgid "SERVER NON ANCORA IMPLEMENTATO"
+msgstr ""
+
+#: ../promogest/ui/Main.py:798
+msgid ""
+"ATTENZIONE!!\n"
+"QUESTA FUNZIONALITÀ È STATA AGGIUNTA PER\n"
+"PERMETTERE DI PROVARE IL PROMOGEST ONE BASIC CON\n"
+"IL MODULO TAGLIA E COLORE PROMOWEAR\n"
+"QUESTO MODULO SERVE A CHI DEVE GESTIRE\n"
+"UNA ATTIVITÀ CHE MOVIMENTA E VENDE\n"
+"ABBIGLIAMENTO O CALZATURE.\n"
+"L'OPERAZIONE È IRREVERSIBILE,AGGIUNGE DIVERSE\n"
+"TABELLE NEL DATABASE E NUOVE INTERFACCE UTENTE\n"
+"DEDICATE,NON CAUSA PERDITA DI DATI\n"
+"MA NON È CONSIGLIATO FARLO SE NON\n"
+"NE AVETE BISOGNO\n"
+"\n"
+"Procedere all'installazione del modulo PromoWear? "
+msgstr ""
+
+#: ../promogest/ui/Main.py:823
+msgid " TABELLE AGGIUNTE, RIAVVIARE IL PROGRAMMA "
+msgstr ""
+
+#: ../promogest/ui/Main.py:826
+msgid "PULSANTE DI TEST GIA' PREMUTO"
+msgstr ""
+
+#: ../promogest/ui/Main.py:832
+msgid ""
+"ATTENZIONE!!\n"
+"QUESTA FUNZIONALITÀ È STATA AGGIUNTA PER\n"
+"PERMETTERE DI PROVARE IL PROMOGEST ONE BASIC CON\n"
+"IL MODULO VENDITA DETTAGLIO\n"
+"\n"
+"Procedere all'installazione del modulo PromoShop? "
+msgstr ""
+
+#: ../promogest/ui/Main.py:874
+msgid "RISULTA GIA' ATTIVATO"
+msgstr ""
+
+#: ../promogest/ui/Main.py:880
+msgid "RICARICO MEDIO e INFLUENZA SULLE VENDITE"
+msgstr ""
+
+#: ../promogest/ui/Main.py:899
+msgid "Confermi l'eliminazione ?"
+msgstr ""
+
+#: ../promogest/ui/Main.py:905
+msgid "Confermi la chiusura?"
+msgstr ""
+
+#: ../promogest/ui/Main.py:923
+msgid "<b>NEWS/A.VEL</b>"
+msgstr ""
+
+#: ../promogest/ui/Main.py:937
+msgid "<b>CALENDARIO</b>"
+msgstr ""
+
+#: ../promogest/ui/Main.py:942
+msgid "<b>NOTIFICA ALLARMI</b>"
+msgstr ""
+
+#: ../promogest/ui/Main.py:953
+msgid ""
+"    PromoGest2 - 070 8649705 - www.promogest.me - info@promotux.it     "
+msgstr ""
+
+#: ../promogest/ui/Main.py:959
+msgid "DA AGGIORNARE!!! "
+msgstr ""
+
+#: ../promogest/ui/Main.py:962
+msgid "AGGIORNATO "
+msgstr ""
 
 #. -*- coding: utf-8 -*-
 #. Promogest
@@ -65,7 +282,7 @@ msgstr "Orders"
 #: ../gui/calendario_notebook.glade.h:5
 #: ../gui/pg3_calendario_notebook.glade.h:5
 msgid "Preventivi"
-msgstr ""
+msgstr "Estimates"
 
 #: ../gui/calendario_notebook.glade.h:6
 #: ../gui/pg3_calendario_notebook.glade.h:6
@@ -75,7 +292,7 @@ msgstr "Memo Ins"
 #: ../gui/calendario_notebook.glade.h:7
 #: ../gui/pg3_calendario_notebook.glade.h:7
 msgid "Promemoria Scad."
-msgstr ""
+msgstr "Memo Expi."
 
 #: ../gui/calendario_notebook.glade.h:8 ../gui/pg3_main_window.glade.h:58
 #: ../gui/pg3_calendario_notebook.glade.h:8 ../gui/calendar.glade.h:6
@@ -105,22 +322,22 @@ msgstr ""
 #: ../gui/pg3_anagrafica_documenti.glade.h:4
 #: ../gui/anagrafica_documenti.glade.h:4
 msgid "  Acconto del "
-msgstr ""
+msgstr "Advance of"
 
 #: ../gui/pg3_anagrafica_documenti.glade.h:5
 #: ../gui/anagrafica_documenti.glade.h:5
 msgid "  Note interne"
-msgstr ""
+msgstr "Internal notes"
 
 #: ../gui/pg3_anagrafica_documenti.glade.h:6
 #: ../gui/anagrafica_documenti.glade.h:6
 msgid "  Porto"
-msgstr ""
+msgstr "Carriage"
 
 #: ../gui/pg3_anagrafica_documenti.glade.h:7
 #: ../gui/anagrafica_documenti.glade.h:7
 msgid " <span size=\"xx-large\" weight=\"bold\">Sospeso</span>"
-msgstr ""
+msgstr "<span size=\"xx-large\" weight=\"bold\">Suspended</span>"
 
 #: ../gui/pg3_anagrafica_documenti.glade.h:9
 #: ../gui/anagrafica_documenti.glade.h:9 ../gui/sconti_window.glade.h:2
@@ -221,32 +438,32 @@ msgstr "0.000     "
 #: ../gui/pg3_anagrafica_documenti.glade.h:20
 #: ../gui/anagrafica_documenti.glade.h:20
 msgid "<b><span foreground=\"black\" size=\"14000\">Imponibile:</span></b>"
-msgstr ""
+msgstr "<span foreground=\"black\" size=\"14000\"><b>Taxable:</b></span>"
 
 #: ../gui/pg3_anagrafica_documenti.glade.h:21
 #: ../gui/anagrafica_documenti.glade.h:21
 msgid "<b><span foreground=\"black\" size=\"14000\">Imposta:</span></b>"
-msgstr ""
+msgstr "<span foreground=\"black\" size=\"14000\"><b>Tax:</b></span>"
 
 #: ../gui/pg3_anagrafica_documenti.glade.h:22
 #: ../gui/anagrafica_documenti.glade.h:22
 msgid "<b><span foreground=\"black\" size=\"14000\">Totale:</span></b>"
-msgstr ""
+msgstr "<span foreground=\"black\" size=\"14000\"><b>Total:</b></span>"
 
 #: ../gui/pg3_anagrafica_documenti.glade.h:23
 #: ../gui/anagrafica_documenti.glade.h:23
 msgid "<b><span foreground=\"black\" size=\"18000\">Totale Documento:</span></b>"
-msgstr ""
+msgstr "<span foreground=\"black\" size=\"18000\"><b>Document Total:</b></span>"
 
 #: ../gui/pg3_anagrafica_documenti.glade.h:24
 #: ../gui/anagrafica_documenti.glade.h:24
 msgid "<b>Arco Temporale</b>"
-msgstr ""
+msgstr "<b>Span</b>"
 
 #: ../gui/pg3_anagrafica_documenti.glade.h:25
 #: ../gui/anagrafica_documenti.glade.h:25
 msgid "<b>Arco temporale Noleggio</b>"
-msgstr ""
+msgstr "<b>Rental time frame</b>"
 
 #: ../gui/pg3_anagrafica_documenti.glade.h:26
 #: ../gui/anagrafica_documenti.glade.h:26
@@ -275,7 +492,7 @@ msgstr "<b>Info</b>"
 #: ../gui/pg3_anagrafica_documenti.glade.h:30
 #: ../gui/anagrafica_documenti.glade.h:31
 msgid "<b>PESO e COLLI</b>"
-msgstr ""
+msgstr "<b>WEIGHT AND PACKAGES</b>"
 
 #: ../gui/pg3_anagrafica_documenti.glade.h:31
 #: ../gui/anagrafica_documenti.glade.h:32
@@ -297,7 +514,7 @@ msgstr "<b>Summaries ADR:</b>"
 #: ../gui/pg3_anagrafica_documenti.glade.h:34
 #: ../gui/anagrafica_documenti.glade.h:35
 msgid "<b>Righe inserite:</b>"
-msgstr ""
+msgstr "<b>Rows inserted:</b>"
 
 #: ../gui/pg3_anagrafica_documenti.glade.h:35
 #: ../gui/anagrafica_documenti.glade.h:36
@@ -307,17 +524,17 @@ msgstr ""
 #: ../gui/pg3_anagrafica_documenti.glade.h:36
 #: ../gui/anagrafica_documenti.glade.h:37
 msgid "<b>Scadenze e Pagamenti</b>"
-msgstr ""
+msgstr "<b>Deadlines and Payments</b>"
 
 #: ../gui/pg3_anagrafica_documenti.glade.h:37
 #: ../gui/anagrafica_documenti.glade.h:38
 msgid "<b>Sconti</b>"
-msgstr ""
+msgstr "<b>Discounts</b>"
 
 #: ../gui/pg3_anagrafica_documenti.glade.h:38
 #: ../gui/anagrafica_documenti.glade.h:39
 msgid "<b>Storici</b>"
-msgstr ""
+msgstr "<b>Historical</b>"
 
 #: ../gui/pg3_anagrafica_documenti.glade.h:39
 #: ../gui/anagrafica_documenti.glade.h:40
@@ -327,32 +544,32 @@ msgstr ""
 #: ../gui/pg3_anagrafica_documenti.glade.h:40
 #: ../gui/anagrafica_documenti.glade.h:41
 msgid "<b>Totale imponibile:</b>"
-msgstr ""
+msgstr "<b>Total taxable:</b>"
 
 #: ../gui/pg3_anagrafica_documenti.glade.h:41
 #: ../gui/anagrafica_documenti.glade.h:42
 msgid "<b>Totale imponibile</b>"
-msgstr ""
+msgstr "<b>Total taxable</b>"
 
 #: ../gui/pg3_anagrafica_documenti.glade.h:42
 #: ../gui/anagrafica_documenti.glade.h:43
 msgid "<b>Totale imposta:</b>"
-msgstr ""
+msgstr "<b>Total Tax:</b>"
 
 #: ../gui/pg3_anagrafica_documenti.glade.h:43
 #: ../gui/anagrafica_documenti.glade.h:44
 msgid "<b>Totale imposta</b>"
-msgstr ""
+msgstr "<b>Total Tax</b>"
 
 #: ../gui/pg3_anagrafica_documenti.glade.h:44
 #: ../gui/anagrafica_documenti.glade.h:45
 msgid "<b>Totali finali:</b>"
-msgstr ""
+msgstr "<b>Final total:</b>"
 
 #: ../gui/pg3_anagrafica_documenti.glade.h:45
 #: ../gui/anagrafica_documenti.glade.h:46
 msgid "<b>Totali:</b>"
-msgstr ""
+msgstr "<b>Totals:</b>"
 
 #: ../gui/pg3_anagrafica_documenti.glade.h:46
 #: ../gui/anagrafica_documenti.glade.h:47
@@ -360,46 +577,46 @@ msgstr ""
 #: ../promogest/modules/VenditaDettaglio/gui/vendita_dettaglio_window.glade.h:31
 #: ../promogest/modules/VenditaDettaglio/gui/pg3_vendita_dettaglio_window.glade.h:30
 msgid "<b>Totali</b>"
-msgstr ""
+msgstr "<b>Total</b>"
 
 #: ../gui/pg3_anagrafica_documenti.glade.h:47
 #: ../gui/anagrafica_documenti.glade.h:48
 msgid "<b>Ulteriori sconti:</b> "
-msgstr ""
+msgstr "<b>Additional discounts:</b>"
 
 #: ../gui/pg3_anagrafica_documenti.glade.h:48
 #: ../gui/anagrafica_documenti.glade.h:49
 msgid "<b>Valori</b>"
-msgstr ""
+msgstr "<b>Values</b>"
 
 #: ../gui/pg3_anagrafica_documenti.glade.h:49
 #: ../gui/anagrafica_documenti.glade.h:50
 msgid "<b>_1 VALORI</b>"
-msgstr ""
+msgstr "<b>_1 VALUES</b>"
 
 #: ../gui/pg3_anagrafica_documenti.glade.h:50
 #: ../gui/anagrafica_documenti.glade.h:51
 msgid "<b>_2 ALTRO</b>"
-msgstr ""
+msgstr "<b>_2 OTHER</b>"
 
 #: ../gui/pg3_anagrafica_documenti.glade.h:51
 msgid "<b>_3 INFO</b>"
-msgstr ""
+msgstr "<b>_3 INFO</b>"
 
 #: ../gui/pg3_anagrafica_documenti.glade.h:52
 #: ../gui/anagrafica_documenti.glade.h:54
 msgid "<span size=\"xx-large\" weight=\"bold\">Metodo di Pagamento:</span>"
-msgstr ""
+msgstr "<span size=\"xx-large\" weight=\"bold\">Payment Method:</span>"
 
 #: ../gui/pg3_anagrafica_documenti.glade.h:53
 #: ../gui/anagrafica_documenti.glade.h:55
 msgid "<span size=\"xx-large\" weight=\"bold\">Note:</span>"
-msgstr ""
+msgstr "<span size=\"xx-large\" weight=\"bold\">Notes:</span>"
 
 #: ../gui/pg3_anagrafica_documenti.glade.h:54
 #: ../gui/anagrafica_documenti.glade.h:56
 msgid "<span size=\"xx-large\" weight=\"bold\">Pagato:</span>"
-msgstr ""
+msgstr "<span size=\"xx-large\" weight=\"bold\">Paid:</span>"
 
 #: ../gui/pg3_anagrafica_documenti.glade.h:55
 #: ../gui/anagrafica_documenti.glade.h:57
@@ -409,7 +626,7 @@ msgstr ""
 #: ../gui/pg3_anagrafica_documenti.glade.h:56
 #: ../gui/anagrafica_documenti.glade.h:58
 msgid "<span size=\"xx-large\" weight=\"bold\">Totale</span>"
-msgstr ""
+msgstr "<span size=\"xx-large\" weight=\"bold\">Total</span>"
 
 #: ../gui/pg3_anagrafica_documenti.glade.h:57
 #: ../gui/_ricerca_semplice_movimenti.glade.h:1
@@ -424,7 +641,7 @@ msgstr ""
 #: ../promogest/modules/VenditaDettaglio/gui/_scontrini_emessi_elements.glade.h:1
 #: ../promogest/modules/VenditaDettaglio/gui/pg3__scontrini_emessi_elements.glade.h:1
 msgid "A data"
-msgstr ""
+msgstr "To date"
 
 #: ../gui/pg3_anagrafica_documenti.glade.h:58
 #: ../gui/anagrafica_documenti.glade.h:60
@@ -433,11 +650,13 @@ msgid ""
 "I Totali sono frutto di una variazione sconto visibile\n"
 "nella sezione riepiloghi"
 msgstr ""
+"WARNING! \n"
+"The totals are the result of a change in the discount visible summaries"
 
 #: ../gui/pg3_anagrafica_documenti.glade.h:61
 #: ../gui/anagrafica_documenti.glade.h:63
 msgid "Abbandona <b>RIGA</b>"
-msgstr ""
+msgstr "Abandon <b>ROW</b>"
 
 #: ../gui/pg3_anagrafica_documenti.glade.h:62
 #: ../gui/_ricerca_semplice_documenti.glade.h:7
@@ -449,14 +668,14 @@ msgstr ""
 #: ../gui/pg3_anagrafica_documenti.glade.h:63
 #: ../gui/anagrafica_documenti.glade.h:65
 msgid "Aggiungi <b>RIGA</b> e pulisci (<b>F4</b>)"
-msgstr ""
+msgstr "Add <b>ROW</b> and clean <b>(F4)</b>"
 
 #: ../gui/pg3_anagrafica_documenti.glade.h:64
 #: ../gui/_anagrafica_movimenti_elements.glade.h:6
 #: ../gui/anagrafica_documenti.glade.h:66
 #: ../gui/pg3__anagrafica_movimenti_elements.glade.h:6
 msgid "Anno:"
-msgstr ""
+msgstr "Year:"
 
 #: ../gui/pg3_anagrafica_documenti.glade.h:65
 #: ../gui/anagrafica_documenti.glade.h:67
@@ -478,7 +697,7 @@ msgstr ""
 #: ../promogest/modules/PrimaNota/gui/pg3__anagrafica_primanota_elements.glade.h:11
 #: ../promogest/modules/PrimaNota/gui/_anagrafica_primanota_elements.glade.h:11
 msgid "Banca"
-msgstr ""
+msgstr "Bank"
 
 #: ../gui/pg3_anagrafica_documenti.glade.h:69
 #: ../gui/anagrafica_documenti.glade.h:71
@@ -2167,17 +2386,6 @@ msgstr ""
 #: ../gui/pg3_azioni_veloce_notebook.glade.h:13
 #: ../gui/news_notebook.glade.h:14 ../gui/pg3_news_notebook.glade.h:14
 msgid "Preventivo"
-msgstr ""
-
-#: ../gui/azioni_veloce_notebook.glade.h:14
-#: ../gui/_anagrafica_clienti_elements.glade.h:84
-#: ../gui/pg3_azioni_veloce_notebook.glade.h:14
-#: ../gui/news_notebook.glade.h:15
-#: ../gui/pg3__anagrafica_clienti_elements.glade.h:84
-#: ../gui/_anagrafica_fornitori_elements.glade.h:36
-#: ../gui/pg3_news_notebook.glade.h:15
-#: ../gui/pg3__anagrafica_fornitori_elements.glade.h:36
-msgid "Promemoria"
 msgstr ""
 
 #: ../gui/azioni_veloce_notebook.glade.h:15
