@@ -2,12 +2,13 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # 
+#   <info@promotux.it>, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: promogest\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/promogest/updates/list\n"
 "POT-Creation-Date: 2011-07-30 11:48+0200\n"
-"PO-Revision-Date: 2011-07-30 19:35+0000\n"
+"PO-Revision-Date: 2011-07-30 19:53+0000\n"
 "Last-Translator: promotux <info@promotux.it>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -5228,7 +5229,7 @@ msgstr ""
 
 #: ../gui/login_window.glade.h:6 ../gui/pg3_login_window.glade.h:5
 msgid "Azienda:"
-msgstr ""
+msgstr "Компания:"
 
 #: ../gui/login_window.glade.h:7 ../gui/pg3_login_window.glade.h:6
 msgid "Connessione al promogest"
@@ -8318,7 +8319,7 @@ msgstr ""
 #: ../promogest/modules/Contatti/gui/pg3__anagrafica_contatti_elements.glade.h:3
 #: ../promogest/modules/Contatti/gui/_anagrafica_contatti_elements.glade.h:3
 msgid "Azienda"
-msgstr ""
+msgstr "Компания"
 
 #: ../promogest/modules/Contatti/gui/pg3__anagrafica_contatti_elements.glade.h:4
 #: ../promogest/modules/Contatti/gui/_anagrafica_contatti_elements.glade.h:4
