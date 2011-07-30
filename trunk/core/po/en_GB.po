@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: promogest\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/promogest/updates/list\n"
-"POT-Creation-Date: 2011-07-30 11:23+0200\n"
-"PO-Revision-Date: 2011-07-30 09:38+0000\n"
+"POT-Creation-Date: 2011-07-30 11:48+0200\n"
+"PO-Revision-Date: 2011-07-30 09:50+0000\n"
 "Last-Translator: promotux <info@promotux.it>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -16,6 +16,10 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: en_GB\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
+
+#: ../promogest/ui/Login.py:183
+msgid "Inserire nome utente e password"
+msgstr "Enter your username and password"
 
 #. -*- coding: utf-8 -*-
 #. Promogest

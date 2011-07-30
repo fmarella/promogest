@@ -180,7 +180,7 @@ class Login(GladeApp):
         password = self.password_entry.get_text()
         do_login = True
         if username=='' or password=='':
-            messageInfo(msg='Inserire nome utente e password')
+            messageInfo(msg=_('Inserire nome utente e password'))
             do_login = False
         elif self.azienda_comboboxentry.get_child().get_text() == '':
             messageInfo(msg="Occorre selezionare un'azienda")
