@@ -61,7 +61,7 @@
             </child>
             <child>
               <object class="GtkButton" id="aggiorna_button">
-                <property name="label">Aggiornato?</property>
+                <property name="label" translatable="yes">Aggiornato?</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>

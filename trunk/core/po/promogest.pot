@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-07-29 17:10+0200\n"
+"POT-Creation-Date: 2011-07-30 11:23+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,41 +17,25 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../gui/_anagrafica_clienti_setup.glade.h:1
-#: ../gui/pg3__anagrafica_clienti_setup.glade.h:1
-msgid "<b>Opzioni Clienti</b>"
-msgstr ""
-
-#: ../gui/_anagrafica_clienti_setup.glade.h:2
-#: ../gui/pg3__anagrafica_clienti_setup.glade.h:2
-msgid "CLIENTI"
-msgstr ""
-
-#: ../gui/_anagrafica_clienti_setup.glade.h:3
-#: ../gui/pg3__anagrafica_clienti_setup.glade.h:3
-msgid ""
-"Struttura base del codice \n"
-"( CLI000000 )"
-msgstr ""
-
-#: ../gui/_anagrafica_clienti_setup.glade.h:5
-#: ../gui/configura_window.glade.h:31
-#: ../gui/pg3__anagrafica_clienti_setup.glade.h:5
-#: ../gui/pg3_configura_window.glade.h:31
-#: ../gui/_anagrafica_fornitori_setup.glade.h:5
-#: ../gui/pg3__anagrafica_fornitori_setup.glade.h:5
-#: ../gui/_anagrafica_articoli_setup.glade.h:5
-#: ../gui/pg3__anagrafica_articoli_setup.glade.h:5
-msgid "Trasforma il codice in MAIUSCOLO"
-msgstr ""
-
-#: ../gui/_anagrafica_clienti_setup.glade.h:6
-#: ../gui/pg3__anagrafica_clienti_setup.glade.h:6
-#: ../gui/_anagrafica_fornitori_setup.glade.h:6
-#: ../gui/pg3__anagrafica_fornitori_setup.glade.h:6
-msgid "Visualizza campo per insegna"
-msgstr ""
-
+#. -*- coding: utf-8 -*-
+#. Promogest
+#.
+#. Copyright (C) 2005-2008 by Promotux Informatica - http://www.promotux.it/
+#. Author: Francesco Meloni <francesco@promotux.it>
+#.
+#. This program is free software; you can redistribute it and/or
+#. modify it under the terms of the GNU General Public License
+#. as published by the Free Software Foundation; either version 2
+#. of the License, or (at your option) any later version.
+#.
+#. This program is distributed in the hope that it will be useful,
+#. but WITHOUT ANY WARRANTY; without even the implied warranty of
+#. MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#. GNU General Public License for more details.
+#.
+#. You should have received a copy of the GNU General Public License
+#. along with this program; if not, write to the Free Software
+#. Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #: ../gui/calendario_notebook.glade.h:1
 #: ../gui/pg3_calendario_notebook.glade.h:1
 msgid "CALENDAR - PLANNING - SCADENZIARIO"
@@ -165,7 +149,7 @@ msgstr ""
 #: ../gui/pg3_anagrafica_documenti.glade.h:15
 #: ../gui/_anagrafica_fornitura_articoli_elements.glade.h:1
 #: ../gui/_anagrafica_listini_articoli_elements.glade.h:7
-#: ../gui/ricerca_window.glade.h:1
+#: ../gui/_filter_elements.glade.h:2 ../gui/ricerca_window.glade.h:1
 #: ../gui/_anagrafica_articoli_detail.glade.h:1
 #: ../gui/pg3__anagrafica_listini_articoli_elements.glade.h:7
 #: ../gui/pg3__filter_elements.glade.h:2
@@ -178,7 +162,6 @@ msgstr ""
 #: ../gui/anagrafica_documenti.glade.h:15
 #: ../gui/pg3__anagrafica_movimenti_elements.glade.h:3
 #: ../gui/pg3_anagrafica_complessa_window.glade.h:1
-#: ../gui/_filter_elements.glade.h:2
 #: ../gui/variazione_listini_articoli_window.glade.h:1
 #: ../promogest/modules/GestioneCommesse/gui/_anagrafica_commessa_elements.glade.h:1
 #: ../promogest/modules/GestioneCommesse/gui/pg3__anagrafica_commessa_elements.glade.h:1
@@ -452,8 +435,8 @@ msgid "Abbandona <b>RIGA</b>"
 msgstr ""
 
 #: ../gui/pg3_anagrafica_documenti.glade.h:62
-#: ../gui/pg3__ricerca_semplice_documenti.glade.h:7
 #: ../gui/_ricerca_semplice_documenti.glade.h:7
+#: ../gui/pg3__ricerca_semplice_documenti.glade.h:7
 #: ../gui/anagrafica_documenti.glade.h:64
 msgid "Agente"
 msgstr ""
@@ -533,8 +516,8 @@ msgstr ""
 
 #: ../gui/pg3_anagrafica_documenti.glade.h:75
 #: ../gui/_ricerca_semplice_movimenti.glade.h:5
-#: ../gui/pg3__ricerca_semplice_documenti.glade.h:13
 #: ../gui/_ricerca_semplice_documenti.glade.h:13
+#: ../gui/pg3__ricerca_semplice_documenti.glade.h:13
 #: ../gui/_anagrafica_noleggi_elements.glade.h:15
 #: ../gui/anagrafica_documenti.glade.h:77
 #: ../gui/pg3__ricerca_semplice_movimenti.glade.h:5
@@ -549,16 +532,16 @@ msgid "Da data"
 msgstr ""
 
 #: ../gui/pg3_anagrafica_documenti.glade.h:76
-#: ../gui/anagrafica_azienda.glade.h:8 ../gui/duplicazione_listino.glade.h:4
+#: ../gui/duplicazione_listino.glade.h:4
 #: ../gui/duplicazione_documento.glade.h:3
 #: ../gui/_anagrafica_aziende_elements.glade.h:9
-#: ../gui/pg3__ricerca_semplice_documenti.glade.h:16
 #: ../gui/_ricerca_semplice_documenti.glade.h:16
 #: ../gui/pg3_anagrafica_azienda.glade.h:8
 #: ../gui/_anagrafica_movimenti_elements.glade.h:14
+#: ../gui/pg3__ricerca_semplice_documenti.glade.h:16
 #: ../gui/fatturazione_differita.glade.h:2
 #: ../gui/_anagrafica_noleggi_elements.glade.h:17
-#: ../gui/anagrafica_documenti.glade.h:78
+#: ../gui/anagrafica_documenti.glade.h:78 ../gui/anagrafica_azienda.glade.h:8
 #: ../gui/pg3__anagrafica_movimenti_elements.glade.h:14
 #: ../gui/duplicazione_movimento.glade.h:3
 #: ../promogest/modules/PrimaNota/gui/pg3__anagrafica_primanota_elements.glade.h:17
@@ -584,26 +567,27 @@ msgstr ""
 
 #: ../gui/pg3_anagrafica_documenti.glade.h:79
 #: ../gui/_anagrafica_fornitura_articoli_elements.glade.h:11
+#: ../gui/_anagrafica_promemoria_elements.glade.h:8
 #: ../gui/pg3__anagrafica_promemoria_elements.glade.h:8
 #: ../gui/anagrafica_documenti.glade.h:81
-#: ../gui/_anagrafica_promemoria_elements.glade.h:8
 msgid "Data scadenza"
 msgstr ""
 
 #: ../gui/pg3_anagrafica_documenti.glade.h:80
-#: ../gui/pg3__anagrafica_categorie_articoli_elements.glade.h:2
 #: ../gui/pg3__anagrafica_stoccaggi_articoli_elements.glade.h:18
 #: ../gui/duplicazione_listino.glade.h:6
+#: ../gui/pg3__anagrafica_categorie_fornitori_elements.glade.h:1
 #: ../gui/_anagrafica_categorie_articoli_elements.glade.h:2
 #: ../gui/anagrafica_articoli_semplice_dialog.glade.h:5
 #: ../gui/_anagrafica_aziende_elements.glade.h:11
 #: ../gui/_anagrafica_categorie_clienti_elements.glade.h:1
+#: ../gui/pg3__anagrafica_articoli_elements.glade.h:11
 #: ../gui/pg3__ricerca_semplice_listini.glade.h:3
 #: ../gui/pg3__anagrafica_ccardtype_elements.glade.h:1
-#: ../gui/pg3__anagrafica_categorie_fornitori_elements.glade.h:1
 #: ../gui/pg3__anagrafica_pagamenti_elements.glade.h:3
 #: ../gui/_anagrafica_stoccaggi_articoli_elements.glade.h:18
 #: ../gui/_elenco_listini_elements.glade.h:16
+#: ../gui/_anagrafica_promemoria_elements.glade.h:9
 #: ../gui/_anagrafica_aliquote_iva_elements.glade.h:9
 #: ../gui/_anagrafica_banche_elements.glade.h:7
 #: ../gui/_anagrafica_multipli_elements.glade.h:2
@@ -611,6 +595,7 @@ msgstr ""
 #: ../gui/pg3__anagrafica_famiglie_articoli_elements.glade.h:2
 #: ../gui/_anagrafica_imballaggi_elements.glade.h:1
 #: ../gui/_ricerca_semplice_articoli.glade.h:8
+#: ../gui/pg3__anagrafica_categorie_articoli_elements.glade.h:2
 #: ../gui/_ricerca_complessa_articoli.glade.h:10
 #: ../gui/pg3__elenco_listini_elements.glade.h:16
 #: ../gui/pg3__anagrafica_promemoria_elements.glade.h:9
@@ -624,13 +609,13 @@ msgstr ""
 #: ../gui/_anagrafica_categorie_fornitori_elements.glade.h:1
 #: ../gui/_anagrafica_pagamenti_elements.glade.h:3
 #: ../gui/pg3__anagrafica_imballaggi_elements.glade.h:1
-#: ../gui/pg3__ricerca_semplice_articoli.glade.h:8
-#: ../gui/_anagrafica_promemoria_elements.glade.h:9
-#: ../gui/_anagrafica_famiglie_articoli_elements.glade.h:2
-#: ../gui/pg3__anagrafica_articoli_elements.glade.h:11
 #: ../gui/_anagrafica_articoli_elements.glade.h:11
+#: ../gui/pg3__ricerca_semplice_articoli.glade.h:8
+#: ../gui/_anagrafica_famiglie_articoli_elements.glade.h:2
 #: ../gui/_ricerca_semplice_listini.glade.h:3
 #: ../gui/_anagrafica_ccardtype_elements.glade.h:1
+#: ../promogest/modules/RuoliAzioni/gui/_anagrafica_ruoli_elements.glade.h:1
+#: ../promogest/modules/RuoliAzioni/gui/pg3__anagrafica_ruoli_elements.glade.h:1
 #: ../promogest/modules/ADR/gui/pg3__anagrafica_gruppo_imballaggio_elements.glade.h:2
 #: ../promogest/modules/ADR/gui/_anagrafica_galleria_elements.glade.h:1
 #: ../promogest/modules/ADR/gui/pg3__anagrafica_galleria_elements.glade.h:1
@@ -640,18 +625,16 @@ msgstr ""
 #: ../promogest/modules/ADR/gui/_anagrafica_gruppo_imballaggio_elements.glade.h:2
 #: ../promogest/modules/ADR/gui/pg3__anagrafica_classe_pericolo_elements.glade.h:2
 #: ../promogest/modules/GestioneNoleggio/gui/schedalavorazione_plugins.glade.h:12
-#: ../promogest/modules/PromoWear/gui/pg3__anagrafica_modello_elements.glade.h:1
 #: ../promogest/modules/PromoWear/gui/_anagrafica_taglie_elements.glade.h:1
 #: ../promogest/modules/PromoWear/gui/_anagrafica_gruppo_taglia_elements.glade.h:1
 #: ../promogest/modules/PromoWear/gui/pg3__anagrafica_colore_elements.glade.h:1
+#: ../promogest/modules/PromoWear/gui/pg3__anagrafica_modello_elements.glade.h:1
 #: ../promogest/modules/PromoWear/gui/pg3__anagrafica_taglie_elements.glade.h:1
 #: ../promogest/modules/PromoWear/gui/pg3__anagrafica_gruppo_taglia_elements.glade.h:1
 #: ../promogest/modules/PromoWear/gui/_anagrafica_modello_elements.glade.h:1
 #: ../promogest/modules/PromoWear/gui/_anagrafica_colore_elements.glade.h:1
 #: ../promogest/modules/PrimaNota/gui/pg3__anagrafica_primanota_elements.glade.h:21
 #: ../promogest/modules/PrimaNota/gui/_anagrafica_primanota_elements.glade.h:21
-#: ../promogest/modules/RuoliAzioni/gui/_anagrafica_ruoli_elements.glade.h:1
-#: ../promogest/modules/RuoliAzioni/gui/pg3__anagrafica_ruoli_elements.glade.h:1
 #: ../promogest/modules/SchedaLavorazione/gui/schedalavorazione_plugins.glade.h:1
 #: ../promogest/modules/GestioneCommesse/gui/pg3__anagrafica_stadio_commessa_elements.glade.h:1
 #: ../promogest/modules/GestioneCommesse/gui/_anagrafica_stadio_commessa_elements.glade.h:1
@@ -736,8 +719,8 @@ msgstr ""
 #: ../gui/_anagrafica_movimenti_elements.glade.h:20
 #: ../gui/anagrafica_documenti.glade.h:94
 #: ../gui/pg3__anagrafica_movimenti_elements.glade.h:20
-#: ../promogest/modules/PromoWear/gui/pg3_creazione_varianti_taglia_colore.glade.h:9
 #: ../promogest/modules/PromoWear/gui/creazione_varianti_taglia_colore.glade.h:9
+#: ../promogest/modules/PromoWear/gui/pg3_creazione_varianti_taglia_colore.glade.h:9
 msgid "Gruppo Taglia:"
 msgstr ""
 
@@ -807,11 +790,11 @@ msgstr ""
 #: ../gui/storico_listini_articoli_filter_table.glade.h:4
 #: ../gui/_anagrafica_movimenti_elements.glade.h:22
 #: ../gui/_ricerca_clienti.glade.h:8
-#: ../gui/pg3__anagrafica_listini_elements.glade.h:41
 #: ../gui/_anagrafica_noleggi_elements.glade.h:26
 #: ../gui/anagrafica_documenti.glade.h:106
 #: ../gui/pg3__anagrafica_movimenti_elements.glade.h:22
 #: ../gui/pg3__ricerca_clienti.glade.h:8
+#: ../gui/pg3__anagrafica_listini_elements.glade.h:41
 #: ../promogest/modules/GestioneImmagini/gui/vendita_dettaglio_window.glade.h:24
 #: ../promogest/modules/VenditaDettaglio/gui/_vendita_dettaglio_setup.glade.h:9
 #: ../promogest/modules/VenditaDettaglio/gui/vendita_dettaglio_window.glade.h:54
@@ -856,14 +839,14 @@ msgid "Note pie' di pagina"
 msgstr ""
 
 #: ../gui/pg3_anagrafica_documenti.glade.h:112
-#: ../gui/anagrafica_azienda.glade.h:23
 #: ../gui/_anagrafica_aziende_elements.glade.h:20
-#: ../gui/pg3__ricerca_semplice_documenti.glade.h:22
 #: ../gui/_ricerca_semplice_documenti.glade.h:22
 #: ../gui/pg3_anagrafica_azienda.glade.h:23
 #: ../gui/_anagrafica_movimenti_elements.glade.h:25
+#: ../gui/pg3__ricerca_semplice_documenti.glade.h:22
 #: ../gui/_anagrafica_noleggi_elements.glade.h:29
 #: ../gui/anagrafica_documenti.glade.h:114
+#: ../gui/anagrafica_azienda.glade.h:23
 #: ../gui/pg3__anagrafica_movimenti_elements.glade.h:25
 #: ../promogest/modules/PrimaNota/gui/pg3__anagrafica_primanota_elements.glade.h:30
 #: ../promogest/modules/PrimaNota/gui/_anagrafica_primanota_elements.glade.h:30
@@ -1034,6 +1017,7 @@ msgstr ""
 
 #: ../gui/pg3_anagrafica_documenti.glade.h:139
 #: ../gui/pg3__anagrafica_stoccaggi_articoli_elements.glade.h:28
+#: ../gui/pg3__anagrafica_articoli_elements.glade.h:26
 #: ../gui/_anagrafica_articoli_detail.glade.h:104
 #: ../gui/_anagrafica_stoccaggi_articoli_elements.glade.h:28
 #: ../gui/_anagrafica_movimenti_elements.glade.h:35
@@ -1042,9 +1026,8 @@ msgstr ""
 #: ../gui/_ricerca_complessa_articoli.glade.h:21
 #: ../gui/anagrafica_documenti.glade.h:142
 #: ../gui/pg3__anagrafica_movimenti_elements.glade.h:35
-#: ../gui/pg3__ricerca_semplice_articoli.glade.h:17
-#: ../gui/pg3__anagrafica_articoli_elements.glade.h:26
 #: ../gui/_anagrafica_articoli_elements.glade.h:26
+#: ../gui/pg3__ricerca_semplice_articoli.glade.h:17
 msgid "Stagione"
 msgstr ""
 
@@ -1102,9 +1085,9 @@ msgid "Tipo:"
 msgstr ""
 
 #: ../gui/pg3_anagrafica_documenti.glade.h:147
-#: ../gui/pg3__ricerca_semplice_documenti.glade.h:29
 #: ../gui/_ricerca_semplice_documenti.glade.h:29
 #: ../gui/_anagrafica_movimenti_elements.glade.h:40
+#: ../gui/pg3__ricerca_semplice_documenti.glade.h:29
 #: ../gui/_anagrafica_noleggi_elements.glade.h:41
 #: ../gui/anagrafica_documenti.glade.h:150
 #: ../gui/pg3__anagrafica_movimenti_elements.glade.h:40
@@ -1221,43 +1204,6 @@ msgstr ""
 msgid "Rimanda Allarme"
 msgstr ""
 
-#: ../gui/pg3__anagrafica_categorie_articoli_elements.glade.h:1
-#: ../gui/_anagrafica_categorie_articoli_elements.glade.h:1
-msgid "\"Seleziona, inserici o  modifica il campo desiderato \""
-msgstr ""
-
-#: ../gui/pg3__anagrafica_categorie_articoli_elements.glade.h:3
-#: ../gui/_anagrafica_categorie_articoli_elements.glade.h:3
-#: ../gui/_anagrafica_aliquote_iva_elements.glade.h:10
-#: ../gui/_anagrafica_multipli_elements.glade.h:3
-#: ../gui/pg3__anagrafica_famiglie_articoli_elements.glade.h:3
-#: ../gui/pg3__anagrafica_aliquote_iva_elements.glade.h:10
-#: ../gui/pg3__anagrafica_multipli_elements.glade.h:3
-#: ../gui/_anagrafica_famiglie_articoli_elements.glade.h:3
-msgid "Descrizione Breve"
-msgstr ""
-
-#: ../gui/pg3__anagrafica_categorie_articoli_elements.glade.h:4
-#: ../gui/_anagrafica_categorie_articoli_elements.glade.h:4
-#: ../gui/pg3__anagrafica_ccardtype_elements.glade.h:2
-#: ../gui/_anagrafica_multipli_elements.glade.h:4
-#: ../gui/pg3__anagrafica_famiglie_articoli_elements.glade.h:4
-#: ../gui/pg3__anagrafica_multipli_elements.glade.h:4
-#: ../gui/_anagrafica_famiglie_articoli_elements.glade.h:4
-#: ../gui/_anagrafica_ccardtype_elements.glade.h:2
-#: ../promogest/modules/PromoWear/gui/pg3__anagrafica_modello_elements.glade.h:2
-#: ../promogest/modules/PromoWear/gui/_anagrafica_taglie_elements.glade.h:2
-#: ../promogest/modules/PromoWear/gui/_anagrafica_gruppo_taglia_elements.glade.h:2
-#: ../promogest/modules/PromoWear/gui/pg3__anagrafica_colore_elements.glade.h:2
-#: ../promogest/modules/PromoWear/gui/pg3__anagrafica_taglie_elements.glade.h:2
-#: ../promogest/modules/PromoWear/gui/pg3__anagrafica_gruppo_taglia_elements.glade.h:2
-#: ../promogest/modules/PromoWear/gui/_anagrafica_modello_elements.glade.h:2
-#: ../promogest/modules/PromoWear/gui/_anagrafica_colore_elements.glade.h:2
-#: ../promogest/modules/VenditaDettaglio/gui/pg3__anagrafica_pos_elements.glade.h:2
-#: ../promogest/modules/VenditaDettaglio/gui/_anagrafica_pos_elements.glade.h:2
-msgid "Descrizione breve"
-msgstr ""
-
 #: ../gui/email_dialog.glade.h:1
 msgid "                                "
 msgstr ""
@@ -1346,9 +1292,10 @@ msgstr ""
 #: ../gui/pg3_main_window.glade.h:6
 #: ../gui/anagrafica_semplice_window.glade.h:1
 #: ../gui/anagrafica_window.glade.h:4
-#: ../gui/anagrafica_complessa_window.glade.h:3 ../gui/main_window.glade.h:6
+#: ../gui/anagrafica_complessa_window.glade.h:3
 #: ../gui/pg3_anagrafica_semplice_window.glade.h:1
 #: ../gui/pg3_anagrafica_complessa_window.glade.h:3
+#: ../gui/main_window.glade.h:6
 msgid "A_iuto"
 msgstr ""
 
@@ -1421,23 +1368,25 @@ msgstr ""
 
 #: ../gui/pg3_main_window.glade.h:25
 #: ../gui/anagrafica_semplice_window.glade.h:4
-#: ../gui/anagrafica_complessa_window.glade.h:6 ../gui/main_window.glade.h:25
+#: ../gui/anagrafica_complessa_window.glade.h:6
 #: ../gui/pg3_anagrafica_semplice_window.glade.h:4
 #: ../gui/pg3_anagrafica_complessa_window.glade.h:6
+#: ../gui/main_window.glade.h:25
 msgid "Codice installazione..."
 msgstr ""
 
 #: ../gui/pg3_main_window.glade.h:26
 #: ../gui/anagrafica_semplice_window.glade.h:5
-#: ../gui/anagrafica_complessa_window.glade.h:7 ../gui/main_window.glade.h:26
+#: ../gui/anagrafica_complessa_window.glade.h:7
 #: ../gui/credits_dialog.glade.h:12
 #: ../gui/pg3_anagrafica_semplice_window.glade.h:5
 #: ../gui/pg3_anagrafica_complessa_window.glade.h:7
+#: ../gui/main_window.glade.h:26
 msgid "Credits"
 msgstr ""
 
-#: ../gui/pg3_main_window.glade.h:27 ../gui/anagrafica_azienda.glade.h:9
-#: ../gui/pg3_anagrafica_azienda.glade.h:9 ../gui/main_window.glade.h:27
+#: ../gui/pg3_main_window.glade.h:27 ../gui/pg3_anagrafica_azienda.glade.h:9
+#: ../gui/anagrafica_azienda.glade.h:9 ../gui/main_window.glade.h:27
 msgid "Dati Azienda"
 msgstr ""
 
@@ -1505,9 +1454,10 @@ msgstr ""
 
 #: ../gui/pg3_main_window.glade.h:50
 #: ../gui/anagrafica_semplice_window.glade.h:11
-#: ../gui/anagrafica_complessa_window.glade.h:22 ../gui/main_window.glade.h:50
+#: ../gui/anagrafica_complessa_window.glade.h:22
 #: ../gui/pg3_anagrafica_semplice_window.glade.h:11
 #: ../gui/pg3_anagrafica_complessa_window.glade.h:22
+#: ../gui/main_window.glade.h:50
 msgid ""
 "Permette di spedire una email all'asitenza con  segnalazioni bug, consigli, "
 "critiche."
@@ -1540,9 +1490,10 @@ msgstr ""
 
 #: ../gui/pg3_main_window.glade.h:59
 #: ../gui/anagrafica_semplice_window.glade.h:15
-#: ../gui/anagrafica_complessa_window.glade.h:25 ../gui/main_window.glade.h:59
+#: ../gui/anagrafica_complessa_window.glade.h:25
 #: ../gui/pg3_anagrafica_semplice_window.glade.h:15
 #: ../gui/pg3_anagrafica_complessa_window.glade.h:25
+#: ../gui/main_window.glade.h:59
 msgid "Spedisci email Assistenza"
 msgstr ""
 
@@ -1722,12 +1673,12 @@ msgid "<span weight=\"bold\">XL (Americane)  Donna</span>"
 msgstr ""
 
 #: ../gui/pg3__anagrafica_stoccaggi_articoli_elements.glade.h:9
+#: ../gui/pg3__anagrafica_articoli_elements.glade.h:4
 #: ../gui/_anagrafica_stoccaggi_articoli_elements.glade.h:9
 #: ../gui/_ricerca_semplice_articoli.glade.h:2
 #: ../gui/_ricerca_complessa_articoli.glade.h:4
-#: ../gui/pg3__ricerca_semplice_articoli.glade.h:2
-#: ../gui/pg3__anagrafica_articoli_elements.glade.h:4
 #: ../gui/_anagrafica_articoli_elements.glade.h:4
+#: ../gui/pg3__ricerca_semplice_articoli.glade.h:2
 msgid "Anno"
 msgstr ""
 
@@ -1735,10 +1686,10 @@ msgstr ""
 #: ../gui/azioni_veloce_notebook.glade.h:2
 #: ../gui/_anagrafica_fornitura_articoli_elements.glade.h:6
 #: ../gui/_anagrafica_listini_articoli_elements.glade.h:14
-#: ../gui/pg3__ricerca_semplice_documenti.glade.h:9
 #: ../gui/anagrafica_forniture_filter_table.glade.h:3
 #: ../gui/_ricerca_semplice_documenti.glade.h:9
 #: ../gui/_ricerca_forniture.glade.h:3
+#: ../gui/pg3_anagrafica_forniture_filter_table.glade.h:3
 #: ../gui/pg3_azioni_veloce_notebook.glade.h:2
 #: ../gui/_anagrafica_stoccaggi_articoli_elements.glade.h:10
 #: ../gui/pg3__anagrafica_listini_articoli_elements.glade.h:14
@@ -1746,10 +1697,10 @@ msgstr ""
 #: ../gui/pg3__anagrafica_fornitura_articoli_elements.glade.h:6
 #: ../gui/news_notebook.glade.h:3
 #: ../gui/_anagrafica_movimenti_elements.glade.h:7
+#: ../gui/pg3__ricerca_semplice_documenti.glade.h:9
 #: ../gui/_anagrafica_noleggi_elements.glade.h:7
 #: ../gui/pg3_news_notebook.glade.h:3
 #: ../gui/pg3__anagrafica_movimenti_elements.glade.h:7
-#: ../gui/pg3_anagrafica_forniture_filter_table.glade.h:3
 #: ../promogest/modules/GestioneKit/gui/pg3_kit_master.glade.h:4
 #: ../promogest/modules/GestioneKit/gui/kit_master.glade.h:4
 #: ../promogest/modules/GestioneKit/gui/_anagrafica_kit_filter_elements.glade.h:3
@@ -1767,6 +1718,7 @@ msgstr ""
 #: ../gui/anagrafica_articoli_semplice_dialog.glade.h:2
 #: ../gui/_anagrafica_clienti_elements.glade.h:24
 #: ../gui/pg3__ricerca_fornitori.glade.h:1
+#: ../gui/pg3__anagrafica_articoli_elements.glade.h:5
 #: ../gui/_anagrafica_listini_elements.glade.h:22
 #: ../gui/_anagrafica_stoccaggi_articoli_elements.glade.h:11
 #: ../gui/_ricerca_clienti.glade.h:1
@@ -1774,13 +1726,12 @@ msgstr ""
 #: ../gui/pg3__anagrafica_clienti_elements.glade.h:24
 #: ../gui/_ricerca_complessa_articoli.glade.h:5
 #: ../gui/_anagrafica_fornitori_elements.glade.h:13
-#: ../gui/pg3__anagrafica_listini_elements.glade.h:22
 #: ../gui/spedizione_mail_fax.glade.h:10 ../gui/pg3__ricerca_clienti.glade.h:1
 #: ../gui/_ricerca_fornitori.glade.h:1
-#: ../gui/pg3__ricerca_semplice_articoli.glade.h:3
-#: ../gui/pg3__anagrafica_articoli_elements.glade.h:5
-#: ../gui/pg3__anagrafica_fornitori_elements.glade.h:13
 #: ../gui/_anagrafica_articoli_elements.glade.h:5
+#: ../gui/pg3__ricerca_semplice_articoli.glade.h:3
+#: ../gui/pg3__anagrafica_listini_elements.glade.h:22
+#: ../gui/pg3__anagrafica_fornitori_elements.glade.h:13
 #: ../promogest/modules/GestioneNoleggio/gui/schedalavorazione_plugins.glade.h:8
 #: ../promogest/modules/DistintaBase/gui/_distinta_base_plugins.glade.h:7
 #: ../promogest/modules/ImportPriceList/gui/import_price_list_models_window.glade.h:10
@@ -1790,11 +1741,11 @@ msgid "Categoria"
 msgstr ""
 
 #: ../gui/pg3__anagrafica_stoccaggi_articoli_elements.glade.h:12
+#: ../gui/pg3__anagrafica_articoli_elements.glade.h:6
 #: ../gui/_anagrafica_stoccaggi_articoli_elements.glade.h:12
 #: ../gui/_ricerca_semplice_articoli.glade.h:4
-#: ../gui/pg3__ricerca_semplice_articoli.glade.h:4
-#: ../gui/pg3__anagrafica_articoli_elements.glade.h:6
 #: ../gui/_anagrafica_articoli_elements.glade.h:6
+#: ../gui/pg3__ricerca_semplice_articoli.glade.h:4
 msgid "Cod. Arti Forni."
 msgstr ""
 
@@ -1803,6 +1754,7 @@ msgstr ""
 #: ../gui/anagrafica_articoli_semplice_dialog.glade.h:3
 #: ../gui/_anagrafica_vettori_elements.glade.h:5
 #: ../gui/pg3__ricerca_fornitori.glade.h:2
+#: ../gui/pg3__anagrafica_articoli_elements.glade.h:7
 #: ../gui/pg3__anagrafica_codici_a_barre_articoli_elements.glade.h:1
 #: ../gui/_anagrafica_stoccaggi_articoli_elements.glade.h:13
 #: ../gui/pg3__anagrafica_vettori_elements.glade.h:5
@@ -1811,10 +1763,9 @@ msgstr ""
 #: ../gui/_ricerca_semplice_articoli.glade.h:5
 #: ../gui/_ricerca_complessa_articoli.glade.h:6
 #: ../gui/pg3__ricerca_clienti.glade.h:2 ../gui/_ricerca_fornitori.glade.h:2
+#: ../gui/_anagrafica_articoli_elements.glade.h:7
 #: ../gui/pg3__ricerca_semplice_articoli.glade.h:5
 #: ../gui/_anagrafica_famiglie_articoli_elements.glade.h:1
-#: ../gui/pg3__anagrafica_articoli_elements.glade.h:7
-#: ../gui/_anagrafica_articoli_elements.glade.h:7
 #: ../gui/_anagrafica_codici_a_barre_articoli_elements.glade.h:1
 #: ../promogest/modules/GestioneKit/gui/pg3_kit_master.glade.h:6
 #: ../promogest/modules/GestioneKit/gui/kit_master.glade.h:6
@@ -1831,12 +1782,12 @@ msgstr ""
 
 #: ../gui/pg3__anagrafica_stoccaggi_articoli_elements.glade.h:14
 #: ../gui/anagrafica_articoli_semplice_dialog.glade.h:4
+#: ../gui/pg3__anagrafica_articoli_elements.glade.h:8
 #: ../gui/_anagrafica_stoccaggi_articoli_elements.glade.h:14
 #: ../gui/_ricerca_semplice_articoli.glade.h:6
 #: ../gui/_ricerca_complessa_articoli.glade.h:7
-#: ../gui/pg3__ricerca_semplice_articoli.glade.h:6
-#: ../gui/pg3__anagrafica_articoli_elements.glade.h:8
 #: ../gui/_anagrafica_articoli_elements.glade.h:8
+#: ../gui/pg3__ricerca_semplice_articoli.glade.h:6
 #: ../promogest/modules/GestioneNoleggio/gui/schedalavorazione_plugins.glade.h:10
 #: ../promogest/modules/GestioneImmagini/gui/vendita_dettaglio_window.glade.h:17
 #: ../promogest/modules/DistintaBase/gui/_distinta_base_plugins.glade.h:9
@@ -1844,14 +1795,14 @@ msgid "Codice a barre"
 msgstr ""
 
 #: ../gui/pg3__anagrafica_stoccaggi_articoli_elements.glade.h:15
+#: ../gui/pg3__anagrafica_articoli_elements.glade.h:10
 #: ../gui/_anagrafica_articoli_detail.glade.h:34
 #: ../gui/_anagrafica_stoccaggi_articoli_elements.glade.h:15
 #: ../gui/_ricerca_semplice_articoli.glade.h:7
 #: ../gui/pg3__anagrafica_articoli_detail.glade.h:34
 #: ../gui/_ricerca_complessa_articoli.glade.h:9
-#: ../gui/pg3__ricerca_semplice_articoli.glade.h:7
-#: ../gui/pg3__anagrafica_articoli_elements.glade.h:10
 #: ../gui/_anagrafica_articoli_elements.glade.h:10
+#: ../gui/pg3__ricerca_semplice_articoli.glade.h:7
 #: ../promogest/modules/GestioneNoleggio/gui/SchedaLavorazione.glade.h:29
 #: ../promogest/modules/SchedaLavorazione/gui/SchedaLavorazione.glade.h:39
 msgid "Colore"
@@ -1868,41 +1819,41 @@ msgid "Data prossimo ordine"
 msgstr ""
 
 #: ../gui/pg3__anagrafica_stoccaggi_articoli_elements.glade.h:19
+#: ../gui/pg3__anagrafica_articoli_elements.glade.h:12
 #: ../gui/_anagrafica_stoccaggi_articoli_elements.glade.h:19
 #: ../gui/_ricerca_semplice_articoli.glade.h:9
-#: ../gui/pg3__ricerca_semplice_articoli.glade.h:9
-#: ../gui/pg3__anagrafica_articoli_elements.glade.h:12
 #: ../gui/_anagrafica_articoli_elements.glade.h:12
+#: ../gui/pg3__ricerca_semplice_articoli.glade.h:9
 msgid "Famiglia "
 msgstr ""
 
 #: ../gui/pg3__anagrafica_stoccaggi_articoli_elements.glade.h:20
+#: ../gui/pg3__anagrafica_articoli_elements.glade.h:14
 #: ../gui/_anagrafica_articoli_detail.glade.h:49
 #: ../gui/_anagrafica_stoccaggi_articoli_elements.glade.h:20
 #: ../gui/_ricerca_semplice_articoli.glade.h:10
 #: ../gui/pg3__anagrafica_articoli_detail.glade.h:49
 #: ../gui/_ricerca_complessa_articoli.glade.h:12
-#: ../gui/pg3__ricerca_semplice_articoli.glade.h:10
-#: ../gui/pg3__anagrafica_articoli_elements.glade.h:14
 #: ../gui/_anagrafica_articoli_elements.glade.h:14
+#: ../gui/pg3__ricerca_semplice_articoli.glade.h:10
 msgid "Genere"
 msgstr ""
 
 #: ../gui/pg3__anagrafica_stoccaggi_articoli_elements.glade.h:21
+#: ../gui/pg3__anagrafica_articoli_elements.glade.h:15
 #: ../gui/_anagrafica_stoccaggi_articoli_elements.glade.h:21
 #: ../gui/_ricerca_semplice_articoli.glade.h:11
-#: ../gui/pg3__ricerca_semplice_articoli.glade.h:11
-#: ../gui/pg3__anagrafica_articoli_elements.glade.h:15
 #: ../gui/_anagrafica_articoli_elements.glade.h:15
+#: ../gui/pg3__ricerca_semplice_articoli.glade.h:11
 msgid "Gr Taglia"
 msgstr ""
 
 #: ../gui/pg3__anagrafica_stoccaggi_articoli_elements.glade.h:22
+#: ../gui/pg3__anagrafica_articoli_elements.glade.h:17
 #: ../gui/_anagrafica_stoccaggi_articoli_elements.glade.h:22
 #: ../gui/_ricerca_semplice_articoli.glade.h:12
-#: ../gui/pg3__ricerca_semplice_articoli.glade.h:12
-#: ../gui/pg3__anagrafica_articoli_elements.glade.h:17
 #: ../gui/_anagrafica_articoli_elements.glade.h:17
+#: ../gui/pg3__ricerca_semplice_articoli.glade.h:12
 msgid "Incl eliminati"
 msgstr ""
 
@@ -1915,18 +1866,19 @@ msgstr ""
 #: ../gui/duplicazione_documento.glade.h:6
 #: ../gui/_ricerca_semplice_movimenti.glade.h:8
 #: ../gui/pg3__ricerca_fornitori.glade.h:10
-#: ../gui/pg3__ricerca_semplice_documenti.glade.h:20
 #: ../gui/_ricerca_semplice_documenti.glade.h:20
 #: ../gui/_anagrafica_listini_elements.glade.h:45
 #: ../gui/_anagrafica_stoccaggi_articoli_elements.glade.h:24
 #: ../gui/_anagrafica_movimenti_elements.glade.h:23
 #: ../gui/multi_dialog.glade.h:3 ../gui/_ricerca_clienti.glade.h:11
-#: ../gui/pg3__anagrafica_listini_elements.glade.h:45
+#: ../gui/pg3__ricerca_semplice_documenti.glade.h:20
 #: ../gui/_anagrafica_noleggi_elements.glade.h:27
 #: ../gui/pg3__anagrafica_movimenti_elements.glade.h:23
-#: ../gui/pg3__ricerca_clienti.glade.h:11 ../gui/_ricerca_fornitori.glade.h:10
-#: ../gui/duplicazione_movimento.glade.h:5
+#: ../gui/pg3__ricerca_clienti.glade.h:11
 #: ../gui/pg3__ricerca_semplice_movimenti.glade.h:8
+#: ../gui/_ricerca_fornitori.glade.h:10
+#: ../gui/pg3__anagrafica_listini_elements.glade.h:45
+#: ../gui/duplicazione_movimento.glade.h:5
 #: ../promogest/modules/Inventario/gui/inventario_filter_table.glade.h:3
 #: ../promogest/modules/Statistiche/gui/statistiche_dialog.glade.h:10
 #: ../promogest/modules/Label/gui/pg3_label_dialog.glade.h:15
@@ -1939,26 +1891,26 @@ msgid "Magazzino"
 msgstr ""
 
 #: ../gui/pg3__anagrafica_stoccaggi_articoli_elements.glade.h:25
+#: ../gui/pg3__anagrafica_articoli_elements.glade.h:20
 #: ../gui/_anagrafica_articoli_detail.glade.h:71
 #: ../gui/_anagrafica_stoccaggi_articoli_elements.glade.h:25
 #: ../gui/_ricerca_semplice_articoli.glade.h:13
 #: ../gui/pg3__anagrafica_articoli_detail.glade.h:71
-#: ../gui/pg3__ricerca_semplice_articoli.glade.h:13
-#: ../gui/pg3__anagrafica_articoli_elements.glade.h:20
 #: ../gui/_anagrafica_articoli_elements.glade.h:20
+#: ../gui/pg3__ricerca_semplice_articoli.glade.h:13
 msgid "Modello"
 msgstr ""
 
 #: ../gui/pg3__anagrafica_stoccaggi_articoli_elements.glade.h:26
 #: ../gui/anagrafica_articoli_semplice_dialog.glade.h:11
+#: ../gui/pg3__anagrafica_articoli_elements.glade.h:21
 #: ../gui/_anagrafica_articoli_detail.glade.h:83
 #: ../gui/_anagrafica_stoccaggi_articoli_elements.glade.h:26
 #: ../gui/_ricerca_semplice_articoli.glade.h:14
 #: ../gui/pg3__anagrafica_articoli_detail.glade.h:83
 #: ../gui/_ricerca_complessa_articoli.glade.h:16
-#: ../gui/pg3__ricerca_semplice_articoli.glade.h:14
-#: ../gui/pg3__anagrafica_articoli_elements.glade.h:21
 #: ../gui/_anagrafica_articoli_elements.glade.h:21
+#: ../gui/pg3__ricerca_semplice_articoli.glade.h:14
 #: ../promogest/modules/GestioneNoleggio/gui/schedalavorazione_plugins.glade.h:14
 #: ../promogest/modules/Statistiche/gui/statistiche_dialog.glade.h:12
 #: ../promogest/modules/DistintaBase/gui/_distinta_base_plugins.glade.h:13
@@ -1972,16 +1924,16 @@ msgid "Scorta minima"
 msgstr ""
 
 #: ../gui/pg3__anagrafica_stoccaggi_articoli_elements.glade.h:29
-#: ../gui/pg3__ricerca_semplice_documenti.glade.h:26
 #: ../gui/_ricerca_semplice_documenti.glade.h:26
+#: ../gui/pg3__anagrafica_articoli_elements.glade.h:27
 #: ../gui/_anagrafica_articoli_detail.glade.h:106
 #: ../gui/_anagrafica_stoccaggi_articoli_elements.glade.h:29
+#: ../gui/pg3__ricerca_semplice_documenti.glade.h:26
 #: ../gui/_ricerca_semplice_articoli.glade.h:18
 #: ../gui/pg3__anagrafica_articoli_detail.glade.h:105
 #: ../gui/_ricerca_complessa_articoli.glade.h:22
-#: ../gui/pg3__ricerca_semplice_articoli.glade.h:18
-#: ../gui/pg3__anagrafica_articoli_elements.glade.h:27
 #: ../gui/_anagrafica_articoli_elements.glade.h:27
+#: ../gui/pg3__ricerca_semplice_articoli.glade.h:18
 #: ../promogest/modules/GestioneNoleggio/gui/schedalavorazione_plugins.glade.h:16
 #: ../promogest/modules/GestioneNoleggio/gui/SchedaLavorazione.glade.h:75
 #: ../promogest/modules/SchedaLavorazione/gui/SchedaLavorazione.glade.h:90
@@ -1990,32 +1942,32 @@ msgid "Stato"
 msgstr ""
 
 #: ../gui/pg3__anagrafica_stoccaggi_articoli_elements.glade.h:30
+#: ../gui/pg3__anagrafica_articoli_elements.glade.h:28
 #: ../gui/_anagrafica_stoccaggi_articoli_elements.glade.h:30
 #: ../gui/_ricerca_semplice_articoli.glade.h:19
-#: ../gui/pg3__ricerca_semplice_articoli.glade.h:19
-#: ../gui/pg3__anagrafica_articoli_elements.glade.h:28
 #: ../gui/_anagrafica_articoli_elements.glade.h:28
+#: ../gui/pg3__ricerca_semplice_articoli.glade.h:19
 msgid "T/C: Incl."
 msgstr ""
 
 #: ../gui/pg3__anagrafica_stoccaggi_articoli_elements.glade.h:31
+#: ../gui/pg3__anagrafica_articoli_elements.glade.h:29
 #: ../gui/_anagrafica_articoli_detail.glade.h:107
 #: ../gui/_anagrafica_stoccaggi_articoli_elements.glade.h:31
 #: ../gui/_ricerca_semplice_articoli.glade.h:20
 #: ../gui/pg3__anagrafica_articoli_detail.glade.h:106
 #: ../gui/_ricerca_complessa_articoli.glade.h:23
-#: ../gui/pg3__ricerca_semplice_articoli.glade.h:20
-#: ../gui/pg3__anagrafica_articoli_elements.glade.h:29
 #: ../gui/_anagrafica_articoli_elements.glade.h:29
+#: ../gui/pg3__ricerca_semplice_articoli.glade.h:20
 msgid "Taglia"
 msgstr ""
 
 #: ../gui/pg3__anagrafica_stoccaggi_articoli_elements.glade.h:32
+#: ../gui/pg3__anagrafica_articoli_elements.glade.h:30
 #: ../gui/_anagrafica_stoccaggi_articoli_elements.glade.h:32
 #: ../gui/_ricerca_semplice_articoli.glade.h:21
-#: ../gui/pg3__ricerca_semplice_articoli.glade.h:21
-#: ../gui/pg3__anagrafica_articoli_elements.glade.h:30
 #: ../gui/_anagrafica_articoli_elements.glade.h:30
+#: ../gui/pg3__ricerca_semplice_articoli.glade.h:21
 msgid "Taglia Colore"
 msgstr ""
 
@@ -2101,310 +2053,8 @@ msgstr ""
 msgid "FIXME"
 msgstr ""
 
-#: ../gui/anagrafica_azienda.glade.h:1
-#: ../gui/_anagrafica_aziende_elements.glade.h:1
-#: ../gui/pg3__anagrafica_banche_edit.glade.h:2
-#: ../gui/pg3_anagrafica_azienda.glade.h:1
-#: ../gui/_anagrafica_banche_elements.glade.h:1
-#: ../gui/_anagrafica_banche_edit.glade.h:2
-#: ../gui/pg3__anagrafica_banche_elements.glade.h:1
-msgid "ABI"
-msgstr ""
-
-#: ../gui/anagrafica_azienda.glade.h:2
-#: ../gui/_anagrafica_vettori_elements.glade.h:4
-#: ../gui/_anagrafica_clienti_elements.glade.h:23
-#: ../gui/pg3__anagrafica_magazzini_elements.glade.h:1
-#: ../gui/_anagrafica_aziende_elements.glade.h:3
-#: ../gui/_anagrafica_destinazioni_merce_elements.glade.h:1
-#: ../gui/pg3_anagrafica_azienda.glade.h:2
-#: ../gui/pg3__anagrafica_vettori_elements.glade.h:4
-#: ../gui/pg3__anagrafica_clienti_elements.glade.h:23
-#: ../gui/_anagrafica_fornitori_elements.glade.h:12
-#: ../gui/_anagrafica_magazzini_elements.glade.h:1
-#: ../gui/pg3__anagrafica_fornitori_elements.glade.h:12
-#: ../promogest/modules/GestioneNoleggio/gui/SchedaLavorazione.glade.h:22
-#: ../promogest/modules/SchedaLavorazione/gui/SchedaLavorazione.glade.h:29
-#: ../promogest/modules/Agenti/gui/pg3__anagrafica_agenti_elements.glade.h:1
-#: ../promogest/modules/Agenti/gui/_anagrafica_agenti_elements.glade.h:1
-msgid "C.A.P."
-msgstr ""
-
-#: ../gui/anagrafica_azienda.glade.h:3
-#: ../gui/_anagrafica_aziende_elements.glade.h:4
-#: ../gui/pg3__anagrafica_banche_edit.glade.h:5
-#: ../gui/pg3_anagrafica_azienda.glade.h:3
-#: ../gui/_anagrafica_banche_elements.glade.h:4
-#: ../gui/_anagrafica_banche_edit.glade.h:5
-#: ../gui/pg3__anagrafica_banche_elements.glade.h:4
-msgid "CAB"
-msgstr ""
-
-#: ../gui/anagrafica_azienda.glade.h:4
-#: ../gui/_anagrafica_aziende_elements.glade.h:5
-#: ../gui/pg3_anagrafica_azienda.glade.h:4
-#: ../gui/_anagrafica_banche_elements.glade.h:5
-#: ../gui/pg3__anagrafica_banche_elements.glade.h:5
-msgid "CIN"
-msgstr ""
-
-#: ../gui/anagrafica_azienda.glade.h:5
-#: ../gui/_anagrafica_aziende_elements.glade.h:6
-#: ../gui/pg3_anagrafica_azienda.glade.h:5
-msgid "Codice REA"
-msgstr ""
-
-#: ../gui/anagrafica_azienda.glade.h:6
-#: ../gui/_anagrafica_vettori_elements.glade.h:6
-#: ../gui/_anagrafica_clienti_elements.glade.h:30
-#: ../gui/pg3__ricerca_fornitori.glade.h:3
-#: ../gui/_anagrafica_aziende_elements.glade.h:7
-#: ../gui/pg3_anagrafica_azienda.glade.h:6
-#: ../gui/pg3__anagrafica_vettori_elements.glade.h:6
-#: ../gui/_ricerca_clienti.glade.h:3
-#: ../gui/pg3__anagrafica_clienti_elements.glade.h:30
-#: ../gui/_anagrafica_fornitori_elements.glade.h:16
-#: ../gui/pg3__ricerca_clienti.glade.h:3 ../gui/_ricerca_fornitori.glade.h:3
-#: ../gui/pg3__anagrafica_fornitori_elements.glade.h:16
-#: ../promogest/modules/Agenti/gui/pg3__anagrafica_agenti_elements.glade.h:3
-#: ../promogest/modules/Agenti/gui/_anagrafica_agenti_elements.glade.h:3
-msgid "Codice fiscale"
-msgstr ""
-
-#: ../gui/anagrafica_azienda.glade.h:7
-#: ../gui/pg3__anagrafica_magazzini_elements.glade.h:3
-#: ../gui/_anagrafica_aziende_elements.glade.h:8
-#: ../gui/pg3__anagrafica_banche_edit.glade.h:8
-#: ../gui/pg3_anagrafica_azienda.glade.h:7
-#: ../gui/_anagrafica_banche_edit.glade.h:8
-#: ../gui/_anagrafica_magazzini_elements.glade.h:3
-msgid "Contatti"
-msgstr ""
-
-#: ../gui/anagrafica_azienda.glade.h:10 ../gui/duplicazione_listino.glade.h:5
-#: ../gui/_anagrafica_variazioni_listini_elements.glade.h:10
-#: ../gui/pg3__anagrafica_magazzini_elements.glade.h:4
-#: ../gui/pg3__elenco_magazzini_elements.glade.h:4
-#: ../gui/_anagrafica_aziende_elements.glade.h:10
-#: ../gui/_anagrafica_destinazioni_merce_elements.glade.h:2
-#: ../gui/pg3__anagrafica_banche_edit.glade.h:9
-#: ../gui/pg3__ricerca_semplice_listini.glade.h:2
-#: ../gui/pg3_anagrafica_azienda.glade.h:10
-#: ../gui/pg3__anagrafica_pagamenti_elements.glade.h:2
-#: ../gui/_elenco_listini_elements.glade.h:15
-#: ../gui/_anagrafica_banche_elements.glade.h:6
-#: ../gui/_anagrafica_banche_edit.glade.h:9
-#: ../gui/pg3__elenco_listini_elements.glade.h:15
-#: ../gui/_elenco_magazzini_elements.glade.h:4
-#: ../gui/pg3__anagrafica_banche_elements.glade.h:6
-#: ../gui/_anagrafica_pagamenti_elements.glade.h:2
-#: ../gui/_anagrafica_magazzini_elements.glade.h:4
-#: ../gui/_ricerca_semplice_listini.glade.h:2
-#: ../promogest/modules/GestioneKit/gui/pg3_kit_master.glade.h:9
-#: ../promogest/modules/GestioneKit/gui/kit_master.glade.h:9
-#: ../promogest/modules/ADR/gui/pg3__anagrafica_gruppo_imballaggio_elements.glade.h:1
-#: ../promogest/modules/ADR/gui/_anagrafica_categorie_trasporto_elements.glade.h:3
-#: ../promogest/modules/ADR/gui/_anagrafica_codice_classificazione_elements.glade.h:1
-#: ../promogest/modules/ADR/gui/_anagrafica_classe_pericolo_elements.glade.h:1
-#: ../promogest/modules/ADR/gui/pg3__anagrafica_categorie_trasporto_elements.glade.h:3
-#: ../promogest/modules/ADR/gui/pg3__anagrafica_codice_classificazione_elements.glade.h:1
-#: ../promogest/modules/ADR/gui/_anagrafica_gruppo_imballaggio_elements.glade.h:1
-#: ../promogest/modules/ADR/gui/pg3__anagrafica_classe_pericolo_elements.glade.h:1
-#: ../promogest/modules/PrimaNota/gui/pg3__anagrafica_primanota_elements.glade.h:20
-#: ../promogest/modules/PrimaNota/gui/_anagrafica_primanota_elements.glade.h:20
-#: ../promogest/modules/Label/gui/pg3_label_dialog.glade.h:13
-#: ../promogest/modules/Label/gui/label_dialog.glade.h:13
-msgid "Denominazione"
-msgstr ""
-
-#: ../gui/anagrafica_azienda.glade.h:11
-#: ../gui/_anagrafica_aziende_elements.glade.h:12
-#: ../gui/pg3__anagrafica_banche_edit.glade.h:11
-#: ../gui/pg3_anagrafica_azienda.glade.h:11
-#: ../gui/_anagrafica_banche_elements.glade.h:8
-#: ../gui/_anagrafica_banche_edit.glade.h:11
-#: ../gui/pg3__anagrafica_banche_elements.glade.h:8
-msgid "IBAN"
-msgstr ""
-
-#: ../gui/anagrafica_azienda.glade.h:12
-#: ../gui/_anagrafica_vettori_elements.glade.h:10
-#: ../gui/_anagrafica_clienti_elements.glade.h:48
-#: ../gui/pg3__ricerca_fornitori.glade.h:6
-#: ../gui/pg3__anagrafica_magazzini_elements.glade.h:5
-#: ../gui/_anagrafica_aziende_elements.glade.h:13
-#: ../gui/_anagrafica_destinazioni_merce_elements.glade.h:3
-#: ../gui/pg3_anagrafica_azienda.glade.h:12
-#: ../gui/pg3__anagrafica_vettori_elements.glade.h:10
-#: ../gui/_ricerca_clienti.glade.h:6
-#: ../gui/pg3__anagrafica_clienti_elements.glade.h:48
-#: ../gui/_anagrafica_fornitori_elements.glade.h:26
-#: ../gui/pg3__ricerca_clienti.glade.h:6 ../gui/_ricerca_fornitori.glade.h:6
-#: ../gui/_anagrafica_magazzini_elements.glade.h:5
-#: ../gui/pg3__anagrafica_fornitori_elements.glade.h:26
-#: ../promogest/modules/Agenti/gui/pg3__anagrafica_agenti_elements.glade.h:7
-#: ../promogest/modules/Agenti/gui/_anagrafica_agenti_elements.glade.h:7
-msgid "Indirizzo"
-msgstr ""
-
-#: ../gui/anagrafica_azienda.glade.h:13
-#: ../gui/_anagrafica_aziende_elements.glade.h:14
-#: ../gui/pg3_anagrafica_azienda.glade.h:13
-msgid "Iscrizione CCIAA"
-msgstr ""
-
-#: ../gui/anagrafica_azienda.glade.h:14
-#: ../gui/_anagrafica_aziende_elements.glade.h:15
-#: ../gui/pg3_anagrafica_azienda.glade.h:14
-msgid "Iscrizione Tribunale"
-msgstr ""
-
-#: ../gui/anagrafica_azienda.glade.h:15
-#: ../gui/pg3_anagrafica_azienda.glade.h:15
-msgid ""
-"La dimensione del logo consigliata è di \n"
-"circa 350 X 70 px \n"
-"oppure 258x66pt\n"
-"Più o meno come il bordo che contiene\n"
-"l'anteprima qui di fianco"
-msgstr ""
-
-#: ../gui/anagrafica_azienda.glade.h:20
-#: ../gui/_anagrafica_vettori_elements.glade.h:12
-#: ../gui/_anagrafica_clienti_elements.glade.h:76
-#: ../gui/pg3__ricerca_fornitori.glade.h:8
-#: ../gui/_anagrafica_aziende_elements.glade.h:16
-#: ../gui/_anagrafica_destinazioni_merce_elements.glade.h:4
-#: ../gui/pg3_anagrafica_azienda.glade.h:20
-#: ../gui/pg3__anagrafica_vettori_elements.glade.h:12
-#: ../gui/_ricerca_clienti.glade.h:9
-#: ../gui/pg3__anagrafica_clienti_elements.glade.h:76
-#: ../gui/_anagrafica_fornitori_elements.glade.h:28
-#: ../gui/pg3__ricerca_clienti.glade.h:9 ../gui/_ricerca_fornitori.glade.h:8
-#: ../gui/pg3__anagrafica_fornitori_elements.glade.h:28
-#: ../promogest/modules/Agenti/gui/pg3__anagrafica_agenti_elements.glade.h:9
-#: ../promogest/modules/Agenti/gui/_anagrafica_agenti_elements.glade.h:9
-msgid "Localita'"
-msgstr ""
-
-#: ../gui/anagrafica_azienda.glade.h:21
-#: ../gui/_anagrafica_aziende_elements.glade.h:17
-#: ../gui/pg3_anagrafica_azienda.glade.h:21
-msgid "Logo"
-msgstr ""
-
-#: ../gui/anagrafica_azienda.glade.h:22
-#: ../gui/_anagrafica_aziende_elements.glade.h:18
-#: ../gui/pg3_anagrafica_azienda.glade.h:22
-msgid "Matricola INPS"
-msgstr ""
-
-#: ../gui/anagrafica_azienda.glade.h:24
-#: ../gui/_anagrafica_aziende_elements.glade.h:21
-#: ../gui/pg3_anagrafica_azienda.glade.h:24
-msgid "Numero conto"
-msgstr ""
-
-#: ../gui/anagrafica_azienda.glade.h:25
-#: ../gui/_anagrafica_vettori_elements.glade.h:15
-#: ../gui/_anagrafica_clienti_elements.glade.h:83
-#: ../gui/pg3__ricerca_fornitori.glade.h:12
-#: ../gui/_anagrafica_aziende_elements.glade.h:22
-#: ../gui/pg3_anagrafica_azienda.glade.h:25
-#: ../gui/pg3__anagrafica_vettori_elements.glade.h:15
-#: ../gui/_ricerca_clienti.glade.h:13
-#: ../gui/pg3__anagrafica_clienti_elements.glade.h:83
-#: ../gui/_anagrafica_fornitori_elements.glade.h:35
-#: ../gui/pg3__ricerca_clienti.glade.h:13 ../gui/_ricerca_fornitori.glade.h:12
-#: ../gui/pg3__anagrafica_fornitori_elements.glade.h:35
-#: ../promogest/modules/Agenti/gui/pg3__anagrafica_agenti_elements.glade.h:12
-#: ../promogest/modules/Agenti/gui/_anagrafica_agenti_elements.glade.h:12
-msgid "Partita I.V.A."
-msgstr ""
-
-#: ../gui/anagrafica_azienda.glade.h:26
-#: ../gui/_anagrafica_vettori_elements.glade.h:17
-#: ../gui/_anagrafica_clienti_elements.glade.h:85
-#: ../gui/pg3__anagrafica_magazzini_elements.glade.h:7
-#: ../gui/_anagrafica_aziende_elements.glade.h:23
-#: ../gui/_anagrafica_destinazioni_merce_elements.glade.h:6
-#: ../gui/pg3_anagrafica_azienda.glade.h:26
-#: ../gui/pg3__anagrafica_vettori_elements.glade.h:17
-#: ../gui/_ricerca_clienti.glade.h:16
-#: ../gui/pg3__anagrafica_clienti_elements.glade.h:85
-#: ../gui/_anagrafica_fornitori_elements.glade.h:37
-#: ../gui/pg3__ricerca_clienti.glade.h:16
-#: ../gui/_anagrafica_magazzini_elements.glade.h:7
-#: ../gui/pg3__anagrafica_fornitori_elements.glade.h:37
-#: ../promogest/modules/GestioneNoleggio/gui/SchedaLavorazione.glade.h:66
-#: ../promogest/modules/SchedaLavorazione/gui/SchedaLavorazione.glade.h:79
-#: ../promogest/modules/Agenti/gui/pg3__anagrafica_agenti_elements.glade.h:16
-#: ../promogest/modules/Agenti/gui/_anagrafica_agenti_elements.glade.h:16
-msgid "Provincia"
-msgstr ""
-
-#: ../gui/anagrafica_azienda.glade.h:27
-#: ../gui/_anagrafica_vettori_elements.glade.h:18
-#: ../gui/pg3__ricerca_fornitori.glade.h:15
-#: ../gui/_anagrafica_aziende_elements.glade.h:24
-#: ../gui/pg3_anagrafica_azienda.glade.h:27
-#: ../gui/pg3__anagrafica_vettori_elements.glade.h:18
-#: ../gui/_ricerca_clienti.glade.h:17 ../gui/pg3__ricerca_clienti.glade.h:17
-#: ../gui/_ricerca_fornitori.glade.h:15
-#: ../promogest/modules/Agenti/gui/pg3__anagrafica_agenti_elements.glade.h:17
-#: ../promogest/modules/Agenti/gui/_anagrafica_agenti_elements.glade.h:17
-msgid "Ragione Sociale"
-msgstr ""
-
-#: ../gui/anagrafica_azienda.glade.h:28
-#: ../gui/_anagrafica_vettori_elements.glade.h:19
-#: ../gui/_anagrafica_aziende_elements.glade.h:25
-#: ../gui/pg3_anagrafica_azienda.glade.h:28
-#: ../gui/pg3__anagrafica_vettori_elements.glade.h:19
-#: ../gui/_anagrafica_fornitori_elements.glade.h:39
-#: ../gui/pg3__anagrafica_fornitori_elements.glade.h:39
-msgid "Sede legale"
-msgstr ""
-
-#: ../gui/anagrafica_azienda.glade.h:29
-#: ../gui/_anagrafica_vettori_elements.glade.h:20
-#: ../gui/_anagrafica_clienti_elements.glade.h:96
-#: ../gui/_anagrafica_aziende_elements.glade.h:26
-#: ../gui/pg3_anagrafica_azienda.glade.h:29
-#: ../gui/pg3__anagrafica_vettori_elements.glade.h:20
-#: ../gui/pg3__anagrafica_clienti_elements.glade.h:96
-#: ../gui/_anagrafica_fornitori_elements.glade.h:40
-#: ../gui/pg3__anagrafica_fornitori_elements.glade.h:40
-msgid "Sede operativa"
-msgstr ""
-
-#: ../gui/anagrafica_azienda.glade.h:30
-#: ../gui/pg3_anagrafica_azienda.glade.h:30
-msgid "path_label"
-msgstr ""
-
-#: ../gui/anagrafica_azienda.glade.h:31
-#: ../gui/pg3_anagrafica_azienda.glade.h:31
-msgid "seleziona logo"
-msgstr ""
-
-#: ../gui/multi_linea_editor.glade.h:1
-msgid "Finestra di inserimento multilinea"
-msgstr ""
-
-#: ../gui/multi_linea_editor.glade.h:2
-msgid "Inserire un testo su pi&#xF9; righe"
-msgstr ""
-
-#: ../gui/multi_linea_editor.glade.h:3
-msgid "Multi linea edit"
-msgstr ""
-
-#: ../gui/multi_linea_editor.glade.h:4
-#: ../promogest/modules/GestioneImmagini/gui/tastierino_dialog.glade.h:12
-#: ../promogest/modules/VenditaDettaglio/gui/tastierino_dialog.glade.h:12
-#: ../promogest/modules/VenditaDettaglio/gui/pg3_tastierino_dialog.glade.h:12
-msgid "OK"
+#: ../gui/setconf_ui.glade.h:1 ../gui/pg3_setconf_ui.glade.h:1
+msgid "SETUP PromoGest2"
 msgstr ""
 
 #: ../gui/azioni_veloce_notebook.glade.h:1
@@ -2415,14 +2065,15 @@ msgstr ""
 #: ../gui/azioni_veloce_notebook.glade.h:3
 #: ../gui/duplicazione_documento.glade.h:2
 #: ../gui/_ricerca_semplice_movimenti.glade.h:4
-#: ../gui/pg3__ricerca_semplice_documenti.glade.h:10
 #: ../gui/pg3__anagrafica_banche_edit.glade.h:7
 #: ../gui/_ricerca_semplice_documenti.glade.h:10
 #: ../gui/pg3_azioni_veloce_notebook.glade.h:3
 #: ../gui/_anagrafica_banche_edit.glade.h:7 ../gui/news_notebook.glade.h:4
+#: ../gui/pg3__ricerca_semplice_documenti.glade.h:10
 #: ../gui/_anagrafica_noleggi_elements.glade.h:10
-#: ../gui/pg3_news_notebook.glade.h:4 ../gui/duplicazione_movimento.glade.h:2
+#: ../gui/pg3_news_notebook.glade.h:4
 #: ../gui/pg3__ricerca_semplice_movimenti.glade.h:4
+#: ../gui/duplicazione_movimento.glade.h:2
 #: ../promogest/modules/Statistiche/gui/statistiche_dialog.glade.h:6
 #: ../promogest/modules/GestioneCommesse/gui/_anagrafica_commessa_elements.glade.h:9
 #: ../promogest/modules/GestioneCommesse/gui/pg3__anagrafica_commessa_elements.glade.h:9
@@ -2480,17 +2131,17 @@ msgstr ""
 #: ../gui/azioni_veloce_notebook.glade.h:11
 #: ../gui/_ricerca_semplice_movimenti.glade.h:7
 #: ../gui/_anagrafica_fornitura_articoli_elements.glade.h:12
-#: ../gui/pg3__ricerca_semplice_documenti.glade.h:17
 #: ../gui/anagrafica_forniture_filter_table.glade.h:7
 #: ../gui/pg3__anagrafica_banche_edit.glade.h:10
 #: ../gui/_ricerca_semplice_documenti.glade.h:17
 #: ../gui/_ricerca_forniture.glade.h:7
+#: ../gui/pg3_anagrafica_forniture_filter_table.glade.h:7
 #: ../gui/pg3_azioni_veloce_notebook.glade.h:11
 #: ../gui/pg3__anagrafica_fornitura_articoli_elements.glade.h:11
 #: ../gui/_anagrafica_banche_edit.glade.h:10 ../gui/news_notebook.glade.h:12
+#: ../gui/pg3__ricerca_semplice_documenti.glade.h:17
 #: ../gui/_anagrafica_noleggi_elements.glade.h:23
 #: ../gui/pg3_news_notebook.glade.h:12
-#: ../gui/pg3_anagrafica_forniture_filter_table.glade.h:7
 #: ../gui/pg3__ricerca_semplice_movimenti.glade.h:7
 #: ../promogest/modules/GestioneKit/gui/_anagrafica_kit_filter_elements.glade.h:7
 #: ../promogest/modules/GestioneKit/gui/_anagrafica_kit_elements.glade.h:7
@@ -2545,6 +2196,43 @@ msgstr ""
 
 #: ../gui/duplicazione_listino.glade.h:3
 msgid "Aggiungi variazione (+)"
+msgstr ""
+
+#: ../gui/duplicazione_listino.glade.h:5
+#: ../gui/_anagrafica_variazioni_listini_elements.glade.h:10
+#: ../gui/pg3__anagrafica_magazzini_elements.glade.h:4
+#: ../gui/pg3__elenco_magazzini_elements.glade.h:4
+#: ../gui/_anagrafica_aziende_elements.glade.h:10
+#: ../gui/_anagrafica_destinazioni_merce_elements.glade.h:2
+#: ../gui/pg3__anagrafica_banche_edit.glade.h:9
+#: ../gui/pg3__ricerca_semplice_listini.glade.h:2
+#: ../gui/pg3_anagrafica_azienda.glade.h:10
+#: ../gui/pg3__anagrafica_pagamenti_elements.glade.h:2
+#: ../gui/_elenco_listini_elements.glade.h:15
+#: ../gui/_anagrafica_banche_elements.glade.h:6
+#: ../gui/_anagrafica_banche_edit.glade.h:9
+#: ../gui/pg3__elenco_listini_elements.glade.h:15
+#: ../gui/_elenco_magazzini_elements.glade.h:4
+#: ../gui/pg3__anagrafica_banche_elements.glade.h:6
+#: ../gui/anagrafica_azienda.glade.h:10
+#: ../gui/_anagrafica_pagamenti_elements.glade.h:2
+#: ../gui/_anagrafica_magazzini_elements.glade.h:4
+#: ../gui/_ricerca_semplice_listini.glade.h:2
+#: ../promogest/modules/GestioneKit/gui/pg3_kit_master.glade.h:9
+#: ../promogest/modules/GestioneKit/gui/kit_master.glade.h:9
+#: ../promogest/modules/ADR/gui/pg3__anagrafica_gruppo_imballaggio_elements.glade.h:1
+#: ../promogest/modules/ADR/gui/_anagrafica_categorie_trasporto_elements.glade.h:3
+#: ../promogest/modules/ADR/gui/_anagrafica_codice_classificazione_elements.glade.h:1
+#: ../promogest/modules/ADR/gui/_anagrafica_classe_pericolo_elements.glade.h:1
+#: ../promogest/modules/ADR/gui/pg3__anagrafica_categorie_trasporto_elements.glade.h:3
+#: ../promogest/modules/ADR/gui/pg3__anagrafica_codice_classificazione_elements.glade.h:1
+#: ../promogest/modules/ADR/gui/_anagrafica_gruppo_imballaggio_elements.glade.h:1
+#: ../promogest/modules/ADR/gui/pg3__anagrafica_classe_pericolo_elements.glade.h:1
+#: ../promogest/modules/PrimaNota/gui/pg3__anagrafica_primanota_elements.glade.h:20
+#: ../promogest/modules/PrimaNota/gui/_anagrafica_primanota_elements.glade.h:20
+#: ../promogest/modules/Label/gui/pg3_label_dialog.glade.h:13
+#: ../promogest/modules/Label/gui/label_dialog.glade.h:13
+msgid "Denominazione"
 msgstr ""
 
 #: ../gui/duplicazione_listino.glade.h:7
@@ -2608,6 +2296,43 @@ msgstr ""
 msgid "Visualizzazione"
 msgstr ""
 
+#: ../gui/_anagrafica_categorie_articoli_elements.glade.h:1
+#: ../gui/pg3__anagrafica_categorie_articoli_elements.glade.h:1
+msgid "\"Seleziona, inserici o  modifica il campo desiderato \""
+msgstr ""
+
+#: ../gui/_anagrafica_categorie_articoli_elements.glade.h:3
+#: ../gui/_anagrafica_aliquote_iva_elements.glade.h:10
+#: ../gui/_anagrafica_multipli_elements.glade.h:3
+#: ../gui/pg3__anagrafica_famiglie_articoli_elements.glade.h:3
+#: ../gui/pg3__anagrafica_categorie_articoli_elements.glade.h:3
+#: ../gui/pg3__anagrafica_aliquote_iva_elements.glade.h:10
+#: ../gui/pg3__anagrafica_multipli_elements.glade.h:3
+#: ../gui/_anagrafica_famiglie_articoli_elements.glade.h:3
+msgid "Descrizione Breve"
+msgstr ""
+
+#: ../gui/_anagrafica_categorie_articoli_elements.glade.h:4
+#: ../gui/pg3__anagrafica_ccardtype_elements.glade.h:2
+#: ../gui/_anagrafica_multipli_elements.glade.h:4
+#: ../gui/pg3__anagrafica_famiglie_articoli_elements.glade.h:4
+#: ../gui/pg3__anagrafica_categorie_articoli_elements.glade.h:4
+#: ../gui/pg3__anagrafica_multipli_elements.glade.h:4
+#: ../gui/_anagrafica_famiglie_articoli_elements.glade.h:4
+#: ../gui/_anagrafica_ccardtype_elements.glade.h:2
+#: ../promogest/modules/PromoWear/gui/_anagrafica_taglie_elements.glade.h:2
+#: ../promogest/modules/PromoWear/gui/_anagrafica_gruppo_taglia_elements.glade.h:2
+#: ../promogest/modules/PromoWear/gui/pg3__anagrafica_colore_elements.glade.h:2
+#: ../promogest/modules/PromoWear/gui/pg3__anagrafica_modello_elements.glade.h:2
+#: ../promogest/modules/PromoWear/gui/pg3__anagrafica_taglie_elements.glade.h:2
+#: ../promogest/modules/PromoWear/gui/pg3__anagrafica_gruppo_taglia_elements.glade.h:2
+#: ../promogest/modules/PromoWear/gui/_anagrafica_modello_elements.glade.h:2
+#: ../promogest/modules/PromoWear/gui/_anagrafica_colore_elements.glade.h:2
+#: ../promogest/modules/VenditaDettaglio/gui/pg3__anagrafica_pos_elements.glade.h:2
+#: ../promogest/modules/VenditaDettaglio/gui/_anagrafica_pos_elements.glade.h:2
+msgid "Descrizione breve"
+msgstr ""
+
 #: ../gui/_ricerca_semplice_movimenti.glade.h:2
 #: ../gui/_anagrafica_noleggi_elements.glade.h:5
 #: ../gui/pg3__ricerca_semplice_movimenti.glade.h:2
@@ -2648,8 +2373,8 @@ msgid "Aliquota IVA"
 msgstr ""
 
 #: ../gui/anagrafica_articoli_semplice_dialog.glade.h:6
-#: ../gui/_ricerca_complessa_articoli.glade.h:11
 #: ../gui/pg3__anagrafica_articoli_elements.glade.h:13
+#: ../gui/_ricerca_complessa_articoli.glade.h:11
 #: ../gui/_anagrafica_articoli_elements.glade.h:13
 #: ../promogest/modules/GestioneNoleggio/gui/schedalavorazione_plugins.glade.h:13
 #: ../promogest/modules/DistintaBase/gui/_distinta_base_plugins.glade.h:12
@@ -2681,11 +2406,11 @@ msgstr ""
 
 #: ../gui/_anagrafica_fornitura_articoli_elements.glade.h:7
 #: ../gui/anagrafica_forniture_filter_table.glade.h:4
+#: ../gui/pg3__anagrafica_articoli_elements.glade.h:9
 #: ../gui/_ricerca_forniture.glade.h:4
+#: ../gui/pg3_anagrafica_forniture_filter_table.glade.h:4
 #: ../gui/pg3__anagrafica_fornitura_articoli_elements.glade.h:7
 #: ../gui/_ricerca_complessa_articoli.glade.h:8
-#: ../gui/pg3__anagrafica_articoli_elements.glade.h:9
-#: ../gui/pg3_anagrafica_forniture_filter_table.glade.h:4
 #: ../gui/_anagrafica_articoli_elements.glade.h:9
 #: ../promogest/modules/GestioneKit/gui/_anagrafica_kit_filter_elements.glade.h:4
 #: ../promogest/modules/GestioneKit/gui/_anagrafica_kit_elements.glade.h:4
@@ -2744,6 +2469,42 @@ msgid ""
 "Cognome Nome</b>"
 msgstr ""
 
+#: ../gui/_anagrafica_vettori_elements.glade.h:4
+#: ../gui/_anagrafica_clienti_elements.glade.h:23
+#: ../gui/pg3__anagrafica_magazzini_elements.glade.h:1
+#: ../gui/_anagrafica_aziende_elements.glade.h:3
+#: ../gui/_anagrafica_destinazioni_merce_elements.glade.h:1
+#: ../gui/pg3_anagrafica_azienda.glade.h:2
+#: ../gui/pg3__anagrafica_vettori_elements.glade.h:4
+#: ../gui/pg3__anagrafica_clienti_elements.glade.h:23
+#: ../gui/_anagrafica_fornitori_elements.glade.h:12
+#: ../gui/anagrafica_azienda.glade.h:2
+#: ../gui/_anagrafica_magazzini_elements.glade.h:1
+#: ../gui/pg3__anagrafica_fornitori_elements.glade.h:12
+#: ../promogest/modules/GestioneNoleggio/gui/SchedaLavorazione.glade.h:22
+#: ../promogest/modules/SchedaLavorazione/gui/SchedaLavorazione.glade.h:29
+#: ../promogest/modules/Agenti/gui/pg3__anagrafica_agenti_elements.glade.h:1
+#: ../promogest/modules/Agenti/gui/_anagrafica_agenti_elements.glade.h:1
+msgid "C.A.P."
+msgstr ""
+
+#: ../gui/_anagrafica_vettori_elements.glade.h:6
+#: ../gui/_anagrafica_clienti_elements.glade.h:30
+#: ../gui/pg3__ricerca_fornitori.glade.h:3
+#: ../gui/_anagrafica_aziende_elements.glade.h:7
+#: ../gui/pg3_anagrafica_azienda.glade.h:6
+#: ../gui/pg3__anagrafica_vettori_elements.glade.h:6
+#: ../gui/_ricerca_clienti.glade.h:3
+#: ../gui/pg3__anagrafica_clienti_elements.glade.h:30
+#: ../gui/_anagrafica_fornitori_elements.glade.h:16
+#: ../gui/anagrafica_azienda.glade.h:6 ../gui/pg3__ricerca_clienti.glade.h:3
+#: ../gui/_ricerca_fornitori.glade.h:3
+#: ../gui/pg3__anagrafica_fornitori_elements.glade.h:16
+#: ../promogest/modules/Agenti/gui/pg3__anagrafica_agenti_elements.glade.h:3
+#: ../promogest/modules/Agenti/gui/_anagrafica_agenti_elements.glade.h:3
+msgid "Codice fiscale"
+msgstr ""
+
 #: ../gui/_anagrafica_vettori_elements.glade.h:7
 #: ../gui/pg3__anagrafica_vettori_elements.glade.h:7
 #: ../gui/_anagrafica_fornitori_elements.glade.h:17
@@ -2777,6 +2538,26 @@ msgstr ""
 msgid "Cognome e nome"
 msgstr ""
 
+#: ../gui/_anagrafica_vettori_elements.glade.h:10
+#: ../gui/_anagrafica_clienti_elements.glade.h:48
+#: ../gui/pg3__ricerca_fornitori.glade.h:6
+#: ../gui/pg3__anagrafica_magazzini_elements.glade.h:5
+#: ../gui/_anagrafica_aziende_elements.glade.h:13
+#: ../gui/_anagrafica_destinazioni_merce_elements.glade.h:3
+#: ../gui/pg3_anagrafica_azienda.glade.h:12
+#: ../gui/pg3__anagrafica_vettori_elements.glade.h:10
+#: ../gui/_ricerca_clienti.glade.h:6
+#: ../gui/pg3__anagrafica_clienti_elements.glade.h:48
+#: ../gui/_anagrafica_fornitori_elements.glade.h:26
+#: ../gui/anagrafica_azienda.glade.h:12 ../gui/pg3__ricerca_clienti.glade.h:6
+#: ../gui/_ricerca_fornitori.glade.h:6
+#: ../gui/_anagrafica_magazzini_elements.glade.h:5
+#: ../gui/pg3__anagrafica_fornitori_elements.glade.h:26
+#: ../promogest/modules/Agenti/gui/pg3__anagrafica_agenti_elements.glade.h:7
+#: ../promogest/modules/Agenti/gui/_anagrafica_agenti_elements.glade.h:7
+msgid "Indirizzo"
+msgstr ""
+
 #: ../gui/_anagrafica_vettori_elements.glade.h:11
 #: ../gui/pg3__ricerca_fornitori.glade.h:7
 #: ../gui/pg3__anagrafica_vettori_elements.glade.h:11
@@ -2787,6 +2568,24 @@ msgstr ""
 #: ../promogest/modules/Agenti/gui/pg3__anagrafica_agenti_elements.glade.h:8
 #: ../promogest/modules/Agenti/gui/_anagrafica_agenti_elements.glade.h:8
 msgid "Insegna"
+msgstr ""
+
+#: ../gui/_anagrafica_vettori_elements.glade.h:12
+#: ../gui/_anagrafica_clienti_elements.glade.h:76
+#: ../gui/pg3__ricerca_fornitori.glade.h:8
+#: ../gui/_anagrafica_aziende_elements.glade.h:16
+#: ../gui/_anagrafica_destinazioni_merce_elements.glade.h:4
+#: ../gui/pg3_anagrafica_azienda.glade.h:20
+#: ../gui/pg3__anagrafica_vettori_elements.glade.h:12
+#: ../gui/_ricerca_clienti.glade.h:9
+#: ../gui/pg3__anagrafica_clienti_elements.glade.h:76
+#: ../gui/_anagrafica_fornitori_elements.glade.h:28
+#: ../gui/anagrafica_azienda.glade.h:20 ../gui/pg3__ricerca_clienti.glade.h:9
+#: ../gui/_ricerca_fornitori.glade.h:8
+#: ../gui/pg3__anagrafica_fornitori_elements.glade.h:28
+#: ../promogest/modules/Agenti/gui/pg3__anagrafica_agenti_elements.glade.h:9
+#: ../promogest/modules/Agenti/gui/_anagrafica_agenti_elements.glade.h:9
+msgid "Localita'"
 msgstr ""
 
 #: ../gui/_anagrafica_vettori_elements.glade.h:13
@@ -2818,6 +2617,23 @@ msgstr ""
 msgid "Nome"
 msgstr ""
 
+#: ../gui/_anagrafica_vettori_elements.glade.h:15
+#: ../gui/_anagrafica_clienti_elements.glade.h:83
+#: ../gui/pg3__ricerca_fornitori.glade.h:12
+#: ../gui/_anagrafica_aziende_elements.glade.h:22
+#: ../gui/pg3_anagrafica_azienda.glade.h:25
+#: ../gui/pg3__anagrafica_vettori_elements.glade.h:15
+#: ../gui/_ricerca_clienti.glade.h:13
+#: ../gui/pg3__anagrafica_clienti_elements.glade.h:83
+#: ../gui/_anagrafica_fornitori_elements.glade.h:35
+#: ../gui/anagrafica_azienda.glade.h:25 ../gui/pg3__ricerca_clienti.glade.h:13
+#: ../gui/_ricerca_fornitori.glade.h:12
+#: ../gui/pg3__anagrafica_fornitori_elements.glade.h:35
+#: ../promogest/modules/Agenti/gui/pg3__anagrafica_agenti_elements.glade.h:12
+#: ../promogest/modules/Agenti/gui/_anagrafica_agenti_elements.glade.h:12
+msgid "Partita I.V.A."
+msgstr ""
+
 #: ../gui/_anagrafica_vettori_elements.glade.h:16
 #: ../gui/pg3__ricerca_fornitori.glade.h:13
 #: ../gui/pg3__anagrafica_vettori_elements.glade.h:16
@@ -2826,6 +2642,60 @@ msgstr ""
 #: ../promogest/modules/Agenti/gui/pg3__anagrafica_agenti_elements.glade.h:13
 #: ../promogest/modules/Agenti/gui/_anagrafica_agenti_elements.glade.h:13
 msgid "Partita IVA / C.F."
+msgstr ""
+
+#: ../gui/_anagrafica_vettori_elements.glade.h:17
+#: ../gui/_anagrafica_clienti_elements.glade.h:85
+#: ../gui/pg3__anagrafica_magazzini_elements.glade.h:7
+#: ../gui/_anagrafica_aziende_elements.glade.h:23
+#: ../gui/_anagrafica_destinazioni_merce_elements.glade.h:6
+#: ../gui/pg3_anagrafica_azienda.glade.h:26
+#: ../gui/pg3__anagrafica_vettori_elements.glade.h:17
+#: ../gui/_ricerca_clienti.glade.h:16
+#: ../gui/pg3__anagrafica_clienti_elements.glade.h:85
+#: ../gui/_anagrafica_fornitori_elements.glade.h:37
+#: ../gui/anagrafica_azienda.glade.h:26 ../gui/pg3__ricerca_clienti.glade.h:16
+#: ../gui/_anagrafica_magazzini_elements.glade.h:7
+#: ../gui/pg3__anagrafica_fornitori_elements.glade.h:37
+#: ../promogest/modules/GestioneNoleggio/gui/SchedaLavorazione.glade.h:66
+#: ../promogest/modules/SchedaLavorazione/gui/SchedaLavorazione.glade.h:79
+#: ../promogest/modules/Agenti/gui/pg3__anagrafica_agenti_elements.glade.h:16
+#: ../promogest/modules/Agenti/gui/_anagrafica_agenti_elements.glade.h:16
+msgid "Provincia"
+msgstr ""
+
+#: ../gui/_anagrafica_vettori_elements.glade.h:18
+#: ../gui/pg3__ricerca_fornitori.glade.h:15
+#: ../gui/_anagrafica_aziende_elements.glade.h:24
+#: ../gui/pg3_anagrafica_azienda.glade.h:27
+#: ../gui/pg3__anagrafica_vettori_elements.glade.h:18
+#: ../gui/_ricerca_clienti.glade.h:17 ../gui/anagrafica_azienda.glade.h:27
+#: ../gui/pg3__ricerca_clienti.glade.h:17 ../gui/_ricerca_fornitori.glade.h:15
+#: ../promogest/modules/Agenti/gui/pg3__anagrafica_agenti_elements.glade.h:17
+#: ../promogest/modules/Agenti/gui/_anagrafica_agenti_elements.glade.h:17
+msgid "Ragione Sociale"
+msgstr ""
+
+#: ../gui/_anagrafica_vettori_elements.glade.h:19
+#: ../gui/_anagrafica_aziende_elements.glade.h:25
+#: ../gui/pg3_anagrafica_azienda.glade.h:28
+#: ../gui/pg3__anagrafica_vettori_elements.glade.h:19
+#: ../gui/_anagrafica_fornitori_elements.glade.h:39
+#: ../gui/anagrafica_azienda.glade.h:28
+#: ../gui/pg3__anagrafica_fornitori_elements.glade.h:39
+msgid "Sede legale"
+msgstr ""
+
+#: ../gui/_anagrafica_vettori_elements.glade.h:20
+#: ../gui/_anagrafica_clienti_elements.glade.h:96
+#: ../gui/_anagrafica_aziende_elements.glade.h:26
+#: ../gui/pg3_anagrafica_azienda.glade.h:29
+#: ../gui/pg3__anagrafica_vettori_elements.glade.h:20
+#: ../gui/pg3__anagrafica_clienti_elements.glade.h:96
+#: ../gui/_anagrafica_fornitori_elements.glade.h:40
+#: ../gui/anagrafica_azienda.glade.h:29
+#: ../gui/pg3__anagrafica_fornitori_elements.glade.h:40
+msgid "Sede operativa"
 msgstr ""
 
 #: ../gui/_anagrafica_clienti_elements.glade.h:1
@@ -3170,10 +3040,11 @@ msgstr ""
 msgid "Ragione sociale"
 msgstr ""
 
-#: ../gui/pg3__ricerca_fornitori.glade.h:17 ../gui/_ricerca_clienti.glade.h:19
+#: ../gui/pg3__ricerca_fornitori.glade.h:17
+#: ../gui/pg3__anagrafica_articoli_elements.glade.h:22
+#: ../gui/_ricerca_clienti.glade.h:19
 #: ../gui/_ricerca_complessa_articoli.glade.h:17
 #: ../gui/pg3__ricerca_clienti.glade.h:19 ../gui/_ricerca_fornitori.glade.h:17
-#: ../gui/pg3__anagrafica_articoli_elements.glade.h:22
 #: ../gui/_anagrafica_articoli_elements.glade.h:22
 msgid "Riepilogo"
 msgstr ""
@@ -3184,28 +3055,28 @@ msgid "Vai a Ricerca Complessa Multipla"
 msgstr ""
 
 #: ../gui/pg3__ricerca_fornitori.glade.h:19
+#: ../gui/pg3__anagrafica_articoli_elements.glade.h:34
 #: ../gui/_ricerca_complessa_articoli.glade.h:26
 #: ../gui/_ricerca_fornitori.glade.h:19
-#: ../gui/pg3__anagrafica_articoli_elements.glade.h:34
 #: ../gui/_anagrafica_articoli_elements.glade.h:34
 msgid "Vai a Ricerca Semplice Singola"
 msgstr ""
 
-#: ../gui/anagrafica_window.glade.h:1 ../gui/pg3__filter_elements.glade.h:1
-#: ../gui/_filter_elements.glade.h:1
+#: ../gui/anagrafica_window.glade.h:1 ../gui/_filter_elements.glade.h:1
+#: ../gui/pg3__filter_elements.glade.h:1
 msgid " /"
 msgstr ""
 
-#: ../gui/anagrafica_window.glade.h:2 ../gui/pg3__filter_elements.glade.h:3
-#: ../gui/_filter_elements.glade.h:3
+#: ../gui/anagrafica_window.glade.h:2 ../gui/_filter_elements.glade.h:3
+#: ../gui/pg3__filter_elements.glade.h:3
 #: ../promogest/modules/GestioneImmagini/gui/tastierino_dialog.glade.h:2
 #: ../promogest/modules/VenditaDettaglio/gui/tastierino_dialog.glade.h:2
 #: ../promogest/modules/VenditaDettaglio/gui/pg3_tastierino_dialog.glade.h:2
 msgid "1"
 msgstr ""
 
-#: ../gui/anagrafica_window.glade.h:3 ../gui/pg3__filter_elements.glade.h:4
-#: ../gui/_filter_elements.glade.h:4
+#: ../gui/anagrafica_window.glade.h:3 ../gui/_filter_elements.glade.h:4
+#: ../gui/pg3__filter_elements.glade.h:4
 #: ../promogest/modules/VenditaDettaglio/gui/vendita_dettaglio_window.glade.h:27
 #: ../promogest/modules/VenditaDettaglio/gui/pg3_vendita_dettaglio_window.glade.h:26
 msgid "<b>Ricerca</b>"
@@ -3226,8 +3097,8 @@ msgstr ""
 msgid "Nuovo"
 msgstr ""
 
-#: ../gui/anagrafica_window.glade.h:16 ../gui/pg3__filter_elements.glade.h:5
-#: ../gui/_filter_elements.glade.h:5
+#: ../gui/anagrafica_window.glade.h:16 ../gui/_filter_elements.glade.h:5
+#: ../gui/pg3__filter_elements.glade.h:5
 msgid "Pag. "
 msgstr ""
 
@@ -3473,6 +3344,16 @@ msgstr ""
 msgid "Codice PV"
 msgstr ""
 
+#: ../gui/pg3__anagrafica_magazzini_elements.glade.h:3
+#: ../gui/_anagrafica_aziende_elements.glade.h:8
+#: ../gui/pg3__anagrafica_banche_edit.glade.h:8
+#: ../gui/pg3_anagrafica_azienda.glade.h:7
+#: ../gui/_anagrafica_banche_edit.glade.h:8
+#: ../gui/anagrafica_azienda.glade.h:7
+#: ../gui/_anagrafica_magazzini_elements.glade.h:3
+msgid "Contatti"
+msgstr ""
+
 #: ../gui/pg3__elenco_magazzini_elements.glade.h:1
 #: ../gui/_elenco_magazzini_elements.glade.h:1
 msgid "<b>MAGAZZINI</b>"
@@ -3509,123 +3390,85 @@ msgid ""
 "Magazzino"
 msgstr ""
 
+#: ../gui/_anagrafica_aziende_elements.glade.h:1
+#: ../gui/pg3__anagrafica_banche_edit.glade.h:2
+#: ../gui/pg3_anagrafica_azienda.glade.h:1
+#: ../gui/_anagrafica_banche_elements.glade.h:1
+#: ../gui/_anagrafica_banche_edit.glade.h:2
+#: ../gui/pg3__anagrafica_banche_elements.glade.h:1
+#: ../gui/anagrafica_azienda.glade.h:1
+msgid "ABI"
+msgstr ""
+
 #: ../gui/_anagrafica_aziende_elements.glade.h:2
 msgid "Anagrafica aziende "
+msgstr ""
+
+#: ../gui/_anagrafica_aziende_elements.glade.h:4
+#: ../gui/pg3__anagrafica_banche_edit.glade.h:5
+#: ../gui/pg3_anagrafica_azienda.glade.h:3
+#: ../gui/_anagrafica_banche_elements.glade.h:4
+#: ../gui/_anagrafica_banche_edit.glade.h:5
+#: ../gui/pg3__anagrafica_banche_elements.glade.h:4
+#: ../gui/anagrafica_azienda.glade.h:3
+msgid "CAB"
+msgstr ""
+
+#: ../gui/_anagrafica_aziende_elements.glade.h:5
+#: ../gui/pg3_anagrafica_azienda.glade.h:4
+#: ../gui/_anagrafica_banche_elements.glade.h:5
+#: ../gui/pg3__anagrafica_banche_elements.glade.h:5
+#: ../gui/anagrafica_azienda.glade.h:4
+msgid "CIN"
+msgstr ""
+
+#: ../gui/_anagrafica_aziende_elements.glade.h:6
+#: ../gui/pg3_anagrafica_azienda.glade.h:5 ../gui/anagrafica_azienda.glade.h:5
+msgid "Codice REA"
+msgstr ""
+
+#: ../gui/_anagrafica_aziende_elements.glade.h:12
+#: ../gui/pg3__anagrafica_banche_edit.glade.h:11
+#: ../gui/pg3_anagrafica_azienda.glade.h:11
+#: ../gui/_anagrafica_banche_elements.glade.h:8
+#: ../gui/_anagrafica_banche_edit.glade.h:11
+#: ../gui/pg3__anagrafica_banche_elements.glade.h:8
+#: ../gui/anagrafica_azienda.glade.h:11
+msgid "IBAN"
+msgstr ""
+
+#: ../gui/_anagrafica_aziende_elements.glade.h:14
+#: ../gui/pg3_anagrafica_azienda.glade.h:13
+#: ../gui/anagrafica_azienda.glade.h:13
+msgid "Iscrizione CCIAA"
+msgstr ""
+
+#: ../gui/_anagrafica_aziende_elements.glade.h:15
+#: ../gui/pg3_anagrafica_azienda.glade.h:14
+#: ../gui/anagrafica_azienda.glade.h:14
+msgid "Iscrizione Tribunale"
+msgstr ""
+
+#: ../gui/_anagrafica_aziende_elements.glade.h:17
+#: ../gui/pg3_anagrafica_azienda.glade.h:21
+#: ../gui/anagrafica_azienda.glade.h:21
+msgid "Logo"
+msgstr ""
+
+#: ../gui/_anagrafica_aziende_elements.glade.h:18
+#: ../gui/pg3_anagrafica_azienda.glade.h:22
+#: ../gui/anagrafica_azienda.glade.h:22
+msgid "Matricola INPS"
 msgstr ""
 
 #: ../gui/_anagrafica_aziende_elements.glade.h:19
 msgid "Modifica dati azienda corrente"
 msgstr ""
 
-#: ../gui/pg3__ricerca_semplice_documenti.glade.h:1
-#: ../gui/_ricerca_semplice_documenti.glade.h:1
-msgid "<b>Filtri Gestione Noleggio</b>"
-msgstr ""
-
-#: ../gui/pg3__ricerca_semplice_documenti.glade.h:2
-#: ../gui/_ricerca_semplice_documenti.glade.h:2
-msgid "<b>Noleggio</b>"
-msgstr ""
-
-#: ../gui/pg3__ricerca_semplice_documenti.glade.h:3
-#: ../gui/_ricerca_semplice_documenti.glade.h:3
-msgid "<b>Solo Doc Contabili</b>"
-msgstr ""
-
-#: ../gui/pg3__ricerca_semplice_documenti.glade.h:4
-#: ../gui/_ricerca_semplice_documenti.glade.h:4
-msgid "A"
-msgstr ""
-
-#: ../gui/pg3__ricerca_semplice_documenti.glade.h:5
-#: ../gui/_ricerca_semplice_documenti.glade.h:5
-msgid "A data Fine Nol"
-msgstr ""
-
-#: ../gui/pg3__ricerca_semplice_documenti.glade.h:6
-#: ../gui/_ricerca_semplice_documenti.glade.h:6
-msgid "A data Inizio Nol."
-msgstr ""
-
-#: ../gui/pg3__ricerca_semplice_documenti.glade.h:8
-#: ../gui/_ricerca_semplice_documenti.glade.h:8
-#: ../promogest/modules/SchedaLavorazione/gui/SchedaLavorazione.glade.h:24
-msgid "Aperto"
-msgstr ""
-
-#: ../gui/pg3__ricerca_semplice_documenti.glade.h:11
-#: ../gui/_ricerca_semplice_documenti.glade.h:11
-msgid "Cliente / Fornitore"
-msgstr ""
-
-#: ../gui/pg3__ricerca_semplice_documenti.glade.h:12
-#: ../gui/_ricerca_semplice_documenti.glade.h:12
-msgid "Da"
-msgstr ""
-
-#: ../gui/pg3__ricerca_semplice_documenti.glade.h:14
-#: ../gui/_ricerca_semplice_documenti.glade.h:14
-msgid "DaData Fine Nol"
-msgstr ""
-
-#: ../gui/pg3__ricerca_semplice_documenti.glade.h:15
-#: ../gui/_ricerca_semplice_documenti.glade.h:15
-msgid "DaData Inizio Nol"
-msgstr ""
-
-#: ../gui/pg3__ricerca_semplice_documenti.glade.h:18
-#: ../gui/_ricerca_semplice_documenti.glade.h:18
-msgid "Imponibile"
-msgstr ""
-
-#: ../gui/pg3__ricerca_semplice_documenti.glade.h:19
-#: ../gui/_ricerca_semplice_documenti.glade.h:19
-msgid "Imposta"
-msgstr ""
-
-#: ../gui/pg3__ricerca_semplice_documenti.glade.h:21
-#: ../gui/_ricerca_semplice_documenti.glade.h:21
-#: ../gui/_anagrafica_movimenti_elements.glade.h:24
-#: ../gui/_anagrafica_noleggi_elements.glade.h:28
-#: ../gui/pg3__anagrafica_movimenti_elements.glade.h:24
-msgid "Note interne"
-msgstr ""
-
-#: ../gui/pg3__ricerca_semplice_documenti.glade.h:23
-#: ../gui/_ricerca_semplice_documenti.glade.h:23
-msgid "Rif. doc. Forn"
-msgstr ""
-
-#: ../gui/pg3__ricerca_semplice_documenti.glade.h:24
-#: ../gui/_ricerca_semplice_documenti.glade.h:24
-msgid "Rif.doc.Fornitore"
-msgstr ""
-
-#: ../gui/pg3__ricerca_semplice_documenti.glade.h:25
-#: ../gui/_ricerca_semplice_documenti.glade.h:25
-msgid "Saldato"
-msgstr ""
-
-#: ../gui/pg3__ricerca_semplice_documenti.glade.h:27
-#: ../gui/_ricerca_semplice_documenti.glade.h:27
-#: ../promogest/modules/PrimaNota/gui/pg3__anagrafica_primanota_elements.glade.h:36
-#: ../promogest/modules/PrimaNota/gui/_anagrafica_primanota_elements.glade.h:36
-#: ../promogest/modules/GestioneCommesse/gui/_anagrafica_commessa_elements.glade.h:29
-#: ../promogest/modules/GestioneCommesse/gui/pg3__anagrafica_commessa_elements.glade.h:29
-msgid "Tipo"
-msgstr ""
-
-#: ../gui/pg3__ricerca_semplice_documenti.glade.h:28
-#: ../gui/_ricerca_semplice_documenti.glade.h:28
-msgid "Tipo Documento"
-msgstr ""
-
-#: ../gui/pg3__ricerca_semplice_documenti.glade.h:30
-#: ../gui/_ricerca_semplice_documenti.glade.h:30
-#: ../promogest/modules/Inventario/gui/_inventario_select.glade.h:30
-#: ../promogest/modules/Statistiche/gui/statistiche_dialog.glade.h:13
-#: ../promogest/modules/SchedaLavorazione/gui/SchedaLavorazione.glade.h:96
-msgid "Tutti"
+#: ../gui/_anagrafica_aziende_elements.glade.h:21
+#: ../gui/pg3_anagrafica_azienda.glade.h:24
+#: ../gui/anagrafica_azienda.glade.h:24
+msgid "Numero conto"
 msgstr ""
 
 #: ../gui/pg3_dettaglio_giacenza_window.glade.h:1
@@ -3679,7 +3522,7 @@ msgid "Ricerca Articolo"
 msgstr ""
 
 #: ../gui/pg3_dettaglio_giacenza_window.glade.h:11
-#: ../gui/login_window.glade.h:12 ../gui/pg3_login_window.glade.h:12
+#: ../gui/login_window.glade.h:13 ../gui/pg3_login_window.glade.h:12
 #: ../gui/dettaglio_giacenza_window.glade.h:11
 #: ../promogest/modules/GestioneKit/gui/pg3_kit_master.glade.h:12
 #: ../promogest/modules/GestioneKit/gui/_anagrafica_kit_edit_elements.glade.h:2
@@ -3804,6 +3647,17 @@ msgstr ""
 msgid "Testo principale"
 msgstr ""
 
+#: ../gui/configura_window.glade.h:31
+#: ../gui/pg3__anagrafica_clienti_setup.glade.h:5
+#: ../gui/pg3_configura_window.glade.h:31
+#: ../gui/_anagrafica_fornitori_setup.glade.h:5
+#: ../gui/pg3__anagrafica_fornitori_setup.glade.h:5
+#: ../gui/_anagrafica_articoli_setup.glade.h:5
+#: ../gui/pg3__anagrafica_articoli_setup.glade.h:5
+#: ../gui/_anagrafica_clienti_setup.glade.h:5
+msgid "Trasforma il codice in MAIUSCOLO"
+msgstr ""
+
 #: ../gui/configura_window.glade.h:32 ../gui/pg3_configura_window.glade.h:32
 msgid "Valuta "
 msgstr ""
@@ -3820,8 +3674,8 @@ msgstr ""
 msgid "Finestra Calendario"
 msgstr ""
 
-#: ../gui/calendar.glade.h:7 ../gui/pg3__filter_elements.glade.h:7
-#: ../gui/_filter_elements.glade.h:7
+#: ../gui/calendar.glade.h:7 ../gui/_filter_elements.glade.h:7
+#: ../gui/pg3__filter_elements.glade.h:7
 msgid "button"
 msgstr ""
 
@@ -3927,9 +3781,203 @@ msgstr ""
 msgid "No"
 msgstr ""
 
+#: ../gui/_ricerca_semplice_documenti.glade.h:1
+#: ../gui/pg3__ricerca_semplice_documenti.glade.h:1
+msgid "<b>Filtri Gestione Noleggio</b>"
+msgstr ""
+
+#: ../gui/_ricerca_semplice_documenti.glade.h:2
+#: ../gui/pg3__ricerca_semplice_documenti.glade.h:2
+msgid "<b>Noleggio</b>"
+msgstr ""
+
+#: ../gui/_ricerca_semplice_documenti.glade.h:3
+#: ../gui/pg3__ricerca_semplice_documenti.glade.h:3
+msgid "<b>Solo Doc Contabili</b>"
+msgstr ""
+
+#: ../gui/_ricerca_semplice_documenti.glade.h:4
+#: ../gui/pg3__ricerca_semplice_documenti.glade.h:4
+msgid "A"
+msgstr ""
+
+#: ../gui/_ricerca_semplice_documenti.glade.h:5
+#: ../gui/pg3__ricerca_semplice_documenti.glade.h:5
+msgid "A data Fine Nol"
+msgstr ""
+
+#: ../gui/_ricerca_semplice_documenti.glade.h:6
+#: ../gui/pg3__ricerca_semplice_documenti.glade.h:6
+msgid "A data Inizio Nol."
+msgstr ""
+
+#: ../gui/_ricerca_semplice_documenti.glade.h:8
+#: ../gui/pg3__ricerca_semplice_documenti.glade.h:8
+#: ../promogest/modules/SchedaLavorazione/gui/SchedaLavorazione.glade.h:24
+msgid "Aperto"
+msgstr ""
+
+#: ../gui/_ricerca_semplice_documenti.glade.h:11
+#: ../gui/pg3__ricerca_semplice_documenti.glade.h:11
+msgid "Cliente / Fornitore"
+msgstr ""
+
+#: ../gui/_ricerca_semplice_documenti.glade.h:12
+#: ../gui/pg3__ricerca_semplice_documenti.glade.h:12
+msgid "Da"
+msgstr ""
+
+#: ../gui/_ricerca_semplice_documenti.glade.h:14
+#: ../gui/pg3__ricerca_semplice_documenti.glade.h:14
+msgid "DaData Fine Nol"
+msgstr ""
+
+#: ../gui/_ricerca_semplice_documenti.glade.h:15
+#: ../gui/pg3__ricerca_semplice_documenti.glade.h:15
+msgid "DaData Inizio Nol"
+msgstr ""
+
+#: ../gui/_ricerca_semplice_documenti.glade.h:18
+#: ../gui/pg3__ricerca_semplice_documenti.glade.h:18
+msgid "Imponibile"
+msgstr ""
+
+#: ../gui/_ricerca_semplice_documenti.glade.h:19
+#: ../gui/pg3__ricerca_semplice_documenti.glade.h:19
+msgid "Imposta"
+msgstr ""
+
+#: ../gui/_ricerca_semplice_documenti.glade.h:21
+#: ../gui/_anagrafica_movimenti_elements.glade.h:24
+#: ../gui/pg3__ricerca_semplice_documenti.glade.h:21
+#: ../gui/_anagrafica_noleggi_elements.glade.h:28
+#: ../gui/pg3__anagrafica_movimenti_elements.glade.h:24
+msgid "Note interne"
+msgstr ""
+
+#: ../gui/_ricerca_semplice_documenti.glade.h:23
+#: ../gui/pg3__ricerca_semplice_documenti.glade.h:23
+msgid "Rif. doc. Forn"
+msgstr ""
+
+#: ../gui/_ricerca_semplice_documenti.glade.h:24
+#: ../gui/pg3__ricerca_semplice_documenti.glade.h:24
+msgid "Rif.doc.Fornitore"
+msgstr ""
+
+#: ../gui/_ricerca_semplice_documenti.glade.h:25
+#: ../gui/pg3__ricerca_semplice_documenti.glade.h:25
+msgid "Saldato"
+msgstr ""
+
+#: ../gui/_ricerca_semplice_documenti.glade.h:27
+#: ../gui/pg3__ricerca_semplice_documenti.glade.h:27
+#: ../promogest/modules/PrimaNota/gui/pg3__anagrafica_primanota_elements.glade.h:36
+#: ../promogest/modules/PrimaNota/gui/_anagrafica_primanota_elements.glade.h:36
+#: ../promogest/modules/GestioneCommesse/gui/_anagrafica_commessa_elements.glade.h:29
+#: ../promogest/modules/GestioneCommesse/gui/pg3__anagrafica_commessa_elements.glade.h:29
+msgid "Tipo"
+msgstr ""
+
+#: ../gui/_ricerca_semplice_documenti.glade.h:28
+#: ../gui/pg3__ricerca_semplice_documenti.glade.h:28
+msgid "Tipo Documento"
+msgstr ""
+
+#: ../gui/_ricerca_semplice_documenti.glade.h:30
+#: ../gui/pg3__ricerca_semplice_documenti.glade.h:30
+#: ../promogest/modules/Inventario/gui/_inventario_select.glade.h:30
+#: ../promogest/modules/Statistiche/gui/statistiche_dialog.glade.h:13
+#: ../promogest/modules/SchedaLavorazione/gui/SchedaLavorazione.glade.h:96
+msgid "Tutti"
+msgstr ""
+
+#: ../gui/_filter_elements.glade.h:6 ../gui/pg3__filter_elements.glade.h:6
+msgid "Premi ESC per ripulire i filtri"
+msgstr ""
+
 #: ../gui/anagrafica_complessa_detail_dialog.glade.h:1
 #: ../gui/pg3_anagrafica_complessa_detail_dialog.glade.h:1
 msgid "Detail"
+msgstr ""
+
+#: ../gui/pg3__anagrafica_articoli_elements.glade.h:1
+#: ../gui/_ricerca_semplice_articoli.glade.h:1
+#: ../gui/_ricerca_complessa_articoli.glade.h:1
+#: ../gui/_anagrafica_articoli_elements.glade.h:1
+#: ../gui/pg3__ricerca_semplice_articoli.glade.h:1
+msgid "< Tutti >"
+msgstr ""
+
+#: ../gui/pg3__anagrafica_articoli_elements.glade.h:2
+#: ../gui/_ricerca_complessa_articoli.glade.h:2
+#: ../gui/_anagrafica_articoli_elements.glade.h:2
+msgid "<b>Abbigliamento</b>"
+msgstr ""
+
+#: ../gui/pg3__anagrafica_articoli_elements.glade.h:3
+#: ../gui/_ricerca_complessa_articoli.glade.h:3
+#: ../gui/_anagrafica_articoli_elements.glade.h:3
+msgid "<b>Ricerca Complessa articoli</b>"
+msgstr ""
+
+#: ../gui/pg3__anagrafica_articoli_elements.glade.h:16
+#: ../gui/_ricerca_complessa_articoli.glade.h:13
+#: ../gui/_anagrafica_articoli_elements.glade.h:16
+msgid "Gruppo taglia"
+msgstr ""
+
+#: ../gui/pg3__anagrafica_articoli_elements.glade.h:18
+#: ../gui/_ricerca_complessa_articoli.glade.h:14
+#: ../gui/_anagrafica_articoli_elements.glade.h:18
+msgid "Incl./Escl Eliminati"
+msgstr ""
+
+#: ../gui/pg3__anagrafica_articoli_elements.glade.h:19
+#: ../gui/_ricerca_complessa_articoli.glade.h:15
+#: ../gui/_anagrafica_articoli_elements.glade.h:19
+msgid "Includi eliminati"
+msgstr ""
+
+#: ../gui/pg3__anagrafica_articoli_elements.glade.h:23
+#: ../gui/_ricerca_complessa_articoli.glade.h:18
+#: ../gui/_anagrafica_articoli_elements.glade.h:23
+msgid "Solo eliminati"
+msgstr ""
+
+#: ../gui/pg3__anagrafica_articoli_elements.glade.h:24
+#: ../gui/_ricerca_semplice_articoli.glade.h:15
+#: ../gui/_ricerca_complessa_articoli.glade.h:19
+#: ../gui/_anagrafica_articoli_elements.glade.h:24
+#: ../gui/pg3__ricerca_semplice_articoli.glade.h:15
+msgid "Solo principali"
+msgstr ""
+
+#: ../gui/pg3__anagrafica_articoli_elements.glade.h:25
+#: ../gui/_ricerca_semplice_articoli.glade.h:16
+#: ../gui/_ricerca_complessa_articoli.glade.h:20
+#: ../gui/_anagrafica_articoli_elements.glade.h:25
+#: ../gui/pg3__ricerca_semplice_articoli.glade.h:16
+msgid "Solo varianti"
+msgstr ""
+
+#: ../gui/pg3__anagrafica_articoli_elements.glade.h:31
+#: ../gui/_ricerca_complessa_articoli.glade.h:24
+#: ../gui/_anagrafica_articoli_elements.glade.h:31
+msgid "Taglia/colore:includi"
+msgstr ""
+
+#: ../gui/pg3__anagrafica_articoli_elements.glade.h:32
+#: ../gui/_ricerca_complessa_articoli.glade.h:25
+#: ../gui/_anagrafica_articoli_elements.glade.h:32
+msgid "Unita' base"
+msgstr ""
+
+#: ../gui/pg3__anagrafica_articoli_elements.glade.h:33
+#: ../gui/_ricerca_semplice_articoli.glade.h:22
+#: ../gui/_anagrafica_articoli_elements.glade.h:33
+#: ../gui/pg3__ricerca_semplice_articoli.glade.h:22
+msgid "Vai a Ricerca Avanzata Multipla"
 msgstr ""
 
 #: ../gui/pg3__ricerca_semplice_listini.glade.h:1
@@ -3937,10 +3985,6 @@ msgstr ""
 #: ../gui/pg3__elenco_listini_elements.glade.h:14
 #: ../gui/_ricerca_semplice_listini.glade.h:1
 msgid "Data Listino"
-msgstr ""
-
-#: ../gui/setconf_ui.glade.h:1 ../gui/pg3_setconf_ui.glade.h:1
-msgid "SETUP PromoGest2"
 msgstr ""
 
 #: ../gui/_anagrafica_documenti_setup.glade.h:1
@@ -4001,6 +4045,50 @@ msgstr ""
 msgid "descrizione"
 msgstr ""
 
+#: ../gui/pg3__anagrafica_clienti_setup.glade.h:1
+#: ../gui/_anagrafica_clienti_setup.glade.h:1
+msgid "<b>Opzioni Clienti</b>"
+msgstr ""
+
+#: ../gui/pg3__anagrafica_clienti_setup.glade.h:2
+#: ../gui/_anagrafica_clienti_setup.glade.h:2
+msgid "CLIENTI"
+msgstr ""
+
+#: ../gui/pg3__anagrafica_clienti_setup.glade.h:3
+#: ../gui/_anagrafica_clienti_setup.glade.h:3
+msgid ""
+"Struttura base del codice \n"
+"( CLI000000 )"
+msgstr ""
+
+#: ../gui/pg3__anagrafica_clienti_setup.glade.h:6
+#: ../gui/_anagrafica_fornitori_setup.glade.h:6
+#: ../gui/pg3__anagrafica_fornitori_setup.glade.h:6
+#: ../gui/_anagrafica_clienti_setup.glade.h:6
+msgid "Visualizza campo per insegna"
+msgstr ""
+
+#: ../gui/pg3_anagrafica_azienda.glade.h:15
+#: ../gui/anagrafica_azienda.glade.h:15
+msgid ""
+"La dimensione del logo consigliata è di \n"
+"circa 350 X 70 px \n"
+"oppure 258x66pt\n"
+"Più o meno come il bordo che contiene\n"
+"l'anteprima qui di fianco"
+msgstr ""
+
+#: ../gui/pg3_anagrafica_azienda.glade.h:30
+#: ../gui/anagrafica_azienda.glade.h:30
+msgid "path_label"
+msgstr ""
+
+#: ../gui/pg3_anagrafica_azienda.glade.h:31
+#: ../gui/anagrafica_azienda.glade.h:31
+msgid "seleziona logo"
+msgstr ""
+
 #: ../gui/ricerca_window.glade.h:2 ../gui/pg3_ricerca_window.glade.h:2
 #: ../gui/variazione_listini_articoli_window.glade.h:6
 msgid "Inserimento..."
@@ -4020,6 +4108,25 @@ msgstr ""
 #: ../gui/anagrafica_complessa_window.glade.h:28
 #: ../gui/pg3_anagrafica_complessa_window.glade.h:28
 msgid "Tot righe:"
+msgstr ""
+
+#: ../gui/multi_linea_editor.glade.h:1
+msgid "Finestra di inserimento multilinea"
+msgstr ""
+
+#: ../gui/multi_linea_editor.glade.h:2
+msgid "Inserire un testo su pi&#xF9; righe"
+msgstr ""
+
+#: ../gui/multi_linea_editor.glade.h:3
+msgid "Multi linea edit"
+msgstr ""
+
+#: ../gui/multi_linea_editor.glade.h:4
+#: ../promogest/modules/GestioneImmagini/gui/tastierino_dialog.glade.h:12
+#: ../promogest/modules/VenditaDettaglio/gui/tastierino_dialog.glade.h:12
+#: ../promogest/modules/VenditaDettaglio/gui/pg3_tastierino_dialog.glade.h:12
+msgid "OK"
 msgstr ""
 
 #: ../gui/notifica_allarmi_notebook.glade.h:1
@@ -4484,8 +4591,8 @@ msgstr ""
 
 #: ../gui/_anagrafica_listini_elements.glade.h:3
 #: ../gui/_anagrafica_aliquote_iva_elements.glade.h:7
-#: ../gui/pg3__anagrafica_listini_elements.glade.h:3
 #: ../gui/pg3__anagrafica_aliquote_iva_elements.glade.h:7
+#: ../gui/pg3__anagrafica_listini_elements.glade.h:3
 #: ../promogest/modules/ADR/gui/_anagrafica_categorie_trasporto_elements.glade.h:1
 #: ../promogest/modules/ADR/gui/pg3__anagrafica_categorie_trasporto_elements.glade.h:1
 msgid "<b>Descrizione</b>"
@@ -4738,6 +4845,91 @@ msgid ""
 "frontaline"
 msgstr ""
 
+#: ../gui/_anagrafica_promemoria_elements.glade.h:1
+#: ../gui/pg3__anagrafica_promemoria_elements.glade.h:1
+msgid "Annotazione"
+msgstr ""
+
+#: ../gui/_anagrafica_promemoria_elements.glade.h:2
+#: ../gui/pg3__anagrafica_promemoria_elements.glade.h:2
+msgid "Autore"
+msgstr ""
+
+#: ../gui/_anagrafica_promemoria_elements.glade.h:3
+#: ../gui/pg3__anagrafica_promemoria_elements.glade.h:3
+msgid "COMPLETATO"
+msgstr ""
+
+#: ../gui/_anagrafica_promemoria_elements.glade.h:4
+#: ../gui/pg3__anagrafica_promemoria_elements.glade.h:4
+msgid "Clienti.."
+msgstr ""
+
+#: ../gui/_anagrafica_promemoria_elements.glade.h:5
+#: ../gui/pg3__anagrafica_promemoria_elements.glade.h:5
+msgid "Contatti.."
+msgstr ""
+
+#: ../gui/_anagrafica_promemoria_elements.glade.h:6
+#: ../gui/pg3__anagrafica_promemoria_elements.glade.h:6
+msgid "Data inserimento"
+msgstr ""
+
+#: ../gui/_anagrafica_promemoria_elements.glade.h:7
+#: ../gui/pg3__anagrafica_promemoria_elements.glade.h:7
+msgid "Data inserimento "
+msgstr ""
+
+#: ../gui/_anagrafica_promemoria_elements.glade.h:10
+#: ../gui/pg3__anagrafica_promemoria_elements.glade.h:10
+msgid "Fornitori.."
+msgstr ""
+
+#: ../gui/_anagrafica_promemoria_elements.glade.h:11
+#: ../gui/pg3__anagrafica_promemoria_elements.glade.h:11
+msgid "Giorni Preavviso"
+msgstr ""
+
+#: ../gui/_anagrafica_promemoria_elements.glade.h:12
+#: ../gui/pg3__anagrafica_promemoria_elements.glade.h:12
+msgid "IN SCADENZA"
+msgstr ""
+
+#: ../gui/_anagrafica_promemoria_elements.glade.h:13
+#: ../gui/pg3__anagrafica_promemoria_elements.glade.h:13
+msgid "Incaricato"
+msgstr ""
+
+#: ../gui/_anagrafica_promemoria_elements.glade.h:14
+#: ../gui/pg3__anagrafica_promemoria_elements.glade.h:14
+msgid "Oggetto"
+msgstr ""
+
+#: ../gui/_anagrafica_promemoria_elements.glade.h:15
+#: ../gui/pg3__anagrafica_promemoria_elements.glade.h:15
+msgid "Riferimento"
+msgstr ""
+
+#: ../gui/_anagrafica_promemoria_elements.glade.h:16
+#: ../gui/pg3__anagrafica_promemoria_elements.glade.h:16
+msgid "SCADUTI"
+msgstr ""
+
+#: ../gui/_anagrafica_promemoria_elements.glade.h:17
+#: ../gui/pg3__anagrafica_promemoria_elements.glade.h:17
+msgid "SCADUTO"
+msgstr ""
+
+#: ../gui/_anagrafica_promemoria_elements.glade.h:18
+#: ../gui/pg3__anagrafica_promemoria_elements.glade.h:18
+msgid "a:"
+msgstr ""
+
+#: ../gui/_anagrafica_promemoria_elements.glade.h:19
+#: ../gui/pg3__anagrafica_promemoria_elements.glade.h:19
+msgid "da:"
+msgstr ""
+
 #: ../gui/_anagrafica_aliquote_iva_elements.glade.h:2
 #: ../gui/pg3__anagrafica_aliquote_iva_elements.glade.h:2
 #, no-c-format
@@ -4803,23 +4995,17 @@ msgid ""
 "dal programma"
 msgstr ""
 
-#: ../gui/delfis_import_progress_dialog.glade.h:1
-msgid ""
-"<span weight=\"bold\"\n"
-"      size=\"larger\">Importazione file in corso...</span>"
-msgstr ""
-
-#: ../gui/delfis_import_progress_dialog.glade.h:3
-msgid "Importazione file"
-msgstr ""
-
 #: ../gui/_anagrafica_banche_elements.glade.h:3
 #: ../gui/pg3__anagrafica_banche_elements.glade.h:3
 msgid "C/C"
 msgstr ""
 
-#: ../gui/pg3__filter_elements.glade.h:6 ../gui/_filter_elements.glade.h:6
-msgid "Premi ESC per ripulire i filtri"
+#: ../gui/_registrazioni_select.glade.h:1
+msgid "Documenti"
+msgstr ""
+
+#: ../gui/_registrazioni_select.glade.h:2
+msgid "Registrazioni"
 msgstr ""
 
 #: ../gui/pg3__anagrafica_vettori_elements.glade.h:1
@@ -4844,6 +5030,18 @@ msgstr ""
 #: ../gui/_anagrafica_multipli_elements.glade.h:7
 #: ../gui/pg3__anagrafica_multipli_elements.glade.h:7
 msgid "Unità Base"
+msgstr ""
+
+#: ../gui/pg3_records_print_progress_dialog.glade.h:1
+#: ../gui/records_print_progress_dialog.glade.h:1
+msgid ""
+"<span weight=\"bold\"\n"
+"      size=\"larger\">Generazione della stampa in corso...</span>"
+msgstr ""
+
+#: ../gui/pg3_records_print_progress_dialog.glade.h:3
+#: ../gui/records_print_progress_dialog.glade.h:3
+msgid "Generazione stampe"
 msgstr ""
 
 #: ../gui/news_notebook.glade.h:1 ../gui/pg3_news_notebook.glade.h:1
@@ -5005,6 +5203,16 @@ msgstr ""
 msgid "Vai a Ricerca Semplice"
 msgstr ""
 
+#: ../gui/delfis_import_progress_dialog.glade.h:1
+msgid ""
+"<span weight=\"bold\"\n"
+"      size=\"larger\">Importazione file in corso...</span>"
+msgstr ""
+
+#: ../gui/delfis_import_progress_dialog.glade.h:3
+msgid "Importazione file"
+msgstr ""
+
 #: ../gui/login_window.glade.h:1 ../gui/pg3_login_window.glade.h:1
 msgid "<span weight=\"bold\" size=\"larger\">PromoGest</span>\n"
 msgstr ""
@@ -5013,67 +5221,40 @@ msgstr ""
 msgid "Accesso a PromoGest2 \"MentoR\" "
 msgstr ""
 
-#: ../gui/login_window.glade.h:4 ../gui/pg3_login_window.glade.h:4
+#: ../gui/login_window.glade.h:4
+msgid "Aggiornato?"
+msgstr ""
+
+#: ../gui/login_window.glade.h:5 ../gui/pg3_login_window.glade.h:4
 msgid "Anno di lavoro:"
 msgstr ""
 
-#: ../gui/login_window.glade.h:5 ../gui/pg3_login_window.glade.h:5
+#: ../gui/login_window.glade.h:6 ../gui/pg3_login_window.glade.h:5
 msgid "Azienda:"
 msgstr ""
 
-#: ../gui/login_window.glade.h:6 ../gui/pg3_login_window.glade.h:6
+#: ../gui/login_window.glade.h:7 ../gui/pg3_login_window.glade.h:6
 msgid "Connessione al promogest"
 msgstr ""
 
-#: ../gui/login_window.glade.h:7
+#: ../gui/login_window.glade.h:8
 msgid "Inserire i dati di accesso:"
 msgstr ""
 
-#: ../gui/login_window.glade.h:8 ../gui/pg3_login_window.glade.h:8
+#: ../gui/login_window.glade.h:9 ../gui/pg3_login_window.glade.h:8
 msgid "Nome utente:"
 msgstr ""
 
-#: ../gui/login_window.glade.h:9 ../gui/pg3_login_window.glade.h:9
+#: ../gui/login_window.glade.h:10 ../gui/pg3_login_window.glade.h:9
 msgid "Password:"
 msgstr ""
 
-#: ../gui/login_window.glade.h:10 ../gui/pg3_login_window.glade.h:10
+#: ../gui/login_window.glade.h:11 ../gui/pg3_login_window.glade.h:10
 msgid "Seleziona l'anno di lavoro "
 msgstr ""
 
-#: ../gui/login_window.glade.h:11 ../gui/pg3_login_window.glade.h:11
+#: ../gui/login_window.glade.h:12 ../gui/pg3_login_window.glade.h:11
 msgid "Uscita"
-msgstr ""
-
-#: ../gui/_ricerca_semplice_articoli.glade.h:1
-#: ../gui/_ricerca_complessa_articoli.glade.h:1
-#: ../gui/pg3__ricerca_semplice_articoli.glade.h:1
-#: ../gui/pg3__anagrafica_articoli_elements.glade.h:1
-#: ../gui/_anagrafica_articoli_elements.glade.h:1
-msgid "< Tutti >"
-msgstr ""
-
-#: ../gui/_ricerca_semplice_articoli.glade.h:15
-#: ../gui/_ricerca_complessa_articoli.glade.h:19
-#: ../gui/pg3__ricerca_semplice_articoli.glade.h:15
-#: ../gui/pg3__anagrafica_articoli_elements.glade.h:24
-#: ../gui/_anagrafica_articoli_elements.glade.h:24
-msgid "Solo principali"
-msgstr ""
-
-#: ../gui/_ricerca_semplice_articoli.glade.h:16
-#: ../gui/_ricerca_complessa_articoli.glade.h:20
-#: ../gui/pg3__ricerca_semplice_articoli.glade.h:16
-#: ../gui/pg3__anagrafica_articoli_elements.glade.h:25
-#: ../gui/_anagrafica_articoli_elements.glade.h:25
-msgid "Solo varianti"
-msgstr ""
-
-#: ../gui/_ricerca_semplice_articoli.glade.h:22
-#: ../gui/pg3__ricerca_semplice_articoli.glade.h:22
-#: ../gui/pg3__anagrafica_articoli_elements.glade.h:33
-#: ../gui/_anagrafica_articoli_elements.glade.h:33
-msgid "Vai a Ricerca Avanzata Multipla"
 msgstr ""
 
 #: ../gui/export_csv.glade.h:1
@@ -5143,18 +5324,6 @@ msgstr ""
 #: ../gui/export_csv.glade.h:17
 #: ../promogest/modules/ImportPriceList/gui/import_price_list_models_window.glade.h:53
 msgid "|"
-msgstr ""
-
-#: ../gui/records_print_progress_dialog.glade.h:1
-#: ../gui/pg3_records_print_progress_dialog.glade.h:1
-msgid ""
-"<span weight=\"bold\"\n"
-"      size=\"larger\">Generazione della stampa in corso...</span>"
-msgstr ""
-
-#: ../gui/records_print_progress_dialog.glade.h:3
-#: ../gui/pg3_records_print_progress_dialog.glade.h:3
-msgid "Generazione stampe"
 msgstr ""
 
 #: ../gui/pg3_login_window.glade.h:7
@@ -5353,54 +5522,6 @@ msgstr ""
 msgid "Inserisci dettaglio Righe del singolo DDT"
 msgstr ""
 
-#: ../gui/_ricerca_complessa_articoli.glade.h:2
-#: ../gui/pg3__anagrafica_articoli_elements.glade.h:2
-#: ../gui/_anagrafica_articoli_elements.glade.h:2
-msgid "<b>Abbigliamento</b>"
-msgstr ""
-
-#: ../gui/_ricerca_complessa_articoli.glade.h:3
-#: ../gui/pg3__anagrafica_articoli_elements.glade.h:3
-#: ../gui/_anagrafica_articoli_elements.glade.h:3
-msgid "<b>Ricerca Complessa articoli</b>"
-msgstr ""
-
-#: ../gui/_ricerca_complessa_articoli.glade.h:13
-#: ../gui/pg3__anagrafica_articoli_elements.glade.h:16
-#: ../gui/_anagrafica_articoli_elements.glade.h:16
-msgid "Gruppo taglia"
-msgstr ""
-
-#: ../gui/_ricerca_complessa_articoli.glade.h:14
-#: ../gui/pg3__anagrafica_articoli_elements.glade.h:18
-#: ../gui/_anagrafica_articoli_elements.glade.h:18
-msgid "Incl./Escl Eliminati"
-msgstr ""
-
-#: ../gui/_ricerca_complessa_articoli.glade.h:15
-#: ../gui/pg3__anagrafica_articoli_elements.glade.h:19
-#: ../gui/_anagrafica_articoli_elements.glade.h:19
-msgid "Includi eliminati"
-msgstr ""
-
-#: ../gui/_ricerca_complessa_articoli.glade.h:18
-#: ../gui/pg3__anagrafica_articoli_elements.glade.h:23
-#: ../gui/_anagrafica_articoli_elements.glade.h:23
-msgid "Solo eliminati"
-msgstr ""
-
-#: ../gui/_ricerca_complessa_articoli.glade.h:24
-#: ../gui/pg3__anagrafica_articoli_elements.glade.h:31
-#: ../gui/_anagrafica_articoli_elements.glade.h:31
-msgid "Taglia/colore:includi"
-msgstr ""
-
-#: ../gui/_ricerca_complessa_articoli.glade.h:25
-#: ../gui/pg3__anagrafica_articoli_elements.glade.h:32
-#: ../gui/_anagrafica_articoli_elements.glade.h:32
-msgid "Unita' base"
-msgstr ""
-
 #: ../gui/_anagrafica_fornitori_elements.glade.h:1
 #: ../gui/pg3__anagrafica_fornitori_elements.glade.h:1
 msgid "  Totale Acquistato"
@@ -5460,91 +5581,6 @@ msgstr ""
 #: ../gui/_anagrafica_articoli_setup.glade.h:6
 #: ../gui/pg3__anagrafica_articoli_setup.glade.h:6
 msgid "Visualizza Immagine se presente"
-msgstr ""
-
-#: ../gui/pg3__anagrafica_promemoria_elements.glade.h:1
-#: ../gui/_anagrafica_promemoria_elements.glade.h:1
-msgid "Annotazione"
-msgstr ""
-
-#: ../gui/pg3__anagrafica_promemoria_elements.glade.h:2
-#: ../gui/_anagrafica_promemoria_elements.glade.h:2
-msgid "Autore"
-msgstr ""
-
-#: ../gui/pg3__anagrafica_promemoria_elements.glade.h:3
-#: ../gui/_anagrafica_promemoria_elements.glade.h:3
-msgid "COMPLETATO"
-msgstr ""
-
-#: ../gui/pg3__anagrafica_promemoria_elements.glade.h:4
-#: ../gui/_anagrafica_promemoria_elements.glade.h:4
-msgid "Clienti.."
-msgstr ""
-
-#: ../gui/pg3__anagrafica_promemoria_elements.glade.h:5
-#: ../gui/_anagrafica_promemoria_elements.glade.h:5
-msgid "Contatti.."
-msgstr ""
-
-#: ../gui/pg3__anagrafica_promemoria_elements.glade.h:6
-#: ../gui/_anagrafica_promemoria_elements.glade.h:6
-msgid "Data inserimento"
-msgstr ""
-
-#: ../gui/pg3__anagrafica_promemoria_elements.glade.h:7
-#: ../gui/_anagrafica_promemoria_elements.glade.h:7
-msgid "Data inserimento "
-msgstr ""
-
-#: ../gui/pg3__anagrafica_promemoria_elements.glade.h:10
-#: ../gui/_anagrafica_promemoria_elements.glade.h:10
-msgid "Fornitori.."
-msgstr ""
-
-#: ../gui/pg3__anagrafica_promemoria_elements.glade.h:11
-#: ../gui/_anagrafica_promemoria_elements.glade.h:11
-msgid "Giorni Preavviso"
-msgstr ""
-
-#: ../gui/pg3__anagrafica_promemoria_elements.glade.h:12
-#: ../gui/_anagrafica_promemoria_elements.glade.h:12
-msgid "IN SCADENZA"
-msgstr ""
-
-#: ../gui/pg3__anagrafica_promemoria_elements.glade.h:13
-#: ../gui/_anagrafica_promemoria_elements.glade.h:13
-msgid "Incaricato"
-msgstr ""
-
-#: ../gui/pg3__anagrafica_promemoria_elements.glade.h:14
-#: ../gui/_anagrafica_promemoria_elements.glade.h:14
-msgid "Oggetto"
-msgstr ""
-
-#: ../gui/pg3__anagrafica_promemoria_elements.glade.h:15
-#: ../gui/_anagrafica_promemoria_elements.glade.h:15
-msgid "Riferimento"
-msgstr ""
-
-#: ../gui/pg3__anagrafica_promemoria_elements.glade.h:16
-#: ../gui/_anagrafica_promemoria_elements.glade.h:16
-msgid "SCADUTI"
-msgstr ""
-
-#: ../gui/pg3__anagrafica_promemoria_elements.glade.h:17
-#: ../gui/_anagrafica_promemoria_elements.glade.h:17
-msgid "SCADUTO"
-msgstr ""
-
-#: ../gui/pg3__anagrafica_promemoria_elements.glade.h:18
-#: ../gui/_anagrafica_promemoria_elements.glade.h:18
-msgid "a:"
-msgstr ""
-
-#: ../gui/pg3__anagrafica_promemoria_elements.glade.h:19
-#: ../gui/_anagrafica_promemoria_elements.glade.h:19
-msgid "da:"
 msgstr ""
 
 #: ../gui/_anagrafica_noleggi_elements.glade.h:6
@@ -5607,14 +5643,6 @@ msgstr ""
 msgid ""
 "<span weight=\"bold\"\n"
 "      size=\"larger\">Spedizione mail in corso...</span>"
-msgstr ""
-
-#: ../gui/_registrazioni_select.glade.h:1
-msgid "Documenti"
-msgstr ""
-
-#: ../gui/_registrazioni_select.glade.h:2
-msgid "Registrazioni"
 msgstr ""
 
 #: ../gui/credits_dialog.glade.h:1
@@ -5924,131 +5952,107 @@ msgstr ""
 msgid "checkbutton"
 msgstr ""
 
-#: ../promogest/modules/Inventario/gui/inventario_filter_table.glade.h:1
-msgid "A data aggiornamento"
+#: ../promogest/modules/RuoliAzioni/gui/pg3__anagrafica_utenti_elements.glade.h:1
+#: ../promogest/modules/RuoliAzioni/gui/_anagrafica_utenti_elements.glade.h:1
+msgid "<b>Attivo</b>"
 msgstr ""
 
-#: ../promogest/modules/Inventario/gui/inventario_filter_table.glade.h:2
-msgid "Da data aggiornamento"
+#: ../promogest/modules/RuoliAzioni/gui/pg3__anagrafica_utenti_elements.glade.h:2
+#: ../promogest/modules/RuoliAzioni/gui/_anagrafica_utenti_elements.glade.h:2
+msgid "<b>Conferma Password</b>"
 msgstr ""
 
-#: ../promogest/modules/Inventario/gui/_inventario_select.glade.h:1
-msgid "<b>Azzera/Ricrea</b>"
+#: ../promogest/modules/RuoliAzioni/gui/pg3__anagrafica_utenti_elements.glade.h:3
+#: ../promogest/modules/RuoliAzioni/gui/_anagrafica_utenti_elements.glade.h:3
+msgid "<b>Email</b>"
 msgstr ""
 
-#: ../promogest/modules/Inventario/gui/_inventario_select.glade.h:2
-msgid "<b>Gen Movi/Esporta csv</b>"
+#: ../promogest/modules/RuoliAzioni/gui/pg3__anagrafica_utenti_elements.glade.h:4
+#: ../promogest/modules/RuoliAzioni/gui/_anagrafica_utenti_elements.glade.h:4
+msgid "<b>Password</b>"
 msgstr ""
 
-#: ../promogest/modules/Inventario/gui/_inventario_select.glade.h:3
-msgid "<b>Inizia Refresh/Chiudi</b>"
+#: ../promogest/modules/RuoliAzioni/gui/pg3__anagrafica_utenti_elements.glade.h:5
+#: ../promogest/modules/RuoliAzioni/gui/_anagrafica_utenti_elements.glade.h:5
+msgid "<b>Ruolo</b>"
 msgstr ""
 
-#: ../promogest/modules/Inventario/gui/_inventario_select.glade.h:4
-msgid "<b>Macro FILTRI</b>"
+#: ../promogest/modules/RuoliAzioni/gui/pg3__anagrafica_utenti_elements.glade.h:6
+#: ../promogest/modules/RuoliAzioni/gui/_anagrafica_utenti_elements.glade.h:6
+msgid "<b>Username</b>"
 msgstr ""
 
-#: ../promogest/modules/Inventario/gui/_inventario_select.glade.h:5
-msgid "<b>Valorizza/Giacenze</b>"
-msgstr ""
-
-#: ../promogest/modules/Inventario/gui/_inventario_select.glade.h:6
-msgid "Aggiunge giacenze da movimenti pregressi"
-msgstr ""
-
-#: ../promogest/modules/Inventario/gui/_inventario_select.glade.h:7
-msgid "Aggiunge valorizzazioni"
-msgstr ""
-
-#: ../promogest/modules/Inventario/gui/_inventario_select.glade.h:8
-msgid "Azzera le voci di inventario selezionate"
-msgstr ""
-
-#: ../promogest/modules/Inventario/gui/_inventario_select.glade.h:9
-msgid "Azzera selez"
-msgstr ""
-
-#: ../promogest/modules/Inventario/gui/_inventario_select.glade.h:10
-msgid "Azzera tutto"
-msgstr ""
-
-#: ../promogest/modules/Inventario/gui/_inventario_select.glade.h:12
-msgid "Esporta >1"
-msgstr ""
-
-#: ../promogest/modules/Inventario/gui/_inventario_select.glade.h:13
-msgid "Esporta in CSV"
-msgstr ""
-
-#: ../promogest/modules/Inventario/gui/_inventario_select.glade.h:14
-msgid "Esporta tutto"
-msgstr ""
-
-#: ../promogest/modules/Inventario/gui/_inventario_select.glade.h:15
-msgid "Genera mov inventario"
-msgstr ""
-
-#: ../promogest/modules/Inventario/gui/_inventario_select.glade.h:16
-msgid "Genera movimento di inventario"
-msgstr ""
-
-#: ../promogest/modules/Inventario/gui/_inventario_select.glade.h:17
-msgid "Giacenze"
-msgstr ""
-
-#: ../promogest/modules/Inventario/gui/_inventario_select.glade.h:18
-msgid "Pezzi complessivi"
-msgstr ""
-
-#: ../promogest/modules/Inventario/gui/_inventario_select.glade.h:19
+#: ../promogest/modules/RuoliAzioni/gui/pg3__anagrafica_utenti_elements.glade.h:7
+#: ../promogest/modules/RuoliAzioni/gui/_anagrafica_utenti_elements.glade.h:7
 msgid ""
-"Primo startup - aggiorna\n"
-"aggiungendo i nuovi articoli \n"
-"inseriti"
+"Assegnare uno dei ruoi \n"
+"precedentemente creato"
 msgstr ""
 
-#: ../promogest/modules/Inventario/gui/_inventario_select.glade.h:22
-msgid "Referenze"
-msgstr ""
-
-#: ../promogest/modules/Inventario/gui/_inventario_select.glade.h:23
-msgid "Ricrea"
-msgstr ""
-
-#: ../promogest/modules/Inventario/gui/_inventario_select.glade.h:24
-msgid "Ricrea un Inventario"
-msgstr ""
-
-#: ../promogest/modules/Inventario/gui/_inventario_select.glade.h:25
+#: ../promogest/modules/RuoliAzioni/gui/pg3__anagrafica_utenti_elements.glade.h:9
+#: ../promogest/modules/RuoliAzioni/gui/_anagrafica_utenti_elements.glade.h:9
 msgid ""
-"Rimuove TUTTO, inventario precedente\n"
-"e movimento derivato"
+"Assegnazione della lingua \n"
+"( non funziona su lite)"
 msgstr ""
 
-#: ../promogest/modules/Inventario/gui/_inventario_select.glade.h:27
-msgid "Solo quantit&#xE0; negative"
+#: ../promogest/modules/RuoliAzioni/gui/pg3__anagrafica_utenti_elements.glade.h:12
+#: ../promogest/modules/RuoliAzioni/gui/_anagrafica_utenti_elements.glade.h:12
+msgid "E-Mail"
 msgstr ""
 
-#: ../promogest/modules/Inventario/gui/_inventario_select.glade.h:28
-msgid "Solo quantit&#xE0; zero"
+#: ../promogest/modules/RuoliAzioni/gui/pg3__anagrafica_utenti_elements.glade.h:13
+#: ../promogest/modules/RuoliAzioni/gui/_anagrafica_utenti_elements.glade.h:13
+msgid "Eventuale indirizzo di una foto \n"
 msgstr ""
 
-#: ../promogest/modules/Inventario/gui/_inventario_select.glade.h:29
-msgid "Solo valore unitario ZERO"
+#: ../promogest/modules/RuoliAzioni/gui/pg3__anagrafica_utenti_elements.glade.h:15
+#: ../promogest/modules/RuoliAzioni/gui/_anagrafica_utenti_elements.glade.h:15
+msgid "Lingua "
 msgstr ""
 
-#: ../promogest/modules/Inventario/gui/_inventario_select.glade.h:31
-#: ../promogest/modules/PrimaNota/gui/pg3__anagrafica_primanota_elements.glade.h:40
-#: ../promogest/modules/PrimaNota/gui/_anagrafica_primanota_elements.glade.h:41
-msgid "Valore"
+#: ../promogest/modules/RuoliAzioni/gui/pg3__anagrafica_utenti_elements.glade.h:16
+#: ../promogest/modules/RuoliAzioni/gui/_anagrafica_utenti_elements.glade.h:16
+#: ../promogest/modules/RuoliAzioni/gui/roleaction.glade.h:4
+#: ../promogest/modules/RuoliAzioni/gui/pg3_roleaction.glade.h:4
+#: ../promogest/modules/Contatti/gui/pg3__anagrafica_contatti_elements.glade.h:31
+#: ../promogest/modules/Contatti/gui/_anagrafica_contatti_elements.glade.h:31
+msgid "Ruolo"
 msgstr ""
 
-#: ../promogest/modules/Inventario/gui/_inventario_select.glade.h:32
-msgid "Valorizza"
+#: ../promogest/modules/RuoliAzioni/gui/pg3__anagrafica_utenti_elements.glade.h:17
+#: ../promogest/modules/RuoliAzioni/gui/_anagrafica_utenti_elements.glade.h:17
+msgid "Url Foto"
 msgstr ""
 
-#: ../promogest/modules/Inventario/gui/_inventario_select.glade.h:33
-msgid "calcola"
+#: ../promogest/modules/RuoliAzioni/gui/pg3__anagrafica_utenti_elements.glade.h:18
+#: ../promogest/modules/RuoliAzioni/gui/_anagrafica_utenti_elements.glade.h:18
+msgid "Username"
+msgstr ""
+
+#: ../promogest/modules/RuoliAzioni/gui/roleaction.glade.h:1
+#: ../promogest/modules/RuoliAzioni/gui/pg3_roleaction.glade.h:1
+msgid "Abbina"
+msgstr ""
+
+#: ../promogest/modules/RuoliAzioni/gui/roleaction.glade.h:2
+#: ../promogest/modules/RuoliAzioni/gui/pg3_roleaction.glade.h:2
+msgid ""
+"Riempie lo spazio sottostante \n"
+"con le azioni possibili"
+msgstr ""
+
+#: ../promogest/modules/RuoliAzioni/gui/roleaction.glade.h:5
+#: ../promogest/modules/RuoliAzioni/gui/pg3_roleaction.glade.h:5
+msgid ""
+"Selezionare il ruolo e premere \"abbina\" \n"
+"per poi assegnare le diverse azioni \n"
+"possibili"
+msgstr ""
+
+#: ../promogest/modules/RuoliAzioni/gui/roleaction.glade.h:8
+#: ../promogest/modules/RuoliAzioni/gui/pg3_roleaction.glade.h:8
+msgid "roleaction"
 msgstr ""
 
 #: ../promogest/modules/ADR/gui/_anagrafica_categorie_trasporto_elements.glade.h:2
@@ -6471,6 +6475,72 @@ msgstr ""
 msgid "e-mail alternativa"
 msgstr ""
 
+#: ../promogest/modules/PromoWear/gui/creazione_varianti_taglia_colore.glade.h:1
+#: ../promogest/modules/PromoWear/gui/pg3_creazione_varianti_taglia_colore.glade.h:1
+msgid "<b>Elenco Combinazioni</b>"
+msgstr ""
+
+#: ../promogest/modules/PromoWear/gui/creazione_varianti_taglia_colore.glade.h:2
+#: ../promogest/modules/PromoWear/gui/pg3_creazione_varianti_taglia_colore.glade.h:2
+msgid "<b>Informazioni generali Articolo</b>"
+msgstr ""
+
+#: ../promogest/modules/PromoWear/gui/creazione_varianti_taglia_colore.glade.h:3
+#: ../promogest/modules/PromoWear/gui/pg3_creazione_varianti_taglia_colore.glade.h:3
+msgid "<b>Mostra:</b>"
+msgstr ""
+
+#: ../promogest/modules/PromoWear/gui/creazione_varianti_taglia_colore.glade.h:4
+#: ../promogest/modules/PromoWear/gui/pg3_creazione_varianti_taglia_colore.glade.h:4
+msgid "<b>Opzioni</b>"
+msgstr ""
+
+#: ../promogest/modules/PromoWear/gui/creazione_varianti_taglia_colore.glade.h:5
+#: ../promogest/modules/PromoWear/gui/pg3_creazione_varianti_taglia_colore.glade.h:5
+msgid "<b>Ordine principale</b>"
+msgstr ""
+
+#: ../promogest/modules/PromoWear/gui/creazione_varianti_taglia_colore.glade.h:6
+#: ../promogest/modules/PromoWear/gui/pg3_creazione_varianti_taglia_colore.glade.h:6
+msgid "<b>Riepilogo</b>"
+msgstr ""
+
+#: ../promogest/modules/PromoWear/gui/creazione_varianti_taglia_colore.glade.h:7
+#: ../promogest/modules/PromoWear/gui/pg3_creazione_varianti_taglia_colore.glade.h:7
+msgid "ARTICOLO PADRE:"
+msgstr ""
+
+#: ../promogest/modules/PromoWear/gui/creazione_varianti_taglia_colore.glade.h:8
+#: ../promogest/modules/PromoWear/gui/pg3_creazione_varianti_taglia_colore.glade.h:8
+msgid "Creazione Varianti Articolo Taglia e Colore"
+msgstr ""
+
+#: ../promogest/modules/PromoWear/gui/creazione_varianti_taglia_colore.glade.h:10
+#: ../promogest/modules/PromoWear/gui/pg3_creazione_varianti_taglia_colore.glade.h:10
+#: ../promogest/modules/Statistiche/gui/statistiche_dialog.glade.h:11
+msgid "Nessuno"
+msgstr ""
+
+#: ../promogest/modules/PromoWear/gui/creazione_varianti_taglia_colore.glade.h:11
+#: ../promogest/modules/PromoWear/gui/pg3_creazione_varianti_taglia_colore.glade.h:11
+msgid "Ordina X Colore"
+msgstr ""
+
+#: ../promogest/modules/PromoWear/gui/creazione_varianti_taglia_colore.glade.h:12
+#: ../promogest/modules/PromoWear/gui/pg3_creazione_varianti_taglia_colore.glade.h:12
+msgid "Ordina X Taglia"
+msgstr ""
+
+#: ../promogest/modules/PromoWear/gui/creazione_varianti_taglia_colore.glade.h:13
+#: ../promogest/modules/PromoWear/gui/pg3_creazione_varianti_taglia_colore.glade.h:13
+msgid "Solo Varianti Articolo"
+msgstr ""
+
+#: ../promogest/modules/PromoWear/gui/creazione_varianti_taglia_colore.glade.h:14
+#: ../promogest/modules/PromoWear/gui/pg3_creazione_varianti_taglia_colore.glade.h:14
+msgid "Tutte le Varianti possibili"
+msgstr ""
+
 #: ../promogest/modules/PromoWear/gui/_anagrafiche_principali_select.glade.h:3
 #: ../promogest/modules/PromoWear/gui/pg3__anagrafiche_principali_select.glade.h:3
 msgid "C_ontatti"
@@ -6496,72 +6566,6 @@ msgstr ""
 #: ../promogest/modules/PromoWear/gui/_anagrafica_taglie_elements.glade.h:4
 #: ../promogest/modules/PromoWear/gui/pg3__anagrafica_taglie_elements.glade.h:4
 msgid "Ordine"
-msgstr ""
-
-#: ../promogest/modules/PromoWear/gui/pg3_creazione_varianti_taglia_colore.glade.h:1
-#: ../promogest/modules/PromoWear/gui/creazione_varianti_taglia_colore.glade.h:1
-msgid "<b>Elenco Combinazioni</b>"
-msgstr ""
-
-#: ../promogest/modules/PromoWear/gui/pg3_creazione_varianti_taglia_colore.glade.h:2
-#: ../promogest/modules/PromoWear/gui/creazione_varianti_taglia_colore.glade.h:2
-msgid "<b>Informazioni generali Articolo</b>"
-msgstr ""
-
-#: ../promogest/modules/PromoWear/gui/pg3_creazione_varianti_taglia_colore.glade.h:3
-#: ../promogest/modules/PromoWear/gui/creazione_varianti_taglia_colore.glade.h:3
-msgid "<b>Mostra:</b>"
-msgstr ""
-
-#: ../promogest/modules/PromoWear/gui/pg3_creazione_varianti_taglia_colore.glade.h:4
-#: ../promogest/modules/PromoWear/gui/creazione_varianti_taglia_colore.glade.h:4
-msgid "<b>Opzioni</b>"
-msgstr ""
-
-#: ../promogest/modules/PromoWear/gui/pg3_creazione_varianti_taglia_colore.glade.h:5
-#: ../promogest/modules/PromoWear/gui/creazione_varianti_taglia_colore.glade.h:5
-msgid "<b>Ordine principale</b>"
-msgstr ""
-
-#: ../promogest/modules/PromoWear/gui/pg3_creazione_varianti_taglia_colore.glade.h:6
-#: ../promogest/modules/PromoWear/gui/creazione_varianti_taglia_colore.glade.h:6
-msgid "<b>Riepilogo</b>"
-msgstr ""
-
-#: ../promogest/modules/PromoWear/gui/pg3_creazione_varianti_taglia_colore.glade.h:7
-#: ../promogest/modules/PromoWear/gui/creazione_varianti_taglia_colore.glade.h:7
-msgid "ARTICOLO PADRE:"
-msgstr ""
-
-#: ../promogest/modules/PromoWear/gui/pg3_creazione_varianti_taglia_colore.glade.h:8
-#: ../promogest/modules/PromoWear/gui/creazione_varianti_taglia_colore.glade.h:8
-msgid "Creazione Varianti Articolo Taglia e Colore"
-msgstr ""
-
-#: ../promogest/modules/PromoWear/gui/pg3_creazione_varianti_taglia_colore.glade.h:10
-#: ../promogest/modules/PromoWear/gui/creazione_varianti_taglia_colore.glade.h:10
-#: ../promogest/modules/Statistiche/gui/statistiche_dialog.glade.h:11
-msgid "Nessuno"
-msgstr ""
-
-#: ../promogest/modules/PromoWear/gui/pg3_creazione_varianti_taglia_colore.glade.h:11
-#: ../promogest/modules/PromoWear/gui/creazione_varianti_taglia_colore.glade.h:11
-msgid "Ordina X Colore"
-msgstr ""
-
-#: ../promogest/modules/PromoWear/gui/pg3_creazione_varianti_taglia_colore.glade.h:12
-#: ../promogest/modules/PromoWear/gui/creazione_varianti_taglia_colore.glade.h:12
-msgid "Ordina X Taglia"
-msgstr ""
-
-#: ../promogest/modules/PromoWear/gui/pg3_creazione_varianti_taglia_colore.glade.h:13
-#: ../promogest/modules/PromoWear/gui/creazione_varianti_taglia_colore.glade.h:13
-msgid "Solo Varianti Articolo"
-msgstr ""
-
-#: ../promogest/modules/PromoWear/gui/pg3_creazione_varianti_taglia_colore.glade.h:14
-#: ../promogest/modules/PromoWear/gui/creazione_varianti_taglia_colore.glade.h:14
-msgid "Tutte le Varianti possibili"
 msgstr ""
 
 #: ../promogest/modules/PromoWear/gui/gestione_varianti_taglia_colore.glade.h:1
@@ -6650,6 +6654,133 @@ msgstr ""
 
 #: ../promogest/modules/PromoWear/gui/pg3_gestione_varianti_taglia_colore.glade.h:6
 msgid "Quantità:"
+msgstr ""
+
+#: ../promogest/modules/Inventario/gui/inventario_filter_table.glade.h:1
+msgid "A data aggiornamento"
+msgstr ""
+
+#: ../promogest/modules/Inventario/gui/inventario_filter_table.glade.h:2
+msgid "Da data aggiornamento"
+msgstr ""
+
+#: ../promogest/modules/Inventario/gui/_inventario_select.glade.h:1
+msgid "<b>Azzera/Ricrea</b>"
+msgstr ""
+
+#: ../promogest/modules/Inventario/gui/_inventario_select.glade.h:2
+msgid "<b>Gen Movi/Esporta csv</b>"
+msgstr ""
+
+#: ../promogest/modules/Inventario/gui/_inventario_select.glade.h:3
+msgid "<b>Inizia Refresh/Chiudi</b>"
+msgstr ""
+
+#: ../promogest/modules/Inventario/gui/_inventario_select.glade.h:4
+msgid "<b>Macro FILTRI</b>"
+msgstr ""
+
+#: ../promogest/modules/Inventario/gui/_inventario_select.glade.h:5
+msgid "<b>Valorizza/Giacenze</b>"
+msgstr ""
+
+#: ../promogest/modules/Inventario/gui/_inventario_select.glade.h:6
+msgid "Aggiunge giacenze da movimenti pregressi"
+msgstr ""
+
+#: ../promogest/modules/Inventario/gui/_inventario_select.glade.h:7
+msgid "Aggiunge valorizzazioni"
+msgstr ""
+
+#: ../promogest/modules/Inventario/gui/_inventario_select.glade.h:8
+msgid "Azzera le voci di inventario selezionate"
+msgstr ""
+
+#: ../promogest/modules/Inventario/gui/_inventario_select.glade.h:9
+msgid "Azzera selez"
+msgstr ""
+
+#: ../promogest/modules/Inventario/gui/_inventario_select.glade.h:10
+msgid "Azzera tutto"
+msgstr ""
+
+#: ../promogest/modules/Inventario/gui/_inventario_select.glade.h:12
+msgid "Esporta >1"
+msgstr ""
+
+#: ../promogest/modules/Inventario/gui/_inventario_select.glade.h:13
+msgid "Esporta in CSV"
+msgstr ""
+
+#: ../promogest/modules/Inventario/gui/_inventario_select.glade.h:14
+msgid "Esporta tutto"
+msgstr ""
+
+#: ../promogest/modules/Inventario/gui/_inventario_select.glade.h:15
+msgid "Genera mov inventario"
+msgstr ""
+
+#: ../promogest/modules/Inventario/gui/_inventario_select.glade.h:16
+msgid "Genera movimento di inventario"
+msgstr ""
+
+#: ../promogest/modules/Inventario/gui/_inventario_select.glade.h:17
+msgid "Giacenze"
+msgstr ""
+
+#: ../promogest/modules/Inventario/gui/_inventario_select.glade.h:18
+msgid "Pezzi complessivi"
+msgstr ""
+
+#: ../promogest/modules/Inventario/gui/_inventario_select.glade.h:19
+msgid ""
+"Primo startup - aggiorna\n"
+"aggiungendo i nuovi articoli \n"
+"inseriti"
+msgstr ""
+
+#: ../promogest/modules/Inventario/gui/_inventario_select.glade.h:22
+msgid "Referenze"
+msgstr ""
+
+#: ../promogest/modules/Inventario/gui/_inventario_select.glade.h:23
+msgid "Ricrea"
+msgstr ""
+
+#: ../promogest/modules/Inventario/gui/_inventario_select.glade.h:24
+msgid "Ricrea un Inventario"
+msgstr ""
+
+#: ../promogest/modules/Inventario/gui/_inventario_select.glade.h:25
+msgid ""
+"Rimuove TUTTO, inventario precedente\n"
+"e movimento derivato"
+msgstr ""
+
+#: ../promogest/modules/Inventario/gui/_inventario_select.glade.h:27
+msgid "Solo quantit&#xE0; negative"
+msgstr ""
+
+#: ../promogest/modules/Inventario/gui/_inventario_select.glade.h:28
+msgid "Solo quantit&#xE0; zero"
+msgstr ""
+
+#: ../promogest/modules/Inventario/gui/_inventario_select.glade.h:29
+msgid "Solo valore unitario ZERO"
+msgstr ""
+
+#: ../promogest/modules/Inventario/gui/_inventario_select.glade.h:31
+#: ../promogest/modules/PrimaNota/gui/pg3__anagrafica_primanota_elements.glade.h:40
+#: ../promogest/modules/PrimaNota/gui/_anagrafica_primanota_elements.glade.h:41
+msgid "Valore"
+msgstr ""
+
+#: ../promogest/modules/Inventario/gui/_inventario_select.glade.h:32
+msgid "Valorizza"
+msgstr ""
+
+#: ../promogest/modules/Inventario/gui/_inventario_select.glade.h:33
+msgid "calcola"
 msgstr ""
 
 #: ../promogest/modules/PrimaNota/gui/pg3__anagrafica_primanota_elements.glade.h:1
@@ -6794,109 +6925,6 @@ msgstr ""
 msgid "<b>Riporto di Cassa</b>"
 msgstr ""
 
-#: ../promogest/modules/RuoliAzioni/gui/pg3__anagrafica_utenti_elements.glade.h:1
-#: ../promogest/modules/RuoliAzioni/gui/_anagrafica_utenti_elements.glade.h:1
-msgid "<b>Attivo</b>"
-msgstr ""
-
-#: ../promogest/modules/RuoliAzioni/gui/pg3__anagrafica_utenti_elements.glade.h:2
-#: ../promogest/modules/RuoliAzioni/gui/_anagrafica_utenti_elements.glade.h:2
-msgid "<b>Conferma Password</b>"
-msgstr ""
-
-#: ../promogest/modules/RuoliAzioni/gui/pg3__anagrafica_utenti_elements.glade.h:3
-#: ../promogest/modules/RuoliAzioni/gui/_anagrafica_utenti_elements.glade.h:3
-msgid "<b>Email</b>"
-msgstr ""
-
-#: ../promogest/modules/RuoliAzioni/gui/pg3__anagrafica_utenti_elements.glade.h:4
-#: ../promogest/modules/RuoliAzioni/gui/_anagrafica_utenti_elements.glade.h:4
-msgid "<b>Password</b>"
-msgstr ""
-
-#: ../promogest/modules/RuoliAzioni/gui/pg3__anagrafica_utenti_elements.glade.h:5
-#: ../promogest/modules/RuoliAzioni/gui/_anagrafica_utenti_elements.glade.h:5
-msgid "<b>Ruolo</b>"
-msgstr ""
-
-#: ../promogest/modules/RuoliAzioni/gui/pg3__anagrafica_utenti_elements.glade.h:6
-#: ../promogest/modules/RuoliAzioni/gui/_anagrafica_utenti_elements.glade.h:6
-msgid "<b>Username</b>"
-msgstr ""
-
-#: ../promogest/modules/RuoliAzioni/gui/pg3__anagrafica_utenti_elements.glade.h:7
-#: ../promogest/modules/RuoliAzioni/gui/_anagrafica_utenti_elements.glade.h:7
-msgid ""
-"Assegnare uno dei ruoi \n"
-"precedentemente creato"
-msgstr ""
-
-#: ../promogest/modules/RuoliAzioni/gui/pg3__anagrafica_utenti_elements.glade.h:9
-#: ../promogest/modules/RuoliAzioni/gui/_anagrafica_utenti_elements.glade.h:9
-msgid ""
-"Assegnazione della lingua \n"
-"( non funziona su lite)"
-msgstr ""
-
-#: ../promogest/modules/RuoliAzioni/gui/pg3__anagrafica_utenti_elements.glade.h:12
-#: ../promogest/modules/RuoliAzioni/gui/_anagrafica_utenti_elements.glade.h:12
-msgid "E-Mail"
-msgstr ""
-
-#: ../promogest/modules/RuoliAzioni/gui/pg3__anagrafica_utenti_elements.glade.h:13
-#: ../promogest/modules/RuoliAzioni/gui/_anagrafica_utenti_elements.glade.h:13
-msgid "Eventuale indirizzo di una foto \n"
-msgstr ""
-
-#: ../promogest/modules/RuoliAzioni/gui/pg3__anagrafica_utenti_elements.glade.h:15
-#: ../promogest/modules/RuoliAzioni/gui/_anagrafica_utenti_elements.glade.h:15
-msgid "Lingua "
-msgstr ""
-
-#: ../promogest/modules/RuoliAzioni/gui/pg3__anagrafica_utenti_elements.glade.h:16
-#: ../promogest/modules/RuoliAzioni/gui/_anagrafica_utenti_elements.glade.h:16
-#: ../promogest/modules/RuoliAzioni/gui/roleaction.glade.h:4
-#: ../promogest/modules/RuoliAzioni/gui/pg3_roleaction.glade.h:4
-#: ../promogest/modules/Contatti/gui/pg3__anagrafica_contatti_elements.glade.h:31
-#: ../promogest/modules/Contatti/gui/_anagrafica_contatti_elements.glade.h:31
-msgid "Ruolo"
-msgstr ""
-
-#: ../promogest/modules/RuoliAzioni/gui/pg3__anagrafica_utenti_elements.glade.h:17
-#: ../promogest/modules/RuoliAzioni/gui/_anagrafica_utenti_elements.glade.h:17
-msgid "Url Foto"
-msgstr ""
-
-#: ../promogest/modules/RuoliAzioni/gui/pg3__anagrafica_utenti_elements.glade.h:18
-#: ../promogest/modules/RuoliAzioni/gui/_anagrafica_utenti_elements.glade.h:18
-msgid "Username"
-msgstr ""
-
-#: ../promogest/modules/RuoliAzioni/gui/roleaction.glade.h:1
-#: ../promogest/modules/RuoliAzioni/gui/pg3_roleaction.glade.h:1
-msgid "Abbina"
-msgstr ""
-
-#: ../promogest/modules/RuoliAzioni/gui/roleaction.glade.h:2
-#: ../promogest/modules/RuoliAzioni/gui/pg3_roleaction.glade.h:2
-msgid ""
-"Riempie lo spazio sottostante \n"
-"con le azioni possibili"
-msgstr ""
-
-#: ../promogest/modules/RuoliAzioni/gui/roleaction.glade.h:5
-#: ../promogest/modules/RuoliAzioni/gui/pg3_roleaction.glade.h:5
-msgid ""
-"Selezionare il ruolo e premere \"abbina\" \n"
-"per poi assegnare le diverse azioni \n"
-"possibili"
-msgstr ""
-
-#: ../promogest/modules/RuoliAzioni/gui/roleaction.glade.h:8
-#: ../promogest/modules/RuoliAzioni/gui/pg3_roleaction.glade.h:8
-msgid "roleaction"
-msgstr ""
-
 #: ../promogest/modules/Statistiche/gui/statistiche_dialog.glade.h:2
 msgid "Aggiungi Regola"
 msgstr ""
@@ -6931,6 +6959,102 @@ msgstr ""
 
 #: ../promogest/modules/Statistiche/gui/statistiche_magazzino_elements.glade.h:5
 msgid "Salva statistiche"
+msgstr ""
+
+#: ../promogest/modules/Label/gui/_anagrafica_label_setup.glade.h:1
+#: ../promogest/modules/Label/gui/pg3__anagrafica_label_setup.glade.h:1
+msgid "<b>Opzioni Modulo Label Frontaline</b>"
+msgstr ""
+
+#: ../promogest/modules/Label/gui/_anagrafica_label_setup.glade.h:2
+#: ../promogest/modules/Label/gui/pg3__anagrafica_label_setup.glade.h:2
+msgid "LABELS"
+msgstr ""
+
+#: ../promogest/modules/Label/gui/_anagrafica_label_setup.glade.h:3
+#: ../promogest/modules/Label/gui/pg3__anagrafica_label_setup.glade.h:3
+msgid "Sistema colonna frontaline"
+msgstr ""
+
+#: ../promogest/modules/Label/gui/_anagrafica_label_setup.glade.h:4
+#: ../promogest/modules/Label/gui/pg3__anagrafica_label_setup.glade.h:4
+msgid "Sistema riga frontaline"
+msgstr ""
+
+#: ../promogest/modules/Label/gui/pg3_label_dialog.glade.h:1
+#: ../promogest/modules/Label/gui/label_dialog.glade.h:1
+msgid "<b>Criterio  di gestione quantità</b>"
+msgstr ""
+
+#: ../promogest/modules/Label/gui/pg3_label_dialog.glade.h:3
+#: ../promogest/modules/Label/gui/label_dialog.glade.h:3
+msgid "<b>Opzioni di stampa</b>"
+msgstr ""
+
+#: ../promogest/modules/Label/gui/pg3_label_dialog.glade.h:5
+#: ../promogest/modules/Label/gui/label_dialog.glade.h:5
+msgid "<b>TIPO:</b>"
+msgstr ""
+
+#: ../promogest/modules/Label/gui/pg3_label_dialog.glade.h:6
+#: ../promogest/modules/Label/gui/label_dialog.glade.h:6
+msgid "C-Art"
+msgstr ""
+
+#: ../promogest/modules/Label/gui/pg3_label_dialog.glade.h:7
+#: ../promogest/modules/Label/gui/label_dialog.glade.h:7
+msgid "C-Bar"
+msgstr ""
+
+#: ../promogest/modules/Label/gui/pg3_label_dialog.glade.h:8
+#: ../promogest/modules/Label/gui/label_dialog.glade.h:8
+msgid "C-Forn"
+msgstr ""
+
+#: ../promogest/modules/Label/gui/pg3_label_dialog.glade.h:9
+#: ../promogest/modules/Label/gui/label_dialog.glade.h:9
+msgid "Cassico ( multi label A4)"
+msgstr ""
+
+#: ../promogest/modules/Label/gui/pg3_label_dialog.glade.h:11
+#: ../promogest/modules/Label/gui/label_dialog.glade.h:11
+msgid "Codide a barre"
+msgstr ""
+
+#: ../promogest/modules/Label/gui/pg3_label_dialog.glade.h:12
+#: ../promogest/modules/Label/gui/label_dialog.glade.h:12
+msgid "Configurazione e generazione Etichette"
+msgstr ""
+
+#: ../promogest/modules/Label/gui/pg3_label_dialog.glade.h:14
+#: ../promogest/modules/Label/gui/label_dialog.glade.h:14
+msgid "Desc"
+msgstr ""
+
+#: ../promogest/modules/Label/gui/pg3_label_dialog.glade.h:16
+#: ../promogest/modules/Label/gui/label_dialog.glade.h:16
+msgid ""
+"Preseleziona Listino\n"
+"per la vendita al Dettaglio"
+msgstr ""
+
+#: ../promogest/modules/Label/gui/pg3_label_dialog.glade.h:20
+#: ../promogest/modules/Label/gui/label_dialog.glade.h:20
+msgid ""
+"Questa spunta serve a fare in modo che il programmi\n"
+"cerchi un Listino preimpostato per la vendita al \n"
+"dettaglio e cerchi di usare quello, in caso di fallimento \n"
+"userà il listino classico"
+msgstr ""
+
+#: ../promogest/modules/Label/gui/pg3_label_dialog.glade.h:24
+#: ../promogest/modules/Label/gui/label_dialog.glade.h:24
+msgid "Seleziona il Templeate"
+msgstr ""
+
+#: ../promogest/modules/Label/gui/pg3_label_dialog.glade.h:25
+#: ../promogest/modules/Label/gui/label_dialog.glade.h:25
+msgid "Single Label ( Dymo )"
 msgstr ""
 
 #: ../promogest/modules/SchedaLavorazione/gui/SchedaLavorazione.glade.h:6
@@ -7075,102 +7199,6 @@ msgstr ""
 
 #: ../promogest/modules/SchedaLavorazione/gui/SchedaLavorazione.glade.h:102
 msgid "numero"
-msgstr ""
-
-#: ../promogest/modules/Label/gui/_anagrafica_label_setup.glade.h:1
-#: ../promogest/modules/Label/gui/pg3__anagrafica_label_setup.glade.h:1
-msgid "<b>Opzioni Modulo Label Frontaline</b>"
-msgstr ""
-
-#: ../promogest/modules/Label/gui/_anagrafica_label_setup.glade.h:2
-#: ../promogest/modules/Label/gui/pg3__anagrafica_label_setup.glade.h:2
-msgid "LABELS"
-msgstr ""
-
-#: ../promogest/modules/Label/gui/_anagrafica_label_setup.glade.h:3
-#: ../promogest/modules/Label/gui/pg3__anagrafica_label_setup.glade.h:3
-msgid "Sistema colonna frontaline"
-msgstr ""
-
-#: ../promogest/modules/Label/gui/_anagrafica_label_setup.glade.h:4
-#: ../promogest/modules/Label/gui/pg3__anagrafica_label_setup.glade.h:4
-msgid "Sistema riga frontaline"
-msgstr ""
-
-#: ../promogest/modules/Label/gui/pg3_label_dialog.glade.h:1
-#: ../promogest/modules/Label/gui/label_dialog.glade.h:1
-msgid "<b>Criterio  di gestione quantità</b>"
-msgstr ""
-
-#: ../promogest/modules/Label/gui/pg3_label_dialog.glade.h:3
-#: ../promogest/modules/Label/gui/label_dialog.glade.h:3
-msgid "<b>Opzioni di stampa</b>"
-msgstr ""
-
-#: ../promogest/modules/Label/gui/pg3_label_dialog.glade.h:5
-#: ../promogest/modules/Label/gui/label_dialog.glade.h:5
-msgid "<b>TIPO:</b>"
-msgstr ""
-
-#: ../promogest/modules/Label/gui/pg3_label_dialog.glade.h:6
-#: ../promogest/modules/Label/gui/label_dialog.glade.h:6
-msgid "C-Art"
-msgstr ""
-
-#: ../promogest/modules/Label/gui/pg3_label_dialog.glade.h:7
-#: ../promogest/modules/Label/gui/label_dialog.glade.h:7
-msgid "C-Bar"
-msgstr ""
-
-#: ../promogest/modules/Label/gui/pg3_label_dialog.glade.h:8
-#: ../promogest/modules/Label/gui/label_dialog.glade.h:8
-msgid "C-Forn"
-msgstr ""
-
-#: ../promogest/modules/Label/gui/pg3_label_dialog.glade.h:9
-#: ../promogest/modules/Label/gui/label_dialog.glade.h:9
-msgid "Cassico ( multi label A4)"
-msgstr ""
-
-#: ../promogest/modules/Label/gui/pg3_label_dialog.glade.h:11
-#: ../promogest/modules/Label/gui/label_dialog.glade.h:11
-msgid "Codide a barre"
-msgstr ""
-
-#: ../promogest/modules/Label/gui/pg3_label_dialog.glade.h:12
-#: ../promogest/modules/Label/gui/label_dialog.glade.h:12
-msgid "Configurazione e generazione Etichette"
-msgstr ""
-
-#: ../promogest/modules/Label/gui/pg3_label_dialog.glade.h:14
-#: ../promogest/modules/Label/gui/label_dialog.glade.h:14
-msgid "Desc"
-msgstr ""
-
-#: ../promogest/modules/Label/gui/pg3_label_dialog.glade.h:16
-#: ../promogest/modules/Label/gui/label_dialog.glade.h:16
-msgid ""
-"Preseleziona Listino\n"
-"per la vendita al Dettaglio"
-msgstr ""
-
-#: ../promogest/modules/Label/gui/pg3_label_dialog.glade.h:20
-#: ../promogest/modules/Label/gui/label_dialog.glade.h:20
-msgid ""
-"Questa spunta serve a fare in modo che il programmi\n"
-"cerchi un Listino preimpostato per la vendita al \n"
-"dettaglio e cerchi di usare quello, in caso di fallimento \n"
-"userà il listino classico"
-msgstr ""
-
-#: ../promogest/modules/Label/gui/pg3_label_dialog.glade.h:24
-#: ../promogest/modules/Label/gui/label_dialog.glade.h:24
-msgid "Seleziona il Templeate"
-msgstr ""
-
-#: ../promogest/modules/Label/gui/pg3_label_dialog.glade.h:25
-#: ../promogest/modules/Label/gui/label_dialog.glade.h:25
-msgid "Single Label ( Dymo )"
 msgstr ""
 
 #: ../promogest/modules/GestioneCommesse/gui/_anagrafica_commessa_elements.glade.h:2
@@ -7836,104 +7864,35 @@ msgstr ""
 msgid "VENDITADETTAGLIO"
 msgstr ""
 
-#: ../promogest/modules/VenditaDettaglio/gui/scontrini_emessi.glade.h:1
-#: ../promogest/modules/VenditaDettaglio/gui/pg3_scontrini_emessi.glade.h:1
-msgid "ASSEGNI"
+#: ../promogest/modules/VenditaDettaglio/gui/pg3_altre_opzioni_dialog.glade.h:1
+#: ../promogest/modules/VenditaDettaglio/gui/vendita_dettaglio_window.glade.h:19
+#: ../promogest/modules/VenditaDettaglio/gui/pg3_vendita_dettaglio_window.glade.h:18
+#: ../promogest/modules/VenditaDettaglio/gui/altre_opzioni_dialog.glade.h:1
+msgid "<b>Altre Opzioni di vendita</b>"
 msgstr ""
 
-#: ../promogest/modules/VenditaDettaglio/gui/scontrini_emessi.glade.h:2
-#: ../promogest/modules/VenditaDettaglio/gui/pg3_scontrini_emessi.glade.h:2
-msgid "Affluenza csv"
+#: ../promogest/modules/VenditaDettaglio/gui/pg3_altre_opzioni_dialog.glade.h:2
+#: ../promogest/modules/VenditaDettaglio/gui/altre_opzioni_dialog.glade.h:2
+msgid "Altre opzioni"
 msgstr ""
 
-#: ../promogest/modules/VenditaDettaglio/gui/scontrini_emessi.glade.h:3
-#: ../promogest/modules/VenditaDettaglio/gui/pg3_scontrini_emessi.glade.h:3
-msgid "Aggiorna Inventario"
+#: ../promogest/modules/VenditaDettaglio/gui/pg3_altre_opzioni_dialog.glade.h:3
+msgid ""
+"Le seguenti combo permettono di selezionare il punto vendita \n"
+"ed il punto cassa da cui si sta effettuando la vendita.\n"
+"Il punto vendita è obbligatorio ma è vivamente consigliato \n"
+"di aggiungere e settare anche gli eventuali punti cassa \n"
+"dal menu \"opzioni\" della finestra principale"
 msgstr ""
 
-#: ../promogest/modules/VenditaDettaglio/gui/scontrini_emessi.glade.h:4
-#: ../promogest/modules/VenditaDettaglio/gui/pg3_scontrini_emessi.glade.h:4
-msgid "C.DI.CRE"
+#: ../promogest/modules/VenditaDettaglio/gui/pg3_altre_opzioni_dialog.glade.h:8
+#: ../promogest/modules/VenditaDettaglio/gui/altre_opzioni_dialog.glade.h:8
+msgid "Magazzino /P Vendita"
 msgstr ""
 
-#: ../promogest/modules/VenditaDettaglio/gui/scontrini_emessi.glade.h:5
-#: ../promogest/modules/VenditaDettaglio/gui/pg3_scontrini_emessi.glade.h:5
-msgid "CONTANTI"
-msgstr ""
-
-#: ../promogest/modules/VenditaDettaglio/gui/scontrini_emessi.glade.h:6
-#: ../promogest/modules/VenditaDettaglio/gui/pg3_scontrini_emessi.glade.h:6
-msgid "Cliente a cui fatturare"
-msgstr ""
-
-#: ../promogest/modules/VenditaDettaglio/gui/scontrini_emessi.glade.h:7
-#: ../promogest/modules/VenditaDettaglio/gui/pg3_scontrini_emessi.glade.h:7
-msgid "Crea Fattura"
-msgstr ""
-
-#: ../promogest/modules/VenditaDettaglio/gui/scontrini_emessi.glade.h:8
-#: ../promogest/modules/VenditaDettaglio/gui/pg3_scontrini_emessi.glade.h:8
-msgid "DATA"
-msgstr ""
-
-#: ../promogest/modules/VenditaDettaglio/gui/scontrini_emessi.glade.h:9
-#: ../promogest/modules/VenditaDettaglio/gui/pg3_scontrini_emessi.glade.h:9
-msgid "DATA MOV"
-msgstr ""
-
-#: ../promogest/modules/VenditaDettaglio/gui/scontrini_emessi.glade.h:10
-#: ../promogest/modules/VenditaDettaglio/gui/pg3_scontrini_emessi.glade.h:10
-msgid "Distinta giornaliera"
-msgstr ""
-
-#: ../promogest/modules/VenditaDettaglio/gui/scontrini_emessi.glade.h:11
-#: ../promogest/modules/VenditaDettaglio/gui/pg3_scontrini_emessi.glade.h:11
-msgid "Fattura accompagnatoria"
-msgstr ""
-
-#: ../promogest/modules/VenditaDettaglio/gui/scontrini_emessi.glade.h:13
-#: ../promogest/modules/VenditaDettaglio/gui/pg3_scontrini_emessi.glade.h:13
-msgid "Grafico affluenza annuale"
-msgstr ""
-
-#: ../promogest/modules/VenditaDettaglio/gui/scontrini_emessi.glade.h:14
-#: ../promogest/modules/VenditaDettaglio/gui/pg3_scontrini_emessi.glade.h:14
-msgid "Grafico affluenza mensile"
-msgstr ""
-
-#: ../promogest/modules/VenditaDettaglio/gui/scontrini_emessi.glade.h:15
-#: ../promogest/modules/VenditaDettaglio/gui/pg3_scontrini_emessi.glade.h:15
-msgid "Grafico affluenza oraria"
-msgstr ""
-
-#: ../promogest/modules/VenditaDettaglio/gui/scontrini_emessi.glade.h:16
-#: ../promogest/modules/VenditaDettaglio/gui/pg3_scontrini_emessi.glade.h:16
-msgid "N° MOV"
-msgstr ""
-
-#: ../promogest/modules/VenditaDettaglio/gui/scontrini_emessi.glade.h:17
-#: ../promogest/modules/VenditaDettaglio/gui/pg3_scontrini_emessi.glade.h:17
-msgid "Reso"
-msgstr ""
-
-#: ../promogest/modules/VenditaDettaglio/gui/scontrini_emessi.glade.h:18
-#: ../promogest/modules/VenditaDettaglio/gui/pg3_scontrini_emessi.glade.h:18
-msgid "Scontrini Emessi"
-msgstr ""
-
-#: ../promogest/modules/VenditaDettaglio/gui/scontrini_emessi.glade.h:19
-#: ../promogest/modules/VenditaDettaglio/gui/pg3_scontrini_emessi.glade.h:19
-msgid "Storno"
-msgstr ""
-
-#: ../promogest/modules/VenditaDettaglio/gui/scontrini_emessi.glade.h:20
-#: ../promogest/modules/VenditaDettaglio/gui/pg3_scontrini_emessi.glade.h:20
-msgid "TOTALE SCONTRINO"
-msgstr ""
-
-#: ../promogest/modules/VenditaDettaglio/gui/scontrini_emessi.glade.h:21
-#: ../promogest/modules/VenditaDettaglio/gui/pg3_scontrini_emessi.glade.h:21
-msgid "_Altre Funzioni"
+#: ../promogest/modules/VenditaDettaglio/gui/pg3_altre_opzioni_dialog.glade.h:9
+#: ../promogest/modules/VenditaDettaglio/gui/altre_opzioni_dialog.glade.h:9
+msgid "Punto Cassa"
 msgstr ""
 
 #: ../promogest/modules/VenditaDettaglio/gui/vendita_dettaglio_window.glade.h:2
@@ -7963,13 +7922,6 @@ msgid ""
 "consigliato aggiungere e settare anche gli eventuali \n"
 "punti cassa dal menu \"opzioni\" della finestra principale\n"
 "dell'interfaccia di vendita"
-msgstr ""
-
-#: ../promogest/modules/VenditaDettaglio/gui/vendita_dettaglio_window.glade.h:19
-#: ../promogest/modules/VenditaDettaglio/gui/altre_opzioni_dialog.glade.h:1
-#: ../promogest/modules/VenditaDettaglio/gui/pg3_altre_opzioni_dialog.glade.h:1
-#: ../promogest/modules/VenditaDettaglio/gui/pg3_vendita_dettaglio_window.glade.h:18
-msgid "<b>Altre Opzioni di vendita</b>"
 msgstr ""
 
 #: ../promogest/modules/VenditaDettaglio/gui/vendita_dettaglio_window.glade.h:23
@@ -8124,6 +8076,106 @@ msgstr ""
 msgid "opzioni varie dialog"
 msgstr ""
 
+#: ../promogest/modules/VenditaDettaglio/gui/scontrini_emessi.glade.h:1
+#: ../promogest/modules/VenditaDettaglio/gui/pg3_scontrini_emessi.glade.h:1
+msgid "ASSEGNI"
+msgstr ""
+
+#: ../promogest/modules/VenditaDettaglio/gui/scontrini_emessi.glade.h:2
+#: ../promogest/modules/VenditaDettaglio/gui/pg3_scontrini_emessi.glade.h:2
+msgid "Affluenza csv"
+msgstr ""
+
+#: ../promogest/modules/VenditaDettaglio/gui/scontrini_emessi.glade.h:3
+#: ../promogest/modules/VenditaDettaglio/gui/pg3_scontrini_emessi.glade.h:3
+msgid "Aggiorna Inventario"
+msgstr ""
+
+#: ../promogest/modules/VenditaDettaglio/gui/scontrini_emessi.glade.h:4
+#: ../promogest/modules/VenditaDettaglio/gui/pg3_scontrini_emessi.glade.h:4
+msgid "C.DI.CRE"
+msgstr ""
+
+#: ../promogest/modules/VenditaDettaglio/gui/scontrini_emessi.glade.h:5
+#: ../promogest/modules/VenditaDettaglio/gui/pg3_scontrini_emessi.glade.h:5
+msgid "CONTANTI"
+msgstr ""
+
+#: ../promogest/modules/VenditaDettaglio/gui/scontrini_emessi.glade.h:6
+#: ../promogest/modules/VenditaDettaglio/gui/pg3_scontrini_emessi.glade.h:6
+msgid "Cliente a cui fatturare"
+msgstr ""
+
+#: ../promogest/modules/VenditaDettaglio/gui/scontrini_emessi.glade.h:7
+#: ../promogest/modules/VenditaDettaglio/gui/pg3_scontrini_emessi.glade.h:7
+msgid "Crea Fattura"
+msgstr ""
+
+#: ../promogest/modules/VenditaDettaglio/gui/scontrini_emessi.glade.h:8
+#: ../promogest/modules/VenditaDettaglio/gui/pg3_scontrini_emessi.glade.h:8
+msgid "DATA"
+msgstr ""
+
+#: ../promogest/modules/VenditaDettaglio/gui/scontrini_emessi.glade.h:9
+#: ../promogest/modules/VenditaDettaglio/gui/pg3_scontrini_emessi.glade.h:9
+msgid "DATA MOV"
+msgstr ""
+
+#: ../promogest/modules/VenditaDettaglio/gui/scontrini_emessi.glade.h:10
+#: ../promogest/modules/VenditaDettaglio/gui/pg3_scontrini_emessi.glade.h:10
+msgid "Distinta giornaliera"
+msgstr ""
+
+#: ../promogest/modules/VenditaDettaglio/gui/scontrini_emessi.glade.h:11
+#: ../promogest/modules/VenditaDettaglio/gui/pg3_scontrini_emessi.glade.h:11
+msgid "Fattura accompagnatoria"
+msgstr ""
+
+#: ../promogest/modules/VenditaDettaglio/gui/scontrini_emessi.glade.h:13
+#: ../promogest/modules/VenditaDettaglio/gui/pg3_scontrini_emessi.glade.h:13
+msgid "Grafico affluenza annuale"
+msgstr ""
+
+#: ../promogest/modules/VenditaDettaglio/gui/scontrini_emessi.glade.h:14
+#: ../promogest/modules/VenditaDettaglio/gui/pg3_scontrini_emessi.glade.h:14
+msgid "Grafico affluenza mensile"
+msgstr ""
+
+#: ../promogest/modules/VenditaDettaglio/gui/scontrini_emessi.glade.h:15
+#: ../promogest/modules/VenditaDettaglio/gui/pg3_scontrini_emessi.glade.h:15
+msgid "Grafico affluenza oraria"
+msgstr ""
+
+#: ../promogest/modules/VenditaDettaglio/gui/scontrini_emessi.glade.h:16
+#: ../promogest/modules/VenditaDettaglio/gui/pg3_scontrini_emessi.glade.h:16
+msgid "N° MOV"
+msgstr ""
+
+#: ../promogest/modules/VenditaDettaglio/gui/scontrini_emessi.glade.h:17
+#: ../promogest/modules/VenditaDettaglio/gui/pg3_scontrini_emessi.glade.h:17
+msgid "Reso"
+msgstr ""
+
+#: ../promogest/modules/VenditaDettaglio/gui/scontrini_emessi.glade.h:18
+#: ../promogest/modules/VenditaDettaglio/gui/pg3_scontrini_emessi.glade.h:18
+msgid "Scontrini Emessi"
+msgstr ""
+
+#: ../promogest/modules/VenditaDettaglio/gui/scontrini_emessi.glade.h:19
+#: ../promogest/modules/VenditaDettaglio/gui/pg3_scontrini_emessi.glade.h:19
+msgid "Storno"
+msgstr ""
+
+#: ../promogest/modules/VenditaDettaglio/gui/scontrini_emessi.glade.h:20
+#: ../promogest/modules/VenditaDettaglio/gui/pg3_scontrini_emessi.glade.h:20
+msgid "TOTALE SCONTRINO"
+msgstr ""
+
+#: ../promogest/modules/VenditaDettaglio/gui/scontrini_emessi.glade.h:21
+#: ../promogest/modules/VenditaDettaglio/gui/pg3_scontrini_emessi.glade.h:21
+msgid "_Altre Funzioni"
+msgstr ""
+
 #: ../promogest/modules/VenditaDettaglio/gui/pg3_chiusura_fine_giornata.glade.h:1
 #: ../promogest/modules/VenditaDettaglio/gui/chiusura_fine_giornata.glade.h:1
 msgid ""
@@ -8150,35 +8202,11 @@ msgstr ""
 msgid "P. Cassa"
 msgstr ""
 
-#: ../promogest/modules/VenditaDettaglio/gui/altre_opzioni_dialog.glade.h:2
-#: ../promogest/modules/VenditaDettaglio/gui/pg3_altre_opzioni_dialog.glade.h:2
-msgid "Altre opzioni"
-msgstr ""
-
 #: ../promogest/modules/VenditaDettaglio/gui/altre_opzioni_dialog.glade.h:3
 msgid ""
 "Le seguenti combo permettono di selezionare il punto vendita \n"
 "ed il punto cassa da cui si sta effettuando la vendita.\n"
 "Il punto vendita &#xE8; obbligatorio ma &#xE8; vivamente consigliato \n"
-"di aggiungere e settare anche gli eventuali punti cassa \n"
-"dal menu \"opzioni\" della finestra principale"
-msgstr ""
-
-#: ../promogest/modules/VenditaDettaglio/gui/altre_opzioni_dialog.glade.h:8
-#: ../promogest/modules/VenditaDettaglio/gui/pg3_altre_opzioni_dialog.glade.h:8
-msgid "Magazzino /P Vendita"
-msgstr ""
-
-#: ../promogest/modules/VenditaDettaglio/gui/altre_opzioni_dialog.glade.h:9
-#: ../promogest/modules/VenditaDettaglio/gui/pg3_altre_opzioni_dialog.glade.h:9
-msgid "Punto Cassa"
-msgstr ""
-
-#: ../promogest/modules/VenditaDettaglio/gui/pg3_altre_opzioni_dialog.glade.h:3
-msgid ""
-"Le seguenti combo permettono di selezionare il punto vendita \n"
-"ed il punto cassa da cui si sta effettuando la vendita.\n"
-"Il punto vendita è obbligatorio ma è vivamente consigliato \n"
 "di aggiungere e settare anche gli eventuali punti cassa \n"
 "dal menu \"opzioni\" della finestra principale"
 msgstr ""
