@@ -502,9 +502,6 @@ if tipodb == "sqlite" and not (os.path.exists(startdir()+"db")):
     if os.path.exists("data/db"):
         shutil.copy("data/db",startdir()+"db")
         os.remove("data/db")
-#    elif os.path.exists("data/db_pw.dist")\
-#                        and pw.upper()=="YES":
-#        shutil.copy("data/db_pw.dist",startdir()+"db" )
     elif os.path.exists("data/db.dist"):
         shutil.copy("data/db.dist",startdir()+"db" )
     else:
@@ -582,8 +579,12 @@ pg2log = logging.getLogger('PromoGest2')
 pg2log.setLevel(logging.INFO)
 
 # Add the log message handler to the logger
-handler = logging.handlers.RotatingFileHandler(
-              LOG_FILENAME, maxBytes=10000, backupCount=6)
+try:
+    handler = logging.handlers.RotatingFileHandler(
+                  LOG_FILENAME, maxBytes=10000, backupCount=6)
+except:
+    handler = logging.handlers.RotatingFileHandler(
+                  LOG_FILENAME+"bis", maxBytes=10000, backupCount=6)
 
 formatter = logging.Formatter(
     "%(asctime)s - %(name)s - %(levelname)s - %(message)s - %(pathname)s - %(funcName)s - %(lineno)d")
