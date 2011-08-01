@@ -504,7 +504,7 @@ class GestioneScontrini(GladeWidget):
 
         msg = "Documento creato da scontrino !\n\nIl nuovo documento e' il n. " + str(res.numero) + " del " + dateToString(res.data_documento) + " (" + newDao.operazione + ")\n" + "Lo vuoi modificare?"
         if YesNoDialog(msg=msg, transient=self.getTopLevel()):
-            from promogest.ui.AnagraficaDocumenti import AnagraficaDocumenti
+            from promogest.ui.anagDocumenti.AnagraficaDocumenti import AnagraficaDocumenti
             anag = AnagraficaDocumenti()
             anagWindow = anag.getTopLevel()
             anagWindow.show_all()
