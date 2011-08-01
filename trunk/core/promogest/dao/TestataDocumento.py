@@ -591,7 +591,8 @@ class TestataDocumento(Dao):
                         tipo_pag = "TERZA RATA"
                     elif scad.numero_scadenza == 4:
                         tipo_pag = "QUARTA RATA"
-                    stringa = "%s %s Rif.interni N.%s del. %s " %(self.operazione, self.protocollo, str(self.numero), dateToString(self.data_documento))
+                    stringa = "%s %s - %s Rif.interni N.%s " %(self.operazione, self.protocollo, \
+                        dateToString(self.data_documento), str(self.numero))
                     if ope["segno"] == "-":
                         stringa += 'a '
                         segno = "entrata"
