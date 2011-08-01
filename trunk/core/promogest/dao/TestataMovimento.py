@@ -167,8 +167,8 @@ class TestataMovimento(Dao):
         self.rmfv= None
         if row:
             self.rmfv = RigaMovimentoFornitura().select(idRigaMovimentoVenditaBool = True, batchSize=None)
-            if self.rmfv:
-                print "QUESTO ARTICOLO è stato venduto", len(self.rmfv), "volte"
+            #if self.rmfv:
+                #print "QUESTO ARTICOLO è stato venduto", len(self.rmfv), "volte"
             for r in row:
                 if posso("SM"):
                     mp = MisuraPezzo().select(idRiga=r.id, batchSize=None)
@@ -261,7 +261,8 @@ class TestataMovimento(Dao):
                             daoFornitura.data_produzione = stringToDate(riga.data_produzione) or None
                         if hasattr(riga,"data_prezzo"):
                             daoFornitura.data_prezzo = data_prezzo
-
+                        if not daoFornitura.data_prezzo:
+                            daoFornitura.data_prezzo = stringToDateTime(self.data_movimento)
                         daoFornitura.id_fornitore = self.id_fornitore
                         daoFornitura.id_articolo = riga.id_articolo
                         if daoFornitura.data_fornitura is not None:
@@ -287,13 +288,15 @@ class TestataMovimento(Dao):
                         params["session"].add(daoFornitura)
                     params["session"].commit()
                     if self.id_fornitore and riga.id_articolo:
-                        for q in range(1,riga.quantita):
+                        for q in range(0,riga.quantita):
                             a = RigaMovimentoFornitura()
                             a.id_articolo = riga.id_articolo
                             a.id_riga_movimento_acquisto = riga.id
-                            if self.rmfv and self.rmfv[0].id_articolo==riga.id_articolo and self.rmfv[0].id_fornitura == daoFornitura.id:
-                                a.id_riga_movimento_vendita = self.rmfv[0].id_riga_movimento_vendita
-                                del self.rmfv[0]
+                            if self.rmfv:
+                                for v in self.rmfv:
+                                    if v.id_articolo==riga.id_articolo and v.id_fornitura == daoFornitura.id:
+                                        a.id_riga_movimento_vendita = v.id_riga_movimento_vendita
+                                        self.rmfv.remove(v)
                             a.id_fornitura = daoFornitura.id
                             params["session"].add(a)
                         params["session"].commit()

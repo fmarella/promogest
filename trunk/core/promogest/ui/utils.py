@@ -478,13 +478,13 @@ def leggiFornitura(idArticolo, idFornitore=None, data=None, noPreferenziale=Fals
     if (idArticolo is not None):
         fors = Fornitura().select(idArticolo=idArticolo,
                                     idFornitore=idFornitore,
-                                    daDataFornitura=None,
+                                    #daDataFornitura=None,
                                     aDataFornitura=None,
-                                    daDataPrezzo=None,
-                                    aDataPrezzo=data,
-                                    codiceArticoloFornitore=None,
+                                    #daDataPrezzo=None,
+                                    #aDataPrezzo=data,
+                                    #codiceArticoloFornitore=None,
                                     orderBy = 'data_prezzo',
-                                    offset = None,
+                                    #offset = None,
                                     batchSize = None)
 
         fornitura = None

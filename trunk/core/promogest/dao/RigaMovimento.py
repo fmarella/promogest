@@ -284,16 +284,13 @@ class RigaMovimento(Dao):
         #print "DOPO Commit Riga movimento", tempo()
         stoccato = (Stoccaggio().count(idArticolo=self.id_articolo,
                                                 idMagazzino=self.id_magazzino) > 0)
-#        print "STOCCATOOOOOOOOOOOOOOOOOOOO", stoccato
         if not stoccato:
             daoStoccaggio = Stoccaggio()
             daoStoccaggio.id_articolo = self.id_articolo
             daoStoccaggio.id_magazzino = self.id_magazzino
             params["session"].add(daoStoccaggio)
             params["session"].commit()
-        #print "DOPO Stoccato", tempo()
         if (hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes") or ("GestioneNoleggio" in modulesList):
-        #if self.__coeficente_noleggio and self.__prezzo_acquisto_noleggio:
             nr = NoleggioRiga()
             nr.coeficente = self.coeficente_noleggio
             nr.prezzo_acquisto = self.prezzo_acquisto_noleggio
@@ -303,9 +300,7 @@ class RigaMovimento(Dao):
                 nr.isrent = False
             nr.id_riga = self.id
             nr.persist()
-        #print "Prima di scontiRigaMovimentoDel", tempo()
         self.scontiRigaMovimentoDel(id=self.id)
-        #print "Dopo di scontiRigaMovimentoDel", tempo()
         if self.scontiRigheMovimento:
             for value in self.scontiRigheMovimento:
                 value.id_riga_movimento = self.id
