@@ -93,30 +93,31 @@ class AnagraficaDocumentiHtml(AnagraficaHtml):
 
     def variations(self):
         from promogest.dao.RigaMovimentoFornitura import RigaMovimentoFornitura
-        for r in self.dao.righe:
-            l = ""
-            setattr(r, "aggiuntalottoindescrizione",l)
-            if self.dao.id_fornitore and r.id_articolo:
-                aa = RigaMovimentoFornitura().select(idRigaMovimentoAcquisto=r.id, batchSize=None)
-            else:
-                aa = RigaMovimentoFornitura().select(idRigaMovimentoVendita=r.id, batchSize=None)
-            #ll = r.descrizione
-            if aa:
-
-                for a in aa:
-                    lottostr = ""
-                    scadstr = ""
-                    if a.forni.numero_lotto and a.forni.numero_lotto != "" :
-                        lotto = a.forni.numero_lotto
-                        if lotto:
-                            lottostr = "<br /> Lotto %s  - " %lotto
-                    if a.forni.data_scadenza:
-                        scad = " "+ dateToString(a.forni.data_scadenza)
-                        if scad:
-                            scadstr = "Data Sc. %s"  %scad
-                    l += lottostr + scadstr
-                #ll += l
+        if self.dao:
+            for r in self.dao.righe:
+                l = ""
                 setattr(r, "aggiuntalottoindescrizione",l)
+                if self.dao.id_fornitore and r.id_articolo:
+                    aa = RigaMovimentoFornitura().select(idRigaMovimentoAcquisto=r.id, batchSize=None)
+                else:
+                    aa = RigaMovimentoFornitura().select(idRigaMovimentoVendita=r.id, batchSize=None)
+                #ll = r.descrizione
+                if aa:
+
+                    for a in aa:
+                        lottostr = ""
+                        scadstr = ""
+                        if a.forni.numero_lotto and a.forni.numero_lotto != "" :
+                            lotto = a.forni.numero_lotto
+                            if lotto:
+                                lottostr = "<br /> Lotto %s  - " %lotto
+                        if a.forni.data_scadenza:
+                            scad = " "+ dateToString(a.forni.data_scadenza)
+                            if scad:
+                                scadstr = "Data Sc. %s"  %scad
+                        l += lottostr + scadstr
+                    #ll += l
+                    setattr(r, "aggiuntalottoindescrizione",l)
 
         return self.dao
 
