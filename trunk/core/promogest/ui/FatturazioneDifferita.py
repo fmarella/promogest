@@ -138,10 +138,10 @@ class FatturazioneDifferita(GladeWidget):
         if operazione is None:
             obligatoryField(self.getTopLevel(), self.id_operazione_combobox)
 
+        fattura = None
         for ragsoc in self.nomi:  # in self.nomi ci sono le ragioni sociali dei clienti
             # self.listdoc contiene un dizionario che ha come chiave il cliente
             #e come valore una lista di gtkTreeiter a lui riferiti
-            fattura = None
             for ddt in self.listdoc[ragsoc]:
                 if self.daoGiaPresente(InformazioniFatturazioneDocumento()\
                                                     .select(id_fattura=ddt[0].id)) and \
