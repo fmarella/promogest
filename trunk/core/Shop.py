@@ -43,6 +43,9 @@ class Shop(object):
 
         (options, args) = parser.parse_args()
 
+        from promogest import bindtextdomain
+        bindtextdomain('promogest', locale_dir='./po/locale')
+
         from promogest.ui.Login import Login
         login = Login(shop=True)
         Environment.pg2log.info("APERTURA DI GESTIONE NEGOZIO")
