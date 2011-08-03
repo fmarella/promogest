@@ -497,6 +497,17 @@ def leggiFornitura(idArticolo, idFornitore=None, data=None, noPreferenziale=Fals
                             orderBy = 'data_prezzo',
                             #offset = None,
                             batchSize = None)
+        if not fors:
+            fors = Fornitura().select(idArticolo=idArticolo,
+                            idFornitore=idFornitore,
+                            #daDataFornitura=None,
+                            #aDataFornitura=None,
+                            #daDataPrezzo=None,
+                            #aDataPrezzo=data,
+                            #codiceArticoloFornitore=None,
+                            orderBy = 'data_prezzo',
+                            #offset = None,
+                            batchSize = None)
         fornitura = None
         if idFornitore:
 #            print "FOOOOOOOOOOOOOOOOOOOOORSA2", fors
