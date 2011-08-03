@@ -231,6 +231,15 @@ class TestataMovimento(Dao):
                                                     orderBy = 'data_prezzo DESC',
                                                     offset = None,
                                                     batchSize = None)
+                        if not fors:
+                            fors = Fornitura().select(idArticolo=riga.id_articolo,
+                                                        idFornitore=self.id_fornitore,
+                                                        #daDataPrezzo=None,
+                                                        aDataFornitura = data_prezzo,
+                                                        orderBy = 'data_fornitura DESC',
+                                                        offset = None,
+                                                        batchSize = None)
+
                         #print "DOPO dopo FORS", fors
                         daoFornitura = None
                         if fors:
