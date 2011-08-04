@@ -30,6 +30,7 @@ from promogest.ui.anagDocumenti.AnagraficaDocumentiFilter import AnagraficaDocum
 from promogest.ui.anagDocumenti.AnagraficaDocumentiEdit import AnagraficaDocumentiEdit
 from promogest.modules.Pagamenti.dao.TestataDocumentoScadenza import TestataDocumentoScadenza
 from promogest.dao.TestataDocumento import TestataDocumento
+from promogest.dao.Fornitura import Fornitura
 from promogest.ui.utils import *
 
 
@@ -103,12 +104,16 @@ class AnagraficaDocumentiHtml(AnagraficaHtml):
                     aa = RigaMovimentoFornitura().select(idRigaMovimentoVendita=r.id, batchSize=None)
                 #ll = r.descrizione
                 if aa:
-
+                    lotti= []
                     for a in aa:
                         lottostr = ""
                         scadstr = ""
                         if a.forni.numero_lotto and a.forni.numero_lotto != "" :
                             lotto = a.forni.numero_lotto
+                            if lotto in lotti:
+                                continue
+                            else:
+                                lotti.append(lotto)
                             if lotto:
                                 lottostr = "<br /> Lotto %s  - " %lotto
                         if a.forni.data_scadenza:

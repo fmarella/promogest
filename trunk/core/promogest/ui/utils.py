@@ -1977,8 +1977,14 @@ def modificaLottiScadenze(riga):
     ll = riga["descrizione"]
     if aa:
         l = ""
+        lotti= []
         for a in aa:
-            l += "\n Lotto %s Data sc %s " %(a.forni.numero_lotto,dateToString(a.forni.data_scadenza))
+            lotto = a.forni.numero_lotto
+            if lotto in lotti:
+                continue
+            else:
+                lotti.append(lotto)
+            l += "\n Lotto %s Data sc %s " %(lotto,dateToString(a.forni.data_scadenza))
         ll += l
     return ll
 
