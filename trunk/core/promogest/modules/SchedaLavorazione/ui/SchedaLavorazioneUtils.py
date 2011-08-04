@@ -329,6 +329,7 @@ def getPrezzoNetto(dao, parzialeNetto=None):
 
 def fillSchedaLavorazioneFromEmail(ui):
     text = []
+    codParte = None
     try:
         email = file(os.path.expanduser('~') +"/Form ordine partecipazioni.eml","r")
         text = email.readlines()
