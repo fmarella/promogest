@@ -67,9 +67,9 @@ Inserite il codice ( Esattamente come è scritto) della famiglia di destinazione
 qui sotto e premete SI
 L'operazione è irreversibile, retroattiva e potrebbe impiegare qualche minuto.
 """
-            move = YesNoDialog(msg=msg, transient=self.getTopLevel(), show_entry=True)
-            if move[0]:
-                famm = FamigliaArticolo().select(codice = move[1])
+            resp, move = YesNoDialog(msg=msg, transient=self.getTopLevel(), show_entry=True)
+            if resp:
+                famm = FamigliaArticolo().select(codice = move)
                 if famm:
                     idfam = famm[0].id
                     isfather = FamigliaArticolo().select(idPadre =idfam)
