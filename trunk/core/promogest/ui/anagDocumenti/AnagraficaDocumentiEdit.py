@@ -164,7 +164,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         if type(ivaobj) != type("CIAO"):
             iva = ivaobj.percentuale
             if iva == "" or iva == "0":
-                messageInfo(msg="ATTENZIONE IVA a 0%")
+                messageInfo(msg=_("ATTENZIONE IVA a 0%"))
             else:
                 prezzoLordo = self.prezzo_lordo_entry.get_text()
                 imponibile = float(prezzoLordo)/(1+float(iva)/100)
@@ -187,7 +187,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         """ controlliamo prima di effettuare una ricerca che il magazzino sia
         selezionato per rendere la ricerca possibile e corretta"""
         if not findIdFromCombobox(self.id_magazzino_combobox) and self.checkMAGAZZINO:
-            messageInfo(msg="ATTENZIONE! \n SELEZIONARE UN MAGAZZINO\n PER UNA RICERCA CORRETTA")
+            messageInfo(msg=_("ATTENZIONE! \n SELEZIONARE UN MAGAZZINO\n PER UNA RICERCA CORRETTA"))
             self.id_magazzino_combobox.grab_focus()
             self.checkMAGAZZINO = False
 
@@ -453,7 +453,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                 if pago:
                     self.metodo_pagamento_label.set_markup('<b><span foreground="black" size="16000">'+str(pago.denominazione)+'</span></b>')
                 else:
-                    self.metodo_pagamento_label.set_markup('<b><span foreground="black" size="16000">'+str("NESSUNO?")+'</span></b>')
+                    self.metodo_pagamento_label.set_markup('<b><span foreground="black" size="16000">'+str(_("NESSUNO?"))+'</span></b>')
                 self.on_aggiorna_pagamenti_button_clicked(self.aggiorna_pagamenti_button)
                 if self.dao.documento_saldato:
                     self.chiudi_pagamento_documento_button.set_sensitive(False)
@@ -796,33 +796,33 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             AnagraficaDocumentiEditADRExt.sposta_sommario_in_tabella(self)
         scontiRigaDocumentoList = {}
         if not(len(self._righe) > 1):
-            messageInfo(msg="TENTATIVO DI SALVATAGGIO DOCUMENTO SENZA RIGHE???")
+            messageInfo(msg=_("TENTATIVO DI SALVATAGGIO DOCUMENTO SENZA RIGHE???"))
             raise Exception, "ATTENZIONE, TENTATIVO DI SALVATAGGIO SENZA RIGHE?????"
 
         if (self.data_documento_entry.get_text() == ''):
             obligatoryField(self.dialogTopLevel,
                     self.data_documento_entry,
-                    'Inserire la data del documento !')
+                    _('Inserire la data del documento !'))
 
         if (findIdFromCombobox(self.id_operazione_combobox) is None):
             obligatoryField(self.dialogTopLevel,
                     self.id_operazione_combobox,
-                    'Inserire il tipo di documento !')
+                    _('Inserire il tipo di documento !'))
 
         if self.id_persona_giuridica_customcombobox.getId() is None:
             obligatoryField(self.dialogTopLevel,
                     self.id_persona_giuridica_customcombobox,
-                    'Inserire l\'intestatario del documento !')
+                    _('Inserire l\'intestatario del documento !'))
 
         self.dao.data_documento = stringToDate(self.data_documento_entry.get_text())
         date = time.strftime("%Y")
         if date != Environment.workingYear:
-            print "ATTENZIONE ANNO DI LAVORO DIVERSO QUALE PRENDERE??????"
-            msg = """ ATTENZIONE!!
+            #print _("ATTENZIONE ANNO DI LAVORO DIVERSO QUALE PRENDERE??????")
+            msg = _(""" ATTENZIONE!!
     L'anno di lavoro e l'anno di creazione documento non corrispondono.
        Vuoi che la DATA UTILIZZATA SIA 31/12/%s?
 
-        """ %str(Environment.workingYear)
+        """) %str(Environment.workingYear)
             if YesNoDialog(msg=msg, transient=None):
                 self.dao.data_documento = stringToDate("31/12/"+Environment.workingYear)
 
@@ -881,7 +881,7 @@ del documento.
             if not self.dao.id_vettore:
                 obligatoryField(self.dialogTopLevel,
                     self.id_vettore_customcombobox,
-                    'Quando si seleziona vettore è obbligatorio settarne uno!')
+                    _('Quando si seleziona vettore è obbligatorio settarne uno!'))
         elif self.mittente_radiobutton.get_active():
             self.dao.id_vettore = None
             self.dao.incaricato_trasporto = 'mittente'
@@ -1139,7 +1139,7 @@ del documento.
         """
         self.checkMAGAZZINO = False
         if self.NoRowUsableArticle:
-            messageInfo('ARTICOLO NON USABILE IN UNA RIGA IN QUANTO ARTICOLO PRINCIPALE O PADRE!')
+            messageInfo(_('ARTICOLO NON USABILE IN UNA RIGA IN QUANTO ARTICOLO PRINCIPALE O PADRE!'))
             return
 
         self._righe[0]["idMagazzino"] = findIdFromCombobox(self.id_magazzino_combobox)
@@ -1147,25 +1147,25 @@ del documento.
         self._righe[0]["magazzino"] = magazzino['denominazione']
 
         if (self.data_documento_entry.get_text() == ''):
-            messageInfo('Inserire la data del documento !')
+            messageInfo(_('Inserire la data del documento !'))
             return
 
         if (findIdFromCombobox(self.id_operazione_combobox) is None):
-            messageInfo('Inserire il tipo di documento !')
+            messageInfo(_('Inserire il tipo di documento !'))
             return
 
         if (self.id_persona_giuridica_customcombobox.getId() is None):
-            messageInfo('Inserire l\'intestatario del documento !')
+            messageInfo(_('Inserire l\'intestatario del documento !'))
             return
 
         if ((self._righe[0]["idMagazzino"] is not None) and
                 (self._righe[0]["idArticolo"] is None)):
-            messageInfo('Inserire l\'articolo !')
+            messageInfo(_('Inserire l\'articolo !'))
             return
 
         if ((self._righe[0]["idArticolo"] is not None) and
                 (self._righe[0]["idMagazzino"] is None)):
-            messageInfo('Inserire il magazzino !')
+            messageInfo(_('Inserire il magazzino !'))
             return
         self.on_show_totali_riga()
         costoVariato = (self._tipoPersonaGiuridica == "fornitore" and self._righe[0]["idArticolo"] is not None and
@@ -1262,7 +1262,7 @@ del documento.
             if "prezzo_acquisto" in self._righe[0]:
                 self._righe[self._numRiga]["prezzo_acquisto"] = self._righe[0]["prezzo_acquisto"]
             else:
-                messageInfo(msg="ATTENZIONE!!, SEMBRA UN NOLEGGIO MA MANCA PREZZO ACQUISTO.\n RICONTROLLARE RIGA")
+                messageInfo(msg=_("ATTENZIONE!!, SEMBRA UN NOLEGGIO MA MANCA PREZZO ACQUISTO.\n RICONTROLLARE RIGA"))
             arco_temporale = self._righe[self._numRiga]["arco_temporale"] = self._righe[0]["arco_temporale"]
         else:
             arco_temporale="NO"
@@ -1322,7 +1322,7 @@ del documento.
         self.calcolaTotale()
         if costoVariato:
             if not(self._variazioneListiniResponse == 'all' or self._variazioneListiniResponse == 'none'):
-                msg = 'Il prezzo di acquisto e\' stato variato:\n\n   si desidera aggiornare i listini di vendita ?'
+                msg = _('Il prezzo di acquisto e\' stato variato:\n\n   si desidera aggiornare i listini di vendita ?')
                 response = showComplexQuestion(self.dialogTopLevel, msg)
                 if response == GTK_RESPONSE_YES:
                     self._variazioneListiniResponse = 'yes'
@@ -1437,15 +1437,15 @@ del documento.
             self.mostraArticolo(anag.dao.id)
 
         if (self.data_documento_entry.get_text() == ''):
-            messageInfo('Inserire la data del documento !')
+            messageInfo(_('Inserire la data del documento !'))
             return
 
         if findIdFromCombobox(self.id_operazione_combobox) is None:
-            messageInfo('Inserire il tipo di documento !')
+            messageInfo(_('Inserire il tipo di documento !'))
             return
 
         if (findIdFromCombobox(self.id_magazzino_combobox) is None):
-            messageInfo('Inserire il magazzino !')
+            messageInfo(_('Inserire il magazzino !'))
             return
 
         codice = None
@@ -1637,7 +1637,7 @@ del documento.
 
     def on_edit_date_and_number_button_clicked(self, toggleButton):
         """ This permit to change the date of the document """
-        msg = 'Attenzione! Si sta per variare i riferimenti primari del documento.\n Continuare ?'
+        msg = _('Attenzione! Si sta per variare i riferimenti primari del documento.\n Continuare ?')
         if YesNoDialog(msg=msg, transient=self.dialogTopLevel):
             self.data_documento_entry.set_sensitive(True)
             self.numero_documento_entry.set_sensitive(True)
@@ -1713,7 +1713,7 @@ del documento.
     def on_variazione_listini_button_clicked(self, toggleButton):
         """ """
         if self._righe[0]["idArticolo"] is None:
-            messageInfo('Selezionare un articolo !')
+            messageInfo(_('Selezionare un articolo !'))
             return
 
         from promogest.ui.VariazioneListini import VariazioneListini
@@ -1848,7 +1848,7 @@ del documento.
             return
         idArt =  self._righe[0]["idArticolo"]
         if not idArt:
-            messageInfo(msg="NESSUN ARTICOLO o RIGA SELEZIONATO")
+            messageInfo(msg=_("NESSUN ARTICOLO o RIGA SELEZIONATO"))
             toggleButton.set_active(False)
             return
         a = DettaglioGiacenzaWindow(mainWindow=self,
@@ -1958,7 +1958,7 @@ del documento.
                 self.giorni_label.set_text(str(self._durataNoleggio.days) or "")
                 self.rent_checkbutton.set_active(True)
             else:
-                msg =  "ERRORE NELLA DURATA DEL NOLEGGIO\nNON PUO' ESSERE ZERO O NEGATIVA"
+                msg =  _("ERRORE NELLA DURATA DEL NOLEGGIO\nNON PUO' ESSERE ZERO O NEGATIVA")
                 messageInfo(msg=msg)
 
     #NOTEBOOK FINE TAB 3
@@ -2000,12 +2000,12 @@ del documento.
         """calcola importi scadenza pagamenti """
         id_pag = findIdFromCombobox(self.id_pagamento_customcombobox.combobox)
         if id_pag == -1 or id_pag==0 or id_pag==None:
-            messageInfo(msg="NESSUN METODO DI PAGAMENTO SELEZIONATO\n NON POSSO AGIRE")
+            messageInfo(msg=_("NESSUN METODO DI PAGAMENTO SELEZIONATO\n NON POSSO AGIRE"))
             return
         if self.dao.documento_saldato:
-            msg = 'Attenzione! Stai per riaprire un documento già saldato.\n Continuare ?'
+            msg = _('Attenzione! Stai per riaprire un documento già saldato.\n Continuare ?')
             if YesNoDialog(msg=msg, transient=self.dialogTopLevel):
-                self.stato_label.set_markup('<b><span foreground="#B40000" size="24000">APERTO</span></b>')
+                self.stato_label.set_markup(_('<b><span foreground="#B40000" size="24000">APERTO</span></b>'))
             else:
                 return
         AnagraficadocumentiPagamentExt.attiva_scadenze(self)

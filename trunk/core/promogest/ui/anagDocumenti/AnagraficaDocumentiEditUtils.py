@@ -51,35 +51,35 @@ def drawPart(anaedit):
     rendererDx = gtk.CellRendererText()
     rendererDx.set_property('xalign', 1)
 
-    column = gtk.TreeViewColumn('N°', rendererSx, text=0)
+    column = gtk.TreeViewColumn(_('N°'), rendererSx, text=0)
     column.set_sizing(GTK_COLUMN_GROWN_ONLY)
     column.set_clickable(False)
     column.set_resizable(True)
     column.set_expand(False)
     treeview.append_column(column)
 
-    column = gtk.TreeViewColumn('Magazzino', rendererSx, text=1)
+    column = gtk.TreeViewColumn(_('Magazzino'), rendererSx, text=1)
     column.set_sizing(GTK_COLUMN_GROWN_ONLY)
     column.set_clickable(False)
     column.set_resizable(True)
     column.set_expand(False)
     treeview.append_column(column)
 
-    column = gtk.TreeViewColumn('Codice articolo', rendererSx, text=2)
+    column = gtk.TreeViewColumn(_('Codice articolo'), rendererSx, text=2)
     column.set_sizing(GTK_COLUMN_GROWN_ONLY)
     column.set_clickable(False)
     column.set_resizable(True)
     column.set_expand(False)
     treeview.append_column(column)
 
-    column = gtk.TreeViewColumn('Descrizione', rendererSx, text=3)
+    column = gtk.TreeViewColumn(_('Descrizione'), rendererSx, text=3)
     column.set_sizing(GTK_COLUMN_GROWN_ONLY)
     column.set_clickable(False)
     column.set_resizable(True)
     column.set_expand(True)
     treeview.append_column(column)
 
-    column = gtk.TreeViewColumn('% IVA', rendererDx, text=4)
+    column = gtk.TreeViewColumn(_('% IVA'), rendererDx, text=4)
     column.set_sizing(GTK_COLUMN_GROWN_ONLY)
     column.set_clickable(False)
     column.set_resizable(True)
@@ -89,49 +89,49 @@ def drawPart(anaedit):
     if posso("SM"):
         AnagraficaDocumentiEditSuMisuraExt.setTreeview(treeview, rendererSx)
 
-    column = gtk.TreeViewColumn('Multiplo', rendererSx, text=8)
+    column = gtk.TreeViewColumn(_('Multiplo'), rendererSx, text=8)
     column.set_sizing(GTK_COLUMN_GROWN_ONLY)
     column.set_clickable(False)
     column.set_resizable(True)
     column.set_expand(False)
     treeview.append_column(column)
 
-    column = gtk.TreeViewColumn('Listino', rendererSx, text=9)
+    column = gtk.TreeViewColumn(_('Listino'), rendererSx, text=9)
     column.set_sizing(GTK_COLUMN_GROWN_ONLY)
     column.set_clickable(False)
     column.set_resizable(True)
     column.set_expand(False)
     treeview.append_column(column)
 
-    column = gtk.TreeViewColumn('U.M.', rendererSx, text=10)
+    column = gtk.TreeViewColumn(_('U.M.'), rendererSx, text=10)
     column.set_sizing(GTK_COLUMN_GROWN_ONLY)
     column.set_clickable(False)
     column.set_resizable(True)
     column.set_expand(False)
     treeview.append_column(column)
 
-    column = gtk.TreeViewColumn('Quantita''', rendererDx, text=11)
+    column = gtk.TreeViewColumn(_("Quantita'"), rendererDx, text=11)
     column.set_sizing(GTK_COLUMN_GROWN_ONLY)
     column.set_clickable(False)
     column.set_resizable(True)
     column.set_expand(False)
     treeview.append_column(column)
 
-    column = gtk.TreeViewColumn('Prezzo lordo', rendererDx, text=12)
+    column = gtk.TreeViewColumn(_('Prezzo lordo'), rendererDx, text=12)
     column.set_sizing(GTK_COLUMN_GROWN_ONLY)
     column.set_clickable(False)
     column.set_resizable(True)
     column.set_expand(False)
     treeview.append_column(column)
 
-    column = gtk.TreeViewColumn('Sconti', rendererSx, text=13)
+    column = gtk.TreeViewColumn(_('Sconti'), rendererSx, text=13)
     column.set_sizing(GTK_COLUMN_GROWN_ONLY)
     column.set_clickable(False)
     column.set_resizable(True)
     column.set_expand(False)
     treeview.append_column(column)
 
-    column = gtk.TreeViewColumn('Prezzo netto', rendererDx, text=14)
+    column = gtk.TreeViewColumn(_('Prezzo netto'), rendererDx, text=14)
     column.set_sizing(GTK_COLUMN_GROWN_ONLY)
     column.set_clickable(False)
     column.set_resizable(True)
@@ -141,7 +141,7 @@ def drawPart(anaedit):
     if posso("GN"):
         AnagraficaDocumentiEditGestioneNoleggioExt.setTreeview(treeview, rendererSx)
 
-    column = gtk.TreeViewColumn('Totale', rendererDx, text=16)
+    column = gtk.TreeViewColumn(_('Totale'), rendererDx, text=16)
     column.set_sizing(GTK_COLUMN_GROWN_ONLY)
     column.set_clickable(False)
     column.set_resizable(True)
@@ -320,12 +320,12 @@ def calcolaTotalePart(anaedit, dao=None):
                 elif applicazioneSconti == 'non scalare':
                     totaleImponibileScontato = totaleImponibileScontato - totaleImponibile * Decimal(s["valore"]) / 100
                 else:
-                    raise Exception, ('BUG! Tipo di applicazione sconto '
-                                        'sconosciuto: %s' % s['tipo'])
+                    raise Exception, (_('BUG! Tipo di applicazione sconto '
+                                        'sconosciuto: %s') % s['tipo'])
             elif s["tipo"] == 'valore':
                 totaleImponibileScontato = totaleImponibileScontato - Decimal(s["valore"])
                 if totaleImponibileScontato <0:
-                    messageInfo(msg="TOTALE SCONTATO NON PUÒ ESSERE INFERIORE A ZERO")
+                    messageInfo(msg=_("TOTALE SCONTATO NON PUÒ ESSERE INFERIORE A ZERO"))
                     anaedit.sconti_testata_widget.setValues([])
                     return
 
@@ -366,7 +366,7 @@ def calcolaTotalePart(anaedit, dao=None):
     if pago:
         anaedit.metodo_pagamento_label.set_markup('<b><span foreground="black" size="16000">'+str(pago.denominazione)+'</span></b>')
     else:
-        anaedit.metodo_pagamento_label.set_markup('<b><span foreground="black" size="16000">'+str("NESSUNO?")+'</span></b>')
+        anaedit.metodo_pagamento_label.set_markup('<b><span foreground="black" size="16000">'+str(_("NESSUNO?"))+'</span></b>')
 
     anaedit.liststore_iva.clear()
     for k in castellettoIva.keys():

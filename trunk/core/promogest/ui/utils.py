@@ -1984,7 +1984,7 @@ def modificaLottiScadenze(riga):
                 continue
             else:
                 lotti.append(lotto)
-            l += "\n Lotto %s Data sc %s " %(lotto,dateToString(a.forni.data_scadenza))
+            l += _("\n Lotto %s Data sc %s ") %(lotto,dateToString(a.forni.data_scadenza))
         ll += l
     return ll
 
@@ -2073,7 +2073,7 @@ def checkCodFisc(codfis):
     if  c:
         return True
     else:
-        msg = 'Attenzione Codice Fiscale formalmente scorretto\nInserire comunque?!!!'
+        msg = _('Attenzione Codice Fiscale formalmente scorretto\nInserire comunque?!!!')
         messageInfo(msg=msg)
         return True
 
@@ -2089,18 +2089,18 @@ def checkPartIva(partitaIVA):
     n_Som2 = 0
     lcv = 0
     if len(partitaIVA) !=11:
-        msg = 'Attenzione Partita Iva formalmente scorretto\nInserire comunque?!!!'
+        msg = _('Attenzione Partita Iva formalmente scorretto\nInserire comunque?!!!')
         messageInfo(msg=msg)
         return True
     l_ret = 0
     try:
         l_ret = int(partitaIVA)
     except:
-        msg = 'Attenzione Partita Iva formalmente scorretto\nInserire comunque?!!!'
+        msg = _('Attenzione Partita Iva formalmente scorretto\nInserire comunque?!!!')
         messageInfo(msg=msg)
         return True
     if l_ret < 0:
-        msg = 'Attenzione Partita Iva formalmente scorretto\nInserire comunque?!!!'
+        msg = _('Attenzione Partita Iva formalmente scorretto\nInserire comunque?!!!')
         messageInfo(msg=msg)
         return True
     for lcv in [0, 2, 4, 6, 8]:
@@ -2115,7 +2115,7 @@ def checkPartIva(partitaIVA):
     if (n_Som2==n_Val):
         return True
     else:
-        msg = 'Attenzione Partita Iva formalmente scorretto\nInserire comunque?!!!'
+        msg = _('Attenzione Partita Iva formalmente scorretto\nInserire comunque?!!!')
         messageInfo(msg=msg)
         return True
 
@@ -2155,7 +2155,7 @@ def hasAction(actionID=None):
                                 GTK_DIALOG_MODAL |
                                 GTK_DIALOG_DESTROY_WITH_PARENT,
                                 GTK_DIALOG_MESSAGE_WARNING, GTK_BUTTON_OK,
-                                "Permesso negato! L'azione richiesta non è tra quelle che ti son consentite")
+                                _("Permesso negato! L'azione richiesta non è tra quelle che ti son consentite"))
         response = dialog.run()
         dialog.destroy()
         return False
@@ -2170,12 +2170,12 @@ def numeroRegistroGet(tipo=None, date=None):
     from promogest.dao.Setting import Setting
     date = time.strftime("%Y")
     if date != Environment.workingYear:
-        print "ATTENZIONE ANNO DI LAVORO DIVERSO QUALE PRENDERE??????"
-        msg = """ ATTENZIONE!!
+        #print "ATTENZIONE ANNO DI LAVORO DIVERSO QUALE PRENDERE??????"
+        msg = _(""" ATTENZIONE!!
 L'anno di lavoro e l'anno di creazione documento non corrispondono.
    Vuoi che la numerazione incrementi l'anno di lavoro selezionato ( %s )?
 
-    """ %str(Environment.workingYear)
+    """) %str(Environment.workingYear)
         dialog = gtk.MessageDialog(None,
                     GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
                     GTK_DIALOG_MESSAGE_QUESTION, GTK_BUTTON_YES_NO, msg)
@@ -2694,17 +2694,17 @@ def aggiorna(anag):
             if response == GTK_RESPONSE_YES:
                 try:
                     client.update( '.' )
-                    msgg = "TUTTO OK AGGIORNAMENTO EFFETTUATO\n\n IL PROMOGEST VERRA' CHIUSO PER UN RIAVVIO"
+                    msgg = _("TUTTO OK AGGIORNAMENTO EFFETTUATO\n\n IL PROMOGEST VERRA' CHIUSO PER UN RIAVVIO")
                     Environment.pg2log.info("EFFETTUATO AGGIORNAMENTO ANDATO A BUON FINE")
                     try:
                         anag.active_img.set_from_file("gui/active_on.png")
-                        anag.aggiornamento_label.set_label("AGGIORNATO")
+                        anag.aggiornamento_label.set_label(_("AGGIORNATO"))
                     except:
                         pass
                     ok = True
                 except pysvn.ClientError, e:
                     # convert to a string
-                    msgg = "ERRORE AGGIORNAMENTO:  %s " %str(e)
+                    msgg = _("ERRORE AGGIORNAMENTO:  %s ") %str(e)
                     Environment.pg2log.info("EFFETTUATO AGGIORNAMENTO ANDATO MALE")
                     ok = False
                 dialogg = gtk.MessageDialog(anag.getTopLevel(),
@@ -2717,7 +2717,7 @@ def aggiorna(anag):
                 if ok:
                     sys.exit()
         else:
-            msggg = "Il PromoGest è già aggiornato all'ultima versione ( %s) \n Riprova in un altro momento\n\nGrazie" %(str(rl))
+            msggg = _("Il PromoGest è già aggiornato all'ultima versione ( %s) \n Riprova in un altro momento\n\nGrazie") %(str(rl))
             dialoggg = gtk.MessageDialog(anag.getTopLevel(),
                                 GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
                                 GTK_DIALOG_MESSAGE_INFO,
@@ -2726,7 +2726,7 @@ def aggiorna(anag):
             dialoggg.run()
             dialoggg.destroy()
     else:
-        msgg = "ERRORE AGGIORNAMENTO FORSE NON C'E' CONNESSIONE \nO DEVI ASPETTARE ANCORA QUALCHE SECONDO E RIPROVARE"
+        msgg = _("ERRORE AGGIORNAMENTO FORSE NON C'E' CONNESSIONE \nO DEVI ASPETTARE ANCORA QUALCHE SECONDO E RIPROVARE")
         Environment.pg2log.info("SISTEMA  NON IN LINEA PER AGGIORNAMENTO")
         dialogg = gtk.MessageDialog(anag.getTopLevel(),
                         GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
@@ -2776,7 +2776,6 @@ def YesNoDialog(msg="MESSAGGIO", transient=None,show_entry=False ):
                            GTK_DIALOG_MESSAGE_QUESTION, GTK_BUTTON_YES_NO,
                            msg)
     __entry_codi = gtk.Entry()
-    #print "DIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIR", dir(dialog)
     dialog.get_content_area().pack_start(__entry_codi, False, False, 0)
     if show_entry:
         __entry_codi.show()

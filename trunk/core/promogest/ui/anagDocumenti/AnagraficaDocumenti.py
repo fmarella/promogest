@@ -41,7 +41,7 @@ class AnagraficaDocumenti(Anagrafica):
         self._magazzinoFissato = (idMagazzino != None)
         self._idMagazzino=idMagazzino
         Anagrafica.__init__(self,
-                            windowTitle='Promogest - Registrazione documenti',
+                            windowTitle=_('Promogest - Registrazione documenti'),
                             recordMenuLabel='_Documenti',
                             filterElement=AnagraficaDocumentiFilter(self),
                             htmlHandler=AnagraficaDocumentiHtml(self),
@@ -115,11 +115,11 @@ class AnagraficaDocumentiHtml(AnagraficaHtml):
                             else:
                                 lotti.append(lotto)
                             if lotto:
-                                lottostr = "<br /> Lotto %s  - " %lotto
+                                lottostr = _("<br /> Lotto %s  - ") %lotto
                         if a.forni.data_scadenza:
                             scad = " "+ dateToString(a.forni.data_scadenza)
                             if scad:
-                                scadstr = "Data Sc. %s"  %scad
+                                scadstr = _("Data Sc. %s")  %scad
                         l += lottostr + scadstr
                     #ll += l
                     setattr(r, "aggiuntalottoindescrizione",l)
@@ -130,7 +130,7 @@ class AnagraficaDocumentiHtml(AnagraficaHtml):
 class AnagraficaDocumentiReport(AnagraficaReport):
     def __init__(self, anagrafica):
         AnagraficaReport.__init__(self, anagrafica=anagrafica,
-                                  description='Elenco dei documenti',
+                                  description=_('Elenco dei documenti'),
                                   defaultFileName='documenti',
                                   htmlTemplate='documenti',
                                   sxwTemplate='documenti')
