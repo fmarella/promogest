@@ -108,7 +108,7 @@ class AnagraficaDocumentiHtml(AnagraficaHtml):
                     for a in aa:
                         lottostr = ""
                         scadstr = ""
-                        if a.forni.numero_lotto and a.forni.numero_lotto != "" :
+                        if a.forni and a.forni.numero_lotto and a.forni.numero_lotto != "" :
                             lotto = a.forni.numero_lotto
                             if lotto in lotti:
                                 continue
@@ -116,7 +116,7 @@ class AnagraficaDocumentiHtml(AnagraficaHtml):
                                 lotti.append(lotto)
                             if lotto:
                                 lottostr = _("<br /> Lotto %s  - ") %lotto
-                        if a.forni.data_scadenza:
+                        if a.forni and a.forni.data_scadenza:
                             scad = " "+ dateToString(a.forni.data_scadenza)
                             if scad:
                                 scadstr = _("Data Sc. %s")  %scad
