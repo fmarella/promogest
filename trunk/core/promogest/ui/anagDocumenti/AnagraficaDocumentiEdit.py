@@ -1369,24 +1369,24 @@ del documento.
             return
         if self.ricerca == "codice":
             if len(text.get_text()) <3:
-                art = Articolo().select(codice=stringa, batchSize=20)
+                art = Articolo().select(codice=stringa,cancellato=True, batchSize=20)
             else:
-                art = Articolo().select(codice=stringa, batchSize=50)
+                art = Articolo().select(codice=stringa,cancellato=True, batchSize=50)
         elif self.ricerca == "descrizione":
             if len(text.get_text()) <3:
-                art = Articolo().select(denominazione=stringa, batchSize=20)
+                art = Articolo().select(denominazione=stringa,cancellato=True, batchSize=20)
             else:
-                art = Articolo().select(denominazione=stringa, batchSize=50)
+                art = Articolo().select(denominazione=stringa,cancellato=True, batchSize=50)
         elif self.ricerca == "codice_a_barre":
             if len(text.get_text()) <7:
-                art = Articolo().select(codiceABarre=stringa, batchSize=10)
+                art = Articolo().select(codiceABarre=stringa,cancellato=True, batchSize=10)
             else:
-                art = Articolo().select(codiceABarre=stringa, batchSize=40)
+                art = Articolo().select(codiceABarre=stringa,cancellato=True, batchSize=40)
         elif self.ricerca == "codice_articolo_fornitore_button":
             if len(text.get_text()) <3:
-                art = Articolo().select(codiceArticoloFornitore=stringa, batchSize=10)
+                art = Articolo().select(codiceArticoloFornitore=stringa,cancellato=True, batchSize=10)
             else:
-                art = Articolo().select(codiceArticoloFornitore=stringa, batchSize=40)
+                art = Articolo().select(codiceArticoloFornitore=stringa,cancellato=True, batchSize=40)
         for m in art:
             codice_art = m.codice
             den = m.denominazione
