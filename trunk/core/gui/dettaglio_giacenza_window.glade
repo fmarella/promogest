@@ -32,8 +32,9 @@
     <property name="modal">True</property>
     <property name="default_width">640</property>
     <property name="default_height">400</property>
-    <property name="destroy_with_parent">True</property>
+    <property name="type_hint">dialog</property>
     <property name="urgency_hint">True</property>
+    <property name="deletable">False</property>
     <property name="gravity">center</property>
     <child>
       <object class="GtkVBox" id="vbox1">
