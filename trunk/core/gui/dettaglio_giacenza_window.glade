@@ -24,12 +24,14 @@
   </object>
   <object class="GtkWindow" id="dettaglio_giacenza_window">
     <property name="visible">True</property>
-    <property name="can_focus">False</property>
+    <property name="can_focus">True</property>
     <property name="has_focus">True</property>
+    <property name="is_focus">True</property>
     <property name="title" translatable="yes">Dettaglio giacenza Articolo</property>
     <property name="modal">True</property>
     <property name="default_width">640</property>
     <property name="default_height">400</property>
+    <property name="gravity">center</property>
     <child>
       <object class="GtkVBox" id="vbox1">
         <property name="visible">True</property>
