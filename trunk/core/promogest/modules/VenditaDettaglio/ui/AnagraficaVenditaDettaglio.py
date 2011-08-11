@@ -503,7 +503,11 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             self.lsmodel.clear()
             listiniList = listinoCandidateSel(idArticolo=idArticolo,
                                                 idMagazzino=self.id_magazzino)
-            listinoPref = Listino().select(idListino=self.id_listino)[0]
+            try:
+                listinoPref = Listino().select(idListino=self.id_listino)[0]
+            except:
+                messageInfo(msg="Non c'è un listino per la vendita dettaglio\n andare in opzioni e configurarlo")
+                return
             self.lsmodel.append([listinoPref.id,listinoPref.denominazione])
             if listiniList:
                 for l in listiniList:
