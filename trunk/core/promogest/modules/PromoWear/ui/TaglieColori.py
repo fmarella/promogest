@@ -295,18 +295,20 @@ class GestioneTaglieColori(GladeWidget):
         self._treeViewModel.foreach(self.selectFilter )
         self._refreshHtml(data=self.datas)
 
-    def selectFilter(self, model, path, iter):
-        check = model.get_value(iter, 1)
-        fatherPath = model.get_path(iter)
+    def selectFilter(self, model, path, aiter):
+        if not aiter:
+            return
+        check = model.get_value(aiter, 1)
+        fatherPath = model.get_path(aiter)
         if check:
-            if len(fatherPath) ==1:
+            if len(fatherPath) == 1:
                 return
-            oggettoFiglio = model.get_value(iter, 0)
-            padre = model.iter_parent(iter)
-            oggettoPadre =model.get_value(padre, 0)
-            codice = model.get_value(iter, 3)
-            articolo = model.get_value(iter, 6)
-            self.datas.append((self._articoloBase,oggettoFiglio,oggettoPadre,codice, articolo))
+            oggettoFiglio = model.get_value(aiter, 0)
+            padre = model.iter_parent(aiter)
+            oggettoPadre = model.get_value(padre, 0)
+            codice = model.get_value(aiter, 3)
+            articolo = model.get_value(aiter, 6)
+            self.datas.append((self._articoloBase, oggettoFiglio, oggettoPadre, codice, articolo))
 
     def on_column_selected_edited(self, cell, path, treeview,value, editNext=True):
         """ Function to set the value quantita edit in the cell"""
