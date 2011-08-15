@@ -142,6 +142,12 @@ def connectEntryPag(anaedit):
     fillComboboxPagamenti(anaedit.id_pagamento_terza_scadenza_customcombobox.combobox)
     fillComboboxPagamenti(anaedit.id_pagamento_quarta_scadenza_customcombobox.combobox)
 
+    fillComboboxBanche(anaedit.id_banca_acconto_ccb.combobox)
+    fillComboboxBanche(anaedit.id_banca_prima_scadenza_ccb.combobox)
+    fillComboboxBanche(anaedit.id_banca_seconda_scadenza_ccb.combobox)
+    fillComboboxBanche(anaedit.id_banca_terza_scadenza_ccb.combobox)
+    fillComboboxBanche(anaedit.id_banca_quarta_scadenza_ccb.combobox)
+
 def on_chiudi_pagamento_documento_button_clicked(anaedit, button):
     "chiudi pagamento"
     if (anaedit.importo_prima_scadenza_entry.get_text() =="" or \
@@ -197,11 +203,13 @@ def on_pulisci_acconto_button_clicked(anaedit, button):
     anaedit.data_acconto_entry.set_text("")
     anaedit.importo_acconto_scadenza_entry.set_text("")
     anaedit.id_pagamento_acconto_customcombobox.combobox.set_active(-1)
+    anaedit.id_banca_acconto_ccb.combobox.set_active(-1)
     anaedit.data_pagamento_acconto_entry.set_text("")
 
 def on_pulisci_prima_rata_button_clicked(anaedit, button):
     anaedit.data_prima_scadenza_entry.set_text("")
     anaedit.id_pagamento_prima_scadenza_customcombobox.combobox.set_active(-1)
+    anaedit.id_banca_prima_scadenza_ccb.combobox.set_active(-1)
     anaedit.data_pagamento_prima_scadenza_entry.set_text("")
     anaedit.importo_prima_scadenza_entry.set_text("")
 
@@ -209,16 +217,19 @@ def on_pulisci_seconda_rata_button_clicked(anaedit, button):
     anaedit.data_seconda_scadenza_entry.set_text("")
     anaedit.importo_seconda_scadenza_entry.set_text("")
     anaedit.id_pagamento_seconda_scadenza_customcombobox.combobox.set_active(-1)
+    anaedit.id_banca_seconda_scadenza_ccb.combobox.set_active(-1)
     anaedit.data_pagamento_seconda_scadenza_entry.set_text("")
 
 def on_pulisci_terza_rata_button_clicked(anaedit, button):
     anaedit.data_terza_scadenza_entry.set_text("")
     anaedit.importo_terza_scadenza_entry.set_text("")
     anaedit.id_pagamento_terza_scadenza_customcombobox.combobox.set_active(-1)
+    anaedit.id_banca_terza_scadenza_ccb.combobox.set_active(-1)
     anaedit.data_pagamento_terza_scadenza_entry.set_text("")
 
 def on_pulisci_quarta_rata_button_clicked(anaedit, button):
     anaedit.data_quarta_scadenza_entry.set_text("")
     anaedit.importo_quarta_scadenza_entry.set_text("")
     anaedit.id_pagamento_quarta_scadenza_customcombobox.combobox.set_active(-1)
+    anaedit.id_banca_quarta_scadenza_ccb.combobox.set_active(-1)
     anaedit.data_pagamento_quarta_scadenza_entry.set_text("")

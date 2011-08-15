@@ -22,22 +22,35 @@
 
 from sqlalchemy import *
 from sqlalchemy.orm import *
+from migrate import *
 from promogest.Environment import *
 from Dao import Dao
+from Banca import Banca
 
-class TestataDocumentoScadenza(Dao):
-
-    def __init__(self, arg=None):
-        Dao.__init__(self, entity=self)
-
-    def filter_values(self,k,v):
-        dic= {'idTestataDocumentoScadenza': tesdocsca.c.id_testata_documento ==v}
-        return  dic[k]
 
 tesdocsca=Table('testata_documento_scadenza',
             params['metadata'],
             schema = params['schema'],
             autoload=True)
 
-std_mapper = mapper(TestataDocumentoScadenza, tesdocsca, properties={},
-                                order_by=tesdocsca.c.id)
+if "id_banca" not in [c.name for c in tesdocsca.columns]:
+    col = Column('id_banca', Integer, nullable=True)
+    # ForeignKey(bancaFK, onupdate="CASCADE", ondelete="RESTRICT"),
+    col.create(tesdocsca)
+
+class TestataDocumentoScadenza(Dao):
+
+    def __init__(self, arg=None):
+        Dao.__init__(self, entity=self)
+
+    def filter_values(self, k, v):
+        dic= {'idTestataDocumentoScadenza': tesdocsca.c.id_testata_documento ==v}
+        return dic[k]
+
+banc = Table('banca', params['metadata'],
+             schema=params['schema'],
+             autoload=True)
+
+std_mapper = mapper(TestataDocumentoScadenza, tesdocsca, properties={
+        "BN":relation(Banca, primaryjoin = (tesdocsca.c.id_banca==banc.c.id)),
+        }, order_by=tesdocsca.c.id)
