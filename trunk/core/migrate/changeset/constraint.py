@@ -3,7 +3,7 @@
 """
 from sqlalchemy import schema
 
-from migrate.changeset.exceptions import *
+from migrate.exceptions import *
 from migrate.changeset import SQLA_06
 
 class ConstraintChangeset(object):
@@ -126,9 +126,17 @@ class ForeignKeyConstraint(ConstraintChangeset, schema.ForeignKeyConstraint):
 
     def autoname(self):
         """Mimic the database's automatic constraint names"""
-        ret = "%(table)s_%(reftable)s_fkey" % dict(
-            table=self.table.name,
-            reftable=self.reftable.name,)
+        if hasattr(self.columns, 'keys'):
+            # SA <= 0.5
+            firstcol = self.columns[self.columns.keys()[0]]
+            ret = "%(table)s_%(firstcolumn)s_fkey" % dict(
+                table=firstcol.table.name,
+                firstcolumn=firstcol.name,)
+        else:
+            # SA >= 0.6
+            ret = "%(table)s_%(firstcolumn)s_fkey" % dict(
+                table=self.table.name,
+                firstcolumn=self.columns[0],)
         return ret
 
 

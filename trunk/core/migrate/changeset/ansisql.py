@@ -4,6 +4,8 @@
    At the moment, this isn't so much based off of ANSI as much as
    things that just happen to work with multiple databases.
 """
+import StringIO
+
 import sqlalchemy as sa
 from sqlalchemy.schema import SchemaVisitor
 from sqlalchemy.engine.default import DefaultDialect
@@ -14,8 +16,8 @@ from sqlalchemy.schema import (ForeignKeyConstraint,
                                UniqueConstraint,
                                Index)
 
-from migrate.changeset import exceptions, constraint, SQLA_06
-import StringIO
+from migrate import exceptions
+from migrate.changeset import constraint, SQLA_06
 
 if not SQLA_06:
     from sqlalchemy.sql.compiler import SchemaGenerator, SchemaDropper
@@ -106,10 +108,7 @@ class ANSIColumnGenerator(AlterTableVisitor, SchemaGenerator):
 
         # add indexes and unique constraints
         if column.index_name:
-            ix = Index(column.index_name,
-                       column,
-                       unique=bool(column.index_name or column.index))
-            ix.create()
+            Index(column.index_name,column).create()
         elif column.unique_name:
             constraint.UniqueConstraint(column,
                                         name=column.unique_name).create()
@@ -117,7 +116,7 @@ class ANSIColumnGenerator(AlterTableVisitor, SchemaGenerator):
         # SA bounds FK constraints to table, add manually
         for fk in column.foreign_keys:
             self.add_foreignkey(fk.constraint)
-
+        
         # add primary key constraint if needed
         if column.primary_key_name:
             cons = constraint.PrimaryKeyConstraint(column,
@@ -168,11 +167,24 @@ class ANSISchemaChanger(AlterTableVisitor, SchemaGenerator):
 
     def visit_index(self, index):
         """Rename an index"""
-        self.append("ALTER INDEX %s RENAME TO %s" %
-            (self.preparer.quote(self._validate_identifier(index.name,
-                                                           True), index.quote),
-             self.preparer.quote(self._validate_identifier(index.new_name,
-                                                           True), index.quote)))
+        if hasattr(self, '_validate_identifier'):
+            # SA <= 0.6.3
+            self.append("ALTER INDEX %s RENAME TO %s" % (
+                    self.preparer.quote(
+                        self._validate_identifier(
+                            index.name, True), index.quote),
+                    self.preparer.quote(
+                        self._validate_identifier(
+                            index.new_name, True), index.quote)))
+        else:
+            # SA >= 0.6.5
+            self.append("ALTER INDEX %s RENAME TO %s" % (
+                    self.preparer.quote(
+                        self._index_identifier(
+                            index.name), index.quote),
+                    self.preparer.quote(
+                        self._index_identifier(
+                            index.new_name), index.quote)))
         self.execute()
 
     def visit_column(self, delta):
