@@ -142,11 +142,11 @@ def connectEntryPag(anaedit):
     fillComboboxPagamenti(anaedit.id_pagamento_terza_scadenza_customcombobox.combobox)
     fillComboboxPagamenti(anaedit.id_pagamento_quarta_scadenza_customcombobox.combobox)
 
-    fillComboboxBanche(anaedit.id_banca_acconto_ccb.combobox)
-    fillComboboxBanche(anaedit.id_banca_prima_scadenza_ccb.combobox)
-    fillComboboxBanche(anaedit.id_banca_seconda_scadenza_ccb.combobox)
-    fillComboboxBanche(anaedit.id_banca_terza_scadenza_ccb.combobox)
-    fillComboboxBanche(anaedit.id_banca_quarta_scadenza_ccb.combobox)
+    fillComboboxBanche(anaedit.id_banca_acconto_ccb.combobox, short=20)
+    fillComboboxBanche(anaedit.id_banca_prima_scadenza_ccb.combobox, short=20)
+    fillComboboxBanche(anaedit.id_banca_seconda_scadenza_ccb.combobox, short=20)
+    fillComboboxBanche(anaedit.id_banca_terza_scadenza_ccb.combobox, short=20)
+    fillComboboxBanche(anaedit.id_banca_quarta_scadenza_ccb.combobox, short=20)
 
 def on_chiudi_pagamento_documento_button_clicked(anaedit, button):
     "chiudi pagamento"
