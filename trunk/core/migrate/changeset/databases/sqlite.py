@@ -8,9 +8,7 @@ from copy import copy
 
 from sqlalchemy.databases import sqlite as sa_base
 
-from migrate import exceptions
-from migrate.changeset import ansisql, SQLA_06
-
+from migrate.changeset import ansisql, exceptions, SQLA_06
 
 if not SQLA_06:
     SQLiteSchemaGenerator = sa_base.SQLiteSchemaGenerator
@@ -26,13 +24,20 @@ class SQLiteCommon(object):
 
 class SQLiteHelper(SQLiteCommon):
 
-    def recreate_table(self,table,column=None,delta=None):
+    def visit_column(self, delta):
+        if isinstance(delta, DictMixin):
+            column = delta.result_column
+            table = self._to_table(delta.table)
+        else:
+            column = delta
+            table = self._to_table(column.table)
         table_name = self.preparer.format_table(table)
 
-        # we remove all indexes so as not to have
-        # problems during copy and re-create
-        for index in table.indexes:
-            index.drop()
+        # we remove all constraints, indexes so it doesnt recreate them
+        ixbackup = copy(table.indexes)
+        consbackup = copy(table.constraints)
+        table.indexes = set()
+        table.constraints = set()
 
         self.append('ALTER TABLE %s RENAME TO migration_tmp' % table_name)
         self.execute()
@@ -44,58 +49,34 @@ class SQLiteHelper(SQLiteCommon):
         self.execute()
         self.append('DROP TABLE migration_tmp')
         self.execute()
-        
-    def visit_column(self, delta):
-        if isinstance(delta, DictMixin):
-            column = delta.result_column
-            table = self._to_table(delta.table)
-        else:
-            column = delta
-            table = self._to_table(column.table)
-        self.recreate_table(table,column,delta)
 
-class SQLiteColumnGenerator(SQLiteSchemaGenerator, 
-                            ansisql.ANSIColumnGenerator,
-                            # at the end so we get the normal
-                            # visit_column by default
-                            SQLiteHelper,
-                            SQLiteCommon
-                            ):
+        # restore indexes, constraints
+        table.indexes = ixbackup
+        table.constraints = consbackup
+
+class SQLiteColumnGenerator(SQLiteSchemaGenerator, SQLiteCommon, 
+                            ansisql.ANSIColumnGenerator):
     """SQLite ColumnGenerator"""
 
-    def _modify_table(self, table, column, delta):
-        columns = ' ,'.join(map(
-                self.preparer.format_column,
-                [c for c in table.columns if c.name!=column.name]))
-        return ('INSERT INTO %%(table_name)s (%(cols)s) '
-                'SELECT %(cols)s from migration_tmp')%{'cols':columns}
+    def add_foreignkey(self, constraint):
+        """Does not support ALTER TABLE ADD FOREIGN KEY"""
+        self._not_supported("ALTER TABLE ADD CONSTRAINT")
 
-    def visit_column(self,column):
-        if column.foreign_keys:
-            SQLiteHelper.visit_column(self,column)
-        else:
-            super(SQLiteColumnGenerator,self).visit_column(column)
 
 class SQLiteColumnDropper(SQLiteHelper, ansisql.ANSIColumnDropper):
     """SQLite ColumnDropper"""
 
     def _modify_table(self, table, column, delta):
-        
         columns = ' ,'.join(map(self.preparer.format_column, table.columns))
         return 'INSERT INTO %(table_name)s SELECT ' + columns + \
             ' from migration_tmp'
-
-    def visit_column(self,column):
-        # For SQLite, we *have* to remove the column here so the table
-        # is re-created properly.
-        column.remove_from_table(column.table,unset_table=False)
-        super(SQLiteColumnDropper,self).visit_column(column)
 
 
 class SQLiteSchemaChanger(SQLiteHelper, ansisql.ANSISchemaChanger):
     """SQLite SchemaChanger"""
 
     def _modify_table(self, table, column, delta):
+        column = table.columns[delta.current_name]
         return 'INSERT INTO %(table_name)s SELECT * from migration_tmp'
 
     def visit_index(self, index):
@@ -103,7 +84,7 @@ class SQLiteSchemaChanger(SQLiteHelper, ansisql.ANSISchemaChanger):
         self._not_supported('ALTER INDEX')
 
 
-class SQLiteConstraintGenerator(ansisql.ANSIConstraintGenerator, SQLiteHelper, SQLiteCommon):
+class SQLiteConstraintGenerator(ansisql.ANSIConstraintGenerator, SQLiteCommon):
 
     def visit_migrate_primary_key_constraint(self, constraint):
         tmpl = "CREATE UNIQUE INDEX %s ON %s ( %s )"
@@ -114,14 +95,11 @@ class SQLiteConstraintGenerator(ansisql.ANSIConstraintGenerator, SQLiteHelper, S
         self.append(msg)
         self.execute()
 
-    def _modify_table(self, table, column, delta):
-        return 'INSERT INTO %(table_name)s SELECT * from migration_tmp'
-
     def visit_migrate_foreign_key_constraint(self, *p, **k):
-        self.recreate_table(p[0].table)
+        self._not_supported('ALTER TABLE ADD CONSTRAINT')
 
     def visit_migrate_unique_constraint(self, *p, **k):
-        self.recreate_table(p[0].table)
+        self._not_supported('ALTER TABLE ADD CONSTRAINT')
 
 
 class SQLiteConstraintDropper(ansisql.ANSIColumnDropper,

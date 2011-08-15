@@ -27,6 +27,7 @@ aziendaforce = pg3_check.aziendaforce
 tipodbforce = pg3_check.tipodbforce
 
 
+import locale
 from config import Config
 if pg3:
     from gi.repository import Gtk as gtk
@@ -134,6 +135,8 @@ fromHtmlLits = ["Promemoria", "TestataPrimaNota","Articolo", "Cliente",
 
 package = ["ONE BASIC", "ONE FULL", "ONE STANDARD", "PRO BASIC", "PRO STANDARD",
             "PRO FULL","ONE PROMOWEAR", "ONE PROMOSHOP", "PRO PROMOWEAR", "PRO PROMOSHOP"]
+
+#loc = locale.setlocale(locale.LC_ALL, '')
 
 mm = {'3996679c06ebc369feefc92063644d83':'e4da3b7fbbce2345d7772b0674a318d5', #Contatto = 5
         'cfe6753e5e82f522119e09df7b726e4a':'eccbc87e4b5ce2fe28308fd9f2a7baf3'} #Promemoria = 3
@@ -398,6 +401,7 @@ Grazie per aver scelto il PromoGest""" %str(promogestDir)
         conf.save()
 
     # Parametri localizzazione formati
+    #loc = locale.setlocale(locale.LC_ALL, '')
     conf.windowsrc = promogestDir + 'windowsrc.xml'
     conf.guiDir = '.' + os.sep + 'gui' + os.sep
 
@@ -564,6 +568,7 @@ params = {'engine': engine ,
         'usernameLoggedList':userdata}
 
  # Parametri localizzazione formati
+#loc = locale.setlocale(locale.LC_ALL, '')
 conf.windowsrc = os.path.expanduser('~') + os.sep + 'promogest2/windowsrc.xml'
 conf.guiDir = '.' + os.sep + 'gui' + os.sep
 
