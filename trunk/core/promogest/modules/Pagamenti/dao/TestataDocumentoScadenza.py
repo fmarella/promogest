@@ -22,6 +22,7 @@
 
 from sqlalchemy import *
 from sqlalchemy.orm import *
+from migrate import *
 from promogest.Environment import *
 from promogest.dao.Dao import Dao
 
@@ -41,6 +42,11 @@ tesdocsca=Table('testata_documento_scadenza',
             params['metadata'],
             schema = params['schema'],
             autoload=True)
+
+if "id_banca" not in [c.name for c in tesdocsca.columns]:
+    col = Column('id_banca', Integer, nullable=True)
+    # ForeignKey(bancaFK, onupdate="CASCADE", ondelete="RESTRICT"),
+    col.create(tesdocsca)
 
 std_mapper = mapper(TestataDocumentoScadenza, tesdocsca, properties={},
                                 order_by=tesdocsca.c.id)
