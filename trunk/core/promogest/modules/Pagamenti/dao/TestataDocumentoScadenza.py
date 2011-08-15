@@ -48,5 +48,9 @@ if "id_banca" not in [c.name for c in tesdocsca.columns]:
     # ForeignKey(bancaFK, onupdate="CASCADE", ondelete="RESTRICT"),
     col.create(tesdocsca)
 
+if "note_per_primanota" not in [c.name for c in tesdocsca.columns]:
+    col = Column('note_per_primanota', String(400))
+    col.create(tesdocsca)
+
 std_mapper = mapper(TestataDocumentoScadenza, tesdocsca, properties={},
                                 order_by=tesdocsca.c.id)
