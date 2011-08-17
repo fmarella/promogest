@@ -41,6 +41,8 @@ from venditaDettaglioUiPart import drawPart
 from VenditaDettaglioUtils import fillComboboxPos
 from promogest.ui.gtk_compat import *
 
+DRIVER = None
+
 if hasattr(Environment.conf, "VenditaDettaglio"):
     if hasattr(Environment.conf.VenditaDettaglio,"backend") and\
         Environment.conf.VenditaDettaglio.backend.upper() =="OLIVETTI":
