@@ -117,3 +117,7 @@ class RicercaAziendeFilter(RicercaFilter):
                           (a.sede_operativa_localita or '')))
 
         self._ricerca.ricerca_filter_treeview.set_model(model)
+
+    def on_filter_treeview_selection_changed(self, treeview):
+        #TODO: <fmarl> da implementare
+        pass
