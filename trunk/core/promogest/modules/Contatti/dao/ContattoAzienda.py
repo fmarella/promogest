@@ -65,11 +65,11 @@ class ContattoAzienda(Dao):
     def filter_values(self,k,v):
         dic= {  'idCategoria' : None,
                 'schemaAzienda' : contattoazienda.c.schema_azienda == v,
-                #'tipoRecapito':
                 'cognomeNome' : or_(contatto.c.cognome.ilike("%"+v+"%"),contatto.c.nome.ilike("%"+v+"%")),
                 'ruolo': contatto.c.ruolo.ilike("%"+v+"%"),
                 'descrizione': contatto.c.descrizione.ilike("%"+v+"%"),
-                #'recapito':
+                'recapito': and_(contatto.c.id == RecapitoContatto.id_contatto,RecapitoContatto.recapito.ilike("%"+v+"%")),
+                'tipoRecapito': and_(contatto.c.id == RecapitoContatto.id_contatto,RecapitoContatto.tipo_recapito.contains(v)),
             }
         return dic[k]
 
