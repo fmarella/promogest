@@ -29,6 +29,7 @@ from promogest import Environment
 from promogest.ui.GladeWidget import GladeWidget
 import smtplib, string
 import datetime
+from promogest.ui.utils import *
 
 class SendEmail(GladeWidget):
     """ Frame per la spedizione email """
