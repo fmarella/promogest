@@ -2790,7 +2790,14 @@ def YesNoDialog(msg="MESSAGGIO", transient=None,show_entry=False ):
         return False
     return response
 
+def textview_get_text(textview):
+    _buffer = textview.get_buffer()
+    return _buffer.get_text(_buffer.get_start_iter(), _buffer.get_end_iter(), True) or ""
 
+def textview_set_text(textview, text):
+    _buffer = textview.get_buffer()
+    _buffer.set_text(text or "")
+    textview.set_buffer(_buffer)
 
 def deaccenta(riga=None):
     """ questa funzione elimina gli accenti magari non graditi in alcuni casi"""

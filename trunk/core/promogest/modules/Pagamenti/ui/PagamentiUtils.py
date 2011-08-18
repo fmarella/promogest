@@ -428,6 +428,7 @@ Procedere con la "chiusura" del Pagamento?"""
                     self.anagrafica.importo_acconto_scadenza_entry.set_text(str(scadenza.importo or ''))
                     findComboboxRowFromStr(self.anagrafica.id_pagamento_acconto_customcombobox.combobox, scadenza.pagamento,2)
                     findComboboxRowFromStr(self.anagrafica.id_banca_acconto_ccb.combobox, scadenza.id_banca, 1)
+                    textview_set_text(self.anagrafica.note_acconto_textview, scadenza.note_per_primanota)
                     self.anagrafica.data_pagamento_acconto_entry.set_text(dateToString
                         (scadenza.data_pagamento or ''))
                 elif scadenza.numero_scadenza == 1:
@@ -435,6 +436,7 @@ Procedere con la "chiusura" del Pagamento?"""
                     self.anagrafica.importo_prima_scadenza_entry.set_text(str(scadenza.importo or ''))
                     findComboboxRowFromStr(self.anagrafica.id_pagamento_prima_scadenza_customcombobox.combobox, scadenza.pagamento,2)
                     findComboboxRowFromStr(self.anagrafica.id_banca_prima_scadenza_ccb.combobox, scadenza.id_banca, 1)
+                    textview_set_text(self.anagrafica.note_prima_scadenza_textview, scadenza.note_per_primanota)
                     self.anagrafica.data_pagamento_prima_scadenza_entry.set_text(dateToString
                         (scadenza.data_pagamento or ''))
                 elif scadenza.numero_scadenza == 2:
@@ -443,6 +445,7 @@ Procedere con la "chiusura" del Pagamento?"""
                     self.anagrafica.importo_seconda_scadenza_entry.set_text(str(scadenza.importo or ''))
                     findComboboxRowFromStr(self.anagrafica.id_pagamento_seconda_scadenza_customcombobox.combobox, scadenza.pagamento,2)
                     findComboboxRowFromStr(self.anagrafica.id_banca_seconda_scadenza_ccb.combobox, scadenza.id_banca, 1)
+                    textview_set_text(self.anagrafica.note_seconda_scadenza_textview, scadenza.note_per_primanota)
                     self.anagrafica.data_pagamento_seconda_scadenza_entry.set_text(dateToString
                         (scadenza.data_pagamento or ''))
                 elif scadenza.numero_scadenza == 3:
@@ -451,6 +454,7 @@ Procedere con la "chiusura" del Pagamento?"""
                     self.anagrafica.importo_terza_scadenza_entry.set_text(str(scadenza.importo or ''))
                     findComboboxRowFromStr(self.anagrafica.id_pagamento_terza_scadenza_customcombobox.combobox, scadenza.pagamento,2)
                     findComboboxRowFromStr(self.anagrafica.id_banca_terza_scadenza_ccb.combobox, scadenza.id_banca, 1)
+                    textview_set_text(self.anagrafica.note_terza_scadenza_textview, scadenza.note_per_primanota)
                     self.anagrafica.data_pagamento_terza_scadenza_entry.set_text(dateToString
                         (scadenza.data_pagamento or ''))
                 elif scadenza.numero_scadenza == 4:
@@ -459,6 +463,7 @@ Procedere con la "chiusura" del Pagamento?"""
                     self.anagrafica.importo_quarta_scadenza_entry.set_text(str(scadenza.importo or ''))
                     findComboboxRowFromStr(self.anagrafica.id_pagamento_quarta_scadenza_customcombobox.combobox, scadenza.pagamento,2)
                     findComboboxRowFromStr(self.anagrafica.id_banca_quarta_scadenza_ccb.combobox, scadenza.id_banca, 1)
+                    textview_set_text(self.anagrafica.note_quarta_scadenza_textview, scadenza.note_per_primanota)
                     self.anagrafica.data_pagamento_quarta_scadenza_entry.set_text(dateToString
                         (scadenza.data_pagamento or ''))
 
@@ -544,6 +549,9 @@ Procedere con la "chiusura" del Pagamento?"""
             idbanca = findIdFromCombobox(self.anagrafica.id_banca_acconto_ccb.combobox)
             if idbanca:
                 daoTestataDocumentoScadenza.id_banca = idbanca
+            note_acconto_PN = textview_get_text(self.anagrafica.note_acconto_textview)
+            if note_acconto_PN:
+                daoTestataDocumentoScadenza.note_per_primanota = note_acconto_PN
             scadenze.append(daoTestataDocumentoScadenza)
         if self.anagrafica.data_prima_scadenza_entry.get_text() != "":
             daoTestataDocumentoScadenza = TestataDocumentoScadenza()
@@ -568,6 +576,9 @@ Procedere con la "chiusura" del Pagamento?"""
             idbanca = findIdFromCombobox(self.anagrafica.id_banca_prima_scadenza_ccb.combobox)
             if idbanca:
                 daoTestataDocumentoScadenza.id_banca = idbanca
+            note_acconto_PN = textview_get_text(self.anagrafica.note_prima_scadenza_textview)
+            if note_acconto_PN:
+                daoTestataDocumentoScadenza.note_per_primanota = note_acconto_PN
             scadenze.append(daoTestataDocumentoScadenza)
         if self.anagrafica.data_seconda_scadenza_entry.get_text() != "":
             daoTestataDocumentoScadenza = TestataDocumentoScadenza()
@@ -594,6 +605,9 @@ Procedere con la "chiusura" del Pagamento?"""
             idbanca = findIdFromCombobox(self.anagrafica.id_banca_seconda_scadenza_ccb.combobox)
             if idbanca:
                 daoTestataDocumentoScadenza.id_banca = idbanca
+            note_acconto_PN = textview_get_text(self.anagrafica.note_seconda_scadenza_textview)
+            if note_acconto_PN:
+                daoTestataDocumentoScadenza.note_per_primanota = note_acconto_PN
             scadenze.append(daoTestataDocumentoScadenza)
         if self.anagrafica.data_terza_scadenza_entry.get_text() != "":
             daoTestataDocumentoScadenza = TestataDocumentoScadenza()
@@ -620,6 +634,9 @@ Procedere con la "chiusura" del Pagamento?"""
             idbanca = findIdFromCombobox(self.anagrafica.id_banca_terza_scadenza_ccb.combobox)
             if idbanca:
                 daoTestataDocumentoScadenza.id_banca = idbanca
+            note_acconto_PN = textview_get_text(self.anagrafica.note_terza_scadenza_textview)
+            if note_acconto_PN:
+                daoTestataDocumentoScadenza.note_per_primanota = note_acconto_PN
             scadenze.append(daoTestataDocumentoScadenza)
         if self.anagrafica.data_quarta_scadenza_entry.get_text() != "":
             daoTestataDocumentoScadenza = TestataDocumentoScadenza()
@@ -646,6 +663,9 @@ Procedere con la "chiusura" del Pagamento?"""
             idbanca = findIdFromCombobox(self.anagrafica.id_banca_quarta_scadenza_ccb.combobox)
             if idbanca:
                 daoTestataDocumentoScadenza.id_banca = idbanca
+            note_acconto_PN = textview_get_text(self.anagrafica.note_quarta_scadenza_textview)
+            if note_acconto_PN:
+                daoTestataDocumentoScadenza.note_per_primanota = note_acconto_PN
             scadenze.append(daoTestataDocumentoScadenza)
         self.anagrafica.dao.scadenze = scadenze
 
