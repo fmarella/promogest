@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010, 2011 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
 #    Author: Andrea Argiolas  <andrea@promotux.it>
+#    Author: Francesco Marella <francesco.marella@gmail.com>
+
 #    This file is part of Promogest.
 
 #    Promogest is free software: you can redistribute it and/or modify
@@ -30,6 +32,8 @@ from promogest.ui.GladeWidget import GladeWidget
 import smtplib, string
 import datetime
 from promogest.ui.utils import *
+from promogest.ui.utilsCombobox import findStrFromCombobox
+
 
 class SendEmail(GladeWidget):
     """ Frame per la spedizione email """
@@ -37,7 +41,7 @@ class SendEmail(GladeWidget):
     def __init__(self, string=None, d=False):
         GladeWidget.__init__(self, 'send_email', fileName= 'email_dialog.glade')
         self.placeWindow(self.getTopLevel())
-        self.getTopLevel().set_modal(modal=True)
+        self.getTopLevel().set_modal(True)
         self.getTopLevel().show_all()
         self.title_label.set_markup("""
     Questo semplice form ti permette di inviare
@@ -51,13 +55,9 @@ class SendEmail(GladeWidget):
         self.dist = d
         self.sobject = ""
         self.obj = ""
-        try:
-            from promogest.ui.utils import setconf
-            if setconf("Smtp", "emailmittente"):
-                self.fromaddr = str(setconf("Smtp", "emailmittente"))
-                self.from_email_entry.set_text(self.fromaddr)
-        except:
-            pass
+        if setconf("Smtp", "emailmittente"):
+            self.fromaddr = str(setconf("Smtp", "emailmittente"))
+            self.from_email_entry.set_text(self.fromaddr)
         try:
             fileName = Environment.conf.guiDir + 'logo_promogest.png'
             f = open(fileName,'rb')
@@ -72,28 +72,17 @@ class SendEmail(GladeWidget):
         #self.setFocus()
 
     def preSetEmailBody(self, string=""):
-        textBuffer = self.emailBody_textview.get_buffer()
-        #textBuffer.set_text(self.dao.note)
-        textBuffer.set_text(string)
-        self.emailBody_textview.set_buffer(textBuffer)
+        textview_set_text(self.emailBody_textview, string)
         self.obj = self.obj_combobox.set_active(0)
         self.sobject = self.object_email_entry.set_text("Errore")
 
     def on_send_button_clicked(self,button):
-        textBuffer = self.emailBody_textview.get_buffer()
-        self.bodytext = textBuffer.get_text(textBuffer.get_start_iter(),
-                                            textBuffer.get_end_iter(),True)
-        try:
-            if not self.sobject:
-                self.sobject= self.object_email_entry.get_text()
-        except:
-            pass
+        self.bodytext = textview_get_text(self.emailBody_textview)
+        if not self.sobject:
+            self.sobject = self.object_email_entry.get_text()
         self.fromm = self.from_email_entry.get_text()
-        try:
-            if not self.obj:
-                self.obj = self.obj_combobox.get_active_text()
-        except:
-            pass
+        if not self.obj:
+            self.obj = findStrFromCombobox(self.obj_combobox, 0)
         if self.bodytext == "" or self.sobject == ""  or self.fromm == "" or self.obj == "":
             msg = """Alcuni campi mancanti, sei pregato di ricontrollare e compilare
             il form in ogni sua parte, Grazie"""
