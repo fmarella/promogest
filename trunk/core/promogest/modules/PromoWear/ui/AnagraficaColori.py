@@ -136,18 +136,15 @@ class AnagraficaColoreDetail(AnagraficaDetail):
     def updateDao(self):
         if self.dao:
             self.dao = Colore().getRecord(id=self.dao.id)
-            self._refresh()
-        else:
-            raise Exception, 'Update not possible'
+        self._refresh()
 
     def _refresh(self):
         sel = self._anagrafica.anagrafica_treeview.get_selection()
         (model, iterator) = sel.get_selected()
-        if not iterator:
-            return
-        model.set_value(iterator, 0, self.dao)
-        model.set_value(iterator, 1, self.dao.denominazione)
-        model.set_value(iterator, 2, self.dao.denominazione_breve)
+        if iterator and self.dao:
+			model.set_value(iterator, 0, self.dao)
+			model.set_value(iterator, 1, self.dao.denominazione or '')
+			model.set_value(iterator, 2, self.dao.denominazione_breve or '')
 
     def saveDao(self):
         sel = self._anagrafica.anagrafica_treeview.get_selection()
