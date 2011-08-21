@@ -4938,7 +4938,7 @@ _
                                 <property name="vscrollbar_policy">automatic</property>
                                 <property name="shadow_type">in</property>
                                 <child>
-                                  <object class="GtkTextView" id="note_accounto_textview">
+                                  <object class="GtkTextView" id="note_acconto_textview">
                                     <property name="height_request">90</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
