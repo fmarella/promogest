@@ -205,7 +205,7 @@ def on_pulisci_acconto_button_clicked(anaedit, button):
     anaedit.id_pagamento_acconto_customcombobox.combobox.set_active(-1)
     anaedit.id_banca_acconto_ccb.combobox.set_active(-1)
     anaedit.data_pagamento_acconto_entry.set_text("")
-    textview_set_text(anaedit.note_accounto_textview, "")
+    textview_set_text(anaedit.note_acconto_textview, "")
 
 def on_pulisci_prima_rata_button_clicked(anaedit, button):
     anaedit.data_prima_scadenza_entry.set_text("")
