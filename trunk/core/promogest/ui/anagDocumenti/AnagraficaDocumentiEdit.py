@@ -537,12 +537,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                                                         self.dao.id_agente)
         self.protocollo_entry1.set_text(self.dao.protocollo or '')
         self.note_pie_pagina_comboboxentry.get_child().set_text(self.dao.note_pie_pagina or '')
-        textBuffer = self.note_interne_textview.get_buffer()
-        if self.dao.note_interne is not None:
-            textBuffer.set_text(self.dao.note_interne)
-        else:
-            textBuffer.set_text('')
-        self.note_interne_textview.set_buffer(textBuffer)
+        textview_set_text(self.note_interne_textview, self.dao.note_interne or '')
         self.causale_trasporto_comboboxentry.get_child().set_text(self.dao.causale_trasporto or '')
         self.aspetto_esteriore_beni_comboboxentry.get_child().set_text(self.dao.aspetto_esteriore_beni or '')
         self.inizio_trasporto_entry.set_text(dateTimeToString(self.dao.inizio_trasporto))
@@ -892,8 +887,7 @@ del documento.
             self.dao.porto = 'Assegnato'
         self.dao.totale_colli = float(self.totale_colli_entry.get_text() or 0)
         self.dao.totale_peso = self.totale_peso_entry.get_text()
-        textBuffer = self.note_interne_textview.get_buffer()
-        self.dao.note_interne = textBuffer.get_text(textBuffer.get_start_iter(), textBuffer.get_end_iter(),True)
+        self.dao.note_interne = textview_get_text(self.note_interne_textview)
         self.dao.note_pie_pagina = self.note_pie_pagina_comboboxentry.get_active_text()
         self.dao.applicazione_sconti = self.sconti_testata_widget.getApplicazione()
         if posso("GN"):
