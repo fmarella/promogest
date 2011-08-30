@@ -37,6 +37,7 @@ def giacenzaSel(year=None, idMagazzino=None, idArticolo=None,allMag= None):
     @type allMag=: bool
     """
     from promogest.dao.TestataMovimento import TestataMovimento
+    from promogest.dao.TestataDocumento import TestataDocumento
     from promogest.dao.RigaMovimento import RigaMovimento
     from promogest.dao.Riga import Riga
     from promogest.dao.Fornitura import Fornitura
@@ -87,9 +88,15 @@ def giacenzaSel(year=None, idMagazzino=None, idArticolo=None,allMag= None):
             fornitura = addFornitura(data=ram[1].data_movimento)
         else:
             fornitura = None
+        if ram[1]:
+            daoTestataDocumento = None
+            idTestataDocumento = ram[1].id_testata_documento
+            if idTestataDocumento:
+                daoTestataDocumento = TestataDocumento().getRecord(id=idTestataDocumento)
 
         diz = {"daoRigaMovimento": ram[0],
                 "daoTestataMovimento":ram[1],
+                "daoTestataDocumento": daoTestataDocumento,
                 "numero":ram[1].numero,
                 "fornitura": fornitura,
                 "data_movimento":ram[1].data_movimento,
