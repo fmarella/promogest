@@ -485,7 +485,7 @@ Procedere con la "chiusura" del Pagamento?"""
             self.anagrafica.dao.totale_pagato or 0)+'</span></b>')
 
         if (self.anagrafica.dao.totale_sospeso is None)  or (self.anagrafica.dao.totale_sospeso == 0):
-            totaleSospeso = Decimal(str(self.anagrafica.totale_scontato_riepiloghi_label.get_text()) or 0) - Decimal(str(self.anagrafica.dao.totale_pagato) or 0)
+            totaleSospeso = Decimal(str(self.anagrafica.totale_scontato_riepiloghi_label.get_text() or 0)) - Decimal(str(self.anagrafica.dao.totale_pagato or 0))
         else:
             totaleSospeso = self.anagrafica.dao.totale_sospeso
 
