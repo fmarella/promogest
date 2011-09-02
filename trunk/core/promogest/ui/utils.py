@@ -3219,3 +3219,14 @@ def daoTestDocu(dao):
         return TestataDocumento().getRecord(id=dao.id_testata_documento)
     else:
         return None
+
+def getLottoeScadenze(daoRigaMovimento, testataMovimento):
+    from promogest.dao.RigaMovimentoFornitura import RigaMovimentoFornitura
+    from promogest.dao.Fornitura import Fornitura
+    idFornitura = RigaMovimentoFornitura().select(idRigaMovimentoAcquisto = daoRigaMovimento.id, idArticolo = daoRigaMovimento.id_articolo, batchSize=None)
+    if idFornitura:
+        idFornitura = idFornitura[0]
+        print "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO"
+        return Fornitura().getRecord(id=idFornitura)
+    else:
+        return None

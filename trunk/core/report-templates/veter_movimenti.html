@@ -2,43 +2,41 @@
 {% block body %}
  {% for dao in objects %}
         <div >
-        <table cellpadding="0" cellspacing="4" border="0">
+        <table cellpadding="0" cellspacing="2" border="0">
             <tr>
-                <td ><h3>Tipo:
+                <td ><h3>
                 {% if dao.id_cliente %}<strong>SCARICO</strong>{% endif %}
                 {% if dao.id_fornitore %}<strong>CARICO</strong>{% endif %}
                 </h3></td>
-                <td ><h3>N: <strong>{{dao.numero}}</strong></h3></td>
-                <td ><h3>Ope: <strong>{{dao.operazione}}</strong></h3></td>
-                <td ><h3>Data Mov:{{utils.dateToString(dao.data_movimento)}}</h3> </td>
-                <td ><h3>Cliente/Forn.:
+                <td ><h3>N.: <strong>{{dao.numero}}</strong></h3></td>
+                <td ><h3>{{dao.operazione}}</h3></td>
+                <td ><h3>Data{{utils.dateToString(dao.data_movimento)}}</h3> </td>
+                <td ><h3>Cli/Forn.:
                 {% if dao.id_cliente %}{{dao.ragione_sociale_cliente}}{% endif %}
-                {% if dao.id_fornitore %}{{dao.ragione_sociale_fornitore    }}{% endif %}</h3>
+                {% if dao.id_fornitore %}{{dao.ragione_sociale_fornitore}}{% endif %}</h3>
                 </td>
                 <td >
-                {% if dao.id_fornitore %}<h3>Rif Forn: {{utils.daoTestDocu(dao).protocollo}}</h3>  {% endif %}
+                {% if dao.id_fornitore %}<h3>Rif doc Forn: {{utils.daoTestDocu(dao).protocollo}}</h3>  {% endif %}
+                </td>
+                <td >
+                {% if dao.id_cliente %}<h3>Veterinario  : {{utils.daoTestDocu(dao).ragione_sociale_agente}}</h3>  {% endif %}
                 </td>
             </tr>
         </table>
         <table cellpadding="0" cellspacing="3" border="0">
             <tr>
-                <th class="left">Magazzino</th>
                 <th class="left">Articolo</th>
-                <th class="number">Iva (%)</th>
                 <th class="number">Quantita'</th>
-                <th class="number">Prezzo netto</th>
-                <th class="number">Totale</th>
+                <th class="number">LOTTO E SCADENZA</th>
             </tr>
                 {% for riga in dao.righe %}
-            <tr >
-                <td>{{riga.magazzino[:20]}}</td>
-                <td>{{riga.descrizione[:20]}}</td>
-                <td class="number">{{utils.number_format() % riga.percentuale_iva}}</td>
+                <tr >
+
+                <td>{{riga.descrizione[:30]}}</td>
                 <td class="number">{{utils.number_format() % ( riga.quantita * riga.moltiplicatore )}}</td>
-                <td class="number">{{utils.number_format() % riga.valore_unitario_netto}}</td>
-                <td class="number">{{utils.number_format() % ( riga.quantita * riga.moltiplicatore * riga.valore_unitario_netto )}}</td>
-            </tr>
-                {% endfor %}
+
+                <td class="number">{{utils.getLottoeScadenze(riga,dao).lotto}}{{utils.dateToString(utils.getLottoeScadenze(riga, dao).data_scadenza)}}</td></tr>
+        {% endfor %}
         </table>
         <hr />
 {% endfor %}

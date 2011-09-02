@@ -88,6 +88,7 @@ class RigaMovimento(Dao):
         else: return ""
     codice_articolo= property(__codiceArticolo)
 
+
     def __unita_base(self):
         #a =  params["session"].query(Articolo).with_parent(self).filter(self.arti.id_unita_base==UnitaBase.id).all()
         #if not a:
