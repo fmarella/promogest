@@ -63,6 +63,8 @@ class AnagraficaMovimenti(Anagrafica):
         showAnagraficaRichiamata(self.getTopLevel(), anag.getTopLevel(), None, self.filter.refresh)
 
 
+
+
 class AnagraficaMovimentiHtml(AnagraficaHtml):
     def __init__(self, anagrafica):
         """
@@ -79,4 +81,5 @@ class AnagraficaMovimentiReport(AnagraficaReport):
                                   description='Elenco dei movimenti',
                                   defaultFileName='movimenti',
                                   htmlTemplate='movimenti',
-                                  sxwTemplate='movimenti')
+                                  sxwTemplate='movimenti',
+                                  )

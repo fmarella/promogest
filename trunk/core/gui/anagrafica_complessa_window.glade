@@ -147,6 +147,18 @@
                       </object>
                     </child>
                     <child>
+                      <object class="GtkMenuItem" id="report_farmacia_veterinaria">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="tooltip_text" translatable="yes">Questo report riporta l'elenco in dettaglio 
+dei farmaci venduti in un determinato arco temporale</property>
+                        <property name="use_action_appearance">False</property>
+                        <property name="label" translatable="yes">Report Farmacia Veterinaria</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="on_report_farmacia_veterinaria_activate" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
                       <object class="GtkSeparatorMenuItem" id="separatore7">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>

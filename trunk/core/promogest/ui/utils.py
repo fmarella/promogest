@@ -3212,3 +3212,10 @@ O ALLA "ONE FULL" OPPURE ACQUISTA IL MODULO
 DI CUI HAI BISOGNO
    GRAZIE"""
     return messageInfo(msg=msg)
+
+def daoTestDocu(dao):
+    if dao.id_fornitore and dao.id_testata_documento:
+        from promogest.dao.TestataDocumento import TestataDocumento
+        return TestataDocumento().getRecord(id=dao.id_testata_documento)
+    else:
+        return None

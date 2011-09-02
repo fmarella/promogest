@@ -4,8 +4,20 @@
         <div >
         <table cellpadding="0" cellspacing="4" border="0">
             <tr>
-                <td colspan="2"><h3>Numero: <strong>{{dao.numero}} / {{dao.parte|nonone}}</strong></h3></td>
-                <td colspan="2"><h3>Data movimento: <strong>{{utils.dateTimeToString(dao.data_movimento)}}</strong></h3></td>
+                <td ><h3>Tipo:
+                {% if dao.id_cliente %}<strong>SCARICO</strong>{% endif %}
+                {% if dao.id_fornitore %}<strong>CARICO</strong>{% endif %}
+                </h3></td>
+                <td ><h3>N: <strong>{{dao.numero}}</strong></h3></td>
+                <td ><h3>Ope: <strong>{{dao.operazione}}</strong></h3></td>
+                <td ><h3>Data Mov:{{utils.dateToString(dao.data_movimento)}}</h3> </td>
+                <td ><h3>Cliente/Forn.:
+                {% if dao.id_cliente %}{{dao.ragione_sociale_cliente}}{% endif %}
+                {% if dao.id_fornitore %}{{dao.ragione_sociale_fornitore    }}{% endif %}</h3>
+                </td>
+                <td >
+                {% if dao.id_fornitore %}<h3>Rif Forn: {{utils.daoTestDocu(dao).protocollo}}</h3>  {% endif %}
+                </td>
             </tr>
         </table>
         <table cellpadding="0" cellspacing="3" border="0">

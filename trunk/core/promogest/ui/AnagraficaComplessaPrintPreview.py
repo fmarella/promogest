@@ -54,11 +54,12 @@ class AnagraficaPrintPreview(GladeWidget):
     """ Print preview """
     # FIXME: a lot of duplicated code from AnagraficaFilter here!
 
-    def __init__(self, anagrafica, windowTitle, previewTemplate):
+    def __init__(self, anagrafica, windowTitle, previewTemplate,veter=False):
         GladeWidget.__init__(self, 'htmlviewer')
         self.windowTitle = windowTitle
         self.visualizzatore_html.set_title(windowTitle)
         self._anagrafica = anagrafica
+        self._veter=veter
 
         self.bodyWidget = FilterWidget(owner=self, resultsElement='html')
         self.bodyWidget.filter_navigation_hbox.destroy()

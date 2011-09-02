@@ -55,16 +55,13 @@ class AnagraficaReport(object):
     """
     def __init__(self, anagrafica, description, defaultFileName,
                  htmlTemplate, sxwTemplate,
-                templatesDir =None):
+                templatesDir =None,
+                ):
         self._anagrafica = anagrafica
         self.description = description
         self.defaultFileName = defaultFileName
         self._htmlTemplate = [os.path.join('report-templates'),htmlTemplate + '.html']
-#        if templatesDir:
-#            self._slaTemplate = templatesDir + sxwTemplate + '.sla'
-#        else:
-#            self._slaTemplate = Environment.reportTemplatesDir + sxwTemplate + '.sla'
-        #self.htmlName = htmlTemplate + '.html'
+
         self.objects = None
         self._slaTemplateObj = None
 
@@ -113,10 +110,15 @@ class AnagraficaReport(object):
             self._slaTemplateObj.cancelOperation()
 
 
-    def buildPreviewWidget(self):
+    def buildPreviewWidget(self, veter=False):
         """Build and return GladeWidget-derived component for print
         preview.
         """
+        if veter:
+            if "veter_" not in self._htmlTemplate[1]:
+                self._htmlTemplate[1] = "veter_"+self._htmlTemplate[1]
+
         return AnagraficaPrintPreview(anagrafica=self._anagrafica,
                                       windowTitle=self.description,
-                                      previewTemplate=self._htmlTemplate)
+                                      previewTemplate=self._htmlTemplate,
+                                      )

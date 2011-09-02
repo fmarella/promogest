@@ -566,9 +566,12 @@ class Anagrafica(GladeWidget):
 
     def on_records_print_on_screen_activate(self, widget):
         """ Questo segnale rimanda a AnagraficaComplessaReport
-        che a sua volta rimanda a AnagraficaComplessaPrineterPreview che
+        che a sua volta rimanda a AnagraficaComplessaPrinterPreview che
         si occupa della visualizzazione e della stampa"""
         previewDialog = self.reportHandler.buildPreviewWidget()
+
+    def on_report_farmacia_veterinaria_activate(self, widget):
+        previewDialog = self.reportHandler.buildPreviewWidget(veter=True)
 
     def on_records_print_progress_dialog_response(self, dialog, responseId):
         if responseId == GTK_RESPONSE_CANCEL:
