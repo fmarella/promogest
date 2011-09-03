@@ -162,6 +162,13 @@ class Pagamenti(object):
         except IndexError:
             pass
 
+        if acconto != 0:
+            self.anagrafica.acconto = True
+            self.aggiungi_acconto_attivato()
+        else:
+            self.anagrafica.acconto = False
+            self.aggiungi_acconto_disattivato()
+
         if n_pagamenti == 3:
             self.anagrafica.importo_quarta_scadenza_entry.set_text("")
             notebook_tabs_hide(self.anagrafica.scadenze_notebook, (INFO_SCADENZA_PAGE, QUARTA_SCADENZA_PAGE,))
@@ -359,7 +366,6 @@ Procedere con la "chiusura" del Pagamento?"""
 #            self.anagrafica.primo_pagamento_entry.set_text(scadenze[0] + scadenze[1] + " gg")
 
             findComboboxRowFromStr(self.anagrafica.id_pagamento_prima_scadenza_customcombobox.combobox, paga, 2)
-            notebook_tab_hide(self.anagrafica.scadenze_notebook, ACCONTO_PAGE)
             if numeroscadenze == 1:
                 self.attiva_prima_scadenza(True, True)
                 self.attiva_seconda_scadenza(False, True)
@@ -436,10 +442,23 @@ Procedere con la "chiusura" del Pagamento?"""
         else:
             return stringaCombobox
 
+    def aggiungi_acconto_attivato(self):
+        """Richiamato quando c'è un acconto nel pagamento
+
+        """
+        self.anagrafica.aggiungi_scheda_acconto_button.set_label("Rimuovi acconto")
+        notebook_tab_show(self.anagrafica.scadenze_notebook, ACCONTO_PAGE)
+
+    def aggiungi_acconto_disattivato(self):
+        """Richiamato quando non c'è un acconto nel pagamento
+
+        """
+        self.anagrafica.aggiungi_scheda_acconto_button.set_label("Aggiungi acconto")
+        notebook_tab_hide(self.anagrafica.scadenze_notebook, ACCONTO_PAGE)
+
     def getScadenze(self):
         notebook_tabs_hide(self.anagrafica.scadenze_notebook, (PRIMA_SCADENZA_PAGE, SECONDA_SCADENZA_PAGE, TERZA_SCADENZA_PAGE, QUARTA_SCADENZA_PAGE, ACCONTO_PAGE,))
-        self.anagrafica.acconto = False
-        self.anagrafica.on_aggiungi_scheda_acconto_button_clicked(None)
+        self.aggiungi_acconto_disattivato()
         if self.anagrafica.dao.scadenze:
             notebook_tabs_hide(self.anagrafica.scadenze_notebook, (INFO_SCADENZA_PAGE,))
             for scadenza in self.anagrafica.dao.scadenze:
@@ -451,8 +470,8 @@ Procedere con la "chiusura" del Pagamento?"""
                     textview_set_text(self.anagrafica.note_acconto_textview, scadenza.note_per_primanota)
                     self.anagrafica.data_pagamento_acconto_entry.set_text(dateToString
                         (scadenza.data_pagamento or ''))
-                    notebook_tab_show(self.anagrafica.scadenze_notebook, ACCONTO_PAGE)
                     self.anagrafica.acconto = True
+                    self.aggiungi_acconto_attivato()
                 elif scadenza.numero_scadenza == 1:
                     self.anagrafica.data_prima_scadenza_entry.set_text(dateToString(scadenza.data) or '')
                     self.anagrafica.importo_prima_scadenza_entry.set_text(str(scadenza.importo or ''))
@@ -494,7 +513,6 @@ Procedere con la "chiusura" del Pagamento?"""
                     notebook_tab_show(self.anagrafica.scadenze_notebook, QUARTA_SCADENZA_PAGE)
         else:
             notebook_tabs_show(self.anagrafica.scadenze_notebook, (INFO_SCADENZA_PAGE,))
-        self.anagrafica.on_aggiungi_scheda_acconto_button_clicked(None)
 
         if self.anagrafica.importo_acconto_scadenza_entry.get_text() != '':
             self.attiva_prima_scadenza(True,True)
