@@ -32,13 +32,13 @@ def drawPart(anag):
     accelGroup = gtk.AccelGroup()
     anag.getTopLevel().add_accel_group(accelGroup)
     anag.contanti_radio_button.add_accelerator('clicked', accelGroup,
-                                        GDK_KEY_F1, 0, gtk.ACCEL_VISIBLE)
+                                        GDK_KEY_F1, 0, GTK_ACCEL_VISIBLE)
     anag.assegni_radio_button.add_accelerator('clicked', accelGroup,
-                                        GDK_KEY_F2, 0, gtk.ACCEL_VISIBLE)
+                                        GDK_KEY_F2, 0, GTK_ACCEL_VISIBLE)
     anag.carta_di_credito_radio_button.add_accelerator('clicked', accelGroup,
-                                        GDK_KEY_F3, 0, gtk.ACCEL_VISIBLE)
+                                        GDK_KEY_F3, 0, GTK_ACCEL_VISIBLE)
     anag.total_button.add_accelerator('grab_focus', accelGroup,
-                                        GDK_KEY_F5, 0, gtk.ACCEL_VISIBLE)
+                                        GDK_KEY_F5, 0, GTK_ACCEL_VISIBLE)
     anag.total_button.set_focus_on_click(False)
 
     # Costruisco treeview scontrino
