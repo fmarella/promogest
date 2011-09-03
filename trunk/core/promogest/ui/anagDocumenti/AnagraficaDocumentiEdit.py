@@ -66,6 +66,15 @@ if posso("PA"):
 if posso("ADR"):
     from promogest.modules.ADR.ui import AnagraficaDocumentiEditADRExt
 
+(
+    INFO_SCADENZA_PAGE,
+    PRIMA_SCADENZA_PAGE,
+    SECONDA_SCADENZA_PAGE,
+    TERZA_SCADENZA_PAGE,
+    QUARTA_SCADENZA_PAGE,
+    ACCONTO_PAGE
+) = range(6)
+
 class AnagraficaDocumentiEdit(AnagraficaEdit):
     """ Modifica un record dei documenti """
 
@@ -116,6 +125,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self.oneshot = False
         self.tagliaColoreRigheList = None
         self.visualizza_prezzo_alternativo = False
+        self.acconto = False
         # Inizializziamo i moduli in interfaccia!
         #self.draw()
         self.completion = self.ricerca_articolo_entrycompletition
@@ -433,7 +443,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             return
         self.calcolaTotale()
 
-    def on_notebook_select_page(self,notebook,move_focus=None, page=None, page_num=None):
+    def on_notebook_select_page(self, notebook, move_focus=None, page=None, page_num=None):
         """ AL MOMENTO INUTILIZZATA"""
         return
 
@@ -1908,6 +1918,11 @@ del documento.
             return
         self.refresh_combobox_listini()
 
+    def id_pagamento_customcombobox_changed(self, combobox):
+        if self._loading:
+            return
+        self.on_calcola_importi_scadenza_button_clicked(None)
+
     def on_id_listino_customcombobox_changed(self, combobox=None):
         """ funzione richiamata quando viene modificato o settato il listino """
         if self._loading:
@@ -1979,6 +1994,16 @@ del documento.
     #END TAB 2
 
     #NOTEBOOK TAB 3
+
+    def on_aggiungi_scheda_acconto_button_clicked(self, button):
+        if not self.acconto:
+            notebook_tabs_show(self.scadenze_notebook, (ACCONTO_PAGE,))
+            self.aggiungi_scheda_acconto_button.set_label("Rimuovi acconto")
+            self.acconto = True
+        else:
+            notebook_tabs_hide(self.scadenze_notebook, (ACCONTO_PAGE,))
+            self.aggiungi_scheda_acconto_button.set_label("Aggiungi acconto")
+            self.acconto = False
 
     def on_primanota_check_toggled(self, button):
         return

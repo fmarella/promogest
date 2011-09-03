@@ -26,6 +26,15 @@ from promogest.dao.TestataDocumento import TestataDocumento
 from promogest.modules.Pagamenti.dao.TestataDocumentoScadenza import TestataDocumentoScadenza
 from promogest.ui.utils import *
 
+(
+    INFO_SCADENZA_PAGE,
+    PRIMA_SCADENZA_PAGE,
+    SECONDA_SCADENZA_PAGE,
+    TERZA_SCADENZA_PAGE,
+    QUARTA_SCADENZA_PAGE,
+    ACCONTO_PAGE
+) = range(6)
+
 class Pagamenti(object):
     def __init__(self, anagrafica):
         self.anagrafica = anagrafica
@@ -155,13 +164,19 @@ class Pagamenti(object):
 
         if n_pagamenti == 3:
             self.anagrafica.importo_quarta_scadenza_entry.set_text("")
+            notebook_tabs_hide(self.anagrafica.scadenze_notebook, (INFO_SCADENZA_PAGE, QUARTA_SCADENZA_PAGE,))
+            notebook_tabs_show(self.anagrafica.scadenze_notebook, (PRIMA_SCADENZA_PAGE, SECONDA_SCADENZA_PAGE, TERZA_SCADENZA_PAGE))
         elif n_pagamenti == 2:
             self.anagrafica.importo_terza_scadenza_entry.set_text("")
             self.anagrafica.importo_quarta_scadenza_entry.set_text("")
+            notebook_tabs_hide(self.anagrafica.scadenze_notebook, (INFO_SCADENZA_PAGE, TERZA_SCADENZA_PAGE, QUARTA_SCADENZA_PAGE),)
+            notebook_tabs_show(self.anagrafica.scadenze_notebook, (PRIMA_SCADENZA_PAGE, SECONDA_SCADENZA_PAGE))
         elif n_pagamenti == 1:
             self.anagrafica.importo_seconda_scadenza_entry.set_text("")
             self.anagrafica.importo_terza_scadenza_entry.set_text("")
             self.anagrafica.importo_quarta_scadenza_entry.set_text("")
+            notebook_tabs_hide(self.anagrafica.scadenze_notebook, (INFO_SCADENZA_PAGE, SECONDA_SCADENZA_PAGE, TERZA_SCADENZA_PAGE, QUARTA_SCADENZA_PAGE),)
+            notebook_tabs_show(self.anagrafica.scadenze_notebook, (PRIMA_SCADENZA_PAGE,))
 
     def controlla_rate_scadenza(self, messaggio):
         """
@@ -335,7 +350,7 @@ Procedere con la "chiusura" del Pagamento?"""
                                                      # della variabile passata, sottraendo il caratteee di
                                                      # Fine Mese e dividendo per due ( vedere la doc di
                                                      # IsPagamentoMultiplo per maggiori informazioni )
-            paga = findStrFromCombobox(self.anagrafica.id_pagamento_customcombobox.combobox,2)
+            paga = findStrFromCombobox(self.anagrafica.id_pagamento_customcombobox.combobox, 2)
             if scadenze[len(scadenze)-1] != "FM":
                 fine_mese = False
             else:
@@ -343,7 +358,8 @@ Procedere con la "chiusura" del Pagamento?"""
 
 #            self.anagrafica.primo_pagamento_entry.set_text(scadenze[0] + scadenze[1] + " gg")
 
-            findComboboxRowFromStr(self.anagrafica.id_pagamento_prima_scadenza_customcombobox.combobox, paga,2)
+            findComboboxRowFromStr(self.anagrafica.id_pagamento_prima_scadenza_customcombobox.combobox, paga, 2)
+            notebook_tab_hide(self.anagrafica.scadenze_notebook, ACCONTO_PAGE)
             if numeroscadenze == 1:
                 self.attiva_prima_scadenza(True, True)
                 self.attiva_seconda_scadenza(False, True)
@@ -421,16 +437,22 @@ Procedere con la "chiusura" del Pagamento?"""
             return stringaCombobox
 
     def getScadenze(self):
-        if  self.anagrafica.dao.scadenze:
+        notebook_tabs_hide(self.anagrafica.scadenze_notebook, (PRIMA_SCADENZA_PAGE, SECONDA_SCADENZA_PAGE, TERZA_SCADENZA_PAGE, QUARTA_SCADENZA_PAGE, ACCONTO_PAGE,))
+        self.anagrafica.acconto = False
+        self.anagrafica.on_aggiungi_scheda_acconto_button_clicked(None)
+        if self.anagrafica.dao.scadenze:
+            notebook_tabs_hide(self.anagrafica.scadenze_notebook, (INFO_SCADENZA_PAGE,))
             for scadenza in self.anagrafica.dao.scadenze:
                 if scadenza.numero_scadenza == 0:
                     self.anagrafica.data_acconto_entry.set_text(dateToString(scadenza.data) or '')
                     self.anagrafica.importo_acconto_scadenza_entry.set_text(str(scadenza.importo or ''))
-                    findComboboxRowFromStr(self.anagrafica.id_pagamento_acconto_customcombobox.combobox, scadenza.pagamento,2)
+                    findComboboxRowFromStr(self.anagrafica.id_pagamento_acconto_customcombobox.combobox, scadenza.pagamento, 2)
                     findComboboxRowFromStr(self.anagrafica.id_banca_acconto_ccb.combobox, scadenza.id_banca, 1)
                     textview_set_text(self.anagrafica.note_acconto_textview, scadenza.note_per_primanota)
                     self.anagrafica.data_pagamento_acconto_entry.set_text(dateToString
                         (scadenza.data_pagamento or ''))
+                    notebook_tab_show(self.anagrafica.scadenze_notebook, ACCONTO_PAGE)
+                    self.anagrafica.acconto = True
                 elif scadenza.numero_scadenza == 1:
                     self.anagrafica.data_prima_scadenza_entry.set_text(dateToString(scadenza.data) or '')
                     self.anagrafica.importo_prima_scadenza_entry.set_text(str(scadenza.importo or ''))
@@ -439,6 +461,7 @@ Procedere con la "chiusura" del Pagamento?"""
                     textview_set_text(self.anagrafica.note_prima_scadenza_textview, scadenza.note_per_primanota)
                     self.anagrafica.data_pagamento_prima_scadenza_entry.set_text(dateToString
                         (scadenza.data_pagamento or ''))
+                    notebook_tab_show(self.anagrafica.scadenze_notebook, PRIMA_SCADENZA_PAGE)
                 elif scadenza.numero_scadenza == 2:
                     self.anagrafica.data_seconda_scadenza_entry.set_text(dateToString
                         (scadenza.data or ''))
@@ -448,6 +471,7 @@ Procedere con la "chiusura" del Pagamento?"""
                     textview_set_text(self.anagrafica.note_seconda_scadenza_textview, scadenza.note_per_primanota)
                     self.anagrafica.data_pagamento_seconda_scadenza_entry.set_text(dateToString
                         (scadenza.data_pagamento or ''))
+                    notebook_tab_show(self.anagrafica.scadenze_notebook, SECONDA_SCADENZA_PAGE)
                 elif scadenza.numero_scadenza == 3:
                     self.anagrafica.data_terza_scadenza_entry.set_text(dateToString
                         (scadenza.data or ''))
@@ -457,6 +481,7 @@ Procedere con la "chiusura" del Pagamento?"""
                     textview_set_text(self.anagrafica.note_terza_scadenza_textview, scadenza.note_per_primanota)
                     self.anagrafica.data_pagamento_terza_scadenza_entry.set_text(dateToString
                         (scadenza.data_pagamento or ''))
+                    notebook_tab_show(self.anagrafica.scadenze_notebook, TERZA_SCADENZA_PAGE)
                 elif scadenza.numero_scadenza == 4:
                     self.anagrafica.data_quarta_scadenza_entry.set_text(dateToString
                         (scadenza.data or ''))
@@ -466,6 +491,10 @@ Procedere con la "chiusura" del Pagamento?"""
                     textview_set_text(self.anagrafica.note_quarta_scadenza_textview, scadenza.note_per_primanota)
                     self.anagrafica.data_pagamento_quarta_scadenza_entry.set_text(dateToString
                         (scadenza.data_pagamento or ''))
+                    notebook_tab_show(self.anagrafica.scadenze_notebook, QUARTA_SCADENZA_PAGE)
+        else:
+            notebook_tabs_show(self.anagrafica.scadenze_notebook, (INFO_SCADENZA_PAGE,))
+        self.anagrafica.on_aggiungi_scheda_acconto_button_clicked(None)
 
         if self.anagrafica.importo_acconto_scadenza_entry.get_text() != '':
             self.attiva_prima_scadenza(True,True)

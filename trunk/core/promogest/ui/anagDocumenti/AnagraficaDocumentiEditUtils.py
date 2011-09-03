@@ -215,6 +215,8 @@ def drawPart(anaedit):
             anaedit.on_sconti_widget_button_toggled)
     anaedit.sconti_testata_widget.button.connect('toggled',
             anaedit.on_sconti_testata_widget_button_toggled)
+    anaedit.id_pagamento_customcombobox.combobox.connect('changed',
+            anaedit.id_pagamento_customcombobox_changed)
 
     if posso("PA"):
         # Vado a popolare anche il tab dei pagamenti

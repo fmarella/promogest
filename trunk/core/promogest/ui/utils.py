@@ -2799,6 +2799,24 @@ def textview_set_text(textview, text):
     _buffer.set_text(text or "")
     textview.set_buffer(_buffer)
 
+def notebook_tabs_show(notebook, pages):
+    for page in pages:
+        _page = notebook.get_nth_page(page)
+        _page.set_visible(True)
+
+def notebook_tabs_hide(notebook, pages):
+    for page in pages:
+        _page = notebook.get_nth_page(page)
+        _page.set_visible(False)
+
+def notebook_tab_hide(notebook, page):
+    _page = notebook.get_nth_page(page)
+    _page.set_visible(False)
+
+def notebook_tab_show(notebook, page):
+    _page = notebook.get_nth_page(page)
+    _page.set_visible(True)
+
 def deaccenta(riga=None):
     """ questa funzione elimina gli accenti magari non graditi in alcuni casi"""
     nkfd_form = unicodedata.normalize('NFKD', unicode(riga))
