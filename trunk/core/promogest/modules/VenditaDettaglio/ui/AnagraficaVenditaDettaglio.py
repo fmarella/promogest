@@ -1128,9 +1128,9 @@ class AnagraficaVenditaDettaglio(GladeWidget):
     def createPopupMenu(self):
         self.file_menu = gtk.Menu()    # Don't need to show menus
         # Create the menu items
-        open_item = gtk.MenuItem("Conferma")
-        #save_item = gtk.MenuItem("Cancella")
-        quit_item = gtk.MenuItem("Annulla")
+        open_item = gtk.MenuItem(label="Conferma")
+        #save_item = gtk.MenuItem(label="Cancella")
+        quit_item = gtk.MenuItem(label="Annulla")
         # Add them to the menu
         self.file_menu.append(open_item)
         self.file_menu.append(quit_item)
