@@ -53,7 +53,7 @@ def on_seleziona_prima_nota_button_clicked(anaedit, button):
         messageInfo(msg="Inserisci il numero del documento")
         response = False
 
-    if response != False:
+    if response:
         anaedit.importo_primo_documento_entry.set_text(str(response))
         Pagamenti(anaedit).dividi_importo()
         Pagamenti(anaedit).ricalcola_sospeso_e_pagato()
@@ -68,7 +68,7 @@ def on_seleziona_seconda_nota_button_clicked(anaedit, button):
     else:
         messageInfo(msg="Inserisci il numero del documento")
         response = False
-    if response != False:
+    if response:
         Pagamenti(anaedit).importo_primo_documento_entry.set_text(str(response))
         Pagamenti(anaedit).dividi_importo()
         Pagamenti(anaedit).ricalcola_sospeso_e_pagato()
