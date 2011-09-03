@@ -74,7 +74,6 @@ def checkPan(main):
                         a.persist()
                 return
     if  Environment.tipodb!="postgresql":
-        print "PASSI QUI"
         pp = PanUi(main).draw()
         a = gtk.Label()
         a.set_text("OPZIONI MODULI")

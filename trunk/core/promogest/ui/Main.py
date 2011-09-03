@@ -791,8 +791,6 @@ promogest2 IN /HOME/NOMEUTENTE/ O IN C:/UTENTI/NOMEUTENTE"""
             from promogest.modules.SincroDB.ui.SincroDB import SincroDB
             anag = SincroDB()
             showAnagrafica(self.getTopLevel(), anag)
-        else:
-            print "PASSIQUI"
 
     def on_test_promowear_button_clicked(self, button):
         msg = _("""ATTENZIONE!!
