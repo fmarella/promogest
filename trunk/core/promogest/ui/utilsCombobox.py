@@ -290,6 +290,9 @@ def fillComboboxUnitaFisica(combobox, tipo):
     combobox.pack_start(renderer, True)
     combobox.add_attribute(renderer, 'text', 0)
     combobox.set_model(model)
+    if not Environment.pg3:
+        if combobox.__class__ is gtk.ComboBoxEntry:
+            combobox.set_text_column(0)
 
 
 def fillComboboxCategorieClienti(combobox, filter=False):
