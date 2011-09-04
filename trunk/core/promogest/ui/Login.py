@@ -42,6 +42,9 @@ from utils import hasAction, checkAggiorna, aggiorna, \
                                 checkInstallation, setconf, posso, installId, messageInfo
 from utilsCombobox import findComboboxRowFromStr
 from promogest.ui.SendEmail import SendEmail
+
+Environment.pg2log.info("GTK+: " + str(GTK_VERSION))
+
 import sqlalchemy
 Environment.pg2log.info("SQLALCHEMY:"+str(sqlalchemy.__version__))
 if sqlalchemy.__version__ < "0.5.8":

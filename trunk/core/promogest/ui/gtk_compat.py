@@ -1,4 +1,4 @@
-# -*- coding: utf8 -*-
+# -*- coding: utf-8 -*-
 
 #    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010, 2011 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
@@ -34,6 +34,9 @@ if not Environment.pg3:
         from gtk import gdk as gdk
         import pango
         import gobject
+
+        GTK_VERSION = str(gtk.gtk_version[0]) + '.' + \
+            str(gtk.gtk_version[1]) + '.' + str(gtk.gtk_version[2])
 
         PANGO_ALIGN_LEFT = pango.TAB_LEFT
         GTK_RESPONSE_OK = gtk.RESPONSE_OK
@@ -127,6 +130,9 @@ else:
     from gi.repository import GdkPixbuf
     from gi.repository import GObject as gobject
     pygtk = None
+
+    GTK_VERSION = str(gtk.get_major_version()) + '.' + str(gtk.get_minor_version()) + \
+        '.' + str(gtk.get_micro_version())
 
     # these are hacks until we fully switch to GI
     PANGO_ALIGN_LEFT = pango.TabAlign.LEFT
