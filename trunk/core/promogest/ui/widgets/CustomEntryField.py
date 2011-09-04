@@ -76,22 +76,14 @@ class CustomEntryField(gtk.Entry):
         except:
             #print "DEFINIRE NELLA SEZIONE DOCUMENTI UN COLORE PER LE ENTRY CON color_text = #FFFFFF"
             color_text = "black"
-        if Environment.pg3:
-            widget.modify_base(GTK_STATE_NORMAL, GDK_COLOR_PARSE(color_base)[1])
-            widget.modify_text(GTK_STATE_NORMAL, GDK_COLOR_PARSE(color_text)[1])
-        else:
-            widget.modify_base(GTK_STATE_NORMAL, GDK_COLOR_PARSE(color_base))
-            widget.modify_text(GTK_STATE_NORMAL, GDK_COLOR_PARSE(color_text))
+        widget.modify_base(GTK_STATE_NORMAL, GDK_COLOR_PARSE(color_base))
+        widget.modify_text(GTK_STATE_NORMAL, GDK_COLOR_PARSE(color_text))
 
     def on_focus_out_event(self, widget, event):
         #widget.modify_fg(GTK_STATE_NORMAL, GDK_COLOR_PARSE("blue"))
         #widget.modify_bg(GTK_STATE_NORMAL, GDK_COLOR_PARSE("red"))
-        if Environment.pg3:
-            widget.modify_base(GTK_STATE_NORMAL, GDK_COLOR_PARSE("white")[1])
-            widget.modify_text(GTK_STATE_NORMAL, GDK_COLOR_PARSE("black")[1])
-        else:
-            widget.modify_base(GTK_STATE_NORMAL, GDK_COLOR_PARSE("white"))
-            widget.modify_text(GTK_STATE_NORMAL, GDK_COLOR_PARSE("black"))
+        widget.modify_base(GTK_STATE_NORMAL, GDK_COLOR_PARSE("white"))
+        widget.modify_text(GTK_STATE_NORMAL, GDK_COLOR_PARSE("black"))
 
     def my_key_press_event(self, widget, event):
         pass
