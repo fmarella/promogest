@@ -102,7 +102,7 @@ class ArticoloADR(Dao):
         if a:
             return a.denominazione
         else:
-            return 'categoria indeterminata'
+            return _('categoria indeterminata')
     categoria_trasporto = property(_categoriaTrasporto)
 
     def _quantita_massima_trasportabile(self):
@@ -111,7 +111,7 @@ class ArticoloADR(Dao):
         if a:
             return a.quantita_massima_trasportabile
         else:
-            return 'quantita massima trasportabile indeterminata'
+            return _('quantita massima trasportabile indeterminata')
     quantita_massima_trasportabile = property(_quantita_massima_trasportabile)
 
     def _coefficiente_moltiplicazione_virtuale(self):
@@ -120,7 +120,7 @@ class ArticoloADR(Dao):
         if a:
             return a.coefficiente_moltiplicazione_virtuale
         else:
-            return 'coefficiente moltiplicazione virtuale indeterminato'
+            return _('coefficiente moltiplicazione virtuale indeterminato')
     coefficiente_moltiplicazione_virtuale = property(_coefficiente_moltiplicazione_virtuale)
 
     def _codiceClassificazione(self):
@@ -138,7 +138,7 @@ class ArticoloADR(Dao):
         if a:
             return a.denominazione
         else:
-            return 'gruppo imballaggio indeterminato'
+            return _('gruppo imballaggio indeterminato')
     gruppo_imballaggio = property(_gruppoImballaggio)
 
     def _classePericolo(self):

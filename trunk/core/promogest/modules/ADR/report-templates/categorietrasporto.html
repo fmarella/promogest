@@ -3,10 +3,10 @@
 {% block body %}
         <table cellpadding="0" cellspacing="3" border="0">
             <tr>
-                <th>Categoria di trasporto</th>
-                <th>Quantità massima trasportabile</th>
-                <th>Coefficiente moltiplicazione virtuale</th>
-                <th>Note</th>
+                <th>{{ _("Categoria di trasporto") }}</th>
+                <th>{{ _("Quantità massima trasportabile") }}</th>
+                <th>{{ _("Coefficiente moltiplicazione virtuale") }}</th>
+                <th>{{ _("Note") }}</th>
             </tr>
             <tr><td colspan="4"><hr /></td></tr>
             {% for dao in objects %}

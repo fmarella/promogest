@@ -29,8 +29,8 @@ class AnagraficaClassePericolo(Anagrafica):
     """ Anagrafica classi di pericolosità """
 
     def __init__(self):
-        Anagrafica.__init__(self, 'Promogest - Anagrafica classi di pericolosità',
-                            '_Classi pericolosità',
+        Anagrafica.__init__(self, _('Promogest - Anagrafica classi di pericolosità'),
+                            _('_Classi pericolosità'),
                             AnagraficaClassePericoloFilter(self),
                             AnagraficaClassePericoloDetail(self))
 

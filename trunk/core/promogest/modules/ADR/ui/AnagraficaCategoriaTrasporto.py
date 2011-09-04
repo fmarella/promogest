@@ -35,8 +35,8 @@ class AnagraficaCategoriaTrasporto(Anagrafica):
 
     def __init__(self, aziendaStr=None):
         Anagrafica.__init__(self,
-                            windowTitle='Promogest - Anagrafica categoria di trasporto',
-                            recordMenuLabel='_Categoria trasporto',
+                            windowTitle=_('Promogest - Anagrafica categoria di trasporto'),
+                            recordMenuLabel=_('_Categoria trasporto'),
                             filterElement=AnagraficaCategoriaTrasportoFilter(self),
                             htmlHandler=AnagraficaCategoriaTrasportoHtml(self),
                             reportHandler=AnagraficaCategoriaTrasportoReport(self),
@@ -105,14 +105,14 @@ class AnagraficaCategoriaTrasportoHtml(AnagraficaHtml):
 
     def __init__(self, anagrafica):
         AnagraficaHtml.__init__(self, anagrafica, 'categoriatrasporto',
-                                'Dettaglio categoria trasporto')
+                                _('Dettaglio categoria trasporto'))
 
 
 class AnagraficaCategoriaTrasportoReport(AnagraficaReport):
 
     def __init__(self, anagrafica):
         AnagraficaReport.__init__(self, anagrafica=anagrafica,
-                                  description='Elenco delle categorie trasporto',
+                                  description=_('Elenco delle categorie trasporto'),
                                   defaultFileName='categorietrasporto',
                                   htmlTemplate='categorietrasporto',
                                   sxwTemplate='categorietrasporto')
@@ -125,7 +125,7 @@ class AnagraficaCategoriaTrasportoEdit(AnagraficaEdit):
         AnagraficaEdit.__init__(self,
                                 anagrafica,
                                 'anagrafica_categorie_trasporto_detail_table',
-                                'Dati categoria di trasporto',
+                                _('Dati categoria di trasporto'),
                                 gladeFile='ADR/gui/_anagrafica_categorie_trasporto_elements.glade',
                                 module=True)
         self._widgetFirstFocus = self.denominazione_entry

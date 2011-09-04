@@ -53,19 +53,19 @@ class ClassePericolo(Dao):
 std_mapper = mapper(ClassePericolo, classe_pericolo, order_by=classe_pericolo.c.denominazione)
 
 _classi = [
-    ('1',   'Materie e oggetti esplosivi'),
-    ('2',   'Gas'),
-    ('3',   'Materie liquide infiammabili'),
-    ('4.1', 'Materie solide infiammabili'),
-    ('4.2', 'Materie soggette ad accensione spontanea'),
-    ('4.3', 'Materie che a contatto con l\'acqua sviluppano gas infiammabili'),
-    ('5.1', 'Materie carburenti'),
-    ('5.2', 'Perossidi organici'),
-    ('6.1', 'Materie tossiche'),
-    ('6.2', 'Materie infettanti'),
-    ('7',   'Materie radioattive'),
-    ('8',   'Materie corrosive'),
-    ('9',   'Materie e oggetti pericolosi diversi'),]
+    ('1',   _('Materie e oggetti esplosivi')),
+    ('2',   _('Gas')),
+    ('3',   _('Materie liquide infiammabili')),
+    ('4.1', _('Materie solide infiammabili')),
+    ('4.2', _('Materie soggette ad accensione spontanea')),
+    ('4.3', _('Materie che a contatto con l\'acqua sviluppano gas infiammabili')),
+    ('5.1', _('Materie carburenti')),
+    ('5.2', _('Perossidi organici')),
+    ('6.1', _('Materie tossiche')),
+    ('6.2', _('Materie infettanti')),
+    ('7',   _('Materie radioattive')),
+    ('8',   _('Materie corrosive')),
+    ('9',   _('Materie e oggetti pericolosi diversi')),]
 
 f = ClassePericolo().select(denominazione="1")
 if not f:

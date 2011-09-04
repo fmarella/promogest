@@ -29,8 +29,8 @@ class AnagraficaGruppoImballaggio(Anagrafica):
     """ Anagrafica gruppo imballaggio """
 
     def __init__(self):
-        Anagrafica.__init__(self, 'Promogest - Anagrafica gruppo imballaggio',
-                            '_Gruppo imballaggio',
+        Anagrafica.__init__(self, _('Promogest - Anagrafica gruppo imballaggio'),
+                            _('_Gruppo imballaggio'),
                             AnagraficaGruppoImballaggioFilter(self),
                             AnagraficaGruppoImballaggioDetail(self))
 

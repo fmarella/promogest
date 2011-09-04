@@ -29,8 +29,8 @@ class AnagraficaCodiceClassificazione(Anagrafica):
     """ Anagrafica codice classificazione """
 
     def __init__(self):
-        Anagrafica.__init__(self, 'Promogest - Anagrafica codice classificazione',
-                            '_Codice classificazione',
+        Anagrafica.__init__(self, _('Promogest - Anagrafica codice classificazione'),
+                            _('_Codice classificazione'),
                             AnagraficaCodiceClassificazioneFilter(self),
                             AnagraficaCodiceClassificazioneDetail(self))
 

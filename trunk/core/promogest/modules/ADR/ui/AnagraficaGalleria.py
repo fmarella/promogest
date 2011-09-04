@@ -29,8 +29,8 @@ class AnagraficaGalleria(Anagrafica):
     """ Anagrafica galleria """
 
     def __init__(self):
-        Anagrafica.__init__(self, 'Promogest - Anagrafica galleria',
-                            '_Galleria',
+        Anagrafica.__init__(self, _('Promogest - Anagrafica galleria'),
+                            _('_Galleria'),
                             AnagraficaGalleriaFilter(self),
                             AnagraficaGalleriaDetail(self))
 

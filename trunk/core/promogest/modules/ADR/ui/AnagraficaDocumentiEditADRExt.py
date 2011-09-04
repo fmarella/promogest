@@ -25,13 +25,13 @@ from promogest.ui.utils import *
 
 from promogest.modules.ADR.dao.ArticoloADR import ArticoloADR
 
-T_SUM_ADR="\t\t### RIEPILOGO ADR ###\n\t  P.G\tCod.UN\tQ.tà\tQ.tà Virt. ADR\n"
+T_SUM_ADR=_("\t\t### RIEPILOGO ADR ###\n\t  P.G\tCod.UN\tQ.tà\tQ.tà Virt. ADR\n")
 
 T_RIGA_SUM_ADR="\t  {0}\t{1}\t{2}\t{3}\n"
 
-T_GRUPPO_SUM_ADR="\t  Tot. Gruppo\t{0}\t{1}\n"
+T_GRUPPO_SUM_ADR=_("\t  Tot. Gruppo\t{0}\t{1}\n")
 
-T_DOC_SUM_ADR="\tTot. Doc.\t{0}\t{1}"
+T_DOC_SUM_ADR=_("\tTot. Doc.\t{0}\t{1}")
 
 def setLabels(anaedit):
     """Inizializza i campi per l'anagrafica documenti relativi al modulo ADR.
