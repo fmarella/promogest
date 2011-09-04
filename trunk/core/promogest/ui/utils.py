@@ -2805,20 +2805,20 @@ def textview_set_text(textview, text):
 def notebook_tabs_show(notebook, pages):
     for page in pages:
         _page = notebook.get_nth_page(page)
-        _page.set_visible(True)
+        _page.set_property('visible', True)
 
 def notebook_tabs_hide(notebook, pages):
     for page in pages:
         _page = notebook.get_nth_page(page)
-        _page.set_visible(False)
+        _page.set_property('visible', False)
 
 def notebook_tab_hide(notebook, page):
     _page = notebook.get_nth_page(page)
-    _page.set_visible(False)
+    _page.set_property('visible', False)
 
 def notebook_tab_show(notebook, page):
     _page = notebook.get_nth_page(page)
-    _page.set_visible(True)
+    _page.set_property('visible', True)
 
 def deaccenta(riga=None):
     """ questa funzione elimina gli accenti magari non graditi in alcuni casi"""
