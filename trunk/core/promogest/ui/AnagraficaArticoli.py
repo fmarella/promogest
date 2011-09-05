@@ -87,7 +87,7 @@ class AnagraficaArticoli(Anagrafica):
         if dao is None:
             return
 
-        self.editElement._duplicatedDaoId = dao.id
+        #self.editElement._duplicatedDaoId = dao.id
         self.editElement.dao = Articolo()
 
         if posso("PW"):
@@ -140,7 +140,7 @@ class AnagraficaArticoli(Anagrafica):
         self.editElement._refresh()
         msg = 'Si desidera duplicare anche tutti i listini dell\' articolo scelto ?'
         if YesNoDialog(msg=msg, transient=self.editElement.dialogTopLevel):
-            self.editElement._duplicatedDaoId = None
+            self.editElement._duplicatedDaoId = dao.id
 
 
 class AnagraficaArticoliFilter(AnagraficaFilter):
