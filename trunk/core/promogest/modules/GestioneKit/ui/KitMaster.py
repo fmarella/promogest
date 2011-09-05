@@ -76,7 +76,7 @@ class KitMaster(GladeWidget):
         """ Aggiunge la riga con i campi di denominazione e valore cassa o banca
             entrata o uscita """
         if self.id_articolo_componente_customcombobox.getId() == None:
-            obligatoryField(None, self.self.id_articolo_componente_customcombobox,
+            obligatoryField(None, self.id_articolo_componente_customcombobox,
             msg="Campo obbligatorio: ARTICOLO!")
 
         if self.data_aggiunta_componente_datewidget.get_text() == "" or \
