@@ -146,8 +146,7 @@ class AnagraficaCategoriaTrasportoEdit(AnagraficaEdit):
         self.denominazione_entry.set_text(self.dao.denominazione or '')
         self.quantita_massima_trasportabile_entry.set_text(('%s') % (self.dao.quantita_massima_trasportabile or '0'))
         self.coefficiente_moltiplicazione_virtuale_entry.set_text(('%s') % (self.dao.coefficiente_moltiplicazione_virtuale or '0'))
-        text_buffer = self.note_textview.get_buffer()
-        text_buffer.set_text(self.dao.note or '')
+        textview_set_text(self.note_textview, self.dao.note or '')
 
     def saveDao(self, tipo=None):
         if (self.denominazione_entry.get_text() == ''):
@@ -162,6 +161,5 @@ class AnagraficaCategoriaTrasportoEdit(AnagraficaEdit):
         self.dao.denominazione = self.denominazione_entry.get_text()
         self.dao.quantita_massima_trasportabile = self.quantita_massima_trasportabile_entry.get_text()
         self.dao.coefficiente_moltiplicazione_virtuale = self.coefficiente_moltiplicazione_virtuale_entry.get_text()
-        text_buffer = self.note_textview.get_buffer()
-        self.dao.note = text_buffer.get_text(*text_buffer.get_bounds())
+        self.dao.note = textview_get_text(self.note_textview)
         self.dao.persist()

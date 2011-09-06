@@ -380,8 +380,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
         self.cellulare_entry.set_text(self.dao.cellulare or '')
         self.skype_entry.set_text(self.dao.skype or '')
         self.nome_contatto_entry.set_text(self.dao.operatore or '')
-        buffer = self.note_text_textview.get_buffer()
-        buffer.set_text(self.dao.note_text or '')
+        textview_set_text(self.note_text_textview, self.dao.note_text or '')
         self.note_final_entry.set_text(self.dao.note_final or '')
         self.note_fornitore_entry.set_text(self.dao.note_fornitore or '')
         self.note_spedizione_entry.set_text(self.dao.note_spedizione or '')
@@ -950,9 +949,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
         Questo metodo viene chiamato per primo in refresh() per evitare di resettare tutte le modifiche
         apportate alla scheda quando viene generato un qualunque altro segnale da un widget che modifica il dao.
         """
-        buffer = self.note_text_textview.get_buffer()
-        start, end = buffer.get_bounds()
-        self.dao.note_text = buffer.get_text(start, end)
+        self.dao.note_text = textview_get_text(self.note_text_textview)
         self.dao.note_final = self.note_final_entry.get_text()
         self.dao.note_fornitore = self.note_fornitore_entry.get_text()
         self.dao.note_spedizione = self.note_spedizione_entry.get_text()
@@ -990,9 +987,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
         self.dao.password_amici = self.password_amici_entry.get_text()
 
     def _clear(self):
-        buffer = self.note_text_textview.get_buffer()
-        start,end = buffer.get_bounds()
-        buffer.delete(start,end)
+        textview_set_text(self.note_text_textview, '')
         if self._loading:
             self.associazione_articoli_comboboxentry.set_active(-1)
         self.listino_combobox.set_active(-1)
