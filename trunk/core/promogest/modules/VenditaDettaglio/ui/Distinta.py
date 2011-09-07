@@ -77,7 +77,6 @@ class Distinta(GladeWidget):
                 totcont_netto += m.totale_scontrino
             totcont_resto = totcont-totcont_netto
             totnum += 1
-            print m.totale_contanti, totcont
         totali = {
             "tot" : mN(tot,2),
             "tot_cont": mN(totcont,2),

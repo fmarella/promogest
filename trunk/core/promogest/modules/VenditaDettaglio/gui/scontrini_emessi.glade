@@ -504,13 +504,14 @@
               </packing>
             </child>
             <child>
-              <object class="GtkButton" id="storno_button">
-                <property name="label" translatable="yes">Storno</property>
+              <object class="GtkButton" id="stampa_button">
+                <property name="label">gtk-print</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="use_action_appearance">False</property>
-                <signal name="clicked" handler="on_storno_button_clicked" swapped="no"/>
+                <property name="use_stock">True</property>
+                <signal name="clicked" handler="on_stampa_button_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>

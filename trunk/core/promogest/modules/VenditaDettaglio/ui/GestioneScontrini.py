@@ -41,7 +41,7 @@ from promogest.dao.Listino import Listino
 from promogest.ui.utils import *
 from promogest.ui import utils
 from promogest.modules.VenditaDettaglio.ui.VenditaDettaglioUtils import fillComboboxPos
-
+from promogest.ui.PrintDialog import PrintDialogHandler
 from promogest.lib.HtmlHandler import createHtmlObj, renderTemplate, renderHTML
 
 class GestioneScontrini(GladeWidget):
@@ -58,6 +58,7 @@ class GestioneScontrini(GladeWidget):
         self._htmlTemplate = None
         self.dao = None
         self.daoTse = None
+        self.html = ""
 
         GladeWidget.__init__(self, 'scontrini_emessi',
                 fileName="VenditaDettaglio/gui/scontrini_emessi.glade", isModule=True)
@@ -217,13 +218,20 @@ class GestioneScontrini(GladeWidget):
         totnum = 0
         totcont = 0
         tot_sconti = 0
+        totcont_netto = 0
+        totcont_resto = 0
         for m in scos_no_batchSize:
             if m.sconti:
                 tot_sconti += self.calcolasconto(m)
-            tot += m.totale_scontrino
-            totccr += m.totale_carta_credito
-            totass += m.totale_assegni
-            totcont += m.totale_contanti
+            tot += m.totale_scontrino # totale incassato
+            totccr += m.totale_carta_credito #totale carta di credito
+            totass += m.totale_assegni # totale assegni
+            totcont += m.totale_contanti # totale dato in contanti
+            if m.totale_carta_credito == 0 and m.totale_assegni == 0 and m.totale_contanti ==0 :
+                totcont += m.totale_scontrino
+            if m.totale_carta_credito == 0 and m.totale_assegni == 0:
+                totcont_netto += m.totale_scontrino
+            totcont_resto = totcont-totcont_netto
             totnum += 1
         #self.filterss.label1.set_text("")
         stringa = """GENERALE:<b><span foreground="black" size="20000">%s</span></b> - NUM. SCONTRINI:<b><span foreground="black" size="18000">%s</span></b> TOT CARTA:<b>%s</b> - TOT ASSEGNI:<b>%s</b> - TOT CONT.:<b>%s</b> - TOT SCONTI:<b>%s</b> - """ %(mNLC(tot,2), totnum, mNLC(totccr,2), mNLC(totass,2), mNLC(totcont,2), mNLC(tot_sconti,2) )
@@ -271,14 +279,14 @@ class GestioneScontrini(GladeWidget):
 
     def refreshHtml(self, dao=None):
         pageData = {}
-        html = '<html></html>'
+        self.html = '<html></html>'
         if self.dao:
             pageData = {
                     "file": "scontrino.html",
                     "dao" :self.dao,
                     }
-            html = renderTemplate(pageData)
-        renderHTML(self.detail,html)
+            self.html = renderTemplate(pageData)
+        renderHTML(self.detail,self.html)
 
     def on_scontrini_window_close(self, widget, event=None):
         self.destroy()
@@ -308,34 +316,25 @@ class GestioneScontrini(GladeWidget):
                 return
 
     def on_affluenza_oraria_chart_clicked(self, button):
-        if "Statistiche" in Environment.modulesList and \
-            hasattr(Environment.conf,"Statistiche") and \
-            hasattr(Environment.conf.Statistiche,"affluenza_oraria_giornaliera") and\
-            Environment.conf.Statistiche.affluenza_oraria_giornaliera == "yes":
+        if posso("STA_DETT"):
             from promogest.modules.Statistiche.ui.chart import chartViewer
             chartViewer(self._window, func="affluenzaOrariaGiornaliera",scontrini= self.scontrini)
         else:
-            fenceDialog()
+            fencemsg()
 
     def on_affluenza_mensile_chart_clicked(self, button):
-        if "Statistiche" in Environment.modulesList and \
-            hasattr(Environment.conf,"Statistiche") and \
-            hasattr(Environment.conf.Statistiche,"affluenza_giornaliera_mensile") and\
-            Environment.conf.Statistiche.affluenza_giornaliera_mensile == "yes":
+        if posso("STA_DETT"):
             from promogest.modules.Statistiche.ui.chart import chartViewer
             chartViewer(self._window, func="affluenzaGiornalieraMensile", scontrini= self.scontrini)
         else:
-            fenceDialog()
+            fencemsg()
 
     def on_affluenza_annuale_chart_clicked(self, button):
-        if "Statistiche" in Environment.modulesList and \
-            hasattr(Environment.conf,"Statistiche") and \
-            hasattr(Environment.conf.Statistiche,"affluenza_mensile_annuale") and\
-            Environment.conf.Statistiche.affluenza_mensile_annuale == "yes":
+        if posso("STA_DETT"):
             from promogest.modules.Statistiche.ui.chart import chartViewer
             chartViewer(self._window, func="affluenzaMensileAnnuale", scontrini= self.scontrini)
         else:
-            fenceDialog()
+            fencemsg()
 
     def on_esporta_affluenza_csv_clicked(self, button):
         print "esport to csv"
@@ -513,3 +512,24 @@ class GestioneScontrini(GladeWidget):
             anag.editElement.id_persona_giuridica_customcombobox.set_sensitive(True)
             anag.editElement.setFocus()
         self.destroy()
+
+
+    def on_stampa_button_clicked(self, button):
+        try:
+            import ho.pisa as pisa
+        except:
+            return
+        if self.dao:
+            f = str(self.html)
+    #        f = "Hello <strong>World</strong>"
+            filename =Environment.tempDir + "ristampa.pdf"
+            g = file(filename, "wb")
+            pdf = pisa.CreatePDF(f,g)
+            g .close()
+            anag = PrintDialogHandler(self,"SCONTRINO", tempFile=Environment.tempDir + "ristampa.pdf")
+            anagWindow = anag.getTopLevel()
+            returnWindow = self.getTopLevel().get_toplevel()
+            anagWindow.set_transient_for(returnWindow)
+            anagWindow.show_all()
+        else:
+            messageInfo(msg="Selezionare uno scontrino da stampare")

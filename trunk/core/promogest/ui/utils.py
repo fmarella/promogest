@@ -3188,6 +3188,9 @@ def posso(mod=None):
     if mod == "STA":
         if "STA" in modulis: return True
         if "FULL" in moduli: return True
+    if mod == "STA_DETT":
+        if "STA_DETT" in modulis: return True
+        if "FULL" in moduli: return True
     if mod == "SD":
         if "SincroDB" in modulis :return True
     if mod == "SL":
