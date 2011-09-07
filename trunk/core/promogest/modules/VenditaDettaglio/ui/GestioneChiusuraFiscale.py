@@ -106,32 +106,61 @@ class GestioneChiusuraFiscale(GladeWidget):
         righeMovimento = []
 
         scontiRigheMovimento= []
+
+        dictRigheProv = {}
+
         for scontrino in scontrini:
             for riga in scontrino.righe:
-                # Istanzio articolo
-                art = Articolo().getRecord(id=riga.id_articolo)
-                # Cerco IVA
-                iva = AliquotaIva().getRecord(id=art.id_aliquota_iva)
+                cri = str(riga.id_articolo)+"_"+str(riga.prezzo_scontato)
+                if  cri in dictRigheProv:
+                    daoss = dictRigheProv[cri]
+                    daoss.append(riga)
+                    dictRigheProv[cri] = daoss
+                else:
+                    daoss = []
+                    daoss.append(riga)
+                    dictRigheProv[cri] = daoss
 
-                daoRiga = RigaMovimento()
-                daoRiga.valore_unitario_lordo = riga.prezzo
-                daoRiga.valore_unitario_netto = riga.prezzo_scontato
-                daoRiga.quantita = riga.quantita
-                daoRiga.moltiplicatore = 1
-                daoRiga.descrizione = riga.descrizione
-                daoRiga.id_magazzino = self.idMagazzino
-                daoRiga.id_articolo = riga.id_articolo
-                daoRiga.percentuale_iva = iva.percentuale
-                scontiRigheMovimento= []
-                if riga.sconti:
-                    for s in riga.sconti:
-                        daoScontoRigaMovimento = ScontoRigaMovimento()
-                        daoScontoRigaMovimento.valore = s.valore
-                        daoScontoRigaMovimento.tipo_sconto = s.tipo_sconto
-                        scontiRigheMovimento.append(daoScontoRigaMovimento)
-                daoRiga.scontiRigheMovimento = scontiRigheMovimento
-                scontiRigheMovimento= []
-                righeMovimento.append(daoRiga)
+        listRighe = []
+        for k,v in dictRigheProv.iteritems():
+            if len(v) ==1:
+                listRighe.append(v[0])
+                #print " QUESTO é SOLO", v[0].quantita
+            else:
+                listPrezzi = []
+                quantita = 0
+                for a in v:
+                    #print "IN COMPAGNIA", a.id_articolo, a.prezzo_scontato, a.quantita
+                    quantita += a.quantita
+                v[0].quantita = quantita
+                listRighe.append(v[0])
+
+        for riga in listRighe:
+
+            # Istanzio articolo
+            art = Articolo().getRecord(id=riga.id_articolo)
+            # Cerco IVA
+            iva = AliquotaIva().getRecord(id=art.id_aliquota_iva)
+
+            daoRiga = RigaMovimento()
+            daoRiga.valore_unitario_lordo = riga.prezzo
+            daoRiga.valore_unitario_netto = riga.prezzo_scontato
+            daoRiga.quantita = riga.quantita
+            daoRiga.moltiplicatore = 1
+            daoRiga.descrizione = riga.descrizione
+            daoRiga.id_magazzino = self.idMagazzino
+            daoRiga.id_articolo = riga.id_articolo
+            daoRiga.percentuale_iva = iva.percentuale
+            scontiRigheMovimento= []
+            if riga.sconti:
+                for s in riga.sconti:
+                    daoScontoRigaMovimento = ScontoRigaMovimento()
+                    daoScontoRigaMovimento.valore = s.valore
+                    daoScontoRigaMovimento.tipo_sconto = s.tipo_sconto
+                    scontiRigheMovimento.append(daoScontoRigaMovimento)
+            daoRiga.scontiRigheMovimento = scontiRigheMovimento
+            scontiRigheMovimento= []
+            righeMovimento.append(daoRiga)
 
         daoMovimento.righeMovimento = righeMovimento
         daoMovimento.persist()

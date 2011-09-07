@@ -1000,7 +1000,8 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             else:
                 return
         else:
-            self.destroy()
+            if YesNoDialog('Confermi la chiusura?', self.getTopLevel()):
+                self.destroy()
             return None
 
     def createFileToPos(self, dao):

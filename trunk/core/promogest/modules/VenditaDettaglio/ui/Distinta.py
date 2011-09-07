@@ -26,6 +26,7 @@ from promogest.ui.utils import *
 from promogest import Environment
 from promogest.dao.CategoriaArticolo import CategoriaArticolo
 from promogest.dao.Magazzino import Magazzino
+from promogest.dao.Articolo import Articolo
 from promogest.modules.VenditaDettaglio.dao.ChiusuraFiscale import ChiusuraFiscale
 from promogest.lib.HtmlHandler import createHtmlObj, renderTemplate, renderHTML
 from promogest.ui.PrintDialog import PrintDialogHandler
@@ -66,14 +67,17 @@ class Distinta(GladeWidget):
         for m in scontrini:
             if m.sconti:
                 tot_sconti += self.calcolasconto(m)
-            tot += m.totale_scontrino
-            totccr += m.totale_carta_credito
-            totass += m.totale_assegni
-            if m.totale_contanti:
-                totcont_resto += (m.totale_contanti-m.totale_scontrino)
+            tot += m.totale_scontrino # totale incassato
+            totccr += m.totale_carta_credito #totale carta di credito
+            totass += m.totale_assegni # totale assegni
+            totcont += m.totale_contanti # totale dato in contanti
+            if m.totale_carta_credito == 0 and m.totale_assegni == 0 and m.totale_contanti ==0 :
+                totcont += m.totale_scontrino
+            if m.totale_carta_credito == 0 and m.totale_assegni == 0:
                 totcont_netto += m.totale_scontrino
-            totcont += m.totale_contanti
+            totcont_resto = totcont-totcont_netto
             totnum += 1
+            print m.totale_contanti, totcont
         totali = {
             "tot" : mN(tot,2),
             "tot_cont": mN(totcont,2),
@@ -84,7 +88,7 @@ class Distinta(GladeWidget):
             "tot_cont_resto": mN(totcont_resto,2),
             "tot_cont_netto": mN(totcont_netto,2)
         }
-        #return (mN(tot),mN(totcont), mN(totccr), mN(totass),mN(tot_sconti), totnum, mN(totcont_resto), mN(totcont_netto) )
+
         return totali
 
     def calcolasconto(self, dao):
@@ -104,14 +108,15 @@ class Distinta(GladeWidget):
         totnum = 0
         tot_sconti = 0
         partz_def = []
-        for partz in parziali:
-            if partz[1]:
-                for p in partz[1]:
+        for k,v in parziali.iteritems():
+            if v:
+                for p in v:
                     if p.sconti:
                         tot_sconti += self.calcolascontoXRiga(p)
                     tot += p.prezzo*p.quantita
                     totnum += p.quantita
-                partz_def.append((partz[0].denominazione, mN(tot), mN(tot_sconti), totnum))
+                categoria = CategoriaArticolo().getRecord(id=k)
+                partz_def.append((categoria.denominazione_breve, mN(tot), mN(tot_sconti), totnum))
                 tot = 0
                 tot_sconti = 0
                 totnum = 0
@@ -133,14 +138,20 @@ class Distinta(GladeWidget):
         else:
             aperto ="SI"
         if self._scontrini:
-            for cate in self.categorie:
-                for s in self._scontrini:
-                    for una in s.righe:
-                        if cate.denominazione == leggiArticolo(una.id_articolo)["daoArticolo"].denominazione_categoria:
-                            catelist.append(una)
-                parziali.append((cate,catelist))
-                catelist= []
-            partz = self.aggiungiTotaliXRiga(parziali)
+            cateDict = {}
+            for s in self._scontrini:
+                for una in s.righe:
+                    articolo = Articolo().getRecord(id=una.id_articolo)
+                    if articolo.id_categoria_articolo in cateDict:
+                        righe = cateDict[articolo.id_categoria_articolo]
+                        righe.append(una)
+                        cateDict[articolo.id_categoria_articolo] = righe
+                    else:
+                        righe = []
+                        righe.append(una)
+                        cateDict[articolo.id_categoria_articolo] = righe
+
+            partz = self.aggiungiTotaliXRiga(cateDict)
             if hasattr(Environment.conf, "VenditaDettaglio"):
                 magazzino = Environment.conf.VenditaDettaglio.magazzino
             else:
@@ -166,7 +177,6 @@ class Distinta(GladeWidget):
                         castellettoIva[ali]['imponibile'] += imponibile
                         castellettoIva[ali]['imposta'] += iva
                         castellettoIva[ali]['totale'] += prezzo_scontato
-            #print "CASTELLETOOOOOOOOOOOOOOOOOOOOOOOOOOO", castellettoIva
             pageData = {
                     "file": "distinta_giornaliera.html",
                     "parziali": partz,

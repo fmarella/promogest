@@ -31,13 +31,13 @@ aperta : </B>{{pageData['aperto']}}
 {% for t in pageData['parziali'] %}
 </P>
 <TABLE WIDTH=100% BORDER=1 BORDERCOLOR="#000000" CELLPADDING=4 CELLSPACING=0>
-    <COL WIDTH=23*>
-    <COL WIDTH=22*>
+    <COL WIDTH=30*>
+    <COL WIDTH=25*>
     <COL WIDTH=18*>
-    <COL WIDTH=35*>
+    <COL WIDTH=25*>
     <COL WIDTH=23*>
-    <COL WIDTH=47*>
-    <COL WIDTH=29*>
+    <COL WIDTH=42*>
+    <COL WIDTH=35*>
     <COL WIDTH=42*>
     <COL WIDTH=17*>
     <TR VALIGN=TOP>
@@ -67,7 +67,7 @@ aperta : </B>{{pageData['aperto']}}
             <P>Numero pezzi</P>
         </TD>
         <TD WIDTH=7%>
-            <P><B>{{t[3]}} </B>
+            <P><B>{{utils.mN(t[3],1)}} </B>
             </P>
         </TD>
     </TR>
@@ -122,7 +122,7 @@ aperta : </B>{{pageData['aperto']}}
             <P>Contanti NETTO</P>
         </TD>
         <TD WIDTH=16%>
-            <P>{{utils.mNLC(pageData['totali']["tot_cont_netto"],2)}}</P>
+            <P><b>{{utils.mNLC(pageData['totali']["tot_cont_netto"],2)}}</b></P>
         </TD>
     </TR>
     <TR VALIGN=TOP>
@@ -150,7 +150,7 @@ aperta : </B>{{pageData['aperto']}}
             <P>C.Credito e POS</P>
         </TD>
         <TD WIDTH=10%>
-            <P>{{utils.mNLC(pageData['totali']["tot_ccr"],2)}}</P>
+            <P><b>{{utils.mNLC(pageData['totali']["tot_ccr"],2)}}</b></P>
         </TD>
         <TD WIDTH=27%>
             <P>Tot sconti su totale</P>
@@ -169,10 +169,57 @@ aperta : </B>{{pageData['aperto']}}
 </TABLE>
 <P><BR><BR>
 </P>
+<TABLE WIDTH=50% BORDER=1 BORDERCOLOR="#000000" CELLPADDING=2 CELLSPACING=0>
+    <TR VALIGN=TOP>
+        <TD WIDTH=70%>
+            <P>TOTALE CONTANTE DA VERSARE</P>
+        </TD>
+        <TD WIDTH=30%>
+            <P></P>
+        </TD>
+    </TR>
+        <TR VALIGN=TOP>
+        <TD WIDTH=30%>
+            <P>TOTALE FONDO CASSA</P>
+        </TD>
+        <TD WIDTH=70%>
+            <P></P>
+        </TD>
+    </TR>
+        </TR>
+        <TR VALIGN=TOP>
+        <TD WIDTH=30%>
+            <P>USCITE DI CASSA</P>
+        </TD>
+        <TD WIDTH=70%>
+            <P></P>
+        </TD>
+    </TR>
+        </TR>
+        <TR VALIGN=TOP>
+        <TD WIDTH=30%>
+            <P>USCITE DI CASSA</P>
+        </TD>
+        <TD WIDTH=70%>
+            <P></P>
+        </TD>
+    </TR>
+        </TR>
+        <TR VALIGN=TOP>
+        <TD WIDTH=30%>
+            <P>USCITE DI CASSA</P>
+        </TD>
+        <TD WIDTH=70%>
+            <P></P>
+        </TD>
+    </TR>
+</TABLE>
+
+
 <DIV TYPE=FOOTER>
     <P ALIGN=CENTER STYLE="margin-top: 0.5cm; margin-bottom: 0cm; font-style: normal">
     <FONT SIZE=2>Distinta realizzata con modulo Gestione negozio di
-    PromoGest2 by PromoTux snc</FONT></P>
+    PromoGest</FONT></P>
 </DIV>
 </BODY>
 </HTML>
