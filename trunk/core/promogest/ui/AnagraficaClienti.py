@@ -78,7 +78,7 @@ class AnagraficaClienti(Anagrafica):
             if cltip:
                 for l in cltip:
                     l.delete()
-            clcg = ClienteGeneralita().select(IdCliente = dao.id, batchSize=None)
+            clcg = ClienteGeneralita().select(idCliente = dao.id, batchSize=None)
             if clcg:
                 for l in clcg:
                     l.delete()
