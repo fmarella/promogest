@@ -73,6 +73,7 @@ class AnagraficaClienti(Anagrafica):
         #try:
         if posso("IP"):
             from promogest.modules.InfoPeso.dao.TestataInfoPeso import TestataInfoPeso
+            from promogest.modules.InfoPeso.dao.ClienteGeneralita import ClienteGeneralita
             cltip = TestataInfoPeso().select(idCliente=dao.id, batchSize=None)
             if cltip:
                 for l in cltip:
