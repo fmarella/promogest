@@ -83,20 +83,34 @@ def getNuovoCodiceFornitore():
     listacodici = []
 #    if hasattr(conf,'Fornitori'):
     try:
-        n = 1
-        quanti = session.query(Fornitore).count()
-        if quanti > 0:
-            while session.query(Fornitore).order_by(Fornitore.codice.asc()).offset(quanti-n).limit(1).all():
-                art = session.query(Fornitore).order_by(Fornitore.codice.asc()).offset(quanti-n).limit(1).all()
-                codice = codeIncrement(art[0].codice)
-                if not codice or Fornitore().select(codice=codice):
-                    if n < 50:
-                        n =n+1
-                    else:
-                        break
-                else:
-                    if not Fornitore().select(codice=codice):
-                        return codice
+        forni = session.query(Fornitore.codice).all()[-500:]
+        forni.reverse()
+
+        for q in forni:
+            codice = codeIncrement(q[0])
+            if not codice or Fornitore().select(codicesatto=codice):
+                continue
+            else:
+                if not Fornitore().select(codicesatto=codice):
+                    return codice
+
+
+
+
+        #n = 1
+        #quanti = session.query(Fornitore).count()
+        #if quanti > 0:
+            #while session.query(Fornitore).order_by(Fornitore.id.asc()).offset(quanti-n).limit(1).all():
+                #art = session.query(Fornitore).order_by(Fornitore.id.asc()).offset(quanti-n).limit(1).all()
+                #codice = codeIncrement(art[0].codice)
+                #if not codice or Fornitore().select(codicesatto=codice):
+                    #if n < 200:
+                        #n =n+1
+                    #else:
+                        #break
+                #else:
+                    #if not Fornitore().select(codicesatto=codice):
+                        #return codice
     except:
         pass
     try:

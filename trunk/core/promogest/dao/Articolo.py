@@ -691,20 +691,35 @@ def getNuovoCodiceArticolo(idFamiglia=None):
     numeroFamiglie = 0
     codice = ''
     try:
-        n = 1
-        quanti = session.query(Articolo).count()
-        if quanti > 0:
-            while session.query(Articolo).order_by(Articolo.codice.asc()).offset(quanti-n).limit(1).all():
-                art = session.query(Articolo).order_by(Articolo.codice.asc()).offset(quanti-n).limit(1).all()
-                codice = codeIncrement(art[0].codice)
-                if not codice or Articolo().select(codice=codice):
-                    if n < 100:
-                        n =n+1
-                    else:
-                        break
-                else:
-                    if not Articolo().select(codice=codice):
-                        return codice
+
+        art = session.query(Articolo.codice).all()[-700:]
+        art.reverse()
+
+        for q in art:
+            codice = codeIncrement(q[0])
+            if not codice or Articolo().select(codicesatto=codice):
+                continue
+            else:
+                if not Articolo().select(codicesatto=codice):
+                    return codice
+
+
+
+
+        #n = 1
+        #quanti = session.query(Articolo).count()
+        #if quanti > 0:
+            #while session.query(Articolo).order_by(Articolo.id.asc()).offset(quanti-n).limit(1).all():
+                #art = session.query(Articolo).order_by(Articolo.id.asc()).offset(quanti-n).limit(1).all()
+                #codice = codeIncrement(art[0].codice)
+                #if not codice or Articolo().select(codice=codice):
+                    #if n < 400:
+                        #n =n+1
+                    #else:
+                        #break
+                #else:
+                    #if not Articolo().select(codice=codice):
+                        #return codice
     except:
         pass
     try:

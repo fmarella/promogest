@@ -454,6 +454,7 @@ Cognome Nome&lt;/b&gt;</property>
                 <property name="secondary_icon_sensitive">True</property>
                 <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
                 <signal name="icon-press" handler="on_icon_press" swapped="no"/>
+                <signal name="icon-press" handler="on_icon_press_primary" swapped="no"/>
               </object>
             </child>
           </object>

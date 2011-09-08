@@ -263,19 +263,30 @@ class AnagraficaClientiEdit(AnagraficaEdit):
         for c in categorie:
             model.append([c.id_categoria_cliente, c.categoria_cliente.denominazione, None, None])
 
+    def on_icon_press_primary(self,entry,position,event):
+        if position.value_nick == "primary":
+            codice = promogest.dao.Cliente.getNuovoCodiceCliente()
+            self.codice_entry.set_text(codice)
+
     def saveDao(self, tipo=None):
+
         if (self.ragione_sociale_entry.get_text() == ''):
             obligatoryField(self.dialogTopLevel,
                             self.ragione_sociale_entry,
                             msg='Campo obbligatorio !\n\nRagione sociale')
         self.verificaListino()
+
+        cod = Cliente().select(codicesatto=self.codice_entry.get_text().upper().strip())
+        if cod:
+            obligatoryField(self.dialogTopLevel,
+                            self.ragione_sociale_entry,
+                            msg='CODICE GIÀ PRESENTE')
         self.dao.codice = self.codice_entry.get_text().upper()
         self.dao.codice = omogeneousCode(section="Clienti", string=self.dao.codice )
         self.dao.ragione_sociale = self.ragione_sociale_entry.get_text()
         if self.cliente_insegna:
             self.dao.insegna = self.insegna_entry.get_text()
-#        self.dao.cognome= self.cognome_entry.get_text()
-#        self.dao.nome= self.nome_entry.get_text()
+
         if (self.dao.codice and (self.dao.ragione_sociale or self.dao.insegna or self.dao.cognome or self.dao.nome)) =='':
             msg="""Il codice è obbligatorio.
     Inserire anche ragione sociale / cognome e nome """
