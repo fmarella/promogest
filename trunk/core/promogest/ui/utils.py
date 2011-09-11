@@ -941,10 +941,39 @@ def getRiportoBanca():
 def getRiportoCassa():
     return str(setconf("PrimaNota", "valore_saldo_parziale_cassa_primanota"))
 
+def getDenominazioneBanca(id_banca):
+    from promogest.dao.Banca import Banca
+    bn = Banca().getRecord(id=id_banca)
+    if bn:
+        return bn.denominazione
+    else:
+        return ""
+
+def calcolaTotaliBanche(banche_entrate, banche_uscite, dao):
+    """ Calcola i totali delle entrate e delle uscite divisi per ciascuna banca
+
+    Arguments:
+    - `banche_entrate`: dizionario ID banca => totale entrate
+    - `banche_uscite`: dizionario ID banca => totale uscite
+    - `dao`: lista di scadenze documento
+    """
+    for r in dao.righeprimanota:
+        if r.id_banca in banche_entrate:
+            banche_entrate[r.id_banca] += dao.totali["tot_entrate_banca"]
+        else:
+            banche_entrate[r.id_banca] = dao.totali["tot_entrate_banca"]
+        if r.id_banca in banche_uscite:
+            banche_uscite[r.id_banca] += dao.totali["tot_uscite_banca"]
+        else:
+            banche_uscite[r.id_banca] = dao.totali["tot_uscite_banca"]
+    return (banche_entrate, banche_uscite)
+
 def calcolaTotaliPrimeNote(daos1, daos2=None):
     """Calcola i totali delle entrate e delle uscite di cassa o di banca"""
     tot_entrate_cassa = 0
     tot_entrate_banca = 0
+    tot_entrate_per_banche = {}
+    tot_uscite_per_banche = {}
     tot_uscite_cassa = 0
     tot_uscite_banca = 0
     riporto_cassa = setconf("PrimaNota", "valore_saldo_parziale_cassa_primanota") or 0
@@ -953,13 +982,13 @@ def calcolaTotaliPrimeNote(daos1, daos2=None):
         tot_entrate_cassa += dao.totali["tot_entrate_cassa"]
         tot_uscite_cassa += dao.totali["tot_uscite_cassa"]
         if not daos2:
+            tot_entrate_per_banche, tot_uscite_per_banche = calcolaTotaliBanche(tot_entrate_per_banche, tot_uscite_per_banche, dao)
             tot_entrate_banca += dao.totali["tot_entrate_banca"]
             tot_uscite_banca += dao.totali["tot_uscite_banca"]
     if daos2:
         for dao in daos2:
-            #tot_entrate_cassa += dao.totali["tot_entrate_cassa"]
+            tot_entrate_per_banche, tot_uscite_per_banche = calcolaTotaliBanche(tot_entrate_per_banche, tot_uscite_per_banche, dao)
             tot_entrate_banca += dao.totali["tot_entrate_banca"]
-            #tot_uscite_cassa += dao.totali["tot_uscite_cassa"]
             tot_uscite_banca += dao.totali["tot_uscite_banca"]
     saldo_cassa = tot_entrate_cassa + tot_uscite_cassa + Decimal(str(riporto_cassa))
     saldo_banca = tot_entrate_banca + tot_uscite_banca + Decimal(str(riporto_banca))
@@ -968,6 +997,8 @@ def calcolaTotaliPrimeNote(daos1, daos2=None):
             "saldo_cassa": saldo_cassa,
             "saldo_banca": saldo_banca,
             "tot_entrate_banca": tot_entrate_banca,
+            "tot_entrate_per_banche": tot_entrate_per_banche,
+            "tot_uscite_per_banche": tot_uscite_per_banche,
             "tot_entrate_cassa": tot_entrate_cassa,
             "tot_uscite_banca": tot_uscite_banca,
             "tot_uscite_cassa": tot_uscite_cassa
