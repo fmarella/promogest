@@ -95,9 +95,7 @@ class AnagraficaPrimaNotaEdit(AnagraficaEdit):
                 col_tipo = ""
             banca = ""
             if r.id_banca:
-                _banca = Banca().getRecord(id=r.id_banca)
-                if _banca:
-                    banca = _banca.denominazione
+                banca = getDenominazioneBanca(r.id_banca)
             self.primanota_riga_listore.append((r,
                                                 r.denominazione,
                                                 str(valore),
@@ -176,9 +174,7 @@ class AnagraficaPrimaNotaEdit(AnagraficaEdit):
         riga.id_banca = findIdFromCombobox(self.id_banca_customcombobox.combobox)
         banca = ""
         if riga.id_banca:
-            _banca = Banca().getRecord(id=riga.id_banca)
-            if _banca:
-                banca = _banca.denominazione
+            banca = getDenominazioneBanca(riga.id_banca)
         dati = (riga,
                         denominazione,
                         str(mN(valore,2)),
