@@ -613,6 +613,7 @@ class TestataDocumento(Dao):
                     rigaprimanota.segno = segno
                     rigaprimanota.valore = scad.importo
                     rigaprimanota.id_banca = scad.id_banca
+                    rigaprimanota.note_primanota = scad.note_per_primanota
                     rigaprimanota.id_testata_documento = self.id
                     tpn.righeprimanota = [rigaprimanota]
                     tpn.persist()

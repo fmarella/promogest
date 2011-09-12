@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010, 2011 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
+#    Author: Francesco Marella <francesco.marella@gmail.com>
 
 #    This file is part of Promogest.
 
@@ -39,6 +40,11 @@ try:
 #            ForeignKey(bancaFK, onupdate="CASCADE", ondelete="RESTRICT"),
             nullable=True)
         col.create(rigaprimanota)
+
+    if "note_primanota" not in [c.name for c in rigaprimanota.columns]:
+        col = Column('note_primanota', Text, nullable=True)
+        col.create(rigaprimanota)
+
     rigaprimanota.c.valore.alter(Numeric(16, 4), nullable=False)
 
 except:
@@ -76,6 +82,7 @@ except:
             Column('tipo', String(25), nullable=False),
             Column('segno', String(25), nullable=False),
             Column('valore', Numeric(16, 4), nullable=False),
+            Column('note_primanota', Text, nullable=True),
             schema=params["schema"],
             useexisting=True)
     rigaprimanota.create(checkfirst=True)

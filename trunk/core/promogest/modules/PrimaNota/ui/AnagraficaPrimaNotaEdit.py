@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010,2011 by Promotux
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010, 2011 by Promotux
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
+#    Author: Francesco Marella <francesco.marella@gmail.com>
+
 #    This file is part of Promogest.
 
 #    Promogest is free software: you can redistribute it and/or modify
@@ -117,6 +119,7 @@ class AnagraficaPrimaNotaEdit(AnagraficaEdit):
         self.valore_entry.set_text("")
         self.denominazione_entry.set_text("")
         self.id_banca_customcombobox.combobox.set_active(-1)
+        textview_set_text(self.note_textview, '')
 
     def on_aggiungi_button_clicked(self, button):
         """ Aggiunge la riga con i campi di denominazione e valore cassa o banca
@@ -247,6 +250,7 @@ class AnagraficaPrimaNotaEdit(AnagraficaEdit):
             self.id_banca_customcombobox.set_sensitive(True)
 
         self.denominazione_entry.set_text(self.rigaIter[1])
+        textview_set_text(self.note_textview, self.rigaIter[0].note_primanota or '')
         self.editRiga = self.rigaIter[0]
 
     def saveDao(self, chiusura=False, tipo=None):
