@@ -2005,9 +2005,6 @@ del documento.
             self.aggiungi_scheda_acconto_button.set_label("Aggiungi acconto")
             self.acconto = False
 
-    def on_primanota_check_toggled(self, button):
-        return
-
     def on_pulisci_scadenza_button_clicked(self, button):
         AnagraficadocumentiPagamentExt.on_pulisci_scadenza_button_clicked(self, button)
 

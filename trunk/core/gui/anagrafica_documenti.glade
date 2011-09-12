@@ -6734,7 +6734,6 @@ _
                                 <property name="use_action_appearance">False</property>
                                 <property name="yalign">0.55000001192092896</property>
                                 <property name="draw_indicator">True</property>
-                                <signal name="toggled" handler="on_primanota_check_toggled" swapped="no"/>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
