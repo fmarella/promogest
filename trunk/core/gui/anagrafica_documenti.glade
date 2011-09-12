@@ -662,6 +662,7 @@
                   <object class="GtkAlignment" id="alignment302">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="bottom_padding">1</property>
                     <property name="left_padding">5</property>
                     <child>
                       <object class="GtkVBox" id="vbox28">
@@ -673,12 +674,6 @@
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="spacing">5</property>
-                            <child>
-                              <placeholder/>
-                            </child>
-                            <child>
-                              <placeholder/>
-                            </child>
                             <child>
                               <object class="GtkHBox" id="hbox243">
                                 <property name="visible">True</property>
@@ -713,7 +708,7 @@
                               <packing>
                                 <property name="expand">False</property>
                                 <property name="fill">True</property>
-                                <property name="position">2</property>
+                                <property name="position">0</property>
                               </packing>
                             </child>
                             <child>
@@ -726,7 +721,7 @@
                               <packing>
                                 <property name="expand">False</property>
                                 <property name="fill">False</property>
-                                <property name="position">3</property>
+                                <property name="position">1</property>
                               </packing>
                             </child>
                             <child>
@@ -749,7 +744,7 @@
                               <packing>
                                 <property name="expand">True</property>
                                 <property name="fill">True</property>
-                                <property name="position">4</property>
+                                <property name="position">2</property>
                               </packing>
                             </child>
                             <child>
@@ -803,7 +798,7 @@
                               <packing>
                                 <property name="expand">False</property>
                                 <property name="fill">False</property>
-                                <property name="position">5</property>
+                                <property name="position">3</property>
                               </packing>
                             </child>
                           </object>
@@ -812,12 +807,6 @@
                             <property name="fill">True</property>
                             <property name="position">0</property>
                           </packing>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
                         </child>
                         <child>
                           <object class="GtkHBox" id="hbox5">
@@ -2907,11 +2896,8 @@
                           <packing>
                             <property name="expand">False</property>
                             <property name="fill">False</property>
-                            <property name="position">3</property>
+                            <property name="position">1</property>
                           </packing>
-                        </child>
-                        <child>
-                          <placeholder/>
                         </child>
                       </object>
                     </child>
@@ -2970,7 +2956,6 @@
                 </child>
                 <child>
                   <object class="GtkScrolledWindow" id="scrolledwindow9">
-                    <property name="height_request">165</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="hscrollbar_policy">automatic</property>

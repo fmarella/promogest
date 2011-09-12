@@ -1820,9 +1820,13 @@ def getStringaSconti(listSconti):
         elif tipo == 'valore':
             tipo = ''
             decimals = int(setconf(key="decimals", section="Numbers"))
+        print "AHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH", s["valore"]
         valore = ('%.' + str(decimals) + 'f') % float(s["valore"])
         stringaSconti = stringaSconti + valore + tipo + '; '
     return stringaSconti
+
+
+
 
 def scontiTipo(stringa):
     if stringa =="valore":
