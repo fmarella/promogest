@@ -276,11 +276,11 @@ class AnagraficaClientiEdit(AnagraficaEdit):
                             msg='Campo obbligatorio !\n\nRagione sociale')
         self.verificaListino()
 
-        cod = Cliente().select(codicesatto=self.codice_entry.get_text().upper().strip())
-        if cod:
-            obligatoryField(self.dialogTopLevel,
-                            self.ragione_sociale_entry,
-                            msg='CODICE GIÀ PRESENTE')
+        #cod = Cliente().select(codicesatto=self.codice_entry.get_text().upper().strip())
+        #if cod:
+            #obligatoryField(self.dialogTopLevel,
+                            #self.ragione_sociale_entry,
+                            #msg='CODICE GIÀ PRESENTE')
         self.dao.codice = self.codice_entry.get_text().upper()
         self.dao.codice = omogeneousCode(section="Clienti", string=self.dao.codice )
         self.dao.ragione_sociale = self.ragione_sociale_entry.get_text()

@@ -158,12 +158,12 @@ class AnagraficaFornitoriEdit(AnagraficaEdit):
             obligatoryField(self.dialogTopLevel,
                             self.ragione_sociale_entry,
                             msg='Campo obbligatorio !\n\nRagione sociale')
-        cod = Fornitore().select(codicesatto=self.codice_entry.get_text().upper().strip())
-        if cod:
-            obligatoryField(self.dialogTopLevel,
-                            self.ragione_sociale_entry,
-                            msg='CODICE GIÀ PRESENTE')
-        self.dao.codice = self.codice_entry.get_text().upper()
+        #cod = Fornitore().select(codicesatto=self.codice_entry.get_text().upper().strip())
+        #if cod:
+            #obligatoryField(self.dialogTopLevel,
+                            #self.ragione_sociale_entry,
+                            #msg='CODICE GIÀ PRESENTE')
+        #self.dao.codice = self.codice_entry.get_text().upper()
 #        self.dao.codice = omogeneousCode(section="Fornitori", string=self.dao.codice )
         self.dao.ragione_sociale = self.ragione_sociale_entry.get_text()
         if self.fornitore_insegna:
