@@ -62,18 +62,13 @@ if posso("SM"):
 if posso("GN"):
     from promogest.modules.GestioneNoleggio.ui import AnagraficaDocumentiEditGestioneNoleggioExt
 if posso("PA"):
+    from promogest.modules.Pagamenti.ui.PagamentiNotebookPage import PagamentiNotebookPage
     from promogest.modules.Pagamenti.ui import AnagraficadocumentiPagamentExt
+    from promogest.modules.Pagamenti.ui.AnagraficadocumentiPagamentExt import INFO_SCADENZA_PAGE, PRIMA_SCADENZA_PAGE, \
+SECONDA_SCADENZA_PAGE, TERZA_SCADENZA_PAGE, QUARTA_SCADENZA_PAGE, ACCONTO_PAGE 
 if posso("ADR"):
     from promogest.modules.ADR.ui import AnagraficaDocumentiEditADRExt
 
-(
-    INFO_SCADENZA_PAGE,
-    PRIMA_SCADENZA_PAGE,
-    SECONDA_SCADENZA_PAGE,
-    TERZA_SCADENZA_PAGE,
-    QUARTA_SCADENZA_PAGE,
-    ACCONTO_PAGE
-) = range(6)
 
 class AnagraficaDocumentiEdit(AnagraficaEdit):
     """ Modifica un record dei documenti """
@@ -165,7 +160,10 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
 
     def draw(self, cplx=False):
         self.cplx = cplx
-        drawPart (self)
+        drawPart(self)
+        if posso("PA"):
+            self.pagamenti_page = PagamentiNotebookPage(self)
+            self.notebook.append_page(self.pagamenti_page.pagamenti_vbox, self.pagamenti_page.pagamenti_page_label)
 
     def on_scorporo_button_clicked(self, button):
         """ Bottone con una "s" minuscola, che permette di effettuare "al volo"
@@ -329,12 +327,6 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             AnagraficaDocumentiEditSuMisuraExt.setLabels(self)
         if posso("GN"):
             AnagraficaDocumentiEditGestioneNoleggioExt.setLabels(self)
-        if posso("PA"):
-            AnagraficadocumentiPagamentExt.nuovaRiga(self)
-            AnagraficadocumentiPagamentExt.attiva_prima_scadenza(self,False, True)
-            AnagraficadocumentiPagamentExt.attiva_seconda_scadenza(self,False, True)
-            AnagraficadocumentiPagamentExt.attiva_terza_scadenza(self,False, True)
-            AnagraficadocumentiPagamentExt.attiva_quarta_scadenza(self,False, True)
 
         if len(self._righe) > 1:
             self.data_documento_entry.set_sensitive(False)
@@ -450,25 +442,26 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
     def on_notebook_switch_page(self, notebook, page, page_num):
         if page_num == 2:
             self.calcolaTotale()
-        elif page_num ==3:
+        elif page_num == 3:
             if not posso("PA"):
                 fencemsg()
-                self.calcola_importi_scadenza_button.set_sensitive(False)
-                self.controlla_rate_scadenza_button.set_sensitive(False)
-                self.pulisci_scadenza_button.set_sensitive(False)
+                self.pagamenti_page.calcola_importi_scadenza_button.set_sensitive(False)
+                self.pagamenti_page.controlla_rate_scadenza_button.set_sensitive(False)
+                self.pagamenti_page.pulisci_scadenza_button.set_sensitive(False)
             else:
-                id_pag = findIdFromCombobox(self.id_pagamento_customcombobox.combobox)
+                id_pag = findIdFromCombobox(self.pagamenti_page.id_pagamento_customcombobox.combobox)
                 pago = Pagamento().getRecord(id=id_pag)
-                self.primanota_check.set_active(self.dao.ripartire_importo or False)
+                self.pagamenti_page.primanota_check.set_active(self.dao.ripartire_importo or False)
                 if pago:
-                    self.metodo_pagamento_label.set_markup('<b><span foreground="black" size="16000">'+str(pago.denominazione)+'</span></b>')
+                    self.pagamenti_page.metodo_pagamento_label.set_markup('<b><span foreground="black" size="16000">'+str(pago.denominazione)+'</span></b>')
                 else:
-                    self.metodo_pagamento_label.set_markup('<b><span foreground="black" size="16000">'+str(_("NESSUNO?"))+'</span></b>')
-                self.on_aggiorna_pagamenti_button_clicked(self.aggiorna_pagamenti_button)
+                    self.pagamenti_page.metodo_pagamento_label.set_markup('<b><span foreground="black" size="16000">'+str(_("NESSUNO?"))+'</span></b>')
+                self.pagamenti_page.on_aggiorna_pagamenti_button_clicked(self.pagamenti_page.aggiorna_pagamenti_button)
                 if self.dao.documento_saldato:
-                    self.chiudi_pagamento_documento_button.set_sensitive(False)
+                    self.pagamenti_page.chiudi_pagamento_documento_button.set_sensitive(False)
+                    self.pagamenti_page.apri_pagamento_documento_button.set_sensitive(True)
                 else:
-                    self.apri_pagamento_documento_button.set_sensitive(False)
+                    self.pagamenti_page.apri_pagamento_documento_button.set_sensitive(False)
             #print "passato al terzo tab"
 
     def on_rent_checkbutton_toggled(self, checkbutton=None):
@@ -538,7 +531,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self.start_rent_entry.set_text(dateTimeToString(self.dao.data_inizio_noleggio))
             self.end_rent_entry.set_text(dateTimeToString(self.dao.data_fine_noleggio))
 #            self.on_end_rent_entry_focus_out_event()
-        findComboboxRowFromId(self.id_pagamento_customcombobox.combobox, self.dao.id_pagamento)
+        findComboboxRowFromId(self.pagamenti_page.id_pagamento_customcombobox.combobox, self.dao.id_pagamento)
         findComboboxRowFromId(self.id_banca_customcombobox.combobox, (self.dao.id_banca or -1) )
         findComboboxRowFromId(self.id_aliquota_iva_esenzione_customcombobox.combobox,
                 (self.dao.id_aliquota_iva_esenzione or -1))
@@ -866,7 +859,7 @@ del documento.
             self.dao.id_cliente = self.id_persona_giuridica_customcombobox.getId()
             self.dao.id_fornitore = None
             self.dao.id_destinazione_merce = findIdFromCombobox(self.id_destinazione_merce_customcombobox.combobox)
-        self.dao.id_pagamento = findIdFromCombobox(self.id_pagamento_customcombobox.combobox)
+        self.dao.id_pagamento = findIdFromCombobox(self.pagamenti_page.id_pagamento_customcombobox.combobox)
         self.dao.id_banca = findIdFromCombobox(self.id_banca_customcombobox.combobox)
         self.dao.id_aliquota_iva_esenzione = findIdFromCombobox(self.id_aliquota_iva_esenzione_customcombobox.combobox)
         self.dao.id_agente = self.id_agente_customcombobox._id
@@ -1878,8 +1871,8 @@ del documento.
             if self._tipoPersonaGiuridica == "cliente":
                 self._id_listino = datiIntestatario["id_listino"]
                 self._id_banca = datiIntestatario["id_banca"]
-            if self.id_pagamento_customcombobox.combobox.get_active() == -1:
-                findComboboxRowFromId(self.id_pagamento_customcombobox.combobox, self._id_pagamento)
+            if self.pagamenti_page.id_pagamento_customcombobox.combobox.get_active() == -1:
+                findComboboxRowFromId(self.pagamenti_page.id_pagamento_customcombobox.combobox, self._id_pagamento)
             if self.id_magazzino_combobox.get_active() == -1:
                 findComboboxRowFromId(self.id_magazzino_combobox, self._id_magazzino)
             if self.id_banca_customcombobox.combobox.get_active() == -1:
@@ -1993,107 +1986,6 @@ del documento.
 
     #END TAB 2
 
-    #NOTEBOOK TAB 3
-
-    def on_aggiungi_scheda_acconto_button_clicked(self, button):
-        if not self.acconto:
-            notebook_tabs_show(self.scadenze_notebook, (ACCONTO_PAGE,))
-            self.aggiungi_scheda_acconto_button.set_label("Rimuovi acconto")
-            self.acconto = True
-        else:
-            notebook_tabs_hide(self.scadenze_notebook, (ACCONTO_PAGE,))
-            self.aggiungi_scheda_acconto_button.set_label("Aggiungi acconto")
-            self.acconto = False
-
-    def on_pulisci_scadenza_button_clicked(self, button):
-        AnagraficadocumentiPagamentExt.on_pulisci_scadenza_button_clicked(self, button)
-
-    def on_controlla_rate_scadenza_button_clicked(self, button):
-        """ bottone che controlla le rate scadenza """
-        AnagraficadocumentiPagamentExt.controlla_rate_scadenza(self,True)
-
-    def on_calcola_importi_scadenza_button_clicked(self, button):
-        """calcola importi scadenza pagamenti """
-        id_pag = findIdFromCombobox(self.id_pagamento_customcombobox.combobox)
-        if id_pag == -1 or id_pag==0 or id_pag==None:
-            messageInfo(msg=_("NESSUN METODO DI PAGAMENTO SELEZIONATO\n NON POSSO AGIRE"))
-            return
-        if self.dao.documento_saldato:
-            msg = _('Attenzione! Stai per riaprire un documento già saldato.\n Continuare ?')
-            if YesNoDialog(msg=msg, transient=self.dialogTopLevel):
-                self.stato_label.set_markup(_('<b><span foreground="#B40000" size="24000">APERTO</span></b>'))
-            else:
-                return
-        AnagraficadocumentiPagamentExt.attiva_scadenze(self)
-        AnagraficadocumentiPagamentExt.dividi_importo(self)
-        AnagraficadocumentiPagamentExt.ricalcola_sospeso_e_pagato(self)
-
-    def on_aggiorna_pagamenti_button_clicked(self, button):
-        "refresha la parte dei pagamenti"
-        AnagraficadocumentiPagamentExt.ricalcola_sospeso_e_pagato(self)
-
-    def on_seleziona_prima_nota_button_clicked(self, button):
-        """ Seleziona la prima nota da utilizzare come riferimento """
-        AnagraficadocumentiPagamentExt.on_seleziona_prima_nota_button_clicked(self, button)
-
-    def on_seleziona_seconda_nota_button_clicked(self, button):
-        """ Seleziona la seconda nota di credito da utilizzare come riferimento """
-        AnagraficadocumentiPagamentExt.on_seleziona_seconda_nota_button_clicked(self, button)
-
-    def on_data_pagamento_prima_scadenza_entry_changed(self, entry):
-        """ Reimposta i totali saldato e da saldare alla modifica della data
-            di pagamento della prima scadenza """
-        AnagraficadocumentiPagamentExt.ricalcola_sospeso_e_pagato(self)
-
-    def on_data_pagamento_seconda_scadenza_entry_changed(self, entry):
-        AnagraficadocumentiPagamentExt.ricalcola_sospeso_e_pagato(self)
-
-    def on_data_pagamento_terza_scadenza_entry_changed(self, entry):
-        AnagraficadocumentiPagamentExt.ricalcola_sospeso_e_pagato(self)
-
-    def on_data_pagamento_quarta_scadenza_entry_changed(self, entry):
-        AnagraficadocumentiPagamentExt.ricalcola_sospeso_e_pagato(self)
-
-    def on_primanota_button_clicked(self, button):
-        AnagraficadocumentiPagamentExt.on_primanota_button_clicked(self, button)
-
-    def on_chiudi_pagamento_documento_button_clicked(self, button):
-        AnagraficadocumentiPagamentExt.on_chiudi_pagamento_documento_button_clicked(self, button)
-
-    def on_apri_pagamento_documento_button_clicked(self, button):
-        AnagraficadocumentiPagamentExt.on_apri_pagamento_documento_button_clicked(self, button)
-
-    def on_edit_prima_rata_button_clicked(self, button):
-        AnagraficadocumentiPagamentExt.on_edit_prima_rata_button_clicked(self, button)
-
-    def on_edit_seconda_rata_button_clicked(self, button):
-        AnagraficadocumentiPagamentExt.on_edit_seconda_rata_button_clicked(self, button)
-
-    def on_edit_terza_rata_button_clicked(self, button):
-        AnagraficadocumentiPagamentExt.on_edit_terza_rata_button_clicked(self, button)
-
-    def on_edit_quarta_rata_button_clicked(self, button):
-        AnagraficadocumentiPagamentExt.on_edit_quarta_rata_button_clicked(self, button)
-
-    def on_edit_acconto_button_clicked(self, button):
-        AnagraficadocumentiPagamentExt.on_edit_acconto_button_clicked(self, button)
-
-    def on_pulisci_acconto_button_clicked(self, button):
-        AnagraficadocumentiPagamentExt.on_pulisci_acconto_button_clicked(self, button)
-
-    def on_pulisci_prima_rata_button_clicked(self, button):
-        AnagraficadocumentiPagamentExt.on_pulisci_prima_rata_button_clicked(self, button)
-
-    def on_pulisci_seconda_rata_button_clicked(self, button):
-        AnagraficadocumentiPagamentExt.on_pulisci_seconda_rata_button_clicked(self, button)
-
-    def on_pulisci_terza_rata_button_clicked(self, button):
-        AnagraficadocumentiPagamentExt.on_pulisci_terza_rata_button_clicked(self, button)
-
-    def on_pulisci_quarta_rata_button_clicked(self, button):
-        AnagraficadocumentiPagamentExt.on_pulisci_quarta_rata_button_clicked(self, button)
-
-    # NOTEBOOK FINE TAB 3
 
     def on_avvertimento_sconti_button_clicked(self, button):
         self.notebook.set_current_page(2)

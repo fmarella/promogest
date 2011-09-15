@@ -153,7 +153,6 @@ def drawPart(anaedit):
                                 on_id_aliquota_iva_customcombobox_clicked)
     fillComboboxOperazioni(anaedit.id_operazione_combobox, 'documento')
     fillComboboxMagazzini(anaedit.id_magazzino_combobox)
-    fillComboboxPagamenti(anaedit.id_pagamento_customcombobox.combobox)
     fillComboboxBanche(anaedit.id_banca_customcombobox.combobox)
     fillComboboxAliquoteIva(anaedit.id_aliquota_iva_esenzione_customcombobox.combobox)
     fillComboboxCausaliTrasporto(anaedit.causale_trasporto_comboboxentry)
@@ -202,8 +201,6 @@ def drawPart(anaedit):
             anaedit.on_id_listino_customcombobox_changed)
     anaedit.id_listino_customcombobox.button.connect('toggled',
             anaedit.on_id_listino_customcombobox_button_toggled)
-    anaedit.id_pagamento_customcombobox.connect('clicked',
-                        on_id_pagamento_customcombobox_clicked)
     anaedit.id_banca_customcombobox.connect('clicked',
                         on_id_banca_customcombobox_clicked)
     anaedit.id_aliquota_iva_esenzione_customcombobox.connect('clicked',
@@ -215,13 +212,6 @@ def drawPart(anaedit):
             anaedit.on_sconti_widget_button_toggled)
     anaedit.sconti_testata_widget.button.connect('toggled',
             anaedit.on_sconti_testata_widget_button_toggled)
-    anaedit.id_pagamento_customcombobox.combobox.connect('changed',
-            anaedit.id_pagamento_customcombobox_changed)
-
-    if posso("PA"):
-        # Vado a popolare anche il tab dei pagamenti
-        AnagraficadocumentiPagamentExt.connectEntryPag(anaedit)
-
 
 def calcolaTotalePart(anaedit, dao=None):
     """ calcola i totali documento """
@@ -360,15 +350,15 @@ def calcolaTotalePart(anaedit, dao=None):
     anaedit.totale_imponibile_scontato_riepiloghi_label.set_text(str(mN(totaleImponibileScontato, 2)))
     anaedit.totale_imposta_scontata_riepiloghi_label.set_text(str(mN(totaleImpostaScontata, 2)))
     anaedit.totale_scontato_riepiloghi_label.set_text(str(mN(totaleImponibileScontato,2) + mN(totaleImpostaScontata,2)))
-    anaedit.totale_in_pagamenti_label.set_markup('<b><span foreground="black" size="24000">'+str(mN(totaleScontato,2))+'</span></b>')
+    anaedit.pagamenti_page.totale_in_pagamenti_label.set_markup('<b><span foreground="black" size="24000">'+str(mN(totaleScontato,2))+'</span></b>')
     anaedit.totale_non_base_imponibile_label.set_text(str(mN(totaleEsclusoBaseImponibile,2)))
 
     id_pag = anaedit._id_pagamento
     pago = Pagamento().getRecord(id=id_pag)
     if pago:
-        anaedit.metodo_pagamento_label.set_markup('<b><span foreground="black" size="16000">'+str(pago.denominazione)+'</span></b>')
+        anaedit.pagamenti_page.metodo_pagamento_label.set_markup('<b><span foreground="black" size="16000">'+str(pago.denominazione)+'</span></b>')
     else:
-        anaedit.metodo_pagamento_label.set_markup('<b><span foreground="black" size="16000">'+str(_("NESSUNO?"))+'</span></b>')
+        anaedit.pagamenti_page.metodo_pagamento_label.set_markup('<b><span foreground="black" size="16000">'+str(_("NESSUNO?"))+'</span></b>')
 
     anaedit.liststore_iva.clear()
     for k in castellettoIva.keys():
