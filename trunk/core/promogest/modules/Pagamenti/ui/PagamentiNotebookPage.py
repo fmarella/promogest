@@ -167,7 +167,7 @@ class PagamentiNotebookPage(GladeWidget):
             return
         if self.ana.dao.documento_saldato:
             msg = _('Attenzione! Stai per riaprire un documento già saldato.\n Continuare ?')
-            if YesNoDialog(msg=msg, transient=self.dialogTopLevel):
+            if YesNoDialog(msg=msg, transient=self.ana.dialogTopLevel):
                 self.stato_label.set_markup(_('<b><span foreground="#B40000" size="24000">APERTO</span></b>'))
             else:
                 return
