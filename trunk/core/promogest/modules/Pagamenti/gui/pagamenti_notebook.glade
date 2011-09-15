@@ -103,7 +103,6 @@
                     <property name="can_focus">False</property>
                     <child>
                       <object class="GtkLabel" id="label42">
-                        <property name="height_request">60</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Selezionare il tipo di pagamento.</property>
@@ -215,7 +214,6 @@
                         </child>
                         <child>
                           <object class="GtkButton" id="edit_prima_rata_button">
-                            <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
                             <property name="use_action_appearance">False</property>
@@ -378,7 +376,7 @@
                             <property name="shadow_type">in</property>
                             <child>
                               <object class="GtkTextView" id="note_prima_scadenza_textview">
-                                <property name="height_request">90</property>
+                                <property name="height_request">2</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                               </object>
@@ -392,7 +390,7 @@
                         </child>
                       </object>
                       <packing>
-                        <property name="expand">True</property>
+                        <property name="expand">False</property>
                         <property name="fill">True</property>
                         <property name="position">2</property>
                       </packing>
@@ -502,7 +500,6 @@
                         </child>
                         <child>
                           <object class="GtkButton" id="edit_seconda_rata_button">
-                            <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
                             <property name="use_action_appearance">False</property>
@@ -665,7 +662,7 @@
                             <property name="shadow_type">in</property>
                             <child>
                               <object class="GtkTextView" id="note_seconda_scadenza_textview">
-                                <property name="height_request">90</property>
+                                <property name="height_request">2</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                               </object>
@@ -679,7 +676,7 @@
                         </child>
                       </object>
                       <packing>
-                        <property name="expand">True</property>
+                        <property name="expand">False</property>
                         <property name="fill">True</property>
                         <property name="position">2</property>
                       </packing>
@@ -792,7 +789,6 @@
                         </child>
                         <child>
                           <object class="GtkButton" id="edit_terza_rata_button">
-                            <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
                             <property name="use_action_appearance">False</property>
@@ -952,7 +948,7 @@
                             <property name="shadow_type">in</property>
                             <child>
                               <object class="GtkTextView" id="note_terza_scadenza_textview">
-                                <property name="height_request">90</property>
+                                <property name="height_request">2</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                               </object>
@@ -966,7 +962,7 @@
                         </child>
                       </object>
                       <packing>
-                        <property name="expand">True</property>
+                        <property name="expand">False</property>
                         <property name="fill">True</property>
                         <property name="position">2</property>
                       </packing>
@@ -1076,7 +1072,6 @@
                         </child>
                         <child>
                           <object class="GtkButton" id="edit_quarta_rata_button">
-                            <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
                             <property name="use_action_appearance">False</property>
@@ -1239,7 +1234,7 @@
                             <property name="shadow_type">in</property>
                             <child>
                               <object class="GtkTextView" id="note_quarta_scadenza_textview">
-                                <property name="height_request">90</property>
+                                <property name="height_request">2</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                               </object>
@@ -1253,7 +1248,7 @@
                         </child>
                       </object>
                       <packing>
-                        <property name="expand">True</property>
+                        <property name="expand">False</property>
                         <property name="fill">True</property>
                         <property name="position">2</property>
                       </packing>
@@ -1363,7 +1358,6 @@
                         </child>
                         <child>
                           <object class="GtkButton" id="edit_acconto_button">
-                            <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
                             <property name="use_action_appearance">False</property>
@@ -1529,7 +1523,7 @@
                             <property name="shadow_type">in</property>
                             <child>
                               <object class="GtkTextView" id="note_acconto_textview">
-                                <property name="height_request">90</property>
+                                <property name="height_request">2</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                               </object>
@@ -1543,7 +1537,7 @@
                         </child>
                       </object>
                       <packing>
-                        <property name="expand">True</property>
+                        <property name="expand">False</property>
                         <property name="fill">True</property>
                         <property name="position">2</property>
                       </packing>
@@ -1565,7 +1559,7 @@
                 </child>
               </object>
               <packing>
-                <property name="expand">True</property>
+                <property name="expand">False</property>
                 <property name="fill">True</property>
                 <property name="position">1</property>
               </packing>
