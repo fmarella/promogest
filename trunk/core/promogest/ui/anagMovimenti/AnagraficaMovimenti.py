@@ -21,15 +21,15 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 
-from AnagraficaComplessa import Anagrafica
+from promogest.ui.AnagraficaComplessa import Anagrafica
 from promogest.ui.AnagraficaComplessaReport import AnagraficaReport
 from promogest.ui.AnagraficaComplessaHtml import AnagraficaHtml
 
-from AnagraficaMovimentiEdit import AnagraficaMovimentiEdit
-from AnagraficaMovimentiFilter import AnagraficaMovimentiFilter
+from promogest.ui.anagMovimenti.AnagraficaMovimentiEdit import AnagraficaMovimentiEdit
+from promogest.ui.anagMovimenti.AnagraficaMovimentiFilter import AnagraficaMovimentiFilter
 from promogest.ui.anagDocumenti.AnagraficaDocumentiEditUtils import *
-from utils import *
-from utilsCombobox import *
+from promogest.ui.utils import *
+from promogest.ui.utilsCombobox import *
 
 if posso("PW"):
     from promogest.modules.PromoWear.ui import AnagraficaDocumentiEditPromoWearExt
@@ -58,7 +58,7 @@ class AnagraficaMovimenti(Anagrafica):
         if dao is None:
             return
 
-        from DuplicazioneMovimento import DuplicazioneMovimento
+        from promogest.ui.DuplicazioneMovimento import DuplicazioneMovimento
         anag = DuplicazioneMovimento(dao,self)
         showAnagraficaRichiamata(self.getTopLevel(), anag.getTopLevel(), None, self.filter.refresh)
 

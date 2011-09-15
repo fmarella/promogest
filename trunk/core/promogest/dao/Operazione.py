@@ -56,6 +56,17 @@ if (u'Ordine a magazzino',) not in s or s==[]:
     ope.execute(denominazione = "Ordine a magazzino", fonte_valore = "acquisto_senza_iva",
     tipo_persona_giuridica="fornitore",tipo_operazione="documento")
 
+if (u'Carico da composizione kit',) not in s or s==[]:
+    ope  = operazione.insert()
+    ope.execute(denominazione = "Carico da composizione kit", fonte_valore = "acquisto_senza_iva",
+    tipo_operazione="movimento", segno="+")
+
+if (u'Trasferimento merce magazzino',) not in s or s==[]:
+    ope  = operazione.insert()
+    ope.execute(denominazione = "Trasferimento merce magazzino", fonte_valore = "acquisto_senza_iva",
+    tipo_operazione="movimento",tipo_persona_giuridica="magazzino", segno="=")
+
+
 if (u'Ordine beni strumentali',) not in s or s==[]:
     ope  = operazione.insert()
     ope.execute(denominazione = "Ordine beni strumentali", fonte_valore = "acquisto_senza_iva",

@@ -108,7 +108,7 @@ class ElencoMagazzini(GladeWidget):
         idMagazzino = None
         if self._currentDao is not None:
             idMagazzino = self._currentDao.id
-        from AnagraficaMovimenti import AnagraficaMovimenti
+        from promogest.ui.anagMovimenti.AnagraficaMovimenti import AnagraficaMovimenti
         anag = AnagraficaMovimenti(idMagazzino, self.aziendaStr)
         anagWindow = anag.getTopLevel()
         returnWindow = self.getTopLevel().get_toplevel()

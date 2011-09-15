@@ -22,6 +22,7 @@
 
 from sqlalchemy import *
 from sqlalchemy.orm import *
+from migrate import *
 from promogest.Environment import *
 from Dao import Dao
 from DaoUtils import *
@@ -41,6 +42,8 @@ from promogest.ui.utils import *
 if hasattr(conf, "SuMisura") and getattr(conf.SuMisura,'mod_enable') == "yes":
     from promogest.modules.SuMisura.dao.MisuraPezzo import MisuraPezzo
 
+
+
 class TestataMovimento(Dao):
 
     def __init__(self, req=None):
@@ -54,12 +57,25 @@ class TestataMovimento(Dao):
         self.__dbRigheMovimento = []
 
     def _getRigheMovimento(self):
-        if not self.__righeMovimento:
-            self.__dbRigheMovimento = params['session'].query(RigaMovimento)\
-                                            .with_parent(self)\
-                                            .filter_by(id_testata_movimento=self.id)\
-                                            .all()
+        #if not self.__righeMovimento:
+        self.__dbRigheMovimento = params['session'].query(RigaMovimento)\
+                                        .with_parent(self)\
+                                        .filter_by(id_testata_movimento=self.id)\
+                                        .all()
+
         self.__righeMovimento = self.__dbRigheMovimento[:]
+        if self.operazione == "Trasferimento merce magazzino" and self.id_to_magazzino:
+            for r in self.__righeMovimento[:]:
+                if r.id_magazzino==self.id_to_magazzino:
+                    self.__righeMovimento.remove(r)
+                else:
+                    if r.quantita <0:
+                        setattr(r, "reversed", True)
+                        r.quantita= -1*r.quantita
+        if self.operazione == "Carico da composizione kit":
+            for r in self.__righeMovimento[:]:
+                if r.quantita <0:
+                    self.__righeMovimento.remove(r)
         return self.__righeMovimento
 
     def _setRigheMovimento(self, value):
@@ -206,15 +222,62 @@ class TestataMovimento(Dao):
             #print "PRIMA DI CANCELLA RIGHE MOV", tempo()
             self.righeMovimentoDel(id=self.id)
             #print "DOPO CANCELLA RIGHE MOV", tempo()
+            if self.operazione == "Carico da composizione kit":
+                #print "DEVO AGGIUNGERE IN NEGATIVO LE RIGHE KIT"
+                righeMov = []
+                for riga in self.righeMovimento:
+                    arto = Articolo().getRecord(id=riga.id_articolo)
+                    #print "KIT", arto.articoli_kit
+                    for art in arto.articoli_kit:
+                        #print art.id_articolo_filler, art.quantita
+                        a = leggiArticolo(art.id_articolo_filler)
+                        r = RigaMovimento()
+                        r.valore_unitario_netto = 0
+                        r.valore_unitario_lordo = 0
+                        r.quantita = -1*(art.quantita*riga.quantita)
+                        r.moltiplicatore = 1
+                        r.applicazione_sconti = riga.applicazione_sconti
+                        r.sconti = []
+                        r.percentuale_iva = a["percentualeAliquotaIva"]
+                        r.descrizione  = a["denominazione"]
+                        r.id_articolo = art.id_articolo_filler
+                        r.id_magazzino = riga.id_magazzino
+                        r.id_multiplo = riga.id_multiplo
+                        r.id_listino = riga.id_listino
+                        r.id_iva = a["idAliquotaIva"]
+                        r.id_riga_padre = riga.id_riga_padre
+                        r.scontiRigheMovimento = riga.scontiRigheMovimento
+                        righeMov.append(r)
+                self.righeMovimento = self.righeMovimento+righeMov
+
+            if self.operazione == "Trasferimento merce magazzino" and self.id_to_magazzino:
+                righeMov = []
+                for riga in self.righeMovimento:
+                    r = RigaMovimento()
+                    r.valore_unitario_netto = riga.valore_unitario_netto
+                    r.valore_unitario_lordo = riga.valore_unitario_lordo
+                    r.quantita = riga.quantita
+                    r.moltiplicatore = riga.moltiplicatore
+                    r.applicazione_sconti = riga.applicazione_sconti
+                    r.sconti = riga.sconti
+                    r.percentuale_iva = riga.percentuale_iva
+                    r.descrizione  = riga.descrizione
+                    r.id_articolo = riga.id_articolo
+                    r.id_magazzino = self.id_to_magazzino
+                    r.id_multiplo = riga.id_multiplo
+                    r.id_listino = riga.id_listino
+                    r.id_iva = riga.id_iva
+                    r.id_riga_padre = riga.id_riga_padre
+                    r.scontiRigheMovimento = riga.scontiRigheMovimento
+                    righeMov.append(r)
+                    riga.quantita = -1*riga.quantita
+                self.righeMovimento = self.righeMovimento+righeMov
             for riga in self.righeMovimento:
                 if "RigaDocumento" in str(riga.__module__):
                     riga.persist()
                 else:
-                    #annullamento id della riga
                     riga._resetId()
-                    #associazione alla riga della testata
                     riga.id_testata_movimento = self.id
-                    #salvataggio riga
                     riga.persist()
                     #print "DOPO il persist della riga", tempo()
                     if self.id_fornitore and riga.id_articolo:
@@ -227,11 +290,13 @@ class TestataMovimento(Dao):
                         fors = Fornitura().select(idArticolo=riga.id_articolo,
                                                     idFornitore=self.id_fornitore,
                                                     daDataPrezzo=None,
-                                                    aDataPrezzo=   data_prezzo,
+                                                    aDataPrezzo= data_prezzo,
                                                     orderBy = 'data_prezzo DESC',
                                                     offset = None,
                                                     batchSize = None)
                         if not fors:
+                            # a causa dell'aggiunta di lotti e scadenze, qui è necessario
+                            # controllare anche per data prezzo
                             fors = Fornitura().select(idArticolo=riga.id_articolo,
                                                         idFornitore=self.id_fornitore,
                                                         #daDataPrezzo=None,
@@ -240,21 +305,18 @@ class TestataMovimento(Dao):
                                                         offset = None,
                                                         batchSize = None)
 
-                        #print "DOPO dopo FORS", fors
                         daoFornitura = None
                         if fors:
                             if fors[0].data_prezzo == data_prezzo:
                                 # ha trovato una fornitura con stessa data: aggiorno questa fornitura
-                                #pg2log.info("TROVATO UNA FORNITURA CON STESSA DATA: AGGIORNO QUESTA FORNITURA")
-                                daoFornitura = Fornitura().getRecord(id=fors[0].id)
+                                #daoFornitura = Fornitura().getRecord(id=fors[0].id)
+                                daoFornitura = fors[0]
                             else:
                                 """creo una nuova fornitura con data_prezzo pari alla data del movimento
                                     copio alcuni dati dalla fornitura piu' prossima"""
-                                #pg2log.info("CREO UNA NUOVA FORNITURA CON DATA_PREZZO PARI ALLA DATA DEL MOVIMENTO COPIO ALCUNI DATI DALLA FORNITURA PIU' PROSSIMA")
                                 daoFornitura = Fornitura()
                         else:
                             # nessuna fornitura utilizzabile, ne creo una nuova (alcuni dati mancheranno)
-                            #pg2log.info("NESSUNA FORNITURA UTILIZZABILE, NE CREO UNA NUOVA (ALCUNI DATI MANCHERANNO)")
                             daoFornitura = Fornitura()
                         if hasattr(riga, "ordine_minimo") and riga.ordine_minimo:
                             daoFornitura.scorta_minima = int(riga.ordine_minimo)
@@ -322,6 +384,7 @@ class TestataMovimento(Dao):
                                     r.id_riga_movimento_vendita = riga.id
                                     params["session"].add(r)
                                 params["session"].commit()
+
                         #print "E una vendita"
                 #print "DOPO il for generale di riga movimento", tempo()
             self.__righeMovimento = []
@@ -331,6 +394,10 @@ testata_mov=Table('testata_movimento', params['metadata'],schema = params['schem
 clie = Table('cliente',params['metadata'],schema = params['schema'],autoload=True)
 rigamovi = Table('riga_movimento',params['metadata'],schema = params['schema'],autoload=True)
 operaz = Table('operazione',params['metadata'],schema = params['mainSchema'],autoload=True)
+
+if "id_to_magazzino" not in [c.name for c in testata_mov.columns]:
+    col = Column('id_to_magazzino', Integer)
+    col.create(testata_mov)
 
 std_mapper = mapper(TestataMovimento, testata_mov,properties={
         "rigamov": relation(RigaMovimento,primaryjoin=

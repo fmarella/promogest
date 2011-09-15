@@ -61,6 +61,7 @@ class Stoccaggio(Dao):
         for t in totaliOperazioniMovimento:
             totGiacenza += (mN(t['giacenza']) or 0)
             #totGiacenza += (t[4] or 0)
+
         return totGiacenza
 
     giacenza = property(_getGiacenza, )

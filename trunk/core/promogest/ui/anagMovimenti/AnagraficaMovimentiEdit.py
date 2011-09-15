@@ -56,7 +56,9 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
                 #pass
         #except:
         self.totale_spinbutton.destroy()
-        self.prz_lordo_label1.hide()
+        self.prz_totale_label.destroy()
+        self.id_multiplo_customcombobox.destroy()
+        self.unita_derivate_label.destroy()
 
         # contenitore (dizionario) righe (riga 0 riservata per
         # variazioni in corso)
@@ -76,10 +78,20 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
         self._operazione = None
         # prezzo vendita/acquisto, ivato/non ivato
         self._fonteValore = None
-        # carico (+) o scarico (-)
+        # carico (+) o scarico (-) o novita ( = )
         self._segno = None
         # caricamento movimento (interrompe l'azione degli eventi on_changed nelle combobox)
         self._loading = False
+        self.mattu = False
+        self.completion = self.ricerca_articolo_entrycompletition
+        if Environment.pg3:
+            self.completion.set_match_func(self.match_func,None)
+        else:
+            self.completion.set_match_func(self.match_func)
+        self.completion.set_text_column(0)
+        self.articolo_entry.set_completion(self.completion)
+        self.sepric = "  ~  "
+        self.articolo_matchato = None
         if posso("PW"):
             self.promowear_manager_taglia_colore_togglebutton.set_property("visible", True)
             self.promowear_manager_taglia_colore_togglebutton.set_sensitive(False)
@@ -99,6 +111,7 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
                                "codiceArticolo": '',
                                "descrizione": '',
                                "percentualeIva": 0,
+                               "idAliquotaIva":None,
                                "idUnitaBase": None,
                                "unitaBase": '',
                                "idMultiplo": None,
@@ -126,7 +139,8 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
         self.articolo_entry.set_text('')
         self.descrizione_entry.set_text('')
         self.codice_articolo_fornitore_entry.set_text('')
-        self.percentuale_iva_entry.set_text('0')
+        #self.percentuale_iva_entry.set_text('0')
+        self.id_iva_customcombobox.combobox.set_active(-1)
         self.id_multiplo_customcombobox.combobox.clear()
         self.id_listino_customcombobox.combobox.clear()
         self.prezzo_lordo_entry.set_text('0')
@@ -261,17 +275,18 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
 
         self.nuovaRiga()
 
-        # preferenza ricerca articolo ?
-        if hasattr(Environment.conf,'Documenti'):
-            if hasattr(Environment.conf.Documenti,'ricerca_per'):
-                if Environment.conf.Documenti.ricerca_per == 'codice':
-                    self.ricerca_codice_button.set_active(True)
-                elif Environment.conf.Documenti.ricerca_per == 'codice_a_barre':
-                    self.ricerca_codice_a_barre_button.set_active(True)
-                elif Environment.conf.Documenti.ricerca_per == 'descrizione':
-                    self.ricerca_descrizione_button.set_active(True)
-                elif Environment.conf.Documenti.ricerca_per == 'codice_articolo_fornitore':
-                    self.ricerca_codice_articolo_fornitore_button.set_active(True)
+        crit = setconf("Documenti", "ricerca_per")
+        self.ricerca = crit
+        if crit == 'codice':
+            self.ricerca_criterio_combobox.set_active(0)
+        elif crit == 'codice_a_barre':
+            self.ricerca_criterio_combobox.set_active(1)
+        elif crit == 'descrizione':
+            self.ricerca_criterio_combobox.set_active(2)
+        elif crit == 'codice_articolo_fornitore':
+            self.ricerca_criterio_combobox.set_active(3)
+        if not self.ricerca:
+            self.ricerca_criterio_combobox.set_active(2)
 
         self.id_operazione_combobox.connect('changed',
                                             self.on_id_operazione_combobox_changed)
@@ -299,14 +314,6 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
                                             self.on_storico_listini_button_clicked)
         self.edit_date_and_number_button.connect('clicked',
                                                  self.on_edit_date_and_number_button_clicked)
-        self.ricerca_codice_button.connect('clicked',
-                                           self.on_ricerca_codice_button_clicked)
-        self.ricerca_codice_a_barre_button.connect('clicked',
-                                                   self.on_ricerca_codice_a_barre_button_clicked)
-        self.ricerca_descrizione_button.connect('clicked',
-                                                self.on_ricerca_descrizione_button_clicked)
-        self.ricerca_codice_articolo_fornitore_button.connect('clicked',
-                                                              self.on_ricerca_codice_articolo_fornitore_button_clicked)
 
         #Castelletto iva
         rendererText = gtk.CellRendererText()
@@ -337,7 +344,9 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
 
         model = gtk.ListStore(str, str, str)
         self.riepiloghi_iva_treeview.set_model(model)
-
+        fillComboboxAliquoteIva(self.id_iva_customcombobox.combobox)
+        self.id_iva_customcombobox.connect('clicked',
+                                on_id_aliquota_iva_customcombobox_clicked)
 
     def on_id_operazione_combobox_changed(self, combobox):
         """
@@ -361,10 +370,22 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
             self.prz_netto_label.set_text('Costo netto')
             self.codice_articolo_fornitore_label.set_property('visible', True)
             self.codice_articolo_fornitore_entry.set_property('visible', True)
-        elif (self._tipoPersonaGiuridica == "cliente"):
+        elif self._tipoPersonaGiuridica == "cliente":
             self.persona_giuridica_label.set_text('Cliente')
             self.id_persona_giuridica_customcombobox.setType(self._tipoPersonaGiuridica)
             self.id_persona_giuridica_customcombobox.set_sensitive(True)
+            self.label_listino.set_property('visible', True)
+            self.id_listino_customcombobox.set_property('visible', True)
+            self.prz_lordo_label.set_text('Prezzo')
+            self.prz_netto_label.set_text('Prezzo netto')
+            self.codice_articolo_fornitore_label.set_property('visible', False)
+            self.codice_articolo_fornitore_entry.set_property('visible', False)
+        elif self._tipoPersonaGiuridica == "magazzino":
+            fillComboboxMagazzini(self.id_magazzino_combobox_trasferimento)
+            self.persona_giuridica_label.set_sensitive(False)
+            self.id_persona_giuridica_customcombobox.set_sensitive(False)
+            self.magazzino_label.set_property('visible', True)
+            self.id_magazzino_combobox_trasferimento.set_property('visible', True)
             self.label_listino.set_property('visible', True)
             self.id_listino_customcombobox.set_property('visible', True)
             self.prz_lordo_label.set_text('Prezzo')
@@ -533,7 +554,6 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
         operazioni
         """
         self._loading = True
-
         self._tipoPersonaGiuridica = None
         self._operazione = None
         self._fonteValore = None
@@ -557,7 +577,8 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
             self.id_persona_giuridica_customcombobox.setId(self.dao.id_fornitore)
         elif self._tipoPersonaGiuridica == "cliente":
             self.id_persona_giuridica_customcombobox.setId(self.dao.id_cliente)
-
+        elif self._tipoPersonaGiuridica == "magazzino":
+            findComboboxRowFromId(self.id_magazzino_combobox_trasferimento, self.dao.id_to_magazzino)
         self.data_movimento_entry.set_text(dateToString(self.dao.data_movimento))
         self.numero_movimento_entry.set_text(str(self.dao.numero or '0'))
         self.showDatiDocumento()
@@ -586,6 +607,28 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
             self._righe[0]["idArticolo"] = riga.id_articolo
             self._righe[0]["codiceArticolo"] = articolo["codice"]
             self._righe[0]["descrizione"] = riga.descrizione
+
+
+            idiva = None
+            if riga.id_iva == None:
+                if riga.id_articolo is not None:
+                    #siamo di fronte ad un articolo "vecchio"
+                    art = Articolo().getRecord(id=riga.id_articolo)
+                    ivaart = art.id_aliquota_iva
+                    daoiva = AliquotaIva().select(percentuale=riga.percentuale_iva)
+                    if daoiva:
+                        idiva = daoiva[0].id
+                else:
+                    if riga.percentuale_iva != 0:
+                        #riga descrittiva
+                        daoiva = AliquotaIva().select(percentuale=riga.percentuale_iva)
+                        if daoiva:
+                            idiva = daoiva[0].id
+            else:
+                idiva = riga.id_iva
+            self._righe[0]["idAliquotaIva"] = idiva
+
+
             self._righe[0]["percentualeIva"] = riga.percentuale_iva
             self._righe[0]["idUnitaBase"] = articolo["idUnitaBase"]
             self._righe[0]["unitaBase"] = articolo["unitaBase"]
@@ -643,13 +686,22 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
             # Suggerisce la data odierna
             self.dao.data_movimento = datetime.datetime.today()
             try:
-                if Environment.conf.Documenti.fornitore_predefinito:
-                    cli = Fornitore().select(codicesatto= Environment.conf.Documenti.fornitore_predefinito)
-                    if cli:
-                        self.dao.id_fornitore = cli[0].id
-                        self.oneshot = True
+                cli = setconf("Documenti", "cliente_predefinito")
+                if cli:
+                    self.dao.id_cliente = int(cli)
+                    self.oneshot = True
+                    self.articolo_entry.grab_focus()
             except:
-                print "FORNITORE_PREDEFINITO NON SETTATO"
+                pass
+#                print "CLIENTE_PREDEFINITO NON SETTATO"
+            try:
+                forn = setconf("Documenti", "fornitore_predefinito")
+                if forn:
+                    self.dao.id_fornitore = int(forn)
+                    self.oneshot = True
+                    self.articolo_entry.grab_focus()
+            except:
+                pass
         else:
             # Ricrea il Dao con una connessione al DBMS SQL
             self.dao = TestataMovimento().getRecord(id=dao.id)
@@ -682,10 +734,15 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
         if self._tipoPersonaGiuridica == "fornitore":
             self.dao.id_fornitore = self.id_persona_giuridica_customcombobox.getId()
             self.dao.id_cliente = None
+            self.dao.id_to_magazzino = None
         elif self._tipoPersonaGiuridica == "cliente":
             self.dao.id_cliente = self.id_persona_giuridica_customcombobox.getId()
             self.dao.id_fornitore = None
-
+            self.dao.id_to_magazzino = None
+        elif self._tipoPersonaGiuridica == "magazzino":
+            self.dao.id_cliente = None
+            self.dao.id_fornitore = None
+            self.dao.id_to_magazzino = findIdFromCombobox(self.id_magazzino_combobox_trasferimento)
         textBuffer = self.note_interne_textview.get_buffer()
         self.dao.note_interne = textBuffer.get_text(textBuffer.get_start_iter(), textBuffer.get_end_iter(),True)
         righeMovimento = []
@@ -700,6 +757,9 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
             daoRiga.descrizione = self._righe[i]["descrizione"]
             daoRiga.codiceArticoloFornitore = self._righe[i]["codiceArticoloFornitore"]
             daoRiga.id_listino = self._righe[i]["idListino"]
+            daoRiga.id_iva = self._righe[i]["idAliquotaIva"]
+
+
             daoRiga.percentuale_iva = self._righe[i]["percentualeIva"]
             daoRiga.applicazione_sconti = self._righe[i]["applicazioneSconti"]
             daoRiga.quantita = self._righe[i]["quantita"]
@@ -722,7 +782,6 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
             righeMovimento.append(daoRiga)
         pbar(self.dialog.pbar,parziale=3, totale=4)
         self.dao.righeMovimento = righeMovimento
-
         self.dao.persist()
         pbar(self.dialog.pbar,parziale=4, totale=4)
         self.label_numero_righe.hide()
@@ -760,6 +819,7 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
         self._righe[0]["moltiplicatore"] = mN(self._righe[self._numRiga]["moltiplicatore"],2)
         self._righe[0]["prezzoLordo"] = mN(self._righe[self._numRiga]["prezzoLordo"])
         self._righe[0]["percentualeIva"] = mN(self._righe[self._numRiga]["percentualeIva"],2)
+        self._righe[0]["idAliquotaIva"] = self._righe[self._numRiga]["idAliquotaIva"]
         self._righe[0]["applicazioneSconti"] = self._righe[self._numRiga]["applicazioneSconti"]
         self._righe[0]["sconti"] = self._righe[self._numRiga]["sconti"]
         self._righe[0]["prezzoNetto"] = mN(self._righe[self._numRiga]["prezzoNetto"])
@@ -774,7 +834,8 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
         self.articolo_entry.set_text(self._righe[0]["codiceArticolo"])
         self.descrizione_entry.set_text(self._righe[0]["descrizione"])
         self.codice_articolo_fornitore_entry.set_text(self._righe[0]["codiceArticoloFornitore"])
-        self.percentuale_iva_entry.set_text(str(mN(self._righe[0]["percentualeIva"],2)))
+        findComboboxRowFromId(self.id_iva_customcombobox.combobox, self._righe[0]["idAliquotaIva"])
+        #self.percentuale_iva_entry.set_text(str(mN(self._righe[0]["percentualeIva"],2)))
         self.sconti_widget.setValues(self._righe[0]["sconti"], self._righe[0]["applicazioneSconti"], False)
         self.quantita_entry.set_text(str(mN(self._righe[0]["quantita"],3)))
         self.prezzo_lordo_entry.set_text(str(mN(self._righe[0]["prezzoLordo"])))
@@ -817,7 +878,7 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
             (self._righe[0]["idMagazzino"] is None)):
             self.showMessage('Inserire il magazzino !')
             return
-
+        self.on_show_totali_riga()
         costoVariato = (self._tipoPersonaGiuridica == "fornitore" and self._righe[0]["idArticolo"] is not None and
                         (Decimal(self._righe[0]["prezzoNetto"]) != Decimal(self._righe[0]["prezzoNettoUltimo"])))
 
@@ -840,6 +901,7 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
         self._righe[self._numRiga]["descrizione"] = self._righe[0]["descrizione"]
         self._righe[self._numRiga]["codiceArticoloFornitore"] = self._righe[0]["codiceArticoloFornitore"]
         self._righe[self._numRiga]["percentualeIva"] = mN(self._righe[0]["percentualeIva"],2)
+        self._righe[self._numRiga]["idAliquotaIva"] = self._righe[0]["idAliquotaIva"]
         self._righe[self._numRiga]["idUnitaBase"] = self._righe[0]["idUnitaBase"]
         self._righe[self._numRiga]["unitaBase"] = self._righe[0]["unitaBase"]
         self._righe[self._numRiga]["idMultiplo"] = self._righe[0]["idMultiplo"]
@@ -940,13 +1002,6 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
             self.ricercaArticolo()
 
 
-    def on_articolo_entry_key_press_event(self, widget, event):
-        """
-        FIXME
-        """
-        keyname = gdk_keyval_name(event.keyval)
-        if keyname == 'Return' or keyname == 'KP_Enter':
-            self.ricercaArticolo()
 
     def on_search_row_button_clicked(self, widget):
         """
@@ -954,14 +1009,9 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
         """
         self.ricercaArticolo()
 
+
     def ricercaArticolo(self):
-        """
-        Gestisce la ricerca complessa Articolo secondo il parametro impostato
-        """
         def on_ricerca_articolo_hide(anagWindow, anag):
-            """
-            Gestisce la chiusura della finestra di ricerca
-            """
             if anag.dao is None:
                 anagWindow.destroy()
                 return
@@ -969,17 +1019,16 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
             anagWindow.destroy()
             self.mostraArticolo(anag.dao.id)
 
-
         if (self.data_movimento_entry.get_text() == ''):
-            self.showMessage('Inserire da data del movimento !')
+            messageInfo(_('Inserire la data del documento !'))
             return
 
-        if (findIdFromCombobox(self.id_operazione_combobox) is None):
-            self.showMessage('Inserire il tipo di movimento !')
+        if findIdFromCombobox(self.id_operazione_combobox) is None:
+            messageInfo(_('Inserire il tipo di documento !'))
             return
 
         if (findIdFromCombobox(self.id_magazzino_combobox) is None):
-            self.showMessage('Inserire il magazzino !')
+            messageInfo(_('Inserire il magazzino !'))
             return
 
         codice = None
@@ -987,64 +1036,72 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
         denominazione = None
         codiceArticoloFornitore = None
         join = None
-        if self.ricerca_codice_button.get_active():
+        orderBy = None
+        if self.ricerca_criterio_combobox.get_active() == 0:
             codice = self.articolo_entry.get_text()
-            if Environment.tipodb == "sqlite":
+            if Environment.tipo_eng =="sqlite":
                 orderBy = "articolo.codice"
             else:
                 orderBy = Environment.params["schema"]+".articolo.codice"
-            batchSize = setconf("Numbers", "batch_size")
-        elif self.ricerca_codice_a_barre_button.get_active():
+                batchSize = setconf("Numbers", "batch_size")
+        elif self.ricerca_criterio_combobox.get_active() == 1:
             codiceABarre = self.articolo_entry.get_text()
             join= Articolo.cod_barre
-            if Environment.tipodb == "sqlite":
+            if Environment.tipo_eng =="sqlite":
                 orderBy = "codice_a_barre_articolo.codice"
             else:
                 orderBy = Environment.params["schema"]+".codice_a_barre_articolo.codice"
             batchSize = setconf("Numbers", "batch_size")
-        elif self.ricerca_descrizione_button.get_active():
+        elif self.ricerca_criterio_combobox.get_active() == 2:
             denominazione = self.articolo_entry.get_text()
-            if Environment.tipodb == "sqlite":
+            if Environment.tipo_eng =="sqlite":
                 orderBy = "articolo.denominazione"
             else:
                 orderBy = Environment.params["schema"]+".articolo.denominazione"
-        elif self.ricerca_codice_articolo_fornitore_button.get_active():
+            batchSize = setconf("Numbers", "batch_size")
+        elif self.ricerca_criterio_combobox.get_active() == 3:
             codiceArticoloFornitore = self.articolo_entry.get_text()
             join= Articolo.fornitur
-            if Environment.tipodb == "sqlite":
+            if Environment.tipo_eng =="sqlite":
                 orderBy = "fornitura.codice_articolo_fornitore"
             else:
                 orderBy = Environment.params["schema"]+".fornitura.codice_articolo_fornitore"
-            batchSize = setconf("Numbers", "batch_size")
-
-        arts = Articolo().select(orderBy=orderBy,
-                                            join = join,
-                                            denominazione=prepareFilterString(denominazione),
-                                            codice=prepareFilterString(codice),
-                                            codiceABarre=prepareFilterString(codiceABarre),
-                                            codiceArticoloFornitore=prepareFilterString(codiceArticoloFornitore),
-                                            idFamiglia=None,
-                                            idCategoria=None,
-                                            idStato=None,
-                                            offset=None,
-                                            batchSize=None)
-
-
+        batchSize = setconf("Numbers", "batch_size")
+        if self.articolo_matchato:
+            arts = [self.articolo_matchato]
+        else:
+            arts = Articolo().select(codiceEM=prepareFilterString(codice),
+                                        orderBy=orderBy,
+                                        join = join,
+                                        denominazione=prepareFilterString(denominazione),
+                                        codiceABarre=prepareFilterString(codiceABarre),
+                                        codiceArticoloFornitore=prepareFilterString(codiceArticoloFornitore),
+                                        idFamiglia=None,
+                                        idCategoria=None,
+                                        idStato=None,
+                                        offset=None,
+                                        batchSize=None)
         if (len(arts) == 1):
             self.mostraArticolo(arts[0].id)
+            self.articolo_matchato = None
         else:
-            from RicercaComplessaArticoli import RicercaComplessaArticoli
+            from promogest.ui.RicercaComplessaArticoli import RicercaComplessaArticoli
             anag = RicercaComplessaArticoli(denominazione=denominazione,
                                             codice=codice,
                                             codiceABarre=codiceABarre,
                                             codiceArticoloFornitore=codiceArticoloFornitore)
             anag.setTreeViewSelectionType(GTK_SELECTIONMODE_SINGLE)
+
             anagWindow = anag.getTopLevel()
             anagWindow.connect("hide",
                                on_ricerca_articolo_hide,
                                anag)
             anagWindow.set_transient_for(self.dialogTopLevel)
-            anagWindow.show_all()
+            anag.show_all()
+        self.cplx=False
+
+
+
 
 
     def mostraArticolo(self, id):
@@ -1054,7 +1111,8 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
         self.articolo_entry.set_text('')
         self.descrizione_entry.set_text('')
         self.codice_articolo_fornitore_entry.set_text('')
-        self.percentuale_iva_entry.set_text('')
+        #self.percentuale_iva_entry.set_text('')
+        self.id_iva_customcombobox.combobox.set_active(-1)
         self.id_multiplo_customcombobox.combobox.clear()
         self.id_listino_customcombobox.combobox.clear()
         self.prezzo_lordo_entry.set_text('0')
@@ -1067,6 +1125,7 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
         self._righe[0]["descrizione"] = ''
         self._righe[0]["codiceArticoloFornitore"] = ''
         self._righe[0]["percentualeIva"] = 0
+        self._righe[0]["idAliquotaIva"] = None
         self._righe[0]["idUnitaBase"] = None
         self._righe[0]["idMultiplo"] = None
         self._righe[0]["moltiplicatore"] = 1
@@ -1085,6 +1144,8 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
             self._righe[0]["codiceArticolo"] = articolo["codice"]
             self._righe[0]["descrizione"] = articolo["denominazione"]
             self._righe[0]["percentualeIva"] = mN(articolo["percentualeAliquotaIva"],2)
+            self._righe[0]["idAliquotaIva"] = articolo["idAliquotaIva"]
+            findComboboxRowFromId(self.id_iva_customcombobox.combobox,self._righe[0]["idAliquotaIva"])
             self._righe[0]["idUnitaBase"] = articolo["idUnitaBase"]
             self._righe[0]["unitaBase"] = articolo["unitaBase"]
             self._righe[0]["idMultiplo"] = None
@@ -1114,7 +1175,12 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
 
         self.articolo_entry.set_text(self._righe[0]["codiceArticolo"])
         self.descrizione_entry.set_text(self._righe[0]["descrizione"])
-        self.percentuale_iva_entry.set_text(str(self._righe[0]["percentualeIva"]))
+
+        #self.percentuale_iva_entry.set_text(str(self._righe[0]["percentualeIva"]))
+        #self._righe[0]["percentualeIva"] = mN(articolo["percentualeAliquotaIva"],2)
+
+        self._righe[0]["idAliquotaIva"] = articolo["idAliquotaIva"]
+        findComboboxRowFromId(self.id_iva_customcombobox.combobox,self._righe[0]["idAliquotaIva"])
         self.codice_articolo_fornitore_entry.set_text(self._righe[0]["codiceArticoloFornitore"])
         self.prezzo_lordo_entry.set_text(str(self._righe[0]["prezzoLordo"]))
         self.on_show_totali_riga()
@@ -1138,16 +1204,17 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
         """
         quantita = mN(self.quantita_entry.get_text(),3) or 0
         self._righe[0]["quantita"] = quantita
-        try:
-            if Environment.conf.Documenti.rosas == "yes":
-                prezzototale = Decimal(self.totale_spinbutton.get_text().strip().replace(",","."))
-                if prezzototale and quantita: prezzounitario = mN(prezzototale/quantita)
-                else: prezzounitario = 0
-                self._righe[0]["prezzoLordo"] = prezzounitario
-                self.prezzo_lordo_entry.set_text(str(prezzounitario))
-        except:
-            self._righe[0]["prezzoLordo"] = float(self.prezzo_lordo_entry.get_text() or 0)
-        self._righe[0]["percentualeIva"] = mN(self.percentuale_iva_entry.get_text(),2) or 0
+        self._righe[0]["prezzoLordo"] = float(self.prezzo_lordo_entry.get_text() or 0)
+        iva = findStrFromCombobox(self.id_iva_customcombobox.combobox,0)
+        if iva and type(iva) != type("CIAO"):
+            self._righe[0]["percentualeIva"] = mN(iva.percentuale,0) or 0
+            self._righe[0]["idAliquotaIva"] = iva.id or None
+        else:
+            self._righe[0]["percentualeIva"] =  0
+            self._righe[0]["idAliquotaIva"] = None
+
+
+        #self._righe[0]["percentualeIva"] = mN(self.percentuale_iva_entry.get_text(),2) or 0
         self._righe[0]["applicazioneSconti"] = self.sconti_widget.getApplicazione()
         self._righe[0]["prezzoNetto"] = self._righe[0]["prezzoLordo"]
         self._righe[0]["sconti"] = self.sconti_widget.getSconti()
@@ -1186,13 +1253,17 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
 
         castellettoIva = {}
 
-        for i in range(1, len(self._righe)):
-            prezzoNetto = mN(self._righe[i]["prezzoNetto"])
-            quantita = mN(self._righe[i]["quantita"],3)
-            moltiplicatore = mN(self._righe[i]["moltiplicatore"],2)
-            percentualeIva = mN(self._righe[i]["percentualeIva"],2)
-
+        for riga in self._righe[1:]:
+            prezzoNetto = mN(riga["prezzoNetto"])
+            quantita = mN(riga["quantita"],3)
+            moltiplicatore = Decimal(riga["moltiplicatore"])
+            percentualeIva = Decimal(riga["percentualeIva"])
+            idAliquotaIva = riga["idAliquotaIva"]
+            daoiva=None
+            if idAliquotaIva:
+                daoiva = AliquotaIva().getRecord(id=idAliquotaIva)
             totaleRiga = prezzoNetto * quantita * moltiplicatore
+
             percentualeIvaRiga = percentualeIva
 
             if (self._fonteValore == "vendita_iva" or
@@ -1243,7 +1314,7 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
         """
         FIXME
         """
-        from StoricoForniture import StoricoForniture
+        from promogest.ui.StoricoForniture import StoricoForniture
         idArticolo = self._righe[0]["idArticolo"]
         if self._tipoPersonaGiuridica == "fornitore":
             idFornitore = self.id_persona_giuridica_customcombobox.getId()
@@ -1260,7 +1331,7 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
         """
         FIXME
         """
-        from StoricoListini import StoricoListini
+        from promogest.ui.StoricoListini import StoricoListini
         idArticolo = self._righe[0]["idArticolo"]
 
         anag = StoricoListini(idArticolo)
@@ -1278,7 +1349,7 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
             self.showMessage('Selezionare un articolo !')
             return
 
-        from VariazioneListini import VariazioneListini
+        from promogest.ui.VariazioneListini import VariazioneListini
         idArticolo = self._righe[0]["idArticolo"]
         costoNuovo = None
         costoUltimo = None
@@ -1313,3 +1384,83 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
                 stringLabel = 'N.' + str(res.numero) + ' del ' + dateToString(res.data_documento)
 
         self.rif_documento_label.set_text(stringLabel)
+
+    def on_articolo_entry_insert_text(self, text):
+        # assegna il valore della casella di testo alla variabile
+        stringa = text.get_text()
+        if self.mattu:
+            text.set_text(stringa.split(self.sepric)[0])
+        #model = gtk.ListStore(str,object)
+        #vediamo = self.completion.get_model()
+        #vediamo.clear()
+        self.ricerca_art_listore.clear()
+        art = []
+        # evita la ricerca per stringhe vuote o più corte di due caratteri
+        if stringa ==[] or len(stringa)<2:
+            return
+        if self.ricerca == "codice":
+            if len(text.get_text()) <3:
+                art = Articolo().select(codice=stringa,cancellato=True, batchSize=20)
+            else:
+                art = Articolo().select(codice=stringa,cancellato=True, batchSize=50)
+        elif self.ricerca == "descrizione":
+            if len(text.get_text()) <3:
+                art = Articolo().select(denominazione=stringa,cancellato=True, batchSize=20)
+            else:
+                art = Articolo().select(denominazione=stringa,cancellato=True, batchSize=50)
+        elif self.ricerca == "codice_a_barre":
+            if len(text.get_text()) <7:
+                art = Articolo().select(codiceABarre=stringa,cancellato=True, batchSize=10)
+            else:
+                art = Articolo().select(codiceABarre=stringa,cancellato=True, batchSize=40)
+        elif self.ricerca == "codice_articolo_fornitore_button":
+            if len(text.get_text()) <3:
+                art = Articolo().select(codiceArticoloFornitore=stringa,cancellato=True, batchSize=10)
+            else:
+                art = Articolo().select(codiceArticoloFornitore=stringa,cancellato=True, batchSize=40)
+        for m in art:
+            codice_art = m.codice
+            den = m.denominazione
+            bloccoInformazioni = codice_art+self.sepric+den
+            compl_string = bloccoInformazioni
+            if self.ricerca == "codice_articolo_fornitore":
+                caf = m.codice_articolo_fornitore
+                compl_string = bloccoInformazioni+self.sepric+caf
+            if self.ricerca == "codice_a_barre":
+                cb = m.codice_a_barre
+                compl_string = bloccoInformazioni+self.sepric+cb
+            self.ricerca_art_listore.append([compl_string,m])
+        #self.completion.set_model(model)
+
+
+    def match_func(self, completion, key, iter):
+        model = self.completion.get_model()
+        self.mattu = False
+        self.articolo_matchato = None
+        if model[iter][0] and self.articolo_entry.get_text().lower() in model[iter][0].lower():
+            return model[iter][0]
+        else:
+            return None
+
+    def on_completion_match(self, completion=None, model=None, iter=None):
+        self.mattu = True
+        self.articolo_matchato = model[iter][1]
+        self.articolo_entry.set_position(-1)
+
+    def on_ricerca_criterio_combobox_changed(self, combobox):
+        if combobox.get_active() ==0:
+            self.ricerca = "codice"
+        elif combobox.get_active() ==1:
+            self.ricerca = "codice_a_barre"
+        elif combobox.get_active() ==2:
+            self.ricerca = "descrizione"
+        elif combobox.get_active() == 3:
+            self.ricerca = "codice_articolo_fornitore"
+
+    def on_articolo_entry_key_press_event(self, widget, event):
+        """ """
+        keyname = gdk_keyval_name(event.keyval)
+        if self.mattu and keyname == 'Return' or keyname == 'KP_Enter':
+            self.ricercaArticolo()
+        if keyname == 'F3':
+            self.ricercaArticolo()

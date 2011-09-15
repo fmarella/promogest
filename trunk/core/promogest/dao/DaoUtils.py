@@ -44,11 +44,16 @@ def giacenzaSel(year=None, idMagazzino=None, idArticolo=None,allMag= None):
     from promogest.dao.Magazzino import Magazzino
     if allMag:
         magazzini = Environment.params["session"].query(Magazzino.id).all()
-
         if not magazzini:
             return []
         else:
-            magazzini = magazzini[0]
+            mag=[]
+            #magazzini = magazzini[0]
+            for m in magazzini:
+                mag.append(m[0])
+            magazzini = mag
+
+
         righeArticoloMovimentate= Environment.params["session"]\
                 .query(RigaMovimento,TestataMovimento)\
                 .filter(TestataMovimento.data_movimento.between(datetime.date(int(year), 1, 1), datetime.date(int(year) + 1, 1, 1)))\
@@ -76,6 +81,8 @@ def giacenzaSel(year=None, idMagazzino=None, idArticolo=None,allMag= None):
             giacenza=0
             if segno =="-":
                 giacenza -= quantita*moltiplicatore
+            elif segno =="+":
+                giacenza += quantita*moltiplicatore
             else:
                 giacenza += quantita*moltiplicatore
             valore= giacenza*valunine
@@ -93,6 +100,10 @@ def giacenzaSel(year=None, idMagazzino=None, idArticolo=None,allMag= None):
             idTestataDocumento = ram[1].id_testata_documento
             if idTestataDocumento:
                 daoTestataDocumento = TestataDocumento().getRecord(id=idTestataDocumento)
+        qua = ram[0].quantita
+        if hasattr(ram[0], "reversed"):
+            if ram[0].reversed:
+                qua = -1*qua
 
         diz = {"daoRigaMovimento": ram[0],
                 "daoTestataMovimento":ram[1],
@@ -102,7 +113,7 @@ def giacenzaSel(year=None, idMagazzino=None, idArticolo=None,allMag= None):
                 "data_movimento":ram[1].data_movimento,
                 "operazione":ram[1].operazione,
                 "id_articolo":ram[0].id_articolo,
-                "giacenza":calcolaGiacenza(quantita=ram[0].quantita,moltiplicatore=ram[0].moltiplicatore, segno=ram[1].segnoOperazione, valunine=ram[0].valore_unitario_netto)[0],
+                "giacenza":calcolaGiacenza(qua,moltiplicatore=ram[0].moltiplicatore, segno=ram[1].segnoOperazione, valunine=ram[0].valore_unitario_netto)[0],
                 "cliente":ram[1].ragione_sociale_cliente,
                 "fornitore":ram[1].ragione_sociale_fornitore,
                 "valore":calcolaGiacenza(quantita=ram[0].quantita,moltiplicatore=ram[0].moltiplicatore, segno=ram[1].segnoOperazione, valunine=ram[0].valore_unitario_netto)[1],

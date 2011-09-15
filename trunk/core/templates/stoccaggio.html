@@ -48,6 +48,9 @@
             {% endif %}
                 {% if item['segnoOperazione'] == "-" %}
                 <td class="odd-number" style="text-align:center;" >{{'%14.2f' % (item['giacenza'],)}} </td>
+            {% endif %}
+                {% if item['segnoOperazione'] == "=" %}
+                <td class="odd-number" style="text-align:center;" >{{'%14.2f' % (item['giacenza'],)}} </td>
             {% else %}
                 <td class="odd-number" style="text-align:center;" >  </td>
             {% endif %}

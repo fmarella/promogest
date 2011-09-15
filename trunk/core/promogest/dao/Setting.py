@@ -76,6 +76,17 @@ if (u'Ordine a magazzino.registro',) not in s or s==[]:
     settinggg.execute(key = "Ordine a magazzino.registro", description = "Registro associato a Ordine a magazzino", value= "registro_ordine_a_magazzino")
     settinggg.execute(key = "registro_ordine_a_magazzino.rotazione", description = "Tipologia di rotazione registro associato a Ordine a magazzino ", value= "annuale")
 
+if (u'Carico da composizione kit.registro',) not in s or s==[]:
+    settinggg  = settingg.insert()
+    settinggg.execute(key = "Carico da composizione kit.registro", description = "Registro associato a Carico da composizione kit", value= "registro_carico_da_composizione_kit")
+    settinggg.execute(key = "carico_da_composizione_kit.rotazione", description = "Tipologia di rotazione registro associato a Carico da composizione kit", value= "annuale")
+
+if (u'Trasferimento merce magazzino.registro',) not in s or s==[]:
+    settinggg  = settingg.insert()
+    settinggg.execute(key = "Trasferimento merce magazzino.registro", description = "Registro associato a Trasferimento merce magazzino", value= "trasferimento_merce_magazzino")
+    settinggg.execute(key = "trasferimento_merce_magazzino.rotazione", description = "Tipologia di rotazione registro associato a Trasferimento merce magazzino", value= "annuale")
+
+
 if (u'Ordine beni strumentali.registro',) not in s or s==[]:
     settinggg  = settingg.insert()
     settinggg.execute(key = "Ordine beni strumentali.registro", description = "Registro associato a Ordine beni strumentali", value= "registro_ordine_beni_strumentali")
