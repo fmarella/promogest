@@ -37,9 +37,7 @@ class PagamentiNotebookPage(GladeWidget):
         GladeWidget.__init__(self, 'pagamenti_vbox',
                                     'Pagamenti/gui/pagamenti_notebook.glade',
                                     isModule=True)
-        self.rowBackGround = None
         self.ana = mainnn
-        #self.dao_articolo_adr = None
         self.draw()
 
     def draw(self):
