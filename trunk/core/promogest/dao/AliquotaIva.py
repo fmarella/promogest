@@ -35,6 +35,8 @@ class AliquotaIva(Dao):
             dic= { k: aliquota_iva.c.denominazione.ilike("%"+v+"%")}
         elif k == "percentuale":
             dic= { k: aliquota_iva.c.percentuale == v}
+        elif k == "idTipo":
+            dic= { k: aliquota_iva.c.id_tipo == v}
         return  dic[k]
 
     def _tipoAliquota(self):

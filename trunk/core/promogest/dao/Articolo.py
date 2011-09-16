@@ -582,6 +582,8 @@ class Articolo(Dao):
             dic = {k:articolo.c.produttore.ilike("%"+v+"%")}
         elif k=='idFamiglia':
             dic = {k:articolo.c.id_famiglia_articolo ==v}
+        elif k=='idAliquotaIva':
+            dic = {k:articolo.c.id_aliquota_iva ==v}
         elif k == 'idCategoria':
             dic = {k:articolo.c.id_categoria_articolo ==v}
         elif k == 'idCategoriaList':
