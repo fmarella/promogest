@@ -36,13 +36,12 @@ from promogest.modules.ADR.dao.ArticoloADR import ArticoloADR
 class ADRNotebookPage(GladeWidget):
     """ Widget di configurazione del codice installazione e dei parametri
     di configurazione """
-    def __init__(self, mainnn, azienda):
+    def __init__(self, mainnn):
         GladeWidget.__init__(self, 'adr_frame',
                                     'ADR/gui/adr_notebook.glade',
                                     isModule=True)
         self.rowBackGround = None
         self.ana = mainnn
-        self.aziendaStr = azienda or ""
         self.dao_articolo_adr = None
         self.draw()
 

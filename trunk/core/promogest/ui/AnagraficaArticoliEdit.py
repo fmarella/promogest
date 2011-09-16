@@ -129,7 +129,7 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
         fillComboboxProduttori(self.produttore_comboboxentry)
 
         if posso("ADR"):
-            self.adr_page = ADRNotebookPage(self, "")
+            self.adr_page = ADRNotebookPage(self)
             self.notebook1.append_page(self.adr_page.adr_frame, self.adr_page.adr_page_label)
 
 
