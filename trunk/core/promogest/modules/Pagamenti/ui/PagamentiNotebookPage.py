@@ -80,15 +80,6 @@ class PagamentiNotebookPage(GladeWidget):
         self.data_pagamento_quarta_scadenza_entry.entry.connect('changed',
                 self.on_data_pagamento_quarta_scadenza_entry_changed)
 
-        self.totale_pagato_scadenza_label.set_markup('<b><span foreground="#338000" size="24000">'+str(
-            0)+'</span></b>')
-        self.totale_sospeso_scadenza_label.set_markup('<b><span foreground="#B40000" size="24000">'+str(
-            0)+'</span></b>')
-        self.importo_primo_documento_entry.set_text('')
-        self.importo_secondo_documento_entry.set_text('')
-        self.numero_primo_documento_entry.set_text('')
-        self.numero_secondo_documento_entry.set_text('')
-
         fillComboboxPagamenti(self.id_pagamento_acconto_customcombobox.combobox)
         fillComboboxPagamenti(self.id_pagamento_prima_scadenza_customcombobox.combobox)
         fillComboboxPagamenti(self.id_pagamento_seconda_scadenza_customcombobox.combobox)
@@ -109,6 +100,23 @@ class PagamentiNotebookPage(GladeWidget):
 
     def _clear(self):
         self.id_pagamento_customcombobox.combobox.set_active(-1)
+        self.totale_pagato_scadenza_label.set_markup('<b><span foreground="#338000" size="24000">'+str(
+            0)+'</span></b>')
+        self.totale_sospeso_scadenza_label.set_markup('<b><span foreground="#B40000" size="24000">'+str(
+            0)+'</span></b>')
+        self.importo_primo_documento_entry.set_text('')
+        self.importo_secondo_documento_entry.set_text('')
+        self.numero_primo_documento_entry.set_text('')
+        self.numero_secondo_documento_entry.set_text('')
+        # Azzera scadenze
+        self.on_pulisci_prima_rata_button_clicked(None)
+        self.on_pulisci_seconda_rata_button_clicked(None)
+        self.on_pulisci_terza_rata_button_clicked(None)
+        self.on_pulisci_quarta_rata_button_clicked(None)
+        self.on_pulisci_acconto_button_clicked(None)
+
+    def clear(self):
+        self._clear()
 
     def on_data_pagamento_prima_scadenza_entry_changed(self, entry):
         """ Reimposta i totali saldato e da saldare alla modifica della data
