@@ -307,7 +307,8 @@ class TestataDocumento(Dao):
             aliquotaIvaRiga = None
             if idAliquotaIva:
                 daoiva = AliquotaIva().getRecord(id=idAliquotaIva)
-                aliquotaIvaRiga = daoiva.percentuale
+                if daoIva:
+                    aliquotaIvaRiga = daoiva.percentuale
             if not aliquotaIvaRiga:
                 aliquotaIvaRiga =  percentualeIvaRiga
             totaleRiga = Decimal(riga.quantita or 0) * Decimal(riga.moltiplicatore) * Decimal(riga.valore_unitario_netto or 0)
