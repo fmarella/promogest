@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <requires lib="gtk+" version="2.16"/>
   <!-- interface-requires pythonplugin 0.0 -->
+  <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy project-wide -->
   <object class="GtkTreeView" id="anagrafica_filter_treeview">
     <property name="visible">True</property>
@@ -536,7 +536,7 @@ Descrizione di più operazioni</property>
                     <property name="shadow_type">in</property>
                     <child>
                       <object class="GtkTextView" id="note_textview">
-                        <property name="height_request">90</property>
+                        <property name="height_request">2</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                       </object>
@@ -550,7 +550,7 @@ Descrizione di più operazioni</property>
                 </child>
               </object>
               <packing>
-                <property name="expand">True</property>
+                <property name="expand">False</property>
                 <property name="fill">True</property>
                 <property name="position">3</property>
               </packing>
