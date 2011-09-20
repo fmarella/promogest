@@ -181,6 +181,7 @@ class AnagraficaPrimaNotaEdit(AnagraficaEdit):
         banca = ""
         if riga.id_banca:
             banca = getDenominazioneBanca(riga.id_banca)
+        riga.note_primanota = textview_get_text(self.note_textview)
         dati = (riga,
                         denominazione,
                         str(mN(valore,2)),
