@@ -694,7 +694,7 @@ def getNuovoCodiceArticolo(idFamiglia=None):
     codice = ''
     try:
 
-        art = session.query(Articolo.codice).all()[-700:]
+        art = session.query(Articolo.codice).all()
         art.reverse()
 
         for q in art:
@@ -702,26 +702,8 @@ def getNuovoCodiceArticolo(idFamiglia=None):
             if not codice or Articolo().select(codicesatto=codice):
                 continue
             else:
-                if not Articolo().select(codicesatto=codice):
-                    return codice
-
-
-
-
-        #n = 1
-        #quanti = session.query(Articolo).count()
-        #if quanti > 0:
-            #while session.query(Articolo).order_by(Articolo.id.asc()).offset(quanti-n).limit(1).all():
-                #art = session.query(Articolo).order_by(Articolo.id.asc()).offset(quanti-n).limit(1).all()
-                #codice = codeIncrement(art[0].codice)
-                #if not codice or Articolo().select(codice=codice):
-                    #if n < 400:
-                        #n =n+1
-                    #else:
-                        #break
-                #else:
-                    #if not Articolo().select(codice=codice):
-                        #return codice
+                #if not Articolo().select(codicesatto=codice):
+                return codice
     except:
         pass
     try:
@@ -733,26 +715,3 @@ def getNuovoCodiceArticolo(idFamiglia=None):
         pass
     return codice
 
-#            if isNuovoCodiceByFamiglia():
-#                #print "passi qui,isNuovoCodiceByFamiglia() "
-#                lunghezzaCodiceFamiglia = int(conf.Articoli.lunghezza_codice_famiglia)
-#                numeroFamiglie = int(conf.Articoli.numero_famiglie)
-            #codicesel  =params['session'].query(Articolo.codice).order_by("id").all()
-#            if Environment.lastCode:
-#                codice = codeIncrement(Environment.lastCode)
-#                Environment.lastCode = codice
-#            else:
-#            codice = codeIncrement(conf.Articoli.struttura_codice)
-#            while params['session'].query(Articolo.codice).filter(codice==Articolo.codice).order_by("id").all()[-10:]:
-#                codice = codeIncrement(codice)
-#            else:
-#                codice = codice
-#            return codice
-#    if params['session'].query(Articolo.codice).filter(codice==Articolo.codice).order_by("id").all()[-10:]:
-#        while params['session'].query(Articolo.codice).filter(codice==Articolo.codice).order_by("id").all()[-10:]:
-#            codice = codeIncrement(codice)
-##            Environment.lastCode = codice
-#        else:
-#            codice = codice
-#    else:
-#        Environment.lastCode = codice
