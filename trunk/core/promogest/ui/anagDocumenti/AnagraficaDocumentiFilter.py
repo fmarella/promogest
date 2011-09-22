@@ -199,20 +199,20 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         self._filterClosure = filterClosure
         tdos = self.runFilter()
         self.filter_listore.clear()
-
+        pa = posso("PA")
         for t in tdos:
             totali = t.totali
             totaleImponibile = mNLC(t._totaleImponibileScontato,2) or 0
             totaleImposta = mNLC(t._totaleImpostaScontata,2) or 0
             totale = mNLC(t._totaleScontato,2) or 0
             col = None
-            if posso("PA") and t.documento_saldato == 1:
+            if pa and t.documento_saldato == 1:
                 documento_saldato_filter = "Si"
                 if t.operazione in Environment.hapag:
                     col = "#CCFFAA"
                 else:
                     col = None
-            elif posso("PA") and t.documento_saldato == 0:
+            elif pa and t.documento_saldato == 0:
                 documento_saldato_filter = "No"
                 if t.operazione in Environment.hapag:
                     col = "#FFD7D7"

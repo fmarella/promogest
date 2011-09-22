@@ -274,6 +274,7 @@ class TestataMovimento(Dao):
                 if "RigaDocumento" in str(riga.__module__):
                     riga.persist()
                 else:
+                    #print "DEEEEEEEEEEEEEEFI", riga.id, riga.quantita, riga.id_articolo, riga.descrizione
                     riga._resetId()
                     riga.id_testata_movimento = self.id
                     riga.persist(sm=sm)

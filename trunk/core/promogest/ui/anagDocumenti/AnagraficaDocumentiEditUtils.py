@@ -230,6 +230,7 @@ def calcolaTotalePart(anaedit, dao=None):
 
     totaleEsclusoBaseImponibileRiga = 0
     totaleImponibileRiga = 0
+    gn = posso("GN")
     for riga in anaedit._righe[1:]:
         prezzoNetto = Decimal(riga["prezzoNetto"])
         quantita = Decimal(riga["quantita"])
@@ -243,7 +244,7 @@ def calcolaTotalePart(anaedit, dao=None):
 
         # PARTE dedicata al modulo noleggio ...
         # TODO : Rivedere quanto prima
-        if posso("GN") and anaedit.noleggio and str(riga["arco_temporale"]) != "NO":
+        if gn and anaedit.noleggio and str(riga["arco_temporale"]) != "NO":
             arco_temporale = Decimal(anaedit.giorni_label.get_text())
             if str(riga["divisore_noleggio"]) == "1":
                 totaleRiga = mN(totaleRiga *Decimal(riga["arco_temporale"]))
