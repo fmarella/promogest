@@ -117,6 +117,7 @@ puntoB = None
 puntoP = None
 eta = 0
 tipo_pg = None
+workingYear = 2011
 cartella_moduli = 'promogest/modules'
 totale_pn_con_riporto = 0
 
