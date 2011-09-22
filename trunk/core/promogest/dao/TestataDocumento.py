@@ -604,7 +604,11 @@ class TestataDocumento(Dao):
                     stringa += "%s \n%s%s, %s" %(self.intestatario, str_importo_doc, self._getPI_CF(), tipo_pag)
 
                     tpn = TestataPrimaNota()
-                    tpn.data_inizio = scad.data_pagamento
+                    if scad.data_pagamento:
+                        tpn.data_inizio = scad.data_pagamento
+                    else:
+                        import datetime
+                        tpn.data_inizio = datetime.datetime.now()
                     tpn.note = ""
                     rigaprimanota = RigaPrimaNota()
                     rigaprimanota.denominazione = stringa
