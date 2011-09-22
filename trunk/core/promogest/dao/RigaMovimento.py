@@ -291,7 +291,7 @@ class RigaMovimento(Dao):
             params["session"].commit()
             return True
 
-    def persist(self):
+    def persist(self,sm=False):
 
         params["session"].add(self)
         params["session"].commit()
@@ -304,7 +304,7 @@ class RigaMovimento(Dao):
             daoStoccaggio.id_articolo = self.id_articolo
             daoStoccaggio.id_magazzino = self.id_magazzino
             params["session"].add(daoStoccaggio)
-            params["session"].commit()
+            #params["session"].commit()
         if (hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes") or ("GestioneNoleggio" in modulesList):
             nr = NoleggioRiga()
             nr.coeficente = self.coeficente_noleggio
@@ -319,11 +319,11 @@ class RigaMovimento(Dao):
         if self.scontiRigheMovimento:
             for value in self.scontiRigheMovimento:
                 value.id_riga_movimento = self.id
-                value.persist()
-                #params["session"].add(value)
-            #params["session"].commit()
+                #value.persist()
+                params["session"].add(value)
+        #params["session"].commit()
         #print "DOPO sconti riga movimento persist", tempo()
-        if posso("SM"):
+        if sm:
             #try:
             if self.__misuraPezzo:
                 self.__misuraPezzo[0].id_riga = self.id
@@ -331,7 +331,7 @@ class RigaMovimento(Dao):
             #except:
                 #print "errore nel salvataggio di misura pezzo"
             self.__misuraPezzo = []
-
+        params["session"].commit()
 
 riga=Table('riga', params['metadata'], schema = params['schema'], autoload=True)
 riga_mov=Table('riga_movimento', params['metadata'],schema = params['schema'],autoload=True)

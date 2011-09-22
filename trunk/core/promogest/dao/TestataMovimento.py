@@ -183,10 +183,9 @@ class TestataMovimento(Dao):
         self.rmfv= None
         if row:
             self.rmfv = RigaMovimentoFornitura().select(idRigaMovimentoVenditaBool = True, batchSize=None)
-            #if self.rmfv:
-                #print "QUESTO ARTICOLO è stato venduto", len(self.rmfv), "volte"
+            sm = posso("SM")
             for r in row:
-                if posso("SM"):
+                if sm:
                     mp = MisuraPezzo().select(idRiga=r.id, batchSize=None)
                     if mp:
                         for m in mp:
@@ -212,6 +211,7 @@ class TestataMovimento(Dao):
         """cancellazione righe associate alla testata
             conn.execStoredProcedure('RigheMovimentoDel',(self.id, ))"""
         pg2log.info("DENTRO IL TESTATA MOVIMENTO")
+        print "INIZIO SALVATAGGIO MOVIMENTO", tempo()
         if not self.numero:
             valori = numeroRegistroGet(tipo="Movimento", date=self.data_movimento)
             self.numero = valori[0]
@@ -219,9 +219,7 @@ class TestataMovimento(Dao):
         params["session"].add(self)
         params["session"].commit()
         if self.righeMovimento:
-            #print "PRIMA DI CANCELLA RIGHE MOV", tempo()
             self.righeMovimentoDel(id=self.id)
-            #print "DOPO CANCELLA RIGHE MOV", tempo()
             if self.operazione == "Carico da composizione kit":
                 #print "DEVO AGGIUNGERE IN NEGATIVO LE RIGHE KIT"
                 righeMov = []
@@ -249,7 +247,6 @@ class TestataMovimento(Dao):
                         r.scontiRigheMovimento = riga.scontiRigheMovimento
                         righeMov.append(r)
                 self.righeMovimento = self.righeMovimento+righeMov
-
             if self.operazione == "Trasferimento merce magazzino" and self.id_to_magazzino:
                 righeMov = []
                 for riga in self.righeMovimento:
@@ -272,14 +269,14 @@ class TestataMovimento(Dao):
                     righeMov.append(r)
                     riga.quantita = -1*riga.quantita
                 self.righeMovimento = self.righeMovimento+righeMov
+            sm = posso("SM")
             for riga in self.righeMovimento:
                 if "RigaDocumento" in str(riga.__module__):
                     riga.persist()
                 else:
                     riga._resetId()
                     riga.id_testata_movimento = self.id
-                    riga.persist()
-                    #print "DOPO il persist della riga", tempo()
+                    riga.persist(sm=sm)
                     if self.id_fornitore and riga.id_articolo:
                         if hasattr(riga,"data_prezzo"):
                             data_prezzo = stringToDateTime(riga.data_prezzo) or stringToDateTime(self.data_movimento)
@@ -304,7 +301,6 @@ class TestataMovimento(Dao):
                                                         orderBy = 'data_fornitura DESC',
                                                         offset = None,
                                                         batchSize = None)
-
                         daoFornitura = None
                         if fors:
                             if fors[0].data_prezzo == data_prezzo:
@@ -384,9 +380,8 @@ class TestataMovimento(Dao):
                                     r.id_riga_movimento_vendita = riga.id
                                     params["session"].add(r)
                                 params["session"].commit()
-
                         #print "E una vendita"
-                #print "DOPO il for generale di riga movimento", tempo()
+            print "DOPO il for generale di riga movimento", tempo()
             self.__righeMovimento = []
 
 #riga=Table('riga',params['metadata'],schema = params['schema'],autoload=True)
