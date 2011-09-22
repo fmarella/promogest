@@ -1,37 +1,36 @@
 {% extends 'index2.html' %}
 {% block body %}
-        <table cellpadding="0" cellspacing="3" border="0">
+        <table cellpadding="2" cellspacing="3" border="0" style="width:90%">
             <tr>
                 <th>Codice</th>
                 <th>C Barre</th>
                 <th>Articolo</th>
                 <th>Magazzino</th>
 
-                <th>Giacenza</th>
+                <th>Giace</th>
                 {% if "SchedaLavorazione" in environment.modulesList %}
                 <th>Impegnato</th>
                 {% endif %}
-                <th>Valore Giacenza</th>
-                <th>Scorta minima</th>
-                <th>Data fine scorte</th>
-                <th>Data prossimo ordine</th>
+                <th>Valore</th>
+                <th>Scorta min.</th>
+                <th>Data fine sc</th>
+                <th>Data prox ordine</th>
             </tr>
-            <tr><td colspan="7"><hr /></td></tr>
             {% for dao in objects %}
             <tr class="row">
-                <td class="detail">{{dao.codice_articolo}}</td>
-                <td class="detail">{{dao.arti.codice_a_barre}}</td>
-                <td class="detail">{{dao.articolo}}</td>
-                <td class="detail">{{dao.magazzino}}</td>
+                <td class="detail" style="width:70px;" >{{dao.codice_articolo}}</td>
+                <td class="detail" style="width:10px;">{{dao.arti.codice_a_barre}}</td>
+                <td class="detail" style="width:470px;">{{dao.articolo}}</td>
+                <td class="detail" style="width:70px;">{{dao.magazzino}}</td>
 
-                <td class="detail">{{utils.mN( dao.giacenza )}}</td>
+                <td class="detail" align="right" style="width:50px;"><strong>{{utils.mN( dao.giacenza,1)}}</strong></td>
                 {% if "SchedaLavorazione" in environment.modulesList %}
                     <td class="number">{{ dao.impegnato}}</td>
                 {% endif %}
-                <td class="detail" "><strong>{{utils.mN(dao.valoreGiacenza)}}</strong></td>
-                <td class="detail">{{dao.scorta_minima|nonone}}</td>
-                <td class="detail">{{utils.dateToString(dao.data_fine_scorte)}}</td>
-                <td class="detail">{{utils.dateToString(dao.data_prossimo_ordine)}}</td>
+                <td class="detail" align="right" style="width:80px;">{{utils.mNLC(dao.valoreGiacenza,2)}}</td>
+                <td class="detail" style="width:50px;">{{dao.scorta_minima|nonone}}</td>
+                <td class="detail" style="width:50px;">{{utils.dateToString(dao.data_fine_scorte)}}</td>
+                <td class="detail" style="width:50px;">{{utils.dateToString(dao.data_prossimo_ordine)}}</td>
 
             </tr>
             {% endfor %}

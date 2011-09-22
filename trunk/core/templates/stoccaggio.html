@@ -2,7 +2,7 @@
 {% block body %}
     {% if dao %}
     <table cellpadding="0" cellspacing="0" border="0">
-            <tr><td colspan="6" class="table-header"><b>MAGAZZINO:</b> {{dao.magazzino}} <br/><b>ARTICOLO: CODICE:</b> {{dao.codice_articolo}}  - <b>C/BARRE:</b> {{dao.arti.codice_a_barre}} <br /> <b>DENOM:</b> {{dao.articolo}}</td></tr>
+            <tr><td colspan="3" class="table-header"><b>MAGAZZINO:</b> {{dao.magazzino}} <br/><b>ARTICOLO: CODICE:</b> {{dao.codice_articolo}}  - <b>C/BARRE:</b> {{dao.arti.codice_a_barre}} <br /> <b>DENOM:</b> {{dao.articolo}}</td></tr>
             <tr>
                 <td width="25%" class="odd-detail">Scorta minima</td>
                 <td width="25%" class="odd-detail"><strong>{{dao.scorta_minima|nonone}}</strong></td>
@@ -26,52 +26,25 @@
 </table><br />
 
 <table cellpadding="0" cellspacing="0" border="0">
-            <tr><td colspan="6" class="table-header">Situazione magazzino</td></tr>
+            <tr><td colspan="3" class="table-header">Situazione magazzino</td></tr>
             <tr class="even-detail">
                 <td class="even-number" style="text-align:center;" width="45%" style="padding-left:20px;" > INFO DOCUMENTO E MOVIMENTO </td>
-                <td class="even-number" style="text-align:center;" width="7%">Carico</td>
-                <td class="even-number" style="text-align:center;" width="7%">Scarico</td>
-                <td class="even-number" style="text-align:center;" width="5%">Valore Carico</td>
-                <td class="even-number" style="text-align:center;" width="5%">Valore Scarico</td>
-                <td class="even-number" style="text-align:center;" width="1%">+/-</td>
+                <td class="even-number" style="text-align:center;" width="7%">Quantità</td>
+                <td class="even-number" style="text-align:center;" width="5%">Valore</td>
             </tr>
             {% for item in dao.totaliOperazioniMovimento %}
             <tr >
             <td class="odd-detail" style="padding-left:5px;"><b>DOC:</b> N° {{item['daoTestataDocumento'].numero}} -- <b>MOV:</b> N° {{item['numero']}} - {{item['operazione']}} - Del: {{utils.dateToString(item['data_movimento'])}} - Rag_soc.:{{item['fornitore'][0:9]|string}}{{item['cliente'][0:9]|string}}<br>
 
             </td>
-
-            {% if item['segnoOperazione'] == "+" %}
-                <td class="odd-number" style="text-align:center;" >{{'%14.2f' % (item['giacenza'],)}}</td>
-            {% else %}
-                <td class="odd-number" style="text-align:center;" >  </td>
-            {% endif %}
-                {% if item['segnoOperazione'] == "-" %}
-                <td class="odd-number" style="text-align:center;" >{{'%14.2f' % (item['giacenza'],)}} </td>
-            {% endif %}
-                {% if item['segnoOperazione'] == "=" %}
-                <td class="odd-number" style="text-align:center;" >{{'%14.2f' % (item['giacenza'],)}} </td>
-            {% else %}
-                <td class="odd-number" style="text-align:center;" >  </td>
-            {% endif %}
-                {% if item['segnoOperazione'] == "+" %}
-                <td class="odd-number" style="text-align:center;">{{'%14.2f' % item['valore']|abs}}</td>
-            {% else %}
-                <td class="odd-number" style="text-align:center;" >  </td>
-            {% endif %}
-                {% if item['segnoOperazione'] == "-" %}
-                <td class="odd-number" style="text-align:center;">{{'%14.2f' % item['valore']|abs}}</td>
-            {% else %}
-                <td class="odd-number" style="text-align:center;" >  </td>
-            {% endif %}
-            <td class="odd-number" style="text-align:center;" >{{item['segnoOperazione']}}</td>
+            <td class="odd-number" style="text-align:center;" >{{'%14.1f' % (item['giacenza'],)}}</td>
+            <td class="odd-number" style="text-align:center;">{{utils.mNLC(item['valore'],2)}}</td>
             </tr>
             {% endfor %}
             <tr>
                 <td class="totale-detail"><strong>Totali</strong></td>
-                <td></td>
-                <td class="totale-number" style="text-align:center;"><strong>{{'%14.2f' % (dao.giacenza, )}}</strong></td>
-                <td class="totale-number" style="text-align:center;"><strong>{{'%14.2f' % (dao.valoreGiacenza, )}}</strong></td>
+                <td class="totale-number" style="text-align:center;"><strong>{{'%14.1f' % (dao.giacenza, )}}</strong></td>
+                <td class="totale-number" style="text-align:center;"><strong>{{utils.mNLC(dao.valoreGiacenza,2)}}</strong></td>
             </tr>
 </table>
         {% else %}
