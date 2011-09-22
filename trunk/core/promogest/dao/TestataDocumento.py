@@ -579,13 +579,23 @@ class TestataDocumento(Dao):
             for scad in self.__ScadenzeDocumento:
                 scad.id_testata_documento = self.id
                 Environment.session.add(scad)
-                if self.ripartire_importo and scad.data_pagamento: #aka prima nota
-                    ope= leggiOperazione(self.operazione)
+                if self.ripartire_importo:
+                    if scad.data_pagamento is None:
+                        if not setconf('PrimaNota', 'inserisci_senza_data_pagamento'):
+                            continue
+                    ope = leggiOperazione(self.operazione)
                     tipo = Pagamento().select(denominazione=scad.pagamento)[0].tipo
                     if scad.numero_scadenza == 0:
                         tipo_pag = "ACCONTO"
                     elif scad.numero_scadenza == 1:
                         tipo_pag = "-"
+                        if scad.data_pagamento is None:
+                            if ope['tipoPersonaGiuridica'] == 'fornitore':
+                                tipo_pag += ' ricevuta'
+                            elif ope['tipoPersonaGiuridica'] == 'cliente':
+                                tipo_pag += ' emessa'
+                            else:
+                                pass
                     elif scad.numero_scadenza == 2:
                         tipo_pag = "SECONDA RATA"
                     elif scad.numero_scadenza == 3:

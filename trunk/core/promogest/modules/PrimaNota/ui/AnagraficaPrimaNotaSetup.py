@@ -56,10 +56,15 @@ class AnagraficaPrimaNotaSetup(GladeWidget):
         except:
             self.aggiungi_partita_iva_check.set_active(0)
 
+        try:
+            self.inserisci_senza_data_pagamento_check.set_active(int(setconf("PrimaNota", "inserisci_senza_data_pagamento")))
+        except:
+            self.inserisci_senza_data_pagamento_check.set_active(0)
+
         self.vecchia_data_cassa = str(self.data_cassa_DateWidget.get_text()).strip()
         self.vecchio_valore_cassa = str(self.valore_cassa_SignedMoneyEntryField.get_text()).strip()
         self.vecchia_data_banca = str(self.data_banca_DateWidget.get_text()).strip()
-        self.vecchio_valore_banca = str(self.valore_banca_SignedMoneyEntryField.get_text()).strip()            
+        self.vecchio_valore_banca = str(self.valore_banca_SignedMoneyEntryField.get_text()).strip()
 
     def _saveSetup(self):
         """ Salviamo i dati modificati in interfaccia """
@@ -150,6 +155,22 @@ class AnagraficaPrimaNotaSetup(GladeWidget):
         c.value = str(self.aggiungi_partita_iva_check.get_active())
         c.tipo = "bool"
         c.description = "Aggiungere la partita IVA di un cliente/fornitore e/o il codice fiscale di un cliente in descrizione operazione"
+        c.tipo_section = "Generico"
+        c.active = True
+        c.visible = True
+        c.date = datetime.datetime.now()
+        Environment.session.add(c)
+
+        c = SetConf().select(key="inserisci_senza_data_pagamento", section="PrimaNota")
+        if c:
+            c = c[0]
+        else:
+            c = SetConf()
+        c.key = "inserisci_senza_data_pagamento"
+        c.section = "PrimaNota"
+        c.value = str(self.inserisci_senza_data_pagamento_check.get_active())
+        c.tipo = "bool"
+        c.description = "Inserire la prima nota senza data di scadenza"
         c.tipo_section = "Generico"
         c.active = True
         c.visible = True
