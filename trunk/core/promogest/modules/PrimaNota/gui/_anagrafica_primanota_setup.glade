@@ -273,7 +273,7 @@ il primo gennaio dell'anno di lavoro.</property>
                     <property name="can_focus">False</property>
                     <child>
                       <object class="GtkCheckButton" id="aggiungi_partita_iva_check">
-                        <property name="label" translatable="yes">Aggiunge la partita IVA di un cliente/fornitore in descrizione operazione</property>
+                        <property name="label" translatable="yes">Aggiungere la partita IVA di un cliente/fornitore in descrizione operazione</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
