@@ -2694,16 +2694,41 @@ def tempo():
     return ""
 
 class PGTimer(object):
+    """ Misura il tempo di esecuzione di un blocco di codice all'interno di una
+    funzione. E' possibile registrare degli intervalli intermedi richiamando
+    la funzione `PGTimer.step()`.
+    """
     steps = []
+    (STARTED, STOPPED) = range(2)
+    status = STOPPED
+
     def start(self):
+        """Avvia il conteggio annotando la date e l'ora di inizio
+        """
         self.steps = []
+        if self.status == STARTED:
+            raise RuntimeError('PGTimer già avviato.')
+        else:
+            self.status = STARTED
         self.steps.append(datetime.datetime.now())
+
     def step(self):
+        """Registra la data e l'ora per l'intervallo
+        """
         self.steps.append(datetime.datetime.now())
+
     def stop(self):
-        self.steps.append(datetime.datetime.now())
+        """Interrompe il conteggio egistra la data e l'ora di fine
+        """
+        if self.status == STARTED:
+            self.steps.append(datetime.datetime.now())
+        else:
+            raise RuntimeError('PGTimer è già fermo.')
+
     def delta(self, t1=None, t2=None):
-        if len(self.steps) < 1:
+        """Ritorna il tempo trascorso tra due intervalli.
+        """
+        if len(self.steps) <= 1:
             return '00:00:00'
         if t1 and t2:
             return str(self.steps[t2-1] - self.steps[t1-1])
