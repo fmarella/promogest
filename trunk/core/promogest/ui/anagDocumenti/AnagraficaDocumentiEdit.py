@@ -576,9 +576,12 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
 
         self.clearRows()
 
+        adr = posso('ADR')
+        sm = posso('SM')
+        gn = posso('GN')
         scarta = False
         for riga in self.dao.righe:
-            if posso("ADR"):
+            if adr:
                 # Scartiamo le righe di riepilogo ADR
                 if "RIEPILOGO" in riga.descrizione:
                     scarta = True
@@ -594,7 +597,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             multiplo = leggiMultiplo(riga.id_multiplo)
             (sconti, applicazione) = getScontiFromDao(
                     riga.sconti, riga.applicazione_sconti)
-            if posso("SM") and riga.misura_pezzo:
+            if sm and riga.misura_pezzo:
                 altezza = (riga.misura_pezzo[-1].altezza)
                 larghezza = (riga.misura_pezzo[-1].larghezza)
                 moltiplicatore_pezzi = riga.misura_pezzo[-1].moltiplicatore
@@ -650,16 +653,16 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self._righe[0]["prezzoNetto"] = Decimal(riga.valore_unitario_netto)
             self._righe[0]["prezzoNettoUltimo"] = Decimal(riga.valore_unitario_netto)
             self._righe[0]["totale"] = 0
-            if posso("ADR"):
+            if adr:
                 artADR = AnagraficaDocumentiEditADRExt.getADRArticolo(riga.id_articolo)
                 if artADR:
                     # Calcola se viene superato il limite massimo di esenzione
                     AnagraficaDocumentiEditADRExt.calcolaLimiteTrasportoADR(self, artADR)
-            if posso("SM"):
+            if sm:
                 self._righe[0]["altezza"] = mN(altezza)
                 self._righe[0]["larghezza"] = mN(larghezza)
                 self._righe[0]["molt_pezzi"] =mN(moltiplicatore_pezzi)
-            if posso("GN"):
+            if gn:
                 print " ISRENT  ",riga.isrent
                 if riga.isrent :
                     self._righe[0]["arco_temporale"] = self.giorni_label.get_text()
@@ -668,7 +671,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                 self._righe[0]["prezzo_acquisto"] = mN(riga.prezzo_acquisto_noleggio)
                 self._righe[0]["divisore_noleggio"] = mN(riga.coeficente_noleggio)
             self.getTotaleRiga()
-            if posso("GN") and self._righe[0]["arco_temporale"] != "NO" :
+            if gn and self._righe[0]["arco_temporale"] != "NO" :
                 totaleNoleggio = AnagraficaDocumentiEditGestioneNoleggioExt.totaleNoleggio(self)
 
             self.unitaBaseLabel.set_text(self._righe[0]["unitaBase"])
@@ -691,14 +694,14 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self._righe.append(self._righe[0])
             rigadoc= self._righe[j]
 
-            if posso("SM"):
+            if sm:
                     altezza=rigadoc["altezza"]
                     larghezza =rigadoc["larghezza"]
                     molt_pezzi = rigadoc["molt_pezzi"]
             else:
                 altezza = larghezza= molt_pezzi= ""
             #riempimento della treeview righe
-            if posso("GN"):
+            if gn:
                 arc_temp = rigadoc["arco_temporale"]
             else:
                 arc_temp = ""
