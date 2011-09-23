@@ -102,7 +102,6 @@ def giacenzaSel(year=None, idMagazzino=None, idArticolo=None,allMag= None):
                 daoTestataDocumento = TestataDocumento().getRecord(id=idTestataDocumento)
 
         qua = ram[0].quantita
-        print "QUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", qua
         if hasattr(ram[0], "reversed"):
             if ram[0].reversed:
                 qua = -1*qua
