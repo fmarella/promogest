@@ -2693,6 +2693,24 @@ def tempo():
     print datetime.datetime.now()
     return ""
 
+class PGTimer(object):
+    steps = []
+    def start(self):
+        self.steps = []
+        self.steps.append(datetime.datetime.now())
+    def step(self):
+        self.steps.append(datetime.datetime.now())
+    def stop(self):
+        self.steps.append(datetime.datetime.now())
+    def delta(self, t1=None, t2=None):
+        if len(self.steps) < 1:
+            return '00:00:00'
+        if t1 and t2:
+            return str(self.steps[t2-1] - self.steps[t1-1])
+        else:
+            return str(self.steps[len(self.steps)-1] - self.steps[0])
+
+
 def checkAggiorna():
     """ controllo se il pg2 è da aggiornare o no"""
     def agg():
