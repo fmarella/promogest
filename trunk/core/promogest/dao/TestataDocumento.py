@@ -665,9 +665,10 @@ class TestataDocumento(Dao):
         row = RigaDocumento().select(idTestataDocumento= id,
                                                     offset = None,
                                                     batchSize = None)
+        sm = posso('SM')
         if row:
             for r in row:
-                if posso("SM"):
+                if sm:
                     mp = MisuraPezzo().select(idRiga=r.id, batchSize=None)
                     if mp:
                         for m in mp:
