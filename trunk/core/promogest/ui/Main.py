@@ -178,16 +178,16 @@ class Main(GladeWidget):
         self.main_window.show_all()
         self.on_button_refresh_clicked()
 
-        if datetime.date.today() >= datetime.date(2011,9,17):
-            from promogest.dao.Setconf import SetConf
-            kbb = SetConf().select(key="upgrade_iva", section="Articoli")
-            if kbb and kbb[0].value=="True":
-                return
-            else:
-                fillComboboxAliquoteIva(self.iva_upgrade_combobox.combobox)
-                self.iva_upgrade_combobox.show_all()
-                self.crea_iva_radio.set_active(True)
-                self.upgrade_iva.run()
+        #if datetime.date.today() >= datetime.date(2011,9,17):
+            #from promogest.dao.Setconf import SetConf
+            #kbb = SetConf().select(key="upgrade_iva", section="Articoli")
+            #if kbb and kbb[0].value=="True":
+                #return
+            #else:
+                #fillComboboxAliquoteIva(self.iva_upgrade_combobox.combobox)
+                #self.iva_upgrade_combobox.show_all()
+                #self.crea_iva_radio.set_active(True)
+                #self.upgrade_iva.run()
 
 
     def on_apri_dialog_upgrade_iva_button_clicked(self, button):
