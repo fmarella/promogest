@@ -1696,14 +1696,11 @@ def stringToDateBumped(stringa):
     else:
         try:
             d = time.strptime(stringa, "%d/%m/%Y")
-            one_day = datetime.timedelta(days=1)
             data = datetime.date(d[0], d[1], d[2])
-            tomorrow =  data+one_day
+            tomorrow = data + datetime.timedelta(days=1)
         except Exception:
             tomorrow=None
         return tomorrow
-
-
 
 def dateTimeToString(data):
     """
