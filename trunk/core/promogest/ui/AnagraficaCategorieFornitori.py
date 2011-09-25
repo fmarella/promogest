@@ -118,6 +118,8 @@ class AnagraficaCategorieFornitoriDetail(AnagraficaDetail):
 
 
     def _refresh(self):
+        if not self.dao:
+            return
         sel = self._anagrafica.anagrafica_treeview.get_selection()
         (model, iterator) = sel.get_selected()
         if not iterator:
