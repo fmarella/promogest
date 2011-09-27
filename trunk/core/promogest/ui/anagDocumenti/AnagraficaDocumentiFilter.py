@@ -156,7 +156,7 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
             daDataInizioNoleggio = stringToDate(self.da_data_inizio_noleggio_filter_entry.get_text())
             aDataInizioNoleggio = stringToDate(self.a_data_inizio_noleggio_filter_entry.get_text())
             daDataFineNoleggio = stringToDate(self.da_data_fine_noleggio_filter_entry.get_text())
-            aDataFineNoleggio = stringToDate(self.a_data_fine_noleggio_filter_entry.get_text())
+            aDataFineNoleggio = stringToDateBumped(self.a_data_fine_noleggio_filter_entry.get_text())
             self.filterDict.update(daDataInizioNoleggio = daDataInizioNoleggio,
                                     aDataInizioNoleggio = aDataInizioNoleggio,
                                     daDataFineNoleggio = daDataFineNoleggio,
