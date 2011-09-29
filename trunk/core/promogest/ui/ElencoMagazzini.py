@@ -146,3 +146,6 @@ class ElencoMagazzini(GladeWidget):
         else:
             fencemsg()
             toggleButton.set_active(False)
+
+    def on_aggiorna_magazzini_button_clicked(self, button):
+        self.refresh()
