@@ -232,7 +232,7 @@ class Main(GladeWidget):
         vecchiaIva = AliquotaIva().select(percentuale=20,idTipo=1)
         if not vecchiaIva:
             messageError(msg="NON RIESCO A TROVARE UNA ALIQUOTA IVA AL 20 NEL SISTEMA")
-            return
+            #return
         else:
             if len(vecchiaIva) >1:
                 messageInfo(msg= "PIÙ DI UNA IVA AL 20% PRESENTE \n contattare l'assistenza")
