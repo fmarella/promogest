@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010, 2011 by Promotux
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -19,12 +19,40 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-from sqlalchemy import Table
-from sqlalchemy.orm import mapper, join,relation
-from promogest.Environment import params
-from Listino import Listino
-from ListinoArticolo import ListinoArticolo
+from sqlalchemy import *
+from sqlalchemy.orm import *
+from promogest.Environment import *
+from migrate.changeset.constraint import PrimaryKeyConstraint
 from Dao import Dao
+
+
+
+try:
+    listinocomplessoarticoloprevalente=Table('listino_complesso_articolo_prevalente',
+                                        params['metadata'],
+                                        schema = params['schema'],
+                                        autoload=True)
+except:
+    listinocomplessoarticoloprevalente = Table('listino_complesso_articolo_prevalente',
+                params['metadata'],
+                Column('id', Integer,  primary_key=True),
+                Column('id_listino_complesso',Integer),
+                Column('id_listino',Integer),
+                Column('id_articolo',Integer),
+                Column('data_listino_articolo',DateTime),
+                schema=params['schema']
+                )
+    listinocomplessoarticoloprevalente.create(checkfirst=True)
+
+if "id" not in [c.name for c in listinocomplessoarticoloprevalente.columns]:
+    #aa = session.query(listinocomplessoarticoloprevalente).all()
+    #if aa:
+        #for a in aa:
+            #session.delete(a)
+        #session.commit()
+    col = Column('id', Integer)
+    col.create(listinocomplessoarticoloprevalente)
+
 
 class ListinoComplessoArticoloPrevalente(Dao):
     """  """
@@ -43,11 +71,17 @@ class ListinoComplessoArticoloPrevalente(Dao):
         return  dic[k]
 
 
-listinocomplessoarticoloprevalente=Table('listino_complesso_articolo_prevalente',
-                                        params['metadata'],
-                                        schema = params['schema'],
-                                        autoload=True)
-
-std_mapper = mapper(ListinoComplessoArticoloPrevalente,listinocomplessoarticoloprevalente, properties={
-                                            },
+std_mapper = mapper(ListinoComplessoArticoloPrevalente,
+                    listinocomplessoarticoloprevalente,
+                    properties={},
                     order_by=listinocomplessoarticoloprevalente.c.id_listino_complesso)
+
+for pk in listinocomplessoarticoloprevalente.primary_key:
+    if "id_listino_complesso" == pk.name and params["tipo_db"] != "sqlite":
+        #print "DEVO OPERARE", pk
+        cons = PrimaryKeyConstraint(listinocomplessoarticoloprevalente.c.id_listino_complesso)
+        cons.drop(cascade=True)
+        cons = PrimaryKeyConstraint(listinocomplessoarticoloprevalente.c.id)
+        #cons.drop(cascade=True)
+        cons.create()
+

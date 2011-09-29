@@ -60,16 +60,12 @@ class ListinoComplessoListino(Dao):
         else: return ""
     listino_denominazione= property(_listino)
 
-#col =
-
-
-
 
 std_mapper = mapper(ListinoComplessoListino,listinocomplessolistino, properties={
                                             },
                     order_by=listinocomplessolistino.c.id_listino_complesso)
 
-print "PPPPPPPPPPPPPPPPPPPPPPP", len(listinocomplessolistino.primary_key)
+print "PK Listino complesso listino", len(listinocomplessolistino.primary_key)
 
 if len(listinocomplessolistino.primary_key) ==1 and params["tipo_db"] != "sqlite":
     cons = PrimaryKeyConstraint(listinocomplessolistino.c.id_listino, listinocomplessolistino.c.id_listino_complesso)

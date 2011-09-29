@@ -4,7 +4,6 @@
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
-#    Author: Andrea Argiolas  <andrea@promotux.it>
 #    Author: Francesco Marella <francesco.marella@gmail.com>
 
 #    This file is part of Promogest.
@@ -59,199 +58,14 @@ class CrossFilterPriceList(GladeWidget):
             Creo tre treeview , degli articoli duplicati, delle opzioni e di quelli
             gestiti
         """
-        #parte dei duplicati
-        treeview_duplicated = self.duplicated_treeview
-        rendererSx = gtk.CellRendererText()
-        rendererDx = gtk.CellRendererText()
-        rendererDx.set_property('xalign', 1)
-
-        column = gtk.TreeViewColumn('Listino', rendererSx, text=1)
-        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
-        column.set_clickable(True)
-        #column.connect("clicked", self._changeOrderBy, 'id_listino')
-        column.set_resizable(False)
-        column.set_expand(True)
-        column.set_min_width(250)
-        treeview_duplicated.append_column(column)
-
-        column = gtk.TreeViewColumn('Codice articolo', rendererSx, text=2)
-        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
-        column.set_clickable(False)
-        #column.connect("clicked", self._changeOrderBy, 'codice_articolo')
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(100)
-        treeview_duplicated.append_column(column)
-
-        column = gtk.TreeViewColumn('Articolo', rendererSx, text=3)
-        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
-        column.set_clickable(False)
-        #column.connect("clicked", self._changeOrderBy, 'id_articolo')
-        column.set_resizable(True)
-        column.set_expand(True)
-        column.set_min_width(200)
-        treeview_duplicated.append_column(column)
-
-        column = gtk.TreeViewColumn('Data variazione', rendererSx, text=4)
-        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
-        column.set_clickable(True)
-        #column.connect("clicked", self._changeOrderBy, 'data_listino_articolo')
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(100)
-        treeview_duplicated.append_column(column)
-
-        column = gtk.TreeViewColumn('Prezzo dettaglio', rendererDx, text=5)
-        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
-        column.set_clickable(True)
-        #column.connect("clicked", self._changeOrderBy, 'prezzo_dettaglio')
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(100)
-        treeview_duplicated.append_column(column)
-
-        column = gtk.TreeViewColumn('Prezzo ingrosso', rendererDx, text=6)
-        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
-        column.set_clickable(True)
-        #column.connect("clicked", self._changeOrderBy, 'prezzo_ingrosso')
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(100)
-        treeview_duplicated.append_column(column)
-        self._treeViewModel_duplicated = gtk.ListStore(object, str, str, str, str, str, str)
-        treeview_duplicated.set_model(self._treeViewModel_duplicated)
-
-        #parte delle opzioni possibili
-        treeview_option = self.option_treeview
-        rendererSx = gtk.CellRendererText()
-        rendererDx = gtk.CellRendererText()
-        rendererDx.set_property('xalign', 1)
-
-        column = gtk.TreeViewColumn('Listino', rendererSx, text=1)
-        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
-        column.set_clickable(True)
-        #column.connect("clicked", self._changeOrderBy, 'id_listino')
-        column.set_resizable(False)
-        column.set_expand(True)
-        column.set_min_width(250)
-        treeview_option.append_column(column)
-
-        column = gtk.TreeViewColumn('Codice articolo', rendererSx, text=2)
-        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
-        column.set_clickable(False)
-        #column.connect("clicked", self._changeOrderBy, 'codice_articolo')
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(100)
-        treeview_option.append_column(column)
-
-        column = gtk.TreeViewColumn('Articolo', rendererSx, text=3)
-        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
-        column.set_clickable(False)
-        #column.connect("clicked", self._changeOrderBy, 'id_articolo')
-        column.set_resizable(True)
-        column.set_expand(True)
-        column.set_min_width(200)
-        treeview_option.append_column(column)
-
-        column = gtk.TreeViewColumn('Data variazione', rendererSx, text=4)
-        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
-        column.set_clickable(True)
-        #column.connect("clicked", self._changeOrderBy, 'data_listino_articolo')
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(100)
-        treeview_option.append_column(column)
-
-        column = gtk.TreeViewColumn('Prezzo dettaglio', rendererDx, text=5)
-        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
-        column.set_clickable(True)
-        #column.connect("clicked", self._changeOrderBy, 'prezzo_dettaglio')
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(100)
-        treeview_option.append_column(column)
-
-        column = gtk.TreeViewColumn('Prezzo ingrosso', rendererDx, text=6)
-        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
-        column.set_clickable(True)
-        #column.connect("clicked", self._changeOrderBy, 'prezzo_ingrosso')
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(100)
-        treeview_option.append_column(column)
-
-        self._treeViewModel_option = gtk.ListStore(object, str, str, str, str, str, str)
-        treeview_option.set_model(self._treeViewModel_option)
-
-        #parte degli articoli filtrati
-        treeview_filtered = self.filtered_treeview
-        rendererSx = gtk.CellRendererText()
-        rendererDx = gtk.CellRendererText()
-        rendererDx.set_property('xalign', 1)
-
-        column = gtk.TreeViewColumn('Listino', rendererSx, text=1)
-        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
-        column.set_clickable(True)
-        #column.connect("clicked", self._changeOrderBy, 'id_listino')
-        column.set_resizable(False)
-        column.set_expand(True)
-        column.set_min_width(250)
-        treeview_filtered.append_column(column)
-
-        column = gtk.TreeViewColumn('Codice articolo', rendererSx, text=2)
-        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
-        column.set_clickable(False)
-        #column.connect("clicked", self._changeOrderBy, 'codice_articolo')
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(100)
-        treeview_filtered.append_column(column)
-
-        column = gtk.TreeViewColumn('Articolo', rendererSx, text=3)
-        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
-        column.set_clickable(False)
-        #column.connect("clicked", self._changeOrderBy, 'id_articolo')
-        column.set_resizable(True)
-        column.set_expand(True)
-        column.set_min_width(200)
-        treeview_filtered.append_column(column)
-
-        column = gtk.TreeViewColumn('Data variazione', rendererSx, text=4)
-        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
-        column.set_clickable(True)
-        #column.connect("clicked", self._changeOrderBy, 'data_listino_articolo')
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(100)
-        treeview_filtered.append_column(column)
-
-        column = gtk.TreeViewColumn('Prezzo dettaglio', rendererDx, text=5)
-        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
-        column.set_clickable(True)
-        #column.connect("clicked", self._changeOrderBy, 'prezzo_dettaglio')
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(100)
-        treeview_filtered.append_column(column)
-
-        column = gtk.TreeViewColumn('Prezzo ingrosso', rendererDx, text=6)
-        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
-        column.set_clickable(True)
-        #column.connect("clicked", self._changeOrderBy, 'prezzo_ingrosso')
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(100)
-        treeview_filtered.append_column(column)
-
-        self._treeViewModel_filtered = gtk.ListStore(object, str, str, str, str, str, str)
-        treeview_filtered.set_model(self._treeViewModel_filtered)
-
+        self._treeViewModel_duplicated = self.duplicated_listore
+        self._treeViewModel_option = self.option_listore
         self.refreshFiltered()
 
     def riempiTreeview(self,l, treeview):
         """
-            tutte le treeview hanno la stessa liststore, funzione di riempiriga
+            tutte le treeview hanno la stessa liststore,
+            funzione di riempiriga
         """
         treeview.append((l,
                         (l.denominazione or ''),
@@ -266,17 +80,16 @@ class CrossFilterPriceList(GladeWidget):
         """
             Aggiornamento TreeView degli articoli già gestiti
         """
-        #self._treeViewModel_option.clear()
         if dao:
             l = dao
-            self.riempiTreeview(l, self._treeViewModel_filtered)
+            self.riempiTreeview(l, self.filtered_listore)
         elif remove:
-            self._treeViewModel_filtered.clear()
+            self.filtered_listore.clear()
             for l in self.stored:
                 if l == remove:
                     pass
                 else:
-                    self.riempiTreeview(l, self._treeViewModel_filtered)
+                    self.riempiTreeview(l, self.filtered_listore)
         elif not self.stored:
             self.stored = self.filteredData()
             self._treeViewModel_option.clear()
@@ -284,30 +97,30 @@ class CrossFilterPriceList(GladeWidget):
                 self.refreshDuplicated()
                 return
             for l in self.stored:
-                self.riempiTreeview(l, self._treeViewModel_filtered)
+                self.riempiTreeview(l, self.filtered_listore)
 
 
     def refreshDuplicated(self,stored=[]):
         """
             Aggiornamento TreeView degli articoli dupplicati
         """
-        self._treeViewModel_duplicated.clear()
+        self.duplicated_listore.clear()
         if not self.duprow:
             self.duprow = self.duplicatedData()
         for l in self.duprow:
             if l in self.stored:
                 pass
             else:
-                self.riempiTreeview(l,self._treeViewModel_duplicated)
+                self.riempiTreeview(l,self.duplicated_listore)
 
 
     def refreshOption(self, daos=None):
         """
             Aggiornamento TreeView delle opzioni possibili
         """
-        self._treeViewModel_option.clear()
+        self.option_listore.clear()
         for l in daos:
-            self.riempiTreeview(l,self._treeViewModel_option)
+            self.riempiTreeview(l,self.option_listore)
 
     def duplicatedData(self):
         """
@@ -339,12 +152,13 @@ class CrossFilterPriceList(GladeWidget):
                                     idArticolo=lc.id_articolo,
                                     listinoAttuale = True,
                                     #dataListinoArticolo=lc.data_listino_articolo,
-                                    batchSize=None)[0]
-                filtrow.append(riga)
+                                    batchSize=None)
+                if riga:
+                    filtrow.append(riga[0])
         return filtrow
 
     def on_filtered_treeview_row_activated(self, widget, path, column):
-        model = self.filtered_treeview.get_model()
+        model = self.filtered_listore
         dao = model[path][0]
         self.remove = dao
         self.refreshFiltered(remove=dao)
@@ -352,7 +166,7 @@ class CrossFilterPriceList(GladeWidget):
         self.optionData(daos)
 
     def on_duplicated_treeview_row_activated(self, widget, path, column):
-        model = self.duplicated_treeview.get_model()
+        model = self.duplicated_listore
         dao = model[path][0]
         daos = ListinoArticolo().select(idArticolo=dao.id_articolo, batchSize=None)
         self.optionData(daos)
@@ -373,12 +187,13 @@ class CrossFilterPriceList(GladeWidget):
         self.destroy()
 
     def on_azzera_button_clicked(self, button):
-        self._treeViewModel_option.clear()
-        self._treeViewModel_duplicated.clear()
-        self._treeViewModel_filtered.clear()
+        self.option_listore.clear()
+        self.duplicated_listore.clear()
+        self.filtered_listore.clear()
         lcaps = ListinoComplessoArticoloPrevalente().select(idListinoComplesso=self._listino.id, batchSize=None)
         for row in lcaps:
-            row.delete()
+            Environment.session.delete(row)
+        Environment.session.commit()
         self.stored = []
         self.duprow = []
         self.refreshDuplicated()
@@ -387,19 +202,20 @@ class CrossFilterPriceList(GladeWidget):
         """
             gestiamo la selezione dell'articolo tra le diverse opzioni
         """
-        selected = self.option_treeview.get_selection()
-        row_model = selected.get_selected()
-        row = row_model[0].get_value(row_model[1], 0)
+        sel = self.option_treeview.get_selection()
+        (model, iterator) = sel.get_selected()
+
+        self.rigaIter = model[iterator]
+        row = self.rigaIter[0]
 
         self.refreshFiltered(row)
-        rows = self.option_treeview.get_model()
-        for r in rows:
+        for r in self.option_listore:
             self.stored.append(r[0])
 
-        self._treeViewModel_option.clear()
+        self.option_listore.clear()
         if not self.remove:
             self.refreshDuplicated(stored=self.stored)
-            residui= len(self.duplicated_treeview.get_model())
+            residui= len(self.duplicated_listore)
         else:
             residui = 0
         if residui==0:
@@ -407,11 +223,10 @@ class CrossFilterPriceList(GladeWidget):
             self.ok_button.set_property("visible",True)
 
     def on_ok_button_clicked(self, button):
-        goodrows = self.filtered_treeview.get_model()
         if ListinoComplessoArticoloPrevalente().select(idListinoComplesso= self._listino.id, batchSize=None):
             for a in ListinoComplessoArticoloPrevalente().select(idListinoComplesso= self._listino.id, batchSize=None):
                 a.delete()
-        for r in goodrows:
+        for r in self.filtered_listore:
             lcap=  ListinoComplessoArticoloPrevalente()
             lcap.id_listino_complesso = self._listino.id
             lcap.id_listino = r[0].id_listino
