@@ -19,11 +19,29 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-from sqlalchemy import Table
-from sqlalchemy.orm import mapper, join,relation
+from sqlalchemy import *
+from sqlalchemy.orm import *
 from promogest.Environment import params
 #from Listino import Listino
+from migrate.changeset.constraint import PrimaryKeyConstraint
 from Dao import Dao
+
+
+
+sconto=Table('sconto', params['metadata'],schema = params['schema'],autoload=True)
+listinoTable = Table('listino', params['metadata'], autoload=True, schema=params['schema'])
+try:
+    listinocomplessolistino=Table('listino_complesso_listino',params['metadata'],schema = params['schema'],autoload=True)
+except:
+    if params["tipo_db"] == "sqlite":
+        listinoFK = 'listino.id'
+    else:
+        listinoFK = params['schema']+'.listino.id'
+    listinocomplessolistino = Table('listino_complesso_listino',params['metadata'],
+                Column('id_listino_complesso',Integer, primary_key=True),
+                Column('id_listino', Integer,ForeignKey(listinoFK,onupdate="CASCADE",ondelete="CASCADE"), primary_key=True),
+                schema=params['schema'])
+    listinocomplessolistino.create(checkfirst=True)
 
 class ListinoComplessoListino(Dao):
     """  """
@@ -42,10 +60,19 @@ class ListinoComplessoListino(Dao):
         else: return ""
     listino_denominazione= property(_listino)
 
-sconto=Table('sconto', params['metadata'],schema = params['schema'],autoload=True)
+#col =
 
-listinocomplessolistino=Table('listino_complesso_listino',params['metadata'],schema = params['schema'],autoload=True)
+
+
 
 std_mapper = mapper(ListinoComplessoListino,listinocomplessolistino, properties={
                                             },
                     order_by=listinocomplessolistino.c.id_listino_complesso)
+
+print "PPPPPPPPPPPPPPPPPPPPPPP", len(listinocomplessolistino.primary_key)
+
+if len(listinocomplessolistino.primary_key) ==1 and params["tipo_db"] != "sqlite":
+    cons = PrimaryKeyConstraint(listinocomplessolistino.c.id_listino, listinocomplessolistino.c.id_listino_complesso)
+    cons.drop(cascade=True)
+    cons.create()
+
