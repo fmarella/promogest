@@ -25,7 +25,9 @@
 import os
 import sys
 import re
-
+import warnings
+with warnings.catch_warnings(record=True) as w:
+    warnings.simplefilter('ignore')
 import tokenize
 from promogest import Environment
 from promogest.ui.gtk_compat import *
@@ -116,7 +118,7 @@ class SimpleGladeWrapper:
         self.normalize_names()
         if callbacks_proxy is None:
             callbacks_proxy = self
-        gl.connect_signals(callbacks_proxy)
+        test = gl.connect_signals(callbacks_proxy)
         self.gl = gl
         #self.new()
 
