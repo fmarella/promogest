@@ -156,17 +156,21 @@ def createbarcode(ch):
     #print "DATA for Barcode", ch,data
     #print "CODICE A BARRE " , data[1]
     bcd = False
+
     def create(tipo, data):
         try:
             bcd = createBarcodeDrawing(tipo, value=data[1], width=float(data[2])*cm,height=float(data[3])*cm)
         except:
             bcd= None
         return bcd
+
     if len(data[1])==8:
         bcd = create("EAN8", data)
+    if len(data[1]) == 13:
+        bcd = create("EAN13", data)
     if not bcd:
-        for tipo in ['EAN13','EAN8','Extended93','Standard39','QR','Extended39','FIM','USPS_4State',
-                        'Codabar','MSI','POSTNET','Code11','Standard93','I2of5','Code128']:
+        for tipo in ['Code128','Extended39','Standard39','Extended93','QR','FIM','USPS_4State',
+                     'Codabar',  'MSI','POSTNET','Code11','Standard93','I2of5']:
             bcd = create(tipo, data)
             if not bcd:
                 continue
