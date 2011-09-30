@@ -151,18 +151,3 @@ def sposta_sommario_in_tabella(anagrafica):
         anagrafica._righe[0]['quantita'] = 0
         anagrafica._righe.append(anagrafica._righe[0])
 
-def docCompatibileADR(denominazione):
-    """Ritorna vero se il tipo di documento è appropriato per il modulo ADR
-
-    Arguments:
-    - `denominazione`: la denominazione del tipo di documento
-    """
-    tipi_consentiti = ['Fattura accompagnatoria',
-                       'DDT vendita',
-                       'DDT acquisto',
-                       'DDT reso a fornitore',
-                       'DDT reso da cliente']
-    if denominazione in tipi_consentiti:
-        return True
-    else:
-        return False

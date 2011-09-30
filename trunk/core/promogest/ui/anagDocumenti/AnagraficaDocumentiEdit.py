@@ -89,8 +89,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self._iteratorRiga = None
         # cliente o fornitore ?
         self._tipoPersonaGiuridica = None
-        self.id_operazione = None
-        self.operazione = None
+        self._operazione = None
         self.mattu = False
         # prezzo vendita/acquisto, ivato/non ivato
         self._fonteValore = None
@@ -491,8 +490,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self.pagamenti_page.clear()
 
         self._tipoPersonaGiuridica = None
-        self.id_operazione = None
-        self.operazione = None
+        self._operazione = None
         self._fonteValore = None
         self._segno = None
         self._variazioneListiniResponse = ''
@@ -653,7 +651,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self._righe[0]["prezzoNetto"] = Decimal(riga.valore_unitario_netto)
             self._righe[0]["prezzoNettoUltimo"] = Decimal(riga.valore_unitario_netto)
             self._righe[0]["totale"] = 0
-            if adr and AnagraficaDocumentiEditADRExt.docCompatibileADR(self.operazione.denominazione):
+            if adr:
                 artADR = AnagraficaDocumentiEditADRExt.getADRArticolo(riga.id_articolo)
                 if artADR:
                     # Calcola se viene superato il limite massimo di esenzione
@@ -795,7 +793,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
     def saveDao(self, tipo=None):
         """ Salvataggio del Dao
         """
-        if posso("ADR") and tipo==GTK_RESPONSE_OK and AnagraficaDocumentiEditADRExt.docCompatibileADR(self.operazione.denominazione):
+        if posso("ADR") and tipo==GTK_RESPONSE_OK:
             AnagraficaDocumentiEditADRExt.sposta_sommario_in_tabella(self)
         scontiRigaDocumentoList = {}
         if not(len(self._righe) > 1):
@@ -854,7 +852,7 @@ del documento.
             è già stato usato per un altro. questo comporterà
             l 'esistenza di due documenti con lo stesso numero!"""
                 self.dao.numero = numero
-        self.dao.operazione = self.id_operazione
+        self.dao.operazione = self._operazione
         pbar(self.dialog.pbar,parziale=1, totale=4)
         if self._tipoPersonaGiuridica == "fornitore":
             self.dao.id_fornitore = self.id_persona_giuridica_customcombobox.getId()
@@ -989,8 +987,10 @@ del documento.
             #questa parte rimanda ai pagamenti
             AnagraficadocumentiPagamentExt.saveScadenze(self)
 
+        tipoid = findIdFromCombobox(self.id_operazione_combobox)
+        tipo = Operazione().getRecord(id=tipoid)
         if not self.dao.numero:
-            valori = numeroRegistroGet(tipo=self.operazione.denominazione,
+            valori = numeroRegistroGet(tipo=tipo.denominazione,
                                     date=self.data_documento_entry.get_text())
             self.dao.numero = valori[0]
             self.dao.registro_numerazione= valori[1]
@@ -1195,7 +1195,7 @@ del documento.
             print "E' di tipo provvigionale"
 
 
-        if posso("ADR") and AnagraficaDocumentiEditADRExt.docCompatibileADR(self.operazione.denominazione):
+        if posso("ADR"):
             artADR = AnagraficaDocumentiEditADRExt.getADRArticolo(self._righe[0]["idArticolo"])
             if artADR:
                 if inserisci:
@@ -1667,7 +1667,7 @@ del documento.
         """ elimina la riga in primo piano """
 
         if not(self._numRiga == 0):
-            if posso("ADR") and AnagraficaDocumentiEditADRExt.docCompatibileADR(self.operazione.denominazione):
+            if posso("ADR"):
                 artADR = AnagraficaDocumentiEditADRExt.getADRArticolo(self._righe[self._numRiga]["idArticolo"])
                 if artADR:
                     # Calcola se viene superato il limite massimo di esenzione
@@ -1735,14 +1735,27 @@ del documento.
 
     def on_id_operazione_combobox_changed(self, combobox):
         """ Funzione di gestione cambiamento combo operazione"""
-        self.id_operazione = findIdFromCombobox(self.id_operazione_combobox)
-        self.operazione = Operazione().getRecord(id=self.id_operazione)
-        if self.operazione:
-            if self._tipoPersonaGiuridica != self.operazione.tipo_persona_giuridica:
+        self._operazione = findIdFromCombobox(self.id_operazione_combobox)
+#        page = self.notebook.get_nth_page(3)
+#        if page:
+#            if self._operazione not in Environment.hapag:
+#                page.set_visible(False)
+#            else:
+#                page.set_visible(True)
+        #operazione = leggiOperazione(self._operazione)
+        operazione = Operazione().getRecord(id=self._operazione)
+        if operazione:
+            if self._tipoPersonaGiuridica != operazione.tipo_persona_giuridica:
                 self.id_persona_giuridica_customcombobox.refresh(clear=True, filter=False)
-            self._tipoPersonaGiuridica = self.operazione.tipo_persona_giuridica
-            self._fonteValore = self.operazione.fonte_valore
-            self._segno = self.operazione.segno
+            self._tipoPersonaGiuridica = operazione.tipo_persona_giuridica
+            self._fonteValore = operazione.fonte_valore
+            self._segno = operazione.segno
+
+        #if self._tipoPersonaGiuridica != operazione["tipoPersonaGiuridica"]:
+            #self.id_persona_giuridica_customcombobox.refresh(clear=True, filter=False)
+        #self._tipoPersonaGiuridica = operazione["tipoPersonaGiuridica"]
+        #self._fonteValore = operazione["fonteValore"]
+        #self._segno = operazione["segno"]
 
         if (self._tipoPersonaGiuridica == "fornitore"):
             self.persona_giuridica_label.set_text('Fornitore')
