@@ -64,8 +64,6 @@ if posso("GN"):
 if posso("PA"):
     from promogest.modules.Pagamenti.ui.PagamentiNotebookPage import PagamentiNotebookPage
     from promogest.modules.Pagamenti.ui import AnagraficadocumentiPagamentExt
-    from promogest.modules.Pagamenti.ui.AnagraficadocumentiPagamentExt import INFO_SCADENZA_PAGE, PRIMA_SCADENZA_PAGE, \
-SECONDA_SCADENZA_PAGE, TERZA_SCADENZA_PAGE, QUARTA_SCADENZA_PAGE, ACCONTO_PAGE
 if posso("ADR"):
     from promogest.modules.ADR.ui import AnagraficaDocumentiEditADRExt
 
