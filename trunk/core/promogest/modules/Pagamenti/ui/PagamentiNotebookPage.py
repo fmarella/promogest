@@ -47,17 +47,6 @@ class PagamentiNotebookPage(GladeWidget):
         self.id_pagamento_customcombobox.combobox.connect('changed',
             self.id_pagamento_customcombobox_changed)
 
-        self.aggiorna_pagamenti_button.connect('clicked',
-            self.on_aggiorna_pagamenti_button_clicked)
-        self.calcola_importi_scadenza_button.connect('clicked',
-            self.on_calcola_importi_scadenza_button_clicked)
-        self.chiudi_pagamento_documento_button.connect('clicked',
-            self.on_chiudi_pagamento_documento_button_clicked)
-        self.apri_pagamento_documento_button.connect('clicked',
-            self.on_apri_pagamento_documento_button_clicked)
-        self.aggiungi_scheda_acconto_button.connect('clicked',
-            self.on_aggiungi_scheda_acconto_button_clicked)
-
         self.pulisci_acconto_button.connect('clicked',
             self.on_pulisci_acconto_button_clicked)
         self.pulisci_prima_rata_button.connect('clicked',
@@ -214,7 +203,7 @@ class PagamentiNotebookPage(GladeWidget):
         """ Apre il pagamento
         """
         msg=_('Attenzione! Stai per riaprire un documento considerato già pagato.\n Continuare?')
-        procedi = YesNoDialog(msg=msg)
+        procedi = YesNoDialog(msg=msg, transient=None)
         if procedi:
             self.stato_label.set_markup(_('<b><span foreground="#B40000" size="24000">APERTO</span></b>'))
             self.apri_pagamento_documento_button.set_sensitive(False)
@@ -286,10 +275,16 @@ class PagamentiNotebookPage(GladeWidget):
         msg = _('Attenzione! Stai per rimuovere i riferimenti già inseriti. Continuare?')
         procedi = YesNoDialog(msg=msg)
         if procedi:
-            self.numero_primo_documento_entry.set_text('')
-            self.numero_secondo_documento_entry.set_text('')
-            self.importo_primo_documento_entry.set_text('')
-            self.importo_secondo_documento_entry.set_text('')
+            self.clear()
+            self.on_pulisci_prima_rata_button_clicked(None)
+            self.on_pulisci_seconda_rata_button_clicked(None)
+            self.on_pulisci_terza_rata_button_clicked(None)
+            self.on_pulisci_quarta_rata_button_clicked(None)
+            # questi sotto sono gia' eseguiti in clear()
+            #self.numero_primo_documento_entry.set_text('')
+            #self.numero_secondo_documento_entry.set_text('')
+            #self.importo_primo_documento_entry.set_text('')
+            #self.importo_secondo_documento_entry.set_text('')
 
     def on_controlla_rate_scadenza_button_clicked(self, button):
         """ bottone che controlla le rate scadenza """
