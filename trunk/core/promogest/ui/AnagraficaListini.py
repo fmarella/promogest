@@ -233,14 +233,14 @@ class AnagraficaListiniEdit(AnagraficaEdit):
         # ATTENZIONE: incremento ottenuto richiamando esplicitamente la sequence, in quanto id non e' PK
         #             della tabella listino
 
-        daoEsistente = Listino().select(denominazioneEM=self.denominazione_entry.get_text(),
-                                        dataListino = stringToDateTime(self.data_listino_entry.get_text()))
-        if daoEsistente:
-            messageInfo(msg="""ATTENZIONE!!
-Una listino con lo stesso nome e data esiste già
-Verrà aggiornato il precedente.""")
-            del self.dao
-            self.dao = daoEsistente[0]
+        #daoEsistente = Listino().select(denominazioneEM=self.denominazione_entry.get_text(),
+                                        #dataListino = stringToDateTime(self.data_listino_entry.get_text()))
+        #if daoEsistente:
+            #messageInfo(msg="""ATTENZIONE!!
+#Una listino con lo stesso nome e data esiste già
+#Verrà aggiornato il precedente.""")
+            #del self.dao
+            #self.dao = daoEsistente[0]
 
         if Environment.tipo_eng !="sqlite" and not self.dao.id:
             listino_sequence = Sequence("listino_id_seq", schema=Environment.params['schema'])
@@ -295,8 +295,10 @@ Verrà aggiornato il precedente.""")
 
         cleanListini = ListinoComplessoListino().select(idListinoComplesso=self.dao.id,
                                                         batchSize=None)
+        print "CLEAN LISTINI", cleanListini
         for lis in cleanListini:
-            lis.delete()
+            Environment.session.delete(lis)
+        Environment.session.commit()
         for l in self.listino_complesso_listore:
             if l[3] == 'deleted':
                 pass

@@ -1017,7 +1017,17 @@ class TestataDocumento(Dao):
                         params['session'].delete(m)
                     params["session"].commit()
         for r in self.righe:
+            rmfa = RigaMovimentoFornitura().select(idRigaMovimentoAcquisto = r.id, batchSize=None)
+            if rmfa:
+                for f in rmfa:
+                    if f.id_riga_movimento_vendita:
+                        from promogest.ui.utils import messageError
+                        messageError(msg="HAI RIMOSSO UN DOCUMENTO DI ACQUISTO DI CUI\n PARTE DEGLI ARTICOLI ERANO GIÀ STATI VENDUTI,\n I LOTTI NON SARANNO PIÙ NUMERICAMENTE CORRETTI")
+                    params['session'].delete(f)
+                params["session"].commit()
+
             precedentiRighe= RigaMovimentoFornitura().select(idRigaMovimentoVendita=r.id, batchSize=None)
+            print "precedentiRighe", precedentiRighe
             if precedentiRighe:
                 for p in precedentiRighe:
                     p.id_riga_movimento_vendita = None
