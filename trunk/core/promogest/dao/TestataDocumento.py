@@ -577,6 +577,7 @@ class TestataDocumento(Dao):
         self.testataDocumentoScadenzaDel(dao=self)
         if self.__ScadenzeDocumento:
             for scad in self.__ScadenzeDocumento:
+                num_scadenze = len(self.__ScadenzeDocumento)
                 scad.id_testata_documento = self.id
                 Environment.session.add(scad)
                 if self.ripartire_importo:
@@ -588,7 +589,10 @@ class TestataDocumento(Dao):
                     if scad.numero_scadenza == 0:
                         tipo_pag = "ACCONTO"
                     elif scad.numero_scadenza == 1:
-                        tipo_pag = "-"
+                        if num_scadenze > 1:
+                            tipo_pag = 'pagam.1'
+                        else:
+                            tipo_pag = 'saldo'
                         if scad.data_pagamento is None:
                             if ope['tipoPersonaGiuridica'] == 'fornitore':
                                 tipo_pag += ' ricevuta'
@@ -597,11 +601,17 @@ class TestataDocumento(Dao):
                             else:
                                 pass
                     elif scad.numero_scadenza == 2:
-                        tipo_pag = "SECONDA RATA"
+                        if num_scadenze > 2:
+                            tipo_pag = 'pagam. 2'
+                        else:
+                            tipo_pag = 'saldo'
                     elif scad.numero_scadenza == 3:
-                        tipo_pag = "TERZA RATA"
+                        if num_scadenze > 3:
+                            tipo_pag = 'pagam. 3'
+                        else:
+                            tipo_pag = 'saldo'
                     elif scad.numero_scadenza == 4:
-                        tipo_pag = "QUARTA RATA"
+                        tipo_pag = 'saldo'
                     stringa = "%s %s - %s Rif.interni N.%s " %(self.operazione, self.protocollo, \
                         dateToString(self.data_documento), str(self.numero))
                     if ope["segno"] == "-":
