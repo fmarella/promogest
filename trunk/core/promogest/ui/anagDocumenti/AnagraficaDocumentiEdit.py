@@ -155,6 +155,11 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self.totale_periodo_label.destroy()
         if not posso("ADR"):
             hideADR(self)
+        self.nolottotemp = True
+        if not setconf("Documenti", "lotto_temp"):
+            self.lotto_temp_hbox.destroy()
+            self.nolottotemp = False
+
 
     def draw(self, cplx=False):
         self.cplx = cplx
@@ -240,6 +245,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                                 "quantita_minima": None,
                                 "ritenute" : [],
                                 "numeroLottoArticoloFornitura":None,
+                                "numeroLottoTemp":None,
                                 "dataScadenzaArticoloFornitura":None,
                                 "dataProduzioneArticoloFornitura":None,
                                 "dataPrezzoFornitura":None,
@@ -325,7 +331,8 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             AnagraficaDocumentiEditSuMisuraExt.setLabels(self)
         if posso("GN"):
             AnagraficaDocumentiEditGestioneNoleggioExt.setLabels(self)
-
+        if self.nolottotemp:
+            self.lotto_temp_entry.set_text("")
         if len(self._righe) > 1:
             self.data_documento_entry.set_sensitive(False)
             self.id_operazione_combobox.set_sensitive(False)
@@ -688,7 +695,8 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                 else:
                     self._righe[0]["rigaMovimentoFornituraList"] = []
                 #TODO: AGGIUNGERE UN RICHIAMO A RIGAMOVIMENTOFORNITURA CON I DATI PRESI DAL DB
-
+                if self.nolottotemp:
+                    self._righe[0]["numeroLottoTemp"] = riga.numero_lotto_temp
             self._righe.append(self._righe[0])
             rigadoc= self._righe[j]
 
@@ -929,6 +937,8 @@ del documento.
             setattr(daoRiga,"data_prezzo",self._righe[i]["dataPrezzoFornitura"])
             setattr(daoRiga,"ordine_minimo",self._righe[i]["ordineMinimoFornitura"])
             setattr(daoRiga,"tempo_arrivo",self._righe[i]["tempoArrivoFornitura"])
+            if self.nolottotemp:
+                setattr(daoRiga,"lotto_temp",self._righe[i]["numeroLottoTemp"])
             if "rigaMovimentoFornituraList" in self._righe[i]:
                 setattr(daoRiga,"righe_movimento_fornitura",self._righe[i]["rigaMovimentoFornituraList"])
 
@@ -1055,6 +1065,7 @@ del documento.
         self._righe[0]["codiceArticoloFornitore"] = self._righe[self._numRiga]["codiceArticoloFornitore"]
 
         self._righe[0]["numeroLottoArticoloFornitura"] = self._righe[self._numRiga]["numeroLottoArticoloFornitura"]
+        self._righe[0]["numeroLottoTemp"] = self._righe[self._numRiga]["numeroLottoTemp"]
         self._righe[0]["dataScadenzaArticoloFornitura"] = self._righe[self._numRiga]["dataScadenzaArticoloFornitura"]
         self._righe[0]["dataProduzioneArticoloFornitura"] = self._righe[self._numRiga]["dataProduzioneArticoloFornitura"]
         self._righe[0]["dataPrezzoFornitura"] = self._righe[self._numRiga]["dataPrezzoFornitura"]
@@ -1102,6 +1113,7 @@ del documento.
 #        self.percentuale_iva_entry.set_text(str(self._righe[0]["percentualeIva"]).strip())
 
         self.numero_lotto_entry.set_text(self._righe[0]["numeroLottoArticoloFornitura"] or "")
+        self.lotto_temp_entry.set_text(self._righe[0]["numeroLottoTemp"] or "")
         self.data_scadenza_datewidget.set_text(self._righe[0]["dataScadenzaArticoloFornitura"] or "")
         self.data_produzione_datewidget.set_text(self._righe[0]["dataProduzioneArticoloFornitura"] or "")
         self.data_prezzo_datewidget.set_text(self._righe[0]["dataPrezzoFornitura"] or "")
@@ -1205,6 +1217,7 @@ del documento.
 
         self._righe[0]["codiceArticoloFornitore"] = self.codice_articolo_fornitore_entry.get_text()
         self._righe[0]["numeroLottoArticoloFornitura"] = self.numero_lotto_entry.get_text()
+        self._righe[0]["numeroLottoTemp"] = self.lotto_temp_entry.get_text()
         self._righe[0]["dataScadenzaArticoloFornitura"] = self.data_scadenza_datewidget.get_text()
         self._righe[0]["dataProduzioneArticoloFornitura"] = self.data_produzione_datewidget.get_text()
         self._righe[0]["dataPrezzoFornitura"] = self.data_prezzo_datewidget.get_text()
@@ -1234,6 +1247,7 @@ del documento.
         self._righe[self._numRiga]["codiceArticoloFornitore"] = self._righe[0]["codiceArticoloFornitore"]
 
         self._righe[self._numRiga]["numeroLottoArticoloFornitura"] = self._righe[0]["numeroLottoArticoloFornitura"]
+        self._righe[self._numRiga]["numeroLottoTemp"] = self._righe[0]["numeroLottoTemp"]
         self._righe[self._numRiga]["dataScadenzaArticoloFornitura"] = self._righe[0]["dataScadenzaArticoloFornitura"]
         self._righe[self._numRiga]["dataProduzioneArticoloFornitura"] = self._righe[0]["dataProduzioneArticoloFornitura"]
         self._righe[self._numRiga]["dataPrezzoFornitura"] = self._righe[0]["dataPrezzoFornitura"]
@@ -1358,10 +1372,8 @@ del documento.
         # assegna il valore della casella di testo alla variabile
         stringa = text.get_text()
         if self.mattu:
-            text.set_text(stringa.split(self.sepric)[0])
-        #model = gtk.ListStore(str,object)
-        #vediamo = self.completion.get_model()
-        #vediamo.clear()
+            text.set_text(stringa.split(self.sepric)[0]) #lasciamo il codice articolo nella entry
+
         self.ricerca_art_listore.clear()
         art = []
         # evita la ricerca per stringhe vuote o più corte di due caratteri
@@ -1411,6 +1423,7 @@ del documento.
             return None
 
     def on_completion_match(self, completion=None, model=None, iter=None):
+        #print "QUANTO CHIAMI QUESTA FUNZ", model[iter][1]
         self.mattu = True
         self.articolo_matchato = model[iter][1]
         self.articolo_entry.set_position(-1)
@@ -1484,6 +1497,7 @@ del documento.
             else:
                 orderBy = Environment.params["schema"]+".fornitura.codice_articolo_fornitore"
         batchSize = setconf("Numbers", "batch_size")
+        quantita = 1
         if self.articolo_matchato:
             arts = [self.articolo_matchato]
         else:
@@ -1491,15 +1505,26 @@ del documento.
                                         orderBy=orderBy,
                                         join = join,
                                         denominazione=prepareFilterString(denominazione),
-                                        codiceABarre=prepareFilterString(codiceABarre),
+                                        codiceABarre = prepareFilterString(codiceABarre),
                                         codiceArticoloFornitore=prepareFilterString(codiceArticoloFornitore),
                                         idFamiglia=None,
                                         idCategoria=None,
                                         idStato=None,
                                         offset=None,
                                         batchSize=None)
+        if not arts and self.ricerca_criterio_combobox.get_active() == 1:
+            #print " PROVIAMO LA CARTA DEL PESO VARIABILE A SEI CIFRE",prepareFilterString(codiceABarre[0:6])
+            arts = Articolo().select(
+                                     codiceABarreEM = prepareFilterString(codiceABarre[0:6]),
+                                     offset=None,
+                                     batchSize=None)
+            if arts: #1234560013189
+                quan = codiceABarre[7:-1]
+                quantita = list(quan)
+                quantita.insert(-3,".")
+                quantita =  str(Decimal(",".join(quantita).replace(",","").strip('[]')))
         if (len(arts) == 1):
-            self.mostraArticolo(arts[0].id)
+            self.mostraArticolo(arts[0].id, quan=quantita)
             self.articolo_matchato = None
         else:
             from promogest.ui.RicercaComplessaArticoli import RicercaComplessaArticoli
@@ -1537,8 +1562,8 @@ del documento.
             self.tagliaColoreRigheList = None
             self.promowear_manager_taglia_colore_togglebutton.set_sensitive(False)
 
-    def mostraArticolo(self, id, art=None):
-        mostraArticoloPart(self, id, art=art)
+    def mostraArticolo(self, id, art=None, quan=None):
+        mostraArticoloPart(self, id, art=art, quan=quan)
 
     def apriAnagraficaArticoliEdit(self, idArticolo):
         from promogest.ui.AnagraficaArticoli import AnagraficaArticoli
@@ -1680,9 +1705,10 @@ del documento.
     def on_articolo_entry_key_press_event(self, widget, event):
         """ """
         keyname = gdk_keyval_name(event.keyval)
-        if self.mattu and keyname == 'Return' or keyname == 'KP_Enter':
+        #print " POI PASSI QUI???????????????", keyname, keyname == 'Return', self.mattu
+        if self.mattu and (keyname == 'Return' or keyname == 'KP_Enter'):
             self.ricercaArticolo()
-        if keyname == 'F3':
+        if keyname == 'F3' or keyname == 'KP_Enter':
             self.ricercaArticolo()
 
     def on_search_row_button_clicked(self, widget):
@@ -1769,6 +1795,8 @@ del documento.
             self.codice_articolo_fornitore_entry.set_property('visible', True)
             self.numero_lotto_label.set_property('visible', True)
             self.numero_lotto_entry.set_property('visible', True)
+            self.lotto_temp_label.set_property('visible', False)
+            self.lotto_temp_entry.set_property('visible', False)
             self.data_prezzo_label.set_property('visible', True)
             self.data_prezzo_datewidget.set_property('visible', True)
             self.data_scadenza_label.set_property('visible', True)
@@ -1807,7 +1835,8 @@ del documento.
             self.tempo_arrivo_merce_label.set_property('visible', False)
             self.tempo_arrivo_merce_entry.set_property('visible', False)
             self.dettaglio_giacenza_togglebutton.set_property("visible", True)
-
+            self.lotto_temp_label.set_property('visible', True)
+            self.lotto_temp_entry.set_property('visible', True)
             self.protocollo_label.set_property('visible', False)
             self.protocollo_entry1.set_property('visible', False)
             self.numero_documento_label.set_text('Numero')
@@ -1837,7 +1866,8 @@ del documento.
             self.protocollo_label.set_property('visible', False)
             self.protocollo_entry1.set_property('visible', False)
             self.numero_documento_label.set_text('Numero')
-
+            self.lotto_temp_label.set_property('visible', False)
+            self.lotto_temp_entry.set_property('visible', False)
         self.persona_giuridica_changed()
         self.data_documento_entry.grab_focus()
 

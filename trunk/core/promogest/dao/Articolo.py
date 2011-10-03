@@ -564,19 +564,11 @@ class Articolo(Dao):
             dic = {k:articolo.c.denominazione.ilike("%"+v+"%")}
         elif k == 'codiceABarre':
             dic = {k:and_(articolo.c.id==CodiceABarreArticolo.id_articolo,CodiceABarreArticolo.codice.ilike("%"+v+"%"))}
-#            dic = {k:articolo.c.id.in_(select([CodiceABarreArticolo.id_articolo],and_(
-#                                        CodiceABarreArticolo.id_articolo == articolo.c.id,
-#                                        CodiceABarreArticolo.codice.ilike("%"+v+"%"))))}
-
+        elif k == 'codiceABarreEM':
+            dic = {k:and_(articolo.c.id==CodiceABarreArticolo.id_articolo,CodiceABarreArticolo.codice ==v)}
         elif k== 'codiceArticoloFornitore':
             dic = {k:and_(articolo.c.id==fornitura.c.id_articolo,fornitura.c.codice_articolo_fornitore.ilike("%"+v+"%"))}
-#            dic = {k:articolo.c.id.in_(select([Fornitura.id_articolo],and_(
-#                                        Fornitura.id_articolo == articolo.c.id,
-#                                        Fornitura.codice_articolo_fornitore.ilike("%"+v+"%"))))}
         elif k== 'codiceArticoloFornitoreEM':
-#            dic = {k:articolo.c.id.in_(select([Fornitura.id_articolo],and_(
-#                            Fornitura.id_articolo == articolo.c.id,
-#                            Fornitura.codice_articolo_fornitore == v)))}
             dic = {k:and_(articolo.c.id==fornitura.c.id_articolo,fornitura.c.codice_articolo_fornitore == v)}
         elif k == 'produttore':
             dic = {k:articolo.c.produttore.ilike("%"+v+"%")}

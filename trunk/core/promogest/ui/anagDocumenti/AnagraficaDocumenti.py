@@ -121,8 +121,12 @@ class AnagraficaDocumentiHtml(AnagraficaHtml):
                             if scad:
                                 scadstr = _("Data Sc. %s")  %scad
                         l += lottostr + scadstr
-                    #ll += l
-                    setattr(r, "aggiuntalottoindescrizione",l)
+                else:
+                    from promogest.dao.NumeroLottoTemp import NumeroLottoTemp
+                    aa = NumeroLottoTemp().select(idRigaMovimentoVenditaTemp=r.id)
+                    if aa:
+                        l +=_("<br /> Lotto %s") %(aa[0].lotto_temp)
+                setattr(r, "aggiuntalottoindescrizione",l)
 
         return self.dao
 

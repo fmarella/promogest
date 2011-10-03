@@ -369,7 +369,7 @@ def calcolaTotalePart(anaedit, dao=None):
                             (str(mN(castellettoIva[k]['imposta'],2))),))
 
 
-def mostraArticoloPart(anaedit, id, art=None):
+def mostraArticoloPart(anaedit, id, art=None, quan=None):
     """questa funzione viene chiamata da ricerca articolo e si occupa di
         riempire la riga[0] con i dati corretti presi dall'articolo
     """
@@ -532,6 +532,9 @@ def mostraArticoloPart(anaedit, id, art=None):
         #vendita
         elif ((anaedit._fonteValore == "vendita_iva") or (anaedit._fonteValore == "vendita_senza_iva")):
             anaedit.refresh_combobox_listini()
+        if quan:
+            anaedit.quantita_entry.set_text(quan)
+
     else:
         anaedit.articolo_entry.set_text('')
         anaedit.descrizione_entry.set_text('')

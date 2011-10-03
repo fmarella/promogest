@@ -2018,6 +2018,11 @@ def modificaLottiScadenze(riga):
                 lotti.append(lotto)
             l += _("\n Lotto %s Data sc %s ") %(lotto,dateToString(a.forni.data_scadenza))
         ll += l
+    else:
+        from promogest.dao.NumeroLottoTemp import NumeroLottoTemp
+        aa = NumeroLottoTemp().select(idRigaMovimentoVenditaTemp=riga["id"])
+        if aa:
+            ll+=_("\n Lotto %s") %(aa[0].lotto_temp)
     return ll
 
 
@@ -2037,20 +2042,6 @@ def multilinedirtywork( param):
                     wrapper = TextWrapper()
                     wrapper.width = int(setconf("Multilinea","multilinealimite"))
                     x["descrizione"] = "\n".join(wrapper.wrap(x["descrizione"]))
-
-                #if '\n' in x["descrizione"]:
-                    #desc= x["descrizione"].split("\n")
-                    #o = lista.index(x)
-                    #lista.remove(x)
-                    #lung = len(desc)-1
-                    #for d in desc:
-                        #p = desc.index(d)
-                        #c = x.copy()
-                        #if p < lung:
-                            #for k,v in c.iteritems():
-                                #c[k] = ""
-                        #c["descrizione"] = str(d).strip()
-                        #lista.insert(o+p,c)
                 if '\n' in x["descrizione"]:
                     desc= x["descrizione"].split("\n")
                     o = lista.index(x) # posizione della righa fra le righe
@@ -3021,7 +3012,6 @@ def checkInstallation():
                 k.persist()
             Environment.modulesList.append(str(conte["tipo"]))
             Environment.tipo_pg= str(conte["tipo"])
-
     except:
         print "ERRORE NEL COLLEGAMENTO AL CHECK INSTALLAZIONE"
         data = SetConf().select(key="tipo",section="Master")
@@ -3043,6 +3033,7 @@ def checkInstallation():
                 k.active = True
                 k.date = datetime.datetime.now()
                 k.persist()
+
 
 def updateScadenzePromemoria():
     """ Segna quali promemoria entrano nel periodo in scadenza,
@@ -3202,79 +3193,74 @@ def scribusVersion(slafile):
         return True
 
 def posso(mod=None):
-    moduli = ""
     modulis = Environment.modulesList
-    for a in modulis:
-        if a:
-            if "ONE" in a or "PRO" in a:
-                moduli = a.split(" ")
     if mod == "RA":
         if "RuoliAzioni"in modulis: return True
-        if "FULL" in moduli :return True
-        if "STANDARD" in moduli: return True
+        if "FULL" in modulis :return True
+        if "STANDARD" in modulis: return True
         #if "PRO STANDARD" in moduli: return True
     if mod == "PW" or mod=="PromoWear":
         if "PromoWear" in modulis:return True
-        if "+W" in moduli:return True
+        if "+W" in modulis:return True
     if mod == "AG":
         if "Agenti" in modulis: return True
-        if "FULL" in moduli :return True
-        if "STANDARD" in moduli: return True
+        if "FULL" in modulis :return True
+        if "STANDARD" in modulis: return True
     if mod == "GN":
         if "GestioneNoleggio" in modulis: return True
     if mod == "VD" or mod=="VenditaDettaglio":
         if "VenditaDettaglio" in modulis:return True
-        if "+S" in moduli:return True
+        if "+S" in modulis:return True
     if mod == "DB":
-        if "DistintaBase" in moduli: return True
+        if "DistintaBase" in modulis: return True
     if mod == "CN" or mod=="Contatti":
         if "Contatti" in modulis:return True
-        if "BASIC" in moduli : return True
-        if "STANDARD" in moduli: return True
-        if "FULL" in moduli: return True
+        if "BASIC" in modulis : return True
+        if "STANDARD" in modulis: return True
+        if "FULL" in modulis: return True
     if mod == "PR" or mod=="Promemoria":
         if "Promemoria" in modulis:return True
-        if "BASIC" in moduli : return True
-        if "STANDARD" in moduli: return True
-        if "FULL" in moduli: return True
+        if "BASIC" in modulis : return True
+        if "STANDARD" in modulis: return True
+        if "FULL" in modulis: return True
     if mod == "IN":
         if "Inventario"  in modulis: return True
-        if "FULL" in moduli: return True
+        if "FULL" in modulis: return True
     if mod == "IPL":
         if "ImportPriceList" in modulis:return True
-        if "FULL" in moduli: return True
+        if "FULL" in modulis: return True
     if mod == "LA":
         if "Label" in modulis: return True
-        if "FULL" in moduli: return True
+        if "FULL" in modulis: return True
     if mod == "SM":
         if "SuMisura" in modulis: return True
     if mod == "IP":
         if "InfoPeso" in modulis: return True
     if mod == "PA" or mod=="Pagamenti":
         if "Pagamenti" in modulis: return True
-        if "BASIC" in moduli: return True
-        if "STANDARD" in moduli: return True
-        if "FULL" in moduli: return True
+        if "BASIC" in modulis: return True
+        if "STANDARD" in modulis: return True
+        if "FULL" in modulis: return True
     if mod == "PN" or mod=="PrimaNota":
         if "PrimaNota" in modulis: return True
-        if "BASIC" in moduli: return True
-        if "STANDARD" in moduli: return True
-        if "FULL" in moduli: return True
+        if "BASIC" in modulis: return True
+        if "STANDARD" in modulis: return True
+        if "FULL" in modulis: return True
     if mod == "STA":
         if "STA" in modulis: return True
-        if "FULL" in moduli: return True
+        if "FULL" in modulis: return True
     if mod == "STA_DETT":
         if "STA_DETT" in modulis: return True
-        if "FULL" in moduli: return True
+        if "FULL" in modulis: return True
     if mod == "SD":
         if "SincroDB" in modulis :return True
     if mod == "SL":
         if "SchedaLavorazione" in modulis :return True
     if mod == "GC" or mod =="GestioneCommesse":
         if "GestioneCommesse" in modulis :return True
-        if "BASIC" in moduli: return True
-        if "STANDARD" in moduli: return True
-        if "FULL" in moduli: return True
+        if "BASIC" in modulis: return True
+        if "STANDARD" in modulis: return True
+        if "FULL" in modulis: return True
     d = setconf(mod,"mod_enable", value="yes")
     if d:
         return True

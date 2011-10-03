@@ -331,6 +331,11 @@ class Login(GladeApp):
             HtmlHandler.templates_dir.append("promogest/modules/Agenti/templates/") # da aggiungere a mano perchè al momento Agenti non è un vero e proprio modulo
             HtmlHandler.jinja_env = HtmlHandler.env(HtmlHandler.templates_dir)
             self.groupModulesByType()
+            for a in Environment.modulesList[:]:
+                mm = a.split(" ")
+                for m in mm:
+                    Environment.modulesList.append(m)
+                Environment.modulesList.remove(a)
 
     def on_login_window_key_press_event(self, widget, event):
         """Gestisce la pressione di alcuni tasti nella finestra di login

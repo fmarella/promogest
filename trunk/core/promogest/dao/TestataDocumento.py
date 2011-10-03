@@ -521,6 +521,9 @@ class TestataDocumento(Dao):
                     # riporti di attributi agganciati all'oggetto temporaneamente
                     if hasattr(row, "numero_lotto"):
                         setattr(daoRigaMovimento,"numero_lotto",row.numero_lotto or None)
+                    if hasattr(row, "lotto_temp"):
+                        print "FAAAAAAAAAAAAAAAAAAAAAAAAA", row.lotto_temp
+                        setattr(daoRigaMovimento,"lotto_temp",row.lotto_temp or None)
                     if hasattr(row, "data_scadenza"):
                         setattr(daoRigaMovimento,"data_scadenza",row.data_scadenza or None)
                     if hasattr(row, "data_produzione"):

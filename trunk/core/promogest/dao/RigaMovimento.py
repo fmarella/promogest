@@ -144,7 +144,12 @@ class RigaMovimento(Dao):
 
     codiceArticoloFornitore = property(_getCodiceArticoloFornitore, _setCodiceArticoloFornitore)
 
-
+    def _lottotemp(self):
+        if self.NLT:
+            return self.NLT[0].lotto_temp
+        else:
+            return ""
+    numero_lotto_temp = property(_lottotemp)
 
 
     if hasattr(conf, "SuMisura") and getattr(conf.SuMisura,'mod_enable')=="yes":
@@ -178,6 +183,8 @@ class RigaMovimento(Dao):
             else:
                 return ""
         pezzi_moltiplicatore = property(_moltiplicatore)
+
+
 
     if (hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes") or ("GestioneNoleggio" in modulesList):
         def _get_coeficente_noleggio(self):
@@ -306,6 +313,7 @@ class RigaMovimento(Dao):
             params["session"].add(daoStoccaggio)
             #params["session"].commit()
         if (hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes") or ("GestioneNoleggio" in modulesList):
+
             nr = NoleggioRiga()
             nr.coeficente = self.coeficente_noleggio
             nr.prezzo_acquisto = self.prezzo_acquisto_noleggio

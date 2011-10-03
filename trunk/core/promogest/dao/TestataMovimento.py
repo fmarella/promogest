@@ -32,6 +32,7 @@ from promogest.dao.RigaMovimento import RigaMovimento
 from promogest.dao.RigaDocumento import RigaDocumento
 from promogest.dao.Riga import Riga
 from promogest.dao.RigaMovimentoFornitura import RigaMovimentoFornitura
+from promogest.dao.NumeroLottoTemp import NumeroLottoTemp
 from promogest.ui.utils import numeroRegistroGet
 from Fornitore import Fornitore
 from Cliente import Cliente
@@ -202,6 +203,11 @@ class TestataMovimento(Dao):
                         p.id_riga_movimento_vendita = None
                         params["session"].add(p)
                     params['session'].commit()
+                nn = NumeroLottoTemp().select(idRigaMovimentoVenditaTemp=r.id)
+                if nn:
+                    for n in nn:
+                        params["session"].delete(n)
+                    params["session"].commit()
                 params['session'].delete(r)
             params["session"].commit()
         return True
@@ -354,7 +360,7 @@ class TestataMovimento(Dao):
 
                         daoFornitura.sconti = sconti
                         params["session"].add(daoFornitura)
-                    params["session"].commit()
+                        params["session"].commit()
                     if self.id_fornitore and riga.id_articolo:
                         for q in range(0,riga.quantita):
                             a = RigaMovimentoFornitura()
@@ -381,6 +387,14 @@ class TestataMovimento(Dao):
                                     r.id_riga_movimento_vendita = riga.id
                                     params["session"].add(r)
                                 params["session"].commit()
+                        if hasattr(riga,"lotto_temp") and riga.lotto_temp:
+                            #print "DEVO SALVARE IL  LOTTO TEMP", riga.lotto_temp
+                            n = NumeroLottoTemp()
+                            n.id_riga_movimento_vendita_temp = riga.id
+                            n.lotto_temp = riga.lotto_temp
+                            params["session"].add(n)
+                            params["session"].commit()
+
                         #print "E una vendita"
             print "DOPO il for generale di riga movimento", tempo()
             self.__righeMovimento = []

@@ -77,7 +77,10 @@ class AnagraficaDocumentiSetup(GladeWidget):
             self.descrizione_radio.set_active(True)
         elif a== "codice_articolo_fornitore":
             self.codice_articolo_fornitore_radio.set_active(True)
-
+        try:
+            self.lotto_temp_check.set_active(int(setconf("Documenti", "lotto_temp")))
+        except:
+            self.lotto_temp_check.set_active(0)
 
     def _saveSetup(self):
         """ Salviamo i dati modificati in interfaccia """
@@ -133,6 +136,23 @@ class AnagraficaDocumentiSetup(GladeWidget):
         d.visible = True
         d.date = datetime.datetime.now()
         Environment.session.add(d)
+
+        c = SetConf().select(key="lotto_temp", section="Documenti")
+        if c:
+            c=c[0]
+        else:
+            c = SetConf()
+        c.key = "lotto_temp"
+        c.section = "Documenti"
+        c.tipo = "bool"
+        c.value = str(self.lotto_temp_check.get_active())
+        c.description = "gestione lotti temporanei"
+        c.tipo_section = "Generico"
+        c.active = True
+        c.visible = True
+        c.date = datetime.datetime.now()
+        Environment.session.add(c)
+
 
         d = SetConf().select(key="fornitore_predefinito", section="Documenti")
         if d:
