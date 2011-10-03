@@ -47,7 +47,8 @@ try:
 
     rigaprimanota.c.valore.alter(Numeric(16, 4), nullable=False)
 
-except:
+except Exception as e:
+    pg2log.info(str(e))
     userTableTable = Table('testata_documento',
         params['metadata'],
         autoload=True,
