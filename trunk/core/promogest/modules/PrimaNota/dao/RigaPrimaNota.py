@@ -45,7 +45,7 @@ try:
         col = Column('note_primanota', Text, nullable=True)
         col.create(rigaprimanota)
 
-    rigaprimanota.c.valore.alter(Numeric(16, 4), nullable=False)
+    #rigaprimanota.c.valore.alter(Numeric(16, 4), nullable=False)
 
 except Exception as e:
     pg2log.info(str(e))
