@@ -1311,9 +1311,6 @@
                                                       </packing>
                                                     </child>
                                                     <child>
-                                                      <placeholder/>
-                                                    </child>
-                                                    <child>
                                                       <object class="GtkHBox" id="hbox7">
                                                         <property name="visible">True</property>
                                                         <property name="can_focus">False</property>
@@ -1385,6 +1382,7 @@
                                                             <object class="GtkEntry" id="lotto_temp_entry">
                                                             <property name="visible">True</property>
                                                             <property name="can_focus">True</property>
+                                                            <property name="has_focus">True</property>
                                                             <property name="invisible_char">•</property>
                                                             <property name="invisible_char_set">True</property>
                                                             <property name="primary_icon_activatable">False</property>
@@ -1413,6 +1411,9 @@
                                                         <property name="top_attach">3</property>
                                                         <property name="bottom_attach">4</property>
                                                       </packing>
+                                                    </child>
+                                                    <child>
+                                                      <placeholder/>
                                                     </child>
                                                   </object>
                                                 </child>

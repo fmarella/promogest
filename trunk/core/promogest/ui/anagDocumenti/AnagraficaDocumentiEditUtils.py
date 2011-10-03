@@ -574,7 +574,10 @@ def mostraArticoloPart(anaedit, id, art=None, quan=None):
         anaedit._righe[0]["totale"] = 0
 
     if anaedit._tipoPersonaGiuridica == "cliente":
-        anaedit.id_listino_customcombobox.combobox.grab_focus()
+        if anaedit.ricerca == "codice_a_barre" and setconf("Documenti", "no_ricerca_incrementale") and anaedit.nolottotemp:
+            anaedit.lotto_temp_entry.grab_focus()
+        else:
+            anaedit.id_listino_customcombobox.combobox.grab_focus()
     elif anaedit._tipoPersonaGiuridica == "fornitore":
         anaedit.codice_articolo_fornitore_entry.grab_focus()
     else:
