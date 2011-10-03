@@ -534,6 +534,10 @@ def mostraArticoloPart(anaedit, id, art=None, quan=None):
             anaedit.refresh_combobox_listini()
         if quan:
             anaedit.quantita_entry.set_text(str(quan))
+            anaedit._righe[0]["quantita"] = str(quan)
+        if not posso("SM") and articolo["quantita_minima"]:
+            anaedit.quantita_entry.set_text(str(articolo["quantita_minima"]))
+            anaedit._righe[0]["quantita"] = str(articolo["quantita_minima"])
 
     else:
         anaedit.articolo_entry.set_text('')
