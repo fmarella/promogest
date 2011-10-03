@@ -38,7 +38,17 @@ class TestUtils(unittest.TestCase):
         self.assertEqual(stringToDateBumped('31/12/2011'),
                         stringToDate('1/1/2012'))
 
+    def test_addPointToString(self):
+        """ Test, prendo una stringa di sei caratteri/numeri e aggiungo
+            un punto al terzultimo posto e poi lo converto in Decimal
+        """
+        quan = "001318"
+        quantita = list(quan)
+        quantita.insert(-3,".")
+        stringa_quantita =  ",".join(quantita).replace(",","").strip('[]')
+        print Decimal(stringa_quantita)
+
 if __name__ == '__main__':
-    tests = ['test_stringToDateBumped']
+    tests = ['test_stringToDateBumped', "test_addPointToString"]
     suite = unittest.TestSuite(map(TestUtils, tests))
     unittest.TextTestRunner(verbosity=2).run(suite)
