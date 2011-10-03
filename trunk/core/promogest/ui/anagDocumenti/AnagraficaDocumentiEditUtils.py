@@ -533,7 +533,7 @@ def mostraArticoloPart(anaedit, id, art=None, quan=None):
         elif ((anaedit._fonteValore == "vendita_iva") or (anaedit._fonteValore == "vendita_senza_iva")):
             anaedit.refresh_combobox_listini()
         if quan:
-            anaedit.quantita_entry.set_text(quan)
+            anaedit.quantita_entry.set_text(str(quan))
 
     else:
         anaedit.articolo_entry.set_text('')
