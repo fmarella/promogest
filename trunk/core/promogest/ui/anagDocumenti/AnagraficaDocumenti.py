@@ -97,7 +97,7 @@ class AnagraficaDocumentiHtml(AnagraficaHtml):
         if self.dao:
             for r in self.dao.righe:
                 l = ""
-                setattr(r, "aggiuntalottoindescrizione",l)
+                #setattr(r, "aggiuntalottoindescrizione",l)
                 if self.dao.id_fornitore and r.id_articolo:
                     aa = RigaMovimentoFornitura().select(idRigaMovimentoAcquisto=r.id, batchSize=None)
                 else:
@@ -105,6 +105,7 @@ class AnagraficaDocumentiHtml(AnagraficaHtml):
                 #ll = r.descrizione
                 if aa:
                     lotti= []
+                    scadenze = []
                     for a in aa:
                         lottostr = ""
                         scadstr = ""
@@ -116,10 +117,17 @@ class AnagraficaDocumentiHtml(AnagraficaHtml):
                                 lotti.append(lotto)
                             if lotto:
                                 lottostr = _("<br /> Lotto %s  - ") %lotto
+
+
+
                         if a.forni and a.forni.data_scadenza:
-                            scad = " "+ dateToString(a.forni.data_scadenza)
+                            scad = dateToString(a.forni.data_scadenza)
+                            if scad in scadenze:
+                                continue
+                            else:
+                                scadenze.append(scad)
                             if scad:
-                                scadstr = _("Data Sc. %s")  %scad
+                                scadstr = _(" Data Sc. %s")  %scad
                         l += lottostr + scadstr
                 else:
                     from promogest.dao.NumeroLottoTemp import NumeroLottoTemp
