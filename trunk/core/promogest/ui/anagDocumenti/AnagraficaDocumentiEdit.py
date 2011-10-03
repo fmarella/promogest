@@ -1377,6 +1377,8 @@ del documento.
         self.ricerca_art_listore.clear()
         art = []
         # evita la ricerca per stringhe vuote o più corte di due caratteri
+        if self.ricerca == "codice_a_barre" and setconf("Documenti", "no_ricerca_incrementale"):
+            return
         if stringa ==[] or len(stringa)<2:
             return
         if self.ricerca == "codice":
@@ -1705,6 +1707,8 @@ del documento.
     def on_articolo_entry_key_press_event(self, widget, event):
         """ """
         keyname = gdk_keyval_name(event.keyval)
+        if self.ricerca == "codice_a_barre" and setconf("Documenti", "no_ricerca_incrementale") and (keyname == 'F3' or keyname == 'KP_Enter' or keyname == 'Return'):
+            self.ricercaArticolo()
         #print " POI PASSI QUI???????????????", keyname, keyname == 'Return', self.mattu
         if self.mattu and (keyname == 'Return' or keyname == 'KP_Enter'):
             self.ricercaArticolo()

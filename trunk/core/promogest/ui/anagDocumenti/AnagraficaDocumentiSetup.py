@@ -81,6 +81,10 @@ class AnagraficaDocumentiSetup(GladeWidget):
             self.lotto_temp_check.set_active(int(setconf("Documenti", "lotto_temp")))
         except:
             self.lotto_temp_check.set_active(0)
+        try:
+            self.no_ricerca_incrementale_check.set_active(int(setconf("Documenti", "no_ricerca_incrementale")))
+        except:
+            self.no_ricerca_incrementale_check.set_active(0)
 
     def _saveSetup(self):
         """ Salviamo i dati modificati in interfaccia """
@@ -147,6 +151,23 @@ class AnagraficaDocumentiSetup(GladeWidget):
         c.tipo = "bool"
         c.value = str(self.lotto_temp_check.get_active())
         c.description = "gestione lotti temporanei"
+        c.tipo_section = "Generico"
+        c.active = True
+        c.visible = True
+        c.date = datetime.datetime.now()
+        Environment.session.add(c)
+
+
+        c = SetConf().select(key="no_ricerca_incrementale", section="Documenti")
+        if c:
+            c=c[0]
+        else:
+            c = SetConf()
+        c.key = "no_ricerca_incrementale"
+        c.section = "Documenti"
+        c.tipo = "bool"
+        c.value = str(self.lotto_temp_check.get_active())
+        c.description = "elimina la ricerca incrementale su codici a barre"
         c.tipo_section = "Generico"
         c.active = True
         c.visible = True
