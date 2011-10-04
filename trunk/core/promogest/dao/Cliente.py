@@ -23,9 +23,12 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import params, conf,session
 from Dao import Dao
+#from promogest.modules.Contatti.dao.ContattoCliente import ContattoCliente
+#from promogest.modules.Contatti.dao.RecapitoContatto import RecapitoContatto
+#from promogest.modules.Contatti.dao.Contatto import Contatto
 from ClienteCategoriaCliente import ClienteCategoriaCliente
 from PersonaGiuridica import PersonaGiuridica_
-from promogest.ui.utils import  codeIncrement
+from promogest.ui.utils import  codeIncrement, getRecapitiCliente
 
 class Cliente(Dao):
 
@@ -51,6 +54,42 @@ class Cliente(Dao):
                 c.delete()
         session.delete(self)
         session.commit()
+
+
+    def _cellularePrincipale(self):
+        for reca in getRecapitiCliente(self.id):
+            if reca.tipo_recapito =="Cellulare":
+                return reca.recapito
+        return ""
+    cellulare_principale = property(_cellularePrincipale)
+
+    def _telefonoPrincipale(self):
+        for reca in getRecapitiCliente(self.id):
+            if reca.tipo_recapito =="Telefono":
+                return reca.recapito
+        return ""
+    telefono_principale = property(_cellularePrincipale)
+
+    def _emailPrincipale(self):
+        for reca in getRecapitiCliente(self.id):
+            if reca.tipo_recapito =="Email":
+                return reca.recapito
+        return ""
+    email_principale = property(_emailPrincipale)
+
+    def _faxPrincipale(self):
+        for reca in getRecapitiCliente(self.id):
+            if reca.tipo_recapito =="Fax":
+                return reca.recapito
+        return ""
+    fax_principale = property(_faxPrincipale)
+
+    def _sitoPrincipale(self):
+        for reca in getRecapitiCliente(self.id):
+            if reca.tipo_recapito =="Sito":
+                return reca.recapito
+        return ""
+    sito_principale = property(_sitoPrincipale)
 
 
     def filter_values(self,k,v):

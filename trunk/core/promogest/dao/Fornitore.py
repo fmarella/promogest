@@ -25,7 +25,7 @@ from promogest.Environment import params, conf, session
 from Dao import Dao
 from CategoriaFornitore import CategoriaFornitore
 from promogest.modules.Contatti.dao.Contatto import Contatto
-from promogest.ui.utils import  codeIncrement
+from promogest.ui.utils import  codeIncrement, getRecapitiFornitore
 
 class Fornitore(Dao):
 
@@ -40,6 +40,40 @@ class Fornitore(Dao):
             return a[0].denominazione
     categoria = property(_categoria)
 
+    def _cellularePrincipale(self):
+        for reca in getRecapitiFornitore(self.id):
+            if reca.tipo_recapito =="Cellulare":
+                return reca.recapito
+        return ""
+    cellulare_principale = property(_cellularePrincipale)
+
+    def _telefonoPrincipale(self):
+        for reca in getRecapitiFornitore(self.id):
+            if reca.tipo_recapito =="Telefono":
+                return reca.recapito
+        return ""
+    telefono_principale = property(_telefonoPrincipale)
+
+    def _emailPrincipale(self):
+        for reca in getRecapitiFornitore(self.id):
+            if reca.tipo_recapito =="Email":
+                return reca.recapito
+        return ""
+    email_principale = property(_emailPrincipale)
+
+    def _faxPrincipale(self):
+        for reca in getRecapitiFornitore(self.id):
+            if reca.tipo_recapito =="Fax":
+                return reca.recapito
+        return ""
+    fax_principale = property(_faxPrincipale)
+
+    def _sitoPrincipale(self):
+        for reca in getRecapitiFornitore(self.id):
+            if reca.tipo_recapito =="Sito":
+                return reca.recapito
+        return ""
+    sito_principale = property(_sitoPrincipale)
 
 
     def delete(self):

@@ -124,22 +124,11 @@ class AnagraficaFornitoriEdit(AnagraficaEdit):
                               self.dao.id_magazzino)
         findComboboxRowFromStr(self.nazione_combobox,self.dao.nazione, 0)
         self.showTotaliDareAvere()
-        self.cellulare_principale_entry.set_text("")
-        self.telefono_principale_entry.set_text("")
-        self.email_principale_entry.set_text("")
-        self.fax_principale_entry.set_text("")
-        self.sito_web_principale_entry.set_text("")
-        for reca in getRecapitiContatto(self.dao_contatto.id):
-            if reca.tipo_recapito =="Cellulare":
-                self.cellulare_principale_entry.set_text(reca.recapito)
-            elif reca.tipo_recapito=="Telefono":
-                self.telefono_principale_entry.set_text(reca.recapito)
-            elif reca.tipo_recapito =="Email":
-                self.email_principale_entry.set_text(reca.recapito)
-            elif reca.tipo_recapito =="Fax":
-                self.fax_principale_entry.set_text(reca.recapito)
-            elif reca.tipo_recapito =="Sito":
-                self.sito_web_principale_entry.set_text(reca.recapito)
+        self.cellulare_principale_entry.set_text(self.dao.cellulare_principale)
+        self.telefono_principale_entry.set_text(self.dao.telefono_principale)
+        self.email_principale_entry.set_text(self.dao.email_principale)
+        self.fax_principale_entry.set_text(self.dao.fax_principale)
+        self.sito_web_principale_entry.set_text(self.dao.sito_principale)
 
     def showTotaliDareAvere(self):
 

@@ -2282,6 +2282,7 @@ def getRecapitiCliente(idCliente):
         return reca
     return []
 
+
 def getRecapitiFornitore(idFornitore):
     """Dato un cliente restituisce un dizionario dei recapiti"""
     from promogest.modules.Contatti.dao.ContattoFornitore import ContattoFornitore
