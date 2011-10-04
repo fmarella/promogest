@@ -59,10 +59,10 @@ from promogest.ui.utils import *
 from promogest.ui.utilsCombobox import *
 from promogest.ui.gtk_compat import *
 from SchedaLavorazioneUtils import *
-from widgets.SchedeOrdinazioniEditWidget import SchedeOrdinazioniEditWidget
+#from widgets.SchedeOrdinazioniEditWidget import SchedeOrdinazioniEditWidget
 from DuplicaInFattura import DuplicaInFattura
 
-class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit):
+class AnagraficaSchedeOrdinazioniEdit(AnagraficaEdit):
     """
     Modifica i dati relativi ad una scheda lavorazione
     """

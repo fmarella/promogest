@@ -150,8 +150,8 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self.noleggio_frame.destroy()
             self.noleggio = False
             self.prezzo_aquisto_entry.destroy()
-            self.label38.destroy()
-            self.label40.destroy()
+            self.X_label.destroy()
+            self.GG_label.destroy()
             self.totale_periodo_label.destroy()
         if not posso("ADR"):
             hideADR(self)
@@ -478,16 +478,16 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self.coeficente_noleggio_entry.set_sensitive(False)
             self.totale_periodo_label.set_sensitive(False)
             self.giorni_label.set_sensitive(False)
-            self.label40.set_sensitive(False)
-            self.label33.set_sensitive(False)
+            self.X_label.set_sensitive(False)
+            self.GG_label.set_sensitive(False)
             self.label31.set_sensitive(False)
         else:
             self.prezzo_aquisto_entry.set_sensitive(True)
             self.coeficente_noleggio_entry.set_sensitive(True)
             self.totale_periodo_label.set_sensitive(True)
             self.giorni_label.set_sensitive(True)
-            self.label40.set_sensitive(True)
-            self.label33.set_sensitive(True)
+            self.X_label.set_sensitive(True)
+            self.GG_label.set_sensitive(True)
             self.label31.set_sensitive(True)
 
     def _refresh(self):

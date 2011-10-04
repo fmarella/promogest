@@ -154,8 +154,7 @@
                                             <property name="visible">True</property>
                                             <property name="can_focus">False</property>
                                             <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                                            <property name="label" translatable="yes">Cambia Articolo
-principale...</property>
+                                            <property name="label" translatable="yes">Cambia Articolo principale...</property>
                                           </object>
                                           <packing>
                                             <property name="expand">False</property>
@@ -371,68 +370,70 @@ principale...</property>
         </child>
       </object>
       <packing>
-        <property name="expand">True</property>
-        <property name="fill">True</property>
+        <property name="expand">False</property>
+        <property name="fill">False</property>
         <property name="position">0</property>
       </packing>
     </child>
     <child>
-      <object class="GtkAlignment" id="alignment10">
+      <object class="GtkScrolledWindow" id="scrolledwindow1">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
+        <property name="can_focus">True</property>
         <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+        <property name="hscrollbar_policy">automatic</property>
+        <property name="vscrollbar_policy">automatic</property>
+        <property name="shadow_type">in</property>
         <child>
-          <object class="GtkScrolledWindow" id="scrolledwindow1">
+          <object class="GtkTreeView" id="articoli_associati_treeview">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-            <property name="hscrollbar_policy">automatic</property>
-            <property name="vscrollbar_policy">automatic</property>
-            <property name="shadow_type">in</property>
+            <property name="model">articoli_associati_liststore</property>
+            <property name="headers_clickable">False</property>
+            <property name="search_column">1</property>
+            <property name="enable_grid_lines">both</property>
+            <signal name="row-activated" handler="on_articoli_associati_treeview_row_activated" swapped="no"/>
             <child>
-              <object class="GtkTreeView" id="articoli_associati_treeview">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                <property name="model">articoli_associati_liststore</property>
-                <property name="enable_grid_lines">both</property>
-                <signal name="cursor-changed" handler="on_articoli_associati_treeview_row_activated" swapped="no"/>
-                <signal name="row-activated" handler="on_articoli_associati_treeview_row_activated" swapped="no"/>
+              <object class="GtkTreeViewColumn" id="codice_treeviewcolumn">
+                <property name="resizable">True</property>
+                <property name="min_width">100</property>
+                <property name="title" translatable="yes">Codice</property>
+                <property name="clickable">True</property>
                 <child>
-                  <object class="GtkTreeViewColumn" id="codice_treeviewcolumn">
-                    <property name="resizable">True</property>
-                    <property name="min_width">100</property>
-                    <property name="title" translatable="yes">Codice</property>
-                    <property name="clickable">True</property>
-                    <child>
-                      <object class="GtkCellRendererText" id="cellrenderertext1"/>
-                    </child>
-                  </object>
+                  <object class="GtkCellRendererText" id="cellrenderertext1"/>
+                  <attributes>
+                    <attribute name="text">2</attribute>
+                  </attributes>
                 </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkTreeViewColumn" id="descrizione_treeviewcolumn">
+                <property name="resizable">True</property>
+                <property name="min_width">300</property>
+                <property name="title" translatable="yes">Descrizione</property>
+                <property name="clickable">True</property>
                 <child>
-                  <object class="GtkTreeViewColumn" id="descrizione_treeviewcolumn">
-                    <property name="resizable">True</property>
-                    <property name="min_width">300</property>
-                    <property name="title" translatable="yes">Descrizione</property>
-                    <property name="clickable">True</property>
-                    <child>
-                      <object class="GtkCellRendererText" id="cellrenderertext2"/>
-                    </child>
-                  </object>
+                  <object class="GtkCellRendererText" id="cellrenderertext2"/>
+                  <attributes>
+                    <attribute name="text">3</attribute>
+                  </attributes>
                 </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkTreeViewColumn" id="quantita_treeviewcolumn">
+                <property name="min_width">40</property>
+                <property name="title" translatable="yes">Quantità</property>
+                <property name="clickable">True</property>
                 <child>
-                  <object class="GtkTreeViewColumn" id="quantita_treeviewcolumn">
-                    <property name="min_width">40</property>
-                    <property name="title" translatable="yes">Quantità</property>
-                    <child>
-                      <object class="GtkCellRendererSpin" id="cellrendererspin1">
-                        <property name="editable">True</property>
-                        <property name="adjustment">adjustment1</property>
-                        <property name="climb_rate">3</property>
-                        <property name="digits">3</property>
-                      </object>
-                    </child>
+                  <object class="GtkCellRendererText" id="cellrenderertext4">
+                    <property name="editable">True</property>
+                    <signal name="edited" handler="on_column_quantita_edited" swapped="no"/>
                   </object>
+                  <attributes>
+                    <attribute name="text">4</attribute>
+                  </attributes>
                 </child>
               </object>
             </child>
@@ -740,8 +741,125 @@ principale...</property>
       <column type="gchararray"/>
       <!-- column-name gchararray2 -->
       <column type="gchararray"/>
-      <!-- column-name gint1 -->
-      <column type="gint"/>
+      <!-- column-name gchararray3 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray4 -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
+  <object class="GtkTreeView" id="anagrafica_filter_treeview">
+    <property name="visible">True</property>
+    <property name="can_focus">True</property>
+    <property name="model">distinta_base_filter_listore</property>
+    <property name="headers_clickable">False</property>
+    <property name="search_column">1</property>
+    <property name="enable_grid_lines">both</property>
+    <child>
+      <object class="GtkTreeViewColumn" id="numero">
+        <property name="title" translatable="yes">Codice</property>
+        <property name="clickable">True</property>
+        <child>
+          <object class="GtkCellRendererText" id="cellrenderertext3"/>
+          <attributes>
+            <attribute name="text">2</attribute>
+          </attributes>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkTreeViewColumn" id="data_inizio">
+        <property name="title" translatable="yes">Descrizione</property>
+        <property name="clickable">True</property>
+        <child>
+          <object class="GtkCellRendererText" id="cellrenderertext10"/>
+          <attributes>
+            <attribute name="text">3</attribute>
+          </attributes>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkTreeViewColumn" id="treeviewcolumn6">
+        <property name="resizable">True</property>
+        <property name="title" translatable="yes">Produttore</property>
+        <property name="expand">True</property>
+        <child>
+          <object class="GtkCellRendererText" id="cellrenderertext15"/>
+          <attributes>
+            <attribute name="text">4</attribute>
+          </attributes>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkTreeViewColumn" id="treeviewcolumn7">
+        <property name="title" translatable="yes">Codice a Barre</property>
+        <child>
+          <object class="GtkCellRendererText" id="cellrenderertext11"/>
+          <attributes>
+            <attribute name="cell-background">1</attribute>
+            <attribute name="text">5</attribute>
+          </attributes>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkTreeViewColumn" id="treeviewcolumn3">
+        <property name="title" translatable="yes">Codice Art Forni</property>
+        <child>
+          <object class="GtkCellRendererText" id="cellrenderertext12"/>
+          <attributes>
+            <attribute name="cell-background">9</attribute>
+            <attribute name="text">6</attribute>
+          </attributes>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkTreeViewColumn" id="treeviewcolumn1">
+        <property name="title" translatable="yes">Famiglia</property>
+        <child>
+          <object class="GtkCellRendererText" id="cellrenderertext6"/>
+          <attributes>
+            <attribute name="text">7</attribute>
+          </attributes>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkTreeViewColumn" id="treeviewcolumn5">
+        <property name="resizable">True</property>
+        <property name="title" translatable="yes">Categoria</property>
+        <property name="expand">True</property>
+        <child>
+          <object class="GtkCellRendererText" id="cellrenderertext14"/>
+          <attributes>
+            <attribute name="text">8</attribute>
+          </attributes>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkListStore" id="distinta_base_filter_listore">
+    <columns>
+      <!-- column-name PyObject1 -->
+      <column type="PyObject"/>
+      <!-- column-name gchararray1 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray2 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray3 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray4 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray5 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray6 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray7 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray8 -->
+      <column type="gchararray"/>
     </columns>
   </object>
 </interface>

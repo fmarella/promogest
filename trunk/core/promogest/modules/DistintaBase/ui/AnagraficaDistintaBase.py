@@ -61,7 +61,7 @@ class AnagraficaDistintaBaseFilter(AnagraficaFilter):
         self.articoliprincipaliList = []
 
     def draw(self, cplx=False):
-        self._treeViewModel = self._anagrafica.anagrafica_filter_treeview.get_model()
+        #self._treeViewModel = self._anagrafica.anagrafica_filter_treeview.get_model()
         self.clear()
 
     def _reOrderBy(self, column):
@@ -156,13 +156,13 @@ class AnagraficaDistintaBaseFilter(AnagraficaFilter):
         self._filterClosure = filterClosure
 
         arts = self.runFilter()
-        self._treeViewModel.clear()
+        self.distinta_base_filter_listore.clear()
         for a in arts:
             col = None
             if a.cancellato:
                 col = 'red'
             #if a.isNode:
-            self._treeViewModel.append((a,
+            self.distinta_base_filter_listore.append((a,
                                         col,
                                         (a.codice or ''),
                                         (a.denominazione or ''),
@@ -206,7 +206,7 @@ class AnagraficaDistintaBaseEdit(AnagraficaEdit):
         self.articoliAssociatiList = []
 
     def draw(self, cplx=False):
-        self._assTreeViewModel = articoli_associati_liststore
+        self._assTreeViewModel = self.articoli_associati_liststore
 
     def on_column_quantita_edited(self, cell, path, value, treeview, editNext=True):
         """ Function ti set the value quantita edit in the cell"""
@@ -229,8 +229,7 @@ class AnagraficaDistintaBaseEdit(AnagraficaEdit):
         self._loading = True
         self.descrizione_label.set_text('')
         self.codice_label.set_text('')
-        self._assTreeviewModel = self.articoli_associati_treeview.get_model()
-        self._assTreeViewModel.clear()
+        self.articoli_associati_liststore.clear()
 
         for articolo in self.articoliAssociatiList:
             col = None
@@ -245,7 +244,7 @@ class AnagraficaDistintaBaseEdit(AnagraficaEdit):
                 #codice = articolo.codice
                 #denominazione = articolo.denominazione
             quantita = articolo.quantita or 0
-            self._assTreeViewModel.append([articolo,
+            self.articoli_associati_liststore.append([articolo,
                                         col,
                                         codice,
                                         denominazione,
@@ -346,5 +345,5 @@ class AnagraficaDistintaBaseEdit(AnagraficaEdit):
         for art in self.articoliAssociatiList:
             art.posizione = self.articoliAssociatiList.index(art)
 
-    def on_articoli_associati_treeview_row_activated(self, widget):
+    def on_articoli_associati_treeview_row_activated(self, treeview, path, column):
         self.remove_article_button.set_sensitive(True)
