@@ -478,17 +478,17 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self.coeficente_noleggio_entry.set_sensitive(False)
             self.totale_periodo_label.set_sensitive(False)
             self.giorni_label.set_sensitive(False)
-            self.X_label.set_sensitive(False)
+            self.periodo_label.set_sensitive(False)
             self.GG_label.set_sensitive(False)
-            #self.label31.set_sensitive(False)
+            self.X_label.set_sensitive(False)
         else:
             self.prezzo_aquisto_entry.set_sensitive(True)
             self.coeficente_noleggio_entry.set_sensitive(True)
             self.totale_periodo_label.set_sensitive(True)
             self.giorni_label.set_sensitive(True)
-            self.X_label.set_sensitive(True)
+            self.periodo_label.set_sensitive(True)
             self.GG_label.set_sensitive(True)
-            #self.label31.set_sensitive(True)
+            self.X_label.set_sensitive(True)
 
     def _refresh(self):
         """ Funzione importantissima di "impianto" del documento nella UI"""

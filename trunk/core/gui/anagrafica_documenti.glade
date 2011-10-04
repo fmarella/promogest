@@ -1531,7 +1531,7 @@
                                                       </packing>
                                                     </child>
                                                     <child>
-                                                      <object class="GtkLabel" id="label40">
+                                                      <object class="GtkLabel" id="periodo_label">
                                                         <property name="visible">True</property>
                                                         <property name="can_focus">False</property>
                                                         <property name="label" translatable="yes">Totale Periodo</property>
