@@ -25,7 +25,7 @@
 
                 <td class="detail" align="right" style="width:50px;"><strong>{{utils.mN( dao.giacenza,1)}}</strong></td>
                 {% if "SchedaLavorazione" in environment.modulesList %}
-                    <td class="number">{{ dao.impegnato}}</td>
+                    <td class="number">{{ dao.impegnato_su_lavorazione}}</td>
                 {% endif %}
                 <td class="detail" align="right" style="width:80px;">{{utils.mNLC(dao.valoreGiacenza,2)}}</td>
                 <td class="detail" style="width:50px;">{{dao.scorta_minima|nonone}}</td>

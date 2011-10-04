@@ -3255,7 +3255,10 @@ def posso(mod=None):
     if mod == "SD":
         if "SincroDB" in modulis :return True
     if mod == "SL":
-        if "SchedaLavorazione" in modulis :return True
+        #print "PASSIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII", modulis
+        if "SchedaLavorazione" in modulis :
+            #print "BOOOOOOOOOOOOOOOOOOOOOOOOOOOO"
+            return True
     if mod == "GC" or mod =="GestioneCommesse":
         if "GestioneCommesse" in modulis :return True
         if "BASIC" in modulis: return True

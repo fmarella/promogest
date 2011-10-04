@@ -186,9 +186,9 @@ class AnagraficaDistintaBaseReport(AnagraficaReport):
     def __init__(self, anagrafica):
         AnagraficaReport.__init__(self, anagrafica=anagrafica,
                                   description='Elenco distinte base',
-                                  defaultFileName='distinta_base',
-                                  htmlTemplate='distinta_base',
-                                  sxwTemplate='distinta_base')
+                                  defaultFileName='articoli_associati',
+                                  htmlTemplate='articoli_associati',
+                                  sxwTemplate='articoli_associati')
 
 class AnagraficaDistintaBaseEdit(AnagraficaEdit):
     """ Modifica un record dell'anagrafica delle distinte base """

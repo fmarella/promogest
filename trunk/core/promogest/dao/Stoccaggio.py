@@ -28,6 +28,7 @@ from Dao import Dao
 from Articolo import Articolo
 from Magazzino import Magazzino
 from promogest.dao.Fornitura import Fornitura
+from promogest.dao.Riga import Riga
 from promogest.dao.CodiceABarreArticolo import CodiceABarreArticolo
 from DaoUtils import giacenzaSel
 from promogest.ui.utils import mN, posso
@@ -60,7 +61,6 @@ class Stoccaggio(Dao):
 
         for t in totaliOperazioniMovimento:
             totGiacenza += (mN(t['giacenza']) or 0)
-            #totGiacenza += (t[4] or 0)
 
         return totGiacenza
 
@@ -91,6 +91,30 @@ class Stoccaggio(Dao):
         if self.arti: return self.maga.denominazione
         else: return ""
     magazzino= property(_magazzino)
+
+    if posso("SL"):
+        print "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        from promogest.modules.SchedaLavorazione.dao.RigaSchedaOrdinazione import RigaSchedaOrdinazione
+        from promogest.modules.SchedaLavorazione.dao.SchedaOrdinazione import SchedaOrdinazione
+        def _impegnatoSuLavorazione(self):
+            if self.arti.codice not in ["Stampa", "z-CONTR","z-BONIFICO"]:
+                year = Environment.workingYear
+                t=0
+                part= Environment.params["session"]\
+                    .query(Riga.quantita)\
+                    .filter(and_(SchedaOrdinazione.fattura!=True,
+                                riga.c.id==RigaSchedaOrdinazione
+.id,
+                                    RigaSchedaOrdinazione
+.id_scheda == SchedaOrdinazione.id,
+                                    Riga.id_articolo==self.id_articolo,
+                                    Articolo.id==self.id_articolo)).all()
+                for r in part:
+                    t +=r[0]
+                return t
+
+        impegnato_su_lavorazione = property(_impegnatoSuLavorazione)
+
 
     if hasattr(conf, "PromoWear") and getattr(conf.PromoWear, 'mod_enable')=="yes":
         def _denominazione_gruppo_taglia(self):
