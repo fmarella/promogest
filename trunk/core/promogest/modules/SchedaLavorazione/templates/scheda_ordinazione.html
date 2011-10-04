@@ -40,10 +40,10 @@
             <td width="16%" class="odd-detail"></td>
             {% endif %}
             <td width="40%" class="odd-detail">{{riga.descrizione}}</td>
-            <td width="12%" class="odd-number">{{utils.mN(riga.quantita * riga.moltiplicatore,0)}}</td>
+            <td width="13%" class="odd-number"><b>{{utils.mN(riga.quantita * riga.moltiplicatore,0)}}</b></td>
             <td width="10%" class="odd-number">{{utils.mN(riga.percentuale_iva,0)}}</td>
-            <td width="12%" class="odd-number">{{utils.mNLC(riga.valore_unitario_netto,2)}}</td>
-            <td width="10%" class="odd-number"><strong>{{utils.mNLC( riga.quantita * riga.moltiplicatore * riga.valore_unitario_netto ,2)}}</strong></td>
+            <td width="13%" class="odd-number">{{utils.mN(riga.valore_unitario_netto,2)}}</td>
+            <td width="10%" class="odd-number"><strong>{{utils.mN( riga.quantita * riga.moltiplicatore * riga.valore_unitario_netto ,2)}}</strong></td>
         </tr>
         {% endfor %}
         </table>
