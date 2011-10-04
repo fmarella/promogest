@@ -19,6 +19,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
+import datetime
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest import Environment
@@ -42,6 +43,23 @@ def giacenzaSel(year=None, idMagazzino=None, idArticolo=None,allMag= None):
     from promogest.dao.Riga import Riga
     from promogest.dao.Fornitura import Fornitura
     from promogest.dao.Magazzino import Magazzino
+    def calcolaGiacenza(quantita=None, moltiplicatore=None, segno=None, valunine=None):
+        """
+        Effettua realmente il calcolo
+        """
+        giacenza=0
+        if segno =="-":
+            giacenza -= quantita*moltiplicatore
+        elif segno =="+":
+            giacenza += quantita*moltiplicatore
+        else:
+            giacenza += quantita*moltiplicatore
+        valore= giacenza*valunine
+        return (giacenza, valore)
+
+    def addFornitura(data=None):
+        return Fornitura().select(idArticolo = idArticolo,dataFornitura=data)
+
     if allMag:
         magazzini = Environment.params["session"].query(Magazzino.id).all()
         if not magazzini:
@@ -73,24 +91,6 @@ def giacenzaSel(year=None, idMagazzino=None, idArticolo=None,allMag= None):
                 .all()
     lista = []
     for ram in righeArticoloMovimentate:
-
-        def calcolaGiacenza(quantita=None, moltiplicatore=None, segno=None, valunine=None):
-            """
-            Effettua realmente il calcolo
-            """
-            giacenza=0
-            if segno =="-":
-                giacenza -= quantita*moltiplicatore
-            elif segno =="+":
-                giacenza += quantita*moltiplicatore
-            else:
-                giacenza += quantita*moltiplicatore
-            valore= giacenza*valunine
-            return (giacenza, valore)
-
-        def addFornitura(data=None):
-            return Fornitura().select(idArticolo = idArticolo,dataFornitura=data)
-
         if ram[1].segnoOperazione =="+":
             fornitura = addFornitura(data=ram[1].data_movimento)
         else:
@@ -105,7 +105,7 @@ def giacenzaSel(year=None, idMagazzino=None, idArticolo=None,allMag= None):
         if hasattr(ram[0], "reversed"):
             if ram[0].reversed:
                 qua = -1*qua
-
+        ll = calcolaGiacenza(qua,moltiplicatore=ram[0].moltiplicatore, segno=ram[1].segnoOperazione, valunine=ram[0].valore_unitario_netto)
         diz = {"daoRigaMovimento": ram[0],
                 "daoTestataMovimento":ram[1],
                 "daoTestataDocumento": daoTestataDocumento,
@@ -114,10 +114,10 @@ def giacenzaSel(year=None, idMagazzino=None, idArticolo=None,allMag= None):
                 "data_movimento":ram[1].data_movimento,
                 "operazione":ram[1].operazione,
                 "id_articolo":ram[0].id_articolo,
-                "giacenza":calcolaGiacenza(qua,moltiplicatore=ram[0].moltiplicatore, segno=ram[1].segnoOperazione, valunine=ram[0].valore_unitario_netto)[0],
+                "giacenza":ll[0],
                 "cliente":ram[1].ragione_sociale_cliente,
                 "fornitore":ram[1].ragione_sociale_fornitore,
-                "valore":calcolaGiacenza(quantita=ram[0].quantita,moltiplicatore=ram[0].moltiplicatore, segno=ram[1].segnoOperazione, valunine=ram[0].valore_unitario_netto)[1],
+                "valore":ll[1],
                 "segnoOperazione":ram[1].segnoOperazione,
                     }
         lista.append(diz)

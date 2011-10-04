@@ -26,8 +26,8 @@
             <td class="even-detail">Giacenza<br /> Impegnato<br /> differenza</td>
             <td class="even-detail">Codice</td>
             <td class="even-detail">Descrizione</td>
-            <td class="even-number">Iva (%)</td>
             <td class="even-number">Quantita'</td>
+            <td class="even-number">Iva (%)</td>
             <td class="even-number">Prezzo netto</td>
             <td class="even-number">Totale</td>
         </tr>
@@ -40,10 +40,10 @@
             <td width="16%" class="odd-detail"></td>
             {% endif %}
             <td width="40%" class="odd-detail">{{riga.descrizione}}</td>
-            <td width="10%" class="odd-number">{{utils.number_format() % riga.percentuale_iva}}</td>
-            <td width="12%" class="odd-number">{{utils.number_format() % ( riga.quantita * riga.moltiplicatore)}}</td>
-            <td width="12%" class="odd-number">{{utils.number_format() % riga.valore_unitario_netto}}</td>
-            <td width="10%" class="odd-number"><strong>{{utils.number_format() % ( riga.quantita * riga.moltiplicatore * riga.valore_unitario_netto )}}</strong></td>
+            <td width="12%" class="odd-number">{{utils.mN(riga.quantita * riga.moltiplicatore,0)}}</td>
+            <td width="10%" class="odd-number">{{utils.mN(riga.percentuale_iva,0)}}</td>
+            <td width="12%" class="odd-number">{{utils.mNLC(riga.valore_unitario_netto,2)}}</td>
+            <td width="10%" class="odd-number"><strong>{{utils.mNLC( riga.quantita * riga.moltiplicatore * riga.valore_unitario_netto ,2)}}</strong></td>
         </tr>
         {% endfor %}
         </table>

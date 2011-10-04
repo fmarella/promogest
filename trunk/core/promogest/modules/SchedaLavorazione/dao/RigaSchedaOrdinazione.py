@@ -87,7 +87,7 @@ class RigaSchedaOrdinazione(Dao):
     codice_articolo= property(__codiceArticolo)
 
     def _setGiacenzaArticolo(self):
-#        print "ARTICOLOOOOOOOOOOOOOOOOOOOOOOOOOOOO", self.arti.codice
+#       print "ARTICOLOOOOOOOOOOOOOOOOOOOOOOOOOOOO", self.arti.codice
         if self.arti.codice not in ["Stampa", "z-CONTR","z-BONIFICO"]:
             giace =giacenzaArticolo(year=Environment.workingYear,
                                         idMagazzino=self.id_magazzino,
@@ -102,14 +102,14 @@ class RigaSchedaOrdinazione(Dao):
             year = Environment.workingYear
             t=0
             part= Environment.params["session"]\
-                .query(Riga)\
+                .query(Riga.quantita)\
                 .filter(and_(schedaordinazione.c.fattura!=True,
                             riga.c.id==rigaschedaordinazione.c.id,
                                 rigaschedaordinazione.c.id_scheda == schedaordinazione.c.id,
                                 riga.c.id_articolo==self.id_articolo,
                                 Articolo.id==self.id_articolo)).all()
             for r in part:
-                t +=r.quantita
+                t +=r[0]
             return t
     impegnato_su_lavorazione = property(_impegnatoSuLavorazione)
 

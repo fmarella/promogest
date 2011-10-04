@@ -855,8 +855,8 @@ class AnagraficaSchedeOrdinazioniEdit(AnagraficaEdit):
         """
         Calcola il totale della scheda
         """
-        totaleImponibile = calcolaPrezzoIva(self._parzialeNetto, (-1*20))
-        totaleImposta = self._parzialeNetto* Decimal( str(0.20))
+        totaleImponibile = calcolaPrezzoIva(self._parzialeNetto, (-1*21))
+        totaleImposta = self._parzialeNetto* Decimal( str(0.21))
         totaleNonScontato = self._parzialeLordo
 
         totaleScontato = self._parzialeNetto
