@@ -13,7 +13,7 @@
                 <th>Riferimento</th>
             </tr>
             <tr><td colspan="9"><hr /></td></tr>
-            {% for dao in objects %}
+           {% for dao in pageData["objects"] %}
             <tr class="row">
                 <td class="detail">{{utils.dateTimeToString(dao.data_scadenza)}}</td>
                 <td class="detail">{{utils.dateTimeToString(dao.data_inserimento)}}</td>

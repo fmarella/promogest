@@ -7,7 +7,7 @@
                 <th>Descrizione</th>
             </tr>
             <tr><td colspan="3"><hr /></td></tr>
-            {% for dao in objects %}
+            {% for dao in pageData["objects"] %}
             <tr class="row">
                 <td class="detail">{{dao.codice}}</td>
                 <td class="detail">{{dao.denominazione_breve}}</td>

@@ -12,7 +12,7 @@
         <th>UB</th>
         <th>Produttore</th>
     </tr>
-    {% for dao in objects %}
+    {% for dao in pageData["objects"] %}
     <tr class="row">
     <td class="detail">{{dao.codice}}</td>
     <td class="detail">{{dao.denominazione}}</td>

@@ -11,7 +11,7 @@
                 <th>Prezzo netto</th>
                 <th>IVA (%)</th>
             </tr>
-            {% for dao in objects %}
+            {% for dao in pageData["objects"] %}
             <tr class="row" >
                 <td class="detail">{{dao.fornitore}}</td>
                 <td class="detail">{{dao.codice_articolo_fornitore}}</td>

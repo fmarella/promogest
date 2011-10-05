@@ -6,7 +6,7 @@ size: A4 portrait;
 margin: 1cm;
 }
 </style>
-{% for dao in objects %}
+{% for dao in pageData["objects"] %}
 <table style="width:auto;">
 <th style="width:70px;">NUMERO</th>
 <th style="width:90px;">DATA</th>
@@ -23,7 +23,7 @@ margin: 1cm;
         <th >VALORE</th>
         <th>TIPO</th>
         <th>RIF.</th>
-	<th>NOTE</th>
+    <th>NOTE</th>
 
         {% for riga in dao.righeprimanota %}
         <tr >
@@ -39,7 +39,7 @@ margin: 1cm;
             <td style="color:orange;width:80px;text-align:center;font-size:14px;" class="odd-detail">{{riga.tipo}}</td>
             {% endif %}
             <td style="width:10%;font-size:10px;" class="odd-detail">{{riga.banca[0:30]}}</td>
-	    <td style="width:10%;font-size:10px;" class="odd-detail">{{ riga.note_primanota|nonone }}</td>
+        <td style="width:10%;font-size:10px;" class="odd-detail">{{ riga.note_primanota|nonone }}</td>
         </tr>
         {% endfor %}
                 {% if dao.righeprimanota|length==1 %}

@@ -8,7 +8,7 @@
                 <th>Moltiplicatore</th>
             </tr>
             <tr><td colspan="4"><hr /></td></tr>
-            {% for dao in objects %}
+            {% for dao in pageData["objects"] %}
             <tr class="row">
                 <td class="detail">{{dao.denominazione}}</td>
                 <td class="detail">{{dao.unita_base}}</td>

@@ -15,7 +15,7 @@
                 <th style="width:120px;" class="detail">TIPO PAGATO</th>
                 <th style="width:140px;" class="detail">BANCA</th>
             </tr>
-            {% for dao in objects %}
+           {% for dao in pageData["objects"] %}
             {% set tota = dao.totali %}
             <tr style="" class="row">
                 <td style="width:25px;text-align:center;font-size:10px;">{{dao.numero|string + ' ' + (dao.parte or '')|string}}</td>
@@ -39,7 +39,7 @@
             </table>
             <hr></hr><h2 align="center">TOTALI</h2>
             <table style="width:360px;">
-            {% set tot = utils.calcolaTotali(objects) %}
+            {% set tot = utils.calcolaTotali(pageData["objects"]) %}
             <tr>
                 <th style="width:200px;text-align:left;font-size:12px" >IMPONIBILE. NON SCONTATO.</th>
                 <td style="width:120px;text-align:right;font-size:12px" ><b>{{utils.mNLC(tot["totale_imponibile_non_scontato"],2)}}</b></td>

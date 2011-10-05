@@ -10,7 +10,7 @@
                 <th>Provincia</th>
                 <th>CAP</th>
             </tr>
-            {% for dao in objects %}
+            {% for dao in pageData["objects"] %}
             <tr class="row">
                 <td class="detail">{{dao.codice}}</td>
                 <td class="detail">{{dao.ragione_sociale}}</td>
