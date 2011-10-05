@@ -1696,11 +1696,12 @@ def stringToDateBumped(stringa):
     else:
         try:
             d = time.strptime(stringa, "%d/%m/%Y")
-            data = datetime.date(d[0], d[1], d[2])
-            tomorrow = data + datetime.timedelta(days=1)
-        except Exception:
-            tomorrow=None
-        return tomorrow
+        except:
+            return None
+        if Environment.tipodb == "sqlite":
+            return datetime.date(d[0], d[1], d[2]) + datetime.timedelta(days=1)
+        else:
+            return datetime.date(d[0], d[1], d[2])
 
 def dateTimeToString(data):
     """
