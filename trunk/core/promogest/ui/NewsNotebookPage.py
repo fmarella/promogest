@@ -75,7 +75,7 @@ class NewsNotebookPage(GladeWidget):
         """ show the html page in the custom widget"""
         pageData = {
                 "file" :"feed.html",
-                "feed" :feedToHtml,
+                "objects" :feedToHtml,
                 }
         html = renderTemplate(pageData)
         renderHTML(self.htmlwidget,html)

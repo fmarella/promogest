@@ -167,17 +167,13 @@ def createHtmlObj(mainWidget,widget=None):
         return gtkhtml2.View()
 
 def renderTemplate(pageData):
-    if "feed" not in pageData:
-        pageData["feed"] = []
-    if "dao" not in pageData:
-        pageData["dao"] = []
-    if "objects" not in pageData:
-        pageData["objects"] = []
     jinja_env.globals['environment'] = Environment
     jinja_env.globals['utils'] = utils
     pageData["titolo"] = pageData["file"].split(".")[0].capitalize()
-    html = jinja_env.get_template("/"+pageData["file"]).render(pageData= pageData,dao=pageData["dao"],
-                    objects=pageData["objects"], feed=pageData["feed"])
+    if "dao" in pageData:
+        html = jinja_env.get_template("/"+pageData["file"]).render(pageData = pageData, dao=pageData["dao"])
+    else:
+        html = jinja_env.get_template("/"+pageData["file"]).render(pageData = pageData)
     return html
 
 def _on_html_request_url(document, url, stream):

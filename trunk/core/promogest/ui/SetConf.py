@@ -32,119 +32,6 @@ class SetConfUI(GladeWidget):
     di configurazione """
     def __init__(self, main):
         pass
-        #GladeWidget.__init__(self, 'setconf_window',
-                                    #'setconf_ui.glade')
-        #self.placeWindow(self.getTopLevel())
-        #self.rowBackGround = None
-        #self.rowBoldFont = 'arial bold 11'
-        #self.draw()
-
-    #def draw(self):
-        #self.treeview = self.setconf_treeview
-        #rendererSx = gtk.CellRendererText()
-        #column = gtk.TreeViewColumn("Sezione/Chiave", rendererSx, text=1, background=4, font=5)
-        #column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        #column.set_clickable(False)
-        #column.set_resizable(True)
-        #column.set_min_width(70)
-        #self.treeview.append_column(column)
-
-        #celltext = gtk.CellRendererText()
-        #celltext.set_property("editable", True)
-        #celltext.set_property("visible", True)
-        #celltext.connect('edited', self.on_column_codice_edited, self.treeview, True)
-        #column = gtk.TreeViewColumn('Valore', celltext, text=2)
-        #column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        #self.treeview.append_column(column)
-
-        #rendererSx = gtk.CellRendererText()
-        #rendererSx.set_property("wrap-width",290)
-        #rendererSx.set_property("wrap-mode", gtk.WRAP_WORD)
-        #column = gtk.TreeViewColumn("Descrizione", rendererSx, text=3)
-        #column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        #column.set_clickable(False)
-        #column.set_resizable(True)
-        #column.set_expand(True)
-        #column.set_min_width(300)
-        #self.treeview.append_column(column)
-
-        #cellspin = gtk.CellRendererToggle()
-        #cellspin.set_property('activatable', True)
-        #cellspin.connect('toggled', self.on_column_selected_edited, self.treeview, True)
-        #column = gtk.TreeViewColumn('Attiva', cellspin)
-        #column.add_attribute( cellspin, "active", 6)
-##        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        #column.set_resizable(False)
-        #column.set_expand(False)
-        #column.set_min_width(70)
-        #self.treeview.append_column(column)
-
-        #self._treeViewModel = gtk.TreeStore(object,str,str,str, str,str,bool)
-        #self.treeview.set_model(self._treeViewModel)
-        #self._refresh()
-
-    #def _refresh(self):
-        #self._treeViewModel.clear()
-        #sc = SetConf().select(batchSize=None, orderBy=SetConf.section)
-        #sect = list(set([ x.section for x in sc]))
-        #for s in sect:
-            #if s in "Master":
-                #continue
-            #if s not in "Master":
-                #iter = self._treeViewModel.append(None,(s,
-                                            #s,
-                                            #"",
-                                           #"",
-                                            #self.rowBackGround,
-                                            #self.rowBoldFont,
-                                            #False))
-            #ss = SetConf().select(section=s,batchSize=None, orderBy=SetConf.section)
-            #for s in ss:
-                #if    (s.key != "password") and\
-                                #(s.key != "username") :
-                    #if s.tipo == "BOOLEAN":
-                        #valore = "USARE 'ATTIVA' / DISATTIVA"
-                    #else:
-                        #valore = s.value
-                    #self._treeViewModel.append(iter,(s,
-                                            #s.key,
-                                            #valore,
-                                            #s.description,
-                                            #None,
-                                            #None,
-                                            #s.active))
-
-    #def on_column_selected_edited(self, cell, path, treeview,value, editNext=True):
-        #""" Function to set the value quantita edit in the cell"""
-        #model = treeview.get_model()
-        #model[path][6] = not model[path][6]
-        #for a in  model[path].iterchildren():
-             #a[6] = model[path][6]
-
-    #def on_column_codice_edited(self, cell, path, value, treeview, editNext=True):
-        #""" Function ti set the value codice edit in the cell"""
-        #model = treeview.get_model()
-        #model[path][2] = value
-
-    #def saveDao(self, model, path, iter):
-        #check = model.get_value(iter, 1)
-        #fatherPath = model.get_path(iter)
-        #if check:
-            #if len(fatherPath) == 1:
-                #return
-            #oggettoFiglio = model.get_value(iter, 0)
-            #if oggettoFiglio.value != model.get_value(iter, 2):
-                #oggettoFiglio.value = model.get_value(iter, 2)
-            #if oggettoFiglio.active !=  model.get_value(iter, 6):
-                #oggettoFiglio.active = model.get_value(iter, 6)
-            #oggettoFiglio.persist()
-
-    #def on_save_button_clicked(self,button):
-        #self._treeViewModel.foreach(self.saveDao)
-        #self.destroy()
-
-    #def on_close_button_clicked(self, button):
-        #self.destroy()
 
 if not SetConf().select(key="rotazione_primanota", section="Primanota"):
     kee = SetConf()
@@ -220,6 +107,19 @@ if not SetConf().select(key="cartella_predefinita",section="General"):
     krr.description = "Cartella di salvataggio predefinita"
     krr.tipo_section = "Generico"
     krr.active = True
+    krr.visible = True
+    krr.date = datetime.datetime.now()
+    krr.persist()
+
+if not SetConf().select(key="gestione_totali_mercatino",section="General"):
+    krr = SetConf()
+    krr.key = "gestione_totali_mercatino"
+    krr.value = "False"
+    krr.section = "General"
+    krr.description = "Gestione totali mercatino"
+    krr.tipo_section = "Generico"
+    krr.active = True
+    krr.tipo = "bool"
     krr.visible = True
     krr.date = datetime.datetime.now()
     krr.persist()

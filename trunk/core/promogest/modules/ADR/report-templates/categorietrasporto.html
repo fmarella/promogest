@@ -9,7 +9,7 @@
                 <th>{{ _("Note") }}</th>
             </tr>
             <tr><td colspan="4"><hr /></td></tr>
-            {% for dao in objects %}
+            {% for dao in pageData["objects"] %}
             <tr >
                 <td class="detail">{{dao.denominazione}}</td>
                 <td class="detail">{{dao.quantita_massima_trasportabile}}</td>

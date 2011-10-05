@@ -224,7 +224,10 @@ def calcolaTotalePart(anaedit, dao=None):
     totaleEsclusoBaseImponibile = Decimal(0)
     totaleScontato = Decimal(0)
     castellettoIva = {}
-
+    ive = Environment.session.query(AliquotaIva.id,AliquotaIva).all()
+    diz = {}
+    for a in ive:
+        diz[a[0]] = (a[1],a[1].tipo_ali_iva)
     anaedit.avvertimento_sconti_button.set_sensitive(False)
     anaedit.avvertimento_sconti_button.hide()
 
@@ -239,7 +242,8 @@ def calcolaTotalePart(anaedit, dao=None):
         idAliquotaIva = riga["idAliquotaIva"]
         daoiva=None
         if idAliquotaIva:
-            daoiva = AliquotaIva().getRecord(id=idAliquotaIva)
+            if idAliquotaIva in diz:
+                daoiva = diz[idAliquotaIva][0]
         totaleRiga = Decimal(prezzoNetto * quantita * moltiplicatore)
 
         # PARTE dedicata al modulo noleggio ...
@@ -254,14 +258,14 @@ def calcolaTotalePart(anaedit, dao=None):
         percentualeIvaRiga = percentualeIva
 
         if (anaedit._fonteValore == "vendita_iva" or anaedit._fonteValore == "acquisto_iva"):
-            if daoiva and daoiva.tipo_ali_iva == "Non imponibile":
+            if daoiva and diz[idAliquotaIva][1]== "Non imponibile":
                 totaleEsclusoBaseImponibileRiga = totaleRiga
                 totaleImponibileRiga = 0
             else:
                 totaleEsclusoBaseImponibileRiga = 0
                 totaleImponibileRiga = calcolaPrezzoIva(totaleRiga, -1 * percentualeIvaRiga) or 0
         else:
-            if daoiva and daoiva.tipo_ali_iva == "Non imponibile":
+            if daoiva and diz[idAliquotaIva][1] == "Non imponibile":
                 totaleEsclusoBaseImponibileRiga = totaleRiga
                 totaleImponibileRiga = 0
                 totaleRiga = calcolaPrezzoIva(totaleRiga, percentualeIvaRiga)

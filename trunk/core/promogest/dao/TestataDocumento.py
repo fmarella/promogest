@@ -274,7 +274,10 @@ class TestataDocumento(Dao):
         """ funzione di calcolo dei totali documento """
         self.__operazione = leggiOperazione(self.operazione)
         fonteValore = self.__operazione["fonteValore"]
-
+        ive = Environment.session.query(AliquotaIva.id,AliquotaIva).all()
+        diz = {}
+        for a in ive:
+            diz[a[0]] = (a[1],a[1].tipo_ali_iva)
         # FIXME: duplicated in AnagraficaDocumenti.py
         totaleImponibile = Decimal(0)
         totaleImposta = Decimal(0)
@@ -292,37 +295,41 @@ class TestataDocumento(Dao):
             # FIXME: added for supporting dumb rows when printing
             if riga is None:
                 continue
-            if riga.id_articolo and riga.id_listino:
-                from promogest.ui.utils import leggiListino
-                ll = leggiListino(riga.id_listino, riga.id_articolo)
-                #print ll["prezzoDettaglio"], ll["prezzoIngrosso"], ll["ultimoCosto"], (riga.valore_unitario_netto - ll["ultimoCosto"]), totaleRicaricatoLordo
-                totaleRicaricatoLordo += (Decimal(riga.valore_unitario_netto or 0) - ll["ultimoCosto"])
-            elif riga.id_articolo and not riga.id_listino:
-                lf = leggiFornitura(riga.id_articolo)
-                totaleRicaricatoLordo += (Decimal(riga.valore_unitario_netto or 0) - lf["prezzoNetto"])
+            if setconf("General", "gestione_totali_mercatino"):
+                if riga.id_articolo and riga.id_listino:
+                    from promogest.ui.utils import leggiListino
+                    ll = leggiListino(riga.id_listino, riga.id_articolo)
+                    totaleRicaricatoLordo += (Decimal(riga.valore_unitario_netto or 0) - ll["ultimoCosto"])
+                elif riga.id_articolo and not riga.id_listino:
+                    lf = leggiFornitura(riga.id_articolo)
+                    totaleRicaricatoLordo += (Decimal(riga.valore_unitario_netto or 0) - lf["prezzoNetto"])
             if not riga.moltiplicatore:
-                riga.moltiplicatore = 1
+                moltiplicatore = 1
+            else:
+                moltiplicatore = riga.moltiplicatore
             percentualeIvaRiga = Decimal(riga.percentuale_iva)
             idAliquotaIva = riga.id_iva
             daoiva=None
             aliquotaIvaRiga = None
             if idAliquotaIva:
-                daoiva = AliquotaIva().getRecord(id=idAliquotaIva)
+                #daoiva = AliquotaIva().getRecord(id=idAliquotaIva)
+                if idAliquotaIva in diz:
+                    daoiva = diz[idAliquotaIva][0]
                 if daoiva:
                     aliquotaIvaRiga = daoiva.percentuale
             if not aliquotaIvaRiga:
                 aliquotaIvaRiga =  percentualeIvaRiga
-            totaleRiga = Decimal(riga.quantita or 0) * Decimal(riga.moltiplicatore) * Decimal(riga.valore_unitario_netto or 0)
+            totaleRiga = Decimal(riga.quantita or 0) * Decimal(moltiplicatore) * Decimal(riga.valore_unitario_netto or 0)
 
             if (fonteValore == "vendita_iva" or fonteValore == "acquisto_iva"):
-                if daoiva and daoiva.tipo_ali_iva == "Non imponibile":
+                if daoiva and diz[idAliquotaIva][1] == "Non imponibile":
                     totaleEsclusoBaseImponibileRiga = totaleRiga
                     totaleImponibileRiga = 0
                 else:
                     totaleEsclusoBaseImponibileRiga = 0
                     totaleImponibileRiga = calcolaPrezzoIva(totaleRiga, -1 * percentualeIvaRiga)
             else:
-                if daoiva and daoiva.tipo_ali_iva == "Non imponibile":
+                if daoiva and diz[idAliquotaIva][1] == "Non imponibile":
                     totaleEsclusoBaseImponibileRiga = totaleRiga
                     totaleImponibileRiga = 0
                     totaleRiga = calcolaPrezzoIva(totaleRiga, percentualeIvaRiga)
@@ -345,14 +352,7 @@ class TestataDocumento(Dao):
                 castellettoIva[aliquotaIvaRiga]['imponibile'] += totaleImponibileRiga
                 castellettoIva[aliquotaIvaRiga]['imposta'] += totaleImpostaRiga
                 castellettoIva[aliquotaIvaRiga]['totale'] += totaleRiga
-#        totaleNonScontato = totaleNonScontato
-#        totaleImponibile = totaleImponibile
         totaleImposta = totaleNonScontato - (totaleImponibile+totaleEsclusoBaseImponibile)
-#        totaleEsclusoBaseImponibile = totaleEsclusoBaseImponibile
-#        for aliquotaIva in castellettoIva:
-#            castellettoIva[aliquotaIva]['imponibile'] = mN(castellettoIva[aliquotaIva]['imponibile'], 2)
-#            castellettoIva[aliquotaIva]['imposta'] = mN(castellettoIva[aliquotaIva]['imposta'], 2)
-#            castellettoIva[aliquotaIva]['totale'] = mN(castellettoIva[aliquotaIva]['totale'], 2)
 
         totaleImponibileScontato = totaleImponibile
         totaleImpostaScontata = totaleImposta

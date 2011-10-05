@@ -104,7 +104,10 @@ class ConfiguraWindow(GladeWidget):
                 self.sterlina_radio.set_active(1)
         except:
             self.euro_radio.set_active(1)
-
+        try:
+            self.mercatino_check.set_active(int(setconf("General", "gestione_totali_mercatino")))
+        except:
+            self.mercatino_check.set_active(0)
 
         try:
             self.vettore_codice_upper_check.set_active(int(setconf("Vettori", "vettore_codice_upper")))
@@ -186,6 +189,12 @@ class ConfiguraWindow(GladeWidget):
         c[0].value = str(self.vettore_codice_upper_check.get_active())
         c[0].tipo = "bool"
         Environment.session.add(c[0])
+
+        c = SetConf().select(key="gestione_totali_mercatino", section="General")
+        c[0].value = str(self.mercatino_check.get_active())
+        c[0].tipo = "bool"
+        Environment.session.add(c[0])
+
 
         g = SetConf().select(key="vettore_struttura_codice", section="Vettori")
         g[0].value = str(self.vettore_struttura_codice_entry.get_text())

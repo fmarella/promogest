@@ -2680,8 +2680,8 @@ def fenceDialog():
     dialog.destroy()
 
 def tempo():
-    print datetime.datetime.now()
-    return ""
+    print ""
+    return datetime.datetime.now()
 
 class PGTimer(object):
     """ Misura il tempo di esecuzione di un blocco di codice all'interno di una

@@ -1192,14 +1192,8 @@ class AnagraficaVenditaDettaglio(GladeWidget):
 
     def getGiacenzaArticolo(self, idArticolo):
         idMagazzino = self.id_magazzino
-        totGiacenza = 0
-        movs = giacenzaSel(year=Environment.workingYear, idMagazzino= self.id_magazzino, idArticolo=idArticolo)
-        for m in movs:
-            totGiacenza += m['giacenza'] or 0
-        #FIXME: attenzione funzioen da rifareeeeeeeeeeeeeeeee
-        #for m in movs:
-            #totGiacenza += ((m['scarico_qta'] or 0 ) * -1)
-        return totGiacenza
+        movs = giacenzaArticolo(year=Environment.workingYear, idMagazzino= self.id_magazzino, idArticolo=idArticolo)
+        return movs
 
     def on_scontrino_treeview_button_press_event(self, treeview, event):
         if event.button == 3:

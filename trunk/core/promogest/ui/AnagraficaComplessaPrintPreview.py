@@ -149,10 +149,14 @@ o contattare l'assistenza""")
 
     def refresh(self):
         """ show the html page in the custom widget"""
+        a = tempo()
+        print "111111111111111111111111111111111!!",a
         self.bodyWidget.orderBy = self.orderBy
         daos = self.bodyWidget.runFilter(offset=None,
                                         batchSize=None,
                                          filterClosure=self._filterClosure)
+        b = tempo()
+        print "2222222222222222222222222", b,  b - a
         self.numRecords = self.bodyWidget.countFilterResults(self._filterCountClosure)
 #        self._refreshPageCount()
         pageData = {}
@@ -160,11 +164,17 @@ o contattare l'assistenza""")
         if daos:
             pageData = {
                     "file" :self._previewTemplate[1],
-                    "dao":daos,
+                    #"dao":daos,
                     "objects":daos
                     }
+            c = tempo()
+            print "333333333333333333333333333333333333333", c, c-b, c-a
             self.html_code = renderTemplate(pageData)
+            d = tempo()
+            print "44444444444444444444444444444444444", d, d-c, d-a
         renderHTML(self.print_on_screen_html,self.html_code)
+        e = tempo()
+        print "555555555555555555555555555555555555555", e, e-d, e-a
 
     def on_print_on_screen_dialog_response(self, dialog, responseId):
         if responseId == GTK_RESPONSE_CLOSE:
