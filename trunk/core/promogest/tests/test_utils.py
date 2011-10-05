@@ -24,8 +24,9 @@ import sys
 sys.path.append('../..')
 from promogest import bindtextdomain
 bindtextdomain('promogest', locale_dir='./po/locale')
+from promogest.dao.AliquotaIva import AliquotaIva
 import unittest
-
+from promogest import Environment
 from promogest import Environment as env
 from promogest.ui.utils import *
 
@@ -53,7 +54,14 @@ class TestUtils(unittest.TestCase):
         stringa_quantita =  ",".join(quantita).replace(",","").strip('[]')
         print Decimal(stringa_quantita)
 
+    def test_iva_dict(self):
+        tutte = Environment.session.query(AliquotaIva.id,AliquotaIva.percentuale).all()
+        diz = {}
+        for a in tutte:
+            diz[a[0]] = a[1]
+        print tutte, diz
+
 if __name__ == '__main__':
-    tests = ['test_stringToDateBumped', "test_addPointToString"]
+    tests = ['test_stringToDateBumped', "test_addPointToString", "test_iva_dict"]
     suite = unittest.TestSuite(map(TestUtils, tests))
     unittest.TextTestRunner(verbosity=2).run(suite)
