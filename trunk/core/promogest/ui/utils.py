@@ -947,7 +947,7 @@ def getDenominazioneBanca(id_banca):
     if bn:
         return bn.denominazione
     else:
-        return ""
+        return "Banca generica"
 
 def calcolaTotaliBanche(banche_entrate, banche_uscite, dao):
     """ Calcola i totali delle entrate e delle uscite divisi per ciascuna banca
