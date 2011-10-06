@@ -78,20 +78,27 @@ class Sla2Pdf_ng(SlaParser):
         xPos = [float(x.get("XPOS")) for x in celle][0]
         yPos = [float(x.get("YPOS")) for x in celle][0]
 #        print "IMAGE Path ", pfile
+        img = None
         try:
-            img = utils.ImageReader(Environment.imagesDir + imgFile)
+            if os.path.exists(Environment.imagesDir + imgFile):
+                img = utils.ImageReader(Environment.imagesDir + imgFile)
         except:
             if not imgPath:
                 imgPath = os.path.expanduser('~') + os.sep
             else:
                 imgPath = os.path.expanduser('~') + os.sep+imgPath +"/"
-            img = utils.ImageReader(imgPath +imgFile)
-        self.canvas.drawImage(img,
-                            xPos - self.pageProperties[self.pdfPage][9],
-                            self.pageProperties[0][7] - yPos - height + self.pageProperties[self.pdfPage][10],
-                            width=width,
-                            height=height)
-        self.canvas.saveState()
+            if os.path.exists(imgPath +imgFile):
+                img = utils.ImageReader(imgPath +imgFile)
+        if img:
+            self.canvas.drawImage(img,
+                                xPos - self.pageProperties[self.pdfPage][9],
+                                self.pageProperties[0][7] - yPos - height + self.pageProperties[self.pdfPage][10],
+                                width=width,
+                                height=height)
+            self.canvas.saveState()
+        else:
+            from promogest.ui.utils import messageError
+            messageError(msg="ATTENZIONE!!!\n L'immagine scelta come logo in dati azienda NON è stata trovata")
 
     def drawTable(self, group=None, monocell=None, reiter = None, tabpro=None):
         """ Drawing a table """
