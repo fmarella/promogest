@@ -87,11 +87,10 @@ class RigaSchedaOrdinazione(Dao):
     codice_articolo= property(__codiceArticolo)
 
     def _setGiacenzaArticolo(self):
-#       print "ARTICOLOOOOOOOOOOOOOOOOOOOOOOOOOOOO", self.arti.codice
         if self.arti.codice not in ["Stampa", "z-CONTR","z-BONIFICO"]:
             giace =giacenzaArticolo(year=Environment.workingYear,
                                         idMagazzino=self.id_magazzino,
-                                        idArticolo=self.id_articolo)
+                                        idArticolo=self.id_articolo)[0]
         else:
             giace = 0
         return giace
