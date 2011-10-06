@@ -174,7 +174,8 @@ o contattare l'assistenza""")
             print "*** STEP 3:", t.delta(t1=3, t2=4)
         renderHTML(self.print_on_screen_html,self.html_code)
         t.stop()
-        print "*** STEP 4:", t.delta()
+        print "*** STEP 4:", t.delta(t1=4, t2=5)
+        print "*** TOTALE:", t.delta()
 
     def on_print_on_screen_dialog_response(self, dialog, responseId):
         if responseId == GTK_RESPONSE_CLOSE:
