@@ -83,7 +83,7 @@ class GladeWidget(SimpleGladeApp):
         """ Imports size and position of the window """
 
         self.isWindowPlaced = True
-        self.width = 300
+        self.width = 500
         self.height = 200
         self.left = 100
         self.top = 100
