@@ -88,7 +88,7 @@ class Articolo(Dao):
     def getGiacenza(self):
         giace =giacenzaArticolo(year=Environment.workingYear,
                                         idArticolo=self.id,
-                                        allMag=True)
+                                        allMag=True)[0]
         return giace
 #        return 0
 #    giacenza = property(_setGiacenzaArticolo)

@@ -30,7 +30,7 @@ from Magazzino import Magazzino
 from promogest.dao.Fornitura import Fornitura
 from promogest.dao.Riga import Riga
 from promogest.dao.CodiceABarreArticolo import CodiceABarreArticolo
-from DaoUtils import giacenzaSel
+from DaoUtils import giacenzaSel, giacenzaArticolo
 from promogest.ui.utils import mN, posso
 
 if posso("PW"):
@@ -56,25 +56,11 @@ class Stoccaggio(Dao):
                                          _setTotaliOperazioniMovimento)
 
     def _getGiacenza(self):
-        totaliOperazioniMovimento = self.totaliOperazioniMovimento
-        totGiacenza = 0
-
-        for t in totaliOperazioniMovimento:
-            totGiacenza += (mN(t['giacenza']) or 0)
-
-        return totGiacenza
-
+        return giacenzaArticolo(year=workingYear, idMagazzino= self.id_magazzino, idArticolo=self.id_articolo)[0] or 0
     giacenza = property(_getGiacenza, )
 
     def _getValoreGiacenza(self):
-        totaliOperazioniMovimento = self.totaliOperazioniMovimento
-        totValoreGiacenza = 0
-
-        for t in totaliOperazioniMovimento:
-            totValoreGiacenza += (t['valore'] or 0)
-            #totValoreGiacenza += (t[5] or 0)
-        return totValoreGiacenza
-
+        return giacenzaArticolo(year=workingYear, idMagazzino= self.id_magazzino, idArticolo=self.id_articolo)[1] or 0
     valoreGiacenza = property(_getValoreGiacenza, )
 
     def _codiceArticolo(self):

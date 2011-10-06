@@ -28,14 +28,6 @@ import datetime
 def giacenzaSel(year=None, idMagazzino=None, idArticolo=None,allMag= None):
     """
     Calcola la quantità di oggetti presenti in magazzino
-    @param year=None: Anno di riferimento
-    @type year=None: Intero
-    @param idMagazzino=None: se c'è questo è l'id magazzino
-    @type idMagazzino=None: interno
-    @param idArticolo=None: Id Articolo da quantificare
-    @type idArticolo=None:
-    @param allMag=: Tutti i magazzini ( utile per l'html )
-    @type allMag=: bool
     """
     from promogest.dao.TestataMovimento import TestataMovimento
     from promogest.dao.TestataDocumento import TestataDocumento
@@ -70,8 +62,6 @@ def giacenzaSel(year=None, idMagazzino=None, idArticolo=None,allMag= None):
             for m in magazzini:
                 mag.append(m[0])
             magazzini = mag
-
-
         righeArticoloMovimentate= Environment.params["session"]\
                 .query(RigaMovimento,TestataMovimento)\
                 .filter(TestataMovimento.data_movimento.between(datetime.date(int(year), 1, 1), datetime.date(int(year) + 1, 1, 1)))\
@@ -79,7 +69,6 @@ def giacenzaSel(year=None, idMagazzino=None, idArticolo=None,allMag= None):
                 .filter(Riga.id_articolo==idArticolo)\
                 .filter(Riga.id_magazzino.in_(magazzini))\
                 .all()
-
     else:
         magazzini = idMagazzino
         righeArticoloMovimentate= Environment.params["session"]\
@@ -190,21 +179,86 @@ def articoloStatistiche(arti=None, righe=None):
                 giacenza = 0)
     return arti
 
-def giacenzaArticolo(year=None, idMagazzino=None, idArticolo=None, allMag=None):
+#def giacenzaArticolo(year=None, idMagazzino=None, idArticolo=None, allMag=None):
+    #"""
+    #Calcola la giacenza insieme a giacenzaSel
+    #"""
+    #if not idArticolo or not year or (not idMagazzino and not allMag):
+        #return "0"
+    #else:
+        #lista = giacenzaSel(year=year, idMagazzino=idMagazzino, idArticolo=idArticolo, allMag=allMag)
+        #totGiacenza = 0
+
+        #for t in lista:
+            #totGiacenza += (t['giacenza'] or 0)
+            ##totGiacenza += (t[4] or 0)
+
+        #return round(totGiacenza,2)
+
+def giacenzaArticolo(year=None, idMagazzino=None, idArticolo=None,allMag= None):
     """
-    Calcola la giacenza insieme a giacenzaSel
+    Calcola la quantità di oggetti presenti in magazzino
     """
+    from promogest.dao.TestataMovimento import TestataMovimento
+    from promogest.dao.RigaMovimento import RigaMovimento
+    from promogest.dao.Operazione import Operazione
+    from promogest.dao.Magazzino import Magazzino
+
+
     if not idArticolo or not year or (not idMagazzino and not allMag):
         return "0"
+    if allMag:
+        magazzini = Environment.params["session"].query(Magazzino.id).all()
+        if not magazzini:
+            return []
+        else:
+            mag=[]
+            for m in magazzini:
+                mag.append(m[0])
+            magazzini = mag
+        righeArticoloMovimentate= Environment.params["session"]\
+                .query(RigaMovimento.quantita, RigaMovimento.moltiplicatore,RigaMovimento.valore_unitario_netto,Operazione.segno).join(TestataMovimento,Operazione)\
+                .filter(TestataMovimento.data_movimento.between(datetime.date(int(year), 1, 1), datetime.date(int(year) + 1, 1, 1)))\
+                .filter(RigaMovimento.id_testata_movimento == TestataMovimento.id)\
+                .filter(RigaMovimento.id_magazzino.in_(magazzini))\
+                .filter(RigaMovimento.id_articolo==idArticolo)\
+                .all()
     else:
-        lista = giacenzaSel(year=year, idMagazzino=idMagazzino, idArticolo=idArticolo, allMag=allMag)
-        totGiacenza = 0
+        magazzini = idMagazzino
+        righeArticoloMovimentate= Environment.params["session"]\
+                .query(RigaMovimento.quantita, RigaMovimento.moltiplicatore,RigaMovimento.valore_unitario_netto,Operazione.segno).join(TestataMovimento,Operazione)\
+                .filter(TestataMovimento.data_movimento.between(datetime.date(int(year), 1, 1), datetime.date(int(year) + 1, 1, 1)))\
+                .filter(RigaMovimento.id_testata_movimento == TestataMovimento.id)\
+                .filter(RigaMovimento.id_magazzino ==magazzini)\
+                .filter(RigaMovimento.id_articolo==idArticolo)\
+                .all()
+    lista = []
 
-        for t in lista:
-            totGiacenza += (t['giacenza'] or 0)
-            #totGiacenza += (t[4] or 0)
+    giacenza=0
+    for ram in righeArticoloMovimentate:
+        segno = ram[3]
+        qua = ram[0]*(ram[1] or 1)
+        #if hasattr(ram[0], "reversed"):
+            #if ram[1].reversed:
+                #qua = -1*qua
+        if segno =="-":
+            giacenza -= qua
+        elif segno =="+":
+            giacenza += qua
+        else:
+            giacenza += qua
+    if len(righeArticoloMovimentate):
+        val = giacenza*ram[2]
+    else:
+        val = 0
+    return (round(giacenza,2), val)
 
-        return round(totGiacenza,2)
+
+
+
+
+
+
 
 
 def TotaleAnnualeCliente(id_cliente=None):

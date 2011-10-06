@@ -603,13 +603,14 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkButton" id="stampa_button">
+                  <object class="GtkButton" id="stampa_infopeso_button">
                     <property name="label">gtk-print</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
                     <property name="use_action_appearance">False</property>
                     <property name="use_stock">True</property>
+                    <signal name="clicked" handler="on_stampa_infopeso_button_clicked" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">True</property>

@@ -24,6 +24,8 @@ from promogest.ui.gtk_compat import *
 from promogest.ui.utils import *
 from promogest import Environment
 from promogest.ui.GladeWidget import GladeWidget
+from promogest.lib.HtmlHandler import renderTemplate
+from promogest.ui.PrintDialog import PrintDialogHandler
 from promogest.modules.InfoPeso.dao.TipoTrattamento import TipoTrattamento
 from promogest.modules.InfoPeso.dao.TestataInfoPeso import TestataInfoPeso
 from promogest.modules.InfoPeso.dao.RigaInfoPeso import RigaInfoPeso
@@ -212,6 +214,7 @@ class InfoPesoNotebookPage(GladeWidget):
     def infoPesoSetDao(self, dao):
         """ Estensione del SetDao principale"""
         self.editRiga = None
+        self.dao_cliente = dao
         if not dao.id:
             self.dao_testata_infopeso = TestataInfoPeso()
             self.dao_generalita_infopeso = ClienteGeneralita()
@@ -289,6 +292,31 @@ class InfoPesoNotebookPage(GladeWidget):
         self.dao_testata_infopeso.righeinfopeso = righe
         return (self.dao_generalita_infopeso, self.dao_testata_infopeso)
 
+
+    def on_stampa_infopeso_button_clicked(self, button):
+        print "OOKOKOKOKOKO"
+        try:
+            import ho.pisa as pisa
+        except:
+            return
+        print "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", self.dao_testata_infopeso.righeinfopeso
+        pageData = {"file": "infopeso.html",
+                    "dao":self.dao_cliente,
+                    "infopeso_righe":self.dao_testata_infopeso.righeinfopeso}
+        self.htmll = renderTemplate(pageData)
+
+
+        f = str(self.htmll)
+        filename =Environment.tempDir + "infopeso.pdf"
+        g = file(filename, "wb")
+        pdf = pisa.CreatePDF(f,g)
+        g .close()
+        anag = PrintDialogHandler(self,"Infopeso", tempFile=Environment.tempDir + "infopeso.pdf")
+        anagWindow = anag.getTopLevel()
+        returnWindow = self.getTopLevel().get_toplevel()
+        anagWindow.set_transient_for(returnWindow)
+        anagWindow.show_all()
+
 def fillComboboxTipoTrattamento(combobox, filter=False):
     """ Riempi combo degli stadi commessa """
     model = gtk.ListStore(object, int, str)
@@ -329,3 +357,5 @@ def on_id_tipo_trattamento_customcombobox_clicked(widget, button):
     anagWindow.show_all()
     anagWindow.connect("destroy",
                         on_anagrafica_tipo_trattamento_articoli_destroyed)
+
+

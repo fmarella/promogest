@@ -1100,7 +1100,7 @@ del documento.
             self._righe[0]["prezzo_acquisto"] = self._righe[self._numRiga]["prezzo_acquisto"]
         self.giacenza_label.set_text(str(giacenzaArticolo(year=Environment.workingYear,
                                                 idMagazzino=self._righe[0]["idMagazzino"],
-                                                idArticolo=self._righe[0]["idArticolo"])))
+                                                idArticolo=self._righe[0]["idArticolo"])[0]))
         findComboboxRowFromId(self.id_magazzino_combobox, self._righe[0]["idMagazzino"])
         fillComboboxMultipli(self.id_multiplo_customcombobox.combobox, self._righe[0]["idArticolo"], True)
         findComboboxRowFromId(self.id_multiplo_customcombobox.combobox, self._righe[0]["idMultiplo"])

@@ -14,43 +14,44 @@ def request_page_setup(operation, context, page_nr, page_setup):
 
 
 def draw_page (operation, context, page_nr):
-    cr = context.get_cairo()
+    #cr = context.get_cairo()
 
-    ## Draw a red rectangle, as wide as the paper (inside the margins)
-    cr.set_source_rgb(1.0, 0, 0)
-    cr.rectangle(0, 0, context.get_width(), 50)
+    ### Draw a red rectangle, as wide as the paper (inside the margins)
+    #cr.set_source_rgb(1.0, 0, 0)
+    #cr.rectangle(0, 0, context.get_width(), 50)
 
-    cr.fill()
+    #cr.fill()
 
-    ## Draw some lines
-    cr.move_to(20, 10)
-    cr.line_to(40, 20)
-    cr.arc(60, 60, 20, 0, math.pi)
-    cr.line_to(80, 20)
+    ### Draw some lines
+    #cr.move_to(20, 10)
+    #cr.line_to(40, 20)
+    #cr.arc(60, 60, 20, 0, math.pi)
+    #cr.line_to(80, 20)
 
-    cr.set_source_rgb(0, 0, 0)
-    cr.set_line_width(5)
-    cr.set_line_cap(cairo.LINE_CAP_ROUND)
-    cr.set_line_join(cairo.LINE_JOIN_ROUND)
+    #cr.set_source_rgb(0, 0, 0)
+    #cr.set_line_width(5)
+    #cr.set_line_cap(cairo.LINE_CAP_ROUND)
+    #cr.set_line_join(cairo.LINE_JOIN_ROUND)
 
-    cr.stroke()
+    #cr.stroke()
 
-    ## Draw some text
-    layout = context.create_layout()
-    layout.set_text("Hello World! Printing is easy")
-    layout.set_font_description(pango.FontDescription("sans 28"))
+    ### Draw some text
+    #layout = context.create_layout()
+    #layout.set_text("Hello World! Printing is easy")
+    #layout.set_font_description(pango.FontDescription("sans 28"))
 
-    cr.move_to(30, 20)
-    cr.layout_path(layout)
+    #cr.move_to(30, 20)
+    #cr.layout_path(layout)
 
-    ## Font Outline
-    cr.set_source_rgb(0.93, 1.0, 0.47)
-    cr.set_line_width(0.5)
-    cr.stroke_preserve()
+    ### Font Outline
+    #cr.set_source_rgb(0.93, 1.0, 0.47)
+    #cr.set_line_width(0.5)
+    #cr.stroke_preserve()
 
-    ## Font Fill
-    cr.set_source_rgb(0, 0.0, 1.0)
-    cr.fill()
+    ### Font Fill
+    #cr.set_source_rgb(0, 0.0, 1.0)
+    #cr.fill()
+    return "/home/vete/promogest2/veterfarma/documenti/articolo.pdf"
 
 
 def main(argv):
