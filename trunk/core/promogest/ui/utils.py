@@ -2680,6 +2680,7 @@ def fenceDialog():
     dialog.destroy()
 
 def tempo():
+    print "QUESTA FUNZIONE E' DEPRECATA, UTILIZZARE IL PGTimer!!!"
     print ""
     return datetime.datetime.now()
 
@@ -2696,10 +2697,10 @@ class PGTimer(object):
         """Avvia il conteggio annotando la date e l'ora di inizio
         """
         self.steps = []
-        if self.status == STARTED:
+        if self.status == self.STARTED:
             raise RuntimeError('PGTimer già avviato.')
         else:
-            self.status = STARTED
+            self.status = self.STARTED
         self.steps.append(datetime.datetime.now())
 
     def step(self):
@@ -2710,7 +2711,7 @@ class PGTimer(object):
     def stop(self):
         """Interrompe il conteggio egistra la data e l'ora di fine
         """
-        if self.status == STARTED:
+        if self.status == self.STARTED:
             self.steps.append(datetime.datetime.now())
         else:
             raise RuntimeError('PGTimer è già fermo.')
