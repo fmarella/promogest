@@ -731,9 +731,9 @@ class AnagraficaSchedeOrdinazioniEdit(AnagraficaEdit):
             index = model.get_path(iter)[0]
             value = model[index][1]
             if "Stampa" != model[index][2]:
-                giace =giacenzaArticolo(year=Environment.workingYear,
+                giace = giacenzaArticolo(year=Environment.workingYear,
                                             idMagazzino=self.dao.id_magazzino,
-                                            idArticolo=value)
+                                            idArticolo=value)[0]
                 imp= self.impegnatoSuSchedaLavorazione(idArticolo=value)
             else:
                 giace = "0"
