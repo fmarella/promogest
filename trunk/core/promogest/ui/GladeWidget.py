@@ -74,10 +74,7 @@ class GladeWidget(SimpleGladeApp):
         self._windowName = self.__class__.__name__
         self.isWindowPlaced = False
         self.topLevelWindow = None
-        try:
-            xmlFile = open(self._defaultWindowAttributesFile, 'r')
-            xmlFile.close()
-        except:
+        if not os.path.exists(self._defaultWindowAttributesFile):
             root = ElementTree.Element("WINDOWS")
             tree = ElementTree.ElementTree(root)
             tree.write(self._defaultWindowAttributesFile)
@@ -90,20 +87,14 @@ class GladeWidget(SimpleGladeApp):
         self.height = 200
         self.left = 100
         self.top = 100
-        try:
-            file = open(self._defaultWindowAttributesFile, "r")
-            doc = ElementTree.parse(file)
-            file.close()
-            elem = doc.getroot()
-            if  elem.findall(self._windowName):
-                obj = elem.find(self._windowName)
-                self.width = int(obj.get('width'))
-                self.height = int(obj.get('height'))
-                self.left = int(obj.get('left'))
-                self.top = int(obj.get('top'))
-        except:
-            print "FILE XMLWINDOW errato da cancellare e ricreare"
-            os.remove(self._defaultWindowAttributesFile)
+        doc = ElementTree.parse(self._defaultWindowAttributesFile)
+        elem = doc.getroot()
+        if  elem.findall(self._windowName):
+            obj = elem.find(self._windowName)
+            self.width = int(obj.get('width'))
+            self.height = int(obj.get('height'))
+            self.left = int(obj.get('left'))
+            self.top = int(obj.get('top'))
 
 
     def _saveWindowAttributes(self):
@@ -114,10 +105,7 @@ class GladeWidget(SimpleGladeApp):
 
         (self.width, self.height) = self.topLevelWindow.get_size()
         (self.left, self.top) = self.topLevelWindow.get_position()
-
-        file = open(self._defaultWindowAttributesFile, "r")
-        doc = ElementTree.parse(file)
-        file.close()
+        doc = ElementTree.parse(self._defaultWindowAttributesFile)
         elem = doc.getroot()
         if elem.findall(self._windowName):
             obj = elem.find(self._windowName)
@@ -127,7 +115,11 @@ class GladeWidget(SimpleGladeApp):
         obj.set("height", str(self.height) or "200")
         obj.set("left", str(self.left) or "100")
         obj.set("top", str(self.top) or "100")
-        doc.write(self._defaultWindowAttributesFile)
+        try:
+            doc.write(self._defaultWindowAttributesFile)
+        except:
+            print "Errore salvando i dati finestra"
+
 
 
     def placeWindow(self, window):
