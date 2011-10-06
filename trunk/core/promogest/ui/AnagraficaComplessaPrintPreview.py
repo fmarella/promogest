@@ -150,7 +150,6 @@ o contattare l'assistenza""")
     def refresh(self):
         """ show the html page in the custom widget"""
         t = PGTimer()
-        t.start()
         self.bodyWidget.orderBy = self.orderBy
         daos = self.bodyWidget.runFilter(offset=None,
                                         batchSize=None,
@@ -170,7 +169,7 @@ o contattare l'assistenza""")
             self.html_code = renderTemplate(pageData)
             t.step()
         renderHTML(self.print_on_screen_html,self.html_code)
-        t.stop()
+        t.step()
         print "*** risultati timer: ***\n", t
 
     def on_print_on_screen_dialog_response(self, dialog, responseId):

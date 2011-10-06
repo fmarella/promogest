@@ -2687,31 +2687,14 @@ class PGTimer(object):
     la funzione `PGTimer.step()`.
     """
     steps = []
-    (STARTED, STOPPED) = range(2)
-    status = STOPPED
-
-    def start(self):
-        """Avvia il conteggio annotando la date e l'ora di inizio
-        """
+    def __init__(self):
         self.steps = []
-        if self.status == self.STARTED:
-            raise RuntimeError('PGTimer già avviato.')
-        else:
-            self.status = self.STARTED
         self.steps.append(datetime.datetime.now())
 
     def step(self):
         """Registra la data e l'ora per l'intervallo
         """
         self.steps.append(datetime.datetime.now())
-
-    def stop(self):
-        """Interrompe il conteggio egistra la data e l'ora di fine
-        """
-        if self.status == self.STARTED:
-            self.steps.append(datetime.datetime.now())
-        else:
-            raise RuntimeError('PGTimer è già fermo.')
 
     def __str__(self):
         """
@@ -2722,7 +2705,6 @@ class PGTimer(object):
         for i in range(len(self.steps)-1):
             tmp += str(self.steps[i+1] - self.steps[i]) + '\n'
         return tmp
-
 
 def checkAggiorna():
     """ controllo se il pg2 è da aggiornare o no"""
