@@ -27,7 +27,6 @@ bindtextdomain('promogest', locale_dir='./po/locale')
 from promogest.dao.AliquotaIva import AliquotaIva
 import unittest
 from promogest import Environment
-from promogest import Environment as env
 from promogest.ui.utils import *
 
 
@@ -37,12 +36,8 @@ class TestUtils(unittest.TestCase):
     def test_stringToDateBumped(self):
         """Test stringToDateBumped
         """
-        if env.tipodb == 'sqlite':
-            self.assertEqual(stringToDateBumped('31/12/2011'),
-                             stringToDate('1/1/2012'))
-        else:
-            self.assertEqual(stringToDateBumped('31/12/2011'),
-                             stringToDate('31/12/2011'))
+        self.assertEqual(stringToDateBumped('31/12/2011'),
+                         stringToDate('1/1/2012'))
 
     def test_addPointToString(self):
         """ Test, prendo una stringa di sei caratteri/numeri e aggiungo
