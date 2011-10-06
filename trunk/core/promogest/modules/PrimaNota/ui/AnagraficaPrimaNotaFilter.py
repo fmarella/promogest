@@ -148,7 +148,10 @@ class AnagraficaPrimaNotaFilter(AnagraficaFilter):
         anumero = prepareFilterString(self.a_numero_filter_entry.get_text())
         danumero = prepareFilterString(self.da_numero_filter_entry.get_text())
         da_data_inizio = stringToDate(self.da_data_inizio_datetimewidget.get_text())
-        a_data_inizio = stringToDateBumped(self.a_data_inizio_datetimewidget.get_text())
+        if Environment.tipodb == "sqlite":
+            a_data_inizio = stringToDateBumped(self.a_data_inizio_datetimewidget.get_text())
+        else:
+            a_data_inizio = stringToDate(self.a_data_inizio_datetimewidget.get_text())
         Environment.da_data_inizio_primanota = self.da_data_inizio_datetimewidget.get_text()
         Environment.a_data_inizio_primanota = self.a_data_inizio_datetimewidget.get_text()
         deno = prepareFilterString(self.denominazione_filter_entry.get_text())
