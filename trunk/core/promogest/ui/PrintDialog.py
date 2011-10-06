@@ -27,6 +27,14 @@ import os, sys, threading, os.path
 from utilsCombobox import *
 from promogest import Environment
 from GladeWidget import GladeWidget
+from promogest.lib.GtkPrintDialog import GtkPrintDialog
+
+try:
+    import gtkunixprint
+    gtkunixprint # pyflakes
+except ImportError:
+    gtkunixprint = None
+
 
 
 class PrintDialogHandler(GladeWidget):
@@ -92,6 +100,16 @@ Verificare i permessi della cartella"""
     def on_open_button_clicked(self, widget):
         self.__handleOpenResponse(self.getTopLevel())
         #self.on_records_print_dialog_close(self.printDialog)
+
+    def on_directprint_button_clicked(self, button):
+        if gtkunixprint:
+            pdfFile = os.path.join(self._folder + self._pdfName +'.pdf')
+            self.tryToSavePdf(pdfFile)
+            dialog = GtkPrintDialog(pdfFile)
+            dialog.run()
+            #os.unlink(report.filename)
+        else:
+            messageInfo(msg="Per il momento la stampa diretta è possibile solo su Linux\n Fra alcuni giorni verrà abilitata anche su windows. Grazie")
 
 
     def on_records_print_dialog_close(self, dialog, event=None):
