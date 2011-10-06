@@ -43,10 +43,17 @@ from promogest.lib.sla2pdf.Sla2Pdf_ng import Sla2Pdf_ng
 from promogest.lib.sla2pdf.SlaTpl2Sla import SlaTpl2Sla as SlaTpl2Sla_ng
 from promogest.lib.SlaTpl2Sla import SlaTpl2Sla
 #else:
-
+from promogest.lib.GtkPrintDialog import GtkPrintDialog
 from promogest.ui.SendEmail import SendEmail
 from promogest.lib.HtmlHandler import createHtmlObj, renderTemplate, renderHTML
 from promogest.dao.Azienda import Azienda
+
+try:
+    import gtkunixprint
+    gtkunixprint # pyflakes
+except ImportError:
+    gtkunixprint = None
+
 
 
 class Anagrafica(GladeWidget):
@@ -633,6 +640,17 @@ class Anagrafica(GladeWidget):
 Verificare i permessi della cartella"""
             messageError(msg=msg)
             return
+
+    def on_directprint_button_clicked(self, button):
+        if gtkunixprint:
+            pdfFile = os.path.join(self._folder + self._pdfName +'.pdf')
+            self.tryToSavePdf(pdfFile)
+            dialog = GtkPrintDialog(pdfFile)
+            dialog.run()
+            #os.unlink(report.filename)
+        else:
+            messageInfo(msg="Per il momento la stampa diretta è possibile solo su Linux\n Fra alcuni giorni verrà abilitata anche su windows. Grazie")
+
 
     def on_send_email_button_clicked(self, widget):
         """ ATTENZIONE: l'errore parrebbe corretto nel launchpad ma ancora non funziona
