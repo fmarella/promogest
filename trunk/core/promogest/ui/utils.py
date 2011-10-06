@@ -2713,15 +2713,15 @@ class PGTimer(object):
         else:
             raise RuntimeError('PGTimer è già fermo.')
 
-    def delta(self, t1=None, t2=None):
-        """Ritorna il tempo trascorso tra due intervalli.
+    def __str__(self):
         """
+        """
+        tmp = ''
         if len(self.steps) <= 1:
-            return '00:00:00'
-        if t1 and t2:
-            return str(self.steps[t2-1] - self.steps[t1-1])
-        else:
-            return str(self.steps[len(self.steps)-1] - self.steps[0])
+            return
+        for i in range(len(self.steps)-1):
+            tmp += str(self.steps[i+1] - self.steps[i]) + '\n'
+        return tmp
 
 
 def checkAggiorna():

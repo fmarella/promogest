@@ -156,7 +156,6 @@ o contattare l'assistenza""")
                                         batchSize=None,
                                          filterClosure=self._filterClosure)
         t.step()
-        print "*** STEP 1:", t.delta()
         self.numRecords = self.bodyWidget.countFilterResults(self._filterCountClosure)
 #        self._refreshPageCount()
         pageData = {}
@@ -168,14 +167,11 @@ o contattare l'assistenza""")
                     "objects":daos
                     }
             t.step()
-            print "*** STEP 2:", t.delta(t1=2, t2=3)
             self.html_code = renderTemplate(pageData)
             t.step()
-            print "*** STEP 3:", t.delta(t1=3, t2=4)
         renderHTML(self.print_on_screen_html,self.html_code)
         t.stop()
-        print "*** STEP 4:", t.delta(t1=4, t2=5)
-        print "*** TOTALE:", t.delta()
+        print "*** risultati timer: ***\n", t
 
     def on_print_on_screen_dialog_response(self, dialog, responseId):
         if responseId == GTK_RESPONSE_CLOSE:
