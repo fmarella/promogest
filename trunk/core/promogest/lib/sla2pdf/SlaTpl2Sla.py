@@ -437,8 +437,10 @@ class SlaTpl2Sla(SlaParser):
                                     resolvedTag = str(value)
                                 ch = ch.replace(tags[tagkey]['completeTag'], resolvedTag)
                                   # Save itext
-                                if ch.count('€') >1:
+                                if "€ €" in ch or "€€" in ch:
                                     ch = ch.replace('€', '', 1)
+                                #if ch.count('€') >1:
+                                    #ch = ch.replace('€', '', 1)
                                 itext.set('CH', ch.decode())
 
                 else:
