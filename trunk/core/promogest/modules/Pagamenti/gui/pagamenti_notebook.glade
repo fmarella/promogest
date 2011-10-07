@@ -375,6 +375,7 @@
                         </child>
                         <child>
                           <object class="GtkScrolledWindow" id="scrolledwindow6">
+                            <property name="height_request">40</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="hscrollbar_policy">automatic</property>
@@ -382,7 +383,6 @@
                             <property name="shadow_type">in</property>
                             <child>
                               <object class="GtkTextView" id="note_prima_scadenza_textview">
-                                <property name="height_request">2</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                               </object>
@@ -661,6 +661,7 @@
                         </child>
                         <child>
                           <object class="GtkScrolledWindow" id="scrolledwindow5">
+                            <property name="height_request">40</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="hscrollbar_policy">automatic</property>
@@ -668,7 +669,6 @@
                             <property name="shadow_type">in</property>
                             <child>
                               <object class="GtkTextView" id="note_seconda_scadenza_textview">
-                                <property name="height_request">2</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                               </object>
@@ -947,6 +947,7 @@
                         </child>
                         <child>
                           <object class="GtkScrolledWindow" id="scrolledwindow4">
+                            <property name="height_request">40</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="hscrollbar_policy">automatic</property>
@@ -954,7 +955,6 @@
                             <property name="shadow_type">in</property>
                             <child>
                               <object class="GtkTextView" id="note_terza_scadenza_textview">
-                                <property name="height_request">2</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                               </object>
@@ -1233,6 +1233,7 @@
                         </child>
                         <child>
                           <object class="GtkScrolledWindow" id="scrolledwindow3">
+                            <property name="height_request">40</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="hscrollbar_policy">automatic</property>
@@ -1240,7 +1241,6 @@
                             <property name="shadow_type">in</property>
                             <child>
                               <object class="GtkTextView" id="note_quarta_scadenza_textview">
-                                <property name="height_request">2</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                               </object>
@@ -1522,6 +1522,7 @@
                         </child>
                         <child>
                           <object class="GtkScrolledWindow" id="scrolledwindow7">
+                            <property name="height_request">40</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="hscrollbar_policy">automatic</property>
@@ -1529,7 +1530,6 @@
                             <property name="shadow_type">in</property>
                             <child>
                               <object class="GtkTextView" id="note_acconto_textview">
-                                <property name="height_request">2</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                               </object>
