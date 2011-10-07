@@ -98,7 +98,7 @@ class Sla2Pdf_ng(SlaParser):
             self.canvas.saveState()
         else:
             from promogest.ui.utils import messageError
-            messageError(msg="ATTENZIONE!!!\n L'immagine scelta come logo in dati azienda NON è stata trovata")
+            messageError(msg="ATTENZIONE!!!\n L'immagine scelta come logo in dati azienda\n NON è stata trovata!")
 
     def drawTable(self, group=None, monocell=None, reiter = None, tabpro=None):
         """ Drawing a table """
