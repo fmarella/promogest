@@ -109,7 +109,13 @@ Verificare i permessi della cartella"""
             dialog.run()
             #os.unlink(report.filename)
         else:
-            messageInfo(msg="Per il momento la stampa diretta è possibile solo su Linux\n Fra alcuni giorni verrà abilitata anche su windows. Grazie")
+            try:
+                import win32api
+                pdfFile = os.path.join(self._folder + self._pdfName +'.pdf')
+                self.tryToSavePdf(pdfFile)
+                win32api.ShellExecute (0, "print", pdfFile, None, ".", 0)
+            except:
+                messageInfo(msg="Per fare funzionare questa opzione su windows installa questo pacchetto: ftp://promotux.it/pywin32-216.win32-py2.6.exe ")
 
 
     def on_records_print_dialog_close(self, dialog, event=None):

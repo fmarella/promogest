@@ -655,7 +655,7 @@ Verificare i permessi della cartella"""
                 self.tryToSavePdf(pdfFile)
                 win32api.ShellExecute (0, "print", pdfFile, None, ".", 0)
             except:
-                messageInfo(msg="Per il momento la stampa diretta è possibile solo su Linux\n Fra alcuni giorni verrà abilitata anche su windows. Grazie")
+                messageInfo(msg="Per fare funzionare questa opzione su windows installa questo pacchetto: ftp://promotux.it/pywin32-216.win32-py2.6.exe ")
 
 
     def on_send_email_button_clicked(self, widget):
