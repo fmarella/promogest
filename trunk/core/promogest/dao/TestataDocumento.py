@@ -49,6 +49,7 @@ from ScontoRigaMovimento import ScontoRigaMovimento
 from promogest.dao.RigaMovimentoFornitura import RigaMovimentoFornitura
 from promogest.modules.Pagamenti.dao.TestataDocumentoScadenza import TestataDocumentoScadenza
 from promogest.dao.InformazioniFatturazioneDocumento import InformazioniFatturazioneDocumento
+from promogest.lib.iban import check_iban, country_data
 
 #from DaoUtils import *
 from decimal import *
@@ -824,6 +825,27 @@ class TestataDocumento(Dao):
         else:return ""
     iban = property(_iban)
 
+    def _abi(self):
+        if self.BN:
+            abi = self.BN.abi or ""
+            if not abi and self.BN.iban:
+                code, checksum, bank, account = check_iban(self.BN.iban)
+                nazione = country_data(code) or ""
+                abi = bank[nazione.bank[0][0]:(nazione.bank[0][0]+nazione.bank[1][0])] or ""
+            return abi
+        else:return ""
+    abi = property(_abi)
+
+    def _cab(self):
+        if self.BN:
+            cab = self.BN.cab or ""
+            if not cab and self.BN.iban:
+                code, checksum, bank, account = check_iban(self.BN.iban)
+                nazione = country_data(code) or ""
+                cab = bank[(nazione.bank[0][0]+nazione.bank[1][0]):(nazione.bank[0][0]+nazione.bank[1][0]+ nazione.bank[2][0])] or ""
+            return cab
+        else:return ""
+    cab = property(_cab)
 
     #property pagamento
     def _pagamento(self):
