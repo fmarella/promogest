@@ -649,7 +649,13 @@ Verificare i permessi della cartella"""
             dialog.run()
             #os.unlink(report.filename)
         else:
-            messageInfo(msg="Per il momento la stampa diretta è possibile solo su Linux\n Fra alcuni giorni verrà abilitata anche su windows. Grazie")
+            try:
+                import win32api
+                pdfFile = os.path.join(self._folder + self._pdfName +'.pdf')
+                self.tryToSavePdf(pdfFile)
+                win32api.ShellExecute (0, "print", pdfFile, None, ".", 0)
+            except:
+                messageInfo(msg="Per il momento la stampa diretta è possibile solo su Linux\n Fra alcuni giorni verrà abilitata anche su windows. Grazie")
 
 
     def on_send_email_button_clicked(self, widget):
