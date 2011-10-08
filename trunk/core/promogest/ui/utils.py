@@ -3318,7 +3318,6 @@ def getLottoeScadenze(daoRigaMovimento, testataMovimento):
     idFornitura = RigaMovimentoFornitura().select(idRigaMovimentoAcquisto = daoRigaMovimento.id, idArticolo = daoRigaMovimento.id_articolo, batchSize=None)
     if idFornitura:
         idFornitura = idFornitura[0]
-        print "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO"
         return Fornitura().getRecord(id=idFornitura)
     else:
         return None
