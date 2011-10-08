@@ -195,10 +195,14 @@ class TestataDocumento(Dao):
     numeroMagazzini = property(_getNumeroMagazzini)
 
     def _getScontiTestataDocumento(self):
-        if not self.__scontiTestataDocumento and self.id:
-            self.__dbScontiTestataDocumento = ScontoTestataDocumento().select(join = ScontoTestataDocumento.TD,
-                                                                                idScontoTestataDocumento=self.id,
-                                                                                batchSize=None)
+        if self.STD:
+        #if not self.__scontiTestataDocumento and self.id:
+            #self.__dbScontiTestataDocumento = ScontoTestataDocumento().select(
+                                    #join = ScontoTestataDocumento.TD,
+                                    #idScontoTestataDocumento=self.id,
+                                    #batchSize=None)
+            #, self.__dbScontiTestataDocumento
+            self.__dbScontiTestataDocumento = self.STD
         self.__scontiTestataDocumento = self.__dbScontiTestataDocumento
         return self.__scontiTestataDocumento
 
@@ -208,7 +212,8 @@ class TestataDocumento(Dao):
     sconti = property(_getScontiTestataDocumento, _setScontiTestataDocumento)
 
     def _getStringaScontiTestataDocumento(self):
-        (listSconti, applicazione) = getScontiFromDao(self._getScontiTestataDocumento(), self.applicazione_sconti)
+        #(listSconti, applicazione) = getScontiFromDao(self._getScontiTestataDocumento(), self.applicazione_sconti)
+        (listSconti, applicazione) = getScontiFromDao(self.STD, self.applicazione_sconti)
         return getStringaSconti(listSconti)
     stringaSconti = property(_getStringaScontiTestataDocumento)
 
@@ -524,7 +529,6 @@ class TestataDocumento(Dao):
                     if hasattr(row, "numero_lotto"):
                         setattr(daoRigaMovimento,"numero_lotto",row.numero_lotto or None)
                     if hasattr(row, "lotto_temp"):
-                        print "FAAAAAAAAAAAAAAAAAAAAAAAAA", row.lotto_temp
                         setattr(daoRigaMovimento,"lotto_temp",row.lotto_temp or None)
                     if hasattr(row, "data_scadenza"):
                         setattr(daoRigaMovimento,"data_scadenza",row.data_scadenza or None)

@@ -2891,18 +2891,20 @@ def setconf(section, key, value=False):
             return Environment.conf.Documenti.cartella_predefinita
     from promogest.dao.Setconf import SetConf
     confList = Environment.confList
-    confff = None
-
     if not confList:
         confList = SetConf().select(batchSize=None)
         Environment.confList = confList
+
+    confff = None
     for d in confList:
         if not value:
             if d.key==key and d.section==section:
                 confff = d
+                break
         else:
             if d.key==key and d.section==section and d.value == value:
                 confff = d
+                break
     if not confff:
         if not value:
             confff = SetConf().select(key=key, section=section)
@@ -2928,6 +2930,7 @@ def setconf(section, key, value=False):
                     return eval(valore)
                 except:
                     return str(valore)
+
     else:
         return ""
 
@@ -3180,72 +3183,91 @@ def posso(mod=None):
         if "RuoliAzioni"in modulis: return True
         if "FULL" in modulis :return True
         if "STANDARD" in modulis: return True
-        #if "PRO STANDARD" in moduli: return True
+        return False
     if mod == "PW" or mod=="PromoWear":
         if "PromoWear" in modulis:return True
         if "+W" in modulis:return True
+        return False
     if mod == "AG":
         if "Agenti" in modulis: return True
         if "FULL" in modulis :return True
         if "STANDARD" in modulis: return True
+        return False
     if mod == "GN":
         if "GestioneNoleggio" in modulis: return True
+        return False
     if mod == "VD" or mod=="VenditaDettaglio":
         if "VenditaDettaglio" in modulis:return True
         if "+S" in modulis:return True
+        return False
     if mod == "DB":
         if "DistintaBase" in modulis: return True
+        return False
+    if mod == "ADR":
+        if "ADR" in modulis: return True
+        return False
     if mod == "CN" or mod=="Contatti":
         if "Contatti" in modulis:return True
         if "BASIC" in modulis : return True
         if "STANDARD" in modulis: return True
         if "FULL" in modulis: return True
+        return False
     if mod == "PR" or mod=="Promemoria":
         if "Promemoria" in modulis:return True
         if "BASIC" in modulis : return True
         if "STANDARD" in modulis: return True
         if "FULL" in modulis: return True
+        return False
     if mod == "IN":
         if "Inventario"  in modulis: return True
         if "FULL" in modulis: return True
+        return False
     if mod == "IPL":
         if "ImportPriceList" in modulis:return True
         if "FULL" in modulis: return True
+        return False
     if mod == "LA":
         if "Label" in modulis: return True
         if "FULL" in modulis: return True
+        return False
     if mod == "SM":
         if "SuMisura" in modulis: return True
+        return False
     if mod == "IP":
         if "InfoPeso" in modulis: return True
+        return False
     if mod == "PA" or mod=="Pagamenti":
         if "Pagamenti" in modulis: return True
         if "BASIC" in modulis: return True
         if "STANDARD" in modulis: return True
         if "FULL" in modulis: return True
+        return False
     if mod == "PN" or mod=="PrimaNota":
         if "PrimaNota" in modulis: return True
         if "BASIC" in modulis: return True
         if "STANDARD" in modulis: return True
         if "FULL" in modulis: return True
+        return False
     if mod == "STA":
         if "STA" in modulis: return True
         if "FULL" in modulis: return True
+        return False
     if mod == "STA_DETT":
         if "STA_DETT" in modulis: return True
         if "FULL" in modulis: return True
     if mod == "SD":
         if "SincroDB" in modulis :return True
+        return False
     if mod == "SL":
-        #print "PASSIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII", modulis
         if "SchedaLavorazione" in modulis :
-            #print "BOOOOOOOOOOOOOOOOOOOOOOOOOOOO"
             return True
+        return False
     if mod == "GC" or mod =="GestioneCommesse":
         if "GestioneCommesse" in modulis :return True
         if "BASIC" in modulis: return True
         if "STANDARD" in modulis: return True
         if "FULL" in modulis: return True
+        return False
     d = setconf(mod,"mod_enable", value="yes")
     if d:
         return True

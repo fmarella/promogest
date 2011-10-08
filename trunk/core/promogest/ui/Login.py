@@ -303,12 +303,13 @@ class Login(GladeApp):
                             if (os.path.isdir(os.path.join(modules_dir, folder)) \
                             and os.path.isfile(os.path.join(modules_dir, folder, 'module.py')))]
             Environment.modules_folders = modules_folders
+
             for m_str in modules_folders:
-                if hasattr(Environment.conf,m_str) or posso(m_str):
+                if hasattr(Environment.conf,m_str) or setconf(m_str,"mod_enable", value="yes"):
                     try:
-                        exec "mod_enable = hasattr(Environment.conf.%s,'mod_enable')" %m_str
+                        exec "mod_enable = getattr(Environment.conf.%s,'mod_enable')" %m_str
                     except:
-                        mod_enable=posso(m_str)
+                        mod_enable = setconf(m_str,"mod_enable", value="yes")
                     if mod_enable:
                         try:
                             exec "mod_enableyes = getattr(Environment.conf.%s,'mod_enable','yes')" %m_str
