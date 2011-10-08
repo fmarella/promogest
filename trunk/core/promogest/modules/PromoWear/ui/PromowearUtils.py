@@ -127,6 +127,7 @@ def leggiArticoloPromoWear(id, full=False):
     _stagione = ''
     _idGenere = None
     _genere = ''
+    _quantita_minima = ""
 
     def numero_ordine(_idTaglia, _idGruppoTaglia):
         if _idGruppoTaglia and _idTaglia:
@@ -170,6 +171,10 @@ def leggiArticoloPromoWear(id, full=False):
                     _stagione = daoArticoloTagliaColore.stagione or '-'
                     _idGenere = daoArticoloTagliaColore.id_genere
                     _genere = daoArticoloTagliaColore.genere or '-'
+                    try:
+                        _quantita_minima = daoArticolo.quantita_minima
+                    except:
+                        _quantita_minima = ""
         articleDict= {"id": _id,
                     "denominazione": _denominazione, "codice": _codice,
                     "denominazioneBreveAliquotaIva": _denominazioneBreveAliquotaIva,
@@ -190,6 +195,7 @@ def leggiArticoloPromoWear(id, full=False):
                     "stagione": _stagione,
                     "idGenere": _idGenere,
                     "genere": _genere,
+                    "quantita_minima": _quantita_minima,
                     "daoArticolo":daoArticolo}
     return articleDict
 
