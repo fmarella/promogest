@@ -40,6 +40,10 @@ class ElencoListini(GladeWidget):
 
     def draw(self):
         # Colonne della Treeview dell' elenco
+        listini = Listino().select(visibileCheck=True, batchSize=None)
+        for l in listini:
+            l.visible = True
+            l.persist()
         self.refresh()
         return self
 
@@ -49,11 +53,18 @@ class ElencoListini(GladeWidget):
 
     def refresh(self):
         # Aggiornamento Treeview
+        visibili = self.visibile_list_check.get_active()
+        if visibili:
+            visibili = None
+        else:
+            visibili = True
         self.elenco_listini_listore.clear()
 
-        liss = Listino().select(orderBy='denominazione',
-                                            batchSize=None,
-                                            offset=None)
+        liss = Listino().select(
+                                visibili = visibili,
+                                orderBy='denominazione',
+                                batchSize=None,
+                                offset=None)
         for l in liss:
             self.elenco_listini_listore.append((l,
                           (l.denominazione or ''),
@@ -89,8 +100,8 @@ class ElencoListini(GladeWidget):
             toggleButton.set_active(False)
             return
         denominazione = None
-        if self._currentDao:
-            denominazione = self._currentDao.denominazione
+        #if self._currentDao:
+            #denominazione = self._currentDao.denominazione
         from AnagraficaListini import AnagraficaListini
         anag = AnagraficaListini(denominazione, self.aziendaStr)
         anagWindow = anag.getTopLevel()
@@ -107,12 +118,14 @@ class ElencoListini(GladeWidget):
         idListino = None
         if self._currentDao:
             idListino = self._currentDao.id
-        from AnagraficaListiniArticoli import AnagraficaListiniArticoli
-        anag = AnagraficaListiniArticoli(None, idListino, self.aziendaStr)
-        anagWindow = anag.getTopLevel()
-        returnWindow = self.getTopLevel().get_toplevel()
-        anagWindow.set_transient_for(returnWindow)
-        anagWindow.show_all()
+            from AnagraficaListiniArticoli import AnagraficaListiniArticoli
+            anag = AnagraficaListiniArticoli(None, idListino, self.aziendaStr)
+            anagWindow = anag.getTopLevel()
+            returnWindow = self.getTopLevel().get_toplevel()
+            anagWindow.set_transient_for(returnWindow)
+            anagWindow.show_all()
+        else:
+            messageInfo(msg= "ATTENZIONE!,\n Selezionare un Listino dalla lista")
         if toggleButton.get_active():
             toggleButton.set_active(False)
 

@@ -107,7 +107,9 @@ class SimpleGladeWrapper:
             gl = gtk.Builder()
             #self.builda = gtk.Buildable()
         gl.set_translation_domain("promogest")
-        gl.add_from_file(self.glade_path)
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            gl.add_from_file(self.glade_path)
 #        print "FILE GLADE:"+str(self.glade_path)
 #        Environment.pg2log.info("FILE GLADE:"+str(self.glade_path))
         self.widgets = gl.get_objects()
@@ -118,7 +120,9 @@ class SimpleGladeWrapper:
         self.normalize_names()
         if callbacks_proxy is None:
             callbacks_proxy = self
-        test = gl.connect_signals(callbacks_proxy)
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            gl.connect_signals(callbacks_proxy)
         self.gl = gl
         #self.new()
 

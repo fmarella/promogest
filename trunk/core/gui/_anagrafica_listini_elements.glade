@@ -209,7 +209,7 @@ associati all'inizio</property>
         <property name="right_attach">3</property>
         <property name="top_attach">13</property>
         <property name="bottom_attach">14</property>
-        <property name="x_options">GTK_SHRINK | GTK_FILL</property>
+        <property name="x_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
       </packing>
     </child>
     <child>
@@ -802,7 +802,7 @@ per inserirne uno nuovo
         </child>
         <child>
           <object class="GtkToggleButton" id="variazioni_togglebutton">
-            <property name="label" translatable="yes">Variazioni</property>
+            <property name="label" translatable="yes">Variazioni di data/prezzo</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
@@ -816,7 +816,20 @@ per inserirne uno nuovo
           </packing>
         </child>
         <child>
-          <placeholder/>
+          <object class="GtkCheckButton" id="visible_check">
+            <property name="label" translatable="yes">VISIBILE</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">False</property>
+            <property name="use_action_appearance">False</property>
+            <property name="draw_indicator">True</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="padding">2</property>
+            <property name="position">2</property>
+          </packing>
         </child>
       </object>
       <packing>
@@ -824,6 +837,8 @@ per inserirne uno nuovo
         <property name="right_attach">3</property>
         <property name="top_attach">2</property>
         <property name="bottom_attach">3</property>
+        <property name="x_options">GTK_FILL</property>
+        <property name="y_options"></property>
       </packing>
     </child>
     <child>

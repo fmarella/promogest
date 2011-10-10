@@ -14,6 +14,13 @@ from Dao import Dao
 from ListinoCategoriaCliente import ListinoCategoriaCliente
 from ListinoMagazzino import ListinoMagazzino
 from ListinoComplessoListino import ListinoComplessoListino
+from migrate import *
+
+listinoT=Table('listino', params['metadata'],schema = params['schema'],autoload=True)
+
+#if "hide" not in [c.name for c in listinoT.columns]:
+    #col = Column('hide', Boolean, default=False)
+    #col.create(listinoT, populate_default=True)
 
 
 class Listino(Dao):
@@ -103,9 +110,12 @@ class Listino(Dao):
             dic= {k:listinoT.c.denominazione ==v}
         elif k=='dataListino':
             dic= {k:listinoT.c.data_listino ==v}
+        elif k=='visibileCheck':
+            dic= {k:listinoT.c.visible ==None}
+        elif k=='visibili':
+            dic= {k:listinoT.c.visible ==v}
         return  dic[k]
 
-listinoT=Table('listino', params['metadata'],schema = params['schema'],autoload=True)
 
 std_mapper = mapper(Listino, listinoT, properties={
     "listino_categoria_cliente" :relation(ListinoCategoriaCliente, backref="listino"),

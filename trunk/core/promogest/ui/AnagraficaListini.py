@@ -63,11 +63,7 @@ class AnagraficaListini(Anagrafica):
 
         from DuplicazioneListino import DuplicazioneListino
         anag = DuplicazioneListino(dao, self)
-        #anag = GestioneChiusuraFiscale(self) #.chiusuraDialog(widget, self.id_magazzino)
-        #anag.set_transient_for(self)
         anagWindow = anag.getTopLevel()
-        #anagWindow.connect("destroy", on_anagrafica_destroyed, [window, button,mainClass])
-        #anagWindow.connect("hide", on_anagrafica_destroyed, [window, button,mainClass])
         anagWindow.set_transient_for(self.getTopLevel())
         anagWindow.show_all()
 
@@ -101,14 +97,20 @@ class AnagraficaListiniFilter(AnagraficaFilter):
     def clear(self):
         # Annullamento filtro
         self.denominazione_filter_entry.set_text('')
+        self.visibile_filter_check.set_active(False)
         self.refresh()
 
     def refresh(self):
         # Aggiornamento TreeView
         denominazione = prepareFilterString(self.denominazione_filter_entry.get_text())
+        visibili = self.visibile_filter_check.get_active()
+        if visibili:
+            visibili = None
+        else:
+            visibili = True
 
         def filterCountClosure():
-            return Listino().count(denominazione=denominazione)
+            return Listino().count(denominazione=denominazione,visibili = visibili)
 
         self._filterCountClosure = filterCountClosure
         self.numRecords = self.countFilterResults()
@@ -116,6 +118,7 @@ class AnagraficaListiniFilter(AnagraficaFilter):
         # Let's save the current search as a closure
         def filterClosure(offset, batchSize):
             return Listino().select(denominazione=denominazione,
+                                                visibili = visibili,
                                                 orderBy=self.orderBy,
                                                 offset=offset,
                                                 batchSize=batchSize)
@@ -187,6 +190,7 @@ class AnagraficaListiniEdit(AnagraficaEdit):
         self.denominazione_entry.set_text(self.dao.denominazione or '')
         self.descrizione_entry.set_text(self.dao.descrizione or '')
         self.data_listino_entry.set_text(dateToString(self.dao.data_listino))
+        self.visible_check.set_active(self.dao.visible or True)
         self._refreshCategorieClienti()
         self._refreshMagazzini()
         self._refreshListiniComplessi()
@@ -263,7 +267,7 @@ class AnagraficaListiniEdit(AnagraficaEdit):
 
         self.dao.descrizione = self.descrizione_entry.get_text()
         self.dao.data_listino = stringToDate(self.data_listino_entry.get_text())
-
+        self.dao.visible = self.visible_check.get_active()
         self.dao.persist()
         cleanListinoCategoriaCliente = ListinoCategoriaCliente()\
                                             .select(idListino=self.dao.id,
@@ -295,7 +299,7 @@ class AnagraficaListiniEdit(AnagraficaEdit):
 
         cleanListini = ListinoComplessoListino().select(idListinoComplesso=self.dao.id,
                                                         batchSize=None)
-        print "CLEAN LISTINI", cleanListini
+        #print "CLEAN LISTINI", cleanListini
         for lis in cleanListini:
             Environment.session.delete(lis)
         Environment.session.commit()

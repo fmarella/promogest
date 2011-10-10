@@ -5,6 +5,7 @@
   <object class="GtkTable" id="anagrafica_listini_filter_table">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
+    <property name="n_rows">2</property>
     <property name="n_columns">2</property>
     <child>
       <object class="GtkEntry" id="denominazione_filter_entry">
@@ -35,6 +36,25 @@
         <property name="x_options">GTK_FILL</property>
         <property name="y_options"></property>
         <property name="x_padding">10</property>
+      </packing>
+    </child>
+    <child>
+      <placeholder/>
+    </child>
+    <child>
+      <object class="GtkCheckButton" id="visibile_filter_check">
+        <property name="label" translatable="yes">Mostra nascosti</property>
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="receives_default">False</property>
+        <property name="use_action_appearance">False</property>
+        <property name="draw_indicator">True</property>
+      </object>
+      <packing>
+        <property name="left_attach">1</property>
+        <property name="right_attach">2</property>
+        <property name="top_attach">1</property>
+        <property name="bottom_attach">2</property>
       </packing>
     </child>
   </object>
