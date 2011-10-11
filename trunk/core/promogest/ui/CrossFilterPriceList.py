@@ -104,7 +104,7 @@ class CrossFilterPriceList(GladeWidget):
 
     def refreshDuplicated(self,stored=[]):
         """
-            Aggiornamento TreeView degli articoli dupplicati
+            Aggiornamento TreeView degli articoli duplicati
         """
         self.duplicated_listore.clear()
         if not self.duprow:
@@ -131,14 +131,22 @@ class CrossFilterPriceList(GladeWidget):
         sottolistini = self._listino.sottoListiniID
         dueid = []
 
-        allArt= ListinoArticolo().select(idListino = sottolistini, batchSize=None)
+        allArt= ListinoArticolo().select(idListino = sottolistini,listinoAttuale=True, batchSize=None)
         dupli2 = []
         if allArt:
             for a in allArt:
                 dueid.append(a.id_articolo)
             dupli = [ x for x in dueid if dueid.count(x) > 1]
+            dupli = list(set(dupli))
             if dupli:
-                dupli2 = ListinoArticolo().select(idListino = sottolistini, idArticolo = dupli, batchSize=None)
+                for art in dupli:
+                    for l in sottolistini:
+                        d = ListinoArticolo().select(idListino = l,listinoAttuale=True,
+                                    idArticolo = art,
+                                    batchSize=None,
+                                    orderBy=ListinoArticolo.data_listino_articolo)
+                        if d:
+                            dupli2.append(d[-1])
         return dupli2 or []
 
     def filteredData(self):
