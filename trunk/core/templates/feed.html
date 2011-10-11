@@ -1,10 +1,17 @@
 <html >
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<!--
+    <head><script type="text/javascript" src="gui/plusone.js"></script></head>
+-->
 <body>
     {% for f in pageData["objects"] %}
         <strong>{{f.updated}}</strong>&nbsp;-&nbsp;<a href="{{f.links}}">{{f.title}}</a>
     {{f.body}}
-    <p style="color:#FCAF3E">Inserita da: <span style = "color: #2B4F81">{{f.autore}}</span>
+    <p style="color:#FCAF3E">Inserita da: <span style = "color: #2B4F81"><a href="http://www.promogest.me"/>PromoGest</a></span>
+
+<!--
+    <g:plusone annotation="inline"></g:plusone>
+-->
     </p>
     {% endfor %}
 </body>

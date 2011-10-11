@@ -225,11 +225,11 @@ class AnagraficaClientiEdit(AnagraficaEdit):
         if posso("IP"):
             self.infopeso_page.infoPeso_refresh()
         self.showTotaliDareAvere()
-        self.cellulare_principale_entry.set_text(self.dao.cellulare_principale)
-        self.telefono_principale_entry.set_text(self.dao.telefono_principale)
-        self.email_principale_entry.set_text(self.dao.email_principale)
-        self.fax_principale_entry.set_text(self.dao.fax_principale)
-        self.sito_web_principale_entry.set_text(self.dao.sito_principale)
+        self.cellulare_principale_entry.set_text(self.dao.cellulare_principale or "")
+        self.telefono_principale_entry.set_text(self.dao.telefono_principale or "")
+        self.email_principale_entry.set_text(self.dao.email_principale or "")
+        self.fax_principale_entry.set_text(self.dao.fax_principale or "")
+        self.sito_web_principale_entry.set_text(self.dao.sito_principale or "")
 
     def showTotaliDareAvere(self):
 

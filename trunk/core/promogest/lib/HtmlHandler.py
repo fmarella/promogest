@@ -221,10 +221,14 @@ def renderHTML(widget, html):
     if WEBKIT:
         try:
             c = WebSettings()
+            c.set_property('user-agent', None)
             c.set_property("minimum_font_size", 8)
             c.set_property("javascript-can-open-windows-automatically", True)
             c.set_property("default-encoding", "Utf-8")
             c.set_property("enable-file-access-from-file-uris", True)
+            c.set_property("enable-universal-access-from-file-uris", True)
+            c.set_property( "enable-site-specific-quirks", True)
+
             widget.set_settings(c)
         except:
             print " VERSIONE DI WEBKIT NON AGGIORNATA... KARMIC?"
