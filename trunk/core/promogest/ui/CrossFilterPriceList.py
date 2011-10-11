@@ -164,13 +164,13 @@ class CrossFilterPriceList(GladeWidget):
         dao = model[path][0]
         self.remove = dao
         self.refreshFiltered(remove=dao)
-        daos = ListinoArticolo().select(idArticolo=dao.id_articolo,idListino =self._listino.sottoListiniID, batchSize=None)
+        daos = ListinoArticolo().select(idArticolo=dao.id_articolo,idListino =self._listino.sottoListiniID,listinoAttuale=True, batchSize=None)
         self.optionData(daos)
 
     def on_duplicated_treeview_row_activated(self, widget, path, column): # quello in basso
         model = self.duplicated_listore
         dao = model[path][0]
-        daos = ListinoArticolo().select(idArticolo=dao.id_articolo,idListino =self._listino.sottoListiniID, batchSize=None)
+        daos = ListinoArticolo().select(idArticolo=dao.id_articolo,idListino=self._listino.sottoListiniID,listinoAttuale=True, batchSize=None)
         self.optionData(daos)
 
     def on_option_treeview_row_activated(self, widget, path, column): #quello in centro
