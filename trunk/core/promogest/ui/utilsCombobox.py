@@ -846,7 +846,6 @@ def fillComboboxDestinazioniMerce(combobox, idCliente=None, filter=False):
 def fillComboboxAutoriPromemoria(combobox):
     """ Crea l'elenco degli autori gia'inseriti """
     from promogest.dao.Promemoria import Promemoria
-    #autors = Promemoria().select(orderBy="autore")
     res = Environment.params['session'].query(Promemoria.autore).distinct()
     model = gtk.ListStore(str)
     for c in res:
@@ -863,7 +862,6 @@ def fillComboboxAutoriPromemoria(combobox):
 def fillComboboxNotePiePaginaTestataDocumento(combobox):
     """ Crea l'elenco degli autori gia'inseriti """
     from promogest.dao.TestataDocumento import TestataDocumento
-    #autors = Promemoria().select(orderBy="autore")
     res = Environment.params['session'].query(TestataDocumento.note_pie_pagina).distinct()
     model = gtk.ListStore(str)
     for c in res:

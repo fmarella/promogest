@@ -49,6 +49,7 @@
                     <child>
                       <object class="GtkTreeViewColumn" id="descrizione_column">
                         <property name="title" translatable="yes">Descrizione</property>
+                        <property name="expand">True</property>
                         <child>
                           <object class="GtkCellRendererText" id="cellrenderertext2"/>
                           <attributes>

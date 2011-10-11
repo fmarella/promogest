@@ -83,8 +83,9 @@ def drawPromoWearExpand1(analistiarti):
     column.set_min_width(50)
     treeview.append_column(column)
     analistiarti._treeViewModel = gtk.ListStore(object, str, str, str, str, str, str, str, str, str, str, str, str)
-    
+
 def drawPromoWearExpand2(analistiarti):
+    print "MA PASSI QUI"
     column = analistiarti._anagrafica.anagrafica_filter_treeview.get_column(6)
     column.set_property('visible', False)
     column = analistiarti._anagrafica.anagrafica_filter_treeview.get_column(7)

@@ -57,11 +57,11 @@ class AnagraficaListiniArticoliFilter(AnagraficaFilter):
 
         column = gtk.TreeViewColumn('Listino', rendererSx, text=1)
         column.set_sizing(GTK_COLUMN_GROWN_ONLY)
-        column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, (None,'id_listino'))
-        column.set_resizable(False)
-        column.set_expand(True)
-        column.set_min_width(250)
+        column.set_clickable(False)
+        #column.connect("clicked", self._changeOrderBy, (None, 'codice_articolo'))
+        column.set_resizable(True)
+        column.set_expand(False)
+        column.set_min_width(100)
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('Codice articolo', rendererSx, text=2)
@@ -113,6 +113,8 @@ class AnagraficaListiniArticoliFilter(AnagraficaFilter):
         else:
             self._treeViewModel = gtk.ListStore(object, str, str, str, str, str, str)
         self._anagrafica.anagrafica_filter_treeview.set_model(self._treeViewModel)
+
+
         self.isComplexPriceList=None
         if self._anagrafica._idListino:
             self.isComplexPriceList = ListinoComplessoListino().select(idListinoComplesso = self._anagrafica._idListino, batchSize=None)
@@ -121,6 +123,7 @@ class AnagraficaListiniArticoliFilter(AnagraficaFilter):
             self.id_sotto_listino_filter_combobox.set_sensitive(True)
             fillComboboxListiniComplessi(self.id_sotto_listino_filter_combobox,
                                         idListinoComplesso = self._anagrafica._idListino,filter=True)
+
         fillComboboxListini(self.id_listino_filter_combobox, True)
 
         if self._anagrafica._articoloFissato:
@@ -165,10 +168,11 @@ class AnagraficaListiniArticoliFilter(AnagraficaFilter):
         listcount = 0
         multilistCount = 0
         multilist = []
+
         idArticolo = self.id_articolo_filter_customcombobox.getId()
         idListino = findIdFromCombobox(self.id_listino_filter_combobox)
         idSottoListino = findIdFromCombobox(self.id_sotto_listino_filter_combobox)
-
+        print " ID SOTTO SLIIIIIIIIIIIIIIIIIIII", idSottoListino, idListino, idArticolo
         if not idSottoListino and self.isComplexPriceList:
             for sottolist in self.isComplexPriceList:
                 multilist.append(sottolist.id_listino)
@@ -178,7 +182,6 @@ class AnagraficaListiniArticoliFilter(AnagraficaFilter):
 
         def filterCountClosure():
             """
-            FIXME
             """
             return ListinoArticolo().count(idListino=idListino,
                                             idArticolo=idArticolo,
@@ -206,8 +209,9 @@ class AnagraficaListiniArticoliFilter(AnagraficaFilter):
         modelRowPromoWear = []
         self._treeViewModel.clear()
         for l in self.liss:
+            print  "PPPPPPPPPPPPPPPPP", l.denominazione
             modelRow = [l,
-                        (l.denominazione or ''),
+                        (l.denominazione or 'PP'),
                         (l.codice_articolo or ''),
                         (l.articolo or ''),
                         dateToString(l.data_listino_articolo),
@@ -225,5 +229,5 @@ class AnagraficaListiniArticoliFilter(AnagraficaFilter):
             if modelRowPromoWear:
                 self._treeViewModel.append(modelRow +modelRowPromoWear)
             else:
-                self._treeViewModel.append(modelRow)
+                self._treeViewModel.append((modelRow))
         #Environment.listinoFissato =  None

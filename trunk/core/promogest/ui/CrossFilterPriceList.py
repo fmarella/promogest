@@ -58,6 +58,8 @@ class CrossFilterPriceList(GladeWidget):
             Creo tre treeview , degli articoli duplicati, delle opzioni e di quelli
             gestiti
         """
+        self.ok_button.set_sensitive(True)
+        self.ok_button.set_property("visible",True)
         self._treeViewModel_duplicated = self.duplicated_listore
         self._treeViewModel_option = self.option_listore
         self.refreshFiltered()
@@ -157,21 +159,21 @@ class CrossFilterPriceList(GladeWidget):
                     filtrow.append(riga[0])
         return filtrow
 
-    def on_filtered_treeview_row_activated(self, widget, path, column):
+    def on_filtered_treeview_row_activated(self, widget, path, column): #quello in alto
         model = self.filtered_listore
         dao = model[path][0]
         self.remove = dao
         self.refreshFiltered(remove=dao)
-        daos = ListinoArticolo().select(idArticolo=dao.id_articolo, batchSize=None)
+        daos = ListinoArticolo().select(idArticolo=dao.id_articolo,idListino =self._listino.sottoListiniID, batchSize=None)
         self.optionData(daos)
 
-    def on_duplicated_treeview_row_activated(self, widget, path, column):
+    def on_duplicated_treeview_row_activated(self, widget, path, column): # quello in basso
         model = self.duplicated_listore
         dao = model[path][0]
-        daos = ListinoArticolo().select(idArticolo=dao.id_articolo, batchSize=None)
+        daos = ListinoArticolo().select(idArticolo=dao.id_articolo,idListino =self._listino.sottoListiniID, batchSize=None)
         self.optionData(daos)
 
-    def on_option_treeview_row_activated(self, widget, path, column):
+    def on_option_treeview_row_activated(self, widget, path, column): #quello in centro
         self.on_allocation_button_clicked(widget)
 
     def optionData(self, daos):
@@ -218,9 +220,9 @@ class CrossFilterPriceList(GladeWidget):
             residui= len(self.duplicated_listore)
         else:
             residui = 0
-        if residui==0:
-            self.ok_button.set_sensitive(True)
-            self.ok_button.set_property("visible",True)
+        #if residui==0:
+            #self.ok_button.set_sensitive(True)
+            #self.ok_button.set_property("visible",True)
 
     def on_ok_button_clicked(self, button):
         if ListinoComplessoArticoloPrevalente().select(idListinoComplesso= self._listino.id, batchSize=None):
