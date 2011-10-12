@@ -324,6 +324,8 @@ class PagamentiNotebookPage(GladeWidget):
             if type(scadenze) == list:
                 daoTDS.data = dateToString(getScadenza(data_doc, int(scadenze[i]), fine_mese))
                 i += 2
+            else:
+                daoTDS.data = data_doc
             try:
                 self.rate[j].fill(daoTDS)
             except IndexError:
