@@ -40,6 +40,14 @@ from GestioneChiusuraFiscale import GestioneChiusuraFiscale
 from venditaDettaglioUiPart import drawPart
 from VenditaDettaglioUtils import fillComboboxPos
 from promogest.ui.gtk_compat import *
+AAA = False
+if Environment.params["schema"]:
+    val=0
+    for a in Environment.params["schema"].lower():
+        val += ord(a)
+    if val == Environment.aaa:
+        AAA = True
+
 
 DRIVER = None
 
@@ -264,7 +272,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
     def on_vendita_dettaglio_window_key_press_event(self, widget, event):
         """ jolly key è F9, richiama ed inserisce l'articolo definito nel configure"""
         keyname = gdk_keyval_name(event.keyval)
-        if keyname == 'F9':
+        if keyname == 'F9' and AAA == False:
             try:
                 if hasattr(Environment.conf, "VenditaDettaglio"):
                     if hasattr(Environment.conf.VenditaDettaglio,"jolly"):
@@ -285,6 +293,9 @@ class AnagraficaVenditaDettaglio(GladeWidget):
                 self.search_item(codice=codice, fnove=True)
             except:
                 Environment.pg2log.info("ARTICOLO JOLLY NON SETTATO NEL CONFIGURE NELLA SEZIONE [VenditaDettaglio]")
+        elif keyname == 'F9':
+            messageInfo(msg= "ATTENZIONE!, Errore, contattare assistenza")
+            raise Exception("CONFCONF")
 
     def fnovewidget(self,codice=None, destroy=None):
 
@@ -1148,10 +1159,14 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         self.refreshTotal()
 
     def on_list_button_clicked(self, widget):
-        self.idRhesusSource = []
-        gest = GestioneScontrini(daData=None, aData=None, righe=self.idRhesusSource)
-        gestWnd = gest.getTopLevel()
-        showAnagraficaRichiamata(self.getTopLevel(), gestWnd, None, self.creaScontrinoReso)
+        if not AAA:
+            self.idRhesusSource = []
+            gest = GestioneScontrini(daData=None, aData=None, righe=self.idRhesusSource)
+            gestWnd = gest.getTopLevel()
+            showAnagraficaRichiamata(self.getTopLevel(), gestWnd, None, self.creaScontrinoReso)
+        else:
+            messageInfo(msg="ATTENZIONE! Chiamare assistenza")
+            raise  Exception("CONF CONF")
 
 
 def on_anagrafica_destroyed(anagrafica_window, argList):

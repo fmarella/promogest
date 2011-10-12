@@ -28,6 +28,7 @@ from promogest.dao.AliquotaIva import AliquotaIva
 import unittest
 from promogest import Environment
 from promogest.ui.utils import *
+import string
 
 
 class TestUtils(unittest.TestCase):
@@ -56,7 +57,16 @@ class TestUtils(unittest.TestCase):
             diz[a[0]] = a[1]
         print tutte, diz
 
+    def test_string_to_number(self):
+        tutte = "elisir"
+        val=0
+        for a in tutte.lower():
+            val += ord(a)
+            print val, a, ord(a)
+        return val
+
+
 if __name__ == '__main__':
-    tests = ['test_stringToDateBumped', "test_addPointToString", "test_iva_dict"]
+    tests = ['test_stringToDateBumped', "test_addPointToString", "test_iva_dict","test_string_to_number"]
     suite = unittest.TestSuite(map(TestUtils, tests))
     unittest.TextTestRunner(verbosity=2).run(suite)

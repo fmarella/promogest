@@ -120,7 +120,7 @@ tipo_pg = None
 workingYear = 2011
 cartella_moduli = 'promogest/modules'
 totale_pn_con_riporto = 0
-
+aaa = 648
 da_data_inizio_primanota = None
 a_data_inizio_primanota = None
 
