@@ -465,6 +465,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                     self.pagamenti_page.chiudi_pagamento_documento_button.set_sensitive(False)
                     self.pagamenti_page.apri_pagamento_documento_button.set_sensitive(True)
                 else:
+                    self.pagamenti_page.chiudi_pagamento_documento_button.set_sensitive(True)
                     self.pagamenti_page.apri_pagamento_documento_button.set_sensitive(False)
 
     def on_rent_checkbutton_toggled(self, checkbutton=None):
