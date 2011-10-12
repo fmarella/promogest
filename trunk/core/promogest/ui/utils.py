@@ -2677,7 +2677,7 @@ def fenceDialog():
     dialog.destroy()
 
 def tempo():
-    print "QUESTA FUNZIONE E' DEPRECATA, UTILIZZARE IL PGTimer!!!"
+    #print "QUESTA FUNZIONE E' DEPRECATA, UTILIZZARE IL PGTimer!!!"
     print ""
     return datetime.datetime.now()
 
