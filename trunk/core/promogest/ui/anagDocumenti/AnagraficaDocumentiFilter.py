@@ -114,7 +114,10 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         Aggiornamento TreeView
         """
         daData = stringToDate(self.da_data_filter_entry.get_text())
-        aData = stringToDate(self.a_data_filter_entry.get_text())
+        if Environment.tipodb == "sqlite":
+            aData = stringToDateBumped(self.a_data_filter_entry.get_text())
+        else:
+            aData = stringToDate(self.a_data_filter_entry.get_text())
         daNumero = prepareFilterString(self.da_numero_filter_entry.get_text())
         aNumero = prepareFilterString(self.a_numero_filter_entry.get_text())
         protocollo = prepareFilterString(self.protocollo_entry.get_text())
