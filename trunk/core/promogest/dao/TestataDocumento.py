@@ -399,10 +399,10 @@ class TestataDocumento(Dao):
                 totaleImponibileScontato += Decimal(castellettoIva[k]['imponibile'])
                 totaleImpostaScontata += Decimal(castellettoIva[k]['imposta'])
 
-            totaleScontato = mN(totaleImponibileScontato,2) + mN(totaleImpostaScontata,2)
+            totaleScontato = mN(totaleImponibileScontato + totaleImpostaScontata, 2)
 
-        self._totaleNonScontato = mN(totaleImponibile,2) +mN(totaleImposta,2) + mN(totaleEsclusoBaseImponibile,2)
-        self._totaleScontato = mN(totaleImponibileScontato,2) + mN(totaleImpostaScontata,2) +mN(totaleEsclusoBaseImponibile,2)
+        self._totaleNonScontato = mN(totaleImponibile + totaleImposta + totaleEsclusoBaseImponibile, 2)
+        self._totaleScontato = mN(totaleImponibileScontato + totaleImpostaScontata + totaleEsclusoBaseImponibile, 2)
         self._totaleImponibile = totaleImponibile
         self._totaleNonBaseImponibile = totaleEsclusoBaseImponibile
         self._totaleImposta = totaleImposta
