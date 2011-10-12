@@ -153,7 +153,6 @@ def drawPart(anaedit):
                                 on_id_aliquota_iva_customcombobox_clicked)
     fillComboboxOperazioni(anaedit.id_operazione_combobox, 'documento')
     fillComboboxMagazzini(anaedit.id_magazzino_combobox)
-    fillComboboxBanche(anaedit.id_banca_customcombobox.combobox)
     fillComboboxAliquoteIva(anaedit.id_aliquota_iva_esenzione_customcombobox.combobox)
     fillComboboxCausaliTrasporto(anaedit.causale_trasporto_comboboxentry)
     fillComboboxAspettoEsterioreBeni(anaedit.aspetto_esteriore_beni_comboboxentry)
@@ -201,8 +200,6 @@ def drawPart(anaedit):
             anaedit.on_id_listino_customcombobox_changed)
     anaedit.id_listino_customcombobox.button.connect('toggled',
             anaedit.on_id_listino_customcombobox_button_toggled)
-    anaedit.id_banca_customcombobox.connect('clicked',
-                        on_id_banca_customcombobox_clicked)
     anaedit.id_aliquota_iva_esenzione_customcombobox.connect('clicked',
                         on_id_aliquota_iva_customcombobox_clicked)
     anaedit.id_vettore_customcombobox.setChangedHandler(idHandler)

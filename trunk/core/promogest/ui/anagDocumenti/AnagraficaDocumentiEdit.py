@@ -118,7 +118,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self.oneshot = False
         self.tagliaColoreRigheList = None
         self.visualizza_prezzo_alternativo = False
-        self.acconto = False
+
         # Inizializziamo i moduli in interfaccia!
         #self.draw()
         self.completion = self.ricerca_articolo_entrycompletition
@@ -461,13 +461,11 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                     self.pagamenti_page.metodo_pagamento_label.set_markup('<b><span foreground="black" size="16000">'+str(pago.denominazione)+'</span></b>')
                 else:
                     self.pagamenti_page.metodo_pagamento_label.set_markup('<b><span foreground="black" size="16000">'+str(_("NESSUNO?"))+'</span></b>')
-                self.pagamenti_page.on_aggiorna_pagamenti_button_clicked(self.pagamenti_page.aggiorna_pagamenti_button)
                 if self.dao.documento_saldato:
                     self.pagamenti_page.chiudi_pagamento_documento_button.set_sensitive(False)
                     self.pagamenti_page.apri_pagamento_documento_button.set_sensitive(True)
                 else:
                     self.pagamenti_page.apri_pagamento_documento_button.set_sensitive(False)
-            #print "passato al terzo tab"
 
     def on_rent_checkbutton_toggled(self, checkbutton=None):
         """ check button in schermata documenti relativa al noleggio """
@@ -539,7 +537,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self.end_rent_entry.set_text(dateTimeToString(self.dao.data_fine_noleggio))
 #            self.on_end_rent_entry_focus_out_event()
         findComboboxRowFromId(self.pagamenti_page.id_pagamento_customcombobox.combobox, self.dao.id_pagamento)
-        findComboboxRowFromId(self.id_banca_customcombobox.combobox, (self.dao.id_banca or -1) )
+        findComboboxRowFromId(self.pagamenti_page.id_banca_customcombobox.combobox, (self.dao.id_banca or -1) )
         findComboboxRowFromId(self.id_aliquota_iva_esenzione_customcombobox.combobox,
                 (self.dao.id_aliquota_iva_esenzione or -1))
         self.id_agente_customcombobox.refresh(clear=True, filter=False)
@@ -747,7 +745,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         else:
             self.id_magazzino_combobox.grab_focus()
         if posso("PA"):
-           AnagraficadocumentiPagamentExt.getScadenze(self)
+            self.pagamenti_page.getScadenze()
 
     def setDao(self, dao):
         """
@@ -871,7 +869,7 @@ del documento.
             self.dao.id_fornitore = None
             self.dao.id_destinazione_merce = findIdFromCombobox(self.id_destinazione_merce_customcombobox.combobox)
         self.dao.id_pagamento = findIdFromCombobox(self.pagamenti_page.id_pagamento_customcombobox.combobox)
-        self.dao.id_banca = findIdFromCombobox(self.id_banca_customcombobox.combobox)
+        self.dao.id_banca = findIdFromCombobox(self.pagamenti_page.id_banca_customcombobox.combobox)
         self.dao.id_aliquota_iva_esenzione = findIdFromCombobox(self.id_aliquota_iva_esenzione_customcombobox.combobox)
         self.dao.id_agente = self.id_agente_customcombobox._id
         self.dao.protocollo = self.protocollo_entry1.get_text()
@@ -995,7 +993,7 @@ del documento.
         self.dao.righeDocumento = righeDocumento
         if posso("PA"):
             #questa parte rimanda ai pagamenti
-            AnagraficadocumentiPagamentExt.saveScadenze(self)
+            self.pagamenti_page.saveScadenze()
 
         tipoid = findIdFromCombobox(self.id_operazione_combobox)
         tipo = Operazione().getRecord(id=tipoid)
@@ -1912,8 +1910,8 @@ del documento.
                 findComboboxRowFromId(self.pagamenti_page.id_pagamento_customcombobox.combobox, self._id_pagamento)
             if self.id_magazzino_combobox.get_active() == -1:
                 findComboboxRowFromId(self.id_magazzino_combobox, self._id_magazzino)
-            if self.id_banca_customcombobox.combobox.get_active() == -1:
-                findComboboxRowFromId(self.id_banca_customcombobox.combobox, self._id_banca)
+            if self.pagamenti_page.id_banca_customcombobox.combobox.get_active() == -1:
+                findComboboxRowFromId(self.pagamenti_page.id_banca_customcombobox.combobox, self._id_banca)
 
         if self._tipoPersonaGiuridica == "cliente":
             self.id_destinazione_merce_customcombobox.set_sensitive(True)
