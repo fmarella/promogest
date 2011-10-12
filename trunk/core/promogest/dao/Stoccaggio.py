@@ -79,7 +79,6 @@ class Stoccaggio(Dao):
     magazzino= property(_magazzino)
 
     if posso("SL"):
-        print "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
         from promogest.modules.SchedaLavorazione.dao.RigaSchedaOrdinazione import RigaSchedaOrdinazione
         from promogest.modules.SchedaLavorazione.dao.SchedaOrdinazione import SchedaOrdinazione
         def _impegnatoSuLavorazione(self):

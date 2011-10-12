@@ -1,29 +1,33 @@
 {% extends 'index2.html' %}
 {% block body %}
-        <table cellpadding="2" cellspacing="3" border="0" style="width:90%">
-            <tr>
-                <th>Codice</th>
-                <th>Giace</th>
-                <th>Impegnato</th>
-                <th>Impegnato</th>
-                <th>Scorta min.</th>
-            </tr>
+        <table cellpadding="2" cellspacing="3" border="1" style="width:90%">
             {% for dao in pageData["objects"] %}
 
-            <tr class="row">
-                <td class="detail" style="width:70px;" ><b>{{dao.codice}}</b></td>
-                <td class="detail" align="right" style="width:50px;"><strong>{{utils.mN( dao.getGiacenza(),1)}}</strong></td>
-                    <td class="number" align="right" style="width:50px;">{{ dao.impegnato_su_lavorazione}}</td>
-                <td class="detail" style="width:100px;">{{dao.scorta_minima|nonone}}</td>
-
+            <tr style="border-bottom-color: #A52A2A; border-bottom-style: solid; ">
+                <td >PART:<b>{{dao.codice}}</b></td>
+                <td >G:{{utils.mN(dao.getGiacenza(),0)}}</td>
+                    <td>I:{{ utils.mN(dao._impegnatoSuLavorazione(),0)}}</td>
+{% if (dao.getGiacenza()|float - dao._impegnatoSuLavorazione()|float) < dao.stoccaggio[0].scorta_minima|float %}                     
+                    
+                    <td style="background-color: #FFD7D7; ">R:{{utils.mN(dao.getGiacenza()|float - dao._impegnatoSuLavorazione()|float,0)}}({{dao.stoccaggio[0].scorta_minima|nonone}})</td>
+                     {% else %}
+                    <td style="background-color: #CCFFAA; ">R:{{utils.mN(dao.getGiacenza()|float - dao._impegnatoSuLavorazione()|float,0)}}({{dao.stoccaggio[0].scorta_minima|nonone}})</td>        
+            {% endif %}
             {% for d in dao.articoliAss %}
             {% if d.codice not in ["Stampa", "z-CONTR","z-BONIFICO"] and not d.id_figlio == d.id_padre %}
-                <tr class="row"><td class="detail" >{{d.codice}}</td><td class="detail"  style="width:50px;">{{d.denominazione}}</td><td class="detail" align="right"><strong>{{utils.mN(d.ARTIFIGLIO.getGiacenza(),1)}}</strong></td></tr>
+                <td>C:<b>{{d.codice}}</b></td><td>G:{{utils.mN(d.ARTIFIGLIO.getGiacenza(),0)}}</td>
+                                    <td>I:{{ utils.mN(d.ARTIFIGLIO._impegnatoSuLavorazione(),0)}}</td>
+                     
+                     
+{% if (d.ARTIFIGLIO.getGiacenza()|float - d.ARTIFIGLIO._impegnatoSuLavorazione()|float) < d.ARTIFIGLIO.stoccaggio[0].scorta_minima|float %}                   
+             <td style="background-color: #FFD7D7; ">R:{{utils.mN(d.ARTIFIGLIO.getGiacenza()|float - d.ARTIFIGLIO._impegnatoSuLavorazione()|float,0)}}({{d.ARTIFIGLIO.stoccaggio[0].scorta_minima|nonone}})</td>
+             
+             {% else %}
+             <td style="background-color: #CCFFAA; ">R:{{utils.mN(d.ARTIFIGLIO.getGiacenza()|float - d.ARTIFIGLIO._impegnatoSuLavorazione()|float,0)}}({{d.ARTIFIGLIO.stoccaggio[0].scorta_minima|nonone}})</td>
+             
+             {% endif %}
                 {% endif %}
             {% endfor %}
-
-            </tr><td span="4"><hr></hr></td></tr>
-
              {% endfor %}
         </table>
 {% endblock %}

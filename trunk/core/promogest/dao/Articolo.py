@@ -198,6 +198,26 @@ class Articolo(Dao):
         else: return ""
 
 
+    def _impegnatoSuLavorazione(self):
+        from promogest.modules.SchedaLavorazione.dao.SchedaOrdinazione import SchedaOrdinazione
+        from promogest.modules.SchedaLavorazione.dao.RigaSchedaOrdinazione import RigaSchedaOrdinazione
+        from promogest.dao.Riga import Riga
+        if self.codice not in ["Stampa", "z-CONTR","z-BONIFICO"]:
+            year = Environment.workingYear
+            t=0
+            part= Environment.params["session"]\
+                .query(Riga.quantita)\
+                .filter(and_(SchedaOrdinazione.fattura!=True,
+                            Riga.id==RigaSchedaOrdinazione.id,
+                                RigaSchedaOrdinazione.id_scheda == SchedaOrdinazione.id,
+                                Riga.id_articolo==self.id,
+                                )).all()
+            for r in part:
+                t +=r[0]
+            return t
+    #impegnato_su_lavorazione = property(_impegnatoSuLavorazione)
+
+
 
     if hasattr(conf, "PromoWear") and getattr(conf.PromoWear,'mod_enable')=="yes":
 
