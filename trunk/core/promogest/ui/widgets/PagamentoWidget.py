@@ -105,8 +105,7 @@ class PagamentoWidget(GladeWidget):
     def on_data_pagamento_scadenza_entry_changed(self, entry):
         """ Reimposta i totali saldato e da saldare alla modifica della data
             di pagamento della scadenza """
-        #AnagraficadocumentiPagamentExt.ricalcola_sospeso_e_pagato(self._owner)
-        pass
+        self._owner.pagamenti_page.ricalcola_sospeso_e_pagato()
 
     def show_all(self):
         self.data_scadenza_entry.show_all()
