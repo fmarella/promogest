@@ -27,10 +27,6 @@
 from decimal import *
 from promogest.dao.Pagamento import Pagamento
 from promogest.dao.TestataDocumento import TestataDocumento
-from promogest.modules.PrimaNota.dao.TestataPrimaNota import TestataPrimaNota
-from promogest.modules.PrimaNota.dao.RigaPrimaNota import RigaPrimaNota
-from promogest.modules.PrimaNota.dao.RigaPrimaNotaTestataDocumentoScadenza import RigaPrimaNotaTestataDocumentoScadenza
-from promogest.modules.Pagamenti.dao.TestataDocumentoScadenza import TestataDocumentoScadenza
 from promogest.ui.utils import *
 
 
@@ -59,10 +55,6 @@ def IsPagamentoMultiplo(combobox):
             return var
     else:
         return stringaCombobox
-
-
-
-
 
 def getDocumentoCollegato(anaedit, numerodocumento):
     """

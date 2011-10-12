@@ -27,10 +27,6 @@ from promogest.ui.utils import *
 from promogest.ui.utilsCombobox import *
 
 from promogest.dao.Pagamento import Pagamento
-#from promogest.dao.TestataDocumento import TestataDocumento
-#from promogest.modules.PrimaNota.dao.TestataPrimaNota import TestataPrimaNota
-#from promogest.modules.PrimaNota.dao.RigaPrimaNota import RigaPrimaNota
-#from promogest.modules.PrimaNota.dao.RigaPrimaNotaTestataDocumentoScadenza import RigaPrimaNotaTestataDocumentoScadenza
 from promogest.modules.Pagamenti.dao.TestataDocumentoScadenza import TestataDocumentoScadenza
 
 
