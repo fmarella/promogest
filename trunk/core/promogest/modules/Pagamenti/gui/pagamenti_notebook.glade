@@ -78,7 +78,7 @@
                     </child>
                   </object>
                   <packing>
-                    <property name="expand">True</property>
+                    <property name="expand">False</property>
                     <property name="fill">True</property>
                     <property name="position">1</property>
                   </packing>
@@ -108,7 +108,7 @@
                     </child>
                   </object>
                   <packing>
-                    <property name="expand">True</property>
+                    <property name="expand">False</property>
                     <property name="fill">True</property>
                     <property name="position">3</property>
                   </packing>
@@ -129,7 +129,7 @@
                 </child>
                 <child>
                   <object class="GtkToggleButton" id="acconto_scheda_togglebutton">
-                    <property name="label" translatable="yes">Aggiungi acconto</property>
+                    <property name="label" translatable="yes">Acconto</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
@@ -145,7 +145,7 @@
                 </child>
                 <child>
                   <object class="GtkButton" id="aggiungi_rate_button">
-                    <property name="label" translatable="yes">Aggiungi rata</property>
+                    <property name="label" translatable="yes">Rata</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
@@ -161,7 +161,7 @@
                 </child>
                 <child>
                   <object class="GtkButton" id="rimuovi_rate_button">
-                    <property name="label" translatable="yes">Rimuovi rata</property>
+                    <property name="label" translatable="yes">Rata</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
