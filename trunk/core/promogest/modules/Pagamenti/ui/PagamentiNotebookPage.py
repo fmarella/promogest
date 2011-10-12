@@ -223,7 +223,7 @@ class PagamentiNotebookPage(GladeWidget):
             else:
                 self.stato_label.set_markup('<b><span foreground="#B40000" size="24000">APERTO</span></b>')
             self.totale_pagato_scadenza_label.set_markup('<b><span foreground="#338000" size="24000">'+str(
-                self.ana.dao.totale_pagato or 0)+'</span></b>')
+                mN(self.ana.dao.totale_pagato) or 0)+'</span></b>')
 
             if (self.ana.dao.totale_sospeso is None)  or (self.ana.dao.totale_sospeso == 0):
                 totaleSospeso = Decimal(str(self.ana.totale_scontato_riepiloghi_label.get_text() or 0)) - Decimal(str(self.ana.dao.totale_pagato or 0))
@@ -231,7 +231,7 @@ class PagamentiNotebookPage(GladeWidget):
                 totaleSospeso = self.ana.dao.totale_sospeso
 
             self.totale_sospeso_scadenza_label.set_markup('<b><span foreground="#B40000" size="24000">'+str(
-                totaleSospeso)+'</span></b>')
+                mN(totaleSospeso))+'</span></b>')
             if self.ana.dao.id_primo_riferimento != None:
                 doc = TestataDocumento().getRecord(id=self.ana.dao.id_primo_riferimento)
                 self.importo_primo_documento_entry.set_text(str(doc.totale_pagato) or '')
