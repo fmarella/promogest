@@ -299,7 +299,6 @@ class InfoPesoNotebookPage(GladeWidget):
             import ho.pisa as pisa
         except:
             return
-        print "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", self.dao_testata_infopeso.righeinfopeso
         pageData = {"file": "infopeso.html",
                     "dao":self.dao_cliente,
                     "infopeso_righe":self.dao_testata_infopeso.righeinfopeso}

@@ -1,54 +1,40 @@
-{% extends 'index.html' %}
+<style>
+@page {
+size: A4 portrait;
+margin: 1cm;
+}
+</style>
 
-{% block body %}
-
-        <table cellpadding="0" cellspacing="0" border="0">
+        <div align="float-left"><img src="gui/gp.png" width="100" height="100" alt="" /></div>
+       
+        <table cellpadding="3" cellspacing="3" border="0" align="left" valign="middle" bgcolor="#FFA500" width="50%">
             <tr>
-                <td class="report-header" colspan="4"><h3>Cliente: <strong>{{dao.ragione_sociale}}</strong></h3></td>
+                <td class="report-header" >Cliente: <strong>{{dao.ragione_sociale}}</strong></td>
             </tr>
-            <tr><td colspan="3" class="table-header">Dati anagrafici</td></tr>
             <tr>
-        <td width="140px" class="odd-detail"> Codice </td>
-                <td class="odd-detail"><strong>{{dao.codice}}</strong></td>
+                <td class="report-header" >Cliente: <strong>{{dao.ragione_sociale}}</strong></td>
             </tr>
-
+                        <tr>
+                <td class="report-header" >Cliente: <strong>{{dao.ragione_sociale}}</strong></td>
+            </tr>
+                        <tr>
+                <td class="report-header" >Cliente: <strong>{{dao.ragione_sociale}}</strong></td>
+            </tr>
         </table>
 
-<table><tr>
-<td width="50%"><table cellpadding="0" cellspacing="0" border="0">
-        <tr><td colspan="2" class="table-header">Sede legale</td></tr>
-        <tr>
-            <td width="140px" class="odd-detail">Indirizzo</td>
-            <td class="odd-detail"><strong>{{dao.sede_legale_indirizzo|nonone}}</strong></td>
-        </tr>
-        <tr>
-            <td class="even-detail">Località</td>
-            <td class="even-detail"><strong>{{dao.sede_legale_localita|nonone}}</strong></td>
-        </tr>
-        <tr>
-            <td class="odd-detail">Provincia</td>
-            <td class="odd-detail"><strong>{{dao.sede_legale_provincia|nonone}}</strong></td>
-        </tr>
-        <tr>
-            <td class="even-detail">CAP</td>
-            <td class="even-detail"><strong>{{dao.sede_legale_cap|nonone}}</strong></td>
-        </tr>
-    </table>
 
-</td></tr>
-</table>
-<table>
-{% for a in utils.getRecapitiCliente(dao.id) %}
-<tr>
-<td><b>{{a.tipo_recapito|nonone}} : </b>{{ a.recapito|nonone}}</td>
-</tr>
-{% endfor %}
+<table cellpadding="3" cellspacing="1" border="0" align="center" valign="middle">
+        <tr>
+            <th>Data Registrazione</th>
+            <th>Peso</th>
+            <th>Trattamento</th>
+            <th>Note</th>
 
-<table>
+        </tr>
 {% for a in pageData["infopeso_righe"] %}
 <tr>
-<td><b>{{a.peso|nonone}} : </b>{{ a.massa_grassa|nonone}}</td>
+<td><b>{{utils.dateToString(a.data_registrazione|nonone)}}</b></td><td>{{utils.mN(a.peso|nonone,1)}}</td><td>{{a.tipotrattamento|nonone}}</td><td>{{a.note|nonone}}</td>
 </tr>
 {% endfor %}
 </table>
-{% endblock %}
+
