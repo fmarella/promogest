@@ -138,6 +138,11 @@ class PagamentiNotebookPage(GladeWidget):
         if id_pag == -1 or id_pag==0 or id_pag==None:
             messageInfo(msg=_("NESSUN METODO DI PAGAMENTO SELEZIONATO\n NON POSSO AGIRE"))
             return
+        pago = Pagamento().getRecord(id=id_pag)
+        if pago:
+            self.metodo_pagamento_label.set_markup('<b><span foreground="black" size="16000">'+str(pago.denominazione)+'</span></b>')
+        else:
+            self.metodo_pagamento_label.set_markup('<b><span foreground="black" size="16000">'+str(_("NESSUNO?"))+'</span></b>')
         if self.ana.dao.documento_saldato:
             msg = _('Attenzione! Stai per riaprire un documento già saldato.\n Continuare ?')
             if YesNoDialog(msg=msg, transient=self.ana.dialogTopLevel):
