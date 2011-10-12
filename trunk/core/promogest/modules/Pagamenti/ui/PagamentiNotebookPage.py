@@ -186,12 +186,12 @@ class PagamentiNotebookPage(GladeWidget):
 
     def on_acconto_scheda_togglebutton_toggled(self, button):
         if not self.acconto:
-            self.acconto_scheda_togglebutton.set_label("Rimuovi acconto")
+            self.acconto_scheda_togglebutton.set_label("Acconto")
             self.acconto = PagamentoWidget(self.ana, 'Acconto')
             self.scadenze_notebook.insert_page(self.acconto.getTopLevel(), gtk.Label(self.acconto.label), 0)
             self.scadenze_notebook.set_current_page(0)
         else:
-            self.acconto_scheda_togglebutton.set_label("Aggiungi acconto")
+            self.acconto_scheda_togglebutton.set_label("Acconto")
             self.scadenze_notebook.remove_page(0)
             self.scadenze_notebook.set_current_page(-1)
             self.acconto = None
