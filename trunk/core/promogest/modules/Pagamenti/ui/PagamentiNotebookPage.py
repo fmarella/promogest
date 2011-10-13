@@ -342,10 +342,10 @@ class PagamentiNotebookPage(GladeWidget):
 #            return
 
         importodoc = float(self.ana.totale_scontato_riepiloghi_label.get_text() or 0)
-        if importodoc == 0:
+        if importodoc == float(0):
             return
 
-        acconto = 0
+        acconto = float(0)
         if self.acconto:
             daoAcconto = self.acconto.get()
             acconto = float(daoAcconto.importo or 0)
@@ -383,10 +383,10 @@ class PagamentiNotebookPage(GladeWidget):
         """
 
         importotot = float(self.ana.totale_scontato_riepiloghi_label.get_text() or 0)
-        if importotot == 0:
+        if importotot == float(0):
             return
 
-        importo_immesso = 0
+        importo_immesso = float(0)
         for rata in self.rate:
             daoTDS = rata.get()
             importo_immesso += daoTDS.importo
@@ -405,7 +405,7 @@ class PagamentiNotebookPage(GladeWidget):
                 messageInfo(msg="Importo delle rate non inserite")
             return True
 
-        elif differenza_importi != 0:
+        elif differenza_importi != float(0):
             if messaggio:
                 messageInfo(msg="""ATTENZIONE!
 La somma degli importi che Lei ha inserito come rate nelle scadenze
@@ -424,6 +424,8 @@ Per l'esattezza, l'errore e` di %.2f""" % differenza_importi)
             Ricalcola i totali sospeso e pagato in base alle
             scadenze ancora da saldare
         """
+        totale_in_pagamenti_label = float(self.totale_in_pagamenti_label.get_text() or '0')
+
         acconto = float(0)
         if self.acconto:
             daoAcconto = self.acconto.get()
@@ -439,22 +441,24 @@ Per l'esattezza, l'errore e` di %.2f""" % differenza_importi)
             else:
                 totalesospeso += daoTDS.importo
 
-        if totalesospeso > float(0):
-            self.stato_label.set_markup('<b><span foreground="#B40000" size="24000">APERTO</span></b>')
-
         totalepagato += float(self.importo_primo_documento_entry.get_text() or '0')
         totalepagato += float(self.importo_secondo_documento_entry.get_text() or '0')
 
-        self.totale_pagato_scadenza_label.set_markup('<b><span foreground="#338000" size="24000">'+str(mN(totalepagato,2))+'</span></b>')
+        if totalepagato == float(0):
+            totalesospeso = totale_in_pagamenti_label
+        if totalesospeso == float(0):
+            totalesospeso = abs(totale_in_pagamenti_label - totalepagato)
 
-        if totalepagato == 0:
-            totalesospeso = float(self.totale_in_pagamenti_label.get_text())
-        if totalesospeso == 0:
-            totalesospeso = float(self.totale_in_pagamenti_label.get_text()) - totalepagato
-        self.totale_sospeso_scadenza_label.set_markup('<b><span foreground="#B40000" size="24000">'+str(mN(totalesospeso,2))+'</span></b>')
-        if totalepagato == 0 and totalesospeso == 0:
+        if totalesospeso > float(0):
             self.stato_label.set_markup('<b><span foreground="#B40000" size="24000">APERTO</span></b>')
-        if totalepagato == float(self.totale_in_pagamenti_label.get_text()) and\
+
+        self.totale_pagato_scadenza_label.set_markup('<b><span foreground="#338000" size="24000">'+str(mN(totalepagato, 2))+'</span></b>')
+        self.totale_sospeso_scadenza_label.set_markup('<b><span foreground="#B40000" size="24000">'+str(mN(totalesospeso, 2))+'</span></b>')
+
+        if totalepagato == float(0) and totalesospeso == float(0):
+            self.stato_label.set_markup('<b><span foreground="#B40000" size="24000">APERTO</span></b>')
+
+        if str(totalepagato) == str(totale_in_pagamenti_label) and \
                         self.stato_label.get_text() == "APERTO" and \
                         self.ana.notebook.get_current_page() == 3:
             msg = """Attenzione! L'importo in sospeso è pari a 0 e
