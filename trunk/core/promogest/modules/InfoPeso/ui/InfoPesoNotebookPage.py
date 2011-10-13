@@ -294,10 +294,7 @@ class InfoPesoNotebookPage(GladeWidget):
 
 
     def on_stampa_infopeso_button_clicked(self, button):
-        try:
-            import ho.pisa as pisa
-        except:
-            return
+        from  xhtml2pdf import pisa
         # provo a prendere i dati per la stampa dalla treeview così
         #ho anche le differenze di peso
         model = self.righe_pesata_treeview.get_model()

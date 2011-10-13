@@ -152,7 +152,7 @@ class AnagraficaHtml(object):
         print "DAO", self.dao.__class__.__name__
 
         if self.dao.__class__.__name__ in Environment.fromHtmlLits:
-            import ho.pisa as pisa
+            from  xhtml2pdf import pisa
 
             f = self.hh
             g = file(Environment.tempDir+".temp.pdf", "wb")

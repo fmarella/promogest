@@ -94,7 +94,8 @@ class AnagraficaPrintPreview(GladeWidget):
     def on_pdf_button_clicked(self, button):
         from PrintDialog import PrintDialogHandler
         try:
-            import ho.pisa as pisa
+            #import ho.pisa as pisa
+            from  xhtml2pdf import pisa
         except:
             messageInfo(msg="""ERRORE nell'import di una libreria
 necessaria alla creazione del pdf, su linux installare "pisa" su
@@ -121,12 +122,7 @@ o contattare l'assistenza""")
     def on_generic_combobox_changed(self,combobox):
         if self.codBar_combo.get_active()==0:
             from PrintDialog import PrintDialogHandler
-            try:
-                import ho.pisa as pisa
-            except:
-                print "ERRORE NELL'IMPORT DI PISA"
-#                import pisaLib.ho.pisa as pisa
-                return
+                from  xhtml2pdf import pisa
             f = self.html_code
             g = file(Environment.tempDir+".temp.pdf", "wb")
             pdf = pisa.CreatePDF(str(f),g)

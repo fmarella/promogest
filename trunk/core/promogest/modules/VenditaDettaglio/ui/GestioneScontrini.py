@@ -515,10 +515,7 @@ class GestioneScontrini(GladeWidget):
 
 
     def on_stampa_button_clicked(self, button):
-        try:
-            import ho.pisa as pisa
-        except:
-            return
+        from  xhtml2pdf import pisa
         if self.dao:
             f = str(self.html)
     #        f = "Hello <strong>World</strong>"

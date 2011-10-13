@@ -28,12 +28,7 @@ from promogest.lib.HtmlHandler import createHtmlObj, renderTemplate, renderHTML
 from promogest.ui.PrintDialog import PrintDialogHandler
 from promogest.dao.TestataDocumento import TestataDocumento
 from promogest.dao.Promemoria import Promemoria
-try:
-    import ho.pisa as pisa
-except:
-    print """ERRORE NELL'IMPORT DI PISA prova a digitare
-'sudo apt-get install python-pisa" nel terminale' """
-#    import pisaLib.ho.pisa as pisa
+from  xhtml2pdf import pisa
 
 try:
     if Environment.pg3:
