@@ -190,7 +190,7 @@ class Distinta(GladeWidget):
         renderHTML(self.detail,self.html)
 
     def on_pdf_button_clicked(self, button):
-        import ho.pisa as pisa
+        from  xhtml2pdf import pisa
         f = str(self.html)
 #        f = "Hello <strong>World</strong>"
         filename =Environment.tempDir + "distintaTemp.pdf"
