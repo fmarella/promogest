@@ -22,6 +22,10 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 from pg import BigBang
+import os
+import sys
 
 if __name__ == '__main__':
+    blackhole = file(os.devnull, 'w')
+    sys.stdout = sys.stderr = blackhole
     BigBang()
