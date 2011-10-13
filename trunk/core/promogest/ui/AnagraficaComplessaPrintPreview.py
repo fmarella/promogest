@@ -93,16 +93,7 @@ class AnagraficaPrintPreview(GladeWidget):
 
     def on_pdf_button_clicked(self, button):
         from PrintDialog import PrintDialogHandler
-        try:
-            #import ho.pisa as pisa
-            from  xhtml2pdf import pisa
-        except:
-            messageInfo(msg="""ERRORE nell'import di una libreria
-necessaria alla creazione del pdf, su linux installare "pisa" su
-windows è consigliato reinstallare il programma
-o contattare l'assistenza""")
-#                import pisaLib.ho.pisa as pisa
-            return
+        from xhtml2pdf import pisa
         f = self.html_code.replace("€","&#8364;")
         g = file(Environment.tempDir+".temp.pdf", "wb")
         pbar(self.pbar,pulse=True,text="GENERAZIONE STAMPA ATTENDERE")
