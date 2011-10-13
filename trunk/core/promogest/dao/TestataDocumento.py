@@ -600,9 +600,8 @@ class TestataDocumento(Dao):
                         tipo_pag = "ACCONTO"
                         num_scadenze -= 1
                     else:
-                        if num_scadenze > scad.numero_scadenza:
-                            tipo_pag = 'pagam. %s' % scad.numero_scadenza
-                        else:
+                        tipo_pag = 'pagam. %s' % scad.numero_scadenza
+                        if self.documento_saldato and num_scadenze == scad.numero_scadenza:
                             tipo_pag = 'saldo'
                         if scad.data_pagamento is None:
                             if ope['tipoPersonaGiuridica'] == 'fornitore':
