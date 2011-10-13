@@ -2,28 +2,32 @@
 {% block body %}
         <table cellpadding="2" cellspacing="3" border="1" style="width:90%">
             {% for dao in pageData["objects"] %}
-
+{% set giace = utils.mN(dao.getGiacenza(),0) %}
+{% set impe = utils.mN(dao._impegnatoSuLavorazione(),0) %}
             <tr style="border-bottom-color: #A52A2A; border-bottom-style: solid; ">
                 <td >PART:<b>{{dao.codice}}</b></td>
-                <td >G:{{utils.mN(dao.getGiacenza(),0)}}</td>
-                    <td>I:{{ utils.mN(dao._impegnatoSuLavorazione(),0)}}</td>
-{% if (dao.getGiacenza()|float - dao._impegnatoSuLavorazione()|float) < dao.sm|float %}
+                <td >G:{{giace}}</td>
+                    <td>I:{{impe}}</td>
+{% if (giace|float - impe|float) < dao.sm|float %}
 
-                    <td style="color: #FF0000; ">R:{{utils.mN(dao.getGiacenza()|float - dao._impegnatoSuLavorazione()|float,0)}}</td>
+                    <td style="color: #FF0000; ">R:{{giace|float - impe|float}}</td>
                      {% else %}
-                    <td >R:{{utils.mN(dao.getGiacenza()|float - dao._impegnatoSuLavorazione()|float,0)}}</td>
+                    <td >R:{{giace|float - impe|float}}</td>
             {% endif %}
             {% for d in dao.articoliAss %}
+{% set giaceAss = utils.mN(d.ARTIFIGLIO.getGiacenza()) %}
+{% set impeAss = utils.mN(d.ARTIFIGLIO._impegnatoSuLavorazione()) %}
+
             {% if d.codice not in ["Stampa", "z-CONTR","z-BONIFICO"] and not d.id_figlio == d.id_padre %}
-                <td>    <b>{{d.codice}}</b></td><td>G:{{utils.mN(d.ARTIFIGLIO.getGiacenza(),0)}}</td>
-                <td>I:{{ utils.mN(d.ARTIFIGLIO._impegnatoSuLavorazione(),0)}}</td>
+                <td>    <b>{{d.codice}}</b></td><td>G:{{giaceAss}}</td>
+                <td>I:{{impeAss}}</td>
 
 
-{% if (d.ARTIFIGLIO.getGiacenza()|float - d.ARTIFIGLIO._impegnatoSuLavorazione()|float) < d.ARTIFIGLIO.sm|float %}
-             <td style="color: #FFD7D7; ">R:{{utils.mN(d.ARTIFIGLIO.getGiacenza()|float - d.ARTIFIGLIO._impegnatoSuLavorazione()|float,0)}}({{d.ARTIFIGLIO.sm|nonone}})</td>
+{% if (giaceAss|float - impeAss|float) < d.ARTIFIGLIO.sm|float %}
+             <td style="color: #FFD7D7; ">R:{{giaceAss - impeAss}}</td>
 
              {% else %}
-             <td >R:{{utils.mN(d.ARTIFIGLIO.getGiacenza()|float - d.ARTIFIGLIO._impegnatoSuLavorazione()|float,0)}}</td>
+             <td >R:{{giaceAss|float - impeAss|float}}</td>
 
              {% endif %}
                 {% endif %}
