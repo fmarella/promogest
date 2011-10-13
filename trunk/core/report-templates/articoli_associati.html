@@ -7,24 +7,24 @@
                 <td >PART:<b>{{dao.codice}}</b></td>
                 <td >G:{{utils.mN(dao.getGiacenza(),0)}}</td>
                     <td>I:{{ utils.mN(dao._impegnatoSuLavorazione(),0)}}</td>
-{% if (dao.getGiacenza()|float - dao._impegnatoSuLavorazione()|float) < dao.stoccaggio[0].scorta_minima|float %}                     
-                    
-                    <td style="background-color: #FFD7D7; ">R:{{utils.mN(dao.getGiacenza()|float - dao._impegnatoSuLavorazione()|float,0)}}({{dao.stoccaggio[0].scorta_minima|nonone}})</td>
+{% if (dao.getGiacenza()|float - dao._impegnatoSuLavorazione()|float) < dao.sm|float %}
+
+                    <td style="color: #FF0000; ">R:{{utils.mN(dao.getGiacenza()|float - dao._impegnatoSuLavorazione()|float,0)}}</td>
                      {% else %}
-                    <td style="background-color: #CCFFAA; ">R:{{utils.mN(dao.getGiacenza()|float - dao._impegnatoSuLavorazione()|float,0)}}({{dao.stoccaggio[0].scorta_minima|nonone}})</td>        
+                    <td >R:{{utils.mN(dao.getGiacenza()|float - dao._impegnatoSuLavorazione()|float,0)}}</td>
             {% endif %}
             {% for d in dao.articoliAss %}
             {% if d.codice not in ["Stampa", "z-CONTR","z-BONIFICO"] and not d.id_figlio == d.id_padre %}
-                <td>C:<b>{{d.codice}}</b></td><td>G:{{utils.mN(d.ARTIFIGLIO.getGiacenza(),0)}}</td>
-                                    <td>I:{{ utils.mN(d.ARTIFIGLIO._impegnatoSuLavorazione(),0)}}</td>
-                     
-                     
-{% if (d.ARTIFIGLIO.getGiacenza()|float - d.ARTIFIGLIO._impegnatoSuLavorazione()|float) < d.ARTIFIGLIO.stoccaggio[0].scorta_minima|float %}                   
-             <td style="background-color: #FFD7D7; ">R:{{utils.mN(d.ARTIFIGLIO.getGiacenza()|float - d.ARTIFIGLIO._impegnatoSuLavorazione()|float,0)}}({{d.ARTIFIGLIO.stoccaggio[0].scorta_minima|nonone}})</td>
-             
+                <td>    <b>{{d.codice}}</b></td><td>G:{{utils.mN(d.ARTIFIGLIO.getGiacenza(),0)}}</td>
+                <td>I:{{ utils.mN(d.ARTIFIGLIO._impegnatoSuLavorazione(),0)}}</td>
+
+
+{% if (d.ARTIFIGLIO.getGiacenza()|float - d.ARTIFIGLIO._impegnatoSuLavorazione()|float) < d.ARTIFIGLIO.sm|float %}
+             <td style="color: #FFD7D7; ">R:{{utils.mN(d.ARTIFIGLIO.getGiacenza()|float - d.ARTIFIGLIO._impegnatoSuLavorazione()|float,0)}}({{d.ARTIFIGLIO.sm|nonone}})</td>
+
              {% else %}
-             <td style="background-color: #CCFFAA; ">R:{{utils.mN(d.ARTIFIGLIO.getGiacenza()|float - d.ARTIFIGLIO._impegnatoSuLavorazione()|float,0)}}({{d.ARTIFIGLIO.stoccaggio[0].scorta_minima|nonone}})</td>
-             
+             <td >R:{{utils.mN(d.ARTIFIGLIO.getGiacenza()|float - d.ARTIFIGLIO._impegnatoSuLavorazione()|float,0)}}</td>
+
              {% endif %}
                 {% endif %}
             {% endfor %}

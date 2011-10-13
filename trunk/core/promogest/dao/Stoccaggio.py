@@ -133,6 +133,7 @@ class Stoccaggio(Dao):
             if self.arti: return self.arti.id_anno
         id_anno = property(_id_anno)
 
+
         def _denominazione_taglia(self):
             """ esempio di funzione  unita alla property """
             if self.arti: return self.arti.denominazione_taglia

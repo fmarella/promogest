@@ -44,17 +44,6 @@ class AssociazioneArticolo(Dao):
         else: return None
     codicePadre = property(_codicePadre)
 
-    #def _giacenzaPadre(self):
-        #if self.ARTIPADRE:
-            #print "aaaaaaaaaaaaaaaaaaaaaaaaa", self.ARTIPADRE.getGiacenza
-            #return self.ARTIPADRE.giacenza
-        #else: return None
-    #giacenzaPadre = property(_giacenzaPadre)
-#
-    #def _giacenzaFiglio(self):
-        #if self.ARTIFIGLIO: return self.ARTIFIGLIO.getGiacenza
-        #else: return None
-    #giacenzaFiglio = property(_giacenzaFiglio)
 
     def _getCodiceFiglio(self):
         if not self.__codice:
@@ -87,6 +76,7 @@ class AssociazioneArticolo(Dao):
             else: return None
         else:
             return self.__cancellato
+
     def _setCancellatoFiglio(self, value):
         self.__cancellato= value
     cancellato = property(_getCancellatoFiglio, _setCancellatoFiglio)
@@ -112,6 +102,10 @@ class AssociazioneArticolo(Dao):
         elif k =="node":
             dic={k:and_(associazionearticolo.c.id_padre == associazionearticolo.c.id_figlio)}
         return  dic[k]
+
+
+    #def delete(self):
+        #print "che succede"
 
 articolo=Table('articolo', params['metadata'],schema = params['schema'],autoload=True)
 associazionearticolo=Table('associazione_articolo',params['metadata'],schema = params['schema'],autoload=True)

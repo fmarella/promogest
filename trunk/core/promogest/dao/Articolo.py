@@ -124,6 +124,12 @@ class Articolo(Dao):
         arti =ArticoloKit().select(idArticoloFiller=self.id,batchSize=None)
         return arti
 
+    def _sm(self):
+        if self.stoccaggio:
+            return self.stoccaggio[0].scorta_minima
+        return 0
+    sm = property(_sm)
+
     @property
     def imballaggio(self):
         if self.imba: return self.imba.denominazione
@@ -726,4 +732,3 @@ def getNuovoCodiceArticolo(idFamiglia=None):
     except:
         pass
     return codice
-

@@ -48,6 +48,18 @@ class AnagraficaDistintaBase(Anagrafica):
         self.record_duplicate_menu.set_property('visible', True)
 
 
+    def on_record_delete_activate(self, widget):
+        if not YesNoDialog(msg='Confermi l\'eliminazione ?', transient=self.getTopLevel()):
+            return
+        dao = self.filter.getSelectedDao()
+        for d in dao.articoliAss:
+            d.delete()
+
+        self.filter.refresh()
+        self.htmlHandler.setDao(None)
+        self.setFocus()
+
+
 class AnagraficaDistintaBaseFilter(AnagraficaFilter):
     """ Filtro per la ricerca nell'anagrafica delle distinte base """
 
