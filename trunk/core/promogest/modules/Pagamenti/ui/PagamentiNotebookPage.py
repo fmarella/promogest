@@ -466,5 +466,6 @@ l'importo pagato è uguale al totale documento.
 Procedere con la "chiusura" del Pagamento?"""
             if YesNoDialog(msg=msg, transient=None):
                 self.stato_label.set_markup('<b><span foreground="#338000" size="24000">PAGATO</span></b>')
-            self.apri_pagamento_documento_button.set_sensitive(True)
-            self.chiudi_pagamento_documento_button.set_sensitive(False)
+                self.chiudi_pagamento_documento_button.set_sensitive(False)
+                self.apri_pagamento_documento_button.set_sensitive(True)
+            
