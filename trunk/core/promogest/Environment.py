@@ -158,13 +158,14 @@ hapag = ["Fattura accompagnatoria","Fattura acquisto","Fattura differita acquist
 try:
     local = Local()
     local_manager = LocalManager([local])
+    application = local('application')
+    feedTrac = None
+    feedPromo = None
+    orario = 0
 except:
     print "MANCA WERKZEUG ANCHE QUI"
 
-application = local('application')
-feedTrac = None
-feedPromo = None
-orario = 0
+
 
 package = ["ONE BASIC", "ONE FULL", "ONE STANDARD", "PRO BASIC", "PRO STANDARD",
             "PRO FULL","ONE PROMOWEAR", "ONE PROMOSHOP", "PRO PROMOWEAR", "PRO PROMOSHOP"]
