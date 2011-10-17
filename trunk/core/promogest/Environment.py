@@ -43,7 +43,10 @@ import shutil
 import glob
 import gettext
 import getopt
-from werkzeug import Local, LocalManager, cached_property
+try:
+    from werkzeug import Local, LocalManager, cached_property
+except:
+    print " MANCA WERKZEUG"
 import sqlalchemy
 SAVER = sqlalchemy.__version__
 from sqlalchemy import *
