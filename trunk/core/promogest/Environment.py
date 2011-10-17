@@ -25,7 +25,7 @@ from promogest import pg3_check
 pg3 = pg3_check.pg3_cla
 aziendaforce = pg3_check.aziendaforce
 tipodbforce = pg3_check.tipodbforce
-
+web = pg3_check.web
 
 from config import Config
 if pg3:
@@ -38,9 +38,12 @@ try:
 except:
     print "Aggiunta icone non ha funzionato"
 import os
+import sys
 import shutil
 import glob
-import getopt, sys
+import gettext
+import getopt
+from werkzeug import Local, LocalManager, cached_property
 import sqlalchemy
 SAVER = sqlalchemy.__version__
 from sqlalchemy import *
@@ -125,13 +128,38 @@ da_data_inizio_primanota = None
 a_data_inizio_primanota = None
 
 
+CONFIGPATH = os.path.split(os.path.dirname(__file__))[0]
+webconfigFile = os.path.join(CONFIGPATH, 'pgweb.conf')
+webconf = Config(webconfigFile)
+
+cadenza = ["MENSILE", "BIMESTRALE", "TRIMESTRALE", "SEMESTRALE", "ANNUALE"]
+ALLOWED_SCHEMES = frozenset(['http', 'https', 'ftp', 'ftps'])
+templates_dir= os.path.join(CONFIGPATH, 'templates')
+STATIC_PATH = templates_dir
+STATIC_PATH_FEED = os.path.join(CONFIGPATH, 'feed')
+IMAGEPATH = os.path.join(STATIC_PATH, 'images/')
+LANGPATH = os.path.join(CONFIGPATH, 'lang')
+session_dir = os.path.join(CONFIGPATH, 'session')
+modules_dir = os.path.join(CONFIGPATH, 'core/plugins')
+domains = os.path.join(CONFIGPATH, 'templates')
+URL_CHARS = 'abcdefghijkmpqrstuvwxyzABCDEFGHIJKLMNPQRST23456789'
+modulesList = []
+sladir = "sladir/"
+artImagPath = ""
+importDebug = False
+languages = ""
+
 hapag = ["Fattura accompagnatoria","Fattura acquisto","Fattura differita acquisto",
 "Fattura differita vendita","Fattura vendita","Ricevuta Fiscale","Vendita dettaglio",
 "Nota di credito a cliente","Nota di credito da fornitore"]
 
-fromHtmlLits = ["Promemoria", "TestataPrimaNota","Articolo", "Cliente",
-                "Contatto", "Fornitore", "Fornitura", "Contatto", "Vettore",
-                "AliquotaIva", "TestataCommessa","Stoccaggio"]
+local = Local()
+local_manager = LocalManager([local])
+
+application = local('application')
+feedTrac = None
+feedPromo = None
+orario = 0
 
 package = ["ONE BASIC", "ONE FULL", "ONE STANDARD", "PRO BASIC", "PRO STANDARD",
             "PRO FULL","ONE PROMOWEAR", "ONE PROMOSHOP", "PRO PROMOWEAR", "PRO PROMOSHOP"]
@@ -559,6 +587,8 @@ params = {'engine': engine ,
         "tipo_db":tipodb,
         'rowsFamily' : [],
         'defaultLimit': 5,
+            'bccaddr' : ["assistenza@promotux.it"],
+            'objects' : ["Informazioni Tecniche", "Informazioni Commerciali" , "Varie"],
         'widthThumbnail' : 64,
         'heightThumbnail' : 64,
         'widthdetail' : 110,
@@ -639,3 +669,4 @@ def hook(et, ev, eb):
     sendmail()
 sys.excepthook = hook
 
+# DA SPOSTARE ASSOLUTAMENTE QUANTO PRIMA
