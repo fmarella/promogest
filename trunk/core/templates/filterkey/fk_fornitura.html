@@ -1,0 +1,53 @@
+<script type="text/javascript">
+$(function() {
+	$('#da_data_fornitura').datepick({dateFormat: 'dd-mm-yyyy'});
+	$('#da_data_prezzo').datepick({dateFormat: 'dd-mm-yyyy'});
+	$('#a_data_fornitura').datepick({dateFormat: 'dd-mm-yyyy'});
+	$('#a_data_prezzo').datepick({dateFormat: 'dd-mm-yyyy'});
+//    $("#fornitore").autocomplete("http://localhost:8888/autocomplete/fk_json_fornitore");
+
+var forn = $("#id_fornitore").attr("value");
+$("#id_fornitore").autoSuggest("http://localhost:8888/autocomplete/fk_json_fornitore",
+{selectedItemProp: "name", searchObjProps: "name",minChars:2,selectedValuesProp:"value",selectionLimit:1,
+asHtmlID:"id_fornitore",preFill:art,startText:""});
+
+var art = $("#id_articolo").attr("value");
+$("#id_articolo").autoSuggest("http://localhost:8888/autocomplete/fk_json_articolo_all",
+{selectedItemProp: "name", searchObjProps: "name",minChars:2,selectedValuesProp:"value",selectionLimit:1,
+asHtmlID:"id_articolo",preFill:art,startText:""});
+
+var tt = $("#codice_articolo_fornitore").attr("value");
+$("#codice_articolo_fornitore").autoSuggest("http://localhost:8888/autocomplete/fk_json_codice_articolo_fornitore",
+{selectedItemProp: "name", searchObjProps: "name",minChars:2,selectedValuesProp:"name",selectionLimit:1,
+asHtmlID:"codice_articolo_fornitore",preFill:tt,startText:""});
+});
+</script>
+
+<div id="searchBox">
+    <form name="searchkey" action="/anagrafiche/fornitura/list" method="post">
+
+    <fieldset><legend>&nbsp;&nbsp;&nbsp;<b>Ricerca</b>&nbsp;&nbsp;&nbsp;</legend>
+    <label >Articolo:</label><input type="text" id="id_articolo" name="id_articolo" size="15" value='{{pageData["chiavi"].articolo|nonone}}' />
+    <br />
+    <label >Fornitore:</label><input type="text" id="id_fornitore" name="id_fornitore" size="15" value='{{pageData["chiavi"].fornitore|nonone}}' /><br />
+<p><label>Da Data Fornitura:</label>
+                <input type="text"  id ="da_data_fornitura" name="da_data_fornitura" value ="{{pageData['dao'].da_data_fornitura|dateformat|replace('/','-')}}"  />
+<br/>
+<label>A Data Fornitura</label>
+                <input type="text" id ="a_data_fornitura" name="a_data_fornitura" value ="{{pageData['dao'].a_data_fornitura|dateformat|replace('/','-')}}"  />
+</p>
+<p><label>Da Data Prezzo:</label>
+                <input type="text" id ="da_data_prezzo" name="da_data_prezzo" value ="{{pageData['dao'].da_data_prezzo|dateformat|replace('/','-')}}"  />
+<br/>
+<label>A Data Prezzo</label>
+                <input type="text" id ="a_data_prezzo" name="a_data_prezzo" value ="{{pageData['dao'].a_data_prezzo|dateformat|replace('/','-')}}"  /></p>
+
+<label>Cod Art Fornitore:</label>    <br /><input type="text" id="codice_articolo_fornitore" name="codice_articolo_fornitore" size="15" value='{{pageData["chiavi"].codice_articolo_fornitore|nonone}}' /><br />
+
+<p><input type="submit" value="Search"/>&nbsp;<input onclick="clear_form_elements(this.form)" type="submit" value="Pulisci" />
+ </p>
+        </fieldset>
+        </form>
+
+    <p>Totale Items: <b> {{pageData['count']}}</b></p>
+</div>

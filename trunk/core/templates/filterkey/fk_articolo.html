@@ -1,0 +1,74 @@
+<script type="text/javascript">
+$(function() {
+
+
+
+var denominazione = $("#denominazione").attr("value");
+$("#denominazione").autoSuggest("http://localhost:8888/autocomplete/fk_json_articolo_denominazione",
+{selectedItemProp: "name", searchObjProps: "name",minChars:2,selectedValuesProp:"value",selectionLimit:1,
+asHtmlID:"denominazione",preFill:denominazione,startText:""});
+var produttore = $("#produttore").attr("value");
+$("#produttore").autoSuggest("http://localhost:8888/autocomplete/fk_json_articolo_produttore",
+{selectedItemProp: "name", searchObjProps: "name",minChars:2,selectedValuesProp:"value",selectionLimit:1,
+asHtmlID:"produttore",preFill:produttore,startText:""});
+var codice = $("#codice").attr("value");
+$("#codice").autoSuggest("http://localhost:8888/autocomplete/fk_json_articolo_codice",
+{selectedItemProp: "name", searchObjProps: "name",minChars:2,selectedValuesProp:"value",selectionLimit:1,
+asHtmlID:"codice",preFill:codice,startText:""});
+});
+</script>
+
+<div id="searchBox">
+    <form name="searchkey" action="/anagrafiche/articolo/list" method="post">
+
+    <fieldset><legend>&nbsp;&nbsp;&nbsp;<b>Ricerca</b>&nbsp;&nbsp;&nbsp;</legend>
+<p><label>Denom:</label><input type="text" id="denominazione" name="denominazione" size="15" value='{{pageData["chiavi"].denominazione|nonone}}' /><br />
+<label>Produtt:</label><input type="text" id="produttore" name="produttore" size="15" value='{{pageData["chiavi"].produttore|nonone}}' /><br />
+<label>Codice:</label><input type="text" id="codice" name="codice" size="15" value='{{pageData["chiavi"].codice|nonone}}' /><br />
+<label>Famiglia:</label>
+<select name="id_famiglia_articolo" >
+                    <option value=""></option>
+                    {% for t in pageData['famiglie'] %}
+                    {% if t.id == pageData["chiavi"].id_famiglia_articolo|int %}
+                           <option value="{{t.id}}" selected="yes">{{t.denominazione}}</option>
+                    {% else %}
+                        <option value="{{t.id}}">{{t.denominazione}}</option>
+                    {% endif %}
+                        {% endfor %}
+                    </select><br/>
+<label>C</label>
+<select name="id_categoria_articolo" >
+                    <option value=""></option>
+                    {% for t in pageData['categorie'] %}
+                    {% if t.id == pageData["chiavi"].id_categoria_articolo|int %}
+                           <option value="{{t.id}}" selected="yes">{{t.denominazione}}</option>
+                    {% else %}
+                        <option value="{{t.id}}">{{t.denominazione}}</option>
+                    {% endif %}
+                        {% endfor %}
+                    </select><br/>
+<label>Stato Articolo:</label>
+<select name="id_stato_articolo" >
+                    <option value=""></option>
+                    {% for t in pageData['statoarticolo'] %}
+                    {% if t.id == pageData["chiavi"].id_stato_articolo|int %}
+                           <option value="{{t.id}}" selected="yes">{{t.denominazione}}</option>
+                    {% else %}
+                        <option value="{{t.id}}">{{t.denominazione}}</option>
+                    {% endif %}
+                        {% endfor %}
+                    </select><br/>
+<label>Includi elim::</label><select name="eliminato">
+                    <option value="0"></option>
+                    <option value="1" >Si</option>
+                     <option value="0">No</option>
+                    </select>
+</p>
+
+<p><input type="submit" value="Search"/>&nbsp;<input onclick="clear_form_elements(this.form)" type="submit" value="Pulisci" />
+ </p>
+        </fieldset>
+        </form>
+
+    <p>Totale Items: <b> {{pageData['count']}}</b></p>
+</div>

@@ -1,0 +1,13 @@
+<div id="searchBox">
+    <form name="searchkey" action="/parametri/imballaggio/list" method="post">
+
+    <fieldset><legend>&nbsp;&nbsp;&nbsp;<b>Ricerca</b>&nbsp;&nbsp;&nbsp;</legend>
+<p><label>Denom:</label><input type="text" name="denominazione" size="20" value='{{pageData["chiavi"].denominazione|nonone}}' /></p>
+
+<p><input type="submit" value="Search"/>&nbsp;<input onclick="clear_form_elements(this.form)" type="submit" value="Pulisci" />
+ </p>
+        </fieldset>
+        </form>
+
+    <p>Totale Items: <b> {{pageData['count']}}</b></p>
+</div>

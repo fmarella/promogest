@@ -1,0 +1,19 @@
+<div id="searchBox">
+    <form name="searchkey" action="/anagrafiche/agente/list" method="post">
+
+    <fieldset><legend>&nbsp;&nbsp;&nbsp;<b>Ricerca</b>&nbsp;&nbsp;&nbsp;</legend>
+<p><label>Ragione Sociale:</label><input type="text" name="ragione_sociale" size="15" value='{{pageData["chiavi"].ragione_sociale|nonone}}' /><br />
+<label>Insegna:</label><input type="text" name="insegna" size="15" value='{{pageData["chiavi"].insegna|nonone}}' /><br />
+<label>Nome Cognome:</label><input type="text" name="cognome_e_nome" size="15" value='{{pageData["chiavi"].cognome_e_nome|nonone}}' /><br />
+<label>Codice:</label><input type="text" name="codice" size="15" value='{{pageData["chiavi"].codice|nonone}}' /><br />
+<label>Località:</label><input type="text" name="localita" size="15" value='{{pageData["chiavi"].localita|nonone}}' /><br />
+<label>Codice Fiscale:</label><input type="text" name="codice_fiscale" size="15" value='{{pageData["chiavi"].codice_fiscale|nonone}}' /><br />
+<label>Partita Iva:</label><input type="text" name="partita_iva" size="15" value='{{pageData["chiavi"].partita_iva|nonone}}' /><br />
+
+<p><input type="submit" value="Search"/>&nbsp;<input onclick="clear_form_elements(this.form)" type="submit" value="Pulisci" />
+ </p>
+        </fieldset>
+        </form>
+
+    <p>Totale Items: <b> {{pageData['count']}}</b></p>
+</div>
