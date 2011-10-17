@@ -39,7 +39,7 @@ from promogest.ui.utils import *
 
 class TestataScontrino(Dao):
 
-    def __init__(self, arg=None):
+    def __init__(self, req=None):
         Dao.__init__(self, entity=self)
 
     @reconstructor

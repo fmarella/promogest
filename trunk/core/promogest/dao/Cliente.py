@@ -32,7 +32,7 @@ from promogest.ui.utils import  codeIncrement, getRecapitiCliente
 
 class Cliente(Dao):
 
-    def __init__(self, arg=None):
+    def __init__(self, req=None):
         Dao.__init__(self, entity=self)
 
     def _getCategorieCliente(self):
