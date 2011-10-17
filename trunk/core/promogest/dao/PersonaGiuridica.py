@@ -2,7 +2,7 @@
 #
 # Promogest
 #
-# Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
+# Copyright (C) 2005,2006,2007,2008,2009,2010,2011 by Promotux Informatica - http://www.promotux.it/
 #
 # Authors: Francesco Meloni  <francesco@promotux.it>
 #          Francesco Marella <francesco.marella@gmail.com>
@@ -30,7 +30,7 @@ from migrate import *
 
 class PersonaGiuridica_(Dao):
 
-    def __init__(self, arg=None):
+    def __init__(self, req=None):
         Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):
@@ -41,7 +41,7 @@ persona_giuridica=Table('persona_giuridica',
                 params['metadata'],
                 schema = params['schema'],
                 autoload=True)
-                
+
 if "note" not in [c.name for c in persona_giuridica.columns]:
     col = Column('note', String)
     col.create(persona_giuridica)

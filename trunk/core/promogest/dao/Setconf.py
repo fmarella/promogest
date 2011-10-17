@@ -210,8 +210,6 @@ if not bb:
     kbb.date = datetime.datetime.now()
     session.add(kbb)
 
-
-
 bb = SetConf().select(key="vettore_codice_upper", section="Vettori")
 if not bb:
     kbb = SetConf()
@@ -224,5 +222,80 @@ if not bb:
     kbb.tipo = "bool"
     kbb.date = datetime.datetime.now()
     session.add(kbb)
+
+if not SetConf().select(key="project_name"):
+    key_name = SetConf()
+    key_name.key = "project_name"
+    key_name.value ="Pg2 WEB"
+    key_name.section = "Project"
+    key_name.description = " Nome del progetto"
+    key_name.active = True
+    key_name.date = datetime.datetime.now()
+    key_name.persist()
+if not SetConf().select(key="subdomain", section="Servizi"):
+    key_name = SetConf()
+    key_name.key = "subdomain"
+    key_name.value ="/siteAdmin/subdomainList"
+    key_name.section = "Servizi"
+    key_name.description = " Gestione dei sottodomini"
+    key_name.active = True
+    key_name.date = datetime.datetime.now()
+    key_name.persist()
+if not SetConf().select(key="uri"):
+    key_uri = SetConf()
+    key_uri.key = "uri"
+    key_uri.value = "http://www.promotux.it"
+    key_uri.section = "Project"
+    key_uri.description = "HOST DI PARTENZA"
+    key_uri.active = True
+    key_uri.date = datetime.datetime.now()
+    key_uri.persist()
+if not SetConf().select(key="cookie_name"):
+    key_cookie = SetConf()
+    key_cookie.key = "cookie_name"
+    key_cookie.value = "janascookie"
+    key_cookie.section = "Project"
+    key_cookie.description = "Descrizione del cookie"
+    key_cookie.active = True
+    key_cookie.date = datetime.datetime.now()
+    key_cookie.persist()
+if not SetConf().select(key="head_title"):
+    key_mf = SetConf()
+    key_mf.key = "head_title"
+    key_mf.value = "PromoTUX - Virtual company - Servizi e soluzioni gestionali per la tua azienda - Open source e Linux - Promotux snc"
+    key_mf.section = "Project"
+    key_mf.description = "Titolo standar della pagina principale"
+    key_mf.active = True
+    key_mf.date = datetime.datetime.now()
+    key_mf.persist()
+if not SetConf().select(key="news_list_number"):
+    key_nln = SetConf()
+    key_nln.key = "news_list_number"
+    key_nln.value = "3"
+    key_nln.section = "Project"
+    key_nln.description = "Numero di news nella sidebar"
+    key_nln.active = True
+    key_nln.date = datetime.datetime.now()
+    key_nln.persist()
+if not SetConf().select(key="smtpserver"):
+    key_nln = SetConf()
+    key_nln.key = "smtpserver"
+    key_nln.value = "smtp.tiscali.it"
+    key_nln.section = "Project"
+    key_nln.description = "server smtp con cui spedire le email"
+    key_nln.active = True
+    key_nln.date = datetime.datetime.now()
+    key_nln.persist()
+if not SetConf().select(key="self_confirm"):
+    key_nln = SetConf()
+    key_nln.key = "self_confirm"
+    key_nln.value = True
+    key_nln.section = "Project"
+    key_nln.description = "indica se nella registrazione serve l'email don conferma"
+    key_nln.active = True
+    key_nln.date = datetime.datetime.now()
+    key_nln.persist()
+
+COOKIENAME = SetConf().select(key="cookie_name")[0].value
 
 session.commit()

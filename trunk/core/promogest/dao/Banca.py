@@ -27,7 +27,7 @@ from Dao import Dao
 
 class Banca(Dao):
 
-    def __init__(self, arg=None):
+    def __init__(self, req=None):
         Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):

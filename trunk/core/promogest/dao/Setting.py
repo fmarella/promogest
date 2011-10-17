@@ -51,7 +51,7 @@ class Setting(Dao):
     Preventivo.registro | registro_preventivo
     Vendita dettaglio.registro | registro_vendita_dettaglio
     """
-    def __init__(self, arg=None):
+    def __init__(self, req=None):
         Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):

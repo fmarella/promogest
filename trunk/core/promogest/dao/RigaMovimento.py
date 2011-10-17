@@ -42,7 +42,7 @@ if hasattr(conf, "SuMisura") and getattr(conf.SuMisura,'mod_enable') == "yes":
 
 class RigaMovimento(Dao):
 
-    def __init__(self, arg=None):
+    def __init__(self, req=None):
         Dao.__init__(self, entity=self)
         self.__scontiRigaMovimento = None
         self.__dbMisuraPezzo = None

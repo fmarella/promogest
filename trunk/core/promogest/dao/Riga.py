@@ -44,7 +44,7 @@ if "id_riga_padre" not in [c.name for c in riga.columns]:
 
 class Riga(Dao):
     """ Mapper to handle the Row Table """
-    def __init__(self, arg=None):
+    def __init__(self, req=None):
         Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):
