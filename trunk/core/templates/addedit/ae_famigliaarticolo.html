@@ -1,0 +1,32 @@
+<script>
+  $(document).ready(function(){
+    $("#ae_form").validate()
+  });
+</script>
+
+{% if pageData["action"] == "edit" %}
+<form id="ae_form" action="/parametri/famiglia_articolo/fromedit" method="post">
+<input type="hidden" name="id" value="{{pageData['dao'].id}}"/>
+{% else %}
+<form id="ae_form" action="/parametri/famiglia_articolo/add" method="post">
+{% endif %}
+<p><label>Codice:</label><input type="text" name="codice" size="10" value='{{pageData["dao"].codice|nonone}}' class="required" /></p>
+<p><label>Denominazione:</label><input type="text" name="denominazione" size="60" value='{{pageData["dao"].denominazione|nonone}}' class="required" /></p>
+<p><label>Denominazione breve:</label><input type="text" name="denominazione_breve" size="60" value='{{pageData["dao"].denominazione_breve|nonone}}' class="required" /></p>
+<p><label>Famiglia Genitore:</label>
+<select name="id_padre"  class="required">
+                    <option value=""></option>
+                    {% for t in pageData['famigliapadre'] %}
+                    {% if t.id == pageData["dao"].id_padre %}
+                           <option value="{{t.id}}" selected="yes">{{t.denominazione}}</option>
+                    {% else %}
+                        <option value="{{t.id}}">{{t.denominazione}}</option>
+                    {% endif %}
+                        {% endfor %}
+                    </select></p>
+<br/>
+
+
+<input type="submit" name="add" value="Aggiungi" />
+<input type="reset" value="Azzera" name="submit" />
+</form>

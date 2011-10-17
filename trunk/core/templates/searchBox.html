@@ -1,0 +1,12 @@
+<div id="searchBox">
+    <form name="searchkey" action="/{{pageData['args']['page_list']}}" method="post">
+    <fieldset><legend>. Ricerca .</legend>
+<p><label>Denominazione:</label><input type="text" name="denominazione" size="10" value='' /></p>
+
+        <p><input type="submit" value="search"/>&nbsp;<input type="submit" value="reset"/></p>
+        </fieldset>
+        </form>
+
+    <p>Totale Items: <b> {{pageData['args']['count']}}</b><br/>
+    Parola cercata: <b>{{pageData['args']['searchkey']|nonone}}</b> </p>
+</div>

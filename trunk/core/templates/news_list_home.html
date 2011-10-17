@@ -1,0 +1,32 @@
+{% if pageData['subdomain'] %}
+    {% extends pageData['subdomain'].template+'/index.html' %}
+{% else %}
+    {% extends 'index.html' %}
+{% endif %}
+
+{% block center %}
+    <div id="page">
+        <h2>Tutte le notizie di {{pageData["project_name"]}} ({{pageData['args']['count']}})</h2>
+        <div id="p1">
+        <!-- NEWS -->
+        {% for news in pageData['newss'] %}
+            <div class="news">
+                <a href="news_detail/{{news.permalink }}" class="news_link">{{news.publication_date|datetimeformat}}</a>
+                <strong><a href="news_detail/{{news.permalink }}" class="news_link">{{news.title}}</a></strong>
+                <a href="news_detail/{{news.permalink }}">{{news.abstract}}</a>
+                <a href='news_detail/{{news.permalink }}' class='news_link'>&#187;&#187;&#187;</a>
+            </div>
+            <div class="news_click" >Notizia letta <span style="color: #ff5400;">{{news.clicks}}</span> volte</div>
+            <div class="tratteggio_arancio" ></div>
+        {% endfor %}
+
+{% include 'common/pagination.html' with context %}
+
+    <!-- END NEWS -->
+
+    </div>
+<!--    <p class="h_space"></p>-->
+
+    </div>
+ <!-- END PAGE -->
+{% endblock %}

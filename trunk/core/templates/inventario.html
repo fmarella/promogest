@@ -1,0 +1,61 @@
+{% include pageData['theme']+'head.html' %}
+<div id="content">
+<!--        <h2>Inventario</h2>-->
+
+{% if not pageData["check"] %}
+<table>
+<form name="check" method="post" action="/inventario_check">
+<tr><td class="contacts-left">Codice A Barre:</td>
+    <td class="contacts-right"><input type="text" name="cb" size="15" maxlength="20" tabindex="1" class="contacts" /></td></tr>
+    <tr><td class="contacts-left">Codice:</td>
+    <td class="contacts-right"><input type="text" name="codice" size="15" maxlength="20" tabindex="1" class="contacts" /></td></tr>
+    <tr><td class="contacts-right"><input type="submit" value="CHECK" class="submit" /></td>
+    <td class="contacts-left"><input type="reset" value="Azzera" class="submit" /></td>
+    </tr>
+    </form>
+    <script type="text/javascript">
+    document.check.cb.focus();
+    </script>
+            </table>
+            Inventariati = {{pageData["inventariati"]}}<br />
+{% else %}
+<table>
+{% if not pageData["art"] %}
+    <h2> Articolo non trovato Chiedere a Francesco" </h2>
+{% elif not pageData["inve"] %}
+<tr><td class="contacts-left">CODICE:</td>
+        <td class="contacts-right"><b>{{pageData["art"].codice}}</b></td></tr>
+<tr><td class="contacts-left">DENOM:</td>
+        <td class="contacts-right"><b>{{pageData["art"].denominazione}}</b></td></tr>
+        <tr><td class="contacts-left">Cod Barre:</td>
+        <td class="contacts-right"><b>{{pageData["art"].codice_a_barre}}</b></td></tr>
+        <h2> NON trovato in tabella inventario <br/>Chiedere a Francesco" </h2>
+{% else %}
+<tr><td class="contacts-left">CODICE:</td>
+        <td class="contacts-right"><b>{{pageData["art"].codice}}</b></td></tr>
+<tr><td class="contacts-left">DENOM:</td>
+        <td class="contacts-right"><b>{{pageData["art"].denominazione}}</b></td></tr>
+<tr><td class="contacts-left">Cod Barre:</td>
+        <td class="contacts-right"><b>{{pageData["inve"].codice_a_barre}}</b></td></tr>
+<tr><td class="contacts-left">VALORE:</td>
+    <td class="contacts-right"><b>{{pageData["inve"].valore_unitario}}</b></td></tr>
+<tr><td class="contacts-left">Data Agg:</td>
+    <td class="contacts-right"><b>{{pageData["inve"].data_aggiornamento|datetimeformat}}</b></td></tr>
+<tr><td><h1>N°:</h1></td><td><h1><b>{{pageData["inve"].quantita|int}}</b></h1></td></tr>
+<form name="store" method="post" action="/inventario_store">
+<input type="hidden" name="id_inv" value="{{pageData['inve'].id}}"/>
+<tr><td class="contacts-left">Quantità:</td>
+    <td class="contacts-right"><input type="text" name="quantita" size="10" maxlength="15" tabindex="1" class="contacts" /></td></tr>
+    <tr><td class="contacts-center"><input type="submit" value="SALVA" class="submit" /></td>
+    <td class="contacts-center"><input type="reset" value="Azzera" class="submit" /></td></tr>
+    </form>
+    <script type="text/javascript">
+    document.store.quantita.focus();
+    </script>
+    {% endif %}
+        {% endif %}
+        </table>
+<a href ="/inventario"> HOME</a>
+    <div>
+</body>
+</html>

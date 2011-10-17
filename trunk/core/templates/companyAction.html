@@ -1,0 +1,184 @@
+{% extends 'siteAdmin/siteAdmin.html' %}
+{% block operation %}
+{% include 'siteAdmin/tinyPart.html' with context %}
+
+{% if req.path =='/siteAdmin/companyAdd' %}
+        <div id="box">
+        {% if pageData['azienda'].id %}
+            <form  method="POST" action="/siteAdmin/companyAdd?update={{pageData['azienda'].id}}">
+        {% else %}
+            <form  method="POST" action="/siteAdmin/companyAdd?add">
+        {% endif %}
+        <div class="row thin">
+            <span class="word">Ragione Sociale :</span>
+            <span class="insert">
+                <input name="social" type="text" style="width: 80%" value="{{pageData['azienda'].social|nonone}}" tabindex="1"/></span><br />
+        </div>
+
+        <div class="row thin">
+            <span class="word">Insegna :</span>
+            <span class="insert">
+                <input name="ensign" type="text" style="width: 80%" value="{{pageData['azienda'].ensign|nonone}}" tabindex="2"/></span><br />
+        </div>
+
+        <div class="row thin">
+            <span class="word">Nome :</span>
+            <span class="insert" >
+                <input name="firstname" type="text" style="width: 80%" value="{{pageData['azienda'].firstname|nonone}}" tabindex="3"/></span><br />
+        </div>
+
+        <div class="row thin">
+            <span class="word">Cognome :</span>
+            <span class="insert">
+                <input name="lastname" type="text" style="width: 80%" value="{{pageData['azienda'].lastname|nonone}}" tabindex="4"/></span><br />
+        </div>
+
+        <div class="row thin">
+            <span class="word">Partita Iva :</span>
+            <span class="insert">
+                <input name="iva" type="text" style="width: 80%" value="{{pageData['azienda'].iva|nonone}}" tabindex="5"/></span><br />
+        </div>
+
+        <div class="row thin">
+            <span class="word">Codice Fiscale :</span>
+            <span class="insert">
+                <input name="fiscalcode" type="text" style="width: 80%" value="{{pageData['azienda'].fiscalcode|nonone}}" tabindex="6"/></span><br />
+        </div>
+
+        <div class="row thin">
+            <span class="word">Indirizzo :</span>
+            <span class="insert">
+                <input name="address" type="text" style="width: 80%" value="{{pageData['azienda'].address|nonone}}" tabindex="8"/></span><br />
+        </div>
+
+        <div class="row thin">
+            <span class="word">Cap :</span>
+            <span class="insert">
+                <input name="cap" type="text" style="width: 80%" value="{{pageData['azienda'].cap|nonone}}" tabindex="9"/></span><br />
+        </div>
+
+        <div class="row thin">
+            <span class="word">Città :</span>
+            <span class="insert">
+                <input name="city" type="text" style="width: 80%" value="{{pageData['azienda'].city|nonone}}" tabindex="10"/></span><br />
+        </div>
+
+        <div class="row thin">
+            <span class="word">Telefono :</span>
+            <span class="insert">
+                <input name="telephone" type="text" style="width: 80%" value="{{pageData['azienda'].telephone|nonone}}" tabindex="11"/></span><br />
+        </div>
+
+        <div class="row thin">
+            <span class="word">Mobile :</span>
+            <span class="insert">
+                <input name="mobile" type="text" style="width: 80%" value="{{pageData['azienda'].mobile|nonone}}" tabindex="12"/></span><br />
+        </div>
+
+        <div class="row thin">
+            <span class="word">Url :</span>
+            <span class="insert">
+                <input name="url" type="text" style="width: 80%" value="{{pageData['azienda'].url|nonone}}" tabindex="13"/></span><br />
+        </div>
+
+        <div class="row thin">
+            <span class="word">Email :</span>
+            <span class="insert">
+                <input name="email" type="text" style="width: 80%" value="{{pageData['azienda'].email|nonone}}" tabindex="14"/></span><br />
+        </div>
+        <br />
+        <span class="word">Abstract</span>
+
+        <span id ="elm1">
+        <textarea class="mceSimple" name="abstract" type="text" rows="10" cols="50" style="width: 100%">{{pageData['azienda'].abstract|nonone}}</textarea>
+        </span>
+        <br />
+        <span class="word">Descrizione Azienda </span>
+        <textarea  class="mceAdvanced" name="description" rows="30" cols="50" style="width: 100%">{{pageData['azienda'].description|nonone}}</textarea>
+
+        <br />
+                <div class="row lineTop">
+                <span class="word">Seleziona la categoria News:</span>
+                    <select name="categoriaId" style="width: 60%" size="7" multiple="multiple">>
+                    {% for cate in pageData['menuCompanyCategory'] %}
+                    {% if cate.denominazione == pageData['azienda'].categ.denominazione %}
+                        <option value="{{cate.id}}" SELECTED >{{cate.denominazione}}</option>
+                    {% else %}
+                    <option value="{{cate.id}}">{{cate.denominazione}}</option>
+                    {% endif %}
+                    {% endfor %}
+                    </select>
+                </div>
+
+                <div class="row thin lineTop">
+                <span class="word">Seleziona la lingua predefinita:</span>
+                    <select name="languageId">
+
+                    {% for lang in pageData['language'] %}
+                    <option value="{{lang.id}}">{{lang.denominazione}}</option>
+                    {% endfor %}
+                    </select>
+                    </div>
+                <div style="height:110px;">
+                <img src="/templates/company_img/{{pageData['azienda'].imagepath}}.jpg?{{pageData['now']}}" alt="{{pageData['azienda'].ensign}}" class="img_left" /><br /><br />
+                <a HREF="/siteAdmin/fileupload?id={{pageData['azienda'].id}}&amp;part=companyAdd"
+                    onClick="return targetopener(this)">Aggiungi o modifica la icona dell'azienda</a></div>
+            <br /><br />
+                <input type="submit" class="wymupdate" value="Aggiungi"/>
+            </form>
+<!--            <a href="javascript:toggleEditor('description');">Add/Remove editor per la descrizione</a>
+            <a href="javascript:toggleEditor('abstract');">Add/Remove editor per L'abstract</a>-->
+            <br />
+        </div>
+
+
+    {% elif req.path =='/siteAdmin/companyList' %}
+        <div id="box">
+                <span class="testa"><h2>Gestione Aziende</h2></span>
+                <hr></hr>
+                <div class="row normal">
+                <a href="/siteAdmin/companyAdd?new">
+                    <img src="/templates/siteAdmin/img/add.png" alt="aggiungi una News" title="aggiungi una News"/>
+                </a>
+                </div>
+                {% for page in pageData['companies'] %}
+                <div class="row normal lineTop" >
+                    <span>{{page.social|nonone}} {{page.ensign|nonone}} {{page.firstname|nonone}} {{page.lastname|nonone}} ({{page.lang.denominazione_breve}})</span>
+                    <span class="image"><a href="/siteAdmin/companyDel?id={{page.id}}" onClick='return confirm("Sei sicuro di voler cancellare questa news?")' ><img src="/templates/siteAdmin/img/trash.png" alt="elimina la news" title="elimina la news"/></a></span>
+                    <span class="image"><a href="/siteAdmin/companyAdd?edit={{page.id}}"><img src="/templates/siteAdmin/img/modifica.png" alt="modifica una news" title="modifica una news"/></a></span>
+            {% if page.active==1 %}
+            <span class="image normal" >
+                <a href="/siteAdmin/companyActive?id={{page.id}}&amp;pag={{pageData['pag']+1}}">
+                    <img src="/templates/siteAdmin/img/active_on.png" alt="disattiva Azienda" title="disattiva Azienda"/>
+                </a>
+            </span>
+            {% endif%}
+            {% if page.active==0 %}
+            <span class="image normal">
+                <a href="/siteAdmin/companyActive?id={{page.id}}&amp;pag={{pageData['pag']+1}}">
+                    <img src="/templates/siteAdmin/img/active_off.png" alt="attiva Azienda" title="attiva Azienda"/>
+                </a>
+            </span>
+            {% endif%}
+                </div>
+                {% endfor %}
+            <ul class="pages">
+                <li class="prima">Aziende:</li>
+                {% for i in range(0,pageData['item']) %}
+                    {% if i != pageData['pag'] %}
+                        <li><a href="/siteAdmin/companyList?pag={{i+1}}">{{i+1}}</a></li>
+                    {% else %}
+                        <li>[<a href="/siteAdmin/companyList?pag={{i+1}}">{{i+1}}</a>]</li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+                <div class="row normal lineTop">
+                <a href="/siteAdmin/companyAdd?new">
+                    <img src="/templates/siteAdmin/img/add.png" alt="aggiungi una azienda" title="aggiungi una azienda"/>
+                </a>
+                </div>
+        </div>
+
+{% endif %}
+        </div>
+{%endblock%}

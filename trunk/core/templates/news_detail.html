@@ -1,0 +1,65 @@
+{% if pageData['subdomain'] %}
+    {% extends pageData['subdomain'].template+'/index.html' %}
+{% else %}
+    {% extends 'mainsite/index.html' %}
+{% endif %}
+
+{% block center %}
+
+    <!-- PAGE -->
+        <div id="page">
+        <div class="news_detail">
+
+        <div style="padding:10px;" id="p1">
+        <h1>{{pageData['news'].title}}</h1>
+        <h4>{{pageData['news'].abstract}}</h4>
+            <div >
+                <div id="linki">{{pageData['news'].body}}</div>
+                {% if pageData['news'].source_url !="" or pageData['news'].source_url_alt_text != "" %}
+                    <p><strong>Fonte notizia:</strong> <a href="{{pageData['news'].source_url}}" class="breadcrumb" target="_blank">{{pageData['news'].source_url_alt_text}}</a></p>
+                {% endif %}
+                <br />
+                               <!-- AddThis Button BEGIN -->
+<script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+<a class="addthis_button" href="http://www.addthis.com/bookmark.php?v=250&amp;username=promotux"><img src="http://s7.addthis.com/static/btn/v2/lg-share-en.gif" width="125" height="16" alt="Bookmark and Share" style="border:0"/></a><script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#username=promotux"></script>
+<!-- AddThis Button END -->
+                <p><strong>Data Pubblicazione:</strong> {{pageData['news'].publication_date|datetimeformat[:-6]}}</p>
+                <br />
+
+                <strong>TAGS: </strong> {% for n in pageData['news'].tags %}
+                <strong> <a href="#" class="breadcrumb">{{n}}</a> </strong>,&nbsp;
+                {% endfor %}                <br />
+                <br />
+                <p><a href="http://forum.promotux.it/viewforum.php?f=1" class="breadcrumb" target="_blank">commenta nel forum...</a></p>
+                <br />
+<iframe style="border:0px;" src="http://www.onelinespot.com/getols" width="90%" height="48">
+  www.onelinespot.com
+</iframe>
+
+
+            {% if pageData['news'].user %}
+                <p>Inserita da: <i>{{pageData['news'].user.username}}</i></p>
+            {% endif %}
+            <div class="news_click" >Notizia letta <span style="color: #ff5400;">{{pageData['news'].clicks}}</span> volte</div>
+            <div id="last_news_title">Altre notizie</div>
+            <div class="tratteggio_verde" ></div>
+            {% for new in pageData['ultimenews'] %}
+                <ul class="last-news">
+                    <li class="last-news"><a href="/{{pageData['subdomain'].template}}/news_detail/{{new.permalink}}" class="news_link">{{new.publication_date|datetimeformat}}: {{new.title}}</a>
+                </ul>
+            {% endfor %}
+            <div id="nav">
+                <br />
+
+                <hr class="hr_green" />
+                <strong><a href="/{{pageData['subdomain'].template}}/news_list" class="news_link">Archivio News</a></strong>&nbsp;
+                &nbsp;
+                <hr class="hr_green" />
+            </div>
+        </div>
+{% if pageData["auth"]  and pageData["role"] == "Admin" %}
+<div >
+<a href="/siteAdmin/newsAdd?edit={{pageData['news'].id}}" title="modifica">Modifica</a>
+</div>{% endif %}
+<!-- END PAGE --> </div> </div> </div>
+{% endblock %}

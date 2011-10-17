@@ -1,0 +1,30 @@
+{% extends 'siteAdmin.html' %}
+{% block operation %}
+
+<div id="box">
+                <span class="testa"><h1>Promemoria</h1></span>
+    <div id=alto>
+    {% include 'searchBox.html' with context %}
+    {% include 'preview.html' with context %}
+    </div>
+                <div class="row normal">
+                <a href="/setconfAdd?new">
+                    <img src="/templates/img/add.png" alt="aggiungi una setconf" title="aggiungi una setconf"/>
+                </a>
+                </div>
+                <div style="width:99%;height:300px;overflow-y: scroll; border:1px solid">
+                {% for a in pageData['daos'] %}
+                <div class="row normal lineTop" >
+                    <span ><strong>{{a.data_scadenza|dateformat}}</strong> -<span style="color: #8C2323; "><a href="#" class="item" dao="Promemoria" id="{{a.id}}"/>{{a.id}} {{a.oggetto}}</a> </span>- <strong>{{a.incaricato}} </strong></span>
+                    <span class="image"><a href="/setconfDel?setconfId={{a.id}}" onClick='return confirm("Sei sicuro di voler cancellare questa setconf?")' ><img src="/templates/img/trash.png" alt="elimina la setconf" title="elimina la setconf"/></a></span>
+                    <span class="image"><a href="/setconfAdd?edit={{a.id}}"><img src="/templates/img/modifica.png" alt="modifica una setconf" title="modifica una setconf"/></a></span>
+                 </div>
+                {% endfor %}</div>
+        {#% include 'pagination.html' with context %#}
+                <div class="row normal lineTop">
+                <a href="/setconfAdd?new">
+                    <img src="/templates/img/add.png" alt="aggiungi una pagina" title="aggiungi una pagina"/>
+                </a>
+                </div>
+        </div>
+{%endblock%}

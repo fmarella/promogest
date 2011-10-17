@@ -1,0 +1,284 @@
+        <div id="box">
+
+        <div class="buy" py:if="pageData['act']=='step2'">
+            <span class="icon">
+                <img src="/style/common/img/attenzione.png"/>
+            </span>
+            <span class="text">Acquisto - Step 2<br/>
+            Conferma o completa i tuoi dati per proseguire nell'acquisto.</span>
+        </div>
+
+        <span class="testa">Profilo utente </span>${pageData['wayd']}
+        <hr></hr>
+
+        <form action="./userProfile?id=${pageData['user'].id}" method="post" onSubmit="return formValidate(this)">
+        <input type="hidden" name="update" value="1"/>
+        <input type="hidden" name="act" value="step3" py:if="pageData['act']=='step2'"/>
+        <input type="hidden" name="wayd" value="ins" py:if="pageData['wayd']=='ins'"/>
+        <input type="hidden" name="wayd" value="up" py:if="pageData['wayd']=='up'"/>
+
+        <div class="row thin bold">
+            <span>Dettagli anagrafici e account</span>
+
+        </div>
+        <div class="row thin lineTop">
+        <span>Registrato il: ${pageData['user'].registration_date.date()}</span>
+        </div>
+        <div class="row thin lineTop">
+            <span class="word">Username</span>
+            <span class="insert">${pageData['user'].username}</span>
+        </div>
+
+        <div class="row thin lineTop">
+            <span class="word">Password</span>
+            <span class="insert">
+                <input id="password" name="passwd" type="password" tabindex="1"/>
+            </span>
+        </div>
+
+        <div class="row thin lineTop">
+            <span class="word">Ripeti Password</span>
+            <span class="insert">
+                <input id="passconfirm" name="passcnf" type="password"  tabindex="2"/>
+            </span>
+        </div>
+
+        <div class="row thin lineTop">
+            <span class="word">Nome (*)</span>
+            <span class="insert">
+                <input id="nome" name="nome" type="text" value="${pageData['pg'].nome}" ddv-required="true"  py:if="pageData['act']=='step2'"  tabindex="3"/>
+                <input id="nome" name="nome" type="text" value="${pageData['pg'].nome}" py:if="pageData['act']!='step2'"  tabindex="3"/>
+            </span>
+        </div>
+
+        <div class="row thin lineTop">
+            <span class="word">Cognome (*)</span>
+            <span class="insert">
+                <input id="cognome" name="cognome" type="text" value="${pageData['pg'].cognome}" ddv-required="true" py:if="pageData['act']=='step2'" tabindex="4"/>
+                <input id="cognome" name="cognome" type="text" value="${pageData['pg'].cognome}" ddv-required="true"  py:if="pageData['act']!='step2'"  tabindex="4"/>
+            </span>
+        </div>
+        <div class="row thin lineTop" >
+        <span class="word">Ragione Sociale (*)</span>
+            <span class="insert">
+            <input id="ragione_sociale" name="ragione_sociale" type="text" value="${pageData['pg'].ragione_sociale}" ddv-required="true" tabindex="5"/>
+            </span>
+        </div>
+<!--         <input type="hidden" name="ragione_sociale" value="" py:if="pageData['role'] != 'ClientePRO'"/> -->
+
+        <div class="row thin lineTop"  >
+            <span class="word">Insegna</span>
+            <span class="insert">
+                <input id="insegna" name="insegna" type="text" value="${pageData['pg'].insegna}"  tabindex="6"/>
+            </span>
+        </div>
+<!--         <input type="hidden" name="insegna" value="" py:if="pageData['role'] != 'ClientePRO'"/> -->
+
+        <div class="row thin lineTop">
+            <span class="word">Email (*)</span>
+            <span class="insert">
+                <input id="email" name="email" type="text" value="${pageData['user'].email}"  tabindex="7" ddv-required="true" ddv-regexp="^([a-zA-Z0-9_\-\.]{3,})+(@[a-zA-Z0-9_\-\.]{3,})+\.+([a-zA-Z]{2,4})$"/>
+            </span>
+        </div>
+
+        <div class="row thin lineTop">
+            <span class="word">Sito Internet </span>
+            <span class="insert">
+                <input id="url" name="url" type="text" value="${pageData['url']}"  tabindex="8" />
+            </span>
+        </div>
+
+        <div class="row thin lineTop" py:if="pageData['role'] == 'ClientePRO' or 'Admin'">
+            <span class="word">Codice Fiscale (*)</span>
+            <span class="insert">
+            <input id="codice_fiscale" name="codice_fiscale" type="text" value="${pageData['pg'].codice_fiscale}" ddv-required="true"    ddv-regexp="[a-zA-Z]{6}[0-9]{2}[a-zA-Z][0-9]{2}[a-zA-Z][0-9]{3}[a-zA-Z]" py:if="pageData['act']=='step2' and pageData['role'] != 'ClientePRO'"  tabindex="8"/>
+            <input id="codice_fiscale" name="codice_fiscale" type="text" value="${pageData['pg'].codice_fiscale}" py:if="pageData['act']!='step2' or pageData['role'] == 'ClientePRO'"  tabindex="8"/>
+            </span>
+        </div>
+<!--         <input type="hidden" name="codice_fiscale" value="" py:if="pageData['role'] == 'Admin'"/> -->
+
+        <div class="row thin lineTop" py:if="pageData['role'] == 'ClientePRO' or 'Admin'">
+            <span class="word">Partita IVA (*)</span>
+            <span class="insert">
+            <input id="partita_iva" name="partita_iva" type="text" value="${pageData['pg'].partita_iva}" ddv-required="true" ddv-regexp="[0-9]{11}" py:if="pageData['act']=='step2'"  tabindex="9"/>
+            <input id="partita_iva" name="partita_iva" type="text" value="${pageData['pg'].partita_iva}" ddv-required="true" py:if="pageData['act']!='step2'"  tabindex="9"/>
+            </span>
+        </div>
+<!--         <input type="hidden" name="partita_iva" value="" py:if="pageData['role'] != 'ClientePRO'"/> -->
+
+        <div class="row thin lineTop" >
+            <span class="word">Telefono (*)</span>
+            <span class="insert">
+            <input id="telefono" name="telefono" type="text" value="${pageData['telefono']}"  ddv-required="true" tabindex="10" />
+            </span>
+        </div>
+<!--         <input type="hidden" name="telefono" value="" py:if="pageData['role'] == 'Admin'"/> -->
+
+        <div class="row thin lineTop" >
+            <span class="word">Fax</span>
+            <span class="insert">
+                <input id="fax" name="fax" type="text" value="${pageData['fax']}"  tabindex="11"/>
+            </span>
+        </div>
+<!--         <input type="hidden" name="partita_iva" value="" py:if="pageData['role'] == 'Admin'"/> -->
+
+        <div class="row large lineTop" >
+            <span class="word thin">Note</span>
+            <span class="box">
+                <textarea id="note" rows="6" name="note" type="textarea"  tabindex="12">${pageData['contact'].note}</textarea>
+            </span>
+        </div>
+<!--         <input type="hidden" name="note" value="" py:if="pageData['role'] == 'Admin'"/> -->
+
+        <div class="row thin lineTop bold" py:if="pageData['role'] != 'Admin'">
+            <span py:if="pageData['role'] == 'ClientePRO'">Sede legale</span>
+            <span py:if="pageData['role'] == 'Cliente'">Residenza</span>
+        </div>
+
+
+        <div class="row thin lineTop" >
+            <span class="word">Indirizzo (*)</span>
+            <span class="insert">
+                <input id="sede_legale_indirizzo" name="sede_legale_indirizzo" type="text" value="${pageData['pg'].sede_legale_indirizzo}" tabindex="13" ddv-required="true"  py:if="pageData['act']=='step2'"/>
+                <input id="sede_legale_indirizzo" name="sede_legale_indirizzo" type="text" value="${pageData['pg'].sede_legale_indirizzo}" tabindex="13" ddv-required="true" py:if="pageData['act']!='step2'"/>
+            </span>
+        </div>
+<!--         <input type="hidden" name="sede_legale_indirizzo" value="" py:if="pageData['role'] == 'Admin'"/> -->
+
+        <div class="row thin lineTop" >
+            <span class="word">Località (*)</span>
+            <span class="insert">
+                <input id="sede_legale_localita" name="sede_legale_localita" type="text" value="${pageData['pg'].sede_legale_localita}" tabindex="14" ddv-required="true"  py:if="pageData['act']=='step2'"/>
+                <input id="sede_legale_localita" name="sede_legale_localita" type="text" value="${pageData['pg'].sede_legale_localita}" tabindex="14" ddv-required="true" py:if="pageData['act']!='step2'"/>
+            </span>
+        </div>
+        <input type="hidden" name="sede_legale_localita" value="" py:if="pageData['role'] == 'Admin'"/>
+
+        <div class="row thin lineTop" >
+            <span class="word">CAP (*)</span>
+            <span class="insert">
+                <input id="sede_legale_cap" name="sede_legale_cap" type="text" value="${pageData['pg'].sede_legale_cap}" tabindex="14" ddv-required="true" py:if="pageData['act']=='step2'"/>
+                <input id="sede_legale_cap" name="sede_legale_cap" type="text" value="${pageData['pg'].sede_legale_cap}" tabindex="14" ddv-required="true" py:if="pageData['act']!='step2'"/>
+            </span>
+        </div>
+<!--         <input type="hidden" name="sede_legale_cap" value="" py:if="pageData['role'] == 'Admin'"/> -->
+
+        <div class="row thin lineTop" >
+            <span class="word">Provincia (*)</span>
+            <span class="insert">
+                <input id="sede_legale_provincia" name="sede_legale_provincia" type="text" value="${pageData['pg'].sede_legale_provincia}" tabindex="15" ddv-required="true" py:if="pageData['act']=='step2'"/>
+                <input id="sede_legale_provincia" name="sede_legale_provincia" type="text" value="${pageData['pg'].sede_legale_provincia}" tabindex="15"  ddv-required="true" py:if="pageData['act']!='step2'"/>
+            </span>
+        </div>
+<!--         <input type="hidden" name="sede_legale_provincia" value="" py:if="pageData['role'] == 'Admin'"/> -->
+
+        <div class="row thin lineTop" >
+            <span class="word">Nazione</span>
+            <span class="insert">
+                <input id="nazione" name="nazione" type="text" value="${pageData['pg'].nazione}" tabindex="16" />
+            </span>
+        </div>
+<!--         <input type="hidden" name="nazione" value="" py:if="pageData['role'] == 'Admin'"/> -->
+
+        <div class="row thin lineTop bold"  py:if="pageData['role'] == 'ClientePRO' or 'Admin'">
+            <span>Sede operativa</span>
+        </div>
+
+        <div class="row thin lineTop" py:if="pageData['role'] == 'ClientePRO' or 'Admin'">
+            <span class="word">Indirizzo sede operativa</span>
+            <span class="insert">
+                <input id="sede_operativa_indirizzo" name="sede_operativa_indirizzo" type="text" value= "${pageData['pg'].sede_operativa_indirizzo}" tabindex="17" />
+            </span>
+        </div>
+        <input type="hidden" name="sede_operativa_indirizzo" value="" py:if="pageData['role'] != 'ClientePRO'"/>
+
+        <div class="row thin lineTop" py:if="pageData['role'] == 'ClientePRO' or 'Admin'">
+            <span class="word">CAP sede operativa</span>
+            <span class="insert">
+                <input id="sede_operativa_cap" name="sede_operativa_cap" type="text" value="${pageData['pg'].sede_operativa_cap}" tabindex="18" />
+            </span>
+        </div>
+        <input type="hidden" name="sede_operativa_cap" value="" py:if="pageData['role'] != 'ClientePRO'"/>
+
+        <div class="row thin lineTop" py:if="pageData['role'] == 'ClientePRO' or 'Admin' ">
+            <span class="word">Località sede operativa</span>
+            <span class="insert">
+                <input id="sede_operativa_localita" name="sede_operativa_localita" type="text" value="${pageData['pg'].sede_operativa_localita}" tabindex="19" />
+            </span>
+        </div>
+        <input type="hidden" name="sede_operativa_localita" value="" py:if="pageData['role'] != 'ClientePRO'"/>
+
+        <div class="row thin lineTop" py:if="pageData['role'] == 'ClientePRO' or 'Admin' ">
+            <span class="word">Provincia sede operativa</span>
+            <span class="insert">
+                <input id="sede_operativa_provincia" name="sede_operativa_provincia" type="text" value="${pageData['pg'].sede_operativa_provincia}" tabindex="20"/>
+            </span>
+        </div>
+        <input type="hidden" name="sede_operativa_provincia" value="" py:if="pageData['role'] != 'ClientePRO'"/>
+
+
+        <div class="row thin lineTop bold" py:if="pageData['role'] != 'Admin' and pageData['act']=='step2'"  onclick="menu('dest');">
+            <span>Destinazione merce (cliccare e indicare solo se diversa da Residenza o Sede Legale)</span>
+        </div>
+
+        <div id="dest" style="display : none;" > <!-- inizio div destinazione-->
+        <div class="row thin lineTop" py:if="pageData['role'] != 'Admin'">
+            <span class="word">Denominazione</span>
+            <span class="insert">
+                <input id="destinazione_denominazione" name="destinazione_denominazione" type="text" value="${pageData['dm'].denominazione}" tabindex="21"/>
+            </span>
+        </div>
+        <input type="hidden" name="destinazione_denominazione" value="" py:if="pageData['role'] == 'Admin'"/>
+
+        <div class="row thin lineTop" py:if="pageData['role'] != 'Admin'">
+            <span class="word">Indirizzo</span>
+            <span class="insert">
+                <input id="destinazione_merce" name="destinazione_indirizzo" type="text" value="${pageData['dm'].indirizzo}" tabindex="22"/>
+            </span>
+        </div>
+        <input type="hidden" name="destinazione_merce" value="" py:if="pageData['role'] == 'Admin'"/>
+
+        <div class="row thin lineTop" py:if="pageData['role'] != 'Admin'">
+            <span class="word">Località</span>
+            <span class="insert">
+                <input id="destinazione_localita" name="destinazione_localita" type="text" value="${pageData['dm'].localita}" tabindex="23"/>
+            </span>
+        </div>
+        <input type="hidden" name="detinazione_localita" value="" py:if="pageData['role'] == 'Admin'"/>
+
+        <div class="row thin lineTop" py:if="pageData['role'] != 'Admin'">
+            <span class="word">CAP</span>
+            <span class="insert">
+                <input id="destinazione_cap" name="destinazione_cap" type="text" value="${pageData['dm'].cap}" tabindex="24"/>
+            </span>
+        </div>
+        <input type="hidden" name="destinazione_cap" value="" py:if="pageData['role'] == 'Admin'"/>
+
+        <div class="row thin lineTop" py:if="pageData['role'] != 'Admin'">
+            <span class="word">Provincia</span>
+            <span class="insert">
+                <input id="destinazione_provincia" name="destinazione_provincia" type="text" value="${pageData['dm'].provincia}" tabindex="25" />
+            </span>
+        </div>
+        <input type="hidden" name="destinazione_provincia" value="" py:if="pageData['role'] == 'Admin'"/>
+        </div> <!-- fine div destinazione-->
+        <div class="row thin lineTop">
+                    <span class="word">Seleziona la lingua predefinita:</span>
+                    <select name="languageId">
+                    <option selected="yes" value="${pageData['user'].lang.id}">${pageData['user'].lang.denominazione}</option>
+                    <py:for each="langg in pageData['language']">
+                    <option value="$langg.id">${langg.denominazione}</option>
+                    </py:for>
+                    </select>
+                    </div>
+        <div class="row thin lineTop center">
+            <input type="submit" value="Conferma" py:if="pageData['act'] == 'step2'"/>
+            <input type="submit" value="Registra-Modifica" py:if="pageData['act'] != 'step2'"/>
+            <input type="reset" value="Annulla"/>
+        </div>
+        </form>
+        </div>
+        <div class="row thin lineTop">
+        <span style="font-size:10px;">Tutti i campi contrassegnati con (*) devono essere compilati obbligatoriamente.</span>
+        </div>
+</html>

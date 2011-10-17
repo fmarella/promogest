@@ -1,0 +1,26 @@
+{% extends 'siteAdmin/siteAdmin.html' %}
+{% block operation %}
+
+
+<div id="box">
+        <span class="testa"><h2>Gestione Setup</h2></span>
+        <hr></hr>
+        <div class="row normal">
+        </div>
+        <form  method="POST" action="/siteAdmin/theme_setup">
+        {% for k,v in pageData['parameters'].items() %}
+        <span><b>{{ k }}</b><br /><br />{% for ke, va in v.items() %}
+        {{ ke }} : {{ va }}<br />
+            {% endfor %}
+        </span><br />
+        {% endfor %}
+
+        <div class="row normal lineTop">
+        <input type="submit" value="salva"/>
+        </div>
+        </form>
+        </div>
+</div>
+<!-- <iframe style="border:0px;" src="/" width="100%" height="400">Preview</iframe> -->
+        </div>
+{%endblock%}

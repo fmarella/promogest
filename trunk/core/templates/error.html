@@ -1,0 +1,21 @@
+{% extends 'index.html' %}
+
+{% block center %}
+    <!-- PAGE -->
+    <div id="page" align="center">
+<div id="box">
+  {{ pageData['error'] }}
+  <br /> <br />
+
+<h2 style="center">
+Riprova:
+    <a href="/prelogin">Area Riservata</a>
+    </h2><br />
+
+<h2 style="center">
+    Se non sei ancora registrato provvedi pure:
+        <a href="/userRegistration ">Registrazione</a>
+  </h2><br />
+</div>
+ <!-- END PAGE -->  </div>
+{% endblock %}

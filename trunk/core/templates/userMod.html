@@ -1,0 +1,200 @@
+{% extends 'siteAdmin/siteAdmin.html' %}
+
+{% block operation %}
+    {{ req.path }}
+    {% if req.path =='/siteAdmin/userMod'%}
+<div id="box">
+        <span class="testa">Modifica l'utente {{pageData['user'].username}}</span>
+        <hr></hr>
+        <form action="/siteAdmin/userUpdate" method="post" >
+        <input type="hidden" name="id" value="{{pageData['user'].id}}"/>
+        <div class="row thin">
+            <span class="word thin">Username</span>
+            <span class="insert thin">
+                <input id="username" name="username" type="text" value="{{pageData['user'].username}}" tabindex="1" READONLY />
+            </span>
+        </div>
+        <div class="row thin">
+            <span class="word thin">Password:</span>
+            <span class="insert thin">
+                <input id="password" name="password" type="password" value="" tabindex="2" />
+            </span>
+        </div>
+        {% if conf.Generic.simple=='True' %}
+
+        <div class="row thin">
+            <span class="word thin">Nome:</span>
+            <span class="insert thin">
+                <input id="nome" name="nome" type="text" value="{{pageData['pg'].nome}}" tabindex="3" />
+            </span>
+        </div>
+        <div class="row thin">
+            <span class="word thin">Cognome:</span>
+            <span class="insert thin">
+                <input id="cognome" name="cognome" type="text" value="{{pageData['pg'].cognome}}" tabindex="4" />
+            </span>
+        </div>
+
+        <div class="row thin">
+            <span class="word thin">Email:</span>
+            <span class="insert thin">
+                <input id="email" name="email" type="text" value="{{pageData['user'].email}}" tabindex="5" READONLY />
+            </span>
+        </div>
+
+        <div class="row thin">
+            <span class="word thin">Ruolo:</span>
+            <span class="insert thin">
+                <select name="roleId">
+                    {% for rolet in pageData['roles'] %}
+                    {% if rolet.name!=pageData['user'].ruolo %}
+                    <option value="${rolet.id}" >{{rolet.name}}</option>
+                    {% endif %}
+                    {% endfor %}
+                    <option value="{{pageData['user'].id}}" selected="selected">{{pageData['user'].ruolo}}</option>
+                </select>
+            </span>
+        </div>
+        {% endif%}
+        <!--<div class="row large">
+            <span class="word large">Note:</span>
+            <span class="box large">
+                <textarea id="note" name="note" rows="6" cols="20"  tabindex="7">${pageData['user'].notes}</textarea>
+            </span>
+        </div>-->
+<!--<div id="box" py:if="pageData['path'][4]=='userDetail'">-->
+        {% if conf.Generic.simple=='False' %}
+        <div class="row thin bold">
+            <span>Dettagli anagrafici e account</span>
+        </div>
+        <div class="row thin lineTop">
+            <span class="word">Username</span>
+            <span class="insert">{{pageData['user'].username}}</span>
+        </div>
+        <div class="row thin lineTop">
+            <span class="word">Cognome</span>
+            <span class="insert">{{pageData['pg'].cognome}}</span>
+        </div>
+        <div class="row thin lineTop">
+            <span class="word">Nome</span>
+            <span class="insert">{{pageData['pg'].nome}}</span>
+        </div>
+
+        <div class="row thin lineTop" py:if="pageData['pg'].ragione_sociale">
+            <span class="word">Ragione Sociale</span>
+            <span class="insert">{{pageData['pg'].ragione_sociale}}</span>
+        </div>
+        <div class="row thin lineTop" py:if="pageData['pg'].insegna">
+            <span class="word">Insegna</span>
+            <span class="insert">{{pageData['pg'].insegna}}</span>
+        </div>
+        <div class="row thin lineTop">
+            <span class="word">Email</span>
+            <span class="insert">{{pageData['user'].email}}</span>
+        </div>
+        <div class="row thin lineTop">
+            <span class="word">Codice Fiscale</span>
+            <span class="insert">{{pageData['pg'].codice_fiscale}}</span>
+        </div>
+        <div class="row thin lineTop">
+            <span class="word">Partita IVA</span>
+            <span class="insert">{{pageData['pg'].partita_iva}}</span>
+        </div>
+        <div class="row thin lineTop" py:if="pageData['telefono']">
+            <span class="word">Telefono</span>
+            <span class="insert">{{pageData['telefono']}}</span>
+        </div>
+        <div class="row thin lineTop" py:if="pageData['fax']">
+            <span class="word">Fax</span>
+            <span class="insert">{{pageData['fax']}}</span>
+        </div>
+        <div class="row large lineTop" py:if="pageData['role'] != 'Admin'">
+            <span class="word thin">Note</span>
+            <span class="box">{{pageData['contact'].note}}</span>
+        </div>
+        <div class="row thin lineTop bold">
+            <span>Sede legale</span>
+<!--             <span py:if="pageData['role'] == 'Cliente'">Residenza</span> -->
+        </div>
+        <div class="row thin lineTop">
+            <span class="word">Indirizzo</span>
+            <span class="insert">{{pageData['pg'].sede_legale_indirizzo}}</span>
+        </div>
+        <div class="row thin lineTop">
+            <span class="word">Località</span>
+            <span class="insert">{{pageData['pg'].sede_legale_localita}}</span>
+        </div>
+        <div class="row thin lineTop">
+            <span class="word">CAP</span>
+            <span class="insert">{{pageData['pg'].sede_legale_cap}}</span>
+        </div>
+        <div class="row thin lineTop">
+            <span class="word">Provincia</span>
+            <span class="insert">{{pageData['pg'].sede_legale_provincia}}</span>
+        </div>
+        <div class="row thin lineTop" py:if="pageData['pg'].nazione">
+            <span class="word">Nazione</span>
+            <span class="insert">{{pageData['pg'].nazione}}</span>
+        </div>
+
+
+        {% if pageData['pg'].sede_operativa_indirizzo %} <!-- sede operativa -->
+            <div class="row thin lineTop bold">
+                <span>Sede operativa</span>
+            </div>
+            <div class="row thin lineTop">
+                <span class="word">Indirizzo sede operativa</span>
+                <span class="insert">{{pageData['pg'].sede_operativa_indirizzo}}</span>
+            </div>
+            <div class="row thin lineTop">
+                <span class="word">CAP sede operativa</span>
+                <span class="insert">{{pageData['pg'].sede_operativa_cap}}</span>
+            </div>
+            <div class="row thin lineTop">
+                <span class="word">Località sede operativa</span>
+                <span class="insert">{{pageData['pg'].sede_operativa_localita}}</span>
+            </div>
+            <div class="row thin lineTop">
+                <span class="word">Provincia sede operativa</span>
+                <span class="insert">{{pageData['pg'].sede_operativa_provincia}}</span>
+            </div>
+        {% endif%} <!-- fine sede operativa -->
+
+
+
+        {% if pageData['dm'].indirizzo %} <!-- destinazione merce dm -->
+            <div class="row thin lineTop bold">
+                <span>Destinazione merce</span>
+            </div>
+            <div class="row thin lineTop">
+                <span class="word">Denominazione</span>
+                <span class="insert">{{pageData['dm'].denominazione}}</span>
+            </div>
+            <div class="row thin lineTop">
+                <span class="word">Indirizzo</span>
+                <span class="insert">{{pageData['dm'].indirizzo}}</span>
+            </div>
+            <div class="row thin lineTop">
+                <span class="word">Località</span>
+                <span class="insert">{{pageData['dm'].localita}}</span>
+            </div>
+            <div class="row thin lineTop">
+                <span class="word">CAP</span>
+                <span class="insert">{{pageData['dm'].cap}}
+                </span>
+            </div>
+            <div class="row thin lineTop">
+                <span class="word">Provincia</span>
+                <span class="insert">{{pageData['dm'].provincia}}</span>
+            </div>
+        </div>
+        {% endif %}<!-- fine destinazione merce -->
+        {% endif %}
+
+        <div class="row thin">
+            <input type="submit" value="Modifica" tabindex="8" onClick='return confirm("Sei sicuro di voler modificare questo utente?")'/>
+        </div>
+    </form>
+    </div>
+{% endif %}
+{%endblock%}

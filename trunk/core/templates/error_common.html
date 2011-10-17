@@ -1,0 +1,19 @@
+{% if pageData['subdomain'] %}
+    {% extends pageData['subdomain'].template+'/index.html' %}
+{% else %}
+    {% extends 'mainsite/index.html' %}
+{% endif %}
+
+{% block center %}
+    <!-- PAGE -->
+    <div id="page" align="center">
+<div id="box">
+  {{ pageData['error'] }}
+  <br /> <br />
+GGGGGGGGGGGGGGGg  {{pageData['subdomain'].template}}
+
+<div class="row thin lineTop center">
+<a href="/{{pageData['subdomain'].template}}">Torna alla Home</a>
+</div></div>
+ <!-- END PAGE -->  </div>
+{% endblock %}

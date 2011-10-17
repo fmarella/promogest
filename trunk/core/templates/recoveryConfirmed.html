@@ -1,0 +1,25 @@
+{% if pageData['subdomain'] %}
+    {% extends pageData['subdomain'].template+'/index.html' %}
+{% else %}
+    {% extends 'mainsite/index.html' %}
+{% endif %}
+
+{% block center %}
+
+<div id="box">
+<span class="testa">Recupero avvenuto!</span>
+<hr></hr>
+<p style="align:center;">Procedura di recupero password avvenuta con successo: è stata inviata una email al recapito indicato.</p>
+<p>Al suo interno viene indicata una password casuale di 10 caratteri.
+
+Vi ricordiamo la possibilità di modificarla tramite il pannello “Profilo personale”.
+
+Grazie per aver scelto {{pageData["project_name"]}}</p>
+
+<p>Grazie per aver scelto il nostro servizio</p>
+<div class="row thin lineTop center">
+<a href="/">Torna alla Home</a>
+</div>
+</div>
+
+{% endblock %}

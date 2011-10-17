@@ -1,0 +1,178 @@
+<html xmlns:py="http://genshi.edgewall.org/" py:strip=""
+      xmlns:xi="http://www.w3.org/2001/XInclude" xi:strip="">
+
+
+    <div id="box" py:if="pageData['path'][4]=='List'">
+        <span class="testa">Gestione utenti ( Admin non si può modificare )</span>
+        <hr></hr>
+                <div class="row">
+        <form name="myform" action="./List" method="post">
+            <span class="insert">
+            <input id="search" name="search" type="text" value=""/></span>
+            <span>&nbsp;<input type="submit" value="search"/>&nbsp;<input type="submit" value="reset"/></span>
+            <br />
+            </form>
+        </div>
+        <hr></hr>
+        <div class="row normal">
+            <a href="./Add">
+                <img src="/style/${pageData['path'][1]}/img/add.png" alt="aggiungi" title="aggiungi"/>
+            </a>
+        </div>
+        <div class="row normal lineTop" py:for="item in pageData['users']">
+            <form name="myform" action="" method="post">
+            <span class="check normal">
+                <input type="checkbox" name="option1" value="delCheck"/>
+            </span>
+            <span class="nick normal"><a href="detail?id=${user.id}">${item.username}</a></span>
+<!--             <span class="name normal">${user.name}</span> -->
+            <span class="role normal">${item.role.name}</span>
+            <span class="image normal">
+                <a href="./Del?id=${item.id}">
+                    <img src="/style/${pageData['path'][1]}/img/trash.png" alt="elimina XXXX" title="elimina XXXXX"/>
+                </a>
+            </span>
+            <span class="image normal" py:if="item.active==True">
+                <a href="./Active?id=${item.id}">
+                    <img src="/style/common/img/active.png" alt="attiva" title="attiva"/>
+                </a>
+            </span>
+            <span class="image normal" py:if="item.active==False">
+                <a href="./Active?id=${item.id}">
+                    <img src="/style/common/img/inactive.png" alt="inattiva" title="inattiva"/>
+                </a>
+            </span>
+            <span class="image normal">
+                <a href="./Mod?id=${item.id}">
+                    <img src="/style/${pageData['path'][1]}/img/modifica.png" alt="modifica" title="modifica"/>
+                </a>
+            </span>
+            </form>
+        </div>
+        <div class="row normal lineTop">
+        <ul class="pages"><li class="prima">Pagine</li>
+        <py:for each="i in range(0,pageData['item'])">
+            <li  py:if="i != pageData['pag']">
+    <a href="./List?pag=${i+1}">${i+1}</a>
+    </li>
+    <li py:if="i == pageData['pag']">[<a href="./List?pag=${i+1}">${i+1}</a>]</li>
+</py:for>
+</ul></div>
+        <div class="row normal lineTop">
+            <a href="./Add">
+                <img src="/style/${pageData['path'][1]}/img/add.png" alt="aggiungi" title="aggiungi"/>
+            </a>
+        </div>
+    </div>
+
+
+    <div id="box" py:if="pageData['path'][4]=='Add'">
+        <span class="testa">Aggiungi un utente</span>
+        <hr></hr>
+        <form action="./Add" method="post">
+        <div class="row thin">
+            <span class="word thin">Username:</span>
+            <span class="insert thin">
+                <input id="addusername" name="addusername" type="text"  tabindex="1" />
+            </span>
+        </div>
+        <div class="row thin">
+            <span class="word thin">Password:</span>
+            <span class="insert thin">
+                <input id="addpassword" name="addpassword" type="password" tabindex="2" />
+            </span>
+        </div>
+        <div class="row thin">
+            <span class="word thin">Email:</span>
+            <span class="insert thin">
+                <input id="email" name="email" type="text"  tabindex="5" />
+            </span>
+        </div>
+        <div class="row thin">
+            <span class="word thin">Ruolo:</span>
+                <span class="insert thin">
+                    <select name="roleId">
+                        <option value="$role.id" py:for="role in pageData['roles']">${role.name}</option>
+                    </select>
+                </span>
+            </div>
+            <div class="row thin">
+                <input type="submit" value="Aggiungi"  tabindex="8" />
+                <input type="reset" value="Annulla" />
+            </div>
+        </form>
+    </div>
+
+
+    <div id="box" py:if="pageData['path'][4]=='Mod'">
+        <span class="testa">Modifica l'utente ${pageData['user'].username}</span>
+        <hr></hr>
+        <form action="./Update" method="post" >
+        <input type="hidden" name="id" value="${pageData['user'].id}"/>
+        <div class="row thin">
+            <span class="word thin">Username</span>
+            <span class="insert thin">
+                <input id="username" name="username" type="text" value="${pageData['user'].username}" tabindex="1" />
+            </span>
+        </div>
+        <div class="row thin">
+            <span class="word thin">Password:</span>
+            <span class="insert thin">
+                <input id="password" name="password" type="password" value="" tabindex="2" />
+            </span>
+        </div>
+        <div class="row thin">
+            <span class="word thin">Nome:</span>
+            <span class="insert thin">
+                <input id="nome" name="nome" type="text" value="${pageData['pg'].nome}" tabindex="3" />
+            </span>
+        </div>
+        <div class="row thin">
+            <span class="word thin">Cognome:</span>
+            <span class="insert thin">
+                <input id="cognome" name="cognome" type="text" value="${pageData['pg'].cognome}" tabindex="4" />
+            </span>
+        </div>
+        <div class="row thin">
+            <span class="word thin">Email:</span>
+            <span class="insert thin">
+                <input id="email" name="email" type="text" value="${pageData['user'].email}" tabindex="5" />
+            </span>
+        </div>
+        <div class="row thin">
+            <span class="word thin">Ruolo:</span>
+            <span class="insert thin">
+                <select name="roleId">
+                    <option value="${rolet.id}" py:for="rolet in pageData['roles']" py:if="rolet.name!=pageData['userRole'].name">${rolet.name}</option>
+                    <option value="${pageData['userRole'].id}" selected="selected">${pageData['userRole'].name}</option>
+                </select>
+            </span>
+        </div>
+        <div class="row large">
+            <span class="word large">Note:</span>
+            <span class="box large">
+                <textarea id="note" name="note" rows="6" cols="20"  tabindex="7">${pageData['user'].notes}</textarea>
+            </span>
+        </div>
+        <div class="row thin">
+            <input type="submit" value="Modifica" tabindex="8" onClick='return confirm("Sei sicuro di voler modificare questo utente?")'/>
+        </div>
+    </form>
+    </div>
+
+    <div id="box" py:if="pageData['path'][4]=='detail'">
+        <div class="row thin bold">
+            <span>Dettagli anagrafici e account</span>
+        </div>
+        <div class="row thin lineTop">
+            <span class="word">Username</span>
+            <span class="insert">${pageData['user'].username}</span>
+        </div>
+            <div class="row thin lineTop">
+                <span class="word">Provincia</span>
+                <span class="insert">${pageData['dm'].provincia}</span>
+            </div>
+        </div> <!-- fine destinazione merce -->
+    </div>
+
+</html>

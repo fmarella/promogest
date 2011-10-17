@@ -1,0 +1,46 @@
+{% if pageData['subdomain'] %}
+    {% extends pageData['subdomain'].template+'/index.html' %}
+{% else %}
+    {% extends 'index.html' %}
+{% endif %}
+
+{% block center %}
+<div id="moduli">
+<br />
+  <h1>Elenco Servizi</h1><br />
+<p>La nostra azienda mette a vostra disposizione la professionalità di un team tecnico qualificato per fornire i Servizi che vanno a corredo del software.</p>
+<p> Come già precisato nella sezione Moduli ( inserire il link ) l'acquisto del software non comprende nessun servizio pertanto questa pagina è rivolta a tutti coloro che per scelta e/o esigenze professionali vogliono affidarsi alla nostra struttura tecnica che si occuperà di effettuare i servizi richiesti verificando il corretto funzionamento di tutto il sistema.</p>
+<p>Siamo in grado di offrire  una copertura su tutto il territorio nazionale grazie alla tecnologia adottata e alle risorse tecniche qualificate tutti i servizi vengono effettuati da remoto, ovvero tramite connessione internet.</p>
+<p>Questo consente una tempistica di intervento quasi immediata e un abbattimento dei costi non indifferente.</p>
+<p>Laddove non fosse possibile fruire dei servizi remoti, siamo in grado di fornire anche servizi onsite che verranno concordati preventivamente.</p>
+<p>Per visionare i costi dei servizi remoti bisogna prima effettuare il login, se non siete utenti registrati potete farlo cliccando qui ( inserire il link ), è gratuito e riserva tanti vantaggi ( inserire il link ).
+</p>
+
+
+  <div id="testata_table">
+    <div id="ico"></div>
+    <div id="descrizione"> Descrizione </div>
+    <div id="attivazione"> Attivazione </div>
+    <div id="rinnovo">Rinnovo</div>
+    <div id="link_dettagli"> Dettagli </div>
+  </div>
+ {% for modu in pageData['services'] %}
+
+  <div id="rigatable">
+    <div id="up">
+    <div id="ico">
+        <a href ="/promoGest/dettaglio_servizi/{{modu.permalink}}"/>
+    <img src="/templates/module_img/{{modu.imagepath}}" width="48" height="48"/></a> </div>
+    <div id="descrizione"><b><span id="risposte"> {{modu.denomination}}</span></b></div>
+    <div id="attivazione"><b><span id="risposte">€&nbsp; {{modu.prezzo}},00</span></b> </div>
+    <div id="rinnovo"><b><span id="risposte">€&nbsp; {{modu.prezzo_rinnovo}},00</span></b> </div>
+    <div id="link_dettagli"><a href ="/promoGest/dettaglio_servizi/{{modu.permalink}}"/>Dettagli</a></div></div>
+    <div id="abstr">{{modu.abstract}}</div>
+    <span id="clicks">Visitato:<b>{{modu.clicks}}</b> volte </span>
+
+  </div>
+<!-- </div> -->
+ {% endfor %}
+<!--end content -->
+</div>
+{%endblock%}

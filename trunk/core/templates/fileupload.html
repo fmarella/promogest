@@ -1,0 +1,13 @@
+            <div>
+                {# <img src="/templates/news_img/{{pageData['news'].imagepath}}" alt="{{pageData['news'].title}}" class="img_left" />
+                <p>Nel caso servisse l'url è : {{pageData['news'].imagepath}}</p><br /><br />#}
+                <!--<span class="word">Url Immagine  ( con http:// ) </span>
+                <span class="insert">
+                <input name="imageSourceUrl" type="text" style="width: 100%"/></span><br />-->
+                <form action="{{pageData['subdomain']}}/siteAdmin/{{pageData['part']}}?upload={{pageData['id']}}" enctype="multipart/form-data" method="post">
+                    <p>Scegli il file da caricare per la news:</p><br />
+                <input type="file"  name="image" size="50"/><br />
+                <input type="reset"  name="image" size="50"/>
+                <input type="submit" value="Invia Immagine"/>
+            </form>
+            </div>

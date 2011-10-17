@@ -1,0 +1,81 @@
+{% extends 'siteAdmin/index.html' %}
+
+{% block operation %}
+    <div id="box" >
+        <span class="testa"><h2>Gestione utenti ( Admin non si può modificare )</h2></span>
+        <hr>
+        {% include 'common/searchBox.html' with context %}
+        <div class="row normal">
+            <a href="/siteAdmin/userAdd?new">
+                <img src="/templates/siteAdmin/img/add.png" alt="aggiungi un utente" title="aggiungi un utente"/>
+            </a>
+        </div>
+        <div class="row normal">
+            {% if pageData["args"]["asc"] == "1" %}
+                <span class="order_by_data"><a href="/{{pageData['args']['page_list']}}?order_by=5&amp;asc=0">DATA</a></span>
+                <span class="order_by_name"><a href="/{{pageData['args']['page_list']}}?order_by=2&amp;asc=0">NOME</a></span>
+                <span class="order_by_active"><a href="/{{pageData['args']['page_list']}}?order_by=9&amp;asc=0">ACTIVE</a></span>
+            {% else %}
+                <span class="order_by_data"><a href="/{{pageData['args']['page_list']}}?order_by=5&amp;asc=1">DATA</a></span>
+                <span class="order_by_name"><a href="/{{pageData['args']['page_list']}}?order_by=2&amp;asc=1">NOME</a></span>
+                <span class="order_by_active"><a href="/{{pageData['args']['page_list']}}?order_by=9&amp;asc=1">ACTIVE</a></span>
+            {% endif %}
+        </div>
+        {% for user in pageData['users']%}
+        <div class="row normal lineTop" >
+            <form name="myform" action="" method="post">
+            <span class="nick normal"> {{user.registration_date|dateformat}} -  <a href="/siteAdmin/userDetail?USER={{user.id}}">{{user.username}}</a>
+             -&nbsp;&nbsp; {{user.email|nonone}} - &nbsp;&nbsp;&nbsp;<b> {{user.role.name}}</b>
+            </span>
+
+            <span class="image normal">
+                <a href="/siteAdmin/userDel?id={{user.id}}&amp;pag={{pageData['args']['pag']}}" onClick='return confirm("Sei sicuro di voler cancellare questo utente?")'>
+                    <img src="/templates/siteAdmin/img/trash.png" alt="elimina utente" title="elimina utente"/>
+                </a>
+            </span>
+
+
+            {% if user.active==1 %}
+            <span class="image normal" >
+                <a href="/siteAdmin/userActive?id={{user.id}}&amp;pag={{pageData['args']['pag']}}">
+                    <img src="/templates/siteAdmin/img/active_on.png" alt="disattiva utente" title="disattiva utente"/>
+                </a>
+            </span>
+            {% endif%}
+
+            {% if user.active==0 %}
+            <span class="image normal">
+                <a href="/siteAdmin/userActive?id={{user.id}}&amp;pag={{pageData['args']['pag']}}">
+                    <img src="/templates/siteAdmin/img/active_off.png" alt="attiva utente" title="attiva utente"/>
+                </a>
+            </span>
+            {% endif%}
+
+                <span class="image normal">
+                <a href="/siteAdmin/userAdd?edit={{user.id}}&amp;pag={{pageData['args']['pag']}}">
+                    <img src="/templates/siteAdmin/img/lucchetto_24X24.png" alt="modifica utente" title="modifica utente"/></a>
+            </span>
+            <span class="image normal">
+                <a href="/siteAdmin/userDetail?USER={{user.id}}">
+                    <img src="/templates/siteAdmin/img/modifica.png" alt="modifica password" title="modifica password"/></a></span>
+            {% if "liente" in user.role.name %}
+                <span class="image normal">
+                <a href="/siteAdmin/userClienteEdit?id={{user.id}}&amp;pag={{pageData['args']['pag']}}">
+                    <img src="/templates/siteAdmin/img/utenti_24.png" alt="modifica cliente" title="modifica cliente"/></a>            </span>
+                                    <span class="image normal">
+                <a href="/siteAdmin/userClienteSendInfo?id={{user.id}}">
+                    <img src="/templates/siteAdmin/img/mail_24X24.png" alt="invia email" title="invia email"/></a>            </span>
+            {% endif %}
+
+
+            </form>
+        </div>
+        {% endfor%}
+        {% include 'common/pagination.html' with context %}
+        <div class="row normal lineTop">
+            <a href="/siteAdmin/userAdd?new">
+                <img src="/templates/siteAdmin/img/add.png" alt="aggiungi un utente" title="aggiungi un utente"/>
+            </a>
+        </div>
+    </div>
+{%endblock%}

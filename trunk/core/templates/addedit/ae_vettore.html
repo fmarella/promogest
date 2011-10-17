@@ -1,0 +1,43 @@
+<script>
+  $(document).ready(function(){
+    $("#ae_form").validate({
+  rules: {
+    partita_iva: {
+      number: true
+    }
+  }
+});
+  });
+</script>
+
+{% if pageData["action"] == "edit" %}
+<form class="cmxform" id="ae_form" action="/anagrafiche/vettore/fromedit" method="post">
+<input type="hidden" name="id" value="{{pageData['dao'].id}}"/>
+{% else %}
+<form class="cmxform" id="ae_form" action="/anagrafiche/vettore/add" method="post">
+{% endif %}
+<p><label>Codice:</label><input  type="text" name="codice" size="60" value='{{pageData["dao"].codice|nonone}}' /></p>
+<p><label>Ragione Sociale:</label><input class="required" type="text" name="ragione_sociale" size="60" value='{{pageData["dao"].ragione_sociale|nonone}}' /></p>
+<p><label>Insegna:</label><input type="text" name="insegna" size="60" value='{{pageData["dao"].insegna|nonone}}' /></p>
+<p><label>Cognome:</label><input type="text" name="cognome" size="60" value='{{pageData["dao"].cognome|nonone}}' /></p>
+<p><label>Nome:</label><input type="text" name="nome" size="60" value='{{pageData["dao"].nome|nonone}}' /></p>
+<p><label>Codice Fiscale:</label><input type="text" name="codice_fiscale" size="16" value='{{pageData["dao"].codice_fiscale|nonone}}' /></p>
+<p><label for=partita_iva >Partita IVA:</label><input type="text" name="partita_iva" size="11" value='{{pageData["dao"].partita_iva|nonone}}' /></p>
+<p><fieldset><LEGEND> <b>Sede Legale</b> </LEGEND>
+<p><label>Indirizzo:</label><input type="text" name="sede_legale_indirizzo" size="60" value='{{pageData["dao"].sede_legale_indirizzo|nonone}}' /></p>
+<p><label>Località:</label><input type="text" name="sede_legale_localita" size="60" value='{{pageData["dao"].sede_legale_localita|nonone}}' /></p>
+<p><label>CAP:</label><input type="text" name="sede_legale_cap" size="5" value='{{pageData["dao"].sede_legale_cap|nonone}}' /></p>
+<p><label>Provincia:</label><input type="text" name="sede_legale_provincia" size="60" value='{{pageData["dao"].sede_legale_provincia|nonone}}' /></p>
+</fieldset></p>
+<p><fieldset><LEGEND> <b>Sede Operativa</b> </LEGEND>
+<p><label>Indirizzo:</label><input type="text" name="sede_operativa_indirizzo" size="60" value='{{pageData["dao"].sede_operativa_indirizzo|nonone}}' /></p>
+<p><label>Località:</label><input type="text" name="sede_operativa_localita" size="60" value='{{pageData["dao"].sede_operativa_localita|nonone}}' /></p>
+<p><label>CAP:</label><input type="text" name="sede_operativa_cap" size="5" value='{{pageData["dao"].sede_operativa_cap|nonone}}' /></p>
+<p><label>Provincia:</label><input type="text" name="sede_operativa_provincia" size="60" value='{{pageData["dao"].sede_operativa_provincia|nonone}}' /></p>
+</fieldset></p>
+
+<br/><br/>
+
+<input type="submit" name="add" value="Aggiungi" />
+<input type="reset" value="Azzera" name="submit" />
+</form>

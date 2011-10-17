@@ -1,0 +1,20 @@
+{% if pageData['subdomain'] %}
+    {% extends pageData['subdomain'].template+'/index.html' %}
+{% else %}
+    {% extends 'mainsite/index.html' %}
+{% endif %}
+
+{% block center %}
+    <div id="page">
+<!--         <h1>ARCHIVIO NEWS - News da e-linux.it</h1> -->
+<h2>{{pageData['staticPages'].title}}</h2>
+<div id="p1">
+<hr></hr>
+{{pageData['staticPages'].body}}
+</div>
+{% if pageData['role'] == 'Admin' %}
+<div >
+<a href="/siteAdmin/staticPagesAdd?edit={{pageData['staticPages'].id}}" title="modifica">Modifica la Pagina</a>
+</div>{% endif %}
+</div>
+{% endblock %}

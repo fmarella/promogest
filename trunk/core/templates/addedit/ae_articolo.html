@@ -1,0 +1,158 @@
+<script>
+  $(document).ready(function(){
+    $("#ae_form").validate({
+  rules: {
+    percentuale: {
+      required: true,
+      number: true
+    }
+  }
+});
+  });
+</script>
+
+{% if pageData["action"] == "edit" %}
+<form class="cmxform" id="ae_form" action="/anagrafiche/articolo/fromedit" method="post">
+<input type="hidden" name="id" value="{{pageData['dao'].id}}"/>
+{% else %}
+<form class="cmxform" id="ae_form" action="/anagrafiche/articolo/add" method="post">
+{% endif %}
+<p><label>Codice:</label><input  class="required" type="text" name="codice" size="60" value='{{pageData["dao"].codice|nonone}}' /></p>
+<p><label>Denominazione:</label><input class="required" type="text" name="denominazione" size="60" value='{{pageData["dao"].denominazione|nonone}}' /></p>
+<p><label>Produttore:</label><input type="text" name="produttore" size="60" value='{{pageData["dao"].produttore|nonone}}' /></p>
+<p><label>Famiglia:</label>
+<select name="id_famiglia_articolo" class="required">
+                    <option value=""></option>
+                    {% for t in pageData['famiglie'] %}
+                    {% if t.id == pageData["dao"].id_famiglia_articolo %}
+                           <option value="{{t.id}}" selected="yes">{{t.denominazione}}</option>
+                    {% else %}
+                        <option value="{{t.id}}">{{t.denominazione}}</option>
+                    {% endif %}
+                        {% endfor %}
+                    </select></p>
+<p><label>Categoria:</label>
+<select name="id_categoria_articolo" class="required">
+                    <option value=""></option>
+                    {% for t in pageData['categorie'] %}
+                    {% if t.id == pageData["dao"].id_categoria_articolo %}
+                           <option value="{{t.id}}" selected="yes">{{t.denominazione}}</option>
+                    {% else %}
+                        <option value="{{t.id}}">{{t.denominazione}}</option>
+                    {% endif %}
+                        {% endfor %}
+                    </select></p>
+<p><label>Aliquota:</label>
+<select name="id_aliquota_iva" class="required" >
+                    <option value=""></option>
+                    {% for t in pageData['aliquote'] %}
+                    {% if t.id == pageData["dao"].id_aliquota_iva %}
+                           <option value="{{t.id}}" selected="yes">{{t.denominazione}}</option>
+                    {% else %}
+                        <option value="{{t.id}}">{{t.denominazione}}</option>
+                    {% endif %}
+                        {% endfor %}
+                    </select></p>
+<p><label>Stato Articolo:</label>
+<select name="id_stato_articolo">
+                    <option value=""></option>
+                    {% for t in pageData['statoarticolo'] %}
+                    {% if t.id == pageData["dao"].id_stato_articolo %}
+                           <option value="{{t.id}}" selected="yes">{{t.denominazione}}</option>
+                    {% else %}
+                        <option value="{{t.id}}">{{t.denominazione}}</option>
+                    {% endif %}
+                        {% endfor %}
+                    </select></p>
+<p><label>Sospeso:</label><select name="sospeso">
+                    <option value=""></option>
+                    <option value="1" >Si</option>
+                     <option value="0">No</option>
+                    </select></p>
+<p><label>Unità base:</label>
+<select name="id_unita_base">
+                    {% for t in pageData['unitabase'] %}
+                    {% if t.id == pageData["dao"].id_unita_base %}
+                           <option value="{{t.id}}" selected="yes">{{t.denominazione}}</option>
+                    {% else %}
+                        <option value="{{t.id}}">{{t.denominazione}}</option>
+                    {% endif %}
+                        {% endfor %}
+                    </select></p>
+<p>Lunghezza:<input type="text" name="lunghezza" size="5" value='{{pageData["dao"].lunghezza|nonone}}' />
+Larghezza:<input type="text" name="larghezza" size="5" value='{{pageData["dao"].larghezza|nonone}}' />
+Altezza:<input type="text" name="altezza" size="5" value='{{pageData["dao"].altezza|nonone}}' />
+Peso Lordo:<input type="text" name="peso_lordo" size="5" value='{{pageData["dao"].peso_lordo|nonone}}' />
+Peso Imballaggio:<input type="text" name="peso_imballaggio" size="5" value='{{pageData["dao"].peso_imballaggio|nonone}}' />
+Quantità minima:<input type="text" name="quantita_minima" size="5" value='{{pageData["dao"].quantita_minima|nonone}}' />
+Volume:<input type="text" name="volume" size="5" value='{{pageData["dao"].volume|nonone}}' />
+</p>
+<p>Imballaggio:
+<select name="id_imballaggio">
+                    <option value=""></option>
+                    {% for t in pageData['imballaggi'] %}
+                    {% if t.id == pageData["dao"].id_imballaggio %}
+                           <option value="{{t.id}}" selected="yes">{{t.denominazione}}</option>
+                    {% else %}
+                        <option value="{{t.id}}">{{t.denominazione}}</option>
+                    {% endif %}
+                        {% endfor %}
+                    </select></p>
+<p>Unita di misura dimensioni:
+<select name="unita_dimensioni">
+                    <option value=""></option>
+                    {% for t in pageData['unitabase'] %}
+                    {% if t.id == pageData["dao"].id_unita_base %}
+                           <option value="{{t.denominazione}}" selected="yes">{{t.denominazione}}</option>
+                    {% else %}
+                        <option value="{{t.id}}">{{t.denominazione}}</option>
+                    {% endif %}
+                        {% endfor %}
+                    </select>Unita di misura Volume:
+<select name="unita_volume">
+                    <option value=""></option>
+                    {% for t in pageData['unitabase'] %}
+                    {% if t.id == pageData["dao"].id_unita_base %}
+                           <option value="{{t.denominazione}}" selected="yes">{{t.denominazione}}</option>
+                    {% else %}
+                        <option value="{{t.id}}">{{t.denominazione}}</option>
+                    {% endif %}
+                        {% endfor %}
+                    </select>Unita di misura peso:
+<select name="unita_peso">
+                    <option value=""></option>
+                    {% for t in pageData['unitabase'] %}
+                    {% if t.id == pageData["dao"].id_unita_base %}
+                           <option value="{{t.denominazione}}" selected="yes">{{t.denominazione}}</option>
+                    {% else %}
+                        <option value="{{t.id}}">{{t.denominazione}}</option>
+                    {% endif %}
+                        {% endfor %}
+                    </select></p>
+
+<p><label>Codice Etichetta:</label><input type="text" name="codice_etichetta" size="10" value='{{pageData["dao"].codice_etichetta|nonone}}' /></p>
+<p><label>Descrizione Etichetta:</label><input type="text" name="descrizione_etichetta" size="50" value='{{pageData["dao"].descrizione_etichetta|nonone}}' /></p>
+<p><label>Stampa etichetta:</label><select name="stampa_etichetta">
+                    <option value=""></option>
+                    <option value="1" >Si</option>
+                     <option value="0">No</option>
+                    </select></p>
+
+<p><label>Stampa Listino:</label><select name="stampa_listino">
+                                    <option value=""></option>
+                                    <option value="1" >Si</option>
+                                     <option value="0">No</option>
+                                </select>
+Aggiornamento Listino:<select name="aggiornamento_listino_auto">
+                    <option value=""></option>
+                    <option value="1" >Si</option>
+                     <option value="0">No</option>
+                    </select>
+Descrizione Listino:<input type="text" name="descrizione_listino" size="50" value='{{pageData["dao"].descrizione_listino|nonone}}' /></p>
+
+<p>Note:<br/> <textarea name="note" rows="5"  style="width: 75%">{{pageData['dao'].note|nonone}}</textarea></p>
+<br/><br/>
+
+<input type="submit" name="add" value="Aggiungi" />
+<input type="reset" value="Azzera" name="submit" />
+</form>

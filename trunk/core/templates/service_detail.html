@@ -1,0 +1,31 @@
+{% if pageData['subdomain'] %}
+    {% extends pageData['subdomain'].template+'/index.html' %}
+{% else %}
+    {% extends 'index.html' %}
+{% endif %}
+
+{% block center %}
+<!-- <div> -->
+<div id="moduli_dettaglio">
+    <div id="menu_mod">
+        <div id="ico_back"></div>
+            <a href="/promoGest/servizi">Tutti i servizi</a>
+    </div>
+
+    <div id="centertop"><br />
+        <h2>{{pageData["serviceD"].denomination}}</h2>
+        <div id="mod_d_ico_modulo">
+                <img src="/templates/service_img/{{pageData['serviceD'].imagepath}}" width="180" height="180" /></div>
+        <div id="mod_d_descrizione"><p>Codice:&nbsp;<b><span id="risposte">{{pageData["serviceD"].codice}}</span></b><br />
+            Prezzo acquisto: <span id="risposte">€&nbsp; <b>{{pageData["serviceD"].prezzo}},00 </b></span><br />
+            Prezzo rinnovo : <span id="risposte">€&nbsp;<b> {{pageData["serviceD"].prezzo_rinnovo}},00</b></span> <br />
+             <br /></p>
+        </div><br /><br /><br />
+        <div id="mod_d_text"><h5>Descrizione Breve:</h5> <br />{{pageData["serviceD"].abstract}}</div> <br />
+        <div id="mod_d_text"><h5>Dettaglio:</h5> <br />{{pageData["serviceD"].body}}</div> <br />
+        <div id="mod_d_clicks">Modulo visitato:<b> {{pageData["serviceD"].clicks}}</b> volte</div>
+    </div> <br /> <br />
+    <div class="spacer"></div>
+</div>
+<!--end content -->
+{%endblock%}

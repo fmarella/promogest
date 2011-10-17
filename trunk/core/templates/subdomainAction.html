@@ -1,0 +1,58 @@
+{% extends 'siteAdmin/siteAdmin.html' %}
+{% block operation %}
+{% if req.path =='/siteAdmin/subdomainAdd' %}
+       <div id="box">
+        {% if pageData['subs'].id %}
+            <form  method="POST" action="/siteAdmin/subdomainAdd?update={{pageData['subs'].id}}">
+        {% else %}
+            <form  method="POST" action="/siteAdmin/subdomainAdd?add">
+        {% endif %}
+        <span class="insert">Nome
+          <input name="name" type="text" value ="{{pageData['subs'].name|nonone}}" />
+                      Descrizione
+          <input name="description" type="text" value ="{{pageData['subs'].description|nonone}}"style="width: 30%" /></span>
+        <span class="insert">Template
+          <input name="template" type="text" value ="{{pageData['subs'].template|nonone}}" />
+            <input type="submit" value="salva"/>
+            </form>
+        </div>
+
+    {% elif req.path =='/siteAdmin/subdomainList' %}
+        <div id="box">
+                <span class="testa"><h1>Gestione SOTTODOMINI E TEMI ASSOCIATI</h1></span>
+                <hr></hr>
+                <div class="row normal">
+                <a href="/siteAdmin/subdomainAdd?new">
+                    <img src="/templates/siteAdmin/img/add.png" alt="aggiungi un subdomain" title="aggiungi un subdomain"/>
+                </a>
+                </div>
+        {% for sub in pageData['subs'] %}
+                <div class="row normal lineTop" >
+              <span >  Nome: {{sub.name|nonone}} - Descrizione: {{sub.description|nonone}} - Template: {{sub.template|nonone}}</span>
+                    <span class="image normal"><a href="/siteAdmin/subdomainDel?subdomainId={{sub.id}}" onClick='return confirm("Sei sicuro di voler cancellare questo modulo?")' ><img src="/templates/siteAdmin/img/trash.png" alt="elimina il subdomain" title="elimina  il subdomain"/></a></span>
+                    <span class="image normal"><a href="/siteAdmin/subdomainAdd?edit={{sub.id}}"><img src="/templates/siteAdmin/img/modifica.png" alt="modifica un subdomain" title="modifica un subdomain"/></a></span>
+            {% if sub.active==1 %}
+            <span class="image normal" >
+                <a href="/siteAdmin/subdomainActive?id={{sub.id}}">
+                    <img src="/templates/siteAdmin/img/active_on.png" alt="disattiva subdomain" title="disattiva subdomain"/>
+                </a>
+            </span>
+            {% endif%}
+            {% if sub.active==0 %}
+            <span class="image normal">
+                <a href="/siteAdmin/subdomainActive?id={{sub.id}}">
+                    <img src="/templates/siteAdmin/img/active_off.png" alt="attiva subdomain" title="attiva subdomain"/>
+                </a>
+            </span>
+            {% endif%}
+                </div>
+                {% endfor %}
+              <div class="row normal lineTop">
+                <a href="/siteAdmin/subdomainAdd?new">
+                    <img src="/templates/siteAdmin/img/add.png" alt="aggiungi una subdomain" title="aggiungi una subdomain"/>
+                </a>
+                </div>
+        </div>
+{% endif %}
+<!--         </div> -->
+{%endblock%}

@@ -1,0 +1,31 @@
+{% if pageData['subdomain'] %}
+    {% extends pageData['subdomain'].template +'/index.html' %}
+{% else %}
+    {% extends 'index.html' %}
+{% endif %}
+
+{% block center %}
+<div id="contentss">
+        <h2>Sviluppo</h2>
+    <p> La filosofia alla base dello sviluppo del <b>PromoGest</b> è leggermente differente da quella solita.</p>
+<p>Il codice sorgente è pubblico, gli step di produzione sono consultabilii ed esiste una "timeline" aggiornata
+quotidianamente che informa su quali operazioni,fix, miglioramenti siano stati apportati all'applicazione secondo una scansione temporale.</p>
+<p>Qui sotto potrete leggere appunto un dettaglio di queste modifiche.</p>
+<p> Rimandiamo comunque per navigare il codice e lasciare qualche ticket nel Trac di sviluppo <a href="http://trac.promotux.it/promogest">a questo indirizzo</a></p>
+<p> Ricordiamo anche strumenti come il <a href="http://forum.promotux.it/">Forum</a> o il <a href="http://blog.promotux.it/">Blog</a> utili allo scambio ed al reperimento di informazioni più tecniche </p>
+
+        <h3><a href="http://trac.promotux.it/promogest/">Novità relative allo sviluppo</a></h3><br />
+            <div id="page">
+        <ul>
+            {% for f in pageData["feedTrac"] %}
+            <li>{{f.updated}}:&nbsp;<br />&nbsp;<a href="{{f.links}}">{{f.title}}</a>
+                <div style="color:#FCAF3E">Inserita da: <span style = "font-weight:bold;font-style:italic;color: #2B4F81">{{f.autore}}</span></div>
+                <div><br/></div>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
+
+{% endblock %}

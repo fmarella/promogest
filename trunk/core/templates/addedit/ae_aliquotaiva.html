@@ -1,0 +1,41 @@
+<script>
+  $(document).ready(function(){
+    $("#ae_form").validate({
+  rules: {
+    percentuale: {
+      required: true,
+      number: true
+    }
+  }
+});
+  });
+</script>
+
+{% if pageData["action"] == "edit" %}
+<form class="cmxform" id="ae_form" action="/parametri/aliquota_iva/fromedit" method="post">
+<input type="hidden" name="id" value="{{pageData['dao'].id}}"/>
+{% else %}
+<form class="cmxform" id="ae_form" action="/parametri/aliquota_iva/add" method="post">
+{% endif %}
+<p><label>Denominazione:</label><input type="text" name="denominazione" size="60" value='{{pageData["dao"].denominazione|nonone}}' class="required" /></p>
+<p><label>Denominazione breve:</label><input type="text" name="denominazione_breve" size="60" value='{{pageData["dao"].denominazione_breve|nonone}}' class="required" /></p>
+<p><label for="percentuale">Percentuale:</label><input type="text" name="percentuale" size="60" value='{{pageData["dao"].percentuale|nonone}}' /></p>
+<p><label>Percentuale Detrazione:</label><input type="text" name="percentuale_detrazione" size="60" value='{{pageData["dao"].percentuale_detrazione|nonone}}' /></p>
+<p><label>Descrizione detrazione:</label><input type="text" name="descrizione_detrazione" size="60" value='{{pageData["dao"].descrizione_detrazione|nonone}}' /></p>
+<p><label>Tipo Aliquota:</label>
+<select name="id_tipo"  class="required">
+                    <option value=""></option>
+                    {% for t in pageData['tipoAliquota'] %}
+                    {% if t.id == pageData["dao"].id_tipo %}
+                           <option value="{{t.id}}" selected="yes">{{t.denominazione}}</option>
+                    {% else %}
+                        <option value="{{t.id}}">{{t.denominazione}}</option>
+                    {% endif %}
+                        {% endfor %}
+                    </select></p>
+<br/>
+
+
+<input type="submit" name="add" value="Aggiungi" />
+<input type="reset" value="Azzera" name="submit" />
+</form>

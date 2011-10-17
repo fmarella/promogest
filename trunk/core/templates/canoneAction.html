@@ -1,0 +1,113 @@
+{% extends 'siteAdmin/index.html' %}
+
+{% block operation %}
+
+{% if req.path =='/siteAdmin/canoneAdd' %}
+<div id="box">
+    <span class="testa"><h3>Aggiungi una canone</h3></span><br />
+        {% if pageData['canone'].id %}
+            <form  name ="canoneform" method="POST" action="/siteAdmin/canoneAdd?update={{pageData['canone'].id}}">
+        {% else %}
+            <form name ="canoneform" method="POST" action="/siteAdmin/canoneAdd?add">
+        {% endif %}
+                <span class="word">titolo</span>
+                <span class="insert">
+                <input name="denomination" type="text" value ="{{pageData['canone'].denomination|nonone}}" style="width: 60%"/></span><br /><br />
+            <span class="word">Inizio canone</span>
+                <input type="text" name="start_date" value ="{{pageData['canone'].start_date|dateformat|replace('/','-')}}" style="width: 60%" />
+                        <script language="JavaScript">
+                        new tcal ({
+                      'formname': 'canoneform',
+                      'controlname': 'start_date'
+                        });
+                        </script><br />                <br />
+                <span class="word">Fine canone</span>
+                    <input type="text" name="stop_date" value ="{{pageData['canone'].stop_date|dateformat|replace('/','-')}}" style="width: 60%" />
+                        <script language="JavaScript">
+                        new tcal ({
+                      'formname': 'canoneform',
+                      'controlname': 'stop_date'
+                        });
+                        </script>
+                <br />
+                                <br />
+                                <span class="word">Ultima Fattura</span>
+                    <input type="text" name="last_invoice" style="width: 60%" />
+                        <script language="JavaScript">
+                        new tcal ({
+                      'formname': 'canoneform',
+                      'controlname': 'last_invoice'
+                        });
+                        </script>
+                <br />
+                <br />
+                    <span class="word">Cadenza:</span>
+                        <select name="cadenza">
+                    {% for cad in pageData['cadenza'] %}
+                    <option value="{{cad}}">{{cad}}</option>
+                    {% endfor %}
+                        </select>
+<br />
+                <br />
+                    <span class="word">Cliente abbinato:</span>
+                        <select name="clienteId">
+                    {% for cad in pageData['clienti'] %}
+                    <option value="{{cad.id}}">{{cad.username}}</option>
+                    {% endfor %}
+                        </select>
+                        <br />
+                                        <br />
+    <span class="word">valore</span>
+                <span class="insert">
+                <input name="valore" type="text" value ="{{pageData['canone'].valore|nonone}}" style="width: 60%"/></span><br /><br />
+                <span class="word">Seleziona la categoria canone:</span>
+                        <select name="categoriaId">
+                    {% for cate in pageData['canoneCategory'] %}
+                    <option value="{{cate.id}}">{{cate.denominazione}}</option>
+                    {% endfor %}
+                    </select>
+<br />
+                <input type="submit" class="wymupdate" value="Aggiungi/modifica"/></form>
+        </div>
+
+{% elif req.path =='/siteAdmin/canoneList' %}
+    <div id="box">
+        <span class="testa"><h1>Gestione canone</h1></span>
+{% include 'common/searchBox.html' with context %}
+        <div class="row normal">
+            <a href="/siteAdmin/canoneAdd?new">
+                <img src="/templates/siteAdmin/img/add.png" alt="aggiungi una canone" title="aggiungi una canone"/>
+            </a>
+        </div>
+{% for page in pageData['canone'] %}
+        <div class="row normal lineTop" >
+            <span ><b>{{page.start_date|dateformat}}</b> - {{page.denomination}}  -  {{page.valore}} - {{page.user.username}}</span>
+                <span class="image"><a href="/siteAdmin/canoneDel?canoneId={{page.id}}" onClick='return confirm("Sei sicuro di voler cancellare questa canone?")' ><img src="/templates/siteAdmin/img/trash.png" alt="elimina la canone" title="elimina la canone"/></a></span>
+                    <span class="image"><a href="/siteAdmin/canoneAdd?edit={{page.id}}"><img src="/templates/siteAdmin/img/modifica.png" alt="modifica una canone" title="modifica una canone"/></a></span>
+            {% if page.active==1 %}
+            <span class="image normal" >
+                <a href="/siteAdmin/canoneActive?id={{page.id}}&amp;pag={{pageData['args']['pag']+1}}">
+                    <img src="/templates/siteAdmin/img/active_on.png" alt="disattiva canone" title="disattiva canone"/>
+                </a>
+            </span>
+            {% endif%}
+            {% if page.active==0 %}
+            <span class="image normal">
+                <a href="/siteAdmin/canoneActive?id={{page.id}}&amp;pag={{pageData['args']['pag']+1}}">
+                    <img src="/templates/siteAdmin/img/active_off.png" alt="attiva canone" title="attiva canone"/>
+                </a>
+            </span>
+            {% endif%}
+                </div>
+                {% endfor %}
+        {% include 'common/pagination.html' with context %}
+                <div class="row normal lineTop">
+                <a href="/siteAdmin/canoneAdd?new">
+                    <img src="/templates/siteAdmin/img/add.png" alt="aggiungi una pagina" title="aggiungi una pagina"/>
+                </a>
+                </div>
+        </div>
+
+{% endif %}
+        </div>
+{%endblock%}

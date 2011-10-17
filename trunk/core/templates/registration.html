@@ -1,0 +1,90 @@
+{% extends 'mainsite/index.html' %}
+
+{% block center %}
+<div id="contentss">
+<!--    <div id="page" align="center">-->
+<div style="text-align: center; margin: 14px 10px 5px 10px; padding: 10px 10px 10px 10px; border-style: solid; border-width: 1px; border-color: #ff8011">
+<p style="background-color: #e7e7e7; font-size: 16px">La registrazione su <b style="color: #ff8011">e</b><b>-linux.it</b> prevede il versamento di un contributo annuale di <b>36,00</b> Euro <br />(IVA compresa)</p><br />
+Se siete interessati a procedere compilate questo modulo e inviate la vostra richiesta di registrazione.<br />
+Ultimata la procedura di iscrizione e pagamento riceverete una e-mail di conferma contenente <b>USERID</b> e <b>PASSWORD</b> che vi permetteranno di accedere e gestire la vostra pagina.<br />
+NB: <i>Per le aziende gi&agrave; registrate che volessero confermare la loro presenza su <b style="color: #ff8011">e</b><b>-linux.it</b>, si prega di effettuare il pagamento cliccando sul bottone Paypal qui sotto o effettuando un bonifico bancario</a>.<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+<input type="hidden" name="cmd" value="_s-xclick">
+<input type="image" src="https://www.paypal.com/it_IT/IT/i/btn/btn_paynowCC_LG.gif" border="0" name="submit" alt="PayPal - Il sistema di pagamento online più facile e sicuro!">
+<img alt="" border="0" src="https://www.paypal.com/it_IT/i/scr/pixel.gif" width="1" height="1">
+<input type="hidden" name="encrypted" value="-----BEGIN PKCS7-----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-----END PKCS7-----
+">
+</form></i><br /><br />
+
+ Per info o comunicazioni scrivete a <span style="font-weight: bold;">info@e-linux.it</span> oppure chiamate il numero dedicato all'assistenza tecnica e commericlae: <span style="font-weight: bold; color: blue">8956060615</span></div><br />
+    <form method="post" action="getregistration">
+    <table border="0" cellpadding="0" cellspacing="2" id="contacts">
+    <tr><td class="contacts-left">Ragione Sociale:</td>
+    <td class="contacts-right"><input type="text" name="Social" size="30" maxlength="100" class="contacts" /></td></tr>
+    <tr><td class="contacts-left">Insegna:</td>
+    <td class="contacts-right"><input type="text" name="Ensign" size="30" maxlength="100" class="contacts" /></td></tr>
+    <tr><td class="contacts-left">Nome:</td>
+    <td class="contacts-right"><input type="text" name="Firstname" size="30" maxlength="50" class="contacts" /></td></tr>
+    <tr><td class="contacts-left">Cognome:</td>
+    <td class="contacts-right"><input type="text" name="Lastname" size="30" maxlength="50" class="contacts" /></td></tr>
+    <tr><td class="contacts-left">Partita IVA:</td>
+    <td class="contacts-right"><input type="text" name="IVA" size="20" maxlength="11" class="contacts" /></td></tr>
+    <tr><td class="contacts-left">Codice Fiscale:</td>
+    <td class="contacts-right"><input type="text" name="FiscalCode" size="20" maxlength="16" class="contacts" /></td></tr>
+    <tr><td class="contacts-left">Indirizzo:</td>
+    <td class="contacts-right"><input type="text" name="Address" size="30" maxlength="100" class="contacts" /></td></tr>
+    <tr><td class="contacts-left">CAP:</td>
+    <td class="contacts-right"><input type="text" name="CAP" size="20" maxlength="5" class="contacts" /></td></tr>
+    <tr><td class="contacts-left">Città:</td>
+    <td class="contacts-right"><input type="text" name="City" size="30" maxlength="50" class="contacts" /></td></tr>
+
+    <tr><td class="contacts-left">Provincia:</td>
+    <td class="contacts-right">
+    <select name="Province">
+    {% for prov in pageData['province'] %}
+        <option value="{{prov.id }}">
+        {{prov.denominazione}}&nbsp;(&nbsp;{{prov.denominazione_breve }}&nbsp;)
+        </option>
+    {% endfor %}
+    </select>
+    </td></tr>
+    <tr><td class="contacts-left">Regione:</td>
+    <td class="contacts-right">
+    <select name="Regioni">
+    {% for reg in pageData['regioni'] %}
+        <option value="{{reg.id }}">
+        {{reg.denominazione}}
+        </option>
+    {% endfor %}
+    </select>
+    </td></tr>
+    <tr><td class="contacts-left">Telefono:</td>
+    <td class="contacts-right"><input type="text" name="Telephone" size="20" maxlength="30" class="contacts" /></td></tr>
+    <tr><td class="contacts-left">Cellulare:</td>
+    <td class="contacts-right"><input type="text" name="Mobile" size="20" maxlength="30" class="contacts" /></td></tr>
+    <tr><td class="contacts-left">E-mail:</td>
+    <td class="contacts-right"><input type="text" name="EMail" size="30" maxlength="50" class="contacts" /></td></tr>
+    <tr><td class="contacts-left">Sito web:</td>
+    <td class="contacts-right"><input type="text" name="URL" size="20" maxlength="30" class="contacts" /></td></tr>
+    <tr><td class="contacts-left">Descrizione azienda:</td>
+    <td class="contacts-right"><textarea name="Description" rows="6" cols="50"></textarea></td></tr>
+    <!--{sql_get_category_all var="_arrCategory"}-->
+    <tr><td class="contacts-left">Categorie in cui si vuole apparire:( scegliere da )
+    <div style="font-weight: normal; font-size: 10px; line-height: 16px;">
+    <!--{section name=_categoryitem loop=$_arrCategory}-->
+        <!--{$_arrCategory[_categoryitem].category}-->&nbsp;&gt;&nbsp;<!--{$_arrCategory[_categoryitem].subcategory}--><br />
+    <!--{/section}-->
+    </div>
+    </td>
+    <td class="contacts-right"><textarea name="Categories" rows="5" cols="50"></textarea></td></tr>
+    <tr><td class="contacts-left">Inserisci lettere e numeri che vedi ( rispetta le maiuscole):
+    <img src="/templates/captcha.png?{{pageData['string']}}"></td>
+    <td class="contacts-right"><input type="text" name="captcha" size="20" maxlength="30" class="contacts" />
+    </td></tr>
+    <tr><td class="contacts-center"><input type="submit" value="Prosegui" class="submit" /></td>
+    <td class="contacts-center"><input type="reset" value="Azzera campi" class="submit" /></td></tr>
+    </table>
+    </form>
+    Compilando questo modulo vi autorizzo al trattamento dei dati ai sensi della Legge 196/03.<br />
+    Promotux S.n.c, dichiara che: nel pieno rispetto della legge per la tutela dei dati personali, i dati forniti tramite il presente modulo non saranno divulgati in nessun modo senza la Sua preventiva, esplicita e scritta autorizzazione.<br /> Titolare e responsabile dei dati raccolti è la Promotux S.n.c. Via G. Deledda, 40 - 09047 Selargius CA - tel +39 070 8474056
+    </div>
+{% endblock %}

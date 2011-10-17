@@ -1,0 +1,76 @@
+{% extends 'siteAdmin/siteAdmin.html' %}
+
+{% block operation %}
+
+<div id="box">
+        <span class="testa">Aggiungi un utente</span>
+        <hr></hr>
+        {% if pageData['user'].id %}
+            <form  method="POST" action="/siteAdmin/userAdd?update={{pageData['user'].id}}">
+        {% else %}
+            <form  method="POST" action="/siteAdmin/userAdd?add">
+        {% endif %}
+        <div class="row thin">
+            <span class="word thin">Username:</span>
+            <span class="insert thin">
+                <input id="username" name="username" type="text" value="{{pageData['user'].username|nonone}}"  tabindex="1" />
+            </span><br /><br />
+        </div>
+        <div class="row thin">
+            <span class="word thin">Password:</span>
+            <span class="insert thin">
+                <input id="password" name="password" type="password" tabindex="2" />
+            </span><br /><br />
+        </div>
+        <div class="row thin">
+            <span class="word thin">Ripeti Password:</span>
+            <span class="insert thin">
+                <input id="re_password" name="re_password" type="password" tabindex="3" />
+            </span><br /><br />
+        </div>
+        <div class="row thin">
+            <span class="word thin">Email:</span>
+            <span class="insert thin">
+                <input id="email" name="email" type="text" value="{{pageData['user'].email|nonone}}" tabindex="4" />
+            </span><br /><br />
+        </div>
+        <div class="row thin">
+            <span class="word thin">Url foto:</span>
+            <span class="insert">
+                <input id="photo_src" name="photo_src" type="text" value="{{pageData['user'].photo_src|nonone}}" tabindex="5" />
+            </span><br /><br />
+        </div>
+        <div class="row thin">
+            <span class="word thin">Ruolo:</span>
+                <span class="insert thin">
+                    <select name="roleId">
+                        {% for role in pageData['roles'] %}
+                            {% if role.id == pageData["user"].id_role %}
+                           <option value="{{role.id}}" selected="yes">{{role.name}}</option>
+                    {% else %}
+                        <option value="{{role.id}}">{{role.name}}</option>
+                    {% endif %}
+                        {% endfor %}
+                    </select>
+                </span>
+            </div>
+            <div class="row thin ">
+                    <span class="word">Seleziona la lingua predefinita:</span>
+                    <select name="languageId">
+<!--                     <option value="1">it</option> -->
+                    {% for lang in pageData['language'] %}
+                    {% if lang.id == pageData["user"].id_language %}
+                           <option value="{{lang.id}}" selected="yes">{{lang.denominazione}}</option>
+                    {% else %}
+                        <option value="{{lang.id}}">{{lang.denominazione}}</option>
+                    {% endif %}
+                        {% endfor %}
+                    </select>
+                    </div>
+            <div class="row thin">
+                <input type="submit" value="Aggiungi/Modifica"  tabindex="8" />
+                <input type="reset" value="Annulla" />
+            </div>
+        </form>
+    </div>
+{%endblock%}

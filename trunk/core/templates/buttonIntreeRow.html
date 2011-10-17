@@ -1,0 +1,29 @@
+<span class="image">
+        <a class="delete" href="#" dao="{{pageData['_dao_']}}" id="{{a.id}}" onClick='return confirm("Sei sicuro di voler cancellare?")' >
+        <img src="/templates/img/trash.png" alt="elimina" title="elimina"/></a></span>
+<span class="image">
+        <a class="edit" href="#" dao="{{pageData['_dao_']}}" id="{{a.id}}">
+        <img src="/templates/img/modifica.png" alt="modifica" title="modifica"/></a></span>
+{% set noprint = ["categoria_articolo","famiglia_articolo","pagamento","categoria_fornitore", "categoria_contatto","categoria_cliente","banca", "imballaggio"] %}
+
+{% if pageData['_dao_'] not in noprint %}
+<span class="image">
+        <a class="printt" onclick="window.open('/printt?dao={{pageData['_dao_']}}&amp;idr={{a.id}}','','width=550,height=120,left='+(screen.availWidth/2-200)+',top='+(screen.availHeight/2-200)+'');return false;" href="/printt?dao={{pageData['_dao_']}}&amp;idr={{a.id}}" >
+        <img src="/templates/img/stampa_selezione24x24.png" alt="print" title="print"/></a></span>
+{% endif %}
+
+{% if pageData['_dao_'] == 'articolo' %}
+<span class="image">
+        <a class="cod_bar" href="#" dao="{{pageData['_dao_']}}" idr="{{a.id}}">
+        <img src="/templates/img/codice_a_barre24x24.png" alt="bar code" title="bar code"/></a></span>
+{% endif %}
+
+{% if pageData['_dao_'] == 'cliente' %}
+<span class="image">
+        <a class="infopeso" onclick="window.open('/anagrafiche/cliente/infopeso?dao={{pageData['_dao_']}}&amp;idr={{a.id}}','','width=550,height=420,left='+(screen.availWidth/2-200)+',top='+(screen.availHeight/2-200)+'');return false;" href="/printt?dao={{pageData['_dao_']}}&amp;idr={{a.id}}" >
+        <img src="/templates/img/_stampa_selezione24x24.png" alt="infopeso" title="infopeso"/></a></span>
+{% endif %}
+
+
+
+<!--<a onclick="window.open('../../download?hf=win','','width=520,height=370,left='+(screen.availWidth/2-250)+',top='+(screen.availHeight/2-200)+'');return false;" href="../download?hf=win"><img style="border: 0px none;" title="logo" src="/templates/promoGest/img/down_windows.png" alt="download_windows" width="400" height="120" /></a></p>-->

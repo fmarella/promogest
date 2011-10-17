@@ -1,0 +1,137 @@
+<html xmlns:py="http://genshi.edgewall.org/" py:strip=""
+      xmlns:xi="http://www.w3.org/2001/XInclude" xi:strip="">
+
+
+    <div id="box" py:if="pageData['path'][4]=='metodiPagamentoList'">
+        <span class="testa">Gestione Metodi di Pagamento</span>
+        <hr></hr>
+                <div class="row">
+        <form name="myform" action="./metodiPagamentoList" method="post">
+            <span class="insert">
+            <input id="search" name="search" type="text" value=""/></span>
+            <span>&nbsp;<input type="submit" value="search"/>&nbsp;<input type="submit" value="reset"/></span>
+            <br />
+            </form>
+        </div>
+        <hr></hr>
+        <div class="row normal">
+            <a href="./metodiPagamentoAdd">
+                <img src="/style/${pageData['path'][1]}/img/add.png" alt="aggiungi" title="aggiungi"/>
+            </a>
+        </div>
+        <div class="row normal lineTop" py:for="item in pageData['metodiPagamento']">
+            <form name="myform" action="" method="post">
+            <span class="check normal">
+                <input type="checkbox" name="option1" value="delCheck"/>
+            </span>
+            <span class="nick normal"><a href="metodiPagamentoDetail?id=${item.id}">${item.denominazione}</a></span>
+<!--             <span class="name normal">${user.name}</span> -->
+            <span class="image normal">
+                <a href="./metodiPagamentoDel?id=${item.id}">
+                    <img src="/style/${pageData['path'][1]}/img/trash.png" alt="elimina" title="elimina"/>
+                </a>
+            </span>
+            <span class="image normal" py:if="item.visible==True">
+                <a href="./metodiPagamentoActive?id=${item.id}">
+                    <img src="/style/${pageData['path'][1]}/img/active.png" alt="attiva" title="attiva"/>
+                </a>
+            </span>
+            <span class="image normal" py:if="item.visible==False">
+                <a href="./metodiPagamentoActive?id=${item.id}">
+                    <img src="/style/${pageData['path'][1]}/img/inactive.png" alt="inattiva" title="inattiva"/>
+                </a>
+            </span>
+            <span class="image normal">
+                <a href="./metodiPagamentoMod?id=${item.id}">
+                    <img src="/style/${pageData['path'][1]}/img/modifica.png" alt="modifica" title="modifica"/>
+                </a>
+            </span>
+            </form>
+        </div>
+        <div class="row normal lineTop">
+        <ul class="pages"><li class="prima">Pagine</li>
+        <py:for each="i in range(0,pageData['item'])">
+            <li  py:if="i != pageData['pag']">
+    <a href="./metodiPagamentoList?pag=${i+1}">${i+1}</a>
+    </li>
+    <li py:if="i == pageData['pag']">[<a href="./metodiPagamentoList?pag=${i+1}">${i+1}</a>]</li>
+</py:for>
+</ul></div>
+        <div class="row normal lineTop">
+            <a href="./metodiPagamentoAdd">
+                <img src="/style/${pageData['path'][1]}/img/add.png" alt="aggiungi" title="aggiungi"/>
+            </a>
+        </div>
+    </div>
+
+
+    <div id="box" py:if="pageData['path'][4]=='metodiPagamentoAdd'">
+        <span class="testa">Aggiungi un utente</span>
+        <hr></hr>
+        <form action="./metodiPagamentoAdd" method="post">
+        <div class="row thin">
+            <span class="word thin">Denominazione:</span>
+            <span class="insert thin">
+                <input id="adddenominazione" name="adddenominazione" type="text"  tabindex="1" />
+            </span>
+            </div>
+                <div class="row thin lineTop">
+                    <span class="word">Seleziona la lingua predefinita:</span>
+                    <select name="languageId">
+
+                    <py:for each="lang in pageData['language']">
+                    <option value="$lang.id">${lang.denominazione}</option>
+                    </py:for>
+                    </select>
+                    </div>
+            <div class="row thin">
+                <input type="submit" value="Aggiungi"  tabindex="8" />
+                <input type="reset" value="Annulla" />
+            </div>
+        </form>
+    </div>
+
+
+    <div id="box" py:if="pageData['path'][4]=='metodiPagamentoMod'">
+        <span class="testa">Modifica l'utente ${pageData['mdP'].denominazione}</span>
+        <hr></hr>
+        <form action="./metodiPagamentoUpdate" method="post" >
+        <input type="hidden" name="id" value="${pageData['mdP'].id}"/>
+        <div class="row thin">
+            <span class="word thin">Denominazione</span>
+            <span class="insert thin">
+                <input id="mdP" name="mdP" type="text" value="${pageData['mdP'].denominazione}" tabindex="1" />
+            </span>
+        </div>
+        <div class="row thin lineTop">
+            <span class="word">Seleziona la lingua predefinita:</span>
+                    <select name="languageId">
+                    <option selected="yes" value="${pageData['mdP'].lang.id}">${pageData['mdP'].lang.denominazione}</option>
+<!--                     <option value="1">it</option> -->
+                    <py:for each="lang in pageData['language']">
+                    <option value="$lang.id">${lang.denominazione}</option>
+                    </py:for>
+                    </select>
+                    </div>
+       <div class="row thin">
+            <input type="submit" value="Modifica" tabindex="8" onClick='return confirm("Sei sicuro di voler modificare questo metodo di Pagamento?")'/>
+        </div>
+    </form>
+    </div>
+
+    <div id="box" py:if="pageData['path'][4]=='metodiPagamentoDetail'">
+        <div class="row thin bold">
+            <span>Dettagli </span>
+        </div>
+        <div class="row thin lineTop">
+            <span class="word">Denomionazione</span>
+            <span class="insert">${pageData['mdP'].denominazione}</span>
+        </div>
+            <div class="row thin lineTop">
+                <span class="word">Lingua </span>
+                <span class="insert">${pageData['mdP'].lang.denominazione}</span>
+            </div>
+        </div> <!-- fine destinazione merce -->
+<!--    </div>-->
+
+</html>

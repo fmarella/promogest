@@ -1,0 +1,71 @@
+<script>
+  $(document).ready(function(){
+    $("#ae_form").validate({
+  rules: {
+    percentuale: {
+      required: true,
+      number: true
+    }
+  }
+});
+  });
+</script>
+<script type="text/javascript">
+$(function() {
+	$('#data_fornitura').datepick({dateFormat: 'dd-mm-yyyy'});
+	$('#data_prezzo').datepick({dateFormat: 'dd-mm-yyyy'});
+});
+</script>
+
+{% if pageData["action"] == "edit" %}
+<form name ="forme" id="ae_form" action="/anagrafiche/fornitura/fromedit" method="post">
+<input type="hidden" name="id" value="{{pageData['dao'].id}}"/>
+{% else %}
+<form name ="forme" id="ae_form" action="/anagrafiche/fornitura/add" method="post">
+{% endif %}
+<p><label>Codice Articolo Fornitore:</label><input  class="required" type="text" name="codice" size="60" value='{{pageData["dao"].codice_articolo_fornitore|nonone}}' /></p>
+<p><label>Articolo:</label>
+<select name="id_articolo" class="required">
+                    <option value=""></option>
+                    {% for t in pageData['articoli'] %}
+                    {% if t.id == pageData["dao"].id_articolo %}
+                           <option value="{{t.id}}" selected="yes">{{t.denominazione}}</option>
+                    {% else %}
+                        <option value="{{t.id}}">{{t.denominazione}}</option>
+                    {% endif %}
+                        {% endfor %}
+                    </select></p>
+<p><label>Fornitori:</label>
+<select name="id_fornitore" class="required">
+                    <option value=""></option>
+                    {% for t in pageData['fornitori'] %}
+                    {% if t.id == pageData["dao"].id_fornitore %}
+                           <option value="{{t.id}}" selected="yes">{{t.ragione_sociale}}</option>
+                    {% else %}
+                        <option value="{{t.id}}">{{t.denominazione}}</option>
+                    {% endif %}
+                        {% endfor %}
+                    </select></p>
+Fornitore Preferenziale:<select name="fornitore_preferenziale">
+                    <option value=""></option>
+                    <option value="1" >Si</option>
+                     <option value="0">No</option>
+                    </select>
+<p><label>Data Fornitura</label>
+                <input type="text" id="data_fornitura" name="data_fornitura" value ="{{pageData['dao'].data_fornitura|dateformat|replace('/','-')}}" />
+                        </p>
+<p><label>Data Prezzo</label>
+                <input type="text" id="data_prezzo" name="data_prezzo" value ="{{pageData['dao'].data_prezzo|dateformat|replace('/','-')}}" />
+                        </p>
+                <br />
+<p>Aliquota iva: </p>
+<p><label>Ordine minimo:</label><input  type="text" name="codice" size="60" value='{{pageData["dao"].ordine_minimo|nonone}}' /></p><p>Multipli se li voglio mettere </p>
+<p><label>Tempo arrivo merce:</label><input  type="text" name="codice" size="60" value='{{pageData["dao"].tempo_arrivo_merce|nonone}}' /></p>
+<p><label>Prezzo Lordo:</label><input  type="text" name="codice" size="60" value='{{pageData["dao"].tempo_arrivo_merce|nonone}}' /></p>
+<p> POPUP SCONTI </p>
+<p> PRezzo netto: </p>
+<br/><br/>
+
+<input type="submit" name="add" value="Aggiungi" />
+<input type="reset" value="Azzera" name="submit" />
+</form>

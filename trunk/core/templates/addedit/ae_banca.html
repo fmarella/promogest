@@ -1,0 +1,23 @@
+<script>
+  $(document).ready(function(){
+    $("#ae_form").validate()
+  });
+</script>
+
+{% if pageData["action"] == "edit" %}
+<form id="ae_form" action="/parametri/banca/fromedit" method="post">
+<input type="hidden" name="id" value="{{pageData['dao'].id}}"/>
+{% else %}
+<form id="ae_form" action="/parametri/banca/add" method="post">
+{% endif %}
+
+<p><label>Denominazione:</label>
+<input type="text" name="denominazione" size="60" value='{{pageData["dao"].denominazione|nonone}}' class="required" /></p>
+<p><label>Agenzia:</label>
+<input type="text" name="agenzia" size="60" value='{{pageData["dao"].agenzia|nonone}}' class="required" /></p>
+<p><label>IBAN:</label>
+<input type="text" name="iban" size="60" value='{{pageData["dao"].iban|nonone}}' class="required" /></p>
+
+<input type="submit" name="add" value="Aggiungi/Modifica" />
+<input type="reset" value="Azzera" name="submit" />
+</form>

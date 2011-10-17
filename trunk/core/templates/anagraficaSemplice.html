@@ -1,0 +1,44 @@
+{% extends 'index.html' %}
+{% block operation %}
+<div id="box">
+                <span class="testa"><h1>{{pageData["name"]}}</h1></span>
+    <div id=alto>
+    <div id="chiudi" ><a href="#", id="chiudilink">
+    <img src="/templates/img/chiudi24x24.png" alt="chiudi " title="chiudi"/>chiudi
+    </a></div>
+    {% set fkey = "/filterkey/"+pageData["fkey"]+".html" %}
+    {% include fkey with context %}
+    {% include 'preview.html' with context %}
+    </div>
+            <div class="row normal">
+            <a href="#", class="new" dao='{{pageData["_dao_"]}}'>
+                <img src="/templates/img/add.png" alt="aggiungi " title="aggiungi"/>
+            </a></div>
+                <div id="filterbox">
+                    {% set treeview = "/tree/"+pageData["tree"]+".html" %}
+                    {% include treeview with context %}
+                </div>
+        </div>
+        </div>
+
+<script type="text/javascript">
+function clear_form_elements(ele) {
+    $(ele).find(':input').each(function() {
+
+        switch(this.type) {
+            case 'password':
+            case 'select-multiple':
+            case 'select-one':
+            case 'text':
+            case 'textarea':
+                $(this).val('');
+                break;
+            case 'checkbox':
+            case 'radio':
+                this.checked = false;
+        }
+    });
+}
+</script>
+
+{%endblock%}

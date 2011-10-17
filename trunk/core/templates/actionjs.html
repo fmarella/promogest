@@ -1,0 +1,58 @@
+<script type="text/javascript">
+$(document).ready(function(){
+$("div#chiudi").hide()
+
+$("a.new").livequery('click',function(){
+$("div#chiudi").show()
+var daod = $(this).attr("dao")
+$("div#searchBox").hide()
+$("div#filterbox").hide()
+$("div#preview").animate({
+    width: "98%",
+    }, 1000 ),
+$('div#preview').load('../../daoadd',{"dao":daod })
+});
+
+
+$('a.delete')
+    .livequery('click', function(event) {
+    var idrr = $(this).attr("id");
+    var dao = $(this).attr("dao");
+    $('div#filterbox').load('../../delete',{ 'idr':idrr,"dao":dao });
+    alert('Cancellato');
+    return false;
+    });
+
+$("a#chiudilink").click(function(){
+$("div#searchBox").show(),
+$("div#filterbox").show(),
+$("div#preview").animate({
+    width: "70%",
+    }, 1000 )
+$("div#chiudi").hide()
+$('div#preview').empty()
+    });
+
+
+$('a.edit')
+    .livequery('click', function(event) {
+    $("div#chiudi").show()
+    $("div#searchBox").hide()
+    $("div#filterbox").hide()
+    $("div#preview").animate({
+    width: "98%",
+    }, 1000 )
+    var idrrr = $(this).attr("id");
+    var daos = $(this).attr("dao");
+    $('div#preview').load('../../edit',{ 'idr':idrrr,"dao":daos });
+    });
+
+$("a.item").livequery('click',function(){
+var idrr = $(this).attr("id")
+var dao = $(this).attr("dao")
+$('div#preview').load('../../preview',{ 'idr':idrr,"dao":dao });
+});
+
+
+});
+</script>

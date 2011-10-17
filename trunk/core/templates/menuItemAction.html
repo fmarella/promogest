@@ -1,0 +1,139 @@
+{% extends 'siteAdmin/index.html' %}
+{% block operation %}
+
+{% if req.path =='/siteAdmin/menuItemAdd' %}
+<div id="box">
+    <span class="testa">Aggiungi voce di menu</span>
+    <hr></hr>
+    <form method="POST" action="/siteAdmin/menuItemAdd?newmenu">
+        <span class="word">Aggiungi un nuovo menù</span>
+        <span class="word">Nome<input name="newMenuname" type="text" /></span>
+                <span class="word">Descrizione<input name="newMenudescrizione" type="text" /></span>
+        <input type="submit" name="addmenubutton" value="Aggiungi"/>
+        <input type="submit" name="delmenubutton" value="Rimuovi"/>
+        <input type="submit" name="acttruebutton" value="Attiva"/>
+        <input type="submit" name="actfalsebutton" value="Disattiva"/>
+
+    </form>
+    <hr></hr>
+        {% if pageData['menuitem'].id %}
+            <form  method="POST" action="/siteAdmin/menuItemAdd?update={{pageData['menuitem'].id}}">
+        {% else %}
+            <form  method="POST" action="/siteAdmin/menuItemAdd?add">
+        {% endif %}
+        <div class="row thin">
+        <span class="word">voce</span>
+        <span class="insert">
+            <input name="newItem" type="text" value="{{pageData['menuitem'].item|nonone}}" />
+                </span></div>
+        <div class="row thin lineTop">
+            <span class="word">URL</span><span class="insert">
+                    <input name="url" type="text" value="{{pageData['menuitem'].url|nonone}}" /></span></div>
+        <div class="row thin lineTop">
+
+            <span class="word">Target:</span>
+            <span class="insert">
+            {% if pageData['menuitem'].target == "None" %}
+            Apri nella stessa Finestra: <input type="radio" name="target" value="None" checked="checked" />
+            Apri in un'altra finestra:  <input type="radio" name="target" value="_blank" />
+            {% else %}
+
+            Apri nella stessa Finestra: <input type="radio" name="target" value="None"/>
+            Apri in un'altra finestra:  <input type="radio" name="target" value="_blank" checked="checked"/>
+        {% endif %}
+            </span>
+            </div>
+        <div class="row thin lineTop">
+            <span class="word">Posizione</span>
+            <span class="insert">
+            <input name="position" type="text" />
+            </span>
+        </div>
+        <div class="row thin lineTop">
+        <span class="word">Scegli la pagina associata:</span>
+        <span class="insert">
+        <select name="pageId">
+            <option value="None">---</option>
+            {% for page in pageData['staticPages'] %}
+            <option value="{{page.id}}">{{page.title}}</option>
+            {% endfor %}
+        </select></span>
+        </div>
+        {#
+        <div class="row thin lineTop">
+        <span class="word">Scegli il nome del menu padre:</span>
+        <select name="fatherpageId">
+            <option value="None">---</option>
+            {% for fatherpage in pageData['itemsmenuItemAdmin'] %}
+            <option value="{{fatherpage.id}}">{{fatherpage.item}}</option>
+            {% endfor %}
+        </select>
+                </div>#}
+                <div class="row thin lineTop">
+                <span class="word">Seleziona un menu:</span>
+        <span class="insert"><select name="menuId">
+            {% for m in pageData['menus'] %}
+            <option value="{{m.id}}">{{m.name}} ({{m.active}}</option>
+            {% endfor %}
+        </select></span>
+        </div>
+        <div class="row thin lineTop">
+            <span class="word">Seleziona la lingua predefinita:</span>
+            <select name="languageId">
+
+            {% for lang in pageData['language']%}>
+            <option value="{{lang.id}}">{{lang.denominazione}}</option>
+             {% endfor %}
+            </select>
+            </div>
+        <div class="row thin lineTop">
+    <input type="submit" value="Aggiungi"/>
+    </div>
+    </form>
+</div>
+
+{% elif req.path =='/siteAdmin/menuItemList' %}
+<div id="box">
+        <span class="testa"><h2>Gestione menu</h2></span>
+        <hr></hr>
+        <div class="row normal">
+        <a href="/siteAdmin/menuItemAdd?new">
+            <img src="/templates/siteAdmin/img/add.png" alt="aggiungi una voce" title="aggiungi una voce"/>
+        </a>
+        </div>
+        {% for item in pageData['menus']%}
+        <div class="row normal lineTop" >
+            <span>{{item.item}}({{item.lang.denominazione_breve}})</span>
+            <span class="image" ><a href="/siteAdmin/menuItemDel?menuId={{item.id}}" onClick='return confirm("Sei sicuro di voler cancellare questa voce menu?")' >
+                <img src="/templates/siteAdmin/img/trash.png" alt="elimina voce" title="elimina voce"/></a>
+            </span>
+    {% if item.active %}
+    <span class="image normal">
+        <a href="/siteAdmin/menuItemActive?id={{item.id}}">
+            <img src="/templates/siteAdmin/img/active_on.png" alt="attiva" title="disattiva"/>
+        </a>
+    </span>
+    {% else %}
+    <span class="image normal">
+        <a href="/siteAdmin/menuItemActive?id={{item.id}}">
+            <img src="/templates/siteAdmin/img/active_off.png" alt="inattiva" title="attiva"/>
+        </a>
+    </span>
+    {% endif %}
+            <span class="image"><a href="/siteAdmin/menuItemAdd?edit={{item.id}}">
+                <img src="/templates/siteAdmin/img/modifica.png" alt="modifica voce" title="modifica voce"/></a>
+            </span>
+
+        </div>
+        {% endfor %}
+
+        <div class="row normal lineTop">
+        <a href="/siteAdmin/menuItemAdd?new">
+            <img src="/templates/siteAdmin/img/add.png" alt="aggiungi una voce" title="aggiungi una voce"/>
+        </a>
+        </div>
+</div>
+
+{% endif %}
+        </div>
+{%endblock%}

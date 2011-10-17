@@ -1,0 +1,78 @@
+{% extends 'siteAdmin/index.html' %}
+
+{% block operation %}
+    <div id="page">
+<div id="box">
+        <span class="testa"><h2>Modifica utente</h2></span><br />
+            <form  name ="clienteprofilo" method="POST" action="/siteAdmin/userClienteEdit?id={{pageData['user'].id}}">
+        <div class="row thin">
+            <span class="word thin">Username ( NON modificabile ):</span>
+            <span class="insert thin">
+                <input id="username" name="username" type="text" value="{{pageData['user'].username|nonone}}"  tabindex="1" READONLY />
+            </span><br /><br />
+        </div>
+        <div>
+<br />
+                <span class="word">DATA ATTIVAZIONE</span>
+                    <input type="text" name="activation_date" value ="{{pageData['clienteprofile'].activation_date|dateformat|replace('/','-')}}" style="width: 10%" />
+                        <script language="JavaScript">
+                        new tcal ({
+                      'formname': 'clienteprofilo',
+                      'controlname': 'activation_date'
+                        });
+                        </script>
+                <br />  <br />
+               <span class="word">Installation code</span>
+                <input id="installation_code" name="installation_code" type="text" value="{{pageData['clienteprofile'].installation_code|nonone}}" style="width: 20%" tabindex="2"/>
+        </div>
+          <br />  <br />
+                    <span ><b>Canoni:</b></span>
+                <div >
+                    <select name="canoni" style="width: 50%" size="5" multiple="multiple">
+                        {% for a in pageData['canoni'] %}
+                            {% if a.id == pageData["usermodule"].id_role %}
+                           <option value="{{a.id}}" selected="yes">{{a.start_date}} - {{a.stop_date}}- {{a.denomination}}- {{a.valore}}- {{a.cadenza}}- {{a.active}}</option>
+                    {% else %}
+                        <option value="{{a.id}}">{{a.start_date}} - {{a.stop_date}}- {{a.denomination}}- {{a.valore}}- {{a.cadenza}}- {{a.active}}</option>
+                    {% endif %}
+                        {% endfor %}
+                    </select>
+                    <br />
+                </div>
+
+            <span ><b>Modulo:</b></span>
+                <div >
+                    <select name="moduli" style="width: 50%" size="20" multiple="multiple">
+                        {% for a in pageData['moduli'] %}
+                            {% if a.id in pageData["usermodule"] %}
+                           <option value="{{a.id}}" selected="yes">{{a.id}}-{{a.denomination}}</option>
+                    {% else %}
+                        <option value="{{a.id}}">{{a.id}}-{{a.denomination}}</option>
+                    {% endif %}
+                        {% endfor %}
+                    </select>
+                    <br />
+                </div>
+
+            <div><b>Servizi:</b></span>
+                <div >
+                    <select name="servizi" style="width: 50%" size="10" multiple="multiple">
+                        {% for a in pageData['servizi'] %}
+                            {% if a.id in pageData["userservice"] %}
+                           <option value="{{a.id}}" selected="yes">{{a.denomination}}</option>
+                    {% else %}
+                        <option value="{{a.id}}">{{a.denomination}}</option>
+                    {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+                    <div class="row thin">
+                <input type="submit" value="Aggiungi/Modifica"  tabindex="8" />
+                <input type="reset" value="Annulla" />
+            </div><br/ >
+
+                </form>
+    </div>    </div>
+{% endblock %}

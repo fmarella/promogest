@@ -1,0 +1,50 @@
+{% if pageData['subdomain'] %}
+    {% extends pageData['subdomain'].template+'/index.html' %}
+{% endif %}
+
+{% block center %}
+<div id="page">
+    <div id="box">
+
+<p>
+<h3>Cliente</h3>
+{{ pageData["user"].username }}
+</p>
+
+<p>
+<h3>Dati Installazione</h3>
+{{ pageData["clienteprofile"].installation_code }}
+</p>
+
+<p>
+<h3>Moduli acquistati</h3>
+{% for a in pageData["usermodule"] %}
+
+<div>{{a.modulo.denomination}}</div>
+
+
+{% endfor %}
+</p>
+
+<p>
+<h3>Servizi acquistati</h3>
+{% for a in pageData["userservice"] %}
+
+<div>{{a.servizio.denomination}}</div>
+
+
+{% endfor %}
+</p>
+<p>
+<h3>Canoni in carico </h3>
+{% for a in pageData["canoni"] %}
+
+<div>{{a.valore}} - {{a.denomination}}</div>
+
+{% endfor %}
+</p>
+
+
+    </div>
+</div>
+{% endblock %}
