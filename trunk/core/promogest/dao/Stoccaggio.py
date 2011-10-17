@@ -40,7 +40,7 @@ if posso("PW"):
 class Stoccaggio(Dao):
     """ User class provides to make a Users dao which include more used"""
 
-    def __init__(self, arg=None):
+    def __init__(self, req=None):
         Dao.__init__(self, entity=self)
 
     def _getTotaliOperazioniMovimento(self):

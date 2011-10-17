@@ -11,7 +11,7 @@ from Dao import Dao
 
 class UnitaBase(Dao):
 
-    def __init__(self, arg=None):
+    def __init__(self, req=None):
         Dao.__init__(self, entity=self)
         self.addMC()
 

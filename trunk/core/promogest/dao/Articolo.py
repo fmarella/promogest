@@ -55,7 +55,7 @@ if posso("ADR"):
 
 class Articolo(Dao):
 
-    def __init__(self, arg=None):
+    def __init__(self, req=None):
         Dao.__init__(self, entity=self)
         self.__articoloTagliaColore = None
         self.__codibar = None

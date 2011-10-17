@@ -28,7 +28,6 @@ core_path = os.path.join(os.path.split(os.path.abspath(path))[0], "core")
 sys.path.append(core_path)
 from promogest import pg3_check
 pg3_check.pg3_cla = True
-print "PAAAAAAAAAAAAAAAAAAAAAAAA", path, core_path
 from promogest import Environment
 Environment.conf.guiDir = path+"/gui/"
 #Environment.conf.decimals = 2
