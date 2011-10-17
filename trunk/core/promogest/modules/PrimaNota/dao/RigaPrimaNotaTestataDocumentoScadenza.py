@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010, 2011
 #by Promotux di Francesco Meloni snc - http://www.promotux.it/
 
 # Author: Francesco Meloni <francesco@promotux.it>
@@ -67,7 +67,7 @@ except:
 
 class RigaPrimaNotaTestataDocumentoScadenza(Dao):
 
-    def __init__(self, arg=None):
+    def __init__(self, req=None):
         Dao.__init__(self, entity=self)
 
     def filter_values(self, k, v):
