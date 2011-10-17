@@ -155,6 +155,7 @@ languages = ""
 hapag = ["Fattura accompagnatoria","Fattura acquisto","Fattura differita acquisto",
 "Fattura differita vendita","Fattura vendita","Ricevuta Fiscale","Vendita dettaglio",
 "Nota di credito a cliente","Nota di credito da fornitore"]
+
 try:
     local = Local()
     local_manager = LocalManager([local])
@@ -165,7 +166,9 @@ try:
 except:
     print "MANCA WERKZEUG ANCHE QUI"
 
-
+fromHtmlLits = ["Promemoria", "TestataPrimaNota","Articolo", "Cliente",
+                "Contatto", "Fornitore", "Fornitura", "Contatto", "Vettore",
+                "AliquotaIva", "TestataCommessa","Stoccaggio"]
 
 package = ["ONE BASIC", "ONE FULL", "ONE STANDARD", "PRO BASIC", "PRO STANDARD",
             "PRO FULL","ONE PROMOWEAR", "ONE PROMOSHOP", "PRO PROMOWEAR", "PRO PROMOSHOP"]
