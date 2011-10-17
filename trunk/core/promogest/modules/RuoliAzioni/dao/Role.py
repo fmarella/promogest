@@ -52,7 +52,7 @@ class Role(Dao):
     Role class provides to make a Users dao which include more used
     database functions
     """
-    def __init__(self, arg=None):
+    def __init__(self, req=None):
         Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):

@@ -35,7 +35,7 @@ class NoleggioRiga(Dao):
                         é il caso di salvarlo per poter incrociare i dati e perchè
                         sento che a breve sarà necessario gestire archi temporali per riga)
     """
-    def __init__(self, arg=None):
+    def __init__(self, req=None):
         Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):
