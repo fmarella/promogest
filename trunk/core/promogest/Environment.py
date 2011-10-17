@@ -155,9 +155,11 @@ languages = ""
 hapag = ["Fattura accompagnatoria","Fattura acquisto","Fattura differita acquisto",
 "Fattura differita vendita","Fattura vendita","Ricevuta Fiscale","Vendita dettaglio",
 "Nota di credito a cliente","Nota di credito da fornitore"]
-
-local = Local()
-local_manager = LocalManager([local])
+try:
+    local = Local()
+    local_manager = LocalManager([local])
+except:
+    print "MANCA WERKZEUG ANCHE QUI"
 
 application = local('application')
 feedTrac = None
