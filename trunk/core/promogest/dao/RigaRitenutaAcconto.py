@@ -50,7 +50,7 @@ except:
 class RigaRitenutaAcconto(Dao):
     """ TABELLA:  ritenuta_acconto_riga,
     """
-    def __init__(self, arg=None):
+    def __init__(self, req=None):
         Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):

@@ -29,7 +29,7 @@ from promogest.ui.utils import  codeIncrement, getRecapitiFornitore
 
 class Fornitore(Dao):
 
-    def __init__(self, arg=None):
+    def __init__(self, req=None):
         Dao.__init__(self, entity=self)
 
     def _categoria(self):

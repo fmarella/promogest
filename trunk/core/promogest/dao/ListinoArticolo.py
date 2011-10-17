@@ -37,7 +37,7 @@ import datetime
 
 class ListinoArticolo(Dao):
 
-    def __init__(self, arg=None):
+    def __init__(self, req=None):
         Dao.__init__(self, entity=self)
         self.__scontiVenditaDett = None
         self.__scontiVenditaIngr = None

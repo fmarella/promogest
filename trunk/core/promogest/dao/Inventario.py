@@ -26,7 +26,7 @@ if hasattr(conf, "PromoWear") and getattr(conf.PromoWear,'mod_enable')=="yes":
     from promogest.modules.PromoWear.dao.GenereAbbigliamento import GenereAbbigliamento
 
 class Inventario(Dao):
-    def __init__(self, arg=None):
+    def __init__(self, req=None):
         Dao.__init__(self, entity=self)
 
     def _unita_base(self):

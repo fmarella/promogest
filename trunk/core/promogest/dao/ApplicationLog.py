@@ -31,7 +31,7 @@ from promogest.ui.utils import messageError
 
 class ApplicationLog(object):
 
-    def __init__(self, arg=None):
+    def __init__(self, req=None):
         pass
 
     def store(self, dao=None,action=None,status=True,value=None ):
