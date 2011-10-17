@@ -1,0 +1,47 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head>
+
+
+  <meta http-equiv="CONTENT-TYPE" content="text/html; charset=utf-8"><title>Ordine PromoGest2</title></head><body dir="ltr" lang="it-IT">
+<div id="page" dir="ltr">
+
+<div id="box" dir="ltr">
+<div style="text-align: center;"> </div>
+<div style="text-align: center;"><img style="width: 530px; height: 110px;" alt="PROMOGEST" src="http://www.promotux.it/templates/promoGest/img/testata_promogest2.png"><br>
+</div>
+<h1>Informazioni:<br>
+
+</h1>
+
+<p><b>USERNAME:</b>
+{{pageData['user'].username|nonone}}</p>
+<p><b>E-MAIL : </b>{{pageData['user'].email|nonone}}
+</p>
+
+<p><b>DATA ATTIVAZIONE:</b>
+{{pageData['clienteprofile'].activation_date|dateformat|replace('/','-')}}
+</p>
+<p><b>INSTALLATION CODE:</b> <br/>da inserire in "opzioni" -> "configurazione" -> "modifica" e poi premere "salva"
+oppure consultare le FAQ nel sito<br />
+{{pageData['clienteprofile'].installation_code|nonone}} </p>
+<p><b>CANONI:</b> </p>
+<p>
+{% for a in pageData["usercanoni"] %}
+<b>Data inizio:</b>{{a.start_date}} - <b> Nome:</b>{{a.denomination}} - <b>Valore Euro:</b>{{a.valore}} - Cadenza:{{a.cadenza}}
+{% endfor %}
+</p>
+<p style="margin-bottom: 0cm;"><br>
+<b>MODULI ATTIVI:</b> </p>
+{% for a in pageData["usermodule"] %}
+<ul>
+<li><p>
+<b>Data Attivazione:</b>{{a.activation_date|dateformat}} - <b>Nome:</b>{{a.modulo.denomination}}</p></li>
+</ul>
+{% endfor %}
+<p></p>
+<br>
+</div>
+</div>
+
+
+</body></html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><title>Ordine PromoGest2</title></head><body>
+<br />
+<div style="text-align: center;"><img style="width: 530px; height: 110px;" alt="PROMOGEST" src="http://www.promotux.it/templates/promoGest/img/testata_promogest2.png"><br>
+</div>
+<h2>ORDINE PER:</h2>
+<p>
+<strong>NOME:</strong> {{pageData["USER"].username}}<br />
+<strong>EMAIL:</strong> {{pageData["USER"].email}}<br />
+<strong>RUOLO:</strong> {{pageData["role"]}}
+</p>
+<br />
+<p>Grazie per aver scelto il Promogest!<br />
+
+<p>Dettaglio delle scelte effettuate</p>
+{% for modu in pageData['modu'] %}
+    {% if modu.id|string in pageData["forms"] %}
+    <span> {{modu.codice}}</span><span>{{modu.denomination}}</span><span>&nbsp;€&nbsp; {{modu.prezzo}},00</span><br />
+    {% endif %}
+{% endfor %}
+
+ <p>Qui di seguito potete leggere i totali</p>
+
+<p><b>TOTALE ACQUISTO PromoGest2:</b> € {{pageData["totali"][0]}},00 + IVA<br />
+   <b> PERSONALIZZAZIONE TEMPLATE DI STAMPA CON LOGO AZIENDALE:</b> € 50,00 +IVA
+
+{% if pageData["totali"][0]|int > 300 %}
+    <strong>OMAGGIO</strong>
+{% endif %}
+<br />
+<b> CANONE MENSILE ASSISTENZA: </b> € {{pageData["totali"][1]|int}},00+ IVA</p><br />
+
+{% if pageData["totali"][0]|int > 300 %}
+<h2>TOTALE FINALE ( Comprensivo dei primi tre mesi di assistenza): € {{pageData["totali"][0]+ (pageData["totali"][1]|int*3) }},00 +IVA </h2>
+{% else %}
+<h2>TOTALE FINALE ( Comprensivo dei primi tre mesi di assistenza): € {{pageData["totali"][0]+50+ (pageData["totali"][1]|int*3) }},00 +IVA </h2>
+{% endif %}
+
+Il pagamento si puo' effettuare tramite bonifico rispettando le seguenti coordinate:<br />&nbsp;
+<br />
+Promotux snc<br />
+Via gorizia, 3<br />
+09047 selargius CA<br />
+<br />
+Banca di credito Sardo<br />
+03716 - Selargius- via trieste 35<br />
+<br />
+IBAN IT04Z0305944100615208306561<br />
+BIC BCITIT3C<br />
+
+Causale: Acquisto {{pageData['tipo']}} <br />
+
+Per accelerare i tempi è consigliabile inviare gli estremi del bonifico tramite e-email: <a href="mailto:amministrazione@promotux.it" title="Invia una mail">amministrazione@promotux.it</a><br />
+o tramite fax al numero 0707731188</p>
+
+</body></html>
