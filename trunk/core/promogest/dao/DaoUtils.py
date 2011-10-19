@@ -468,29 +468,27 @@ def scontiRigaMovimentoDel(id=None):
 
 def ckd(dao):
     classe = dao.__class__.__name__
-#    Environment.pg2log.info("MODULI E OPZIONI:  " \
-#                        + str(Environment.modulesList)+" "\
-#                        +str(Environment.tipo_pg) \
-#                        +" "+str(classe))
+
     stopp = False
-    if "ONE BASIC" in Environment.modulesList or \
-                            "PRO BASIC" in Environment.modulesList:
+    if "BASIC" in Environment.modulesList:
         if Environment.tipodb =="sqlite":
             records = Environment.session.query(dao.__class__).count()
             for a in Environment.modulesList:
                 if "+S" not in a:
                     if "TestataScontrino" in classe:
                         print "SHOP LIMITATO"
-                        if records > 20: stopp = True
+                        if records > 16: stopp = True
             if "TestataDocumento" in classe:
-                if records > 50: stopp = True
+                if records > 48: stopp = True
             if "Articolo" in classe:
-                if records > 500: stopp = True
+                if records > 400: stopp = True
             if stopp:
                 msg = """HAI RAGGIUNTO IL LIMITE MASSIMO CONSENTITO
-    DALLA VERSIONE ONE BASIC GRATUITA PER QUESTA OPERAZIONE, ACQUISTA
-    LA VERSIONE "ONE STANDARD" PER ELIMINARE TUTTI I LIMITI
-    O LA "ONE FULL" PER ATTIVARE ANCHE TUTTI I MODULI"""
+    DALLA VERSIONE ONE BASIC GRATUITA
+    ACQUISTA A VERSIONE "ONE STANDARD" PER ELIMINARE TUTTI I LIMITI
+    O LA "ONE FULL" PER ATTIVARE ANCHE TUTTI I MODULI
+
+    GRAZIE"""
                 Environment.messageInfoEnv(msg=msg)
                 Environment.params["session"].rollback()
                 return False
