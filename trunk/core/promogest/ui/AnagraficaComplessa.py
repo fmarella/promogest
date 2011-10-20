@@ -48,10 +48,13 @@ from promogest.ui.SendEmail import SendEmail
 from promogest.lib.HtmlHandler import createHtmlObj, renderTemplate, renderHTML
 from promogest.dao.Azienda import Azienda
 
-try:
-    import gtkunixprint
-    gtkunixprint # pyflakes
-except ImportError:
+if not Environment.pg3:
+    try:
+        import gtkunixprint
+        gtkunixprint # pyflakes
+    except ImportError:
+        gtkunixprint = None
+else:
     gtkunixprint = None
 
 

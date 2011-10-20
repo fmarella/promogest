@@ -35,6 +35,8 @@ if not Environment.pg3:
         gtkunixprint # pyflakes
     except ImportError:
         gtkunixprint = None
+else:
+    gtkunixprint = None
 
 
 class GtkPrintDialog(object):

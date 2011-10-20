@@ -29,10 +29,13 @@ from promogest import Environment
 from GladeWidget import GladeWidget
 from promogest.lib.GtkPrintDialog import GtkPrintDialog
 
-try:
-    import gtkunixprint
-    gtkunixprint # pyflakes
-except ImportError:
+if not Environment.pg3:
+    try:
+        import gtkunixprint
+        gtkunixprint # pyflakes
+    except ImportError:
+        gtkunixprint = None
+else:
     gtkunixprint = None
 
 
