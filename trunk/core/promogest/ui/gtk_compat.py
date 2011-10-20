@@ -34,6 +34,7 @@ if not Environment.pg3:
         from gtk import gdk as gdk
         import pango
         import gobject
+        import cairo
 
         GTK_VERSION = str(gtk.gtk_version[0]) + '.' + \
             str(gtk.gtk_version[1]) + '.' + str(gtk.gtk_version[2])
@@ -127,6 +128,7 @@ else:
     from gi.repository import Gtk as gtk
     from gi.repository import GObject as gobject
     from gi.repository import Pango as pango
+    from gi.repository import Cairo as cairo
     from gi.repository import GdkPixbuf
     from gi.repository import GObject as gobject
     pygtk = None
@@ -135,7 +137,12 @@ else:
         '.' + str(gtk.get_micro_version())
 
     # these are hacks until we fully switch to GI
-    PANGO_ALIGN_LEFT = pango.TabAlign.LEFT
+
+    try:
+        PANGO_ALIGN_LEFT = pango.TabAlign.LEFT
+    except AttributeError:
+        # backwards compat for older Pango versions with broken GIR
+        PANGO_ALIGN_LEFT = pango.TabAlign.TAB_LEFT
     GTK_RESPONSE_OK = gtk.ResponseType.OK
     GTK_RESPONSE_CLOSE = gtk.ResponseType.CLOSE
     GTK_RESPONSE_CANCEL = gtk.ResponseType.CANCEL

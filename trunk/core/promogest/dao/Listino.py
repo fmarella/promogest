@@ -1,11 +1,24 @@
-#-*- coding: utf-8 -*-
-#
-"""
- Promogest
- Copyright (C) 2005-2008 by Promotux Informatica - http://www.promotux.it/
- Author: Francesco Meloni <francesco@promotux.it>
- License: GNU GPLv2
-"""
+# -*- coding: utf-8 -*-
+
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010, 2011 by Promotux
+#                        di Francesco Meloni snc - http://www.promotux.it/
+
+#    Author: Francesco Meloni  <francesco@promotux.it>
+
+#    This file is part of Promogest.
+
+#    Promogest is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 2 of the License, or
+#    (at your option) any later version.
+
+#    Promogest is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+
+#    You should have received a copy of the GNU General Public License
+#    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 from sqlalchemy import *
 from sqlalchemy.orm import *
@@ -18,18 +31,11 @@ from migrate import *
 
 listinoT=Table('listino', params['metadata'],schema = params['schema'],autoload=True)
 
-#if "hide" not in [c.name for c in listinoT.columns]:
-    #col = Column('hide', Boolean, default=False)
-    #col.create(listinoT, populate_default=True)
-
 
 class Listino(Dao):
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
-
-    #def __repr__(self):
-        #return "il modulo è %s" %self.denominazione
 
     def _getCategorieCliente(self):
         self.__dbCategorieCliente = ListinoCategoriaCliente().select(idListino=self.id, batchSize=None)

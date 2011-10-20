@@ -26,13 +26,15 @@ import commands
 import os
 import shutil
 import tempfile
+from promogest import Environment
 from promogest.ui.gtk_compat import *
 
-try:
-    import gtkunixprint
-    gtkunixprint # pyflakes
-except ImportError:
-    gtkunixprint = None
+if not Environment.pg3:
+    try:
+        import gtkunixprint
+        gtkunixprint # pyflakes
+    except ImportError:
+        gtkunixprint = None
 
 
 class GtkPrintDialog(object):

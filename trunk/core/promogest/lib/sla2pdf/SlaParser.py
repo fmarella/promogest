@@ -44,10 +44,14 @@ class SlaParser(object):
             text = text.replace('&#x5;', '\\n')
             f.close()
             tempFile = self.pdfFolder+"_temp"
-            f = file(tempFile, 'wb')
-            f.write(text)
-            f.close()
-            self.doc = ElementTree.parse(tempFile)
+            try:
+                f = file(tempFile, 'wb')
+                f.write(text)
+                f.close()
+                self.doc = ElementTree.parse(tempFile)
+            except IOError:
+                from promogest.ui.utils import messageError
+                messageError(msg="PERCORSO NON TROVATO,\n Spostato per caso la cartella promogest2? ,\n controllare l'impostazione in opzioni")
         self.root = self.doc.getroot()
         self.document = self.root.findall('DOCUMENT')[0]
 
