@@ -53,12 +53,7 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
         if not posso("PW"):
             self.taglia_colore_table.hide()
             self.taglia_colore_table.set_no_show_all(True)
-#        self.sconti_dettaglio_widget.button.connect('toggled',
-#                            self.on_sconti_dettaglio_widget_button_toggled)
 
-#        self.sconti_ingrosso_widget.button.connect('toggled',
-#                            self.on_sconti_ingrosso_widget_button_toggled)
-        #ListinoArticolo().cleann()
         decimals = int(setconf(key="decimals", section="Numbers"))
         self.nformat = '%-14.' + str(decimals) + 'f'
 
@@ -73,6 +68,24 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
         if button.get_property('active') is True:
             return
         _scontoIngrosso= self.sconti_ingrosso_widget.getSconti()
+
+
+    def on_calcola_costo_ultimo_da_dettaglio_button_clicked(self, button):
+        print "CCCC"
+        #self.calcolaDettaglioDaRicarico()
+        cu= calcolaCostoUltimodaDettaglio(dettaglio=self.prezzo_dettaglio_entry.get_text(),
+                                        ricarico= self.percentuale_ricarico_dettaglio_entry.get_text(),
+                                        iva= self._percentualeIva)
+        self.ultimo_costo_entry.set_text('%-6.3f' % cu)
+
+    def on_calcola_costo_ultimo_da_ingrosso_button_clicked(self, button):
+        print "AAA"
+        #self.calcolaDettaglioDaRicarico()
+        cu= calcolaCostoUltimodaIngrosso(ingrosso=self.prezzo_ingrosso_entry.get_text(),
+                                        ricarico= self.percentuale_ricarico_ingrosso_entry.get_text(),
+                                        )
+        self.ultimo_costo_entry.set_text('%-6.3f' % cu)
+
 
     def calcolaPercentualiDettaglio(self, widget=None, event=None):
         """ calcolaPercentualiDettaglio """

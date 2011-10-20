@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010, 2011 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -20,9 +20,9 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
+
 import datetime
 from GladeWidget import GladeWidget
-
 from promogest import Environment
 from decimal import *
 from promogest.dao.Listino import Listino
@@ -38,18 +38,14 @@ class DuplicazioneListino(GladeWidget):
     def __init__(self, daoListino, anagraficaListino):
 
         self.dao = daoListino
-#        self.anagrafica_listini = anagraficaListino
         GladeWidget.__init__(self, 'duplicazione_listino_window',
                                     'duplicazione_listino.glade')
         self.placeWindow(self.getTopLevel())
-#        self.getTopLevel().set_transient_for(anagraficaListino.getTopLevel())
-        #self.getTopLevel().show_all()
         self.dati_vecchio_listino_label.set_text(self.dao.denominazione + \
                         " DEL: "+ dateTimeToString(self.dao.data_listino))
 
 
     def on_confirms_button_clicked(self, button):
-#        print dir(self.getTopLevel())
         if self.data_listino_duplicato_entry.get_text() == '':
             obligatoryField(self.getTopLevel(),
                                  self.data_listino_duplicato_entry)
@@ -148,8 +144,7 @@ class DuplicazioneListino(GladeWidget):
                 Environment.session.add(ladao)
             Environment.session.commit()
 
-        msg = "Nuovo Listino creato"
-        messageInfo(msg)
+        messageInfo(msg="Nuovo Listino creato")
 
         self.getTopLevel().hide()
 

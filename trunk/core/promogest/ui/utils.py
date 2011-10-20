@@ -351,13 +351,15 @@ def leggiListino(idListino=None, idArticolo=None):
     from promogest.dao.Listino import Listino
     from promogest.dao.ListinoArticolo import ListinoArticolo
     from promogest.dao.ListinoComplessoArticoloPrevalente import ListinoComplessoArticoloPrevalente
+
     daoListinoArticolo = None
     liss = Listino().select(batchSize=None)
+
     # select dei listini
-    for l in liss:
-        if l.listino_attuale ==False:
-            l.listino_attuale = True
-            l.persist()
+    #for l in liss:
+        #if l.listino_attuale ==False:
+            #l.listino_attuale = True
+            #l.persist()
     #creo qui il dizionario invece di usare un return alla fine
     listinoDict = {"denominazione": "",
                     "prezzoIngrosso": 0,
@@ -1590,6 +1592,17 @@ def calcolaMargine(costo=0, listino=0, iva=0):
         return float(100 - ((costo * 100) / ((listino * 100) / (iva + 100))))
 
 
+def calcolaCostoUltimodaDettaglio(dettaglio=0, ricarico=0, iva=0):
+    #prima scorporo
+    imponibile = float(dettaglio)/(1+float(iva)/100)
+    #poi calclo il costo ultimo
+    costo_ultimo = float(imponibile)/(1+float(ricarico)/100)
+    return costo_ultimo
+
+def calcolaCostoUltimodaIngrosso(ingrosso=0, ricarico=0):
+    costo_ultimo = float(ingrosso)/(1+float(ricarico)/100)
+    return costo_ultimo
+
 def calcolaMargineDaRicarico(ricarico=0):
     """
     Calcola il margine dal ricarico
@@ -1613,6 +1626,8 @@ def calcolaRicaricoDaMargine(margine=0):
         return margine / (1 - (margine / 100))
     else:
         return float(margine / (1 - (margine / 100)))
+
+
 
 
 def calcolaPrezzoIva(prezzo=0, iva=0):
