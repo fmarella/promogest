@@ -128,7 +128,7 @@ else:
     from gi.repository import Gtk as gtk
     from gi.repository import GObject as gobject
     from gi.repository import Pango as pango
-    from gi.repository import Cairo as cairo
+    #from gi.repository import Cairo as cairo
     from gi.repository import GdkPixbuf
     from gi.repository import GObject as gobject
     pygtk = None
