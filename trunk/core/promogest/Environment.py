@@ -30,8 +30,18 @@ web = pg3_check.web
 from config import Config
 if pg3:
     from gi.repository import Gtk as gtk
+    GTK_DIALOG_MODAL = gtk.DialogFlags.MODAL
+    GTK_DIALOG_DESTROY_WITH_PARENT = gtk.DialogFlags.DESTROY_WITH_PARENT
+    GTK_BUTTON_OK = gtk.ButtonsType.OK
+    GTK_DIALOG_MESSAGE_INFO = gtk.MessageType.INFO
+    GTK_RESPONSE_OK = gtk.ResponseType.OK
 else:
     import gtk
+    GTK_DIALOG_MODAL = gtk.DIALOG_MODAL
+    GTK_DIALOG_DESTROY_WITH_PARENT = gtk.DIALOG_DESTROY_WITH_PARENT
+    GTK_BUTTON_OK = gtk.BUTTONS_OK
+    GTK_DIALOG_MESSAGE_INFO = gtk.MESSAGE_INFO
+    GTK_RESPONSE_OK = gtk.RESPONSE_OK
 try:
     settings = gtk.settings_get_default()
     gtk.Settings.set_long_property(settings, "gtk-button-images", 1, "main")
@@ -206,9 +216,9 @@ def startdir():
 def messageInfoEnv(msg="Messaggio generico", transient=None):
     """generic msg dialog """
     dialoggg = gtk.MessageDialog(transient,
-                        gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                        gtk.MESSAGE_INFO,
-                        gtk.BUTTONS_OK,
+                        GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
+                        GTK_DIALOG_MESSAGE_INFO,
+                        GTK_BUTTON_OK,
                         msg)
     try:
         pg2log.info(msg)
@@ -413,11 +423,11 @@ La cartella di lavoro sarà: %s
 Grazie per aver scelto il PromoGest""" %str(promogestDir)
 
         overDialog = gtk.MessageDialog(None,
-                                       gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                       gtk.MESSAGE_INFO,
-                                       gtk.BUTTONS_OK, msg)
+                                       GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
+                                       GTK_DIALOG_MESSAGE_INFO,
+                                       GTK_BUTTON_OK, msg)
         response = overDialog.run()
-        if response == gtk.RESPONSE_OK:
+        if response == GTK_RESPONSE_OK:
             b= open(promogestStartDir+'configure')
             db_cont = b.readlines()
 
