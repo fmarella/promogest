@@ -49,11 +49,13 @@ class SlaParser(object):
                 f.write(text)
                 f.close()
                 self.doc = ElementTree.parse(tempFile)
+
             except IOError:
                 from promogest.ui.utils import messageError
                 messageError(msg="PERCORSO NON TROVATO,\n Spostato per caso la cartella promogest2? ,\n controllare l'impostazione in opzioni")
-        self.root = self.doc.getroot()
-        self.document = self.root.findall('DOCUMENT')[0]
+        if self.doc:
+            self.root = self.doc.getroot()
+            self.document = self.root.findall('DOCUMENT')[0]
 
     def lenPageObjects(self):
         lenPageObjects = len(self.slaPageObjects())
