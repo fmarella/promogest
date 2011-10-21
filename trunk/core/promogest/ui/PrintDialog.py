@@ -113,7 +113,7 @@ Verificare i permessi della cartella"""
             dialog = GtkPrintDialog(pdfFile)
             dialog.run()
             #os.unlink(report.filename)
-        else:
+        elif os.name == "nt"::
             try:
                 import win32api
                 pdfFile = os.path.join(self._folder + self._pdfName +'.pdf')
