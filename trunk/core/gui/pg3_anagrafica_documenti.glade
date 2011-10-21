@@ -3967,10 +3967,62 @@ _
               <placeholder/>
             </child>
             <child>
-              <placeholder/>
+              <object class="GtkComboBox" id="causale_trasporto_comboboxentry">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="has_entry">True</property>
+                <property name="entry_text_column">0</property>
+                <child>
+                  <object class="GtkCellRendererText" id="unita_dimensione_cellerenderer"/>
+                  <attributes>
+                    <attribute name="text">0</attribute>
+                  </attributes>
+                </child>
+                <child internal-child="entry">
+                  <object class="GtkEntry" id="combobox-entry12">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="invisible_char">•</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="right_attach">2</property>
+                <property name="top_attach">7</property>
+                <property name="bottom_attach">8</property>
+                <property name="x_options">GTK_FILL</property>
+                <property name="y_options"></property>
+              </packing>
             </child>
             <child>
-              <placeholder/>
+              <object class="GtkComboBox" id="aspetto_esteriore_beni_comboboxentry">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="has_entry">True</property>
+                <property name="entry_text_column">0</property>
+                <child>
+                  <object class="GtkCellRendererText" id="unita_dimensione_cellerenderer1"/>
+                  <attributes>
+                    <attribute name="text">0</attribute>
+                  </attributes>
+                </child>
+                <child internal-child="entry">
+                  <object class="GtkEntry" id="combobox-entry13">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="invisible_char">•</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="right_attach">2</property>
+                <property name="top_attach">8</property>
+                <property name="bottom_attach">9</property>
+                <property name="x_options">GTK_FILL</property>
+                <property name="y_options"></property>
+              </packing>
             </child>
           </object>
           <packing>
