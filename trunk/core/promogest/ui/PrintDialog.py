@@ -5,6 +5,8 @@
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
 #    Author: Andrea Argiolas  <andrea@promotux.it>
+#    Author: Francesco Marella <francesco.marella@gmail.com>
+
 #    This file is part of Promogest.
 
 #    Promogest is free software: you can redistribute it and/or modify
@@ -140,12 +142,11 @@ Verificare i permessi della cartella"""
     def __handleSaveResponse(self, dialog):
         fileDialog = gtk.FileChooserDialog(title='Salva il file',
                                            parent=dialog,
-                                           action=gtk.FILE_CHOOSER_ACTION_SAVE,
+                                           action=GTK_FILE_CHOOSER_ACTION_SAVE,
                                            buttons=(gtk.STOCK_CANCEL,
                                                     GTK_RESPONSE_CANCEL,
                                                     gtk.STOCK_SAVE,
-                                                    GTK_RESPONSE_OK),
-                                           backend=None)
+                                                    GTK_RESPONSE_OK))
         fileDialog.set_current_name(self._pdfName+".pdf")
         fileDialog.set_current_folder(self._folder)
 
@@ -163,7 +164,7 @@ Verificare i permessi della cartella"""
 
         response = fileDialog.run()
         # FIXME: handle errors here
-        if ( (response == GTK_RESPONSE_CANCEL) or ( response == gtk.RESPONSE_DELETE_EVENT)) :
+        if ( (response == GTK_RESPONSE_CANCEL) or ( response == GTK_RESPONSE_DELETE_EVENT)) :
             pass
         elif response == GTK_RESPONSE_OK:
             filename = fileDialog.get_filename()
@@ -177,24 +178,24 @@ Verificare i permessi della cartella"""
 
                 if os.path.exists(filename):
                     msg = 'Il file "%s" esiste.  Sovrascrivere?' % filename
-                    overDialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL
-                                                            | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                                            gtk.MESSAGE_QUESTION,
-                                                            gtk.BUTTONS_YES_NO, msg)
+                    overDialog = gtk.MessageDialog(None, GTK_DIALOG_MODAL
+                                                            | GTK_DIALOG_DESTROY_WITH_PARENT,
+                                                            GTK_DIALOG_MESSAGE_QUESTION,
+                                                            GTK_BUTTON_YES_NO, msg)
                     response = overDialog.run()
                     overDialog.destroy()
-                    if response == gtk.RESPONSE_YES:
+                    if response == GTK_RESPONSE_YES:
                         can_save = 1
                         #overwrite the file if user click  yes
                         break
                     else:
                         response =  fileDialog.run()
-                        if response == gtk.RESPONSE_CANCEL or response == gtk.RESPONSE_DELETE_EVENT:
+                        if response == GTK_RESPONSE_CANCEL or response == GTK_RESPONSE_DELETE_EVENT:
                             #exit but don't save the file
                             esci = True
                             can_save = 0
                             break
-                        elif response == gtk.RESPONSE_OK:
+                        elif response == GTK_RESPONSE_OK:
                             filename = fileDialog.get_filename()
                 else:
                     can_save = 1
@@ -210,16 +211,16 @@ Verificare i permessi della cartella"""
                             break
                         except:
                             msg = 'Errore nel salvataggio!\n Verificare i permessi della cartella'
-                            overDialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL
-                                                                | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                                                gtk.MESSAGE_ERROR,
-                                                                gtk.BUTTONS_CANCEL, msg)
+                            overDialog = gtk.MessageDialog(None, GTK_DIALOG_MODAL
+                                                                | GTK_DIALOG_DESTROY_WITH_PARENT,
+                                                                GTK_DIALOG_MESSAGE_ERROR,
+                                                                GTK_BUTTON_CANCEL, msg)
                             response = overDialog.run()
                             #overDialog.destroy()
-                            if response == gtk.RESPONSE_CANCEL or response == gtk.RESPONSE_DELETE_EVENT:
+                            if response == GTK_RESPONSE_CANCEL or response == GTK_RESPONSE_DELETE_EVENT:
                                 overDialog.destroy()
                                 response = fileDialog.run()
-                                if response == gtk.RESPONSE_CANCEL or response == gtk.RESPONSE_DELETE_EVENT:
+                                if response == GTK_RESPONSE_CANCEL or response == GTK_RESPONSE_DELETE_EVENT:
                                     #exit but don't save the file
                                     esci  = True
                                     break
