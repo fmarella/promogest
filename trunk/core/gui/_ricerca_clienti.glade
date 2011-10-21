@@ -1600,7 +1600,6 @@
       <object class="GtkTreeViewColumn" id="codice_column">
         <property name="resizable">True</property>
         <property name="title" translatable="yes">Codice</property>
-        <property name="expand">True</property>
         <property name="clickable">True</property>
         <property name="reorderable">True</property>
         <property name="sort_indicator">True</property>

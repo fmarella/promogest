@@ -19,7 +19,8 @@
             <property name="app_paintable">True</property>
             <property name="can_focus">False</property>
             <property name="xalign">0</property>
-            <property name="right_padding">5</property>
+            <property name="yalign">0</property>
+            <property name="right_padding">4</property>
             <child>
               <object class="GtkVBox" id="filter_frame_vbox">
                 <property name="visible">True</property>
@@ -69,10 +70,10 @@
                         <property name="tooltip_markup">Premi ( F3 )  o invio per avviare la ricerca</property>
                         <property name="use_action_appearance">False</property>
                         <property name="image">trova_image</property>
-                        <accelerator key="F3" signal="clicked"/>
-                        <accelerator key="KP_F3" signal="clicked"/>
-                        <accelerator key="KP_Enter" signal="clicked"/>
                         <accelerator key="Return" signal="clicked"/>
+                        <accelerator key="KP_Enter" signal="clicked"/>
+                        <accelerator key="KP_F3" signal="clicked"/>
+                        <accelerator key="F3" signal="clicked"/>
                         <signal name="clicked" handler="on_filter_search_button_clicked" swapped="no"/>
                       </object>
                       <packing>
@@ -104,8 +105,8 @@
         </child>
       </object>
       <packing>
-        <property name="expand">False</property>
-        <property name="fill">False</property>
+        <property name="expand">True</property>
+        <property name="fill">True</property>
         <property name="position">0</property>
       </packing>
     </child>
@@ -163,6 +164,7 @@
             <property name="border_width">3</property>
             <property name="hscrollbar_policy">automatic</property>
             <property name="vscrollbar_policy">automatic</property>
+            <property name="window_placement_set">True</property>
             <property name="shadow_type">in</property>
             <child>
               <placeholder/>
