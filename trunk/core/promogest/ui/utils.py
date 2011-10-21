@@ -1595,7 +1595,7 @@ def calcolaMargine(costo=0, listino=0, iva=0):
 def calcolaCostoUltimodaDettaglio(dettaglio=0, ricarico=0, iva=0):
     #prima scorporo
     imponibile = float(dettaglio)/(1+float(iva)/100)
-    #poi calclo il costo ultimo
+    #poi calcolo il costo ultimo
     costo_ultimo = float(imponibile)/(1+float(ricarico)/100)
     return costo_ultimo
 

@@ -299,9 +299,11 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
                 Environment.listinoFissato = None
         else:
             # Ricrea il Dao con una connessione al DBMS SQL
-            self.dao = ListinoArticolo().select(idListino=dao.id_listino,
+            self.daoo = ListinoArticolo().select(idListino=dao.id_listino,
                                     idArticolo=dao.id_articolo,
-                                    orderBy=ListinoArticolo.id_articolo)[0]
+                                    dataListinoArticolo = datetime.datetime.today())
+            if self.daoo:
+                self.dao= self.daoo[0]
         self._refresh()
         return self.dao
 
@@ -407,15 +409,15 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
 
         listin = findIdFromCombobox(self.id_listino_customcombobox.combobox)
 
-        daoEsistente = ListinoArticolo().select(idListino=listin, idArticolo =self.id_articolo_customcombobox.getId(),
-                                                dataListinoArticolo = datetime.datetime.today())
-        if daoEsistente:
-            messageInfo(msg="""ATTENZIONE!!
-Un listino articolo con lo stesso riferimento a data,
-listino ed articolo esiste già
-Verrà aggiornato il precedente.""")
-            del self.dao
-            self.dao = daoEsistente[0]
+        #daoEsistente = ListinoArticolo().select(idListino=listin, idArticolo =self.id_articolo_customcombobox.getId(),
+                                                #dataListinoArticolo = datetime.datetime.today())
+        #if daoEsistente:
+            #messageInfo(msg="""ATTENZIONE!!
+#Un listino articolo con lo stesso riferimento a data,
+#listino ed articolo esiste già
+#Verrà aggiornato il precedente.""")
+            #del self.dao
+            #self.dao = daoEsistente[0]
 
         self.dao.id_listino = listin
         self.dao.id_articolo = self.id_articolo_customcombobox.getId()

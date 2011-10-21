@@ -234,8 +234,8 @@ class Login(GladeApp):
                         Environment.pg2log.info("LOGIN  id, user, role azienda: %s, %s" %(repr(Environment.params['usernameLoggedList']),self.azienda) )
                         import promogest.ui.SetConf
                         checkInstallation()
-                        gobject.idle_add(self.importModulesFromDir,'promogest/modules')
-                        #self.importModulesFromDir('promogest/modules')
+                        #gobject.idle_add(self.importModulesFromDir,'promogest/modules')
+                        self.importModulesFromDir('promogest/modules')
                         def mainmain():
                             from Main import Main
                             main = Main(self.azienda,
