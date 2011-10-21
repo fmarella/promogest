@@ -304,6 +304,12 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
                                     dataListinoArticolo = datetime.datetime.today())
             if self.daoo:
                 self.dao= self.daoo[0]
+            else:
+                self.daoo = ListinoArticolo().select(idListino=dao.id_listino,
+                                    idArticolo=dao.id_articolo,
+                                    orderBy=ListinoArticolo.data_listino_articolo)
+                if self.daoo:
+                    self.dao= self.daoo[0]
         self._refresh()
         return self.dao
 
