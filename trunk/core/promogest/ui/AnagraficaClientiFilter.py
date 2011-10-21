@@ -134,5 +134,5 @@ class AnagraficaClientiFilter(AnagraficaFilter):
                                         (c.codice or ''),
                                         (c.ragione_sociale or ''),
                                         (c.cognome or '') + ' ' + (c.nome or ''),
-                                        (c.sede_operativa_localita or ''),
+                                        (c.sede_legale_localita or ''),
                                         pvcf))
