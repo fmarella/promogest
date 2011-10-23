@@ -64,8 +64,6 @@ class Login(GladeApp):
         :param debugALL: boolean, non utilizzato
         :param shop: default False
         """
-
-        statu = Pg2StatusIcon()
         self.azienda=None
         self._dbConnString = ''
         self.modules = {}
@@ -75,6 +73,7 @@ class Login(GladeApp):
         checkAggiorna()
         self.draw()
         self.getTopLevel().show_all()
+        #Pg2StatusIcon()
 
     def draw(self):
         """Disegna la finestra di login

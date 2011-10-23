@@ -27,8 +27,10 @@
     <property name="resizable">False</property>
     <property name="modal">True</property>
     <property name="window_position">center</property>
-    <property name="icon">promogest.png</property>
+    <property name="icon">mask_400.png</property>
     <property name="type_hint">normal</property>
+    <property name="urgency_hint">True</property>
+    <property name="decorated">False</property>
     <property name="deletable">False</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox2">
@@ -425,6 +427,11 @@
       <action-widget response="0">button_quit</action-widget>
       <action-widget response="-11">aggiorna_button</action-widget>
     </action-widgets>
+  </object>
+  <object class="GtkStatusIcon" id="pg_statusbar">
+    <property name="pixbuf">mask_32.png</property>
+    <property name="has_tooltip">True</property>
+    <property name="tooltip_text" translatable="yes">Gestionale open source PromoGest</property>
   </object>
   <object class="GtkListStore" id="username_combobox_listore">
     <columns>
