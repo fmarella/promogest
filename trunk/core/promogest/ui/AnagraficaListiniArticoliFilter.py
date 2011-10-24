@@ -304,7 +304,7 @@ class AnagraficaListiniArticoliFilter(AnagraficaFilter):
                 elif segno =="-" and tipo_sconto =="valore":
                     d.prezzo_ingrosso = d.prezzo_ingrosso - valore
                 elif segno == "+" and tipo_sconto =="percentuale":
-                    d.prezzo_dettaglio = d.prezzo_ingrosso*(1+valore/100)
+                    d.prezzo_ingrosso = d.prezzo_ingrosso*(1+valore/100)
                 elif segno == "-" and tipo_sconto =="percentuale":
                     d.prezzo_ingrosso = d.prezzo_ingrosso*(1-valore/100)
                 Environment.session.add(d)
