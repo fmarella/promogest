@@ -432,6 +432,7 @@
     <property name="pixbuf">mask_32.png</property>
     <property name="has_tooltip">True</property>
     <property name="tooltip_text" translatable="yes">Gestionale open source PromoGest</property>
+    <signal name="activate" handler="on_pg_statusbar_activate" swapped="no"/>
   </object>
   <object class="GtkListStore" id="username_combobox_listore">
     <columns>

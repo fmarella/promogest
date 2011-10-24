@@ -99,6 +99,8 @@ class Anagrafica(GladeWidget):
         self.duplica_button.set_sensitive(False)
         self.selected_record_print_button.set_sensitive(False)
         self.selected_record_print_menu.set_sensitive(False)
+        if self.__class__.__name__ !="AnagraficaListiniArticoli":
+            self.modifiche_menu.destroy()
         self.placeWindow(self.anagrafica_complessa_window)
         self.filter.draw()
         self.editElement.draw(cplx=True)

@@ -68,12 +68,12 @@ class Login(GladeApp):
         self._dbConnString = ''
         self.modules = {}
         self.shop =shop
-        GladeApp.__init__(self, 'login_window')
+        a = GladeApp.__init__(self, 'login_window')
         Environment.exceptionHandler = GtkExceptionHandler()
         checkAggiorna()
         self.draw()
         self.getTopLevel().show_all()
-        #Pg2StatusIcon()
+        #Pg2StatusIcon() # da risolvere in futuro magari con una soluzione all-glade
 
     def draw(self):
         """Disegna la finestra di login

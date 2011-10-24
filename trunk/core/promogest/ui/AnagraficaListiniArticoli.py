@@ -68,6 +68,109 @@ class AnagraficaListiniArticoli(Anagrafica):
         #if "Label" not in Environment.modulesList:
             #self.Stampa_Frontaline.set_sensitive(False)
         self.records_file_export.set_sensitive(True)
+        self.filter.aggiungi_sconto_dettaglio = False
+        self.filter.aggiungi_sconto_ingrosso = False
+        self.filter.variazione_dettaglio = False
+        self.filter.variazione_ingrosso = False
+
+    def on_rimuovi_articoli_activate(self, widget):
+        msg = """ATTENZIONE!!! Confermi la cancellazione di tutti
+gli articoli presenti in questo listino?
+
+L'articolo non verrà rimosso dall'anagrafica
+ma solo dal listino di vendita
+
+L'operazione è irreversibile, fallo solo se sai cosa stai facendo"""
+        if YesNoDialog(msg=_(msg), transient=self.getTopLevel()):
+            daos = self.filter._filterClosure(None, None)
+            for d in daos:
+                Environment.session.delete(d)
+            Environment.session.commit()
+        self.filter.refresh()
+
+    def on_aggiungi_sconto_dettaglio_activate(self, widget):
+        info=""" ATTENZIONE!!
+In questa finestra viene gestita una modifica allo sconto del prezzo al DETTAGLIO
+( equivale a premere il pulsante "sconti" ed inserirne uno)
+
+Si può selezionare il tipo di sconto ( valore o percentuale )
+ed inserne la quantità.
+
+Tutti gli articoli selezionati verranno modificati
+
+"""
+        self.filter.aggiungi_sconto_ingrosso = False
+        self.filter.variazione_dettaglio = False
+        self.filter.variazione_ingrosso = False
+        self.filter.valore_ml_entry.set_text("")
+        self.filter.aggiungi_sconto_dettaglio = True
+        self.filter.hbox1_mlml.set_visible(False)
+        self.filter.info_ml_label.set_text(info)
+        self.filter.modifiche_listino.run()
+
+    def on_aggiungi_sconto_ingrosso_activate(self, widget):
+        info=""" ATTENZIONE!!
+In questa finestra viene gestita una modifica allo sconto del prezzo all'INGROSSO
+( equivale a premere il pulsante "sconti" ed inserirne uno)
+
+Si può selezionare il tipo di sconto ( valore o percentuale )
+ed inserne la quantità.
+
+Tutti gli articoli selezionati verranno modificati
+
+"""
+        self.filter.aggiungi_sconto_dettaglio = False
+        self.filter.variazione_dettaglio = False
+        self.filter.variazione_ingrosso = False
+        self.filter.valore_ml_entry.set_text("")
+        self.filter.aggiungi_sconto_ingrosso = True
+        self.filter.hbox1_mlml.set_visible(False)
+        self.filter.info_ml_label.set_text(info)
+        self.filter.modifiche_listino.run()
+
+    def on_variazione_dettaglio_activate(self, widget):
+        info=""" ATTENZIONE!!
+In questa finestra viene gestita una modifica al prezzo al DETTAGLIO
+(Il prezzo all'ingrosso NON verrà variato così come le % di ricarico e margine )
+
+Si può selezionare il tipo di variazione ( valore o percentuale )
+inserne la quantità e definire se variare in aggiunta o in sottrazione del
+valore iniziale
+
+Tutti gli articoli selezionati verranno modificati
+
+"""
+        self.filter.aggiungi_sconto_dettaglio = False
+        self.filter.aggiungi_sconto_ingrosso = False
+        self.filter.variazione_ingrosso = False
+        self.filter.valore_ml_entry.set_text("")
+        self.filter.variazione_dettaglio = True
+        self.filter.hbox1_mlml.set_visible(True)
+        self.filter.info_ml_label.set_text(info)
+        self.filter.modifiche_listino.run()
+
+    def on_variazione_ingrosso_activate(self, widget):
+        info=""" ATTENZIONE!!
+In questa finestra viene gestita una modifica al prezzo al INGROSSO
+(Il prezzo al dettaglio NON verrà variato così come le % di ricarico e margine )
+
+Si può selezionare il tipo di variazione ( valore o percentuale )
+inserne la quantità e definire se variare in aggiunta o in sottrazione del
+valore iniziale
+
+Tutti gli articoli selezionati verranno modificati
+
+"""
+        self.filter.aggiungi_sconto_dettaglio = False
+        self.filter.aggiungi_sconto_ingrosso = False
+        self.filter.variazione_dettaglio = False
+        self.filter.valore_ml_entry.set_text("")
+        self.filter.variazione_ingrosso = True
+        self.filter.hbox1_mlml.set_visible(True)
+        self.filter.info_ml_label.set_text(info)
+        self.filter.modifiche_listino.run()
+
+
 
 class AnagraficaListiniArticoliHtml(AnagraficaHtml):
 

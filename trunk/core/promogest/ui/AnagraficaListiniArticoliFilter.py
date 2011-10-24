@@ -23,10 +23,12 @@
 
 from promogest.ui.gtk_compat import *
 from promogest.ui.AnagraficaComplessaFilter import AnagraficaFilter
-
+from decimal import *
 from promogest import Environment
 from promogest.dao.ListinoArticolo import ListinoArticolo
 from promogest.dao.ListinoComplessoListino import ListinoComplessoListino
+from promogest.dao.ScontoVenditaDettaglio import ScontoVenditaDettaglio
+from promogest.dao.ScontoVenditaIngrosso import ScontoVenditaIngrosso
 from utils import *
 from utilsCombobox import fillComboboxListini,findIdFromCombobox,findComboboxRowFromId
 
@@ -209,7 +211,6 @@ class AnagraficaListiniArticoliFilter(AnagraficaFilter):
         modelRowPromoWear = []
         self._treeViewModel.clear()
         for l in self.liss:
-            print  "PPPPPPPPPPPPPPPPP", l.denominazione
             modelRow = [l,
                         (l.denominazione or 'PP'),
                         (l.codice_articolo or ''),
@@ -231,3 +232,73 @@ class AnagraficaListiniArticoliFilter(AnagraficaFilter):
             else:
                 self._treeViewModel.append((modelRow))
         #Environment.listinoFissato =  None
+
+    def on_annulla_ml_button_clicked(self, button):
+        self.modifiche_listino.hide()
+
+    def on_ok_ml_button_clicked(self, button):
+        daos = self._filterClosure(None, None)
+        valore = Decimal(self.valore_ml_entry.get_text() or 0)
+        #if not valore:
+            #return
+        if self.aggiungi_ml_radio.get_active():
+            segno = "+"
+        else:
+            segno = "-"
+        if self.valore_ml_radio.get_active():
+            tipo_sconto = "valore"
+        else:
+            tipo_sconto = "percentuale"
+
+        if self.aggiungi_sconto_dettaglio:
+            for d in daos:
+                sconti_ingrosso = []
+                sconti_dettaglio = []
+                if valore > 0:
+                    g = ScontoVenditaDettaglio()
+                    g.valore = valore
+                    g.tipo_sconto = tipo_sconto
+                    sconti_dettaglio.append(g)
+                d.persist(sconti={"dettaglio":sconti_dettaglio,"ingrosso":sconti_ingrosso})
+
+        elif self.aggiungi_sconto_ingrosso:
+            for d in daos:
+                sconti_ingrosso = []
+                sconti_dettaglio = []
+                if valore > 0:
+                    g = ScontoVenditaIngrosso()
+                    g.valore = valore
+                    g.tipo_sconto = tipo_sconto
+                    sconti_ingrosso.append(g)
+                d.persist(sconti={"dettaglio":sconti_dettaglio,"ingrosso":sconti_ingrosso})
+
+        elif self.variazione_dettaglio:
+            if not valore:
+                return
+            for d in daos:
+                if segno =="+" and tipo_sconto =="valore":
+                    d.prezzo_dettaglio = d.prezzo_dettaglio + valore
+                elif segno =="-" and tipo_sconto =="valore":
+                    d.prezzo_dettaglio = d.prezzo_dettaglio - valore
+                elif segno == "+" and tipo_sconto =="percentuale":
+                    d.prezzo_dettaglio = d.prezzo_dettaglio*(1+valore/100)
+                elif segno == "-" and tipo_sconto =="percentuale":
+                    d.prezzo_dettaglio = d.prezzo_dettaglio*(1-valore/100)
+                Environment.session.add(d)
+        elif self.variazione_ingrosso:
+            if not valore:
+                return
+            for d in daos:
+                if segno =="+" and tipo_sconto =="valore":
+                    d.prezzo_ingrosso = d.prezzo_ingrosso + valore
+                elif segno =="-" and tipo_sconto =="valore":
+                    d.prezzo_ingrosso = d.prezzo_ingrosso - valore
+                elif segno == "+" and tipo_sconto =="percentuale":
+                    d.prezzo_dettaglio = d.prezzo_ingrosso*(1+valore/100)
+                elif segno == "-" and tipo_sconto =="percentuale":
+                    d.prezzo_ingrosso = d.prezzo_ingrosso*(1-valore/100)
+                Environment.session.add(d)
+
+        Environment.session.commit()
+        self.modifiche_listino.hide()
+        self.refresh()
