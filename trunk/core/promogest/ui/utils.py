@@ -951,7 +951,7 @@ def getDenominazioneBanca(id_banca):
     else:
         return "Banca generica"
 
-def calcolaTotaliBanche(banche_entrate, banche_uscite, dao):
+def calcolaTotaliBanche(banche_entrate, banche_uscite, dao,t):
     """ Calcola i totali delle entrate e delle uscite divisi per ciascuna banca
 
     Arguments:
@@ -961,13 +961,13 @@ def calcolaTotaliBanche(banche_entrate, banche_uscite, dao):
     """
     for r in dao.righeprimanota:
         if r.id_banca in banche_entrate:
-            banche_entrate[r.id_banca] += dao.totali["tot_entrate_banca"]
+            banche_entrate[r.id_banca] += t["tot_entrate_banca"]
         else:
-            banche_entrate[r.id_banca] = dao.totali["tot_entrate_banca"]
+            banche_entrate[r.id_banca] = t["tot_entrate_banca"]
         if r.id_banca in banche_uscite:
-            banche_uscite[r.id_banca] += dao.totali["tot_uscite_banca"]
+            banche_uscite[r.id_banca] += t["tot_uscite_banca"]
         else:
-            banche_uscite[r.id_banca] = dao.totali["tot_uscite_banca"]
+            banche_uscite[r.id_banca] = t["tot_uscite_banca"]
     return (banche_entrate, banche_uscite)
 
 def calcolaTotaliPrimeNote(daos1, daos2=None):
@@ -981,12 +981,13 @@ def calcolaTotaliPrimeNote(daos1, daos2=None):
     riporto_cassa = setconf("PrimaNota", "valore_saldo_parziale_cassa_primanota") or 0
     riporto_banca = setconf("PrimaNota", "valore_saldo_parziale_banca_primanota") or 0
     for dao in daos1:
-        tot_entrate_cassa += dao.totali["tot_entrate_cassa"]
-        tot_uscite_cassa += dao.totali["tot_uscite_cassa"]
+        t = dao.totali
+        tot_entrate_cassa += t["tot_entrate_cassa"]
+        tot_uscite_cassa += t["tot_uscite_cassa"]
         if not daos2:
-            tot_entrate_per_banche, tot_uscite_per_banche = calcolaTotaliBanche(tot_entrate_per_banche, tot_uscite_per_banche, dao)
-            tot_entrate_banca += dao.totali["tot_entrate_banca"]
-            tot_uscite_banca += dao.totali["tot_uscite_banca"]
+            tot_entrate_per_banche, tot_uscite_per_banche = calcolaTotaliBanche(tot_entrate_per_banche, tot_uscite_per_banche,dao, t)
+            tot_entrate_banca += t["tot_entrate_banca"]
+            tot_uscite_banca += t["tot_uscite_banca"]
     if daos2:
         for dao in daos2:
             tot_entrate_per_banche, tot_uscite_per_banche = calcolaTotaliBanche(tot_entrate_per_banche, tot_uscite_per_banche, dao)

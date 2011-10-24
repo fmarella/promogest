@@ -57,6 +57,11 @@ class AnagraficaPrimaNotaSetup(GladeWidget):
             self.aggiungi_partita_iva_check.set_active(0)
 
         try:
+            self.inserisci_totali_generali_in_report_check.set_active(int(setconf("PrimaNota", "saldi_periodo")))
+        except:
+            self.inserisci_totali_generali_in_report_check.set_active(0)
+
+        try:
             self.inserisci_senza_data_pagamento_check.set_active(int(setconf("PrimaNota", "inserisci_senza_data_pagamento")))
         except:
             self.inserisci_senza_data_pagamento_check.set_active(0)
@@ -171,6 +176,22 @@ class AnagraficaPrimaNotaSetup(GladeWidget):
         c.value = str(self.inserisci_senza_data_pagamento_check.get_active())
         c.tipo = "bool"
         c.description = "Inserire la prima nota senza data di scadenza"
+        c.tipo_section = "Generico"
+        c.active = True
+        c.visible = True
+        c.date = datetime.datetime.now()
+        Environment.session.add(c)
+
+        c = SetConf().select(key="saldi_periodo", section="PrimaNota")
+        if c:
+            c = c[0]
+        else:
+            c = SetConf()
+        c.key = "saldi_periodo"
+        c.section = "PrimaNota"
+        c.value = str(self.inserisci_totali_generali_in_report_check.get_active())
+        c.tipo = "bool"
+        c.description = "Inserire i saldi per periodo nel report"
         c.tipo_section = "Generico"
         c.active = True
         c.visible = True

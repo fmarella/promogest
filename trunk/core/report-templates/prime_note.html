@@ -50,7 +50,7 @@ margin: 1cm;
     </tr>{% endfor %}
 </table>
 <table style="width:300px;">
-{% set tot_init = utils.calcolaSaldoPeriodoPrimaNota() %}
+
 {% set tot = utils.calcolaTotaliPrimeNote(pageData["objects"], None) %}
 <tr>
         <td style="width:120px;">TOTALE ENTRATE CASSA</td>
@@ -111,6 +111,10 @@ margin: 1cm;
         <td style="color:red;width:90px;text-align:right;font-size:12px"> {{utils.mNLC(tot["saldo_banca"],2)}}</td>
 </tr>
          {% endif %}
+
+{% if utils.setconf("PrimaNota", "saldi_periodo") %}
+{% set tot_init = utils.calcolaSaldoPeriodoPrimaNota() %}
+
 {% if utils.getDataFiltroPrimaNota() != '' %}
         {% if tot_init["saldo_cassa"] > 0 %}
 <tr>
@@ -134,6 +138,7 @@ margin: 1cm;
         <td style="color:red;width:90px;text-align:right;font-size:12px"> {{utils.mNLC(tot_init["saldo_banca"],2)}}</td>
 </tr>
          {% endif %}
+{% endif %}
 {% endif %}
 </table>
 {% endblock %}
