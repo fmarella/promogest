@@ -259,6 +259,11 @@ class AnagraficaListiniArticoliFilter(AnagraficaFilter):
                     g.valore = valore
                     g.tipo_sconto = tipo_sconto
                     sconti_dettaglio.append(g)
+                if d.sconto_vendita_ingrosso:
+                    h = ScontoVenditaIngrosso()
+                    h.valore = d.sconto_vendita_ingrosso[0].valore
+                    h.tipo_sconto = d.sconto_vendita_ingrosso[0].tipo_sconto
+                    sconti_ingrosso.append(h)
                 d.persist(sconti={"dettaglio":sconti_dettaglio,"ingrosso":sconti_ingrosso})
 
         elif self.aggiungi_sconto_ingrosso:
@@ -270,6 +275,11 @@ class AnagraficaListiniArticoliFilter(AnagraficaFilter):
                     g.valore = valore
                     g.tipo_sconto = tipo_sconto
                     sconti_ingrosso.append(g)
+                if d.sconto_vendita_dettaglio:
+                    h = ScontoVenditaDettaglio()
+                    h.valore = d.sconto_vendita_dettaglio[0].valore
+                    h.tipo_sconto = d.sconto_vendita_dettaglio[0].tipo_sconto
+                    sconti_ingrosso.append(h)
                 d.persist(sconti={"dettaglio":sconti_dettaglio,"ingrosso":sconti_ingrosso})
 
         elif self.variazione_dettaglio:
@@ -300,5 +310,6 @@ class AnagraficaListiniArticoliFilter(AnagraficaFilter):
                 Environment.session.add(d)
 
         Environment.session.commit()
+        messageInfo(msg="Operazione effettuata")
         self.modifiche_listino.hide()
         self.refresh()
