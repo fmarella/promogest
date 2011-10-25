@@ -462,6 +462,7 @@ def listinoCandidateSel(OrderBy=None,idArticolo=None,idMagazzino=None,idCliente=
     from promogest.dao.ListinoArticolo import ListinoArticolo
     from promogest.dao.ListinoCategoriaCliente import ListinoCategoriaCliente
     from promogest.dao.ClienteCategoriaCliente import ClienteCategoriaCliente
+    from promogest.dao.ListinoComplessoListino import ListinoComplessoListino
     from promogest.dao.Cliente import Cliente
     listin = None
 
@@ -472,10 +473,20 @@ def listinoCandidateSel(OrderBy=None,idArticolo=None,idMagazzino=None,idCliente=
         listiniArt = []
         aa = []
         clid = []
+        listiniArtComplexList = []
         if idArticolo:
             listiniArt=  Environment.session.\
                         query(ListinoArticolo.id_listino).\
                         filter(ListinoArticolo.id_articolo == idArticolo).all()
+                        #aggiungere anche i listino complesso se presente.
+            la = ListinoArticolo().select(idArticolo=idArticolo)
+            for a in la:
+                bb = Listino().select(id=a.id_listino)
+                for b in bb:
+                    listiniArtComplexList = Environment.session.\
+                            query(ListinoComplessoListino.id_listino_complesso).\
+                            filter(ListinoComplessoListino.id_listino == a.id_listino).all()
+
         if idMagazzino:
             listiniMAG = Environment.session.\
                         query(ListinoMagazzino.id_listino).\
@@ -492,7 +503,7 @@ def listinoCandidateSel(OrderBy=None,idArticolo=None,idMagazzino=None,idCliente=
             cli = Cliente().getRecord(id=idCliente)
             if cli:
                 clid= [(cli.id_listino,)]
-        listinoIDS = clid+listiniMAG+listiniArt+aa
+        listinoIDS = clid+listiniMAG+listiniArt+aa+listiniArtComplexList
         listid = list(set([ a[0] for a in listinoIDS]))
         if listid:
             listinoSelezionato = Environment.session.query(Listino).filter(and_(Listino.id.in_(listid),Listino.listino_attuale==True)).all()
