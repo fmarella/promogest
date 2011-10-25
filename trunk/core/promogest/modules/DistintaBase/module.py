@@ -28,7 +28,7 @@ TEMPLATES = Environment.cartella_moduli+"/DistintaBase/templates/"
 #testataMovimentoTable = Table('testata_movimento', params['metadata'], autoload=True, schema=params['schema'])
 
 class DistintaBase(object):
-    VIEW_TYPE = ('anagrafica', 'Distinta Base ', 'report48x48.png')
+    VIEW_TYPE = ('anagrafica', 'Associazione Articoli ', 'report48x48.png')
     def getApplication(self):
         anag = AnagraficaDistintaBase()
         return anag
