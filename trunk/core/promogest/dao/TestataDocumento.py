@@ -1107,9 +1107,14 @@ class TestataDocumento(Dao):
         elif k == 'soloContabili':
             dic = {k:testata_documento.c.operazione.in_(contabili)}
         elif k == 'idMagazzino':
-            dic = {k:testata_movi.c.id.in_(select([RigaMovimento.id_testata_movimento],and_(
-                                        testata_movi.c.id_testata_documento == testata_documento.c.id,
-                                        Riga.id==RigaMovimento.id,Riga.id_magazzino== v)))
+            #dic = {k:testata_movi.c.id.in_(select([RigaMovimento.id_testata_movimento],and_(
+                                        #testata_movi.c.id_testata_documento == testata_documento.c.id,
+                                        #Riga.id==RigaMovimento.id,Riga.id_magazzino== v)))
+                                        #}
+            dic = {k:and_(v == Riga.id_magazzino,
+                    riga.c.id==RigaMovimento.id,
+                    RigaMovimento.id_testata_movimento == TestataMovimento.id,
+                    TestataMovimento.id_testata_documento == testata_documento.c.id)
                                         }
 #            dic = {k:and_(or_(testata_movi.c.id_testata_documento == testata_documento.c.id,
 #                            testata_movi.c.id == RigaMovimento.id_testata_movimento,
@@ -1134,6 +1139,7 @@ class TestataDocumento(Dao):
             dic = {k: and_(v==Riga.id_articolo,
                     Riga.id==RigaDocumento.id,
                     RigaDocumento.id_testata_documento == TestataDocumento.id)}
+
         elif (hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes") or ("GestioneNoleggio" in Environment.modulesList):
             if k == 'daDataInizioNoleggio':
                 dic = {k:and_(testata_documento.c.id == TestataGestioneNoleggio.id_testata_documento,
