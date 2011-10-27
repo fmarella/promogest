@@ -26,7 +26,7 @@ from promogest import Environment
 from promogest.ui.GladeWidget import GladeWidget
 from promogest.ui.utils import *
 from promogest.ui.utilsCombobox import *
-from promogest.dao.DaoUtils import giacenzaArticolo, giacenzaSel
+from promogest.dao.DaoUtils import giacenzaArticolo, giacenzaDettaglio
 from promogest.dao.Articolo import Articolo
 from promogest.dao.Listino import Listino
 from promogest.dao.Fornitura import Fornitura

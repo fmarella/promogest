@@ -25,7 +25,7 @@ from sqlalchemy.orm import *
 from promogest import Environment
 import datetime
 
-def giacenzaSel(year=None, idMagazzino=None, idArticolo=None,allMag= None):
+def giacenzaDettaglio(year=None, idMagazzino=None, idArticolo=None,allMag= None):
     """
     Calcola la quantità di oggetti presenti in magazzino
     """
@@ -35,19 +35,7 @@ def giacenzaSel(year=None, idMagazzino=None, idArticolo=None,allMag= None):
     from promogest.dao.Riga import Riga
     from promogest.dao.Fornitura import Fornitura
     from promogest.dao.Magazzino import Magazzino
-    def calcolaGiacenza(quantita=None, moltiplicatore=None, segno=None, valunine=None):
-        """
-        Effettua realmente il calcolo
-        """
-        giacenza=0
-        if segno =="-":
-            giacenza -= quantita*moltiplicatore
-        elif segno =="+":
-            giacenza += quantita*moltiplicatore
-        else:
-            giacenza += quantita*moltiplicatore
-        valore= giacenza*valunine
-        return (giacenza, valore)
+
 
     def addFornitura(data=None):
         return Fornitura().select(idArticolo = idArticolo,dataFornitura=data)
@@ -68,6 +56,7 @@ def giacenzaSel(year=None, idMagazzino=None, idArticolo=None,allMag= None):
                 .filter(RigaMovimento.id_testata_movimento == TestataMovimento.id)\
                 .filter(Riga.id_articolo==idArticolo)\
                 .filter(Riga.id_magazzino.in_(magazzini))\
+                .order_by(TestataMovimento.data_movimento)\
                 .all()
     else:
         magazzini = idMagazzino
@@ -77,8 +66,10 @@ def giacenzaSel(year=None, idMagazzino=None, idArticolo=None,allMag= None):
                 .filter(RigaMovimento.id_testata_movimento == TestataMovimento.id)\
                 .filter(Riga.id_articolo==idArticolo)\
                 .filter(Riga.id_magazzino ==magazzini)\
+                .order_by(TestataMovimento.data_movimento)\
                 .all()
     lista = []
+    giacenza=0
     for ram in righeArticoloMovimentate:
         if ram[1].segnoOperazione =="+":
             fornitura = addFornitura(data=ram[1].data_movimento)
@@ -90,11 +81,23 @@ def giacenzaSel(year=None, idMagazzino=None, idArticolo=None,allMag= None):
             if idTestataDocumento:
                 daoTestataDocumento = TestataDocumento().getRecord(id=idTestataDocumento)
 
-        qua = ram[0].quantita
-        if hasattr(ram[0], "reversed"):
-            if ram[0].reversed:
-                qua = -1*qua
-        ll = calcolaGiacenza(qua,moltiplicatore=ram[0].moltiplicatore, segno=ram[1].segnoOperazione, valunine=ram[0].valore_unitario_netto)
+        qua = ram[0].quantita *ram[0].moltiplicatore
+        #print "TUUUUUUUUU", ram[1].segnoOperazione, ram[0].quantita, ram[0].moltiplicatore, qua,
+
+        if ram[1].segnoOperazione =="-":
+            giacenza -= qua
+        elif ram[1].segnoOperazione =="+":
+            giacenza += qua
+        elif ram[1].segnoOperazione == "=":
+            #print "è un trasferimento", qua
+            if ram[1].operazione == "Trasferimento merce magazzino":
+                if ram[0].id_magazzino == ram[1].id_to_magazzino:
+                    giacenza += qua
+                else:
+                    giacenza -= qua
+        valore= giacenza*ram[0].valore_unitario_netto
+
+        #ll = calcolaGiacenza(qua,moltiplicatore=ram[0].moltiplicatore, segno=ram[1].segnoOperazione, valunine=ram[0].valore_unitario_netto)
         diz = {"daoRigaMovimento": ram[0],
                 "daoTestataMovimento":ram[1],
                 "daoTestataDocumento": daoTestataDocumento,
@@ -103,13 +106,14 @@ def giacenzaSel(year=None, idMagazzino=None, idArticolo=None,allMag= None):
                 "data_movimento":ram[1].data_movimento,
                 "operazione":ram[1].operazione,
                 "id_articolo":ram[0].id_articolo,
-                "giacenza":ll[0],
+                "giacenza":giacenza,
                 "cliente":ram[1].ragione_sociale_cliente,
                 "fornitore":ram[1].ragione_sociale_fornitore,
-                "valore":ll[1],
+                "valore":valore,
                 "segnoOperazione":ram[1].segnoOperazione,
                     }
         lista.append(diz)
+        giacenza = 0
     return lista
 
 def articoloStatistiche(arti=None, righe=None):
@@ -179,21 +183,6 @@ def articoloStatistiche(arti=None, righe=None):
                 giacenza = 0)
     return arti
 
-#def giacenzaArticolo(year=None, idMagazzino=None, idArticolo=None, allMag=None):
-    #"""
-    #Calcola la giacenza insieme a giacenzaSel
-    #"""
-    #if not idArticolo or not year or (not idMagazzino and not allMag):
-        #return "0"
-    #else:
-        #lista = giacenzaSel(year=year, idMagazzino=idMagazzino, idArticolo=idArticolo, allMag=allMag)
-        #totGiacenza = 0
-
-        #for t in lista:
-            #totGiacenza += (t['giacenza'] or 0)
-            ##totGiacenza += (t[4] or 0)
-
-        #return round(totGiacenza,2)
 
 def giacenzaArticolo(year=None, idMagazzino=None, idArticolo=None,allMag= None):
     """
@@ -226,7 +215,7 @@ def giacenzaArticolo(year=None, idMagazzino=None, idArticolo=None,allMag= None):
     else:
         magazzini = idMagazzino
         righeArticoloMovimentate= Environment.params["session"]\
-                .query(RigaMovimento.quantita, RigaMovimento.moltiplicatore,RigaMovimento.valore_unitario_netto,Operazione.segno).join(TestataMovimento,Operazione)\
+                .query(RigaMovimento.quantita, RigaMovimento.moltiplicatore,RigaMovimento.valore_unitario_netto,Operazione.segno,RigaMovimento.id).join(TestataMovimento,Operazione)\
                 .filter(TestataMovimento.data_movimento.between(datetime.date(int(year), 1, 1), datetime.date(int(year) + 1, 1, 1)))\
                 .filter(RigaMovimento.id_testata_movimento == TestataMovimento.id)\
                 .filter(RigaMovimento.id_magazzino ==magazzini)\
@@ -237,16 +226,20 @@ def giacenzaArticolo(year=None, idMagazzino=None, idArticolo=None,allMag= None):
     giacenza=0
     for ram in righeArticoloMovimentate:
         segno = ram[3]
-        qua = ram[0]*(ram[1] or 1)
-        #if hasattr(ram[0], "reversed"):
-            #if ram[1].reversed:
-                #qua = -1*qua
+        qua = ram[0]*ram[1]
         if segno =="-":
             giacenza -= qua
         elif segno =="+":
             giacenza += qua
-        else:
-            giacenza += qua
+        elif segno == "=":
+            r = RigaMovimento().getRecord(id=ram[4])
+            tm = TestataMovimento().getRecord(id=r.id_testata_movimento)
+            if tm.operazione == "Trasferimento merce magazzino":
+                if r.id_magazzino == tm.id_to_magazzino:
+                    giacenza += qua
+                else:
+                    giacenza -= qua
+
     if len(righeArticoloMovimentate):
         val = giacenza*ram[2]
     else:

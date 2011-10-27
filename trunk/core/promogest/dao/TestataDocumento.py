@@ -1119,7 +1119,6 @@ class TestataDocumento(Dao):
                     riga.c.id==RigaMovimento.id,
                     RigaMovimento.id_testata_movimento == TestataMovimento.id,
                     TestataMovimento.id_testata_documento == testata_documento.c.id)}
-
         elif k == 'idArticoloDoc':
             dic = {k: and_(v==Riga.id_articolo,
                     Riga.id==RigaDocumento.id,
@@ -1128,13 +1127,7 @@ class TestataDocumento(Dao):
             dic = {k:and_(v == Riga.id_magazzino,
                     riga.c.id==RigaMovimento.id,
                     RigaMovimento.id_testata_movimento == TestataMovimento.id,
-                    TestataMovimento.id_testata_documento == testata_documento.c.id)
-                                        }
-
-
-
-
-
+                    TestataMovimento.id_testata_documento == testata_documento.c.id)}
 
         elif (hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes") or ("GestioneNoleggio" in Environment.modulesList):
             if k == 'daDataInizioNoleggio':

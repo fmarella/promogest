@@ -22,7 +22,7 @@
 
 import os, popen2
 
-from promogest.dao.DaoUtils import giacenzaSel
+from promogest.dao.DaoUtils import giacenzaDettaglio
 from datetime import datetime, timedelta
 from promogest import Environment
 from promogest.ui.GladeWidget import GladeWidget

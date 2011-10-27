@@ -114,11 +114,18 @@ def apriAnagraficaArticoliEdit(articoloId):
     a.on_record_edit_activate(a, dao=art)
 
 def apriTestataDocumentoEdit(testataDocumentoId):
-    from promogest.ui.AnagraficaDocumenti import AnagraficaDocumenti
+    from promogest.ui.anagDocumenti.AnagraficaDocumenti import AnagraficaDocumenti
 #    from promogest.ui.AnagraficaDocumentiEdit import AnagraficaDocumentiEdit
     from promogest.dao.TestataDocumento import TestataDocumento
     a = AnagraficaDocumenti()
     art = TestataDocumento().getRecord(id=testataDocumentoId)
+    a.on_record_edit_activate(a, dao=art)
+
+def apriTestataMovimentoEdit(testataMovimentoId):
+    from promogest.ui.anagMovimenti.AnagraficaMovimenti import AnagraficaMovimenti
+    from promogest.dao.TestataMovimento import TestataMovimento
+    a = AnagraficaMovimenti()
+    art = TestataMovimento().getRecord(id=testataMovimentoId)
     a.on_record_edit_activate(a, dao=art)
 
 def apriAnagraficaPromemoriaNew(selectedData=None):
@@ -150,8 +157,17 @@ def _on_navigation_requested(view, frame, req, data=None):
             exec(agg)
             apriAnagraficaPromemoriaEdit(promemoriaId)
         elif "testataDocumentoId" in agg:
-            exec(agg)
-            apriTestataDocumentoEdit(testataDocumentoId)
+            try:
+                exec(agg)
+                apriTestataDocumentoEdit(testataDocumentoId)
+            except:
+                return
+        elif "testataMovimentoId" in agg:
+            try:
+                exec(agg)
+                apriTestataMovimentoEdit(testataMovimentoId)
+            except:
+                return
     elif uri.startswith("http://"):
         linkOpen(uri)
     else:

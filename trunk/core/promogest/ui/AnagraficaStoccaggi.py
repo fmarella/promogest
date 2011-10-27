@@ -117,9 +117,9 @@ class AnagraficaStoccaggiFilter(AnagraficaFilter):
         column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
         column.connect("clicked", self._changeOrderBy, 'articolo')
-        column.set_resizable(True)
-        column.set_expand(True)
-        column.set_min_width(100)
+        #column.set_resizable(True)
+        #column.set_expand(True)
+        #column.set_min_width(100)
         treeview.append_column(column)
 
         self._treeViewModel = gtk.ListStore(object, str, str, str, str,str)
@@ -143,7 +143,7 @@ class AnagraficaStoccaggiFilter(AnagraficaFilter):
             column.set_property('visible', False)
         if self._anagrafica._magazzinoFissato:
             findComboboxRowFromId(self.id_magazzino_filter_combobox, self._anagrafica._idMagazzino)
-            self.id_magazzino_filter_combobox.set_sensitive(False)
+            #self.id_magazzino_filter_combobox.set_sensitive(False)
             column = self._anagrafica.anagrafica_filter_treeview.get_column(0)
             column.set_property('visible', False)
         if posso("PW"):

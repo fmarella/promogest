@@ -55,7 +55,6 @@ class Cliente(Dao):
         session.delete(self)
         session.commit()
 
-
     def _cellularePrincipale(self):
         if self.id:
             for reca in getRecapitiCliente(self.id):

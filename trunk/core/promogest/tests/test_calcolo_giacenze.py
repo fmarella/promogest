@@ -51,7 +51,7 @@ class TestCalcoloGiacenza(unittest.TestCase):
 
 
     def _getTotaliOperazioniMovimento(self):
-        self.__dbTotaliOperazioniMovimento = self.giacenzaSel(year=workingYear, idMagazzino= self.id_magazzino, idArticolo=self.id_articolo)
+        self.__dbTotaliOperazioniMovimento = self.giacenzaDettaglio(year=workingYear, idMagazzino= self.id_magazzino, idArticolo=self.id_articolo)
         self.__totaliOperazioniMovimento = self.__dbTotaliOperazioniMovimento[:]
 
         return self.__totaliOperazioniMovimento
