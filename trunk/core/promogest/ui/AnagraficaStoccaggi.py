@@ -202,6 +202,7 @@ class AnagraficaStoccaggiFilter(AnagraficaFilter):
             cancellato = False
         else:
             cancellato = True
+        print "MAGAZZINOOOOOOOOOOOOOOOOO", idMagazzino
         self.filterDict = { "articolo":denominazione,
                             "codice":codice,
                             "codiceABarre":codiceABarre,

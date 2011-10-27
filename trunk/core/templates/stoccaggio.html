@@ -33,12 +33,18 @@
                 <td class="even-number" style="text-align:center;" width="15%">Valore</td>
 
             </tr>
-            {% for item in dao.totaliOperazioniMovimento %}
+            {% for item in dao._getTotaliOperazioniMovimento() %}
             <tr >
-            <td class="odd-detail" style="padding-left:5px;"><a href="program:/testataDocumentoId={{item['daoTestataDocumento'].id}}"><b>DOC:</b> N° {{item['daoTestataDocumento'].numero}} </a>-- <a href="program:/testataMovimentoId={{item['daoTestataMovimento'].id}}"><b>MOV:</b> N° {{item['numero']}}</a> - {{item['operazione']}} - Del: {{utils.dateToString(item['data_movimento'])}} - Rag_soc.:{{item['fornitore'][0:9]|string}}{{item['cliente'][0:9]|string}}<br>
+            <td class="odd-detail" style="padding-left:5px;"><a href="program:/testataDocumentoId={{item['daoTestataDocumento'].id}}"><b>DOC:</b> N° {{item['daoTestataDocumento'].numero}} </a>-- <a href="program:/testataMovimentoId={{item['daoTestataMovimento'].id}}"><b>MOV:</b> N° {{item['numero']}}</a> - {{item['operazione']}} - Del: {{utils.dateToString(item['data_movimento'])}} -
+            {% if item["daoTestataMovimento"].id_cliente or item["daoTestataMovimento"].id_fornitore %}
+            Rag_soc.:{{item['fornitore'][0:9]|string}}{{item['cliente'][0:9]|string}}<br>
+            {% endif %}
+            {% if item["daoTestataMovimento"].operazione == "Trasferimento merce magazzino" %}
+            <br>&nbsp;&nbsp;DA {{item['magazzino']}} - A -{{item['daoTestataMovimento'].tomagazzino}}
+            {% endif %}
 
             </td>
-            <td class="odd-number" style="text-align:center;" >{{'%14.1f' % (item['giacenza'],)}}</td>
+            <td class="odd-number" style="text-align:center;" >{{'%14.1f' % (item['giacenza'],)}} </td>
             <td class="odd-number" style="text-align:center;">{{utils.mNLC(item['valore'],2)}}</td>
             </tr>
             {% endfor %}
@@ -47,6 +53,7 @@
                 <td class="totale-number" style="text-align:center;"><strong>{{'%14.1f' % (dao.giacenza, )}}</strong></td>
                 <td class="totale-number" style="text-align:center;"><strong>{{utils.mNLC(dao.valoreGiacenza,2)}}</strong></td>
             </tr>
+            <tr><td colspan="3"><br /><br />GIACENZA GENERALE IN TUTTI I MAGAZZINI: {{dao.arti.getGiacenza()|nonone or 0}}</td></tr>
 </table>
         {% else %}
         <p><img src= "gui/attenzione_48X48.png">ELIMINATO: Niente da visualizzare</p>

@@ -35,8 +35,8 @@ def giacenzaDettaglio(year=None, idMagazzino=None, idArticolo=None,allMag= None)
     from promogest.dao.Riga import Riga
     from promogest.dao.Fornitura import Fornitura
     from promogest.dao.Magazzino import Magazzino
-
-
+    #Environment.session.commit()
+    print " IDDDDDDDDDDDDDDMAGAZZINO", idMagazzino
     def addFornitura(data=None):
         return Fornitura().select(idArticolo = idArticolo,dataFornitura=data)
 
@@ -71,6 +71,7 @@ def giacenzaDettaglio(year=None, idMagazzino=None, idArticolo=None,allMag= None)
     lista = []
     giacenza=0
     for ram in righeArticoloMovimentate:
+        print "ram[0]", ram[0].id, ram[0].quantita
         if ram[1].segnoOperazione =="+":
             fornitura = addFornitura(data=ram[1].data_movimento)
         else:
@@ -83,24 +84,35 @@ def giacenzaDettaglio(year=None, idMagazzino=None, idArticolo=None,allMag= None)
 
         qua = ram[0].quantita *ram[0].moltiplicatore
         #print "TUUUUUUUUU", ram[1].segnoOperazione, ram[0].quantita, ram[0].moltiplicatore, qua,
-
+        magazzino = ""
         if ram[1].segnoOperazione =="-":
-            giacenza -= qua
+            giacenza += -1*qua
         elif ram[1].segnoOperazione =="+":
-            giacenza += qua
+            giacenza = qua
         elif ram[1].segnoOperazione == "=":
-            #print "è un trasferimento", qua
+            print "è un trasferimento", qua
             if ram[1].operazione == "Trasferimento merce magazzino":
                 if ram[0].id_magazzino == ram[1].id_to_magazzino:
-                    giacenza += qua
+                    if qua >=0:
+                        giacenza = qua
+                    else:
+                        giacenza = -1*qua
                 else:
-                    giacenza -= qua
+                    if qua <=0:
+                        giacenza = qua
+                    else:
+                        giacenza = -1*qua
+                print "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", ram[0].id_magazzino, ram[1].id_to_magazzino, ram[0].quantita *ram[0].moltiplicatore
+                if ram[0].id_magazzino == ram[1].id_to_magazzino:
+                    magazzino = ram[0].magazzino
+        print "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", magazzino
         valore= giacenza*ram[0].valore_unitario_netto
 
         #ll = calcolaGiacenza(qua,moltiplicatore=ram[0].moltiplicatore, segno=ram[1].segnoOperazione, valunine=ram[0].valore_unitario_netto)
         diz = {"daoRigaMovimento": ram[0],
                 "daoTestataMovimento":ram[1],
                 "daoTestataDocumento": daoTestataDocumento,
+                "magazzino":magazzino,
                 "numero":ram[1].numero,
                 "fornitura": fornitura,
                 "data_movimento":ram[1].data_movimento,
@@ -206,7 +218,7 @@ def giacenzaArticolo(year=None, idMagazzino=None, idArticolo=None,allMag= None):
                 mag.append(m[0])
             magazzini = mag
         righeArticoloMovimentate= Environment.params["session"]\
-                .query(RigaMovimento.quantita, RigaMovimento.moltiplicatore,RigaMovimento.valore_unitario_netto,Operazione.segno).join(TestataMovimento,Operazione)\
+                .query(RigaMovimento.quantita, RigaMovimento.moltiplicatore,RigaMovimento.valore_unitario_netto,Operazione.segno,RigaMovimento.id).join(TestataMovimento,Operazione)\
                 .filter(TestataMovimento.data_movimento.between(datetime.date(int(year), 1, 1), datetime.date(int(year) + 1, 1, 1)))\
                 .filter(RigaMovimento.id_testata_movimento == TestataMovimento.id)\
                 .filter(RigaMovimento.id_magazzino.in_(magazzini))\
@@ -236,10 +248,15 @@ def giacenzaArticolo(year=None, idMagazzino=None, idArticolo=None,allMag= None):
             tm = TestataMovimento().getRecord(id=r.id_testata_movimento)
             if tm.operazione == "Trasferimento merce magazzino":
                 if r.id_magazzino == tm.id_to_magazzino:
-                    giacenza += qua
+                    if qua >=0:
+                        giacenza += qua
+                    else:
+                        giacenza += -1*qua
                 else:
-                    giacenza -= qua
-
+                    if qua <=0:
+                        giacenza += qua
+                    else:
+                        giacenza += -1*qua
     if len(righeArticoloMovimentate):
         val = giacenza*ram[2]
     else:

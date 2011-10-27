@@ -39,6 +39,7 @@ from Cliente import Cliente
 from Fornitura import Fornitura
 from Operazione import Operazione
 from ScontoFornitura import ScontoFornitura
+from promogest.dao.Magazzino import Magazzino
 from promogest.ui.utils import *
 if hasattr(conf, "SuMisura") and getattr(conf.SuMisura,'mod_enable') == "yes":
     from promogest.modules.SuMisura.dao.MisuraPezzo import MisuraPezzo
@@ -118,6 +119,15 @@ class TestataMovimento(Dao):
         if self.forni: return self.forni.nome
         else: return ""
     nome_fornitore= property(_nome_fornitore)
+
+    def _to_magazzino(self):
+        if self.id_to_magazzino:
+            a = Magazzino().getRecord(id=self.id_to_magazzino)
+            return a.denominazione
+        else: return ""
+    tomagazzino= property(_to_magazzino)
+
+
 
     def _getNumeroMagazzini(self):
         """

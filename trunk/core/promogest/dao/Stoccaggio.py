@@ -52,8 +52,8 @@ class Stoccaggio(Dao):
     def _setTotaliOperazioniMovimento(self, value):
         self.__totaliOperazioniMovimento = value
 
-    totaliOperazioniMovimento = property(_getTotaliOperazioniMovimento,
-                                         _setTotaliOperazioniMovimento)
+    #totaliOperazioniMovimento = property(_getTotaliOperazioniMovimento,
+                                         #_setTotaliOperazioniMovimento)
 
     def _getGiacenza(self):
         return giacenzaArticolo(year=workingYear, idMagazzino= self.id_magazzino, idArticolo=self.id_articolo)[0] or 0
