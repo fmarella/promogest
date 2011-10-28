@@ -59,6 +59,9 @@ from promogest.ui.utilsCombobox import *
 from promogest.Environment import *
 from promogest import Environment
 
+import datetime
+
+
 class TestataDocumento(Dao):
 
     def __init__(self, req=None):
@@ -584,69 +587,78 @@ class TestataDocumento(Dao):
         #agganciare qui con dei controlli, le cancellazioni preventive ed i
         #reinserimenti.
         self.testataDocumentoScadenzaDel(dao=self)
-        if self.__ScadenzeDocumento:
-            num_scadenze = len(self.__ScadenzeDocumento)
-            for scad in self.__ScadenzeDocumento:
-                scad.id_testata_documento = self.id
-                Environment.session.add(scad)
-                if self.ripartire_importo:
-                    if scad.data_pagamento is None:
-                        if not setconf('PrimaNota', 'inserisci_senza_data_pagamento'):
-                            continue
-                    ope = leggiOperazione(self.operazione)
+        if not(self.__ScadenzeDocumento) and self.ripartire_importo:
+            tds = TestataDocumentoScadenza()
+            tds.data = datetime.datetime.now()
+            tds.numero_scadenza = 1
+            tds.pagamento = 'nessuno'
+            tds.importo = self._totaleScontato
+            self.__ScadenzeDocumento.append(tds)
+
+        num_scadenze = len(self.__ScadenzeDocumento)
+        for scad in self.__ScadenzeDocumento:
+            scad.id_testata_documento = self.id
+            Environment.session.add(scad)
+            if self.ripartire_importo:
+                if scad.data_pagamento is None:
+                    if not setconf('PrimaNota', 'inserisci_senza_data_pagamento'):
+                        continue
+                ope = leggiOperazione(self.operazione)
+                if scad.pagamento == 'nessuno':
+                    tipo = scad.pagamento
+                else:
                     tipo = Pagamento().select(denominazione=scad.pagamento)[0].tipo
 
-                    if scad.numero_scadenza == 0:
-                        tipo_pag = "ACCONTO"
-                        num_scadenze -= 1
-                    else:
-                        tipo_pag = 'pagam. %s' % scad.numero_scadenza
-                        if self.documento_saldato and num_scadenze == scad.numero_scadenza:
-                            tipo_pag = 'saldo'
-                        if scad.data_pagamento is None:
-                            if ope['tipoPersonaGiuridica'] == 'fornitore':
-                                tipo_pag += ' ricevuta'
-                            elif ope['tipoPersonaGiuridica'] == 'cliente':
-                                tipo_pag += ' emessa'
-                            else:
-                                pass
+                if scad.numero_scadenza == 0:
+                    tipo_pag = "ACCONTO"
+                    num_scadenze -= 1
+                else:
+                    tipo_pag = 'pagam. %s' % scad.numero_scadenza
+                    if self.documento_saldato and num_scadenze == scad.numero_scadenza:
+                        tipo_pag = 'saldo'
+                    if scad.data_pagamento is None:
+                        if ope['tipoPersonaGiuridica'] == 'fornitore':
+                            tipo_pag += ' ricevuta'
+                        elif ope['tipoPersonaGiuridica'] == 'cliente':
+                            tipo_pag += ' emessa'
+                        else:
+                            pass
 
-                    stringa = "%s %s - %s Rif.interni N.%s " %(self.operazione, self.protocollo, \
-                        dateToString(self.data_documento), str(self.numero))
-                    if ope["segno"] == "-":
-                        stringa += 'a '
-                        segno = "entrata"
-                    else:
-                        stringa += 'da '
-                        segno = "uscita"
-                    str_importo_doc = "Importo doc. %s " % self._totaleScontato
-                    stringa += "%s \n%s%s, %s" %(self.intestatario, str_importo_doc, self._getPI_CF(), tipo_pag)
+                stringa = "%s %s - %s Rif.interni N.%s " %(self.operazione, self.protocollo, \
+                    dateToString(self.data_documento), str(self.numero))
+                if ope["segno"] == "-":
+                    stringa += 'a '
+                    segno = "entrata"
+                else:
+                    stringa += 'da '
+                    segno = "uscita"
+                str_importo_doc = "Importo doc. %s " % self._totaleScontato
+                stringa += "%s \n%s%s, %s" %(self.intestatario, str_importo_doc, self._getPI_CF(), tipo_pag)
 
-                    tpn = TestataPrimaNota()
-                    if scad.data_pagamento:
-                        tpn.data_inizio = scad.data_pagamento
-                    else:
-                        import datetime
-                        tpn.data_inizio = datetime.datetime.now()
-                    tpn.note = ""
-                    rigaprimanota = RigaPrimaNota()
-                    rigaprimanota.denominazione = stringa
-                    rigaprimanota.numero = 1
-                    rigaprimanota.data_registrazione = scad.data_pagamento
-                    rigaprimanota.tipo = tipo.lower()
-                    rigaprimanota.segno = segno
-                    rigaprimanota.valore = scad.importo
-                    rigaprimanota.id_banca = scad.id_banca
-                    rigaprimanota.note_primanota = scad.note_per_primanota
-                    rigaprimanota.id_testata_documento = self.id
-                    tpn.righeprimanota = [rigaprimanota]
-                    tpn.persist()
-                    a = RigaPrimaNotaTestataDocumentoScadenza()
-                    a.id_riga_prima_nota = rigaprimanota.id
-                    a.id_testata_documento_scadenza = scad.id
-                    params["session"].add(a)
-                    params["session"].commit()
-            Environment.session.commit()
+                tpn = TestataPrimaNota()
+                if scad.data_pagamento:
+                    tpn.data_inizio = scad.data_pagamento
+                else:
+                    tpn.data_inizio = datetime.datetime.now()
+                tpn.note = ""
+                rigaprimanota = RigaPrimaNota()
+                rigaprimanota.denominazione = stringa
+                rigaprimanota.numero = 1
+                rigaprimanota.data_registrazione = scad.data_pagamento
+                rigaprimanota.tipo = tipo.lower()
+                rigaprimanota.segno = segno
+                rigaprimanota.valore = scad.importo
+                rigaprimanota.id_banca = scad.id_banca
+                rigaprimanota.note_primanota = scad.note_per_primanota
+                rigaprimanota.id_testata_documento = self.id
+                tpn.righeprimanota = [rigaprimanota]
+                tpn.persist()
+                a = RigaPrimaNotaTestataDocumentoScadenza()
+                a.id_riga_prima_nota = rigaprimanota.id
+                a.id_testata_documento_scadenza = scad.id
+                params["session"].add(a)
+                params["session"].commit()
+        Environment.session.commit()
 
         #parte relativa al noleggio
         if self.__data_fine_noleggio and self.__data_inizio_noleggio:
