@@ -59,10 +59,7 @@ class RigaMovimento(Dao):
         self.__prezzo_acquisto_noleggio = None
         self.__isrent = None
 
-    #def _getAliquotaIva(self):
-        #_denominazioneBreveAliquotaIva = Articolo().getRecord(id=self.id_articolo).denominazione_breve_aliquota_iva
-        #return _denominazioneBreveAliquotaIva
-    #aliquota = property(_getAliquotaIva, )
+
     def __aliquota(self):
         if self.rig: return self.rig.aliquota
         else: return ""

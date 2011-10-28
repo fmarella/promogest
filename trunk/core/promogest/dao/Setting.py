@@ -81,6 +81,11 @@ if (u'Carico da composizione kit.registro',) not in s or s==[]:
     settinggg.execute(key = "Carico da composizione kit.registro", description = "Registro associato a Carico da composizione kit", value= "registro_carico_da_composizione_kit")
     settinggg.execute(key = "carico_da_composizione_kit.rotazione", description = "Tipologia di rotazione registro associato a Carico da composizione kit", value= "annuale")
 
+if (u'Scarico Scomposizione kit.registro',) not in s or s==[]:
+    settinggg  = settingg.insert()
+    settinggg.execute(key = "Scarico Scomposizione kit.registro", description = "Registro associato a Scarico Scomposizione kit", value= "registro_scarico_scomposizione_kit")
+    settinggg.execute(key = "scarico_scomposizione_kit.rotazione", description = "Tipologia di rotazione registro associato a Scarico Scomposizione kit", value= "annuale")
+
 if (u'Trasferimento merce magazzino.registro',) not in s or s==[]:
     settinggg  = settingg.insert()
     settinggg.execute(key = "Trasferimento merce magazzino.registro", description = "Registro associato a Trasferimento merce magazzino", value= "trasferimento_merce_magazzino")

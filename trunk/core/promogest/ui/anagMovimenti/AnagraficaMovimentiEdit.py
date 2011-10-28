@@ -693,7 +693,6 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
                     self.articolo_entry.grab_focus()
             except:
                 pass
-#                print "CLIENTE_PREDEFINITO NON SETTATO"
             try:
                 forn = setconf("Documenti", "fornitore_predefinito")
                 if forn:

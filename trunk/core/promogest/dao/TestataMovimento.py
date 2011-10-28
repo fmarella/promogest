@@ -52,11 +52,14 @@ class TestataMovimento(Dao):
         Dao.__init__(self, entity=self)
         self.__righeMovimento = []
         self.__dbRigheMovimento = []
+        #setattr(self, "rev",False)
 
     @reconstructor
     def init_on_load(self):
         self.__righeMovimento = []
         self.__dbRigheMovimento = []
+        #setattr(self, "rev",False)
+
 
     def _getRigheMovimento(self):
         #if not self.__righeMovimento:
@@ -72,12 +75,21 @@ class TestataMovimento(Dao):
                     self.__righeMovimento.remove(r)
                 else:
                     if r.quantita <0:
-                        setattr(r, "reversed", True)
                         r.quantita= -1*r.quantita
         if self.operazione == "Carico da composizione kit":
             for r in self.__righeMovimento[:]:
                 if r.quantita <0:
                     self.__righeMovimento.remove(r)
+        if self.operazione == "Scarico Scomposizione kit":
+
+            for r in self.__righeMovimento[:]:
+                if "$SSK$" in r.descrizione:
+                    self.__righeMovimento.remove(r)
+                else:
+                    if r.quantita <0:
+                        r.quantita= -1*r.quantita
+                        #self.rev = True
+
         return self.__righeMovimento
 
     def _setRigheMovimento(self, value):
@@ -262,6 +274,34 @@ class TestataMovimento(Dao):
                         r.id_riga_padre = riga.id_riga_padre
                         r.scontiRigheMovimento = riga.scontiRigheMovimento
                         righeMov.append(r)
+                self.righeMovimento = self.righeMovimento+righeMov
+            if self.operazione == "Scarico Scomposizione kit":
+                #print "DEVO AGGIUNGERE IN NEGATIVO LE RIGHE KIT"
+                righeMov = []
+                for riga in self.righeMovimento:
+                    arto = Articolo().getRecord(id=riga.id_articolo)
+                    #print "KIT", arto.articoli_kit
+                    for art in arto.articoli_kit:
+                        print art.id_articolo_filler, art.quantita
+                        a = leggiArticolo(art.id_articolo_filler)
+                        r = RigaMovimento()
+                        r.valore_unitario_netto = 0
+                        r.valore_unitario_lordo = 0
+                        r.quantita = art.quantita*riga.quantita
+                        r.moltiplicatore = 1
+                        r.applicazione_sconti = riga.applicazione_sconti
+                        r.sconti = []
+                        r.percentuale_iva = a["percentualeAliquotaIva"]
+                        r.descrizione  = a["denominazione"] +" $SSK$"
+                        r.id_articolo = art.id_articolo_filler
+                        r.id_magazzino = riga.id_magazzino
+                        r.id_multiplo = riga.id_multiplo
+                        r.id_listino = riga.id_listino
+                        r.id_iva = a["idAliquotaIva"]
+                        r.id_riga_padre = riga.id_riga_padre
+                        r.scontiRigheMovimento = riga.scontiRigheMovimento
+                        righeMov.append(r)
+                    riga.quantita = -1*riga.quantita
                 self.righeMovimento = self.righeMovimento+righeMov
             if self.operazione == "Trasferimento merce magazzino" and self.id_to_magazzino:
                 righeMov = []

@@ -30,6 +30,7 @@ from promogest.Environment import *
 from promogest.dao.TestataMovimento import TestataMovimento
 from promogest.dao.RigaMovimento import RigaMovimento
 from promogest.dao.Articolo import Articolo
+from promogest.modules.GestioneKit.dao.ArticoloKit import ArticoloKit
 from promogest.ui.utils import *
 
 #mi serve un movimento di tipo trasferimento merce magazzino
@@ -79,12 +80,28 @@ class TestTestataMovimento(unittest.TestCase):
         if self.tm.operazione == "Carico da composizione kit":
             print " **************** DEVO AGGIUNGERE IN NEGATIVO LE RIGHE KIT *****************"
             righeMov = []
+            lista = []
+
+            def gira(arti):
+                aa=ArticoloKit().select(idArticoloWrapper=arti)
+                if aa:
+                    for a in aa:
+                        print "A",leggiArticolo(a.id_articolo_wrapper)["denominazione"], leggiArticolo(a.id_articolo_filler)["denominazione"]
+                        bb=ArticoloKit().select(idArticoloWrapper=a.id_articolo_wrapper)
+                        if bb:
+                            lista.append(a.id_articolo_filler)
+                            gira(a.id_articolo_filler)
+
+                return lista
+
             print "NUMERO RIGHE                                               ", len(self.tm.righe)
             for riga in self.tm.righe:
-                arto = Articolo().getRecord(id=riga.id_articolo)
-                for art in arto.articoli_kit:
-                    r=self.aggiungi_riga(art, riga)
-                    righeMov.append(r)
+                print leggiArticolo(riga.id_articolo)["denominazione"]
+
+                gira(riga.id_articolo)
+                for l in lista:
+                    print "OKKKKKKKKKKKKKKKKKKKKKKKKKKK", leggiArticolo(l)["denominazione"]
+
             self.righeMovimento = self.righeMovimento+righeMov
             print "NUMERO RIGHE DEFINITIVO                                   ", len(self.righeMovimento)
             for rigadef in self.righeMovimento:

@@ -114,7 +114,6 @@ class Articolo(Dao):
 
     @property
     def articoli_kit(self):
-
         arti =ArticoloKit().select(idArticoloWrapper=self.id,batchSize=None)
         return arti
 

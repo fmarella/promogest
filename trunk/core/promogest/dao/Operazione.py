@@ -61,6 +61,11 @@ if (u'Carico da composizione kit',) not in s or s==[]:
     ope.execute(denominazione = "Carico da composizione kit", fonte_valore = "acquisto_senza_iva",
     tipo_operazione="movimento", segno="+")
 
+if (u'Scarico Scomposizione kit',) not in s or s==[]:
+    ope  = operazione.insert()
+    ope.execute(denominazione = "Scarico Scomposizione kit", fonte_valore = "vendita_senza_iva",
+    tipo_operazione="movimento", segno="-")
+
 if (u'Trasferimento merce magazzino',) not in s or s==[]:
     ope  = operazione.insert()
     ope.execute(denominazione = "Trasferimento merce magazzino", fonte_valore = "acquisto_senza_iva",
