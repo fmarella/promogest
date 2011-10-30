@@ -227,7 +227,7 @@ class Login(GladeApp):
                         self.login_window.hide()
                         Environment.windowGroup.remove(self.getTopLevel())
                         installId()
-                        import promogest.lib.UpdateDB
+                        #import promogest.lib.UpdateDB
 
                         #saveAppLog(action="login", status=True,value=username)
                         Environment.pg2log.info("LOGIN  id, user, role azienda: %s, %s" %(repr(Environment.params['usernameLoggedList']),self.azienda) )

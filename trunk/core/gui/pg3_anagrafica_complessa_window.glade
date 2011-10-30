@@ -146,6 +146,18 @@
                       </object>
                     </child>
                     <child>
+                      <object class="GtkMenuItem" id="report_farmacia_veterinaria">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="tooltip_text" translatable="yes">Questo report riporta l'elenco in dettaglio 
+dei farmaci venduti in un determinato arco temporale</property>
+                        <property name="use_action_appearance">False</property>
+                        <property name="label" translatable="yes">Report Farmacia Veterinaria</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="on_report_farmacia_veterinaria_activate" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
                       <object class="GtkSeparatorMenuItem" id="separatore7">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
@@ -160,6 +172,71 @@
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <signal name="activate" handler="on_anagrafica_window_close" swapped="no"/>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkMenuItem" id="modifiche_menu">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="use_action_appearance">False</property>
+                <property name="label" translatable="yes">Modifiche</property>
+                <property name="use_underline">True</property>
+                <child type="submenu">
+                  <object class="GtkMenu" id="menu1">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <child>
+                      <object class="GtkMenuItem" id="rimuovi_articoli">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
+                        <property name="label" translatable="yes">Rimuovi Articoli</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="on_rimuovi_articoli_activate" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="aggiungi_sconto_dettaglio">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
+                        <property name="label" translatable="yes">Aggiungi sconto dettaglio</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="on_aggiungi_sconto_dettaglio_activate" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="aggiungi_sconto_ingrosso">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
+                        <property name="label" translatable="yes">Aggiungi Sconto Ingrosso</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="on_aggiungi_sconto_ingrosso_activate" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="variazione_dettaglio">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
+                        <property name="label" translatable="yes">Variazione Prezzo Dettaglio</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="on_variazione_dettaglio_activate" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="variazione_ingrosso">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
+                        <property name="label" translatable="yes">Variazione Prezzo Ingrosso</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="on_variazione_ingrosso_activate" swapped="no"/>
                       </object>
                     </child>
                   </object>
@@ -234,6 +311,7 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="toolbar_style">both</property>
+            <property name="icon_size">2</property>
             <child>
               <object class="GtkToolButton" id="record_new_button">
                 <property name="visible">True</property>

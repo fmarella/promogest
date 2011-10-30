@@ -28,6 +28,21 @@ from promogest.dao.Dao import Dao
 #from promogest.modules.VenditaDettaglio.dao.TestataScontrino import TestataScontrino
 
 
+try:
+    c_card_type =Table('credit_card_type',
+            params['metadata'],
+            schema = params['schema'],
+            autoload=True)
+except:
+    c_card_type = Table('credit_card_type', params['metadata'],
+        Column('id', Integer, primary_key=True),
+        Column('denominazione', String(200), nullable=False ),
+        Column('denominazione_breve', String(10), nullable=False),
+        schema=params['schema'],
+        )
+c_card_type.create(checkfirst=True)
+
+
 class CCardType(Dao):
 
     def __init__(self, req=None):
@@ -37,12 +52,6 @@ class CCardType(Dao):
         dic= {  'denominazione' : c_card_type.c.denominazione.ilike("%"+v+"%")}
         return  dic[k]
 
-c_card_type =Table('credit_card_type',
-            params['metadata'],
-            schema = params['schema'],
-            autoload=True)
 
 std_mapper = mapper(CCardType, c_card_type, order_by=c_card_type.c.id,properties={
-#        "tesscon":relation(TestataScontrino,primaryjoin=(TestataScontrino.id_ccardtype==c_card_type.c.id), backref="cctypee")
-
         })

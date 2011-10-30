@@ -61,6 +61,7 @@ import sqlalchemy
 SAVER = sqlalchemy.__version__
 from sqlalchemy import *
 from sqlalchemy.orm import *
+from sqlalchemy.engine import reflection
 from sqlalchemy.interfaces import PoolListener
 #from sqlalchemy import event
 
@@ -591,6 +592,7 @@ tipo_eng = engine.name
 print "TIPO ENGINE", tipo_eng
 engine.echo = False
 #engine.autocommit= True
+insp = reflection.Inspector.from_engine(engine)
 meta = MetaData(engine)
 #Session = sessionmaker(bind=engine)
 Session = scoped_session(sessionmaker(bind=engine, autoflush=True))
