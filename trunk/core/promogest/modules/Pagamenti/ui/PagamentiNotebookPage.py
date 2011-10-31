@@ -167,7 +167,7 @@ class PagamentiNotebookPage(GladeWidget):
             acconto = daoAcconto.importo
 
         if acconto == 0 or importo_immesso == 0 or importo_immesso < float(self.totale_in_pagamenti_label.get_text()):
-            msg = 'Attenzione! Stai per chiudere un documento dove non figura incassato niente.\n Continuare?'
+            msg = _('Chiusura di un documento con pagamenti nulli o parziali.\n Continuare?')
             if YesNoDialog(msg=msg, transient=None):
                 self.stato_label.set_markup('<b><span foreground="#338000" size="24000">PAGATO</span></b>')
                 self.chiudi_pagamento_documento_button.set_sensitive(False)
