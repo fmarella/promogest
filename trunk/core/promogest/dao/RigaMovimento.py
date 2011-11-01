@@ -142,8 +142,9 @@ class RigaMovimento(Dao):
     codiceArticoloFornitore = property(_getCodiceArticoloFornitore, _setCodiceArticoloFornitore)
 
     def _lottotemp(self):
-        if self.NLT:
-            return self.NLT[0].lotto_temp
+        if hasattr(self, "NLT"):
+            if self.NLT:
+                return self.NLT[0].lotto_temp
         else:
             return ""
     numero_lotto_temp = property(_lottotemp)
