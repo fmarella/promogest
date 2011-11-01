@@ -2896,7 +2896,7 @@ def setconf(section, key, value=False):
     Tentativo abbastanza rudimentale per gestire le liste attraverso i ; ma
     forse si potrebbero gestire più semplicemente con le virgole
     """
-    if Environment.tipo_eng =="postgresql":
+    if Environment.tipodb =="postgresql":
         if not hasattr(Environment.conf, "Documenti"):
             Environment.conf.add_section("Documenti")
             Environment.conf.save()
