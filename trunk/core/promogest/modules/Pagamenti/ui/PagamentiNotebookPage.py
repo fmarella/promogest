@@ -284,11 +284,11 @@ class PagamentiNotebookPage(GladeWidget):
 
         doc = self.numero_primo_documento_entry.get_text()
         if doc != "" and doc != "0":
-            documentocollegato = getDocumentoCollegato(int(doc))
+            documentocollegato = AnagraficadocumentiPagamentExt.getDocumentoCollegato(int(doc))
             self.ana.dao.id_primo_riferimento = documentocollegato[0].id
             doc2 = self.numero_secondo_documento_entry.get_text()
             if doc2 != "" and doc2 != "0":
-                documentocollegato = getDocumentoCollegato(int(doc2))
+                documentocollegato = AnagraficadocumentiPagamentExt.getDocumentoCollegato(int(doc2))
                 self.ana.dao.id_secondo_riferimento = documentocollegato[0].id
 
     def attiva_scadenze(self):
@@ -468,4 +468,4 @@ Procedere con la "chiusura" del Pagamento?"""
                 self.stato_label.set_markup('<b><span foreground="#338000" size="24000">PAGATO</span></b>')
                 self.chiudi_pagamento_documento_button.set_sensitive(False)
                 self.apri_pagamento_documento_button.set_sensitive(True)
-            
+
