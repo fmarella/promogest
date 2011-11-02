@@ -77,8 +77,10 @@ class PagamentoWidget(GladeWidget):
             p = Pagamento().getRecord(id=idpag)
             daoTestataDocumentoScadenza.pagamento = p.denominazione
         else:
-            obligatoryField(self._owner.dialogTopLevel,
-                    self.id_pagamento_scadenza_ccb.combobox, 'Inserire una forma di pagamento!')
+            # Nel caso di una fattura emessa o ricevuta il tipo di pagamento
+            # non è noto a priori. Dato che `pagamento` è un campo obbligatorio
+            # assegnamo la stringa 'n/a'.
+            daoTestataDocumentoScadenza.pagamento = 'n/a'
         daoTestataDocumentoScadenza.data_pagamento = stringToDate(self.data_pagamento_scadenza_entry.get_text())
         idbanca = findIdFromCombobox(self.id_banca_scadenza_ccb.combobox)
         if idbanca:
