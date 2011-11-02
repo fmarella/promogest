@@ -591,7 +591,7 @@ class TestataDocumento(Dao):
             tds = TestataDocumentoScadenza()
             tds.data = datetime.datetime.now()
             tds.numero_scadenza = 1
-            tds.pagamento = 'nessuno'
+            tds.pagamento = 'n/a'
             tds.importo = self._totaleScontato
             self.__ScadenzeDocumento.append(tds)
 
@@ -604,7 +604,7 @@ class TestataDocumento(Dao):
                     if not setconf('PrimaNota', 'inserisci_senza_data_pagamento'):
                         continue
                 ope = leggiOperazione(self.operazione)
-                if scad.pagamento == 'nessuno':
+                if scad.pagamento == 'n/a':
                     tipo = scad.pagamento
                 else:
                     tipo = Pagamento().select(denominazione=scad.pagamento)[0].tipo
