@@ -72,7 +72,7 @@ class PagamentoWidget(GladeWidget):
         daoTestataDocumentoScadenza = TestataDocumentoScadenza()
         if stringToDate(self.data_scadenza_entry.get_text()) == "":
             obligatoryField(self._owner.dialogTopLevel,
-                self.data_scadenza_entry, 'Inserire una data acconto!')
+                self.data_scadenza_entry, 'Inserire una data!')
         daoTestataDocumentoScadenza.data = stringToDate(self.data_scadenza_entry.get_text())
         daoTestataDocumentoScadenza.importo = float(self.importo_scadenza_entry.get_text() or '0')
         idpag = findIdFromCombobox(self.id_pagamento_scadenza_ccb.combobox)
