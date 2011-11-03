@@ -58,7 +58,10 @@ class PagamentoWidget(GladeWidget):
         """
         self.data_scadenza_entry.set_text(dateToString(scadenza.data) or '')
         self.importo_scadenza_entry.set_text(str(scadenza.importo or ''))
-        findComboboxRowFromStr(self.id_pagamento_scadenza_ccb.combobox, scadenza.pagamento, 2)
+        if scadenza.pagamento != 'n/a':
+            findComboboxRowFromStr(self.id_pagamento_scadenza_ccb.combobox, scadenza.pagamento, 2)
+        else:
+            self.id_pagamento_scadenza_ccb.combobox.set_active(-1)
         findComboboxRowFromStr(self.id_banca_scadenza_ccb.combobox, scadenza.id_banca, 1)
         textview_set_text(self.note_scadenza_textview, scadenza.note_per_primanota)
         self.data_pagamento_scadenza_entry.set_text(dateToString
