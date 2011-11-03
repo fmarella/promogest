@@ -1,33 +1,33 @@
 {% extends 'index2.html' %}
 {% block body %}
-        <table cellpadding="2" cellspacing="3" border="1" style="width:90%">
+        <table cellpadding="0" cellspacing="0" border="0.5" style="width:90%">
             {% for dao in pageData["objects"] %}
 {% set giace = utils.mN(dao.getGiacenza(),0) %}
 {% set impe = utils.mN(dao._impegnatoSuLavorazione(),0) %}
-            <tr style="border-bottom-color: #A52A2A; border-bottom-style: solid; ">
-                <td >PART:<b>{{dao.codice}}</b></td>
+            <tr>
+                <td >P:<b>{{dao.codice}}</b></td>
                 <td >G:{{giace}}</td>
                     <td>I:{{impe}}</td>
 {% if (giace|float - impe|float) < dao.sm|float %}
 
-                    <td style="color: #FF0000; ">R:{{giace|float - impe|float}}</td>
+                    <td style="background-color: #FFD7D7; ">R:{{utils.mN(giace|float - impe|float,0)}}</td>
                      {% else %}
-                    <td >R:{{giace|float - impe|float}}</td>
+                    <td >R:{{utils.mN(giace|float - impe|float,0)}}</td>
             {% endif %}
             {% for d in dao.articoliAss %}
 {% set giaceAss = utils.mN(d.ARTIFIGLIO.getGiacenza()) %}
 {% set impeAss = utils.mN(d.ARTIFIGLIO._impegnatoSuLavorazione()) %}
 
             {% if d.codice not in ["Stampa", "z-CONTR","z-BONIFICO"] and not d.id_figlio == d.id_padre %}
-                <td>    <b>{{d.codice}}</b></td><td>G:{{giaceAss}}</td>
-                <td>I:{{impeAss}}</td>
+                <td>    <b>{{d.codice}}</b></td><td>G:{{utils.mN(giaceAss,0)}}</td>
+                <td>I:{{utils.mN(impeAss,0)}}</td>
 
 
 {% if (giaceAss|float - impeAss|float) < d.ARTIFIGLIO.sm|float %}
-             <td style="color: #FFD7D7; ">R:{{giaceAss - impeAss}}</td>
+             <td style="background-color: #FFD7D7; ">R:{{utils.mN(giaceAss - impeAss,0)}}</td>
 
              {% else %}
-             <td >R:{{giaceAss|float - impeAss|float}}</td>
+             <td >R:{{utils.mN(giaceAss|float - impeAss|float,0)}}</td>
 
              {% endif %}
                 {% endif %}
