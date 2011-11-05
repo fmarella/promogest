@@ -4,6 +4,8 @@
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
+#    Author: Francesco Marella <francesco.marella@gmail.com>
+
 #    This file is part of Promogest.
 
 #    Promogest is free software: you can redistribute it and/or modify
@@ -38,12 +40,12 @@ class Pagamento(Dao):
             dic= {k : pagamento.c.tipo == v} # cassa o banca
         return  dic[k]
 
-pagamento=Table('pagamento',
-                params['metadata'],
-                schema = params['schema'],
-                autoload=True)
+pagamento = Table('pagamento',
+                  params['metadata'],
+                  schema = params['schema'],
+                  autoload=True)
 
-if "tipo" not in [c.name for c in pagamento.columns]:
+if 'tipo' not in [c.name for c in pagamento.columns]:
     col = Column('tipo', String, default='banca')
     col.create(pagamento, populate_default=True)
 
