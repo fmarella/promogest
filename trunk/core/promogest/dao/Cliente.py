@@ -4,6 +4,8 @@
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
+#    Author: Francesco Marella <francesco.marella@gmail.com>
+
 #    This file is part of Promogest.
 
 #    Promogest is free software: you can redistribute it and/or modify
@@ -29,6 +31,7 @@ from Dao import Dao
 from ClienteCategoriaCliente import ClienteCategoriaCliente
 from PersonaGiuridica import PersonaGiuridica_
 from promogest.ui.utils import  codeIncrement, getRecapitiCliente
+
 
 class Cliente(Dao):
 
@@ -165,12 +168,20 @@ def getNuovoCodiceCliente():
         pass
     return codice
 
-persona_giuridica=Table('persona_giuridica', params['metadata'],schema = params['schema'], autoload=True)
-cliente=Table('cliente', params['metadata'],schema = params['schema'], autoload=True)
+persona_giuridica = Table('persona_giuridica',
+                          params['metadata'],
+                          schema=params['schema'],
+                          autoload=True)
+
+cliente = Table('cliente',
+              params['metadata'],
+              schema=params['schema'],
+              autoload=True)
+
 j = join(cliente, persona_giuridica)
 
 std_mapper = mapper(Cliente,j, properties={
-        'id':[cliente.c.id, persona_giuridica.c.id],
-        "per_giu" :relation(PersonaGiuridica_, backref='cliente_'),
-        'cliente_categoria_cliente':relation(ClienteCategoriaCliente, backref='cliente_'),
+        'id': [cliente.c.id, persona_giuridica.c.id],
+        "per_giu" : relation(PersonaGiuridica_, backref='cliente_'),
+        'cliente_categoria_cliente': relation(ClienteCategoriaCliente, backref='cliente_'),
         }, order_by=cliente.c.id)
