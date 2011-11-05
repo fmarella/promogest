@@ -41,8 +41,8 @@ class PagamentiNotebookPage(GladeWidget):
     di configurazione """
     def __init__(self, mainnn):
         GladeWidget.__init__(self, 'pagamenti_vbox',
-                                    'Pagamenti/gui/pagamenti_notebook.glade',
-                                    isModule=True)
+                             'Pagamenti/gui/pagamenti_notebook.glade',
+                             isModule=True)
         self.ana = mainnn
         # lista di scadenze
         self.rate = []
@@ -346,10 +346,6 @@ class PagamentiNotebookPage(GladeWidget):
         il valore di una rata, ricalcola gli altri tenendo conto del valore modificato
         TODO: Passare i valori valuta a mN
         """
-        #FIXME: fare il controllo direttamente nell'interfaccia di edit
-#        if anaedit.totale_scontato_riepiloghi_label.get_text() == '-':
-#            return
-
         importodoc = float(self.ana.totale_scontato_riepiloghi_label.get_text() or 0)
         if importodoc == float(0):
             return
