@@ -74,6 +74,7 @@ class PagamentiNotebookPage(GladeWidget):
             0)+'</span></b>')
         self.totale_sospeso_scadenza_label.set_markup('<b><span foreground="#B40000" size="24000">'+str(
             0)+'</span></b>')
+        self.stato_label.set_markup(_('<b><span foreground="#B40000" size="24000">-</span></b>'))
         self.importo_primo_documento_entry.set_text('')
         self.importo_secondo_documento_entry.set_text('')
         self.numero_primo_documento_entry.set_text('')
