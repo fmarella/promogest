@@ -5,7 +5,7 @@
 {% set giace = utils.mN(dao.getGiacenza(),0) %}
 {% set impe = utils.mN(dao._impegnatoSuLavorazione(),0) %}
             <tr>
-                <td >P:<b>{{dao.codice}}</b></td>
+                <td ><b>{{dao.codice}}</b></td>
                 <td >G:{{giace}}</td>
                     <td>I:{{impe}}</td>
 {% if (giace|float - impe|float) < dao.sm|float %}

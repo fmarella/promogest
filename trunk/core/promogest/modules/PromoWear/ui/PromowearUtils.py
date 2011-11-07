@@ -23,8 +23,6 @@
 
 from promogest.dao.UnitaBase import UnitaBase
 from promogest.dao.AliquotaIva import AliquotaIva
-from promogest.dao.Articolo import Articolo
-from promogest.modules.PromoWear.dao.ArticoloTagliaColore import ArticoloTagliaColore
 from promogest.modules.PromoWear.dao.GruppoTaglia import GruppoTaglia
 from promogest.modules.PromoWear.dao.GruppoTagliaTaglia import GruppoTagliaTaglia
 from promogest.modules.PromoWear.dao.Taglia import Taglia
@@ -33,6 +31,8 @@ from promogest.modules.PromoWear.dao.Modello import Modello
 from promogest.modules.PromoWear.dao.AnnoAbbigliamento import AnnoAbbigliamento
 from promogest.modules.PromoWear.dao.StagioneAbbigliamento import StagioneAbbigliamento
 from promogest.modules.PromoWear.dao.GenereAbbigliamento import GenereAbbigliamento
+from promogest.dao.Articolo import Articolo
+from promogest.modules.PromoWear.dao.ArticoloTagliaColore import ArticoloTagliaColore
 import promogest.dao.Listino
 from promogest.ui.utils import findIdFromCombobox, findComboboxRowFromId, posso
 from promogest import Environment

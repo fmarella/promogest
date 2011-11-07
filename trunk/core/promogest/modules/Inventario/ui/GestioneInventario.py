@@ -69,8 +69,8 @@ class GestioneInventario(RicercaComplessaArticoli):
         self.annoScorso= int(Environment.workingYear) -1
         # modifiche all'interfaccia originaria
         self.getTopLevel().set_title('Promogest - Gestione inventario ' + str(self.annoScorso))
-        self.search_image.set_no_show_all(True)
-        self.search_image.set_property('visible', False)
+        #self.search_image.set_no_show_all(True)
+        #self.search_image.set_property('visible', False)
         self.filter.filter_search_button.set_label('_Seleziona')
 #        self.buttons_hbox.destroy()
         self._ricerca.varie_articolo_filter_expander.set_no_show_all(True)
