@@ -695,7 +695,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                     self._righe[0]["rigaMovimentoFornituraList"] = []
                 #TODO: AGGIUNGERE UN RICHIAMO A RIGAMOVIMENTOFORNITURA CON I DATI PRESI DAL DB
                 if self.nolottotemp:
-                    if riga:
+                    if riga and hasattr(riga, 'numero_lotto_temp'):
                         self._righe[0]["numeroLottoTemp"] = riga.numero_lotto_temp
             self._righe.append(self._righe[0])
             rigadoc= self._righe[j]
