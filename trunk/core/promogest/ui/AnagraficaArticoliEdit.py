@@ -695,9 +695,9 @@ dei dati accessori. Continuare?"""
                                 msg='Campo obbligatorio !\nColore')
 
         tagcol = GestioneTaglieColori(articolo=self.dao)
-        tagcolWindow = tagcol.getTopLevel()
+        #tagcolWindow = tagcol.getTopLevel()
 
-        showAnagraficaRichiamata(self.dialogTopLevel, tagcolWindow, toggleButton)
+        #showAnagraficaRichiamata(self.dialogTopLevel, tagcolWindow, toggleButton)
 
     def on_id_taglia_customcombobox_clicked(self, widget, button):
         articoliTagliaColore = self.dao.articoliTagliaColore
