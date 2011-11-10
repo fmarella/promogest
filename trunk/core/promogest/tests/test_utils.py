@@ -34,39 +34,82 @@ import string
 class TestUtils(unittest.TestCase):
     """Test per il modulo Utils
     """
+
+    def test_stringToDate(self):
+        """Test trasformazione di stringa in data
+        """
+        self.assertIsNotNone(stringToDate('1/1/2011'))
+
+    def test_stringToDate_err(self):
+        """Test trasformazione con stringa data errata
+        """
+        self.assertIsNone(stringToDate('1/1'))
+
     def test_stringToDateBumped(self):
-        """Test stringToDateBumped
+        """Test bump di una data
         """
         self.assertEqual(stringToDateBumped('31/12/2011'),
                          stringToDate('1/1/2012'))
 
-    def test_addPointToString(self):
-        """ Test, prendo una stringa di sei caratteri/numeri e aggiungo
+    def test_date_festivi(self):
+        """Test controlla data se festiva"""
+        self.assertTrue(controllaDateFestivi('31/12/2011'))
+
+    def addPointToString(self):
+        """ prendo una stringa di sei caratteri/numeri e aggiungo
             un punto al terzultimo posto e poi lo converto in Decimal
         """
+        # TODO: da mettere in utils?
         quan = "001318"
         quantita = list(quan)
         quantita.insert(-3,".")
         stringa_quantita =  ",".join(quantita).replace(",","").strip('[]')
-        print Decimal(stringa_quantita)
+        return Decimal(stringa_quantita)
 
-    def test_iva_dict(self):
-        tutte = Environment.session.query(AliquotaIva.id,AliquotaIva.percentuale).all()
+    def test_addPointToString(self):
+        """ Test trasforma stringa in decimale
+        """
+        self.assertEqual(self.addPointToString(), Decimal('1.318'))
+
+    def iva_dict(self):
+        # TODO: da mettere in utils?
+        tutte = Environment.session.query(AliquotaIva.id, AliquotaIva.percentuale).all()
         diz = {}
         for a in tutte:
             diz[a[0]] = a[1]
-        print tutte, diz
+        return diz
 
-    def test_string_to_number(self):
+    def test_iva_dict(self):
+        """ Test conversione di una lista di tuple in dizionario
+        """
+        # brutto, ma funziona per ora...
+        diz_atteso = {1: Decimal('10.0000'),
+                      2: Decimal('20.0000'),
+                      3: Decimal('21.0000')}
+        diz = self.iva_dict()
+        self.assertDictEqual(diz_atteso, diz)
+
+    def string_to_number(self):
+        """Stringa in numeri"""
         tutte = "elisir"
         val=0
         for a in tutte.lower():
             val += ord(a)
-            print val, a, ord(a)
         return val
+
+    def test_string_to_number(self):
+        """Test stringa in numeri
+        """
+        pass
 
 
 if __name__ == '__main__':
-    tests = ['test_stringToDateBumped', "test_addPointToString", "test_iva_dict","test_string_to_number"]
+    tests = ['test_stringToDate',
+             'test_stringToDate_err',
+             'test_stringToDateBumped',
+             'test_date_festivi',
+             "test_addPointToString",
+             "test_iva_dict",
+             "test_string_to_number"]
     suite = unittest.TestSuite(map(TestUtils, tests))
     unittest.TextTestRunner(verbosity=2).run(suite)
