@@ -1748,6 +1748,18 @@ def stringToDateTime(stringa):
                 data=None
         return data
 
+def controllaDateFestivi(stringa):
+    """Controlla se una data stringa convertita in data è festiva
+
+    Arguments:
+    - `stringa`: la data da controllare
+    """
+    data = stringToDate(stringa)
+    if data:
+        festivi = ['1508',
+                   '3112']
+        return str(data.day) + str(data.month) in festivi
+
 def getScadenza(data_documento, ngiorniscad, FM = True):
     """
     Ritorna la data di scadenza in base alla data del documento, al numero di giorni
