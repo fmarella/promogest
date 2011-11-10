@@ -1693,28 +1693,25 @@ def stringToDate(stringa):
     """
     Converte una stringa in data
     """
-    if stringa is None or stringa == '':
+    if not stringa:
         return None
     else:
         try:
             d = time.strptime(stringa, "%d/%m/%Y")
-            data = datetime.date(d[0], d[1], d[2])
-        except Exception:
-            data=None
-        return data
+        except ValueError:
+            return None
+        else:
+            return datetime.date(d[0], d[1], d[2])
 
 def stringToDateBumped(stringa):
     """
     Converte una stringa in data e ci aggiunge un giorno per la ricerca
     """
-    if stringa is None or stringa == '':
-        return None
+    stringa = stringToDate(stringa)
+    if stringa:
+        return stringa + datetime.timedelta(days=1)
     else:
-        try:
-            d = time.strptime(stringa, "%d/%m/%Y")
-            return datetime.date(d[0], d[1], d[2]) + datetime.timedelta(days=1)
-        except:
-            return None
+        return None
 
 def dateTimeToString(data):
     """
