@@ -41,7 +41,7 @@ class ManageSizeAndColor(GladeWidget):
                 isModule=True)
         #self.placeWindow(self.getTopLevel())
         self.getTopLevel().set_modal(modal=True)
-        self.set_transient_for(mainWindow)
+        #self.set_transient_for(mainWindow)
         self.articoloPadre= articolo
         self.idPerGiu = idPerGiu
         self.data = data
