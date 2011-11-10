@@ -51,6 +51,12 @@ class TestUtils(unittest.TestCase):
         self.assertEqual(stringToDateBumped('31/12/2011'),
                          stringToDate('1/1/2012'))
 
+    def test_stringToDateBumped_giorni(self):
+        """Test bump di una data con giorni
+        """
+        self.assertEqual(stringToDateBumped('31/12/2011', giorni=2),
+                         stringToDate('2/1/2012'))
+
     def test_date_festivi(self):
         """Test controlla data se festiva"""
         self.assertTrue(controllaDateFestivi('31/12/2011'))
@@ -107,6 +113,7 @@ if __name__ == '__main__':
     tests = ['test_stringToDate',
              'test_stringToDate_err',
              'test_stringToDateBumped',
+             'test_stringToDateBumped_giorni',
              'test_date_festivi',
              "test_addPointToString",
              "test_iva_dict",

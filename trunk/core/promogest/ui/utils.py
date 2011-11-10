@@ -1703,13 +1703,18 @@ def stringToDate(stringa):
         else:
             return datetime.date(d[0], d[1], d[2])
 
-def stringToDateBumped(stringa):
+
+def stringToDateBumped(stringa, giorni=1):
     """
-    Converte una stringa in data e ci aggiunge un giorno per la ricerca
+    Ritorna la data aumentata di uno o più giorni
+
+    Arguments:
+    - `stringa`: una data
+    - `giorni`: il numero di giorni da aggiungere
     """
     stringa = stringToDate(stringa)
     if stringa:
-        return stringa + datetime.timedelta(days=1)
+        return stringa + datetime.timedelta(days=giorni)
     else:
         return None
 
