@@ -59,6 +59,19 @@ class AnagraficaClientiSetup(GladeWidget):
             self.clienti_insegna_check.set_active(int(setconf("Clienti", "cliente_insegna")))
         except:
             self.clienti_insegna_check.set_active(0)
+
+        try:
+            self.clienti_nomi_check.set_active(int(setconf("Clienti", "cliente_nome")))
+        except:
+            self.clienti_nomi_check.set_active(0)
+
+        try:
+            self.clienti_cognomi_check.set_active(int(setconf("Clienti", "cliente_cognome")))
+        except:
+            self.clienti_cognomi_check.set_active(0)
+
+
+
         self.clienti_struttura_codice_entry.set_text(str(setconf("Clienti", "cliente_struttura_codice")))
 
     def _saveSetup(self):
@@ -83,6 +96,38 @@ class AnagraficaClientiSetup(GladeWidget):
         c.value = str(self.clienti_insegna_check.get_active())
         c.tipo = "bool"
         c.description = "visualizzare il campo per insegna"
+        c.tipo_section = "Generico"
+        c.active = True
+        c.visible = True
+        c.date = datetime.datetime.now()
+        Environment.session.add(c)
+
+        c = SetConf().select(key="cliente_nome", section="Clienti")
+        if c:
+            c = c[0]
+        else:
+            c = SetConf()
+        c.key = "cliente_nome"
+        c.section = "Clienti"
+        c.value = str(self.clienti_nomi_check.get_active())
+        c.tipo = "bool"
+        c.description = "visualizzare il campo per nome"
+        c.tipo_section = "Generico"
+        c.active = True
+        c.visible = True
+        c.date = datetime.datetime.now()
+        Environment.session.add(c)
+
+        c = SetConf().select(key="cliente_cognome", section="Clienti")
+        if c:
+            c = c[0]
+        else:
+            c = SetConf()
+        c.key = "cliente_cognome"
+        c.section = "Clienti"
+        c.value = str(self.clienti_cognomi_check.get_active())
+        c.tipo = "bool"
+        c.description = "visualizzare il campo per cognome"
         c.tipo_section = "Generico"
         c.active = True
         c.visible = True
