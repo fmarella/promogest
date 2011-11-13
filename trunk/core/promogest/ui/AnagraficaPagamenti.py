@@ -27,6 +27,7 @@ from promogest.ui.AnagraficaComplessaReport import AnagraficaReport
 from promogest.ui.AnagraficaComplessaHtml import AnagraficaHtml
 from promogest.ui.AnagraficaComplessaFilter import AnagraficaFilter
 from promogest.ui.utils import obligatoryField, prepareFilterString, mN
+from promogest.ui.utils import on_id_aliquota_iva_customcombobox_clicked
 from promogest.ui.utilsCombobox import fillComboboxAliquoteIva, findComboboxRowFromStr
 from promogest.ui.utilsCombobox import findComboboxRowFromId, findIdFromCombobox
 from promogest.dao.Pagamento import Pagamento
@@ -128,6 +129,8 @@ class AnagraficaPagamentiEdit(AnagraficaEdit):
     def draw(self, cplx=False):
         #Popola combobox
         fillComboboxAliquoteIva(self.id_aliquota_iva_ccb.combobox)
+        self.id_aliquota_iva_ccb.connect('clicked',
+                                         on_id_aliquota_iva_customcombobox_clicked)
 
     def setDao(self, dao):
         if dao is None:
