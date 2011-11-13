@@ -165,10 +165,11 @@ class AnagraficaFilter(GladeWidget):
 
         treeView = self._anagrafica.anagrafica_filter_treeview
         selection = treeView.get_selection()
-        selection.unselect_all()
-        model = treeView.get_model()
+        if selection:
+            selection.unselect_all()
+            model = treeView.get_model()
 
-        model.foreach(foreach_handler, selection)
+            model.foreach(foreach_handler, selection)
 
     def getSelectedDao(self):
         treeViewSelection = self._anagrafica.anagrafica_filter_treeview.get_selection()
