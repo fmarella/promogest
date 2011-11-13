@@ -44,6 +44,10 @@ class PagamentoWidget(GladeWidget):
 
         if label:
             self.label = label
+        self.id_pagamento_scadenza_ccb.connect('clicked',
+                                               on_id_pagamento_customcombobox_clicked)
+        self.id_banca_scadenza_ccb.connect('clicked',
+                                           on_id_banca_customcombobox_clicked)
         self.pulisci_rata_button.connect('clicked',
                                          self.on_pulisci_rata_button_clicked)
         self.data_pagamento_scadenza_entry.entry.connect('changed',
