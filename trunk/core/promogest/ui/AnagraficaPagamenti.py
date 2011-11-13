@@ -4,6 +4,8 @@
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
+#    Author: Francesco Marella <francesco.marella@gmail.com>
+
 #    This file is part of Promogest.
 
 #    Promogest is free software: you can redistribute it and/or modify
@@ -19,11 +21,15 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-
-
-from AnagraficaSemplice import Anagrafica, AnagraficaDetail, AnagraficaFilter
+from promogest.ui.AnagraficaComplessa import Anagrafica
+from promogest.ui.AnagraficaComplessaEdit import AnagraficaEdit
+from promogest.ui.AnagraficaComplessaReport import AnagraficaReport
+from promogest.ui.AnagraficaComplessaHtml import AnagraficaHtml
+from promogest.ui.AnagraficaComplessaFilter import AnagraficaFilter
+from promogest.ui.utils import obligatoryField, prepareFilterString, mN
+from promogest.ui.utilsCombobox import fillComboboxAliquoteIva, findComboboxRowFromStr
+from promogest.ui.utilsCombobox import findComboboxRowFromId, findIdFromCombobox
 from promogest.dao.Pagamento import Pagamento
-from utils import prepareFilterString, obligatoryField
 
 
 class AnagraficaPagamenti(Anagrafica):
@@ -31,114 +37,128 @@ class AnagraficaPagamenti(Anagrafica):
 
     def __init__(self):
         Anagrafica.__init__(self, 'Promogest - Anagrafica pagamenti',
-                            '_Pagamenti',
-                            AnagraficaPagamentiFilter(self),
-                            AnagraficaPagamentiDetail(self))
-
-    def draw(self):
-        """ Facoltativo ma suggerito per indicare la lunghezza
-        massima della cella di testo
-        """
-        #self.filter.descrizione_column.get_cells()[0].set_data('max_length', 200)
-        self._treeViewModel = self.filter.filter_listore
-        self.refresh()
-
-    def refresh(self):
-        # Aggiornamento TreeView
-        denominazione = prepareFilterString(self.filter.denominazione_filter_entry.get_text())
-        self.numRecords = Pagamento().count(denominazione=denominazione)
-
-        self._refreshPageCount()
-
-        # Let's save the current search as a closure
-        def filterClosure(offset, batchSize):
-            return Pagamento().select(denominazione=denominazione,
-                                                orderBy=self.orderBy,
-                                                offset=self.offset,
-                                                batchSize=self.batchSize)
-
-        self._filterClosure = filterClosure
-
-        pags = self.runFilter()
-
-        self._treeViewModel.clear()
-
-        for p in pags:
-            self._treeViewModel.append((p,
-                                        (p.denominazione or ''),
-                                        (p.tipo or '')))
-
+                            recordMenuLabel='_Pagamenti',
+                            filterElement=AnagraficaPagamentiFilter(self),
+                            htmlHandler=AnagraficaPagamentiHtml(self),
+                            reportHandler=AnagraficaPagamentiReport(self),
+                            editElement=AnagraficaPagamentiEdit(self))
 
 class AnagraficaPagamentiFilter(AnagraficaFilter):
     """ Filtro per la ricerca nell'anagrafica dei pagamenti """
 
     def __init__(self, anagrafica):
         AnagraficaFilter.__init__(self,
-                          anagrafica,
-                          'anagrafica_pagamenti_filter_table',
-                          gladeFile='_anagrafica_pagamenti_elements.glade')
+                                  anagrafica,
+                                  'anagrafica_pagamenti_filter_table',
+                                  gladeFile='_anagrafica_pagamenti_elements.glade')
         self._widgetFirstFocus = self.denominazione_filter_entry
 
+    def draw(self):
+        self._treeViewModel = self.filter_listore
+        self.clear()
 
-    def on_tipologia_changed(self, combo, path_string, new_iter):
-        valore = self.tipologia_listore.get_value(new_iter,0)
-        model = self.filter_listore
-        model[path_string][2] = valore
-        #self._anagrafica.anagrafica_treeview_set_edit(False)
+    def _reOrderBy(self, column):
+        if column.get_name() == "denominazione_column":
+            return self._changeOrderBy(column, (None, Pagamento.denominazione))
 
     def clear(self):
         # Annullamento filtro
         self.denominazione_filter_entry.set_text('')
-        self.denominazione_filter_entry.grab_focus()
-        self._anagrafica.refresh()
+        self.refresh()
 
+    def refresh(self):
+        # Aggiornamento TreeView
+        denominazione = prepareFilterString(self.denominazione_filter_entry.get_text())
+        pagamento = Pagamento()
+        def filterCountClosure():
+            return pagamento.count(denominazione=denominazione)
 
-class AnagraficaPagamentiDetail(AnagraficaDetail):
-    """ Dettaglio dell'anagrafica dei pagamenti """
+        self._filterCountClosure = filterCountClosure
+
+        self.numRecords = self.countFilterResults()
+
+        self._refreshPageCount()
+
+        # Let's save the current search as a closure
+        def filterClosure(offset, batchSize):
+            return pagamento.select(orderBy=self.orderBy,
+                                denominazione=denominazione,
+                                offset=offset,
+                                batchSize=batchSize)
+
+        self._filterClosure = filterClosure
+
+        pagamenti = self.runFilter()
+
+        self._treeViewModel.clear()
+
+        for p in pagamenti:
+            self._treeViewModel.append((p,
+                                        (p.denominazione or ''),
+                                        (p.tipo or ''),
+                                        (mN(p.spese, 2)),
+                                        (p.aliquota_iva)))
+
+        self._anagrafica.anagrafica_filter_treeview.set_model(self._treeViewModel)
+
+class AnagraficaPagamentiHtml(AnagraficaHtml):
+    def __init__(self, anagrafica):
+        AnagraficaHtml.__init__(self, anagrafica, 'pagamento',
+                                'Informazioni sul pagamento')
+
+class AnagraficaPagamentiReport(AnagraficaReport):
+    def __init__(self, anagrafica):
+        AnagraficaReport.__init__(self, anagrafica=anagrafica,
+                                  description='Elenco dei pagamenti',
+                                  defaultFileName='pagamenti',
+                                  htmlTemplate='pagamenti',
+                                  sxwTemplate='pagamenti')
+
+class AnagraficaPagamentiEdit(AnagraficaEdit):
+    """ Modifica un record dell'anagrafica dei pagamenti """
 
     def __init__(self, anagrafica):
-        AnagraficaDetail.__init__(self,
-                          anagrafica,
-                          gladeFile='_anagrafica_pagamenti_elements.glade')
+        AnagraficaEdit.__init__(self,
+                                anagrafica,
+                                'anagrafica_pagamenti_detail_table',
+                                'Dati pagamento',
+                                gladeFile='_anagrafica_pagamenti_elements.glade')
+        self._widgetFirstFocus = self.denominazione_entry
+
+    def draw(self, cplx=False):
+        #Popola combobox
+        fillComboboxAliquoteIva(self.id_aliquota_iva_ccb.combobox)
 
     def setDao(self, dao):
         if dao is None:
+            # Crea un nuovo Dao vuoto
             self.dao = Pagamento()
-            self._anagrafica._newRow((self.dao, '',''))
-            self._refresh()
         else:
-            self.dao = dao
-        return self.dao
-
-    def updateDao(self):
-        self.dao = Pagamento().getRecord(id=self.dao.id)
+            # Ricrea il Dao con una connessione al DBMS SQL
+            self.dao = Pagamento().getRecord(id=dao.id)
         self._refresh()
 
     def _refresh(self):
-        sel = self._anagrafica.anagrafica_treeview.get_selection()
-        (model, iterator) = sel.get_selected()
-        if not iterator:return
-        if not self.dao:return
-        model.set_value(iterator, 0, self.dao)
-        model.set_value(iterator, 1, self.dao.denominazione)
-        model.set_value(iterator, 2, self.dao.tipo)
+        self.denominazione_entry.set_text(self.dao.denominazione or '')
+        self.spese_entry.set_text(str(self.dao.spese or 0))
+        findComboboxRowFromStr(self.tipo_combobox, self.dao.tipo, 0)
+        findComboboxRowFromId(self.id_aliquota_iva_ccb.combobox,
+                              self.dao.id_aliquota_iva)
 
-    def saveDao(self):
-        sel = self._anagrafica.anagrafica_treeview.get_selection()
-        (model, iterator) = sel.get_selected()
-        denominazione = model.get_value(iterator, 1) or ''
-        tipo = model.get_value(iterator, 2) or ''
-        if denominazione == '' or denominazione == None:
-            obligatoryField(self._anagrafica.getTopLevel(),
-                                self._anagrafica.anagrafica_treeview,
-                                msg="Campo Obbligatorio:Denominazione Pagamento!")
-        if model.get_value(iterator, 2)=="" or model.get_value(iterator, 2) == None :
-            obligatoryField(self._anagrafica.getTopLevel(),
-                            self._anagrafica.anagrafica_treeview,
-                            msg="Campo Obbligatorio:Denominazione TIPO Pagamento!")
-        self.dao.denominazione = denominazione
-        self.dao.tipo = tipo
+    def saveDao(self, tipo=None):
+        if (self.denominazione_entry.get_text() == ''):
+            obligatoryField(self.dialogTopLevel,
+                            self.denominazione_entry,
+                            msg='Inserire la denominazione!')
+
+        if (self.tipo_combobox.get_active_text() == ''):
+            obligatoryField(self.dialogTopLevel,
+                            self.tipo_combobox,
+                            msg='Inserire il tipo di pagamento!')
+
+        self.dao.id_aliquota_iva = findIdFromCombobox(self.id_aliquota_iva_ccb.combobox)
+        self.dao.denominazione = self.denominazione_entry.get_text()
+        self.dao.spese = float(self.spese_entry.get_text())
+        self.dao.tipo = self.tipo_combobox.get_active_text()
+
         self.dao.persist()
-
-    def deleteDao(self):
-        self.dao.delete()

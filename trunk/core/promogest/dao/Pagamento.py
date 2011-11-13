@@ -25,6 +25,7 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
 from Dao import Dao
+from promogest.dao.AliquotaIva import AliquotaIva
 from migrate import *
 
 
@@ -40,6 +41,14 @@ class Pagamento(Dao):
             dic= {k : pagamento.c.tipo == v} # cassa o banca
         return  dic[k]
 
+    def _aliquota_iva(self):
+        dao = AliquotaIva().getRecord(self.id_aliquota_iva)
+        if dao:
+            return dao.denominazione_breve
+        else:
+            return ''
+    aliquota_iva = property(_aliquota_iva)
+
 pagamento = Table('pagamento',
                   params['metadata'],
                   schema = params['schema'],
@@ -47,6 +56,14 @@ pagamento = Table('pagamento',
 
 if 'tipo' not in [c.name for c in pagamento.columns]:
     col = Column('tipo', String, default='banca')
+    col.create(pagamento, populate_default=True)
+
+if 'spese' not in [c.name for c in pagamento.columns]:
+    col = Column('spese', Numeric(16, 4), nullable=True)
+    col.create(pagamento, populate_default=True)
+
+if 'id_aliquota_iva' not in [c.name for c in pagamento.columns]:
+    col = Column('id_aliquota_iva', Integer, nullable=True)
     col.create(pagamento, populate_default=True)
 
 std_mapper = mapper(Pagamento, pagamento, order_by=pagamento.c.id)
