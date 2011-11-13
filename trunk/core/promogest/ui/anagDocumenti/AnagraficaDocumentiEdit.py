@@ -748,6 +748,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self.id_magazzino_combobox.grab_focus()
         if posso("PA"):
             self.pagamenti_page.getScadenze()
+            self.pagamenti_page.ricalcola_sospeso_e_pagato()
 
     def setDao(self, dao):
         """
