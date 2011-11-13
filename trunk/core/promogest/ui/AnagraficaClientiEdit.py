@@ -224,6 +224,8 @@ class AnagraficaClientiEdit(AnagraficaEdit):
                               self.dao.id_listino)
         findComboboxRowFromId(self.id_banca_customcombobox.combobox,
                               self.dao.id_banca)
+        findComboboxRowFromId(self.id_aliquota_iva_customcombobox.combobox,
+                              self.dao.id_aliquota_iva)
         findComboboxRowFromStr(self.nazione_combobox,self.dao.nazione, 0)
         #finComboBoxNazione(self.nazione_combobox, default="Italia")
         #if Environment.conf.hasPagamenti == True:
@@ -309,6 +311,7 @@ class AnagraficaClientiEdit(AnagraficaEdit):
         self.dao.id_magazzino = findIdFromCombobox(self.id_magazzino_customcombobox.combobox)
         self.dao.id_listino = findIdFromCombobox(self.id_listino_customcombobox.combobox)
         self.dao.id_banca = findIdFromCombobox(self.id_banca_customcombobox.combobox)
+        self.dao.id_aliquota_iva = findIdFromCombobox(self.id_aliquota_iva_customcombobox.combobox)
         self.dao.nazione = findStrFromCombobox(self.nazione_combobox,0)
         #if self.dao.codice_fiscale != '':
             #codfis = checkCodFisc(self.dao.codice_fiscale)
