@@ -107,14 +107,13 @@ class RigaPrimaNota(Dao):
             dic = {k: rigaprimanota.c.id_testata_prima_nota == v}
         return dic[k]
 
-    def _banca(self):
+    @property
+    def banca(self):
         bn = Banca().getRecord(id=self.id_banca)
         if bn:
             return bn.denominazione
         else:
-            return ""
-    banca= property(_banca)
-
+            return ''
 
 std_mapper = mapper(RigaPrimaNota,
                     rigaprimanota,
