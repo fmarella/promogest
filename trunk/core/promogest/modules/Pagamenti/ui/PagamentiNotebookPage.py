@@ -212,6 +212,7 @@ class PagamentiNotebookPage(GladeWidget):
         msg = _('Stai per rimuovere i riferimenti già inseriti. Continuare?')
         if YesNoDialog(msg=msg):
             self.clear()
+            self.ricalcola_sospeso_e_pagato()
 
     def on_controlla_rate_scadenza_button_clicked(self, button):
         """ bottone che controlla le rate scadenza """
