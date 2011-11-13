@@ -235,6 +235,7 @@ class AnagraficaClientiEdit(AnagraficaEdit):
         self.email_principale_entry.set_text(self.dao.email_principale or "")
         self.fax_principale_entry.set_text(self.dao.fax_principale or "")
         self.sito_web_principale_entry.set_text(self.dao.sito_principale or "")
+        self.spese_checkbox.set_active(self.dao.pagante or False)
 
     def showTotaliDareAvere(self):
 
@@ -275,6 +276,7 @@ class AnagraficaClientiEdit(AnagraficaEdit):
             #obligatoryField(self.dialogTopLevel,
                             #self.ragione_sociale_entry,
                             #msg='CODICE GIÀ PRESENTE')
+        self.dao.pagante = self.spese_checkbox.get_active()
         self.dao.codice = self.codice_entry.get_text().upper()
         self.dao.codice = omogeneousCode(section="Clienti", string=self.dao.codice )
         self.dao.ragione_sociale = self.ragione_sociale_entry.get_text()

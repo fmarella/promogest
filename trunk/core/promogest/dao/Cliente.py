@@ -178,6 +178,10 @@ cliente = Table('cliente',
               schema=params['schema'],
               autoload=True)
 
+if 'pagante' not in [c.name for c in cliente.columns]:
+    col = Column('pagante', Boolean, default=False)
+    col.create(cliente, populate_default=True)
+
 if 'id_aliquota_iva' not in [c.name for c in cliente.columns]:
     col = Column('id_aliquota_iva', Integer, nullable=True)
     col.create(cliente, populate_default=True)
