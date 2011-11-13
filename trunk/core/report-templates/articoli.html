@@ -16,7 +16,7 @@
     <tr class="row">
     <td class="detail">{{dao.codice}}</td>
     <td class="detail">{{dao.denominazione}}</td>
-    <td class="detail">{{'%14.2f' % dao.percentuale_aliquota_iva}}</td>
+    <td class="detail">{{utils.mN(dao.percentuale_aliquota_iva,0)}}%</td>
     <td class="detail">{{dao.denominazione_famiglia}}</td>
     <td class="detail">{{dao.denominazione_categoria}}</td>
     <td class="detail">{{dao.denominazione_unita_base}}</td>
