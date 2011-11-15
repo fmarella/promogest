@@ -309,14 +309,15 @@ class TestataDocumento(Dao):
             else:
                 moltiplicatore = riga.moltiplicatore
             if setconf("General", "gestione_totali_mercatino"):
+                trn = (Decimal(riga.quantita or 0) * Decimal(moltiplicatore) * Decimal(riga.valore_unitario_netto or 0))
+                trl = (Decimal(riga.quantita or 0) * Decimal(moltiplicatore) * Decimal(riga.valore_unitario_lordo or 0))
                 if riga.id_articolo and riga.id_listino:
                     from promogest.ui.utils import leggiListino
                     ll = leggiListino(riga.id_listino, riga.id_articolo)
-                    totaleRicaricatoLordo += (Decimal(riga.quantita or 0) * Decimal(moltiplicatore) * Decimal(riga.valore_unitario_netto or 0)) - ll["ultimoCosto"]
+                    totaleRicaricatoLordo += (trl * (ll["ultimoCosto"]*Decimal(riga.quantita or 0)) / trn)
                 elif riga.id_articolo and not riga.id_listino:
                     lf = leggiFornitura(riga.id_articolo)
-                    totaleRicaricatoLordo += (Decimal(riga.quantita or 0) * Decimal(moltiplicatore) * Decimal(riga.valore_unitario_netto or 0)) - lf["prezzoNetto"]
-
+                    totaleRicaricatoLordo += (trl * (lf["prezzoNetto"]*Decimal(riga.quantita or 0)) / trn)
             percentualeIvaRiga = Decimal(riga.percentuale_iva)
             idAliquotaIva = riga.id_iva
             daoiva=None
