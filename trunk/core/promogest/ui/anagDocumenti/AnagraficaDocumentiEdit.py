@@ -876,7 +876,7 @@ del documento.
         self.dao.id_aliquota_iva_esenzione = findIdFromCombobox(self.id_aliquota_iva_esenzione_customcombobox.combobox)
         self.dao.id_agente = self.id_agente_customcombobox._id
         self.dao.protocollo = self.protocollo_entry1.get_text()
-        self.dao.causale_trasporto = self.causale_trasporto_comboboxentry.get_child().get_text()
+        self.dao.causale_trasporto = self.causale_trasporto_comboboxentry.get_child().get_text()[0:30]
         self.dao.aspetto_esteriore_beni = self.aspetto_esteriore_beni_comboboxentry.get_child().get_text()
         self.dao.inizio_trasporto = stringToDateTime(self.inizio_trasporto_entry.get_text())
         self.dao.fine_trasporto = stringToDateTime(self.fine_trasporto_entry.get_text())
