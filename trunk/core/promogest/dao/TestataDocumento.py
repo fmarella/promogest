@@ -314,10 +314,10 @@ class TestataDocumento(Dao):
                 if riga.id_articolo and riga.id_listino:
                     from promogest.ui.utils import leggiListino
                     ll = leggiListino(riga.id_listino, riga.id_articolo)
-                    totaleRicaricatoLordo += (trl * (ll["ultimoCosto"]*Decimal(riga.quantita or 0)) / trn)
+                    totaleRicaricatoLordo += (trn * (ll["ultimoCosto"]*Decimal(riga.quantita or 0)) / trl)
                 elif riga.id_articolo and not riga.id_listino:
                     lf = leggiFornitura(riga.id_articolo)
-                    totaleRicaricatoLordo += (trl * (lf["prezzoNetto"]*Decimal(riga.quantita or 0)) / trn)
+                    totaleRicaricatoLordo += (trn * (lf["prezzoNetto"]*Decimal(riga.quantita or 0)) / trl)
             percentualeIvaRiga = Decimal(riga.percentuale_iva)
             idAliquotaIva = riga.id_iva
             daoiva=None
