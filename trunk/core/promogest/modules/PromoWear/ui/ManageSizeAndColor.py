@@ -39,9 +39,9 @@ class ManageSizeAndColor(GladeWidget):
         GladeWidget.__init__(self, 'gestione_varianti_taglie_colore',
                 fileName= 'PromoWear/gui/gestione_varianti_taglia_colore.glade',
                 isModule=True)
-        #self.placeWindow(self.getTopLevel())
+        self.placeWindow(self.getTopLevel())
         self.getTopLevel().set_modal(modal=True)
-        #self.set_transient_for(mainWindow)
+        #self.getTopLevel().set_transient_for(mainWindow)
         self.articoloPadre= articolo
         self.idPerGiu = idPerGiu
         self.data = data
