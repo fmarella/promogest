@@ -1838,16 +1838,15 @@ def getStringaSconti(listSconti):
     """
     stringaSconti = ''
     for s in listSconti:
-        decimals = '2'
+        decimals = '1'
         tipo = s["tipo"]
         if tipo == 'percentuale':
             tipo = '%'
         elif tipo == 'valore':
             tipo = ''
             decimals = int(setconf(key="decimals", section="Numbers"))
-        #print "AHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH", s["valore"]
         valore = ('%.' + str(decimals) + 'f') % float(s["valore"])
-        stringaSconti = stringaSconti + valore + tipo + '; '
+        stringaSconti = stringaSconti + valore + tipo + ' '
     return stringaSconti
 
 
@@ -2309,6 +2308,18 @@ def getRecapitiCliente(idCliente):
         reca = RecapitoContatto().select(idContatto=cc[0].id,  batchSize=None)
         return reca
     return []
+
+def getRecapitiAnagraficaSecondaria(idAnagraficaSecondaria):
+    """Dato un cliente restituisce un dizionario dei recapiti"""
+    from promogest.modules.Contatti.dao.ContattoAnagraficaSecondaria import ContattoAnagraficaSecondaria
+    from promogest.modules.Contatti.dao.RecapitoContatto import RecapitoContatto
+    recaCli = {}
+    cc = ContattoAnagraficaSecondaria().select(idAnagraficaSecondaria=idAnagraficaSecondaria)
+    if cc:
+        reca = RecapitoContatto().select(idContatto=cc[0].id,  batchSize=None)
+        return reca
+    return []
+
 
 
 def getRecapitiFornitore(idFornitore):
