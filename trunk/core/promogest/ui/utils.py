@@ -1846,7 +1846,7 @@ def getStringaSconti(listSconti):
             tipo = ''
             decimals = int(setconf(key="decimals", section="Numbers"))
         valore = ('%.' + str(decimals) + 'f') % float(s["valore"])
-        stringaSconti = stringaSconti + valore + tipo + ' '
+        stringaSconti = stringaSconti + valore + tipo + ';'
     return stringaSconti
 
 
