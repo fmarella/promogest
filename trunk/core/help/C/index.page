@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/"
+      type="guide"
+      id="index">
+
+      <info>
+      <revision pkgversion="2.9" version="1.0" date="2011-11-08" status="stub"/>
+
+	    <credit type="author">
+	      <name>Francesco Marella</name>
+	      <email>francesco.marella@gmail.com</email>
+	    </credit>
+	    <credit type="copyright">
+	      <years>2011</years>
+	      <name>PromoGest</name>
+	    </credit>
+
+        <license>
+            <p>Creative Commons Share Alike 3.0</p>
+        </license>
+
+        <desc>Guida a PromoGest</desc>
+
+      </info>
+
+      <title>
+        <media type="image" mime="image/png" src="figures/logo_promogest_small.png">
+        </media>
+        Guida a PromoGest
+      </title>
+
+        <p>Ut accumsan elementum purus, id imperdiet dui molestie sit amet. Nunc rutrum, tellus in pellentesque interdum, ligula enim auctor velit, eget posuere arcu mi in risus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam malesuada, sapien et placerat gravida, est lectus eleifend ipsum, et accumsan sem felis nec eros. Quisque adipiscing sollicitudin turpis ut semper. Donec tincidunt dignissim justo facilisis vestibulum. Etiam porttitor imperdiet ultrices.</p>
+
+      <!--<links type="section"/> -->
+
+      <section id="login">
+        <title>Login</title>
+      </section>
+
+      <section id="anagrafiche">
+        <title>Anagrafiche</title>
+      </section>
+
+      <section id="documenti">
+        <title>Documenti</title>
+      </section>
+
+</page>

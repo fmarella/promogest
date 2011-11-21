@@ -1,0 +1,23 @@
+<page xmlns="http://projectmallard.org/1.0/"
+      type="topic"
+      id="agenti">
+
+    <info>
+      <desc>Agenti</desc>
+      <revision pkgversion="2.9" version="1.0" date="2011-11-08" status="stub"/>
+	    <credit type="author">
+	      <name>Francesco Marella</name>
+	      <email>francesco.marella@gmail.com</email>
+	    </credit>
+	    <credit type="copyright">
+	      <years>2011</years>
+	      <name>PromoGest</name>
+	    </credit>
+      <link type="guide" xref="index#anagrafiche"/>
+    </info>
+
+    <title>Agenti</title>
+
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam lacinia varius tellus sed lacinia. Cras a odio libero, eget posuere augue. Phasellus rutrum diam convallis metus ultricies pretium. Praesent elementum tellus faucibus nisi fringilla placerat. Nam scelerisque lectus ut urna malesuada eu tincidunt lectus iaculis. Vivamus auctor, dolor vitae ornare elementum, tortor odio imperdiet lacus, id tempor tortor erat in risus. Duis id mi a dui consectetur volutpat et ac mauris. Nunc eget ipsum non mi vulputate sodales. Etiam porta est nec massa ullamcorper eu vestibulum purus sodales. Aliquam porta vulputate justo sit amet pharetra. Donec a tellus nisi, vel tempor sapien. Integer mollis convallis lectus eget placerat. Maecenas vestibulum nibh ut enim euismod imperdiet. </p>
+
+</page>
