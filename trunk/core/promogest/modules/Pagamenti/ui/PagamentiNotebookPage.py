@@ -67,14 +67,15 @@ class PagamentiNotebookPage(GladeWidget):
         self.on_calcola_importi_scadenza_button_clicked(None)
 
     def clear(self):
-        """
-
-        """
+        '''
+        '''
         self.id_pagamento_customcombobox.combobox.set_active(-1)
-        self.totale_pagato_scadenza_label.set_markup('<b><span foreground="#338000" size="24000">0</span></b>')
-        self.totale_sospeso_scadenza_label.set_markup('<b><span foreground="#B40000" size="24000">0</span></b>')
-        self.stato_label.set_markup('<b><span foreground="#B40000" size="24000">'+_('APERTO')+'</span></b>')
-        self.metodo_pagamento_label.set_markup('<b><span foreground="black" size="16000">'+_("NESSUNO?")+'</span></b>')
+        self.totale_pagato_scadenza_label.set_markup('<b><span foreground="#338000" size="24000">'+str(
+            0)+'</span></b>')
+        self.totale_sospeso_scadenza_label.set_markup('<b><span foreground="#B40000" size="24000">'+str(
+            0)+'</span></b>')
+        self.stato_label.set_markup(_('<b><span foreground="#B40000" size="24000">APERTO</span></b>'))
+        self.metodo_pagamento_label.set_markup('<b><span foreground="black" size="16000">'+str(_("NESSUNO?"))+'</span></b>')
         self.importo_primo_documento_entry.set_text('')
         self.importo_secondo_documento_entry.set_text('')
         self.numero_primo_documento_entry.set_text('')
@@ -87,9 +88,8 @@ class PagamentiNotebookPage(GladeWidget):
             self.rate = []
 
     def on_aggiungi_rate_button_clicked(self, button):
-        """
-
-        """
+        '''
+        '''
         numero = len(self.rate) + 1
         pag_w = PagamentoWidget(self.ana, 'rata ' + str(numero))
         dao = pag_w.get()
@@ -104,23 +104,19 @@ class PagamentiNotebookPage(GladeWidget):
         '''
         if len(self.rate) > 0:
             if YesNoDialog(msg='Rimuovere la scadenza?'):
-                self.rate.pop()
+                removed = self.rate.pop()
                 self.scadenze_notebook.remove_page(-1)
         else:
             messageInfo('Non ci sono altre scadenze da rimuovere.')
 
     def on_aggiorna_pagamenti_button_clicked(self, button):
-        """
-        Aggiorna la parte dei pagamenti
-        """
+        """Aggiorna la parte dei pagamenti"""
         self.ricalcola_sospeso_e_pagato()
 
     def on_seleziona_prima_nota_button_clicked(self, button):
-        """
-        Seleziona la prima nota da utilizzare come riferimento
-        """
+        """ Seleziona la prima nota da utilizzare come riferimento """
         if self.ana.numero_primo_documento_entry.get_text() != "":
-            response = AnagraficadocumentiPagamentExt.impostaDocumentoCollegato(int(self.ana.numero_primo_documento_entry.get_text()))
+                response = AnagraficadocumentiPagamentExt.impostaDocumentoCollegato(int(self.ana.numero_primo_documento_entry.get_text()))
         else:
             messageInfo(msg="Inserisci il numero del documento")
             response = False
@@ -145,9 +141,7 @@ class PagamentiNotebookPage(GladeWidget):
             AnagraficadocumentiPagamentExt.ricalcola_sospeso_e_pagato(self.ana)
 
     def on_calcola_importi_scadenza_button_clicked(self, button):
-        """
-        Calcola importi scadenza pagamenti
-        """
+        """calcola importi scadenza pagamenti """
         id_pag = findIdFromCombobox(self.id_pagamento_customcombobox.combobox)
         if id_pag == -1 or id_pag==0 or id_pag==None:
             messageInfo(msg=_("NESSUN METODO DI PAGAMENTO SELEZIONATO\n NON POSSO AGIRE"))
@@ -168,8 +162,7 @@ class PagamentiNotebookPage(GladeWidget):
         self.ricalcola_sospeso_e_pagato()
 
     def on_chiudi_pagamento_documento_button_clicked(self, button):
-        """
-        Chiude un pagamento
+        """ Chiude un pagamento
         """
         acconto = 0
         importo_immesso = 0
@@ -184,27 +177,24 @@ class PagamentiNotebookPage(GladeWidget):
         if acconto == 0 or importo_immesso == 0 or importo_immesso < float(self.totale_in_pagamenti_label.get_text()):
             msg = _('Chiusura di un documento con pagamenti nulli o parziali.\n Continuare?')
             if YesNoDialog(msg=msg, transient=None):
-                self.stato_label.set_markup('<b><span foreground="#338000" size="24000">'+_('PAGATO')+'</span></b>')
+                self.stato_label.set_markup('<b><span foreground="#338000" size="24000">PAGATO</span></b>')
                 self.chiudi_pagamento_documento_button.set_sensitive(False)
                 self.apri_pagamento_documento_button.set_sensitive(True)
         else:
-            self.stato_label.set_markup('<b><span foreground="#338000" size="24000">'+_('PAGATO')+'</span></b>')
+            self.stato_label.set_markup('<b><span foreground="#338000" size="24000">PAGATO</span></b>')
 
     def on_apri_pagamento_documento_button_clicked(self, button):
         ''' Apre il pagamento
         '''
         msg=_('Attenzione! Stai per riaprire un documento considerato già pagato.\n Continuare?')
         if YesNoDialog(msg=msg):
-            self.stato_label.set_markup('<b><span foreground="#B40000" size="24000">'+_('APERTO')+'</span></b>')
+            self.stato_label.set_markup(_('<b><span foreground="#B40000" size="24000">APERTO</span></b>'))
             self.apri_pagamento_documento_button.set_sensitive(False)
             self.chiudi_pagamento_documento_button.set_sensitive(True)
 
     def on_acconto_scheda_togglebutton_toggled(self, button):
-        """
-
-        """
         if not self.acconto:
-            self.acconto_scheda_togglebutton.set_label(_('Acconto'))
+            self.acconto_scheda_togglebutton.set_label("Acconto")
             self.acconto = PagamentoWidget(self.ana, 'Acconto')
             dao = self.acconto.get()
             dao.data = datetime.datetime.now()
@@ -212,14 +202,13 @@ class PagamentiNotebookPage(GladeWidget):
             self.scadenze_notebook.insert_page(self.acconto.getTopLevel(), gtk.Label(self.acconto.label), 0)
             self.scadenze_notebook.set_current_page(0)
         else:
-            self.acconto_scheda_togglebutton.set_label(_('Acconto'))
+            self.acconto_scheda_togglebutton.set_label("Acconto")
             self.scadenze_notebook.remove_page(0)
             self.scadenze_notebook.set_current_page(-1)
             self.acconto = None
 
     def on_pulisci_scadenza_button_clicked(self, button):
-        """
-        Pulisce tutti i campi relativi alla scheda pagamenti
+        """ Pulizia di tutti i campi relativi alla tab pagamenti
         """
         msg = _('Stai per rimuovere i riferimenti già inseriti. Continuare?')
         if YesNoDialog(msg=msg):
@@ -242,11 +231,11 @@ class PagamentiNotebookPage(GladeWidget):
                     self.rate[-1].fill(scadenza)
 
             if self.ana.dao.documento_saldato:
-                self.stato_label.set_markup('<b><span foreground="#338000" size="24000">'+_('PAGATO')+'</span></b>')
+                self.stato_label.set_markup('<b><span foreground="#338000" size="24000">PAGATO</span></b>')
             else:
+                self.stato_label.set_markup('<b><span foreground="#B40000" size="24000">APERTO</span></b>')
             self.totale_pagato_scadenza_label.set_markup('<b><span foreground="#338000" size="24000">'+str(
                 mN(self.ana.dao.totale_pagato) or 0)+'</span></b>')
-                self.stato_label.set_markup('<b><span foreground="#B40000" size="24000">'+_('APERTO')+'</span></b>')
 
             if (self.ana.dao.totale_sospeso is None)  or (self.ana.dao.totale_sospeso == 0):
                 totaleSospeso = Decimal(str(self.ana.totale_scontato_riepiloghi_label.get_text() or 0)) - Decimal(str(self.ana.dao.totale_pagato or 0))
@@ -281,7 +270,7 @@ class PagamentiNotebookPage(GladeWidget):
         #TODO: aggiungere la cancellazione se vengono trovate più righe?
         self.ana.dao.totale_pagato = float(self.totale_pagato_scadenza_label.get_text())
         self.ana.dao.totale_sospeso = float(self.totale_sospeso_scadenza_label.get_text())
-        if self.stato_label.get_text() == 'PAGATO':
+        if self.stato_label.get_text() == "PAGATO":
             self.ana.dao.documento_saldato = True
         else:
             self.ana.dao.documento_saldato = False
@@ -469,13 +458,13 @@ Per l'esattezza, l'errore e` di %.2f""" % differenza_importi)
             totalesospeso = abs(totale_in_pagamenti_label - totalepagato)
 
         if totalesospeso > float(0):
-            self.stato_label.set_markup('<b><span foreground="#B40000" size="24000">'+_('APERTO')+'</span></b>')
+            self.stato_label.set_markup('<b><span foreground="#B40000" size="24000">APERTO</span></b>')
 
         self.totale_pagato_scadenza_label.set_markup('<b><span foreground="#338000" size="24000">'+str(mN(totalepagato, 2))+'</span></b>')
         self.totale_sospeso_scadenza_label.set_markup('<b><span foreground="#B40000" size="24000">'+str(mN(totalesospeso, 2))+'</span></b>')
 
         if totalepagato == float(0) and totalesospeso == float(0):
-            self.stato_label.set_markup('<b><span foreground="#B40000" size="24000">'+_('APERTO')+'</span></b>')
+            self.stato_label.set_markup('<b><span foreground="#B40000" size="24000">APERTO</span></b>')
 
         if str(totalepagato) == str(totale_in_pagamenti_label) and \
                         self.stato_label.get_text() == "APERTO" and \
@@ -484,7 +473,7 @@ Per l'esattezza, l'errore e` di %.2f""" % differenza_importi)
 l'importo pagato è uguale al totale documento.
 Procedere con la "chiusura" del Pagamento?"""
             if YesNoDialog(msg=msg, transient=None):
-                self.stato_label.set_markup('<b><span foreground="#338000" size="24000">'+_('PAGATO')+'</span></b>')
+                self.stato_label.set_markup('<b><span foreground="#338000" size="24000">PAGATO</span></b>')
                 self.chiudi_pagamento_documento_button.set_sensitive(False)
                 self.apri_pagamento_documento_button.set_sensitive(True)
 
