@@ -2060,13 +2060,26 @@ def multilinedirtywork( param):
     """
     Funzione che gestisce la suddivisione in multirighe
     """
+    ope = param[0]['operazione'].strip()
+    strippa = ope not in ['DDT', 'Fattura accompagnatoria']
+
     for i in param:
         try:
             for z in i["righe"]:
                 z["descrizione"] = modificaLottiScadenze(z)
 
             lista = i['righe']
+            skippa = False
             for x in lista:
+                if strippa:
+                    if 'RIEPILOGO' in x["descrizione"]:
+                        skippa = True
+                        x["descrizione"] = ''
+                        continue
+                    if skippa:
+                        x["descrizione"] = ''
+                        continue
+
                 if len(x["descrizione"]) > int(setconf("Multilinea","multilinealimite"))\
                 and "\n" not in x["descrizione"]:
                     wrapper = TextWrapper()
