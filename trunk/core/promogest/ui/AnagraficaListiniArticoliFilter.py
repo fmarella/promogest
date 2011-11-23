@@ -25,6 +25,8 @@ from promogest.ui.gtk_compat import *
 from promogest.ui.AnagraficaComplessaFilter import AnagraficaFilter
 from decimal import *
 from promogest import Environment
+from promogest.dao.Articolo import Articolo
+from promogest.dao.Listino import Listino
 from promogest.dao.ListinoArticolo import ListinoArticolo
 from promogest.dao.ListinoComplessoListino import ListinoComplessoListino
 from promogest.dao.ScontoVenditaDettaglio import ScontoVenditaDettaglio
@@ -59,8 +61,8 @@ class AnagraficaListiniArticoliFilter(AnagraficaFilter):
 
         column = gtk.TreeViewColumn('Listino', rendererSx, text=1)
         column.set_sizing(GTK_COLUMN_GROWN_ONLY)
-        column.set_clickable(False)
-        #column.connect("clicked", self._changeOrderBy, (None, 'codice_articolo'))
+        column.set_clickable(True)
+        column.connect("clicked", self._changeOrderBy, (Listino, 'Listino.denominazione'))
         column.set_resizable(True)
         column.set_expand(False)
         column.set_min_width(100)
@@ -68,8 +70,8 @@ class AnagraficaListiniArticoliFilter(AnagraficaFilter):
 
         column = gtk.TreeViewColumn('Codice articolo', rendererSx, text=2)
         column.set_sizing(GTK_COLUMN_GROWN_ONLY)
-        column.set_clickable(False)
-        column.connect("clicked", self._changeOrderBy, (None, 'codice_articolo'))
+        column.set_clickable(True)
+        column.connect("clicked", self._changeOrderBy, (Articolo, 'Articolo.codice'))
         column.set_resizable(True)
         column.set_expand(False)
         column.set_min_width(100)
@@ -77,8 +79,8 @@ class AnagraficaListiniArticoliFilter(AnagraficaFilter):
 
         column = gtk.TreeViewColumn('Articolo', rendererSx, text=3)
         column.set_sizing(GTK_COLUMN_GROWN_ONLY)
-        column.set_clickable(False)
-        column.connect("clicked", self._changeOrderBy, (None, 'id_articolo'))
+        column.set_clickable(True)
+        column.connect("clicked", self._changeOrderBy, (Articolo, 'Articolo.denominazione'))
         column.set_resizable(True)
         column.set_expand(True)
         column.set_min_width(200)
@@ -141,7 +143,7 @@ class AnagraficaListiniArticoliFilter(AnagraficaFilter):
         if self._anagrafica._listinoFissato:
             findComboboxRowFromId(self.id_listino_filter_combobox, self._anagrafica._idListino)
             Environment.listinoFissato = self._anagrafica._idListino
-            self.id_listino_filter_combobox.set_sensitive(False)
+            #self.id_listino_filter_combobox.set_sensitive(False)
             if not (self._anagrafica._articoloFissato):
                 column = self._anagrafica.anagrafica_filter_treeview.get_column(0)
                 column.set_property('visible', False)
@@ -202,6 +204,7 @@ class AnagraficaListiniArticoliFilter(AnagraficaFilter):
                                             idArticolo=idArticolo,
                                             listinoAttuale=True,
                                             offset=offset,
+                                            join=self.join,
                                             batchSize=batchSize)
 
         self._filterClosure = filterClosure
