@@ -21,17 +21,13 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 import datetime
-
-
 from promogest.ui.gtk_compat import *
 from promogest.ui.utils import *
 from promogest.ui.utilsCombobox import *
 from promogest import Environment
 from promogest.ui.GladeWidget import GladeWidget
-
 from promogest.modules.Pagamenti.ui import AnagraficadocumentiPagamentExt
 from promogest.ui.widgets.PagamentoWidget import PagamentoWidget
-
 from promogest.dao.Pagamento import Pagamento
 from promogest.modules.Pagamenti.dao.TestataDocumentoScadenza import TestataDocumentoScadenza
 
@@ -412,24 +408,15 @@ class PagamentiNotebookPage(GladeWidget):
 
         if not self.ana.dao:
             return float(0)
-        id_documento = self.ana.dao.id
-        if not id_documento:
-            return float(0)
-        cliente = None
-        if not self.ana.dao.id_cliente:
+        if not self.ana.dao.id or not self.ana.dao.id_cliente:
             return float(0)
         cliente = leggiCliente(self.ana.dao.id_cliente)
+        spese = float(0)
         if not cliente['pagante']:
-            spese = float(0)
-            # Controllo le rate
-            for rata in self.rate:
-                daoTDS = rata.get()
-                spese += getSpesePagamento(daoTDS.pagamento)
-            # controllo l'acconto
-            if self.acconto:
-                daoTDS = self.acconto.get()
-                spese += getSpesePagamento(daoTDS.pagamento)
-            return spese
+            # Controllo l'acconto e le rate
+            for rata in self.ana.dao.scadenze:
+                spese += getSpesePagamento(rata.pagamento)
+        return spese
 
     def controlla_rate_scadenza(self, messaggio):
         """
