@@ -20,16 +20,15 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-import gobject
-
 from promogest.ui.AnagraficaComplessaFilter import AnagraficaFilter
 from promogest.dao.PersonaGiuridica import PersonaGiuridica_
 from promogest import Environment
 import promogest.dao.Fornitore
 from promogest.dao.Fornitore import Fornitore
 from promogest.dao.DaoUtils import *
-from utils import *
-from utilsCombobox import *
+from promogest.ui.utils import *
+from promogest.ui.utilsCombobox import *
+from promogest.ui.gtk_compat import *
 
 
 class AnagraficaFornitoriFilter(AnagraficaFilter):
