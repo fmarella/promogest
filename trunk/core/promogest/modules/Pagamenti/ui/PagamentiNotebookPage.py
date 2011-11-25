@@ -121,8 +121,8 @@ class PagamentiNotebookPage(GladeWidget):
 
         if response:
             self.ana.importo_primo_documento_entry.set_text(str(response))
-            AnagraficadocumentiPagamentExt.dividi_importo(self.ana)
-            AnagraficadocumentiPagamentExt.ricalcola_sospeso_e_pagato(self.ana)
+            self.dividi_importo()
+            self.ricalcola_sospeso_e_pagato()
             self.ana.numero_secondo_documento_entry.set_sensitive(True)
             self.ana.seleziona_seconda_nota_button.set_sensitive(True)
             self.ana.importo_secondo_documento_entry.set_sensitive(True)
@@ -135,8 +135,8 @@ class PagamentiNotebookPage(GladeWidget):
             response = False
         if response:
             self.ana.importo_primo_documento_entry.set_text(str(response))
-            AnagraficadocumentiPagamentExt.dividi_importo(self.ana)
-            AnagraficadocumentiPagamentExt.ricalcola_sospeso_e_pagato(self.ana)
+            self.dividi_importo()
+            self.ricalcola_sospeso_e_pagato()
 
     def on_calcola_importi_scadenza_button_clicked(self, button):
         """
