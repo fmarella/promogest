@@ -407,7 +407,7 @@ class PagamentiNotebookPage(GladeWidget):
             if len(p) > 0:
                 p = p[0]
                 if float(p.spese or 0) != float(0):
-                    return float(p.spese) + float((p.spese * p.perc_aliquota_iva) / 100)
+                    return calcolaPrezzoIva(float(p.spese), float(p.perc_aliquota_iva))
                 else:
                     return float(0)
             else:
