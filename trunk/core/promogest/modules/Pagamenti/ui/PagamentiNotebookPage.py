@@ -287,6 +287,8 @@ class PagamentiNotebookPage(GladeWidget):
             daoTestataDocumentoScadenza = rata.get()
             daoTestataDocumentoScadenza.id_testata_documento = self.ana.dao.id
             daoTestataDocumentoScadenza.numero_scadenza = i
+            if not daoTestataDocumentoScadenza.data:
+                daoTestataDocumentoScadenza.data = datetime.datime.now()
             i += 1
             scadenze.append(daoTestataDocumentoScadenza)
 
