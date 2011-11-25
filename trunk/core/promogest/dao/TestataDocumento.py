@@ -83,11 +83,11 @@ class TestataDocumento(Dao):
         self._totaleImponibileScontato = 0
         self._totaleImposta = 0
         self._totaleImpostaScontata = 0
-        self._totaleScontato = 0
         self._castellettoIva = 0
         self.__data_inizio_noleggio = None
         self.__data_fine_noleggio = None
         self.__numeroMagazzini = 0
+        self._totaleSpese = 0
 
     @reconstructor
     def init_on_load(self):
@@ -297,6 +297,24 @@ class TestataDocumento(Dao):
         totaleRicaricatoLordo = Decimal(0)
         totaleScontato = Decimal(0)
         castellettoIva = {}
+
+        def getSpesePagamento(pagamento):
+            p = Pagamento().select(denominazione=pagamento)[0]
+            if p:
+                if float(p.spese or 0) != float(0):
+                    return calcolaPrezzoIva(float(p.spese), float(p.perc_aliquota_iva))
+                else:
+                    return float(0)
+            else:
+                return float(0)
+
+        spese = 0
+        if self.id_cliente:
+            cliente = leggiCliente(self.id_cliente)
+            if not cliente['pagante']:
+                for scad in self.__ScadenzeDocumento:
+                    spese += getSpesePagamento(scad.pagamento)
+        self._totaleSpese = mN(spese, 2)
 
         totaleEsclusoBaseImponibileRiga = 0
         totaleImponibileRiga = 0
