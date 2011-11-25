@@ -2060,8 +2060,10 @@ def multilinedirtywork( param):
     """
     Funzione che gestisce la suddivisione in multirighe
     """
-    ope = param[0]['operazione'].strip()
-    strippa = ope not in ['DDT', 'Fattura accompagnatoria']
+    strippa = False
+    if 'operazione' in param[0]:
+        ope = param[0]['operazione'].strip()
+        strippa = ope not in ['DDT', 'Fattura accompagnatoria']
 
     for i in param:
         try:
