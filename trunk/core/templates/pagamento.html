@@ -11,8 +11,12 @@
                 <td class="even-detail"><strong>{{dao.tipo}}</strong></td>
             </tr>
             <tr>
-                <td class="odd-detail" >&#037;</td>
-                <td class="odd-detail"><strong>{{utils.mN(dao.spese,0)}}</strong></td>
+                <td class="odd-detail" >Spese</td>
+                <td class="odd-detail"><strong>{{utils.mN(dao.spese, 2)}}</strong></td>
+            </tr>
+            <tr>
+                <td class="odd-detail" >Aliquota IVA</td>
+                <td class="odd-detail"><strong>{{dao.aliquota_iva}}</strong></td>
             </tr>
         </table>
         {% else %}
