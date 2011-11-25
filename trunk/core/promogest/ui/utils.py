@@ -164,6 +164,7 @@ def leggiCliente(id):
     _id_listino = None
     _id_banca = None
     _email = None
+    _pagante = False
     if id is not None:
         daoCliente = Cliente().getRecord(id=id)
         if daoCliente is not None:
@@ -182,6 +183,7 @@ def leggiCliente(id):
             _id_magazzino = daoCliente.id_magazzino
             _id_listino = daoCliente.id_listino
             _id_banca = daoCliente.id_banca
+            _pagante = daoCliente.pagante
 
     return {"id": _id,
             "ragioneSociale": _ragioneSociale,
@@ -191,7 +193,8 @@ def leggiCliente(id):
             "id_magazzino": _id_magazzino,
             "id_listino": _id_listino,
             "id_banca": _id_banca,
-            "email": _email or ""}
+            "email": _email or "",
+            "pagante": _pagante}
 
 
 def leggiDestinazioneMerce(id):
