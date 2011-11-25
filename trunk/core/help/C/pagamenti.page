@@ -26,9 +26,10 @@
     <section>
         <title>Inserire un nuovo pagamento</title>
         <p>Nella finestra <gui>Anagrafica Pagamenti</gui>, selezionare <guiseq><gui>Pagamenti</gui><gui>Nuovo</gui></guiseq> o in alternativa selezionare il tasto <gui>Nuovo</gui>.</p>
-        <media type="image" mime="image/png" src="figures/anagPagamenti_nuovo.png" />
+        <figure>
+            <media type="image" mime="image/png" src="figures/anagPagamenti_nuovo.png" />
+        </figure>
     </section>
-
 
     <section>
         <title>Eliminare un pagamento</title>
