@@ -385,6 +385,43 @@ class PagamentiNotebookPage(GladeWidget):
 
         #TODO: mostrare o nascondere l'acconto ?
 
+
+    def calcola_spese(self):
+        """
+        Calcola le spese dei pagamenti
+        """
+        def getSpesePagamento(pagamento):
+            p = Pagamento().select(denominazione=pagamento)
+            if len(p) > 0:
+                p = p[0]
+                if float(p.spese or 0) != float(0):
+                    return float(p.spese) + float((p.spese * p.perc_aliquota_iva) / 100)
+                else:
+                    return float(0)
+            else:
+                return float(0)
+
+        if not self.ana.dao:
+            return float(0)
+        id_documento = self.ana.dao.id
+        if not id_documento:
+            return float(0)
+        cliente = None
+        if not self.ana.dao.id_cliente:
+            return float(0)
+        cliente = leggiCliente(self.ana.dao.id_cliente)
+        if not cliente['pagante']:
+            spese = float(0)
+            # Controllo le rate
+            for rata in self.rate:
+                daoTDS = rata.get()
+                spese += getSpesePagamento(daoTDS.pagamento)
+            # controllo l'acconto
+            if self.acconto:
+                daoTDS = self.acconto.get()
+                spese += getSpesePagamento(daoTDS.pagamento)
+            return spese
+
     def controlla_rate_scadenza(self, messaggio):
         """
         Controlla che gli importi inseriti nelle scadenze siano corrispondenti
