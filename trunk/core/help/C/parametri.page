@@ -1,0 +1,23 @@
+<page xmlns="http://projectmallard.org/1.0/"
+      type="guide"
+      id="parametri">
+
+    <info>
+        <revision pkgversion="2.9" version="1.0" date="2011-11-24" status="stub"/>
+	    <credit type="author">
+	      <name>Francesco Marella</name>
+	      <email>francesco.marella@gmail.com</email>
+	    </credit>
+	    <credit type="copyright">
+	      <years>2011</years>
+	      <name>PromoGest</name>
+	    </credit>
+        <link type="topic" xref="pagamenti"/>
+
+    </info>
+
+    <title>Parametri</title>
+
+    <p></p>
+
+</page>

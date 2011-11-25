@@ -1,0 +1,39 @@
+<page xmlns="http://projectmallard.org/1.0/"
+      type="topic"
+      id="pagamenti">
+
+    <info>
+        <desc>descrizione breve Pagamenti</desc>
+        <revision version="0.1" date="2011-11-24" status="stub"/>
+	    <credit type="author">
+	      <name>Francesco Marella</name>
+	      <email>francesco.marella@gmail.com</email>
+	    </credit>
+	    <credit type="copyright">
+	      <years>2011</years>
+	      <name>PromoGest</name>
+        </credit>
+        <link type="guide" xref="index#parametri"/>
+    </info>
+
+    <title>Pagamenti</title>
+
+    <figure>
+      <desc>Finestra dell'anagrafica pagamenti</desc>
+      <media type="image" mime="image/png" src="figures/anagPagamenti.png"/>
+    </figure>
+
+    <section>
+        <title>Inserire un nuovo pagamento</title>
+        <p>Nella finestra <gui>Anagrafica Pagamenti</gui>, selezionare <guiseq><gui>Pagamenti</gui><gui>Nuovo</gui></guiseq> o in alternativa selezionare il tasto <gui>Nuovo</gui>.</p>
+        <media type="image" mime="image/png" src="figures/anagPagamenti_nuovo.png" />
+    </section>
+
+
+    <section>
+        <title>Eliminare un pagamento</title>
+        <p></p>
+    </section>
+
+
+</page>

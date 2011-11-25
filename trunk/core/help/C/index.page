@@ -4,7 +4,7 @@
       id="index">
 
       <info>
-      <revision pkgversion="2.9" version="1.0" date="2011-11-08" status="stub"/>
+      <revision pkgversion="2.9" version="1.0" date="2011-11-24" status="stub"/>
 
 	    <credit type="author">
 	      <name>Francesco Marella</name>
@@ -35,6 +35,10 @@
 
       <section id="login">
         <title>Login</title>
+      </section>
+
+      <section id="parametri">
+        <title>Parametri</title>
       </section>
 
       <section id="anagrafiche">
