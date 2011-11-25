@@ -41,13 +41,20 @@ class Pagamento(Dao):
             dic= {k : pagamento.c.tipo == v} # cassa o banca
         return  dic[k]
 
-    def _aliquota_iva(self):
+    @property
+    def aliquota_iva(self):
         dao = AliquotaIva().getRecord(self.id_aliquota_iva)
         if dao:
             return dao.denominazione_breve
         else:
             return ''
-    aliquota_iva = property(_aliquota_iva)
+    #aliquota_iva = property(_aliquota_iva)
+
+    @property
+    def perc_aliquota_iva(self):
+        dao = AliquotaIva().getRecord(self.id_aliquota_iva)
+        if dao:
+            return dao.percentuale
 
 pagamento = Table('pagamento',
                   params['metadata'],
