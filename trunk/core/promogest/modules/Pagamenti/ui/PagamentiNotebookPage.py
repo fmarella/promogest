@@ -66,6 +66,8 @@ class PagamentiNotebookPage(GladeWidget):
         '''
         '''
         self.id_pagamento_customcombobox.combobox.set_active(-1)
+        val = Decimal(self.ana.totale_scontato_riepiloghi_label.get_text() or 0)
+        self.totale_in_pagamenti_label.set_markup('<b><span foreground="black" size="24000">'+str(mN(val, 2))+'</span></b>')
         self.totale_pagato_scadenza_label.set_markup('<b><span foreground="#338000" size="24000">0</span></b>')
         self.totale_sospeso_scadenza_label.set_markup('<b><span foreground="#B40000" size="24000">0</span></b>')
         self.stato_label.set_markup('<b><span foreground="#B40000" size="24000">'+_('APERTO')+'</span></b>')
@@ -149,8 +151,12 @@ class PagamentiNotebookPage(GladeWidget):
         pago = Pagamento().getRecord(id=id_pag)
         if pago:
             self.metodo_pagamento_label.set_markup('<b><span foreground="black" size="16000">'+str(pago.denominazione)+'</span></b>')
+            val = Decimal(self.ana.totale_scontato_riepiloghi_label.get_text() or 0) + Decimal(self.calcola_spese())
+            self.totale_in_pagamenti_label.set_markup('<b><span foreground="black" size="24000">'+str(mN(val, 2))+'</span></b>')
         else:
             self.metodo_pagamento_label.set_markup('<b><span foreground="black" size="16000">'+str(_("NESSUNO?"))+'</span></b>')
+            val = Decimal(self.ana.totale_scontato_riepiloghi_label.get_text() or 0)
+            self.totale_in_pagamenti_label.set_markup('<b><span foreground="black" size="24000">'+str(mN(val, 2))+'</span></b>')
         if self.ana.dao.documento_saldato:
             msg = _('Attenzione! Stai per riaprire un documento già saldato.\n Continuare ?')
             if YesNoDialog(msg=msg, transient=self.ana.dialogTopLevel):
@@ -238,7 +244,7 @@ class PagamentiNotebookPage(GladeWidget):
             if self.ana.dao.documento_saldato:
                 self.stato_label.set_markup('<b><span foreground="#338000" size="24000">'+_('PAGATO')+'</span></b>')
             else:
-                self.stato_label.set_markup('<b><span foreground="#B40000" size="24000">APERTO</span></b>')
+                self.stato_label.set_markup('<b><span foreground="#B40000" size="24000">'+_('APERTO')+'</span></b>')
             self.totale_pagato_scadenza_label.set_markup('<b><span foreground="#338000" size="24000">'+str(
                 mN(self.ana.dao.totale_pagato) or 0)+'</span></b>')
 
@@ -313,7 +319,7 @@ class PagamentiNotebookPage(GladeWidget):
     def attiva_scadenze(self):
         scadenze = AnagraficadocumentiPagamentExt.IsPagamentoMultiplo(self.id_pagamento_customcombobox.combobox)
         data_doc = stringToDate(self.ana.data_documento_entry.get_text())
-        importotot = float(self.ana.totale_scontato_riepiloghi_label.get_text())
+        importotot = float(self.totale_in_pagamenti_label.get_text() or 0)
 
         if type(scadenze) == list:
             numeroscadenze = (len(scadenze) - 1) / 2
@@ -356,9 +362,10 @@ class PagamentiNotebookPage(GladeWidget):
         il valore di una rata, ricalcola gli altri tenendo conto del valore modificato
         TODO: Passare i valori valuta a mN
         """
-        importodoc = float(self.ana.totale_scontato_riepiloghi_label.get_text() or 0)
+        importodoc = float(float(self.ana.totale_scontato_riepiloghi_label.get_text() or 0) + self.calcola_spese())
         if importodoc == float(0):
             return
+        self.totale_in_pagamenti_label.set_markup('<b><span foreground="black" size="24000">'+str(mN(importodoc, 2))+'</span></b>')
 
         acconto = float(0)
         if self.acconto:
@@ -414,8 +421,13 @@ class PagamentiNotebookPage(GladeWidget):
         spese = float(0)
         if not cliente['pagante']:
             # Controllo l'acconto e le rate
-            for rata in self.ana.dao.scadenze:
-                spese += getSpesePagamento(rata.pagamento)
+            if self.acconto:
+                dao = self.acconto.get()
+                spese += getSpesePagamento(dao.pagamento)
+            if len(self.rate) > 0:
+                for rata in self.rate:
+                    dao = rata.get()
+                    spese += getSpesePagamento(dao.pagamento)
         return spese
 
     def controlla_rate_scadenza(self, messaggio):
@@ -425,7 +437,7 @@ class PagamentiNotebookPage(GladeWidget):
         True se e` tutto corretto.
         """
 
-        importotot = float(self.ana.totale_scontato_riepiloghi_label.get_text() or 0)
+        importotot = float(float(self.ana.totale_scontato_riepiloghi_label.get_text() or 0) + self.calcola_spese())
         if importotot == float(0):
             return
 
@@ -467,7 +479,10 @@ Per l'esattezza, l'errore e` di %.2f""" % differenza_importi)
             Ricalcola i totali sospeso e pagato in base alle
             scadenze ancora da saldare
         """
-        totale_in_pagamenti_label = float(self.totale_in_pagamenti_label.get_text() or '0')
+        spese = self.calcola_spese()
+        totale_in_pagamenti_label = float(float(self.ana.totale_scontato_riepiloghi_label.get_text() or 0) + spese)
+        self.totale_in_pagamenti_label.set_markup('<b><span foreground="black" size="24000">'+str(mN(totale_in_pagamenti_label, 2))+'</span></b>')
+        self.ana.totale_spese_label.set_text(str(mN(spese, 2)))
 
         acconto = float(0)
         if self.acconto:

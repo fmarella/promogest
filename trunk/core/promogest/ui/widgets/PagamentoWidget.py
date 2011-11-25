@@ -52,6 +52,8 @@ class PagamentoWidget(GladeWidget):
                                          self.on_pulisci_rata_button_clicked)
         self.data_pagamento_scadenza_entry.entry.connect('changed',
                                                          self.on_data_pagamento_scadenza_entry_changed)
+        self.id_pagamento_scadenza_ccb.combobox.connect('changed',
+                                                        self.on_id_pagamento_scadenza_ccb_changed)
         fillComboboxPagamenti(self.id_pagamento_scadenza_ccb.combobox)
         fillComboboxBanche(self.id_banca_scadenza_ccb.combobox, short=20)
         self._owner = owner
@@ -110,6 +112,9 @@ class PagamentoWidget(GladeWidget):
     def on_data_pagamento_scadenza_entry_changed(self, entry):
         """ Reimposta i totali saldato e da saldare alla modifica della data
             di pagamento della scadenza """
+        self._owner.pagamenti_page.ricalcola_sospeso_e_pagato()
+
+    def on_id_pagamento_scadenza_ccb_changed(self, combobox):
         self._owner.pagamenti_page.ricalcola_sospeso_e_pagato()
 
     def show_all(self):
