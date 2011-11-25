@@ -131,7 +131,6 @@ else:
     from gi.repository import Pango as pango
     #from gi.repository import Cairo as cairo
     from gi.repository import GdkPixbuf
-    from gi.repository import GObject as gobject
     pygtk = None
 
     GTK_VERSION = str(gtk.get_major_version()) + '.' + str(gtk.get_minor_version()) + \
