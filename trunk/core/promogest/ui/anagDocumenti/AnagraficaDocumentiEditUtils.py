@@ -343,6 +343,8 @@ def calcolaTotalePart(anaedit, dao=None):
             totaleImpostaScontata += Decimal(castellettoIva[k]['imposta'])
 
         totaleScontato = totaleImponibileScontato + totaleImpostaScontata
+    totaleInPagamenti = totaleScontato + Decimal(anaedit.pagamenti_page.calcola_spese())
+
     anaedit.totale_generale_label.set_text(str(mN(totaleImponibile + totaleImposta + totaleEsclusoBaseImponibile, 2)))
     anaedit.totale_generale_riepiloghi_label.set_text(str(mN(totaleImponibile + totaleImposta + totaleEsclusoBaseImponibile, 2)))
     anaedit.totale_imponibile_label.set_text(str(mN(totaleImponibileScontato, 2)))
@@ -352,7 +354,7 @@ def calcolaTotalePart(anaedit, dao=None):
     anaedit.totale_imponibile_scontato_riepiloghi_label.set_text(str(mN(totaleImponibileScontato, 2)))
     anaedit.totale_imposta_scontata_riepiloghi_label.set_text(str(mN(totaleImpostaScontata, 2)))
     anaedit.totale_scontato_riepiloghi_label.set_text(str(mN(totaleImponibileScontato + totaleImpostaScontata, 2)))
-    anaedit.pagamenti_page.totale_in_pagamenti_label.set_markup('<b><span foreground="black" size="24000">'+str(mN(totaleScontato, 2))+'</span></b>')
+    anaedit.pagamenti_page.totale_in_pagamenti_label.set_markup('<b><span foreground="black" size="24000">'+str(mN(totaleInPagamenti, 2))+'</span></b>')
     anaedit.totale_non_base_imponibile_label.set_text(str(mN(totaleEsclusoBaseImponibile, 2)))
 
     id_pag = anaedit._id_pagamento
