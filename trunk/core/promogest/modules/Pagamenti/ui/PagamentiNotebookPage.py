@@ -151,7 +151,7 @@ class PagamentiNotebookPage(GladeWidget):
         pago = Pagamento().getRecord(id=id_pag)
         if pago:
             self.metodo_pagamento_label.set_markup('<b><span foreground="black" size="16000">'+str(pago.denominazione)+'</span></b>')
-            val = Decimal(self.ana.totale_scontato_riepiloghi_label.get_text() or 0) + Decimal(self.calcola_spese())
+            val = Decimal(self.ana.totale_scontato_riepiloghi_label.get_text() or 0) + Decimal(str(self.calcola_spese()))
             self.totale_in_pagamenti_label.set_markup('<b><span foreground="black" size="24000">'+str(mN(val, 2))+'</span></b>')
         else:
             self.metodo_pagamento_label.set_markup('<b><span foreground="black" size="16000">'+str(_("NESSUNO?"))+'</span></b>')
