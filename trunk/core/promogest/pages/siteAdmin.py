@@ -30,10 +30,10 @@ def siteAdminn(req, SUB =""):
     """
     classe di gestione dell"area riservata
     """
-#    company = Azienda().select(batchSize=None)
-    company = [Environment.azienda]
+    company = Azienda().select(batchSize=None)
     anno = datetime.now().year
     pageData = {'file' : 'siteAdmin',
                 "annocorrente":anno,
-                'company': company}
+                'company': company,
+                "subdomain":SUB}
     return Page(req).render(pageData)

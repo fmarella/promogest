@@ -54,8 +54,8 @@ def login(req=None, SUB = ""):
     Environment.meta.clear()
 #    Environment.meta.reflect(schema=company )
     Environment.params["metadata"].clear()
-#    Environment.params["metadata"].reflect(schema="promogest2" )
-#    Environment.params["metadata"].reflect(schema=company )
+    Environment.params["metadata"].reflect(schema="promogest2" )
+    Environment.params["metadata"].reflect(schema=company )
 #    from promogest import Environment
     if not username or not req.cookies:
         return Page(req).redirect(req.host_url)
