@@ -45,11 +45,11 @@
             <child>
               <object class="GtkLinkButton" id="help_button">
                 <property name="label">gtk-help</property>
+                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="has_tooltip">True</property>
-                <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
                 <property name="uri">http://help.promotux.it</property>
                 <signal name="clicked" handler="on_help_button_clicked" swapped="no"/>
@@ -64,10 +64,10 @@
             <child>
               <object class="GtkButton" id="aggiorna_button">
                 <property name="label" translatable="yes">Aggiornato?</property>
+                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
-                <property name="use_action_appearance">False</property>
                 <property name="image">image1</property>
                 <property name="use_underline">True</property>
                 <signal name="clicked" handler="on_aggiorna_button_clicked" swapped="no"/>
@@ -82,11 +82,11 @@
             <child>
               <object class="GtkButton" id="button_quit">
                 <property name="label">gtk-quit</property>
+                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="receives_default">False</property>
                 <property name="tooltip_text" translatable="yes">Uscita</property>
-                <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
                 <signal name="clicked" handler="gtk_main_quit" swapped="no"/>
               </object>
@@ -100,13 +100,13 @@
             <child>
               <object class="GtkButton" id="button_login">
                 <property name="label">gtk-connect</property>
+                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="can_default">True</property>
                 <property name="has_default">True</property>
                 <property name="receives_default">False</property>
                 <property name="tooltip_text" translatable="yes">Connessione al promogest</property>
-                <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
                 <accelerator key="F2" signal="clicked"/>
                 <signal name="clicked" handler="on_button_login_clicked" swapped="no"/>
@@ -128,10 +128,10 @@
         </child>
         <child>
           <object class="GtkButton" id="logo_button">
+            <property name="use_action_appearance">False</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
-            <property name="use_action_appearance">False</property>
             <property name="xalign">0</property>
             <property name="yalign">0</property>
             <signal name="clicked" handler="on_logo_button_clicked" swapped="no"/>
@@ -270,35 +270,6 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkComboBoxEntry" id="username_comboxentry">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="model">username_combobox_listore</property>
-                        <property name="text_column">0</property>
-                        <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
-                        <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
-                        <child internal-child="entry">
-                          <object class="GtkEntry" id="comboboxentry-entry2">
-                            <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <property name="has_focus">True</property>
-                            <property name="primary_icon_activatable">False</property>
-                            <property name="secondary_icon_activatable">False</property>
-                            <property name="primary_icon_sensitive">True</property>
-                            <property name="secondary_icon_sensitive">True</property>
-                          </object>
-                        </child>
-                      </object>
-                      <packing>
-                        <property name="left_attach">1</property>
-                        <property name="right_attach">2</property>
-                        <property name="top_attach">1</property>
-                        <property name="bottom_attach">2</property>
-                        <property name="x_options">GTK_FILL</property>
-                        <property name="y_options"></property>
-                      </packing>
-                    </child>
-                    <child>
                       <object class="GtkLabel" id="label684">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
@@ -310,32 +281,6 @@
                         <property name="bottom_attach">4</property>
                         <property name="x_options">GTK_FILL</property>
                         <property name="y_options"></property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkComboBoxEntry" id="azienda_comboboxentry">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="has_focus">True</property>
-                        <property name="model">azienda_combobox_listore</property>
-                        <property name="text_column">0</property>
-                        <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
-                        <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
-                        <child internal-child="entry">
-                          <object class="GtkEntry" id="comboboxentry-entry4">
-                            <property name="can_focus">True</property>
-                            <property name="has_focus">True</property>
-                            <property name="primary_icon_activatable">False</property>
-                            <property name="secondary_icon_activatable">False</property>
-                            <property name="primary_icon_sensitive">True</property>
-                            <property name="secondary_icon_sensitive">True</property>
-                          </object>
-                        </child>
-                      </object>
-                      <packing>
-                        <property name="left_attach">1</property>
-                        <property name="right_attach">2</property>
-                        <property name="y_options">GTK_FILL</property>
                       </packing>
                     </child>
                     <child>
@@ -394,6 +339,46 @@
                         <property name="right_attach">2</property>
                         <property name="top_attach">2</property>
                         <property name="bottom_attach">3</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkComboBox" id="azienda_combobox">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="model">azienda_combobox_listore</property>
+                        <child>
+                          <object class="GtkCellRendererText" id="cellrenderertext1"/>
+                          <attributes>
+                            <attribute name="text">0</attribute>
+                          </attributes>
+                        </child>
+                        <child>
+                          <object class="GtkCellRendererText" id="cellrenderertext2"/>
+                          <attributes>
+                            <attribute name="text">1</attribute>
+                          </attributes>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="left_attach">1</property>
+                        <property name="right_attach">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkEntry" id="username_entry">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="invisible_char">●</property>
+                        <property name="primary_icon_activatable">False</property>
+                        <property name="secondary_icon_activatable">False</property>
+                        <property name="primary_icon_sensitive">True</property>
+                        <property name="secondary_icon_sensitive">True</property>
+                      </object>
+                      <packing>
+                        <property name="left_attach">1</property>
+                        <property name="right_attach">2</property>
+                        <property name="top_attach">1</property>
+                        <property name="bottom_attach">2</property>
                       </packing>
                     </child>
                   </object>

@@ -359,6 +359,14 @@ def includeFile(files, subdomain=None):
     print "files del template", files
     filename= files+'.html'
     pathFile = Environment.CONFIGPATH + '/templates/'
+    if Environment.SUB:
+        pathFilesub = pathFile+Environment.SUB.lower()+"/"
+        print "BEHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH", str(pathFilesub+filename)
+
+        if os.path.exists(str(pathFilesub+filename)):
+            pathFilesub = Environment.SUB.lower()+"/"+filename
+            print "TUUUUUUUUUUUUUUUUUUUUUU", pathFilesub
+            return pathFilesub
     if os.path.exists(str(pathFile+filename)):
         pathFile = filename
         return pathFile
@@ -629,6 +637,69 @@ def codeIncrement(value):
             return s
 
     return increment(value)
+
+
+def setconf(section, key, value=False):
+    """ Importante funzione che "semplifica" la lettura dei dati dalla tabella
+    di configurazione setconf
+    Tentativo abbastanza rudimentale per gestire le liste attraverso i ; ma
+    forse si potrebbero gestire più semplicemente con le virgole
+    """
+    if Environment.tipo_eng =="postgresql" or Environment.tipo_eng =="postgres" :
+        if not hasattr(Environment.conf, "Documenti"):
+            Environment.conf.add_section("Documenti")
+            Environment.conf.save()
+        if  hasattr(Environment.conf, "Documenti") and not hasattr(Environment.conf.Documenti, "cartella_predefinita"):
+            setattr(Environment.conf.Documenti,"cartella_predefinita",Environment.documentsDir)
+            Environment.conf.save()
+        if key == "cartella_predefinita":
+            return Environment.conf.Documenti.cartella_predefinita
+    from promogest.dao.Setconf import SetConf
+    confList = Environment.confList
+    if not confList:
+        confList = SetConf().select(batchSize=None)
+        Environment.confList = confList
+
+    confff = None
+    for d in confList:
+        if not value:
+            if d.key==key and d.section==section:
+                confff = d
+                break
+        else:
+            if d.key==key and d.section==section and d.value == value:
+                confff = d
+                break
+    if not confff:
+        if not value:
+            confff = SetConf().select(key=key, section=section)
+        elif value:
+            confff = SetConf().select(key=key, section=section, value=value)
+        if confff:
+            confff = confff[0]
+    c = []
+    if confff:
+        valore = confff.value
+        if ";" in str(valore):
+            val = str(valore).split(";")
+            for a in val:
+                c.append(a.strip())
+            return c
+        else:
+            if valore == "":
+                return None
+            elif valore and len(valore.split("/"))>=2:
+                return str(valore)
+            else:
+                try:
+                    return eval(valore)
+                except:
+                    return str(valore)
+
+    else:
+        return ""
+
+
 
 nationList=["Afganistan","Albania","Algeria","Arabia Saudita","Argentina","Australia",
             "Austria","Belgio","Bermude","Bielorussia","Bolivia","Bosnia-Erzegovina","Brasile",

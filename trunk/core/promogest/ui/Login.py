@@ -34,7 +34,8 @@ from promogest.dao.User import User
 from promogest.dao.Azienda import Azienda
 from GtkExceptionHandler import GtkExceptionHandler
 from utils import hasAction, checkAggiorna, aggiorna, \
-                                checkInstallation, setconf, posso, installId, messageInfo
+    checkInstallation, setconf,\
+    posso, installId, messageInfo, findStrFromCombobox
 from utilsCombobox import findComboboxRowFromStr
 from promogest.ui.SendEmail import SendEmail
 
@@ -79,16 +80,16 @@ class Login(GladeApp):
         """Disegna la finestra di login
         """
         self.azienda_combobox_listore.clear()
-        usrs = User().select(batchSize = None)
+        #usrs = User().select(batchSize = None)
         azs = Azienda().select(batchSize = None, orderBy=Azienda.schemaa)
         ultima_azienda = None
         for a in azs:
             if a.tipo_schemaa == "last":
                 ultima_azienda = a.schemaa
-            self.azienda_combobox_listore.append((a.schemaa, a.denominazione))
-        self.azienda_comboboxentry.set_model(self.azienda_combobox_listore)
-        if not Environment.pg3: #necessario per windows, non va bene in gtk3
-            self.azienda_comboboxentry.set_text_column(0)
+            self.azienda_combobox_listore.append((a.schemaa, (a.denominazione or "")[0:30]))
+        self.azienda_combobox.set_model(self.azienda_combobox_listore)
+        #if not Environment.pg3: #necessario per windows, non va bene in gtk3
+            #self.azienda_combobox.set_text_column(0)
         Environment.windowGroup.append(self.getTopLevel())
 
         self.splashHandler()
@@ -99,18 +100,18 @@ class Login(GladeApp):
         if ultima_azienda:
             for r in self.azienda_combobox_listore:
                 if r[0] == ultima_azienda:
-                    self.azienda_comboboxentry.set_active_iter(r.iter)
+                    self.azienda_combobox.set_active_iter(r.iter)
         else:
-            self.azienda_comboboxentry.set_active(0)
+            self.azienda_combobox.set_active(0)
         #ATTENZIONE METTO COME RUOLO ADMIN PER IL MOMENTO RICONTROLLARE
 
-        self.username_combobox_listore.clear()
-        for a in usrs:
-            self.username_combobox_listore.append((a.username, a.email))
-        self.username_comboxentry.set_model(self.username_combobox_listore)
-        if not Environment.pg3:  #necessario per windows
-            self.username_comboxentry.set_text_column(0)
-        self.username_comboxentry.grab_focus()
+        #self.username_combobox_listore.clear()
+        #for a in usrs:
+            #self.username_combobox_listore.append((a.username, a.email))
+        #self.username_comboxentry.set_model(self.username_combobox_listore)
+        #if not Environment.pg3:  #necessario per windows
+            #self.username_comboxentry.set_text_column(0)
+        self.username_entry.grab_focus()
         data = datetime.datetime.now()
         self.anno_lavoro_spinbutton.set_value(data.year)
 
@@ -172,20 +173,20 @@ class Login(GladeApp):
         """
         """
         #username = self.username_comboxentry.child.get_text()
-        username = self.username_comboxentry.get_child().get_text()
+        username = self.username_entry.get_text()
         password = self.password_entry.get_text()
         do_login = True
         if username=='' or password=='':
             messageInfo(msg=_('Inserire nome utente e password'))
             do_login = False
-        elif self.azienda_comboboxentry.get_child().get_text() == '':
+        elif findStrFromCombobox(self.azienda_combobox,0) == '':
             messageInfo(msg=_("Occorre selezionare un'azienda"))
             do_login = False
         else:
             #self.azienda = self.azienda_comboboxentry.child.get_text()
-            self.azienda = self.azienda_comboboxentry.get_child().get_text()
-            findComboboxRowFromStr(self.azienda_comboboxentry, self.azienda, 0)
-            found = self.azienda_comboboxentry.get_active() != -1
+            self.azienda = findStrFromCombobox(self.azienda_combobox,0)
+            findComboboxRowFromStr(self.azienda_combobox, self.azienda, 0)
+            found = self.azienda_combobox.get_active() != -1
             if not found:
                 messageInfo(msg=_("Selezionare un'azienda esistente"))
                 do_login = False
@@ -345,7 +346,7 @@ class Login(GladeApp):
             if event.get_state() & GDK_CONTROL_MASK:
                 key = str(gdk_keyval_name(event.keyval))
                 if key.upper() == "L":
-                    self.username_comboxentry.set_active(0)
+                    self.username_entry.set_text("admin")
                     self.password_entry.set_text('admin')
                     self.on_button_login_clicked()
 
