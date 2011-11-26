@@ -2063,10 +2063,11 @@ def multilinedirtywork( param):
     """
     Funzione che gestisce la suddivisione in multirighe
     """
-    strippa = False
+    strippa = True
     if 'operazione' in param[0]:
         ope = param[0]['operazione'].strip()
-        strippa = ope not in ['DDT', 'Fattura accompagnatoria']
+        if ope == 'Fattura accompagnatoria' or 'DDT' in ope:
+            strippa = False
 
     for i in param:
         try:
@@ -2076,12 +2077,9 @@ def multilinedirtywork( param):
             lista = i['righe']
             skippa = False
             for x in lista:
-                if strippa:
-                    if 'RIEPILOGO' in x["descrizione"]:
+                # Rimuoviamo le righe che formano il castelletto ADR
+                if strippa and ('RIEPILOGO' in x["descrizione"] or skippa):
                         skippa = True
-                        x["descrizione"] = ''
-                        continue
-                    if skippa:
                         x["descrizione"] = ''
                         continue
 
