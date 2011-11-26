@@ -14,15 +14,10 @@
              <div id="navigation">
                 <p>This is the Navigation</p>
             </div>
-
 {% include "spallasx.html" with context %}
 <div id="content">
-
-<div style="text-align: center;"><a href="http://promogest.promotux.it" /><img style="width: 530px; height: 110px;" alt="PROMOGEST" src="http://www.promotux.it/templates/promoGest/img/testata_promogest2.png"></a><br>
-</div>
-
 <!-- LOGIN -->
-
+<div id="logo_login"><img src="/templates/img/gp.png" alt="ciao"/></div>
 {% if not pageData["auth"] %}
 {% include "login.html" with context %}
 {% else %}

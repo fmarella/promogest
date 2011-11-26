@@ -1,5 +1,11 @@
-{% extends 'index.html' %}
+{% if not pageData['subdomain'] =="" %}
+    {% extends pageData['subdomain']+"/"+'index.html' %}
+{% else %}
+    {% extends 'index.html' %}
+{% endif %}
+
 {% block center %}
+
 <div id="box2">
 <div><h2>Pannello di amministrazione</h2><br /></div>
         <hr></hr>

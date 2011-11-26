@@ -106,23 +106,27 @@
 </tr></table>
 
 {% elif pageData["view"] == "week" %}
-			{{ pageData["dayName"][pageData["weekDay"]]|upper }} - {{ pageData["workinDay"]}}/{{ pageData["workinMonth"]}}/{{ pageData["workinYearc"]}}
+            {{ pageData["dayName"][pageData["weekDay"]]|upper }} - {{ pageData["workinDay"]}}/{{ pageData["workinMonth"]}}/{{ pageData["workinYearc"]}}
 <table class="weekTable" cellspacing="0" cellpadding="5">
 <tr>
 
 {% for c in pageData["onlyWeek"] %}
+
 {% if pageData["dayName"][pageData["weekDay"]] == c[3]|string %}
 <th>
-<b>{{c[3]|upper}} {{c[1]}}</b></th>
+    <b>{{c[3]|upper}} {{c[1]}}</b>
+</th>
 {% else %}
 <th >
 {{c[3]}} {{c[1]}}</th>
 {% endif %}
 {% endfor %}
 </tr>
-	<tr >
+
+    <tr >
 {% for c in pageData["onlyWeek"] %}
 <td ondblclick="window.location='program:/newPromemoria={{c}}'">
+
 {% for a in pageData["eventipromes_ins"] %}
     {% if c[0] == a[0] %}
     <div style='background:{{a[1]["colore"]}};' ><a href='program:/promemoriaId={{a[1]["id"]}}'><p>{{a[1]["short"]}}</p></a></div>
@@ -160,19 +164,19 @@
 {% endfor %}
 </td>
 {% endfor %}
-	</tr>
+    </tr>
 </table>
 
 
 {% elif pageData["view"] == "day" %}
 <TABLE class="dayTable" CELLPADDING=4 CELLSPACING=0>
-	<TR>
-		<TH >
+    <TR>
+        <TH >
             <P class="workinMonth">
-			{{ pageData["dayName"][pageData["weekDay"]]|upper }} - {{ pageData["workinDay"]}}/{{ pageData["workinMonth"]}}/{{ pageData["workinYearc"]}}
-			</P>
-		</TH>
-	<tr>
+            {{ pageData["dayName"][pageData["weekDay"]]|upper }} - {{ pageData["workinDay"]}}/{{ pageData["workinMonth"]}}/{{ pageData["workinYearc"]}}
+            </P>
+        </TH>
+    <tr>
 {% for c in pageData["onlyWeek"] %}
 {% if pageData["dayName"][pageData["weekDay"]] == c[3] %}
 <td ondblclick="window.location='program:/newPromemoria={{c}}'">
@@ -211,10 +215,10 @@
     <div style='background:{{a[1]["colore"]}};' ><a href='program:/testataDocumentoId={{a[1]["id"]}}'><p>{{a[1]["short"]}}</p></a></div>
     {% endif %}
 {% endfor %}
-{% endif %}
 </td>
+{% endif %}
 {% endfor %}
-	</tr>
+    </tr>
 
 </TABLE>
 {% endif %}

@@ -1,10 +1,11 @@
-{% extends 'index.html' %}
+{% if not pageData['subdomain'] =="" %}
+    {% extends pageData['subdomain']+"/"+'index.html' %}
+{% else %}
+    {% extends 'index.html' %}
+{% endif %}
 {% block operation %}
 
 <br /><br /><br />
-
-<div style="text-align: center;"><a href="http://promogest.promotux.it" /><img style="width: 530px; height: 110px;" alt="PROMOGEST" src="http://www.promotux.it/templates/promoGest/img/testata_promogest2.png"></a><br>
-</div>
 
 <div id="box">
 <p> Pg2 web è un client per il server PromoGest2.<br /><br />

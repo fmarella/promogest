@@ -1,4 +1,8 @@
-{% extends 'index.html' %}
+{% if not pageData['subdomain'] =="" %}
+    {% extends pageData['subdomain']+"/"+'index.html' %}
+{% else %}
+    {% extends 'index.html' %}
+{% endif %}
 {% block operation %}
 
 <div id="box">

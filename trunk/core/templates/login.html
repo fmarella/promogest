@@ -1,47 +1,27 @@
-<div class="ombra" id="menudxlogin">
-      <div class="testatina">
-        <div align="center" class="titolitestate">
-          Login
-        </div>
-      </div>
-{% if pageData["auth"] %}
-        <div id="box"><br />&nbsp;&nbsp;Benvenuto: {{ pageData["USER"].username or "Guest" }}<br />
-        &nbsp;&nbsp;Ruolo:{{pageData["role"]}}</div>
-        <ul class="login-box">
-        {% if pageData["role"] == "Admin" %}
-        <li><a href="/siteAdmin" class="login">SiteAdmin</a></li>
-        <li><a href="/{{pageData['subdomain'].template or ''}}/preventivo_online1" class="login">Preventivo ONLINE</a></li>
-        {% else %}
-            <li><a href="/{{pageData['subdomain'].template or ''}}/userDetail" class="login">Modifica dati</a></li>
-            <li><a href="/{{pageData['subdomain'].template or ''}}/preventivo_online1" class="login">Preventivo ONLINE!</a></li>
-                        {% if "liente" in pageData["USER"].role.name %}
-            <li><a href="/{{pageData['subdomain'].template or ''}}/userClientInfo" class="login">Info utente</a></li>
-        {% endif %}
-        {% endif %}
-        <li><a href="/logout" class="login">Logout</a></li>
-        </ul>
- {% else %}
-      <div id="imgmenulogin">
-        <div><a href="promoGest/cms/i-vantaggi-del-registrarsi"><img src="/templates/promoGest/img/scopri.png" alt="scopri i vantaggi del registrarti"/></a></div>
-        <label></label>
-        <div id="formall">
-          <form id="form1" name="form1" method="post" action="/login">
-            <label for="label">user</label>
-            <label for="submit"></label>
-            <input name="username" type="text" id="imputuser" size="13" />
-            <label for="label"> <br />
-              pwd </label>
-            <input name="password" type="password" id="label" size="13" />
-            <input name="submit" type="image" id="submit"  value="submit" src="/templates/promoGest/img/frecce_invio.png" alt="enter" align="bottom" />
-          </form>
-        </div>
-    <br />
-    <div id="registrati"><a href="/userRegistration" class="login">Registrati</a><br /><a href="/recoveryPassword" class="login">Recupera password</a></div>
-      </div>
-    {% endif %}
-    <div id="registraticaount" align="center">Ultimo cliente (N° {{pageData["regiClientiNumber"]}}):<br />Il {{pageData["regiClientiWhen"][-1].registration_date|datetimeformat}}<br />
-Benvenuto!
-<!--Tot:{#{pageData["regiClientiNumber"]}#}-->
-
+<div id="login">
+    <h4 class="titolo">Login Pg web for {{pageData["subdomain"]}}</h4><br />
+    <form method="post" action="/login"><p>
+            &nbsp;Azienda&nbsp;&nbsp;&nbsp;<select name="company">
+                {% for com in pageData['company'] %}
+                    {% if com.tipo_schemaa =="last" %}
+                    <option value="{{com.schemaa}}" selected="selected">{{com.schemaa}}</option>
+                    {% else %}
+                     <option value="{{com.schemaa}}">{{com.schemaa}}</option>
+                     {% endif %}
+                {% endfor %}
+            </select><br />
+            &nbsp;Username&nbsp;<input type="text" name="username" class="input_login" />
+             <br /><br />
+            &nbsp;Password&nbsp;<input type="password" name="password" class="input_login" /><br /><br />
+            &nbsp;Anno&nbsp;&nbsp;&nbsp;&nbsp;<select name="year">
+                {% for y in range(2007,2020) %}
+                    {% if y == pageData["annocorrente"] %}
+                        <option value="{{y}}" selected="selected"> {{y}} </option>
+                    {% else %}
+                        <option value="{{y}}"> {{y}} </option>
+                    {% endif %}
+                 {% endfor %}
+            </select><br /><br />
+            <input type="submit" value="login" class="login" />
+    </form>
 </div>
-    </div>

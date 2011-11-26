@@ -1,8 +1,8 @@
 <div id="leftcolumn">
-    <a href="{{req.url_root}}main">TORNA AL SITO</a>
+    <a href="{{req.url_root}}main">T</a>
         {% if pageData["auth"] %}
-                <p>Benvenuto:{{ pageData["nameuser"] }}<br />
-                Ruolo: {{pageData["role"]}}</p>
+                <p>Benvenuto:<b>{{ pageData["nameuser"] }}</b><br />
+                Ruolo: <b>{{pageData["role"]}}</b></p>
                 <ul class="login-box">
                 {% if pageData["role"] == "Admin" %}
                     <li><a class="login" href="#"><img src="/templates/img/lucchetto_48X48.png" width="48" height="48" alt="" /><br /> SETUP-CONF</a></a></li>

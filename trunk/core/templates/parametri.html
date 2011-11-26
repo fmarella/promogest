@@ -1,34 +1,38 @@
-{% extends 'index.html' %}
+{% if not pageData['subdomain'] =="" %}
+    {% extends pageData['subdomain']+"/"+'index.html' %}
+{% else %}
+    {% extends 'index.html' %}
+{% endif %}
 {% block operation %}
 
 <div id="box">
                 <span class="testa"><h1>Parametri</h1></span>
 <table id="anagrafiche">
 <tr>
-	<td><a href="/parametri/categoria_articolo/list"><img src="/templates/img/categoria_articolo48x48.png" width="48" height="48" alt="" ALIGN=ABSMIDDLE /> Categorie Articoli </a></td>
-	<td><a href="/parametri/imballaggio/list"><img src="/templates/img/imballaggio48x48.png" width="48" height="48" alt=""  ALIGN=ABSMIDDLE /> Imballaggi </a></td>
-	<td><a href="/parametri/utente/list"><img src="/templates/img/utenti_48.png" width="48" height="48" alt="" ALIGN=ABSMIDDLE /> Utenti </a></td>
+    <td><a href="/parametri/categoria_articolo/list"><img src="/templates/img/categoria_articolo48x48.png" width="48" height="48" alt="" ALIGN=ABSMIDDLE /> Categorie Articoli </a></td>
+    <td><a href="/parametri/imballaggio/list"><img src="/templates/img/imballaggio48x48.png" width="48" height="48" alt=""  ALIGN=ABSMIDDLE /> Imballaggi </a></td>
+    <td><a href="/parametri/utente/list"><img src="/templates/img/utenti_48.png" width="48" height="48" alt="" ALIGN=ABSMIDDLE /> Utenti </a></td>
 </tr>
 <tr>
-	<td><a href="/parametri/famiglia_articolo/list"><img src="/templates/img/famiglia_articolo48x48.png" width="48" height="48" alt="" ALIGN=ABSMIDDLE /> Famiglie Articoli </a></td>
-	<td><a href="/parametri/multiplo/list"><img src="/templates/img/multiplo48x48.png" width="48" height="48" alt="" ALIGN=ABSMIDDLE /> Multiplo </a></td>
-	<td><a href="/parametri/ruolo/list"><img src="/templates/img/ruori_48.png" width="48" height="48" alt="" ALIGN=ABSMIDDLE /> Ruoli </a></td>
-</tr>
-<tr>
-
-	<td><a href="/parametri/categoria_cliente/list"><img src="/templates/img/categoria_cliente48x48.png" width="48" height="48" alt="" ALIGN=ABSMIDDLE /> Categorie Clienti </a></td>
-	<td><a href="/parametri/banca/list"><img src="/templates/img/banca48x48.png" width="48" height="48" alt="" ALIGN=ABSMIDDLE /> Banca </a></td>
-		<td><a href="/parametri/utente_ruolo/list"><img src="/templates/img/utenti_ruoli_48.png" width="48" height="48" alt=""ALIGN=ABSMIDDLE /> Utenti - Ruoli </a></td>
+    <td><a href="/parametri/famiglia_articolo/list"><img src="/templates/img/famiglia_articolo48x48.png" width="48" height="48" alt="" ALIGN=ABSMIDDLE /> Famiglie Articoli </a></td>
+    <td><a href="/parametri/multiplo/list"><img src="/templates/img/multiplo48x48.png" width="48" height="48" alt="" ALIGN=ABSMIDDLE /> Multiplo </a></td>
+    <td><a href="/parametri/ruolo/list"><img src="/templates/img/ruori_48.png" width="48" height="48" alt="" ALIGN=ABSMIDDLE /> Ruoli </a></td>
 </tr>
 <tr>
 
-	<td><a href="/parametri/categoria_fornitore/list"><img src="/templates/img/categoria_fornitore48x48.png" width="48" height="48" alt="" ALIGN=ABSMIDDLE /> Categoria Fornitori  </a></td>
-	<td><a href="/parametri/pagamento/list"><img src="/templates/img/pagamento48x48.png" width="48" height="48" alt="" ALIGN=ABSMIDDLE /> Pagamenti </a></td>
+    <td><a href="/parametri/categoria_cliente/list"><img src="/templates/img/categoria_cliente48x48.png" width="48" height="48" alt="" ALIGN=ABSMIDDLE /> Categorie Clienti </a></td>
+    <td><a href="/parametri/banca/list"><img src="/templates/img/banca48x48.png" width="48" height="48" alt="" ALIGN=ABSMIDDLE /> Banca </a></td>
+        <td><a href="/parametri/utente_ruolo/list"><img src="/templates/img/utenti_ruoli_48.png" width="48" height="48" alt=""ALIGN=ABSMIDDLE /> Utenti - Ruoli </a></td>
 </tr>
 <tr>
-	<td><a href="/parametri/categoria_contatto/list"><img src="/templates/img/categoria_contatto48x48.png" width="48" height="48" alt=""ALIGN=ABSMIDDLE /> Categoria Contatti  </a></td>
-	<td><a href="/parametri/aliquota_iva/list"><img src="/templates/img/aliquota_iva48x48.png" width="48" height="48" alt="" ALIGN=ABSMIDDLE /> Aliquote IVA </a></td>
-	</tr>
+
+    <td><a href="/parametri/categoria_fornitore/list"><img src="/templates/img/categoria_fornitore48x48.png" width="48" height="48" alt="" ALIGN=ABSMIDDLE /> Categoria Fornitori  </a></td>
+    <td><a href="/parametri/pagamento/list"><img src="/templates/img/pagamento48x48.png" width="48" height="48" alt="" ALIGN=ABSMIDDLE /> Pagamenti </a></td>
+</tr>
+<tr>
+    <td><a href="/parametri/categoria_contatto/list"><img src="/templates/img/categoria_contatto48x48.png" width="48" height="48" alt=""ALIGN=ABSMIDDLE /> Categoria Contatti  </a></td>
+    <td><a href="/parametri/aliquota_iva/list"><img src="/templates/img/aliquota_iva48x48.png" width="48" height="48" alt="" ALIGN=ABSMIDDLE /> Aliquote IVA </a></td>
+    </tr>
 
 </table>
         </div>

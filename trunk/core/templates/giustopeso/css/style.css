@@ -6,7 +6,9 @@
 * { padding: 0; margin: 0; }
 
 body {
+/*
     background-color: #E7DFC7;
+*/
     font-family: Verdana, Arial, Helvetica, sans-serif;
     font-size: 12px;
 /*  width:1020px;*/
@@ -65,13 +67,17 @@ img { border:0px;}
  height:100%;
 
 /*background: #ddffff;*/
+/*
     background-color: #E7DFC7;
+*/
 }
 
 #content {
  float: left;
  color: #333;
+/*
     background-color:#E7DFC7;
+*/
  height: auto;
  width: 75%;
  display: inline;
@@ -99,7 +105,9 @@ height:100%;
     clear: both;
     height: 22px;
     width: 100%;
+/*
     background-color: #E7DFC7;
+*/
 }
 
 #logo_login {
@@ -125,14 +133,18 @@ height:100%;
     float: left;
     width: 9%;
     height: 600px;
+/*
     background-color:#E7DFC7;
+*/
     color: #333;
 }
 
 
 #rightcolumn {
         padding-top: 30px;
+/*
     background-color:#E7DFC7;
+*/
     color: #333;
 /*    height: 600px;*/
     width: 10%;

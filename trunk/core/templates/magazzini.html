@@ -4,14 +4,14 @@
 <div id="box">
                 <span class="testa"><h1>Magazzini</h1></span>
 <form>
-                <ul>
-                {%for a in pageData["daos"] %}
+        <ul>
+        {%for a in pageData["daos"] %}
                 <li>{{a.denominazione}} -- {{a.localita }} </li>
-                {% endfor %}
-                </ul>
-                <input type="submit" class="wymupdate" value="Aggiungi/modifica"/>
-                <input type="submit" class="wymupdate" value="Aggiungi/modifica"/>
-                <input type="submit" class="wymupdate" value="Aggiungi/modifica"/>
+        {% endfor %}
+        </ul>
+        <input type="submit" class="wymupdate" value="Aggiungi/modifica"/>
+        <input type="submit" class="wymupdate" value="Aggiungi/modifica"/>
+        <input type="submit" class="wymupdate" value="Aggiungi/modifica"/>
 
 </form>
 
