@@ -79,15 +79,19 @@ class Login(GladeApp):
     def draw(self):
         """Disegna la finestra di login
         """
-        self.azienda_combobox_listore.clear()
-        #usrs = User().select(batchSize = None)
-        azs = Azienda().select(batchSize = None, orderBy=Azienda.schemaa)
-        ultima_azienda = None
-        for a in azs:
-            if a.tipo_schemaa == "last":
-                ultima_azienda = a.schemaa
-            self.azienda_combobox_listore.append((a.schemaa, (a.denominazione or "")[0:30]))
-        self.azienda_combobox.set_model(self.azienda_combobox_listore)
+        if Environment.engine.name == "sqlite":
+            self.azienda_combobox.destroy()
+            self.azienda_label.destroy()
+            self.logina_label.set_markup("Dati accesso <b>ONE</b> : Username: <b>admin</b>, password: <b>admin</b>")
+        else:
+            self.azienda_combobox_listore.clear()
+            azs = Azienda().select(batchSize = None, orderBy=Azienda.schemaa)
+            ultima_azienda = None
+            for a in azs:
+                if a.tipo_schemaa == "last":
+                    ultima_azienda = a.schemaa
+                self.azienda_combobox_listore.append((a.schemaa, (a.denominazione or "")[0:30]))
+            self.azienda_combobox.set_model(self.azienda_combobox_listore)
         #if not Environment.pg3: #necessario per windows, non va bene in gtk3
             #self.azienda_combobox.set_text_column(0)
         Environment.windowGroup.append(self.getTopLevel())
@@ -95,14 +99,15 @@ class Login(GladeApp):
         self.splashHandler()
         dateTimeLabel = datetime.datetime.now().strftime('%d/%m/%Y  %H:%M')
         self.date_label.set_text(dateTimeLabel)
-        if Environment.aziendaforce:
-            ultima_azienda = Environment.aziendaforce
-        if ultima_azienda:
-            for r in self.azienda_combobox_listore:
-                if r[0] == ultima_azienda:
-                    self.azienda_combobox.set_active_iter(r.iter)
-        else:
-            self.azienda_combobox.set_active(0)
+        if Environment.engine.name != "sqlite":
+            if Environment.aziendaforce:
+                ultima_azienda = Environment.aziendaforce
+            if ultima_azienda:
+                for r in self.azienda_combobox_listore:
+                    if r[0] == ultima_azienda:
+                        self.azienda_combobox.set_active_iter(r.iter)
+            else:
+                self.azienda_combobox.set_active(0)
         #ATTENZIONE METTO COME RUOLO ADMIN PER IL MOMENTO RICONTROLLARE
 
         #self.username_combobox_listore.clear()
@@ -179,17 +184,18 @@ class Login(GladeApp):
         if username=='' or password=='':
             messageInfo(msg=_('Inserire nome utente e password'))
             do_login = False
-        elif findStrFromCombobox(self.azienda_combobox,0) == '':
+        elif Environment.engine.name != "sqlite" and \
+                findStrFromCombobox(self.azienda_combobox,0) == '':
             messageInfo(msg=_("Occorre selezionare un'azienda"))
             do_login = False
         else:
-            #self.azienda = self.azienda_comboboxentry.child.get_text()
-            self.azienda = findStrFromCombobox(self.azienda_combobox,0)
-            findComboboxRowFromStr(self.azienda_combobox, self.azienda, 0)
-            found = self.azienda_combobox.get_active() != -1
-            if not found:
-                messageInfo(msg=_("Selezionare un'azienda esistente"))
-                do_login = False
+            if Environment.engine.name != "sqlite":
+                self.azienda = findStrFromCombobox(self.azienda_combobox,0)
+                findComboboxRowFromStr(self.azienda_combobox, self.azienda, 0)
+                found = self.azienda_combobox.get_active() != -1
+                if not found:
+                    messageInfo(msg=_("Selezionare un'azienda esistente"))
+                    do_login = False
         if do_login: #superati i check di login
             users = User().select(username=username,
                         password=hashlib.md5(username+password).hexdigest())
@@ -201,16 +207,17 @@ class Login(GladeApp):
                     do_login = False
                 else:
                     Environment.workingYear = str(self.anno_lavoro_spinbutton.get_value_as_int())
-                    Environment.azienda = self.azienda
-                    azs = Azienda().select(batchSize = None)
-                    for a in azs:
-                        a.tipo_schemaa = ""
-                        a.persist()
-                    uaz = Azienda().getRecord(id =self.azienda)
-                    uaz.tipo_schemaa = "last"
-                    uaz.persist()
+                    Environment.azienda = self.azienda or "AziendaPromo"
+                    if Environment.engine.name != "sqlite":
+                        azs = Azienda().select(batchSize = None)
+                        for a in azs:
+                            a.tipo_schemaa = ""
+                            a.persist()
+                        uaz = Azienda().getRecord(id =self.azienda)
+                        uaz.tipo_schemaa = "last"
+                        uaz.persist()
                     if Environment.tipodb !="sqlite":
-                        Environment.params["schema"]=self.azienda
+                        Environment.params["schema"] = self.azienda or "AziendaPromo"
                     # Lancio la funzione di generazione della dir di configurazione
                     Environment.set_configuration(Environment.azienda,Environment.workingYear)
 #                    if setconf("Feed","feed"):
@@ -231,14 +238,14 @@ class Login(GladeApp):
                         #import promogest.lib.UpdateDB
 
                         #saveAppLog(action="login", status=True,value=username)
-                        Environment.pg2log.info("LOGIN  id, user, role azienda: %s, %s" %(repr(Environment.params['usernameLoggedList']),self.azienda) )
+                        Environment.pg2log.info("LOGIN  id, user, role azienda: %s, %s" %(repr(Environment.params['usernameLoggedList']),self.azienda ) )
                         import promogest.ui.SetConf
                         checkInstallation()
                         #gobject.idle_add(self.importModulesFromDir,'promogest/modules')
                         self.importModulesFromDir('promogest/modules')
                         def mainmain():
                             from Main import Main
-                            main = Main(self.azienda,
+                            main = Main(self.azienda or "AziendaPromo",
                                         self.anagrafiche_modules,
                                         self.parametri_modules,
                                         self.anagrafiche_dirette_modules,

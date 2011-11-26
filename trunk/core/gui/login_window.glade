@@ -21,6 +21,11 @@
     <property name="can_focus">False</property>
     <property name="stock">gtk-execute</property>
   </object>
+  <object class="GtkImage" id="image2">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-connect</property>
+  </object>
   <object class="GtkDialog" id="login_window">
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">Accesso a PromoGest2 "MentoR" </property>
@@ -99,7 +104,7 @@
             </child>
             <child>
               <object class="GtkButton" id="button_login">
-                <property name="label">gtk-connect</property>
+                <property name="label">Connetti (F2)</property>
                 <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
@@ -107,7 +112,7 @@
                 <property name="has_default">True</property>
                 <property name="receives_default">False</property>
                 <property name="tooltip_text" translatable="yes">Connessione al promogest</property>
-                <property name="use_stock">True</property>
+                <property name="image">image2</property>
                 <accelerator key="F2" signal="clicked"/>
                 <signal name="clicked" handler="on_button_login_clicked" swapped="no"/>
               </object>
@@ -199,6 +204,7 @@
                     <property name="can_focus">False</property>
                     <property name="xalign">0</property>
                     <property name="label" translatable="yes">Inserire i dati di accesso:</property>
+                    <property name="use_markup">True</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -312,7 +318,7 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkLabel" id="label30">
+                      <object class="GtkLabel" id="azienda_label">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="xalign">0</property>
