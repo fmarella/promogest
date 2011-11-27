@@ -1148,7 +1148,6 @@ del documento.
     def on_confirm_row_button_clicked(self, widget=None,row=None):
         """
         Memorizza la riga inserita o modificata
-        TODO: ATTENZIONE, iniziato il controllo sull'iva ma non finito
         """
         self.checkMAGAZZINO = False
         if self.NoRowUsableArticle:
@@ -1184,7 +1183,16 @@ del documento.
         costoVariato = (self._tipoPersonaGiuridica == "fornitore" and self._righe[0]["idArticolo"] is not None and
                 (self._righe[0]["prezzoNetto"] != self._righe[0]["prezzoNettoUltimo"]) and
                 (self._segno is not None and self._segno != ''))
+        print "ID ARTICOLOOOOOOOOOOOOOOOOOOOOO", self._righe
+        for r in self._righe[1:]:
+            if self._righe[0]["idArticolo"] == r["idArticolo"]:
+                print "ARTICOLO GIA PRESENTE NELE RIGHE"
+                #self.modelRiga:
 
+                r["quantita"] +=self._righe[0]["quantita"]
+                self.modelRiga[self._righe.index(r)-1][11]=str(r["quantita"])
+                self.nuovaRiga()
+                return
         if self._numRiga == 0:
             self._numRiga = len(self._righe)
             self._righe.append(self._righe[0])

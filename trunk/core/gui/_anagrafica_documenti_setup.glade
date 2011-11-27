@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <requires lib="gtk+" version="2.16"/>
   <!-- interface-requires pythonplugin 0.0 -->
+  <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy project-wide -->
   <object class="GtkFrame" id="_anagrafica_documenti_setup_frame">
     <property name="visible">True</property>
@@ -203,10 +203,10 @@
                     <child>
                       <object class="GtkRadioButton" id="codice_radio">
                         <property name="label" translatable="yes">codice</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="active">True</property>
                         <property name="draw_indicator">True</property>
                       </object>
@@ -219,10 +219,10 @@
                     <child>
                       <object class="GtkRadioButton" id="codice_a_barre_radio">
                         <property name="label" translatable="yes">codice a barre</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="active">True</property>
                         <property name="draw_indicator">True</property>
                         <property name="group">codice_radio</property>
@@ -236,10 +236,10 @@
                     <child>
                       <object class="GtkRadioButton" id="descrizione_radio">
                         <property name="label" translatable="yes">descrizione</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="active">True</property>
                         <property name="draw_indicator">True</property>
                         <property name="group">codice_radio</property>
@@ -253,10 +253,10 @@
                     <child>
                       <object class="GtkRadioButton" id="codice_articolo_fornitore_radio">
                         <property name="label" translatable="yes">codice art fornitore</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="active">True</property>
                         <property name="draw_indicator">True</property>
                         <property name="group">codice_radio</property>
@@ -321,10 +321,10 @@ dei documenti  ( 60 )</property>
                 <child>
                   <object class="GtkCheckButton" id="lotto_temp_check">
                     <property name="label" translatable="yes">Gestione Lotti temporanei</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="draw_indicator">True</property>
                   </object>
                   <packing>
@@ -338,16 +338,32 @@ dei documenti  ( 60 )</property>
                     <property name="label" translatable="yes">Quando si seleziona "codice a barre" come criterio di ricerca
 si può decidere di non avere il menù con i risultati incrementali
 questo rende la ricerca più veloce ed evita la pressione del tasto F3</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="draw_indicator">True</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">False</property>
                     <property name="position">7</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="add_quantita_check">
+                    <property name="label" translatable="yes">Unifica Quantità nei documenti
+quanto una stessa riga prodotto è già stata inserita</property>
+                    <property name="use_action_appearance">False</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="draw_indicator">True</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">8</property>
                   </packing>
                 </child>
               </object>

@@ -82,6 +82,10 @@ class AnagraficaDocumentiSetup(GladeWidget):
         except:
             self.lotto_temp_check.set_active(0)
         try:
+            self.add_quantita_check.set_active(int(setconf("Documenti", "add_quantita")))
+        except:
+            self.add_quantita_check.set_active(0)
+        try:
             self.no_ricerca_incrementale_check.set_active(int(setconf("Documenti", "no_ricerca_incrementale")))
         except:
             self.no_ricerca_incrementale_check.set_active(0)
@@ -157,6 +161,21 @@ class AnagraficaDocumentiSetup(GladeWidget):
         c.date = datetime.datetime.now()
         Environment.session.add(c)
 
+        c = SetConf().select(key="add_quantita", section="Documenti")
+        if c:
+            c=c[0]
+        else:
+            c = SetConf()
+        c.key = "add_quantita"
+        c.section = "Documenti"
+        c.tipo = "bool"
+        c.value = str(self.add_quantita_check.get_active())
+        c.description = "Aggiugni quantita"
+        c.tipo_section = "Generico"
+        c.active = True
+        c.visible = True
+        c.date = datetime.datetime.now()
+        Environment.session.add(c)
 
         c = SetConf().select(key="no_ricerca_incrementale", section="Documenti")
         if c:
