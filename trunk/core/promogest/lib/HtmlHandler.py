@@ -24,6 +24,7 @@ import os
 import sys
 from promogest.ui.gtk_compat import *
 from threading import Timer
+from promogest.lib import feedparser
 try:
     if Environment.pg3:
         from gi.repository.WebKit import WebView
@@ -140,6 +141,41 @@ def apriAnagraficaPromemoriaEdit(promemoriaId):
     pro = Promemoria().getRecord(id=promemoriaId)
     a.on_record_edit_activate(a, dao=pro)
 
+
+def renderPage(feedToHtml):
+    """ show the html page in the custom widget"""
+    pageData = {
+            "file" :"feed.html",
+            "objects" :feedToHtml,
+            }
+    html = renderTemplate(pageData)
+    renderHTML(Environment.htmlwidget,html)
+
+def getfeedFromSite():
+    string = ""
+    if Environment.feedAll == "":
+        d = feedparser.parse("http://www.promogest.me/newsfeed")
+    else:
+        d = Environment.feedAll
+    feedList = d['entries']
+    feedToHtml = []
+    for feed in feedList[0:3]:
+        try:
+            body = feed['content'][0]['value']
+        except:
+            body = feed["summary_detail"]['value']
+        feed = {
+            "title" :feed['title'],
+            "links": feed['links'][0]['href'],
+            "body" : body,
+            "updated" : feed['updated'][4:-13],
+            "autore" : feed['author']
+            }
+        feedToHtml.append(feed)
+    Environment.feedCache = feedToHtml
+    renderPage(feedToHtml)
+
+
 def _on_navigation_requested(view, frame, req, data=None):
     uri = req.get_uri()
     if uri.startswith("program:/"):
@@ -168,6 +204,20 @@ def _on_navigation_requested(view, frame, req, data=None):
                 apriTestataMovimentoEdit(testataMovimentoId)
             except:
                 return
+        elif "recuperafeed" in agg:
+            #try:
+            if utils.setconf("Feed", "feed"):
+                feedAll = Environment.feedAll
+                feedToHtml = Environment.feedCache
+                if feedAll != "" and feedAll and feedToHtml:
+                    renderPage(feedToHtml)
+                else:
+                    #try:
+                    gobject.idle_add(getfeedFromSite)
+                    #except:
+                        #Environment.pg2log.info("LEGGERO RITARDO NEL RECUPERO DEI FEED")
+            #except:
+                #return
     elif uri.startswith("http://"):
         linkOpen(uri)
     else:

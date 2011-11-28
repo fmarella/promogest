@@ -50,7 +50,7 @@ class Page(object):
         self.nameuser = getUsernameFromId(req)
         self.us= None
         self.vetrina = None
-        self.language= Language().select()
+        #self.language= Language().select()
         jinja_env.globals['req'] = req
         jinja_env.globals['environment'] = Environment
         jinja_env.globals['utils'] = utils
@@ -137,7 +137,7 @@ class Page(object):
     def render(self, pageData, cookiename=None, cookieval=None, cookiedel=None, langflagged = None):
         #self.itemsStaticMenu = self.itemStaticMenu()
         if "subdomain" not in pageData:
-            pageData["subdomain"] = None
+            pageData["subdomain"] = Environment.SUB.lower()
         if "bodyTags" in pageData.keys():
             pageData = self.bodyTags(pageData)
         try:
@@ -157,7 +157,7 @@ class Page(object):
         pageData['nameuser'] = self.nameuser
         pageData['now'] = datetime.datetime.now()
         pageData['role'] = self.role
-        pageData['language'] = self.language
+        #pageData['language'] = self.language
         if "dao" in pageData:
             resp = render_template(pageData["file"],pageData=pageData,dao = pageData["dao"])
         else:

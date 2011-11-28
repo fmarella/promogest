@@ -64,9 +64,13 @@ from promogest.pages.setconfAction import setConf
 
 @expose("/")
 def siteAdmi(req, subdomain=""):
-#    if hasAction(req,action=[1,2,3,4,5]): # adminrole
+    #if hasAction(req,action=[1,2,3,4,5]): # adminrole
+    #if Environment.SUB:
+        #host_url= "/"+Environment.SUB
+        #return Page(req).redirect(host_url)
+
     if 5==5: # adminrole
-        return siteAdminn(req, SUB=subdomain)
+        return siteAdminn(req, SUB=Environment.SUB)
     elif hasAction(req,action=[1,2]): #utente
         host_url= "/"+subdomain
         return Page(req).redirect(host_url)
@@ -132,6 +136,8 @@ def elencoPagineStatiche(req, static=None, subdomain=None):
         return parametri(req)
     elif static =="promemoria":
         return promemoria(req)
+    #elif static.upper() == Environment.SUB.upper():
+        #return siteAdminn(req, SUB=Environment.SUB)
 #    elif action.upper() =="THEME_SETUP":
 #        return theme_setup(req,subdomain=subdomain, action=action)
 #    elif action.upper() =="SETUP":
