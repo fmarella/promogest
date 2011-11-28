@@ -58,19 +58,33 @@ class AnagraficaClienti(Anagrafica):
 
     def on_record_delete_activate(self, widget):
         dao = self.filter.getSelectedDao()
+
         tdoc = TestataDocumento().select(idCliente=dao.id, batchSize=None)
         if tdoc:
             messageInfo(msg= "CI SONO DOCUMENTI LEGATI A QUESTO CLIENTE\nNON E' POSSIBILE RIMUOVERLO")
             return
         if not YesNoDialog(msg='Confermi l\'eliminazione ?', transient=self.getTopLevel()):
             return
-
+        #Environment.session.commit()
+        #Environment.session.flush()
         #verificare se ci sono relazioni con documenti o con contatti o recapiti
         #chiedere se si vuole rimuovere ugualmente tutto, nel caso procedere
         #davvero alla rimozione ed a quel punto gestire il "delete" a livello di
         #dao
 
         #try:
+        cnnt = ContattoCliente().select(idCliente=dao.id, batchSize=None)
+        if cnnt:
+            for c in cnnt:
+                for l in c.recapiti:
+                    l.delete()
+                c.delete()
+
+        cnnt = ClienteCategoriaCliente().select(idCliente=dao.id, batchSize=None)
+        if cnnt:
+            for c in cnnt:
+                c.delete()
+
         if posso("IP"):
             from promogest.modules.InfoPeso.dao.TestataInfoPeso import TestataInfoPeso
             from promogest.modules.InfoPeso.dao.ClienteGeneralita import ClienteGeneralita
@@ -82,16 +96,15 @@ class AnagraficaClienti(Anagrafica):
             if clcg:
                 for l in clcg:
                     l.delete()
-        cnnt = ContattoCliente().select(idCliente=dao.id, batchSize=None)
-        if cnnt:
-            for c in cnnt:
-                for l in c.recapiti:
-                    l.delete()
-                c.delete()
+
         dao.delete()
+
         self.filter.refresh()
         self.htmlHandler.setDao(None)
         self.setFocus()
+
+
+
 
     def on_duplica_in_fornitore_activate_item(self, widget):
         dao = self.filter.getSelectedDao()
