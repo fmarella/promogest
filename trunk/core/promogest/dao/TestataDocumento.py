@@ -299,8 +299,9 @@ class TestataDocumento(Dao):
         castellettoIva = {}
 
         def getSpesePagamento(pagamento):
-            p = Pagamento().select(denominazione=pagamento)[0]
+            p = Pagamento().select(denominazione=pagamento)
             if p:
+                p = p[0]
                 if float(p.spese or 0) != float(0):
                     return calcolaPrezzoIva(float(p.spese), float(p.perc_aliquota_iva))
                 else:
@@ -1124,6 +1125,8 @@ class TestataDocumento(Dao):
             dic = {k:testata_documento.c.numero >= v}
         elif k == 'aNumero':
             dic = {k:testata_documento.c.numero <= v}
+        elif k == 'numero':
+            dic = {k:testata_documento.c.numero == v}
         elif k == 'daParte':
             dic = {k:testata_documento.c.parte >= v}
         elif k == 'aParte':
