@@ -80,14 +80,12 @@ class Login(GladeApp):
         """Disegna la finestra di login
         """
         azs = Azienda().select(batchSize = None, orderBy=Azienda.schemaa)
-        print len(azs)
         if Environment.engine.name == "sqlite" and len(azs)==1 and azs[0].schemaa=="AziendaPromo":
             self.azienda_combobox.destroy()
             self.azienda_label.destroy()
             self.logina_label.set_markup("Dati accesso <b>ONE</b> : Username: <b>admin</b>, password: <b>admin</b>")
         else:
             self.azienda_combobox_listore.clear()
-            azs = Azienda().select(batchSize = None, orderBy=Azienda.schemaa)
             ultima_azienda = None
             for a in azs:
                 if a.tipo_schemaa == "last":
@@ -101,15 +99,15 @@ class Login(GladeApp):
         self.splashHandler()
         dateTimeLabel = datetime.datetime.now().strftime('%d/%m/%Y  %H:%M')
         self.date_label.set_text(dateTimeLabel)
-        if Environment.engine.name != "sqlite" :
-            if Environment.aziendaforce:
-                ultima_azienda = Environment.aziendaforce
-            if ultima_azienda:
-                for r in self.azienda_combobox_listore:
-                    if r[0] == ultima_azienda:
-                        self.azienda_combobox.set_active_iter(r.iter)
-            else:
-                self.azienda_combobox.set_active(0)
+        #if Environment.engine.name != "sqlite" or (len(azs)==1 and azs[0].schemaa !="AziendaPromo") :
+        if Environment.aziendaforce:
+            ultima_azienda = Environment.aziendaforce
+        if ultima_azienda:
+            for r in self.azienda_combobox_listore:
+                if r[0] == ultima_azienda:
+                    self.azienda_combobox.set_active_iter(r.iter)
+        else:
+            self.azienda_combobox.set_active(0)
         #ATTENZIONE METTO COME RUOLO ADMIN PER IL MOMENTO RICONTROLLARE
 
         #self.username_combobox_listore.clear()
@@ -191,13 +189,15 @@ class Login(GladeApp):
             messageInfo(msg=_("Occorre selezionare un'azienda"))
             do_login = False
         else:
-            if Environment.engine.name != "sqlite":
+            if hasattr(self,"azienda_combobox"):
                 self.azienda = findStrFromCombobox(self.azienda_combobox,0)
                 findComboboxRowFromStr(self.azienda_combobox, self.azienda, 0)
                 found = self.azienda_combobox.get_active() != -1
                 if not found:
                     messageInfo(msg=_("Selezionare un'azienda esistente"))
                     do_login = False
+            else:
+                self.azienda = "AziendaPromo"
         if do_login: #superati i check di login
             users = User().select(username=username,
                         password=hashlib.md5(username+password).hexdigest())
@@ -209,7 +209,7 @@ class Login(GladeApp):
                     do_login = False
                 else:
                     Environment.workingYear = str(self.anno_lavoro_spinbutton.get_value_as_int())
-                    Environment.azienda = self.azienda or "AziendaPromo"
+                    Environment.azienda = self.azienda
                     if Environment.engine.name != "sqlite":
                         azs = Azienda().select(batchSize = None)
                         for a in azs:
