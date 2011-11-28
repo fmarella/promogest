@@ -2,13 +2,13 @@
 {% block body %}
         <table cellpadding="0" cellspacing="3" border="0">
             <tr>
-                <th>Codice</th>
-                <th>Rag.Sociale</th>
-                <th>Cognome/Nome</th>
-                <th>Indirizzo</th>
-                <th>Località</th>
-                <th>Provincia</th>
-                <th>CAP</th>
+                <th>{{ _("Codice") }}</th>
+                <th>{{ _("Rag.Sociale") }}</th>
+                <th>{{ _("Cognome/Nome") }}</th>
+                <th>{{ _("Indirizzo") }}</th>
+                <th>{{ _("Località") }}</th>
+                <th>{{ _("Provincia") }}</th>
+                <th>{{ _("CAP") }}</th>
             </tr>
             {% for dao in pageData["objects"] %}
             <tr class="row">
