@@ -245,7 +245,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                                 "quantita_minima": None,
                                 "ritenute" : [],
                                 "numeroLottoArticoloFornitura":None,
-                                "numeroLottoTemp":None,
+                                "numeroLottoTemp":"",
                                 "dataScadenzaArticoloFornitura":None,
                                 "dataProduzioneArticoloFornitura":None,
                                 "dataPrezzoFornitura":None,
@@ -1183,9 +1183,12 @@ del documento.
         costoVariato = (self._tipoPersonaGiuridica == "fornitore" and self._righe[0]["idArticolo"] is not None and
                 (self._righe[0]["prezzoNetto"] != self._righe[0]["prezzoNettoUltimo"]) and
                 (self._segno is not None and self._segno != ''))
-        if not setconf("Documenti", "add_quantita"):
+
+        if setconf("Documenti", "add_quantita"):
             for r in self._righe[1:]:
-                if self._righe[0]["idArticolo"] == r["idArticolo"]:
+                #print "11111111111111111111111111111111111111111111111111111111111111111111111111111111111AAAAAAAAAAAAA", self._righe[0]["idArticolo"], r["idArticolo"],self._righe[0]["prezzoNetto"], r["prezzoNetto"],"AAA", self._righe[0]["numeroLottoTemp"],"bbbbb", r["numeroLottoTemp"]
+                if self._righe[0]["idArticolo"] == r["idArticolo"] and \
+                        self._righe[0]["prezzoNetto"] == r["prezzoNetto"]:
                     r["quantita"] +=self._righe[0]["quantita"]
                     self.modelRiga[self._righe.index(r)-1][11]=str(r["quantita"])
                     self.nuovaRiga()
