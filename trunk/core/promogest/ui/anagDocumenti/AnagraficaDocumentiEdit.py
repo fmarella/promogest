@@ -1150,6 +1150,7 @@ del documento.
         Memorizza la riga inserita o modificata
         """
         self.checkMAGAZZINO = False
+        inserisci = False
         if self.NoRowUsableArticle:
             messageInfo(_('ARTICOLO NON USABILE IN UNA RIGA IN QUANTO ARTICOLO PRINCIPALE O PADRE!'))
             return
@@ -1183,12 +1184,12 @@ del documento.
         costoVariato = (self._tipoPersonaGiuridica == "fornitore" and self._righe[0]["idArticolo"] is not None and
                 (self._righe[0]["prezzoNetto"] != self._righe[0]["prezzoNettoUltimo"]) and
                 (self._segno is not None and self._segno != ''))
-
-        if setconf("Documenti", "add_quantita"):
+        self._righe[0]["numeroLottoTemp"] = self.lotto_temp_entry.get_text()
+        if setconf("Documenti", "add_quantita") and not inserisci:
             for r in self._righe[1:]:
-                #print "11111111111111111111111111111111111111111111111111111111111111111111111111111111111AAAAAAAAAAAAA", self._righe[0]["idArticolo"], r["idArticolo"],self._righe[0]["prezzoNetto"], r["prezzoNetto"],"AAA", self._righe[0]["numeroLottoTemp"],"bbbbb", r["numeroLottoTemp"]
                 if self._righe[0]["idArticolo"] == r["idArticolo"] and \
-                        self._righe[0]["prezzoNetto"] == r["prezzoNetto"]:
+                        self._righe[0]["prezzoNetto"] == r["prezzoNetto"] and\
+                        self._righe[0]["numeroLottoTemp"] == r["numeroLottoTemp"] and self._numRiga == 0:
                     r["quantita"] +=self._righe[0]["quantita"]
                     self.modelRiga[self._righe.index(r)-1][11]=str(r["quantita"])
                     self.nuovaRiga()
@@ -1226,7 +1227,6 @@ del documento.
 
         self._righe[0]["codiceArticoloFornitore"] = self.codice_articolo_fornitore_entry.get_text()
         self._righe[0]["numeroLottoArticoloFornitura"] = self.numero_lotto_entry.get_text()
-        self._righe[0]["numeroLottoTemp"] = self.lotto_temp_entry.get_text()
         self._righe[0]["dataScadenzaArticoloFornitura"] = self.data_scadenza_datewidget.get_text()
         self._righe[0]["dataProduzioneArticoloFornitura"] = self.data_produzione_datewidget.get_text()
         self._righe[0]["dataPrezzoFornitura"] = self.data_prezzo_datewidget.get_text()
@@ -1622,7 +1622,7 @@ del documento.
 
     def calcolaTotaleRiga(self):
         """ calcola il totale riga """
-
+        print "PASSIIIIIIIIIIIIIIIIIIIIIIIIII"
         if self._righe[0]["prezzoNetto"] is None:
             self._righe[0]["prezzoNetto"] = 0
         if self._righe[0]["quantita"] is None:
