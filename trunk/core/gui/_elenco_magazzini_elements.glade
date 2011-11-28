@@ -2,6 +2,16 @@
 <interface>
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy toplevel-contextual -->
+  <object class="GtkListStore" id="elenco_magazzini_listore">
+    <columns>
+      <!-- column-name PyObject1 -->
+      <column type="PyObject"/>
+      <!-- column-name gchararray1 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray2 -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
   <object class="GtkFrame" id="elenco_magazzini_frame">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -75,10 +85,10 @@
                   <object class="GtkToggleButton" id="magazzini_togglebutton">
                     <property name="label" translatable="yes">Anagrafica
 Magazzino</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="image">image1</property>
                     <signal name="clicked" handler="on_magazzini_togglebutton_clicked" swapped="no"/>
                   </object>
@@ -92,10 +102,10 @@ Magazzino</property>
                   <object class="GtkToggleButton" id="stoccaggi_togglebutton">
                     <property name="label" translatable="yes">Situazione
 Magazzino</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="image">image2</property>
                     <signal name="clicked" handler="on_stoccaggi_togglebutton_clicked" swapped="no"/>
                   </object>
@@ -109,10 +119,10 @@ Magazzino</property>
                   <object class="GtkToggleButton" id="movimenti_togglebutton">
                     <property name="label" translatable="yes">Movimenti
 Magazzino</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="image">image3</property>
                     <signal name="clicked" handler="on_movimenti_togglebutton_clicked" swapped="no"/>
                   </object>
@@ -123,14 +133,15 @@ Magazzino</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkToggleButton" id="inventario_togglebutton">
-                    <property name="label" translatable="yes">Inventario</property>
+                  <object class="GtkToggleButton" id="forniture_button">
+                    <property name="label" translatable="yes">Fornit_ure</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <property name="use_action_appearance">False</property>
-                    <property name="image">image4</property>
-                    <signal name="clicked" handler="on_inventario_togglebutton_clicked" swapped="no"/>
+                    <property name="image">image5</property>
+                    <property name="use_underline">True</property>
+                    <signal name="clicked" handler="on_forniture_button_clicked" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -139,19 +150,35 @@ Magazzino</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkButton" id="aggiorna_magazzini_button">
-                    <property name="label">gtk-refresh</property>
+                  <object class="GtkToggleButton" id="inventario_togglebutton">
+                    <property name="label" translatable="yes">Inventario</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
+                    <property name="image">image4</property>
+                    <signal name="clicked" handler="on_inventario_togglebutton_clicked" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">4</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="aggiorna_magazzini_button">
+                    <property name="label">gtk-refresh</property>
                     <property name="use_action_appearance">False</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
                     <property name="use_stock">True</property>
                     <signal name="clicked" handler="on_aggiorna_magazzini_button_clicked" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">False</property>
-                    <property name="position">4</property>
+                    <property name="position">5</property>
                   </packing>
                 </child>
               </object>
@@ -176,16 +203,6 @@ Magazzino</property>
       </object>
     </child>
   </object>
-  <object class="GtkListStore" id="elenco_magazzini_listore">
-    <columns>
-      <!-- column-name PyObject1 -->
-      <column type="PyObject"/>
-      <!-- column-name gchararray1 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray2 -->
-      <column type="gchararray"/>
-    </columns>
-  </object>
   <object class="GtkImage" id="image1">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -205,6 +222,11 @@ Magazzino</property>
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="pixbuf">inventario24x24.png</property>
+  </object>
+  <object class="GtkImage" id="image5">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">fornitura48x48.png</property>
   </object>
   <object class="GtkLabel" id="magazzini_label">
     <property name="visible">True</property>

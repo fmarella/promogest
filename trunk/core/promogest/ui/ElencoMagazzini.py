@@ -80,7 +80,18 @@ class ElencoMagazzini(GladeWidget):
 
         #showAnagraficaRichiamata(self._mainWindow, anagWindow, toggleButton, self.refresh)
 
-
+    def on_forniture_button_clicked(self, toggleButton):
+        if toggleButton.get_property('active') is False:
+            return
+        from promogest.ui.anagForniture.AnagraficaForniture import AnagraficaForniture
+        anag = AnagraficaForniture(aziendaStr=self.aziendaStr)
+        anagWindow = anag.getTopLevel()
+        returnWindow = self.getTopLevel().get_toplevel()
+        anagWindow.set_transient_for(returnWindow)
+        anagWindow.show_all()
+        if toggleButton.get_active():
+            toggleButton.set_active(False)
+            
     def on_stoccaggi_togglebutton_clicked(self, toggleButton):
         if not(toggleButton.get_active()):
             toggleButton.set_active(False)
