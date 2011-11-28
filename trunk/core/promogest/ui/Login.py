@@ -189,14 +189,14 @@ class Login(GladeApp):
             messageInfo(msg=_("Occorre selezionare un'azienda"))
             do_login = False
         else:
-            if hasattr(self,"azienda_combobox"):
-                self.azienda = findStrFromCombobox(self.azienda_combobox,0)
-                findComboboxRowFromStr(self.azienda_combobox, self.azienda, 0)
-                found = self.azienda_combobox.get_active() != -1
-                if not found:
-                    messageInfo(msg=_("Selezionare un'azienda esistente"))
-                    do_login = False
-            else:
+            #if hasattr(self,"azienda_combobox"):
+            self.azienda = findStrFromCombobox(self.azienda_combobox,0)
+            findComboboxRowFromStr(self.azienda_combobox, self.azienda, 0)
+            found = self.azienda_combobox.get_active() != -1
+            #if not found:
+                #messageInfo(msg=_("Selezionare un'azienda esistente"))
+                #do_login = False
+            if not self.azienda:
                 self.azienda = "AziendaPromo"
         if do_login: #superati i check di login
             users = User().select(username=username,
