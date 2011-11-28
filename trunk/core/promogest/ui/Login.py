@@ -79,7 +79,9 @@ class Login(GladeApp):
     def draw(self):
         """Disegna la finestra di login
         """
-        if Environment.engine.name == "sqlite":
+        azs = Azienda().select(batchSize = None, orderBy=Azienda.schemaa)
+        print len(azs)
+        if Environment.engine.name == "sqlite" and len(azs)==1 and azs[0].schemaa=="AziendaPromo":
             self.azienda_combobox.destroy()
             self.azienda_label.destroy()
             self.logina_label.set_markup("Dati accesso <b>ONE</b> : Username: <b>admin</b>, password: <b>admin</b>")
@@ -99,7 +101,7 @@ class Login(GladeApp):
         self.splashHandler()
         dateTimeLabel = datetime.datetime.now().strftime('%d/%m/%Y  %H:%M')
         self.date_label.set_text(dateTimeLabel)
-        if Environment.engine.name != "sqlite":
+        if Environment.engine.name != "sqlite" :
             if Environment.aziendaforce:
                 ultima_azienda = Environment.aziendaforce
             if ultima_azienda:
@@ -217,7 +219,7 @@ class Login(GladeApp):
                         uaz.tipo_schemaa = "last"
                         uaz.persist()
                     if Environment.tipodb !="sqlite":
-                        Environment.params["schema"] = self.azienda or "AziendaPromo"
+                        Environment.params["schema"] = self.azienda
                     # Lancio la funzione di generazione della dir di configurazione
                     Environment.set_configuration(Environment.azienda,Environment.workingYear)
 #                    if setconf("Feed","feed"):
