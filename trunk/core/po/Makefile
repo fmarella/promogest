@@ -16,12 +16,17 @@ PYFILES  = $(wildcard ../promogest/ui/*.py) \
  $(wildcard ../promogest/ui/anag*/*.py) \
  $(wildcard ../promogest/ui/SimpleSearch/*.py) \
  $(wildcard ../promogest/ui/widgets/*.py) \
- $(wildcard ../promogest/modules/*/ui/*.py) 
+ $(wildcard ../promogest/modules/*/ui/*.py)
 
 GLADEFILES = $(wildcard ../gui/*.glade) \
- $(wildcard ../promogest/modules/*/gui/*.glade) 
+ $(wildcard ../promogest/modules/*/gui/*.glade)
 
-POTFILES  = $(PYFILES) $(GLADEFILES)
+TEMPLATEFILES = $(wildcard ../templates/*.html) \
+ $(wildcard ../report-templates/*.html) \
+ $(wildcard ../promogest/modules/*/templates/*.html) \
+ $(wildcard ../promogest/modules/*/report-templates/*.html)
+
+POTFILES  = $(PYFILES) $(GLADEFILES) $(TEMPLATEFILES)
 
 all: $(NLSPACKAGE).pot $(FMTCATALOGS)
 
@@ -53,11 +58,11 @@ report:
 	@for cat in *.po ; do \
 		echo -n "$$cat: "; \
 		msgfmt --statistics -o /dev/null $$cat; \
-	done    
+	done
 
 clean:
 	@rm -fv *mo *~ .depend *.autosave
-   
+
 distclean: clean
 	rm -f *mo .depend Makefile $(NLSPACKAGE).pot POTFILES.in
 
