@@ -119,7 +119,7 @@ def leggiArticolo(id, full=False, idFornitore=False, data=None):
             _denominazioneBreveAliquotaIva = daoArticolo.denominazione_breve_aliquota_iva
             _percentualeAliquotaIva = daoArticolo.percentuale_aliquota_iva
             _idAliquotaIva = daoArticolo.id_aliquota_iva
-            _unitaBase = daoArticolo.denominazione_unita_base
+            _unitaBase = daoArticolo.denominazione_breve_unita_base
             try:
                 _quantita_minima = daoArticolo.quantita_minima
             except:
