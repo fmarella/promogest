@@ -225,7 +225,7 @@ def fillComboboxUnitaBase(combobox, filter=False):
     combobox.set_model(model)
 
 
-def fillComboboxRole(combobox, filter=False):
+def fillComboboxRole(combobox, filter=False, noAdmin=False):
     """
     Crea l'elenco dei ruoli
     """
@@ -239,7 +239,10 @@ def fillComboboxRole(combobox, filter=False):
         emptyRow = '< Tutti >'
     model.append((None, 0, emptyRow))
     for u in res:
-        model.append((u, u.id, u.name or '')[0:20])
+        if u.name =="Admin"and noAdmin:
+            continue
+        else:
+            model.append((u, u.id, u.name or '')[0:20])
 
     combobox.clear()
     renderer = gtk.CellRendererText()
