@@ -2059,6 +2059,20 @@ def modificaLottiScadenze(riga):
     return ll
 
 
+def listaComponentiArticoloKit(riga):
+    """
+    Ritorna la lista dei componenti articolo kit
+    """
+    from promogest.dao.Articolo import Articolo
+    if setconf('Documenti', 'lista_componenti_articolokit'):
+        if 'id_articolo' in riga:
+            articolo = Articolo().getRecord(id=riga['id_articolo'])
+            for articolokit in articolo.articoli_kit:
+                _subarticolo = leggiArticolo(articolokit.id_articolo_filler)
+                riga['descrizione'] += "\n %s" % _subarticolo['denominazione']
+    return riga
+     
+
 def multilinedirtywork( param):
     """
     Funzione che gestisce la suddivisione in multirighe
@@ -2082,6 +2096,8 @@ def multilinedirtywork( param):
                         skippa = True
                         x["descrizione"] = ''
                         continue
+
+                x = listaComponentiArticoloKit(x)
 
                 if len(x["descrizione"]) > int(setconf("Multilinea","multilinealimite"))\
                 and "\n" not in x["descrizione"]:

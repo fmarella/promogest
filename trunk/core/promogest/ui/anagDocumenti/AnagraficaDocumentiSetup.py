@@ -86,6 +86,10 @@ class AnagraficaDocumentiSetup(GladeWidget):
         except:
             self.add_quantita_check.set_active(0)
         try:
+            self.lista_componenti_articolokit_check.set_active(int(setconf("Documenti", "lista_componenti_articolokit")))
+        except:
+            self.lista_componenti_articolokit_check.set_active(0)
+        try:
             self.no_ricerca_incrementale_check.set_active(int(setconf("Documenti", "no_ricerca_incrementale")))
         except:
             self.no_ricerca_incrementale_check.set_active(0)
@@ -171,6 +175,22 @@ class AnagraficaDocumentiSetup(GladeWidget):
         c.tipo = "bool"
         c.value = str(self.add_quantita_check.get_active())
         c.description = "Aggiugni quantita"
+        c.tipo_section = "Generico"
+        c.active = True
+        c.visible = True
+        c.date = datetime.datetime.now()
+        Environment.session.add(c)
+
+        c = SetConf().select(key="lista_componenti_articolokit", section="Documenti")
+        if c:
+            c=c[0]
+        else:
+            c = SetConf()
+        c.key = "lista_componenti_articolokit"
+        c.section = "Documenti"
+        c.tipo = "bool"
+        c.value = str(self.lista_componenti_articolokit_check.get_active())
+        c.description = "visualizza in stampa la lista dei componenti articolo kit"
         c.tipo_section = "Generico"
         c.active = True
         c.visible = True
