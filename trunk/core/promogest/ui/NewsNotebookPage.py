@@ -56,53 +56,29 @@ class NewsNotebookPage(GladeWidget):
 
     def create_news_frame(self):
         """ CREIAMO IL TAB DELLE NEWS"""
-        self.htmlwidget = createHtmlObj(self)
-        self.feed_scrolled.add(self.htmlwidget)
-        html = """<html><body></body></html>"""
-        renderHTML(self.htmlwidget,html)
-        if setconf("Feed", "feed"):
-            feedAll = Environment.feedAll
-            feedToHtml = Environment.feedCache
-            if feedAll != "" and feedAll and feedToHtml:
-                self.renderPage(feedToHtml)
-            else:
-                try:
-                    gobject.idle_add(self.getfeedFromSite)
-                except:
-                    Environment.pg2log.info("LEGGERO RITARDO NEL RECUPERO DEI FEED")
+        Environment.htmlwidget = createHtmlObj(self)
+        self.feed_scrolled.add(Environment.htmlwidget)
+        html = """<html><body>
+<a style="text-color:black;" href="program:/recuperafeed">
+<div style="text-align: center;">
+    <img style="width: 530px; height: 110px;" alt="PROMOGEST" src="http://www.promotux.it/templates/promoGest/img/testata_promogest2.png"><br>
+</div>
+<div style="text-align:center;color:black;"><br />
+    <h3 style="color:black;">HAI LETTO LE NOVITA' SUL TUO SOFTWARE GESTIONALE PREFERITO?</a></h3></div></body></html>"""
+        renderHTML(Environment.htmlwidget,html)
 
-    def renderPage(self, feedToHtml):
-        """ show the html page in the custom widget"""
-        pageData = {
-                "file" :"feed.html",
-                "objects" :feedToHtml,
-                }
-        html = renderTemplate(pageData)
-        renderHTML(self.htmlwidget,html)
 
-    def getfeedFromSite(self):
-        string = ""
-        if Environment.feedAll == "":
-            d = feedparser.parse("http://www.promogest.me/newsfeed")
-        else:
-            d = Environment.feedAll
-        feedList = d['entries']
-        feedToHtml = []
-        for feed in feedList[0:3]:
-            try:
-                body = feed['content'][0]['value']
-            except:
-                body = feed["summary_detail"]['value']
-            feed = {
-                "title" :feed['title'],
-                "links": feed['links'][0]['href'],
-                "body" : body,
-                "updated" : feed['updated'][4:-13],
-                "autore" : feed['author']
-                }
-            feedToHtml.append(feed)
-        Environment.feedCache = feedToHtml
-        self.renderPage(feedToHtml)
+
+        #if setconf("Feed", "feed"):
+            #feedAll = Environment.feedAll
+            #feedToHtml = Environment.feedCache
+            #if feedAll != "" and feedAll and feedToHtml:
+                #self.renderPage(feedToHtml)
+            #else:
+                #try:
+                    #gobject.idle_add(self.getfeedFromSite)
+                #except:
+                    #Environment.pg2log.info("LEGGERO RITARDO NEL RECUPERO DEI FEED")
 
     def on_nuovo_articolo_button_clicked(self, widget):
         if not hasAction(actionID=8):return
