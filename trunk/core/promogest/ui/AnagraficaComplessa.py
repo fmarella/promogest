@@ -63,7 +63,9 @@ class Anagrafica(GladeWidget):
     """ Classe base per le anagrafiche di Promogest """
 
     def __init__(self, windowTitle, recordMenuLabel,
-                 filterElement, htmlHandler, reportHandler, editElement, labelHandler = None, gladeFile=None, aziendaStr=None):
+            filterElement, htmlHandler, reportHandler,
+            editElement, labelHandler = None,
+            gladeFile=None, aziendaStr=None):
         GladeWidget.__init__(self, 'anagrafica_complessa_window',
                             fileName=gladeFile)
         if aziendaStr is not None:
@@ -105,6 +107,8 @@ class Anagrafica(GladeWidget):
         self.filter.draw()
         self.editElement.draw(cplx=True)
         self.email = ""
+        if self.__class__.__name__ !="AnagraficaPrimaNota":
+            self.info_anag_complessa_label.destroy()
         self.setFocus()
 
     def _setFilterElement(self, gladeWidget):
@@ -356,9 +360,12 @@ class Anagrafica(GladeWidget):
         self.selected_record_print_menu.set_sensitive(self.dao is not None)
         return self.daoSelection or self.dao or False
 
-    def on_record_new_activate(self, widget=None):
+    def on_record_new_activate(self, widget=None, from_other_dao=None):
         self.editElement.setVisible(True)
-        self.editElement.setDao(None)
+        if self.__class__.__name__=="AnagraficaUtenti":
+            self.editElement.setDao(None, from_other_dao=from_other_dao)
+        else:
+            self.editElement.setDao(None)
         self.setFocus()
 
     def on_record_delete_activate(self, widget):
