@@ -50,10 +50,10 @@ jinja_env = None
 
 def env(templates_dir):
     jinja_env = Env(loader=FileSystemLoader(templates_dir),
-            bytecode_cache = FileSystemBytecodeCache(os.path.join(Environment.promogestDir, 'temp'), '%s.cache'))
+                    bytecode_cache=FileSystemBytecodeCache(os.path.join(Environment.promogestDir, 'temp'), '%s.cache'),
+                    extensions=['jinja2.ext.i18n'])
 
-    #i18n
-    jinja_env.add_extension('jinja2.ext.i18n')
+    #installa gettext per i18n
     jinja_env.install_gettext_callables(_, ngettext, newstyle=True)
     jinja_env.globals.update({
             '_': _,
