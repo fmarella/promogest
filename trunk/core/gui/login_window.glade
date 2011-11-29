@@ -32,11 +32,10 @@
     <property name="title" translatable="yes">Accesso a PromoGest2 "MentoR" </property>
     <property name="resizable">False</property>
     <property name="modal">True</property>
-    <property name="window_position">center</property>
+    <property name="window_position">center-always</property>
     <property name="icon">mask_400.png</property>
-    <property name="type_hint">dialog</property>
+    <property name="type_hint">normal</property>
     <property name="urgency_hint">True</property>
-    <property name="decorated">False</property>
     <property name="deletable">False</property>
     <property name="has_separator">True</property>
     <child internal-child="vbox">
