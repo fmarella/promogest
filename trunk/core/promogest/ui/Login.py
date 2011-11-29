@@ -80,13 +80,14 @@ class Login(GladeApp):
         """Disegna la finestra di login
         """
         azs = Azienda().select(batchSize = None, orderBy=Azienda.schemaa)
+        ultima_azienda = None
         if Environment.engine.name == "sqlite" and len(azs)==1 and azs[0].schemaa=="AziendaPromo":
             self.azienda_combobox.destroy()
             self.azienda_label.destroy()
             self.logina_label.set_markup("Dati accesso <b>ONE</b> : Username: <b>admin</b>, password: <b>admin</b>")
         else:
             self.azienda_combobox_listore.clear()
-            ultima_azienda = None
+
             for a in azs:
                 if a.tipo_schemaa == "last":
                     ultima_azienda = a.schemaa
