@@ -53,12 +53,15 @@ def env(templates_dir):
                     bytecode_cache=FileSystemBytecodeCache(os.path.join(Environment.promogestDir, 'temp'), '%s.cache'),
                     extensions=['jinja2.ext.i18n'])
 
-    #installa gettext per i18n
-    jinja_env.install_gettext_callables(_, ngettext, newstyle=True)
-    jinja_env.globals.update({
-            '_': _,
-            'ngettext': ngettext
-    })
+    try:
+        #installa gettext per i18n
+        jinja_env.install_gettext_callables(_, ngettext, newstyle=True)
+        jinja_env.globals.update({
+                '_': _,
+                'ngettext': ngettext
+        })
+    except:
+        pass
 
     jinja_env.filters['dateformat'] = dateformat
     jinja_env.filters['datetimeformat'] = datetimeformat
