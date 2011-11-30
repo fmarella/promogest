@@ -58,7 +58,6 @@ try:
 except:
     print " MANCA WERKZEUG"
 import sqlalchemy
-SAVER = sqlalchemy.__version__
 from sqlalchemy import *
 from sqlalchemy.orm import *
 #from sqlalchemy.engine import reflection
@@ -570,8 +569,7 @@ def my_on_connect(dbapi_con, con_record):
 if tipodb == "sqlite":
     azienda = None
     mainSchema = None
-    if SAVER >= "0.7":
-        print "SA 0.7"
+    if sqlalchemy.__version__ >= "0.7":
         from sqlalchemy.event import listen
         engine =create_engine("sqlite:///"+startdir()+"db",encoding='utf-8',proxy=MyProxy())
         listen(engine, 'connect', my_on_connect)
