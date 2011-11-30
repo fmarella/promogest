@@ -585,7 +585,7 @@ else:
     if not engine:
         engine = _psycopg2old()
 if not engine:
-    raise Exception, "NON È STATO TROVATO UN BACKEND PER IL DB"
+    raise RuntimeError("Non è stato trovato un backend per il database.")
 tipo_eng = engine.name
 print "TIPO ENGINE", tipo_eng
 engine.echo = False
