@@ -579,22 +579,20 @@ class GestioneInventario(RicercaComplessaArticoli):
 
         idMagazzino = findIdFromCombobox(self.additional_filter.id_magazzino_filter_combobox2)
         res = Inventario().select(anno=self.annoScorso,
-                                    idMagazzino=idMagazzino, batchSize=None)
+                                  idMagazzino=idMagazzino, batchSize=None)
         if res:
             for r in res:
                 if (sovrascrivi) or (not sovrascrivi and not r.quantita):
-                    print "ANNO DI GIACENZA", self.annoScorso
-                    giace = giacenzaArticolo(year=self.annoScorso,
-                                    idMagazzino=idMagazzino,
-                                    idArticolo=r.id_articolo)
-                    r.quantita = giace
-                    if giace >0:
+                    giacenza, valore = giacenzaArticolo(year=self.annoScorso,
+                                                        idMagazzino=idMagazzino,
+                                                        idArticolo=r.id_articolo)
+                    r.quantita = valore
+                    if giacenza > 0:
                         r.data_aggiornamento = datetime.datetime.today().date()
                     Environment.params['session'].add(r)
             Environment.params['session'].commit()
         self.refresh()
         self.fineElaborazione()
-        print "FINITO"
 
     def on_ricrea_button_clicked(self, button):
         """ Verifica se esistono gia' delle righe di inventario nell'anno di esercizio
