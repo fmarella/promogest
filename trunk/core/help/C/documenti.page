@@ -4,10 +4,13 @@
       id="documenti">
 
     <info>
+<!--
         <link type="topic" xref="aggiungi-documento"/>
         <link type="topic" xref="modificare-documento"/>
         <link type="topic" xref="cancellare-documento"/>
+-->
 	<link type="topic" xref="spese-bancarie"/>
+	<link type="guide" xref="scadenze" />
 	<credit type="author">
 	  <name>Francesco Marella</name>
 	  <email>francesco.marella@gmail.com</email>

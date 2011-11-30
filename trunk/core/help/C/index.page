@@ -15,37 +15,25 @@
 	      <name>PromoGest</name>
 	    </credit>
 
-        <license>
-            <p>Creative Commons Share Alike 3.0</p>
-        </license>
-
-        <desc>Guida a PromoGest</desc>
+        <!--<license>Creative Commons Share Alike 3.0</license>-->
 
       </info>
 
-      <title>
-        <media type="image" mime="image/png" src="figures/logo_promogest_small.png">
-        </media>
-        Guida a PromoGest
-      </title>
+      <title>Guida a PromoGest</title>
 
-        <p>Ut accumsan elementum purus, id imperdiet dui molestie sit amet. Nunc rutrum, tellus in pellentesque interdum, ligula enim auctor velit, eget posuere arcu mi in risus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam malesuada, sapien et placerat gravida, est lectus eleifend ipsum, et accumsan sem felis nec eros. Quisque adipiscing sollicitudin turpis ut semper. Donec tincidunt dignissim justo facilisis vestibulum. Etiam porttitor imperdiet ultrices.</p>
-
-      <!--<links type="section"/> -->
-
-      <section id="login">
+      <section id="login" style="2column">
         <title>Login</title>
       </section>
 
-      <section id="parametri">
+      <section id="anagrafiche" style="2column">
+	<title>Anagrafiche</title>
+      </section>
+
+      <section id="parametri" style="2column">
         <title>Parametri</title>
       </section>
 
-      <section id="anagrafiche">
-        <title>Anagrafiche</title>
-      </section>
-
-      <section id="documenti">
+      <section id="documenti" style="2column">
         <title>Documenti</title>
       </section>
 

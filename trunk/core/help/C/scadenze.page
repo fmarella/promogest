@@ -1,0 +1,30 @@
+<page xmlns="http://projectmallard.org/1.0/"
+      type="topic"
+      id="scadenze">
+
+    <info>
+      <link type="guide" xref="index#documenti" />
+      <desc>Pagamenti e scadenze</desc>
+
+      <revision pkgversion="2.9" version="1.0" date="2011-11-08" status="stub"/>
+      <credit type="author">
+	<name>Francesco Marella</name>
+	<email>francesco.marella@gmail.com</email>
+      </credit>
+      <credit type="copyright">
+	<years>2011</years>
+	<name>PromoGest</name>
+      </credit>
+    </info>
+
+    <title>Scadenze</title>
+
+    <section>
+      <title>Inserimento in prima nota</title>
+      <p>L'inserimento in prima nota avviene in automatico se è stata attivata
+      l'opzione<gui>Abilitare l'inserimento in prima nota senza una data di
+      pagamento</gui> da <guiseq><gui>Opzioni</gui><gui>Preferenze</gui>
+      <gui>PRIMANOTA</gui></guiseq></p>
+    </section>
+
+</page>
