@@ -586,7 +586,7 @@ class GestioneInventario(RicercaComplessaArticoli):
                     giacenza, valore = giacenzaArticolo(year=self.annoScorso,
                                                         idMagazzino=idMagazzino,
                                                         idArticolo=r.id_articolo)
-                    r.quantita = valore
+                    r.quantita = giacenza
                     if giacenza > 0:
                         r.data_aggiornamento = datetime.datetime.today().date()
                     Environment.params['session'].add(r)
