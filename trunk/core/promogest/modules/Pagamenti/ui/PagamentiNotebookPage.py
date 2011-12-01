@@ -120,30 +120,54 @@ class PagamentiNotebookPage(GladeWidget):
         """
         Seleziona la prima nota da utilizzare come riferimento
         """
-        if self.ana.numero_primo_documento_entry.get_text() != "":
-            response = AnagraficadocumentiPagamentExt.impostaDocumentoCollegato(int(self.ana.numero_primo_documento_entry.get_text()))
+        if self.numero_primo_documento_entry.get_text() != "":
+            response = self.impostaDocumentoCollegato(int(self.numero_primo_documento_entry.get_text()))
         else:
             messageInfo(msg="Inserisci il numero del documento")
             response = False
 
         if response:
-            self.ana.importo_primo_documento_entry.set_text(str(response))
+            self.importo_primo_documento_entry.set_text(str(response))
             self.dividi_importo()
             self.ricalcola_sospeso_e_pagato()
-            self.ana.numero_secondo_documento_entry.set_sensitive(True)
-            self.ana.seleziona_seconda_nota_button.set_sensitive(True)
-            self.ana.importo_secondo_documento_entry.set_sensitive(True)
+            self.numero_secondo_documento_entry.set_sensitive(True)
+            self.seleziona_seconda_nota_button.set_sensitive(True)
+            self.importo_secondo_documento_entry.set_sensitive(True)
 
     def on_seleziona_seconda_nota_button_clicked(self, button):
-        if self.ana.numero_secondo_documento_entry.get_text() != "":
-            response = AnagraficadocumentiPagamentExt.impostaDocumentoCollegato(int(self.ana.numero_secondo_documento_entry.get_text()))
+        if self.numero_secondo_documento_entry.get_text() != "":
+            response = self.impostaDocumentoCollegato(int(self.numero_secondo_documento_entry.get_text()))
         else:
             messageInfo(msg="Inserisci il numero del documento")
             response = False
         if response:
-            self.ana.importo_primo_documento_entry.set_text(str(response))
+            self.importo_primo_documento_entry.set_text(str(response))
             self.dividi_importo()
             self.ricalcola_sospeso_e_pagato()
+
+
+    def impostaDocumentoCollegato(self, numerodocumento):
+        """
+        Imposta il documento indicato dall'utente come collegato al documento
+        in creazione.
+        """
+
+        documento = AnagraficadocumentiPagamentExt.getDocumentoCollegato(self.ana, numerodocumento)
+        if documento == False:
+            return False
+        daoTestata = TestataDocumento().getRecord(id=documento[0].id)
+        tipo_documento = daoTestata.operazione
+        totale_pagato = daoTestata.totale_pagato
+        totale_sospeso = daoTestata.totale_sospeso
+        numero_documento = daoTestata.numero
+        data_documento = daoTestata.data_documento
+
+        if totale_sospeso != 0:
+            messageError(msg="""Attenzione. Risulta che il documento da Lei scelto abbia ancora
+un importo in sospeso. Il documento, per poter essere collegato, deve essere completamente saldato""")
+            return False
+
+        return totale_pagato
 
     def on_calcola_importi_scadenza_button_clicked(self, button):
         """
@@ -314,11 +338,11 @@ class PagamentiNotebookPage(GladeWidget):
 
         doc = self.numero_primo_documento_entry.get_text()
         if doc != "" and doc != "0":
-            documentocollegato = AnagraficadocumentiPagamentExt.getDocumentoCollegato(int(doc))
+            documentocollegato = AnagraficadocumentiPagamentExt.getDocumentoCollegato(self.ana, int(doc))
             self.ana.dao.id_primo_riferimento = documentocollegato[0].id
             doc2 = self.numero_secondo_documento_entry.get_text()
             if doc2 != "" and doc2 != "0":
-                documentocollegato = AnagraficadocumentiPagamentExt.getDocumentoCollegato(int(doc2))
+                documentocollegato = AnagraficadocumentiPagamentExt.getDocumentoCollegato(self.ana, int(doc2))
                 self.ana.dao.id_secondo_riferimento = documentocollegato[0].id
 
     def attiva_scadenze(self):

@@ -91,26 +91,3 @@ def getDocumentoCollegato(anaedit, numerodocumento):
     else:
         return result
 
-def impostaDocumentoCollegato(numerodocumento):
-    """
-    Imposta il documento indicato dall'utente come collegato al documento
-    in creazione.
-    """
-
-    documento = getDocumentoCollegato(numerodocumento)
-    if documento == False:
-        return False
-    daoTestata = TestataDocumento().getRecord(id=documento[0].id)
-    tipo_documento = daoTestata.operazione
-    totale_pagato = daoTestata.totale_pagato
-    totale_sospeso = daoTestata.totale_sospeso
-    numero_documento = daoTestata.numero
-    data_documento = daoTestata.data_documento
-
-    if totale_sospeso != 0:
-        messageError(msg="""Attenzione. Risulta che il documento da Lei scelto abbia ancora
-un importo in sospeso. Il documento, per poter essere collegato, deve essere completamente saldato""")
-        return False
-
-    return totale_pagato
-
