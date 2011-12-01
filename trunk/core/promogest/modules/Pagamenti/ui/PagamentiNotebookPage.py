@@ -547,6 +547,10 @@ Per l'esattezza, l'errore e` di %.2f""" % differenza_importi)
         if totalepagato == float(0) and totalesospeso == float(0):
             self.stato_label.set_markup('<b><span foreground="#B40000" size="24000">'+_('APERTO')+'</span></b>')
 
+        # se il totale è zero, esci senza proporre la chiusura
+        if str(totale_in_pagamenti_label) == '0.0':
+            return
+
         if str(totalepagato) == str(totale_in_pagamenti_label) and \
                         self.stato_label.get_text() == "APERTO" and \
                         self.ana.notebook.get_current_page() == 3:
