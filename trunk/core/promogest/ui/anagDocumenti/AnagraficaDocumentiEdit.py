@@ -1670,6 +1670,7 @@ del documento.
 
     def calcolaTotale(self):
         calcolaTotalePart(self)
+        self.pagamenti_page.ricalcola_sospeso_e_pagato()
 
     def on_edit_date_and_number_button_clicked(self, toggleButton):
         """ This permit to change the date of the document """
