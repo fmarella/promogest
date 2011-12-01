@@ -356,6 +356,8 @@ class PagamentiNotebookPage(GladeWidget):
                 i += 2
             else:
                 daoTDS.data = data_doc
+            if controllaDateFestivi(dateTimeToString(daoTDS.data)):
+                daoTDS.data = stringToDateBumped(dateTimeToString(daoTDS.data), 1)
             try:
                 self.rate[j].fill(daoTDS)
             except IndexError:
