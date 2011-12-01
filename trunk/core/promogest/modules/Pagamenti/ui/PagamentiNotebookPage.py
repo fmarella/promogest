@@ -29,6 +29,7 @@ from promogest.ui.GladeWidget import GladeWidget
 from promogest.modules.Pagamenti.ui import AnagraficadocumentiPagamentExt
 from promogest.ui.widgets.PagamentoWidget import PagamentoWidget
 from promogest.dao.Pagamento import Pagamento
+from promogest.dao.TestataDocumento import TestataDocumento
 from promogest.modules.Pagamenti.dao.TestataDocumentoScadenza import TestataDocumentoScadenza
 
 
