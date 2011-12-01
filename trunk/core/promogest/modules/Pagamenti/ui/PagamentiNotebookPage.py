@@ -62,6 +62,11 @@ class PagamentiNotebookPage(GladeWidget):
             return
         self.on_calcola_importi_scadenza_button_clicked(None)
 
+    def on_apri_primanota_clicked(self, widget):
+        from promogest.modules.PrimaNota.ui.AnagraficaPrimaNota import AnagraficaPrimaNota
+        anag = AnagraficaPrimaNota(aziendaStr=Environment.azienda)
+        anag.show_all()
+
     def clear(self):
         '''
         '''
