@@ -274,7 +274,7 @@ def giacenzaArticolo(year=None, idMagazzino=None, idArticolo=None,allMag= None):
         val = giacenza*ram[2]
     else:
         val = 0
-    return (round(giacenza,2), val, piu, meno)
+    return (round(giacenza,2), round(val,2), piu,round(meno,2))
 
 
 
