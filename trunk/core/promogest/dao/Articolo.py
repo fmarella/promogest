@@ -30,7 +30,7 @@ from promogest.modules.GestioneKit.dao.ArticoloKit import ArticoloKit
 from Imballaggio import Imballaggio
 from AliquotaIva import AliquotaIva
 from StatoArticolo import StatoArticolo
-from Immagine import Immagine
+#from Immagine import Immagine
 from UnitaBase import UnitaBase
 from FamigliaArticolo import FamigliaArticolo
 from CategoriaArticolo import CategoriaArticolo
@@ -136,6 +136,8 @@ class Articolo(Dao):
 
 
     def _getImmagine(self):
+        self._url_immagine = ""
+        return self._url_immagine
         if self.image:
             self._url_immagine= self.image.filename
         else:
@@ -661,9 +663,9 @@ std_mapper = mapper(Articolo,articolo,
                         den_categoria = relation(CategoriaArticolo,primaryjoin=
                                     (articolo.c.id_categoria_articolo==catearti.c.id)),
                         den_unita = relation(UnitaBase,primaryjoin=articolo.c.id_unita_base==unita_b.c.id),
-                        image = relation(Immagine,primaryjoin= articolo.c.id_immagine==img.c.id,
-                                            cascade="all, delete",
-                                            backref="arti"),
+                        #image = relation(Immagine,primaryjoin= articolo.c.id_immagine==img.c.id,
+                                            #cascade="all, delete",
+                                            #backref="arti"),
                         sa = relation(StatoArticolo,primaryjoin=(articolo.c.id_stato_articolo==statoart.c.id)),
                         fornitur = relation(Fornitura,primaryjoin=(fornitura.c.id_articolo==articolo.c.id), backref="arti"),
                         multi = relation(Multiplo,primaryjoin=(Multiplo.id_articolo==articolo.c.id),backref="arti")
@@ -711,9 +713,9 @@ def getNuovoCodiceArticolo(idFamiglia=None):
     codice = ''
     try:
 
-        art = session.query(Articolo.codice).all()
-        art.reverse()
-
+        art = session.query(Articolo.codice).order_by(desc(Articolo.id)).limit(500).all()
+        #art.reverse()
+        #print art
         for q in art:
             codice = codeIncrement(q[0])
             if not codice or Articolo().select(codicesatto=codice):
