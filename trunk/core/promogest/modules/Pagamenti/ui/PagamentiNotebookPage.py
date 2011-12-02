@@ -384,7 +384,7 @@ un importo in sospeso. Il documento, per poter essere collegato, deve essere com
             else:
                 daoTDS.data = data_doc
             if controllaDateFestivi(dateTimeToString(daoTDS.data)):
-                daoTDS.data = stringToDateBumped(dateTimeToString(daoTDS.data), 1)
+                daoTDS.data = stringToDateBumped(dateTimeToString(daoTDS.data), 7)
             try:
                 self.rate[j].fill(daoTDS)
             except IndexError:
