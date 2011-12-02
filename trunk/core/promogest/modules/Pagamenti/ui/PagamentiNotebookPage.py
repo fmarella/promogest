@@ -66,6 +66,8 @@ class PagamentiNotebookPage(GladeWidget):
     def on_apri_primanota_clicked(self, widget):
         from promogest.modules.PrimaNota.ui.AnagraficaPrimaNota import AnagraficaPrimaNota
         anag = AnagraficaPrimaNota(aziendaStr=Environment.azienda)
+        win = anag.getTopLevel()
+        win.set_transient_for(self.ana.dialogTopLevel)
         anag.show_all()
 
     def clear(self):
