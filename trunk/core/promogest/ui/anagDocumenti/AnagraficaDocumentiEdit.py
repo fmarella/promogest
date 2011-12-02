@@ -456,7 +456,6 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             else:
                 id_pag = findIdFromCombobox(self.pagamenti_page.id_pagamento_customcombobox.combobox)
                 pago = Pagamento().getRecord(id=id_pag)
-                self.pagamenti_page.primanota_check.set_active(self.dao.ripartire_importo or False)
                 if pago:
                     self.pagamenti_page.metodo_pagamento_label.set_markup('<b><span foreground="black" size="16000">'+str(pago.denominazione)+'</span></b>')
                 else:

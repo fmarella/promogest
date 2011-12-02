@@ -273,6 +273,8 @@ un importo in sospeso. Il documento, per poter essere collegato, deve essere com
                     self.on_aggiungi_rate_button_clicked(None)
                     self.rate[-1].fill(scadenza)
 
+            self.primanota_check.set_active(self.ana.dao.ripartire_importo or False)
+
             if self.ana.dao.documento_saldato:
                 self.stato_label.set_markup('<b><span foreground="#338000" size="24000">'+_('PAGATO')+'</span></b>')
             else:
