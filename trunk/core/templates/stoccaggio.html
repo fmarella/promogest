@@ -50,7 +50,7 @@
             {% endfor %}
             <tr>
                 <td class="totale-detail"><strong>Totali</strong></td>
-                <td class="totale-number" style="text-align:center;"><strong>{{'%14.1f' % (dao.giacenza, )}}</strong></td>
+                <td class="totale-number" style="text-align:center;"><strong>T{{'%14.1f' % (dao.giacenza[0], )}} <br/> A:{{'%14.1f' % (dao.giacenza[2], )}}<br /> V:{{'%14.1f' % (dao.giacenza[3], )}}</strong></td>
                 <td class="totale-number" style="text-align:center;"><strong>{{utils.mNLC(dao.valoreGiacenza,2)}}</strong></td>
             </tr>
             <tr><td colspan="3"><br /><br />GIACENZA GENERALE IN TUTTI I MAGAZZINI: {{dao.arti.getGiacenza()|nonone or 0}}</td></tr>

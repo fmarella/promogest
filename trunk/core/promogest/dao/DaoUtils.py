@@ -236,16 +236,22 @@ def giacenzaArticolo(year=None, idMagazzino=None, idArticolo=None,allMag= None):
     lista = []
 
     giacenza=0
+    piu = 0
+    meno = 0
     for ram in righeArticoloMovimentate:
         segno = ram[3]
         qua = ram[0]*ram[1]
         if segno =="-":
             if "$SSK$" in ram[5]:
                 giacenza += qua
+                piu += qua
             else:
                 giacenza -= qua
+                meno += qua
+
         elif segno =="+":
             giacenza += qua
+            piu += qua
         elif segno == "=":
             r = RigaMovimento().getRecord(id=ram[4])
             tm = TestataMovimento().getRecord(id=r.id_testata_movimento)
@@ -253,18 +259,22 @@ def giacenzaArticolo(year=None, idMagazzino=None, idArticolo=None,allMag= None):
                 if r.id_magazzino == tm.id_to_magazzino:
                     if qua >=0:
                         giacenza += qua
+                        piu += qua
                     else:
                         giacenza += -1*qua
+                        meno += qua
                 else:
                     if qua <=0:
                         giacenza += qua
+                        piu += qua
                     else:
                         giacenza += -1*qua
+                        meno += qua
     if len(righeArticoloMovimentate):
         val = giacenza*ram[2]
     else:
         val = 0
-    return (round(giacenza,2), val)
+    return (round(giacenza,2), val, piu, meno)
 
 
 

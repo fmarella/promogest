@@ -250,7 +250,7 @@ class AnagraficaStoccaggiFilter(AnagraficaFilter):
                                         (s.codice_articolo or ''),
                                         (s.arti.codice_a_barre or ''),
                                         (s.articolo or ''),
-                                        (str(s.giacenza) or '')))
+                                        (str(s.giacenza[0]) or '')))
 
 
 class AnagraficaStoccaggiHtml(AnagraficaHtml):
