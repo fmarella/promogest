@@ -23,7 +23,7 @@
                 <td class="detail" style="width:470px;">{{dao.articolo}}</td>
                 <td class="detail" style="width:70px;">{{dao.magazzino}}</td>
 
-                <td class="detail" align="right" style="width:50px;"><strong>{{utils.mN( dao.giacenza,1)}}</strong></td>
+                <td class="detail" align="right" style="width:50px;"><strong>{{utils.mN( dao.giacenza[0],1)}}</strong></td>
                 {% if "SchedaLavorazione" in environment.modulesList %}
                     <td class="number">{{ dao.impegnato_su_lavorazione}}</td>
                 {% endif %}
