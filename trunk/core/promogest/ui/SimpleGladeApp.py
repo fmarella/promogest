@@ -171,3 +171,4 @@ class SimpleGladeApp(SimpleGladeWrapper):
         except KeyboardInterrupt:
             Environment.pg2log.info("<<<<<<<<<<  CHIUSURA PROMOGEST >>>>>>>>>>>>>")
             self.on_keyboard_interrupt()
+
