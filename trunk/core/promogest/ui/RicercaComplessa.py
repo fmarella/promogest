@@ -59,8 +59,8 @@ class RicercaComplessa(GladeWidget):
 
     def show_all(self):
         """ Visualizza/aggiorna tutta la struttura della ricerca """
-        if self.window not in Environment.windowGroup:
-            Environment.windowGroup.append(self.window)
+        #if self.window not in Environment.windowGroup:
+            #Environment.windowGroup.append(self.window)
         self.window.show_all()
 
 
