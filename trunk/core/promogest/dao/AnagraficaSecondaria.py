@@ -95,8 +95,8 @@ except Exception as e:
             Column('id_magazzino', Integer, ForeignKey(magazzinoFK, onupdate="CASCADE", ondelete="CASCADE")),
             Column('id_listino', Integer, ForeignKey(listinoFK, onupdate="CASCADE", ondelete="CASCADE")),
             schema=params["schema"],
-            #useexisting = True,
-            extend_existing = True,
+            useexisting = True,
+            #extend_existing = True,
             )
     anagraficasecondaria.create(checkfirst=True)
 
