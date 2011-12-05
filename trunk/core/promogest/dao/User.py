@@ -27,10 +27,36 @@ from promogest.Environment import *
 from Dao import Dao
 from Regioni import Regioni
 from Province import Province
+from migrate import *
+#from promogest.dao.UtenteImmagine import UtenteImmagine
+#from promogest.dao.Immagine import ImageFile
 #from ApplicationLog import ApplicationLog
 #if hasattr(conf, "RuoliAzioni") and getattr(conf.RuoliAzioni,'mod_enable')=="yes":
     #from promogest.modules.RuoliAzioni.dao.Role import Role
 #from Language import Language
+from promogest.modules.RuoliAzioni.dao.Role import Role
+
+user=Table('utente', params['metadata'],schema = params['mainSchema'],autoload=True)
+
+
+if 'id_role' not in [c.name for c in user.columns]:
+    col = Column('id_role', Integer, nullable=True)
+    col.create(user)
+
+
+
+try:
+    from sqlalchemy.orm import relationship
+    if tipodb =="sqlite":
+        std_mapper.add_property("role",relationship(Role,primaryjoin=(user.c.id_role==Role.id),foreign_keys=[Role.id],backref="users",uselist=False,passive_deletes=True))
+    #else:
+        #std_mapper.add_property("role",relationship(Role,primaryjoin=(user.c.id_role==Role.id),backref="users",uselist=False))
+except:
+    pg2log.info("AGGIORNARE SQLALCHEMY RUOLI NON FUNZIONERANNO")
+if hasattr(conf, "MultiLingua") and getattr(conf.MultiLingua,'mod_enable')=="yes":
+    from promogest.modules.MultiLingua.dao.UserLanguage import UserLanguage
+    std_mapper.add_property("userlang",relation(UserLanguage,primaryjoin=(user.c.id==UserLanguage.id_user),backref="users",uselist=False))
+
 
 class User(Dao):
     """ User class provides to make a Users dao which include more used"""
@@ -63,6 +89,8 @@ class User(Dao):
         #else: return ""
     #lingua = property(_language)
 
+
+
     def delete(self):
         if self.username == "admin":
             print "TENTATIVO DI CANCELLAZIONE ADMIN L'EVENTO VERRA' REGISTRATO "
@@ -77,7 +105,7 @@ class User(Dao):
             return True
 
     def persist(self):
-        if self.username == "admin" and database == "promogest_demo":
+        if self.username == "admin" and database == "promogest_db":
             print "TENTATIVO DI MODIFICA ADMIN L'EVENTO VERRA' REGISTRATO E SEGNALATO "
             return False
         else:
@@ -107,20 +135,4 @@ class User(Dao):
             else: return ""
 
 
-user=Table('utente', params['metadata'],schema = params['mainSchema'],autoload=True)
 std_mapper = mapper(User, user, order_by=user.c.username)
-
-from promogest.modules.RuoliAzioni.dao.Role import Role
-try:
-    from sqlalchemy.orm import relationship
-    if tipodb =="sqlite":
-        pass
-#    #    pass
-#        std_mapper.add_property("role",relationship(Role,primaryjoin=(user.c.id_role==Role.id),foreign_keys=[Role.id],backref="users",uselist=False,passive_deletes=True))
-    else:
-        std_mapper.add_property("role",relationship(Role,primaryjoin=(user.c.id_role==Role.id),backref="users",uselist=False))
-except:
-    pg2log.info("AGGIORNARE SQLALCHEMY RUOLI NON FUNZIONERANNO")
-if hasattr(conf, "MultiLingua") and getattr(conf.MultiLingua,'mod_enable')=="yes":
-    from promogest.modules.MultiLingua.dao.UserLanguage import UserLanguage
-    std_mapper.add_property("userlang",relation(UserLanguage,primaryjoin=(user.c.id==UserLanguage.id_user),backref="users",uselist=False))
