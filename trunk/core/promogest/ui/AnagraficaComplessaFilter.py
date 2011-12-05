@@ -75,6 +75,7 @@ class AnagraficaFilter(GladeWidget):
             raise NotImplementedError
         self._filterCountClosure = __defaultFilterCountClosure
 
+
     def build(self):
         """ reindirizza alcuni campi e metodi dal filterWidget """
         self.bodyWidget = self._anagrafica.bodyWidget
