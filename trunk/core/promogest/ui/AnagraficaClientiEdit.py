@@ -198,8 +198,8 @@ class AnagraficaClientiEdit(AnagraficaEdit):
         self.ragione_sociale_entry.set_text(rag_soc)
         if self.cliente_insegna:
             self.insegna_entry.set_text(self.dao.insegna or '')
-#        self.cognome_entry.set_text(self.dao.cognome or '')
-#        self.nome_entry.set_text(self.dao.nome or '')
+        self.cognome_entry.set_text(self.dao.cognome or '')
+        self.nome_entry.set_text(self.dao.nome or '')
         self.indirizzo_sede_operativa_entry.set_text(self.dao.sede_operativa_indirizzo or '')
         self.cap_sede_operativa_entry.set_text(self.dao.sede_operativa_cap or '')
         self.localita_sede_operativa_entry.set_text(self.dao.sede_operativa_localita or '')
@@ -528,6 +528,54 @@ class AnagraficaClientiEdit(AnagraficaEdit):
         else:
             fenceDialog()
             toggleButton.set_active(False)
+
+
+    def on_abbina_pg_toggle_clicked(self, toggleButton):
+        if not(toggleButton.get_active()):
+            toggleButton.set_active(False)
+            return
+        if self.dao.id is None:
+            msg = 'Prima di poter inserire gli abbinamenti persona giuridica occorre salvare il cliente.\n Salvare ?'
+            if YesNoDialog(msg=msg, transient=self.dialogTopLevel):
+                self.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, GTK_RESPONSE_APPLY)
+            else:
+                toggleButton.set_active(False)
+                return
+        from AbbinamentoPersonaGiuridica import AbbinamentoPersonaGiuridica
+        anag = AbbinamentoPersonaGiuridica(self.dao.id)
+        anagWindow = anag.getTopLevel()
+
+        showAnagraficaRichiamata(self.dialogTopLevel, anagWindow, toggleButton)
+
+    def on_abbinamento_utente_togglebutton_toggled(self, toggleButton):
+        if not(toggleButton.get_active()):
+            toggleButton.set_active(False)
+            return
+
+        if self.dao.id is None:
+            msg = 'Prima di poter abbinare un utente occorre salvare il cliente.\n Salvare ?'
+            if YesNoDialog(msg=msg, transient=self.dialogTopLevel):
+                self.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, GTK_RESPONSE_APPLY)
+            else:
+                toggleButton.set_active(False)
+                return
+
+        from promogest.modules.RuoliAzioni.ui.AnagraficaUtenti import AnagraficaUtenti
+        from promogest.dao.User import User
+        a = AnagraficaUtenti()
+        if self.dao.id_user:
+            art = User().getRecord(id=self.dao.id_user)
+            a.on_record_edit_activate(a, dao=art)
+        else:
+            a.on_record_new_activate(a, from_other_dao=self.dao)
+            a.editElement.username_entry.set_text(self.dao.ragione_sociale.strip().replace(" ","").lower() or (self.dao.cognome+self.dao.nome).strip().replace(" ","").lower())
+            a.editElement.password_entry.set_text(self.dao.partita_iva.lower()[0:5] or
+            self.dao.codice_fiscale.lower()[0:6])
+            a.editElement.confirm_password_entry.set_text(self.dao.partita_iva.lower()[0:5] or self.dao.codice_fiscale.lower()[0:6])
+            findComboboxRowFromStr(a.editElement.azienda_combobox, Environment.azienda,0)
+            a.editElement.active_user_checkbutton.set_active(True)
+            a.editElement.email_entry.set_text(self.dao.email_principale or "")
+
 
     def on_destinazioni_merce_togglebutton_clicked(self, toggleButton):
         if not(toggleButton.get_active()):
