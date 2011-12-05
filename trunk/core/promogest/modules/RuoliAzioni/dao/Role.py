@@ -42,9 +42,9 @@ except:
         if (u'Admin',) not in s or s ==[]:
             ruoli = role.insert()
             ruoli.execute(name = "Admin", descrizione = "Gestore del promogest", active = True)
-            ruoli.execute(name = "Magazzino", descrizione = "Gestione magazzino", active = True)
-            ruoli.execute(name = "Venditore", descrizione = "Addetto alla vendita", active = True)
-            ruoli.execute(name = "Fatturazione", descrizione = "Fatturazione", active = True)
+            ruoli.execute(name = "Magazzinieri", descrizione = "Personale gestione magazzino", active = True)
+            ruoli.execute(name = "Venditori", descrizione = "Addetti alla vendita", active = True)
+            ruoli.execute(name = "Impiegati", descrizione = "Impiegati", active = True)
 
 
 class Role(Dao):

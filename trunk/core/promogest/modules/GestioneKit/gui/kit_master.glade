@@ -197,11 +197,11 @@
                     <child>
                       <object class="GtkCheckButton" id="attivo_componente_check">
                         <property name="label" translatable="yes">Attivo</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="width_request">80</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="active">True</property>
                         <property name="draw_indicator">True</property>
                       </object>
@@ -273,11 +273,11 @@
                     <child>
                       <object class="GtkButton" id="elimina_componente_button">
                         <property name="label">gtk-delete</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="width_request">120</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="use_stock">True</property>
                         <signal name="clicked" handler="on_elimina_componente_button_clicked" swapped="no"/>
                       </object>
@@ -291,11 +291,11 @@
                     <child>
                       <object class="GtkButton" id="aggiungi_componente_button">
                         <property name="label">gtk-add</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="width_request">120</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="use_stock">True</property>
                         <signal name="clicked" handler="on_aggiungi_componente_button_clicked" swapped="no"/>
                       </object>
@@ -427,11 +427,11 @@
                     <child>
                       <object class="GtkButton" id="ok_kit_button">
                         <property name="label">gtk-save</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="width_request">120</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="use_stock">True</property>
                         <signal name="clicked" handler="on_ok_kit_button_clicked" swapped="no"/>
                       </object>
@@ -615,11 +615,11 @@
         <child>
           <object class="GtkButton" id="annulla_kit_button">
             <property name="label">gtk-close</property>
+            <property name="use_action_appearance">False</property>
             <property name="width_request">120</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
-            <property name="use_action_appearance">False</property>
             <property name="use_stock">True</property>
             <signal name="clicked" handler="on_chiudi_kit_button_clicked" swapped="no"/>
           </object>

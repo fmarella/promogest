@@ -41,13 +41,6 @@ class AnagraficaVettoriFilter(AnagraficaFilter):
                               gladeFile='_anagrafica_vettori_elements.glade')
         self._widgetFirstFocus = self.ragione_sociale_filter_entry
         self.orderBy = 'ragione_sociale'
-        persona_giuridica=Table('persona_giuridica',
-                    Environment.params['metadata'],
-                    schema = Environment.params['schema'],
-                    autoload=True)
-        vettore=Table('vettore', Environment.params['metadata'],
-                        schema = Environment.params['schema'], autoload=True)
-        self.joinT = join(vettore, persona_giuridica)
 
 
     def draw(self):
@@ -124,8 +117,8 @@ class AnagraficaVettoriFilter(AnagraficaFilter):
             else:
                 pvcf = f.partita_iva
             self.filter_listore.append((f,
-                                        (f.codice or ''),
-                                        (f.ragione_sociale or ''),
-                                        (f.cognome or '') + ' ' + (f.nome or ''),
-                                        (f.sede_operativa_localita or ''),
-                                        pvcf))
+                (f.codice or ''),
+                (f.ragione_sociale or ''),
+                (f.cognome or '') + ' ' + (f.nome or ''),
+                (f.sede_operativa_localita or ''),
+                pvcf))
