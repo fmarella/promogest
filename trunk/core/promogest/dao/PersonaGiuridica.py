@@ -47,3 +47,5 @@ if "note" not in [c.name for c in persona_giuridica.columns]:
     col.create(persona_giuridica)
 
 std_mapper = mapper(PersonaGiuridica_, persona_giuridica, order_by=persona_giuridica.c.id)
+
+from promogest.dao.PersonaGiuridicaPersonaGiuridica import PersonaGiuridicaPersonaGiuridica

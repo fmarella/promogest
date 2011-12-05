@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010, 2011 by Promotux
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
-#    This file is part of Promogest.
+#    This file is part of Promogest. http://www.promogest.me
 
 #    Promogest is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -65,7 +65,7 @@ std_mapper = mapper(ListinoComplessoListino,listinocomplessolistino, properties=
                                             },
                     order_by=listinocomplessolistino.c.id_listino_complesso)
 
-print "PK Listino complesso listino", len(listinocomplessolistino.primary_key)
+#print "PK Listino complesso listino", len(listinocomplessolistino.primary_key)
 
 if len(listinocomplessolistino.primary_key) ==1 and params["tipo_db"] != "sqlite":
     cons = PrimaryKeyConstraint(listinocomplessolistino.c.id_listino, listinocomplessolistino.c.id_listino_complesso)
