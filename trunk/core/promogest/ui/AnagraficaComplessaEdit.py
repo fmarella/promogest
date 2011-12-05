@@ -54,8 +54,10 @@ from promogest.ui.gtk_compat import *
 class AnagraficaEdit(GladeWidget):
     """ Interfaccia di editing dell'anagrafica """
 
-    def __init__(self, anagrafica, rootWidget, windowTitle,gladeFile=None,module=False):
-        GladeWidget.__init__(self, rootWidget, fileName=gladeFile, isModule=module)
+    def __init__(self, anagrafica, rootWidget,
+            windowTitle,gladeFile=None,module=False):
+        GladeWidget.__init__(self, rootWidget,
+            fileName=gladeFile, isModule=module)
 
         self._anagrafica = anagrafica
         self._widgetFirstFocus = None
