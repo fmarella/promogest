@@ -49,6 +49,12 @@ from AnagraficaPrincipaleFrame import AnagrafichePrincipaliFrame
 import promogest.dao.Promemoria
 from promogest.dao.Promemoria import Promemoria
 from promogest.dao.VariazioneListino import VariazioneListino
+from promogest.dao.AnagraficaSecondaria import AnagraficaSecondaria_
+from promogest.dao.Immagine import ImageFile
+from promogest.dao.UtenteImmagine import UtenteImmagine
+from promogest.dao.ArticoloImmagine import ArticoloImmagine
+from promogest.dao.SlaFile import SlaFile
+from promogest.dao.SlaFileImmagine import SlaFileImmagine
 from promogest.ui.ConfiguraWindow import ConfiguraWindow
 from promogest.ui.PanUi import PanUi, checkPan
 from promogest.ui.AzioniVelociNotebookPage import AzioniVelociNotebookPage
@@ -210,6 +216,8 @@ class Main(GladeWidget):
         self.placeWindow(self.main_window)
         self.main_window.show_all()
         self.on_button_refresh_clicked()
+
+        fillComboboxRole(self.anag_minori_combobox, noAdmin=True)
 
         #if datetime.date.today() >= datetime.date(2011,9,17):
             #from promogest.dao.Setconf import SetConf
@@ -454,13 +462,6 @@ class Main(GladeWidget):
         anag = AnagraficaArticoli(aziendaStr=Environment.azienda)
         showAnagrafica(self.getTopLevel(), anag, toggleButton, mainClass=self)
 
-    def on_forniture_button_clicked(self, toggleButton):
-        if toggleButton.get_property('active') is False:
-            return
-        from promogest.ui.anagForniture.AnagraficaForniture import AnagraficaForniture
-        anag = AnagraficaForniture(aziendaStr=self.aziendaStr)
-        showAnagrafica(self.getTopLevel(), anag, toggleButton, mainClass=self)
-
     def on_clienti_button_clicked(self, toggleButton):
         if toggleButton.get_property('active') is False:
             return
@@ -485,6 +486,9 @@ class Main(GladeWidget):
     def on_agenti_button_clicked(self, toggleButton):
         if toggleButton.get_property('active') is False:
             return
+        if not hasAction(actionID=6):
+            toggleButton.set_active(False)
+            return
         if posso("AG"):
             from promogest.modules.Agenti.ui.AnagraficaAgenti import AnagraficaAgenti
             anag = AnagraficaAgenti(aziendaStr=self.aziendaStr)
@@ -493,8 +497,28 @@ class Main(GladeWidget):
             fencemsg()
             toggleButton.set_active(False)
 
+    def on_apri_anag_secondarie_toggle_toggled(self, toggleButton):
+        if toggleButton.get_property('active') is False:
+            return
+        from promogest.ui.AnagraficaSecondaria import AnagraficaSecondarie
+        if not findIdFromCombobox(self.anag_minori_combobox):
+            obligatoryField(None,
+                            self.anag_minori_combobox,
+                            msg='Campo obbligatorio !\n\nTipo AnagraficaSecondaria')
+            toggleButton.set_active(False)
+        model = self.anag_minori_combobox.get_model()
+        iterator = self.anag_minori_combobox.get_active_iter()
+        if iterator is not None:
+            dao = model.get_value(iterator, 0)
+        anag = AnagraficaSecondarie(aziendaStr=self.aziendaStr, daoRole= dao)
+        showAnagrafica(self.getTopLevel(), anag, toggleButton, mainClass=self)
+
+
     def on_categorie_articoli_button_clicked(self, toggleButton):
         if toggleButton.get_property('active') is False:
+            return
+        if not hasAction(actionID=6):
+            toggleButton.set_active(False)
             return
         from AnagraficaCategorieArticoli import AnagraficaCategorieArticoli
         anag = AnagraficaCategorieArticoli()
@@ -503,12 +527,18 @@ class Main(GladeWidget):
     def on_famiglie_articoli_button_clicked(self, toggleButton):
         if toggleButton.get_property('active') is False:
             return
+        if not hasAction(actionID=6):
+            toggleButton.set_active(False)
+            return
         from AnagraficaFamiglieArticoli import AnagraficaFamiglieArticoli
         anag = AnagraficaFamiglieArticoli()
         showAnagrafica(self.getTopLevel(), anag, toggleButton, mainClass=self)
 
     def on_categorie_clienti_button_clicked(self, toggleButton):
         if toggleButton.get_property('active') is False:
+            return
+        if not hasAction(actionID=6):
+            toggleButton.set_active(False)
             return
         from AnagraficaCategorieClienti import AnagraficaCategorieClienti
         anag = AnagraficaCategorieClienti()
@@ -517,12 +547,18 @@ class Main(GladeWidget):
     def on_categorie_fornitori_button_clicked(self, toggleButton):
         if toggleButton.get_property('active') is False:
             return
+        if not hasAction(actionID=6):
+            toggleButton.set_active(False)
+            return
         from AnagraficaCategorieFornitori import AnagraficaCategorieFornitori
         anag = AnagraficaCategorieFornitori()
         showAnagrafica(self.getTopLevel(), anag, toggleButton, mainClass=self)
 
     def on_utenti_button_toggled(self, toggleButton):
         if toggleButton.get_property('active') is False:
+            return
+        if not hasAction(actionID=6):
+            toggleButton.set_active(False)
             return
         if posso("RA"):
             from promogest.modules.RuoliAzioni.ui.AnagraficaUtenti import AnagraficaUtenti
@@ -535,6 +571,9 @@ class Main(GladeWidget):
     def on_ruoli_button_toggled(self, toggleButton):
         if toggleButton.get_property('active') is False:
             return
+        if not hasAction(actionID=6):
+            toggleButton.set_active(False)
+            return
         if posso("RA"):
             from promogest.modules.RuoliAzioni.ui.AnagraficaRuoli import AnagraficaRuoli
             anag = AnagraficaRuoli()
@@ -545,6 +584,9 @@ class Main(GladeWidget):
 
     def on_ruoli_azioni_button_toggled(self, toggleButton):
         if toggleButton.get_property('active') is False:
+            return
+        if not hasAction(actionID=6):
+            toggleButton.set_active(False)
             return
         if posso("RA"):
             from promogest.modules.RuoliAzioni.ui.ManageRoleAction import ManageRuoloAzioni
@@ -557,12 +599,18 @@ class Main(GladeWidget):
     def on_multipli_button_clicked(self, toggleButton):
         if toggleButton.get_property('active') is False:
             return
+        if not hasAction(actionID=6):
+            toggleButton.set_active(False)
+            return
         from AnagraficaMultipli import AnagraficaMultipli
         anag = AnagraficaMultipli()
         showAnagrafica(self.getTopLevel(), anag, toggleButton, mainClass=self)
 
     def on_pagamenti_button_clicked(self, toggleButton):
         if toggleButton.get_property('active') is False:
+            return
+        if not hasAction(actionID=6):
+            toggleButton.set_active(False)
             return
         from AnagraficaPagamenti import AnagraficaPagamenti
         anag = AnagraficaPagamenti()
@@ -571,12 +619,18 @@ class Main(GladeWidget):
     def on_banche_button_clicked(self, toggleButton):
         if toggleButton.get_property('active') is False:
             return
+        if not hasAction(actionID=6):
+            toggleButton.set_active(False)
+            return
         from AnagraficaBanche import AnagraficaBanche
         anag = AnagraficaBanche()
         showAnagrafica(self.getTopLevel(), anag, toggleButton, mainClass=self)
 
     def on_categorie_contatti_button_clicked(self, toggleButton):
         if toggleButton.get_property('active') is False:
+            return
+        if not hasAction(actionID=6):
+            toggleButton.set_active(False)
             return
         from promogest.modules.Contatti.ui.AnagraficaCategorieContatti import AnagraficaCategorieContatti
         anag = AnagraficaCategorieContatti()
@@ -585,12 +639,18 @@ class Main(GladeWidget):
     def on_aliquote_iva_button_clicked(self, toggleButton):
         if toggleButton.get_property('active') is False:
             return
+        if not hasAction(actionID=6):
+            toggleButton.set_active(False)
+            return
         from AnagraficaAliquoteIva import AnagraficaAliquoteIva
         anag = AnagraficaAliquoteIva()
         showAnagrafica(self.getTopLevel(), anag, toggleButton, mainClass=self)
 
     def on_imballaggi_button_clicked(self, toggleButton):
         if toggleButton.get_property('active') is False:
+            return
+        if not hasAction(actionID=6):
+            toggleButton.set_active(False)
             return
         from AnagraficaImballaggi import AnagraficaImballaggi
         anag = AnagraficaImballaggi()
@@ -599,6 +659,9 @@ class Main(GladeWidget):
     def on_stadio_commessa_button_toggled(self, toggleButton):
 
         if toggleButton.get_property('active') is False:
+            return
+        if not hasAction(actionID=6):
+            toggleButton.set_active(False)
             return
 #        if posso("GC"):
 #        messageInfo(msg="""RICORDIAMO CHE QUESTO MODULO E' ANCORA IN FASE DI TEST """)
