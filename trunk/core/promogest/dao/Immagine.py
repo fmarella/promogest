@@ -20,23 +20,40 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 
+
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
-from Dao import Dao
+from promogest.dao.Dao import Dao
+#from promogest.modules.VenditaDettaglio.dao.TestataScontrino import TestataScontrino
 
-class Immagine(Dao):
+
+try:
+    immagine =Table('immagine',
+            params['metadata'],
+            schema = params['schema'],
+            autoload=True)
+except:
+    immagine = Table('immagine', params['metadata'],
+        Column('id', Integer, primary_key=True),
+        Column('denominazione', String(200), nullable=False ),
+        Column('altezza', Numeric(16,4), nullable=True),
+        Column('larghezza', Numeric(16,4), nullable=True),
+        Column('fingerprint', String(200), nullable=False ),
+        Column('data', LargeBinary),
+        schema=params['schema'],
+        )
+immagine.create(checkfirst=True)
+
+
+class ImageFile(Dao):
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):
-        dic= {'filename' : immagine.c.filename==v}
+        dic= { 'denominazione' : immagine.c.denominazione == v }
         return  dic[k]
 
-immagine=Table('image',
-        params['metadata'],
-        schema = params['schema'],
-        autoload=True)
 
-std_mapper = mapper(Immagine, immagine, order_by=immagine.c.id)
+std_mapper = mapper(ImageFile, immagine, order_by = immagine.c.id)
