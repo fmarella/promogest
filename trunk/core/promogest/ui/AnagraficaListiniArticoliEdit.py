@@ -330,7 +330,7 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
         if res:
             self.descrizione_breve_aliquota_iva_label.set_text(res["denominazioneBreveAliquotaIva"])
             self._percentualeIva = res["percentualeAliquotaIva"]
-            self.percentuale_aliquota_iva_label.set_text(self.nformat % self._percentualeIva + ' %')
+            self.percentuale_aliquota_iva_label.set_text(str(self.nformat % self._percentualeIva) + ' %')
         self.id_listino_customcombobox.combobox.set_active(-1)
         self.id_listino_customcombobox.set_sensitive(True)
         if self.dao.id_listino is None:
