@@ -597,9 +597,7 @@ def on_multi_line_button_clickedPart(anaedit, widget):
     #mleditor.multi_linea_editor.set_transient_for(self)
     #self.placeWindow(mleditor.multi_linea_editor)
     desc = anaedit.descrizione_entry.get_text()
-    textBuffer = mleditor.multi_line_editor_textview.get_buffer()
-    textBuffer.set_text(desc)
-    mleditor.multi_line_editor_textview.set_buffer(textBuffer)
+    textview_set_text(mleditor.multi_line_editor_textview, desc)
     mleditor.multi_linea_editor.show_all()
     anaedit.a = 0
     anaedit.b = 0
@@ -624,9 +622,7 @@ def on_multi_line_button_clickedPart(anaedit, widget):
         mleditor.multi_line_editor_statusbar.push(context_id,textStatusBar)
 
     def on_ok_button_clicked(button):
-        text = textBuffer.get_text(textBuffer.get_start_iter(),
-                                    textBuffer.get_end_iter(),True)
-
+        text = textview_get_text(mleditor.multi_line_editor_textview)
         anaedit.descrizione_entry.set_text(text)
         vediamo = anaedit.descrizione_entry.get_text()
         mleditor.multi_linea_editor.hide()
