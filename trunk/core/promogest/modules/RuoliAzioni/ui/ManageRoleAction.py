@@ -35,7 +35,7 @@ class ManageRuoloAzioni(GladeWidget):
 
     def __init__(self, string=None, d=False):
         GladeWidget.__init__(self, 'roleaction',
-                                fileName= 'RuoliAzioni/gui/roleaction.glade',
+                fileName= 'RuoliAzioni/gui/roleaction.glade',
                                 isModule=True)
         self.placeWindow(self.getTopLevel())
         self.getTopLevel().set_modal(True)

@@ -22,6 +22,11 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 import hashlib
+import datetime
+import base64
+from base64 import b64decode
+import Image
+
 from promogest.ui.AnagraficaComplessa import Anagrafica
 from promogest.ui.AnagraficaComplessaEdit import AnagraficaEdit
 from promogest.ui.AnagraficaComplessaReport import AnagraficaReport
@@ -30,7 +35,9 @@ from promogest.ui.AnagraficaComplessaFilter import AnagraficaFilter
 
 from promogest import Environment
 from promogest.dao.User import User
-
+from promogest.dao.Azienda import Azienda
+from promogest.dao.UtenteImmagine import UtenteImmagine
+from promogest.dao.Immagine import ImageFile
 from promogest.ui.utils import *
 from promogest.ui.utilsCombobox import *
 from promogest.ui.gtk_compat import *
@@ -40,13 +47,13 @@ class AnagraficaUtenti(Anagrafica):
 
     def __init__(self, aziendaStr=None):
         Anagrafica.__init__(self,
-                            windowTitle='Promogest - Anagrafica utenti',
-                            recordMenuLabel='_Utenti',
-                            filterElement=AnagraficaUtentiFilter(self),
-                            htmlHandler=AnagraficaUtentiHtml(self),
-                            reportHandler=AnagraficaUtentiReport(self),
-                            editElement=AnagraficaUtentiEdit(self),
-                            aziendaStr=aziendaStr)
+            windowTitle='Promogest - Anagrafica utenti',
+            recordMenuLabel='_Utenti',
+            filterElement=AnagraficaUtentiFilter(self),
+            htmlHandler=AnagraficaUtentiHtml(self),
+            reportHandler=AnagraficaUtentiReport(self),
+            editElement=AnagraficaUtentiEdit(self),
+            aziendaStr=aziendaStr)
 
 
 class AnagraficaUtentiFilter(AnagraficaFilter):
@@ -54,10 +61,10 @@ class AnagraficaUtentiFilter(AnagraficaFilter):
 
     def __init__(self, anagrafica):
         AnagraficaFilter.__init__(self,
-                                  anagrafica,
-                                  'anagrafica_utenti_filter_table',
-                                  gladeFile='RuoliAzioni/gui/_anagrafica_utenti_elements.glade',
-                                module=True)
+            anagrafica,
+            'anagrafica_utenti_filter_table',
+            gladeFile='RuoliAzioni/gui/_anagrafica_utenti_elements.glade',
+            module=True)
         self._widgetFirstFocus = self.username_filter_entry
 
 
@@ -164,11 +171,10 @@ class AnagraficaUtentiHtml(AnagraficaHtml):
 class AnagraficaUtentiReport(AnagraficaReport):
     def __init__(self, anagrafica):
         AnagraficaReport.__init__(self, anagrafica=anagrafica,
-                                  description='Elenco delle aliquote I.V.A.',
-                                  defaultFileName='aliquote_iva',
-                                  htmlTemplate='aliquote_iva',
-                                  sxwTemplate='aliquote_iva')
-
+                                  description='Elenco degli utenti',
+                                  defaultFileName='utenti',
+                                  htmlTemplate='utenti',
+                                  sxwTemplate='utenti')
 
 
 class AnagraficaUtentiEdit(AnagraficaEdit):
@@ -176,27 +182,30 @@ class AnagraficaUtentiEdit(AnagraficaEdit):
 
     def __init__(self, anagrafica):
         AnagraficaEdit.__init__(self,
-                                anagrafica,
-                                'anagrafica_utenti_detail_table',
-                                'Dati Utente',
-                                gladeFile='RuoliAzioni/gui/_anagrafica_utenti_elements.glade',
-                                module=True)
+            anagrafica,
+            'anagrafica_utenti_detail_table',
+            'Dati Utente',
+            gladeFile='RuoliAzioni/gui/_anagrafica_utenti_elements.glade',
+            module=True)
+        self.imgblob = None
         self._widgetFirstFocus = self.username_entry
-
 
     def draw(self, cplx=False):
         #Popola combobox tipi utenti
         fillComboboxRole(self.id_role_combobox)
         fillComboboxLang(self.id_language_combobox)
+        azs = Azienda().select(batchSize = None, orderBy=Azienda.schemaa)
+        for a in azs:
+            self.azienda_listore.append((a.schemaa,))
+        self.azienda_combobox.set_model(self.azienda_listore)
 
-
-    def setDao(self, dao):
+    def setDao(self, dao, from_other_dao=None):
+        self.from_other_dao = from_other_dao
         if dao is None:
             # Crea un nuovo Dao vuoto
             self.dao = User()
-            self.aggiornamento = False
+            self.aggiornamento=False
         else:
-            # Ricrea il Dao con una connessione al DBMS SQL
             self.dao = User().getRecord(id=dao.id)
             self.aggiornamento=True
         self._refresh()
@@ -215,8 +224,25 @@ class AnagraficaUtentiEdit(AnagraficaEdit):
             act = 1
         self.active_user_checkbutton.set_active(act)
         findComboboxRowFromId(self.id_role_combobox, self.dao.id_role)
-#        findComboboxRowFromId(self.id_language_combobox, self.dao.id_language)
+        findComboboxRowFromStr(self.azienda_combobox, self.dao.schemaa_azienda,0)
+        self.data_registrazione_label.set_text(dateToString(self.dao.registration_date))
+        self.ultima_modifica_label.set_text(dateToString(self.dao.last_modified))
+        if self.dao.id:
+            imgBlobb = UtenteImmagine().select(idUtente = self.dao.id)
+            if imgBlobb:
+                try:
+                    img = ImageFile().getRecord(id=imgBlobb[0].id_immagine)
+                    fingerprint =Environment.CACHE+"/"+img.fingerprint
+                    f = open(fingerprint, "w")
+                    f.write(b64decode(img.data))
+                    f.close()
+                    self.userlogo_image.set_from_file(fingerprint)
+                except:
+                    self.userlogo_image.set_from_file("")
 
+# ----- Per il momento non è utilizzato ma andrà ripristinato
+# ---- il prima possibile
+#        findComboboxRowFromId(self.id_language_combobox, self.dao.id_language)
 
     def saveDao(self, tipo=None):
         if (self.username_entry.get_text() == ''):
@@ -230,18 +256,12 @@ class AnagraficaUtentiEdit(AnagraficaEdit):
 
         if (findIdFromCombobox(self.id_role_combobox) is None):
             obligatoryField(self.dialogTopLevel, self.id_role_combobox)
+
         username = self.username_entry.get_text()
         password = self.password_entry.get_text()
         confirm_passowrd = self.confirm_password_entry.get_text()
         if password != confirm_passowrd:
-            msg = 'Le due Password non corrispondono !!!'
-            dialog = gtk.MessageDialog(None,
-                                   gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                   gtk.MESSAGE_INFO,
-                                   gtk.BUTTONS_OK,
-                                   msg)
-            dialog.run()
-            dialog.destroy()
+            messageInfo(msg='Le due Password non corrispondono !!!')
             return
         passwordmd5 = hashlib.md5(username + str(password)).hexdigest()
 
@@ -251,6 +271,56 @@ class AnagraficaUtentiEdit(AnagraficaEdit):
         self.dao.email = self.email_entry.get_text()
         self.dao.photo_src = self.url_entry.get_text()
         self.dao.id_role = findIdFromCombobox(self.id_role_combobox)
+        self.dao.schemaa_azienda = findStrFromCombobox(self.azienda_combobox,0)
+        self.dao.last_modified = datetime.datetime.now()
 #        self.dao.id_language = findIdFromCombobox(self.id_language_combobox)
         self.dao.active = self.active_user_checkbutton.get_active()
+        if not self.aggiornamento:
+            self.dao.registration_date = datetime.datetime.now()
         self.dao.persist()
+
+        if self.from_other_dao:
+            self.from_other_dao.id_user = self.dao.id
+            #self.from_other_dao.id_user.persist()
+        if self.imgblob:
+            idutente = self.dao.id
+            a = UtenteImmagine().select(idUtente=self.dao.id)
+            if a:
+                a=a[0]
+                img = ImageFile().getRecord(id=a.id_immagine)
+            else:
+                a= UtenteImmagine()
+                img = ImageFile()
+            img.denominazione = "nessuno"
+            #img.altezza
+            img.larghezza = 200
+            img.fingerprint = hashlib.md5(self.imgblob).hexdigest()
+            img.data = self.imgblob
+            img.persist()
+            a.id_utente = self.dao.id
+            a.id_immagine = img.id
+            a.persist()
+
+    def on_rimuovi_foto_button_clicked(self, button):
+        self.imgblob = "RIMUOVO"
+        self.userlogo_image.set_from_file("")
+
+    def on_filechooserbutton1_file_set(self, filechooser):
+        #import StringIO
+        #output = StringIO.StringIO()
+        #image.save(output)
+        #contents = output.getvalue()
+        #output.close()
+
+        print "LA FOTO SELEZIONATA",  filechooser.get_file().get_path(), filechooser.get_file()
+        size = 200, 200
+        self.photo_src= filechooser.get_filename()
+        self.userlogo_image.set_from_file(self.photo_src)
+        #im1 = Image.fromstring(self.photo_src)
+        f = open(self.photo_src, "r")
+        g = f.read()
+        #im = Image.open(g)
+        #im.thumbnail(size, Image.ANTIALIAS)
+        #im.tostring(self.photo_src + ".thumbnail)
+        self.imgblob = base64.b64encode(str(g))
+        f.close()
