@@ -34,15 +34,26 @@ try:
             schema = params['schema'],
             autoload=True)
 except:
-    immagine = Table('immagine', params['metadata'],
-        Column('id', Integer, primary_key=True),
-        Column('denominazione', String(200), nullable=False ),
-        Column('altezza', Numeric(16,4), nullable=True),
-        Column('larghezza', Numeric(16,4), nullable=True),
-        Column('fingerprint', String(200), nullable=False ),
-        Column('data', LargeBinary),
-        schema=params['schema'],
-        )
+    try:
+        immagine = Table('immagine', params['metadata'],
+            Column('id', Integer, primary_key=True),
+            Column('denominazione', String(200), nullable=False ),
+            Column('altezza', Numeric(16,4), nullable=True),
+            Column('larghezza', Numeric(16,4), nullable=True),
+            Column('fingerprint', String(200), nullable=False ),
+            Column('data', LargeBinary),
+            schema=params['schema'],
+            )
+    except:
+        immagine = Table('immagine', params['metadata'],
+            Column('id', Integer, primary_key=True),
+            Column('denominazione', String(200), nullable=False ),
+            Column('altezza', Numeric(16,4), nullable=True),
+            Column('larghezza', Numeric(16,4), nullable=True),
+            Column('fingerprint', String(200), nullable=False ),
+            Column('data', Binary),
+            schema=params['schema'],
+            )
 immagine.create(checkfirst=True)
 
 
