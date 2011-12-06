@@ -2917,6 +2917,22 @@ def YesNoDialog(msg="MESSAGGIO", transient=None,show_entry=False ):
         return False
     return response
 
+def textview_insert_at_cursor(textview, string):
+    _buffer = textview.get_buffer()
+    return _buffer.insert_at_cursor(string)
+
+def textview_get_modified(textview):
+    _buffer = textview.get_buffer()
+    return _buffer.get_modified()
+
+def textview_get_char_count(textview):
+    _buffer = textview.get_buffer()
+    return _buffer.get_char_count()
+
+def textview_get_line_count(textview):
+    _buffer = textview.get_buffer()
+    return _buffer.get_line_count()
+
 def textview_get_text(textview):
     _buffer = textview.get_buffer()
     return _buffer.get_text(_buffer.get_start_iter(), _buffer.get_end_iter(), True) or ""

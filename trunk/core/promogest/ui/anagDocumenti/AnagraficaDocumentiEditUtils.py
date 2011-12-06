@@ -602,8 +602,8 @@ def on_multi_line_button_clickedPart(anaedit, widget):
     anaedit.a = 0
     anaedit.b = 0
     def test(widget, event):
-        char_count = textBuffer.get_char_count()
-        line_count = textBuffer.get_line_count()
+        char_count = textview_get_char_count(mleditor.multi_line_editor_textview)
+        line_count = textview_get_line_count(mleditor.multi_line_editor_textview)
         if char_count >= 500:
             on_ok_button_clicked(button)
         if anaedit.b != line_count:
@@ -614,9 +614,9 @@ def on_multi_line_button_clickedPart(anaedit, widget):
         if anaedit.a <= (int(setconf("Multilinea","multilinealimite"))-1):
             pass
         else:
-            textBuffer.insert_at_cursor("\n")
+            textview_insert_at_cursor(mleditor.multi_line_editor_textview, "\n")
             anaedit.a = -1
-        modified = textBuffer.get_modified()
+        modified = textview_get_modified(mleditor.multi_line_editor_textview)
         textStatusBar = "Tot. Caratteri = %s , Righe = %s, Limite= %s, Colonna=%s" %(char_count,line_count, colonne, anaedit.a)
         context_id =  mleditor.multi_line_editor_statusbar.get_context_id("Multi Editor")
         mleditor.multi_line_editor_statusbar.push(context_id,textStatusBar)
