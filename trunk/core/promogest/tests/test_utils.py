@@ -28,6 +28,7 @@ from promogest.dao.AliquotaIva import AliquotaIva
 import unittest
 from promogest import Environment
 from promogest.ui.utils import *
+from promogest.ui.gtk_compat import *
 import string
 
 
@@ -108,6 +109,19 @@ class TestUtils(unittest.TestCase):
         """
         pass
 
+    def test_textview_func(self):
+        """
+
+        Arguments:
+        - `self`:
+        """
+        _tb = gtk.TextView()
+        textview_set_text(_tb, 'foobar')
+        self.assertEqual(textview_get_text(_tb), 'foobar')
+        self.assertTrue(textview_get_modified(_tb))
+
+
+
 
 if __name__ == '__main__':
     tests = ['test_stringToDate',
@@ -117,6 +131,7 @@ if __name__ == '__main__':
              'test_date_festivi',
              "test_addPointToString",
              "test_iva_dict",
-             "test_string_to_number"]
+             "test_string_to_number",
+             "test_textview_func"]
     suite = unittest.TestSuite(map(TestUtils, tests))
     unittest.TextTestRunner(verbosity=2).run(suite)
