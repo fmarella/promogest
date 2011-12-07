@@ -79,6 +79,7 @@ class DuplicazioneListino(GladeWidget):
                 newDao.id = 1
             else:
                 newDao.id = max([p.id for p in listini]) +1
+        newDao.visible = True
         newDao.persist()
 
         lcc = ListinoCategoriaCliente().select(idListino=self.dao.id,
@@ -142,7 +143,7 @@ class DuplicazioneListino(GladeWidget):
                     ladao.data_listino_articolo = datetime.datetime.now()
                 ladao.listino_attuale = True
                 Environment.session.add(ladao)
-            Environment.session.commit()
+                Environment.session.commit()
 
         messageInfo(msg="Nuovo Listino creato")
 
