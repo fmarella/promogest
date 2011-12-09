@@ -24,7 +24,7 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import params, conf,session
-from Dao import Dao
+from promogest.dao.Dao import Dao
 #from promogest.modules.Contatti.dao.ContattoCliente import ContattoCliente
 #from promogest.modules.Contatti.dao.RecapitoContatto import RecapitoContatto
 #from promogest.modules.Contatti.dao.Contatto import Contatto
@@ -34,6 +34,9 @@ from promogest.ui.utils import  codeIncrement, getRecapitiCliente
 
 
 class Cliente(Dao):
+    """
+    Dao Cliente
+    """
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
@@ -51,6 +54,9 @@ class Cliente(Dao):
     categorieCliente = property(_getCategorieCliente, _setCategorieCliente)
 
     def delete(self):
+        """
+        Rimuove il cliente
+        """
         categ = self._getCategorieCliente()
         if categ:
             for c in categ:
@@ -58,46 +64,63 @@ class Cliente(Dao):
         session.delete(self)
         session.commit()
 
-    def _cellularePrincipale(self):
+    @property
+    def cellulare_principale(self):
+        """
+        Ritorna il numero di cellulare principale del cliente
+        """
         if self.id:
             for reca in getRecapitiCliente(self.id):
                 if reca.tipo_recapito =="Cellulare":
                     return reca.recapito
         return ""
-    cellulare_principale = property(_cellularePrincipale)
 
-    def _telefonoPrincipale(self):
+    @property
+    def telefono_principale(self):
+        """
+        Ritorna il numero di rete fissa principale del cliente
+        """
         if self.id:
             for reca in getRecapitiCliente(self.id):
-                if reca.tipo_recapito =="Telefono":
+                if reca.tipo_recapito == "Telefono":
                     return reca.recapito
-        return ""
-    telefono_principale = property(_telefonoPrincipale)
+        else:
+            return ""
 
-    def _emailPrincipale(self):
+    @property
+    def email_principale(self):
+        """
+        Ritorna l'indirizzo email principale del cliente
+        """
         if self.id:
             for reca in getRecapitiCliente(self.id):
-                if reca.tipo_recapito =="Email":
+                if reca.tipo_recapito == "Email":
                     return reca.recapito
         return ""
-    email_principale = property(_emailPrincipale)
 
-    def _faxPrincipale(self):
+    @property
+    def fax_principale(self):
+        """
+        Ritorna il fax principale del cliente
+        """
         if self.id:
             for reca in getRecapitiCliente(self.id):
-                if reca.tipo_recapito =="Fax":
+                if reca.tipo_recapito == "Fax":
                     return reca.recapito
-        return ""
-    fax_principale = property(_faxPrincipale)
+        else:
+            return ""
 
-    def _sitoPrincipale(self):
+    @property
+    def sito_principale(self):
+        """
+        Ritorna il sito principale del cliente
+        """
         if self.id:
             for reca in getRecapitiCliente(self.id):
-                if reca.tipo_recapito =="Sito":
+                if reca.tipo_recapito == "Sito":
                     return reca.recapito
-        return ""
-    sito_principale = property(_sitoPrincipale)
-
+        else:
+            return ""
 
     def filter_values(self,k,v):
         if k == 'codice':
@@ -124,7 +147,7 @@ class Cliente(Dao):
 
 def getNuovoCodiceCliente():
     """
-        Restituisce il codice progressivo per un nuovo cliente
+    Restituisce il codice progressivo per un nuovo cliente
     """
 
     lunghezzaCodice = 10
