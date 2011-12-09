@@ -55,6 +55,8 @@ class Pagamento(Dao):
         dao = AliquotaIva().getRecord(self.id_aliquota_iva)
         if dao:
             return dao.percentuale
+        else:
+            return 0
 
 pagamento = Table('pagamento',
                   params['metadata'],
