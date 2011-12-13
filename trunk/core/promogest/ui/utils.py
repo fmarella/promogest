@@ -1678,7 +1678,7 @@ def prepareFilterString(string=None):
 
 def dateToString(data):
     """
-    Converte una data in stringa
+    Converte una data in stringa con formato GG/MM/AAAA
     """
     if data is None:
         return ''
@@ -1694,7 +1694,7 @@ def dateToString(data):
 
 def stringToDate(stringa):
     """
-    Converte una stringa in data
+    Converte una stringa con formato GG/MM/AAAA in data
     """
     if not stringa:
         return None
