@@ -2062,31 +2062,40 @@ def modificaLottiScadenze(riga):
 def listaComponentiArticoloKit(riga):
     """
     Ritorna la lista dei componenti articolo kit
+    
+    @param riga: riga dell'articolo
+    @return: descrizione completa articolo kit
     """
+    descr = riga['descrizione']
     from promogest.dao.Articolo import Articolo
     if setconf('Documenti', 'lista_componenti_articolokit'):
         if 'id_articolo' in riga:
             articolo = Articolo().getRecord(id=riga['id_articolo'])
             for articolokit in articolo.articoli_kit:
                 _subarticolo = leggiArticolo(articolokit.id_articolo_filler)
-                riga['descrizione'] += "\n %s" % _subarticolo['denominazione']
-    return riga
-     
+                descr += "\n %s" % _subarticolo['denominazione']
+    return descr
 
-def multilinedirtywork( param):
+def multilinedirtywork(param):
     """
     Funzione che gestisce la suddivisione in multirighe
     """
-    strippa = True
+    caratteri_singola_linea = int(setconf("Multilinea","multilinealimite"))
+    
+    operazione = None
     if 'operazione' in param[0]:
-        ope = param[0]['operazione'].strip()
-        if ope == 'Fattura accompagnatoria' or 'DDT' in ope:
+        operazione = param[0]['operazione'].strip()
+    
+    strippa = True
+    if operazione:
+        if operazione == 'Fattura accompagnatoria' or 'DDT' in operazione:
             strippa = False
 
     for i in param:
-        try:
+        if 'righe' in i:
             for z in i["righe"]:
                 z["descrizione"] = modificaLottiScadenze(z)
+                z["descrizione"] = listaComponentiArticoloKit(z)
 
             lista = i['righe']
             skippa = False
@@ -2097,13 +2106,12 @@ def multilinedirtywork( param):
                         x["descrizione"] = ''
                         continue
 
-                x = listaComponentiArticoloKit(x)
-
-                if len(x["descrizione"]) > int(setconf("Multilinea","multilinealimite"))\
+                if len(x["descrizione"]) > caratteri_singola_linea \
                 and "\n" not in x["descrizione"]:
                     wrapper = TextWrapper()
-                    wrapper.width = int(setconf("Multilinea","multilinealimite"))
+                    wrapper.width = caratteri_singola_linea
                     x["descrizione"] = "\n".join(wrapper.wrap(x["descrizione"]))
+                    
                 if '\n' in x["descrizione"]:
                     desc= x["descrizione"].split("\n")
                     o = lista.index(x) # posizione della righa fra le righe
@@ -2116,8 +2124,6 @@ def multilinedirtywork( param):
                             c[k] = ""
                         c["descrizione"] = str(d).strip()
                         lista.insert(o+p,c)
-        except:
-           print " NON e' una riga"
     return param
 
 
