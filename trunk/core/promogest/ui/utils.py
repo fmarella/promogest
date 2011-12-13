@@ -2037,25 +2037,26 @@ def insertFileTypeChooser(filechooser,typeList):
 
 
 def modificaLottiScadenze(riga):
-    from promogest.dao.RigaMovimentoFornitura import RigaMovimentoFornitura
-    aa = RigaMovimentoFornitura().select(idRigaMovimentoVendita = riga["id"], batchSize=None)
     ll = riga["descrizione"]
-    if aa:
-        l = ""
-        lotti= []
-        for a in aa:
-            lotto = a.forni.numero_lotto
-            if lotto in lotti:
-                continue
-            else:
-                lotti.append(lotto)
-            l += _("\n Lotto %s Data sc %s ") %(lotto,dateToString(a.forni.data_scadenza))
-        ll += l
-    else:
-        from promogest.dao.NumeroLottoTemp import NumeroLottoTemp
-        aa = NumeroLottoTemp().select(idRigaMovimentoVenditaTemp=riga["id"])
+    if 'id' in riga:
+        from promogest.dao.RigaMovimentoFornitura import RigaMovimentoFornitura
+        aa = RigaMovimentoFornitura().select(idRigaMovimentoVendita = riga["id"], batchSize=None)
         if aa:
-            ll+=_("\n Lotto %s") %(aa[0].lotto_temp)
+            l = ""
+            lotti= []
+            for a in aa:
+                lotto = a.forni.numero_lotto
+                if lotto in lotti:
+                    continue
+                else:
+                    lotti.append(lotto)
+                l += _("\n Lotto %s Data sc %s ") %(lotto,dateToString(a.forni.data_scadenza))
+            ll += l
+        else:
+            from promogest.dao.NumeroLottoTemp import NumeroLottoTemp
+            aa = NumeroLottoTemp().select(idRigaMovimentoVenditaTemp=riga["id"])
+            if aa:
+                ll+=_("\n Lotto %s") %(aa[0].lotto_temp)
     return ll
 
 
