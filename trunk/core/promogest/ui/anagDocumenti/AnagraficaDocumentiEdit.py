@@ -653,7 +653,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self._righe[0]["prezzoLordo"] = mN(riga.valore_unitario_lordo)
             self._righe[0]["sconti"] = sconti
             self._righe[0]["applicazioneSconti"] = applicazione
-            self._righe[0]["prezzoNetto"] = mN(Decimal(riga.valore_unitario_netto), 2)
+            self._righe[0]["prezzoNetto"] = Decimal(riga.valore_unitario_netto)
             self._righe[0]["prezzoNettoUltimo"] = Decimal(riga.valore_unitario_netto)
             self._righe[0]["totale"] = 0
             if adr:
