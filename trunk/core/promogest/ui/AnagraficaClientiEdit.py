@@ -282,6 +282,15 @@ class AnagraficaClientiEdit(AnagraficaEdit):
         self.dao.codice = self.codice_entry.get_text().upper()
         self.dao.codice = omogeneousCode(section="Clienti", string=self.dao.codice )
         self.dao.ragione_sociale = self.ragione_sociale_entry.get_text()
+
+        self.cliente_nome = setconf("Clienti", "cliente_nome") or False
+        if self.cliente_nome:
+            self.dao.nome = self.nome_entry.get_text()
+
+        self.cliente_cognome = setconf("Clienti", "cliente_cognome") or False
+        if self.cliente_cognome:
+            self.dao.cognome = self.cognome_entry.get_text()
+
         if self.cliente_insegna:
             self.dao.insegna = self.insegna_entry.get_text()
 
