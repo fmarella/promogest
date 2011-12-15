@@ -2072,9 +2072,11 @@ def listaComponentiArticoloKit(riga):
     if setconf('Documenti', 'lista_componenti_articolokit'):
         if 'id_articolo' in riga:
             articolo = Articolo().getRecord(id=riga['id_articolo'])
-            for articolokit in articolo.articoli_kit:
-                _subarticolo = leggiArticolo(articolokit.id_articolo_filler)
-                descr += "\n %s" % _subarticolo['denominazione']
+            if articolo:
+                for articolokit in articolo.articoli_kit:
+                    _subarticolo = leggiArticolo(articolokit.id_articolo_filler)
+                    if _subarticolo:
+                        descr += "\n %s" % _subarticolo['denominazione']
     return descr
 
 def multilinedirtywork(param):
