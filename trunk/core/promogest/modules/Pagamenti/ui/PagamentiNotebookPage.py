@@ -195,7 +195,9 @@ un importo in sospeso. Il documento, per poter essere collegato, deve essere com
                 self.stato_label.set_markup('<b><span foreground="#B40000" size="24000">'+_('APERTO')+'</span></b>')
             else:
                 return
-        self.attiva_scadenze()
+        res = self.attiva_scadenze()
+        if not res:
+            return
         self.dividi_importo()
         self.ricalcola_sospeso_e_pagato()
 
@@ -368,6 +370,10 @@ un importo in sospeso. Il documento, per poter essere collegato, deve essere com
         # Rimuovo le rate in eccesso e le relative tabs dall'interfaccia
         y = len(self.rate) - numeroscadenze
         if y > 0:
+            msg = 'Rimuovere ' + ngettext('%s rata', '%s rate', y) % y #@UndefinedVariable
+            msg += ' dai pagamenti?\n\n Alcune informazioni andranno perse per sempre.'
+            if not YesNoDialog(msg=msg):
+                return False
             for i in range(abs(y)):
                 self.rate.pop()
                 self.scadenze_notebook.remove_page(-1)
@@ -375,7 +381,11 @@ un importo in sospeso. Il documento, per poter essere collegato, deve essere com
         # Aggiungo le rate necessarie per il tipo di pagamento scelto
         i = 1
         for j in range(numeroscadenze):
-            daoTDS = TestataDocumentoScadenza()
+            daoTDS = None
+            try:
+                daoTDS = self.rate[j].get()
+            except IndexError:
+                daoTDS = TestataDocumentoScadenza()
             idpag = findIdFromCombobox(self.id_pagamento_customcombobox.combobox)
             if idpag:
                 p = Pagamento().getRecord(id=idpag)
@@ -392,6 +402,7 @@ un importo in sospeso. Il documento, per poter essere collegato, deve essere com
             except IndexError:
                 self.on_aggiungi_rate_button_clicked(None)
                 self.rate[-1].fill(daoTDS)
+        return True
 
     def dividi_importo(self):
         """ Divide l'importo passato per il numero delle scadenze. Se viene passato un argomento, che indica
