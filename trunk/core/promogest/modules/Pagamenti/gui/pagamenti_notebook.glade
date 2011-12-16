@@ -825,7 +825,7 @@
                     </child>
                     <child>
                       <object class="GtkCheckButton" id="primanota_check">
-                        <property name="label" translatable="yes">Non inserire pagamenti in prima nota cassa</property>
+                        <property name="label" translatable="yes">Inserisci pagamenti  in prima nota cassa</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>

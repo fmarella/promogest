@@ -608,7 +608,7 @@ class TestataDocumento(Dao):
         #agganciare qui con dei controlli, le cancellazioni preventive ed i
         #reinserimenti.
         self.testataDocumentoScadenzaDel(dao=self)
-        if not(self.__ScadenzeDocumento) and not self.ripartire_importo:
+        if not(self.__ScadenzeDocumento) and self.ripartire_importo:
             tds = TestataDocumentoScadenza()
             tds.data = datetime.datetime.now()
             tds.numero_scadenza = 1
@@ -620,7 +620,7 @@ class TestataDocumento(Dao):
         for scad in self.__ScadenzeDocumento:
             scad.id_testata_documento = self.id
             Environment.session.add(scad)
-            if not self.ripartire_importo:
+            if self.ripartire_importo:
                 if scad.data_pagamento is None:
                     if not setconf('PrimaNota', 'inserisci_senza_data_pagamento'):
                         continue
