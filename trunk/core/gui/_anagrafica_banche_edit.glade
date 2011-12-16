@@ -210,15 +210,6 @@
               </packing>
             </child>
             <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
               <object class="GtkLabel" id="bic_swift_label">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
@@ -250,6 +241,15 @@
                 <property name="top_attach">5</property>
                 <property name="bottom_attach">6</property>
               </packing>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
             </child>
           </object>
           <packing>
@@ -385,7 +385,6 @@
         </child>
         <child>
           <object class="GtkFrame" id="altre_info_frame">
-            <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="label_xalign">0</property>
             <property name="shadow_type">in</property>
