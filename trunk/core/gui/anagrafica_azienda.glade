@@ -875,7 +875,7 @@
                 <property name="xscale">0</property>
                 <child>
                   <object class="GtkEntry" id="cin_entry">
-                    <property name="width_request">30</property>
+                    <property name="width_request">60</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="max_length">1</property>
@@ -914,7 +914,7 @@
                 <property name="xscale">0</property>
                 <child>
                   <object class="GtkEntry" id="abi_entry">
-                    <property name="width_request">50</property>
+                    <property name="width_request">80</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="max_length">5</property>
@@ -953,7 +953,7 @@
                 <property name="xscale">0</property>
                 <child>
                   <object class="GtkEntry" id="cab_entry">
-                    <property name="width_request">50</property>
+                    <property name="width_request">80</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="max_length">5</property>
