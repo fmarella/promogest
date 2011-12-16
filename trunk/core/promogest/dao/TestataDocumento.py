@@ -49,7 +49,7 @@ from ScontoRigaMovimento import ScontoRigaMovimento
 from promogest.dao.RigaMovimentoFornitura import RigaMovimentoFornitura
 from promogest.modules.Pagamenti.dao.TestataDocumentoScadenza import TestataDocumentoScadenza
 from promogest.dao.InformazioniFatturazioneDocumento import InformazioniFatturazioneDocumento
-from promogest.lib.iban import check_iban, country_data
+from promogest.lib.iban import check_iban, IBANError
 
 #from DaoUtils import *
 from decimal import *
@@ -795,62 +795,69 @@ class TestataDocumento(Dao):
             return True
 
 
+    @property
+    def aliquota_iva_esenzione(self):
+        if self.AL:
+            return self.AL.denominazione
+        else:
+            return ""
 
-    def _al(self):
-        if self.AL: return self.AL.denominazione
-        else: return ""
-    aliquota_iva_esenzione = property(_al)
+    @property
+    def ragione_sociale_vettore(self):
+        if self.PV:
+            return self.PV.ragione_sociale
+        else:
+            return ""
 
-
-    #property vettore
-    def _rag_soc_vett(self):
-        if self.PV: return self.PV.ragione_sociale
-        else: return ""
-    ragione_sociale_vettore = property(_rag_soc_vett)
-
-
-    #property destinazione_merce
-    def _destMerc(self):
+    @property
+    def destinazione_merce(self):
         if self.DM: return self.DM.denominazione
         else: return ""
-    destinazione_merce = property(_destMerc)
 
-    def _destMercInd(self):
+    @property
+    def indirizzo_destinazione_merce(self):
         if self.DM: return self.DM.indirizzo
         else: return ""
-    indirizzo_destinazione_merce = property(_destMercInd)
 
-    def _destMercloca(self):
+    @property
+    def localita_destinazione_merce(self):
         if self.DM: return self.DM.localita
         else: return ""
-    localita_destinazione_merce = property(_destMercloca)
 
-    def _destMerccap(self):
-        if self.DM: return self.DM.cap
-        else: return ""
-    cap_destinazione_merce = property(_destMerccap)
+    @property
+    def cap_destinazione_merce(self):
+        if self.DM:
+            return self.DM.cap
+        else:
+            return ""
 
-    def _destMercprov(self):
-        if self.DM: return self.DM.provincia
-        else: return ""
-    provincia_destinazione_merce = property(_destMercprov)
+    @property
+    def provincia_destinazione_merce(self):
+        if self.DM:
+            return self.DM.provincia
+        else:
+            return ""
 
+    @property
+    def banca(self):
+        if self.BN:
+            return self.BN.denominazione
+        else:
+            return ""
 
-    #property banca
-    def _banca(self):
-        if self.BN: return self.BN.denominazione
-        else: return ""
-    banca = property(_banca)
+    @property
+    def agenzia(self):
+        if self.BN:
+            return self.BN.agenzia
+        else:
+            return ""
 
-    def _agenzia(self):
-        if self.BN: return self.BN.agenzia
-        else: return ""
-    agenzia = property(_agenzia)
-
-    def _iban(self):
-        if self.BN: return self.BN.iban
-        else:return ""
-    iban = property(_iban)
+    @property
+    def iban(self):
+        if self.BN:
+            return self.BN.iban
+        else:
+            return ""
     
     @property
     def bic_swift(self):
@@ -859,52 +866,59 @@ class TestataDocumento(Dao):
         else:
             return ''
 
-    def _abi(self):
+    @property
+    def abi(self):
         if self.BN:
             abi = self.BN.abi or ""
             if not abi and self.BN.iban:
-                code, checksum, bank, account = check_iban(self.BN.iban)
-                nazione = country_data(code) or ""
-                abi = bank[nazione.bank[0][0]:(nazione.bank[0][0]+nazione.bank[1][0])] or ""
+                try:
+                    code, checksum, cin, abi, cab, account = check_iban(self.BN.iban)
+                except IBANError:
+                    abi = ''
             return abi
-        else:return ""
-    abi = property(_abi)
+        else:
+            return ""
 
-    def _cab(self):
+    @property
+    def cab(self):
         if self.BN:
             cab = self.BN.cab or ""
             if not cab and self.BN.iban:
-                code, checksum, bank, account = check_iban(self.BN.iban)
-                nazione = country_data(code) or ""
-                cab = bank[(nazione.bank[0][0]+nazione.bank[1][0]):(nazione.bank[0][0]+nazione.bank[1][0]+ nazione.bank[2][0])] or ""
+                try:
+                    code, checksum, cin, abi, cab, account = check_iban(self.BN.iban)
+                except IBANError:
+                    cab = ''
             return cab
-        else:return ""
-    cab = property(_cab)
+        else:
+            return ""
 
-    #property pagamento
-    def _pagamento(self):
-        if self.PG: return self.PG.denominazione
-        else:return ""
-    pagamento = property(_pagamento)
+    @property
+    def pagamento(self):
+        if self.PG:
+            return self.PG.denominazione
+        else:
+            return ""
 
-    #property pagamento_tipo
-    def _pagamento_tipo(self):
-        if self.PG: return self.PG.tipo
-        else:return ""
-    pagamento_tipo = property(_pagamento_tipo)
+    @property
+    def pagamento_tipo(self):
+        if self.PG:
+            return self.PG.tipo
+        else:
+            return ""
 
+    @property
+    def ragione_sociale_cliente(self):
+        if self.CLI:
+            return self.CLI.ragione_sociale
+        else:
+            return ""
 
-    #property cliente
-    def _ragione_sociale_cliente(self):
-        if self.CLI: return self.CLI.ragione_sociale
-        else: return ""
-    ragione_sociale_cliente= property(_ragione_sociale_cliente)
-
-
-    def _codice_cliente(self):
-        if self.CLI: return self.CLI.codice
-        else: return ""
-    codice_cliente= property(_codice_cliente)
+    @property
+    def codice_cliente(self):
+        if self.CLI:
+            return self.CLI.codice
+        else:
+            return ""
 
     def _insegna_cliente(self):
         if self.CLI: return self.CLI.insegna
