@@ -24,7 +24,7 @@
 from promogest.dao.Banca import Banca
 from promogest.ui.GladeWidget import GladeWidget
 from promogest.ui.utils import obligatoryField, messageWarning,\
-    messageError
+    messageError, messageInfo
 from promogest.lib.iban import check_iban, IBANError
 
 
@@ -66,6 +66,9 @@ class AnagraficaBancheEdit(GladeWidget):
             except IBANError as e:
                 messageWarning(msg="Il codice IBAN inserito non è corretto.",
                                transient=self.getTopLevel())
+            else:
+                messageInfo(msg="Il codice IBAN è formalmente corretto.",
+                            transient=self.getTopLevel())
 
 
     def saveDao(self, tipo=None):
