@@ -851,6 +851,13 @@ class TestataDocumento(Dao):
         if self.BN: return self.BN.iban
         else:return ""
     iban = property(_iban)
+    
+    @property
+    def bic_swift(self):
+        if self.BN:
+            return self.BN.bic_swift
+        else:
+            return ''
 
     def _abi(self):
         if self.BN:
