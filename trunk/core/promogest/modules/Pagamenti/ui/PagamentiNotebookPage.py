@@ -94,6 +94,7 @@ class PagamentiNotebookPage(GladeWidget):
         self.importo_secondo_documento_entry.set_text('')
         self.numero_primo_documento_entry.set_text('')
         self.numero_secondo_documento_entry.set_text('')
+        self.primanota_check.set_active(True)
         if self.acconto:
             self.acconto_scheda_togglebutton.set_active(False)
         if len(self.rate) > 0:
