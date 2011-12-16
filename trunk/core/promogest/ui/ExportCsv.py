@@ -19,17 +19,14 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-
-import csv
-from GladeWidget import GladeWidget
-from shutil import copy2
 import os
-from promogest import Environment
+import csv
+from shutil import copy2
 import xml.etree.ElementTree as ET
-
-from utils import *
-#from utilsCombobox import *
-
+from promogest.ui.GladeWidget import GladeWidget
+from promogest import Environment
+from promogest.ui.utils import messageInfo, obligatoryField, pbar
+from promogest.ui.gtk_compat import *
 
 
 class ExportCsv(GladeWidget):
