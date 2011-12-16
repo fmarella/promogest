@@ -27,7 +27,9 @@ import Image
 import os
 from promogest import Environment
 from promogest.dao.Azienda import Azienda
-from promogest.ui.utils import dateToString, stringToDate, checkCodFisc, checkPartIva, showAnagraficaRichiamata, fenceDialog, setconf, posso
+from promogest.ui.utils import dateToString, stringToDate, checkCodFisc, checkPartIva, showAnagraficaRichiamata, fenceDialog, setconf, posso,\
+    messageError
+from promogest.lib.iban import check_iban, IBANError
 
 
 class AnagraficaAziende(GladeWidget):
@@ -87,6 +89,8 @@ class AnagraficaAziende(GladeWidget):
         self.numero_conto_entry.set_text(self.dao.numero_conto or '')
         self.cin_entry.set_text(self.dao.cin or '')
         self.iban_entry.set_text(self.dao.iban or '')
+        self.abi_entry.set_text(self.dao.abi or '')
+        self.cab_entry.set_text(self.dao.cab or '')
         self.path_label.set_text(self.dao.percorso_immagine or '')
         self.logo_azienda.set_from_file(self.dao.percorso_immagine)
 
@@ -114,9 +118,30 @@ class AnagraficaAziende(GladeWidget):
         self.dao.iscrizione_tribunale_numero = self.numero_iscrizione_tribunale_entry.get_text()
         self.dao.codice_rea = self.codice_rea_entry.get_text()
         self.dao.matricola_inps = self.matricola_inps_entry.get_text()
+        
         self.dao.numero_conto = self.numero_conto_entry.get_text()
         self.dao.cin = self.cin_entry.get_text()
-        self.dao.iban = self.iban_entry.get_text()
+        self.dao.abi = self.abi_entry.get_text()
+        self.dao.cab = self.cab_entry.get_text()
+        
+        iban = self.iban_entry.get_text() or ''
+        if iban:
+            iban = iban.upper()
+            try:
+                cc, cs, cin, abi, cab, conto = check_iban(iban)
+            except IBANError:
+                messageError(msg="Il codice IBAN inserito non è corretto.",
+                                   transient=self.getTopLevel())
+                return False
+            else:
+                self.dao.cin = cin
+                self.dao.abi = abi
+                self.dao.cab = cab
+                self.dao.numero_conto = conto
+                self.dao.iban = iban
+        else:
+            self.dao.iban = ''
+
         self.dao.percorso_immagine = self.path_label.get_text() #+"/"+self.filena
 #        self.logo_azienda.set_from_file(self.resizeImgThumbnailGeneric(filename =self.dao.percorso_immagine))
         if self.dao.codice_fiscale != '':
