@@ -79,8 +79,6 @@ class AnagraficaBanche(Anagrafica):
         self._treeViewModel.clear()
 
         for b in bans:
-            iban = IBAN(b.iban)
-
             self._treeViewModel.append((b,
                                         (b.denominazione or ''),
                                         (b.agenzia or ''),
