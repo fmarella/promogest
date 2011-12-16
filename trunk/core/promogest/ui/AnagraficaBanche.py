@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010, 2011 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -23,12 +23,8 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 from promogest.ui.AnagraficaSemplice import Anagrafica, AnagraficaDetail, AnagraficaFilter
-from promogest import Environment
 from promogest.dao.Banca import Banca
-from promogest.lib.ControlloIBAN import *
-from promogest.ui.GladeWidget import GladeWidget
-from promogest.ui.utils import *
-from promogest.ui.utilsCombobox import *
+from promogest.ui.utils import prepareFilterString
 
 
 class AnagraficaBanche(Anagrafica):
