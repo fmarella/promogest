@@ -71,14 +71,7 @@ class PagamentiNotebookPage(GladeWidget):
         anag.show_all()
         
     def on_primanota_check_toggled(self, widget):
-        if self.ana._loading:
-            return
-        if not widget.get_active():
-            self.ana.notebook.set_current_page(-1)
-            if YesNoDialog(msg=_('Le informazioni sui pagamenti in PrimaNota andranno perse, continuare?')):
-                widget.set_active(False)
-            else:
-                widget.set_active(True)
+        pass
 
     def clear(self):
         '''
@@ -287,6 +280,10 @@ un importo in sospeso. Il documento, per poter essere collegato, deve essere com
                     self.rate[-1].fill(scadenza)
 
             self.primanota_check.set_active(self.ana.dao.ripartire_importo)
+            if not self.ana.dao.ripartire_importo:
+                msg="""Eventuali pagamenti inseriti in Prima Nota andranno persi.
+\nControlla l\'opzione "<b>Inserisci pagamenti in prima nota cassa</b>" nella scheda Pagamenti."""
+                messageWarning(msg=msg)
 
             if self.ana.dao.documento_saldato:
                 self.stato_label.set_markup('<b><span foreground="#338000" size="24000">'+_('PAGATO')+'</span></b>')
