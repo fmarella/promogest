@@ -69,6 +69,16 @@ class PagamentiNotebookPage(GladeWidget):
         win = anag.getTopLevel()
         win.set_transient_for(self.ana.dialogTopLevel)
         anag.show_all()
+        
+    def on_primanota_check_toggled(self, widget):
+        if self.ana._loading:
+            return
+        if not widget.get_active():
+            self.ana.notebook.set_current_page(-1)
+            if YesNoDialog(msg=_('Eventuali inserimenti precedenti in prima nota andranno persi, continuare?')):
+                widget.set_active(False)
+            else:
+                widget.set_active(True)
 
     def clear(self):
         '''
