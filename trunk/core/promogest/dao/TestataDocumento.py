@@ -628,7 +628,11 @@ class TestataDocumento(Dao):
                 if scad.pagamento == 'n/a':
                     tipo = scad.pagamento
                 else:
-                    tipo = Pagamento().select(denominazione=scad.pagamento)[0].tipo
+                    p = Pagamento().select(denominazione=scad.pagamento)
+                    if p:
+                        tipo = p[0].tipo
+                    else:
+                        tipo = 'n/a'
 
                 if scad.numero_scadenza == 0:
                     tipo_pag = "ACCONTO"
