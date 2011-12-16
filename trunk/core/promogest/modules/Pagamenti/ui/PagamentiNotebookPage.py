@@ -117,7 +117,7 @@ class PagamentiNotebookPage(GladeWidget):
         ''' Elimina una scheda di pagamento e la relativa rata
         '''
         if len(self.rate) > 0:
-            if YesNoDialog(msg='Rimuovere la scadenza?'):
+            if YesNoDialog(msg=_('Rimuovere la rata?\n\nAlcune informazioni andranno perse per sempre.')):
                 self.rate.pop()
                 self.scadenze_notebook.remove_page(-1)
         else:
