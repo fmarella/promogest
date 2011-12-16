@@ -75,7 +75,7 @@ class PagamentiNotebookPage(GladeWidget):
             return
         if not widget.get_active():
             self.ana.notebook.set_current_page(-1)
-            if YesNoDialog(msg=_('Eventuali inserimenti precedenti in prima nota andranno persi, continuare?')):
+            if YesNoDialog(msg=_('Le informazioni sui pagamenti in PrimaNota andranno perse, continuare?')):
                 widget.set_active(False)
             else:
                 widget.set_active(True)
