@@ -57,6 +57,7 @@ class AnagraficaBancheEdit(GladeWidget):
             self.iban_entry.set_text(str(self.dao.iban))
             self.abi_entry.set_text(str(self.dao.abi))
             self.cab_entry.set_text(str(self.dao.cab))
+            self.bic_swift_entry.set_text(str(self.dao.bic_swift or ''))
             self.checkIban()
 
     def on_calcola_da_iban_button_clicked(self, button):
@@ -92,6 +93,7 @@ class AnagraficaBancheEdit(GladeWidget):
         iban = self.iban_entry.get_text()
         abi = self.abi_entry.get_text()
         cab = self.cab_entry.get_text()
+        bic_swift = self.bic_swift_entry.get_text()
         if not denominazione :
             obligatoryField(self.anagrafica.getTopLevel(), self.denominazione_banca_entry)
             return
@@ -102,6 +104,7 @@ class AnagraficaBancheEdit(GladeWidget):
         self.dao.agenzia = agenzia
         self.dao.abi = abi
         self.dao.cab = cab
+        self.dao.bic_swift = bic_swift
         ib =  self.checkIban()
         if ib:
             self.dao.iban = ib

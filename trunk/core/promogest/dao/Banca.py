@@ -24,6 +24,9 @@ from sqlalchemy import Table
 from sqlalchemy.orm import mapper
 from promogest.Environment import params
 from Dao import Dao
+from migrate import *
+from sqlalchemy.schema import Column
+from sqlalchemy.types import String
 
 class Banca(Dao):
 
@@ -39,9 +42,16 @@ class Banca(Dao):
             dic = {k: banca.c.abi.ilike("%"+v+"%")}
         elif k == 'cab':
             dic = {k: banca.c.cab.ilike("%"+v+"%")}
+        elif k == 'bic_swift':
+            dic = {k: banca.c.bic_swift.ilike('%' + v + '%')}
         elif k == 'agenzia':
             dic = {k:banca.c.agenzia.ilike("%"+v+"%")}
         return  dic[k]
 
 banca=Table('banca',params['metadata'],schema = params['schema'],autoload=True)
+
+if 'bic_swift' not in [c.name for c in banca.columns]:
+    col = Column('bic_swift', String)
+    col.create(banca, populate_default=True)
+
 std_mapper = mapper(Banca,banca, order_by=banca.c.id)

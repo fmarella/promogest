@@ -54,11 +54,13 @@ class AnagraficaBanche(Anagrafica):
         iban = prepareFilterString(self.filter.iban_filter_entry.get_text())
         abi = prepareFilterString(self.filter.abi_filter_entry.get_text())
         cab = prepareFilterString(self.filter.cab_filter_entry.get_text())
+        bic_swift = prepareFilterString(self.filter.bic_swift_filter_entry.get_text())
         self.numRecords = Banca().count( denominazione=denominazione,
                                                     agenzia=agenzia,
                                                     iban=iban,
                                                     abi=abi,
-                                                    cab=cab)
+                                                    cab=cab,
+                                                    bic_swift=bic_swift)
         self._refreshPageCount()
 
         # Let's save the current search as a closure
@@ -68,6 +70,7 @@ class AnagraficaBanche(Anagrafica):
                                             iban=iban,
                                             abi=abi,
                                             cab=cab,
+                                            bic_swift=bic_swift,
                                             orderBy=self.orderBy,
                                             offset=self.offset,
                                             batchSize=self.batchSize)
@@ -84,7 +87,8 @@ class AnagraficaBanche(Anagrafica):
                                         (b.agenzia or ''),
                                         (b.iban or ''),
                                         (b.abi or ''),
-                                        (b.cab or '')))
+                                        (b.cab or ''),
+                                        (b.bic_swift or '')))
 
 class AnagraficaBancheFilter(AnagraficaFilter):
     """ Filtro per la ricerca nell'anagrafica delle banche """
@@ -111,6 +115,7 @@ class AnagraficaBancheFilter(AnagraficaFilter):
         self.iban_filter_entry.set_text('')
         self.abi_filter_entry.set_text('')
         self.cab_filter_entry.set_text('')
+        self.bic_swift_filter_entry.set_text('')
         self.denominazione_filter_entry.grab_focus()
         self._anagrafica.refresh()
 
