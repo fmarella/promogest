@@ -562,7 +562,7 @@ Per l'esattezza, l'errore e` di %.2f""" % differenza_importi)
         if totalesospeso == float(0):
             totalesospeso = abs(totale_in_pagamenti_label - totalepagato)
 
-        if totalesospeso > float(0):
+        if totalesospeso > float(0) and not self.ana.dao.documento_saldato:
             self.stato_label.set_markup('<b><span foreground="#B40000" size="24000">'+_('APERTO')+'</span></b>')
 
         self.totale_pagato_scadenza_label.set_markup('<b><span foreground="#338000" size="24000">'+str(mN(totalepagato, 2))+'</span></b>')
