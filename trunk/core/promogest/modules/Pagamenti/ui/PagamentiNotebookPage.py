@@ -279,6 +279,8 @@ un importo in sospeso. Il documento, per poter essere collegato, deve essere com
                     self.on_aggiungi_rate_button_clicked(None)
                     self.rate[-1].fill(scadenza)
 
+            if self.ana.dao.ripartire_importo is None:
+                self.ana.dao.ripartire_importo = True
             self.primanota_check.set_active(self.ana.dao.ripartire_importo)
             if not self.ana.dao.ripartire_importo:
                 msg="""Eventuali pagamenti inseriti in Prima Nota andranno persi.
