@@ -109,7 +109,8 @@ class AnagraficaListiniFilter(AnagraficaFilter):
             visibili = True
 
         def filterCountClosure():
-            return Listino().count(denominazione=denominazione,visibili = visibili)
+            return Listino().count(denominazione=denominazione,
+                                   visibili=visibili)
 
         self._filterCountClosure = filterCountClosure
         self.numRecords = self.countFilterResults()
@@ -117,7 +118,7 @@ class AnagraficaListiniFilter(AnagraficaFilter):
         # Let's save the current search as a closure
         def filterClosure(offset, batchSize):
             return Listino().select(denominazione=denominazione,
-                                                visibili = visibili,
+                                                visibili=visibili,
                                                 orderBy=self.orderBy,
                                                 offset=offset,
                                                 batchSize=batchSize)
@@ -177,13 +178,10 @@ class AnagraficaListiniEdit(AnagraficaEdit):
         if dao is None:
             # Crea un nuovo Dao vuoto
             self.dao = Listino()
-            self._refresh()
         else:
             # Ricrea il Dao con una connessione al DBMS SQL
             self.dao = Listino().select(id=dao.id)[0]
-            self._refresh()
-        return self.dao
-
+        self._refresh()
 
     def _refresh(self):
         self.denominazione_entry.set_text(self.dao.denominazione or '')
@@ -288,9 +286,7 @@ class AnagraficaListiniEdit(AnagraficaEdit):
         for mag in cleanMagazzini:
             mag.delete()
         for m in self.magazzino_listore:
-            if m[3] == 'deleted':
-                pass
-            else:
+            if m[3] != 'deleted':
                 daoListinoMagazzino = ListinoMagazzino()
                 daoListinoMagazzino.id_listino = self.dao.id
                 daoListinoMagazzino.id_magazzino = m[0]
@@ -303,9 +299,7 @@ class AnagraficaListiniEdit(AnagraficaEdit):
             Environment.session.delete(lis)
         Environment.session.commit()
         for l in self.listino_complesso_listore:
-            if l[3] == 'deleted':
-                pass
-            else:
+            if l[3] != 'deleted':
                 daoListinoComplessoListino = ListinoComplessoListino()
                 daoListinoComplessoListino.id_listino_complesso = self.dao.id
                 daoListinoComplessoListino.id_listino = l[0]
