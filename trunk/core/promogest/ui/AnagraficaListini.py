@@ -67,14 +67,13 @@ class AnagraficaListini(Anagrafica):
         anagWindow.set_transient_for(self.getTopLevel())
         anagWindow.show_all()
 
-
-
     def on_record_delete_activate(self, widget):
         dao = self.filter.getSelectedDao()
         tdoc = ListinoArticolo().select(idListino=dao.id, batchSize=None)
         if tdoc:
-            messageInfo(msg= "ATTENZIONE!\n CI SONO DEGLI ARTICOLI CHE COMPONGONO\n QUESTO LISTINO NON E' POSSIBILE RIMUOVERLO")
-            return
+            messageWarning(msg=_("<big><b>Impossibile rimuovere il listino</b></big>\n\nAlcuni articoli compongono questo listino."))
+        else:
+            Anagrafica.on_record_delete_activate(self, widget)
 
 class AnagraficaListiniFilter(AnagraficaFilter):
     """ Filtro per la ricerca nell'anagrafica dei listini """
