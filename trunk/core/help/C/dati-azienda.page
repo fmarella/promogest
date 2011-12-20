@@ -20,7 +20,14 @@
 
     <title>Dati azienda</title>
 
-    <p>Nella schermata principale di <app>PromoGest</app>, selezionare <guiseq><gui>Opzioni</gui><gui>Dati azienda</gui></guiseq></p>
+    <p>Nella schermata principale di <app>PromoGest</app>, selezionare 
+    <guiseq><gui>Opzioni</gui><gui>Dati azienda</gui></guiseq></p>
+
+
+    <note style="tip">
+      <p>Inserendo il <em>codice IBAN</em>, i codici CIN, ABI, CAB e 
+      il numero di conto verranno riempiti in automatico.</p>
+    </note>
 
     <figure>
       <desc>Finestra per l'inserimento delle informazioni dell'azienda</desc>

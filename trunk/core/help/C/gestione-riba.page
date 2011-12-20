@@ -19,11 +19,31 @@
 
     <title>Ricevute bancarie (RIBA)</title>
 
-    <p>Per utilizzare la funzione di gestione RIBA, entrare nell'anagrafica <em>Documenti</em>, quindi selezionare <guiseq><gui>Strumenti</gui><gui>Gestione RIBA</gui></guiseq></p>
+    <note style="warning">
+      <title>Informazioni supplementari richieste</title>
+      <p>Per la corretta gestione delle RIBA è necessario che le informazioni
+      sul <em>codice IBAN</em> e del <em>codice fiscale</em> siano state
+      inserite in <link xref="dati-azienda"/>.</p>
+    </note>
+
+    <p>Per utilizzare la funzione di gestione RIBA, entrare nell'anagrafica
+    <em>Documenti</em>, quindi selezionare <guiseq><gui>Strumenti</gui>
+    <gui>Gestione RIBA</gui></guiseq>.</p>
 
     <figure>
       <desc>Finestra di gestione RIBA</desc>
       <media type="image" mime="image/png" src="figures/gestione_riba.png"/>
     </figure>
+
+    <p>Nel campo <gui>Data di inizio</gui> viene inserita in automatico la data 
+    al primo giorno del mese corrente. Modificare se necessario tale data.</p>
+
+    <p>Selezionare <gui>Aggiorna</gui> per popolare la lista in cui vengono 
+    visualizzate le informazioni principali per le scadenze pagate per Ri.Ba.
+    Selezionare con una spunta le Ri.Ba. interessate.</p>
+
+    <p>Infine selezionare <gui>Genera file</gui> per salvare il file di testo
+    per le riba selezionate.</p>
+
 
 </page>
