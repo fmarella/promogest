@@ -13,7 +13,7 @@
 	      <years>2011</years>
 	      <name>PromoGest</name>
 	    </credit>
-      <link type="guide" xref="index#documenti"/>
+<!--      <link type="guide" xref="index#documenti"/>decommentare per far comparire la voce nell'indice-->
       <link type="seealso" xref="aggiungi-documento"/>
       <link type="seealso" xref="modificare-documento"/>
     </info>
