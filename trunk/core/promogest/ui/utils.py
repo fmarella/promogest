@@ -624,15 +624,31 @@ def leggiAzienda(schema):
     from  promogest.dao.Azienda import Azienda
     _schema = None
     _denominazione = ''
+    _codice_fiscale = ''
+    _iban = ''
+    _numero_conto = ''
+    _abi = ''
+    _cab = ''
 
     if schema is not None:
         daoAzienda = Azienda().getRecord(id=schema)
         if daoAzienda is not None:
             _schema = schema
             _denominazione = daoAzienda.denominazione or ''
+            _codice_fiscale = daoAzienda.codice_fiscale or ''
+            _iban = daoAzienda.iban or ''
+            _abi = daoAzienda.abi or ''
+            _cab = daoAzienda.cab or ''
+            _numero_conto = daoAzienda.numero_conto or ''
 
     return {"schema": _schema,
-            "denominazione": _denominazione}
+            "denominazione": _denominazione,
+            "codice_fiscale": _codice_fiscale,
+            "iban": _iban,
+            "abi": _abi,
+            "cab": _cab,
+            "numero_conto": _numero_conto
+            }
 
 
 def leggiAgente(id):
@@ -953,6 +969,19 @@ def getDenominazioneBanca(id_banca):
         return bn.denominazione
     else:
         return "Banca generica"
+    
+def leggiBanca(id_banca):
+    from promogest.dao.Banca import Banca
+    bn = Banca().getRecord(id=id_banca)
+    if bn:
+        return {"denominazione": bn.denominazione,
+                "agenzia": bn.agenzia,
+                "iban": bn.iban,
+                "abi": bn.abi,
+                "cab": bn.cab
+                }
+    else:
+        return None
 
 def calcolaTotaliBanche(banche_entrate, banche_uscite, dao,t):
     """ Calcola i totali delle entrate e delle uscite divisi per ciascuna banca
@@ -1767,6 +1796,14 @@ def controllaDateFestivi(stringa):
         festivi = ['1508',
                    '3112']
         return str(data.day) + str(data.month) in festivi
+    
+    
+def dataInizioFineMese(data):
+    import calendar
+    mese = data.month
+    anno = data.year
+    giorni = calendar.monthrange(anno, mese)
+    return (datetime.date(anno, mese, 1), datetime.date(anno, mese, giorni[1]))
 
 def getScadenza(data_documento, ngiorniscad, FM = True):
     """
@@ -3178,7 +3215,7 @@ def format_sec(sec):
     hour, min_ = divmod(min_, 60)
     return '%d:%02d:%02d' % (hour, min_, sec)
 
-def pbar(pbar,parziale=1, totale=1, pulse=False, stop=False, text=""):
+def pbar(pbar, parziale=1, totale=1, pulse=False, stop=False, text=""):
     if stop:
         pbar.grab_add()
         pbar.set_fraction(0)

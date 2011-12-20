@@ -25,8 +25,12 @@
         <title>Login</title>
       </section>
 
+      <section id="opzioni" style="2column">
+	    <title>Opzioni</title>
+      </section>
+
       <section id="anagrafiche" style="2column">
-	<title>Anagrafiche</title>
+	    <title>Anagrafiche</title>
       </section>
 
       <section id="parametri" style="2column">

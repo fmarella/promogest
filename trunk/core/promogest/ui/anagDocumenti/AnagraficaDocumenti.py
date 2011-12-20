@@ -53,7 +53,10 @@ class AnagraficaDocumenti(Anagrafica):
         self.record_duplicate_menu.set_property('visible', True)
         self.records_file_export.set_sensitive(True)
         self.record_fattura_button.set_sensitive(False)
-
+        
+    def on_gestione_riba_menu_activate(self, widget):
+        from promogest.ui.RiBaExportWindow import RiBaExportWindow
+        anag = RiBaExportWindow(self)
 
     def duplicate(self, dao):
         """

@@ -1,17 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <page xmlns="http://projectmallard.org/1.0/"
       type="guide"
-      id="documenti">
+      id="opzioni">
 
     <info>
-<!--
-        <link type="topic" xref="aggiungi-documento"/>
-        <link type="topic" xref="modificare-documento"/>
-        <link type="topic" xref="cancellare-documento"/>
--->
-	<link type="topic" xref="spese-bancarie"/>
-	<link type="guide" xref="scadenze" />
-    <link type="guide" xref="riba"/>
+	<link type="guide" xref="dati-azienda" />
 	<credit type="author">
 	  <name>Francesco Marella</name>
 	  <email>francesco.marella@gmail.com</email>

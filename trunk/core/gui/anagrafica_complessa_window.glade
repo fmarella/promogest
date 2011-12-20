@@ -245,6 +245,31 @@ dei farmaci venduti in un determinato arco temporale</property>
               </object>
             </child>
             <child>
+              <object class="GtkMenuItem" id="strumenti_menu">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="use_action_appearance">False</property>
+                <property name="label" translatable="yes">_Strumenti</property>
+                <property name="use_underline">True</property>
+                <child type="submenu">
+                  <object class="GtkMenu" id="menu2">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <child>
+                      <object class="GtkMenuItem" id="gestione_riba_menu">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
+                        <property name="label" translatable="yes">Gestione RIBA</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="on_gestione_riba_menu_activate" swapped="no"/>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
               <object class="GtkMenuItem" id="aiuto_menu">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
