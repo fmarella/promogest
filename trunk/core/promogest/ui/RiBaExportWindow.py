@@ -27,7 +27,7 @@ from promogest.dao.TestataDocumento import TestataDocumento
 from promogest.dao.Azienda import Azienda
 from promogest.ui.utils import messageError, dateToString, leggiOperazione,\
     dataInizioFineMese, pbar, stringToDate, messageInfo, leggiAzienda,\
-    leggiBanca, leggiCliente, mN
+    leggiBanca, leggiCliente, mN, messageWarning
 
 from promogest.modules.PrimaNota.dao.TestataPrimaNota import TestataPrimaNota
 from promogest.lib.iban import check_iban, IBANError
@@ -159,6 +159,8 @@ class RiBaExportWindow(GladeWidget):
         self.getTopLevel()
         self.placeWindow(self.getTopLevel()) 
         self.draw()
+        
+        messageWarning(msg='La funzione di gestione RIBA è in fase di test.')
         
         try:
             self.__creditore = leggiCreditore()
