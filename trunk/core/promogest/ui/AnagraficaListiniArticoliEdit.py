@@ -71,7 +71,6 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
 
 
     def on_calcola_costo_ultimo_da_dettaglio_button_clicked(self, button):
-        print "CCCC"
         #self.calcolaDettaglioDaRicarico()
         cu= calcolaCostoUltimodaDettaglio(dettaglio=self.prezzo_dettaglio_entry.get_text(),
                                         ricarico= self.percentuale_ricarico_dettaglio_entry.get_text(),
@@ -79,7 +78,6 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
         self.ultimo_costo_entry.set_text('%-6.3f' % cu)
 
     def on_calcola_costo_ultimo_da_ingrosso_button_clicked(self, button):
-        print "AAA"
         #self.calcolaDettaglioDaRicarico()
         cu= calcolaCostoUltimodaIngrosso(ingrosso=self.prezzo_ingrosso_entry.get_text(),
                                         ricarico= self.percentuale_ricarico_ingrosso_entry.get_text(),
