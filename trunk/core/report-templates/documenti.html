@@ -40,10 +40,22 @@
             <hr></hr><h2 align="center">TOTALI</h2>
             <table style="width:360px;">
             {% set tot = utils.calcolaTotali(pageData["objects"]) %}
+            {% for k, v in tot['imponibile_aliquote'].items() %}
+	            <tr>
+	                <th style="width:200px;text-align:left;font-size:12px" >IMPONIBILE Aliquota {{ utils.mN(k, 2) }}.</th>
+	                <td style="width:120px;text-align:right;font-size:12px" ><b>{{utils.mNLC(v, 2)}}</b></td>
+	            </tr>
+			{% endfor %}
             <tr>
                 <th style="width:200px;text-align:left;font-size:12px" >IMPONIBILE. NON SCONTATO.</th>
                 <td style="width:120px;text-align:right;font-size:12px" ><b>{{utils.mNLC(tot["totale_imponibile_non_scontato"],2)}}</b></td>
             </tr>
+            {% for k, v in tot['imposta_aliquote'].items() %}
+	            <tr>
+	                <th style="width:200px;text-align:left;font-size:12px" >IMPOSTA Aliquota {{ utils.mN(k, 2) }}.</th>
+	                <td style="width:120px;text-align:right;font-size:12px" ><b>{{utils.mNLC(v, 2)}}</b></td>
+	            </tr>
+			{% endfor %}
             <tr>
                 <th style="width:200px;text-align:left;font-size:12px">IMPOSTA NON SCONTATA</th>
                 <td style="width:120px;text-align:right;font-size:12px"><b>{{utils.mNLC(tot["totale_imposta_non_scontata"],2)}}</b></td>

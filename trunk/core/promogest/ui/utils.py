@@ -2683,8 +2683,21 @@ def calcolaTotali(daos):
     totale_scontato = 0
     totale_sospeso = 0
     totale_pagato = 0
+    
+    _cast_imponibile = {}
+    _cast_imposta = {}
+    
     for tot in daos:
-        ope = leggiOperazione(tot.operazione)
+        for u in tot._castellettoIva:
+            if str(u['aliquota']) not in _cast_imponibile:
+                _cast_imponibile[str(u['aliquota'])] = Decimal(0)
+                _cast_imposta[str(u['aliquota'])] = Decimal(0)
+            if tot.operazione in minus:
+                _cast_imposta[str(u['aliquota'])] -= u['imposta']
+                _cast_imponibile[str(u['aliquota'])] -= u['imponibile']
+            elif tot.operazione in plus:
+                _cast_imposta[str(u['aliquota'])] += u['imposta']
+                _cast_imponibile[str(u['aliquota'])] += u['imponibile']
         try:
             if tot.operazione in minus:
                 totale_imponibile_non_scontato -= tot._totaleImponibile
@@ -2769,7 +2782,10 @@ def calcolaTotali(daos):
                         "totale_non_scontato" :totale_non_scontato,
                         "totale_scontato":totale_scontato,
                         "totale_pagato":totale_pagato,
-                        "totale_sospeso": totale_sospeso}
+                        "totale_sospeso": totale_sospeso,
+                        "imponibile_aliquote": _cast_imponibile,
+                        "imposta_aliquote": _cast_imposta
+                        }
     return totaliGenerali
 
 def fenceDialog():
