@@ -96,69 +96,61 @@ class ArticoloADR(Dao):
             dic = {k: articolo_adr.c.id_articolo == v}
         return dic[k]
 
-    def _categoriaTrasporto(self):
-        a = \
-            CategoriaTrasporto().getRecord(id=self.id_categoria_trasporto)
+    @property
+    def categoria_trasporto(self):
+        a = CategoriaTrasporto().getRecord(id=self.id_categoria_trasporto)
         if a:
             return a.denominazione
         else:
             return _('categoria indeterminata')
-    categoria_trasporto = property(_categoriaTrasporto)
 
-    def _quantita_massima_trasportabile(self):
-        a = \
-            CategoriaTrasporto().getRecord(id=self.id_categoria_trasporto)
+    @property
+    def quantita_massima_trasportabile(self):
+        a = CategoriaTrasporto().getRecord(id=self.id_categoria_trasporto)
         if a:
             return a.quantita_massima_trasportabile
         else:
             return _('quantita massima trasportabile indeterminata')
-    quantita_massima_trasportabile = property(_quantita_massima_trasportabile)
 
-    def _coefficiente_moltiplicazione_virtuale(self):
-        a = \
-            CategoriaTrasporto().getRecord(id=self.id_categoria_trasporto)
+    @property
+    def coefficiente_moltiplicazione_virtuale(self):
+        a = CategoriaTrasporto().getRecord(id=self.id_categoria_trasporto)
         if a:
             return a.coefficiente_moltiplicazione_virtuale
         else:
             return _('coefficiente moltiplicazione virtuale indeterminato')
-    coefficiente_moltiplicazione_virtuale = property(_coefficiente_moltiplicazione_virtuale)
 
-    def _codiceClassificazione(self):
-        a = \
-            CodiceClassificazione().getRecord(id=self.id_codice_classificazione)
+    @property
+    def codice_classificazione(self):
+        a = CodiceClassificazione().getRecord(id=self.id_codice_classificazione)
         if a:
             return a.denominazione
         else:
             return ''
-    codice_classificazione = property(_codiceClassificazione)
 
-    def _gruppoImballaggio(self):
-        a = \
-            GruppoImballaggio().getRecord(id=self.id_gruppo_imballaggio)
+    @property
+    def gruppo_imballaggio(self):
+        a = GruppoImballaggio().getRecord(id=self.id_gruppo_imballaggio)
         if a:
             return a.denominazione
         else:
             return _('gruppo imballaggio indeterminato')
-    gruppo_imballaggio = property(_gruppoImballaggio)
 
-    def _classePericolo(self):
-        a = \
-            ClassePericolo().getRecord(id=self.id_classe)
+    @property
+    def classe_pericolo(self):
+        a = ClassePericolo().getRecord(id=self.id_classe)
         if a:
             return a.denominazione
         else:
             return ''
-    classe_pericolo = property(_classePericolo)
 
-    def _galleria(self):
-        a = \
-            Galleria().getRecord(id=self.id_galleria)
+    @property
+    def galleria(self):
+        a = Galleria().getRecord(id=self.id_galleria)
         if a:
             return a.denominazione
         else:
             return ''
-    galleria = property(_galleria)
-
 
 std_mapper = mapper(ArticoloADR, articolo_adr, properties={},
                     order_by=articolo_adr.c.id_articolo)
