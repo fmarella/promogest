@@ -22,7 +22,7 @@ Created on 09/dic/2011
 @author: Francesco Marella <francesco.marella@gmail.com>
 '''
 
-__version__ = '0.9'
+__version__ = '1.0'
 
 from struct import Struct
 import datetime
@@ -35,7 +35,7 @@ import datetime
 #===============================================================================
 
 
-class Debitore:
+class Debitore(object):
     '''
     '''
     codice_fiscale = ' ' # codice_fiscale: codice fiscale del cliente debitore (CIN obbligatorio)
@@ -52,7 +52,7 @@ class Debitore:
         self.abi = abi
         self.cab = cab
 
-class Creditore:
+class Creditore(object):
     '''
     Informazioni sul creditore.
     '''
@@ -82,7 +82,7 @@ class Creditore:
         self.denominazione_breve = denominazione_breve
         
 
-class RiBa:
+class RiBa(object):
     '''
     Libreria di generazione delle ricevute Ri.Ba.
     
@@ -104,14 +104,12 @@ class RiBa:
     def __init__(self, creditore):
         '''
         Inizializza il tracciato Ri.Ba.
+        
+        @param creditore: informazioni sul creditore
         '''
         self._buffer = ''
-        self._numero_record = 0
         self.creditore = creditore
-        self.debitore = None
         self.data_flusso = datetime.datetime.now().strftime('%d%m%y')
-        # numero disposizioni (ricevute ri.ba contenute nel flusso)
-        self.totale_disposizioni = 0
         self.nome_supporto = 'INVIO DEL %s' % datetime.datetime.now().strftime('%d%m%y')
             
     def analizza(self, data_inizio=None):
@@ -156,7 +154,6 @@ class RiBa:
         
         @param disposizioni: numero di disposizioni
         @param totale_importi: totale importi negativi
-        @param record: numero dei record che compongono il flusso
         @return: il testo del record EF
         '''
         return self.EFStruct.pack(self.FILLER,

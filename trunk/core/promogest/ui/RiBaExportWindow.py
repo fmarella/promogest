@@ -45,11 +45,11 @@ def leggiCreditore():
     '''
     # inizializziamo i dati del creditore
     creditore = Creditore()
-    azienda = leggiAzienda(env.azienda) #Azienda().getRecord(id=env.azienda)
+    azienda = leggiAzienda(env.azienda)
     if azienda['schema']:
         creditore.codice_fiscale = azienda['codice_fiscale']
         if not creditore.codice_fiscale:
-            raise ValueError('codice fiscale mancante')
+            raise ValueError('Inserire il codice fiscale nei Dati azienda.')
         if azienda['iban']:
             try:
                 cc, cs, cin, creditore.abi, creditore.cab, creditore.numero_conto = check_iban(azienda['iban'])
@@ -61,9 +61,9 @@ def leggiCreditore():
             if azienda['numero_conto']:
                 creditore.numero_conto = azienda['numero_conto']
             else:
-                raise ValueError('numero di conto mancante')
+                raise ValueError('Inserire il numero di conto nei Dati azienda.')
         else:
-            raise ValueError('ABI/CAB oppure IBAN mancante')
+            raise ValueError('Inserire il codice IBAN oppure i codici CIN, ABI e CAB nei Dati azienda.')
 
     return creditore
 
