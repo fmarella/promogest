@@ -98,17 +98,17 @@ class ADRNotebookPage(GladeWidget):
             self.id_categoria_trasporto_adr_customcombobox.combobox.set_active(self.dao_articolo_adr.id_categoria_trasporto or -1)
 
     def adrSaveDao(self):
+        numero_un = self.numero_un_adr_entry.get_text() or ''
+        if not numero_un:
+            return None
         dao_articolo_adr = ArticoloADR()
-        dao_articolo_adr.numero_un = self.numero_un_adr_entry.get_text()
+        dao_articolo_adr.numero_un = numero_un
         dao_articolo_adr.id_gruppo_imballaggio = self.id_gruppo_imballaggio_adr_customcombobox.combobox.get_active()
         dao_articolo_adr.id_codice_classificazione = self.id_codice_classificazione_adr_customcombobox.combobox.get_active()
         dao_articolo_adr.id_classe = self.id_classe_pericolo_adr_customcombobox.combobox.get_active()
         dao_articolo_adr.id_galleria = self.id_galleria_adr_customcombobox.combobox.get_active()
         dao_articolo_adr.id_categoria_trasporto = self.id_categoria_trasporto_adr_customcombobox.combobox.get_active()
         return dao_articolo_adr
-
-    def isArticoloADR(self):
-        return self.numero_un_adr_entry.get_text() != ""
 
 # Categoria trasporto
  
