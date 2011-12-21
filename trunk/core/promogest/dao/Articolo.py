@@ -48,10 +48,6 @@ if hasattr(conf, "PromoWear") and getattr(conf.PromoWear,'mod_enable')=="yes":
     from promogest.modules.PromoWear.dao.StagioneAbbigliamento import StagioneAbbigliamento
     from promogest.modules.PromoWear.dao.GenereAbbigliamento import GenereAbbigliamento
 
-if posso("ADR"):
-    from promogest.modules.ADR.dao.ArticoloADR import ArticoloADR
-
-
 
 class Articolo(Dao):
 
@@ -527,12 +523,13 @@ class Articolo(Dao):
                 print "ARTICOLO NORMALE SENZA TAGLIE O COLORI"
 
         if posso("ADR"):
-            if self.articoloADR and self.id:
+            from promogest.modules.ADR.dao.ArticoloADR import ArticoloADR
+            if self.articolo_adr_dao and self.id:
                 articoloADR = ArticoloADR().select(id_articolo=self.id)
                 if articoloADR:
                         articoloADR[0].delete()
-                self.articoloADR.id_articolo = self.id
-                params["session"].add(self.articoloADR)
+                self.articolo_adr_dao.id_articolo = self.id
+                params["session"].add(self.articolo_adr_dao)
                 self.save_update()
 
         params["session"].commit()
@@ -563,6 +560,7 @@ class Articolo(Dao):
                 if atc:
                     atc.delete()
             if posso('ADR'):
+                from promogest.modules.ADR.dao.ArticoloADR import ArticoloADR
                 artADR = ArticoloADR().select(id_articolo=self.id)
                 if artADR:
                     params["session"].delete(artADR[0])
