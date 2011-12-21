@@ -38,7 +38,6 @@ if not Environment.pg3:
 
         GTK_VERSION = str(gtk.gtk_version[0]) + '.' + \
             str(gtk.gtk_version[1]) + '.' + str(gtk.gtk_version[2])
-        Environment.GTK_VERSION = GTK_VERSION
 
         PANGO_ALIGN_LEFT = pango.TAB_LEFT
         GTK_RESPONSE_OK = gtk.RESPONSE_OK
@@ -136,7 +135,6 @@ else:
 
     GTK_VERSION = str(gtk.get_major_version()) + '.' + str(gtk.get_minor_version()) + \
         '.' + str(gtk.get_micro_version())
-    Environment.GTK_VERSION = GTK_VERSION
 
     # these are hacks until we fully switch to GI
 

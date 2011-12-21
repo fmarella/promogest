@@ -82,8 +82,7 @@ from email import Encoders
 import datetime
 
 PRODOTTO = "PromoTux"
-VERSIONE = "PromoGest 2.9"
-GTK_VERSION = None
+VERSIONE = "PromoGest 2.7.0.1"
 debugFilter = False
 debugDao = False
 debugSQL = False
@@ -640,27 +639,41 @@ handler.setFormatter(formatter)
 pg2log.addHandler(handler)
 pg2log.info("\n\n<<<<<<<<<<<  AVVIO PROMOGEST >>>>>>>>>>")
 
-def sendmail(text):
+def sendmail(msg="PG"):
+    msg = str(promogestDir) +"  "+str(rev_locale) +"  "+str(rev_remota)
+    return _msgDef(text=msg)
+
+def _msgDef(text="", html="",img="", subject=""):
+    msgg = MIMEMultipart()
+    msgg['Subject'] = azienda+"  "+str(datetime.datetime.now().strftime('%d_%m_%Y_%H_%M'))
+    msgg['From'] = "promogestlogs@gmail.com"
+    msgg['To'] = "promogestlogs@gmail.com"
+    msgg.attach(MIMEText(text))
+#        fp = open(self.stname, 'rb')
+#    part = MIMEBase('application','octet-stream')
+    part = MIMEText('text/plain')
+    fp =open(LOG_FILENAME, 'rb')
+    part.set_payload(fp.read())
+    fp.close()
+#    Encoders.encode_base64(part)
+    part.add_header('Content-Disposition','attachment', filename="pg2.log")
+    msgg.attach(part)
+
+    _send(fromaddr="promogestlogs@gmail.com", total_addrs="promogestlogs@gmail.com", msg=msgg)
+
+def _send(fromaddr=None, total_addrs=None, msg=None):
     try:
         server = smtplib.SMTP("smtp.gmail.com")
         server.ehlo()
         server.starttls()
         server.ehlo()
         server.login("promogestlogs@gmail.com", "pr0m0t0x")
-        msg = MIMEMultipart()
-        msg['Subject'] = '%s %s' % (azienda, str(datetime.datetime.now().strftime('%H_%M_%d_%m_%Y')))
-        msg['From'] = "promogestlogs@gmail.com"
-        msg['To'] = "promogestlogs@gmail.com"
-        part = MIMEText(text, 'plain')
-        msg.attach(part)
         return server.sendmail("promogestlogs@gmail.com", "promogestlogs@gmail.com" , msg.as_string())
     except Exception as e:
         print "ERRORE NELLA SPEDIZIONE EMAIL", e.message
 
 def hook(et, ev, eb):
     import traceback
-    import jinja2
-    import platform
     if "Operation aborted" in str(ev):
         return
     if "ATTENZIONE, TENTATIVO DI SALVATAGGIO SENZA RIGHE?????" in ev:
@@ -670,20 +683,9 @@ def hook(et, ev, eb):
     if "Handler" in str(ev):
         print "ATTENZIONE!!! MANCA L'HANDLER", ev
         return
-    msg = '\n'.join([
-        'azienda %s' % azienda,
-        'tipo_db %s' % tipodb,
-        'time %s' % str(datetime.datetime.now().strftime('%d%m%Y %H:%m')),
-        'rev_locale %s' % str(rev_locale),
-        'rev_remota %s' % str(rev_remota),
-        'jinja2 %s' %  jinja2.__version__,
-        'sqlalchemy %s' % sqlalchemy.__version__,
-        'gtk %s' % GTK_VERSION,
-        'platform-system %s' % platform.system(),
-        'traceback', "\r\n"] + list(traceback.format_exception(et, ev, eb)))
     pg2log.info("\n  ".join (["Error occurred: traceback follows"]+list(traceback.format_exception(et, ev, eb))))
-    print "UN ERRORE È STATO INTERCETTATO E LOGGATO, SI CONSIGLIA DI RIAVVIARE E DI CONTATTARE L'ASSISTENZA \n\nPREMERE CTRL+C PER CHIUDERE\n"
-    sendmail(msg)
+    print "UN ERRORE È STATO INTERCETTATO E LOGGATO, SI CONSIGLIA DI RIAVVIARE E DI CONTATTARE L'ASSISTENZA \n\nPREMERE CTRL+C PER CHIUDERE  \n"+"\n  ".join(list(traceback.format_exception(et, ev, eb)))
+    sendmail()
 sys.excepthook = hook
 
 # DA SPOSTARE ASSOLUTAMENTE QUANTO PRIMA
