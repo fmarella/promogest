@@ -41,9 +41,11 @@ class DuplicazioneListino(GladeWidget):
         GladeWidget.__init__(self, 'duplicazione_listino_window',
                                     'duplicazione_listino.glade')
         self.placeWindow(self.getTopLevel())
+        self.draw()
+        
+    def draw(self):
         self.dati_vecchio_listino_label.set_text(self.dao.denominazione + \
                         " DEL: "+ dateTimeToString(self.dao.data_listino))
-
 
     def on_confirms_button_clicked(self, button):
         if self.data_listino_duplicato_entry.get_text() == '':
@@ -167,8 +169,12 @@ class DuplicazioneListino(GladeWidget):
 
         messageInfo(msg="Nuovo Listino creato")
 
-        self.getTopLevel().hide()
+        self.destroy()
+        
+    def on_chiudi_button_clicked(self, widget):
+        self.destroy()
+        return None
 
-    def on_chiudi_button_clicked(self, widget, event=None):
-        self.getTopLevel().hide()
+    def on_duplicazione_listino_window_close(self, widget, event=None):
+        self.destroy()
         return None

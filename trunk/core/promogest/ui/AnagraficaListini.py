@@ -61,11 +61,9 @@ class AnagraficaListini(Anagrafica):
         if dao is None:
             return
 
-        from DuplicazioneListino import DuplicazioneListino
+        from promogest.ui.DuplicazioneListino import DuplicazioneListino
         anag = DuplicazioneListino(dao, self)
-        anagWindow = anag.getTopLevel()
-        anagWindow.set_transient_for(self.getTopLevel())
-        anagWindow.show_all()
+        showAnagraficaRichiamata(self.getTopLevel(), anag.getTopLevel(), None, self.filter.refresh)
 
     def on_record_delete_activate(self, widget):
         dao = self.filter.getSelectedDao()
