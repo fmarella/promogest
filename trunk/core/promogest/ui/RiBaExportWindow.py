@@ -67,6 +67,10 @@ def leggiCreditore():
 
     return creditore
 
+
+def pagamentoLookup(pagamento):
+    return 'riba' in pagamento.lower().replace('.', '')
+
 class PGRiBa(RiBa):
     
     def __init__(self, ana, creditore):
@@ -95,11 +99,14 @@ class PGRiBa(RiBa):
                     continue
             for scadenza in documento.scadenze:
                 pbar(self.ana.progressbar1, pulse=True, text='')
-                if 'Ri.Ba' in scadenza.pagamento and scadenza.id_banca:
+                if pagamentoLookup(scadenza.pagamento) and scadenza.id_banca:
                     numero_disposizioni += 1
-                    banca = leggiBanca(scadenza.id_banca)
-                    if not banca:
-                        raise ValueError("banca non definita per la scadenza")
+                    if scadenza.id_banca:
+                        banca = leggiBanca(scadenza.id_banca)
+                    elif documento.id_banca:
+                        banca = leggiBanca(documento.id_banca)
+                    else:
+                        raise ValueError("Assegnare una banca a ciascuna scadenza oppure al documento")
 
                     debitore = Debitore(documento.codice_fiscale_cliente, banca['abi'], banca['cab'])
                     self.ana.liststore1.append((
@@ -171,9 +178,13 @@ class RiBaExportWindow(GladeWidget):
         self.liststore1.clear()
         self.generatore = PGRiBa(self, self.__creditore)
         data = stringToDate(self.data_entry.get_text())
-        num = self.generatore.analizza(data)
-        if num > 0:
-            self.genera_button.set_sensitive(True)
+        try:
+            num = self.generatore.analizza(data)
+        except ValueError as e:
+            messageError(msg=str(e))
+        else:
+            if num > 0:
+                self.genera_button.set_sensitive(True)
 
     def search(self):
         
