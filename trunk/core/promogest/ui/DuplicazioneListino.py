@@ -128,8 +128,12 @@ class DuplicazioneListino(GladeWidget):
                 ladao = ListinoArticolo()
                 ladao.id_listino = newDao.id
                 ladao.id_articolo = l.id_articolo
-                assert l.prezzo_dettaglio != None
-                assert l.prezzo_ingrosso != None
+                
+                if not l.prezzo_dettaglio:
+                    l.prezzo_dettaglio = Decimal('0.00')
+                if not l.prezzo_ingrosso:
+                    l.prezzo_ingrosso = Decimal('0.00')
+
                 if sconto:
                     if tiposconto == "percentuale":
                         if plus:
