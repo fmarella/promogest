@@ -30,7 +30,7 @@ from promogest.dao.ListinoArticolo import ListinoArticolo
 from promogest.dao.ListinoCategoriaCliente import ListinoCategoriaCliente
 from promogest.dao.ListinoComplessoListino import ListinoComplessoListino
 from promogest.dao.ListinoMagazzino import ListinoMagazzino
-from utils import *
+from promogest.ui.utils import *
 
 
 class DuplicazioneListino(GladeWidget):
@@ -62,9 +62,23 @@ class DuplicazioneListino(GladeWidget):
         tiposconto = self.duplica_listini_scontowidget.tipoSconto
         plus = self.plus_radio.get_active()
 
+        # Controllo eventuali listini con stessa coppia denominazione e data
+        _denominazione = self.nome_listino_entry.get_text()
+        _data = stringToDate(self.data_listino_duplicato_entry.get_text())
+        _dataOra = stringToDateTime(self.data_listino_duplicato_entry.get_text())
+        if _denominazione and _data:
+            check = Listino().select(denominazione=_denominazione,
+                                     dataListino=_dataOra,
+                                     batchSize=None)
+            
+            if check:
+                if len(check) > 0:
+                    messageWarning(msg='Il listino è già presente.')
+                    return
+
         newDao = Listino()
-        newDao.data_listino = stringToDate(self.data_listino_duplicato_entry.get_text())
-        newDao.denominazione = self.nome_listino_entry.get_text()
+        newDao.data_listino = _data
+        newDao.denominazione = _denominazione
         newDao.descrizione = self.descrizione_listino_entry.get_text()
         if tutto:
             newDao.listino_attuale = True
