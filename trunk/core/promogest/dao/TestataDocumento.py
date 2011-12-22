@@ -674,7 +674,7 @@ class TestataDocumento(Dao):
                 rigaprimanota.segno = segno
                 rigaprimanota.valore = scad.importo
                 rigaprimanota.id_banca = scad.id_banca
-                rigaprimanota.note_primanota = scad.note_per_primanota
+                rigaprimanota.note_primanota = scad.note_per_primanota or ''
                 rigaprimanota.id_testata_documento = self.id
                 tpn.righeprimanota = [rigaprimanota]
                 tpn.persist()
@@ -862,7 +862,7 @@ class TestataDocumento(Dao):
             return self.BN.iban
         else:
             return ""
-    
+
     @property
     def bic_swift(self):
         if self.BN:

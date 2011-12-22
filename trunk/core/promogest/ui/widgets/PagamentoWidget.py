@@ -95,8 +95,7 @@ class PagamentoWidget(GladeWidget):
         if idbanca:
             daoTestataDocumentoScadenza.id_banca = idbanca
         note = textview_get_text(self.note_scadenza_textview)
-        if note:
-            daoTestataDocumentoScadenza.note_per_primanota = note
+        daoTestataDocumentoScadenza.note_per_primanota = note or ''
         return daoTestataDocumentoScadenza
 
     def on_pulisci_rata_button_clicked(self, button):
