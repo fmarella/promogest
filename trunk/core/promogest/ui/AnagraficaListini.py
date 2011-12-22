@@ -73,7 +73,8 @@ class AnagraficaListini(Anagrafica):
         if tdoc:
             messageWarning(msg=_("<big><b>Impossibile rimuovere il listino</b></big>\n\nAlcuni articoli compongono questo listino."))
         else:
-            Anagrafica.on_record_delete_activate(self, widget)
+            messageWarning(msg=_('Impossibile cancellare il listino.'))
+            #Anagrafica.on_record_delete_activate(self, widget)
 
 class AnagraficaListiniFilter(AnagraficaFilter):
     """ Filtro per la ricerca nell'anagrafica dei listini """
