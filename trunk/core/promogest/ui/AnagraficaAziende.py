@@ -153,7 +153,23 @@ class AnagraficaAziende(GladeWidget):
             if not partiva:
                 return False
         return True
-
+    
+    def on_iban_entry_focus_out_event(self, widget, event):
+        iban = self.iban_entry.get_text() or ''
+        if iban:
+            iban = iban.upper()
+            try:
+                cc, cs, cin, abi, cab, conto = check_iban(iban)
+            except IBANError:
+                messageError(msg="Il codice IBAN inserito non è corretto.",
+                                   transient=self.getTopLevel())
+                return False
+            else:
+                self.numero_conto_entry.set_text(conto)
+                self.cin_entry.set_text(cin)
+                self.abi_entry.set_text(abi)
+                self.cab_entry.set_text(cab)
+        
     def on_logo_button_clicked(self, widget):
         self.logo_filechooserdialog.run()
         if self.dao.percorso_immagine:
