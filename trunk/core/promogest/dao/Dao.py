@@ -43,10 +43,9 @@ class Dao(object):
     def getRecord(self,id=None):
         """ Restituisce un record ( necessita di un ID )"""
         if id:
-            _record = self._session.query(self._DaoModule).get(id)
+            return self._session.query(self._DaoModule).get(id)
         else:
             return None
-        return _record
 
     def select(self, orderBy=None, distinct=None, groupBy=None,join=None, offset=0,
                 batchSize=20,complexFilter=None,isList = "all", **kwargs):
