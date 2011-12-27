@@ -104,7 +104,7 @@ Tutti gli articoli selezionati verranno modificati
         self.filter.variazione_ingrosso = False
         self.filter.valore_ml_entry.set_text("")
         self.filter.aggiungi_sconto_dettaglio = True
-        self.filter.hbox1_mlml.set_visible(False)
+        #self.filter.hbox1_mlml.set_visible(False)
         self.filter.info_ml_label.set_text(info)
         self.filter.modifiche_listino.run()
 
@@ -124,7 +124,7 @@ Tutti gli articoli selezionati verranno modificati
         self.filter.variazione_ingrosso = False
         self.filter.valore_ml_entry.set_text("")
         self.filter.aggiungi_sconto_ingrosso = True
-        self.filter.hbox1_mlml.set_visible(False)
+        #self.filter.hbox1_mlml.set_visible(False)
         self.filter.info_ml_label.set_text(info)
         self.filter.modifiche_listino.run()
 
@@ -145,7 +145,7 @@ Tutti gli articoli selezionati verranno modificati
         self.filter.variazione_ingrosso = False
         self.filter.valore_ml_entry.set_text("")
         self.filter.variazione_dettaglio = True
-        self.filter.hbox1_mlml.set_visible(True)
+        #self.filter.hbox1_mlml.set_visible(True)
         self.filter.info_ml_label.set_text(info)
         self.filter.modifiche_listino.run()
 
@@ -166,7 +166,7 @@ Tutti gli articoli selezionati verranno modificati
         self.filter.variazione_dettaglio = False
         self.filter.valore_ml_entry.set_text("")
         self.filter.variazione_ingrosso = True
-        self.filter.hbox1_mlml.set_visible(True)
+        #self.filter.hbox1_mlml.set_visible(True)
         self.filter.info_ml_label.set_text(info)
         self.filter.modifiche_listino.run()
 
