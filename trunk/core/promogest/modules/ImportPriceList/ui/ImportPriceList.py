@@ -49,9 +49,9 @@ class ImportPriceList(GladeWidget):
                     fileName="ImportPriceList/gui/import_price_list_window.glade",
                     isModule=True)
         self._mainWindow = mainWindow
-        self._mainWindow.hide()
-        if self._mainWindow in Environment.windowGroup:
-            Environment.windowGroup.remove(self._mainWindow)
+        #self._mainWindow.hide()
+        #if self._mainWindow in Environment.windowGroup:
+            #Environment.windowGroup.remove(self._mainWindow)
         self.window = self.getTopLevel()
         self.placeWindow(self.window)
 
@@ -141,7 +141,8 @@ class ImportPriceList(GladeWidget):
         ind = 0
         for line in lines:
             line.encode('utf-8', 'replace')
-            fields = string.split(line[:-1], priceListModel._fieldsSeparator)
+            print "LINEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE", line
+            fields = string.split(line.strip(), priceListModel._fieldsSeparator)
             for i in range(len(fields)):
                 if len(fields[i]) > 0:
                     if fields[i][0] == priceListModel._fieldsDelimiter:
