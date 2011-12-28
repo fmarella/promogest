@@ -47,6 +47,7 @@ from promogest.lib.GtkPrintDialog import GtkPrintDialog
 from promogest.ui.SendEmail import SendEmail
 from promogest.lib.HtmlHandler import createHtmlObj, renderTemplate, renderHTML
 from promogest.dao.Azienda import Azienda
+from hashlib import md5
 
 if not Environment.pg3:
     try:
