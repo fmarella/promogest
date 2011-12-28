@@ -34,13 +34,22 @@ try:
             schema = params['schema'],
             autoload=True)
 except:
-    slafile = Table('sla_file', params['metadata'],
-        Column('id', Integer, primary_key=True),
-        Column('denominazione', String(200), nullable=False ),
-        Column('fingerprint', String(200), nullable=False ),
-        Column('data', LargeBinary),
-        schema=params['schema'],
-        )
+    try:
+        slafile = Table('sla_file', params['metadata'],
+            Column('id', Integer, primary_key=True),
+            Column('denominazione', String(200), nullable=False ),
+            Column('fingerprint', String(200), nullable=False ),
+            Column('data', LargeBinary),
+            schema=params['schema'],
+            )
+    except:
+        slafile = Table('sla_file', params['metadata'],
+            Column('id', Integer, primary_key=True),
+            Column('denominazione', String(200), nullable=False ),
+            Column('fingerprint', String(200), nullable=False ),
+            Column('data', Binary),
+            schema=params['schema'],
+            )
 slafile.create(checkfirst=True)
 
 
