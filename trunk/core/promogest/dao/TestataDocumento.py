@@ -814,6 +814,20 @@ class TestataDocumento(Dao):
             return ""
 
     @property
+    def sede_operativa_localita_vettore(self):
+        if self.PV:
+            return self.PV.sede_operativa_localita
+        else:
+            return ""
+
+    @property
+    def sede_operativa_indirizzo_vettore(self):
+        if self.PV:
+            return self.PV.sede_operativa_indirizzo
+        else:
+            return ""
+
+    @property
     def destinazione_merce(self):
         if self.DM: return self.DM.denominazione
         else: return ""

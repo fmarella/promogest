@@ -141,7 +141,6 @@ class ImportPriceList(GladeWidget):
         ind = 0
         for line in lines:
             line.encode('utf-8', 'replace')
-            print "LINEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE", line
             fields = string.split(line.strip(), priceListModel._fieldsSeparator)
             for i in range(len(fields)):
                 if len(fields[i]) > 0:
