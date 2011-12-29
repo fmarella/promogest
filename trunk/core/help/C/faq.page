@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/"
+      type="topic"
+      id="faq">
+
+  <info>
+  <link type="guide" xref="index#faq"/>
+   <!--<desc>Domande frequenti</desc>-->
+   <credit type="author">
+     <name>Francesco Marella</name>
+     <email>francesco.marella@gmail.com</email>
+   </credit>
+   <credit type="copyright">
+     <years>2011</years>
+     <name>PromoGest</name>
+   </credit>
+  </info>
+
+  <title>Domande frequenti</title>
+
+  <p>
+    Domanda: Ho modificato il file <file>documento.sla</file> presente nella
+    cartella templates con Scribus. Come faccio ad ottenere diversi template
+    per le fatture, DDT, ecc?
+  </p>
+  <p>
+    Risposta: E' necessario duplicare il file <file>documento.sla</file> assegnando come
+    nome del file, il nome del documento che ci occorre.
+  </p>
+  <p>
+    Ad esempio: per una <em>Fattura Accompagnatoria</em> il template corrispondente sarà <file>fattura_accompagnatoria.sla</file>.
+  </p>
+</page>
