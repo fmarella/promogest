@@ -172,6 +172,8 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         """ Bottone con una "s" minuscola, che permette di effettuare "al volo"
         lo scorporo di un valore finale nel campo prezzo """
         ivaobj = findStrFromCombobox(self.id_iva_customcombobox.combobox,0)
+        if not ivaobj:
+            return
         if type(ivaobj) != type("CIAO"):
             iva = ivaobj.percentuale
             if iva == "" or iva == "0":
