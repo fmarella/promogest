@@ -42,7 +42,7 @@ class DuplicazioneListino(GladeWidget):
                                     'duplicazione_listino.glade')
         self.placeWindow(self.getTopLevel())
         self.draw()
-        
+
     def draw(self):
         self.dati_vecchio_listino_label.set_text(self.dao.denominazione + \
                         " DEL: "+ dateTimeToString(self.dao.data_listino))
@@ -72,7 +72,7 @@ class DuplicazioneListino(GladeWidget):
             check = Listino().select(denominazione=_denominazione,
                                      dataListino=_dataOra,
                                      batchSize=None)
-            
+
             if check:
                 if len(check) > 0:
                     messageWarning(msg='Il listino è già presente.')
@@ -130,7 +130,7 @@ class DuplicazioneListino(GladeWidget):
                 ladao = ListinoArticolo()
                 ladao.id_listino = newDao.id
                 ladao.id_articolo = l.id_articolo
-                
+
                 if not l.prezzo_dettaglio:
                     l.prezzo_dettaglio = Decimal('0.00')
                 if not l.prezzo_ingrosso:
@@ -164,13 +164,14 @@ class DuplicazioneListino(GladeWidget):
                 else:
                     ladao.data_listino_articolo = datetime.datetime.now()
                 ladao.listino_attuale = True
+                ladao.visible = True
                 Environment.session.add(ladao)
                 Environment.session.commit()
 
         messageInfo(msg="Nuovo Listino creato")
 
         self.destroy()
-        
+
     def on_chiudi_button_clicked(self, widget):
         self.destroy()
         return None
