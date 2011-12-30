@@ -186,7 +186,10 @@ class AnagraficaListiniEdit(AnagraficaEdit):
         self.denominazione_entry.set_text(self.dao.denominazione or '')
         self.descrizione_entry.set_text(self.dao.descrizione or '')
         self.data_listino_entry.set_text(dateToString(self.dao.data_listino))
-        self.visible_check.set_active(self.dao.visible or True)
+        if self.dao.visible is None:
+            self.visible_check.set_active(True)
+        else:
+            self.visible_check.set_active(self.dao.visible)
         self._refreshCategorieClienti()
         self._refreshMagazzini()
         self._refreshListiniComplessi()
