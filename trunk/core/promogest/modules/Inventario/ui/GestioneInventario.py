@@ -583,7 +583,7 @@ class GestioneInventario(RicercaComplessaArticoli):
         if res:
             for r in res:
                 if (sovrascrivi) or (not sovrascrivi and not r.quantita):
-                    giacenza, valore = giacenzaArticolo(year=self.annoScorso,
+                    giacenza, valore, piu, meno = giacenzaArticolo(year=self.annoScorso,
                                                         idMagazzino=idMagazzino,
                                                         idArticolo=r.id_articolo)
                     r.quantita = giacenza
