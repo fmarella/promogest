@@ -299,7 +299,7 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
             # Ricrea il Dao con una connessione al DBMS SQL
             self.daoo = ListinoArticolo().select(idListino=dao.id_listino,
                                     idArticolo=dao.id_articolo,
-                                    dataListinoArticolo = datetime.datetime.today())
+                                    dataListinoArticolo = dao.data_listino_articolo)
             if self.daoo:
                 self.dao= self.daoo[0]
             else:
