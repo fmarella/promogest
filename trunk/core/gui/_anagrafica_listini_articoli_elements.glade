@@ -1339,6 +1339,7 @@
             </child>
             <child>
               <object class="GtkHBox" id="hbox1_mlml">
+                <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="spacing">5</property>
                 <child>
