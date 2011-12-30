@@ -33,7 +33,7 @@ from Listino import Listino
 from Multiplo import Multiplo
 from Stoccaggio import Stoccaggio
 from Riga import Riga
-from promogest.ui.utils import getScontiFromDao, getStringaSconti, tempo, posso
+from promogest.ui.utils import getScontiFromDao, getStringaSconti, posso
 
 if hasattr(conf, "SuMisura") and getattr(conf.SuMisura,'mod_enable') == "yes":
     #from promogest.modules.SuMisura.data.SuMisuraDb import *
@@ -301,7 +301,6 @@ class RigaMovimento(Dao):
         params["session"].add(self)
         params["session"].commit()
         #creazione stoccaggio se non gia' presente
-        #print "DOPO Commit Riga movimento", tempo()
         stoccato = (Stoccaggio().count(idArticolo=self.id_articolo,
                                                 idMagazzino=self.id_magazzino) > 0)
         if not stoccato:
@@ -328,7 +327,6 @@ class RigaMovimento(Dao):
                 #value.persist()
                 params["session"].add(value)
         #params["session"].commit()
-        #print "DOPO sconti riga movimento persist", tempo()
         if sm:
             #try:
             if self.__misuraPezzo:

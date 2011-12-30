@@ -525,12 +525,10 @@ class TestataDocumento(Dao):
             # ci sono piu' movimenti collegati al documento
             # FIXME: che fare ?
             raise Exception, "ATTENZIONE CI SONO PIU' MOVIMENTI LEGATI AD UN DOCUMENTO"
-        #print "DOPO if di check di RES ", tempo()
         righeMovimento = []
         righeDocumento = []
         scontiRigaMovimento = []
         if self.righeDocumento:  #trattiamo le righe documento e movimento
-            #print "Prima del FOR delle RIGHE ", tempo()
             for row in self.righeDocumento:
                 if (row.id_articolo is not None and contieneMovimentazione):
                     #salvo tra le righe movimenti

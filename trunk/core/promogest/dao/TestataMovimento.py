@@ -238,8 +238,6 @@ class TestataMovimento(Dao):
     def persist(self):
         """cancellazione righe associate alla testata
             conn.execStoredProcedure('RigheMovimentoDel',(self.id, ))"""
-        pg2log.info("DENTRO IL TESTATA MOVIMENTO")
-        print "INIZIO SALVATAGGIO MOVIMENTO", tempo()
         if not self.numero:
             valori = numeroRegistroGet(tipo="Movimento", date=self.data_movimento)
             self.numero = valori[0]
@@ -438,15 +436,13 @@ class TestataMovimento(Dao):
                                     params["session"].add(r)
                                 params["session"].commit()
                         if hasattr(riga,"lotto_temp") and riga.lotto_temp:
-                            #print "DEVO SALVARE IL  LOTTO TEMP", riga.lotto_temp
+                            # Salvare il lotto temporaneo
                             n = NumeroLottoTemp()
                             n.id_riga_movimento_vendita_temp = riga.id
                             n.lotto_temp = riga.lotto_temp
                             params["session"].add(n)
                             params["session"].commit()
 
-                        #print "E una vendita"
-            print "DOPO il for generale di riga movimento", tempo()
             self.__righeMovimento = []
 
 #riga=Table('riga',params['metadata'],schema = params['schema'],autoload=True)

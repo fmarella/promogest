@@ -356,8 +356,6 @@ class StatisticaGenerale(GladeWidget):
             else:
                 incidenzaAcquistoDict[k] = 0
 
-        print "FINE ELABORAZIONE", tempo()
-
         pageData = {
                 "file": "statistica_ricarico_medio_e_influenza_vendite.html",
                 "categorieArticolo": self.cateArticoloDen,

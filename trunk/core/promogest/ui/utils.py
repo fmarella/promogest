@@ -2814,11 +2814,6 @@ def fenceDialog():
     response = dialog.run()
     dialog.destroy()
 
-def tempo():
-    #print "QUESTA FUNZIONE E' DEPRECATA, UTILIZZARE IL PGTimer!!!"
-    print ""
-    return datetime.datetime.now()
-
 class PGTimer(object):
     """ Misura il tempo di esecuzione di un blocco di codice all'interno di una
     funzione. E' possibile registrare degli intervalli intermedi richiamando
