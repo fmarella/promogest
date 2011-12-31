@@ -514,7 +514,6 @@ class Anagrafica(GladeWidget):
                     operationName = ""
 
                     pdfGenerator.setObjects(results)
-                    print "TEMPLATE FILE", self._template_file
                     self._pdfName = str(pdfGenerator.defaultFileName)
 
                     if pdfGenerator.defaultFileName == 'documento':
