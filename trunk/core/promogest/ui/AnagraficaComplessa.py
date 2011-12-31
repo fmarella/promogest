@@ -682,19 +682,16 @@ Verificare i permessi della cartella"""
         self.tryToSavePdf(pdfFile)
 
         fileName = self._pdfName +'.pdf'
-        subject= "Invio: %s" %fileName
+        subject= "Invio: %s" % fileName
         body = conf.body %fileName
 #        if self.email:
 #        arghi = "xdg-email --utf8 --attach '%s' --subject '%s' --body '%s' '%s'" %(pdfFile,subject,body,self.email)
 #        else:
 #            arghi = "xdg-email --attach '%s' --subject '%s' --body '%s'" %(str(pdfFile),subject,body)
-        messageInfo(msg=""" Purtroppo per un bug indipendente dalla nostra volontà
-l'unico client di posta supportato su windows e su linux è <b>Thunderbird</b>
+        messageInfo(msg="""Il client di posta consigliato è <b>Thunderbird</b>.
 
 Chi avesse bisogno di un template di spedizione email più complesso anche in formato
-html contatti <b>assistenza@promotux.it</b> per informazioni
-
-Grazie!""")
+html contatti <b>assistenza@promotux.it</b> per informazioni.""")
 
         if os.name == "nt":
             arghi = "start thunderbird -compose subject='%s',body='%s',attachment='file:///%s',to='%s'" %(subject,body,str(pdfFile),self.email)
