@@ -922,7 +922,7 @@ class Main(GladeWidget):
             licenzaDialog.licenza_dialog.destroy()
 
     def on_manuale_online_activate(self, widget):
-        url ="http://help.promotux.it"
+        url ="http://help.promogest.me"
         webbrowser.open_new_tab(url)
 
     def on_aggiorna_activate(self, widget):
