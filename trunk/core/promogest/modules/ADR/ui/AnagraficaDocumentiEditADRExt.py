@@ -37,7 +37,7 @@ T_QTA_VIRT = _("Q.tà Virt. ADR")
 
 T_GRUPPO_SUM_ADR=_("Tot. Gruppo")
 
-T_DOC_SUM_ADR=_("Tot. Doc.")
+T_DOC_SUM_ADR=_("Tot. Documento")
 
 def setLabels(anaedit):
     """Inizializza i campi per l'anagrafica documenti relativi al modulo ADR.
@@ -123,22 +123,22 @@ def calcolaLimiteTrasportoADR(anagrafica, artADR, **kwargs):
     sup = False
     tt1=0
     tt2=0
-    _buf = T_SUM_ADR.center(60)
-    _buf += '\n' + (T_PG.ljust(15) + T_CODICE_UN.ljust(15) + T_QTA.ljust(15) + T_QTA_VIRT.ljust(15)).center(60)
+    _buf = T_SUM_ADR.center(70)
+    _buf += "\n %-5s %-15s %-20s %-20s" % (T_PG, T_CODICE_UN, T_QTA, T_QTA_VIRT)
     for k,o in anagrafica.dati_adr.iteritems():
         t1=0
         t2=0
         for j in o:
             for kk,z in j.iteritems():
-                _buf += '\n' + str(k).ljust(20) + str(kk).ljust(20) + str(z[0]).ljust(15) + str(z[1]).ljust(15)
+                _buf += "\n %-8s %-17s %-18s %-20s" % (str(k), str(kk), str(z[0]), str(z[1]))
                 t1+=z[0]
                 t2+=z[1]
-        _buf += '\n' + T_GRUPPO_SUM_ADR.ljust(10) + str(t1).rjust(30) + str(t2).rjust(30)
+        _buf += "\n\n %-22s %-18s %-10s" % (T_GRUPPO_SUM_ADR, str(t1), str(t2))
         if t2 > 1000:
             sup = True
         tt1+=t1
         tt2+=t2
-    _buf += '\n' + T_DOC_SUM_ADR.ljust(10) + str(tt1).rjust(30) + str(tt2).rjust(30)
+    _buf += "\n %-20s %-18s %-10s" % (T_DOC_SUM_ADR, str(tt1), str(tt2))
 
     if not sup:
         _buf += MSG_ADR
