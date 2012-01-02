@@ -25,13 +25,19 @@ from promogest.ui.utils import *
 
 from promogest.modules.ADR.dao.ArticoloADR import ArticoloADR
 
-T_SUM_ADR=_("\t\t### RIEPILOGO ADR ###\n\t  P.G\tCod.UN\tQ.tà\tQ.tà Virt. ADR\n")
+T_SUM_ADR=_("### RIEPILOGO ADR ###")
 
-T_RIGA_SUM_ADR="\t  {0}\t{1}\t{2}\t{3}\n"
+T_PG = _("P.G")
 
-T_GRUPPO_SUM_ADR=_("\t  Tot. Gruppo\t{0}\t{1}\n")
+T_CODICE_UN = _("Cod.UN")
 
-T_DOC_SUM_ADR=_("\tTot. Doc.\t{0}\t{1}")
+T_QTA = _("Q.tà")
+
+T_QTA_VIRT = _("Q.tà Virt. ADR")
+
+T_GRUPPO_SUM_ADR=_("Tot. Gruppo")
+
+T_DOC_SUM_ADR=_("Tot. Doc.")
 
 def setLabels(anaedit):
     """Inizializza i campi per l'anagrafica documenti relativi al modulo ADR.
@@ -117,21 +123,22 @@ def calcolaLimiteTrasportoADR(anagrafica, artADR, **kwargs):
     sup = False
     tt1=0
     tt2=0
-    _buf = T_SUM_ADR
+    _buf = T_SUM_ADR.center(60)
+    _buf += '\n' + (T_PG.ljust(15) + T_CODICE_UN.ljust(15) + T_QTA.ljust(15) + T_QTA_VIRT.ljust(15)).center(60)
     for k,o in anagrafica.dati_adr.iteritems():
         t1=0
         t2=0
         for j in o:
             for kk,z in j.iteritems():
-                _buf += T_RIGA_SUM_ADR.format(k, kk, z[0], z[1])
+                _buf += '\n' + str(k).ljust(20) + str(kk).ljust(20) + str(z[0]).ljust(15) + str(z[1]).ljust(15)
                 t1+=z[0]
                 t2+=z[1]
-        _buf += T_GRUPPO_SUM_ADR.format(t1,t2)
+        _buf += '\n' + T_GRUPPO_SUM_ADR.ljust(10) + str(t1).rjust(30) + str(t2).rjust(30)
         if t2 > 1000:
             sup = True
         tt1+=t1
         tt2+=t2
-    _buf += T_DOC_SUM_ADR.format(tt1,tt2)
+    _buf += '\n' + T_DOC_SUM_ADR.ljust(10) + str(tt1).rjust(30) + str(tt2).rjust(30)
 
     if not sup:
         _buf += MSG_ADR
