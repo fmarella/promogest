@@ -167,13 +167,13 @@ def leggiCliente(id):
     _pagante = False
     if id is not None:
         daoCliente = Cliente().getRecord(id=id)
-        if daoCliente is not None:
-            try:
-                for i in range(0,len(daoCliente.recapiti)):
-                    if daoCliente.recapiti[i].tipo_recapito == "E-Mail" or daoCliente.recapiti[i].tipo_recapito == "Email":
-                        _email = daoCliente.recapiti[i].recapito
-            except:
-                _email = ""
+        if daoCliente:
+#            try:
+#                for i in range(0,len(daoCliente.recapiti)):
+#                    if daoCliente.recapiti[i].tipo_recapito == "E-Mail" or daoCliente.recapiti[i].tipo_recapito == "Email":
+#                        _email = daoCliente.recapiti[i].recapito
+#            except:
+#                _email = ""
 
             _id = id
             _ragioneSociale = daoCliente.ragione_sociale or ''
@@ -184,6 +184,7 @@ def leggiCliente(id):
             _id_listino = daoCliente.id_listino
             _id_banca = daoCliente.id_banca
             _pagante = daoCliente.pagante
+            _email = daoCliente.email_principale or ''
 
     return {"id": _id,
             "ragioneSociale": _ragioneSociale,
@@ -193,7 +194,7 @@ def leggiCliente(id):
             "id_magazzino": _id_magazzino,
             "id_listino": _id_listino,
             "id_banca": _id_banca,
-            "email": _email or "",
+            "email": _email,
             "pagante": _pagante}
 
 
@@ -243,13 +244,13 @@ def leggiFornitore(id):
 
     if id is not None:
         daoFornitore = Fornitore().getRecord(id=id)
-        if daoFornitore is not None:
-            try:
-                for i in range(0,len(daoFornitore.recapiti)):
-                    if daoFornitore.recapiti[i].tipo_recapito == "E-Mail" or daoFornitore.recapiti[i].tipo_recapito == "Email":
-                        _email = daoFornitore.recapiti[i].recapito
-            except:
-                _email = ""
+        if daoFornitore:
+#            try:
+#                for i in range(0,len(daoFornitore.recapiti)):
+#                    if daoFornitore.recapiti[i].tipo_recapito == "E-Mail" or daoFornitore.recapiti[i].tipo_recapito == "Email":
+#                        _email = daoFornitore.recapiti[i].recapito
+#            except:
+#                _email = ""
 
             _id = id
             _ragioneSociale = daoFornitore.ragione_sociale or ''
@@ -257,6 +258,7 @@ def leggiFornitore(id):
             _cognome = daoFornitore.cognome or ''
             _id_pagamento = daoFornitore.id_pagamento
             _id_magazzino = daoFornitore.id_magazzino
+            _email = daoFornitore.email_principale or ''
 
     return {"id": _id,
             "ragioneSociale": _ragioneSociale,
@@ -264,7 +266,7 @@ def leggiFornitore(id):
             "cognome": _cognome,
             "id_pagamento": _id_pagamento,
             "id_magazzino": _id_magazzino,
-            "email":_email or ""}
+            "email":_email}
 
 
 def leggiVettore(id):

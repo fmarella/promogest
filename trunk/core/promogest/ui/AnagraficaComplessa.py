@@ -463,13 +463,9 @@ class Anagrafica(GladeWidget):
                                       callbacks_proxy=self)
             printDialog.getTopLevel().set_transient_for(self.getTopLevel())
 
-            printDialog.records_print_dialog_description_label.\
-                                        set_markup('<span weight="bold">' +\
-                                        self._pdfName + '</span>')
-            printDialog.records_print_dialog_size_label.\
-                                        set_markup('<span weight="bold">' +\
-                                        str(len(self.__pdfReport) / 1024) +\
-                                        ' Kb</span>')
+            printDialog.records_print_dialog_description_label.set_text(self._pdfName)
+            printDialog.email_destinatario_entry.set_text(self._indirizzo_email)
+            printDialog.records_print_dialog_size_label.set_text(str(len(self.__pdfReport) / 1024) + ' Kb')
             printDialog.placeWindow(printDialog.getTopLevel())
             printDialog.getTopLevel().show_all()
             self.printDialog = printDialog
@@ -520,6 +516,12 @@ class Anagrafica(GladeWidget):
                         dao = self.filter.getSelectedDao()
                         data = dao.data_documento
                         operationName = dao.operazione
+                        if dao.id_cliente:
+                            self._indirizzo_email = leggiCliente(dao.id_cliente)['email']
+                        elif dao.id_fornitore:
+                            self._indirizzo_email = leggiFornitore(dao.id_fornitore)['email']
+                        else:
+                            self._indirizzo_email = ''
                         intestatario = permalinkaTitle(dao.intestatario)[0:15] or ""
                         #intestatario = dao.intestatario[0:15].replace(" ","_").replace("\\n","") or ""
                         self._pdfName = operationName + \
@@ -609,12 +611,12 @@ class Anagrafica(GladeWidget):
 
     def on_records_print_progress_dialog_close(self, dialog, event=None):
         # FIXME: we're leaving the threads running!
-        print 'diediedie'
         dialog.destroy()
 
-    def on_riferimento2_combobox_entry_changed(self, combobox):
-        stringContatti = 'Contatti...'
-        def refresh_combobox(anagWindow, tipo):
+    def on_cerca_contatto_button_clicked(self, widget):
+        from promogest.modules.Contatti.ui.RicercaContatti import RicercaContatti
+        
+        def aggiorna_email(anagWindow, tipo):
             if anag.dao is None:
                 id = None
             else:
@@ -625,22 +627,16 @@ class Anagrafica(GladeWidget):
                 res = leggiCliente(id)
             elif tipo == 'contatto':
                 res = leggiContatto(id)
-            if res.has_key("ragioneSociale") and res["ragioneSociale"] != '':
-                self.printDialog.riferimento2_combobox_entry.\
-                                            child.set_text(res["ragioneSociale"])
-            else:
-                self.printDialog.riferimento2_combobox_entry.\
-                                            child.set_text(res["email"])
+            self.printDialog.email_destinatario_entry.set_text(res["email"])
             self.email = res["email"]
             anagWindow.destroy()
-        if self.printDialog.riferimento2_combobox_entry.get_active_text() == stringContatti:
-            from promogest.modules.Contatti.ui.RicercaContatti import RicercaContatti
-            anag = RicercaContatti()
-            anagWindow = anag.getTopLevel()
-            anagWindow.connect("hide", refresh_combobox, 'contatto')
-            returnWindow = combobox.get_toplevel()
-            anagWindow.set_transient_for(returnWindow)
-            anag.show_all()
+        
+        anag = RicercaContatti()
+        anagWindow = anag.getTopLevel()
+        anagWindow.connect("hide", aggiorna_email, 'contatto')
+        #returnWindow = combobox.get_toplevel()
+        #anagWindow.set_transient_for(returnWindow)
+        anag.show_all()
 
     def tryToSavePdf(self, pdfFile):
         try:
@@ -672,32 +668,25 @@ Verificare i permessi della cartella"""
 
 
     def on_send_email_button_clicked(self, widget):
-        """ ATTENZIONE: l'errore parrebbe corretto nel launchpad ma ancora non funziona
-        con thunderbird controllando in simplescan dà lo stesso errore che riscontro io
-        aspettiamo...."""
-        self.email = self.printDialog.riferimento2_combobox_entry.\
-                                                                get_active_text()
+        '''
+        '''
+        self.email = self.printDialog.email_destinatario_entry.get_text()
         pdfFile = os.path.join(self._folder + self._pdfName +'.pdf')
         self.tryToSavePdf(pdfFile)
 
         fileName = self._pdfName +'.pdf'
         subject= "Invio: %s" % fileName
         body = conf.body %fileName
-#        if self.email:
-#        arghi = "xdg-email --utf8 --attach '%s' --subject '%s' --body '%s' '%s'" %(pdfFile,subject,body,self.email)
-#        else:
-#            arghi = "xdg-email --attach '%s' --subject '%s' --body '%s'" %(str(pdfFile),subject,body)
         messageInfo(msg="""Il client di posta consigliato è <b>Thunderbird</b>.
 
 Chi avesse bisogno di un template di spedizione email più complesso anche in formato
 html contatti <b>assistenza@promotux.it</b> per informazioni.""")
 
         if os.name == "nt":
-            arghi = "start thunderbird -compose subject='%s',body='%s',attachment='file:///%s',to='%s'" %(subject,body,str(pdfFile),self.email)
+            arghi = "start thunderbird -compose subject='%s',body='%s',attachment='file:///%s',to='%s'" %(subject, body, str(pdfFile), self.email)
         else:
-            arghi = "thunderbird -compose subject='%s',body='%s',attachment='file:///%s',to='%s'" %(subject,body,str(pdfFile),self.email)
-#        args = shlex.split(arghi)
-#        arghi = "evolution mailto:frank@sislands.com&Subject=mailto Creator"
+            #TODO: dividere self.email al carattere ';' e accodare ciascun indirizzo come 'a@email.com' 'b@email.com' 
+            arghi = "xdg-email --utf8 --subject '%s' --body '%s' --attach '%s' '%s'" %(subject, body, str(pdfFile), self.email)
         subprocess.Popen(arghi, shell=True)
 
     def on_close_button_clicked(self,widget):
