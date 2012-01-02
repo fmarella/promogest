@@ -634,8 +634,7 @@ class Anagrafica(GladeWidget):
         anag = RicercaContatti()
         anagWindow = anag.getTopLevel()
         anagWindow.connect("hide", aggiorna_email, 'contatto')
-        #returnWindow = combobox.get_toplevel()
-        #anagWindow.set_transient_for(returnWindow)
+        anagWindow.set_transient_for(self.printDialog.getTopLevel())
         anag.show_all()
 
     def tryToSavePdf(self, pdfFile):
