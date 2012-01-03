@@ -56,6 +56,7 @@ if not Environment.pg3:
         GTK_DIALOG_MESSAGE_ERROR = gtk.MESSAGE_ERROR
         GTK_BUTTON_OK = gtk.BUTTONS_OK
         GTK_BUTTON_YES_NO = gtk.BUTTONS_YES_NO
+        GTK_BUTTON_CANCEL = gtk.BUTTONS_CANCEL
 
 
         gtk_status_icon_new = gtk.status_icon_new_from_file
@@ -159,6 +160,7 @@ else:
     GTK_DIALOG_MESSAGE_ERROR = gtk.MessageType.ERROR
     GTK_BUTTON_OK = gtk.ButtonsType.OK
     GTK_BUTTON_YES_NO = gtk.ButtonsType.YES_NO
+    GTK_BUTTON_CANCEL = gtk.ButtonsType.CANCEL
 
 
     gtk_status_icon_new = gtk.StatusIcon.new_from_file
