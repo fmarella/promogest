@@ -63,8 +63,8 @@ class PrintDialogHandler(GladeWidget):
             filetemp=file(Environment.tempDir+".temp.pdf", "r")
         self.__pdfReport= filetemp.read()
         filetemp.close()
-        self.records_print_dialog_size_label.set_markup('<span weight="bold">' + str(len(self.__pdfReport) / 1024) + ' Kb</span>')
-        self.records_print_dialog_description_label.set_markup('<span weight="bold">' + self._pdfName + '</span>')
+        self.records_print_dialog_size_label.set_text(str(len(self.__pdfReport) / 1024) + ' Kb')
+        self.records_print_dialog_description_label.set_text(self._pdfName)
         self._reportType = report
 
     def tryToSavePdf(self, pdfFile):
@@ -80,7 +80,7 @@ Verificare i permessi della cartella"""
             return
 
     def on_send_email_button_clicked(self, widget):
-        self.email = self.riferimento2_combobox_entry.get_active_text()
+        self.email = self.email_destinatario_entry.get_text()
         pdfFile = os.path.join(self._folder + self._pdfName +'.pdf')
 
         self.tryToSavePdf(pdfFile)
@@ -222,7 +222,7 @@ Verificare i permessi della cartella"""
                                 response = fileDialog.run()
                                 if response == GTK_RESPONSE_CANCEL or response == GTK_RESPONSE_DELETE_EVENT:
                                     #exit but don't save the file
-                                    esci  = True
+                                    esci = True
                                     break
                                 elif response == GTK_RESPONSE_OK:
                                     filename = fileDialog.get_filename()
