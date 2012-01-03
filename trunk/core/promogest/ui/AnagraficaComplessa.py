@@ -464,7 +464,7 @@ class Anagrafica(GladeWidget):
             printDialog.getTopLevel().set_transient_for(self.getTopLevel())
 
             printDialog.records_print_dialog_description_label.set_text(self._pdfName)
-            printDialog.email_destinatario_entry.set_text(self._indirizzo_email)
+            printDialog.email_destinatario_entry.set_text(self.email)
             printDialog.records_print_dialog_size_label.set_text(str(len(self.__pdfReport) / 1024) + ' Kb')
             printDialog.placeWindow(printDialog.getTopLevel())
             printDialog.getTopLevel().show_all()
@@ -517,11 +517,11 @@ class Anagrafica(GladeWidget):
                         data = dao.data_documento
                         operationName = dao.operazione
                         if dao.id_cliente:
-                            self._indirizzo_email = leggiCliente(dao.id_cliente)['email']
+                            self.email = leggiCliente(dao.id_cliente)['email']
                         elif dao.id_fornitore:
-                            self._indirizzo_email = leggiFornitore(dao.id_fornitore)['email']
+                            self.email = leggiFornitore(dao.id_fornitore)['email']
                         else:
-                            self._indirizzo_email = ''
+                            self.email = ''
                         intestatario = permalinkaTitle(dao.intestatario)[0:15] or ""
                         #intestatario = dao.intestatario[0:15].replace(" ","_").replace("\\n","") or ""
                         self._pdfName = operationName + \
