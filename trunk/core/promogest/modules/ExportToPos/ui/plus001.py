@@ -1,6 +1,6 @@
 # -*- coding: iso-8859-15 -*-
 
-#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010, 2011 by Promotux
+#    Copyright (C) 2005-2012 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Alessandro Scano <alessandro@promotux.it>

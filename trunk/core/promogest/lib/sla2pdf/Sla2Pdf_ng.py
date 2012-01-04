@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux
+#    Copyright (C) 2005-2012 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 # Author: Simone Cossu <simone@promotux.it>
