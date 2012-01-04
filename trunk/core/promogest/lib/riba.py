@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 '''
-Copyright (c) 2011, Francesco Marella <francesco.marella@gmail.com>
+Copyright (c) 2011-2012 Francesco Marella <francesco.marella@gmail.com>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -26,7 +26,7 @@ __version__ = '1.0'
 
 from struct import Struct
 import datetime
-    
+
 #===============================================================================
 # def validate(obj):
 #    for key, val in vars(obj).iteritems():
@@ -46,7 +46,7 @@ class Debitore(object):
     descrizione = ' ' # descrizione del debitore (30 caratteri * 2)
     abi = ' '
     cab = ' '
-    
+
     def __init__(self, codice_fiscale, abi, cab):
         self.codice_fiscale = codice_fiscale
         self.abi = abi
@@ -63,11 +63,11 @@ class Creditore(object):
     denominazione_breve = ' '
     abi = ' '
     cab = ' '
-    
+
     def __init__(self, codice_fiscale='', abi='', cab='', numero_conto='', denominazione_breve=' '):
         '''
         Costruttore
-        
+
         @param codice_fiscale: codice fiscale del creditore
         @param abi: ABI del creditore
         @param cab: CAB del creditore
@@ -80,15 +80,15 @@ class Creditore(object):
         self.numero_conto = numero_conto
         self.descrizione = '{0} {1} {2}'.format(datetime.datetime.now().strftime('%d%m%y'), abi, cab)
         self.denominazione_breve = denominazione_breve
-        
+
 
 class RiBa(object):
     '''
     Libreria di generazione delle ricevute Ri.Ba.
-    
+
     L'implementazione non supporta la gestione del bollo virtuale.
     '''
-    
+
     FILLER = ' '
     IBStruct = Struct('c2s5s5s6s20s6s59scc5s2scc5s')
     EFStruct = Struct('c2s5s5s6s20s6s7s15s15s7s24sc6s')
@@ -99,35 +99,35 @@ class RiBa(object):
     R50Struct = Struct('c2s7s40s40s10s16s4s')
     R51Struct = Struct('c2s7s10s20s15s10s6s49s')
     R70Struct = Struct('c2s7s78s12sccc17s')
-    
-    
+
+
     def __init__(self, creditore):
         '''
         Inizializza il tracciato Ri.Ba.
-        
+
         @param creditore: informazioni sul creditore
         '''
         self._buffer = ''
         self.creditore = creditore
         self.data_flusso = datetime.datetime.now().strftime('%d%m%y')
         self.nome_supporto = 'INVIO DEL %s' % datetime.datetime.now().strftime('%d%m%y')
-            
+
     def analizza(self, data_inizio=None):
         raise NotImplementedError()
 
     def write(self, filename):
         '''
         Scrive il tracciato Ri.Ba. su file di testo
-        
+
         @param filename: file contenente il tracciato Ri.Ba.
         '''
         with open(filename, 'w') as f:
             f.write(self._buffer)
-            
+
     def recordIB(self):
         '''
         Genera il testo del record IB
-        
+
         @return: il testo del record IB
         '''
         return self.IBStruct.pack(self.FILLER,
@@ -141,17 +141,17 @@ class RiBa(object):
                              # qualificatore flusso
                              ' ', # tipo flusso
                              '$', # qualificatore flusso
-                             ' ',  # soggetto veicolatore    
+                             ' ',  # soggetto veicolatore
                              self.FILLER,
                              'E',
                              self.FILLER,
                              ' ').replace('\0', self.FILLER)
 
-   
+
     def recordEF(self, disposizioni, totale_importi):
         '''
         Genera il testo del record EF
-        
+
         @param disposizioni: numero di disposizioni
         @param totale_importi: totale importi negativi
         @return: il testo del record EF
@@ -170,11 +170,11 @@ class RiBa(object):
                                   self.FILLER,
                                   'E', # codice divisa
                                   self.FILLER).replace('\0', self.FILLER)
-        
+
     def record14(self, progressivo, data_pagamento, importo, debitore):
         '''
         Genera il testo del record 14
-        
+
         @param progressivo: numero progressivo
         @param data_pagamento: data di pagamento
         @param importo: importo della ricevuta in cent
@@ -201,11 +201,11 @@ class RiBa(object):
                                    ' ', # flag tipo debitore ('B' per banca)
                                    self.FILLER,
                                    'E').replace('\0', self.FILLER)
-    
+
     def record20(self, progressivo):
         '''
         Genera il testo del record 20
-        
+
         @param progressivo: numero progressivo
         @return: il testo del record 20
         '''
@@ -222,11 +222,11 @@ class RiBa(object):
                                     descr[2] or ' ',
                                     descr[3] or ' ',
                                     self.FILLER).replace('\0', self.FILLER)
-    
+
     def record30(self, progressivo, debitore):
         '''
         Genera il testo del record 30
-        
+
         @param progressivo: numero progressivo
         @param debitore: informazioni sul debitore
         @return: il testo del record 30
@@ -240,11 +240,11 @@ class RiBa(object):
                                      descr[1] or ' ',
                                      str(debitore.codice_fiscale),
                                      self.FILLER).replace('\0', self.FILLER)
-    
+
     def record40(self, progressivo, debitore):
         '''
         Genera il testo del record 40
-        
+
         @param progressivo: numero progressivo
         @param debitore: informazioni sul debitore
         @return: il testo del record 40
@@ -261,7 +261,7 @@ class RiBa(object):
     def record50(self, progressivo, debitore, riferimenti_debito):
         '''
         Genera il testo del record 50
-        
+
         @param progressivo: numero progressivo
         @param debitore: informazioni sul debitore
         @param riferimenti_debito: riferimenti al debito
@@ -277,11 +277,11 @@ class RiBa(object):
                                    self.FILLER,
                                    str(self.creditore.codice_fiscale),
                                    self.FILLER).replace('\0', self.FILLER)
-    
+
     def record51(self, progressivo, ricevuta):
         '''
         Genera il testo del record 51
-        
+
         @param progressivo: numero progressivo
         @param ricevuta: numero ricevuta attribuito dal creditore
         @return: il testo del record 51
@@ -296,11 +296,11 @@ class RiBa(object):
                                    ' ', # numero autorizzazione
                                    ' ', # data autorizzazione
                                    self.FILLER).replace('\0', self.FILLER)
-    
+
     def record70(self, progressivo):
         '''
         Genera il testo del record 70
-        
+
         @param progressivo: numero progressivo
         @return: il testo del record 70
         '''
@@ -310,7 +310,7 @@ class RiBa(object):
                                    self.FILLER,
                                    ' ', # indicatori di circuito
                                    # indicatore richiesta incasso
-                                   '0', # tipo doc per debitore 
+                                   '0', # tipo doc per debitore
                                         # 1=ricevuta bancaria
                                         # 2=conferma d'ordine di bonifico
                                         # 0 o blank = accordi bilaterali predefiniti con la banca

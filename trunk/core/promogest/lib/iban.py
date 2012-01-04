@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2011, Francesco Marella <francesco.marella@gmail.com>
+#    Copyright (C) 2011-2012 Francesco Marella <francesco.marella@gmail.com>
 
 #    Promogest is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -31,7 +31,7 @@ def check_iban(iban):
         return IT_IBAN_Struct.unpack(iban)
     except:
         raise IBANError('Il codice IBAN non è corretto.')
-    
+
 __iban_data = {
              'AD': ['Andorra'],
              'IT': ['Italy'],
