@@ -62,7 +62,7 @@ def getADRArticolo(id):
     return _articoloADR
 
 
-MSG_ADR = "\nTrasporto non superante i limiti liberi prescritti al 1.1.3.6"
+MSG_ADR = "\nTrasporto non superante i limiti liberi\nprescritti al 1.1.3.6"
 
 def calcolaLimiteTrasportoADR(anagrafica, artADR, **kwargs):
     """Calcola se viene superato il limite massimo di esenzione
