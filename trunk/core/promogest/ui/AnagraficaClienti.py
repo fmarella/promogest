@@ -57,13 +57,17 @@ class AnagraficaClienti(Anagrafica):
         self.duplica_in_fornitore.set_sensitive(True)
 
     def on_record_delete_activate(self, widget):
+        widget.set_sensitive(False)
         dao = self.filter.getSelectedDao()
 
         tdoc = TestataDocumento().select(idCliente=dao.id, batchSize=None)
         if tdoc:
-            messageInfo(msg= "CI SONO DOCUMENTI LEGATI A QUESTO CLIENTE\nNON E' POSSIBILE RIMUOVERLO")
+            messageInfo(msg="<big><b>Non è possibile cancellare il cliente.</b></big>\n\nAlcuni documenti sono legati a questo cliente.",
+                        transient=self.getTopLevel())
+            widget.set_sensitive(True)
             return
         if not YesNoDialog(msg='Confermi l\'eliminazione ?', transient=self.getTopLevel()):
+            widget.set_sensitive(True)
             return
         #Environment.session.commit()
         #Environment.session.flush()
@@ -102,9 +106,7 @@ class AnagraficaClienti(Anagrafica):
         self.filter.refresh()
         self.htmlHandler.setDao(None)
         self.setFocus()
-
-
-
+        widget.set_sensitive(True)
 
     def on_duplica_in_fornitore_activate_item(self, widget):
         dao = self.filter.getSelectedDao()

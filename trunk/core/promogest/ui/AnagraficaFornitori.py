@@ -51,12 +51,17 @@ class AnagraficaFornitori(Anagrafica):
         self.duplica_in_cliente.set_sensitive(True)
 
     def on_record_delete_activate(self, widget):
+        widget.set_sensitive(False)
         dao = self.filter.getSelectedDao()
+        
         tdoc = TestataDocumento().select(idFornitore=dao.id, batchSize=None)
         if tdoc:
-            messageInfo(msg= "CI SONO DOCUMENTI LEGATI A QUESTO FORNITORE\nNON E' POSSIBILE RIMUOVERLO")
+            messageInfo(msg="<big><b>Non è possibile cancellare il fornitore.</b></big>\n\nAlcuni documenti sono legati a questo fornitore.",
+                        transient=self.getTopLevel())
+            widget.set_sensitive(True)
             return
         if not YesNoDialog(msg='Confermi l\'eliminazione ?', transient=self.getTopLevel()):
+            widget.set_sensitive(True)
             return
         dao = self.filter.getSelectedDao()
         cnnt = ContattoFornitore().select(idFornitore=dao.id, batchSize=None)
@@ -69,6 +74,7 @@ class AnagraficaFornitori(Anagrafica):
         self.filter.refresh()
         self.htmlHandler.setDao(None)
         self.setFocus()
+        widget.set_sensitive(True)
 
     def on_duplica_in_cliente_activate_item(self, widget):
         dao = self.filter.getSelectedDao()
