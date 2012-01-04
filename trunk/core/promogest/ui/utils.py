@@ -2132,7 +2132,11 @@ def multilinedirtywork(param):
     costi_ddt_totale = True
     if 'DDT' in operazione:
         costi_ddt_riga = setconf("Documenti","costi_ddt_riga")
+        if costi_ddt_riga == '':
+            costi_ddt_riga = True
         costi_ddt_totale = setconf("Documenti","costi_ddt_totale")
+        if costi_ddt_totale == '':
+            costi_ddt_totale = True
 
     strippa = True
     if operazione:
