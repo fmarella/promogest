@@ -97,12 +97,12 @@ class AnagraficaDocumentiSetup(GladeWidget):
         try:
             self.costi_ddt_riga_check.set_active(int(setconf("Documenti", "costi_ddt_riga")))
         except:
-            self.costi_ddt_riga_check.set_active(0)
+            self.costi_ddt_riga_check.set_active(1)
         # Opzioni visualizza costi in DDT totale
         try:
             self.costi_ddt_totale_check.set_active(int(setconf("Documenti", "costi_ddt_totale")))
         except:
-            self.costi_ddt_totale_check.set_active(0)
+            self.costi_ddt_totale_check.set_active(1)
 
     def _saveSetup(self):
         """ Salviamo i dati modificati in interfaccia """
