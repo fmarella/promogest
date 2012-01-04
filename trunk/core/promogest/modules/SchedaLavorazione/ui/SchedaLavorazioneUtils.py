@@ -37,6 +37,8 @@ from promogest.modules.SchedaLavorazione.dao.ScontoSchedaOrdinazione import Scon
 from promogest.modules.SchedaLavorazione.dao.PromemoriaSchedaOrdinazione import PromemoriaSchedaOrdinazione
 from promogest.dao.ListinoArticolo import ListinoArticolo
 from promogest.dao.Articolo import Articolo
+from promogest.modules.SchedaLavorazione.dao import AssociazioneArticoli,\
+    RigaSchedaOrdinazione
 
 
 def fillComboboxColoreStampa(combobox, filter=False):
@@ -182,7 +184,7 @@ def fetch_date(string):
         month = fetch_month(data[2])
         year = fetch_year(data[3])
         if (day is not None) and (month is not None) and (year is not None):
-            return stringTodate (day+'/'+month+'/'+year)
+            return stringToDate(day+'/'+month+'/'+year)
         else:
             return None
 
@@ -217,7 +219,7 @@ def create_schede_ordinazioni(data):
         nomi_sposi = get_nomi_sposi(form["Nome_sposo"],form["Nome_sposa"], reverse=True)
         dao = SchedaOrdinazione()
         if data_matrimonio is not None:
-            dao.data_matrimonio = utils.stringToDate(data_matrimonio)
+            dao.data_matrimonio = stringToDate(data_matrimonio)
         else:
             schede_saltate.append(form)
             continue
@@ -330,6 +332,9 @@ def getPrezzoNetto(dao, parzialeNetto=None):
 def fillSchedaLavorazioneFromEmail(ui):
     text = []
     codParte = None
+    quantitaParte = ''
+    quantitaInvito = ''
+    quantitaBombo = ''
     try:
         email = file(os.path.expanduser('~') +"/Form ordine partecipazioni.eml","r")
         text = email.readlines()
