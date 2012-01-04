@@ -37,8 +37,6 @@ from promogest.modules.SchedaLavorazione.dao.ScontoSchedaOrdinazione import Scon
 from promogest.modules.SchedaLavorazione.dao.PromemoriaSchedaOrdinazione import PromemoriaSchedaOrdinazione
 from promogest.dao.ListinoArticolo import ListinoArticolo
 from promogest.dao.Articolo import Articolo
-from promogest.modules.SchedaLavorazione.dao import AssociazioneArticoli,\
-    RigaSchedaOrdinazione
 
 
 def fillComboboxColoreStampa(combobox, filter=False):
