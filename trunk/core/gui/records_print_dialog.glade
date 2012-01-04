@@ -20,15 +20,14 @@
         <property name="can_focus">False</property>
         <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
         <child>
-          <object class="GtkHBox" id="hbox7">
+          <object class="GtkHBox" id="hbox5">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="border_width">6</property>
-            <property name="spacing">12</property>
             <child>
               <object class="GtkImage" id="image7">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="xpad">20</property>
                 <property name="stock">gtk-new</property>
                 <property name="icon-size">6</property>
               </object>
@@ -159,32 +158,10 @@
                 <property name="position">1</property>
               </packing>
             </child>
-            <child>
-              <object class="GtkVBox" id="vbox4">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="spacing">6</property>
-                <child>
-                  <placeholder/>
-                </child>
-              </object>
-              <packing>
-                <property name="expand">True</property>
-                <property name="fill">True</property>
-                <property name="pack_type">end</property>
-                <property name="position">1</property>
-              </packing>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
           </object>
           <packing>
-            <property name="expand">False</property>
-            <property name="fill">False</property>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
             <property name="position">0</property>
           </packing>
         </child>
