@@ -2123,21 +2123,37 @@ def multilinedirtywork(param):
     Funzione che gestisce la suddivisione in multirighe
     """
     caratteri_singola_linea = int(setconf("Multilinea","multilinealimite"))
-    
+
     operazione = None
     if 'operazione' in param[0]:
         operazione = param[0]['operazione'].strip()
-    
+
+    costi_ddt_riga = True
+    costi_ddt_totale = True
+    if 'DDT' in operazione:
+        costi_ddt_riga = setconf("Documenti","costi_ddt_riga")
+        costi_ddt_totale = setconf("Documenti","costi_ddt_totale")
+
     strippa = True
     if operazione:
         if operazione == 'Fattura accompagnatoria' or 'DDT' in operazione:
             strippa = False
 
     for i in param:
+        if not costi_ddt_totale:
+            for k in ['_totaleOggetti', '_totaleImponibile',
+                      '_totaleScontato', '_totaleImpostaScontata',
+                      '_totaleNonScontato', '_totaleNonBaseImponibile',
+                      '_totaleImposta', '_totaleImponibileScontato']:
+                i[k] = ''
+            i['_castellettoIva'] = []
         if 'righe' in i:
             for z in i["righe"]:
                 z["descrizione"] = modificaLottiScadenze(z)
                 z["descrizione"] = listaComponentiArticoloKit(z)
+                if not costi_ddt_riga:
+                    for k in ['valore_unitario_lordo', 'totaleRiga', 'valore_unitario_netto']:
+                        z[k] = ''
 
             lista = i['righe']
             skippa = False

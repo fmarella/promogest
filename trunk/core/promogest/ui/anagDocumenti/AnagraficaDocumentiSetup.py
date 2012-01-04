@@ -93,6 +93,16 @@ class AnagraficaDocumentiSetup(GladeWidget):
             self.no_ricerca_incrementale_check.set_active(int(setconf("Documenti", "no_ricerca_incrementale")))
         except:
             self.no_ricerca_incrementale_check.set_active(0)
+        # Opzione visualizza costi in DDT riga
+        try:
+            self.costi_ddt_riga_check.set_active(int(setconf("Documenti", "costi_ddt_riga")))
+        except:
+            self.costi_ddt_riga_check.set_active(0)
+        # Opzioni visualizza costi in DDT totale
+        try:
+            self.costi_ddt_totale_check.set_active(int(setconf("Documenti", "costi_ddt_totale")))
+        except:
+            self.costi_ddt_totale_check.set_active(0)
 
     def _saveSetup(self):
         """ Salviamo i dati modificati in interfaccia """
@@ -241,4 +251,35 @@ class AnagraficaDocumentiSetup(GladeWidget):
             d[0].value = "codice_articolo_fornitore"
         d[0].tipo = "str"
         Environment.session.add(d[0])
-        return
+        
+        c = SetConf().select(key="costi_ddt_riga", section="Documenti")
+        if c:
+            c=c[0]
+        else:
+            c = SetConf()
+        c.key = "costi_ddt_riga"
+        c.section = "Documenti"
+        c.tipo = "bool"
+        c.value = str(self.costi_ddt_riga_check.get_active())
+        c.description = "visualizza i costi in DDT riga"
+        c.tipo_section = "Generico"
+        c.active = True
+        c.visible = True
+        c.date = datetime.datetime.now()
+        Environment.session.add(c)
+        
+        c = SetConf().select(key="costi_ddt_totale", section="Documenti")
+        if c:
+            c=c[0]
+        else:
+            c = SetConf()
+        c.key = "costi_ddt_totale"
+        c.section = "Documenti"
+        c.tipo = "bool"
+        c.value = str(self.costi_ddt_totale_check.get_active())
+        c.description = "visualizza i costi in DDT totale"
+        c.tipo_section = "Generico"
+        c.active = True
+        c.visible = True
+        c.date = datetime.datetime.now()
+        Environment.session.add(c)

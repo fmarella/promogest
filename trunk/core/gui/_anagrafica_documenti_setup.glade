@@ -381,6 +381,36 @@ quanto una stessa riga prodotto è già stata inserita</property>
                     <property name="position">9</property>
                   </packing>
                 </child>
+                <child>
+                  <object class="GtkCheckButton" id="costi_ddt_riga_check">
+                    <property name="label" translatable="yes">Visualizza i costi in DDT riga</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="use_action_appearance">False</property>
+                    <property name="draw_indicator">True</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">10</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="costi_ddt_totale_check">
+                    <property name="label" translatable="yes">Visualizza i costi in DDT totale</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="use_action_appearance">False</property>
+                    <property name="draw_indicator">True</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">11</property>
+                  </packing>
+                </child>
               </object>
             </child>
           </object>
