@@ -260,7 +260,7 @@ class AnagraficaDocumentiSetup(GladeWidget):
         c.key = "costi_ddt_riga"
         c.section = "Documenti"
         c.tipo = "bool"
-        c.value = '1'#str(self.costi_ddt_riga_check.get_active())
+        c.value = str(self.costi_ddt_riga_check.get_active())
         c.description = "visualizza i costi in DDT riga"
         c.tipo_section = "Generico"
         c.active = True
@@ -276,7 +276,7 @@ class AnagraficaDocumentiSetup(GladeWidget):
         c.key = "costi_ddt_totale"
         c.section = "Documenti"
         c.tipo = "bool"
-        c.value = '1'#str(self.costi_ddt_totale_check.get_active())
+        c.value = str(self.costi_ddt_totale_check.get_active())
         c.description = "visualizza i costi in DDT totale"
         c.tipo_section = "Generico"
         c.active = True
