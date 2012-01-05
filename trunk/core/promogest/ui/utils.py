@@ -2327,14 +2327,8 @@ def numeroRegistroGet(tipo=None, date=None):
         msg = _(""" ATTENZIONE!!
 L'anno di lavoro e l'anno di creazione documento non corrispondono.
    Vuoi che la numerazione incrementi l'anno di lavoro selezionato ( %s )?
-
-    """) %str(Environment.workingYear)
-        dialog = gtk.MessageDialog(None,
-                    GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
-                    GTK_DIALOG_MESSAGE_QUESTION, GTK_BUTTON_YES_NO, msg)
-        response = dialog.run()
-        dialog.destroy()
-        if response == GTK_RESPONSE_YES:
+""") %str(Environment.workingYear)
+        if YesNoDialog(msg=msg):
             date = Environment.workingYear
 
     numeri = []
@@ -2362,12 +2356,7 @@ L'anno di lavoro e l'anno di creazione documento non corrispondono.
         numeroSEL = TestataDocumento().select(complexFilter=(and_(TestataDocumento.data_documento.between(datetime.date(int(date), 1, 1), datetime.date(int(date) + 1, 1, 1)) ,
                         TestataDocumento.registro_numerazione==registrovalue)), batchSize=None)
     if numeroSEL:
-        numero = max([p.numero for p in numeroSEL])
-        if numero:
-            try:
-                numero = int(numero) +1
-            except:
-                Environment.pg2log.info("INCREMENTO DELLA NUMERAZIONE DOCUMENTO NON RIUSCITA")
+        numero = max([p.numero for p in numeroSEL]) + 1
     else:
         numero = 1
     return (numero, registrovalue)

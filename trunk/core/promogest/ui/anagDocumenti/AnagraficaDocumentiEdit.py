@@ -53,6 +53,7 @@ from promogest.dao.RigaMovimentoFornitura import RigaMovimentoFornitura
 from promogest.ui.utils import *
 from promogest.ui.utilsCombobox import *
 from promogest.dao.DaoUtils import giacenzaArticolo
+from promogest.dao.RigaRitenutaAcconto import RigaRitenutaAcconto
 
 if posso("PW"):
     from promogest.modules.PromoWear.ui import AnagraficaDocumentiEditPromoWearExt
@@ -803,6 +804,8 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
     def saveDao(self, tipo=None):
         """ Salvataggio del Dao
         """
+        GN = posso("GN")
+        SM = posso("SM")
         if posso("ADR") and tipo==GTK_RESPONSE_OK:
             AnagraficaDocumentiEditADRExt.sposta_sommario_in_tabella(self)
         scontiRigaDocumentoList = {}
@@ -828,14 +831,14 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self.dao.data_documento = stringToDate(self.data_documento_entry.get_text())
         date = time.strftime("%Y")
         if date != Environment.workingYear:
-            #print _("ATTENZIONE ANNO DI LAVORO DIVERSO QUALE PRENDERE??????")
+
             msg = _(""" ATTENZIONE!!
     L'anno di lavoro e l'anno di creazione documento non corrispondono.
        Vuoi che la DATA UTILIZZATA SIA 31/12/%s?
 
         """) %str(Environment.workingYear)
             if YesNoDialog(msg=msg, transient=None):
-                self.dao.data_documento = stringToDate("31/12/"+Environment.workingYear)
+                self.dao.data_documento = stringToDate("31/12/" + Environment.workingYear)
 
         if self.dao.id is not None and self.numero_documento_entry.get_text() != '0':
 
@@ -857,10 +860,9 @@ l'anno di esercizio indicato nella data
 del documento.
     Continuare comunque?""" % numero
 
-                    if YesNoDialog(msg=msg, transient=None):
-                        print """si è deciso di salvare un documento il cui numero
-            è già stato usato per un altro. questo comporterà
-            l 'esistenza di due documenti con lo stesso numero!"""
+                    if not YesNoDialog(msg=msg, transient=None):
+                        return
+
                 self.dao.numero = numero
         self.dao.operazione = self._operazione
         pbar(self.dialog.pbar,parziale=1, totale=4)
@@ -906,7 +908,7 @@ del documento.
         self.dao.note_interne = textview_get_text(self.note_interne_textview)
         self.dao.note_pie_pagina = self.note_pie_pagina_comboboxentry.get_active_text()
         self.dao.applicazione_sconti = self.sconti_testata_widget.getApplicazione()
-        if posso("GN"):
+        if GN:
             self.dao.data_inizio_noleggio= self.start_rent_entry.get_text()
             self.dao.data_fine_noleggio = self.end_rent_entry.get_text()
         pbar(self.dialog.pbar,parziale=2, totale=4)
@@ -954,7 +956,7 @@ del documento.
             daoRiga.valore_unitario_lordo = self._righe[i]["prezzoLordo"]
             daoRiga.valore_unitario_netto = self._righe[i]["prezzoNetto"]
 #            pbar(self.dialog.pbar,pulse=True)
-            if posso("GN"):
+            if GN:
                 daoRiga.prezzo_acquisto_noleggio = self._righe[i]["prezzo_acquisto"]
                 daoRiga.coeficente_noleggio = self._righe[i]["divisore_noleggio"]
                 if self._righe[i]["arco_temporale"] != "NO":
@@ -973,8 +975,7 @@ del documento.
             daoRiga.scontiRigaDocumento = scontiRigaDocumento
             scontiRigaDocumento =[]
             misure = []
-            if posso("SM") and \
-                            self._righe[i]["altezza"] != '' and \
+            if SM and self._righe[i]["altezza"] != '' and \
                             self._righe[i]["larghezza"] != '':
                 daoMisura = MisuraPezzo()
                 daoMisura.altezza = float(self._righe[i]["altezza"] or 0)
@@ -1013,7 +1014,7 @@ del documento.
         text = str(len(self.dao.righe))
         self.label_numero_righe.set_text(text)
         self.label_numero_righe.show()
-        pbar(self.dialog.pbar,stop=True)
+        pbar(self.dialog.pbar, stop=True)
 
     def on_importo_da_ripartire_entry_changed(self, entry):
         return
@@ -1623,7 +1624,6 @@ del documento.
 
     def calcolaTotaleRiga(self):
         """ calcola il totale riga """
-        print "PASSIIIIIIIIIIIIIIIIIIIIIIIIII"
         if self._righe[0]["prezzoNetto"] is None:
             self._righe[0]["prezzoNetto"] = 0
         if self._righe[0]["quantita"] is None:
