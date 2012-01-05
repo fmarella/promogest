@@ -662,11 +662,12 @@ class GestioneInventario(RicercaComplessaArticoli):
             for s in sel:
                 if s not in sel2:
                     print "MA QUI CI PASSI"
-                    inv = Inventario()
-                    inv.anno = self.annoScorso
-                    inv.id_magazzino = s[0]
-                    inv.id_articolo = s[1]
-                    Environment.params['session'].add(inv)
+                    if s[1]:
+                        inv = Inventario()
+                        inv.anno = self.annoScorso
+                        inv.id_magazzino = s[0]
+                        inv.id_articolo = s[1]
+                        Environment.params['session'].add(inv)
                 Environment.params['session'].commit()
         self.refresh()
 
