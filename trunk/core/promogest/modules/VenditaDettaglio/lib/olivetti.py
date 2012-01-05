@@ -111,9 +111,4 @@ class ElaExecute(object):
 
     def copyToInDir(self, filename):
         path = Environment.conf.VenditaDettaglio.export_path
-        if os.path.exists(os.path.join(path, filename)):
-           if YesNoDialog(msg='Sovrascrivere il file già presente?'):
-               os.remove(os.path.join(path, filename))
-               shutil.move(filename, path)
-        else:
-            shutil.move(filename, path)
+        shutil.move(filename, path)
