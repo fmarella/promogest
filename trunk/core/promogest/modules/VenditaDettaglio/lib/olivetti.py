@@ -115,3 +115,5 @@ class ElaExecute(object):
            if YesNoDialog(msg='Sovrascrivere il file già presente?'):
                os.remove(os.path.join(path, filename))
                shutil.move(filename, path)
+        else:
+            shutil.move(filename, path)
