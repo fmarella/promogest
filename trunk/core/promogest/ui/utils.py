@@ -971,7 +971,7 @@ def getDenominazioneBanca(id_banca):
         return bn.denominazione
     else:
         return "Banca generica"
-    
+
 def leggiBanca(id_banca):
     from promogest.dao.Banca import Banca
     bn = Banca().getRecord(id=id_banca)
@@ -1798,8 +1798,8 @@ def controllaDateFestivi(stringa):
         festivi = ['1508',
                    '3112']
         return str(data.day) + str(data.month) in festivi
-    
-    
+
+
 def dataInizioFineMese(data):
     import calendar
     mese = data.month
@@ -2102,7 +2102,7 @@ def modificaLottiScadenze(riga):
 def listaComponentiArticoloKit(riga):
     """
     Ritorna la lista dei componenti articolo kit
-    
+
     @param riga: riga dell'articolo
     @return: descrizione completa articolo kit
     """
@@ -2124,7 +2124,7 @@ def multilinedirtywork(param):
     """
     caratteri_singola_linea = int(setconf("Multilinea","multilinealimite"))
 
-    operazione = None
+    operazione = ""
     if 'operazione' in param[0]:
         operazione = param[0]['operazione'].strip()
 
@@ -2173,7 +2173,7 @@ def multilinedirtywork(param):
                     wrapper = TextWrapper()
                     wrapper.width = caratteri_singola_linea
                     x["descrizione"] = "\n".join(wrapper.wrap(x["descrizione"]))
-                    
+
                 if '\n' in x["descrizione"]:
                     desc= x["descrizione"].split("\n")
                     o = lista.index(x) # posizione della righa fra le righe
@@ -2694,10 +2694,10 @@ def calcolaTotali(daos):
     totale_scontato = 0
     totale_sospeso = 0
     totale_pagato = 0
-    
+
     _cast_imponibile = {}
     _cast_imposta = {}
-    
+
     for tot in daos:
         for u in tot._castellettoIva:
             if str(u['aliquota']) not in _cast_imponibile:
