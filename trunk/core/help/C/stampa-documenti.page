@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/"
+      type="topic"
+      id="stampa-doc">
+
+    <info>
+        <desc>Stampa delle fatture, DDT, Preventivi</desc>
+        <revision version="0.1" date="2012-01-07" status="stub"/>
+	<credit type="author">
+	  <name>Francesco Marella</name>
+	  <email>francesco.marella@gmail.com</email>
+	</credit>
+	<credit type="copyright">
+	  <years>2011-2012</years>
+	  <name>PromoGest</name>
+        </credit>
+        <link type="guide" xref="index#documenti"/>
+    </info>
+
+    <title>Stampa di documenti</title>
+
+    <p>Per utilizzare la funzione di stampa è necessario aprire
+    l'anagrafica <em>Documenti</em>, quindi selezionare il documento da
+    stampare nella lista, infine selezionare dalla barra degli strumenti
+    <gui>Stampa</gui>.</p>
+
+
+    <section>
+      <title>Visualizzare o nascondere i costi nei DDT</title>
+      <p>
+	Aprire la finestra di configurazione <app>PromoGest</app>
+	da <guiseq><gui>Opzioni</gui><gui>Preferenze</gui></guiseq> e
+	selezionare <gui>Documenti</gui>.
+      </p>
+      <p>
+	Per visualizzare i costi per ciascuna riga in un documento DDT,
+	attivare l'opzione <gui>Visualizza i costi in DDT riga</gui>,
+	disattivare per nasconderli.
+      </p>
+      <p>
+	Per visualizzare i costi nei totali in un documento DDT, attivare
+	l'opzione <gui>Visualizza i costi in DDT totale</gui>, disattivare
+	per nasconderli.
+      </p>
+    </section>
+
+</page>
