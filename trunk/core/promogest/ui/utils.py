@@ -928,21 +928,26 @@ def calcolaSaldoGeneralePrimaNota():
     if data_riporto_cassa:
         tpn_cassa = TestataPrimaNota().select(daDataInizio=stringToDate(data_riporto_cassa), batchSize=None)
         riporto_cassa = setconf("PrimaNota", "valore_saldo_parziale_cassa_primanota")
-    else:
-        tpn_cassa = TestataPrimaNota().select(batchSize=None)
+        tot_cassa = calcolaTotaliPrimeNote(tpn_cassa, tipo='CASSA')
 
     data_riporto_banca = setconf("PrimaNota", "data_saldo_parziale_banca_primanota")
     riporto_banca = 0
     if data_riporto_banca:
         tpn_banca = TestataPrimaNota().select(daDataInizio=stringToDate(data_riporto_banca), batchSize=None)
         riporto_banca = setconf("PrimaNota", "valore_saldo_parziale_banca_primanota")
-    else:
-        tpn_banca = TestataPrimaNota().select(batchSize=None)
+        tot_banca = calcolaTotaliPrimeNote(tpn_banca, tipo='BANCA')
 
-    tot = calcolaTotaliPrimeNote(tpn_cassa, tpn_banca)
-    #tot["riporto_di_cassa"] = tot["totale"] + Decimal(str(riporto))
-
-    return tot
+    if data_riporto_cassa and data_riporto_banca:
+        tot_banca['saldo_cassa'] = tot_cassa['saldo_cassa']
+        tot_banca['tot_entrate_cassa'] = tot_cassa['tot_entrate_cassa']
+        tot_banca['tot_uscite_cassa'] = tot_cassa['tot_uscite_cassa']
+        return tot_banca
+    if data_riporto_cassa:
+        return tot_cassa
+    if data_riporto_banca:
+        return tot_banca
+    tpn = TestataPrimaNota().select(batchSize=None)
+    return calcolaTotaliPrimeNote(tpn, tipo='ALL')
 
 
 def calcolaSaldoPeriodoPrimaNota():
@@ -953,7 +958,7 @@ def calcolaSaldoPeriodoPrimaNota():
         return None
 
     tpn = TestataPrimaNota().select(daDataInizio=stringToDate('01/01/' + Environment.workingYear), aDataInizio=stringToDate(a), batchSize=None)
-    return calcolaTotaliPrimeNote(tpn, None)
+    return calcolaTotaliPrimeNote(tpn, tipo='ALL')
 
 def getDataFiltroPrimaNota():
     return Environment.a_data_inizio_primanota
@@ -985,62 +990,68 @@ def leggiBanca(id_banca):
     else:
         return None
 
-def calcolaTotaliBanche(banche_entrate, banche_uscite, dao,t):
-    """ Calcola i totali delle entrate e delle uscite divisi per ciascuna banca
-
-    Arguments:
-    - `banche_entrate`: dizionario ID banca => totale entrate
-    - `banche_uscite`: dizionario ID banca => totale uscite
-    - `dao`: lista di scadenze documento
+def calcolaTotaliBanche(dao, banche_entrate, banche_uscite):
+    """
+    Ritorna i totali entrate e uscite divisi per banca
     """
     for r in dao.righeprimanota:
-        if r.id_banca in banche_entrate:
-            banche_entrate[r.id_banca] += t["tot_entrate_banca"]
+        if r.tipo == 'cassa' or not r.id_banca:
+            continue
+        idx = str(r.id_banca)
+
+        if r.segno == "uscita":
+            if idx in banche_uscite.keys():
+                banche_uscite[idx] += -1*Decimal(r.valore)
+            else:
+                banche_uscite[idx] = -1*Decimal(r.valore)
+        elif r.segno == 'entrata':
+            if idx in banche_entrate.keys():
+                banche_entrate[idx] += Decimal(r.valore)
+            else:
+                banche_entrate[idx] = Decimal(r.valore)
         else:
-            banche_entrate[r.id_banca] = t["tot_entrate_banca"]
-        if r.id_banca in banche_uscite:
-            banche_uscite[r.id_banca] += t["tot_uscite_banca"]
-        else:
-            banche_uscite[r.id_banca] = t["tot_uscite_banca"]
+            pass
+
     return (banche_entrate, banche_uscite)
 
-def calcolaTotaliPrimeNote(daos1, daos2=None):
-    """Calcola i totali delle entrate e delle uscite di cassa o di banca"""
-    tot_entrate_cassa = 0
-    tot_entrate_banca = 0
-    tot_entrate_per_banche = {}
-    tot_uscite_per_banche = {}
-    tot_uscite_cassa = 0
-    tot_uscite_banca = 0
+def calcolaTotaliPrimeNote(tpn, tipo='ALL'):
+    """
+    """
     riporto_cassa = setconf("PrimaNota", "valore_saldo_parziale_cassa_primanota") or 0
     riporto_banca = setconf("PrimaNota", "valore_saldo_parziale_banca_primanota") or 0
-    for dao in daos1:
-        t = dao.totali
-        tot_entrate_cassa += t["tot_entrate_cassa"]
-        tot_uscite_cassa += t["tot_uscite_cassa"]
-        if not daos2:
-            tot_entrate_per_banche, tot_uscite_per_banche = calcolaTotaliBanche(tot_entrate_per_banche, tot_uscite_per_banche,dao, t)
-            tot_entrate_banca += t["tot_entrate_banca"]
-            tot_uscite_banca += t["tot_uscite_banca"]
-    if daos2:
-        for dao in daos2:
-            tot_entrate_per_banche, tot_uscite_per_banche = calcolaTotaliBanche(tot_entrate_per_banche, tot_uscite_per_banche, dao)
-            tot_entrate_banca += dao.totali["tot_entrate_banca"]
-            tot_uscite_banca += dao.totali["tot_uscite_banca"]
-    saldo_cassa = tot_entrate_cassa + tot_uscite_cassa + Decimal(str(riporto_cassa))
-    saldo_banca = tot_entrate_banca + tot_uscite_banca + Decimal(str(riporto_banca))
+    
+    entrate_cassa = Decimal(0)
+    uscite_cassa = Decimal(0)
+    entrate_banca = Decimal(0)
+    uscite_banca = Decimal(0)
 
-    totalii = {
-            "saldo_cassa": saldo_cassa,
-            "saldo_banca": saldo_banca,
-            "tot_entrate_banca": tot_entrate_banca,
-            "tot_entrate_per_banche": tot_entrate_per_banche,
-            "tot_uscite_per_banche": tot_uscite_per_banche,
-            "tot_entrate_cassa": tot_entrate_cassa,
-            "tot_uscite_banca": tot_uscite_banca,
-            "tot_uscite_cassa": tot_uscite_cassa
-            }
-    return totalii
+    dict_be = {}
+    dict_bu = {}
+
+    for dao in tpn:
+        t = dao.totali
+
+        if tipo == "ALL" or tipo == 'CASSA':
+            entrate_cassa += t["tot_entrate_cassa"]
+            uscite_cassa += t["tot_uscite_cassa"]
+        if tipo == "ALL" or tipo == 'BANCA':
+            entrate_banca += t['tot_entrate_banca']
+            uscite_banca += t['tot_uscite_banca']
+            dict_be, dict_bu = calcolaTotaliBanche(dao, dict_be, dict_bu)
+
+    saldo_cassa = entrate_cassa + uscite_cassa + Decimal(str(riporto_cassa))
+    saldo_banca = entrate_banca + uscite_banca + Decimal(str(riporto_banca))
+
+    return {
+        'saldo_cassa': saldo_cassa,
+        'saldo_banca': saldo_banca,
+        'tot_entrate_cassa': entrate_cassa,
+        'tot_uscite_cassa': uscite_cassa,
+        'tot_entrate_banca': entrate_banca,
+        'tot_uscite_banca': uscite_banca,
+        'tot_entrate_per_banche': dict_be,
+        'tot_uscite_per_banche': dict_bu,
+        }
 
 def findIdFromCombobox(combobox):
     """

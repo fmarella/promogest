@@ -51,7 +51,7 @@ margin: 1cm;
 </table>
 <table style="width:300px;">
 
-{% set tot = utils.calcolaTotaliPrimeNote(pageData["objects"], None) %}
+{% set tot = utils.calcolaTotaliPrimeNote(pageData["objects"]) %}
 <tr>
         <td style="width:120px;">TOTALE ENTRATE CASSA</td>
 <td style="color:green;width:90px;text-align:right;font-size:12px" > {{utils.mNLC(tot["tot_entrate_cassa"],2)}}</td>
