@@ -37,7 +37,7 @@ from promogest.ui.ElencoListini import ElencoListini
 from promogest.ui.VistaPrincipale import VistaPrincipale
 from promogest.ui.SendEmail import SendEmail
 from promogest.ui.PrintDialog import PrintDialogHandler
-from promogest.ui.utils import hasAction, fencemsg, aggiorna, updateScadenzePromemoria,\
+from promogest.ui.utils import hasAction, fencemsg, updateScadenzePromemoria,\
          setconf, dateTimeToString, dateToString, \
          orda, posso, messageInfo, installId , YesNoDialog, messageError,\
          obligatoryField
@@ -67,6 +67,7 @@ from promogest.ui.widgets.ArticoloSearchWidget import ArticoloSearchWidget
 from promogest.ui.widgets.ClienteSearchWidget import ClienteSearchWidget
 from promogest.ui.widgets.FornitoreSearchWidget import FornitoreSearchWidget
 from promogest.ui.widgets.PersonaGiuridicaSearchWidget import PersonaGiuridicaSearchWidget
+from promogest.ui.UpdateDialog import UpdateDialog
 if posso("GN"):
     from promogest.modules.GestioneNoleggio.dao.TestataGestioneNoleggio \
                             import TestataGestioneNoleggio
@@ -926,7 +927,8 @@ class Main(GladeWidget):
         webbrowser.open_new_tab(url)
 
     def on_aggiorna_activate(self, widget):
-        aggiorna(self)
+        updateDialog = UpdateDialog(self)
+        updateDialog.show()
 
     def on_Back_up_Database_activate(self, widget):
         """ Si prepara un file zip con il dump del DB """

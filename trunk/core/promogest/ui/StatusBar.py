@@ -25,7 +25,7 @@ from promogest.ui.gtk_compat import *
 import datetime
 from  subprocess import *
 from promogest import Environment
-from utils import on_status_activate, aggiorna, checkInstallation, setconf
+from utils import on_status_activate, checkInstallation, setconf
 from utilsCombobox import findComboboxRowFromStr
 from sqlalchemy import *
 from sqlalchemy.orm import *

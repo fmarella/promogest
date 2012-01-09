@@ -33,11 +33,11 @@ from promogest.ui.GladeApp import GladeApp
 from promogest.dao.User import User
 from promogest.dao.Azienda import Azienda
 from GtkExceptionHandler import GtkExceptionHandler
-from utils import hasAction, checkAggiorna, aggiorna, \
-    checkInstallation, setconf,\
-    posso, installId, messageInfo, findStrFromCombobox
-from utilsCombobox import findComboboxRowFromStr
 from promogest.ui.SendEmail import SendEmail
+from promogest.ui.UpdateDialog import UpdateDialog
+from promogest.ui.utils import checkAggiorna, hasAction, checkInstallation, \
+    setconf, posso, installId, messageInfo, findStrFromCombobox
+from promogest.ui.utilsCombobox import findComboboxRowFromStr
 
 Environment.pg2log.info("GTK+: " + str(GTK_VERSION))
 
@@ -271,7 +271,9 @@ class Login(GladeApp):
 
         :param widget: il widget che ha generato l'evento
         """
-        aggiorna(self)
+        updateDialog = UpdateDialog(self)
+        updateDialog.show()
+
 
     def groupModulesByType(self):
         """
