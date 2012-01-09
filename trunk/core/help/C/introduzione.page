@@ -19,8 +19,8 @@
   <title>Introduzione</title>
 
   <p>
-    <app>Promogest</app> è un gestionale open-source italiano indirizzato a
-    piccole e medie imprese.
+    <app>Promogest</app> è un gestionale open-source italiano per piccole
+    e medie imprese.
   </p>
   <p>
     E' scritto in Python con le librerie GTK+ e utilizza PostgreSQL
