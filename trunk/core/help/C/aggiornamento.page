@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page xmlns="http://projectmallard.org/1.0/"
+      type="topic"
+      id="aggiornamento">
+
+  <info>
+  <link type="guide" xref="index#altro"/>
+   <credit type="author">
+     <name>Francesco Marella</name>
+     <email>francesco.marella@gmail.com</email>
+   </credit>
+   <credit type="copyright">
+     <years>2011-2012</years>
+     <name>PromoGest</name>
+   </credit>
+  </info>
+
+  <title>Aggiornamenti</title>
+
+  <p></p>
+</page>
