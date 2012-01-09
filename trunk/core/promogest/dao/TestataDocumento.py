@@ -313,8 +313,9 @@ class TestataDocumento(Dao):
         if self.id_cliente:
             cliente = leggiCliente(self.id_cliente)
             if not cliente['pagante']:
-                for scad in self.__ScadenzeDocumento:
-                    spese += getSpesePagamento(scad.pagamento)
+                for scad in scadenze:
+                    if scad:
+                        spese += getSpesePagamento(scad.pagamento)
         self._totaleSpese = mN(spese, 2)
 
         totaleEsclusoBaseImponibileRiga = 0
