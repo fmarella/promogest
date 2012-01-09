@@ -2,11 +2,6 @@
 <interface>
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy toplevel-contextual -->
-  <object class="GtkImage" id="image1">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">gtk-quit</property>
-  </object>
   <object class="GtkDialog" id="update_progress_dialog">
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">Aggiornamento di PromoGest</property>
