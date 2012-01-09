@@ -29,7 +29,10 @@ import hashlib
 from calendar import Calendar
 from decimal import *
 
-from promogest.ui.gtk_compat import *
+try:
+    from promogest.ui.gtk_compat import *
+except:
+    pass
 import threading
 import time
 import datetime
