@@ -201,6 +201,16 @@ dei farmaci venduti in un determinato arco temporale</property>
                       </object>
                     </child>
                     <child>
+                      <object class="GtkMenuItem" id="dettaglio_da_ingrosso_menuitem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
+                        <property name="label" translatable="yes">Inserisci prezzo dettaglio da ingrosso</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="on_dettaglio_da_ingrosso_menuitem_activate" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
                       <object class="GtkMenuItem" id="aggiungi_sconto_dettaglio">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>

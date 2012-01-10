@@ -170,6 +170,21 @@ Tutti gli articoli selezionati verranno modificati
         self.filter.info_ml_label.set_text(info)
         self.filter.modifiche_listino.run()
 
+    def on_dettaglio_da_ingrosso_menuitem_activate(self, widget):
+        msg = """Confermi la modifica del prezzo al dettaglio di tutti
+gli articoli presenti in questo listino?
+
+L'operazione potrebbe richiedere alcuni minuti ed è irreversibile, fallo solo se sai cosa stai facendo"""
+        if YesNoDialog(msg=_(msg), transient=self.getTopLevel()):
+            daos = self.filter._filterClosure(None, None)
+            for d in daos:
+                articolo = leggiArticolo(id=d.id_articolo)
+                aliquota = articolo['percentualeAliquotaIva']
+                d.prezzo_dettaglio = calcolaPrezzoIva(d.prezzo_ingrosso, aliquota)
+                Environment.session.add(d)
+            Environment.session.commit()
+        messageInfo(msg="Operazione effettuata")
+        self.filter.refresh()
 
 
 class AnagraficaListiniArticoliHtml(AnagraficaHtml):
