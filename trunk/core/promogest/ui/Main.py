@@ -131,7 +131,6 @@ class Main(GladeWidget):
                                 Environment.params['usernameLoggedList'][1]+\
                                 ' ***')
         self.aziendaStr = aziendaStr
-        self.statusBarHandler()
         for filename in glob.glob(Environment.promogestDir+\
                                                     "temp"+os.sep+'*.cache'):
             try:
@@ -231,6 +230,7 @@ class Main(GladeWidget):
                 #self.crea_iva_radio.set_active(True)
                 #self.upgrade_iva.run()
         checkAggiorna()
+        self.statusBarHandler()
 
 
     def on_apri_dialog_upgrade_iva_button_clicked(self, button):
