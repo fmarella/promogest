@@ -789,6 +789,8 @@ class Main(GladeWidget):
     def on_credits_menu_activate(self, widget):
         creditsDialog = GladeWidget('credits_dialog', callbacks_proxy=self)
         creditsDialog.getTopLevel().set_transient_for(self.getTopLevel())
+        info = "%s Build: %s" % (Environment.VERSIONE, Environment.rev_locale)
+        creditsDialog.versione_label.set_markup(info)
         creditsDialog.getTopLevel().show_all()
         response = creditsDialog.credits_dialog.run()
         if response == GTK_RESPONSE_OK:
@@ -1161,7 +1163,7 @@ Procedere all'installazione del modulo PromoShop? """)
 
 
     def statusBarHandler(self):
-        textStatusBar = _("    PromoGest2 - 070 8649705 - www.promogest.me - info@promotux.it     ")
+        textStatusBar = _(" %s Build: %s - 070 8649705 - www.promogest.me - info@promotux.it     " % (Environment.VERSIONE, Environment.rev_locale))
         context_id =  self.pg2_statusbar.get_context_id("main_window")
         self.pg2_statusbar.push(context_id,textStatusBar)
 
