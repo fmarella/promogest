@@ -82,7 +82,7 @@ from email import Encoders
 import datetime
 
 PRODOTTO = "PromoTux"
-VERSIONE = "PromoGest 2.7.0.1"
+VERSIONE = "PromoGest 2.9.0"
 debugFilter = False
 debugDao = False
 debugSQL = False
