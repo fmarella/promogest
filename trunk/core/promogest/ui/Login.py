@@ -35,7 +35,7 @@ from promogest.dao.Azienda import Azienda
 from GtkExceptionHandler import GtkExceptionHandler
 from promogest.ui.SendEmail import SendEmail
 from promogest.ui.UpdateDialog import UpdateDialog
-from promogest.ui.utils import checkAggiorna, hasAction, checkInstallation, \
+from promogest.ui.utils import hasAction, checkInstallation, \
     setconf, posso, installId, messageInfo, findStrFromCombobox
 from promogest.ui.utilsCombobox import findComboboxRowFromStr
 
@@ -71,7 +71,6 @@ class Login(GladeApp):
         self.shop =shop
         a = GladeApp.__init__(self, 'login_window')
         Environment.exceptionHandler = GtkExceptionHandler()
-        checkAggiorna()
         self.draw()
         self.getTopLevel().show_all()
         #Pg2StatusIcon() # da risolvere in futuro magari con una soluzione all-glade
