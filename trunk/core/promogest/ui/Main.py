@@ -40,7 +40,7 @@ from promogest.ui.PrintDialog import PrintDialogHandler
 from promogest.ui.utils import hasAction, fencemsg, updateScadenzePromemoria,\
          setconf, dateTimeToString, dateToString, \
          orda, posso, messageInfo, installId , YesNoDialog, messageError,\
-         obligatoryField
+         obligatoryField, checkAggiorna
 from promogest.ui.utilsCombobox import *
 from promogest.ui.gtk_compat import *
 from ParametriFrame import ParametriFrame
@@ -230,6 +230,7 @@ class Main(GladeWidget):
                 #self.iva_upgrade_combobox.show_all()
                 #self.crea_iva_radio.set_active(True)
                 #self.upgrade_iva.run()
+        checkAggiorna()
 
 
     def on_apri_dialog_upgrade_iva_button_clicked(self, button):
