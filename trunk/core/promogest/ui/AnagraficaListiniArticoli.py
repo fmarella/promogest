@@ -184,7 +184,7 @@ L'operazione potrebbe richiedere alcuni minuti ed è irreversibile, fallo solo s
                 d.prezzo_dettaglio = calcolaPrezzoIva(d.prezzo_ingrosso, aliquota)
                 Environment.session.add(d)
             Environment.session.commit()
-        messageInfo(msg="Operazione effettuata")
+            messageInfo(msg="Operazione effettuata")
         self.filter.refresh()
 
 
