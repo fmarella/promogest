@@ -35,7 +35,7 @@ from promogest.dao.Azienda import Azienda
 from GtkExceptionHandler import GtkExceptionHandler
 from promogest.ui.SendEmail import SendEmail
 from promogest.ui.UpdateDialog import UpdateDialog
-from promogest.ui.utils import hasAction, checkInstallation, \
+from promogest.ui.utils import leggiRevisioni, hasAction, checkInstallation, \
     setconf, posso, installId, messageInfo, findStrFromCombobox
 from promogest.ui.utilsCombobox import findComboboxRowFromStr
 
@@ -119,6 +119,7 @@ class Login(GladeApp):
         self.username_entry.grab_focus()
         data = datetime.datetime.now()
         self.anno_lavoro_spinbutton.set_value(data.year)
+        leggiRevisioni()
 
 
     def on_logo_button_clicked(self, button):

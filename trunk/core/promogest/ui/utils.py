@@ -1022,7 +1022,7 @@ def calcolaTotaliPrimeNote(tpn, tipo='ALL'):
     """
     riporto_cassa = setconf("PrimaNota", "valore_saldo_parziale_cassa_primanota") or 0
     riporto_banca = setconf("PrimaNota", "valore_saldo_parziale_banca_primanota") or 0
-    
+
     entrate_cassa = Decimal(0)
     uscite_cassa = Decimal(0)
     entrate_banca = Decimal(0)
@@ -2864,9 +2864,9 @@ class PGTimer(object):
             tmp += str(self.steps[i+1] - self.steps[i]) + '\n'
         return tmp
 
-def checkAggiorna():
+def leggiRevisioni():
     """ controllo se il pg2 è da aggiornare o no"""
-    def agg():
+    def fetch():
         try:
             client = pysvn.Client()
             if not Environment.rev_locale:
@@ -2877,7 +2877,7 @@ def checkAggiorna():
             print "Attenzione: %s" % str(cerr)
         Environment.pg2log.info("VERSIONE IN USO LOCALE E REMOTA "+str(Environment.rev_locale)+" "+str(Environment.rev_remota))
 
-    thread = threading.Thread(target=agg)
+    thread = threading.Thread(target=fetch)
     thread.start()
 
 def messageInfo(msg="Messaggio generico", transient=None):

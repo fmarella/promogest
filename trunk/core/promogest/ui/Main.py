@@ -40,7 +40,7 @@ from promogest.ui.PrintDialog import PrintDialogHandler
 from promogest.ui.utils import hasAction, fencemsg, updateScadenzePromemoria,\
          setconf, dateTimeToString, dateToString, \
          orda, posso, messageInfo, installId , YesNoDialog, messageError,\
-         obligatoryField, checkAggiorna
+         obligatoryField
 from promogest.ui.utilsCombobox import *
 from promogest.ui.gtk_compat import *
 from ParametriFrame import ParametriFrame
@@ -131,6 +131,7 @@ class Main(GladeWidget):
                                 Environment.params['usernameLoggedList'][1]+\
                                 ' ***')
         self.aziendaStr = aziendaStr
+        self.statusBarHandler()
         for filename in glob.glob(Environment.promogestDir+\
                                                     "temp"+os.sep+'*.cache'):
             try:
@@ -229,8 +230,6 @@ class Main(GladeWidget):
                 #self.iva_upgrade_combobox.show_all()
                 #self.crea_iva_radio.set_active(True)
                 #self.upgrade_iva.run()
-        checkAggiorna()
-        self.statusBarHandler()
 
 
     def on_apri_dialog_upgrade_iva_button_clicked(self, button):
