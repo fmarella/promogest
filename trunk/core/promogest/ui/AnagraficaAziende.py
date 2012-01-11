@@ -38,7 +38,9 @@ class AnagraficaAziende(GladeWidget):
     def __init__(self, mainWindow):
         self._mainWindow = mainWindow
         self.dao = Azienda()
-        GladeWidget.__init__(self, 'anagrafica_azienda',fileName='anagrafica_azienda.glade')
+        GladeWidget.__init__(self,
+            'anagrafica_azienda',
+            fileName='anagrafica_azienda.glade')
         self.getTopLevel()
         self.placeWindow(self.getTopLevel())
         self.getTopLevel().set_modal(modal=True)

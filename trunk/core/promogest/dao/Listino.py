@@ -72,13 +72,13 @@ class Listino(Dao):
             return True
         else:
             return False
-    isComplex = property(_isComplex)
+    #isComplex = property(_isComplex)
 
-    def _sottoListini(self):
+    def _sottoListiniIDD(self):
         """
             Return a list of Listini ID
         """
-        if self.isComplex:
+        if ListinoComplessoListino().select(idListinoComplesso=self.id):
             lista = []
             for sotto in self.listiniComplessi:
                 lista.append(sotto.id_listino)
@@ -87,7 +87,7 @@ class Listino(Dao):
             self. __sottoListiniID=None
             return self. __sottoListiniID
         return self. __sottoListiniID
-    sottoListiniID = property(_sottoListini)
+    #sottoListiniID = property(_sottoListini)
 
 
     def delete(self, multiple=False, record = True):

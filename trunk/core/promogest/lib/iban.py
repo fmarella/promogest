@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+#! /usr/bin/env python
 
 #    Copyright (C) 2011-2012 Francesco Marella <francesco.marella@gmail.com>
 

@@ -25,20 +25,20 @@
 import hashlib
 import time
 import datetime
-from core import Environment
-from core.lib.utils import *
-from core.lib.page import Page
-from core.dao.Setconf import SetConf
-from core.dao.StaticPages import StaticPages
-from core.lib.MailHandler import SendMail
-from core.dao.Province import Province
-from core.dao.Regioni import Regioni
-from core.dao.PersonaGiuridica import PersonaGiuridica_ as PersonaGiuridica
-from core.dao.User import User
-from core.dao.DestinazioneMerce import DestinazioneMerce
-from core.dao.ConfirmRegistration import ConfirmRegistration
+from promogest import Environment
+from promogest.lib.webutils import *
+from promogest.lib.page import Page
+from promogest.dao.Setconf import SetConf
+from promogest.dao.StaticPages import StaticPages
+#from promogest.lib.MailHandler import SendMail
+from promogest.dao.Province import Province
+from promogest.dao.Regioni import Regioni
+from promogest.dao.PersonaGiuridica import PersonaGiuridica_ as PersonaGiuridica
+from promogest.dao.User import User
+from promogest.dao.DestinazioneMerce import DestinazioneMerce
+from promogest.dao.ConfirmRegistration import ConfirmRegistration
 import json
-from core.dao.News import News
+from promogest.dao.News import News
 
 
 def dls(req, static=None, subdomain=None):

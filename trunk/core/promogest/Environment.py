@@ -28,20 +28,21 @@ tipodbforce = pg3_check.tipodbforce
 web = pg3_check.web
 
 from config import Config
-if pg3:
-    from gi.repository import Gtk as gtk
-    GTK_DIALOG_MODAL = gtk.DialogFlags.MODAL
-    GTK_DIALOG_DESTROY_WITH_PARENT = gtk.DialogFlags.DESTROY_WITH_PARENT
-    GTK_BUTTON_OK = gtk.ButtonsType.OK
-    GTK_DIALOG_MESSAGE_INFO = gtk.MessageType.INFO
-    GTK_RESPONSE_OK = gtk.ResponseType.OK
-else:
-    import gtk
-    GTK_DIALOG_MODAL = gtk.DIALOG_MODAL
-    GTK_DIALOG_DESTROY_WITH_PARENT = gtk.DIALOG_DESTROY_WITH_PARENT
-    GTK_BUTTON_OK = gtk.BUTTONS_OK
-    GTK_DIALOG_MESSAGE_INFO = gtk.MESSAGE_INFO
-    GTK_RESPONSE_OK = gtk.RESPONSE_OK
+if not web:
+    if pg3:
+        from gi.repository import Gtk as gtk
+        GTK_DIALOG_MODAL = gtk.DialogFlags.MODAL
+        GTK_DIALOG_DESTROY_WITH_PARENT = gtk.DialogFlags.DESTROY_WITH_PARENT
+        GTK_BUTTON_OK = gtk.ButtonsType.OK
+        GTK_DIALOG_MESSAGE_INFO = gtk.MessageType.INFO
+        GTK_RESPONSE_OK = gtk.ResponseType.OK
+    else:
+        import gtk
+        GTK_DIALOG_MODAL = gtk.DIALOG_MODAL
+        GTK_DIALOG_DESTROY_WITH_PARENT = gtk.DIALOG_DESTROY_WITH_PARENT
+        GTK_BUTTON_OK = gtk.BUTTONS_OK
+        GTK_DIALOG_MESSAGE_INFO = gtk.MESSAGE_INFO
+        GTK_RESPONSE_OK = gtk.RESPONSE_OK
 try:
     settings = gtk.settings_get_default()
     gtk.Settings.set_long_property(settings, "gtk-button-images", 1, "main")
@@ -56,7 +57,8 @@ import getopt
 try:
     from werkzeug import Local, LocalManager, cached_property
 except:
-    print " MANCA WERKZEUG"
+    print "MANCA WERKZEUG"
+
 import sqlalchemy
 from sqlalchemy import *
 from sqlalchemy.orm import *
@@ -139,12 +141,19 @@ totale_pn_con_riporto = 0
 aaa = 648
 da_data_inizio_primanota = None
 a_data_inizio_primanota = None
+azienda_in_conf = None
 
 
 CONFIGPATH = os.path.split(os.path.dirname(__file__))[0]
 webconfigFile = os.path.join(CONFIGPATH, 'pgweb.conf')
 webconf = Config(webconfigFile)
-
+if hasattr(webconf,"SottoDominio"):
+    if os.path.exists(CONFIGPATH+'/templates/'+webconf.SottoDominio.schema):
+        SUB = webconf.SottoDominio.schema
+    else:
+        SUB = ""
+else:
+    SUB = ""
 cadenza = ["MENSILE", "BIMESTRALE", "TRIMESTRALE", "SEMESTRALE", "ANNUALE"]
 ALLOWED_SCHEMES = frozenset(['http', 'https', 'ftp', 'ftps'])
 templates_dir= os.path.join(CONFIGPATH, 'templates')
@@ -155,13 +164,14 @@ LANGPATH = os.path.join(CONFIGPATH, 'lang')
 session_dir = os.path.join(CONFIGPATH, 'session')
 modules_dir = os.path.join(CONFIGPATH, 'core/plugins')
 domains = os.path.join(CONFIGPATH, 'templates')
+CACHE = os.path.join(CONFIGPATH, 'cache')
 URL_CHARS = 'abcdefghijkmpqrstuvwxyzABCDEFGHIJKLMNPQRST23456789'
-modulesList = []
+modulesList = ["Contatti"]
 sladir = "sladir/"
 artImagPath = ""
 importDebug = False
 languages = ""
-
+COOKIENAME = "promogest_web"
 hapag = ["Fattura accompagnatoria","Fattura acquisto","Fattura differita acquisto",
 "Fattura differita vendita","Fattura vendita","Ricevuta Fiscale","Vendita dettaglio",
 "Nota di credito a cliente","Nota di credito da fornitore"]
@@ -215,17 +225,18 @@ def startdir():
 
 def messageInfoEnv(msg="Messaggio generico", transient=None):
     """generic msg dialog """
-    dialoggg = gtk.MessageDialog(transient,
+    if not web:
+        dialoggg = gtk.MessageDialog(transient,
                         GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
                         GTK_DIALOG_MESSAGE_INFO,
                         GTK_BUTTON_OK,
                         msg)
-    try:
-        pg2log.info(msg)
-    except:
-        pass
-    dialoggg.run()
-    dialoggg.destroy()
+        try:
+            pg2log.info(msg)
+        except:
+            pass
+        dialoggg.run()
+        dialoggg.destroy()
 
 class MyProxy(ConnectionProxy):
     def cursor_execute(self, execute, cursor, statement, parameters, context, executemany):
@@ -343,24 +354,25 @@ def _psycopg2old():
 #        pg2log.info("PSYCOPG2 OLD NON PRESENTE")
         return None
 
-try:
-    promogestStartDir = startdir()
-    if not (os.path.exists(promogestStartDir)):
-        os.mkdir(promogestStartDir)
-    configFile = promogestStartDir + 'configure'
-    conf = Config(configFile)
-    conf.guiDir = '.' + os.sep + 'gui' + os.sep
+if not web:
+    try:
+        promogestStartDir = startdir()
+        if not (os.path.exists(promogestStartDir)):
+            os.mkdir(promogestStartDir)
+        configFile = promogestStartDir + 'configure'
+        conf = Config(configFile)
+        conf.guiDir = '.' + os.sep + 'gui' + os.sep
 
-except IOError:
-    c = open('configure.dist','r')
-    content = c.readlines()
-    fileConfig = open(configFile,'w')
-    for row in content[0:13]:
-        fileConfig.write(row)
-    c.close()
-    fileConfig.close()
-    conf = Config(configFile)
-    conf.guiDir = '.' + os.sep + 'gui' + os.sep
+    except IOError:
+        c = open('configure.dist','r')
+        content = c.readlines()
+        fileConfig = open(configFile,'w')
+        for row in content[0:13]:
+            fileConfig.write(row)
+        c.close()
+        fileConfig.close()
+        conf = Config(configFile)
+        conf.guiDir = '.' + os.sep + 'gui' + os.sep
 
 
 """ Sets configuration value """
@@ -527,10 +539,13 @@ Grazie per aver scelto il PromoGest""" %str(promogestDir)
 
     importDebug = True
 
+if web:
+    conf = webconf
+
 if aziendaforce:
     azienda = aziendaforce
 else:
-    azienda=conf.Database.azienda
+    azienda = conf.Database.azienda
 
 if tipodbforce:
     tipodb = tipodbforce
@@ -591,13 +606,20 @@ print "TIPO ENGINE", tipo_eng
 engine.echo = False
 #engine.autocommit= True
 #insp = reflection.Inspector.from_engine(engine)
-meta = MetaData(engine)
-#Session = sessionmaker(bind=engine)
-Session = scoped_session(sessionmaker(bind=engine, autoflush=True))
 
-#meta = None
+#Session = sessionmaker(bind=engine)
+#Session = scoped_session(sessionmaker(bind=engine, autoflush=True))
 #Session = scoped_session(sessionmaker(bind=engine))
+if web:
+    print "SESSIONE DI TIPO SCOPED PER IL WEB"
+    Session = scoped_session(lambda: create_session(engine, autocommit=False))
+else:
+    Session = sessionmaker(bind=engine)
+meta = MetaData(engine)
 session = Session()
+#meta = None
+
+
 params = {'engine': engine ,
         'mainSchema': mainSchema,
         'schema': azienda,
@@ -618,26 +640,31 @@ params = {'engine': engine ,
 conf.windowsrc = os.path.expanduser('~') + os.sep + 'promogest2/windowsrc.xml'
 conf.guiDir = '.' + os.sep + 'gui' + os.sep
 
-LOG_FILENAME = startdir()+'pg2.log'
+if not web:
+    LOG_FILENAME = startdir() + 'pg2.log'
 
-# Set up a specific logger with our desired output level
-pg2log = logging.getLogger('PromoGest2')
-pg2log.setLevel(logging.INFO)
+    # Set up a specific logger with our desired output level
+    pg2log = logging.getLogger('PromoGest2')
+    pg2log.setLevel(logging.INFO)
 
-# Add the log message handler to the logger
-try:
-    handler = logging.handlers.RotatingFileHandler(
-                  LOG_FILENAME, maxBytes=10000, backupCount=6)
-except:
-    handler = logging.handlers.RotatingFileHandler(
-                  LOG_FILENAME+"bis", maxBytes=10000, backupCount=6)
+    # Add the log message handler to the logger
+    try:
+        handler = logging.handlers.RotatingFileHandler(
+                      LOG_FILENAME, maxBytes=10000, backupCount=6)
+    except:
+        handler = logging.handlers.RotatingFileHandler(
+                      LOG_FILENAME+"bis", maxBytes=10000, backupCount=6)
 
-formatter = logging.Formatter(
-    "%(asctime)s - %(name)s - %(levelname)s - %(message)s - %(pathname)s - %(funcName)s - %(lineno)d")
-# add formatter to ch
-handler.setFormatter(formatter)
-pg2log.addHandler(handler)
-pg2log.info("\n\n<<<<<<<<<<<  AVVIO PROMOGEST >>>>>>>>>>")
+    formatter = logging.Formatter(
+        "%(asctime)s - %(name)s - %(levelname)s - %(message)s - %(pathname)s - %(funcName)s - %(lineno)d")
+    # add formatter to ch
+    handler.setFormatter(formatter)
+    pg2log.addHandler(handler)
+    pg2log.info("\n\n<<<<<<<<<<<  AVVIO PROMOGEST >>>>>>>>>>")
+else:
+    pg2log = logging.getLogger('PromoGest2')
+    #pg2log=None
+
 
 def sendmail(msg="PG"):
     msg = str(promogestDir) +"  "+str(rev_locale) +"  "+str(rev_remota)

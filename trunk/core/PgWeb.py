@@ -48,8 +48,8 @@ class Pg2_web(object):
             print "pazienza"
 
         #TODO: eventuale gestione modulare successiva come nel pg
-        self.importModulesFromDir(modules_dir="promogest/pages/modules")
-        #Aggiungo le directori di lavoro ...
+        #self.importModulesFromDir(modules_dir="./promogest/pages/modules")
+        #Aggiungo le directory di lavoro ...
         self.dispatch = SharedDataMiddleware(self.dispatch, {
             '/templates/': Environment.STATIC_PATH,
             '/feed': Environment.STATIC_PATH_FEED,

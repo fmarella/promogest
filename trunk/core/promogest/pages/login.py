@@ -51,7 +51,7 @@ def login(req=None, SUB = ""):
     workingYear = req.form.get('year')
     Environment.workingYear = int(workingYear)
     Environment.azienda = company
-    Environment.meta.clear()
+    #Environment.meta.clear()
 #    Environment.meta.reflect(schema=company )
     Environment.params["metadata"].clear()
     Environment.params["metadata"].reflect(schema="promogest2" )

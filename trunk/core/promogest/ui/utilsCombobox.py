@@ -24,7 +24,10 @@
 import os
 import decimal
 from decimal import *
-from promogest.ui.gtk_compat import *
+try:
+    from promogest.ui.gtk_compat import *
+except:
+    pass
 import time, datetime
 from promogest import Environment
 

@@ -20,16 +20,26 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-
+from promogest import Environment
 from promogest.lib.page import Page
 from promogest.dao.Promemoria import Promemoria
+from promogest.dao.AnagraficaSecondaria import AnagraficaSecondaria_
+from promogest.modules.RuoliAzioni.dao.Role import Role
 
 def mainpage(req, subdomain=None):
     """
     Main
     """
-    #print "MATTUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUA"
-    prome = Promemoria().select(batchSize=None)
+    # PASSARE LE ATTIVITA' se azienda è giusto peso
+    #prome = Promemoria().select(batchSize=None)
+    #print "SUUUUUUUUUB2", subdomain, Environment.azienda
+    role = Role().select(name="ATTIVITA")
+    pgs = []
+    if role:
+        idrole = role[0].id
+        pgs = AnagraficaSecondaria_().select(idRole=idrole, batchSize=None, orderBy="ragione_sociale")
+        print "PEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE", pgs
     pageData = {'file' : "mainpage",
-                "promemoria":prome}
+                "pgs": pgs
+                }
     return Page(req).render(pageData)

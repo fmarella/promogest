@@ -21,7 +21,7 @@
 
 from sqlalchemy import *
 from sqlalchemy.orm import *
-from core.Environment import *
+from promogest.Environment import *
 from Dao import Dao
 
 news_categoryTable  = Table('news_category', params["metadata"],

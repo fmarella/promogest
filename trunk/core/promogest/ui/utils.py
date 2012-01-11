@@ -352,23 +352,18 @@ def leggiMagazzino(id):
             "email": _email}
 
 
-def leggiListino(idListino=None, idArticolo=None):
+def leggiListino(idListino=None, idArticolo=None, tiny=False):
     """
     Restituisce un dizionario con le informazioni sul listino letto
     """
     from promogest.dao.Listino import Listino
     from promogest.dao.ListinoArticolo import ListinoArticolo
     from promogest.dao.ListinoComplessoArticoloPrevalente import ListinoComplessoArticoloPrevalente
-
+    from promogest.dao.Articolo import Articolo
     daoListinoArticolo = None
-    liss = Listino().select(batchSize=None)
 
-    # select dei listini
-    #for l in liss:
-        #if l.listino_attuale ==False:
-            #l.listino_attuale = True
-            #l.persist()
-    #creo qui il dizionario invece di usare un return alla fine
+    #liss = Listino().select(batchSize=None)
+
     listinoDict = {"denominazione": "",
                     "prezzoIngrosso": 0,
                     "prezzoDettaglio": 0,
@@ -385,38 +380,41 @@ def leggiListino(idListino=None, idArticolo=None):
         if daoListinoo:
             daoListino = daoListinoo[0]
             _denominazione = daoListino.denominazione
-            _complesso = daoListino.isComplex  #verifico se il listino è complesso
+            _complesso = daoListino._isComplex()  #verifico se il listino è complesso
             listinoDict["denominazione"] = _denominazione
             listinoDict["complesso"] = _complesso
             if _complesso:
-                _sottoListiniID = daoListino.sottoListiniID
+                _sottoListiniID = daoListino._sottoListiniIDD()
                 listinoDict["sottoListiniID"] = _sottoListiniID
 
             if idArticolo:       #abbiamo anche un id Articolo daoListinoArticolo = None
-                if _complesso:  #se il listino è complesso gestisco il suo listino articolo
-                    daoListinoArticolo1 = ListinoArticolo().select(idListino=_sottoListiniID,
-                                                                idArticolo = idArticolo,
-                                                                listinoAttuale = True,
-                                                                batchSize=None,
-                                                                orderBy=ListinoArticolo.id_listino)
+                if _complesso:
+                    #se il listino è complesso gestisco il suo listino articolo
+                    daoListinoArticolo1 = ListinoArticolo().select(
+                        idListino=_sottoListiniID,
+                        idArticolo = idArticolo,
+                        listinoAttuale = True,
+                        batchSize=None,
+                        orderBy=ListinoArticolo.id_listino)
                     if len(daoListinoArticolo1)>1:
                         daoListinoArticolo2 = ListinoComplessoArticoloPrevalente()\
-                                                .select(idListinoComplesso = idListino,
-                                                idArticolo = idArticolo,
-                                                batchSize=None)
+                                .select(idListinoComplesso = idListino,
+                                idArticolo = idArticolo,
+                                batchSize = None)
                         if daoListinoArticolo2:
-                            daoListinoArticolo = ListinoArticolo()\
-                                    .select(idListino=daoListinoArticolo2[0].id_listino,
-                                                        idArticolo = idArticolo,
-                                                        listinoAttuale = True,
-                                                        batchSize=None,
-                                                        orderBy=ListinoArticolo.id_listino)[0]
+                            daoListinoArticolo = ListinoArticolo().select(
+                                idListino=daoListinoArticolo2[0].id_listino,
+                                idArticolo = idArticolo,
+                                listinoAttuale = True,
+                                batchSize = None,
+                                orderBy=ListinoArticolo.id_listino)[0]
                         else:
-                            daoListinoArticolo3 = ListinoArticolo().select(idListino=_sottoListiniID,
-                                                                idArticolo = idArticolo,
-                                                                listinoAttuale = True,
-                                                                batchSize=None,
-                                                                orderBy=ListinoArticolo.data_listino_articolo)
+                            daoListinoArticolo3 = ListinoArticolo().select(
+                                idListino=_sottoListiniID,
+                                idArticolo = idArticolo,
+                                listinoAttuale = True,
+                                batchSize=None,
+                                orderBy=ListinoArticolo.data_listino_articolo)
                             if daoListinoArticolo3:
                                 daoListinoArticolo = daoListinoArticolo1[-1]
 
@@ -426,13 +424,14 @@ def leggiListino(idListino=None, idArticolo=None):
                         daoListinoArticolo = None
 
                 else:  #listino normale
-                    daoListinoArticolo1 = ListinoArticolo().select(idListino=idListino,
+                    daoListinoArticolo1 = ListinoArticolo().select(join=Articolo,idListino=idListino,
                                                             idArticolo = idArticolo,
                                                             listinoAttuale = True,
                                                             batchSize=None,
-                                                            orderBy=ListinoArticolo.id_listino)
+                                                            #orderBy=ListinoArticolo.id_listino
+                                                            )
                     if not daoListinoArticolo1 and posso("PW"):
-                        from promogest.dao.Articolo import Articolo
+
                         father = Articolo().getRecord(id=idArticolo)
                         idArticolo = father.id_articolo_padre
                         #riprovo la query con l'id del padre, potrebbe essere un figlio
@@ -448,6 +447,10 @@ def leggiListino(idListino=None, idArticolo=None):
                         daoListinoArticolo = None
 
                 if daoListinoArticolo:
+                    if tiny:
+                        listinoDict["prezzoIngrosso"] = daoListinoArticolo.prezzo_ingrosso or 0
+                        listinoDict["prezzoDettaglio"] = daoListinoArticolo.prezzo_dettaglio or 0
+                        return listinoDict
                     _prezzoIngrosso = daoListinoArticolo.prezzo_ingrosso
                     _prezzoDettaglio = daoListinoArticolo.prezzo_dettaglio
                     _ultimoCosto = daoListinoArticolo.ultimo_costo

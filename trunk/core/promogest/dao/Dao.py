@@ -26,7 +26,10 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from sqlalchemy.ext.serializer import loads, dumps
 from promogest.Environment import *
-from promogest.ui.GtkExceptionHandler import GtkExceptionHandler
+try:
+    from promogest.ui.GtkExceptionHandler import GtkExceptionHandler
+except:
+    pass
 from promogest.dao.DaoUtils import ckd
 
 class Dao(object):

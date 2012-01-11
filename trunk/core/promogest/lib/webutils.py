@@ -41,7 +41,7 @@ from promogest.dao.User import User
 #from core.dao.Feed import Feed
 #from core.dao.Subdomain import Subdomain
 from promogest.dao.Setconf import SetConf
-
+from  promogest.ui import utils
 import Image, ImageDraw
 from random import randint as rint
 import ImageFont
@@ -57,6 +57,7 @@ def expose(rule, **kw):
         url_map.add(Rule(rule, **kw))
         return f
     return decorate
+
 
 jinja_env = Env(loader=FileSystemLoader(Environment.templates_dir, ),
         bytecode_cache = FileSystemBytecodeCache(os.path.join(Environment.CONFIGPATH, 'cache'), '%s.cache'))
@@ -212,6 +213,18 @@ def renderizza(req,tpl,pageData):
     html = tpl2.render(pageData=pageData)
     return html
 
+def renderTemplate(pageData):
+    #jinja_env.globals['environment'] = Environment
+    jinja_env.globals['utils'] = utils
+    pageData["titolo"] = pageData["file"].split(".")[0].capitalize()
+    if "dao" in pageData:
+        html = jinja_env.get_template("/"+pageData["file"]+".html").render(pageData = pageData, dao=pageData["dao"])
+    else:
+        html = jinja_env.get_template("/"+pageData["file"]+".html").render(pageData = pageData)
+    return html
+
+
+
 
 def subList():
     subss = Subdomain().select(batchSize=None)
@@ -361,11 +374,9 @@ def includeFile(files, subdomain=None):
     pathFile = Environment.CONFIGPATH + '/templates/'
     if Environment.SUB:
         pathFilesub = pathFile+Environment.SUB.lower()+"/"
-        print "BEHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH", str(pathFilesub+filename)
 
         if os.path.exists(str(pathFilesub+filename)):
             pathFilesub = Environment.SUB.lower()+"/"+filename
-            print "TUUUUUUUUUUUUUUUUUUUUUU", pathFilesub
             return pathFilesub
     if os.path.exists(str(pathFile+filename)):
         pathFile = filename

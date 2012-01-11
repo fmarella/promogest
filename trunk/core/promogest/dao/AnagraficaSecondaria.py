@@ -21,7 +21,7 @@
 
 from sqlalchemy import *
 from sqlalchemy.orm import *
-from promogest.Environment import params, conf, pg2log, session
+from promogest.Environment import params, conf, session
 from Dao import Dao
 from promogest.ui.utils import  codeIncrement, getRecapitiAnagraficaSecondaria
 
@@ -37,7 +37,6 @@ try:
         autoload=True)
 
 except Exception as e:
-    pg2log.info(str(e))
     ruoloTable = Table('role',
         params['metadata'],
         autoload=True,

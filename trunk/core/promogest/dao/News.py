@@ -7,10 +7,10 @@
 
 from sqlalchemy import *
 from sqlalchemy.orm import *
-from core.Environment import *
+from promogest.Environment import *
 from Dao import Dao
-from core.dao.NewsCategory import NewsCategory
-from Language import Language
+from promogest.dao.NewsCategory import NewsCategory
+from promogest.modules.Multilingua.dao.Language import Language
 from User import User
 
 languageTable = Table('language', params['metadata'], autoload=True, schema=params['mainSchema'])

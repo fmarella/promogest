@@ -578,9 +578,9 @@ class AnagraficaClientiEdit(AnagraficaEdit):
         else:
             a.on_record_new_activate(a, from_other_dao=self.dao)
             a.editElement.username_entry.set_text(self.dao.ragione_sociale.strip().replace(" ","").lower() or (self.dao.cognome+self.dao.nome).strip().replace(" ","").lower())
-            a.editElement.password_entry.set_text(self.dao.partita_iva.lower()[0:5] or
+            a.editElement.password_entry.set_text(self.dao.partita_iva.lower()[0:6] or
             self.dao.codice_fiscale.lower()[0:6])
-            a.editElement.confirm_password_entry.set_text(self.dao.partita_iva.lower()[0:5] or self.dao.codice_fiscale.lower()[0:6])
+            a.editElement.confirm_password_entry.set_text(self.dao.partita_iva.lower()[0:6] or self.dao.codice_fiscale.lower()[0:6])
             findComboboxRowFromStr(a.editElement.azienda_combobox, Environment.azienda,0)
             a.editElement.active_user_checkbutton.set_active(True)
             a.editElement.email_entry.set_text(self.dao.email_principale or "")

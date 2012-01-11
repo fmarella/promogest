@@ -96,12 +96,12 @@ class InfoPesoNotebookPage(GladeWidget):
 
         if not data_pesata:
             obligatoryField(None,
-                    self.data_pesata_datewidget,
-                    'Inserire una data pesata !')
+                self.data_pesata_datewidget,
+                'Inserire una data pesata !')
         if not peso:
             obligatoryField(None,
-                    self.peso_pesata_entry,
-                    'Inserire un peso !')
+                self.peso_pesata_entry,
+                'Inserire un peso !')
 
         if float(mgrassa.replace(",","."))+float(mmagraeacqua.replace(",",".")) > float(peso.replace(",","."))+float(0.1):
             messageInfo(msg = "ATTENZIONE! La somma di M.GRASSA , M.MAGRA e ACQUA\n è superiore al peso totale")

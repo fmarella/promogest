@@ -27,6 +27,7 @@ from promogest.lib.page import Page
 #from core.pages.home import *
 from promogest.pages.mainpage import mainpage
 #from core.lib.utils import *
+from promogest.pages.static import *
 from promogest.pages.siteAdmin import siteAdminn # importa la parte di gestione ...
 from promogest.pages.userAction import user
 from promogest.pages.roleAction import role
@@ -38,6 +39,7 @@ from promogest.pages.anagrafiche import anagrafiche
 from promogest.pages.magazzini import magazzini
 from promogest.pages.parametri import parametri
 from promogest.pages.promemoria import promemoria
+from promogest.pages.cms import *
 from promogest.pages.anagraficaArticolo import anagraficaArticolo
 from promogest.pages.anagraficaCliente import anagraficaCliente
 from promogest.pages.anagraficaFornitore import anagraficaFornitore
@@ -57,57 +59,12 @@ from promogest.pages.anagraficaAliquotaIva import anagraficaAliquotaIva
 from promogest.pages.configuration import *
 from promogest.pages.jsonSearch import jsonsearch
 from promogest.pages.printDao import printDao
+from promogest.pages.ordineDaCliente import ordineDaCliente, calcolaTotaleOrdine, schedaArticolo
+from promogest.pages.staticPagesAction import staticPages
+from promogest.pages.questionarioIntroduttivo import questionarioIntroduttivo
 #from core.pages.siteAdmin.subdomainAction import subDomain
 from promogest.pages.setconfAction import setConf
 
-""" PARTE RELATIVA AL SITEADMIN """
-
-@expose("/")
-def siteAdmi(req, subdomain=""):
-    #if hasAction(req,action=[1,2,3,4,5]): # adminrole
-    #if Environment.SUB:
-        #host_url= "/"+Environment.SUB
-        #return Page(req).redirect(host_url)
-
-    if 5==5: # adminrole
-        return siteAdminn(req, SUB=Environment.SUB)
-    elif hasAction(req,action=[1,2]): #utente
-        host_url= "/"+subdomain
-        return Page(req).redirect(host_url)
-    else:
-        print " L'USER NON HA ABBASTANZA DIRITTI DI ACCESSO"
-#        Session(req).destroy()
-        pageData = {'file' : 'not_found'}
-        return Page(req).render(pageData)
-
-
-#@expose("/siteAdmin/<action>")
-#def siteAdminAction(req, subdomain=None, action=None):
-#    if hasAction(req,action=[1,2,3,4,5]):
-#        if action.upper() =="THEME_SETUP":
-#            return theme_setup(req,subdomain=subdomain, action=action)
-#        elif action.upper() =="SETUP":
-#            return mainSetup(req,subdomain=subdomain, action=action)
-
-#        if "USER" in action.upper():
-#            return user(req,subdomain=subdomain, action=action)
-#        if "MENUITEM" in action.upper():
-#            return menuItem(req,subdomain=subdomain, action=action)
-#        if "SETCONF" in action.upper():
-#            return setConf(req,subdomain=subdomain, action=action)
-#        if "SUBDOMAIN" in action.upper():
-#            return subDomain(req,subdomain=subdomain, action=action)
-#        if "ROLE" in action.upper():
-#            return role(req,subdomain=subdomain, action=action)
-#        if "STATICPAGES" in action.upper():
-#            return staticPages(req,subdomain=subdomain, action=action)
-#        if "COMPANY" in action.upper():
-#            return company(req,subdomain=subdomain, action=action)
-#        if "FEED" in action.upper():
-#            return feed(req,subdomain=subdomain, action=action)
-#    else:
-#        pageData = {'file' : 'not_found'}
-#        return Page(req).render(pageData)
 
 def elencoPagineStatiche(req, static=None, subdomain=None):
     if static == "sla2pdf":
@@ -136,6 +93,20 @@ def elencoPagineStatiche(req, static=None, subdomain=None):
         return parametri(req)
     elif static =="promemoria":
         return promemoria(req)
+    elif static == "calcola_totale_ordine":
+        return calcolaTotaleOrdine(req)
+    elif static == "ordine_da_cliente":
+        dao= req.args.get("dao")
+        return ordineDaCliente(req, dao=dao)
+    elif static == "ordine_da_cliente_scheda_articolo":
+        return schedaArticolo(req)
+    elif static == "questionario_introduttivo":
+        return questionarioIntroduttivo(req)
+    elif static == "anteprima_metodo":
+        return questionarioIntroduttivo(req, action=static)
+    elif static == "invio_ordine_da_cliente":
+        action = "invio_ordine"
+        return ordineDaCliente(req, action=action)
     #elif static.upper() == Environment.SUB.upper():
         #return siteAdminn(req, SUB=Environment.SUB)
 #    elif action.upper() =="THEME_SETUP":
@@ -153,8 +124,8 @@ def elencoPagineStatiche(req, static=None, subdomain=None):
 #        return subDomain(req,subdomain=subdomain, action=action)
 #    if "ROLE" in action.upper():
 #        return role(req,subdomain=subdomain, action=action)
-#    if "STATICPAGES" in action.upper():
-#        return staticPages(req,subdomain=subdomain, action=action)
+    elif "STATICPAGES" in static.upper():
+        return staticPages(req)
 #    if "COMPANY" in action.upper():
 #        return company(req,subdomain=subdomain, action=action)
 #    if "FEED" in action.upper():
@@ -164,7 +135,12 @@ def elencoPagineStatiche(req, static=None, subdomain=None):
         return Page(req).render(pageData)
 
 
-def __sub__(req, sub=None, action=None):
+def primoSecondo(req, first=None, second=None):
+    if "STATICPAGES" in first.upper():
+        return staticPages(req, first=first, second=second)
+
+
+def __sub__(req, sub=None, action=None, quarto=None):
     if sub == "categoria_articolo":
         return anagraficaCategoriaArticolo(req, action=action)
     elif sub == "famiglia_articolo":
@@ -188,7 +164,7 @@ def __sub__(req, sub=None, action=None):
     elif sub == "articolo":
         return anagraficaArticolo(req, action=action)
     elif sub == "cliente":
-        return anagraficaCliente(req, action=action)
+        return anagraficaCliente(req, action=action, quarto=quarto)
     elif sub == "fornitura":
         return anagraficaFornitura(req, action=action)
     elif sub == "fornitore":
@@ -198,12 +174,23 @@ def __sub__(req, sub=None, action=None):
     elif sub == "agente":
         return anagraficaAgente(req, action=action)
 
-
 def __autocomplete__(req, action=None, what_json_search=None):
     return jsonsearch(req, action = action, what_json_search=what_json_search)
 
 def __printt__(req, dao=None, action=None):
     return printDao(req, dao=dao)
+
+@expose("/")
+def siteAdmi(req, subdomain=""):
+    return siteAdminn(req, SUB=Environment.SUB)
+    #elif hasAction(req,action=[1,2]): #utente
+        #host_url= "/"+subdomain
+        #return Page(req).redirect(host_url)
+    #else:
+        #print " L'USER NON HA ABBASTANZA DIRITTI DI ACCESSO"
+        #Session(req).destroy()
+        #pageData = {'file' : 'not_found'}
+        #return Page(req).render(pageData)
 
 @expose('/preview')
 def __preview(req):
@@ -240,16 +227,32 @@ def __edit(req):
     return __sub__(req, sub=dao, action=action)
 
 
-#Qui gestiamo le pagine statiche di primo livello
-@expose("/<first>")
-def statics(req, first=None):
-    return elencoPagineStatiche(req, static=first)
+
+
 
 #qui gestiamo le operazioni di secondo livello sulle anagrafiche
 @expose('/anagrafiche/<second>/<terzo>')
 def ___anagrafiche_sub(req, second=None, terzo=None):
     return __sub__(req, sub=second, action=terzo)
 
+@expose('/anagrafiche/<second>/<terzo>/<quarto>')
+def ___anagrafiche_sub_sub(req, second=None, terzo=None, quarto=None):
+    dao = req.args.get("idr")
+    return __sub__(req, sub=second, action=terzo,quarto=quarto)
+
 @expose('/parametri/<second>/<terzo>')
 def ___parametri_sub(req, second=None, terzo=None):
     return __sub__(req, sub=second, action=terzo)
+
+@expose('/cms/<pages>')
+def pagine(req, pages=None, subdomain=None):
+    return staticpages(req,pages=pages, subdomain=subdomain)
+
+@expose("/<first>")
+def statics(req, first=None):
+    return elencoPagineStatiche(req, static=first)
+
+@expose('/<first>/<second>/')
+@expose('/<first>/<second>')
+def ___primo_e_secondo(req, first=None, second=None):
+    return primoSecondo(req, first=first,second=second)

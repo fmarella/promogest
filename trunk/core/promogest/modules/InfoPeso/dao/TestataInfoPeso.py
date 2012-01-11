@@ -113,7 +113,6 @@ class TestataInfoPeso(Dao):
 
     def persist(self):
         """ cancellazione righe associate alla testata """
-        pg2log.info("DENTRO IL TESTATA INFOPESO")
         params["session"].add(self)
         params["session"].commit()
 #        self.righeInfoPesoDel(self.id)

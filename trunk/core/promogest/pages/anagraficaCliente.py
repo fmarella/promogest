@@ -24,6 +24,10 @@ import datetime
 from decimal import *
 from promogest.lib.page import Page
 from promogest.dao.Cliente import Cliente, getNuovoCodiceCliente
+from promogest.dao.ClienteCategoriaCliente import ClienteCategoriaCliente
+from promogest.modules.Contatti.dao.ContattoCliente import ContattoCliente
+from promogest.modules.Contatti.dao.RecapitoContatto import RecapitoContatto
+from promogest.modules.Contatti.dao.Contatto import Contatto
 from promogest.dao.PersonaGiuridica import PersonaGiuridica_ as PersonaGiuridica
 from promogest.dao.Pagamento import Pagamento
 from promogest.dao.Banca import Banca
@@ -31,13 +35,24 @@ from promogest.dao.Listino import Listino
 from promogest.dao.Magazzino import Magazzino
 from promogest.dao.CategoriaCliente import CategoriaCliente
 from promogest.lib.webutils import *
+from promogest.pages.modules.infopesoWeb import infopesoWeb
+from promogest.dao.PersonaGiuridica import PersonaGiuridica_ as PersonaGiuridica
+from promogest.dao.PersonaGiuridicaPersonaGiuridica import PersonaGiuridicaPersonaGiuridica
 
-def anagraficaCliente(req, action=None):
+def anagraficaCliente(req, action=None, quarto=None):
     """
     Funzione di gestione delle preview
     """
     def _list_(req, action=None):
         """ """
+        daos = []
+        attivita = req.form.get("attivita")
+        print "ATTIVITAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", attivita
+        if attivita:
+            pgg = PersonaGiuridicaPersonaGiuridica().select(idPersonaGiuridica =attivita)
+            #print "PGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG", pgg
+            for d in pgg:
+                daos.append(Cliente().getRecord(id=d.id_persona_giuridica_abbinata))
         fk_ragione_sociale = None
         fk_insegna = None
         fk_cognome_e_nome = None
@@ -86,16 +101,17 @@ def anagraficaCliente(req, action=None):
                                         )
         args = pagination(req,batch,count)
         args["page_list"] = "anagrafiche/cliente/list"
-        daos = Cliente(req=req).select( ragioneSociale=fk_ragione_sociale,
-                                        insegna=fk_insegna,
-                                        cognomeNome=fk_cognome_e_nome,
-                                        codice = fk_codice,
-                                        localita = fk_localita,
-                                        codiceFiscale = fk_codice_fiscale,
-                                        partitaIva = fk_partita_iva,
-                                        idCategoria = fk_id_categoria_cliente,
-                                        batchSize=batch,
-                                        offset=args["offset"])
+        #if not daos:
+            #daos = Cliente(req=req).select( ragioneSociale=fk_ragione_sociale,
+                                            #insegna=fk_insegna,
+                                            #cognomeNome=fk_cognome_e_nome,
+                                            #codice = fk_codice,
+                                            #localita = fk_localita,
+                                            #codiceFiscale = fk_codice_fiscale,
+                                            #partitaIva = fk_partita_iva,
+                                            #idCategoria = fk_id_categoria_cliente,
+                                            #batchSize=batch,
+                                            #offset=args["offset"])
         categorie = CategoriaCliente().select(batchSize=None)
         pageData = {'file' : "anagraficaComplessa",
                     "_dao_":"cliente",
@@ -117,11 +133,15 @@ def anagraficaCliente(req, action=None):
             dao = Cliente()
         else:
             dao = Cliente().getRecord(id=id)
-        codice = req.form.get("codice")
-        if codice:
-            dao.codice = codice
-        else:
+        #codice = req.form.get("codice")
+        if not dao.codice:
             dao.codice = getNuovoCodiceCliente()
+
+        dao_contatto = ContattoCliente().select(idCliente=dao.id)
+        if dao_contatto:
+            dao_contatto = dao_contatto[0]
+        else:
+            dao_contatto = ContattoCliente()
 
         if req.form.get("id_pagamento"):
             dao.id_pagamento = int(req.form.get("id_pagamento"))
@@ -147,8 +167,131 @@ def anagraficaCliente(req, action=None):
         #nazione    character varying(100)
         dao.codice_fiscale= req.form.get("codice_fiscale")
         dao.partita_iva = req.form.get("partita_iva")
+        dao.note = req.form.get("cliente_note")
         if dao.codice:
             dao.persist()
+
+        #if Environment.subdomain =="giustopeso": # modificare per il controllo web
+            #(dao_testata_infopeso, dao_generalita_infopeso) = self.infopeso_page.infoPesoSaveDao()
+            #dao_testata_infopeso.id_cliente = self.dao.id
+            #dao_testata_infopeso.persist()
+            #dao_generalita_infopeso.id_cliente = self.dao.id
+            #dao_generalita_infopeso.persist()
+
+        #SEzione dedicata ai contatti/recapiti principali
+        if Environment.tipo_eng =="sqlite" and not dao_contatto.id:
+            forMaxId = Contatto().select(batchSize=None)
+            if not forMaxId:
+                dao_contatto.id = 1
+            else:
+                idss = []
+                for l in forMaxId:
+                    idss.append(l.id)
+                dao_contatto.id = (max(idss)) +1
+        appa = ""
+        if dao.ragione_sociale:
+            appa = appa +" "+dao.ragione_sociale
+        if dao.cognome:
+            appa = appa+" " +dao.cognome
+        dao_contatto.cognome = appa
+        if dao.nome:
+            dao_contatto.nome = dao.nome
+        dao_contatto.tipo_contatto ="cliente"
+        dao_contatto.id_cliente = dao.id
+        dao_contatto.persist()
+
+        recont = RecapitoContatto().select(idContatto = dao_contatto.id,
+            tipoRecapito="Cellulare")
+        if recont:
+            reco = recont[0]
+            if req.form.get("cliente_cellulare_principale") == "" or reco.recapito=="":
+                reco.delete()
+            else:
+                reco.id_contatto = dao_contatto.id
+                reco.tipo_recapito = "Cellulare"
+                reco.recapito = req.form.get("cliente_cellulare_principale")
+                reco.persist()
+
+        else:
+            reco = RecapitoContatto()
+            reco.id_contatto = dao_contatto.id
+            reco.tipo_recapito = "Cellulare"
+            reco.recapito = req.form.get("cliente_cellulare_principale")
+            reco.persist()
+
+        recont = RecapitoContatto().select(idContatto = dao_contatto.id,
+            tipoRecapito="Telefono")
+        if recont:
+            reco = recont[0]
+            if req.form.get("cliente_telefono_principale") =="" or reco.recapito=="":
+                reco.delete()
+            else:
+                reco.id_contatto = dao_contatto.id
+                reco.tipo_recapito = "Telefono"
+                reco.recapito = req.form.get("cliente_telefono_principale")
+                reco.persist()
+        else:
+            reco = RecapitoContatto()
+            reco.id_contatto = dao_contatto.id
+            reco.tipo_recapito = "Telefono"
+            reco.recapito = req.form.get("cliente_telefono_principale")
+            reco.persist()
+
+
+        recont = RecapitoContatto().select(idContatto = dao_contatto.id,
+            tipoRecapito="Email")
+        if recont:
+            reco = recont[0]
+            if req.form.get("cliente_email_principale") =="" or reco.recapito=="":
+                reco.delete()
+            else:
+                reco.id_contatto = dao_contatto.id
+                reco.tipo_recapito = "Email"
+                reco.recapito = req.form.get("cliente_email_principale")
+                reco.persist()
+        else:
+            reco = RecapitoContatto()
+            reco.id_contatto = dao_contatto.id
+            reco.tipo_recapito = "Email"
+            reco.recapito = req.form.get("cliente_email_principale")
+            reco.persist()
+
+        recontw = RecapitoContatto().select(idContatto = dao_contatto.id,
+            tipoRecapito="Sito")
+        if recontw:
+            recow = recontw[0]
+            if req.form.get("cliente_sito_web_principale") == "" or recow.recapito=="":
+                recow.delete()
+            else:
+                recow.id_contatto = dao_contatto.id
+                recow.tipo_recapito = "Sito"
+                recow.recapito = req.form.get("cliente_sito_web_principale")
+                recow.persist()
+        else:
+            recow = RecapitoContatto()
+            recow.id_contatto = dao_contatto.id
+            recow.tipo_recapito = "Sito"
+            recow.recapito = req.form.get("cliente_sito_web_principale")
+            recow.persist()
+
+        recont = RecapitoContatto().select(idContatto = dao_contatto.id,
+            tipoRecapito="Fax")
+        if recont:
+            reco = recont[0]
+            if req.form.get("cliente_fax_principale") =="" or reco.recapito=="":
+                reco.delete()
+            else:
+                reco.id_contatto = dao_contatto.id
+                reco.tipo_recapito = "Fax"
+                reco.recapito = req.form.get("cliente_fax_principale")
+                reco.persist()
+        else:
+            reco = RecapitoContatto()
+            reco.id_contatto = dao_contatto.id
+            reco.tipo_recapito = "Fax"
+            reco.recapito = req.form.get("cliente_fax_principale")
+            reco.persist()
+
         redirectUrl='/anagrafiche/cliente/list'
         return Page(req).redirect(redirectUrl)
 
@@ -175,6 +318,7 @@ def anagraficaCliente(req, action=None):
         magazzini = Magazzino().select(batchSize=None)
         categoriecliente = CategoriaCliente().select(batchSize=None)
         dao = Cliente().getRecord(id=id)
+
         idscatecli = [a.id_categoria_cliente for a in dao.categorieCliente]
         pageData = {'file' : "/addedit/ae_cliente",
                     "_dao_":"cliente",
@@ -207,29 +351,16 @@ def anagraficaCliente(req, action=None):
                     "banche": banche,
                     "magazzini":magazzini,
                     "categoriecliente":categoriecliente,
+                    "dao":None
                     }
         return Page(req).render(pageData)
 
 
-    def __infopeso__(req, action=None):
-        print "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOKEI"
-        pagamenti = Pagamento().select(batchSize=None)
-        listini = Listino().select(batchSize=None)
-        banche = Banca().select(batchSize=None)
-        magazzini = Magazzino().select(batchSize=None)
-        categoriecliente = CategoriaCliente().select(batchSize=None)
-        pageData = {'file' : "/modules/infopeso",
-                    "_dao_":"cliente",
-                    "name": "Cliente",
-                    "tree":"treeCliente",
-                    "action":action,
-                    "pagamenti":pagamenti,
-                    "listini":listini,
-                    "banche": banche,
-                    "magazzini":magazzini,
-                    "categoriecliente":categoriecliente,
-                    }
-        return Page(req).render(pageData)
+    def __infopeso__(req, action=None, quarto=None):
+        idd = req.form.get("idr")
+        dao = Cliente().getRecord(id=idd)
+        return infopesoWeb(req,dao=dao, action=action, quarto=quarto)
+
 
 
 
@@ -243,5 +374,5 @@ def anagraficaCliente(req, action=None):
         return __edit__(req, action=action)
     elif action=="new":
         return __new__(req, action=action)
-    elif action=="infopeso":
-        return __infopeso__(req, action=action)
+    elif "infopeso".lower() in action.lower():
+        return __infopeso__(req, action=action, quarto=quarto)

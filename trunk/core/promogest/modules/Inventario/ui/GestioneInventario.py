@@ -645,6 +645,7 @@ class GestioneInventario(RicercaComplessaArticoli):
                             #FROM magazzino M CROSS JOIN articolo A
                             #WHERE (M.id, A.id) NOT IN (SELECT I.id_magazzino, I.id_articolo FROM INVENTARIO I WHERE I.anno = \' || _anno || \')
                             #AND A.cancellato <> True)\';
+        self.idMagazzino = findIdFromCombobox(self.additional_filter.id_magazzino_filter_combobox2)
         sel2 = Environment.params['session'].\
                 query(Inventario.id_magazzino,
                     Inventario.id_articolo).\
@@ -661,14 +662,13 @@ class GestioneInventario(RicercaComplessaArticoli):
         if sel != sel2:
             for s in sel:
                 if s not in sel2:
-                    print "MA QUI CI PASSI"
                     if s[1]:
                         inv = Inventario()
                         inv.anno = self.annoScorso
                         inv.id_magazzino = s[0]
                         inv.id_articolo = s[1]
                         Environment.params['session'].add(inv)
-                Environment.params['session'].commit()
+            Environment.params['session'].commit()
         self.refresh()
 
     def on_aggiorna_da_ana_articoli_clicked(self, button):

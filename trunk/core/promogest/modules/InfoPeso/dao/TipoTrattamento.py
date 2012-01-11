@@ -44,7 +44,7 @@ class TipoTrattamento(Dao):
 
     def filter_values(self,k,v):
         dic= {
-            'denominazione':tipotrattamento.c.denominazione == v,
+            'denominazione':tipotrattamento.c.denominazione.ilike("%"+v+"%"),
                 }
         return  dic[k]
 

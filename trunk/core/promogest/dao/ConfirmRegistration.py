@@ -7,7 +7,7 @@
 
 from sqlalchemy import *
 from sqlalchemy.orm import *
-from core.Environment import *
+from promogest.Environment import *
 from Dao import Dao
 from User import User
 
