@@ -20,7 +20,10 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-import pysvn
+try:
+    import pysvn
+except:
+    pysvn = None
 import threading
 from promogest.ui.GladeWidget import GladeWidget
 from promogest.ui.gtk_compat import *
@@ -44,8 +47,8 @@ class UpdateDialog(GladeWidget):
     def aggiornaLabel(self):
 
         def fetchThread(data):
-            client = pysvn.Client()
             try:
+                client = pysvn.Client()
                 data.msg_label.set_text("Lettura versioni locale e remota in corso...")
                 data._rev_locale = client.info('.').revision.number
                 data._rev_remota = pysvn.Client().info2("http://svn.promotux.it/svn/promogest2/trunk/", recurse=False)[0][1]["rev"].number
@@ -79,7 +82,6 @@ class UpdateDialog(GladeWidget):
             return True
         gobject.timeout_add(100, refreshUI)
 
-
         t = threading.Thread(group=None, target=fetchThread,
                         name='Data rendering thread', args=([self]),
                         kwargs={})
@@ -89,8 +91,8 @@ class UpdateDialog(GladeWidget):
     def sync(self):
 
         def updateThread(data):
-            client = pysvn.Client()
             try:
+                client = pysvn.Client()
                 data.msg_label.set_text("Aggiornamento in corso...")
                 data.update_button.set_sensitive(False)
                 data.__stop = client.update('.')

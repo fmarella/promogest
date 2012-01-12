@@ -42,7 +42,11 @@ from promogest import Environment
 
 import string
 import re
-import pysvn
+try:
+    import pysvn
+except:
+    pysvn = None
+    print 'Modulo pysvn non trovato: gli aggiornamenti non saranno disponibili!'
 import xml.etree.ElementTree as ET
 import unicodedata
 import urllib
@@ -2879,9 +2883,9 @@ def leggiRevisioni():
         except pysvn.ClientError as cerr:
             print "Attenzione: %s" % str(cerr)
         Environment.pg2log.info("VERSIONE IN USO LOCALE E REMOTA "+str(Environment.rev_locale)+" "+str(Environment.rev_remota))
-
-    thread = threading.Thread(target=fetch)
-    thread.start()
+    if pysvn:
+        thread = threading.Thread(target=fetch)
+        thread.start()
 
 def messageInfo(msg="Messaggio generico", transient=None):
     """generic msg dialog """
