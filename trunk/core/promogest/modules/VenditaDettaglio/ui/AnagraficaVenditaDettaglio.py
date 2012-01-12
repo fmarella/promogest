@@ -354,7 +354,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             idArticolo = arts[0].id
             codice = arts[0].codice or ''
             codiceABarre = arts[0].codice_a_barre or ''
-            descrizione = arts[0].descrizione_etichetta or arts[0].denominazione or ''
+            descrizione = arts[0].denominazione or ''
             # Ricerca listino_articolo
             listino = leggiListino(self.id_listino, idArticolo)
             if fnove and not valorigenerici:
@@ -860,7 +860,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             idArticolo = anag.dao.id
             codiceABarre = anag.dao.codice_a_barre or ''
             codice = anag.dao.codice or ''
-            descrizione = anag.dao.descrizione_etichetta or anag.dao.denominazione or ''
+            descrizione = anag.dao.denominazione or ''
             # Ricerca listino_articolo
             listino = leggiListino(self.id_listino, idArticolo)
             #prezzo = listino["prezzoDettaglio"]

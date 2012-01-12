@@ -104,14 +104,14 @@ class User(Dao):
             params["session"].commit()
             return True
 
-    def persist(self):
-        if self.username == "admin" and database == "promogest_db":
-            print "TENTATIVO DI MODIFICA ADMIN L'EVENTO VERRA' REGISTRATO E SEGNALATO "
-            return False
-        else:
-            params["session"].add(self)
-            params["session"].commit()
-            return True
+    #def persist(self):
+        #if self.username == "admin" and database == "promogest_db":
+            #print "TENTATIVO DI MODIFICA ADMIN L'EVENTO VERRA' REGISTRATO E SEGNALATO "
+            #return False
+        #else:
+            #params["session"].add(self)
+            #params["session"].commit()
+            #return True
 
     @property
     def ruolo(self):
