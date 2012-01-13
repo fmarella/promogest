@@ -762,8 +762,13 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             # Crea un nuovo Dao vuoto
             #Environment.tagliacoloretempdata = (False,[])
             self.dao = TestataDocumento()
-            # Suggerisce la data odierna
-            self.dao.data_documento = datetime.datetime.today()
+            # Suggerisce la data odierna se stiamo lavorando con l'anno
+            # di lavoro corrente, altrimenti lascia vuoto il campo data e
+            # mostra un messaggio di avviso.
+            if time.strftime("%Y") != Environment.workingYear:
+                messageWarning(msg="Inserire la data del documento!")
+            else:
+                self.dao.data_documento = datetime.datetime.today()
             self._oldDaoRicreato = False #il dao è nuovo il controllo sul nuovo codice è necessario
             try:
                 op = setconf("Documenti", "tipo_documento_predefinito")
