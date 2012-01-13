@@ -30,61 +30,36 @@ from optparse import OptionParser
 from config import Config
 
 class BigBang(object):
-    def __init__(self, debugDao=None, debugSQL=None, debugALL=None):
-        usage = """Uso: %prog [options]
-        Opzioni disponibili sono :
-                -d   --debugDao Per visualizzare con delle print i dizionari dao
-                -c   --config-dir Configurazione
-                -f   --debugFilter Per visualizzare maggiori informazioni sui filtri
-                -a   --debugALL Per mettere il debug al massimo
-                -t   --tipoDB  Permette, quando possibile da modificare il DB
-                        sottostante ( opzioni possibili: "sqlite" , "postgresql")
-                -r  --rapid-start Per decidere da riga di comando sia tipo db che azienda usare azienda@tipodatabase
-                """
-        parser = OptionParser(usage=usage)
-        parser.add_option("-d", "--debugDao",
-                            action="store_true",
-                            help="Per visualizzare con delle print i dizionari dao",
+    def __init__(self, debug=None):
+        parser = OptionParser()
+        debug_help = """Imposta una o piu' modalita' di debug tra
+SQL, DAO, FILTER, ALL (separate da virgola)
+per visualizzare rispettivamente le query SQL,
+i DAO, i filtri o tutto"""
+        parser.add_option("-d", "--debug",
+                            action="store",
+                            help=debug_help,
                             default="False",
-                            #type="string",
-                            dest="debugDao")
-        parser.add_option("-a", "--debugALL",
-                            action="store_true",
-                            help="Per mettere il debug al massimo",
-                            default="False",
-                            #type="string",
-                            dest="debugALL")
+                            type="string",
+                            dest="debug")
         parser.add_option("-3", "--pg3",
                             action="store_true",
-                            help="Per mettere il debug al massimo",
+                            help="Utilizza il modulo gi e le librerie GTK+3",
                             default="False",
-                            #type="string",
                             dest="pg3_classi")
         parser.add_option("-t", "--tipoDB",
                             action="store",
-                            help="Permette di cambiare backend DB da sqlite a postgresql",
+                            help="Imposta il backend DB (sqlite, postgresql)",
                             default="False",
                             type="string",
                             dest="tipoDB")
-        parser.add_option("-s", "--debugSQL",
-                            action="store_true",
-                            help="Per visualizzare con delle print l'echo di sqlalchemy",
-                            default="False",
-                            #type="string",
-                            dest="debugSQL")
-        parser.add_option("-f","--debugFilter",
-                            help="Per visualizzare maggiori informazioni sui filtri",
-                            action="store_true",
-                            default="False",
-                            dest="debugFilter")
-
         parser.add_option("-c","--config-dir",
-                            help="Per visualizzare maggiori informazioni sui filtri",
+                            help="Specifica la cartella di configurazione",
                             default="False",
                             type="string",
                             dest="configDir")
         parser.add_option("-r","--rapid-start",
-                            help="Per decidere da riga di comando sia tipo db che azienda usare azienda@tipodatabase",
+                            help="Imposta il tipo db e l'azienda (es. azienda@tipodatabase)",
                             default="False",
                             type="string",
                             dest="RapidStart")
@@ -99,11 +74,13 @@ class BigBang(object):
             pg3_check.aziendaforce = options.RapidStart.split("@")[0]
             pg3_check.tipodbforce = options.RapidStart.split("@")[1]
         from promogest import Environment
-        if options.debugDao == True:
+
+        options.debug = options.debug.split(',')
+        if 'DAO' in options.debug:
             Environment.debugDao = True
-        elif options.debugFilter == True:
+        elif 'FILTER' in options.debug:
             Environment.debugFilter = True
-        elif options.debugSQL == True:
+        elif 'SQL' in options.debug:
             Environment.debugSQL = True
         elif options.tipoDB == "sqlite":
             try:
@@ -134,11 +111,10 @@ class BigBang(object):
                 #if options.datiConnessione""
             except:
                 print "operazione non riuscita"
-        elif options.debugALL == True:
+        elif 'ALL' in options.debug:
             Environment.debugDao = True
             Environment.debugFilter = True
             Environment.debugSQL = True
-
         Environment.shop = False
         from promogest.ui.Login import Login
         login = Login()
