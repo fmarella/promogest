@@ -164,13 +164,13 @@ Inserite la descrizione breve ( Esattamente come è scritta) della categoria di 
 qui sotto e premete SI
 L'operazione è irreversibile,retroattiva e potrebbe impiegare qualche minuto
 """
-            move = YesNoDialog(msg=msg, transient=None, show_entry=True)
-            if move[0]:
-                cate = CategoriaArticolo().select(denominazioneBreveEM = move[1])
+            move, nuova_categoria = YesNoDialog(msg=msg, transient=None, show_entry=True)
+            if move:
+                cate = CategoriaArticolo().select(denominazioneBreveEM=nuova_categoria)
                 if cate:
                     idcat = cate[0].id
                 else:
-                    messageInfo(msg = "NON è stato possibile trovare la categoria\n di passaggio, non faccio niente")
+                    messageInfo(msg="NON è stato possibile trovare la categoria\n di passaggio, non faccio niente")
                     return
                 for u in usata:
                     u.id_categoria_articolo = idcat
