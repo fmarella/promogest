@@ -30,6 +30,8 @@ from promogest.modules.Contatti.dao.ContattoAnagraficaSecondaria import Contatto
 from promogest.modules.Contatti.dao.RecapitoContatto import RecapitoContatto
 from promogest.modules.Contatti.dao.Contatto import Contatto
 from promogest.dao.DaoUtils import *
+from promogest.dao.PersonaGiuridicaPersonaGiuridica import PersonaGiuridicaPersonaGiuridica
+from promogest.dao.Cliente import Cliente
 from promogest.ui.utils import *
 from promogest.ui.utilsCombobox import *
 from promogest.ui.gtk_compat import *
@@ -334,7 +336,18 @@ class AnagraficaSecondariaEdit(AnagraficaEdit):
         anag = AnagraficaDocumenti()
         anagWindow = anag.getTopLevel()
         showAnagraficaRichiamata(self.dialogTopLevel, anagWindow, toggleButton)
-        anag.filter.id_fornitore_filter_customcombobox.setId(self.dao.id)
+
+        daos = []
+        pgg = PersonaGiuridicaPersonaGiuridica().select(idPersonaGiuridica =self.dao.id)
+        if pgg:
+            for p in pgg:
+                cli = Cliente().getRecord(id=p.id_persona_giuridica_abbinata)
+                if cli:
+                    daos.append(cli.id)
+        #TODO: Al momento funziona solo con le attività ( primi livelli )
+        # andrà sistemato per gestire anche i livelli superiori
+        #anag.filter.id_cliente_filter_customcombobox.setId(daos)
+        anag.filter.id_clienti_abbinati = daos
         anag.filter.solo_contabili_check.set_active(True)
         anag.filter.refresh()
 

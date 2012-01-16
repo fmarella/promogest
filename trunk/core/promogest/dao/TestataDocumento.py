@@ -1191,6 +1191,8 @@ class TestataDocumento(Dao):
             dic = {k:testata_documento.c.operazione.in_(contabili)}
         elif k == 'idCliente':
             dic = {k:testata_documento.c.id_cliente == v}
+        elif k=='idClienteList':
+            dic={ k :testata_documento.c.id_cliente.in_(v)}
         elif k == 'idFornitore':
             dic = {k:testata_documento.c.id_fornitore == v}
         elif k == 'idAgente':

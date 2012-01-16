@@ -199,6 +199,7 @@ class Login(GladeApp):
                 #do_login = False
             if not self.azienda:
                 self.azienda = "AziendaPromo"
+
         if do_login: #superati i check di login
             users = User().select(username=username,
                         password=hashlib.md5(username+password).hexdigest())

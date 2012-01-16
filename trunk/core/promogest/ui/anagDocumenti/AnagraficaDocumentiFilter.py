@@ -45,6 +45,8 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
             self.noleggio_expander.destroy()
         self.orderBy = 'data_documento'
         self.xptDaoList = None
+        self.id_clienti_abbinati = None
+        print "AHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH", self.id_clienti_abbinati
 
     def draw(self):
         """
@@ -137,7 +139,8 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
             soloContabili = bool(True)
         else:
             soloContabili=None
-
+        print "AHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH",
+        idCliente = self.id_clienti_abbinati
         idArticolo = self.id_articolo_filter_customcombobox.getId()
         #genero il dizionario dei filtri
         self.filterDict = {"daNumero":daNumero,
