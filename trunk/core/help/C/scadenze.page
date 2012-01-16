@@ -4,18 +4,18 @@
       id="scadenze">
 
     <info>
-      <link type="guide" xref="index#documenti" />
-      <desc>Pagamenti e scadenze</desc>
-
-      <revision pkgversion="2.9" version="1.0" date="2011-11-08" status="stub"/>
-      <credit type="author">
-	<name>Francesco Marella</name>
-	<email>francesco.marella@gmail.com</email>
-      </credit>
-      <credit type="copyright">
-	<years>2011-2012</years>
-	<name>PromoGest</name>
-      </credit>
+        <link type="guide" xref="index#documenti" />
+        <desc>Pagamenti e scadenze</desc>
+        <revision pkgversion="2.9" version="1.0" date="2012-01-16" status="stub"/>
+        <credit type="author">
+            <name>Francesco Marella</name>
+            <email>francesco.marella@gmail.com</email>
+        </credit>
+        <credit type="copyright">
+            <years>2011-2012</years>
+            <name>Francesco Marella</name>
+        </credit>
+        <license>Creative Commons Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0)</license>
     </info>
 
     <title>Scadenze</title>

@@ -3,27 +3,27 @@
       type="topic"
       id="introduzione">
 
-  <info>
-   <link type="guide" xref="index"/>
-   <desc>Introduzione a <app>Promogest</app>.</desc>
-   <credit type="author">
-     <name>Francesco Marella</name>
-     <email>francesco.marella@gmail.com</email>
-   </credit>
-   <credit type="copyright">
-     <years>2011-2012</years>
-     <name>PromoGest</name>
-   </credit>
-  </info>
+    <info>
+        <link type="guide" xref="index"/>
+        <desc>Introduzione a <app>Promogest</app>.</desc>
+        <revision pkgversion="2.9" version="1.0" date="2012-01-16" status="stub"/>
+        <credit type="author">
+            <name>Francesco Marella</name>
+            <email>francesco.marella@gmail.com</email>
+        </credit>
+        <credit type="copyright">
+            <years>2011-2012</years>
+            <name>Francesco Marella</name>
+        </credit>
+        <license>Creative Commons Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0)</license>
+    </info>
 
-  <title>Introduzione</title>
+    <title>Introduzione</title>
 
-  <p>
-    <app>Promogest</app> è un gestionale open-source italiano per piccole
-    e medie imprese.
-  </p>
-  <p>
-    E' scritto in Python con le librerie GTK+ e utilizza PostgreSQL
+    <p><app>Promogest</app> è un gestionale open-source italiano per piccole
+    e medie imprese.</p>
+
+    <p>E' scritto in Python con le librerie GTK+ e utilizza PostgreSQL
     come database. Inoltre <app>Promogest</app> è rilasciato con
     licenza GPLv2 ed è compatibile sia con le piattaforme Microsoft Windows
     che GNU/Linux.

@@ -1,0 +1,63 @@
+README
+======
+
+Guida utente PromoGest
+
+Autore: Francesco Marella <francesco.marella@gmail.com>
+Data: 16 Gennaio 2012
+
+Linee guida
+-----------
+
+Il formato per la guida utente è Mallard[1].
+
+Alcune linee guida per la scrittura della guida utente:
+
+ - leggere la documentazione[2] di Mallard; è ricca di esempi utili;
+
+ - la singola pagina deve avere obbligatoriamente i seguenti elementi:
+
+  * intestazione:
+    <?xml version="1.0" encoding="utf-8"?>
+
+  * elemento page:
+    <page xmlns="http://projectmallard.org/1.0/"
+      type="TIPO"
+      id="ID">
+      ...
+    </page>
+
+  * primo elemento in page:
+
+    <info>
+        <revision pkgversion="2.9" version="1.0" date="2012-01-16" status="stub"/>
+        <credit type="author">
+            <name></name>
+            <email></email>
+        </credit>
+        <credit type="copyright">
+            <years>2011-2012</years>
+            <name>Francesco Marella</name>
+        </credit>
+        <license>Creative Commons Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0)</license>
+        ...
+    </info>
+
+Nota:
+ a) eventuali contributi con licenze non libere e/o con restrizioni sulla
+    modifica e/o redistribuzione e/o commercializzazione non verranno prese
+    in considerazione;
+    Se non specificato diversamente verrà applicata la licenza
+    Creative Commons Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0)
+    (per il testo completo della licenza: http://creativecommons.org/licenses/by-sa/3.0/legalcode)
+ 
+ - lunghezza singola linea 80 caratteri;
+
+ - indentazione 4 spazi;
+
+
+Riferimenti
+-----------
+
+[1] http://projectmallard.org/
+[2] http://projectmallard.org/1.0/index.html

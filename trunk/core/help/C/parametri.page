@@ -1,19 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
 <page xmlns="http://projectmallard.org/1.0/"
       type="guide"
       id="parametri">
 
     <info>
-        <revision pkgversion="2.9" version="1.0" date="2011-11-24" status="stub"/>
-	    <credit type="author">
-	      <name>Francesco Marella</name>
-	      <email>francesco.marella@gmail.com</email>
-	    </credit>
-	    <credit type="copyright">
-	      <years>2011-2012</years>
-	      <name>PromoGest</name>
-	    </credit>
+        <revision pkgversion="2.9" version="1.0" date="2012-01-16" status="stub"/>
+        <credit type="author">
+            <name>Francesco Marella</name>
+            <email>francesco.marella@gmail.com</email>
+        </credit>
+        <credit type="copyright">
+            <years>2011-2012</years>
+            <name>Francesco Marella</name>
+        </credit>
+        <license>Creative Commons Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0)</license>
         <link type="topic" xref="pagamenti"/>
-
     </info>
 
     <title>Parametri</title>
