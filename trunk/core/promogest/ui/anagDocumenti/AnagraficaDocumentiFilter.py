@@ -139,8 +139,8 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
             soloContabili = bool(True)
         else:
             soloContabili=None
-        print "AHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH",
-        idCliente = self.id_clienti_abbinati
+        if self.id_clienti_abbinati:
+            idCliente = self.id_clienti_abbinati
         idArticolo = self.id_articolo_filter_customcombobox.getId()
         #genero il dizionario dei filtri
         self.filterDict = {"daNumero":daNumero,
