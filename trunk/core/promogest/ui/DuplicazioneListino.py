@@ -50,13 +50,13 @@ class DuplicazioneListino(GladeWidget):
     def on_confirms_button_clicked(self, button):
         if self.data_listino_duplicato_entry.get_text() == '':
             obligatoryField(self.getTopLevel(),
-                                 self.data_listino_duplicato_entry)
+                            self.data_listino_duplicato_entry)
         if (self.nome_listino_entry.get_text() == ''):
-            obligatoryField(self.dialogTopLevel, self.nome_listino_entry)
-
+            obligatoryField(self.getTopLevel(),
+                            self.nome_listino_entry)
         if (self.descrizione_listino_entry.get_text() == ''):
-            obligatoryField(self.dialogTopLevel,
-                                            self.descrizione_listino_entry)
+            obligatoryField(self.getTopLevel(),
+                            self.descrizione_listino_entry)
 
         tutto = self.tutto_duplicato_check.get_active()
         tieni_data = self.tieni_data_check.get_active()
