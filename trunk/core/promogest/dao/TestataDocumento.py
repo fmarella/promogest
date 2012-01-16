@@ -625,6 +625,7 @@ class TestataDocumento(Dao):
                     if not setconf('PrimaNota', 'inserisci_senza_data_pagamento'):
                         continue
                 ope = leggiOperazione(self.operazione)
+                tipo = 'n/a'
                 if scad.pagamento == 'n/a':
                     tipo = scad.pagamento
                 else:
