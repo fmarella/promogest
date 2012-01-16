@@ -289,27 +289,31 @@ class AnagraficaListiniArticoliFilter(AnagraficaFilter):
             if not valore:
                 return
             for d in daos:
-                if segno =="+" and tipo_sconto =="valore":
+                if d.prezzo_dettaglio is None:
+                    d.prezzo_dettaglio = Decimal(0)
+                if segno == "+" and tipo_sconto == "valore":
                     d.prezzo_dettaglio = d.prezzo_dettaglio + valore
-                elif segno =="-" and tipo_sconto =="valore":
+                elif segno == "-" and tipo_sconto == "valore":
                     d.prezzo_dettaglio = d.prezzo_dettaglio - valore
-                elif segno == "+" and tipo_sconto =="percentuale":
-                    d.prezzo_dettaglio = d.prezzo_dettaglio*(1+valore/100)
-                elif segno == "-" and tipo_sconto =="percentuale":
-                    d.prezzo_dettaglio = d.prezzo_dettaglio*(1-valore/100)
+                elif segno == "+" and tipo_sconto == "percentuale":
+                    d.prezzo_dettaglio = d.prezzo_dettaglio * (1 + valore / 100)
+                elif segno == "-" and tipo_sconto == "percentuale":
+                    d.prezzo_dettaglio = d.prezzo_dettaglio * ( 1 - valore / 100)
                 Environment.session.add(d)
         elif self.variazione_ingrosso:
             if not valore:
                 return
             for d in daos:
-                if segno =="+" and tipo_sconto =="valore":
+                if d.prezzo_ingrosso is None:
+                    d.prezzo_ingrosso = Decimal(0)
+                if segno == "+" and tipo_sconto == "valore":
                     d.prezzo_ingrosso = d.prezzo_ingrosso + valore
-                elif segno =="-" and tipo_sconto =="valore":
+                elif segno == "-" and tipo_sconto == "valore":
                     d.prezzo_ingrosso = d.prezzo_ingrosso - valore
-                elif segno == "+" and tipo_sconto =="percentuale":
-                    d.prezzo_ingrosso = d.prezzo_ingrosso*(1+valore/100)
-                elif segno == "-" and tipo_sconto =="percentuale":
-                    d.prezzo_ingrosso = d.prezzo_ingrosso*(1-valore/100)
+                elif segno == "+" and tipo_sconto == "percentuale":
+                    d.prezzo_ingrosso = d.prezzo_ingrosso * (1 + valore / 100)
+                elif segno == "-" and tipo_sconto == "percentuale":
+                    d.prezzo_ingrosso = d.prezzo_ingrosso * (1 - valore / 100)
                 Environment.session.add(d)
 
         Environment.session.commit()
