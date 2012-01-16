@@ -15,7 +15,10 @@
             <years>2011-2012</years>
             <name>Francesco Marella</name>
         </credit>
-        <license>Creative Commons Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0)</license>
+        <license href="http://creativecommons.org/licenses/by-sa/3.0/">
+            <p><link href="http://creativecommons.org/licenses/by-sa/3.0/">Creative 
+            Commons Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0)</link>.</p>
+        </license>
     </info>
 
     <title>Pagamenti</title>
