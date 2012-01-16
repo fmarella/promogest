@@ -12,7 +12,8 @@
     <section>
         <title>Come effettuare il login</title>
 
-        <p>Effettuare il login è il primo semplice passo per l'utilizzo di <app>PromoGest</app>.</p>
+        <p>Effettuare il login è il primo semplice passo per l'utilizzo di
+        <app>PromoGest</app>.</p>
 
         <figure>
           <desc>La finestra di login</desc>
@@ -21,6 +22,40 @@
         </figure>
 
         <p>La finestra è composta di tre parti pricipali:</p>
+	<p>La prima è quella dello splash, scelto in maniera casuale fra otto
+	immagini differenti, che possono presentare i dati del programma ed
+	alcuni riferimenti per contattare l'assistenza o reperire informazioni
+	sul web.</p>
+
+	<p>La seconda è quella in cui si seleziona l'azienda, in questo caso
+	una azienda di testing, ma nel vostro caso potrà essere o aziendaDemo
+	oppure una con la vostra ragione sociale.</p>
+
+	<p>Inoltre sono presenti i campi per inserire il vostro nome utente
+	ed la vostra password.</p>
+	<note style="important">
+	  <title>Inserire nome utente e password</title>
+	  <p>Se il nome utente e la password non sono stati modificati, il
+	  valore predefinito è <em>admin</em> per entrambi i campi.</p>
+       </note>
+
+       <p><gui>Connetti</gui>...</p>
+       <note style="tip">
+	 <p>Premere <keyseq><key>Ctrl</key><key>L</key></keyseq> per
+	 effettuare la connessione con il nome utente e password
+	 predefiniti.</p>
+       </note>
+
+    </section>
+
+    <section>
+      <title>Aprire la guida utente</title>
+       <p><gui>Aiuto</gui> ...</p>
+    </section>
+
+    <section>
+      <title>Aggiornamento da finestra di login</title>
+       <p><gui>Aggiornato?</gui> ...</p>
     </section>
 
 </page>
