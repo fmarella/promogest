@@ -30,6 +30,9 @@ from promogest.ui.utils import mN, setconf
 class UnsignedMoneyEntryField(CustomEntryField):
 # Effettua la validazione per decimali senza segno
     __gtype_name__ = 'UnsignedMoneyEntryField'
+
+    _default = None
+
     def __init__(self, str1=None, str2=None, int1=None, int2=None):
         CustomEntryField.__init__(self)
 
