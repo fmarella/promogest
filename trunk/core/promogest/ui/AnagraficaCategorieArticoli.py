@@ -165,7 +165,7 @@ qui sotto e premete SI
 L'operazione è irreversibile,retroattiva e potrebbe impiegare qualche minuto
 """
             move, nuova_categoria = YesNoDialog(msg=msg, transient=None, show_entry=True)
-            if move:
+            if move and nuova_categoria:
                 cate = CategoriaArticolo().select(denominazioneBreveEM=nuova_categoria)
                 if cate:
                     idcat = cate[0].id
