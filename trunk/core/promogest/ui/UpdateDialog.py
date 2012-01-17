@@ -97,6 +97,8 @@ class UpdateDialog(GladeWidget):
                 data.update_button.set_sensitive(False)
                 data.__stop = client.update('.')
             except:
+                client = pysvn.Client()
+                client.cleanup('.')
                 data.__stop = True
                 data.update_progress_bar.set_fraction(0.0)
                 data.cancel_button.set_sensitive(True)
