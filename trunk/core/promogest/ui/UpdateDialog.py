@@ -106,7 +106,8 @@ class UpdateDialog(GladeWidget):
             else:
                 data.update_progress_bar.set_fraction(1.0)
                 data.msg_label.set_text("Aggiornamento eseguito con successo, riavviare Promogest.")
-                data.cancel_button.set_sensitive(True)
+                data.quit_button.set_visible(True)
+                data.cancel_button.set_visible(False)
 
         def refreshUI():
             if self.__stop:
@@ -132,3 +133,7 @@ class UpdateDialog(GladeWidget):
 
     def on_cancel_button_clicked(self, widget):
         self.update_progress_dialog.destroy()
+
+    def on_quit_button_clicked(self, widget):
+        import sys
+        sys.exit(0)
