@@ -403,7 +403,8 @@ def mostraArticoloPart(anaedit, id, art=None, quan=None):
             anaedit._righe[0]["percentualeIva"] = mN(articolo["percentualeAliquotaIva"],2)
 #ATTENZIONEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE!!!
             anaedit._righe[0]["idAliquotaIva"] = articolo["idAliquotaIva"]
-            findComboboxRowFromId(anaedit.id_iva_customcombobox.combobox,anaedit._righe[0]["idAliquotaIva"])
+            findComboboxRowFromId(anaedit.id_iva_customcombobox.combobox,
+                                  anaedit._righe[0]["idAliquotaIva"])
 #            anaedit.percentuale_iva_entry.set_text(str(anaedit._righe[0]["percentualeIva"]))
             anaedit._righe[0]["idUnitaBase"] = articolo["idUnitaBase"]
             anaedit._righe[0]["unitaBase"] = articolo["unitaBase"]
@@ -487,8 +488,17 @@ def mostraArticoloPart(anaedit, id, art=None, quan=None):
                     artADR.galleria)
         anaedit.descrizione_entry.set_text(anaedit._righe[0]["descrizione"])
         anaedit._righe[0]["percentualeIva"] = mN(articolo["percentualeAliquotaIva"],2)
-        anaedit._righe[0]["idAliquotaIva"] = articolo["idAliquotaIva"]
-        findComboboxRowFromId(anaedit.id_iva_customcombobox.combobox,anaedit._righe[0]["idAliquotaIva"])
+        # Recuperiamo l'aliquota preferenziale del cliente se impostata
+        _id_aliquota_iva = None
+        if anaedit._tipoPersonaGiuridica == "cliente":
+            _id = anaedit.id_persona_giuridica_customcombobox.getId()
+            if _id:
+                _cliente = leggiCliente(_id)
+                if _cliente:
+                    _id_aliquota_iva = _cliente['id_aliquota_iva']
+        anaedit._righe[0]["idAliquotaIva"] = _id_aliquota_iva or articolo["idAliquotaIva"]
+        findComboboxRowFromId(anaedit.id_iva_customcombobox.combobox,
+                              _id_aliquota_iva or anaedit._righe[0]["idAliquotaIva"])
 #        anaedit.percentuale_iva_entry.set_text(str(anaedit._righe[0]["percentualeIva"]))
         anaedit._righe[0]["idUnitaBase"] = articolo["idUnitaBase"]
         anaedit._righe[0]["unitaBase"] = articolo["unitaBase"]

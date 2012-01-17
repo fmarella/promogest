@@ -160,7 +160,7 @@ def leggiCliente(id):
     Legge un Dao restituisce un dizionario della tabella cliente con alcune
     property risolte
     """
-    from  promogest.dao.Cliente import Cliente
+    from promogest.dao.Cliente import Cliente
 
     _id = None
     _ragioneSociale = ''
@@ -170,6 +170,7 @@ def leggiCliente(id):
     _id_magazzino = None
     _id_listino = None
     _id_banca = None
+    _id_aliquota_iva = None
     _email = None
     _pagante = False
     if id is not None:
@@ -190,6 +191,7 @@ def leggiCliente(id):
             _id_magazzino = daoCliente.id_magazzino
             _id_listino = daoCliente.id_listino
             _id_banca = daoCliente.id_banca
+            _id_aliquota_iva = daoCliente.id_aliquota_iva
             _pagante = daoCliente.pagante
             _email = daoCliente.email_principale or ''
 
@@ -201,6 +203,7 @@ def leggiCliente(id):
             "id_magazzino": _id_magazzino,
             "id_listino": _id_listino,
             "id_banca": _id_banca,
+            "id_aliquota_iva": _id_aliquota_iva,
             "email": _email,
             "pagante": _pagante}
 
