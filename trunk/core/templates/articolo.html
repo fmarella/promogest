@@ -147,10 +147,17 @@
             </tr>
                 <tr><td colspan="4" class="table-header">PRESENTE NEI LISTINI:</td></tr>
                 {% for li in utils.getListiniArticolo(dao.id) %}
+		{% set tmp = utils.leggiListino(li.id_listino, li.id_articolo) %}
+		
             <tr>
-                <td colspan="4" class="odd-detail"><b>{{utils.leggiListino(li.id_listino, li.id_articolo)["denominazione"]}}:</b>&nbsp;&nbsp;<b>PR. DETTAGLIO:  </b>{{utils.mNLC(utils.leggiListino(li.id_listino, li.id_articolo)["prezzoDettaglio"],2)}}&nbsp;
-                <b>PR. INGROSSO:  </b>{{utils.mNLC(utils.leggiListino(li.id_listino, li.id_articolo)["prezzoIngrosso"],2)}}&nbsp;</strong>
-                <lr></td>
+	      {% if tmp["denominazione"] %}
+                <td colspan="4" class="odd-detail">
+		  <b>{{tmp["denominazione"]}}:</b>&nbsp;&nbsp;
+		  <b>PR. DETTAGLIO:  </b>{{utils.mNLC(tmp["prezzoDettaglio"],2)}}&nbsp;
+                  <b>PR. INGROSSO:  </b>{{utils.mNLC(tmp["prezzoIngrosso"],2)}}&nbsp;
+                  <lr>
+		</td>
+		{% endif %}
                 {% endfor %}
             </tr>
         </table>
