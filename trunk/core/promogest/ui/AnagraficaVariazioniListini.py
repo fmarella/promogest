@@ -228,6 +228,7 @@ class AnagraficaVariazioniListiniEdit(AnagraficaEdit):
             # Ricrea il Dao con una connessione al DBMS SQL
             self.dao = VariazioneListino().getRecord(id=dao.id)
         self._refresh()
+        return self.dao
 
     def _refresh(self):
         self.denominazione_entry.set_text(self.dao.denominazione or '')

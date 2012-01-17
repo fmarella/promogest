@@ -116,9 +116,9 @@ class AnagraficaCategorieArticoliDetail(AnagraficaDetail):
         if dao is None:
             self.dao = CategoriaArticolo()
             self._anagrafica._newRow((self.dao, '', ''))
-            self._refresh()
         else:
             self.dao = dao
+        self._refresh()
         return self.dao
 
 

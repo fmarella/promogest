@@ -108,7 +108,11 @@ class ExportCsv(GladeWidget):
     def _refresh(self, diz=None):
         model = self.modello_treeview.get_model()
         model.clear()
-        dic= self.dao.dictionary(complete=True)
+
+        if self.dao is None:
+            return
+
+        dic = self.dao.dictionary(complete=True)
 
         if not diz:
             for k,v in dic.items():

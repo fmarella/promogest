@@ -309,6 +309,7 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
                 if self.daoo:
                     self.dao= self.daoo[0]
         self._refresh()
+        return self.dao
 
     def _refresh(self):
         """        """

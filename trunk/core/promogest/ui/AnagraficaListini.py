@@ -181,6 +181,7 @@ class AnagraficaListiniEdit(AnagraficaEdit):
             # Ricrea il Dao con una connessione al DBMS SQL
             self.dao = Listino().select(id=dao.id)[0]
         self._refresh()
+        return self.dao
 
     def _refresh(self):
         self.denominazione_entry.set_text(self.dao.denominazione or '')

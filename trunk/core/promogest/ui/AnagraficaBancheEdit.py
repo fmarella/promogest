@@ -31,9 +31,9 @@ from promogest.lib.iban import check_iban, IBANError
 class AnagraficaBancheEdit(GladeWidget):
     """ Dettaglio dell'anagrafica delle banche """
 
-    def __init__(self, anagrafica,dao=None, codice=None):
+    def __init__(self, anagrafica, dao=None, codice=None):
         GladeWidget.__init__(self,
-                              'banca_edit_window',
+                             'banca_edit_window',
                              fileName='_anagrafica_banche_edit.glade')
         self.codice = codice
         self.setDao(dao)
@@ -45,9 +45,11 @@ class AnagraficaBancheEdit(GladeWidget):
             self.dao = Banca()
         else:
             self.dao = dao
+        self._refresh()
+        return self.dao
 
     def updateDao(self):
-        self.dao = Banca().getRecord(id= self.dao.id)
+        self.dao = Banca().getRecord(id=self.dao.id)
 
     def _refresh(self):
         if self.dao and self.dao.denominazione:
