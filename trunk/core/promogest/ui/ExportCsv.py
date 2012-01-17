@@ -66,6 +66,8 @@ class ExportCsv(GladeWidget):
         self.modello_csv_scrolledwindow.set_sensitive(False)
         self.hbox2.set_sensitive(False)
         self.nome_entry.hide()
+        self.separatore_combobox.set_active(0)
+        self.stringa_combobox.set_active(0)
 #        self._refresh()
 
 
