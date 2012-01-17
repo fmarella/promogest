@@ -680,7 +680,10 @@ class TestataDocumento(Dao):
                 rigaprimanota.denominazione = stringa
                 rigaprimanota.numero = 1
                 rigaprimanota.data_registrazione = scad.data_pagamento
-                rigaprimanota.tipo = tipo.lower()
+                if tipo:
+                    rigaprimanota.tipo = tipo.lower()
+                else:
+                    rigaprimanota.tipo = 'n/a'
                 rigaprimanota.segno = segno
                 rigaprimanota.valore = scad.importo
                 rigaprimanota.id_banca = scad.id_banca
