@@ -2152,6 +2152,12 @@ def multilinedirtywork(param):
     if 'operazione' in param[0]:
         operazione = param[0]['operazione'].strip()
 
+    if param[0].has_key('intestatario'):
+        if len(param[0]['intestatario']) > 40:
+            wrapper = TextWrapper()
+            wrapper.width = 40
+            param[0]['intestatario'] = "\n ".join(wrapper.wrap(param[0]['intestatario']))
+
     costi_ddt_riga = True
     costi_ddt_totale = True
     if 'DDT' in operazione:
