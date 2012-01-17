@@ -487,7 +487,7 @@ def mostraArticoloPart(anaedit, id, art=None, quan=None):
                     artADR.gruppo_imballaggio,
                     artADR.galleria)
         anaedit.descrizione_entry.set_text(anaedit._righe[0]["descrizione"])
-        anaedit._righe[0]["percentualeIva"] = mN(articolo["percentualeAliquotaIva"],2)
+
         # Recuperiamo l'aliquota preferenziale del cliente se impostata
         _id_aliquota_iva = None
         if anaedit._tipoPersonaGiuridica == "cliente":
@@ -499,7 +499,13 @@ def mostraArticoloPart(anaedit, id, art=None, quan=None):
         anaedit._righe[0]["idAliquotaIva"] = _id_aliquota_iva or articolo["idAliquotaIva"]
         findComboboxRowFromId(anaedit.id_iva_customcombobox.combobox,
                               _id_aliquota_iva or anaedit._righe[0]["idAliquotaIva"])
-#        anaedit.percentuale_iva_entry.set_text(str(anaedit._righe[0]["percentualeIva"]))
+        # Risolviamo la percentuale tramite id_iva_customcombobox
+        iva = findStrFromCombobox(anaedit.id_iva_customcombobox.combobox, 0)
+        if iva:
+            anaedit._righe[0]["percentualeIva"] = mN(iva.percentuale, 2) or 0
+        else:
+            anaedit._righe[0]["percentualeIva"] = 0
+
         anaedit._righe[0]["idUnitaBase"] = articolo["idUnitaBase"]
         anaedit._righe[0]["unitaBase"] = articolo["unitaBase"]
         anaedit.unitaBaseLabel.set_text(anaedit._righe[0]["unitaBase"])
