@@ -255,7 +255,7 @@ class VariazioneListini(GladeWidget):
                 daoListinoArticolo = ListinoArticolo().select(idListino=r[0].id_listino,
                                                 idArticolo= self._idArticolo,
                                                 batchSize=None, orderBy=ListinoArticolo.id_listino)[0]
-                vecchioCosto = daoListinoArticolo.ultimo_costo
+                vecchioCosto = daoListinoArticolo.ultimo_costo or 0
                 if nuovoCosto is not None:
                     daoListinoArticolo.ultimo_costo = nuovoCosto
                 else:
