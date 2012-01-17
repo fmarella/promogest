@@ -60,13 +60,13 @@ class TestBuildFileConad(unittest.TestCase):
                 for ddtt in dati_differita:
                     ddt = TestataDocumento().getRecord(id=ddtt.id_ddt)
                     self.fc.write("01")
-                    self.fc.write(str(dati_differita.index(ddtt)+1).rjust(5))
+                    self.fc.write(str(dati_differita.index(ddtt)+1).zfill(5))
                     self.fc.write(str(self.t.numero).rjust(6))
                     dt = self.t.data_documento
-                    self.fc.write(str(str(dt.year)[2:]+str(dt.month)+str(dt.day)).rjust(6))
+                    self.fc.write(str(dt.strftime('%y%m%d')))
                     self.fc.write(str(ddt.numero).rjust(6))
                     dt = ddt.data_documento
-                    self.fc.write(str(str(dt.year)[2:]+str(dt.month)+str(dt.day)).rjust(6))
+                    self.fc.write(str(dt.strftime('%y%m%d')))
                     self.fc.write("CodiceURBANI".rjust(15))
                     self.fc.write(" ")
                     self.fc.write(ddt.ragione_sociale_cliente.rjust(15))
@@ -74,7 +74,7 @@ class TestBuildFileConad(unittest.TestCase):
                     self.fc.write(" ".rjust(15))
                     self.fc.write(" ")
                     self.fc.write("F")
-                    self.fc.write("EUR".rjust(3))
+                    self.fc.write("EUR")
                     self.fc.write(" ".rjust(25))
                     self.fc.write(" ".rjust(6)+"\n")
                     for riga in ddt.righe:
@@ -82,7 +82,7 @@ class TestBuildFileConad(unittest.TestCase):
                             art = leggiArticolo(riga.id_articolo)
                             #print riga
                             self.fc.write("02")
-                            self.fc.write(str(dati_differita.index(ddtt)+1).rjust(5))
+                            self.fc.write(str(dati_differita.index(ddtt)+1).zfill(5))
                             self.fc.write(str(art["codice"]).rjust(15))
                             self.fc.write(str(art["denominazione"][0:26].replace("à","a")).rjust(30))
                             self.fc.write(str(art["unitaBase"]).upper().rjust(2))
@@ -94,7 +94,18 @@ class TestBuildFileConad(unittest.TestCase):
                             self.fc.write(str(mN(riga.percentuale_iva,0)).rjust(2))
                             self.fc.write(" ".rjust(1))
                             self.fc.write("1")
-                            self.fc.write(" ".rjust(40)+"\n")
+                            self.fc.write("".zfill(6))
+                            self.fc.write(" ".rjust(2))
+                            self.fc.write(" ")
+                            self.fc.write(" ")
+                            self.fc.write(" ")
+                            self.fc.write("".zfill(5))
+                            self.fc.write(" ")
+                            self.fc.write(" ")
+                            self.fc.write("".zfill(7))
+                            self.fc.write(" ".rjust(3))
+                            self.fc.write("".zfill(6))
+                            self.fc.write(" ".rjust(6)+"\n")
 
             self.fc.close()
 
