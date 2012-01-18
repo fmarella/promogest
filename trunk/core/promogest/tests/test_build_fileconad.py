@@ -35,78 +35,80 @@ from promogest.ui.utils import *
 
 #mi serve un movimento di tipo trasferimento merce magazzino
 
+def generaFileConad(testata, file_conad):
+    """ 
+    """
+    if testata:
+        #Scriviamo la testata della fattura
+        dati_differita = InformazioniFatturazioneDocumento().select(id_fattura = testata.id)
+        if dati_differita:
+            for ddtt in dati_differita:
+                ddt = TestataDocumento().getRecord(id=ddtt.id_ddt)
+                file_conad.write("01")
+                file_conad.write(str(dati_differita.index(ddtt)+1).zfill(5))
+                file_conad.write(str(testata.numero).rjust(6))
+                file_conad.write(str(testata.data_documento.strftime('%y%m%d')))
+                file_conad.write(str(ddt.numero).rjust(6))
+                file_conad.write(str(ddt.data_documento.strftime('%y%m%d')))
+                file_conad.write("CodiceURBANI".rjust(15))
+                file_conad.write(" ")
+                file_conad.write(ddt.ragione_sociale_cliente.rjust(15))
+                file_conad.write("6800".rjust(15))
+                file_conad.write(" ".rjust(15))
+                file_conad.write(" ")
+                file_conad.write("F")
+                file_conad.write("EUR")
+                file_conad.write(" ".rjust(25))
+                file_conad.write(" ".rjust(6)+"\n")
+                for riga in ddt.righe:
+                    if riga.id_articolo:
+                        art = leggiArticolo(riga.id_articolo)
+                        file_conad.write("02")
+                        file_conad.write(str(dati_differita.index(ddtt) + 1).zfill(5))
+                        file_conad.write(str(art["codice"]).rjust(15))
+                        file_conad.write(str(art["denominazione"][0:26].replace("à", "a")).rjust(30))
+                        file_conad.write(str(art["unitaBase"]).upper().rjust(2))
+                        file_conad.write(str(mN(Decimal(riga.quantita * (riga.moltiplicatore or 1)), 2)).replace(".","").zfill(7))
+                        file_conad.write(str(mN(Decimal(riga.valore_unitario_netto), 3)).replace(".","").zfill(9))
+                        file_conad.write(str(mN(Decimal(riga.quantita or 0) * Decimal(riga.moltiplicatore or 1) * Decimal(riga.valore_unitario_netto or 0), 3)).replace(".","").zfill(9))
+                        file_conad.write(" ".rjust(4))
+                        file_conad.write(" ".rjust(1))
+                        file_conad.write(str(mN(riga.percentuale_iva,0)).rjust(2))
+                        file_conad.write(" ".rjust(1))
+                        file_conad.write("1")
+                        file_conad.write("".zfill(6))
+                        file_conad.write(" ".rjust(2))
+                        file_conad.write(" ")
+                        file_conad.write(" ")
+                        file_conad.write(" ")
+                        file_conad.write("".zfill(5))
+                        file_conad.write(" ")
+                        file_conad.write(" ")
+                        file_conad.write("".zfill(7))
+                        file_conad.write(" ".rjust(3))
+                        file_conad.write("".zfill(6))
+                        file_conad.write(" ".rjust(6) + "\n")
+
+        file_conad.close()
+
+
 class TestBuildFileConad(unittest.TestCase):
     """Test per il modulo Trasferimento merce magazzino
     """
     numero = -1
-    t = None
-    fc = None
+    testata = None
+    file_conad = None
 
     def setUp(self):
-        testata = TestataDocumento().select(numero="1367")
-        if testata:
-            self.t = testata[0]
-        self.fc = open("file_conad", "w")
+        testate = TestataDocumento().select(numero="1")
+        if testate:
+            self.testata = testate[0]
+        self.file_conad = open("file_conad", "wb")
 
     def test_build_fileconad(self):
         """ build fileconad
         """
-        if self.t:
-            #Scriviamo la testata della fattura
-            dati_differita = InformazioniFatturazioneDocumento().select(id_fattura = self.t.id)
-            if dati_differita:
-                #print "RIGHE PER OGNI DDT", dati_differita
-                for ddtt in dati_differita:
-                    ddt = TestataDocumento().getRecord(id=ddtt.id_ddt)
-                    self.fc.write("01")
-                    self.fc.write(str(dati_differita.index(ddtt)+1).zfill(5))
-                    self.fc.write(str(self.t.numero).rjust(6))
-                    dt = self.t.data_documento
-                    self.fc.write(str(dt.strftime('%y%m%d')))
-                    self.fc.write(str(ddt.numero).rjust(6))
-                    dt = ddt.data_documento
-                    self.fc.write(str(dt.strftime('%y%m%d')))
-                    self.fc.write("CodiceURBANI".rjust(15))
-                    self.fc.write(" ")
-                    self.fc.write(ddt.ragione_sociale_cliente.rjust(15))
-                    self.fc.write("6800".rjust(15))
-                    self.fc.write(" ".rjust(15))
-                    self.fc.write(" ")
-                    self.fc.write("F")
-                    self.fc.write("EUR")
-                    self.fc.write(" ".rjust(25))
-                    self.fc.write(" ".rjust(6)+"\n")
-                    for riga in ddt.righe:
-                        if riga.id_articolo:
-                            art = leggiArticolo(riga.id_articolo)
-                            #print riga
-                            self.fc.write("02")
-                            self.fc.write(str(dati_differita.index(ddtt) + 1).zfill(5))
-                            self.fc.write(str(art["codice"]).rjust(15))
-                            self.fc.write(str(art["denominazione"][0:26].replace("à", "a")).rjust(30))
-                            self.fc.write(str(art["unitaBase"]).upper().rjust(2))
-                            self.fc.write(str(mN(Decimal(riga.quantita * (riga.moltiplicatore or 1)), 2)).replace(".","").zfill(7))
-                            self.fc.write(str(mN(Decimal(riga.valore_unitario_netto), 3)).replace(".","").zfill(9))
-                            self.fc.write(str(mN(Decimal(riga.quantita or 0) * Decimal(riga.moltiplicatore or 1) * Decimal(riga.valore_unitario_netto or 0), 3)).replace(".","").zfill(9))
-                            self.fc.write(" ".rjust(4))
-                            self.fc.write(" ".rjust(1))
-                            self.fc.write(str(mN(riga.percentuale_iva,0)).rjust(2))
-                            self.fc.write(" ".rjust(1))
-                            self.fc.write("1")
-                            self.fc.write("".zfill(6))
-                            self.fc.write(" ".rjust(2))
-                            self.fc.write(" ")
-                            self.fc.write(" ")
-                            self.fc.write(" ")
-                            self.fc.write("".zfill(5))
-                            self.fc.write(" ")
-                            self.fc.write(" ")
-                            self.fc.write("".zfill(7))
-                            self.fc.write(" ".rjust(3))
-                            self.fc.write("".zfill(6))
-                            self.fc.write(" ".rjust(6) + "\n")
-
-            self.fc.close()
+        generaFileConad(self.testata, self.file_conad)
 
 if __name__ == '__main__':
     tests = ['test_build_fileconad']
