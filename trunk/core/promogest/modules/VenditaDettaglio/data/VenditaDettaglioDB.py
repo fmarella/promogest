@@ -26,7 +26,7 @@ from sqlalchemy.orm import *
 from promogest.Environment import *
 from promogest.ui.utils import setconf
 #from promogest.dao.Dao import Dao
-
+from promogest.dao.CCardType import CCardType
 
 posTable = Table('pos', params['metadata'],
         Column('id', Integer, primary_key=True),

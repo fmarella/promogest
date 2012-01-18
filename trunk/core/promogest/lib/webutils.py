@@ -537,7 +537,7 @@ def createcaptcha():
     img.save(pathFile+"/templates/captcha.png", "PNG")
     return string
 
-def setconf(key):
+def setconf_web(key):
     """ Importante funzione che "semplifica" la lettura dei dati dalla tabella
     di configurazione setconf
     Tentativo abbastanza rudimentale per gestire le liste attraverso i ; ma
