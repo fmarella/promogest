@@ -165,11 +165,10 @@ class KitMaster(GladeWidget):
 
     def on_print_kit_clicked(self, button):
         from  xhtml2pdf import pisa
-
         pageData = {"file": "articolo_kit.html",
-                    "dao":self._articolo_master,
-                    #"infopeso_righe":self.dao_testata_infopeso.righeinfopeso
-                    "articoli_kit":self.articoli_componenti_listore
+                    "dao" : self._articolo_master,
+                    "sub_kit" : self.print_sub_kit_checkbutton.get_active(),
+                    "articoli_kit" : self.articoli_componenti_listore,
                     }
         self.htmll = renderTemplate(pageData)
         f = str(self.htmll)

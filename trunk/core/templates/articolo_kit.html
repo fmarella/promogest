@@ -16,7 +16,7 @@ margin: 1cm;
             <th>Data Inserimento</th>
             <th>Codice</th>
             <th>Denominazione</th>
-            <th>Wuantita</th>
+            <th>Quantita</th>
             <th>Attivo</th>
 
         </tr>
@@ -25,9 +25,20 @@ margin: 1cm;
 <td align="center"width="80px" >{{utils.dateToString(a[1]|nonone)}}</td>
 				<td align="center" width="80px" >{{a[2]|nonone}}</td>
 				<td align="left" >{{a[3]|nonone}}</td>
-				<td align="center" width="40px">{{a[4]|nonone}}</td>
+				<td align="center" style="background:#D0D0D0;" width="40px">{{utils.mN(a[4]|nonone,2)}}</td>
 				<td align="center" width="40px">{{a[5]|nonone}}</td>
 </tr>
+        {% if pageData["sub_kit"] == True %}
+        {% for b in utils.leggiArticolo(a[0].id_articolo_filler)["daoArticolo"].articoli_kit %}
+        <tr>
+                <td align="center" width="80px" >\______</td>
+				<td align="center" width="80px" >{{utils.leggiArticolo(b.id_articolo_filler)["codice"]}}</td>
+				<td align="left" >{{utils.leggiArticolo(b.id_articolo_filler)["denominazione"]}}</td>
+				<td align="center" style="background:#FFFCC1;" width="40px">{{utils.mN(b.quantita|nonone,2)}}</td>
+				<td align="center" width="40px">{{b.attivo|nonone}}</td>
+        </tr>
+        {% endfor %}
+        {% endif %}
 {% endfor %}
 </table>
 
