@@ -1,0 +1,33 @@
+<style>
+@page {
+size: A4 portrait;
+margin: 1cm;
+}
+</style>
+
+        <table cellpadding="3" cellspacing="3" border="0" align="left" valign="middle" bgcolor="#FFA500" width="50%">
+            <tr>
+                <td class="report-header" ><h2><b>Articolo principale della distinta :</b> {{dao.denominazione}}</h2></td>
+            </tr>
+        </table>
+
+<table cellpadding="3" cellspacing="1" border="0.2" align="center" valign="middle" style="border-style: dotted; ">
+        <tr style="background-color: #E5E5E5; ">
+            <th>Data Inserimento</th>
+            <th>Codice</th>
+            <th>Denominazione</th>
+            <th>Wuantita</th>
+            <th>Attivo</th>
+
+        </tr>
+{% for a in pageData["articoli_kit"] %}
+<tr>
+<td align="center"width="80px" >{{utils.dateToString(a[1]|nonone)}}</td>
+				<td align="center" width="80px" >{{a[2]|nonone}}</td>
+				<td align="left" >{{a[3]|nonone}}</td>
+				<td align="center" width="40px">{{a[4]|nonone}}</td>
+				<td align="center" width="40px">{{a[5]|nonone}}</td>
+</tr>
+{% endfor %}
+</table>
+

@@ -21,6 +21,8 @@
 
 from promogest import Environment
 from promogest.ui.GladeWidget import GladeWidget
+from promogest.lib.HtmlHandler import renderTemplate
+from promogest.ui.PrintDialog import PrintDialogHandler
 from promogest.ui.utils import *
 from promogest.modules.GestioneKit.dao.ArticoloKit import ArticoloKit
 from promogest.dao.Articolo import Articolo
@@ -160,6 +162,27 @@ class KitMaster(GladeWidget):
         for m in self.articoli_componenti_listore:
             m[0].persist()
         self.clear()
+
+    def on_print_kit_clicked(self, button):
+        from  xhtml2pdf import pisa
+
+        pageData = {"file": "articolo_kit.html",
+                    "dao":self._articolo_master,
+                    #"infopeso_righe":self.dao_testata_infopeso.righeinfopeso
+                    "articoli_kit":self.articoli_componenti_listore
+                    }
+        self.htmll = renderTemplate(pageData)
+        f = str(self.htmll)
+        filename =Environment.tempDir + "articolo_kit_"+str(self._articolo_master.id)+".pdf"
+        g = file(filename, "wb")
+        pdf = pisa.CreatePDF(f,g)
+        g .close()
+        anag = PrintDialogHandler(self,"Articolo kit", tempFile=filename)
+        anagWindow = anag.getTopLevel()
+        returnWindow = self.getTopLevel().get_toplevel()
+        anagWindow.set_transient_for(returnWindow)
+        anagWindow.show_all()
+
 
     def on_articolo_componente_treeview_row_activated(self, treeview, path, column):
         sel = treeview.get_selection()
