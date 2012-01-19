@@ -45,16 +45,16 @@ def generaFileConad(testata, file_conad):
             for ddtt in dati_differita:
                 ddt = TestataDocumento().getRecord(id=ddtt.id_ddt)
                 file_conad.write("01")
-                file_conad.write(str(dati_differita.index(ddtt)+1).zfill(5))
-                file_conad.write(str(testata.numero).rjust(6))
-                file_conad.write(str(testata.data_documento.strftime('%y%m%d')))
-                file_conad.write(str(ddt.numero).rjust(6))
+                file_conad.write(str(dati_differita.index(ddtt)+1).zfill(5)) #numero progressivo
+                file_conad.write(str(testata.numero).rjust(6)) #numero fattura
+                file_conad.write(str(testata.data_documento.strftime('%y%m%d'))) #data fattura
+                file_conad.write(str(ddt.numero).rjust(6)) #numero bolla
                 file_conad.write(str(ddt.data_documento.strftime('%y%m%d')))
-                file_conad.write("CodiceURBANI".rjust(15))
+                file_conad.write("CodiceURBANI".ljust(15))
                 file_conad.write(" ")
-                file_conad.write(ddt.ragione_sociale_cliente.rjust(15))
-                file_conad.write("6800".rjust(15))
-                file_conad.write(" ".rjust(15))
+                file_conad.write(ddt.ragione_sociale_cliente[0:14].ljust(15))
+                file_conad.write("6800".ljust(15))
+                file_conad.write(" ".rjust(15)) #codice socio
                 file_conad.write(" ")
                 file_conad.write("F")
                 file_conad.write("EUR")
@@ -66,12 +66,12 @@ def generaFileConad(testata, file_conad):
                         file_conad.write("02")
                         file_conad.write(str(dati_differita.index(ddtt) + 1).zfill(5))
                         file_conad.write(str(art["codice"]).rjust(15))
-                        file_conad.write(str(art["denominazione"][0:26].replace("à", "a")).rjust(30))
+                        file_conad.write(str(art["denominazione"][0:26].replace("à", "a")).ljust(30))
                         file_conad.write(str(art["unitaBase"]).upper().rjust(2))
                         file_conad.write(str(mN(Decimal(riga.quantita * (riga.moltiplicatore or 1)), 2)).replace(".","").zfill(7))
                         file_conad.write(str(mN(Decimal(riga.valore_unitario_netto), 3)).replace(".","").zfill(9))
                         file_conad.write(str(mN(Decimal(riga.quantita or 0) * Decimal(riga.moltiplicatore or 1) * Decimal(riga.valore_unitario_netto or 0), 3)).replace(".","").zfill(9))
-                        file_conad.write(" ".rjust(4))
+                        file_conad.write("".zfill(4))
                         file_conad.write(" ".rjust(1))
                         file_conad.write(str(mN(riga.percentuale_iva,0)).rjust(2))
                         file_conad.write(" ".rjust(1))
