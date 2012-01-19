@@ -52,8 +52,9 @@ if "note_per_primanota" not in [c.name for c in tesdocsca.columns]:
     col = Column('note_per_primanota', String(400))
     col.create(tesdocsca)
 else:
-    col = tesdocsca.c.note_per_primanota
-    col.alter(nullable=True)
+    if tipodb == "postgresql":
+        col = tesdocsca.c.note_per_primanota
+        col.alter(nullable=True)
 
 std_mapper = mapper(TestataDocumentoScadenza, tesdocsca, properties={},
                                 order_by=tesdocsca.c.id)
