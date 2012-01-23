@@ -649,6 +649,33 @@ class AnagraficaClientiEdit(AnagraficaEdit):
 
         showAnagraficaRichiamata(self.dialogTopLevel, anagWindow, toggleButton)
 
+
+    def on_label_togglebutton_clicked(self, toggleButton):
+        print "OK"
+        if not(toggleButton.get_active()):
+            toggleButton.set_active(False)
+            return
+
+        if self.dao.id is None:
+            msg = 'Prima di poter stampare una label occorre salvare l\' il cliente.\n Salvare ?'
+            if YesNoDialog(msg=msg, transient=self.dialogTopLevel):
+                self.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, GTK_RESPONSE_APPLY)
+            else:
+                toggleButton.set_active(False)
+                return
+
+        if posso("LA"):
+            from promogest.modules.Label.ui.ManageLabelsToPrintCliente import ManageLabelsToPrintCliente
+            a = ManageLabelsToPrintCliente(mainWindow=self,daos=[], cliente=self.dao)
+            anagWindow = a.getTopLevel()
+            returnWindow = self.getTopLevel().get_toplevel()
+            anagWindow.set_transient_for(returnWindow)
+            anagWindow.show_all()
+        else:
+            fencemsg()
+        toggleButton.set_active(False)
+
+
     def verificaListino(self):
         """ Verifica se il listino inserito e' compatibile con le categorie e il magazzino associati al cliente """
         from promogest.dao.ListinoCategoriaCliente import ListinoCategoriaCliente
