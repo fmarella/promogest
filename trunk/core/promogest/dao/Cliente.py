@@ -156,7 +156,7 @@ def getNuovoCodiceCliente():
     listacodici= []
     try:
         n = 1
-        clienti = session.query(Cliente.codice).all()[-500:]
+        clienti = session.query(Cliente.codice).all()
         clienti.reverse()
 
         for q in clienti:
@@ -207,6 +207,15 @@ if 'pagante' not in [c.name for c in cliente.columns]:
 
 if 'id_aliquota_iva' not in [c.name for c in cliente.columns]:
     col = Column('id_aliquota_iva', Integer, nullable=True)
+    col.create(cliente, populate_default=True)
+
+
+# Sistema di definizione della tipologia di cliente  
+#opzioni PF ( Persona fisica ) o PG 
+# PG ( Persona Giusridica )
+
+if 'tipo' not in [c.name for c in cliente.columns]:  
+    col = Column('tipo', String(2), default="PG")
     col.create(cliente, populate_default=True)
 
 j = join(cliente, persona_giuridica)

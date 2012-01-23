@@ -95,6 +95,26 @@ class AnagraficaClientiEdit(AnagraficaEdit):
                 self.infopeso_page.infopeso_page_label)
 
 
+    def on_pf_radio_toggled(self, button):
+        if self.pf_radio:
+            self.ragione_sociale_entry.set_sensitive(False)
+            self.cognome_entry.set_sensitive(True)
+            self.nome_entry.set_sensitive(True)
+#        else:
+#            self.ragione_sociale_entry.set_sensitive(True)
+#            self.cognome_entry.set_sensitive(False)
+#            self.nome_entry.set_sensitive=(False)
+
+    def on_pg_radio_toggled(self, button):
+        if self.pg_radio:
+            self.ragione_sociale_entry.set_sensitive(True)
+            self.cognome_entry.set_sensitive(False)
+            self.nome_entry.set_sensitive(False)
+#        else:
+#            self.ragione_sociale.set_sensitive(True)
+#            self.cognome.set_sensitive(False)
+#            self.nome.set_sensitive=(False)
+
     def on_categorie_clienti_add_row_button_clicked(self, widget):
         """
         Aggiunge una categoria cliente al dao selezionato
@@ -200,6 +220,16 @@ class AnagraficaClientiEdit(AnagraficaEdit):
             self.insegna_entry.set_text(self.dao.insegna or '')
         self.cognome_entry.set_text(self.dao.cognome or '')
         self.nome_entry.set_text(self.dao.nome or '')
+        if self.dao.tipo == "PG":
+            self.pg_radio.set_active(True)
+            self.ragione_sociale_entry.set_sensitive(True)
+            self.cognome_entry.set_sensitive(False)
+            self.nome_entry.set_sensitive(False)
+        if self.dao.tipo == "PF":
+            self.pf_radio.set_active(True)
+            self.ragione_sociale_entry.set_sensitive(False)
+            self.cognome_entry.set_sensitive(True)
+            self.nome_entry.set_sensitive(True)
         self.indirizzo_sede_operativa_entry.set_text(self.dao.sede_operativa_indirizzo or '')
         self.cap_sede_operativa_entry.set_text(self.dao.sede_operativa_cap or '')
         self.localita_sede_operativa_entry.set_text(self.dao.sede_operativa_localita or '')
@@ -266,11 +296,20 @@ class AnagraficaClientiEdit(AnagraficaEdit):
             self.codice_entry.set_text(codice)
 
     def saveDao(self, tipo=None):
-
-        if (self.ragione_sociale_entry.get_text() == ''):
-            obligatoryField(self.dialogTopLevel,
-                            self.ragione_sociale_entry,
-                            msg='Campo obbligatorio !\n\nRagione sociale')
+        if self.pg_radio.get_active():
+            if (self.ragione_sociale_entry.get_text() == ''):
+                obligatoryField(self.dialogTopLevel,
+                                self.ragione_sociale_entry,
+                                msg='Campo obbligatorio !\n\nRagione sociale')
+        if self.pf_radio.get_active():
+            if (self.cognome_entry.get_text() == ''):
+                obligatoryField(self.dialogTopLevel,
+                                self.cognome_entry,
+                                msg='Campo obbligatorio !\n\nCognome')
+            if (self.nome_entry.get_text() == ''):
+                obligatoryField(self.dialogTopLevel,
+                                self.nome_entry,
+                                msg='Campo obbligatorio !\n\nNome')
         self.verificaListino()
 
         #cod = Cliente().select(codicesatto=self.codice_entry.get_text().upper().strip())
@@ -293,6 +332,11 @@ class AnagraficaClientiEdit(AnagraficaEdit):
 
         if self.cliente_insegna:
             self.dao.insegna = self.insegna_entry.get_text()
+        if self.pf_radio.get_active():
+            self.dao.ragione_sociale = self.cognome_entry.get_text() +" "+ self.nome_entry.get_text()
+            self.dao.tipo = "PF"
+            
+
 
         if (self.dao.codice and (self.dao.ragione_sociale or self.dao.insegna or self.dao.cognome or self.dao.nome)) =='':
             msg="""Il codice è obbligatorio.
