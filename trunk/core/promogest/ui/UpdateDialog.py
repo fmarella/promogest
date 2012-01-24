@@ -96,8 +96,6 @@ class UpdateDialog(GladeWidget):
                 data.msg_label.set_text("Aggiornamento in corso...")
                 data.update_button.set_sensitive(False)
                 data.__stop = client.update('.')
-                data.quit_button.set_visible(True)
-                data.cancel_button.set_visible(False)
             except:
                 client = pysvn.Client()
                 client.cleanup('.')
