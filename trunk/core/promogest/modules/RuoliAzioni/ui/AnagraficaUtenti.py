@@ -204,10 +204,10 @@ class AnagraficaUtentiEdit(AnagraficaEdit):
         if dao is None:
             # Crea un nuovo Dao vuoto
             self.dao = User()
-#            self.aggiornamento=False
+            self.aggiornamento=False
         else:
             self.dao = User().getRecord(id=dao.id)
-#            self.aggiornamento=True
+            self.aggiornamento=True
         self._refresh()
 
 
@@ -215,8 +215,14 @@ class AnagraficaUtentiEdit(AnagraficaEdit):
         self.username_entry.set_text(self.dao.username or '')
 #        if self.aggiornamento:
 #            self.username_entry.set_sensitive(False)
-        self.password_entry.set_text('')
-        self.confirm_password_entry.set_text('')
+        if self.dao.tipo_user =="PLAIN":
+            self.password_entry.set_text(self.dao.password)
+            self.confirm_password_entry.set_text(self.dao.password)
+            self.password_entry.set_visibility(True)
+            self.confirm_password_entry.set_visibility(True)
+        else:
+            self.password_entry.set_text('')
+            self.confirm_password_entry.set_text('')
         self.email_entry.set_text(self.dao.email or '')
         self.url_entry.set_text(self.dao.photo_src or '')
         act = 0
@@ -267,7 +273,10 @@ class AnagraficaUtentiEdit(AnagraficaEdit):
 
         self.dao.username = username
         if (self.password_entry.get_text() != '') or (self.password_entry.get_text() != '' and self.aggiornamento):
-            self.dao.password = passwordmd5
+            if self.dao.tipo_user =="PLAIN":
+                self.dao.password = self.password_entry.get_text()
+            else:
+                self.dao.password = passwordmd5
         self.dao.email = self.email_entry.get_text()
         self.dao.photo_src = self.url_entry.get_text()
         self.dao.id_role = findIdFromCombobox(self.id_role_combobox)
