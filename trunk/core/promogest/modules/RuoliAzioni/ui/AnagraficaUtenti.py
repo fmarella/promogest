@@ -204,17 +204,17 @@ class AnagraficaUtentiEdit(AnagraficaEdit):
         if dao is None:
             # Crea un nuovo Dao vuoto
             self.dao = User()
-            self.aggiornamento=False
+#            self.aggiornamento=False
         else:
             self.dao = User().getRecord(id=dao.id)
-            self.aggiornamento=True
+#            self.aggiornamento=True
         self._refresh()
 
 
     def _refresh(self):
         self.username_entry.set_text(self.dao.username or '')
-        if self.aggiornamento:
-            self.username_entry.set_sensitive(False)
+#        if self.aggiornamento:
+#            self.username_entry.set_sensitive(False)
         self.password_entry.set_text('')
         self.confirm_password_entry.set_text('')
         self.email_entry.set_text(self.dao.email or '')
