@@ -52,7 +52,6 @@
 	  valore predefinito è <em>admin</em> per entrambi i campi.</p>
        </note>
 
-       <p><gui>Connetti</gui>...</p>
        <note style="tip">
 	 <p>Premere <keyseq><key>Ctrl</key><key>L</key></keyseq> per
 	 effettuare la connessione con il nome utente e password
@@ -61,9 +60,11 @@
 
     </section>
 
+    <p>La terza parte presenta le seguenti funzioni:</p>
     <section>
-      <title>Aprire la guida utente</title>
-       <p><gui>Aiuto</gui> ...</p>
+       <title>Aprire la guida utente</title>
+       <p>Premere il tasto <gui>Aiuto</gui> per aprire la guida
+       utente del programma. (E' necessaria una connessione ad Internet)</p>
     </section>
 
     <section>
