@@ -11,6 +11,7 @@
         <table cellpadding="0" cellspacing="3" border="0">
             <tr>
                 <th class="left">Magazzino</th>
+                <th class="left">Codice Art.</th>
                 <th class="left">Articolo</th>
                 <th class="number">Iva (%)</th>
                 <th class="number">Quantita'</th>
@@ -20,6 +21,7 @@
                 {% for riga in dao.righe %}
             <tr >
                 <td>{{riga.magazzino[:20]}}</td>
+                <td>{{riga.codice_articolo}}</td>
                 <td>{{riga.descrizione[:20]}}</td>
                 <td class="number">{{utils.number_format() % riga.percentuale_iva}}</td>
                 <td class="number">{{utils.number_format() % ( riga.quantita * riga.moltiplicatore )}}</td>

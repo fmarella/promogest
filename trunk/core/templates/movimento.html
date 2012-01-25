@@ -54,6 +54,7 @@
         <tr><td colspan="9" class="table-header">Righe movimento</td></tr>
         <tr>
             <td class="even-detail">Magazzino</td>
+            <td class="even-detail">Codice Art.</td>
             <td class="even-detail">Articolo</td>
             <td class="even-number">Iva (%)</td>
             <td class="even-number">Quantita'</td>
@@ -67,7 +68,8 @@
             {% else %}
             <td width="16%" class="odd-detail"></td>
             {% endif %}
-            <td width="40%" class="odd-detail">{{riga.descrizione}}</td>
+            <td width="10%" class="odd-detail">{{riga.codice_articolo}}</td>
+            <td width="35%" class="odd-detail">{{riga.descrizione}}</td>
             <td width="10%" class="odd-number">{{utils.number_format() % riga.percentuale_iva}}</td>
             <td width="12%" class="odd-number">{{utils.number_format() % ( riga.quantita * riga.moltiplicatore)}}</td>
             <td width="12%" class="odd-number">{{utils.number_format() % riga.valore_unitario_netto}}</td>
