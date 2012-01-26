@@ -25,6 +25,7 @@ from promogest import pg3_check
 pg3 = pg3_check.pg3_cla
 aziendaforce = pg3_check.aziendaforce
 tipodbforce = pg3_check.tipodbforce
+hostdbforce = pg3_check.hostdbforce
 web = pg3_check.web
 
 from config import Config
@@ -554,6 +555,17 @@ else:
         tipodb = conf.Database.tipodb
     except:
         tipodb = "postgresql"
+
+if hostdbforce:
+    host = hostdbforce
+else:
+    try:
+        host = conf.Database.host
+    except:
+        host = "localhost"
+
+
+
 try:
     pw = conf.Database.pw
 except:
@@ -571,7 +583,7 @@ database = conf.Database.database
 port = conf.Database.port
 user = conf.Database.user
 password = conf.Database.password
-host = conf.Database.host
+
 userdata = ["","","",user]
 
 class SetTextFactory(PoolListener):
