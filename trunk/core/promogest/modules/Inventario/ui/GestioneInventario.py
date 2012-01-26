@@ -597,6 +597,16 @@ class GestioneInventario(RicercaComplessaArticoli):
     def on_ricrea_button_clicked(self, button):
         """ Verifica se esistono gia' delle righe di inventario nell'anno di esercizio
         """
+
+        def calcolaGiacenza(quantita=None, moltiplicatore=None, segno=None, valunine=None):
+            giacenza=0
+            if segno =="-":
+                giacenza -= quantita*moltiplicatore
+            else:
+                giacenza += quantita*moltiplicatore
+                valore= giacenza*valunine
+            return (giacenza, valore)
+
         idMagazzino = findIdFromCombobox(self.additional_filter.id_magazzino_filter_combobox2)
         res = Inventario().select(anno=self.anno,
                                     idMagazzino=idMagazzino)
