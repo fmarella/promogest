@@ -4,7 +4,6 @@
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
-#    Author: Andrea Argiolas  <andrea@promotux.it>
 #    Author: Francesco Marella <francesco.marella@gmail.com>
 
 #    This file is part of Promogest.

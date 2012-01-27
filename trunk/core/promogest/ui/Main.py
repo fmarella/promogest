@@ -25,7 +25,7 @@ import locale
 import hashlib
 import os
 import glob
-from  xhtml2pdf import pisa
+
 
 from datetime import datetime
 import webbrowser
@@ -71,6 +71,11 @@ from promogest.ui.UpdateDialog import UpdateDialog
 if posso("GN"):
     from promogest.modules.GestioneNoleggio.dao.TestataGestioneNoleggio \
                             import TestataGestioneNoleggio
+try:
+    from  xhtml2pdf import pisa
+except:
+    messageError(msg="ATTENIONE! modulo xhtml2pdf mancante,\n qualcosa non ha funzionato nell'installazione?")
+
 
 try:
     if Environment.pg3:
