@@ -550,6 +550,7 @@ else:
 
 if tipodbforce:
     tipodb = tipodbforce
+
 else:
     try:
         tipodb = conf.Database.tipodb
@@ -570,7 +571,7 @@ try:
     pw = conf.Database.pw
 except:
     pw = "No"
-if tipodb == "sqlite" and not (os.path.exists(startdir()+"db")):
+if tipodb == "sqlite" and not (os.path.exists(startdir()+"db")) and not tipodbforce:
     if os.path.exists("data/db"):
         shutil.copy("data/db",startdir()+"db")
         os.remove("data/db")
@@ -598,7 +599,10 @@ if tipodb == "sqlite":
     mainSchema = None
     if sqlalchemy.__version__ >= "0.7":
         from sqlalchemy.event import listen
-        engine =create_engine("sqlite:///"+startdir()+"db",encoding='utf-8',proxy=MyProxy())
+        if hostdbforce and tipodbforce:
+            engine =create_engine("sqlite:///"+hostdbforce+"/db",encoding='utf-8',proxy=MyProxy())
+        else:
+            engine =create_engine("sqlite:///"+startdir()+"db",encoding='utf-8',proxy=MyProxy())
         listen(engine, 'connect', my_on_connect)
     else:
         engine =create_engine("sqlite:///"+startdir()+"db",listeners=[SetTextFactory()],proxy=MyProxy())

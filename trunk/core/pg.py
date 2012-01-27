@@ -72,7 +72,7 @@ i DAO, i filtri o tutto"""
             pg3_check.pg3_cla = True
         if "@" in options.RapidStart:
             pg3_check.aziendaforce = options.RapidStart.split(":")[0]
-            pg3_check.tipodbforce = options.RapidStart.split(":")[1]
+            pg3_check.tipodbforce = options.RapidStart.split(":")[1].split("@")[0]
             pg3_check.hostdbforce = options.RapidStart.split("@")[1]
         from promogest import Environment
 
