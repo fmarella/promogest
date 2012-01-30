@@ -177,11 +177,12 @@ class AnagraficaHtml(object):
                 azidict[k] = b
                 del azidict[a]
             param[0].update(azidict)
-        if "operazione" in param[0]:
-            if (param[0]["operazione"] =="DDT vendita" or\
-                     param[0]["operazione"] =="DDT acquisto") and \
-                                     param[0]["causale_trasporto"] != "":
+
+        if 'operazione' in param[0] and 'causale_trasporto' in param[0]:
+            if (param[0]["operazione"] in ["DDT vendita", "DDT acquisto"]) and \
+              param[0]["causale_trasporto"] != "":
                 param[0]["operazione"] = "DDT"
+
         # controllo la versione dello sla che devo elaborare
         versione = scribusVersion(self._slaTemplate)
         Environment.pg2log.info("VERSIONE SLA: "+ str(versione))
