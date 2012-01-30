@@ -94,6 +94,7 @@ imagesDir = None
 labelTemplatesDir = None
 templatesDir = None
 documentsDir = None
+tracciatiDir = None
 conf = None
 promogestDir = None
 exceptionHandler = None
@@ -382,7 +383,7 @@ def set_configuration(company=None, year = None):
                 emailmittente, smtpServer, \
                 multilinelimit, mltext,\
                 imagesDir, labelTemplatesDir, templatesDir, documentsDir, reportTemplatesDir,\
-                bordoDestro, bordoSinistro, magazzini, listini, tempDir
+                bordoDestro, bordoSinistro, magazzini, listini, tempDir, tracciatiDir
 
     try:
         dire = getConfigureDir(company)
@@ -393,6 +394,10 @@ def set_configuration(company=None, year = None):
             documentsDir = promogestDir + 'documenti' + os.sep
             if not (os.path.exists(documentsDir)):
                 os.mkdir(documentsDir)
+                
+            tracciatiDir = promogestDir + 'tracciati' + os.sep
+            if not (os.path.exists(tracciatiDir)):
+                os.mkdir(tracciatiDir)
 
             tempDir = promogestDir + 'temp' + os.sep
             if not (os.path.exists(tempDir)):

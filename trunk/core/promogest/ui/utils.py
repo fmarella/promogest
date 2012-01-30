@@ -3440,3 +3440,8 @@ def getLottoeScadenze(daoRigaMovimento, testataMovimento):
         return Fornitura().getRecord(id=idFornitura)
     else:
         return None
+    
+def tracciati_disponibili():
+    ''' Ritorna una lista con i nomi dei tracciati disponibili '''
+    return [tracciato[:-4] for tracciato in os.listdir(Environment.tracciatiDir)]
+

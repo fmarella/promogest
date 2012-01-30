@@ -85,6 +85,15 @@ class Anagrafica(GladeWidget):
         self._setEditElement(editElement)
         self._setLabelHandler(labelHandler)
         self._selectedDao = None
+        if self.__class__.__name__ == 'AnagraficaDocumenti':
+            for tracciato in tracciati_disponibili():
+                if tracciato == 'conad':
+                    self.esporta_conad_menuitem.show()
+                elif tracciato == 'buffetti':
+                    self.esporta_buffetti_menuitem.show()
+                else:
+                    pass
+            self.records_file_export.set_menu(self.menu3)
         # Initial (in)sensitive widgets
         textStatusBar = "     *****   PromoGest - 070 8649705 - www.promogest.me - assistenza@promotux.it  *****     "
         context_id =  self.pg2_statusbar.get_context_id("anagrafica_complessa_windows")
@@ -167,6 +176,12 @@ class Anagrafica(GladeWidget):
     def show_all(self):
         """ Visualizza/aggiorna tutta la struttura dell'anagrafica """
         self.anagrafica_complessa_window.show_all()
+
+    def on_esporta_conad_menuitem_activate(self, menuitem):
+        pass
+
+    def on_esporta_buffetti_menuitem_activate(self, menuitem):
+        pass
 
     def on_records_file_export_clicked(self, widget):
         dao = self.editElement.setDao(None)
@@ -355,6 +370,10 @@ class Anagrafica(GladeWidget):
         if self.dao.__class__.__name__ in ["TestataDocumento", "Articolo", "TestataMovimento", "Listino"]:
             self.duplica_button.set_sensitive(self.dao is not None)
             self.record_duplicate_menu.set_sensitive(self.dao is not None)
+            
+        if self.dao.__class__.__name__ == 'TestataDocumento':
+            self.esporta_conad_menuitem.set_sensitive(self.dao is not None)
+            self.esporta_buffetti_menuitem.set_sensitive(self.dao is not None)
 
         self.record_delete_button.set_sensitive(self.dao is not None)
         self.record_delete_menu.set_sensitive(self.dao is not None)
