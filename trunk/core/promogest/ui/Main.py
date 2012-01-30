@@ -1128,11 +1128,11 @@ Procedere all'installazione del modulo PromoShop? """)
             return
 
     def on_main_notebook_change_current_page(self, notebook):
-        print "AAAAAAAAAAAAAAAAAAAA", notebook
+        pass
 
 
     def on_main_notebook_select_page(self, noteebok):
-        print "AHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH", noteebok
+        pass
 
     def addNoteBookPage(self):
 

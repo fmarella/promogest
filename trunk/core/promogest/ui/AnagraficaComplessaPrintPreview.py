@@ -136,12 +136,10 @@ class AnagraficaPrintPreview(GladeWidget):
 
     def refresh(self):
         """ show the html page in the custom widget"""
-        t = PGTimer()
         self.bodyWidget.orderBy = self.orderBy
         daos = self.bodyWidget.runFilter(offset=None,
                                         batchSize=None,
                                          filterClosure=self._filterClosure)
-        t.step()
         self.numRecords = self.bodyWidget.countFilterResults(self._filterCountClosure)
 #        self._refreshPageCount()
         pageData = {}
@@ -152,12 +150,8 @@ class AnagraficaPrintPreview(GladeWidget):
                     #"dao":daos,
                     "objects":daos
                     }
-            t.step()
             self.html_code = renderTemplate(pageData)
-            t.step()
         renderHTML(self.print_on_screen_html,self.html_code)
-        t.step()
-        print "*** risultati timer: ***\n", t
 
     def on_print_on_screen_dialog_response(self, dialog, responseId):
         if responseId == GTK_RESPONSE_CLOSE:

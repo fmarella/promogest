@@ -46,7 +46,6 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         self.orderBy = 'data_documento'
         self.xptDaoList = None
         self.id_clienti_abbinati = None
-        print "AHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH", self.id_clienti_abbinati
 
     def draw(self):
         """
