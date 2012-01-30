@@ -286,7 +286,7 @@ class SlaTpl2Sla(object):
             if group:
                 itexts = pageObject.findall('ITEXT')
                 ch = ''
-                if self.tablesTags.has_key(group):
+                if group in self.tablesTags:
                     vector = self.tablesTags[group]
                 else:
                     vector = []

@@ -389,9 +389,9 @@ def findAct(req):
     path = req.environ['PATH_INFO'].split('/')
     if req.form.get('act'):
         act = req.form.get('act')
-    elif req.cookies.has_key(path[1]+'buy'):
+    elif path[1]+'buy' in req.cookies:
         act = req.cookies[path[1]+'buy']
-    elif req.cookies.has_key('reg'):
+    elif 'reg' in req.cookies:
         act = req.cookies['reg']
     else:
         act = None

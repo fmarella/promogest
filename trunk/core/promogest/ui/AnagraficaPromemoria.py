@@ -403,7 +403,7 @@ class AnagraficaPromemoriaEdit(AnagraficaEdit):
             elif tipo == 'contatto':
                 res = leggiContatto(id)
 
-            if res.has_key("ragioneSociale") and res["ragioneSociale"] != '':
+            if "ragioneSociale" in res and res["ragioneSociale"] != '':
                 self.riferimento_combobox_entry.get_child().set_text(res["ragioneSociale"])
             else:
                 self.riferimento_combobox_entry.get_child().set_text(res["cognome"] + ' ' + res["nome"])

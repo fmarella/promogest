@@ -494,7 +494,7 @@ def mostraArticoloPart(anaedit, id, art=None, quan=None):
             _id = anaedit.id_persona_giuridica_customcombobox.getId()
             if _id:
                 _cliente = leggiCliente(_id)
-                if _cliente and _cliente.has_key('id_aliquota_iva'):
+                if _cliente and 'id_aliquota_iva' in _cliente:
                     _id_aliquota_iva = _cliente['id_aliquota_iva']
         anaedit._righe[0]["idAliquotaIva"] = _id_aliquota_iva or articolo["idAliquotaIva"]
         findComboboxRowFromId(anaedit.id_iva_customcombobox.combobox,

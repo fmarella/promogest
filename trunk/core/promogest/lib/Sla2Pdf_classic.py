@@ -144,7 +144,7 @@ class Sla2Pdf_classic(object):
 
             itexts = pagObjAttr.findall('ITEXT')
             ch = ''
-            if self.tablesTags.has_key(group):
+            if group in self.tablesTags:
                 vector = self.tablesTags[group]
             else:
                 vector = []
@@ -697,7 +697,7 @@ class Sla2Pdf_classic(object):
             """ Drawing a cell text """
             # Finding background
             cellBackground = self.pageObject.get('PCOLOR')
-            if self.colorList.has_key(cellBackground):
+            if cellBackground in self.colorList:
                 try:
                     hexCellColor = self.colorList[cellBackground]
                     background = colors.HexColor(str(hexCellColor))
@@ -768,7 +768,7 @@ class Sla2Pdf_classic(object):
                     textColor = itext.get('FCOLOR')
                 else:
                     textColor = itext.get('CCOLOR')
-                if self.colorList.has_key(textColor):
+                if textColor in self.colorList:
                     try:
                         hexTextColor = self.colorList[textColor]
                         foreground = colors.HexColor(str(hexTextColor))
@@ -779,7 +779,7 @@ class Sla2Pdf_classic(object):
                 stile.add('TEXTCOLOR', (0,0), (0,0), foreground)
 
                 # Applying attributes
-                if self.colorList.has_key(borderColor):
+                if borderColor in self.colorList:
                     try:
                         hexBorderColor = self.colorList[borderColor]
                     except:
@@ -878,7 +878,7 @@ class Sla2Pdf_classic(object):
 
                     # Finding background
                     cellBackground = self.pageObjects[innerIterator].get('PCOLOR')
-                    if self.colorList.has_key(cellBackground):
+                    if cellBackground in self.colorList:
                         try:
                             hexColor = self.colorList[cellBackground]
                             background = colors.HexColor(str(hexColor))
@@ -941,7 +941,7 @@ class Sla2Pdf_classic(object):
 
                             # Hex color
                             textColor = itext.get('FCOLOR')
-                            if self.colorList.has_key(textColor):
+                            if textColor in self.colorList:
                                 try:
                                     hexColor = self.colorList[textColor]
                                     foreground = colors.HexColor(str(hexColor))
@@ -960,7 +960,7 @@ class Sla2Pdf_classic(object):
                             lineWidth = float(actualPageObject.get('PWIDTH'))
 
                             borderColor = actualPageObject.get('PCOLOR2')
-                            if self.colorList.has_key(borderColor):
+                            if borderColor in self.colorList:
                                 try:
                                     hexBorderColor = self.colorList[borderColor]
                                 except:

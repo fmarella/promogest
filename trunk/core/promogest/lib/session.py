@@ -67,7 +67,7 @@ class Session(object):
         #cookiename =  self.req.environ["SERVER_NAME"] +id
         cookiename =  COOKIENAME
         #cookiename = self.path[1]+'id'
-        if not self.req.cookies.has_key(cookiename):
+        if cookiename not in self.req.cookies:
 #            print '>>>>>           NON CI SONO COOKIE           <<<<<'
             return False
         else:
@@ -87,7 +87,7 @@ class Session(object):
         """
         #cookiename = self.req.environ["SERVER_NAME"]+'id'
         cookiename =  COOKIENAME
-        if self.req.cookies.has_key(cookiename):
+        if cookiename in self.req.cookies:
             file = self.req.cookies[cookiename]
             session_file = self.session_dir + "/" + file
             if os.path.exists(session_file):

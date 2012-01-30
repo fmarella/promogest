@@ -228,7 +228,7 @@ class ManageLabelsToPrint(GladeWidget):
         prezzo = mN(listino["prezzoDettaglio"])
         prezzoScontato = prezzo
         tipoSconto = None
-        if listino.has_key('scontiDettaglio'):
+        if 'scontiDettaglio' in listino:
             if  len(listino["scontiDettaglio"]) > 0:
                 valoreSconto = listino['scontiDettaglio'][0].valore or 0
                 if valoreSconto == 0:

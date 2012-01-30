@@ -240,7 +240,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
                 listin = leggiListino(l[0],model[path][0])
                 break
         prez = str(listin['prezzoDettaglio'])
-        if listin.has_key('scontiDettaglio'):
+        if 'scontiDettaglio' in listin:
                 if  len(listin["scontiDettaglio"]) > 0:
                     model[path][6]= listin['scontiDettaglio'][0].valore or 0
                 else:
@@ -369,7 +369,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             prezzoScontato = prezzo
             valoreSconto = 0
             tipoSconto = None
-            if listino.has_key('scontiDettaglio'):
+            if 'scontiDettaglio' in listino:
                 if  len(listino["scontiDettaglio"]) > 0:
                     valoreSconto = listino['scontiDettaglio'][0].valore or 0
                     if valoreSconto == 0:
@@ -868,7 +868,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             prezzo = mN(listino["prezzoDettaglio"])
             prezzoScontato = prezzo
             tipoSconto = None
-            if listino.has_key('scontiDettaglio'):
+            if 'scontiDettaglio' in listino:
                 if  len(listino["scontiDettaglio"]) > 0:
                     valoreSconto = listino['scontiDettaglio'][0].valore or 0
                     if valoreSconto == 0:

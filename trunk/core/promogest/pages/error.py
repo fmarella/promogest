@@ -49,7 +49,7 @@ class Error(object):
 
         resp = Response(stream.render('xhtml'))
         cookiename = self.path[1]+'id'
-        if not req.cookies.has_key(cookiename):
+        if cookiename not in req.cookies:
             cookieval = sha.new(repr(time.time())).hexdigest()
             resp.set_cookie(cookiename, value=cookieval, path='/')
         return resp
