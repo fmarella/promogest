@@ -178,7 +178,93 @@ class Anagrafica(GladeWidget):
         self.anagrafica_complessa_window.show_all()
 
     def on_esporta_conad_menuitem_activate(self, menuitem):
-        pass
+        from promogest.dao.TestataDocumento import TestataDocumento
+        from promogest.dao.InformazioniFatturazioneDocumento import InformazioniFatturazioneDocumento
+        from promogest.lib.parser import myparse
+
+        def dati_file_conad(testata):
+            """ 
+            """
+            if testata:
+                #Scriviamo la testata della fattura
+                dati_differita = InformazioniFatturazioneDocumento().select(id_fattura = testata.id)
+                if dati_differita:
+                    for ddtt in dati_differita:
+                        ddt = TestataDocumento().getRecord(id=ddtt.id_ddt)
+        
+                        dati = {
+                            'testata': {
+                                'numero_progressivo': str(dati_differita.index(ddtt) + 1),
+                                'numero_fattura': str(testata.numero),
+                                'data_fattura': testata.data_documento,
+                                'numero_bolla': str(ddt.numero),
+                                'data_bolla': ddt.data_documento,
+                                'codice_fornitore': 'CodiceURBANI',
+                                'codice_cliente': ddt.ragione_sociale_cliente[0:14],
+                            },
+                            'dettaglio': []
+                        }
+                        
+        
+                        for riga in ddt.righe:
+                            if riga.id_articolo:
+                                art = leggiArticolo(riga.id_articolo)
+                                dati['dettaglio'].append(
+                                    {
+                                        'numero_progressivo':str(dati_differita.index(ddtt) + 1),
+                                        'codice_articolo': str(art["codice"]),
+                                        'descrizione': str(art["denominazione"][0:26].replace("à", "a")),
+                                        'unita_misura': str(art["unitaBase"]).upper(),
+                                        'qta_fatturata': str(mN(Decimal(riga.quantita * (riga.moltiplicatore or 1)), 2)),
+                                        'prezzo_unitario': str(mN(Decimal(riga.valore_unitario_netto), 3)),
+                                        'importo_totale': str(mN(Decimal(riga.quantita or 0) * Decimal(riga.moltiplicatore or 1) * Decimal(riga.valore_unitario_netto or 0), 3)),
+                                        'aliquota_iva': str(mN(riga.percentuale_iva,0))
+                                    })
+                    return dati
+        # Otteniamo il documento
+        dao = self.filter.getSelectedDao()
+        self._selectedDao = dao
+        # Generiamo i dati utili dal documento
+        dati = dati_file_conad(dao)
+        xml_file = open(os.path.join(Environment.tracciatiDir, 'conad.xml'))
+        
+        def get_save_filename():
+            dialog = gtk.FileChooserDialog("Inserisci il nome del file",
+                                           None,
+                                           gtk.FILE_CHOOSER_ACTION_SAVE,
+                                           (gtk.STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+                                            gtk.STOCK_SAVE, GTK_RESPONSE_OK))
+            dialog.set_default_response(GTK_RESPONSE_OK)
+            
+            self.__homeFolder = setconf("General", "cartella_predefinita") or None
+            if self.__homeFolder is None:
+                if os.name == 'posix':
+                    self.__homeFolder = os.environ['HOME']
+                elif os.name == 'nt':
+                    self.__homeFolder = os.environ['USERPROFILE']
+            dialog.set_current_folder(self.__homeFolder)
+            
+            response = dialog.run()
+          
+            if response == gtk.RESPONSE_OK:
+                save_filename = dialog.get_filename()
+                dialog.destroy()
+                return save_filename
+            else:
+                dialog.destroy()
+                return None
+
+        save_filename = get_save_filename()
+        if save_filename is None:
+            return
+        file_out = open(save_filename, 'wb')
+
+        try:
+            myparse(xml_file, dati, file_out)
+        except Exception as e:
+            messageError("Si è verificato un problema durante l'esportazione.")
+        else:
+            messageInfo("Esportazione eseguita con successo")
 
     def on_esporta_buffetti_menuitem_activate(self, menuitem):
         pass
