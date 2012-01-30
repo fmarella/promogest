@@ -3443,5 +3443,5 @@ def getLottoeScadenze(daoRigaMovimento, testataMovimento):
     
 def tracciati_disponibili():
     ''' Ritorna una lista con i nomi dei tracciati disponibili '''
-    return [tracciato[:-4] for tracciato in os.listdir(Environment.tracciatiDir)]
+    return [tracciato[:-4] for tracciato in os.listdir(Environment.tracciatiDir) if tracciato.endswith('.xml')]
 
