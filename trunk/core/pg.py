@@ -93,10 +93,10 @@ i DAO, i filtri o tutto"""
                 conf.Database.tipodb = "sqlite"
                 conf.save()
                 if oldDB != options.tipoDB:
-                    print "ATTENZIONE !!!! RILANCIARE IL PROMOGEST A CAUSA DI UN CAMBIAMENTO DI DB"
+                    print "Cambio tipo database a \'sqlite\' eseguito."
                     return
-            except:
-                print "operazione non riuscita"
+            except Exception as e:
+                print "operazione non riuscita: %s" % str(e)
         elif options.tipoDB == "postgresql":
             try:
                 default='promogest2'
@@ -107,11 +107,11 @@ i DAO, i filtri o tutto"""
                 conf.Database.tipodb = "postgresql"
                 conf.save()
                 if oldDB != options.tipoDB:
-                    print "ATTENZIONE !!!! RILANCIARE IL PROMOGEST A CAUSA DI UN CAMBIAMENTO DI DB"
+                    print "Cambio tipo database a \'postgresql\' eseguito."
                     return
                 #if options.datiConnessione""
-            except:
-                print "operazione non riuscita"
+            except Exception as e:
+                print "operazione non riuscita: %s" % str(e)
         elif 'ALL' in options.debug:
             Environment.debugDao = True
             Environment.debugFilter = True
