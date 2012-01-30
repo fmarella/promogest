@@ -24,6 +24,10 @@
       <section id="login" style="2column">
         <title>Login</title>
       </section>
+       
+      <section id="pagina_principale" style="2column">
+        <title>Pagina principale</title>
+      </section>
 
       <section id="opzioni" style="2column">
 	    <title>Opzioni</title>
