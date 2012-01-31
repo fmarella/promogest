@@ -181,6 +181,7 @@ class Anagrafica(GladeWidget):
         from promogest.dao.TestataDocumento import TestataDocumento
         from promogest.dao.InformazioniFatturazioneDocumento import InformazioniFatturazioneDocumento
         from promogest.lib.parser import myparse
+        from promogest.dao.Azienda import Azienda
 
         def dati_file_conad(testata):
             """ 
@@ -188,6 +189,10 @@ class Anagrafica(GladeWidget):
             if testata:
                 #Scriviamo la testata della fattura
                 dati_differita = InformazioniFatturazioneDocumento().select(id_fattura = testata.id)
+                azienda = Azienda().getRecord(id=Environment.azienda)
+                codice_fornitore = ''
+                if azienda:
+                    codice_fornitore = azienda.matricola_inps
                 if dati_differita:
                     for ddtt in dati_differita:
                         ddt = TestataDocumento().getRecord(id=ddtt.id_ddt)
@@ -199,8 +204,8 @@ class Anagrafica(GladeWidget):
                                 'data_fattura': testata.data_documento,
                                 'numero_bolla': str(ddt.numero),
                                 'data_bolla': ddt.data_documento,
-                                'codice_fornitore': 'CodiceURBANI',
-                                'codice_cliente': ddt.ragione_sociale_cliente[0:14],
+                                'codice_fornitore': codice_fornitore,
+                                'codice_cliente': ddt.ragione_sociale_cliente,
                             },
                             'dettaglio': []
                         }
@@ -213,7 +218,7 @@ class Anagrafica(GladeWidget):
                                     {
                                         'numero_progressivo':str(dati_differita.index(ddtt) + 1),
                                         'codice_articolo': str(art["codice"]),
-                                        'descrizione': str(art["denominazione"][0:26].replace("à", "a")),
+                                        'descrizione': str(art["denominazione"].replace("à", "a")),
                                         'unita_misura': str(art["unitaBase"]).upper(),
                                         'qta_fatturata': str(mN(Decimal(riga.quantita * (riga.moltiplicatore or 1)), 2)),
                                         'prezzo_unitario': str(mN(Decimal(riga.valore_unitario_netto), 3)),
@@ -231,7 +236,7 @@ class Anagrafica(GladeWidget):
         def get_save_filename():
             dialog = gtk.FileChooserDialog("Inserisci il nome del file",
                                            None,
-                                           gtk.FILE_CHOOSER_ACTION_SAVE,
+                                           GTK_FILE_CHOOSER_ACTION_SAVE,
                                            (gtk.STOCK_CANCEL, GTK_RESPONSE_CANCEL,
                                             gtk.STOCK_SAVE, GTK_RESPONSE_OK))
             dialog.set_default_response(GTK_RESPONSE_OK)
@@ -246,7 +251,7 @@ class Anagrafica(GladeWidget):
             
             response = dialog.run()
           
-            if response == gtk.RESPONSE_OK:
+            if response == GTK_RESPONSE_OK:
                 save_filename = dialog.get_filename()
                 dialog.destroy()
                 return save_filename
