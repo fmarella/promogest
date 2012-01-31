@@ -223,10 +223,10 @@ class Login(GladeApp):
                     if Environment.tipodb !="sqlite":
                         Environment.params["schema"] = self.azienda
                         if hashlib.md5(self.azienda).hexdigest() == "bf5fbf670a0b15ada95b3c03bf4ee64a":
-#                            raise Exception(":)")
+                            raise Exception(":D")
                             return
                         if hashlib.md5(self.azienda).hexdigest() == "46d3e603f127254cdc30e5a397413fc7":
-#                            raise Exception(":)")
+                            raise Exception(":P")
                             return
                     # Lancio la funzione di generazione della dir di configurazione
                     Environment.set_configuration(Environment.azienda,Environment.workingYear)
