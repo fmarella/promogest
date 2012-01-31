@@ -34,6 +34,7 @@ from promogest.lib.iban import check_iban, IBANError
 
 class AnagraficaAziende(GladeWidget):
     """ Anagrafica aziende """
+    filename = None
 
     def __init__(self, mainWindow):
         self._mainWindow = mainWindow
@@ -88,12 +89,8 @@ class AnagraficaAziende(GladeWidget):
         self.numero_iscrizione_tribunale_entry.set_text(self.dao.iscrizione_tribunale_numero or '')
         self.codice_rea_entry.set_text(self.dao.codice_rea or '')
         self.matricola_inps_entry.set_text(self.dao.matricola_inps or '')
-        self.numero_conto_entry.set_text(self.dao.numero_conto or '')
-        self.cin_entry.set_text(self.dao.cin or '')
         self.iban_entry.set_text(self.dao.iban or '')
-        self.abi_entry.set_text(self.dao.abi or '')
-        self.cab_entry.set_text(self.dao.cab or '')
-        self.path_label.set_text(self.dao.percorso_immagine or '')
+        #self.path_label.set_text(self.dao.percorso_immagine or '')
         self.logo_azienda.set_from_file(self.dao.percorso_immagine)
 
         #self.percorso_immagine_entry.set_text(self.dao.percorso_immagine or '')
@@ -121,11 +118,6 @@ class AnagraficaAziende(GladeWidget):
         self.dao.codice_rea = self.codice_rea_entry.get_text()
         self.dao.matricola_inps = self.matricola_inps_entry.get_text()
         
-        self.dao.numero_conto = self.numero_conto_entry.get_text()
-        self.dao.cin = self.cin_entry.get_text()
-        self.dao.abi = self.abi_entry.get_text()
-        self.dao.cab = self.cab_entry.get_text()
-        
         iban = self.iban_entry.get_text() or ''
         if iban:
             iban = iban.upper()
@@ -144,7 +136,8 @@ class AnagraficaAziende(GladeWidget):
         else:
             self.dao.iban = ''
 
-        self.dao.percorso_immagine = self.path_label.get_text() #+"/"+self.filena
+        self.dao.percorso_immagine = self.filename or ''
+        #self.path_label.get_text() #+"/"+self.filena
 #        self.logo_azienda.set_from_file(self.resizeImgThumbnailGeneric(filename =self.dao.percorso_immagine))
         if self.dao.codice_fiscale != '':
             codfis = checkCodFisc(self.dao.codice_fiscale)
@@ -166,13 +159,8 @@ class AnagraficaAziende(GladeWidget):
                 messageError(msg="Il codice IBAN inserito non è corretto.",
                                    transient=self.getTopLevel())
                 return False
-            else:
-                self.numero_conto_entry.set_text(conto)
-                self.cin_entry.set_text(cin)
-                self.abi_entry.set_text(abi)
-                self.cab_entry.set_text(cab)
         
-    def on_logo_button_clicked(self, widget):
+    def on_seleziona_logo_button_clicked(self, widget):
         self.logo_filechooserdialog.run()
         if self.dao.percorso_immagine:
             self.logo_filechooserdialog.set_filename(self.dao.percorso_immagine)
@@ -188,15 +176,15 @@ class AnagraficaAziende(GladeWidget):
         self.logo_filechooserdialog.hide()
 
     def on_apri_button_clicked(self,button):
-        filename = self.logo_filechooserdialog.get_filename()
-        self.path_label.set_text(filename)
+        self.filename = self.logo_filechooserdialog.get_filename()
+        #self.path_label.set_text(filename)
 #        f = self.resizeImgThumbnailGeneric(filename = filename)
-        self.logo_azienda.set_from_file(filename)
+        self.logo_azienda.set_from_file(self.filename)
         self.logo_filechooserdialog.hide()
 
     def on_rimuovi_logo_clicked(self, button):
         self.logo_azienda.set_from_file(None)
-        self.path_label.set_text("")
+        #self.path_label.set_text("")
 
 
 
