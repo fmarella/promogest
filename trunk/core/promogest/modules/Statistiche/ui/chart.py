@@ -26,14 +26,13 @@ from matplotlib.figure import Figure
 from numpy import arange, sin, pi
 from matplotlib.backends.backend_gtkagg import FigureCanvasGTKAgg as FigureCanvas
 from matplotlib.backends.backend_gtkagg import NavigationToolbar2GTKAgg as NavigationToolbar
-
+from promogest.ui.utils import *
 from promogest.ui.gtk_compat import *
 
 class chartViewer():
-    def __init__(self,widget, func= None, scontrini = None):
+    def __init__(self,widget, func= None, daos = None):
         member = getattr(self, func)
-        self.fig = member(scontrini=scontrini)
-
+        self.fig = member(daos=daos)
         self.draw(widget, func)
 
     def draw(self,widget, func):
@@ -58,7 +57,7 @@ class chartViewer():
         toolbar.set_message(func)
         vbox.pack_start(toolbar, False, False, 0)
         win.set_modal(True)
-        win.set_transient_for(widget)
+        win.set_transient_for(None)
         win.show_all()
         gtk.main()
 
@@ -67,12 +66,12 @@ class chartViewer():
 
 
 
-    def affluenzaOrariaGiornaliera(self, scontrini=None):
+    def affluenzaOrariaGiornaliera(self, daos=None):
         """ TODO: Avvisare con un messaggio quando i dati non sono omogenei
             esempio ci sono più giorni negli scontrini """
         ore = []
         if scontrini:
-            for sco in scontrini:
+            for sco in daos:
                 ore.append(sco.data_inserimento.hour)
         f = plt.figure()
         ax = f.add_subplot(111)
@@ -90,7 +89,28 @@ class chartViewer():
         plt.grid(True)
         return f
 
-    def affluenzaGiornalieraMensile(self, scontrini=None):
+    def graficoPesateInfopeso(self, daos=None):
+        """ TODO: Avvisare con un messaggio quando i dati non sono omogenei
+            esempio ci sono più giorni negli scontrini """
+        ore = []
+
+        f = plt.figure()
+        ax = f.add_subplot(111)
+        plt.plot([b.data_registrazione for b in daos],[float(a.peso) for a in daos], color='green',label='Peso/Data',linewidth=3)
+
+        plt.ylabel('Pesate')
+        plt.xlabel('Data pesate')
+
+        plt.axis()
+        plt.legend()
+        f.autofmt_xdate()
+        plt.grid(True)
+        print "COSA SEI ", f, dir(f)
+        plt.savefig("/home/vete/node.png")
+        return f
+
+
+    def affluenzaGiornalieraMensile(self, daos = None):
         """ TODO: Avvisare con un messaggio quando i dati non sono omogenei
             esempio ci sono più mesi negli scontrini """
         giorni = []
@@ -113,15 +133,15 @@ class chartViewer():
         plt.grid(True)
         return f
 
-    def affluenzaMensileAnnuale(self, scontrini=None):
+    def affluenzaMensileAnnuale(self, daos=None):
         mesi = []
         if scontrini:
-            for sco in scontrini:
+            for sco in daos:
                 mesi.append(sco.data_inserimento.month)
         f = plt.figure()
         ax = f.add_subplot(111)
 
-        plt.plot([a for a in range(1,13)], [mesi.count(b) or 0 for b in range(1,13)], color='green',label='Q/y',linewidth=2)
+        plt.plot([a for a in range(1,13)], [mesi.count(b) or 0 for b in range(1,13)], color='green',label = 'Q/y',linewidth = 2)
 
         ax.xaxis.set_major_locator(plt.FixedLocator(range(1,13)))
 #        ax.yaxis.set_major_locator(plt.FixedLocator(range(0,len(mesi)+1)))

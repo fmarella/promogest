@@ -318,21 +318,21 @@ class GestioneScontrini(GladeWidget):
     def on_affluenza_oraria_chart_clicked(self, button):
         if posso("STA_DETT"):
             from promogest.modules.Statistiche.ui.chart import chartViewer
-            chartViewer(self._window, func="affluenzaOrariaGiornaliera",scontrini= self.scontrini)
+            chartViewer(self._window, func="affluenzaOrariaGiornaliera",daos= self.scontrini)
         else:
             fencemsg()
 
     def on_affluenza_mensile_chart_clicked(self, button):
         if posso("STA_DETT"):
             from promogest.modules.Statistiche.ui.chart import chartViewer
-            chartViewer(self._window, func="affluenzaGiornalieraMensile", scontrini= self.scontrini)
+            chartViewer(self._window, func="affluenzaGiornalieraMensile", daos= self.scontrini)
         else:
             fencemsg()
 
     def on_affluenza_annuale_chart_clicked(self, button):
         if posso("STA_DETT"):
             from promogest.modules.Statistiche.ui.chart import chartViewer
-            chartViewer(self._window, func="affluenzaMensileAnnuale", scontrini= self.scontrini)
+            chartViewer(self._window, func="affluenzaMensileAnnuale", daos= self.scontrini)
         else:
             fencemsg()
 

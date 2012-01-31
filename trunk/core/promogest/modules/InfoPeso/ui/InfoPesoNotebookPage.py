@@ -317,6 +317,11 @@ class InfoPesoNotebookPage(GladeWidget):
         returnWindow = self.getTopLevel().get_toplevel()
         anagWindow.set_transient_for(returnWindow)
         anagWindow.show_all()
+        
+        
+    def on_grafico_button_clicked(self, button):
+        from promogest.modules.Statistiche.ui.chart import chartViewer
+        chartViewer(self.ana, func="graficoPesateInfopeso", daos = self.dao_testata_infopeso.righeinfopeso)
 
 def fillComboboxTipoTrattamento(combobox, filter=False):
     """ Riempi combo degli stadi commessa """

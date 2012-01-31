@@ -29,6 +29,7 @@ from optparse import OptionParser
 #from promogest.lib.UpdateDB import *
 from config import Config
 
+
 class BigBang(object):
     def __init__(self, debug=None):
         parser = OptionParser()
@@ -53,20 +54,20 @@ i DAO, i filtri o tutto"""
                             default="False",
                             type="string",
                             dest="tipoDB")
-        parser.add_option("-c","--config-dir",
+        parser.add_option("-c", "--config-dir",
                             help="Specifica la cartella di configurazione",
                             default="False",
                             type="string",
                             dest="configDir")
-        parser.add_option("-r","--rapid-start",
-                            help="Imposta il tipo db e l'azienda (es. azienda@tipodatabase)",
+        parser.add_option("-r", "--rapid-start",
+                            help="Imposta il tipo db e l'azienda (es. azienda:tipodatabase@host)",
                             default="False",
                             type="string",
                             dest="RapidStart")
         (options, args) = parser.parse_args()
         from promogest import pg3_check, bindtextdomain
         bindtextdomain('promogest', locale_dir='./po/locale')
-        if options.pg3_classi ==True:
+        if options.pg3_classi == True:
             reload(sys)
             sys.setdefaultencoding('utf-8')
             pg3_check.pg3_cla = True
@@ -85,8 +86,9 @@ i DAO, i filtri o tutto"""
             Environment.debugSQL = True
         elif options.tipoDB == "sqlite":
             try:
-                default='promogest2'
-                promogestStartDir = os.path.expanduser('~') + os.sep + default + os.sep
+                default = 'promogest2'
+                promogestStartDir = os.path.expanduser('~') + os.sep \
+                                                        + default + os.sep
                 configFile = promogestStartDir + 'configure'
                 conf = Config(configFile)
                 oldDB = conf.Database.tipodb
@@ -99,8 +101,9 @@ i DAO, i filtri o tutto"""
                 print "operazione non riuscita: %s" % str(e)
         elif options.tipoDB == "postgresql":
             try:
-                default='promogest2'
-                promogestStartDir = os.path.expanduser('~') + os.sep + default + os.sep
+                default = 'promogest2'
+                promogestStartDir = os.path.expanduser('~') + os.sep \
+                                                        + default + os.sep
                 configFile = promogestStartDir + 'configure'
                 conf = Config(configFile)
                 oldDB = conf.Database.tipodb
@@ -123,7 +126,7 @@ i DAO, i filtri o tutto"""
 
 
 if __name__ == '__main__':
-    default='promogest2'
+    default = 'promogest2'
     #promogestStartDir = os.path.expanduser('~') + os.sep + default + os.sep
     #configFile = promogestStartDir + 'configure'
     #conf = Config(configFile)
@@ -135,7 +138,7 @@ if __name__ == '__main__':
 #            try:
 #                s = socket.socket()
 #                host = socket.gethostname()
-#                port = 34639    #make sure this port is not used on this system
+#                port = 34639 #make sure this port is not used on this system
 #                s.bind((host, port))
             #BigBang()
 #            except Exception as e:
