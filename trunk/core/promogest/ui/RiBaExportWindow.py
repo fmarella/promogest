@@ -97,9 +97,13 @@ class PGRiBa(RiBa):
             if ope:
                 if ope['tipoPersonaGiuridica'] != 'cliente':
                     continue
+                
+            if str(documento.operazione).strip() != 'Fattura differita vendita':
+                continue
+
             for scadenza in documento.scadenze:
                 pbar(self.ana.progressbar1, pulse=True, text='')
-                if pagamentoLookup(scadenza.pagamento) and scadenza.id_banca:
+                if pagamentoLookup(scadenza.pagamento):
                     numero_disposizioni += 1
                     if scadenza.id_banca:
                         banca = leggiBanca(scadenza.id_banca)
@@ -126,7 +130,7 @@ class PGRiBa(RiBa):
     
     def genera(self, rows):
         disposizioni = len(rows)
-        buff = self.recordIB()
+        buff = self.recordIB() + '\n'
         i = 0
         totale_importi = Decimal(0)
         for row in rows:
@@ -134,13 +138,13 @@ class PGRiBa(RiBa):
             debitore = row[2]
             progressivo = i + 1
             totale_importi += scadenza.importo
-            buff += self.record14(progressivo, scadenza.data, scadenza.importo, debitore)
-            buff += self.record20(progressivo)
-            buff += self.record30(progressivo, debitore)
-            buff += self.record40(progressivo, debitore)
-            buff += self.record50(progressivo, debitore, row[0].replace('\n', ''))
-            buff += self.record51(progressivo, progressivo)
-            buff += self.record70(progressivo)
+            buff += self.record14(progressivo, scadenza.data, scadenza.importo, debitore) + '\n'
+            buff += self.record20(progressivo) + '\n'
+            buff += self.record30(progressivo, debitore) + '\n'
+            buff += self.record40(progressivo, debitore) + '\n'
+            buff += self.record50(progressivo, debitore, row[0].replace('\n', '')) + '\n'
+            buff += self.record51(progressivo, progressivo) + '\n'
+            buff += self.record70(progressivo) + '\n'
             i = i + 1
         buff += self.recordEF(disposizioni, totale_importi)
         self._buffer = buff
