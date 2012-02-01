@@ -187,6 +187,8 @@ class Anagrafica(GladeWidget):
 
         # Generiamo i dati utili dal documento
         dati = dati_file_conad(dao)
+        if dati is None:
+            return
         xml_file = open(os.path.join(Environment.tracciatiDir, 'conad.xml'))
         
         def get_save_filename():
@@ -237,6 +239,8 @@ class Anagrafica(GladeWidget):
 
         # Generiamo i dati utili dal documento
         dati = dati_file_buffetti(dao)
+        if dati is None:
+            return
         xml_file = open(os.path.join(Environment.tracciatiDir, 'buffetti.xml'))
 
         def get_save_filename():

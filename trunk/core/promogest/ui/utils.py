@@ -3455,9 +3455,21 @@ def dati_file_conad(testata):
         #Scriviamo la testata della fattura
         dati_differita = InformazioniFatturazioneDocumento().select(id_fattura = testata.id)
         azienda = Azienda().getRecord(id=Environment.azienda)
+        if not azienda:
+            messageError('Inserire le informazioni sull\' azienda in Dati azienda')
+            return None
+
+        if azienda.ragione_sociale == '':
+            messageError('Inserire la ragione sociale dell\'azienda in Dati azienda')
+            return None
+        
         codice_fornitore = ''
-        if azienda:
+        if azienda.matricola_inps:
             codice_fornitore = azienda.matricola_inps
+        else:
+            messageError("Inserire il codice fornitore nel campo \'matricola_inps\' in Dati azienda")
+            return None
+        
         if dati_differita:
             for ddtt in dati_differita:
                 ddt = TestataDocumento().getRecord(id=ddtt.id_ddt)
