@@ -3445,3 +3445,51 @@ def tracciati_disponibili():
     ''' Ritorna una lista con i nomi dei tracciati disponibili '''
     return [tracciato[:-4] for tracciato in os.listdir(Environment.tracciatiDir) if tracciato.endswith('.xml')]
 
+def dati_file_conad(testata):
+    """ 
+    """
+    from promogest.dao.TestataDocumento import TestataDocumento
+    from promogest.dao.InformazioniFatturazioneDocumento import InformazioniFatturazioneDocumento
+    from promogest.dao.Azienda import Azienda
+    if testata:
+        #Scriviamo la testata della fattura
+        dati_differita = InformazioniFatturazioneDocumento().select(id_fattura = testata.id)
+        azienda = Azienda().getRecord(id=Environment.azienda)
+        codice_fornitore = ''
+        if azienda:
+            codice_fornitore = azienda.matricola_inps
+        if dati_differita:
+            for ddtt in dati_differita:
+                ddt = TestataDocumento().getRecord(id=ddtt.id_ddt)
+
+                dati = {
+                    'testata': {
+                        'numero_progressivo': str(dati_differita.index(ddtt) + 1),
+                        'numero_fattura': str(testata.numero),
+                        'data_fattura': testata.data_documento,
+                        'numero_bolla': str(ddt.numero),
+                        'data_bolla': ddt.data_documento,
+                        'codice_fornitore': codice_fornitore,
+                        'codice_cliente': ddt.ragione_sociale_cliente,
+                    },
+                    'dettaglio': []
+                }
+
+                for riga in ddt.righe:
+                    if riga.id_articolo:
+                        art = leggiArticolo(riga.id_articolo)
+                        dati['dettaglio'].append(
+                            {
+                                'numero_progressivo':str(dati_differita.index(ddtt) + 1),
+                                'codice_articolo': str(art["codice"]),
+                                'descrizione': str(art["denominazione"].replace("à", "a")),
+                                'unita_misura': str(art["unitaBase"]).upper(),
+                                'qta_fatturata': str(mN(Decimal(riga.quantita * (riga.moltiplicatore or 1)), 2)),
+                                'prezzo_unitario': str(mN(Decimal(riga.valore_unitario_netto), 3)),
+                                'importo_totale': str(mN(Decimal(riga.quantita or 0) * Decimal(riga.moltiplicatore or 1) * Decimal(riga.valore_unitario_netto or 0), 3)),
+                                'aliquota_iva': str(mN(riga.percentuale_iva,0))
+                            })
+            return dati
+
+def dati_file_buffetti(testata):
+    pass
