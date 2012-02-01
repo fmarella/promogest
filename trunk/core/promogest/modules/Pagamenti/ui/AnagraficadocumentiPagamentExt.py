@@ -84,10 +84,10 @@ def getDocumentoCollegato(anaedit, numerodocumento):
 
     if len(result) > 1:
         messageInfo(msg= "Sono stati trovati piu` di un documento. Hai scovato un bug :D")
-        return False
+        return None
     elif len(result) == 0:
         messageInfo(msg="Non e' stato trovato nessun documento con il numero specificato")
-        return False
+        return None
     else:
-        return result
+        return result[0]
 

@@ -160,9 +160,9 @@ class PagamentiNotebookPage(GladeWidget):
         """
 
         documento = AnagraficadocumentiPagamentExt.getDocumentoCollegato(self.ana, numerodocumento)
-        if documento == False:
+        if documento is None:
             return False
-        daoTestata = TestataDocumento().getRecord(id=documento[0].id)
+        daoTestata = TestataDocumento().getRecord(id=documento.id)
         tipo_documento = daoTestata.operazione
         totale_pagato = daoTestata.totale_pagato
         totale_sospeso = daoTestata.totale_sospeso
@@ -356,11 +356,13 @@ un importo in sospeso. Il documento, per poter essere collegato, deve essere com
         doc = self.numero_primo_documento_entry.get_text()
         if doc != "" and doc != "0":
             documentocollegato = AnagraficadocumentiPagamentExt.getDocumentoCollegato(self.ana, int(doc))
-            self.ana.dao.id_primo_riferimento = documentocollegato[0].id
-            doc2 = self.numero_secondo_documento_entry.get_text()
-            if doc2 != "" and doc2 != "0":
-                documentocollegato = AnagraficadocumentiPagamentExt.getDocumentoCollegato(self.ana, int(doc2))
-                self.ana.dao.id_secondo_riferimento = documentocollegato[0].id
+            if documentocollegato is not None:
+                self.ana.dao.id_primo_riferimento = documentocollegato.id
+                doc2 = self.numero_secondo_documento_entry.get_text()
+                if doc2 != "" and doc2 != "0":
+                    documentocollegato = AnagraficadocumentiPagamentExt.getDocumentoCollegato(self.ana, int(doc2))
+                    if documentocollegato is not None:
+                        self.ana.dao.id_secondo_riferimento = documentocollegato.id
 
     def attiva_scadenze(self):
         scadenze = AnagraficadocumentiPagamentExt.IsPagamentoMultiplo(self.id_pagamento_customcombobox.combobox)
