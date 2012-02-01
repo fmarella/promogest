@@ -115,19 +115,19 @@ def myparse(metadata_xml, dati, out, test=None, verbose=None):
                     _value = ''
 
         if field.getAttribute('required') == '1' and not _value:
-            raise ProcessError("Attenzione: il campo obbligatorio \'%s\' non è stato inserito." % _name)
+            raise ProcessError("Attenzione: il campo obbligatorio \'%s\' di \'%s\' non è stato inserito." % (_name, el))
 
         _value_str = str(_value)
 
         _type = str(field.getAttribute('type'))
         if _type == '':
-            raise ProcessError("Attenzione: il tipo per il campo \'%s\' non è stato inserito." % _name)
+            raise ProcessError("Attenzione: il tipo per il campo \'%s\' di \'%s\' non è stato inserito." % (_name, el))
 
         _len = 0
         try:
             _len = int(field.getAttribute('len'))
         except:
-            raise ProcessError("L'attributo len di \'%s\' è mancante o non è un numero." % _name)
+            raise ProcessError("L'attributo len di \'%s\' di \'%s\' è mancante o non è un numero." % (_name, el))
 
         _align = str(field.getAttribute('align'))
 #        if _align == '':
