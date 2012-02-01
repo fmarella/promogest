@@ -97,8 +97,8 @@ class PGRiBa(RiBa):
             if ope:
                 if ope['tipoPersonaGiuridica'] != 'cliente':
                     continue
-                
-            if str(documento.operazione).strip() != 'Fattura differita vendita':
+
+            if 'Fattura differita vendita' in documento.operazione:
                 continue
 
             for scadenza in documento.scadenze:
