@@ -3510,4 +3510,114 @@ def dati_file_conad(testata):
             return dati
 
 def dati_file_buffetti(testata):
-    pass
+    """ 
+    """
+    #from promogest.dao.TestataDocumento import TestataDocumento
+    from promogest.dao.Azienda import Azienda
+    if testata:
+        azienda = Azienda().getRecord(id=Environment.azienda)
+        if not azienda:
+            messageError('nessuna informazione azienda')
+            return None
+
+        if azienda.ragione_sociale == '':
+            messageError('nessuna ragione sociale impostata')
+            return None
+        
+        scadenze = testata.scadenze
+        dati_generazione_scadenze = 'S'
+        if len(scadenze) == 0:
+            dati_generazione_scadenze = 'N'
+            
+        if testata.operazione == 'Fattura Accompagnatoria':
+            tipo_documento = 'A'
+        elif 'Fattura Differita' in testata.operazione:
+            tipo_documento = 'D'
+        elif 'Fattura' in testata.operazione:
+            tipo_documento = 'F'
+            
+        tipo_registro = 'F'
+            
+        totale_fattura = mN(testata._totaleScontato + testata._totaleSpese, 2)
+        
+        if testata.id_fornitore is not None:
+            tipo_nominativo = 'F'
+            cognome_cli_for = testata.cognome_fornitore
+            codice_fiscale_cli_for = testata.codice_fiscale_fornitore
+            partita_iva_cli_for = testata.partita_iva_fornitore
+            indirizzo_cli_for = testata.indirizzo_fornitore
+            localita_cli_for = testata.localita_fornitore
+            cap_cli_for = testata.cap_fornitore
+            provincia_cli_for = testata.provincia_fornitore
+            codice_cli_for = testata.codice_fornitore
+        elif testata.id_cliente is not None:
+            tipo_nominativo = 'C'
+            cognome_cli_for = testata.cognome_cliente
+            codice_fiscale_cli_for = testata.codice_fiscale_cliente
+            partita_iva_cli_for = testata.partita_iva_cliente
+            indirizzo_cli_for = testata.indirizzo_cliente
+            localita_cli_for = testata.localita_cliente
+            cap_cli_for = testata.cap_cliente
+            provincia_cli_for = testata.provincia_cliente
+            codice_cli_for = testata.codice_cliente
+
+        dati = {
+            'testata': {
+                'ragione_sociale_ditta': azienda.ragione_sociale,
+                'cod_fisc_piva_ditta': azienda.codice_fiscale or azienda.partita_iva,
+                'dati_generazione_scadenze': dati_generazione_scadenze,
+                'tipo_piano': '2',
+            },
+            'scadenze': {
+                'numero_rate': str(len(scadenze)),
+                'descrizione': testata.pagamento
+            },
+            'agenti': {},
+            'banca': {
+                'codice_banca': ''
+            },
+            'testata_pagamento': {},
+            'dettaglio_rate': [
+            ],
+            'valute': {},
+            'zona': {},
+            'fine_scadenza': {},
+            'record0': [{
+                'tipo_nominativo': tipo_nominativo,
+                'cognome': cognome_cli_for,
+                'codice_fiscale': codice_fiscale_cli_for,
+                'partita_iva': partita_iva_cli_for,
+                'indirizzo': indirizzo_cli_for,
+                'localita': localita_cli_for,
+                'cap': cap_cli_for,
+                'provincia': provincia_cli_for
+            }],
+            'record1': [{
+                'tipo_documento': tipo_documento,
+                'totale_fattura': str(totale_fattura),
+                'cf_piva': codice_fiscale_cli_for or partita_iva_cli_for,
+                'codice': codice_cli_for,
+                'tipo_registro': tipo_registro,
+                'data_doc': testata.data_documento
+            }],
+            'recordC': [{}],
+            'record2': [{
+                'imponibile_iva': str(mN(testata._totaleImponibileScontato)),
+                'importo_iva': str(mN(testata._totaleImpostaScontata)),
+            }],
+            'record5': [{}],
+            'recordA': [{}],
+            'recordB': [{}],
+            'record6': [{}],
+            'record7': [{}],
+            'record8': [{}],
+            'record9': [{}],
+        }
+
+        for scadenza in testata.scadenze:
+            dati['dettaglio_rate'].append({
+                'numero_rata': testata.scadenze.index(scadenza) + 1
+            })
+
+        return dati
+    
