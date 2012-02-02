@@ -2176,22 +2176,28 @@ def multilinedirtywork(param):
                 i[k] = ''
             i['_castellettoIva'] = []
         if 'righe' in i:
+            skip = False
             for z in i["righe"]:
                 z["descrizione"] = modificaLottiScadenze(z)
                 z["descrizione"] = listaComponentiArticoloKit(z)
+                if strippa:
+                    if 'Rif. DDT vendita' in z["descrizione"]:
+                        skip = False
+                    if skip or 'RIEPILOGO ADR' in z["descrizione"]:
+                        skip = True
+                        z["descrizione"] = ''
+                        continue
                 if not costi_ddt_riga:
                     for k in ['valore_unitario_lordo', 'totaleRiga', 'valore_unitario_netto']:
                         z[k] = ''
+            
+            lista = []
+            for riga in i['righe']:
+                if riga['descrizione'] != '':
+                    lista.append(riga)
+            i['righe'] = lista
 
-            lista = i['righe']
-            skippa = False
-            for x in lista:
-                # Rimuoviamo le righe che formano il castelletto ADR
-                if strippa and ('RIEPILOGO' in x["descrizione"] or skippa):
-                        skippa = True
-                        x["descrizione"] = ''
-                        continue
-
+            for x in i['righe']:
                 if len(x["descrizione"]) > caratteri_singola_linea \
                 and "\n" not in x["descrizione"]:
                     wrapper = TextWrapper()
