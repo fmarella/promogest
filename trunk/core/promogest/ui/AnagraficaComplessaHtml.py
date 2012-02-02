@@ -149,8 +149,6 @@ class AnagraficaHtml(object):
             self._slaTemplate = Environment.templatesDir + self.defaultFileName + '.sla'
         """ Restituisce una stringa contenente il report in formato PDF """
 
-        print "DAO", self.dao.__class__.__name__
-
         if self.dao.__class__.__name__ in Environment.fromHtmlLits:
             from  xhtml2pdf import pisa
 
