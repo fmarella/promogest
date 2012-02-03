@@ -403,7 +403,7 @@ class TestataDocumento(Dao):
                     if applicazioneSconti == 'scalare':
                         totaleImponibileScontato = totaleImponibileScontato * (1 - Decimal(s.valore) / 100)
                     elif applicazioneSconti == 'non scalare':
-                        totaleImponibileScontato = totaleImponibileScontato - totaleNonScontato * totaleImponibileScontato(s.valore) / 100
+                        totaleImponibileScontato = totaleImponibileScontato - totaleNonScontato * totaleImponibileScontato * Decimal(s.valore) / 100
                     else:
                         raise Exception, ('BUG! Tipo di applicazione sconto '
                                           'sconosciuto: %s' % s.tipo_sconto)
