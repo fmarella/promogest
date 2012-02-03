@@ -35,6 +35,7 @@ from promogest.modules.Pagamenti.dao import TestataDocumentoScadenza
 from datetime import datetime
 from decimal import Decimal
 from promogest.ui.gtk_compat import *
+from sqlalchemy.sql import and_, or_
 
 
 def leggiCreditore():
@@ -49,7 +50,7 @@ def leggiCreditore():
     if azienda['schema']:
         creditore.codice_fiscale = azienda['codice_fiscale']
         if not creditore.codice_fiscale:
-            raise ValueError('Inserire il codice fiscale nei Dati azienda.')
+            raise RuntimeError('Inserire il codice fiscale nei Dati azienda.')
         if azienda['iban']:
             try:
                 cc, cs, cin, creditore.abi, creditore.cab, creditore.numero_conto = check_iban(azienda['iban'])
@@ -61,9 +62,9 @@ def leggiCreditore():
             if azienda['numero_conto']:
                 creditore.numero_conto = azienda['numero_conto']
             else:
-                raise ValueError('Inserire il numero di conto nei Dati azienda.')
+                raise RuntimeError('Inserire il numero di conto nei Dati azienda.')
         else:
-            raise ValueError('Inserire il codice IBAN oppure i codici CIN, ABI e CAB nei Dati azienda.')
+            raise RuntimeError('Inserire il codice IBAN nei Dati azienda.')
 
     return creditore
 
@@ -79,40 +80,36 @@ class PGRiBa(RiBa):
     
     def analizza(self, data_inizio=None):
         if not data_inizio:
-            messageError(msg='Inserire una data di partenza.')
+            messageError(msg='Inserire una data d\'inizio periodo.')
             return 0
         
-        filtro = {
-                  'daData': data_inizio
-                  }
-        documenti = TestataDocumento().select(filterDict=filtro)
-        
+        data_inizio, data_fine = dataInizioFineMese(data_inizio)
+
+        documenti = TestataDocumento().select(complexFilter=(and_(TestataDocumento.data_documento.between(data_inizio, data_fine) ,
+                        or_(TestataDocumento.operazione == 'Fattura differita vendita', TestataDocumento.operazione == 'Fattura accompagnatoria'))), batchSize=None)
+
         if not documenti:
             messageInfo(msg="Nessun risultato.")
             return 0
 
         numero_disposizioni = 0
         for documento in documenti:
+
             ope = leggiOperazione(documento.operazione)
             if ope:
                 if ope['tipoPersonaGiuridica'] != 'cliente':
                     continue
-
-            if 'Fattura differita vendita' in documento.operazione:
-                continue
-
+            
             for scadenza in documento.scadenze:
                 pbar(self.ana.progressbar1, pulse=True, text='')
                 if pagamentoLookup(scadenza.pagamento):
-                    numero_disposizioni += 1
-                    if scadenza.id_banca:
-                        banca = leggiBanca(scadenza.id_banca)
-                    elif documento.id_banca:
+                    if documento.id_banca:
                         banca = leggiBanca(documento.id_banca)
                     else:
-                        raise ValueError("Assegnare una banca a ciascuna scadenza oppure al documento")
-
+                        raise RuntimeError("Assegnare la banca nel documento numero %d." % documento.numero)
+                    numero_disposizioni += 1
                     debitore = Debitore(documento.codice_fiscale_cliente, banca['abi'], banca['cab'])
+                    
                     self.ana.liststore1.append((
                                  (True), #scadenza.emesso
                                  ("%s a %s del %s \nImporto: %s data scadenza: %s" % (documento.operazione,
@@ -130,7 +127,7 @@ class PGRiBa(RiBa):
     
     def genera(self, rows):
         disposizioni = len(rows)
-        buff = self.recordIB() + '\n'
+        buff = self.recordIB()
         i = 0
         totale_importi = Decimal(0)
         for row in rows:
@@ -138,13 +135,13 @@ class PGRiBa(RiBa):
             debitore = row[2]
             progressivo = i + 1
             totale_importi += scadenza.importo
-            buff += self.record14(progressivo, scadenza.data, scadenza.importo, debitore) + '\n'
-            buff += self.record20(progressivo) + '\n'
-            buff += self.record30(progressivo, debitore) + '\n'
-            buff += self.record40(progressivo, debitore) + '\n'
-            buff += self.record50(progressivo, debitore, row[0].replace('\n', '')) + '\n'
-            buff += self.record51(progressivo, progressivo) + '\n'
-            buff += self.record70(progressivo) + '\n'
+            buff += self.record14(progressivo, scadenza.data, scadenza.importo, debitore)
+            buff += self.record20(progressivo)
+            buff += self.record30(progressivo, debitore)
+            buff += self.record40(progressivo, debitore)
+            buff += self.record50(progressivo, debitore, row[0].replace('\n', ''))
+            buff += self.record51(progressivo, progressivo)
+            buff += self.record70(progressivo)
             i = i + 1
         buff += self.recordEF(disposizioni, totale_importi)
         self._buffer = buff
@@ -171,24 +168,23 @@ class RiBaExportWindow(GladeWidget):
         self.placeWindow(self.getTopLevel()) 
         self.draw()
         
-        messageWarning(msg='La funzione di gestione RIBA è in fase di test.')
-        
         try:
             self.__creditore = leggiCreditore()
-        except ValueError as e:
+        except RuntimeError as e:
             messageError(msg=str(e))
 
     def on_aggiorna_button_clicked(self, button):
         self.liststore1.clear()
         self.generatore = PGRiBa(self, self.__creditore)
         data = stringToDate(self.data_entry.get_text())
+        num = 0
         try:
             num = self.generatore.analizza(data)
-        except ValueError as e:
+        except RuntimeError as e:
             messageError(msg=str(e))
-        else:
-            if num > 0:
-                self.genera_button.set_sensitive(True)
+        if num > 0:
+            self.genera_button.set_sensitive(True)
+
 
     def search(self):
         
@@ -205,8 +201,9 @@ class RiBaExportWindow(GladeWidget):
         return pathlist
     
     def salvaFile(self):
-        data = datetime.now().strftime('%d%m%y')
-        fileDialog = gtk.FileChooserDialog(title='Salva il file',
+        data = stringToDate(self.data_entry.get_text())
+        nome_file = 'estratto_riba_' + data.strftime('%m_%y') + ".txt"
+        fileDialog = gtk.FileChooserDialog(title='Salvare il file',
                                            parent=self.getTopLevel(),
                                            action= GTK_FILE_CHOOSER_ACTION_SAVE,
                                            buttons=(gtk.STOCK_CANCEL,
@@ -214,7 +211,7 @@ class RiBaExportWindow(GladeWidget):
                                                     gtk.STOCK_SAVE,
                                                     GTK_RESPONSE_OK),
                                            backend=None)
-        fileDialog.set_current_name('estratto_riba_' + data + ".txt")
+        fileDialog.set_current_name(nome_file)
         fileDialog.set_current_folder(Environment.documentsDir)
 
         response = fileDialog.run()
@@ -254,5 +251,5 @@ class RiBaExportWindow(GladeWidget):
     
     def draw(self):
         self.data_entry.show_all()
-        self.data_entry.set_text(dateToString(dataInizioFineMese(datetime.now())[0]))
+        #self.data_entry.set_text(dateToString(dataInizioFineMese(datetime.now())[0]))
         self.genera_button.set_sensitive(False)

@@ -145,7 +145,7 @@ class RiBa(object):
                              self.FILLER,
                              'E',
                              self.FILLER,
-                             ' ').replace('\0', self.FILLER)
+                             ' ').replace('\0', self.FILLER) + '\n'
 
 
     def recordEF(self, disposizioni, totale_importi):
@@ -200,7 +200,7 @@ class RiBa(object):
                                    ' ', # codice cliente debitore
                                    ' ', # flag tipo debitore ('B' per banca)
                                    self.FILLER,
-                                   'E').replace('\0', self.FILLER)
+                                   'E').replace('\0', self.FILLER) + '\n'
 
     def record20(self, progressivo):
         '''
@@ -221,7 +221,7 @@ class RiBa(object):
                                     descr[1] or ' ',
                                     descr[2] or ' ',
                                     descr[3] or ' ',
-                                    self.FILLER).replace('\0', self.FILLER)
+                                    self.FILLER).replace('\0', self.FILLER) + '\n'
 
     def record30(self, progressivo, debitore):
         '''
@@ -239,7 +239,7 @@ class RiBa(object):
                                      descr[0] or ' ',
                                      descr[1] or ' ',
                                      str(debitore.codice_fiscale),
-                                     self.FILLER).replace('\0', self.FILLER)
+                                     self.FILLER).replace('\0', self.FILLER) + '\n'
 
     def record40(self, progressivo, debitore):
         '''
@@ -256,7 +256,7 @@ class RiBa(object):
                                    str(debitore.indirizzo),
                                    str(debitore.CAP),
                                    '{0} {1}'.format(debitore.comune, debitore.provincia),
-                                   ' ').replace('\0', self.FILLER) # eventuale denominazione in chiaro della banca/sportello domiciliataria/o
+                                   ' ').replace('\0', self.FILLER) + '\n' # eventuale denominazione in chiaro della banca/sportello domiciliataria/o
 
     def record50(self, progressivo, debitore, riferimenti_debito):
         '''
@@ -276,7 +276,7 @@ class RiBa(object):
                                    rif_debito[1] or ' ',
                                    self.FILLER,
                                    str(self.creditore.codice_fiscale),
-                                   self.FILLER).replace('\0', self.FILLER)
+                                   self.FILLER).replace('\0', self.FILLER) + '\n'
 
     def record51(self, progressivo, ricevuta):
         '''
@@ -295,7 +295,7 @@ class RiBa(object):
                                    ' ', # provincia
                                    ' ', # numero autorizzazione
                                    ' ', # data autorizzazione
-                                   self.FILLER).replace('\0', self.FILLER)
+                                   self.FILLER).replace('\0', self.FILLER) + '\n'
 
     def record70(self, progressivo):
         '''
@@ -321,4 +321,4 @@ class RiBa(object):
                                    '0', # flag stampa avviso
                                         # 4=avvisi da predisporre e da inviare a cura della banca domiciliaria
                                         # 0 o blank = accordi bilaterali predefiniti con la banca
-                                   self.FILLER).replace('\0', self.FILLER)
+                                   self.FILLER).replace('\0', self.FILLER) + '\n'
