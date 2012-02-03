@@ -1159,8 +1159,7 @@ class TestataDocumento(Dao):
                     params['session'].delete(f)
                 params["session"].commit()
 
-            precedentiRighe= RigaMovimentoFornitura().select(idRigaMovimentoVendita=r.id, batchSize=None)
-            print "precedentiRighe", precedentiRighe
+            precedentiRighe = RigaMovimentoFornitura().select(idRigaMovimentoVendita=r.id, batchSize=None)
             if precedentiRighe:
                 for p in precedentiRighe:
                     p.id_riga_movimento_vendita = None
