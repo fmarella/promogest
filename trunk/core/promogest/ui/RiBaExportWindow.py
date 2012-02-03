@@ -88,8 +88,7 @@ class PGRiBa(RiBa):
         
         data_inizio, data_fine = dataInizioFineMese(data_inizio)
 
-        documenti = TestataDocumento().select(complexFilter=(and_(TestataDocumento.data_documento.between(data_inizio, data_fine) ,
-                        or_(TestataDocumento.operazione == 'Fattura differita vendita', TestataDocumento.operazione == 'Fattura accompagnatoria'))), batchSize=None)
+        documenti = TestataDocumento().select(complexFilter=(and_(TestataDocumento.data_documento.between(data_inizio, data_fine))), batchSize=None)
 
         if not documenti:
             messageInfo(msg="Nessun risultato.")
@@ -98,6 +97,9 @@ class PGRiBa(RiBa):
         numero_disposizioni = 0
         for documento in documenti:
 
+            if documento.operazione not in ['Fattura differita vendita', 'Fattura accompagnatoria']:
+                continue
+    
             ope = leggiOperazione(documento.operazione)
             if ope:
                 if ope['tipoPersonaGiuridica'] != 'cliente':
