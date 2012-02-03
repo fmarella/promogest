@@ -79,7 +79,7 @@ class TestataNoleggio(Dao):
             conn.execStoredProcedure('RigheMovimentoDel',(self.id, ))"""
         def righeNoleggioDel(id=None):
             """Cancella le righe associate ad un movimento"""
-            row = RigaNoleggio().select(idTestataNoleggio = id,
+            row = RigaNoleggio().select(idTestataNoleggio = id)
 
             for r in row:
                 r.delete()
