@@ -25,7 +25,7 @@ from sqlalchemy.orm import *
 from promogest.Environment import *
 from promogest.dao.Dao import Dao
 
-if hasattr(conf, 'GestioneNoleggio') o
+if hasattr(conf, 'GestioneNoleggio'): 
         """ tabelle schema principale """
 
     articolo=Table('articolo',
