@@ -302,21 +302,26 @@ class TestataDocumento(Dao):
             p = Pagamento().select(denominazione=pagamento)
             if p:
                 p = p[0]
-                if float(p.spese or 0) != float(0):
-                    return calcolaPrezzoIva(float(p.spese), float(p.perc_aliquota_iva))
+                if Decimal(str(p.spese or 0)) != Decimal(0):
+                    return Decimal(str(p.spese)), calcolaPrezzoIva(Decimal(str(p.spese)), Decimal(str(p.perc_aliquota_iva)))
                 else:
-                    return float(0)
+                    return (Decimal(0), Decimal(0))
             else:
-                return float(0)
+                return (Decimal(0), Decimal(0))
 
-        spese = 0
+        spese = Decimal(0)
+        impon_spese = Decimal(0)
+        imposta_spese = Decimal(0)
         if self.id_cliente:
             cliente = leggiCliente(self.id_cliente)
             if not cliente['pagante']:
                 for scad in self.scadenze:
                     if scad:
-                        spese += getSpesePagamento(scad.pagamento)
-        self._totaleSpese = mN(spese, 2)
+                        impon_spese_, spese_ = getSpesePagamento(scad.pagamento)
+                        spese += spese_
+                        impon_spese += impon_spese_
+                        imposta_spese += spese - impon_spese
+        self._totaleSpese = spese
 
         totaleEsclusoBaseImponibileRiga = 0
         totaleImponibileRiga = 0
@@ -428,20 +433,19 @@ class TestataDocumento(Dao):
             totaleScontato = mN(totaleImponibileScontato + totaleImpostaScontata, 2)
 
         self._totaleNonScontato = mN(totaleImponibile + totaleImposta + totaleEsclusoBaseImponibile, 2)
-        self._totaleScontato = mN(totaleImponibileScontato + totaleImpostaScontata + totaleEsclusoBaseImponibile, 2)
+        self._totaleScontato = mN(totaleImponibileScontato + totaleImpostaScontata + totaleEsclusoBaseImponibile + spese, 2)
         self._totaleImponibile = totaleImponibile
         self._totaleNonBaseImponibile = totaleEsclusoBaseImponibile
         self._totaleImposta = totaleImposta
         self._totaleRicaricatoLordo = totaleRicaricatoLordo
         self._totaleRicaricatoImponibile = Decimal(totaleRicaricatoLordo)/(1+Decimal(20)/100)
         self._totaleRicaricatoIva = totaleRicaricatoLordo - self._totaleRicaricatoImponibile
-        self._totaleImponibileScontato = totaleImponibileScontato
+        self._totaleImponibileScontato = totaleImponibileScontato + impon_spese
         self._totaleOggetti = self._totaleImponibileScontato - self._totaleRicaricatoLordo
-        self._totaleImpostaScontata = totaleImpostaScontata
+        self._totaleImpostaScontata = totaleImpostaScontata + imposta_spese
         self._castellettoIva = []
         #print "VEDIAMO I TOTALI", self._totaleScontato, self._totaleNonScontato, self._totaleImponibile, self._totaleImposta
         for k in castellettoIva.keys():
-            #print "KAPPPAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", k
             #if k !=0:
             dictCastellettoIva = castellettoIva[k]
             dictCastellettoIva['aliquota'] = k
