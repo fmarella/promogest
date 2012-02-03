@@ -586,16 +586,19 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         sm = posso('SM')
         gn = posso('GN')
         scarta = False
+        j = 0
         for riga in self.dao.righe:
             if adr:
+                if "Rif. DDT" in riga.descrizione:
+                    scarta = False
                 # Scartiamo le righe di riepilogo ADR
-                if "RIEPILOGO" in riga.descrizione:
+                elif "RIEPILOGO" in riga.descrizione:
                     scarta = True
                     continue
                 if scarta:
                     continue
             self.azzeraRiga(0)
-            j = self.dao.righe.index(riga) + 1
+            j += 1 #self.dao.righe.index(riga) + 1
             magazzino = leggiMagazzino(riga.id_magazzino)
             #magazzino = Magazzino().getRecord(id=riga.id_magazzino)
             articolo = leggiArticolo(riga.id_articolo)
