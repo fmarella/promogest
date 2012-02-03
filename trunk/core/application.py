@@ -33,7 +33,7 @@ class PromoWeb(object):
             endpoint, values = adapter.match()
             handler = getattr(views, endpoint)
             response = handler(request, **values)
-        except HTTPException, e:
+        except HTTPException as e:
             response = e
         return ClosingIterator(response(environ, start_response),
                                [session.remove, local_manager.cleanup])

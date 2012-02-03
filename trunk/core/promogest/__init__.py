@@ -45,5 +45,5 @@ def bindtextdomain(app_name, locale_dir=None):
 
     try:
         locale.setlocale(locale.LC_ALL, "")
-    except locale.Error, e:
+    except locale.Error as e:
         pass
