@@ -50,7 +50,8 @@ def leggiCreditore():
     if azienda['schema']:
         creditore.codice_fiscale = azienda['codice_fiscale']
         if not creditore.codice_fiscale:
-            raise RuntimeError('Inserire il codice fiscale nei Dati azienda.')
+            messageError('Inserire il codice fiscale nei Dati azienda.')
+            return
         if azienda['iban']:
             try:
                 cc, cs, cin, creditore.abi, creditore.cab, creditore.numero_conto = check_iban(azienda['iban'])
@@ -62,9 +63,11 @@ def leggiCreditore():
             if azienda['numero_conto']:
                 creditore.numero_conto = azienda['numero_conto']
             else:
-                raise RuntimeError('Inserire il numero di conto nei Dati azienda.')
+                messageError('Inserire il numero di conto nei Dati azienda.')
+                return
         else:
-            raise RuntimeError('Inserire il codice IBAN nei Dati azienda.')
+            messageError('Inserire il codice IBAN nei Dati azienda.')
+            return
 
     return creditore
 
@@ -99,20 +102,25 @@ class PGRiBa(RiBa):
             if ope:
                 if ope['tipoPersonaGiuridica'] != 'cliente':
                     continue
-            
+
+            banca = None
+            if documento.id_banca:
+                banca = leggiBanca(documento.id_banca)
+            else:
+                messageWarning("Assegnare la banca nel documento numero %d." % documento.numero)
+                continue
+                
             for scadenza in documento.scadenze:
                 pbar(self.ana.progressbar1, pulse=True, text='')
                 if pagamentoLookup(scadenza.pagamento):
-                    if documento.id_banca:
-                        banca = leggiBanca(documento.id_banca)
-                    else:
-                        raise RuntimeError("Assegnare la banca nel documento numero %d." % documento.numero)
+
                     numero_disposizioni += 1
                     debitore = Debitore(documento.codice_fiscale_cliente, banca['abi'], banca['cab'])
                     
                     self.ana.liststore1.append((
-                                 (True), #scadenza.emesso
-                                 ("%s a %s del %s \nImporto: %s data scadenza: %s" % (documento.operazione,
+                                 (True),
+                                 ("%s N. %s a %s del %s \nImporto: %s data scadenza: %s" % (documento.operazione,
+                                                     documento.numero,
                                                      documento.intestatario,
                                                      dateToString(documento.data_documento),
                                                      # scadenza.pagamento,
