@@ -109,7 +109,6 @@ class PGRiBa(RiBa):
             if documento.id_banca:
                 banca = leggiBanca(documento.id_banca)
             else:
-                messageWarning("Assegnare la banca nel documento numero %d." % documento.numero)
                 continue
                 
             for scadenza in documento.scadenze:
