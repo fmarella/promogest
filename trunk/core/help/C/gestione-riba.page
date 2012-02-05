@@ -4,7 +4,7 @@
       id="riba">
 
     <info>
-        <desc>Ricevute bancarie (RIBA)</desc>
+        <!--<desc>Ricevute bancarie (RIBA)</desc>-->
         <link type="guide" xref="index#documenti"/>
         <revision pkgversion="2.9" version="1.0" date="2012-01-16" status="stub"/>
         <credit type="author">
@@ -23,11 +23,15 @@
 
     <title>Ricevute bancarie (RIBA)</title>
 
+    <note style="info">
+      <p>Il modulo è disponibile nella versione FULL di <app>PromoGest</app>.</p>
+    </note>
+
     <note style="warning">
       <title>Informazioni supplementari richieste</title>
-      <p>Per la corretta gestione delle RIBA è necessario che le informazioni
-      sul <em>codice IBAN</em> e del <em>codice fiscale</em> siano state
-      inserite in <link xref="dati-azienda"/>.</p>
+      <p>Per la corretta gestione delle RIBA è necessario che il 
+      <em>codice IBAN</em>, il <em>codice fiscale</em> e il <em>codice SIA</em> 
+      dell'azienda siano stati inseriti in <link xref="dati-azienda"/>.</p>
     </note>
 
     <p>Per utilizzare la funzione di gestione RIBA, entrare nell'anagrafica
