@@ -194,7 +194,6 @@ class RiBaExportWindow(GladeWidget):
         if num > 0:
             self.genera_button.set_sensitive(True)
 
-
     def search(self):
         
         def match_func(model, path, iter, data):
@@ -256,7 +255,7 @@ class RiBaExportWindow(GladeWidget):
 
     def on_chiudi_button_clicked(self, button):
         self.destroy()
-        return None
+        #return None
     
     def draw(self):
         self.data_entry.show_all()
