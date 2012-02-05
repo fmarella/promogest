@@ -46,27 +46,33 @@ def leggiCreditore():
     '''
     # inizializziamo i dati del creditore
     creditore = Creditore()
-    azienda = leggiAzienda(env.azienda)
-    if azienda['schema']:
-        creditore.codice_fiscale = azienda['codice_fiscale']
+    azienda = Azienda().getRecord(id=Environment.azienda)
+    if azienda:
+        creditore.codice_fiscale = azienda.codice_fiscale
         if not creditore.codice_fiscale:
             messageError('Inserire il codice fiscale nei Dati azienda.')
             return
-        if azienda['iban']:
+        if azienda.iban:
             try:
-                cc, cs, cin, creditore.abi, creditore.cab, creditore.numero_conto = check_iban(azienda['iban'])
+                cc, cs, cin, creditore.abi, creditore.cab, creditore.numero_conto = check_iban(azienda.iban)
             except IBANError:
                 pass
-        elif azienda['abi'] and azienda['cab']:
-            creditore.abi = azienda['abi']
-            creditore.cab = azienda['cab']
-            if azienda['numero_conto']:
-                creditore.numero_conto = azienda['numero_conto']
+        elif azienda.abi and azienda.cab:
+            creditore.abi = azienda.abi
+            creditore.cab = azienda.cab
+            if azienda.numero_conto:
+                creditore.numero_conto = azienda.numero_conto
             else:
                 messageError('Inserire il numero di conto nei Dati azienda.')
                 return
         else:
             messageError('Inserire il codice IBAN nei Dati azienda.')
+            return
+    
+        if azienda.codice_rea:
+            creditore.codice_sia = str(azienda.codice_rea or ' ')
+        else:
+            messageError('Inserire il codice SIA in Dati azienda.')
             return
 
     return creditore
@@ -181,6 +187,10 @@ class RiBaExportWindow(GladeWidget):
             self.__creditore = leggiCreditore()
         except RuntimeError as e:
             messageError(msg=str(e))
+        self.show_all()
+        
+    def show_all(self):
+        self.data_entry.show_all()
 
     def on_aggiorna_button_clicked(self, button):
         self.liststore1.clear()

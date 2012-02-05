@@ -110,11 +110,14 @@ class Anagrafica(GladeWidget):
         self.record_duplicate_menu.set_sensitive(False)
         self.duplica_button.set_sensitive(False)
         self.selected_record_print_button.set_sensitive(False)
-        self.selected_record_print_menu.set_sensitive(False)
+        self.selected_record_print_menu.set_sensitive(False) 
         if self.__class__.__name__ != 'AnagraficaListiniArticoli':
             self.modifiche_menu.destroy()
         if self.__class__.__name__ != 'AnagraficaDocumenti':
             self.strumenti_menu.destroy()
+        else:
+            if not posso('GRB'):
+                self.gestione_riba_menu.destroy()
         self.placeWindow(self.anagrafica_complessa_window)
         self.filter.draw()
         self.editElement.draw(cplx=True)

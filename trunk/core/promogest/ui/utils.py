@@ -3355,6 +3355,9 @@ def posso(mod=None):
         if "Label" in modulis: return True
         if "FULL" in modulis: return True
         return False
+    if mod == "GRB":
+        if "FULL" in modulis: return True
+        return False
     if mod == "SM":
         if "SuMisura" in modulis: return True
         return False
