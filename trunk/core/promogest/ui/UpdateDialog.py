@@ -95,25 +95,22 @@ class UpdateDialog(GladeWidget):
                 client = pysvn.Client()
                 data.msg_label.set_text("Aggiornamento in corso...")
                 data.update_button.set_sensitive(False)
-                client.update('.')
-                data.__stop = '0k'
+                data.__stop = client.update('.')
             except:
                 client = pysvn.Client()
                 client.cleanup('.')
-                data.__stop = 'cleanup'
+                data.__stop = True
+                data.update_progress_bar.set_fraction(0.0)
+                data.cancel_button.set_sensitive(True)
+                data.msg_label.set_text("Si è verificato un errore in aggiornamento, attendere alcuni minuti e riprovare")
+            else:
+                data.update_progress_bar.set_fraction(1.0)
+                data.msg_label.set_text("Aggiornamento eseguito con successo, riavviare Promogest.")
+                data.quit_button.set_visible(True)
+                data.cancel_button.set_visible(False)
 
         def refreshUI():
-            if self.__stop == 'cleanup':
-                self.update_progress_bar.set_fraction(0.0)
-                self.cancel_button.set_visible(False)
-                self.quit_button.set_visible(True)
-                self.msg_label.set_text("Si è verificato un errore in aggiornamento, riavviare Promogest e riprovare")
-            elif self.__stop == '0k':
-                self.update_progress_bar.set_fraction(1.0)
-                self.msg_label.set_text("Aggiornamento eseguito con successo, riavviare Promogest.")
-                self.quit_button.set_visible(True)
-                self.cancel_button.set_visible(False)
-            elif self.__stop == True:
+            if self.__stop:
                 return False
             else:
                 self.update_progress_bar.pulse()
