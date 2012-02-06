@@ -267,6 +267,8 @@ class DuplicazioneDocumento(GladeWidget):
                 newDao.id_secondo_riferimento = self.dao.id_secondo_riferimento
             else:
                 newDao.documento_saldato = False
+                newDao.totale_pagato = self.dao.totale_pagato
+                newDao.totale_sospeso = self.dao.totale_sospeso
 
         tipoid = findIdFromCombobox(self.id_operazione_combobox)
         tipo = Operazione().getRecord(id=tipoid)
