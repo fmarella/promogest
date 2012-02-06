@@ -42,7 +42,7 @@ def as_number(arg, lenght):
 
 def as_currency(arg, lenght, decimal=2):
     args = str(arg).split('.')
-    return str(args[0][:lenght-decimal]).rjust(lenght, ' ') + args[1][:decimal].rjust(decimal, '0')
+    return str(args[0][:lenght-decimal].rjust(lenght, '0') + args[1][:decimal].rjust(decimal, '0'))
 
 
 class Debitore(object):
@@ -53,7 +53,7 @@ class Debitore(object):
     indirizzo = ' '
     provincia =  ' '
     comune = ' '
-    descrizione = ' ' # descrizione del debitore (30 caratteri * 2)
+    descrizione = ['','']
     abi = ' '
     cab = ' '
 
@@ -71,6 +71,7 @@ class Creditore(object):
     codice_fiscale = ' ' # codice fiscale o partita iva
     numero_conto = ' '
     denominazione_breve = ' '
+    descrizione = ['','','','']
     abi = ' '
     cab = ' '
 
@@ -88,8 +89,9 @@ class Creditore(object):
         self.cab = cab
         self.codice_fiscale = codice_fiscale
         self.numero_conto = numero_conto
-        self.descrizione = '{0} {1} {2}'.format(datetime.datetime.now().strftime('%d%m%y'), abi, cab)
-        self.denominazione_breve = denominazione_breve
+        self.descrizione[3] = codice_fiscale
+        self.denominazione_breve = denominazione_breve # nome dell azienda
+        
 
 
 class RiBa(object):
@@ -121,7 +123,7 @@ class RiBa(object):
         self._buffer = ''
         self.creditore = creditore
         self.data_flusso = datetime.datetime.now().strftime('%d%m%y')
-        self.nome_supporto = 'INVIO DEL %s' % datetime.datetime.now().strftime('%d%m%y')
+        self.nome_supporto = 'CBIRIB%s' % datetime.datetime.now().strftime('%d%m%y%H%M')
 
     def analizza(self, data_inizio=None):
         raise NotImplementedError()
@@ -150,9 +152,9 @@ class RiBa(object):
                              as_string(' ', 6), # campo a disposizione
                              as_string(' ', 59),
                              # qualificatore flusso
-                             ' ', # tipo flusso 1
-                             ' ', # qualificatore flusso $
-                             as_string(' ', 5),  # soggetto veicolatore
+                             '1', # tipo flusso 1
+                             '$', # qualificatore flusso $
+                             as_string(self.creditore.abi, 5),  # soggetto veicolatore
                              as_number('0', 2),
                              'E',
                              self.FILLER,
@@ -175,9 +177,9 @@ class RiBa(object):
                                   as_string(self.nome_supporto, 20),
                                   as_string(' ', 6), # campo a disposizione
                                   as_number(disposizioni, 7),
-                                  as_currency(totale_importi, 15, 2),
+                                  as_currency(totale_importi, 15),
                                   as_number('0', 15), # totale importi positivi
-                                  as_number(disposizioni + 2, 7),
+                                  as_number(disposizioni * 7 + 2, 7),
                                   as_string(self.FILLER, 24),
                                   'E', # codice divisa
                                   as_string(self.FILLER, 6)).replace('\0', self.FILLER)
@@ -220,18 +222,14 @@ class RiBa(object):
         @param progressivo: numero progressivo
         @return: il testo del record 20
         '''
-        descr = list([self.creditore.descrizione[0:24],
-                      self.creditore.descrizione[24:24*2],
-                      self.creditore.descrizione[24*2:24*3],
-                      self.creditore.descrizione[24*3:24*4]])
         return self.R20Struct.pack(self.FILLER,
                                     '20',
                                     as_number(str(progressivo), 7),
                                     # descrizione del creditore
-                                    as_string(descr[0], 24),
-                                    as_string(descr[1], 24),
-                                    as_string(descr[2], 24),
-                                    as_string(descr[3], 24),
+                                    as_string(self.creditore.descrizione[0], 24), #nome azienda
+                                    as_string(self.creditore.descrizione[1], 24), # indirizzo
+                                    as_string(self.creditore.descrizione[2], 24), # località
+                                    as_string(self.creditore.descrizione[3], 24), # codice fiscale
                                     as_string(self.FILLER, 14)).replace('\0', self.FILLER) + self.EOL
 
     def record30(self, progressivo, debitore):
@@ -242,13 +240,12 @@ class RiBa(object):
         @param debitore: informazioni sul debitore
         @return: il testo del record 30
         '''
-        descr = list([debitore.descrizione[0:30], debitore.descrizione[30:60]])
         return self.R30Struct.pack(self.FILLER,
                                      '30',
                                      as_number(str(progressivo), 7),
                                      # descrizione del debitore (30 caratteri ognuno)
-                                     as_string(descr[0], 30),
-                                     as_string(descr[1], 30),
+                                     as_string(debitore.descrizione[0], 30),
+                                     as_string(debitore.descrizione[1], 30),
                                      as_string(debitore.codice_fiscale, 16),
                                      as_string(self.FILLER, 34)).replace('\0', self.FILLER) + self.EOL
 
@@ -304,8 +301,8 @@ class RiBa(object):
                                    as_string(self.creditore.denominazione_breve, 20),
                                    # bollo virtuale
                                    as_string(' ', 15), # provincia
-                                   as_number(' ', 10), # numero autorizzazione
-                                   as_number(' ', 6), # data autorizzazione
+                                   as_number('0', 10), # numero autorizzazione
+                                   as_number('0', 6), # data autorizzazione
                                    as_string(' ', 49)).replace('\0', self.FILLER) + self.EOL
 
     def record70(self, progressivo):

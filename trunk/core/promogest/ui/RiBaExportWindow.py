@@ -74,6 +74,13 @@ def leggiCreditore():
         else:
             messageError('Inserire il codice SIA in Dati azienda.')
             return
+    
+    creditore.descrizione[0] = azienda.ragione_sociale
+    creditore.descrizione[1] = azienda.sede_operativa_indirizzo
+    creditore.descrizione[2] = azienda.sede_operativa_provincia
+    creditore.descrizione[3] = azienda.codice_fiscale
+    
+    creditore.descrizione_breve = azienda.codice_fiscale 
 
     return creditore
 
@@ -111,18 +118,24 @@ class PGRiBa(RiBa):
                 if ope['tipoPersonaGiuridica'] != 'cliente':
                     continue
 
-            banca = None
-            if documento.id_banca:
-                banca = leggiBanca(documento.id_banca)
-            else:
-                continue
+            # banca = None
+            # if documento.id_banca:
+                # banca = leggiBanca(documento.id_banca)
+            # else:
+                # continue
                 
             for scadenza in documento.scadenze:
                 pbar(self.ana.progressbar1, pulse=True, text='')
                 if pagamentoLookup(scadenza.pagamento):
 
                     numero_disposizioni += 1
+                    
+                    cliente = leggiCliente(documento.id_cliente)
+                    banca = leggiBanca(cliente['id_banca'])
+                    
                     debitore = Debitore(documento.codice_fiscale_cliente, banca['abi'], banca['cab'])
+                    debitore.descrizione[0]= documento.intestatario
+                    debitore.descrizione[1] = banca['abi'] + banca['cab']
                     
                     self.ana.liststore1.append((
                                  (True),
