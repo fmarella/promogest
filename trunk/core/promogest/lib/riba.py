@@ -34,6 +34,16 @@ import datetime
 #            raise ValueError('Campo %s non valido' % key)
 #===============================================================================
 
+def as_string(arg, lenght):
+    return str(arg).ljust(lenght, ' ')
+
+def as_number(arg, lenght):
+    return str(arg).rjust(lenght, '0')
+
+def as_currency(arg, lenght, decimal=2):
+    args = str(arg).split('.')
+    return str(args[0][:lenght-decimal]).rjust(lenght, ' ') + args[1][:decimal].rjust(decimal, '0')
+
 
 class Debitore(object):
     '''
@@ -90,6 +100,7 @@ class RiBa(object):
     '''
 
     FILLER = ' '
+    EOL = '\n\r'
     IBStruct = Struct('c2s5s5s6s20s6s59scc5s2scc5s')
     EFStruct = Struct('c2s5s5s6s20s6s7s15s15s7s24sc6s')
     R14Struct = Struct('c2s7s12s6s5s13sc5s5s12s5s5s12s5sc16sc5sc')
@@ -132,20 +143,20 @@ class RiBa(object):
         '''
         return self.IBStruct.pack(self.FILLER,
                              'IB',
-                             self.creditore.codice_sia,
-                             self.creditore.abi,
+                             as_string(self.creditore.codice_sia, 5),
+                             as_number(self.creditore.abi, 5),
                              self.data_flusso,
-                             self.nome_supporto,
-                             ' ', # campo a disposizione
-                             self.FILLER,
+                             as_string(self.nome_supporto, 20),
+                             as_string(' ', 6), # campo a disposizione
+                             as_string(' ', 59),
                              # qualificatore flusso
-                             ' ', # tipo flusso
-                             '$', # qualificatore flusso
-                             ' ',  # soggetto veicolatore
-                             self.FILLER,
+                             ' ', # tipo flusso 1
+                             ' ', # qualificatore flusso $
+                             as_string(' ', 5),  # soggetto veicolatore
+                             as_number('0', 2),
                              'E',
                              self.FILLER,
-                             ' ').replace('\0', self.FILLER) + '\n'
+                             as_number('0', 2)).replace('\0', self.FILLER) + self.EOL
 
 
     def recordEF(self, disposizioni, totale_importi):
@@ -158,18 +169,18 @@ class RiBa(object):
         '''
         return self.EFStruct.pack(self.FILLER,
                                   'EF',
-                                  self.creditore.codice_sia,
-                                  self.creditore.abi,
+                                  as_string(self.creditore.codice_sia, 5),
+                                  as_number(self.creditore.abi, 5),
                                   self.data_flusso,
-                                  self.nome_supporto,
-                                  ' ', # campo a disposizione
-                                  str(disposizioni),
-                                  str(totale_importi),
-                                  '0'*15, # totale importi positivi
-                                  str(disposizioni + 2),
-                                  self.FILLER,
+                                  as_string(self.nome_supporto, 20),
+                                  as_string(' ', 6), # campo a disposizione
+                                  as_number(disposizioni, 7),
+                                  as_currency(totale_importi, 15, 2),
+                                  as_number('0', 15), # totale importi positivi
+                                  as_number(disposizioni + 2, 7),
+                                  as_string(self.FILLER, 24),
                                   'E', # codice divisa
-                                  self.FILLER).replace('\0', self.FILLER)
+                                  as_string(self.FILLER, 6)).replace('\0', self.FILLER)
 
     def record14(self, progressivo, data_pagamento, importo, debitore):
         '''
@@ -183,24 +194,24 @@ class RiBa(object):
         '''
         return self.R14Struct.pack(self.FILLER,
                                    '14',
-                                   str(progressivo),
-                                   self.FILLER,
+                                   as_number(str(progressivo), 7),
+                                   as_string(self.FILLER, 12),
                                    str(data_pagamento.strftime('%d%m%y')),
                                    '30000', # causale
-                                   str(importo),
+                                   as_currency(str(importo), 13),
                                    '-', # segno
-                                   str(self.creditore.abi),
-                                   str(self.creditore.cab),
-                                   str(self.creditore.numero_conto),
-                                   str(debitore.abi),
-                                   str(debitore.cab),
-                                   self.FILLER,
-                                   self.creditore.codice_sia,
+                                   as_number(self.creditore.abi, 5),
+                                   as_number(self.creditore.cab, 5),
+                                   as_number(self.creditore.numero_conto, 12),
+                                   as_number(debitore.abi, 5),
+                                   as_number(debitore.cab, 5),
+                                   as_string(self.FILLER, 12),
+                                   as_string(self.creditore.codice_sia, 5),
                                    '4',
-                                   ' ', # codice cliente debitore
+                                   as_string(' ', 16), # codice cliente debitore
                                    ' ', # flag tipo debitore ('B' per banca)
-                                   self.FILLER,
-                                   'E').replace('\0', self.FILLER) + '\n'
+                                   as_string(self.FILLER, 5),
+                                   'E').replace('\0', self.FILLER) + self.EOL
 
     def record20(self, progressivo):
         '''
@@ -215,13 +226,13 @@ class RiBa(object):
                       self.creditore.descrizione[24*3:24*4]])
         return self.R20Struct.pack(self.FILLER,
                                     '20',
-                                    str(progressivo),
+                                    as_number(str(progressivo), 7),
                                     # descrizione del creditore
-                                    descr[0] or ' ',
-                                    descr[1] or ' ',
-                                    descr[2] or ' ',
-                                    descr[3] or ' ',
-                                    self.FILLER).replace('\0', self.FILLER) + '\n'
+                                    as_string(descr[0], 24),
+                                    as_string(descr[1], 24),
+                                    as_string(descr[2], 24),
+                                    as_string(descr[3], 24),
+                                    as_string(self.FILLER, 14)).replace('\0', self.FILLER) + self.EOL
 
     def record30(self, progressivo, debitore):
         '''
@@ -234,12 +245,12 @@ class RiBa(object):
         descr = list([debitore.descrizione[0:30], debitore.descrizione[30:60]])
         return self.R30Struct.pack(self.FILLER,
                                      '30',
-                                     str(progressivo),
+                                     as_number(str(progressivo), 7),
                                      # descrizione del debitore (30 caratteri ognuno)
-                                     descr[0] or ' ',
-                                     descr[1] or ' ',
-                                     str(debitore.codice_fiscale),
-                                     self.FILLER).replace('\0', self.FILLER) + '\n'
+                                     as_string(descr[0], 30),
+                                     as_string(descr[1], 30),
+                                     as_string(debitore.codice_fiscale, 16),
+                                     as_string(self.FILLER, 34)).replace('\0', self.FILLER) + self.EOL
 
     def record40(self, progressivo, debitore):
         '''
@@ -251,12 +262,12 @@ class RiBa(object):
         '''
         return self.R40Struct.pack(self.FILLER,
                                    '40',
-                                   str(progressivo),
+                                   as_number(str(progressivo), 7),
                                    # indirizzo del debitore
-                                   str(debitore.indirizzo),
-                                   str(debitore.CAP),
-                                   '{0} {1}'.format(debitore.comune, debitore.provincia),
-                                   ' ').replace('\0', self.FILLER) + '\n' # eventuale denominazione in chiaro della banca/sportello domiciliataria/o
+                                   as_string(debitore.indirizzo, 30),
+                                   as_number(debitore.CAP, 5),
+                                   as_string('{0} {1}'.format(debitore.comune, debitore.provincia), 25),
+                                   as_string(' ', 50)).replace('\0', self.FILLER) + self.EOL # eventuale denominazione in chiaro della banca/sportello domiciliataria/o
 
     def record50(self, progressivo, debitore, riferimenti_debito):
         '''
@@ -270,13 +281,13 @@ class RiBa(object):
         rif_debito = list([riferimenti_debito[0:40], riferimenti_debito[40:80]])
         return self.R50Struct.pack(self.FILLER,
                                    '50',
-                                   str(progressivo),
+                                   as_number(str(progressivo), 7),
                                    # riferimenti al debito
-                                   rif_debito[0] or ' ',
-                                   rif_debito[1] or ' ',
-                                   self.FILLER,
-                                   str(self.creditore.codice_fiscale),
-                                   self.FILLER).replace('\0', self.FILLER) + '\n'
+                                   as_string(rif_debito[0], 40),
+                                   as_string(rif_debito[1], 40),
+                                   as_string(self.FILLER, 10),
+                                   as_string(self.creditore.codice_fiscale, 16),
+                                   as_string(self.FILLER, 4)).replace('\0', self.FILLER) + self.EOL
 
     def record51(self, progressivo, ricevuta):
         '''
@@ -288,14 +299,14 @@ class RiBa(object):
         '''
         return self.R51Struct.pack(self.FILLER,
                                    '51',
-                                   str(progressivo),
-                                   str(ricevuta),
-                                   str(self.creditore.denominazione_breve),
+                                   as_number(str(progressivo), 7),
+                                   as_number(ricevuta, 10),
+                                   as_string(self.creditore.denominazione_breve, 20),
                                    # bollo virtuale
-                                   ' ', # provincia
-                                   ' ', # numero autorizzazione
-                                   ' ', # data autorizzazione
-                                   self.FILLER).replace('\0', self.FILLER) + '\n'
+                                   as_string(' ', 15), # provincia
+                                   as_number(' ', 10), # numero autorizzazione
+                                   as_number(' ', 6), # data autorizzazione
+                                   as_string(' ', 49)).replace('\0', self.FILLER) + self.EOL
 
     def record70(self, progressivo):
         '''
@@ -306,9 +317,9 @@ class RiBa(object):
         '''
         return self.R70Struct.pack(self.FILLER,
                                    '70',
-                                   str(progressivo),
-                                   self.FILLER,
-                                   ' ', # indicatori di circuito
+                                   as_number(str(progressivo), 7),
+                                   as_string(self.FILLER, 78),
+                                   as_string(' ', 12), # indicatori di circuito
                                    # indicatore richiesta incasso
                                    '0', # tipo doc per debitore
                                         # 1=ricevuta bancaria
@@ -321,4 +332,4 @@ class RiBa(object):
                                    '0', # flag stampa avviso
                                         # 4=avvisi da predisporre e da inviare a cura della banca domiciliaria
                                         # 0 o blank = accordi bilaterali predefiniti con la banca
-                                   self.FILLER).replace('\0', self.FILLER) + '\n'
+                                   as_string(self.FILLER, 17)).replace('\0', self.FILLER) + self.EOL
