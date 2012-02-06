@@ -130,9 +130,15 @@ class PGRiBa(RiBa):
                 banca = leggiBanca(documento.id_banca)
             else:
                 continue
-    
+
             cli = leggiCliente(documento.id_cliente)
-            debitore = Debitore(documento.codice_fiscale_cliente, banca['abi'], banca['cab'])
+            cli_ente = Cliente().getRecord(id=documento.id_cliente)
+            cod_fisc_piva = ''
+            if cli_ente:
+                cod_fisc_piva = cli_ente.codice_fiscale or cli_ente.partita_iva
+            else:
+                cod_fisc_piva = documento.codice_fiscale_cliente
+            debitore = Debitore(cod_fisc_piva, banca['abi'], banca['cab'])
             debitore.descrizione[0] = ''
             if cli['ragioneSociale']:
                 debitore.descrizione[0] = cli['ragioneSociale']
@@ -142,13 +148,11 @@ class PGRiBa(RiBa):
             debitore.CAP = documento.cap_cliente
             debitore.provincia = documento.provincia_cliente
             debitore.comune = documento.localita_cliente
-                
+
             for scadenza in documento.scadenze:
                 pbar(self.ana.progressbar1, pulse=True, text='')
                 if pagamentoLookup(scadenza.pagamento):
 
-                    # numero_disposizioni += 1
-                    
                     row = "%s N. %s a %s del %s \nImporto: %s data scadenza: %s" % (documento.operazione,
                                                      documento.numero,
                                                      documento.intestatario,
@@ -158,8 +162,6 @@ class PGRiBa(RiBa):
                                                      dateToString(scadenza.data)
                                                      )
                     
-                    # scadenza = row[1]
-                    # debitore = row[2]
                     progressivo = i + 1
                     totale_importi += scadenza.importo
                     buff += self.record14(progressivo, scadenza.data, scadenza.importo, debitore)
@@ -218,21 +220,7 @@ class RiBaExportWindow(GladeWidget):
         # if num > 0:
         self.genera_button.set_sensitive(True)
         
-
-    # def search(self):
-        
-        # def match_func(model, path, iter, data):
-            # pbar(self.progressbar1, pulse=True, text='')
-            # if model.get_value(iter, 0) == True:
-                # data.append([model.get_value(iter, 1),
-                             # model.get_value(iter, 2),
-                             # model.get_value(iter, 3)])
-            # return False
-        
-        # pathlist = []
-        # self.liststore1.foreach(match_func, pathlist)
-        # return pathlist
-    
+   
     def salvaFile(self):
         data = stringToDate(self.data_entry.get_text())
         nome_file = 'estratto_riba_' + data.strftime('%m_%y') + ".txt"
