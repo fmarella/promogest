@@ -42,7 +42,7 @@ def as_number(arg, lenght):
 
 def as_currency(arg, lenght, decimal=2):
     args = str(arg).split('.')
-    return str(args[0][:lenght-decimal].rjust(lenght, '0') + args[1][:decimal].rjust(decimal, '0'))
+    return str(args[0][:int(lenght-decimal)].rjust(int(lenght-decimal), '0') + args[1][:decimal].rjust(decimal, '0'))
 
 
 class Debitore(object):
@@ -200,7 +200,7 @@ class RiBa(object):
                                    as_string(self.FILLER, 12),
                                    str(data_pagamento.strftime('%d%m%y')),
                                    '30000', # causale
-                                   as_currency(str(importo), 13),
+                                   as_currency(importo, 13),
                                    '-', # segno
                                    as_number(self.creditore.abi, 5),
                                    as_number(self.creditore.cab, 5),

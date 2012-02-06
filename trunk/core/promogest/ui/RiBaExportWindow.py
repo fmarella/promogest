@@ -118,11 +118,11 @@ class PGRiBa(RiBa):
                 if ope['tipoPersonaGiuridica'] != 'cliente':
                     continue
 
-            # banca = None
-            # if documento.id_banca:
-                # banca = leggiBanca(documento.id_banca)
-            # else:
-                # continue
+            banca = None
+            if documento.id_banca:
+                banca = leggiBanca(documento.id_banca)
+            else:
+                continue
                 
             for scadenza in documento.scadenze:
                 pbar(self.ana.progressbar1, pulse=True, text='')
@@ -130,12 +130,10 @@ class PGRiBa(RiBa):
 
                     numero_disposizioni += 1
                     
-                    cliente = leggiCliente(documento.id_cliente)
-                    banca = leggiBanca(cliente['id_banca'])
-                    
                     debitore = Debitore(documento.codice_fiscale_cliente, banca['abi'], banca['cab'])
                     debitore.descrizione[0]= documento.intestatario
-                    debitore.descrizione[1] = banca['abi'] + banca['cab']
+                    debitore.descrizione[1] = banca['abi'] or ''
+                    debitore.descrizione[1] += banca['cab'] or ''
                     
                     self.ana.liststore1.append((
                                  (True),
