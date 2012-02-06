@@ -132,8 +132,8 @@ class PGRiBa(RiBa):
                     
                     debitore = Debitore(documento.codice_fiscale_cliente, banca['abi'], banca['cab'])
                     debitore.descrizione[0]= documento.intestatario
-                    debitore.descrizione[1] = banca['abi'] or ''
-                    debitore.descrizione[1] += banca['cab'] or ''
+                    # debitore.descrizione[1] = banca['abi'] or ''
+                    # debitore.descrizione[1] += banca['cab'] or ''
                     
                     self.ana.liststore1.append((
                                  (True),
