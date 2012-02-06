@@ -100,7 +100,7 @@ class RiBa(object):
     '''
 
     FILLER = ' '
-    EOL = '\n\r'
+    EOL = '\n'
     IBStruct = Struct('c2s5s5s6s20s6s59scc5s2scc5s')
     EFStruct = Struct('c2s5s5s6s20s6s7s15s15s7s24sc6s')
     R14Struct = Struct('c2s7s12s6s5s13sc5s5s12s5s5s12s5sc16sc5sc')
