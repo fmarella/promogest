@@ -25,6 +25,7 @@ from promogest.ui.GladeWidget import GladeWidget
 from promogest.lib.riba import RiBa, Creditore, Debitore
 from promogest.dao.TestataDocumento import TestataDocumento
 from promogest.dao.Azienda import Azienda
+from promogest.dao.Cliente import Cliente
 from promogest.ui.utils import messageError, dateToString, leggiOperazione,\
     dataInizioFineMese, pbar, stringToDate, messageInfo, leggiAzienda,\
     leggiBanca, leggiCliente, mN, messageWarning
@@ -77,10 +78,10 @@ def leggiCreditore():
     
     creditore.descrizione[0] = azienda.ragione_sociale
     creditore.descrizione[1] = azienda.sede_operativa_indirizzo
-    creditore.descrizione[2] = azienda.sede_operativa_provincia
+    creditore.descrizione[2] = azienda.sede_operativa_localita
     creditore.descrizione[3] = azienda.codice_fiscale
     
-    creditore.descrizione_breve = azienda.codice_fiscale 
+    creditore.descrizione_breve = azienda.codice_fiscale
 
     return creditore
 
@@ -108,6 +109,12 @@ class PGRiBa(RiBa):
             return 0
 
         numero_disposizioni = 0
+        
+        buff = self.recordIB()
+        
+        i = 0
+        totale_importi = Decimal(0)
+        
         for documento in documenti:
 
             if documento.operazione not in ['Fattura differita vendita', 'Fattura accompagnatoria']:
@@ -123,55 +130,51 @@ class PGRiBa(RiBa):
                 banca = leggiBanca(documento.id_banca)
             else:
                 continue
+    
+            cli = leggiCliente(documento.id_cliente)
+            debitore = Debitore(documento.codice_fiscale_cliente, banca['abi'], banca['cab'])
+            debitore.descrizione[0] = ''
+            if cli['ragioneSociale']:
+                debitore.descrizione[0] = cli['ragioneSociale']
+            else:
+                debitore.descrizione[0] = cli['cognome'] + ' ' + cli['nome']
+            debitore.indirizzo = documento.indirizzo_cliente
+            debitore.CAP = documento.cap_cliente
+            debitore.provincia = documento.provincia_cliente
+            debitore.comune = documento.localita_cliente
                 
             for scadenza in documento.scadenze:
                 pbar(self.ana.progressbar1, pulse=True, text='')
                 if pagamentoLookup(scadenza.pagamento):
 
-                    numero_disposizioni += 1
+                    # numero_disposizioni += 1
                     
-                    debitore = Debitore(documento.codice_fiscale_cliente, banca['abi'], banca['cab'])
-                    debitore.descrizione[0]= documento.intestatario
-                    # debitore.descrizione[1] = banca['abi'] or ''
-                    # debitore.descrizione[1] += banca['cab'] or ''
-                    
-                    self.ana.liststore1.append((
-                                 (True),
-                                 ("%s N. %s a %s del %s \nImporto: %s data scadenza: %s" % (documento.operazione,
+                    row = "%s N. %s a %s del %s \nImporto: %s data scadenza: %s" % (documento.operazione,
                                                      documento.numero,
                                                      documento.intestatario,
                                                      dateToString(documento.data_documento),
                                                      # scadenza.pagamento,
                                                      mN(scadenza.importo, 2),
                                                      dateToString(scadenza.data)
-                                                     )),
-                                 (scadenza),
-                                 (debitore)
-                                 ))
-        pbar(self.ana.progressbar1, stop=True)
-        return numero_disposizioni
-    
-    def genera(self, rows):
-        disposizioni = len(rows)
-        buff = self.recordIB()
-        i = 0
-        totale_importi = Decimal(0)
-        for row in rows:
-            scadenza = row[1]
-            debitore = row[2]
-            progressivo = i + 1
-            totale_importi += scadenza.importo
-            buff += self.record14(progressivo, scadenza.data, scadenza.importo, debitore)
-            buff += self.record20(progressivo)
-            buff += self.record30(progressivo, debitore)
-            buff += self.record40(progressivo, debitore)
-            buff += self.record50(progressivo, debitore, row[0].replace('\n', ''))
-            buff += self.record51(progressivo, progressivo)
-            buff += self.record70(progressivo)
-            i = i + 1
-        buff += self.recordEF(disposizioni, totale_importi)
+                                                     )
+                    
+                    # scadenza = row[1]
+                    # debitore = row[2]
+                    progressivo = i + 1
+                    totale_importi += scadenza.importo
+                    buff += self.record14(progressivo, scadenza.data, scadenza.importo, debitore)
+                    buff += self.record20(progressivo)
+                    buff += self.record30(progressivo, debitore)
+                    buff += self.record40(progressivo, debitore)
+                    buff += self.record50(progressivo, debitore, row.replace('\n', ''))
+                    buff += self.record51(progressivo, progressivo)
+                    buff += self.record70(progressivo)
+                    i = i + 1
+                    
+        buff += self.recordEF(i, totale_importi)
         self._buffer = buff
-        
+        pbar(self.ana.progressbar1, stop=True, text='Finito.')
+
 
 
 class RiBaExportWindow(GladeWidget):
@@ -209,25 +212,26 @@ class RiBaExportWindow(GladeWidget):
         data = stringToDate(self.data_entry.get_text())
         num = 0
         try:
-            num = self.generatore.analizza(data)
+            self.generatore.analizza(data)
         except RuntimeError as e:
             messageError(msg=str(e))
-        if num > 0:
-            self.genera_button.set_sensitive(True)
+        # if num > 0:
+        self.genera_button.set_sensitive(True)
+        
 
-    def search(self):
+    # def search(self):
         
-        def match_func(model, path, iter, data):
-            pbar(self.progressbar1, pulse=True, text='')
-            if model.get_value(iter, 0) == True:
-                data.append([model.get_value(iter, 1),
-                             model.get_value(iter, 2),
-                             model.get_value(iter, 3)])
-            return False
+        # def match_func(model, path, iter, data):
+            # pbar(self.progressbar1, pulse=True, text='')
+            # if model.get_value(iter, 0) == True:
+                # data.append([model.get_value(iter, 1),
+                             # model.get_value(iter, 2),
+                             # model.get_value(iter, 3)])
+            # return False
         
-        pathlist = []
-        self.liststore1.foreach(match_func, pathlist)
-        return pathlist
+        # pathlist = []
+        # self.liststore1.foreach(match_func, pathlist)
+        # return pathlist
     
     def salvaFile(self):
         data = stringToDate(self.data_entry.get_text())
@@ -256,12 +260,7 @@ class RiBaExportWindow(GladeWidget):
                 self.generatore.write(filename)
         
     def on_genera_button_clicked(self, button):
-        selected = self.search()
-        pbar(self.progressbar1, stop=True)
-        if selected:
-            self.generatore.genera(selected)
-            pbar(self.progressbar1, stop=True)
-            self.salvaFile()
+        self.salvaFile()
 
     def on_stato_cellrendertoggle_toggled(self, widget, model):
         sel = self.treeview1.get_selection()

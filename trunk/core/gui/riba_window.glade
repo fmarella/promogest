@@ -85,10 +85,10 @@
                     <child>
                       <object class="GtkButton" id="aggiorna_button">
                         <property name="label">gtk-refresh</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="use_stock">True</property>
                         <signal name="clicked" handler="on_aggiorna_button_clicked" swapped="no"/>
                       </object>
@@ -139,7 +139,6 @@
             <property name="vscrollbar_policy">automatic</property>
             <child>
               <object class="GtkTreeView" id="treeview1">
-                <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="model">liststore1</property>
                 <child>
@@ -213,11 +212,11 @@
                 <child>
                   <object class="GtkButton" id="genera_button">
                     <property name="label" translatable="yes">Genera file</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="has_default">True</property>
                     <property name="receives_default">True</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="image">image2</property>
                     <signal name="clicked" handler="on_genera_button_clicked" swapped="no"/>
                   </object>
@@ -230,10 +229,10 @@
                 <child>
                   <object class="GtkButton" id="chiudi_button">
                     <property name="label">gtk-close</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="use_stock">True</property>
                     <signal name="clicked" handler="on_chiudi_button_clicked" swapped="no"/>
                   </object>
