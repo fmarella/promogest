@@ -612,32 +612,32 @@ class TestataDocumento(Dao):
         #agganciare qui con dei controlli, le cancellazioni preventive ed i
         #reinserimenti.
         self.testataDocumentoScadenzaDel(dao=self)
+        
         if not(self.__ScadenzeDocumento) and self.ripartire_importo:
             tds = TestataDocumentoScadenza()
             tds.data = datetime.datetime.now()
             tds.numero_scadenza = 1
             tds.pagamento = 'n/a'
-            tds.importo = self._totaleScontato
+            tds.note_per_primanota = ''
+            tds.importo = self.totale_sospeso + self.totale_pagato
             self.__ScadenzeDocumento.append(tds)
 
         num_scadenze = len(self.__ScadenzeDocumento)
         for scad in self.__ScadenzeDocumento:
             scad.id_testata_documento = self.id
             Environment.session.add(scad)
+
             if self.ripartire_importo:
                 if scad.data_pagamento is None:
                     if not setconf('PrimaNota', 'inserisci_senza_data_pagamento'):
                         continue
+                
                 ope = leggiOperazione(self.operazione)
                 tipo = 'n/a'
-                if scad.pagamento == 'n/a':
-                    tipo = scad.pagamento
-                else:
+                if scad.pagamento != 'n/a':
                     p = Pagamento().select(denominazione=scad.pagamento)
                     if p:
                         tipo = p[0].tipo
-                    else:
-                        tipo = 'n/a'
 
                 if scad.numero_scadenza == 0:
                     tipo_pag = "ACCONTO"
@@ -662,7 +662,7 @@ class TestataDocumento(Dao):
                 else:
                     stringa += 'da '
                     segno = "uscita"
-                str_importo_doc = "Importo doc. %s " % self._totaleScontato
+                str_importo_doc = "Importo doc. %s " % mN(self.totale_sospeso + self.totale_pagato, 2)
                 stringa += "%s \n%s%s, %s" %(self.intestatario, str_importo_doc, self._getPI_CF(), tipo_pag)
 
                 tpn = TestataPrimaNota()

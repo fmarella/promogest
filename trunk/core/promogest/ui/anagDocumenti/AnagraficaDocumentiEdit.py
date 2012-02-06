@@ -461,6 +461,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                 pago = Pagamento().getRecord(id=id_pag)
                 if pago:
                     self.pagamenti_page.metodo_pagamento_label.set_markup('<b><span foreground="black" size="16000">'+str(pago.denominazione)+'</span></b>')
+                    self.pagamenti_page.on_calcola_importi_scadenza_button_clicked(None)
                 else:
                     self.pagamenti_page.metodo_pagamento_label.set_markup('<b><span foreground="black" size="16000">'+str(_("NESSUNO?"))+'</span></b>')
                 if self.dao.documento_saldato:
@@ -1970,7 +1971,7 @@ del documento.
     def id_pagamento_customcombobox_changed(self, combobox):
         if self._loading:
             return
-        self.on_calcola_importi_scadenza_button_clicked(None)
+        self.pagamenti_page.on_calcola_importi_scadenza_button_clicked(None)
 
     def on_id_listino_customcombobox_changed(self, combobox=None):
         """ funzione richiamata quando viene modificato o settato il listino """
