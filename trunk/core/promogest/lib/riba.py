@@ -195,7 +195,7 @@ class RiBa(object):
                                    str(debitore.abi),
                                    str(debitore.cab),
                                    self.FILLER,
-                                   ' ', # codice azienda
+                                   self.creditore.codice_sia,
                                    '4',
                                    ' ', # codice cliente debitore
                                    ' ', # flag tipo debitore ('B' per banca)
