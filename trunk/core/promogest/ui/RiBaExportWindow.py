@@ -220,7 +220,7 @@ class RiBaExportWindow(GladeWidget):
     
     def salvaFile(self):
         data = stringToDate(self.data_entry.get_text())
-        nome_file = 'estratto_riba_' + data.strftime('%m_%y') + ".txt"
+        nome_file = 'estratto_riba_' + data.strftime('%m_%y') + ".cbi"
         fileDialog = gtk.FileChooserDialog(title='Salvare il file',
                                            parent=self.getTopLevel(),
                                            action= GTK_FILE_CHOOSER_ACTION_SAVE,
