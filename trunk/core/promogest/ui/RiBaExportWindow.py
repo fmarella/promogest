@@ -81,7 +81,7 @@ def leggiCreditore():
     creditore.descrizione[2] = azienda.sede_operativa_localita
     creditore.descrizione[3] = azienda.codice_fiscale
     
-    creditore.descrizione_breve = azienda.codice_fiscale
+    creditore.denominazione_breve = azienda.ragione_sociale
 
     return creditore
 
@@ -150,7 +150,6 @@ class PGRiBa(RiBa):
             debitore.comune = documento.localita_cliente
 
             for scadenza in documento.scadenze:
-                pbar(self.ana.progressbar1, pulse=True, text='')
                 if pagamentoLookup(scadenza.pagamento):
 
                     row = "%s N. %s a %s del %s \nImporto: %s data scadenza: %s" % (documento.operazione,
@@ -175,7 +174,6 @@ class PGRiBa(RiBa):
                     
         buff += self.recordEF(i, totale_importi)
         self._buffer = buff
-        pbar(self.ana.progressbar1, stop=True, text='Finito.')
 
 
 
@@ -208,17 +206,14 @@ class RiBaExportWindow(GladeWidget):
     def show_all(self):
         self.data_entry.show_all()
 
-    def on_aggiorna_button_clicked(self, button):
-        self.liststore1.clear()
+    def on_genera_button_clicked(self, button):
         self.generatore = PGRiBa(self, self.__creditore)
         data = stringToDate(self.data_entry.get_text())
-        num = 0
         try:
             self.generatore.analizza(data)
         except RuntimeError as e:
             messageError(msg=str(e))
-        # if num > 0:
-        self.genera_button.set_sensitive(True)
+        self.salvaFile()
         
    
     def salvaFile(self):
@@ -246,26 +241,7 @@ class RiBaExportWindow(GladeWidget):
             else:
                 fileDialog.destroy()
                 self.generatore.write(filename)
-        
-    def on_genera_button_clicked(self, button):
-        self.salvaFile()
-
-    def on_stato_cellrendertoggle_toggled(self, widget, model):
-        sel = self.treeview1.get_selection()
-        sel.select_path(model)
-        model, _iter = sel.get_selected()
-        if not _iter:
-            return
-        if model.get_value(_iter, 0):
-            model.set_value(_iter, 0, 0)
-        else:
-            model.set_value(_iter, 0, 1)
-
-    def on_chiudi_button_clicked(self, button):
-        self.destroy()
-        #return None
     
     def draw(self):
         self.data_entry.show_all()
         #self.data_entry.set_text(dateToString(dataInizioFineMese(datetime.now())[0]))
-        self.genera_button.set_sensitive(False)

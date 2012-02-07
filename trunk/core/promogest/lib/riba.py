@@ -26,6 +26,7 @@ __version__ = '1.0'
 
 from struct import Struct
 import datetime
+import unicodedata
 
 #===============================================================================
 # def validate(obj):
@@ -35,6 +36,11 @@ import datetime
 #===============================================================================
 
 def as_string(arg, lenght):
+    try:
+        arg = unicode(arg, 'UTF-8')
+    except TypeError:
+        pass
+    arg = unicodedata.normalize('NFKD', arg).encode('ASCII', 'ignore')
     return str(arg).ljust(lenght, ' ')
 
 def as_number(arg, lenght):
