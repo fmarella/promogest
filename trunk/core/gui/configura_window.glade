@@ -20,14 +20,12 @@
           <object class="GtkNotebook" id="setup_notebook">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <property name="tab_pos">left</property>
             <child>
               <object class="GtkScrolledWindow" id="setconf_scrolledwindow">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="hscrollbar_policy">automatic</property>
                 <property name="vscrollbar_policy">automatic</property>
-                <property name="shadow_type">in</property>
                 <child>
                   <object class="GtkViewport" id="viewport1">
                     <property name="visible">True</property>
@@ -42,7 +40,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="label_xalign">0</property>
-                            <property name="shadow_type">in</property>
+                            <property name="shadow_type">none</property>
                             <child>
                               <object class="GtkHBox" id="hbox1">
                                 <property name="visible">True</property>
@@ -62,10 +60,10 @@
                                 <child>
                                   <object class="GtkCheckButton" id="feed_check">
                                     <property name="label" translatable="yes">Attiva l'aggiornamento delle news del promogest dal sito</property>
+                                    <property name="use_action_appearance">False</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">False</property>
-                                    <property name="use_action_appearance">False</property>
                                     <property name="active">True</property>
                                     <property name="draw_indicator">True</property>
                                   </object>
@@ -99,7 +97,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="label_xalign">0</property>
-                            <property name="shadow_type">in</property>
+                            <property name="shadow_type">none</property>
                             <child>
                               <object class="GtkAlignment" id="alignment1">
                                 <property name="visible">True</property>
@@ -117,10 +115,10 @@
                                         <child>
                                           <object class="GtkCheckButton" id="zeri_in_totali_check">
                                             <property name="label" translatable="yes">Visualizza gli zeri nei totali in fase di stampa</property>
+                                            <property name="use_action_appearance">False</property>
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="receives_default">False</property>
-                                            <property name="use_action_appearance">False</property>
                                             <property name="draw_indicator">True</property>
                                           </object>
                                           <packing>
@@ -143,10 +141,10 @@
                                         <child>
                                           <object class="GtkCheckButton" id="zeri_in_riga_check">
                                             <property name="label" translatable="yes">Visualizza gli zeri nelle righe documento in fase di stampa</property>
+                                            <property name="use_action_appearance">False</property>
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="receives_default">False</property>
-                                            <property name="use_action_appearance">False</property>
                                             <property name="draw_indicator">True</property>
                                           </object>
                                           <packing>
@@ -329,7 +327,7 @@ pdf di fatture, ddt etc..</property>
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="label_xalign">0</property>
-                            <property name="shadow_type">in</property>
+                            <property name="shadow_type">none</property>
                             <child>
                               <object class="GtkAlignment" id="alignment2">
                                 <property name="visible">True</property>
@@ -493,7 +491,7 @@ dei risultati nelle ricerche ( 15 )</property>
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="label_xalign">0</property>
-                            <property name="shadow_type">in</property>
+                            <property name="shadow_type">none</property>
                             <child>
                               <object class="GtkAlignment" id="alignment5">
                                 <property name="visible">True</property>
@@ -522,10 +520,10 @@ dei risultati nelle ricerche ( 15 )</property>
                                         <child>
                                           <object class="GtkRadioButton" id="euro_radio">
                                             <property name="label" translatable="yes"> € </property>
+                                            <property name="use_action_appearance">False</property>
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="receives_default">False</property>
-                                            <property name="use_action_appearance">False</property>
                                             <property name="active">True</property>
                                             <property name="draw_indicator">True</property>
                                           </object>
@@ -538,10 +536,10 @@ dei risultati nelle ricerche ( 15 )</property>
                                         <child>
                                           <object class="GtkRadioButton" id="dollaro_radio">
                                             <property name="label" translatable="yes"> $ </property>
+                                            <property name="use_action_appearance">False</property>
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="receives_default">False</property>
-                                            <property name="use_action_appearance">False</property>
                                             <property name="active">True</property>
                                             <property name="draw_indicator">True</property>
                                             <property name="group">euro_radio</property>
@@ -555,10 +553,10 @@ dei risultati nelle ricerche ( 15 )</property>
                                         <child>
                                           <object class="GtkRadioButton" id="sterlina_radio">
                                             <property name="label" translatable="yes"> £ </property>
+                                            <property name="use_action_appearance">False</property>
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="receives_default">False</property>
-                                            <property name="use_action_appearance">False</property>
                                             <property name="active">True</property>
                                             <property name="draw_indicator">True</property>
                                             <property name="group">euro_radio</property>
@@ -609,7 +607,7 @@ dei risultati nelle ricerche ( 15 )</property>
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="label_xalign">0</property>
-                            <property name="shadow_type">in</property>
+                            <property name="shadow_type">none</property>
                             <child>
                               <object class="GtkAlignment" id="alignment3">
                                 <property name="visible">True</property>
@@ -639,11 +637,11 @@ dei risultati nelle ricerche ( 15 )</property>
                                         </child>
                                         <child>
                                           <object class="GtkColorButton" id="colorbutton1">
+                                            <property name="use_action_appearance">False</property>
                                             <property name="visible">True</property>
                                             <property name="sensitive">False</property>
                                             <property name="can_focus">True</property>
                                             <property name="receives_default">True</property>
-                                            <property name="use_action_appearance">False</property>
                                             <property name="color">#000000000000</property>
                                           </object>
                                           <packing>
@@ -679,11 +677,11 @@ dei risultati nelle ricerche ( 15 )</property>
                                         </child>
                                         <child>
                                           <object class="GtkColorButton" id="colorbutton2">
+                                            <property name="use_action_appearance">False</property>
                                             <property name="visible">True</property>
                                             <property name="sensitive">False</property>
                                             <property name="can_focus">True</property>
                                             <property name="receives_default">True</property>
-                                            <property name="use_action_appearance">False</property>
                                             <property name="color">#000000000000</property>
                                           </object>
                                           <packing>
@@ -719,11 +717,11 @@ dei risultati nelle ricerche ( 15 )</property>
                                         </child>
                                         <child>
                                           <object class="GtkColorButton" id="colorbutton3">
+                                            <property name="use_action_appearance">False</property>
                                             <property name="visible">True</property>
                                             <property name="sensitive">False</property>
                                             <property name="can_focus">True</property>
                                             <property name="receives_default">True</property>
-                                            <property name="use_action_appearance">False</property>
                                             <property name="color">#000000000000</property>
                                           </object>
                                           <packing>
@@ -763,7 +761,7 @@ dei risultati nelle ricerche ( 15 )</property>
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="label_xalign">0</property>
-                            <property name="shadow_type">in</property>
+                            <property name="shadow_type">none</property>
                             <child>
                               <object class="GtkAlignment" id="alignment4">
                                 <property name="visible">True</property>
@@ -819,10 +817,10 @@ VETTORE ( VE0000 )</property>
                                     <child>
                                       <object class="GtkCheckButton" id="vettore_codice_upper_check">
                                         <property name="label" translatable="yes">Trasforma il codice in MAIUSCOLO</property>
+                                        <property name="use_action_appearance">False</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">False</property>
-                                        <property name="use_action_appearance">False</property>
                                         <property name="draw_indicator">True</property>
                                       </object>
                                       <packing>
@@ -853,10 +851,10 @@ VETTORE ( VE0000 )</property>
                         <child>
                           <object class="GtkCheckButton" id="mercatino_check">
                             <property name="label" translatable="yes">Abilita un calcolo provvigionale in uso presso mercatini usato ( consigliato lasciare non selezionato)</property>
+                            <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">False</property>
-                            <property name="use_action_appearance">False</property>
                             <property name="draw_indicator">True</property>
                           </object>
                           <packing>
@@ -897,11 +895,11 @@ VETTORE ( VE0000 )</property>
             <child>
               <object class="GtkButton" id="salva_button">
                 <property name="label">gtk-save</property>
+                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
                 <property name="receives_default">False</property>
-                <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
                 <signal name="clicked" handler="on_salva_button_clicked" swapped="no"/>
               </object>
@@ -909,23 +907,6 @@ VETTORE ( VE0000 )</property>
                 <property name="expand">False</property>
                 <property name="fill">False</property>
                 <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton" id="esci_button">
-                <property name="label">gtk-close</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="can_default">True</property>
-                <property name="receives_default">False</property>
-                <property name="use_action_appearance">False</property>
-                <property name="use_stock">True</property>
-                <signal name="clicked" handler="on_quit" swapped="no"/>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
-                <property name="position">1</property>
               </packing>
             </child>
           </object>

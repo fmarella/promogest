@@ -6,7 +6,7 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="label_xalign">0</property>
-    <property name="shadow_type">in</property>
+    <property name="shadow_type">none</property>
     <child>
       <object class="GtkAlignment" id="alignment1">
         <property name="visible">True</property>
@@ -16,6 +16,7 @@
           <object class="GtkViewport" id="viewport1">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="shadow_type">none</property>
             <child>
               <object class="GtkVBox" id="vbox1">
                 <property name="visible">True</property>
@@ -66,10 +67,10 @@
                 <child>
                   <object class="GtkCheckButton" id="clienti_insegna_check">
                     <property name="label" translatable="yes">Visualizza campo per insegna</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="draw_indicator">True</property>
                   </object>
                   <packing>
@@ -81,10 +82,10 @@
                 <child>
                   <object class="GtkCheckButton" id="clienti_nomi_check">
                     <property name="label" translatable="yes">Visualizza campo nome</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="draw_indicator">True</property>
                   </object>
                   <packing>
@@ -96,10 +97,10 @@
                 <child>
                   <object class="GtkCheckButton" id="clienti_cognomi_check">
                     <property name="label" translatable="yes">Visualizza campo cognome</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="draw_indicator">True</property>
                   </object>
                   <packing>
@@ -111,10 +112,10 @@
                 <child>
                   <object class="GtkCheckButton" id="clienti_codice_upper_check">
                     <property name="label" translatable="yes">Trasforma il codice in MAIUSCOLO</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="draw_indicator">True</property>
                   </object>
                   <packing>

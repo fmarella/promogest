@@ -4,6 +4,7 @@
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
+#    Author: Francesco Marella <francesco.marella@gmail.com>
 
 #    This file is part of Promogest.
 
@@ -224,7 +225,7 @@ class ConfiguraWindow(GladeWidget):
         Environment.session.commit()
         confList = SetConf().select(batchSize=None)
         Environment.confList = confList
-        messageInfo(msg="SALVATO CORRETTAMENTE")
+        self.destroy()
 
 
     def on_quit(self, widget=None, event=None):
