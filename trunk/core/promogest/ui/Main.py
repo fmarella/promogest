@@ -345,7 +345,7 @@ class Main(GladeWidget):
         """
         #Aggiornamento scadenze promemoria
         if posso("PR"):
-            print "VERIFICA DEI PROMEMORIA IN SCADENZA"
+            # VERIFICA DEI PROMEMORIA IN SCADENZA
             updateScadenzePromemoria()
 
     def _refresh(self):

@@ -4,6 +4,7 @@
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
+#    Author: Francesco Marella <francesco.marella@gmail.com>
 
 #    This file is part of Promogest.
 
@@ -37,6 +38,8 @@ if not web:
         GTK_BUTTON_OK = gtk.ButtonsType.OK
         GTK_DIALOG_MESSAGE_INFO = gtk.MessageType.INFO
         GTK_RESPONSE_OK = gtk.ResponseType.OK
+        settings = gtk.Settings.get_default()
+        gtk.Settings.set_long_property(settings, "gtk-button-images", 1, "main")
     else:
         import gtk
         GTK_DIALOG_MODAL = gtk.DIALOG_MODAL
@@ -44,21 +47,18 @@ if not web:
         GTK_BUTTON_OK = gtk.BUTTONS_OK
         GTK_DIALOG_MESSAGE_INFO = gtk.MESSAGE_INFO
         GTK_RESPONSE_OK = gtk.RESPONSE_OK
-try:
-    settings = gtk.settings_get_default()
-    gtk.Settings.set_long_property(settings, "gtk-button-images", 1, "main")
-except:
-    print "Aggiunta icone non ha funzionato"
+        settings = gtk.settings_get_default()
+        gtk.Settings.set_long_property(settings, "gtk-button-images", 1, "main")
+
 import os
 import sys
 import shutil
 import glob
-import gettext
 import getopt
 try:
-    from werkzeug import Local, LocalManager, cached_property
+    from werkzeug import Local, LocalManager #, cached_property
 except:
-    print "MANCA WERKZEUG"
+    pass
 
 import sqlalchemy
 from sqlalchemy import *
@@ -73,15 +73,8 @@ from sqlalchemy.exc import *
 import logging
 import logging.handlers
 import smtplib
-import string
-from email.MIMEBase import MIMEBase
 from email.MIMEMultipart import MIMEMultipart
-from email.MIMEBase import MIMEBase
 from email.MIMEText import MIMEText
-from email.Utils import COMMASPACE, formatdate
-from email.mime.image import MIMEImage
-from email.Header import Header
-from email import Encoders
 import datetime
 
 PRODOTTO = "PromoTux"
@@ -186,7 +179,7 @@ try:
     feedPromo = None
     orario = 0
 except:
-    print "MANCA WERKZEUG ANCHE QUI"
+    pass
 
 fromHtmlLits = ["Promemoria", "TestataPrimaNota","Articolo", "Cliente",
                 "Contatto", "Fornitore", "Fornitura", "Contatto", "Vettore",
@@ -245,33 +238,20 @@ class MyProxy(ConnectionProxy):
         try:
             return execute(cursor, statement, parameters, context)
         except OperationalError as e:
-            # Handle this exception
-#            print("ATTENZIONE:OperationalError",e)
             messageInfoEnv(msg="UN ERRORE È STATO INTERCETTATO E SEGNALATO: "+e.message)
-#            pass
         except IntegrityError as e:
-            # Handle this exception
-#            print("ATTENZIONE:IntegrityError",e)
             messageInfoEnv(msg="IntegrityError UN ERRORE È STATO INTERCETTATO E SEGNALATO: "+e.message)
             session.rollback()
         except ProgrammingError as e:
-            # Handle this exception
-#            print("ATTENZIONE:ProgrammingError",e)
             messageInfoEnv(msg="UN ERRORE È STATO INTERCETTATO E SEGNALATO: "+e.message)
             session.rollback()
         except InvalidRequestError as e:
-            # Handle this exception
-#            print("ATTENZIONE:InvalidRequestError",e)
             messageInfoEnv(msg="UN ERRORE È STATO INTERCETTATO E SEGNALATO: "+e.message)
             session.rollback()
         except AssertionError as e:
-            # Handle this exception
-#            print("ATTENZIONE:AssertionError",e)
             messageInfoEnv(msg="UN ERRORE È STATO INTERCETTATO E SEGNALATO\n Possibile tentativo di cancellazione di un dato\n collegato ad altri dati fondamentali: "+e.message)
             session.rollback()
         except ValueError as e:
-            # Handle this exception
-#            print("ATTENZIONE:ValueError",e)
             messageInfoEnv(msg="Risulta inserito un Valore non corretto. Ricontrolla: "+e.message)
             session.rollback()
 
@@ -286,10 +266,8 @@ def _pg8000():
                     + database,
                     encoding='utf-8',pool_size=30,
                     convert_unicode=True,proxy=MyProxy() )
-#        pg2log.info("PG8000")
         return engine
     except:
-#        pg2log.info("PG8000 NON PRESENTE")
         return None
 
 def _py_postgresql():
@@ -302,10 +280,8 @@ def _py_postgresql():
                     + database,
                     encoding='utf-8',pool_size=30,
                     convert_unicode=True,proxy=MyProxy())
-#        pg2log.info("PY-POSTGRESQL")
         return engine
     except:
-#        pg2log.info("PY-POSTGRESQL NON PRESENTE")
         return None
 
 def connect():
@@ -315,9 +291,9 @@ def connect():
         a = psycopg2.connect(user=user, host=host, port=port,
                             password=password, database=database)
     except Exception as e:
-        a= "CONNESSIONE AL DATABASE PRO NON RIUSCITA.\n DETTAGLIO ERRORE: [%s]" % ( e,)
+        a = "CONNESSIONE AL DATABASE PRO NON RIUSCITA.\n DETTAGLIO ERRORE: [%s]" % str(e)
         messageInfoEnv(msg=a)
-        exit( )
+        sys.exit()
     if a:
         return a
 
@@ -349,11 +325,8 @@ def _psycopg2old():
                     + database,
                     encoding='utf-8',pool_size=30,
                     convert_unicode=True,proxy=MyProxy())
-#        print "PSYCOPG2 OLD"
-#        pg2log.info("PSYCOPG2 OLD")
         return engine
     except:
-#        pg2log.info("PSYCOPG2 OLD NON PRESENTE")
         return None
 
 if not web:
@@ -623,7 +596,6 @@ else:
 if not engine:
     raise RuntimeError("Non è stato trovato un backend per il database.")
 tipo_eng = engine.name
-print "TIPO ENGINE", tipo_eng
 engine.echo = False
 #engine.autocommit= True
 #insp = reflection.Inspector.from_engine(engine)
