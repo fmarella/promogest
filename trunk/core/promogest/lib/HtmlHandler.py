@@ -243,8 +243,10 @@ def createHtmlObj(mainWidget,widget=None):
         return gtkhtml2.View()
 
 def renderTemplate(pageData):
+    from datetime import datetime
     jinja_env.globals['environment'] = Environment
     jinja_env.globals['utils'] = utils
+    jinja_env.globals['datetime'] = datetime
     pageData["titolo"] = pageData["file"].split(".")[0].capitalize()
     if "dao" in pageData:
         html = jinja_env.get_template("/"+pageData["file"]).render(pageData = pageData, dao=pageData["dao"])
