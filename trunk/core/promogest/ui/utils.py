@@ -2890,7 +2890,7 @@ def leggiRevisioni():
             if not Environment.rev_remota:
                 Environment.rev_remota= pysvn.Client().info2("http://svn.promotux.it/svn/promogest2/trunk/", recurse=False)[0][1]["rev"].number
         except pysvn.ClientError as cerr:
-            print "Attenzione: %s" % str(cerr)
+            pass
         Environment.pg2log.info("VERSIONE IN USO LOCALE E REMOTA "+str(Environment.rev_locale)+" "+str(Environment.rev_remota))
     if pysvn:
         thread = threading.Thread(target=fetch)

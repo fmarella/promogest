@@ -40,7 +40,7 @@ from promogest.ui.PrintDialog import PrintDialogHandler
 from promogest.ui.utils import hasAction, fencemsg, updateScadenzePromemoria,\
          setconf, dateTimeToString, dateToString, \
          orda, posso, messageInfo, installId , YesNoDialog, messageError,\
-         obligatoryField
+         obligatoryField, leggiRevisioni
 from promogest.ui.utilsCombobox import *
 from promogest.ui.gtk_compat import *
 from ParametriFrame import ParametriFrame
@@ -224,6 +224,18 @@ class Main(GladeWidget):
         self.on_button_refresh_clicked()
 
         fillComboboxRole(self.anag_minori_combobox, noAdmin=True)
+        
+        def update_timer():
+            leggiRevisioni()
+            if Environment.rev_locale < Environment.rev_remota:
+                self.active_img.set_from_file("gui/active_off.png")
+                self.aggiornamento_label.set_label(_("DA AGGIORNARE!!! "))
+            else:
+                self.active_img.set_from_file("gui/active_on.png")
+                self.aggiornamento_label.set_label(_("AGGIORNATO "))
+            return True
+        # controllo automatico ogni 5 minuti
+        gobject.timeout_add(60*5000, update_timer)
 
         #if datetime.date.today() >= datetime.date(2011,9,17):
             #from promogest.dao.Setconf import SetConf
@@ -1172,13 +1184,6 @@ Procedere all'installazione del modulo PromoShop? """)
         textStatusBar = _(" %s Build: %s - 070 8649705 - www.promogest.me - info@promotux.it     " % (Environment.VERSIONE, Environment.rev_locale))
         context_id =  self.pg2_statusbar.get_context_id("main_window")
         self.pg2_statusbar.push(context_id,textStatusBar)
-
-        if Environment.rev_locale < Environment.rev_remota:
-            self.active_img.set_from_file("gui/active_off.png")
-            self.aggiornamento_label.set_label(_("DA AGGIORNARE!!! "))
-        else:
-            self.active_img.set_from_file("gui/active_on.png")
-            self.aggiornamento_label.set_label(_("AGGIORNATO "))
 
 class MainWindowFrame(VistaPrincipale):
     def __init__(self, mainWindow, azs):
