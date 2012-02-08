@@ -35,6 +35,7 @@ if not Environment.pg3:
         import pango
         import gobject
         import cairo
+        import glib
 
         GTK_VERSION = str(gtk.gtk_version[0]) + '.' + \
             str(gtk.gtk_version[1]) + '.' + str(gtk.gtk_version[2])
@@ -130,6 +131,7 @@ else:
     from gi.repository import Gtk as gtk
     from gi.repository import GObject as gobject
     from gi.repository import Pango as pango
+    from gi.repository import GLib as glib
     #from gi.repository import Cairo as cairo
     from gi.repository import GdkPixbuf
     pygtk = None
