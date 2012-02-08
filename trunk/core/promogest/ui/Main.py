@@ -1122,7 +1122,7 @@ Procedere all'installazione del modulo PromoShop? """)
         anagWindow = anag.getTopLevel()
 
     def on_main_window_key_press_event(self, widget, event):
-        on_main_window_key_press_eventPart(self,widget, event)
+        on_main_window_key_press_eventPart(self, widget, event)
 
     def on_disconnect(self, widget=None):
         if YesNoDialog(msg=_('Confermi l\'eliminazione ?'), transient=self.getTopLevel()):

@@ -21,7 +21,7 @@
         
      </info>
 
-    <title>Pagina principale</title>
+    <title>Finestra principale</title>
 
     <figure>
       <desc>La finestra principale di <app>PromoGest</app></desc>
@@ -30,5 +30,63 @@
     </figure>
 
     <p>...</p>
+
+    <section>
+      <title>Combinazioni di tasti</title>
+      <p>
+	Le seguenti combinazioni di tasti permettono di controllare la finestra
+	principale di <app>PromoGest</app> direttamente da tastiera.
+      </p>
+      <table>
+	<tr>
+	  <td><p><keyseq><key>Ctrl</key><key>d</key></keyseq></p></td>
+	  <td><p> Apre l'anagrafica dei Documenti </p></td>
+	</tr>
+	<tr>
+	  <td><p><keyseq><key>Ctrl</key><key>p</key></keyseq></p></td>
+	  <td><p> Apre la PrimaNota </p></td>
+	</tr>
+	<tr>
+	  <td><p><keyseq><key>Ctrl</key><key>m</key></keyseq></p></td>
+	  <td><p> Apre il Promemoria </p></td>
+	</tr>
+	<tr>
+	  <td><p><keyseq><key>Ctrl</key><key>c</key></keyseq></p></td>
+	  <td><p> Apre la Gestione commesse </p></td>
+	</tr>
+	<tr>
+	  <td><p><keyseq><key>Alt</key><key>1</key></keyseq></p></td>
+	  <td><p> Mostra la scheda Opzioni moduli </p></td>
+	</tr>
+	<tr>
+	  <td><p><keyseq><key>Alt</key><key>2</key></keyseq></p></td>
+	  <td><p> Mostra la scheda Anagrafiche</p></td>
+	</tr>
+	<tr>
+	  <td><p><keyseq><key>Alt</key><key>3</key></keyseq></p></td>
+	  <td><p> Mostra la scheda Parametri</p></td>
+	</tr>
+	<tr>
+	  <td><p><keyseq><key>Alt</key><key>4</key></keyseq></p></td>
+	  <td><p> Mostra la scheda News / Azioni veloci</p></td>
+	</tr>
+	<tr>
+	  <td><p><keyseq><key>Alt</key><key>5</key></keyseq></p></td>
+	  <td><p> Mostra la scheda Magazzini</p></td>
+	</tr>
+	<tr>
+	  <td><p><keyseq><key>Alt</key><key>6</key></keyseq></p></td>
+	  <td><p> Mostra la scheda Listini</p></td>
+	</tr>
+	<tr>
+	  <td><p><keyseq><key>Alt</key><key>7</key></keyseq></p></td>
+	  <td><p> Mostra la scheda Calendario</p></td>
+	</tr>
+	<tr>
+	  <td><p><keyseq><key>Alt</key><key>8</key></keyseq></p></td>
+	  <td><p> Mostra la scheda Notifica allarmi</p></td>
+	</tr>
+      </table>
+    </section>
 
 </page>
