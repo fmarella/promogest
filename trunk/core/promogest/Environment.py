@@ -79,6 +79,8 @@ import datetime
 
 PRODOTTO = "PromoTux"
 VERSIONE = "PromoGest 2.9.0"
+if pg3:
+    VERSIONE = "PromoGest 2.9.90"
 debugFilter = False
 debugDao = False
 debugSQL = False
