@@ -999,27 +999,27 @@ class TestataDocumento(Dao):
     def _provincia_cliente_operativa(self):
         if self.CLI: return self.CLI.sede_operativa_provincia
         else: return ""
-    provincia_cliente_operativa= property(_provincia_cliente_operativa)
+    provincia_cliente_operativa = property(_provincia_cliente_operativa)
 
     def _partita_iva_cliente(self):
         if self.CLI: return self.CLI.partita_iva
         else: return ""
-    partita_iva_cliente= property(_partita_iva_cliente)
+    partita_iva_cliente = property(_partita_iva_cliente)
 
     def _codice_fiscale_cliente(self):
         if self.CLI: return self.CLI.codice_fiscale
         else: return ""
-    codice_fiscale_cliente= property(_codice_fiscale_cliente)
+    codice_fiscale_cliente = property(_codice_fiscale_cliente)
 
     def _cognome_cliente(self):
         if self.CLI: return self.CLI.cognome
         else: return ""
-    cognome_cliente= property(_cognome_cliente)
+    cognome_cliente = property(_cognome_cliente)
 
     def _nome_cliente(self):
         if self.CLI: return self.CLI.nome
         else: return ""
-    nome_cliente= property(_nome_cliente)
+    nome_cliente = property(_nome_cliente)
 
 
 
