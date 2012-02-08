@@ -235,7 +235,7 @@ class Main(GladeWidget):
                 self.aggiornamento_label.set_label(_("AGGIORNATO "))
             return True
         # controllo automatico ogni 5 minuti
-        gobject.timeout_add(60*5000, update_timer)
+        glib.timeout_add_seconds(300, update_timer)
 
         #if datetime.date.today() >= datetime.date(2011,9,17):
             #from promogest.dao.Setconf import SetConf
