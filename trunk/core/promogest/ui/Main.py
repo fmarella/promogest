@@ -419,8 +419,6 @@ class Main(GladeWidget):
             else:
                 fencemsg()
         elif selection == 10: #gestione commessa
-#            messageInfo(msg="""RICORDIAMO CHE QUESTO MODULO E' ANCORA IN FASE DI TEST """)
-#            if posso("GC"):
             from promogest.modules.GestioneCommesse.ui.AnagraficaCommesse import AnagraficaCommesse
             anag = AnagraficaCommesse(aziendaStr=self.aziendaStr)
             showAnagrafica(self.getTopLevel(), anag, mainClass=self)
