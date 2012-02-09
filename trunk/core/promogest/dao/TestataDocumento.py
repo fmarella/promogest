@@ -355,10 +355,10 @@ class TestataDocumento(Dao):
                     aliquotaIvaRiga = daoiva.percentuale
             if not aliquotaIvaRiga: # solo se non l'ho trovato dall'id prendo quello della percentuale
                 aliquotaIvaRiga =  percentualeIvaRiga
-                idAliquotaIvas = AliquotaIva().select(percentuale=aliquotaIvaRiga)
-                if idAliquotaIvas:
-                    idAliquotaIva = idAliquotaIvas[0].id
-                    daoiva = idAliquotaIvas[0]
+#                idAliquotaIvas = AliquotaIva().select(percentuale=aliquotaIvaRiga)
+#                if idAliquotaIvas:
+#                    idAliquotaIva = idAliquotaIvas[0].id
+#                    daoiva = idAliquotaIvas[0]
             totaleRiga = Decimal(riga.quantita or 0) * Decimal(moltiplicatore) * Decimal(riga.valore_unitario_netto or 0)
 
             if (fonteValore == "vendita_iva" or fonteValore == "acquisto_iva"):
