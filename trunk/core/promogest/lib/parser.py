@@ -165,13 +165,14 @@ def myparse(metadata_xml, dati, out, test=None, verbose=None):
                 if len(_value_str) > 0 and '.' in _value_str:
                     _decimal = int(field.getAttribute('decimal'))
                     try:
-                        _value_array = str(_value).split('.')
-                        if len(str(_value_array[0])) > int(_len-_decimal):
-                            __log("Attenzione: la parte intera eccede la lunghezza consentita!")
-                        if len(str(_value_array[1])) > int(_decimal):
-                            __log("Attenzione: la parte decimale eccede la lunghezza consentita! Verranno troncate le cifre meno significative.")
-                            _value_array[1] = str(_value_array[1])[:int(_decimal)]
-                        _value_str = _value_array[0].rjust(int(_len-_decimal), _fill) + _sep +  _value_array[1].rjust(int(_decimal), _fill)
+                        _args = str(_value).split('.')
+                        # if len(str(_value_array[0])) > int(_len-_decimal):
+                            # __log("Attenzione: la parte intera eccede la lunghezza consentita!")
+                        # if len(str(_value_array[1])) > int(_decimal):
+                            # __log("Attenzione: la parte decimale eccede la lunghezza consentita! Verranno troncate le cifre meno significative.")
+                            # _value_array[1] = str(_value_array[1])[:int(_decimal)]
+                        _args[1] = _args[1].rstrip('0')
+                        _value_str = str(_args[0][:int(_len-_decimal)].rjust(int(_len-_decimal), _fill) + _sep + _args[1][:_decimal].rjust(_decimal, _fill))
                     except Exception as e:
                         print(str(e))
                         _value_str = ''
@@ -202,7 +203,7 @@ def myparse(metadata_xml, dati, out, test=None, verbose=None):
         # Applica eventuali funzioni
         if _len:
             if _fn == 'center':
-                _value_str = getattr(_value_str, str(fn))(_len)
+                _value_str = getattr(_value_str, str(_fn))(_len)
             elif _fn in ['rjust', 'ljust']:
                 _value_str = getattr(_value_str, str(_fn))(_len, _fill)
             else:
@@ -232,11 +233,11 @@ def myparse(metadata_xml, dati, out, test=None, verbose=None):
     except:
         pass
     
-    nr = 0
-    try:
-        nr = int(records.getAttribute('repeat'))
-    except:
-        pass
+    # nr = 0
+    # try:
+        # nr = int(records.getAttribute('repeat'))
+    # except:
+        # pass
     
     _fineriga = records.getAttribute('eol') or '\n'
     
