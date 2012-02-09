@@ -382,6 +382,8 @@ class TestataDocumento(Dao):
             totaleImponibile += totaleImponibileRiga
             totaleImposta += totaleImpostaRiga
             totaleEsclusoBaseImponibile += totaleEsclusoBaseImponibileRiga
+            if not daoiva:
+                daoiva = AliquotaIva().getRecord(id=idAliquotaIva)
             if idAliquotaIva not in castellettoIva.keys():
                 castellettoIva[idAliquotaIva] = {
                     'percentuale': percentualeIvaRiga,
