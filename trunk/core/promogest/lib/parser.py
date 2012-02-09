@@ -231,47 +231,54 @@ def myparse(metadata_xml, dati, out, test=None, verbose=None):
         len_riga = int(records.getAttribute('len'))
     except:
         pass
-
+    
+    nr = 0
+    try:
+        nr = int(records.getAttribute('repeat'))
+    except:
+        pass
+    
     _fineriga = records.getAttribute('eol') or '\n'
     
     __log("\tLunghezza della singola linea del tracciato: %s" % len_riga)
-
-    for record in records.getElementsByTagName("record"):
-        el = str(record.getAttribute('name'))   
-        _repeat = str(record.getAttribute('repeat')) or '0'
-
-        __log("\tProcessiamo il record: %s" % el)
-
-        if _repeat == '1':
-            #TODO: implementare dei controlli sul tipo, dati[el] deve esseere una lista
-
-            for baz in dati[el]:
+    for dati_ in dati:
+        
+        for record in records.getElementsByTagName("record"):
+            el = str(record.getAttribute('name'))
+            _repeat = str(record.getAttribute('repeat')) or '0'
+    
+            __log("\tProcessiamo il record: %s" % el)
+    
+            if _repeat == '1':
+                #TODO: implementare dei controlli sul tipo, dati[el] deve esseere una lista
+    
+                for baz in dati_[el]:
+                    for field in record.getElementsByTagName('field'):
+                        __log("\t\tProcessiamo il campo: %s" % field.getAttribute('name'))
+    
+                        try:
+                            tmp = __process(field, el, baz)
+                        except ProcessError as err:
+                            print(str(err))
+    
+                        out.write(tmp)
+                    if _fineriga == 'nl':
+                        out.write('\n')
+                    if _fineriga == 'nlcr':
+                        out.write('\n\r')
+            else:
                 for field in record.getElementsByTagName('field'):
                     __log("\t\tProcessiamo il campo: %s" % field.getAttribute('name'))
-
                     try:
-                        tmp = __process(field, el, baz)
+                        tmp = __process(field, el, dati_[el])
                     except ProcessError as err:
                         print(str(err))
-
+    
                     out.write(tmp)
                 if _fineriga == 'nl':
                     out.write('\n')
                 if _fineriga == 'nlcr':
                     out.write('\n\r')
-        else:
-            for field in record.getElementsByTagName('field'):
-                __log("\t\tProcessiamo il campo: %s" % field.getAttribute('name'))
-                try:
-                    tmp = __process(field, el, dati[el])
-                except ProcessError as err:
-                    print(str(err))
-
-                out.write(tmp)
-            if _fineriga == 'nl':
-                out.write('\n')
-            if _fineriga == 'nlcr':
-                out.write('\n\r')
 
     __log("Processo terminato.")
     out.close()
