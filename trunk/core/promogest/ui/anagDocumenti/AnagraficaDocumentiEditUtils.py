@@ -237,7 +237,6 @@ def calcolaTotalePart(anaedit, dao=None):
         moltiplicatore = Decimal(riga["moltiplicatore"])
         percentualeIvaRiga = Decimal(riga["percentualeIva"])
         idAliquotaIva = riga["idAliquotaIva"]
-        idAliquotaIvaRiga = idAliquotaIva
         daoiva=None
         if idAliquotaIva:
             if idAliquotaIva in dictIva:
@@ -255,12 +254,12 @@ def calcolaTotalePart(anaedit, dao=None):
             else:
                 totaleRiga= mN(totaleRiga *Decimal(str(sqrt(int(riga["arco_temporale"])))))
 
-        if not aliquotaIvaRiga: # solo se non l'ho trovato dall'id prendo quello della percentuale
-            aliquotaIvaRiga =  percentualeIvaRiga
-            idAliquotaIvas = AliquotaIva().select(percentuale=aliquotaIvaRiga)
-            if idAliquotaIvas:
-                idAliquotaIva = idAliquotaIvas[0].id
-                daoiva = idAliquotaIvas[0]
+#        if not aliquotaIvaRiga: # solo se non l'ho trovato dall'id prendo quello della percentuale
+#            aliquotaIvaRiga =  percentualeIvaRiga
+#            idAliquotaIvas = AliquotaIva().select(percentuale=aliquotaIvaRiga)
+#            if idAliquotaIvas:
+#                idAliquotaIva = idAliquotaIvas[0].id
+#                daoiva = idAliquotaIvas[0]
 #        percentualeIvaRiga = percentualeIva
 
         if (anaedit._fonteValore == "vendita_iva" or anaedit._fonteValore == "acquisto_iva"):
