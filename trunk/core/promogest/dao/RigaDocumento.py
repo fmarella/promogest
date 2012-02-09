@@ -85,12 +85,12 @@ class RigaDocumento(Dao):
     def __aliquota(self):
         if self.rig: return self.rig.aliquota
         else: return ""
-    aliquota= property(__aliquota)
+    aliquota = property(__aliquota)
 
-    def __aliquotaLunga(self):
-        if self.rig: return self.rig.aliquota_lunga
-        else: return ""
-    aliquota_lunga= property(__aliquotaLunga)
+#    def __aliquotaLunga(self):
+#        if self.rig: return self.rig.aliquota_lunga
+#        else: return ""
+#    aliquota_lunga= property(__aliquotaLunga)
 
     def _getStringaScontiRigaDocumento(self):
         (listSconti, applicazione) = getScontiFromDao(self._getScontiRigaDocumento(), self.applicazione_sconti)

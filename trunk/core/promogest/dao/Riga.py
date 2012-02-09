@@ -29,6 +29,7 @@ from promogest.dao.Listino import Listino
 from promogest.dao.Multiplo import Multiplo
 from promogest.dao.Articolo import Articolo
 from promogest.dao.UnitaBase import UnitaBase
+from promogest.dao.AliquotaIva import AliquotaIva
 
 
 artic = Table('articolo', params['metadata'],schema = params['schema'],autoload=True)
@@ -84,15 +85,16 @@ class Riga(Dao):
 #    daoArticolo= property(__daoArticolo)
 
     def _getAliquotaIva(self):
-        if self.arti:return self.arti.denominazione_breve_aliquota_iva
+        if self.arti:
+            ali = AliquotaIva().getRecord(id=self.id_iva)
+            return ali.denominazione_breve or ""
         else: return ""
     aliquota = property(_getAliquotaIva)
 
-    def _getAliquotaIvaLunga(self):
-        if self.arti:return self.arti.denominazione_aliquota_iva
-        else: return ""
-    aliquota_lunga = property(_getAliquotaIvaLunga)
-
+#    def _getAliquotaIvaLunga(self):
+#        if self.arti:return self.arti.denominazione_aliquota_iva
+#        else: return ""
+#    aliquota_lunga = property(_getAliquotaIvaLunga)
 
     def __unita_base(self):
 

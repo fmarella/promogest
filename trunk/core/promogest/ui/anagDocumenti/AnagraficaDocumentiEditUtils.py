@@ -222,9 +222,9 @@ def calcolaTotalePart(anaedit, dao=None):
     totaleScontato = Decimal(0)
     castellettoIva = {}
     ive = Environment.session.query(AliquotaIva.id,AliquotaIva).all()
-    diz = {}
+    dictIva = {}
     for a in ive:
-        diz[a[0]] = (a[1],a[1].tipo_ali_iva)
+        dictIva[a[0]] = (a[1],a[1].tipo_ali_iva)
     anaedit.avvertimento_sconti_button.set_sensitive(False)
     anaedit.avvertimento_sconti_button.hide()
 
@@ -235,12 +235,14 @@ def calcolaTotalePart(anaedit, dao=None):
         prezzoNetto = Decimal(riga["prezzoNetto"])
         quantita = Decimal(riga["quantita"])
         moltiplicatore = Decimal(riga["moltiplicatore"])
-        percentualeIva = Decimal(riga["percentualeIva"])
+        percentualeIvaRiga = Decimal(riga["percentualeIva"])
         idAliquotaIva = riga["idAliquotaIva"]
         daoiva=None
         if idAliquotaIva:
-            if idAliquotaIva in diz:
-                daoiva = diz[idAliquotaIva][0]
+            if idAliquotaIva in dictIva:
+                daoiva = dictIva[idAliquotaIva][0]
+            if daoiva:
+                aliquotaIvaRiga = daoiva.percentuale
         totaleRiga = Decimal(prezzoNetto * quantita * moltiplicatore)
 
         # PARTE dedicata al modulo noleggio ...
@@ -252,17 +254,23 @@ def calcolaTotalePart(anaedit, dao=None):
             else:
                 totaleRiga= mN(totaleRiga *Decimal(str(sqrt(int(riga["arco_temporale"])))))
 
-        percentualeIvaRiga = percentualeIva
+        if not aliquotaIvaRiga: # solo se non l'ho trovato dall'id prendo quello della percentuale
+            aliquotaIvaRiga =  percentualeIvaRiga
+            idAliquotaIvas = AliquotaIva().select(percentuale=aliquotaIvaRiga)
+            if idAliquotaIvas:
+                idAliquotaIva = idAliquotaIvas[0].id
+                daoiva = idAliquotaIvas[0]
+#        percentualeIvaRiga = percentualeIva
 
         if (anaedit._fonteValore == "vendita_iva" or anaedit._fonteValore == "acquisto_iva"):
-            if daoiva and diz[idAliquotaIva][1]== "Non imponibile":
+            if daoiva and dictIva[idAliquotaIva][1]== "Non imponibile":
                 totaleEsclusoBaseImponibileRiga = totaleRiga
                 totaleImponibileRiga = 0
             else:
                 totaleEsclusoBaseImponibileRiga = 0
                 totaleImponibileRiga = calcolaPrezzoIva(totaleRiga, -1 * percentualeIvaRiga) or 0
         else:
-            if daoiva and diz[idAliquotaIva][1] == "Non imponibile":
+            if daoiva and dictIva[idAliquotaIva][1] == "Non imponibile":
                 totaleEsclusoBaseImponibileRiga = totaleRiga
                 totaleImponibileRiga = 0
                 totaleRiga = calcolaPrezzoIva(totaleRiga, percentualeIvaRiga)
@@ -276,17 +284,19 @@ def calcolaTotalePart(anaedit, dao=None):
         totaleImposta += totaleImpostaRiga
         totaleEsclusoBaseImponibile += totaleEsclusoBaseImponibileRiga
 
-        if percentualeIvaRiga not in castellettoIva.keys():
-
-            castellettoIva[percentualeIvaRiga] = {'percentuale': percentualeIvaRiga,
-                                                'imponibile': totaleImponibileRiga,
-                                                'imposta': totaleImpostaRiga,
-                                                'totale': totaleRiga}
+        if idAliquotaIva not in castellettoIva.keys():
+            castellettoIva[idAliquotaIva] = {
+                'percentuale': percentualeIvaRiga,
+                'imponibile': totaleImponibileRiga,
+                'imposta': totaleImpostaRiga,
+                'totale': totaleRiga,
+                "denominazione_breve": daoiva.denominazione_breve,
+                "denominazione": daoiva.denominazione}
         else:
-            castellettoIva[percentualeIvaRiga]['percentuale'] = percentualeIvaRiga
-            castellettoIva[percentualeIvaRiga]['imponibile'] += totaleImponibileRiga
-            castellettoIva[percentualeIvaRiga]['imposta'] += totaleImpostaRiga
-            castellettoIva[percentualeIvaRiga]['totale'] += totaleRiga
+            castellettoIva[idAliquotaIva]['percentuale'] = percentualeIvaRiga
+            castellettoIva[idAliquotaIva]['imponibile'] += totaleImponibileRiga
+            castellettoIva[idAliquotaIva]['imposta'] += totaleImpostaRiga
+            castellettoIva[idAliquotaIva]['totale'] += totaleRiga
 
 #    totaleNonScontato = totaleNonScontato
 #    totaleImponibile = totaleImponibile
@@ -367,7 +377,7 @@ def calcolaTotalePart(anaedit, dao=None):
     anaedit.liststore_iva.clear()
     for k in castellettoIva.keys():
         if k !=0:
-            anaedit.liststore_iva.append((str(mN(k,1)),
+            anaedit.liststore_iva.append(((str(mN(castellettoIva[k]['percentuale'],1))),
                             (str(mN(castellettoIva[k]['imponibile'],2))),
                             (str(mN(castellettoIva[k]['imposta'],2))),))
 

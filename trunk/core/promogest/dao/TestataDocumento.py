@@ -284,9 +284,9 @@ class TestataDocumento(Dao):
         self.__operazione = leggiOperazione(self.operazione)
         fonteValore = self.__operazione["fonteValore"]
         ive = Environment.session.query(AliquotaIva.id,AliquotaIva).all()
-        diz = {}
+        dictIva = {}
         for a in ive:
-            diz[a[0]] = (a[1],a[1].tipo_ali_iva)
+            dictIva[a[0]] = (a[1],a[1].tipo_ali_iva)
         # FIXME: duplicated in AnagraficaDocumenti.py
         totaleImponibile = Decimal(0)
         totaleImposta = Decimal(0)
@@ -344,29 +344,32 @@ class TestataDocumento(Dao):
                     elif riga.id_articolo and not riga.id_listino:
                         lf = leggiFornitura(riga.id_articolo)
                         totaleRicaricatoLordo += (trn * (lf["prezzoNetto"]*Decimal(riga.quantita or 0)) / trl)
-            percentualeIvaRiga = Decimal(riga.percentuale_iva)
-            idAliquotaIva = riga.id_iva
-            daoiva=None
+            percentualeIvaRiga = Decimal(riga.percentuale_iva) #campo non più da usare
+            idAliquotaIva = riga.id_iva  # campo da usare perchè l'id è più preciso
+            daoiva = None
             aliquotaIvaRiga = None
             if idAliquotaIva:
-                #daoiva = AliquotaIva().getRecord(id=idAliquotaIva)
-                if idAliquotaIva in diz:
-                    daoiva = diz[idAliquotaIva][0]
+                if idAliquotaIva in dictIva:
+                    daoiva = dictIva[idAliquotaIva][0]
                 if daoiva:
                     aliquotaIvaRiga = daoiva.percentuale
-            if not aliquotaIvaRiga:
+            if not aliquotaIvaRiga: # solo se non l'ho trovato dall'id prendo quello della percentuale
                 aliquotaIvaRiga =  percentualeIvaRiga
+                idAliquotaIvas = AliquotaIva().select(percentuale=aliquotaIvaRiga)
+                if idAliquotaIvas:
+                    idAliquotaIva = idAliquotaIvas[0].id
+                    daoiva = idAliquotaIvas[0]
             totaleRiga = Decimal(riga.quantita or 0) * Decimal(moltiplicatore) * Decimal(riga.valore_unitario_netto or 0)
 
             if (fonteValore == "vendita_iva" or fonteValore == "acquisto_iva"):
-                if daoiva and diz[idAliquotaIva][1] == "Non imponibile":
+                if daoiva and dictIva[idAliquotaIva][1] == "Non imponibile":
                     totaleEsclusoBaseImponibileRiga = totaleRiga
                     totaleImponibileRiga = 0
                 else:
                     totaleEsclusoBaseImponibileRiga = 0
                     totaleImponibileRiga = calcolaPrezzoIva(totaleRiga, -1 * percentualeIvaRiga)
             else:
-                if daoiva and diz[idAliquotaIva][1] == "Non imponibile":
+                if daoiva and dictIva[idAliquotaIva][1] == "Non imponibile":
                     totaleEsclusoBaseImponibileRiga = totaleRiga
                     totaleImponibileRiga = 0
                     totaleRiga = calcolaPrezzoIva(totaleRiga, percentualeIvaRiga)
@@ -379,16 +382,19 @@ class TestataDocumento(Dao):
             totaleImponibile += totaleImponibileRiga
             totaleImposta += totaleImpostaRiga
             totaleEsclusoBaseImponibile += totaleEsclusoBaseImponibileRiga
-            if aliquotaIvaRiga not in castellettoIva.keys():
-                castellettoIva[aliquotaIvaRiga] = {'percentuale': percentualeIvaRiga,
-                                                    'imponibile': totaleImponibileRiga,
-                                                    'imposta': totaleImpostaRiga,
-                                                    'totale': totaleRiga}
+            if idAliquotaIva not in castellettoIva.keys():
+                castellettoIva[idAliquotaIva] = {
+                    'percentuale': percentualeIvaRiga,
+                    'imponibile': totaleImponibileRiga,
+                    'imposta': totaleImpostaRiga,
+                    'totale': totaleRiga,
+                    "denominazione_breve": daoiva.denominazione_breve,
+                    "denominazione": daoiva.denominazione}
             else:
-                castellettoIva[aliquotaIvaRiga]['percentuale'] = percentualeIvaRiga
-                castellettoIva[aliquotaIvaRiga]['imponibile'] += totaleImponibileRiga
-                castellettoIva[aliquotaIvaRiga]['imposta'] += totaleImpostaRiga
-                castellettoIva[aliquotaIvaRiga]['totale'] += totaleRiga
+                castellettoIva[idAliquotaIva]['percentuale'] = percentualeIvaRiga
+                castellettoIva[idAliquotaIva]['imponibile'] += totaleImponibileRiga
+                castellettoIva[idAliquotaIva]['imposta'] += totaleImpostaRiga
+                castellettoIva[idAliquotaIva]['totale'] += totaleRiga
         totaleImposta = totaleNonScontato - (totaleImponibile+totaleEsclusoBaseImponibile)
 
         totaleImponibileScontato = totaleImponibile
@@ -612,7 +618,7 @@ class TestataDocumento(Dao):
         #agganciare qui con dei controlli, le cancellazioni preventive ed i
         #reinserimenti.
         self.testataDocumentoScadenzaDel(dao=self)
-        
+
         if not(self.__ScadenzeDocumento) and self.ripartire_importo:
             tds = TestataDocumentoScadenza()
             tds.data = datetime.datetime.now()
@@ -631,7 +637,7 @@ class TestataDocumento(Dao):
                 if scad.data_pagamento is None:
                     if not setconf('PrimaNota', 'inserisci_senza_data_pagamento'):
                         continue
-                
+
                 ope = leggiOperazione(self.operazione)
                 tipo = 'n/a'
                 if scad.pagamento != 'n/a':
