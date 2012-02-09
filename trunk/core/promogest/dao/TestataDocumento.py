@@ -346,6 +346,7 @@ class TestataDocumento(Dao):
                         totaleRicaricatoLordo += (trn * (lf["prezzoNetto"]*Decimal(riga.quantita or 0)) / trl)
             percentualeIvaRiga = Decimal(riga.percentuale_iva) #campo non più da usare
             idAliquotaIva = riga.id_iva  # campo da usare perchè l'id è più preciso
+            print "IVAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", idAliquotaIva
             daoiva = None
             aliquotaIvaRiga = None
             if idAliquotaIva:
