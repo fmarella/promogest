@@ -283,12 +283,12 @@ def calcolaTotalePart(anaedit, dao=None):
         totaleImponibile += totaleImponibileRiga
         totaleImposta += totaleImpostaRiga
         totaleEsclusoBaseImponibile += totaleEsclusoBaseImponibileRiga
-        if not daoiva:
-            denominazione = ""
-            denominazione_breve = ""
-        else:
+        if daoiva:
             denominazione = daoiva.denominazione
             denominazione_breve = daoiva.denominazione_breve
+        else:
+            denominazione = ""
+            denominazione_breve = ""
 
         if idAliquotaIva not in castellettoIva.keys():
             castellettoIva[idAliquotaIva] = {
