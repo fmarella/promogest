@@ -237,6 +237,7 @@ def calcolaTotalePart(anaedit, dao=None):
         moltiplicatore = Decimal(riga["moltiplicatore"])
         percentualeIvaRiga = Decimal(riga["percentualeIva"])
         idAliquotaIva = riga["idAliquotaIva"]
+        idAliquotaIvaRiga = idAliquotaIva
         daoiva=None
         if idAliquotaIva:
             if idAliquotaIva in dictIva:
