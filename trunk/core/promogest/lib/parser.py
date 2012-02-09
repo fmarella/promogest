@@ -170,8 +170,8 @@ def myparse(metadata_xml, dati, out, test=None, verbose=None):
                             __log("Attenzione: la parte intera eccede la lunghezza consentita!")
                         if len(str(_value_array[1])) > int(_decimal):
                             __log("Attenzione: la parte decimale eccede la lunghezza consentita! Verranno troncate le cifre meno significative.")
-                            _value_array[1] = str(_value_array[1])[:_decimal]
-                        _value_str = _value_array[0].rjust(int(_len-_decimal), _fill) + _sep +  _value_array[1].rjust(_decimal, _fill)
+                            _value_array[1] = str(_value_array[1])[:int(_decimal)]
+                        _value_str = _value_array[0].rjust(int(_len-_decimal), _fill) + _sep +  _value_array[1].rjust(int(_decimal), _fill)
                     except Exception as e:
                         print(str(e))
                         _value_str = ''
