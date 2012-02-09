@@ -3478,24 +3478,25 @@ def dati_file_conad(testata):
         else:
             messageError("Inserire il codice fornitore nel campo \'matricola_inps\' in Dati azienda")
             return None
-        
+    
+        dati2 = []
+
         if dati_differita:
+
             for ddtt in dati_differita:
                 ddt = TestataDocumento().getRecord(id=ddtt.id_ddt)
-
-                dati = {
-                    'testata': {
-                        'numero_progressivo': str(dati_differita.index(ddtt) + 1),
-                        'numero_fattura': str(testata.numero),
-                        'data_fattura': testata.data_documento,
-                        'numero_bolla': str(ddt.numero),
-                        'data_bolla': ddt.data_documento,
-                        'codice_fornitore': codice_fornitore,
-                        'codice_cliente': ddt.ragione_sociale_cliente,
-                    },
-                    'dettaglio': []
+                
+                dati = {'testata': {
+                    'numero_progressivo': str(dati_differita.index(ddtt) + 1),
+                    'codice_cliente': ddt.ragione_sociale_cliente,
+                    'data_bolla':  ddt.data_documento,
+                    'numero_bolla': str(ddt.numero),
+                    'codice_fornitore': codice_fornitore,
+                    'data_fattura': testata.data_documento,
+                    'numero_fattura': str(testata.numero)
+                },
+                'dettaglio': []
                 }
-
                 for riga in ddt.righe:
                     if riga.id_articolo:
                         art = leggiArticolo(riga.id_articolo)
@@ -3510,7 +3511,8 @@ def dati_file_conad(testata):
                                 'importo_totale': str(mN(Decimal(riga.quantita or 0) * Decimal(riga.moltiplicatore or 1) * Decimal(riga.valore_unitario_netto or 0), 3)),
                                 'aliquota_iva': str(mN(riga.percentuale_iva,0))
                             })
-            return dati
+                dati2.append(dati)
+            return dati2
 
 def dati_file_buffetti(testata):
     """ 
