@@ -346,7 +346,6 @@ class TestataDocumento(Dao):
                         totaleRicaricatoLordo += (trn * (lf["prezzoNetto"]*Decimal(riga.quantita or 0)) / trl)
             percentualeIvaRiga = Decimal(riga.percentuale_iva) #campo non più da usare
             idAliquotaIva = riga.id_iva  # campo da usare perchè l'id è più preciso
-            print "IVAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", idAliquotaIva
             daoiva = None
             aliquotaIvaRiga = None
             if idAliquotaIva:
@@ -383,16 +382,21 @@ class TestataDocumento(Dao):
             totaleImponibile += totaleImponibileRiga
             totaleImposta += totaleImpostaRiga
             totaleEsclusoBaseImponibile += totaleEsclusoBaseImponibileRiga
-            if not daoiva:
-                daoiva = AliquotaIva().getRecord(id=1)
+            if daoiva:
+                denominazione = daoiva.denominazione
+                denominazione_breve = daoiva.denominazione_breve
+            else:
+                denominazione = ""
+                denominazione_breve = ""
+#                daoiva = AliquotaIva().getRecord(id=1)
             if idAliquotaIva not in castellettoIva.keys():
                 castellettoIva[idAliquotaIva] = {
                     'percentuale': percentualeIvaRiga,
                     'imponibile': totaleImponibileRiga,
                     'imposta': totaleImpostaRiga,
                     'totale': totaleRiga,
-                    "denominazione_breve": daoiva.denominazione_breve,
-                    "denominazione": daoiva.denominazione}
+                    "denominazione_breve": denominazione_breve,
+                    "denominazione": denominazione}
             else:
                 castellettoIva[idAliquotaIva]['percentuale'] = percentualeIvaRiga
                 castellettoIva[idAliquotaIva]['imponibile'] += totaleImponibileRiga

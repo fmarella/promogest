@@ -628,22 +628,22 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             # Questo valore potrebbe essere a none per le righe
             #precedenti il 19/02/2011 , cerchiamo di derurre l'id e lo settiamo
             idiva = None
-            if riga.id_iva == None:
-                if riga.id_articolo is not None:
-                    #siamo di fronte ad un articolo "vecchio"
-                    art = Articolo().getRecord(id=riga.id_articolo)
-                    ivaart = art.id_aliquota_iva
-                    daoiva = AliquotaIva().select(percentuale=riga.percentuale_iva)
-                    if daoiva:
-                        idiva = daoiva[0].id
-                else:
-                    if riga.percentuale_iva != 0:
-                        #riga descrittiva
-                        daoiva = AliquotaIva().select(percentuale=riga.percentuale_iva)
-                        if daoiva:
-                            idiva = daoiva[0].id
-            else:
-                idiva = riga.id_iva
+#            if riga.id_iva == None:
+#                if riga.id_articolo is not None:
+#                    #siamo di fronte ad un articolo "vecchio"
+#                    art = Articolo().getRecord(id=riga.id_articolo)
+#                    ivaart = art.id_aliquota_iva
+#                    daoiva = AliquotaIva().select(percentuale=riga.percentuale_iva)
+#                    if daoiva:
+#                        idiva = daoiva[0].id
+#                else:
+#                    if riga.percentuale_iva != 0:
+#                        #riga descrittiva
+#                        daoiva = AliquotaIva().select(percentuale=riga.percentuale_iva)
+#                        if daoiva:
+#                            idiva = daoiva[0].id
+#            else:
+            idiva = riga.id_iva
             self._righe[0]["idAliquotaIva"] = idiva
 
             self._righe[0]["idUnitaBase"] = articolo["idUnitaBase"]
