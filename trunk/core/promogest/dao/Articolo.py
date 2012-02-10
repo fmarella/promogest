@@ -42,11 +42,15 @@ if hasattr(conf, "PromoWear") and \
         getattr(conf.PromoWear, 'mod_enable') == "yes":
     from promogest.modules.PromoWear.dao.Colore import Colore
     from promogest.modules.PromoWear.dao.Taglia import Taglia
-    from promogest.modules.PromoWear.dao.ArticoloTagliaColore import ArticoloTagliaColore
-    from promogest.modules.PromoWear.dao.AnnoAbbigliamento import AnnoAbbigliamento
+    from promogest.modules.PromoWear.dao.ArticoloTagliaColore \
+                                    import ArticoloTagliaColore
+    from promogest.modules.PromoWear.dao.AnnoAbbigliamento \
+                                    import AnnoAbbigliamento
     from promogest.modules.PromoWear.dao.GruppoTaglia import GruppoTaglia
-    from promogest.modules.PromoWear.dao.StagioneAbbigliamento import StagioneAbbigliamento
-    from promogest.modules.PromoWear.dao.GenereAbbigliamento import GenereAbbigliamento
+    from promogest.modules.PromoWear.dao.StagioneAbbigliamento \
+                                    import StagioneAbbigliamento
+    from promogest.modules.PromoWear.dao.GenereAbbigliamento \
+                                    import GenereAbbigliamento
 
 
 class Articolo(Dao):
@@ -74,16 +78,16 @@ class Articolo(Dao):
         try:
             # cerco la situazione ottimale, un articolo ha un codice ed è primario
             try:
-                a =  que.filter(CodiceABarreArticolo.primario==True).one()
+                a = que.filter(CodiceABarreArticolo.primario == True).one()
                 return a.codice
             except:
-                a =  que.one()
+                a = que.one()
                 return a.codice
         except:
             return ""
 
     def getGiacenza(self):
-        giace =giacenzaArticolo(year=workingYear,
+        giace = giacenzaArticolo(year=workingYear,
                                     idArticolo=self.id,
                                     allMag=True)[0]
         return giace
@@ -93,26 +97,25 @@ class Articolo(Dao):
         codi = []
         if self.fornitur:
             for f in self.fornitur:
-                if not f.codice_articolo_fornitore in codi and f.codice_articolo_fornitore is not None:
+                if not f.codice_articolo_fornitore in codi \
+                    and f.codice_articolo_fornitore is not None:
                     codi.append(f.codice_articolo_fornitore)
-            if len(codi)>1:
-#                print "STRANAMENTE CI SONO PI§ CODICI FORNITORE PER QUESTO ARTICOLO"
+            if len(codi) > 1:
                 return codi[-1] or ""
-            elif len(codi)==1:
+            elif len(codi) == 1:
                 return codi[0]
             else:
                 return ""
-#            return forni.codice_articolo_fornitore or ""
 
     @property
     def articoli_kit(self):
-        arti =ArticoloKit().select(idArticoloWrapper=self.id,batchSize=None)
+        arti = ArticoloKit().select(idArticoloWrapper=self.id, batchSize=None)
         return arti
 
     @property
     def componente_in_kit(self):
         #from promogest.modules.GestioneKit.dao.ArticoloKit import ArticoloKit
-        arti =ArticoloKit().select(idArticoloFiller=self.id,batchSize=None)
+        arti = ArticoloKit().select(idArticoloFiller=self.id, batchSize=None)
         return arti
 
     def _sm(self):
@@ -123,220 +126,255 @@ class Articolo(Dao):
 
     @property
     def imballaggio(self):
-        if self.imba: return self.imba.denominazione
-        else: return ""
-
+        if self.imba:
+            return self.imba.denominazione
+        else:
+            return ""
 
     def _getImmagine(self):
         self._url_immagine = ""
         return self._url_immagine
         if self.image:
-            self._url_immagine= self.image.filename
+            self._url_immagine = self.image.filename
         else:
             self._url_immagine = ""
         return self._url_immagine
 
     def _setImmagine(self, value):
         self._url_immagine = value
-    url_immagine= property(_getImmagine, _setImmagine)
+    url_immagine = property(_getImmagine, _setImmagine)
 
     @property
     def denominazione_famiglia(self):
-        if self.den_famiglia :return self.den_famiglia.denominazione
-        else : return ""
-
+        if self.den_famiglia:
+            return self.den_famiglia.denominazione
+        else:
+            return ""
 
     @property
     def denominazione_breve_famiglia(self):
-        if self.den_famiglia:return self.den_famiglia.denominazione_breve
-        else: return ""
+        if self.den_famiglia:
+            return self.den_famiglia.denominazione_breve
+        else:
+            return ""
 
     @property
     def denominazione_breve_aliquota_iva(self):
-        if self.ali_iva :return self.ali_iva.denominazione_breve
-        else: return ""
+        if self.ali_iva:
+            return self.ali_iva.denominazione_breve
+        else:
+            return ""
 
     @property
     def id_tipo_aliquota_iva(self):
-        if self.ali_iva :return self.ali_iva.id_tipo
-        else: return 1
+        if self.ali_iva:
+            return self.ali_iva.id_tipo
+        else:
+            return 1
 
     @property
     def denominazione_aliquota_iva(self):
-        if self.ali_iva :return self.ali_iva.denominazione
-        else: return ""
+        if self.ali_iva:
+            return self.ali_iva.denominazione
+        else:
+            return ""
 
     @property
     def percentuale_aliquota_iva(self):
-        if self.ali_iva :return self.ali_iva.percentuale
-        else: return ""
+        if self.ali_iva:
+            return self.ali_iva.percentuale
+        else:
+            return ""
 
     @property
     def denominazione_breve_categoria(self):
-        if self.den_categoria: return self.den_categoria.denominazione_breve
-        else: return ""
+        if self.den_categoria:
+            return self.den_categoria.denominazione_breve
+        else:
+            return ""
 
     @property
     def denominazione_categoria(self):
-        if self.den_categoria: return self.den_categoria.denominazione
-        else: return ""
+        if self.den_categoria:
+            return self.den_categoria.denominazione
+        else:
+            return ""
 
     @property
     def denominazione_breve_unita_base(self):
-        if self.den_unita:return self.den_unita.denominazione_breve
-        else: return ""
+        if self.den_unita:
+            return self.den_unita.denominazione_breve
+        else:
+            return ""
 
     @property
     def denominazione_unita_base(self):
-        if self.den_unita:return self.den_unita.denominazione
-        else: return ""
+        if self.den_unita:
+            return self.den_unita.denominazione
+        else:
+            return ""
 
     @property
     def stato_articolo(self):
-        if self.sa: return self.sa.denominazione
-        else: return ""
-
+        if self.sa:
+            return self.sa.denominazione
+        else:
+            return ""
 
     def _impegnatoSuLavorazione(self):
-        from promogest.modules.SchedaLavorazione.dao.SchedaOrdinazione import SchedaOrdinazione
-        from promogest.modules.SchedaLavorazione.dao.RigaSchedaOrdinazione import RigaSchedaOrdinazione
+        from promogest.modules.SchedaLavorazione.dao.SchedaOrdinazione \
+                                    import SchedaOrdinazione
+        from promogest.modules.SchedaLavorazione.dao.RigaSchedaOrdinazione \
+                                    import RigaSchedaOrdinazione
         from promogest.dao.Riga import Riga
-        if self.codice not in ["Stampa", "z-CONTR","z-BONIFICO"]:
+        if self.codice not in ["Stampa", "z-CONTR", "z-BONIFICO"]:
             year = workingYear
-            t=0
-            part= session\
+            t = 0
+            part = session\
                 .query(Riga.quantita)\
-                .filter(and_(SchedaOrdinazione.fattura!=True,
-                            Riga.id==RigaSchedaOrdinazione.id,
-                                RigaSchedaOrdinazione.id_scheda == SchedaOrdinazione.id,
-                                Riga.id_articolo==self.id,
-                                )).all()
+                .filter(and_(SchedaOrdinazione.fattura != True,
+                    Riga.id == RigaSchedaOrdinazione.id,
+                    RigaSchedaOrdinazione.id_scheda == SchedaOrdinazione.id,
+                    Riga.id_articolo == self.id,
+                    )).all()
             for r in part:
-                t +=r[0]
+                t += r[0]
             return t
     #impegnato_su_lavorazione = property(_impegnatoSuLavorazione)
 
-
-
-    if hasattr(conf, "PromoWear") and getattr(conf.PromoWear,'mod_enable')=="yes":
-
+    if hasattr(conf, "PromoWear") \
+            and getattr(conf.PromoWear, 'mod_enable') == "yes":
 
         def getArticoloTagliaColore(self):
-            """ Restituisce il Dao ArticoloTagliaColore collegato al Dao Articolo #"""
-            self.__articoloTagliaColore = ArticoloTagliaColore().getRecord(id=self.id)
+            """ Restituisce il Dao ArticoloTagliaColore collegato
+                al Dao Articolo """
+            self.__articoloTagliaColore = ArticoloTagliaColore()\
+                                                .getRecord(id=self.id)
             return self.__articoloTagliaColore
 
         def setArticoloTagliaColore(self, value):
             """ Imposta il Dao ArticoloTagliaColore collegato al Dao Articolo
             """
             self.__articoloTagliaColore = value
-        articoloTagliaColore = property(getArticoloTagliaColore, setArticoloTagliaColore)
+        articoloTagliaColore = property(getArticoloTagliaColore,
+                                                setArticoloTagliaColore)
 
-        def getArticoliTagliaColore(self, idGruppoTaglia=None, idTaglia=None, idColore=None, order=None):
-            """ Restituisce una lista di Dao ArticoloTagliaColore figli del Dao Articolo """
-            #from promogest.modules.PromoWear.dao.ArticoloTagliaColore import select
+        def getArticoliTagliaColore(self, idGruppoTaglia=None, idTaglia=None,
+                                                    idColore=None, order=None):
+            """ Restituisce una lista di Dao ArticoloTagliaColore
+                figli del Dao Articolo """
             articoli = []
             try:
                 articolo_relato = ArticoloTagliaColore().getRecord(id=self.id)
-                if order =="Colore":
+                if order == "Colore":
                     orderBy = ArticoloTagliaColore.id_colore.asc()
-                elif order =="Taglia":
+                elif order == "Taglia":
                     orderBy = ArticoloTagliaColore.id_taglia.asc()
-                elif order =="ColoreDESC":
+                elif order == "ColoreDESC":
                     orderBy = ArticoloTagliaColore.id_colore.desc()
-                elif order =="TagliaDESC":
+                elif order == "TagliaDESC":
                     orderBy = ArticoloTagliaColore.id_taglia.desc()
                 else:
                     orderBy = None
                 if not articolo_relato.id_articolo_padre:
-                    articoli = ArticoloTagliaColore().select(idArticoloPadre=articolo_relato.id_articolo,
-                                                                idGruppoTaglia=idGruppoTaglia,
-                                                                idTaglia=idTaglia,
-                                                                idColore=idColore,
-                                                                offset=None,
-                                                                batchSize=None,
-                                                                orderBy=orderBy)
+                    articoli = ArticoloTagliaColore().select(
+                        idArticoloPadre=articolo_relato.id_articolo,
+                        idGruppoTaglia=idGruppoTaglia,
+                        idTaglia=idTaglia,
+                        idColore=idColore,
+                        offset=None,
+                        batchSize=None,
+                        orderBy=orderBy)
                 else:
-                    articoli = ArticoloTagliaColore().select(idArticoloPadre=articolo_relato.id_articolo_padre,
-                                                                idGruppoTaglia=idGruppoTaglia,
-                                                                idTaglia=idTaglia,
-                                                                idColore=idColore,
-                                                                offset=None,
-                                                                batchSize=None,
-                                                                orderBy=orderBy)
+                    articoli = ArticoloTagliaColore().select(
+                        idArticoloPadre=articolo_relato.id_articolo_padre,
+                        idGruppoTaglia=idGruppoTaglia,
+                        idTaglia=idTaglia,
+                        idColore=idColore,
+                        offset=None,
+                        batchSize=None,
+                        orderBy=orderBy)
             except:
                 #print "FOR DEBUG ONLY getArticoliTagliaColore FAILED"
                 pass
             return articoli
         articoliTagliaColore = property(getArticoliTagliaColore)
 
-
-        def _getArticoliVarianti(self,order=None):
+        def _getArticoliVarianti(self, order=None):
             """ Restituisce una lista di Dao Articolo Varianti """
-            return [Articolo().getRecord(id=art.id_articolo) for art in self.getArticoliTagliaColore(order=order)]
+            return [Articolo().getRecord(id=art.id_articolo)\
+                 for art in self.getArticoliTagliaColore(order=order)]
         articoliVarianti = property(_getArticoliVarianti)
 
-
         def _getTaglie(self):
-            """ Restituisce una lista di Dao Taglia relativi alle taglie di tutti i Dao
-                ArticoloTagliaColore figli del Dao Articolo  """
+            """ Restituisce una lista di Dao Taglia
+                relativi alle taglie di tutti i Dao
+                ArticoloTagliaColore figli del Dao Articolo """
             idTaglie = set(a.id_taglia for a in self.articoliTagliaColore)
             return [Taglia().getRecord(id=idt) for idt in idTaglie]
 
         taglie = property(_getTaglie)
 
-
         def _getColori(self):
-            """ Restituisce una lista di Dao Colore relativi ai colori di tutti i Dao
+            """ Restituisce una lista di Dao Colore relativi ai
+                colori di tutti i Dao
                 ArticoloTagliaColore figli del Dao Articolo """
             idColori = set(a.id_colore for a in self.articoliTagliaColore)
             return [Colore().getRecord(id=idc) for idc in idColori]
-
         colori = property(_getColori)
 
         def _id_articolo_padre(self):
-            if self.ATC: return self.ATC.id_articolo_padre or None
-        id_articolo_padre_taglia_colore=property(_id_articolo_padre)
+            if self.ATC:
+                return self.ATC.id_articolo_padre or None
+        id_articolo_padre_taglia_colore = property(_id_articolo_padre)
         id_articolo_padre = property(_id_articolo_padre)
 
         def _id_articolo(self):
-            # we need it to see if this is ia tagliacolore simple article without father or variant
-            if self.ATC: return self.ATC.id_articolo or None
-        id_articolo_taglia_colore=property(_id_articolo)
+            # we need it to see if this is ia tagliacolore
+            #simple article without father or variant
+            if self.ATC:
+                return self.ATC.id_articolo or None
+        id_articolo_taglia_colore = property(_id_articolo)
 
         def _id_gruppo_taglia(self):
-            if self.ATC: return self.ATC.id_gruppo_taglia or None
-        id_gruppo_taglia=property(_id_gruppo_taglia)
+            if self.ATC:
+                return self.ATC.id_gruppo_taglia or None
+        id_gruppo_taglia = property(_id_gruppo_taglia)
 
         def _id_taglia(self):
-            if self.ATC: return self.ATC.id_taglia or None
-        id_taglia=property(_id_taglia)
+            if self.ATC:
+                return self.ATC.id_taglia or None
+        id_taglia = property(_id_taglia)
 
         def _id_colore(self):
-            if self.ATC: return self.ATC.id_colore or None
-        id_colore=property(_id_colore)
+            if self.ATC:
+                return self.ATC.id_colore or None
+        id_colore = property(_id_colore)
 
         def _id_modello(self):
-            if self.ATC: return self.ATC.id_modello or None
-        id_modello=property(_id_modello)
+            if self.ATC:
+                return self.ATC.id_modello or None
+        id_modello = property(_id_modello)
 
         def _id_genere(self):
-            if self.ATC: return self.ATC.id_genere or None
-            #else: return ""
+            if self.ATC:
+                return self.ATC.id_genere or None
         id_genere = property(_id_genere)
 
         def _id_stagione(self):
-            if self.ATC: return self.ATC.id_stagione or None
+            if self.ATC:
+                return self.ATC.id_stagione or None
         id_stagione = property(_id_stagione)
 
         @property
         def id_anno(self):
-            if self.ATC: return self.ATC.id_anno or ""
+            if self.ATC:
+                return self.ATC.id_anno or ""
 
         @property
         def denominazione_gruppo_taglia(self):
             """ esempio di funzione  unita alla property """
-            if self.ATC :
+            if self.ATC:
                 try:
                     return self.ATC[0].denominazione_gruppo_taglia
                 except:
@@ -345,7 +383,7 @@ class Articolo(Dao):
         @property
         def denominazione_taglia(self):
             """ esempio di funzione  unita alla property """
-            if self.ATC :
+            if self.ATC:
                 try:
                     return self.ATC[0].denominazione_taglia
                 except:
@@ -356,7 +394,7 @@ class Articolo(Dao):
         @property
         def denominazione_breve_taglia(self):
             """ esempio di funzione  unita alla property """
-            if self.ATC :
+            if self.ATC:
                 try:
                     return self.ATC[0].denominazione_breve_taglia
                 except:
@@ -364,7 +402,7 @@ class Articolo(Dao):
 
         def _denominazione_colore(self):
             """ esempio di funzione  unita alla property """
-            if self.ATC :
+            if self.ATC:
                 try:
                     return self.ATC[0].denominazione_colore
                 except:
@@ -373,7 +411,7 @@ class Articolo(Dao):
 
         def _denominazione_breve_colore(self):
             """ esempio di funzione  unita alla property """
-            if self.ATC :
+            if self.ATC:
                 try:
                     return self.ATC[0].denominazione_breve_colore
                 except:
@@ -382,7 +420,7 @@ class Articolo(Dao):
 
         def _denominazione_modello(self):
             """ esempio di funzione  unita alla property """
-            if self.ATC :
+            if self.ATC:
                 try:
                     return self.ATC[0].denominazione_modello
                 except:
@@ -392,7 +430,7 @@ class Articolo(Dao):
         @property
         def anno(self):
             """ esempio di funzione  unita alla property """
-            if self.ATC :
+            if self.ATC:
                 try:
                     return self.ATC[0].anno
                 except:
@@ -401,7 +439,7 @@ class Articolo(Dao):
         @property
         def stagione(self):
             """ esempio di funzione  unita alla property """
-            if self.ATC :
+            if self.ATC:
                 try:
                     return self.ATC[0].stagione
                 except:
@@ -410,7 +448,7 @@ class Articolo(Dao):
         @property
         def genere(self):
             """ esempio di funzione  unita alla property """
-            if self.ATC :
+            if self.ATC:
                 try:
                     return self.ATC[0].genere
                 except:
@@ -418,21 +456,23 @@ class Articolo(Dao):
 
         def isArticoloPadre(self):
             """ Dice se l'articolo e' un articolo padre """
-
             articolo = self.getArticoloTagliaColore()
             if articolo is not None:
                 return (articolo.id_articolo_padre is None)
             else:
                 return False
 
-    if (hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes") or ("GestioneNoleggio" in modulesList):
+    if (hasattr(conf, "GestioneNoleggio") \
+               and getattr(conf.GestioneNoleggio, 'mod_enable') == "yes") \
+               or ("GestioneNoleggio" in modulesList):
 
         @property
         def divisore_noleggio(self):
             """ esempio di funzione  unita alla property """
-            if self.APGN :return self.APGN.divisore_noleggio_value
-            else: return ""
-
+            if self.APGN:
+                return self.APGN.divisore_noleggio_value
+            else:
+                return ""
 
     if hasattr(conf, "DistintaBase") and getattr(conf.DistintaBase,'mod_enable')=="yes":
         """ necessario questo if"""
@@ -618,7 +658,7 @@ class Articolo(Dao):
                     ArticoloTagliaColore.id_taglia == v)}
             elif k == 'idModello':
                 dic = {k: and_(articolo.c.id == ArticoloTagliaColore.id_articolo,
-                    ArticoloTagliaColore.id_modello==v)}
+                    ArticoloTagliaColore.id_modello == v)}
             elif k == 'idGruppoTaglia':
                 dic = {k: and_(articolo.c.id == ArticoloTagliaColore.id_articolo,
                     ArticoloTagliaColore.id_gruppo_taglia == v)}
