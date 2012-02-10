@@ -49,6 +49,7 @@ from AnagraficaPrincipaleFrame import AnagrafichePrincipaliFrame
 import promogest.dao.Promemoria
 from promogest.dao.Promemoria import Promemoria
 from promogest.dao.VariazioneListino import VariazioneListino
+from promogest.dao.AnagraficaSecondaria import AnagraficaSecondaria_
 from promogest.dao.Immagine import ImageFile
 from promogest.dao.UtenteImmagine import UtenteImmagine
 from promogest.dao.ArticoloImmagine import ArticoloImmagine
@@ -60,7 +61,7 @@ from promogest.ui.AzioniVelociNotebookPage import AzioniVelociNotebookPage
 from promogest.ui.NewsNotebookPage import NewsNotebookPage
 from promogest.ui.CalendarNotebookPage import CalendarNotebookPage
 from promogest.ui.NotificaAllarmiNotebookPage import NotificaAllarmiNotebookPage
-from promogest.dao.AnagraficaSecondaria import AnagraficaSecondaria_
+
 #inizializzano il customwidget
 from promogest.ui.widgets.ArticoloSearchWidget import ArticoloSearchWidget
 from promogest.ui.widgets.ClienteSearchWidget import ClienteSearchWidget

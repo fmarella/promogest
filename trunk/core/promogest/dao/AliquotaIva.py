@@ -48,7 +48,7 @@ class AliquotaIva(Dao):
     tipo_ali_iva = property(_tipoAliquota)
 
 aliquota_iva = Table('aliquota_iva', meta,
-        schema=schema_azienda, autoload=True)
+        schema=params["schema"], autoload=True)
 
 std_mapper = mapper(AliquotaIva, aliquota_iva, properties={
         'tipo_aliquota_iva': relation(TipoAliquotaIva, backref='aliquota_iva')

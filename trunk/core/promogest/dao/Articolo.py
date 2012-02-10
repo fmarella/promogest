@@ -690,27 +690,27 @@ class Articolo(Dao):
                         AssociazioneArticolo.id_figlio == articolo.c.id)}
         return  dic[k]
 
-listinoarticolo = Table('listino_articolo', meta, schema=schema_azienda,
+listinoarticolo = Table('listino_articolo', meta, schema=params["schema"],
     autoload=True)
-fornitura = Table('fornitura', meta, schema=schema_azienda,
+fornitura = Table('fornitura', meta, schema=params["schema"],
     autoload=True)
-articolo = Table('articolo', meta, schema=schema_azienda,
+articolo = Table('articolo', meta, schema=params["schema"],
     autoload=True)
 unita_b = Table('unita_base', meta, schema=mainSchema,
     autoload=True)
-imballo = Table('imballaggio', meta, schema=schema_azienda,
+imballo = Table('imballaggio', meta, schema=params["schema"],
     autoload=True)
-codb = Table('codice_a_barre_articolo', meta, schema=schema_azienda,
+codb = Table('codice_a_barre_articolo', meta,schema=params["schema"],
     autoload=True)
-aliva = Table('aliquota_iva', meta, schema=schema_azienda,
+aliva = Table('aliquota_iva', meta, schema=params["schema"],
     autoload=True)
-catearti = Table('categoria_articolo', meta, schema=schema_azienda,
+catearti = Table('categoria_articolo', meta, schema=params["schema"],
     autoload=True)
-famiarti = Table('famiglia_articolo', meta, schema=schema_azienda,
+famiarti = Table('famiglia_articolo', meta, schema=params["schema"],
     autoload=True)
 statoart = Table('stato_articolo', meta, schema=mainSchema,
     autoload=True)
-img = Table('image', meta, schema=schema_azienda,
+img = Table('image', meta, schema=params["schema"],
     autoload=True)
 
 std_mapper = mapper(

@@ -607,11 +607,12 @@ if web:
 else:
     Session = sessionmaker(bind=engine)
 
+schema_azienda = azienda
 meta = MetaData(engine)
 session = Session()
 #meta = None
-
 schema_azienda = azienda
+
 params = {'engine': engine ,
         'mainSchema': mainSchema,
         'schema': azienda,

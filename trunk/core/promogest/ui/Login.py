@@ -223,6 +223,7 @@ class Login(GladeApp):
                         uaz.persist()
                     if Environment.tipodb !="sqlite":
                         Environment.params["schema"] = self.azienda
+                        Environment.schema_azienda = self.azienda
                         if hashlib.md5(self.azienda).hexdigest() == "bf5fbf670a0b15ada95b3c03bf4ee64a":
                             raise Exception(":D")
                             return

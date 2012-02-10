@@ -27,7 +27,7 @@ from promogest.ui.utils import  codeIncrement, getRecapitiAnagraficaSecondaria
 
 persona_giuridica = Table('persona_giuridica',
                         meta,
-                        schema=schema_azienda,
+                        schema=params["schema"],
                         autoload=True)
 
 try:
@@ -49,22 +49,22 @@ except Exception as e:
 
     pagamentoTable = Table('pagamento',
         meta,
-        schema=schema_azienda,
+        schema=params["schema"],
         autoload=True)
 
     bancaTable = Table('banca',
         meta,
-        schema=schema_azienda,
+        schema=params["schema"],
         autoload=True)
 
     magazzinoTable = Table('magazzino',
         meta,
-        schema=schema_azienda,
+        schema=params["schema"],
         autoload=True)
 
     listinoTable = Table('listino',
         meta,
-        schema=schema_azienda,
+        schema=params["schema"],
         autoload=True)
 
     if tipodb == "sqlite":
@@ -99,7 +99,7 @@ except Exception as e:
                 onupdate="CASCADE", ondelete="CASCADE")),
             Column('id_listino', Integer, ForeignKey(listinoFK,
                 onupdate="CASCADE", ondelete="CASCADE")),
-            schema=schema_azienda,
+            schema=params["schema"],
             useexisting=True,
             )
     anagraficasecondaria.create(checkfirst=True)
