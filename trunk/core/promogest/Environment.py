@@ -63,11 +63,7 @@ except:
 import sqlalchemy
 from sqlalchemy import *
 from sqlalchemy.orm import *
-#from sqlalchemy.engine import reflection
 from sqlalchemy.interfaces import PoolListener
-#from sqlalchemy import event
-
-#from sqlalchemy.pool import NullPool
 from sqlalchemy.interfaces import ConnectionProxy
 from sqlalchemy.exc import *
 import logging
@@ -369,7 +365,7 @@ def set_configuration(company=None, year = None):
             documentsDir = promogestDir + 'documenti' + os.sep
             if not (os.path.exists(documentsDir)):
                 os.mkdir(documentsDir)
-                
+
             tracciatiDir = promogestDir + 'tracciati' + os.sep
             if not (os.path.exists(tracciatiDir)):
                 os.mkdir(tracciatiDir)
@@ -610,10 +606,11 @@ if web:
     Session = scoped_session(lambda: create_session(engine, autocommit=False))
 else:
     Session = sessionmaker(bind=engine)
+
 meta = MetaData(engine)
 session = Session()
 #meta = None
-
+schema_azienda = azienda
 
 params = {'engine': engine ,
         'mainSchema': mainSchema,
@@ -623,13 +620,15 @@ params = {'engine': engine ,
         "tipo_db":tipodb,
         'rowsFamily' : [],
         'defaultLimit': 5,
-            'bccaddr' : ["assistenza@promotux.it"],
-            'objects' : ["Informazioni Tecniche", "Informazioni Commerciali" , "Varie"],
+        'bccaddr' : ["assistenza@promotux.it"],
+        'objects' : ["Informazioni Tecniche", "Informazioni Commerciali" , "Varie"],
         'widthThumbnail' : 64,
         'heightThumbnail' : 64,
         'widthdetail' : 110,
         'heightdetail': 110 ,
         'usernameLoggedList':userdata}
+
+
 
  # Parametri localizzazione formati
 conf.windowsrc = os.path.expanduser('~') + os.sep + 'promogest2/windowsrc.xml'
