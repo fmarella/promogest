@@ -3488,12 +3488,13 @@ def dati_file_conad(testata):
                 
                 dati = {'testata': {
                     'numero_progressivo': str(dati_differita.index(ddtt) + 1),
-                    'codice_cliente': ddt.ragione_sociale_cliente,
+                    'codice_cliente': testata.codice_cliente,
                     'data_bolla':  ddt.data_documento,
                     'numero_bolla': str(ddt.numero),
                     'codice_fornitore': codice_fornitore,
                     'data_fattura': testata.data_documento,
-                    'numero_fattura': str(testata.numero)
+                    'numero_fattura': str(testata.numero),
+                    'codice_cooperativa': str(ddt.DM.codice or '')
                 },
                 'dettaglio': []
                 }
