@@ -4,6 +4,8 @@
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
+#    Author: Francesco Marella <francesco.marella@gmail.com>
+
 #    This file is part of Promogest.
 
 #    Promogest is free software: you can redistribute it and/or modify
@@ -21,6 +23,7 @@
 
 from sqlalchemy import *
 from sqlalchemy.orm import *
+from migrate import *
 from promogest.Environment import *
 from Dao import Dao
 
@@ -46,5 +49,9 @@ destinazione_merce=Table('destinazione_merce',
                 params['metadata'],
                 schema = params['schema'],
                 autoload=True)
+
+if 'codice' not in [c.name for c in destinazione_merce.columns]:
+    col = Column('codice', String(30))
+    col.create(destinazione_merce, populate_default=True)
 
 std_mapper = mapper(DestinazioneMerce,destinazione_merce, order_by=destinazione_merce.c.id)
