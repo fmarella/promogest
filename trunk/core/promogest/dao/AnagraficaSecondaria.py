@@ -21,53 +21,53 @@
 
 from sqlalchemy import *
 from sqlalchemy.orm import *
-from promogest.Environment import params, conf, session
+from promogest.Environment import *
 from Dao import Dao
 from promogest.ui.utils import  codeIncrement, getRecapitiAnagraficaSecondaria
 
-persona_giuridica=Table('persona_giuridica',
-                        params['metadata'],
-                        schema = params['schema'],
+persona_giuridica = Table('persona_giuridica',
+                        meta,
+                        schema=schema_azienda,
                         autoload=True)
 
 try:
-    anagraficasecondaria=Table('anagrafica_secondaria',
-        params['metadata'],
-        schema = params['schema'],
+    anagraficasecondaria = Table('anagrafica_secondaria',
+        meta,
+        schema=schema_azienda,
         autoload=True)
 
 except Exception as e:
     ruoloTable = Table('role',
-        params['metadata'],
+        meta,
         autoload=True,
-        schema=params['mainSchema'])
+        schema=mainSchema)
 
     utenteTable = Table('utente',
-        params['metadata'],
-        schema=params['mainSchema'],
+        meta,
+        schema=mainSchema,
         autoload=True)
 
-    pagamentoTable=Table('pagamento',
-        params['metadata'],
-        schema = params['schema'],
+    pagamentoTable = Table('pagamento',
+        meta,
+        schema=schema_azienda,
         autoload=True)
 
-    bancaTable=Table('banca',
-        params['metadata'],
-        schema = params['schema'],
+    bancaTable = Table('banca',
+        meta,
+        schema=schema_azienda,
         autoload=True)
 
-    magazzinoTable=Table('magazzino',
-        params['metadata'],
-        schema = params['schema'],
+    magazzinoTable = Table('magazzino',
+        meta,
+        schema=schema_azienda,
         autoload=True)
 
-    listinoTable=Table('listino',
-        params['metadata'],
-        schema = params['schema'],
+    listinoTable = Table('listino',
+        meta,
+        schema=schema_azienda,
         autoload=True)
 
-    if params["tipo_db"] == "sqlite":
+    if tipodb == "sqlite":
         ruoloFK = 'role.id'
         personagiuridicaFK = 'persona_giuridica.id'
         utenteFK = "utente.id"
@@ -76,58 +76,66 @@ except Exception as e:
         magazzinoFK = "magazzino.id"
         listinoFK = "listino.id"
     else:
-        ruoloFK = params['mainSchema'] + '.role.id'
-        personagiuridicaFK = params['schema'] + '.persona_giuridica.id'
-        utenteFK = params["mainSchema"] + ".utente.id"
-        pagamentoFK = params['schema'] + '.pagamento.id'
-        bancaFK = params['schema'] + '.banca.id'
-        magazzinoFK = params['schema'] + '.magazzino.id'
-        listinoFK = params['schema'] + '.listino.id'
+        ruoloFK = mainSchema + '.role.id'
+        personagiuridicaFK = schema_azienda + '.persona_giuridica.id'
+        utenteFK = mainSchema + ".utente.id"
+        pagamentoFK = schema_azienda + '.pagamento.id'
+        bancaFK = schema_azienda + '.banca.id'
+        magazzinoFK = schema_azienda + '.magazzino.id'
+        listinoFK = schema_azienda + '.listino.id'
 
-
-    anagraficasecondaria = Table('anagrafica_secondaria', params["metadata"],
-            Column('id',Integer, ForeignKey(personagiuridicaFK, onupdate="CASCADE",ondelete="CASCADE"),primary_key=True),
-            Column('id_ruolo', Integer, ForeignKey(ruoloFK, onupdate="CASCADE", ondelete="CASCADE")),
-            Column('id_utente', Integer, ForeignKey(utenteFK, onupdate="CASCADE", ondelete="CASCADE")),
-            Column('id_pagamento', Integer, ForeignKey(pagamentoFK, onupdate="CASCADE", ondelete="CASCADE")),
-            Column('id_banca', Integer, ForeignKey(bancaFK, onupdate="CASCADE", ondelete="CASCADE")),
-            Column('id_magazzino', Integer, ForeignKey(magazzinoFK, onupdate="CASCADE", ondelete="CASCADE")),
-            Column('id_listino', Integer, ForeignKey(listinoFK, onupdate="CASCADE", ondelete="CASCADE")),
-            schema=params["schema"],
-            useexisting = True,
-            #extend_existing = True,
+    anagraficasecondaria = Table('anagrafica_secondaria', meta,
+            Column('id', Integer, ForeignKey(personagiuridicaFK,
+                onupdate="CASCADE", ondelete="CASCADE"), primary_key=True),
+            Column('id_ruolo', Integer, ForeignKey(ruoloFK,
+                onupdate="CASCADE", ondelete="CASCADE")),
+            Column('id_utente', Integer, ForeignKey(utenteFK,
+                onupdate="CASCADE", ondelete="CASCADE")),
+            Column('id_pagamento', Integer, ForeignKey(pagamentoFK,
+                onupdate="CASCADE", ondelete="CASCADE")),
+            Column('id_banca', Integer, ForeignKey(bancaFK,
+                onupdate="CASCADE", ondelete="CASCADE")),
+            Column('id_magazzino', Integer, ForeignKey(magazzinoFK,
+                onupdate="CASCADE", ondelete="CASCADE")),
+            Column('id_listino', Integer, ForeignKey(listinoFK,
+                onupdate="CASCADE", ondelete="CASCADE")),
+            schema=schema_azienda,
+            useexisting=True,
             )
     anagraficasecondaria.create(checkfirst=True)
+
 
 class AnagraficaSecondaria_(Dao):
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
 
-    def filter_values(self,k,v):
+    def filter_values(self, k, v):
         if k == 'codice':
-            dic = {k:persona_giuridica.c.codice.ilike("%"+v+"%")}
+            dic = {k: persona_giuridica.c.codice.ilike("%" + v + "%")}
         elif k == 'ragioneSociale':
-            dic = {k:persona_giuridica.c.ragione_sociale.ilike("%"+v+"%")}
+            dic = {k: persona_giuridica.c.ragione_sociale.ilike("%" + v + "%")}
         elif k == 'idRole':
-            dic = {k:anagraficasecondaria.c.id_ruolo == v}
+            dic = {k: anagraficasecondaria.c.id_ruolo == v}
         elif k == 'idMagazzino':
-            dic = {k:anagraficasecondaria.c.id_magazzino == v}
+            dic = {k: anagraficasecondaria.c.id_magazzino == v}
         elif k == 'cognomeNome':
-            dic = {k:or_(persona_giuridica.c.cognome.ilike("%"+v+"%"),persona_giuridica.c.nome.ilike("%"+v+"%"))}
+            dic = {k: or_(persona_giuridica.c.cognome.ilike("%" + v + "%"),
+                persona_giuridica.c.nome.ilike("%" + v + "%"))}
         elif k == 'localita':
-            dic = {k:or_(persona_giuridica.c.sede_operativa_localita.ilike("%"+v+"%"),persona_giuridica.c.sede_legale_localita.ilike("%"+v+"%"))}
+            dic = {k: or_(
+            persona_giuridica.c.sede_operativa_localita.ilike("%" + v + "%"),
+                persona_giuridica.c.sede_legale_localita.ilike("%" + v + "%"))}
         elif k == 'partitaIva':
-            dic = {k:persona_giuridica.c.partita_iva.ilike("%"+v+"%")}
-        elif k== 'codiceFiscale':
-            dic ={k:persona_giuridica.c.codice_fiscale.ilike("%"+v+"%")}
+            dic = {k: persona_giuridica.c.partita_iva.ilike("%" + v + "%")}
+        elif k == 'codiceFiscale':
+            dic = {k: persona_giuridica.c.codice_fiscale.ilike("%" + v + "%")}
         return  dic[k]
-
 
     def _cellularePrincipale(self):
         if self.id:
             for reca in getRecapitiAnagraficaSecondaria(self.id):
-                if reca.tipo_recapito =="Cellulare":
+                if reca.tipo_recapito == "Cellulare":
                     return reca.recapito
         return ""
     cellulare_principale = property(_cellularePrincipale)
@@ -135,7 +143,7 @@ class AnagraficaSecondaria_(Dao):
     def _telefonoPrincipale(self):
         if self.id:
             for reca in getRecapitiAnagraficaSecondaria(self.id):
-                if reca.tipo_recapito =="Telefono":
+                if reca.tipo_recapito == "Telefono":
                     return reca.recapito
         return ""
     telefono_principale = property(_telefonoPrincipale)
@@ -143,7 +151,7 @@ class AnagraficaSecondaria_(Dao):
     def _emailPrincipale(self):
         if self.id:
             for reca in getRecapitiAnagraficaSecondaria(self.id):
-                if reca.tipo_recapito =="Email":
+                if reca.tipo_recapito == "Email":
                     return reca.recapito
         return ""
     email_principale = property(_emailPrincipale)
@@ -151,7 +159,7 @@ class AnagraficaSecondaria_(Dao):
     def _faxPrincipale(self):
         if self.id:
             for reca in getRecapitiAnagraficaSecondaria(self.id):
-                if reca.tipo_recapito =="Fax":
+                if reca.tipo_recapito == "Fax":
                     return reca.recapito
         return ""
     fax_principale = property(_faxPrincipale)
@@ -159,7 +167,7 @@ class AnagraficaSecondaria_(Dao):
     def _sitoPrincipale(self):
         if self.id:
             for reca in getRecapitiAnagraficaSecondaria(self.id):
-                if reca.tipo_recapito =="Sito":
+                if reca.tipo_recapito == "Sito":
                     return reca.recapito
         return ""
     sito_principale = property(_sitoPrincipale)
@@ -170,9 +178,9 @@ def getNuovoCodiceAnagraficaSecondaria():
         Restituisce il codice progressivo per un nuovo vettore
     """
     codice = ''
-    listacodici= []
+    listacodici = []
     #try:
-    codicesel  = session.query(AnagraficaSecondaria_).all()[-3:]
+    codicesel = session.query(AnagraficaSecondaria_).all()[-3:]
     for cod in codicesel:
         listacodici.append(cod.codice)
         codice = codeIncrement(str(max(listacodici)))
@@ -180,16 +188,13 @@ def getNuovoCodiceAnagraficaSecondaria():
         #pass
     try:
         if codice == "":
-            #from promogest.ui.utils import setconf
-            #codice = codeIncrement(setconf("Vettori", "vettore_struttura_codice"))
             codice = "AS000"
     except:
         pass
     return codice
 
-
 j = join(anagraficasecondaria, persona_giuridica)
 
 std_mapper = mapper(AnagraficaSecondaria_, j, properties={
-    'id':[anagraficasecondaria.c.id, persona_giuridica.c.id]},
-    order_by = anagraficasecondaria.c.id)
+    'id': [anagraficasecondaria.c.id, persona_giuridica.c.id]},
+    order_by=anagraficasecondaria.c.id)

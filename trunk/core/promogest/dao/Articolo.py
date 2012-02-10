@@ -25,7 +25,6 @@ from sqlalchemy.orm import *
 from promogest.Environment import *
 from Dao import Dao
 from promogest.dao.DaoUtils import giacenzaArticolo
-from promogest import Environment
 from promogest.modules.GestioneKit.dao.ArticoloKit import ArticoloKit
 from Imballaggio import Imballaggio
 from AliquotaIva import AliquotaIva
@@ -39,7 +38,8 @@ from Fornitura import Fornitura
 from Multiplo import Multiplo
 from promogest.ui.utils import codeIncrement
 
-if hasattr(conf, "PromoWear") and getattr(conf.PromoWear,'mod_enable')=="yes":
+if hasattr(conf, "PromoWear") and \
+        getattr(conf.PromoWear, 'mod_enable') == "yes":
     from promogest.modules.PromoWear.dao.Colore import Colore
     from promogest.modules.PromoWear.dao.Taglia import Taglia
     from promogest.modules.PromoWear.dao.ArticoloTagliaColore import ArticoloTagliaColore
@@ -63,12 +63,13 @@ class Articolo(Dao):
 
     def cod_bar(self):
         if not self.__codibar:
-            self.__codibar = params["session"].query(CodiceABarreArticolo).with_parent(self).filter(articolo.c.id==CodiceABarreArticolo.id_articolo)
+            self.__codibar = session.query(CodiceABarreArticolo)\
+                .with_parent(self)\
+                .filter(articolo.c.id == CodiceABarreArticolo.id_articolo)
         return self.__codibar
 
     @property
     def codice_a_barre(self):
-        """ esempio di funzione  unita alla property """
         que = self.cod_bar()
         try:
             # cerco la situazione ottimale, un articolo ha un codice ed è primario
@@ -82,14 +83,10 @@ class Articolo(Dao):
             return ""
 
     def getGiacenza(self):
-        giace =giacenzaArticolo(year=Environment.workingYear,
-                                        idArticolo=self.id,
-                                        allMag=True)[0]
+        giace =giacenzaArticolo(year=workingYear,
+                                    idArticolo=self.id,
+                                    allMag=True)[0]
         return giace
-#        return 0
-#    giacenza = property(_setGiacenzaArticolo)
-
-
 
     @property
     def codice_articolo_fornitore(self):
@@ -106,7 +103,6 @@ class Articolo(Dao):
             else:
                 return ""
 #            return forni.codice_articolo_fornitore or ""
-
 
     @property
     def articoli_kit(self):
@@ -206,9 +202,9 @@ class Articolo(Dao):
         from promogest.modules.SchedaLavorazione.dao.RigaSchedaOrdinazione import RigaSchedaOrdinazione
         from promogest.dao.Riga import Riga
         if self.codice not in ["Stampa", "z-CONTR","z-BONIFICO"]:
-            year = Environment.workingYear
+            year = workingYear
             t=0
-            part= Environment.params["session"]\
+            part= session\
                 .query(Riga.quantita)\
                 .filter(and_(SchedaOrdinazione.fattura!=True,
                             Riga.id==RigaSchedaOrdinazione.id,
@@ -459,30 +455,29 @@ class Articolo(Dao):
             else: return False
 
     def persist(self):
-        params["session"].add(self)
-        #params["session"].commit()
+        session.add(self)
         self.save_update()
         #salvataggio , immagine ....per il momento viene gestita una immagine per articolo ...
         #in seguito sarà l'immagine a comandare non l'articolo
         try:
             if self._url_immagine and Immagine().getRecord(id=self.id_immagine):
                 img = Immagine().getRecord(id=self.id_immagine)
-                img.filename=self._url_immagine
+                img.filename = self._url_immagine
                 img.id_famiglia = self.id_famiglia_articolo
                 self.id_immagine = self.id
-                params["session"].add(img)
+                session.add(img)
                 self.save_update()
-                params["session"].add(self)
+                session.add(self)
                 self.save_update()
             elif self._url_immagine:
                 img = Immagine()
-                img.id=self.id
-                img.filename=self._url_immagine
+                img.id = self.id
+                img.filename = self._url_immagine
                 img.id_famiglia = self.id_famiglia_articolo
                 self.id_immagine = self.id
-                params["session"].add(img)
+                session.add(img)
                 self.saveToAppLog(img)
-                params["session"].add(self)
+                session.add(self)
                 self.saveToAppLog(self)
             elif not self._url_immagine and Immagine().getRecord(id=self.id_immagine):
                 img = Immagine().getRecord(id=self.id_immagine)
@@ -495,12 +490,12 @@ class Articolo(Dao):
                 div_nol = ArticoloGestioneNoleggio().getRecord(id=self.id)
                 if div_nol:
                         div_nol.divisore_noleggio_value = self.divisore_noleggio_value_set
-                        params["session"].add(div_nol)
+                        session.add(div_nol)
                 else:
                     div_nol = ArticoloGestioneNoleggio()
                     div_nol.id_articolo = self.id
                     div_nol.divisore_noleggio_value = self.divisore_noleggio_value_set
-                    params["session"].add(div_nol)
+                    session.add(div_nol)
 
         if posso("PW"):
             try:
@@ -509,7 +504,7 @@ class Articolo(Dao):
                     if isTc:
                         isTc.delete()
                     self.__articoloTagliaColore.id_articolo=self.id
-                    params["session"].add(self.__articoloTagliaColore)
+                    session.add(self.__articoloTagliaColore)
                     self.save_update()
                     if self.isArticoloPadre():
                         for var in self.getArticoliTagliaColore():
@@ -517,7 +512,7 @@ class Articolo(Dao):
                             var.id_anno = self.__articoloTagliaColore.id_anno
                             var.id_stagione = self.__articoloTagliaColore.id_stagione
                             var.id_modello = self.__articoloTagliaColore.id_modello
-                            params["session"].add(var)
+                            session.add(var)
                         #self.saveToAppLog(var)
             except:
                 print "ARTICOLO NORMALE SENZA TAGLIE O COLORI"
@@ -529,10 +524,9 @@ class Articolo(Dao):
                 if articoloADR:
                         articoloADR[0].delete()
                 self.articolo_adr_dao.id_articolo = self.id
-                params["session"].add(self.articolo_adr_dao)
+                session.add(self.articolo_adr_dao)
                 self.save_update()
-
-        params["session"].commit()
+        session.commit()
 
     def delete(self):
         # se l'articolo e' presente tra le righe di un movimento o documento
@@ -549,11 +543,11 @@ class Articolo(Dao):
         if res or inv:
             daoArticolo = Articolo().getRecord(id=self.id)
             daoArticolo.cancellato = True
-            params["session"].add(daoArticolo)
+            session.add(daoArticolo)
         elif sc:
             daoArticolo = Articolo().getRecord(id=self.id)
             daoArticolo.cancellato = True
-            params["session"].add(daoArticolo)
+            session.add(daoArticolo)
         else:
             if posso("PW"):
                 atc = ArticoloTagliaColore().getRecord(id=self.id)
@@ -563,97 +557,121 @@ class Articolo(Dao):
                 from promogest.modules.ADR.dao.ArticoloADR import ArticoloADR
                 artADR = ArticoloADR().select(id_articolo=self.id)
                 if artADR:
-                    params["session"].delete(artADR[0])
-            params["session"].delete(self)
+                    session.delete(artADR[0])
+            session.delete(self)
         la = ListinoArticolo().select(idArticolo= self.id)
         if la:
             for l in la:
                 l.delete()
-#        try:
         if posso("GN"):
             from promogest.modules.GestioneNoleggio.dao.ArticoloGestioneNoleggio import ArticoloGestioneNoleggio
             artGN = ArticoloGestioneNoleggio().select(idArticolo=self.id)
             if artGN:
-                params["session"].delete(artGN[0])
-        params["session"].commit()
-        Environment.pg2log.info("DELETE ARTICOLO" )
-#        except:
-#            print " ATTENZIONE CANCELLAZIONE ARTICOLO NON  RIUSCITA"
+                session.delete(artGN[0])
+        session.commit()
+        pg2log.info("DELETE ARTICOLO" )
 
-    def filter_values(self,k,v):
+    def filter_values(self, k, v):
         if k == "codice":
-            dic = {k:articolo.c.codice.ilike("%"+v+"%")}
+            dic = {k: articolo.c.codice.ilike("%" + v + "%")}
         elif k == "codicesatto" or k == "codiceEM":
-            dic = {k:articolo.c.codice == v}
+            dic = {k: articolo.c.codice == v}
         elif k == 'denominazione':
-            dic = {k:articolo.c.denominazione.ilike("%"+v+"%")}
+            dic = {k: articolo.c.denominazione.ilike("%" + v + "%")}
         elif k == 'codiceABarre':
-            dic = {k:and_(articolo.c.id==CodiceABarreArticolo.id_articolo,CodiceABarreArticolo.codice.ilike("%"+v+"%"))}
+            dic = {k: and_(articolo.c.id == CodiceABarreArticolo.id_articolo,
+                CodiceABarreArticolo.codice.ilike("%" + v + "%"))}
         elif k == 'codiceABarreEM':
-            dic = {k:and_(articolo.c.id==CodiceABarreArticolo.id_articolo,CodiceABarreArticolo.codice ==v)}
-        elif k== 'codiceArticoloFornitore':
-            dic = {k:and_(articolo.c.id==fornitura.c.id_articolo,fornitura.c.codice_articolo_fornitore.ilike("%"+v+"%"))}
-        elif k== 'codiceArticoloFornitoreEM':
-            dic = {k:and_(articolo.c.id==fornitura.c.id_articolo,fornitura.c.codice_articolo_fornitore == v)}
+            dic = {k: and_(articolo.c.id == CodiceABarreArticolo.id_articolo,
+                CodiceABarreArticolo.codice == v)}
+        elif k == 'codiceArticoloFornitore':
+            dic = {k: and_(articolo.c.id == fornitura.c.id_articolo,
+                fornitura.c.codice_articolo_fornitore.ilike("%" + v + "%"))}
+        elif k == 'codiceArticoloFornitoreEM':
+            dic = {k: and_(articolo.c.id == fornitura.c.id_articolo,
+                fornitura.c.codice_articolo_fornitore == v)}
         elif k == 'produttore':
-            dic = {k:articolo.c.produttore.ilike("%"+v+"%")}
-        elif k=='idFamiglia':
-            dic = {k:articolo.c.id_famiglia_articolo ==v}
-        elif k=='idAliquotaIva':
-            dic = {k:articolo.c.id_aliquota_iva ==v}
+            dic = {k: articolo.c.produttore.ilike("%" + v + "%")}
+        elif k == 'idFamiglia':
+            dic = {k: articolo.c.id_famiglia_articolo == v}
+        elif k == 'idAliquotaIva':
+            dic = {k: articolo.c.id_aliquota_iva == v}
         elif k == 'idCategoria':
-            dic = {k:articolo.c.id_categoria_articolo ==v}
+            dic = {k: articolo.c.id_categoria_articolo == v}
         elif k == 'idCategoriaList':
-            dic = {k:articolo.c.id_categoria_articolo.in_(v)}
+            dic = {k: articolo.c.id_categoria_articolo.in_(v)}
         elif k == 'idStato':
-            dic= {k:articolo.c.id_stato_articolo == v}
+            dic = {k: articolo.c.id_stato_articolo == v}
         elif k == 'cancellato':
-            dic = {k:or_(articolo.c.cancellato != v)}
+            dic = {k: or_(articolo.c.cancellato != v)}
         elif k == 'idArticolo':
-            dic = {k:or_(articolo.c.id == v)}
+            dic = {k: or_(articolo.c.id == v)}
         elif k == "listinoFissato":
-            dic = {k:and_(listinoarticolo.c.id_articolo == articolo.c.id, listinoarticolo.c.id_listino == v)}
+            dic = {k: and_(listinoarticolo.c.id_articolo == articolo.c.id,
+                listinoarticolo.c.id_listino == v)}
         elif posso("PW"):
             if k == 'figliTagliaColore':
-                dic = {k:and_(articolo.c.id==ArticoloTagliaColore.id_articolo, ArticoloTagliaColore.id_articolo_padre==None)}
+                dic = {k: and_(articolo.c.id == ArticoloTagliaColore.id_articolo,
+                    ArticoloTagliaColore.id_articolo_padre == None)}
             elif k == 'idTaglia':
-                dic = {k:and_(articolo.c.id==ArticoloTagliaColore.id_articolo, ArticoloTagliaColore.id_taglia==v)}
+                dic = {k: and_(articolo.c.id == ArticoloTagliaColore.id_articolo,
+                    ArticoloTagliaColore.id_taglia == v)}
             elif k == 'idModello':
-                dic = {k:and_(articolo.c.id==ArticoloTagliaColore.id_articolo, ArticoloTagliaColore.id_modello==v)}
+                dic = {k: and_(articolo.c.id == ArticoloTagliaColore.id_articolo,
+                    ArticoloTagliaColore.id_modello==v)}
             elif k == 'idGruppoTaglia':
-                dic = {k:and_(articolo.c.id==ArticoloTagliaColore.id_articolo, ArticoloTagliaColore.id_gruppo_taglia ==v)}
+                dic = {k: and_(articolo.c.id == ArticoloTagliaColore.id_articolo,
+                    ArticoloTagliaColore.id_gruppo_taglia == v)}
             elif k == 'padriTagliaColore':
-                dic = {k:and_(articolo.c.id==ArticoloTagliaColore.id_articolo, ArticoloTagliaColore.id_articolo_padre!=None)}
+                dic = {k: and_(articolo.c.id == ArticoloTagliaColore.id_articolo,
+                    ArticoloTagliaColore.id_articolo_padre != None)}
             elif k == 'idColore':
-                dic = {k:and_(articolo.c.id==ArticoloTagliaColore.id_articolo, ArticoloTagliaColore.id_colore ==v)}
+                dic = {k: and_(articolo.c.id == ArticoloTagliaColore.id_articolo,
+                    ArticoloTagliaColore.id_colore == v)}
             elif k == 'idStagione':
-                dic = {k:and_(articolo.c.id==ArticoloTagliaColore.id_articolo, ArticoloTagliaColore.id_stagione ==v)}
+                dic = {k: and_(articolo.c.id == ArticoloTagliaColore.id_articolo,
+                    ArticoloTagliaColore.id_stagione == v)}
             elif k == 'idAnno':
-                dic = {k:and_(articolo.c.id==ArticoloTagliaColore.id_articolo, ArticoloTagliaColore.id_anno == v)}
+                dic = {k: and_(articolo.c.id == ArticoloTagliaColore.id_articolo,
+                    ArticoloTagliaColore.id_anno == v)}
             elif k == 'idGenere':
-                dic = {k:and_(articolo.c.id==ArticoloTagliaColore.id_articolo, ArticoloTagliaColore.id_genere ==v)}
+                dic = {k: and_(articolo.c.id == ArticoloTagliaColore.id_articolo,
+                    ArticoloTagliaColore.id_genere == v)}
         elif posso("SL"):
-            if k =="node":
-                dic = {k: and_(AssociazioneArticolo.id_padre==articolo.c.id,
-                        AssociazioneArticolo.id_figlio ==articolo.c.id)}
+            if k == "node":
+                dic = {k: and_(AssociazioneArticolo.id_padre == articolo.c.id,
+                        AssociazioneArticolo.id_figlio == articolo.c.id)}
         return  dic[k]
 
-listinoarticolo=Table('listino_articolo',params['metadata'],schema = params['schema'],autoload=True)
-fornitura=Table('fornitura',params['metadata'],schema = params['schema'],autoload=True)
-articolo=Table('articolo', params['metadata'],schema = params['schema'],autoload=True)
-unita_b=Table('unita_base', params['metadata'],schema = params['mainSchema'],autoload=True)
-imballo=Table('imballaggio', params['metadata'],schema = params['schema'],autoload=True)
-codb=Table('codice_a_barre_articolo', params['metadata'],schema = params['schema'],autoload=True)
-aliva=Table('aliquota_iva', params['metadata'],schema = params['schema'],autoload=True)
-catearti=Table('categoria_articolo', params['metadata'],schema = params['schema'],autoload=True)
-famiarti=Table('famiglia_articolo', params['metadata'],schema = params['schema'],autoload=True)
-statoart=Table('stato_articolo', params['metadata'],schema = params['mainSchema'],autoload=True)
-img=Table('image', params['metadata'],schema = params['schema'],autoload=True)
+listinoarticolo = Table('listino_articolo', meta, schema=schema_azienda,
+    autoload=True)
+fornitura = Table('fornitura', meta, schema=schema_azienda,
+    autoload=True)
+articolo = Table('articolo', meta, schema=schema_azienda,
+    autoload=True)
+unita_b = Table('unita_base', meta, schema=mainSchema,
+    autoload=True)
+imballo = Table('imballaggio', meta, schema=schema_azienda,
+    autoload=True)
+codb = Table('codice_a_barre_articolo', meta, schema=schema_azienda,
+    autoload=True)
+aliva = Table('aliquota_iva', meta, schema=schema_azienda,
+    autoload=True)
+catearti = Table('categoria_articolo', meta, schema=schema_azienda,
+    autoload=True)
+famiarti = Table('famiglia_articolo', meta, schema=schema_azienda,
+    autoload=True)
+statoart = Table('stato_articolo', meta, schema=mainSchema,
+    autoload=True)
+img = Table('image', meta, schema=schema_azienda,
+    autoload=True)
 
-std_mapper = mapper(Articolo,articolo,
+std_mapper = mapper(Articolo, articolo,
             properties=dict(
-                        cod_barre = relation(CodiceABarreArticolo,primaryjoin=
-                                articolo.c.id==codb.c.id_articolo, backref="arti", cascade="all, delete"),
+                        cod_barre=relation(CodiceABarreArticolo,
+                            primaryjoin=articolo.c.id == codb.c.id_articolo,
+                            backref="arti",
+                            cascade="all, delete"),
                         imba = relation(Imballaggio,primaryjoin=articolo.c.id_imballaggio==imballo.c.id),
                         ali_iva =  relation(AliquotaIva,primaryjoin=
                                 (articolo.c.id_aliquota_iva==aliva.c.id)),
@@ -670,34 +688,55 @@ std_mapper = mapper(Articolo,articolo,
                         ), order_by=articolo.c.codice)
 if hasattr(conf, "PromoWear") and getattr(conf.PromoWear,'mod_enable')=="yes":
     from promogest.modules.PromoWear.dao.ArticoloTagliaColore import ArticoloTagliaColore
-    std_mapper.add_property("ATC",relation(ArticoloTagliaColore,primaryjoin=(articolo.c.id==ArticoloTagliaColore.id_articolo),backref="ARTI",uselist=False))
-if hasattr(conf, "DistintaBase") and getattr(conf.DistintaBase,'mod_enable')=="yes":
-    from promogest.modules.DistintaBase.dao.AssociazioneArticolo import AssociazioneArticolo
-    std_mapper.add_property("AAPadre",relation(AssociazioneArticolo,primaryjoin=(articolo.c.id==AssociazioneArticolo.id_padre),backref="ARTIPADRE"))
-    std_mapper.add_property("AAFiglio",relation(AssociazioneArticolo,primaryjoin=(articolo.c.id==AssociazioneArticolo.id_figlio),backref="ARTIFIGLIO"))
-if (hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes") or ("GestioneNoleggio"in modulesList):
-    from promogest.modules.GestioneNoleggio.dao.ArticoloGestioneNoleggio import ArticoloGestioneNoleggio
-    std_mapper.add_property("APGN",relation(ArticoloGestioneNoleggio,primaryjoin=(articolo.c.id==ArticoloGestioneNoleggio.id_articolo),backref="ARTI",uselist=False))
+    std_mapper.add_property("ATC",
+        relation(ArticoloTagliaColore,
+            primaryjoin=(articolo.c.id == ArticoloTagliaColore.id_articolo),
+            backref="ARTI",
+            uselist=False))
+if hasattr(conf, "DistintaBase") and \
+                        getattr(conf.DistintaBase, 'mod_enable') == "yes":
+    from promogest.modules.DistintaBase.dao.AssociazioneArticolo \
+         import AssociazioneArticolo
+    std_mapper.add_property("AAPadre",
+        relation(AssociazioneArticolo,
+            primaryjoin=(articolo.c.id == AssociazioneArticolo.id_padre),
+                backref="ARTIPADRE"))
+    std_mapper.add_property("AAFiglio",
+        relation(AssociazioneArticolo,
+            primaryjoin=(articolo.c.id == AssociazioneArticolo.id_figlio),
+                backref="ARTIFIGLIO"))
+if (hasattr(conf, "GestioneNoleggio") and \
+            getattr(conf.GestioneNoleggio, 'mod_enable') == "yes") or\
+             ("GestioneNoleggio"in modulesList):
+    from promogest.modules.GestioneNoleggio.dao.ArticoloGestioneNoleggio \
+            import ArticoloGestioneNoleggio
+    std_mapper.add_property("APGN",
+        relation(ArticoloGestioneNoleggio,
+        primaryjoin=(articolo.c.id == ArticoloGestioneNoleggio.id_articolo),
+            backref="ARTI",
+                uselist=False))
 
-if (hasattr(conf, "ADR") and getattr(conf.ADR, 'mod_enable') == "yes") or ("ADR" in modulesList):
+if (hasattr(conf, "ADR") and getattr(conf.ADR, 'mod_enable') == "yes") or\
+                                                ("ADR" in modulesList):
     from promogest.modules.ADR.dao.ArticoloADR import ArticoloADR
     std_mapper.add_property("APADR",
-                            relation(ArticoloADR,
-                                     primaryjoin=(articolo.c.id==ArticoloADR.id_articolo),
-                                     backref="ARTI",
-                                     uselist=False))
+                    relation(ArticoloADR,
+                    primaryjoin=(articolo.c.id == ArticoloADR.id_articolo),
+                    backref="ARTI",
+                    uselist=False))
 
 
 def isNuovoCodiceByFamiglia():
     """ Indica se un nuovo codice articolo dipende dalla famiglia o meno """
     dependsOn = False
 
-    if hasattr(conf,'Articoli'):
-        if hasattr(conf.Articoli,'numero_famiglie'):
-            if hasattr(conf.Articoli,'lunghezza_codice_famiglia'):
-                dependsOn = ((int(conf.Articoli.lunghezza_codice_famiglia) > 0) and
-                            (int(conf.Articoli.numero_famiglie) > 0))
+    if hasattr(conf, 'Articoli'):
+        if hasattr(conf.Articoli, 'numero_famiglie'):
+            if hasattr(conf.Articoli, 'lunghezza_codice_famiglia'):
+                dependsOn = ((int(conf.Articoli.lunghezza_codice_famiglia) > 0)\
+                and (int(conf.Articoli.numero_famiglie) > 0))
     return dependsOn
+
 
 def getNuovoCodiceArticolo(idFamiglia=None):
     """ Restituisce il codice progressivo per un nuovo articolo
@@ -710,16 +749,13 @@ def getNuovoCodiceArticolo(idFamiglia=None):
     numeroFamiglie = 0
     codice = ''
     try:
-
-        art = session.query(Articolo.codice).order_by(desc(Articolo.id)).limit(500).all()
-        #art.reverse()
-        #print art
+        art = session.query(Articolo.codice).order_by(desc(Articolo.id))\
+                        .limit(500).all()
         for q in art:
             codice = codeIncrement(q[0])
             if not codice or Articolo().select(codicesatto=codice):
                 continue
             else:
-                #if not Articolo().select(codicesatto=codice):
                 return codice
     except:
         pass
