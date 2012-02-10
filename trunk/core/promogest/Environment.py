@@ -610,8 +610,8 @@ else:
 meta = MetaData(engine)
 session = Session()
 #meta = None
-schema_azienda = azienda
 
+schema_azienda = azienda
 params = {'engine': engine ,
         'mainSchema': mainSchema,
         'schema': azienda,

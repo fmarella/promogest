@@ -212,6 +212,7 @@ class Login(GladeApp):
                 else:
                     Environment.workingYear = str(self.anno_lavoro_spinbutton.get_value_as_int())
                     Environment.azienda = self.azienda
+                    Environment.schema_azienda = self.azienda
                     if Environment.engine.name != "sqlite":
                         azs = Azienda().select(batchSize = None)
                         for a in azs:
