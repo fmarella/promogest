@@ -187,14 +187,23 @@ class Anagrafica(GladeWidget):
         # Otteniamo il documento
         dao = self.filter.getSelectedDao()
         self._selectedDao = dao
-
+        data = dao.data_documento
+        operationName = dao.operazione
+        intestatario = permalinkaTitle(dao.intestatario)[0:15] or ""
+        filename = operationName + \
+                        '_' +\
+                        str(dao.numero) +\
+                        '_' +\
+                        intestatario + \
+                        '_' +\
+                        data.strftime('%d-%m-%Y')
         # Generiamo i dati utili dal documento
         dati = dati_file_conad(dao)
         if dati is None:
             return
         xml_file = open(os.path.join(Environment.tracciatiDir, 'conad.xml'))
         
-        def get_save_filename():
+        def get_save_filename(filename):
             dialog = gtk.FileChooserDialog("Inserisci il nome del file",
                                            None,
                                            GTK_FILE_CHOOSER_ACTION_SAVE,
@@ -209,6 +218,7 @@ class Anagrafica(GladeWidget):
                 elif os.name == 'nt':
                     self.__homeFolder = os.environ['USERPROFILE']
             dialog.set_current_folder(self.__homeFolder)
+            dialog.set_current_name(filename)
             
             response = dialog.run()
           
@@ -220,7 +230,7 @@ class Anagrafica(GladeWidget):
                 dialog.destroy()
                 return None
 
-        save_filename = get_save_filename()
+        save_filename = get_save_filename(filename)
         if save_filename is None:
             return
         file_out = open(save_filename, 'wb')
