@@ -86,8 +86,11 @@ class Riga(Dao):
 
     def _getAliquotaIva(self):
         if self.arti:
-            ali = AliquotaIva().getRecord(id=self.id_iva)
-            return ali.denominazione_breve or ""
+            if self.id_iva:
+                ali = AliquotaIva().getRecord(id=self.id_iva)
+                return ali.denominazione_breve or ""
+            else:
+                return ""
         else: return ""
     aliquota = property(_getAliquotaIva)
 

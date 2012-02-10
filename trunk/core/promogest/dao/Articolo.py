@@ -474,7 +474,8 @@ class Articolo(Dao):
             else:
                 return ""
 
-    if hasattr(conf, "DistintaBase") and getattr(conf.DistintaBase,'mod_enable')=="yes":
+    if hasattr(conf, "DistintaBase") \
+            and getattr(conf.DistintaBase, 'mod_enable') == "yes":
         """ necessario questo if"""
         @property
         def articoliAss(self):
@@ -488,19 +489,23 @@ class Articolo(Dao):
         @property
         def isNode(self):
             art = AssociazioneArticolo().select(idPadre=self.id,
-                                                idFiglio = self.id,
+                                                idFiglio=self.id,
                                                 offset=None,
                                                 batchSize=None)
-            if art:return True
-            else: return False
+            if art:
+                return True
+            else:
+                return False
 
     def persist(self):
         session.add(self)
         self.save_update()
-        #salvataggio , immagine ....per il momento viene gestita una immagine per articolo ...
+        #salvataggio , immagine ....per il momento viene gestita
+        #una immagine per articolo ...
         #in seguito sarà l'immagine a comandare non l'articolo
         try:
-            if self._url_immagine and Immagine().getRecord(id=self.id_immagine):
+            if self._url_immagine \
+                        and Immagine().getRecord(id=self.id_immagine):
                 img = Immagine().getRecord(id=self.id_immagine)
                 img.filename = self._url_immagine
                 img.id_famiglia = self.id_famiglia_articolo
@@ -543,7 +548,7 @@ class Articolo(Dao):
                     isTc = ArticoloTagliaColore().getRecord(id=self.id)
                     if isTc:
                         isTc.delete()
-                    self.__articoloTagliaColore.id_articolo=self.id
+                    self.__articoloTagliaColore.id_articolo = self.id
                     session.add(self.__articoloTagliaColore)
                     self.save_update()
                     if self.isArticoloPadre():
@@ -578,8 +583,9 @@ class Articolo(Dao):
         inv = Inventario().select(idArticolo=self.id)
         sc = None
         if posso("VD"):
-            from promogest.modules.VenditaDettaglio.dao.RigaScontrino import RigaScontrino
-            sc = RigaScontrino().select(idArticolo= self.id)
+            from promogest.modules.VenditaDettaglio.dao.RigaScontrino \
+                                                    import RigaScontrino
+            sc = RigaScontrino().select(idArticolo=self.id)
         if res or inv:
             daoArticolo = Articolo().getRecord(id=self.id)
             daoArticolo.cancellato = True
@@ -599,17 +605,18 @@ class Articolo(Dao):
                 if artADR:
                     session.delete(artADR[0])
             session.delete(self)
-        la = ListinoArticolo().select(idArticolo= self.id)
+        la = ListinoArticolo().select(idArticolo=self.id)
         if la:
             for l in la:
                 l.delete()
         if posso("GN"):
-            from promogest.modules.GestioneNoleggio.dao.ArticoloGestioneNoleggio import ArticoloGestioneNoleggio
+            from promogest.modules.GestioneNoleggio.dao.\
+                    ArticoloGestioneNoleggio import ArticoloGestioneNoleggio
             artGN = ArticoloGestioneNoleggio().select(idArticolo=self.id)
             if artGN:
                 session.delete(artGN[0])
         session.commit()
-        pg2log.info("DELETE ARTICOLO" )
+        pg2log.info("DELETE ARTICOLO")
 
     def filter_values(self, k, v):
         if k == "codice":
@@ -706,28 +713,40 @@ statoart = Table('stato_articolo', meta, schema=mainSchema,
 img = Table('image', meta, schema=schema_azienda,
     autoload=True)
 
-std_mapper = mapper(Articolo, articolo,
-            properties=dict(
-                        cod_barre=relation(CodiceABarreArticolo,
-                            primaryjoin=articolo.c.id == codb.c.id_articolo,
-                            backref="arti",
-                            cascade="all, delete"),
-                        imba = relation(Imballaggio,primaryjoin=articolo.c.id_imballaggio==imballo.c.id),
-                        ali_iva =  relation(AliquotaIva,primaryjoin=
-                                (articolo.c.id_aliquota_iva==aliva.c.id)),
-                        den_famiglia = relation(FamigliaArticolo,primaryjoin= articolo.c.id_famiglia_articolo==famiarti.c.id),
-                        den_categoria = relation(CategoriaArticolo,primaryjoin=
-                                    (articolo.c.id_categoria_articolo==catearti.c.id)),
-                        den_unita = relation(UnitaBase,primaryjoin=articolo.c.id_unita_base==unita_b.c.id),
-                        #image = relation(Immagine,primaryjoin= articolo.c.id_immagine==img.c.id,
-                                            #cascade="all, delete",
-                                            #backref="arti"),
-                        sa = relation(StatoArticolo,primaryjoin=(articolo.c.id_stato_articolo==statoart.c.id)),
-                        fornitur = relation(Fornitura,primaryjoin=(fornitura.c.id_articolo==articolo.c.id), backref="arti"),
-                        multi = relation(Multiplo,primaryjoin=(Multiplo.id_articolo==articolo.c.id),backref="arti")
-                        ), order_by=articolo.c.codice)
-if hasattr(conf, "PromoWear") and getattr(conf.PromoWear,'mod_enable')=="yes":
-    from promogest.modules.PromoWear.dao.ArticoloTagliaColore import ArticoloTagliaColore
+std_mapper = mapper(
+    Articolo,
+    articolo,
+    properties=dict(
+        cod_barre=relation(CodiceABarreArticolo,
+            primaryjoin=articolo.c.id == codb.c.id_articolo,
+            backref="arti",
+            cascade="all, delete"),
+        imba=relation(Imballaggio,
+            primaryjoin=articolo.c.id_imballaggio == imballo.c.id),
+        ali_iva=relation(AliquotaIva,
+            primaryjoin=(articolo.c.id_aliquota_iva == aliva.c.id)),
+        den_famiglia=relation(FamigliaArticolo,
+            primaryjoin=articolo.c.id_famiglia_articolo == famiarti.c.id),
+        den_categoria=relation(CategoriaArticolo,
+            primaryjoin=(articolo.c.id_categoria_articolo == catearti.c.id)),
+        den_unita=relation(UnitaBase,
+            primaryjoin=articolo.c.id_unita_base == unita_b.c.id),
+        #image=relation(Immagine,primaryjoin= articolo.c.id_immagine==img.c.id,
+                            #cascade="all, delete",
+                            #backref="arti"),
+        sa=relation(StatoArticolo,
+            primaryjoin=(articolo.c.id_stato_articolo == statoart.c.id)),
+        fornitur=relation(Fornitura,
+            primaryjoin=(fornitura.c.id_articolo == articolo.c.id),
+                backref="arti"),
+        multi=relation(Multiplo,
+            primaryjoin=(Multiplo.id_articolo == articolo.c.id),
+                backref="arti")
+        ), order_by=articolo.c.codice)
+if hasattr(conf, "PromoWear")\
+            and getattr(conf.PromoWear, 'mod_enable') == "yes":
+    from promogest.modules.PromoWear.dao.ArticoloTagliaColore \
+                                            import ArticoloTagliaColore
     std_mapper.add_property("ATC",
         relation(ArticoloTagliaColore,
             primaryjoin=(articolo.c.id == ArticoloTagliaColore.id_articolo),
