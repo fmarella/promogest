@@ -664,10 +664,11 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self._righe[0]["prezzoNettoUltimo"] = Decimal(riga.valore_unitario_netto)
             self._righe[0]["totale"] = 0
             if adr:
-                artADR = AnagraficaDocumentiEditADRExt.getADRArticolo(riga.id_articolo)
-                if artADR:
-                    # Calcola se viene superato il limite massimo di esenzione
-                    AnagraficaDocumentiEditADRExt.calcolaLimiteTrasportoADR(self, artADR)
+                if riga.id_articolo is not None:
+                    artADR = AnagraficaDocumentiEditADRExt.getADRArticolo(riga.id_articolo)
+                    if artADR:
+                        # Calcola se viene superato il limite massimo di esenzione
+                        AnagraficaDocumentiEditADRExt.calcolaLimiteTrasportoADR(self, artADR)
             if sm:
                 self._righe[0]["altezza"] = mN(altezza)
                 self._righe[0]["larghezza"] = mN(larghezza)
@@ -1229,12 +1230,13 @@ del documento.
 
 
         if posso("ADR"):
-            artADR = AnagraficaDocumentiEditADRExt.getADRArticolo(self._righe[0]["idArticolo"])
-            if artADR:
-                if inserisci:
-                    AnagraficaDocumentiEditADRExt.calcolaLimiteTrasportoADR(self, artADR)
-                else:
-                    AnagraficaDocumentiEditADRExt.calcolaLimiteTrasportoADR(self, artADR, azione='agg', qta=self.last_qta)
+            if self._righe[0]["idArticolo"] is not None:
+                artADR = AnagraficaDocumentiEditADRExt.getADRArticolo(self._righe[0]["idArticolo"])
+                if artADR:
+                    if inserisci:
+                        AnagraficaDocumentiEditADRExt.calcolaLimiteTrasportoADR(self, artADR)
+                    else:
+                        AnagraficaDocumentiEditADRExt.calcolaLimiteTrasportoADR(self, artADR, azione='agg', qta=self.last_qta)
 
         self._righe[0]["codiceArticoloFornitore"] = self.codice_articolo_fornitore_entry.get_text()
         self._righe[0]["numeroLottoArticoloFornitura"] = self.numero_lotto_entry.get_text()
@@ -1715,10 +1717,11 @@ del documento.
 
         if not(self._numRiga == 0):
             if posso("ADR"):
-                artADR = AnagraficaDocumentiEditADRExt.getADRArticolo(self._righe[self._numRiga]["idArticolo"])
-                if artADR:
-                    # Calcola se viene superato il limite massimo di esenzione
-                    AnagraficaDocumentiEditADRExt.calcolaLimiteTrasportoADR(self, artADR, azione='rm')
+                if self._righe[self._numRiga]["idArticolo"] is not None:
+                    artADR = AnagraficaDocumentiEditADRExt.getADRArticolo(self._righe[self._numRiga]["idArticolo"])
+                    if artADR:
+                        # Calcola se viene superato il limite massimo di esenzione
+                        AnagraficaDocumentiEditADRExt.calcolaLimiteTrasportoADR(self, artADR, azione='rm')
             del(self._righe[self._numRiga])
             self.modelRiga.remove(self._iteratorRiga)
         self.calcolaTotale()
