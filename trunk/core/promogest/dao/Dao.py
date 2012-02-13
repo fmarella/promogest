@@ -162,7 +162,7 @@ class Dao(object):
             if __numRecords > 0:
                 self._numRecords = __numRecords
             return self._numRecords
-        except Exception as e:
+        except Exception, e:
             self.raiseException(e)
 
     def persist(self,multiple=False, record=True):
@@ -201,7 +201,7 @@ class Dao(object):
         try:
             params["session"].commit()
             return 1
-        except Exception as e:
+        except Exception,e:
             msg = """ATTENZIONE ERRORE NEL SALVATAGGIO
     Qui sotto viene riportato l'errore di sistema:
 

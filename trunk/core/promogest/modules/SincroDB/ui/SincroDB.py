@@ -372,7 +372,7 @@ class SincroDB(GladeWidget):
             if self.tabe != "articolo":
                 try:
                     sqlalchemy.ext.sqlsoup.Session.commit()
-                except Exception as e:
+                except Exception, e:
                     if self.tabe=="listino_articolo":
                         print "ERRORE NEI LISTINI", e
                         sqlalchemy.ext.sqlsoup.Session.rollback()

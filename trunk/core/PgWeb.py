@@ -117,10 +117,10 @@ class Pg2_web(object):
             #print "req.remote_addr --->", req.remote_addr
             #print "pathList --->", pathList
             response = handler(req, **values)
-        except NotFound as e:
+        except NotFound, e:
             response = self.not_found(req)
             response.status_code = 404
-        except HTTPException as e:
+        except HTTPException, e:
             response = e
         return ClosingIterator(response(environ, start_response),
                                [Environment.local_manager.cleanup])

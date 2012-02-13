@@ -45,7 +45,7 @@ def r(exception, func, *args, **kw):
         func(*args, **kw)
     except exception:
         pass
-    except Exception as e:
+    except Exception, e:
         tup = exception.__name__, e.__class__.__name__, e
         raise AssertionError("expected %s, caught %s: %s" % tup)
     else:

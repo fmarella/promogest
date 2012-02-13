@@ -47,10 +47,10 @@ class Janas(object):
             endpoint, values = adapter.match()
             handler = getattr(views, endpoint)
             response = handler(request, **values)
-        except NotFound as e:
+        except NotFound, e:
             response = views.not_found(request)
             response.status_code = 404
-        except HTTPException as e:
+        except HTTPException, e:
             response = e
         return ClosingIterator(response(environ, start_response),
                                [local_manager.cleanup])

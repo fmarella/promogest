@@ -48,7 +48,7 @@ class ApplicationLog(object):
         try:
             params["session"].commit()
             return True
-        except Exception as e:
+        except Exception,e:
             msg = """ATTENZIONE ERRORE
 Qui sotto viene riportato l'errore di sistema:
 %s

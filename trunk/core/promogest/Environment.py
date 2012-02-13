@@ -288,7 +288,7 @@ def connect():
     try:
         a = psycopg2.connect(user=user, host=host, port=port,
                             password=password, database=database)
-    except Exception as e:
+    except Exception, e:
         a = "CONNESSIONE AL DATABASE PRO NON RIUSCITA.\n DETTAGLIO ERRORE: [%s]" % str(e)
         messageInfoEnv(msg=a)
         sys.exit()
