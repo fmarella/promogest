@@ -236,21 +236,21 @@ class MyProxy(ConnectionProxy):
         try:
             return execute(cursor, statement, parameters, context)
         except OperationalError as e:
-            messageInfoEnv(msg="UN ERRORE È STATO INTERCETTATO E SEGNALATO: "+e.message)
+            messageInfoEnv(msg="UN ERRORE È STATO INTERCETTATO E SEGNALATO: "+ str(e) )
         except IntegrityError as e:
-            messageInfoEnv(msg="IntegrityError UN ERRORE È STATO INTERCETTATO E SEGNALATO: "+e.message)
+            messageInfoEnv(msg="IntegrityError UN ERRORE È STATO INTERCETTATO E SEGNALATO: "+ str(e))
             session.rollback()
         except ProgrammingError as e:
-            messageInfoEnv(msg="UN ERRORE È STATO INTERCETTATO E SEGNALATO: "+e.message)
+            messageInfoEnv(msg="UN ERRORE È STATO INTERCETTATO E SEGNALATO: "+str(e))
             session.rollback()
         except InvalidRequestError as e:
-            messageInfoEnv(msg="UN ERRORE È STATO INTERCETTATO E SEGNALATO: "+e.message)
+            messageInfoEnv(msg="UN ERRORE È STATO INTERCETTATO E SEGNALATO: "+str(e))
             session.rollback()
         except AssertionError as e:
-            messageInfoEnv(msg="UN ERRORE È STATO INTERCETTATO E SEGNALATO\n Possibile tentativo di cancellazione di un dato\n collegato ad altri dati fondamentali: "+e.message)
+            messageInfoEnv(msg="UN ERRORE È STATO INTERCETTATO E SEGNALATO\n Possibile tentativo di cancellazione di un dato\n collegato ad altri dati fondamentali: "+str(e))
             session.rollback()
         except ValueError as e:
-            messageInfoEnv(msg="Risulta inserito un Valore non corretto. Ricontrolla: "+e.message)
+            messageInfoEnv(msg="Risulta inserito un Valore non corretto. Ricontrolla: "+str(e))
             session.rollback()
 
 
@@ -692,7 +692,7 @@ def _send(fromaddr=None, total_addrs=None, msg=None):
         server.login("promogestlogs@gmail.com", "pr0m0t0x")
         return server.sendmail("promogestlogs@gmail.com", "promogestlogs@gmail.com" , msg.as_string())
     except Exception as e:
-        print "ERRORE NELLA SPEDIZIONE EMAIL", e.message
+        print "ERRORE NELLA SPEDIZIONE EMAIL", str(e)
 
 def hook(et, ev, eb):
     import traceback
