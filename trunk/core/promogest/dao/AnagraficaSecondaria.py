@@ -76,9 +76,9 @@ except Exception as e:
         magazzinoFK = "magazzino.id"
         listinoFK = "listino.id"
     else:
-        ruoloFK = params["mainSchema"]) + '.role.id'
+        ruoloFK = params["mainSchema"] + '.role.id'
         personagiuridicaFK = params["schema"] + '.persona_giuridica.id'
-        utenteFK = params["mainSchema"]) + ".utente.id"
+        utenteFK = params["mainSchema"] + ".utente.id"
         pagamentoFK = params["schema"] + '.pagamento.id'
         bancaFK = schema_azienda + '.banca.id'
         magazzinoFK = params["schema"] + '.magazzino.id'
