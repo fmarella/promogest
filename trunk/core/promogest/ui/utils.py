@@ -3488,7 +3488,7 @@ def dati_file_conad(testata):
                 
                 codice_cooperativa = 0
                 if ddt.DM is not None:
-                    codice_cooperativa = ddt.DM.codice_cooperativa
+                    codice_cooperativa = ddt.DM.codice
                 
                 dati = {'testata': {
                     'numero_progressivo': str(dati_differita.index(ddtt) + 1),
