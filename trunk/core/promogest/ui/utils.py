@@ -3486,6 +3486,10 @@ def dati_file_conad(testata):
             for ddtt in dati_differita:
                 ddt = TestataDocumento().getRecord(id=ddtt.id_ddt)
                 
+                codice_cooperativa = 0
+                if ddt.DM is not None:
+                    codice_cooperativa = ddt.DM.codice_cooperativa
+                
                 dati = {'testata': {
                     'numero_progressivo': str(dati_differita.index(ddtt) + 1),
                     'codice_cliente': testata.codice_cliente,
@@ -3494,7 +3498,7 @@ def dati_file_conad(testata):
                     'codice_fornitore': codice_fornitore,
                     'data_fattura': testata.data_documento,
                     'numero_fattura': str(testata.numero),
-                    'codice_cooperativa': str(ddt.DM.codice or '')
+                    'codice_cooperativa': str(codice_cooperativa)
                 },
                 'dettaglio': []
                 }
