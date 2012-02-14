@@ -67,7 +67,7 @@ except Exception as e:
         schema=params["schema"],
         autoload=True)
 
-    if tipodb == "sqlite":
+    if params["tipo_db"] == "sqlite":
         ruoloFK = 'role.id'
         personagiuridicaFK = 'persona_giuridica.id'
         utenteFK = "utente.id"
