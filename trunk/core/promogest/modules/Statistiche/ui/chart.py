@@ -110,7 +110,7 @@ class chartViewer():
         return f
 
 
-    def affluenzaGiornalieraMensile(self, daos = None):
+    def affluenzaGiornalieraMensile(self, daos=None):
         """ TODO: Avvisare con un messaggio quando i dati non sono omogenei
             esempio ci sono più mesi negli scontrini """
         giorni = []
