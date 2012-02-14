@@ -2190,7 +2190,7 @@ def multilinedirtywork(param):
                 if not costi_ddt_riga:
                     for k in ['valore_unitario_lordo', 'totaleRiga', 'valore_unitario_netto']:
                         z[k] = ''
-            
+
             lista = []
             for riga in i['righe']:
                 if riga['descrizione'] != '':
@@ -2528,7 +2528,7 @@ def mN(value,decimal=None):
     RICORDA: Per un valore TOTALE quindi con due decimali si deve forzare il 2
     UPDATE: adesso supporta anche lo zero
     """
-    if not value or value =='':
+    if not value or value =='' or value =="None":
         return Decimal(0)
     value = deItalianizza(value)
     if decimal >=0:
@@ -3449,13 +3449,13 @@ def getLottoeScadenze(daoRigaMovimento, testataMovimento):
         return Fornitura().getRecord(id=idFornitura)
     else:
         return None
-    
+
 def tracciati_disponibili():
     ''' Ritorna una lista con i nomi dei tracciati disponibili '''
     return [tracciato[:-4] for tracciato in os.listdir(Environment.tracciatiDir) if tracciato.endswith('.xml')]
 
 def dati_file_conad(testata):
-    """ 
+    """
     """
     from promogest.dao.TestataDocumento import TestataDocumento
     from promogest.dao.InformazioniFatturazioneDocumento import InformazioniFatturazioneDocumento
@@ -3471,25 +3471,25 @@ def dati_file_conad(testata):
         if azienda.ragione_sociale == '':
             messageError('Inserire la ragione sociale dell\'azienda in Dati azienda')
             return None
-        
+
         codice_fornitore = ''
         if azienda.matricola_inps:
             codice_fornitore = azienda.matricola_inps
         else:
             messageError("Inserire il codice fornitore nel campo \'matricola_inps\' in Dati azienda")
             return None
-    
+
         dati2 = []
 
         if dati_differita:
 
             for ddtt in dati_differita:
                 ddt = TestataDocumento().getRecord(id=ddtt.id_ddt)
-                
+
                 codice_cooperativa = 0
                 if ddt.DM is not None:
                     codice_cooperativa = ddt.DM.codice
-                
+
                 dati = {'testata': {
                     'numero_progressivo': str(dati_differita.index(ddtt) + 1),
                     'codice_cliente': testata.codice_cliente,
@@ -3520,7 +3520,7 @@ def dati_file_conad(testata):
             return dati2
 
 def dati_file_buffetti(testata):
-    """ 
+    """
     """
     #from promogest.dao.TestataDocumento import TestataDocumento
     from promogest.dao.Azienda import Azienda
@@ -3533,23 +3533,23 @@ def dati_file_buffetti(testata):
         if azienda.ragione_sociale == '':
             messageError('nessuna ragione sociale impostata')
             return None
-        
+
         scadenze = testata.scadenze
         dati_generazione_scadenze = 'S'
         if len(scadenze) == 0:
             dati_generazione_scadenze = 'N'
-            
+
         if testata.operazione == 'Fattura Accompagnatoria':
             tipo_documento = 'A'
         elif 'Fattura Differita' in testata.operazione:
             tipo_documento = 'D'
         elif 'Fattura' in testata.operazione:
             tipo_documento = 'F'
-            
+
         tipo_registro = 'F'
-            
+
         totale_fattura = mN(testata._totaleScontato + testata._totaleSpese, 2)
-        
+
         if testata.id_fornitore is not None:
             tipo_nominativo = 'F'
             cognome_cli_for = testata.cognome_fornitore
@@ -3630,4 +3630,4 @@ def dati_file_buffetti(testata):
             })
 
         return dati
-    
+
