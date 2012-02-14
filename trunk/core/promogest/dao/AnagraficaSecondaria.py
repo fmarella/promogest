@@ -33,18 +33,18 @@ persona_giuridica = Table('persona_giuridica',
 try:
     anagraficasecondaria = Table('anagrafica_secondaria',
         meta,
-        schema=schema_azienda,
+        schema=params["schema"],
         autoload=True)
 
 except Exception as e:
     ruoloTable = Table('role',
         meta,
         autoload=True,
-        schema=mainSchema)
+        schema=params["mainSchema"])
 
     utenteTable = Table('utente',
         meta,
-        schema=mainSchema,
+        schema=params["mainSchema"]),
         autoload=True)
 
     pagamentoTable = Table('pagamento',
@@ -76,13 +76,13 @@ except Exception as e:
         magazzinoFK = "magazzino.id"
         listinoFK = "listino.id"
     else:
-        ruoloFK = mainSchema + '.role.id'
-        personagiuridicaFK = schema_azienda + '.persona_giuridica.id'
-        utenteFK = mainSchema + ".utente.id"
-        pagamentoFK = schema_azienda + '.pagamento.id'
+        ruoloFK = params["mainSchema"]) + '.role.id'
+        personagiuridicaFK = params["schema"] + '.persona_giuridica.id'
+        utenteFK = params["mainSchema"]) + ".utente.id"
+        pagamentoFK = params["schema"] + '.pagamento.id'
         bancaFK = schema_azienda + '.banca.id'
-        magazzinoFK = schema_azienda + '.magazzino.id'
-        listinoFK = schema_azienda + '.listino.id'
+        magazzinoFK = params["schema"] + '.magazzino.id'
+        listinoFK = params["schema"] + '.listino.id'
 
     anagraficasecondaria = Table('anagrafica_secondaria', meta,
             Column('id', Integer, ForeignKey(personagiuridicaFK,
