@@ -345,6 +345,7 @@ class TestataDocumento(Dao):
                         lf = leggiFornitura(riga.id_articolo)
                         totaleRicaricatoLordo += (trn * (lf["prezzoNetto"]*Decimal(riga.quantita or 0)) / trl)
             percentualeIvaRiga = Decimal(riga.percentuale_iva) #campo non più da usare
+            print "AHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH", percentualeIvaRiga
             idAliquotaIva = riga.id_iva  # campo da usare perchè l'id è più preciso
             daoiva = None
             aliquotaIvaRiga = None
@@ -461,7 +462,7 @@ class TestataDocumento(Dao):
         for k in castellettoIva.keys():
             #if k !=0:
             dictCastellettoIva = castellettoIva[k]
-            dictCastellettoIva['aliquota'] = k
+            dictCastellettoIva['aliquota'] = castellettoIva[k]["percentuale"]
             self._castellettoIva.append(dictCastellettoIva)
         return None
 
