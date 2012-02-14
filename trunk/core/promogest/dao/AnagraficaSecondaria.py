@@ -44,7 +44,7 @@ except Exception as e:
 
     utenteTable = Table('utente',
         meta,
-        schema=params["mainSchema"]),
+        schema=params["mainSchema"],
         autoload=True)
 
     pagamentoTable = Table('pagamento',
