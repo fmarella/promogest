@@ -70,6 +70,13 @@ def getScadenze():
             returnList.append(alarm.id)
     return returnList
 
+#if params['schema'] + ".promemoria" in metatmp.tables.keys():
+    #t = metatmp.tables[params['schema'] + ".promemoria"]
+    #t.tometadata(meta)
+    #promemoria = Table('promemoria',
+                #params['metadata'],
+                #schema = params['schema'],
+                #autoload=True)
 
 promemoria = Table('promemoria',
             params['metadata'],

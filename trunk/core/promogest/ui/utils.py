@@ -2328,10 +2328,14 @@ def hasAction(actionID=None):
     """
     from promogest.modules.RuoliAzioni.dao.RoleAction import RoleAction
     idRole = Environment.params['usernameLoggedList'][2]
-    roleActions = RoleAction().select(id_role=idRole,
-                                            id_action=actionID,
-                                            )
-    if roleActions:
+    if Environment.idACT == []:
+        aa= RoleAction().select(id_role=idRole, batchSize=None)
+        Environment.idACT = [x.id_action for x in aa]
+
+    #roleActions = RoleAction().select(id_role=idRole,
+                                            #id_action=actionID,
+                                            #)
+    if actionID in Environment.idACT: #roleActions:
         return True
     else:
         dialog = gtk.MessageDialog( None,

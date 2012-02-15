@@ -158,12 +158,12 @@ provi =[("001",'Torino',"TO"),
         ("106","Medio Campidano","VS"),
         ("107","Carbonia-Iglesias","CI"),]
 
-f = Province().select(denominazione="Nuoro")
-if not f:
-    for p in provi:
-        a = Province()
-        a.codice=p[0]
-        a.denominazione = p[1]
-        a.denominazione_breve=p[2]
-        session.add(a)
-    session.commit()
+#f = Province().select(denominazione="Nuoro")
+#if not f:
+    #for p in provi:
+        #a = Province()
+        #a.codice=p[0]
+        #a.denominazione = p[1]
+        #a.denominazione_breve=p[2]
+        #session.add(a)
+    #session.commit()

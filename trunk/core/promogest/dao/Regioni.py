@@ -70,11 +70,11 @@ regis = [ ("01",'Piemonte'),
         ("19","Sicilia"),
         ("20","Sardegna"),]
 
-f = Regioni().select(denominazione="Piemonte")
-if not f:
-    for p in regis:
-        a = Regioni()
-        a.codice=p[0]
-        a.denominazione = p[1]
-        session.add(a)
-    session.commit()
+#f = Regioni().select(denominazione="Piemonte")
+#if not f:
+    #for p in regis:
+        #a = Regioni()
+        #a.codice=p[0]
+        #a.denominazione = p[1]
+        #session.add(a)
+    #session.commit()
