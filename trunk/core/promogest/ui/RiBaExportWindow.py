@@ -102,6 +102,7 @@ class PGRiBa(RiBa):
         
         data_inizio, data_fine = dataInizioFineMese(data_inizio)
 
+        #TODO: aggiungere selezione per tipo documento
         documenti = TestataDocumento().select(complexFilter=(and_(TestataDocumento.data_documento.between(data_inizio, data_fine))), batchSize=None)
 
         if not documenti:
@@ -210,10 +211,11 @@ class RiBaExportWindow(GladeWidget):
         self.generatore = PGRiBa(self, self.__creditore)
         data = stringToDate(self.data_entry.get_text())
         try:
-            self.generatore.analizza(data)
+            res = self.generatore.analizza(data)
         except RuntimeError as e:
             messageError(msg=str(e))
-        self.salvaFile()
+        if res != 0:
+            self.salvaFile()
         
    
     def salvaFile(self):
