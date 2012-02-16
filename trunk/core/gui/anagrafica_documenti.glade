@@ -1392,6 +1392,7 @@
                                                             <property name="primary_icon_sensitive">True</property>
                                                             <property name="secondary_icon_sensitive">True</property>
                                                             <accelerator key="F12" signal="grab-focus"/>
+                                                            <signal name="insert-text" handler="on_lotto_temp_entry_insert_text" swapped="no"/>
                                                             </object>
                                                             <packing>
                                                             <property name="expand">True</property>
