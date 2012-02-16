@@ -71,27 +71,26 @@ class UpdateDialog(GladeWidget):
                     else:
                         self.msg_label.set_text('Sono disponibili %d aggiornamenti.' % num)
                         
-                    client = pysvn.Client()
-                    critico = False
+                    # client = pysvn.Client()
+                    # critico = False
 
-                    rev_locale = client.info('.').revision.number
+                    # rev_locale = client.info('.').revision.number
 
-                    logs  = client.log(
-                        "http://svn.promotux.it/svn/promogest2/trunk/", 
-                        revision_start=pysvn.Revision( pysvn.opt_revision_kind.number, rev_locale),
-                        revision_end=pysvn.Revision( pysvn.opt_revision_kind.number, self._rev_remota),
-                        strict_node_history=True,
-                        limit=0,
-                        include_merged_revisions=False,
-                        )
+                    # logs  = client.log(
+                        # "http://svn.promotux.it/svn/promogest2/trunk/", 
+                        # revision_start=pysvn.Revision( pysvn.opt_revision_kind.number, rev_locale),
+                        # revision_end=pysvn.Revision( pysvn.opt_revision_kind.number, self._rev_remota),
+                        # strict_node_history=True,
+                        # limit=0,
+                        # include_merged_revisions=False,
+                        # )
                             
-                    for commit in logs:
-                        if 'DBWARN' in commit.message:
-                            critico = True
+                    # for commit in logs:
+                        # if 'DBWARN' in commit.message:
+                            # critico = True
 
-                    if critico:
-                        messageWarning("Attenzione: E' necessario chiudere PromoGest su tutte le postazioni collegate prima di premere Aggiorna.\n\nNel caso non sia possibile consigliamo di rinviare l'aggiornamento.")
-
+                    # if critico:
+                        # messageWarning("Attenzione: E' necessario chiudere PromoGest su tutte le postazioni collegate prima di premere Aggiorna.\n\nNel caso non sia possibile consigliamo di rinviare l'aggiornamento.")
                     self.update_button.set_sensitive(True)
                     self.cancel_button.set_sensitive(True)
                     self.update_progress_bar.set_fraction(1.0)
