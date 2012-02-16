@@ -3502,7 +3502,8 @@ def dati_file_conad(testata):
                     'codice_fornitore': codice_fornitore,
                     'data_fattura': testata.data_documento,
                     'numero_fattura': str(testata.numero),
-                    'codice_cooperativa': str(codice_cooperativa)
+                    'codice_cooperativa': str(codice_cooperativa),
+                    'codice_socio': str(ddt.ragione_sociale_cliente)
                 },
                 'dettaglio': []
                 }
