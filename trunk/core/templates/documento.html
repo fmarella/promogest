@@ -130,6 +130,27 @@
     </table>
 </td></tr>
 </table>
+	<table cellpadding="0" cellspacing="0" border="0">
+        <tr><td colspan="6" class="table-header">Scadenze </td></tr>
+        {% for scadenza in dao.scadenze %}
+            <tr>
+                <td width="140px" class="even-detail">Pagamento</td>
+                <td class="odd-detail"><strong>{{ scadenza.pagamento }}</strong></td>
+            </tr>
+            <tr>
+                <td width="140px" class="even-detail">Data</td>
+                <td class="odd-detail"><strong>{{ utils.dateToString(scadenza.data) }}</strong></td>
+            </tr>
+            <tr>
+                <td class="even-detail">Importo</td>
+                <td class="odd-detail"><strong>{{ utils.mNLC(scadenza.importo, 2) }}</strong></td>
+            </tr>
+            <tr>
+                <td class="even-detail">Data pagamento</td>
+                <td class="odd-detail"><strong>{{ utils.dateToString(scadenza.data_pagamento) }}</strong></td>
+            </tr>
+       {% endfor %}
+    </table>
     <table cellpadding="1" cellspacing="3" border="0">
         <tr><td colspan="15" class="table-header">Totale Contabilita'</td></tr>
         <tr>
