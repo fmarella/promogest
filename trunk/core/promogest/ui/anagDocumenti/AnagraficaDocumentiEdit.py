@@ -464,7 +464,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                 pago = Pagamento().getRecord(id=id_pag)
                 if pago:
                     self.pagamenti_page.metodo_pagamento_label.set_markup('<b><span foreground="black" size="16000">'+str(pago.denominazione)+'</span></b>')
-                    if not self.dao.documento_saldato:
+                    if not self.dao.documento_saldato and not self.dao.id:
                         self.pagamenti_page.on_calcola_importi_scadenza_button_clicked(None)
                 else:
                     self.pagamenti_page.metodo_pagamento_label.set_markup('<b><span foreground="black" size="16000">'+str(_("NESSUNO?"))+'</span></b>')
