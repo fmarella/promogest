@@ -269,6 +269,8 @@ def myparse(metadata_xml, dati, out, test=None, verbose=None):
             else:
                 for field in record.getElementsByTagName('field'):
                     __log("\t\tProcessiamo il campo: %s" % field.getAttribute('name'))
+                    el = str(record.getAttribute('name'))
+                    __log(dati_[el])
                     try:
                         tmp = __process(field, el, dati_[el])
                     except ProcessError as err:

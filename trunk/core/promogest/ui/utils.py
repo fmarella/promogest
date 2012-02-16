@@ -3557,7 +3557,8 @@ def dati_file_buffetti(testata):
 
         if testata.id_fornitore is not None:
             tipo_nominativo = 'F'
-            cognome_cli_for = testata.cognome_fornitore
+            cognome_cli_for = testata.cognome_fornitore or ''
+            nome_cli_for = testata.nome_fornitore or ''
             codice_fiscale_cli_for = testata.codice_fiscale_fornitore
             partita_iva_cli_for = testata.partita_iva_fornitore
             indirizzo_cli_for = testata.indirizzo_fornitore
@@ -3567,7 +3568,8 @@ def dati_file_buffetti(testata):
             codice_cli_for = testata.codice_fornitore
         elif testata.id_cliente is not None:
             tipo_nominativo = 'C'
-            cognome_cli_for = testata.cognome_cliente
+            cognome_cli_for = testata.cognome_cliente or ''
+            nome_cli_for = testata.nome_cliente or ''
             codice_fiscale_cli_for = testata.codice_fiscale_cliente
             partita_iva_cli_for = testata.partita_iva_cliente
             indirizzo_cli_for = testata.indirizzo_cliente
@@ -3576,36 +3578,38 @@ def dati_file_buffetti(testata):
             provincia_cli_for = testata.provincia_cliente
             codice_cli_for = testata.codice_cliente
 
-        dati = {
+        dati = [{
             'testata': {
                 'ragione_sociale_ditta': azienda.ragione_sociale,
                 'cod_fisc_piva_ditta': azienda.codice_fiscale or azienda.partita_iva,
                 'dati_generazione_scadenze': dati_generazione_scadenze,
                 'tipo_piano': '2',
+                'da_data': testata.data_documento,
+                'a_data': testata.data_documento,
+                'no_data': ''
             },
-            'scadenze': {
+            'scadenze':{},
+            'testata_pagamento': [{
+                'codice': '0', #inseire il codice con cui identifichiamo il tipo di pagamento (es. ID RIba 30 gg)
                 'numero_rate': str(len(scadenze)),
-                'descrizione': testata.pagamento
-            },
-            'agenti': {},
-            'banca': {
-                'codice_banca': ''
-            },
-            'testata_pagamento': {},
-            'dettaglio_rate': [
-            ],
-            'valute': {},
-            'zona': {},
+                'descrizione': testata.pagamento,
+                'tipo': '1',
+                'determinazione_tipo': '31',
+                'numero_rate': '1',
+                'giorni_prima': '30' # recuperare il numero di giorni dal pagamento
+            }],
             'fine_scadenza': {},
             'record0': [{
                 'tipo_nominativo': tipo_nominativo,
                 'cognome': cognome_cli_for,
+                'nome': nome_cli_for,
                 'codice_fiscale': codice_fiscale_cli_for,
                 'partita_iva': partita_iva_cli_for,
                 'indirizzo': indirizzo_cli_for,
                 'localita': localita_cli_for,
                 'cap': cap_cli_for,
-                'provincia': provincia_cli_for
+                'provincia': provincia_cli_for,
+                'incluso_elenchi_bl': 'N'
             }],
             'record1': [{
                 'tipo_documento': tipo_documento,
@@ -3615,24 +3619,19 @@ def dati_file_buffetti(testata):
                 'tipo_registro': tipo_registro,
                 'data_doc': testata.data_documento
             }],
-            'recordC': [{}],
             'record2': [{
                 'imponibile_iva': str(mN(testata._totaleImponibileScontato)),
                 'importo_iva': str(mN(testata._totaleImpostaScontata)),
             }],
-            'record5': [{}],
-            'recordA': [{}],
-            'recordB': [{}],
-            'record6': [{}],
-            'record7': [{}],
-            'record8': [{}],
-            'record9': [{}],
-        }
+            'recordB': [{
+                'posizione': 'A' # controllare scadenze.data_pagamento se None mettere A, altrimenti P (pagato) 
+            }],
+        }]
 
-        for scadenza in testata.scadenze:
-            dati['dettaglio_rate'].append({
-                'numero_rata': testata.scadenze.index(scadenza) + 1
-            })
+        # for scadenza in testata.scadenze:
+            # dati['dettaglio_rate'].append({
+                # 'numero_rata': testata.scadenze.index(scadenza) + 1
+            # })
 
         return dati
 

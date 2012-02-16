@@ -89,7 +89,7 @@ class Anagrafica(GladeWidget):
             for tracciato in tracciati_disponibili():
                 if tracciato == 'conad':
                     self.esporta_conad_menuitem.show()
-                elif tracciato == 'buffetti':
+                elif tracciato == 'buffetti_fatture':
                     self.esporta_buffetti_menuitem.show()
                 else:
                     pass
@@ -254,7 +254,7 @@ class Anagrafica(GladeWidget):
         dati = dati_file_buffetti(dao)
         if dati is None:
             return
-        xml_file = open(os.path.join(Environment.tracciatiDir, 'buffetti.xml'))
+        xml_file = open(os.path.join(Environment.tracciatiDir, 'buffetti_fatture.xml'))
 
         def get_save_filename():
             dialog = gtk.FileChooserDialog("Inserisci il nome del file",
