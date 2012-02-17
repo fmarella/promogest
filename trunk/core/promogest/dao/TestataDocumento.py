@@ -320,7 +320,7 @@ class TestataDocumento(Dao):
                         impon_spese_, spese_ = getSpesePagamento(scad.pagamento)
                         spese += spese_
                         impon_spese += impon_spese_
-                        imposta_spese += spese - impon_spese
+                        imposta_spese += spese_ - impon_spese_
         self._totaleSpese = spese
 
         totaleEsclusoBaseImponibileRiga = 0
