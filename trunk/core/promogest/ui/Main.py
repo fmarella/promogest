@@ -224,7 +224,7 @@ class Main(GladeWidget):
         self.on_button_refresh_clicked()
 
         fillComboboxRole(self.anag_minori_combobox, noAdmin=True)
-        
+
         # conf_timeout = SetConf().select(key="updates_timeout", section="General")
         # timeout = '300'
         # if not conf_timeout:
@@ -269,8 +269,8 @@ class Main(GladeWidget):
                             # print ">>>>>>> SCARTO LA TABELLA %s" % t
                     pickle.dump(meta2, f)
                     print ">>>>>>> SALVATAGGIO TERMINATO "
-        if Environment.tipodb != "sqlite":
-            pickle_meta()
+        #if Environment.tipodb != "sqlite":
+            #pickle_meta()
         # print "Metadata contiene un totale di {0} tabelle".format( len(Environment.meta.tables.keys()))
 
         #if datetime.date.today() >= datetime.date(2011,9,17):
