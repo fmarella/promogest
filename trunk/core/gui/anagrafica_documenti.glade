@@ -45,10 +45,10 @@
                     <property name="left_padding">5</property>
                     <child>
                       <object class="GtkButton" id="edit_date_and_number_button">
+                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="relief">none</property>
                         <signal name="clicked" handler="on_edit_date_and_number_button_clicked" swapped="no"/>
                         <child>
@@ -315,10 +315,10 @@
                         </child>
                         <child>
                           <object class="GtkButton" id="at_button">
+                            <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
-                            <property name="use_action_appearance">False</property>
                             <property name="image">at_image</property>
                             <signal name="clicked" handler="on_end_rent_entry_focus_out_event" swapped="no"/>
                           </object>
@@ -582,10 +582,10 @@
                             <child>
                               <object class="GtkButton" id="search_row_button">
                                 <property name="label">gtk-find</property>
+                                <property name="use_action_appearance">False</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
-                                <property name="use_action_appearance">False</property>
                                 <property name="use_stock">True</property>
                                 <signal name="clicked" handler="on_search_row_button_clicked" swapped="no"/>
                               </object>
@@ -597,10 +597,10 @@
                             </child>
                             <child>
                               <object class="GtkToggleButton" id="promowear_manager_taglia_colore_togglebutton">
+                                <property name="use_action_appearance">False</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
-                                <property name="use_action_appearance">False</property>
                                 <signal name="toggled" handler="on_promowear_manager_taglia_colore_togglebutton_toggled" swapped="no"/>
                                 <child>
                                   <object class="GtkImage" id="promowear_manager_taglia_colore_image">
@@ -739,10 +739,10 @@
                             </child>
                             <child>
                               <object class="GtkButton" id="multi_line_button">
+                                <property name="use_action_appearance">False</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
-                                <property name="use_action_appearance">False</property>
                                 <signal name="clicked" handler="on_multi_line_button_clicked" swapped="no"/>
                                 <child>
                                   <object class="GtkAlignment" id="alignment3">
@@ -1081,11 +1081,11 @@
                                                         <child>
                                                           <object class="GtkButton" id="scorporo_button">
                                                             <property name="label" translatable="yes">s</property>
+                                                            <property name="use_action_appearance">False</property>
                                                             <property name="visible">True</property>
                                                             <property name="can_focus">True</property>
                                                             <property name="receives_default">True</property>
                                                             <property name="tooltip_text" translatable="yes">Scorporo</property>
-                                                            <property name="use_action_appearance">False</property>
                                                             <accelerator key="F11" signal="clicked"/>
                                                             <signal name="clicked" handler="on_scorporo_button_clicked" swapped="no"/>
                                                           </object>
@@ -1099,11 +1099,11 @@
                                                         <child>
                                                           <object class="GtkButton" id="switch_prezzo_button">
                                                             <property name="label" translatable="yes">I/D</property>
+                                                            <property name="use_action_appearance">False</property>
                                                             <property name="visible">True</property>
                                                             <property name="can_focus">True</property>
                                                             <property name="receives_default">True</property>
                                                             <property name="tooltip_text" translatable="yes">Ingrosso/Dettaglio</property>
-                                                            <property name="use_action_appearance">False</property>
                                                             <signal name="clicked" handler="on_switch_prezzo_button_clicked" swapped="no"/>
                                                           </object>
                                                           <packing>
@@ -1290,10 +1290,10 @@
                                                         <child>
                                                           <object class="GtkCheckButton" id="rent_checkbutton">
                                                             <property name="label" translatable="yes">noleggio</property>
+                                                            <property name="use_action_appearance">False</property>
                                                             <property name="visible">True</property>
                                                             <property name="can_focus">True</property>
                                                             <property name="receives_default">False</property>
-                                                            <property name="use_action_appearance">False</property>
                                                             <property name="draw_indicator">True</property>
                                                             <signal name="toggled" handler="on_rent_checkbutton_toggled" swapped="no"/>
                                                           </object>
@@ -1392,7 +1392,7 @@
                                                             <property name="primary_icon_sensitive">True</property>
                                                             <property name="secondary_icon_sensitive">True</property>
                                                             <accelerator key="F12" signal="grab-focus"/>
-                                                            <signal name="insert-text" handler="on_lotto_temp_entry_insert_text" swapped="no"/>
+                                                            <signal name="changed" handler="on_lotto_temp_entry_changed" swapped="no"/>
                                                             </object>
                                                             <packing>
                                                             <property name="expand">True</property>
@@ -1846,10 +1846,10 @@
                                                 <child>
                                                   <object class="GtkCheckButton" id="provvigionale_check">
                                                     <property name="label" translatable="yes">provvigionale</property>
+                                                    <property name="use_action_appearance">False</property>
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">True</property>
                                                     <property name="receives_default">False</property>
-                                                    <property name="use_action_appearance">False</property>
                                                     <property name="draw_indicator">True</property>
                                                   </object>
                                                   <packing>
@@ -2093,10 +2093,10 @@
                                                     <child>
                                                       <object class="GtkToggleButton" id="dettaglio_giacenza_togglebutton">
                                                         <property name="label" translatable="yes">DETTAGLIO GIACENZA</property>
+                                                        <property name="use_action_appearance">False</property>
                                                         <property name="visible">True</property>
                                                         <property name="can_focus">True</property>
                                                         <property name="receives_default">True</property>
-                                                        <property name="use_action_appearance">False</property>
                                                         <property name="image">info_dg_image</property>
                                                         <signal name="toggled" handler="on_dettaglio_giacenza_togglebutton_toggled" swapped="no"/>
                                                       </object>
@@ -2223,10 +2223,10 @@
                                                 <property name="can_focus">False</property>
                                                 <child>
                                                   <object class="GtkButton" id="variazione_listini_button">
+                                                    <property name="use_action_appearance">False</property>
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">True</property>
                                                     <property name="receives_default">True</property>
-                                                    <property name="use_action_appearance">False</property>
                                                     <signal name="clicked" handler="on_variazione_listini_button_clicked" swapped="no"/>
                                                     <child>
                                                       <object class="GtkAlignment" id="alignment216">
@@ -2277,10 +2277,10 @@
                                                 </child>
                                                 <child>
                                                   <object class="GtkButton" id="storico_listini_button">
+                                                    <property name="use_action_appearance">False</property>
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">True</property>
                                                     <property name="receives_default">True</property>
-                                                    <property name="use_action_appearance">False</property>
                                                     <signal name="clicked" handler="on_storico_listini_button_clicked" swapped="no"/>
                                                     <child>
                                                       <object class="GtkAlignment" id="alignment196">
@@ -2331,10 +2331,10 @@
                                                 </child>
                                                 <child>
                                                   <object class="GtkButton" id="storico_costi_button">
+                                                    <property name="use_action_appearance">False</property>
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">True</property>
                                                     <property name="receives_default">True</property>
-                                                    <property name="use_action_appearance">False</property>
                                                     <signal name="clicked" handler="on_storico_costi_button_clicked" swapped="no"/>
                                                     <child>
                                                       <object class="GtkAlignment" id="alignment195">
@@ -2385,10 +2385,10 @@
                                                 </child>
                                                 <child>
                                                   <object class="GtkButton" id="edit_articolo_button">
+                                                    <property name="use_action_appearance">False</property>
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">True</property>
                                                     <property name="receives_default">True</property>
-                                                    <property name="use_action_appearance">False</property>
                                                     <signal name="clicked" handler="on_edit_articolo_button_clicked" swapped="no"/>
                                                     <child>
                                                       <object class="GtkAlignment" id="alignment4">
@@ -2520,10 +2520,10 @@
                                             <child>
                                               <object class="GtkButton" id="add_serial_number_button">
                                                 <property name="label">gtk-add</property>
+                                                <property name="use_action_appearance">False</property>
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">True</property>
                                                 <property name="receives_default">True</property>
-                                                <property name="use_action_appearance">False</property>
                                                 <property name="use_stock">True</property>
                                               </object>
                                               <packing>
@@ -2535,10 +2535,10 @@
                                             <child>
                                               <object class="GtkButton" id="remove_serial_number">
                                                 <property name="label">gtk-remove</property>
+                                                <property name="use_action_appearance">False</property>
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">True</property>
                                                 <property name="receives_default">True</property>
-                                                <property name="use_action_appearance">False</property>
                                                 <property name="use_stock">True</property>
                                               </object>
                                               <packing>
@@ -3036,10 +3036,10 @@
                     <property name="spacing">4</property>
                     <child>
                       <object class="GtkButton" id="confirm_row_withoutclean_button">
+                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
-                        <property name="use_action_appearance">False</property>
                         <accelerator key="F6" signal="clicked"/>
                         <signal name="clicked" handler="on_confirm_row_withoutclean_button_clicked" swapped="no"/>
                         <child>
@@ -3080,11 +3080,11 @@
                     </child>
                     <child>
                       <object class="GtkButton" id="confirm_row_button">
+                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
                         <property name="has_tooltip">True</property>
-                        <property name="use_action_appearance">False</property>
                         <accelerator key="F4" signal="clicked"/>
                         <signal name="clicked" handler="on_confirm_row_button_clicked" swapped="no"/>
                         <child>
@@ -3137,10 +3137,10 @@
                     </child>
                     <child>
                       <object class="GtkButton" id="undo_row_button">
+                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
-                        <property name="use_action_appearance">False</property>
                         <signal name="clicked" handler="on_undo_row_button_clicked" swapped="no"/>
                         <child>
                           <object class="GtkAlignment" id="alignment86">
@@ -3192,10 +3192,10 @@
                     </child>
                     <child>
                       <object class="GtkButton" id="new_row_button">
+                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
-                        <property name="use_action_appearance">False</property>
                         <signal name="clicked" handler="on_new_row_button_clicked" swapped="no"/>
                         <child>
                           <object class="GtkAlignment" id="alignment87">
@@ -3247,10 +3247,10 @@
                     </child>
                     <child>
                       <object class="GtkButton" id="delete_row_button">
+                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
-                        <property name="use_action_appearance">False</property>
                         <signal name="clicked" handler="on_delete_row_button_clicked" swapped="no"/>
                         <child>
                           <object class="GtkAlignment" id="alignment50">
@@ -3488,13 +3488,13 @@
                     </child>
                     <child>
                       <object class="GtkButton" id="avvertimento_sconti_button">
+                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
                         <property name="tooltip_text" translatable="yes">ATTENZIONE!!
 I Totali sono frutto di una variazione sconto visibile
 nella sezione riepiloghi</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="image">avvertimento_sconto_image</property>
                         <signal name="clicked" handler="on_avvertimento_sconti_button_clicked" swapped="no"/>
                       </object>
@@ -3682,10 +3682,10 @@ _
                     <child>
                       <object class="GtkRadioButton" id="destinatario_radiobutton">
                         <property name="label" translatable="yes">Destinatario</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="use_underline">True</property>
                         <property name="active">True</property>
                         <property name="draw_indicator">True</property>
@@ -3700,10 +3700,10 @@ _
                     <child>
                       <object class="GtkRadioButton" id="mittente_radiobutton">
                         <property name="label" translatable="yes">Mittente</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="use_underline">True</property>
                         <property name="draw_indicator">True</property>
                         <property name="group">destinatario_radiobutton</property>
@@ -3718,10 +3718,10 @@ _
                     <child>
                       <object class="GtkRadioButton" id="vettore_radiobutton">
                         <property name="label" translatable="yes">Vettore</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="use_underline">True</property>
                         <property name="draw_indicator">True</property>
                         <property name="group">destinatario_radiobutton</property>

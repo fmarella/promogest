@@ -161,9 +161,8 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self.lotto_temp_hbox.destroy()
             self.nolottotemp = False
 
-    def on_lotto_temp_entry_insert_text(self, *args):
-        if setconf("Documenti", "lotto_temp"):
-            self.on_confirm_row_button_clicked(widget=None)
+    def on_lotto_temp_entry_changed(self, *args):
+        self.on_confirm_row_button_clicked(widget=None)
 
     def draw(self, cplx=False):
         self.cplx = cplx
