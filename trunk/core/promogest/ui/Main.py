@@ -248,7 +248,7 @@ class Main(GladeWidget):
                 self.active_img.set_from_file("gui/active_on.png")
                 self.aggiornamento_label.set_label(_("AGGIORNATO "))
             return True
-        if timeout != '0':
+        if timeout >= 300:
             glib.timeout_add_seconds(int(timeout), update_timer)
 
         #if datetime.date.today() >= datetime.date(2011,9,17):
