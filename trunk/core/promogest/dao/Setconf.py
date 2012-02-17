@@ -73,7 +73,6 @@ class SetConf(Dao):
 
 std_mapper = mapper(SetConf, setconf, order_by=setconf.c.key)
 allkey = session.query(SetConf.key,SetConf.section).all()
-print "ALLLLLKEY", allkey, ("articolo_struttura_codice","Articoli") in allkey
 
 #bb = SetConf().select(key="articolo_struttura_codice", section="Articoli")
 
