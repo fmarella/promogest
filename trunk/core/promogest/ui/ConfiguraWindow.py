@@ -22,6 +22,7 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 import os
+import datetime
 from promogest import Environment
 from GladeWidget import GladeWidget
 from promogest.ui.anagDocumenti.AnagraficaDocumentiSetup import AnagraficaDocumentiSetup
@@ -32,7 +33,8 @@ from promogest.modules.PrimaNota.ui.AnagraficaPrimaNotaSetup import AnagraficaPr
 from promogest.modules.Label.ui.AnagraficaLabelSetup import AnagraficaLabelSetup
 from ParametriFrame import ParametriFrame
 from promogest.dao.Setconf import SetConf
-from promogest.ui.utils import setconf, messageInfo, posso
+from promogest.ui.utils import setconf, messageInfo, posso, findIdFromCombobox
+from promogest.ui.utilsCombobox import findComboboxRowFromId
 
 class ConfiguraWindow(GladeWidget):
 
@@ -94,6 +96,10 @@ class ConfiguraWindow(GladeWidget):
             self.feed_check.set_active(int(setconf("Feed", "feed")))
         except:
             self.feed_check.set_active(1)
+        try:
+            findComboboxRowFromId(self.timer_combobox, str(setconf("General", "updates_timeout")))
+        except:
+            findComboboxRowFromId(self.timer_combobox, '300')
 
         try:
             curr = setconf("Valuta", "valuta_curr")
@@ -135,6 +141,10 @@ class ConfiguraWindow(GladeWidget):
         a = SetConf().select(key="feed", section="Feed")
         a[0].value= str(self.feed_check.get_active())
         a[0].tipo = "bool"
+        Environment.session.add(a[0])
+
+        a = SetConf().select(key="updates_timeout", section="General")
+        a[0].value = str(findIdFromCombobox(self.timer_combobox))
         Environment.session.add(a[0])
 
         b = SetConf().select(key="zeri_in_totali", section="Stampa")

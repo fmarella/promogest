@@ -73,6 +73,7 @@ try:
 except:
     messageError(msg="ATTENIONE! modulo xhtml2pdf mancante,\n qualcosa non ha funzionato nell'installazione?")
 
+from promogest.dao.Setconf import SetConf
 
 try:
     if Environment.pg3:
@@ -221,6 +222,22 @@ class Main(GladeWidget):
         self.on_button_refresh_clicked()
 
         fillComboboxRole(self.anag_minori_combobox, noAdmin=True)
+        
+        conf_timeout = SetConf().select(key="updates_timeout", section="General")
+        timeout = '300'
+        if not conf_timeout:
+            conf_timeout = SetConf()
+            conf_timeout.key = "updates_timeout"
+            conf_timeout.value = '300'
+            conf_timeout.section = "General"
+            conf_timeout.tipo_section = "Generico"
+            conf_timeout.description = "intervallo controllo aggiornamenti"
+            conf_timeout.active = True
+            conf_timeout.tipo = "str"
+            conf_timeout.date = datetime.datetime.now()
+            Environment.session.add(conf_timeout)
+        else:
+            timeout = conf_timeout[0].value
 
         def update_timer():
             leggiRevisioni()
@@ -231,8 +248,8 @@ class Main(GladeWidget):
                 self.active_img.set_from_file("gui/active_on.png")
                 self.aggiornamento_label.set_label(_("AGGIORNATO "))
             return True
-        # controllo automatico ogni 5 minuti
-        glib.timeout_add_seconds(300, update_timer)
+        if timeout != '0':
+            glib.timeout_add_seconds(int(timeout), update_timer)
 
         #if datetime.date.today() >= datetime.date(2011,9,17):
             #from promogest.dao.Setconf import SetConf
