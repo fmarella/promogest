@@ -106,6 +106,7 @@ bordoDestro = None
 bordoSinistro = None
 feedCache = ""
 feedAll = ""
+idACT = []
 scontisave = {}
 tagliacoloretempdata = (False,None)
 lastCode = None
@@ -594,7 +595,7 @@ else:
 if not engine:
     raise RuntimeError("Non è stato trovato un backend per il database.")
 tipo_eng = engine.name
-engine.echo = False
+engine.echo = True
 #engine.autocommit= True
 #insp = reflection.Inspector.from_engine(engine)
 
@@ -608,10 +609,42 @@ else:
     Session = sessionmaker(bind=engine)
 
 schema_azienda = azienda
-meta = MetaData(engine)
+
+if azienda:
+    meta_pickle = azienda + "_meta_pickle"
+else:
+    meta_pickle = "azienda_meta_pickle"
+import time
+import pickle
+meta = MetaData()
+metatmp = MetaData()
+_start = time.time()
+
+print mainSchema
+print azienda
+
+if os.path.exists(os.path.join(CONFIGPATH, meta_pickle)):
+    print ">>>>>>> STO CARICANDO IL METADATA DA FILE..."
+    with open(os.path.join(CONFIGPATH, meta_pickle), 'rb') as f:
+        print ">>>>>>> LEGGO IL FILE PICKLE..."
+        metatmp = pickle.load(f)
+    print ">>>>>>> INIZIO IL CICLO TRA LE TABELLE CONTENUTE NEL METADATA LETTO DA FILE..."
+    for t, v in metatmp.tables.iteritems():
+        if 'promogest2' in t:
+            args=t.split('.')
+            print ">>>>>>> IMPORTO LA TABELLA %s dello schema %s" % (args[1], args[0])
+            v.tometadata(meta)
+    meta.bind = engine
+    _end = time.time()
+    print "***caricamento meta da file completato in : ", _end - _start, "sec"
+else:
+    print ">>>>>>> STO CARICANDO IL METADATA IN AUTOMATICO"
+    meta = MetaData(engine)
+
 session = Session()
 #meta = None
 schema_azienda = azienda
+
 
 params = {'engine': engine ,
         'mainSchema': mainSchema,

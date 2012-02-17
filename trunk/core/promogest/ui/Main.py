@@ -43,7 +43,9 @@ from promogest.ui.gtk_compat import *
 from ParametriFrame import ParametriFrame
 from SetConf import SetConfUI
 from AnagraficaPrincipaleFrame import AnagrafichePrincipaliFrame
+
 import promogest.dao.Promemoria
+
 from promogest.dao.Promemoria import Promemoria
 from promogest.dao.VariazioneListino import VariazioneListino
 from promogest.dao.AnagraficaSecondaria import AnagraficaSecondaria_
@@ -250,6 +252,26 @@ class Main(GladeWidget):
             return True
         #if timeout >= 300:
         glib.timeout_add_seconds(600, update_timer)
+
+        def pickle_meta():
+            import time
+            import pickle
+            if not os.path.exists(os.path.join(Environment.CONFIGPATH, Environment.meta_pickle)):
+                print ">>>>>>> INIZIAMO IL SALVATAGGIO DELLE TABELLE DEL METADATA"
+                with open(os.path.join(Environment.CONFIGPATH, Environment.meta_pickle), 'wb') as f:
+                    meta2 = MetaData()
+                    for t, v in Environment.meta.tables.iteritems():
+                        v.tometadata(meta2)
+                        # if t:
+                        print ">>>>>>> SALVIAMO LA TABELLA %s " % t
+                            # v.tometadata(meta)
+                        # else:
+                            # print ">>>>>>> SCARTO LA TABELLA %s" % t
+                    pickle.dump(meta2, f)
+                    print ">>>>>>> SALVATAGGIO TERMINATO "
+        if Environment.tipodb != "sqlite":
+            pickle_meta()
+        # print "Metadata contiene un totale di {0} tabelle".format( len(Environment.meta.tables.keys()))
 
         #if datetime.date.today() >= datetime.date(2011,9,17):
             #from promogest.dao.Setconf import SetConf

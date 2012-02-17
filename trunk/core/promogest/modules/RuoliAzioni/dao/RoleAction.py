@@ -68,11 +68,15 @@ if not idAdmin:
     print "ATTENZIONE NON e' PRESENTE UN ADMIN"
 else:
     idadmin = idAdmin[0].id
-    ac = Action().select(batchSize=None)
-    for a in ac:
-        ra = RoleAction().select(id_role=idadmin,id_action=a.id, batchSize=None)
-        if not ra:
-            aa = RoleAction()
-            aa.id_role = idadmin
-            aa.id_action = a.id
-            aa.persist()
+    idact = session.query(Action.id).all()
+    idract = session.query(RoleAction.id_action).filter_by(id_role=idadmin).all()
+    if idact != idract:
+        ac = Action().select(batchSize=None)
+        for a in ac:
+            ra = RoleAction().select(id_role=idadmin,id_action=a.id, batchSize=None)
+            if not ra:
+                aa = RoleAction()
+                aa.id_role = idadmin
+                aa.id_action = a.id
+                session.add(aa)
+        session.commit()

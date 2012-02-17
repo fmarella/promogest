@@ -24,18 +24,20 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
 from Dao import Dao
+from UnitaBase import UnitaBase
+from Multiplo import Multiplo
 from promogest.dao.DaoUtils import giacenzaArticolo
 from promogest.modules.GestioneKit.dao.ArticoloKit import ArticoloKit
 from Imballaggio import Imballaggio
 from AliquotaIva import AliquotaIva
 from StatoArticolo import StatoArticolo
 #from Immagine import Immagine
-from UnitaBase import UnitaBase
+
 from FamigliaArticolo import FamigliaArticolo
 from CategoriaArticolo import CategoriaArticolo
 from CodiceABarreArticolo import CodiceABarreArticolo
 from Fornitura import Fornitura
-from Multiplo import Multiplo
+
 from promogest.ui.utils import codeIncrement
 
 if hasattr(conf, "PromoWear") and \

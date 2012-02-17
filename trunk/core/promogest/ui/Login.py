@@ -216,11 +216,15 @@ class Login(GladeApp):
                     if Environment.engine.name != "sqlite":
                         azs = Azienda().select(batchSize = None)
                         for a in azs:
-                            a.tipo_schemaa = ""
-                            a.persist()
-                        uaz = Azienda().getRecord(id =self.azienda)
-                        uaz.tipo_schemaa = "last"
-                        uaz.persist()
+                            if a.schemaa == self.azienda:
+                                a.tipo_schemaa = "last"
+                            else:
+                                a.tipo_schemaa = ""
+                            Environment.session.add(a)
+                        #uaz = Azienda().getRecord(id =self.azienda)
+                        #uaz.tipo_schemaa = "last"
+                        #uaz.persist()
+                        Environment.session.commit()
                     if Environment.tipodb !="sqlite":
                         Environment.params["schema"] = self.azienda
                         Environment.schema_azienda = self.azienda
@@ -253,7 +257,18 @@ class Login(GladeApp):
                         Environment.pg2log.info("LOGIN  id, user, role azienda: %s, %s" %(repr(Environment.params['usernameLoggedList']),self.azienda ) )
                         import promogest.ui.SetConf
                         checkInstallation()
-                        #gobject.idle_add(self.importModulesFromDir,'promogest/modules')
+                        if Environment.tipodb !="sqlite":
+                            print ">>>>>>> INIZIO IL CICLO TRA LE TABELLE CONTENUTE NEL METADATA LETTO DA FILE..."
+                            for t, v in Environment.metatmp.tables.iteritems():
+                                if 'promogest2' not in t:
+                                    args=t.split('.')
+                                    print ">>>>>>> IMPORTO LA TABELLA %s dello schema %s" % (args[1], args[0])
+                                    try:
+                                        v.tometadata(Environment.meta)
+                                    except:
+                                        print ">>>>>>> SCARTO LA TABELLA %s" % t
+                        #_end = time.time()
+                        #print "***caricamento meta da file completato in : ", _end - _start, "sec" #gobject.idle_add(self.importModulesFromDir,'promogest/modules')
                         self.importModulesFromDir('promogest/modules')
                         def mainmain():
                             from Main import Main

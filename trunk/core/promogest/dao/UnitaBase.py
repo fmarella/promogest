@@ -13,7 +13,7 @@ class UnitaBase(Dao):
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
-        self.addMC()
+        #self.addMC()
 
     def filter_values(self,k,v):
         dic= {'denominazione' : unitabase.c.denominazione ==v}

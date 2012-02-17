@@ -3160,12 +3160,13 @@ def updateScadenzePromemoria():
         data_scadenza = p.data_scadenza
         if data_scadenza < data_attuale:
             p.scaduto = True
-            p.persist()
+            Environment.session.add(p)
         elif data_scadenza > data_attuale:
             differenze = int((data_scadenza - data_attuale).days)
             if differenze < preavviso:
                 p.in_scadenza = True
-                p.persist()
+                Environment.session.add(p)
+        Environment.session.commit()
 
 _dim = (None, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
 
