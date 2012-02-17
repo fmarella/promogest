@@ -2,47 +2,49 @@
 
 {% block body %}
     {% if dao %}
-<h3 ><strong>DATI PRIMA NOTA</strong></h3>
-<table style="width:auto;">
-<th style="width:70px;">NUMERO</th>
-<th style="width:90px;">DATA</th>
-<tr>
-<td style="width:70px;text-align:center;"><strong>{{dao.numero}}</strong></td>
-<td style="width:90px;text-align:center;"><strong>{{utils.dateToString(dao.data_inizio)}}</strong></td>
-</tr>
-</table>
-{% if dao.righeprimanota|length >1 %}
-<p><b>DESCRIZIONE: </b> {{dao.note|nonone}}</p>
-{% endif %}
+		<h3><strong>DATI PRIMA NOTA</strong></h3>
+		<table style="width:auto;">
+			<th style="width:70px;">NUMERO</th>
+			<th style="width:90px;">DATA</th>
+			<tr>
+				<td style="width:70px;text-align:center;"><strong>{{dao.numero}}</strong></td>
+				<td style="width:90px;text-align:center;"><strong>{{utils.dateToString(dao.data_inizio)}}</strong></td>
+			</tr>
+		</table>
+		{% if dao.righeprimanota|length >1 %}
+		<p><b>DESCRIZIONE: </b> {{dao.note|nonone}}</p>
+		{% endif %}
 
     <table cellpadding="0" cellspacing="0" border="0">
-        <th><b>DESCRIZIONE</b></th>
-        <th ><b>VALORE</b></th>
-        <th><b>TIPO</b></th>
-        <th><b>RIF.</b></th>
-	<th><b>NOTE</b></th>
+		<th><b>DESCRIZIONE</b></th>
+		<th><b>VALORE</b></th>
+		<th><b>TIPO</b></th>
+		<th><b>RIF.</b></th>
+		<th><b>NOTE</b></th>
 
         {% for riga in dao.righeprimanota %}
-        <tr >
-            <td class="odd-detail">{{riga.denominazione|replace("\\n"," ")}}</td>
+        <tr>
+            <td style="width:65%;font-size:10px;" class="odd-detail">{{riga.denominazione|replace("\\n"," ")}}</td>
             {% if riga.segno =="entrata" %}
-                <td style="color:green;width:80px;text-align:center;" class="odd-detail">{{utils.mNLC(riga.valore,2)}}</td>
+                <td style="color:green;width:120px;text-align:center;" class="odd-detail">{{utils.mNLC(riga.valore,2)}}</td>
             {% elif riga.segno =="uscita" %}
-            <td style="color:red;width:80px;text-align:center;" class="odd-detail">-{{utils.mNLC(riga.valore,2)}}</td>
+            <td style="color:red;width:120px;text-align:center;" class="odd-detail">-{{utils.mNLC(riga.valore,2)}}</td>
             {% endif %}
-            {% if riga.tipo =="banca" %}
-                <td style="color:blue;width:80px;text-align:center;" class="odd-detail">{{(riga.tipo)}}</td>
-            {% elif riga.tipo =="cassa" %}
-            <td style="color:orange;width:80px;text-align:center;" class="odd-detail">{{riga.tipo}}</td>
+            {% if riga.tipo == "banca" %}
+            <td style="color:blue;width:80px;text-align:center;" class="odd-detail">{{(riga.tipo)}}</td>
+            {% elif riga.tipo == "cassa" %}
+        	<td style="color:orange;width:80px;text-align:center;" class="odd-detail">{{riga.tipo}}</td>
+            {% else %}
+        	<td style="color:brown;width:80px;text-align:center;" class="odd-detail">{{riga.tipo}}</td>
             {% endif %}
-              <td style="width:12%;" class="odd-detail">{{riga.banca[0:30]}}</td>
-	      <td class="odd-detail">{{ riga.note_primanota|nonone }}</td>
+			<td style="width:100px;" class="odd-detail">{{riga.banca[0:30]}}</td>
+			<td style="width:20%;font-size:10px;" class="odd-detail">{{ riga.note_primanota|nonone }}</td>
         </tr>
         {% endfor %}
         {% if dao.righeprimanota|length==1 %}
-<tr> <td span=4><br />NOTE: {{dao.note|nonone}}</td></tr>
-{% endif %}
-                </table>
+			<tr><td span=4><br />NOTE: {{dao.note|nonone}}</td></tr>
+		{% endif %}
+    </table>
 <br />
 <table style="width:280px;">
 <tr>
