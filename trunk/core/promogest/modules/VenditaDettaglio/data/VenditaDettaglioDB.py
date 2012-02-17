@@ -78,7 +78,7 @@ testataScontrinoTable = Table('testata_scontrino', params['metadata'],
             Column('id_user',Integer),
             Column('id_testata_movimento',Integer,ForeignKey(testataMovimentoFK, onupdate="CASCADE", ondelete="RESTRICT")),
             schema=params['schema'],
-            extend_existing=True
+            useexisting =True
             )
 testataScontrinoTable.create(checkfirst=True)
 
@@ -94,7 +94,7 @@ rigaScontrinoTable = Table('riga_scontrino', params['metadata'],
         Column('id_testata_scontrino',Integer,ForeignKey(testataScontrinoFK, onupdate="CASCADE", ondelete="CASCADE"),nullable=True),
         Column('id_articolo',Integer, ForeignKey(articoloFK, onupdate="CASCADE", ondelete="RESTRICT"),nullable=False),
         schema=params['schema'],
-        extend_existing=True
+        useexisting =True
 
         )
 rigaScontrinoTable.create(checkfirst=True)
@@ -105,7 +105,7 @@ scontoScontrinoTable= Table('sconto_scontrino', params['metadata'],
             Column('tipo_sconto',String(50),nullable=False),
             CheckConstraint( "tipo_sconto = 'valore' or tipo_sconto = 'percentuale'" ),
             schema = params['schema'],
-            extend_existing=True
+            useexisting =True
         )
 scontoScontrinoTable.create(checkfirst=True)
 
@@ -115,7 +115,7 @@ scontoRigaScontrinoTable = Table('sconto_riga_scontrino', params['metadata'],
         Column('id',Integer,ForeignKey(scontoscontrinoFK,onupdate="CASCADE",ondelete="CASCADE"),primary_key=True),
         Column('id_riga_scontrino',Integer,ForeignKey(rigascontrinoFK,onupdate="CASCADE",ondelete="CASCADE")),
         schema=params['schema'],
-        extend_existing=True)
+        useexisting =True)
 scontoRigaScontrinoTable.create(checkfirst=True)
 
 chiusuraFiscaleTable = Table('chiusura_fiscale', params['metadata'],
@@ -124,7 +124,7 @@ chiusuraFiscaleTable = Table('chiusura_fiscale', params['metadata'],
             Column('id_magazzino',Integer,ForeignKey(magazzinoFK, onupdate="CASCADE", ondelete="RESTRICT")),
             Column('id_pos',Integer,ForeignKey(posFK, onupdate="CASCADE", ondelete="RESTRICT")),
             schema=params['schema'],
-            extend_existing=True
+            useexisting =True
             )
 chiusuraFiscaleTable.create(checkfirst=True)
 
@@ -134,7 +134,7 @@ scontoTestataScontrinoTable = Table('sconto_testata_scontrino', params['metadata
         Column('id',Integer,ForeignKey(scontoscontrinoFK,onupdate="CASCADE",ondelete="CASCADE"),primary_key=True),
         Column('id_testata_scontrino',Integer,ForeignKey(testataScontrinoFK,onupdate="CASCADE",ondelete="CASCADE")),
         schema=params['schema'],
-        extend_existing=True
+       useexisting =True
         )
 scontoTestataScontrinoTable.create(checkfirst=True)
 
@@ -151,6 +151,6 @@ testataScontrinoClienteTable = Table('testata_scontrino_cliente', params['metada
         Column('id_testata_scontrino',Integer,ForeignKey(testataScontrinoFK,onupdate="CASCADE",ondelete="CASCADE")),
         Column('id_cliente',Integer,ForeignKey(clienteFK,onupdate="CASCADE",ondelete="CASCADE")),
         schema=params['schema'],
-        extend_existing=True
+        useexisting =True
         )
 testataScontrinoClienteTable.create(checkfirst=True)
