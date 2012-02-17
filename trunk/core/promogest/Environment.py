@@ -595,7 +595,7 @@ else:
 if not engine:
     raise RuntimeError("Non è stato trovato un backend per il database.")
 tipo_eng = engine.name
-engine.echo = True
+engine.echo = False
 #engine.autocommit= True
 #insp = reflection.Inspector.from_engine(engine)
 
