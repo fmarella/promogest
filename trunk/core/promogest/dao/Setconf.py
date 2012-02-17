@@ -366,7 +366,7 @@ if not ("ricerca_per", "Documenti") in allkey:
 if not ("cartella_predefinita", "General") in allkey:
     krr = SetConf()
     krr.key = "cartella_predefinita"
-    krr.value = Environment.documentsDir
+    krr.value = documentsDir
     krr.section = "General"
     krr.description = "Cartella di salvataggio predefinita"
     krr.tipo_section = "Generico"
