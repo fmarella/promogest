@@ -223,21 +223,21 @@ class Main(GladeWidget):
 
         fillComboboxRole(self.anag_minori_combobox, noAdmin=True)
         
-        conf_timeout = SetConf().select(key="updates_timeout", section="General")
-        timeout = '300'
-        if not conf_timeout:
-            conf_timeout = SetConf()
-            conf_timeout.key = "updates_timeout"
-            conf_timeout.value = '300'
-            conf_timeout.section = "General"
-            conf_timeout.tipo_section = "Generico"
-            conf_timeout.description = "intervallo controllo aggiornamenti"
-            conf_timeout.active = True
-            conf_timeout.tipo = "str"
-            conf_timeout.date = datetime.datetime.now()
-            Environment.session.add(conf_timeout)
-        else:
-            timeout = conf_timeout[0].value
+        # conf_timeout = SetConf().select(key="updates_timeout", section="General")
+        # timeout = '300'
+        # if not conf_timeout:
+            # conf_timeout = SetConf()
+            # conf_timeout.key = "updates_timeout"
+            # conf_timeout.value = '300'
+            # conf_timeout.section = "General"
+            # conf_timeout.tipo_section = "Generico"
+            # conf_timeout.description = "intervallo controllo aggiornamenti"
+            # conf_timeout.active = True
+            # conf_timeout.tipo = "str"
+            # conf_timeout.date = datetime.datetime.now()
+            # Environment.session.add(conf_timeout)
+        # else:
+            # timeout = conf_timeout[0].value
 
         def update_timer():
             leggiRevisioni()

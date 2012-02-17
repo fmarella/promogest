@@ -143,9 +143,9 @@ class ConfiguraWindow(GladeWidget):
         a[0].tipo = "bool"
         Environment.session.add(a[0])
 
-        a = SetConf().select(key="updates_timeout", section="General")
-        a[0].value = str(findIdFromCombobox(self.timer_combobox))
-        Environment.session.add(a[0])
+        # a = SetConf().select(key="updates_timeout", section="General")
+        # a[0].value = str(findIdFromCombobox(self.timer_combobox))
+        # Environment.session.add(a[0])
 
         b = SetConf().select(key="zeri_in_totali", section="Stampa")
         b[0].value = str(self.zeri_in_totali_check.get_active())
