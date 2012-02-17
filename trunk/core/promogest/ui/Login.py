@@ -257,16 +257,16 @@ class Login(GladeApp):
                         Environment.pg2log.info("LOGIN  id, user, role azienda: %s, %s" %(repr(Environment.params['usernameLoggedList']),self.azienda ) )
                         import promogest.ui.SetConf
                         checkInstallation()
-                        if Environment.tipodb !="sqlite":
-                            print ">>>>>>> INIZIO IL CICLO TRA LE TABELLE CONTENUTE NEL METADATA LETTO DA FILE..."
-                            for t, v in Environment.metatmp.tables.iteritems():
-                                if 'promogest2' not in t:
-                                    args=t.split('.')
-                                    print ">>>>>>> IMPORTO LA TABELLA %s dello schema %s" % (args[1], args[0])
-                                    try:
-                                        v.tometadata(Environment.meta)
-                                    except:
-                                        print ">>>>>>> SCARTO LA TABELLA %s" % t
+                        #if Environment.tipodb !="sqlite":
+                            #print ">>>>>>> INIZIO IL CICLO TRA LE TABELLE CONTENUTE NEL METADATA LETTO DA FILE..."
+                            #for t, v in Environment.metatmp.tables.iteritems():
+                                #if 'promogest2' not in t:
+                                    #args=t.split('.')
+                                    #print ">>>>>>> IMPORTO LA TABELLA %s dello schema %s" % (args[1], args[0])
+                                    #try:
+                                        #v.tometadata(Environment.meta)
+                                    #except:
+                                        #print ">>>>>>> SCARTO LA TABELLA %s" % t
                         #_end = time.time()
                         #print "***caricamento meta da file completato in : ", _end - _start, "sec" #gobject.idle_add(self.importModulesFromDir,'promogest/modules')
                         self.importModulesFromDir('promogest/modules')
