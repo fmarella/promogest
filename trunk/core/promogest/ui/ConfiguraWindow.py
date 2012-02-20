@@ -234,7 +234,8 @@ class ConfiguraWindow(GladeWidget):
 
         Environment.session.commit()
         confList = SetConf().select(batchSize=None)
-        Environment.confList = confList
+        for d in confList:
+            Environment.confDict[(d.key,d.section)] = d
         self.destroy()
 
 
