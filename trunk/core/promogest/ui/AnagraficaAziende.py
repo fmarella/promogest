@@ -210,3 +210,6 @@ class AnagraficaAziende(GladeWidget):
         from promogest.ui.AnagraficaBancheAzienda import AnagraficaBancheAzienda
         anag = AnagraficaBancheAzienda(self.dao.schemaa)
         anag.show_all()
+        self.getTopLevel()
+        self.placeWindow(anag.getTopLevel())
+        anag.getTopLevel().set_modal(modal=True)
