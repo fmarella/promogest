@@ -35,23 +35,26 @@ class Banca(Dao):
 
     def filter_values(self,k,v):
         if k == 'denominazione':
-            dic= {  k : banca.c.denominazione.ilike("%"+v+"%")}
+            dic= {  k : banca_table.c.denominazione.ilike("%"+v+"%")}
         elif k == 'iban':
-            dic = {k: banca.c.iban.ilike("%"+v+"%")}
+            dic = {k: banca_table.c.iban.ilike("%"+v+"%")}
         elif k == 'abi':
-            dic = {k: banca.c.abi.ilike("%"+v+"%")}
+            dic = {k: banca_table.c.abi.ilike("%"+v+"%")}
         elif k == 'cab':
-            dic = {k: banca.c.cab.ilike("%"+v+"%")}
+            dic = {k: banca_table.c.cab.ilike("%"+v+"%")}
         elif k == 'bic_swift':
-            dic = {k: banca.c.bic_swift.ilike('%' + v + '%')}
+            dic = {k: banca_table.c.bic_swift.ilike('%' + v + '%')}
         elif k == 'agenzia':
-            dic = {k:banca.c.agenzia.ilike("%"+v+"%")}
+            dic = {k:banca_table.c.agenzia.ilike("%"+v+"%")}
         return  dic[k]
 
-banca=Table('banca',params['metadata'],schema = params['schema'],autoload=True)
+banca_table = Table('banca',
+                      params['metadata'],
+                      schema=params['schema'],
+                      autoload=True)
 
-if 'bic_swift' not in [c.name for c in banca.columns]:
+if 'bic_swift' not in [c.name for c in banca_table.columns]:
     col = Column('bic_swift', String)
-    col.create(banca, populate_default=True)
+    col.create(banca_table, populate_default=True)
 
-std_mapper = mapper(Banca,banca, order_by=banca.c.id)
+std_mapper = mapper(Banca, banca_table, order_by=banca_table.c.id)

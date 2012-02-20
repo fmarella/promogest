@@ -19,28 +19,27 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-
 from sqlalchemy import Table
 from sqlalchemy.orm import mapper
 from promogest.Environment import params
 from Dao import Dao
 
+
 class Azienda(Dao):
-    """ User class provides to make a Users dao which include more used"""
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
 
-    def filter_values(self, k,v):
-        if k =="schemaa":
-            dic= {  'schemaa' : azienda.c.schemaa ==v}
+    def filter_values(self, k, v):
+        if k == "schemaa":
+            dic = { 'schemaa': azienda_table.c.schemaa==v}
         elif k == "denominazione":
-            dic= {  k : azienda.c.denominazione.ilike("%"+v+"%")}
-        return  dic[k]
+            dic = { k: azienda_table.c.denominazione.ilike("%"+v+"%")}
+        return dic[k]
 
-azienda=Table('azienda',
-        params['metadata'],
-        autoload=True,
-        schema = params['mainSchema'])
+azienda_table = Table('azienda',
+                 params['metadata'],
+                 autoload=True,
+                 schema=params['mainSchema'])
 
-std_mapper = mapper(Azienda, azienda, order_by=azienda.c.schemaa)
+std_mapper = mapper(Azienda, azienda_table, order_by=azienda_table.c.schemaa)

@@ -29,12 +29,12 @@ from promogest.dao.Banca import Banca
 
 
 try:
-    banche_azienda = Table('banche_azienda',
+    banche_azienda_table = Table('banche_azienda',
                             params['metadata'],
                             schema=params['schema'],
                             autoload=True)
 except:
-    banche_azienda = Table('banche_azienda',
+    banche_azienda_table = Table('banche_azienda',
         params['metadata'],
         Column('id', Integer, primary_key=True),
         Column('id_banca', Integer),
@@ -49,7 +49,7 @@ except:
         schema=params['schema'],
         )
 
-    banche_azienda.create(checkfirst=True)
+    banche_azienda_table.create(checkfirst=True)
 
 def reimposta_banca_predefinita(newDao):
     daos = BancheAzienda().select(complexFilter=(and_(not_(BancheAzienda.id==newDao.id), BancheAzienda.id_azienda==newDao.id_azienda, BancheAzienda.banca_predefinita==True)), batchSize=None)
@@ -80,12 +80,12 @@ class BancheAzienda(Dao):
 
     def filter_values(self, k, v):
         if k == 'idAzienda':
-            dic = {k: banche_azienda.c.id_azienda==v}
+            dic = {k: banche_azienda_table.c.id_azienda==v}
         elif k == 'numeroConto':
-            dic = {k: and_(banche_azienda.c.id_azienda==Azienda.schemaa,
-                            banche_azienda.c.numero_conto.ilike("%" + v + "%"))}
+            dic = {k: and_(banche_azienda_table.c.id_azienda==Azienda.schemaa,
+                            banche_azienda_table.c.numero_conto.ilike("%" + v + "%"))}
         return dic[k]
 
 std_mapper = mapper(BancheAzienda,
-                      banche_azienda,
-                      order_by=banche_azienda.c.id)
+                      banche_azienda_table,
+                      order_by=banche_azienda_table.c.id)
