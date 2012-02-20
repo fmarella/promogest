@@ -622,9 +622,6 @@ meta = MetaData()
 metatmp = MetaData()
 _start = time.time()
 
-print mainSchema
-print azienda
-
 if os.path.exists(os.path.join(CONFIGPATH, meta_pickle)):
     print ">>>>>>> STO CARICANDO IL METADATA DA FILE..."
     with open(os.path.join(CONFIGPATH, meta_pickle), 'rb') as f:
