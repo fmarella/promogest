@@ -54,6 +54,9 @@ from promogest.dao.UtenteImmagine import UtenteImmagine
 from promogest.dao.ArticoloImmagine import ArticoloImmagine
 from promogest.dao.SlaFile import SlaFile
 from promogest.dao.SlaFileImmagine import SlaFileImmagine
+from promogest.modules.GestioneCommesse.dao.StadioCommessa import StadioCommessa
+from promogest.modules.GestioneCommesse.dao.TestataCommessa import TestataCommessa
+from promogest.modules.GestioneCommesse.dao.RigaCommessa import RigaCommessa
 from promogest.ui.ConfiguraWindow import ConfiguraWindow
 from promogest.ui.PanUi import PanUi, checkPan
 from promogest.ui.AzioniVelociNotebookPage import AzioniVelociNotebookPage
@@ -130,13 +133,13 @@ def upgrade_banca():
     else:
         if Environment.tipodb == 'sqlite':
             RAW_SQL_1 = """CREATE TABLE banca2 (
-	id INTEGER NOT NULL, 
-	denominazione VARCHAR(200) NOT NULL, 
-	agenzia VARCHAR(200), 
-	iban VARCHAR(30), 
-	abi VARCHAR(5), 
-	cab VARCHAR(5), bic_swift VARCHAR, 
-	PRIMARY KEY (id) 
+    id INTEGER NOT NULL,
+    denominazione VARCHAR(200) NOT NULL,
+    agenzia VARCHAR(200),
+    iban VARCHAR(30),
+    abi VARCHAR(5),
+    cab VARCHAR(5), bic_swift VARCHAR,
+    PRIMARY KEY (id)
 );"""
             RAW_SQL_2 = """INSERT INTO banca2 (id, denominazione, agenzia, iban, abi, cab)
 SELECT id, denominazione, agenzia, iban, abi, cab FROM banca;"""

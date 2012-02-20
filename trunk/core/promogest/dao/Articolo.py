@@ -37,7 +37,8 @@ from FamigliaArticolo import FamigliaArticolo
 from CategoriaArticolo import CategoriaArticolo
 from CodiceABarreArticolo import CodiceABarreArticolo
 from Fornitura import Fornitura
-
+from promogest.dao.ScontoVenditaDettaglio import ScontoVenditaDettaglio
+from promogest.dao.ScontoVenditaIngrosso import ScontoVenditaIngrosso
 from promogest.ui.utils import codeIncrement
 
 if hasattr(conf, "PromoWear") and \
