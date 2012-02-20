@@ -727,7 +727,10 @@ def fillComboboxBanche(combobox, filter=False, short=1000):
         emptyRow = '< Tutti >'
     model.append((None, 0, emptyRow))
     for b in bans:
-        model.append((b, b.id, (b.denominazione[0:short]  or '')))
+        if b.agenzia:
+            model.append((b, b.id, ("{0} ({1})".format(b.denominazione, b.agenzia))))
+        else:
+            model.append((b, b.id, ("{0}".format(b.denominazione))))
 
     combobox.clear()
     renderer = gtk.CellRendererText()
