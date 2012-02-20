@@ -20,6 +20,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
+from decimal import Decimal
 from promogest.ui.AnagraficaComplessa import Anagrafica
 from promogest.ui.AnagraficaComplessaEdit import AnagraficaEdit
 from promogest.ui.AnagraficaComplessaReport import AnagraficaReport
@@ -154,7 +155,7 @@ class AnagraficaBancheAziendaEdit(AnagraficaEdit):
         findComboboxRowFromId(self.id_banca_ccb.combobox, self.dao.id_banca)
         self.numero_conto_entry.set_text(self.dao.numero_conto or '')
         self.data_widget.set_text(dateToString(self.dao.data_riporto) or '')
-        self.valore_smentry.set_text(str(self.dao.valore_riporto or ''))
+        self.valore_smentry.set_text(str(self.dao.valore_riporto or Decimal(0)))
         self.codice_sia_entry.set_text(self.dao.codice_sia or '')
         self.banca_pref_check.set_active(self.dao.banca_predefinita or False)
 
@@ -165,7 +166,7 @@ class AnagraficaBancheAziendaEdit(AnagraficaEdit):
         self.dao.id_banca = id_banca
         self.dao.numero_conto = self.numero_conto_entry.get_text()
         self.dao.data_riporto = stringToDate(self.data_widget.get_text())
-        self.dao.valore_riporto = self.valore_smentry.get_text()
+        self.dao.valore_riporto = self.valore_smentry.get_text() or Decimal(0)
         self.dao.codice_sia = self.codice_sia_entry.get_text()
         self.dao.banca_predefinita = self.banca_pref_check.get_active()
         self.dao.id_azienda = self._anagrafica._idAzienda
