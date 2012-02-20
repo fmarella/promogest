@@ -489,7 +489,7 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
                 toggleButton.set_active(False)
                 return
 
-        from promogest.uiAnagraficaListiniArticoli import AnagraficaListiniArticoli
+        from promogest.ui.AnagraficaListiniArticoli import AnagraficaListiniArticoli
         anag = AnagraficaListiniArticoli(self.dao.id)
         anagWindow = anag.getTopLevel()
 
