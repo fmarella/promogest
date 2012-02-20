@@ -126,6 +126,7 @@ except:
 #graph.write_png('schema.png') # write out the file
 
 def upgrade_banca():
+    return
     from promogest.dao.Setconf import SetConf
     kbb = SetConf().select(key="upgrade_banca", section="General")
     if kbb and kbb[0].value=="True":
