@@ -209,7 +209,7 @@ class AnagraficaAziende(GladeWidget):
     def on_banche_azienda_button_clicked(self, button):
         from promogest.ui.AnagraficaBancheAzienda import AnagraficaBancheAzienda
         anag = AnagraficaBancheAzienda(self.dao.schemaa)
-        anag.show_all()
-        self.getTopLevel()
-        self.placeWindow(anag.getTopLevel())
-        anag.getTopLevel().set_modal(modal=True)
+        anagWindow = anag.getTopLevel()
+        returnWindow = button.get_toplevel()
+        anagWindow.set_transient_for(returnWindow)
+        anagWindow.show_all()
