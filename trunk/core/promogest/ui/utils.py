@@ -3019,28 +3019,32 @@ def setconf(section, key, value=False):
         if key == "cartella_predefinita":
             return Environment.conf.Documenti.cartella_predefinita
     from promogest.dao.Setconf import SetConf
-    confList = Environment.confList
-    if not confList:
+    #confList = Environment.confList
+    if not Environment.confDict:
         confList = SetConf().select(batchSize=None)
-        Environment.confList = confList
+        for d in confList:
+            Environment.confDict[(d.key,d.section)] = d
+        #Environment.confList = confList
 
-    confff = None
-    for d in confList:
-        if not value:
-            if d.key==key and d.section==section:
-                confff = d
-                break
-        else:
-            if d.key==key and d.section==section and d.value == value:
-                confff = d
-                break
-    if not confff:
+    #confff = None
+    #for d in confList:
+        #if not value:
+            #if d.key==key and d.section==section:
+                #confff = d
+                #break
+        #else:
+            #if d.key==key and d.section==section and d.value == value:
+                #confff = d
+                #break
+    if (key,section) not in Environment.confDict:
         if not value:
             confff = SetConf().select(key=key, section=section)
         elif value:
             confff = SetConf().select(key=key, section=section, value=value)
         if confff:
             confff = confff[0]
+    else:
+        confff = Environment.confDict[(key, section)]
     c = []
     if confff:
         valore = confff.value
@@ -3625,7 +3629,7 @@ def dati_file_buffetti(testata):
                 'importo_iva': str(mN(testata._totaleImpostaScontata)),
             }],
             'recordB': [{
-                'posizione': 'A' # controllare scadenze.data_pagamento se None mettere A, altrimenti P (pagato) 
+                'posizione': 'A' # controllare scadenze.data_pagamento se None mettere A, altrimenti P (pagato)
             }],
         }]
 
