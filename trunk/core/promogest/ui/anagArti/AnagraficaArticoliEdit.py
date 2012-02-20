@@ -388,7 +388,7 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
                 toggleButton.set_active(False)
                 return
 
-        from AnagraficaCodiciABarreArticoli import AnagraficaCodiciABarreArticoli
+        from promogest.ui.AnagraficaCodiciABarreArticoli import AnagraficaCodiciABarreArticoli
         anag = AnagraficaCodiciABarreArticoli(self.dao.id)
         anagWindow = anag.getTopLevel()
 
@@ -407,7 +407,7 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
                 toggleButton.set_active(False)
                 return
 
-        from AnagraficaMultipli import AnagraficaMultipli
+        from promogest.ui.AnagraficaMultipli import AnagraficaMultipli
         anag = AnagraficaMultipli(self.dao.id)
         anagWindow = anag.getTopLevel()
 
@@ -489,7 +489,7 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
                 toggleButton.set_active(False)
                 return
 
-        from AnagraficaListiniArticoli import AnagraficaListiniArticoli
+        from promogest.uiAnagraficaListiniArticoli import AnagraficaListiniArticoli
         anag = AnagraficaListiniArticoli(self.dao.id)
         anagWindow = anag.getTopLevel()
 
