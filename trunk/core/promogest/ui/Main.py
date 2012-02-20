@@ -122,7 +122,61 @@ except:
 #)
 #graph.write_png('schema.png') # write out the file
 
+def upgrade_banca():
+    from promogest.dao.Setconf import SetConf
+    kbb = SetConf().select(key="upgrade_banca", section="General")
+    if kbb and kbb[0].value=="True":
+        return
+    else:
+        if Environment.tipodb == 'sqlite':
+            RAW_SQL_1 = """CREATE TABLE banca2 (
+	id INTEGER NOT NULL, 
+	denominazione VARCHAR(200) NOT NULL, 
+	agenzia VARCHAR(200), 
+	iban VARCHAR(30), 
+	abi VARCHAR(5), 
+	cab VARCHAR(5), bic_swift VARCHAR, 
+	PRIMARY KEY (id) 
+);"""
+            RAW_SQL_2 = """INSERT INTO banca2 (id, denominazione, agenzia, iban, abi, cab)
+SELECT id, denominazione, agenzia, iban, abi, cab FROM banca;"""
+            RAW_SQL_3 = "DROP TABLE banca;"
+            RAW_SQL_4 = "ALTER TABLE banca2 RENAME TO banca;"
+            result = Environment.params['engine'].execute(RAW_SQL_1)
+            result = Environment.params['engine'].execute(RAW_SQL_2)
+            result = Environment.params['engine'].execute(RAW_SQL_3)
+            result = Environment.params['engine'].execute(RAW_SQL_4)
+            result.close()
+        elif Environment.tipodb == 'postgresql':
+            from promogest.ui.utils import messageWarning
+            messageWarning("""<span font='12.5' font-weight='bold'>Aggiornamento del database</span>\n
+Chiudere eventuali postazioni aperte prima di procedere.
+Al termine dell'aggiornamento PromoGest verrà chiuso.""")
+            from promogest.dao.Banca import banca
+            from migrate.changeset.constraint import UniqueConstraint
+            cons = UniqueConstraint('denominazione', table=banca)
+            cons.drop()
+        else:
+            pass
 
+        kbb = SetConf().select(key="upgrade_banca", section="General")
+        if not kbb:
+            kbb = SetConf()
+            kbb.key = "upgrade_banca"
+            kbb.value ="True"
+            kbb.section = "General"
+            kbb.tipo_section = "Generico"
+            kbb.description = "rimuove constraint descrizione su banca"
+            kbb.active = True
+            kbb.tipo = "bool"
+            kbb.date = datetime.datetime.now()
+            kbb.persist()
+        else:
+            kbb[0].value="True"
+            kbb[0].persist()
+        messageInfo("Aggiornamento completato con successo! Riavviare PromoGest")
+        import sys
+        sys.exit(0)
 
 
 class Main(GladeWidget):
@@ -272,6 +326,8 @@ class Main(GladeWidget):
         #if Environment.tipodb != "sqlite":
             #pickle_meta()
         # print "Metadata contiene un totale di {0} tabelle".format( len(Environment.meta.tables.keys()))
+
+        upgrade_banca()
 
         #if datetime.date.today() >= datetime.date(2011,9,17):
             #from promogest.dao.Setconf import SetConf
@@ -1161,7 +1217,7 @@ Procedere all'installazione del modulo PromoShop? """)
         on_main_window_key_press_eventPart(self, widget, event)
 
     def on_disconnect(self, widget=None):
-        if YesNoDialog(msg=_('Confermi l\'eliminazione ?'), transient=self.getTopLevel()):
+        if YesNoDialog(msg=_('Disconnessione dal database, continuare?'), transient=self.getTopLevel()):
             self.destroy()
         else:
             return

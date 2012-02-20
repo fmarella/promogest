@@ -27,9 +27,9 @@ import Image
 import os
 from promogest import Environment
 from promogest.dao.Azienda import Azienda
-from promogest.ui.utils import dateToString, stringToDate, checkCodFisc, checkPartIva, showAnagraficaRichiamata, fenceDialog, setconf, posso,\
-    messageError
 from promogest.lib.iban import check_iban, IBANError
+from promogest.ui.utils import *
+from promogest.ui.utilsCombobox import *
 
 
 class AnagraficaAziende(GladeWidget):
@@ -45,6 +45,7 @@ class AnagraficaAziende(GladeWidget):
         self.getTopLevel()
         self.placeWindow(self.getTopLevel())
         self.getTopLevel().set_modal(modal=True)
+
         self.draw()
 
 
@@ -89,7 +90,6 @@ class AnagraficaAziende(GladeWidget):
         self.numero_iscrizione_tribunale_entry.set_text(self.dao.iscrizione_tribunale_numero or '')
         self.codice_rea_entry.set_text(self.dao.codice_rea or '')
         self.matricola_inps_entry.set_text(self.dao.matricola_inps or '')
-        self.iban_entry.set_text(self.dao.iban or '')
         #self.path_label.set_text(self.dao.percorso_immagine or '')
         self.logo_azienda.set_from_file(self.dao.percorso_immagine)
 
@@ -117,24 +117,6 @@ class AnagraficaAziende(GladeWidget):
         self.dao.iscrizione_tribunale_numero = self.numero_iscrizione_tribunale_entry.get_text()
         self.dao.codice_rea = self.codice_rea_entry.get_text()
         self.dao.matricola_inps = self.matricola_inps_entry.get_text()
-        
-        iban = self.iban_entry.get_text() or ''
-        if iban:
-            iban = iban.upper()
-            try:
-                cc, cs, cin, abi, cab, conto = check_iban(iban)
-            except IBANError:
-                messageError(msg="Il codice IBAN inserito non è corretto.",
-                                   transient=self.getTopLevel())
-                return False
-            else:
-                self.dao.cin = cin
-                self.dao.abi = abi
-                self.dao.cab = cab
-                self.dao.numero_conto = conto
-                self.dao.iban = iban
-        else:
-            self.dao.iban = ''
 
         self.dao.percorso_immagine = self.filename or ''
         #self.path_label.get_text() #+"/"+self.filena
@@ -148,18 +130,7 @@ class AnagraficaAziende(GladeWidget):
             if not partiva:
                 return False
         return True
-    
-    def on_iban_entry_focus_out_event(self, widget, event):
-        iban = self.iban_entry.get_text() or ''
-        if iban:
-            iban = iban.upper()
-            try:
-                cc, cs, cin, abi, cab, conto = check_iban(iban)
-            except IBANError:
-                messageError(msg="Il codice IBAN inserito non è corretto.",
-                                   transient=self.getTopLevel())
-                return False
-        
+
     def on_seleziona_logo_button_clicked(self, widget):
         self.logo_filechooserdialog.run()
         if self.dao.percorso_immagine:
@@ -235,3 +206,8 @@ class AnagraficaAziende(GladeWidget):
         else:
             fenceDialog()
             toggleButton.set_active(False)
+
+    def on_banche_azienda_button_clicked(self, button):
+        from promogest.ui.AnagraficaBancheAzienda import AnagraficaBancheAzienda
+        anag = AnagraficaBancheAzienda(self.dao.schemaa)
+        anag.show_all()
