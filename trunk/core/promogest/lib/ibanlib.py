@@ -24,7 +24,7 @@ PARI = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20
 DISPARI = [1, 0, 5, 7, 9, 13, 15, 17, 19, 21, 2, 4, 18, 20, 11, 3, 6, 8, 12, 14, 16, 10, 22, 25, 24, 23, 27, 28, 26]
 
 IT_IBAN_Struct = Struct('2s2sc5s5s12s')
-(COUNTRY, CEU, CIN, ABI, CAB, NCONTO) = range(6)
+(COUNTRY, CS, CIN, ABI, CAB, NCONTO) = range(6)
 
 def dividi_iban(iban):
     '''Ritorna una lista con i codici che compongono il codice iban

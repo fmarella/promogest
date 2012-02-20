@@ -27,7 +27,6 @@ import Image
 import os
 from promogest import Environment
 from promogest.dao.Azienda import Azienda
-from promogest.lib.iban import check_iban, IBANError
 from promogest.ui.utils import *
 from promogest.ui.utilsCombobox import *
 

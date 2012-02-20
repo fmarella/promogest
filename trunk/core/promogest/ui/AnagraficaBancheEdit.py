@@ -25,7 +25,7 @@ from promogest.dao.Banca import Banca
 from promogest.ui.GladeWidget import GladeWidget
 from promogest.ui.utils import obligatoryField, messageWarning,\
     messageError, messageInfo
-from promogest.lib.iban import check_iban, IBANError
+from promogest.lib.ibanlib import dividi_iban
 
 
 class AnagraficaBancheEdit(GladeWidget):
@@ -60,18 +60,6 @@ class AnagraficaBancheEdit(GladeWidget):
             self.cab_entry.set_text(str(self.dao.cab or ''))
             self.bic_swift_entry.set_text(str(self.dao.bic_swift or ''))
 
-    def on_calcola_da_iban_button_clicked(self, button):
-        iban = self.iban_entry.get_text() or ''
-        if iban:
-            try:
-                cc, cs, cin, abi, cab, conto = check_iban(iban.upper())
-            except IBANError as e:
-                messageWarning(msg="Il codice IBAN inserito non è corretto.",
-                               transient=self.getTopLevel())
-            else:
-                messageInfo(msg="Il codice IBAN è formalmente corretto.",
-                            transient=self.getTopLevel())
-
 
     def saveDao(self, tipo=None):
         denominazione = self.denominazione_banca_entry.get_text()
@@ -86,10 +74,9 @@ class AnagraficaBancheEdit(GladeWidget):
         
         iban = self.iban_entry.get_text() or ''
         if iban:
-            iban = iban.upper()
             try:
-                cc, cs, cin, abi, cab, conto = check_iban(iban)
-            except IBANError:
+                cc, cs, cin, abi, cab, conto = dividi_iban(iban)
+            except:
                 messageError(msg="Il codice IBAN inserito non è corretto.",
                                    transient=self.getTopLevel())
                 return

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <!-- interface-requires pythonplugin 0.0 -->
   <requires lib="gtk+" version="2.16"/>
+  <!-- interface-requires pythonplugin 0.0 -->
   <!-- interface-naming-policy project-wide -->
   <object class="GtkWindow" id="banca_edit_window">
     <property name="visible">True</property>
@@ -125,23 +125,6 @@
               </packing>
             </child>
             <child>
-              <object class="GtkButton" id="calcola_da_iban_button">
-                <property name="label" translatable="yes">Check</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
-                <property name="image">image2</property>
-                <signal name="clicked" handler="on_calcola_da_iban_button_clicked" swapped="no"/>
-              </object>
-              <packing>
-                <property name="left_attach">2</property>
-                <property name="right_attach">3</property>
-                <property name="top_attach">2</property>
-                <property name="bottom_attach">3</property>
-              </packing>
-            </child>
-            <child>
               <object class="GtkEntry" id="abi_entry">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -251,6 +234,9 @@
             <child>
               <placeholder/>
             </child>
+            <child>
+              <placeholder/>
+            </child>
           </object>
           <packing>
             <property name="expand">True</property>
@@ -270,10 +256,10 @@
                 <child>
                   <object class="GtkRadioButton" id="no_button">
                     <property name="label" translatable="yes">No</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="active">True</property>
                     <property name="draw_indicator">True</property>
                   </object>
@@ -286,10 +272,10 @@
                 <child>
                   <object class="GtkRadioButton" id="associa_cliente_radio">
                     <property name="label" translatable="yes">Cliente</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="active">True</property>
                     <property name="draw_indicator">True</property>
                     <property name="group">no_button</property>
@@ -315,10 +301,10 @@
                 <child>
                   <object class="GtkRadioButton" id="associa_fornitore_radio">
                     <property name="label" translatable="yes">Fornitore</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="active">True</property>
                     <property name="draw_indicator">True</property>
                     <property name="group">no_button</property>
@@ -344,10 +330,10 @@
                 <child>
                   <object class="GtkRadioButton" id="associa_persona_giuridica_radio">
                     <property name="label" translatable="yes">Contatti</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="draw_indicator">True</property>
                     <property name="group">no_button</property>
                   </object>
@@ -433,10 +419,10 @@
             <child>
               <object class="GtkButton" id="chiudi_banche_edit_button">
                 <property name="label">gtk-close</property>
+                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
                 <signal name="clicked" handler="on_chiudi_banche_edit_button_clicked" swapped="no"/>
               </object>
@@ -449,10 +435,10 @@
             <child>
               <object class="GtkButton" id="elimina_banca_button">
                 <property name="label">gtk-delete</property>
+                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
                 <signal name="clicked" handler="on_elimina_banca_button_clicked" swapped="no"/>
               </object>
@@ -465,10 +451,10 @@
             <child>
               <object class="GtkButton" id="ok_banche_edit_button">
                 <property name="label">gtk-ok</property>
+                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
                 <signal name="clicked" handler="on_ok_banche_edit_button_clicked" swapped="no"/>
               </object>

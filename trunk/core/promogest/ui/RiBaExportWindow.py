@@ -31,7 +31,7 @@ from promogest.ui.utils import messageError, dateToString, leggiOperazione,\
     leggiBanca, leggiCliente, mN, messageWarning
 
 from promogest.modules.PrimaNota.dao.TestataPrimaNota import TestataPrimaNota
-from promogest.lib.iban import check_iban, IBANError
+from promogest.lib.ibanlib import dividi_iban
 from promogest.modules.Pagamenti.dao import TestataDocumentoScadenza
 from datetime import datetime
 from decimal import Decimal
@@ -53,10 +53,13 @@ def leggiCreditore():
         if not creditore.codice_fiscale:
             messageError('Inserire il codice fiscale nei Dati azienda.')
             return
+
+        # provare con le banche azienda prima
+        
         if azienda.iban:
             try:
-                cc, cs, cin, creditore.abi, creditore.cab, creditore.numero_conto = check_iban(azienda.iban)
-            except IBANError:
+                cc, cs, cin, creditore.abi, creditore.cab, creditore.numero_conto = dividi_iban(azienda.iban)
+            except:
                 pass
         elif azienda.abi and azienda.cab:
             creditore.abi = azienda.abi

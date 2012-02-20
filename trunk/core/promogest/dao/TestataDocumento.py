@@ -49,7 +49,7 @@ from ScontoRigaMovimento import ScontoRigaMovimento
 from promogest.dao.RigaMovimentoFornitura import RigaMovimentoFornitura
 from promogest.modules.Pagamenti.dao.TestataDocumentoScadenza import TestataDocumentoScadenza
 from promogest.dao.InformazioniFatturazioneDocumento import InformazioniFatturazioneDocumento
-from promogest.lib.iban import check_iban, IBANError
+import promogest.lib.ibanlib
 
 #from DaoUtils import *
 from decimal import *
@@ -919,8 +919,8 @@ class TestataDocumento(Dao):
             abi = self.BN.abi or ""
             if not abi and self.BN.iban:
                 try:
-                    code, checksum, cin, abi, cab, account = check_iban(self.BN.iban)
-                except IBANError:
+                    ibanlib.dividi_iban(self.BN.iban)[ibanlib.ABI]
+                except:
                     abi = ''
             return abi
         else:
@@ -932,7 +932,7 @@ class TestataDocumento(Dao):
             cab = self.BN.cab or ""
             if not cab and self.BN.iban:
                 try:
-                    code, checksum, cin, abi, cab, account = check_iban(self.BN.iban)
+                    ibanlib.dividi_iban(self.BN.iban)[ibanlib.CAB]
                 except IBANError:
                     cab = ''
             return cab
