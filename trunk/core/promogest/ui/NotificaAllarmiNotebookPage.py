@@ -43,10 +43,10 @@ class NotificaAllarmiNotebookPage(GladeWidget):
         model = self.alarm_notify_treeview.get_model()
         model.clear()
         #get the current alarms from db
-        idAllarmi = promogest.dao.Promemoria.getScadenze()
+        allarmi = promogest.dao.Promemoria.getScadenze()
         #fill again the model of the treeview (a gtk.ListStore)
-        for idAllarme in idAllarmi:
-            dao = Promemoria().getRecord(id=idAllarme)
+        for dao in allarmi:
+            #dao = Promemoria().getRecord(id=idAllarme)
             model.append((dao, dateToString(dao.data_scadenza),
                                 dao.oggetto,
                                 dao.descrizione,

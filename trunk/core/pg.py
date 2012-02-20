@@ -75,6 +75,8 @@ i DAO, i filtri o tutto"""
             pg3_check.aziendaforce = options.RapidStart.split(":")[0]
             pg3_check.tipodbforce = options.RapidStart.split(":")[1].split("@")[0]
             pg3_check.hostdbforce = options.RapidStart.split("@")[1]
+        if 'ALL' in options.debug:
+            pg3_check.echo = True
         from promogest import Environment
 
         options.debug = options.debug.split(',')

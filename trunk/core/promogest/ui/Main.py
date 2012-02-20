@@ -313,19 +313,9 @@ class Main(GladeWidget):
             if not os.path.exists(os.path.join(Environment.CONFIGPATH, Environment.meta_pickle)):
                 print ">>>>>>> INIZIAMO IL SALVATAGGIO DELLE TABELLE DEL METADATA"
                 with open(os.path.join(Environment.CONFIGPATH, Environment.meta_pickle), 'wb') as f:
-                    meta2 = MetaData()
-                    for t, v in Environment.meta.tables.iteritems():
-                        v.tometadata(meta2)
-                        # if t:
-                        print ">>>>>>> SALVIAMO LA TABELLA %s " % t
-                            # v.tometadata(meta)
-                        # else:
-                            # print ">>>>>>> SCARTO LA TABELLA %s" % t
-                    pickle.dump(meta2, f)
+                    pickle.dump(Environment.meta, f)
                     print ">>>>>>> SALVATAGGIO TERMINATO "
-        #if Environment.tipodb != "sqlite":
-            #pickle_meta()
-        # print "Metadata contiene un totale di {0} tabelle".format( len(Environment.meta.tables.keys()))
+        pickle_meta()
 
         upgrade_banca()
 
@@ -448,9 +438,11 @@ class Main(GladeWidget):
         """ Aggiornamenti e controlli da fare all'avvio del programma
         """
         #Aggiornamento scadenze promemoria
-        if posso("PR"):
+        #if posso("PR"):
             # VERIFICA DEI PROMEMORIA IN SCADENZA
-            updateScadenzePromemoria()
+            #updateScadenzePromemoria()
+        if posso("PR"):
+            glib.timeout_add_seconds(30, updateScadenzePromemoria)
 
     def _refresh(self):
         """

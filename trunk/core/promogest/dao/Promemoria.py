@@ -64,11 +64,12 @@ def getScadenze():
     Ritorna una lista di id di oggetti Promemoria in scadenza (e quindi da notificare)
     """
     alarms = Promemoria().select(in_scadenza=True,offset=None, batchSize=None)
-    returnList = []
-    if alarms:
-        for alarm in alarms:
-            returnList.append(alarm.id)
-    return returnList
+    #returnList = []
+    #if alarms:
+        #for alarm in alarms:
+            #returnList.append(alarm.id)
+    #return returnList
+    return alarms
 
 #if params['schema'] + ".promemoria" in metatmp.tables.keys():
     #t = metatmp.tables[params['schema'] + ".promemoria"]

@@ -28,6 +28,7 @@ aziendaforce = pg3_check.aziendaforce
 tipodbforce = pg3_check.tipodbforce
 hostdbforce = pg3_check.hostdbforce
 web = pg3_check.web
+echosa = pg3_check.echo
 
 from config import Config
 if not web:
@@ -595,7 +596,8 @@ else:
 if not engine:
     raise RuntimeError("Non è stato trovato un backend per il database.")
 tipo_eng = engine.name
-engine.echo = False
+
+engine.echo = echosa
 #engine.autocommit= True
 #insp = reflection.Inspector.from_engine(engine)
 
@@ -627,14 +629,14 @@ if os.path.exists(os.path.join(CONFIGPATH, meta_pickle)):
     print ">>>>>>> STO CARICANDO IL METADATA DA FILE..."
     with open(os.path.join(CONFIGPATH, meta_pickle), 'rb') as f:
         print ">>>>>>> LEGGO IL FILE PICKLE..."
-        metatmp = pickle.load(f)
-    print ">>>>>>> INIZIO IL CICLO TRA LE TABELLE CONTENUTE NEL METADATA LETTO DA FILE..."
-    for t, v in metatmp.tables.iteritems():
-        if 'promogest2' in t:
-            args=t.split('.')
-            print ">>>>>>> IMPORTO LA TABELLA %s dello schema %s" % (args[1], args[0])
-            v.tometadata(meta)
-    meta.bind = engine
+        meta = pickle.load(f)
+    #print ">>>>>>> INIZIO IL CICLO TRA LE TABELLE CONTENUTE NEL METADATA LETTO DA FILE..."
+    #for t, v in metatmp.tables.iteritems():
+        #if 'promogest2' in t:
+            #args=t.split('.')
+            #print ">>>>>>> IMPORTO LA TABELLA %s dello schema %s" % (args[1], args[0])
+            #v.tometadata(meta)
+        meta.bind = engine
     _end = time.time()
     print "***caricamento meta da file completato in : ", _end - _start, "sec"
 else:

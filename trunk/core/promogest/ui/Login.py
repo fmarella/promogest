@@ -255,20 +255,17 @@ class Login(GladeApp):
 
                         #saveAppLog(action="login", status=True,value=username)
                         Environment.pg2log.info("LOGIN  id, user, role azienda: %s, %s" %(repr(Environment.params['usernameLoggedList']),self.azienda ) )
-                        import promogest.ui.SetConf
-                        checkInstallation()
-                        #if Environment.tipodb !="sqlite":
-                            #print ">>>>>>> INIZIO IL CICLO TRA LE TABELLE CONTENUTE NEL METADATA LETTO DA FILE..."
-                            #for t, v in Environment.metatmp.tables.iteritems():
-                                #if 'promogest2' not in t:
-                                    #args=t.split('.')
-                                    #print ">>>>>>> IMPORTO LA TABELLA %s dello schema %s" % (args[1], args[0])
-                                    #try:
-                                        #v.tometadata(Environment.meta)
-                                    #except:
-                                        #print ">>>>>>> SCARTO LA TABELLA %s" % t
+                        #if os.path.exists(os.path.join(Environment.CONFIGPATH, Environment.meta_pickle)):
+                            #import pickle
+                            #print ">>>>>>> STO CARICANDO IL METADATA DA FILE..."
+                            #with open(os.path.join(Environment.CONFIGPATH, Environment.meta_pickle), 'rb') as f:
+                                #print ">>>>>>> LEGGO IL FILE PICKLE..."
+                                #Environment.meta.clear()
+                                #Environment.meta = pickle.load(f)
                         #_end = time.time()
                         #print "***caricamento meta da file completato in : ", _end - _start, "sec" #gobject.idle_add(self.importModulesFromDir,'promogest/modules')
+                        #import promogest.ui.SetConf
+                        checkInstallation()
                         self.importModulesFromDir('promogest/modules')
                         def mainmain():
                             from Main import Main
