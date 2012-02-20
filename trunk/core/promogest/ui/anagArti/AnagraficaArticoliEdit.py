@@ -426,7 +426,7 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
                 toggleButton.set_active(False)
                 return
 
-        from AnagraficaStoccaggi import AnagraficaStoccaggi
+        from promogest.dao.ui.AnagraficaStoccaggi import AnagraficaStoccaggi
         anag = AnagraficaStoccaggi(self.dao.id)
         anagWindow = anag.getTopLevel()
 
