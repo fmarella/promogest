@@ -3467,7 +3467,7 @@ def dati_file_conad(testata):
     from promogest.dao.Azienda import Azienda
     if testata:
         #Scriviamo la testata della fattura
-        dati_differita = InformazioniFatturazioneDocumento().select(id_fattura = testata.id)
+        dati_differita = InformazioniFatturazioneDocumento().select(id_fattura=testata.id, batchSize=None)
         azienda = Azienda().getRecord(id=Environment.azienda)
         if not azienda:
             messageError('Inserire le informazioni sull\' azienda in Dati azienda')
