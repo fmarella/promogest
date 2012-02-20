@@ -174,7 +174,7 @@ Al termine dell'aggiornamento PromoGest verrà chiuso.""")
         else:
             kbb[0].value="True"
             kbb[0].persist()
-        messageInfo("Aggiornamento completato con successo! Riavviare PromoGest")
+        messageInfo("Aggiornamento del database completato con successo! Riavviare PromoGest")
         import sys
         sys.exit(0)
 
