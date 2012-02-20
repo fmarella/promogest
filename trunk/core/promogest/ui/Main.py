@@ -152,9 +152,9 @@ SELECT id, denominazione, agenzia, iban, abi, cab FROM banca;"""
             messageWarning("""<span font='12.5' font-weight='bold'>Aggiornamento del database</span>\n
 Chiudere eventuali postazioni aperte prima di procedere.
 Al termine dell'aggiornamento PromoGest verrà chiuso.""")
-            from promogest.dao.Banca import banca
+            from promogest.dao.Banca import banca_table
             from migrate.changeset.constraint import UniqueConstraint
-            cons = UniqueConstraint('denominazione', table=banca)
+            cons = UniqueConstraint('denominazione', table=banca_table)
             cons.drop()
         else:
             pass
