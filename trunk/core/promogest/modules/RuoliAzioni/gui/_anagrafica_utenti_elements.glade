@@ -12,10 +12,10 @@
     <property name="row_spacing">6</property>
     <child>
       <object class="GtkCheckButton" id="active_user_checkbutton">
-        <property name="use_action_appearance">False</property>
         <property name="visible">True</property>
         <property name="can_focus">True</property>
         <property name="receives_default">False</property>
+        <property name="use_action_appearance">False</property>
         <property name="draw_indicator">True</property>
       </object>
       <packing>
@@ -434,10 +434,10 @@ precedentemente creato</property>
         <child>
           <object class="GtkButton" id="rimuovi_foto_button">
             <property name="label">gtk-remove</property>
-            <property name="use_action_appearance">False</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
+            <property name="use_action_appearance">False</property>
             <property name="use_stock">True</property>
             <signal name="clicked" handler="on_rimuovi_foto_button_clicked" swapped="no"/>
           </object>
@@ -465,10 +465,10 @@ precedentemente creato</property>
     <property name="row_spacing">6</property>
     <child>
       <object class="GtkCheckButton" id="active_filter_checkbutton">
-        <property name="use_action_appearance">False</property>
         <property name="visible">True</property>
         <property name="can_focus">True</property>
         <property name="receives_default">False</property>
+        <property name="use_action_appearance">False</property>
         <property name="draw_indicator">True</property>
       </object>
       <packing>

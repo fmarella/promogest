@@ -214,7 +214,7 @@ class RicercaComplessaArticoli(RicercaComplessa):
 
     def insert(self, toggleButton, returnWindow):
         """ Open Article anag widget """
-        from AnagraficaArticoli import AnagraficaArticoli
+        from promogest.ui.anagArti.AnagraficaArticoli import AnagraficaArticoli
         anag = AnagraficaArticoli()
         anagWindow = anag.getTopLevel()
         showAnagraficaRichiamata(returnWindow, anagWindow, toggleButton, self.refresh)

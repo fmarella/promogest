@@ -563,7 +563,7 @@ class Main(GladeWidget):
             return
         if toggleButton.get_property('active') is False:
             return
-        from AnagraficaArticoli import AnagraficaArticoli
+        from promogest.ui.anagArti.AnagraficaArticoli import AnagraficaArticoli
         anag = AnagraficaArticoli(aziendaStr=Environment.azienda)
         showAnagrafica(self.getTopLevel(), anag, toggleButton, mainClass=self)
 

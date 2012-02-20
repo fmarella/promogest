@@ -57,7 +57,7 @@ class RicercaArticoli(Ricerca):
             self.filter.refresh()
             self.filter.denominazione_filter_entry.grab_focus()
 
-        from promogest.ui.AnagraficaArticoli import AnagraficaArticoli
+        from promogest.ui.anagArti.AnagraficaArticoli import AnagraficaArticoli
         anag = AnagraficaArticoli()
         anagWindow = anag.getTopLevel()
 

@@ -117,8 +117,8 @@ def nl2br(eval_ctx, value):
     renderHTML = inserisce il codice html dentro l'oggetto
 """
 def apriAnagraficaArticoliEdit(articoloId):
-    from promogest.ui.AnagraficaArticoli import AnagraficaArticoli
-    from promogest.ui.AnagraficaArticoliEdit import AnagraficaArticoliEdit
+    from promogest.ui.anagArti.AnagraficaArticoli import AnagraficaArticoli
+    from promogest.ui.anagArti.AnagraficaArticoliEdit import AnagraficaArticoliEdit
     from promogest.dao.Articolo import Articolo
     a = AnagraficaArticoli()
     art = Articolo().getRecord(id=articoloId)

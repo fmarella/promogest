@@ -28,15 +28,17 @@ from promogest.ui.utils import setconf
 #from promogest.dao.Dao import Dao
 from promogest.dao.CCardType import c_card_type
 from promogest.dao.Magazzino import magazzino
-from promogest.dao.TestataMovimento import testata_mov
 from promogest.dao.Articolo import articolo
+from promogest.dao.TestataMovimento import testata_mov
+
 from promogest.dao.Cliente import j as cliente
 
 posTable = Table('pos', params['metadata'],
         Column('id', Integer, primary_key=True),
         Column('denominazione', String(200), nullable=False ),
         Column('denominazione_breve', String(10), nullable=False),
-        schema=params['schema'], useexisting =True
+        schema=params['schema'],
+        useexisting =True
         )
 posTable.create(checkfirst=True)
 
@@ -129,7 +131,7 @@ chiusuraFiscaleTable = Table('chiusura_fiscale', params['metadata'],
 chiusuraFiscaleTable.create(checkfirst=True)
 
 #    testatascontrinoTable = Table('testata_scontrino', params['metadata'], autoload=True, schema=params['schema'])
-testataDoctoTable = Table('sconto_scontrino', params['metadata'], autoload=True, schema=params['schema'])
+#testataDoctoTable = Table('sconto_scontrino', params['metadata'], autoload=True, schema=params['schema'])
 scontoTestataScontrinoTable = Table('sconto_testata_scontrino', params['metadata'],
         Column('id',Integer,ForeignKey(scontoscontrinoFK,onupdate="CASCADE",ondelete="CASCADE"),primary_key=True),
         Column('id_testata_scontrino',Integer,ForeignKey(testataScontrinoFK,onupdate="CASCADE",ondelete="CASCADE")),

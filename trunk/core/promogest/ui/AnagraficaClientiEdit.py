@@ -335,7 +335,7 @@ class AnagraficaClientiEdit(AnagraficaEdit):
         if self.pf_radio.get_active():
             self.dao.ragione_sociale = self.cognome_entry.get_text() +" "+ self.nome_entry.get_text()
             self.dao.tipo = "PF"
-            
+
 
 
         if (self.dao.codice and (self.dao.ragione_sociale or self.dao.insegna or self.dao.cognome or self.dao.nome)) =='':
@@ -681,3 +681,28 @@ class AnagraficaClientiEdit(AnagraficaEdit):
         from promogest.dao.ListinoCategoriaCliente import ListinoCategoriaCliente
         from promogest.dao.ListinoMagazzino import ListinoMagazzino
         listino = findIdFromCombobox(self.id_listino_customcombobox.combobox)
+
+    def on_filechooserbutton_file_set(self, filechooser):
+        #import StringIO
+        #output = StringIO.StringIO()
+        #image.save(output)
+        #contents = output.getvalue()
+        #output.close()
+
+        print "LA FOTO SELEZIONATA", filechooser.get_file().get_path(), \
+                                                     filechooser.get_file()
+        size = 200, 200
+        self.photo_src = filechooser.get_filename()
+        self.userlogo_image.set_from_file(self.photo_src)
+        #im1 = Image.fromstring(self.photo_src)
+        f = open(self.photo_src, "r")
+        g = f.read()
+        #im = Image.open(g)
+        #im.thumbnail(size, Image.ANTIALIAS)
+        #im.tostring(self.photo_src + ".thumbnail)
+        self.imgblob = base64.b64encode(str(g))
+        f.close()
+
+    def on_rimuovi_foto_button_clicked(self, button):
+        self.imgblob = "RIMUOVO"
+        self.userlogo_image.set_from_file("")

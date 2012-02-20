@@ -42,7 +42,7 @@ class AzioniVelociNotebookPage(GladeWidget):
 
     def on_nuovo_articolo_button_clicked(self, widget):
         if not hasAction(actionID=8):return
-        from AnagraficaArticoli import AnagraficaArticoli
+        from promogest.ui.anagArti.AnagraficaArticoli import AnagraficaArticoli
         anag = AnagraficaArticoli(self.aziendaStr)
         showAnagrafica(self.getTopLevel(), anag)
         anag.on_record_new_activate()

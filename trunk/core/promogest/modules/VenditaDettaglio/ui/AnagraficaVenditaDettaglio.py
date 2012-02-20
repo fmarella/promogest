@@ -919,7 +919,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         """ open the anagraficaArticolo Semplice to add a new article
         """
         return
-        from promogest.ui.AnagraficaArticoliSemplice import AnagraficaArticoliSemplice
+        from promogest.ui.anagArti.AnagraficaArticoliSemplice import AnagraficaArticoliSemplice
         anag = AnagraficaArticoliSemplice()
         anagWindow = anag.getTopLevel()
         showAnagraficaRichiamata(self.getTopLevel(), anagWindow, button)

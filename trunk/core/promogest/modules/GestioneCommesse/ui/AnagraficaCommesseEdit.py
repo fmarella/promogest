@@ -124,7 +124,7 @@ class AnagraficaCommesseEdit(AnagraficaEdit):
             showAnagrafica(self.getTopLevel(), anag)
             anag.on_record_new_activate()
         elif self.tipo_dao == "ARTICOLO".lower():
-            from promogest.ui.AnagraficaArticoli import AnagraficaArticoli
+            from promogest.ui.anagArti.AnagraficaArticoli import AnagraficaArticoli
             anag = AnagraficaArticoli(self.aziendaStr)
             showAnagrafica(self.getTopLevel(), anag)
             anag.on_record_new_activate()

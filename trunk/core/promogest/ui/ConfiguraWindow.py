@@ -26,7 +26,7 @@ import datetime
 from promogest import Environment
 from GladeWidget import GladeWidget
 from promogest.ui.anagDocumenti.AnagraficaDocumentiSetup import AnagraficaDocumentiSetup
-from promogest.ui.AnagraficaArticoliSetup import AnagraficaArticoliSetup
+from promogest.ui.anagArti.AnagraficaArticoliSetup import AnagraficaArticoliSetup
 from promogest.ui.AnagraficaClientiSetup import AnagraficaClientiSetup
 from promogest.ui.AnagraficaFornitoriSetup import AnagraficaFornitoriSetup
 from promogest.modules.PrimaNota.ui.AnagraficaPrimaNotaSetup import AnagraficaPrimaNotaSetup

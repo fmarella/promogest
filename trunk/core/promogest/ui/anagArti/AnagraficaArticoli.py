@@ -28,7 +28,7 @@ from promogest.ui.AnagraficaComplessa import Anagrafica
 from promogest.ui.AnagraficaComplessaFilter import AnagraficaFilter
 from promogest.ui.AnagraficaComplessaReport import AnagraficaReport
 from promogest.ui.AnagraficaComplessaHtml import AnagraficaHtml
-from promogest.ui.AnagraficaArticoliEdit import AnagraficaArticoliEdit
+from promogest.ui.anagArti.AnagraficaArticoliEdit import AnagraficaArticoliEdit
 from promogest import Environment
 
 import promogest.dao.Articolo

@@ -1593,7 +1593,7 @@ del documento.
         mostraArticoloPart(self, id, art=art, quan=quan)
 
     def apriAnagraficaArticoliEdit(self, idArticolo):
-        from promogest.ui.AnagraficaArticoli import AnagraficaArticoli
+        from promogest.ui.anagArti.AnagraficaArticoli import AnagraficaArticoli
         from promogest.dao.Articolo import Articolo
         a = AnagraficaArticoli()
         art = Articolo().getRecord(id=idArticolo)
