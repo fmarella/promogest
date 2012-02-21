@@ -162,7 +162,8 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self.nolottotemp = False
 
     def on_lotto_temp_entry_changed(self, *args):
-        self.on_confirm_row_button_clicked(widget=None)
+        # self.on_confirm_row_button_clicked(widget=None)
+        pass
 
     def draw(self, cplx=False):
         self.cplx = cplx
