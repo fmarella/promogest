@@ -933,7 +933,7 @@ class TestataDocumento(Dao):
             if not cab and self.BN.iban:
                 try:
                     ibanlib.dividi_iban(self.BN.iban)[ibanlib.CAB]
-                except IBANError:
+                except: # IBANError:
                     cab = ''
             return cab
         else:

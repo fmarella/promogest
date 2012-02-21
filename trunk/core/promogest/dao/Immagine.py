@@ -25,7 +25,6 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
 from promogest.dao.Dao import Dao
-#from promogest.modules.VenditaDettaglio.dao.TestataScontrino import TestataScontrino
 
 
 try:

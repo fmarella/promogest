@@ -23,27 +23,23 @@ from promogest.ui.AnagraficaComplessa import Anagrafica
 from promogest.ui.AnagraficaComplessaReport import AnagraficaReport
 from promogest.ui.AnagraficaComplessaHtml import AnagraficaHtml
 
-from promogest.ui.AnagraficaFornitoriEdit import AnagraficaFornitoriEdit
-from promogest.ui.AnagraficaFornitoriFilter import AnagraficaFornitoriFilter
-from promogest.modules.PrimaNota.ui.\
-                        AnagraficaPrimaNotaEdit import AnagraficaPrimaNotaEdit
-from promogest.modules.PrimaNota.ui.\
-                    AnagraficaPrimaNotaFilter import AnagraficaPrimaNotaFilter
-#from promogest.ui.utils import *
-#from promogest.ui.utilsCombobox import *
+from promogest.modules.GestoneFile.ui.\
+                        AnagraficaFilesEdit import AnagraficaFilesEdit
+from promogest.modules.GestioneFile.ui.\
+                    AnagraficaFilesFilter import AnagraficaFilesFilter
 
 
-class AnagraficaPrimaNota(Anagrafica):
-    """ Anagrafica Variazioni Listini """
+class AnagraficaFiles(Anagrafica):
+    """ Anagrafica gestione file """
 
     def __init__(self, aziendaStr=None):
         Anagrafica.__init__(self,
-                        windowTitle='Promogest - Anagrafica Prima Nota Cassa',
-                        recordMenuLabel='_Prima nota cassa',
-                        filterElement=AnagraficaPrimaNotaFilter(self),
-                        htmlHandler=AnagraficaPrimaNotaHtml(self),
-                        reportHandler=AnagraficaPrimaNotaReport(self),
-                        editElement=AnagraficaPrimaNotaEdit(self),
+                        windowTitle='Promogest - Anagrafica File',
+                        recordMenuLabel='_Gestione file',
+                        filterElement=AnagraficaFilesFilter(self),
+                        htmlHandler=AnagraficaFilesHtml(self),
+                        reportHandler=AnagraficaFilesReport(self),
+                        editElement=AnagraficaFilesEdit(self),
                         aziendaStr=aziendaStr)
 #        self.records_print_on_screen_button.set_sensitive(False)
         self.records_print_button.set_sensitive(False)
@@ -51,18 +47,18 @@ class AnagraficaPrimaNota(Anagrafica):
         self.record_duplicate_menu.set_sensitive(False)
         self.record_duplicate_menu.set_sensitive(False)
 
-class AnagraficaPrimaNotaHtml(AnagraficaHtml):
+class AnagraficaFilesHtml(AnagraficaHtml):
 
     def __init__(self, anagrafica):
-        AnagraficaHtml.__init__(self, anagrafica, 'prima_nota',
-                                'Dettaglio Prima Nota Cassa')
+        AnagraficaHtml.__init__(self, anagrafica, 'gestione_file',
+                                'Gestione files')
 
 
-class AnagraficaPrimaNotaReport(AnagraficaReport):
+class AnagraficaFilesReport(AnagraficaReport):
 
     def __init__(self, anagrafica):
         AnagraficaReport.__init__(self, anagrafica=anagrafica,
-                                  description='Elenco delle Prime Note Cassa',
-                                  defaultFileName='prime_note',
-                                  htmlTemplate='prime_note',
-                                  sxwTemplate='prime_note')
+                                  description='Elenco dei files di sistema',
+                                  defaultFileName='gestione_files',
+                                  htmlTemplate='gestione_files',
+                                  sxwTemplate='gestione_files')
