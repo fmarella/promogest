@@ -455,6 +455,30 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
         showAnagraficaRichiamata(self.dialogTopLevel, anagWindow, toggleButton)
 
 
+    def on_abbina_immagine_togglebutton_toggled(self, toggleButton):
+        messageInfo(msg="FUNZIONE PRONTA A BREVE")
+        return
+        if not(toggleButton.get_active()):
+            toggleButton.set_active(False)
+            return
+
+        if self.dao.id is None:
+            msg = ('Prima di poter creare un kit occorre '
+                   + 'salvare l\' articolo.\n Salvare ?')
+
+            if YesNoDialog(msg=msg, transient=self.dialogTopLevel):
+                self.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, GTK_RESPONSE_APPLY)
+            else:
+                toggleButton.set_active(False)
+                return
+        from promogest.modules.GestioneFile.ui.AnagraficaFiles import AnagraficaFiles
+        anag = AnagraficaFiles(dao=self.dao)
+        anagWindow = anag.getTopLevel()
+
+        showAnagraficaRichiamata(self.dialogTopLevel, anagWindow, toggleButton)
+
+
+
     def on_forniture_togglebutton_clicked(self, toggleButton):
         if not(toggleButton.get_active()):
             toggleButton.set_active(False)

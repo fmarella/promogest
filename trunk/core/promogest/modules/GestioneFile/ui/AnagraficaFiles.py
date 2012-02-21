@@ -22,8 +22,8 @@
 from promogest.ui.AnagraficaComplessa import Anagrafica
 from promogest.ui.AnagraficaComplessaReport import AnagraficaReport
 from promogest.ui.AnagraficaComplessaHtml import AnagraficaHtml
-
-from promogest.modules.GestoneFile.ui.\
+from promogest import Environment
+from promogest.modules.GestioneFile.ui.\
                         AnagraficaFilesEdit import AnagraficaFilesEdit
 from promogest.modules.GestioneFile.ui.\
                     AnagraficaFilesFilter import AnagraficaFilesFilter
@@ -32,7 +32,7 @@ from promogest.modules.GestioneFile.ui.\
 class AnagraficaFiles(Anagrafica):
     """ Anagrafica gestione file """
 
-    def __init__(self, aziendaStr=None):
+    def __init__(self, aziendaStr=None, dao=None):
         Anagrafica.__init__(self,
                         windowTitle='Promogest - Anagrafica File',
                         recordMenuLabel='_Gestione file',
@@ -40,7 +40,7 @@ class AnagraficaFiles(Anagrafica):
                         htmlHandler=AnagraficaFilesHtml(self),
                         reportHandler=AnagraficaFilesReport(self),
                         editElement=AnagraficaFilesEdit(self),
-                        aziendaStr=aziendaStr)
+                        aziendaStr=Environment.azienda)
 #        self.records_print_on_screen_button.set_sensitive(False)
         self.records_print_button.set_sensitive(False)
         self.records_file_export.set_sensitive(True)

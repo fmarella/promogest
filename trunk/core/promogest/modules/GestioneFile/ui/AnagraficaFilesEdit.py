@@ -24,8 +24,6 @@
 
 from decimal import *
 from promogest.ui.AnagraficaComplessaEdit import AnagraficaEdit
-from promogest.modules.GestioneFile.dao.TestataPrimaNota import TestataPrimaNota
-from promogest.modules.GestioneFile.dao.RigaPrimaNota import RigaPrimaNota
 from promogest.ui.utils import *
 from promogest.ui.utilsCombobox import *
 
@@ -35,9 +33,9 @@ class AnagraficaFilesEdit(AnagraficaEdit):
     def __init__(self, anagrafica):
         AnagraficaEdit.__init__(self,
                 anagrafica,
-                'anagrafica_file_detail_vbox',
+                'anagrafica_gestione_file_detail_vbox',
                 'Informazioni File.',
-                gladeFile='GestioneFile/gui/_anagrafica_file_elements.glade',
+                gladeFile='GestioneFile/gui/_anagrafica_gestione_file_elements.glade',
                 module=True)
         self._widgetFirstFocus = self.data_inserimento_datewidget
         self.anagrafica = anagrafica

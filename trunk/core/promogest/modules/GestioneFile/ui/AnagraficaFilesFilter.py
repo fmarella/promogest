@@ -28,14 +28,14 @@ from promogest.ui.utils import *
 from promogest.ui.utilsCombobox import *
 
 
-class AnagraficaPrimaNotaFilter(AnagraficaFilter):
+class AnagraficaFilesFilter(AnagraficaFilter):
     """ Filtro per la ricerca nella prim nota cassa """
 
     def __init__(self, anagrafica):
         AnagraficaFilter.__init__(self,
                           anagrafica,
-                          'anagrafica_prima_nota_filter_table',
-                          gladeFile='PrimaNota/gui/_anagrafica_primanota_elements.glade',
+                          'anagrafica_gestione_file_filter_table',
+                          gladeFile='GestioneFile/gui/_anagrafica_gestione_file_elements.glade',
                           module=True)
         self._widgetFirstFocus = self.a_numero_filter_entry
         self.da_data_inizio_datetimewidget.set_text('01/01/' + Environment.workingYear)
@@ -45,17 +45,6 @@ class AnagraficaPrimaNotaFilter(AnagraficaFilter):
 
     def draw(self):
         """ """
-        #pns = TestataPrimaNota().select(batchSize=None)
-        #for i in pns:
-            #self.checkOldPN(i)
-        if not setconf("PrimaNota", "valore_saldo_parziale_cassa_primanota") and \
-            not setconf("PrimaNota", "data_saldo_parziale_cassa_primanota") and \
-            not setconf("PrimaNota", "valore_saldo_parziale_banca_primanota") and \
-            not setconf("PrimaNota", "data_saldo_parziale_banca_primanota"):
-            self.inizializzaValoriPrimaNotaSaldo()
-
-        stringa = "<b>Per i totali parziali e complessivi usare 'report a video'</b>"
-        self._anagrafica.info_anag_complessa_label.set_markup(stringa)
         self.refresh()
 
 
@@ -67,62 +56,7 @@ class AnagraficaPrimaNotaFilter(AnagraficaFilter):
 
 
     def inizializzaValoriPrimaNotaSaldo(self):
-        messageInfo(msg="Nessun riporto settato, imposto uno standard al primo gennaio")
-        tpn = TestataPrimaNota().select(aDataInizio=stringToDate('01/01/' + Environment.workingYear), batchSize=None)
-        tot = calcolaTotaliPrimeNote(tpn, tpn)
-
-        bb = SetConf().select(key="valore_saldo_parziale_cassa_primanota", section="PrimaNota")
-        if not bb:
-            kbb = SetConf()
-            kbb.key = "valore_saldo_parziale_cassa_primanota"
-            kbb.value = 0.0 #str(tot["saldo_cassa"])
-            kbb.section = "PrimaNota"
-            kbb.tipo_section = "Generico"
-            kbb.description = "Valore saldo parziale cassa prima nota"
-            kbb.active = True
-            kbb.tipo = "float"
-            kbb.date = datetime.datetime.now()
-            Environment.session.add(kbb)
-
-        bb = SetConf().select(key="data_saldo_parziale_cassa_primanota", section="PrimaNota")
-        if not bb:
-            kbb = SetConf()
-            kbb.key = "data_saldo_parziale_cassa_primanota"
-            kbb.value = '01/01/' + Environment.workingYear
-            kbb.section = "PrimaNota"
-            kbb.tipo_section = "Generico"
-            kbb.description = "Valore saldo parziale cassa prima nota"
-            kbb.active = True
-            kbb.tipo = "date"
-            kbb.date = datetime.datetime.now()
-            Environment.session.add(kbb)
-
-        bb = SetConf().select(key="valore_saldo_parziale_banca_primanota", section="PrimaNota")
-        if not bb:
-            kbb = SetConf()
-            kbb.key = "valore_saldo_parziale_banca_primanota"
-            kbb.value = 0.0 #str(tot["saldo_banca"])
-            kbb.section = "PrimaNota"
-            kbb.tipo_section = "Generico"
-            kbb.description = "Valore saldo parziale banca prima nota"
-            kbb.active = True
-            kbb.tipo = "float"
-            kbb.date = datetime.datetime.now()
-            Environment.session.add(kbb)
-
-        bb = SetConf().select(key="data_saldo_parziale_banca_primanota", section="PrimaNota")
-        if not bb:
-            kbb = SetConf()
-            kbb.key = "data_saldo_parziale_banca_primanota"
-            kbb.value = '01/01/' + Environment.workingYear
-            kbb.section = "PrimaNota"
-            kbb.tipo_section = "Generico"
-            kbb.description = "Data saldo parziale banca prima nota"
-            kbb.active = True
-            kbb.tipo = "date"
-            kbb.date = datetime.datetime.now()
-            Environment.session.add(kbb)
-        Environment.session.commit()
+        return
 
     def on_banca_filter_check_clicked(self,check):
         if self.banca_filter_check.get_active():
