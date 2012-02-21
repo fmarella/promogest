@@ -23,9 +23,8 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from core.Environment import *
 from core.dao.Dao import Dao
-
-operazioneTable = Table('operazione', params['metadata'], autoload=True, schema=params['mainSchema'])
-slafileTable = Table('sla_file', params['metadata'], autoload=True, schema=params['schema'])
+from promogest.modules.GestioneFile.dao.SlaFile import slafile
+from promogest.dao.Operazione import operazione
 
 try:
     operazioneslafile=Table('operazione_slafile',
@@ -47,7 +46,7 @@ except:
     operazioneslafile.create(checkfirst=True)
 
 class OperazioneSlaFile(Dao):
-    """ RoleAction class database functions  """
+    """ Operazione sla  """
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)

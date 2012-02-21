@@ -51,10 +51,7 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
                                 'Dati movimento',
                                 gladeFile='_anagrafica_movimenti_elements.glade')
         self._widgetFirstFocus = self.data_movimento_entry
-        #try:
-            #if Environment.conf.Documenti.rosas =="yes":
-                #pass
-        #except:
+
         self.totale_spinbutton.destroy()
         self.prz_totale_label.destroy()
         self.id_multiplo_customcombobox.destroy()
@@ -84,6 +81,7 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
         self._loading = False
         self.mattu = False
         self.completion = self.ricerca_articolo_entrycompletition
+
         if Environment.pg3:
             self.completion.set_match_func(self.match_func,None)
         else:
@@ -92,6 +90,7 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
         self.articolo_entry.set_completion(self.completion)
         self.sepric = "  ~  "
         self.articolo_matchato = None
+
         if posso("PW"):
             self.promowear_manager_taglia_colore_togglebutton.set_property("visible", True)
             self.promowear_manager_taglia_colore_togglebutton.set_sensitive(False)

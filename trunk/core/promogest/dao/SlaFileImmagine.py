@@ -23,9 +23,8 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
 from promogest.dao.Dao import Dao
-
-immagineTable = Table('immagine', params['metadata'], autoload=True, schema=params['schema'])
-slafileTable = Table('sla_file', params['metadata'], autoload=True, schema=params['schema'])
+from promogest.modules.GestioneFile.dao.Immagine import immagine
+from promogest.modules.GestioneFile.dao.SlaFile import slafile
 
 try:
     slafileimmagine=Table('slafile_immagine',

@@ -25,7 +25,6 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
 from promogest.dao.Dao import Dao
-#from promogest.modules.VenditaDettaglio.dao.TestataScontrino import TestataScontrino
 
 
 try:
@@ -50,7 +49,7 @@ except:
             Column('data', Binary),
             schema=params['schema'],
             )
-slafile.create(checkfirst=True)
+    slafile.create(checkfirst=True)
 
 
 class SlaFile(Dao):

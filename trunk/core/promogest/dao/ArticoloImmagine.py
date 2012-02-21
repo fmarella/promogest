@@ -23,9 +23,8 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
 from promogest.dao.Dao import Dao
-
-immagineTable = Table('immagine', params['metadata'], autoload=True, schema=params['schema'])
-articoloTable = Table('articolo', params['metadata'], autoload=True, schema=params['schema'])
+from promogest.modules.GestioneFile.dao.Immagine import immagine
+from promogest.dao.Articolo import articolo
 
 try:
     articoloimmagine=Table('articolo_immagine',
@@ -41,8 +40,16 @@ except:
         articoloFK = params['schema']+'.articolo.id'
 
     articoloimmagine = Table('articolo_immagine', params['metadata'],
-            Column('id_immagine',Integer,ForeignKey(immagineFK,onupdate="CASCADE",ondelete="CASCADE"),primary_key=True),
-            Column('id_articolo',Integer,ForeignKey(articoloFK,onupdate="CASCADE",ondelete="CASCADE"),primary_key=True),
+            Column('id_immagine',Integer,
+                ForeignKey(immagineFK,
+                    onupdate="CASCADE",
+                    ondelete="CASCADE"),
+                    primary_key=True),
+            Column('id_articolo',Integer,
+                ForeignKey(articoloFK,
+                    onupdate="CASCADE",
+                    ondelete="CASCADE"),
+                    primary_key=True),
             schema=params['schema'])
     articoloimmagine.create(checkfirst=True)
 

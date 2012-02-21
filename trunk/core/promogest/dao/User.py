@@ -28,34 +28,33 @@ from Dao import Dao
 from Regioni import Regioni
 from Province import Province
 from migrate import *
-#from promogest.dao.UtenteImmagine import UtenteImmagine
-#from promogest.dao.Immagine import ImageFile
-#from ApplicationLog import ApplicationLog
-#if hasattr(conf, "RuoliAzioni") and getattr(conf.RuoliAzioni,'mod_enable')=="yes":
-    #from promogest.modules.RuoliAzioni.dao.Role import Role
-#from Language import Language
 from promogest.modules.RuoliAzioni.dao.Role import Role
 
 user=Table('utente', params['metadata'],schema = params['mainSchema'],autoload=True)
-
 
 if 'id_role' not in [c.name for c in user.columns]:
     col = Column('id_role', Integer, nullable=True)
     col.create(user)
 
-
-
 try:
     from sqlalchemy.orm import relationship
     if tipodb =="sqlite":
-        std_mapper.add_property("role",relationship(Role,primaryjoin=(user.c.id_role==Role.id),foreign_keys=[Role.id],backref="users",uselist=False,passive_deletes=True))
-    #else:
-        #std_mapper.add_property("role",relationship(Role,primaryjoin=(user.c.id_role==Role.id),backref="users",uselist=False))
+        std_mapper.add_property("role",relationship(Role,
+            primaryjoin=(user.c.id_role==Role.id),
+                        foreign_keys=[Role.id],
+                        backref="users",
+                        uselist=False,
+                        passive_deletes=True))
 except:
     pg2log.info("AGGIORNARE SQLALCHEMY RUOLI NON FUNZIONERANNO")
 if hasattr(conf, "MultiLingua") and getattr(conf.MultiLingua,'mod_enable')=="yes":
     from promogest.modules.MultiLingua.dao.UserLanguage import UserLanguage
-    std_mapper.add_property("userlang",relation(UserLanguage,primaryjoin=(user.c.id==UserLanguage.id_user),backref="users",uselist=False))
+    std_mapper.add_property("userlang",
+            relation(UserLanguage,
+                    primaryjoin=(user.c.id==UserLanguage.id_user),
+                    backref="users",
+                    uselist=False)
+                    )
 
 
 class User(Dao):
@@ -78,17 +77,6 @@ class User(Dao):
         elif k == 'idRole':
             dic = {k:user.c.id_role == v}
         return  dic[k]
-    #if hasattr(conf, "RuoliAzioni") and getattr(conf.RuoliAzioni,'mod_enable')=="yes":
-        #def _ruolo(self):
-            #if self.role: return self.role.name
-            #else: return ""
-        #ruolo = property(_ruolo)
-
-    #def _language(self):
-        #if self.lang: return self.lang.denominazione
-        #else: return ""
-    #lingua = property(_language)
-
 
 
     def delete(self):
@@ -97,21 +85,8 @@ class User(Dao):
             return False
         else:
             params['session'].delete(self)
-#            dd = params['session'].query(ApplicationLog).filter_by(id_user = self.id).all()
-#            if dd:
-#                for d in dd:
-#                    params['session'].delete(d)
             params["session"].commit()
             return True
-
-    #def persist(self):
-        #if self.username == "admin" and database == "promogest_db":
-            #print "TENTATIVO DI MODIFICA ADMIN L'EVENTO VERRA' REGISTRATO E SEGNALATO "
-            #return False
-        #else:
-            #params["session"].add(self)
-            #params["session"].commit()
-            #return True
 
     @property
     def ruolo(self):
@@ -124,15 +99,13 @@ class User(Dao):
                 return nome[0].name or ""
             else:
                 return ""
-#            print "NESSUN NOME DI ROLE"
 
 
-
-    if hasattr(conf, "MultiLingua") and getattr(conf.MultiLingua,'mod_enable')=="yes":
+    if hasattr(conf, "MultiLingua") and getattr(conf.MultiLingua,
+                                                'mod_enable')=="yes":
         @property
         def lingua(self):
             if self.userlang: return self.userlang.lan.denominazione
             else: return ""
-
 
 std_mapper = mapper(User, user, order_by=user.c.username)
