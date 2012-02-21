@@ -49,10 +49,10 @@ import promogest.dao.Promemoria
 from promogest.dao.Promemoria import Promemoria
 from promogest.dao.VariazioneListino import VariazioneListino
 from promogest.dao.AnagraficaSecondaria import AnagraficaSecondaria_
-from promogest.dao.Immagine import ImageFile
+from promogest.modules.GestioneFile.dao.Immagine import ImageFile
 from promogest.dao.UtenteImmagine import UtenteImmagine
 from promogest.dao.ArticoloImmagine import ArticoloImmagine
-from promogest.dao.SlaFile import SlaFile
+from promogest.modules.GestioneFile.dao.SlaFile import SlaFile
 from promogest.dao.SlaFileImmagine import SlaFileImmagine
 from promogest.modules.GestioneCommesse.dao.StadioCommessa import StadioCommessa
 from promogest.modules.GestioneCommesse.dao.TestataCommessa import TestataCommessa
