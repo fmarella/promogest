@@ -36,6 +36,7 @@ from promogest.modules.Contatti.dao.ContattoCliente import ContattoCliente
 from promogest.ui.AnagraficaClientiEdit import AnagraficaClientiEdit
 from promogest.ui.AnagraficaClientiFilter import AnagraficaClientiFilter
 from promogest.dao.TestataDocumento import TestataDocumento
+from promogest.dao.User import User
 from promogest.dao.DaoUtils import *
 from promogest.ui.utils import *
 from promogest.ui.utilsCombobox import *
@@ -88,6 +89,11 @@ class AnagraficaClienti(Anagrafica):
         if cnnt:
             for c in cnnt:
                 c.delete()
+        if self.dao.id_user:
+            utente = User().getRecord(id = self.dao.id_user)
+            self.dao.id_user = None
+            if utente:
+                utente.delete()
 
         if posso("IP"):
             from promogest.modules.InfoPeso.dao.TestataInfoPeso import TestataInfoPeso
