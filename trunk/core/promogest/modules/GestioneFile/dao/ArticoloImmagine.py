@@ -64,6 +64,8 @@ class ArticoloImmagine(Dao):
             dic = {k:slafileimmagine.c.id_immagine == v}
         elif k == 'id_articolo':
             dic = {k:slafileimmagine.c.id_articolo == v}
+        elif k == 'denominazione':
+            dic = {k:and_(articoloimmagine.id_articolo==articolo.id,immagine.ilike("%"+v+"%"))}
         return  dic[k]
 
 std_mapper = mapper(ArticoloImmagine, articoloimmagine, properties={
