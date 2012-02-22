@@ -39,7 +39,6 @@ class NotificaAllarmiNotebookPage(GladeWidget):
         self.rowBackGround = None
         self.maino = maino
         self.aziendaStr = azienda or ""
-        self.drawAllarmi()
         model = self.alarm_notify_treeview.get_model()
         model.clear()
         #get the current alarms from db
@@ -54,65 +53,6 @@ class NotificaAllarmiNotebookPage(GladeWidget):
                                 dao.autore,
                                 dao.annotazione))
 
-    def drawAllarmi(self):
-        """
-        disegna questo frame nella finestra principale
-        """
-        treeview = self.alarm_notify_treeview
-        renderer = gtk.CellRendererText()
-        rendererCtr = gtk.CellRendererText()
-        rendererCtr.set_property('xalign', 0.5)
-
-        column = gtk.TreeViewColumn('Data Scadenza', rendererCtr, text=1)
-        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
-        column.set_clickable(True)
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(120)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Oggetto', renderer, text=2)
-        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
-        column.set_clickable(True)
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(150)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Descrizione', renderer, text=3)
-        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
-        column.set_clickable(True)
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(150)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Incaricato', rendererCtr, text=4)
-        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
-        column.set_clickable(True)
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(100)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Autore', rendererCtr, text=5)
-        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
-        column.set_clickable(True)
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(100)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Annotazioni', renderer, text=6)
-        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
-        column.set_clickable(True)
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(200)
-        treeview.append_column(column)
-
-        model = gtk.ListStore(object, str, str, str, str, str, str)
-        treeview.set_model(model)
 
     def on_alarm_notify_treeview_row_activated(self, treeview, path, column):
         model = treeview.get_model()
