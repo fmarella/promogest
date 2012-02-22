@@ -329,7 +329,7 @@ class Login(GladeApp):
 
             """
             #global jinja_env
-            Environment.modulesList=[Environment.tipo_pg]
+            Environment.modulesList = [Environment.tipo_pg]
             modules_folders = [folder for folder in os.listdir(modules_dir) \
                             if (os.path.isdir(os.path.join(modules_dir, folder)) \
                             and os.path.isfile(os.path.join(modules_dir, folder, 'module.py')))]
@@ -364,10 +364,11 @@ class Login(GladeApp):
             HtmlHandler.jinja_env = HtmlHandler.env(HtmlHandler.templates_dir)
             self.groupModulesByType()
             for a in Environment.modulesList[:]:
-                mm = a.split(" ")
-                for m in mm:
-                    Environment.modulesList.append(m)
-                Environment.modulesList.remove(a)
+                if a is not None:
+                    mm = a.split(" ")
+                    for m in mm:
+                        Environment.modulesList.append(m)
+                    Environment.modulesList.remove(a)
 
     def on_login_window_key_press_event(self, widget, event):
         """Gestisce la pressione di alcuni tasti nella finestra di login
