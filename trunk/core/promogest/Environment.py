@@ -623,7 +623,7 @@ meta = MetaData()
 metatmp = MetaData()
 _start = time.time()
 
-if os.path.exists(os.path.join(CONFIGPATH, meta_pickle)):
+if os.path.exists(os.path.join(CONFIGPATH, meta_pickle)) and if sqlalchemy.__version__ > "0.5.8":
     print ">>>>>>> STO CARICANDO IL METADATA DA FILE..."
     with open(os.path.join(CONFIGPATH, meta_pickle), 'rb') as f:
         print ">>>>>>> LEGGO IL FILE PICKLE..."
