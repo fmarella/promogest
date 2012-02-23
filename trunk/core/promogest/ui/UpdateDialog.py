@@ -119,18 +119,19 @@ class UpdateDialog(GladeWidget):
                 data.update_button.set_sensitive(False)
                 data.__stop = client.update('.')
             except:
+                data.msg_label.set_text("Si è verificato un problema in aggiornamento, PromoGest verrà ripristinato...")
                 client = pysvn.Client()
                 client.cleanup('.')
                 data.__stop = True
-                data.update_progress_bar.set_fraction(0.0)
+                data.update_progress_bar.set_fraction(1.0)
                 data.cancel_button.set_sensitive(True)
-                data.msg_label.set_text("Si è verificato un errore in aggiornamento, attendere alcuni minuti e riprovare")
+                data.msg_label.set_text("Ripristino completato, riavviare PromoGest.")
             else:
                 data.update_progress_bar.set_fraction(1.0)
-                data.msg_label.set_text("Aggiornamento eseguito con successo, riavviare Promogest.")
+                data.msg_label.set_text("Aggiornamento eseguito con successo, riavviare PromoGest.")
+                data.cancel_button.set_sensitive(True)
                 import sys
                 sys.exit(0)
-                data.cancel_button.set_sensitive(True)
 
         def refreshUI():
             if self.__stop:
