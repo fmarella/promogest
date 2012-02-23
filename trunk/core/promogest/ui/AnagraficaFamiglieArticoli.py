@@ -222,7 +222,8 @@ class AnagraficaFamiglieArticoliEdit(AnagraficaEdit):
             self.dao = FamigliaArticolo()
         else:
             # Ricrea il Dao con una connessione al DBMS SQL
-            self.dao = FamigliaArticolo().getRecord(id = dao.id)
+            #self.dao = FamigliaArticolo().getRecord(id = dao.id)
+            self.dao = dao
         self._refresh()
         return self.dao
 
