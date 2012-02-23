@@ -1,0 +1,14 @@
+<style>
+@page {
+size: A4 portrait;
+margin: 1cm;
+}
+</style>
+    {% if dao %}
+<h3>{{dao.immagine.denominazione}}</h3>
+<img src="data:image/png;base64,{{dao.immagine.data}}" alt="{{dao.immagine.denominazione}}"  title="{{dao.immagine.denomrinazione}}"/>
+        {% else %}
+        <p><img src= "gui/attenzione_48X48.png">ELIMINATO: Niente da visualizzare</p>
+        <p><img src= "gui/testata_promogest2.png"></p>
+        {% endif %}
+

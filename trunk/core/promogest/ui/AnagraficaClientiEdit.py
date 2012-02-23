@@ -187,7 +187,8 @@ class AnagraficaClientiEdit(AnagraficaEdit):
             self._oldDaoRicreato = False
         else:
             # Ricrea il Dao con una connessione al DBMS SQL
-            self.dao = Cliente().getRecord(id=dao.id)
+            #self.dao = Cliente().getRecord(id=dao.id)
+            self.dao = dao
             self._oldDaoRicreato = True
 
         if posso("IP"):
