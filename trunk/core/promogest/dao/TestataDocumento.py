@@ -88,6 +88,8 @@ class TestataDocumento(Dao):
         self.__data_fine_noleggio = None
         self.__numeroMagazzini = 0
         self._totaleSpese = 0
+        self._totaleImponibileSpese = 0
+        self._totaleImpostaSpese = 0
 
     @reconstructor
     def init_on_load(self):
@@ -322,6 +324,8 @@ class TestataDocumento(Dao):
                         impon_spese += impon_spese_
                         imposta_spese += spese_ - impon_spese_
         self._totaleSpese = spese
+        self._totaleImponibileSpese = impon_spese
+        self._totaleImpostaSpese = imposta_spese
 
         totaleEsclusoBaseImponibileRiga = 0
         totaleImponibileRiga = 0
