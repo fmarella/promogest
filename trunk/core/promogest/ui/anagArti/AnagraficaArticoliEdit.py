@@ -456,8 +456,8 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
 
 
     def on_abbina_immagine_togglebutton_toggled(self, toggleButton):
-        messageInfo(msg="FUNZIONE PRONTA A BREVE")
-        return
+        #messageInfo(msg="FUNZIONE PRONTA A BREVE")
+        #return
         if not(toggleButton.get_active()):
             toggleButton.set_active(False)
             return
