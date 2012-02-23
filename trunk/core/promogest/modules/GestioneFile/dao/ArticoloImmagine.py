@@ -69,5 +69,5 @@ class ArticoloImmagine(Dao):
         return  dic[k]
 
 std_mapper = mapper(ArticoloImmagine, articoloimmagine, properties={
-                 'immagine': relation(ImageFile, backref='artima'),
+                 'immagine': relation(ImageFile, backref='artima',cascade="all, delete"),
                 }, order_by=articoloimmagine.c.id_immagine)
