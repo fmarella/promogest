@@ -29,13 +29,15 @@ from promogest.ui.utilsCombobox import *
 class AnagraficaFilesFilter(AnagraficaFilter):
     """ Filtro per la ricerca nei file """
 
-    def __init__(self, anagrafica):
+    def __init__(self, anagrafica, daoArticolo=None):
         AnagraficaFilter.__init__(self,
                           anagrafica,
                           'anagrafica_gestione_file_filter_table',
                           gladeFile='GestioneFile/gui/_anagrafica_gestione_file_elements.glade',
                           module=True)
         self._widgetFirstFocus = self.denominazione_filter_entry
+        self.daoArticolo = daoArticolo
+
 
     def draw(self):
         """ """
@@ -58,6 +60,7 @@ class AnagraficaFilesFilter(AnagraficaFilter):
 
         def filterCountClosure():
             return ArticoloImmagine().count(
+                                idArticolo = self.daoArticolo.id,
                                 denominazione=deno,
                                 )
         self._filterCountClosure = filterCountClosure
@@ -68,6 +71,7 @@ class AnagraficaFilesFilter(AnagraficaFilter):
         # Let's save the current search as a closure
         def filterClosure(offset, batchSize):
             return ArticoloImmagine().select(
+                                            idArticolo = self.daoArticolo.id,
                                             denominazione = deno,
                                             offset=offset,
                                             batchSize=batchSize)
@@ -79,48 +83,10 @@ class AnagraficaFilesFilter(AnagraficaFilter):
         self.gestionefile_filter_listore.clear()
         valore = 0
         for i in valis:
-            col_valore = None
-            col_tipo = None
 
-            if mN(i.totali["totale"]) >0:
-                col_valore = "#CCFFAA"
-            else:
-                col_valore = "#FFD7D7"
-
-            if len(i.righeprimanota) >1:
-                denom = i.note
-                note = "( Più operazioni )"
-                a = [l for l in i.righeprimanota]
-                if len(a)==1:
-                    tipo = i.righeprimanota[0].tipo
-                else:
-                    tipo = "misto"
-                banca = i.righeprimanota[0].banca[0:15] or ""
-            elif len(i.righeprimanota) ==1:
-                denom = i.righeprimanota[0].denominazione
-                note = i.note
-                tipo = i.righeprimanota[0].tipo
-                banca = i.righeprimanota[0].banca[0:15] or ""
-            else:
-                print "ATTENZIONE TESTATA PRIMA NOTA SENZA RIGHE", i, i.note, i.data_inizio
-                denom ="SENZARIGHE"
-                note = i.note
-                banca = ""
-            if tipo =="cassa":
-                col_tipo = "#FFF2C7"
-            elif tipo=="banca":
-                col_tipo = "#CFF5FF"
-            else:
-                col_tipo = ""
-            self.primanota_filter_listore.append((i,
-                                        col_valore,
-                                        (str(i.numero) or ''),
-                                        (dateToString(i.data_inizio) or ''),
-                                        denom or '',
-                                        (str(mNLC(i.totali["totale"],2)) or "0"),
-                                        tipo,
-                                        banca,
-                                        note or "",
-                                        col_tipo
+            self.gestionefile_filter_listore.append((i,
+                                        i.immagine.denominazione,
+                                        i.immagine.denominazione,
+                                        i.immagine.denominazione
                                         ))
 

@@ -36,10 +36,10 @@ class AnagraficaFiles(Anagrafica):
         Anagrafica.__init__(self,
                         windowTitle='Promogest - Anagrafica File',
                         recordMenuLabel='_Gestione file',
-                        filterElement=AnagraficaFilesFilter(self),
+                        filterElement=AnagraficaFilesFilter(self,daoArticolo=dao),
                         htmlHandler=AnagraficaFilesHtml(self),
                         reportHandler=AnagraficaFilesReport(self),
-                        editElement=AnagraficaFilesEdit(self),
+                        editElement=AnagraficaFilesEdit(self,daoArticolo=dao),
                         aziendaStr=Environment.azienda)
 #        self.records_print_on_screen_button.set_sensitive(False)
         self.records_print_button.set_sensitive(False)

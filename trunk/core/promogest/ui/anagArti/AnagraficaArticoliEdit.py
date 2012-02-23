@@ -471,12 +471,14 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
             else:
                 toggleButton.set_active(False)
                 return
-        from promogest.modules.GestioneFile.ui.AnagraficaFiles import AnagraficaFiles
-        anag = AnagraficaFiles(dao=self.dao)
-        anagWindow = anag.getTopLevel()
+        if posso("LA"):
+            from promogest.modules.GestioneFile.ui.AnagraficaFiles import AnagraficaFiles
+            anag = AnagraficaFiles(dao=self.dao)
+            anagWindow = anag.getTopLevel()
 
-        showAnagraficaRichiamata(self.dialogTopLevel, anagWindow, toggleButton)
-
+            showAnagraficaRichiamata(self.dialogTopLevel, anagWindow, toggleButton)
+        else:
+            fencemsg()
 
 
     def on_forniture_togglebutton_clicked(self, toggleButton):

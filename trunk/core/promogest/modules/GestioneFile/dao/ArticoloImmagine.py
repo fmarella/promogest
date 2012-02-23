@@ -23,7 +23,7 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
 from promogest.dao.Dao import Dao
-from promogest.modules.GestioneFile.dao.Immagine import immagine
+from promogest.modules.GestioneFile.dao.Immagine import ImageFile,immagine
 from promogest.dao.Articolo import articolo
 
 try:
@@ -61,12 +61,13 @@ class ArticoloImmagine(Dao):
 
     def filter_values(self,k,v):
         if k == 'id_immagine':
-            dic = {k:slafileimmagine.c.id_immagine == v}
-        elif k == 'id_articolo':
-            dic = {k:slafileimmagine.c.id_articolo == v}
+            dic = {k:articoloimmagine.c.id_immagine == v}
+        elif k == 'idArticolo':
+            dic = {k:articoloimmagine.c.id_articolo == v}
         elif k == 'denominazione':
             dic = {k:and_(articoloimmagine.id_articolo==articolo.id,immagine.ilike("%"+v+"%"))}
         return  dic[k]
 
 std_mapper = mapper(ArticoloImmagine, articoloimmagine, properties={
+                 'immagine': relation(ImageFile, backref='artima'),
                 }, order_by=articoloimmagine.c.id_immagine)

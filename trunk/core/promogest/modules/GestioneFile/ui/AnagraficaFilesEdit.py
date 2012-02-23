@@ -33,16 +33,16 @@ from promogest.modules.GestioneFile.dao.ArticoloImmagine import ArticoloImmagine
 
 class AnagraficaFilesEdit(AnagraficaEdit):
     """ Modifica un record dell'anagrafica delle prima nota cassa """
-    def __init__(self, anagrafica, articolo=None):
+    def __init__(self, anagrafica, daoArticolo=None):
         AnagraficaEdit.__init__(self,
                 anagrafica,
                 'anagrafica_gestione_file_detail_vbox',
                 'Informazioni File.',
                 gladeFile='GestioneFile/gui/_anagrafica_gestione_file_elements.glade',
                 module=True)
-        self._widgetFirstFocus = self.art_image
+        self._widgetFirstFocus = self.denominazione_entry
         self.anagrafica = anagrafica
-        self.daoArticolo = articolo
+        self.daoArticolo = daoArticolo
 
     def draw(self, cplx=False):
         return
@@ -51,7 +51,8 @@ class AnagraficaFilesEdit(AnagraficaEdit):
         if dao is None:
             self.dao = ArticoloImmagine()
         else:
-            self.dao = ArticoloImmagine().getRecord(id=dao.id)
+            #self.dao = ArticoloImmagine().getRecord(id=(dao.id_articolo,dao.id_immagine)) #ricontrollare
+            self.dao = dao
         self._refresh()
         return self.dao
 
@@ -66,52 +67,37 @@ class AnagraficaFilesEdit(AnagraficaEdit):
                 self.art_image.set_from_file(fingerprint)
             except:
                 self.art_image.set_from_file("")
+            self.denominazione_entry.set_text(self.dao.immagine.denominazione)
+        else:
+            self.art_image.set_from_file("")
+            self.denominazione_entry.set_text("")
 
     def clear(self):
+        self.art_image.set_from_file("")
+        self.denominazione_entry.set_text("")
         return
 
     def on_gestione_file_filechooserbutton_file_set(self, filechooser):
-        #import StringIO
-        #output = StringIO.StringIO()
-        #image.save(output)
-        #contents = output.getvalue()
-        #output.close()
-
-        print "LA FOTO SELEZIONATA",  filechooser.get_file().get_path(), filechooser.get_file()
         size = 200, 200
         self.photo_src= filechooser.get_filename()
         self.art_image.set_from_file(self.photo_src)
-        #im1 = Image.fromstring(self.photo_src)
         f = open(self.photo_src, "r")
         g = f.read()
-        #im = Image.open(g)
-        #im.thumbnail(size, Image.ANTIALIAS)
-        #im.tostring(self.photo_src + ".thumbnail)
         self.imgblob = base64.b64encode(str(g))
         f.close()
 
 
     def saveDao(self, tipo=None):
         if self.gestione_file_filechooserbutton.get_file():
-            print "LA FOTO SELEZIONATA", self.gestione_file_filechooserbutton.get_file().get_path(), self.gestione_file_filechooserbutton.get_file()
-        else:
-            print "NESSUNA FOTO SELEZIONATA POSSO METTERE UN CONTROLO", self.art_image.get_file()
-        return
-        if self.dao.id_articolo:
-            if a:
-                a=a[0]
-                img = ImageFile().getRecord(id=a.id_immagine)
-            else:
-                a= UtenteImmagine()
+            #print "LA FOTO SELEZIONATA", self.gestione_file_filechooserbutton.get_file().get_path(), self.gestione_file_filechooserbutton.get_file(), self.imgblob
+            img = ImageFile().getRecord(id=self.dao.id_immagine)
+            if not img:
                 img = ImageFile()
-            img.denominazione = "nessuno"
-            #img.altezza
-            img.larghezza = 200
+            img.denominazione = self.denominazione_entry.get_text() or ""
             img.fingerprint = hashlib.md5(self.imgblob).hexdigest()
             img.data = self.imgblob
             img.persist()
-            a.id_utente = self.dao.id
-            a.id_immagine = img.id
-            a.persist()
-        self.dao.persist()
+            self.dao.id_articolo = self.daoArticolo.id
+            self.dao.id_immagine = img.id
+            self.dao.persist()
         self.clear()
