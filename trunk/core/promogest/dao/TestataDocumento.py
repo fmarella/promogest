@@ -40,7 +40,6 @@ from AliquotaIva import AliquotaIva
 from RigaMovimento import RigaMovimento
 from Banca import Banca
 from Riga import Riga
-from Articolo import Articolo
 from promogest.dao.NumeroLottoTemp import NumeroLottoTemp
 from promogest.modules.PrimaNota.dao.TestataPrimaNota import TestataPrimaNota
 from promogest.modules.PrimaNota.dao.RigaPrimaNota import RigaPrimaNota

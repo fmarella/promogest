@@ -4,6 +4,7 @@
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
 #    Author: Alceste Scalas <alceste@promotux.it>
+#    Author: Francesco Marella <francesco.marella@gmail.com>
 
 #    This file is part of Promogest.
 
@@ -21,11 +22,9 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 import math
-
+from promogest import Environment
 from promogest.ui.gtk_compat import *
 from GladeWidget import GladeWidget
-import Login
-
 
 
 class Anagrafica(GladeWidget):
@@ -286,7 +285,7 @@ class Anagrafica(GladeWidget):
         (model, iterator) = sel.get_selected()
 
         if iterator is None:
-            print 'Anagrafica.on_anagrafica_filter_treeview_cursor_changed(): FIXME: iterator is None!'
+            Environment.pg2log.info('Anagrafica.on_anagrafica_filter_treeview_cursor_changed(): iterator is None!')
             return
 
         dao = model.get_value(iterator, 0)
@@ -425,7 +424,6 @@ class AnagraficaDetail(GladeWidget):
 
     def __init__(self, anagrafica, rootWidget):
         GladeWidget.__init__(self, rootWidget)
-##        Login.windowGroup.append(self.getTopLevel())
         self._anagrafica = anagrafica
         self._widgetFirstFocus = None
         self._isSensitive = True

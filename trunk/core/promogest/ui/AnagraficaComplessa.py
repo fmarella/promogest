@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 
 #    Copyright (C) 2005-2012 by Promotux
-#                        di Francesco Meloni snc - http://www.promotux.it/
+#                  di Francesco Meloni snc - http://www.promotux.it/
 
-# Author: Alceste Scalas <alceste@promotux.it>
-# Author: Andrea Argiolas <andrea@promotux.it>
-# Author: Francesco Meloni <francesco@promotux.it
+#    Author: Alceste Scalas <alceste@promotux.it>
+#    Author: Andrea Argiolas <andrea@promotux.it>
+#    Author: Francesco Meloni <francesco@promotux.it
+#    Author: Francesco Marella <francesco.marella@gmail.com>
 
 #    This file is part of Promogest.
 
@@ -23,31 +24,21 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 import time
-from promogest.ui.gtk_compat import *
 import os
-import sys
 import threading
 import os.path
-from promogest.Environment import conf
+import subprocess
+from hashlib import md5
+from promogest.ui.gtk_compat import *
 from promogest.ui.GladeWidget import GladeWidget
 from promogest.ui.widgets.FilterWidget import FilterWidget
+from promogest.ui.utils import *
 from promogest.lib.XmlGenerator import XlsXmlGenerator
 from promogest.lib.CsvGenerator import CsvFileGenerator
-from promogest.ui.utils import *
-import subprocess
-import shlex
 from promogest import Environment
-from calendar import Calendar
-#if Environment.new_print_enjine:
-from promogest.lib.sla2pdf.Sla2Pdf_ng import Sla2Pdf_ng
-from promogest.lib.sla2pdf.SlaTpl2Sla import SlaTpl2Sla as SlaTpl2Sla_ng
-from promogest.lib.SlaTpl2Sla import SlaTpl2Sla
-#else:
 from promogest.lib.GtkPrintDialog import GtkPrintDialog
 from promogest.ui.SendEmail import SendEmail
-from promogest.lib.HtmlHandler import createHtmlObj, renderTemplate, renderHTML
-from promogest.dao.Azienda import Azienda
-from hashlib import md5
+from promogest.lib.HtmlHandler import createHtmlObj, renderHTML
 
 if not Environment.pg3:
     try:
@@ -57,7 +48,6 @@ if not Environment.pg3:
         gtkunixprint = None
 else:
     gtkunixprint = None
-
 
 
 class Anagrafica(GladeWidget):
@@ -237,7 +227,7 @@ class Anagrafica(GladeWidget):
 
         try:
             myparse(xml_file, dati, file_out)
-        except Exception as e:
+        except Exception:
             messageError("Si è verificato un problema durante l'esportazione.")
         else:
             messageInfo("Esportazione eseguita con successo")
@@ -289,7 +279,7 @@ class Anagrafica(GladeWidget):
 
         try:
             myparse(xml_file, dati, file_out)
-        except Exception as e:
+        except Exception:
             messageError("Si è verificato un problema durante l'esportazione.")
         else:
             messageInfo("Esportazione eseguita con successo")
@@ -303,7 +293,7 @@ class Anagrafica(GladeWidget):
 #        values = self.set_data_list(data_export)
 
         from ExportCsv import ExportCsv
-        anag = ExportCsv(self, dao=dao)
+        ExportCsv(self, dao=dao)
         dao=None
         return
 
@@ -324,7 +314,7 @@ class Anagrafica(GladeWidget):
             elif os.name == 'nt':
                 self.__homeFolder = os.environ['USERPROFILE']
         saveDialog.set_current_folder(self.__homeFolder)
-        folder = self.__homeFolder
+        # folder = self.__homeFolder
 
         filter = gtk.FileFilter()
         filter.set_name("All files")
@@ -393,7 +383,7 @@ class Anagrafica(GladeWidget):
             creditsDialog.credits_dialog.destroy()
 
     def on_send_Email_activate(self, widget):
-        sendemail = SendEmail()
+        SendEmail()
 
     def on_licenza_menu_activate(self, widget):
         licenzaDialog = GladeWidget('licenza_dialog', callbacks_proxy=self)
@@ -720,10 +710,10 @@ class Anagrafica(GladeWidget):
         """ Questo segnale rimanda a AnagraficaComplessaReport
         che a sua volta rimanda a AnagraficaComplessaPrinterPreview che
         si occupa della visualizzazione e della stampa"""
-        previewDialog = self.reportHandler.buildPreviewWidget()
+        self.reportHandler.buildPreviewWidget()
 
     def on_report_farmacia_veterinaria_activate(self, widget):
-        previewDialog = self.reportHandler.buildPreviewWidget(veter=True)
+        self.reportHandler.buildPreviewWidget(veter=True)
 
     def on_records_print_progress_dialog_response(self, dialog, responseId):
         if responseId == GTK_RESPONSE_CANCEL:
@@ -805,7 +795,7 @@ Verificare i permessi della cartella"""
 
         fileName = self._pdfName +'.pdf'
         subject= "Invio: %s" % fileName
-        body = conf.body %fileName
+        body = Environment.conf.body %fileName
 
         messageInfo(msg="""Il client di posta consigliato è <b>Thunderbird</b>.
 

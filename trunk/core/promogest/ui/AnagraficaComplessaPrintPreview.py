@@ -3,9 +3,10 @@
 #    Copyright (C) 2005-2012 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
-# Author: Alceste Scalas <alceste@promotux.it>
-# Author: Andrea Argiolas <andrea@promotux.it>
-# Author: Francesco Meloni <francesco@promotux.it
+#    Author: Alceste Scalas <alceste@promotux.it>
+#    Author: Andrea Argiolas <andrea@promotux.it>
+#    Author: Francesco Meloni <francesco@promotux.it
+#    Author: Francesco Marella <francesco.marella@gmail.com>
 
 #    This file is part of Promogest.
 
@@ -22,32 +23,12 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-import time
 from promogest.ui.gtk_compat import *
-import os
-import sys
-import threading
-import os.path
-from promogest.Environment import conf
 from GladeWidget import GladeWidget
 from promogest.ui.widgets.FilterWidget import FilterWidget
-from promogest.lib.XmlGenerator import XlsXmlGenerator
-from promogest.lib.CsvGenerator import CsvFileGenerator
-from utils import *
-import Login
-import subprocess ,shlex
+from promogest.ui.utils import *
 from promogest import Environment
-from calendar import Calendar
-#if Environment.new_print_enjine:
-from promogest.lib.sla2pdf.Sla2Pdf_ng import Sla2Pdf_ng
-from promogest.lib.sla2pdf.SlaTpl2Sla import SlaTpl2Sla as SlaTpl2Sla_ng
-from promogest.lib.SlaTpl2Sla import SlaTpl2Sla
-#else:
-
-
-from promogest.ui.SendEmail import SendEmail
 from promogest.lib.HtmlHandler import createHtmlObj, renderTemplate, renderHTML
-from promogest.dao.Azienda import Azienda
 
 
 class AnagraficaPrintPreview(GladeWidget):
