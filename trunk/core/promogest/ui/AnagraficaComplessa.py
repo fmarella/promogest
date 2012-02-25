@@ -839,10 +839,15 @@ html contatti <b>assistenza@promotux.it</b> per informazioni.""")
         pdfFile = os.path.join(self._folder + self._pdfName +'.pdf')
         self.pdfFile = pdfFile
         self.tryToSavePdf(pdfFile)
-        try:
-            subprocess.Popen(['xdg-open', pdfFile])
-        except:
+        from sys import platform
+        if platform == 'darwin':
+            os.system('open "%s"' % pdfFile)
+        elif platform == 'win32':
             os.startfile(pdfFile)
+        elif platform.startswith('linux'):
+            subprocess.Popen(['xdg-open', pdfFile])
+        else:
+            pass
 
     def __handleSaveResponse(self, dialog):
         fileDialog = gtk.FileChooserDialog(title='Salva il file',
