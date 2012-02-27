@@ -22,7 +22,7 @@
 
 from promogest import Environment
 #import promogest.ui.Login
-#from promogest.modules.VenditaDettaglio.data.VenditaDettaglioDB import *
+from promogest.modules.VenditaDettaglio.data.VenditaDettaglioDB import *
 from promogest.modules.VenditaDettaglio.ui.AnagraficaVenditaDettaglio import AnagraficaVenditaDettaglio
 MODULES_NAME = "VenditaDettaglio"
 MODULES_FOR_EXPORT = ['VenditaDettaglio']

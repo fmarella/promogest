@@ -26,6 +26,21 @@ from sqlalchemy.orm import *
 from promogest.Environment import *
 from promogest.dao.Dao import Dao
 
+try:
+    pos=Table('pos',
+                params['metadata'],
+                schema = params['schema'],
+                autoload=True)
+except:
+    pos = Table('pos', params['metadata'],
+            Column('id', Integer, primary_key=True),
+            Column('denominazione', String(200), nullable=False ),
+            Column('denominazione_breve', String(10), nullable=False),
+            schema=params['schema'],
+            useexisting =True
+            )
+    pos.create(checkfirst=True)
+
 class Pos(Dao):
 
     def __init__(self, req=None):
@@ -34,10 +49,4 @@ class Pos(Dao):
     def filter_values(self,k,v):
         dic= {  'denominazione' : pos.c.denominazione.ilike("%"+v+"%")}
         return  dic[k]
-
-pos=Table('pos',
-            params['metadata'],
-            schema = params['schema'],
-            autoload=True)
-
 std_mapper = mapper(Pos, pos, order_by=pos.c.id)
