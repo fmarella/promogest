@@ -24,6 +24,32 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
 from promogest.dao.Dao import Dao
+from promogest.dao.Magazzino import magazzino
+from promogest.modules.VenditaDettaglio.dao.Pos import pos
+
+try:
+    chiusura_fiscale=Table('chiusura_fiscale',
+                    params['metadata'],
+                    schema = params['schema'],
+                    autoload=True)
+except:
+
+    if tipodb=="sqlite":
+        magazzinoFK = 'magazzino.id'
+        posFK = "pos.id"
+    else:
+        magazzinoFK = params['schema']+'.magazzino.id'
+        posFK = params['schema']+'.pos.id'
+
+    chiusura_fiscale = Table('chiusura_fiscale', params['metadata'],
+                Column('id',Integer,primary_key=True),
+                Column('data_chiusura',DateTime,nullable=False),
+                Column('id_magazzino',Integer,ForeignKey(magazzinoFK, onupdate="CASCADE", ondelete="RESTRICT")),
+                Column('id_pos',Integer,ForeignKey(posFK, onupdate="CASCADE", ondelete="RESTRICT")),
+                schema=params['schema'],
+                useexisting =True
+                )
+    chiusura_fiscale.create(checkfirst=True)
 
 
 class ChiusuraFiscale(Dao):
@@ -39,11 +65,6 @@ class ChiusuraFiscale(Dao):
         elif k == 'idPuntoCassa':
             dic = {k: chiusura_fiscale.c.id_pos == v}
         return  dic[k]
-
-chiusura_fiscale=Table('chiusura_fiscale',
-                    params['metadata'],
-                    schema = params['schema'],
-                    autoload=True)
 
 std_mapper = mapper(ChiusuraFiscale, chiusura_fiscale,properties={
         #"testatamovimento": relation(TestataMovimento,primaryjoin=

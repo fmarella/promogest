@@ -30,21 +30,8 @@ from promogest.dao.CCardType import c_card_type
 from promogest.dao.Magazzino import magazzino
 from promogest.dao.Articolo import articolo
 from promogest.dao.TestataMovimento import testata_mov
-
+from promogest.modules.VenditaDettaglio.dao.Pos import pos
 from promogest.dao.Cliente import j as cliente
-
-posTable = Table('pos', params['metadata'],
-        Column('id', Integer, primary_key=True),
-        Column('denominazione', String(200), nullable=False ),
-        Column('denominazione_breve', String(10), nullable=False),
-        schema=params['schema'],
-        useexisting =True
-        )
-posTable.create(checkfirst=True)
-
-#magazzinoTable = Table('magazzino', params['metadata'], autoload=True, schema=params['schema'])
-#testataMovimentoTable = Table('testata_movimento', params['metadata'], autoload=True, schema=params['schema'])
-#ccdTypeTable = Table('credit_card_type', params['metadata'], autoload=True, schema=params['schema'])
 
 if tipodb=="sqlite":
     magazzinoFK = 'magazzino.id'
@@ -84,7 +71,6 @@ testataScontrinoTable = Table('testata_scontrino', params['metadata'],
             )
 testataScontrinoTable.create(checkfirst=True)
 
-#articoloTable = Table('articolo', params['metadata'], autoload=True, schema=params['schema'])
 
 rigaScontrinoTable = Table('riga_scontrino', params['metadata'],
         Column('id',Integer,primary_key=True),
@@ -111,7 +97,6 @@ scontoScontrinoTable= Table('sconto_scontrino', params['metadata'],
         )
 scontoScontrinoTable.create(checkfirst=True)
 
-#rigaDotoTable = Table('sconto_scontrino', params['metadata'], autoload=True, schema=params['schema'])
 
 scontoRigaScontrinoTable = Table('sconto_riga_scontrino', params['metadata'],
         Column('id',Integer,ForeignKey(scontoscontrinoFK,onupdate="CASCADE",ondelete="CASCADE"),primary_key=True),
@@ -120,15 +105,7 @@ scontoRigaScontrinoTable = Table('sconto_riga_scontrino', params['metadata'],
         useexisting =True)
 scontoRigaScontrinoTable.create(checkfirst=True)
 
-chiusuraFiscaleTable = Table('chiusura_fiscale', params['metadata'],
-            Column('id',Integer,primary_key=True),
-            Column('data_chiusura',DateTime,nullable=False),
-            Column('id_magazzino',Integer,ForeignKey(magazzinoFK, onupdate="CASCADE", ondelete="RESTRICT")),
-            Column('id_pos',Integer,ForeignKey(posFK, onupdate="CASCADE", ondelete="RESTRICT")),
-            schema=params['schema'],
-            useexisting =True
-            )
-chiusuraFiscaleTable.create(checkfirst=True)
+
 
 #    testatascontrinoTable = Table('testata_scontrino', params['metadata'], autoload=True, schema=params['schema'])
 #testataDoctoTable = Table('sconto_scontrino', params['metadata'], autoload=True, schema=params['schema'])
