@@ -257,6 +257,7 @@ class DuplicazioneDocumento(GladeWidget):
                     daoTestataDocumentoScadenza.pagamento = s.pagamento
                     daoTestataDocumentoScadenza.id_banca = s.id_banca
                     daoTestataDocumentoScadenza.data_pagamento= s.data_pagamento
+                    daoTestataDocumentoScadenza.note_per_primanota = s.note_per_primanota
                     daoTestataDocumentoScadenza.numero_scadenza = s.numero_scadenza
                     scadenze.append(daoTestataDocumentoScadenza)
                 newDao.scadenze = scadenze
