@@ -617,28 +617,15 @@ if azienda:
     meta_pickle = azienda + "_meta_pickle"
 else:
     meta_pickle = "azienda_meta_pickle"
-import time
-import pickle
+from pickle import load as pickle_load
 meta = MetaData()
 metatmp = MetaData()
-_start = time.time()
 
 if os.path.exists(os.path.join(CONFIGPATH, meta_pickle)) and  sqlalchemy.__version__ > "0.5.8":
-    print ">>>>>>> STO CARICANDO IL METADATA DA FILE..."
     with open(os.path.join(CONFIGPATH, meta_pickle), 'rb') as f:
-        print ">>>>>>> LEGGO IL FILE PICKLE..."
-        meta = pickle.load(f)
-    #print ">>>>>>> INIZIO IL CICLO TRA LE TABELLE CONTENUTE NEL METADATA LETTO DA FILE..."
-    #for t, v in metatmp.tables.iteritems():
-        #if 'promogest2' in t:
-            #args=t.split('.')
-            #print ">>>>>>> IMPORTO LA TABELLA %s dello schema %s" % (args[1], args[0])
-            #v.tometadata(meta)
+        meta = pickle_load(f)
         meta.bind = engine
-    _end = time.time()
-    print "***caricamento meta da file completato in : ", _end - _start, "sec"
 else:
-    print ">>>>>>> STO CARICANDO IL METADATA IN AUTOMATICO"
     meta = MetaData(engine)
 
 session = Session()

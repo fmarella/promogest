@@ -312,13 +312,10 @@ class Main(GladeWidget):
         glib.timeout_add_seconds(600, update_timer)
 
         def pickle_meta():
-            import time
-            import pickle
+            from pickle import dump
             if not os.path.exists(os.path.join(Environment.CONFIGPATH, Environment.meta_pickle)):
-                print ">>>>>>> INIZIAMO IL SALVATAGGIO DELLE TABELLE DEL METADATA"
                 with open(os.path.join(Environment.CONFIGPATH, Environment.meta_pickle), 'wb') as f:
-                    pickle.dump(Environment.meta, f)
-                    print ">>>>>>> SALVATAGGIO TERMINATO "
+                    dump(Environment.meta, f)
         pickle_meta()
 
         upgrade_banca()
