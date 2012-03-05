@@ -1,0 +1,97 @@
+{% extends 'index.html' %}
+
+{% block body %}
+<style type="text/css">
+table.ed {
+	border-width: 0px;
+	border-spacing: 1px;
+	border-style: solid;
+	border-color: gray;
+	border-collapse: separate;
+	background-color: white;
+}
+table.ed th {
+	border-width: 1px;
+	padding: 3px;
+	border-style: solid;
+	border-color: gray;
+	background-color: white;
+	-moz-border-radius: ;
+}
+table.ed td {
+	border-width: 1px;
+	padding: 3px;
+	border-style: solid;
+	border-color: gray;
+	background-color: white;
+	-moz-border-radius: ;
+}
+</style>
+<center>
+<h2 style="background-color:red;color:white;">
+    <b>RICEVUTE BANCARIE (RI.BA)</b>
+</h2>
+<table style="width:90%;">
+    <th colspan="2"><b>DATI AZIENDA</b></th>
+	<tr>
+		<td><b>Codice SIA:</b> {{pageData["creditore"].codice_sia}}</td>
+        <td><b>Data di creazione:</b> {{utils.dateToString(pageData["data_creazione"])}}</td>
+	</tr>
+	<tr>
+		<td><b>Nome azienda:</b> {{pageData["creditore"].denominazione_breve}}</td>
+		<td><b>Località:</b> {{pageData["creditore"].descrizione[2]}}</td>
+	</tr>
+	<tr>
+		<td><b>Indirizzo:</b> {{pageData["creditore"].descrizione[1]}}</td>
+		<td><b>Cod. fiscale:</b> {{pageData["creditore"].codice_fiscale}}</td>
+	</tr>
+</table>
+<table style="width:90%;">
+    <th colspan="2"><b>ESTREMI BANCA ASSUNTRICE (Dati ordinante)</b></th>
+	<tr>
+		<td><b>Codice ABI:</b> {{pageData["creditore"].abi}}</td>
+        <td><b>Codice CAB:</b> {{pageData["creditore"].cab}}</td>
+	</tr>
+	<tr>
+		<td><b>C/C:</b> {{pageData["creditore"].numero_conto}}</td>
+		<td></td>
+	</tr>
+</table>
+<table class="ed" style="width:100%;">
+    <th colspan="11"><b>ESTREMI DEBITORI</b></th>
+	<tr>
+		<th><b>Destinatario</b></th>
+        <th><b>Indirizzo</b></th>
+        <th><b>CAP</b></th>
+        <th><b>Località</b></th>
+        <th><b>Prov.</b></th>
+        <th><b>Cod. fiscale/ P.IVA</b></th>
+        <th><b>ABI</b></th>
+        <th><b>CAB</b></th>
+        <th><b>Importo</b></th>
+        <th><b>Scad.</b></th>
+        <th><b>Rif. al debito</b></th>
+	</tr>
+{% for riga in pageData['righe'] %}
+	<tr>
+		<td>{{riga['destinatario']}}</td>
+        <td>{{riga['indirizzo']}}</td>
+        <td>{{riga['CAP']}}</td>
+        <td>{{riga['comune']}}</td>
+        <td>{{riga['provincia']}}</td>
+        <td>{{riga['cod_fisc_piva']}}</td>
+        <td>{{riga['banca_abi']}}</td>
+        <td>{{riga['banca_cab']}}</td>
+        <td>{{utils.mNLC(riga['importo'], 2)}}</td>
+        <td>{{utils.dateToString(riga['data_scadenza'])}}</td>
+        <td>{{riga['rif_debito']}}</td>
+	</tr>
+{% endfor %}
+</table>
+<h3>
+    <b>DATI RIEPILOGATIVI</b>
+</h3>
+<p><b>Numero riba:</b> {{pageData["disposizioni"]}}
+<b>Totale importo:</b> {{utils.mNLC(pageData["totale_importi"], 2)}}</p>
+</center>
+{% endblock %}

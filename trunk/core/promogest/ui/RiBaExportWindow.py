@@ -37,6 +37,7 @@ from datetime import datetime
 from decimal import Decimal
 from promogest.ui.gtk_compat import *
 from sqlalchemy.sql import and_, or_
+from promogest.lib.HtmlHandler import renderTemplate, renderHTML
 
 
 def leggiCreditore():
@@ -94,25 +95,29 @@ def pagamentoLookup(pagamento):
 
 class PGRiBa(RiBa):
     
+    progressbar = None
+    
     def __init__(self, ana, creditore):
         RiBa.__init__(self, creditore)
         self.ana = ana
+        
+    def bind(self, widget):
+        self.progressbar = widget
     
-    def analizza(self, data_inizio=None):
+    def analizza(self, data_inizio=None, pageData=None):
         if not data_inizio:
             messageError(msg='Inserire una data d\'inizio periodo.')
             return 0
         
         data_inizio, data_fine = dataInizioFineMese(data_inizio)
-
-        #TODO: aggiungere selezione per tipo documento
-        documenti = TestataDocumento().select(complexFilter=(and_(TestataDocumento.data_documento.between(data_inizio, data_fine))), batchSize=None)
+        
+        documenti = TestataDocumento().select(complexFilter=(and_(or_(TestataDocumento.operazione=='Fattura differita vendita', TestataDocumento.operazione=='Fattura accompagnatoria'), TestataDocumento.data_documento.between(data_inizio, data_fine))), batchSize=None)
 
         if not documenti:
             messageInfo(msg="Nessun risultato.")
             return 0
 
-        numero_disposizioni = 0
+        righe = []
         
         buff = self.recordIB()
         
@@ -121,9 +126,9 @@ class PGRiBa(RiBa):
         
         for documento in documenti:
 
-            if documento.operazione not in ['Fattura differita vendita', 'Fattura accompagnatoria']:
-                continue
-    
+            if self.progressbar:
+                pbar(self.progressbar, parziale=i, totale=len(documenti))
+
             ope = leggiOperazione(documento.operazione)
             if ope:
                 if ope['tipoPersonaGiuridica'] != 'cliente':
@@ -174,12 +179,34 @@ class PGRiBa(RiBa):
                     buff += self.record50(progressivo, debitore, row.replace('\n', ''))
                     buff += self.record51(progressivo, progressivo)
                     buff += self.record70(progressivo)
+                    
+                    riga = {
+                        'destinatario': debitore.descrizione[0],
+                        'indirizzo': debitore.indirizzo,
+                        'CAP': debitore.CAP,
+                        'comune': debitore.comune,
+                        'provincia': debitore.provincia,
+                        'cod_fisc_piva': cod_fisc_piva,
+                        'banca_abi': banca['abi'],
+                        'banca_cab': banca['cab'],
+                        'importo': scadenza.importo,
+                        'data_scadenza': scadenza.data,
+                        'rif_debito': row
+                    }
+                    righe.append(riga)
+                    
                     i = i + 1
                     
         buff += self.recordEF(i, totale_importi)
+        
+        pageData['righe'] = righe
+        pageData['totale_importi'] = totale_importi
+        pageData['disposizioni'] = i
+
+        if self.progressbar:
+            pbar(self.progressbar, stop=True)
+
         self._buffer = buff
-
-
 
 class RiBaExportWindow(GladeWidget):
     '''
@@ -197,8 +224,8 @@ class RiBaExportWindow(GladeWidget):
         '''
         GladeWidget.__init__(self, 'riba_window', fileName='riba_window.glade')
         self.__parent = parent
-        self.getTopLevel()
-        self.placeWindow(self.getTopLevel()) 
+        self.placeWindow(self.getTopLevel())
+        self.__setup_webview()
         self.draw()
         
         try:
@@ -206,24 +233,39 @@ class RiBaExportWindow(GladeWidget):
         except RuntimeError as e:
             messageError(msg=str(e))
         self.show_all()
-        
+
+    def __setup_webview(self):
+        from webkit import WebView
+        self.view = WebView()
+        self.webview_scrolledwindow.add(self.view)
+
     def show_all(self):
         self.data_entry.show_all()
+        
+    def on_salva_file_button_clicked(self, button):
+        self.salvaFile()
 
     def on_genera_button_clicked(self, button):
         self.generatore = PGRiBa(self, self.__creditore)
+        self.generatore.bind(self.progressbar1)
         data = stringToDate(self.data_entry.get_text())
+        pageData = {
+            'file': 'riba_export.html',
+            'creditore': self.__creditore,
+            'data_creazione': data,
+        }
+        res = 0
         try:
-            res = self.generatore.analizza(data)
+            res = self.generatore.analizza(data, pageData=pageData)
         except RuntimeError as e:
             messageError(msg=str(e))
         if res != 0:
-            self.salvaFile()
-        
-   
+            self.salva_file_button.set_sensitive(True)
+            renderHTML(self.view, renderTemplate(pageData))
+
     def salvaFile(self):
         data = stringToDate(self.data_entry.get_text())
-        nome_file = 'estratto_riba_' + data.strftime('%m_%y') + ".txt"
+        nome_file = 'ESTRATTO_RIBA_' + data.strftime('%m_%y') + ".txt"
         fileDialog = gtk.FileChooserDialog(title='Salvare il file',
                                            parent=self.getTopLevel(),
                                            action= GTK_FILE_CHOOSER_ACTION_SAVE,
@@ -249,4 +291,3 @@ class RiBaExportWindow(GladeWidget):
     
     def draw(self):
         self.data_entry.show_all()
-        #self.data_entry.set_text(dateToString(dataInizioFineMese(datetime.now())[0]))
