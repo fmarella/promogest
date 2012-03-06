@@ -112,10 +112,10 @@
                         <child>
                           <object class="GtkCheckButton" id="data_consegna_check">
                             <property name="label" translatable="yes">Inserisci data consegna dei singoli DDT</property>
+                            <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">False</property>
-                            <property name="use_action_appearance">False</property>
                             <property name="draw_indicator">True</property>
                           </object>
                           <packing>
@@ -127,10 +127,10 @@
                         <child>
                           <object class="GtkCheckButton" id="note_check">
                             <property name="label" translatable="yes">Inserisci Note dei singoli DDT</property>
+                            <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">False</property>
-                            <property name="use_action_appearance">False</property>
                             <property name="draw_indicator">True</property>
                           </object>
                           <packing>
@@ -142,10 +142,10 @@
                         <child>
                           <object class="GtkCheckButton" id="no_row_check">
                             <property name="label" translatable="yes">Inserisci dettaglio Righe del singolo DDT</property>
+                            <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">False</property>
-                            <property name="use_action_appearance">False</property>
                             <property name="active">True</property>
                             <property name="draw_indicator">True</property>
                           </object>
@@ -156,7 +156,20 @@
                           </packing>
                         </child>
                         <child>
-                          <placeholder/>
+                          <object class="GtkCheckButton" id="no_rif_righe_cumul_check">
+                            <property name="label" translatable="yes">No Rif ai DDT, righe composte da sintesi articoli
+cumulati come quantità e valore</property>
+                            <property name="use_action_appearance">False</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">False</property>
+                            <property name="draw_indicator">True</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                            <property name="position">5</property>
+                          </packing>
                         </child>
                       </object>
                     </child>
@@ -203,11 +216,11 @@
             <property name="layout_style">end</property>
             <child>
               <object class="GtkButton" id="confirm_button">
+                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
                 <property name="receives_default">False</property>
-                <property name="use_action_appearance">False</property>
                 <signal name="clicked" handler="on_confirm_button_clicked" swapped="no"/>
                 <child>
                   <object class="GtkAlignment" id="alignment318">

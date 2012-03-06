@@ -161,6 +161,9 @@ class FatturazioneDifferita(GladeWidget):
                         # Ok, ora posso registrare le righe dei documenti
                         dao_da_fatturare = ddt[0]
                         # Inserisco il riferimento:
+                        if self.no_rif_righe_cumul_check.get_active():
+                            print "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                            return
                         riga_riferimento = "Rif. " + str(dao_da_fatturare.operazione) + " n. " + str(
                                             dao_da_fatturare.numero) + " del " + dateToString(
                                             dao_da_fatturare.data_documento )
