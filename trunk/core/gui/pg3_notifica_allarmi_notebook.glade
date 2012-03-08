@@ -1,7 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <requires lib="gtk+" version="2.16"/>
-  <object class="GtkListStore" id="liststore1"/>
+  <!-- interface-naming-policy project-wide -->
+  <object class="GtkListStore" id="liststore1">
+    <columns>
+      <!-- column-name PyObject1 -->
+      <column type="PyObject"/>
+      <!-- column-name data_scadenza -->
+      <column type="gchararray"/>
+      <!-- column-name oggetto -->
+      <column type="gchararray"/>
+      <!-- column-name descrizione -->
+      <column type="gchararray"/>
+      <!-- column-name incaricato -->
+      <column type="gchararray"/>
+      <!-- column-name autore -->
+      <column type="gchararray"/>
+      <!-- column-name annotazione -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
   <object class="GtkFrame" id="notifica_allarmi_frame">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -48,6 +66,7 @@ Promemoria in scadenza. Verificare?!?</property>
                 <property name="row_spacing">5</property>
                 <child>
                   <object class="GtkButton" id="snooze_alarm_button">
+                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
@@ -194,6 +213,8 @@ Promemoria in scadenza. Verificare?!?</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                <property name="hscrollbar_policy">automatic</property>
+                <property name="vscrollbar_policy">automatic</property>
                 <property name="shadow_type">etched-in</property>
                 <child>
                   <object class="GtkTreeView" id="alarm_notify_treeview">
@@ -201,12 +222,94 @@ Promemoria in scadenza. Verificare?!?</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                    <property name="model">liststore1</property>
                     <property name="rules_hint">True</property>
                     <property name="rubber_banding">True</property>
                     <property name="enable_grid_lines">both</property>
                     <signal name="row-activated" handler="on_alarm_notify_treeview_row_activated" swapped="no"/>
-                    <child internal-child="selection">
-                      <object class="GtkTreeSelection" id="treeview-selection1"/>
+                    <child>
+                      <object class="GtkTreeViewColumn" id="data_scadenza_column">
+                        <property name="min_width">200</property>
+                        <property name="title" translatable="yes">Data scadenza</property>
+                        <property name="clickable">True</property>
+                        <property name="reorderable">True</property>
+                        <child>
+                          <object class="GtkCellRendererText" id="cellrenderertext1"/>
+                          <attributes>
+                            <attribute name="text">1</attribute>
+                          </attributes>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkTreeViewColumn" id="oggetto_column">
+                        <property name="min_width">150</property>
+                        <property name="title" translatable="yes">Oggetto</property>
+                        <property name="clickable">True</property>
+                        <property name="reorderable">True</property>
+                        <child>
+                          <object class="GtkCellRendererText" id="cellrenderertext2"/>
+                          <attributes>
+                            <attribute name="text">2</attribute>
+                          </attributes>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkTreeViewColumn" id="descrizione_column">
+                        <property name="min_width">150</property>
+                        <property name="title" translatable="yes">Descrizione</property>
+                        <property name="clickable">True</property>
+                        <property name="reorderable">True</property>
+                        <child>
+                          <object class="GtkCellRendererText" id="cellrenderertext3"/>
+                          <attributes>
+                            <attribute name="text">3</attribute>
+                          </attributes>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkTreeViewColumn" id="incaricato_column">
+                        <property name="min_width">100</property>
+                        <property name="title" translatable="yes">Incaricato</property>
+                        <property name="clickable">True</property>
+                        <property name="reorderable">True</property>
+                        <child>
+                          <object class="GtkCellRendererText" id="cellrenderertext4"/>
+                          <attributes>
+                            <attribute name="text">4</attribute>
+                          </attributes>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkTreeViewColumn" id="autore_column">
+                        <property name="min_width">100</property>
+                        <property name="title" translatable="yes">Autore</property>
+                        <property name="clickable">True</property>
+                        <property name="reorderable">True</property>
+                        <child>
+                          <object class="GtkCellRendererText" id="cellrenderertext5"/>
+                          <attributes>
+                            <attribute name="text">5</attribute>
+                          </attributes>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkTreeViewColumn" id="annotazione_column">
+                        <property name="min_width">100</property>
+                        <property name="title" translatable="yes">Annotazione</property>
+                        <property name="clickable">True</property>
+                        <property name="reorderable">True</property>
+                        <child>
+                          <object class="GtkCellRendererText" id="cellrenderertext6"/>
+                          <attributes>
+                            <attribute name="text">6</attribute>
+                          </attributes>
+                        </child>
+                      </object>
                     </child>
                   </object>
                 </child>
