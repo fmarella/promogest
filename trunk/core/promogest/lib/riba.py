@@ -48,7 +48,10 @@ def as_number(arg, lenght):
 
 def as_currency(arg, lenght, decimal=2):
     args = str(arg).split('.')
-    return str(args[0][:int(lenght-decimal)].rjust(int(lenght-decimal), '0') + args[1][:decimal].rjust(decimal, '0'))
+    if len(args) == 1:
+        return str(args[0][:int(lenght)].rjust(int(lenght), '0'))
+    else:
+        return str(args[0][:int(lenght-decimal)].rjust(int(lenght-decimal), '0') + args[1][:decimal].rjust(decimal, '0'))
 
 
 class Debitore(object):
