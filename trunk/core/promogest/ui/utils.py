@@ -2859,31 +2859,6 @@ def fenceDialog():
     response = dialog.run()
     dialog.destroy()
 
-class PGTimer(object):
-    """ Misura il tempo di esecuzione di un blocco di codice all'interno di una
-    funzione. E' possibile registrare degli intervalli intermedi richiamando
-    la funzione `PGTimer.step()`.
-    """
-    steps = []
-    def __init__(self):
-        self.steps = []
-        self.steps.append(datetime.datetime.now())
-
-    def step(self):
-        """Registra la data e l'ora per l'intervallo
-        """
-        self.steps.append(datetime.datetime.now())
-
-    def __str__(self):
-        """
-        """
-        tmp = ''
-        if len(self.steps) <= 1:
-            return
-        for i in range(len(self.steps)-1):
-            tmp += str(self.steps[i+1] - self.steps[i]) + '\n'
-        return tmp
-
 def leggiRevisioni():
     """ controllo se il pg2 è da aggiornare o no"""
     def fetch():
@@ -3458,6 +3433,19 @@ def getLottoeScadenze(daoRigaMovimento, testataMovimento):
         return Fornitura().getRecord(id=idFornitura)
     else:
         return None
+    
+def timeit(method):
+
+    def timed(*args, **kw):
+        ts = time.time()
+        result = method(*args, **kw)
+        te = time.time()
+
+        print '%r (%r, %r) %2.2f sec' % \
+              (method.__name__, args, kw, te-ts)
+        return result
+
+    return timed
 
 def tracciati_disponibili():
     ''' Ritorna una lista con i nomi dei tracciati disponibili '''
