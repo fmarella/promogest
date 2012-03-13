@@ -322,8 +322,8 @@ class FatturazioneDifferita(GladeWidget):
                                         continue
                                     else:
                                         quantita += a.quantita
-                                        vul += a.valore_unitario_lordo
-                                        vun += a.valore_unitario_netto
+                                        #vul = a.valore_unitario_lordo
+                                        #vun = a.valore_unitario_netto
                                 daoRiga = RigaDocumento()
                                 daoRiga.id_articolo = a.id_articolo
                                 daoRiga.id_magazzino = a.id_magazzino
@@ -334,8 +334,8 @@ class FatturazioneDifferita(GladeWidget):
                                 daoRiga.quantita = quantita
                                 daoRiga.id_multiplo = a.id_multiplo
                                 daoRiga.moltiplicatore = a.moltiplicatore
-                                daoRiga.valore_unitario_lordo = vun
-                                daoRiga.valore_unitario_netto = vul
+                                daoRiga.valore_unitario_lordo = a.valore_unitario_lordo
+                                daoRiga.valore_unitario_netto = a.valore_unitario_netto
 #                                daoRiga.misura_pezzo = r.misura_pezzo
                                 sconti = []
                                 for s in a.sconti:
