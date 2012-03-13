@@ -54,6 +54,7 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         treeselection = self.anagrafica_filter_treeview.get_selection()
         treeselection.set_mode(GTK_SELECTIONMODE_MULTIPLE)
 
+        fillComboboxPagamenti(self.id_pagamento_filter_combobox)
         fillComboboxOperazioni(self.id_operazione_filter_combobox, 'documento',True)
         self.id_operazione_filter_combobox.set_active(0)
         fillComboboxMagazzini(self.id_magazzino_filter_combobox, True)
@@ -89,6 +90,7 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         self.da_numero_filter_entry.set_text('')
         self.a_numero_filter_entry.set_text('')
         self.protocollo_entry.set_text('')
+        self.id_pagamento_filter_combobox.set_active(-1)
         self.id_operazione_filter_combobox.set_active(0)
         if not self._anagrafica._magazzinoFissato:
             fillComboboxMagazzini(self.id_magazzino_filter_combobox, True)
@@ -126,6 +128,7 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         idMagazzino = findIdFromCombobox(self.id_magazzino_filter_combobox)
         idCliente = self.id_cliente_filter_customcombobox.getId()
         idFornitore = self.id_fornitore_filter_customcombobox.getId()
+        idPagamento = findIdFromCombobox(self.id_pagamento_filter_combobox)
         idAgente = self.id_agente_filter_customcombobox._id
         if self.tutto_radio.get_active():
             statoDocumento = None
@@ -149,6 +152,7 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
                             "daParte":None,
                             "aParte":None,
                             "protocollo":protocollo,
+                            "idPagamento": idPagamento,
                             "idOperazione":idOperazione,
                             "idMagazzino":idMagazzino,
                             "idCliente":idCliente,

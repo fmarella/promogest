@@ -1212,6 +1212,8 @@ class TestataDocumento(Dao):
             dic = {k:testata_documento.c.protocollo.ilike("%"+v+"%")}
         elif k == 'idOperazione':
             dic = {k:testata_documento.c.operazione == v}
+        elif k == 'idPagamento':
+            dic = {k:testata_documento.c.id_pagamento == v}
         elif k == 'soloContabili':
             dic = {k:testata_documento.c.operazione.in_(contabili)}
         elif k == 'idCliente':
