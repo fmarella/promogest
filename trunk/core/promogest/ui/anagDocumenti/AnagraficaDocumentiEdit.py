@@ -828,7 +828,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         return self.dao
 
     def saveDao(self, tipo=None):
-        """ Salvataggio del Dao
+        """ Salvataggio del Dao ok
         """
         GN = posso("GN")
         SM = posso("SM")
