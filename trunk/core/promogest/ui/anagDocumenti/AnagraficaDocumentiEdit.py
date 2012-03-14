@@ -162,16 +162,16 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self.lotto_temp_hbox.destroy()
             self.nolottotemp = False
 
-     def on_lotto_temp_entry_changed(self, entry):
-         '''
-         Conferma automaticamente la riga dopo 3 secondi se viene
-         inserito il lotto temp.
-         '''
-         def do_confirm_row():
-             if (len(self.lotto_temp_entry.get_text()) > 3) and \
-                     self.auto_lotto_temp:
-                 self.on_confirm_row_button_clicked(widget=None)
-         gobject.timeout_add(3000, do_confirm_row)
+    def on_lotto_temp_entry_changed(self, entry):
+        '''
+        Conferma automaticamente la riga dopo 3 secondi se viene
+        inserito il lotto temp.
+        '''
+        def do_confirm_row():
+            if (len(self.lotto_temp_entry.get_text()) > 3) and \
+                    self.auto_lotto_temp:
+                self.on_confirm_row_button_clicked(widget=None)
+        gobject.timeout_add(3000, do_confirm_row)
 
     def draw(self, cplx=False):
         self.cplx = cplx
