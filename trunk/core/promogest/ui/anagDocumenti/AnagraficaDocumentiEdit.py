@@ -171,7 +171,8 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             if (len(self.lotto_temp_entry.get_text()) >= 6) and \
                     self.auto_lotto_temp:
                 self.on_confirm_row_button_clicked(widget=None)
-        gobject.timeout_add(1000, do_confirm_row)
+        if self.ricerca_criterio_combobox.get_active() == 1: #codice a barre
+            gobject.timeout_add(1000, do_confirm_row)
 
     def draw(self, cplx=False):
         self.cplx = cplx
