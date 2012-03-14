@@ -157,13 +157,21 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         if not posso("ADR"):
             hideADR(self)
         self.nolottotemp = True
+        self.auto_lotto_temp = True
         if not setconf("Documenti", "lotto_temp"):
             self.lotto_temp_hbox.destroy()
             self.nolottotemp = False
 
-    def on_lotto_temp_entry_changed(self, *args):
-        # self.on_confirm_row_button_clicked(widget=None)
-        pass
+     def on_lotto_temp_entry_changed(self, entry):
+         '''
+         Conferma automaticamente la riga dopo 3 secondi se viene
+         inserito il lotto temp.
+         '''
+         def do_confirm_row():
+             if (len(self.lotto_temp_entry.get_text()) > 3) and \
+                     self.auto_lotto_temp:
+                 self.on_confirm_row_button_clicked(widget=None)
+         gobject.timeout_add(3000, do_confirm_row)
 
     def draw(self, cplx=False):
         self.cplx = cplx
@@ -354,6 +362,9 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                 findComboboxRowFromId(self.id_magazzino_combobox, self._id_magazzino)
             self.id_magazzino_combobox.grab_focus()
 
+        # Finita la manipolazione della riga e pulita l'interfaccia
+        # riabilita la conferma automatica su lotto temp
+        self.auto_lotto_temp = True
 
     def nuovaRigaNoClean(self, rigatampone=None):
         """ Prepara per l'inserimento di una nuova riga seza cancellare i campi
@@ -1065,6 +1076,8 @@ del documento.
 
     def on_righe_treeview_row_activated(self, treeview, path, column):
         """ riporta la riga selezionata in primo piano per la modifica"""
+        # Disabilita la conferma automatica su lotto temp
+        self.auto_lotto_temp = False
 
         sel = treeview.get_selection()
         (model, self._iteratorRiga) = sel.get_selected()
