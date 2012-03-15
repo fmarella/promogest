@@ -31,7 +31,62 @@ def tracciati_disponibili():
     return [tracciato[:-4] for tracciato in os.listdir(Environment.tracciatiDir) if tracciato.endswith('.xml')]
 
 def dati_file_conad_terron(testata):
-    pass
+    """
+    """
+    from promogest.dao.TestataDocumento import TestataDocumento
+    from promogest.dao.InformazioniFatturazioneDocumento import InformazioniFatturazioneDocumento
+    from promogest.dao.Azienda import Azienda
+    if testata:
+        #Scriviamo la testata della fattura
+        dati_differita = InformazioniFatturazioneDocumento().select(id_fattura=testata.id, batchSize=None)
+        azienda = Azienda().getRecord(id=Environment.azienda)
+        if not azienda:
+            messageError('Inserire le informazioni sull\' azienda in Dati azienda')
+            return None
+
+        if azienda.ragione_sociale == '':
+            messageError('Inserire la ragione sociale dell\'azienda in Dati azienda')
+            return None
+
+        dati2 = []
+
+        if dati_differita:
+
+            for ddtt in dati_differita:
+                ddt = TestataDocumento().getRecord(id=ddtt.id_ddt)
+
+                codice = 0
+                if ddt.DM is not None:
+                    codice = ddt.DM.codice
+
+                dati = {'testata': {
+                    'numero_progressivo': '0',
+                    'codice_cliente': str(codice),
+                    'data_bolla':  ddt.data_documento,
+                    'numero_bolla': str(ddt.numero),
+                    'data_fattura': testata.data_documento,
+                    'numero_fattura': str(testata.numero),
+                },
+                'dettaglio': []
+                }
+                for riga in ddt.righe:
+                    if riga.id_articolo:
+                        art = leggiArticolo(riga.id_articolo)
+                        unitaBase = str(art["unitaBase"]).upper()
+                        if unitaBase == 'N':
+                            unitaBase = 'NR'
+                        dati['dettaglio'].append(
+                            {
+                                'numero_progressivo':'0',
+                                'codice_articolo': str(art["codice"]),
+                                'descrizione': str(art["denominazione"].replace("à", "a")),
+                                'unita_misura': unitaBase,
+                                'qta_fatturata': str(mN(Decimal(riga.quantita * (riga.moltiplicatore or 1)), 2)),
+                                'prezzo_unitario': str(mN(Decimal(riga.valore_unitario_netto), 3)),
+                                'aliquota_iva': str(mN(riga.percentuale_iva,0))
+                            })
+                dati2.append(dati)
+            return dati2
 
 def dati_file_conad(testata):
     """
