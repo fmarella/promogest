@@ -25,25 +25,18 @@ from promogest.Environment import *
 from Dao import Dao
 from User import User
 
-userTable = Table('utente', meta, autoload=True, schema=mainSchema)
+userTable = Table('utente',params['metadata'], autoload=True, schema=params['mainSchema'])
 
 try:
-    access = Table('access', meta, schema=mainSchema, autoload=True)
+    access=Table('access', params['metadata'],schema = params['schema'],autoload=True)
 except:
 
-    if tipodb == "sqlite":
-        utenteFK = 'utente.id'
-    else:
-        utenteFK = mainSchema + '.utente.id'
-
-    access = Table('access', meta,
-            Column('id', Integer, primary_key=True),
-            Column('id_user', Integer, ForeignKey(utenteFK,
-                onupdate="CASCADE",
-                ondelete="CASCADE")),
+    access = Table('access', params['metadata'],
+            Column('id',Integer,primary_key=True),
+            Column('id_user',Integer),
             Column('login', Date, nullable=True),
             Column('logout', Date, nullable=True),
-            schema=schema_azienda)
+            schema=params['schema'])
     access.create(checkfirst=True)
 
 class Access(Dao):
@@ -58,5 +51,5 @@ class Access(Dao):
 
 
 std_mapper = mapper(Access, access, properties={
-                            'utente':relation(User)
+                           # 'utente':relation(User)
                             })

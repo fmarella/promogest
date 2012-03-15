@@ -33,7 +33,7 @@ from Magazzino import Magazzino
 from Listino import Listino
 from Multiplo import Multiplo
 from DaoUtils import scontiRigaDocumentoDel
-from Riga import Riga
+from Riga import Riga, riga
 from promogest.ui.utils import *
 if posso("SM"):
     from promogest.modules.SuMisura.dao.MisuraPezzo import MisuraPezzo
@@ -294,7 +294,8 @@ class RigaDocumento(Dao):
                 params["session"].add(value)
         params["session"].commit()
         self.__dbMisuraPezzo = []
-riga=Table('riga', params['metadata'],schema = params['schema'], autoload=True)
+
+#riga=Table('riga', params['metadata'],schema = params['schema'], autoload=True)
 riga_doc=Table('riga_documento',params['metadata'],schema = params['schema'],autoload=True)
 
 j = join(riga_doc, riga)

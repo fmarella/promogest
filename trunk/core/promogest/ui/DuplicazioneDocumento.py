@@ -28,7 +28,9 @@ from promogest.dao.Magazzino import Magazzino
 from promogest.dao.Listino import Listino
 from promogest.dao.ListinoArticolo import ListinoArticolo
 from promogest.dao.RigaDocumento import RigaDocumento
+from promogest.dao.RigaMovimento import RigaMovimento
 from promogest.dao.ScontoRigaDocumento import ScontoRigaDocumento
+from promogest.dao.ScontoRigaMovimento import ScontoRigaMovimento
 from promogest.dao.ScontoTestataDocumento import ScontoTestataDocumento
 from promogest.dao.Operazione import Operazione
 from promogest.dao.Fornitura import Fornitura
@@ -155,6 +157,15 @@ class DuplicazioneDocumento(GladeWidget):
         newDao.applicazione_sconti = self.dao.applicazione_sconti
         newDao.ripartire_importo = self.dao.ripartire_importo
         newDao.costo_da_ripartire = self.dao.costo_da_ripartire
+
+        tipoid = findIdFromCombobox(self.id_operazione_combobox)
+        tipo = Operazione().getRecord(id=tipoid)
+        #if not newDao.numero:
+        valori = numeroRegistroGet(tipo=tipo.denominazione, date=self.data_documento_entry.get_text())
+        newDao.numero = valori[0]
+        newDao.registro_numerazione= valori[1]
+
+
         #sconti = []
         sco = self.dao.sconti or []
         scontiRigaDocumento=[]
@@ -168,9 +179,43 @@ class DuplicazioneDocumento(GladeWidget):
         newDao.scontiSuTotale = scontiSuTotale
         #righe = []
         rig = self.dao.righe
+
+        #operazione = leggiOperazione(tipo)
+        if tipo.segno != '' and tipo.segno is not None:
+            tipoDOC = "MOV"
+        else:
+            tipoDOC = "DOC"
+
+        scontiRigaMovimento =[]
+        scontiRigaDocumento =[]
         for r in rig:
-            daoRiga = RigaDocumento()
-            daoRiga.id_testata_documento = newDao.id
+
+            if (tipoDOC == "MOV" and r.id_articolo == None) or tipoDOC == "DOC":
+                daoRiga = RigaDocumento()
+                sconti = []
+                sco = r.sconti
+                if self.mantieni_sconti_checkbutton.get_active() :
+                    for s in sco:
+                        daoSconto = ScontoRigaDocumento()
+                        daoSconto.valore = s.valore
+                        daoSconto.tipo_sconto = s.tipo_sconto
+                        scontiRigaDocumento.append(daoSconto)
+                daoRiga.scontiRigaDocumento = scontiRigaDocumento
+                scontiRigaDocumento =[]
+            else:
+                daoRiga = RigaMovimento()
+                sconti =[]
+                sco = r.sconti
+                if self.mantieni_sconti_checkbutton.get_active() :
+                    for s in sco:
+                        daoSconto = ScontoRigaMovimento()
+                        daoSconto.valore = s.valore
+                        daoSconto.tipo_sconto = s.tipo_sconto
+                        scontiRigaMovimento.append(daoSconto)
+                daoRiga.scontiRigheMovimento = scontiRigaMovimento
+                scontiRigaMovimento =[]
+
+            #daoRiga.id_testata_documento = newDao.id
             daoRiga.id_articolo = r.id_articolo
             if self.id_magazzino_combobox.get_active() != -1 and r.id_magazzino !=None:
                 iddi = findIdFromCombobox(self.id_magazzino_combobox)
@@ -216,7 +261,6 @@ class DuplicazioneDocumento(GladeWidget):
             daoRiga.quantita = r.quantita
             daoRiga.id_multiplo = r.id_multiplo
             daoRiga.moltiplicatore = r.moltiplicatore
-            #print "RIGA ARTICOLO", r.descrizione, r.id_articolo
             if posso("SM"):
                 from promogest.modules.SuMisura.dao.MisuraPezzo import MisuraPezzo
                 #try:
@@ -232,18 +276,9 @@ class DuplicazioneDocumento(GladeWidget):
                 daoRiga.misura_pezzo = [daoMisuraPezzo]
                 #except :
                     #pass
-            sconti = []
-            scontiRigaDocumento = []
-            sco = r.sconti
-            if self.mantieni_sconti_checkbutton.get_active() :
-              for s in sco:
-                  daoSconto = ScontoRigaDocumento()
-                  daoSconto.valore = s.valore
-                  daoSconto.tipo_sconto = s.tipo_sconto
-                  scontiRigaDocumento.append(daoSconto)
-            daoRiga.scontiRigaDocumento = scontiRigaDocumento
-            righeDocumento.append(daoRiga)
 
+            righeDocumento.append(daoRiga)
+        #return
         newDao.righeDocumento = righeDocumento
         scadenze = []
         if posso("PA"):
@@ -271,12 +306,7 @@ class DuplicazioneDocumento(GladeWidget):
                 newDao.totale_pagato = self.dao.totale_pagato
                 newDao.totale_sospeso = self.dao.totale_sospeso
 
-        tipoid = findIdFromCombobox(self.id_operazione_combobox)
-        tipo = Operazione().getRecord(id=tipoid)
-        #if not newDao.numero:
-        valori = numeroRegistroGet(tipo=tipo.denominazione, date=self.data_documento_entry.get_text())
-        newDao.numero = valori[0]
-        newDao.registro_numerazione= valori[1]
+
 
         newDao.persist()
 

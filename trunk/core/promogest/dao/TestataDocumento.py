@@ -546,82 +546,87 @@ class TestataDocumento(Dao):
             # ci sono piu' movimenti collegati al documento
             # FIXME: che fare ?
             raise Exception, "ATTENZIONE CI SONO PIU' MOVIMENTI LEGATI AD UN DOCUMENTO"
-        righeMovimento = []
-        righeDocumento = []
-        scontiRigaMovimento = []
-        if self.righeDocumento:  #trattiamo le righe documento e movimento
-            for row in self.righeDocumento:
-                if (row.id_articolo is not None and contieneMovimentazione):
-                    #salvo tra le righe movimenti
-#                    print "RIGHE ",row, row.id_articolo, row.__dict__["_RigaDocumento__codiceArticoloFornitore"]
-                    daoRigaMovimento = RigaMovimento()
-                    #daoRigaMovimento.id_testata_movimento = DaoTestataMovimento.id
-                    daoRigaMovimento.valore_unitario_netto = row.valore_unitario_netto
-                    daoRigaMovimento.valore_unitario_lordo = row.valore_unitario_lordo
-                    daoRigaMovimento.quantita = row.quantita
-                    daoRigaMovimento.moltiplicatore = row.moltiplicatore
-                    daoRigaMovimento.applicazione_sconti = row.applicazione_sconti
-                    daoRigaMovimento.percentuale_iva = row.percentuale_iva
-                    daoRigaMovimento.id_iva = row.id_iva
-                    daoRigaMovimento.descrizione = row.descrizione
-                    daoRigaMovimento.id_listino = row.id_listino
-                    daoRigaMovimento.id_magazzino = row.id_magazzino
-                    daoRigaMovimento.id_articolo = row.id_articolo
-                    daoRigaMovimento.id_multiplo = row.id_multiplo
-                    # riporti di attributi agganciati all'oggetto temporaneamente
-                    if hasattr(row, "numero_lotto"):
-                        setattr(daoRigaMovimento,"numero_lotto",row.numero_lotto or None)
-                    if hasattr(row, "lotto_temp"):
-                        setattr(daoRigaMovimento,"lotto_temp",row.lotto_temp or None)
-                    if hasattr(row, "data_scadenza"):
-                        setattr(daoRigaMovimento,"data_scadenza",row.data_scadenza or None)
-                    if hasattr(row, "data_produzione"):
-                        setattr(daoRigaMovimento,"data_produzione",row.data_produzione or None)
-                    if hasattr(row, "data_prezzo"):
-                        setattr(daoRigaMovimento,"data_prezzo",row.data_prezzo or None)
-                    if hasattr(row, "ordine_minimo"):
-                        setattr(daoRigaMovimento,"ordine_minimo",row.ordine_minimo or None)
-                    if hasattr(row, "tempo_arrivo"):
-                        setattr(daoRigaMovimento,"tempo_arrivo",row.tempo_arrivo or None)
-                    if hasattr(row, "righe_movimento_fornitura"):
-                        setattr(daoRigaMovimento,"righe_movimento_fornitura", row.righe_movimento_fornitura or None)
-                    daoRigaMovimento.codiceArticoloFornitore = row.__dict__["_RigaDocumento__codiceArticoloFornitore"]
-                    if (hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes") or ("GestioneNoleggio" in Environment.modulesList):
-                        daoRigaMovimento.prezzo_acquisto_noleggio = row.prezzo_acquisto_noleggio
-                        daoRigaMovimento.coeficente_noleggio = row.coeficente_noleggio
-                        daoRigaMovimento.isrent = row.isrent
+        #righeMovimento = []
+        #righeDocumento = []
+        #scontiRigaMovimento = []
+        #if self.righeDocumento:  #trattiamo le righe documento e movimento
+            #for row in self.righeDocumento:
+                #if "RigaMovimento" in str(row.__module__):
+                #if (row.id_articolo is not None and contieneMovimentazione):
+                    ##salvo tra le righe movimenti
+##                    print "RIGHE ",row, row.id_articolo, row.__dict__["_RigaDocumento__codiceArticoloFornitore"]
+                    #daoRigaMovimento = RigaMovimento()
+                    ##daoRigaMovimento.id_testata_movimento = DaoTestataMovimento.id
+                    #daoRigaMovimento.valore_unitario_netto = row.valore_unitario_netto
+                    #daoRigaMovimento.valore_unitario_lordo = row.valore_unitario_lordo
+                    #daoRigaMovimento.quantita = row.quantita
+                    #daoRigaMovimento.moltiplicatore = row.moltiplicatore
+                    #daoRigaMovimento.applicazione_sconti = row.applicazione_sconti
+                    #daoRigaMovimento.percentuale_iva = row.percentuale_iva
+                    #daoRigaMovimento.id_iva = row.id_iva
+                    #daoRigaMovimento.descrizione = row.descrizione
+                    #daoRigaMovimento.id_listino = row.id_listino
+                    #daoRigaMovimento.id_magazzino = row.id_magazzino
+                    #daoRigaMovimento.id_articolo = row.id_articolo
+                    #daoRigaMovimento.id_multiplo = row.id_multiplo
+                    ## riporti di attributi agganciati all'oggetto temporaneamente
+                    #if hasattr(row, "numero_lotto"):
+                        #setattr(daoRigaMovimento,"numero_lotto",row.numero_lotto or None)
+                    #if hasattr(row, "lotto_temp"):
+                        #setattr(daoRigaMovimento,"lotto_temp",row.lotto_temp or None)
+                    #if hasattr(row, "data_scadenza"):
+                        #setattr(daoRigaMovimento,"data_scadenza",row.data_scadenza or None)
+                    #if hasattr(row, "data_produzione"):
+                        #setattr(daoRigaMovimento,"data_produzione",row.data_produzione or None)
+                    #if hasattr(row, "data_prezzo"):
+                        #setattr(daoRigaMovimento,"data_prezzo",row.data_prezzo or None)
+                    #if hasattr(row, "ordine_minimo"):
+                        #setattr(daoRigaMovimento,"ordine_minimo",row.ordine_minimo or None)
+                    #if hasattr(row, "tempo_arrivo"):
+                        #setattr(daoRigaMovimento,"tempo_arrivo",row.tempo_arrivo or None)
+                    #if hasattr(row, "righe_movimento_fornitura"):
+                        #setattr(daoRigaMovimento,"righe_movimento_fornitura", row.righe_movimento_fornitura or None)
+                    #daoRigaMovimento.codiceArticoloFornitore = row.__dict__["_RigaDocumento__codiceArticoloFornitore"]
+                    #if (hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes") or ("GestioneNoleggio" in Environment.modulesList):
+                        #daoRigaMovimento.prezzo_acquisto_noleggio = row.prezzo_acquisto_noleggio
+                        #daoRigaMovimento.coeficente_noleggio = row.coeficente_noleggio
+                        #daoRigaMovimento.isrent = row.isrent
 
-                    scontiRigaMovimento = []
-                    if row.scontiRigaDocumento:
-                        for v in row.scontiRigaDocumento:
-                            daoScontoMovimento = ScontoRigaMovimento()
-                            daoScontoMovimento.valore = v.valore
-                            daoScontoMovimento.tipo_sconto = v.tipo_sconto
+                    #scontiRigaMovimento = []
+                    #if row.scontiRigaDocumento:
+                        #for v in row.scontiRigaDocumento:
+                            #daoScontoMovimento = ScontoRigaMovimento()
+                            #daoScontoMovimento.valore = v.valore
+                            #daoScontoMovimento.tipo_sconto = v.tipo_sconto
 
-                            scontiRigaMovimento.append(daoScontoMovimento)
-                    if hasattr(conf, "SuMisura") and getattr(conf.SuMisura,'mod_enable')=="yes":
-                        if row.misura_pezzo:
-                                daoRigaMovimento.misura_pezzo = row.misura_pezzo
+                            #scontiRigaMovimento.append(daoScontoMovimento)
+                    #if hasattr(conf, "SuMisura") and getattr(conf.SuMisura,'mod_enable')=="yes":
+                        #if row.misura_pezzo:
+                                #daoRigaMovimento.misura_pezzo = row.misura_pezzo
 
-                    daoRigaMovimento.scontiRigheMovimento = scontiRigaMovimento
-                    righeMovimento.append(daoRigaMovimento)
+                    #daoRigaMovimento.scontiRigheMovimento = scontiRigaMovimento
+                    #righeMovimento.append(daoRigaMovimento)
+                    #righeMovimento.append(row)
                     #righeMovimento.scontiRigheMovimento = scontiRigaMovimento
-                else:
-                    Environment.pg2log.info("RIGA SENZA RIFERMENTO ARTICOLO QUINDI DESCRITTIVA, SALVO IN RIGADOCUMENTO")
+                #else:
+                    #Environment.pg2log.info("RIGA SENZA RIFERMENTO ARTICOLO QUINDI DESCRITTIVA, SALVO IN RIGADOCUMENTO")
                     #annullamento id della riga
                     #row._resetId()
                     #associazione alla riga della testata
-                    row.id_testata_documento = self.id
-                    righeMovimento.append(row)
+                    #row.id_testata_documento = self.id
+                    #row.persist()
+                    #righeMovimento.append(row)
 
         if (DaoTestataMovimento is not None):
-            if righeMovimento:
+            if self.righeDocumento:
                 ##print "SE ARRIVI QUI DOVREBBE ANDARE TUTTO BENE" , righeMovimento
-                DaoTestataMovimento.righeMovimento=righeMovimento
+                DaoTestataMovimento.righeMovimento=self.righeDocumento
                 DaoTestataMovimento.persist()
         else:
-            for riga in righeMovimento:
-                riga.persist()
+            for riga in self.righeDocumento:
+                if self.id:
+                    riga.id_testata_documento = self.id
+                    riga.persist()
 
         #Gestione anche della prima nota abbinata al pagamento
         #agganciare qui con dei controlli, le cancellazioni preventive ed i

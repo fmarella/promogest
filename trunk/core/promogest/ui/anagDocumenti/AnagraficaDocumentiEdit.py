@@ -36,6 +36,8 @@ from promogest.dao.TestataDocumento import TestataDocumento
 from promogest.dao.TestataMovimento import TestataMovimento
 from promogest.dao.RigaDocumento import RigaDocumento
 from promogest.dao.ScontoRigaDocumento import ScontoRigaDocumento
+from promogest.dao.RigaMovimento import RigaMovimento
+from promogest.dao.ScontoRigaMovimento import ScontoRigaMovimento
 from promogest.dao.ScontoTestataDocumento import ScontoTestataDocumento
 from promogest.dao.ScontoVenditaDettaglio import ScontoVenditaDettaglio
 from promogest.dao.ScontoVenditaIngrosso import ScontoVenditaIngrosso
@@ -132,6 +134,8 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self.sepric = "  ~  "
         self.articolo_matchato = None
         self.checkMAGAZZINO = True
+        self.edited_rows = []
+        self.deleted_rows = []
 #        self.completion.set_minimum_key_length(3)
 
 #        if not posso("PA"):
@@ -828,7 +832,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         return self.dao
 
     def saveDao(self, tipo=None):
-        """ Salvataggio del Dao ok
+        """ Salvataggio del Dao
         """
         GN = posso("GN")
         SM = posso("SM")
@@ -951,10 +955,44 @@ del documento.
 
         scontiRigaDocumento=[]
         righeDocumento = []
+
+        operazione = leggiOperazione(self._operazione)
+        if operazione["segno"] != '':
+            tipoDOC = "MOV"
+        else:
+            tipoDOC = "DOC"
+        scontiRigaMovimento =[]
+        scontiRigaDocumento =[]
+
         for i in range(1, len(self._righe)):
             pbar(self.dialog.pbar,parziale=(3+(i/100)), totale=4)
-            daoRiga = RigaDocumento()
-            daoRiga.id_testata_documento = self.dao.id
+            if (tipoDOC == "MOV" and self._righe[i]["idArticolo"] == None) or tipoDOC == "DOC":
+                daoRiga = RigaDocumento()
+                sconti =[]
+                listsco=[]
+                if self._righe[i]["sconti"] is not None:
+                    for scon in self._righe[i]["sconti"]:
+                        daoSconto = ScontoRigaDocumento()
+                        daoSconto.valore = scon["valore"]
+                        daoSconto.tipo_sconto = scon["tipo"]
+                        scontiRigaDocumento.append(daoSconto)
+                #scontiRigaDocumento[daoRiga] = sconti
+                daoRiga.scontiRigaDocumento = scontiRigaDocumento
+                scontiRigaDocumento =[]
+            else:
+                daoRiga = RigaMovimento()
+                sconti =[]
+                listsco=[]
+                if self._righe[i]["sconti"] is not None:
+                    for scon in self._righe[i]["sconti"]:
+                        daoSconto = ScontoRigaMovimento()
+                        daoSconto.valore = scon["valore"]
+                        daoSconto.tipo_sconto = scon["tipo"]
+                        scontiRigaMovimento.append(daoSconto)
+                    #scontiRigaDocumento[daoRiga] = sconti
+                    daoRiga.scontiRigheMovimento = scontiRigaMovimento
+                    scontiRigaMovimento =[]
+            #daoRiga.id_testata_documento = self.dao.id
             daoRiga.id_articolo = self._righe[i]["idArticolo"]
             daoRiga.id_magazzino = self._righe[i]["idMagazzino"]
             daoRiga.descrizione = self._righe[i]["descrizione"]
@@ -989,17 +1027,7 @@ del documento.
                     daoRiga.isrent =  "True"
                 else:
                     daoRiga.isrent = "False"
-            sconti =[]
-            listsco=[]
-            if self._righe[i]["sconti"] is not None:
-                for scon in self._righe[i]["sconti"]:
-                    daoSconto = ScontoRigaDocumento()
-                    daoSconto.valore = scon["valore"]
-                    daoSconto.tipo_sconto = scon["tipo"]
-                    scontiRigaDocumento.append(daoSconto)
-            #scontiRigaDocumento[daoRiga] = sconti
-            daoRiga.scontiRigaDocumento = scontiRigaDocumento
-            scontiRigaDocumento =[]
+
             misure = []
             if SM and self._righe[i]["altezza"] != '' and \
                             self._righe[i]["larghezza"] != '':
@@ -1740,17 +1768,22 @@ del documento.
                     if artADR:
                         # Calcola se viene superato il limite massimo di esenzione
                         AnagraficaDocumentiEditADRExt.calcolaLimiteTrasportoADR(self, artADR, azione='rm')
+            #self.deleted_rows.append(self._righe[self._numRiga][0])
             del(self._righe[self._numRiga])
             self.modelRiga.remove(self._iteratorRiga)
+
         self.calcolaTotale()
         self.nuovaRiga()
 
     def on_articolo_entry_key_press_event(self, widget, event):
         """ """
         keyname = gdk_keyval_name(event.keyval)
-        if self.ricerca == "codice_a_barre" and setconf("Documenti", "no_ricerca_incrementale") and (keyname == 'F3' or keyname == 'KP_Enter' or keyname == 'Return'):
+        if self.ricerca == "codice_a_barre" \
+                and setconf("Documenti", "no_ricerca_incrementale") \
+                and (keyname == 'F3' \
+                or keyname == 'KP_Enter' \
+                or keyname == 'Return'):
             self.ricercaArticolo()
-        #print " POI PASSI QUI???????????????", keyname, keyname == 'Return', self.mattu
         if self.mattu and (keyname == 'Return' or keyname == 'KP_Enter'):
             self.ricercaArticolo()
         if keyname == 'F3' or keyname == 'KP_Enter':
