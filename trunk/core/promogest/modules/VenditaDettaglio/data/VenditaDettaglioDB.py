@@ -52,58 +52,118 @@ else:
     scontoscontrinoFK = params['schema'] +'.sconto_scontrino.id'
     rigascontrinoFK = params['schema']+'.riga_scontrino.id'
 
+if tipodb=="sqlite":
+    if 'testata_scontrino' not in params['metadata'].tables:
+        testataScontrinoTable = Table('testata_scontrino', params['metadata'],
+                    Column('id',Integer,primary_key=True),
+                    Column('data_inserimento',DateTime,DefaultClause(func.now()),nullable=False),
+                    Column('totale_scontrino',Numeric(16,4),nullable=False),
+                    Column('totale_contanti',Numeric(16,4),nullable=False),
+                    Column('totale_assegni',Numeric(16,4),nullable=False),
+                    Column('totale_carta_credito',Numeric(16,4),nullable=False),
+                    #chiavi esterne
+                    Column('id_magazzino',Integer,ForeignKey(magazzinoFK, onupdate="CASCADE", ondelete="RESTRICT")),
+                    Column('id_pos',Integer,ForeignKey(posFK, onupdate="CASCADE", ondelete="RESTRICT")),
+                    Column('id_ccardtype',Integer,ForeignKey(cctFK, onupdate="CASCADE", ondelete="RESTRICT")),
+                    Column('id_user',Integer),
+                    Column('id_testata_movimento',Integer,ForeignKey(testataMovimentoFK, onupdate="CASCADE", ondelete="RESTRICT")),
+                    schema=params['schema'],
+                    useexisting =True
+                    )
+        testataScontrinoTable.create(checkfirst=True)
+else:
+    if params["schema"]+'.testata_scontrino' not in params['metadata'].tables:
+        testataScontrinoTable = Table('testata_scontrino', params['metadata'],
+                    Column('id',Integer,primary_key=True),
+                    Column('data_inserimento',DateTime,DefaultClause(func.now()),nullable=False),
+                    Column('totale_scontrino',Numeric(16,4),nullable=False),
+                    Column('totale_contanti',Numeric(16,4),nullable=False),
+                    Column('totale_assegni',Numeric(16,4),nullable=False),
+                    Column('totale_carta_credito',Numeric(16,4),nullable=False),
+                    #chiavi esterne
+                    Column('id_magazzino',Integer,ForeignKey(magazzinoFK, onupdate="CASCADE", ondelete="RESTRICT")),
+                    Column('id_pos',Integer,ForeignKey(posFK, onupdate="CASCADE", ondelete="RESTRICT")),
+                    Column('id_ccardtype',Integer,ForeignKey(cctFK, onupdate="CASCADE", ondelete="RESTRICT")),
+                    Column('id_user',Integer),
+                    Column('id_testata_movimento',Integer,ForeignKey(testataMovimentoFK, onupdate="CASCADE", ondelete="RESTRICT")),
+                    schema=params['schema'],
+                    useexisting =True
+                    )
+        testataScontrinoTable.create(checkfirst=True)
 
-testataScontrinoTable = Table('testata_scontrino', params['metadata'],
-            Column('id',Integer,primary_key=True),
-            Column('data_inserimento',DateTime,DefaultClause(func.now()),nullable=False),
-            Column('totale_scontrino',Numeric(16,4),nullable=False),
-            Column('totale_contanti',Numeric(16,4),nullable=False),
-            Column('totale_assegni',Numeric(16,4),nullable=False),
-            Column('totale_carta_credito',Numeric(16,4),nullable=False),
-            #chiavi esterne
-            Column('id_magazzino',Integer,ForeignKey(magazzinoFK, onupdate="CASCADE", ondelete="RESTRICT")),
-            Column('id_pos',Integer,ForeignKey(posFK, onupdate="CASCADE", ondelete="RESTRICT")),
-            Column('id_ccardtype',Integer,ForeignKey(cctFK, onupdate="CASCADE", ondelete="RESTRICT")),
-            Column('id_user',Integer),
-            Column('id_testata_movimento',Integer,ForeignKey(testataMovimentoFK, onupdate="CASCADE", ondelete="RESTRICT")),
-            schema=params['schema'],
-            useexisting =True
-            )
-testataScontrinoTable.create(checkfirst=True)
+if tipodb=="sqlite":
+    if 'riga_scontrino' not in params['metadata'].tables:
+        rigaScontrinoTable = Table('riga_scontrino', params['metadata'],
+                Column('id',Integer,primary_key=True),
+                Column('prezzo',Numeric(16,4),nullable=True),
+                Column('prezzo_scontato',Numeric(16,4),nullable=True),
+                Column('quantita',Numeric(16,4),nullable=False),
+                Column('descrizione',String(200),nullable=False),
+                #chiavi esterne
+                Column('id_testata_scontrino',Integer,ForeignKey(testataScontrinoFK, onupdate="CASCADE", ondelete="CASCADE"),nullable=True),
+                Column('id_articolo',Integer, ForeignKey(articoloFK, onupdate="CASCADE", ondelete="RESTRICT"),nullable=False),
+                schema=params['schema'],
+                useexisting =True
 
+                )
+        rigaScontrinoTable.create(checkfirst=True)
 
-rigaScontrinoTable = Table('riga_scontrino', params['metadata'],
-        Column('id',Integer,primary_key=True),
-        Column('prezzo',Numeric(16,4),nullable=True),
-        Column('prezzo_scontato',Numeric(16,4),nullable=True),
-        Column('quantita',Numeric(16,4),nullable=False),
-        Column('descrizione',String(200),nullable=False),
-        #chiavi esterne
-        Column('id_testata_scontrino',Integer,ForeignKey(testataScontrinoFK, onupdate="CASCADE", ondelete="CASCADE"),nullable=True),
-        Column('id_articolo',Integer, ForeignKey(articoloFK, onupdate="CASCADE", ondelete="RESTRICT"),nullable=False),
-        schema=params['schema'],
-        useexisting =True
+else:
+    if params["schema"]+'.riga_scontrino' not in params['metadata'].tables:
+        rigaScontrinoTable = Table('riga_scontrino', params['metadata'],
+                Column('id',Integer,primary_key=True),
+                Column('prezzo',Numeric(16,4),nullable=True),
+                Column('prezzo_scontato',Numeric(16,4),nullable=True),
+                Column('quantita',Numeric(16,4),nullable=False),
+                Column('descrizione',String(200),nullable=False),
+                #chiavi esterne
+                Column('id_testata_scontrino',Integer,ForeignKey(testataScontrinoFK, onupdate="CASCADE", ondelete="CASCADE"),nullable=True),
+                Column('id_articolo',Integer, ForeignKey(articoloFK, onupdate="CASCADE", ondelete="RESTRICT"),nullable=False),
+                schema=params['schema'],
+                useexisting =True
 
-        )
-rigaScontrinoTable.create(checkfirst=True)
+                )
+        rigaScontrinoTable.create(checkfirst=True)
 
-scontoScontrinoTable= Table('sconto_scontrino', params['metadata'],
-            Column('id',Integer,primary_key=True),
-            Column('valore',Numeric(16,4),nullable=True),
-            Column('tipo_sconto',String(50),nullable=False),
-            CheckConstraint( "tipo_sconto = 'valore' or tipo_sconto = 'percentuale'" ),
-            schema = params['schema'],
-            useexisting =True
-        )
-scontoScontrinoTable.create(checkfirst=True)
+if tipodb=="sqlite":
+    if 'sconto_scontrino' not in params['metadata'].tables :
+        scontoScontrinoTable= Table('sconto_scontrino', params['metadata'],
+                    Column('id',Integer,primary_key=True),
+                    Column('valore',Numeric(16,4),nullable=True),
+                    Column('tipo_sconto',String(50),nullable=False),
+                    CheckConstraint( "tipo_sconto = 'valore' or tipo_sconto = 'percentuale'" ),
+                    schema = params['schema'],
+                    useexisting =True
+                )
+        scontoScontrinoTable.create(checkfirst=True)
+else:
+    if params["schema"]+'.sconto_scontrino' not in params['metadata'].tables:
+        scontoScontrinoTable= Table('sconto_scontrino', params['metadata'],
+                    Column('id',Integer,primary_key=True),
+                    Column('valore',Numeric(16,4),nullable=True),
+                    Column('tipo_sconto',String(50),nullable=False),
+                    CheckConstraint( "tipo_sconto = 'valore' or tipo_sconto = 'percentuale'" ),
+                    schema = params['schema'],
+                    useexisting =True
+                )
+        scontoScontrinoTable.create(checkfirst=True)
 
-
-scontoRigaScontrinoTable = Table('sconto_riga_scontrino', params['metadata'],
-        Column('id',Integer,ForeignKey(scontoscontrinoFK,onupdate="CASCADE",ondelete="CASCADE"),primary_key=True),
-        Column('id_riga_scontrino',Integer,ForeignKey(rigascontrinoFK,onupdate="CASCADE",ondelete="CASCADE")),
-        schema=params['schema'],
-        useexisting =True)
-scontoRigaScontrinoTable.create(checkfirst=True)
+if tipodb=="sqlite":
+    if 'sconto_riga_scontrino' not in params['metadata'].tables:
+        scontoRigaScontrinoTable = Table('sconto_riga_scontrino', params['metadata'],
+                Column('id',Integer,ForeignKey(scontoscontrinoFK,onupdate="CASCADE",ondelete="CASCADE"),primary_key=True),
+                Column('id_riga_scontrino',Integer,ForeignKey(rigascontrinoFK,onupdate="CASCADE",ondelete="CASCADE")),
+                schema=params['schema'],
+                useexisting =True)
+        scontoRigaScontrinoTable.create(checkfirst=True)
+else:
+    if params["schema"]+'.sconto_riga_scontrino' not in params['metadata'].tables:
+        scontoRigaScontrinoTable = Table('sconto_riga_scontrino', params['metadata'],
+                Column('id',Integer,ForeignKey(scontoscontrinoFK,onupdate="CASCADE",ondelete="CASCADE"),primary_key=True),
+                Column('id_riga_scontrino',Integer,ForeignKey(rigascontrinoFK,onupdate="CASCADE",ondelete="CASCADE")),
+                schema=params['schema'],
+                useexisting =True)
+        scontoRigaScontrinoTable.create(checkfirst=True)
 
 
 
