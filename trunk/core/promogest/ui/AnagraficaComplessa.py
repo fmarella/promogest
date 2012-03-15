@@ -177,11 +177,12 @@ class Anagrafica(GladeWidget):
         from promogest.lib.parser import myparse
         # In base al nome del tracciato richiamiamo la funzione che
         # effettua la traduzione nel formato corrispondente.
-        if data[0] == 'conad':
+        nome_tracciato = data[0]
+        if nome_tracciato == 'conad':
             from promogest.export import dati_file_conad as dati_file
-        elif data[0] == 'conad_ditta_terron':
+        elif nome_tracciato == 'conad_ditta_terron':
             from promogest.export import dati_file_conad_terron as dati_file
-        elif data[0] == 'buffetti_fatture':
+        elif nome_tracciato == 'buffetti_fatture':
             from promogest.export import dati_file_buffetti as dati_file
         else:
             messageError('Formato di esportazione non riconosciuto.')
@@ -207,7 +208,7 @@ class Anagrafica(GladeWidget):
         dati = dati_file(dao)
         if dati is None:
             return
-        xml_file = open(os.path.join(Environment.tracciatiDir, 'conad.xml'))
+        xml_file = open(os.path.join(Environment.tracciatiDir, nome_tracciato + '.xml'))
         
         def get_save_filename(filename):
             dialog = gtk.FileChooserDialog("Inserisci il nome del file",
