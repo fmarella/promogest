@@ -76,6 +76,7 @@ class Anagrafica(GladeWidget):
         self._setLabelHandler(labelHandler)
         self._selectedDao = None
         if self.__class__.__name__ == 'AnagraficaDocumenti':
+            from promogest.export import tracciati_disponibili
             for tracciato in tracciati_disponibili():
                 def build_menuitem(name):
                     import string
@@ -177,11 +178,11 @@ class Anagrafica(GladeWidget):
         # In base al nome del tracciato richiamiamo la funzione che
         # effettua la traduzione nel formato corrispondente.
         if data[0] == 'conad':
-            from promogest.ui.utils import dati_file_conad as dati_file
+            from promogest.export import dati_file_conad as dati_file
         elif data[0] == 'conad_ditta_terron':
-            from promogest.ui.utils import dati_file_conad_terron as dati_file
+            from promogest.export import dati_file_conad_terron as dati_file
         elif data[0] == 'buffetti_fatture':
-            from promogest.ui.utils import dati_file_buffetti as dati_file
+            from promogest.export import dati_file_buffetti as dati_file
         else:
             messageError('Formato di esportazione non riconosciuto.')
             return
