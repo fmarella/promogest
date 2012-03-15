@@ -77,12 +77,14 @@ class Anagrafica(GladeWidget):
         self._selectedDao = None
         if self.__class__.__name__ == 'AnagraficaDocumenti':
             for tracciato in tracciati_disponibili():
-                if tracciato == 'conad':
-                    self.esporta_conad_menuitem.show()
-                elif tracciato == 'buffetti_fatture':
-                    self.esporta_buffetti_menuitem.show()
-                else:
-                    pass
+                def build_menuitem(name):
+                    import string
+                    label = "Esporta " + string.capwords(name.replace('_', ' '))
+                    mi = gtk.MenuItem(label=label)
+                    mi.show()
+                    mi.connect('activate', self.on_esporta_tracciato_menuitem_activate, (name,))
+                    return mi
+                self.menu3.append(build_menuitem(tracciato))
             self.records_file_export.set_menu(self.menu3)
         # Initial (in)sensitive widgets
         textStatusBar = "     *****   PromoGest - 070 8649705 - www.promogest.me - assistenza@promotux.it  *****     "
@@ -169,13 +171,26 @@ class Anagrafica(GladeWidget):
     def show_all(self):
         """ Visualizza/aggiorna tutta la struttura dell'anagrafica """
         self.anagrafica_complessa_window.show_all()
-
-    def on_esporta_conad_menuitem_activate(self, menuitem):
+        
+    def on_esporta_tracciato_menuitem_activate(self, menuitem, data):
         from promogest.lib.parser import myparse
-        from promogest.ui.utils import dati_file_conad
+        # In base al nome del tracciato richiamiamo la funzione che
+        # effettua la traduzione nel formato corrispondente.
+        if data[0] == 'conad':
+            from promogest.ui.utils import dati_file_conad as dati_file
+        elif data[0] == 'conad_ditta_terron':
+            from promogest.ui.utils import dati_file_conad_terron as dati_file
+        elif data[0] == 'buffetti_fatture':
+            from promogest.ui.utils import dati_file_buffetti as dati_file
+        else:
+            messageError('Formato di esportazione non riconosciuto.')
+            return
 
         # Otteniamo il documento
         dao = self.filter.getSelectedDao()
+        if dao is None:
+            messageWarning('Selezionare un documento da esportare!')
+            return
         self._selectedDao = dao
         data = dao.data_documento
         operationName = dao.operazione
@@ -188,7 +203,7 @@ class Anagrafica(GladeWidget):
                         '_' +\
                         data.strftime('%d-%m-%Y')
         # Generiamo i dati utili dal documento
-        dati = dati_file_conad(dao)
+        dati = dati_file(dao)
         if dati is None:
             return
         xml_file = open(os.path.join(Environment.tracciatiDir, 'conad.xml'))
@@ -221,58 +236,6 @@ class Anagrafica(GladeWidget):
                 return None
 
         save_filename = get_save_filename(filename)
-        if save_filename is None:
-            return
-        file_out = open(save_filename, 'wb')
-
-        try:
-            myparse(xml_file, dati, file_out)
-        except Exception:
-            messageError("Si è verificato un problema durante l'esportazione.")
-        else:
-            messageInfo("Esportazione eseguita con successo")
-
-    def on_esporta_buffetti_menuitem_activate(self, menuitem):
-        from promogest.lib.parser import myparse
-        from promogest.ui.utils import dati_file_buffetti
-
-        # Otteniamo il documento
-        dao = self.filter.getSelectedDao()
-        self._selectedDao = dao
-
-        # Generiamo i dati utili dal documento
-        dati = dati_file_buffetti(dao)
-        if dati is None:
-            return
-        xml_file = open(os.path.join(Environment.tracciatiDir, 'buffetti_fatture.xml'))
-
-        def get_save_filename():
-            dialog = gtk.FileChooserDialog("Inserisci il nome del file",
-                                           None,
-                                           GTK_FILE_CHOOSER_ACTION_SAVE,
-                                           (gtk.STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                                            gtk.STOCK_SAVE, GTK_RESPONSE_OK))
-            dialog.set_default_response(GTK_RESPONSE_OK)
-            
-            self.__homeFolder = setconf("General", "cartella_predefinita") or None
-            if self.__homeFolder is None:
-                if os.name == 'posix':
-                    self.__homeFolder = os.environ['HOME']
-                elif os.name == 'nt':
-                    self.__homeFolder = os.environ['USERPROFILE']
-            dialog.set_current_folder(self.__homeFolder)
-            
-            response = dialog.run()
-          
-            if response == GTK_RESPONSE_OK:
-                save_filename = dialog.get_filename()
-                dialog.destroy()
-                return save_filename
-            else:
-                dialog.destroy()
-                return None
-
-        save_filename = get_save_filename()
         if save_filename is None:
             return
         file_out = open(save_filename, 'wb')
@@ -472,10 +435,6 @@ class Anagrafica(GladeWidget):
             self.duplica_button.set_sensitive(self.dao is not None)
             self.record_duplicate_menu.set_sensitive(self.dao is not None)
             
-        if self.dao.__class__.__name__ == 'TestataDocumento':
-            self.esporta_conad_menuitem.set_sensitive(self.dao is not None)
-            self.esporta_buffetti_menuitem.set_sensitive(self.dao is not None)
-
         self.record_delete_button.set_sensitive(self.dao is not None)
         self.record_delete_menu.set_sensitive(self.dao is not None)
 
