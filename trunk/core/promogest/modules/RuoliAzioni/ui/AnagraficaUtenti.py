@@ -37,7 +37,7 @@ from promogest import Environment
 from promogest.dao.User import User
 from promogest.dao.Azienda import Azienda
 from promogest.dao.UtenteImmagine import UtenteImmagine
-from promogest.dao.Immagine import ImageFile
+from promogest.modules.GestioneFile.dao.Immagine import ImageFile
 from promogest.ui.utils import *
 from promogest.ui.utilsCombobox import *
 from promogest.ui.gtk_compat import *
