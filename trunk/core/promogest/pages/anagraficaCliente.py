@@ -35,7 +35,7 @@ from promogest.dao.Listino import Listino
 from promogest.dao.Magazzino import Magazzino
 from promogest.dao.CategoriaCliente import CategoriaCliente
 from promogest.lib.webutils import *
-from promogest.pages.modules.infopesoWeb import infopesoWeb
+#from promogest.pages.modules.infopesoWeb import infopesoWeb
 from promogest.dao.PersonaGiuridica import PersonaGiuridica_ as PersonaGiuridica
 from promogest.dao.PersonaGiuridicaPersonaGiuridica import PersonaGiuridicaPersonaGiuridica
 
@@ -47,10 +47,8 @@ def anagraficaCliente(req, action=None, quarto=None):
         """ """
         daos = []
         attivita = req.form.get("attivita")
-        print "ATTIVITAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", attivita
         if attivita:
             pgg = PersonaGiuridicaPersonaGiuridica().select(idPersonaGiuridica =attivita)
-            #print "PGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG", pgg
             for d in pgg:
                 daos.append(Cliente().getRecord(id=d.id_persona_giuridica_abbinata))
         fk_ragione_sociale = None
@@ -101,17 +99,6 @@ def anagraficaCliente(req, action=None, quarto=None):
                                         )
         args = pagination(req,batch,count)
         args["page_list"] = "anagrafiche/cliente/list"
-        #if not daos:
-            #daos = Cliente(req=req).select( ragioneSociale=fk_ragione_sociale,
-                                            #insegna=fk_insegna,
-                                            #cognomeNome=fk_cognome_e_nome,
-                                            #codice = fk_codice,
-                                            #localita = fk_localita,
-                                            #codiceFiscale = fk_codice_fiscale,
-                                            #partitaIva = fk_partita_iva,
-                                            #idCategoria = fk_id_categoria_cliente,
-                                            #batchSize=batch,
-                                            #offset=args["offset"])
         categorie = CategoriaCliente().select(batchSize=None)
         pageData = {'file' : "anagraficaComplessa",
                     "_dao_":"cliente",

@@ -39,10 +39,10 @@ class AnagraficaFornitureEdit(AnagraficaEdit):
 
     def __init__(self, anagrafica):
         AnagraficaEdit.__init__(self,
-                                anagrafica,
-                                'anagrafica_forniture_detail_table',
-                                'Dati fornitura',
-                                gladeFile='_anagrafica_fornitura_articoli_elements.glade')
+            anagrafica,
+            'anagrafica_forniture_detail_table',
+            'Dati fornitura',
+            gladeFile='_anagrafica_fornitura_articoli_elements.glade')
         self._widgetFirstFocus = self.codice_articolo_fornitore_entry
         self._percentualeIva = 0
         self.taglia_colore_table.hide()
@@ -90,12 +90,11 @@ class AnagraficaFornitureEdit(AnagraficaEdit):
                 self._refreshTagliaColore(res["id"])
 
     def setDao(self, dao):
+        self.dao = dao
+        self.new = False
         if dao is None:
-            # Crea un nuovo Dao vuoto
             self.dao = Fornitura()
-        else:
-            # Ricrea il Dao con una connessione al DBMS SQL
-            self.dao = Fornitura().getRecord(id=dao.id)
+            self.new = True
         self._refresh()
         return self.dao
 
@@ -188,20 +187,20 @@ class AnagraficaFornitureEdit(AnagraficaEdit):
         if (self.prezzo_netto_label.get_text() == ''):
             obligatoryField(self.dialogTopLevel, self.prezzo_netto_label)
 
-        if (self.data_prezzo_entry.get_text() == ''):
-            obligatoryField(self.dialogTopLevel, self.data_prezzo_entry)
+        #if (self.data_prezzo_entry.get_text() == ''):
+            #obligatoryField(self.dialogTopLevel, self.data_prezzo_entry)
 
-        daoEsistente = Fornitura().select(idArticolo=self.id_articolo_customcombobox.getId(),
-                                            idFornitore= self.id_fornitore_customcombobox.getId(),
-                                            dataPrezzo = stringToDateTime(self.data_prezzo_entry.get_text()))
-        if daoEsistente:
-            messageInfo(msg="""ATTENZIONE!!
-Una fornitura con lo stesso fornitore
-e la stessa data prezzo per questo articolo
-esiste già. Si presume sia la stessa fornitura
-per cui verrà aggiornata la precedente.""")
-            del self.dao
-            self.dao = daoEsistente[0]
+        #daoEsistente = Fornitura().select(idArticolo=self.id_articolo_customcombobox.getId(),
+                                            #idFornitore= self.id_fornitore_customcombobox.getId(),
+                                            #dataPrezzo = stringToDateTime(self.data_prezzo_entry.get_text()))
+        #if daoEsistente:
+            #messageInfo(msg="""ATTENZIONE!!
+#Una fornitura con lo stesso fornitore
+#e la stessa data prezzo per questo articolo
+#esiste già. Si presume sia la stessa fornitura
+#per cui verrà aggiornata la precedente.""")
+            #del self.dao
+            #self.dao = daoEsistente[0]
 
         self.dao.id_articolo = self.id_articolo_customcombobox.getId()
         self.dao.id_fornitore = self.id_fornitore_customcombobox.getId()
@@ -224,7 +223,6 @@ per cui verrà aggiornata la precedente.""")
             daoSconto.valore = s["valore"]
             daoSconto.tipo_sconto = s["tipo"]
             sconti.append(daoSconto)
-
         self.dao.sconti = sconti
         self.dao.persist()
 

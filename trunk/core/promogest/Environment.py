@@ -139,6 +139,7 @@ a_data_inizio_primanota = None
 azienda_in_conf = None
 idACT = []
 confDict = {}
+ivacache = []
 
 CONFIGPATH = os.path.split(os.path.dirname(__file__))[0]
 webconfigFile = os.path.join(CONFIGPATH, 'pgweb.conf')

@@ -136,12 +136,9 @@ class AnagraficaAliquoteIvaEdit(AnagraficaEdit):
         fillComboboxTipiAliquoteIva(self.id_tipo_combobox)
 
     def setDao(self, dao):
+        self.dao = dao
         if dao is None:
-            # Crea un nuovo Dao vuoto
             self.dao = AliquotaIva()
-        else:
-            # Ricrea il Dao con una connessione al DBMS SQL
-            self.dao = AliquotaIva().getRecord(id=dao.id)
         self._refresh()
 
     def _refresh(self):
@@ -173,4 +170,5 @@ class AnagraficaAliquoteIvaEdit(AnagraficaEdit):
         self.dao.percentuale_detrazione = float(self.percentuale_detrazione_entry.get_text())
         self.dao.descrizione_detrazione = self.descrizione_detrazione_entry.get_text()
         self.dao.id_tipo = findIdFromCombobox(self.id_tipo_combobox)
+        Environment.ivacache = []
         self.dao.persist()

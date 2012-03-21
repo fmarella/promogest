@@ -284,10 +284,7 @@ class TestataDocumento(Dao):
         """ funzione di calcolo dei totali documento """
         self.__operazione = leggiOperazione(self.operazione)
         fonteValore = self.__operazione["fonteValore"]
-        ive = Environment.session.query(AliquotaIva.id,AliquotaIva).all()
-        dictIva = {}
-        for a in ive:
-            dictIva[a[0]] = (a[1],a[1].tipo_ali_iva)
+        dictIva = ivaCache()
         # FIXME: duplicated in AnagraficaDocumenti.py
         totaleImponibile = Decimal(0)
         totaleImposta = Decimal(0)

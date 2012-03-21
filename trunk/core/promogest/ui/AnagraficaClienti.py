@@ -124,8 +124,8 @@ class AnagraficaClienti(Anagrafica):
         from promogest.modules.Contatti.dao.ContattoFornitore import ContattoFornitore
         from promogest.modules.Contatti.dao.RecapitoContatto import RecapitoContatto
         from promogest.modules.Contatti.dao.Contatto import Contatto
-        d = Fornitore()
 
+        d = Fornitore()
         d.codice = promogest.dao.Fornitore.getNuovoCodiceFornitore()
         d.ragione_sociale = dao.ragione_sociale
         d.insegna = dao.insegna

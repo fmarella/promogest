@@ -48,6 +48,7 @@ class AnagraficaClientiEdit(AnagraficaEdit):
                                 'Dati cliente',
                                 gladeFile='_anagrafica_clienti_elements.glade')
         self._widgetFirstFocus = self.codice_entry
+        self.anagrafica_clienti_detail_notebook.set_current_page(0)
 
     def draw(self,cplx=False):
         #Popola combobox categorie clienti
@@ -78,15 +79,15 @@ class AnagraficaClientiEdit(AnagraficaEdit):
         if not self.cliente_insegna:
             self.insegna_entry.destroy()
             self.insegna_label.destroy()
-        self.cliente_nome = setconf("Clienti", "cliente_nome") or False
-        if not self.cliente_nome:
-            self.nome_entry.destroy()
-            self.nome_label.destroy()
-
-        self.cliente_cognome = setconf("Clienti", "cliente_cognome") or False
-        if not self.cliente_cognome:
-            self.cognome_entry.destroy()
-            self.cognome_label.destroy()
+        #self.cliente_nome = setconf("Clienti", "cliente_nome") or False
+        #if not self.cliente_nome:
+            #self.nome_entry.destroy()
+            #self.nome_label.destroy()
+#
+        #self.cliente_cognome = setconf("Clienti", "cliente_cognome") or False
+        #if not self.cliente_cognome:
+            #self.cognome_entry.destroy()
+            #self.cognome_label.destroy()
 
 #        if not setconf(key="INFOPESO", section="General"):
         if posso("IP"):

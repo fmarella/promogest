@@ -27,12 +27,10 @@ from promogest.dao.Dao import Dao
 from promogest.dao.Magazzino import Magazzino
 from promogest.dao.Listino import Listino
 from promogest.dao.Multiplo import Multiplo
-from promogest.dao.Articolo import Articolo
+from promogest.dao.Articolo import Articolo, articolo
 from promogest.dao.UnitaBase import UnitaBase
 from promogest.dao.AliquotaIva import AliquotaIva
 
-
-artic = Table('articolo', params['metadata'],schema = params['schema'],autoload=True)
 riga=Table('riga', params['metadata'],schema = params['schema'],autoload=True)
 
 if "id_iva" not in [c.name for c in riga.columns]:
@@ -76,28 +74,21 @@ class Riga(Dao):
         else: return ""
     codice_articolo= property(__codiceArticolo)
 
-#    def __daoArticolo(self):
-#        print "SELLLLLLLLLLLLLF ARTI", self.arti
-#        if self.arti:
-#            print "E DUEEEE", Articolo().getRecord(id=self.arti.id)
-#            return Articolo().getRecord(id=self.arti.id)
-#        else: return ""
-#    daoArticolo= property(__daoArticolo)
-
     def _getAliquotaIva(self):
-        if self.arti:
-            if self.id_iva:
-                ali = AliquotaIva().getRecord(id=self.id_iva)
-                return ali.denominazione_breve or ""
-            else:
-                return ""
-        else: return ""
+        if self.id_iva:
+            dictIva = ivaCache()
+            #ali = AliquotaIva().getRecord(id=self.id_iva)
+            return dictIva[self.id_iva][0].denominazione_breve or ""
+        else:
+            return ""
     aliquota = property(_getAliquotaIva)
 
-#    def _getAliquotaIvaLunga(self):
-#        if self.arti:return self.arti.denominazione_aliquota_iva
-#        else: return ""
-#    aliquota_lunga = property(_getAliquotaIvaLunga)
+    #def _getAliquotaIva(self):
+        #if self.arti:
+            #return self.arti.denominazione_breve_aliquota_iva
+        #else:
+            #return ""
+    #aliquota = property(_getAliquotaIva)
 
     def __unita_base(self):
 
@@ -171,5 +162,5 @@ std_mapper = mapper(Riga, riga, properties={
             "maga":relation(Magazzino,primaryjoin=riga.c.id_magazzino==Magazzino.id),
             "listi":relation(Listino,primaryjoin=riga.c.id_listino==Listino.id),
             "multi":relation(Multiplo,primaryjoin=riga.c.id_multiplo==Multiplo.id),
-            "arti":relation(Articolo,primaryjoin=riga.c.id_articolo==artic.c.id),
+            "arti":relation(Articolo,primaryjoin=riga.c.id_articolo==articolo.c.id),
 }, order_by=riga.c.id)

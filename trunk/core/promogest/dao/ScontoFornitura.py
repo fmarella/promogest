@@ -22,6 +22,7 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
+from promogest.dao.Sconto import sconto
 from Dao import Dao
 
 class ScontoFornitura(Dao):

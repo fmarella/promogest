@@ -23,9 +23,9 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
 from Dao import Dao
-from Multiplo import Multiplo
+from Multiplo import Multiplo, multiplo
 from ScontoFornitura import ScontoFornitura
-from Fornitore import Fornitore
+from Fornitore import Fornitore, fornitore
 from migrate import *
 
 
@@ -35,7 +35,7 @@ class Fornitura(Dao):
         Dao.__init__(self, entity=self)
 
     def _getScontiFornitura(self):
-        self.__dbScontiFornitura = params['session'].query(ScontoFornitura).with_parent(self).filter_by(id_fornitura=fornitura.c.id).all()
+        self.__dbScontiFornitura = self.sconto_fornitura
         self.__scontiFornitura = self.__dbScontiFornitura[:]
         return self.__scontiFornitura
 
@@ -140,26 +140,23 @@ class Fornitura(Dao):
             dic = {k:fornitura.c.data_fornitura <= v}
         return  dic[k]
 
-    #def persist(self, conn=None):
+    def scontiFornituraDel(self, idDao):
+        aa = ScontoFornitura().select(idFornitura = idDao.id, batchSize=None)
+        if aa:
+            for a in aa:
+                session.delete(a)
+            session.commit()
 
-    """FIXME:
-            ##cancellazione sconti associati alla fornitura
-            #conn.execStoredProcedure('ScontiFornituraDel',
-                                    #(self.id, ))
-
-            #if self.__scontiFornitura is not None:
-                #for i in range(0, len(self.__scontiFornitura)):
-                    ##annullamento id dello sconto
-                    #self.__scontiFornitura[i]._resetId()
-                    ##associazione allo sconto della fornitura
-                    #self.__scontiFornitura[i].id_fornitura = self.id
-                    ##salvataggio sconto
-                    #self.__scontiFornitura[i].persist(conn)
-                    """
+    def persist(self):
+        session.add (self)
+        session.commit()
+        self.scontiFornituraDel(self)
+        if self.__scontiFornitura is not None:
+            for sco in self.__scontiFornitura:
+                sco.id_fornitura = self.id
+                sco.persist()
 
 fornitura=Table('fornitura', params['metadata'], schema = params['schema'], autoload=True)
-fornitor=Table('fornitore', params['metadata'], schema = params['schema'], autoload=True)
-multip=Table('multiplo', params['metadata'], schema = params['schema'], autoload=True)
 
 if "numero_lotto" not in [c.name for c in fornitura.columns]:
     col = Column('numero_lotto', String(200))
@@ -172,8 +169,8 @@ if "data_produzione" not in [c.name for c in fornitura.columns]:
     col.create(fornitura)
 
 std_mapper = mapper(Fornitura,fornitura, properties={
-        "multi": relation(Multiplo,primaryjoin=fornitura.c.id_multiplo==multip.c.id),
+        "multi": relation(Multiplo,primaryjoin=fornitura.c.id_multiplo==multiplo.c.id),
         "sconto_fornitura": relation(ScontoFornitura, backref="fornitura"),
-        "forni" : relation(Fornitore,primaryjoin=fornitura.c.id_fornitore==fornitor.c.id),
+        "forni" : relation(Fornitore,primaryjoin=fornitura.c.id_fornitore==fornitore.c.id),
         #"arti" : relation(Articolo,primaryjoin=fornitura.c.id_articolo==Articolo.id, backref=backref("artic", uselist=False)),
                 }, order_by=[fornitura.c.data_fornitura,fornitura.c.id_fornitore])

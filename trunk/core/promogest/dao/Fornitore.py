@@ -23,6 +23,7 @@ from sqlalchemy import Table, or_
 from sqlalchemy.orm import mapper, relation, join
 from promogest.Environment import params, conf, session
 from Dao import Dao
+from promogest.dao.PersonaGiuridica import persona_giuridica
 from CategoriaFornitore import CategoriaFornitore
 from promogest.modules.Contatti.dao.Contatto import Contatto
 from promogest.ui.utils import  codeIncrement, getRecapitiFornitore
@@ -33,11 +34,10 @@ class Fornitore(Dao):
         Dao.__init__(self, entity=self)
 
     def _categoria(self):
-        a =  params["session"].query(CategoriaFornitore).with_parent(self).filter(self.id_categoria_fornitore==CategoriaFornitore.id).all()
-        if not a:
-            return a
+        if self.categoria_fornitore:
+            return self.categoria_fornitore.denominazione
         else:
-            return a[0].denominazione
+            return ""
     categoria = property(_categoria)
 
     def _cellularePrincipale(self):
@@ -90,8 +90,6 @@ class Fornitore(Dao):
         session.commit()
 
 
-
-
     def filter_values(self,k,v):
         if k == 'codice':
             dic = {k:persona_giuridica.c.codice.ilike("%"+v+"%")}
@@ -133,23 +131,6 @@ def getNuovoCodiceFornitore():
                 if not Fornitore().select(codicesatto=codice):
                     return codice
 
-
-
-
-        #n = 1
-        #quanti = session.query(Fornitore).count()
-        #if quanti > 0:
-            #while session.query(Fornitore).order_by(Fornitore.id.asc()).offset(quanti-n).limit(1).all():
-                #art = session.query(Fornitore).order_by(Fornitore.id.asc()).offset(quanti-n).limit(1).all()
-                #codice = codeIncrement(art[0].codice)
-                #if not codice or Fornitore().select(codicesatto=codice):
-                    #if n < 200:
-                        #n =n+1
-                    #else:
-                        #break
-                #else:
-                    #if not Fornitore().select(codicesatto=codice):
-                        #return codice
     except:
         pass
     try:
@@ -162,24 +143,12 @@ def getNuovoCodiceFornitore():
     except:
         pass
 
-#        try:
-##            codicesel = Fornitore().select(batchSize=None, orderBy=Fornitore.ragione_sociale)
-#            codicesel  = session.query(Fornitore).all()[-3:]
-#            for cod in codicesel:
-#                listacodici.append(cod.codice)
-#                codice = codeIncrement(str(max(listacodici)))
-#        except:
-#            pass
-#        try:
-#            if ( not codice or codice == "")  and hasattr(conf.Fornitori,'struttura_codice'):
-#                codice = codeIncrement(conf.Fornitori.struttura_codice)
-#        except:
-#            pass
     return codice
 
-fornitore=Table('fornitore',params['metadata'],schema = params['schema'],autoload=True)
-
-persona_giuridica=Table('persona_giuridica',params['metadata'],schema = params['schema'],autoload=True)
+fornitore=Table('fornitore',
+    params['metadata'],
+    schema = params['schema'],
+    autoload=True)
 
 j = join(fornitore, persona_giuridica)
 

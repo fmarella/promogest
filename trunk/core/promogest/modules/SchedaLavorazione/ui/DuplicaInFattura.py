@@ -210,6 +210,7 @@ class DuplicaInFattura(object):
         daoTestataFattura.id_banca = None
         righe_testata = []
 
+        #TODO: Da fare con urgenza
         for riga in self.dao.righe:
             riga_testata = RigaDocumento()
             riga_testata.id_articolo = riga.id_articolo

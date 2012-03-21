@@ -24,18 +24,18 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
 from Dao import Dao
-from UnitaBase import UnitaBase
+from UnitaBase import UnitaBase, unitabase
 from Multiplo import Multiplo
 from promogest.dao.DaoUtils import giacenzaArticolo
 from promogest.modules.GestioneKit.dao.ArticoloKit import ArticoloKit
-from Imballaggio import Imballaggio
-from AliquotaIva import AliquotaIva
-from StatoArticolo import StatoArticolo
+from Imballaggio import Imballaggio, imballaggio
+from AliquotaIva import AliquotaIva, aliquota_iva
+from StatoArticolo import StatoArticolo, stato_articolo
 #from Immagine import Immagine
 
-from FamigliaArticolo import FamigliaArticolo
-from CategoriaArticolo import CategoriaArticolo
-from CodiceABarreArticolo import CodiceABarreArticolo
+from FamigliaArticolo import FamigliaArticolo, famiglia
+from CategoriaArticolo import CategoriaArticolo, categoria_articolo
+from CodiceABarreArticolo import CodiceABarreArticolo,codice_barre_articolo
 from Fornitura import Fornitura
 from promogest.dao.ScontoVenditaDettaglio import ScontoVenditaDettaglio
 from promogest.dao.ScontoVenditaIngrosso import ScontoVenditaIngrosso
@@ -68,25 +68,19 @@ class Articolo(Dao):
         self.__codibar = None
         self.__articoloTagliaColore = None
 
-    def cod_bar(self):
-        if not self.__codibar:
-            self.__codibar = session.query(CodiceABarreArticolo)\
-                .with_parent(self)\
-                .filter(articolo.c.id == CodiceABarreArticolo.id_articolo)
-        return self.__codibar
-
     @property
     def codice_a_barre(self):
-        que = self.cod_bar()
-        try:
-            # cerco la situazione ottimale, un articolo ha un codice ed è primario
-            try:
-                a = que.filter(CodiceABarreArticolo.primario == True).one()
-                return a.codice
-            except:
-                a = que.one()
-                return a.codice
-        except:
+        if self.cod_barre:
+            if len(list(self.cod_barre)) >1:
+                for a in self.cod_barre:
+                    if a.primario:
+                        return a.codice or ""
+            elif len(list(self.cod_barre)) ==1:
+                return self.cod_barre[0].codice or ""
+            else:
+                return ""
+            return self.cod_barre
+        else:
             return ""
 
     def getGiacenza(self):
@@ -699,20 +693,6 @@ fornitura = Table('fornitura', meta, schema=params["schema"],
     autoload=True)
 articolo = Table('articolo', meta, schema=params["schema"],
     autoload=True)
-unita_b = Table('unita_base', meta, schema=mainSchema,
-    autoload=True)
-imballo = Table('imballaggio', meta, schema=params["schema"],
-    autoload=True)
-codb = Table('codice_a_barre_articolo', meta,schema=params["schema"],
-    autoload=True)
-aliva = Table('aliquota_iva', meta, schema=params["schema"],
-    autoload=True)
-catearti = Table('categoria_articolo', meta, schema=params["schema"],
-    autoload=True)
-famiarti = Table('famiglia_articolo', meta, schema=params["schema"],
-    autoload=True)
-statoart = Table('stato_articolo', meta, schema=mainSchema,
-    autoload=True)
 img = Table('image', meta, schema=params["schema"],
     autoload=True)
 
@@ -721,24 +701,24 @@ std_mapper = mapper(
     articolo,
     properties=dict(
         cod_barre=relation(CodiceABarreArticolo,
-            primaryjoin=articolo.c.id == codb.c.id_articolo,
+            primaryjoin=articolo.c.id == codice_barre_articolo.c.id_articolo,
             backref="arti",
             cascade="all, delete"),
         imba=relation(Imballaggio,
-            primaryjoin=articolo.c.id_imballaggio == imballo.c.id),
+            primaryjoin=articolo.c.id_imballaggio == imballaggio.c.id),
         ali_iva=relation(AliquotaIva,
-            primaryjoin=(articolo.c.id_aliquota_iva == aliva.c.id)),
+            primaryjoin=(articolo.c.id_aliquota_iva == aliquota_iva.c.id)),
         den_famiglia=relation(FamigliaArticolo,
-            primaryjoin=articolo.c.id_famiglia_articolo == famiarti.c.id),
+            primaryjoin=articolo.c.id_famiglia_articolo == famiglia.c.id),
         den_categoria=relation(CategoriaArticolo,
-            primaryjoin=(articolo.c.id_categoria_articolo == catearti.c.id)),
+            primaryjoin=(articolo.c.id_categoria_articolo == categoria_articolo.c.id)),
         den_unita=relation(UnitaBase,
-            primaryjoin=articolo.c.id_unita_base == unita_b.c.id),
+            primaryjoin=articolo.c.id_unita_base == unitabase.c.id),
         #image=relation(Immagine,primaryjoin= articolo.c.id_immagine==img.c.id,
                             #cascade="all, delete",
                             #backref="arti"),
         sa=relation(StatoArticolo,
-            primaryjoin=(articolo.c.id_stato_articolo == statoart.c.id)),
+            primaryjoin=(articolo.c.id_stato_articolo == stato_articolo.c.id)),
         fornitur=relation(Fornitura,
             primaryjoin=(fornitura.c.id_articolo == articolo.c.id),
                 backref="arti"),

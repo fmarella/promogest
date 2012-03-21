@@ -3433,7 +3433,7 @@ def getLottoeScadenze(daoRigaMovimento, testataMovimento):
         return Fornitura().getRecord(id=idFornitura)
     else:
         return None
-    
+
 def timeit(method):
 
     def timed(*args, **kw):
@@ -3447,3 +3447,14 @@ def timeit(method):
 
     return timed
 
+def ivaCache():
+    from promogest.dao.AliquotaIva import AliquotaIva
+    if not Environment.ivacache:
+        ive = Environment.session.query(AliquotaIva.id,AliquotaIva).all()
+        Environment.ivacache = ive
+    else:
+        ive = Environment.ivacache
+    dictIva = {}
+    for a in ive:
+        dictIva[a[0]] = (a[1],a[1].tipo_ali_iva)
+    return dictIva

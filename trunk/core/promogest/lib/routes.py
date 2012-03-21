@@ -59,9 +59,9 @@ from promogest.pages.anagraficaAliquotaIva import anagraficaAliquotaIva
 from promogest.pages.configuration import *
 from promogest.pages.jsonSearch import jsonsearch
 from promogest.pages.printDao import printDao
-from promogest.pages.ordineDaCliente import ordineDaCliente, calcolaTotaleOrdine, schedaArticolo
-from promogest.pages.staticPagesAction import staticPages
-from promogest.pages.questionarioIntroduttivo import questionarioIntroduttivo
+#from promogest.pages.ordineDaCliente import ordineDaCliente, calcolaTotaleOrdine, schedaArticolo
+#from promogest.pages.staticPagesAction import staticPages
+#from promogest.pages.questionarioIntroduttivo import questionarioIntroduttivo
 #from core.pages.siteAdmin.subdomainAction import subDomain
 from promogest.pages.setconfAction import setConf
 

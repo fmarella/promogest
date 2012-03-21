@@ -27,6 +27,7 @@ from promogest.Environment import *
 from Dao import Dao
 from promogest.dao.AliquotaIva import AliquotaIva
 from migrate import *
+from promogest.ui.utils import ivaCache
 
 
 class Pagamento(Dao):
@@ -43,18 +44,19 @@ class Pagamento(Dao):
 
     @property
     def aliquota_iva(self):
-        dao = AliquotaIva().getRecord(self.id_aliquota_iva)
-        if dao:
-            return dao.denominazione_breve
+        if self.id_aliquota_iva:
+            dictIva = ivaCache()
+            #ali = AliquotaIva().getRecord(id=self.id_iva)
+            return dictIva[self.id_aliquota_iva][0].denominazione_breve or ""
         else:
-            return ''
-    #aliquota_iva = property(_aliquota_iva)
+            return ""
 
     @property
     def perc_aliquota_iva(self):
-        dao = AliquotaIva().getRecord(self.id_aliquota_iva)
-        if dao:
-            return dao.percentuale
+        if self.id_aliquota_iva:
+            dictIva = ivaCache()
+            #ali = AliquotaIva().getRecord(id=self.id_iva)
+            return dictIva[self.id_aliquota_iva][0].percentuale or ""
         else:
             return 0
 

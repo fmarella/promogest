@@ -25,11 +25,9 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import params, conf,session
 from promogest.dao.Dao import Dao
-#from promogest.modules.Contatti.dao.ContattoCliente import ContattoCliente
-#from promogest.modules.Contatti.dao.RecapitoContatto import RecapitoContatto
-#from promogest.modules.Contatti.dao.Contatto import Contatto
 from ClienteCategoriaCliente import ClienteCategoriaCliente
-from PersonaGiuridica import PersonaGiuridica_
+from promogest.dao.PersonaGiuridica import persona_giuridica
+from promogest.dao.User import User
 from promogest.ui.utils import  codeIncrement, getRecapitiCliente
 
 
@@ -42,10 +40,7 @@ class Cliente(Dao):
         Dao.__init__(self, entity=self)
 
     def _getCategorieCliente(self):
-        self.__dbCategorieCliente = ClienteCategoriaCliente()\
-                                            .select(idCliente = self.id,
-                                            offset=None,
-                                            batchSize=None)
+        self.__dbCategorieCliente = self.cliente_categoria_cliente
         self.__categorieCliente = self.__dbCategorieCliente[:]
         return self.__categorieCliente
 
@@ -63,6 +58,27 @@ class Cliente(Dao):
                 c.delete()
         session.delete(self)
         session.commit()
+
+    @property
+    def username(self):
+        """
+        """
+        if self.id:
+            user = User().getRecord(id=self.id_user)
+            if user:
+                return user.username
+        return ""
+
+    @property
+    def password(self):
+        """
+        """
+        if self.id:
+            user = User().getRecord(id=self.id_user)
+            if user and user.tipo_user == "PLAIN":
+                return user.password
+        return ""
+
 
     @property
     def cellulare_principale(self):
@@ -167,19 +183,6 @@ def getNuovoCodiceCliente():
                 if not Cliente().select(codicesatto=codice):
                     return codice
 
-    #quanti = session.query(Cliente).count()
-    #if quanti > 0:
-        #while session.query(Cliente).offset(quanti-n).limit(1).all():
-            #art = session.query(Cliente).offset(quanti-n).limit(1).all()
-            #codice = codeIncrement(art[0].codice)
-            #if not codice or Cliente().select(codicesatto=codice):
-                #if n < 300:
-                    #n +=1
-                #else:
-                    #break
-            #else:
-                #if not Cliente().select(codicesatto=codice):
-                    #return codice
     except:
         pass
     try:
@@ -191,37 +194,31 @@ def getNuovoCodiceCliente():
         pass
     return codice
 
-persona_giuridica = Table('persona_giuridica',
-                          params['metadata'],
-                          schema=params['schema'],
-                          autoload=True)
-
-cliente = Table('cliente',
+t_cliente = Table('cliente',
               params['metadata'],
               schema=params['schema'],
               autoload=True)
 
-if 'pagante' not in [c.name for c in cliente.columns]:
+if 'pagante' not in [c.name for c in t_cliente.columns]:
     col = Column('pagante', Boolean, default=False)
-    col.create(cliente, populate_default=True)
+    col.create(t_cliente, populate_default=True)
 
-if 'id_aliquota_iva' not in [c.name for c in cliente.columns]:
+if 'id_aliquota_iva' not in [c.name for c in t_cliente.columns]:
     col = Column('id_aliquota_iva', Integer, nullable=True)
-    col.create(cliente, populate_default=True)
+    col.create(t_cliente, populate_default=True)
 
 
-# Sistema di definizione della tipologia di cliente  
-#opzioni PF ( Persona fisica ) o PG 
+# Sistema di definizione della tipologia di cliente
+#opzioni PF ( Persona fisica ) o PG
 # PG ( Persona Giusridica )
 
-if 'tipo' not in [c.name for c in cliente.columns]:  
+if 'tipo' not in [c.name for c in t_cliente.columns]:
     col = Column('tipo', String(2), default="PG")
-    col.create(cliente, populate_default=True)
+    col.create(t_cliente, populate_default=True)
 
-j = join(cliente, persona_giuridica)
+j = join(t_cliente, persona_giuridica)
 
 std_mapper = mapper(Cliente,j, properties={
-        'id': [cliente.c.id, persona_giuridica.c.id],
-        "per_giu" : relation(PersonaGiuridica_, backref='cliente_'),
+        'id': [t_cliente.c.id, persona_giuridica.c.id],
         'cliente_categoria_cliente': relation(ClienteCategoriaCliente, backref='cliente_'),
-        }, order_by=cliente.c.id)
+        }, order_by=t_cliente.c.id)

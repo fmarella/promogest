@@ -157,11 +157,12 @@ class ListinoArticolo(Dao):
         genere = property(_genere)
 
     def _getScontiVenditaDettaglio(self):
-        self.__dbScontiVenditaDett = params['session'].\
-                        query(ScontoVenditaDettaglio).\
-                        filter_by(id_listino=self.id_listino,
-                        id_articolo=self.id_articolo,
-                        data_listino_articolo=self.data_listino_articolo).all()
+        #self.__dbScontiVenditaDett = params['session'].\
+                        #query(ScontoVenditaDettaglio).\
+                        #filter_by(id_listino=self.id_listino,
+                        #id_articolo=self.id_articolo,
+                        #data_listino_articolo=self.data_listino_articolo).all()
+        self.__dbScontiVenditaDett = self.SVD
         self.__scontiVenditaDett= self.__dbScontiVenditaDett
         return self.__scontiVenditaDett
 
@@ -185,6 +186,7 @@ class ListinoArticolo(Dao):
                         filter_by(id_listino=self.id_listino,
                         id_articolo=self.id_articolo,
                         data_listino_articolo=self.data_listino_articolo).all()
+        self.__dbScontiVenditaIngr = self.SVI
         self.__scontiVenditaIngr= self.__dbScontiVenditaIngr
         return self.__scontiVenditaIngr
 
@@ -245,14 +247,14 @@ class ListinoArticolo(Dao):
         """
         cancella gli sconti associati al listino articolo
         """
-        row = ScontoVenditaDettaglio().select(idListino=idListino,
-                                                idArticolo=idArticolo,
-                                                dataListinoArticolo=dataListinoArticolo,
-                                                offset = None,
-                                                batchSize = None,
-                                                orderBy=ScontoVenditaDettaglio.id_listino)
-        if row:
-            for r in row:
+        #row = ScontoVenditaDettaglio().select(idListino=idListino,
+                                                #idArticolo=idArticolo,
+                                                #dataListinoArticolo=dataListinoArticolo,
+                                                #offset = None,
+                                                #batchSize = None,
+                                                #orderBy=ScontoVenditaDettaglio.id_listino)
+        if self.SVD:
+            for r in self.SVD:
                 params['session'].delete(r)
             params["session"].commit()
             return True
@@ -262,14 +264,14 @@ class ListinoArticolo(Dao):
         cancella gli sconti associati al listino articolo
         """
 
-        row = ScontoVenditaIngrosso().select(idListino=idListino,
-                                                        idArticolo=idArticolo,
-                                                        dataListinoArticolo=dataListinoArticolo,
-                                                        offset = None,
-                                                        batchSize = None,
-                                                        orderBy=ScontoVenditaIngrosso.id_listino)
-        if row:
-            for r in row:
+        #row = ScontoVenditaIngrosso().select(idListino=idListino,
+                                                        #idArticolo=idArticolo,
+                                                        #dataListinoArticolo=dataListinoArticolo,
+                                                        #offset = None,
+                                                        #batchSize = None,
+                                                        #orderBy=ScontoVenditaIngrosso.id_listino)
+        if self.SVI:
+            for r in self.SVI:
                 params['session'].delete(r)
             params["session"].commit()
             return True
