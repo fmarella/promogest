@@ -75,6 +75,7 @@ class Riga(Dao):
     codice_articolo= property(__codiceArticolo)
 
     def _getAliquotaIva(self):
+        from promogest.ui.utils import ivaCache
         if self.id_iva:
             dictIva = ivaCache()
             #ali = AliquotaIva().getRecord(id=self.id_iva)
