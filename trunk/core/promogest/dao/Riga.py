@@ -30,6 +30,7 @@ from promogest.dao.Multiplo import Multiplo
 from promogest.dao.Articolo import Articolo, articolo
 from promogest.dao.UnitaBase import UnitaBase
 from promogest.dao.AliquotaIva import AliquotaIva
+from promogest.ui.utils import ivaCache
 
 riga=Table('riga', params['metadata'],schema = params['schema'],autoload=True)
 
