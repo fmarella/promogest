@@ -365,7 +365,8 @@ un importo in sospeso. Il documento, per poter essere collegato, deve essere com
                         self.ana.dao.id_secondo_riferimento = documentocollegato.id
 
     def attiva_scadenze(self):
-        scadenze = AnagraficadocumentiPagamentExt.IsPagamentoMultiplo(self.id_pagamento_customcombobox.combobox)
+        sel = findStrFromCombobox(self.id_pagamento_customcombobox.combobox, 2)
+        scadenze = AnagraficadocumentiPagamentExt.IsPagamentoMultiplo(sel)
         data_doc = stringToDate(self.ana.data_documento_entry.get_text())
         importotot = float(self.totale_in_pagamenti_label.get_text() or 0)
 
@@ -435,7 +436,8 @@ un importo in sospeso. Il documento, per poter essere collegato, deve essere com
         importo_secondo_doc = float(self.importo_secondo_documento_entry.get_text() or 0)
         importotot = importodoc - acconto - importo_primo_doc - importo_secondo_doc
 
-        pagamenti = AnagraficadocumentiPagamentExt.IsPagamentoMultiplo(self.id_pagamento_customcombobox.combobox)
+        sel = findStrFromCombobox(self.id_pagamento_customcombobox.combobox, 2)
+        pagamenti = AnagraficadocumentiPagamentExt.IsPagamentoMultiplo(sel)
         importorate = None
         if type(pagamenti) == list:
             n_pagamenti = (len(pagamenti) - 1) / 2

@@ -30,9 +30,9 @@ from promogest.dao.TestataDocumento import TestataDocumento
 from promogest.ui.utils import *
 
 
-def IsPagamentoMultiplo(combobox):
+def IsPagamentoMultiplo(pagamento):
     """
-    Controlla la scadenza contenuta nel combobox, restituendo una lista con questi valori:
+    Analizza la scadenza selezionata, restituendo una lista con questi valori:
     valore_di_ritorno = [ 'nome_pagamento', 'giorni_prima_scad', 'separatore', ..., 'FM']
     al posto di ... ci sono 3 ulteriori valori ( fino ad un totale di quattro scadenze )
     e 3 ulteriori separatori. Il valore dell'ultimo campo e` FM se e` una scadenza da
@@ -40,13 +40,11 @@ def IsPagamentoMultiplo(combobox):
     il pagamento non sia riconosciuto, o non contenga scadenze, ritorna solo il nome
     del pagamento.
     """
-
-    stringaCombobox = findStrFromCombobox(combobox, 2)
     controllascadenza = re.compile('^.* [0-9]?(.[0-9]+)+.*$')
-    r = controllascadenza.match(stringaCombobox)
+    r = controllascadenza.match(pagamento)
     finemese = re.compile('^.* [(F|f).(M|m)]*.$')
     if r:
-        var = re.split('([0-9]+)', stringaCombobox)
+        var = re.split('([0-9]+)', pagamento)
         p = finemese.match(var[len(var)-1])
         if p:
             var[len(var)-1] = "FM"
@@ -54,7 +52,7 @@ def IsPagamentoMultiplo(combobox):
         else:
             return var
     else:
-        return stringaCombobox
+        return pagamento
 
 def getDocumentoCollegato(anaedit, numerodocumento):
     """
