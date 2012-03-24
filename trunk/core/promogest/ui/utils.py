@@ -3458,3 +3458,19 @@ def ivaCache():
     for a in ive:
         dictIva[a[0]] = (a[1],a[1].tipo_ali_iva)
     return dictIva
+
+def start_viewer(filename):
+    '''
+    Apre un documento con il visualizzatore predefinito in modo
+    cross-platform.
+    '''
+    import subprocess
+    from sys import platform
+    if platform == 'darwin':
+        os.system('open "%s"' % filename)
+    elif platform == 'win32':
+        os.startfile(filename)
+    elif platform.startswith('linux'):
+        subprocess.Popen(['xdg-open', filename])
+    else:
+        pass

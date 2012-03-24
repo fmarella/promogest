@@ -134,10 +134,8 @@ Verificare i permessi della cartella"""
         pdfFile = os.path.join(self._folder + self._pdfName +'.pdf')
         self.pdfFile = pdfFile
         self.tryToSavePdf(pdfFile)
-        try:
-            subprocess.Popen(['xdg-open', pdfFile])
-        except:
-            os.startfile(pdfFile)
+        from utils import start_viewer
+        start_viewer(pdfFile)
 
     def __handleSaveResponse(self, dialog):
         fileDialog = gtk.FileChooserDialog(title='Salva il file',
