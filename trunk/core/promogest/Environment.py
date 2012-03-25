@@ -650,7 +650,7 @@ params = {'engine': engine ,
         'heightdetail': 110 ,
         'usernameLoggedList':userdata}
 
-
+fk_prefix = params['schema'] + '.' if params['tipo_db'] == 'postgresql' else ''
 
  # Parametri localizzazione formati
 conf.windowsrc = os.path.expanduser('~') + os.sep + 'promogest2/windowsrc.xml'

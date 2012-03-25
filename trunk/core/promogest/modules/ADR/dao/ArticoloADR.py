@@ -25,6 +25,7 @@ from sqlalchemy.orm import *
 from promogest.Environment import *
 from promogest.dao.Dao import Dao
 from migrate import *
+from promogest.dao.Articolo import articolo
 from promogest.modules.ADR.dao.CategoriaTrasporto import CategoriaTrasporto
 from promogest.modules.ADR.dao.CodiceClassificazione import CodiceClassificazione
 from promogest.modules.ADR.dao.GruppoImballaggio import GruppoImballaggio
@@ -32,56 +33,37 @@ from promogest.modules.ADR.dao.ClassePericolo import ClassePericolo
 from promogest.modules.ADR.dao.Galleria import Galleria
 
 try:
-    articolo_adr = Table('articolo_adr', params['metadata'],
+    articolo_adr_t = Table('articolo_adr', params['metadata'],
                          schema=params['schema'], autoload=True)
 except:
-    articolo = Table('articolo', params['metadata'],
-                     schema=params['schema'], autoload=True)
 
-    if tipodb == 'sqlite':
-        articoloFK = 'articolo.id'
-        categoria_trasportoFK = 'categoria_trasporto.id'
-        codice_classificazioneFK = 'codice_classificazione.id'
-        gruppo_imballaggioFK = 'gruppo_imballaggio.id'
-        classeFK = 'adr_classe_pericolo.id'
-        galleriaFK = 'adr_galleria.id'
-    else:
-        articoloFK = params['schema'] + '.articolo.id'
-        categoria_trasportoFK = params['schema'] \
-            + '.categoria_trasporto.id'
-        codice_classificazioneFK = params['schema'] \
-            + '.codice_classificazione.id'
-        gruppo_imballaggioFK = params['schema'] \
-            + '.gruppo_imballaggio.id'
-        classeFK = params['schema'] + '.adr_classe_pericolo.id'
-        galleriaFK = params['schema'] + '.adr_galleria.id'
-
-    articolo_adr = Table(
+    articolo_adr_t = Table(
         'articolo_adr',
         params['metadata'],
         Column('id', Integer, primary_key=True),
-        Column('id_articolo', Integer, ForeignKey(articoloFK,
-               onupdate='CASCADE', ondelete='CASCADE')),
+        Column('id_articolo', Integer, 
+               ForeignKey(fk_prefix + 'articolo.id',
+                          onupdate='CASCADE', ondelete='CASCADE')),
         Column('numero_un', String(20), nullable=True),
         Column('id_gruppo_imballaggio', Integer,
-               ForeignKey(gruppo_imballaggioFK, onupdate="CASCADE",
-               ondelete="RESTRICT")),
+               ForeignKey(fk_prefix + 'gruppo_imballaggio.id',
+                          onupdate="CASCADE", ondelete="RESTRICT")),
         Column('id_categoria_trasporto', Integer,
-               ForeignKey(categoria_trasportoFK, onupdate='CASCADE',
-               ondelete='RESTRICT')),
+               ForeignKey(fk_prefix + 'categoria_trasporto.id',
+                          onupdate='CASCADE', ondelete='RESTRICT')),
         Column('id_galleria', Integer,
-               ForeignKey(galleriaFK, onupdate="CASCADE",
-               ondelete="RESTRICT")),
+               ForeignKey(fk_prefix + 'adr_galleria.id',
+                          onupdate="CASCADE", ondelete="RESTRICT")),
         Column('id_classe', Integer,
-               ForeignKey(classeFK, onupdate="CASCADE",
-               ondelete="RESTRICT")),
+               ForeignKey(fk_prefix + 'adr_classe_pericolo.id',
+                          onupdate="CASCADE", ondelete="RESTRICT")),
         Column('id_codice_classificazione', Integer,
-               ForeignKey(codice_classificazioneFK, onupdate="CASCADE",
-               ondelete="RESTRICT")),
+               ForeignKey(fk_prefix + 'codice_classificazione.id',
+                          onupdate="CASCADE", ondelete="RESTRICT")),
         schema=params['schema'],
         useexisting=True,
         )
-    articolo_adr.create(checkfirst=True)
+    articolo_adr_t.create(checkfirst=True)
 
 
 class ArticoloADR(Dao):
@@ -91,9 +73,9 @@ class ArticoloADR(Dao):
 
     def filter_values(self, k, v):
         if k == 'id':
-            dic = {k: articolo_adr.c.id == v}
+            dic = {k: articolo_adr_t.c.id==v}
         elif k == 'id_articolo':
-            dic = {k: articolo_adr.c.id_articolo == v}
+            dic = {k: articolo_adr_t.c.id_articolo==v}
         return dic[k]
 
     @property
@@ -152,5 +134,5 @@ class ArticoloADR(Dao):
         else:
             return ''
 
-std_mapper = mapper(ArticoloADR, articolo_adr, properties={},
-                    order_by=articolo_adr.c.id_articolo)
+std_mapper = mapper(ArticoloADR, articolo_adr_t,
+                    order_by=articolo_adr_t.c.id_articolo)
