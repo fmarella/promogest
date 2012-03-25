@@ -22,6 +22,7 @@
 
 import os
 import sys
+from datetime import datetime
 from promogest.ui.gtk_compat import *
 from threading import Timer
 from promogest.lib import feedparser
@@ -52,7 +53,10 @@ def env(templates_dir):
     jinja_env = Env(loader=FileSystemLoader(templates_dir),
                     bytecode_cache=FileSystemBytecodeCache(os.path.join(Environment.promogestDir, 'temp'), '%s.cache'),
                     extensions=['jinja2.ext.i18n'])
-
+    jinja_env.globals['environment'] = Environment
+    jinja_env.globals['utils'] = utils
+    jinja_env.globals['datetime'] = datetime
+    
     try:
         #installa gettext per i18n
         jinja_env.install_gettext_callables(_, ngettext, newstyle=True)
@@ -69,14 +73,6 @@ def env(templates_dir):
     jinja_env.filters['nonone'] = noNone
     return jinja_env
 
-
-def noNone(value):
-    if value =="None":
-        return ""
-    elif not value:
-        return ""
-    else:
-        return value
 
 def datetimeformat(value, format='%d/%m/%Y %H:%M '):
     if not value:
@@ -243,10 +239,8 @@ def createHtmlObj(mainWidget,widget=None):
         return gtkhtml2.View()
 
 def renderTemplate(pageData):
-    from datetime import datetime
-    jinja_env.globals['environment'] = Environment
-    jinja_env.globals['utils'] = utils
-    jinja_env.globals['datetime'] = datetime
+
+
     pageData["titolo"] = pageData["file"].split(".")[0].capitalize()
     if "dao" in pageData:
         html = jinja_env.get_template("/"+pageData["file"]).render(pageData = pageData, dao=pageData["dao"])

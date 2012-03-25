@@ -328,37 +328,41 @@ class Login(GladeApp):
             all available modules
 
             """
-            #global jinja_env
+            from promogest.dao.Setconf import SetConf
             Environment.modulesList = [Environment.tipo_pg]
             modules_folders = [folder for folder in os.listdir(modules_dir) \
                             if (os.path.isdir(os.path.join(modules_dir, folder)) \
                             and os.path.isfile(os.path.join(modules_dir, folder, 'module.py')))]
             Environment.modules_folders = modules_folders
-
+            moduli = Environment.session.query(SetConf.section).filter_by(key="mod_enable").filter_by(value="yes").all()
             for m_str in modules_folders:
-                if hasattr(Environment.conf,m_str) or setconf(m_str,"mod_enable", value="yes"):
+                mod_enable = False
+                mod_enableyes="no"
+                if (m_str,) in moduli:
+                    mod_enable = True
+                    mod_enableyes = "yes"
+                elif hasattr(Environment.conf,m_str):
                     try:
                         exec "mod_enable = getattr(Environment.conf.%s,'mod_enable')" %m_str
-                    except:
-                        mod_enable = setconf(m_str,"mod_enable", value="yes")
-                    if mod_enable:
                         try:
                             exec "mod_enableyes = getattr(Environment.conf.%s,'mod_enable','yes')" %m_str
                         except:
-                            mod_enableyes="yes"
-                        if mod_enableyes=="yes":
-                            stringa= "%s.%s.module" % (modules_dir.replace("/", "."), m_str)
-                            m= __import__(stringa, globals(), locals(), ["m"], -1)
-                            Environment.modulesList.append(str(m.MODULES_NAME))
-                            if hasattr(m,"TEMPLATES"):
-                                HtmlHandler.templates_dir.append(m.TEMPLATES)
-                            for class_name in m.MODULES_FOR_EXPORT:
-                                exec 'module = m.'+ class_name
-                                self.modules[class_name] = {
-                                                    'module': module(),
-                                                    'type': module.VIEW_TYPE[0],
-                                                    'module_dir': "%s" % (m_str),
-                                                    'guiDir':m.GUI_DIR}
+                            pass
+                    except:
+                        pass
+                if mod_enable and mod_enableyes=="yes":
+                    stringa= "%s.%s.module" % (modules_dir.replace("/", "."), m_str)
+                    m= __import__(stringa, globals(), locals(), ["m"], -1)
+                    Environment.modulesList.append(str(m.MODULES_NAME))
+                    if hasattr(m,"TEMPLATES"):
+                        HtmlHandler.templates_dir.append(m.TEMPLATES)
+                    for class_name in m.MODULES_FOR_EXPORT:
+                        exec 'module = m.'+ class_name
+                        self.modules[class_name] = {
+                                        'module': module(),
+                                        'type': module.VIEW_TYPE[0],
+                                        'module_dir': "%s" % (m_str),
+                                        'guiDir':m.GUI_DIR}
             Environment.pg2log.info("LISTA DEI MODULI CARICATI E FUNZIONANTI %s" %(str(repr(Environment.modulesList))))
             HtmlHandler.templates_dir.append("promogest/modules/Agenti/templates/") # da aggiungere a mano perchè al momento Agenti non è un vero e proprio modulo
             HtmlHandler.jinja_env = HtmlHandler.env(HtmlHandler.templates_dir)

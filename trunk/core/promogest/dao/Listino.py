@@ -38,7 +38,8 @@ class Listino(Dao):
         Dao.__init__(self, entity=self)
 
     def _getCategorieCliente(self):
-        self.__dbCategorieCliente = ListinoCategoriaCliente().select(idListino=self.id, batchSize=None)
+        #self.__dbCategorieCliente = ListinoCategoriaCliente().select(idListino=self.id, batchSize=None)
+        self.__dbCategorieCliente = self.listino_categoria_cliente
         self.__categorieCliente = self.__dbCategorieCliente[:]
         return self.__categorieCliente
 
@@ -48,7 +49,8 @@ class Listino(Dao):
     categorieCliente = property(_getCategorieCliente, _setCategorieCliente)
 
     def _getMagazzini(self):
-        self.__dbMagazzini = ListinoMagazzino().select(idListino=self.id, batchSize=None)
+        #self.__dbMagazzini = ListinoMagazzino().select(idListino=self.id, batchSize=None)
+        self.__dbMagazzini = self.listino_magazzino
         self.__magazzini = self.__dbMagazzini[:]
         return self.__magazzini
 
@@ -58,7 +60,8 @@ class Listino(Dao):
     magazzini = property(_getMagazzini, _setMagazzini)
 
     def _getListinoComplesso(self):
-        self.__dbListinoComplesso = ListinoComplessoListino().select(idListinoComplesso=self.id, batchSize=None)
+        #self.__dbListinoComplesso = ListinoComplessoListino().select(idListinoComplesso=self.id, batchSize=None)
+        self.__dbListinoComplesso = self.listino_complesso
         self.__listinocomplesso = self.__dbListinoComplesso[:]
         return self.__listinocomplesso
 

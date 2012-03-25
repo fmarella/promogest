@@ -37,17 +37,17 @@ class PersonaGiuridica_(Dao):
         dic= {}
         return  dic[k]
 
-persona_giuridica=Table('persona_giuridica',
+t_persona_giuridica = Table('persona_giuridica',
                 params['metadata'],
-                schema = params['schema'],
+                schema=params['schema'],
                 autoload=True)
 
-if "note" not in [c.name for c in persona_giuridica.columns]:
+if "note" not in [c.name for c in t_persona_giuridica.columns]:
     col = Column('note', String)
-    col.create(persona_giuridica)
+    col.create(t_persona_giuridica)
 
 std_mapper = mapper(PersonaGiuridica_,
-        persona_giuridica,
-        order_by=persona_giuridica.c.id)
+        t_persona_giuridica,
+        order_by=t_persona_giuridica.c.id)
 
 from promogest.dao.PersonaGiuridicaPersonaGiuridica import PersonaGiuridicaPersonaGiuridica

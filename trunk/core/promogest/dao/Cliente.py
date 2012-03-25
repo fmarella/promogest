@@ -26,8 +26,7 @@ from sqlalchemy.orm import *
 from promogest.Environment import params, conf,session
 from promogest.dao.Dao import Dao
 from ClienteCategoriaCliente import ClienteCategoriaCliente
-from promogest.dao.PersonaGiuridica import persona_giuridica
-from promogest.dao.User import User
+from promogest.dao.PersonaGiuridica import t_persona_giuridica
 from promogest.ui.utils import  codeIncrement, getRecapitiCliente
 
 
@@ -140,23 +139,23 @@ class Cliente(Dao):
 
     def filter_values(self,k,v):
         if k == 'codice':
-            dic = {k:persona_giuridica.c.codice.ilike("%"+v+"%")}
+            dic = {k : t_persona_giuridica.c.codice.ilike("%"+v+"%")}
         elif k == 'codicesatto':
-            dic = {k:persona_giuridica.c.codice == v}
+            dic = {k : t_persona_giuridica.c.codice == v}
         elif k == 'ragioneSociale':
-            dic = {k:persona_giuridica.c.ragione_sociale.ilike("%"+v+"%")}
+            dic = {k : t_persona_giuridica.c.ragione_sociale.ilike("%"+v+"%")}
         elif k == 'insegna':
-            dic = {k:persona_giuridica.c.insegna.ilike("%"+v+"%")}
+            dic = {k : t_persona_giuridica.c.insegna.ilike("%"+v+"%")}
         elif k == 'cognomeNome':
-            dic = {k:or_(persona_giuridica.c.cognome.ilike("%"+v+"%"),persona_giuridica.c.nome.ilike("%"+v+"%"))}
+            dic = {k : or_(t_persona_giuridica.c.cognome.ilike("%"+v+"%"),t_persona_giuridica.c.nome.ilike("%"+v+"%"))}
         elif k == 'localita':
-            dic = {k:or_(persona_giuridica.c.sede_operativa_localita.ilike("%"+v+"%"),persona_giuridica.c.sede_legale_localita.ilike("%"+v+"%"))}
+            dic = {k : or_(t_persona_giuridica.c.sede_operativa_localita.ilike("%"+v+"%"), t_persona_giuridica.c.sede_legale_localita.ilike("%"+v+"%"))}
         elif k == 'provincia':
-            dic = {k:or_(persona_giuridica.c.sede_operativa_provincia.ilike("%"+v+"%"),persona_giuridica.c.sede_legale_provincia.ilike("%"+v+"%"))}
+            dic = {k : or_(t_persona_giuridica.c.sede_operativa_provincia.ilike("%"+v+"%"), t_persona_giuridica.c.sede_legale_provincia.ilike("%"+v+"%"))}
         elif k == 'partitaIva':
-            dic = {k:persona_giuridica.c.partita_iva.ilike("%"+v+"%")}
+            dic = {k : t_persona_giuridica.c.partita_iva.ilike("%"+v+"%")}
         elif k == 'codiceFiscale':
-            dic = {k:persona_giuridica.c.codice_fiscale.ilike("%"+v+"%")}
+            dic = {k : t_persona_giuridica.c.codice_fiscale.ilike("%"+v+"%")}
         elif k == 'idCategoria':
             dic = {k:and_(Cliente.id==ClienteCategoriaCliente.id_cliente,ClienteCategoriaCliente.id_categoria_cliente==v)}
         return  dic[k]
@@ -216,9 +215,9 @@ if 'tipo' not in [c.name for c in t_cliente.columns]:
     col = Column('tipo', String(2), default="PG")
     col.create(t_cliente, populate_default=True)
 
-j = join(t_cliente, persona_giuridica)
+j = join(t_cliente, t_persona_giuridica)
 
 std_mapper = mapper(Cliente,j, properties={
-        'id': [t_cliente.c.id, persona_giuridica.c.id],
+        'id': [t_cliente.c.id, t_persona_giuridica.c.id],
         'cliente_categoria_cliente': relation(ClienteCategoriaCliente, backref='cliente_'),
         }, order_by=t_cliente.c.id)

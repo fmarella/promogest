@@ -245,8 +245,9 @@ class Articolo(Dao):
         def getArticoloTagliaColore(self):
             """ Restituisce il Dao ArticoloTagliaColore collegato
                 al Dao Articolo """
-            self.__articoloTagliaColore = ArticoloTagliaColore()\
-                                                .getRecord(id=self.id)
+            #self.__articoloTagliaColore = ArticoloTagliaColore()\
+                                                #.getRecord(id=self.id)
+            self.__articoloTagliaColore = self.ATC
             return self.__articoloTagliaColore
 
         def setArticoloTagliaColore(self, value):
@@ -262,7 +263,8 @@ class Articolo(Dao):
                 figli del Dao Articolo """
             articoli = []
             try:
-                articolo_relato = ArticoloTagliaColore().getRecord(id=self.id)
+                #articolo_relato = ArticoloTagliaColore().getRecord(id=self.id)
+                articolo_relato = self.ATC
                 if order == "Colore":
                     orderBy = ArticoloTagliaColore.id_colore.asc()
                 elif order == "Taglia":

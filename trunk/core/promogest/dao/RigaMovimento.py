@@ -32,7 +32,7 @@ from UnitaBase import UnitaBase
 from Listino import Listino
 from Multiplo import Multiplo
 from Stoccaggio import Stoccaggio
-from Riga import Riga
+from Riga import Riga, riga
 from promogest.ui.utils import getScontiFromDao, getStringaSconti, posso
 
 if hasattr(conf, "SuMisura") and getattr(conf.SuMisura,'mod_enable') == "yes":
@@ -88,11 +88,6 @@ class RigaMovimento(Dao):
 
 
     def __unita_base(self):
-        #a =  params["session"].query(Articolo).with_parent(self).filter(self.arti.id_unita_base==UnitaBase.id).all()
-        #if not a:
-            #return a
-        #else:
-            #return a[0].den_unita.denominazione_breve
         if self.rig : return self.rig.unita_base
         else: return ""
     unita_base = property(__unita_base)
@@ -102,8 +97,10 @@ class RigaMovimento(Dao):
     def _getScontiRigaMovimento(self):
 
         if self.id:
-            self.__dbScontiRigaMovimentoPart = params["session"].query(ScontoRigaMovimento).filter_by(id_riga_movimento=self.id).all()
-            self.__dbScontiRigaDocumentoPart = params["session"].query(ScontoRigaDocumento).filter_by(id_riga_documento=self.id).all()
+            self.__dbScontiRigaMovimentoPart=self.SCM
+
+            #self.__dbScontiRigaDocumentoPart = params["session"].query(ScontoRigaDocumento).filter_by(id_riga_documento=self.id).all()
+            self.__dbScontiRigaDocumentoPart = []
             self.__dbScontiRigaMovimento = self.__dbScontiRigaMovimentoPart + self.__dbScontiRigaDocumentoPart
             self.__scontiRigaMovimento = self.__dbScontiRigaMovimento[:]
         else:
@@ -121,15 +118,6 @@ class RigaMovimento(Dao):
         return getStringaSconti(listSconti)
 
     stringaSconti = property(_getStringaScontiRigaMovimento)
-
-    def _getTotaleRiga(self):
-        # Il totale e' ivato o meno a seconda del prezzo
-        totaleRiga = float(self.quantita) * float(self.moltiplicatore) * float(self.valore_unitario_netto)
-        return totaleRiga
-
-    totaleRiga = property(_getTotaleRiga, )
-
-
 
     def _getCodiceArticoloFornitore(self):
         #FIXME: controllare
@@ -338,7 +326,6 @@ class RigaMovimento(Dao):
             self.__misuraPezzo = []
         params["session"].commit()
 
-riga=Table('riga', params['metadata'], schema = params['schema'], autoload=True)
 riga_mov=Table('riga_movimento', params['metadata'],schema = params['schema'],autoload=True)
 
 j = join(riga_mov, riga)
@@ -346,6 +333,7 @@ j = join(riga_mov, riga)
 std_mapper = mapper(RigaMovimento, j,properties={
         'id':[riga_mov.c.id, riga.c.id],
         "rig":relation(Riga,primaryjoin = riga_mov.c.id==riga.c.id, backref="RM"),
+        'totale_riga': column_property(riga.c.quantita * riga.c.moltiplicatore * riga.c.valore_unitario_netto ),
         #"arti":relation(Articolo,primaryjoin=riga.c.id_articolo==Articolo.id),
         #"listi":relation(Listino,primaryjoin=riga.c.id_listino==Listino.id),
         #"multi":relation(Multiplo,primaryjoin=riga.c.id_multiplo==Multiplo.id),

@@ -9,7 +9,6 @@
     <property name="border_width">6</property>
     <property name="n_rows">11</property>
     <property name="n_columns">2</property>
-    <property name="row_spacing">6</property>
     <child>
       <object class="GtkTable" id="taglia_colore_table">
         <property name="visible">True</property>
@@ -266,11 +265,11 @@
             <child>
               <object class="GtkButton" id="calcola_costo_ultimo_da_ingrosso_button">
                 <property name="label" translatable="yes">Calcola c.u. da ingrosso</property>
+                <property name="use_action_appearance">False</property>
                 <property name="width_request">150</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
                 <property name="use_underline">True</property>
                 <signal name="clicked" handler="on_calcola_costo_ultimo_da_ingrosso_button_clicked" swapped="no"/>
               </object>
@@ -283,11 +282,11 @@
             <child>
               <object class="GtkButton" id="calcola_costo_ultimo_da_dettaglio_button">
                 <property name="label" translatable="yes">Calcola c.u. da dettaglio</property>
+                <property name="use_action_appearance">False</property>
                 <property name="width_request">150</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
                 <property name="use_underline">True</property>
                 <signal name="clicked" handler="on_calcola_costo_ultimo_da_dettaglio_button_clicked" swapped="no"/>
               </object>
@@ -538,11 +537,11 @@
             <child>
               <object class="GtkButton" id="calcola_ingrosso_da_ricarico_button">
                 <property name="label" translatable="yes">Calcola prezzo</property>
+                <property name="use_action_appearance">False</property>
                 <property name="width_request">150</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
                 <property name="use_underline">True</property>
                 <signal name="clicked" handler="calcolaIngrossoDaRicarico" swapped="no"/>
               </object>
@@ -555,11 +554,11 @@
             <child>
               <object class="GtkButton" id="calcola_ingrosso_da_margine_button">
                 <property name="label" translatable="yes">Calcola prezzo</property>
+                <property name="use_action_appearance">False</property>
                 <property name="width_request">150</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
                 <property name="use_underline">True</property>
                 <signal name="clicked" handler="calcolaIngrossoDaMargine" swapped="no"/>
               </object>
@@ -574,11 +573,11 @@
             <child>
               <object class="GtkButton" id="calcola_percentuali_ingrosso_button">
                 <property name="label" translatable="yes">Calcola percentuali</property>
+                <property name="use_action_appearance">False</property>
                 <property name="width_request">150</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
                 <property name="use_underline">True</property>
                 <signal name="clicked" handler="calcolaPercentualiIngrosso" swapped="no"/>
               </object>
@@ -837,11 +836,11 @@
             <child>
               <object class="GtkButton" id="calcola_dettaglio_da_ricarico_button">
                 <property name="label" translatable="yes">Calcola prezzo</property>
+                <property name="use_action_appearance">False</property>
                 <property name="width_request">150</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
                 <property name="use_underline">True</property>
                 <signal name="clicked" handler="calcolaDettaglioDaRicarico" swapped="no"/>
               </object>
@@ -854,11 +853,11 @@
             <child>
               <object class="GtkButton" id="calcola_dettaglio_da_margine_button">
                 <property name="label" translatable="yes">Calcola prezzo</property>
+                <property name="use_action_appearance">False</property>
                 <property name="width_request">150</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
                 <property name="use_underline">True</property>
                 <signal name="clicked" handler="calcolaDettaglioDaMargine" swapped="no"/>
               </object>
@@ -873,11 +872,11 @@
             <child>
               <object class="GtkButton" id="calcola_percentuali_dettaglio_button">
                 <property name="label" translatable="yes">Calcola percentuali</property>
+                <property name="use_action_appearance">False</property>
                 <property name="width_request">150</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
                 <property name="use_underline">True</property>
                 <signal name="clicked" handler="calcolaPercentualiDettaglio" swapped="no"/>
               </object>
@@ -1208,10 +1207,10 @@
             <child>
               <object class="GtkButton" id="annulla_ml_button">
                 <property name="label">gtk-cancel</property>
+                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
                 <signal name="clicked" handler="on_annulla_ml_button_clicked" swapped="no"/>
               </object>
@@ -1224,10 +1223,10 @@
             <child>
               <object class="GtkButton" id="ok_ml_button">
                 <property name="label">gtk-ok</property>
+                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
                 <signal name="clicked" handler="on_ok_ml_button_clicked" swapped="no"/>
               </object>
@@ -1299,10 +1298,10 @@
                 <child>
                   <object class="GtkRadioButton" id="percentuale_ml_radio">
                     <property name="label" translatable="yes">%</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="active">True</property>
                     <property name="draw_indicator">False</property>
                   </object>
@@ -1315,10 +1314,10 @@
                 <child>
                   <object class="GtkRadioButton" id="valore_ml_radio">
                     <property name="label" translatable="yes">€</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="active">True</property>
                     <property name="draw_indicator">False</property>
                     <property name="group">percentuale_ml_radio</property>
@@ -1345,10 +1344,10 @@
                 <child>
                   <object class="GtkRadioButton" id="aggiungi_ml_radio">
                     <property name="label" translatable="yes">Aggiungi +</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="active">True</property>
                     <property name="draw_indicator">True</property>
                     <property name="group">sottrai_ml_radio</property>
@@ -1363,10 +1362,10 @@
                 <child>
                   <object class="GtkRadioButton" id="sottrai_ml_radio">
                     <property name="label" translatable="yes">Sottrai -</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="active">True</property>
                     <property name="draw_indicator">True</property>
                   </object>

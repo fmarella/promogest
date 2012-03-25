@@ -124,26 +124,20 @@ class TestataDocumento(Dao):
         return [tup[-1] for tup in intermed]
 
     def _getRigheDocumento(self):
+        self.__dbRigheMovimentoPart = []
+        self.__dbRigheDocumentoPart = []
         if self.id:
-            self.__dbRigheDocumentoPart = object_session(self)\
-                                        .query(RigaDocumento )\
-                                        .filter(RigaDocumento.id_testata_documento == self.id).all()
-            try:
-                self.__dbRigheMovimentoPart = object_session(self)\
-                                .query(RigaMovimento)\
-                                .join(RigaMovimento.testata_movimento)\
-                                .filter(RigaMovimento.id_testata_movimento==select([TestataMovimento.id], \
-                                        TestataMovimento.id_testata_documento==self.id)).all()
-            except:
-                self.rollback()
-                test = TestataMovimento().select(idTestataDocumento = self.id)
-                if len(test) >1:
-                    Environment.pg2log.info("ATTENZIONE due movimenti fanno riferimento ad una sola testata documento:"+str(self.id))
-                    for t in test:
-                        Environment.pg2log.info("DATI MOVIMENTO ERRATI id:"+str(t.id))
-                    messageInfo(msg="""ATTENZIONE, Più di un movimento fa riferimento
-                                                    allo stesso documento.
-                                                    Contattare l'assistenza con urgenza""")
+            #self.__dbRigheDocumentoPart = object_session(self)\
+                                        #.query(RigaDocumento )\
+                                        #.filter(RigaDocumento.id_testata_documento == self.id).all()
+            self.__dbRigheDocumentoPart = self.rigadoc
+            if self.TM and len(self.TM) ==1:
+                self.__dbRigheMovimentoPart = self.TM[0].rigamov
+            elif self.TM and len(self.TM) >1:
+                Environment.pg2log.info("ATTENZIONE due movimenti fanno riferimento ad una sola testata documento:"+str(self.id))
+                messageInfo(msg="""ATTENZIONE, Più di un movimento fa riferimento
+                                                    #allo stesso documento.
+                                                    #Contattare l'assistenza con urgenza""")
             self.__dbRigheDocumento = self.__dbRigheDocumentoPart + self.__dbRigheMovimentoPart
             self.__dbRigheDocumento = self.sort_by_attr(self.__dbRigheDocumento,"id")
             self.__righeDocumento = self.__dbRigheDocumento[:]
@@ -325,6 +319,7 @@ class TestataDocumento(Dao):
 
         totaleEsclusoBaseImponibileRiga = 0
         totaleImponibileRiga = 0
+        merca = setconf("General", "gestione_totali_mercatino")
         for riga in self.righe:
             # FIXME: added for supporting dumb rows when printing
             if riga is None:
@@ -333,7 +328,7 @@ class TestataDocumento(Dao):
                 moltiplicatore = 1
             else:
                 moltiplicatore = riga.moltiplicatore
-            if setconf("General", "gestione_totali_mercatino"):
+            if merca:
                 trn = (Decimal(riga.quantita or 0) * Decimal(moltiplicatore) * Decimal(riga.valore_unitario_netto or 0))
                 trl = (Decimal(riga.quantita or 0) * Decimal(moltiplicatore) * Decimal(riga.valore_unitario_lordo or 0))
                 if trn != 0 and trl != 0:
@@ -359,7 +354,7 @@ class TestataDocumento(Dao):
 #                if idAliquotaIvas:
 #                    idAliquotaIva = idAliquotaIvas[0].id
 #                    daoiva = idAliquotaIvas[0]
-            totaleRiga = Decimal(riga.quantita or 0) * Decimal(moltiplicatore) * Decimal(riga.valore_unitario_netto or 0)
+            totaleRiga = riga.totale_riga
 
             if (fonteValore == "vendita_iva" or fonteValore == "acquisto_iva"):
                 if daoiva and dictIva[idAliquotaIva][1] == "Non imponibile":
@@ -484,6 +479,7 @@ class TestataDocumento(Dao):
 
 
     #Salvataggi subordinati alla testata Documento, iniziamo da righe documento e poi righe
+    @timeit
     def persist(self):
         if not self.ckdd(self):
             return
@@ -503,27 +499,26 @@ class TestataDocumento(Dao):
         contieneMovimentazione = self.contieneMovimentazione(righe=self.righeDocumento)
         #cerco le testate movimento associate al documento
         #FIXME: se ne trovo piu' di una ? (ad esempio se il documento e' in realta' un cappello)
-        res = TestataMovimento().select(idTestataDocumento = self.id,batchSize=None)
+#        res = TestataMovimento().select(idTestataDocumento = self.id,batchSize=None)
         #Tutto nuovo non ci sono teste movimento relate a questa testata documento
-        if not res:
+        if not self.TM and contieneMovimentazione:
             #se però c'è movimentazione vuol dire che ha un movimento abbinato
-            if contieneMovimentazione:
-                #creo una nuova testata movimento
-                DaoTestataMovimento = TestataMovimento()
-                DaoTestataMovimento.data_movimento = self.data_documento
-                if not DaoTestataMovimento.numero:
-                    valori = numeroRegistroGet(tipo="Movimento", date=self.data_documento)
-                    DaoTestataMovimento.numero = valori[0]
-                    DaoTestataMovimento.registro_numerazione= valori[1]
-                DaoTestataMovimento.operazione = self.operazione
-                DaoTestataMovimento.id_cliente = self.id_cliente
-                DaoTestataMovimento.id_fornitore = self.id_fornitore
-                DaoTestataMovimento.note_interne = self.note_interne
-                DaoTestataMovimento.note_interne = self.note_interne
-                DaoTestataMovimento.id_testata_documento = self.id # abbino la testata alla testata movimento
-        elif len(res) == 1:
+            #creo una nuova testata movimento
+            DaoTestataMovimento = TestataMovimento()
+            DaoTestataMovimento.data_movimento = self.data_documento
+            if not DaoTestataMovimento.numero:
+                valori = numeroRegistroGet(tipo="Movimento", date=self.data_documento)
+                DaoTestataMovimento.numero = valori[0]
+                DaoTestataMovimento.registro_numerazione= valori[1]
+            DaoTestataMovimento.operazione = self.operazione
+            DaoTestataMovimento.id_cliente = self.id_cliente
+            DaoTestataMovimento.id_fornitore = self.id_fornitore
+            DaoTestataMovimento.note_interne = self.note_interne
+            DaoTestataMovimento.note_interne = self.note_interne
+            DaoTestataMovimento.id_testata_documento = self.id # abbino la testata alla testata movimento
+        elif self.TM and len(self.TM) == 1:
             #print "RES È UGUALE AD UNO.... ESITE UN MOVIMENTO USO RES"
-            DaoTestataMovimento = res[0] #TestataMovimento().getRecord(id=res[0].id)
+            DaoTestataMovimento = self.TM[0]  #TestataMovimento().getRecord(id=res[0].id)
             if not contieneMovimentazione:
                 #devo eliminare il movimento interamente, visto che non ci sono righe movimento
                 #self.righeMovimentoDel(id=DaoTestataMovimento.id)
@@ -543,76 +538,6 @@ class TestataDocumento(Dao):
             # ci sono piu' movimenti collegati al documento
             # FIXME: che fare ?
             raise Exception, "ATTENZIONE CI SONO PIU' MOVIMENTI LEGATI AD UN DOCUMENTO"
-        #righeMovimento = []
-        #righeDocumento = []
-        #scontiRigaMovimento = []
-        #if self.righeDocumento:  #trattiamo le righe documento e movimento
-            #for row in self.righeDocumento:
-                #if "RigaMovimento" in str(row.__module__):
-                #if (row.id_articolo is not None and contieneMovimentazione):
-                    ##salvo tra le righe movimenti
-##                    print "RIGHE ",row, row.id_articolo, row.__dict__["_RigaDocumento__codiceArticoloFornitore"]
-                    #daoRigaMovimento = RigaMovimento()
-                    ##daoRigaMovimento.id_testata_movimento = DaoTestataMovimento.id
-                    #daoRigaMovimento.valore_unitario_netto = row.valore_unitario_netto
-                    #daoRigaMovimento.valore_unitario_lordo = row.valore_unitario_lordo
-                    #daoRigaMovimento.quantita = row.quantita
-                    #daoRigaMovimento.moltiplicatore = row.moltiplicatore
-                    #daoRigaMovimento.applicazione_sconti = row.applicazione_sconti
-                    #daoRigaMovimento.percentuale_iva = row.percentuale_iva
-                    #daoRigaMovimento.id_iva = row.id_iva
-                    #daoRigaMovimento.descrizione = row.descrizione
-                    #daoRigaMovimento.id_listino = row.id_listino
-                    #daoRigaMovimento.id_magazzino = row.id_magazzino
-                    #daoRigaMovimento.id_articolo = row.id_articolo
-                    #daoRigaMovimento.id_multiplo = row.id_multiplo
-                    ## riporti di attributi agganciati all'oggetto temporaneamente
-                    #if hasattr(row, "numero_lotto"):
-                        #setattr(daoRigaMovimento,"numero_lotto",row.numero_lotto or None)
-                    #if hasattr(row, "lotto_temp"):
-                        #setattr(daoRigaMovimento,"lotto_temp",row.lotto_temp or None)
-                    #if hasattr(row, "data_scadenza"):
-                        #setattr(daoRigaMovimento,"data_scadenza",row.data_scadenza or None)
-                    #if hasattr(row, "data_produzione"):
-                        #setattr(daoRigaMovimento,"data_produzione",row.data_produzione or None)
-                    #if hasattr(row, "data_prezzo"):
-                        #setattr(daoRigaMovimento,"data_prezzo",row.data_prezzo or None)
-                    #if hasattr(row, "ordine_minimo"):
-                        #setattr(daoRigaMovimento,"ordine_minimo",row.ordine_minimo or None)
-                    #if hasattr(row, "tempo_arrivo"):
-                        #setattr(daoRigaMovimento,"tempo_arrivo",row.tempo_arrivo or None)
-                    #if hasattr(row, "righe_movimento_fornitura"):
-                        #setattr(daoRigaMovimento,"righe_movimento_fornitura", row.righe_movimento_fornitura or None)
-                    #daoRigaMovimento.codiceArticoloFornitore = row.__dict__["_RigaDocumento__codiceArticoloFornitore"]
-                    #if (hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes") or ("GestioneNoleggio" in Environment.modulesList):
-                        #daoRigaMovimento.prezzo_acquisto_noleggio = row.prezzo_acquisto_noleggio
-                        #daoRigaMovimento.coeficente_noleggio = row.coeficente_noleggio
-                        #daoRigaMovimento.isrent = row.isrent
-
-                    #scontiRigaMovimento = []
-                    #if row.scontiRigaDocumento:
-                        #for v in row.scontiRigaDocumento:
-                            #daoScontoMovimento = ScontoRigaMovimento()
-                            #daoScontoMovimento.valore = v.valore
-                            #daoScontoMovimento.tipo_sconto = v.tipo_sconto
-
-                            #scontiRigaMovimento.append(daoScontoMovimento)
-                    #if hasattr(conf, "SuMisura") and getattr(conf.SuMisura,'mod_enable')=="yes":
-                        #if row.misura_pezzo:
-                                #daoRigaMovimento.misura_pezzo = row.misura_pezzo
-
-                    #daoRigaMovimento.scontiRigheMovimento = scontiRigaMovimento
-                    #righeMovimento.append(daoRigaMovimento)
-                    #righeMovimento.append(row)
-                    #righeMovimento.scontiRigheMovimento = scontiRigaMovimento
-                #else:
-                    #Environment.pg2log.info("RIGA SENZA RIFERMENTO ARTICOLO QUINDI DESCRITTIVA, SALVO IN RIGADOCUMENTO")
-                    #annullamento id della riga
-                    #row._resetId()
-                    #associazione alla riga della testata
-                    #row.id_testata_documento = self.id
-                    #row.persist()
-                    #righeMovimento.append(row)
 
         if (DaoTestataMovimento is not None):
             if self.righeDocumento:

@@ -131,15 +131,6 @@ def leggiArticolo(id, full=False, idFornitore=False, data=None):
                 _quantita_minima = daoArticolo.quantita_minima
             except:
                 _quantita_minima = ""
-#            if _idUnitaBase is not None:
-#                res = UnitaBase().getRecord(id =_idUnitaBase)
-#                if res is not None:
-#                    _unitaBase = res.denominazione
-#            if daoArticolo.id_aliquota_iva is not None:
-#                daoAliquotaIva = AliquotaIva().getRecord(id=daoArticolo.id_aliquota_iva)
-#                if daoAliquotaIva is not None:
-#                    _denominazioneBreveAliquotaIva = daoAliquotaIva.denominazione_breve or ''
-#                    _percentualeAliquotaIva = daoAliquotaIva.percentuale or 0
 
     artiDict = {"id": _id,
                 "denominazione": _denominazione,
@@ -176,13 +167,6 @@ def leggiCliente(id):
     if id is not None:
         daoCliente = Cliente().getRecord(id=id)
         if daoCliente:
-#            try:
-#                for i in range(0,len(daoCliente.recapiti)):
-#                    if daoCliente.recapiti[i].tipo_recapito == "E-Mail" or daoCliente.recapiti[i].tipo_recapito == "Email":
-#                        _email = daoCliente.recapiti[i].recapito
-#            except:
-#                _email = ""
-
             _id = id
             _ragioneSociale = daoCliente.ragione_sociale or ''
             _nome = daoCliente.nome or ''
@@ -255,12 +239,6 @@ def leggiFornitore(id):
     if id is not None:
         daoFornitore = Fornitore().getRecord(id=id)
         if daoFornitore:
-#            try:
-#                for i in range(0,len(daoFornitore.recapiti)):
-#                    if daoFornitore.recapiti[i].tipo_recapito == "E-Mail" or daoFornitore.recapiti[i].tipo_recapito == "Email":
-#                        _email = daoFornitore.recapiti[i].recapito
-#            except:
-#                _email = ""
 
             _id = id
             _ragioneSociale = daoFornitore.ragione_sociale or ''
@@ -1687,8 +1665,6 @@ def calcolaRicaricoDaMargine(margine=0):
         return float(margine / (1 - (margine / 100)))
 
 
-
-
 def calcolaPrezzoIva(prezzo=0, iva=0):
     """
     Calcola un prezzo ivato (iva > 0) o scorpora l'iva da un prezzo (iva < 0)
@@ -2400,9 +2376,9 @@ def idArticoloFromFornitura(k,v):
     """
     from promogest.dao.Fornitura import Fornitura
     codiciArtForFiltered =  Environment.params["session"]\
-                        .query(Fornitura)\
-                        .filter(and_(Fornitura.codice_articolo_fornitore.ilike("%"+v+"%")))\
-                        .all()
+        .query(Fornitura)\
+        .filter(and_(Fornitura.codice_articolo_fornitore.ilike("%"+v+"%")))\
+        .all()
     return codiciArtForFiltered
 
 def getCategorieContatto(id=None):
@@ -3057,8 +3033,10 @@ def checkInstallation():
     try:
 #        url = "http://localhost:8080/check"
         url = "http://www.promogest.me/check"
-        data = {"masterkey" : SetConf().select(key="install_code",section="Master")[0].value,
-                "icode":SetConf().select(key="icode",section="Master")[0].value}
+        data = {"masterkey" : SetConf().select(key="install_code",
+                                            section="Master")[0].value,
+                "icode":SetConf().select(key="icode",
+                                            section="Master")[0].value}
         values = urllib.urlencode(data)
         req = urllib2.Request(url, values)
         response = urllib2.urlopen(req)
@@ -3406,7 +3384,8 @@ def installId():
 
 def getListiniArticolo(idArticolo=None):
     from promogest.dao.ListinoArticolo import ListinoArticolo
-    listi = ListinoArticolo().select(idArticolo = idArticolo,listinoAttuale=True, batchSize=None)
+    listi = ListinoArticolo().select(idArticolo = idArticolo,
+                            listinoAttuale=True, batchSize=None)
     return listi
 
 def fencemsg():
@@ -3427,7 +3406,11 @@ def daoTestDocu(dao):
 def getLottoeScadenze(daoRigaMovimento, testataMovimento):
     from promogest.dao.RigaMovimentoFornitura import RigaMovimentoFornitura
     from promogest.dao.Fornitura import Fornitura
-    idFornitura = RigaMovimentoFornitura().select(idRigaMovimentoAcquisto = daoRigaMovimento.id, idArticolo = daoRigaMovimento.id_articolo, batchSize=None)
+
+    idFornitura = RigaMovimentoFornitura().select(
+                        idRigaMovimentoAcquisto = daoRigaMovimento.id,
+                        idArticolo = daoRigaMovimento.id_articolo,
+                        batchSize=None)
     if idFornitura:
         idFornitura = idFornitura[0]
         return Fornitura().getRecord(id=idFornitura)

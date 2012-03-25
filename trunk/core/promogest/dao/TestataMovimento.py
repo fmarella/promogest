@@ -63,11 +63,11 @@ class TestataMovimento(Dao):
 
     def _getRigheMovimento(self):
         #if not self.__righeMovimento:
-        self.__dbRigheMovimento = params['session'].query(RigaMovimento)\
-                                        .with_parent(self)\
-                                        .filter_by(id_testata_movimento=self.id)\
-                                        .all()
-
+        #self.__dbRigheMovimento = params['session'].query(RigaMovimento)\
+                                        #.with_parent(self)\
+                                        #.filter_by(id_testata_movimento=self.id)\
+                                        #.all()
+        self.__dbRigheMovimento = self.rigamov
         self.__righeMovimento = self.__dbRigheMovimento[:]
         if self.operazione == "Trasferimento merce magazzino" and self.id_to_magazzino:
             for r in self.__righeMovimento[:]:

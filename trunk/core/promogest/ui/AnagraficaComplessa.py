@@ -103,7 +103,7 @@ class Anagrafica(GladeWidget):
         self.record_duplicate_menu.set_sensitive(False)
         self.duplica_button.set_sensitive(False)
         self.selected_record_print_button.set_sensitive(False)
-        self.selected_record_print_menu.set_sensitive(False) 
+        self.selected_record_print_menu.set_sensitive(False)
         if self.__class__.__name__ != 'AnagraficaListiniArticoli':
             self.modifiche_menu.destroy()
         if self.__class__.__name__ != 'AnagraficaDocumenti':
@@ -172,7 +172,7 @@ class Anagrafica(GladeWidget):
     def show_all(self):
         """ Visualizza/aggiorna tutta la struttura dell'anagrafica """
         self.anagrafica_complessa_window.show_all()
-        
+
     def on_esporta_tracciato_menuitem_activate(self, menuitem, data):
         from promogest.lib.parser import myparse
         # In base al nome del tracciato richiamiamo la funzione che
@@ -209,7 +209,7 @@ class Anagrafica(GladeWidget):
         if dati is None:
             return
         xml_file = open(os.path.join(Environment.tracciatiDir, nome_tracciato + '.xml'))
-        
+
         def get_save_filename(filename):
             dialog = gtk.FileChooserDialog("Inserisci il nome del file",
                                            None,
@@ -217,7 +217,7 @@ class Anagrafica(GladeWidget):
                                            (gtk.STOCK_CANCEL, GTK_RESPONSE_CANCEL,
                                             gtk.STOCK_SAVE, GTK_RESPONSE_OK))
             dialog.set_default_response(GTK_RESPONSE_OK)
-            
+
             self.__homeFolder = setconf("General", "cartella_predefinita") or None
             if self.__homeFolder is None:
                 if os.name == 'posix':
@@ -226,9 +226,9 @@ class Anagrafica(GladeWidget):
                     self.__homeFolder = os.environ['USERPROFILE']
             dialog.set_current_folder(self.__homeFolder)
             dialog.set_current_name(filename)
-            
+
             response = dialog.run()
-          
+
             if response == GTK_RESPONSE_OK:
                 save_filename = dialog.get_filename()
                 dialog.destroy()
@@ -436,7 +436,7 @@ class Anagrafica(GladeWidget):
         if self.dao.__class__.__name__ in ["TestataDocumento", "Articolo", "TestataMovimento", "Listino"]:
             self.duplica_button.set_sensitive(self.dao is not None)
             self.record_duplicate_menu.set_sensitive(self.dao is not None)
-            
+
         self.record_delete_button.set_sensitive(self.dao is not None)
         self.record_delete_menu.set_sensitive(self.dao is not None)
 
@@ -696,7 +696,7 @@ class Anagrafica(GladeWidget):
 
     def on_cerca_contatto_button_clicked(self, widget):
         from promogest.modules.Contatti.ui.RicercaContatti import RicercaContatti
-        
+
         def aggiorna_email(anagWindow, tipo):
             if anag.dao is None:
                 id = None
@@ -711,7 +711,7 @@ class Anagrafica(GladeWidget):
             self.printDialog.email_destinatario_entry.set_text(res["email"])
             self.email = res["email"]
             anagWindow.destroy()
-        
+
         anag = RicercaContatti()
         anagWindow = anag.getTopLevel()
         anagWindow.connect("hide", aggiorna_email, 'contatto')
@@ -773,7 +773,7 @@ html contatti <b>assistenza@promotux.it</b> per informazioni.""")
                     arghi = "%s -compose subject='%s',body='%s',attachment='file:///%s',to='%s'" % (client, subject, body, str(pdfFile), self.email)
                     flag = True
                     break
-            #TODO: dividere self.email al carattere ';' e accodare ciascun indirizzo come 'a@email.com' 'b@email.com' 
+            #TODO: dividere self.email al carattere ';' e accodare ciascun indirizzo come 'a@email.com' 'b@email.com'
             if not flag:
                 arghi = "xdg-email --utf8 --subject '%s' --body '%s' --attach '%s' '%s'" %(subject, body, str(pdfFile), self.email)
         subprocess.Popen(arghi, shell=True)

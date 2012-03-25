@@ -93,7 +93,7 @@ class AnagraficaFilter(GladeWidget):
         raise NotImplementedError
 
     def on_filter_treeview_row_activated(self, treeview, path, column):
-        """ Gestisce la conferma della riga """
+        """ Gestisce la conferma ed apertura della anagrafica """
         self._anagrafica.on_anagrafica_filter_treeview_row_activated(treeview, path, column)
 
 

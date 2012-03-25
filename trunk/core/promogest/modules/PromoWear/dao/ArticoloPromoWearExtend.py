@@ -16,8 +16,9 @@ def getArticoloTagliaColoreExt(dao):
     #if self.__articoloTagliaColore is not None:
     #self.__articoloTagliaColore = None
     #try:
-    dao.__articoloTagliaColore = ArticoloTagliaColore().getRecord(id=self.id)
-    return dao.__articoloTagliaColore
+    #dao.__articoloTagliaColore = ArticoloTagliaColore().getRecord(id=self.id)
+    #return dao.__articoloTagliaColore
+    return self.ATC
     #except:
         #return False
 
@@ -32,7 +33,8 @@ def getArticoliTagliaColore(self, idGruppoTaglia=None, idTaglia=None, idColore=N
     #from promogest.modules.PromoWear.dao.ArticoloTagliaColore import select
     articoli = []
     try:
-        articolo_relato = ArticoloTagliaColore().getRecord(id=self.id)
+        #articolo_relato = ArticoloTagliaColore().getRecord(id=self.id)
+        articolo_relato = self.ATC
         if not articolo_relato.id_articolo_padre:
             articoli = ArticoloTagliaColore().select(idArticoloPadre=articolo_relato.id_articolo,
                                                         idGruppoTaglia=idGruppoTaglia,
@@ -42,14 +44,13 @@ def getArticoliTagliaColore(self, idGruppoTaglia=None, idTaglia=None, idColore=N
                                                         batchSize=None)
         else:
             articoli = ArticoloTagliaColore().select(idArticoloPadre=articolo_relato.id_articolo_padre,
-                                                        idGruppoTaglia=idGruppoTaglia,
-                                                        idTaglia=idTaglia,
-                                                        idColore=idColore,
-                                                        offset=None,
-                                                        batchSize=None)
+                        idGruppoTaglia=idGruppoTaglia,
+                        idTaglia=idTaglia,
+                        idColore=idColore,
+                        offset=None,
+                        batchSize=None)
     except:
         print "FOR DEBUG ONLY getArticoliTagliaColore FAILED"
-    print "ARTICOLIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII", articoli
     return articoli
 articoliTagliaColore = property(getArticoliTagliaColore)
 

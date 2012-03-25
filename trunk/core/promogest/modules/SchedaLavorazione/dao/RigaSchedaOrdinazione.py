@@ -86,15 +86,15 @@ class RigaSchedaOrdinazione(Dao):
     codiceArticoloFornitore = property(_getCodiceArticoloFornitore, _setCodiceArticoloFornitore)
 
 
-    def _getTotaleRiga(self):
-        # Il totale e' ivato o meno a seconda del prezzo
-        if (self.moltiplicatore is None) or (self.moltiplicatore == 0):
-            self.moltiplicatore = 1
-        self.valore_unitario_netto = Decimal(str(self.valore_unitario_netto)).quantize(Decimal('.0001'), rounding=ROUND_HALF_UP)
-        totaleRiga = self.valore_unitario_netto * Decimal(str(self.quantita)) * Decimal(str(self.moltiplicatore))
-        return totaleRiga.quantize(Decimal('.01'), rounding=ROUND_HALF_UP)
+#    def _getTotaleRiga(self):
+#        # Il totale e' ivato o meno a seconda del prezzo
+#        if (self.moltiplicatore is None) or (self.moltiplicatore == 0):
+#            self.moltiplicatore = 1
+#        self.valore_unitario_netto = Decimal(str(self.valore_unitario_netto)).quantize(Decimal('.0001'), rounding=ROUND_HALF_UP)
+#        totaleRiga = self.valore_unitario_netto * Decimal(str(self.quantita)) * Decimal(str(self.moltiplicatore))
+#        return totaleRiga.quantize(Decimal('.01'), rounding=ROUND_HALF_UP)
 
-    totaleRiga = property(_getTotaleRiga)
+#    totaleRiga = property(_getTotaleRiga)
 
     def __codiceArticolo(self):
         """ esempio di funzione  unita alla property """
@@ -196,5 +196,6 @@ j = join(rigaschedaordinazione, riga)
 std_mapper = mapper(RigaSchedaOrdinazione, j, properties={
         'id':[rigaschedaordinazione.c.id, riga.c.id],
         "arti":relation(Articolo,primaryjoin=riga.c.id_articolo==Articolo.id),
+        'totale_riga': column_property(riga.c.quantita * riga.c.moltiplicatore * riga.c.valore_unitario_netto ),
             },
                     order_by=rigaschedaordinazione.c.id)

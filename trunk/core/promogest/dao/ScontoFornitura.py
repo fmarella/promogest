@@ -39,5 +39,11 @@ sconto_fornitura=Table('sconto_fornitura',
                 schema = params['schema'],
                 autoload=True)
 
-std_mapper = mapper(ScontoFornitura, sconto_fornitura, order_by=sconto_fornitura.c.id)
+j = join(sconto, sconto_fornitura)
+
+
+std_mapper = mapper(ScontoFornitura,
+            j, properties={
+    'id':[sconto.c.id, sconto_fornitura.c.id],},
+            order_by=sconto_fornitura.c.id)
 

@@ -42,7 +42,8 @@ class ArticoloTagliaColore(Dao):
         """ Restituisce il Dao GruppoTaglia collegato al Dao ArticoloTagliaColore """
         if self.id_gruppo_taglia is None:
             return None
-        return GruppoTaglia().getRecord(id=self.id_gruppo_taglia)
+        return self.GT
+        #return GruppoTaglia().getRecord(id=self.id_gruppo_taglia)
 
     gruppoTaglia = property(_getGruppoTaglia)
 
@@ -51,21 +52,24 @@ class ArticoloTagliaColore(Dao):
         """ Restituisce il Dao Taglia collegato al Dao ArticoloTagliaColore """
         if self.id_taglia is None:
             return None
-        return Taglia().getRecord(id=self.id_taglia)
+        return self.TA
+        #return Taglia().getRecord(id=self.id_taglia)
     taglia = property(_getTaglia)
 
     def _getModello(self):
         """ Restituisce il Dao Taglia collegato al Dao ArticoloTagliaColore """
         if self.id_modello is None:
             return None
-        return Modello().getRecord(id=self.id_modello)
+        return self.MO
+        #return Modello().getRecord(id=self.id_modello)
     modello = property(_getModello)
 
     def _getColore(self):
         """ Restituisce il Dao Colore collegato al Dao ArticoloTagliaColore """
         if self.id_colore is None:
             return None
-        return Colore().getRecord(id=self.id_colore)
+        return self.CO
+        #return Colore().getRecord(id=self.id_colore)
     colore = property(_getColore)
 
     def articoloPadre(self):

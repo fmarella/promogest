@@ -66,31 +66,11 @@ class RigaDocumento(Dao):
         self.__isrent = None
 
 
-    #def _getAliquotaIva(self):
-        ## Restituisce la denominazione breve dell'aliquota iva
-        #_denominazioneBreveAliquotaIva = '%2.0f' % (self.percentuale_iva or 0)
-        #daoArticolo = Articolo().getRecord(id=self.id_articolo)
-        #if daoArticolo is not None:
-            #if daoArticolo.id_aliquota_iva is not None:
-                #daoAliquotaIva = AliquotaIva().getRecord(id=daoArticolo.id_aliquota_iva)
-                #if daoAliquotaIva is not None:
-                    #_denominazioneBreveAliquotaIva = daoAliquotaIva.denominazione_breve or ''
-        #if (_denominazioneBreveAliquotaIva == '0' or _denominazioneBreveAliquotaIva == '00'):
-            #_denominazioneBreveAliquotaIva = ''
-        #return _denominazioneBreveAliquotaIva
-
-    #aliquota = property(_getAliquotaIva, )
-
-
     def __aliquota(self):
         if self.rig: return self.rig.aliquota
         else: return ""
     aliquota = property(__aliquota)
 
-#    def __aliquotaLunga(self):
-#        if self.rig: return self.rig.aliquota_lunga
-#        else: return ""
-#    aliquota_lunga= property(__aliquotaLunga)
 
     def _getStringaScontiRigaDocumento(self):
         (listSconti, applicazione) = getScontiFromDao(self._getScontiRigaDocumento(), self.applicazione_sconti)
@@ -106,13 +86,6 @@ class RigaDocumento(Dao):
         self.__codiceArticoloFornitore = value
 
     codiceArticoloFornitore = property(_getCodiceArticoloFornitore, _setCodiceArticoloFornitore)
-
-    def _getTotaleRiga(self):
-        # Il totale e' ivato o meno a seconda del prezzo
-        totaleRiga = float(self.quantita) * float(self.moltiplicatore) * float(self.valore_unitario_netto)
-        return totaleRiga
-
-    totaleRiga = property(_getTotaleRiga, )
 
     def __magazzino(self):
         if self.rig: return self.rig.magazzino
@@ -134,11 +107,6 @@ class RigaDocumento(Dao):
         else: return ""
     unita_base = property(__unita_base)
 
-#    def __codiceABarre(self):
-#        print "COSA SEIIIIIIIIIIII", self.rig.daoArticolo
-#        if self.rig:return self.rig.daoArticolo.codice_a_barre
-#        else: return ""
-#    codice_a_barre= property(__codiceABarre)
 
     def __codiceArticolo(self):
         if self.rig:return self.rig.codice_articolo
@@ -249,9 +217,10 @@ class RigaDocumento(Dao):
         #FIXME : il sistema originale aveva una UNION di due view fatte su mov e doc per cui avevano due campi
         # movimento e riga documento con l'id della riga a cui si riferivano ...
         # noi non avendo la union al momento facciamo due query ed appendiamo le liste
-        self.__dbScontiRigaMovimentoPart = params["session"].query(ScontoRigaMovimento).filter_by(id_riga_movimento=self.id).all()
-        self.__dbScontiRigaDocumentoPart = params["session"].query(ScontoRigaDocumento).filter_by(id_riga_documento=self.id).all()
-        self.__dbScontiRigaDocumento = self.__dbScontiRigaMovimentoPart + self.__dbScontiRigaDocumentoPart
+        #self.__dbScontiRigaMovimentoPart = params["session"].query(ScontoRigaMovimento).filter_by(id_riga_movimento=self.id).all()
+        #self.__dbScontiRigaDocumentoPart = params["session"].query(ScontoRigaDocumento).filter_by(id_riga_documento=self.id).all()
+        self.__dbScontiRigaDocumento = self.SCD
+        #self.__dbScontiRigaDocumento = self.__dbScontiRigaMovimentoPart + self.__dbScontiRigaDocumentoPart
         self.__scontiRigaDocumento = self.__dbScontiRigaDocumento[:]
         return self.__scontiRigaDocumento
 
@@ -303,6 +272,7 @@ j = join(riga_doc, riga)
 std_mapper = mapper(RigaDocumento, j,properties={
         'id':[riga_doc.c.id, riga.c.id],
         "rig":relation(Riga,primaryjoin = riga_doc.c.id==riga.c.id, backref="RD"),
+        'totale_riga': column_property(riga.c.quantita * riga.c.moltiplicatore * riga.c.valore_unitario_netto ),
         #"maga":relation(Magazzino,primaryjoin=riga.c.id_magazzino==Magazzino.id),
         #"arti":relation(Articolo,primaryjoin=riga.c.id_articolo==Articolo.id),
         #"listi":relation(Listino,primaryjoin=riga.c.id_listino==Listino.id),

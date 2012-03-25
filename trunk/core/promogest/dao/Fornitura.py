@@ -25,7 +25,7 @@ from promogest.Environment import *
 from Dao import Dao
 from Multiplo import Multiplo, multiplo
 from ScontoFornitura import ScontoFornitura
-from Fornitore import Fornitore, fornitore
+from Fornitore import Fornitore, t_fornitore
 from migrate import *
 
 
@@ -171,6 +171,6 @@ if "data_produzione" not in [c.name for c in fornitura.columns]:
 std_mapper = mapper(Fornitura,fornitura, properties={
         "multi": relation(Multiplo,primaryjoin=fornitura.c.id_multiplo==multiplo.c.id),
         "sconto_fornitura": relation(ScontoFornitura, backref="fornitura"),
-        "forni" : relation(Fornitore,primaryjoin=fornitura.c.id_fornitore==fornitore.c.id),
+        "forni" : relation(Fornitore,primaryjoin=fornitura.c.id_fornitore==t_fornitore.c.id),
         #"arti" : relation(Articolo,primaryjoin=fornitura.c.id_articolo==Articolo.id, backref=backref("artic", uselist=False)),
                 }, order_by=[fornitura.c.data_fornitura,fornitura.c.id_fornitore])
