@@ -28,7 +28,7 @@ from promogest.dao.Dao import Dao
 from ClienteCategoriaCliente import ClienteCategoriaCliente
 from promogest.dao.PersonaGiuridica import t_persona_giuridica
 from promogest.ui.utils import  codeIncrement, getRecapitiCliente
-
+from promogest.dao.User import User
 
 class Cliente(Dao):
     """
