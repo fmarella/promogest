@@ -83,22 +83,6 @@ class Company(Dao):
             dic = { k :company.c.active ==v}
         return  dic[k]
 
-#    def _getcategorie(self):
-#        if not self.__categorie:
-
-#            if self.categ:
-#                for compacat in self.categ:
-#                    sc = Category().getRecord(id=compacat.id_company_category)
-#                    self.__dbcategorie.append(sc)
-#        self.__categorie = self.__dbcategorie[:]
-#        print "categproeeeeeeeeeeeeee",self.__categorie, self.categ
-#        return self.__categorie
-
-#    def _setcategorie(self, value):
-#        self.__categorie = value
-#    categorie = property(_getcategorie, _setcategorie)
-
-
     def categorieDel(self, id=None):
         """
         Cancella le categorie

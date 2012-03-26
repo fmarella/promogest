@@ -90,7 +90,7 @@
                 <td class="odd-number" colspan="2"></td>
                 {% endif %}
                 <td class="odd-number" colspan="2">{{riga.percentuale_iva|int}}</td>
-                <td class="odd-number" colspan="3"><strong>{{utils.mNLC(( riga.quantita*  riga.moltiplicatore * riga.valore_unitario_netto ),2)}}<strong></td>
+                <td class="odd-number" colspan="3"><strong>{{utils.mNLC(( riga.totale_riga ),2)}}<strong></td>
             </tr>
             {% endfor %}
         </table>
