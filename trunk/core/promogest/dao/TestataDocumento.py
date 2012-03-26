@@ -534,7 +534,7 @@ class TestataDocumento(Dao):
                 DaoTestataMovimento.note_interne = self.note_interne
                 DaoTestataMovimento.id_testata_documento = self.id
                 #righeMovimentoDel(id=DaoTestataMovimento.id)
-        elif self.TM and len(self.TM) > 1::
+        elif self.TM and len(self.TM) > 1:
             # ci sono piu' movimenti collegati al documento
             # FIXME: che fare ?
             raise Exception, "ATTENZIONE CI SONO PIU' MOVIMENTI LEGATI AD UN DOCUMENTO"
