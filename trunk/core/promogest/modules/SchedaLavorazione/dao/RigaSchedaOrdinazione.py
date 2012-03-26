@@ -196,6 +196,6 @@ j = join(rigaschedaordinazione, riga)
 std_mapper = mapper(RigaSchedaOrdinazione, j, properties={
         'id':[rigaschedaordinazione.c.id, riga.c.id],
         "arti":relation(Articolo,primaryjoin=riga.c.id_articolo==Articolo.id),
-        'totale_riga': column_property(riga.c.quantita * riga.c.moltiplicatore * riga.c.valore_unitario_netto ),
+        'totalRiga': column_property(riga.c.quantita * riga.c.moltiplicatore * riga.c.valore_unitario_netto ),
             },
                     order_by=rigaschedaordinazione.c.id)

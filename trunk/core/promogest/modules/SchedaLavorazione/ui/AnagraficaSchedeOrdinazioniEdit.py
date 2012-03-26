@@ -334,7 +334,7 @@ class AnagraficaSchedeOrdinazioniEdit(AnagraficaEdit):
                                                 row.quantita,
                                                 row.valore_unitario_lordo,
                                                 row.valore_unitario_netto,
-                                                row.totale_riga])
+                                                row.totaleRiga])
 
         # questi dati sono a posto,
         self.data_matrimonio_entry.set_text(dateToString(self.dao.data_matrimonio))

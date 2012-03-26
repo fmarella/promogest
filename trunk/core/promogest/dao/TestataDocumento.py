@@ -354,7 +354,7 @@ class TestataDocumento(Dao):
 #                if idAliquotaIvas:
 #                    idAliquotaIva = idAliquotaIvas[0].id
 #                    daoiva = idAliquotaIvas[0]
-            totaleRiga = riga.totale_riga
+            totaleRiga = riga.totaleRiga
 
             if (fonteValore == "vendita_iva" or fonteValore == "acquisto_iva"):
                 if daoiva and dictIva[idAliquotaIva][1] == "Non imponibile":
