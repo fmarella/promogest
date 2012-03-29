@@ -1752,7 +1752,7 @@ def stringToDateBumped(stringa, giorni=1):
     else:
         return None
 
-def dateTimeToString(data, oraazero=True):
+def dateTimeToString(data):
     """
     Converte una data + ora in stringa
     """
@@ -1762,7 +1762,7 @@ def dateTimeToString(data, oraazero=True):
         return data
     else:
         try:
-            if oraazero:
+            if string.zfill(str(data.month),2) and string.zfill(str(data.minute),2) != "00":
                 s = string.zfill(str(data.day), 2) +\
                 '/' + string.zfill(str(data.month),2) +\
                 '/' + string.zfill(str(data.year),4) + \

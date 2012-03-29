@@ -230,7 +230,7 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
             else:
                 documento_saldato_filter = ''
             self.filter_listore.append((t,
-                                    dateTimeToString(t.data_documento, oraazero=False),
+                                    dateTimeToString(t.data_documento),
                                     (str(t.numero) or 0),
                                     (t.operazione or ''),
                                     (t.intestatario or ''),
