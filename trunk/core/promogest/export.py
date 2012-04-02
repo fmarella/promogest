@@ -55,9 +55,9 @@ def dati_file_conad_terron(testata):
             for ddtt in dati_differita:
                 ddt = TestataDocumento().getRecord(id=ddtt.id_ddt)
 
-                codice = 0
+                codice = ''
                 if ddt.DM is not None:
-                    codice = ddt.DM.codice
+                    codice = ddt.DM.codice or ''
 
                 dati = {'testata': {
                     'numero_progressivo': '0',
@@ -72,9 +72,7 @@ def dati_file_conad_terron(testata):
                 for riga in ddt.righe:
                     if riga.id_articolo:
                         art = leggiArticolo(riga.id_articolo)
-                        unitaBase = str(art["unitaBase"]).upper()
-                        if unitaBase == 'N':
-                            unitaBase = 'NR'
+                        unitaBase = 'NR' if str(art["unitaBase"]).upper() == 'N' else str(art["unitaBase"]).upper()
                         dati['dettaglio'].append(
                             {
                                 'numero_progressivo':'0',
@@ -120,9 +118,9 @@ def dati_file_conad(testata):
             for ddtt in dati_differita:
                 ddt = TestataDocumento().getRecord(id=ddtt.id_ddt)
 
-                codice = 0
+                codice = ''
                 if ddt.DM is not None:
-                    codice = ddt.DM.codice
+                    codice = ddt.DM.codice or ''
 
                 dati = {'testata': {
                     'numero_progressivo': str(dati_differita.index(ddtt) + 1),
