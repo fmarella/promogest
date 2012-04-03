@@ -42,11 +42,9 @@ class FatturazioneDifferita(GladeWidget):
         GladeWidget.__init__(self, 'fatturazione_differita_window',
                                          'fatturazione_differita.glade')
         if selection is None:
-            print """Errore. Nessuna selezione su cui fare la fatturazione
-                    Complimenti, hai trovato un bug !"""
             return
         self.listdoc = self.findDoc(selection)
-        self.nomi  = self.getNames(self.listdoc)
+        self.nomi = self.getNames(self.listdoc)
         self.draw()
         self.listdoc = self.sortDoc(self.nomi, self.listdoc)
 
