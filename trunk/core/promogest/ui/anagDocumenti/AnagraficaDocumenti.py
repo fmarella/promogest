@@ -81,6 +81,7 @@ class AnagraficaDocumenti(Anagrafica):
         if dao.__class__ != TestataDocumento:
             if dao.__class__ == list:
                 if len(dao) > 1:
+                    self.record_delete_button.set_sensitive(True)
                     self.record_fattura_button.set_sensitive(True)
                     self.selected_record_print_button.set_sensitive(True)
                 else:
