@@ -155,14 +155,21 @@ class AnagraficaFilter(GladeWidget):
         treeViewSelection = self._anagrafica.anagrafica_filter_treeview.get_selection()
         if not treeViewSelection:
             return None
-        if treeViewSelection.get_mode() == GTK_SELECTIONMODE_SINGLE:
+        if treeViewSelection.get_mode() != GTK_SELECTIONMODE_MULTIPLE:
             (model, iterator) = treeViewSelection.get_selected()
             if iterator is not None:
-                return model.get_value(iterator, 0)
+                dao = model.get_value(iterator, 0)
             else:
-                return None
+                dao = None
         else:
-            return None
+            model, iterator = treeViewSelection.get_selected_rows()
+            count = treeViewSelection.count_selected_rows()
+            if count == 1:
+                dao = model[iterator[0]][0]
+                # daoSelection = None
+            else:
+                dao = None
+        return dao
             
     def getSelectedDaos(self):
         treeViewSelection = self._anagrafica.anagrafica_filter_treeview.get_selection()

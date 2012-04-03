@@ -25,16 +25,106 @@ from promogest.ui.gtk_compat import *
 from promogest.ui.utils import *
 from promogest.ui.GladeWidget import GladeWidget
 from promogest import Environment
-#from promogest.dao.Dao import Dao
-#import promogest.dao.TestataDocumento
 from promogest.dao.TestataDocumento import TestataDocumento
 from promogest.dao.Operazione import Operazione
 from promogest.dao.InformazioniFatturazioneDocumento import InformazioniFatturazioneDocumento
 from promogest.dao.ScontoRigaDocumento import ScontoRigaDocumento
 from promogest.dao.ScontoTestataDocumento import ScontoTestataDocumento
 from promogest.dao.RigaDocumento import RigaDocumento
-from promogest.dao.ScontoRigaDocumento import ScontoRigaDocumento
 
+
+
+def findDoc(selection):
+    """
+    Restituisce solo i DDT vendita da una selezione
+    scremando gli altri.
+    """
+    newmodel = []
+    (model, iterator) = selection.get_selected_rows()
+    for i in iterator:
+        if model[i][3] == "DDT vendita":
+            newmodel.append(model[i])
+    newmodel.reverse()
+    return newmodel
+
+
+def getNames(lista):
+    """
+    Restituisce la lista dei nomi dei clienti.
+    """
+    nomi = []
+    for i in lista:
+        if i[4] not in nomi:
+            nomi.append(i[4])
+    return nomi
+
+def sortDoc(nomi, lista):
+    """
+    """
+    newlist = { }
+    for i in range(0, len(nomi)):
+        newlist[nomi[i]] = []
+
+    for i in range(0, len(lista)):
+        for j in range(0, len(nomi)):
+            if (lista[i][4] == nomi[j]):
+                newlist[nomi[j]].append(lista[i])
+    return newlist
+
+def daoGiaPresente(dao):
+    if dao!=[]:
+        daoFattura = TestataDocumento().getRecord(id=dao[0].id_fattura)
+        daoDdt = TestataDocumento().getRecord(id=dao[0].id_ddt)
+        msg = "Il documento N." + str(daoDdt.numero) +" e' gia' stato elaborato nel documento " + str(daoFattura.numero) + "\nPertanto non verra' elaborato in questa sessione"
+        messageInfo(msg)
+        return False
+    else:
+        return True
+
+def newSingleDoc(data, operazione, note, daoDocumento, newDao=None):
+    """
+    Make a new document from existing one
+    """
+    if newDao is None:
+        newDao = TestataDocumento()
+    newDao.data_documento = stringToDate(data)
+    newDao.operazione = operazione
+    newDao.id_cliente = daoDocumento.id_cliente
+    newDao.id_fornitore = daoDocumento.id_fornitore
+    newDao.id_destinazione_merce = daoDocumento.id_destinazione_merce
+    newDao.id_pagamento = daoDocumento.id_pagamento
+    newDao.id_banca = daoDocumento.id_banca
+    newDao.id_aliquota_iva_esenzione = daoDocumento.id_aliquota_iva_esenzione
+    newDao.protocollo = daoDocumento.protocollo
+    newDao.causale_trasporto = daoDocumento.causale_trasporto
+    newDao.aspetto_esteriore_beni = daoDocumento.aspetto_esteriore_beni
+    newDao.inizio_trasporto = daoDocumento.inizio_trasporto
+    newDao.fine_trasporto = daoDocumento.fine_trasporto
+    newDao.id_vettore =daoDocumento.id_vettore
+    newDao.incaricato_trasporto = daoDocumento.incaricato_trasporto
+    newDao.totale_colli = daoDocumento.totale_colli
+    newDao.totale_peso = daoDocumento.totale_peso
+    newDao.note_interne = daoDocumento.note_interne
+    newDao.note_pie_pagina = daoDocumento.note_pie_pagina  + " "  + note
+    newDao.applicazione_sconti = daoDocumento.applicazione_sconti
+    sconti = []
+    sco = daoDocumento.sconti or []
+    for s in sco:
+        daoSconto = ScontoTestataDocumento()
+        daoSconto.valore = s.valore
+        daoSconto.tipo_sconto = s.tipo_sconto
+        sconti.append(daoSconto)
+    newDao.scontiSuTotale = sconti
+    if posso("PA"):
+        newDao.totale_pagato = daoDocumento.totale_pagato
+        newDao.totale_sospeso = daoDocumento.totale_sospeso
+        newDao.documento_saldato = daoDocumento.documento_saldato
+        newDao.id_primo_riferimento = daoDocumento.id_primo_riferimento
+        newDao.id_secondo_riferimento = daoDocumento.id_secondo_riferimento
+
+    newDao.ripartire_importo = daoDocumento.ripartire_importo
+    newDao.costo_da_ripartire = daoDocumento.costo_da_ripartire
+    return newDao
 
 class FatturazioneDifferita(GladeWidget):
 
@@ -43,10 +133,10 @@ class FatturazioneDifferita(GladeWidget):
                                          'fatturazione_differita.glade')
         if selection is None:
             return
-        self.listdoc = self.findDoc(selection)
-        self.nomi = self.getNames(self.listdoc)
+        self.listdoc = findDoc(selection)
+        self.nomi = getNames(self.listdoc)
         self.draw()
-        self.listdoc = self.sortDoc(self.nomi, self.listdoc)
+        self.listdoc = sortDoc(self.nomi, self.listdoc)
 
     def draw(self):
         #queryString = ("SELECT * FROM promogest.operazione " +
@@ -70,61 +160,6 @@ class FatturazioneDifferita(GladeWidget):
         self.data_documento_entry.set_text(dateToString(datetime.datetime.today()))
         self.data_documento_entry.grab_focus()
 
-    def daoGiaPresente(self, dao):
-        if dao!=[]:
-            daoFattura = TestataDocumento().getRecord(id=dao[0].id_fattura)
-            daoDdt = TestataDocumento().getRecord(id=dao[0].id_ddt)
-            msg = "Il documento N." + str(daoDdt.numero) +" e' gia' stato elaborato nel documento " + str(daoFattura.numero) + "\nPertanto non verra' elaborato in questa sessione"
-            messageInfo(msg)
-            return False
-        else:
-            return True
-
-    def newSingleDoc(self, data, operazione, note, daoDocumento, newDao = None):
-        """
-        Make a new document from existing one
-        """
-        if newDao is None:
-            newDao = TestataDocumento()
-        newDao.data_documento = stringToDate(data)
-        newDao.operazione = operazione
-        newDao.id_cliente = daoDocumento.id_cliente
-        newDao.id_fornitore = daoDocumento.id_fornitore
-        newDao.id_destinazione_merce = daoDocumento.id_destinazione_merce
-        newDao.id_pagamento = daoDocumento.id_pagamento
-        newDao.id_banca = daoDocumento.id_banca
-        newDao.id_aliquota_iva_esenzione = daoDocumento.id_aliquota_iva_esenzione
-        newDao.protocollo = daoDocumento.protocollo
-        newDao.causale_trasporto = daoDocumento.causale_trasporto
-        newDao.aspetto_esteriore_beni = daoDocumento.aspetto_esteriore_beni
-        newDao.inizio_trasporto = daoDocumento.inizio_trasporto
-        newDao.fine_trasporto = daoDocumento.fine_trasporto
-        newDao.id_vettore =daoDocumento.id_vettore
-        newDao.incaricato_trasporto = daoDocumento.incaricato_trasporto
-        newDao.totale_colli = daoDocumento.totale_colli
-        newDao.totale_peso = daoDocumento.totale_peso
-        newDao.note_interne = daoDocumento.note_interne
-        newDao.note_pie_pagina = daoDocumento.note_pie_pagina  + " "  + note
-        newDao.applicazione_sconti = daoDocumento.applicazione_sconti
-        sconti = []
-        sco = daoDocumento.sconti or []
-        for s in sco:
-            daoSconto = ScontoTestataDocumento()
-            daoSconto.valore = s.valore
-            daoSconto.tipo_sconto = s.tipo_sconto
-            sconti.append(daoSconto)
-        newDao.scontiSuTotale = sconti
-        if posso("PA"):
-            newDao.totale_pagato = daoDocumento.totale_pagato
-            newDao.totale_sospeso = daoDocumento.totale_sospeso
-            newDao.documento_saldato = daoDocumento.documento_saldato
-            newDao.id_primo_riferimento = daoDocumento.id_primo_riferimento
-            newDao.id_secondo_riferimento = daoDocumento.id_secondo_riferimento
-
-        newDao.ripartire_importo = daoDocumento.ripartire_importo
-        newDao.costo_da_ripartire = daoDocumento.costo_da_ripartire
-        return newDao
-
     def on_confirm_button_clicked(self, button=None):
         """ COSA CAVOLO DOBBIAMO FARE QUI ....porca miseria ... commentare..."""
         #Verifichiamo che ci sia una data documento
@@ -141,12 +176,12 @@ class FatturazioneDifferita(GladeWidget):
             # self.listdoc contiene un dizionario che ha come chiave il cliente
             #e come valore una lista di gtkTreeiter a lui riferiti
             for ddt in self.listdoc[ragsoc]:
-                if self.daoGiaPresente(InformazioniFatturazioneDocumento()\
+                if daoGiaPresente(InformazioniFatturazioneDocumento()\
                                                     .select(id_fattura=ddt[0].id)) and \
                     operazione in ["Fattura vendita","Fattura differita vendita"]:
                     #ok il ddt non è già presente in nessuna fatturato
                     # usiamo i suoi dati per fare una fattura
-                    fattura = self.newSingleDoc(self.data_documento_entry.get_text(),
+                    fattura = newSingleDoc(self.data_documento_entry.get_text(),
                                             operazione,
                                             "",
                                             ddt[0])
@@ -154,7 +189,7 @@ class FatturazioneDifferita(GladeWidget):
                 righe = []
                 ddt_id = []
                 for ddt in self.listdoc[ragsoc]:
-                    if self.daoGiaPresente(InformazioniFatturazioneDocumento()\
+                    if daoGiaPresente(InformazioniFatturazioneDocumento()\
                                                         .select(id_ddt=ddt[0].id)):
                         # Ok, ora posso registrare le righe dei documenti
                         dao_da_fatturare = ddt[0]
@@ -367,41 +402,3 @@ class FatturazioneDifferita(GladeWidget):
             msg = "Non è stato creato alcun documento in quanto non sono state trovate righe da inserire.\n\n)"
             messageInfo(msg)
             return
-
-
-    def findDoc(self, selection):
-        """
-        Restituisce solo i DDT vendita da una selezione
-        scremando gli altri.
-        """
-        newmodel = []
-        (model, iterator) = selection.get_selected_rows()
-        for i in iterator:
-            if model[i][3] == "DDT vendita":
-                newmodel.append(model[i])
-        newmodel.reverse()
-        return newmodel
-
-
-    def getNames(self,lista):
-        """
-        Restituisce la lista dei nomi dei clienti.
-        """
-        nomi = []
-        for i in lista:
-            if i[4] not in nomi:
-                nomi.append(i[4])
-        return nomi
-
-    def sortDoc(self, nomi, lista):
-        """
-        """
-        newlist = { }
-        for i in range(0, len(nomi)):
-            newlist[nomi[i]] = []
-
-        for i in range(0, len(lista)):
-            for j in range(0, len(nomi)):
-                if (lista[i][4] == nomi[j]):
-                    newlist[nomi[j]].append(lista[i])
-        return newlist
