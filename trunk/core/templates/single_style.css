@@ -15,40 +15,50 @@
 
     td.odd-detail {
         text-align: left;
-        color :black;
+        color:#000000;
         border-bottom : 1px solid #c0c0c0;
+
+        font-size:11px;
+        font-family:"lucida grande",tahoma,verdana,arial,sans-serif;
+        padding:3px;
     }
 
-    td.even-detail { text-align: left;
-                    color :black;
-                    background: #efefef;
-                    border-bottom : 1px solid #FFFFFF;
+    td.even-detail {  /* ALESSIA */
+                    text-align: left;
+                    color:#000000;
+                    background: #E1DfDf;
+                    border-bottom : 1px solid #404040;
+                    font-size:11px;
+                    font-family:"lucida grande",tahoma,verdana,arial,sans-serif;
+        padding:3px;
     }
 
     td.odd-number {
         text-align: right;
         color :black;
         border-bottom : 1px solid #c0c0c0;
+        padding:3px;
     }
 
     td.even-number {
         text-align: right;
         color :black;
         background: #efefef;
+        padding:3px;
     }
 
     tr.even-detail {
         text-align: left;
         color :black;
         border : 1px solid #000000;
+        padding:3px;
     }
 
     th {
-        padding-left: 1px;
         font-weight: normal;
-/*         font-style: italic; */
-        font-size: 1.1em;
-        background: #efefef;
+        font-size: 11px;
+        border-bottom: 1px solid #404040;
+        color: #404040;
     }
 
 /*     th.left {font-weight: normal;} */
@@ -58,15 +68,10 @@
     }
 
     .table-header {
-            color: #000000;
-/*            font-weight : bold;*/
-            border-width: 1px 0px 1px 0px;
-            border-style: solid;
-            border-color: #777777;
-            padding: 0px;
-            margin: 0px;
-            font-size: 1.1em;
-        background : #FFFFC0;
+        color: #404040;
+        font-weight : bold;
+        font-size: 13px;
+        background : #ECE0E0;
     }
     .header {
 /*         font-style: italic; */
