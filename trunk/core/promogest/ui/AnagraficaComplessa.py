@@ -454,6 +454,8 @@ class Anagrafica(GladeWidget):
 
     def on_record_delete_activate(self, widget):
         daos = self.filter.getSelectedDaos()
+        if not daos:
+            return
         if not YesNoDialog(msg='Continuare con la cancellazione?', transient=self.getTopLevel()):
             return
         for dao in daos:
