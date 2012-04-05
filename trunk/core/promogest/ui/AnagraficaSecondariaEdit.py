@@ -338,7 +338,7 @@ class AnagraficaSecondariaEdit(AnagraficaEdit):
         showAnagraficaRichiamata(self.dialogTopLevel, anagWindow, toggleButton)
 
         daos = []
-        pgg = PersonaGiuridicaPersonaGiuridica().select(idPersonaGiuridica =self.dao.id)
+        pgg = PersonaGiuridicaPersonaGiuridica().select(idPersonaGiuridica =self.dao.id, batchSize=None)
         if pgg:
             for p in pgg:
                 cli = Cliente().getRecord(id=p.id_persona_giuridica_abbinata)
