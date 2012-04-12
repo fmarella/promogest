@@ -177,6 +177,7 @@ def do_fatt_diff(lista_documenti, data_documento, operazione, no_rif_righe_cumul
                                 daoRiga.id_magazzino = r.id_magazzino
                                 daoRiga.descrizione = ".    "+ r.descrizione
                                 daoRiga.id_listino = r.id_listino
+                                daoRiga.id_iva = r.id_iva
                                 daoRiga.percentuale_iva = r.percentuale_iva
                                 daoRiga.applicazione_sconti = r.applicazione_sconti
                                 daoRiga.quantita = r.quantita
