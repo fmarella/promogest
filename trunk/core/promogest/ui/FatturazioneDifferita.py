@@ -33,7 +33,6 @@ from promogest.dao.ScontoTestataDocumento import ScontoTestataDocumento
 from promogest.dao.RigaDocumento import RigaDocumento
 
 
-
 def findDoc(selection):
     """
     Restituisce solo i DDT vendita da una selezione
@@ -126,6 +125,233 @@ def newSingleDoc(data, operazione, note, daoDocumento, newDao=None):
     newDao.costo_da_ripartire = daoDocumento.costo_da_ripartire
     return newDao
 
+def do_fatt_diff(lista_documenti, data_documento, operazione, no_rif_righe_cumul=False, note=False, data_consegna=False, no_row=False):
+    fattura = None
+    nomi = getNames(lista_documenti)
+    lista_documenti = sortDoc(nomi, lista_documenti)
+    for ragsoc in nomi:
+        # in nomi ci sono le ragioni sociali dei clienti
+        # self.listdoc contiene un dizionario che ha come chiave il cliente
+        #e come valore una lista di gtkTreeiter a lui riferiti
+        for ddt in lista_documenti[ragsoc]:
+            if daoGiaPresente(InformazioniFatturazioneDocumento()\
+                                                .select(id_fattura=ddt[0].id)) and \
+                operazione in ["Fattura vendita","Fattura differita vendita"]:
+                #ok il ddt non è già presente in nessuna fatturato
+                # usiamo i suoi dati per fare una fattura
+                fattura = newSingleDoc(data_documento, operazione, "", ddt[0])
+        if fattura:
+            righe = []
+            ddt_id = []
+            for ddt in lista_documenti[ragsoc]:
+                if daoGiaPresente(InformazioniFatturazioneDocumento()\
+                                                    .select(id_ddt=ddt[0].id)):
+                    # Ok, ora posso registrare le righe dei documenti
+                    dao_da_fatturare = ddt[0]
+                    # Inserisco il riferimento:
+                    if no_rif_righe_cumul:
+                        righe += dao_da_fatturare.righe[:]
+                    else:
+                        riga_riferimento = "Rif. " + str(dao_da_fatturare.operazione) + " n. " + str(
+                                            dao_da_fatturare.numero) + " del " + dateToString(
+                                            dao_da_fatturare.data_documento )
+                        if data_consegna and dao_da_fatturare.inizio_trasporto:
+                             riga_riferimento = riga_riferimento + "\nIn.Tr. il "+ dateToString(
+                                            dao_da_fatturare.inizio_trasporto)
+                        if note and dao_da_fatturare.note_pie_pagina != "":
+                            riga_riferimento = riga_riferimento + "\n" + dao_da_fatturare.note_pie_pagina
+                        if no_row:
+                            daoRiga = RigaDocumento()
+                            daoRiga.descrizione = riga_riferimento
+                            daoRiga.quantita = 0.0
+                            daoRiga.valore_unitario_lordo = 0.0
+                            daoRiga.percentuale_iva = 0.0
+                            daoRiga.moltiplicatore = 0.0
+                            daoRiga.valore_unitario_netto = 0.0
+                            daoRiga.scontiRigaDocumento = []
+                            righe.append(daoRiga)
+
+                            for r in dao_da_fatturare.righe:
+                                daoRiga = RigaDocumento()
+                                daoRiga.id_articolo = r.id_articolo
+                                daoRiga.id_magazzino = r.id_magazzino
+                                daoRiga.descrizione = ".    "+ r.descrizione
+                                daoRiga.id_listino = r.id_listino
+                                daoRiga.percentuale_iva = r.percentuale_iva
+                                daoRiga.applicazione_sconti = r.applicazione_sconti
+                                daoRiga.quantita = r.quantita
+                                daoRiga.id_multiplo = r.id_multiplo
+                                daoRiga.moltiplicatore = r.moltiplicatore
+                                daoRiga.valore_unitario_lordo = r.valore_unitario_lordo
+                                daoRiga.valore_unitario_netto = r.valore_unitario_netto
+#                                daoRiga.misura_pezzo = r.misura_pezzo
+                                sconti = []
+                                for s in r.sconti:
+                                    daoSconto = ScontoRigaDocumento()
+                                    daoSconto.valore = s.valore
+                                    daoSconto.tipo_sconto = s.tipo_sconto
+                                    sconti.append(daoSconto)
+                                daoRiga.scontiRigaDocumento = sconti
+                                righe.append(daoRiga)
+                        else:
+                            #percentuale_iva = (dao_da_fatturare._totaleScontato - dao_da_fatturare._totaleImponibileScontato) *100 / dao_da_fatturare._totaleScontato
+                            dao_da_fatturare.totali
+                            daoRiga = RigaDocumento()
+                            daoRiga.descrizione = riga_riferimento
+                            daoRiga.quantita = 0
+                            daoRiga.valore_unitario_lordo = 0
+                            daoRiga.percentuale_iva = 0
+                            daoRiga.moltiplicatore = 0
+                            daoRiga.valore_unitario_netto = 0
+                            daoRiga.scontiRigaDocumento = []
+                            righe.append(daoRiga)
+                            for t in dao_da_fatturare._castellettoIva:
+                                daoRiga = RigaDocumento()
+                                daoRiga.descrizione = ".       Articoli con aliquota IVA: "+str(mN(t["percentuale"],1))+"%"
+                                daoRiga.quantita = 1
+                                daoRiga.valore_unitario_lordo = t["totale"]
+                                daoRiga.percentuale_iva = t["percentuale"]
+                                daoRiga.moltiplicatore = 0
+                                daoRiga.valore_unitario_netto = t["imponibile"]
+                                daoRiga.scontiRigaDocumento = []
+                                righe.append(daoRiga)
+                        ddt_id.append(dao_da_fatturare.id)
+            if righe:
+                if no_rif_righe_cumul:
+                    righeDict = {}
+                    rrighe = []
+                    for r in righe:
+                        if r.id_articolo:
+                            if r.id_articolo in righeDict:
+                                a = righeDict[r.id_articolo]
+                                a.append(r)
+                                righeDict[r.id_articolo] = a
+                            else:
+                                righeDict[r.id_articolo] = [r]
+                        else:
+                            rrighe.append(r)
+                    #print "OKOKOK", righeDict, rrighe
+                    righe = []
+                    for r in rrighe:
+                        daoRiga = RigaDocumento()
+                        daoRiga.id_articolo = r.id_articolo
+                        daoRiga.id_magazzino = r.id_magazzino
+                        daoRiga.descrizione = r.descrizione
+                        daoRiga.id_listino = r.id_listino
+                        daoRiga.percentuale_iva = r.percentuale_iva
+                        daoRiga.applicazione_sconti = r.applicazione_sconti
+                        daoRiga.quantita = r.quantita
+                        daoRiga.id_multiplo = r.id_multiplo
+                        daoRiga.moltiplicatore = r.moltiplicatore
+                        daoRiga.valore_unitario_lordo = r.valore_unitario_lordo
+                        daoRiga.valore_unitario_netto = r.valore_unitario_netto
+#                                daoRiga.misura_pezzo = r.misura_pezzo
+                        sconti = []
+                        for s in r.sconti:
+                            daoSconto = ScontoRigaDocumento()
+                            daoSconto.valore = s.valore
+                            daoSconto.tipo_sconto = s.tipo_sconto
+                            sconti.append(daoSconto)
+                        daoRiga.scontiRigaDocumento = sconti
+                        righe.insert(0, daoRiga)
+                    for k,v in righeDict.iteritems():
+                        if len(v) ==1:
+                            r = v[0]
+                            daoRiga = RigaDocumento()
+                            daoRiga.id_articolo = r.id_articolo
+                            daoRiga.id_magazzino = r.id_magazzino
+                            daoRiga.descrizione = r.descrizione
+                            daoRiga.id_listino = r.id_listino
+                            daoRiga.percentuale_iva = r.percentuale_iva
+                            daoRiga.applicazione_sconti = r.applicazione_sconti
+                            daoRiga.quantita = r.quantita
+                            daoRiga.id_multiplo = r.id_multiplo
+                            daoRiga.moltiplicatore = r.moltiplicatore
+                            daoRiga.valore_unitario_lordo = r.valore_unitario_lordo
+                            daoRiga.valore_unitario_netto = r.valore_unitario_netto
+#                                daoRiga.misura_pezzo = r.misura_pezzo
+                            sconti = []
+                            for s in r.sconti:
+                                daoSconto = ScontoRigaDocumento()
+                                daoSconto.valore = s.valore
+                                daoSconto.tipo_sconto = s.tipo_sconto
+                                sconti.append(daoSconto)
+                            daoRiga.scontiRigaDocumento = sconti
+                            righe.insert(0, daoRiga)
+                        else:
+                            # Questa è la situazione di più righe da accorpare
+                            quantita = 0
+                            vul = 0
+                            vun = 0
+                            for a in v:
+                                if a.sconti:
+                                    daoRiga = RigaDocumento()
+                                    daoRiga.id_articolo = a.id_articolo
+                                    daoRiga.id_magazzino = a.id_magazzino
+                                    daoRiga.descrizione = a.descrizione
+                                    daoRiga.id_listino = a.id_listino
+                                    daoRiga.percentuale_iva = a.percentuale_iva
+                                    daoRiga.applicazione_sconti = a.applicazione_sconti
+                                    daoRiga.quantita = a.quantita
+                                    daoRiga.id_multiplo = a.id_multiplo
+                                    daoRiga.moltiplicatore = a.moltiplicatore
+                                    daoRiga.valore_unitario_lordo = a.valore_unitario_lordo
+                                    daoRiga.valore_unitario_netto = a.valore_unitario_netto
+    #                                daoRiga.misura_pezzo = r.misura_pezzo
+                                    sconti = []
+                                    for s in a.sconti:
+                                        daoSconto = ScontoRigaDocumento()
+                                        daoSconto.valore = s.valore
+                                        daoSconto.tipo_sconto = s.tipo_sconto
+                                        sconti.append(daoSconto)
+                                    daoRiga.scontiRigaDocumento = sconti
+                                    righe.insert(0, daoRiga)
+                                    continue
+                                else:
+                                    quantita += a.quantita
+                                    #vul = a.valore_unitario_lordo
+                                    #vun = a.valore_unitario_netto
+                            daoRiga = RigaDocumento()
+                            daoRiga.id_articolo = a.id_articolo
+                            daoRiga.id_magazzino = a.id_magazzino
+                            daoRiga.descrizione = a.descrizione
+                            daoRiga.id_listino = a.id_listino
+                            daoRiga.percentuale_iva = a.percentuale_iva
+                            daoRiga.applicazione_sconti = a.applicazione_sconti
+                            daoRiga.quantita = quantita
+                            daoRiga.id_multiplo = a.id_multiplo
+                            daoRiga.moltiplicatore = a.moltiplicatore
+                            daoRiga.valore_unitario_lordo = a.valore_unitario_lordo
+                            daoRiga.valore_unitario_netto = a.valore_unitario_netto
+#                                daoRiga.misura_pezzo = r.misura_pezzo
+                            sconti = []
+                            for s in a.sconti:
+                                daoSconto = ScontoRigaDocumento()
+                                daoSconto.valore = s.valore
+                                daoSconto.tipo_sconto = s.tipo_sconto
+                                sconti.append(daoSconto)
+                            daoRiga.scontiRigaDocumento = sconti
+                            righe.insert(0, daoRiga)
+                    #return
+                fattura.righeDocumento = righe
+                if not fattura.numero:
+                    valori = numeroRegistroGet(tipo=operazione,
+                            date=data_documento)
+                    fattura.numero = valori[0]
+                    fattura.registro_numerazione= valori[1]
+                fattura.persist()
+                for d in ddt_id:
+                    info = InformazioniFatturazioneDocumento()
+                    info.id_fattura = fattura.id
+                    info.id_ddt = d
+                    info.persist()
+            else:
+                messageInfo(msg= "NON CI SONO RIGHE NON CREO NIENTE")
+    if fattura:
+        messageInfo("Nuovo documento creato!")
+    else:
+        messageInfo("Non è stato creato alcun documento in quanto non sono state trovate righe da inserire.")
+
 class FatturazioneDifferita(GladeWidget):
 
     def __init__(self, selection=None):
@@ -134,9 +360,7 @@ class FatturazioneDifferita(GladeWidget):
         if selection is None:
             return
         self.listdoc = findDoc(selection)
-        self.nomi = getNames(self.listdoc)
         self.draw()
-        self.listdoc = sortDoc(self.nomi, self.listdoc)
 
     def draw(self):
         #queryString = ("SELECT * FROM promogest.operazione " +
@@ -161,244 +385,21 @@ class FatturazioneDifferita(GladeWidget):
         self.data_documento_entry.grab_focus()
 
     def on_confirm_button_clicked(self, button=None):
-        """ COSA CAVOLO DOBBIAMO FARE QUI ....porca miseria ... commentare..."""
-        #Verifichiamo che ci sia una data documento
+        # Verifichiamo che ci sia una data documento
         if self.data_documento_entry.get_text() == '':
             obligatoryField(self.getTopLevel(), self.data_documento_entry)
+        data_documento = self.data_documento_entry.get_text()
 
-        #verifichiamo che ci sia un tipo documento
+        # Verifichiamo che ci sia un tipo documento
         operazione = findIdFromCombobox(self.id_operazione_combobox)
         if operazione is None:
             obligatoryField(self.getTopLevel(), self.id_operazione_combobox)
 
-        fattura = None
-        for ragsoc in self.nomi:  # in self.nomi ci sono le ragioni sociali dei clienti
-            # self.listdoc contiene un dizionario che ha come chiave il cliente
-            #e come valore una lista di gtkTreeiter a lui riferiti
-            for ddt in self.listdoc[ragsoc]:
-                if daoGiaPresente(InformazioniFatturazioneDocumento()\
-                                                    .select(id_fattura=ddt[0].id)) and \
-                    operazione in ["Fattura vendita","Fattura differita vendita"]:
-                    #ok il ddt non è già presente in nessuna fatturato
-                    # usiamo i suoi dati per fare una fattura
-                    fattura = newSingleDoc(self.data_documento_entry.get_text(),
-                                            operazione,
-                                            "",
-                                            ddt[0])
-            if fattura:
-                righe = []
-                ddt_id = []
-                for ddt in self.listdoc[ragsoc]:
-                    if daoGiaPresente(InformazioniFatturazioneDocumento()\
-                                                        .select(id_ddt=ddt[0].id)):
-                        # Ok, ora posso registrare le righe dei documenti
-                        dao_da_fatturare = ddt[0]
-                        # Inserisco il riferimento:
-                        if self.no_rif_righe_cumul_check.get_active():
-                            righe += dao_da_fatturare.righe[:]
-                        else:
-                            riga_riferimento = "Rif. " + str(dao_da_fatturare.operazione) + " n. " + str(
-                                                dao_da_fatturare.numero) + " del " + dateToString(
-                                                dao_da_fatturare.data_documento )
-                            if self.data_consegna_check.get_active() and  dao_da_fatturare.inizio_trasporto:
-                                 riga_riferimento = riga_riferimento + "\nIn.Tr. il "+ dateToString(
-                                                dao_da_fatturare.inizio_trasporto)
-                            if self.note_check.get_active() and dao_da_fatturare.note_pie_pagina != "":
-                                riga_riferimento = riga_riferimento+ "\n"+ dao_da_fatturare.note_pie_pagina
-                            if self.no_row_check.get_active():
-                                daoRiga = RigaDocumento()
-                                daoRiga.descrizione = riga_riferimento
-                                daoRiga.quantita = 0.0
-                                daoRiga.valore_unitario_lordo = 0.0
-                                daoRiga.percentuale_iva = 0.0
-                                daoRiga.moltiplicatore = 0.0
-                                daoRiga.valore_unitario_netto = 0.0
-                                daoRiga.scontiRigaDocumento = []
-                                righe.append(daoRiga)
+        # Opzioni di creazione fattura
+        no_rif_righe_cumul = self.no_rif_righe_cumul_check.get_active()
+        note = self.note_check.get_active()
+        data_consegna = self.data_consegna_check.get_active()
+        no_row = self.no_row_check.get_active()
 
-
-                                for r in dao_da_fatturare.righe:
-                                    daoRiga = RigaDocumento()
-                                    daoRiga.id_articolo = r.id_articolo
-                                    daoRiga.id_magazzino = r.id_magazzino
-                                    daoRiga.descrizione = ".    "+ r.descrizione
-                                    daoRiga.id_listino = r.id_listino
-                                    daoRiga.percentuale_iva = r.percentuale_iva
-                                    daoRiga.applicazione_sconti = r.applicazione_sconti
-                                    daoRiga.quantita = r.quantita
-                                    daoRiga.id_multiplo = r.id_multiplo
-                                    daoRiga.moltiplicatore = r.moltiplicatore
-                                    daoRiga.valore_unitario_lordo = r.valore_unitario_lordo
-                                    daoRiga.valore_unitario_netto = r.valore_unitario_netto
-    #                                daoRiga.misura_pezzo = r.misura_pezzo
-                                    sconti = []
-                                    for s in r.sconti:
-                                        daoSconto = ScontoRigaDocumento()
-                                        daoSconto.valore = s.valore
-                                        daoSconto.tipo_sconto = s.tipo_sconto
-                                        sconti.append(daoSconto)
-                                    daoRiga.scontiRigaDocumento = sconti
-                                    righe.append(daoRiga)
-                            else:
-                                #percentuale_iva = (dao_da_fatturare._totaleScontato - dao_da_fatturare._totaleImponibileScontato) *100 / dao_da_fatturare._totaleScontato
-                                dao_da_fatturare.totali
-                                daoRiga = RigaDocumento()
-                                daoRiga.descrizione = riga_riferimento
-                                daoRiga.quantita = 0
-                                daoRiga.valore_unitario_lordo = 0
-                                daoRiga.percentuale_iva = 0
-                                daoRiga.moltiplicatore = 0
-                                daoRiga.valore_unitario_netto = 0
-                                daoRiga.scontiRigaDocumento = []
-                                righe.append(daoRiga)
-                                for t in dao_da_fatturare._castellettoIva:
-                                    daoRiga = RigaDocumento()
-                                    daoRiga.descrizione = ".       Articoli con aliquota IVA: "+str(mN(t["percentuale"],1))+"%"
-                                    daoRiga.quantita = 1
-                                    daoRiga.valore_unitario_lordo = t["totale"]
-                                    daoRiga.percentuale_iva = t["percentuale"]
-                                    daoRiga.moltiplicatore = 0
-                                    daoRiga.valore_unitario_netto = t["imponibile"]
-                                    daoRiga.scontiRigaDocumento = []
-                                    righe.append(daoRiga)
-                            ddt_id.append(dao_da_fatturare.id)
-                if righe:
-                    if self.no_rif_righe_cumul_check.get_active():
-                        righeDict = {}
-                        rrighe = []
-                        for r in righe:
-                            if r.id_articolo:
-                                if r.id_articolo in righeDict:
-                                    a = righeDict[r.id_articolo]
-                                    a.append(r)
-                                    righeDict[r.id_articolo] = a
-                                else:
-                                    righeDict[r.id_articolo] = [r]
-                            else:
-                                rrighe.append(r)
-                        #print "OKOKOK", righeDict, rrighe
-                        righe = []
-                        for r in rrighe:
-                            daoRiga = RigaDocumento()
-                            daoRiga.id_articolo = r.id_articolo
-                            daoRiga.id_magazzino = r.id_magazzino
-                            daoRiga.descrizione = r.descrizione
-                            daoRiga.id_listino = r.id_listino
-                            daoRiga.percentuale_iva = r.percentuale_iva
-                            daoRiga.applicazione_sconti = r.applicazione_sconti
-                            daoRiga.quantita = r.quantita
-                            daoRiga.id_multiplo = r.id_multiplo
-                            daoRiga.moltiplicatore = r.moltiplicatore
-                            daoRiga.valore_unitario_lordo = r.valore_unitario_lordo
-                            daoRiga.valore_unitario_netto = r.valore_unitario_netto
-#                                daoRiga.misura_pezzo = r.misura_pezzo
-                            sconti = []
-                            for s in r.sconti:
-                                daoSconto = ScontoRigaDocumento()
-                                daoSconto.valore = s.valore
-                                daoSconto.tipo_sconto = s.tipo_sconto
-                                sconti.append(daoSconto)
-                            daoRiga.scontiRigaDocumento = sconti
-                            righe.insert(0, daoRiga)
-                        for k,v in righeDict.iteritems():
-                            if len(v) ==1:
-                                r = v[0]
-                                daoRiga = RigaDocumento()
-                                daoRiga.id_articolo = r.id_articolo
-                                daoRiga.id_magazzino = r.id_magazzino
-                                daoRiga.descrizione = r.descrizione
-                                daoRiga.id_listino = r.id_listino
-                                daoRiga.percentuale_iva = r.percentuale_iva
-                                daoRiga.applicazione_sconti = r.applicazione_sconti
-                                daoRiga.quantita = r.quantita
-                                daoRiga.id_multiplo = r.id_multiplo
-                                daoRiga.moltiplicatore = r.moltiplicatore
-                                daoRiga.valore_unitario_lordo = r.valore_unitario_lordo
-                                daoRiga.valore_unitario_netto = r.valore_unitario_netto
-#                                daoRiga.misura_pezzo = r.misura_pezzo
-                                sconti = []
-                                for s in r.sconti:
-                                    daoSconto = ScontoRigaDocumento()
-                                    daoSconto.valore = s.valore
-                                    daoSconto.tipo_sconto = s.tipo_sconto
-                                    sconti.append(daoSconto)
-                                daoRiga.scontiRigaDocumento = sconti
-                                righe.insert(0, daoRiga)
-                            else:
-                                # Questa è la situazione di più righe da accorpare
-                                quantita = 0
-                                vul = 0
-                                vun = 0
-                                for a in v:
-                                    if a.sconti:
-                                        daoRiga = RigaDocumento()
-                                        daoRiga.id_articolo = a.id_articolo
-                                        daoRiga.id_magazzino = a.id_magazzino
-                                        daoRiga.descrizione = a.descrizione
-                                        daoRiga.id_listino = a.id_listino
-                                        daoRiga.percentuale_iva = a.percentuale_iva
-                                        daoRiga.applicazione_sconti = a.applicazione_sconti
-                                        daoRiga.quantita = a.quantita
-                                        daoRiga.id_multiplo = a.id_multiplo
-                                        daoRiga.moltiplicatore = a.moltiplicatore
-                                        daoRiga.valore_unitario_lordo = a.valore_unitario_lordo
-                                        daoRiga.valore_unitario_netto = a.valore_unitario_netto
-        #                                daoRiga.misura_pezzo = r.misura_pezzo
-                                        sconti = []
-                                        for s in a.sconti:
-                                            daoSconto = ScontoRigaDocumento()
-                                            daoSconto.valore = s.valore
-                                            daoSconto.tipo_sconto = s.tipo_sconto
-                                            sconti.append(daoSconto)
-                                        daoRiga.scontiRigaDocumento = sconti
-                                        righe.insert(0, daoRiga)
-                                        continue
-                                    else:
-                                        quantita += a.quantita
-                                        #vul = a.valore_unitario_lordo
-                                        #vun = a.valore_unitario_netto
-                                daoRiga = RigaDocumento()
-                                daoRiga.id_articolo = a.id_articolo
-                                daoRiga.id_magazzino = a.id_magazzino
-                                daoRiga.descrizione = a.descrizione
-                                daoRiga.id_listino = a.id_listino
-                                daoRiga.percentuale_iva = a.percentuale_iva
-                                daoRiga.applicazione_sconti = a.applicazione_sconti
-                                daoRiga.quantita = quantita
-                                daoRiga.id_multiplo = a.id_multiplo
-                                daoRiga.moltiplicatore = a.moltiplicatore
-                                daoRiga.valore_unitario_lordo = a.valore_unitario_lordo
-                                daoRiga.valore_unitario_netto = a.valore_unitario_netto
-#                                daoRiga.misura_pezzo = r.misura_pezzo
-                                sconti = []
-                                for s in a.sconti:
-                                    daoSconto = ScontoRigaDocumento()
-                                    daoSconto.valore = s.valore
-                                    daoSconto.tipo_sconto = s.tipo_sconto
-                                    sconti.append(daoSconto)
-                                daoRiga.scontiRigaDocumento = sconti
-                                righe.insert(0, daoRiga)
-                        #return
-                    fattura.righeDocumento = righe
-                    if not fattura.numero:
-                        valori = numeroRegistroGet(tipo=operazione,
-                                date=self.data_documento_entry.get_text())
-                        fattura.numero = valori[0]
-                        fattura.registro_numerazione= valori[1]
-                    fattura.persist()
-                    for d in ddt_id:
-                        info = InformazioniFatturazioneDocumento()
-                        info.id_fattura = fattura.id
-                        info.id_ddt = d
-                        info.persist()
-                else:
-                    messageInfo(msg= "NON CI SONO RIGHE NON CREO NIENTE")
-        if fattura:
-            msg = "Nuovi documenti creati !\n\n"
-            messageInfo(msg)
-            self.getTopLevel().destroy()
-        else:
-            self.getTopLevel().destroy()
-            msg = "Non è stato creato alcun documento in quanto non sono state trovate righe da inserire.\n\n)"
-            messageInfo(msg)
-            return
+        do_fatt_diff(self.listdoc, data_documento, operazione, no_rif_righe_cumul, note, data_consegna, no_row)
+        self.getTopLevel().destroy()
