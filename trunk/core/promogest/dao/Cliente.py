@@ -23,12 +23,13 @@
 
 from sqlalchemy import *
 from sqlalchemy.orm import *
-from promogest.Environment import params, conf,session
+from promogest.Environment import params, conf, session, get_columns
 from promogest.dao.Dao import Dao
 from ClienteCategoriaCliente import ClienteCategoriaCliente
 from promogest.dao.PersonaGiuridica import t_persona_giuridica
 from promogest.ui.utils import  codeIncrement, getRecapitiCliente
 from promogest.dao.User import User
+
 
 class Cliente(Dao):
     """
@@ -78,7 +79,6 @@ class Cliente(Dao):
                 return user.password
         return ""
 
-
     @property
     def cellulare_principale(self):
         """
@@ -86,7 +86,7 @@ class Cliente(Dao):
         """
         if self.id:
             for reca in getRecapitiCliente(self.id):
-                if reca.tipo_recapito =="Cellulare":
+                if reca.tipo_recapito == "Cellulare":
                     return reca.recapito
         return ""
 
@@ -137,28 +137,28 @@ class Cliente(Dao):
         else:
             return ""
 
-    def filter_values(self,k,v):
+    def filter_values(self, k, v):
         if k == 'codice':
-            dic = {k : t_persona_giuridica.c.codice.ilike("%"+v+"%")}
+            dic = {k: t_persona_giuridica.c.codice.ilike("%"+v+"%")}
         elif k == 'codicesatto':
-            dic = {k : t_persona_giuridica.c.codice == v}
+            dic = {k: t_persona_giuridica.c.codice == v}
         elif k == 'ragioneSociale':
-            dic = {k : t_persona_giuridica.c.ragione_sociale.ilike("%"+v+"%")}
+            dic = {k: t_persona_giuridica.c.ragione_sociale.ilike("%"+v+"%")}
         elif k == 'insegna':
-            dic = {k : t_persona_giuridica.c.insegna.ilike("%"+v+"%")}
+            dic = {k: t_persona_giuridica.c.insegna.ilike("%"+v+"%")}
         elif k == 'cognomeNome':
-            dic = {k : or_(t_persona_giuridica.c.cognome.ilike("%"+v+"%"),t_persona_giuridica.c.nome.ilike("%"+v+"%"))}
+            dic = {k: or_(t_persona_giuridica.c.cognome.ilike("%"+v+"%"),t_persona_giuridica.c.nome.ilike("%"+v+"%"))}
         elif k == 'localita':
-            dic = {k : or_(t_persona_giuridica.c.sede_operativa_localita.ilike("%"+v+"%"), t_persona_giuridica.c.sede_legale_localita.ilike("%"+v+"%"))}
+            dic = {k: or_(t_persona_giuridica.c.sede_operativa_localita.ilike("%"+v+"%"), t_persona_giuridica.c.sede_legale_localita.ilike("%"+v+"%"))}
         elif k == 'provincia':
-            dic = {k : or_(t_persona_giuridica.c.sede_operativa_provincia.ilike("%"+v+"%"), t_persona_giuridica.c.sede_legale_provincia.ilike("%"+v+"%"))}
+            dic = {k: or_(t_persona_giuridica.c.sede_operativa_provincia.ilike("%"+v+"%"), t_persona_giuridica.c.sede_legale_provincia.ilike("%"+v+"%"))}
         elif k == 'partitaIva':
-            dic = {k : t_persona_giuridica.c.partita_iva.ilike("%"+v+"%")}
+            dic = {k: t_persona_giuridica.c.partita_iva.ilike("%"+v+"%")}
         elif k == 'codiceFiscale':
-            dic = {k : t_persona_giuridica.c.codice_fiscale.ilike("%"+v+"%")}
+            dic = {k: t_persona_giuridica.c.codice_fiscale.ilike("%"+v+"%")}
         elif k == 'idCategoria':
             dic = {k:and_(Cliente.id==ClienteCategoriaCliente.id_cliente,ClienteCategoriaCliente.id_categoria_cliente==v)}
-        return  dic[k]
+        return dic[k]
 
 def getNuovoCodiceCliente():
     """
@@ -198,11 +198,13 @@ t_cliente = Table('cliente',
               schema=params['schema'],
               autoload=True)
 
-if 'pagante' not in [c.name for c in t_cliente.columns]:
+colonne = get_columns(t_cliente)
+
+if 'pagante' not in colonne:
     col = Column('pagante', Boolean, default=False)
     col.create(t_cliente, populate_default=True)
 
-if 'id_aliquota_iva' not in [c.name for c in t_cliente.columns]:
+if 'id_aliquota_iva' not in colonne:
     col = Column('id_aliquota_iva', Integer, nullable=True)
     col.create(t_cliente, populate_default=True)
 
@@ -211,13 +213,17 @@ if 'id_aliquota_iva' not in [c.name for c in t_cliente.columns]:
 #opzioni PF ( Persona fisica ) o PG
 # PG ( Persona Giusridica )
 
-if 'tipo' not in [c.name for c in t_cliente.columns]:
+if 'tipo' not in colonne:
     col = Column('tipo', String(2), default="PG")
     col.create(t_cliente, populate_default=True)
 
 j = join(t_cliente, t_persona_giuridica)
 
-std_mapper = mapper(Cliente,j, properties={
-        'id': [t_cliente.c.id, t_persona_giuridica.c.id],
-        'cliente_categoria_cliente': relation(ClienteCategoriaCliente, backref='cliente_'),
-        }, order_by=t_cliente.c.id)
+std_mapper = mapper(Cliente,
+                    j,
+                    properties={
+                        'id': [t_cliente.c.id, t_persona_giuridica.c.id],
+                        'cliente_categoria_cliente': relation(ClienteCategoriaCliente,
+                                                              backref='cliente_'),
+                    },
+                    order_by=t_cliente.c.id)

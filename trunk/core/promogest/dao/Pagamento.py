@@ -62,19 +62,23 @@ class Pagamento(Dao):
 
 pagamento = Table('pagamento',
                   params['metadata'],
-                  schema = params['schema'],
+                  schema=params['schema'],
                   autoload=True)
 
-if 'tipo' not in [c.name for c in pagamento.columns]:
+colonne = get_columns(pagamento)
+
+if 'tipo' not in colonne:
     col = Column('tipo', String, default='banca')
     col.create(pagamento, populate_default=True)
 
-if 'spese' not in [c.name for c in pagamento.columns]:
+if 'spese' not in colonne:
     col = Column('spese', Numeric(16, 4), nullable=True)
     col.create(pagamento, populate_default=True)
 
-if 'id_aliquota_iva' not in [c.name for c in pagamento.columns]:
+if 'id_aliquota_iva' not in colonne:
     col = Column('id_aliquota_iva', Integer, nullable=True)
     col.create(pagamento, populate_default=True)
 
-std_mapper = mapper(Pagamento, pagamento, order_by=pagamento.c.id)
+std_mapper = mapper(Pagamento,
+                    pagamento,
+                    order_by=pagamento.c.id)
