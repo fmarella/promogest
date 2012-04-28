@@ -732,3 +732,13 @@ def hook(et, ev, eb):
 sys.excepthook = hook
 
 # DA SPOSTARE ASSOLUTAMENTE QUANTO PRIMA
+
+
+def get_columns(table):
+    """ritorna la lista dei nomi delle colonne di una tabella
+    
+    :table: istanza di una tabella del database
+    :returns: nomi delle colonne
+    """
+
+    return [c.name for c in table.columns]
