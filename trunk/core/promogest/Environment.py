@@ -632,6 +632,13 @@ if os.path.exists(os.path.join(CONFIGPATH, meta_pickle)) and  sqlalchemy.__versi
 else:
     meta = MetaData(engine)
 
+def delete_pickle():
+    """ Cancella il file pickle del metadata
+    """
+    import os
+    if os.path.exists(os.path.join(CONFIGPATH, meta_pickle)):
+        os.remove(os.path.join(CONFIGPATH, meta_pickle))
+
 session = Session()
 #meta = None
 schema_azienda = azienda
