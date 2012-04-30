@@ -614,10 +614,13 @@ else:
 
 schema_azienda = azienda
 
+# Determiniamo il nome del file pickle in base all'azienda e alla versione python.
 if azienda:
     meta_pickle = azienda + "_meta_pickle"
 else:
     meta_pickle = "azienda_meta_pickle"
+meta_pickle += sys.version[:1]
+
 from pickle import load as pickle_load
 meta = MetaData()
 metatmp = MetaData()
