@@ -530,7 +530,7 @@ def listinoCandidateSel(OrderBy=None, idArticolo=None,
                      Listino.listino_attuale == True)).all()
         return listinoSelezionato
 
-    listin = dirtyWork(OrderBy=OrderBy, idArticolo=idArticolo,
+    listin = _dirtyWork(OrderBy=OrderBy, idArticolo=idArticolo,
                                     idMagazzino=idMagazzino,
                                         idCliente=idCliente)
     if not listin and "PromoWear" in Environment.modulesList:
