@@ -191,14 +191,15 @@ class AnagraficaArticoliFilter(AnagraficaFilter):
         column.set_min_width(100)
         treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('Codice articolo fornitore', renderer, text=6, background=1)
-        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
-        column.set_clickable(True)
-        from promogest.dao.Fornitura import Fornitura
-        column.connect("clicked", self._changeOrderBy, (Fornitura, Fornitura.codice_articolo_fornitore))
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(100)
+        #column = gtk.TreeViewColumn('Codice articolo fornitore', renderer, text=6, background=1)
+        column = gtk.TreeViewColumn('', renderer, text=6, background=1)
+        #column.set_sizing(GTK_COLUMN_GROWN_ONLY)
+        #column.set_clickable(True)
+        #from promogest.dao.Fornitura import Fornitura
+        #column.connect("clicked", self._changeOrderBy, (Fornitura, Fornitura.codice_articolo_fornitore))
+        #column.set_resizable(True)
+        #column.set_expand(False)
+        #column.set_min_width(100)
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('Famiglia', renderer, text=7, background=1)
@@ -310,9 +311,12 @@ class AnagraficaArticoliFilter(AnagraficaFilter):
             col = None
             if a.cancellato:
                 col = 'red'
-            modelRow = [a,col,(a.codice or ''),(a.denominazione or ''),
-                        (a.produttore or ''),(a.codice_a_barre or ''),
-                        (a.codice_articolo_fornitore or ''),
+
+            modelRow = [a,col,(a.codice or ''),
+                        (a.denominazione or ''),
+                        (a.produttore or ''),
+                        (a.codice_a_barre or ''),
+                        (''), # qui c'era a.codice_articolo_fornitore or ""
                         (a.denominazione_famiglia or ''),
                         (a.denominazione_categoria or '')]
             if posso("PW"):

@@ -108,4 +108,13 @@ class User(Dao):
             if self.userlang: return self.userlang.lan.denominazione
             else: return ""
 
-std_mapper = mapper(User, user, order_by=user.c.username)
+std_mapper = mapper(User, user,
+properties={
+    'email':deferred(user.c.email),
+    'registration_date':deferred(user.c.registration_date),
+    'last_modified':deferred(user.c.last_modified),
+    'photo_src':deferred(user.c.photo_src),
+    'id_language':deferred(user.c.id_language),
+    'schemaa_azienda':deferred(user.c.schemaa_azienda),
+
+}, order_by=user.c.username)

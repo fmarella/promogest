@@ -726,8 +726,32 @@ std_mapper = mapper(
                 backref="arti"),
         multi=relation(Multiplo,
             primaryjoin=(Multiplo.id_articolo == articolo.c.id),
-                backref="arti")
-        ), order_by=articolo.c.codice)
+                backref="arti"),
+
+
+
+        id_immagine = deferred(articolo.c.id_immagine, group='id_unita_base'),
+        id_unita_base = deferred(articolo.c.id_unita_base),
+        unita_dimensioni = deferred(articolo.c.unita_dimensioni, group='id_unita_base'),
+        lunghezza = deferred(articolo.c.lunghezza, group='id_unita_base'),
+        altezza = deferred(articolo.c.altezza, group='id_unita_base'),
+        unita_volume = deferred(articolo.c.unita_volume, group='id_unita_base'),
+        volume = deferred(articolo.c.volume, group='id_unita_base'),
+        unita_peso = deferred(articolo.c.unita_peso, group='id_unita_base'),
+        peso_lordo = deferred(articolo.c.peso_lordo, group='id_unita_base'),
+        id_imballaggio = deferred(articolo.c.id_imballaggio, group='id_unita_base'),
+        peso_imballaggio = deferred(articolo.c.peso_imballaggio, group='id_unita_base'),
+        stampa_etichetta = deferred(articolo.c.stampa_etichetta, group='id_unita_base'),
+        codice_etichetta = deferred(articolo.c.codice_etichetta, group='id_unita_base'),
+        descrizione_etichetta = deferred(articolo.c.descrizione_etichetta, group='id_unita_base'),
+        stampa_listino = deferred(articolo.c.stampa_listino, group='id_unita_base'),
+        descrizione_listino = deferred(articolo.c.descrizione_listino, group='id_unita_base'),
+        aggiornamento_listino_auto = deferred(articolo.c.aggiornamento_listino_auto, group='id_unita_base'),
+        timestamp_variazione = deferred(articolo.c.timestamp_variazione, group='id_unita_base'),
+        note = deferred(articolo.c.note, group='id_unita_base'),
+        contenuto = deferred(articolo.c.contenuto, group='id_unita_base'),
+        quantita_minima = deferred(articolo.c.quantita_minima, group='id_unita_base'),
+            ), order_by=articolo.c.codice)
 if hasattr(conf, "PromoWear")\
             and getattr(conf.PromoWear, 'mod_enable') == "yes":
     from promogest.modules.PromoWear.dao.ArticoloTagliaColore \

@@ -46,4 +46,14 @@ if "pvcode" not in [c.name for c in magazzino.columns]:
     col.create(magazzino)
 
 
-std_mapper = mapper(Magazzino, magazzino, order_by=magazzino.c.id)
+std_mapper = mapper(Magazzino, magazzino,
+        properties={
+        'indirizzo':deferred(magazzino.c.indirizzo),
+        'cap':deferred(magazzino.c.cap),
+        'provincia':deferred(magazzino.c.provincia),
+        'nazione':deferred(magazzino.c.nazione),
+        'pvcode':deferred(magazzino.c.pvcode),
+        'data_ultima_stampa_giornale':deferred(magazzino.c.data_ultima_stampa_giornale),
+
+    },
+ order_by=magazzino.c.id)

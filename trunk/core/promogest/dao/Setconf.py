@@ -71,7 +71,11 @@ class SetConf(Dao):
             dic = { k :setconf.c.visible ==v}
         return  dic[k]
 
-std_mapper = mapper(SetConf, setconf, order_by=setconf.c.key)
+std_mapper = mapper(SetConf, setconf,
+    properties={
+        'description':deferred(setconf.c.description),
+        'date':deferred(setconf.c.date),
+    }, order_by=setconf.c.key)
 allkey = session.query(SetConf.key,SetConf.section).all()
 
 #bb = SetConf().select(key="articolo_struttura_codice", section="Articoli")

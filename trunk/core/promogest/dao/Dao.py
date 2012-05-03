@@ -36,12 +36,19 @@ class Dao(object):
     """
     Astrazione generica di ciò˛ che fu il vecchio dao basata su sqlAlchemy
     """
-    def __init__(self, entity=None, exceptionHandler=None):
+    def __init__(self,campo=[], entity=None, exceptionHandler=None):
         self._session = params["session"]
 #        self._metadata = params["metadata"]
         self._numRecords = None
         self._DaoModule = entity.__class__
         self._exceptionHandler = exceptionHandler
+        self.campi = []
+        #print "CAMPOOOOOOOOOOOOOOOOOOOOO", campo
+        # NON SO COME TIRARE FUORI CIÒ CHE SERVE .....
+        if campo:
+            for a in campo:
+                print dir(entity)
+                self.campi.append(getattr(entity, a))
 
     def getRecord(self,id=None):
         """ Restituisce un record ( necessita di un ID )"""
@@ -94,7 +101,10 @@ class Dao(object):
 #            self.raiseException(e)
 
 #        try:
-        self.record= self._session.query(self._DaoModule)
+        if self.campi:
+            self.record= self._session.query(Azienda.schemaa)
+        else:
+            self.record= self._session.query(self._DaoModule)
         if sqlalchemy.__version__ > 0.6:
             if join is not None:
                 self.record = self.record.join(join)
