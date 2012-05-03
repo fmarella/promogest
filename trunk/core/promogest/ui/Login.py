@@ -188,14 +188,13 @@ class Login(GladeApp):
         #username = self.username_comboxentry.child.get_text()
         username = self.username_entry.get_text()
         password = self.password_entry.get_text()
-        do_login = True
         if username == '' or password == '':
             messageInfo(msg=_('Inserire nome utente e password'))
-            do_login = False
+            return
         elif Environment.engine.name != "sqlite" and \
                 findStrFromCombobox(self.azienda_combobox, 0) == '':
             messageInfo(msg=_("Occorre selezionare un'azienda"))
-            do_login = False
+            return
         else:
             #if hasattr(self,"azienda_combobox"):
             self.azienda = findStrFromCombobox(self.azienda_combobox, 0)
@@ -204,110 +203,96 @@ class Login(GladeApp):
             if not self.azienda:
                 self.azienda = "AziendaPromo"
 
-        if do_login:
-            #superati i check di login
-            users = User().select(username=username,
-                        password=hashlib.md5(username + password).hexdigest())
-            if len(users) == 1:
-                if users[0].active == False:
-                    messageInfo(msg=_('Utente Presente Ma non ATTIVO'))
-                    dialog.destroy()
-                    #saveAppLog(action="login", status=False,value=username)
-                    do_login = False
-                else:
-                    Environment.workingYear = str(
-                            self.anno_lavoro_spinbutton.get_value_as_int())
-                    Environment.azienda = self.azienda
+        #superati i check di login
+        users = User().select(username=username,
+                    password=hashlib.md5(username + password).hexdigest())
+        if len(users) == 1:
+            if users[0].active == False:
+                messageInfo(msg=_('Utente Presente Ma non ATTIVO'))
+                dialog.destroy()
+                return
+            else:
+                Environment.workingYear = str(
+                        self.anno_lavoro_spinbutton.get_value_as_int())
+                Environment.azienda = self.azienda
+                Environment.schema_azienda = self.azienda
+                if Environment.engine.name != "sqlite":
+                    azs = Azienda().select(batchSize=None)
+                    for a in azs:
+                        if a.schemaa == self.azienda:
+                            a.tipo_schemaa = "last"
+                        else:
+                            a.tipo_schemaa = ""
+                        Environment.session.add(a)
+                    Environment.session.commit()
+
+                if Environment.tipodb != "sqlite":
+                    Environment.params["schema"] = self.azienda
                     Environment.schema_azienda = self.azienda
-                    if Environment.engine.name != "sqlite":
-                        azs = Azienda().select(batchSize=None)
-                        for a in azs:
-                            if a.schemaa == self.azienda:
-                                a.tipo_schemaa = "last"
-                            else:
-                                a.tipo_schemaa = ""
-                            Environment.session.add(a)
-                        #uaz = Azienda().getRecord(id =self.azienda)
-                        #uaz.tipo_schemaa = "last"
-                        #uaz.persist()
-                        Environment.session.commit()
-                    if Environment.tipodb != "sqlite":
-                        Environment.params["schema"] = self.azienda
-                        Environment.schema_azienda = self.azienda
-                        if hashlib.md5(self.azienda).hexdigest() == \
-                                        "bf5fbf670a0b15ada95b3c03bf4ee64a":
-                            raise Exception(":D")
-                            return
-                        if hashlib.md5(self.azienda).hexdigest() == \
-                                        "46d3e603f127254cdc30e5a397413fc7":
-                            raise Exception(":P")
-                            return
+                    if hashlib.md5(self.azienda).hexdigest() == \
+                                    "46d3e603f127254cdc30e5a397413fc7":
+                        raise Exception(":P")
+                        return
 # Lancio la funzione di generazione della dir di configurazione
-                    Environment.set_configuration(Environment.azienda,
-                                                    Environment.workingYear)
+                Environment.set_configuration(Environment.azienda,
+                                                Environment.workingYear)
 #                    if setconf("Feed","feed"):
 #                    if True == True:
 #                        thread = threading.Thread(target=self.feddretreive)
 #                        thread.start()
 #                        thread.join(2.3)
-                    Environment.params['usernameLoggedList'][0] = users[0].id
-                    Environment.params['usernameLoggedList'][1] =\
-                                                     users[0].username
-                    try:
-                        Environment.params['usernameLoggedList'][2] =\
-                                                     users[0].id_role
-                    except:
-                        Environment.params['usernameLoggedList'][2] = 1
-                    if hasAction(actionID=1):
-                        self.login_window.hide()
-                        Environment.windowGroup.remove(self.getTopLevel())
-                        installId()
-                        #import promogest.lib.UpdateDB
+                Environment.params['usernameLoggedList'][0] = users[0].id
+                Environment.params['usernameLoggedList'][1] =\
+                                                 users[0].username
+                try:
+                    Environment.params['usernameLoggedList'][2] =\
+                                                 users[0].id_role
+                except:
+                    Environment.params['usernameLoggedList'][2] = 1
+                if hasAction(actionID=1):
+                    self.login_window.hide()
+                    Environment.windowGroup.remove(self.getTopLevel())
+                    installId()
+                    #import promogest.lib.UpdateDB
 
-                        #saveAppLog(action="login", status=True,value=username)
-                        Environment.pg2log.info(
-                            "LOGIN  id, user, role azienda: %s, %s" % (
-                                repr(Environment.params['usernameLoggedList']),
-                                    self.azienda))
-                        #if os.path.exists(os.path.join(Environment.CONFIGPATH,
+                    #saveAppLog(action="login", status=True,value=username)
+                    Environment.pg2log.info(
+                        "LOGIN  id, user, role azienda: %s, %s" % (
+                            repr(Environment.params['usernameLoggedList']),
+                                self.azienda))
+                    #if os.path.exists(os.path.join(Environment.CONFIGPATH,
 #                                    Environment.meta_pickle)):
-                            #import pickle
-                        #print ">>>>>>> STO CARICANDO IL METADATA DA FILE..."
-                        #with open(os.path.join(Environment.CONFIGPATH,
+                        #import pickle
+                    #print ">>>>>>> STO CARICANDO IL METADATA DA FILE..."
+                    #with open(os.path.join(Environment.CONFIGPATH,
 #                                        Environment.meta_pickle), 'rb') as f:
-                                #print ">>>>>>> LEGGO IL FILE PICKLE..."
-                                #Environment.meta.clear()
-                                #Environment.meta = pickle.load(f)
-                        #_end = time.time()
-                        #import promogest.ui.SetConf
-                        checkInstallation()
-                        self.importModulesFromDir('promogest/modules')
+                            #print ">>>>>>> LEGGO IL FILE PICKLE..."
+                            #Environment.meta.clear()
+                            #Environment.meta = pickle.load(f)
+                    #_end = time.time()
+                    #import promogest.ui.SetConf
+                    checkInstallation()
+                    self.importModulesFromDir('promogest/modules')
 
-                        def mainmain():
-                            from Main import Main
-                            main = Main(self.azienda or "AziendaPromo",
-                                        self.anagrafiche_modules,
-                                        self.parametri_modules,
-                                        self.anagrafiche_dirette_modules,
-                                        self.frame_modules,
-                                        self.permanent_frames)
-                            main.getTopLevel().connect("destroy",
-                                                on_main_window_closed,
-                                                self.login_window)
-                            main.show()
-                        gobject.idle_add(mainmain)
+                    def mainmain():
+                        from Main import Main
+                        main = Main(self.azienda or "AziendaPromo",
+                                    self.anagrafiche_modules,
+                                    self.parametri_modules,
+                                    self.anagrafiche_dirette_modules,
+                                    self.frame_modules,
+                                    self.permanent_frames)
+                        main.getTopLevel().connect("destroy",
+                                            on_main_window_closed,
+                                            self.login_window)
+                        main.show()
+                    gobject.idle_add(mainmain)
 
-                    else:
-                        do_login = False
-            else:
-                messageInfo(msg=_('Nome utente o password errati'))
-                #saveAppLog(action="login", status=False,value=username)
-                do_login = False
+        else:
+            messageInfo(msg=_('Nome utente o password errati'))
 
     def on_aggiorna_button_clicked(self, widget):
         """Evento associato alla richiesta di aggiornamento
-
-        :param widget: il widget che ha generato l'evento
         """
         updateDialog = UpdateDialog(self)
         updateDialog.show()

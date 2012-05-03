@@ -28,20 +28,8 @@ from promogest import Environment
 from promogest.ui.gtk_compat import *
 import xml.etree.cElementTree as ElementTree
 
-from promogest.ui.widgets.UnsignedDecimalEntryField import UnsignedDecimalEntryField
-from promogest.ui.widgets.SignedDecimalEntryField import SignedDecimalEntryField
-from promogest.ui.widgets.UnsignedMoneyEntryField import UnsignedMoneyEntryField
-from promogest.ui.widgets.SignedMoneyEntryField import SignedMoneyEntryField
-from promogest.ui.widgets.UnsignedIntegerEntryField import UnsignedIntegerEntryField
-from promogest.ui.widgets.SignedIntegerEntryField import SignedIntegerEntryField
-from promogest.ui.widgets.DateEntryField import DateEntryField
-from promogest.ui.widgets.DateTimeEntryField import DateTimeEntryField
-from promogest.ui.widgets.DateWidget import DateWidget
-from promogest.ui.widgets.DateTimeWidget import DateTimeWidget
-from promogest.ui.widgets.CustomComboBoxModify import CustomComboBoxModify
-from promogest.ui.widgets.CustomComboBoxSearch import CustomComboBoxSearch
-from promogest.ui.widgets.ScontiWidget import ScontiWidget
-from promogest.ui.widgets.ScontoWidget import ScontoWidget
+
+import promogest.ui.widgets
 
 
 from SimpleGladeApp import SimpleGladeApp
@@ -105,6 +93,10 @@ class GladeWidget(SimpleGladeApp):
 
         (self.width, self.height) = self.topLevelWindow.get_size()
         (self.left, self.top) = self.topLevelWindow.get_position()
+        if self.left > self.width:
+            self.left = -8
+        if self.top > self.height:
+            self.top = -8
         doc = ElementTree.parse(self._defaultWindowAttributesFile)
         elem = doc.getroot()
         if elem.findall(self._windowName):

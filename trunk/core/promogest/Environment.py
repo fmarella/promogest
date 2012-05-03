@@ -540,7 +540,6 @@ else:
         host = "localhost"
 
 
-
 try:
     pw = conf.Database.pw
 except:
@@ -608,7 +607,7 @@ else:
 
 schema_azienda = azienda
 
-# Determiniamo il nome del file pickle in base all'azienda e alla versione python.
+# Determiniamo il nome del file pickle in base all'azienda e alla ver python.
 if azienda:
     meta_pickle = azienda + "_meta_pickle"
 else:
@@ -619,12 +618,14 @@ from pickle import load as pickle_load
 meta = MetaData()
 metatmp = MetaData()
 
-if os.path.exists(os.path.join(CONFIGPATH, meta_pickle)) and  sqlalchemy.__version__ > "0.5.8":
+if os.path.exists(os.path.join(CONFIGPATH, meta_pickle)) \
+                                    and  sqlalchemy.__version__ > "0.5.8":
     with open(os.path.join(CONFIGPATH, meta_pickle), 'rb') as f:
         meta = pickle_load(f)
         meta.bind = engine
 else:
     meta = MetaData(engine)
+
 
 def delete_pickle():
     """ Cancella il file pickle del metadata
@@ -637,7 +638,7 @@ session = Session()
 #meta = None
 schema_azienda = azienda
 
-params = {'engine': engine ,
+params = {'engine': engine,
         'mainSchema': mainSchema,
         'schema': azienda,
         'metadata': meta,
