@@ -90,7 +90,7 @@ class Listino(Dao):
             self. __sottoListiniID=None
             return self. __sottoListiniID
         return self. __sottoListiniID
-    #sottoListiniID = property(_sottoListini)
+    sottoListiniID = property(_sottoListini)
 
 
     def delete(self, multiple=False, record = True):
