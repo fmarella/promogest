@@ -124,6 +124,10 @@ class GladeWidget(SimpleGladeApp):
             else:
                 self.topLevelWindow.resize("300", "200")
             if self.left is not None and self.top is not None:
+                if self.left > self.width:
+                    self.left = -8
+                if self.top > self.height:
+                    self.top = -8
                 self.topLevelWindow.move(self.left, self.top)
             else:
                 self.topLevelWindow.move("100", "100")
