@@ -416,9 +416,9 @@ La cartella di lavoro sarà: %s
 Grazie per aver scelto il PromoGest""" %str(promogestDir)
 
         overDialog = gtk.MessageDialog(None,
-                                       GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
-                                       GTK_DIALOG_MESSAGE_INFO,
-                                       GTK_BUTTON_OK, msg)
+                           GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
+                           GTK_DIALOG_MESSAGE_INFO,
+                           GTK_BUTTON_OK, msg)
         response = overDialog.run()
         if response == GTK_RESPONSE_OK:
             b= open(promogestStartDir+'configure')
@@ -464,12 +464,6 @@ Grazie per aver scelto il PromoGest""" %str(promogestDir)
         conf.body = conf.signature
     else:
         emailcompose = None
-
-    #[Rivenditore]
-    if hasattr(conf,'Rivenditore'):
-        rivenditoreUrl = str(getattr(conf.Composer, 'rivenditoreurl'))
-    else:
-        rivenditoreUrl = "http://promogest.promotux.it/contatti.php"
 
     mltext = ""
 
@@ -643,17 +637,17 @@ session = Session()
 #meta = None
 schema_azienda = azienda
 
-
 params = {'engine': engine ,
         'mainSchema': mainSchema,
         'schema': azienda,
         'metadata': meta,
         'session' : session,
-        "tipo_db":tipodb,
+        "tipo_db": tipodb,
         'rowsFamily' : [],
         'defaultLimit': 5,
         'bccaddr' : ["assistenza@promotux.it"],
-        'objects' : ["Informazioni Tecniche", "Informazioni Commerciali" , "Varie"],
+        'objects' : ["Informazioni Tecniche",
+                            "Informazioni Commerciali" , "Varie"],
         'widthThumbnail' : 64,
         'heightThumbnail' : 64,
         'widthdetail' : 110,
@@ -679,7 +673,7 @@ if not web:
                       LOG_FILENAME, maxBytes=10000, backupCount=6)
     except:
         handler = logging.handlers.RotatingFileHandler(
-                      LOG_FILENAME+"bis", maxBytes=10000, backupCount=6)
+                      LOG_FILENAME + "bis", maxBytes=10000, backupCount=6)
 
     formatter = logging.Formatter(
         "%(asctime)s - %(name)s - %(levelname)s - %(message)s - %(pathname)s - %(funcName)s - %(lineno)d")
@@ -693,26 +687,31 @@ else:
 
 
 def sendmail(msg="PG"):
-    msg = str(promogestDir) +"  "+str(rev_locale) +"  "+str(rev_remota)
+    msg = str(promogestDir) + " " + str(rev_locale) + "  " + str(rev_remota)
     return _msgDef(text=msg)
 
-def _msgDef(text="", html="",img="", subject=""):
+
+def _msgDef(text="", html="", img="", subject=""):
     msgg = MIMEMultipart()
-    msgg['Subject'] = azienda+"  "+str(datetime.datetime.now().strftime('%d_%m_%Y_%H_%M'))
+    msgg['Subject'] = azienda\
+                 + "  "\
+                 + str(datetime.datetime.now().strftime('%d_%m_%Y_%H_%M'))
     msgg['From'] = "promogestlogs@gmail.com"
     msgg['To'] = "promogestlogs@gmail.com"
     msgg.attach(MIMEText(text))
 #        fp = open(self.stname, 'rb')
 #    part = MIMEBase('application','octet-stream')
     part = MIMEText('text/plain')
-    fp =open(LOG_FILENAME, 'rb')
+    fp = open(LOG_FILENAME, 'rb')
     part.set_payload(fp.read())
     fp.close()
 #    Encoders.encode_base64(part)
-    part.add_header('Content-Disposition','attachment', filename="pg2.log")
+    part.add_header('Content-Disposition', 'attachment', filename="pg2.log")
     msgg.attach(part)
+    _send(fromaddr="promogestlogs@gmail.com",
+                total_addrs="promogestlogs@gmail.com",
+                msg=msgg)
 
-    _send(fromaddr="promogestlogs@gmail.com", total_addrs="promogestlogs@gmail.com", msg=msgg)
 
 def _send(fromaddr=None, total_addrs=None, msg=None):
     try:
@@ -721,7 +720,9 @@ def _send(fromaddr=None, total_addrs=None, msg=None):
         server.starttls()
         server.ehlo()
         server.login("promogestlogs@gmail.com", "pr0m0t0x")
-        return server.sendmail("promogestlogs@gmail.com", "promogestlogs@gmail.com" , msg.as_string())
+        return server.sendmail("promogestlogs@gmail.com",
+                        "promogestlogs@gmail.com",
+                            msg.as_string())
     except Exception as e:
         print "ERRORE NELLA SPEDIZIONE EMAIL", str(e)
 
@@ -737,7 +738,7 @@ def hook(et, ev, eb):
         print "ATTENZIONE!!! MANCA L'HANDLER", ev
         return
     pg2log.info("\n  ".join (["Error occurred: traceback follows"]+list(traceback.format_exception(et, ev, eb))))
-    print "UN ERRORE È STATO INTERCETTATO E LOGGATO, SI CONSIGLIA DI RIAVVIARE E DI CONTATTARE L'ASSISTENZA \n\nPREMERE CTRL+C PER CHIUDERE  \n"+"\n  ".join(list(traceback.format_exception(et, ev, eb)))
+    print "UN ERRORE È STATO INTERCETTATO E LOGGATO, SI CONSIGLIA DI RIAVVIARE\n E DI CONTATTARE L'ASSISTENZA \n\nPREMERE CTRL+C PER CHIUDERE  \n"+"\n  ".join(list(traceback.format_exception(et, ev, eb)))
     sendmail()
 sys.excepthook = hook
 
@@ -746,7 +747,7 @@ sys.excepthook = hook
 
 def get_columns(table):
     """ritorna la lista dei nomi delle colonne di una tabella
-    
+
     :table: istanza di una tabella del database
     :returns: nomi delle colonne
     """
