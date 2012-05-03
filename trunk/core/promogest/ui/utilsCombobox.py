@@ -22,21 +22,17 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 import os
-import decimal
 from decimal import *
 try:
     from promogest.ui.gtk_compat import *
 except:
     pass
-import time, datetime
 from promogest import Environment
 
 from sqlalchemy.orm import *
 from sqlalchemy import *
 #from utils import leggiAgente
-import xml.etree.cElementTree as ElementTree
 from xml.etree.cElementTree import *
-from random import randint as rint
 # Letture per recuperare velocemente dati da uno o piu' dao correlati
 
 # Riempimento lookup combobox
@@ -48,7 +44,7 @@ def fillComboboxAliquoteIva(combobox, filter=False):
     """
     from promogest.dao.AliquotaIva import AliquotaIva
     model = gtk.ListStore(object, int, str)
-    ivas = AliquotaIva().select(offset=None,batchSize=None)
+    ivas = AliquotaIva().select(offset=None, batchSize=None)
     if not filter:
         emptyRow = ''
     else:
@@ -70,7 +66,7 @@ def fillComboboxTipiAliquoteIva(combobox, filter=False):
     Crea l'elenco dei tipi aliquota iva
     """
     from promogest.dao.TipoAliquotaIva import TipoAliquotaIva
-    res = TipoAliquotaIva().select(offset=None,batchSize=None)
+    res = TipoAliquotaIva().select(offset=None, batchSize=None)
     model = gtk.ListStore(object, int, str)
 
     if not filter:
@@ -87,13 +83,15 @@ def fillComboboxTipiAliquoteIva(combobox, filter=False):
     combobox.add_attribute(renderer, 'text', 2)
     combobox.set_model(model)
 
+
 def fillComboboxCategorieArticoli(combobox, filter=False):
     """
     Crea l'elenco delle categorie articoli
     """
     from promogest.dao.CategoriaArticolo import CategoriaArticolo
     model = gtk.ListStore(object, int, str)
-    cats = CategoriaArticolo().select(offset=None,batchSize=None, orderBy=CategoriaArticolo.denominazione)
+    cats = CategoriaArticolo().select(offset=None, batchSize=None,
+                                orderBy=CategoriaArticolo.denominazione)
     if not filter:
         emptyRow = ''
     else:
@@ -108,6 +106,7 @@ def fillComboboxCategorieArticoli(combobox, filter=False):
     combobox.pack_start(renderer, True)
     combobox.add_attribute(renderer, 'text', 2)
     combobox.set_model(model)
+
 
 def fillComboboxCCardType(combobox, filter=False):
     """
@@ -115,7 +114,8 @@ def fillComboboxCCardType(combobox, filter=False):
     """
     from promogest.dao.CCardType import CCardType
     model = gtk.ListStore(object, int, str)
-    cats = CCardType().select(offset=None,batchSize=None, orderBy=CCardType.denominazione)
+    cats = CCardType().select(offset=None, batchSize=None,
+                                            orderBy=CCardType.denominazione)
     if not filter:
         emptyRow = ''
     else:
@@ -130,6 +130,7 @@ def fillComboboxCCardType(combobox, filter=False):
     combobox.pack_start(renderer, True)
     combobox.add_attribute(renderer, 'text', 2)
     combobox.set_model(model)
+
 
 def fillComboboxFamiglieArticoli(combobox, filter=False, ignore=[]):
     """
@@ -143,21 +144,21 @@ def fillComboboxFamiglieArticoli(combobox, filter=False, ignore=[]):
         emptyRow = '< Tutti >'
     model.append(None, (None, 0, emptyRow))
 
-    def recurse(padre,f):
+    def recurse(padre, f):
         for s in f.children:
             figlio1 = model.append(padre, (s,
-                                (s.id ),
+                                (s.id),
                                 (s.denominazione or ''),
                                 ))
-            recurse(figlio1,s)
+            recurse(figlio1, s)
     for f in FamigliaArticolo().select(batchSize=None):
         if not f.parent:
             padre = model.append(None, (f,
-                                (f.id ),
+                                (f.id),
                                 (f.denominazione or ''),
                                 ))
             if f.children:
-                recurse(padre,f)
+                recurse(padre, f)
 
     combobox.clear()
     renderer = gtk.CellRendererText()
@@ -165,13 +166,14 @@ def fillComboboxFamiglieArticoli(combobox, filter=False, ignore=[]):
     combobox.add_attribute(renderer, 'text', 2)
     combobox.set_model(model)
 
+
 def fillComboboxImballaggi(combobox, filter=False):
     """
     Crea l'elenco degli imballaggi
     """
     from promogest.dao.Imballaggio import Imballaggio
     model = gtk.ListStore(object, int, str)
-    imbs = Imballaggio().select(offset=None,batchSize=None)
+    imbs = Imballaggio().select(offset=None, batchSize=None)
     if not filter:
         emptyRow = ''
     else:
@@ -191,7 +193,7 @@ def fillComboboxStatiArticoli(combobox, filter=False):
     """ Crea l'elenco degli stati articoli """
     from promogest.dao.StatoArticolo import StatoArticolo
     model = gtk.ListStore(object, int, str)
-    stas = StatoArticolo().select(offset=None,batchSize=None)
+    stas = StatoArticolo().select(offset=None, batchSize=None)
     if not filter:
         emptyRow = ''
     else:
@@ -210,7 +212,7 @@ def fillComboboxStatiArticoli(combobox, filter=False):
 def fillComboboxUnitaBase(combobox, filter=False):
     """ Crea l'elenco delle unita base """
     from promogest.dao.UnitaBase import UnitaBase
-    res = UnitaBase().select(offset=None,batchSize=None)
+    res = UnitaBase().select(offset=None, batchSize=None)
     model = gtk.ListStore(object, int, str)
 
     if not filter:
@@ -233,7 +235,7 @@ def fillComboboxRole(combobox, filter=False, noAdmin=False):
     Crea l'elenco dei ruoli
     """
     from promogest.modules.RuoliAzioni.dao.Role import Role
-    res = Role().select(offset=None,batchSize=None)
+    res = Role().select(offset=None, batchSize=None)
     model = gtk.ListStore(object, int, str)
 
     if not filter:
@@ -242,7 +244,7 @@ def fillComboboxRole(combobox, filter=False, noAdmin=False):
         emptyRow = '< Tutti >'
     model.append((None, 0, emptyRow))
     for u in res:
-        if u.name =="Admin"and noAdmin:
+        if u.name == "Admin" and noAdmin:
             continue
         else:
             model.append((u, u.id, u.name or '')[0:20])
@@ -259,7 +261,7 @@ def fillComboboxLang(combobox, filter=False):
     Crea l'elenco delle lingue
     """
     from promogest.modules.Multilingua.dao.Language import Language
-    res = Language().select(offset=None,batchSize=None)
+    res = Language().select(offset=None, batchSize=None)
     model = gtk.ListStore(object, int, str)
 
     if not filter:
@@ -284,7 +286,7 @@ def fillComboboxUnitaFisica(combobox, tipo):
     from promogest.dao.UnitaBase import UnitaBase
     #unitaFisica = 'unita_' + tipo
     model = gtk.ListStore(str)
-    res = UnitaBase().select(offset=None,batchSize=None)
+    res = UnitaBase().select(offset=None, batchSize=None)
     for u in res:
         #unita = (u[unitaFisica] or '')[0:20]
         unita = (u.denominazione or '')[0:20]
@@ -307,7 +309,7 @@ def fillComboboxCategorieClienti(combobox, filter=False):
     """
     from  promogest.dao.CategoriaCliente import CategoriaCliente
     model = gtk.ListStore(object, int, str)
-    cats = CategoriaCliente().select(offset=None,batchSize=None)
+    cats = CategoriaCliente().select(offset=None, batchSize=None)
 
     if not filter:
         emptyRow = ''
@@ -328,9 +330,10 @@ def fillComboboxCategorieContatti(combobox, filter=False):
     """
     Crea l'elenco delle categorie contatti
     """
-    from promogest.modules.Contatti.dao.CategoriaContatto import CategoriaContatto
+    from promogest.modules.Contatti.dao.CategoriaContatto import\
+                                                         CategoriaContatto
     model = gtk.ListStore(object, int, str)
-    cats = CategoriaContatto().select(offset=None,batchSize=None)
+    cats = CategoriaContatto().select(offset=None, batchSize=None)
 
     if not filter:
         emptyRow = ''
@@ -353,7 +356,7 @@ def fillComboboxCategorieFornitori(combobox, filter=False):
     """
     from promogest.dao.CategoriaFornitore import CategoriaFornitore
     model = gtk.ListStore(object, int, str)
-    cats = CategoriaFornitore().select(offset=None,batchSize=None)
+    cats = CategoriaFornitore().select(offset=None, batchSize=None)
     if not filter:
         emptyRow = ''
     else:
@@ -371,7 +374,8 @@ def fillComboboxCategorieFornitori(combobox, filter=False):
 
 def fillComboboxStadioCommessa(combobox, filter=False):
     """ Riempi combo degli stadi commessa """
-    from promogest.modules.GestioneCommesse.dao.StadioCommessa import StadioCommessa
+    from promogest.modules.GestioneCommesse.dao.StadioCommessa import \
+                                                    StadioCommessa
     model = gtk.ListStore(object, int, str)
     stcom = StadioCommessa().select(batchSize=None)
     if not filter:
@@ -389,14 +393,15 @@ def fillComboboxStadioCommessa(combobox, filter=False):
     combobox.set_model(model)
 
 
-def fillComboboxMultipli(combobox, idArticolo=None, noSottoMultipli=False, filter=False):
+def fillComboboxMultipli(combobox, idArticolo=None,
+                                noSottoMultipli=False, filter=False):
     """
     Crea l'elenco dei multipli
     """
     from promogest.dao.Multiplo import Multiplo
     model = gtk.ListStore(object, int, str, float)
     # multipli legati all'articolo
-    muls = Multiplo().select(offset=None,batchSize=None)
+    muls = Multiplo().select(offset=None, batchSize=None)
     if not filter:
         emptyRow = ''
     else:
@@ -404,10 +409,11 @@ def fillComboboxMultipli(combobox, idArticolo=None, noSottoMultipli=False, filte
     model.append((None, 0, emptyRow, float(0)))
 
     if noSottoMultipli:
-        muls = [ item for item in muls if item.moltiplicatore > 1 ]
+        muls = [item for item in muls if item.moltiplicatore > 1]
 
     for m in muls:
-        model.append((m, m.id, m.denominazione_breve, float(m.moltiplicatore or 0)))
+        model.append((m, m.id, m.denominazione_breve,
+                                        float(m.moltiplicatore or 0)))
 
     combobox.clear()
     renderer = gtk.CellRendererText()
@@ -422,7 +428,8 @@ def fillComboboxListini(combobox, filter=False):
     """
     from promogest.dao.Listino import Listino
     model = gtk.ListStore(object, int, str)
-    liss= Listino().select(denominazione=None,offset=None,orderBy = None,batchSize=None)
+    liss = Listino().select(denominazione=None, offset=None,
+                                                orderBy=None, batchSize=None)
 
     if not filter:
         emptyRow = ''
@@ -439,13 +446,15 @@ def fillComboboxListini(combobox, filter=False):
     combobox.set_model(model)
 
 
-def fillComboboxListiniComplessi(combobox,idListinoComplesso=None, filter=False):
+def fillComboboxListiniComplessi(combobox, idListinoComplesso=None,
+                                                        filter=False):
     """
     Crea l'elenco dei listini
     """
     from promogest.dao.ListinoComplessoListino import ListinoComplessoListino
     model = gtk.ListStore(object, int, str)
-    liss= ListinoComplessoListino().select(idListinoComplesso=idListinoComplesso,offset=None,batchSize=None)
+    liss = ListinoComplessoListino().select(
+            idListinoComplesso=idListinoComplesso, offset=None, batchSize=None)
 
     if not filter:
         emptyRow = ''
@@ -462,7 +471,8 @@ def fillComboboxListiniComplessi(combobox,idListinoComplesso=None, filter=False)
     combobox.set_model(model)
 
 
-def listinoCandidateSel(OrderBy=None,idArticolo=None,idMagazzino=None,idCliente=None):
+def listinoCandidateSel(OrderBy=None, idArticolo=None,
+                                            idMagazzino=None, idCliente=None):
     from promogest.dao.Listino import Listino
     from promogest.dao.ListinoMagazzino import ListinoMagazzino
     from promogest.dao.ListinoArticolo import ListinoArticolo
@@ -472,16 +482,17 @@ def listinoCandidateSel(OrderBy=None,idArticolo=None,idMagazzino=None,idCliente=
     from promogest.dao.Cliente import Cliente
     listin = None
 
-    def _dirtyWork(OrderBy=None,idArticolo=None,idMagazzino=None,idCliente=None):
+    def _dirtyWork(OrderBy=None, idArticolo=None, idMagazzino=None,
+                                                        idCliente=None):
         listinoSelezionato = []
-        listinoIDS= []
+        listinoIDS = []
         listiniMAG = []
         listiniArt = []
         aa = []
         clid = []
         listiniArtComplexList = []
         if idArticolo:
-            listiniArt=  Environment.session.\
+            listiniArt = Environment.session.\
                         query(ListinoArticolo.id_listino).\
                         filter(ListinoArticolo.id_articolo == idArticolo).all()
                         #aggiungere anche i listino complesso se presente.
@@ -490,53 +501,61 @@ def listinoCandidateSel(OrderBy=None,idArticolo=None,idMagazzino=None,idCliente=
                 bb = Listino().select(id=a.id_listino)
                 for b in bb:
                     listiniArtComplexList = Environment.session.\
-                            query(ListinoComplessoListino.id_listino_complesso).\
-                            filter(ListinoComplessoListino.id_listino == a.id_listino).all()
+            query(ListinoComplessoListino.id_listino_complesso).\
+            filter(ListinoComplessoListino.id_listino == a.id_listino).all()
 
         if idMagazzino:
             listiniMAG = Environment.session.\
-                        query(ListinoMagazzino.id_listino).\
-                        filter(ListinoMagazzino.id_magazzino == idMagazzino).all()
+                    query(ListinoMagazzino.id_listino).\
+                    filter(ListinoMagazzino.id_magazzino == idMagazzino).all()
         if idCliente:
             categorie_cliente_id = Environment.session.\
-                        query(ClienteCategoriaCliente.id_categoria_cliente).all()
+                    query(ClienteCategoriaCliente.id_categoria_cliente).all()
             if categorie_cliente_id:
                 cclid = [a[0] for a in categorie_cliente_id]
                 aa = Environment.session.\
-                        query(ListinoCategoriaCliente.id_listino).\
-                        filter(ListinoCategoriaCliente.id_categoria_cliente.in_(cclid)).all()
+                query(ListinoCategoriaCliente.id_listino).\
+                filter(ListinoCategoriaCliente.id_categoria_cliente.in_(
+                                                                cclid)).all()
         if idCliente:
             cli = Cliente().getRecord(id=idCliente)
             if cli:
-                clid= [(cli.id_listino,)]
-        listinoIDS = clid+listiniMAG+listiniArt+aa+listiniArtComplexList
-        listid = list(set([ a[0] for a in listinoIDS]))
+                clid = [(cli.id_listino,)]
+        listinoIDS = clid + listiniMAG + listiniArt \
+                            + aa + listiniArtComplexList
+        listid = list(set([a[0] for a in listinoIDS]))
         if listid:
-            listinoSelezionato = Environment.session.query(Listino).filter(and_(Listino.id.in_(listid),Listino.listino_attuale==True)).all()
+            listinoSelezionato = Environment.session.query(Listino).filter(
+                and_(Listino.id.in_(listid),
+                     Listino.listino_attuale == True)).all()
         return listinoSelezionato
 
-    listin = _dirtyWork(OrderBy=OrderBy,idArticolo=idArticolo,
-                                    idMagazzino=idMagazzino,idCliente=idCliente)
+    listin = dirtyWork(OrderBy=OrderBy, idArticolo=idArticolo,
+                                    idMagazzino=idMagazzino,
+                                        idCliente=idCliente)
     if not listin and "PromoWear" in Environment.modulesList:
         from promogest.dao.Articolo import Articolo
         father = Articolo().getRecord(id=idArticolo)
         idArticolo = father.id_articolo_padre
-        listinPadre = _dirtyWork(OrderBy=OrderBy,idArticolo=idArticolo,
-                                    idMagazzino=idMagazzino,idCliente=idCliente)
+        listinPadre = _dirtyWork(OrderBy=OrderBy, idArticolo=idArticolo,
+                                    idMagazzino=idMagazzino,
+                                    idCliente=idCliente)
         if listinPadre:
             listin = listinPadre
-            print "LISTINO ASSOCIATO AL PADRE IN QUANDO FIGLIO NON NE AVEVA UNO", listin
             return listin
     else:
-        Environment.pg2log.info("LISTINI ASSOCIATI: "+str(listin))
         return listin
 
-def fillComboboxListiniFiltrati(combobox, idArticolo=None, idMagazzino=None, idCliente=None, filter=False):
+
+def fillComboboxListiniFiltrati(combobox, idArticolo=None,
+                            idMagazzino=None, idCliente=None, filter=False):
     """
     Crea l'elenco dei listini
     """
     model = gtk.ListStore(object, int, str)
-    liss = listinoCandidateSel( idArticolo=idArticolo, idMagazzino=idMagazzino, idCliente = idCliente)
+    liss = listinoCandidateSel(idArticolo=idArticolo,
+                                idMagazzino=idMagazzino,
+                                idCliente=idCliente)
     if not filter:
         emptyRow = ''
     else:
@@ -553,16 +572,16 @@ def fillComboboxListiniFiltrati(combobox, idArticolo=None, idMagazzino=None, idC
     combobox.set_model(model)
 
 
-def fillComboboxFornitori(combobox,filter=False, noempty=False):
+def fillComboboxFornitori(combobox, filter=False, noempty=False):
     """ Crea l'elenco dei fornitori in una combo """
     from promogest.dao.Fornitore import Fornitore
     model = gtk.ListStore(object, int, str)
-    forns = Fornitore().select(offset=None,batchSize=None)
+    forns = Fornitore().select(offset=None, batchSize=None)
     if not noempty:
         if not filter:
             emptyRow = ''
         else:
-            empyRow = '<Tutti>'
+            emptyRow = '<Tutti>'
         model.append((None, 0, emptyRow))
     for f in forns:
         model.append((f, f.id, (f.ragione_sociale or '')[:20]))
@@ -573,11 +592,12 @@ def fillComboboxFornitori(combobox,filter=False, noempty=False):
     combobox.add_attribute(renderer, 'text', 2)
     combobox.set_model(model)
 
+
 def fillComboboxMagazzini(combobox, filter=False, noempty=False):
     """  Crea l'elenco dei magazzini  """
     from promogest.dao.Magazzino import Magazzino
     model = gtk.ListStore(object, int, str)
-    mags = Magazzino().select(offset=None,batchSize=None)
+    mags = Magazzino().select(offset=None, batchSize=None)
     if not noempty:
         if not filter:
             emptyRow = ''
@@ -593,15 +613,22 @@ def fillComboboxMagazzini(combobox, filter=False, noempty=False):
     combobox.add_attribute(renderer, 'text', 2)
     combobox.set_model(model)
 
+
 def fillComboboxOperazioni(combobox, tipo=None, filter=False):
     """
     Crea l'elenco delle operazioni per la movimentazione di magazzino """
     from promogest.dao.Operazione import Operazione
     if tipo:
-#        res = Environment.params['session'].query(Operazione).filter(Operazione.tipo_operazione==tipo).order_by(Operazione.denominazione).all()
-        res = Environment.params['session'].query(Operazione).filter(or_(Operazione.tipo_operazione==None,Operazione.tipo_operazione==tipo)).order_by(Operazione.denominazione).all()
+        res = Environment.params['session'].query(
+                    Operazione).filter(or_(
+                        Operazione.tipo_operazione == None,
+                        Operazione.tipo_operazione == tipo)).order_by(
+                            Operazione.denominazione).all()
     else:
-        res = Environment.params['session'].query(Operazione).filter(Operazione.tipo_operazione==None).order_by(Operazione.denominazione).all()
+        res = Environment.params['session'].query(
+                    Operazione).filter(
+                        Operazione.tipo_operazione == None).order_by(
+                            Operazione.denominazione).all()
     model = gtk.ListStore(object, str, str)
     if not filter:
         emptyRow = ''
@@ -639,11 +666,13 @@ def fillModelTipiRecapito():
         model.append((r.denominazione, ))
     return model
 
+
 def fillComboboxAziende(combobox, filter=False):
     """ Crea l'elenco delle aziende  """
     from promogest.dao.Azienda import Azienda
     model = gtk.ListStore(object, str, str)
-    res = Azienda().select(offset=None,batchSize=None, orderBy=Azienda.schemaa)
+    res = Azienda().select(offset=None, batchSize=None,
+                                                    orderBy=Azienda.schemaa)
     if not filter:
         emptyRow = ''
     else:
@@ -658,11 +687,12 @@ def fillComboboxAziende(combobox, filter=False):
     combobox.add_attribute(renderer, 'text', 2)
     combobox.set_model(model)
 
+
 def fillComboboxPagamenti(combobox, filter=False):
     """ Crea l'elenco dei pagamenti  """
     from promogest.dao.Pagamento import Pagamento
     model = gtk.ListStore(object, int, str)
-    pags = Pagamento().select(offset=None,batchSize=None)
+    pags = Pagamento().select(offset=None, batchSize=None)
     if not filter:
         emptyRow = ''
     else:
@@ -680,8 +710,8 @@ def fillComboboxPagamenti(combobox, filter=False):
 
 def getModelsName():
     """Scans all xml files in models directory.
-
-    It returns a dictionary containing models' names and relatives paths"""
+    It returns a dictionary containing models' names and relatives paths
+    """
     modelsDir = Environment.documentsDir + 'modelli_listini'
     if not (os.path.exists(modelsDir)):
         os.mkdir(modelsDir)
@@ -698,20 +728,22 @@ def getModelsName():
                 existingModels[model_tag.attrib['name']] = path
     return existingModels
 
+
 def fillModelCombobox(combobox):
     """Appends in combobox tuples containing,
     for each file in models directory, model's name and its path"""
     existingModels = getModelsName()
-    model = gtk.ListStore(str,str)
-    model.append((None,None))
+    model = gtk.ListStore(str, str)
+    model.append((None, None))
     if existingModels:
-        for (m,p) in existingModels.iteritems():
-            model.append((m,p))
+        for (m, p) in existingModels.iteritems():
+            model.append((m, p))
     combobox.clear()
     renderer = gtk.CellRendererText()
     combobox.pack_start(renderer, True)
     combobox.add_attribute(renderer, 'text', 0)
     combobox.set_model(model)
+
 
 def fillComboboxBanche(combobox, filter=False, short=1000):
     """
@@ -720,7 +752,7 @@ def fillComboboxBanche(combobox, filter=False, short=1000):
     combobox.set_wrap_width(1)
     from promogest.dao.Banca import Banca
     model = gtk.ListStore(object, int, str)
-    bans = Banca().select(offset=None,batchSize=None)
+    bans = Banca().select(offset=None, batchSize=None)
     if not filter:
         emptyRow = ''
     else:
@@ -728,7 +760,8 @@ def fillComboboxBanche(combobox, filter=False, short=1000):
     model.append((None, 0, emptyRow))
     for b in bans:
         if b.agenzia:
-            model.append((b, b.id, ("{0} ({1})".format(b.denominazione, b.agenzia))))
+            model.append((b, b.id, ("{0} ({1})".format(
+                                        b.denominazione, b.agenzia))))
         else:
             model.append((b, b.id, ("{0}".format(b.denominazione))))
 
@@ -742,7 +775,8 @@ def fillComboboxBanche(combobox, filter=False, short=1000):
 def fillComboboxCausaliTrasporto(combobox, filter=False):
     """ Crea elenco delle causali di trasporto  """
     from promogest.dao.TestataDocumento import TestataDocumento
-    res = Environment.params['session'].query(TestataDocumento.causale_trasporto).distinct()
+    res = Environment.params['session'].query(
+                                TestataDocumento.causale_trasporto).distinct()
     model = gtk.ListStore(object, str)
     #res = []
     if not filter:
@@ -762,10 +796,12 @@ def fillComboboxCausaliTrasporto(combobox, filter=False):
         if combobox.__class__ is gtk.ComboBoxEntry:
             combobox.set_text_column(1)
 
+
 def fillComboboxProduttori(combobox):
     """ Crea elenco dei produttori  """
     from promogest.dao.Articolo import Articolo
-    res = Environment.params['session'].query(Articolo.produttore).order_by(Articolo.produttore).distinct()
+    res = Environment.params['session'].query(
+                Articolo.produttore).order_by(Articolo.produttore).distinct()
     ll = []
     for b in res:
         if b and b.produttore and b.produttore.strip() not in ll:
@@ -783,10 +819,12 @@ def fillComboboxProduttori(combobox):
         if combobox.__class__ is gtk.ComboBoxEntry:
             combobox.set_text_column(0)
 
+
 def fillComboboxAspettoEsterioreBeni(combobox, filter=False):
     """ Crea elenco degli aspetti esteriori beni """
     from promogest.dao.TestataDocumento import TestataDocumento
-    res = Environment.params['session'].query(TestataDocumento.aspetto_esteriore_beni).distinct()
+    res = Environment.params['session'].query(
+                        TestataDocumento.aspetto_esteriore_beni).distinct()
     model = gtk.ListStore(object, str)
     #res = []
     if not filter:
@@ -806,6 +844,7 @@ def fillComboboxAspettoEsterioreBeni(combobox, filter=False):
         if combobox.__class__ is gtk.ComboBoxEntry:
             combobox.set_text_column(1)
 
+
 def fillComboboxPortoTrasporto(combobox):
     """ Crea l'elenco dei porti trasporto """
     model = gtk.ListStore(str)
@@ -820,11 +859,13 @@ def fillComboboxPortoTrasporto(combobox):
         if combobox.__class__ is gtk.ComboBoxEntry:
             combobox.set_text_column(1)
 
+
 def fillComboboxDestinazioniMerce(combobox, idCliente=None, filter=False):
     """ Crea l'elenco delle destinazioni merce """
     from promogest.dao.DestinazioneMerce import DestinazioneMerce
     model = gtk.ListStore(object, int, str)
-    dems = DestinazioneMerce().select(idCliente=idCliente, batchSize=None,offset=None )
+    dems = DestinazioneMerce().select(idCliente=idCliente,
+                                                batchSize=None, offset=None)
     if not filter:
         emptyRow = ''
     else:
@@ -842,6 +883,7 @@ def fillComboboxDestinazioniMerce(combobox, idCliente=None, filter=False):
         if combobox.__class__ is gtk.ComboBoxEntry:
             combobox.set_text_column(2)
 
+
 def fillComboboxAutoriPromemoria(combobox):
     """ Crea l'elenco degli autori gia'inseriti """
     from promogest.dao.Promemoria import Promemoria
@@ -858,10 +900,12 @@ def fillComboboxAutoriPromemoria(combobox):
         if combobox.__class__ is gtk.ComboBoxEntry:
             combobox.set_text_column(0)
 
+
 def fillComboboxNotePiePaginaTestataDocumento(combobox):
     """ Crea l'elenco degli autori gia'inseriti """
     from promogest.dao.TestataDocumento import TestataDocumento
-    res = Environment.params['session'].query(TestataDocumento.note_pie_pagina).distinct()
+    res = Environment.params['session'].query(
+                            TestataDocumento.note_pie_pagina).distinct()
     model = gtk.ListStore(str)
     for c in res:
         if c.note_pie_pagina:
@@ -975,7 +1019,8 @@ def findIdFromCombobox(combobox):
 
 def findStrFromCombobox(combobox, column):
     """
-    Restituisce la stringa relativa alla riga selezionata in un elenco a discesa
+    Restituisce la stringa relativa alla riga selezionata in un
+    elenco a discesa
     """
 
     model = combobox.get_model()
@@ -984,6 +1029,7 @@ def findStrFromCombobox(combobox, column):
         return model.get_value(iterator, column)
     else:
         return ''
+
 
 def on_combobox_articolo_search_clicked(combobox, callName=None):
     """
@@ -1017,9 +1063,7 @@ def on_combobox_articolo_search_clicked(combobox, callName=None):
         callName()
 
 
-# ---
-
-def setFileName(filename, ext, returnName = False):
+def setFileName(filename, ext, returnName=False):
     """Verify that the filename have the extension "ext"
 
     If not, it will append the extension to the end of the filename."""
@@ -1035,10 +1079,11 @@ def setFileName(filename, ext, returnName = False):
 
     else:
         if returnName:
-            return _filename[0]+'.'+ext.lower()
+            return _filename[0] + '.' + ext.lower()
         else:
-            _name = name[0]+os.path.sep+_filename[0]+'.'+ext.lower()
+            _name = name[0] + os.path.sep + _filename[0] + '.' + ext.lower()
             return _name
+
 
 def on_typeComboBox_changed(combobox, dialogWidget, currentName, isEvent=True):
     cb_model = combobox.get_model()
@@ -1063,21 +1108,32 @@ def on_typeComboBox_changed(combobox, dialogWidget, currentName, isEvent=True):
             return (value, _file_name)
 
 
-def fillComboBoxNazione(combobox,default=None):
+def fillComboBoxNazione(combobox, default=None):
     """
     nazione
     """
-    nationList=["Afganistan","Albania","Algeria","Arabia Saudita","Argentina","Australia",
-                "Austria","Belgio","Bermude","Bielorussia","Bolivia","Bosnia-Erzegovina","Brasile",
-                "Bulgaria","Canada","Ceca (Repubblica)","Cile","Cina","Cipro","Colombia","Corea del Sud",
-                "Costarica","Croazia","Cuba","Danimarca","Egitto","Estonia","Filippine","Finlandia",
-                "Francia","Georgia","Germania","Giappone","Gran Bretagna","Grecia","Hong Kong","India",
-                "Indonesia","Iran","Iraq","Irlanda","Islanda","Israele","Italia","Kazakstan","Kuwait","Lettonia",
-                "Libano","Libia","Lituania","Lussemburgo","Malta","Marocco","Messico","Monaco","Montenegro",
-                "Norvegia","Nuova Zelanda","Paesi Bassi", "Perù","Polonia","Portogallo","Regno Unito","Romania",
-                "Russia (Federazione)","S.Marino","Senegal","Serbia (Repubblica)","Siria","Slovacca (Repubblica)",
-                "Slovenia","Somalia","Spagna","Stati Uniti d'America","Sudafrica","Svezia","Svizzera","Tailandia",
-                "Taiwan","Tunisia","Turchia","Ucraina","Ungheria","Unione Europea","Uruguay","Vaticano","Venezuela",
+    nationList = ["Afganistan", "Albania", "Algeria", "Arabia Saudita",
+                "Argentina", "Australia",
+                "Austria", "Belgio", "Bermude", "Bielorussia", "Bolivia",
+                "Bosnia-Erzegovina", "Brasile",
+                "Bulgaria", "Canada", "Ceca (Repubblica)", "Cile", "Cina",
+                "Colombia", "Corea del Sud", "Cipro",
+                "Costarica", "Croazia", "Cuba", "Danimarca", "Egitto",
+                "Filippine", "Finlandia", "Estonia",
+                "Francia", "Georgia", "Germania", "Giappone", "Gran Bretagna",
+                "Grecia", "Hong Kong", "India",
+                "Indonesia", "Iran", "Iraq", "Irlanda", "Islanda", "Israele",
+                "Italia", "Kazakstan", "Kuwait", "Lettonia",
+                "Libano", "Libia", "Lituania", "Lussemburgo", "Malta",
+                "Marocco", "Messico", "Monaco", "Montenegro",
+                "Norvegia", "Nuova Zelanda", "Paesi Bassi", "Perù","Polonia",
+                "Portogallo", "Regno Unito", "Romania",
+                "Russia (Federazione)", "S.Marino", "Senegal",
+                "Serbia (Repubblica)", "Siria", "Slovacca (Repubblica)",
+                "Slovenia", "Somalia", "Spagna", "Stati Uniti d'America",
+                "Sudafrica", "Svezia", "Svizzera", "Tailandia",
+                "Taiwan", "Tunisia", "Turchia", "Ucraina", "Ungheria",
+                "Unione Europea", "Uruguay", "Vaticano", "Venezuela",
                 "Vietnam"]
     model = gtk.ListStore(str)
     if not default:
@@ -1095,6 +1151,7 @@ def fillComboBoxNazione(combobox,default=None):
     combobox.set_active(11)
     combobox.set_model(model)
 
+
 # cescoap - utility all'autocompletamento delle entry
 def autocompletamento_entry(par_entry=None, filtro=None):
     '''Funzione di autocompletamento delle entry'''
@@ -1109,6 +1166,7 @@ def autocompletamento_entry(par_entry=None, filtro=None):
     par_entry.add_events(gtk.gdk.KEY_RELEASE_MASK)
     par_entry.connect('key-release-event', gestione_testo, filtro)
 
+
 # cescoap - funzione supplemento a autocompletamento_entry
 def gestione_testo(gest_entry, event, filtro):
     ''' Gestione riempimento liststore su base del numero di elementi'''
@@ -1119,15 +1177,15 @@ def gestione_testo(gest_entry, event, filtro):
     gest_liststore = gest_completion.get_model()
     gest_filtro = gest_entry.get_text()
     # seleziona i dati in base al filtro
-    if filtro=="codice":
+    if filtro == "codice":
         articoli = Articolo().select(codice=gest_filtro)
-    elif filtro=="denominazione":
+    elif filtro == "denominazione":
         articoli = Articolo().select(denominazione=gest_filtro)
-    elif filtro=="produttore":
+    elif filtro == "produttore":
         articoli = Articolo().select(produttore=gest_filtro)
-    elif filtro=="codiceABarre":
+    elif filtro == "codiceABarre":
         articoli = Articolo().select(codiceABarre=gest_filtro)
-    elif filtro=="codiceArticoloFornitore":
+    elif filtro == "codiceArticoloFornitore":
         articoli = Articolo().select(codiceArticoloFornitore=gest_filtro)
     # ripulisco la liststore per evitare accavallamenti
     gest_liststore.clear()
@@ -1143,19 +1201,20 @@ def gestione_testo(gest_entry, event, filtro):
             gest_liststore.append([n.produttore, n])
         elif filtro == "codiceABarre":
             gest_liststore.append([n.codice_a_barre, n])
-        elif filtro=="codiceArticoloFornitore":
+        elif filtro == "codiceArticoloFornitore":
             gest_liststore.append([n.codice_articolo_fornitore, n])
         print gest_liststore[i][0] + " inserita nella liststore"
         i = i + 1
     gest_completion.set_model(gest_liststore)
     gest_entry.set_completion(gest_completion)
 
+
 def on_main_window_key_press_eventPart(ui, widget, event):
     if event.type == gtk.gdk.KEY_PRESS:
         if event.state & gtk.gdk.MOD1_MASK:
             if gdk_keyval_name(event.keyval) >= '1' and \
                     gdk_keyval_name(event.keyval) <= '8':
-                ui.main_notebook.set_current_page(int(event.keyval)-49)
+                ui.main_notebook.set_current_page(int(event.keyval) - 49)
         elif event.state & gtk.gdk.CONTROL_MASK:
             if gdk_keyval_name(event.keyval) == 'd':
                 try:
@@ -1179,7 +1238,7 @@ def on_main_window_key_press_eventPart(ui, widget, event):
                     pass
             elif gdk_keyval_name(event.keyval) == "t":
                 import random
-                msg= """
+                msg = """
 Il Promogest2  ha generato per te due sestine
 "vincenti" per il prossimo concorso del superenalotto
 giocale e facci sapere .....
@@ -1189,11 +1248,12 @@ Il Team:
 
 I Numeri:   %s
             %s
-""" %(str(random.sample(xrange(90), 6))[1:-1],str(random.sample(xrange(90), 6))[1:-1])
+""" % (str(random.sample(xrange(90), 6))[1:-1],
+                                str(random.sample(xrange(90), 6))[1:-1])
                 dialog = gtk.MessageDialog(ui.getTopLevel(),
-                                            GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
-                                            GTK_DIALOG_MESSAGE_INFO,
-                                            GTK_BUTTON_OK,
-                                            msg)
+                    GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
+                    GTK_DIALOG_MESSAGE_INFO,
+                    GTK_BUTTON_OK,
+                    msg)
                 dialog.run()
                 dialog.destroy()

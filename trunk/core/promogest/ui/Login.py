@@ -22,29 +22,27 @@
 
 import hashlib
 import os
-import sys
 from promogest import Environment
 from promogest.ui.gtk_compat import *
 import datetime
 import random
-import threading
 import webbrowser
 from promogest.ui.GladeApp import GladeApp
 from promogest.dao.User import User
 from promogest.dao.Azienda import Azienda
 from GtkExceptionHandler import GtkExceptionHandler
-from promogest.ui.SendEmail import SendEmail
 from promogest.ui.UpdateDialog import UpdateDialog
 from promogest.ui.utils import leggiRevisioni, hasAction, checkInstallation, \
-    setconf, posso, installId, messageInfo, findStrFromCombobox
+    installId, messageInfo, findStrFromCombobox
 from promogest.ui.utilsCombobox import findComboboxRowFromStr
 
 Environment.pg2log.info("GTK+: " + str(GTK_VERSION))
 
 import sqlalchemy
-Environment.pg2log.info("SQLALCHEMY:"+str(sqlalchemy.__version__))
+Environment.pg2log.info("SQLALCHEMY:" + str(sqlalchemy.__version__))
 if sqlalchemy.__version__ < "0.5.8":
-    messageInfo(msg="""ATTENZIONE!! Versione di python-sqlalchemy inferiore a 0.5.8
+    messageInfo(msg="""
+ATTENZIONE!! Versione di python-sqlalchemy inferiore a 0.5.8
 Alcune parti potrebbero dare errore
 Si consiglia di aggiornare alla versione 0.6.3 o superiore
 su forum.promotux.it troverete come fare
@@ -53,7 +51,6 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.lib import feedparser
 from promogest.lib import HtmlHandler
-from promogest.ui.StatusBar import Pg2StatusIcon
 
 
 class Login(GladeApp):
@@ -65,32 +62,36 @@ class Login(GladeApp):
         :param debugALL: boolean, non utilizzato
         :param shop: default False
         """
-        self.azienda=None
+        self.azienda = None
         self._dbConnString = ''
         self.modules = {}
-        self.shop =shop
-        a = GladeApp.__init__(self, 'login_window')
+        self.shop = shop
+        GladeApp.__init__(self, 'login_window')
         Environment.exceptionHandler = GtkExceptionHandler()
         self.draw()
         self.getTopLevel().show_all()
-        #Pg2StatusIcon() # da risolvere in futuro magari con una soluzione all-glade
+        #Pg2StatusIcon()
+        # da risolvere in futuro magari con una soluzione all-glade
 
     def draw(self):
         """Disegna la finestra di login
         """
-        azs = Azienda().select(batchSize = None, orderBy=Azienda.schemaa)
+        azs = Azienda().select(batchSize=None, orderBy=Azienda.schemaa)
         ultima_azienda = None
-        if Environment.engine.name == "sqlite" and len(azs)==1 and azs[0].schemaa=="AziendaPromo":
+        if Environment.engine.name == "sqlite" \
+            and len(azs) == 1 and azs[0].schemaa == "AziendaPromo":
             self.azienda_combobox.destroy()
             self.azienda_label.destroy()
-            self.logina_label.set_markup("Dati accesso <b>ONE</b> : Username: <b>admin</b>, password: <b>admin</b>")
+            self.logina_label.set_markup(
+    "Dati accesso <b>ONE</b> : Username: <b>admin</b>, password: <b>admin</b>")
         else:
             self.azienda_combobox_listore.clear()
 
             for a in azs:
                 if a.tipo_schemaa == "last":
                     ultima_azienda = a.schemaa
-                self.azienda_combobox_listore.append((a.schemaa, (a.denominazione or "")[0:30]))
+                self.azienda_combobox_listore.append((a.schemaa,
+                                            (a.denominazione or "")[0:30]))
             self.azienda_combobox.set_model(self.azienda_combobox_listore)
         #if not Environment.pg3: #necessario per windows, non va bene in gtk3
             #self.azienda_combobox.set_text_column(0)
@@ -99,7 +100,6 @@ class Login(GladeApp):
         self.splashHandler()
         dateTimeLabel = datetime.datetime.now().strftime('%d/%m/%Y  %H:%M')
         self.date_label.set_text(dateTimeLabel)
-        #if Environment.engine.name != "sqlite" or (len(azs)==1 and azs[0].schemaa !="AziendaPromo") :
         if Environment.aziendaforce:
             ultima_azienda = Environment.aziendaforce
         if ultima_azienda:
@@ -121,7 +121,6 @@ class Login(GladeApp):
         self.anno_lavoro_spinbutton.set_value(data.year)
         leggiRevisioni()
 
-
     def on_logo_button_clicked(self, button):
         """Apre il sito web del PromoGest
 
@@ -129,13 +128,17 @@ class Login(GladeApp):
         """
         webbrowser.open_new_tab(self.urll)
 
-
     def splashHandler(self):
         data = datetime.datetime.now()
-        if (data > datetime.datetime(data.year,12,15) and data < datetime.datetime(data.year,12,31)) or \
-            (data < datetime.datetime(data.year,1,10) and data > datetime.datetime(data.year,1,1)) :
-            randomFile = random.sample([1, 2, 3, 4, 5,6], 1)[0]
-            fileSplashImage = Environment.conf.guiDir + "natale["+str(randomFile)+"].png"
+        if (data > datetime.datetime(data.year, 12, 15) \
+                and data < datetime.datetime(data.year, 12, 31)) or \
+            (data < datetime.datetime(data.year, 1, 10) \
+                    and data > datetime.datetime(data.year, 1, 1)):
+            randomFile = random.sample([1, 2, 3, 4, 5, 6], 1)[0]
+            fileSplashImage = Environment.conf.guiDir \
+                            + "natale[" \
+                            + str(randomFile) \
+                            + "].png"
             if Environment.engine.name == "sqlite":
                 self.login_tipo_label.set_markup("<b>PromoGest 'ONE'</b>")
                 self.urll = "http://www.promogest.me/promoGest/preventivo_one"
@@ -143,18 +146,24 @@ class Login(GladeApp):
                 self.login_tipo_label.set_markup("<b>PromoGest 'PRO'</b>")
                 self.urll = "http://www.promogest.me/promoGest/preventivo_pro"
         else:
-            if Environment.engine.name == "sqlite": #forzo lo splash per lite
+            if Environment.engine.name == "sqlite":
+                #forzo lo splash per lite
                 randomFile = random.sample([1, 2, 3, 4, 5, 6], 1)[0]
-                fileSplashImage = Environment.conf.guiDir + "one["+str(randomFile)+"].png"
+                fileSplashImage = Environment.conf.guiDir \
+                                + "one[" \
+                                + str(randomFile) \
+                                + "].png"
                 self.login_tipo_label.set_markup("<b>PromoGest 'ONE'</b>")
                 self.urll = "http://www.promogest.me/promoGest/preventivo_one"
             else:
                 randomFile = random.sample([1, 2, 3, 4, 5, 6], 1)[0]
-                fileSplashImage = Environment.conf.guiDir + "pro["+str(randomFile)+"].png"
+                fileSplashImage = Environment.conf.guiDir \
+                                    + "pro[" \
+                                    + str(randomFile) \
+                                    + "].png"
                 self.login_tipo_label.set_markup("<b>PromoGest 'PRO'</b>")
                 self.urll = "http://www.promogest.me/promoGest/preventivo_pro"
         self.splash_image.set_from_file(fileSplashImage)
-
 
     def feddretreive(self):
         """Carica il feed RSS
@@ -165,8 +174,6 @@ class Login(GladeApp):
 
     def on_azienda_comboboxentry_changed(self, combo):
         """Imposta il nome dell'azienda
-
-        :param combo: la combobox che ha generato l'evento
         """
         index = combo.get_active()
         if index >= 0:
@@ -182,39 +189,38 @@ class Login(GladeApp):
         username = self.username_entry.get_text()
         password = self.password_entry.get_text()
         do_login = True
-        if username=='' or password=='':
+        if username == '' or password == '':
             messageInfo(msg=_('Inserire nome utente e password'))
             do_login = False
         elif Environment.engine.name != "sqlite" and \
-                findStrFromCombobox(self.azienda_combobox,0) == '':
+                findStrFromCombobox(self.azienda_combobox, 0) == '':
             messageInfo(msg=_("Occorre selezionare un'azienda"))
             do_login = False
         else:
             #if hasattr(self,"azienda_combobox"):
-            self.azienda = findStrFromCombobox(self.azienda_combobox,0)
+            self.azienda = findStrFromCombobox(self.azienda_combobox, 0)
             findComboboxRowFromStr(self.azienda_combobox, self.azienda, 0)
-            found = self.azienda_combobox.get_active() != -1
-            #if not found:
-                #messageInfo(msg=_("Selezionare un'azienda esistente"))
-                #do_login = False
+            self.azienda_combobox.get_active() != -1
             if not self.azienda:
                 self.azienda = "AziendaPromo"
 
-        if do_login: #superati i check di login
+        if do_login:
+            #superati i check di login
             users = User().select(username=username,
-                        password=hashlib.md5(username+password).hexdigest())
-            if len(users) ==1:
+                        password=hashlib.md5(username + password).hexdigest())
+            if len(users) == 1:
                 if users[0].active == False:
                     messageInfo(msg=_('Utente Presente Ma non ATTIVO'))
                     dialog.destroy()
                     #saveAppLog(action="login", status=False,value=username)
                     do_login = False
                 else:
-                    Environment.workingYear = str(self.anno_lavoro_spinbutton.get_value_as_int())
+                    Environment.workingYear = str(
+                            self.anno_lavoro_spinbutton.get_value_as_int())
                     Environment.azienda = self.azienda
                     Environment.schema_azienda = self.azienda
                     if Environment.engine.name != "sqlite":
-                        azs = Azienda().select(batchSize = None)
+                        azs = Azienda().select(batchSize=None)
                         for a in azs:
                             if a.schemaa == self.azienda:
                                 a.tipo_schemaa = "last"
@@ -225,26 +231,31 @@ class Login(GladeApp):
                         #uaz.tipo_schemaa = "last"
                         #uaz.persist()
                         Environment.session.commit()
-                    if Environment.tipodb !="sqlite":
+                    if Environment.tipodb != "sqlite":
                         Environment.params["schema"] = self.azienda
                         Environment.schema_azienda = self.azienda
-                        if hashlib.md5(self.azienda).hexdigest() == "bf5fbf670a0b15ada95b3c03bf4ee64a":
+                        if hashlib.md5(self.azienda).hexdigest() == \
+                                        "bf5fbf670a0b15ada95b3c03bf4ee64a":
                             raise Exception(":D")
                             return
-                        if hashlib.md5(self.azienda).hexdigest() == "46d3e603f127254cdc30e5a397413fc7":
+                        if hashlib.md5(self.azienda).hexdigest() == \
+                                        "46d3e603f127254cdc30e5a397413fc7":
                             raise Exception(":P")
                             return
-                    # Lancio la funzione di generazione della dir di configurazione
-                    Environment.set_configuration(Environment.azienda,Environment.workingYear)
+# Lancio la funzione di generazione della dir di configurazione
+                    Environment.set_configuration(Environment.azienda,
+                                                    Environment.workingYear)
 #                    if setconf("Feed","feed"):
 #                    if True == True:
 #                        thread = threading.Thread(target=self.feddretreive)
 #                        thread.start()
 #                        thread.join(2.3)
                     Environment.params['usernameLoggedList'][0] = users[0].id
-                    Environment.params['usernameLoggedList'][1] = users[0].username
+                    Environment.params['usernameLoggedList'][1] =\
+                                                     users[0].username
                     try:
-                        Environment.params['usernameLoggedList'][2] = users[0].id_role
+                        Environment.params['usernameLoggedList'][2] =\
+                                                     users[0].id_role
                     except:
                         Environment.params['usernameLoggedList'][2] = 1
                     if hasAction(actionID=1):
@@ -254,19 +265,24 @@ class Login(GladeApp):
                         #import promogest.lib.UpdateDB
 
                         #saveAppLog(action="login", status=True,value=username)
-                        Environment.pg2log.info("LOGIN  id, user, role azienda: %s, %s" %(repr(Environment.params['usernameLoggedList']),self.azienda ) )
-                        #if os.path.exists(os.path.join(Environment.CONFIGPATH, Environment.meta_pickle)):
+                        Environment.pg2log.info(
+                            "LOGIN  id, user, role azienda: %s, %s" % (
+                                repr(Environment.params['usernameLoggedList']),
+                                    self.azienda))
+                        #if os.path.exists(os.path.join(Environment.CONFIGPATH,
+#                                    Environment.meta_pickle)):
                             #import pickle
-                            #print ">>>>>>> STO CARICANDO IL METADATA DA FILE..."
-                            #with open(os.path.join(Environment.CONFIGPATH, Environment.meta_pickle), 'rb') as f:
+                        #print ">>>>>>> STO CARICANDO IL METADATA DA FILE..."
+                        #with open(os.path.join(Environment.CONFIGPATH,
+#                                        Environment.meta_pickle), 'rb') as f:
                                 #print ">>>>>>> LEGGO IL FILE PICKLE..."
                                 #Environment.meta.clear()
                                 #Environment.meta = pickle.load(f)
                         #_end = time.time()
-                        #print "***caricamento meta da file completato in : ", _end - _start, "sec" #gobject.idle_add(self.importModulesFromDir,'promogest/modules')
                         #import promogest.ui.SetConf
                         checkInstallation()
                         self.importModulesFromDir('promogest/modules')
+
                         def mainmain():
                             from Main import Main
                             main = Main(self.azienda or "AziendaPromo",
@@ -275,13 +291,14 @@ class Login(GladeApp):
                                         self.anagrafiche_dirette_modules,
                                         self.frame_modules,
                                         self.permanent_frames)
-                            main.getTopLevel().connect("destroy", on_main_window_closed,
+                            main.getTopLevel().connect("destroy",
+                                                on_main_window_closed,
                                                 self.login_window)
                             main.show()
                         gobject.idle_add(mainmain)
 
                     else:
-                        do_login=False
+                        do_login = False
             else:
                 messageInfo(msg=_('Nome utente o password errati'))
                 #saveAppLog(action="login", status=False,value=username)
@@ -294,7 +311,6 @@ class Login(GladeApp):
         """
         updateDialog = UpdateDialog(self)
         updateDialog.show()
-
 
     def groupModulesByType(self):
         """
@@ -312,59 +328,69 @@ class Login(GladeApp):
         self.permanent_frames = {}
         for module_name in self.modules.keys():
             if self.modules[module_name]['type'] == 'anagrafica':
-                self.anagrafiche_modules[module_name] = self.modules[module_name]
+                self.anagrafiche_modules[module_name] =\
+                                             self.modules[module_name]
             elif self.modules[module_name]['type'] == 'parametro':
                 self.parametri_modules[module_name] = self.modules[module_name]
             elif self.modules[module_name]['type'] == 'anagrafica_diretta':
-                self.anagrafiche_dirette_modules[module_name] = self.modules[module_name]
+                self.anagrafiche_dirette_modules[module_name] =\
+                                             self.modules[module_name]
             elif self.modules[module_name]['type'] == 'frame':
                 self.frame_modules[module_name] = self.modules[module_name]
             elif self.modules[module_name]['type'] == 'permanent_frame':
                 self.permanent_frames[module_name] = self.modules[module_name]
 
-
     def importModulesFromDir(self, modules_dir):
             """Check the modules directory and automatically try to load
             all available modules
-
             """
             from promogest.dao.Setconf import SetConf
             Environment.modulesList = [Environment.tipo_pg]
             modules_folders = [folder for folder in os.listdir(modules_dir) \
-                            if (os.path.isdir(os.path.join(modules_dir, folder)) \
-                            and os.path.isfile(os.path.join(modules_dir, folder, 'module.py')))]
+                        if (os.path.isdir(os.path.join(modules_dir, folder)) \
+                        and os.path.isfile(os.path.join(modules_dir, folder,
+                             'module.py')))]
             Environment.modules_folders = modules_folders
-            moduli = Environment.session.query(SetConf.section).filter_by(key="mod_enable").filter_by(value="yes").all()
+            moduli = Environment.session.query(
+                SetConf.section).filter_by(
+                    key="mod_enable").filter_by(value="yes").all()
             for m_str in modules_folders:
                 mod_enable = False
-                mod_enableyes="no"
+                mod_enableyes = "no"
                 if (m_str,) in moduli:
                     mod_enable = True
                     mod_enableyes = "yes"
-                elif hasattr(Environment.conf,m_str):
+                elif hasattr(Environment.conf, m_str):
                     try:
-                        exec "mod_enable = getattr(Environment.conf.%s,'mod_enable')" %m_str
+                        exec \
+            "mod_enable = getattr(Environment.conf.%s,'mod_enable')" % m_str
                         try:
-                            exec "mod_enableyes = getattr(Environment.conf.%s,'mod_enable','yes')" %m_str
+                            exec \
+    "mod_enableyes = getattr(Environment.conf.%s,'mod_enable','yes')" % m_str
                         except:
                             pass
                     except:
                         pass
-                if mod_enable and mod_enableyes=="yes":
-                    stringa= "%s.%s.module" % (modules_dir.replace("/", "."), m_str)
-                    m= __import__(stringa, globals(), locals(), ["m"], -1)
+                if mod_enable and mod_enableyes == "yes":
+                    stringa = "%s.%s.module" % (
+                                        modules_dir.replace("/", "."), m_str)
+                    m = __import__(stringa, globals(), locals(), ["m"], -1)
                     Environment.modulesList.append(str(m.MODULES_NAME))
-                    if hasattr(m,"TEMPLATES"):
+                    if hasattr(m, "TEMPLATES"):
                         HtmlHandler.templates_dir.append(m.TEMPLATES)
                     for class_name in m.MODULES_FOR_EXPORT:
-                        exec 'module = m.'+ class_name
+                        exec 'module = m.' + class_name
                         self.modules[class_name] = {
                                         'module': module(),
                                         'type': module.VIEW_TYPE[0],
                                         'module_dir': "%s" % (m_str),
-                                        'guiDir':m.GUI_DIR}
-            Environment.pg2log.info("LISTA DEI MODULI CARICATI E FUNZIONANTI %s" %(str(repr(Environment.modulesList))))
-            HtmlHandler.templates_dir.append("promogest/modules/Agenti/templates/") # da aggiungere a mano perchè al momento Agenti non è un vero e proprio modulo
+                                        'guiDir': m.GUI_DIR}
+            Environment.pg2log.info(
+                "LISTA DEI MODULI CARICATI E FUNZIONANTI %s" % (
+                    str(repr(Environment.modulesList))))
+            HtmlHandler.templates_dir.append(
+                "promogest/modules/Agenti/templates/")
+# da aggiungere a mano perchè al momento Agenti non è un vero e proprio modulo
             HtmlHandler.jinja_env = HtmlHandler.env(HtmlHandler.templates_dir)
             self.groupModulesByType()
             for a in Environment.modulesList[:]:

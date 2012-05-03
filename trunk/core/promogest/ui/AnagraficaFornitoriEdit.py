@@ -23,19 +23,17 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 from promogest.ui.AnagraficaComplessaEdit import AnagraficaEdit
-
+from promogest.ui.AnagraficaPGEdit import AnagraficaPGEdit
 import promogest.dao.Fornitore
 from promogest.dao.Fornitore import Fornitore
 from promogest.modules.Contatti.dao.ContattoFornitore import ContattoFornitore
-from promogest.modules.Contatti.dao.RecapitoContatto import RecapitoContatto
-from promogest.modules.Contatti.dao.Contatto import Contatto
 from promogest.dao.DaoUtils import *
 from promogest.ui.utils import *
 from promogest.ui.utilsCombobox import *
 from promogest.ui.gtk_compat import *
 
 
-class AnagraficaFornitoriEdit(AnagraficaEdit):
+class AnagraficaFornitoriEdit(AnagraficaEdit, AnagraficaPGEdit):
     """ Modifica un record dell'anagrafica dei fornitori """
 
     def __init__(self, anagrafica):
@@ -44,19 +42,17 @@ class AnagraficaFornitoriEdit(AnagraficaEdit):
                             'anagrafica_fornitori_detail_notebook',
                             'Dati fornitore',
                             gladeFile='_anagrafica_fornitori_elements.glade')
+        AnagraficaPGEdit.__init__(self, "fornitore")
         self._widgetFirstFocus = self.codice_entry
 
     def draw(self,cplx=False):
         fillComboBoxNazione(self.nazione_combobox, default="Italia")
-        #Popola combobox categorie fornitori
         fillComboboxCategorieFornitori(self.id_categoria_fornitore_customcombobox.combobox)
         self.id_categoria_fornitore_customcombobox.connect('clicked',
                                                            on_id_categoria_fornitore_customcombobox_clicked)
-        #Popola combobox pagamenti
         fillComboboxPagamenti(self.id_pagamento_customcombobox.combobox)
         self.id_pagamento_customcombobox.connect('clicked',
                                                  on_id_pagamento_customcombobox_clicked)
-        #Popola combobox magazzini
         fillComboboxMagazzini(self.id_magazzino_customcombobox.combobox)
         self.id_magazzino_customcombobox.connect('clicked',
                                                  on_id_magazzino_customcombobox_clicked)
@@ -72,13 +68,12 @@ class AnagraficaFornitoriEdit(AnagraficaEdit):
 
 
     def setDao(self, dao):
+        self.dao = dao
         if dao is None:
             # Crea un nuovo Dao vuoto
             self.dao = Fornitore()
             self.dao.codice = promogest.dao.Fornitore.getNuovoCodiceFornitore()
-        else:
-            # Ricrea il Dao con una connessione al DBMS SQL
-            self.dao = Fornitore().getRecord(id=dao.id)
+
         if dao is None:
             self.dao_contatto = ContattoFornitore()
         else:
@@ -90,45 +85,45 @@ class AnagraficaFornitoriEdit(AnagraficaEdit):
         self._refresh()
         return self.dao
 
-    def _refresh(self):
-        if self.dao.ragione_sociale:
-            rag_soc= self.dao.ragione_sociale
-        elif self.dao.cognome or self.dao.nome:
-            rag_soc = str(self.dao.cognome)+" "+str(self.dao.nome)
-        elif self.dao.insegna:
-            rag_soc = self.dao.insegna
-        else:
-            rag_soc = ""
-        self.codice_entry.set_text(self.dao.codice or '')
-        self.ragione_sociale_entry.set_text(rag_soc)
-        if self.fornitore_insegna:
-            self.insegna_entry.set_text(self.dao.insegna or '')
-#        self.cognome_entry.set_text(self.dao.cognome or '')
-#        self.nome_entry.set_text(self.dao.nome or '')
-        self.indirizzo_sede_operativa_entry.set_text(self.dao.sede_operativa_indirizzo or '')
-        self.cap_sede_operativa_entry.set_text(self.dao.sede_operativa_cap or '')
-        self.localita_sede_operativa_entry.set_text(self.dao.sede_operativa_localita or '')
-        self.provincia_sede_operativa_entry.set_text(self.dao.sede_operativa_provincia or '')
-        self.indirizzo_sede_legale_entry.set_text(self.dao.sede_legale_indirizzo or '')
-        self.cap_sede_legale_entry.set_text(self.dao.sede_legale_cap or '')
-        self.localita_sede_legale_entry.set_text(self.dao.sede_legale_localita or '')
-        self.provincia_sede_legale_entry.set_text(self.dao.sede_legale_provincia or '')
-        self.codice_fiscale_entry.set_text(self.dao.codice_fiscale or '')
-        self.partita_iva_entry.set_text(self.dao.partita_iva or '')
-        textview_set_text(self.note_textview, self.dao.note or '')
-        findComboboxRowFromId(self.id_categoria_fornitore_customcombobox.combobox,
-                              self.dao.id_categoria_fornitore)
-        findComboboxRowFromId(self.id_pagamento_customcombobox.combobox,
-                              self.dao.id_pagamento)
-        findComboboxRowFromId(self.id_magazzino_customcombobox.combobox,
-                              self.dao.id_magazzino)
-        findComboboxRowFromStr(self.nazione_combobox,self.dao.nazione, 0)
-        self.showTotaliDareAvere()
-        self.cellulare_principale_entry.set_text(self.dao.cellulare_principale)
-        self.telefono_principale_entry.set_text(self.dao.telefono_principale)
-        self.email_principale_entry.set_text(self.dao.email_principale)
-        self.fax_principale_entry.set_text(self.dao.fax_principale)
-        self.sito_web_principale_entry.set_text(self.dao.sito_principale)
+#    def _refresh(self):
+#        if self.dao.ragione_sociale:
+#            rag_soc= self.dao.ragione_sociale
+#        elif self.dao.cognome or self.dao.nome:
+#            rag_soc = str(self.dao.cognome)+" "+str(self.dao.nome)
+#        elif self.dao.insegna:
+#            rag_soc = self.dao.insegna
+#        else:
+#            rag_soc = ""
+#        self.codice_entry.set_text(self.dao.codice or '')
+#        self.ragione_sociale_entry.set_text(rag_soc)
+#        if self.fornitore_insegna:
+#            self.insegna_entry.set_text(self.dao.insegna or '')
+##        self.cognome_entry.set_text(self.dao.cognome or '')
+##        self.nome_entry.set_text(self.dao.nome or '')
+#        self.indirizzo_sede_operativa_entry.set_text(self.dao.sede_operativa_indirizzo or '')
+#        self.cap_sede_operativa_entry.set_text(self.dao.sede_operativa_cap or '')
+#        self.localita_sede_operativa_entry.set_text(self.dao.sede_operativa_localita or '')
+#        self.provincia_sede_operativa_entry.set_text(self.dao.sede_operativa_provincia or '')
+#        self.indirizzo_sede_legale_entry.set_text(self.dao.sede_legale_indirizzo or '')
+#        self.cap_sede_legale_entry.set_text(self.dao.sede_legale_cap or '')
+#        self.localita_sede_legale_entry.set_text(self.dao.sede_legale_localita or '')
+#        self.provincia_sede_legale_entry.set_text(self.dao.sede_legale_provincia or '')
+#        self.codice_fiscale_entry.set_text(self.dao.codice_fiscale or '')
+#        self.partita_iva_entry.set_text(self.dao.partita_iva or '')
+#        textview_set_text(self.note_textview, self.dao.note or '')
+#        findComboboxRowFromId(self.id_categoria_fornitore_customcombobox.combobox,
+#                              self.dao.id_categoria_fornitore)
+#        findComboboxRowFromId(self.id_pagamento_customcombobox.combobox,
+#                              self.dao.id_pagamento)
+#        findComboboxRowFromId(self.id_magazzino_customcombobox.combobox,
+#                              self.dao.id_magazzino)
+#        findComboboxRowFromStr(self.nazione_combobox,self.dao.nazione, 0)
+#        self.showTotaliDareAvere()
+#        self.cellulare_principale_entry.set_text(self.dao.cellulare_principale)
+#        self.telefono_principale_entry.set_text(self.dao.telefono_principale)
+#        self.email_principale_entry.set_text(self.dao.email_principale)
+#        self.fax_principale_entry.set_text(self.dao.fax_principale)
+#        self.sito_web_principale_entry.set_text(self.dao.sito_principale)
 
     def showTotaliDareAvere(self):
 
@@ -191,114 +186,13 @@ class AnagraficaFornitoriEdit(AnagraficaEdit):
         self.dao.persist()
 
 
-        #SEzione dedicata ai contatti/recapiti principali
-        if Environment.tipo_eng =="sqlite" and not self.dao_contatto.id:
-            forMaxId = Contatto().select(batchSize=None)
-            if not forMaxId:
-                self.dao_contatto.id = 1
-            else:
-                idss = []
-                for l in forMaxId:
-                    idss.append(l.id)
-                self.dao_contatto.id = (max(idss)) +1
-        appa = ""
-        if self.dao.ragione_sociale:
-            appa = appa +" "+self.dao.ragione_sociale
-        if self.dao.cognome:
-            appa = appa+" " +self.dao.cognome
-        self.dao_contatto.cognome = appa
-        if self.dao.nome:
-            self.dao_contatto.nome = self.dao.nome
-        self.dao_contatto.tipo_contatto ="fornitore"
-        self.dao_contatto.id_fornitore =self.dao.id
-        self.dao_contatto.persist()
+        self.aggiungi_contatto_pg(self, "fornitore")
 
-        recont = RecapitoContatto().select(idContatto=self.dao_contatto.id,tipoRecapito="Cellulare")
-        if recont:
-            reco = recont[0]
-            if self.cellulare_principale_entry.get_text() =="" or reco.recapito=="":
-                reco.delete()
-            else:
-                reco.id_contatto = self.dao_contatto.id
-                reco.tipo_recapito = "Cellulare"
-                reco.recapito = self.cellulare_principale_entry.get_text()
-                reco.persist()
-
-        else:
-            reco = RecapitoContatto()
-            reco.id_contatto = self.dao_contatto.id
-            reco.tipo_recapito = "Cellulare"
-            reco.recapito = self.cellulare_principale_entry.get_text()
-            reco.persist()
-
-        recont = RecapitoContatto().select(idContatto=self.dao_contatto.id,tipoRecapito="Telefono")
-        if recont:
-            reco = recont[0]
-            if self.telefono_principale_entry.get_text() =="" or reco.recapito=="":
-                reco.delete()
-            else:
-                reco.id_contatto = self.dao_contatto.id
-                reco.tipo_recapito = "Telefono"
-                reco.recapito = self.telefono_principale_entry.get_text()
-                reco.persist()
-        else:
-            reco = RecapitoContatto()
-            reco.id_contatto = self.dao_contatto.id
-            reco.tipo_recapito = "Telefono"
-            reco.recapito = self.telefono_principale_entry.get_text()
-            reco.persist()
-
-
-        recont = RecapitoContatto().select(idContatto=self.dao_contatto.id,tipoRecapito="Email")
-        if recont:
-            reco = recont[0]
-            if self.email_principale_entry.get_text() =="" or reco.recapito=="":
-                reco.delete()
-            else:
-                reco.id_contatto = self.dao_contatto.id
-                reco.tipo_recapito = "Email"
-                reco.recapito = self.email_principale_entry.get_text()
-                reco.persist()
-        else:
-            reco = RecapitoContatto()
-            reco.id_contatto = self.dao_contatto.id
-            reco.tipo_recapito = "Email"
-            reco.recapito = self.email_principale_entry.get_text()
-            reco.persist()
-
-        recontw = RecapitoContatto().select(idContatto=self.dao_contatto.id,tipoRecapito="Sito")
-        if recontw:
-            recow = recontw[0]
-            if self.sito_web_principale_entry.get_text() =="" or recow.recapito=="":
-                recow.delete()
-            else:
-                recow.id_contatto = self.dao_contatto.id
-                recow.tipo_recapito = "Sito"
-                recow.recapito = self.sito_web_principale_entry.get_text()
-                recow.persist()
-        else:
-            recow = RecapitoContatto()
-            recow.id_contatto = self.dao_contatto.id
-            recow.tipo_recapito = "Sito"
-            recow.recapito = self.sito_web_principale_entry.get_text()
-            recow.persist()
-
-        recont = RecapitoContatto().select(idContatto=self.dao_contatto.id,tipoRecapito="Fax")
-        if recont:
-            reco = recont[0]
-            if self.fax_principale_entry.get_text() =="" or reco.recapito=="":
-                reco.delete()
-            else:
-                reco.id_contatto = self.dao_contatto.id
-                reco.tipo_recapito = "Fax"
-                reco.recapito = self.fax_principale_entry.get_text()
-                reco.persist()
-        else:
-            reco = RecapitoContatto()
-            reco.id_contatto = self.dao_contatto.id
-            reco.tipo_recapito = "Fax"
-            reco.recapito = self.fax_principale_entry.get_text()
-            reco.persist()
+        self.save_contatto_cellulare_principale(self, self.dao_contatto)
+        self.save_contatto_telefono_principale(self, self.dao_contatto)
+        self.save_contatto_fax_principale(self, self.dao_contatto)
+        self.save_contatto_email_principale(self, self.dao_contatto)
+        self.save_contatto_sito_principale(self, self.dao_contatto)
 
     def on_scheda_contabile_togglebutton_clicked(self, toggleButton):
         """
@@ -327,34 +221,6 @@ class AnagraficaFornitoriEdit(AnagraficaEdit):
         anag.filter.solo_contabili_check.set_active(True)
         anag.filter.refresh()
 
-
-    def on_promemoria_togglebutton_toggled(self, toggleButton):
-        if not(toggleButton.get_active()):
-            toggleButton.set_active(False)
-            return
-        if posso("PR"):
-            if self.dao.id is None:
-                msg = 'Prima di poter inserire i contatti occorre salvare il Fornitore.\n Salvare ?'
-                if YesNoDialog(msg=msg, transient=self.dialogTopLevel):
-                    self.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, GTK_RESPONSE_APPLY)
-                else:
-                    toggleButton.set_active(False)
-                    return
-
-            from promogest.ui.AnagraficaPromemoria import AnagraficaPromemoria
-            if self.dao.ragione_sociale:
-                stringa = self.dao.ragione_sociale
-            elif self.dao.cognome:
-                stringa = self.dao.cognome
-            else:
-                stringa = None
-            anag = AnagraficaPromemoria(pg=stringa)
-            anagWindow = anag.getTopLevel()
-
-            showAnagraficaRichiamata(self.dialogTopLevel, anagWindow, toggleButton)
-        else:
-            fenceDialog()
-            toggleButton.set_active(False)
 
     def on_icon_press_primary(self,entry,position,event):
         if position.value_nick == "primary":

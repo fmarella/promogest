@@ -22,8 +22,8 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-from promogest.ui.AnagraficaSemplice import Anagrafica, AnagraficaDetail, AnagraficaFilter
-from promogest import Environment
+from promogest.ui.AnagraficaSemplice import \
+                 Anagrafica, AnagraficaDetail, AnagraficaFilter
 from promogest.dao.CodiceABarreArticolo import CodiceABarreArticolo
 from promogest.ui.utils import *
 from promogest.ui.utilsCombobox import *
@@ -33,18 +33,17 @@ from promogest.ui.gtk_compat import *
 class AnagraficaCodiciABarreArticoli(Anagrafica):
     """ Anagrafica codici a barre """
 
-    def __init__(self, idArticolo = None):
+    def __init__(self, idArticolo=None):
         self._idArticolo = idArticolo
         Anagrafica.__init__(self, 'Promogest - Anagrafica codici a barre',
                             '_Codici a barre',
                             AnagraficaCodiciABarreArticoliFilter(self),
                             AnagraficaCodiciABarreArticoliDetail(self))
 
-
     def draw(self):
         # Colonne della Treeview per il filtro/modifica
         treeview = self.anagrafica_treeview
-        self.row=None
+        self.row = None
         renderer = gtk.CellRendererText()
         renderer.set_property('editable', False)
         renderer.connect('edited', self.on_column_edited, treeview, False)
@@ -81,14 +80,14 @@ class AnagraficaCodiciABarreArticoli(Anagrafica):
 
         self.refresh()
 
-    def on_generic_combobox_changed(self,combobox):
-        if self.codBar_combo.get_active()==0:
+    def on_generic_combobox_changed(self, combobox):
+        if self.codBar_combo.get_active() == 0:
             codice = generateRandomBarCode(ean=13)
-            self.on_record_new_activate(self,codice=codice)
+            self.on_record_new_activate(self, codice=codice)
             #self.codBar_combo.set_active(0)
-        elif self.codBar_combo.get_active()==1:
+        elif self.codBar_combo.get_active() == 1:
             codice = generateRandomBarCode(ean=8)
-            self.on_record_new_activate(self,codice=codice)
+            self.on_record_new_activate(self, codice=codice)
         else:
             self.codBar_combo.set_active(-1)
 
@@ -97,17 +96,17 @@ class AnagraficaCodiciABarreArticoli(Anagrafica):
         idArticolo = self._idArticolo
         codice = prepareFilterString(self.filter.codice_filter_entry.get_text())
         self.numRecords = CodiceABarreArticolo().count(idArticolo=idArticolo,
-                                                                   codice=codice)
+                                                       codice=codice)
 
         self._refreshPageCount()
 
         # Let's save the current search as a closure
         def filterClosure(offset, batchSize):
             return CodiceABarreArticolo().select(idArticolo=idArticolo,
-                                                             codice=codice,
-                                                             orderBy=self.orderBy,
-                                                             offset=self.offset,
-                                                             batchSize=self.batchSize)
+                                                     codice=codice,
+                                                     orderBy=self.orderBy,
+                                                     offset=self.offset,
+                                                     batchSize=self.batchSize)
 
         self._filterClosure = filterClosure
 
@@ -126,11 +125,10 @@ class AnagraficaCodiciABarreArticoliFilter(AnagraficaFilter):
 
     def __init__(self, anagrafica):
         AnagraficaFilter.__init__(self,
-                                  anagrafica,
-                                  'anagrafica_codici_a_barre_articoli_filter_table',
-                                  gladeFile='_anagrafica_codici_a_barre_articoli_elements.glade')
+              anagrafica,
+              'anagrafica_codici_a_barre_articoli_filter_table',
+              gladeFile='_anagrafica_codici_a_barre_articoli_elements.glade')
         self._widgetFirstFocus = self.codice_filter_entry
-
 
     def clear(self):
         # Annullamento filtro
@@ -144,11 +142,11 @@ class AnagraficaCodiciABarreArticoliDetail(AnagraficaDetail):
 
     def __init__(self, anagrafica):
         AnagraficaDetail.__init__(self,
-                                anagrafica,
-                                gladeFile='_anagrafica_codici_a_barre_articoli_elements.glade')
-
+                anagrafica,
+                gladeFile='_anagrafica_codici_a_barre_articoli_elements.glade')
 
     def setDao(self, dao, codice=None):
+        self.dao = dao
         if dao is None:
             self.dao = CodiceABarreArticolo()
             self.dao.id_articolo = self._anagrafica._idArticolo
@@ -158,15 +156,12 @@ class AnagraficaCodiciABarreArticoliDetail(AnagraficaDetail):
             else:
                 self._anagrafica._newRow((self.dao, '', False))
             self._refresh()
-        else:
-            self.dao = dao
         return self.dao
 
     def updateDao(self):
         if self.dao:
             self.dao = CodiceABarreArticolo().getRecord(id=self.dao.id)
         self._refresh()
-
 
     def _refresh(self):
         sel = self._anagrafica.anagrafica_treeview.get_selection()
@@ -176,13 +171,13 @@ class AnagraficaCodiciABarreArticoliDetail(AnagraficaDetail):
             model.set_value(iterator, 1, self.dao.codice)
             model.set_value(iterator, 2, self.dao.primario or False)
 
-
     def saveDao(self):
         sel = self._anagrafica.anagrafica_treeview.get_selection()
         (model, iterator) = sel.get_selected()
         codice = model.get_value(iterator, 1) or ''
         if (codice == ''):
-            obligatoryField(self._anagrafica.getTopLevel(), self._anagrafica.anagrafica_treeview)
+            obligatoryField(self._anagrafica.getTopLevel(),
+                                self._anagrafica.anagrafica_treeview)
         self.verifica(codice)
         primario = model.get_value(iterator, 2)
 
@@ -190,7 +185,6 @@ class AnagraficaCodiciABarreArticoliDetail(AnagraficaDetail):
         self.dao.codice = codice
         self.dao.primario = primario
         self.dao.persist()
-
 
     def deleteDao(self):
         self.dao.delete()
@@ -207,6 +201,7 @@ class AnagraficaCodiciABarreArticoliDetail(AnagraficaDetail):
 
             if bars[0].id_articolo != self._anagrafica._idArticolo:
                 articolo = leggiArticolo(bars[0].id_articolo)
-                msg = "Codice gia' assegnato all'articolo: \n\nCod. " + articolo["codice"] + " (" + articolo["denominazione"] + ")"
+                msg = "Codice gia' assegnato all'articolo: \n\nCod. " \
+                + articolo["codice"] + " (" + articolo["denominazione"] + ")"
                 messageInfo(msg=msg, transient=self._anagrafica.getTopLevel())
-                raise Exception, 'Operation aborted: Cod Barre già assegnato'
+                raise Exception('Operation aborted: Cod Barre già assegnato')

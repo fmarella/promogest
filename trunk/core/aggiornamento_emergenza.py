@@ -10,4 +10,4 @@ import pysvn
 
 client = pysvn.Client()
 client.exception_style = 0
-client.update( '.' )
+client.update('.')

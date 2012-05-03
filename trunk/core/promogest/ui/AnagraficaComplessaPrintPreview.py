@@ -35,20 +35,21 @@ class AnagraficaPrintPreview(GladeWidget):
     """ Print preview """
     # FIXME: a lot of duplicated code from AnagraficaFilter here!
 
-    def __init__(self, anagrafica, windowTitle, previewTemplate,veter=False):
+    def __init__(self, anagrafica, windowTitle, previewTemplate, veter=False):
         GladeWidget.__init__(self, 'htmlviewer')
         self.windowTitle = windowTitle
         self.visualizzatore_html.set_title(windowTitle)
         self._anagrafica = anagrafica
-        self._veter=veter
+        self._veter = veter
 
         self.bodyWidget = FilterWidget(owner=self, resultsElement='html')
         self.bodyWidget.filter_navigation_hbox.destroy()
         self.bodyWidget.info_label.set_markup("INSERT INFO")
-        self.html_scrolledwindow.add_with_viewport(self.bodyWidget.getTopLevel())
+        self.html_scrolledwindow.add_with_viewport(
+                                            self.bodyWidget.getTopLevel())
 
         self.print_on_screen_html = self.bodyWidget.resultsElement
-        self._gtkHtmlDocuments = None # Will be filled later
+        self._gtkHtmlDocuments = None
         self._previewTemplate = previewTemplate
         self.html = createHtmlObj(self)
 
@@ -61,10 +62,7 @@ class AnagraficaPrintPreview(GladeWidget):
         self.numRecords = self.bodyWidget.numRecords
         self._filterClosure = self._anagrafica.filter._filterClosure
         self._filterCountClosure = self._anagrafica.filter._filterCountClosure
-
         self.placeWindow(self.visualizzatore_html)
-
-
         self.bodyWidget.generic_button.set_property('visible', False)
 
         #generaButton = self.bodyWidget.generic_button
@@ -76,12 +74,12 @@ class AnagraficaPrintPreview(GladeWidget):
         from PrintDialog import PrintDialogHandler
         from xhtml2pdf import pisa
         f = self.html_code.replace("€","&#8364;")
-        g = file(Environment.tempDir+".temp.pdf", "wb")
-        pbar(self.pbar,pulse=True,text="GENERAZIONE STAMPA ATTENDERE")
-        pdf = pisa.CreatePDF(str(f),g)
+        g = file(Environment.tempDir + ".temp.pdf", "wb")
+        pbar(self.pbar, pulse=True, text="GENERAZIONE STAMPA ATTENDERE")
+        pisa.CreatePDF(str(f), g)
         g .close()
-        pbar(self.pbar,stop=True)
-        anag = PrintDialogHandler(self,self.windowTitle)
+        pbar(self.pbar, stop=True)
+        anag = PrintDialogHandler(self, self.windowTitle)
         anagWindow = anag.getTopLevel()
         returnWindow = self.bodyWidget.getTopLevel().get_toplevel()
         anagWindow.set_transient_for(returnWindow)
@@ -90,22 +88,21 @@ class AnagraficaPrintPreview(GladeWidget):
     def on_csv_button_clicked(self, button):
         messageInfo(msg="NON ANCORA IMPLEMENTATO")
 
-
-    def on_generic_combobox_changed(self,combobox):
-        if self.codBar_combo.get_active()==0:
+    def on_generic_combobox_changed(self, combobox):
+        if self.codBar_combo.get_active() == 0:
             from PrintDialog import PrintDialogHandler
             from  xhtml2pdf import pisa
             f = self.html_code
-            g = file(Environment.tempDir+".temp.pdf", "wb")
-            pdf = pisa.CreatePDF(str(f),g)
+            g = file(Environment.tempDir + ".temp.pdf", "wb")
+            pisa.CreatePDF(str(f), g)
             g .close()
-            anag = PrintDialogHandler(self,self.windowTitle)
+            anag = PrintDialogHandler(self, self.windowTitle)
             anagWindow = anag.getTopLevel()
             returnWindow = self.bodyWidget.getTopLevel().get_toplevel()
             anagWindow.set_transient_for(returnWindow)
             anagWindow.show_all()
             #self.codBar_combo.set_active(0)
-        elif self.codBar_combo.get_active()==1:
+        elif self.codBar_combo.get_active() == 1:
             print "ANTEPRIMA CSV"
         else:
             self.codBar_combo.set_active(-1)
@@ -121,18 +118,19 @@ class AnagraficaPrintPreview(GladeWidget):
         daos = self.bodyWidget.runFilter(offset=None,
                                         batchSize=None,
                                          filterClosure=self._filterClosure)
-        self.numRecords = self.bodyWidget.countFilterResults(self._filterCountClosure)
+        self.numRecords = self.bodyWidget.countFilterResults(
+                                                self._filterCountClosure)
 #        self._refreshPageCount()
         pageData = {}
         self.html_code = "<html><body></body></html>"
         if daos:
             pageData = {
-                    "file" :self._previewTemplate[1],
+                    "file": self._previewTemplate[1],
                     #"dao":daos,
-                    "objects":daos
+                    "objects": daos
                     }
             self.html_code = renderTemplate(pageData)
-        renderHTML(self.print_on_screen_html,self.html_code)
+        renderHTML(self.print_on_screen_html, self.html_code)
 
     def on_print_on_screen_dialog_response(self, dialog, responseId):
         if responseId == GTK_RESPONSE_CLOSE:

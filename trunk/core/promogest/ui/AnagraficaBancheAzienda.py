@@ -28,7 +28,8 @@ from promogest.ui.AnagraficaComplessaHtml import AnagraficaHtml
 from promogest.ui.AnagraficaComplessaFilter import AnagraficaFilter
 from promogest.dao.BancheAzienda import BancheAzienda
 from promogest.ui.utils import prepareFilterString, obligatoryField, \
-dateToString, stringToDate, fillComboboxBanche, on_id_banca_customcombobox_clicked, \
+                    dateToString, stringToDate, fillComboboxBanche,\
+                    on_id_banca_customcombobox_clicked, \
 findComboboxRowFromId, findIdFromCombobox
 
 
@@ -48,25 +49,26 @@ class AnagraficaBancheAzienda(Anagrafica):
                             aziendaStr=aziendaStr)
         self.records_file_export.set_sensitive(True)
 
+
 class AnagraficaBancheAziendaFilter(AnagraficaFilter):
     """ Filtro per la ricerca nell'anagrafica delle banche azienda """
 
     def __init__(self, anagrafica):
         AnagraficaFilter.__init__(self,
-                                  anagrafica,
-                                  'anagrafica_banche_azienda_filter_table',
-                                  gladeFile='_anagrafica_banche_azienda_elements.glade')
+              anagrafica,
+              'anagrafica_banche_azienda_filter_table',
+              gladeFile='_anagrafica_banche_azienda_elements.glade')
         self._widgetFirstFocus = self.numero_conto_filter_entry
         self.orderBy = 'numero_conto'
-
 
     def draw(self, cplx=False):
         self._treeViewModel = self.filter_listore
         self.refresh()
-        
+
     def _reOrderBy(self, column):
         if column.get_name() == "numero_conto_column":
-            return self._changeOrderBy(column, (None, BancheAzienda.numero_conto))
+            return self._changeOrderBy(
+                column, (None, BancheAzienda.numero_conto))
 
     def clear(self):
         # Annullamento filtro
@@ -76,7 +78,8 @@ class AnagraficaBancheAziendaFilter(AnagraficaFilter):
     def refresh(self):
         # Aggiornamento TreeView
         idAzienda = self._anagrafica._idAzienda
-        numero_conto = prepareFilterString(self.numero_conto_filter_entry.get_text())
+        numero_conto = prepareFilterString(
+                self.numero_conto_filter_entry.get_text())
 
         def filterCountClosure():
             return BancheAzienda().count(idAzienda=idAzienda,
@@ -104,17 +107,19 @@ class AnagraficaBancheAziendaFilter(AnagraficaFilter):
 
         for dao in daos:
             self._treeViewModel.append((dao,
-                                        (dao.denominazione_banca), 
+                                        (dao.denominazione_banca),
                                         (dao.numero_conto or ''),
                                         (dateToString(dao.data_riporto) or ''),
                                         (str(dao.valore_riporto) or ''),
                                         (dao.codice_sia or ''),
                                         (dao.banca_predefinita or False)))
 
+
 class AnagraficaBancheAziendaHtml(AnagraficaHtml):
     def __init__(self, anagrafica):
         AnagraficaHtml.__init__(self, anagrafica, 'banca_azienda',
                                 'Dettaglio della banca azienda')
+
 
 class AnagraficaBancheAziendaReport(AnagraficaReport):
     def __init__(self, anagrafica):
@@ -124,15 +129,16 @@ class AnagraficaBancheAziendaReport(AnagraficaReport):
                                   htmlTemplate='banche_azienda',
                                   sxwTemplate='banche_azienda')
 
+
 class AnagraficaBancheAziendaEdit(AnagraficaEdit):
     """ Modifica un record dell'anagrafica delle banche azienda """
 
     def __init__(self, anagrafica):
         AnagraficaEdit.__init__(self,
-                                anagrafica,
-                                'anagrafica_banche_azienda_detail_table',
-                                'Dati banche azienda',
-                                gladeFile='_anagrafica_banche_azienda_elements.glade')
+            anagrafica,
+            'anagrafica_banche_azienda_detail_table',
+            'Dati banche azienda',
+            gladeFile='_anagrafica_banche_azienda_elements.glade')
         self._widgetFirstFocus = self.numero_conto_entry
         fillComboboxBanche(self.id_banca_ccb.combobox, short=20)
         self.id_banca_ccb.connect('clicked',

@@ -1074,9 +1074,8 @@ class TestataDocumento(Dao):
 
 
     def delete(self):
-        """
-        Cancelliamo una testata documento con tutti i cascade
-        """
+        """ Cancelliamo una testata documento con tutti i cascade"""
+
         ifd = InformazioniFatturazioneDocumento().select(id_fattura=self.id, batchSize=None)
         if ifd:
             for f in ifd:

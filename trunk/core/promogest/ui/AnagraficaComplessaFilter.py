@@ -34,7 +34,8 @@ class AnagraficaFilter(GladeWidget):
     def __init__(self, anagrafica, rootWidget,
                                     gladeFile=None,
                                     module=False):
-        GladeWidget.__init__(self, rootWidget, fileName=gladeFile, isModule=module)
+        GladeWidget.__init__(self, rootWidget, fileName=gladeFile,
+                                                        isModule=module)
         self._anagrafica = anagrafica
         self._widgetFirstFocus = None
         self._isSensitive = True
@@ -54,14 +55,13 @@ class AnagraficaFilter(GladeWidget):
             raise NotImplementedError
         self._filterCountClosure = __defaultFilterCountClosure
 
-
     def build(self):
         """ reindirizza alcuni campi e metodi dal filterWidget """
         self.bodyWidget = self._anagrafica.bodyWidget
         # mapping fields and methods from bodyWidget to this class
         self._changeOrderBy = self.bodyWidget._changeOrderBy
         self.orderBy = self.bodyWidget.orderBy = None
-        self.join =self.bodyWidget.join =None
+        self.join = self.bodyWidget.join = None
         self.batchSize = setconf("Numbers", "batch_size")
         model = self._anagrafica.batchsize_combo.get_model()
         for r in model:
@@ -94,8 +94,8 @@ class AnagraficaFilter(GladeWidget):
 
     def on_filter_treeview_row_activated(self, treeview, path, column):
         """ Gestisce la conferma ed apertura della anagrafica """
-        self._anagrafica.on_anagrafica_filter_treeview_row_activated(treeview, path, column)
-
+        self._anagrafica.on_anagrafica_filter_treeview_row_activated(
+                                                treeview, path, column)
 
     def on_filter_treeview_cursor_changed(self, treeview):
         """ Gestisce lo spostamento tra le righe """
@@ -105,25 +105,31 @@ class AnagraficaFilter(GladeWidget):
         """
         Gestisce le selezioni multiple (se attive)
         """
-        self._anagrafica.on_anagrafica_filter_treeview_selection_changed(treeSelection)
+        self._anagrafica.on_anagrafica_filter_treeview_selection_changed(
+                                                            treeSelection)
 
     def runFilter(self, offset='__default__', batchSize='__default__',
                                       progressCB=None, progressBatchSize=0):
         """ Recupera i dati """
         self.bodyWidget.orderBy = self.orderBy
-        if batchSize == '__default__' and  self._anagrafica.batchsize_combo.get_active_iter():
+        if batchSize == '__default__' and \
+                        self._anagrafica.batchsize_combo.get_active_iter():
             iterator = self._anagrafica.batchsize_combo.get_active_iter()
             model = self._anagrafica.batchsize_combo.get_model()
             if iterator is not None:
                 batchSize = model.get_value(iterator, 0)
         return self.bodyWidget.runFilter(offset=offset, batchSize=batchSize,
-                                         progressCB=progressCB, progressBatchSize=progressBatchSize,
+                                         progressCB=progressCB,
+                                         progressBatchSize=progressBatchSize,
                                          filterClosure=self._filterClosure)
 
     def countFilterResults(self):
         """ Conta i dati """
-        totale_daos = self.bodyWidget.countFilterResults(self._filterCountClosure)
-        self._anagrafica.tot_daos_label.set_markup(" <b>"+str(totale_daos or "Nessuno")+"</b>")
+        totale_daos = self.bodyWidget.countFilterResults(
+                                                    self._filterCountClosure)
+        self._anagrafica.tot_daos_label.set_markup(" <b>" \
+                                    + str(totale_daos or "Nessuno")
+                                    + "</b>")
         return totale_daos
 
     def _refreshPageCount(self):
@@ -138,7 +144,8 @@ class AnagraficaFilter(GladeWidget):
             dao = model.get_value(iter, 0)
             if dao.sameRecord(self._anagrafica._selectedDao):
                 selection.select_path(path)
-                self._anagrafica.on_anagrafica_filter_treeview_cursor_changed(self._anagrafica.anagrafica_filter_treeview)
+                self._anagrafica.on_anagrafica_filter_treeview_cursor_changed(
+                                self._anagrafica.anagrafica_filter_treeview)
                 return True
             else:
                 return False
@@ -152,7 +159,8 @@ class AnagraficaFilter(GladeWidget):
             model.foreach(foreach_handler, selection)
 
     def getSelectedDao(self):
-        treeViewSelection = self._anagrafica.anagrafica_filter_treeview.get_selection()
+        treeViewSelection = self._anagrafica.anagrafica_filter_treeview.\
+                                                            get_selection()
         if not treeViewSelection:
             return None
         if treeViewSelection.get_mode() != GTK_SELECTIONMODE_MULTIPLE:
@@ -170,25 +178,13 @@ class AnagraficaFilter(GladeWidget):
             else:
                 dao = None
         return dao
-            
-    def getSelectedDaos(self):
-        treeViewSelection = self._anagrafica.anagrafica_filter_treeview.get_selection()
-        if not treeViewSelection:
-            return None
-        if treeViewSelection.get_mode() == GTK_SELECTIONMODE_MULTIPLE:
-            model, iterator = treeViewSelection.get_selected_rows()
-            daos = []
-            for i in iterator:
-                daos.append(model[i][0])
-            return daos
-        else:
-            return None
 
     def getTreeViewModel(self):
         return self._treeViewModel
 
     def on_campo_filter_entry_key_press_event(self, widget, event):
-        return self._anagrafica.bodyWidget.on_filter_element_key_press_event(widget, event)
+        return self._anagrafica.bodyWidget.on_filter_element_key_press_event(
+                                                                widget, event)
 
     def setFocus(self, widget=None):
         self._anagrafica.bodyWidget.setFocus(widget)

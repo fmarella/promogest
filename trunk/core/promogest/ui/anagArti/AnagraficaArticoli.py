@@ -23,14 +23,11 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 from promogest.ui.gtk_compat import *
-from promogest.ui.GladeWidget import GladeWidget
 from promogest.ui.AnagraficaComplessa import Anagrafica
 from promogest.ui.AnagraficaComplessaFilter import AnagraficaFilter
 from promogest.ui.AnagraficaComplessaReport import AnagraficaReport
 from promogest.ui.AnagraficaComplessaHtml import AnagraficaHtml
 from promogest.ui.anagArti.AnagraficaArticoliEdit import AnagraficaArticoliEdit
-from promogest import Environment
-
 import promogest.dao.Articolo
 from promogest.dao.Articolo import Articolo
 import promogest.dao.Fornitura
@@ -39,11 +36,6 @@ from promogest.ui.utils import *
 from promogest.ui.utilsCombobox import *
 if posso("PW"):
     from promogest.modules.PromoWear.ui.PromowearUtils import *
-    from promogest.modules.PromoWear.dao.ArticoloTagliaColore import ArticoloTagliaColore
-    from promogest.modules.PromoWear.dao.GruppoTaglia import GruppoTaglia
-    from promogest.modules.PromoWear.dao.Taglia import Taglia
-    from promogest.modules.PromoWear.dao.Colore import Colore
-    from promogest.modules.PromoWear.dao.AnnoAbbigliamento import AnnoAbbigliamento
     from promogest.modules.PromoWear.ui import AnagraficaArticoliPromoWearExpand
 
 class AnagraficaArticoli(Anagrafica):
@@ -70,7 +62,7 @@ class AnagraficaArticoli(Anagrafica):
             if dao.cancellato:
                 msg = "L'articolo risulta eliminato.\nSi desidera riattivare l'articolo ?"
                 if YesNoDialog(msg=msg, transient=self.getTopLevel()):
-                    daoArticolo = Articolo().getRecord(id= dao.id)
+                    daoArticolo = Articolo().getRecord(id=dao.id)
                     daoArticolo.cancellato = False
                     daoArticolo.persist()
 
@@ -119,7 +111,8 @@ class AnagraficaArticoli(Anagrafica):
         self.editElement.dao.descrizione_etichetta = dao.descrizione_etichetta
         self.editElement.dao.stampa_listino = dao.stampa_listino
         self.editElement.dao.descrizione_listino = dao.descrizione_listino
-        self.editElement.dao.aggiornamento_listino_auto = dao.aggiornamento_listino_auto
+        self.editElement.dao.aggiornamento_listino_auto = \
+                                        dao.aggiornamento_listino_auto
         self.editElement.dao.timestamp_variazione = dao.timestamp_variazione
         self.editElement.dao.note = dao.note
         self.editElement.dao.url_immagine = dao.url_immagine

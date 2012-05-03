@@ -98,7 +98,6 @@ def leggiArticolo(id, full=False, idFornitore=False, data=None):
     Restituisce un dizionario con le informazioni sull'articolo letto
     """
     from promogest.dao.Articolo import Articolo
-    from promogest.dao.UnitaBase import UnitaBase
     _id = None
     _denominazione = ''
     _codice = ''
@@ -113,7 +112,7 @@ def leggiArticolo(id, full=False, idFornitore=False, data=None):
     _codicearticolofornitore = ""
     if id is not None:
         if posso("PW"):
-            from promogest.modules.PromoWear.ui.PromowearUtils import leggiArticoloPromoWear, leggiFornituraPromoWear
+            from promogest.modules.PromoWear.ui.PromowearUtils import leggiArticoloPromoWear
             artiDict = leggiArticoloPromoWear(id)
             return artiDict
         daoArticolo = Articolo().getRecord(id=id)
@@ -2490,6 +2489,7 @@ def checkCodiceDuplicato(codice=None,id=None,tipo=None):
     else:
         return True
 
+
 def sanitizer(value):
     if value:
         value = value.strip()
@@ -2497,6 +2497,7 @@ def sanitizer(value):
         value = value.replace("%", "")
         value = value.replace(",", ".")
     return value
+
 
 def dividi_in_rate(totale, nrate):
     """Divide un importo in rate
@@ -2507,27 +2508,28 @@ def dividi_in_rate(totale, nrate):
     for i in range(nrate):
         rate.append(mN(totale / nrate, 2))
         somma += mN(rate[i], 2)
-    rate[nrate-1] = rate[0] - mN(somma - totale, 2)
+    rate[nrate - 1] = rate[0] - mN(somma - totale, 2)
     return rate
 
-def mN(value,decimal=None):
+
+def mN(value, decimal=None):
     """
     funzione importante perchè normalizza le valute, mettendo i decimali così
     come settato nel configure e restituisce un arrotondamento corretto
     RICORDA: Per un valore TOTALE quindi con due decimali si deve forzare il 2
     UPDATE: adesso supporta anche lo zero
     """
-    if not value or value =='' or value =="None":
+    if not value or value == '' or value == "None":
         return Decimal(0)
     value = deItalianizza(value)
-    if decimal >=0:
+    if decimal >= 0:
         precisione = decimal
     else:
         precisione = int(setconf(key="decimals", section="Numbers"))
-    if precisione == 0 :
+    if precisione == 0:
         decimals = 0
     else:
-        decimals = Decimal(10) ** -(precisione)
+        decimals = Decimal(10) ** - (precisione)
     newvalue= Decimal(str(value).strip()).quantize(Decimal(decimals), rounding=ROUND_HALF_UP)
     return newvalue
 
@@ -2550,6 +2552,7 @@ def mNLC(value,decimal=None, curr="€ "):
 
     return italianizza(value, decimal=decimal,curr=curr+" ", dp=dp, sep=sep)
 
+
 def mNL(value,decimal=None):
     """
     Per il momento ritorna mN, da implementare la localizzazione
@@ -2558,15 +2561,16 @@ def mNL(value,decimal=None):
     value = mN(value, decimal=decimal)
     return italianizza(value, decimal=decimal)
 
+
 def deItalianizza(value):
     if type("stringa") == type(value):
         if "€" in str(value):
             value = value.replace("€","")
         if "," in str(value) and "." in str(value):
-            value = value.replace(".","")
-            value = value.replace(",",".")
+            value = value.replace(".", "")
+            value = value.replace(",", ".")
         elif "," in str(value):
-            value = value.replace(",",".")
+            value = value.replace(",", ".")
     return value
 
 
@@ -2594,7 +2598,8 @@ def italianizza(value, decimal=0, curr='', sep='.', dp=',',
     '123 456 789.00'
     >>> moneyfmt(Decimal('-0.02'), neg='<', trailneg='>')
     '<0.02>'
-    ATTENZIONE: se si vuole che arrotondi si deve mettere un due ma si deve dare anche
+    ATTENZIONE: se si vuole che arrotondi si deve mettere
+    un due ma si deve dare anche
     un valore con soli due decimali
     """
 #    qq = Decimal(10) ** -places      # 2 places --> '0.01'
@@ -2634,40 +2639,48 @@ def generateRandomBarCode(ean=13):
     import random
     from promogest.dao.CodiceABarreArticolo import CodiceABarreArticolo
     codice = ''
+
     def create(ean):
         """
         crea un codice di tipo ean
         @param ean: tipo di codice ( al momento gestisce  ean8 ed ean13)
         @type ean: int ( 8 o 13 )
         """
-        codice = ''
-        code=[8,0]
-        if ean==13:
+        code = [8, 0]
+        if ean == 13:
             for a in xrange(10):
-                code.append(random.sample([1,2,3,4,5,6,7,8,9,0],1)[0])
-            dispari = (code[1] + code[3] +code[5] +code[7]+code[9]+code[11])*3
-            pari = code[0]+code[2]+code[4]+code[6]+code[8]+code[10]
-        elif ean==8:
+                code.append(random.sample(
+                                    [1, 2, 3, 4, 5, 6, 7, 8, 9, 0], 1)[0])
+            dispari = (code[1] \
+                        + code[3] \
+                        + code[5] \
+                        + code[7] \
+                        + code[9] \
+                        + code[11]) * 3
+            pari = code[0] + code[2] + code[4] + code[6] + code[8] + code[10]
+        elif ean == 8:
             for a in xrange(5):
-                code.append(random.sample([1,2,3,4,5,6,7,8,9,0],1)[0])
-            dispari = (code[0] + code[2] +code[4]+code[6])*3
-            pari = code[1]+code[3]+code[5]
-        tot = 10-((dispari+pari)%10)
-        if tot ==10:
+                code.append(random.sample(
+                                    [1, 2, 3, 4, 5, 6, 7, 8, 9, 0], 1)[0])
+            dispari = (code[0] + code[2] + code[4] + code[6]) * 3
+            pari = code[1] + code[3] + code[5]
+        tot = 10 - ((dispari + pari) % 10)
+        if tot == 10:
             tot = 0
         code.append(tot)
         b = ''
         for d in code:
-            b =b+str(d)
+            b = b + str(d)
         return b
     correct = False
     while correct is False:
         codice = create(ean)
-        there= CodiceABarreArticolo().select(codice=codice)
+        there = CodiceABarreArticolo().select(codice=codice)
         if not there:
             return codice
         else:
             create(ean)
+
 
 def removeCodBarorphan():
     """
@@ -2682,19 +2695,20 @@ def removeCodBarorphan():
             print "CODICE A BARRE ORFANO DI ARTICOLO, VERRA' ELIMINATO", a.codice
             a.delete()
 
+
 def calcolaTotali(daos):
     """
     Preleva i dati del totale del dao e ne fa un dizionario
     """
 
-    plus = ["Fattura vendita","DDT vendita","Preventivo","Vendita dettaglio",
+    plus = ["Fattura vendita", "DDT vendita", "Preventivo", "Vendita dettaglio",
     "Preventivo dettaglio","Ordine a magazzino","Vendita dettaglio CORSO", "Vendita dettaglio SANTIAGO",
 "Ordine beni strumentali","Fattura pro-forma","Fattura differita vendita",
     "Fattura accompagnatoria","Scarico venduto da cassa","Ordine da cliente",
     "Ordine a fornitore","DDT acquisto",
     "Fattura acquisto","Fattura differita acquisto",]
 
-    minus =[ "Nota di credito a cliente",
+    minus =["Nota di credito a cliente",
             "Nota di credito da fornitore",
             "DDT reso da cliente",
             "DDT reso a fornitore",]
@@ -2804,19 +2818,21 @@ def calcolaTotali(daos):
         except:
             pass
 
-    totaliGenerali = { "totale_imponibile_non_scontato":totale_imponibile_non_scontato,
-                        "totale_imponibile_scontato":totale_imponibile_scontato,
-                        "totale_imposta_scontata":totale_imposta_scontata,
-                        "totale_non_base_imponibile":totale_non_base_imponibile,
-                        "totale_imposta_non_scontata":totale_imposta_non_scontata,
-                        "totale_non_scontato" :totale_non_scontato,
-                        "totale_scontato":totale_scontato,
-                        "totale_pagato":totale_pagato,
-                        "totale_sospeso": totale_sospeso,
-                        "imponibile_aliquote": _cast_imponibile,
-                        "imposta_aliquote": _cast_imposta
+    totaliGenerali = {
+        "totale_imponibile_non_scontato": totale_imponibile_non_scontato,
+        "totale_imponibile_scontato": totale_imponibile_scontato,
+        "totale_imposta_scontata": totale_imposta_scontata,
+        "totale_non_base_imponibile": totale_non_base_imponibile,
+        "totale_imposta_non_scontata": totale_imposta_non_scontata,
+        "totale_non_scontato": totale_non_scontato,
+        "totale_scontato": totale_scontato,
+        "totale_pagato": totale_pagato,
+        "totale_sospeso": totale_sospeso,
+        "imponibile_aliquote": _cast_imponibile,
+        "imposta_aliquote": _cast_imposta
                         }
     return totaliGenerali
+
 
 def fenceDialog():
     """
@@ -2827,7 +2843,7 @@ def fenceDialog():
         FIXME
         """
         from promogest.ui.SendEmail import SendEmail
-        sendemail = SendEmail()
+        SendEmail()
 
     dialog = gtk.MessageDialog(None,
                                 GTK_DIALOG_MODAL
@@ -2841,7 +2857,7 @@ def fenceDialog():
     button.show()
     button.connect('clicked', on_button_clicked)
     dialog.set_image(button)
-    response = dialog.run()
+    dialog.run()
     dialog.destroy()
 
 def leggiRevisioni():
@@ -2850,10 +2866,12 @@ def leggiRevisioni():
         try:
             client = pysvn.Client()
             if not Environment.rev_locale:
-                Environment.rev_locale= client.info(".").revision.number
+                Environment.rev_locale = client.info(".").revision.number
             if not Environment.rev_remota:
-                Environment.rev_remota= pysvn.Client().info2("http://svn.promotux.it/svn/promogest2/trunk/", recurse=False)[0][1]["rev"].number
-        except pysvn.ClientError as cerr:
+                Environment.rev_remota = pysvn.Client().info2(
+                    "http://svn.promotux.it/svn/promogest2/trunk/",
+                            recurse=False)[0][1]["rev"].number
+        except pysvn.ClientError:
             pass
         Environment.pg2log.info("VERSIONE IN USO LOCALE E REMOTA "+str(Environment.rev_locale)+" "+str(Environment.rev_remota))
     if pysvn:

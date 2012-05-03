@@ -21,8 +21,8 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-from promogest.ui.AnagraficaSemplice import Anagrafica, AnagraficaDetail, AnagraficaFilter
-from promogest import Environment
+from promogest.ui.AnagraficaSemplice import \
+                Anagrafica, AnagraficaDetail, AnagraficaFilter
 from promogest.dao.CCardType import CCardType
 from promogest.ui.utils import *
 from promogest.ui.gtk_compat import *
@@ -37,7 +37,6 @@ class AnagraficaCCardType(Anagrafica):
                             AnagraficaCCardTypeFilter(self),
                             AnagraficaCCardTypeDetail(self))
 
-
     def draw(self):
         # Colonne della Treeview per il filtro/modifica
         treeview = self.anagrafica_treeview
@@ -50,7 +49,7 @@ class AnagraficaCCardType(Anagrafica):
         column = gtk.TreeViewColumn('Descrizione', renderer, text=1)
         column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, (None,'denominazione'))
+        column.connect("clicked", self._changeOrderBy, (None, 'denominazione'))
         column.set_resizable(True)
         column.set_expand(True)
         treeview.append_column(column)
@@ -63,7 +62,8 @@ class AnagraficaCCardType(Anagrafica):
         column = gtk.TreeViewColumn('Descrizione breve', renderer, text=2)
         column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, (None,'denominazione_breve'))
+        column.connect("clicked", self._changeOrderBy,
+                                (None, 'denominazione_breve'))
         column.set_resizable(True)
         column.set_expand(False)
         treeview.append_column(column)
@@ -75,10 +75,10 @@ class AnagraficaCCardType(Anagrafica):
 
         self.refresh()
 
-
     def refresh(self):
         # Aggiornamento TreeView
-        denominazione = prepareFilterString(self.filter.denominazione_filter_entry.get_text())
+        denominazione = prepareFilterString(
+            self.filter.denominazione_filter_entry.get_text())
         self.numRecords = CCardType().count(denominazione=denominazione)
 
         self._refreshPageCount()
@@ -102,17 +102,15 @@ class AnagraficaCCardType(Anagrafica):
                                         (c.denominazione_breve or '')))
 
 
-
 class AnagraficaCCardTypeFilter(AnagraficaFilter):
     """ Filtro per la ricerca nell'anagrafica dei tipi di carta di credito """
 
     def __init__(self, anagrafica):
         AnagraficaFilter.__init__(self,
-                                  anagrafica,
-                                  'anagrafica_ccardtype_filter_table',
-                                  gladeFile='_anagrafica_ccardtype_elements.glade')
+                          anagrafica,
+                          'anagrafica_ccardtype_filter_table',
+                          gladeFile='_anagrafica_ccardtype_elements.glade')
         self._widgetFirstFocus = self.denominazione_filter_entry
-
 
     def clear(self):
         # Annullamento filtro
@@ -121,15 +119,13 @@ class AnagraficaCCardTypeFilter(AnagraficaFilter):
         self._anagrafica.refresh()
 
 
-
 class AnagraficaCCardTypeDetail(AnagraficaDetail):
     """ Dettaglio dell'anagrafica dei tipi di carta di credito """
 
     def __init__(self, anagrafica):
         AnagraficaDetail.__init__(self,
-                                  anagrafica,
-                                  gladeFile='_anagrafica_ccardtype_elements.glade')
-
+                              anagrafica,
+                              gladeFile='_anagrafica_ccardtype_elements.glade')
 
     def setDao(self, dao):
         if dao is None:
@@ -144,7 +140,6 @@ class AnagraficaCCardTypeDetail(AnagraficaDetail):
         self.dao = CCardType().getRecord(id=self.dao.id)
         self._refresh()
 
-
     def _refresh(self):
         sel = self._anagrafica.anagrafica_treeview.get_selection()
         (model, iterator) = sel.get_selected()
@@ -152,20 +147,20 @@ class AnagraficaCCardTypeDetail(AnagraficaDetail):
         model.set_value(iterator, 1, self.dao.denominazione)
         model.set_value(iterator, 2, self.dao.denominazione_breve)
 
-
     def saveDao(self, tipo=None):
         sel = self._anagrafica.anagrafica_treeview.get_selection()
         (model, iterator) = sel.get_selected()
         denominazione = model.get_value(iterator, 1) or ''
         denominazioneBreve = model.get_value(iterator, 2) or ''
         if (denominazione == ''):
-            obligatoryField(self._anagrafica.getTopLevel(), self._anagrafica.anagrafica_treeview)
+            obligatoryField(self._anagrafica.getTopLevel(),
+                self._anagrafica.anagrafica_treeview)
         if (denominazioneBreve == ''):
-            obligatoryField(self._anagrafica.getTopLevel(), self._anagrafica.anagrafica_treeview)
+            obligatoryField(self._anagrafica.getTopLevel(),
+                self._anagrafica.anagrafica_treeview)
         self.dao.denominazione = denominazione
         self.dao.denominazione_breve = denominazioneBreve
         self.dao.persist()
-
 
     def deleteDao(self):
         self.dao.delete()

@@ -21,7 +21,8 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-from promogest.ui.AnagraficaSemplice import Anagrafica, AnagraficaDetail, AnagraficaFilter
+from promogest.ui.AnagraficaSemplice import \
+                        Anagrafica, AnagraficaDetail, AnagraficaFilter
 from promogest.dao.CategoriaArticolo import CategoriaArticolo
 from promogest.dao.Articolo import Articolo
 from promogest.ui.utils import *
@@ -36,7 +37,6 @@ class AnagraficaCategorieArticoli(Anagrafica):
                             AnagraficaCategorieArticoliFilter(self),
                             AnagraficaCategorieArticoliDetail(self))
 
-
     def draw(self):
         """ Facoltativo ma suggerito per indicare la lunghezza
         massima della cella di testo
@@ -46,16 +46,20 @@ class AnagraficaCategorieArticoli(Anagrafica):
         purtroppo pygi gestisce la cosa in maniera diversa vedi quella funzione
         SOLUZIONE Trovata...monitorare
         """
-        self.filter.descrizione_column.get_cells()[0].set_data('max_length', 200)
-        self.filter.descrizione_breve_column.get_cells()[0].set_data('max_length', 10)
+        self.filter.descrizione_column.get_cells()[0].set_data(
+                                                        'max_length', 200)
+        self.filter.descrizione_breve_column.get_cells()[0].set_data(
+                                                        'max_length', 10)
         #self.filter.descrizione_column.get_cells()[0].set_data('column', 0)
-        #self.filter.descrizione_breve_column.get_cells()[0].set_data('column', 1)
+        #self.filter.descrizione_breve_column.get_cells()[0].set_data(
+#                                                            'column', 1)
         self._treeViewModel = self.filter.filter_listore
         self.refresh()
 
     def refresh(self):
         # Aggiornamento TreeView
-        denominazione = prepareFilterString(self.filter.denominazione_filter_entry.get_text())
+        denominazione = prepareFilterString(
+                        self.filter.denominazione_filter_entry.get_text())
         self.numRecords = CategoriaArticolo().count(denominazione=denominazione)
 
         self._refreshPageCount()
@@ -84,17 +88,18 @@ class AnagraficaCategorieArticoliFilter(AnagraficaFilter):
 
     def __init__(self, anagrafica):
         AnagraficaFilter.__init__(self,
-                                  anagrafica,
-                                  'anagrafica_categorie_articoli_filter_table',
-                                  gladeFile='_anagrafica_categorie_articoli_elements.glade')
+                      anagrafica,
+                      'anagrafica_categorie_articoli_filter_table',
+                      gladeFile='_anagrafica_categorie_articoli_elements.glade')
         self._widgetFirstFocus = self.denominazione_filter_entry
 
     def _reOrderBy(self, column):
         if column.get_name() == "descrizione_column":
-            return self._anagrafica._changeOrderBy(column, (None, CategoriaArticolo.denominazione))
+            return self._anagrafica._changeOrderBy(
+                            column, (None, CategoriaArticolo.denominazione))
         if column.get_name() == "descrizione_breve_column":
-            return self._anagrafica._changeOrderBy(column, (None, CategoriaArticolo.denominazione_breve))
-
+            return self._anagrafica._changeOrderBy(
+                        column, (None, CategoriaArticolo.denominazione_breve))
 
     def clear(self):
         # Annullamento filtro
@@ -111,22 +116,18 @@ class AnagraficaCategorieArticoliDetail(AnagraficaDetail):
             anagrafica,
             gladeFile='_anagrafica_categorie_articoli_elements.glade')
 
-
     def setDao(self, dao):
+        self.dao = dao
         if dao is None:
             self.dao = CategoriaArticolo()
             self._anagrafica._newRow((self.dao, '', ''))
-        else:
-            self.dao = dao
         self._refresh()
         return self.dao
-
 
     def updateDao(self):
         if self.dao:
             self.dao = CategoriaArticolo().getRecord(id=self.dao.id)
         self._refresh()
-
 
     def _refresh(self):
         sel = self._anagrafica.anagrafica_treeview.get_selection()
@@ -142,13 +143,14 @@ class AnagraficaCategorieArticoliDetail(AnagraficaDetail):
         denominazione = model.get_value(iterator, 1) or ''
         denominazioneBreve = model.get_value(iterator, 2) or ''
         if (denominazione == ''):
-            obligatoryField(self._anagrafica.getTopLevel(), self._anagrafica.anagrafica_treeview)
+            obligatoryField(self._anagrafica.getTopLevel(),
+                    self._anagrafica.anagrafica_treeview)
         if (denominazioneBreve == ''):
-            obligatoryField(self._anagrafica.getTopLevel(), self._anagrafica.anagrafica_treeview)
+            obligatoryField(self._anagrafica.getTopLevel(),
+                    self._anagrafica.anagrafica_treeview)
         self.dao.denominazione = denominazione
         self.dao.denominazione_breve = denominazioneBreve
         self.dao.persist()
-
 
     def deleteDao(self):
         usata = Articolo().select(idCategoria=self.dao.id, batchSize=None)
@@ -160,17 +162,21 @@ ATTENZIONE ATTENZIONE!!
 
 E' però possibile "passare" tutti gli articoli della categoria che
 si vuole cancellare ad un'altra ancora presente.
-Inserite la descrizione breve ( Esattamente come è scritta) della categoria di destinazione
-qui sotto e premete SI
+Inserite la descrizione breve ( Esattamente come è scritta)
+della categoria di destinazione qui sotto e premete SI
 L'operazione è irreversibile,retroattiva e potrebbe impiegare qualche minuto
 """
-            move, nuova_categoria = YesNoDialog(msg=msg, transient=None, show_entry=True)
+            move, nuova_categoria = YesNoDialog(msg=msg,
+                                        transient=None, show_entry=True)
             if move and nuova_categoria:
-                cate = CategoriaArticolo().select(denominazioneBreveEM=nuova_categoria)
+                cate = CategoriaArticolo().select(
+                                    denominazioneBreveEM=nuova_categoria)
                 if cate:
                     idcat = cate[0].id
                 else:
-                    messageInfo(msg="NON è stato possibile trovare la categoria\n di passaggio, non faccio niente")
+                    msg = """NON è stato possibile trovare la categoria
+ di passaggio, non faccio niente"""
+                    messageInfo(msg=msg)
                     return
                 for u in usata:
                     u.id_categoria_articolo = idcat

@@ -22,48 +22,45 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-import datetime
-import string
 from AnagraficaComplessa import Anagrafica
 from promogest.ui.AnagraficaComplessaLabel import AnagraficaLabel
 from promogest.ui.AnagraficaComplessaReport import AnagraficaReport
 from promogest.ui.AnagraficaComplessaHtml import AnagraficaHtml
-from promogest.ui.AnagraficaListiniArticoliEdit import AnagraficaListiniArticoliEdit
-from promogest.ui.AnagraficaListiniArticoliFilter import AnagraficaListiniArticoliFilter
+from promogest.ui.AnagraficaListiniArticoliEdit import \
+                                        AnagraficaListiniArticoliEdit
+from promogest.ui.AnagraficaListiniArticoliFilter import \
+                                        AnagraficaListiniArticoliFilter
 from promogest import Environment
-from promogest.dao.Articolo import Articolo
-from promogest.dao.ListinoArticolo import ListinoArticolo
-from promogest.dao.ScontoVenditaDettaglio import ScontoVenditaDettaglio
-from promogest.dao.ScontoVenditaIngrosso import ScontoVenditaIngrosso
-from promogest.dao.ListinoComplessoListino import ListinoComplessoListino
 from utils import *
-from utilsCombobox import fillComboboxListini,findIdFromCombobox,findComboboxRowFromId
 
 if posso("PW"):
-    from promogest.modules.PromoWear.ui.AnagraficaListinoArticoliExpand import *
+    from promogest.modules.PromoWear.ui.\
+                                    AnagraficaListinoArticoliExpand import *
+
 
 class AnagraficaListiniArticoli(Anagrafica):
     """ Anagrafica listini vendita articoli """
 
-    def __init__(self, idArticolo=None, idListino=None,aziendaStr=None):
+    def __init__(self, idArticolo=None, idListino=None, aziendaStr=None):
         """
         FIXME
         """
-        self._articoloFissato = (idArticolo <> None)
-        self._listinoFissato = (idListino <> None)
-        self._idArticolo=idArticolo
-        self._idListino=idListino
-        if posso("PW"):
-            from promogest.modules.PromoWear.dao.ArticoloTagliaColore import ArticoloTagliaColore
+        self._articoloFissato = (idArticolo != None)
+        self._listinoFissato = (idListino != None)
+        self._idArticolo = idArticolo
+        self._idListino = idListino
+#        if posso("PW"):
+#            from promogest.modules.PromoWear.dao.ArticoloTagliaColore import \
+#                                                    ArticoloTagliaColore
         Anagrafica.__init__(self,
-                            windowTitle='Promogest - Anagrafica listini di vendita',
-                            recordMenuLabel='_Listini',
-                            filterElement=AnagraficaListiniArticoliFilter(self),
-                            htmlHandler=AnagraficaListiniArticoliHtml(self),
-                            reportHandler=AnagraficaListiniArticoliReport(self),
-                            labelHandler=AnagraficaListiniArticoliLabel(self),
-                            editElement=AnagraficaListiniArticoliEdit(self),
-                            aziendaStr=aziendaStr)
+                    windowTitle='Promogest - Anagrafica listini di vendita',
+                    recordMenuLabel='_Listini',
+                    filterElement=AnagraficaListiniArticoliFilter(self),
+                    htmlHandler=AnagraficaListiniArticoliHtml(self),
+                    reportHandler=AnagraficaListiniArticoliReport(self),
+                    labelHandler=AnagraficaListiniArticoliLabel(self),
+                    editElement=AnagraficaListiniArticoliEdit(self),
+                    aziendaStr=aziendaStr)
 
         self.Stampa_Frontaline.set_visible_horizontal(True)
         #if "Label" not in Environment.modulesList:
@@ -90,8 +87,8 @@ L'operazione è irreversibile, fallo solo se sai cosa stai facendo"""
         self.filter.refresh()
 
     def on_aggiungi_sconto_dettaglio_activate(self, widget):
-        info=""" ATTENZIONE!!
-In questa finestra viene gestita una modifica allo sconto del prezzo al DETTAGLIO
+        info = """ ATTENZIONE!!
+Qui viene gestita una modifica allo sconto del prezzo al DETTAGLIO
 ( equivale a premere il pulsante "sconti" ed inserirne uno)
 
 Si può selezionare il tipo di sconto ( valore o percentuale )
@@ -110,8 +107,8 @@ Tutti gli articoli selezionati verranno modificati
         self.filter.modifiche_listino.run()
 
     def on_aggiungi_sconto_ingrosso_activate(self, widget):
-        info=""" ATTENZIONE!!
-In questa finestra viene gestita una modifica allo sconto del prezzo all'INGROSSO
+        info = """ ATTENZIONE!!
+Qui viene gestita una modifica allo sconto del prezzo all'INGROSSO
 ( equivale a premere il pulsante "sconti" ed inserirne uno)
 
 Si può selezionare il tipo di sconto ( valore o percentuale )
@@ -130,7 +127,7 @@ Tutti gli articoli selezionati verranno modificati
         self.filter.modifiche_listino.run()
 
     def on_variazione_dettaglio_activate(self, widget):
-        info=""" ATTENZIONE!!
+        info = """ ATTENZIONE!!
 In questa finestra viene gestita una modifica al prezzo al DETTAGLIO
 (Il prezzo all'ingrosso NON verrà variato così come le % di ricarico e margine )
 
@@ -151,7 +148,7 @@ Tutti gli articoli selezionati verranno modificati
         self.filter.modifiche_listino.run()
 
     def on_variazione_ingrosso_activate(self, widget):
-        info=""" ATTENZIONE!!
+        info = """ ATTENZIONE!!
 In questa finestra viene gestita una modifica al prezzo al INGROSSO
 (Il prezzo al dettaglio NON verrà variato così come le % di ricarico e margine )
 
@@ -175,13 +172,15 @@ Tutti gli articoli selezionati verranno modificati
         msg = """Confermi la modifica del prezzo al dettaglio di tutti
 gli articoli presenti in questo listino?
 
-L'operazione potrebbe richiedere alcuni minuti ed è irreversibile, fallo solo se sai cosa stai facendo"""
+L'operazione potrebbe richiedere alcuni minuti ed è irreversibile,
+fallo solo se sai cosa stai facendo"""
         if YesNoDialog(msg=_(msg), transient=self.getTopLevel()):
             daos = self.filter._filterClosure(None, None)
             for d in daos:
                 articolo = leggiArticolo(id=d.id_articolo)
                 aliquota = articolo['percentualeAliquotaIva']
-                d.prezzo_dettaglio = calcolaPrezzoIva(d.prezzo_ingrosso, aliquota)
+                d.prezzo_dettaglio = calcolaPrezzoIva(d.prezzo_ingrosso,
+                                                                aliquota)
                 Environment.session.add(d)
             Environment.session.commit()
             messageInfo(msg="Operazione effettuata")

@@ -43,7 +43,7 @@ from promogest.lib.HtmlHandler import createHtmlObj, renderHTML
 if not Environment.pg3:
     try:
         import gtkunixprint
-        gtkunixprint # pyflakes
+        gtkunixprint
     except ImportError:
         gtkunixprint = None
 else:
@@ -55,12 +55,17 @@ class Anagrafica(GladeWidget):
 
     def __init__(self, windowTitle, recordMenuLabel,
             filterElement, htmlHandler, reportHandler,
-            editElement, labelHandler = None,
+            editElement, labelHandler=None,
             gladeFile=None, aziendaStr=None):
         GladeWidget.__init__(self, 'anagrafica_complessa_window',
                             fileName=gladeFile)
         if aziendaStr is not None:
-            self.anagrafica_complessa_window.set_title(windowTitle[:12]+' su ('+aziendaStr+') - '+windowTitle[11:])
+            self.anagrafica_complessa_window.set_title(
+                windowTitle[:12]\
+                + ' su (' + \
+                aziendaStr\
+                + ') - ' + \
+                windowTitle[11:])
         else:
             self.anagrafica_complessa_window.set_title(windowTitle)
         self.record_menu.get_child().set_label(recordMenuLabel)
@@ -78,19 +83,23 @@ class Anagrafica(GladeWidget):
         if self.__class__.__name__ == 'AnagraficaDocumenti':
             from promogest.export import tracciati_disponibili
             for tracciato in tracciati_disponibili():
+
                 def build_menuitem(name):
                     import string
-                    label = "Esporta " + string.capwords(name.replace('_', ' '))
-                    mi = gtk.MenuItem(label=label)
+                    labe = "Esporta " + string.capwords(name.replace('_', ' '))
+                    mi = gtk.MenuItem(label=labe)
                     mi.show()
-                    mi.connect('activate', self.on_esporta_tracciato_menuitem_activate, (name,))
+                    mi.connect('activate',
+                        self.on_esporta_tracciato_menuitem_activate, (name,))
                     return mi
                 self.menu3.append(build_menuitem(tracciato))
             self.records_file_export.set_menu(self.menu3)
         # Initial (in)sensitive widgets
-        textStatusBar = "     *****   PromoGest - 070 8649705 - www.promogest.me - assistenza@promotux.it  *****     "
-        context_id =  self.pg2_statusbar.get_context_id("anagrafica_complessa_windows")
-        self.pg2_statusbar.push(context_id,textStatusBar)
+        textStatusBar = "     *****   PromoGest - 070 8649705 -" \
+                + " www.promogest.me - assistenza@promotux.it  *****"
+        context_id = self.pg2_statusbar.get_context_id(
+                                            "anagrafica_complessa_windows")
+        self.pg2_statusbar.push(context_id, textStatusBar)
         self.record_delete_button.set_sensitive(False)
         self.record_delete_menu.set_sensitive(False)
         self.duplica_button.set_sensitive(False)
@@ -115,12 +124,13 @@ class Anagrafica(GladeWidget):
         self.filter.draw()
         self.editElement.draw(cplx=True)
         self.email = ""
-        if self.__class__.__name__ !="AnagraficaPrimaNota":
+        if self.__class__.__name__ != "AnagraficaPrimaNota":
             self.info_anag_complessa_label.destroy()
         self.setFocus()
 
     def _setFilterElement(self, gladeWidget):
-        self.bodyWidget = FilterWidget(owner=gladeWidget, filtersElement=gladeWidget)
+        self.bodyWidget = FilterWidget(owner=gladeWidget,
+                                                filtersElement=gladeWidget)
 
         self.filter = self.bodyWidget.filtersElement
         self.filterTopLevel = self.filter.getTopLevel()
@@ -145,14 +155,14 @@ class Anagrafica(GladeWidget):
         self.bodyWidget.filter_search_button.add_accelerator('clicked',
                             accelGroup, GDK_KEY_F3, 0, GTK_ACCEL_VISIBLE)
 #        self.bodyWidget.filter_search_button.add_accelerator('clicked',
-#                            accelGroup, gtk.keysyms.KP_Enter, 0, gtk.ACCEL_VISIBLE)
+#                accelGroup, gtk.keysyms.KP_Enter, 0, gtk.ACCEL_VISIBLE)
 #        self.bodyWidget.filter_search_button.add_accelerator('clicked',
-#                            accelGroup, gtk.keysyms.Return, 0, gtk.ACCEL_VISIBLE)
+#                accelGroup, gtk.keysyms.Return, 0, gtk.ACCEL_VISIBLE)
 
     def _setHtmlHandler(self, htmlHandler):
         self.htmlHandler = htmlHandler
         html = """<html><body></body></html>"""
-        renderHTML(self.html,html)
+        renderHTML(self.html, html)
 
     def _setLabelHandler(self, labelHandler):
         self.labelHandler = labelHandler
@@ -208,17 +218,19 @@ class Anagrafica(GladeWidget):
         dati = dati_file(dao)
         if dati is None:
             return
-        xml_file = open(os.path.join(Environment.tracciatiDir, nome_tracciato + '.xml'))
+        xml_file = open(os.path.join(Environment.tracciatiDir,
+                                                nome_tracciato + '.xml'))
 
         def get_save_filename(filename):
             dialog = gtk.FileChooserDialog("Inserisci il nome del file",
-                                           None,
-                                           GTK_FILE_CHOOSER_ACTION_SAVE,
-                                           (gtk.STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                                            gtk.STOCK_SAVE, GTK_RESPONSE_OK))
+                                       None,
+                                       GTK_FILE_CHOOSER_ACTION_SAVE,
+                                       (gtk.STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+                                        gtk.STOCK_SAVE, GTK_RESPONSE_OK))
             dialog.set_default_response(GTK_RESPONSE_OK)
 
-            self.__homeFolder = setconf("General", "cartella_predefinita") or None
+            self.__homeFolder = setconf("General",
+                                    "cartella_predefinita") or None
             if self.__homeFolder is None:
                 if os.name == 'posix':
                     self.__homeFolder = os.environ['HOME']
@@ -259,7 +271,7 @@ class Anagrafica(GladeWidget):
 
         from ExportCsv import ExportCsv
         ExportCsv(self, dao=dao)
-        dao=None
+        dao = None
         return
 
         data = self.set_export_data()
@@ -301,10 +313,10 @@ class Anagrafica(GladeWidget):
         currentName = data['currentName']
         saveDialog.set_filter(filter1)
         saveDialog.set_current_name(currentName)
-        cb_typeList = [['CSV','Csv compatibile Excel'],
-                                            ['XML','MS Excel 2003 Xml format']]
+        cb_typeList = [['CSV', 'Csv compatibile Excel'],
+                                            ['XML', 'MS Excel 2003 Xml format']]
         typeComboBox = insertFileTypeChooser(filechooser=saveDialog,
-                                                            typeList=cb_typeList)
+                                                        typeList=cb_typeList)
         typeComboBox.connect('changed', on_typeComboBox_changed,
                                                         saveDialog, currentName)
         typeComboBox.set_active(1)
@@ -316,7 +328,7 @@ class Anagrafica(GladeWidget):
         saveDialog.show_all()
         response = saveDialog.run()
         if response == GTK_RESPONSE_OK:
-            (fileType,file_name) = on_typeComboBox_changed(typeComboBox,
+            (fileType, file_name) = on_typeComboBox_changed(typeComboBox,
                                                             saveDialog,
                                                             currentName,
                                                             isEvent=False)
@@ -329,11 +341,15 @@ class Anagrafica(GladeWidget):
                 csvFile.createFile(wtot=True)
             elif fileType == "XML":
                 xmlFile = XlsXmlGenerator(file_name)
-                xmlFile.setAttributes(head=xmlMarkup[0], cols=xmlMarkup[2], data=values, totColumns=xmlMarkup[1])
-                # wtot is to tell the function if it can close the worksheet after filling it with data.
+                xmlFile.setAttributes(head=xmlMarkup[0],
+                            cols=xmlMarkup[2],
+                            data=values,
+                            totColumns=xmlMarkup[1])
+        # wtot is to tell the function if it can close
+        #the worksheet after filling it with data.
                 xmlFile.createFile(wtot=True)
-                #the previous function by default closes automatically the worksheet
-                #xmlFile.close_sheet()
+        #the previous function by default closes automatically the worksheet
+        #xmlFile.close_sheet()
                 xmlFile.XlsXmlFooter()
             saveDialog.destroy()
         elif response == GTK_RESPONSE_CANCEL:
@@ -372,18 +388,32 @@ class Anagrafica(GladeWidget):
     def on_seriale_menu_activate(self, widget):
         try:
             fileName = Environment.conf.guiDir + 'logo_promogest.png'
-            f = open(fileName,'rb')
+            f = open(fileName, 'rb')
             content = f.read()
             f.close()
-            msg = 'Codice installazione:\n\n' + str(md5.new(content).hexdigest().upper())
+            msg = 'Codice installazione:\n\n' \
+                    + str(md5.new(content).hexdigest().upper())
         except:
             msg = 'Impossibile generare il codice !!!'
         messageInfo(msg=msg)
 
     def on_anagrafica_filter_treeview_cursor_changed(self, treeview=None):
-        sel = self.anagrafica_filter_treeview.get_selection()
+#        print "on_anagrafica_filter_treeview_cursor_changed"
+#        sel = self.anagrafica_filter_treeview.get_selection()
+        sel = treeview.get_selection()
         if sel.get_mode() == GTK_SELECTIONMODE_MULTIPLE:
-            return
+            model, iterator = sel.get_selected_rows()
+            count = sel.count_selected_rows()
+            if count > 1:
+                for iter in iterator:
+                    self.daoSelection.append(model[iter][0])
+                self.dao = None
+            elif count == 1:
+                self.dao = model[iterator[0]][0]
+            else:
+                iterator = None
+                # No items are currently selected
+                self.dao = None
         elif sel.get_mode() == GTK_SELECTIONMODE_SINGLE:
             (model, iterator) = sel.get_selected()
             if iterator is not None:
@@ -395,7 +425,10 @@ class Anagrafica(GladeWidget):
 
         self.record_edit_button.set_sensitive(self.dao is not None)
         self.record_edit_menu.set_sensitive(self.dao is not None)
-        if self.dao.__class__.__name__ in ["TestataDocumento", "Articolo", "TestataMovimento", "Listino"]:
+        if self.dao.__class__.__name__ in ["TestataDocumento",
+                                        "Articolo",
+                                        "TestataMovimento",
+                                        "Listino"]:
             self.duplica_button.set_sensitive(self.dao is not None)
             self.record_duplicate_menu.set_sensitive(self.dao is not None)
 
@@ -406,10 +439,17 @@ class Anagrafica(GladeWidget):
         self.selected_record_print_menu.set_sensitive(self.dao is not None)
         return self.dao or False
 
-    def on_anagrafica_filter_treeview_row_activated(self, widget, path, column):
-        self.on_record_edit_activate(widget, path, column)
+    def on_anagrafica_filter_treeview_row_activated(self, widget, path, colum):
+        """ Funzione che si attiva nel momento in cui si fa doppio click per
+            l'apertura del dao in modifica"""
+        print "on_anagrafica_filter_treeview_row_activated"
+        self.on_record_edit_activate(widget, path, colum)
 
     def on_anagrafica_filter_treeview_selection_changed(self, treeSelection):
+        """ per il momento questa funzione la togliamo perchè sembra non servire
+        """
+#        print "on_anagrafica_filter_treeview_selection_changed"
+        return
         sel = treeSelection
         self.daoSelection = []
         self.dao = None
@@ -426,14 +466,21 @@ class Anagrafica(GladeWidget):
                 iterator = None
                 # No items are currently selected
                 self.dao = None
-        else:
-            return
+        elif sel.get_mode() == GTK_SELECTIONMODE_SINGLE:
+            (model, iterator) = sel.get_selected()
+            if iterator is not None:
+                self.dao = model.get_value(iterator, 0)
+            else:
+                self.dao = None
         if self.dao is not None:
             self.htmlHandler.setDao(self.dao)
 
         self.record_edit_button.set_sensitive(self.dao is not None)
         self.record_edit_menu.set_sensitive(self.dao is not None)
-        if self.dao.__class__.__name__ in ["TestataDocumento", "Articolo", "TestataMovimento", "Listino"]:
+        if self.dao.__class__.__name__ in ["TestataDocumento",
+                                            "Articolo",
+                                            "TestataMovimento",
+                                            "Listino"]:
             self.duplica_button.set_sensitive(self.dao is not None)
             self.record_duplicate_menu.set_sensitive(self.dao is not None)
 
@@ -446,25 +493,25 @@ class Anagrafica(GladeWidget):
 
     def on_record_new_activate(self, widget=None, from_other_dao=None):
         self.editElement.setVisible(True)
-        if self.__class__.__name__=="AnagraficaUtenti":
+        if self.__class__.__name__ == "AnagraficaUtenti":
             self.editElement.setDao(None, from_other_dao=from_other_dao)
         else:
             self.editElement.setDao(None)
         self.setFocus()
 
     def on_record_delete_activate(self, widget):
-        daos = self.filter.getSelectedDaos()
-        if not daos:
+        if not YesNoDialog(msg='Confermi l\'eliminazione ?',
+                                            transient=self.getTopLevel()):
             return
-        if not YesNoDialog(msg='Continuare con la cancellazione?', transient=self.getTopLevel()):
-            return
-        for dao in daos:
+        dao = self.filter.getSelectedDao()
+        if dao:
             dao.delete()
         self.filter.refresh()
         self.htmlHandler.setDao(None)
         self.setFocus()
 
-    def on_record_edit_activate(self, widget=None, path=None, column=None, dao=None):
+    def on_record_edit_activate(self, widget=None,
+                                            path=None, column=None, dao=None):
         if not dao:
             dao = self.filter.getSelectedDao()
         self._selectedDao = dao
@@ -497,8 +544,9 @@ class Anagrafica(GladeWidget):
                              report=True)
 
     def manageLabels(self, results):
-        from promogest.modules.Label.ui.ManageLabelsToPrint import ManageLabelsToPrint
-        a = ManageLabelsToPrint(mainWindow=self,daos=results)
+        from promogest.modules.Label.ui.ManageLabelsToPrint import\
+                                                         ManageLabelsToPrint
+        a = ManageLabelsToPrint(mainWindow=self, daos=results)
         anagWindow = a.getTopLevel()
         returnWindow = self.getTopLevel().get_toplevel()
         anagWindow.set_transient_for(returnWindow)
@@ -506,7 +554,7 @@ class Anagrafica(GladeWidget):
 
     def _handlePrinting(self, pdfGenerator, report,
                         daos=None, label=None,
-                        returnResults=None,classic=False, template_file=False):
+                        returnResults=None, classic=False, template_file=False):
         # FIXME: refactor this mess!!!
 
         # tiro su la finestrella con la progress bar
@@ -525,7 +573,8 @@ class Anagrafica(GladeWidget):
         self._reportType = report
         self._template_file = template_file
         self._classic = classic
-        self.label = label # tipo report ma anche opzione label
+        self.label = label
+        # tipo report ma anche opzione label
         self._pdfName = str(pdfGenerator.defaultFileName)
         self._folder = setconf("General", "cartella_predefinita") or ""
         if self._folder == '':
@@ -546,9 +595,11 @@ class Anagrafica(GladeWidget):
                                       callbacks_proxy=self)
             printDialog.getTopLevel().set_transient_for(self.getTopLevel())
 
-            printDialog.records_print_dialog_description_label.set_text(self._pdfName)
+            printDialog.records_print_dialog_description_label.set_text(
+                                                                self._pdfName)
             printDialog.email_destinatario_entry.set_text(self.email)
-            printDialog.records_print_dialog_size_label.set_text(str(len(self.__pdfReport) / 1024) + ' Kb')
+            printDialog.records_print_dialog_size_label.set_text(str(
+                                    len(self.__pdfReport) / 1024) + ' Kb')
             printDialog.placeWindow(printDialog.getTopLevel())
             printDialog.getTopLevel().show_all()
             self.printDialog = printDialog
@@ -556,7 +607,7 @@ class Anagrafica(GladeWidget):
 
         def progressCB(results, prevLen, totalLen):
             if self.__cancelOperation:
-                raise Exception, 'Operation cancelled, thread killed'
+                raise Exception('Operation cancelled, thread killed')
 
             # Let's schedule progress bar update from the main thread
             def updateProgressBarIdle():
@@ -589,7 +640,8 @@ class Anagrafica(GladeWidget):
 
                 # In the end, let's launch the template rendering thread
                 def renderingThread():
-                    """ Questo è il thread di conversione e generazione della stampa"""
+                    """ Questo è il thread di conversione e
+                        generazione della stampa"""
                     operationName = ""
 
                     pdfGenerator.setObjects(results)

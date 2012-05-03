@@ -23,8 +23,7 @@
 
 from promogest.dao.Banca import Banca
 from promogest.ui.GladeWidget import GladeWidget
-from promogest.ui.utils import obligatoryField, messageWarning,\
-    messageError, messageInfo
+from promogest.ui.utils import obligatoryField, messageError
 from promogest.lib.ibanlib import dividi_iban
 
 
@@ -41,10 +40,9 @@ class AnagraficaBancheEdit(GladeWidget):
         self._refresh()
 
     def setDao(self, dao):
+        self.dao = dao
         if dao is None:
             self.dao = Banca()
-        else:
-            self.dao = dao
         self._refresh()
         return self.dao
 
@@ -60,18 +58,18 @@ class AnagraficaBancheEdit(GladeWidget):
             self.cab_entry.set_text(str(self.dao.cab or ''))
             self.bic_swift_entry.set_text(str(self.dao.bic_swift or ''))
 
-
     def saveDao(self, tipo=None):
         denominazione = self.denominazione_banca_entry.get_text()
         if not denominazione:
-            obligatoryField(self.anagrafica.getTopLevel(), self.denominazione_banca_entry)
+            obligatoryField(self.anagrafica.getTopLevel(),
+                    self.denominazione_banca_entry)
             return
         self.dao.denominazione = denominazione
         self.dao.agenzia = self.agenzia_entry.get_text()
         self.dao.bic_swift = self.bic_swift_entry.get_text()
         self.dao.abi = self.abi_entry.get_text()
         self.dao.cab = self.cab_entry.get_text()
-        
+
         iban = self.iban_entry.get_text() or ''
         if iban:
             try:
@@ -88,7 +86,6 @@ class AnagraficaBancheEdit(GladeWidget):
             self.dao.iban = ''
 
         self.dao.persist()
-
 
     def deleteDao(self):
         if self.dao and self.dao.denominazione:
@@ -119,8 +116,6 @@ class AnagraficaBancheEdit(GladeWidget):
 #        self.anagrafica.setToolTip(False)
         self.anagrafica.setFocus()
 
-
-
     def on_ok_banche_edit_button_clicked(self, button):
         self.saveDao()
         self.anagrafica.refresh()
@@ -145,7 +140,6 @@ class AnagraficaBancheEdit(GladeWidget):
         self.getTopLevel().destroy()
 #        self.anagrafica.setToolTip(False)
         self.anagrafica.setFocus()
-
 
     def on_chiudi_banche_edit_button_clicked(self, button):
 #        self.anagrafica.refresh()

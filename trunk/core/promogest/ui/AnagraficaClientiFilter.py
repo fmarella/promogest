@@ -21,14 +21,9 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 
-from sqlalchemy.orm import join
-from sqlalchemy import or_
 from promogest.ui.AnagraficaComplessaFilter import AnagraficaFilter
-import promogest.dao.Cliente
-from promogest import Environment
 from promogest.dao.Cliente import Cliente
 from promogest.dao.PersonaGiuridica import PersonaGiuridica_
-from promogest.dao.ClienteCategoriaCliente import ClienteCategoriaCliente
 from promogest.dao.DaoUtils import *
 from utils import *
 from utilsCombobox import *
@@ -46,7 +41,8 @@ class AnagraficaClientiFilter(AnagraficaFilter):
         self.orderBy = 'ragione_sociale'
         self.ricerca_avanzata_clienti_filter_hbox.destroy()
         self.ricerca_avanzata_clienti_filter_vbox.destroy()
-        self.joinT = None # join(cliente, perso_giuri)
+        self.joinT = None
+        #join(cliente, perso_giuri)
 
     def draw(self):
         """ Disegno la treeview e gli altri oggetti della gui """
@@ -54,9 +50,11 @@ class AnagraficaClientiFilter(AnagraficaFilter):
 
     def _reOrderBy(self, column):
         if column.get_name() == "codice_column":
-            return self._changeOrderBy(column,(None,PersonaGiuridica_.codice))
+            return self._changeOrderBy(column, (
+                                    None, PersonaGiuridica_.codice))
         if column.get_name() == "ragione_sociale_column":
-            return self._changeOrderBy(column,(None,PersonaGiuridica_.ragione_sociale))
+            return self._changeOrderBy(column, (
+                                    None, PersonaGiuridica_.ragione_sociale))
 
     def clear(self):
         # Annullamento filtro
@@ -68,7 +66,8 @@ class AnagraficaClientiFilter(AnagraficaFilter):
         self.provincia_filter_entry.set_text('')
         self.codice_fiscale_filter_entry.set_text('')
         self.partita_iva_filter_entry.set_text('')
-        fillComboboxCategorieClienti(self.id_categoria_cliente_filter_combobox, True)
+        fillComboboxCategorieClienti(
+                        self.id_categoria_cliente_filter_combobox, True)
         self.id_categoria_cliente_filter_combobox.set_active(0)
         self.refresh()
 
@@ -77,17 +76,22 @@ class AnagraficaClientiFilter(AnagraficaFilter):
         Aggiorno l'interfaccia con i dati filtrati
         """
         codice = prepareFilterString(self.codice_filter_entry.get_text())
-        ragioneSociale = prepareFilterString(self.ragione_sociale_filter_entry.get_text())
+        ragioneSociale = prepareFilterString(
+                        self.ragione_sociale_filter_entry.get_text())
         insegna = prepareFilterString(self.insegna_filter_entry.get_text())
-        cognomeNome = prepareFilterString(self.cognome_nome_filter_entry.get_text())
+        cognomeNome = prepareFilterString(
+                        self.cognome_nome_filter_entry.get_text())
         localita = prepareFilterString(self.localita_filter_entry.get_text())
         provincia = prepareFilterString(self.provincia_filter_entry.get_text())
-        partitaIva = prepareFilterString(self.partita_iva_filter_entry.get_text())
-        codiceFiscale = prepareFilterString(self.codice_fiscale_filter_entry.get_text())
-        idCategoria = findIdFromCombobox(self.id_categoria_cliente_filter_combobox)
+        partitaIva = prepareFilterString(
+                        self.partita_iva_filter_entry.get_text())
+        codiceFiscale = prepareFilterString(
+                        self.codice_fiscale_filter_entry.get_text())
+        idCategoria = findIdFromCombobox(
+                        self.id_categoria_cliente_filter_combobox)
 
         def filterCountClosure():
-            return Cliente().count( codice=codice,
+            return Cliente().count(codice=codice,
                                     ragioneSociale=ragioneSociale,
                                     insegna=insegna,
                                     cognomeNome=cognomeNome,

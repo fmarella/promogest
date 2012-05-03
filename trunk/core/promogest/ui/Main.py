@@ -33,20 +33,16 @@ from promogest.ui.ElencoMagazzini import ElencoMagazzini
 from promogest.ui.ElencoListini import ElencoListini
 from promogest.ui.VistaPrincipale import VistaPrincipale
 from promogest.ui.SendEmail import SendEmail
-from promogest.ui.PrintDialog import PrintDialogHandler
 from promogest.ui.utils import hasAction, fencemsg, updateScadenzePromemoria,\
-         setconf, dateTimeToString, dateToString, \
-         orda, posso, messageInfo, installId , YesNoDialog, messageError,\
+         setconf,  \
+         orda, posso, messageInfo, YesNoDialog, messageError,\
          obligatoryField, leggiRevisioni
 from promogest.ui.utilsCombobox import *
 from promogest.ui.gtk_compat import *
 from ParametriFrame import ParametriFrame
-from SetConf import SetConfUI
 from AnagraficaPrincipaleFrame import AnagrafichePrincipaliFrame
 
-import promogest.dao.Promemoria
 
-from promogest.dao.Promemoria import Promemoria
 from promogest.dao.VariazioneListino import VariazioneListino
 from promogest.dao.AnagraficaSecondaria import AnagraficaSecondaria_
 from promogest.modules.GestioneFile.dao.Immagine import ImageFile
@@ -59,7 +55,7 @@ from promogest.modules.GestioneCommesse.dao.TestataCommessa import TestataCommes
 from promogest.modules.GestioneCommesse.dao.RigaCommessa import RigaCommessa
 from promogest.ui.ConfiguraWindow import ConfiguraWindow
 from promogest.ui.PanUi import PanUi, checkPan
-from promogest.ui.AzioniVelociNotebookPage import AzioniVelociNotebookPage
+#from promogest.ui.AzioniVelociNotebookPage import AzioniVelociNotebookPage
 from promogest.ui.NewsNotebookPage import NewsNotebookPage
 from promogest.ui.CalendarNotebookPage import CalendarNotebookPage
 from promogest.ui.NotificaAllarmiNotebookPage import NotificaAllarmiNotebookPage
@@ -129,7 +125,7 @@ def upgrade_banca():
     return
     from promogest.dao.Setconf import SetConf
     kbb = SetConf().select(key="upgrade_banca", section="General")
-    if kbb and kbb[0].value=="True":
+    if kbb and kbb[0].value == "True":
         return
     else:
         if Environment.tipodb == 'sqlite':
@@ -189,14 +185,17 @@ class Main(GladeWidget):
                 anagrafiche_dirette_modules, frame_modules, permanent_frames):
 
         GladeWidget.__init__(self, 'main_window')
-        self.main_window.set_title(_('*** PromoGest2 *** Azienda : ')+aziendaStr+\
-                                _('  *** Utente : ')+\
-                                Environment.params['usernameLoggedList'][1]+\
-                                ' ***')
+        self.main_window.set_title(_('*** PromoGest2 *** Azienda : ') \
+                                + aziendaStr \
+                                + _('  *** Utente : ') \
+                                + Environment.params['usernameLoggedList'][1] \
+                                + ' ***')
         self.aziendaStr = aziendaStr
         self.statusBarHandler()
-        for filename in glob.glob(Environment.promogestDir+\
-                                                    "temp"+os.sep+'*.cache'):
+        for filename in glob.glob(Environment.promogestDir + \
+                                                    "temp" + \
+                                                    os.sep + \
+                                                    '*.cache'):
             try:
                 os.remove(filename)
             except:
@@ -204,7 +203,7 @@ class Main(GladeWidget):
         Environment.windowGroup.append(self.getTopLevel())
         self.anagrafiche_modules = anagrafiche_modules
         self.parametri_modules = parametri_modules
-        self.anagrafiche_dirette_modules=anagrafiche_dirette_modules
+        self.anagrafiche_dirette_modules = anagrafiche_dirette_modules
         self.frame_modules = frame_modules
         self.permanent_frames = permanent_frames
         self.currentFrame = None
@@ -214,12 +213,12 @@ class Main(GladeWidget):
         if posso("SD"):
             self.sincro_db.destroy()
         elif posso("SD") and \
-                            Environment.conf.SincroDB.tipo =="client":
+                            Environment.conf.SincroDB.tipo == "client":
             self.master_sincro_db.destroy()
         elif posso("SD") and \
-                            Environment.conf.SincroDB.tipo =="server":
+                            Environment.conf.SincroDB.tipo == "server":
             self.client_sincro_db.destroy()
-        if Environment.tipodb =="postgresql":
+        if Environment.tipodb == "postgresql":
 #            self.whatcant_button.destroy()
             self.test_promowear_button.destroy()
             self.test_promoshop_button.destroy()
@@ -247,19 +246,24 @@ class Main(GladeWidget):
         ind = 6
         for mod in self.anagrafiche_dirette_modules.keys():
             currModule = self.anagrafiche_dirette_modules[mod]
-            if self.shop and currModule["module"].VIEW_TYPE[1] =="Vendita Dettaglio":
+            if self.shop \
+                and currModule["module"].VIEW_TYPE[1] == "Vendita Dettaglio":
                 anag = currModule["module"].getApplication()
                 showAnagrafica(self.getTopLevel(), anag, mainClass=self)
                 #icon_view.unselect_all()
                 return
-            pbuf = GDK_PIXBUF_NEW_FROM_FILE(currModule['guiDir']+ currModule['module'].VIEW_TYPE[2])
-            row = (ind, currModule['module'].VIEW_TYPE[1], pbuf, currModule['module'])
+            pbuf = GDK_PIXBUF_NEW_FROM_FILE(currModule['guiDir'] \
+                                    + currModule['module'].VIEW_TYPE[2])
+            row = (ind, currModule['module'].VIEW_TYPE[1],
+                                            pbuf, currModule['module'])
             model.append(row)
             ind += 1
         for mod in self.frame_modules.keys():
             currModule = self.frame_modules[mod]
-            pbuf = GDK_PIXBUF_NEW_FROM_FILE(currModule['guiDir']+ currModule['module'].VIEW_TYPE[2])
-            row =(ind, currModule['module'].VIEW_TYPE[1], pbuf, currModule['module'])
+            pbuf = GDK_PIXBUF_NEW_FROM_FILE(currModule['guiDir'] \
+                                    + currModule['module'].VIEW_TYPE[2])
+            row = (ind, currModule['module'].VIEW_TYPE[1],
+                                            pbuf, currModule['module'])
             model.append(row)
             ind += 1
 
@@ -283,7 +287,8 @@ class Main(GladeWidget):
 
         fillComboboxRole(self.anag_minori_combobox, noAdmin=True)
 
-        # conf_timeout = SetConf().select(key="updates_timeout", section="General")
+        # conf_timeout = SetConf().select(key="updates_timeout",
+#                                                        section="General")
         # timeout = '300'
         # if not conf_timeout:
             # conf_timeout = SetConf()
@@ -313,8 +318,10 @@ class Main(GladeWidget):
 
         def pickle_meta():
             from pickle import dump
-            if not os.path.exists(os.path.join(Environment.CONFIGPATH, Environment.meta_pickle)):
-                with open(os.path.join(Environment.CONFIGPATH, Environment.meta_pickle), 'wb') as f:
+            if not os.path.exists(os.path.join(Environment.CONFIGPATH,
+                                                Environment.meta_pickle)):
+                with open(os.path.join(Environment.CONFIGPATH,
+                                        Environment.meta_pickle), 'wb') as f:
                     dump(Environment.meta, f)
         pickle_meta()
 
@@ -453,7 +460,7 @@ class Main(GladeWidget):
         self.main_hbox.show_all()
 
     def on_button_help_clicked(self, button):
-        sendemail = SendEmail()
+        SendEmail()
 
     def on_button_refresh_clicked(self, widget=None):
 #        if WEBKIT:
@@ -777,7 +784,7 @@ class Main(GladeWidget):
         if len(selected) == 0:
             return
         i = selected[0][0]
-        selection = model[i][0]
+#        selection = model[i][0]
         module = model[i][3]
 
         if self.currentFrame is not None:
@@ -913,7 +920,7 @@ class Main(GladeWidget):
         hbox.pack_start(entry___, True, True, 0)
         dialog.get_content_area().pack_start(hbox, True, True, 0)
         dialog.show_all()
-        response = dialog.run()
+        dialog.run()
         codice = entry___.get_text()
 #        hascode = str(hashlib.sha224(codice+orda(codice)).hexdigest())
         if "cl" and "|" in codice :
@@ -1096,7 +1103,7 @@ promogest2 IN /HOME/NOMEUTENTE/ O IN C:/UTENTI/NOMEUTENTE"""
         messageInfo(msg= msg, transient=self.getTopLevel())
 
     def on_send_Email_activate(self, widget):
-        sendemail = SendEmail()
+        SendEmail()
 
     def on_master_sincro_db_activate(self, widget):
         msg = _("SERVER NON ANCORA IMPLEMENTATO")

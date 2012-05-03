@@ -33,7 +33,8 @@ from promogest.dao.ListinoCategoriaCliente import ListinoCategoriaCliente
 from promogest.dao.ListinoMagazzino import ListinoMagazzino
 from promogest.dao.ListinoComplessoListino import ListinoComplessoListino
 from promogest.dao.ListinoArticolo import ListinoArticolo
-from promogest.ui.AnagraficaVariazioniListini import AnagraficaVariazioniListini
+from promogest.ui.AnagraficaVariazioniListini import \
+                                                AnagraficaVariazioniListini
 from promogest.ui.utils import *
 from promogest.ui.utilsCombobox import *
 
@@ -56,14 +57,16 @@ class AnagraficaListini(Anagrafica):
         self.records_file_export.set_sensitive(True)
 
     def duplicate(self, dao):
-        """ Duplica le informazioni relative ad un documento scelto su uno nuovo
+        """ Duplica le informazioni relative ad un
+            documento scelto su uno nuovo
         """
         if dao is None:
             return
 
         from promogest.ui.DuplicazioneListino import DuplicazioneListino
         anag = DuplicazioneListino(dao, self)
-        showAnagraficaRichiamata(self.getTopLevel(), anag.getTopLevel(), None, self.filter.refresh)
+        showAnagraficaRichiamata(self.getTopLevel(),
+                            anag.getTopLevel(), None, self.filter.refresh)
 
     def on_record_delete_activate(self, widget):
         dao = self.filter.getSelectedDao()
@@ -73,6 +76,7 @@ class AnagraficaListini(Anagrafica):
         else:
             messageWarning(msg=_('Impossibile cancellare il listino.'))
             #Anagrafica.on_record_delete_activate(self, widget)
+
 
 class AnagraficaListiniFilter(AnagraficaFilter):
     """ Filtro per la ricerca nell'anagrafica dei listini """
@@ -87,7 +91,8 @@ class AnagraficaListiniFilter(AnagraficaFilter):
     def draw(self, cplx=False):
         # Colonne della Treeview per il filtro
         if self._anagrafica._denominazione:
-            self.denominazione_filter_entry.set_text(self._anagrafica._denominazione)
+            self.denominazione_filter_entry.set_text(
+                                        self._anagrafica._denominazione)
         self.refresh()
         if self._anagrafica._denominazione:
             self._anagrafica.anagrafica_filter_treeview.grab_focus()
@@ -100,7 +105,8 @@ class AnagraficaListiniFilter(AnagraficaFilter):
 
     def refresh(self):
         # Aggiornamento TreeView
-        denominazione = prepareFilterString(self.denominazione_filter_entry.get_text())
+        denominazione = prepareFilterString(
+                                self.denominazione_filter_entry.get_text())
         visibili = self.visibile_filter_check.get_active()
         if visibili:
             visibili = None
@@ -115,6 +121,7 @@ class AnagraficaListiniFilter(AnagraficaFilter):
         self.numRecords = self.countFilterResults()
         self._refreshPageCount()
         # Let's save the current search as a closure
+
         def filterClosure(offset, batchSize):
             return Listino().select(denominazione=denominazione,
                                                 visibili=visibili,
@@ -345,7 +352,8 @@ class AnagraficaListiniEdit(AnagraficaEdit):
         self.listino_complesso_treeview.get_selection().unselect_all()
 
     def on_delete_row_categoria_button_clicked(self, widget):
-        id = findIdFromCombobox(self.id_categoria_cliente_customcombobox.combobox)
+        id = findIdFromCombobox(
+                        self.id_categoria_cliente_customcombobox.combobox)
         if id:
             for c in self.categorie_listore:
                 if c[0] == id:
@@ -381,7 +389,8 @@ class AnagraficaListiniEdit(AnagraficaEdit):
         self.listino_complesso_treeview.get_selection().unselect_all()
 
     def on_undelete_row_categoria_button_clicked(self, widget):
-        id = findIdFromCombobox(self.id_categoria_cliente_customcombobox.combobox)
+        id = findIdFromCombobox(
+                        self.id_categoria_cliente_customcombobox.combobox)
         if id:
             for c in self.categorie_listore:
                 if c[0] == id:
@@ -415,10 +424,13 @@ class AnagraficaListiniEdit(AnagraficaEdit):
         (model, iterator) = sel.get_selected()
         if iterator is not None:
             idCategoriaCliente = model.get_value(iterator, 0)
-            findComboboxRowFromId(self.id_categoria_cliente_customcombobox.combobox, idCategoriaCliente)
+            findComboboxRowFromId(
+                self.id_categoria_cliente_customcombobox.combobox,
+                idCategoriaCliente)
             status = model.get_value(iterator, 3)
             self.delete_row_categoria_button.set_sensitive(status != 'deleted')
-            self.undelete_row_categoria_button.set_sensitive(status == 'deleted')
+            self.undelete_row_categoria_button.set_sensitive(
+                                                        status == 'deleted')
 
     def on_magazzini_treeview_cursor_changed(self, treeview):
         sel = treeview.get_selection()
@@ -429,7 +441,8 @@ class AnagraficaListiniEdit(AnagraficaEdit):
                                                          idMagazzino)
             status = model.get_value(iterator, 3)
             self.delete_row_magazzino_button.set_sensitive(status != 'deleted')
-            self.undelete_row_magazzino_button.set_sensitive(status == 'deleted')
+            self.undelete_row_magazzino_button.set_sensitive(
+                                                        status == 'deleted')
 
     def on_listino_complesso_treeview_cursor_changed(self, treeview):
         sel = treeview.get_selection()
@@ -450,7 +463,9 @@ class AnagraficaListiniEdit(AnagraficaEdit):
         if self.dao.id is None:
             msg = 'Prima di poter inserire gli articoli occorre salvare il listino.\n Salvare ?'
             if YesNoDialog(msg=msg, transient=self.dialogTopLevel):
-                self.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, GTK_RESPONSE_APPLY)
+                self.on_anagrafica_complessa_detail_dialog_response(
+                                self.dialogTopLevel,
+                                GTK_RESPONSE_APPLY)
             else:
                 toggleButton.set_active(False)
                 return
@@ -459,7 +474,6 @@ class AnagraficaListiniEdit(AnagraficaEdit):
         anag = AnagraficaListiniArticoli(idListino=self.dao.id)
         anagWindow = anag.getTopLevel()
         showAnagraficaRichiamata(self.dialogTopLevel, anagWindow, toggleButton)
-
 
     def on_variazioni_togglebutton_toggled(self, toggleButton):
         anag = AnagraficaVariazioniListini(idListino=self.dao.id)
@@ -474,7 +488,9 @@ class AnagraficaListiniEdit(AnagraficaEdit):
         if self.dao.id is None:
             msg = 'Prima di poter filtrare gli articoli occorre salvare il listino.\n Salvare ?'
             if YesNoDialog(msg=msg, transient=self.dialogTopLevel):
-                self.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, GTK_RESPONSE_APPLY)
+                self.on_anagrafica_complessa_detail_dialog_response(
+                                self.dialogTopLevel,
+                                GTK_RESPONSE_APPLY)
             else:
                 toggleButton.set_active(False)
                 return

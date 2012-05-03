@@ -24,7 +24,8 @@ from sqlalchemy.orm import *
 from promogest.Environment import *
 from promogest.dao.Dao import Dao
 from promogest.modules.GestioneFile.dao.Immagine import ImageFile,immagine
-from promogest.dao.Articolo import articolo
+from promogest.dao.Articolo import Articolo,articolo
+
 
 try:
     articoloimmagine=Table('articolo_immagine',
@@ -70,4 +71,5 @@ class ArticoloImmagine(Dao):
 
 std_mapper = mapper(ArticoloImmagine, articoloimmagine, properties={
                  'immagine': relation(ImageFile, backref='artima',cascade="all, delete"),
+                 'articolo': relation(Articolo, backref='artima'),
                 }, order_by=articoloimmagine.c.id_immagine)

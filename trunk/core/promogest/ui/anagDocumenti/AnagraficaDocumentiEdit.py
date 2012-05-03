@@ -39,17 +39,12 @@ from promogest.dao.ScontoRigaDocumento import ScontoRigaDocumento
 from promogest.dao.RigaMovimento import RigaMovimento
 from promogest.dao.ScontoRigaMovimento import ScontoRigaMovimento
 from promogest.dao.ScontoTestataDocumento import ScontoTestataDocumento
-from promogest.dao.ScontoVenditaDettaglio import ScontoVenditaDettaglio
-from promogest.dao.ScontoVenditaIngrosso import ScontoVenditaIngrosso
 from promogest.dao.Articolo import Articolo
 from promogest.dao.Magazzino import Magazzino
 from promogest.dao.Operazione import Operazione
-from promogest.dao.Cliente import Cliente
 from promogest.dao.Multiplo import Multiplo
 from promogest.dao.Pagamento import Pagamento
-from promogest.dao.AliquotaIva import AliquotaIva
 #from promogest.dao.RigaRitenutaAcconto import RigaRitenutaAcconto
-from promogest.modules.PrimaNota.dao.TestataPrimaNota import TestataPrimaNota
 from promogest.ui.DettaglioGiacenzaWindow import DettaglioGiacenzaWindow
 from promogest.dao.RigaMovimentoFornitura import RigaMovimentoFornitura
 from promogest.ui.utils import *
@@ -82,7 +77,8 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                                 'anagrafica_documenti.glade')
 #        self.placeWindow(self.getTopLevel())
         self._widgetFirstFocus = self.data_documento_entry
-        # contenitore (dizionario) righe (riga 0 riservata per  variazioni in corso)
+        # contenitore (dizionario) righe (
+#           riga 0 riservata per  variazioni in corso)
         self._righe = []
         self._righe.append({})
         # numero riga corrente
@@ -106,9 +102,9 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self._id_listino = None
         # banca preferenziale dell'intestatario
         self._id_banca = None
-        # caricamento documento (interrompe l'azione degli eventi on_changed nelle combobox)
         self._loading = False
-        # risposta richiesta variazione listini per costo variato: 'yes', 'no', 'all', 'none'
+        # risposta richiesta variazione
+#        listini per costo variato: 'yes', 'no', 'all', 'none'
         self._variazioneListiniResponse = ''
         # mostrare variazione listini ?
         self._variazioneListiniShow = True
@@ -126,7 +122,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         #self.draw()
         self.completion = self.ricerca_articolo_entrycompletition
         if Environment.pg3:
-            self.completion.set_match_func(self.match_func,None)
+            self.completion.set_match_func(self.match_func, None)
         else:
             self.completion.set_match_func(self.match_func)
         self.completion.set_text_column(0)
@@ -141,8 +137,10 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
 #        if not posso("PA"):
 #            self.notebook.remove_page(3)
         if posso("PW"):
-            self.promowear_manager_taglia_colore_togglebutton.set_property("visible", True)
-            self.promowear_manager_taglia_colore_togglebutton.set_sensitive(False)
+            self.promowear_manager_taglia_colore_togglebutton.set_property(
+                                                            "visible", True)
+            self.promowear_manager_taglia_colore_togglebutton.set_sensitive(
+                                                                    False)
         else:
             hidePromoWear(self)
         if not posso("SM"):
@@ -175,7 +173,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             if (len(self.lotto_temp_entry.get_text()) >= 6) and \
                     self.auto_lotto_temp:
                 self.on_confirm_row_button_clicked(widget=None)
-        if self.ricerca_criterio_combobox.get_active() == 1: #codice a barre
+        if self.ricerca_criterio_combobox.get_active() == 1:
             gobject.timeout_add(500, do_confirm_row)
 
     def draw(self, cplx=False):
@@ -183,12 +181,14 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         drawPart(self)
         if posso("PA"):
             self.pagamenti_page = PagamentiNotebookPage(self)
-            self.notebook.append_page(self.pagamenti_page.pagamenti_vbox, self.pagamenti_page.pagamenti_page_label)
+            self.notebook.append_page(self.pagamenti_page.pagamenti_vbox,
+                                    self.pagamenti_page.pagamenti_page_label)
 
     def on_scorporo_button_clicked(self, button):
         """ Bottone con una "s" minuscola, che permette di effettuare "al volo"
-        lo scorporo di un valore finale nel campo prezzo """
-        ivaobj = findStrFromCombobox(self.id_iva_customcombobox.combobox,0)
+        lo scorporo di un valore finale nel campo prezzo
+        """
+        ivaobj = findStrFromCombobox(self.id_iva_customcombobox.combobox, 0)
         if not ivaobj:
             return
         if type(ivaobj) != type("CIAO"):
@@ -197,7 +197,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                 messageInfo(msg=_("ATTENZIONE IVA a 0%"))
             else:
                 prezzoLordo = self.prezzo_lordo_entry.get_text()
-                imponibile = float(prezzoLordo)/(1+float(iva)/100)
+                imponibile = float(prezzoLordo) / (1 + float(iva) / 100)
                 self.prezzo_lordo_entry.set_text(str(mN(str(imponibile))))
                 self.prezzo_lordo_entry.grab_focus()
 
@@ -212,16 +212,19 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self.prezzo_lordo_entry.set_text(str(prezzi["prezzoIngrosso"]))
             self.visualizza_prezzo_alternativo = False
 
-
     def on_articolo_entry_focus_in_event(self, widget, event):
         """ controlliamo prima di effettuare una ricerca che il magazzino sia
         selezionato per rendere la ricerca possibile e corretta"""
-        if not findIdFromCombobox(self.id_magazzino_combobox) and self.checkMAGAZZINO:
-            messageInfo(msg=_("ATTENZIONE! \n SELEZIONARE UN MAGAZZINO\n PER UNA RICERCA CORRETTA"))
+
+        if not findIdFromCombobox(self.id_magazzino_combobox) \
+                                                    and self.checkMAGAZZINO:
+            messageInfo(msg=_(
+        "ATTENZIONE! \n SELEZIONARE UN MAGAZZINO\n PER UNA RICERCA CORRETTA"))
             self.id_magazzino_combobox.grab_focus()
             self.checkMAGAZZINO = False
 
-    def on_anagrafica_documenti_detail_vbox_key_press_event(self, widget=None, event=None):
+    def on_anagrafica_documenti_detail_vbox_key_press_event(self,
+                                                widget=None, event=None):
         """ Mappiamo un po' di tasti su ana documenti"""
         keyname = gdk_keyval_name(event.keyval)
         if keyname == 'F4':  # confermo e pulisco
@@ -245,7 +248,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                                 "codiceArticolo": '',
                                 "descrizione": '',
                                 "percentualeIva": 0,
-                                "idAliquotaIva":None,
+                                "idAliquotaIva": None,
                                 "idUnitaBase": None,
                                 "unitaBase": '',
                                 "idMultiplo": None,
@@ -262,56 +265,57 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                                 "codiceArticoloFornitore": '',
                                 "prezzoNettoUltimo": 0,
                                 "quantita_minima": None,
-                                "ritenute" : [],
-                                "numeroLottoArticoloFornitura":None,
-                                "numeroLottoTemp":"",
-                                "dataScadenzaArticoloFornitura":None,
-                                "dataProduzioneArticoloFornitura":None,
-                                "dataPrezzoFornitura":None,
-                                "ordineMinimoFornitura":None,
-                                "tempoArrivoFornitura":None,
-                                "rigaMovimentoFornituraList":[],
+                                "ritenute": [],
+                                "numeroLottoArticoloFornitura": None,
+                                "numeroLottoTemp": "",
+                                "dataScadenzaArticoloFornitura": None,
+                                "dataProduzioneArticoloFornitura": None,
+                                "dataPrezzoFornitura": None,
+                                "ordineMinimoFornitura": None,
+                                "tempoArrivoFornitura": None,
+                                "rigaMovimentoFornituraList": [],
                                 }
         if posso("SM"):
-            AnagraficaDocumentiEditSuMisuraExt.azzeraRiga(self,numero)
+            AnagraficaDocumentiEditSuMisuraExt.azzeraRiga(self, numero)
         if posso("PW"):
-            AnagraficaDocumentiEditPromoWearExt.azzeraRiga(self,numero)
+            AnagraficaDocumentiEditPromoWearExt.azzeraRiga(self, numero)
         if posso("GN"):
-            AnagraficaDocumentiEditGestioneNoleggioExt.azzeraRiga(self,numero)
+            AnagraficaDocumentiEditGestioneNoleggioExt.azzeraRiga(self, numero)
 
-    def azzeraRigaPartial(self, numero = 0, rigatampone=None):
+    def azzeraRigaPartial(self, numero=0, rigatampone=None):
         """
         Azzera i campi del dizionario privato delle righe, alla riga
         indicata (o alla 0-esima)
         """
         self._righe[numero] = {"idRiga": None,
-                                "idMagazzino": rigatampone['idMagazzino'],
-                                "magazzino": rigatampone['magazzino'],
-                                "idArticolo": rigatampone['idArticolo'],
-                                "codiceArticolo": rigatampone['codiceArticolo'],
-                                "descrizione": rigatampone['descrizione'],
-                                "percentualeIva": rigatampone['percentualeIva'],
-                                "idAliquotaIva": rigatampone['idAliquotaIva'],
-                                "idUnitaBase": rigatampone['idUnitaBase'],
-                                "unitaBase": rigatampone['unitaBase'],
-                                "idMultiplo": rigatampone['idMultiplo'],
-                                "multiplo": rigatampone['multiplo'],
-                                "idListino": rigatampone['idListino'],
-                                "listino": rigatampone['listino'],
-                                "quantita": rigatampone['quantita'],
-                                "moltiplicatore": rigatampone['moltiplicatore'],
-                                "prezzoLordo": rigatampone['prezzoLordo'],
-                                "applicazioneSconti": 'scalare',
-                                "sconti": rigatampone['sconti'],
-                                "prezzoNetto": rigatampone['prezzoNetto'],
-                                "totale": rigatampone['totale'],
-                                "codiceArticoloFornitore": rigatampone['codiceArticoloFornitore'],
-                                "prezzoNettoUltimo": rigatampone['prezzoNettoUltimo'],
-                                "quantita_minima": rigatampone['quantita_minima'],
-                                "ritenute" : rigatampone['ritenute'],
+            "idMagazzino": rigatampone['idMagazzino'],
+            "magazzino": rigatampone['magazzino'],
+            "idArticolo": rigatampone['idArticolo'],
+            "codiceArticolo": rigatampone['codiceArticolo'],
+            "descrizione": rigatampone['descrizione'],
+            "percentualeIva": rigatampone['percentualeIva'],
+            "idAliquotaIva": rigatampone['idAliquotaIva'],
+            "idUnitaBase": rigatampone['idUnitaBase'],
+            "unitaBase": rigatampone['unitaBase'],
+            "idMultiplo": rigatampone['idMultiplo'],
+            "multiplo": rigatampone['multiplo'],
+            "idListino": rigatampone['idListino'],
+            "listino": rigatampone['listino'],
+            "quantita": rigatampone['quantita'],
+            "moltiplicatore": rigatampone['moltiplicatore'],
+            "prezzoLordo": rigatampone['prezzoLordo'],
+            "applicazioneSconti": 'scalare',
+            "sconti": rigatampone['sconti'],
+            "prezzoNetto": rigatampone['prezzoNetto'],
+            "totale": rigatampone['totale'],
+            "codiceArticoloFornitore": rigatampone['codiceArticoloFornitore'],
+            "prezzoNettoUltimo": rigatampone['prezzoNettoUltimo'],
+            "quantita_minima": rigatampone['quantita_minima'],
+            "ritenute": rigatampone['ritenute'],
                                 }
         if posso("SM"):
-            AnagraficaDocumentiEditSuMisuraExt.azzeraRigaPartial(self,numero, rigatampone)
+            AnagraficaDocumentiEditSuMisuraExt.azzeraRigaPartial(self, numero,
+                                                            rigatampone)
 
     def nuovaRiga(self):
         """
@@ -359,12 +363,15 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self.articolo_entry.grab_focus()
         else:
             self.data_documento_entry.set_sensitive(True)
-            self.id_persona_giuridica_customcombobox.set_sensitive(self.id_operazione_combobox.get_active() != -1)
+            self.id_persona_giuridica_customcombobox.set_sensitive(
+                            self.id_operazione_combobox.get_active() != -1)
             self.id_operazione_combobox.set_sensitive(True)
             if self._anagrafica._magazzinoFissato:
-                findComboboxRowFromId(self.id_magazzino_combobox, self._anagrafica._idMagazzino)
+                findComboboxRowFromId(self.id_magazzino_combobox,
+                                            self._anagrafica._idMagazzino)
             elif self._id_magazzino is not None:
-                findComboboxRowFromId(self.id_magazzino_combobox, self._id_magazzino)
+                findComboboxRowFromId(self.id_magazzino_combobox,
+                                                        self._id_magazzino)
             self.id_magazzino_combobox.grab_focus()
 
         # Finita la manipolazione della riga e pulita l'interfaccia
@@ -378,10 +385,12 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self._numRiga = 0
         self.azzeraRigaPartial(0, rigatampone=rigatampone)
         self.unitaBaseLabel.set_text(rigatampone['unitaBase'])
-        self.codice_articolo_fornitore_entry.set_text(rigatampone['codiceArticoloFornitore'])
+        self.codice_articolo_fornitore_entry.set_text(
+                                    rigatampone['codiceArticoloFornitore'])
 
     def clearRows(self):
-        """ pulisce i campi per il trattamento e la conservazione delle righe """
+        """ pulisce i campi per il trattamento e la conservazione delle righe
+        """
         self._righe = []
         self._righe.append({})
         self._numRiga = 0
@@ -397,12 +406,14 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         if self._righe[0]["idArticolo"] is None:
             self.id_listino_customcombobox.combobox.clear
         else:
-            a = fillComboboxListiniFiltrati(self.id_listino_customcombobox.combobox,
-                                            self._righe[0]["idArticolo"],
-                                            self._righe[0]["idMagazzino"],
-                                            self.id_persona_giuridica_customcombobox.getId())
+            fillComboboxListiniFiltrati(
+                        self.id_listino_customcombobox.combobox,
+                        self._righe[0]["idArticolo"],
+                        self._righe[0]["idMagazzino"],
+                        self.id_persona_giuridica_customcombobox.getId())
             if self._id_listino:
-                findComboboxRowFromId(self.id_listino_customcombobox.combobox, self._id_listino)
+                findComboboxRowFromId(self.id_listino_customcombobox.combobox,
+                                                            self._id_listino)
 
     def on_id_multiplo_customcombobox_button_clicked(self, widget, toggleButton):
         """ FIXME """

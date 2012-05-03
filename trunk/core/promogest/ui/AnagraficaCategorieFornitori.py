@@ -21,10 +21,8 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 from AnagraficaSemplice import Anagrafica, AnagraficaDetail, AnagraficaFilter
-from promogest import Environment
 from promogest.dao.CategoriaFornitore import CategoriaFornitore
 from utils import *
-
 
 
 class AnagraficaCategorieFornitori(Anagrafica):
@@ -36,29 +34,30 @@ class AnagraficaCategorieFornitori(Anagrafica):
                             AnagraficaCategorieFornitoriFilter(self),
                             AnagraficaCategorieFornitoriDetail(self))
 
-
     def draw(self):
         """ Facoltativo ma suggerito per indicare la lunghezza
         massima della cella di testo
         """
-        self.filter.descrizione_column.get_cells()[0].set_data('max_length', 200)
+        self.filter.descrizione_column.get_cells()[0].set_data(
+                                                            'max_length', 200)
         self._treeViewModel = self.filter.filter_listore
         self.refresh()
 
-
     def refresh(self):
         # Aggiornamento TreeView
-        denominazione = prepareFilterString(self.filter.denominazione_filter_entry.get_text())
-        self.numRecords = CategoriaFornitore().count(denominazione=denominazione)
+        denominazione = prepareFilterString(
+                        self.filter.denominazione_filter_entry.get_text())
+        self.numRecords = CategoriaFornitore().count(
+                                       denominazione=denominazione)
 
         self._refreshPageCount()
 
         # Let's save the current search as a closure
         def filterClosure(offset, batchSize):
             return CategoriaFornitore().select(denominazione=denominazione,
-                                                        orderBy=self.orderBy,
-                                                        offset=self.offset,
-                                                        batchSize=self.batchSize)
+                                            orderBy=self.orderBy,
+                                            offset=self.offset,
+                                            batchSize=self.batchSize)
 
         self._filterClosure = filterClosure
 
@@ -71,20 +70,20 @@ class AnagraficaCategorieFornitori(Anagrafica):
                                         (c.denominazione or '')))
 
 
-
 class AnagraficaCategorieFornitoriFilter(AnagraficaFilter):
     """ Filtro per la ricerca nell'anagrafica delle categorie fornitori """
 
     def __init__(self, anagrafica):
         AnagraficaFilter.__init__(self,
-                                  anagrafica,
-                                  'anagrafica_categorie_fornitori_filter_table',
-                                  gladeFile='_anagrafica_categorie_fornitori_elements.glade')
+                  anagrafica,
+                  'anagrafica_categorie_fornitori_filter_table',
+                  gladeFile='_anagrafica_categorie_fornitori_elements.glade')
         self._widgetFirstFocus = self.denominazione_filter_entry
 
     def _reOrderBy(self, column):
         if column.get_name() == "descrizione_column":
-            return self._anagrafica._changeOrderBy(column,(None,CategoriaFornitore.denominazione))
+            return self._anagrafica._changeOrderBy(
+                            column, (None, CategoriaFornitore.denominazione))
 
     def clear(self):
         # Annullamento filtro
@@ -93,29 +92,25 @@ class AnagraficaCategorieFornitoriFilter(AnagraficaFilter):
         self._anagrafica.refresh()
 
 
-
 class AnagraficaCategorieFornitoriDetail(AnagraficaDetail):
     """ Dettaglio dell'anagrafica delle categorie fornitori """
 
     def __init__(self, anagrafica):
         AnagraficaDetail.__init__(self,
-                                anagrafica,
-                                gladeFile='_anagrafica_categorie_fornitori_elements.glade')
-
+                    anagrafica,
+                    gladeFile='_anagrafica_categorie_fornitori_elements.glade')
 
     def setDao(self, dao):
+        self.dao = dao
         if dao is None:
             self.dao = CategoriaFornitore()
             self._anagrafica._newRow((self.dao, ''))
             self._refresh()
-        else:
-            self.dao = dao
         return self.dao
 
     def updateDao(self):
         self.dao = CategoriaFornitore().getRecord(id=self.dao.id)
         self._refresh()
-
 
     def _refresh(self):
         if not self.dao:
@@ -127,16 +122,15 @@ class AnagraficaCategorieFornitoriDetail(AnagraficaDetail):
         model.set_value(iterator, 0, self.dao)
         model.set_value(iterator, 1, self.dao.denominazione)
 
-
     def saveDao(self):
         sel = self._anagrafica.anagrafica_treeview.get_selection()
         (model, iterator) = sel.get_selected()
         denominazione = model.get_value(iterator, 1) or ''
         if (denominazione == ''):
-            obligatoryField(self._anagrafica.getTopLevel(), self._anagrafica.anagrafica_treeview)
+            obligatoryField(self._anagrafica.getTopLevel(),
+                                    self._anagrafica.anagrafica_treeview)
         self.dao.denominazione = denominazione
         self.dao.persist()
-
 
     def deleteDao(self):
         self.dao.delete()

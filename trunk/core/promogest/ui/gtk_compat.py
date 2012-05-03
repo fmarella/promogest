@@ -59,7 +59,6 @@ if not Environment.pg3:
         GTK_BUTTON_YES_NO = gtk.BUTTONS_YES_NO
         GTK_BUTTON_CANCEL = gtk.BUTTONS_CANCEL
 
-
         gtk_status_icon_new = gtk.status_icon_new_from_file
         pango_tabarray_new = pango.TabArray
         gdk_keyval_name = gtk.gdk.keyval_name
@@ -73,7 +72,7 @@ if not Environment.pg3:
         GDK_EVENTTYPE_3BUTTON_PRESS = gdk._3BUTTON_PRESS
 
         GDK_EVENTTYPE_KEY_PRESS = gtk.gdk.KEY_PRESS
-        GDK_EVENTTYPE_FOCUS_CHANGE =   gtk.gdk.FOCUS_CHANGE
+        GDK_EVENTTYPE_FOCUS_CHANGE = gtk.gdk.FOCUS_CHANGE
         GDK_EVENT = gtk.gdk.Event
         GDK_EVENT_DESTROY = gtk.gdk.DESTROY
         GDK_CONTROL_MASK = gtk.gdk.CONTROL_MASK
@@ -95,10 +94,10 @@ if not Environment.pg3:
 
         GDK_PIXBUF_NEW_FROM_FILE = gtk.gdk.pixbuf_new_from_file
         GTK_WIN_POS_CENTER_ON_PARENT = gtk.WIN_POS_CENTER_ON_PARENT
-        GTK_BUTTON_BOX_SPREAD =  gtk.BUTTONBOX_SPREAD
+        GTK_BUTTON_BOX_SPREAD = gtk.BUTTONBOX_SPREAD
 
         GOBJECT_SIGNAL_RUNLAST = gobject.SIGNAL_RUN_LAST
-        GTK_COLUMN_GROWN_ONLY =  gtk.TREE_VIEW_COLUMN_GROW_ONLY
+        GTK_COLUMN_GROWN_ONLY = gtk.TREE_VIEW_COLUMN_GROW_ONLY
         GTK_COLUMN_FIXED = gtk.TREE_VIEW_COLUMN_FIXED
 
         GTK_ICON_SIZE_BUTTON = gtk.ICON_SIZE_BUTTON
@@ -106,7 +105,7 @@ if not Environment.pg3:
         GTK_ICON_SIZE_SMALL_TOOLBAR = gtk.ICON_SIZE_SMALL_TOOLBAR
 
         GTK_ATTACHOPTIONS_FILL = gtk.FILL
-        GTK_ATTACHOPTIONS_EXPAND =  gtk.EXPAND
+        GTK_ATTACHOPTIONS_EXPAND = gtk.EXPAND
 
         GTK_POLICYTYPE_AUTOMATIC = gtk.POLICY_AUTOMATIC
         GTK_POLICYTYPE_ALWAYS = gtk.POLICY_ALWAYS
@@ -136,8 +135,11 @@ else:
     from gi.repository import GdkPixbuf
     pygtk = None
 
-    GTK_VERSION = str(gtk.get_major_version()) + '.' + str(gtk.get_minor_version()) + \
-        '.' + str(gtk.get_micro_version())
+    GTK_VERSION = str(gtk.get_major_version()) \
+                + '.' \
+                + str(gtk.get_minor_version()) \
+                + '.' \
+                + str(gtk.get_micro_version())
 
     # these are hacks until we fully switch to GI
 
@@ -164,7 +166,6 @@ else:
     GTK_BUTTON_YES_NO = gtk.ButtonsType.YES_NO
     GTK_BUTTON_CANCEL = gtk.ButtonsType.CANCEL
 
-
     gtk_status_icon_new = gtk.StatusIcon.new_from_file
     pango_tabarray_new = pango.TabArray.new
     gdk_keyval_name = gdk.keyval_name
@@ -178,10 +179,9 @@ else:
     GDK_EVENTTYPE_3BUTTON_PRESS = gdk.EventType._3BUTTON_PRESS
 
     GDK_EVENTTYPE_KEY_PRESS = gdk.EventType.KEY_PRESS
-    GDK_EVENTTYPE_FOCUS_CHANGE =   gdk.EventType.FOCUS_CHANGE
+    GDK_EVENTTYPE_FOCUS_CHANGE = gdk.EventType.FOCUS_CHANGE
     GDK_EVENT = gdk.Event
     GDK_EVENT_DESTROY = gdk.EventType.DESTROY
-
 
     GDK_CONTROL_MASK = gdk.ModifierType.CONTROL_MASK
 
@@ -207,7 +207,7 @@ else:
 
     GOBJECT_SIGNAL_RUNLAST = gobject.SignalFlags.RUN_LAST
 
-    GTK_COLUMN_GROWN_ONLY =  gtk.TreeViewColumnSizing.GROW_ONLY
+    GTK_COLUMN_GROWN_ONLY = gtk.TreeViewColumnSizing.GROW_ONLY
     GTK_COLUMN_FIXED = gtk.TreeViewColumnSizing.FIXED
 
     GTK_ICON_SIZE_BUTTON = gtk.IconSize.BUTTON
@@ -215,7 +215,7 @@ else:
     GTK_ICON_SIZE_SMALL_TOOLBAR = gtk.IconSize.SMALL_TOOLBAR
 
     GTK_ATTACHOPTIONS_FILL = gtk.AttachOptions.FILL
-    GTK_ATTACHOPTIONS_EXPAND =  gtk.AttachOptions.EXPAND
+    GTK_ATTACHOPTIONS_EXPAND = gtk.AttachOptions.EXPAND
 
     GTK_POLICYTYPE_AUTOMATIC = gtk.PolicyType.AUTOMATIC
     GTK_JUSTIFICATION_LEFT = gtk.Justification.LEFT
@@ -226,4 +226,3 @@ else:
 
     GTK_FILE_CHOOSER_ACTION_OPEN = gtk.FileChooserAction.OPEN
     GTK_FILE_CHOOSER_ACTION_SAVE = gtk.FileChooserAction.SAVE
-

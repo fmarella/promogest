@@ -22,7 +22,8 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-from promogest.ui.AnagraficaSemplice import Anagrafica, AnagraficaDetail, AnagraficaFilter
+from promogest.ui.AnagraficaSemplice import \
+                Anagrafica, AnagraficaDetail, AnagraficaFilter
 from promogest.dao.Banca import Banca
 from promogest.ui.utils import prepareFilterString
 
@@ -36,9 +37,9 @@ class AnagraficaBanche(Anagrafica):
                             AnagraficaBancheFilter(self),
                             AnagraficaBancheDetail(self))
 
-
     def draw(self):
-        self.filter.denominazione_column.get_cells()[0].set_data('max_length', 200)
+        self.filter.denominazione_column.get_cells()[0].set_data(
+                                                        'max_length', 200)
         self.filter.agenzia_column.get_cells()[0].set_data('max_length', 200)
         self.filter.iban_column.get_cells()[0].set_data('max_length', 30)
         self.filter.abi_column.get_cells()[0].set_data('max_length', 30)
@@ -46,16 +47,18 @@ class AnagraficaBanche(Anagrafica):
         self._treeViewModel = self.filter.filter_listore
         self.refresh()
 
-
     def refresh(self):
         # Aggiornamento TreeView
-        denominazione = prepareFilterString(self.filter.denominazione_filter_entry.get_text())
-        agenzia = prepareFilterString(self.filter.agenzia_filter_entry.get_text())
+        denominazione = prepareFilterString(
+            self.filter.denominazione_filter_entry.get_text())
+        agenzia = prepareFilterString(
+            self.filter.agenzia_filter_entry.get_text())
         iban = prepareFilterString(self.filter.iban_filter_entry.get_text())
         abi = prepareFilterString(self.filter.abi_filter_entry.get_text())
         cab = prepareFilterString(self.filter.cab_filter_entry.get_text())
-        bic_swift = prepareFilterString(self.filter.bic_swift_filter_entry.get_text())
-        self.numRecords = Banca().count( denominazione=denominazione,
+        bic_swift = prepareFilterString(
+            self.filter.bic_swift_filter_entry.get_text())
+        self.numRecords = Banca().count(denominazione=denominazione,
                                                     agenzia=agenzia,
                                                     iban=iban,
                                                     abi=abi,
@@ -90,6 +93,7 @@ class AnagraficaBanche(Anagrafica):
                                         (b.cab or ''),
                                         (b.bic_swift or '')))
 
+
 class AnagraficaBancheFilter(AnagraficaFilter):
     """ Filtro per la ricerca nell'anagrafica delle banche """
 
@@ -102,11 +106,14 @@ class AnagraficaBancheFilter(AnagraficaFilter):
 
     def _reOrderBy(self, column):
         if column.get_name() == "denominazione_column":
-            return self._anagrafica._changeOrderBy(column,(None,Banca.denominazione))
+            return self._anagrafica._changeOrderBy(
+                column, (None, Banca.denominazione))
         elif column.get_name() == "agenzia_column":
-            return self._anagrafica._changeOrderBy(column,(None,Banca.agenzia))
+            return self._anagrafica._changeOrderBy(
+                column, (None, Banca.agenzia))
         elif column.get_name() == "iban_column":
-            return self._anagrafica._changeOrderBy(column,(None,Banca.iban))
+            return self._anagrafica._changeOrderBy(
+                column, (None, Banca.iban))
 
     def clear(self):
         # Annullamento filtro
@@ -119,12 +126,12 @@ class AnagraficaBancheFilter(AnagraficaFilter):
         self.denominazione_filter_entry.grab_focus()
         self._anagrafica.refresh()
 
+
 class AnagraficaBancheDetail(AnagraficaDetail):
     """ Dettaglio dell'anagrafica delle banche """
 
     def __init__(self, anagrafica):
         pass
-
 
     def setDao(self, dao):
         if dao is None:
@@ -133,5 +140,4 @@ class AnagraficaBancheDetail(AnagraficaDetail):
             self.dao = dao
 
     def updateDao(self):
-        self.dao = Banca().getRecord(id= self.dao.id)
-
+        self.dao = Banca().getRecord(id=self.dao.id)

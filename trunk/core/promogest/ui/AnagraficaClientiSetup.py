@@ -52,27 +52,30 @@ class AnagraficaClientiSetup(GladeWidget):
         Carichiamo i dati in interfaccia
         """
         try:
-            self.clienti_codice_upper_check.set_active(int(setconf("Clienti", "cliente_codice_upper")))
+            self.clienti_codice_upper_check.set_active(
+                int(setconf("Clienti", "cliente_codice_upper")))
         except:
             self.clienti_codice_upper_check.set_active(1)
         try:
-            self.clienti_insegna_check.set_active(int(setconf("Clienti", "cliente_insegna")))
+            self.clienti_insegna_check.set_active(
+                int(setconf("Clienti", "cliente_insegna")))
         except:
             self.clienti_insegna_check.set_active(0)
 
         try:
-            self.clienti_nomi_check.set_active(int(setconf("Clienti", "cliente_nome")))
+            self.clienti_nomi_check.set_active(
+                int(setconf("Clienti", "cliente_nome")))
         except:
             self.clienti_nomi_check.set_active(0)
 
         try:
-            self.clienti_cognomi_check.set_active(int(setconf("Clienti", "cliente_cognome")))
+            self.clienti_cognomi_check.set_active(
+                int(setconf("Clienti", "cliente_cognome")))
         except:
             self.clienti_cognomi_check.set_active(0)
 
-
-
-        self.clienti_struttura_codice_entry.set_text(str(setconf("Clienti", "cliente_struttura_codice")))
+        self.clienti_struttura_codice_entry.set_text(
+            str(setconf("Clienti", "cliente_struttura_codice")))
 
     def _saveSetup(self):
         """ Salviamo i dati modificati in interfaccia """

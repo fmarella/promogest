@@ -23,31 +23,10 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-import time
-import os
-import sys
-import threading
-import os.path
-from promogest.Environment import conf
 from promogest.ui.GladeWidget import GladeWidget
-from promogest.ui.widgets.FilterWidget import FilterWidget
-from promogest.lib.XmlGenerator import XlsXmlGenerator
-from promogest.lib.CsvGenerator import CsvFileGenerator
 from promogest.ui.utils import *
-import Login
-import subprocess, shlex
 from promogest import Environment
-from calendar import Calendar
-#if Environment.new_print_enjine:
-from promogest.lib.sla2pdf.Sla2Pdf_ng import Sla2Pdf_ng
-from promogest.lib.sla2pdf.SlaTpl2Sla import SlaTpl2Sla as SlaTpl2Sla_ng
-from promogest.lib.SlaTpl2Sla import SlaTpl2Sla
-#else:
 
-
-from promogest.ui.SendEmail import SendEmail
-from promogest.lib.HtmlHandler import createHtmlObj, renderTemplate, renderHTML
-from promogest.dao.Azienda import Azienda
 from promogest.ui.gtk_compat import *
 
 
@@ -55,7 +34,7 @@ class AnagraficaEdit(GladeWidget):
     """ Interfaccia di editing dell'anagrafica """
 
     def __init__(self, anagrafica, rootWidget,
-            windowTitle,gladeFile=None,module=False):
+            windowTitle, gladeFile=None, module=False):
         GladeWidget.__init__(self, rootWidget,
             fileName=gladeFile, isModule=module)
 
@@ -64,7 +43,6 @@ class AnagraficaEdit(GladeWidget):
         self._isSensitive = True
         self._windowTitle = windowTitle
         self.dao = None
-
 
     def setVisible(self, isVisible):
         """ Make the window visible/invisible """

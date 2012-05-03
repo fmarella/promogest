@@ -20,6 +20,84 @@
         <property name="n_columns">6</property>
         <property name="row_spacing">6</property>
         <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
           <object class="GtkHBox" id="nazione_hbox">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
@@ -824,12 +902,12 @@ della sede legale del cliente</property>
             <child>
               <object class="GtkCheckButton" id="fatturazione_riepilogativa_checkbutton">
                 <property name="label" translatable="yes">Fatturazione Riepilogativa</property>
+                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
                 <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                 <property name="tooltip_text" translatable="yes">???</property>
-                <property name="use_action_appearance">False</property>
                 <property name="draw_indicator">True</property>
               </object>
             </child>
@@ -856,10 +934,10 @@ della sede legale del cliente</property>
         </child>
         <child>
           <object class="GtkToggleButton" id="scheda_contabile_togglebutton">
+            <property name="use_action_appearance">False</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
-            <property name="use_action_appearance">False</property>
             <signal name="clicked" handler="on_scheda_contabile_togglebutton_clicked" swapped="no"/>
             <child>
               <object class="GtkAlignment" id="alignment14">
@@ -913,10 +991,10 @@ della sede legale del cliente</property>
         </child>
         <child>
           <object class="GtkToggleButton" id="destinazioni_merce_togglebutton">
+            <property name="use_action_appearance">False</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
-            <property name="use_action_appearance">False</property>
             <signal name="clicked" handler="on_destinazioni_merce_togglebutton_clicked" swapped="no"/>
             <child>
               <object class="GtkAlignment" id="alignment181">
@@ -969,11 +1047,14 @@ della sede legale del cliente</property>
           </packing>
         </child>
         <child>
+          <placeholder/>
+        </child>
+        <child>
           <object class="GtkToggleButton" id="promemoria_togglebutton">
+            <property name="use_action_appearance">False</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
-            <property name="use_action_appearance">False</property>
             <signal name="toggled" handler="on_promemoria_togglebutton_toggled" swapped="no"/>
             <child>
               <object class="GtkAlignment" id="alignment3">
@@ -1025,6 +1106,9 @@ della sede legale del cliente</property>
           </packing>
         </child>
         <child>
+          <placeholder/>
+        </child>
+        <child>
           <object class="GtkEntry" id="partita_iva_entry">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
@@ -1072,102 +1156,12 @@ della sede legale del cliente</property>
           <placeholder/>
         </child>
         <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
           <object class="GtkToggleButton" id="abbinamento_utente_togglebutton">
             <property name="label" translatable="yes">Utente</property>
+            <property name="use_action_appearance">False</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
-            <property name="use_action_appearance">False</property>
             <property name="image">utenti_image</property>
             <signal name="toggled" handler="on_abbinamento_utente_togglebutton_toggled" swapped="no"/>
           </object>
@@ -1178,6 +1172,65 @@ della sede legale del cliente</property>
             <property name="bottom_attach">6</property>
             <property name="x_options">GTK_FILL</property>
             <property name="y_options"></property>
+          </packing>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <object class="GtkToggleButton" id="label_togglebutton">
+            <property name="use_action_appearance">False</property>
+            <property name="width_request">120</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <signal name="toggled" handler="on_label_togglebutton_clicked" swapped="no"/>
+            <child>
+              <object class="GtkAlignment" id="alignment5">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="xscale">0</property>
+                <property name="yscale">0</property>
+                <child>
+                  <object class="GtkHBox" id="hbox11">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="spacing">2</property>
+                    <child>
+                      <object class="GtkImage" id="label_image">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="pixbuf">stampa_report24x24.png</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="label5">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Label</property>
+                        <property name="use_underline">True</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="left_attach">4</property>
+            <property name="right_attach">5</property>
+            <property name="top_attach">5</property>
+            <property name="bottom_attach">6</property>
           </packing>
         </child>
       </object>
@@ -1417,10 +1470,10 @@ della sede legale del cliente</property>
                 <child>
                   <object class="GtkToggleButton" id="abbina_pg_toggle">
                     <property name="label" translatable="yes">Abbinamento Persona Giuridica</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="image">abb_pg_image</property>
                     <signal name="clicked" handler="on_abbina_pg_toggle_clicked" swapped="no"/>
                   </object>
@@ -1679,10 +1732,10 @@ ed assegnare loro recapiti telefonici, contatti  skype o msn. </property>
                         </child>
                         <child>
                           <object class="GtkToggleButton" id="contatti_togglebutton">
+                            <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
-                            <property name="use_action_appearance">False</property>
                             <signal name="clicked" handler="on_contatti_togglebutton_clicked" swapped="no"/>
                             <child>
                               <object class="GtkAlignment" id="alignment108">

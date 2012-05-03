@@ -22,15 +22,10 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-from sqlalchemy.orm import join
-from sqlalchemy import or_
 from promogest.ui.AnagraficaComplessa import Anagrafica
 from promogest.ui.AnagraficaComplessaReport import AnagraficaReport
 from promogest.ui.AnagraficaComplessaHtml import AnagraficaHtml
-import promogest.dao.Cliente
 from promogest import Environment
-from promogest.dao.Cliente import Cliente
-from promogest.dao.PersonaGiuridica import PersonaGiuridica_
 from promogest.dao.ClienteCategoriaCliente import ClienteCategoriaCliente
 from promogest.modules.Contatti.dao.ContattoCliente import ContattoCliente
 from promogest.ui.AnagraficaClientiEdit import AnagraficaClientiEdit
@@ -63,11 +58,15 @@ class AnagraficaClienti(Anagrafica):
 
         tdoc = TestataDocumento().select(idCliente=dao.id, batchSize=None)
         if tdoc:
-            messageInfo(msg="<big><b>Non è possibile cancellare il cliente.</b></big>\n\nAlcuni documenti sono legati a questo cliente.",
+            msg = """<big><b>Non è possibile cancellare il cliente.</b></big>
+
+Alcuni documenti sono legati a questo cliente."""
+            messageInfo(msg=msg,
                         transient=self.getTopLevel())
             widget.set_sensitive(True)
             return
-        if not YesNoDialog(msg='Confermi l\'eliminazione ?', transient=self.getTopLevel()):
+        if not YesNoDialog(
+                msg='Confermi l\'eliminazione ?', transient=self.getTopLevel()):
             widget.set_sensitive(True)
             return
         #Environment.session.commit()
@@ -85,24 +84,27 @@ class AnagraficaClienti(Anagrafica):
                     l.delete()
                 c.delete()
 
-        cnnt = ClienteCategoriaCliente().select(idCliente=dao.id, batchSize=None)
+        cnnt = ClienteCategoriaCliente().select(idCliente=dao.id,
+                batchSize=None)
         if cnnt:
             for c in cnnt:
                 c.delete()
         if self.dao.id_user:
-            utente = User().getRecord(id = self.dao.id_user)
+            utente = User().getRecord(id=self.dao.id_user)
             self.dao.id_user = None
             if utente:
                 utente.delete()
 
         if posso("IP"):
-            from promogest.modules.InfoPeso.dao.TestataInfoPeso import TestataInfoPeso
-            from promogest.modules.InfoPeso.dao.ClienteGeneralita import ClienteGeneralita
+            from promogest.modules.InfoPeso.dao.TestataInfoPeso import\
+                                                             TestataInfoPeso
+            from promogest.modules.InfoPeso.dao.ClienteGeneralita import\
+                                                             ClienteGeneralita
             cltip = TestataInfoPeso().select(idCliente=dao.id, batchSize=None)
             if cltip:
                 for l in cltip:
                     l.delete()
-            clcg = ClienteGeneralita().select(idCliente = dao.id, batchSize=None)
+            clcg = ClienteGeneralita().select(idCliente=dao.id, batchSize=None)
             if clcg:
                 for l in clcg:
                     l.delete()
@@ -121,8 +123,10 @@ class AnagraficaClienti(Anagrafica):
             return
         import promogest.dao.Fornitore
         from promogest.dao.Fornitore import Fornitore
-        from promogest.modules.Contatti.dao.ContattoFornitore import ContattoFornitore
-        from promogest.modules.Contatti.dao.RecapitoContatto import RecapitoContatto
+        from promogest.modules.Contatti.dao.ContattoFornitore import\
+                                                         ContattoFornitore
+        from promogest.modules.Contatti.dao.RecapitoContatto import\
+                                                             RecapitoContatto
         from promogest.modules.Contatti.dao.Contatto import Contatto
 
         d = Fornitore()
@@ -131,7 +135,7 @@ class AnagraficaClienti(Anagrafica):
         d.insegna = dao.insegna
         d.cognome = dao.cognome
         d.nome = dao.nome
-        d.sede_operativa_indirizzo= dao.sede_operativa_indirizzo
+        d.sede_operativa_indirizzo = dao.sede_operativa_indirizzo
         d.sede_operativa_cap = dao.sede_operativa_cap
         d.sede_operativa_localita = dao.sede_operativa_localita
         d.sede_operativa_provincia = dao.sede_operativa_provincia
@@ -149,7 +153,7 @@ class AnagraficaClienti(Anagrafica):
         d.persist()
         #SEzione dedicata ai contatti/recapiti principali
         dao_contatto = ContattoFornitore()
-        if Environment.tipo_eng =="sqlite":
+        if Environment.tipo_eng == "sqlite":
             forMaxId = Contatto().select(batchSize=None)
             if not forMaxId:
                 dao_contatto.id = 1
@@ -157,19 +161,18 @@ class AnagraficaClienti(Anagrafica):
                 idss = []
                 for l in forMaxId:
                     idss.append(l.id)
-                dao_contatto.id = (max(idss)) +1
+                dao_contatto.id = (max(idss)) + 1
         appa = ""
         if d.ragione_sociale:
-            appa = appa +" "+d.ragione_sociale
+            appa = appa + " " + d.ragione_sociale
         if d.cognome:
-            appa = appa+" " +d.cognome
+            appa = appa + " " + d.cognome
         dao_contatto.cognome = appa
         if d.nome:
             dao_contatto.nome = d.nome
-        dao_contatto.tipo_contatto ="fornitore"
-        dao_contatto.id_fornitore =d.id
+        dao_contatto.tipo_contatto = "fornitore"
+        dao_contatto.id_fornitore = d.id
         dao_contatto.persist()
-
 
         contatti = getRecapitiCliente(dao.id)
         for c in contatti:

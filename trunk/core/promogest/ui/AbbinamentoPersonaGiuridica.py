@@ -19,11 +19,12 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-from promogest import Environment
 from promogest.ui.GladeWidget import GladeWidget
 from promogest.ui.utils import *
-from promogest.dao.PersonaGiuridicaPersonaGiuridica import PersonaGiuridicaPersonaGiuridica
-from promogest.dao.PersonaGiuridica import PersonaGiuridica_ as PersonaGiuridica
+from promogest.dao.PersonaGiuridicaPersonaGiuridica import\
+                                     PersonaGiuridicaPersonaGiuridica
+from promogest.dao.PersonaGiuridica import\
+                                 PersonaGiuridica_ as PersonaGiuridica
 from promogest.modules.RuoliAzioni.dao.Role import Role
 
 class AbbinamentoPersonaGiuridica(GladeWidget):
@@ -39,18 +40,18 @@ class AbbinamentoPersonaGiuridica(GladeWidget):
         self.draw()
 
     def draw(self):
-        self.tipiDict = {"":None,
-                "FORNITORE":"Fornitore",
-                "VETTORE":"Vettore",
-                "CLIENTE":"Cliente",
-                "AGENTE":"Agente"}
+        self.tipiDict = {"": None,
+                "FORNITORE": "Fornitore",
+                "VETTORE": "Vettore",
+                "CLIENTE": "Cliente",
+                "AGENTE": "Agente"}
         for t in self.tipiDict.keys():
             self.abbinamento_pg_listore.append((t,))
             self.riferimento_pg_listore.append((t,))
 
-        res = Role().select(offset=None,batchSize=None)
+        res = Role().select(offset=None, batchSize=None)
         for u in res:
-            if u.name =="Admin":
+            if u.name == "Admin":
                 continue
             else:
                 self.abbinamento_pg_listore.append((u.name.upper(),))
@@ -64,10 +65,13 @@ class AbbinamentoPersonaGiuridica(GladeWidget):
         self.abbinamento_righe_pg_listore.clear()
         self.riferimento_righe_pg_listore.clear()
 
-        padre = PersonaGiuridicaPersonaGiuridica().select(idPersonaGiuridica=self._dao_pg, batchSize=None)
-        figli = PersonaGiuridicaPersonaGiuridica().select(idPersonaGiuridicaAbbinata=self._dao_pg, batchSize=None)
+        padre = PersonaGiuridicaPersonaGiuridica().select(
+                    idPersonaGiuridica=self._dao_pg, batchSize=None)
+        figli = PersonaGiuridicaPersonaGiuridica().select(
+                    idPersonaGiuridicaAbbinata=self._dao_pg, batchSize=None)
         for a in padre:
-            p = PersonaGiuridica().getRecord(id=a.id_persona_giuridica_abbinata)
+            p = PersonaGiuridica().getRecord(
+                                    id=a.id_persona_giuridica_abbinata)
             self.abbinamento_righe_pg_listore.append((p,
                 p.ragione_sociale or "",
                 p.cognome or "",
@@ -102,25 +106,28 @@ class AbbinamentoPersonaGiuridica(GladeWidget):
             else:
                 self.dao_temp = None
 
-        self.tipo_dao = self.abbinamento_pg_listore.get_value(self.abbinamento_pg_combobox.get_active_iter(), 0).lower()
+        self.tipo_dao = self.abbinamento_pg_listore.get_value(
+                    self.abbinamento_pg_combobox.get_active_iter(), 0).lower()
         if self.tipo_dao == "CLIENTE".lower():
             from promogest.ui.SimpleSearch.RicercaClienti import RicercaClienti
             anag = RicercaClienti()
-        elif self.tipo_dao =="VETTORE".lower():
+        elif self.tipo_dao == "VETTORE".lower():
             from promogest.ui.SimpleSearch.RicercaVettori import RicercaVettori
             anag = RicercaVettori()
-        elif self.tipo_dao =="AGENTE".lower():
+        elif self.tipo_dao == "AGENTE".lower():
             from promogest.ui.SimpleSearch.RicercaAgenti import RicercaAgenti
             anag = RicercaAgenti()
-        elif self.tipo_dao =="FORNITORE".lower():
-            from promogest.ui.SimpleSearch.RicercaFornitori import RicercaFornitori
+        elif self.tipo_dao == "FORNITORE".lower():
+            from promogest.ui.SimpleSearch.RicercaFornitori import\
+                                                             RicercaFornitori
             anag = RicercaFornitori()
         else:
-            from promogest.ui.SimpleSearch.RicercaAnagraficaSecondaria import RicercaAnagraficaSecondaria
+            from promogest.ui.SimpleSearch.RicercaAnagraficaSecondaria import\
+                                                 RicercaAnagraficaSecondaria
             anag = RicercaAnagraficaSecondaria(tipo_dao=self.tipo_dao)
         anagWindow = anag.getTopLevel()
         anagWindow.show_all()
-        anagWindow.connect("hide",returnDao)
+        anagWindow.connect("hide", returnDao)
 
 # RIFERIMENTO
 
@@ -143,28 +150,28 @@ class AbbinamentoPersonaGiuridica(GladeWidget):
             else:
                 self.dao_temp = None
 
-
-        self.tipo_dao = self.riferimento_pg_listore.get_value(self.riferimento_pg_combobox.get_active_iter(), 0).lower()
+        self.tipo_dao = self.riferimento_pg_listore.get_value(
+                    self.riferimento_pg_combobox.get_active_iter(), 0).lower()
         if self.tipo_dao == "CLIENTE".lower():
             from promogest.ui.SimpleSearch.RicercaClienti import RicercaClienti
             anag = RicercaClienti()
-        elif self.tipo_dao =="VETTORE".lower():
+        elif self.tipo_dao == "VETTORE".lower():
             from promogest.ui.SimpleSearch.RicercaVettori import RicercaVettori
             anag = RicercaVettori()
-        elif self.tipo_dao =="AGENTE".lower():
+        elif self.tipo_dao == "AGENTE".lower():
             from promogest.ui.SimpleSearch.RicercaAgenti import RicercaAgenti
             anag = RicercaAgenti()
-        elif self.tipo_dao =="FORNITORE".lower():
-            from promogest.ui.SimpleSearch.RicercaFornitori import RicercaFornitori
+        elif self.tipo_dao == "FORNITORE".lower():
+            from promogest.ui.SimpleSearch.RicercaFornitori import\
+                                                             RicercaFornitori
             anag = RicercaFornitori()
         else:
-            from promogest.ui.SimpleSearch.RicercaAnagraficaSecondaria import RicercaAnagraficaSecondaria
-            print "quiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii", self.tipo_dao
+            from promogest.ui.SimpleSearch.RicercaAnagraficaSecondaria import \
+                                            RicercaAnagraficaSecondaria
             anag = RicercaAnagraficaSecondaria(tipo_dao=self.tipo_dao)
         anagWindow = anag.getTopLevel()
         anagWindow.show_all()
-        anagWindow.connect("hide",returnDao)
-
+        anagWindow.connect("hide", returnDao)
 
     def clear(self):
         self.quantita_componente_kit_entry.set_text("")
@@ -172,16 +179,15 @@ class AbbinamentoPersonaGiuridica(GladeWidget):
         self.data_aggiunta_componente_datewidget.set_text("")
         self.id_articolo_componente_customcombobox.set_active(-1)
 
-
     def on_chiudi_abbinamento_pg_button_clicked(self, button):
-        padre = PersonaGiuridicaPersonaGiuridica().select(idPersonaGiuridica=self._dao_pg, batchSize=None)
+        padre = PersonaGiuridicaPersonaGiuridica().select(
+                           idPersonaGiuridica=self._dao_pg, batchSize=None)
         for p in padre:
             p.delete()
-        #print "PAAAAAAAAAAAAAAAAADRE", padre
-        figli = PersonaGiuridicaPersonaGiuridica().select(idPersonaGiuridicaAbbinata=self._dao_pg, batchSize=None)
+        figli = PersonaGiuridicaPersonaGiuridica().select(
+                    idPersonaGiuridicaAbbinata=self._dao_pg, batchSize=None)
         for p in figli:
             p.delete()
-        #print "FIGLIIIIIIIIIIIIIIIIIIIIIIIIIIIIII", figli
         # QUI cancello i vecchi prima salvare di nuovo
         for m in self.abbinamento_righe_pg_listore:
             print "ABBI", m, m[0].id
@@ -196,4 +202,3 @@ class AbbinamentoPersonaGiuridica(GladeWidget):
             a.id_persona_giuridica_abbinata = self._dao_pg
             a.persist()
         self.destroy()
-

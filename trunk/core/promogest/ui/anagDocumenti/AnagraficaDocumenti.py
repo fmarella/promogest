@@ -25,12 +25,11 @@
 from promogest.ui.AnagraficaComplessa import Anagrafica
 from promogest.ui.AnagraficaComplessaReport import AnagraficaReport
 from promogest.ui.AnagraficaComplessaHtml import AnagraficaHtml
-from promogest import Environment
-from promogest.ui.anagDocumenti.AnagraficaDocumentiFilter import AnagraficaDocumentiFilter
-from promogest.ui.anagDocumenti.AnagraficaDocumentiEdit import AnagraficaDocumentiEdit
-from promogest.modules.Pagamenti.dao.TestataDocumentoScadenza import TestataDocumentoScadenza
+from promogest.ui.anagDocumenti.AnagraficaDocumentiFilter import \
+                                                    AnagraficaDocumentiFilter
+from promogest.ui.anagDocumenti.AnagraficaDocumentiEdit import \
+                                                        AnagraficaDocumentiEdit
 from promogest.dao.TestataDocumento import TestataDocumento
-from promogest.dao.Fornitura import Fornitura
 from promogest.ui.utils import *
 
 
@@ -39,15 +38,15 @@ class AnagraficaDocumenti(Anagrafica):
 
     def __init__(self, idMagazzino=None, aziendaStr=None):
         self._magazzinoFissato = (idMagazzino != None)
-        self._idMagazzino=idMagazzino
+        self._idMagazzino = idMagazzino
         Anagrafica.__init__(self,
-                            windowTitle=_('Promogest - Registrazione documenti'),
-                            recordMenuLabel='_Documenti',
-                            filterElement=AnagraficaDocumentiFilter(self),
-                            htmlHandler=AnagraficaDocumentiHtml(self),
-                            reportHandler=AnagraficaDocumentiReport(self),
-                            editElement=AnagraficaDocumentiEdit(self),
-                            aziendaStr=aziendaStr)
+                        windowTitle=_('Promogest - Registrazione documenti'),
+                        recordMenuLabel='_Documenti',
+                        filterElement=AnagraficaDocumentiFilter(self),
+                        htmlHandler=AnagraficaDocumentiHtml(self),
+                        reportHandler=AnagraficaDocumentiReport(self),
+                        editElement=AnagraficaDocumentiEdit(self),
+                        aziendaStr=aziendaStr)
 
         self.duplica_button.set_sensitive(True)
         self.record_duplicate_menu.set_property('visible', True)
@@ -57,27 +56,30 @@ class AnagraficaDocumenti(Anagrafica):
     def on_gestione_riba_menu_activate(self, widget):
         from promogest.ui.RiBaExportWindow import RiBaExportWindow
         anag = RiBaExportWindow(self)
-        showAnagraficaRichiamata(self.getTopLevel(), anag.getTopLevel(), None, self.filter.refresh)
+        showAnagraficaRichiamata(self.getTopLevel(), anag.getTopLevel(),
+                                                None, self.filter.refresh)
 
     def duplicate(self, dao):
         """
         Duplica le informazioni relative ad un documento scelto su uno nuovo
         """
-
         if dao is None:
             return
-
         from promogest.ui.DuplicazioneDocumento import DuplicazioneDocumento
         anag = DuplicazioneDocumento(dao, self)
-        showAnagraficaRichiamata(self.getTopLevel(), anag.getTopLevel(), None, self.filter.refresh)
+        showAnagraficaRichiamata(self.getTopLevel(), anag.getTopLevel(),
+                                                    None, self.filter.refresh)
 
     def on_record_fattura_button_clicked(self, button=None):
         from promogest.ui.FatturazioneDifferita import FatturazioneDifferita
-        anag = FatturazioneDifferita(self.anagrafica_filter_treeview.get_selection())
-        showAnagraficaRichiamata(self.getTopLevel(), anag.getTopLevel(), button=None, callName=self.filter.refresh)
+        anag = FatturazioneDifferita(
+                            self.anagrafica_filter_treeview.get_selection())
+        showAnagraficaRichiamata(self.getTopLevel(), anag.getTopLevel(),
+                                button=None, callName=self.filter.refresh)
 
     def on_anagrafica_filter_treeview_selection_changed(self, selection):
-        dao = Anagrafica.on_anagrafica_filter_treeview_selection_changed(self,selection)
+        dao = Anagrafica.on_anagrafica_filter_treeview_selection_changed(
+                                                            self, selection)
         if dao.__class__ != TestataDocumento:
             if dao.__class__ == list:
                 if len(dao) > 1:
@@ -90,8 +92,9 @@ class AnagraficaDocumenti(Anagrafica):
             self.record_fattura_button.set_sensitive(False)
             return
 
-    def on_anagrafica_filter_treeview_cursor_changed(self,treeview):
-        pass
+#    def on_anagrafica_filter_treeview_cursor_changed(self, treeview):
+#        pass
+
 
 class AnagraficaDocumentiHtml(AnagraficaHtml):
     def __init__(self, anagrafica):
@@ -105,26 +108,27 @@ class AnagraficaDocumentiHtml(AnagraficaHtml):
                 l = ""
                 #setattr(r, "aggiuntalottoindescrizione",l)
                 if self.dao.id_fornitore and r.id_articolo:
-                    aa = RigaMovimentoFornitura().select(idRigaMovimentoAcquisto=r.id, batchSize=None)
+                    aa = RigaMovimentoFornitura().select(
+                                idRigaMovimentoAcquisto=r.id, batchSize=None)
                 else:
-                    aa = RigaMovimentoFornitura().select(idRigaMovimentoVendita=r.id, batchSize=None)
+                    aa = RigaMovimentoFornitura().select(
+                                  idRigaMovimentoVendita=r.id, batchSize=None)
                 #ll = r.descrizione
                 if aa:
-                    lotti= []
+                    lotti = []
                     scadenze = []
                     for a in aa:
                         lottostr = ""
                         scadstr = ""
-                        if a.forni and a.forni.numero_lotto and a.forni.numero_lotto != "" :
+                        if a.forni and a.forni.numero_lotto \
+                                            and a.forni.numero_lotto != "":
                             lotto = a.forni.numero_lotto
                             if lotto in lotti:
                                 continue
                             else:
                                 lotti.append(lotto)
                             if lotto:
-                                lottostr = _("<br /> Lotto %s  - ") %lotto
-
-
+                                lottostr = _("<br /> Lotto %s  - ") % lotto
 
                         if a.forni and a.forni.data_scadenza:
                             scad = dateToString(a.forni.data_scadenza)
@@ -133,15 +137,16 @@ class AnagraficaDocumentiHtml(AnagraficaHtml):
                             else:
                                 scadenze.append(scad)
                             if scad:
-                                scadstr = _(" Data Sc. %s")  %scad
+                                scadstr = _(" Data Sc. %s") % scad
                         l += lottostr + scadstr
                 else:
                     from promogest.dao.NumeroLottoTemp import NumeroLottoTemp
-                    aa = NumeroLottoTemp().select(idRigaMovimentoVenditaTemp=r.id)
+                    aa = NumeroLottoTemp().select(
+                                    idRigaMovimentoVenditaTemp=r.id,
+                                        batchSize=None)
                     if aa:
-                        l +=_("<br /> Lotto %s") %(aa[0].lotto_temp)
-                setattr(r, "aggiuntalottoindescrizione",l)
-
+                        l += _("<br /> Lotto %s") % (aa[0].lotto_temp)
+                setattr(r, "aggiuntalottoindescrizione", l)
         return self.dao
 
 

@@ -60,10 +60,11 @@ class AnagraficaAliquoteIvaFilter(AnagraficaFilter):
 
     def _reOrderBy(self, column):
         if column.get_name() == "descrizione_column":
-            return self._changeOrderBy(column,(None,AliquotaIva.denominazione))
+            return self._changeOrderBy(column,
+                                    (None, AliquotaIva.denominazione))
         if column.get_name() == "descrizione_breve_column":
-            return self._changeOrderBy(column,(None,AliquotaIva.denominazione_breve))
-
+            return self._changeOrderBy(column,
+                                    (None, AliquotaIva.denominazione_breve))
 
     def clear(self):
         # Annullamento filtro
@@ -72,7 +73,8 @@ class AnagraficaAliquoteIvaFilter(AnagraficaFilter):
 
     def refresh(self):
         # Aggiornamento TreeView
-        denominazione = prepareFilterString(self.denominazione_filter_entry.get_text())
+        denominazione = prepareFilterString(
+                                self.denominazione_filter_entry.get_text())
         aliquota_iva = AliquotaIva()
 
         def filterCountClosure():
@@ -125,10 +127,10 @@ class AnagraficaAliquoteIvaEdit(AnagraficaEdit):
 
     def __init__(self, anagrafica):
         AnagraficaEdit.__init__(self,
-                                anagrafica,
-                                'anagrafica_aliquote_iva_detail_table',
-                                'Dati aliquota I.V.A.',
-                                gladeFile='_anagrafica_aliquote_iva_elements.glade')
+                        anagrafica,
+                        'anagrafica_aliquote_iva_detail_table',
+                        'Dati aliquota I.V.A.',
+                        gladeFile='_anagrafica_aliquote_iva_elements.glade')
         self._widgetFirstFocus = self.denominazione_entry
 
     def draw(self, cplx=False):
@@ -143,12 +145,15 @@ class AnagraficaAliquoteIvaEdit(AnagraficaEdit):
 
     def _refresh(self):
         self.denominazione_entry.set_text(self.dao.denominazione or '')
-        self.denominazione_breve_entry.set_text(self.dao.denominazione_breve or '')
+        self.denominazione_breve_entry.set_text(
+                                        self.dao.denominazione_breve or '')
         percentuale = self.dao.percentuale or 0
         self.percentuale_entry.set_text(('%-5.2f') % percentuale)
         percentuale_detrazione = self.dao.percentuale_detrazione or 0
-        self.percentuale_detrazione_entry.set_text(('%-5.2f') % percentuale_detrazione)
-        self.descrizione_detrazione_entry.set_text(self.dao.descrizione_detrazione or '')
+        self.percentuale_detrazione_entry.set_text(
+                                        ('%-5.2f') % percentuale_detrazione)
+        self.descrizione_detrazione_entry.set_text(
+                                        self.dao.descrizione_detrazione or '')
         findComboboxRowFromId(self.id_tipo_combobox, self.dao.id_tipo)
 
     def saveDao(self, tipo=None):
@@ -156,7 +161,8 @@ class AnagraficaAliquoteIvaEdit(AnagraficaEdit):
             obligatoryField(self.dialogTopLevel, self.denominazione_entry)
 
         if (self.denominazione_breve_entry.get_text() == ''):
-            obligatoryField(self.dialogTopLevel, self.denominazione_breve_entry)
+            obligatoryField(
+                        self.dialogTopLevel, self.denominazione_breve_entry)
 
         if (self.percentuale_entry.get_text() == ''):
             obligatoryField(self.dialogTopLevel, self.percentuale_entry)
@@ -165,10 +171,13 @@ class AnagraficaAliquoteIvaEdit(AnagraficaEdit):
             obligatoryField(self.dialogTopLevel, self.id_tipo_combobox)
 
         self.dao.denominazione = self.denominazione_entry.get_text()
-        self.dao.denominazione_breve = self.denominazione_breve_entry.get_text()
+        self.dao.denominazione_breve = self.denominazione_breve_entry.\
+                                                                    get_text()
         self.dao.percentuale = float(self.percentuale_entry.get_text())
-        self.dao.percentuale_detrazione = float(self.percentuale_detrazione_entry.get_text())
-        self.dao.descrizione_detrazione = self.descrizione_detrazione_entry.get_text()
+        self.dao.percentuale_detrazione = float(
+                                self.percentuale_detrazione_entry.get_text())
+        self.dao.descrizione_detrazione = self.descrizione_detrazione_entry.\
+                                                                    get_text()
         self.dao.id_tipo = findIdFromCombobox(self.id_tipo_combobox)
         Environment.ivacache = []
         self.dao.persist()

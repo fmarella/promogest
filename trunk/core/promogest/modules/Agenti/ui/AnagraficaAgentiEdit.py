@@ -24,7 +24,6 @@
 
 
 from promogest.ui.AnagraficaComplessaEdit import AnagraficaEdit
-from promogest import Environment
 from promogest.modules.Agenti.dao.Agente import Agente, getNuovoCodiceAgente
 from promogest.ui.utils import *
 from promogest.ui.utilsCombobox import *
@@ -60,22 +59,19 @@ class AnagraficaAgentiEdit(AnagraficaEdit):
 
     def setDao(self, dao):
         """ Istanzia un  oggetto nuovo se non presente """
+        self.dao = dao
         if dao is None:
             # Crea un nuovo Dao vuoto
             self.dao = Agente()
             self.dao.codice = getNuovoCodiceAgente()
-        else:
-            # Ricrea il Dao con una connessione al DBMS SQL
-            self.dao = Agente().getRecord(id=dao.id)
         self._refresh()
-
 
     def _refresh(self):
         """ Aggiorna gli oggetti della gui """
         if self.dao.ragione_sociale:
-            rag_soc= self.dao.ragione_sociale
+            rag_soc = self.dao.ragione_sociale
         elif self.dao.cognome or self.dao.nome:
-            rag_soc = str(self.dao.cognome)+" "+str(self.dao.nome)
+            rag_soc = str(self.dao.cognome) + " " + str(self.dao.nome)
         elif self.dao.insegna:
             rag_soc = self.dao.insegna
         else:
