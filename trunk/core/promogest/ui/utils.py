@@ -3392,6 +3392,7 @@ def posso(mod=None):
 
 def installId():
     from promogest.dao.Setconf import SetConf
+    from random import randint as rint
     a = setconf(section="Master", key ="icode")
     if not a:
         string = ""
