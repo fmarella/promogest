@@ -114,7 +114,7 @@ properties={
     'registration_date':deferred(user.c.registration_date),
     'last_modified':deferred(user.c.last_modified),
     'photo_src':deferred(user.c.photo_src),
-    'id_language':deferred(user.c.id_language),
+    #'id_language':deferred(user.c.id_language),
     'schemaa_azienda':deferred(user.c.schemaa_azienda),
 
 }, order_by=user.c.username)
