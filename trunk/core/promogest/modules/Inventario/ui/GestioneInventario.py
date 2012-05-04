@@ -459,7 +459,7 @@ class GestioneInventario(RicercaComplessaArticoli):
         quantita = Decimal(value)
         valore_unitario = Decimal(model[path][2])
         model[path][4] = mN(Decimal(quantita*valore_unitario).quantize(Decimal('.01')))
-        data = model[path][5] or datetime.datetime.today().date()
+        data = datetime.datetime.today().date()
         dao = Inventario().getRecord(id=self.dao.id)
         dao.anno = self.dao.anno
         dao.id_magazzino = self.dao.id_magazzino
