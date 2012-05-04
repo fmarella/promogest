@@ -91,7 +91,7 @@ class ElencoMagazzini(GladeWidget):
         anagWindow.show_all()
         if toggleButton.get_active():
             toggleButton.set_active(False)
-            
+
     def on_stoccaggi_togglebutton_clicked(self, toggleButton):
         if not(toggleButton.get_active()):
             toggleButton.set_active(False)
@@ -100,7 +100,7 @@ class ElencoMagazzini(GladeWidget):
         idMagazzino = None
         if self._currentDao is not None:
             idMagazzino = self._currentDao.id
-        from AnagraficaStoccaggi import AnagraficaStoccaggi
+        from promogest.ui.anagStoccaggi.AnagraficaStoccaggi import AnagraficaStoccaggi
         anag = AnagraficaStoccaggi(None, idMagazzino, self.aziendaStr)
         anagWindow = anag.getTopLevel()
         returnWindow = self.getTopLevel().get_toplevel()
