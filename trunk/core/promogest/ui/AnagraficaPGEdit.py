@@ -28,7 +28,7 @@ import promogest.dao.Fornitore
 #from promogest.dao.Fornitore import Fornitore
 #from promogest.modules.Contatti.dao.ContattoFornitore import ContattoFornitore
 from promogest.modules.Contatti.dao.RecapitoContatto import RecapitoContatto
-#from promogest.modules.Contatti.dao.Contatto import Contatto
+from promogest.modules.Contatti.dao.Contatto import Contatto
 from promogest.dao.DaoUtils import *
 from promogest.ui.utils import *
 from promogest.ui.utilsCombobox import *
