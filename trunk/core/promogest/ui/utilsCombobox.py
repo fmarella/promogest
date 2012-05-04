@@ -480,6 +480,7 @@ def listinoCandidateSel(OrderBy=None, idArticolo=None,
     from promogest.dao.ClienteCategoriaCliente import ClienteCategoriaCliente
     from promogest.dao.ListinoComplessoListino import ListinoComplessoListino
     from promogest.dao.Cliente import Cliente
+
     listin = None
 
     def _dirtyWork(OrderBy=None, idArticolo=None, idMagazzino=None,
@@ -496,27 +497,27 @@ def listinoCandidateSel(OrderBy=None, idArticolo=None,
                         query(ListinoArticolo.id_listino).\
                         filter(ListinoArticolo.id_articolo == idArticolo).all()
                         #aggiungere anche i listino complesso se presente.
-            la = ListinoArticolo().select(idArticolo=idArticolo)
-            for a in la:
-                bb = Listino().select(id=a.id_listino)
-                for b in bb:
-                    listiniArtComplexList = Environment.session.\
+            #la = ListinoArticolo().select(idArticolo=idArticolo)
+            for a in listiniArt:
+                #bb = Listino().select(id=a.id_listino)
+                #for b in bb:
+                listiniArtComplexList = Environment.session.\
             query(ListinoComplessoListino.id_listino_complesso).\
-            filter(ListinoComplessoListino.id_listino == a.id_listino).all()
+            filter(ListinoComplessoListino.id_listino == a).all()
 
         if idMagazzino:
             listiniMAG = Environment.session.\
                     query(ListinoMagazzino.id_listino).\
                     filter(ListinoMagazzino.id_magazzino == idMagazzino).all()
-        if idCliente:
-            categorie_cliente_id = Environment.session.\
-                    query(ClienteCategoriaCliente.id_categoria_cliente).all()
-            if categorie_cliente_id:
-                cclid = [a[0] for a in categorie_cliente_id]
-                aa = Environment.session.\
-                query(ListinoCategoriaCliente.id_listino).\
-                filter(ListinoCategoriaCliente.id_categoria_cliente.in_(
-                                                                cclid)).all()
+        #if idCliente:
+            #categorie_cliente_id = Environment.session.\
+                    #query(ClienteCategoriaCliente.id_categoria_cliente).all()
+            #if categorie_cliente_id:
+                #cclid = [a[0] for a in categorie_cliente_id]
+                #aa = Environment.session.\
+                #query(ListinoCategoriaCliente.id_listino).\
+                #filter(ListinoCategoriaCliente.id_categoria_cliente.in_(
+                                                                #cclid)).all()
         if idCliente:
             cli = Cliente().getRecord(id=idCliente)
             if cli:
@@ -547,8 +548,11 @@ def listinoCandidateSel(OrderBy=None, idArticolo=None,
         return listin
 
 
-def fillComboboxListiniFiltrati(combobox, idArticolo=None,
-                            idMagazzino=None, idCliente=None, filter=False):
+def fillComboboxListiniFiltrati(combobox,
+                            idArticolo=None,
+                            idMagazzino=None,
+                            idCliente=None,
+                            filter=False):
     """
     Crea l'elenco dei listini
     """
