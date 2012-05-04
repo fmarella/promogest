@@ -503,7 +503,7 @@ def listinoCandidateSel(OrderBy=None, idArticolo=None,
                 #for b in bb:
                 listiniArtComplexList = Environment.session.\
             query(ListinoComplessoListino.id_listino_complesso).\
-            filter(ListinoComplessoListino.id_listino == a).all()
+            filter(ListinoComplessoListino.id_listino == a[0]).all()
 
         if idMagazzino:
             listiniMAG = Environment.session.\
