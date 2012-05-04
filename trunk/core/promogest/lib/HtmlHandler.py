@@ -56,7 +56,7 @@ def env(templates_dir):
     jinja_env.globals['environment'] = Environment
     jinja_env.globals['utils'] = utils
     jinja_env.globals['datetime'] = datetime
-    
+
     try:
         #installa gettext per i18n
         jinja_env.install_gettext_callables(_, ngettext, newstyle=True)

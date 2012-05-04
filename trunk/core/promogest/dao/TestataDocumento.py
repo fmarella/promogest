@@ -446,7 +446,7 @@ class TestataDocumento(Dao):
         self._totaleNonBaseImponibile = totaleEsclusoBaseImponibile
         self._totaleImposta = totaleImposta  + imposta_spese
         self._totaleRicaricatoLordo = totaleRicaricatoLordo
-        self._totaleRicaricatoImponibile = Decimal(totaleRicaricatoLordo)/(1+Decimal(20)/100)
+        self._totaleRicaricatoImponibile = Decimal(totaleRicaricatoLordo)/(1+Decimal(21)/100)
         self._totaleRicaricatoIva = totaleRicaricatoLordo - self._totaleRicaricatoImponibile
         self._totaleImponibileScontato = totaleImponibileScontato + impon_spese
         self._totaleOggetti = self._totaleImponibileScontato - self._totaleRicaricatoLordo

@@ -96,6 +96,7 @@ class AnagraficaReport(object):
         """Build and return GladeWidget-derived component for print
         preview.
         """
+        print "BOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO", self._htmlTemplate
         if veter:
             if "veter_" not in self._htmlTemplate[1]:
                 self._htmlTemplate[1] = "veter_" + self._htmlTemplate[1]
