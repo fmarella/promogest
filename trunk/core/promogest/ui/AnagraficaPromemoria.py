@@ -32,7 +32,7 @@ from promogest.ui.AnagraficaComplessaFilter import AnagraficaFilter
 from promogest import Environment
 from promogest.dao.Promemoria import Promemoria
 from datetime import datetime, timedelta
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 from promogest.ui.utilsCombobox import *
 from promogest.lib.HtmlHandler import createHtmlObj, renderTemplate, renderHTML
 

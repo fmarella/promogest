@@ -21,7 +21,7 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 from promogest.ui.gtk_compat import *
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 from promogest import Environment
 from promogest.ui.GladeWidget import GladeWidget
 
@@ -111,7 +111,7 @@ class ADRNotebookPage(GladeWidget):
         return dao_articolo_adr
 
 # Categoria trasporto
- 
+
 def fillComboboxCategoriaTrasporto(combobox, filter=False):
     """ Riempi combo degli stadi commessa """
     model = gtk.ListStore(object, int, str)

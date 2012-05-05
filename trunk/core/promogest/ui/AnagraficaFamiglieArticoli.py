@@ -28,7 +28,7 @@ from promogest.ui.AnagraficaComplessaReport import AnagraficaReport
 from promogest.ui.AnagraficaComplessaHtml import AnagraficaHtml
 from promogest.dao.FamigliaArticolo import FamigliaArticolo
 from promogest.dao.Articolo import Articolo
-from utils import *
+from promogest.lib.utils import *
 from utilsCombobox import *
 
 

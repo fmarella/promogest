@@ -30,7 +30,7 @@ from promogest.ui.anagDocumenti.AnagraficaDocumentiFilter import \
 from promogest.ui.anagDocumenti.AnagraficaDocumentiEdit import \
                                                         AnagraficaDocumentiEdit
 from promogest.dao.TestataDocumento import TestataDocumento
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 
 
 class AnagraficaDocumenti(Anagrafica):

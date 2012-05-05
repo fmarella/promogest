@@ -25,14 +25,14 @@ import math
 import operator
 import xml.etree.cElementTree as ElementTree
 from promogest import Environment
-from promogest.ui.utils import setconf
+from promogest.lib.utils import setconf
 import Sla2pdfUtils
 from SlaParser import SlaParser
 SHOWZERORIGA = False
 SHOWZEROTOTALI = False
 
 try:
-    from promogest.ui.utils import pbar, setconf
+    from promogest.lib.utils import pbar, setconf
     SHOWZEROTOTALI = setconf( "Stampa","zeri_in_totali")
     SHOWZERORIGA = setconf( "Stampa","zeri_in_riga")
 except:

@@ -21,7 +21,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 from promogest.ui.gtk_compat import *
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 from promogest import Environment
 from promogest.ui.GladeWidget import GladeWidget
 from promogest.lib.HtmlHandler import renderTemplate
@@ -317,8 +317,8 @@ class InfoPesoNotebookPage(GladeWidget):
         returnWindow = self.getTopLevel().get_toplevel()
         anagWindow.set_transient_for(returnWindow)
         anagWindow.show_all()
-        
-        
+
+
     def on_grafico_button_clicked(self, button):
         from promogest.modules.Statistiche.ui.chart import chartViewer
         chartViewer(self.ana, func="graficoPesateInfopeso", daos = self.dao_testata_infopeso.righeinfopeso)

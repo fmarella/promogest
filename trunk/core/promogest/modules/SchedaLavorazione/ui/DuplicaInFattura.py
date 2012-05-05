@@ -23,7 +23,7 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 from promogest.Environment import *
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 from promogest.ui.gtk_compat import *
 from promogest.dao.RigaDocumento import RigaDocumento
 from promogest.dao.DestinazioneMerce import DestinazioneMerce

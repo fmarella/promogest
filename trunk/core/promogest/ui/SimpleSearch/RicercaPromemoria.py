@@ -23,7 +23,7 @@
 
 from promogest.ui.Ricerca import Ricerca, RicercaFilter
 from promogest.dao.Promemoria import Promemoria
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 from promogest.ui.utilsCombobox import *
 from promogest.ui.gtk_compat import *
 

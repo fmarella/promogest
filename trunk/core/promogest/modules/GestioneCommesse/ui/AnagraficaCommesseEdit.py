@@ -32,7 +32,7 @@ from promogest.dao.Magazzino import Magazzino
 from promogest.dao.Vettore import Vettore
 from promogest.dao.Promemoria import Promemoria
 from promogest.dao.TestataDocumento import TestataDocumento
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 from promogest.ui.utilsCombobox import *
 
 class AnagraficaCommesseEdit(AnagraficaEdit):

@@ -41,7 +41,7 @@ from promogest.dao.Magazzino import Magazzino
 from promogest.dao.Fornitore import Fornitore
 from promogest.ui.GladeWidget import GladeWidget
 import Login
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 from promogest.ui.utilsCombobox import *
 
 

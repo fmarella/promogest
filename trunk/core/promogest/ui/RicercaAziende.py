@@ -28,7 +28,7 @@ from promogest.dao.Dao import Dao
 import promogest.dao.Azienda
 from promogest.dao.Azienda import Azienda
 
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 from promogest.ui.gtk_compat import *
 
 

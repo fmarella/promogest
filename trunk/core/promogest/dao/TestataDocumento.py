@@ -52,7 +52,7 @@ import promogest.lib.ibanlib
 
 #from DaoUtils import *
 from decimal import *
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 from promogest.ui.utilsCombobox import *
 
 from promogest.Environment import *
@@ -333,7 +333,7 @@ class TestataDocumento(Dao):
                 trl = (Decimal(riga.quantita or 0) * Decimal(moltiplicatore) * Decimal(riga.valore_unitario_lordo or 0))
                 if trn != 0 and trl != 0:
                     if riga.id_articolo and riga.id_listino:
-                        from promogest.ui.utils import leggiListino
+                        from promogest.lib.utils import leggiListino
                         ll = leggiListino(riga.id_listino, riga.id_articolo)
                         totaleRicaricatoLordo += (trn * (ll["ultimoCosto"]*Decimal(riga.quantita or 0)) / trl)
                     elif riga.id_articolo and not riga.id_listino:
@@ -1100,7 +1100,7 @@ class TestataDocumento(Dao):
             if rmfa:
                 for f in rmfa:
                     if f.id_riga_movimento_vendita:
-                        from promogest.ui.utils import messageError
+                        from promogest.lib.utils import messageError
                         messageError(msg="HAI RIMOSSO UN DOCUMENTO DI ACQUISTO DI CUI\n PARTE DEGLI ARTICOLI ERANO GIÀ STATI VENDUTI,\n I LOTTI NON SARANNO PIÙ NUMERICAMENTE CORRETTI")
                     params['session'].delete(f)
                 params["session"].commit()

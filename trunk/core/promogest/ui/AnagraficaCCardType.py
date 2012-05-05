@@ -24,7 +24,7 @@
 from promogest.ui.AnagraficaSemplice import \
                 Anagrafica, AnagraficaDetail, AnagraficaFilter
 from promogest.dao.CCardType import CCardType
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 from promogest.ui.gtk_compat import *
 
 

@@ -24,7 +24,7 @@
 
 from promogest.ui.gtk_compat import *
 from CustomComboBoxSearch import CustomComboBoxSearch
-from promogest.ui.utils import leggiFornitore
+from promogest.lib.utils import leggiFornitore
 
 
 class FornitoreSearchWidget(CustomComboBoxSearch):

@@ -35,7 +35,7 @@ from promogest.dao.User import User
 from promogest.modules.Multilingua.dao.Language import Language
 from promogest.dao.Setconf import SetConf
 from promogest.lib.webutils import *
-from promogest.ui import utils
+from promogest.lib import utils
 from promogest.lib.session import Session
 
 COOKIENAME = SetConf().select(key="cookie_name")[0].value

@@ -26,7 +26,7 @@ from matplotlib.figure import Figure
 from numpy import arange, sin, pi
 from matplotlib.backends.backend_gtkagg import FigureCanvasGTKAgg as FigureCanvas
 from matplotlib.backends.backend_gtkagg import NavigationToolbar2GTKAgg as NavigationToolbar
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 from promogest.ui.gtk_compat import *
 
 class chartViewer():

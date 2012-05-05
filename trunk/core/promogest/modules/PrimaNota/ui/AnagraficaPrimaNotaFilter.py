@@ -24,7 +24,7 @@ from promogest.ui.AnagraficaComplessaFilter import AnagraficaFilter
 from promogest.modules.PrimaNota.dao.TestataPrimaNota import TestataPrimaNota
 from promogest.dao.Setconf import SetConf
 from promogest.dao.Banca import Banca
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 from promogest.ui.utilsCombobox import *
 
 

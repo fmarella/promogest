@@ -8,7 +8,7 @@
 
 # possibleFieldsKeys is a global module list containing all visible fields that is possible to import from a price list
 from promogest import Environment
-from promogest.ui.utils import posso
+from promogest.lib.utils import posso
 
 possibleFieldsKeys = ['Codice',
                       'Codice a barre',

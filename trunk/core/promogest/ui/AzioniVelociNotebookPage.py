@@ -20,7 +20,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 import webbrowser
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 from promogest.dao.Setconf import SetConf
 from promogest import Environment
 from GladeWidget import GladeWidget
@@ -126,7 +126,7 @@ class AzioniVelociNotebookPage(GladeWidget):
     def nuovoDocumento(self, kind):
         if not hasAction(actionID=2):return
         from promogest.ui.anagDocumenti.AnagraficaDocumenti import AnagraficaDocumenti
-        #from utils import findComboboxRowFromStr
+        #from promogest.lib.utils import findComboboxRowFromStr
 #        self.aziendaStr = Environment.azienda
         anag = AnagraficaDocumenti()
         showAnagrafica(self.main_wind.getTopLevel(), anag)

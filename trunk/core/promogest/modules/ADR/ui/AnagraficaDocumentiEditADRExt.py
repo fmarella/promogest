@@ -21,7 +21,7 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 from promogest import Environment
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 
 from promogest.modules.ADR.dao.ArticoloADR import ArticoloADR
 
@@ -147,7 +147,7 @@ def calcolaLimiteTrasportoADR(anagrafica, artADR, **kwargs):
 
 def sposta_sommario_in_tabella(anagrafica):
     """Sposta le righe descrittive del documento ADR nella tabella
-    
+
     Arguments:
     - `anagrafica`: l'anagrafica documento
     """

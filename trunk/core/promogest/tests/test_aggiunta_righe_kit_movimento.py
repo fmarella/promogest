@@ -31,7 +31,7 @@ from promogest.dao.TestataMovimento import TestataMovimento
 from promogest.dao.RigaMovimento import RigaMovimento
 from promogest.dao.Articolo import Articolo
 from promogest.modules.GestioneKit.dao.ArticoloKit import ArticoloKit
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 
 #mi serve un movimento di tipo trasferimento merce magazzino
 

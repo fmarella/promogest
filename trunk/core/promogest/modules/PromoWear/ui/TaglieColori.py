@@ -30,7 +30,7 @@ from promogest.modules.PromoWear.dao.GruppoTagliaTaglia import GruppoTagliaTagli
 from promogest.modules.PromoWear.dao.Taglia import Taglia
 from promogest.modules.PromoWear.dao.Colore import Colore
 from promogest.dao.CodiceABarreArticolo import CodiceABarreArticolo
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 from promogest.ui.gtk_compat import *
 from promogest.ui.GladeWidget import GladeWidget
 from promogest.lib.HtmlHandler import createHtmlObj, renderTemplate, renderHTML

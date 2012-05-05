@@ -31,7 +31,7 @@ from promogest.dao.Fornitura import Fornitura
 from promogest.dao.Riga import Riga
 from promogest.dao.CodiceABarreArticolo import CodiceABarreArticolo
 from DaoUtils import giacenzaDettaglio, giacenzaArticolo
-from promogest.ui.utils import posso
+from promogest.lib.utils import posso
 
 if posso("PW"):
     from promogest.modules.PromoWear.dao.ArticoloTagliaColore import \

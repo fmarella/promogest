@@ -34,7 +34,7 @@ from Listino import Listino
 from Multiplo import Multiplo
 from DaoUtils import scontiRigaDocumentoDel
 from Riga import Riga, riga
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 if posso("SM"):
     from promogest.modules.SuMisura.dao.MisuraPezzo import MisuraPezzo
 

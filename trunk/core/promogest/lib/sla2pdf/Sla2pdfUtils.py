@@ -27,7 +27,7 @@ from reportlab.platypus import  Paragraph
 from reportlab.lib.styles import ParagraphStyle
 from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_RIGHT
 from reportlab.lib.pagesizes import cm
-from promogest.ui.utils import mNL, mNLC, mN, italianizza, deItalianizza
+from promogest.lib.utils import mNL, mNLC, mN, italianizza, deItalianizza
 try:
     from reportlab.graphics.barcode.common import *
     from reportlab.graphics.barcode.usps import *

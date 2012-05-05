@@ -29,7 +29,7 @@ from promogest.ui.AnagraficaComplessaFilter import AnagraficaFilter
 from promogest import Environment
 from promogest.dao.Multiplo import Multiplo
 
-from utils import *
+from promogest.lib.utils import *
 from utilsCombobox import fillComboboxUnitaBase, findIdFromCombobox
 
 

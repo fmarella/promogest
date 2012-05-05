@@ -25,8 +25,8 @@ from sqlalchemy.orm import *
 from promogest.Environment import *
 from promogest.dao.Dao import Dao
 from promogest.dao.DaoUtils import *
-from promogest.ui.utils import numeroRegistroGet
-from promogest.ui.utils import *
+from promogest.lib.utils import numeroRegistroGet
+from promogest.lib.utils import *
 from promogest.dao.Cliente import Cliente
 from promogest.dao.Articolo import Articolo
 from promogest.modules.GestioneCommesse.dao.StadioCommessa import StadioCommessa

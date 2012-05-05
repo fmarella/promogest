@@ -30,7 +30,7 @@ from promogest.dao.Articolo import Articolo
 from promogest.dao.ListinoArticolo import ListinoArticolo
 from promogest.dao.ScontoVenditaDettaglio import ScontoVenditaDettaglio
 from promogest.dao.ScontoVenditaIngrosso import ScontoVenditaIngrosso
-from utils import *
+from promogest.lib.utils import *
 from utilsCombobox import fillComboboxListini,findIdFromCombobox,findComboboxRowFromId
 
 if posso("PW"):

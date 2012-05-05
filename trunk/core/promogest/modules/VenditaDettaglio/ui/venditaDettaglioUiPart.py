@@ -24,7 +24,7 @@
 from promogest.dao.Magazzino import Magazzino
 from promogest import Environment
 from promogest.ui.utilsCombobox import fillComboboxCCardType
-from promogest.ui.utils import setconf
+from promogest.lib.utils import setconf
 from promogest.ui.gtk_compat import *
 
 

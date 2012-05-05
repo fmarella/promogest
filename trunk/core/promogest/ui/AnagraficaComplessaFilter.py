@@ -25,7 +25,7 @@
 
 from promogest.ui.GladeWidget import GladeWidget
 from promogest.ui.gtk_compat import *
-from promogest.ui.utils import setconf
+from promogest.lib.utils import setconf
 
 
 class AnagraficaFilter(GladeWidget):

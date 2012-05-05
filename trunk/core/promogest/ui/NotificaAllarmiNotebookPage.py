@@ -20,7 +20,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 from promogest.ui.gtk_compat import *
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 #from promogest.dao.Setconf import SetConf
 from promogest import Environment
 from GladeWidget import GladeWidget

@@ -28,7 +28,7 @@ from promogest.dao.Articolo import Articolo
 from promogest.dao.CodiceABarreArticolo import CodiceABarreArticolo
 import promogest.dao.ListinoArticolo
 from promogest.dao.ListinoArticolo import ListinoArticolo
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 from promogest.ui.utilsCombobox import *
 import datetime
 

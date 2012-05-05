@@ -22,7 +22,7 @@
 
 from datetime import datetime
 from promogest.ui.GladeWidget import GladeWidget
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 from promogest import Environment
 from promogest.dao.CategoriaArticolo import CategoriaArticolo
 from promogest.dao.Magazzino import Magazzino

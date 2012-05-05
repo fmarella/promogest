@@ -22,7 +22,7 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 from promogest.ui.gtk_compat import *
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 from promogest.ui.GladeWidget import GladeWidget
 from promogest import Environment
 from promogest.dao.TestataDocumento import TestataDocumento

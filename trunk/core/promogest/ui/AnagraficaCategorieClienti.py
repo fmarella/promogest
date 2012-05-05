@@ -25,7 +25,7 @@
 from promogest.ui.AnagraficaSemplice import \
                         Anagrafica, AnagraficaDetail, AnagraficaFilter
 from promogest.dao.CategoriaCliente import CategoriaCliente
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 from promogest.ui.utilsCombobox import *
 
 

@@ -27,7 +27,7 @@ import Image
 import os
 from promogest import Environment
 from promogest.dao.Azienda import Azienda
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 from promogest.ui.utilsCombobox import *
 
 

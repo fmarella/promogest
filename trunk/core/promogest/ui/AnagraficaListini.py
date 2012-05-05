@@ -35,7 +35,7 @@ from promogest.dao.ListinoComplessoListino import ListinoComplessoListino
 from promogest.dao.ListinoArticolo import ListinoArticolo
 from promogest.ui.AnagraficaVariazioniListini import \
                                                 AnagraficaVariazioniListini
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 from promogest.ui.utilsCombobox import *
 
 

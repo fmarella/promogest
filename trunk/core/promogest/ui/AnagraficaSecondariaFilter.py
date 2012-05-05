@@ -28,7 +28,7 @@ from promogest import Environment
 import promogest.dao.Fornitore
 from promogest.dao.AnagraficaSecondaria import AnagraficaSecondaria_ as AnagraficaSecondaria
 from promogest.dao.DaoUtils import *
-from utils import *
+from promogest.lib.utils import *
 from utilsCombobox import *
 
 

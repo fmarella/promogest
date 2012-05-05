@@ -20,7 +20,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 import hashlib
-from promogest.ui.utils import orda
+from promogest.lib.utils import orda
 from promogest import Environment
 from promogest.dao.Setconf import SetConf
 from promogest.dao.SectionUser import SectionUser

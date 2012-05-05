@@ -26,8 +26,8 @@ from promogest.ui.AnagraficaComplessaEdit import AnagraficaEdit
 from promogest.ui.AnagraficaComplessaReport import AnagraficaReport
 from promogest.ui.AnagraficaComplessaHtml import AnagraficaHtml
 from promogest.ui.AnagraficaComplessaFilter import AnagraficaFilter
-from promogest.ui.utils import obligatoryField, prepareFilterString, mN
-from promogest.ui.utils import on_id_aliquota_iva_customcombobox_clicked
+from promogest.lib.utils import obligatoryField, prepareFilterString, mN
+from promogest.lib.utils import on_id_aliquota_iva_customcombobox_clicked
 from promogest.ui.utilsCombobox import fillComboboxAliquoteIva, findComboboxRowFromStr
 from promogest.ui.utilsCombobox import findComboboxRowFromId, findIdFromCombobox
 from promogest.dao.Pagamento import Pagamento

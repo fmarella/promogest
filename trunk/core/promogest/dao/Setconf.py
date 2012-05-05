@@ -25,7 +25,7 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from Dao import Dao
 from promogest.Environment import *
-from promogest.ui.utils import orda
+from promogest.lib.utils import orda
 
 try:
     setconf=Table('setconf', params['metadata'],schema = params['schema'],autoload=True)

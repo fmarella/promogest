@@ -9,7 +9,7 @@
 import os
 import math
 import pprint
-from promogest.ui.utils import setconf
+from promogest.lib.utils import setconf
 import xml.etree.cElementTree as ElementTree
 from promogest import Environment
 from promogest.lib import Sla2pdfUtils

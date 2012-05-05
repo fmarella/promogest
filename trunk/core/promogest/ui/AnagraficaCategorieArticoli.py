@@ -25,7 +25,7 @@ from promogest.ui.AnagraficaSemplice import \
                         Anagrafica, AnagraficaDetail, AnagraficaFilter
 from promogest.dao.CategoriaArticolo import CategoriaArticolo
 from promogest.dao.Articolo import Articolo
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 
 
 class AnagraficaCategorieArticoli(Anagrafica):

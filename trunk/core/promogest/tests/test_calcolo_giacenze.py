@@ -28,7 +28,7 @@ import unittest
 
 from promogest.Environment import *
 from promogest.dao.Articolo import Articolo
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 
 from promogest.dao.TestataMovimento import TestataMovimento
 from promogest.dao.TestataDocumento import TestataDocumento

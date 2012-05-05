@@ -25,7 +25,7 @@
 
 from promogest.ui.AnagraficaComplessaEdit import AnagraficaEdit
 from promogest.modules.Agenti.dao.Agente import Agente, getNuovoCodiceAgente
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 from promogest.ui.utilsCombobox import *
 
 

@@ -22,7 +22,7 @@
 from promogest.ui.gtk_compat import *
 from promogest.ui.AnagraficaSemplice import Anagrafica, AnagraficaDetail, AnagraficaFilter
 from promogest.modules.InfoPeso.dao.TipoTrattamento import TipoTrattamento
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 
 
 class AnagraficaTipoTrattamento(Anagrafica):

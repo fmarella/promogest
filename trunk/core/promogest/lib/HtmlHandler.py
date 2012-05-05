@@ -41,7 +41,7 @@ except:
 import urllib2
 import webbrowser
 from promogest import Environment
-from  promogest.ui import utils
+from  promogest.lib import utils
 from jinja2 import Environment  as Env
 from jinja2 import FileSystemLoader,FileSystemBytecodeCache,environmentfilter, Markup, escape
 import re

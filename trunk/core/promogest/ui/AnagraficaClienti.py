@@ -33,7 +33,7 @@ from promogest.ui.AnagraficaClientiFilter import AnagraficaClientiFilter
 from promogest.dao.TestataDocumento import TestataDocumento
 from promogest.dao.User import User
 from promogest.dao.DaoUtils import *
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 from promogest.ui.utilsCombobox import *
 
 

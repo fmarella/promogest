@@ -33,7 +33,7 @@ class CustomComboBoxModify(gtk.HBox):
                                  (gobject.TYPE_OBJECT, ) )}
 
     def __init__(self):
-        from promogest.ui.utils import setconf
+        from promogest.lib.utils import setconf
         gtk.HBox.__init__(self)
         self.combobox = gtk.ComboBox()
         self.combobox.set_property("can-focus", True)

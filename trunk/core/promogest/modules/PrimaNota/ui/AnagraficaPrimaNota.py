@@ -29,7 +29,7 @@ from promogest.modules.PrimaNota.ui.\
                         AnagraficaPrimaNotaEdit import AnagraficaPrimaNotaEdit
 from promogest.modules.PrimaNota.ui.\
                     AnagraficaPrimaNotaFilter import AnagraficaPrimaNotaFilter
-#from promogest.ui.utils import *
+#from promogest.lib.utils import *
 #from promogest.ui.utilsCombobox import *
 
 

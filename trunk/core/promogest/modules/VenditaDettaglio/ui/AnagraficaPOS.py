@@ -24,7 +24,7 @@ from promogest.ui.AnagraficaSemplice import Anagrafica, AnagraficaDetail, Anagra
 from promogest import Environment
 from promogest.modules.VenditaDettaglio.dao.Pos import Pos
 
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 
 
 class AnagraficaPos(Anagrafica):

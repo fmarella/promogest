@@ -28,7 +28,7 @@ from promogest.ui.AnagraficaComplessaHtml import AnagraficaHtml
 from promogest.ui.anagMovimenti.AnagraficaMovimentiEdit import AnagraficaMovimentiEdit
 from promogest.ui.anagMovimenti.AnagraficaMovimentiFilter import AnagraficaMovimentiFilter
 from promogest.ui.anagDocumenti.AnagraficaDocumentiEditUtils import *
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 from promogest.ui.utilsCombobox import *
 
 if posso("PW"):

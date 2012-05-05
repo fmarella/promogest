@@ -29,7 +29,7 @@ from promogest.ui.AnagraficaComplessaHtml import AnagraficaHtml
 from promogest import Environment
 from promogest.dao.Articolo import Articolo
 from promogest.modules.DistintaBase.dao.AssociazioneArticolo import AssociazioneArticolo
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 from promogest.ui.gtk_compat import *
 
 

@@ -25,7 +25,7 @@ from promogest.ui.AnagraficaComplessaFilter import AnagraficaFilter
 from promogest.ui.anagDocumenti.AnagraficaDocumentiEditUtils import *
 from promogest import Environment
 from promogest.dao.TestataMovimento import TestataMovimento
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 from promogest.ui.utilsCombobox import *
 from promogest.ui.gtk_compat import *
 

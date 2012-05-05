@@ -25,7 +25,7 @@
 import os
 from promogest.ui.GladeWidget import GladeWidget
 from promogest import Environment
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 from promogest.ui.utilsCombobox import *
 from promogest.ui.gtk_compat import *
 from promogest.dao.DaoUtils import *

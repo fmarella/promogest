@@ -14,7 +14,7 @@ from promogest.dao.Articolo import Articolo
 from promogest.dao.Fornitura import Fornitura
 from promogest.dao.CodiceABarreArticolo import CodiceABarreArticolo
 from promogest.dao.Dao import Dao
-from promogest.ui.utils import YesNoDialog, posso
+from promogest.lib.utils import YesNoDialog, posso
 
 if hasattr(conf, "PromoWear") and getattr(conf.PromoWear,'mod_enable')=="yes":
     from promogest.modules.PromoWear.dao.Colore import Colore

@@ -11,7 +11,7 @@ import xml.etree.cElementTree as ElementTree
 import promogest.ui.AnagraficaListini
 import promogest.ui.Main
 from promogest.ui.Main import *
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 import promogest.ui.Login
 from fieldsDict import *
 

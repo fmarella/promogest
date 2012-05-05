@@ -26,7 +26,7 @@ from sqlalchemy.orm import *
 from promogest.Environment import params
 import datetime
 from sqlalchemy.ext.serializer import loads, dumps
-from promogest.ui.utils import messageError
+from promogest.lib.utils import messageError
 
 
 class ApplicationLog(object):

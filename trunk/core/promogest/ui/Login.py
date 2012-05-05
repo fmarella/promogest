@@ -32,7 +32,7 @@ from promogest.dao.User import User
 from promogest.dao.Azienda import Azienda
 from GtkExceptionHandler import GtkExceptionHandler
 from promogest.ui.UpdateDialog import UpdateDialog
-from promogest.ui.utils import leggiRevisioni, hasAction, checkInstallation, \
+from promogest.lib.utils import leggiRevisioni, hasAction, checkInstallation, \
     installId, messageInfo, findStrFromCombobox
 from promogest.ui.utilsCombobox import findComboboxRowFromStr
 

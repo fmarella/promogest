@@ -27,7 +27,7 @@ from promogest.ui.AnagraficaComplessaHtml import AnagraficaHtml
 from promogest.ui.AnagraficaComplessaFilter import AnagraficaFilter
 from promogest.dao.VariazioneListino import VariazioneListino
 from promogest.lib.relativedelta import relativedelta
-from utils import *
+from promogest.lib.utils import *
 from utilsCombobox import *
 
 

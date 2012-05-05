@@ -11,7 +11,7 @@ from sqlalchemy.orm import *
 from promogest.Environment import *
 from Dao import Dao
 from RigaMovimento import RigaMovimento
-from promogest.ui.utils import numeroRegistroGet
+from promogest.lib.utils import numeroRegistroGet
 from Fornitore import Fornitore
 from Cliente import Cliente
 from Fornitura import Fornitura

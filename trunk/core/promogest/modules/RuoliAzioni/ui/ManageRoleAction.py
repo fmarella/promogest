@@ -26,7 +26,7 @@ from promogest.ui.GladeWidget import GladeWidget
 from promogest.modules.RuoliAzioni.dao.Action import Action
 from promogest.modules.RuoliAzioni.dao.RoleAction import RoleAction
 from promogest.ui.utilsCombobox import *
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 from promogest.ui.gtk_compat import *
 
 

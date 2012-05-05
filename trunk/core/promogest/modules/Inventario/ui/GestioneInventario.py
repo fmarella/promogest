@@ -37,7 +37,7 @@ from promogest.dao.Articolo import Articolo
 from promogest.dao.Stoccaggio import Stoccaggio
 from promogest.dao.Listino import Listino
 from promogest.ui.GladeWidget import GladeWidget
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 from promogest.dao.DaoUtils import giacenzaArticolo
 from sqlalchemy import func
 

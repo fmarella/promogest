@@ -22,7 +22,7 @@
 
 from AnagraficaSemplice import Anagrafica, AnagraficaDetail, AnagraficaFilter
 from promogest.dao.CategoriaFornitore import CategoriaFornitore
-from utils import *
+from promogest.lib.utils import *
 
 
 class AnagraficaCategorieFornitori(Anagrafica):

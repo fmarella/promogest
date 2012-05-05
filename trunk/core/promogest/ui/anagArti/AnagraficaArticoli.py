@@ -32,7 +32,7 @@ import promogest.dao.Articolo
 from promogest.dao.Articolo import Articolo
 import promogest.dao.Fornitura
 
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 from promogest.ui.utilsCombobox import *
 if posso("PW"):
     from promogest.modules.PromoWear.ui.PromowearUtils import *

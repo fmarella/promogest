@@ -31,12 +31,12 @@ from promogest.Environment import *
 from promogest.dao.TestataDocumento import TestataDocumento
 from promogest.dao.InformazioniFatturazioneDocumento import InformazioniFatturazioneDocumento
 
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 
 #mi serve un movimento di tipo trasferimento merce magazzino
 
 def generaFileConad(testata, file_conad):
-    """ 
+    """
     """
     if testata:
         #Scriviamo la testata della fattura

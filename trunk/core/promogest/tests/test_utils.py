@@ -27,7 +27,7 @@ bindtextdomain('promogest', locale_dir='./po/locale')
 from promogest.dao.AliquotaIva import AliquotaIva
 import unittest
 from promogest import Environment
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 from promogest.ui.gtk_compat import *
 import string
 

@@ -30,7 +30,7 @@ import promogest.dao.Fornitore
 from promogest.modules.Contatti.dao.RecapitoContatto import RecapitoContatto
 from promogest.modules.Contatti.dao.Contatto import Contatto
 from promogest.dao.DaoUtils import *
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 from promogest.ui.utilsCombobox import *
 from promogest.ui.gtk_compat import *
 

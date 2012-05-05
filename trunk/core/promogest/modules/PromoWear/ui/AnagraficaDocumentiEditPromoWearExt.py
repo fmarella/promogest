@@ -23,7 +23,7 @@
 
 
 from promogest import Environment
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 from promogest.ui.gtk_compat import *
 from promogest.modules.PromoWear.ui.PromowearUtils import *
 

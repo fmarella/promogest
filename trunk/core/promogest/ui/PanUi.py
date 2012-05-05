@@ -22,7 +22,7 @@
 from promogest.ui.gtk_compat import *
 import hashlib
 from threading import Timer
-from promogest.ui.utils import orda, messageInfo, setconf
+from promogest.lib.utils import orda, messageInfo, setconf
 from promogest.dao.Setconf import SetConf
 from promogest import Environment
 from GladeWidget import GladeWidget

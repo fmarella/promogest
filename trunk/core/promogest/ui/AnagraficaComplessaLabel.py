@@ -24,7 +24,7 @@
 
 import os
 import os.path
-from utils import *
+from promogest.lib.utils import *
 from promogest import Environment
 #if Environment.new_print_enjine:
 from promogest.lib.sla2pdf.Sla2Pdf_ng import Sla2Pdf_ng

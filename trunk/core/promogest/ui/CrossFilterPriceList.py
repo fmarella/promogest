@@ -30,7 +30,7 @@ from promogest.dao.Dao import Dao
 from promogest.dao.ListinoArticolo import ListinoArticolo
 from promogest.dao.CodiceABarreArticolo import CodiceABarreArticolo
 from promogest.dao.ListinoComplessoArticoloPrevalente import ListinoComplessoArticoloPrevalente
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 from promogest.ui.gtk_compat import *
 
 

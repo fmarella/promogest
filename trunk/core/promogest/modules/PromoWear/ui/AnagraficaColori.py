@@ -26,7 +26,7 @@ from promogest.ui.AnagraficaSemplice import Anagrafica,\
                                      AnagraficaDetail, AnagraficaFilter
 from promogest import Environment
 from promogest.modules.PromoWear.dao.Colore import Colore
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 from promogest.ui.gtk_compat import *
 
 
@@ -142,9 +142,9 @@ class AnagraficaColoreDetail(AnagraficaDetail):
         sel = self._anagrafica.anagrafica_treeview.get_selection()
         (model, iterator) = sel.get_selected()
         if iterator and self.dao:
-			model.set_value(iterator, 0, self.dao)
-			model.set_value(iterator, 1, self.dao.denominazione or '')
-			model.set_value(iterator, 2, self.dao.denominazione_breve or '')
+            model.set_value(iterator, 0, self.dao)
+            model.set_value(iterator, 1, self.dao.denominazione or '')
+            model.set_value(iterator, 2, self.dao.denominazione_breve or '')
 
     def saveDao(self):
         sel = self._anagrafica.anagrafica_treeview.get_selection()

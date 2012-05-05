@@ -28,7 +28,7 @@ from sqlalchemy.orm import mapper, join
 from promogest import Environment
 from promogest.dao.ListinoArticolo import ListinoArticolo
 
-from promogest.ui.utils import stringToDate, fillComboboxListini, findIdFromCombobox,\
+from promogest.lib.utils import stringToDate, fillComboboxListini, findIdFromCombobox,\
             calcolaRicarico, calcolaMargine, dateToString, setconf, mN, messageInfo
 
 

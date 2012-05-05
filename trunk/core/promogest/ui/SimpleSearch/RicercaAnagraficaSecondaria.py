@@ -24,7 +24,7 @@
 
 from promogest.ui.Ricerca import Ricerca, RicercaFilter
 from promogest.dao.AnagraficaSecondaria import AnagraficaSecondaria_
-from promogest.ui.utils import showAnagraficaRichiamata, prepareFilterString, findIdFromCombobox
+from promogest.lib.utils import showAnagraficaRichiamata, prepareFilterString, findIdFromCombobox
 from promogest.ui.gtk_compat import *
 from promogest.modules.RuoliAzioni.dao.Role import Role
 

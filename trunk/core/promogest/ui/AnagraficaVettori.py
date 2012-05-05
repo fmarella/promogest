@@ -31,8 +31,8 @@ from promogest import Environment
 import promogest.dao.Vettore
 from promogest.dao.Vettore import Vettore
 
-from utils import *
-from utilsCombobox import *
+from promogest.lib.utils import *
+from promogest.ui.utilsCombobox import *
 
 
 class AnagraficaVettori(Anagrafica):

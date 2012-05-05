@@ -27,7 +27,7 @@ except:
 import threading
 from promogest.ui.GladeWidget import GladeWidget
 from promogest.ui.gtk_compat import *
-from promogest.ui.utils import messageWarning
+from promogest.lib.utils import messageWarning
 
 
 class UpdateDialog(GladeWidget):
@@ -70,21 +70,21 @@ class UpdateDialog(GladeWidget):
                         self.msg_label.set_text('E\' disponibile un aggiornamento.')
                     else:
                         self.msg_label.set_text('Sono disponibili %d aggiornamenti.' % num)
-                        
+
                     # client = pysvn.Client()
                     # critico = False
 
                     # rev_locale = client.info('.').revision.number
 
                     # logs  = client.log(
-                        # "http://svn.promotux.it/svn/promogest2/trunk/", 
+                        # "http://svn.promotux.it/svn/promogest2/trunk/",
                         # revision_start=pysvn.Revision( pysvn.opt_revision_kind.number, rev_locale),
                         # revision_end=pysvn.Revision( pysvn.opt_revision_kind.number, self._rev_remota),
                         # strict_node_history=True,
                         # limit=0,
                         # include_merged_revisions=False,
                         # )
-                            
+
                     # for commit in logs:
                         # if 'DBWARN' in commit.message:
                             # critico = True

@@ -22,7 +22,7 @@
 import os
 from promogest.ui.GladeWidget import GladeWidget
 from promogest.ui.widgets.FilterWidget import FilterWidget
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 from promogest import Environment
 from jinja2 import Environment as Env
 from jinja2 import FileSystemLoader, FileSystemBytecodeCache

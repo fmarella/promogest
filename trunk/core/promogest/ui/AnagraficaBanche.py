@@ -25,7 +25,7 @@
 from promogest.ui.AnagraficaSemplice import \
                 Anagrafica, AnagraficaDetail, AnagraficaFilter
 from promogest.dao.Banca import Banca
-from promogest.ui.utils import prepareFilterString
+from promogest.lib.utils import prepareFilterString
 
 
 class AnagraficaBanche(Anagrafica):

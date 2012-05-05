@@ -25,7 +25,7 @@ from shutil import copy2
 import xml.etree.ElementTree as ET
 from promogest.ui.GladeWidget import GladeWidget
 from promogest import Environment
-from promogest.ui.utils import messageInfo, obligatoryField, pbar
+from promogest.lib.utils import messageInfo, obligatoryField, pbar
 from promogest.ui.gtk_compat import *
 
 

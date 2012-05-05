@@ -23,7 +23,7 @@ from sqlalchemy import Table, or_
 from sqlalchemy.orm import mapper, join
 from promogest.Environment import params, conf
 from Dao import Dao
-from promogest.ui.utils import  codeIncrement
+from promogest.lib.utils import  codeIncrement
 
 
 class Vettore(Dao):
@@ -64,7 +64,7 @@ def getNuovoCodiceVettore():
             pass
         try:
             if codice == "":
-                from promogest.ui.utils import setconf
+                from promogest.lib.utils import setconf
                 codice = codeIncrement(setconf("Vettori", "vettore_struttura_codice"))
         except:
             pass

@@ -27,7 +27,7 @@
 from decimal import *
 from promogest.dao.Pagamento import Pagamento
 from promogest.dao.TestataDocumento import TestataDocumento
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 
 
 def IsPagamentoMultiplo(pagamento):

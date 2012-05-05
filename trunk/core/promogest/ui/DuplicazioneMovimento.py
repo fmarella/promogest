@@ -33,7 +33,7 @@ from promogest.dao.ScontoRigaMovimento import ScontoRigaMovimento
 from promogest.dao.Operazione import Operazione
 from promogest.ui.anagDocumenti.AnagraficaDocumenti import *
 from promogest.ui.GladeWidget import GladeWidget
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 from promogest.ui.gtk_compat import *
 
 if posso("PA"):

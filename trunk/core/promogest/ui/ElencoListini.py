@@ -24,7 +24,7 @@
 from promogest import Environment
 from promogest.dao.Listino import Listino
 from promogest.ui.GladeWidget import GladeWidget
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 
 
 class ElencoListini(GladeWidget):

@@ -239,7 +239,7 @@ class Dao(object):
 #        if clasemd5 in mm:
 ##            print "OLLELLE OLLALLA", self.count()
 #            if hashlib.md5(str(self.count())).hexdigest() == mm[clasemd5]:
-#                from promogest.ui.utils import fenceDialog
+#                from promogest.lib.utils import fenceDialog
 #                fenceDialog()
 
 

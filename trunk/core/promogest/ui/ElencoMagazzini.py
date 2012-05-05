@@ -22,7 +22,7 @@
 
 from GladeWidget import GladeWidget
 from promogest.dao.Magazzino import Magazzino
-from utils import *
+from promogest.lib.utils import *
 
 
 class ElencoMagazzini(GladeWidget):

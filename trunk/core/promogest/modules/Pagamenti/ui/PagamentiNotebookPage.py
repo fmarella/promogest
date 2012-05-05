@@ -22,7 +22,7 @@
 
 import datetime
 from promogest.ui.gtk_compat import *
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 from promogest.ui.utilsCombobox import *
 from promogest import Environment
 from promogest.ui.GladeWidget import GladeWidget
@@ -69,7 +69,7 @@ class PagamentiNotebookPage(GladeWidget):
         win = anag.getTopLevel()
         win.set_transient_for(self.ana.dialogTopLevel)
         anag.show_all()
-        
+
     def on_primanota_check_toggled(self, widget):
         pass
 

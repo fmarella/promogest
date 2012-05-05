@@ -23,7 +23,7 @@
 from AnagraficaSemplice import Anagrafica, AnagraficaDetail, AnagraficaFilter
 from promogest import Environment
 from promogest.dao.Imballaggio import Imballaggio
-from utils import *
+from promogest.lib.utils import *
 
 
 class AnagraficaImballaggi(Anagrafica):

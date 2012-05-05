@@ -26,7 +26,7 @@ import os
 import string, re, time, datetime, decimal
 from decimal import *
 from promogest import Environment
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 from promogest.ui.gtk_compat import *
 from promogest.modules.SchedaLavorazione.dao.SchedaOrdinazione import SchedaOrdinazione
 from promogest.modules.SchedaLavorazione.dao.ColoreStampa import ColoreStampa

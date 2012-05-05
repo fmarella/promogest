@@ -24,7 +24,7 @@ from sqlalchemy.orm import *
 from promogest.dao.Dao import Dao
 from promogest.dao.Listino import Listino
 from promogest.Environment import *
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 from promogest.modules.SchedaLavorazione.dao.RigaSchedaOrdinazione import RigaSchedaOrdinazione
 from promogest.modules.SchedaLavorazione.dao.ScontoRigaScheda import ScontoRigaScheda
 from promogest.modules.SchedaLavorazione.dao.ScontoSchedaOrdinazione import ScontoSchedaOrdinazione

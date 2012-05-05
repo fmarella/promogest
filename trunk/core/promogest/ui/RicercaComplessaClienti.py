@@ -42,7 +42,7 @@ from promogest.dao.Listino import Listino
 import Login
 from promogest.ui.GladeWidget import GladeWidget
 
-from promogest.ui.utils import prepareFilterString, showAnagraficaRichiamata
+from promogest.lib.utils import prepareFilterString, showAnagraficaRichiamata
 from promogest.ui.utilsCombobox import fillComboboxCategorieClienti, findIdFromCombobox
 
 

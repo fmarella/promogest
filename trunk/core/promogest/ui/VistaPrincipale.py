@@ -22,7 +22,7 @@
 
 import webbrowser
 from GladeWidget import GladeWidget
-from utils import *
+from promogest.lib.utils import *
 from promogest.ui.SendEmail import SendEmail
 
 

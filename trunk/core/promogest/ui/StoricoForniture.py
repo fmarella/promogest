@@ -26,7 +26,7 @@ from promogest.ui.Visualizzazione import Visualizzazione, VisualizzazioneFilter
 from promogest import Environment
 import promogest.dao.Fornitura
 from promogest.dao.Fornitura import Fornitura
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 from promogest.ui.gtk_compat import *
 
 

@@ -23,7 +23,7 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 from promogest.ui.gtk_compat import *
-from utils import *
+from promogest.lib.utils import *
 import subprocess
 import os, sys, threading, os.path
 from utilsCombobox import *
@@ -134,7 +134,7 @@ Verificare i permessi della cartella"""
         pdfFile = os.path.join(self._folder + self._pdfName +'.pdf')
         self.pdfFile = pdfFile
         self.tryToSavePdf(pdfFile)
-        from utils import start_viewer
+        from promogest.lib.utils import start_viewer
         start_viewer(pdfFile)
 
     def __handleSaveResponse(self, dialog):

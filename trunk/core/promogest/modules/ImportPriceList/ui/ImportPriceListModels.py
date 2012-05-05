@@ -35,7 +35,7 @@ from promogest.ui.Main import *
 from promogest.ui.AnagraficaAliquoteIva import AnagraficaAliquoteIva
 from promogest.ui.AnagraficaCategorieArticoli import AnagraficaCategorieArticoli
 from promogest.ui.AnagraficaFamiglieArticoli import AnagraficaFamiglieArticoli
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 from promogest.ui.utilsCombobox import fillModelCombobox
 from promogest.ui.gtk_compat import *
 

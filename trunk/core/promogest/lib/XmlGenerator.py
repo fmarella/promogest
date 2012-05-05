@@ -22,7 +22,7 @@
 
 import os
 import SimpleXMLWriter
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 
 from SimpleXMLWriter import XMLWriter
 

@@ -23,7 +23,7 @@
 
 from promogest.dao.Banca import Banca
 from promogest.ui.GladeWidget import GladeWidget
-from promogest.ui.utils import obligatoryField, messageError
+from promogest.lib.utils import obligatoryField, messageError
 from promogest.lib.ibanlib import dividi_iban
 
 

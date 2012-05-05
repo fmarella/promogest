@@ -32,7 +32,7 @@ from promogest.modules.GestioneCommesse.dao.RigaCommessa import RigaCommessa
 from promogest.dao.Cliente import Cliente
 from promogest.dao.TestataDocumento import TestataDocumento
 from promogest.lib.relativedelta import relativedelta
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 from promogest.ui.utilsCombobox import *
 
 

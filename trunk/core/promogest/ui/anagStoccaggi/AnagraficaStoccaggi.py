@@ -29,7 +29,7 @@ from promogest.ui.anagStoccaggi.AnagraficaStoccaggiEdit import\
 from promogest.ui.anagStoccaggi.AnagraficaStoccaggiFilter import\
                                                      AnagraficaStoccaggiFilter
 
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 from promogest.ui.utilsCombobox import *
 from promogest.ui.gtk_compat import *
 

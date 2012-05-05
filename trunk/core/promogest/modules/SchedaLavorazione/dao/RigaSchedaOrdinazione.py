@@ -30,7 +30,7 @@ from promogest.dao.Articolo import Articolo
 from promogest.dao.AliquotaIva import AliquotaIva
 #from promogest.modules.SchedaLavorazione.ui.SchedaLavorazioneUtils import *
 #from promogest.modules.SchedaLavorazione.dao.SchedaOrdinazione import SchedaOrdinazione
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 from promogest.dao.DaoUtils import giacenzaArticolo
 from promogest.dao.Riga import Riga
 

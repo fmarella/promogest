@@ -25,7 +25,7 @@
 from promogest.ui.gtk_compat import *
 from CustomEntryField import CustomEntryField
 from promogest import Environment
-from promogest.ui.utils import mN, setconf
+from promogest.lib.utils import mN, setconf
 
 
 class UnsignedDecimalEntryField(CustomEntryField):

@@ -31,7 +31,7 @@ from promogest import Environment
 from promogest.ui.GladeWidget import GladeWidget
 import smtplib, string
 import datetime
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 from promogest.ui.utilsCombobox import findStrFromCombobox
 
 

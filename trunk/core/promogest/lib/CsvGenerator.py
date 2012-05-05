@@ -8,7 +8,7 @@
 
 
 import csv
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 
 class CsvFileGenerator:
     """convert a bidimensional array to a csv file (as table)"""

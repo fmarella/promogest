@@ -26,7 +26,7 @@
 from promogest.ui.gtk_compat import *
 from GladeWidget import GladeWidget
 from promogest.ui.widgets.FilterWidget import FilterWidget
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 from promogest import Environment
 from promogest.lib.HtmlHandler import createHtmlObj, renderTemplate, renderHTML
 

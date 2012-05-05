@@ -20,7 +20,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 from SuMisura import CalcolaArea, CalcolaPerimetro
 
 

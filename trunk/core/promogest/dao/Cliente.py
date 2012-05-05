@@ -27,7 +27,7 @@ from promogest.Environment import params, conf, session, get_columns
 from promogest.dao.Dao import Dao
 from ClienteCategoriaCliente import ClienteCategoriaCliente
 from promogest.dao.PersonaGiuridica import t_persona_giuridica
-from promogest.ui.utils import  codeIncrement, getRecapitiCliente
+from promogest.lib.utils import  codeIncrement, getRecapitiCliente
 from promogest.dao.User import User
 
 
@@ -186,7 +186,7 @@ def getNuovoCodiceCliente():
         pass
     try:
         if not codice:
-            from promogest.ui.utils import setconf
+            from promogest.lib.utils import setconf
             dd = setconf("Clienti", "cliente_struttura_codice")
             codice = codeIncrement(dd)
     except Exception as e:

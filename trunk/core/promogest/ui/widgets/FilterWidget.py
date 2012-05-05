@@ -28,7 +28,7 @@ from promogest import Environment
 from sqlalchemy import asc, desc
 from promogest.ui.GladeWidget import GladeWidget
 from promogest.lib.HtmlHandler import createHtmlObj, renderHTML
-from promogest.ui.utils import setconf
+from promogest.lib.utils import setconf
 
 
 class FilterWidget(GladeWidget):

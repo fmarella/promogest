@@ -31,7 +31,7 @@ from promogest.ui.AnagraficaListiniArticoliEdit import \
 from promogest.ui.AnagraficaListiniArticoliFilter import \
                                         AnagraficaListiniArticoliFilter
 from promogest import Environment
-from utils import *
+from promogest.lib.utils import *
 
 if posso("PW"):
     from promogest.modules.PromoWear.ui.\

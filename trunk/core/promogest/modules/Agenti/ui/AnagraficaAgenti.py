@@ -30,7 +30,7 @@ from promogest.modules.Agenti.ui.AnagraficaAgentiEdit import AnagraficaAgentiEdi
 from promogest.modules.Agenti.ui.AnagraficaAgentiFilter import AnagraficaAgentiFilter
 from promogest import Environment
 from promogest.modules.Agenti.dao.Agente import Agente, getNuovoCodiceAgente
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 from promogest.ui.utilsCombobox import *
 
 

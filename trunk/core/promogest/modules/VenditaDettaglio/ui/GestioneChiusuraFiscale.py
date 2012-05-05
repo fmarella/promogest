@@ -19,7 +19,7 @@ from promogest.modules.VenditaDettaglio.dao.TestataScontrino import TestataScont
 from promogest.modules.VenditaDettaglio.dao.RigaScontrino import RigaScontrino
 from promogest.modules.VenditaDettaglio.dao.ScontoRigaScontrino import ScontoRigaScontrino
 from promogest.modules.VenditaDettaglio.dao.ChiusuraFiscale import ChiusuraFiscale
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 from promogest.modules.VenditaDettaglio.ui.VenditaDettaglioUtils import fillComboboxPos
 from promogest.modules.VenditaDettaglio.dao.Pos import Pos
 

@@ -23,7 +23,7 @@ from promogest import Environment
 from promogest.ui.GladeWidget import GladeWidget
 from promogest.lib.HtmlHandler import renderTemplate
 from promogest.ui.PrintDialog import PrintDialogHandler
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 from promogest.modules.GestioneKit.dao.ArticoloKit import ArticoloKit
 from promogest.dao.Articolo import Articolo
 

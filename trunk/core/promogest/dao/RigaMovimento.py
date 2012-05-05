@@ -33,7 +33,7 @@ from Listino import Listino
 from Multiplo import Multiplo
 from Stoccaggio import Stoccaggio
 from Riga import Riga, riga
-from promogest.ui.utils import getScontiFromDao, getStringaSconti, posso
+from promogest.lib.utils import getScontiFromDao, getStringaSconti, posso
 
 if hasattr(conf, "SuMisura") and getattr(conf.SuMisura,'mod_enable') == "yes":
     #from promogest.modules.SuMisura.data.SuMisuraDb import *

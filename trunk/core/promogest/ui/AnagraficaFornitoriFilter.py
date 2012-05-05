@@ -26,7 +26,7 @@ from promogest import Environment
 import promogest.dao.Fornitore
 from promogest.dao.Fornitore import Fornitore
 from promogest.dao.DaoUtils import *
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 from promogest.ui.utilsCombobox import *
 from promogest.ui.gtk_compat import *
 

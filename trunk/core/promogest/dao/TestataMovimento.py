@@ -33,14 +33,14 @@ from promogest.dao.RigaDocumento import RigaDocumento
 from promogest.dao.Riga import Riga
 from promogest.dao.RigaMovimentoFornitura import RigaMovimentoFornitura
 from promogest.dao.NumeroLottoTemp import NumeroLottoTemp
-from promogest.ui.utils import numeroRegistroGet
+from promogest.lib.utils import numeroRegistroGet
 from Fornitore import Fornitore
 from Cliente import Cliente
 from Fornitura import Fornitura
 from Operazione import Operazione
 from ScontoFornitura import ScontoFornitura
 from promogest.dao.Magazzino import Magazzino
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 if hasattr(conf, "SuMisura") and getattr(conf.SuMisura,'mod_enable') == "yes":
     from promogest.modules.SuMisura.dao.MisuraPezzo import MisuraPezzo
 

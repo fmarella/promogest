@@ -23,7 +23,7 @@
 import os
 from decimal import Decimal
 from promogest import Environment
-from promogest.ui.utils import messageError, mN, leggiArticolo
+from promogest.lib.utils import messageError, mN, leggiArticolo
 
 
 def tracciati_disponibili():

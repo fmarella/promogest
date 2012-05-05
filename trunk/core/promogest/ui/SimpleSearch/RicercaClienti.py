@@ -24,7 +24,7 @@
 
 from promogest.ui.Ricerca import Ricerca, RicercaFilter
 from promogest.dao.Cliente import Cliente
-from promogest.ui.utils import showAnagraficaRichiamata, fillComboboxCategorieClienti,\
+from promogest.lib.utils import showAnagraficaRichiamata, fillComboboxCategorieClienti,\
                     prepareFilterString, findIdFromCombobox
 from promogest.ui.gtk_compat import *
 

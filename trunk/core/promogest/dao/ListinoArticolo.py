@@ -31,7 +31,7 @@ from promogest.dao.Listino import Listino
 from promogest.dao.Articolo import Articolo
 from promogest.dao.ScontoVenditaDettaglio import ScontoVenditaDettaglio
 from promogest.dao.ScontoVenditaIngrosso import ScontoVenditaIngrosso
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 
 import datetime
 

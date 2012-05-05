@@ -29,7 +29,7 @@ from promogest.ui.GladeWidget import GladeWidget
 import promogest.ui.AnagraficaListini
 import promogest.ui.Main
 from promogest.ui.Main import *
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 from promogest.ui.gtk_compat import *
 import promogest.ui.Login
 from ProductFromCSV import ProductFromCsv

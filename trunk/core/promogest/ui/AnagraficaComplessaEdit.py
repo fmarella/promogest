@@ -24,7 +24,7 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 from promogest.ui.GladeWidget import GladeWidget
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 from promogest import Environment
 
 from promogest.ui.gtk_compat import *

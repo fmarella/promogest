@@ -27,7 +27,7 @@ from promogest.ui.AnagraficaComplessaReport import AnagraficaReport
 from promogest.ui.AnagraficaComplessaHtml import AnagraficaHtml
 from promogest.ui.AnagraficaComplessaFilter import AnagraficaFilter
 from promogest.dao.BancheAzienda import BancheAzienda
-from promogest.ui.utils import prepareFilterString, obligatoryField, \
+from promogest.lib.utils import prepareFilterString, obligatoryField, \
                     dateToString, stringToDate, fillComboboxBanche,\
                     on_id_banca_customcombobox_clicked, \
 findComboboxRowFromId, findIdFromCombobox

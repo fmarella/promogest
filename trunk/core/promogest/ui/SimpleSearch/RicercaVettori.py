@@ -23,7 +23,7 @@
 
 from promogest.ui.Ricerca import Ricerca, RicercaFilter
 from promogest.dao.Vettore import Vettore
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 from promogest.ui.gtk_compat import *
 
 

@@ -22,7 +22,7 @@
 from decimal import *
 from promogest.ui.AnagraficaComplessaFilter import AnagraficaFilter
 from promogest.modules.GestioneFile.dao.ArticoloImmagine import ArticoloImmagine
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 from promogest.ui.utilsCombobox import *
 
 

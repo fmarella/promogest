@@ -22,7 +22,7 @@
 
 from promogest.ui.gtk_compat import *
 from CustomComboBoxSearch import CustomComboBoxSearch
-from promogest.ui.utils import leggiCliente
+from promogest.lib.utils import leggiCliente
 
 class ClienteSearchWidget(CustomComboBoxSearch):
     """ Classe base per la ricerca clienti """

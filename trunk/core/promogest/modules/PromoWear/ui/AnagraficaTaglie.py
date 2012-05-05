@@ -30,7 +30,7 @@ from promogest.modules.PromoWear.dao.Taglia import Taglia
 from promogest.modules.PromoWear.dao.GruppoTaglia import GruppoTaglia
 from promogest.modules.PromoWear.dao.GruppoTagliaTaglia import GruppoTagliaTaglia
 from promogest.modules.PromoWear.ui.PromowearUtils import *
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 from promogest.ui.gtk_compat import *
 
 

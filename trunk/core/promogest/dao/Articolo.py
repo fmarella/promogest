@@ -19,7 +19,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-from promogest.ui.utils import codeIncrement, posso
+from promogest.lib.utils import codeIncrement, posso
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
@@ -39,7 +39,7 @@ from CodiceABarreArticolo import CodiceABarreArticolo,codice_barre_articolo
 from Fornitura import Fornitura
 from promogest.dao.ScontoVenditaDettaglio import ScontoVenditaDettaglio
 from promogest.dao.ScontoVenditaIngrosso import ScontoVenditaIngrosso
-from promogest.ui.utils import codeIncrement
+
 
 if hasattr(conf, "PromoWear") and \
         getattr(conf.PromoWear, 'mod_enable') == "yes":
@@ -829,7 +829,7 @@ def getNuovoCodiceArticolo(idFamiglia=None):
         pass
     try:
         if not codice:
-            from promogest.ui.utils import setconf
+            from promogest.lib.utils import setconf
             dd = setconf("Articoli", "articolo_struttura_codice")
             codice = codeIncrement(dd)
     except:

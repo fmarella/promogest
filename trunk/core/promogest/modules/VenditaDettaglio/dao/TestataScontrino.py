@@ -34,7 +34,7 @@ from promogest.modules.VenditaDettaglio.dao.RigaScontrino import RigaScontrino
 from promogest.modules.VenditaDettaglio.dao.ScontoTestataScontrino import ScontoTestataScontrino
 from promogest.modules.VenditaDettaglio.dao.TestataScontrinoCliente import TestataScontrinoCliente
 from promogest.modules.VenditaDettaglio.dao.Pos import Pos
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 
 
 class TestataScontrino(Dao):

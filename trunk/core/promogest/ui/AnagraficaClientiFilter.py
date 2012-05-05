@@ -25,7 +25,7 @@ from promogest.ui.AnagraficaComplessaFilter import AnagraficaFilter
 from promogest.dao.Cliente import Cliente
 from promogest.dao.PersonaGiuridica import PersonaGiuridica_
 from promogest.dao.DaoUtils import *
-from utils import *
+from promogest.lib.utils import *
 from utilsCombobox import *
 
 

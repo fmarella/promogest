@@ -33,7 +33,7 @@ from promogest.modules.PrimaNota.ui.AnagraficaPrimaNotaSetup import AnagraficaPr
 from promogest.modules.Label.ui.AnagraficaLabelSetup import AnagraficaLabelSetup
 from ParametriFrame import ParametriFrame
 from promogest.dao.Setconf import SetConf
-from promogest.ui.utils import setconf, messageInfo, posso, findIdFromCombobox
+from promogest.lib.utils import setconf, messageInfo, posso, findIdFromCombobox
 from promogest.ui.utilsCombobox import findComboboxRowFromId
 
 class ConfiguraWindow(GladeWidget):

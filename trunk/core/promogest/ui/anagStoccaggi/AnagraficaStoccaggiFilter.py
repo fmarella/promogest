@@ -25,7 +25,7 @@ from promogest.ui.AnagraficaComplessaFilter import AnagraficaFilter
 
 from promogest.dao.Stoccaggio import Stoccaggio
 from promogest.dao.Magazzino import Magazzino
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 from promogest.ui.utilsCombobox import *
 from promogest.ui.gtk_compat import *
 

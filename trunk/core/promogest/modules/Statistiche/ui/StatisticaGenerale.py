@@ -33,7 +33,7 @@ from promogest.dao.Magazzino import Magazzino
 from promogest.dao.CategoriaCliente import CategoriaCliente
 from promogest.dao.CategoriaArticolo import CategoriaArticolo
 from promogest.dao.ClienteCategoriaCliente import ClienteCategoriaCliente
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 from promogest.ui.utilsCombobox import *
 from promogest.ui.gtk_compat import *
 from promogest.dao.DaoUtils import *

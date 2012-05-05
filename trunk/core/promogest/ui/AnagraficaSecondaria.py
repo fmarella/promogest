@@ -31,7 +31,7 @@ from promogest.ui.AnagraficaSecondariaFilter import AnagraficaSecondariaFilter
 #from promogest.modules.Contatti.dao.ContattoFornitore import ContattoFornitore
 #from promogest.dao.TestataDocumento import TestataDocumento
 from promogest.dao.DaoUtils import *
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 from promogest.ui.utilsCombobox import *
 
 

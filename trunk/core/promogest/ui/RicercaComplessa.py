@@ -26,7 +26,7 @@ from promogest.ui.gtk_compat import *
 from GladeWidget import GladeWidget
 from promogest.ui.widgets.FilterWidget import FilterWidget
 import Login
-from utils import *
+from promogest.lib.utils import *
 
 
 class RicercaComplessa(GladeWidget):

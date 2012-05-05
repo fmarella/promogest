@@ -25,7 +25,7 @@ from promogest.ui.gtk_compat import *
 from promogest import Environment
 
 from CustomComboBoxSearch import CustomComboBoxSearch
-from promogest.ui.utils import leggiArticolo
+from promogest.lib.utils import leggiArticolo
 from promogest.ui.utilsCombobox import fillComboboxListini,findIdFromCombobox,findComboboxRowFromId
 from promogest.ui.RicercaComplessaArticoli import RicercaComplessaArticoli
 

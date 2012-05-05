@@ -26,7 +26,7 @@ from promogest.lib.riba import RiBa, Creditore, Debitore
 from promogest.dao.TestataDocumento import TestataDocumento
 from promogest.dao.Azienda import Azienda
 from promogest.dao.Cliente import Cliente
-from promogest.ui.utils import messageError, dateToString, leggiOperazione,\
+from promogest.lib.utils import messageError, dateToString, leggiOperazione,\
     dataInizioFineMese, pbar, stringToDate, messageInfo, leggiAzienda,\
     leggiBanca, leggiCliente, mN, messageWarning
 
@@ -43,7 +43,7 @@ from promogest.lib.HtmlHandler import renderTemplate, renderHTML
 def leggiCreditore():
     '''
     Ritorna le informazioni sul creditore
-    
+
     @return: creditore
     '''
     # inizializziamo i dati del creditore
@@ -56,7 +56,7 @@ def leggiCreditore():
             return
 
         # provare con le banche azienda prima
-        
+
         if azienda.iban:
             try:
                 cc, cs, cin, creditore.abi, creditore.cab, creditore.numero_conto = dividi_iban(azienda.iban)
@@ -73,18 +73,18 @@ def leggiCreditore():
         else:
             messageError('Inserire il codice IBAN nei Dati azienda.')
             return
-    
+
         if azienda.codice_rea:
             creditore.codice_sia = str(azienda.codice_rea or ' ')
         else:
             messageError('Inserire il codice SIA in Dati azienda.')
             return
-    
+
     creditore.descrizione[0] = azienda.ragione_sociale
     creditore.descrizione[1] = azienda.sede_operativa_indirizzo
     creditore.descrizione[2] = azienda.sede_operativa_localita
     creditore.descrizione[3] = azienda.codice_fiscale
-    
+
     creditore.denominazione_breve = azienda.ragione_sociale
 
     return creditore
@@ -94,23 +94,23 @@ def pagamentoLookup(pagamento):
     return 'riba' in pagamento.lower().replace('.', '')
 
 class PGRiBa(RiBa):
-    
+
     progressbar = None
-    
+
     def __init__(self, ana, creditore):
         RiBa.__init__(self, creditore)
         self.ana = ana
-        
+
     def bind(self, widget):
         self.progressbar = widget
-    
+
     def analizza(self, data_inizio=None, pageData=None):
         if not data_inizio:
             messageError(msg='Inserire una data d\'inizio periodo.')
             return 0
-        
+
         data_inizio, data_fine = dataInizioFineMese(data_inizio)
-        
+
         documenti = TestataDocumento().select(complexFilter=(and_(or_(TestataDocumento.operazione=='Fattura differita vendita', TestataDocumento.operazione=='Fattura accompagnatoria'), TestataDocumento.data_documento.between(data_inizio, data_fine))), batchSize=None)
 
         if not documenti:
@@ -118,12 +118,12 @@ class PGRiBa(RiBa):
             return 0
 
         righe = []
-        
+
         buff = self.recordIB()
-        
+
         i = 0
         totale_importi = Decimal(0)
-        
+
         for documento in documenti:
 
             if self.progressbar:
@@ -169,7 +169,7 @@ class PGRiBa(RiBa):
                                                      mN(scadenza.importo, 2),
                                                      dateToString(scadenza.data)
                                                      )
-                    
+
                     progressivo = i + 1
                     totale_importi += scadenza.importo
                     buff += self.record14(progressivo, scadenza.data, scadenza.importo, debitore)
@@ -179,7 +179,7 @@ class PGRiBa(RiBa):
                     buff += self.record50(progressivo, debitore, row.replace('\n', ''))
                     buff += self.record51(progressivo, progressivo)
                     buff += self.record70(progressivo)
-                    
+
                     riga = {
                         'destinatario': debitore.descrizione[0],
                         'indirizzo': debitore.indirizzo,
@@ -194,11 +194,11 @@ class PGRiBa(RiBa):
                         'rif_debito': row
                     }
                     righe.append(riga)
-                    
+
                     i = i + 1
-                    
+
         buff += self.recordEF(i, totale_importi)
-        
+
         pageData['righe'] = righe
         pageData['totale_importi'] = totale_importi
         pageData['disposizioni'] = i
@@ -217,7 +217,7 @@ class RiBaExportWindow(GladeWidget):
     __creditore = Creditore()
     generatore = None
 
-    
+
     def __init__(self, parent):
         '''
         Constructor
@@ -227,7 +227,7 @@ class RiBaExportWindow(GladeWidget):
         self.placeWindow(self.getTopLevel())
         self.__setup_webview()
         self.draw()
-        
+
         try:
             self.__creditore = leggiCreditore()
         except RuntimeError as e:
@@ -241,7 +241,7 @@ class RiBaExportWindow(GladeWidget):
 
     def show_all(self):
         self.data_entry.show_all()
-        
+
     def on_salva_file_button_clicked(self, button):
         self.salvaFile()
 
@@ -278,7 +278,7 @@ class RiBaExportWindow(GladeWidget):
         fileDialog.set_current_folder(Environment.documentsDir)
 
         response = fileDialog.run()
-        
+
         if ( (response == GTK_RESPONSE_CANCEL) or ( response == GTK_RESPONSE_DELETE_EVENT)) :
             fileDialog.destroy()
         elif response == GTK_RESPONSE_OK:
@@ -288,6 +288,6 @@ class RiBaExportWindow(GladeWidget):
             else:
                 fileDialog.destroy()
                 self.generatore.write(filename)
-    
+
     def draw(self):
         self.data_entry.show_all()

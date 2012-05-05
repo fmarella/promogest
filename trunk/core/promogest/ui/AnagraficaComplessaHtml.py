@@ -26,7 +26,7 @@
 from calendar import Calendar
 import os.path
 from promogest import Environment
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 from promogest.lib.sla2pdf.Sla2Pdf_ng import Sla2Pdf_ng
 from promogest.lib.sla2pdf.SlaTpl2Sla import SlaTpl2Sla as SlaTpl2Sla_ng
 from promogest.lib.SlaTpl2Sla import SlaTpl2Sla

@@ -22,7 +22,7 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 from promogest.ui.gtk_compat import *
-#from promogest.ui.utils import
+#from promogest.lib.utils import
 
 class CustomComboBoxSearch(gtk.ComboBox):
     __gtype_name__ = 'CustomComboBoxSearch'

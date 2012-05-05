@@ -33,7 +33,7 @@ from promogest.ui.ElencoMagazzini import ElencoMagazzini
 from promogest.ui.ElencoListini import ElencoListini
 from promogest.ui.VistaPrincipale import VistaPrincipale
 from promogest.ui.SendEmail import SendEmail
-from promogest.ui.utils import hasAction, fencemsg, updateScadenzePromemoria,\
+from promogest.lib.utils import hasAction, fencemsg, updateScadenzePromemoria,\
          setconf,  \
          orda, posso, messageInfo, YesNoDialog, messageError,\
          obligatoryField, leggiRevisioni
@@ -148,7 +148,7 @@ SELECT id, denominazione, agenzia, iban, abi, cab FROM banca;"""
             result = Environment.params['engine'].execute(RAW_SQL_4)
             result.close()
         elif Environment.tipodb == 'postgresql':
-            from promogest.ui.utils import messageWarning
+            from promogest.lib.utils import messageWarning
             messageWarning("""<span font='12.5' font-weight='bold'>Aggiornamento del database</span>\n
 Chiudere eventuali postazioni aperte prima di procedere.
 Al termine dell'aggiornamento PromoGest verrà chiuso.""")

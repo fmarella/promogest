@@ -47,7 +47,7 @@ from promogest.dao.Pagamento import Pagamento
 #from promogest.dao.RigaRitenutaAcconto import RigaRitenutaAcconto
 from promogest.ui.DettaglioGiacenzaWindow import DettaglioGiacenzaWindow
 from promogest.dao.RigaMovimentoFornitura import RigaMovimentoFornitura
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 from promogest.ui.utilsCombobox import *
 from promogest.dao.DaoUtils import giacenzaArticolo
 from promogest.dao.RigaRitenutaAcconto import RigaRitenutaAcconto

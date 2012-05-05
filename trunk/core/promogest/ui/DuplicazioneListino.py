@@ -30,7 +30,7 @@ from promogest.dao.ListinoArticolo import ListinoArticolo
 from promogest.dao.ListinoCategoriaCliente import ListinoCategoriaCliente
 from promogest.dao.ListinoComplessoListino import ListinoComplessoListino
 from promogest.dao.ListinoMagazzino import ListinoMagazzino
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 
 
 class DuplicazioneListino(GladeWidget):

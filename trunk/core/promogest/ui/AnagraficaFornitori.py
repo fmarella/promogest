@@ -30,7 +30,7 @@ from promogest.ui.AnagraficaFornitoriFilter import AnagraficaFornitoriFilter
 from promogest.modules.Contatti.dao.ContattoFornitore import ContattoFornitore
 from promogest.dao.TestataDocumento import TestataDocumento
 from promogest.dao.DaoUtils import *
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 from promogest.ui.utilsCombobox import *
 
 
@@ -53,7 +53,7 @@ class AnagraficaFornitori(Anagrafica):
     def on_record_delete_activate(self, widget):
         widget.set_sensitive(False)
         dao = self.filter.getSelectedDao()
-        
+
         tdoc = TestataDocumento().select(idFornitore=dao.id, batchSize=None)
         if tdoc:
             messageInfo(msg="<big><b>Non è possibile cancellare il fornitore.</b></big>\n\nAlcuni documenti sono legati a questo fornitore.",

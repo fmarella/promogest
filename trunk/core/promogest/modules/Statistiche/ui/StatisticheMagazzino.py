@@ -31,7 +31,7 @@ from promogest.dao.RigaMovimento import RigaMovimento
 from promogest.dao.Riga import Riga
 from promogest.dao.Magazzino import Magazzino
 from promogest.dao.Stoccaggio import Stoccaggio
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 from promogest.ui.utilsCombobox import *
 from promogest.ui.gtk_compat import *
 from promogest.dao.DaoUtils import *

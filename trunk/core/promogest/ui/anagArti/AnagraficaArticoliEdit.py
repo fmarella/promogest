@@ -29,7 +29,7 @@ from promogest import Environment
 import promogest.dao.Fornitura
 import promogest.dao.Articolo
 from promogest.dao.Articolo import Articolo
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 from promogest.ui.utilsCombobox import *
 from promogest.dao.ScontoVenditaDettaglio import ScontoVenditaDettaglio
 from promogest.dao.ScontoVenditaIngrosso import ScontoVenditaIngrosso

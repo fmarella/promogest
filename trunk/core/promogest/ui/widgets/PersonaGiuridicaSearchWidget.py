@@ -24,7 +24,7 @@
 
 from promogest.ui.gtk_compat import *
 from CustomComboBoxSearch import CustomComboBoxSearch
-from promogest.ui.utils import leggiCliente, leggiFornitore
+from promogest.lib.utils import leggiCliente, leggiFornitore
 
 
 class PersonaGiuridicaSearchWidget(CustomComboBoxSearch):

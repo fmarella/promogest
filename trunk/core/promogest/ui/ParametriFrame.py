@@ -33,7 +33,7 @@ from promogest.ui.ElencoMagazzini import ElencoMagazzini
 from promogest.ui.ElencoListini import ElencoListini
 from promogest.ui.VistaPrincipale import VistaPrincipale
 from promogest.ui.SendEmail import SendEmail
-from promogest.ui.utils import hasAction, fenceDialog
+from promogest.lib.utils import hasAction, fenceDialog
 from promogest.ui.utilsCombobox import *
 from promogest.ui.gtk_compat import *
 import Login

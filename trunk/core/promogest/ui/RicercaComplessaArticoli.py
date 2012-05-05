@@ -32,7 +32,7 @@ from promogest.ui.RicercaComplessa import parseModel, onColumnEdited, columnSele
 from promogest.ui.RicercaComplessa import optimizeString, insertTreeViewRow, deleteTreeViewRow, clearWhereString
 from promogest.ui.GladeWidget import GladeWidget
 import Login
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 from promogest.ui.utilsCombobox import *
 from promogest import Environment
 from promogest.dao.UnitaBase import UnitaBase

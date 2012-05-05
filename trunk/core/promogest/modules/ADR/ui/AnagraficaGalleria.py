@@ -22,7 +22,7 @@
 
 from promogest.ui.AnagraficaSemplice import Anagrafica, AnagraficaDetail, AnagraficaFilter
 from promogest.modules.ADR.dao.Galleria import Galleria
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 
 
 class AnagraficaGalleria(Anagrafica):

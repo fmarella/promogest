@@ -32,7 +32,7 @@ from hashlib import md5
 from promogest.ui.gtk_compat import *
 from promogest.ui.GladeWidget import GladeWidget
 from promogest.ui.widgets.FilterWidget import FilterWidget
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 from promogest.lib.XmlGenerator import XlsXmlGenerator
 from promogest.lib.CsvGenerator import CsvFileGenerator
 from promogest import Environment
@@ -854,7 +854,7 @@ html contatti <b>assistenza@promotux.it</b> per informazioni.""")
         pdfFile = os.path.join(self._folder + self._pdfName +'.pdf')
         self.pdfFile = pdfFile
         self.tryToSavePdf(pdfFile)
-        from utils import start_viewer
+        from promogest.lib.utils import start_viewer
         start_viewer(pdfFile)
 
     def __handleSaveResponse(self, dialog):

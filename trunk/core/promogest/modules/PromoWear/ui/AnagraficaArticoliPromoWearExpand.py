@@ -22,7 +22,7 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 from promogest import Environment
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 from promogest.ui.gtk_compat import *
 from promogest.modules.PromoWear.ui.PromowearUtils import *
 from promogest.modules.PromoWear.dao.ArticoloTagliaColore import ArticoloTagliaColore

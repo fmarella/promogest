@@ -27,7 +27,7 @@ from promogest.ui.AnagraficaComplessaReport import AnagraficaReport
 from promogest.ui.AnagraficaComplessaHtml import AnagraficaHtml
 from promogest.ui.AnagraficaComplessaFilter import AnagraficaFilter
 from promogest.dao.DestinazioneMerce import DestinazioneMerce
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 
 
 class AnagraficaDestinazioniMerce(Anagrafica):
@@ -62,7 +62,7 @@ class AnagraficaDestinazioniMerceFilter(AnagraficaFilter):
     def draw(self, cplx=False):
         self._treeViewModel = self.filter_listore
         self.refresh()
-        
+
     def _reOrderBy(self, column):
         if column.get_name() == "denominazione_column":
             return self._changeOrderBy(column, (None, DestinazioneMerce.denominazione))

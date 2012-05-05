@@ -27,7 +27,7 @@ from promogest.Environment import *
 from Dao import Dao
 from promogest.dao.AliquotaIva import AliquotaIva
 from migrate import *
-from promogest.ui.utils import ivaCache
+from promogest.lib.utils import ivaCache
 
 
 class Pagamento(Dao):

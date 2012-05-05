@@ -24,7 +24,7 @@
 
 import os
 import os.path
-from utils import *
+from promogest.lib.utils import *
 from promogest import Environment
 from promogest.lib.SlaTpl2Sla import SlaTpl2Sla
 from promogest.ui.AnagraficaComplessaPrintPreview import AnagraficaPrintPreview

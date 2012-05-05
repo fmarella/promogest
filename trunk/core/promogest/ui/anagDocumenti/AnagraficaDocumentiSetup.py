@@ -19,7 +19,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 from promogest.dao.Setconf import SetConf
 from promogest import Environment
 from promogest.ui.GladeWidget import GladeWidget
@@ -251,7 +251,7 @@ class AnagraficaDocumentiSetup(GladeWidget):
             d[0].value = "codice_articolo_fornitore"
         d[0].tipo = "str"
         Environment.session.add(d[0])
-        
+
         c = SetConf().select(key="costi_ddt_riga", section="Documenti")
         if c:
             c=c[0]
@@ -267,7 +267,7 @@ class AnagraficaDocumentiSetup(GladeWidget):
         c.visible = True
         c.date = datetime.datetime.now()
         Environment.session.add(c)
-        
+
         c = SetConf().select(key="costi_ddt_totale", section="Documenti")
         if c:
             c=c[0]

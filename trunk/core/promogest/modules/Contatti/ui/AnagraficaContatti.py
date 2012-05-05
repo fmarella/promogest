@@ -38,7 +38,7 @@ from promogest.modules.Contatti.dao.ContattoAzienda import ContattoAzienda
 from promogest.modules.Contatti.dao.RecapitoContatto import RecapitoContatto
 from promogest.modules.Contatti.dao.ContattoCategoriaContatto import ContattoCategoriaContatto
 
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 from promogest.ui.utilsCombobox import *
 
 

@@ -51,7 +51,7 @@ class SlaParser(object):
                 self.doc = ElementTree.parse(tempFile)
 
             except IOError:
-                from promogest.ui.utils import messageError
+                from promogest.lib.utils import messageError
                 messageError(msg="PERCORSO NON TROVATO,\n Spostato per caso la cartella promogest2? ,\n controllare l'impostazione in opzioni")
                 return
         if self.doc:

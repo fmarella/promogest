@@ -23,7 +23,7 @@
 from promogest import Environment
 import datetime
 #from datetime import *
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 from  subprocess import *
 import popen2
 

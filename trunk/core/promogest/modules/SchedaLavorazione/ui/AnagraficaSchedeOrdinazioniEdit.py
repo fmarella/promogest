@@ -55,7 +55,7 @@ from promogest.dao.Cliente import Cliente
 from promogest.modules.SchedaLavorazione.dao.PromemoriaSchedaOrdinazione import PromemoriaSchedaOrdinazione
 from promogest.dao.TestataDocumento import TestataDocumento
 from promogest.ui.GladeWidget import GladeWidget
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 from promogest.ui.utilsCombobox import *
 from promogest.ui.gtk_compat import *
 from SchedaLavorazioneUtils import *

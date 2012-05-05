@@ -27,7 +27,7 @@ bindtextdomain('promogest', locale_dir='./po/locale')
 import unittest
 
 from promogest.modules.PrimaNota.dao.TestataPrimaNota import TestataPrimaNota
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 
 
 class TestPrimaNota(unittest.TestCase):

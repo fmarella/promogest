@@ -26,7 +26,7 @@ from promogest import Environment
 from promogest.ui.GladeWidget import GladeWidget
 from promogest.ui.utilsCombobox import fillComboboxMagazzini
 from promogest.ui.gtk_compat import *
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 
 class CasseFrame(GladeWidget):
     """ Frame per la gestione della comunicazione  """

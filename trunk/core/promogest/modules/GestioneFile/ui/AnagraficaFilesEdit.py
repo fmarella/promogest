@@ -26,7 +26,7 @@ import datetime
 import base64
 from base64 import b64decode
 from promogest.ui.AnagraficaComplessaEdit import AnagraficaEdit
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 from promogest.ui.utilsCombobox import *
 from promogest.modules.GestioneFile.dao.Immagine import ImageFile
 from promogest.modules.GestioneFile.dao.ArticoloImmagine import ArticoloImmagine

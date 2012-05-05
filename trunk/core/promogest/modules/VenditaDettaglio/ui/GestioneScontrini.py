@@ -38,8 +38,7 @@ from promogest.dao.Articolo import Articolo
 from promogest.dao.TestataDocumento import TestataDocumento
 from promogest.dao.RigaDocumento import RigaDocumento
 from promogest.dao.Listino import Listino
-from promogest.ui.utils import *
-from promogest.ui import utils
+from promogest.lib.utils import *
 from promogest.modules.VenditaDettaglio.ui.VenditaDettaglioUtils import fillComboboxPos
 from promogest.ui.PrintDialog import PrintDialogHandler
 from promogest.lib.HtmlHandler import createHtmlObj, renderTemplate, renderHTML

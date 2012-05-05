@@ -33,7 +33,7 @@ from promogest.dao.DaoUtils import *
 from promogest.dao.PersonaGiuridicaPersonaGiuridica import \
                                             PersonaGiuridicaPersonaGiuridica
 from promogest.dao.Cliente import Cliente
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 from promogest.ui.utilsCombobox import *
 from promogest.ui.gtk_compat import *
 

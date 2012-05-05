@@ -34,7 +34,7 @@ from promogest.modules.PromoWear.dao.GenereAbbigliamento import GenereAbbigliame
 from promogest.dao.Articolo import Articolo
 from promogest.modules.PromoWear.dao.ArticoloTagliaColore import ArticoloTagliaColore
 import promogest.dao.Listino
-from promogest.ui.utils import findIdFromCombobox, findComboboxRowFromId, posso
+from promogest.lib.utils import findIdFromCombobox, findComboboxRowFromId, posso
 from promogest import Environment
 from promogest.ui.gtk_compat import *
 

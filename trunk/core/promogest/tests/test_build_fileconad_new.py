@@ -31,14 +31,14 @@ from promogest.Environment import *
 from promogest.dao.TestataDocumento import TestataDocumento
 from promogest.dao.InformazioniFatturazioneDocumento import InformazioniFatturazioneDocumento
 
-from promogest.ui.utils import *
+from promogest.lib.utils import *
 
 #mi serve un movimento di tipo trasferimento merce magazzino
 from parser import myparse
 
 
 def generaFileConad(testata):
-    """ 
+    """
     """
     if testata:
         #Scriviamo la testata della fattura
@@ -59,7 +59,7 @@ def generaFileConad(testata):
                     },
                     'dettaglio': []
                 }
-                
+
 
                 for riga in ddt.righe:
                     if riga.id_articolo:

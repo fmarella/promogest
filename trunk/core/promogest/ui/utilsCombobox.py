@@ -31,7 +31,7 @@ from promogest import Environment
 
 from sqlalchemy.orm import *
 from sqlalchemy import *
-#from utils import leggiAgente
+#from promogest.lib.utils import leggiAgente
 from xml.etree.cElementTree import *
 # Letture per recuperare velocemente dati da uno o piu' dao correlati
 
