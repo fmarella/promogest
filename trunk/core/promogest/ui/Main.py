@@ -169,7 +169,7 @@ Al termine dell'aggiornamento PromoGest verrà chiuso.""")
             kbb.description = "rimuove constraint descrizione su banca"
             kbb.active = True
             kbb.tipo = "bool"
-            kbb.date = datetime.datetime.now()
+            kbb.date = datetime.now()
             kbb.persist()
         else:
             kbb[0].value="True"
@@ -971,7 +971,7 @@ class Main(GladeWidget):
                 d.tipo = tipo
                 d.active = active
                 d.visible = visible
-                d.date = datetime.datetime.now()
+                d.date = datetime.now()
                 d.persist()
                 messageInfo(msg=_("MODULO O OPZIONE MODIFICATO attivato o disattivato"))
                 dialog.destroy()
@@ -1008,7 +1008,7 @@ class Main(GladeWidget):
                 k.tipo_section = "General"
                 k.tipo = "ONE"
                 k.active = True
-                k.date = datetime.datetime.now()
+                k.date = datetime.now()
                 k.persist()
                 messageInfo(msg=_("ATTIVAZIONE EFFETTUATA, RIAVVIARE IL PROMOGEST"))
         dialog.destroy()
@@ -1051,7 +1051,7 @@ promogest2 IN /HOME/NOMEUTENTE/ O IN C:/UTENTI/NOMEUTENTE"""
             messageInfo(msg= msg)
         else:
             st= Environment.startdir()
-            nameDump = "promoGest2_dump_"+self.aziendaStr+"_"+datetime.datetime.now().strftime('%d_%m_%Y_%H_%M')
+            nameDump = "promoGest2_dump_"+self.aziendaStr+"_"+ datetime.now().strftime('%d_%m_%Y_%H_%M')
             msgg = """Il "dump" del database verrà salvato in
 
     %s
