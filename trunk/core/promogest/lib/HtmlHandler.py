@@ -74,6 +74,14 @@ def env(templates_dir):
     return jinja_env
 
 
+def noNone(value):
+    if value =="None":
+        return ""
+    elif not value:
+        return ""
+    else:
+        return value
+
 def datetimeformat(value, format='%d/%m/%Y %H:%M '):
     if not value:
         return ""
@@ -239,8 +247,8 @@ def createHtmlObj(mainWidget,widget=None):
         return gtkhtml2.View()
 
 def renderTemplate(pageData):
-
-
+    jinja_env.globals['environment'] = Environment
+    jinja_env.globals['utils'] = utils
     pageData["titolo"] = pageData["file"].split(".")[0].capitalize()
     if "dao" in pageData:
         html = jinja_env.get_template("/"+pageData["file"]).render(pageData = pageData, dao=pageData["dao"])

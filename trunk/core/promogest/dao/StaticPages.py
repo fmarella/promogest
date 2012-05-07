@@ -24,7 +24,7 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
 from promogest.dao.Dao import Dao
-from promogest.modules.Multilingua.dao.Language import Language
+from promogest.modules.Multilingua.dao.Language import Language, lang
 from promogest.dao.User import User
 from migrate import *
 
@@ -76,6 +76,12 @@ class StaticPages(Dao):
         return  dic[k]
 
 
-std_mapper = mapper(StaticPages, staticpage, properties = {
-        'lang' : relation(Language),
-        'user' : relation(User) }, order_by=staticpage.c.id)
+std_mapper = mapper(StaticPages, staticpage,
+        properties = {
+        'lang' : relation(Language,
+                    primaryjoin=
+                    staticpage.c.id_language==lang.c.id,
+                    foreign_keys=[lang.c.id]),
+        #'user' : relation(User)
+        },
+        order_by=staticpage.c.id)

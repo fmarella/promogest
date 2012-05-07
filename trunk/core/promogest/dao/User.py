@@ -32,9 +32,20 @@ from promogest.modules.RuoliAzioni.dao.Role import Role
 
 user=Table('utente', params['metadata'],schema = params['mainSchema'],autoload=True)
 
-if 'id_role' not in [c.name for c in user.columns]:
+
+colonne = get_columns(user)
+
+if 'id_role' not in colonne:
     col = Column('id_role', Integer, nullable=True)
     col.create(user)
+    delete_pickle()
+
+print "COLONNNNNNNNNNNNNNNNNNNNNE", colonne
+if 'email_confirmed' not in colonne:
+    col = Column('email_confirmed', Boolean, default=False)
+    col.create(user)
+    delete_pickle()
+
 
 try:
     from sqlalchemy.orm import relationship
@@ -46,7 +57,8 @@ try:
                         uselist=False,
                         passive_deletes=True))
 except:
-    pg2log.info("AGGIORNARE SQLALCHEMY RUOLI NON FUNZIONERANNO")
+    pass
+    #pg2log.info("AGGIORNARE SQLALCHEMY RUOLI NON FUNZIONERANNO")
 if hasattr(conf, "MultiLingua") and getattr(conf.MultiLingua,'mod_enable')=="yes":
     from promogest.modules.MultiLingua.dao.UserLanguage import UserLanguage
     std_mapper.add_property("userlang",
@@ -74,6 +86,8 @@ class User(Dao):
             dic = {k:user.c.email.ilike("%"+v+"%")}
         elif k == 'active':
             dic = {k:user.c.active == v}
+        elif k == 'tipoUser':
+            dic = {k:user.c.tipo_user == v}
         elif k == 'idRole':
             dic = {k:user.c.id_role == v}
         return  dic[k]

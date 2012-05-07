@@ -41,7 +41,7 @@ from promogest.dao.User import User
 #from core.dao.Feed import Feed
 #from core.dao.Subdomain import Subdomain
 from promogest.dao.Setconf import SetConf
-from  promogest.ui import utils
+from  promogest.lib import utils
 import Image, ImageDraw
 from random import randint as rint
 import ImageFont

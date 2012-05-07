@@ -26,12 +26,12 @@ from sqlalchemy.orm import *
 from migrate import *
 from promogest.Environment import *
 from promogest.dao.Dao import Dao
-from promogest.dao.User import User
+from promogest.dao.User import User, user
 
-userTable = Table('utente', params['metadata'], autoload=True, schema=params['mainSchema'])
+#userTable = Table('utente', params['metadata'], autoload=True, schema=params['mainSchema'])
 pagamentoTable = Table('pagamento',params['metadata'], autoload=True, schema=params['schema'])
 articleTable = Table('articolo',params['metadata'], autoload=True, schema=params['schema'])
-clienteTable = Table('cliente',params['metadata'], autoload=True, schema=params['schema'])
+#clienteTable = Table('cliente',params['metadata'], autoload=True, schema=params['schema'])
 
 
 try:
@@ -85,5 +85,7 @@ class Cart(Dao):
 
 
 std_mapper = mapper(Cart, cart, properties={
-            'user' : relation(User, backref="cart"),
+            'user' : relation(User,primaryjoin=
+                    cart.c.id_utente==user.c.id,
+                    foreign_keys=[user.c.id], backref="cart"),
                 }, order_by=cart.c.id)

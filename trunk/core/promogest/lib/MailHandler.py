@@ -8,9 +8,9 @@
 import smtplib
 import string
 import hashlib
-from core.lib.utils import createRandomString, setconf
-from core.dao.Setconf import SetConf
-from core import Environment
+from promogest.lib.webutils import setconf_web
+from promogest.dao.Setconf import SetConf
+from promogest import Environment
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.image import MIMEImage
@@ -47,7 +47,7 @@ class SendMail(object):
         if type(setconf("ccn_email")) == type(["ciao"]):
             self.bccaddrs = setconf("ccn_email")
         else:
-            self.bccaddrs = [setconf("ccn_email")]
+            self.bccaddrs = [setconf_web("ccn_email")]
         for i in self.to:
             self.total_addrs.append(i)
         for i in self.bccaddrs:
@@ -61,7 +61,7 @@ class SendMail(object):
         """
         Email abbinata alla registrazione utente
         """
-        registrazioneOggetto = "%s Registrazione in attesa di attivazione" %setconf("name")
+        registrazioneOggetto = "%s Registrazione in attesa di attivazione" %setconf_web("name")
         registrazioneBody = """Gentile utente, la sua richiesta di registrazione e' stata inoltrata correttamente
         ed e' in attesa di essere approvata dal team di %s.
 
@@ -71,7 +71,7 @@ class SendMail(object):
 
         A Presto
         Staff %s
-            """ %( setconf("name"),
+            """ %( setconf_web("name"),
                 self.addDataFormInEmail(),
                 setconf("name"))
 
@@ -179,17 +179,18 @@ Grazie per aver scelto %s
         """
         Spedisce il codice di attivazione
         """
-        from core.dao.ConfirmRegistration import ConfirmRegistration
-
-        code = createRandomString()
-        codeencr = hashlib.md5(code).hexdigest()
+        from promogest.dao.ConfirmRegistration import ConfirmRegistration
+        from promogest.lib.webutils import createRandomString
+        #code = "PIPPO
+        codeencr = createRandomString(num=5).upper()
         cr = ConfirmRegistration()
         cr.id_user= userid
         cr.code = codeencr
         cr.verified = False
         cr.persist()
-        registrazioneOggetto = "%s Registrazione in attesa di attivazione invio codice" %setconf("name")
-        registrazioneBody = """Gentile utente, la sua richiesta di registrazione e' stata inoltrata correttamente
+        registrazioneOggetto = "Conferma email giustopeso"
+        registrazioneBody = """Gentile utente, questa è l'email di
+        conferma del suo indirizzo email
 
         Prema su questo link o copi/incolli sul suo browser:
 

@@ -20,6 +20,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
+import ConfigParser
 import hashlib
 import gettext
 import datetime,time
@@ -34,6 +35,7 @@ from promogest.lib import webutils
 from promogest.dao.User import User
 from promogest.modules.Multilingua.dao.Language import Language
 from promogest.dao.Setconf import SetConf
+from promogest.dao.PersonaGiuridica import PersonaGiuridica_ as PersonaGiuridica
 from promogest.lib.webutils import *
 from promogest.lib import utils
 from promogest.lib.session import Session
@@ -45,7 +47,7 @@ class Page(object):
     def __init__(self, req):
         self.req = req
         self.path = req.environ['PATH_INFO'].split('/')
-        self.host = req.environ['HTTP_HOST']
+        #self.host = req.environ['HTTP_HOST']
         self.auth = Session(req).control()
         self.nameuser = getUsernameFromId(req)
         self.us= None
@@ -133,6 +135,19 @@ class Page(object):
                             pass
         return pageData
 
+    def readAttivita(self, req):
+        id_attivita = None
+
+        try:
+            config = ConfigParser.RawConfigParser()
+            if COOKIENAME in req.cookies:
+                sid = req.cookies[COOKIENAME]
+                session_file = Environment.session_dir + "/" + sid
+                config.read(session_file)
+                id_attivita = config.get('Main', 'id_attivita')
+        except:
+            id_attivita = None
+        return id_attivita
 
     def render(self, pageData, cookiename=None, cookieval=None, cookiedel=None, langflagged = None):
         #self.itemsStaticMenu = self.itemStaticMenu()
@@ -155,8 +170,22 @@ class Page(object):
         pageData['file'] = includeFile(pageData['file'])
         #pageData['itemsStaticMenu'] = self.itemsStaticMenu
         pageData['nameuser'] = self.nameuser
+        pageData['dao_pg'] = None
+        if getUserFromId(self.req):
+            pg = PersonaGiuridica().select(idUser=getUserFromId(self.req).id)
+            if pg:
+                pageData['dao_pg'] = pg[0]
+        id_attivita= self.readAttivita(self.req)
+        attivita = None
+        if id_attivita and id_attivita != "None":
+            attivita = PersonaGiuridica().getRecord(id=id_attivita)
+        if attivita:
+            pageData["nome_attivita"] = attivita.ragione_sociale
+        else:
+            pageData["nome_attivita"] = ""
         pageData['now'] = datetime.datetime.now()
         pageData['role'] = self.role
+
         #pageData['language'] = self.language
         if "dao" in pageData:
             resp = render_template(pageData["file"],pageData=pageData,dao = pageData["dao"])

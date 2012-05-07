@@ -84,13 +84,6 @@ class Riga(Dao):
             return ""
     aliquota = property(_getAliquotaIva)
 
-    #def _getAliquotaIva(self):
-        #if self.arti:
-            #return self.arti.denominazione_breve_aliquota_iva
-        #else:
-            #return ""
-    #aliquota = property(_getAliquotaIva)
-
     def __unita_base(self):
 
         if self.arti: return self.arti.denominazione_breve_unita_base

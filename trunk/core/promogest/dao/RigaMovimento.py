@@ -65,7 +65,6 @@ class RigaMovimento(Dao):
         else: return ""
     aliquota= property(__aliquota)
 
-
     def __magazzino(self):
         if self.rig: return self.rig.magazzino
         else: return ""

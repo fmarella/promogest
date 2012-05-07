@@ -25,6 +25,7 @@ import os
 from promogest import Environment
 from promogest.dao.Setconf import SetConf
 COOKIENAME = SetConf().select(key="cookie_name")[0].value
+import ConfigParser
 
 class Session(object):
     """
@@ -45,9 +46,18 @@ class Session(object):
         #cookiename = self.path[1]+'id'
         sid = self.req.cookies[cookiename]
         session_file = self.session_dir + "/" + sid
-        s_file = open(session_file, 'w')
-        s_file.write(str(id_user))
-        s_file.close()
+        #s_file = open(session_file, 'w')
+        #s_file.write(str(id_user)+"\n")
+        #s_file.close()
+
+        config = ConfigParser.RawConfigParser()
+        config.add_section('Main')
+        config.set('Main', 'id_user', id_user)
+        #s_file = open(session_file, 'a')
+        #s_file.write(str("id_attivita="+ attivita))
+        #s_file.close()
+        with open(session_file, 'wb') as configfile:
+            config.write(configfile)
 
 
     def destroy(self):
@@ -57,7 +67,8 @@ class Session(object):
         #cookiename = self.path[1]+'id'
         sid = self.req.cookies[cookiename]
         session_file = self.session_dir + "/" + sid
-        os.remove(session_file)
+        if os.path.exists(session_file):
+            os.remove(session_file)
 
 
     def control(self):
@@ -67,7 +78,7 @@ class Session(object):
         #cookiename =  self.req.environ["SERVER_NAME"] +id
         cookiename =  COOKIENAME
         #cookiename = self.path[1]+'id'
-        if cookiename not in self.req.cookies:
+        if not self.req.cookies.has_key(cookiename):
 #            print '>>>>>           NON CI SONO COOKIE           <<<<<'
             return False
         else:
@@ -87,13 +98,16 @@ class Session(object):
         """
         #cookiename = self.req.environ["SERVER_NAME"]+'id'
         cookiename =  COOKIENAME
-        if cookiename in self.req.cookies:
+        if self.req.cookies.has_key(cookiename):
             file = self.req.cookies[cookiename]
             session_file = self.session_dir + "/" + file
             if os.path.exists(session_file):
-                s_file = open(session_file, 'r')
-                id_user = s_file.readlines()[0]
-                s_file.close()
+                config = ConfigParser.RawConfigParser()
+                config.read(session_file)
+                #s_file = open(session_file, 'r')
+                id_user = config.getint('Main', 'id_user')
+                #id_user = s_file.readlines()[0]
+                #s_file.close()
                 return int(id_user)
             return 0
         else:

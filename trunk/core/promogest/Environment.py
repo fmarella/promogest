@@ -55,12 +55,15 @@ import os
 import sys
 import shutil
 import glob
+import gettext
 import getopt
 try:
-    from werkzeug import Local, LocalManager #, cached_property
+    from werkzeug import Local, LocalManager, cached_property
 except:
-    pass
-
+    print "MANCA WERKZEUG"
+import psycopg2
+import decimal
+psycopg2.extensions.register_adapter(decimal.Decimal, psycopg2._psycopg.Decimal)
 import sqlalchemy
 from sqlalchemy import *
 from sqlalchemy.orm import *
@@ -601,7 +604,8 @@ engine.echo = echosa
 #Session = scoped_session(sessionmaker(bind=engine))
 if web:
     print "SESSIONE DI TIPO SCOPED PER IL WEB"
-    Session = scoped_session(lambda: create_session(engine, autocommit=False))
+    #Session = scoped_session(lambda: create_session(engine, autocommit=False))
+    Session = scoped_session(sessionmaker(autoflush=True))
 else:
     Session = sessionmaker(bind=engine)
 

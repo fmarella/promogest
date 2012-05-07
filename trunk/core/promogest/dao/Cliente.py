@@ -23,13 +23,13 @@
 
 from sqlalchemy import *
 from sqlalchemy.orm import *
-from promogest.Environment import params, conf, session, get_columns
+from promogest.Environment import params, conf, session, get_columns, delete_pickle
 from promogest.dao.Dao import Dao
 from ClienteCategoriaCliente import ClienteCategoriaCliente
 from promogest.dao.PersonaGiuridica import t_persona_giuridica
 from promogest.lib.utils import  codeIncrement, getRecapitiCliente
 from promogest.dao.User import User
-
+from promogest.dao.DestinazioneMerce import DestinazioneMerce
 
 class Cliente(Dao):
     """
@@ -60,7 +60,7 @@ class Cliente(Dao):
         session.commit()
 
     @property
-    def username(self):
+    def username_login(self):
         """
         """
         if self.id:
@@ -70,7 +70,17 @@ class Cliente(Dao):
         return ""
 
     @property
-    def password(self):
+    def email_confirmed(self):
+        """
+        """
+        if self.id:
+            user = User().getRecord(id=self.id_user)
+            if user:
+                return user.email_confirmed
+        return False
+
+    @property
+    def password_login(self):
         """
         """
         if self.id:
@@ -78,6 +88,7 @@ class Cliente(Dao):
             if user and user.tipo_user == "PLAIN":
                 return user.password
         return ""
+
 
     @property
     def cellulare_principale(self):
@@ -108,9 +119,13 @@ class Cliente(Dao):
         Ritorna l'indirizzo email principale del cliente
         """
         if self.id:
-            for reca in getRecapitiCliente(self.id):
-                if reca.tipo_recapito == "Email":
-                    return reca.recapito
+            u = User().getRecord(id=self.id_user)
+            if u:
+                return u.email
+            else:
+                for reca in getRecapitiCliente(self.id):
+                    if reca.tipo_recapito == "Email":
+                        return reca.recapito
         return ""
 
     @property
@@ -141,7 +156,9 @@ class Cliente(Dao):
         if k == 'codice':
             dic = {k: t_persona_giuridica.c.codice.ilike("%"+v+"%")}
         elif k == 'codicesatto':
-            dic = {k: t_persona_giuridica.c.codice == v}
+            dic = {k : t_persona_giuridica.c.codice == v}
+        elif k == 'idList':
+            dic = {k: t_persona_giuridica.c.id.in_(v)}
         elif k == 'ragioneSociale':
             dic = {k: t_persona_giuridica.c.ragione_sociale.ilike("%"+v+"%")}
         elif k == 'insegna':
@@ -203,10 +220,12 @@ colonne = get_columns(t_cliente)
 if 'pagante' not in colonne:
     col = Column('pagante', Boolean, default=False)
     col.create(t_cliente, populate_default=True)
+    delete_pickle()
 
 if 'id_aliquota_iva' not in colonne:
     col = Column('id_aliquota_iva', Integer, nullable=True)
     col.create(t_cliente, populate_default=True)
+    delete_pickle()
 
 
 # Sistema di definizione della tipologia di cliente
@@ -225,5 +244,6 @@ std_mapper = mapper(Cliente,
                         'id': [t_cliente.c.id, t_persona_giuridica.c.id],
                         'cliente_categoria_cliente': relation(ClienteCategoriaCliente,
                                                               backref='cliente_'),
+                         "dm":relation(DestinazioneMerce)
                     },
                     order_by=t_cliente.c.id)

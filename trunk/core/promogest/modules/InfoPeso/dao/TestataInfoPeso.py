@@ -27,6 +27,8 @@ from promogest.dao.Dao import Dao
 from promogest.dao.DaoUtils import *
 from promogest.lib.utils import *
 from promogest.dao.Cliente import Cliente
+from migrate import *
+
 
 try:
     testatainfopeso = Table('testata_info_peso',
@@ -53,7 +55,21 @@ except:
             useexisting=True)
     testatainfopeso.create(checkfirst=True)
 
+if 'metodo_saved' not in [c.name for c in testatainfopeso.columns]:
+    col = Column('metodo_saved', Text)
+    col.create(testatainfopeso)
+
+if 'metodo_data_creazione' not in [c.name for c in testatainfopeso.columns]:
+    col = Column('metodo_data_creazione', DateTime,
+        default=datetime.datetime.now())
+    col.create(testatainfopeso)
+
+if 'sblocca_ordini' not in [c.name for c in testatainfopeso.columns]:
+    col = Column('sblocca_ordini', Boolean)
+    col.create(testatainfopeso)
+
 from promogest.modules.InfoPeso.dao.RigaInfoPeso import RigaInfoPeso
+
 
 class TestataInfoPeso(Dao):
 
@@ -98,7 +114,6 @@ class TestataInfoPeso(Dao):
             params["session"].commit()
         return True
 
-
     def delete(self):
         row = RigaInfoPeso().select(idTestataInfoPeso= self.id,
                                     offset = None,
@@ -109,7 +124,6 @@ class TestataInfoPeso(Dao):
                 params["session"].commit()
         params['session'].delete(self)
         params["session"].commit()
-
 
     def persist(self):
         """ cancellazione righe associate alla testata """
@@ -122,9 +136,11 @@ class TestataInfoPeso(Dao):
                 riga.persist()
         self.__righeInfoPeso= []
 
-std_mapper = mapper(TestataInfoPeso, testatainfopeso,properties={
-        "rigatestinfo": relation(RigaInfoPeso,primaryjoin=
-                testatainfopeso.c.id==RigaInfoPeso.id_testata_info_peso,
-#                foreign_keys=[RigaPrimaNota.id_testata_prima_nota],
-                cascade="all, delete")},
-                order_by=testatainfopeso.c.id)
+std_mapper = mapper(TestataInfoPeso, testatainfopeso, properties={
+        "rigatestinfo": relation(RigaInfoPeso,
+        primaryjoin=testatainfopeso.c.id == RigaInfoPeso.id_testata_info_peso,
+        cascade="all, delete"),
+        "cliente": relation(Cliente,
+        primaryjoin=testatainfopeso.c.id_cliente == Cliente.id, backref= "tip"
+        )},
+        order_by=testatainfopeso.c.id)

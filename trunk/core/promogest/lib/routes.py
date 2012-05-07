@@ -20,12 +20,11 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-from werkzeug.exceptions import NotFound
 from promogest.lib.webutils import *
-from promogest.pages.login import login, logout, prelogin
+from promogest.pages.login import *
 from promogest.lib.page import Page
 #from core.pages.home import *
-from promogest.pages.mainpage import mainpage
+from promogest.pages.mainpage import *
 #from core.lib.utils import *
 from promogest.pages.static import *
 from promogest.pages.siteAdmin import siteAdminn # importa la parte di gestione ...
@@ -59,12 +58,12 @@ from promogest.pages.anagraficaAliquotaIva import anagraficaAliquotaIva
 from promogest.pages.configuration import *
 from promogest.pages.jsonSearch import jsonsearch
 from promogest.pages.printDao import printDao
-#from promogest.pages.ordineDaCliente import ordineDaCliente, calcolaTotaleOrdine, schedaArticolo
-#from promogest.pages.staticPagesAction import staticPages
-#from promogest.pages.questionarioIntroduttivo import questionarioIntroduttivo
+from promogest.pages.ordineDaCliente import *
+from promogest.pages.staticPagesAction import staticPages
+#from promogest.pages.questionarioIntroduttivo import *
 #from core.pages.siteAdmin.subdomainAction import subDomain
 from promogest.pages.setconfAction import setConf
-
+#from promogest.pages.pp_ipn import *
 
 def elencoPagineStatiche(req, static=None, subdomain=None):
     if static == "sla2pdf":
@@ -75,61 +74,26 @@ def elencoPagineStatiche(req, static=None, subdomain=None):
         return companylistCategorized(req)
     elif static == "contacts":
         return contacts(req, static=static, subdomain=subdomain)
+    elif static == "recoveryPassword":
+        return recoverypassword(req, static=static, subdomain=subdomain)
     elif static == "userDetail":
         return userdetail(req, static=static, subdomain=subdomain)
-    elif static =="main":
-        return mainpage(req, subdomain=subdomain)
-    elif static =="login":
-        return login(req, SUB=subdomain)
-    elif static =="prelogin":
-        return prelogin(req, SUB=subdomain)
-    elif static =="logout":
-        return logout(req, SUB=subdomain)
-    elif static =="anagrafiche":
+    elif static == "anagrafiche":
         return anagrafiche(req)
-    elif static =="magazzini":
+    elif static == "magazzini":
         return magazzini(req)
-    elif static =="parametri":
+    elif static == "parametri":
         return parametri(req)
-    elif static =="promemoria":
+    elif static == "promemoria":
         return promemoria(req)
-    elif static == "calcola_totale_ordine":
-        return calcolaTotaleOrdine(req)
     elif static == "ordine_da_cliente":
-        dao= req.args.get("dao")
+        dao = req.args.get("dao")
         return ordineDaCliente(req, dao=dao)
-    elif static == "ordine_da_cliente_scheda_articolo":
-        return schedaArticolo(req)
-    elif static == "questionario_introduttivo":
-        return questionarioIntroduttivo(req)
-    elif static == "anteprima_metodo":
-        return questionarioIntroduttivo(req, action=static)
     elif static == "invio_ordine_da_cliente":
         action = "invio_ordine"
         return ordineDaCliente(req, action=action)
-    #elif static.upper() == Environment.SUB.upper():
-        #return siteAdminn(req, SUB=Environment.SUB)
-#    elif action.upper() =="THEME_SETUP":
-#        return theme_setup(req,subdomain=subdomain, action=action)
-#    elif action.upper() =="SETUP":
-#        return mainSetup(req,subdomain=subdomain, action=action)
-
-#    if "USER" in action.upper():
-#        return user(req,subdomain=subdomain, action=action)
-#    if "MENUITEM" in action.upper():
-#        return menuItem(req,subdomain=subdomain, action=action)
-#    if "SETCONF" in action.upper():
-#        return setConf(req,subdomain=subdomain, action=action)
-#    if "SUBDOMAIN" in action.upper():
-#        return subDomain(req,subdomain=subdomain, action=action)
-#    if "ROLE" in action.upper():
-#        return role(req,subdomain=subdomain, action=action)
     elif "STATICPAGES" in static.upper():
         return staticPages(req)
-#    if "COMPANY" in action.upper():
-#        return company(req,subdomain=subdomain, action=action)
-#    if "FEED" in action.upper():
-#        return feed(req,subdomain=subdomain, action=action)
     else:
         pageData = {'file' : 'not_found'}
         return Page(req).render(pageData)
@@ -141,6 +105,9 @@ def primoSecondo(req, first=None, second=None):
 
 
 def __sub__(req, sub=None, action=None, quarto=None):
+    if not getUserFromId(req):
+        redirectUrl="/"
+        return Page(req).redirect(redirectUrl)
     if sub == "categoria_articolo":
         return anagraficaCategoriaArticolo(req, action=action)
     elif sub == "famiglia_articolo":
@@ -198,22 +165,43 @@ def __preview(req):
 
 @expose('/daoadd')
 def __daoadd(req):
+    if not getUserFromId(req):
+        redirectUrl="/"
+        return Page(req).redirect(redirectUrl)
     dao= req.form.get("dao")
+    if not dao:
+        redirectUrl="/main"
+        return Page(req).redirect(redirectUrl)
     action = "new"
     return __sub__(req, sub=dao, action=action)
 
 @expose('/delete')
 def __delete(req):
+    if not getUserFromId(req):
+        redirectUrl="/"
+        return Page(req).redirect(redirectUrl)
     dao= req.form.get("dao")
+    if not dao:
+        redirectUrl="/main"
+        return Page(req).redirect(redirectUrl)
     action = "delete"
     return __sub__(req, sub=dao, action=action)
 
 @expose('/printt')
 def __printt(req):
+    if not getUserFromId(req):
+        redirectUrl="/"
+        return Page(req).redirect(redirectUrl)
     dao= req.args.get("dao")
+    if not dao:
+        redirectUrl="/main"
+        return Page(req).redirect(redirectUrl)
     action = "printt"
     return __printt__(req, dao=dao, action=action)
 
+@expose("/pp_ipn")
+def pp_ip(req, subdomain=""):
+    return pp_ipn(req, subdomain=subdomain)
 
 @expose('/autocomplete/<what_json_search>')
 def __autocomplete(req, what_json_search=None):
@@ -222,7 +210,13 @@ def __autocomplete(req, what_json_search=None):
 
 @expose('/edit')
 def __edit(req):
+    if not getUserFromId(req):
+        redirectUrl="/"
+        return Page(req).redirect(redirectUrl)
     dao= req.form.get("dao")
+    if not dao:
+        redirectUrl="/main"
+        return Page(req).redirect(redirectUrl)
     action = "edit"
     return __sub__(req, sub=dao, action=action)
 
@@ -237,7 +231,6 @@ def ___anagrafiche_sub(req, second=None, terzo=None):
 
 @expose('/anagrafiche/<second>/<terzo>/<quarto>')
 def ___anagrafiche_sub_sub(req, second=None, terzo=None, quarto=None):
-    dao = req.args.get("idr")
     return __sub__(req, sub=second, action=terzo,quarto=quarto)
 
 @expose('/parametri/<second>/<terzo>')
