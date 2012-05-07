@@ -223,9 +223,6 @@ def renderTemplate(pageData):
         html = jinja_env.get_template("/"+pageData["file"]+".html").render(pageData = pageData)
     return html
 
-
-
-
 def subList():
     subss = Subdomain().select(batchSize=None)
     return subss
@@ -428,16 +425,6 @@ def checkPath(path=None, correctPath=None):
             return False
     return True
 
-def getCategorieContatto(id=None):
-    from core.dao.ContattoCategoriaContatto import ContattoCategoriaContatto
-    dbCategorieContatto = ContattoCategoriaContatto().select(id=id,
-                                                            batchSize=None)
-    return dbCategorieContatto
-
-def getRecapitiContatto(id=None):
-    from core.dao.RecapitoContatto import RecapitoContatto
-    dbRecapitiContatto = RecapitoContatto().select(idContatto=id)
-    return dbRecapitiContatto
 
 def getfeedFromSite(name=None, items=3):
     string = ""
@@ -537,54 +524,6 @@ def createcaptcha():
     img.save(pathFile+"/templates/captcha.png", "PNG")
     return string
 
-def setconf_web(key):
-    """ Importante funzione che "semplifica" la lettura dei dati dalla tabella
-    di configurazione setconf
-    Tentativo abbastanza rudimentale per gestire le liste attraverso i ; ma
-    forse si potrebbero gestire più semplicemente con le virgole
-    """
-    conf = SetConf().select(key=key)
-    c = []
-    if conf:
-        if ";" in str(conf[0].value):
-            val = str(conf[0].value).split(";")
-            for a in val:
-                c.append(a.strip())
-            return c
-        else:
-            return str(conf[0].value)
-    else:
-        return ""
-
-def dateToString(data):
-    """
-    Converte una data in stringa
-    """
-    if data is None:
-        return ''
-    elif type(data) == str:
-        return data
-    else:
-        try:
-            s = string.zfill(str(data.day),2) + '/' + string.zfill(str(data.month),2) + '/' + string.zfill(str(data.year),4)
-        except Exception:
-            s = ''
-        return s
-
-def dateTimeToString(data):
-    """
-    Converte una data + ora in stringa
-    """
-    if data is None:
-        return ''
-    elif type(data) == str:
-        return data
-    else:
-        try:
-            s = string.zfill(str(data.day), 2) + '/' + string.zfill(str(data.month),2) + '/' + string.zfill(str(data.year),4) + ' ' + string.zfill(str(data.hour),2) + ':' + string.zfill(str(data.minute),2)
-        except Exception:
-            s = ''
-        return s
 
 def subdoms():
     ssdict = {}
@@ -592,124 +531,6 @@ def subdoms():
     for s in sds:
         ssdict[str(s.name).lower()] = s
     return ssdict
-
-def getRecapitiContatto(id=None):
-    """
-    """
-    from promogest.dao.RecapitoContatto import RecapitoContatto
-    if id:
-        dbRecapitiContatto = RecapitoContatto().select(idContatto=id)
-    else:
-        dbRecapitiContatto = []
-    return dbRecapitiContatto
-
-
-def getRecapitiCliente(idCliente):
-    """Dato un cliente restituisce un dizionario dei recapiti"""
-    from promogest.dao.ContattoCliente import ContattoCliente
-    from promogest.dao.RecapitoContatto import RecapitoContatto
-    recaCli = {}
-    cc = ContattoCliente().select(idCliente=idCliente)
-    if cc:
-        reca = RecapitoContatto().select(idContatto=cc[0].id,  batchSize=None)
-        return reca
-    return []
-
-
-def getRecapitiFornitore(idFornitore):
-    """Dato un cliente restituisce un dizionario dei recapiti"""
-    from promogest.dao.ContattoFornitore import ContattoFornitore
-    from promogest.dao.RecapitoContatto import RecapitoContatto
-    recaCli = {}
-    cc = ContattoFornitore().select(idFornitore=idFornitore)
-    if cc:
-        reca = RecapitoContatto().select(idContatto=cc[0].id,  batchSize=None)
-        return reca
-    return []
-
-
-
-def codeIncrement(value):
-    """
-    FIXME
-    @param value:
-    @type value:
-    """
-
-    lastNum = re.compile(r'(?:[^\d]*(\d+)[^\d]*)+')
-
-    def increment(s):
-        """ look for the last sequence of number(s) in a string and increment """
-        m = lastNum.search(s)
-        if m:
-            next = str(int(m.group(1))+1)
-            start, end = m.span(1)
-            s = s[:max(end-len(next), start)] + next + s[end:]
-            return s
-
-    return increment(value)
-
-
-def setconf(section, key, value=False):
-    """ Importante funzione che "semplifica" la lettura dei dati dalla tabella
-    di configurazione setconf
-    Tentativo abbastanza rudimentale per gestire le liste attraverso i ; ma
-    forse si potrebbero gestire più semplicemente con le virgole
-    """
-    if Environment.tipo_eng =="postgresql" or Environment.tipo_eng =="postgres" :
-        if not hasattr(Environment.conf, "Documenti"):
-            Environment.conf.add_section("Documenti")
-            Environment.conf.save()
-        if  hasattr(Environment.conf, "Documenti") and not hasattr(Environment.conf.Documenti, "cartella_predefinita"):
-            setattr(Environment.conf.Documenti,"cartella_predefinita",Environment.documentsDir)
-            Environment.conf.save()
-        if key == "cartella_predefinita":
-            return Environment.conf.Documenti.cartella_predefinita
-    from promogest.dao.Setconf import SetConf
-    confList = Environment.confList
-    if not confList:
-        confList = SetConf().select(batchSize=None)
-        Environment.confList = confList
-
-    confff = None
-    for d in confList:
-        if not value:
-            if d.key==key and d.section==section:
-                confff = d
-                break
-        else:
-            if d.key==key and d.section==section and d.value == value:
-                confff = d
-                break
-    if not confff:
-        if not value:
-            confff = SetConf().select(key=key, section=section)
-        elif value:
-            confff = SetConf().select(key=key, section=section, value=value)
-        if confff:
-            confff = confff[0]
-    c = []
-    if confff:
-        valore = confff.value
-        if ";" in str(valore):
-            val = str(valore).split(";")
-            for a in val:
-                c.append(a.strip())
-            return c
-        else:
-            if valore == "":
-                return None
-            elif valore and len(valore.split("/"))>=2:
-                return str(valore)
-            else:
-                try:
-                    return eval(valore)
-                except:
-                    return str(valore)
-
-    else:
-        return ""
-
 
 
 nationList=["Afganistan","Albania","Algeria","Arabia Saudita","Argentina","Australia",

@@ -34,7 +34,7 @@ user=Table('utente', params['metadata'],schema = params['mainSchema'],autoload=T
 
 
 colonne = get_columns(user)
-
+print "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq", colonne
 if 'id_role' not in colonne:
     col = Column('id_role', Integer, nullable=True)
     col.create(user)

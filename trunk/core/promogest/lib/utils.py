@@ -2444,25 +2444,6 @@ def getRecapitiFornitore(idFornitore):
         return reca
     return []
 
-def codeIncrement(value):
-    """
-    FIXME
-    @param value:
-    @type value:
-    """
-
-    lastNum = re.compile(r'(?:[^\d]*(\d+)[^\d]*)+')
-
-    def increment(s):
-        """ look for the last sequence of number(s) in a string and increment """
-        m = lastNum.search(s)
-        if m:
-            next = str(int(m.group(1))+1)
-            start, end = m.span(1)
-            s = s[:max(end-len(next), start)] + next + s[end:]
-            return s
-
-    return increment(value)
 
 def checkCodiceDuplicato(codice=None,id=None,tipo=None):
     """
@@ -3134,25 +3115,6 @@ def checkInstallation():
                 k.persist()
 
 
-def updateScadenzePromemoria():
-    """ Segna quali promemoria entrano nel periodo in scadenza,
-        quali scadono, e quali sono completati """
-    from promogest.dao.Promemoria import Promemoria
-    promes = Promemoria().select(in_scadenza=False, completato=False)
-    for p in promes:
-        preavviso = p.giorni_preavviso
-        data_attuale = datetime.datetime.now()
-        data_scadenza = p.data_scadenza
-        if data_scadenza < data_attuale:
-            p.scaduto = True
-            Environment.session.add(p)
-        elif data_scadenza > data_attuale:
-            differenze = int((data_scadenza - data_attuale).days)
-            if differenze < preavviso:
-                p.in_scadenza = True
-                Environment.session.add(p)
-        Environment.session.commit()
-
 _dim = (None, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
 
 def _leap(y):
@@ -3459,17 +3421,6 @@ def timeit(method):
 
     return timed
 
-def ivaCache():
-    from promogest.dao.AliquotaIva import AliquotaIva
-    if not Environment.ivacache:
-        ive = Environment.session.query(AliquotaIva.id,AliquotaIva).all()
-        Environment.ivacache = ive
-    else:
-        ive = Environment.ivacache
-    dictIva = {}
-    for a in ive:
-        dictIva[a[0]] = (a[1],a[1].tipo_ali_iva)
-    return dictIva
 
 def start_viewer(filename):
     '''

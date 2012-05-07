@@ -50,7 +50,7 @@ from promogest.modules.Pagamenti.dao.TestataDocumentoScadenza import TestataDocu
 from promogest.dao.InformazioniFatturazioneDocumento import InformazioniFatturazioneDocumento
 import promogest.lib.ibanlib
 
-#from DaoUtils import *
+from promogest.dao.DaoUtils import ivaCache
 from decimal import *
 from promogest.lib.utils import *
 from promogest.ui.utilsCombobox import *

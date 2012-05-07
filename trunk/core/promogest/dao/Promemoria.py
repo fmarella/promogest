@@ -59,6 +59,26 @@ class Promemoria(Dao):
             dic = { k:promemoria.c.data_inserimento >= v }
         return  dic[k]
 
+
+def updateScadenzePromemoria():
+    """ Segna quali promemoria entrano nel periodo in scadenza,
+        quali scadono, e quali sono completati """
+    promes = Promemoria().select(in_scadenza=False, completato=False)
+    for p in promes:
+        preavviso = p.giorni_preavviso
+        data_attuale = datetime.datetime.now()
+        data_scadenza = p.data_scadenza
+        if data_scadenza < data_attuale:
+            p.scaduto = True
+            Environment.session.add(p)
+        elif data_scadenza > data_attuale:
+            differenze = int((data_scadenza - data_attuale).days)
+            if differenze < preavviso:
+                p.in_scadenza = True
+                Environment.session.add(p)
+        Environment.session.commit()
+
+
 def getScadenze():
     """
     Ritorna una lista di id di oggetti Promemoria in scadenza (e quindi da notificare)

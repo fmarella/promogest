@@ -33,8 +33,7 @@ from promogest.ui.ElencoMagazzini import ElencoMagazzini
 from promogest.ui.ElencoListini import ElencoListini
 from promogest.ui.VistaPrincipale import VistaPrincipale
 from promogest.ui.SendEmail import SendEmail
-from promogest.lib.utils import hasAction, fencemsg, updateScadenzePromemoria,\
-         setconf,  \
+from promogest.lib.utils import hasAction, fencemsg, setconf,  \
          orda, posso, messageInfo, YesNoDialog, messageError,\
          obligatoryField, leggiRevisioni
 from promogest.ui.utilsCombobox import *
@@ -445,12 +444,9 @@ class Main(GladeWidget):
     def updates(self):
         """ Aggiornamenti e controlli da fare all'avvio del programma
         """
-        #Aggiornamento scadenze promemoria
-        #if posso("PR"):
-            # VERIFICA DEI PROMEMORIA IN SCADENZA
-            #updateScadenzePromemoria()
+        from promogest.dao.Promemoria import updateScadenzePromemoria
         if posso("PR"):
-            glib.timeout_add_seconds(30, updateScadenzePromemoria)
+            glib.timeout_add_seconds(20, updateScadenzePromemoria)
 
     def _refresh(self):
         """

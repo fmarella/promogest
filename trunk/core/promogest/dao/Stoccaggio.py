@@ -70,7 +70,7 @@ class Stoccaggio(Dao):
 #        return giacenzaArticolo(year=workingYear,
 #            idMagazzino=self.id_magazzino,
 #            idArticolo=self.id_articolo)[1] or 0
-        return self.giacenza[1]
+        return self.giacenza[0]
     valoreGiacenza = property(_getValoreGiacenza, )
 
     def _codiceArticolo(self):

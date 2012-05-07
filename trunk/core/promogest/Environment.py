@@ -147,7 +147,7 @@ a_data_inizio_primanota = None
 azienda_in_conf = None
 idACT = []
 confDict = {}
-ivacache = []
+ivacache = [] # lista di aliquote e deniminazione ...utile come cache
 
 CONFIGPATH = os.path.split(os.path.dirname(__file__))[0]
 webconfigFile = os.path.join(CONFIGPATH, 'pgweb.conf')
@@ -750,6 +750,10 @@ def hook(et, ev, eb):
         delete_pickle()
         return
     if "ProgrammingError" in str(ev):
+        #print "ATTENZIONE!!! MANCA L'HANDLER", ev
+        delete_pickle()
+        return
+    if "OperationalError" in str(ev):
         #print "ATTENZIONE!!! MANCA L'HANDLER", ev
         delete_pickle()
         return

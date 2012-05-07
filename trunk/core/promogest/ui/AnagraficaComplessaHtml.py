@@ -128,10 +128,13 @@ class AnagraficaHtml(object):
 
     def pdf(self, operationName, classic=None, template_file=None):
         """ Qui si stampa selezione """
+        from sqlalchemy.orm import undefer_group
         self._slaTemplate = None
         self._slaTemplateObj = None
         # aggiungo i dati azienda al dao in modo che si gestiscano a monte
         azienda = Azienda().getRecord(id=Environment.azienda)
+        azienda.options(undefer_group('ragione_socuale'))
+        print "AIENZAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", azienda, azienda.ragione_sociale
         operationNameUnderscored = operationName.replace(' ', '_').lower()
         a = Environment.templatesDir + operationNameUnderscored + '.sla'
         Environment.pg2log.info(a)

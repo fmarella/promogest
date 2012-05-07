@@ -23,7 +23,7 @@ from sqlalchemy import Table, or_
 from sqlalchemy.orm import mapper, join
 from promogest.Environment import params, conf
 from promogest.dao.Dao import Dao
-from promogest.lib.utils import  codeIncrement
+from promogest.dao.DaoUtils import codeIncrement
 
 class Agente(Dao):
 

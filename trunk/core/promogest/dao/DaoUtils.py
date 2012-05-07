@@ -557,3 +557,35 @@ def ckd(dao):
         else:
             return True
     return True
+
+def ivaCache():
+    from promogest.dao.AliquotaIva import AliquotaIva
+    if not Environment.ivacache:
+        ive = Environment.session.query(AliquotaIva.id,AliquotaIva).all()
+        Environment.ivacache = ive
+    else:
+        ive = Environment.ivacache
+    dictIva = {}
+    for a in ive:
+        dictIva[a[0]] = (a[1],a[1].tipo_ali_iva)
+    return dictIva
+
+def codeIncrement(value):
+    """
+    FIXME
+    @param value:
+    @type value:
+    """
+    import re
+    lastNum = re.compile(r'(?:[^\d]*(\d+)[^\d]*)+')
+
+    def increment(s):
+        """ look for the last sequence of number(s) in a string and increment """
+        m = lastNum.search(s)
+        if m:
+            next = str(int(m.group(1))+1)
+            start, end = m.span(1)
+            s = s[:max(end-len(next), start)] + next + s[end:]
+            return s
+
+    return increment(value)

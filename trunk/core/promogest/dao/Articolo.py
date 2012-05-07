@@ -19,11 +19,12 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-from promogest.lib.utils import codeIncrement, posso
+from promogest.lib.utils import posso
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
 from Dao import Dao
+from promogest.dao.DaoUtils import codeIncrement
 from UnitaBase import UnitaBase, unitabase
 from Multiplo import Multiplo
 from promogest.dao.DaoUtils import giacenzaArticolo
