@@ -255,6 +255,7 @@ class MyProxy(ConnectionProxy):
         except ProgrammingError as e:
             messageInfoEnv(msg="UN ERRORE È STATO INTERCETTATO E SEGNALATO: "+str(e))
             session.rollback()
+            delete_pickle()
         except InvalidRequestError as e:
             messageInfoEnv(msg="UN ERRORE È STATO INTERCETTATO E SEGNALATO: "+str(e))
             session.rollback()

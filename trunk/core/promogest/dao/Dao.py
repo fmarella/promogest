@@ -236,13 +236,6 @@ class Dao(object):
     def dd(self,clase):
 #        clasemd5 = hashlib.md5(clase).hexdigest()
         return True
-#        if clasemd5 in mm:
-##            print "OLLELLE OLLALLA", self.count()
-#            if hashlib.md5(str(self.count())).hexdigest() == mm[clasemd5]:
-#                from promogest.lib.utils import fenceDialog
-#                fenceDialog()
-
-
 
     def saveToAppLog(self, status=True,action=None, value=None):
         """

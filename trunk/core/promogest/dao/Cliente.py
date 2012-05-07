@@ -27,10 +27,9 @@ from promogest.Environment import params, conf, session, get_columns, delete_pic
 from promogest.dao.Dao import Dao
 from ClienteCategoriaCliente import ClienteCategoriaCliente
 from promogest.dao.PersonaGiuridica import t_persona_giuridica
-from promogest.lib.utils import  getRecapitiCliente
 from promogest.dao.User import User
 from promogest.dao.DestinazioneMerce import DestinazioneMerce
-from promogest.dao.DaoUtils import codeIncrement
+from promogest.dao.DaoUtils import codeIncrement, getRecapitiCliente
 
 class Cliente(Dao):
     """

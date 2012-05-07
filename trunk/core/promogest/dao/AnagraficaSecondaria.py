@@ -23,8 +23,7 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
 from Dao import Dao
-from promogest.lib.utils import getRecapitiAnagraficaSecondaria
-from promogest.dao.DaoUtils import codeIncrement
+from promogest.dao.DaoUtils import codeIncrement, getRecapitiAnagraficaSecondaria
 
 persona_giuridica = Table('persona_giuridica',
                         meta,

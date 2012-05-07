@@ -1078,7 +1078,7 @@ def on_id_aliquota_iva_customcombobox_clicked(widget, button):
     if widget.button.get_property('active') is False:
         return
 
-    from AnagraficaAliquoteIva import AnagraficaAliquoteIva
+    from promogest.ui.AnagraficaAliquoteIva import AnagraficaAliquoteIva
     anag = AnagraficaAliquoteIva()
 
     anagWindow = anag.getTopLevel()
@@ -1105,7 +1105,7 @@ def on_id_categoria_articolo_customcombobox_clicked(widget, button):
     if widget.button.get_property('active') is False:
         return
 
-    from AnagraficaCategorieArticoli import AnagraficaCategorieArticoli
+    from promogest.ui.AnagraficaCategorieArticoli import AnagraficaCategorieArticoli
     anag = AnagraficaCategorieArticoli()
 
     anagWindow = anag.getTopLevel()
@@ -1134,7 +1134,7 @@ def on_id_famiglia_articolo_customcombobox_clicked(widget, button):
     if widget.button.get_property('active') is False:
         return
 
-    from AnagraficaFamiglieArticoli import AnagraficaFamiglieArticoli
+    from promogest.ui.AnagraficaFamiglieArticoli import AnagraficaFamiglieArticoli
     anag = AnagraficaFamiglieArticoli()
 
     anagWindow = anag.getTopLevel()
@@ -1187,7 +1187,7 @@ def on_id_imballaggio_customcombobox_clicked(widget, button):
     if widget.button.get_property('active') is False:
         return
 
-    from AnagraficaImballaggi import AnagraficaImballaggi
+    from promogest.ui.AnagraficaImballaggi import AnagraficaImballaggi
     anag = AnagraficaImballaggi()
 
     anagWindow = anag.getTopLevel()
@@ -1216,7 +1216,7 @@ def on_id_categoria_cliente_customcombobox_clicked(widget, button):
     if widget.button.get_property('active') is False:
         return
 
-    from AnagraficaCategorieClienti import AnagraficaCategorieClienti
+    from promogest.ui.AnagraficaCategorieClienti import AnagraficaCategorieClienti
     anag = AnagraficaCategorieClienti()
 
     anagWindow = anag.getTopLevel()
@@ -1245,7 +1245,7 @@ def on_id_categoria_fornitore_customcombobox_clicked(widget, button):
     if widget.button.get_property('active') is False:
         return
 
-    from AnagraficaCategorieFornitori import AnagraficaCategorieFornitori
+    from promogest.ui.AnagraficaCategorieFornitori import AnagraficaCategorieFornitori
     anag = AnagraficaCategorieFornitori()
 
     anagWindow = anag.getTopLevel()
@@ -1303,7 +1303,7 @@ def on_id_magazzino_customcombobox_clicked(widget, button):
     if widget.button.get_property('active') is False:
         return
 
-    from AnagraficaMagazzini import AnagraficaMagazzini
+    from promogest.ui.AnagraficaMagazzini import AnagraficaMagazzini
     anag = AnagraficaMagazzini()
 
     anagWindow = anag.getTopLevel()
@@ -1332,7 +1332,7 @@ def on_id_multiplo_customcombobox_clicked(widget, button, idArticolo):
     if widget.button.get_property('active') is False:
         return
 
-    from AnagraficaMultipli import AnagraficaMultipli
+    from promogest.ui.AnagraficaMultipli import AnagraficaMultipli
     anag = AnagraficaMultipli(idArticolo)
 
     anagWindow = anag.getTopLevel()
@@ -1362,10 +1362,10 @@ def on_id_listino_customcombobox_clicked(widget, button, idArticolo=None, idList
         return
 
     if idArticolo is not None:
-        from AnagraficaListiniArticoli import AnagraficaListiniArticoli
+        from promogest.ui.AnagraficaListiniArticoli import AnagraficaListiniArticoli
         anag = AnagraficaListiniArticoli(idArticolo, idListino)
     else:
-        from AnagraficaListini import AnagraficaListini
+        from promogest.ui.AnagraficaListini import AnagraficaListini
         anag = AnagraficaListini()
 
     anagWindow = anag.getTopLevel()
@@ -1420,7 +1420,7 @@ def on_id_pagamento_customcombobox_clicked(widget, button):
     if widget.button.get_property('active') is False:
         return
 
-    from AnagraficaPagamenti import AnagraficaPagamenti
+    from promogest.ui.AnagraficaPagamenti import AnagraficaPagamenti
     anag = AnagraficaPagamenti()
 
     anagWindow = anag.getTopLevel()
@@ -1448,7 +1448,7 @@ def on_id_banca_customcombobox_clicked(widget, button):
     if widget.button.get_property('active') is False:
         return
 
-    from AnagraficaBanche import AnagraficaBanche
+    from promogest.ui.AnagraficaBanche import AnagraficaBanche
     anag = AnagraficaBanche()
 
     anagWindow = anag.getTopLevel()
@@ -2407,43 +2407,6 @@ def getRecapitiContatto(id=None):
     else:
         dbRecapitiContatto = []
     return dbRecapitiContatto
-
-
-def getRecapitiCliente(idCliente):
-    """Dato un cliente restituisce un dizionario dei recapiti"""
-    from promogest.modules.Contatti.dao.ContattoCliente import ContattoCliente
-    from promogest.modules.Contatti.dao.RecapitoContatto import RecapitoContatto
-    recaCli = {}
-    cc = ContattoCliente().select(idCliente=idCliente)
-    if cc:
-        reca = RecapitoContatto().select(idContatto=cc[0].id,  batchSize=None)
-        return reca
-    return []
-
-def getRecapitiAnagraficaSecondaria(idAnagraficaSecondaria):
-    """Dato un cliente restituisce un dizionario dei recapiti"""
-    from promogest.modules.Contatti.dao.ContattoAnagraficaSecondaria import ContattoAnagraficaSecondaria
-    from promogest.modules.Contatti.dao.RecapitoContatto import RecapitoContatto
-    recaCli = {}
-    cc = ContattoAnagraficaSecondaria().select(idAnagraficaSecondaria=idAnagraficaSecondaria)
-    if cc:
-        reca = RecapitoContatto().select(idContatto=cc[0].id,  batchSize=None)
-        return reca
-    return []
-
-
-
-def getRecapitiFornitore(idFornitore):
-    """Dato un cliente restituisce un dizionario dei recapiti"""
-    from promogest.modules.Contatti.dao.ContattoFornitore import ContattoFornitore
-    from promogest.modules.Contatti.dao.RecapitoContatto import RecapitoContatto
-    recaCli = {}
-    cc = ContattoFornitore().select(idFornitore=idFornitore)
-    if cc:
-        reca = RecapitoContatto().select(idContatto=cc[0].id,  batchSize=None)
-        return reca
-    return []
-
 
 def checkCodiceDuplicato(codice=None,id=None,tipo=None):
     """
