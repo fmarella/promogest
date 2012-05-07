@@ -46,7 +46,7 @@ if 'id_role' not in colonne:
     #col.create(user)
     #delete_pickle()
 
-
+raise ProgrammingError("d","v","f", "TEST TEST")
 try:
     from sqlalchemy.orm import relationship
     if tipodb =="sqlite":

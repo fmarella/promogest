@@ -61,9 +61,14 @@ try:
     from werkzeug import Local, LocalManager, cached_property
 except:
     print "MANCA WERKZEUG"
-import psycopg2
 import decimal
-psycopg2.extensions.register_adapter(decimal.Decimal, psycopg2._psycopg.Decimal)
+
+try:
+    import psycopg2
+    psycopg2.extensions.register_adapter(decimal.Decimal, psycopg2._psycopg.Decimal)
+except:
+    pass
+
 import sqlalchemy
 from sqlalchemy import *
 from sqlalchemy.orm import *
@@ -733,7 +738,7 @@ def _send(fromaddr=None, total_addrs=None, msg=None):
 
 def hook(et, ev, eb):
     import traceback
-    print "EVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV", et, ev, eb
+    #print "EVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV", et.__dict__, ev.__dict__, eb.__class__.__dict__
     if "Operation aborted" in str(ev):
         delete_pickle()
         return
