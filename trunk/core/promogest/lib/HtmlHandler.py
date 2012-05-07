@@ -42,6 +42,7 @@ import urllib2
 import webbrowser
 from promogest import Environment
 from  promogest.lib import utils
+from promogest.dao import DaoUtils as daoutils
 from jinja2 import Environment  as Env
 from jinja2 import FileSystemLoader,FileSystemBytecodeCache,environmentfilter, Markup, escape
 import re
@@ -55,6 +56,7 @@ def env(templates_dir):
                     extensions=['jinja2.ext.i18n'])
     jinja_env.globals['environment'] = Environment
     jinja_env.globals['utils'] = utils
+    jinja_env.globals['daoutils'] = daoutils
     jinja_env.globals['datetime'] = datetime
 
     try:

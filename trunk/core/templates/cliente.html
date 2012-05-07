@@ -81,7 +81,7 @@
 </td></tr>
 </table>
 <table>
-{% for a in utils.getRecapitiCliente(dao.id) %}
+{% for a in daoutils.getRecapitiCliente(dao.id) %}
 <tr>
 <td><b>{{a.tipo_recapito|nonone}} : </b>{{ a.recapito|nonone}}</td>
 </tr>
