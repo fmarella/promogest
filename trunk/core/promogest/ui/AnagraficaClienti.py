@@ -174,6 +174,7 @@ Alcuni documenti sono legati a questo cliente."""
         dao_contatto.id_fornitore = d.id
         dao_contatto.persist()
 
+        from promogest.dao.DaoUtils import getRecapitiCliente
         contatti = getRecapitiCliente(dao.id)
         for c in contatti:
             reco = RecapitoContatto()

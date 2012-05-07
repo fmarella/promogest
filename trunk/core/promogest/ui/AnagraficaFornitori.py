@@ -132,7 +132,7 @@ class AnagraficaFornitori(Anagrafica):
         dao_contatto.id_cliente =d.id
         dao_contatto.persist()
 
-
+        from promogest.dao.DaoUtils import getRecapitiFornitore
         contatti = getRecapitiFornitore(dao.id)
         for c in contatti:
             reco = RecapitoContatto()
