@@ -1477,7 +1477,7 @@ def on_id_destinazione_merce_customcombobox_clicked(widget, button, idCliente):
     if widget.button.get_property('active') is False:
         return
 
-    from AnagraficaDestinazioniMerce import AnagraficaDestinazioniMerce
+    from promogest.ui.AnagraficaDestinazioniMerce import AnagraficaDestinazioniMerce
     anag = AnagraficaDestinazioniMerce(idCliente)
 
     anagWindow = anag.getTopLevel()
