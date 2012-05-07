@@ -133,8 +133,6 @@ class AnagraficaHtml(object):
         self._slaTemplateObj = None
         # aggiungo i dati azienda al dao in modo che si gestiscano a monte
         azienda = Azienda().getRecord(id=Environment.azienda)
-        azienda.options(undefer_group('ragione_socuale'))
-        print "AIENZAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", azienda, azienda.ragione_sociale
         operationNameUnderscored = operationName.replace(' ', '_').lower()
         a = Environment.templatesDir + operationNameUnderscored + '.sla'
         Environment.pg2log.info(a)

@@ -33,8 +33,8 @@ from promogest.dao.Azienda import Azienda
 from GtkExceptionHandler import GtkExceptionHandler
 from promogest.ui.UpdateDialog import UpdateDialog
 from promogest.lib.utils import leggiRevisioni, hasAction, checkInstallation, \
-    installId, messageInfo, findStrFromCombobox
-from promogest.ui.utilsCombobox import findComboboxRowFromStr
+    installId, messageInfo
+from promogest.ui.utilsCombobox import findComboboxRowFromStr,findStrFromCombobox
 
 Environment.pg2log.info("GTK+: " + str(GTK_VERSION))
 

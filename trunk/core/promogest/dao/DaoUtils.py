@@ -570,6 +570,7 @@ def ivaCache():
         dictIva[a[0]] = (a[1],a[1].tipo_ali_iva)
     return dictIva
 
+
 def codeIncrement(value):
     """
     FIXME

@@ -23,7 +23,6 @@
 
 from textwrap import TextWrapper
 import os
-import sys
 from threading import Timer
 import hashlib
 from calendar import Calendar
@@ -62,7 +61,7 @@ try:  # necessario per gestire i custom widgts con glade3 e gtkBuilder
 except:
     pass
 
-from promogest.ui.utilsCombobox import *
+#from promogest.ui.utilsCombobox import *
 
 # Letture per recuperare velocemente dati da uno o piu' dao correlati
 
@@ -203,7 +202,6 @@ def leggiDestinazioneMerce(id):
     _localita = ''
     _cap = ''
     _provincia = ''
-    _email = ""
 
     if id is not None:
         daoDestinazioneMerce = DestinazioneMerce().getRecord(id=id)
@@ -893,7 +891,6 @@ def on_combobox_fornitore_search_clicked(combobox, callName=None):
 
 
 def permalinkaTitle(string):
-    import unicodedata
     try:
         string = unicodedata.normalize("NFKD",string).encode('ascii','ignore').strip().lower()
     except:
@@ -2328,7 +2325,7 @@ def hasAction(actionID=None):
                                 GTK_DIALOG_DESTROY_WITH_PARENT,
                                 GTK_DIALOG_MESSAGE_WARNING, GTK_BUTTON_OK,
                                 _("Permesso negato! L'azione richiesta non è tra quelle che ti son consentite"))
-        response = dialog.run()
+        dialog.run()
         dialog.destroy()
         return False
 
@@ -3195,7 +3192,7 @@ def scribusVersion(slafile):
         Environment.new_print_enjine=False
         return False
     root = doc.getroot()
-    document = doc.findall('DOCUMENT')[0]
+    doc.findall('DOCUMENT')[0]
     slaversion = root.get('Version')
     Environment.pg2log.info( "FILE SLA DA VERIFICARE PRIMA DLLA STAMPA "+ slafile)
     Environment.pg2log.info("VERSIONE SLA  "+ str(slaversion))
