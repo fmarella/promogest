@@ -69,15 +69,15 @@ class Cliente(Dao):
                 return user.username
         return ""
 
-    #@property
-    #def email_confirmed(self):
-        #"""
-        #"""
-        #if self.id:
-            #user = User().getRecord(id=self.id_user)
-            #if user:
-                #return user.email_confirmed
-        #return False
+    @property
+    def email_confirmed(self):
+        """
+        """
+        if self.id:
+            user = User().getRecord(id=self.id_user)
+            if user:
+                return user.email_confirmed
+        return False
 
     @property
     def password_login(self):
