@@ -742,6 +742,10 @@ def hook(et, ev, eb):
     if "Handler" in str(ev):
         print "ATTENZIONE!!! MANCA L'HANDLER", ev
         return
+    if "column" in str(ev):
+        #print "ATTENZIONE!!! MANCA L'HANDLER", ev
+        delete_pickle()
+        return
     pg2log.info("\n  ".join (["Error occurred: traceback follows"]+list(traceback.format_exception(et, ev, eb))))
     print "UN ERRORE È STATO INTERCETTATO E LOGGATO, SI CONSIGLIA DI RIAVVIARE\n E DI CONTATTARE L'ASSISTENZA \n\nPREMERE CTRL+C PER CHIUDERE  \n"+"\n  ".join(list(traceback.format_exception(et, ev, eb)))
     sendmail()
