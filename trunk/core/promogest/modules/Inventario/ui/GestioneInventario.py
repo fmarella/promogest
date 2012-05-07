@@ -561,9 +561,9 @@ class GestioneInventario(RicercaComplessaArticoli):
                                                     idOperazione= "Carico per inventario")
             if movimento:
                 for m in movimento:
-                    for riga in movimento.righe:
+                    for riga in m.righe:
                         if riga.id_magazzino == self.idMagazzino:
-                            movimento.delete()
+                            m.delete()
                             return True
             model = self.filter.resultsElement.get_model()
             model.clear()
