@@ -40,11 +40,11 @@ if 'id_role' not in colonne:
     col.create(user)
     delete_pickle()
 
-print "COLONNNNNNNNNNNNNNNNNNNNNE", colonne
-if 'email_confirmed' not in colonne:
-    col = Column('email_confirmed', Boolean, default=False)
-    col.create(user)
-    delete_pickle()
+#print "COLONNNNNNNNNNNNNNNNNNNNNE", colonne
+#if 'email_confirmed' not in colonne:
+    #col = Column('email_confirmed', Boolean, default=False)
+    #col.create(user)
+    #delete_pickle()
 
 
 try:
