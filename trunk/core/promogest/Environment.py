@@ -733,7 +733,9 @@ def _send(fromaddr=None, total_addrs=None, msg=None):
 
 def hook(et, ev, eb):
     import traceback
+    print "EVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV", et, ev, eb
     if "Operation aborted" in str(ev):
+        delete_pickle()
         return
     if "ATTENZIONE, TENTATIVO DI SALVATAGGIO SENZA RIGHE?????" in ev:
         return
@@ -741,6 +743,7 @@ def hook(et, ev, eb):
         return
     if "Handler" in str(ev):
         print "ATTENZIONE!!! MANCA L'HANDLER", ev
+        delete_pickle()
         return
     if "column" in str(ev):
         #print "ATTENZIONE!!! MANCA L'HANDLER", ev
