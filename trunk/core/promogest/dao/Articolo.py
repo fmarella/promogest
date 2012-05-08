@@ -24,10 +24,9 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
 from Dao import Dao
-from promogest.dao.DaoUtils import codeIncrement
 from UnitaBase import UnitaBase, unitabase
 from Multiplo import Multiplo
-from promogest.dao.DaoUtils import giacenzaArticolo
+from promogest.dao.DaoUtils import giacenzaArticolo, codeIncrement
 from promogest.modules.GestioneKit.dao.ArticoloKit import ArticoloKit
 from Imballaggio import Imballaggio, imballaggio
 from AliquotaIva import AliquotaIva, aliquota_iva

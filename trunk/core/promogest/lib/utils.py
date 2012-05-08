@@ -61,7 +61,7 @@ try:  # necessario per gestire i custom widgts con glade3 e gtkBuilder
 except:
     pass
 
-#from promogest.ui.utilsCombobox import *
+from promogest.ui.utilsCombobox import *
 
 # Letture per recuperare velocemente dati da uno o piu' dao correlati
 
