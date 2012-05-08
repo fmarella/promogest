@@ -596,7 +596,7 @@ class Main(GladeWidget):
             toggleButton.set_active(False)
             return
         if posso("AG"):
-            from promogest.modules.Agenti.ui.AnagraficaAgenti import AnagraficaAgenti
+            from promogest.ui.anagAgenti.AnagraficaAgenti import AnagraficaAgenti
             anag = AnagraficaAgenti(aziendaStr=self.aziendaStr)
             showAnagrafica(self.getTopLevel(), anag, toggleButton, mainClass=self)
         else:

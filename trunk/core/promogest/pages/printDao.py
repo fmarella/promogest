@@ -28,7 +28,7 @@ from promogest.dao.Fornitura import Fornitura
 from promogest.dao.Cliente import Cliente
 from promogest.dao.Fornitore import Fornitore
 from promogest.dao.Vettore import Vettore
-from promogest.modules.Agenti.dao.Agente import Agente, getNuovoCodiceAgente
+from promogest.dao.daoAgenti.Agente import Agente, getNuovoCodiceAgente
 from promogest.dao.Fornitura import Fornitura
 from promogest.dao.AliquotaIva import AliquotaIva
 from promogest.dao.Multiplo import Multiplo

@@ -22,7 +22,7 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 from promogest.ui.Ricerca import Ricerca, RicercaFilter
-from promogest.modules.Agenti.dao.Agente import Agente
+from promogest.dao.daoAgenti.Agente import Agente
 from promogest.lib.utils import *
 from promogest.ui.gtk_compat import *
 
@@ -43,7 +43,7 @@ class RicercaAgenti(Ricerca):
             self.filter.refresh()
             self.filter.ragione_sociale_filter_entry.grab_focus()
         if posso("AG"):
-            from promogest.modules.Agenti.ui.AnagraficaAgenti import AnagraficaAgenti
+            from promogest.ui.anagAgenti.AnagraficaAgenti import AnagraficaAgenti
             anag = AnagraficaAgenti()
             anagWindow = anag.getTopLevel()
             showAnagraficaRichiamata(returnWindow, anagWindow, toggleButton, refresh)

@@ -31,7 +31,7 @@ from DestinazioneMerce import DestinazioneMerce
 from TestataMovimento import TestataMovimento
 from Pagamento import Pagamento
 from Vettore import Vettore
-from promogest.modules.Agenti.dao.Agente import Agente
+from promogest.dao.daoAgenti.Agente import Agente
 from Fornitore import Fornitore
 from Cliente import Cliente
 from RigaDocumento import RigaDocumento

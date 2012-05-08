@@ -24,7 +24,7 @@
 import datetime
 from decimal import *
 from promogest.lib.page import Page
-from promogest.modules.Agenti.dao.Agente import Agente, getNuovoCodiceAgente
+from promogest.dao.daoAgenti.Agente import Agente, getNuovoCodiceAgente
 from promogest.dao.PersonaGiuridica import PersonaGiuridica_ as PersonaGiuridica
 from promogest.lib.webutils import *
 
