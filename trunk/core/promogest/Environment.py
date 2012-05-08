@@ -193,7 +193,7 @@ except:
 
 fromHtmlLits = ["Promemoria", "TestataPrimaNota","Articolo", "Cliente",
                 "Contatto", "Fornitore", "Fornitura", "Contatto", "Vettore",
-                "AliquotaIva", "TestataCommessa","Stoccaggio"]
+                "AliquotaIva", "TestataCommessa","Stoccaggio", "Agente"]
 
 package = ["ONE BASIC", "ONE FULL", "ONE STANDARD", "PRO BASIC", "PRO STANDARD",
             "PRO FULL","ONE PROMOWEAR", "ONE PROMOSHOP", "PRO PROMOWEAR", "PRO PROMOSHOP"]

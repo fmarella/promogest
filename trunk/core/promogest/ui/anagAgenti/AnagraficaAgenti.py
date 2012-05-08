@@ -52,7 +52,7 @@ class AnagraficaAgentiHtml(AnagraficaHtml):
     """ Anagrafica Agenti HTML widget di anteprima"""
     def __init__(self, anagrafica):
         AnagraficaHtml.__init__(self, anagrafica,
-                                '/tplAgenti/agente',
+                                'tplAgenti/agente',
                                 "Informazioni sull'agente",
                                 )
 

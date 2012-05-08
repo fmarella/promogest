@@ -576,6 +576,7 @@ class Anagrafica(GladeWidget):
         self.label = label
         # tipo report ma anche opzione label
         self._pdfName = str(pdfGenerator.defaultFileName)
+
         self._folder = setconf("General", "cartella_predefinita") or ""
         if self._folder == '':
             if os.name == 'posix':
@@ -594,7 +595,8 @@ class Anagrafica(GladeWidget):
             printDialog = GladeWidget('records_print_dialog',
                                       callbacks_proxy=self)
             printDialog.getTopLevel().set_transient_for(self.getTopLevel())
-
+            if "/" in self._pdfName:
+                self._pdfName = self._pdfName.split("/")[1]
             printDialog.records_print_dialog_description_label.set_text(
                                                                 self._pdfName)
             printDialog.email_destinatario_entry.set_text(self.email)

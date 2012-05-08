@@ -145,8 +145,6 @@ class AnagraficaHtml(object):
                         os.path.exists(Environment.templatesDir + 'ddt.sla'):
             self._slaTemplate = Environment.templatesDir + 'ddt.sla'
         else:
-            Environment.pg2log.info(
-                            "UTILIZZO il documento.sla normale per la stampa")
             self._slaTemplate = Environment.templatesDir \
                                         + self.defaultFileName \
                                         + '.sla'
@@ -154,7 +152,6 @@ class AnagraficaHtml(object):
 
         if self.dao.__class__.__name__ in Environment.fromHtmlLits:
             from  xhtml2pdf import pisa
-
             f = self.hh
             g = file(Environment.tempDir + ".temp.pdf", "wb")
             pisa.CreatePDF(str(f), g)
