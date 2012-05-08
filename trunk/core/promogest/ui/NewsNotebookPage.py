@@ -21,6 +21,7 @@
 
 import webbrowser
 from promogest.lib.utils import *
+from promogest.ui.utilsCombobox import *
 from promogest.dao.Setconf import SetConf
 from promogest import Environment
 from GladeWidget import GladeWidget

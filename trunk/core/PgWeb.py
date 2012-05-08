@@ -31,8 +31,10 @@ from werkzeug.exceptions import HTTPException, NotFound
 from wsgiref.simple_server import make_server
 
 from promogest import Environment
+from promogest import pg3_check
 from promogest.lib.page import Page
-from promogest.lib.webutils import url_map, jinja_env, setconf
+from promogest.lib.webutils import url_map, jinja_env
+from promogest.lib.utils import setconf
 from promogest.lib import routes
 
 class Pg2_web(object):
@@ -50,11 +52,11 @@ class Pg2_web(object):
         #TODO: eventuale gestione modulare successiva come nel pg
         #self.importModulesFromDir(modules_dir="./promogest/pages/modules")
         #Aggiungo le directory di lavoro ...
-        self.dispatch = SharedDataMiddleware(self.dispatch, {
+        if pg3_check.wsgi == False:
+            self.dispatch = SharedDataMiddleware(self.dispatch, {
             '/templates/': Environment.STATIC_PATH,
             '/feed': Environment.STATIC_PATH_FEED,
         })
-
 
     def importModulesFromDir(self, modules_dir):
         """Check the modules directory and automatically try to load
