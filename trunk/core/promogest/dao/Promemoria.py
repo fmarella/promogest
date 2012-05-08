@@ -22,7 +22,7 @@
 import datetime
 from sqlalchemy import Table
 from sqlalchemy.orm import mapper
-from promogest.Environment import params
+from promogest.Environment import *
 from Dao import Dao
 
 class Promemoria(Dao):
@@ -71,13 +71,13 @@ def updateScadenzePromemoria():
         data_scadenza = p.data_scadenza
         if data_scadenza < data_attuale:
             p.scaduto = True
-            Environment.session.add(p)
+            session.add(p)
         elif data_scadenza > data_attuale:
             differenze = int((data_scadenza - data_attuale).days)
             if differenze < preavviso:
                 p.in_scadenza = True
-                Environment.session.add(p)
-        Environment.session.commit()
+                session.add(p)
+        session.commit()
 
 
 def getScadenze():
