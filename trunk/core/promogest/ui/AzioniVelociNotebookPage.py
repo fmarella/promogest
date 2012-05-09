@@ -63,7 +63,7 @@ class AzioniVelociNotebookPage(GladeWidget):
 
     def on_nuovo_promemoria_button_clicked(self, widget):
         if not hasAction(actionID=11):return
-        from AnagraficaPromemoria import AnagraficaPromemoria
+        from promogest.ui.anagPromemoria.AnagraficaPromemoria import AnagraficaPromemoria
         anag = AnagraficaPromemoria(self.aziendaStr)
         showAnagrafica(self.getTopLevel(), anag)
         anag.on_record_new_activate()

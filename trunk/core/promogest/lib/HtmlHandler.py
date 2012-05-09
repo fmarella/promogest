@@ -149,12 +149,12 @@ def apriTestataMovimentoEdit(testataMovimentoId):
     a.on_record_edit_activate(a, dao=art)
 
 def apriAnagraficaPromemoriaNew(selectedData=None):
-    from promogest.ui.AnagraficaPromemoria import AnagraficaPromemoria
+    from promogest.ui.anagPromemoria.AnagraficaPromemoria import AnagraficaPromemoria
     a = AnagraficaPromemoria(selectedData=selectedData)
     a.on_record_new_activate(a)
 
 def apriAnagraficaPromemoriaEdit(promemoriaId):
-    from promogest.ui.AnagraficaPromemoria import AnagraficaPromemoria
+    from promogest.ui.anagPromemoria.AnagraficaPromemoria import AnagraficaPromemoria
     from promogest.dao.Promemoria import Promemoria
     a = AnagraficaPromemoria()
     pro = Promemoria().getRecord(id=promemoriaId)

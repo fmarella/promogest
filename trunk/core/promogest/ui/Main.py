@@ -499,7 +499,7 @@ class Main(GladeWidget):
             return
         elif selection == 5:
             if posso("PR"):
-                from AnagraficaPromemoria import AnagraficaPromemoria
+                from promogest.ui.anagPromemoria.AnagraficaPromemoria import AnagraficaPromemoria
                 anag = AnagraficaPromemoria(self.aziendaStr)
                 showAnagrafica(self.getTopLevel(), anag, mainClass=self)
                 icon_view.unselect_all()

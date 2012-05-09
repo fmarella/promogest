@@ -26,7 +26,7 @@ from promogest import Environment
 from GladeWidget import GladeWidget
 import promogest.dao.Promemoria
 from promogest.dao.Promemoria import Promemoria
-from promogest.ui.AnagraficaPromemoria import AnagraficaPromemoria
+from promogest.ui.anagPromemoria.AnagraficaPromemoria import AnagraficaPromemoria
 
 
 class NotificaAllarmiNotebookPage(GladeWidget):

@@ -123,7 +123,7 @@ class AnagraficaPGEdit(object):
                     toggleButton.set_active(False)
                     return
 
-            from promogest.ui.AnagraficaPromemoria import AnagraficaPromemoria
+            from promogest.ui.anagPromemoria.AnagraficaPromemoria import AnagraficaPromemoria
             if self.dao.ragione_sociale:
                 stringa = self.dao.ragione_sociale
             elif self.dao.cognome:

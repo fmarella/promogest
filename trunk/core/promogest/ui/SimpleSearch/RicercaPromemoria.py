@@ -41,7 +41,7 @@ class RicercaPromemoria(Ricerca):
             self.filter.refresh()
 #            self.filter.ragione_sociale_filter_entry.grab_focus()
 
-        from promogest.ui.AnagraficaPromemoria import AnagraficaPromemoria
+        from promogest.ui.anagPromemoria.AnagraficaPromemoria import AnagraficaPromemoria
         anag = AnagraficaPromemoria()
         anagWindow = anag.getTopLevel()
         showAnagraficaRichiamata(returnWindow, anagWindow, toggleButton, refresh)
