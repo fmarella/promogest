@@ -273,6 +273,7 @@ std_mapper = mapper(RigaDocumento, j,properties={
         'id':[riga_doc.c.id, riga.c.id],
         "rig":relation(Riga,primaryjoin = riga_doc.c.id==riga.c.id, backref="RD"),
         'totaleRiga': column_property(riga.c.quantita * riga.c.moltiplicatore * riga.c.valore_unitario_netto ),
+        'totaleRigaLordo': column_property(riga.c.quantita * riga.c.moltiplicatore * riga.c.valore_unitario_lordo ),
         #"maga":relation(Magazzino,primaryjoin=riga.c.id_magazzino==Magazzino.id),
         #"arti":relation(Articolo,primaryjoin=riga.c.id_articolo==Articolo.id),
         #"listi":relation(Listino,primaryjoin=riga.c.id_listino==Listino.id),

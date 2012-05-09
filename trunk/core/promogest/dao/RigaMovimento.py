@@ -333,6 +333,7 @@ std_mapper = mapper(RigaMovimento, j,properties={
         'id':[riga_mov.c.id, riga.c.id],
         "rig":relation(Riga,primaryjoin = riga_mov.c.id==riga.c.id, backref="RM"),
         'totaleRiga': column_property(riga.c.quantita * riga.c.moltiplicatore * riga.c.valore_unitario_netto ),
+        'totaleRigaLordo': column_property(riga.c.quantita * riga.c.moltiplicatore * riga.c.valore_unitario_lordo ),
         #"arti":relation(Articolo,primaryjoin=riga.c.id_articolo==Articolo.id),
         #"listi":relation(Listino,primaryjoin=riga.c.id_listino==Listino.id),
         #"multi":relation(Multiplo,primaryjoin=riga.c.id_multiplo==Multiplo.id),

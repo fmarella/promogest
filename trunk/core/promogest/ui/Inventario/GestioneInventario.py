@@ -55,14 +55,14 @@ class GestioneInventario(RicercaComplessaArticoli):
 #        self.checkTable()
         # filtri propri della parte inventario
         self.additional_filter = GladeWidget(rootWidget='inventario_filter_table',
-        fileName="Inventario/gui/inventario_filter_table.glade", isModule=True)
+        fileName="Inventario/inventario_filter_table.glade")
         fillComboboxMagazzini(self.additional_filter.id_magazzino_filter_combobox2, noempty=True)
         if idMagazzino:
             findComboboxRowFromId(self.additional_filter.id_magazzino_filter_combobox2,
                                                               idMagazzino)
         # aggiunta della parte di dettaglio
         self._modifica = GladeWidget(rootWidget='inventario_detail_vbox',
-            fileName="Inventario/gui/_inventario_select.glade", isModule=True)
+            fileName="Inventario/_inventario_select.glade")
 
         RicercaComplessaArticoli.__init__(self)
         self.anno = int(Environment.workingYear)

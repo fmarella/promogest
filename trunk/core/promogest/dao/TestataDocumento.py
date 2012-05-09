@@ -329,8 +329,8 @@ class TestataDocumento(Dao):
             else:
                 moltiplicatore = riga.moltiplicatore
             if merca:
-                trn = (Decimal(riga.quantita or 0) * Decimal(moltiplicatore) * Decimal(riga.valore_unitario_netto or 0))
-                trl = (Decimal(riga.quantita or 0) * Decimal(moltiplicatore) * Decimal(riga.valore_unitario_lordo or 0))
+                trn = riga.totaleRiga
+                trl = riga.totaleRigaLordo
                 if trn != 0 and trl != 0:
                     if riga.id_articolo and riga.id_listino:
                         from promogest.lib.utils import leggiListino
@@ -339,6 +339,7 @@ class TestataDocumento(Dao):
                     elif riga.id_articolo and not riga.id_listino:
                         lf = leggiFornitura(riga.id_articolo)
                         totaleRicaricatoLordo += (trn * (lf["prezzoNetto"]*Decimal(riga.quantita or 0)) / trl)
+
             percentualeIvaRiga = Decimal(riga.percentuale_iva) #campo non più da usare
             idAliquotaIva = riga.id_iva  # campo da usare perchè l'id è più preciso
             daoiva = None

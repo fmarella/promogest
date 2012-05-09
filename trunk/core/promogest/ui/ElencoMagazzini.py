@@ -139,7 +139,7 @@ class ElencoMagazzini(GladeWidget):
 
             if self._currentDao is not None:
                 idMagazzino = self._currentDao.id
-                from promogest.modules.Inventario.ui.GestioneInventario import GestioneInventario
+                from promogest.ui.Inventario.GestioneInventario import GestioneInventario
                 anag = GestioneInventario(idMagazzino)
                 anagWindow = anag.getTopLevel()
                 returnWindow = self.getTopLevel().get_toplevel()
