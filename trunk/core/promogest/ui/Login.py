@@ -370,6 +370,21 @@ class Login(GladeApp):
                                         'type': module.VIEW_TYPE[0],
                                         'module_dir': "%s" % (m_str),
                                         'guiDir': m.GUI_DIR}
+            for f in [fi for fi in os.listdir(modules_dir) \
+                        if "module_" in str(fi)]:
+
+                exec("from "+modules_dir.replace("/", ".")+" import "+ f.split(".")[0] +" as m" )
+
+                Environment.modulesList.append(str(m.MODULES_NAME))
+                if hasattr(m, "TEMPLATES"):
+                    HtmlHandler.templates_dir.append(m.TEMPLATES)
+                for class_name in m.MODULES_FOR_EXPORT:
+                    exec 'module = m.' + class_name
+                    self.modules[class_name] = {
+                                    'module': module(),
+                                    'type': module.VIEW_TYPE[0],
+                                    'module_dir': "%s" % (m_str),
+                                    'guiDir': m.GUI_DIR}
             Environment.pg2log.info(
                 "LISTA DEI MODULI CARICATI E FUNZIONANTI %s" % (
                     str(repr(Environment.modulesList))))

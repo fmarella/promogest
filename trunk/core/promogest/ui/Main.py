@@ -243,7 +243,6 @@ class Main(GladeWidget):
         # right vertical icon list  adding modules
 #        model_right = gtk.ListStore(int, str, gtk.gdk.Pixbuf, object)
         ind = 6
-        print " COSA SEIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII", self.anagrafiche_dirette_modules
         for mod in self.anagrafiche_dirette_modules:
             currModule = self.anagrafiche_dirette_modules[mod]
             if self.shop \
