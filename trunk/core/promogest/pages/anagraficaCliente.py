@@ -25,9 +25,9 @@ from decimal import *
 from promogest.lib.page import Page
 from promogest.dao.Cliente import Cliente, getNuovoCodiceCliente
 from promogest.dao.ClienteCategoriaCliente import ClienteCategoriaCliente
-from promogest.modules.Contatti.dao.ContattoCliente import ContattoCliente
-from promogest.modules.Contatti.dao.RecapitoContatto import RecapitoContatto
-from promogest.modules.Contatti.dao.Contatto import Contatto
+from promogest.dao.daoContatti.ContattoCliente import ContattoCliente
+from promogest.dao.daoContatti.RecapitoContatto import RecapitoContatto
+from promogest.dao.daoContatti.Contatto import Contatto
 from promogest.dao.PersonaGiuridica import PersonaGiuridica_ as PersonaGiuridica
 from promogest.dao.Pagamento import Pagamento
 from promogest.dao.Banca import Banca

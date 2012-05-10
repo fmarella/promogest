@@ -330,7 +330,7 @@ def fillComboboxCategorieContatti(combobox, filter=False):
     """
     Crea l'elenco delle categorie contatti
     """
-    from promogest.modules.Contatti.dao.CategoriaContatto import\
+    from promogest.dao.daoContatti.CategoriaContatto import\
                                                          CategoriaContatto
     model = gtk.ListStore(object, int, str)
     cats = CategoriaContatto().select(offset=None, batchSize=None)
@@ -662,7 +662,7 @@ def fillComboboxTipiRecapito(combobox):
 
 def fillModelTipiRecapito():
     """ Crea l'elenco dei tipi di recapito per i contatti  """
-    from promogest.modules.Contatti.dao.TipoRecapito import TipoRecapito
+    from promogest.dao.daoContatti.TipoRecapito import TipoRecapito
     res = TipoRecapito().select(orderBy=TipoRecapito.denominazione)
     model = gtk.ListStore(str)
     model.append(('', ))

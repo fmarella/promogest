@@ -191,7 +191,7 @@ Verrà aggiornata la precedente.""")
                     toggleButton.set_active(False)
                     return
 
-            from promogest.modules.Contatti.ui.AnagraficaContatti import AnagraficaContatti
+            from promogest.ui.Contatti.AnagraficaContatti import AnagraficaContatti
             anag = AnagraficaContatti(self.dao.id, 'magazzino')
             anagWindow = anag.getTopLevel()
 

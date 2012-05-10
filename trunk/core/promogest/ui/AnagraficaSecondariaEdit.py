@@ -27,7 +27,7 @@ import promogest.dao.AnagraficaSecondaria
 from promogest.dao.AnagraficaSecondaria import \
                             AnagraficaSecondaria_ as AnagraficaSecondaria
 
-from promogest.modules.Contatti.dao.ContattoAnagraficaSecondaria import \
+from promogest.dao.daoContatti.ContattoAnagraficaSecondaria import \
                                                 ContattoAnagraficaSecondaria
 from promogest.dao.DaoUtils import *
 from promogest.dao.PersonaGiuridicaPersonaGiuridica import \

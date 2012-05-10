@@ -283,7 +283,7 @@ def leggiContatto(id):
     """
     Restituisce un dizionario con le informazioni sul contatto letto
     """
-    from promogest.modules.Contatti.dao.Contatto import Contatto
+    from promogest.dao.daoContatti.Contatto import Contatto
     _id = None
     _nome = ''
     _cognome = ''
@@ -1271,7 +1271,7 @@ def on_id_categoria_contatto_customcombobox_clicked(widget, button):
     if widget.button.get_property('active') is False:
         return
 
-    from promogest.modules.Contatti.ui.AnagraficaCategorieContatti import AnagraficaCategorieContatti
+    from promogest.ui.Contatti.AnagraficaCategorieContatti import AnagraficaCategorieContatti
     anag = AnagraficaCategorieContatti()
 
     anagWindow = anag.getTopLevel()
@@ -2390,7 +2390,7 @@ def idArticoloFromFornitura(k,v):
 def getCategorieContatto(id=None):
     """
     """
-    from promogest.modules.Contatti.dao.ContattoCategoriaContatto import ContattoCategoriaContatto
+    from promogest.dao.daoContatti.ContattoCategoriaContatto import ContattoCategoriaContatto
     dbCategorieContatto = ContattoCategoriaContatto().select(id=id,
                                                             batchSize=None)
     return dbCategorieContatto
@@ -2398,7 +2398,7 @@ def getCategorieContatto(id=None):
 def getRecapitiContatto(id=None):
     """
     """
-    from promogest.modules.Contatti.dao.RecapitoContatto import RecapitoContatto
+    from promogest.dao.daoContatti.RecapitoContatto import RecapitoContatto
     if id:
         dbRecapitiContatto = RecapitoContatto().select(idContatto=id)
     else:

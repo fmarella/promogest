@@ -27,7 +27,7 @@ from promogest.ui.AnagraficaComplessaReport import AnagraficaReport
 from promogest.ui.AnagraficaComplessaHtml import AnagraficaHtml
 from promogest import Environment
 from promogest.dao.ClienteCategoriaCliente import ClienteCategoriaCliente
-from promogest.modules.Contatti.dao.ContattoCliente import ContattoCliente
+from promogest.dao.daoContatti.ContattoCliente import ContattoCliente
 from promogest.ui.AnagraficaClientiEdit import AnagraficaClientiEdit
 from promogest.ui.AnagraficaClientiFilter import AnagraficaClientiFilter
 from promogest.dao.TestataDocumento import TestataDocumento
@@ -123,11 +123,11 @@ Alcuni documenti sono legati a questo cliente."""
             return
         import promogest.dao.Fornitore
         from promogest.dao.Fornitore import Fornitore
-        from promogest.modules.Contatti.dao.ContattoFornitore import\
+        from promogest.dao.daoContatti.ContattoFornitore import\
                                                          ContattoFornitore
-        from promogest.modules.Contatti.dao.RecapitoContatto import\
+        from promogest.dao.daoContatti.RecapitoContatto import\
                                                              RecapitoContatto
-        from promogest.modules.Contatti.dao.Contatto import Contatto
+        from promogest.dao.daoContatti.Contatto import Contatto
 
         d = Fornitore()
         d.codice = promogest.dao.Fornitore.getNuovoCodiceFornitore()

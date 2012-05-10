@@ -429,7 +429,7 @@ class AnagraficaPromemoriaEdit(AnagraficaEdit):
             anag.show_all()
         elif combobox.get_child().get_text() == stringContatti:
             if posso("CN"):
-                from promogest.modules.Contatti.ui.RicercaContatti import RicercaContatti
+                from promogest.ui.Contatti.RicercaContatti import RicercaContatti
                 anag = RicercaContatti()
                 anagWindow = anag.getTopLevel()
                 anagWindow.connect("hide", refresh_combobox, 'contatto')

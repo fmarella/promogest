@@ -24,11 +24,11 @@
 from promogest.ui.Ricerca import Ricerca, RicercaFilter, RicercaHtml
 
 from promogest import Environment
-from promogest.modules.Contatti.dao.Contatto import Contatto
-from promogest.modules.Contatti.dao.ContattoCliente import ContattoCliente
-from promogest.modules.Contatti.dao.ContattoFornitore import ContattoFornitore
-from promogest.modules.Contatti.dao.ContattoAzienda import ContattoAzienda
-from promogest.modules.Contatti.dao.ContattoMagazzino import ContattoMagazzino
+from promogest.dao.daoContatti.Contatto import Contatto
+from promogest.dao.daoContatti.ContattoCliente import ContattoCliente
+from promogest.dao.daoContatti.ContattoFornitore import ContattoFornitore
+from promogest.dao.daoContatti.ContattoAzienda import ContattoAzienda
+from promogest.dao.daoContatti.ContattoMagazzino import ContattoMagazzino
 
 from promogest.lib.utils import *
 from promogest.ui.gtk_compat import *
@@ -49,7 +49,7 @@ class RicercaContatti(Ricerca):
             self.filter.refresh()
             self.filter.cognome_nome_filter_entry.grab_focus()
         if posso("CN"):
-            from promogest.modules.Contatti.ui.AnagraficaContatti import AnagraficaContatti
+            from promogest.ui.Contatti.AnagraficaContatti import AnagraficaContatti
             anag = AnagraficaContatti()
             anagWindow = anag.getTopLevel()
 
@@ -66,8 +66,8 @@ class RicercaContattiFilter(RicercaFilter):
     def __init__(self, ricerca):
         RicercaFilter.__init__(self, ricerca,
                                'anagrafica_contatti_filter_table',
-                               fileName='Contatti/gui/_anagrafica_contatti_elements.glade',
-                                isModule=True)
+                               fileName='Contatti/_anagrafica_contatti_elements.glade',
+                                )
         self._ownerType = 'generico'
         self._widgetFirstFocus = self.cognome_nome_filter_entry
 

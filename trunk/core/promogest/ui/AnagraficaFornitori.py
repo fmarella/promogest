@@ -27,7 +27,7 @@ from promogest.ui.AnagraficaComplessaReport import AnagraficaReport
 from promogest.ui.AnagraficaComplessaHtml import AnagraficaHtml
 from promogest.ui.AnagraficaFornitoriEdit import AnagraficaFornitoriEdit
 from promogest.ui.AnagraficaFornitoriFilter import AnagraficaFornitoriFilter
-from promogest.modules.Contatti.dao.ContattoFornitore import ContattoFornitore
+from promogest.dao.daoContatti.ContattoFornitore import ContattoFornitore
 from promogest.dao.TestataDocumento import TestataDocumento
 from promogest.dao.DaoUtils import *
 from promogest.lib.utils import *
@@ -83,11 +83,11 @@ class AnagraficaFornitori(Anagrafica):
             return
         import promogest.dao.Cliente
         from promogest.dao.Cliente import Cliente
-        from promogest.modules.Contatti.dao.ContattoCliente import ContattoCliente
-        from promogest.modules.Contatti.dao.RecapitoContatto import RecapitoContatto
-        from promogest.modules.Contatti.dao.Contatto import Contatto
-        d = Cliente()
+        from promogest.dao.daoContatti.ContattoCliente import ContattoCliente
+        from promogest.dao.daoContatti.RecapitoContatto import RecapitoContatto
+        from promogest.dao.daoContatti.Contatto import Contatto
 
+        d = Cliente()
         d.codice = promogest.dao.Cliente.getNuovoCodiceCliente()
         d.ragione_sociale = dao.ragione_sociale
         d.insegna = dao.insegna

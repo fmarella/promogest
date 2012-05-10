@@ -23,7 +23,7 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
-from promogest.modules.Contatti.dao.TipoRecapito import TipoRecapito
+from promogest.dao.daoContatti.TipoRecapito import TipoRecapito
 from promogest.dao.Dao import Dao
 
 class RecapitoContatto(Dao):

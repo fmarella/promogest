@@ -30,13 +30,13 @@ from promogest.ui.AnagraficaComplessaReport import AnagraficaReport
 from promogest.ui.AnagraficaComplessaHtml import AnagraficaHtml
 
 from promogest import Environment
-from promogest.modules.Contatti.dao.Contatto import Contatto
-from promogest.modules.Contatti.dao.ContattoCliente import ContattoCliente
-from promogest.modules.Contatti.dao.ContattoFornitore import ContattoFornitore
-from promogest.modules.Contatti.dao.ContattoMagazzino import ContattoMagazzino
-from promogest.modules.Contatti.dao.ContattoAzienda import ContattoAzienda
-from promogest.modules.Contatti.dao.RecapitoContatto import RecapitoContatto
-from promogest.modules.Contatti.dao.ContattoCategoriaContatto import ContattoCategoriaContatto
+from promogest.dao.daoContatti.Contatto import Contatto
+from promogest.dao.daoContatti.ContattoCliente import ContattoCliente
+from promogest.dao.daoContatti.ContattoFornitore import ContattoFornitore
+from promogest.dao.daoContatti.ContattoMagazzino import ContattoMagazzino
+from promogest.dao.daoContatti.ContattoAzienda import ContattoAzienda
+from promogest.dao.daoContatti.RecapitoContatto import RecapitoContatto
+from promogest.dao.daoContatti.ContattoCategoriaContatto import ContattoCategoriaContatto
 
 from promogest.lib.utils import *
 from promogest.ui.utilsCombobox import *
@@ -72,8 +72,8 @@ class AnagraficaContattiFilter(AnagraficaFilter):
         AnagraficaFilter.__init__(self,
                   anagrafica,
                   'anagrafica_contatti_filter_table',
-                  gladeFile='Contatti/gui/_anagrafica_contatti_elements.glade',
-                   module=True)
+                  gladeFile='Contatti/_anagrafica_contatti_elements.glade',
+                   )
 #        self._widgetFirstFocus = self.appartenenza_filter_entry
 
     def draw(self, cplx=False):
@@ -456,8 +456,8 @@ class AnagraficaContattiEdit(AnagraficaEdit):
                                   anagrafica,
                                   'anagrafica_contatti_detail_table',
                                   'Dati contatto',
-                                  gladeFile='Contatti/gui/_anagrafica_contatti_elements.glade',
-                                    module=True)
+                                  gladeFile='Contatti/_anagrafica_contatti_elements.glade',
+                                   )
         self._widgetFirstFocus = self.cognome_entry
         self.dao = Contatto()
         self._tabPressed = False
@@ -466,7 +466,7 @@ class AnagraficaContattiEdit(AnagraficaEdit):
         #Popola combobox categorie contatti
         fillComboboxCategorieContatti(self.id_categoria_contatto_customcombobox.combobox)
         self.id_categoria_contatto_customcombobox.connect('clicked',
-                                                          on_id_categoria_contatto_customcombobox_clicked)
+                      on_id_categoria_contatto_customcombobox_clicked)
 
         #Elenco categorie
         model = self.categorie_liststore

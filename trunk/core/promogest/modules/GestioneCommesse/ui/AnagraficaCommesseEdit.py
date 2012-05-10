@@ -149,7 +149,7 @@ class AnagraficaCommesseEdit(AnagraficaEdit):
             showAnagrafica(self.getTopLevel(), anag)
             anag.on_record_new_activate()
 
-#        from promogest.modules.Contatti.ui.AnagraficaContatti import AnagraficaContatti
+#        from promogest.ui.Contatti.AnagraficaContatti import AnagraficaContatti
 #        anag = AnagraficaContatti(self.aziendaStr)
 #        showAnagrafica(self.getTopLevel(), anag)
 #        anag.on_record_new_activate()

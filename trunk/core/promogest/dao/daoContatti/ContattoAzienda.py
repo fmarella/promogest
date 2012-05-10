@@ -20,15 +20,15 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-from sqlalchemy import Table, or_
-from sqlalchemy.orm import join, relation, mapper
-from promogest.Environment import params
+from sqlalchemy import *
+from sqlalchemy.orm import *
+from promogest.Environment import *
 from promogest.dao.Dao import Dao
-from promogest.dao.Magazzino import Magazzino
-from promogest.modules.Contatti.dao.RecapitoContatto import RecapitoContatto
-from promogest.modules.Contatti.dao.ContattoCategoriaContatto import ContattoCategoriaContatto
+from promogest.dao.Azienda import Azienda
+from promogest.dao.daoContatti.RecapitoContatto import RecapitoContatto
+from promogest.dao.daoContatti.ContattoCategoriaContatto import ContattoCategoriaContatto
 
-class ContattoMagazzino(Dao):
+class ContattoAzienda(Dao):
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
@@ -43,10 +43,8 @@ class ContattoMagazzino(Dao):
 
     recapiti = property(_getRecapitiContatto, _setRecapitiContatto)
 
-
     def _getCategorieContatto(self):
         self.__dbCategorieContatto = ContattoCategoriaContatto().select(id=self.id)
-
         self.__categorieContatto = self.__dbCategorieContatto[:]
         return self.__categorieContatto
 
@@ -56,49 +54,40 @@ class ContattoMagazzino(Dao):
     categorieContatto = property(_getCategorieContatto, _setCategorieContatto)
 
     def _appartenenza(self):
-        a =  params["session"].query(Magazzino).with_parent(self).filter(self.id_magazzino==Magazzino.id).all()
+        a =  params["session"].query(Azienda).with_parent(self).filter(self.schema_azienda==Azienda.schemaa).all()
         if not a:
             return a
         else:
-            return a[0].denominazione
+            return a[0].ragione_sociale or a[0].denominazione
     appartenenza = property(_appartenenza)
 
+
     def filter_values(self,k,v):
-        if k == 'idCategoria':
-            dic = {k:and_(ContattoCategoriaContatto.id_contatto==contatto.c.id, ContattoCategoriaContatto.id_categoria_contatto==v)}
-        elif k == 'idMagazzino':
-            dic = {k : contattomagazzino.c.id_magazzino == v}
-        elif k == 'idMagazzinoList':
-            dic = {k : contattomagazzino.c.id_magazzino.in_(v)}
-        elif k == 'cognomeNome':
-            dic = {k : or_(contatto.c.cognome.ilike("%"+v+"%"),contatto.c.nome.ilike("%"+v+"%"))}
-        elif k == 'ruolo':
-            dic = {k : contatto.c.ruolo.ilike("%"+v+"%")}
-        elif k == "recapito":
-            dic={k:and_(contattocliente.c.id==recapito.c.id_contatto,recapito.c.recapito.ilike("%"+v+"%"))}
-        elif k == "tipoRecapito":
-            dic={k:and_(contattocliente.c.id==recapito.c.id_contatto,recapito.c.tipo_recapito ==v)}
-        elif k =='descrizione':
-            dic = {k : contatto.c.descrizione.ilike("%"+v+"%")}
-        #'recapito':
-        #'tipoRecapito':
+        dic= {  'idCategoria' : None,
+                'schemaAzienda' : contattoazienda.c.schema_azienda == v,
+                'cognomeNome' : or_(contatto.c.cognome.ilike("%"+v+"%"),contatto.c.nome.ilike("%"+v+"%")),
+                'ruolo': contatto.c.ruolo.ilike("%"+v+"%"),
+                'descrizione': contatto.c.descrizione.ilike("%"+v+"%"),
+                'recapito': and_(contatto.c.id == RecapitoContatto.id_contatto,RecapitoContatto.recapito.ilike("%"+v+"%")),
+                'tipoRecapito': and_(contatto.c.id == RecapitoContatto.id_contatto,RecapitoContatto.tipo_recapito.contains(v)),
+            }
         return dic[k]
 
-recapito=Table('recapito',params['metadata'],autoload=True,schema = params['schema'])
+
 contatto=Table('contatto',
         params['metadata'],
         schema = params['schema'],
         autoload=True)
 
-contattomagazzino=Table('contatto_magazzino',
+contattoazienda=Table('contatto_azienda',
         params['metadata'],
         schema = params['schema'],
         autoload=True)
 
-j = join(contatto, contattomagazzino)
-
-std_mapper = mapper(ContattoMagazzino, j,properties={
-               'id':[contatto.c.id, contattomagazzino.c.id],
-                'tipo_contatto':[contatto.c.tipo_contatto, contattomagazzino.c.tipo_contatto],
-                "magazzino":relation(Magazzino, backref="contatto_magazzino")},
-                order_by=contattomagazzino.c.id)
+j = join(contatto, contattoazienda)
+std_mapper = mapper(ContattoAzienda, j,properties={
+                'id':[contatto.c.id, contattoazienda.c.id],
+                'tipo_contatto':[contatto.c.tipo_contatto, contattoazienda.c.tipo_contatto],
+                "azienda":relation(Azienda, backref="contatto_azienda")
+                },
+                order_by=contatto.c.id)

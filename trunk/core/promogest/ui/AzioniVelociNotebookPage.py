@@ -70,7 +70,7 @@ class AzioniVelociNotebookPage(GladeWidget):
 
     def on_nuovo_contatto_button_clicked(self, widget):
         if not hasAction(actionID=11):return
-        from promogest.modules.Contatti.ui.AnagraficaContatti import AnagraficaContatti
+        from promogest.ui.Contatti.AnagraficaContatti import AnagraficaContatti
         anag = AnagraficaContatti(self.aziendaStr)
         showAnagrafica(self.getTopLevel(), anag)
         anag.on_record_new_activate()

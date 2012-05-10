@@ -330,7 +330,7 @@ class Login(GladeApp):
             all available modules
             """
             from promogest.dao.Setconf import SetConf
-            Environment.modulesList = [Environment.tipo_pg]
+            Environment.modulesList.append(Environment.tipo_pg)
             modules_folders = [folder for folder in os.listdir(modules_dir) \
                         if (os.path.isdir(os.path.join(modules_dir, folder)) \
                         and os.path.isfile(os.path.join(modules_dir, folder,

@@ -4,7 +4,8 @@
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
-#    This file is part of Promogest. http://www.promogest.me
+
+#    This file is part of Promogest.
 
 #    Promogest is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -19,16 +20,15 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-from sqlalchemy import *
-from sqlalchemy.orm import *
+from sqlalchemy import Table, or_
+from sqlalchemy.orm import join, relation, mapper
 from promogest.Environment import params
 from promogest.dao.Dao import Dao
-from promogest.dao.Cliente import Cliente
-from promogest.modules.Contatti.dao.Contatto import Contatto
-from promogest.modules.Contatti.dao.RecapitoContatto import RecapitoContatto
-from promogest.modules.Contatti.dao.ContattoCategoriaContatto import ContattoCategoriaContatto
+from promogest.dao.Magazzino import Magazzino
+from promogest.dao.daoContatti.RecapitoContatto import RecapitoContatto
+from promogest.dao.daoContatti.ContattoCategoriaContatto import ContattoCategoriaContatto
 
-class ContattoCliente(Dao):
+class ContattoMagazzino(Dao):
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
@@ -45,8 +45,7 @@ class ContattoCliente(Dao):
 
 
     def _getCategorieContatto(self):
-        self.__dbCategorieContatto = ContattoCategoriaContatto().select(id=self.id,
-                                                        orderBy=ContattoCategoriaContatto.id_contatto)
+        self.__dbCategorieContatto = ContattoCategoriaContatto().select(id=self.id)
 
         self.__categorieContatto = self.__dbCategorieContatto[:]
         return self.__categorieContatto
@@ -57,51 +56,49 @@ class ContattoCliente(Dao):
     categorieContatto = property(_getCategorieContatto, _setCategorieContatto)
 
     def _appartenenza(self):
-        appa = ""
-        a =  params["session"].query(Cliente).with_parent(self).filter(self.id_cliente==Cliente.id).all()
-        if a:
-            appa = "Rif."
-            if a[0].ragione_sociale:
-                appa = appa +" "+a[0].ragione_sociale
-            if a[0].cognome:
-                appa = appa+" " +a[0].cognome
-            if a[0].nome:
-                appa = appa+" "+a[0].nome
-        return appa
+        a =  params["session"].query(Magazzino).with_parent(self).filter(self.id_magazzino==Magazzino.id).all()
+        if not a:
+            return a
+        else:
+            return a[0].denominazione
     appartenenza = property(_appartenenza)
-
 
     def filter_values(self,k,v):
         if k == 'idCategoria':
             dic = {k:and_(ContattoCategoriaContatto.id_contatto==contatto.c.id, ContattoCategoriaContatto.id_categoria_contatto==v)}
-        elif k == 'idCliente':
-            dic = {k:contattocliente.c.id_cliente == v}
-        elif k == "idClienteList":
-            dic = {k:contattocliente.c.id_cliente.in_(v)}
+        elif k == 'idMagazzino':
+            dic = {k : contattomagazzino.c.id_magazzino == v}
+        elif k == 'idMagazzinoList':
+            dic = {k : contattomagazzino.c.id_magazzino.in_(v)}
         elif k == 'cognomeNome':
-            dic = {k:or_(contatto.c.cognome.ilike("%"+v+"%"),contatto.c.nome.ilike("%"+v+"%"))}
+            dic = {k : or_(contatto.c.cognome.ilike("%"+v+"%"),contatto.c.nome.ilike("%"+v+"%"))}
         elif k == 'ruolo':
-            dic = {k:contatto.c.ruolo.ilike("%"+v+"%")}
+            dic = {k : contatto.c.ruolo.ilike("%"+v+"%")}
         elif k == "recapito":
             dic={k:and_(contattocliente.c.id==recapito.c.id_contatto,recapito.c.recapito.ilike("%"+v+"%"))}
         elif k == "tipoRecapito":
             dic={k:and_(contattocliente.c.id==recapito.c.id_contatto,recapito.c.tipo_recapito ==v)}
-        elif k=='descrizione':
-            dic = {k:contatto.c.descrizione.ilike("%"+v+"%")}
-
-        #FIXME: #'recapito'
-        #FIXME : #'tipoRecapito':
+        elif k =='descrizione':
+            dic = {k : contatto.c.descrizione.ilike("%"+v+"%")}
+        #'recapito':
+        #'tipoRecapito':
         return dic[k]
 
 recapito=Table('recapito',params['metadata'],autoload=True,schema = params['schema'])
-contatto=Table('contatto', params['metadata'],schema = params['schema'], autoload=True)
-contattocliente=Table('contatto_cliente', params['metadata'],schema = params['schema'], autoload=True)
+contatto=Table('contatto',
+        params['metadata'],
+        schema = params['schema'],
+        autoload=True)
 
-j = join(contatto, contattocliente)
+contattomagazzino=Table('contatto_magazzino',
+        params['metadata'],
+        schema = params['schema'],
+        autoload=True)
 
-std_mapper = mapper(ContattoCliente, j,properties={
-                'id':[contatto.c.id, contattocliente.c.id],
-                "cc" : relation(Contatto, backref="contatto_cliente"),
-                'tipo_contatto':[contatto.c.tipo_contatto, contattocliente.c.tipo_contatto],
-                "cliente":relation(Cliente, backref="contatto_cliente")
-                }, order_by=contattocliente.c.id)
+j = join(contatto, contattomagazzino)
+
+std_mapper = mapper(ContattoMagazzino, j,properties={
+               'id':[contatto.c.id, contattomagazzino.c.id],
+                'tipo_contatto':[contatto.c.tipo_contatto, contattomagazzino.c.tipo_contatto],
+                "magazzino":relation(Magazzino, backref="contatto_magazzino")},
+                order_by=contattomagazzino.c.id)

@@ -751,7 +751,7 @@ class Anagrafica(GladeWidget):
         dialog.destroy()
 
     def on_cerca_contatto_button_clicked(self, widget):
-        from promogest.modules.Contatti.ui.RicercaContatti import RicercaContatti
+        from promogest.ui.Contatti.RicercaContatti import RicercaContatti
 
         def aggiorna_email(anagWindow, tipo):
             if anag.dao is None:

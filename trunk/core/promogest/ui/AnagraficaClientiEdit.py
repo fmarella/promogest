@@ -29,7 +29,7 @@ import promogest.dao.Cliente
 from promogest import Environment
 from promogest.dao.Cliente import Cliente
 from promogest.dao.ClienteCategoriaCliente import ClienteCategoriaCliente
-from promogest.modules.Contatti.dao.ContattoCliente import ContattoCliente
+from promogest.dao.daoContatti.ContattoCliente import ContattoCliente
 from promogest.dao.DaoUtils import *
 from promogest.lib.utils import *
 from promogest.ui.utilsCombobox import *

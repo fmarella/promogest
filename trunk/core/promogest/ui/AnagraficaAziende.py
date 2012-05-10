@@ -220,7 +220,7 @@ class AnagraficaAziende(GladeWidget):
             toggleButton.set_active(False)
             return
         if posso("CN"):
-            from promogest.modules.Contatti.ui.AnagraficaContatti import\
+            from promogest.ui.Contatti.AnagraficaContatti import\
                                                          AnagraficaContatti
             anag = AnagraficaContatti(self.dao.schemaa, 'azienda')
             anagWindow = anag.getTopLevel()

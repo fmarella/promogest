@@ -21,7 +21,7 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 from promogest.ui.AnagraficaSemplice import Anagrafica, AnagraficaDetail, AnagraficaFilter
-from promogest.modules.Contatti.dao.CategoriaContatto import CategoriaContatto
+from promogest.dao.daoContatti.CategoriaContatto import CategoriaContatto
 from promogest.lib.utils import *
 
 
@@ -74,8 +74,8 @@ class AnagraficaCategorieContattiFilter(AnagraficaFilter):
         AnagraficaFilter.__init__(self,
                                   anagrafica,
                                   'anagrafica_categorie_contatti_filter_table',
-                                  gladeFile='Contatti/gui/_anagrafica_categorie_contatti_elements.glade',
-                                   module=True)
+                                  gladeFile='Contatti/_anagrafica_categorie_contatti_elements.glade',
+                                   )
         self._widgetFirstFocus = self.denominazione_filter_entry
 
     def _reOrderBy(self, column):
@@ -95,8 +95,8 @@ class AnagraficaCategorieContattiDetail(AnagraficaDetail):
     def __init__(self, anagrafica):
         AnagraficaDetail.__init__(self,
                                   anagrafica,
-                  gladeFile='Contatti/gui/_anagrafica_categorie_contatti_elements.glade',
-                  module=True)
+                  gladeFile='Contatti/_anagrafica_categorie_contatti_elements.glade',
+                  )
 
     def setDao(self, dao):
         if dao is None:

@@ -26,7 +26,7 @@ from promogest.ui.AnagraficaComplessaEdit import AnagraficaEdit
 from promogest.ui.AnagraficaPGEdit import AnagraficaPGEdit
 import promogest.dao.Fornitore
 from promogest.dao.Fornitore import Fornitore
-from promogest.modules.Contatti.dao.ContattoFornitore import ContattoFornitore
+from promogest.dao.Contatti.ContattoFornitore import ContattoFornitore
 from promogest.dao.DaoUtils import *
 from promogest.lib.utils import *
 from promogest.ui.utilsCombobox import *
@@ -241,7 +241,7 @@ class AnagraficaFornitoriEdit(AnagraficaEdit, AnagraficaPGEdit):
                     toggleButton.set_active(False)
                     return
 
-            from promogest.modules.Contatti.ui.AnagraficaContatti import AnagraficaContatti
+            from promogest.ui.Contatti.AnagraficaContatti import AnagraficaContatti
             anag = AnagraficaContatti(self.dao.id, 'fornitore')
             anagWindow = anag.getTopLevel()
 

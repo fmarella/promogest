@@ -28,7 +28,7 @@ from promogest.ui.AnagraficaComplessaHtml import AnagraficaHtml
 from promogest.ui.AnagraficaSecondariaEdit import AnagraficaSecondariaEdit
 from promogest.ui.AnagraficaSecondariaFilter import AnagraficaSecondariaFilter
 
-#from promogest.modules.Contatti.dao.ContattoFornitore import ContattoFornitore
+#from promogest.dao.daoContatti.ContattoFornitore import ContattoFornitore
 #from promogest.dao.TestataDocumento import TestataDocumento
 from promogest.dao.DaoUtils import *
 from promogest.lib.utils import *

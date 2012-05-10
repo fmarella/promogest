@@ -25,7 +25,7 @@ from promogest.Environment import params, conf, session
 from Dao import Dao
 from promogest.dao.PersonaGiuridica import t_persona_giuridica
 from CategoriaFornitore import CategoriaFornitore
-from promogest.modules.Contatti.dao.Contatto import Contatto
+from promogest.dao.daoContatti.Contatto import Contatto
 from promogest.dao.DaoUtils import codeIncrement, getRecapitiFornitore
 
 class Fornitore(Dao):

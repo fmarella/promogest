@@ -243,7 +243,8 @@ class Main(GladeWidget):
         # right vertical icon list  adding modules
 #        model_right = gtk.ListStore(int, str, gtk.gdk.Pixbuf, object)
         ind = 6
-        for mod in self.anagrafiche_dirette_modules.keys():
+        print " COSA SEIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII", self.anagrafiche_dirette_modules
+        for mod in self.anagrafiche_dirette_modules:
             currModule = self.anagrafiche_dirette_modules[mod]
             if self.shop \
                 and currModule["module"].VIEW_TYPE[1] == "Vendita Dettaglio":
@@ -257,7 +258,7 @@ class Main(GladeWidget):
                                             pbuf, currModule['module'])
             model.append(row)
             ind += 1
-        for mod in self.frame_modules.keys():
+        for mod in self.frame_modules:
             currModule = self.frame_modules[mod]
             pbuf = GDK_PIXBUF_NEW_FROM_FILE(currModule['guiDir'] \
                                     + currModule['module'].VIEW_TYPE[2])
@@ -738,7 +739,7 @@ class Main(GladeWidget):
         if not hasAction(actionID=6):
             toggleButton.set_active(False)
             return
-        from promogest.modules.Contatti.ui.AnagraficaCategorieContatti import AnagraficaCategorieContatti
+        from promogest.ui.Contatti.AnagraficaCategorieContatti import AnagraficaCategorieContatti
         anag = AnagraficaCategorieContatti()
         showAnagrafica(self.getTopLevel(), anag, toggleButton, mainClass=self)
 
