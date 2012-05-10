@@ -26,7 +26,7 @@ from promogest.ui.AnagraficaComplessaEdit import AnagraficaEdit
 from promogest.ui.AnagraficaPGEdit import AnagraficaPGEdit
 import promogest.dao.Fornitore
 from promogest.dao.Fornitore import Fornitore
-from promogest.dao.Contatti.ContattoFornitore import ContattoFornitore
+from promogest.dao.daoContatti.ContattoFornitore import ContattoFornitore
 from promogest.dao.DaoUtils import *
 from promogest.lib.utils import *
 from promogest.ui.utilsCombobox import *
