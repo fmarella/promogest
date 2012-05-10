@@ -446,11 +446,13 @@ class TestataDocumento(Dao):
         self._totaleImponibile = totaleImponibile + impon_spese
         self._totaleNonBaseImponibile = totaleEsclusoBaseImponibile
         self._totaleImposta = totaleImposta  + imposta_spese
-        self._totaleRicaricatoLordo = totaleRicaricatoLordo
-        self._totaleRicaricatoImponibile = Decimal(totaleRicaricatoLordo)/(1+Decimal(21)/100)
-        self._totaleRicaricatoIva = totaleRicaricatoLordo - self._totaleRicaricatoImponibile
         self._totaleImponibileScontato = totaleImponibileScontato + impon_spese
-        self._totaleOggetti = self._totaleImponibileScontato - self._totaleRicaricatoLordo
+        self._totaleRicaricatoLordo = self._totaleImponibileScontato - totaleRicaricatoLordo
+        self._totaleRicaricatoImponibile = Decimal(self._totaleRicaricatoLordo)/(1+Decimal(21)/100)
+        self._totaleRicaricatoIva = self._totaleRicaricatoLordo - self._totaleRicaricatoImponibile
+
+        self._totaleOggetti = self._totaleRicaricatoLordo
+
         self._totaleImpostaScontata = totaleImpostaScontata + imposta_spese
         self._castellettoIva = []
         for k in castellettoIva.keys():
