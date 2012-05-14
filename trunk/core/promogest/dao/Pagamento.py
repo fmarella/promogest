@@ -47,7 +47,10 @@ class Pagamento(Dao):
         if self.id_aliquota_iva:
             dictIva = ivaCache()
             #ali = AliquotaIva().getRecord(id=self.id_iva)
-            return dictIva[self.id_aliquota_iva][0].denominazione_breve or ""
+            if self.id_aliquota_iva in dictIva:
+                return dictIva[self.id_aliquota_iva][0].denominazione_breve or ""
+            else:
+                return ""
         else:
             return ""
 
