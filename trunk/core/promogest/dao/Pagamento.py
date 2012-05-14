@@ -56,7 +56,10 @@ class Pagamento(Dao):
         if self.id_aliquota_iva:
             dictIva = ivaCache()
             #ali = AliquotaIva().getRecord(id=self.id_iva)
-            return dictIva[self.id_aliquota_iva][0].percentuale or ""
+            if self.id_aliquota_iva in dictIva:
+                return dictIva[self.id_aliquota_iva][0].percentuale or ""
+            else:
+                return 0
         else:
             return 0
 
