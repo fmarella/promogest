@@ -1100,6 +1100,8 @@ del documento.
         """ questa è la funzione di "scarico" del drop, abbiamo la riga di
         destinazione con la funzione get_drag_dest_row() e prendiamo
         la riga di partenza con la funzione precedente """
+        if not treeview:
+            return
         duplicarighe= []
         model, iter_to_copy = treeview.get_selection().get_selected()
         row, pos = treeview.get_drag_dest_row()
