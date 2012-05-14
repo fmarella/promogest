@@ -448,10 +448,17 @@ class TestataDocumento(Dao):
         self._totaleImposta = totaleImposta  + imposta_spese
         self._totaleImponibileScontato = totaleImponibileScontato + impon_spese
         self._totaleRicaricatoLordo = self._totaleImponibileScontato - totaleRicaricatoLordo
-        if self.data_documento < datetime.datetime(2011,9,16):
-            self._totaleRicaricatoImponibile = Decimal(self._totaleRicaricatoLordo)/(1+Decimal(20)/100)
-        else:
-            self._totaleRicaricatoImponibile = Decimal(self._totaleRicaricatoLordo)/(1+Decimal(21)/100)
+        try:
+            if self.data_documento < datetime.datetime(2011,9,16):
+                self._totaleRicaricatoImponibile = Decimal(self._totaleRicaricatoLordo)/(1+Decimal(20)/100)
+            else:
+                self._totaleRicaricatoImponibile = Decimal(self._totaleRicaricatoLordo)/(1+Decimal(21)/100)
+        except:
+            if self.data_documento < datetime.date(2011,9,16):
+                self._totaleRicaricatoImponibile = Decimal(self._totaleRicaricatoLordo)/(1+Decimal(20)/100)
+            else:
+                self._totaleRicaricatoImponibile = Decimal(self._totaleRicaricatoLordo)/(1+Decimal(21)/100)
+
         self._totaleRicaricatoIva = self._totaleRicaricatoLordo - self._totaleRicaricatoImponibile
         self._totaleOggetti = self._totaleScontato - self._totaleRicaricatoLordo
         #print " self._totaleOggetti", self._totaleOggetti
