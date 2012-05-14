@@ -442,16 +442,17 @@ class Anagrafica(GladeWidget):
     def on_anagrafica_filter_treeview_row_activated(self, widget, path, colum):
         """ Funzione che si attiva nel momento in cui si fa doppio click per
             l'apertura del dao in modifica"""
-        print "on_anagrafica_filter_treeview_row_activated"
+        #print "on_anagrafica_filter_treeview_row_activated"
         self.on_record_edit_activate(widget, path, colum)
 
     def on_anagrafica_filter_treeview_selection_changed(self, treeSelection):
         """ per il momento questa funzione la togliamo perchè sembra non servire
         """
 #        print "on_anagrafica_filter_treeview_selection_changed"
-        return
+
         sel = treeSelection
         self.daoSelection = []
+        #return
         self.dao = None
         if sel.get_mode() == GTK_SELECTIONMODE_MULTIPLE:
             model, iterator = sel.get_selected_rows()
