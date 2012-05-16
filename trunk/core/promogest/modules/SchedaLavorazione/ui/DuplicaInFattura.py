@@ -129,6 +129,7 @@ class DuplicaInFattura(object):
             riga_testata.descrizione = riga.descrizione
             riga_testata.id_listino = riga.id_listino
             riga_testata.percentuale_iva = riga.percentuale_iva
+            riga_testata.id_iva = riga.id_iva
             riga_testata.applicazione_sconti = riga.applicazione_sconti
             riga_testata.quantita = riga.quantita
             riga_testata.id_multiplo = riga.id_multiplo
