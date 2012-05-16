@@ -332,5 +332,10 @@ class AnagraficaPGEdit(object):
         if anagrafica.dao.nome:
             anagrafica.dao_contatto.nome = anagrafica.dao.nome
         anagrafica.dao_contatto.tipo_contatto = tipo
-        anagrafica.dao_contatto.id_cliente = anagrafica.dao.id
+        if tipo == "cliente":
+            anagrafica.dao_contatto.id_cliente = anagrafica.dao.id
+        elif tipo =="fornitore":
+            anagrafica.dao_contatto.id_fornitore = anagrafica.dao.id
+        elif tipo == "generico":
+            anagrafica.dao_contatto.id_anagraficasecondaria = anagrafica.dao.id
         anagrafica.dao_contatto.persist()
