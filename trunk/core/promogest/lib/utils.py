@@ -3075,17 +3075,19 @@ def checkInstallation():
                 k.persist()
 
 
-_dim = (None, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
 
-def _leap(y):
-    if y % 4: return 0
-    if y % 100: return 1
-    if y % 400: return 0
-    return 1
 
 def last_day_of_month(y, m):
     """Return day (1..31) which is last day of month m in year y
     """
+    _dim = (None, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
+
+    def _leap(y):
+        if y % 4: return 0
+        if y % 100: return 1
+        if y % 400: return 0
+        return 1
+
     if m == 2:
         return 28 + _leap(y)
     if not (1 <= m <= 12):
