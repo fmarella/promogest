@@ -27,6 +27,7 @@ from promogest.ui.AnagraficaComplessaEdit import AnagraficaEdit
 from promogest.modules.PrimaNota.dao.TestataPrimaNota import TestataPrimaNota
 from promogest.modules.PrimaNota.dao.RigaPrimaNota import RigaPrimaNota
 from promogest.dao.Banca import Banca
+from promogest.dao.BancheAzienda import gen_banche_azienda
 from promogest.modules.PrimaNota.dao.RigaPrimaNotaTestataDocumentoScadenza import RigaPrimaNotaTestataDocumentoScadenza
 from promogest.lib.utils import *
 from promogest.ui.utilsCombobox import *
@@ -45,7 +46,7 @@ class AnagraficaPrimaNotaEdit(AnagraficaEdit):
         self.anagrafica = anagrafica
         self.editRiga = None
 #        self.rotazione = setconf("rotazione_primanota", "Primanota")
-        fillComboboxBanche(self.id_banca_customcombobox.combobox)
+        fill_combobox_with_data(self.id_banca_customcombobox.combobox, gen_banche_azienda)
         self.id_banca_customcombobox.connect('clicked',
                                  on_id_banca_customcombobox_clicked)
 
