@@ -39,7 +39,8 @@ class AnagraficaPrimaNotaFilter(AnagraficaFilter):
                           module=True)
         self._widgetFirstFocus = self.a_numero_filter_entry
         self.da_data_inizio_datetimewidget.set_text('01/01/' + Environment.workingYear)
-        fillComboboxBanche(self.id_banche_filter_combobox, short=20)
+        from promogest.dao.BancheAzienda import gen_banche_azienda
+        fill_combobox_with_data(self.id_banche_filter_combobox, gen_banche_azienda, short=20)
         self.aggiornamento=False
 
 

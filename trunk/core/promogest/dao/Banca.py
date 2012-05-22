@@ -28,6 +28,15 @@ from migrate import *
 from sqlalchemy.schema import Column
 from sqlalchemy.types import String
 
+
+def gen_banca():
+    banks = Banca().select(offset=None, batchSize=None)
+    for b in banks:
+        if b.agenzia:
+            yield (b, b.id, ("{0} ({1})".format(b.denominazione, b.agenzia)))
+        else:
+            yield (b, b.id, ("{0}".format(b.denominazione)))
+
 class Banca(Dao):
 
     def __init__(self, req=None):
@@ -52,6 +61,7 @@ banca_table = Table('banca',
                       params['metadata'],
                       schema=params['schema'],
                       autoload=True)
+t_banca = banca_table #TODO: rimuovere questo alias una volta standardizzato il DAO...
 
 if 'bic_swift' not in [c.name for c in banca_table.columns]:
     col = Column('bic_swift', String)

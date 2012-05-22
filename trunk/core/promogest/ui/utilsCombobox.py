@@ -37,6 +37,26 @@ from xml.etree.cElementTree import *
 
 # Riempimento lookup combobox
 
+def fill_combobox_with_data(combobox, data_provider, filter=False, short=1000):
+    """
+    Riempie un widget ComboBox
+    """
+    combobox.set_wrap_width(1)
+    model = gtk.ListStore(object, int, str)
+    if not filter:
+        emptyRow = ''
+    else:
+        emptyRow = '< Tutti >'
+    model.append((None, 0, emptyRow))
+    for data in data_provider():
+        model.append((data[0], data[1], data[2]))
+
+    combobox.clear()
+    renderer = gtk.CellRendererText()
+    combobox.pack_start(renderer, True)
+    combobox.add_attribute(renderer, 'text', 2)
+    combobox.set_model(model)
+
 
 def fillComboboxAliquoteIva(combobox, filter=False):
     """
