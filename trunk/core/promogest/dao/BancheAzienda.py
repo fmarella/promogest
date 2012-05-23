@@ -35,7 +35,7 @@ def gen_banche_azienda():
     else:
         daos = BancheAzienda().select(batchSize=None)
     for dao in daos:
-        if dao.banca
+        if dao.banca:
             if dao.banca.agenzia:
                 yield (dao.banca, dao.banca.id, ("{0} ({1})".format(dao.banca.denominazione, dao.banca.agenzia)))
             else:
