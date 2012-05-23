@@ -45,7 +45,7 @@ try:
                             params['metadata'],
                             schema=params['schema'],
                             autoload=True,
-                            extend_existing=True)
+                            useexisting=True)
     from migrate.changeset.constraint import ForeignKeyConstraint
     const = ForeignKeyConstraint([t_banche_azienda.c.id_banca],
                 [t_banca.c.id])
@@ -64,7 +64,7 @@ except:
         Column('banca_predefinita', Boolean),
         UniqueConstraint('id_banca', 'numero_conto'),
         schema=params['schema'],
-        extend_existing=True)
+        useexisting=True)
 
     t_banche_azienda.create(checkfirst=True)
 
