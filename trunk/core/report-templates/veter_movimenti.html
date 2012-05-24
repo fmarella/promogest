@@ -1,7 +1,8 @@
 {% extends 'index.html' %}
 {% block body %}
- {% for dao in pageData["objects"] %}
+    {% for dao in pageData["objects"] %}
         <div >
+
         <table cellpadding="0" cellspacing="2" border="0">
             <tr>
                 <td ><h3>
@@ -23,6 +24,9 @@
                 </td>
             </tr>
         </table>
+
+
+
         <table cellpadding="0" cellspacing="3" border="0">
             <tr>
                 <th class="left">Articolo</th>
@@ -31,14 +35,16 @@
             </tr>
                 {% for riga in dao.righe %}
                 <tr >
+                {% if "TRIPLICE" in utils.leggiArticolo(riga.id_articolo)["daoArticolo"].denominazione_famiglia %}
+                    <td>{{riga.descrizione[:30]}}</td>
+                    <td class="number">{{utils.number_format() % ( riga.quantita * riga.moltiplicatore )}}</td>
 
-                <td>{{riga.descrizione[:30]}}</td>
-                <td class="number">{{utils.number_format() % ( riga.quantita * riga.moltiplicatore )}}</td>
-
-                <td class="number">{{utils.getLottoeScadenze(riga,dao).lotto}}{{utils.dateToString(utils.getLottoeScadenze(riga, dao).data_scadenza)}}</td></tr>
-        {% endfor %}
+                    <td class="number">{{utils.getLottoeScadenze(riga,dao).lotto}}{{utils.dateToString(utils.getLottoeScadenze(riga, dao).data_scadenza)}}</td>
+                {% endif %}</tr>
+                {% endfor %}
         </table>
         <hr />
+
 {% endfor %}
 
         </div>

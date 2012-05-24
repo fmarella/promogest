@@ -115,14 +115,29 @@ class AnagraficaPrintPreview(GladeWidget):
     def refresh(self):
         """ show the html page in the custom widget"""
         self.bodyWidget.orderBy = self.orderBy
+        self.bodyWidget.veter = self._veter
         daos = self.bodyWidget.runFilter(offset=None,
                                         batchSize=None,
-                                         filterClosure=self._filterClosure)
+                                        filterClosure=self._filterClosure,
+                                        )
         self.numRecords = self.bodyWidget.countFilterResults(
-                                                self._filterCountClosure)
+                                        self._filterCountClosure,
+                                        )
+
 #        self._refreshPageCount()
         pageData = {}
         self.html_code = "<html><body></body></html>"
+        if self._veter:
+            daos = daos[:]
+            da = []
+            for d in daos:
+                c = []
+                for a in d.righe:
+                    if "TRIPLICE" in a.rig.arti.denominazione_famiglia:
+                        c.append(a)
+                if c:
+                    da.append(d)
+            daos = da
         if daos:
             pageData = {
                     "file": self._previewTemplate[1],

@@ -103,4 +103,5 @@ class AnagraficaReport(object):
         return AnagraficaPrintPreview(anagrafica=self._anagrafica,
                                       windowTitle=self.description,
                                       previewTemplate=self._htmlTemplate,
+                                      veter=veter
                                       )
