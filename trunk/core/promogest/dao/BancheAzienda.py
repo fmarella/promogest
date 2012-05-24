@@ -50,6 +50,7 @@ try:
     from migrate.changeset.constraint import ForeignKeyConstraint
     const = ForeignKeyConstraint([t_banche_azienda.c.id_banca],
                 [t_banca.c.id])
+    const.create()
 except:
     t_banche_azienda = Table('banche_azienda',
         params['metadata'],
