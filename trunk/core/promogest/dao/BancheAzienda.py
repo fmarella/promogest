@@ -34,12 +34,12 @@ def gen_banche_azienda():
         daos = BancheAzienda().select(complexFilter=(and_(BancheAzienda.id_azienda==azienda)), batchSize=None)
     else:
         daos = BancheAzienda().select(batchSize=None)
-    for dao in daos:
-        if dao.banca:
-            if dao.banca.agenzia:
-                yield (dao.banca, dao.banca.id, ("{0} ({1})".format(dao.banca.denominazione, dao.banca.agenzia)))
-            else:
-                yield (dao.banca, dao.banca.id, ("{0}".format(dao.banca.denominazione)))
+    #for dao in daos:
+        #if dao.banca:
+            #if dao.banca.agenzia:
+                #yield (dao.banca, dao.banca.id, ("{0} ({1})".format(dao.banca.denominazione, dao.banca.agenzia)))
+            #else:
+                #yield (dao.banca, dao.banca.id, ("{0}".format(dao.banca.denominazione)))
 
 #try:
     #t_banche_azienda = Table('banche_azienda',
