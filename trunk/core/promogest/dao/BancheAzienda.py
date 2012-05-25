@@ -34,6 +34,7 @@ def gen_banche_azienda():
         daos = BancheAzienda().select(complexFilter=(and_(BancheAzienda.id_azienda==azienda)), batchSize=None)
     else:
         daos = BancheAzienda().select(batchSize=None)
+    return []
     #for dao in daos:
         #if dao.banca:
             #if dao.banca.agenzia:
