@@ -107,6 +107,6 @@ class BancheAzienda(Dao):
 std_mapper = mapper(BancheAzienda,
                       t_banche_azienda,
                       properties={
-                          "banca": relation(Banca, primaryjoin=(t_banche_azienda.c.id_banca==t_banca.c.id)),
+                          #"banca": relation(Banca, primaryjoin=(t_banche_azienda.c.id_banca==t_banca.c.id)),
                       },
                       order_by=t_banche_azienda.c.id)
