@@ -22,7 +22,7 @@
 
 from sqlalchemy import *
 from sqlalchemy.orm import *
-from promogest.Environment import params, session, azienda, fk_prefix
+from promogest.Environment import params, session, azienda
 from promogest.dao.Dao import Dao
 from promogest.dao.Azienda import Azienda
 from promogest.dao.Banca import Banca, t_banca
@@ -34,41 +34,35 @@ def gen_banche_azienda():
         daos = BancheAzienda().select(complexFilter=(and_(BancheAzienda.id_azienda==azienda)), batchSize=None)
     else:
         daos = BancheAzienda().select(batchSize=None)
-    return []
-    #for dao in daos:
-        #if dao.banca:
-            #if dao.banca.agenzia:
-                #yield (dao.banca, dao.banca.id, ("{0} ({1})".format(dao.banca.denominazione, dao.banca.agenzia)))
-            #else:
-                #yield (dao.banca, dao.banca.id, ("{0}".format(dao.banca.denominazione)))
+    for dao in daos:
+        if dao.banca:
+            if dao.banca.agenzia:
+                yield (dao.banca, dao.banca.id, ("{0} ({1})".format(dao.banca.denominazione, dao.banca.agenzia)))
+            else:
+                yield (dao.banca, dao.banca.id, ("{0}".format(dao.banca.denominazione)))
 
-#try:
-    #t_banche_azienda = Table('banche_azienda',
-                            #params['metadata'],
-                            #schema=params['schema'],
-                            #autoload=True,
-                            #useexisting=True)
-    #from migrate.changeset.constraint import ForeignKeyConstraint
-    #const = ForeignKeyConstraint([t_banca.c.id], [t_banche_azienda.c.id_banca])
-    #const.create()
-#except:
-t_banche_azienda = Table('banche_azienda',
-    params['metadata'],
-    Column('id', Integer, primary_key=True),
-    Column('id_banca', Integer,
-           ForeignKey(fk_prefix + 'banca.id'), nullable=False),
-    Column('id_azienda', String(100)),
-    Column('id_persona_giuridica', Integer),
-    Column('numero_conto', String(30)),
-    Column('data_riporto', Date()),
-    Column('valore_riporto', Numeric(16, 4)),
-    Column('codice_sia', String(15)),
-    Column('banca_predefinita', Boolean),
-    UniqueConstraint('id_banca', 'numero_conto'),
-    schema=params['schema'],
-    useexisting=True)
-
-t_banche_azienda.create(checkfirst=True)
+try:
+    t_banche_azienda = Table('banche_azienda',
+                            params['metadata'],
+                            schema=params['schema'],
+                            autoload=True,
+                            useexisting=True)
+except:
+    t_banche_azienda = Table('banche_azienda',
+        params['metadata'],
+        Column('id', Integer, primary_key=True),
+        Column('id_banca', Integer),
+        Column('id_azienda', String(100)),
+        Column('id_persona_giuridica', Integer),
+        Column('numero_conto', String(30)),
+        Column('data_riporto', Date()),
+        Column('valore_riporto', Numeric(16, 4)),
+        Column('codice_sia', String(15)),
+        Column('banca_predefinita', Boolean),
+        UniqueConstraint('id_banca', 'numero_conto'),
+        schema=params['schema'],
+        useexisting=True)
+    t_banche_azienda.create(checkfirst=True)
 
 def reimposta_banca_predefinita(newDao):
     daos = BancheAzienda().select(complexFilter=(and_(not_(BancheAzienda.id==newDao.id), BancheAzienda.id_azienda==newDao.id_azienda, BancheAzienda.banca_predefinita==True)), batchSize=None)
@@ -108,6 +102,9 @@ class BancheAzienda(Dao):
 std_mapper = mapper(BancheAzienda,
                       t_banche_azienda,
                       properties={
-                          #"banca": relation(Banca, primaryjoin=(t_banche_azienda.c.id_banca==t_banca.c.id)),
+                          "banca": relation(Banca,
+                                            primaryjoin=(t_banche_azienda.c.id_banca==t_banca.c.id),
+                                            foreign_keys=[t_banca.c.id],
+                                            uselist=False),
                       },
                       order_by=t_banche_azienda.c.id)
