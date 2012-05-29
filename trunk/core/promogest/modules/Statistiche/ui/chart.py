@@ -70,7 +70,7 @@ class chartViewer():
         """ TODO: Avvisare con un messaggio quando i dati non sono omogenei
             esempio ci sono più giorni negli scontrini """
         ore = []
-        if scontrini:
+        if daos:
             for sco in daos:
                 ore.append(sco.data_inserimento.hour)
         f = plt.figure()
@@ -114,8 +114,8 @@ class chartViewer():
         """ TODO: Avvisare con un messaggio quando i dati non sono omogenei
             esempio ci sono più mesi negli scontrini """
         giorni = []
-        if scontrini:
-            for sco in scontrini:
+        if daos:
+            for sco in daos:
                 giorni.append(sco.data_inserimento.day)
         f = plt.figure()
         ax = f.add_subplot(111)
@@ -135,7 +135,7 @@ class chartViewer():
 
     def affluenzaMensileAnnuale(self, daos=None):
         mesi = []
-        if scontrini:
+        if daos:
             for sco in daos:
                 mesi.append(sco.data_inserimento.month)
         f = plt.figure()
