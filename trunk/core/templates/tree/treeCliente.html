@@ -1,7 +1,0 @@
-{% for a in pageData['daos'] %}
-<div class="row normal lineTop" >
-    <span style="color: #8C2323; ">
-        <strong><a href="#" class="item" dao="Cliente" id="{{a.id}}" />{{a.codice}} -{{a.ragione_sociale}} </a></strong></span>
-            {% include 'buttonIntreeRow.html' with context %}
- </div>
-{% endfor %}
