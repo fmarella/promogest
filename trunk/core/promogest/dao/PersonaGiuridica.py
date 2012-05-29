@@ -35,7 +35,7 @@ class PersonaGiuridica_(Dao):
 
     def filter_values(self,k,v):
         if k == 'idUser':
-            dic = {k:persona_giuridica.c.id_user == v}
+            dic = {k: t_persona_giuridica.c.id_user == v}
         return  dic[k]
 
 t_persona_giuridica = Table('persona_giuridica',

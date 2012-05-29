@@ -8,7 +8,7 @@
 import smtplib
 import string
 import hashlib
-from promogest.lib.webutils import setconf_web
+#from promogest.lib.webutils import setconf_web
 from promogest.dao.Setconf import SetConf
 from promogest import Environment
 from email.mime.multipart import MIMEMultipart
