@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+{% if environment.web %}
+{% block body %}
+{% include "head.html" with context %}
+
+<body >
+
+    <div id="wrapper">
+    <div id="header">
+    <h1>PgWeb for {{pageData["subdomain"]}} </h1>
+</div>
+             <div id="navigation">
+                <p>This is the Navigation</p>
+            </div>
+
+{% include "spallasx.html" with context %}
+<div id="content">
+
+<div style="text-align: center;"><a href="http://promogest.promotux.it" /><img style="width: 530px; height: 110px;" alt="PROMOGEST" src="http://www.promotux.it/templates/promoGest/img/testata_promogest2.png"></a><br>
+</div>
+
+<!-- LOGIN -->
+
+{% if not pageData["auth"] %}
+{% include "login.html" with context %}
+{% else %}
+
+{% block operation %}
+
+
+{% endblock %}
+<!--    <a href="/siteAdmin"><h1>HAI LE TUE SCELTE NELLE DUE SIDEBAR</h1></a>-->
+{% endif %}
+
+    <!-- END LOGIN -->
+
+</div>
+{% include "spalladx_siteadmin.html" with context %}
+
+</div>
+<!--<div id="footer">-->
+<!--    <span class="copy">Copyright 2007 2008 2009 2010 &#169; </span>-->
+<!--    <span class="credits"><a href="http://www.promotux.it" target="blank">Promotux Informatica</a></span>-->
+<!--</div>-->
+
+{% endblock %}
+</body>
+{% else %}
+<head>
+
+{% include 'gtkhead.html' with context %}
+
+</head>
+<body >
+<div id="container">
+{{ self.body() }}
+</div>
+</body>
+{% endif %}
+</html>
