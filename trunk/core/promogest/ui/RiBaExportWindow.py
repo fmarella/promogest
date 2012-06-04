@@ -104,12 +104,12 @@ class PGRiBa(RiBa):
     def bind(self, widget):
         self.progressbar = widget
 
-    def analizza(self, data_inizio=None, pageData=None):
+    def analizza(self, data_inizio=None, data_fine=None, pageData=None):
         if not data_inizio:
             messageError(msg='Inserire una data d\'inizio periodo.')
             return 0
-
-        data_inizio, data_fine = dataInizioFineMese(data_inizio)
+        if not data_fine:
+            data_inizio, data_fine = dataInizioFineMese(data_inizio)
 
         documenti = TestataDocumento().select(complexFilter=(and_(or_(TestataDocumento.operazione=='Fattura differita vendita', TestataDocumento.operazione=='Fattura accompagnatoria'), TestataDocumento.data_documento.between(data_inizio, data_fine))), batchSize=None)
 
@@ -240,7 +240,8 @@ class RiBaExportWindow(GladeWidget):
         self.webview_scrolledwindow.add(self.view)
 
     def show_all(self):
-        self.data_entry.show_all()
+        self.data_inizio_entry.show_all()
+        self.data_fine_entry.show_all()
 
     def on_salva_file_button_clicked(self, button):
         self.salvaFile()
@@ -248,15 +249,17 @@ class RiBaExportWindow(GladeWidget):
     def on_genera_button_clicked(self, button):
         self.generatore = PGRiBa(self, self.__creditore)
         self.generatore.bind(self.progressbar1)
-        data = stringToDate(self.data_entry.get_text())
+        data_inizio = stringToDate(self.data_inizio_entry.get_text())
+        data_fine = stringToDate(self.data_fine_entry.get_text())
+
         pageData = {
             'file': 'riba_export.html',
             'creditore': self.__creditore,
-            'data_creazione': data,
+            'data_creazione': data_inizio,
         }
         res = 0
         try:
-            res = self.generatore.analizza(data, pageData=pageData)
+            res = self.generatore.analizza(data_inizio, data_fine, pageData=pageData)
         except RuntimeError as e:
             messageError(msg=str(e))
         if res != 0:
@@ -264,8 +267,8 @@ class RiBaExportWindow(GladeWidget):
             renderHTML(self.view, renderTemplate(pageData))
 
     def salvaFile(self):
-        data = stringToDate(self.data_entry.get_text())
-        nome_file = 'ESTRATTO_RIBA_' + data.strftime('%m_%y') + ".txt"
+        data_inizio = stringToDate(self.data_inizio_entry.get_text())
+        nome_file = 'ESTRATTO_RIBA_' + data_inizio.strftime('%m_%y') + ".txt"
         fileDialog = gtk.FileChooserDialog(title='Salvare il file',
                                            parent=self.getTopLevel(),
                                            action= GTK_FILE_CHOOSER_ACTION_SAVE,
@@ -290,4 +293,5 @@ class RiBaExportWindow(GladeWidget):
                 self.generatore.write(filename)
 
     def draw(self):
-        self.data_entry.show_all()
+        self.data_inizio_entry.show_all()
+        self.data_fine_entry.show_all()
