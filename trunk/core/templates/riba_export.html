@@ -35,7 +35,7 @@ table.ed td {
     <th colspan="2"><b>DATI AZIENDA</b></th>
 	<tr>
 		<td><b>Codice SIA:</b> {{pageData["creditore"].codice_sia}}</td>
-        <td><b>Data di creazione:</b> {{utils.dateToString(pageData["data_creazione"])}}</td>
+		<td><b>Periodo da:</b> {{utils.dateToString(pageData["data_inizio"])}} <b>a:</b> {{utils.dateToString(pageData["data_fine"])}}</td>
 	</tr>
 	<tr>
 		<td><b>Nome azienda:</b> {{pageData["creditore"].denominazione_breve}}</td>

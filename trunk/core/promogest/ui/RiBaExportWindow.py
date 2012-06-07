@@ -246,7 +246,7 @@ class RiBaExportWindow(GladeWidget):
     def on_salva_file_button_clicked(self, button):
         self.salvaFile()
 
-    def on_genera_button_clicked(self, button):
+    def on_genera_report_button_clicked(self, button):
         self.generatore = PGRiBa(self, self.__creditore)
         self.generatore.bind(self.progressbar1)
         data_inizio = stringToDate(self.data_inizio_entry.get_text())
@@ -255,7 +255,8 @@ class RiBaExportWindow(GladeWidget):
         pageData = {
             'file': 'riba_export.html',
             'creditore': self.__creditore,
-            'data_creazione': data_inizio,
+            'data_inizio': data_inizio,
+            'data_fine': data_fine,
         }
         res = 0
         try:
@@ -265,6 +266,10 @@ class RiBaExportWindow(GladeWidget):
         if res != 0:
             self.salva_file_button.set_sensitive(True)
             renderHTML(self.view, renderTemplate(pageData))
+
+    def on_stampa_report_button_clicked(self, widget):
+        #TODO: implementare la stampa del report.
+        pass
 
     def salvaFile(self):
         data_inizio = stringToDate(self.data_inizio_entry.get_text())
