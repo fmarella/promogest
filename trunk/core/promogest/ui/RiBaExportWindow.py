@@ -109,7 +109,7 @@ class PGRiBa(RiBa):
             messageError(msg='Inserire una data d\'inizio periodo.')
             return 0
         if not data_fine:
-            data_inizio, data_fine = dataInizioFineMese(data_inizio)
+            data_inizio_, data_fine = dataInizioFineMese(data_inizio)
 
         documenti = TestataDocumento().select(complexFilter=(and_(or_(TestataDocumento.operazione=='Fattura differita vendita', TestataDocumento.operazione=='Fattura accompagnatoria'), TestataDocumento.data_documento.between(data_inizio, data_fine))), batchSize=None)
 
