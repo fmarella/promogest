@@ -491,7 +491,6 @@ class TestataDocumento(Dao):
 
 
     #Salvataggi subordinati alla testata Documento, iniziamo da righe documento e poi righe
-    @timeit
     def persist(self):
         if not self.ckdd(self):
             return

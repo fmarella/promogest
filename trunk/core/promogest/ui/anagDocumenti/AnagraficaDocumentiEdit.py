@@ -1176,9 +1176,7 @@ del documento.
         findComboboxRowFromId(self.id_magazzino_combobox, self._righe[0]["idMagazzino"])
         fillComboboxMultipli(self.id_multiplo_customcombobox.combobox, self._righe[0]["idArticolo"], True)
         findComboboxRowFromId(self.id_multiplo_customcombobox.combobox, self._righe[0]["idMultiplo"])
-        print "AHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH"
         self.refresh_combobox_listini()
-        print "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB"
         findComboboxRowFromId(self.id_listino_customcombobox.combobox, self._righe[0]["idListino"])
         self.articolo_entry.set_text(self._righe[0]["codiceArticolo"])
         self.descrizione_entry.set_text(self._righe[0]["descrizione"])
