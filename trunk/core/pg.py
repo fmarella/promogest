@@ -60,10 +60,15 @@ i DAO, i filtri o tutto"""
                             type="string",
                             dest="configDir")
         parser.add_option("-r", "--rapid-start",
-                            help="Imposta il tipo db e l'azienda (es. azienda:tipodatabase@host)",
+                            help="Imposta il tipo db e l'azienda (es. azienda@host)",
                             default="False",
                             type="string",
                             dest="RapidStart")
+        parser.add_option("-n", "--nome_database",
+                            help="Imposta il nome db",
+                            default="False",
+                            type="string",
+                            dest="nome_database")
         (options, args) = parser.parse_args()
         from promogest import pg3_check, bindtextdomain
         bindtextdomain('promogest', locale_dir='./po/locale')
@@ -71,9 +76,12 @@ i DAO, i filtri o tutto"""
             reload(sys)
             sys.setdefaultencoding('utf-8')
             pg3_check.pg3_cla = True
+        if options.nome_database:
+            pg3_check.dbforce = options.nome_database
+        if options.tipoDB:
+            pg3_check.tipodbforce = options.tipoDB
         if "@" in options.RapidStart:
-            pg3_check.aziendaforce = options.RapidStart.split(":")[0]
-            pg3_check.tipodbforce = options.RapidStart.split(":")[1].split("@")[0]
+            pg3_check.aziendaforce = options.RapidStart.split("@")[0]
             pg3_check.hostdbforce = options.RapidStart.split("@")[1]
         if 'ALL' in options.debug:
             pg3_check.echo = True
@@ -86,37 +94,8 @@ i DAO, i filtri o tutto"""
             Environment.debugFilter = True
         elif 'SQL' in options.debug:
             Environment.debugSQL = True
-        elif options.tipoDB == "sqlite":
-            try:
-                default = 'promogest2'
-                promogestStartDir = os.path.expanduser('~') + os.sep \
-                                                        + default + os.sep
-                configFile = promogestStartDir + 'configure'
-                conf = Config(configFile)
-                oldDB = conf.Database.tipodb
-                conf.Database.tipodb = "sqlite"
-                conf.save()
-                if oldDB != options.tipoDB:
-                    print "Cambio tipo database a \'sqlite\' eseguito."
-                    return
-            except Exception as e:
-                print "operazione non riuscita: %s" % str(e)
-        elif options.tipoDB == "postgresql":
-            try:
-                default = 'promogest2'
-                promogestStartDir = os.path.expanduser('~') + os.sep \
-                                                        + default + os.sep
-                configFile = promogestStartDir + 'configure'
-                conf = Config(configFile)
-                oldDB = conf.Database.tipodb
-                conf.Database.tipodb = "postgresql"
-                conf.save()
-                if oldDB != options.tipoDB:
-                    print "Cambio tipo database a \'postgresql\' eseguito."
-                    return
-                #if options.datiConnessione""
-            except Exception as e:
-                print "operazione non riuscita: %s" % str(e)
+
+
         elif 'ALL' in options.debug:
             Environment.debugDao = True
             Environment.debugFilter = True

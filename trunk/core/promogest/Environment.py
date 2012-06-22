@@ -23,10 +23,12 @@
 
 
 from promogest import pg3_check
+# leggiamo da pg3_check che è diventato anche un file di configurazioni pre-environment
 pg3 = pg3_check.pg3_cla
 aziendaforce = pg3_check.aziendaforce
 tipodbforce = pg3_check.tipodbforce
 hostdbforce = pg3_check.hostdbforce
+dbforce = pg3_check.dbforce
 web = pg3_check.web
 echosa = pg3_check.echo
 
@@ -540,8 +542,10 @@ if tipodb == "sqlite" and not (os.path.exists(startdir()+"db")) and not tipodbfo
         shutil.copy("data/db.dist",startdir()+"db" )
     else:
         print("ERRORE NON RIESCO A CREARE IL DB")
-
-database = conf.Database.database
+if dbforce:
+    database = dbforce
+else:
+    database = conf.Database.database
 port = conf.Database.port
 user = conf.Database.user
 password = conf.Database.password
