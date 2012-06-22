@@ -4,7 +4,7 @@ password = admin
 host = db.promotux.it
 port = 5432
 database = promogest_demo
-azienda= azienda_mentor
+azienda= AziendaDemo
 tipodb = sqlite
 pw = No
 [RuoliAzioni]
