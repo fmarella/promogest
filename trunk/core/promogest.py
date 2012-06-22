@@ -24,6 +24,4 @@
 from pg import BigBang
 
 if __name__ == '__main__':
-    #login = Login()
-    #login.run()
     BigBang()

@@ -55,7 +55,6 @@ import os
 import sys
 import shutil
 import glob
-import gettext
 import getopt
 try:
     from werkzeug import Local, LocalManager, cached_property
@@ -73,7 +72,6 @@ import sqlalchemy
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from sqlalchemy.interfaces import PoolListener
-from sqlalchemy.interfaces import ConnectionProxy
 from sqlalchemy.exc import *
 import logging
 import logging.handlers
@@ -81,6 +79,7 @@ import smtplib
 from email.MIMEMultipart import MIMEMultipart
 from email.MIMEText import MIMEText
 import datetime
+from promogest.EnvUtils import MyProxy
 
 PRODOTTO = "PromoTux"
 VERSIONE = "PromoGest 2.9.0"
@@ -102,7 +101,7 @@ connection = None
 feed = None
 emailcompose = None
 loc = None
-subject= None
+subject = None
 body = None
 rivenditoreUrl = None
 smtpServer = None
@@ -150,15 +149,19 @@ confDict = {}
 ivacache = [] # lista di aliquote e deniminazione ...utile come cache
 
 CONFIGPATH = os.path.split(os.path.dirname(__file__))[0]
-webconfigFile = os.path.join(CONFIGPATH, 'pgweb.conf')
-webconf = Config(webconfigFile)
-if hasattr(webconf,"SottoDominio"):
-    if os.path.exists(CONFIGPATH+'/templates/'+webconf.SottoDominio.schema):
-        SUB = webconf.SottoDominio.schema
+if web:
+    webconfigFile = os.path.join(CONFIGPATH, 'pgweb.conf')
+    webconf = Config(webconfigFile)
+
+
+    if hasattr(webconf,"SottoDominio"):
+        if os.path.exists(CONFIGPATH+'/templates/'+webconf.SottoDominio.schema):
+            SUB = webconf.SottoDominio.schema
+        else:
+            SUB = ""
     else:
         SUB = ""
-else:
-    SUB = ""
+
 cadenza = ["MENSILE", "BIMESTRALE", "TRIMESTRALE", "SEMESTRALE", "ANNUALE"]
 ALLOWED_SCHEMES = frozenset(['http', 'https', 'ftp', 'ftps'])
 templates_dir= os.path.join(CONFIGPATH, 'templates')
@@ -210,7 +213,7 @@ def getConfigureDir(company='__default__'):
     """ Tests if another configuration folder was indicated """
     default='promogest2'
     if company != '__default__' and company is not None:
-        default = os.path.join('promogest2',company)
+        default = os.path.join('promogest2', company)
 
     try:
         opts, args = getopt.getopt(sys.argv[1:], "c:", ["config-dir="])
@@ -242,30 +245,6 @@ def messageInfoEnv(msg="Messaggio generico", transient=None):
             pass
         dialoggg.run()
         dialoggg.destroy()
-
-class MyProxy(ConnectionProxy):
-    def cursor_execute(self, execute, cursor, statement, parameters, context, executemany):
-        try:
-            return execute(cursor, statement, parameters, context)
-        except OperationalError as e:
-            messageInfoEnv(msg="UN ERRORE È STATO INTERCETTATO E SEGNALATO: "+ str(e) )
-        except IntegrityError as e:
-            messageInfoEnv(msg="IntegrityError UN ERRORE È STATO INTERCETTATO E SEGNALATO: "+ str(e))
-            session.rollback()
-        except ProgrammingError as e:
-            messageInfoEnv(msg="UN ERRORE È STATO INTERCETTATO E SEGNALATO: "+str(e))
-            session.rollback()
-            delete_pickle()
-        except InvalidRequestError as e:
-            messageInfoEnv(msg="UN ERRORE È STATO INTERCETTATO E SEGNALATO: "+str(e))
-            session.rollback()
-        except AssertionError as e:
-            messageInfoEnv(msg="UN ERRORE È STATO INTERCETTATO E SEGNALATO\n Possibile tentativo di cancellazione di un dato\n collegato ad altri dati fondamentali: "+str(e))
-            session.rollback()
-        except ValueError as e:
-            messageInfoEnv(msg="Risulta inserito un Valore non corretto. Ricontrolla: "+str(e))
-            session.rollback()
-
 
 def _pg8000():
     try:

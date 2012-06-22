@@ -5,3 +5,4 @@ hostdbforce = None
 web = False
 echo = False
 wsgi = False
+pgwebconfpath = None

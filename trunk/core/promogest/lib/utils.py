@@ -2827,8 +2827,9 @@ def messageInfo(msg="Messaggio generico", transient=None):
                         GTK_DIALOG_MESSAGE_INFO,
                         GTK_BUTTON_OK)
     dialoggg.set_markup(msg)
-    dialoggg.run()
+    response = dialoggg.run()
     dialoggg.destroy()
+    return response
 
 def messageError(msg="Messaggio generico", transient=None):
     """generic msg dialog """
