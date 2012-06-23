@@ -7,3 +7,4 @@ web = False
 echo = False
 wsgi = False
 pgwebconfpath = None
+session = None

@@ -51,7 +51,7 @@ i DAO, i filtri o tutto"""
         parser.add_option("-t", "--tipoDB",
                             action="store",
                             help="Imposta il backend DB (sqlite, postgresql)",
-                            default="False",
+                            #default="False",
                             type="string",
                             dest="tipoDB")
         parser.add_option("-c", "--config-dir",
@@ -66,7 +66,7 @@ i DAO, i filtri o tutto"""
                             dest="RapidStart")
         parser.add_option("-n", "--nome_database",
                             help="Imposta il nome db",
-                            default="False",
+                            #default="False",
                             type="string",
                             dest="nome_database")
         (options, args) = parser.parse_args()

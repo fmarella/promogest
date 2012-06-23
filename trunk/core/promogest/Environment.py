@@ -57,7 +57,6 @@ import os
 import sys
 import shutil
 import glob
-import getopt
 try:
     from werkzeug import Local, LocalManager, cached_property
 except:
@@ -216,37 +215,13 @@ def getConfigureDir(company='__default__'):
     default='promogest2'
     if company != '__default__' and company is not None:
         default = os.path.join('promogest2', company)
-
-    try:
-        opts, args = getopt.getopt(sys.argv[1:], "c:", ["config-dir="])
-        for opt, arg in opts:
-            if opt in ("-c", "--config-dir"):
-                return arg
-        else:
-            return default
-    except getopt.GetoptError:
-        return default
+    return default
 
 def startdir():
     startDir = getConfigureDir()
     promogestStartDir = os.path.expanduser('~') + os.sep + startDir + os.sep
     return promogestStartDir
 
-
-def messageInfoEnv(msg="Messaggio generico", transient=None):
-    """generic msg dialog """
-    if not web:
-        dialoggg = gtk.MessageDialog(transient,
-                        GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
-                        GTK_DIALOG_MESSAGE_INFO,
-                        GTK_BUTTON_OK,
-                        msg)
-        try:
-            pg2log.info(msg)
-        except:
-            pass
-        dialoggg.run()
-        dialoggg.destroy()
 
 def _pg8000():
     try:
@@ -284,7 +259,8 @@ def connect():
                             password=password, database=database)
     except Exception, e:
         a = "CONNESSIONE AL DATABASE PRO NON RIUSCITA.\n DETTAGLIO ERRORE: [%s]" % str(e)
-        messageInfoEnv(msg=a)
+        from promogest.lib.utils import messageInfo
+        messageInfo(msg=a)
         sys.exit()
     if a:
         return a
@@ -546,6 +522,7 @@ if dbforce:
     database = dbforce
 else:
     database = conf.Database.database
+print "DATA BASEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE", database
 port = conf.Database.port
 user = conf.Database.user
 password = conf.Database.password
@@ -630,7 +607,7 @@ def delete_pickle():
 session = Session()
 #meta = None
 schema_azienda = azienda
-
+pg3_check.session = session
 params = {'engine': engine,
         'mainSchema': mainSchema,
         'schema': azienda,

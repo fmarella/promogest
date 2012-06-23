@@ -30,6 +30,7 @@ class MyProxy(ConnectionProxy):
 
     def cursor_execute(self, execute, cursor, statement, parameters, context, executemany):
         from promogest.lib.utils import messageInfo
+        from promogest.pg3_check import session
         try:
             return execute(cursor, statement, parameters, context)
         except OperationalError as e:
