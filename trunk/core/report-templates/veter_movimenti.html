@@ -39,7 +39,7 @@
                     <td>{{riga.descrizione[:30]}}</td>
                     <td class="number">{{utils.number_format() % ( riga.quantita * riga.moltiplicatore )}}</td>
 
-                    <td class="number">{{utils.getLottoeScadenze(riga,dao).lotto}}{{utils.dateToString(utils.getLottoeScadenze(riga, dao).data_scadenza)}}</td>
+                    <td class="number">{#{utils.getLottoeScadenze(riga,dao).lotto}#}{#{utils.dateToString(utils.getLottoeScadenze(riga, dao).data_scadenza)}#}</td>
                 {% endif %}</tr>
                 {% endfor %}
         </table>
