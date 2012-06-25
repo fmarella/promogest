@@ -135,7 +135,7 @@ class AnagraficaPrintPreview(GladeWidget):
                 for a in d.righe:
                     if "TRIPLICE" in a.rig.arti.denominazione_famiglia:
                         c.append(a)
-                if c:
+                if len(c)>0:
                     da.append(d)
             daos = da
         if daos:

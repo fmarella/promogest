@@ -1,51 +1,48 @@
 {% extends 'index.html' %}
 {% block body %}
     {% for dao in pageData["objects"] %}
-        <div >
-
         <table cellpadding="0" cellspacing="2" border="0">
             <tr>
-                <td ><h3>
+                <td style="width:100px;text-align:left;font-size:12px;"><h3>
                 {% if dao.id_cliente %}<strong>SCARICO</strong>{% endif %}
                 {% if dao.id_fornitore %}<strong>CARICO</strong>{% endif %}
                 </h3></td>
-                <td ><h3>N.: <strong>{{dao.numero}}</strong></h3></td>
-                <td ><h3>{{dao.operazione}}</h3></td>
-                <td ><h3>Data{{utils.dateToString(dao.data_movimento)}}</h3> </td>
-                <td ><h3>Cli/Forn.:
+                <td style="width:60px;text-align:left;font-size:12px;"><h3>N.: <strong>{{dao.numero}}</strong></h3></td>
+                <td style="width:180px;text-align:left;font-size:12px;"><h3>{{dao.operazione}}</h3></td>
+                <td style="width:150px;text-align:left;font-size:12px;"><h3>Data{{utils.dateToString(dao.data_movimento)}}</h3> </td>
+                <td style="width:420px;text-align:left;font-size:12px;"><h3>Cli/Forn.:
                 {% if dao.id_cliente %}{{dao.ragione_sociale_cliente}}{% endif %}
                 {% if dao.id_fornitore %}{{dao.ragione_sociale_fornitore}}{% endif %}</h3>
                 </td>
-                <td >
+                <td style="width:300px;text-align:left;font-size:12px;">
                 {% if dao.id_fornitore %}<h3>Rif doc Forn: {{utils.daoTestDocu(dao).protocollo}}</h3>  {% endif %}
                 </td>
-                <td >
+                <td style="width:250px;text-align:left;font-size:12px;">
                 {% if dao.id_cliente %}<h3>Veterinario: {{dao.TD.ragione_sociale_agente}}</h3>  {% endif %}
                 </td>
             </tr>
-        </table>
-
-
-
-        <table cellpadding="0" cellspacing="3" border="0">
+            </table>
+            <table cellpadding="0" cellspacing="2" border="0" style="width:300px;">
             <tr>
-                <th class="left">Articolo</th>
-                <th class="number">Quantita'</th>
-                <th class="number">LOTTO E SCADENZA</th>
+                <td style="width:250px;text-align:left;font-size:12px;"><b>Articolo</b></td>
+                <td style="width:25px;text-align:right;font-size:12px;"><b>Quantita'</b></td>
             </tr>
                 {% for riga in dao.righe %}
                 <tr >
-                {% if "TRIPLICE" in utils.leggiArticolo(riga.id_articolo)["daoArticolo"].denominazione_famiglia %}
-                    <td>{{riga.descrizione[:30]}}</td>
-                    <td class="number">{{utils.number_format() % ( riga.quantita * riga.moltiplicatore )}}</td>
-
-                    <td class="number">{#{utils.getLottoeScadenze(riga,dao).lotto}#}{#{utils.dateToString(utils.getLottoeScadenze(riga, dao).data_scadenza)}#}</td>
-                {% endif %}</tr>
+                {% if "TRIPLICE" in riga.rig.arti.denominazione_famiglia %}
+                    <td style="width:250px;text-align:left;font-size:11px;">{{riga.descrizione}}</td>
+                    <td style="width:25px;text-align:right;font-size:11px;">{{utils.mN(riga.quantita * riga.moltiplicatore,2)}}</td>
+                {% else %}
+                <td class="left"></td><td class="number"></td>
+                {% endif %}
+                </tr>
                 {% endfor %}
         </table>
-        <hr />
+        <br />
+        <hr/>
+        <br />
+
 
 {% endfor %}
 
-        </div>
 {% endblock %}
