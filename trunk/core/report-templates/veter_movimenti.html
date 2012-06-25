@@ -20,7 +20,7 @@
                 {% if dao.id_fornitore %}<h3>Rif doc Forn: {{utils.daoTestDocu(dao).protocollo}}</h3>  {% endif %}
                 </td>
                 <td >
-                {% if dao.id_cliente %}<h3>Veterinario  : {{utils.daoTestDocu(dao).ragione_sociale_agente}}</h3>  {% endif %}
+                {% if dao.id_cliente %}<h3>Veterinario: {{dao.TD.ragione_sociale_agente}}</h3>  {% endif %}
                 </td>
             </tr>
         </table>
