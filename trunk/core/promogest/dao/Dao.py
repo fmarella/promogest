@@ -212,6 +212,7 @@ class Dao(object):
             params["session"].commit()
             return 1
         except Exception,e:
+            from promogest.lib.utils import messageError
             msg = """ATTENZIONE ERRORE NEL SALVATAGGIO
     Qui sotto viene riportato l'errore di sistema:
 
@@ -224,7 +225,7 @@ class Dao(object):
     rincontrollare i campi e riprovare
     Grazie!
     """ %e
-            messageInfoEnv(msg=msg)
+            messageInfo(msg=msg)
             pg2log.info("ERRORE IN DAO COMMIT  "+str(e))
             params["session"].rollback()
 #            params["session"].clear()
@@ -378,3 +379,5 @@ class Dao(object):
                 arg= self.filter_values(str(elem[1]),elem[0])
                 filters.append(arg)
         return and_(*filters)
+
+
