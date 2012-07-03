@@ -55,11 +55,8 @@ from promogest.lib import HtmlHandler
 
 class Login(GladeApp):
 
-    def __init__(self, debugSQL=None, debugALL=None, shop=False):
+    def __init__(self, shop=False):
         """Inizializza la finestra di login
-
-        :param debugSQL: boolean, non utilizzato
-        :param debugALL: boolean, non utilizzato
         :param shop: default False
         """
         self.azienda = None
@@ -135,7 +132,7 @@ class Login(GladeApp):
             (data < datetime.datetime(data.year, 1, 10) \
                     and data > datetime.datetime(data.year, 1, 1)):
             randomFile = random.sample([1, 2, 3, 4, 5, 6], 1)[0]
-            fileSplashImage = Environment.conf.guiDir \
+            fileSplashImage = Environment.guiDir \
                             + "natale[" \
                             + str(randomFile) \
                             + "].png"
@@ -149,7 +146,7 @@ class Login(GladeApp):
             if Environment.engine.name == "sqlite":
                 #forzo lo splash per lite
                 randomFile = random.sample([1, 2, 3, 4, 5, 6], 1)[0]
-                fileSplashImage = Environment.conf.guiDir \
+                fileSplashImage = Environment.guiDir \
                                 + "one[" \
                                 + str(randomFile) \
                                 + "].png"
@@ -157,7 +154,7 @@ class Login(GladeApp):
                 self.urll = "http://www.promogest.me/promoGest/preventivo_one"
             else:
                 randomFile = random.sample([1, 2, 3, 4, 5, 6], 1)[0]
-                fileSplashImage = Environment.conf.guiDir \
+                fileSplashImage = Environment.guiDir \
                                     + "pro[" \
                                     + str(randomFile) \
                                     + "].png"
@@ -225,7 +222,7 @@ class Login(GladeApp):
                             a.tipo_schemaa = ""
                         Environment.session.add(a)
                     Environment.session.commit()
-
+                print "CI SIAMO"
                 if Environment.tipodb != "sqlite":
                     Environment.params["schema"] = self.azienda
                     Environment.schema_azienda = self.azienda
@@ -234,7 +231,8 @@ class Login(GladeApp):
                         raise Exception(":P")
                         return
 # Lancio la funzione di generazione della dir di configurazione
-                Environment.set_configuration(Environment.azienda,
+                from promogest.buildEnv import set_configuration
+                Environment.conf = set_configuration(Environment.azienda,
                                                 Environment.workingYear)
 #                    if setconf("Feed","feed"):
 #                    if True == True:

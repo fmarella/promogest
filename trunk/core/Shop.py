@@ -28,28 +28,13 @@ from promogest import Environment
 
 class Shop(object):
     def __init__(self):
-        usage = """Uso: %prog [options]
-        Opzioni disponibili sono :
-                -d   --debugDao Per visualizzare con delle print i dizionari dao
-                """
-        parser = OptionParser(usage=usage)
-        parser.add_option("-d", "--debugDao",
-                            action="store_true",
-                            help="Per visualizzare con delle print i dizionari dao",
-                            default="False",
-                            #type="string",
-                            dest="debugDao")
-
-
-        (options, args) = parser.parse_args()
-
-        from promogest import bindtextdomain
+        from promogest import preEnv, bindtextdomain
         bindtextdomain('promogest', locale_dir='./po/locale')
 
         from promogest.ui.Login import Login
         login = Login(shop=True)
         Environment.pg2log.info("APERTURA DI GESTIONE NEGOZIO")
-        Environment.shop = True
+        preEnv.shop = True
         login.run()
 
 if __name__ == '__main__':

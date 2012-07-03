@@ -28,8 +28,9 @@ from promogest.Environment import *
 from promogest.lib.utils import orda
 
 try:
-    setconf=Table('setconf', params['metadata'],schema = params['schema'],autoload=True)
+    setconf=Table('setconf',params['metadata'] ,schema = params['schema'],autoload=True)
 except:
+    print "UFFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", params['schema'], params['metadata']
     setconf  = Table('setconf', params["metadata"],
             Column('id',Integer,primary_key=True),
             Column('key',String(50), nullable=False),
@@ -77,7 +78,6 @@ std_mapper = mapper(SetConf, setconf,
         'date':deferred(setconf.c.date),
     }, order_by=setconf.c.key)
 allkey = session.query(SetConf.key,SetConf.section).all()
-
 #bb = SetConf().select(key="articolo_struttura_codice", section="Articoli")
 
 if not ("articolo_struttura_codice","Articoli") in allkey:
@@ -428,16 +428,16 @@ if not ("feed", "Feed") in allkey:
     kuu.date = datetime.datetime.now()
     session.add(kuu)
 
-if not ("smtpserver", "Smtp") in allkey:
-    kvv = SetConf()
-    kvv.key = "smtpserver"
-    kvv.value =""
-    kvv.section = "Smtp"
-    kvv.tipo_section = "Generico"
-    kvv.description = "server per l'invio della posta"
-    kvv.active = True
-    kvv.date = datetime.datetime.now()
-    session.add(kvv)
+#if not ("smtpserver", "Smtp") in allkey:
+    #kvv = SetConf()
+    #kvv.key = "smtpserver"
+    #kvv.value =""
+    #kvv.section = "Smtp"
+    #kvv.tipo_section = "Generico"
+    #kvv.description = "server per l'invio della posta"
+    #kvv.active = True
+    #kvv.date = datetime.datetime.now()
+    #session.add(kvv)
 
 if not ("emailmittente", "Smtp") in allkey:
     kzz = SetConf()
@@ -526,4 +526,4 @@ if not ("zeri_in_totali", "Stampa") in allkey:
 
 COOKIENAME = SetConf().select(key="cookie_name")[0].value
 
-session.commit()
+params["session"].commit()

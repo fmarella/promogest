@@ -228,14 +228,9 @@ class Dao(object):
             messageInfo(msg=msg)
             pg2log.info("ERRORE IN DAO COMMIT  "+str(e))
             params["session"].rollback()
-#            params["session"].clear()
-#            Session = scoped_session(sessionmaker(bind=engine))
-#            _session = Session()
-#            params["session"] = _session
             return 0
 
     def dd(self,clase):
-#        clasemd5 = hashlib.md5(clase).hexdigest()
         return True
 
     def saveToAppLog(self, status=True,action=None, value=None):

@@ -58,7 +58,7 @@ class GladeWidget(SimpleGladeApp):
     def _prepareWindowPlacement(self):
         """ Elements for the correct view of windows """
 
-        self._defaultWindowAttributesFile = Environment.conf.windowsrc
+        self._defaultWindowAttributesFile = Environment.windowsrc
         self._windowName = self.__class__.__name__
         self.isWindowPlaced = False
         self.topLevelWindow = None

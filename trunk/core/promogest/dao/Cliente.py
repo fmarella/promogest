@@ -23,13 +23,13 @@
 
 from sqlalchemy import *
 from sqlalchemy.orm import *
-from promogest.Environment import params, conf, session, get_columns, delete_pickle
+from promogest.Environment import params, conf, session, delete_pickle
 from promogest.dao.Dao import Dao
 from ClienteCategoriaCliente import ClienteCategoriaCliente
 from promogest.dao.PersonaGiuridica import t_persona_giuridica
 from promogest.dao.User import User
 from promogest.dao.DestinazioneMerce import DestinazioneMerce
-from promogest.dao.DaoUtils import codeIncrement, getRecapitiCliente
+from promogest.dao.DaoUtils import codeIncrement, getRecapitiCliente, get_columns
 
 class Cliente(Dao):
     """

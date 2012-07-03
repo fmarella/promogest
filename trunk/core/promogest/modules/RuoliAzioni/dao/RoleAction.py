@@ -68,8 +68,8 @@ if not idAdmin:
     print "ATTENZIONE NON e' PRESENTE UN ADMIN"
 else:
     idadmin = idAdmin[0].id
-    idact = session.query(Action.id).all()
-    idract = session.query(RoleAction.id_action).filter_by(id_role=idadmin).all()
+    idact = params["session"].query(Action.id).all()
+    idract = params["session"].query(RoleAction.id_action).filter_by(id_role=idadmin).all()
     if idact != idract:
         ac = Action().select(batchSize=None)
         for a in ac:
@@ -79,4 +79,4 @@ else:
                 aa.id_role = idadmin
                 aa.id_action = a.id
                 session.add(aa)
-        session.commit()
+        params["session"].commit()

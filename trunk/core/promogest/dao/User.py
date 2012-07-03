@@ -29,9 +29,10 @@ from Regioni import Regioni
 from Province import Province
 from migrate import *
 from promogest.modules.RuoliAzioni.dao.Role import Role
+from promogest.dao.DaoUtils import get_columns
 
-user=Table('utente', params['metadata'],schema = params['mainSchema'],autoload=True)
 
+user = Table('utente', params['metadata'],schema = params['mainSchema'],autoload=True)
 
 colonne = get_columns(user)
 if 'id_role' not in colonne:

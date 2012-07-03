@@ -117,7 +117,7 @@ class Anagrafica(GladeWidget):
 
     def on_seriale_menu_activate(self, widget):
         try:
-            fileName = Environment.conf.guiDir + 'logo_promogest.png'
+            fileName = Environment.guiDir + 'logo_promogest.png'
             f = open(fileName,'rb')
             content = f.read()
             f.close()

@@ -52,7 +52,7 @@ class Pg2_web(object):
         #TODO: eventuale gestione modulare successiva come nel pg
         #self.importModulesFromDir(modules_dir="./promogest/pages/modules")
         #Aggiungo le directory di lavoro ...
-        if pg3_check.wsgi == False:
+        if preEnv.wsgi == False:
             self.dispatch = SharedDataMiddleware(self.dispatch, {
             '/templates/': Environment.STATIC_PATH,
             '/feed': Environment.STATIC_PATH_FEED,

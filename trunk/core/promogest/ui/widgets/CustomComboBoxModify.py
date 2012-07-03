@@ -40,7 +40,7 @@ class CustomComboBoxModify(gtk.HBox):
         self.button = gtk.ToggleButton()
         self.button.set_property("can-focus", True)
         image = gtk.Image()
-        pbuf = GDK_PIXBUF_NEW_FROM_FILE(Environment.conf.guiDir + 'modifica16x16.png')
+        pbuf = GDK_PIXBUF_NEW_FROM_FILE(Environment.guiDir + 'modifica16x16.png')
         image.set_from_pixbuf(pbuf)
         self.button.add(image)
         self.pack_start(self.combobox, True, True, 0)

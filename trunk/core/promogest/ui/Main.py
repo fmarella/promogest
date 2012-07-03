@@ -317,9 +317,9 @@ class Main(GladeWidget):
 
         def pickle_meta():
             from pickle import dump
-            if not os.path.exists(os.path.join(Environment.CONFIGPATH,
+            if not os.path.exists(os.path.join(Environment.SRC_PATH,
                                                 Environment.meta_pickle)):
-                with open(os.path.join(Environment.CONFIGPATH,
+                with open(os.path.join(Environment.SRC_PATH,
                                         Environment.meta_pickle), 'wb') as f:
                     dump(Environment.meta, f)
         pickle_meta()

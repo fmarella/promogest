@@ -26,10 +26,10 @@ import sys, os
 path = os.path.split(os.path.dirname(__file__))[0]
 core_path = os.path.join(os.path.split(os.path.abspath(path))[0], "core")
 sys.path.append(core_path)
-from promogest import pg3_check
-pg3_check.pg3_cla = True
+from promogest import preEnv
+preEnv.pg3_cla = True
 from promogest import Environment
-Environment.conf.guiDir = path+"/gui/"
+Environment.guiDir = path+"/gui/"
 #Environment.conf.decimals = 2
 from promogest.ui.GladeWidget import *
 from promogest.ui.widgets import PersonaGiuridicaSearchWidget, FornitoreSearchWidget,\

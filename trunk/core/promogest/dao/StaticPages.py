@@ -66,6 +66,7 @@ class StaticPages(Dao):
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
 
+
     def filter_values(self,k,v):
         if k=='id_language':
             dic= {  k : staticpage.c.id_language == v}
@@ -85,3 +86,4 @@ std_mapper = mapper(StaticPages, staticpage,
         #'user' : relation(User)
         },
         order_by=staticpage.c.id)
+print " PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP"

@@ -31,7 +31,7 @@ class ScontiWidget(CustomLabel):
     __gtype_name__ = 'ScontiWidget'
     def __init__(self, str1=None, str2=None):
         CustomLabel.__init__(self, str1, str2)
-        pbuf = GDK_PIXBUF_NEW_FROM_FILE(Environment.conf.guiDir + 'sconti16x16.png')
+        pbuf = GDK_PIXBUF_NEW_FROM_FILE(Environment.guiDir + 'sconti16x16.png')
         self.image.set_from_pixbuf(pbuf)
 
         self._scontiPercentuali = True

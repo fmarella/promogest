@@ -49,7 +49,6 @@ import re
 
 templates_dir = [os.path.join('templates'),os.path.join('report-templates')]
 jinja_env = None
-
 def env(templates_dir):
     jinja_env = Env(loader=FileSystemLoader(templates_dir),
                     bytecode_cache=FileSystemBytecodeCache(os.path.join(Environment.promogestDir, 'temp'), '%s.cache'),

@@ -59,7 +59,7 @@ class SendEmail(GladeWidget):
             self.fromaddr = str(setconf("Smtp", "emailmittente"))
             self.from_email_entry.set_text(self.fromaddr)
         try:
-            fileName = Environment.conf.guiDir + 'logo_promogest.png'
+            fileName = Environment.guiDir + 'logo_promogest.png'
             f = open(fileName,'rb')
             content = f.read()
             f.close()
