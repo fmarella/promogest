@@ -75,6 +75,8 @@ class Login(GladeApp):
         """
         azs = Azienda().select(batchSize=None, orderBy=Azienda.schemaa)
         ultima_azienda = None
+        if Environment.nobrand:
+            self.logo_image.set_from_file(Environment.guiDir + "mask_32.png" )
         if Environment.engine.name == "sqlite" \
             and len(azs) == 1 and azs[0].schemaa == "AziendaPromo":
             self.azienda_combobox.destroy()

@@ -38,6 +38,7 @@ class AzioniVelociNotebookPage(GladeWidget):
         self.aziendaStr = aziendaa or ""
 
     def draw(self):
+
         return self
 
     def on_nuovo_articolo_button_clicked(self, widget):

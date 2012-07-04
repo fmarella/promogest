@@ -201,7 +201,14 @@ if hostdbforce:
     host = hostdbforce
 else:
     host = main_conf.Database.host
-
+try:
+    nobrand = bool(main_conf.Database.nobrand)
+except:
+    nobrand = False
+try:
+    partner = main_conf.Database.partner
+except:
+    partner = "070 8649702 -- www.promogest.me -- assistenza@promotux.it"
 #pw = main_conf.Database.pw
 
 if tipodb == "sqlite" and not (os.path.exists(startdir()+"db")) and not tipodbforce and not preEnv.web:

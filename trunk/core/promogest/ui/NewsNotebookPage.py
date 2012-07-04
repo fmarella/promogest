@@ -57,6 +57,10 @@ class NewsNotebookPage(GladeWidget):
 
     def create_news_frame(self):
         """ CREIAMO IL TAB DELLE NEWS"""
+        if Environment.nobrand:
+            self.promotux_button.set_visible(False)
+            self.email_button.set_visible(False)
+            self.promogest_button.set_visible(False)
         Environment.htmlwidget = createHtmlObj(self)
         self.feed_scrolled.add(Environment.htmlwidget)
         html = """<html><body>

@@ -1267,7 +1267,10 @@ Procedere all'installazione del modulo PromoShop? """)
 
 
     def statusBarHandler(self):
-        textStatusBar = _(" %s Build: %s - 070 8649705 - www.promogest.me - info@promotux.it     " % (Environment.VERSIONE, Environment.rev_locale))
+        if not Environment.nobrand:
+            textStatusBar = _(" %s Build: %s - 070 8649705 - www.promogest.me - info@promotux.it     " % (Environment.VERSIONE, Environment.rev_locale))
+        else:
+            textStatusBar = _(" %s Build: %s - %s" % (Environment.VERSIONE, Environment.rev_locale, Environment.partner))
         context_id =  self.pg2_statusbar.get_context_id("main_window")
         self.pg2_statusbar.push(context_id,textStatusBar)
 

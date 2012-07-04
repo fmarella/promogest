@@ -41,6 +41,10 @@ class VistaPrincipale(GladeWidget):
 
     def show_all(self):
         """ Visualizza/aggiorna tutta la struttura del frame """
+        print "AHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH"
+        if not Environment.nobrand:
+            print " SIAMO QUIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII"
+            self.promotux_button.destroy()
         self.vista_principale_frame.show_all()
 
     def on_alarm_notify_treeview_cursor_changed(self, treeview):
