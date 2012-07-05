@@ -90,7 +90,6 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             textStatusBar = _("    PromoGest - Vendita Dettaglio - www.promogest.me - info@promotux.it      ")
         else:
             textStatusBar = _(" %s Build: %s - %s" % (Environment.VERSIONE, Environment.rev_locale, Environment.partner))
-        context_id =  self.pg2_statusbar.get_context_id("main_window")
         context_id = self.vendita_dettaglio_statusbar.get_context_id("vendita_dettaglio_window")
         self.vendita_dettaglio_statusbar.push(context_id, textStatusBar)
         azienda = Azienda().getRecord(id=Environment.azienda)
