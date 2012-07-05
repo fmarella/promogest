@@ -46,16 +46,14 @@ class AnagraficaPrimaNotaEdit(AnagraficaEdit):
         self.anagrafica = anagrafica
         self.editRiga = None
 #        self.rotazione = setconf("rotazione_primanota", "Primanota")
-        fill_combobox_with_data(self.id_banca_customcombobox.combobox, gen_banche_azienda)
-        self.id_banca_customcombobox.connect('clicked',
-                                 on_id_banca_customcombobox_clicked)
+        fill_combobox_with_data(self.id_banca_combobox, gen_banche_azienda)
 
     def on_come_combobox_changed(self, combobox):
         come = findStrFromCombobox(self.come_combobox,0).lower()
         if come =="banca":
-            self.id_banca_customcombobox.set_sensitive(True)
+            self.id_banca_combobox.set_sensitive(True)
         else:
-            self.id_banca_customcombobox.set_sensitive(False)
+            self.id_banca_combobox.set_sensitive(False)
 
 
     def draw(self, cplx=False):
@@ -74,7 +72,6 @@ class AnagraficaPrimaNotaEdit(AnagraficaEdit):
 
 
     def _refresh(self):
-#        self.id_banca_customcombobox.hide()
         self.note_entry.set_sensitive(False)
         self.numero_label.set_text(str(self.dao.numero or ""))
         self.note_entry.set_text(self.dao.note or "")
@@ -119,7 +116,7 @@ class AnagraficaPrimaNotaEdit(AnagraficaEdit):
     def clear(self):
         self.valore_entry.set_text("")
         self.denominazione_entry.set_text("")
-        self.id_banca_customcombobox.combobox.set_active(-1)
+        self.id_banca_combobox.set_active(-1)
         textview_set_text(self.note_textview, '')
         self.aggiungi_button.set_label("Aggiungi")
         image = GTK_IMAGE_NEW_FROM_STOCK(gtk.STOCK_ADD, GTK_ICON_SIZE_BUTTON)
@@ -178,7 +175,7 @@ class AnagraficaPrimaNotaEdit(AnagraficaEdit):
 #                        self.id_banca_customcombobox,
 #                        'Inserire un riferimento ad una banca !')
 
-        riga.id_banca = findIdFromCombobox(self.id_banca_customcombobox.combobox)
+        riga.id_banca = findIdFromCombobox(self.id_banca_combobox)
         banca = ""
         if riga.id_banca:
             banca = getDenominazioneBanca(riga.id_banca)
@@ -254,8 +251,8 @@ class AnagraficaPrimaNotaEdit(AnagraficaEdit):
         if self.rigaIter[4] != "":
 #            self.uscita_banca_radio.set_active(True)
             findComboboxRowFromStr(self.come_combobox,"BANCA",0)
-            findComboboxRowFromId(self.id_banca_customcombobox.combobox, self.rigaIter[0].id_banca)
-            self.id_banca_customcombobox.set_sensitive(True)
+            findComboboxRowFromId(self.id_banca_combobox, self.rigaIter[0].id_banca)
+            self.id_banca_combobox.set_sensitive(True)
 
         self.denominazione_entry.set_text(self.rigaIter[1])
         textview_set_text(self.note_textview, self.rigaIter[0].note_primanota or '')
