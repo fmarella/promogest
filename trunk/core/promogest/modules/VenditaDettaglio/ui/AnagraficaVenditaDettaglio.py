@@ -87,7 +87,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         self._simboloPercentuale = '%'
         self._simboloEuro = '€'
         if not Environment.nobrand:
-            textStatusBar = _("    PromoGest - Vendita Dettaglio - www.promogest.me - info@promotux.it      "
+            textStatusBar = _("    PromoGest - Vendita Dettaglio - www.promogest.me - info@promotux.it      ")
         else:
             textStatusBar = _(" %s Build: %s - %s" % (Environment.VERSIONE, Environment.rev_locale, Environment.partner))
         context_id =  self.pg2_statusbar.get_context_id("main_window")
