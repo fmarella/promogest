@@ -100,7 +100,8 @@ class GestioneChiusuraFiscale(GladeWidget):
         #if hasattr(Environment.conf, "VenditaDettaglio"):
             #daoMovimento.operazione = Environment.conf.VenditaDettaglio.operazione
         #else:
-        daoMovimento.operazione = setconf("VenditaDettaglio", "operazione")
+        #daoMovimento.operazione = setconf("VenditaDettaglio", "operazione")
+        daoMovimento.operazione = "Scarico venduto da cassa"
         daoMovimento.data_movimento = datefirst
         daoMovimento.note_interne = """Movimento chiusura fiscale  magazzino: %s, punto cassa: %s """ %(str(nomeMagazzino),str(nomePuntoCassa))
         righeMovimento = []
