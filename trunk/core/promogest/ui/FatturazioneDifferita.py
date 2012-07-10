@@ -346,6 +346,15 @@ def do_fatt_diff(lista_documenti, data_documento, operazione, no_rif_righe_cumul
                     fattura.numero = valori[0]
                     fattura.registro_numerazione= valori[1]
                 fattura.persist()
+
+                # calcolo i totali, quindi assegno come importo
+                # dell'unica scadenza, l'importo del documento
+                fattura.totali
+                if posso('PA'):
+                    scad = fattura.scadenze
+                    if scad:
+                        scad[0].importo = fattura._totaleScontato
+
                 for d in ddt_id:
                     info = InformazioniFatturazioneDocumento()
                     info.id_fattura = fattura.id
