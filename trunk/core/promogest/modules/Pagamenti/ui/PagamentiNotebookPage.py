@@ -346,6 +346,8 @@ un importo in sospeso. Il documento, per poter essere collegato, deve essere com
             daoTestataDocumentoScadenza.numero_scadenza = i
             if not daoTestataDocumentoScadenza.data:
                 daoTestataDocumentoScadenza.data = datetime.datetime.now()
+            if controllaDateFestivi(daoTestataDocumentoScadenza.data):
+                daoTestataDocumentoScadenza.data = daoTestataDocumentoScadenza.data + datetime.timedelta(5)
             i += 1
             scadenze.append(daoTestataDocumentoScadenza)
 
@@ -408,8 +410,6 @@ un importo in sospeso. Il documento, per poter essere collegato, deve essere com
                 i += 2
             else:
                 daoTDS.data = data_doc
-            if controllaDateFestivi(dateTimeToString(daoTDS.data)):
-                daoTDS.data = stringToDateBumped(dateTimeToString(daoTDS.data), 7)
             try:
                 self.rate[j].fill(daoTDS)
             except IndexError:

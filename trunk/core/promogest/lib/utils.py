@@ -1793,17 +1793,18 @@ def stringToDateTime(stringa):
                 data=None
         return data
 
-def controllaDateFestivi(stringa):
-    """Controlla se una data stringa convertita in data è festiva
+def controllaDateFestivi(data):
+    """Controlla se una data è festiva
 
     Arguments:
     - `stringa`: la data da controllare
     """
-    data = stringToDate(stringa)
-    if data:
-        festivi = ['1508',
-                   '3112']
-        return str(data.day) + str(data.month) in festivi
+    festivi = ['1508', '3112']
+    if type (data) != str:
+        data = data.strftime('%d%m')
+    else:
+        data = data[:4]
+    return data in festivi
 
 
 def dataInizioFineMese(data):
