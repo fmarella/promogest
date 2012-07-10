@@ -74,11 +74,9 @@ def daoGiaPresente(dao):
     if dao!=[]:
         daoFattura = TestataDocumento().getRecord(id=dao[0].id_fattura)
         daoDdt = TestataDocumento().getRecord(id=dao[0].id_ddt)
-        msg = "Il documento N." + str(daoDdt.numero) +" e' gia' stato elaborato nel documento " + str(daoFattura.numero) + "\nPertanto non verra' elaborato in questa sessione"
-        messageInfo(msg)
-        return False
+        return (True, "Il documento N." + str(daoDdt.numero) +" e' gia' stato elaborato nel documento " + str(daoFattura.numero) + "\n")
     else:
-        return True
+        return (False, '')
 
 def newSingleDoc(data, operazione, note, daoDocumento, newDao=None):
     """
@@ -127,6 +125,7 @@ def newSingleDoc(data, operazione, note, daoDocumento, newDao=None):
 
 def do_fatt_diff(lista_documenti, data_documento, operazione, no_rif_righe_cumul=False, note=False, data_consegna=False, no_row=False):
     fattura = None
+    logfattdiff = ''
     nomi = getNames(lista_documenti)
     lista_documenti = sortDoc(nomi, lista_documenti)
     for ragsoc in nomi:
@@ -134,9 +133,12 @@ def do_fatt_diff(lista_documenti, data_documento, operazione, no_rif_righe_cumul
         # self.listdoc contiene un dizionario che ha come chiave il cliente
         #e come valore una lista di gtkTreeiter a lui riferiti
         for ddt in lista_documenti[ragsoc]:
-            if daoGiaPresente(InformazioniFatturazioneDocumento()\
-                                                .select(id_fattura=ddt[0].id)) and \
-                operazione in ["Fattura vendita","Fattura differita vendita"]:
+            esiste, msg = daoGiaPresente(InformazioniFatturazioneDocumento()\
+                                                .select(id_fattura=ddt[0].id))
+
+            if esiste and operazione in ["Fattura vendita","Fattura differita vendita"]:
+                logfattdiff += msg
+            else:
                 #ok il ddt non è già presente in nessuna fatturato
                 # usiamo i suoi dati per fare una fattura
                 fattura = newSingleDoc(data_documento, operazione, "", ddt[0])
@@ -144,8 +146,11 @@ def do_fatt_diff(lista_documenti, data_documento, operazione, no_rif_righe_cumul
             righe = []
             ddt_id = []
             for ddt in lista_documenti[ragsoc]:
-                if daoGiaPresente(InformazioniFatturazioneDocumento()\
-                                                    .select(id_ddt=ddt[0].id)):
+                esiste, msg = daoGiaPresente(InformazioniFatturazioneDocumento()\
+                                                    .select(id_ddt=ddt[0].id))
+                if esiste:
+                    logfattdiff += msg
+                else:
                     # Ok, ora posso registrare le righe dei documenti
                     dao_da_fatturare = ddt[0]
                     # Inserisco il riferimento:
@@ -348,6 +353,8 @@ def do_fatt_diff(lista_documenti, data_documento, operazione, no_rif_righe_cumul
                     info.persist()
             else:
                 messageInfo(msg= "NON CI SONO RIGHE NON CREO NIENTE")
+    if logfattdiff:
+        messageInfo('I seguenti documenti non sono stati elaborati:\n' + logfattdiff)
     if fattura:
         messageInfo("Nuovo documento creato!")
     else:
