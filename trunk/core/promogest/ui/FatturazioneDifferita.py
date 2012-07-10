@@ -74,9 +74,9 @@ def daoGiaPresente(dao):
     if dao!=[]:
         daoFattura = TestataDocumento().getRecord(id=dao[0].id_fattura)
         daoDdt = TestataDocumento().getRecord(id=dao[0].id_ddt)
-        return (True, "Il documento N." + str(daoDdt.numero) +" e' gia' stato elaborato nel documento " + str(daoFattura.numero) + "\n")
+        return (False, "Il documento N." + str(daoDdt.numero) +" e' gia' stato elaborato nel documento " + str(daoFattura.numero) + "\n")
     else:
-        return (False, '')
+        return (True, '')
 
 def newSingleDoc(data, operazione, note, daoDocumento, newDao=None):
     """
