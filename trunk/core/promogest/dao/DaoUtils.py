@@ -551,7 +551,8 @@ def ckd(dao):
     O LA "ONE FULL" PER ATTIVARE ANCHE TUTTI I MODULI
 
     GRAZIE"""
-                Environment.messageInfoEnv(msg=msg)
+                from promogest.lib.utils import messageError
+                messageError(msg=msg)
                 Environment.params["session"].rollback()
                 return False
         else:

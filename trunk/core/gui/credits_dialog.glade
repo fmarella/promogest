@@ -24,11 +24,11 @@
             <property name="layout_style">end</property>
             <child>
               <object class="GtkButton" id="ok_button">
+                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
                 <property name="receives_default">False</property>
-                <property name="use_action_appearance">False</property>
                 <child>
                   <object class="GtkAlignment" id="alignment513">
                     <property name="visible">True</property>
@@ -127,14 +127,14 @@
                     <property name="xpad">3</property>
                     <property name="label" translatable="yes">
 &lt;b&gt;      PROMOGEST&lt;/b&gt;
-software gestionale per aziende
+Software di gestione azienda open source
 
-©2005- 2010 PROMOTUX S.N.C.
+©2005- 2012 PROMOTUX S.N.C.
 
-Segnalazioni info@promotux.it
-Numero verde 800 034561
+Segnalazioni assistenza@promotux.it
+		   TEL 070 8649705
 
-http://promogest.promotux.it
+http://www.promogest.me
 </property>
                     <property name="use_markup">True</property>
                   </object>
