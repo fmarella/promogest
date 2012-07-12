@@ -1154,7 +1154,7 @@ IL MODULO VENDITA DETTAGLIO
 Procedere all'installazione del modulo PromoShop? """)
         if not YesNoDialog(msg=msg, transient=self.getTopLevel()):
             return
-        if not setconf("VenditaDettaglio", "mod_enable"):
+        if not setconf("VenditaDettaglio","mod_enable",value="yes"):
             a = SetConf()
             a.section = "VenditaDettaglio"
             a.tipo_section ="Modulo"
@@ -1198,7 +1198,10 @@ Procedere all'installazione del modulo PromoShop? """)
         anagWindow = anag.getTopLevel()
 
     def on_controllo_fatturato_activate(self, widget):
-        print "CONTROLLO FATTURATO NON GESTITO"
+        from promogest.modules.Statistiche.ui.StatisticaGenerale import StatisticaGenerale
+        anag = StatisticaGenerale(idMagazzino=None,
+                        nome=_("CONTROLLO FATTURATO"))
+        anagWindow = anag.getTopLevel()
 
     def on_whatcant_button_clicked(self, button):
         url ="http://www.promogest.me/promoGest/whatCanT"

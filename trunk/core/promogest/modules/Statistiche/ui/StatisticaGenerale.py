@@ -23,12 +23,15 @@
 
 import os
 import datetime
+from collections import OrderedDict
 from promogest.ui.GladeWidget import GladeWidget
 from promogest import Environment
 from promogest.dao.TestataMovimento import TestataMovimento
+from promogest.dao.TestataDocumento import TestataDocumento
 from promogest.dao.RigaMovimento import RigaMovimento
 from promogest.dao.Riga import Riga
 from promogest.dao.Articolo import Articolo
+from promogest.dao.Cliente import Cliente
 from promogest.dao.Magazzino import Magazzino
 from promogest.dao.CategoriaCliente import CategoriaCliente
 from promogest.dao.CategoriaArticolo import CategoriaArticolo
@@ -58,16 +61,16 @@ class StatisticaGenerale(GladeWidget):
 #        self._idMagazzino = idMagazzino
         self.da_data_entry.show_all()
         self.a_data_entry.show_all()
-        self.cateClienteId = []
-        self.cateArticoloId = []
-        self.magazzinoId = []
-        self.cateClienteDen = []
-        self.cateArticoloDen = []
-        self.magazzinoDen = []
-        self.magazzinoTutti = False
-        self.cateArticoloTutti = False
-        self.cateClienteTutti = False
-        self.nomestatistica= nome
+
+        self.nomestatistica = self.tipo_statistica_combo.get_active_text()
+        self.cateCliente = ["CATEGORIA CLIENTE", [], [],False, object]
+        self.cateArticolo = ["CATEGORIA ARTICOLO", [], [],False, object]
+        self.magazzino = ["MAGAZZINO", [], [], False, object]
+        self.produttore = ["PRODUTTORE", [], [], False, str]
+        self.cliente = ["CLIENTE", [], [], False, object]
+
+        self.tipo_stat = 2 # CONTROLLO FATTURATO
+
         self.draw()
 
     def draw(self):
@@ -96,40 +99,54 @@ class StatisticaGenerale(GladeWidget):
 
         self.treeview.set_search_column(2)
 
-        self._treeViewModel = gtk.ListStore(object, bool, str)
+        self._treeViewModel = gtk.ListStore(object, bool, str, str)
         self.treeview.set_model(self._treeViewModel)
         self._refresh()
 
     def _refresh(self):
         datata = self.da_data_entry.get_text()
         adata= self.a_data_entry.get_text()
-        produt = self.produttore_entry.get_text()
+
         buffer= self.sommario_textview.get_buffer()
         line_count = buffer.get_line_count()
-        if not self.magazzinoTutti:
-            maga = str(self.magazzinoDen)[1:-1]
-        else:
-            maga = "TUTTI"
-        if not self.cateArticoloTutti:
-            catea = str(self.cateArticoloDen)[1:-1]
-        else:
-            catea = "TUTTI"
-        if not self.cateClienteTutti:
-            catec = str(self.cateClienteDen)[1:-1]
-        else:
-            catec = "TUTTI"
+
         stringa ="""
-        Stiamo per creare un CSV relativo alla statistica: %s
-        Con i seguenti parametri di ricerca e filtraggio:
-        DA DATA: %s
-        A DATA: %s
-        PRODUTTORE: %s
-        MAGAZZINO: %s
-        CATEGORIA CLIENTE: %s
-        CATEGORIA ARTICOLO: %s
-        CLIENTE : %s
-        """%(self.nomestatistica, datata, adata, produt, maga, catec, catea,"")
+        Stiamo per creare un REPORT relativo alla statistica: %s
+
+        Questi sono parametri utilizzati:
+        Arco temporale:
+        DA DATA: %s  A DATA: %s
+
+        Criteri di ricerca e selezione:
+
+        """%(self.nomestatistica, datata, adata)
+
+        if self.produttore[2]:
+            stringa += "\n" + self.produttore[0] + ": " + ", ".join(self.produttore[2])
+        if self.produttore[3]:
+            stringa += "\n" + self.produttore[0] + ": " + "TUTTI"
+
+        if self.magazzino[2]:
+            stringa += "\n" + self.magazzino[0] + ": " + ", ".join(self.magazzino[2])
+        if self.magazzino[3]:
+            stringa += "\n" + self.magazzino[0] + ": " + "TUTTI"
+
+        if self.cateCliente[2]:
+            stringa += "\n" + self.cateCliente[0] + ": " + ", ".join(self.cateCliente[2])
+        if self.cateCliente[3]:
+            stringa += "\n" + self.cateCliente[0] + ": " + "TUTTI"
+        if self.cateArticolo[2]:
+            stringa += "\n" + self.cateArticolo[0] + ": " + ", ".join(self.cateArticolo[2])
+        if self.cateArticolo[3]:
+            stringa += "\n" + self.cateArticolo[0] + ": " + "TUTTI"
+        if self.cliente[2]:
+            stringa += "\n" + self.cliente[0] + ": " + ", ".join(self.cliente[2])
+        if self.cliente[3]:
+            stringa += "\n" + self.cliente[0] + ": " + "TUTTI"
+
         buffer.set_text(stringa)
+        self.stringa = stringa
+
         self.sommario_textview.set_buffer(buffer)
 
     def on_column_selected_edited(self, cell, path, treeview,value, editNext=True):
@@ -138,6 +155,22 @@ class StatisticaGenerale(GladeWidget):
         model[path][1] = not model[path][1]
         for a in  model[path].iterchildren():
              a[1] = model[path][1]
+        if self._treeViewModel[0][3].lower() =="categoria cliente":
+            self.cateCliente[3] = False
+        elif self._treeViewModel[0][3].lower() == "categoria articolo":
+            self.cateArticolo[3] = False
+        elif self._treeViewModel[0][3].lower() == "magazzino":
+            self.magazzino[3] = False
+        elif self._treeViewModel[0][3].lower() == "cliente":
+            self.cliente[3] = False
+        elif self._treeViewModel[0][3].lower() == "produttore":
+            self.produttore[3] = False
+
+
+
+
+
+
 
     def on_statistica_dialog_destroy(self, widget):
         self.a_data_entry.destroy()
@@ -147,30 +180,60 @@ class StatisticaGenerale(GladeWidget):
     def on_ok_button_clicked(self, button):
         """ cb del bottone ELABORA """
         if posso("STA"):
-            self.exportss(self)
+            if self.tipo_stat == 1:
+                self.calcolo_ricarico_medio_e_influenza_sulle_vendite()
+            elif self.tipo_stat == 2:
+                self.controllo_fatturato()
+                messageInfo(msg=" ANCORA NON GESTITO")
+            elif self.tipo_stat == 3:
+                messageInfo(msg=" ANCORA NON GESTITO")
+
         else:
             fenceDialog()
 
     def on_tutti_button_clicked(self, button):
         for m in self._treeViewModel:
             m[1] = True
+        tipo = self._treeViewModel[0][3].lower()
+        self.setStatus(tipo, True)
+
+    def setStatus(self, tipo, bo):
+        if  tipo == "categoria cliente":
+            self.cateCliente[3] = bo
+        if tipo == "categoria articolo":
+            self.cateArticolo[3] = bo
+        if tipo == "cliente":
+            self.cliente[3] = bo
+        if tipo == "produttore":
+            self.produttore[3] = bo
+        if tipo == "magazzino":
+            self.magazzino[3] = bo
+
 
     def on_nessuno_button_clicked(self, button):
         for m in self._treeViewModel:
             m[1] = False
+        tipo = self._treeViewModel[0][3].lower()
+        self.setStatus(tipo, False)
 
     def on_categoria_cliente_button_clicked(self, button):
         self._treeViewModel.clear()
         cate = CategoriaCliente().select(batchSize=None)
         for c in cate:
-            self._treeViewModel.append([c,False, c.denominazione])
+            if c.denominazione in self.cateCliente[2] or self.cateCliente[3]:
+                self._treeViewModel.append([c, True, c.denominazione, self.cateCliente[0]])
+            else:
+                self._treeViewModel.append([c, False, c.denominazione, self.cateCliente[0]])
         self.treeview.set_model(self._treeViewModel)
 
     def on_categoria_articolo_clicked(self, button):
         self._treeViewModel.clear()
         cate = CategoriaArticolo().select(batchSize=None)
         for c in cate:
-            self._treeViewModel.append([c,False, c.denominazione])
+            if c.denominazione in self.cateArticolo[2] or self.cateArticolo[3]:
+                self._treeViewModel.append([c, True, c.denominazione, self.cateArticolo[0]])
+            else:
+                self._treeViewModel.append([c, False, c.denominazione, self.cateArticolo[0]])
         self.treeview.set_model(self._treeViewModel)
 
     def on_magazzino_button_clicked(self, button):
@@ -178,46 +241,108 @@ class StatisticaGenerale(GladeWidget):
         self._treeViewModel.clear()
         mag = Magazzino().select(batchSize=None)
         for c in mag:
-            self._treeViewModel.append([c,False, c.denominazione])
+            if c.denominazione in self.magazzino[2] or self.magazzino[3]:
+                self._treeViewModel.append([c, True, c.denominazione, self.magazzino[0]])
+            else:
+                self._treeViewModel.append([c, False, c.denominazione, self.magazzino[0]])
         self.treeview.set_model(self._treeViewModel)
+
+    def on_produttore_button_clicked(self, button):
+        """ cb del bottone produttore """
+        self._treeViewModel.clear()
+
+        res = Environment.params['session'].query(
+                Articolo.produttore).order_by(Articolo.produttore).distinct()
+        for c in res:
+            if c[0].strip() is not "":
+                if c[0] in self.produttore[2] or self.produttore[3]:
+                    self._treeViewModel.append([c , True, c[0], self.produttore[0]])
+                else:
+                    self._treeViewModel.append([c , False, c[0], self.produttore[0]])
+        self.treeview.set_model(self._treeViewModel)
+
+
+    def  on_cliente_button_clicked(self, button):
+        self._treeViewModel.clear()
+        cli = Cliente().select(batchSize=None, orderBy="ragione_sociale")
+        for c in cli:
+            if c.ragione_sociale in self.cliente[2] or self.cliente[3]:
+                self._treeViewModel.append([c, True, c.ragione_sociale,self.cliente[0]])
+            else:
+                self._treeViewModel.append([c, False, c.ragione_sociale,self.cliente[0]])
+        self.treeview.set_model(self._treeViewModel)
+
 
     def on_famiglia_articolo_clicked(self, button):
         return
 
+
     def on_aggiungi_regola_button_clicked(self, button):
         """ cb del bottone aggiungi regola """
         if len(self._treeViewModel) > 0:
-            if type(self._treeViewModel[0][0]).__name__ =="CategoriaCliente":
-                self.cateClienteId=[]
-                self.cateClienteDen=[]
-                self.cateClienteTutti = True
-            elif type(self._treeViewModel[0][0]).__name__ =="CategoriaArticolo":
-                self.cateArticoloId = []
-                self.cateArticoloDen = []
-                self.cateArticoloTutti = True
-            elif type(self._treeViewModel[0][0]).__name__ =="Magazzino":
-                self.magazzinoId = []
-                self.magazzinoDen = []
-                self.magazzinoTutti = True
+            if self._treeViewModel[0][3].lower() =="categoria cliente":
+                self.cateCliente[1] = []
+                self.cateCliente[2] = []
+            elif self._treeViewModel[0][3].lower() == "categoria articolo":
+                self.cateArticolo[1] = []
+                self.cateArticolo[2] = []
+            elif self._treeViewModel[0][3].lower() == "magazzino":
+                self.magazzino[1] = []
+                self.magazzino[2] = []
+            elif self._treeViewModel[0][3].lower() == "cliente":
+                self.cliente[1] = []
+                self.cliente[2] = []
+            elif self._treeViewModel[0][3].lower() == "produttore":
+                self.produttore[1] = []
+                self.produttore[2] = []
+
+
+
             for riga in self._treeViewModel:
-                if type(riga[0]).__name__ =="CategoriaCliente" and riga[1] == True:
-                    self.cateClienteId.append(riga[0].id)
-                    self.cateClienteDen.append(str(riga[0].denominazione))
-                elif type(riga[0]).__name__ =="CategoriaCliente" and riga[1] == False:
-                    self.cateClienteTutti = False
-                elif type(riga[0]).__name__ =="CategoriaArticolo" and riga[1] == True:
-                    self.cateArticoloId.append(riga[0].id)
-                    self.cateArticoloDen.append(str(riga[0].denominazione))
-                elif type(riga[0]).__name__ =="CategoriaArticolo" and riga[1] == False:
-                    self.cateArticoloTutti = False
-                elif type(riga[0]).__name__ =="Magazzino" and riga[1] == True:
-                    self.magazzinoId.append(riga[0].id)
-                    self.magazzinoDen.append(str(riga[0].denominazione))
-                elif type(riga[0]).__name__ =="Magazzino" and riga[1] == False:
-                    self.magazzinoTutti = False
+                if riga[3].lower() =="categoria cliente":
+                    if self.cateCliente[3]:
+                        break
+                    elif riga[1] == True:
+                        self.cateCliente[1].append(riga[0])
+                        self.cateCliente[2].append(riga[2])
+                elif riga[3].lower() == "categoria articolo":
+                    if self.cateArticolo[3]:
+                        break
+                    elif riga[1] == True:
+                        self.cateArticolo[1].append(riga[0])
+                        self.cateArticolo[2].append(riga[2])
+
+                elif riga[3].lower() == "magazzino":
+                    if self.magazzino[3]:
+                        break
+                    elif riga[1] == True:
+                        self.magazzino[1].append(riga[0])
+                        self.magazzino[2].append(riga[2])
+                elif riga[3].lower() == "cliente":
+                    if self.cliente[3]:
+                        break
+                    elif riga[1] == True:
+                        self.cliente[1].append(riga[0])
+                        self.cliente[2].append(riga[2])
+                elif riga[3].lower() == "produttore":
+                    if self.produttore[3]:
+                        break
+                    elif riga[1] == True:
+                        self.produttore[1].append(riga[0])
+                        self.produttore[2].append(riga[2])
+
         self._refresh()
 
-    def exportss(self, filename):
+    def on_tipo_statistica_combo_changed(self, combo):
+        tipo = combo.get_active_text()
+        if tipo == "CALCOLO RICARICO MEDIO E INFLUENZA SULLE VENDITE":
+            self.tipo_stat = 1
+        elif tipo =="CONTROLLO FATTURATO":
+            self.tipo_stat = 2
+        elif tipo == "TOTALI FATTURATO":
+            self.tipo_stat == 3
+
+    def calcolo_ricarico_medio_e_influenza_sulle_vendite(self):
         idsCliente = []
         idsArticoli = []
         artiID = []
@@ -226,7 +351,7 @@ class StatisticaGenerale(GladeWidget):
         # Prelevo i dati dalla ui
         daData = stringToDate(self.da_data_entry.get_text())
         aData = stringToDate(self.a_data_entry.get_text())
-        produt = self.produttore_entry.get_text()
+
         # Id dei clienti
         clienti = ClienteCategoriaCliente().select(idCategoria = self.cateClienteId, batchSize=None)
         for cli in clienti:
@@ -377,3 +502,33 @@ class StatisticaGenerale(GladeWidget):
 
         view = HtmlViewer(pageData)
         return
+
+    def controllo_fatturato(self):
+        #print "I CLIENTI", self.cliente
+        if self.cliente[3]:
+            clienti = Cliente().select(batchSize=None)
+        elif not self.cliente[2]:
+            messageError(msg="NESSUN CLIENTE SELEZIONATO")
+        else:
+            clienti = self.cliente[1]
+        daData = stringToDate(self.da_data_entry.get_text())
+        aData = stringToDate(self.a_data_entry.get_text())
+        #print "eccoci_qui", daData, aData, clienti
+        diz = OrderedDict()
+        for c in clienti:
+            pbar(self.pbar,parziale=clienti.index(c), totale=len(clienti),text="GEN DATI", noeta = True)
+            docu = TestataDocumento().select(idCliente = c.id, batchSize=None)
+            #print "DOCU", docu
+            #print "PROVIAMO COSì", calcolaTotali(docu)
+            diz[c.id] = [c, calcolaTotali(docu, pbarr = self.pbarr), len(docu)]
+        pbar(self.pbar,stop=True)
+        pageData = {
+                "file": "statistica_controllo_fatturato.html",
+                "diz": diz,
+                "nomestatistica":self.nomestatistica,
+                "ricerca_stringa" : self.stringa.replace("\n","<br />"),
+
+                }
+
+        view = HtmlViewer(pageData)
+

@@ -1,0 +1,84 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+    <META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=utf-8">
+    <TITLE></TITLE>
+    <STYLE TYPE="text/css">
+    <!--
+        @page { size: landscape; margin: 2cm }
+        P { margin-bottom: 0.21cm }
+        TD P { margin-bottom: 0cm }
+        TH P { margin-bottom: 0cm }
+        A:link { so-language: zxx }
+    -->
+    </STYLE>
+</HEAD>
+<BODY LANG="it-IT" DIR="LTR">
+<P>Prospetto risultante per la statistica :{{pageData["ricerca_stringa"]}}</P>
+
+
+<P>Cliente:</P>
+<TABLE WIDTH=100% BORDER=1 BORDERCOLOR="#000000" CELLPADDING=4 CELLSPACING=0>
+    <COL WIDTH=37*>
+    <COL WIDTH=37*>
+    <COL WIDTH=37*>
+    <COL WIDTH=37*>
+    <COL WIDTH=37*>
+    <COL WIDTH=37*>
+    <COL WIDTH=37*>
+    <THEAD>
+        <TR VALIGN=TOP>
+            <TH WIDTH=18%>
+                <P>Ragione Sociale</P>
+            </TH>
+            <TH WIDTH=14%>
+                <P>Tot imponibile acquistato</P>
+            </TH>
+            <TH WIDTH=14%>
+                <P>Tot iva acquistato</P>
+            </TH>
+            <TH WIDTH=14%>
+                <P>Tot acquistato</P>
+            </TH>
+            <TH WIDTH=14%>
+                <P>Valore acq. medio</P>
+            </TH>
+            <TH WIDTH=10%>
+                <P>Numero acquisti</P>
+            </TH>
+        </TR>
+    </THEAD>
+    <TBODY>
+    {% for c in pageData["diz"] %}
+        <TR VALIGN=TOP>
+            <TD WIDTH=18%>
+                <P>{{pageData["diz"][c][0].ragione_sociale}}</P>
+            </TD>
+            <TD WIDTH=14%>
+                <P>{{utils.mNLC(pageData["diz"][c][1]["totale_imponibile_scontato"],2)}}</P>
+            </TD>
+            <TD WIDTH=14%>
+                <P>{{utils.mNLC(pageData["diz"][c][1]["totale_imposta_scontata"],2)}}</P>
+            </TD>
+            <TD WIDTH=14%>
+                <P><b>{{utils.mNLC(pageData["diz"][c][1]["totale_scontato"],2)}}</b></P>
+            </TD>
+            <TD WIDTH=14%>
+                {%if pageData["diz"][c][2] > 0 %}
+                <P>{{utils.mNLC(pageData["diz"][c][1]["totale_scontato"]/pageData["diz"][c][2],2)}}</P>
+                {% else %}
+                 <P> </P>
+                 {% endif %}
+            </TD>
+            <TD WIDTH=10%>
+                <P>{{pageData["diz"][c][2]}}</P>
+            </TD>
+        </TR>
+        {% endfor %}
+
+    </TBODY>
+</TABLE>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+</BODY>
+</HTML>

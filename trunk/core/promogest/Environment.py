@@ -347,12 +347,11 @@ def hook(et, ev, eb):
     if "OperationalError" in str(ev):
         delete_pickle()
         return
-    if not preEnv.web:
-        pg2log.info("\n  ".join (["Error occurred: traceback follows"]+list(traceback.format_exception(et, ev, eb))))
-        print "UN ERRORE È STATO INTERCETTATO\n\n ".join(list(traceback.format_exception(et, ev, eb)))
-        __sendmail()
-if not preEnv.web:
-    sys.excepthook = hook
+    pg2log.info("\n  ".join (["Error occurred: traceback follows"]+list(traceback.format_exception(et, ev, eb))))
+    print "\n  ".join(list(traceback.format_exception(et, ev, eb)))
+    __sendmail()
+#if not preEnv.web:
+sys.excepthook = hook
 
 # DA SPOSTARE ASSOLUTAMENTE QUANTO PRIMA
 

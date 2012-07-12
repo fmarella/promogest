@@ -2639,7 +2639,7 @@ def removeCodBarorphan():
             a.delete()
 
 
-def calcolaTotali(daos):
+def calcolaTotali(daos, pbarr=None):
     """
     Preleva i dati del totale del dao e ne fa un dizionario
     """
@@ -2675,6 +2675,9 @@ def calcolaTotali(daos):
     _cast_imposta = {}
 
     for tot in daos:
+        if pbarr:
+            pbar(pbarr,parziale=daos.index(tot), totale=len(daos),text=tot.intestatario[0:15], noeta=True)
+        tot.totali
         for u in tot._castellettoIva:
             if str(u['aliquota']) not in _cast_imponibile:
                 _cast_imponibile[str(u['aliquota'])] = Decimal(0)
@@ -2760,7 +2763,8 @@ def calcolaTotali(daos):
                     totale_pagato += tot.totale_pagato
         except:
             pass
-
+    if pbarr:
+        pbar(pbarr,stop=True)
     totaliGenerali = {
         "totale_imponibile_non_scontato": totale_imponibile_non_scontato,
         "totale_imponibile_scontato": totale_imponibile_scontato,
@@ -3118,7 +3122,7 @@ def format_sec(sec):
     hour, min_ = divmod(min_, 60)
     return '%d:%02d:%02d' % (hour, min_, sec)
 
-def pbar(pbar, parziale=1, totale=1, pulse=False, stop=False, text=""):
+def pbar(pbar, parziale=1, totale=1, pulse=False, stop=False, text="", noeta= False):
     if stop:
         pbar.grab_add()
         pbar.set_fraction(0)
@@ -3153,9 +3157,15 @@ def pbar(pbar, parziale=1, totale=1, pulse=False, stop=False, text=""):
                 eta = Environment.eta
         pbar.grab_add()
         if text:
-            pbar.set_text(text+" "+str(x)+"% ETA: "+str(eta))
+            if noeta:
+                pbar.set_text(text+" "+str(x)+"%")
+            else:
+                pbar.set_text(text+" "+str(x)+"% ETA: "+str(eta))
         else:
-            pbar.set_text(str(x)+"% ETA: "+str(eta))
+            if noeta:
+                pbar.set_text(str(x)+"%")
+            else:
+                pbar.set_text(str(x)+"% ETA: "+str(eta))
         if parziale == 0: parziale=1
         if totale ==0 :totale =1
         if totale - 1.0 >0:
