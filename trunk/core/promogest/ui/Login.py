@@ -224,7 +224,6 @@ class Login(GladeApp):
                             a.tipo_schemaa = ""
                         Environment.session.add(a)
                     Environment.session.commit()
-                print "CI SIAMO"
                 if Environment.tipodb != "sqlite":
                     Environment.params["schema"] = self.azienda
                     Environment.schema_azienda = self.azienda

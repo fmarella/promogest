@@ -207,7 +207,8 @@ class Main(GladeWidget):
         self.permanent_frames = permanent_frames
         self.currentFrame = None
         self.alarmFrame = None
-        self.shop = Environment.shop
+        from promogest.preEnv import shop
+        self.shop = shop
         self.creata = False
         if posso("SD"):
             self.sincro_db.destroy()

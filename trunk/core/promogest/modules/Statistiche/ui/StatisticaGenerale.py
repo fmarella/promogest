@@ -23,7 +23,10 @@
 
 import os
 import datetime
-from collections import OrderedDict
+try:
+    from collections import OrderedDict
+except:
+    from promogest.lib.ordereddict import OrderedDict
 from promogest.ui.GladeWidget import GladeWidget
 from promogest import Environment
 from promogest.dao.TestataMovimento import TestataMovimento
