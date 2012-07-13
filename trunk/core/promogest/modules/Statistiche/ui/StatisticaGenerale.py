@@ -520,7 +520,7 @@ class StatisticaGenerale(GladeWidget):
         diz = OrderedDict()
         for c in clienti:
             pbar(self.pbar,parziale=clienti.index(c), totale=len(clienti),text="GEN DATI", noeta = True)
-            docu = TestataDocumento().select(idCliente = c.id, batchSize=None)
+            docu = TestataDocumento().select(idCliente = c.id,daData=daData, aData=aData, batchSize=None)
             #print "DOCU", docu
             #print "PROVIAMO COSì", calcolaTotali(docu)
             diz[c.id] = [c, calcolaTotali(docu, pbarr = self.pbarr), len(docu)]

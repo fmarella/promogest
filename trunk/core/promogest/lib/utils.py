@@ -2639,7 +2639,7 @@ def removeCodBarorphan():
             a.delete()
 
 
-def calcolaTotali(daos, pbarr=None):
+def calcolaTotali(daos, pbarr=None, onlypag=True):
     """
     Preleva i dati del totale del dao e ne fa un dizionario
     """
@@ -2675,6 +2675,10 @@ def calcolaTotali(daos, pbarr=None):
     _cast_imposta = {}
 
     for tot in daos:
+        if onlypag:
+            if tot.operazione not in Environment.hapag:
+                continue
+
         if pbarr:
             pbar(pbarr,parziale=daos.index(tot), totale=len(daos),text=tot.intestatario[0:15], noeta=True)
         tot.totali
