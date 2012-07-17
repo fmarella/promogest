@@ -32,7 +32,10 @@
                 <P>Ragione Sociale</P>
             </TH>
             <TH WIDTH=14%>
-                <P>Tot imponibile acquistato</P>
+                <P>Tot imponibile </P>
+            </TH>
+            <TH WIDTH=14%>
+                <P>Tot NON base imponibile</P>
             </TH>
             <TH WIDTH=14%>
                 <P>Tot iva acquistato</P>
@@ -56,6 +59,9 @@
             </TD>
             <TD WIDTH=14%>
                 <P>{{utils.mNLC(pageData["diz"][c][1]["totale_imponibile_scontato"],2)}}</P>
+            </TD>
+                <TD WIDTH=14%>
+                <P>{{utils.mNLC(pageData["diz"][c][1]["totale_non_base_imponibile"],2)}}</P>
             </TD>
             <TD WIDTH=14%>
                 <P>{{utils.mNLC(pageData["diz"][c][1]["totale_imposta_scontata"],2)}}</P>
@@ -84,6 +90,9 @@
             </TD>
             <TD WIDTH=14%>
                 <P></P>
+                 </TD>
+                        <TD WIDTH=14%>
+                <P></P>
             </TD>
             <TD WIDTH=14%>
                 <P></P>
@@ -92,7 +101,13 @@
                  <P>PZ:{{utils.mN(pageData["diz"][c][3][k][1],1)}}</P>
             </TD>
             <TD WIDTH=10%>
+                {%if pageData["diz"][c][1]["totale_imponibile_scontato"] > 0 %}
                 <P>{{utils.mN(pageData["diz"][c][3][k][0]*100/pageData["diz"][c][1]["totale_imponibile_scontato"],1)}}%</P>
+                {% elif pageData["diz"][c][1]["totale_non_base_imponibile"] > 0 %}
+                <P>{{utils.mN(pageData["diz"][c][3][k][0]*100/pageData["diz"][c][1]["totale_non_base_imponibile"],1)}}%</P>
+                {% else %}
+                 <P> </P>
+                 {% endif %}
             </TD>
         </TR>
         {% endfor %}
@@ -107,6 +122,9 @@
             <TD WIDTH=14%>
                 <P></P>
             </TD>
+                        <TD WIDTH=14%>
+                <P></P>
+                 </TD>
             <TD WIDTH=14%>
                 <P></P>
             </TD>
@@ -114,7 +132,13 @@
                  <P>PZ:{{utils.mN(pageData["diz"][c][4][k][1],1)}}</P>
             </TD>
             <TD WIDTH=10%>
+               {%if pageData["diz"][c][1]["totale_imponibile_scontato"] > 0 %}
                 <P>{{utils.mN(pageData["diz"][c][4][k][0]*100/pageData["diz"][c][1]["totale_imponibile_scontato"],1)}}%</P>
+                {% elif pageData["diz"][c][1]["totale_non_base_imponibile"] > 0 %}
+                <P>{{utils.mN(pageData["diz"][c][4][k][0]*100/pageData["diz"][c][1]["totale_non_base_imponibile"],1)}}%</P>
+                {% else %}
+                 <P> </P>
+                 {% endif %}
             </TD>
         </TR>
         {% endfor %}

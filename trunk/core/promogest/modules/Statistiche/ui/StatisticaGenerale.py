@@ -170,11 +170,6 @@ class StatisticaGenerale(GladeWidget):
             self.produttore[3] = False
 
 
-
-
-
-
-
     def on_statistica_dialog_destroy(self, widget):
         self.a_data_entry.destroy()
         self.da_data_entry.destroy()
@@ -257,7 +252,7 @@ class StatisticaGenerale(GladeWidget):
         res = Environment.params['session'].query(
                 Articolo.produttore).order_by(Articolo.produttore).distinct()
         for c in res:
-            if c[0].strip() is not "":
+            if c[0].strip() is not "" :
                 if c[0] in self.produttore[2] or self.produttore[3]:
                     self._treeViewModel.append([c , True, c[0], self.produttore[0]])
                 else:
@@ -508,12 +503,30 @@ class StatisticaGenerale(GladeWidget):
 
     def controllo_fatturato(self):
         #print "I CLIENTI", self.cliente
-        if self.cliente[3]:
-            clienti = Cliente().select(batchSize=None)
-        elif not self.cliente[2]:
-            messageError(msg="NESSUN CLIENTE SELEZIONATO")
+        clienti1 = []
+
+        if self.cateCliente[3]:
+            catesCli = CategoriaCliente().select(batchSize=None)
         else:
-            clienti = self.cliente[1]
+            catesCli = self.cateCliente[1]
+        idcates = [x.id for x in catesCli]
+        clie = [x.id_cliente for x in ClienteCategoriaCliente().select(idCategoria = idcates, batchSize=None)]
+        for c in clie:
+            clienti1.append(Cliente().getRecord(id=c))
+        #print "clientiiiiiiiiiiiiiiiiiiiiiiiiii", clienti
+
+        if self.cliente[3]:
+            clienti2 = Cliente().select(batchSize=None)
+        #elif not self.cliente[2]:
+            #messageError(msg="NESSUN CLIENTE SELEZIONATO")
+        else:
+            clienti2 = self.cliente[1]
+        clienti = clienti1+clienti2
+
+
+
+
+
         daData = stringToDate(self.da_data_entry.get_text())
         aData = stringToDate(self.a_data_entry.get_text())
         #print self.cateArticolo
