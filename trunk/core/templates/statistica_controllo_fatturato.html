@@ -73,7 +73,51 @@
             <TD WIDTH=10%>
                 <P>{{pageData["diz"][c][2]}}</P>
             </TD>
+        </TR >
+        {% for k in pageData["diz"][c][3] %}
+                <TR VALIGN=TOP style="background:#CBFFCB">
+            <TD WIDTH=18%>
+                <P>{{k}}</P>
+            </TD>
+            <TD WIDTH=14%>
+                <P>{{utils.mNLC(pageData["diz"][c][3][k][0],2)}}</P>
+            </TD>
+            <TD WIDTH=14%>
+                <P></P>
+            </TD>
+            <TD WIDTH=14%>
+                <P></P>
+            </TD>
+            <TD WIDTH=14%>
+                 <P>PZ:{{utils.mN(pageData["diz"][c][3][k][1],1)}}</P>
+            </TD>
+            <TD WIDTH=10%>
+                <P>{{utils.mN(pageData["diz"][c][3][k][0]*100/pageData["diz"][c][1]["totale_imponibile_scontato"],1)}}%</P>
+            </TD>
         </TR>
+        {% endfor %}
+                {% for k in pageData["diz"][c][4] %}
+                <TR VALIGN=TOP style="background:#CBFFFF">
+            <TD WIDTH=18%>
+                <P>{{k}}</P>
+            </TD>
+            <TD WIDTH=14%>
+                <P>{{utils.mNLC(pageData["diz"][c][4][k][0],2)}}</P>
+            </TD>
+            <TD WIDTH=14%>
+                <P></P>
+            </TD>
+            <TD WIDTH=14%>
+                <P></P>
+            </TD>
+            <TD WIDTH=14%>
+                 <P>PZ:{{utils.mN(pageData["diz"][c][4][k][1],1)}}</P>
+            </TD>
+            <TD WIDTH=10%>
+                <P>{{utils.mN(pageData["diz"][c][4][k][0]*100/pageData["diz"][c][1]["totale_imponibile_scontato"],1)}}%</P>
+            </TD>
+        </TR>
+        {% endfor %}
         {% endfor %}
 
     </TBODY>

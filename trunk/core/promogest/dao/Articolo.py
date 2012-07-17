@@ -638,6 +638,8 @@ class Articolo(Dao):
                 fornitura.c.codice_articolo_fornitore == v)}
         elif k == 'produttore':
             dic = {k: articolo.c.produttore.ilike("%" + v + "%")}
+        elif k == 'produttoreEM':
+            dic = {k: articolo.c.produttore == v}
         elif k == 'idFamiglia':
             dic = {k: articolo.c.id_famiglia_articolo == v}
         elif k == 'idAliquotaIva':

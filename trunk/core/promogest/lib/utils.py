@@ -2678,7 +2678,6 @@ def calcolaTotali(daos, pbarr=None, onlypag=True):
         if onlypag:
             if tot.operazione not in Environment.hapag:
                 continue
-
         if pbarr:
             pbar(pbarr,parziale=daos.index(tot), totale=len(daos),text=tot.intestatario[0:15], noeta=True)
         tot.totali

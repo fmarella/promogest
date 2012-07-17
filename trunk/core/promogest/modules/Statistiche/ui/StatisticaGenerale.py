@@ -45,7 +45,7 @@ from promogest.ui.gtk_compat import *
 from promogest.dao.DaoUtils import *
 from promogest.lib.HtmlViewer import HtmlViewer
 from promogest.lib.relativedelta import relativedelta
-
+from promogest.dao.DaoUtils import ivaCache
 
 class StatisticaGenerale(GladeWidget):
     """ Questa classe nasce con l'intenzione di gestire una interfaccia di
@@ -187,7 +187,7 @@ class StatisticaGenerale(GladeWidget):
                 self.calcolo_ricarico_medio_e_influenza_sulle_vendite()
             elif self.tipo_stat == 2:
                 self.controllo_fatturato()
-                messageInfo(msg=" ANCORA NON GESTITO")
+                #messageInfo(msg=" ANCORA NON GESTITO")
             elif self.tipo_stat == 3:
                 messageInfo(msg=" ANCORA NON GESTITO")
 
@@ -516,14 +516,91 @@ class StatisticaGenerale(GladeWidget):
             clienti = self.cliente[1]
         daData = stringToDate(self.da_data_entry.get_text())
         aData = stringToDate(self.a_data_entry.get_text())
-        #print "eccoci_qui", daData, aData, clienti
+        #print self.cateArticolo
+        #print self.produttore
+
         diz = OrderedDict()
+        dictIva =ivaCache()
         for c in clienti:
             pbar(self.pbar,parziale=clienti.index(c), totale=len(clienti),text="GEN DATI", noeta = True)
             docu = TestataDocumento().select(idCliente = c.id,daData=daData, aData=aData, batchSize=None)
-            #print "DOCU", docu
-            #print "PROVIAMO COSì", calcolaTotali(docu)
-            diz[c.id] = [c, calcolaTotali(docu, pbarr = self.pbarr), len(docu)]
+            rowDiz = OrderedDict()
+            for d in docu:
+                if d.operazione not in Environment.hapag:
+                    continue
+                for r in d.righe:
+                    if r.id_articolo:
+                        if r.id_articolo in rowDiz:
+                            a = rowDiz[r.id_articolo]
+                            a.append(r)
+                        else:
+                            rowDiz[r.id_articolo] = [r]
+
+            artCatArt = []
+            dizcate = OrderedDict()
+            dizprod = OrderedDict()
+
+            #Categorie Articolo
+            if self.cateArticolo[3]:
+                cates = CategoriaArticolo().select(batchSize=None)
+            elif self.cateArticolo[1]:
+                cates = self.cateArticolo[1]
+            else:
+                cates = []
+
+            for cate in cates:
+                artCatArt = Articolo().select(idCategoria= cate.id, batchSize=None)
+                idArt = [x.id for x in artCatArt]
+                pezzi = 0
+                totRiga = 0
+                for d in rowDiz:
+                    categoria = Articolo().getRecord(id=d).denominazione_categoria
+                    if d in idArt:
+                        for cc in rowDiz[d]:
+                            if str(cc.testata_movimento.opera.segno) == "-":
+                                if cc.testata_movimento.opera.fonte_valore == "vendita_iva":
+                                    # scorporo l'iva per avere tutti valori imponibili
+                                    idAliquotaIva = cc.id_iva
+                                    daoiva = dictIva[idAliquotaIva][0]
+                                    aliquotaIvaRiga = daoiva.percentuale
+                                    totRigaImponibile = cc.valore_unitario_netto/(1+aliquotaIvaRiga/100)
+                                    totRiga += totRigaImponibile
+                                else:
+                                    totRiga += cc.totaleRiga
+                            pezzi += cc.quantita * cc.moltiplicatore
+                        dizcate[categoria] = [totRiga,pezzi, categoria]
+            #Produttore
+            if self.produttore[3]:
+                produts = Environment.params['session'].query(
+                        Articolo.produttore).order_by(Articolo.produttore).distinct()
+            elif self.produttore[1]:
+                produts = self.produttore[1]
+            else:
+                produts = []
+
+            for prod in produts:
+                artProd = Articolo().select(produttoreEM=prod[0], batchSize=None)
+                idArt = [x.id for x in artProd]
+                pezzi = 0
+                totRiga = 0
+                for d in rowDiz:
+                    if d in idArt:
+                        for cc in rowDiz[d]:
+                            if str(cc.testata_movimento.opera.segno) == "-":
+                                if cc.testata_movimento.opera.fonte_valore == "vendita_iva":
+                                    # scorporo l'iva per avere tutti valori imponibili
+                                    idAliquotaIva = cc.id_iva
+                                    daoiva = dictIva[idAliquotaIva][0]
+                                    aliquotaIvaRiga = daoiva.percentuale
+                                    totRigaImponibile = cc.valore_unitario_netto/(1+aliquotaIvaRiga/100)
+                                    totRiga += totRigaImponibile
+                                else:
+                                    totRiga += cc.totaleRiga
+                            pezzi += cc.quantita * cc.moltiplicatore
+                        dizprod[prod[0]] = [totRiga,pezzi, prod[0]]
+
+            diz[c.id] = [c, calcolaTotali(docu, pbarr = self.pbarr), len(docu), dizcate, dizprod]
+            #print "DIZZZZZZZZZZ", diz
         pbar(self.pbar,stop=True)
         pageData = {
                 "file": "statistica_controllo_fatturato.html",
