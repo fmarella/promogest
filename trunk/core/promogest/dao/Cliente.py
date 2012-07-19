@@ -31,6 +31,41 @@ from promogest.dao.User import User
 from promogest.dao.DestinazioneMerce import DestinazioneMerce
 from promogest.dao.DaoUtils import codeIncrement, getRecapitiCliente, get_columns
 
+
+def getNuovoCodiceCliente():
+    """
+    Restituisce il codice progressivo per un nuovo cliente
+    """
+
+    lunghezzaCodice = 10
+    prefissoCodice = 'CL'
+    codice = ''
+    listacodici= []
+    try:
+        n = 1
+        clienti = session.query(Cliente.codice).all()
+        clienti.reverse()
+
+        for q in clienti:
+            codice = codeIncrement(q[0])
+            if not codice or Cliente().select(codicesatto=codice):
+                continue
+            else:
+                if not Cliente().select(codicesatto=codice):
+                    return codice
+
+    except:
+        pass
+    try:
+        if not codice:
+            from promogest.lib.utils import setconf
+            dd = setconf("Clienti", "cliente_struttura_codice")
+            codice = codeIncrement(dd)
+    except Exception:
+        pass
+    return codice
+
+
 class Cliente(Dao):
     """
     Dao Cliente
@@ -47,6 +82,12 @@ class Cliente(Dao):
     def _setCategorieCliente(self, value):
         self.__categorieCliente = value
     categorieCliente = property(_getCategorieCliente, _setCategorieCliente)
+
+    def persist(self):
+        if not self.codice:
+            self.codice = getNuovoCodiceCliente()
+        session.add(self)
+        session.commit()
 
     def delete(self):
         """
@@ -176,39 +217,6 @@ class Cliente(Dao):
         elif k == 'idCategoria':
             dic = {k:and_(Cliente.id==ClienteCategoriaCliente.id_cliente,ClienteCategoriaCliente.id_categoria_cliente==v)}
         return dic[k]
-
-def getNuovoCodiceCliente():
-    """
-    Restituisce il codice progressivo per un nuovo cliente
-    """
-
-    lunghezzaCodice = 10
-    prefissoCodice = 'CL'
-    codice = ''
-    listacodici= []
-    try:
-        n = 1
-        clienti = session.query(Cliente.codice).all()
-        clienti.reverse()
-
-        for q in clienti:
-            codice = codeIncrement(q[0])
-            if not codice or Cliente().select(codicesatto=codice):
-                continue
-            else:
-                if not Cliente().select(codicesatto=codice):
-                    return codice
-
-    except:
-        pass
-    try:
-        if not codice:
-            from promogest.lib.utils import setconf
-            dd = setconf("Clienti", "cliente_struttura_codice")
-            codice = codeIncrement(dd)
-    except Exception as e:
-        pass
-    return codice
 
 t_cliente = Table('cliente',
               params['metadata'],
