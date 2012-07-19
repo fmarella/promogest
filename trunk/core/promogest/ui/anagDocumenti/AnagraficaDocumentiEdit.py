@@ -870,16 +870,6 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                     _('Inserire l\'intestatario del documento !'))
 
         self.dao.data_documento = stringToDate(self.data_documento_entry.get_text())
-        date = time.strftime("%Y")
-        if date != Environment.workingYear:
-
-            msg = _(""" ATTENZIONE!!
-    L'anno di lavoro e l'anno di creazione documento non corrispondono.
-       Vuoi che la DATA UTILIZZATA SIA 31/12/%s?
-
-        """) %str(Environment.workingYear)
-            if YesNoDialog(msg=msg, transient=None):
-                self.dao.data_documento = stringToDate("31/12/" + Environment.workingYear)
 
         if self.dao.id is not None and self.numero_documento_entry.get_text() != '0':
 
