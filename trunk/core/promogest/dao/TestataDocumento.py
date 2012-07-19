@@ -58,6 +58,8 @@ from promogest import Environment
 
 import datetime
 
+class TipoDocumento:
+    DDT_VENDITA = 'DDT vendita'
 
 class TestataDocumento(Dao):
 
