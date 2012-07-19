@@ -23,7 +23,7 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 from promogest.Environment import *
-from promogest.dao.DoaUtils import numeroRegistroGet
+from promogest.dao.DaoUtils import numeroRegistroGet
 from promogest.dao.RigaDocumento import RigaDocumento
 from promogest.dao.DestinazioneMerce import DestinazioneMerce
 from promogest.dao.TestataDocumento import TestataDocumento
