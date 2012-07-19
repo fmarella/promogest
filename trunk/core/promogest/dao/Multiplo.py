@@ -1,16 +1,32 @@
-#-*- coding: utf-8 -*-
-#
-"""
- Promogest
- Copyright (C) 2005-2008 by Promotux Informatica - http://www.promotux.it/
- Author: Francesco Meloni <francesco@promotux.it>
- License: GNU GPLv2
-"""
+# -*- coding: utf-8 -*-
+
+#    Copyright (C) 2005-2012 by Promotux
+#                        di Francesco Meloni snc - http://www.promotux.it/
+
+#    Author: Francesco Meloni <francesco@promotux.it>
+#    Author: Francesco Marella <francesco.marella@gmail.com>
+
+#    This file is part of Promogest.
+
+#    Promogest is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 2 of the License, or
+#    (at your option) any later version.
+
+#    Promogest is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+
+#    You should have received a copy of the GNU General Public License
+#    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
+
 from sqlalchemy import Table
 from sqlalchemy.orm import mapper, relation
 from promogest.Environment import params, conf
 from UnitaBase import UnitaBase
 from Dao import Dao
+
 
 class Multiplo(Dao):
 
@@ -19,83 +35,90 @@ class Multiplo(Dao):
 
     def filter_values(self,k,v):
         if k == 'idArticolo':
-            dic= { k : multiplo.c.id_articolo== v}
+            dic = {k : t_multiplo.c.id_articolo==v}
         elif k == 'idUnitaBase':
-            dic = {k: multiplo.c.id_unita_base == v}
+            dic = {k: t_multiplo.c.id_unita_base==v}
         elif k == 'denominazione':
-            dic = {k: multiplo.c.denominazione.ilike("%"+v+"%")}
-        return  dic[k]
+            dic = {k: t_multiplo.c.denominazione.ilike("%"+v+"%")}
+        return dic[k]
 
-    def _unitabase(self):
-        if self.uniba:  return self.uniba.denominazione
-        else: return ""
-    unita_base = property(_unitabase)
+    @property
+    def unita_base(self):
+        if self.uniba:
+            return self.uniba.denominazione
+        else:
+            return ""
 
-    def _articolo(self):
-        if self.arti: return self.arti.denominazione
-        else: return ""
-    articolo = property(_articolo)
+    @property
+    def articolo(self):
+        if self.arti:
+            return self.arti.denominazione
+        else:
+            return ""
 
     if hasattr(conf, "PromoWear") and getattr(conf.PromoWear,'mod_enable')=="yes":
-        def _denominazione_gruppo_taglia(self):
-            #if self.ATC: return self.ATC.denominazione or ""
-            if self.arti:return self.arti.denominazione_gruppo_taglia
-            #else: return ""
-        denominazione_gruppo_taglia = property(_denominazione_gruppo_taglia)
+        @property
+        def denominazione_gruppo_taglia(self):
+            if self.arti:
+                return self.arti.denominazione_gruppo_taglia
 
         def _id_articolo_padre(self):
-            #if self.ATC: return self.ATC.id_articolo_padre or None
-            if self.arti:return self.arti.id_articolo_padre
-        id_articolo_padre_taglia_colore=property(_id_articolo_padre)
+            if self.arti:
+                return self.arti.id_articolo_padre
+        id_articolo_padre_taglia_colore = property(_id_articolo_padre)
         id_articolo_padre = property(_id_articolo_padre)
 
-        def _id_gruppo_taglia(self):
-            #if self.ATC: return self.ATC.id_gruppo_taglia or None
-            if self.arti:return self.arti.id_gruppo_taglia
-        id_gruppo_taglia=property(_id_gruppo_taglia)
+        @property
+        def id_gruppo_taglia(self):
+            if self.arti:
+                return self.arti.id_gruppo_taglia
 
-        def _id_genere(self):
-            #if self.ATC: return self.ATC.id_genere or None
-            if self.arti:return self.arti.id_genere
-            #else: return ""
-        id_genere = property(_id_genere)
+        @property
+        def id_genere(self):
+            if self.arti:
+                return self.arti.id_genere
 
-        def _id_stagione(self):
-            if self.arti:return self.arti.id_stagione
-        id_stagione = property(_id_stagione)
+        @property
+        def id_stagione(self):
+            if self.arti:
+                return self.arti.id_stagione
 
-        def _id_anno(self):
-            if self.arti:return self.arti.id_anno
-        id_anno = property(_id_anno)
+        @property
+        def id_anno(self):
+            if self.arti:
+                return self.arti.id_anno
 
-        def _denominazione_taglia(self):
-            """ esempio di funzione  unita alla property """
-            if self.arti:return self.arti.denominazione_taglia
-        denominazione_taglia = property(_denominazione_taglia)
+        @property
+        def denominazione_taglia(self):
+            if self.arti:
+                return self.arti.denominazione_taglia
 
-        def _denominazione_colore(self):
-            """ esempio di funzione  unita alla property """
-            if self.arti:return self.arti.denominazione_colore
-        denominazione_colore = property(_denominazione_colore)
+        @property
+        def denominazione_colore(self):
+            if self.arti:
+                return self.arti.denominazione_colore
 
-        def _anno(self):
-            """ esempio di funzione  unita alla property """
-            if self.arti:return self.arti.anno
-        anno = property(_anno)
+        @property
+        def anno(self):
+            if self.arti:
+                return self.arti.anno
 
-        def _stagione(self):
-            """ esempio di funzione  unita alla property """
-            if self.arti:return self.arti.stagione
-        stagione = property(_stagione)
+        @property
+        def stagione(self):
+            if self.arti:
+                return self.arti.stagione
 
-        def _genere(self):
-            """ esempio di funzione  unita alla property """
-            if self.arti:return self.arti.genere
-        genere = property(_genere)
+        @property
+        def genere(self):
+            if self.arti:
+                return self.arti.genere
 
-multiplo=Table('multiplo',params['metadata'],schema = params['schema'], autoload=True)
+t_multiplo = Table('multiplo',
+                   params['metadata'],
+                   schema=params['schema'],
+                   autoload=True)
 
-std_mapper = mapper(Multiplo, multiplo, properties={
-    "uniba":relation(UnitaBase,primaryjoin=multiplo.c.id_unita_base==UnitaBase.id),
-    #"arti":relation(Articolo,primaryjoin=multiplo.c.id_articolo==Articolo.id)
-        }, order_by=multiplo.c.id)
+std_mapper = mapper(Multiplo, t_multiplo, properties={
+        "uniba":relation(UnitaBase, primaryjoin=t_multiplo.c.id_unita_base==UnitaBase.id),
+        #"arti":relation(Articolo,primaryjoin=multiplo.c.id_articolo==Articolo.id)
+    }, order_by=t_multiplo.c.id)
