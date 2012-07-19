@@ -2670,6 +2670,7 @@ def calcolaTotali(daos, pbarr=None, onlypag=True):
     totale_scontato = 0
     totale_sospeso = 0
     totale_pagato = 0
+    numero_documenti = 0
 
     _cast_imponibile = {}
     _cast_imposta = {}
@@ -2678,6 +2679,7 @@ def calcolaTotali(daos, pbarr=None, onlypag=True):
         if onlypag:
             if tot.operazione not in Environment.hapag:
                 continue
+        numero_documenti += 1
         if pbarr:
             pbar(pbarr,parziale=daos.index(tot), totale=len(daos),text=tot.intestatario[0:15], noeta=True)
         tot.totali
@@ -2779,7 +2781,8 @@ def calcolaTotali(daos, pbarr=None, onlypag=True):
         "totale_pagato": totale_pagato,
         "totale_sospeso": totale_sospeso,
         "imponibile_aliquote": _cast_imponibile,
-        "imposta_aliquote": _cast_imposta
+        "imposta_aliquote": _cast_imposta,
+        "numero_documenti": numero_documenti
                         }
     return totaliGenerali
 
