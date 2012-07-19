@@ -509,12 +509,13 @@ class TestataDocumento(Dao):
 
         self.scontiTestataDocumentoDel(id=self.id)
 
-
         if posso("GN"):
             self.testataDocumentoGestioneNoleggioDel(id=self.id)
         self.righeDocumentoDel(id=self.id)
         #verifica se sono presenti righe di movimentazione magazzino
-        contieneMovimentazione = self.contieneMovimentazione(righe=self.righeDocumento)
+        contieneMovimentazione = False
+        if hasattr(self, 'righeDocumento'):
+            contieneMovimentazione = self.contieneMovimentazione(righe=self.righeDocumento)
         #cerco le testate movimento associate al documento
         #FIXME: se ne trovo piu' di una ? (ad esempio se il documento e' in realta' un cappello)
 #        res = TestataMovimento().select(idTestataDocumento = self.id,batchSize=None)
@@ -563,10 +564,11 @@ class TestataDocumento(Dao):
                 DaoTestataMovimento.righeMovimento=self.righeDocumento
                 DaoTestataMovimento.persist()
         else:
-            for riga in self.righeDocumento:
-                if self.id:
-                    riga.id_testata_documento = self.id
-                    riga.persist()
+            if hasattr(self, 'righeDocumento'):
+                for riga in self.righeDocumento:
+                    if self.id:
+                        riga.id_testata_documento = self.id
+                        riga.persist()
 
         #Gestione anche della prima nota abbinata al pagamento
         #agganciare qui con dei controlli, le cancellazioni preventive ed i
@@ -670,7 +672,7 @@ class TestataDocumento(Dao):
             tn.data_fine_noleggio = self.data_fine_noleggio
             tn.persist()
 
-        if self.scontiSuTotale:
+        if hasattr(self, 'scontiSuTotale'):
             self.scontiTestataDocumentoDel(id=self.id)
             for scontisutot in self.scontiSuTotale:
                 scontisutot.id_testata_documento = self.id
