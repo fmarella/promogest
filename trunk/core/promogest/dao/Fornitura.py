@@ -127,29 +127,29 @@ class Fornitura(Dao):
 
     def filter_values(self,k,v):
         if k == 'codiceArticoloFornitore':
-            dic = {k: fornitura.c.codice_articolo_fornitore.ilike("%"+v+"%")}
+            dic = {k: t_fornitura.c.codice_articolo_fornitore.ilike("%"+v+"%")}
         elif k == 'codiceArticoloFornitoreEM' or k == "codiceArticoloFornitoreEsatto":
-            dic = {k: fornitura.c.codice_articolo_fornitore == v}
+            dic = {k: t_fornitura.c.codice_articolo_fornitore == v}
         elif k == 'idFornitore':
-            dic= {k: fornitura.c.id_fornitore ==v}
+            dic= {k: t_fornitura.c.id_fornitore ==v}
         elif k == 'idFornitoreList':
-            dic= {k: fornitura.c.id_fornitore.in_(v)}
+            dic= {k: t_fornitura.c.id_fornitore.in_(v)}
         elif k == 'idArticolo':
-            dic = {k: fornitura.c.id_articolo==v}
+            dic = {k: t_fornitura.c.id_articolo==v}
         elif k == 'idArticoloList':
-            dic = {k: fornitura.c.id_articolo.in_(v)}
+            dic = {k: t_fornitura.c.id_articolo.in_(v)}
         elif k == 'daDataPrezzo':
-            dic = {k: fornitura.c.data_prezzo >= v}
+            dic = {k: t_fornitura.c.data_prezzo >= v}
         elif k == 'dataPrezzo':
-            dic = {k: fornitura.c.data_prezzo == v}
+            dic = {k: t_fornitura.c.data_prezzo == v}
         elif k == 'dataFornitura':
-            dic = {k: fornitura.c.data_fornitura == v}
+            dic = {k: t_fornitura.c.data_fornitura == v}
         elif k == 'aDataPrezzo':
-            dic = {k: fornitura.c.data_prezzo <= v}
+            dic = {k: t_fornitura.c.data_prezzo <= v}
         elif k == 'daDataFornitura':
-            dic = {k: fornitura.c.data_fornitura >= v}
+            dic = {k: t_fornitura.c.data_fornitura >= v}
         elif k == 'aDataFornitura':
-            dic = {k: fornitura.c.data_fornitura <= v}
+            dic = {k: t_fornitura.c.data_fornitura <= v}
         return dic[k]
 
     def scontiFornituraDel(self, idDao):
@@ -172,7 +172,7 @@ t_fornitura = Table('fornitura',
                     params['metadata'],
                     schema=params['schema'],
                     autoload=True)
-
+fornitura = t_fornitura
 if "numero_lotto" not in [c.name for c in t_fornitura.columns]:
     col = Column('numero_lotto', String(200))
     col.create(fornitura)
