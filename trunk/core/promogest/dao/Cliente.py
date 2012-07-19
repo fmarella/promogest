@@ -74,6 +74,16 @@ class Cliente(Dao):
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
 
+    def __repr__(self):
+        def _descrizione(obj):
+            if obj.tipo=='PG':
+                return ', ragione sociale="{0}"'.format(obj.ragione_sociale)
+            elif obj.tipo == 'PF':
+                return ', nome e cognome="{0} {1}"'.format(obj.nome, obj.cognome)
+            else:
+                return ''
+        return '<Cliente ID={0}{1}>'.format(self.codice, _descrizione(self))
+
     def _getCategorieCliente(self):
         self.__dbCategorieCliente = self.cliente_categoria_cliente
         self.__categorieCliente = self.__dbCategorieCliente[:]
