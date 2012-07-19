@@ -21,10 +21,10 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-from Dao import Dao
 
 from sqlalchemy import *
 from sqlalchemy.orm import *
+from Dao import Dao
 from Operazione import Operazione
 from ScontoTestataDocumento import ScontoTestataDocumento
 from DestinazioneMerce import DestinazioneMerce
@@ -50,10 +50,8 @@ from promogest.modules.Pagamenti.dao.TestataDocumentoScadenza import TestataDocu
 from promogest.dao.InformazioniFatturazioneDocumento import InformazioniFatturazioneDocumento
 import promogest.lib.ibanlib
 
-from promogest.dao.DaoUtils import ivaCache
+from promogest.dao.DaoUtils import ivaCache, numeroRegistroGet
 from decimal import *
-from promogest.lib.utils import *
-from promogest.ui.utilsCombobox import *
 
 from promogest.Environment import *
 from promogest import Environment
@@ -135,9 +133,7 @@ class TestataDocumento(Dao):
                 self.__dbRigheMovimentoPart = self.TM[0].rigamov
             elif self.TM and len(self.TM) >1:
                 Environment.pg2log.info("ATTENZIONE due movimenti fanno riferimento ad una sola testata documento:"+str(self.id))
-                messageInfo(msg="""ATTENZIONE, Più di un movimento fa riferimento
-                                                    #allo stesso documento.
-                                                    #Contattare l'assistenza con urgenza""")
+                raise Exception("Più di un movimento fa riferimento allo stesso documento!")
             self.__dbRigheDocumento = self.__dbRigheDocumentoPart + self.__dbRigheMovimentoPart
             self.__dbRigheDocumento = self.sort_by_attr(self.__dbRigheDocumento,"id")
             self.__righeDocumento = self.__dbRigheDocumento[:]
@@ -495,6 +491,12 @@ class TestataDocumento(Dao):
         if not self.ckdd(self):
             return
         DaoTestataMovimento = None
+
+        if not self.numero:
+            valori = numeroRegistroGet(tipo=self.operazione, date=self.data_documento)
+            self.numero = valori[0]
+            self.registro_numerazione = valori[1]
+
         params["session"].add(self)
         params["session"].commit()
 

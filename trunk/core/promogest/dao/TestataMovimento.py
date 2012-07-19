@@ -33,7 +33,6 @@ from promogest.dao.RigaDocumento import RigaDocumento
 from promogest.dao.Riga import Riga
 from promogest.dao.RigaMovimentoFornitura import RigaMovimentoFornitura
 from promogest.dao.NumeroLottoTemp import NumeroLottoTemp
-from promogest.lib.utils import numeroRegistroGet
 from Fornitore import Fornitore
 from Cliente import Cliente
 from Fornitura import Fornitura

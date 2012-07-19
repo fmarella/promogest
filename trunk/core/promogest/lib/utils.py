@@ -2330,54 +2330,6 @@ def hasAction(actionID=None):
         dialog.destroy()
         return False
 
-def numeroRegistroGet(tipo=None, date=None):
-    """
-    Attenzione, funzione improvvisata, controllare meglio ed
-    aggiungere i check sui diversi tipi di rotazione
-    """
-    from promogest.dao.TestataMovimento import TestataMovimento
-    from promogest.dao.TestataDocumento import TestataDocumento
-    from promogest.dao.Setting import Setting
-    date = time.strftime("%Y")
-    if date != Environment.workingYear:
-        #print "ATTENZIONE ANNO DI LAVORO DIVERSO QUALE PRENDERE??????"
-        msg = _(""" ATTENZIONE!!
-L'anno di lavoro e l'anno di creazione documento non corrispondono.
-   Vuoi che la numerazione incrementi l'anno di lavoro selezionato ( %s )?
-""") %str(Environment.workingYear)
-        if YesNoDialog(msg=msg):
-            date = Environment.workingYear
-
-    numeri = []
-
-    _key= str(tipo+".registro").strip()
-    registro = Setting().getRecord(id=_key)
-    if not registro :
-        raise Exception, "ATTENZIONE , Registro numerazione non trovato"
-
-    registrovalue = registro.value
-    registrovalueforrotazione = registrovalue+".rotazione"
-    rotazione = Setting().select(keys=registrovalueforrotazione)
-    if not rotazione:
-        print "ATTENZIONE , Registro numerazione non trovato"
-
-    rotazione_temporale_dict = {'annuale':"year",
-                                "mensile":"month",
-                                "giornaliera":"day"}
-
-    if tipo == "Movimento":
-        numeroSEL = TestataMovimento()\
-            .select(complexFilter=(and_(TestataMovimento.data_movimento.between(datetime.date(int(date), 1, 1), datetime.date(int(date) + 1, 1, 1)) ,
-                            TestataMovimento.registro_numerazione==registrovalue)), batchSize=None)
-    else:
-        numeroSEL = TestataDocumento().select(complexFilter=(and_(TestataDocumento.data_documento.between(datetime.date(int(date), 1, 1), datetime.date(int(date) + 1, 1, 1)) ,
-                        TestataDocumento.registro_numerazione==registrovalue)), batchSize=None)
-    if numeroSEL:
-        numero = max([p.numero for p in numeroSEL]) + 1
-    else:
-        numero = 1
-    return (numero, registrovalue)
-
 def idArticoloFromFornitura(k,v):
     """
     """

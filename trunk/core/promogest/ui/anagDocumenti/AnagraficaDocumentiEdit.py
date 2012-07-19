@@ -1065,13 +1065,6 @@ del documento.
             #questa parte rimanda ai pagamenti
             self.pagamenti_page.saveScadenze()
 
-        tipoid = findIdFromCombobox(self.id_operazione_combobox)
-        tipo = Operazione().getRecord(id=tipoid)
-        if not self.dao.numero:
-            valori = numeroRegistroGet(tipo=tipo.denominazione,
-                                    date=self.data_documento_entry.get_text())
-            self.dao.numero = valori[0]
-            self.dao.registro_numerazione= valori[1]
         #porto in persist tre dizionari: uno per gli sconti sul totale, l'altro per gli sconti sulle righe e le righe stesse
         self.dao.persist()
         pbar(self.dialog.pbar,parziale=4, totale=4)

@@ -23,13 +23,14 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 from promogest.Environment import *
-from promogest.lib.utils import *
-from promogest.ui.gtk_compat import *
+from promogest.dao.DoaUtils import numeroRegistroGet
 from promogest.dao.RigaDocumento import RigaDocumento
 from promogest.dao.DestinazioneMerce import DestinazioneMerce
 from promogest.dao.TestataDocumento import TestataDocumento
 from promogest.dao.TestataMovimento import TestataMovimento
 from promogest.dao.RigaMovimento import RigaMovimento
+from promogest.lib.utils import *
+from promogest.ui.gtk_compat import *
 
 
 class DuplicaInFattura(object):

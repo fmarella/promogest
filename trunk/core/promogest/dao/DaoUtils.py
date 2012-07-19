@@ -4,6 +4,8 @@
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
+#    Author: Francesco Marella <francesco.marella@gmail.com>
+
 #    This file is part of Promogest.
 
 #    Promogest is free software: you can redistribute it and/or modify
@@ -25,6 +27,44 @@ from sqlalchemy.orm import *
 from promogest import Environment
 
 
+def numeroRegistroGet(tipo=None, date=None):
+    """
+    """
+    #TODO: aggiungere i check sui diversi tipi di rotazione
+    from promogest.dao.TestataMovimento import TestataMovimento
+    from promogest.dao.TestataDocumento import TestataDocumento
+    from promogest.dao.Setting import Setting
+
+    numeri = []
+
+    registro = Setting().getRecord(id=str(tipo + ".registro").strip())
+    if not registro:
+        raise Exception("Registro numerazione non trovato.")
+
+    registrovalue = registro.value
+    registrovalueforrotazione = registrovalue+".rotazione"
+    rotazione = Setting().select(keys=registrovalueforrotazione)
+    if not rotazione:
+        raise Exception("Registro rotazione numerazione non trovato.")
+
+    rotazione_temporale_dict = {'annuale':"year",
+                                "mensile":"month",
+                                "giornaliera":"day"}
+
+    from sqlalchemy import func
+    if tipo == "Movimento":
+        numeroSEL = Environment.session.query(func.max(TestataMovimento.numero)).filter((and_(TestataMovimento.data_movimento.between(datetime.date(date.year, 1, 1), datetime.date(date.year + 1, 1, 1)),
+                TestataMovimento.registro_numerazione==registrovalue))).one()[0]
+    else:
+        numeroSEL = Environment.session.query(func.max(TestataDocumento.numero)).filter((and_(TestataDocumento.data_documento.between(datetime.date(date.year, 1, 1), datetime.date(date.year + 1, 1, 1)),
+                TestataDocumento.registro_numerazione==registrovalue))).one()[0]
+    if numeroSEL:
+        numero = numeroSEL + 1
+    else:
+        numero = 1
+    return (numero, registrovalue)
+
+
 def giacenzaDettaglio(year=None, idMagazzino=None,
                                             idArticolo=None, allMag=None):
     """
@@ -32,6 +72,7 @@ def giacenzaDettaglio(year=None, idMagazzino=None,
     """
     from promogest.dao.TestataMovimento import TestataMovimento
     from promogest.dao.TestataDocumento import TestataDocumento
+
     from promogest.dao.RigaMovimento import RigaMovimento
     from promogest.dao.Riga import Riga
     from promogest.dao.Fornitura import Fornitura

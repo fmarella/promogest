@@ -34,6 +34,7 @@ from promogest.dao.ScontoRigaMovimento import ScontoRigaMovimento
 from promogest.dao.ScontoTestataDocumento import ScontoTestataDocumento
 from promogest.dao.Operazione import Operazione
 from promogest.dao.Fornitura import Fornitura
+from promogest.dao.DoaUtils import numeroRegistroGet
 from promogest.ui.anagDocumenti.AnagraficaDocumenti import *
 if posso("PA"):
     import promogest.modules.Pagamenti.dao.TestataDocumentoScadenza
