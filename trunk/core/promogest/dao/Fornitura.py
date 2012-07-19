@@ -175,13 +175,13 @@ t_fornitura = Table('fornitura',
 fornitura = t_fornitura
 if "numero_lotto" not in [c.name for c in t_fornitura.columns]:
     col = Column('numero_lotto', String(200))
-    col.create(fornitura)
+    col.create(t_fornitura)
 if "data_scadenza" not in [c.name for c in t_fornitura.columns]:
     col = Column('data_scadenza', DateTime)
-    col.create(fornitura)
+    col.create(t_fornitura)
 if "data_produzione" not in [c.name for c in t_fornitura.columns]:
     col = Column('data_produzione', DateTime)
-    col.create(fornitura)
+    col.create(t_fornitura)
 
 std_mapper = mapper(Fornitura, t_fornitura, properties={
         "multi": relation(Multiplo, primaryjoin=t_fornitura.c.id_multiplo==t_multiplo.c.id),
