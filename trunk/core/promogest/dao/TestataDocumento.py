@@ -102,6 +102,9 @@ class TestataDocumento(Dao):
         self.__data_inizio_noleggio = None
         self.__data_fine_noleggio = None
 
+    def __repr__(self):
+        return '<Documento ID={0} operazione="{1}">'.format(self.numero, self.operazione)
+
     def _getScadenzeDocumento(self):
         if self.id:
             self.__dbScadenzeDocumento = params['session']\
