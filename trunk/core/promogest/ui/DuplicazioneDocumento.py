@@ -162,7 +162,7 @@ class DuplicazioneDocumento(GladeWidget):
         tipoid = findIdFromCombobox(self.id_operazione_combobox)
         tipo = Operazione().getRecord(id=tipoid)
         #if not newDao.numero:
-        valori = numeroRegistroGet(tipo=tipo.denominazione, date=self.data_documento_entry.get_text())
+        valori = numeroRegistroGet(tipo=tipo.denominazione, date=stringToDate(self.data_documento_entry.get_text()))
         newDao.numero = valori[0]
         newDao.registro_numerazione= valori[1]
 

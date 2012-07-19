@@ -31,6 +31,7 @@ from promogest.dao.InformazioniFatturazioneDocumento import InformazioniFatturaz
 from promogest.dao.ScontoRigaDocumento import ScontoRigaDocumento
 from promogest.dao.ScontoTestataDocumento import ScontoTestataDocumento
 from promogest.dao.RigaDocumento import RigaDocumento
+from promogest.dao.DaoUtils import numeroRegistroGet
 
 
 def findDoc(selection):
@@ -342,7 +343,7 @@ def do_fatt_diff(lista_documenti, data_documento, operazione, no_rif_righe_cumul
                 fattura.righeDocumento = righe
                 if not fattura.numero:
                     valori = numeroRegistroGet(tipo=operazione,
-                            date=data_documento)
+                            date=stringToDate(data_documento))
                     fattura.numero = valori[0]
                     fattura.registro_numerazione= valori[1]
                 fattura.persist()
