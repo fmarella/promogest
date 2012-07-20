@@ -45,7 +45,7 @@ def numeroRegistroGet(tipo=None, date=None):
     registrovalueforrotazione = registrovalue+".rotazione"
     rotazione = Setting().select(keys=registrovalueforrotazione)
     if not rotazione:
-        raise Exception("Registro rotazione numerazione non trovato.")
+        Environment.pg2log.info("Registro rotazione numerazione non trovato (tipo documento=%s)." % tipo)
 
     rotazione_temporale_dict = {'annuale':"year",
                                 "mensile":"month",
