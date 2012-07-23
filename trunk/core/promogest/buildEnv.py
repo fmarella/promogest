@@ -38,7 +38,8 @@ def set_configuration(company=None, year = None):
                 #imagesDir, labelTemplatesDir, templatesDir, documentsDir, reportTemplatesDir,\
                 #bordoDestro, bordoSinistro, magazzini, listini, tempDir, tracciatiDir
 
-
+    if company:
+        Environment.azienda = company
     dire = getConfigureDir(company)
     promogestDir = os.path.expanduser('~') + os.sep + dire + os.sep
     Environment.promogestDir = promogestDir
