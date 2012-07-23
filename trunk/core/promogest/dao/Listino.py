@@ -31,11 +31,35 @@ from migrate import *
 
 listinoT=Table('listino', params['metadata'],schema = params['schema'],autoload=True)
 
+def idListinoGet():
+    if tipo_eng == "postgresql":
+        listino_sequence = Sequence("listino_id_seq",
+                                    schema=params['schema'])
+        return params['session'].connection().execute(listino_sequence)
+    elif tipo_eng == "sqlite":
+        # TODO: ottimizzare questa query usando func.max da sqlalchemy
+        listini = Listino().select(orderBy=Listino.id, batchSize=None)
+        if not listini:
+            return 1
+        else:
+            return max([p.id for p in listini]) + 1
+    else:
+        raise Exception("Impossibile generare l'ID listino per l'engine in uso.")
+
 
 class Listino(Dao):
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
+
+    def __repr__(self):
+        return '<Listino ID={0} denominazione="{1}">'.format(self.id, self.denominazione)
+
+    def persist(self):
+        if not self.id:
+            self.id = idListinoGet()
+        params["session"].add(self)
+        params["session"].commit()
 
     def _getCategorieCliente(self):
         #self.__dbCategorieCliente = ListinoCategoriaCliente().select(idListino=self.id, batchSize=None)

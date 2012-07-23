@@ -85,16 +85,6 @@ class DuplicazioneListino(GladeWidget):
         if tutto:
             newDao.listino_attuale = True
             newDao.visible = True
-        if Environment.tipo_eng !="sqlite" and not newDao.id:
-            listino_sequence = Sequence("listino_id_seq",
-                                        schema=Environment.params['schema'])
-            newDao.id = Environment.params['session'].connection().execute(listino_sequence)
-        if Environment.tipo_eng =="sqlite" and not newDao.id:
-            listini = Listino().select(orderBy=Listino.id, batchSize=None)
-            if not listini:
-                newDao.id = 1
-            else:
-                newDao.id = max([p.id for p in listini]) +1
         newDao.visible = True
         newDao.persist()
 
