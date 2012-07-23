@@ -31,7 +31,7 @@ from promogest.EnvUtils import getConfigureDir
 from promogest import Environment
 
 #""" Sets configuration value """
-def set_configuration(company=None, year = None):
+def set_configuration(company=None, year = None, pg_path=None):
     #global conf,connection, exceptionHandler, promogestDir, feed,  emailcompose,\
                 #emailmittente, smtpServer, \
                 #multilinelimit, mltext,\
@@ -41,11 +41,14 @@ def set_configuration(company=None, year = None):
     if company:
         Environment.azienda = company
     dire = getConfigureDir(company)
-    promogestDir = os.path.expanduser('~') + os.sep + dire + os.sep
+    promogestDir = None
+    if pg_path:
+        promogestDir = os.path.join(pg_path, dire) + os.sep
+    else:
+        promogestDir = os.path.join(os.path.expanduser('~'), dire) + os.sep
     Environment.promogestDir = promogestDir
     if not (os.path.exists(promogestDir)):
         os.mkdir(promogestDir)
-
 
     documentsDir = promogestDir + 'documenti' + os.sep
     Environment.documentsDir = documentsDir
