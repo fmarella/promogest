@@ -476,9 +476,12 @@ class AnagraficaListiniEdit(AnagraficaEdit):
         showAnagraficaRichiamata(self.dialogTopLevel, anagWindow, toggleButton)
 
     def on_variazioni_togglebutton_toggled(self, toggleButton):
-        anag = AnagraficaVariazioniListini(idListino=self.dao.id)
-        anagWindow = anag.getTopLevel()
-        showAnagraficaRichiamata(self.dialogTopLevel, anagWindow, toggleButton)
+        if toggleButton.get_active():
+            anag = AnagraficaVariazioniListini(idListino=self.dao.id)
+            anagWindow = anag.getTopLevel()
+            showAnagraficaRichiamata(self.dialogTopLevel, anagWindow, toggleButton)
+        else:
+            toggleButton.set_active(False)
 
     def on_check_pricelist_togglebutton_toggled(self, toggleButton):
         if not(toggleButton.get_active()):
