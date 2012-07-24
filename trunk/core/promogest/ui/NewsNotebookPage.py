@@ -20,6 +20,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 import webbrowser
+from promogest.lib.relativedelta import relativedelta
 from promogest.lib.utils import *
 from promogest.ui.utilsCombobox import *
 from promogest.dao.Setconf import SetConf
@@ -28,6 +29,7 @@ from GladeWidget import GladeWidget
 from promogest.lib.HtmlHandler import createHtmlObj, renderTemplate, renderHTML
 from promogest.lib import feedparser
 from promogest.ui.SendEmail import SendEmail
+from promogest.dao.TestataDocumento import TestataDocumento
 
 try:
     if Environment.pg3:
@@ -55,25 +57,58 @@ class NewsNotebookPage(GladeWidget):
     def draw(self):
         return self
 
+
+    def build_news_frame(self):
+        htmlwidget = createHtmlObj(self)
+        self.feed_scrolled.add(htmlwidget)
+        oggi = datetime.datetime.today()
+        one_month = relativedelta(months=1)
+        lastmonth =  oggi - one_month
+        #if lendocu > 200:
+        print "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", dateToString(lastmonth)
+        #quanti= TestataDocumento().count(daData=dateToString(lastmonth),batchSize=None)
+        docu = TestataDocumento().select(daData=dateToString(lastmonth),batchSize=None)
+        if len(docu) > 50:
+            docu = docu[-50:]
+            sospesi = 50
+            troppi = 1
+        else:
+            sospesi = len(docu)
+            troppi = 0
+
+        #totaleSospeso = calcolaTotali(docuSos)
+        #totaleGenerale = calcolaTotali(docu)
+        #print "DOCUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU", docu, totaleGenerale
+        #totaleGenerale = 0
+        totaleSospeso = 0
+        pageData = {
+                    "file": "home_pg.html",
+                    "sospesi": sospesi,
+                    "objects": docu,
+                    "troppi" : troppi
+        }
+        html = renderTemplate(pageData)
+        #html = """<html><body>
+#<a style="text-color:black;" href="program:/recuperafeed">
+#<div style="text-align: center;">
+    #<img style="width: 530px; height: 110px;" alt="PROMOGEST" src="http://www.promotux.it/templates/promoGest/img/testata_promogest2.png"><br>
+#</div>
+#<div style="text-align:center;color:black;"><br />
+    #<h3 style="color:black;">HAI LETTO LE NOVITA' SUL TUO SOFTWARE GESTIONALE PREFERITO?</a></h3></div></body></html>"""
+        renderHTML(htmlwidget, html)
+
+
+
     def create_news_frame(self):
         """ CREIAMO IL TAB DELLE NEWS"""
-        if Environment.nobrand:
-            #self.promotux_button.set_visible(False)
+        if Environment.nobrand:  # Questo serve a rendere un po' anonimo il pg toglendo i rif al sito
             self.promotux_button.hide()
-            #self.email_button.set_visible(False)
             self.email_button.hide()
-            #self.promogest_button.set_visible(False)
             self.promogest_button.hide()
-        Environment.htmlwidget = createHtmlObj(self)
-        self.feed_scrolled.add(Environment.htmlwidget)
-        html = """<html><body>
-<a style="text-color:black;" href="program:/recuperafeed">
-<div style="text-align: center;">
-    <img style="width: 530px; height: 110px;" alt="PROMOGEST" src="http://www.promotux.it/templates/promoGest/img/testata_promogest2.png"><br>
-</div>
-<div style="text-align:center;color:black;"><br />
-    <h3 style="color:black;">HAI LETTO LE NOVITA' SUL TUO SOFTWARE GESTIONALE PREFERITO?</a></h3></div></body></html>"""
-        renderHTML(Environment.htmlwidget,html)
+
+        gobject.idle_add(self.build_news_frame)
+        #lendocu = TestataDocumento().count(daData="2012-01-01",batchSize=None)
+
 
 
 

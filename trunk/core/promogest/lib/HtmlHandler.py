@@ -49,6 +49,7 @@ import re
 
 templates_dir = [os.path.join('templates'),os.path.join('report-templates')]
 jinja_env = None
+
 def env(templates_dir):
     jinja_env = Env(loader=FileSystemLoader(templates_dir),
                     bytecode_cache=FileSystemBytecodeCache(os.path.join(Environment.promogestDir, 'temp'), '%s.cache'),
@@ -254,11 +255,14 @@ def renderTemplate(pageData):
     jinja_env.globals['environment'] = Environment
     jinja_env.globals['utils'] = utils
     pageData["titolo"] = pageData["file"].split(".")[0].capitalize()
+
     if "dao" in pageData:
         html = jinja_env.get_template("/"+pageData["file"]).render(pageData = pageData, dao=pageData["dao"])
     else:
         html = jinja_env.get_template("/"+pageData["file"]).render(pageData = pageData)
     return html
+
+
 
 def _on_html_request_url(document, url, stream):
     def render():
