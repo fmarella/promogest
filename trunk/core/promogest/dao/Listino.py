@@ -53,7 +53,7 @@ class Listino(Dao):
         Dao.__init__(self, entity=self)
 
     def __repr__(self):
-        return '<Listino ID={0} denominazione="{1}">'.format(self.id, self.denominazione)
+        return '<Listino ID={0}>'.format(self.id)
 
     def persist(self):
         if not self.id:
