@@ -60,13 +60,13 @@ if not web:
 import os
 import sys
 import shutil
-import glob
 
 import decimal
 
 try:
     import psycopg2
-    psycopg2.extensions.register_adapter(decimal.Decimal, psycopg2._psycopg.Decimal)
+    psycopg2.extensions.register_adapter(decimal.Decimal,
+                                                psycopg2._psycopg.Decimal)
 except:
     pass
 import sqlalchemy
@@ -109,7 +109,7 @@ feedCache = ""
 feedAll = ""
 idACT = []
 scontisave = {}
-tagliacoloretempdata = (False,None)
+tagliacoloretempdata = (False, None)
 lastCode = None
 modules_folders = []
 righeDocumentoDict = {}
@@ -137,7 +137,7 @@ a_data_inizio_primanota = None
 azienda_in_conf = None
 idACT = []
 confDict = {}
-ivacache = [] # lista di aliquote e deniminazione ...utile come cache
+ivacache = []  # lista di aliquote e deniminazione ...utile come cache
 SRC_PATH = os.path.split(os.path.dirname(__file__))[0]
 
 STATIC_PATH = os.path.join(SRC_PATH, 'templates')
@@ -145,7 +145,7 @@ STATIC_PATH_FEED = os.path.join(SRC_PATH, 'feed')
 IMAGE_PATH = os.path.join(STATIC_PATH, 'images/')
 guiDir = '.' + os.sep + 'gui' + os.sep
 
-SESSION_DIR = os.path.join("./",'session')
+SESSION_DIR = os.path.join("./", 'session')
 CACHE_DIR = os.path.join("./", 'cache')
 URL_CHARS = 'abcdefghijkmpqrstuvwxyzABCDEFGHIJKLMNPQRST23456789'
 COOKIENAME = "promogest_web"
@@ -159,8 +159,8 @@ artImagPath = ""
 languages = ""
 
 
-confList=[]
-configDir= None
+confList = []
+configDir = None
 
 if not preEnv.web:
     #controlliamo che ci sia la cartella promogest2
@@ -172,9 +172,9 @@ if not preEnv.web:
         if os.path.exists(promogestStartDir + "configure"):
             shutil.copy(promogestStartDir + "configure", configFile)
         else:
-            c = open('configure.dist','r')
+            c = open('configure.dist', 'r')
             content = c.readlines()
-            fileConfig = open(configFile,'w')
+            fileConfig = open(configFile, 'w')
             for row in content[0:13]:
                 fileConfig.write(row)
             c.close()
@@ -211,12 +211,12 @@ except:
     partner = "070 8649702 -- www.promogest.me -- assistenza@promotux.it"
 #pw = main_conf.Database.pw
 
-if tipodb == "sqlite" and not (os.path.exists(startdir()+"db")) and not tipodbforce and not preEnv.web:
+if tipodb == "sqlite" and not (os.path.exists(startdir() + "db")) and not tipodbforce and not preEnv.web:
     if os.path.exists("data/db"):
-        shutil.copy("data/db",startdir()+"db")
+        shutil.copy("data/db", startdir() + "db")
         os.remove("data/db")
     elif os.path.exists("data/db.dist"):
-        shutil.copy("data/db.dist",startdir()+"db" )
+        shutil.copy("data/db.dist", startdir() + "db")
     else:
         print("ERRORE NON RIESCO A CREARE IL DB")
 
@@ -237,7 +237,7 @@ preEnv.database = database
 preEnv.host = host
 preEnv.tipodb = tipodb
 SUB = ""
-userdata = ["","","",user]
+userdata = ["", "", "", user]
 
 engine = None
 if tipodb == "sqlite":
@@ -246,17 +246,17 @@ if tipodb == "sqlite":
     if sqlalchemy.__version__ >= "0.7":
         from sqlalchemy.event import listen
         if hostdbforce and tipodbforce:
-            engine =create_engine("sqlite:///"+hostdbforce+"/db",encoding='utf-8',proxy=MyProxy())
+            engine = create_engine("sqlite:///" + hostdbforce + "/db", encoding='utf-8', proxy=MyProxy())
         else:
-            if preEnv.web :
+            if preEnv.web:
                 #engine = create_engine("sqlite:///"+"/home/vete/www.promotux.it/"+main_conf.Database.sqlitedb,encoding='utf-8')
-                engine = create_engine("sqlite:///"+"/home/vete/www.promotux.it/"+main_conf.Database.sqlitedb,encoding='utf-8',proxy=MyProxy())
+                engine = create_engine("sqlite:///" + "/home/vete/www.promotux.it/" + main_conf.Database.sqlitedb, encoding='utf-8', proxy=MyProxy())
             else:
-                engine = create_engine("sqlite:///"+startdir()+"db",encoding='utf-8',proxy=MyProxy())
+                engine = create_engine("sqlite:///" + startdir() + "db", encoding='utf-8', proxy=MyProxy())
 
         listen(engine, 'connect', my_on_connect)
     else:
-        engine = create_engine("sqlite:///"+startdir()+"db",listeners=[SetTextFactory()],proxy=MyProxy())
+        engine = create_engine("sqlite:///" + startdir() + "db", listeners=[SetTextFactory()], proxy=MyProxy())
 else:
     from promogest.EnvUtils import *
     mainSchema = "promogest2"
@@ -293,7 +293,7 @@ meta = MetaData(engine)
 metatmp = MetaData()
 
 if os.path.exists(os.path.join(SRC_PATH, meta_pickle)) \
-                                    and  sqlalchemy.__version__ > "0.5.8":
+                                    and sqlalchemy.__version__ > "0.5.8":
     with open(os.path.join(SRC_PATH, meta_pickle), 'rb') as f:
         meta = pickle_load(f)
         meta.bind = engine
@@ -309,13 +309,14 @@ params = {'engine': engine,
         'mainSchema': mainSchema,
         'schema': azienda,
         'metadata': meta,
-        'session' : session,
+        'session': session,
         "tipo_db": tipodb,
         'defaultLimit': 5,
-        'bccaddr' : ["assistenza@promotux.it"],
-        'objects' : ["Informazioni Tecniche",
-                            "Informazioni Commerciali" , "Varie"],
-        'usernameLoggedList':userdata}
+        'bccaddr': ["assistenza@promotux.it"],
+        'objects': ["Informazioni Tecniche",
+                    "Informazioni Commerciali",
+                    "Varie"],
+        'usernameLoggedList': userdata}
 
 fk_prefix = params['schema'] + '.' if params['tipo_db'] == 'postgresql' else ''
 
@@ -323,10 +324,12 @@ fk_prefix = params['schema'] + '.' if params['tipo_db'] == 'postgresql' else ''
 if not preEnv.web:
     pg2log = pg_log()
 
+
 def __sendmail(msg="PG"):
     msg = str(promogestDir) + " " + str(rev_locale) + "  " + str(rev_remota)
     if not web:
         return msgDef(text=msg, azienda=azienda)
+
 
 def hook(et, ev, eb):
     import traceback
@@ -347,7 +350,7 @@ def hook(et, ev, eb):
     if "OperationalError" in str(ev):
         delete_pickle()
         return
-    pg2log.info("\n  ".join (["Error occurred: traceback follows"]+list(traceback.format_exception(et, ev, eb))))
+    pg2log.info("\n  ".join(["Error occurred: traceback follows"] + list(traceback.format_exception(et, ev, eb))))
     print "\n  ".join(list(traceback.format_exception(et, ev, eb)))
     __sendmail()
 #if not preEnv.web:
@@ -355,14 +358,13 @@ sys.excepthook = hook
 
 # DA SPOSTARE ASSOLUTAMENTE QUANTO PRIMA
 
+
 def delete_pickle():
     """ Cancella il file pickle del metadata
     """
     import os
     if os.path.exists(os.path.join(SRC_PATH, meta_pickle)):
         os.remove(os.path.join(SRC_PATH, meta_pickle))
-
-
 
 cadenza = ["MENSILE", "BIMESTRALE", "TRIMESTRALE",
             "SEMESTRALE", "ANNUALE"]
@@ -382,7 +384,8 @@ fromHtmlLits = ["Promemoria", "TestataPrimaNota",
                 "Contatto", "Fornitore",
                 "Fornitura", "Contatto",
                 "Vettore", "AliquotaIva",
-                "TestataCommessa","Stoccaggio", "Agente"]
+                "TestataCommessa", "Stoccaggio",
+                "Agente"]
 
 package = ["ONE BASIC", "ONE FULL", "ONE STANDARD",
             "PRO BASIC", "PRO STANDARD",
