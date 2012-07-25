@@ -108,7 +108,7 @@ class AnagraficaAziende(GladeWidget):
             self.dao.matricola_inps or '')
         #self.path_label.set_text(self.dao.percorso_immagine or '')
         self.logo_azienda.set_from_file(
-            self.dao.percorso_immagine)
+            self.dao.percorso_immagine or "")
 
         #self.percorso_immagine_entry.set_text(self.dao.percorso_immagine or '')
 

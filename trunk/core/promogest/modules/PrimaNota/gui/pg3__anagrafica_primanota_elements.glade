@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <!-- interface-requires pythonplugin 0.0 -->
   <!-- interface-requires gtk+ 3.0 -->
+  <!-- interface-requires  0.0 -->
+  <!-- interface-requires pythonplugin 0.0 -->
   <object class="GtkTreeView" id="anagrafica_filter_treeview">
     <property name="visible">True</property>
     <property name="can_focus">True</property>
@@ -239,7 +240,6 @@ Descrizione di più operazioni</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
-                        <property name="use_action_appearance">False</property>
                         <signal name="toggled" handler="on_attiva_note_toggled_toggled" swapped="no"/>
                       </object>
                       <packing>
@@ -381,7 +381,7 @@ Descrizione di più operazioni</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
-                    <property name="use_action_appearance">False</property>
+                    <property name="xalign">0.5</property>
                     <property name="active">True</property>
                     <property name="draw_indicator">True</property>
                   </object>
@@ -397,7 +397,7 @@ Descrizione di più operazioni</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
-                    <property name="use_action_appearance">False</property>
+                    <property name="xalign">0.5</property>
                     <property name="active">True</property>
                     <property name="draw_indicator">True</property>
                     <property name="group">tipo_entrata_radio</property>
@@ -446,6 +446,7 @@ Descrizione di più operazioni</property>
               <object class="GtkHBox" id="hbox5">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="spacing">5</property>
                 <child>
                   <object class="GtkLabel" id="banca_label">
                     <property name="visible">True</property>
@@ -459,14 +460,13 @@ Descrizione di più operazioni</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="CustomComboBoxModify" id="id_banca_customcombobox">
+                  <object class="GtkComboBox" id="id_banca_combobox">
                     <property name="visible">True</property>
-                    <property name="sensitive">False</property>
-                    <property name="can_focus">True</property>
+                    <property name="can_focus">False</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
-                    <property name="fill">False</property>
+                    <property name="fill">True</property>
                     <property name="position">1</property>
                   </packing>
                 </child>
@@ -505,6 +505,49 @@ Descrizione di più operazioni</property>
               </packing>
             </child>
             <child>
+              <object class="GtkHBox" id="hbox4">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="spacing">8</property>
+                <child>
+                  <object class="GtkLabel" id="label4">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">Note:</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkScrolledWindow" id="scrolledwindow2">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="shadow_type">in</property>
+                    <child>
+                      <object class="GtkTextView" id="note_textview">
+                        <property name="height_request">2</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">3</property>
+              </packing>
+            </child>
+            <child>
               <object class="GtkHButtonBox" id="hbuttonbox1">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
@@ -517,7 +560,6 @@ Descrizione di più operazioni</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
                     <property name="tooltip_text" translatable="yes">Aggiunge la riga inserita </property>
-                    <property name="use_action_appearance">False</property>
                     <property name="use_stock">True</property>
                     <signal name="clicked" handler="on_aggiungi_button_clicked" swapped="no"/>
                   </object>
@@ -534,7 +576,6 @@ Descrizione di più operazioni</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
                     <property name="tooltip_text" translatable="yes">Elimina la riga di prima nota selezionata</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="use_stock">True</property>
                     <signal name="clicked" handler="on_rimuovi_button_clicked" swapped="no"/>
                   </object>
@@ -548,7 +589,7 @@ Descrizione di più operazioni</property>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">False</property>
-                <property name="position">3</property>
+                <property name="position">4</property>
               </packing>
             </child>
             <child>
@@ -561,6 +602,7 @@ Descrizione di più operazioni</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="model">primanota_riga_listore</property>
+                    <property name="headers_clickable">False</property>
                     <property name="search_column">1</property>
                     <property name="enable_grid_lines">both</property>
                     <signal name="row-activated" handler="on_riga_primanota_treeview_row_activated" swapped="no"/>
@@ -569,7 +611,6 @@ Descrizione di più operazioni</property>
                     </child>
                     <child>
                       <object class="GtkTreeViewColumn" id="descrizione_column">
-                        <property name="resizable">True</property>
                         <property name="sizing">autosize</property>
                         <property name="fixed_width">100</property>
                         <property name="title" translatable="yes">Descrizione</property>
@@ -635,7 +676,7 @@ Descrizione di più operazioni</property>
               <packing>
                 <property name="expand">True</property>
                 <property name="fill">True</property>
-                <property name="position">4</property>
+                <property name="position">5</property>
               </packing>
             </child>
           </object>
@@ -660,7 +701,7 @@ Descrizione di più operazioni</property>
   <object class="GtkTable" id="anagrafica_prima_nota_filter_table">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="n_rows">10</property>
+    <property name="n_rows">11</property>
     <property name="n_columns">2</property>
     <child>
       <object class="GtkEntry" id="da_numero_filter_entry">
@@ -673,7 +714,7 @@ Descrizione di più operazioni</property>
       <packing>
         <property name="left_attach">1</property>
         <property name="right_attach">2</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
       </packing>
     </child>
     <child>
@@ -685,7 +726,7 @@ Descrizione di più operazioni</property>
       </object>
       <packing>
         <property name="x_options">GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
         <property name="x_padding">2</property>
       </packing>
     </child>
@@ -700,7 +741,7 @@ Descrizione di più operazioni</property>
         <property name="top_attach">2</property>
         <property name="bottom_attach">3</property>
         <property name="x_options">GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
         <property name="x_padding">2</property>
       </packing>
     </child>
@@ -729,7 +770,7 @@ Descrizione di più operazioni</property>
         <property name="right_attach">2</property>
         <property name="top_attach">2</property>
         <property name="bottom_attach">3</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
       </packing>
     </child>
     <child>
@@ -743,7 +784,7 @@ Descrizione di più operazioni</property>
         <property name="top_attach">1</property>
         <property name="bottom_attach">2</property>
         <property name="x_options">GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
         <property name="x_padding">2</property>
       </packing>
     </child>
@@ -761,7 +802,7 @@ Descrizione di più operazioni</property>
         <property name="right_attach">2</property>
         <property name="top_attach">1</property>
         <property name="bottom_attach">2</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
       </packing>
     </child>
     <child>
@@ -774,7 +815,7 @@ Descrizione di più operazioni</property>
         <property name="right_attach">2</property>
         <property name="top_attach">3</property>
         <property name="bottom_attach">4</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
       </packing>
     </child>
     <child>
@@ -788,7 +829,7 @@ Descrizione di più operazioni</property>
         <property name="top_attach">4</property>
         <property name="bottom_attach">6</property>
         <property name="x_options">GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
         <property name="x_padding">2</property>
       </packing>
     </child>
@@ -798,7 +839,7 @@ Descrizione di più operazioni</property>
         <property name="visible">True</property>
         <property name="can_focus">True</property>
         <property name="receives_default">False</property>
-        <property name="use_action_appearance">False</property>
+        <property name="xalign">0.5</property>
         <property name="active">True</property>
         <property name="draw_indicator">True</property>
       </object>
@@ -807,7 +848,7 @@ Descrizione di più operazioni</property>
         <property name="right_attach">2</property>
         <property name="top_attach">4</property>
         <property name="bottom_attach">5</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
       </packing>
     </child>
     <child>
@@ -816,7 +857,7 @@ Descrizione di più operazioni</property>
         <property name="visible">True</property>
         <property name="can_focus">True</property>
         <property name="receives_default">False</property>
-        <property name="use_action_appearance">False</property>
+        <property name="xalign">0.5</property>
         <property name="active">True</property>
         <property name="draw_indicator">True</property>
         <signal name="clicked" handler="on_banca_filter_check_clicked" swapped="no"/>
@@ -826,7 +867,7 @@ Descrizione di più operazioni</property>
         <property name="right_attach">2</property>
         <property name="top_attach">5</property>
         <property name="bottom_attach">6</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
       </packing>
     </child>
     <child>
@@ -840,7 +881,7 @@ Descrizione di più operazioni</property>
         <property name="top_attach">6</property>
         <property name="bottom_attach">7</property>
         <property name="x_options">GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
         <property name="x_padding">2</property>
       </packing>
     </child>
@@ -854,7 +895,7 @@ Descrizione di più operazioni</property>
         <property name="right_attach">2</property>
         <property name="top_attach">6</property>
         <property name="bottom_attach">7</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
       </packing>
     </child>
     <child>
@@ -868,7 +909,7 @@ Descrizione di più operazioni</property>
         <property name="top_attach">7</property>
         <property name="bottom_attach">9</property>
         <property name="x_options">GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
         <property name="x_padding">2</property>
       </packing>
     </child>
@@ -878,7 +919,7 @@ Descrizione di più operazioni</property>
         <property name="visible">True</property>
         <property name="can_focus">True</property>
         <property name="receives_default">False</property>
-        <property name="use_action_appearance">False</property>
+        <property name="xalign">0.5</property>
         <property name="active">True</property>
         <property name="draw_indicator">True</property>
       </object>
@@ -888,7 +929,7 @@ Descrizione di più operazioni</property>
         <property name="top_attach">7</property>
         <property name="bottom_attach">8</property>
         <property name="x_options">GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
       </packing>
     </child>
     <child>
@@ -897,7 +938,7 @@ Descrizione di più operazioni</property>
         <property name="visible">True</property>
         <property name="can_focus">True</property>
         <property name="receives_default">False</property>
-        <property name="use_action_appearance">False</property>
+        <property name="xalign">0.5</property>
         <property name="active">True</property>
         <property name="draw_indicator">True</property>
       </object>
@@ -907,7 +948,7 @@ Descrizione di più operazioni</property>
         <property name="top_attach">8</property>
         <property name="bottom_attach">9</property>
         <property name="x_options">GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
       </packing>
     </child>
     <child>
@@ -921,7 +962,7 @@ Descrizione di più operazioni</property>
         <property name="top_attach">9</property>
         <property name="bottom_attach">10</property>
         <property name="x_options">GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
         <property name="x_padding">2</property>
       </packing>
     </child>
@@ -939,7 +980,36 @@ Descrizione di più operazioni</property>
         <property name="right_attach">2</property>
         <property name="top_attach">9</property>
         <property name="bottom_attach">10</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkLabel" id="tipo_doc_label">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="xalign">0.10000000149011612</property>
+        <property name="label" translatable="yes">Tipo documento</property>
+      </object>
+      <packing>
+        <property name="top_attach">10</property>
+        <property name="bottom_attach">11</property>
+        <property name="x_options">GTK_FILL</property>
+        <property name="y_options"/>
+        <property name="x_padding">2</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkComboBox" id="id_operazione_filter_combobox">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="border_width">1</property>
+      </object>
+      <packing>
+        <property name="left_attach">1</property>
+        <property name="right_attach">2</property>
+        <property name="top_attach">10</property>
+        <property name="bottom_attach">11</property>
+        <property name="y_options"/>
       </packing>
     </child>
   </object>
