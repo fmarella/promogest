@@ -65,7 +65,6 @@ class NewsNotebookPage(GladeWidget):
         one_month = relativedelta(months=1)
         lastmonth =  oggi - one_month
         #if lendocu > 200:
-        print "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", dateToString(lastmonth)
         #quanti= TestataDocumento().count(daData=dateToString(lastmonth),batchSize=None)
         docu = TestataDocumento().select(daData=dateToString(lastmonth),batchSize=None)
         if len(docu) > 50:
@@ -76,10 +75,6 @@ class NewsNotebookPage(GladeWidget):
             sospesi = len(docu)
             troppi = 0
 
-        #totaleSospeso = calcolaTotali(docuSos)
-        #totaleGenerale = calcolaTotali(docu)
-        #print "DOCUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU", docu, totaleGenerale
-        #totaleGenerale = 0
         totaleSospeso = 0
         pageData = {
                     "file": "home_pg.html",
@@ -88,13 +83,6 @@ class NewsNotebookPage(GladeWidget):
                     "troppi" : troppi
         }
         html = renderTemplate(pageData)
-        #html = """<html><body>
-#<a style="text-color:black;" href="program:/recuperafeed">
-#<div style="text-align: center;">
-    #<img style="width: 530px; height: 110px;" alt="PROMOGEST" src="http://www.promotux.it/templates/promoGest/img/testata_promogest2.png"><br>
-#</div>
-#<div style="text-align:center;color:black;"><br />
-    #<h3 style="color:black;">HAI LETTO LE NOVITA' SUL TUO SOFTWARE GESTIONALE PREFERITO?</a></h3></div></body></html>"""
         renderHTML(htmlwidget, html)
 
 

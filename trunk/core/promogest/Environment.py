@@ -40,6 +40,7 @@ if web:
 from config import Config
 if not web:
     if pg3:
+        print " USIAMO LA VERSIONE CON PYGI"
         from gi.repository import Gtk as gtk
         GTK_DIALOG_MODAL = gtk.DialogFlags.MODAL
         GTK_DIALOG_DESTROY_WITH_PARENT = gtk.DialogFlags.DESTROY_WITH_PARENT

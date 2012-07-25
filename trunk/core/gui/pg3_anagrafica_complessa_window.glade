@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <requires lib="gtk+" version="2.16"/>
+  <!-- interface-requires gtk+ 3.0 -->
   <object class="GtkWindow" id="anagrafica_complessa_window">
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">Anagrafica</property>
@@ -22,7 +22,6 @@
               <object class="GtkMenuItem" id="record_menu">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">Record</property>
                 <property name="use_underline">True</property>
                 <signal name="activate" handler="on_record_menu_activate" swapped="no"/>
@@ -34,7 +33,6 @@
                         <property name="label" translatable="yes">_Nuovo</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="use_underline">True</property>
                         <property name="image">image2</property>
                         <property name="use_stock">False</property>
@@ -48,7 +46,6 @@
                         <property name="visible">True</property>
                         <property name="sensitive">False</property>
                         <property name="can_focus">False</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="use_underline">True</property>
                         <property name="image">image1</property>
                         <property name="use_stock">False</property>
@@ -61,7 +58,6 @@
                         <property name="label" translatable="yes">Duplica in Fornitore</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="image">image11</property>
                         <property name="use_stock">False</property>
                         <signal name="activate" handler="on_duplica_in_fornitore_activate_item" swapped="no"/>
@@ -72,7 +68,6 @@
                         <property name="label" translatable="yes">Duplica in Cliente</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="image">image12</property>
                         <property name="use_stock">False</property>
                         <signal name="activate" handler="on_duplica_in_cliente_activate_item" swapped="no"/>
@@ -90,7 +85,6 @@
                         <property name="visible">True</property>
                         <property name="sensitive">False</property>
                         <property name="can_focus">False</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="use_underline">True</property>
                         <property name="image">image3</property>
                         <property name="use_stock">False</property>
@@ -103,7 +97,6 @@
                         <property name="visible">True</property>
                         <property name="sensitive">False</property>
                         <property name="can_focus">False</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="use_underline">True</property>
                         <property name="image">image4</property>
                         <property name="use_stock">False</property>
@@ -121,7 +114,6 @@
                         <property name="label">gtk-print</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <signal name="activate" handler="on_selected_record_print_activate" swapped="no"/>
@@ -138,7 +130,6 @@
                         <property name="label">Report A video e Stampa</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="use_underline">True</property>
                         <property name="image">image5</property>
                         <property name="use_stock">False</property>
@@ -151,7 +142,6 @@
                         <property name="can_focus">False</property>
                         <property name="tooltip_text" translatable="yes">Questo report riporta l'elenco in dettaglio 
 dei farmaci venduti in un determinato arco temporale</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="label" translatable="yes">Report Farmacia Veterinaria</property>
                         <property name="use_underline">True</property>
                         <signal name="activate" handler="on_report_farmacia_veterinaria_activate" swapped="no"/>
@@ -168,7 +158,6 @@ dei farmaci venduti in un determinato arco temporale</property>
                         <property name="label">gtk-close</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <signal name="activate" handler="on_anagrafica_window_close" swapped="no"/>
@@ -182,7 +171,6 @@ dei farmaci venduti in un determinato arco temporale</property>
               <object class="GtkMenuItem" id="modifiche_menu">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">Modifiche</property>
                 <property name="use_underline">True</property>
                 <child type="submenu">
@@ -193,17 +181,24 @@ dei farmaci venduti in un determinato arco temporale</property>
                       <object class="GtkMenuItem" id="rimuovi_articoli">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="label" translatable="yes">Rimuovi Articoli</property>
                         <property name="use_underline">True</property>
                         <signal name="activate" handler="on_rimuovi_articoli_activate" swapped="no"/>
                       </object>
                     </child>
                     <child>
+                      <object class="GtkMenuItem" id="dettaglio_da_ingrosso_menuitem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Inserisci prezzo dettaglio da ingrosso</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="on_dettaglio_da_ingrosso_menuitem_activate" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
                       <object class="GtkMenuItem" id="aggiungi_sconto_dettaglio">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="label" translatable="yes">Aggiungi sconto dettaglio</property>
                         <property name="use_underline">True</property>
                         <signal name="activate" handler="on_aggiungi_sconto_dettaglio_activate" swapped="no"/>
@@ -213,7 +208,6 @@ dei farmaci venduti in un determinato arco temporale</property>
                       <object class="GtkMenuItem" id="aggiungi_sconto_ingrosso">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="label" translatable="yes">Aggiungi Sconto Ingrosso</property>
                         <property name="use_underline">True</property>
                         <signal name="activate" handler="on_aggiungi_sconto_ingrosso_activate" swapped="no"/>
@@ -223,7 +217,6 @@ dei farmaci venduti in un determinato arco temporale</property>
                       <object class="GtkMenuItem" id="variazione_dettaglio">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="label" translatable="yes">Variazione Prezzo Dettaglio</property>
                         <property name="use_underline">True</property>
                         <signal name="activate" handler="on_variazione_dettaglio_activate" swapped="no"/>
@@ -233,7 +226,6 @@ dei farmaci venduti in un determinato arco temporale</property>
                       <object class="GtkMenuItem" id="variazione_ingrosso">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="label" translatable="yes">Variazione Prezzo Ingrosso</property>
                         <property name="use_underline">True</property>
                         <signal name="activate" handler="on_variazione_ingrosso_activate" swapped="no"/>
@@ -244,10 +236,32 @@ dei farmaci venduti in un determinato arco temporale</property>
               </object>
             </child>
             <child>
+              <object class="GtkMenuItem" id="strumenti_menu">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">_Strumenti</property>
+                <property name="use_underline">True</property>
+                <child type="submenu">
+                  <object class="GtkMenu" id="menu2">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <child>
+                      <object class="GtkMenuItem" id="gestione_riba_menu">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Gestione RIBA</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="on_gestione_riba_menu_activate" swapped="no"/>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
               <object class="GtkMenuItem" id="aiuto_menu">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">A_iuto</property>
                 <property name="use_underline">True</property>
                 <child type="submenu">
@@ -257,7 +271,6 @@ dei farmaci venduti in un determinato arco temporale</property>
                       <object class="GtkMenuItem" id="credits_menu">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="label" translatable="yes">Credits</property>
                         <property name="use_underline">True</property>
                         <signal name="activate" handler="on_credits_menu_activate" swapped="no"/>
@@ -267,7 +280,6 @@ dei farmaci venduti in un determinato arco temporale</property>
                       <object class="GtkMenuItem" id="licenza_menu">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="label" translatable="yes">Vedi la licenza</property>
                         <property name="use_underline">True</property>
                         <signal name="activate" handler="on_licenza_menu_activate" swapped="no"/>
@@ -277,7 +289,6 @@ dei farmaci venduti in un determinato arco temporale</property>
                       <object class="GtkMenuItem" id="seriale_menu">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="label" translatable="yes">Codice installazione...</property>
                         <property name="use_underline">True</property>
                         <signal name="activate" handler="on_seriale_menu_activate" swapped="no"/>
@@ -289,7 +300,6 @@ dei farmaci venduti in un determinato arco temporale</property>
                         <property name="can_focus">False</property>
                         <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                         <property name="tooltip_text" translatable="yes">Permette di spedire una email all'asitenza con  segnalazioni bug, consigli, critiche.</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="label" translatable="yes">Spedisci email Assistenza</property>
                         <property name="use_underline">True</property>
                         <signal name="activate" handler="on_send_Email_activate" swapped="no"/>
@@ -317,7 +327,6 @@ dei farmaci venduti in un determinato arco temporale</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="tooltip_text" translatable="yes">Nuovo record</property>
-                <property name="use_action_appearance">False</property>
                 <property name="use_underline">True</property>
                 <property name="stock_id">gtk-new</property>
                 <signal name="clicked" handler="on_record_new_activate" swapped="no"/>
@@ -342,7 +351,6 @@ dei farmaci venduti in un determinato arco temporale</property>
                 <property name="sensitive">False</property>
                 <property name="can_focus">False</property>
                 <property name="tooltip_text" translatable="yes">Modifica il record selezionato</property>
-                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">Modifica</property>
                 <property name="use_underline">True</property>
                 <property name="stock_id">gtk-edit</property>
@@ -357,7 +365,6 @@ dei farmaci venduti in un determinato arco temporale</property>
               <object class="GtkToolButton" id="duplica_button">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">Duplica</property>
                 <property name="use_underline">True</property>
                 <property name="stock_id">gtk-copy</property>
@@ -374,7 +381,6 @@ dei farmaci venduti in un determinato arco temporale</property>
                 <property name="sensitive">False</property>
                 <property name="can_focus">False</property>
                 <property name="tooltip_text" translatable="yes">Elimina il record selezionato</property>
-                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">Elimina</property>
                 <property name="use_underline">True</property>
                 <property name="stock_id">gtk-delete</property>
@@ -399,7 +405,6 @@ dei farmaci venduti in un determinato arco temporale</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="tooltip_text" translatable="yes">Genera un file PDF con il dettaglio del record selezionato</property>
-                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">Stampa</property>
                 <property name="use_underline">True</property>
                 <property name="stock_id">gtk-print</property>
@@ -424,7 +429,6 @@ dei farmaci venduti in un determinato arco temporale</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="tooltip_text" translatable="yes">Mostra un report a partire dai risultati nella ricerca e poi permette di stamparlo</property>
-                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">Report a video e Stampa</property>
                 <property name="use_underline">True</property>
                 <property name="icon_widget">image7</property>
@@ -440,7 +444,6 @@ dei farmaci venduti in un determinato arco temporale</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="tooltip_text" translatable="yes">Genera un report in formato PDF per i risultati della ricerca</property>
-                <property name="use_action_appearance">False</property>
                 <property name="visible_horizontal">False</property>
                 <property name="visible_vertical">False</property>
                 <property name="label" translatable="yes">Stampa</property>
@@ -458,7 +461,6 @@ dei farmaci venduti in un determinato arco temporale</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                <property name="use_action_appearance">False</property>
                 <property name="visible_horizontal">False</property>
                 <property name="visible_vertical">False</property>
                 <property name="label" translatable="yes">Stampa Frontaline</property>
@@ -481,13 +483,12 @@ dei farmaci venduti in un determinato arco temporale</property>
               </packing>
             </child>
             <child>
-              <object class="GtkToolButton" id="records_file_export">
+              <object class="GtkMenuToolButton" id="records_file_export">
                 <property name="visible">True</property>
                 <property name="sensitive">False</property>
                 <property name="can_focus">False</property>
                 <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                <property name="use_action_appearance">False</property>
-                <property name="label" translatable="yes">Esporta...</property>
+                <property name="label" translatable="yes">Esporta in CSV</property>
                 <property name="icon_widget">image8</property>
                 <signal name="clicked" handler="on_records_file_export_clicked" swapped="no"/>
               </object>
@@ -503,7 +504,6 @@ dei farmaci venduti in un determinato arco temporale</property>
                 <property name="app_paintable">True</property>
                 <property name="can_focus">False</property>
                 <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">Fattura Differita</property>
                 <property name="icon_widget">image9</property>
                 <signal name="clicked" handler="on_record_fattura_button_clicked" swapped="no"/>
@@ -518,7 +518,6 @@ dei farmaci venduti in un determinato arco temporale</property>
                 <property name="visible">True</property>
                 <property name="sensitive">False</property>
                 <property name="can_focus">False</property>
-                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">Calcolatrice</property>
                 <property name="use_underline">True</property>
                 <property name="icon_widget">image10</property>
@@ -844,5 +843,9 @@ dei farmaci venduti in un determinato arco temporale</property>
         <col id="0">10000</col>
       </row>
     </data>
+  </object>
+  <object class="GtkMenu" id="menu3">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
   </object>
 </interface>

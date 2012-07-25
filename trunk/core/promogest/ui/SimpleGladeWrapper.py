@@ -110,7 +110,7 @@ class SimpleGladeWrapper:
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
             gl.add_from_file(self.glade_path)
-#        print "FILE GLADE:"+str(self.glade_path)
+        print "FILE GLADE:"+str(self.glade_path)
 #        Environment.pg2log.info("FILE GLADE:"+str(self.glade_path))
         self.widgets = gl.get_objects()
         if root:

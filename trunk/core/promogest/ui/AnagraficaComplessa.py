@@ -397,10 +397,13 @@ class Anagrafica(GladeWidget):
             msg = 'Impossibile generare il codice !!!'
         messageInfo(msg=msg)
 
-    def on_anagrafica_filter_treeview_cursor_changed(self, treeview=None):
+    def on_anagrafica_filter_treeview_cursor_changed(self, treeview):
 #        print "on_anagrafica_filter_treeview_cursor_changed"
-#        sel = self.anagrafica_filter_treeview.get_selection()
+        #sel1 = self.anagrafica_filter_treeview.get_selection()
         sel = treeview.get_selection()
+        #print "DIRRRRRRRRRRRRRRRRRRRRRRRRR", sel, dir(sel), sel1, dir(sel1)
+        if not sel:
+            return
         if sel.get_mode() == GTK_SELECTIONMODE_MULTIPLE:
             model, iterator = sel.get_selected_rows()
             count = sel.count_selected_rows()
@@ -454,7 +457,7 @@ class Anagrafica(GladeWidget):
         self.daoSelection = []
         #return
         self.dao = None
-        if sel.get_mode() == GTK_SELECTIONMODE_MULTIPLE:
+        if sel and sel.get_mode() == GTK_SELECTIONMODE_MULTIPLE:
             model, iterator = sel.get_selected_rows()
             count = sel.count_selected_rows()
             if count > 1:
@@ -467,7 +470,7 @@ class Anagrafica(GladeWidget):
                 iterator = None
                 # No items are currently selected
                 self.dao = None
-        elif sel.get_mode() == GTK_SELECTIONMODE_SINGLE:
+        elif sel and sel.get_mode() == GTK_SELECTIONMODE_SINGLE:
             (model, iterator) = sel.get_selected()
             if iterator is not None:
                 self.dao = model.get_value(iterator, 0)

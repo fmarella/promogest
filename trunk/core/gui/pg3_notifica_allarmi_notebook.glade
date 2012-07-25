@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <requires lib="gtk+" version="2.16"/>
-  <!-- interface-naming-policy project-wide -->
+  <!-- interface-requires gtk+ 3.0 -->
   <object class="GtkListStore" id="liststore1">
     <columns>
       <!-- column-name PyObject1 -->
@@ -66,12 +65,10 @@ Promemoria in scadenza. Verificare?!?</property>
                 <property name="row_spacing">5</property>
                 <child>
                   <object class="GtkButton" id="snooze_alarm_button">
-                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
                     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                    <property name="use_action_appearance">False</property>
                     <signal name="clicked" handler="on_snooze_alarm_button_clicked" swapped="no"/>
                     <child>
                       <object class="GtkAlignment" id="alignment1">
@@ -119,8 +116,8 @@ Promemoria in scadenza. Verificare?!?</property>
                   <packing>
                     <property name="left_attach">2</property>
                     <property name="right_attach">3</property>
-                    <property name="x_options"></property>
-                    <property name="y_options"></property>
+                    <property name="x_options"/>
+                    <property name="y_options"/>
                   </packing>
                 </child>
                 <child>
@@ -136,7 +133,6 @@ Promemoria in scadenza. Verificare?!?</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
                     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                    <property name="use_action_appearance">False</property>
                     <signal name="clicked" handler="on_cancel_alarm_button_clicked" swapped="no"/>
                     <child>
                       <object class="GtkAlignment" id="alignment2">
@@ -184,8 +180,8 @@ Promemoria in scadenza. Verificare?!?</property>
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="right_attach">2</property>
-                    <property name="x_options"></property>
-                    <property name="y_options"></property>
+                    <property name="x_options"/>
+                    <property name="y_options"/>
                   </packing>
                 </child>
               </object>
@@ -213,8 +209,6 @@ Promemoria in scadenza. Verificare?!?</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                <property name="hscrollbar_policy">automatic</property>
-                <property name="vscrollbar_policy">automatic</property>
                 <property name="shadow_type">etched-in</property>
                 <child>
                   <object class="GtkTreeView" id="alarm_notify_treeview">
@@ -227,6 +221,9 @@ Promemoria in scadenza. Verificare?!?</property>
                     <property name="rubber_banding">True</property>
                     <property name="enable_grid_lines">both</property>
                     <signal name="row-activated" handler="on_alarm_notify_treeview_row_activated" swapped="no"/>
+                    <child internal-child="selection">
+                      <object class="GtkTreeSelection" id="treeview-selection1"/>
+                    </child>
                     <child>
                       <object class="GtkTreeViewColumn" id="data_scadenza_column">
                         <property name="min_width">200</property>
