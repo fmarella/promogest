@@ -22,13 +22,10 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 import sys, os
-print "OHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH"
+
 path = os.path.split(os.path.dirname(__file__))[0]
-print "PAAATH", path
-core_path = os.path.split(os.path.abspath(path))[0]
-print "CORE PATTH", core_path
+core_path = os.path.join(os.path.split(os.path.abspath(path))[0], "core")
 sys.path.append(core_path)
-print "SYYYYYYYYYYYYYYYYYYYS PATH", sys.path
 from promogest import preEnv
 preEnv.pg3_cla = True
 from promogest import Environment
@@ -38,4 +35,3 @@ from promogest.ui.GladeWidget import *
 from promogest.ui.widgets import PersonaGiuridicaSearchWidget, FornitoreSearchWidget,\
                     ClienteSearchWidget,ArticoloSearchWidget,CustomComboBoxModify,\
                     CustomComboBoxSearch,ScontiWidget,ScontoWidget
-print promogest
