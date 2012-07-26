@@ -377,6 +377,8 @@ class Anagrafica(GladeWidget):
     def on_filter_treeview_cursor_changed(self, treeview):
         """ Gestisce lo spostamento tra le righe """
         sel = self.anagrafica_treeview.get_selection()
+        if not sel:
+            return
         (model, iterator) = sel.get_selected()
         if self._rowEditingPath is not None:
             if iterator:
