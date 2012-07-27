@@ -67,9 +67,9 @@ class NewsNotebookPage(GladeWidget):
         #if lendocu > 200:
         #quanti= TestataDocumento().count(daData=dateToString(lastmonth),batchSize=None)
         docu = TestataDocumento().select(daData=dateToString(lastmonth),batchSize=None)
-        if len(docu) > 50:
-            docu = docu[-50:]
-            sospesi = 50
+        if len(docu) > 30:
+            docu = docu[-30:]
+            sospesi = 30
             troppi = 1
         else:
             sospesi = len(docu)
