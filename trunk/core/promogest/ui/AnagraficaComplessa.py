@@ -569,7 +569,7 @@ class Anagrafica(GladeWidget):
                     cartella = os.environ['HOME']
                 elif os.name == 'nt':
                     cartella = os.environ['USERPROFILE']
-            fileName = os.path.join(cartella, "documenti_" + time.strftime('%d_%m_%Y'))
+            fileName = os.path.join(cartella, "documenti_" + time.strftime('%d_%m_%Y') + '.pdf')
             # conversione dei DAO in un unico documento PDF
             to_pdf(daos, fileName, self)
             try:
