@@ -117,7 +117,9 @@ class AnagraficaCategorieContattiDetail(AnagraficaDetail):
         if not iterator:
             return
         model.set_value(iterator, 0, self.dao)
-        model.set_value(iterator, 1, self.dao.denominazione)
+        model.set_value(iterator, 1, self.dao.denominazione or "")
+
+
 
     def saveDao(self):
         sel = self._anagrafica.anagrafica_treeview.get_selection()

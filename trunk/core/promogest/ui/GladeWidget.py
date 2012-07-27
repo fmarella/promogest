@@ -39,11 +39,12 @@ class GladeWidget(SimpleGladeApp):
 
     def __init__(self, rootWidget, fileName=None, callbacks_proxy=None, isModule=False):
         prefix = ""
-        if Environment.pg3:
-            prefix = "pg3_"
         if not isModule:
-            if fileName:
-                fileName = prefix+fileName
+            if Environment.pg3:
+                prefix = "pg3_"
+                if fileName and "/" in fileName:
+                    a = fileName.split("/")
+                    fileName = a[0]+"/"+prefix+a[1]
             glade_path = './gui/'+(fileName or '')
         else:
             glade_path = fileName
