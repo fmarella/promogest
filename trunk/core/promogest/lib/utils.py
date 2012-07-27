@@ -3392,5 +3392,4 @@ def do_print(fileName):
             import win32api
             win32api.ShellExecute (0, "print", fileName, None, ".", 0)
         except:
-            raise Exception("Per fare funzionare questa opzione su windows installa questo pacchetto: ftp://promotux.it/pywin32-216.win32-py2.6.exe")
-        
+            raise Exception("Per fare funzionare questa opzione su windows installa questo pacchetto: ftp://promotux.it/pywin32-216.win32-py2.6.exe oppure verifica di avere una stampante funzionante nel sistema")
