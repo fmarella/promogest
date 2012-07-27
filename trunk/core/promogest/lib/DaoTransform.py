@@ -128,4 +128,4 @@ def to_pdf(daos, output, anag=None):
     merger.close()
     if anag:
         pbar(anag.pbar_anag_complessa,stop=True)
-        anag.pbar_anag_complessa.set_visible(False)
+        anag.pbar_anag_complessa.set_property("visible",False)
