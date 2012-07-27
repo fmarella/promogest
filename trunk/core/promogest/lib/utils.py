@@ -3369,3 +3369,28 @@ def start_viewer(filename):
         subprocess.Popen(['xdg-open', filename])
     else:
         pass
+
+def do_print(fileName):
+    """Stampa un file.
+
+    L'argomento è il percorso ad un file esistente.
+    """
+    if not Environment.pg3:
+        try:
+            import gtkunixprint
+            gtkunixprint # pyflakes
+        except ImportError:
+            gtkunixprint = None
+    else:
+        gtkunixprint = None
+    if gtkunixprint:
+        from promogest.lib.GtkPrintDialog import GtkPrintDialog
+        dialog = GtkPrintDialog(fileName)
+        dialog.run()
+    elif os.name == "nt":
+        try:
+            import win32api
+            win32api.ShellExecute (0, "print", fileName, None, ".", 0)
+        except:
+            raise Exception("Per fare funzionare questa opzione su windows installa questo pacchetto: ftp://promotux.it/pywin32-216.win32-py2.6.exe")
+        

@@ -29,17 +29,6 @@ import os, sys, threading, os.path
 from utilsCombobox import *
 from promogest import Environment
 from GladeWidget import GladeWidget
-from promogest.lib.GtkPrintDialog import GtkPrintDialog
-
-if not Environment.pg3:
-    try:
-        import gtkunixprint
-        gtkunixprint # pyflakes
-    except ImportError:
-        gtkunixprint = None
-else:
-    gtkunixprint = None
-
 
 
 class PrintDialogHandler(GladeWidget):
@@ -81,7 +70,7 @@ Verificare i permessi della cartella"""
 
     def on_send_email_button_clicked(self, widget):
         self.email = self.email_destinatario_entry.get_text()
-        pdfFile = os.path.join(self._folder + self._pdfName +'.pdf')
+        pdfFile = os.path.join(self._folder, self._pdfName +'.pdf')
 
         self.tryToSavePdf(pdfFile)
 
@@ -107,21 +96,13 @@ Verificare i permessi della cartella"""
         #self.on_records_print_dialog_close(self.printDialog)
 
     def on_directprint_button_clicked(self, button):
-        if gtkunixprint:
-            pdfFile = os.path.join(self._folder + self._pdfName +'.pdf')
-            self.tryToSavePdf(pdfFile)
-            dialog = GtkPrintDialog(pdfFile)
-            dialog.run()
-            #os.unlink(report.filename)
-        elif os.name == "nt":
-            try:
-                import win32api
-                pdfFile = os.path.join(self._folder + self._pdfName +'.pdf')
-                self.tryToSavePdf(pdfFile)
-                win32api.ShellExecute (0, "print", pdfFile, None, ".", 0)
-            except:
-                messageInfo(msg="Per fare funzionare questa opzione su windows installa questo pacchetto: ftp://promotux.it/pywin32-216.win32-py2.6.exe ")
-
+        from promogest.lib.utils import do_print
+        pdfFile = os.path.join(self._folder, self._pdfName + '.pdf')
+        self.tryToSavePdf(pdfFile)
+        try:
+            do_print(pdfFile)
+        except Exception as ex:
+            messageInfo(msg=str(ex))
 
     def on_records_print_dialog_close(self, dialog, event=None):
         del self.__pdfReport
