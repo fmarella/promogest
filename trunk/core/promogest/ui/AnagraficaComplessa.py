@@ -36,18 +36,9 @@ from promogest.lib.utils import *
 from promogest.lib.XmlGenerator import XlsXmlGenerator
 from promogest.lib.CsvGenerator import CsvFileGenerator
 from promogest import Environment
-from promogest.lib.GtkPrintDialog import GtkPrintDialog
 from promogest.ui.SendEmail import SendEmail
 from promogest.lib.HtmlHandler import createHtmlObj, renderHTML
 
-if not Environment.pg3:
-    try:
-        import gtkunixprint
-        gtkunixprint
-    except ImportError:
-        gtkunixprint = None
-else:
-    gtkunixprint = None
 
 
 class Anagrafica(GladeWidget):
@@ -791,21 +782,13 @@ Verificare i permessi della cartella"""
             return
 
     def on_directprint_button_clicked(self, button):
-        if gtkunixprint:
-            pdfFile = os.path.join(self._folder + self._pdfName +'.pdf')
-            self.tryToSavePdf(pdfFile)
-            dialog = GtkPrintDialog(pdfFile)
-            dialog.run()
-            #os.unlink(report.filename)
-        elif os.name == "nt":
-            try:
-                import win32api
-                pdfFile = os.path.join(self._folder + self._pdfName +'.pdf')
-                self.tryToSavePdf(pdfFile)
-                win32api.ShellExecute (0, "print", pdfFile, None, ".", 0)
-            except:
-                messageInfo(msg="Per fare funzionare questa opzione su windows installa questo pacchetto: ftp://promotux.it/pywin32-216.win32-py2.6.exe ")
-
+        from promogest.lib.utils import do_print
+        pdfFile = os.path.join(self._folder, self._pdfName + '.pdf')
+        self.tryToSavePdf(pdfFile)
+        try:
+            do_print(pdfFile)
+        except Exception as ex:
+            messageInfo(msg=str(ex))
 
     def on_send_email_button_clicked(self, widget):
         '''
