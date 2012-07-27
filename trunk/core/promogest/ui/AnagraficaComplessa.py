@@ -140,6 +140,7 @@ class Anagrafica(GladeWidget):
         self.email = ""
         if self.__class__.__name__ != "AnagraficaPrimaNota":
             self.info_anag_complessa_label.destroy()
+        self.pbar_anag_complessa.set_visible(False)
         self.setFocus()
 
     def _setFilterElement(self, gladeWidget):
@@ -570,7 +571,7 @@ class Anagrafica(GladeWidget):
                     cartella = os.environ['USERPROFILE']
             fileName = os.path.join(cartella, "documenti_" + time.strftime('%d_%m_%Y'))
             # conversione dei DAO in un unico documento PDF
-            to_pdf(daos, fileName)
+            to_pdf(daos, fileName, self)
             try:
                 do_print(fileName)
             except Exception as ex:

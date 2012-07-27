@@ -102,10 +102,14 @@ def _to_pdf(dao, classic=None, template_file=None):
                             template_file=None).fileElaborated()
     return Sla2Pdf_ng(slafile=stpl2sla).translate()
 
-def to_pdf(daos, output):
+def to_pdf(daos, output, anag=None):
     PDF_WORKING_DIR = tempfile.mkdtemp()
     i = 1
+    if anag:
+        anag.pbar_anag_complessa.show()
     for dao in daos:
+        if anag:
+            pbar(anag.pbar_anag_complessa,parziale=daos.index(dao), totale=len(daos), text="GEN STAMPE MULTIPLE", noeta=False)
         if dao.__class__.__name__ == 'TestataDocumento':
             dao.totali
 
@@ -114,9 +118,14 @@ def to_pdf(daos, output):
         i += 1
 
     merger = PyPDF2.PdfFileMerger()
-
-    for infile in glob.glob(os.path.join(PDF_WORKING_DIR, '*.pdf')):
+    filesPdf = glob.glob(os.path.join(PDF_WORKING_DIR, '*.pdf'))
+    for infile in filesPdf:
+        if anag:
+            pbar(anag.pbar_anag_complessa,parziale=filesPdf.index(infile), totale=len(filesPdf), text="UNIONE PDF", noeta=False)
         merger.append(fileobj=file(infile, 'rb'))
 
     merger.write(output)
     merger.close()
+    if anag:
+        pbar(anag.pbar_anag_complessa,stop=True)
+        anag.pbar_anag_complessa.set_visible(False)
