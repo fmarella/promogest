@@ -34,8 +34,6 @@ from promogest.lib.HtmlHandler import renderTemplate, renderHTML
 from promogest.dao.Azienda import Azienda
 
 
-PDF_WORKING_DIR = tempfile.mkdtemp()
-
 def _to_pdf(dao, classic=None, template_file=None):
 
     operationName = dao.operazione
@@ -105,6 +103,7 @@ def _to_pdf(dao, classic=None, template_file=None):
     return Sla2Pdf_ng(slafile=stpl2sla).translate()
 
 def to_pdf(daos, output):
+    PDF_WORKING_DIR = tempfile.mkdtemp()
     i = 1
     for dao in daos:
         if dao.__class__.__name__ == 'TestataDocumento':
