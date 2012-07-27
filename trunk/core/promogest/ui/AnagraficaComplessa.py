@@ -140,7 +140,7 @@ class Anagrafica(GladeWidget):
         self.email = ""
         if self.__class__.__name__ != "AnagraficaPrimaNota":
             self.info_anag_complessa_label.destroy()
-        self.pbar_anag_complessa.set_visible(False)
+        self.pbar_anag_complessa.set_property("visible",False)
         self.setFocus()
 
     def _setFilterElement(self, gladeWidget):
