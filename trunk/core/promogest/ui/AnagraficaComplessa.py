@@ -40,6 +40,29 @@ from promogest.ui.SendEmail import SendEmail
 from promogest.lib.HtmlHandler import createHtmlObj, renderHTML
 
 
+def get_selected_daos(treeview):
+    """Ritorna una lista di DAO selezionati.
+
+    L'argomento è un oggetto di tipo GtkTreeView.
+    """
+    sel = treeview.get_selection()
+    if not sel:
+        return []
+    if sel.get_mode() == GTK_SELECTIONMODE_MULTIPLE:
+        model, iterator = sel.get_selected_rows()
+        count = sel.count_selected_rows()
+        if count > 1:
+            return [model[iter][0] for iter in iterator]
+        elif count == 1:
+            return [model[iterator[0]][0]]
+        else:
+            return []
+    elif sel.get_mode() == GTK_SELECTIONMODE_SINGLE:
+        (model, iterator) = sel.get_selected()
+        if iterator is not None:
+            return [model.get_value(iterator, 0)]
+        else:
+            return []
 
 class Anagrafica(GladeWidget):
     """ Classe base per le anagrafiche di Promogest """
@@ -534,9 +557,28 @@ class Anagrafica(GladeWidget):
             fenceDialog()
 
     def on_selected_record_print_activate(self, widget):
-        self._handlePrinting(daos=[self.filter.getSelectedDao()],
-                             pdfGenerator=self.htmlHandler,
-                             report=True)
+        from promogest.lib.utils import do_print
+        from promogest.lib.DaoTransform import to_pdf
+        daos = get_selected_daos(self.filter.anagrafica_filter_treeview)
+        if len(daos) > 1:
+            # risoluzione della cartella di salvataggio del file e del nome del file
+            cartella = setconf("General", "cartella_predefinita") or ""
+            if cartella == '':
+                if os.name == 'posix':
+                    cartella = os.environ['HOME']
+                elif os.name == 'nt':
+                    cartella = os.environ['USERPROFILE']
+            fileName = os.path.join(cartella, "documenti_" + time.strftime('%d_%m_%Y'))
+            # conversione dei DAO in un unico documento PDF
+            to_pdf(daos, fileName)
+            try:
+                do_print(fileName)
+            except Exception as ex:
+                messageError(msg=str(ex))
+        else:
+            self._handlePrinting(daos=daos,
+                                 pdfGenerator=self.htmlHandler,
+                                 report=True)
 
     def manageLabels(self, results):
         from promogest.modules.Label.ui.ManageLabelsToPrint import\
