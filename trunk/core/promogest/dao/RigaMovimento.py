@@ -326,6 +326,7 @@ class RigaMovimento(Dao):
         params["session"].commit()
 
 riga_mov=Table('riga_movimento', params['metadata'],schema = params['schema'],autoload=True)
+t_riga_movimento = riga_mov
 
 j = join(riga_mov, riga)
 

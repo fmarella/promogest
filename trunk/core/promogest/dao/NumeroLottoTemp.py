@@ -23,26 +23,20 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
-from promogest.dao.RigaMovimento import RigaMovimento
+from promogest.dao.RigaMovimento import RigaMovimento, t_riga_movimento
 from Dao import Dao
-#from promogest.dao.TestataDocumento import TestataDocumento
 
-rigamovimento = Table('riga_movimento', params['metadata'], autoload=True, schema=params['schema'])
 try:
     numerolottotemp = Table('numero_lotto_temp',
                 params['metadata'],
                 schema = params['schema'],
                 autoload=True)
 except:
-    if params["tipo_db"] == "sqlite":
-        riga_movimentoFK = 'riga_movimento.id'
-    else:
-        riga_movimentoFK = params['schema']+'.riga_movimento.id'
-
     numerolottotemp = Table('numero_lotto_temp', params['metadata'],
-            Column('id',Integer,primary_key=True),
-            Column('id_riga_movimento_vendita_temp',Integer,ForeignKey(riga_movimentoFK),nullable=False),
-            Column('lotto_temp',String(50), nullable=False),
+            Column('id', Integer, primary_key=True),
+            Column('id_riga_movimento_vendita_temp', Integer,
+                ForeignKey(fk_prefix + 'riga_movimento.id'), nullable=False),
+            Column('lotto_temp', String(50), nullable=False),
             Column('data_lotto_temp', DateTime, nullable=True),
             schema=params["schema"])
     numerolottotemp.create(checkfirst=True)
@@ -52,14 +46,17 @@ class NumeroLottoTemp(Dao):
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
 
-    def filter_values(self,k,v):
+    def filter_values(self, k, v):
         if k == "lottoTemp":
-            dic= {k:numerolottotemp.c.lotto_temp ==v}
+            dic = {k: numerolottotemp.c.lotto_temp==v}
         elif k == "idRigaMovimentoVenditaTemp":
-            dic= {k:numerolottotemp.c.id_riga_movimento_vendita_temp ==v}
-        return  dic[k]
+            dic = {k: numerolottotemp.c.id_riga_movimento_vendita_temp==v}
+        return dic[k]
 
-
-std_mapper = mapper(NumeroLottoTemp,numerolottotemp,properties={
-            "rigamovventemp ":relation(RigaMovimento ,primaryjoin = (numerolottotemp.c.id_riga_movimento_vendita_temp==rigamovimento.c.id), backref="NLT"),
-        }, order_by=numerolottotemp.c.id )
+std_mapper = mapper(NumeroLottoTemp, numerolottotemp,
+    properties={
+        "rigamovventemp": relation(RigaMovimento,
+            primaryjoin=(numerolottotemp.c.id_riga_movimento_vendita_temp==t_riga_movimento.c.id),
+            backref="NLT"),
+    },
+    order_by=numerolottotemp.c.id)

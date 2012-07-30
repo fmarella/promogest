@@ -35,17 +35,13 @@ try:
 except:
         listinoTable = Table('listino', params["metadata"], autoload=True, schema=params["schema"])
 
-        if params["schema"]:
-            listinoFK = params["schema"]+'.listino.id'
-        else:
-            listinoFK = 'listino.id'
-
         variazionelistino = Table('variazione_listino', params["metadata"],
             Column('id', Integer, primary_key=True),
             Column('denominazione', String(200), nullable=False),
             Column('data_inizio', DateTime, nullable=True),
             Column('data_fine', DateTime, nullable=True),
-            Column('id_listino', Integer,ForeignKey(listinoFK,onupdate="CASCADE",ondelete="CASCADE")),
+            Column('id_listino', Integer,
+                ForeignKey(fk_prefix + 'listino.id', onupdate="CASCADE", ondelete="CASCADE")),
             Column('valore', String(50), nullable=True),
             Column('tipo', String(50), nullable=True),
             Column('segno', String(1), nullable=True),
