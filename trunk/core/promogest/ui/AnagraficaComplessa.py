@@ -413,49 +413,51 @@ class Anagrafica(GladeWidget):
         messageInfo(msg=msg)
 
     def on_anagrafica_filter_treeview_cursor_changed(self, treeview):
-#        print "on_anagrafica_filter_treeview_cursor_changed"
-        #sel1 = self.anagrafica_filter_treeview.get_selection()
-        sel = treeview.get_selection()
-        #print "DIRRRRRRRRRRRRRRRRRRRRRRRRR", sel, dir(sel), sel1, dir(sel1)
-        if not sel:
-            return
-        if sel.get_mode() == GTK_SELECTIONMODE_MULTIPLE:
-            model, iterator = sel.get_selected_rows()
-            count = sel.count_selected_rows()
-            if count > 1:
-                for iter in iterator:
-                    self.daoSelection.append(model[iter][0])
-                self.dao = None
-            elif count == 1:
-                self.dao = model[iterator[0]][0]
-            else:
-                iterator = None
-                # No items are currently selected
-                self.dao = None
-        elif sel.get_mode() == GTK_SELECTIONMODE_SINGLE:
-            (model, iterator) = sel.get_selected()
-            if iterator is not None:
-                self.dao = model.get_value(iterator, 0)
-            else:
-                self.dao = None
-        if self.dao is not None:
-            self.htmlHandler.setDao(self.dao)
+        daos = get_selected_daos(self.filter.anagrafica_filter_treeview)
 
-        self.record_edit_button.set_sensitive(self.dao is not None)
-        self.record_edit_menu.set_sensitive(self.dao is not None)
-        if self.dao.__class__.__name__ in ["TestataDocumento",
-                                        "Articolo",
-                                        "TestataMovimento",
-                                        "Listino"]:
-            self.duplica_button.set_sensitive(self.dao is not None)
-            self.record_duplicate_menu.set_sensitive(self.dao is not None)
+        if daos:
+            if len(daos) == 1:
+                dao = daos[0]
+                self.htmlHandler.setDao(dao)
 
-        self.record_delete_button.set_sensitive(self.dao is not None)
-        self.record_delete_menu.set_sensitive(self.dao is not None)
+                self.record_edit_button.set_sensitive(dao is not None)
+                self.record_edit_menu.set_sensitive(dao is not None)
+                if dao.__class__.__name__ in ["TestataDocumento",
+                                                "Articolo",
+                                                "TestataMovimento",
+                                                "Listino"]:
+                    self.duplica_button.set_sensitive(dao is not None)
+                    self.record_duplicate_menu.set_sensitive(dao is not None)
 
-        self.selected_record_print_button.set_sensitive(self.dao is not None)
-        self.selected_record_print_menu.set_sensitive(self.dao is not None)
-        return self.dao or False
+                self.record_delete_button.set_sensitive(dao is not None)
+                self.record_delete_menu.set_sensitive(dao is not None)
+
+                self.selected_record_print_button.set_sensitive(dao is not None)
+                self.selected_record_print_menu.set_sensitive(dao is not None)
+            elif len(daos) > 1:
+                self.record_edit_button.set_sensitive(False)
+                self.record_edit_menu.set_sensitive(False)
+
+                self.duplica_button.set_sensitive(False)
+                self.record_duplicate_menu.set_sensitive(False)
+
+                self.record_delete_button.set_sensitive(True)
+                self.record_delete_menu.set_sensitive(True)
+
+                self.selected_record_print_button.set_sensitive(True)
+                self.selected_record_print_menu.set_sensitive(True)
+        else:
+            self.record_edit_button.set_sensitive(False)
+            self.record_edit_menu.set_sensitive(False)
+
+            self.duplica_button.set_sensitive(False)
+            self.record_duplicate_menu.set_sensitive(False)
+
+            self.record_delete_button.set_sensitive(False)
+            self.record_delete_menu.set_sensitive(False)
+
+            self.selected_record_print_button.set_sensitive(False)
+            self.selected_record_print_menu.set_sensitive(False)
 
     def on_anagrafica_filter_treeview_row_activated(self, widget, path, colum):
         """ Funzione che si attiva nel momento in cui si fa doppio click per
@@ -464,51 +466,51 @@ class Anagrafica(GladeWidget):
         self.on_record_edit_activate(widget, path, colum)
 
     def on_anagrafica_filter_treeview_selection_changed(self, treeSelection):
-        """ per il momento questa funzione la togliamo perchè sembra non servire
-        """
-#        print "on_anagrafica_filter_treeview_selection_changed"
+        daos = get_selected_daos(self.filter.anagrafica_filter_treeview)
 
-        sel = treeSelection
-        self.daoSelection = []
-        #return
-        self.dao = None
-        if sel and sel.get_mode() == GTK_SELECTIONMODE_MULTIPLE:
-            model, iterator = sel.get_selected_rows()
-            count = sel.count_selected_rows()
-            if count > 1:
-                for iter in iterator:
-                    self.daoSelection.append(model[iter][0])
-                self.dao = None
-            elif count == 1:
-                self.dao = model[iterator[0]][0]
-            else:
-                iterator = None
-                # No items are currently selected
-                self.dao = None
-        elif sel and sel.get_mode() == GTK_SELECTIONMODE_SINGLE:
-            (model, iterator) = sel.get_selected()
-            if iterator is not None:
-                self.dao = model.get_value(iterator, 0)
-            else:
-                self.dao = None
-        if self.dao is not None:
-            self.htmlHandler.setDao(self.dao)
+        if daos:
+            if len(daos) == 1:
+                dao = daos[0]
+                self.htmlHandler.setDao(dao)
 
-        self.record_edit_button.set_sensitive(self.dao is not None)
-        self.record_edit_menu.set_sensitive(self.dao is not None)
-        if self.dao.__class__.__name__ in ["TestataDocumento",
-                                            "Articolo",
-                                            "TestataMovimento",
-                                            "Listino"]:
-            self.duplica_button.set_sensitive(self.dao is not None)
-            self.record_duplicate_menu.set_sensitive(self.dao is not None)
+                self.record_edit_button.set_sensitive(dao is not None)
+                self.record_edit_menu.set_sensitive(dao is not None)
+                if dao.__class__.__name__ in ["TestataDocumento",
+                                              "Articolo",
+                                              "TestataMovimento",
+                                              "Listino"]:
+                    self.duplica_button.set_sensitive(dao is not None)
+                    self.record_duplicate_menu.set_sensitive(dao is not None)
 
-        self.record_delete_button.set_sensitive(self.dao is not None)
-        self.record_delete_menu.set_sensitive(self.dao is not None)
+                self.record_delete_button.set_sensitive(dao is not None)
+                self.record_delete_menu.set_sensitive(dao is not None)
 
-        self.selected_record_print_button.set_sensitive(self.dao is not None)
-        self.selected_record_print_menu.set_sensitive(self.dao is not None)
-        return self.daoSelection or self.dao or False
+                self.selected_record_print_button.set_sensitive(dao is not None)
+                self.selected_record_print_menu.set_sensitive(dao is not None)
+            elif len(daos) > 1:
+                self.record_edit_button.set_sensitive(False)
+                self.record_edit_menu.set_sensitive(False)
+
+                self.duplica_button.set_sensitive(False)
+                self.record_duplicate_menu.set_sensitive(False)
+
+                self.record_delete_button.set_sensitive(True)
+                self.record_delete_menu.set_sensitive(True)
+
+                self.selected_record_print_button.set_sensitive(True)
+                self.selected_record_print_menu.set_sensitive(True)
+        else:
+            self.record_edit_button.set_sensitive(False)
+            self.record_edit_menu.set_sensitive(False)
+
+            self.duplica_button.set_sensitive(False)
+            self.record_duplicate_menu.set_sensitive(False)
+
+            self.record_delete_button.set_sensitive(False)
+            self.record_delete_menu.set_sensitive(False)
+
+            self.selected_record_print_button.set_sensitive(False)
+            self.selected_record_print_menu.set_sensitive(False)
 
     def on_record_new_activate(self, widget=None, from_other_dao=None):
         self.editElement.setVisible(True)
