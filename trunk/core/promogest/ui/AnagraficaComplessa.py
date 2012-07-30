@@ -562,7 +562,7 @@ class Anagrafica(GladeWidget):
     def on_selected_record_print_activate(self, widget):
         from promogest.lib.utils import do_print
         from promogest.lib.DaoTransform import to_pdf
-        daos = get_selected_daos(self.filter.anagrafica_filter_treeview)
+        daos = get_selected_daos(self.anagrafica_filter_treeview)
         if len(daos) > 1:
             # risoluzione della cartella di salvataggio del file e del nome del file
             cartella = setconf("General", "cartella_predefinita") or ""
