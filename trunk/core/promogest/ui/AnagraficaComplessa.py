@@ -413,7 +413,7 @@ class Anagrafica(GladeWidget):
         messageInfo(msg=msg)
 
     def on_anagrafica_filter_treeview_cursor_changed(self, treeview):
-        daos = get_selected_daos(self.filter.anagrafica_filter_treeview)
+        daos = get_selected_daos(self.anagrafica_filter_treeview)
 
         if daos:
             if len(daos) == 1:
@@ -466,7 +466,7 @@ class Anagrafica(GladeWidget):
         self.on_record_edit_activate(widget, path, colum)
 
     def on_anagrafica_filter_treeview_selection_changed(self, treeSelection):
-        daos = get_selected_daos(self.filter.anagrafica_filter_treeview)
+        daos = get_selected_daos(self.anagrafica_filter_treeview)
 
         if daos:
             if len(daos) == 1:
