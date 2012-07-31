@@ -82,7 +82,7 @@ class Cliente(Dao):
                 return ', nome e cognome="{0} {1}"'.format(obj.nome, obj.cognome)
             else:
                 return ''
-        return '<Cliente ID={0}{1}>'.format(self.codice, _descrizione(self))
+        return '<Cliente ID={0}>'.format(self.codice) # , _descrizione(self)
 
     def _getCategorieCliente(self):
         self.__dbCategorieCliente = self.cliente_categoria_cliente

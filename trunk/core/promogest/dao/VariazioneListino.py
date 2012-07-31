@@ -4,6 +4,7 @@
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
+#    Author: Francesco Marella <francesco.marella@gmail.com>
 
 #    This file is part of Promogest.
 
@@ -26,15 +27,12 @@ from sqlalchemy.orm import *
 from promogest.Environment import *
 from promogest.dao.Dao import Dao
 
-
 try:
-    variazionelistino=Table('variazione_listino',
+    variazionelistino = Table('variazione_listino',
             params['metadata'],
             schema = params['schema'],
             autoload=True)
 except:
-        listinoTable = Table('listino', params["metadata"], autoload=True, schema=params["schema"])
-
         variazionelistino = Table('variazione_listino', params["metadata"],
             Column('id', Integer, primary_key=True),
             Column('denominazione', String(200), nullable=False),
@@ -74,4 +72,6 @@ class VariazioneListino(Dao):
             dic = {k:variazionelistino.c.tipo == v}
         return  dic[k]
 
-std_mapper = mapper(VariazioneListino, variazionelistino, order_by=variazionelistino.c.id)
+std_mapper = mapper(VariazioneListino,
+                    variazionelistino,
+                    order_by=variazionelistino.c.id)
