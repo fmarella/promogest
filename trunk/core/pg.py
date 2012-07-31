@@ -28,7 +28,7 @@ from optparse import OptionParser
 
 
 class BigBang(object):
-    def __init__(self, debug=None):
+    def __init__(self, debug=None, shop=False):
         parser = OptionParser()
         debug_help = """Imposta una o piu' modalita' di debug tra
 SQL, DAO, FILTER, ALL (separate da virgola)
@@ -88,6 +88,8 @@ i DAO, i filtri o tutto"""
         elif 'FILTER' in options.debug:
             preEnv.debugFilter = True
         from promogest.ui.Login import Login
+        if shop:
+            preEnv.shop = True
         login = Login()
         login.run()
 

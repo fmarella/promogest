@@ -42,10 +42,10 @@ dell'interfaccia di vendita</property>
             <child>
               <object class="GtkButton" id="ao_annulla_button">
                 <property name="label">gtk-cancel</property>
+                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
                 <signal name="clicked" handler="on_ao_annulla_button_clicked" swapped="no"/>
               </object>
@@ -58,10 +58,10 @@ dell'interfaccia di vendita</property>
             <child>
               <object class="GtkButton" id="ao_ok_button">
                 <property name="label">gtk-ok</property>
+                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
                 <signal name="clicked" handler="on_ao_ok_button_clicked" swapped="no"/>
               </object>
@@ -232,10 +232,10 @@ ALT +n per annullare INVIO  per confermare</property>
             <child>
               <object class="GtkButton" id="annulla_generico_button">
                 <property name="label">gtk-cancel</property>
+                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
                 <signal name="clicked" handler="on_annulla_generico_button_clicked" swapped="no"/>
               </object>
@@ -248,15 +248,15 @@ ALT +n per annullare INVIO  per confermare</property>
             <child>
               <object class="GtkButton" id="generico_ok_button">
                 <property name="label">gtk-ok</property>
+                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="tooltip_markup">Conferma con invio</property>
                 <property name="border_width">1</property>
-                <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
-                <accelerator key="Return" signal="clicked"/>
                 <accelerator key="KP_Enter" signal="clicked"/>
+                <accelerator key="Return" signal="clicked"/>
                 <signal name="clicked" handler="on_generico_ok_button_clicked" swapped="no"/>
               </object>
               <packing>
@@ -309,14 +309,14 @@ ALT +n per annullare INVIO  per confermare</property>
             </child>
             <child>
               <object class="GtkButton" id="plus2_button">
+                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="tooltip_markup">(+) aumenta</property>
-                <property name="use_action_appearance">False</property>
                 <property name="image">image2_plus</property>
-                <accelerator key="KP_Add" signal="clicked"/>
                 <accelerator key="plus" signal="clicked"/>
+                <accelerator key="KP_Add" signal="clicked"/>
                 <signal name="clicked" handler="on_plus2_button_clicked" swapped="no"/>
               </object>
               <packing>
@@ -327,14 +327,14 @@ ALT +n per annullare INVIO  per confermare</property>
             </child>
             <child>
               <object class="GtkButton" id="minus2_button">
+                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="tooltip_markup">(-) diminuisce</property>
-                <property name="use_action_appearance">False</property>
                 <property name="image">image4_minus2</property>
-                <accelerator key="KP_Subtract" signal="clicked"/>
                 <accelerator key="minus" signal="clicked"/>
+                <accelerator key="KP_Subtract" signal="clicked"/>
                 <signal name="clicked" handler="on_minus2_button_clicked" swapped="no"/>
               </object>
               <packing>
@@ -392,14 +392,14 @@ ALT +n per annullare INVIO  per confermare</property>
             </child>
             <child>
               <object class="GtkButton" id="plus_button">
+                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="tooltip_markup">ctrl +( +) aumenta</property>
-                <property name="use_action_appearance">False</property>
                 <property name="image">image_plus</property>
-                <accelerator key="KP_Add" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
                 <accelerator key="plus" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
+                <accelerator key="KP_Add" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
                 <signal name="clicked" handler="on_plus_button_clicked" swapped="no"/>
               </object>
               <packing>
@@ -410,14 +410,14 @@ ALT +n per annullare INVIO  per confermare</property>
             </child>
             <child>
               <object class="GtkButton" id="minus_button">
+                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="tooltip_markup">ctrl +( - ) diminisce</property>
-                <property name="use_action_appearance">False</property>
                 <property name="image">image3_minus</property>
-                <accelerator key="KP_Subtract" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
                 <accelerator key="minus" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
+                <accelerator key="KP_Subtract" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
                 <signal name="clicked" handler="on_minus_button_clicked" swapped="no"/>
               </object>
               <packing>
@@ -521,7 +521,9 @@ all stampante fiscale.</property>
     <property name="pixbuf">conferma32x32.png</property>
   </object>
   <object class="GtkWindow" id="vendita_dettaglio_window">
-    <property name="can_focus">False</property>
+    <property name="app_paintable">True</property>
+    <property name="can_focus">True</property>
+    <property name="no_show_all">True</property>
     <property name="title" translatable="yes">Vendita al dettaglio</property>
     <property name="icon">promogest.png</property>
     <signal name="destroy-event" handler="on_vendita_dettaglio_window_close" swapped="no"/>
@@ -537,9 +539,9 @@ all stampante fiscale.</property>
             <property name="can_focus">False</property>
             <child>
               <object class="GtkMenuItem" id="operazioni_di_fine_giornata">
+                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">_Operazioni di fine giornata</property>
                 <property name="use_underline">True</property>
                 <child type="submenu">
@@ -548,9 +550,9 @@ all stampante fiscale.</property>
                     <child>
                       <object class="GtkImageMenuItem" id="chiusura_fiscale">
                         <property name="label">Chiusura Fiscale</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="image">image11</property>
                         <property name="use_stock">False</property>
                         <signal name="activate" handler="on_chiusura_fiscale_activate" swapped="no"/>
@@ -562,9 +564,9 @@ all stampante fiscale.</property>
             </child>
             <child>
               <object class="GtkMenuItem" id="letture_NON_Fisc_menu">
+                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">Letture NON Fisc.</property>
                 <property name="use_underline">True</property>
                 <child type="submenu">
@@ -574,9 +576,9 @@ all stampante fiscale.</property>
                     <child>
                       <object class="GtkImageMenuItem" id="stampa_del_giornale_breve">
                         <property name="label">Stampa del giornale breve</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="image">image10</property>
                         <property name="use_stock">False</property>
                         <signal name="activate" handler="on_stampa_del_giornale_breve_activate" swapped="no"/>
@@ -585,9 +587,9 @@ all stampante fiscale.</property>
                     <child>
                       <object class="GtkImageMenuItem" id="stampa_del_periodico_cassa">
                         <property name="label">Stampa del periodico cassa</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="image">image9</property>
                         <property name="use_stock">False</property>
                         <signal name="activate" handler="on_stampa_del_periodico_cassa_activate" swapped="no"/>
@@ -596,9 +598,9 @@ all stampante fiscale.</property>
                     <child>
                       <object class="GtkImageMenuItem" id="stampa_del_periodico_reparti">
                         <property name="label">Stampa del periodico reparti</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="image">image8</property>
                         <property name="use_stock">False</property>
                         <signal name="activate" handler="on_stampa_del_periodico_reparti_activate" swapped="no"/>
@@ -607,9 +609,9 @@ all stampante fiscale.</property>
                     <child>
                       <object class="GtkImageMenuItem" id="stampa_del_periodico_articoli">
                         <property name="label" translatable="yes">Stampa del periodico articoli</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="image">image6</property>
                         <property name="use_stock">False</property>
                         <signal name="activate" handler="on_stampa_del_periodico_articoli_activate" swapped="no"/>
@@ -618,9 +620,9 @@ all stampante fiscale.</property>
                     <child>
                       <object class="GtkImageMenuItem" id="stampa_della_affluenza_oraria">
                         <property name="label">Stampa della affluenza oraria</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="image">image7</property>
                         <property name="use_stock">False</property>
                         <signal name="activate" handler="on_stampa_della_affluenza_oraria_activate" swapped="no"/>
@@ -632,9 +634,9 @@ all stampante fiscale.</property>
             </child>
             <child>
               <object class="GtkMenuItem" id="Opzioni">
+                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">Opzioni</property>
                 <property name="use_underline">True</property>
                 <child type="submenu">
@@ -643,9 +645,9 @@ all stampante fiscale.</property>
                     <property name="can_focus">False</property>
                     <child>
                       <object class="GtkMenuItem" id="anagrafica_punti_cassa">
+                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="label" translatable="yes">Anagrafica Punti Cassa</property>
                         <property name="use_underline">True</property>
                         <signal name="activate" handler="on_anagrafica_punti_cassa_activate_item" swapped="no"/>
@@ -653,9 +655,9 @@ all stampante fiscale.</property>
                     </child>
                     <child>
                       <object class="GtkMenuItem" id="anagrafica_tipi_carta">
+                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="label" translatable="yes">Anagrafica Tipi Carta</property>
                         <property name="use_underline">True</property>
                         <signal name="activate" handler="on_anagrafica_tipi_carta_activate" swapped="no"/>
@@ -663,12 +665,12 @@ all stampante fiscale.</property>
                     </child>
                     <child>
                       <object class="GtkMenuItem" id="set_pv_pos">
+                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="tooltip_text" translatable="yes">Riapre il menu iniziale per 
 settare un nuovo magazzino 
 ed un nuovo punto cassa.</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="label" translatable="yes">Risetta Punto cassa e P Vendita</property>
                         <property name="use_underline">True</property>
                         <signal name="activate" handler="on_set_pv_pos_activate" swapped="no"/>
@@ -970,11 +972,11 @@ ed un nuovo punto cassa.</property>
                                     </child>
                                     <child>
                                       <object class="GtkButton" id="search_button">
+                                        <property name="use_action_appearance">False</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="can_default">True</property>
                                         <property name="receives_default">True</property>
-                                        <property name="use_action_appearance">False</property>
                                         <signal name="clicked" handler="on_search_button_clicked" swapped="no"/>
                                         <child>
                                           <object class="GtkAlignment" id="alignment266">
@@ -1036,12 +1038,12 @@ ed un nuovo punto cassa.</property>
                                     <property name="can_focus">False</property>
                                     <child>
                                       <object class="GtkButton" id="new_button">
+                                        <property name="use_action_appearance">False</property>
                                         <property name="visible">True</property>
                                         <property name="sensitive">False</property>
                                         <property name="can_focus">True</property>
                                         <property name="can_default">True</property>
                                         <property name="receives_default">True</property>
-                                        <property name="use_action_appearance">False</property>
                                         <signal name="clicked" handler="on_new_button_clicked" swapped="no"/>
                                         <child>
                                           <object class="GtkAlignment" id="alignment1">
@@ -1341,7 +1343,7 @@ ed un nuovo punto cassa.</property>
                                     <property name="top_attach">1</property>
                                     <property name="bottom_attach">2</property>
                                     <property name="x_options">GTK_FILL</property>
-                                    <property name="y_options"></property>
+                                    <property name="y_options"/>
                                   </packing>
                                 </child>
                                 <child>
@@ -1358,7 +1360,7 @@ ed un nuovo punto cassa.</property>
                                     <property name="top_attach">1</property>
                                     <property name="bottom_attach">2</property>
                                     <property name="x_options">GTK_FILL</property>
-                                    <property name="y_options"></property>
+                                    <property name="y_options"/>
                                   </packing>
                                 </child>
                                 <child>
@@ -1374,7 +1376,7 @@ ed un nuovo punto cassa.</property>
                                     <property name="top_attach">1</property>
                                     <property name="bottom_attach">2</property>
                                     <property name="x_options">GTK_FILL</property>
-                                    <property name="y_options"></property>
+                                    <property name="y_options"/>
                                   </packing>
                                 </child>
                                 <child>
@@ -1391,7 +1393,7 @@ ed un nuovo punto cassa.</property>
                                     <property name="top_attach">1</property>
                                     <property name="bottom_attach">2</property>
                                     <property name="x_options">GTK_FILL</property>
-                                    <property name="y_options"></property>
+                                    <property name="y_options"/>
                                   </packing>
                                 </child>
                                 <child>
@@ -1402,8 +1404,8 @@ ed un nuovo punto cassa.</property>
                                     <property name="label" translatable="yes">Listino</property>
                                   </object>
                                   <packing>
-                                    <property name="x_options"></property>
-                                    <property name="y_options"></property>
+                                    <property name="x_options"/>
+                                    <property name="y_options"/>
                                   </packing>
                                 </child>
                                 <child>
@@ -1416,7 +1418,7 @@ ed un nuovo punto cassa.</property>
                                   <packing>
                                     <property name="left_attach">1</property>
                                     <property name="right_attach">2</property>
-                                    <property name="y_options"></property>
+                                    <property name="y_options"/>
                                   </packing>
                                 </child>
                                 <child>
@@ -1468,6 +1470,9 @@ ed un nuovo punto cassa.</property>
                                   </packing>
                                 </child>
                                 <child>
+                                  <placeholder/>
+                                </child>
+                                <child>
                                   <object class="SignedDecimalEntryField" id="quantita_entry">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
@@ -1485,9 +1490,6 @@ ed un nuovo punto cassa.</property>
                                     <property name="top_attach">2</property>
                                     <property name="bottom_attach">3</property>
                                   </packing>
-                                </child>
-                                <child>
-                                  <placeholder/>
                                 </child>
                                 <child>
                                   <placeholder/>
@@ -1520,12 +1522,12 @@ ed un nuovo punto cassa.</property>
                         <property name="homogeneous">True</property>
                         <child>
                           <object class="GtkButton" id="cancel_button">
+                            <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="can_default">True</property>
                             <property name="has_default">True</property>
                             <property name="receives_default">True</property>
-                            <property name="use_action_appearance">False</property>
                             <signal name="clicked" handler="on_cancel_button_clicked" swapped="no"/>
                             <child>
                               <object class="GtkAlignment" id="alignment429">
@@ -1576,12 +1578,12 @@ ed un nuovo punto cassa.</property>
                         </child>
                         <child>
                           <object class="GtkButton" id="rhesus_button">
+                            <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="can_default">True</property>
                             <property name="has_default">True</property>
                             <property name="receives_default">True</property>
-                            <property name="use_action_appearance">False</property>
                             <signal name="clicked" handler="on_rhesus_button_clicked" swapped="no"/>
                             <child>
                               <object class="GtkAlignment" id="alignment427">
@@ -1632,11 +1634,11 @@ ed un nuovo punto cassa.</property>
                         </child>
                         <child>
                           <object class="GtkButton" id="delete_button">
+                            <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="can_default">True</property>
                             <property name="receives_default">True</property>
-                            <property name="use_action_appearance">False</property>
                             <signal name="clicked" handler="on_delete_button_clicked" swapped="no"/>
                             <child>
                               <object class="GtkAlignment" id="alignment267">
@@ -1688,10 +1690,10 @@ ed un nuovo punto cassa.</property>
                         <child>
                           <object class="GtkButton" id="tastiera_button">
                             <property name="label" translatable="yes">Tastiera</property>
+                            <property name="use_action_appearance">False</property>
                             <property name="sensitive">False</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
-                            <property name="use_action_appearance">False</property>
                             <signal name="clicked" handler="on_tastiera_button_clicked" swapped="no"/>
                           </object>
                           <packing>
@@ -1772,10 +1774,10 @@ ed un nuovo punto cassa.</property>
                                     <property name="homogeneous">True</property>
                                     <child>
                                       <object class="GtkRadioButton" id="assegni_radio_button">
+                                        <property name="use_action_appearance">False</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">False</property>
-                                        <property name="use_action_appearance">False</property>
                                         <property name="draw_indicator">False</property>
                                         <property name="group">contanti_radio_button</property>
                                         <accelerator key="F2" signal="clicked"/>
@@ -1829,10 +1831,10 @@ ed un nuovo punto cassa.</property>
                                     </child>
                                     <child>
                                       <object class="GtkRadioButton" id="carta_di_credito_radio_button">
+                                        <property name="use_action_appearance">False</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">False</property>
-                                        <property name="use_action_appearance">False</property>
                                         <property name="draw_indicator">False</property>
                                         <property name="group">contanti_radio_button</property>
                                         <accelerator key="F2" signal="clicked"/>
@@ -1889,15 +1891,15 @@ ed un nuovo punto cassa.</property>
                                     <property name="top_attach">2</property>
                                     <property name="bottom_attach">3</property>
                                     <property name="x_options">GTK_FILL</property>
-                                    <property name="y_options"></property>
+                                    <property name="y_options"/>
                                   </packing>
                                 </child>
                                 <child>
                                   <object class="GtkRadioButton" id="contanti_radio_button">
+                                    <property name="use_action_appearance">False</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">False</property>
-                                    <property name="use_action_appearance">False</property>
                                     <property name="draw_indicator">False</property>
                                     <accelerator key="F1" signal="clicked"/>
                                     <signal name="clicked" handler="on_contanti_radio_button_clicked" after="yes" swapped="no"/>
@@ -1944,7 +1946,7 @@ ed un nuovo punto cassa.</property>
                                   </object>
                                   <packing>
                                     <property name="x_options">GTK_FILL</property>
-                                    <property name="y_options"></property>
+                                    <property name="y_options"/>
                                   </packing>
                                 </child>
                                 <child>
@@ -1967,8 +1969,8 @@ ed un nuovo punto cassa.</property>
                                   <packing>
                                     <property name="top_attach">1</property>
                                     <property name="bottom_attach">2</property>
-                                    <property name="x_options"></property>
-                                    <property name="y_options"></property>
+                                    <property name="x_options"/>
+                                    <property name="y_options"/>
                                   </packing>
                                 </child>
                                 <child>
@@ -2040,10 +2042,10 @@ ed un nuovo punto cassa.</property>
                                     <child>
                                       <object class="GtkRadioButton" id="tipo_sconto_euro">
                                         <property name="label" translatable="yes"> € </property>
+                                        <property name="use_action_appearance">False</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">False</property>
-                                        <property name="use_action_appearance">False</property>
                                         <property name="active">True</property>
                                         <property name="draw_indicator">False</property>
                                       </object>
@@ -2057,10 +2059,10 @@ ed un nuovo punto cassa.</property>
                                     <child>
                                       <object class="GtkRadioButton" id="tipo_sconto_percentuale">
                                         <property name="label" translatable="yes"> % </property>
+                                        <property name="use_action_appearance">False</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">False</property>
-                                        <property name="use_action_appearance">False</property>
                                         <property name="draw_indicator">False</property>
                                         <property name="group">tipo_sconto_euro</property>
                                       </object>
@@ -2075,7 +2077,7 @@ ed un nuovo punto cassa.</property>
                                   <packing>
                                     <property name="top_attach">4</property>
                                     <property name="bottom_attach">5</property>
-                                    <property name="y_options"></property>
+                                    <property name="y_options"/>
                                   </packing>
                                 </child>
                                 <child>
@@ -2134,7 +2136,7 @@ ed un nuovo punto cassa.</property>
                                     <property name="top_attach">3</property>
                                     <property name="bottom_attach">4</property>
                                     <property name="x_options">GTK_FILL</property>
-                                    <property name="y_options"></property>
+                                    <property name="y_options"/>
                                   </packing>
                                 </child>
                               </object>
@@ -2190,7 +2192,7 @@ ed un nuovo punto cassa.</property>
                                         <property name="left_attach">1</property>
                                         <property name="right_attach">2</property>
                                         <property name="x_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
-                                        <property name="y_options"></property>
+                                        <property name="y_options"/>
                                       </packing>
                                     </child>
                                     <child>
@@ -2204,7 +2206,7 @@ ed un nuovo punto cassa.</property>
                                       </object>
                                       <packing>
                                         <property name="x_options">GTK_FILL</property>
-                                        <property name="y_options"></property>
+                                        <property name="y_options"/>
                                       </packing>
                                     </child>
                                     <child>
@@ -2220,7 +2222,7 @@ ed un nuovo punto cassa.</property>
                                         <property name="left_attach">2</property>
                                         <property name="right_attach">3</property>
                                         <property name="x_options">GTK_FILL</property>
-                                        <property name="y_options"></property>
+                                        <property name="y_options"/>
                                       </packing>
                                     </child>
                                     <child>
@@ -2236,7 +2238,7 @@ ed un nuovo punto cassa.</property>
                                         <property name="left_attach">3</property>
                                         <property name="right_attach">4</property>
                                         <property name="x_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
-                                        <property name="y_options"></property>
+                                        <property name="y_options"/>
                                       </packing>
                                     </child>
                                     <child>
@@ -2254,7 +2256,7 @@ ed un nuovo punto cassa.</property>
                                         <property name="top_attach">1</property>
                                         <property name="bottom_attach">2</property>
                                         <property name="x_options">GTK_FILL</property>
-                                        <property name="y_options"></property>
+                                        <property name="y_options"/>
                                       </packing>
                                     </child>
                                     <child>
@@ -2272,7 +2274,7 @@ ed un nuovo punto cassa.</property>
                                         <property name="top_attach">1</property>
                                         <property name="bottom_attach">2</property>
                                         <property name="x_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
-                                        <property name="y_options"></property>
+                                        <property name="y_options"/>
                                       </packing>
                                     </child>
                                     <child>
@@ -2288,7 +2290,7 @@ ed un nuovo punto cassa.</property>
                                         <property name="top_attach">1</property>
                                         <property name="bottom_attach">2</property>
                                         <property name="x_options">GTK_FILL</property>
-                                        <property name="y_options"></property>
+                                        <property name="y_options"/>
                                       </packing>
                                     </child>
                                     <child>
@@ -2306,7 +2308,7 @@ ed un nuovo punto cassa.</property>
                                         <property name="top_attach">1</property>
                                         <property name="bottom_attach">2</property>
                                         <property name="x_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
-                                        <property name="y_options"></property>
+                                        <property name="y_options"/>
                                       </packing>
                                     </child>
                                     <child>
@@ -2321,7 +2323,7 @@ ed un nuovo punto cassa.</property>
                                         <property name="right_attach">4</property>
                                         <property name="top_attach">2</property>
                                         <property name="bottom_attach">3</property>
-                                        <property name="y_options"></property>
+                                        <property name="y_options"/>
                                       </packing>
                                     </child>
                                   </object>
@@ -2359,11 +2361,11 @@ ed un nuovo punto cassa.</property>
                                   <object class="GtkButton" id="empty_button">
                                     <property name="label" translatable="yes">Annulla
 Scontrino</property>
+                                    <property name="use_action_appearance">False</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="can_default">True</property>
                                     <property name="receives_default">False</property>
-                                    <property name="use_action_appearance">False</property>
                                     <property name="image">annulla_img</property>
                                     <signal name="clicked" handler="on_empty_button_clicked" swapped="no"/>
                                   </object>
@@ -2376,11 +2378,11 @@ Scontrino</property>
                                 <child>
                                   <object class="GtkButton" id="subtotal_button">
                                     <property name="label" translatable="yes">SubTotale (F6)</property>
+                                    <property name="use_action_appearance">False</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="can_default">True</property>
                                     <property name="receives_default">True</property>
-                                    <property name="use_action_appearance">False</property>
                                     <property name="image">subtotale_img</property>
                                     <accelerator key="F6" signal="clicked"/>
                                     <signal name="clicked" handler="on_subtotal_button_clicked" swapped="no"/>
@@ -2394,11 +2396,11 @@ Scontrino</property>
                                 <child>
                                   <object class="GtkButton" id="total_button">
                                     <property name="label" translatable="yes">Totale (F5)</property>
+                                    <property name="use_action_appearance">False</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="can_default">True</property>
                                     <property name="receives_default">False</property>
-                                    <property name="use_action_appearance">False</property>
                                     <property name="image">totale_img</property>
                                     <property name="use_underline">True</property>
                                     <accelerator key="F5" signal="clicked"/>
@@ -2436,11 +2438,11 @@ Scontrino</property>
                         <property name="layout_style">edge</property>
                         <child>
                           <object class="GtkButton" id="list_button">
+                            <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="can_default">True</property>
                             <property name="receives_default">False</property>
-                            <property name="use_action_appearance">False</property>
                             <signal name="clicked" handler="on_list_button_clicked" swapped="no"/>
                             <child>
                               <object class="GtkAlignment" id="alignment414">
@@ -2492,10 +2494,10 @@ Scontrino</property>
                         <child>
                           <object class="GtkButton" id="apri_cassetto_button">
                             <property name="label" translatable="yes">Apri Cassetto (F12)</property>
+                            <property name="use_action_appearance">False</property>
                             <property name="sensitive">False</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
-                            <property name="use_action_appearance">False</property>
                             <accelerator key="F12" signal="clicked"/>
                             <signal name="clicked" handler="on_apri_cassetto_button_clicked" swapped="no"/>
                           </object>
@@ -2508,11 +2510,11 @@ Scontrino</property>
                         <child>
                           <object class="GtkToggleButton" id="no_print_toggled">
                             <property name="label" translatable="yes">NO Print</property>
+                            <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
                             <property name="tooltip_markup">Quando questo bottone è premuto non verrà inviato lo scontrino alla stampa</property>
-                            <property name="use_action_appearance">False</property>
                             <property name="image">no_prinnt_image</property>
                           </object>
                           <packing>
@@ -2524,11 +2526,11 @@ Scontrino</property>
                         <child>
                           <object class="GtkButton" id="exit_button">
                             <property name="label">gtk-quit</property>
+                            <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="can_default">True</property>
                             <property name="receives_default">False</property>
-                            <property name="use_action_appearance">False</property>
                             <property name="use_stock">True</property>
                             <signal name="clicked" handler="on_vendita_dettaglio_window_close" swapped="no"/>
                           </object>

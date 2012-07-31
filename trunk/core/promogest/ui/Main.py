@@ -207,8 +207,7 @@ class Main(GladeWidget):
         self.permanent_frames = permanent_frames
         self.currentFrame = None
         self.alarmFrame = None
-        from promogest.preEnv import shop
-        self.shop = shop
+
         self.creata = False
         if posso("SD"):
             self.sincro_db.destroy()
@@ -246,9 +245,11 @@ class Main(GladeWidget):
         ind = 6
         for mod in self.anagrafiche_dirette_modules:
             currModule = self.anagrafiche_dirette_modules[mod]
-            if self.shop \
+            from promogest.preEnv import shop
+            if shop \
                 and currModule["module"].VIEW_TYPE[1] == "Vendita Dettaglio":
                 anag = currModule["module"].getApplication()
+                from promogest.modules.VenditaDettaglio.ui.AnagraficaVenditaDettaglio import showAnagrafica
                 showAnagrafica(self.getTopLevel(), anag, mainClass=self)
                 #icon_view.unselect_all()
                 return

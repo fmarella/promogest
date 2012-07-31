@@ -55,14 +55,13 @@ from promogest.lib import HtmlHandler
 
 class Login(GladeApp):
 
-    def __init__(self, shop=False):
+    def __init__(self):
         """Inizializza la finestra di login
         :param shop: default False
         """
         self.azienda = None
         self._dbConnString = ''
         self.modules = {}
-        self.shop = shop
         GladeApp.__init__(self, 'login_window')
         Environment.exceptionHandler = GtkExceptionHandler()
         self.draw()

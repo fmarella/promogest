@@ -22,20 +22,7 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 
-import os
-from optparse import OptionParser
-from promogest import Environment
-
-class Shop(object):
-    def __init__(self):
-        from promogest import preEnv, bindtextdomain
-        bindtextdomain('promogest', locale_dir='./po/locale')
-
-        from promogest.ui.Login import Login
-        login = Login(shop=True)
-        Environment.pg2log.info("APERTURA DI GESTIONE NEGOZIO")
-        preEnv.shop = True
-        login.run()
+from pg import BigBang
 
 if __name__ == '__main__':
-    Shop()
+    BigBang(shop=True)
