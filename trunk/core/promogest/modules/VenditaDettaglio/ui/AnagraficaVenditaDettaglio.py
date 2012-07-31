@@ -1188,6 +1188,6 @@ def showAnagrafica(window, anag, button=None, mainClass=None):
     anagWindow = anag.getTopLevel()
     #anagWindow.connect("destroy", on_anagrafica_destroyed, [window, button,mainClass])
     #anagWindow.connect("hide", on_anagrafica_destroyed, [window, button,mainClass])
-    anagWindow.set_transient_for(window)
-    anag.vendita_dettaglio_window.set_property("visible", True)
+    #anagWindow.set_transient_for(window)
+    #anag.vendita_dettaglio_window.show()
     anagWindow.show_all()

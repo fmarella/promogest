@@ -523,8 +523,9 @@ all stampante fiscale.</property>
   <object class="GtkWindow" id="vendita_dettaglio_window">
     <property name="app_paintable">True</property>
     <property name="can_focus">True</property>
-    <property name="no_show_all">True</property>
     <property name="title" translatable="yes">Vendita al dettaglio</property>
+    <property name="modal">True</property>
+    <property name="window_position">center</property>
     <property name="icon">promogest.png</property>
     <signal name="destroy-event" handler="on_vendita_dettaglio_window_close" swapped="no"/>
     <signal name="key-press-event" handler="on_vendita_dettaglio_window_key_press_event" swapped="no"/>
