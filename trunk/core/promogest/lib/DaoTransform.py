@@ -107,6 +107,7 @@ def to_pdf(daos, output, anag=None):
     i = 1
     if anag:
         anag.pbar_anag_complessa.show()
+    daos.sort(key=lambda x: x.numero)
     for dao in daos:
         if anag:
             pbar(anag.pbar_anag_complessa,parziale=daos.index(dao), totale=len(daos), text="GEN STAMPE MULTIPLE", noeta=False)
