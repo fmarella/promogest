@@ -173,6 +173,7 @@ t_fornitura = Table('fornitura',
                     schema=params['schema'],
                     autoload=True)
 fornitura = t_fornitura
+
 if "numero_lotto" not in [c.name for c in t_fornitura.columns]:
     col = Column('numero_lotto', String(200))
     col.create(t_fornitura)
@@ -183,8 +184,12 @@ if "data_produzione" not in [c.name for c in t_fornitura.columns]:
     col = Column('data_produzione', DateTime)
     col.create(t_fornitura)
 
-std_mapper = mapper(Fornitura, t_fornitura, properties={
-        "multi": relation(Multiplo, primaryjoin=t_fornitura.c.id_multiplo==t_multiplo.c.id),
+std_mapper = mapper(Fornitura, t_fornitura,
+    properties={
+        "multi": relation(Multiplo,
+            primaryjoin=t_fornitura.c.id_multiplo==t_multiplo.c.id),
         "sconto_fornitura": relation(ScontoFornitura, backref="fornitura"),
-        "forni" : relation(Fornitore, primaryjoin=t_fornitura.c.id_fornitore==t_fornitore.c.id),
-                }, order_by=[t_fornitura.c.data_fornitura, t_fornitura.c.id_fornitore])
+        "forni" : relation(Fornitore,
+            primaryjoin=t_fornitura.c.id_fornitore==t_fornitore.c.id),
+    },
+    order_by=[t_fornitura.c.data_fornitura, t_fornitura.c.id_fornitore])

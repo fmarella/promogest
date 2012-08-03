@@ -59,7 +59,6 @@ class RigaMovimento(Dao):
         self.__prezzo_acquisto_noleggio = None
         self.__isrent = None
 
-
     def __aliquota(self):
         if self.rig: return self.rig.aliquota
         else: return ""
@@ -330,7 +329,8 @@ t_riga_movimento = riga_mov
 
 j = join(riga_mov, riga)
 
-std_mapper = mapper(RigaMovimento, j,properties={
+std_mapper = mapper(RigaMovimento, j,
+    properties={
         'id':[riga_mov.c.id, riga.c.id],
         "rig":relation(Riga,primaryjoin = riga_mov.c.id==riga.c.id, backref="RM"),
         'totaleRiga': column_property(riga.c.quantita * riga.c.moltiplicatore * riga.c.valore_unitario_netto ),
@@ -341,7 +341,8 @@ std_mapper = mapper(RigaMovimento, j,properties={
         "SCM":relation(ScontoRigaMovimento,primaryjoin = riga_mov.c.id==ScontoRigaMovimento.id_riga_movimento,
                         cascade="all, delete",
                         backref="RM"),
-        }, order_by=riga_mov.c.id)
+    },
+    order_by=riga_mov.c.id)
 
 if (hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes") or ("GestioneNoleggio" in modulesList):
     from promogest.modules.GestioneNoleggio.dao.NoleggioRiga import NoleggioRiga

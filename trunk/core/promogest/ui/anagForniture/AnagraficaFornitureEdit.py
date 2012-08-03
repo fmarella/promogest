@@ -91,15 +91,14 @@ class AnagraficaFornitureEdit(AnagraficaEdit):
 
     def setDao(self, dao):
         self.dao = dao
-        self.new = False
         if dao is None:
             self.dao = Fornitura()
-            self.new = True
         self._refresh()
         return self.dao
 
     def _refresh(self):
-        self.id_articolo_customcombobox.refresh(clear=True, filter=False)
+        self.clear()
+        #self.id_articolo_customcombobox.refresh(clear=True, filter=False)
         self.id_articolo_customcombobox.set_sensitive(True)
         if self.dao.id_articolo is None:
             if self._anagrafica._articoloFissato:
@@ -112,7 +111,7 @@ class AnagraficaFornitureEdit(AnagraficaEdit):
         self.descrizione_breve_aliquota_iva_label.set_text(res["denominazioneBreveAliquotaIva"])
         self._percentualeIva = res["percentualeAliquotaIva"]
         self.percentuale_aliquota_iva_label.set_text('%5.2f' % self._percentualeIva + ' %')
-        self.id_fornitore_customcombobox.refresh(clear=True, filter=False)
+        #self.id_fornitore_customcombobox.refresh(clear=True, filter=False)
         self.id_fornitore_customcombobox.set_sensitive(True)
         if self.dao.id_fornitore is None:
             if self._anagrafica._fornitoreFissato:
@@ -129,6 +128,8 @@ class AnagraficaFornitureEdit(AnagraficaEdit):
         self.fornitore_preferenziale_checkbutton.set_active(self.dao.fornitore_preferenziale or False)
         self.data_fornitura_entry.set_text(dateToString(self.dao.data_fornitura))
         self.data_prezzo_entry.set_text(dateToString(self.dao.data_prezzo))
+
+        self.lotto_entry.set_text(self.dao.numero_lotto or '')
         #fillComboboxMultipli(self.id_multiplo_customcombobox.combobox, self.id_articolo_customcombobox.getId())
         #findComboboxRowFromId(self.id_multiplo_customcombobox.combobox,
                               #self.dao.id_multiplo)
@@ -173,6 +174,18 @@ class AnagraficaFornitureEdit(AnagraficaEdit):
                 prezzoNetto = prezzoNetto - float(s["valore"])
         self.prezzo_netto_label.set_text(self.number_format % float(prezzoNetto or 0))
 
+    def clear(self):
+        self.id_articolo_customcombobox.refresh(clear=True, filter=False)
+        self.id_fornitore_customcombobox.refresh(clear=True, filter=False)
+        self.data_prezzo_entry.set_text('')
+        self.data_fornitura_entry.set_text('')
+        self.codice_articolo_fornitore_entry.set_text('')
+        self.prezzo_lordo_entry.set_text('')
+        self.prezzo_netto_label.set_text('')
+        self.scorta_minima_entry.set_text('')
+        self.tempo_arrivo_merce_entry.set_text('')
+        self.fornitore_preferenziale_checkbutton.set_active(False)
+        self.lotto_entry.set_text('')
 
     def saveDao(self, tipo=None):
         if self.id_articolo_customcombobox.getId() is None:
@@ -187,21 +200,6 @@ class AnagraficaFornitureEdit(AnagraficaEdit):
         if (self.prezzo_netto_label.get_text() == ''):
             obligatoryField(self.dialogTopLevel, self.prezzo_netto_label)
 
-        #if (self.data_prezzo_entry.get_text() == ''):
-            #obligatoryField(self.dialogTopLevel, self.data_prezzo_entry)
-
-        #daoEsistente = Fornitura().select(idArticolo=self.id_articolo_customcombobox.getId(),
-                                            #idFornitore= self.id_fornitore_customcombobox.getId(),
-                                            #dataPrezzo = stringToDateTime(self.data_prezzo_entry.get_text()))
-        #if daoEsistente:
-            #messageInfo(msg="""ATTENZIONE!!
-#Una fornitura con lo stesso fornitore
-#e la stessa data prezzo per questo articolo
-#esiste già. Si presume sia la stessa fornitura
-#per cui verrà aggiornata la precedente.""")
-            #del self.dao
-            #self.dao = daoEsistente[0]
-
         self.dao.id_articolo = self.id_articolo_customcombobox.getId()
         self.dao.id_fornitore = self.id_fornitore_customcombobox.getId()
         self.dao.data_prezzo = stringToDate(self.data_prezzo_entry.get_text())
@@ -214,6 +212,7 @@ class AnagraficaFornitureEdit(AnagraficaEdit):
         self.dao.tempo_arrivo_merce = int(self.tempo_arrivo_merce_entry.get_text() or 1)
         self.dao.fornitore_preferenziale = self.fornitore_preferenziale_checkbutton.get_active()
         self.dao.percentuale_iva = float(self._percentualeIva)
+        self.dao.numero_lotto = self.lotto_entry.get_text()
 
         sconti = []
         self.dao.applicazione_sconti = self.sconti_widget.getApplicazione()
@@ -228,7 +227,5 @@ class AnagraficaFornitureEdit(AnagraficaEdit):
 
 
     def on_sconti_widget_button_toggled(self, button):
-        if button.get_property('active') is True:
-            return
-
-        self._calcolaPrezzoNetto()
+        if not button.get_property('active'):
+            self._calcolaPrezzoNetto()

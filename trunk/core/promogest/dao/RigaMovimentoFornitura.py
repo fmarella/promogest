@@ -24,34 +24,29 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
 from promogest.dao.Fornitura import Fornitura
-from promogest.dao.RigaMovimento import RigaMovimento
+from promogest.dao.RigaMovimento import RigaMovimento, t_riga_movimento
 from Dao import Dao
-#from promogest.dao.TestataDocumento import TestataDocumento
 
-rigamovimento = Table('riga_movimento', params['metadata'], autoload=True, schema=params['schema'])
-fornitura = Table('fornitura', params['metadata'], autoload=True, schema=params['schema'])
-articolo =  Table('articolo', params['metadata'], autoload=True, schema=params['schema'])
 try:
     rigamovimentofornitura = Table('riga_movimento_fornitura',
                 params['metadata'],
                 schema = params['schema'],
                 autoload=True)
 except:
-    if params["tipo_db"] == "sqlite":
-        riga_movimentoFK = 'riga_movimento.id'
-        fornituraFK = 'fornitura.id'
-        articoloFK = 'articolo.id'
-    else:
-        riga_movimentoFK = params['schema']+'.riga_movimento.id'
-        fornituraFK = params['schema']+'.fornitura.id'
-        articoloFK = params['schema']+'.articolo.id'
-
     rigamovimentofornitura = Table('riga_movimento_fornitura', params['metadata'],
-            Column('id',Integer,primary_key=True),
-            Column('id_articolo',Integer,ForeignKey(articoloFK),nullable=False),
-            Column('id_riga_movimento_acquisto',Integer,ForeignKey(riga_movimentoFK),nullable=True),
-            Column('id_riga_movimento_vendita',Integer,ForeignKey(riga_movimentoFK),nullable=True),
-            Column('id_fornitura',Integer,ForeignKey(fornituraFK),nullable=False),
+            Column('id', Integer, primary_key=True),
+            Column('id_articolo', Integer,
+                ForeignKey(fk_prefix + 'articolo.id'),
+                nullable=False),
+            Column('id_riga_movimento_acquisto', Integer,
+                ForeignKey(fk_prefix + 'riga_movimento.id'),
+                nullable=True),
+            Column('id_riga_movimento_vendita', Integer,
+                ForeignKey(fk_prefix + 'riga_movimento.id'),
+                nullable=True),
+            Column('id_fornitura', Integer,
+                ForeignKey(fk_prefix + 'fornitura.id'),
+                nullable=False),
             schema=params["schema"])
     rigamovimentofornitura.create(checkfirst=True)
 
@@ -76,8 +71,13 @@ class RigaMovimentoFornitura(Dao):
         return  dic[k]
 
 
-std_mapper = mapper(RigaMovimentoFornitura,rigamovimentofornitura,properties={
-            "forni":relation(Fornitura, primaryjoin = (rigamovimentofornitura.c.id_fornitura==Fornitura.id)),
-            "rigamovacq":relation(RigaMovimento ,primaryjoin = (rigamovimentofornitura.c.id_riga_movimento_acquisto==rigamovimento.c.id)),
-            "rigamovven ":relation(RigaMovimento ,primaryjoin = (rigamovimentofornitura.c.id_riga_movimento_vendita==rigamovimento.c.id)),
-        }, order_by=rigamovimentofornitura.c.id )
+std_mapper = mapper(RigaMovimentoFornitura, rigamovimentofornitura,
+    properties={
+        "forni": relation(Fornitura,
+            primaryjoin = (rigamovimentofornitura.c.id_fornitura==Fornitura.id)),
+        "rigamovacq": relation(RigaMovimento,
+            primaryjoin = (rigamovimentofornitura.c.id_riga_movimento_acquisto==t_riga_movimento.c.id)),
+        "rigamovven": relation(RigaMovimento,
+            primaryjoin = (rigamovimentofornitura.c.id_riga_movimento_vendita==t_riga_movimento.c.id)),
+    },
+    order_by=rigamovimentofornitura.c.id)

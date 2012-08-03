@@ -33,9 +33,12 @@ class CategoriaCliente(Dao):
         dic= {'denominazione' : categoria_cliente.c.denominazione.ilike("%"+v+"%")}
         return  dic[k]
 
-categoria_cliente=Table('categoria_cliente',params['metadata'],schema = params['schema'],autoload=True)
+categoria_cliente = Table('categoria_cliente',
+					   params['metadata'],
+					   schema=params['schema'],
+					   autoload=True)
 
-std_mapper = mapper(CategoriaCliente,categoria_cliente, order_by=categoria_cliente.c.id)
+std_mapper = mapper(CategoriaCliente, categoria_cliente, order_by=categoria_cliente.c.id)
 
 
 
