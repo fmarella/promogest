@@ -2774,7 +2774,7 @@ def leggiRevisioni():
                 Environment.rev_locale = client.info(".").revision.number
             if not Environment.rev_remota:
                 Environment.rev_remota = pysvn.Client().info2(
-                    "http://svn.promotux.it/svn/promogest2/trunk/",
+                    "http://promogest.googlecode.com/svn/trunk",
                             recurse=False)[0][1]["rev"].number
         except pysvn.ClientError:
             pass
