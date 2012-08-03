@@ -52,7 +52,7 @@ class UpdateDialog(GladeWidget):
                 client = pysvn.Client()
                 data.msg_label.set_text("Lettura versioni locale e remota in corso...")
                 data._rev_locale = client.info('.').revision.number
-                data._rev_remota = pysvn.Client().info2("http://svn.promotux.it/svn/promogest2/trunk/", recurse=False)[0][1]["rev"].number
+                data._rev_remota = pysvn.Client().info2("http://promogest.googlecode.com/svn/trunk", recurse=False)[0][1]["rev"].number
             except:
                 data.__stop = True
                 data.msg_label.set_text("Si è verificato un errore nella lettura della revisioni,\nattendere alcuni minuti e riprovare")
