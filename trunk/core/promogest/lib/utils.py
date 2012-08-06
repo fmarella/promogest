@@ -335,7 +335,7 @@ def leggiMagazzino(id):
             "email": _email}
 
 
-def leggiListino(idListino=None, idArticolo=None, tiny=False):
+def leggiListino(idListino=None, idArticolo=None, tiny=False, conVariazioniListino=False):
     """
     Restituisce un dizionario con le informazioni sul listino letto
     """
@@ -356,7 +356,8 @@ def leggiListino(idListino=None, idArticolo=None, tiny=False):
                     "scontiDettaglio":[],
                     "scontiIngrosso":[],
                     'applicazioneScontiDettaglio':None,
-                    'applicazioneScontiIngrosso':[]}
+                    'applicazioneScontiIngrosso':[],
+                    'variazioniListino': []}
 
     if idListino:
         daoListinoo = Listino().select(idListino=idListino, listinoAttuale=True)
@@ -449,6 +450,12 @@ def leggiListino(idListino=None, idArticolo=None, tiny=False):
                     listinoDict["scontiIngrosso"] = _scontiIngrosso
                     listinoDict['applicazioneScontiDettaglio'] = _applicazioneDettaglio
                     listinoDict['applicazioneScontiIngrosso'] = _applicazioneIngrosso
+
+                    if conVariazioniListino:
+                        from promogest.dao.VariazioneListino import VariazioneListino
+                        # Leggo tutte le variazioni listino per il listino corrente
+                        for vl in VariazioneListino().select(idListino=idListino):
+                            listinoDict['variazioniListino'].append(vl)
 
     return listinoDict
 
