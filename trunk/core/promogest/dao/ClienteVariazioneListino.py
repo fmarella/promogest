@@ -40,7 +40,7 @@ except:
             ForeignKey(fk_prefix + 'variazione_listino.id', onupdate="CASCADE", ondelete="RESTRICT"),
              primary_key=True),
         schema=params["schema"],
-        extend_existing=True)
+        useexisting=True)
     t_cliente_variazione_listino.create(checkfirst=True)
 
 class ClienteVariazioneListino(Dao):
