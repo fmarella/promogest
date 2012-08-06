@@ -47,6 +47,7 @@ except:
             schema=params["schema"],
             useexisting=True)
         variazionelistino.create(checkfirst=True)
+t_variazione_listino = variazionelistino
 
 class VariazioneListino(Dao):
 

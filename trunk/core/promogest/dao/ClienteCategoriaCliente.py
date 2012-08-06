@@ -46,5 +46,5 @@ cliente_categoria_cliente=Table('cliente_categoria_cliente',
 std_mapper =mapper(ClienteCategoriaCliente, cliente_categoria_cliente,
             properties={
             #'cliente':relation(Cliente, backref='cliente_categoria_cliente'),
-            'categoria_cliente':relation(CategoriaCliente, backref='cliente_categoria_cliente'),
+                'categoria_cliente':relation(CategoriaCliente, backref='cliente_categoria_cliente'),
             }, order_by=cliente_categoria_cliente.c.id_cliente)

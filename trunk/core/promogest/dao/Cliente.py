@@ -30,6 +30,8 @@ from promogest.dao.PersonaGiuridica import t_persona_giuridica
 from promogest.dao.User import User
 from promogest.dao.DestinazioneMerce import DestinazioneMerce
 from promogest.dao.DaoUtils import codeIncrement, getRecapitiCliente, get_columns
+from promogest.dao.VariazioneListino import VariazioneListino
+from promogest.dao.ClienteVariazioneListino import t_cliente_variazione_listino
 
 
 def getNuovoCodiceCliente():
@@ -259,9 +261,13 @@ j = join(t_cliente, t_persona_giuridica)
 std_mapper = mapper(Cliente,
                     j,
                     properties={
+
                         'id': [t_cliente.c.id, t_persona_giuridica.c.id],
                         'cliente_categoria_cliente': relation(ClienteCategoriaCliente,
-                                                              backref='cliente_'),
-                         "dm":relation(DestinazioneMerce)
+                                                             backref='cliente_'),
+                        "dm": relation(DestinazioneMerce),
+                        'vl': relationship(VariazioneListino,
+                            lazy='joined',
+                            secondary=t_cliente_variazione_listino)
                     },
                     order_by=t_cliente.c.id)
