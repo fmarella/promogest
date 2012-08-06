@@ -25,6 +25,7 @@ from promogest.ui.AnagraficaComplessaEdit import AnagraficaEdit
 from promogest.ui.AnagraficaComplessaReport import AnagraficaReport
 from promogest.ui.AnagraficaComplessaHtml import AnagraficaHtml
 from promogest.ui.AnagraficaComplessaFilter import AnagraficaFilter
+from promogest.dao.Listino import Listino
 from promogest.dao.VariazioneListino import VariazioneListino
 from promogest.lib.relativedelta import relativedelta
 from promogest.lib.utils import *
@@ -69,7 +70,16 @@ class AnagraficaVariazioniListiniFilter(AnagraficaFilter):
         column.set_min_width(100)
         treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('Data Inizio', renderer, text=3, background=1)
+        column = gtk.TreeViewColumn('Listino', renderer, text=3, background=1)
+        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_clickable(True)
+        column.connect("clicked", self._changeOrderBy, (None, 'listino'))
+        column.set_resizable(True)
+        column.set_expand(True)
+        column.set_min_width(70)
+        treeview.append_column(column)
+
+        column = gtk.TreeViewColumn('Data Inizio', renderer, text=4, background=1)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
         column.connect('clicked', self._changeOrderBy, (None, 'data_inizio'))
@@ -78,7 +88,7 @@ class AnagraficaVariazioniListiniFilter(AnagraficaFilter):
         column.set_min_width(100)
         treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('Data Fine', renderer, text=4, background=1)
+        column = gtk.TreeViewColumn('Data Fine', renderer, text=5, background=1)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
         column.connect('clicked', self._changeOrderBy, (None, 'data_fine'))
@@ -87,7 +97,7 @@ class AnagraficaVariazioniListiniFilter(AnagraficaFilter):
         column.set_min_width(100)
         treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('Valore', renderer, text=5, background=1)
+        column = gtk.TreeViewColumn('Valore', renderer, text=6, background=1)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
         column.connect('clicked', self._changeOrderBy, (None, 'valore'))
@@ -98,14 +108,17 @@ class AnagraficaVariazioniListiniFilter(AnagraficaFilter):
 
         treeview.set_search_column(1)
 
-        self._treeViewModel = gtk.ListStore(object, str,str, str, str, str)
+        self._treeViewModel = gtk.ListStore(object, str,str, str, str, str, str)
         self._anagrafica.anagrafica_filter_treeview.set_model(self._treeViewModel)
+
+        fillComboboxListini(self.listino_filter_ccb.combobox)
 
         self.refresh()
 
     def clear(self):
         # Annullamento filtro
         self.denominazione_filter_entry.set_text('')
+        self.listino_filter_ccb.set_active(-1)
         self.da_data_inizio_datetimewidget.set_text('')
         self.a_data_inizio_datetimewidget.set_text('')
         self.da_data_fine_datetimewidget.set_text('')
@@ -115,6 +128,7 @@ class AnagraficaVariazioniListiniFilter(AnagraficaFilter):
     def refresh(self):
         # Aggiornamento TreeView
         denominazione = prepareFilterString(self.denominazione_filter_entry.get_text())
+        id_listino = findIdFromCombobox(self.listino_filter_ccb.combobox)
         da_data_inizio = stringToDateTime(emptyStringToNone(self.da_data_inizio_datetimewidget.get_text()))
         a_data_inizio = stringToDateTime(emptyStringToNone(self.a_data_inizio_datetimewidget.get_text()))
         da_data_fine = stringToDateTime(emptyStringToNone(self.da_data_fine_datetimewidget.get_text()))
@@ -122,6 +136,7 @@ class AnagraficaVariazioniListiniFilter(AnagraficaFilter):
 
         def filterCountClosure():
             return VariazioneListino().count(denominazione=denominazione,
+                                idListino=id_listino,
                                 daDataInizio = da_data_inizio,
                                 aDataInizio = a_data_inizio,
                                 daDataFine = da_data_fine,
@@ -136,13 +151,14 @@ class AnagraficaVariazioniListiniFilter(AnagraficaFilter):
         # Let's save the current search as a closure
         def filterClosure(offset, batchSize):
             return VariazioneListino().select(denominazione=denominazione,
-                                     daDataInizio = da_data_inizio,
-                                    aDataInizio = a_data_inizio,
-                                    daDataFine = da_data_fine,
-                                    aDataFine = a_data_fine,
-                                        orderBy=self.orderBy,
-                                        offset=offset,
-                                        batchSize=batchSize)
+                                            idListino=id_listino,
+                                            daDataInizio = da_data_inizio,
+                                            aDataInizio = a_data_inizio,
+                                            daDataFine = da_data_fine,
+                                            aDataFine = a_data_fine,
+                                            orderBy=self.orderBy,
+                                            offset=offset,
+                                            batchSize=batchSize)
 
         self._filterClosure = filterClosure
 
@@ -159,8 +175,12 @@ class AnagraficaVariazioniListiniFilter(AnagraficaFilter):
             col = None
             if i.data_fine > datetime.datetime.today():
                 col = "green"
+            listino_denominazione = ''
+            if i.id_listino:
+                listino_denominazione = Listino().select(idListino=i.id_listino)[0].denominazione
             self._treeViewModel.append((i,col,
                                         (i.denominazione or ''),
+                                        (listino_denominazione),
                                         (i.data_inizio or ''),
                                         (i.data_fine or ''),
                                         (valore or 0)))
@@ -200,7 +220,7 @@ class AnagraficaVariazioniListiniEdit(AnagraficaEdit):
         self.secondo_moltiplicatore_entry.set_sensitive(False)
         self.stesso_articolo_radiobutton.set_sensitive(False)
         self.ogni_articolo_radiobutton.set_sensitive(False)
-        return
+        fillComboboxListini(self.listino_ccb.combobox)
 
     def on_a_sconto_radiobutton_toggled(self, radiobutton):
         if not self.a_sconto_radiobutton.get_active():
@@ -232,6 +252,7 @@ class AnagraficaVariazioniListiniEdit(AnagraficaEdit):
 
     def _refresh(self):
         self.denominazione_entry.set_text(self.dao.denominazione or '')
+        findComboboxRowFromId(self.listino_ccb.combobox, self.dao.id_listino or -1)
         self.data_inizio_datetimewidget.set_text(dateTimeToString(self.dao.data_inizio) or '')
         self.data_fine_datetimewidget.set_text(dateTimeToString(self.dao.data_fine) or '')
         if self.dao.tipo == "percentuale" or self.dao.tipo == "valore":
@@ -264,6 +285,8 @@ class AnagraficaVariazioniListiniEdit(AnagraficaEdit):
 
         self.dao.data_inizio = stringToDateTime(self.data_inizio_datetimewidget.get_text())
         self.dao.data_fine = stringToDateTime(self.data_fine_datetimewidget.get_text())
+
+        self.dao.id_listino = findIdFromCombobox(self.listino_ccb.combobox)
 
         if self.dao.data_inizio > self.dao.data_fine:
             messageInfo(msg="La data di inizio dev'essere successiva alla data di fine ...valore impossibile!!!")
@@ -305,6 +328,6 @@ class AnagraficaVariazioniListiniEdit(AnagraficaEdit):
             self.dao.valore = a+"|"+b+"|"+c
             self.dao.tipo = "moltiplicatore"
         self.dao.denominazione = self.denominazione_entry.get_text()
-        self.dao.id_listino = self.anagrafica.idListino
+        #self.dao.id_listino = self.anagrafica.idListino
         self.dao.priorita = self.priorita_checkbutton.get_active()
         self.dao.persist()
