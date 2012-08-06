@@ -40,7 +40,8 @@ def set_configuration(company=None, year = None, pg_path=None):
 
     if company:
         Environment.azienda = company
-        Environment.fk_prefix = company + '.'
+        if company != 'AziendaPromo':
+            Environment.fk_prefix = company + '.'
     dire = getConfigureDir(company)
     promogestDir = None
     if pg_path:
