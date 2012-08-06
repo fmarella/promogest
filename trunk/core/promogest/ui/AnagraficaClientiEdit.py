@@ -99,6 +99,24 @@ class AnagraficaClientiEdit(AnagraficaEdit, AnagraficaPGEdit):
                             self.infopeso_page.infopeso_frame,
                             self.infopeso_page.infopeso_page_label)
 
+    def on_anag_variazioni_listini_togglebutton_toggled(self, toggleButton):
+        if toggleButton.get_active():
+            from promogest.ui.AnagraficaVariazioniListini import AnagraficaVariazioniListini
+            anag = AnagraficaVariazioniListini()
+            anagWindow = anag.getTopLevel()
+            showAnagraficaRichiamata(self.dialogTopLevel, anagWindow, toggleButton)
+        else:
+            toggleButton.set_active(False)
+            self._refresh_variazioni_listini()
+            self.anagrafica_clienti_detail_notebook.set_current_page(2)
+
+    def on_variazioni_listini_toggle_toggled(self, cell, path):
+        self.variazioni_tv_liststore[path][2] = not self.variazioni_tv_liststore[path][2]
+        if self.variazioni_tv_liststore[path][2] == 0:
+            self.dao.vl.remove(self.variazioni_tv_liststore[path][0])
+        else:
+            self.dao.vl.append(self.variazioni_tv_liststore[path][0])
+
     def on_pf_radio_toggled(self, button):
         if self.pf_radio:
             self.ragione_sociale_entry.set_sensitive(False)
@@ -218,6 +236,18 @@ class AnagraficaClientiEdit(AnagraficaEdit, AnagraficaPGEdit):
         self._refresh()
         return self.dao
 
+    def _refresh_variazioni_listini(self):
+        from promogest.dao.VariazioneListino import VariazioneListino
+        from promogest.lib.utils import fill_treeview_with_data
+        diff = lambda l1,l2: [x for x in l1 if x not in l2]
+        
+        tutti = VariazioneListino().select(batchSize=None)
+        if not self.dao.id:
+            fill_treeview_with_data(self.variazioni_treeview, tutti)
+        else:
+            fill_treeview_with_data(self.variazioni_treeview, self.dao.vl, flag=True)
+            fill_treeview_with_data(self.variazioni_treeview, diff(tutti, self.dao.vl), clear=False)
+
     def _refresh(self):
         self.codice_entry.set_text(self.dao.codice or '')
         if self.dao.ragione_sociale:
@@ -290,6 +320,8 @@ class AnagraficaClientiEdit(AnagraficaEdit, AnagraficaPGEdit):
         self.fax_principale_entry.set_text(self.dao.fax_principale or "")
         self.sito_web_principale_entry.set_text(self.dao.sito_principale or "")
         self.spese_checkbox.set_active(self.dao.pagante or False)
+
+        self._refresh_variazioni_listini()
 
     def showTotaliDareAvere(self):
 
