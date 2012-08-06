@@ -523,11 +523,20 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self.GG_label.set_sensitive(True)
             self.X_label.set_sensitive(True)
 
+    def _clear(self):
+        self.causale_trasporto_comboboxentry.get_child().set_text('')
+        self.destinatario_radiobutton.set_active(True)
+        self.id_vettore_customcombobox.set_sensitive(False)
+        self.porto_combobox.set_sensitive(False)
+        findComboboxRowFromId(self.id_destinazione_merce_customcombobox.combobox, -1)
+        self.id_destinazione_merce_customcombobox.combobox.set_sensitive(False)
+
     def _refresh(self):
         """ Funzione importantissima di "impianto" del documento nella UI"""
         self._loading = True
 
         self.pagamenti_page.clear()
+        self._clear()
 
         self._tipoPersonaGiuridica = None
         self._operazione = None
@@ -581,11 +590,15 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self.protocollo_entry1.set_text(self.dao.protocollo or '')
         self.note_pie_pagina_comboboxentry.get_child().set_text(self.dao.note_pie_pagina or '')
         textview_set_text(self.note_interne_textview, self.dao.note_interne or '')
+        if not self.dao.id:
+            self.dao.causale_trasporto = setconf("Documenti", "causale_vendita") or ''
         self.causale_trasporto_comboboxentry.get_child().set_text(self.dao.causale_trasporto or '')
         self.aspetto_esteriore_beni_comboboxentry.get_child().set_text(self.dao.aspetto_esteriore_beni or '')
         self.inizio_trasporto_entry.set_text(dateTimeToString(self.dao.inizio_trasporto))
         self.fine_trasporto_entry.set_text(dateTimeToString(self.dao.fine_trasporto))
         self.id_vettore_customcombobox.refresh(clear=True, filter=False)
+        if not self.dao.id:
+           self.dao.incaricato_trasporto = setconf("Documenti","incaricato_predef") or 'destinatario'
         if self.dao.incaricato_trasporto == 'vettore':
             # Se l'incaricato e` un vettore, allora bisogna attivare il campo Porto
             self.vettore_radiobutton.set_active(True)
@@ -1993,6 +2006,9 @@ del documento.
             else:
                 fillComboboxDestinazioniMerce(self.id_destinazione_merce_customcombobox.combobox,
                         self.id_persona_giuridica_customcombobox.getId())
+                if not self.dao.id:
+                    if setconf('Documenti', 'primo_dest_merce'):
+                        findComboboxRowFromId(self.id_destinazione_merce_customcombobox.combobox, 1)
                 self.id_destinazione_merce_customcombobox.set_sensitive(True)
             self.refresh_combobox_listini()
         else:

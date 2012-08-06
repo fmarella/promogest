@@ -1,23 +1,25 @@
 # -*- coding: utf-8 -*-
 
-# Promogest
-#
-# Copyright (C) 2005-2009 by Promotux Informatica - http://www.promotux.it/
-# Author: Francesco Meloni <francesco@promotux.it>
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#    Copyright (C) 2005-2012 by Promotux
+#                        di Francesco Meloni snc - http://www.promotux.it/
+
+#    Author: Francesco Meloni  <francesco@promotux.it>
+#    Author: Francesco Marella <francesco.marella@gmail.com>
+
+#    This file is part of Promogest.
+
+#    Promogest is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 2 of the License, or
+#    (at your option) any later version.
+
+#    Promogest is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+
+#    You should have received a copy of the GNU General Public License
+#    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 from promogest.lib.utils import *
 from promogest.dao.Setconf import SetConf
@@ -104,12 +106,76 @@ class AnagraficaDocumentiSetup(GladeWidget):
         except:
             self.costi_ddt_totale_check.set_active(1)
 
+        a = setconf("Documenti","causale_vendita")
+        if a:
+            self.causale_vendita_entry.set_text(a)
+        else:
+            self.causale_vendita_entry.set_text('')
+
+        a = setconf("Documenti","incaricato_predef")
+        if a:
+            findComboboxRowFromStr(self.incaricato_predef_combobox, a, 0)
+        else:
+            self.incaricato_predef_combobox.set_active(-1)
+        try:
+            self.primo_dest_merce_check.set_active(int(setconf("Documenti", "primo_dest_merce")))
+        except:
+            self.primo_dest_merce_check.set_active(0)
+
     def _saveSetup(self):
         """ Salviamo i dati modificati in interfaccia """
         d = SetConf().select(key="multilinealimite", section="Multilinea")
         d[0].value = str(self.multilinea_entry.get_text())
         d[0].tipo = "int"
         Environment.session.add(d[0])
+
+        d = SetConf().select(key="causale_vendita", section="Documenti")
+        if d:
+            d = d[0]
+        else:
+            d = SetConf()
+        d.key = "causale_vendita"
+        d.section = "Documenti"
+        d.tipo = "str"
+        d.value = str(self.causale_vendita_entry.get_text())
+        d.description = "causale vendita preferenziale da preimpostare"
+        d.tipo_section = "Generico"
+        d.active = True
+        d.visible = True
+        d.date = datetime.datetime.now()
+        Environment.session.add(d)
+
+        d = SetConf().select(key="incaricato_predef", section="Documenti")
+        if d:
+            d = d[0]
+        else:
+            d = SetConf()
+        d.key = "incaricato_predef"
+        d.section = "Documenti"
+        d.tipo = "str"
+        d.value = findStrFromCombobox(self.incaricato_predef_combobox, 0)
+        d.description = "incaricato trasporto preferenziale da preimpostare"
+        d.tipo_section = "Generico"
+        d.active = True
+        d.visible = True
+        d.date = datetime.datetime.now()
+        Environment.session.add(d)
+
+        c = SetConf().select(key="primo_dest_merce", section="Documenti")
+        if c:
+            c=c[0]
+        else:
+            c = SetConf()
+        c.key = "primo_dest_merce"
+        c.section = "Documenti"
+        c.tipo = "bool"
+        c.value = str(self.primo_dest_merce_check.get_active())
+        c.description = "Seleziona primo destinatario merce in lista"
+        c.tipo_section = "Generico"
+        c.active = True
+        c.visible = True
+        c.date = datetime.datetime.now()
+        Environment.session.add(c)
 
         d = SetConf().select(key="tipo_documento_predefinito", section="Documenti")
         if d:
