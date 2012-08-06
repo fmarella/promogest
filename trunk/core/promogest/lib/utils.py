@@ -3393,3 +3393,11 @@ def do_print(fileName):
             win32api.ShellExecute (0, "print", fileName, None, ".", 0)
         except:
             raise Exception("Per fare funzionare questa opzione su windows installa questo pacchetto: ftp://promotux.it/pywin32-216.win32-py2.6.exe oppure verifica di avere una stampante funzionante nel sistema")
+
+def fill_treeview_with_data(treeview, data_provider, flag=False, clear=True):
+    model = treeview.get_model()
+    if clear:
+        model.clear()
+    for data in data_provider:
+        model.append([data, data.id, flag, data.denominazione])
+    treeview.set_model(model)
