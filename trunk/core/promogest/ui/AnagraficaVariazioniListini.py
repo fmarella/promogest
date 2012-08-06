@@ -181,8 +181,8 @@ class AnagraficaVariazioniListiniFilter(AnagraficaFilter):
             self._treeViewModel.append((i,col,
                                         (i.denominazione or ''),
                                         (listino_denominazione),
-                                        (i.data_inizio or ''),
-                                        (i.data_fine or ''),
+                                        (dateTimeToString(i.data_inizio) or ''),
+                                        (dateTimeToString(i.data_fine) or ''),
                                         (valore or 0)))
 
 
