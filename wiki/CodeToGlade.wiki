@@ -1,0 +1,54 @@
+#summary Attività: spostare la creazione widget in Glade.
+
+= Introduction =
+
+L'obiettivo di questa attività è quella di spostare la creazione di vari widget (es. CellRendererText, ListStore) utilizzati per le interfacce di PromoGest, nei rispettivi file glade.
+
+== Stato ==
+
+_Attenzione: a causa dei lavori in corso sull'attività, le informazioni contenute potrebbero essere obsolete._
+
+*Core*:
+|| Nome || Anag. S/C ||
+|| Anag. Banche || X ||
+|| Anag. Categorie Articoli || X ||
+|| Anag. Categorie Clienti || X ||
+|| Anag. Categorie Fornitori || X ||
+|| Anag. Destinazione merce || X ||
+|| Anag. Imballaggi || X ||
+|| Anag. Magazzini || X ||
+|| Anag. Multipli || X ||
+|| Anag. Pagamenti || X ||
+|| Elenco Listini || X ||
+|| Elenco Magazzini || X ||
+
+*Moduli*:
+|| Nome modulo || Anag. S/C ||
+|| ADR || X ||
+|| Agenti || X ||
+|| Contatti || X ||
+|| DistintaBase || wip - fmarl ||
+|| ExportToPos || - ||
+|| GestioneImmagini ||  ||
+|| ImportContacts ||  ||
+|| Label ||  ||
+|| ModuloGenerico || - ||
+|| Multilingua ||  ||
+|| PrimaNota || X ||
+|| GestioneNoleggio ||  ||
+|| GestioneCommesse ||  ||
+|| GestioneMatricole ||  ||
+|| ImportPriceList ||  ||
+|| InfoPeso || wip - fmarl ||
+|| Inventario ||  ||
+|| Promemoria ||  ||
+|| SincroDB || - ||
+|| SchedaLavorazione ||  ||
+|| Statistiche ||  ||
+|| NumerazioneComplessa ||  ||
+|| VenditaDettaglio ||  ||
+|| RuoliAzioni ||  ||
+|| MailAndFax ||  ||
+|| Pagamenti ||  ||
+|| PromoWear ||  ||
+|| SuMisura ||  ||
