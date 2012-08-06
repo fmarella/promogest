@@ -38,10 +38,9 @@ def set_configuration(company=None, year = None, pg_path=None):
                 #imagesDir, labelTemplatesDir, templatesDir, documentsDir, reportTemplatesDir,\
                 #bordoDestro, bordoSinistro, magazzini, listini, tempDir, tracciatiDir
 
-    if company:
-        Environment.azienda = company
-        if company != 'AziendaPromo':
-            Environment.fk_prefix = company + '.'
+    if Environment.tipodb != 'sqlite':
+        #Environment.azienda = company
+        Environment.fk_prefix = company + '.'
     dire = getConfigureDir(company)
     promogestDir = None
     if pg_path:
