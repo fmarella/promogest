@@ -25,7 +25,6 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
 from promogest.dao.Dao import Dao
-from promogest.dao.VariazioneListino import VariazioneListino
 
 try:
     t_cliente_variazione_listino = Table('cliente_variazione_listino',
@@ -55,8 +54,3 @@ class ClienteVariazioneListino(Dao):
         elif k =='idVariazioneList':
             dic= {k : t_cliente_variazione_listino.c.id_variazione.in_(v)}
         return  dic[k]
-
-std_mapper =mapper(ClienteVariazioneListino, t_cliente_variazione_listino,
-            properties={
-                'vl': relation(VariazioneListino, backref='cliente_variazione_listino')
-            }, order_by=t_cliente_variazione_listino.c.id_cliente)
