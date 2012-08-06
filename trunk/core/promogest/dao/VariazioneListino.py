@@ -73,6 +73,9 @@ class VariazioneListino(Dao):
             dic = {k:variazionelistino.c.tipo == v}
         return  dic[k]
 
+    def __repr__(self):
+        return "<VariazioneListino ID={0}>".format(self.id)
+
 std_mapper = mapper(VariazioneListino,
                     variazionelistino,
                     order_by=variazionelistino.c.id)
