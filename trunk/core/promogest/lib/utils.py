@@ -459,6 +459,22 @@ def leggiListino(idListino=None, idArticolo=None, tiny=False, conVariazioniListi
 
     return listinoDict
 
+def applica_vl(prezzo, variazioniListino):
+    prezzo_tmp = prezzo
+    data = datetime.datetime.now()
+    for vl in variazioniListino:
+        if data > vl.data_inizio and data < vl.data_fine:
+            if vl.tipo == 'percentuale':
+                if vl.segno == '-':
+                    prezzo_tmp = float(prezzo_tmp) * (1 - float(vl.valore) / 100)
+                else:
+                    prezzo_tmp = float(prezzo_tmp) * (1 + float(vl.valore) / 100)
+            elif vl.tipo == 'valore':
+                if vl.segno == '-':
+                    prezzo_tmp = float(prezzo_tmp) - float(vl.valore)
+                else:
+                    prezzo_tmp = float(prezzo_tmp) + float(vl.valore)
+    return prezzo_tmp
 
 def leggiFornitura(idArticolo, idFornitore=None, data=None, noPreferenziale=False):
     """
