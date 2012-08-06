@@ -1256,7 +1256,8 @@ del documento.
             for r in self._righe[1:]:
                 if self._righe[0]["idArticolo"] == r["idArticolo"] and \
                         self._righe[0]["prezzoNetto"] == r["prezzoNetto"] and\
-                        self._righe[0]["numeroLottoTemp"] == r["numeroLottoTemp"] and self._numRiga == 0:
+                        self._righe[0]["numeroLottoTemp"] == r["numeroLottoTemp"] and \
+                        self._righe[0]["descrizione"] == r["descrizione"] and self._numRiga == 0:
                     r["quantita"] +=self._righe[0]["quantita"]
                     self.modelRiga[self._righe.index(r)-1][11]=str(r["quantita"])
                     self.nuovaRiga()
