@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <!-- interface-requires pythonplugin 0.0 -->
   <requires lib="gtk+" version="2.16"/>
+  <!-- interface-requires pythonplugin 0.0 -->
   <!-- interface-naming-policy toplevel-contextual -->
   <object class="GtkTable" id="anagrafica_variazioni_listini_detail_table">
     <property name="visible">True</property>
@@ -239,6 +239,7 @@
         <property name="label" translatable="yes">a moltiplicatore</property>
         <property name="use_action_appearance">False</property>
         <property name="visible">True</property>
+        <property name="sensitive">False</property>
         <property name="can_focus">True</property>
         <property name="receives_default">False</property>
         <property name="active">True</property>
