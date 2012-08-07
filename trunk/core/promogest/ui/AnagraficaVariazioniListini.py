@@ -250,26 +250,39 @@ class AnagraficaVariazioniListiniEdit(AnagraficaEdit):
         self._refresh()
         return self.dao
 
+    def _clear(self):
+        self.denominazione_entry.set_text('')
+        findComboboxRowFromId(self.listino_ccb.combobox, -1)
+        self.data_inizio_datetimewidget.set_text('')
+        self.data_fine_datetimewidget.set_text('')
+        self.a_valore_scontowidget.set_text('')
+        self.primo_moltiplicatore_entry.set_text('')
+        self.secondo_moltiplicatore_entry.set_text('')
+        self.priorita_checkbutton.set_active(True)
+        self.a_sconto_radiobutton.set_active(True)
+
     def _refresh(self):
+        self._clear()
         self.denominazione_entry.set_text(self.dao.denominazione or '')
         findComboboxRowFromId(self.listino_ccb.combobox, self.dao.id_listino or -1)
         self.data_inizio_datetimewidget.set_text(dateTimeToString(self.dao.data_inizio) or '')
         self.data_fine_datetimewidget.set_text(dateTimeToString(self.dao.data_fine) or '')
-        if self.dao.tipo == "percentuale" or self.dao.tipo == "valore":
-            self.a_valore_scontowidget.set_text(self.dao.valore or "")
-            self.a_valore_scontowidget.tipoSconto = self.dao.tipo
-            self.a_sconto_radiobutton.set_active(True)
-        else:
-            self.a_moltiplicatore_radiobutton.set_active(True)
-            if self.dao.valore:
-                values = self.dao.valore.split("|")
-                self.primo_moltiplicatore_entry.set_text(values[0] or "")
-                self.secondo_moltiplicatore_entry.set_text(values[1] or "" )
-                if values and values[2] == "stesso":
-                    self.stesso_articolo_radiobutton.set_active(True)
-                else:
-                    self.ogni_articolo_radiobutton.set_active(True)
-        self.on_a_sconto_radiobutton_toggled(self.a_sconto_radiobutton )
+        if self.dao.id:
+            if self.dao.tipo == "percentuale" or self.dao.tipo == "valore":
+                self.a_valore_scontowidget.set_text(self.dao.valore or "")
+                self.a_valore_scontowidget.tipoSconto = self.dao.tipo
+                self.a_sconto_radiobutton.set_active(True)
+            else:
+                self.a_moltiplicatore_radiobutton.set_active(True)
+                if self.dao.valore:
+                    values = self.dao.valore.split("|")
+                    self.primo_moltiplicatore_entry.set_text(values[0] or "")
+                    self.secondo_moltiplicatore_entry.set_text(values[1] or "" )
+                    if values and values[2] == "stesso":
+                        self.stesso_articolo_radiobutton.set_active(True)
+                    else:
+                        self.ogni_articolo_radiobutton.set_active(True)
+            self.on_a_sconto_radiobutton_toggled(self.a_sconto_radiobutton )
         self.priorita_checkbutton.set_active(self.dao.priorita or True)
 
 
