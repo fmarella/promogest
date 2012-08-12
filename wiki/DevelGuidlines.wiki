@@ -7,3 +7,5 @@ DAO:
   * il nome assegnato all'istanza della tabella *deve avere* il prefisso *t`_`*  e segue la convenzione python per le variabili (minuscolo con underscore) (es. t_banche_azienda);
   * è *assolutamente vietato* ricreare in un DAO l'istanza di una tabella definita altrove. Tale istanza deve essere _importata_!;
   * all'interno dei DAO non si dovrebbero *MAI* richiamare funzioni di interfaccia (es. messageInfo, messageWarning, ect) in caso di errore ma sollevare una eccezione che andrà gestita a livello di presentazione (nella ui)
+
+http://pythonguy.wordpress.com/2011/08/17/sqlalchemy-tips-performance/
