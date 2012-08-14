@@ -80,11 +80,11 @@ class SimpleGladeWrapper:
         if Environment.pg3:
             prefix = "pg3_"
 
-        print "PATH o NOME FILE --> ", path
-        print "ROOT --> ", root
-        print "DOMAIN --> ", domain
-        print "CALLBACK --> ", callbacks_proxy
-        print "ISMODULE --> ", isModule
+        #print "PATH o NOME FILE --> ", path
+        #print "ROOT --> ", root
+        #print "DOMAIN --> ", domain
+        #print "CALLBACK --> ", callbacks_proxy
+        #print "ISMODULE --> ", isModule
         pp = './gui/'
         self.glade = None
         #else:
@@ -115,7 +115,6 @@ class SimpleGladeWrapper:
         print "FILE GLADE:"+str(self.glade_path)
 #        Environment.pg2log.info("FILE GLADE:"+str(self.glade_path))
         self.widgets = gl.get_objects()
-        print "ROOOOOOOOOOOOOOOOOOOOOOOOOT", root, self.glade_path
         if root:
             self.main_widget = gl.get_object(root)
         #else:
