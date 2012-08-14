@@ -223,13 +223,17 @@ class RicercaComplessaArticoli(RicercaComplessa):
     def on_filter_treeview_cursor_changed(self, treeview):
         """ Rileva la riga attualmente selezionata """
         sel = treeview.get_selection()
-        (model, iterator) = sel.get_selected()
 
-        if iterator is None:
+        try:
+            (model, iterator) = sel.get_selected()
+            if iterator is None:
+                return
+            self.dao = model.get_value(iterator, 0)
+            self.refreshDetail()
+        except:
             return
 
-        self.dao = model.get_value(iterator, 0)
-        self.refreshDetail()
+
 
     def refreshDetail(self):
         """ Aggiornamento della parte di dettaglio puo' essere ridefinito dalle
@@ -1172,9 +1176,11 @@ class RicercaArticoliFilter(GladeWidget):
     def on_produttore_articolo_filter_treeview_cursor_changed(self, treeview):
         """ Gestione della selezione di una riga all'interno della treeview dei produttori """
         sel = treeview.get_selection()
-        (model, iterator) = sel.get_selected()
-
-        self.cancella_produttore_articolo_filter_button.set_property('sensitive', (iterator is not None))
+        try:
+            (model, iterator) = sel.get_selected()
+            self.cancella_produttore_articolo_filter_button.set_property('sensitive', (iterator is not None))
+        except:
+            return
 
 
     def on_codice_articolo_filter_treeview_cursor_changed(self, treeview):

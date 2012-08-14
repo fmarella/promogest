@@ -86,17 +86,10 @@ class SimpleGladeWrapper:
         print "CALLBACK --> ", callbacks_proxy
         print "ISMODULE --> ", isModule
         pp = './gui/'
-
-        #if (path is None) or (path == pp):
-            #gladeFile = pp+prefix+root +".glade"
-            #if os.path.exists(gladeFile):
-                #self.glade_path = gladeFile
         self.glade = None
         #else:
-        print "OKOKOKOKO", pp+prefix+path
         if path and os.path.exists(pp+prefix+path) and not isModule:
             self.glade_path = pp+prefix+path
-            print "CI SIAMO", self.glade_path
         elif isModule:
             self.glade_path = './promogest/modules/'+path
             file_glade = prefix+os.path.split(self.glade_path)[1]
@@ -122,7 +115,7 @@ class SimpleGladeWrapper:
         print "FILE GLADE:"+str(self.glade_path)
 #        Environment.pg2log.info("FILE GLADE:"+str(self.glade_path))
         self.widgets = gl.get_objects()
-        print "ROOOOOOOOOOOOOOOOOOOOOOOOOT", root
+        print "ROOOOOOOOOOOOOOOOOOOOOOOOOT", root, self.glade_path
         if root:
             self.main_widget = gl.get_object(root)
         #else:
