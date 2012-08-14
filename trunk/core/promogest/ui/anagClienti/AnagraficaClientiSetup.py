@@ -38,8 +38,9 @@ class AnagraficaClientiSetup(GladeWidget):
     struttura_codice = CLI000000
     """
     def __init__(self, maino):
-        GladeWidget.__init__(self, '_anagrafica_clienti_setup_frame',
-                                    '_anagrafica_clienti_setup.glade')
+        GladeWidget.__init__(self,
+                                root='_anagrafica_clienti_setup_frame',
+                                path='_anagrafica_clienti_setup.glade')
         self.maino = maino
         self._draw()
 

@@ -108,8 +108,9 @@ class AnagraficaPosFilter(AnagraficaFilter):
     def __init__(self, anagrafica):
         AnagraficaFilter.__init__(self,
                                   anagrafica,
-                                  'anagrafica_pos_filter_table',
-                                  gladeFile='VenditaDettaglio/gui/_anagrafica_pos_elements.glade', module=True)
+                                  root='anagrafica_pos_filter_table',
+                                  path='VenditaDettaglio/gui/_anagrafica_pos_elements.glade',
+                                  isModule=True)
         self._widgetFirstFocus = self.denominazione_filter_entry
 
 
@@ -127,7 +128,8 @@ class AnagraficaPosDetail(AnagraficaDetail):
     def __init__(self, anagrafica):
         AnagraficaDetail.__init__(self,
                                   anagrafica,
-                                  gladeFile='VenditaDettaglio/gui/_anagrafica_pos_elements.glade', module=True)
+                                  path='VenditaDettaglio/gui/_anagrafica_pos_elements.glade',
+                                  isModule=True)
 
 
     def setDao(self, dao):

@@ -66,9 +66,9 @@ class AnagraficaDistintaBaseFilter(AnagraficaFilter):
     def __init__(self, anagrafica):
         AnagraficaFilter.__init__(self,
                                   anagrafica,
-                                  'anagrafica_associazioni_articoli_filter_table',
-                                    gladeFile='DistintaBase/gui/_distinta_base_plugins.glade',
-                                    module=True)
+                                  root='anagrafica_associazioni_articoli_filter_table',
+                                    path='DistintaBase/gui/_distinta_base_plugins.glade',
+                                    isModule=True)
         self._widgetFirstFocus = self.denominazione_filter_entry
         self.articoliprincipaliList = []
 
@@ -208,10 +208,11 @@ class AnagraficaDistintaBaseEdit(AnagraficaEdit):
     def __init__(self, anagrafica):
         AnagraficaEdit.__init__(self,
                                 anagrafica,
-                                'anagrafica_associazioni_articoli_detail_vbox',
                                 'Dati articolo',
-                                gladeFile='DistintaBase/gui/_distinta_base_plugins.glade',
-                                module=True)
+                                root='anagrafica_associazioni_articoli_detail_vbox',
+
+                                path='DistintaBase/gui/_distinta_base_plugins.glade',
+                                isModule=True)
         self._widgetFirstFocus = self.articolo_principale_button
         self.remove_article_button.set_sensitive(False)
         self._loading= False

@@ -48,9 +48,9 @@ class AnagraficaSecondariaEdit(AnagraficaEdit, AnagraficaPGEdit):
 
         AnagraficaEdit.__init__(self,
                         anagrafica,
-                        'anagrafica_secondaria_detail_notebook',
                         title,
-                        gladeFile='_anagrafica_secondaria_elements.glade')
+                        root='anagrafica_secondaria_detail_notebook',
+                        path='_anagrafica_secondaria_elements.glade')
         self._widgetFirstFocus = self.codice_entry
         self.idRole = daoRole.id
 

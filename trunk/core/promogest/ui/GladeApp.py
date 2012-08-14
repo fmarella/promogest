@@ -28,7 +28,7 @@ from promogest import Environment
 class GladeApp(SimpleGladeApp):
     """ Classe base per i widget creati utilizzando Glade"""
 
-    def __init__(self, rootWidget, path=None):
+    def __init__(self, root=None, path=None):
 
-        SimpleGladeApp.__init__(self, path=path, root=rootWidget,
+        SimpleGladeApp.__init__(self, path=path, root=root,
                                 domain=None)

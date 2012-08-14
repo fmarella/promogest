@@ -60,8 +60,8 @@ class RicercaAnagraficaSecondariaFilter(RicercaFilter):
     """ Filtro per la ricerca dei anagrafica secondaria """
     def __init__(self, ricerca, tipo_dao):
         RicercaFilter.__init__(self, ricerca,
-                             "anagrafica_secondaria_filter_vbox",
-                               fileName='_ricerca_secondaria.glade')
+                             root="anagrafica_secondaria_filter_vbox",
+                               path='_ricerca_secondaria.glade')
         self.ricerca_avanzata_secondaria_filter_vbox.destroy()
         self.ricerca_alignment.destroy()
         self.ricerca = ricerca

@@ -75,8 +75,8 @@ class AnagraficaVenditaDettaglio(GladeWidget):
     """ Frame per la gestione delle vendite a dettaglio """
 
     def __init__(self):
-        GladeWidget.__init__(self, 'vendita_dettaglio_window',
-                        fileName='VenditaDettaglio/gui/vendita_dettaglio_window.glade',
+        GladeWidget.__init__(self, root='vendita_dettaglio_window',
+                        path='VenditaDettaglio/gui/vendita_dettaglio_window.glade',
                         isModule=True)
         self.idPuntoCassa = None
         self.idMagazzino = None

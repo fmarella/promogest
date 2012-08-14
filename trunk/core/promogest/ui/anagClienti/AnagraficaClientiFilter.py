@@ -35,8 +35,8 @@ class AnagraficaClientiFilter(AnagraficaFilter):
     def __init__(self, anagrafica):
         AnagraficaFilter.__init__(self,
                                   anagrafica,
-                                  'anagrafica_clienti_filter_vbox',
-                                  gladeFile='_ricerca_clienti.glade')
+                                  root='anagrafica_clienti_filter_vbox',
+                                  path='_ricerca_clienti.glade')
         self._widgetFirstFocus = self.ragione_sociale_filter_entry
         self.orderBy = 'ragione_sociale'
         self.ricerca_avanzata_clienti_filter_hbox.destroy()

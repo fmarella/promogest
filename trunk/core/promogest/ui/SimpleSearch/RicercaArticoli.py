@@ -70,8 +70,8 @@ class RicercaArticoliFilter(RicercaFilter):
 
     def __init__(self, ricerca):
         RicercaFilter.__init__(self, ricerca,
-                               'anagrafica_articoli_filter_table',
-                               fileName='_anagrafica_articoli_elements.glade')
+                               root='anagrafica_articoli_filter_table',
+                               path='_anagrafica_articoli_elements.glade')
 
     def on_filter_treeview_selection_changed(self, treeview):
         pass

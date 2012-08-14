@@ -41,8 +41,9 @@ class AnagraficaArticoliSetup(GladeWidget):
     lunghezza_codice_famiglia = 0
     """
     def __init__(self, maino):
-        GladeWidget.__init__(self, '_anagrafica_articoli_setup_frame',
-                                    '_anagrafica_articoli_setup.glade')
+        GladeWidget.__init__(self,
+                                root='_anagrafica_articoli_setup_frame',
+                                path='_anagrafica_articoli_setup.glade')
         self.maino = maino
         self._draw()
 

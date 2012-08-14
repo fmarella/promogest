@@ -32,8 +32,8 @@ class AnagraficaBancheEdit(GladeWidget):
 
     def __init__(self, anagrafica, dao=None, codice=None):
         GladeWidget.__init__(self,
-                             'banca_edit_window',
-                             fileName='_anagrafica_banche_edit.glade')
+                             root='banca_edit_window',
+                             path='_anagrafica_banche_edit.glade')
         self.codice = codice
         self.setDao(dao)
         self.anagrafica = anagrafica

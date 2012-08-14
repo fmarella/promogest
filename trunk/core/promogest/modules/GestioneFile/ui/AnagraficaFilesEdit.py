@@ -36,10 +36,10 @@ class AnagraficaFilesEdit(AnagraficaEdit):
     def __init__(self, anagrafica, daoArticolo=None):
         AnagraficaEdit.__init__(self,
                 anagrafica,
-                'anagrafica_gestione_file_detail_vbox',
                 'Informazioni File.',
-                gladeFile='GestioneFile/gui/_anagrafica_gestione_file_elements.glade',
-                module=True)
+                root='anagrafica_gestione_file_detail_vbox',
+                path='GestioneFile/gui/_anagrafica_gestione_file_elements.glade',
+                isModule=True)
         self._widgetFirstFocus = self.denominazione_entry
         self.anagrafica = anagrafica
         self.daoArticolo = daoArticolo

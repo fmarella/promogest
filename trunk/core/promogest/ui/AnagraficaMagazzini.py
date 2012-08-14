@@ -55,8 +55,8 @@ class AnagraficaMagazziniFilter(AnagraficaFilter):
     def __init__(self, anagrafica):
         AnagraficaFilter.__init__(self,
                                   anagrafica,
-                                  'anagrafica_magazzini_filter_table',
-                                  gladeFile='_anagrafica_magazzini_elements.glade')
+                                  root='anagrafica_magazzini_filter_table',
+                                  path='_anagrafica_magazzini_elements.glade')
         self._widgetFirstFocus = self.denominazione_filter_entry
 
 
@@ -128,9 +128,9 @@ class AnagraficaMagazziniEdit(AnagraficaEdit):
     def __init__(self, anagrafica):
         AnagraficaEdit.__init__(self,
                                   anagrafica,
-                                  'anagrafica_magazzini_detail_table',
                                   'Dati magazzino',
-                                  gladeFile='_anagrafica_magazzini_elements.glade')
+                                  root='anagrafica_magazzini_detail_table',
+                                  path='_anagrafica_magazzini_elements.glade')
         self._widgetFirstFocus = self.denominazione_entry
 
 

@@ -56,8 +56,8 @@ class AnagraficaPromemoriaFilter(AnagraficaFilter):
     def __init__(self, anagrafica, pg=None):
         AnagraficaFilter.__init__(self,
                                   anagrafica,
-                                  'anagrafica_promemoria_filter_table',
-                                  gladeFile='_anagrafica_promemoria_elements.glade')
+                                  root='anagrafica_promemoria_filter_table',
+                                  path='_anagrafica_promemoria_elements.glade')
         self._widgetFirstFocus = self.da_data_inserimento_entry.entry
         self.orderBy = 'data_scadenza'
         self.pg = pg
@@ -284,9 +284,9 @@ class AnagraficaPromemoriaEdit(AnagraficaEdit):
     def __init__(self, anagrafica, selectedData=None):
         AnagraficaEdit.__init__(self,
                                 anagrafica,
-                                'anagrafica_promemoria_detail_table',
                                 'Dati promemoria',
-                                gladeFile='_anagrafica_promemoria_elements.glade')
+                                root='anagrafica_promemoria_detail_table',
+                                path='_anagrafica_promemoria_elements.glade')
         self._widgetFirstFocus = self.data_scadenza_entry
         self.selectedData = selectedData
 

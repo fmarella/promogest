@@ -26,7 +26,8 @@ class ErrorDialog(GladeWidget):
     """ Dialog for showing a fatal error message """
     def __init__(self, message):
         self.message = message
-        GladeWidget.__init__(self, 'error_dialog')
+        GladeWidget.__init__(self, root='error_dialog',
+                                path="error_dialog.glade")
         self.error_dialog_label.set_text(message)
 
     def on_email_send_clicked(self,button):

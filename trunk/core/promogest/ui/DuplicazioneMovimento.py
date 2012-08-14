@@ -48,8 +48,8 @@ class DuplicazioneMovimento(GladeWidget):
         self.dao = daoMovimento
         self.anagrafica_movimenti = anagraficaMovimenti
 
-        GladeWidget.__init__(self, 'duplicazione_movimento_window',
-                                            'duplicazione_movimento.glade')
+        GladeWidget.__init__(self, root='duplicazione_movimento_window',
+                                    path='duplicazione_movimento.glade')
         self.placeWindow(self.getTopLevel())
         self.draw()
 

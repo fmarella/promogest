@@ -46,9 +46,10 @@ class AnagraficaClientiEdit(AnagraficaEdit, AnagraficaPGEdit):
     def __init__(self, anagrafica):
         AnagraficaEdit.__init__(self,
                                 anagrafica,
-                                'anagrafica_clienti_detail_notebook',
                                 'Dati cliente',
-                                gladeFile='_anagrafica_clienti_elements.glade')
+                                root='anagrafica_clienti_detail_notebook',
+                                path='_anagrafica_clienti_elements.glade')
+
         AnagraficaPGEdit.__init__(self, "cliente")
         self._widgetFirstFocus = self.codice_entry
         self.anagrafica_clienti_detail_notebook.set_current_page(0)

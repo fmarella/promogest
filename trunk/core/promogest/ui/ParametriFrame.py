@@ -46,8 +46,8 @@ class ParametriFrame(GladeWidget):
         self.mainWindow = mainWindow
         self.mainClass=parent
         self.modules = modules
-        GladeWidget.__init__(self, 'parametri_select_frame',
-                                    fileName='_parametri_select.glade')
+        GladeWidget.__init__(self, root='parametri_select_frame',
+                                path='_parametri_select.glade')
         self.setModulesButtons()
 
     def setModulesButtons(self):

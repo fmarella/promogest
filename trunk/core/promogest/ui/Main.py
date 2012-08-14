@@ -183,7 +183,7 @@ class Main(GladeWidget):
     def __init__(self, aziendaStr, anagrafiche_modules, parametri_modules,
                 anagrafiche_dirette_modules, frame_modules, permanent_frames):
 
-        GladeWidget.__init__(self, 'main_window')
+        GladeWidget.__init__(self, root= 'main_window', path="main_window.glade")
         self.main_window.set_title(_('*** PromoGest2 *** Azienda : ') \
                                 + aziendaStr \
                                 + _('  *** Utente : ') \
@@ -1290,7 +1290,8 @@ class RegistrazioniFrame(GladeWidget):
     def __init__(self, mainWindow,azs):
         self.mainWindow = mainWindow
         self.aziendaStr = azs
-        GladeWidget.__init__(self, 'registrazioni_select_frame', fileName='_registrazioni_select.glade')
+        GladeWidget.__init__(self, root='registrazioni_select_frame',
+                                    path='_registrazioni_select.glade')
 
     def on_documenti_button_clicked(self, toggleButton):
         if toggleButton.get_property('active') is False:

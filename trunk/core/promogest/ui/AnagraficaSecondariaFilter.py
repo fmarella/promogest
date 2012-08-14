@@ -38,8 +38,8 @@ class AnagraficaSecondariaFilter(AnagraficaFilter):
     def __init__(self, anagrafica, daoRole):
         AnagraficaFilter.__init__(self,
                                   anagrafica,
-                                  'anagrafica_secondaria_filter_vbox',
-                                  gladeFile='_ricerca_secondaria.glade')
+                                  root='anagrafica_secondaria_filter_vbox',
+                                  path='_ricerca_secondaria.glade')
         self._widgetFirstFocus = self.ragione_sociale_filter_entry
         self.orderBy = 'ragione_sociale'
         self.idRole = daoRole.id

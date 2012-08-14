@@ -38,8 +38,8 @@ class DuplicazioneListino(GladeWidget):
     def __init__(self, daoListino, anagraficaListino):
 
         self.dao = daoListino
-        GladeWidget.__init__(self, 'duplicazione_listino_window',
-                                    'duplicazione_listino.glade')
+        GladeWidget.__init__(self, root='duplicazione_listino_window',
+                                    path='duplicazione_listino.glade')
         self.placeWindow(self.getTopLevel())
         self.draw()
 

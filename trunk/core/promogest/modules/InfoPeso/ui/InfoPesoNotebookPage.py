@@ -37,8 +37,8 @@ class InfoPesoNotebookPage(GladeWidget):
     """ Widget di configurazione del codice installazione e dei parametri
     di configurazione """
     def __init__(self, mainnn, azienda):
-        GladeWidget.__init__(self, 'infopeso_frame',
-                                    'InfoPeso/gui/infopeso_notebook.glade',
+        GladeWidget.__init__(self, root='infopeso_frame',
+                                    path='InfoPeso/gui/infopeso_notebook.glade',
                                     isModule=True)
         self.rowBackGround = None
         self.ana = mainnn
@@ -363,5 +363,3 @@ def on_id_tipo_trattamento_customcombobox_clicked(widget, button):
     anagWindow.show_all()
     anagWindow.connect("destroy",
                         on_anagrafica_tipo_trattamento_articoli_destroyed)
-
-

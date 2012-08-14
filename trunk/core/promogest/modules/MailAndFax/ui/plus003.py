@@ -40,7 +40,7 @@ class SpamFrame(GladeWidget):
 
     def __init__(self, mainWindow):
         self.mainWindow = mainWindow
-        GladeWidget.__init__(self, 'spam_frame')
+        GladeWidget.__init__(self, root='spam_frame', path="spam_frame.glade")
 
         # Costruisco treeview categorie mail e fax
         modelRiga = gtk.ListStore(int, str)

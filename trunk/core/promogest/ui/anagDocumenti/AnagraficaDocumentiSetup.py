@@ -42,8 +42,8 @@ class AnagraficaDocumentiSetup(GladeWidget):
     color_text = black
     """
     def __init__(self, maino):
-        GladeWidget.__init__(self, '_anagrafica_documenti_setup_frame',
-                                    '_anagrafica_documenti_setup.glade')
+        GladeWidget.__init__(self, root='_anagrafica_documenti_setup_frame',
+                                    path='_anagrafica_documenti_setup.glade')
 #        self.placeWindow(self.getTopLevel())
         self.maino = maino
         self._draw()

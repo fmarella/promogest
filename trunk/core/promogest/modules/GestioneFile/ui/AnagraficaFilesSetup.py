@@ -32,8 +32,8 @@ class AnagraficaPrimaNotaSetup(GladeWidget):
     di configurazione
     """
     def __init__(self, maino):
-        GladeWidget.__init__(self, 'PrimaNota/gui/_anagrafica_primanota_setup_frame',
-                                    'PrimaNota/gui/_anagrafica_primanota_setup.glade',
+        GladeWidget.__init__(self, root='PrimaNota/gui/_anagrafica_primanota_setup_frame',
+                                    path='PrimaNota/gui/_anagrafica_primanota_setup.glade',
                                     isModule=True)
         self.maino = maino
         self._draw()

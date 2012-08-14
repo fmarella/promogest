@@ -55,9 +55,9 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
     def __init__(self, anagrafica):
         AnagraficaEdit.__init__(self,
                                 anagrafica,
-                                'anagrafica_articoli_detail_table',
                                 'Dati articolo',
-                                gladeFile='_anagrafica_articoli_detail.glade')
+                                root='anagrafica_articoli_detail_table',
+                                path='_anagrafica_articoli_detail.glade')
         self._widgetFirstFocus = self.codice_entry
         self._loading = False
         #FIXME: promogest.dao.Articolo.isNuovoCodiceByFamiglia()

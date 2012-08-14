@@ -38,10 +38,11 @@ class AnagraficaPrimaNotaEdit(AnagraficaEdit):
     def __init__(self, anagrafica):
         AnagraficaEdit.__init__(self,
                 anagrafica,
-                'anagrafica_prima_nota_detail_vbox',
                 'Dati Prima nota cassa.',
-                gladeFile='PrimaNota/gui/_anagrafica_primanota_elements.glade',
-                module=True)
+                root='anagrafica_prima_nota_detail_vbox',
+
+                path='PrimaNota/gui/_anagrafica_primanota_elements.glade',
+                isModule=True)
         self._widgetFirstFocus = self.data_inserimento_datewidget
         self.anagrafica = anagrafica
         self.editRiga = None

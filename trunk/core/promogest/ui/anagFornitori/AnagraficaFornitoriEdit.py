@@ -39,9 +39,9 @@ class AnagraficaFornitoriEdit(AnagraficaEdit, AnagraficaPGEdit):
     def __init__(self, anagrafica):
         AnagraficaEdit.__init__(self,
                             anagrafica,
-                            'anagrafica_fornitori_detail_notebook',
                             'Dati fornitore',
-                            gladeFile='_anagrafica_fornitori_elements.glade')
+                            root='anagrafica_fornitori_detail_notebook',
+                            path='_anagrafica_fornitori_elements.glade')
         AnagraficaPGEdit.__init__(self, "fornitore")
         self._widgetFirstFocus = self.codice_entry
 

@@ -45,9 +45,9 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
         """ Gestione la modifica e l'editing dei listino articolo """
         AnagraficaEdit.__init__(self,
                                 anagrafica,
-                                'anagrafica_listini_articoli_detail_table',
                                 'Dati articolo nel listino',
-                                gladeFile='_anagrafica_listini_articoli_elements.glade')
+                                root='anagrafica_listini_articoli_detail_table',
+                                path='_anagrafica_listini_articoli_elements.glade')
         self._widgetFirstFocus = self.id_articolo_customcombobox
         self._percentualeIva = 0
         if not posso("PW"):

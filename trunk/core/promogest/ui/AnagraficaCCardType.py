@@ -108,8 +108,8 @@ class AnagraficaCCardTypeFilter(AnagraficaFilter):
     def __init__(self, anagrafica):
         AnagraficaFilter.__init__(self,
                           anagrafica,
-                          'anagrafica_ccardtype_filter_table',
-                          gladeFile='_anagrafica_ccardtype_elements.glade')
+                          root='anagrafica_ccardtype_filter_table',
+                          path='_anagrafica_ccardtype_elements.glade')
         self._widgetFirstFocus = self.denominazione_filter_entry
 
     def clear(self):
@@ -125,7 +125,7 @@ class AnagraficaCCardTypeDetail(AnagraficaDetail):
     def __init__(self, anagrafica):
         AnagraficaDetail.__init__(self,
                               anagrafica,
-                              gladeFile='_anagrafica_ccardtype_elements.glade')
+                              path='_anagrafica_ccardtype_elements.glade')
 
     def setDao(self, dao):
         if dao is None:

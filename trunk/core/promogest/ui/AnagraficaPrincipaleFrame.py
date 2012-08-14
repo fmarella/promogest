@@ -44,8 +44,8 @@ class AnagrafichePrincipaliFrame(GladeWidget):
         self.mainWindow = mainWindow
         self.aziendaStr = azs
         self.modules = modules
-        GladeWidget.__init__(self, 'anagrafiche_principali_select_frame',
-                            fileName='_anagrafiche_principali_select.glade' )
+        GladeWidget.__init__(self, root='anagrafiche_principali_select_frame',
+                            path='_anagrafiche_principali_select.glade' )
         self.setModulesButtons()
 
     def setModulesButtons(self):

@@ -50,8 +50,8 @@ class AnagraficaAliquoteIvaFilter(AnagraficaFilter):
     def __init__(self, anagrafica):
         AnagraficaFilter.__init__(self,
                           anagrafica,
-                          'anagrafica_aliquote_iva_filter_table',
-                          gladeFile='_anagrafica_aliquote_iva_elements.glade')
+                          root='anagrafica_aliquote_iva_filter_table',
+                          path='_anagrafica_aliquote_iva_elements.glade')
         self._widgetFirstFocus = self.denominazione_filter_entry
 
     def draw(self):
@@ -128,9 +128,9 @@ class AnagraficaAliquoteIvaEdit(AnagraficaEdit):
     def __init__(self, anagrafica):
         AnagraficaEdit.__init__(self,
                         anagrafica,
-                        'anagrafica_aliquote_iva_detail_table',
                         'Dati aliquota I.V.A.',
-                        gladeFile='_anagrafica_aliquote_iva_elements.glade')
+                        root='anagrafica_aliquote_iva_detail_table',
+                        path='_anagrafica_aliquote_iva_elements.glade')
         self._widgetFirstFocus = self.denominazione_entry
 
     def draw(self, cplx=False):

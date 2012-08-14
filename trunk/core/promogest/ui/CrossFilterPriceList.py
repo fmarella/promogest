@@ -37,8 +37,8 @@ from promogest.ui.gtk_compat import *
 class CrossFilterPriceList(GladeWidget):
 
     def __init__(self, listino):
-        GladeWidget.__init__(self, 'cross_filter_pricelist',
-                            'cross_filter_pricelist.glade')
+        GladeWidget.__init__(self, root='cross_filter_pricelist',
+                            path='cross_filter_pricelist.glade')
 
         dialog = self.cross_filter_pricelist
         self.placeWindow(self.getTopLevel())
@@ -244,4 +244,3 @@ class CrossFilterPriceList(GladeWidget):
             lcap.data_listino_articolo = r[0].data_listino_articolo
             lcap.persist()
         self.destroy()
-

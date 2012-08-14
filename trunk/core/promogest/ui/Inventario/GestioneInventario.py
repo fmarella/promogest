@@ -54,15 +54,15 @@ class GestioneInventario(RicercaComplessaArticoli):
         # aggiornamento inventario con gli articoli eventualmente non presenti
 #        self.checkTable()
         # filtri propri della parte inventario
-        self.additional_filter = GladeWidget(rootWidget='inventario_filter_table',
-        fileName="Inventario/inventario_filter_table.glade")
+        self.additional_filter = GladeWidget(root='inventario_filter_table',
+                    path="Inventario/inventario_filter_table.glade")
         fillComboboxMagazzini(self.additional_filter.id_magazzino_filter_combobox2, noempty=True)
         if idMagazzino:
             findComboboxRowFromId(self.additional_filter.id_magazzino_filter_combobox2,
                                                               idMagazzino)
         # aggiunta della parte di dettaglio
-        self._modifica = GladeWidget(rootWidget='inventario_detail_vbox',
-            fileName="Inventario/_inventario_select.glade")
+        self._modifica = GladeWidget(root='inventario_detail_vbox',
+            path="Inventario/_inventario_select.glade")
 
         RicercaComplessaArticoli.__init__(self)
         self.anno = int(Environment.workingYear)

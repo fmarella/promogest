@@ -92,9 +92,9 @@ class AnagraficaTipoTrattamentoFilter(AnagraficaFilter):
     def __init__(self, anagrafica):
         AnagraficaFilter.__init__(self,
                                   anagrafica,
-                                  'anagrafica_tipo_trattamento_filter_table',
-                                  gladeFile='InfoPeso/gui/_anagrafica_tipo_trattamento_elements.glade',
-                                  module=True)
+                                  root='anagrafica_tipo_trattamento_filter_table',
+                                  path='InfoPeso/gui/_anagrafica_tipo_trattamento_elements.glade',
+                                  isModule=True)
         self._widgetFirstFocus = self.denominazione_filter_entry
 
 
@@ -112,8 +112,8 @@ class AnagraficaTipoTrattamentoDetail(AnagraficaDetail):
     def __init__(self, anagrafica):
         AnagraficaDetail.__init__(self,
                                   anagrafica,
-                                  gladeFile='InfoPeso/gui/_anagrafica_tipo_trattamento_elements.glade',
-                                  module=True)
+                                  path='InfoPeso/gui/_anagrafica_tipo_trattamento_elements.glade',
+                                  isModule=True)
 
     def setDao(self, dao):
         if dao is None:

@@ -59,8 +59,10 @@ class GestioneScontrini(GladeWidget):
         self.daoTse = None
         self.html = ""
 
-        GladeWidget.__init__(self, 'scontrini_emessi',
-                fileName="VenditaDettaglio/gui/scontrini_emessi.glade", isModule=True)
+        GladeWidget.__init__(self,
+                root='scontrini_emessi',
+                path="VenditaDettaglio/gui/scontrini_emessi.glade",
+                isModule=True)
         self._window = self.scontrini_emessi
 
         self.placeWindow(self._window)
@@ -71,8 +73,8 @@ class GestioneScontrini(GladeWidget):
         self.filterss = FilterWidget(
                             owner=self,
                             filtersElement=GladeWidget(
-                            rootWidget='scontrini_filter_table',
-                            fileName="VenditaDettaglio/gui/_scontrini_emessi_elements.glade",
+                            root='scontrini_filter_table',
+                            path="VenditaDettaglio/gui/_scontrini_emessi_elements.glade",
                             isModule=True),
                             #resultsElement="scontrino"
                             )

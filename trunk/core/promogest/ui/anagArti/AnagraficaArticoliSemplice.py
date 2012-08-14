@@ -36,7 +36,9 @@ import datetime
 class AnagraficaArticoliSemplice(GladeWidget):
 
     def __init__(self):
-        GladeWidget.__init__(self, 'anagrafica_articoli_semplice_dialog', fileName='anagrafica_articoli_semplice_dialog.glade')
+        GladeWidget.__init__(self,
+                    root='anagrafica_articoli_semplice_dialog',
+                    path='anagrafica_articoli_semplice_dialog.glade')
 
         self.placeWindow(self.getTopLevel())
         self._loading = False

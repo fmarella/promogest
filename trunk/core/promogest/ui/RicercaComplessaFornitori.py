@@ -316,8 +316,8 @@ class RicercaFornitoriFilter(GladeWidget):
                     idPagamento = None,
                     idMagazzino = None):
 
-        GladeWidget.__init__(self, 'anagrafica_fornitori_filter_vbox',
-                            fileName='_ricerca_fornitori.glade')
+        GladeWidget.__init__(self, root='anagrafica_fornitori_filter_vbox',
+                            path='_ricerca_fornitori.glade')
 
         self._ragioneSociale = ragioneSociale
         self._insegna = insegna

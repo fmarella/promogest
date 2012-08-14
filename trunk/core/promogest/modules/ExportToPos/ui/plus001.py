@@ -34,7 +34,7 @@ class CasseFrame(GladeWidget):
     def __init__(self, mainWindow):
         self.mainWindow = mainWindow
         self.magazzino = None
-        GladeWidget.__init__(self, 'casse_frame')
+        GladeWidget.__init__(self, root='casse_frame', path="casse_frame.glade")
         # Imposto comando di esportazione
         export_program = getattr(Environment.conf.Delfis,'export_program','')
         self.casse_export_text_entry.set_text(export_program)

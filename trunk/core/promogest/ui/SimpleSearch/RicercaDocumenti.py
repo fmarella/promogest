@@ -52,8 +52,8 @@ class RicercaDocumentiFilter(RicercaFilter):
     """ Filtro per la ricerca dei clienti """
     def __init__(self, ricerca):
         RicercaFilter.__init__(self, ricerca,
-                             'anagrafica_documenti_filter_table',
-                               fileName='_ricerca_semplice_documenti.glade')
+                        root='anagrafica_documenti_filter_table',
+                        path='_ricerca_semplice_documenti.glade')
 #        self.ricerca_alignment.destroy()
 
     def on_filter_treeview_selection_changed(self, treeview):

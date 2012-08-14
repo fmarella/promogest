@@ -65,8 +65,8 @@ class RicercaContattiFilter(RicercaFilter):
 
     def __init__(self, ricerca):
         RicercaFilter.__init__(self, ricerca,
-                               'anagrafica_contatti_filter_table',
-                               fileName='Contatti/_anagrafica_contatti_elements.glade',
+                           root='anagrafica_contatti_filter_table',
+                           path='Contatti/_anagrafica_contatti_elements.glade',
                                 )
         self._ownerType = 'generico'
         self._widgetFirstFocus = self.cognome_nome_filter_entry

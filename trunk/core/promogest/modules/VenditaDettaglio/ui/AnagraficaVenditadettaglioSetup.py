@@ -44,8 +44,8 @@ class VenditadettaglioSetup(GladeWidget):
     export_path = /home/vete/promogest2/elisir/temp/
     """
     def __init__(self, maino):
-        GladeWidget.__init__(self, '_vendita_dettaglio_setup_frame',
-                                    'VenditaDettaglio/gui/_vendita_dettaglio_setup.glade',
+        GladeWidget.__init__(self, root='_vendita_dettaglio_setup_frame',
+                                    path='VenditaDettaglio/gui/_vendita_dettaglio_setup.glade',
                                     isModule=True)
         self.maino = maino
         self._draw()
@@ -159,4 +159,3 @@ class VenditadettaglioSetup(GladeWidget):
             a.value = str(findIdFromCombobox(self.id_magazzino_filter_combobox))
             a.active = True
             Environment.session.add(a)
-

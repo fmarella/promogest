@@ -35,8 +35,8 @@ class FilterWidget(GladeWidget):
     """ Base Class for filter part of windows/dialogs """
 
     def __init__(self, owner, filtersElement=None, resultsElement='grid'):
-        GladeWidget.__init__(self, 'filter_vbox',
-                            fileName='_filter_elements.glade')
+        GladeWidget.__init__(self, root='filter_vbox',
+                            path='_filter_elements.glade')
         self._owner = owner
         self.filtersElement = None
         self.resultsElement = None

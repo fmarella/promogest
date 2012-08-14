@@ -51,8 +51,8 @@ class RicercaAziendeFilter(RicercaFilter):
 
     def __init__(self, ricerca):
         RicercaFilter.__init__(self, ricerca,
-                               'anagrafica_aziende_filter_table',
-                               fileName='_anagrafica_aziende_elements.glade')
+                               root='anagrafica_aziende_filter_table',
+                               path='_anagrafica_aziende_elements.glade')
 
     def draw(self):
         # Colonne della Treeview per il filtro

@@ -37,9 +37,9 @@ class AnagraficaStoccaggiEdit(AnagraficaEdit):
     def __init__(self, anagrafica):
         AnagraficaEdit.__init__(self,
                 anagrafica,
-                'anagrafica_stoccaggi_detail_table',
                 'Dati stoccaggi',
-                gladeFile='_anagrafica_stoccaggi_articoli_elements.glade')
+                root='anagrafica_stoccaggi_detail_table',
+                path='_anagrafica_stoccaggi_articoli_elements.glade')
         self._widgetFirstFocus = self.id_magazzino_customcombobox
         if not posso("PW"):
             self.promowear_frame.destroy()

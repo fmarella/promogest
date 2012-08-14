@@ -45,8 +45,8 @@ class AnagraficaListiniArticoliFilter(AnagraficaFilter):
         """
         AnagraficaFilter.__init__(self,
                                   anagrafica,
-                                  'anagrafica_listini_articoli_filter_table',
-                                  gladeFile='_anagrafica_listini_articoli_elements.glade')
+                                  root='anagrafica_listini_articoli_filter_table',
+                                  path='_anagrafica_listini_articoli_elements.glade')
         self._widgetFirstFocus = self.id_listino_filter_combobox
 
     def draw(self, cplx=False):

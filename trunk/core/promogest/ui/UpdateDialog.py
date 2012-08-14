@@ -39,7 +39,7 @@ class UpdateDialog(GladeWidget):
         '''
         Inizializza la finestra di aggiornamento
         '''
-        GladeWidget.__init__(self, 'update_progress_dialog')
+        GladeWidget.__init__(self, root='update_progress_dialog', path='update_progress_dialog.glade')
         self._parent = parent
         self._rev_locale = None
         self._rev_remota = None

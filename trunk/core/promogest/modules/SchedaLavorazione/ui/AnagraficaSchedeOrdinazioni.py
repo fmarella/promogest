@@ -57,10 +57,10 @@ class AnagraficaSchedeOrdinazioniFilter(AnagraficaFilter):
 
     def __init__(self, anagrafica):
         AnagraficaFilter.__init__(self,
-                                  anagrafica,
-                                  'anagrafica_schede_ordinazione_filter_vbox',
-                                    gladeFile='SchedaLavorazione/gui/SchedaLavorazione.glade',
-                                    module=True)
+                    anagrafica,
+                    root='anagrafica_schede_ordinazione_filter_vbox',
+                    path='SchedaLavorazione/gui/SchedaLavorazione.glade',
+                    isModule=True)
         self._widgetFirstFocus = self.nome_sposi_filter_entry
         self.orderBy = "id"
 

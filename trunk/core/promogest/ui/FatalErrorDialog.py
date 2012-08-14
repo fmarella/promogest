@@ -39,7 +39,8 @@ di email dopo aver configurato i parametri smtp nel file
 "configure" o tramite interfaccia dal menu opzioni
 
 Grazie"""
-        GladeWidget.__init__(self, 'fatal_error_dialog.glade')
+        GladeWidget.__init__(self, root='fatal_error_dialog',
+                                    path='fatal_error_dialog.glade')
         self.fatal_error_dialog_label.set_text(msg)
 
     def on_email_send_clicked(self,button):

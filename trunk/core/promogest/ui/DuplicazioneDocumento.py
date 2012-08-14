@@ -50,8 +50,8 @@ class DuplicazioneDocumento(GladeWidget):
         self.dao = daoDocumento
         self.anagrafica_documenti = anagraficaDocumenti
         self.personaGiuridicaCambiata = False
-        GladeWidget.__init__(self, 'duplicazione_documento_window',
-                                    'duplicazione_documento.glade')
+        GladeWidget.__init__(self, root='duplicazione_documento_window',
+                                    path='duplicazione_documento.glade')
         self.placeWindow(self.getTopLevel())
         self.draw()
 

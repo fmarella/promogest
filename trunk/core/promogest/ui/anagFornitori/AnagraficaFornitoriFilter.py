@@ -37,8 +37,8 @@ class AnagraficaFornitoriFilter(AnagraficaFilter):
     def __init__(self, anagrafica):
         AnagraficaFilter.__init__(self,
                                   anagrafica,
-                                  'anagrafica_fornitori_filter_vbox',
-                                  gladeFile='_ricerca_fornitori.glade')
+                                  root='anagrafica_fornitori_filter_vbox',
+                                  path='_ricerca_fornitori.glade')
         self._widgetFirstFocus = self.ragione_sociale_filter_entry
         self.orderBy = 'ragione_sociale'
         persona_giuridica=Table('persona_giuridica', Environment.params['metadata'],schema = Environment.params['schema'], autoload=True)

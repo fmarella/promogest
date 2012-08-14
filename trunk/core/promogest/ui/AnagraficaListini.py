@@ -84,8 +84,8 @@ class AnagraficaListiniFilter(AnagraficaFilter):
     def __init__(self, anagrafica):
         AnagraficaFilter.__init__(self,
                                   anagrafica,
-                                  'anagrafica_listini_filter_table',
-                                  gladeFile='_ricerca_semplice_listini.glade')
+                                  root='anagrafica_listini_filter_table',
+                                  path='_ricerca_semplice_listini.glade')
         self._widgetFirstFocus = self.denominazione_filter_entry
 
     def draw(self, cplx=False):
@@ -159,9 +159,9 @@ class AnagraficaListiniEdit(AnagraficaEdit):
     def __init__(self, anagrafica):
         AnagraficaEdit.__init__(self,
                                   anagrafica,
-                                  'anagrafica_listini_detail_table',
-                                  'Dati listino',
-                                  gladeFile='_anagrafica_listini_elements.glade')
+                                  'Dati pagamento',
+                                  root='anagrafica_listini_detail_table',
+                                  path='_anagrafica_listini_elements.glade')
         self._widgetFirstFocus = self.denominazione_entry
         add_image =self.add_image.get_stock()
         self.addpix = self.add_image.render_icon(add_image[0],add_image[1], None)

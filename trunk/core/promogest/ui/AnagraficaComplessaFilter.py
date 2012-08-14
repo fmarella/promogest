@@ -31,11 +31,12 @@ from promogest.lib.utils import setconf
 class AnagraficaFilter(GladeWidget):
     """ Filtro per la ricerca nell'anagrafica articoli """
 
-    def __init__(self, anagrafica, rootWidget,
-                                    gladeFile=None,
-                                    module=False):
-        GladeWidget.__init__(self, rootWidget, fileName=gladeFile,
-                                                        isModule=module)
+    def __init__(self, anagrafica, root=None,
+                                    path=None,
+                                    isModule=False):
+        print "QQQQQQQQQQQQQQQQQQQQQQQQQQQ", path
+        GladeWidget.__init__(self, root=root, path=path,
+                                isModule=isModule)
         self._anagrafica = anagrafica
         self._widgetFirstFocus = None
         self._isSensitive = True

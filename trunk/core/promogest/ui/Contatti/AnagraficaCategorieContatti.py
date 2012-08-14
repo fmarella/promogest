@@ -73,8 +73,8 @@ class AnagraficaCategorieContattiFilter(AnagraficaFilter):
     def __init__(self, anagrafica):
         AnagraficaFilter.__init__(self,
                                   anagrafica,
-                                  'anagrafica_categorie_contatti_filter_table',
-                                  gladeFile='Contatti/_anagrafica_categorie_contatti_elements.glade',
+                                  root='anagrafica_categorie_contatti_filter_table',
+                                  path='Contatti/_anagrafica_categorie_contatti_elements.glade',
                                    )
         self._widgetFirstFocus = self.denominazione_filter_entry
 
@@ -95,7 +95,7 @@ class AnagraficaCategorieContattiDetail(AnagraficaDetail):
     def __init__(self, anagrafica):
         AnagraficaDetail.__init__(self,
                                   anagrafica,
-                  gladeFile='Contatti/_anagrafica_categorie_contatti_elements.glade',
+                  path='Contatti/_anagrafica_categorie_contatti_elements.glade',
                   )
 
     def setDao(self, dao):

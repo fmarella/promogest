@@ -33,8 +33,8 @@ class NotificaAllarmiNotebookPage(GladeWidget):
     """ Widget di configurazione del codice installazione e dei parametri
     di configurazione """
     def __init__(self, maino, azienda):
-        GladeWidget.__init__(self, 'notifica_allarmi_frame',
-                                    'notifica_allarmi_notebook.glade')
+        GladeWidget.__init__(self, root='notifica_allarmi_frame',
+                                    path='notifica_allarmi_notebook.glade')
 #        self.placeWindow(self.getTopLevel())
         self.rowBackGround = None
         self.maino = maino

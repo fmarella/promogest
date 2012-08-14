@@ -97,8 +97,8 @@ class AnagraficaFamiglieArticoliFilter(AnagraficaFilter):
     def __init__(self, anagrafica):
         AnagraficaFilter.__init__(self,
                                   anagrafica,
-                                  'anagrafica_famiglie_articoli_filter_table',
-                                  gladeFile='_anagrafica_famiglie_articoli_elements.glade')
+                                  root='anagrafica_famiglie_articoli_filter_table',
+                                  path='_anagrafica_famiglie_articoli_elements.glade')
         self._widgetFirstFocus = self.denominazione_filter_entry
         self.orderBy = 'denominazione'
 
@@ -207,9 +207,9 @@ class AnagraficaFamiglieArticoliEdit(AnagraficaEdit):
     def __init__(self, anagrafica):
         AnagraficaEdit.__init__(self,
                                 anagrafica,
-                                'anagrafica_famiglie_articoli_detail_table',
                                 'Dati famiglia articolo',
-                                gladeFile='_anagrafica_famiglie_articoli_elements.glade')
+                                root='anagrafica_famiglie_articoli_detail_table',
+                                path='_anagrafica_famiglie_articoli_elements.glade')
         self._widgetFirstFocus = self.codice_entry
 
     def draw(self,cplx=False):

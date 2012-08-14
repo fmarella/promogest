@@ -32,7 +32,8 @@ class Ricerca(GladeWidget):
     """ Classe base per le ricerche di Promogest """
 
     def __init__(self, windowTitle, filterElement, htmlHandler=None):
-        GladeWidget.__init__(self, 'ricerca_window')
+        GladeWidget.__init__(self, root='ricerca_window'
+                                    path="ricerca_window.glade")
 
         self.ricerca_window.set_title(windowTitle)
 
@@ -131,8 +132,8 @@ class Ricerca(GladeWidget):
 class RicercaFilter(GladeWidget):
     """ Filtro per la ricerca """
 
-    def __init__(self, ricerca, rootWidget,fileName=None,isModule=False):
-        GladeWidget.__init__(self, rootWidget, fileName,isModule=isModule)
+    def __init__(self, ricerca, root, path=None,isModule=False):
+        GladeWidget.__init__(self, root, path,isModule=isModule)
         self._ricerca = ricerca
 
     def build(self):

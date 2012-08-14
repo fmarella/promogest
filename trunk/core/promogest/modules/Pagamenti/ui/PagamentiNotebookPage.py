@@ -37,8 +37,8 @@ class PagamentiNotebookPage(GladeWidget):
     """ Widget di configurazione del codice installazione e dei parametri
     di configurazione """
     def __init__(self, mainnn):
-        GladeWidget.__init__(self, 'pagamenti_vbox',
-                             'Pagamenti/gui/pagamenti_notebook.glade',
+        GladeWidget.__init__(self, root='pagamenti_vbox',
+                             path='Pagamenti/gui/pagamenti_notebook.glade',
                              isModule=True)
         self.ana = mainnn
         # lista di scadenze
@@ -591,4 +591,3 @@ Procedere con la "chiusura" del Pagamento?"""
                 self.stato_label.set_markup('<b><span foreground="#338000" size="24000">'+_('PAGATO')+'</span></b>')
                 self.chiudi_pagamento_documento_button.set_sensitive(False)
                 self.apri_pagamento_documento_button.set_sensitive(True)
-

@@ -72,10 +72,10 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
     def __init__(self, anagrafica):
         AnagraficaEdit.__init__(self,
                                 anagrafica,
-                                'anagrafica_documenti_detail_vbox',
                                 'Dati Documento',
-                                'anagrafica_documenti.glade')
-#        self.placeWindow(self.getTopLevel())
+                                root='anagrafica_documenti_detail_vbox',
+                                path='anagrafica_documenti.glade')
+        #self.placeWindow(self.getTopLevel())
         self._widgetFirstFocus = self.data_documento_entry
         # contenitore (dizionario) righe (
 #           riga 0 riservata per  variazioni in corso)

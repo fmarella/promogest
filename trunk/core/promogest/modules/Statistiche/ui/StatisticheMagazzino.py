@@ -41,8 +41,8 @@ class StatisticheMagazzino(GladeWidget):
 
     def __init__(self, idMagazzino=None):
 
-        GladeWidget.__init__(self, 'statistiche_magazzino_dialog',
-                'Statistiche/gui/statistiche_magazzino_elements.glade',
+        GladeWidget.__init__(self, root='statistiche_magazzino_dialog',
+                path='Statistiche/gui/statistiche_magazzino_elements.glade',
                 isModule=True)
         self.placeWindow(self.getTopLevel())
         self.da_data__entry.set_text('01/01/' + Environment.workingYear)

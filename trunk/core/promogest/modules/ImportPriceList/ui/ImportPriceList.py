@@ -45,8 +45,8 @@ class ImportPriceList(GladeWidget):
     """Does price-list importation"""
 
     def __init__(self, mainWindow):
-        GladeWidget.__init__(self,'import_price_list_window',
-                    fileName="ImportPriceList/gui/import_price_list_window.glade",
+        GladeWidget.__init__(self, root='import_price_list_window',
+                    path="ImportPriceList/gui/import_price_list_window.glade",
                     isModule=True)
         self._mainWindow = mainWindow
         #self._mainWindow.hide()

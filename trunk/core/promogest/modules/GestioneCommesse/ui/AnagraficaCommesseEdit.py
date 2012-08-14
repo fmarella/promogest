@@ -41,10 +41,10 @@ class AnagraficaCommesseEdit(AnagraficaEdit):
     def __init__(self, anagrafica):
         AnagraficaEdit.__init__(self,
                                 anagrafica,
-                                'anagrafica_commessa_detail_vbox',
                                 'Dati della commessa cliente.',
-                                gladeFile='GestioneCommesse/gui/_anagrafica_commessa_elements.glade',
-                                module=True)
+                                root='anagrafica_commessa_detail_vbox',
+                                path='GestioneCommesse/gui/_anagrafica_commessa_elements.glade',
+                                isModule=True)
         self._widgetFirstFocus = self.titolo_commessa_entry
         self.anagrafica = anagrafica
         self.editRiga = None

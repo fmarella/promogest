@@ -45,8 +45,8 @@ class NewsNotebookPage(GladeWidget):
     """ Widget di configurazione del codice installazione e dei parametri
     di configurazione """
     def __init__(self, main, azienda):
-        GladeWidget.__init__(self, 'notizie_frame',
-                                    'news_notebook.glade')
+        GladeWidget.__init__(self, root='notizie_frame',
+                                    path='news_notebook.glade')
 #        self.placeWindow(self.getTopLevel())
         self.rowBackGround = None
         self.main = main

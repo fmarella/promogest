@@ -50,9 +50,9 @@ class AnagraficaCategoriaTrasportoFilter(AnagraficaFilter):
     def __init__(self, anagrafica):
         AnagraficaFilter.__init__(self,
                           anagrafica,
-                          'anagrafica_categorie_trasporto_filter_table',
-                          gladeFile='ADR/gui/_anagrafica_categorie_trasporto_elements.glade',
-                          module=True)
+                          root='anagrafica_categorie_trasporto_filter_table',
+                          path='ADR/gui/_anagrafica_categorie_trasporto_elements.glade',
+                          isModule=True)
         self._widgetFirstFocus = self.denominazione_filter_entry
 
     def draw(self):
@@ -124,10 +124,11 @@ class AnagraficaCategoriaTrasportoEdit(AnagraficaEdit):
     def __init__(self, anagrafica):
         AnagraficaEdit.__init__(self,
                                 anagrafica,
-                                'anagrafica_categorie_trasporto_detail_table',
                                 _('Dati categoria di trasporto'),
-                                gladeFile='ADR/gui/_anagrafica_categorie_trasporto_elements.glade',
-                                module=True)
+                                root='anagrafica_categorie_trasporto_detail_table',
+
+                                path='ADR/gui/_anagrafica_categorie_trasporto_elements.glade',
+                                isModule=True)
         self._widgetFirstFocus = self.denominazione_entry
 
     def draw(self, cplx=False):

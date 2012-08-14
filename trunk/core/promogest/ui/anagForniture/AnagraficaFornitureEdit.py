@@ -40,9 +40,9 @@ class AnagraficaFornitureEdit(AnagraficaEdit):
     def __init__(self, anagrafica):
         AnagraficaEdit.__init__(self,
             anagrafica,
-            'anagrafica_forniture_detail_table',
             'Dati fornitura',
-            gladeFile='_anagrafica_fornitura_articoli_elements.glade')
+            root='anagrafica_forniture_detail_table',
+            path='_anagrafica_fornitura_articoli_elements.glade')
         self._widgetFirstFocus = self.codice_articolo_fornitore_entry
         self._percentualeIva = 0
         self.taglia_colore_table.hide()

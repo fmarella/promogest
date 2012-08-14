@@ -39,8 +39,8 @@ class AnagraficaStoccaggiFilter(AnagraficaFilter):
     def __init__(self, anagrafica):
         AnagraficaFilter.__init__(self,
             anagrafica,
-            'anagrafica_stoccaggi_filter_table',
-            gladeFile='_anagrafica_stoccaggi_articoli_elements.glade')
+            root='anagrafica_stoccaggi_filter_table',
+            path='_anagrafica_stoccaggi_articoli_elements.glade')
         self._widgetFirstFocus = self.id_magazzino_filter_combobox
         self.orderBy = None
 

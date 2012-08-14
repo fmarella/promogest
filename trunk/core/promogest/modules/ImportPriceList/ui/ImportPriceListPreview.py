@@ -46,7 +46,8 @@ class ImportPreview(GladeWidget):
 
     def __init__(self, mainWindow, table, PLModel, productList, promoPriceList,
                                                     Fornitore, data_listino):
-        GladeWidget.__init__(self, 'import_preview_window')
+        GladeWidget.__init__(self, root='import_preview_window',
+        path='import_preview_window.glade')
         self._mainWindow = mainWindow
         self.window = self.getTopLevel()
         self.table = table

@@ -96,9 +96,9 @@ class AnagraficaStadioCommessaFilter(AnagraficaFilter):
     def __init__(self, anagrafica):
         AnagraficaFilter.__init__(self,
                 anagrafica,
-                'anagrafica_stadio_commessa_filter_table',
-                gladeFile='GestioneCommesse/gui/_anagrafica_stadio_commessa_elements.glade',
-                module=True)
+                root='anagrafica_stadio_commessa_filter_table',
+                path='GestioneCommesse/gui/_anagrafica_stadio_commessa_elements.glade',
+                isModule=True)
         self._widgetFirstFocus = self.denominazione_filter_entry
 
     def clear(self):

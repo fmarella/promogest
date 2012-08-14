@@ -41,7 +41,8 @@ class VariazioneListini(GladeWidget):
         self._percentualeIva = 0
         self._selectAll = False
 
-        GladeWidget.__init__(self, 'variazione_listini_articoli_window')
+        GladeWidget.__init__(self, root='variazione_listini_articoli_window',
+                            path='variazione_listini_articoli_window.glade')
         self.placeWindow(self.getTopLevel())
 
 

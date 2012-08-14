@@ -100,8 +100,8 @@ class AnagraficaBancheFilter(AnagraficaFilter):
     def __init__(self, anagrafica):
         AnagraficaFilter.__init__(self,
                                   anagrafica,
-                                  'anagrafica_banche_filter_table',
-                                  gladeFile='_anagrafica_banche_elements.glade')
+                                  root='anagrafica_banche_filter_table',
+                                  path='_anagrafica_banche_elements.glade')
         self._widgetFirstFocus = self.denominazione_filter_entry
 
     def _reOrderBy(self, column):

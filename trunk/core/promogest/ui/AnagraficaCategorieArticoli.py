@@ -89,8 +89,8 @@ class AnagraficaCategorieArticoliFilter(AnagraficaFilter):
     def __init__(self, anagrafica):
         AnagraficaFilter.__init__(self,
                       anagrafica,
-                      'anagrafica_categorie_articoli_filter_table',
-                      gladeFile='_anagrafica_categorie_articoli_elements.glade')
+                      root='anagrafica_categorie_articoli_filter_table',
+                      path='_anagrafica_categorie_articoli_elements.glade')
         self._widgetFirstFocus = self.denominazione_filter_entry
 
     def _reOrderBy(self, column):
@@ -114,7 +114,7 @@ class AnagraficaCategorieArticoliDetail(AnagraficaDetail):
     def __init__(self, anagrafica):
         AnagraficaDetail.__init__(self,
             anagrafica,
-            gladeFile='_anagrafica_categorie_articoli_elements.glade')
+            path='_anagrafica_categorie_articoli_elements.glade')
 
     def setDao(self, dao):
         self.dao = dao

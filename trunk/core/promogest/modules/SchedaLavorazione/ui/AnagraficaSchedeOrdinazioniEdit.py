@@ -71,10 +71,10 @@ class AnagraficaSchedeOrdinazioniEdit(AnagraficaEdit):
         #SchedeOrdinazioniEditWidget.__init__(self)
         AnagraficaEdit.__init__(self,
                                 anagrafica,
-                                'anagrafica_schede_ordinazioni_detail_vbox',
                                 'Dettagli scheda lavorazione',
-                                gladeFile='SchedaLavorazione/gui/SchedaLavorazione.glade',
-                                module=True)
+                                root='anagrafica_schede_ordinazioni_detail_vbox',
+                                path='SchedaLavorazione/gui/SchedaLavorazione.glade',
+                                isModule=True)
         self._prepareWindowPlacement()
         self._anagrafica = anagrafica
         self._widgetFirstFocus = self.nomi_sposi_entry

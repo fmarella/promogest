@@ -42,8 +42,9 @@ class ManageLabelsToPrint(GladeWidget):
         """Widget di transizione per visualizzare e confermare gli oggetti
             preparati per la stampa ( Multi_dialog.glade tab 1)
         """
-        GladeWidget.__init__(self, 'label_dialog',
-                        fileName= 'Label/gui/label_dialog.glade',isModule=True)
+        GladeWidget.__init__(self, root='label_dialog',
+                        path='Label/gui/label_dialog.glade',
+                        isModule=True)
         self.revert_button.destroy()
         self.apply_button.destroy()
         self.mainWindow = mainWindow

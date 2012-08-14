@@ -34,9 +34,9 @@ class AnagraficaPrimaNotaFilter(AnagraficaFilter):
     def __init__(self, anagrafica):
         AnagraficaFilter.__init__(self,
                           anagrafica,
-                          'anagrafica_prima_nota_filter_table',
-                          gladeFile='PrimaNota/gui/_anagrafica_primanota_elements.glade',
-                          module=True)
+                          root='anagrafica_prima_nota_filter_table',
+                          path='PrimaNota/gui/_anagrafica_primanota_elements.glade',
+                          isModule=True)
         self._widgetFirstFocus = self.a_numero_filter_entry
         self.da_data_inizio_datetimewidget.set_text('01/01/' + Environment.workingYear)
         from promogest.dao.BancheAzienda import gen_banche_azienda

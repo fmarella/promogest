@@ -76,8 +76,8 @@ class AnagraficaCategorieClientiFilter(AnagraficaFilter):
     def __init__(self, anagrafica):
         AnagraficaFilter.__init__(self,
                       anagrafica,
-                      'anagrafica_categorie_clienti_filter_table',
-                      gladeFile='_anagrafica_categorie_clienti_elements.glade')
+                      root='anagrafica_categorie_clienti_filter_table',
+                      path='_anagrafica_categorie_clienti_elements.glade')
         self._widgetFirstFocus = self.denominazione_filter_entry
 
     def _reOrderBy(self, column):
@@ -98,7 +98,7 @@ class AnagraficaCategorieClientiDetail(AnagraficaDetail):
     def __init__(self, anagrafica):
         AnagraficaDetail.__init__(self,
                       anagrafica,
-                      gladeFile='_anagrafica_categorie_clienti_elements.glade')
+                      path='_anagrafica_categorie_clienti_elements.glade')
 
     def setDao(self, dao):
         if dao is None:

@@ -58,8 +58,8 @@ class RicercaFornitoriFilter(RicercaFilter):
 
     def __init__(self, ricerca):
         RicercaFilter.__init__(self, ricerca,
-                               'anagrafica_fornitori_filter_vbox',
-                               fileName='_ricerca_fornitori.glade')
+                               root='anagrafica_fornitori_filter_vbox',
+                               path='_ricerca_fornitori.glade')
         self.ricerca_avanzata_fornitori_filter_vbox.destroy()
         self.ricerca_alignment.destroy()
 

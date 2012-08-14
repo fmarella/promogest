@@ -35,10 +35,10 @@ class AnagraficaAgentiEdit(AnagraficaEdit):
     def __init__(self, anagrafica):
         AnagraficaEdit.__init__(self,
                                 anagrafica,
-                                'anagrafica_agenti_detail_table',
                                 'Dati agente',
-                                gladeFile='/Agenti/_anagrafica_agenti_elements.glade',
-                                module=False)
+                                root='anagrafica_agenti_detail_table',
+                                path='/Agenti/_anagrafica_agenti_elements.glade',
+                                isModule=False)
         self._widgetFirstFocus = self.codice_entry
 
 

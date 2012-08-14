@@ -321,8 +321,8 @@ class RicercaClientiFilter(GladeWidget):
                     idMagazzino = None,
                     idListino = None):
 
-        GladeWidget.__init__(self, 'anagrafica_clienti_filter_vbox',
-                            fileName='_ricerca_clienti.glade')
+        GladeWidget.__init__(self, root='anagrafica_clienti_filter_vbox',
+                            path='_ricerca_clienti.glade')
         self.root= self.ricerca_semplice_clienti_filter_vbox
         self._ragioneSociale = ragioneSociale
         self._insegna = insegna

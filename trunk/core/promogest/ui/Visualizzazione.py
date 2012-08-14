@@ -29,7 +29,8 @@ class Visualizzazione(GladeWidget):
     """ Classe base per le visualizzazioni di Promogest """
 
     def __init__(self, windowTitle, filterElement):
-        GladeWidget.__init__(self, 'visualizzazione_window', 'visualizzazione_window.glade')
+        GladeWidget.__init__(self, root='visualizzazione_window',
+                        path='visualizzazione_window.glade')
         self.visualizzazione_window.set_title(windowTitle)
         self.dao = None
         self._setFilterElement(filterElement)
@@ -90,8 +91,8 @@ class Visualizzazione(GladeWidget):
 class VisualizzazioneFilter(GladeWidget):
     """ Filtro per la visualizzazione """
 
-    def __init__(self, visualizzazione, rootWidget):
-        GladeWidget.__init__(self, rootWidget)
+    def __init__(self, visualizzazione, root=None, path=None):
+        GladeWidget.__init__(self, root=root, path=path)
         self._visualizzazione = visualizzazione
 
     def build(self):

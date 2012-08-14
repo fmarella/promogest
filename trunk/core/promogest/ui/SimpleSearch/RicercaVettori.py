@@ -56,8 +56,8 @@ class RicercaVettoriFilter(RicercaFilter):
 
     def __init__(self, ricerca):
         RicercaFilter.__init__(self, ricerca,
-                               'anagrafica_vettori_filter_table',
-                               fileName='_anagrafica_vettori_elements.glade')
+                               root='anagrafica_vettori_filter_table',
+                               path='_anagrafica_vettori_elements.glade')
 
     def on_filter_treeview_selection_changed(self, treeview):
         pass

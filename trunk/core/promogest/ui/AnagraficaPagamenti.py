@@ -50,8 +50,8 @@ class AnagraficaPagamentiFilter(AnagraficaFilter):
     def __init__(self, anagrafica):
         AnagraficaFilter.__init__(self,
                                   anagrafica,
-                                  'anagrafica_pagamenti_filter_table',
-                                  gladeFile='_anagrafica_pagamenti_elements.glade')
+                                  root='anagrafica_pagamenti_filter_table',
+                                  path='_anagrafica_pagamenti_elements.glade')
         self._widgetFirstFocus = self.denominazione_filter_entry
 
     def draw(self):
@@ -121,9 +121,9 @@ class AnagraficaPagamentiEdit(AnagraficaEdit):
     def __init__(self, anagrafica):
         AnagraficaEdit.__init__(self,
                                 anagrafica,
-                                'anagrafica_pagamenti_detail_table',
                                 'Dati pagamento',
-                                gladeFile='_anagrafica_pagamenti_elements.glade')
+                                root='anagrafica_pagamenti_detail_table',
+                                path='_anagrafica_pagamenti_elements.glade')
         self._widgetFirstFocus = self.denominazione_entry
 
     def draw(self, cplx=False):

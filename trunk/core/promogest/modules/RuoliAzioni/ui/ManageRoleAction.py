@@ -34,8 +34,8 @@ class ManageRuoloAzioni(GladeWidget):
     """ Frame per la spedizione email """
 
     def __init__(self, string=None, d=False):
-        GladeWidget.__init__(self, 'roleaction',
-                fileName= 'RuoliAzioni/gui/roleaction.glade',
+        GladeWidget.__init__(self, root='roleaction',
+                path='RuoliAzioni/gui/roleaction.glade',
                                 isModule=True)
         self.placeWindow(self.getTopLevel())
         self.getTopLevel().set_modal(True)

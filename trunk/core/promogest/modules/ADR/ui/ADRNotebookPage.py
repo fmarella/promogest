@@ -37,8 +37,8 @@ class ADRNotebookPage(GladeWidget):
     """ Widget di configurazione del codice installazione e dei parametri
     di configurazione """
     def __init__(self, mainnn):
-        GladeWidget.__init__(self, 'adr_frame',
-                                    'ADR/gui/adr_notebook.glade',
+        GladeWidget.__init__(self, root='adr_frame',
+                                    path='ADR/gui/adr_notebook.glade',
                                     isModule=True)
         self.rowBackGround = None
         self.ana = mainnn
@@ -320,5 +320,3 @@ def id_galleria_adr_customcombobox_clicked(widget, button):
     anagWindow.show_all()
     anagWindow.connect("destroy",
                         on_anagrafica_galleria_destroyed)
-
-

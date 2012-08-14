@@ -73,9 +73,9 @@ class AnagraficaGruppoImballaggioFilter(AnagraficaFilter):
     def __init__(self, anagrafica):
         AnagraficaFilter.__init__(self,
                                   anagrafica,
-                                  'anagrafica_gruppo_imballaggio_filter_table',
-                                  gladeFile='ADR/gui/_anagrafica_gruppo_imballaggio_elements.glade',
-                                  module=True)
+                                  root='anagrafica_gruppo_imballaggio_filter_table',
+                                  path='ADR/gui/_anagrafica_gruppo_imballaggio_elements.glade',
+                                  isModule=True)
         self._widgetFirstFocus = self.denominazione_filter_entry
 
 
@@ -93,8 +93,8 @@ class AnagraficaGruppoImballaggioDetail(AnagraficaDetail):
     def __init__(self, anagrafica):
         AnagraficaDetail.__init__(self,
                                   anagrafica,
-                                  gladeFile='ADR/gui/_anagrafica_gruppo_imballaggio_elements.glade',
-                                  module=True)
+                                  path='ADR/gui/_anagrafica_gruppo_imballaggio_elements.glade',
+                                  isModule=True)
 
     def setDao(self, dao):
         if dao is None:

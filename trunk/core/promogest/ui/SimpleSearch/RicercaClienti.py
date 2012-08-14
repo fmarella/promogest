@@ -55,8 +55,8 @@ class RicercaClientiFilter(RicercaFilter):
     """ Filtro per la ricerca dei clienti """
     def __init__(self, ricerca):
         RicercaFilter.__init__(self, ricerca,
-                             "anagrafica_clienti_filter_vbox",
-                               fileName='_ricerca_clienti.glade')
+                             root="anagrafica_clienti_filter_vbox",
+                               path='_ricerca_clienti.glade')
         self.ricerca_avanzata_clienti_filter_vbox.destroy()
         self.ricerca_alignment.destroy()
 

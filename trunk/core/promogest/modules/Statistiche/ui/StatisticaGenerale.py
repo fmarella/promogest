@@ -55,8 +55,8 @@ class StatisticaGenerale(GladeWidget):
     """
     def __init__(self, idMagazzino=None, nome=""):
 
-        GladeWidget.__init__(self, 'statistica_dialog',
-                'Statistiche/gui/statistiche_dialog.glade',
+        GladeWidget.__init__(self, root='statistica_dialog',
+                path='Statistiche/gui/statistiche_dialog.glade',
                 isModule=True)
         self.placeWindow(self.getTopLevel())
         self.da_data_entry.set_text('01/01/' + Environment.workingYear)
@@ -624,4 +624,3 @@ class StatisticaGenerale(GladeWidget):
                 }
 
         view = HtmlViewer(pageData)
-

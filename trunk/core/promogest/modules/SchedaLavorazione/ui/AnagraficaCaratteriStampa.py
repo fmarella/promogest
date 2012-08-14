@@ -90,9 +90,9 @@ class AnagraficaCaratteriStampaFilter(AnagraficaFilter):
     def __init__(self, anagrafica):
         AnagraficaFilter.__init__(self,
                                 anagrafica,
-                                '_anagrafica_caratteri_stampa_filter_table', \
-                                gladeFile='SchedaLavorazione/gui/schedalavorazione_plugins.glade', \
-                                module=True)
+                                root'_anagrafica_caratteri_stampa_filter_table',
+                                path='SchedaLavorazione/gui/schedalavorazione_plugins.glade',
+                                isModule=True)
         self._widgetFirstFocus = self.denominazione_caratteri_filter_entry
 
     def clear(self):
@@ -107,8 +107,8 @@ class AnagraficaCaratteriStampaDetail(AnagraficaDetail):
     def __init__(self, anagrafica):
         AnagraficaDetail.__init__(self,
                                 anagrafica,
-                                gladeFile='SchedaLavorazione/gui/schedalavorazione_plugins.glade',
-                                module=True)
+                                path='SchedaLavorazione/gui/schedalavorazione_plugins.glade',
+                                isModule=True)
 
     def setDao(self, dao):
         if dao is None:

@@ -34,16 +34,14 @@ class VistaPrincipale(GladeWidget):
     """
 
     def __init__(self, mainWindow, azs=None):
-#        GladeWidget.__init__(self, 'vista_principale_frame',
-#        fileName='_main_window_view_select.glade')
+#        GladeWidget.__init__(self, root='vista_principale_frame',
+#        path='_main_window_view_select.glade')
         self._loading = None
 #        self.getfeedFromSite()
 
     def show_all(self):
         """ Visualizza/aggiorna tutta la struttura del frame """
-        print "AHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH"
         if not Environment.nobrand:
-            print " SIAMO QUIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII"
             self.promotux_button.destroy()
         self.vista_principale_frame.show_all()
 

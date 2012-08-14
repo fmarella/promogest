@@ -37,9 +37,9 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
 
     def __init__(self, anagrafica):
         AnagraficaFilter.__init__(self,
-                                  anagrafica,
-                                  'anagrafica_documenti_filter_table',
-                                    '_ricerca_semplice_documenti.glade')
+                                anagrafica,
+                                root='anagrafica_documenti_filter_table',
+                                path='_ricerca_semplice_documenti.glade')
         self._widgetFirstFocus = self.da_data_filter_entry
         if not posso("GN"):
             self.noleggio_expander.destroy()

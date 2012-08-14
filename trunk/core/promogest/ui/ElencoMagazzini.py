@@ -29,7 +29,9 @@ class ElencoMagazzini(GladeWidget):
     """ Elenco magazzini """
 
     def __init__(self, mainWindow,aziendaStr):
-        GladeWidget.__init__(self, 'elenco_magazzini_frame', fileName='_elenco_magazzini_elements.glade')
+        GladeWidget.__init__(self,
+                            root='elenco_magazzini_frame',
+                            path='_elenco_magazzini_elements.glade')
         self._mainWindow = mainWindow
         self.aziendaStr = aziendaStr
         self._currentDao = None

@@ -62,9 +62,9 @@ class AnagraficaUtentiFilter(AnagraficaFilter):
     def __init__(self, anagrafica):
         AnagraficaFilter.__init__(self,
             anagrafica,
-            'anagrafica_utenti_filter_table',
-            gladeFile='RuoliAzioni/gui/_anagrafica_utenti_elements.glade',
-            module=True)
+            root='anagrafica_utenti_filter_table',
+            path='RuoliAzioni/gui/_anagrafica_utenti_elements.glade',
+            isModule=True)
         self._widgetFirstFocus = self.username_filter_entry
 
 
@@ -183,10 +183,11 @@ class AnagraficaUtentiEdit(AnagraficaEdit):
     def __init__(self, anagrafica):
         AnagraficaEdit.__init__(self,
             anagrafica,
-            'anagrafica_utenti_detail_table',
             'Dati Utente',
-            gladeFile='RuoliAzioni/gui/_anagrafica_utenti_elements.glade',
-            module=True)
+            root='anagrafica_utenti_detail_table',
+
+            path='RuoliAzioni/gui/_anagrafica_utenti_elements.glade',
+            isModule=True)
         self.imgblob = None
         self._widgetFirstFocus = self.username_entry
 

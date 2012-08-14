@@ -37,8 +37,8 @@ class AnagraficaLabelSetup(GladeWidget):
 
     """
     def __init__(self, maino):
-        GladeWidget.__init__(self, 'Label/gui/_anagrafica_label_setup_frame',
-                                    'Label/gui/_anagrafica_label_setup.glade',
+        GladeWidget.__init__(self, root='Label/gui/_anagrafica_label_setup_frame',
+                                    path='Label/gui/_anagrafica_label_setup.glade',
                                     isModule=True)
         self.maino = maino
         self._draw()

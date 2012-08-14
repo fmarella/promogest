@@ -109,9 +109,9 @@ class AnagraficaRuoliFilter(AnagraficaFilter):
     def __init__(self, anagrafica):
         AnagraficaFilter.__init__(self,
                                   anagrafica,
-                                  'anagrafica_ruoli_filter_table',
-                                  gladeFile='./promogest/modules/RuoliAzioni/gui/_anagrafica_ruoli_elements.glade',
-                                    module=True)
+                                  root='anagrafica_ruoli_filter_table',
+                                  path='./promogest/modules/RuoliAzioni/gui/_anagrafica_ruoli_elements.glade',
+                                    isModule=True)
         self._widgetFirstFocus = self.name_filter_entry
 
 
@@ -128,16 +128,15 @@ class AnagraficaRuoliDetail(AnagraficaDetail):
     def __init__(self, anagrafica):
         AnagraficaDetail.__init__(self,
                                   anagrafica,
-                                  gladeFile='_anagrafica_ruoli_elements.glade')
+                                  path='_anagrafica_ruoli_elements.glade')
 
 
     def setDao(self, dao):
+        self.dao = dao
         if dao is None:
             self.dao = Role()
             self._anagrafica._newRow((self.dao, '', ''))
             self._refresh()
-        else:
-            self.dao = dao
 
 
     def updateDao(self):

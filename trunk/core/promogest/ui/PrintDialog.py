@@ -34,7 +34,8 @@ from promogest.ui.GladeWidget import GladeWidget
 class PrintDialogHandler(GladeWidget):
 
     def __init__(self,anacomplex,nome, pdfGenerator=None, report=None, daos=None, label=None, tempFile=None ):
-        GladeWidget.__init__(self, 'records_print_dialog',fileName='records_print_dialog.glade')
+        GladeWidget.__init__(self, root='records_print_dialog',
+                                path='records_print_dialog.glade')
         try:
             self._pdfName = nome.replace(" ","_").replace("\\n","_") + '_report_' + time.strftime('%d-%m-%Y')
         except:

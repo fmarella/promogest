@@ -222,7 +222,7 @@ class RiBaExportWindow(GladeWidget):
         '''
         Constructor
         '''
-        GladeWidget.__init__(self, 'riba_window', fileName='riba_window.glade')
+        GladeWidget.__init__(self, root='riba_window', path='riba_window.glade')
         self.__parent = parent
         self.placeWindow(self.getTopLevel())
         self.__setup_webview()

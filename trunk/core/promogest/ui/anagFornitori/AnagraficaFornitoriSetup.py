@@ -38,8 +38,9 @@ class AnagraficaFornitoriSetup(GladeWidget):
     struttura_codice = FOR000000
     """
     def __init__(self, maino):
-        GladeWidget.__init__(self, '_anagrafica_fornitori_setup_frame',
-                                    '_anagrafica_fornitori_setup.glade')
+        GladeWidget.__init__(self,
+                        root='_anagrafica_fornitori_setup_frame',
+                        path='_anagrafica_fornitori_setup.glade')
         self.maino = maino
         self._draw()
 

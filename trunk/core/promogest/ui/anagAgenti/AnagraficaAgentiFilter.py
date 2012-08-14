@@ -36,9 +36,9 @@ class AnagraficaAgentiFilter(AnagraficaFilter):
     def __init__(self, anagrafica):
         AnagraficaFilter.__init__(self,
                             anagrafica,
-                            'anagrafica_agenti_filter_table',
-                            gladeFile='/Agenti/_anagrafica_agenti_elements.glade',
-                            module=False)
+                            root='anagrafica_agenti_filter_table',
+                            path='/Agenti/_anagrafica_agenti_elements.glade',
+                            isModule=False)
      ##   self._widgetFirstFocus = self.ragione_sociale_filter_entry
         self.orderBy = 'ragione_sociale'
         persona_giuridica=Table('persona_giuridica', Environment.params['metadata'],schema = Environment.params['schema'], autoload=True)

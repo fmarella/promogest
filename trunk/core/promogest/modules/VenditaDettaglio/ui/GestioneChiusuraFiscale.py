@@ -26,8 +26,8 @@ from promogest.modules.VenditaDettaglio.dao.Pos import Pos
 class GestioneChiusuraFiscale(GladeWidget):
     """ Classe per la gestione degli scontrini emessi """
     def __init__(self, gladeobj):
-        GladeWidget.__init__(self, 'chiusura_dialog',
-                fileName='VenditaDettaglio/gui/chiusura_fine_giornata.glade',
+        GladeWidget.__init__(self, root='chiusura_dialog',
+                path='VenditaDettaglio/gui/chiusura_fine_giornata.glade',
                 isModule=True)
         self.gladeobj = gladeobj
         self.idMagazzino = None

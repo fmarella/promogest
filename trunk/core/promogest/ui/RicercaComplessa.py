@@ -33,7 +33,7 @@ class RicercaComplessa(GladeWidget):
     """ Classe base per le ricerche avanzate di Promogest """
 
     def __init__(self, windowTitle, filtersElement):
-        GladeWidget.__init__(self, 'ricerca_window')
+        GladeWidget.__init__(self, root='ricerca_window', path="ricerca_window.glade")
 
         #self.ricerca_html.destroy()
         self.dao = None

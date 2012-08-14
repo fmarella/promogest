@@ -36,7 +36,7 @@ class AnagraficaPrintPreview(GladeWidget):
     # FIXME: a lot of duplicated code from AnagraficaFilter here!
 
     def __init__(self, anagrafica, windowTitle, previewTemplate, veter=False):
-        GladeWidget.__init__(self, 'htmlviewer')
+        GladeWidget.__init__(self, root='htmlviewer', path="htmlviewer.glade")
         self.windowTitle = windowTitle
         self.visualizzatore_html.set_title(windowTitle)
         self._anagrafica = anagrafica

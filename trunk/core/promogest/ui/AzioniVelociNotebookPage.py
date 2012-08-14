@@ -30,8 +30,8 @@ class AzioniVelociNotebookPage(GladeWidget):
     """ Widget di configurazione del codice installazione e dei parametri
     di configurazione """
     def __init__(self, mainnn, aziendaa):
-        GladeWidget.__init__(self, 'azioni_veloci_frame',
-                                    'azioni_veloce_notebook.glade')
+        GladeWidget.__init__(self, root='azioni_veloci_frame',
+                                    path='azioni_veloce_notebook.glade')
 #        self.placeWindow(self.getTopLevel())
         self.rowBackGround = None
         self.main_wind = mainnn

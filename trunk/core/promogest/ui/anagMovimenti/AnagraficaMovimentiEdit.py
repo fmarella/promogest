@@ -47,9 +47,9 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
         """
         AnagraficaEdit.__init__(self,
                                 anagrafica,
-                                'anagrafica_movimenti_detail_vbox',
                                 'Dati movimento',
-                                gladeFile='_anagrafica_movimenti_elements.glade')
+                                root='anagrafica_movimenti_detail_vbox',
+                                path='_anagrafica_movimenti_elements.glade')
         self._widgetFirstFocus = self.data_movimento_entry
 
         self.totale_spinbutton.destroy()

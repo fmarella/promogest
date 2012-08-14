@@ -33,8 +33,8 @@ class AbbinamentoPersonaGiuridica(GladeWidget):
     def __init__(self, dao):
         self._dao_pg = dao
 
-        GladeWidget.__init__(self, 'abbinamento_pg_window',
-                fileName="abbinamento_persone_giuridiche.glade")
+        GladeWidget.__init__(self, root='abbinamento_pg_window',
+                path="abbinamento_persone_giuridiche.glade")
         self._window = self.abbinamento_pg_window
         self.placeWindow(self._window)
         self.draw()

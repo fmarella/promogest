@@ -27,7 +27,7 @@ from promogest.ui.gtk_compat import *
 import datetime
 import random
 import webbrowser
-from promogest.ui.GladeApp import GladeApp
+from promogest.ui.SimpleGladeApp import SimpleGladeApp
 from promogest.dao.User import User
 from promogest.dao.Azienda import Azienda
 from GtkExceptionHandler import GtkExceptionHandler
@@ -53,7 +53,7 @@ from promogest.lib import feedparser
 from promogest.lib import HtmlHandler
 
 
-class Login(GladeApp):
+class Login(SimpleGladeApp):
 
     def __init__(self):
         """Inizializza la finestra di login
@@ -62,7 +62,9 @@ class Login(GladeApp):
         self.azienda = None
         self._dbConnString = ''
         self.modules = {}
-        GladeApp.__init__(self, 'login_window')
+        SimpleGladeApp.__init__(self,
+                path='login_window.glade',
+                root="login_window")
         Environment.exceptionHandler = GtkExceptionHandler()
         self.draw()
         self.getTopLevel().show_all()

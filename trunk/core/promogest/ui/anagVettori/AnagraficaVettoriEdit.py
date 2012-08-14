@@ -35,8 +35,9 @@ class AnagraficaVettoriEdit(AnagraficaEdit):
     def __init__(self, anagrafica):
         AnagraficaEdit.__init__(self,
                                 anagrafica,
-                                'anagrafica_vettori_detail_table',
-                                'Dati vettore', gladeFile='_anagrafica_vettori_elements.glade')
+                                'Dati vettore',
+                                root='anagrafica_vettori_detail_table',
+                                path='_anagrafica_vettori_elements.glade')
         self._widgetFirstFocus = self.codice_entry
         self.nome_entry.destroy()
         self.cognome_entry.destroy()

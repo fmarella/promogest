@@ -126,8 +126,8 @@ class AnagraficaCodiciABarreArticoliFilter(AnagraficaFilter):
     def __init__(self, anagrafica):
         AnagraficaFilter.__init__(self,
               anagrafica,
-              'anagrafica_codici_a_barre_articoli_filter_table',
-              gladeFile='_anagrafica_codici_a_barre_articoli_elements.glade')
+              root='anagrafica_codici_a_barre_articoli_filter_table',
+              path='_anagrafica_codici_a_barre_articoli_elements.glade')
         self._widgetFirstFocus = self.codice_filter_entry
 
     def clear(self):
@@ -143,7 +143,7 @@ class AnagraficaCodiciABarreArticoliDetail(AnagraficaDetail):
     def __init__(self, anagrafica):
         AnagraficaDetail.__init__(self,
                 anagrafica,
-                gladeFile='_anagrafica_codici_a_barre_articoli_elements.glade')
+                path='_anagrafica_codici_a_barre_articoli_elements.glade')
 
     def setDao(self, dao, codice=None):
         self.dao = dao

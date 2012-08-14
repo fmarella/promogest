@@ -32,9 +32,9 @@ class AnagraficaCommesseFilter(AnagraficaFilter):
     def __init__(self, anagrafica):
         AnagraficaFilter.__init__(self,
                           anagrafica,
-                          'anagrafica_commessa_filter_table',
-                          gladeFile='GestioneCommesse/gui/_anagrafica_commessa_elements.glade',
-                          module=True)
+                          root='anagrafica_commessa_filter_table',
+                          path='GestioneCommesse/gui/_anagrafica_commessa_elements.glade',
+                          isModule=True)
         self._widgetFirstFocus = self.numero_filter_entry
         self.da_data_inizio_datetimewidget.set_text('01/01/' + Environment.workingYear)
 

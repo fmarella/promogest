@@ -76,28 +76,37 @@ class SimpleGladeWrapper:
             sets two attributes (foo and bar) to glade_app.
         """
         gl = None
-        pp = './gui/'
         prefix = ""
         if Environment.pg3:
             prefix = "pg3_"
-        if (path is None) or (path == pp):
-            gladeFile = pp+prefix+root +".glade"
-            #print "GLADE FILE", gladeFile
-            if os.path.exists(gladeFile):
-                self.glade_path = gladeFile
-            else:
-                self.glade_path = pp+prefix+"promogest.glade"
-            self.glade = None
-        else:
-            if os.path.isfile(path):
-                self.glade_path = path
-            elif isModule:
-                self.glade_path = './promogest/modules/'+path
-                file_glade = prefix+os.path.split(self.glade_path)[1]
-                self.glade_path = os.path.join(os.path.split(self.glade_path)[0],file_glade)
-            else:
-                glade_dir = os.path.dirname( sys.argv[0] )
-                self.glade_path = os.path.join(glade_dir, path)
+
+        print "PATH o NOME FILE --> ", path
+        print "ROOT --> ", root
+        print "DOMAIN --> ", domain
+        print "CALLBACK --> ", callbacks_proxy
+        print "ISMODULE --> ", isModule
+        pp = './gui/'
+
+        #if (path is None) or (path == pp):
+            #gladeFile = pp+prefix+root +".glade"
+            #if os.path.exists(gladeFile):
+                #self.glade_path = gladeFile
+        self.glade = None
+        #else:
+        print "OKOKOKOKO", pp+prefix+path
+        if path and os.path.exists(pp+prefix+path) and not isModule:
+            self.glade_path = pp+prefix+path
+            print "CI SIAMO", self.glade_path
+        elif isModule:
+            self.glade_path = './promogest/modules/'+path
+            file_glade = prefix+os.path.split(self.glade_path)[1]
+            self.glade_path = os.path.join(os.path.split(self.glade_path)[0],file_glade)
+        #else:
+                #glade_dir = os.path.dirname( sys.argv[0] )
+                #self.glade_path = os.path.join(glade_dir, path)
+
+
+
         for key, value in kwargs.items():
             try:
                 setattr(self, key, weakref.proxy(value) )
@@ -113,10 +122,11 @@ class SimpleGladeWrapper:
         print "FILE GLADE:"+str(self.glade_path)
 #        Environment.pg2log.info("FILE GLADE:"+str(self.glade_path))
         self.widgets = gl.get_objects()
+        print "ROOOOOOOOOOOOOOOOOOOOOOOOOT", root
         if root:
             self.main_widget = gl.get_object(root)
-        else:
-            self.main_widget = None
+        #else:
+            #self.main_widget = None
         self.normalize_names()
         if callbacks_proxy is None:
             callbacks_proxy = self

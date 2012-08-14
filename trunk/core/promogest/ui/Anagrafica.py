@@ -33,7 +33,7 @@ class Anagrafica(GladeWidget):
 
     def __init__(self, windowTitle, recordMenuLabel,
                  filterElement, detailElement):
-        GladeWidget.__init__(self, 'anagrafica_window')
+        GladeWidget.__init__(self, root='anagrafica_window', path="anagrafica_window.glade")
         Environment.windowGroup.append(self.getTopLevel)
         self._setFilterElement(filterElement)
         self._setDetailElement(detailElement)
@@ -293,8 +293,8 @@ class Anagrafica(GladeWidget):
 class AnagraficaFilter(GladeWidget):
     """ Filtro per la ricerca nell'anagrafica articoli """
 
-    def __init__(self, anagrafica, rootWidget, isModule=False):
-        GladeWidget.__init__(self, rootWidget, isModule=isModule)
+    def __init__(self, anagrafica, root=None, path=None,  isModule=False):
+        GladeWidget.__init__(self, root=root,path=path, isModule=isModule)
         self._anagrafica = anagrafica
         self._widgetFirstFocus = None
         self._isSensitive = True
@@ -391,8 +391,8 @@ class AnagraficaFilter(GladeWidget):
 class AnagraficaDetail(GladeWidget):
     """ Dettaglio dell'anagrafica articoli """
 
-    def __init__(self, anagrafica, rootWidget):
-        GladeWidget.__init__(self, rootWidget)
+    def __init__(self, anagrafica, root=None, path=None):
+        GladeWidget.__init__(self, root=root, path=path)
         self._anagrafica = anagrafica
         self._widgetFirstFocus = None
         self._isSensitive = True

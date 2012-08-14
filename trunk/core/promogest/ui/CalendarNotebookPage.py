@@ -43,8 +43,8 @@ class CalendarNotebookPage(GladeWidget):
     """ Widget di configurazione del codice installazione e dei parametri
     di configurazione """
     def __init__(self, mainnnn, azienda):
-        GladeWidget.__init__(self, 'calendario_frame',
-                                    'calendario_notebook.glade')
+        GladeWidget.__init__(self, root='calendario_frame',
+                                    path='calendario_notebook.glade')
 #        self.placeWindow(self.getTopLevel())
         self.rowBackGround = None
         self.mainoo = mainnnn

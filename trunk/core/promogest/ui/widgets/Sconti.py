@@ -34,7 +34,7 @@ class Sconti(GladeWidget):
     """ Classe base per l'inserimento e la modifica degli sconti """
 
     def __init__(self, windowTitle="", sconti=None, applicazione='scalare', percentuale=True, valore=True):
-        GladeWidget.__init__(self, 'sconti_window')
+        GladeWidget.__init__(self, root='sconti_window', path="sconti_window.glade")
 
         self.listSconti = []
         self.stringApplicazione = ''

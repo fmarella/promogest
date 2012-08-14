@@ -38,8 +38,8 @@ class PagamentoWidget(GladeWidget):
     label = 'rata generica'
 
     def __init__(self, owner, label=None):
-        GladeWidget.__init__(self, 'pagamento_box',
-                             fileName='Pagamenti/gui/_pagamento_elements.glade',
+        GladeWidget.__init__(self, root='pagamento_box',
+                             path='Pagamenti/gui/_pagamento_elements.glade',
                              isModule=True)
 
         if label:

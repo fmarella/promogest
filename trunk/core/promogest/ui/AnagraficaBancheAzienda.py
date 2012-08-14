@@ -56,8 +56,8 @@ class AnagraficaBancheAziendaFilter(AnagraficaFilter):
     def __init__(self, anagrafica):
         AnagraficaFilter.__init__(self,
               anagrafica,
-              'anagrafica_banche_azienda_filter_table',
-              gladeFile='_anagrafica_banche_azienda_elements.glade')
+              root='anagrafica_banche_azienda_filter_table',
+              path='_anagrafica_banche_azienda_elements.glade')
         self._widgetFirstFocus = self.numero_conto_filter_entry
         self.orderBy = 'numero_conto'
 
@@ -136,9 +136,9 @@ class AnagraficaBancheAziendaEdit(AnagraficaEdit):
     def __init__(self, anagrafica):
         AnagraficaEdit.__init__(self,
             anagrafica,
-            'anagrafica_banche_azienda_detail_table',
             'Dati banche azienda',
-            gladeFile='_anagrafica_banche_azienda_elements.glade')
+            root'anagrafica_banche_azienda_detail_table',
+            path='_anagrafica_banche_azienda_elements.glade')
         self._widgetFirstFocus = self.numero_conto_entry
         fillComboboxBanche(self.id_banca_ccb.combobox, short=20)
         self.id_banca_ccb.connect('clicked',

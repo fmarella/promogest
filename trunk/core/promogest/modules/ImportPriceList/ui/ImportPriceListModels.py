@@ -47,8 +47,8 @@ class ImportPriceListModels(GladeWidget):
     """ImportPriceList  manages all events from import_price_list_models"""
 
     def __init__(self, mainWindow, pathFile = None):
-        GladeWidget.__init__(self, 'import_price_list_models_window',
-                        fileName='ImportPriceList/gui/import_price_list_models_window.glade',
+        GladeWidget.__init__(self, root='import_price_list_models_window',
+                        path='ImportPriceList/gui/import_price_list_models_window.glade',
                         isModule=True)
         self._mainWindow = mainWindow
         self.window = self.import_price_list_models_window

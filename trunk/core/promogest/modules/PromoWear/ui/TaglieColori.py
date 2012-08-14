@@ -40,8 +40,9 @@ class GestioneTaglieColori(GladeWidget):
         infatti di creare in maniera veloce ed automatica tutte le varianti articolo
         necessarie per la gestione di una attività di abbigliamento o calzature"""
     def __init__(self, articolo):
-        GladeWidget.__init__(self, 'creazione_taglie_colore',
-                            'PromoWear/gui/creazione_varianti_taglia_colore.glade', isModule=True)
+        GladeWidget.__init__(self, root='creazione_taglie_colore',
+                            path='PromoWear/gui/creazione_varianti_taglia_colore.glade',
+                            isModule=True)
         self._loading = False
 
         self.placeWindow(self.getTopLevel())

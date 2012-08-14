@@ -41,8 +41,8 @@ class Distinta(GladeWidget):
         self._scontrini = righe
         self._htmlTemplate = None
 
-        GladeWidget.__init__(self, 'visualizzatore_html',
-                fileName="htmlviewer.glade")
+        GladeWidget.__init__(self, root='visualizzatore_html',
+                path="htmlviewer.glade")
         self._window = self.visualizzatore_html
         self.windowTitle = "Distinta giornaliera"
 #        self.set_title("Distinta giornaliera")

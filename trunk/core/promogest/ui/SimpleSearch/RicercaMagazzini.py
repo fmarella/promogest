@@ -58,8 +58,8 @@ class RicercaMagazziniFilter(RicercaFilter):
 
     def __init__(self, ricerca):
         RicercaFilter.__init__(self, ricerca,
-                               'anagrafica_magazzini_filter_table',
-                               fileName='_anagrafica_magazzini_elements.glade')
+                               root='anagrafica_magazzini_filter_table',
+                               path='_anagrafica_magazzini_elements.glade')
 
     def on_filter_treeview_selection_changed(self, treeview):
         pass

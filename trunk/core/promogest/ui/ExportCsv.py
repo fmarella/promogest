@@ -34,7 +34,8 @@ class ExportCsv(GladeWidget):
 
     def __init__(self, mainWindow, dao=None):
         self._mainWindow = mainWindow
-        GladeWidget.__init__(self, 'export_csv',fileName='export_csv.glade')
+        GladeWidget.__init__(self, root='export_csv',
+                        path='export_csv.glade')
         self.getTopLevel()
         self.placeWindow(self.getTopLevel())
         self.dao = dao

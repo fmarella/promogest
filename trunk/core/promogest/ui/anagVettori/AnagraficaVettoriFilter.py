@@ -37,8 +37,8 @@ class AnagraficaVettoriFilter(AnagraficaFilter):
     def __init__(self, anagrafica):
         AnagraficaFilter.__init__(self,
                               anagrafica,
-                              'anagrafica_vettori_filter_table',
-                              gladeFile='_anagrafica_vettori_elements.glade')
+                              root='anagrafica_vettori_filter_table',
+                              path='_anagrafica_vettori_elements.glade')
         self._widgetFirstFocus = self.ragione_sociale_filter_entry
         self.orderBy = 'ragione_sociale'
 

@@ -41,8 +41,8 @@ class DettaglioGiacenzaWindow(GladeWidget):
         """Widget di transizione per visualizzare e confermare gli oggetti
             preparati per la stampa ( Multi_dialog.glade tab 1)
         """
-        GladeWidget.__init__(self, 'dettaglio_giacenza_window',
-                        fileName= 'dettaglio_giacenza_window.glade',
+        GladeWidget.__init__(self, root='dettaglio_giacenza_window',
+                        path='dettaglio_giacenza_window.glade',
                         isModule=False)
         self.mainWindow = mainWindow
         self.idRiga = riga["idRiga"]

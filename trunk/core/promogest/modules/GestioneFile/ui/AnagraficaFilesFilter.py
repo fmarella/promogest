@@ -32,9 +32,9 @@ class AnagraficaFilesFilter(AnagraficaFilter):
     def __init__(self, anagrafica, daoArticolo=None):
         AnagraficaFilter.__init__(self,
                           anagrafica,
-                          'anagrafica_gestione_file_filter_table',
-                          gladeFile='GestioneFile/gui/_anagrafica_gestione_file_elements.glade',
-                          module=True)
+                          root='anagrafica_gestione_file_filter_table',
+                          path='GestioneFile/gui/_anagrafica_gestione_file_elements.glade',
+                          isModule=True)
         self._widgetFirstFocus = self.denominazione_filter_entry
         self.daoArticolo = daoArticolo
 
@@ -89,4 +89,3 @@ class AnagraficaFilesFilter(AnagraficaFilter):
                                         i.immagine.denominazione,
                                         i.immagine.denominazione
                                         ))
-

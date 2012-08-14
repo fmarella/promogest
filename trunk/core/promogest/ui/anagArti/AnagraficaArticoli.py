@@ -142,9 +142,8 @@ class AnagraficaArticoliFilter(AnagraficaFilter):
     def __init__(self, anagrafica):
         AnagraficaFilter.__init__(self,
                                   anagrafica,
-                                  'ricerca_semplice_articoli_filter_vbox',
-                                  #'anagrafica_articoli_filter_vbox',
-                                  gladeFile='_ricerca_semplice_articoli.glade')
+                                  root='ricerca_semplice_articoli_filter_vbox',
+                                  path='_ricerca_semplice_articoli.glade')
         self._widgetFirstFocus = self.denominazione_filter_entry
         #self.ricerca_avanzata_articoli_filter_hbox.set_no_show_all(True)
         self.ricerca_avanzata_button_alignment.destroy()

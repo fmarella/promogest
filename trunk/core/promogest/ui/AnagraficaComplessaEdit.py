@@ -33,10 +33,10 @@ from promogest.ui.gtk_compat import *
 class AnagraficaEdit(GladeWidget):
     """ Interfaccia di editing dell'anagrafica """
 
-    def __init__(self, anagrafica, rootWidget,
-            windowTitle, gladeFile=None, module=False):
-        GladeWidget.__init__(self, rootWidget,
-            fileName=gladeFile, isModule=module)
+    def __init__(self, anagrafica, windowTitle,
+                                root=None,path=None, isModule=False):
+        GladeWidget.__init__(self, root=root,
+            path=path, isModule=isModule)
 
         self._anagrafica = anagrafica
         self._widgetFirstFocus = None
@@ -48,8 +48,10 @@ class AnagraficaEdit(GladeWidget):
         """ Make the window visible/invisible """
         self._isSensitive = isVisible
         if isVisible:
-            self.dialog = GladeWidget('anagrafica_complessa_detail_dialog',
-                                      callbacks_proxy=self)
+            self.dialog = GladeWidget(
+                                    root='anagrafica_complessa_detail_dialog',
+                                    callbacks_proxy=self,
+                                    path='anagrafica_complessa_detail_dialog.glade')
             self.dialogTopLevel = self.dialog.getTopLevel()
             self.dialogTopLevel.set_title(self._windowTitle)
             self.dialogTopLevel.get_content_area().pack_start(self.getTopLevel(), True, True, 0)

@@ -37,20 +37,13 @@ from SimpleGladeApp import SimpleGladeApp
 class GladeWidget(SimpleGladeApp):
     """ Classe base per i widget creati utilizzando Glade 2 """
 
-    def __init__(self, rootWidget, fileName=None, callbacks_proxy=None, isModule=False):
-        prefix = ""
-        if not isModule:
-            if Environment.pg3:
-                prefix = "pg3_"
-                if fileName and "/" in fileName:
-                    a = fileName.split("/")
-                    fileName = a[0]+"/"+prefix+a[1]
-            glade_path = './gui/'+(fileName or '')
-        else:
-            glade_path = fileName
-        SimpleGladeWrapper.__init__(self, path=glade_path, root=rootWidget,
+    def __init__(self, root=None, path=None, callbacks_proxy=None, isModule=False):
+        SimpleGladeWrapper.__init__(self,
+                                    path=path,
+                                    root=root,
                                     domain=None,
-                                    callbacks_proxy=callbacks_proxy, isModule=isModule)
+                                    callbacks_proxy=callbacks_proxy,
+                                    isModule=isModule)
         self._prepareWindowPlacement()
 
     def on_generic_button_clicked(self, button):

@@ -37,7 +37,7 @@ __author__ = 'Sandino "tigrux" Flores-Moreno'
 
 class SimpleGladeApp(SimpleGladeWrapper):
 
-    def __init__(self, path, root=None, domain=None, **kwargs):
+    def __init__(self, path=None, root=None, domain=None, **kwargs):
         """
         Load a glade file specified by glade_filename, using root as
         root widget and domain as the domain for translations.
@@ -65,7 +65,7 @@ class SimpleGladeApp(SimpleGladeWrapper):
                 glade_app = SimpleGladeApp("ui.glade", foo="some value", bar="another value")
             sets two attributes (foo and bar) to glade_app.
         """
-        SimpleGladeWrapper.__init__(self, path, root, domain)
+        SimpleGladeWrapper.__init__(self, path=path, root=root, domain=domain)
 
 
 
@@ -171,4 +171,3 @@ class SimpleGladeApp(SimpleGladeWrapper):
         except KeyboardInterrupt:
             Environment.pg2log.info("<<<<<<<<<<  CHIUSURA PROMOGEST >>>>>>>>>>>>>")
             self.on_keyboard_interrupt()
-

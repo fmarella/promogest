@@ -72,8 +72,8 @@ class SincroDB(GladeWidget):
     """
 
     def __init__(self, conf=None, batch=False, schema=None, fileconf=None, wear= False):
-        GladeWidget.__init__(self, 'sincro_dialog',
-                        fileName='sincro_dialog.glade')
+        GladeWidget.__init__(self, root='sincro_dialog',
+                        path='sincro_dialog.glade')
         self.placeWindow(self.getTopLevel())
         self.batch = batch
         self.wear = wear

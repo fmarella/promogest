@@ -52,8 +52,8 @@ class RicercaPromemoriaFilter(RicercaFilter):
     """ Filtro per la ricerca dei clienti """
     def __init__(self, ricerca):
         RicercaFilter.__init__(self, ricerca,
-                             'anagrafica_promemoria_filter_table',
-                               fileName='_anagrafica_promemoria_elements.glade')
+                             root='anagrafica_promemoria_filter_table',
+                               path='_anagrafica_promemoria_elements.glade')
 #        self.ricerca_alignment.destroy()
         self._widgetFirstFocus = self.da_data_inserimento_entry.entry
         self.orderBy = 'data_scadenza'

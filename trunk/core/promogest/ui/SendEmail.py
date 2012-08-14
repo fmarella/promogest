@@ -39,7 +39,7 @@ class SendEmail(GladeWidget):
     """ Frame per la spedizione email """
 
     def __init__(self, string=None, d=False):
-        GladeWidget.__init__(self, 'send_email', fileName= 'email_dialog.glade')
+        GladeWidget.__init__(self, root='send_email', path='email_dialog.glade')
         self.placeWindow(self.getTopLevel())
         self.getTopLevel().set_modal(True)
         self.getTopLevel().show_all()

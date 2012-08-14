@@ -58,8 +58,8 @@ class RicercaAgentiFilter(RicercaFilter):
 
     def __init__(self, ricerca):
         RicercaFilter.__init__(self, ricerca,
-                               'anagrafica_agenti_filter_table',
-                               fileName='Agenti/_anagrafica_agenti_elements.glade',
+                               root='anagrafica_agenti_filter_table',
+                               path='Agenti/_anagrafica_agenti_elements.glade',
                             isModule=False)
 
     def on_filter_treeview_selection_changed(self, treeview):

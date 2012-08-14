@@ -373,8 +373,8 @@ def do_fatt_diff(lista_documenti, data_documento, operazione, no_rif_righe_cumul
 class FatturazioneDifferita(GladeWidget):
 
     def __init__(self, selection=None):
-        GladeWidget.__init__(self, 'fatturazione_differita_window',
-                                         'fatturazione_differita.glade')
+        GladeWidget.__init__(self, root='fatturazione_differita_window',
+                                        path='fatturazione_differita.glade')
         if selection is None:
             return
         self.listdoc = findDoc(selection)

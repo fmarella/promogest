@@ -35,8 +35,8 @@ class KitMaster(GladeWidget):
         self._htmlTemplate = None
         self.editRiga = None
 
-        GladeWidget.__init__(self, 'master_kit_window',
-                fileName="GestioneKit/gui/kit_master.glade", isModule=True)
+        GladeWidget.__init__(self, root='master_kit_window',
+                path="GestioneKit/gui/kit_master.glade", isModule=True)
         self._window = self.master_kit_window
         self.placeWindow(self._window)
         self.draw()

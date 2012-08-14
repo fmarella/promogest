@@ -84,9 +84,9 @@ class AnagraficaTaglieFilter(AnagraficaFilter):
     def __init__(self, anagrafica):
         AnagraficaFilter.__init__(self,
                   anagrafica,
-                  'anagrafica_taglie_filter_table',
-                  gladeFile='PromoWear/gui/_anagrafica_taglie_elements.glade',
-                  module=True)
+                  root='anagrafica_taglie_filter_table',
+                  path='PromoWear/gui/_anagrafica_taglie_elements.glade',
+                  isModule=True)
         self._widgetFirstFocus = self.denominazione_filter_entry
         self.orderBy = 'denominazione'
 
@@ -218,10 +218,10 @@ class AnagraficaTaglieEdit(AnagraficaEdit):
     def __init__(self, anagrafica):
         AnagraficaEdit.__init__(self,
                 anagrafica,
-                'anagrafica_taglie_detail_table',
                 'Dati taglia',
-                gladeFile="PromoWear/gui/_anagrafica_taglie_elements.glade",
-                module=True)
+                root='anagrafica_taglie_detail_table',
+                path="PromoWear/gui/_anagrafica_taglie_elements.glade",
+                isModule=True)
         self._widgetFirstFocus = self.denominazione_entry
 
     def draw(self, cplx=False):
@@ -229,13 +229,10 @@ class AnagraficaTaglieEdit(AnagraficaEdit):
         fillComboboxGruppiTaglia(self.gruppo_taglia_combobox)
 
     def setDao(self, dao):
+        self.dao = dao
         if dao is None:
-            # Crea un nuovo Dao vuoto
             self.dao = GruppoTagliaTaglia()
-        else:
-            # Ricrea il Dao con una connessione al DBMS SQL
-            self.dao = GruppoTagliaTaglia().getRecord(id=[dao.id_gruppo_taglia,
-                                                        dao.id_taglia])
+
         self.taglia = None
         self._refresh()
         return self.dao

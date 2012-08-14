@@ -326,8 +326,8 @@ class RicercaArticoliFilter(GladeWidget):
                 idGenere = None,
                 listinoFissato = None):
 
-        GladeWidget.__init__(self, 'anagrafica_articoli_filter_vbox',
-                            fileName='_anagrafica_articoli_elements.glade')
+        GladeWidget.__init__(self, root='anagrafica_articoli_filter_vbox',
+                            path='_anagrafica_articoli_elements.glade')
         self.ricerca_semplice_articoli_filter_vbox.pack_start(self.anagrafica_articoli_filter_table, True, True, 0)
         self.viewport1.add(self.ricerca_avanzata_articoli_filter_filters_frame)
         #ATTENZIONE: Sicuramente qui ci sono da riaggiungere  le tabelle alla vbox

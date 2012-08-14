@@ -36,9 +36,11 @@ class Anagrafica(GladeWidget):
     """ Classe base per le anagrafiche semplici """
 
     def __init__(self, windowTitle, recordMenuLabel,
-                 filterElement, detailElement, gladeFile=None):
-        GladeWidget.__init__(self, 'anagrafica_semplice_window',
-                                fileName= 'anagrafica_semplice_window.glade')
+                 filterElement, detailElement, path=None):
+        if not path:
+            path='anagrafica_semplice_window.glade'
+        GladeWidget.__init__(self, root='anagrafica_semplice_window',
+                            path=path)
         Environment.windowGroup.append(self.anagrafica_semplice_window)
         self.anagrafica_semplice_window.set_title(windowTitle)
         self.record_menu.get_child().set_label(recordMenuLabel)
@@ -526,10 +528,10 @@ class Anagrafica(GladeWidget):
 class AnagraficaFilter(GladeWidget):
     """ Filtro per la ricerca nell'anagrafica """
 
-    def __init__(self, anagrafica, rootWidget,
-                                    gladeFile=None,module=False):
-        GladeWidget.__init__(self, rootWidget,
-                        fileName=gladeFile,isModule=module)
+    def __init__(self, anagrafica, root=None,
+                                    path=None,isModule=False):
+        GladeWidget.__init__(self, root=root,
+                        path=path,isModule=isModule)
 
         self._anagrafica = anagrafica
         self._widgetFirstFocus = None
@@ -585,7 +587,7 @@ class AnagraficaFilter(GladeWidget):
 class AnagraficaDetail(object):
     """ Dettaglio dell'anagrafica """
 
-    def __init__(self, anagrafica, gladeFile=None,module=False):
+    def __init__(self, anagrafica, path=None,isModule=False):
         self._anagrafica = anagrafica
         self._widgetFirstFocus = None
 

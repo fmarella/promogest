@@ -110,9 +110,9 @@ class AnagraficaGruppoTagliaFilter(AnagraficaFilter):
     def __init__(self, anagrafica):
         AnagraficaFilter.__init__(self,
             anagrafica,
-            'anagrafica_gruppo_taglia_filter_table',
-            gladeFile='PromoWear/gui/_anagrafica_gruppo_taglia_elements.glade',
-            module=True)
+            root='anagrafica_gruppo_taglia_filter_table',
+            path='PromoWear/gui/_anagrafica_gruppo_taglia_elements.glade',
+            isModule=True)
         self._widgetFirstFocus = self.denominazione_filter_entry
 
     def clear(self):
