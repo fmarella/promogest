@@ -2,11 +2,6 @@
 <interface>
   <!-- interface-requires gtk+ 3.0 -->
   <!-- interface-requires pythonplugin 0.0 -->
-  <object class="GtkImage" id="at_image">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">gtk-execute</property>
-  </object>
   <object class="GtkVBox" id="anagrafica_documenti_detail_vbox">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -4044,6 +4039,12 @@ _
               <placeholder/>
             </child>
             <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
               <object class="GtkComboBox" id="note_pie_pagina_comboboxentry">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
@@ -4056,7 +4057,7 @@ _
                   </attributes>
                 </child>
                 <child internal-child="entry">
-                  <object class="GtkEntry" id="combobox-entry15">
+                  <object class="GtkEntry" id="combobox-entry8">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="invisible_char">•</property>
@@ -4071,12 +4072,6 @@ _
                 <property name="x_options">GTK_FILL</property>
                 <property name="y_options"/>
               </packing>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
             </child>
           </object>
           <packing>
@@ -4638,6 +4633,11 @@ _
         <property name="position">1</property>
       </packing>
     </child>
+  </object>
+  <object class="GtkImage" id="at_image">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-execute</property>
   </object>
   <object class="GtkImage" id="avvertimento_sconto_image">
     <property name="visible">True</property>

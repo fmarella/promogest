@@ -954,7 +954,7 @@ del documento.
         self.dao.totale_colli = float(self.totale_colli_entry.get_text() or 0)
         self.dao.totale_peso = self.totale_peso_entry.get_text()
         self.dao.note_interne = textview_get_text(self.note_interne_textview)
-        self.dao.note_pie_pagina = self.note_pie_pagina_comboboxentry.get_active_text()
+        self.dao.note_pie_pagina = self.note_pie_pagina_comboboxentry.get_child().get_text()
         self.dao.applicazione_sconti = self.sconti_testata_widget.getApplicazione()
         if GN:
             self.dao.data_inizio_noleggio= self.start_rent_entry.get_text()
@@ -1506,7 +1506,7 @@ del documento.
             self.ricerca_art_listore.append([compl_string,m])
         #self.completion.set_model(model)
 
-    def match_func(self, completion, key, iter):
+    def match_func(self, completion, key, iter, user_data=None):
         model = self.completion.get_model()
         self.mattu = False
         self.articolo_matchato = None
