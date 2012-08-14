@@ -129,17 +129,17 @@ class AnagraficaCommesseEdit(AnagraficaEdit):
             showAnagrafica(self.getTopLevel(), anag)
             anag.on_record_new_activate()
         elif self.tipo_dao == "CLIENTE".lower():
-            from promogest.ui.AnagraficaClienti import AnagraficaClienti
+            from promogest.ui.anagClienti.AnagraficaClienti import AnagraficaClienti
             anag = AnagraficaClienti(self.aziendaStr)
             showAnagrafica(self.getTopLevel(), anag)
             anag.on_record_new_activate()
         elif self.tipo_dao == "VETTORE".lower():
-            from promogest.ui.AnagraficaVettori import AnagraficaVettori
+            from promogest.ui.anagVettori.AnagraficaVettori import AnagraficaVettori
             anag = AnagraficaVettori(self.aziendaStr)
             showAnagrafica(self.getTopLevel(), anag)
             anag.on_record_new_activate()
         elif self.tipo_dao == "FORNITORE".lower():
-            from promogest.ui.AnagraficaFornitori import AnagraficaFornitori
+            from promogest.ui.anagFornitori.AnagraficaFornitori import AnagraficaFornitori
             anag = AnagraficaFornitori(self.aziendaStr)
             showAnagrafica(self.getTopLevel(), anag)
             anag.on_record_new_activate()

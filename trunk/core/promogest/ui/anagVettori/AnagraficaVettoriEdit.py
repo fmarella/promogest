@@ -27,7 +27,7 @@ import promogest.dao.Vettore
 from promogest.dao.Vettore import Vettore
 
 from promogest.lib.utils import *
-from utilsCombobox import *
+from promogest.ui.utilsCombobox import *
 
 class AnagraficaVettoriEdit(AnagraficaEdit):
     """ Modifica un record dell'anagrafica dei vettori """

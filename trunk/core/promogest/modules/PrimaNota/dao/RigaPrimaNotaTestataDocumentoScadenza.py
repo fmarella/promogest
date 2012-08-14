@@ -80,6 +80,6 @@ class RigaPrimaNotaTestataDocumentoScadenza(Dao):
 std_mapper = mapper(RigaPrimaNotaTestataDocumentoScadenza,
                    rigaprimanotatestatadocumentoscadenza,
                    properties={
-#                       "tds" :relation(TestataDocumentoScadenza,cascade="all, delete", backref="rpntds")
+                    "tds" :relation(TestataDocumentoScadenza, cascade="all, delete", backref="rpntds")
                    },
                    order_by=rigaprimanotatestatadocumentoscadenza.c.id_riga_prima_nota)

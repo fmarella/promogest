@@ -85,46 +85,6 @@ class AnagraficaFornitoriEdit(AnagraficaEdit, AnagraficaPGEdit):
         self._refresh()
         return self.dao
 
-#    def _refresh(self):
-#        if self.dao.ragione_sociale:
-#            rag_soc= self.dao.ragione_sociale
-#        elif self.dao.cognome or self.dao.nome:
-#            rag_soc = str(self.dao.cognome)+" "+str(self.dao.nome)
-#        elif self.dao.insegna:
-#            rag_soc = self.dao.insegna
-#        else:
-#            rag_soc = ""
-#        self.codice_entry.set_text(self.dao.codice or '')
-#        self.ragione_sociale_entry.set_text(rag_soc)
-#        if self.fornitore_insegna:
-#            self.insegna_entry.set_text(self.dao.insegna or '')
-##        self.cognome_entry.set_text(self.dao.cognome or '')
-##        self.nome_entry.set_text(self.dao.nome or '')
-#        self.indirizzo_sede_operativa_entry.set_text(self.dao.sede_operativa_indirizzo or '')
-#        self.cap_sede_operativa_entry.set_text(self.dao.sede_operativa_cap or '')
-#        self.localita_sede_operativa_entry.set_text(self.dao.sede_operativa_localita or '')
-#        self.provincia_sede_operativa_entry.set_text(self.dao.sede_operativa_provincia or '')
-#        self.indirizzo_sede_legale_entry.set_text(self.dao.sede_legale_indirizzo or '')
-#        self.cap_sede_legale_entry.set_text(self.dao.sede_legale_cap or '')
-#        self.localita_sede_legale_entry.set_text(self.dao.sede_legale_localita or '')
-#        self.provincia_sede_legale_entry.set_text(self.dao.sede_legale_provincia or '')
-#        self.codice_fiscale_entry.set_text(self.dao.codice_fiscale or '')
-#        self.partita_iva_entry.set_text(self.dao.partita_iva or '')
-#        textview_set_text(self.note_textview, self.dao.note or '')
-#        findComboboxRowFromId(self.id_categoria_fornitore_customcombobox.combobox,
-#                              self.dao.id_categoria_fornitore)
-#        findComboboxRowFromId(self.id_pagamento_customcombobox.combobox,
-#                              self.dao.id_pagamento)
-#        findComboboxRowFromId(self.id_magazzino_customcombobox.combobox,
-#                              self.dao.id_magazzino)
-#        findComboboxRowFromStr(self.nazione_combobox,self.dao.nazione, 0)
-#        self.showTotaliDareAvere()
-#        self.cellulare_principale_entry.set_text(self.dao.cellulare_principale)
-#        self.telefono_principale_entry.set_text(self.dao.telefono_principale)
-#        self.email_principale_entry.set_text(self.dao.email_principale)
-#        self.fax_principale_entry.set_text(self.dao.fax_principale)
-#        self.sito_web_principale_entry.set_text(self.dao.sito_principale)
-
     def showTotaliDareAvere(self):
 
         if self.dao.id:
@@ -170,15 +130,15 @@ class AnagraficaFornitoriEdit(AnagraficaEdit, AnagraficaPGEdit):
         self.dao.sede_legale_provincia = self.provincia_sede_legale_entry.get_text()
         self.dao.codice_fiscale = self.codice_fiscale_entry.get_text()
         self.dao.note = textview_get_text(self.note_textview)
-        if self.dao.codice_fiscale != '':
-            codfis = checkCodFisc(self.dao.codice_fiscale)
-            if not codfis:
-                raise Exception, 'Operation aborted: Codice fiscale errato'
+        #if self.dao.codice_fiscale != '':
+            #codfis = checkCodFisc(self.dao.codice_fiscale)
+            #if not codfis:
+                #raise Exception, 'Operation aborted: Codice fiscale errato'
         self.dao.partita_iva = self.partita_iva_entry.get_text()
-        if self.dao.partita_iva != '':
-            partiva = checkPartIva(self.dao.partita_iva)
-            if not partiva:
-                raise Exception, 'Operation aborted: Partita iva errata'
+        #if self.dao.partita_iva != '':
+            #partiva = checkPartIva(self.dao.partita_iva)
+            #if not partiva:
+                #raise Exception, 'Operation aborted: Partita iva errata'
         self.dao.id_categoria_fornitore = findIdFromCombobox(self.id_categoria_fornitore_customcombobox.combobox)
         self.dao.id_pagamento = findIdFromCombobox(self.id_pagamento_customcombobox.combobox)
         self.dao.id_magazzino = findIdFromCombobox(self.id_magazzino_customcombobox.combobox)

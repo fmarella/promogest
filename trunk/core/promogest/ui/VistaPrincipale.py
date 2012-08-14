@@ -21,7 +21,7 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 import webbrowser
-from GladeWidget import GladeWidget
+from promogest.ui.GladeWidget import GladeWidget
 from promogest.lib.utils import *
 from promogest.ui.SendEmail import SendEmail
 

@@ -191,14 +191,14 @@ class Main(GladeWidget):
                                 + ' ***')
         self.aziendaStr = aziendaStr
         self.statusBarHandler()
-        for filename in glob.glob(Environment.promogestDir + \
-                                                    "temp" + \
-                                                    os.sep + \
-                                                    '*.cache'):
-            try:
-                os.remove(filename)
-            except:
-                pass
+        #for filename in glob.glob(Environment.promogestDir + \
+                                                    #"temp" + \
+                                                    #os.sep + \
+                                                    #'*.cache'):
+            #try:
+                #os.remove(filename)
+            #except:
+                #pass
         Environment.windowGroup.append(self.getTopLevel())
         self.anagrafiche_modules = anagrafiche_modules
         self.parametri_modules = parametri_modules
@@ -573,21 +573,21 @@ class Main(GladeWidget):
     def on_clienti_button_clicked(self, toggleButton):
         if toggleButton.get_property('active') is False:
             return
-        from AnagraficaClienti import AnagraficaClienti
+        from promogest.ui.anagClienti.AnagraficaClienti import AnagraficaClienti
         anag = AnagraficaClienti(aziendaStr=self.aziendaStr)
         showAnagrafica(self.getTopLevel(), anag, toggleButton, mainClass=self)
 
     def on_fornitori_button_clicked(self, toggleButton):
         if toggleButton.get_property('active') is False:
             return
-        from AnagraficaFornitori import AnagraficaFornitori
+        from promogest.ui.anagFornitori.AnagraficaFornitori import AnagraficaFornitori
         anag = AnagraficaFornitori(aziendaStr=self.aziendaStr)
         showAnagrafica(self.getTopLevel(), anag, toggleButton, mainClass=self)
 
     def on_vettori_button_clicked(self, toggleButton):
         if toggleButton.get_property('active') is False:
             return
-        from AnagraficaVettori import AnagraficaVettori
+        from promogest.ui.anagVettori.AnagraficaVettori import AnagraficaVettori
         anag = AnagraficaVettori(aziendaStr=self.aziendaStr)
         showAnagrafica(self.getTopLevel(), anag, toggleButton, mainClass=self)
 

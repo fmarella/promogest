@@ -30,7 +30,7 @@ import promogest.ui.AnagraficaListini
 import promogest.ui.Main
 from promogest.ui.Main import *
 from promogest.ui.AnagraficaListini import AnagraficaListini
-from promogest.ui.AnagraficaFornitori import AnagraficaFornitori
+from promogest.ui.anagFornitori.AnagraficaFornitori import AnagraficaFornitori
 from promogest.lib.utils import *
 from promogest.ui.utilsCombobox import fillModelCombobox, fillComboboxListini
 from promogest.ui.gtk_compat import *

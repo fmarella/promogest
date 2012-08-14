@@ -21,11 +21,11 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 
-from AnagraficaComplessa import Anagrafica
+from promogest.ui.AnagraficaComplessa import Anagrafica
 from promogest.ui.AnagraficaComplessaReport import AnagraficaReport
 from promogest.ui.AnagraficaComplessaHtml import AnagraficaHtml
-from promogest.ui.AnagraficaVettoriFilter import AnagraficaVettoriFilter
-from promogest.ui.AnagraficaVettoriEdit import AnagraficaVettoriEdit
+from promogest.ui.anagVettori.AnagraficaVettoriFilter import AnagraficaVettoriFilter
+from promogest.ui.anagVettori.AnagraficaVettoriEdit import AnagraficaVettoriEdit
 
 from promogest import Environment
 import promogest.dao.Vettore

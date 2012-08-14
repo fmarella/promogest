@@ -41,7 +41,7 @@ class RicercaVettori(Ricerca):
             self.filter.refresh()
             self.filter.ragione_sociale_filter_entry.grab_focus()
 
-        from promogest.ui.AnagraficaVettori import AnagraficaVettori
+        from promogest.ui.anagVettori.AnagraficaVettori import AnagraficaVettori
         anag = AnagraficaVettori()
         anagWindow = anag.getTopLevel()
 

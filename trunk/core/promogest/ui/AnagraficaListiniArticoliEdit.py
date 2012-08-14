@@ -290,24 +290,25 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
     def setDao(self, dao):
         """
         """
+        self.dao = dao
         if dao is None:
             # Crea un nuovo Dao vuoto
             self.dao = ListinoArticolo()
             if Environment.listinoFissato and self._anagrafica._idListino:
                 Environment.listinoFissato = None
-        else:
-            # Ricrea il Dao con una connessione al DBMS SQL
-            self.daoo = ListinoArticolo().select(idListino=dao.id_listino,
-                                    idArticolo=dao.id_articolo,
-                                    dataListinoArticolo = dao.data_listino_articolo)
-            if self.daoo:
-                self.dao= self.daoo[0]
-            else:
-                self.daoo = ListinoArticolo().select(idListino=dao.id_listino,
-                                    idArticolo=dao.id_articolo,
-                                    orderBy=ListinoArticolo.data_listino_articolo)
-                if self.daoo:
-                    self.dao= self.daoo[0]
+        #else:
+            ## Ricrea il Dao con una connessione al DBMS SQL
+            #self.daoo = ListinoArticolo().select(idListino=dao.id_listino,
+                                    #idArticolo=dao.id_articolo,
+                                    #dataListinoArticolo = dao.data_listino_articolo)
+            #if self.daoo:
+                #self.dao= self.daoo[0]
+            #else:
+                #self.daoo = ListinoArticolo().select(idListino=dao.id_listino,
+                                    #idArticolo=dao.id_articolo,
+                                    #orderBy=ListinoArticolo.data_listino_articolo)
+                #if self.daoo:
+                    #self.dao= self.daoo[0]
         self._refresh()
         return self.dao
 

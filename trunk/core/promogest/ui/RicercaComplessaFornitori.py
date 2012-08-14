@@ -192,7 +192,7 @@ class RicercaComplessaFornitori(RicercaComplessa):
     def insert(self, toggleButton, returnWindow):
         # Richiamo anagrafica di competenza
 
-        from AnagraficaFornitori import AnagraficaFornitori
+        from promogest.ui.anagFornitori.AnagraficaFornitori import AnagraficaFornitori
         anag = AnagraficaFornitori()
         anagWindow = anag.getTopLevel()
 

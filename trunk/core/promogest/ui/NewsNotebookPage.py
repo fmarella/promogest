@@ -25,7 +25,7 @@ from promogest.lib.utils import *
 from promogest.ui.utilsCombobox import *
 from promogest.dao.Setconf import SetConf
 from promogest import Environment
-from GladeWidget import GladeWidget
+from promogest.ui.GladeWidget import GladeWidget
 from promogest.lib.HtmlHandler import createHtmlObj, renderTemplate, renderHTML
 from promogest.lib import feedparser
 from promogest.ui.SendEmail import SendEmail
@@ -120,14 +120,14 @@ class NewsNotebookPage(GladeWidget):
 
     def on_nuovo_cliente_button_clicked(self, widget):
         if not hasAction(actionID=11):return
-        from AnagraficaClienti import AnagraficaClienti
+        from promogest.ui.anagClienti.AnagraficaClienti import AnagraficaClienti
         anag = AnagraficaClienti(self.main_wind.aziendaStr)
         showAnagrafica(self.main_wind.getTopLevel(), anag)
         anag.on_record_new_activate()
 
     def on_nuovo_fornitore_button_clicked(self, widget):
         if not hasAction(actionID=11):return
-        from AnagraficaFornitori import AnagraficaFornitori
+        from promogest.ui.anagFornitori.AnagraficaFornitori import AnagraficaFornitori
         anag = AnagraficaFornitori(self.aziendaStr)
         showAnagrafica(self.getTopLevel(), anag)
         anag.on_record_new_activate()

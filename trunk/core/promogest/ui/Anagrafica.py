@@ -25,7 +25,7 @@
 import math
 from promogest import Environment
 from promogest.ui.gtk_compat import *
-from GladeWidget import GladeWidget
+from promogest.ui.GladeWidget import GladeWidget
 
 
 class Anagrafica(GladeWidget):

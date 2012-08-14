@@ -23,7 +23,7 @@ import calendar
 from promogest.lib.relativedelta import relativedelta
 from promogest.lib.utils import *
 from promogest import Environment
-from GladeWidget import GladeWidget
+from promogest.ui.GladeWidget import GladeWidget
 from promogest.lib.HtmlHandler import createHtmlObj, renderTemplate, renderHTML
 from promogest.ui.PrintDialog import PrintDialogHandler
 from promogest.dao.TestataDocumento import TestataDocumento

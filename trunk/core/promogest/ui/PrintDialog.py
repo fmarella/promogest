@@ -28,7 +28,7 @@ import subprocess
 import os, sys, threading, os.path
 from utilsCombobox import *
 from promogest import Environment
-from GladeWidget import GladeWidget
+from promogest.ui.GladeWidget import GladeWidget
 
 
 class PrintDialogHandler(GladeWidget):

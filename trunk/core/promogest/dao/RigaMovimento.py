@@ -33,7 +33,7 @@ from Listino import Listino
 from Multiplo import Multiplo
 from Stoccaggio import Stoccaggio
 from Riga import Riga, riga
-from promogest.lib.utils import getScontiFromDao, getStringaSconti, posso
+from promogest.lib.utils import getScontiFromDao, getStringaSconti, posso, timeit
 
 if hasattr(conf, "SuMisura") and getattr(conf.SuMisura,'mod_enable') == "yes":
     #from promogest.modules.SuMisura.data.SuMisuraDb import *
@@ -270,23 +270,24 @@ class RigaMovimento(Dao):
         dic= {  'idTestataMovimento' :riga_mov.c.id_testata_movimento ==v,}
         return  dic[k]
 
-    def scontiRigaMovimentoDel(self,id=None):
-        """
-        Cancella gli sconti legati ad una riga movimento
-        """
-        row = ScontoRigaMovimento().select(idRigaMovimento= id,
-                                            offset = None,
-                                            batchSize = None)
-        if row:
-            for r in row:
-                params['session'].delete(r)
-            params["session"].commit()
-            return True
+    #def scontiRigaMovimentoDel(self,id=None):
+        #"""
+        #Cancella gli sconti legati ad una riga movimento
+        #"""
+        #row = ScontoRigaMovimento().select(idRigaMovimento= id,
+                                            #offset = None,
+                                            #batchSize = None)
+        #if row:
+            #for r in row:
+                #params['session'].delete(r)
+            #params["session"].commit()
+            #return True
 
+    @timeit
     def persist(self,sm=False):
 
         params["session"].add(self)
-        params["session"].commit()
+        #params["session"].commit()
         #creazione stoccaggio se non gia' presente
         stoccato = (Stoccaggio().count(idArticolo=self.id_articolo,
                                                 idMagazzino=self.id_magazzino) > 0)
@@ -307,8 +308,10 @@ class RigaMovimento(Dao):
                 nr.isrent = False
             nr.id_riga = self.id
             nr.persist()
-        self.scontiRigaMovimentoDel(id=self.id)
+        #self.scontiRigaMovimentoDel(id=self.id)
         if self.scontiRigheMovimento:
+            if not self.id:
+                params["session"].commit()
             for value in self.scontiRigheMovimento:
                 value.id_riga_movimento = self.id
                 #value.persist()
@@ -322,7 +325,7 @@ class RigaMovimento(Dao):
             #except:
                 #print "errore nel salvataggio di misura pezzo"
             self.__misuraPezzo = []
-        params["session"].commit()
+        #params["session"].commit()
 
 riga_mov=Table('riga_movimento', params['metadata'],schema = params['schema'],autoload=True)
 t_riga_movimento = riga_mov
@@ -342,7 +345,7 @@ std_mapper = mapper(RigaMovimento, j,
                         cascade="all, delete",
                         backref="RM"),
     },
-    order_by=riga_mov.c.id)
+    order_by=riga.c.posizione)
 
 if (hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes") or ("GestioneNoleggio" in modulesList):
     from promogest.modules.GestioneNoleggio.dao.NoleggioRiga import NoleggioRiga

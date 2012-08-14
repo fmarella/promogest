@@ -140,7 +140,7 @@ class TestataDocumento(Dao):
                 Environment.pg2log.info("ATTENZIONE due movimenti fanno riferimento ad una sola testata documento:"+str(self.id))
                 raise Exception("Più di un movimento fa riferimento allo stesso documento!")
             self.__dbRigheDocumento = self.__dbRigheDocumentoPart + self.__dbRigheMovimentoPart
-            self.__dbRigheDocumento = self.sort_by_attr(self.__dbRigheDocumento,"id")
+            self.__dbRigheDocumento = self.sort_by_attr(self.__dbRigheDocumento,"posizione")
             self.__righeDocumento = self.__dbRigheDocumento[:]
         else:
             self.__righeDocumento = []
@@ -492,6 +492,7 @@ class TestataDocumento(Dao):
 
 
     #Salvataggi subordinati alla testata Documento, iniziamo da righe documento e poi righe
+    @timeit
     def persist(self):
         if not self.ckdd(self):
             return
@@ -505,7 +506,7 @@ class TestataDocumento(Dao):
         params["session"].add(self)
         params["session"].commit()
 
-        Environment.pg2log.info("INIZIO SALVATAGGIO DOCUMENTO")
+        #Environment.pg2log.info("INIZIO SALVATAGGIO DOCUMENTO")
 
         self.scontiTestataDocumentoDel(id=self.id)
 
@@ -541,7 +542,7 @@ class TestataDocumento(Dao):
             if not contieneMovimentazione:
                 #devo eliminare il movimento interamente, visto che non ci sono righe movimento
                 #self.righeMovimentoDel(id=DaoTestataMovimento.id)
-                DaoTestataMovimento.delete()
+                self.TM[0].delete()
                 DaoTestataMovimento = None
             else:
                 #la testata movimento e` gia` presente, quindi devo aggiornarla
@@ -564,11 +565,12 @@ class TestataDocumento(Dao):
                 DaoTestataMovimento.righeMovimento=self.righeDocumento
                 DaoTestataMovimento.persist()
         else:
+            sm = posso("SM")
             if hasattr(self, 'righeDocumento'):
                 for riga in self.righeDocumento:
                     if self.id:
                         riga.id_testata_documento = self.id
-                        riga.persist()
+                        riga.persist(sm=sm)
 
         #Gestione anche della prima nota abbinata al pagamento
         #agganciare qui con dei controlli, le cancellazioni preventive ed i
@@ -683,48 +685,55 @@ class TestataDocumento(Dao):
 #                scontisutot.persist()
         Environment.pg2log.info("FINE SALVATAGGIO DOCUMENTO")
 
+    @timeit
     def righeDocumentoDel(self, id=None):
         """
         Cancella le righe associate ad un documento
         """
-        row = RigaDocumento().select(idTestataDocumento= id,
-                                                    offset = None,
-                                                    batchSize = None)
+        #row = RigaDocumento().select(idTestataDocumento= id,
+                                                    #offset = None,
+                                                    #batchSize = None)
         sm = posso('SM')
+        row = self.rigadoc
         if row:
             for r in row:
+                if r.SCD:
+                    for a in r.SCD:
+                        params['session'].delete(a)
                 if sm:
                     mp = MisuraPezzo().select(idRiga=r.id, batchSize=None)
                     if mp:
                         for m in mp:
                             params['session'].delete(m)
-                        params["session"].commit()
+                        #params["session"].commit()
                 params['session'].delete(r)
-            params["session"].commit()
+            #params["session"].commit()
             return True
 
+    @timeit
     def scontiTestataDocumentoDel(self,id=None):
         """
         Cancella gli sconti associati ad un documento
         """
-        row = ScontoTestataDocumento().select(idScontoTestataDocumento= id,
-                            offset = None,
-                            batchSize = None,
-                            orderBy=ScontoTestataDocumento.id_testata_documento)
-        if row:
-            for r in row:
+        #row = ScontoTestataDocumento().select(idScontoTestataDocumento= id,
+                            #offset = None,
+                            #batchSize = None,
+                            #orderBy=ScontoTestataDocumento.id_testata_documento)
+        if self.STD:
+            for r in self.STD:
                 params['session'].delete(r)
             params["session"].commit()
             return True
 
-
+    @timeit
     def testataDocumentoScadenzaDel(self,dao=None):
         """
         Cancella la scadenza documento associato ad un documento
         """
-        row = TestataDocumentoScadenza().select(idTestataDocumento= dao.id,
-                        offset = None,
-                        batchSize = None)
+        #row = TestataDocumentoScadenza().select(idTestataDocumento= dao.id,
+                        #offset = None,
+                        #batchSize = None)
+        row = self.testata_documento_scadenza
         for r in row:
             #a cascata
 #            if dao.ripartire_importo: #aka prima nota
@@ -737,15 +746,15 @@ class TestataDocumento(Dao):
                     if rpn:
                         tpn = TestataPrimaNota().getRecord(id=rpn.id_testata_prima_nota)
                     params['session'].delete(p)
-                    params["session"].commit()
+                    #params["session"].commit()
                     if rpn:
                         params['session'].delete(rpn)
-                        params["session"].commit()
+                        #params["session"].commit()
                     if tpn and len(tpn.righeprimanota)==0:
                         params['session'].delete(tpn)
-                        params["session"].commit()
+                        #params["session"].commit()
             params['session'].delete(r)
-            params["session"].commit()
+        params["session"].commit()
         return True
 
 
@@ -763,19 +772,6 @@ class TestataDocumento(Dao):
                 params['session'].delete(r)
             params["session"].commit()
         return True
-
-    def scontiRigaDocumentoDel(self,id=None):
-        """
-        Cancella gli sconti legati ad una riga movimento
-        """
-        row = ScontoRigaDocumento().select(idRigaDocumento= id,
-                                                    offset = None,
-                                                    batchSize = None)
-        if row:
-            for r in row:
-                params['session'].delete(r)
-            params["session"].commit()
-            return True
 
 
     @property

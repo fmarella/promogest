@@ -22,17 +22,21 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
+from promogest import Environment
+
 from promogest.ui.AnagraficaComplessa import Anagrafica
 from promogest.ui.AnagraficaComplessaReport import AnagraficaReport
 from promogest.ui.AnagraficaComplessaHtml import AnagraficaHtml
-from promogest import Environment
+
+from promogest.ui.anagClienti.AnagraficaClientiEdit import AnagraficaClientiEdit
+from promogest.ui.anagClienti.AnagraficaClientiFilter import AnagraficaClientiFilter
+
 from promogest.dao.ClienteCategoriaCliente import ClienteCategoriaCliente
 from promogest.dao.daoContatti.ContattoCliente import ContattoCliente
-from promogest.ui.AnagraficaClientiEdit import AnagraficaClientiEdit
-from promogest.ui.AnagraficaClientiFilter import AnagraficaClientiFilter
 from promogest.dao.TestataDocumento import TestataDocumento
 from promogest.dao.User import User
 from promogest.dao.DaoUtils import *
+
 from promogest.lib.utils import *
 from promogest.ui.utilsCombobox import *
 

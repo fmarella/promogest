@@ -24,11 +24,11 @@
 import os
 import datetime
 from promogest import Environment
-from GladeWidget import GladeWidget
+from promogest.ui.GladeWidget import GladeWidget
 from promogest.ui.anagDocumenti.AnagraficaDocumentiSetup import AnagraficaDocumentiSetup
 from promogest.ui.anagArti.AnagraficaArticoliSetup import AnagraficaArticoliSetup
-from promogest.ui.AnagraficaClientiSetup import AnagraficaClientiSetup
-from promogest.ui.AnagraficaFornitoriSetup import AnagraficaFornitoriSetup
+from promogest.ui.anagClienti.AnagraficaClientiSetup import AnagraficaClientiSetup
+from promogest.ui.anagFornitori.AnagraficaFornitoriSetup import AnagraficaFornitoriSetup
 from promogest.modules.PrimaNota.ui.AnagraficaPrimaNotaSetup import AnagraficaPrimaNotaSetup
 from promogest.modules.Label.ui.AnagraficaLabelSetup import AnagraficaLabelSetup
 from ParametriFrame import ParametriFrame

@@ -234,17 +234,22 @@ class RigaDocumento(Dao):
         dic= {  'idTestataDocumento' : riga_doc.c.id_testata_documento==v }
         return  dic[k]
 
-    def persist(self):
+    @timeit
+    def persist(self, sm=False):
 
         #salvataggio riga
         params["session"].add(self)
-        params["session"].commit()
-        if hasattr(conf, "SuMisura") and getattr(conf.SuMisura,'mod_enable')=="yes":
+        #params["session"].commit()
+        if sm:
+            if not self.id:
+                params["session"].commit()
             if self.__misuraPezzo:
                 self.__misuraPezzo[0].id_riga = self.id
                 self.__misuraPezzo[0].persist()
 
         if (hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes") or ("GestioneNoleggio" in modulesList):
+            if not self.id:
+                params["session"].commit()
         #if self.__coeficente_noleggio and self.__prezzo_acquisto_noleggio:
             nr = NoleggioRiga()
             nr.coeficente = self.coeficente_noleggio
@@ -256,12 +261,14 @@ class RigaDocumento(Dao):
             nr.id_riga = self.id
             nr.persist()
 
-        scontiRigaDocumentoDel(id=self.id)
+        #scontiRigaDocumentoDel(id=self.id)
         if self.scontiRigaDocumento:
+            if not self.id:
+                params["session"].commit()
             for value in self.scontiRigaDocumento:
                 value.id_riga_documento = self.id
                 params["session"].add(value)
-        params["session"].commit()
+            #params["session"].commit()
         self.__dbMisuraPezzo = []
 
 #riga=Table('riga', params['metadata'],schema = params['schema'], autoload=True)
@@ -279,7 +286,7 @@ std_mapper = mapper(RigaDocumento, j,properties={
         #"listi":relation(Listino,primaryjoin=riga.c.id_listino==Listino.id),
         "multi":relation(Multiplo,primaryjoin=riga.c.id_multiplo==Multiplo.id),
         "SCD":relation(ScontoRigaDocumento,primaryjoin = riga_doc.c.id==ScontoRigaDocumento.id_riga_documento, cascade="all, delete", backref="RD"),
-            },order_by=riga_doc.c.id)
+            },order_by=riga.c.posizione)
 
 if (hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes") or ("GestioneNoleggio" in modulesList):
     from promogest.modules.GestioneNoleggio.dao.NoleggioRiga import NoleggioRiga

@@ -41,7 +41,7 @@ from promogest.modules.SchedaLavorazione.dao.ScontoSchedaOrdinazione import Scon
 from promogest.modules.SchedaLavorazione.dao.ColoreStampa import ColoreStampa
 from promogest.modules.SchedaLavorazione.dao.CarattereStampa import CarattereStampa
 from promogest.modules.SchedaLavorazione.dao.Datario import Datario
-from promogest.ui.AnagraficaClienti import AnagraficaClienti
+from promogest.ui.anagClienti.AnagraficaClienti import AnagraficaClienti
 from promogest.dao.Listino import Listino
 from promogest.dao.ListinoArticolo import ListinoArticolo
 from promogest.dao.Magazzino import Magazzino

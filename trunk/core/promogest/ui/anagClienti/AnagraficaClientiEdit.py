@@ -22,11 +22,12 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
+from promogest import Environment
 from promogest.ui.gtk_compat import *
 from promogest.ui.AnagraficaComplessaEdit import AnagraficaEdit
 from promogest.ui.AnagraficaPGEdit import AnagraficaPGEdit
 import promogest.dao.Cliente
-from promogest import Environment
+
 from promogest.dao.Cliente import Cliente
 from promogest.dao.ClienteCategoriaCliente import ClienteCategoriaCliente
 from promogest.dao.daoContatti.ContattoCliente import ContattoCliente
@@ -82,6 +83,7 @@ class AnagraficaClientiEdit(AnagraficaEdit, AnagraficaPGEdit):
         if not self.cliente_insegna:
             self.insegna_entry.destroy()
             self.insegna_label.destroy()
+        self.on_pg_radio_toggled()
         #self.cliente_nome = setconf("Clienti", "cliente_nome") or False
         #if not self.cliente_nome:
             #self.nome_entry.destroy()
@@ -117,13 +119,13 @@ class AnagraficaClientiEdit(AnagraficaEdit, AnagraficaPGEdit):
         else:
             self.dao.vl.append(self.variazioni_tv_liststore[path][0])
 
-    def on_pf_radio_toggled(self, button):
+    def on_pf_radio_toggled(self, button=None):
         if self.pf_radio:
             self.ragione_sociale_entry.set_sensitive(False)
             self.cognome_entry.set_sensitive(True)
             self.nome_entry.set_sensitive(True)
 
-    def on_pg_radio_toggled(self, button):
+    def on_pg_radio_toggled(self, button=None):
         if self.pg_radio:
             self.ragione_sociale_entry.set_sensitive(True)
             self.cognome_entry.set_sensitive(False)
@@ -205,16 +207,11 @@ class AnagraficaClientiEdit(AnagraficaEdit, AnagraficaPGEdit):
                                                         status == 'deleted')
 
     def setDao(self, dao):
+        self.dao = dao
         if dao is None:
             # Crea un nuovo Dao vuoto
             self.dao = Cliente()
             self.dao.codice = promogest.dao.Cliente.getNuovoCodiceCliente()
-            self._oldDaoRicreato = False
-        else:
-            # Ricrea il Dao con una connessione al DBMS SQL
-            #self.dao = Cliente().getRecord(id=dao.id)
-            self.dao = dao
-            self._oldDaoRicreato = True
 
         if posso("IP"):
             self.infopeso_page.infoPesoSetDao(self.dao)
@@ -240,7 +237,7 @@ class AnagraficaClientiEdit(AnagraficaEdit, AnagraficaPGEdit):
         from promogest.dao.VariazioneListino import VariazioneListino
         from promogest.lib.utils import fill_treeview_with_data
         diff = lambda l1,l2: [x for x in l1 if x not in l2]
-        
+
         tutti = VariazioneListino().select(batchSize=None)
         if not self.dao.id:
             fill_treeview_with_data(self.variazioni_treeview, tutti)
@@ -375,13 +372,13 @@ class AnagraficaClientiEdit(AnagraficaEdit, AnagraficaPGEdit):
                                         string=self.dao.codice)
         self.dao.ragione_sociale = self.ragione_sociale_entry.get_text()
 
-        self.cliente_nome = setconf("Clienti", "cliente_nome") or False
-        if self.cliente_nome:
-            self.dao.nome = self.nome_entry.get_text()
+        #self.cliente_nome = setconf("Clienti", "cliente_nome") or False
+        #if self.cliente_nome:
+        self.dao.nome = self.nome_entry.get_text()
 
-        self.cliente_cognome = setconf("Clienti", "cliente_cognome") or False
-        if self.cliente_cognome:
-            self.dao.cognome = self.cognome_entry.get_text()
+        #self.cliente_cognome = setconf("Clienti", "cliente_cognome") or False
+        #if self.cliente_cognome:
+        self.dao.cognome = self.cognome_entry.get_text()
 
         if self.cliente_insegna:
             self.dao.insegna = self.insegna_entry.get_text()

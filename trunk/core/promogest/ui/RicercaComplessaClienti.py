@@ -196,7 +196,7 @@ class RicercaComplessaClienti(RicercaComplessa):
     def insert(self, toggleButton, returnWindow):
         """Richiamo anagrafica di competenza"""
 
-        from AnagraficaClienti import AnagraficaClienti
+        from promogest.ui.anagClienti.AnagraficaClienti import AnagraficaClienti
         anag = AnagraficaClienti()
         anagWindow = anag.getTopLevel()
 

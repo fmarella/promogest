@@ -185,8 +185,6 @@ class AnagraficaListiniArticoliFilter(AnagraficaFilter):
             idListino=idSottoListino
 
         def filterCountClosure():
-            """
-            """
             return ListinoArticolo().count(idListino=idListino,
                                             idArticolo=idArticolo,
                                             listinoAttuale=True)
@@ -197,8 +195,6 @@ class AnagraficaListiniArticoliFilter(AnagraficaFilter):
 
         # Let's save the current search as a closure
         def filterClosure(offset, batchSize):
-            """
-            """
             return ListinoArticolo().select(orderBy=self.orderBy,
                                             idListino=idListino,
                                             idArticolo=idArticolo,

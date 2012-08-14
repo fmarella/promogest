@@ -23,7 +23,7 @@ from promogest.ui.gtk_compat import *
 from promogest.lib.utils import *
 #from promogest.dao.Setconf import SetConf
 from promogest import Environment
-from GladeWidget import GladeWidget
+from promogest.ui.GladeWidget import GladeWidget
 import promogest.dao.Promemoria
 from promogest.dao.Promemoria import Promemoria
 from promogest.ui.anagPromemoria.AnagraficaPromemoria import AnagraficaPromemoria

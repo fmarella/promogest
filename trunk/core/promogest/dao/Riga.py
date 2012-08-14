@@ -38,6 +38,10 @@ if "id_iva" not in [c.name for c in riga.columns]:
     col = Column('id_iva', Integer)
     col.create(riga)
 
+if "posizione" not in [c.name for c in riga.columns]:
+    col = Column('posizione', Integer)
+    col.create(riga)
+
 if "id_riga_padre" not in [c.name for c in riga.columns]:
     col = Column('id_riga_padre', Integer)
     col.create(riga)
@@ -157,4 +161,4 @@ std_mapper = mapper(Riga, riga, properties={
             "listi":relation(Listino,primaryjoin=riga.c.id_listino==Listino.id),
             "multi":relation(Multiplo,primaryjoin=riga.c.id_multiplo==Multiplo.id),
             "arti":relation(Articolo,primaryjoin=riga.c.id_articolo==articolo.c.id),
-}, order_by=riga.c.id)
+}, order_by=riga.c.posizione)

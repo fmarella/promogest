@@ -784,7 +784,8 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                     rigadoc["applicazioneSconti"] + ' ' + getStringaSconti(rigadoc["sconti"]),
                     str(rigadoc["prezzoNetto"]),
                     arc_temp,
-                    str(rigadoc["totale"])]
+                    str(rigadoc["totale"]),
+                    ]
             self.modelRiga.append(row)
 
 
@@ -815,7 +816,6 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self.id_vettore_customcombobox.set_sensitive(False)
         if dao is None:
             # Crea un nuovo Dao vuoto
-            #Environment.tagliacoloretempdata = (False,[])
             self.dao = TestataDocumento()
             # Suggerisce la data odierna se stiamo lavorando con l'anno
             # di lavoro corrente, altrimenti lascia vuoto il campo data e
@@ -831,7 +831,6 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                     self.dao.operazione = op
             except:
                 pass
-#                print "TIPO_DOCUMENTO_PREDEFINITO NON SETTATO"
             try:
                 cli = setconf("Documenti", "cliente_predefinito")
                 if cli:
@@ -840,7 +839,6 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                     self.articolo_entry.grab_focus()
             except:
                 pass
-#                print "CLIENTE_PREDEFINITO NON SETTATO"
             try:
                 forn = setconf("Documenti", "fornitore_predefinito")
                 if forn:
@@ -849,7 +847,6 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                     self.articolo_entry.grab_focus()
             except:
                 pass
-#                print "FORNITORE_PREDEFINITO NON SETTATO"
 
         else:
             # Ricrea il Dao prendendolo dal DB
@@ -860,10 +857,11 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self._oldDaoRicreato = True #il dao è nuovo il controllo sul nuovo codice non  è necessario
         self._refresh()
         return self.dao
-
+    @timeit
     def saveDao(self, tipo=None):
         """ Salvataggio del Dao
         """
+        print "\n\nINIZIO IL SALVATAGGIO DEL DOCUMENTO\n\n"
         GN = posso("GN")
         SM = posso("SM")
         if posso("ADR") and tipo==GTK_RESPONSE_OK:
@@ -985,7 +983,7 @@ del documento.
         scontiRigaDocumento =[]
 
         for i in range(1, len(self._righe)):
-            pbar(self.dialog.pbar,parziale=(3+(i/100)), totale=4)
+            pbar(self.dialog.pbar,parziale=3, totale=4)
             if (tipoDOC == "MOV" and self._righe[i]["idArticolo"] == None) or tipoDOC == "DOC":
                 daoRiga = RigaDocumento()
                 sconti =[]
@@ -1029,7 +1027,7 @@ del documento.
                 setattr(daoRiga,"lotto_temp",self._righe[i]["numeroLottoTemp"])
             if "rigaMovimentoFornituraList" in self._righe[i]:
                 setattr(daoRiga,"righe_movimento_fornitura",self._righe[i]["rigaMovimentoFornituraList"])
-
+            daoRiga.posizione = i
             daoRiga.id_listino = self._righe[i]["idListino"]
             daoRiga.percentuale_iva = self._righe[i]["percentualeIva"]
             daoRiga.id_iva = self._righe[i]["idAliquotaIva"]
@@ -1082,6 +1080,7 @@ del documento.
         self.label_numero_righe.set_text(text)
         self.label_numero_righe.show()
         pbar(self.dialog.pbar, stop=True)
+        print " \nFINE DEL SALVATAGGIO DEL DOCUMENTO\n\n"
 
     def on_importo_da_ripartire_entry_changed(self, entry):
         return
@@ -1097,16 +1096,22 @@ del documento.
         model, iter_to_copy = treeview.get_selection().get_selected()
         self.riga_partenza =  model.get_path(iter_to_copy)
 
-
     def on_righe_treeview_drag_leave(self, treeview, drag_context, timestamp):
         """ questa è la funzione di "scarico" del drop, abbiamo la riga di
         destinazione con la funzione get_drag_dest_row() e prendiamo
         la riga di partenza con la funzione precedente """
+        #model = treeview.get_model()
+        #for m in model:
+            #print "CURIOSEO", m[17]
+        for i in range(0, len(self._righe)):
+            print "PRIMA", i, self._righe[i]["descrizione"]
         if not treeview:
             return
         duplicarighe= []
-        model, iter_to_copy = treeview.get_selection().get_selected()
-        row, pos = treeview.get_drag_dest_row()
+        try:
+            row, pos = treeview.get_drag_dest_row()
+        except:
+            return
         if self.riga_partenza != row[0]:
             duplicarighe = self._righe[:]
             if self.riga_partenza[0] > row[0]:
@@ -1116,7 +1121,9 @@ del documento.
                 self._righe.insert(row[0]+2,duplicarighe[self.riga_partenza[0]+1])
                 self._righe.pop(self.riga_partenza[0]+1)
             duplicarighe= []
-        self.riga_partenza = None
+        for i in range(0, len(self._righe)):
+            print "DOPO ELABORAZIONE", i, self._righe[i]["descrizione"]
+
 
     def on_righe_treeview_row_activated(self, treeview, path, column):
         """ riporta la riga selezionata in primo piano per la modifica"""

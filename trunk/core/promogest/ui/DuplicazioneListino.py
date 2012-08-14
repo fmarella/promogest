@@ -22,7 +22,7 @@
 
 
 import datetime
-from GladeWidget import GladeWidget
+from promogest.ui.GladeWidget import GladeWidget
 from promogest import Environment
 from decimal import *
 from promogest.dao.Listino import Listino

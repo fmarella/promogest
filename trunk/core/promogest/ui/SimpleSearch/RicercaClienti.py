@@ -42,7 +42,7 @@ class RicercaClienti(Ricerca):
             self.filter.refresh()
             self.filter.ragione_sociale_filter_entry.grab_focus()
 
-        from promogest.ui.AnagraficaClienti import AnagraficaClienti
+        from promogest.ui.anagClienti.AnagraficaClienti import AnagraficaClienti
         anag = AnagraficaClienti()
         anagWindow = anag.getTopLevel()
 

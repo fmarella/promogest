@@ -24,7 +24,7 @@ from promogest.lib.utils import orda
 from promogest import Environment
 from promogest.dao.Setconf import SetConf
 from promogest.dao.SectionUser import SectionUser
-from GladeWidget import GladeWidget
+from promogest.ui.GladeWidget import GladeWidget
 import datetime
 
 class SetConfUI(GladeWidget):

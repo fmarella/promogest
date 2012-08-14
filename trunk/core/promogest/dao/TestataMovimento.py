@@ -194,46 +194,52 @@ class TestataMovimento(Dao):
 
         return  dic[k]
 
-    def righeMovimentoDel(self,id=None):
+    @timeit
+    def righeMovimentoDel(self,id=None, sm = False):
         """
         Cancella le righe associate ad un documento
         """
-        #from promogest.dao.RigaMovimento import RigaMovimento
-        row = RigaMovimento().select(idTestataMovimento= id,
-                                    offset = None,
-                                    batchSize = None)
+
         self.rmfv= None
+        row = self.rigamov
         if row:
             self.rmfv = RigaMovimentoFornitura().select(idRigaMovimentoVenditaBool = True, batchSize=None)
-            sm = posso("SM")
+            #self.rmfv = []
+            #sm = posso("SM")
             for r in row:
+                if r.SCM:
+                    for a in r.SCM:
+                        params['session'].delete(a)
                 if sm:
                     mp = MisuraPezzo().select(idRiga=r.id, batchSize=None)
                     if mp:
                         for m in mp:
                             params['session'].delete(m)
-                        params["session"].commit()
-                rmfa = RigaMovimentoFornitura().select(idRigaMovimentoAcquisto = r.id, batchSize=None)
+                        #params["session"].commit()
+                #rmfa = RigaMovimentoFornitura().select(idRigaMovimentoAcquisto = r.id, batchSize=None)
+                rmfa = r.rmfac
                 if rmfa:
                     for f in rmfa:
                         params['session'].delete(f)
-                    params["session"].commit()
-                precedentiRighe= RigaMovimentoFornitura().select(idRigaMovimentoVendita=r.id, batchSize=None)
+                    #params["session"].commit()
+                #precedentiRighe= RigaMovimentoFornitura().select(idRigaMovimentoVendita=r.id, batchSize=None)
+                precedentiRighe = r.rmfve
                 if precedentiRighe:
                     for p in precedentiRighe:
                         p.id_riga_movimento_vendita = None
                         params["session"].add(p)
-                    params['session'].commit()
-                nn = NumeroLottoTemp().select(idRigaMovimentoVenditaTemp=r.id)
+                    #params['session'].commit()
+                #nn = NumeroLottoTemp().select(idRigaMovimentoVenditaTemp=r.id)
+                nn = r.NLT
                 if nn:
                     for n in nn:
                         params["session"].delete(n)
-                    params["session"].commit()
+                    #params["session"].commit()
                 params['session'].delete(r)
-            params["session"].commit()
+            #params["session"].commit()
         return True
 
-
+    @timeit
     def persist(self):
         """cancellazione righe associate alla testata
             conn.execStoredProcedure('RigheMovimentoDel',(self.id, ))"""
@@ -243,8 +249,10 @@ class TestataMovimento(Dao):
             self.registro_numerazione= valori[1]
         params["session"].add(self)
         params["session"].commit()
+
+        sm = posso("SM")
         if self.righeMovimento:
-            self.righeMovimentoDel(id=self.id)
+            self.righeMovimentoDel(id=self.id, sm=sm)
             if self.operazione == "Carico da composizione kit":
                 #print "DEVO AGGIUNGERE IN NEGATIVO LE RIGHE KIT"
                 righeMov = []
@@ -322,14 +330,12 @@ class TestataMovimento(Dao):
                     righeMov.append(r)
                     riga.quantita = -1*riga.quantita
                 self.righeMovimento = self.righeMovimento+righeMov
-            sm = posso("SM")
+            #sm = posso("SM")
             for riga in self.righeMovimento:
                 if "RigaDocumento" in str(riga.__module__):
                     riga.id_testata_documento = self.id_testata_documento
-                    riga.persist()
+                    riga.persist(sm=sm)
                 else:
-                    #print "DEEEEEEEEEEEEEEFI", riga.id, riga.quantita, riga.id_articolo, riga.descrizione
-                    riga._resetId()
                     riga.id_testata_movimento = self.id
                     riga.persist(sm=sm)
                     if self.id_fornitore and riga.id_articolo:
@@ -421,27 +427,28 @@ class TestataMovimento(Dao):
                                         self.rmfv.remove(v)
                             a.id_fornitura = daoFornitura.id
                             params["session"].add(a)
-                        params["session"].commit()
+                        #params["session"].commit()
                     else:
                         if hasattr(riga,"righe_movimento_fornitura"):
                             if riga.righe_movimento_fornitura:
-                                precedentiRighe= RigaMovimentoFornitura().select(idRigaMovimentoVendita=riga.id, batchSize=None)
+                                #precedentiRighe= RigaMovimentoFornitura().select(idRigaMovimentoVendita=riga.id, batchSize=None)
+                                precedentiRighe = riga.rmfve
                                 if precedentiRighe:
                                     for p in precedentiRighe:
                                         p.id_riga_movimento_vendita = None
                                         params["session"].add(p)
-                                    params["session"].commit()
+                                    #params["session"].commit()
                                 for r in riga.righe_movimento_fornitura:
                                     r.id_riga_movimento_vendita = riga.id
                                     params["session"].add(r)
-                                params["session"].commit()
+                                #params["session"].commit()
                         if hasattr(riga,"lotto_temp") and riga.lotto_temp:
                             # Salvare il lotto temporaneo
                             n = NumeroLottoTemp()
                             n.id_riga_movimento_vendita_temp = riga.id
                             n.lotto_temp = riga.lotto_temp
                             params["session"].add(n)
-                            params["session"].commit()
+            params["session"].commit()
 
             self.__righeMovimento = []
 

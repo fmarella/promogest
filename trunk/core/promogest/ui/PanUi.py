@@ -25,7 +25,7 @@ from threading import Timer
 from promogest.lib.utils import orda, messageInfo, setconf
 from promogest.dao.Setconf import SetConf
 from promogest import Environment
-from GladeWidget import GladeWidget
+from promogest.ui.GladeWidget import GladeWidget
 import webbrowser
 import datetime
 import urllib, urllib2
@@ -74,18 +74,18 @@ def checkPan(main):
                         a.persist()
                 return
     if  Environment.tipodb!="postgresql":
-        pp = PanUi(main).draw()
-        a = gtk.Label()
-        a.set_text("OPZIONI MODULI")
-        main.main_notebook.prepend_page(pp.pan_frame, a)
-        main.main_notebook.set_current_page(0)
+        #pp = PanUi(main).draw()
+        #a = gtk.Label()
+        #a.set_text("OPZIONI MODULI")
+        #main.main_notebook.prepend_page(pp.pan_frame, a)
+        #main.main_notebook.set_current_page(0)
         text = "OPZIONE: <b>%s!</b>" %("ONE BASIC")
         main.pan_label_info.set_markup(text)
-        return pp
+        #return pp
     else:
         text = "OPZIONE: <b>%s</b>" %(Environment.tipo_pg)
         main.pan_label_info.set_markup(text)
-        Environment.pg2log.info(text)
+    Environment.pg2log.info(text)
 #        main.main_notebook.set_current_page(4)
 
 

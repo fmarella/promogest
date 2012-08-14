@@ -44,7 +44,7 @@ class RicercaFornitori(Ricerca):
             self.filter.refresh()
             self.filter.ragione_sociale_filter_entry.grab_focus()
 
-        from promogest.ui.AnagraficaFornitori import AnagraficaFornitori
+        from promogest.ui.anagFornitori.AnagraficaFornitori import AnagraficaFornitori
         anag = AnagraficaFornitori()
         anagWindow = anag.getTopLevel()
 

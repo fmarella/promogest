@@ -23,8 +23,8 @@ from promogest.ui.AnagraficaComplessa import Anagrafica
 from promogest.ui.AnagraficaComplessaReport import AnagraficaReport
 from promogest.ui.AnagraficaComplessaHtml import AnagraficaHtml
 
-from promogest.ui.AnagraficaFornitoriEdit import AnagraficaFornitoriEdit
-from promogest.ui.AnagraficaFornitoriFilter import AnagraficaFornitoriFilter
+from promogest.ui.anagFornitori.AnagraficaFornitoriEdit import AnagraficaFornitoriEdit
+from promogest.ui.anagFornitori.AnagraficaFornitoriFilter import AnagraficaFornitoriFilter
 from promogest.modules.PrimaNota.ui.\
                         AnagraficaPrimaNotaEdit import AnagraficaPrimaNotaEdit
 from promogest.modules.PrimaNota.ui.\
