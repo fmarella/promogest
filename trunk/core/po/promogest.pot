@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-15 16:16+0200\n"
+"POT-Creation-Date: 2012-08-15 23:56+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,6 +17,19 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: ../promogest/ui/Login.py:86
+msgid ""
+"Dati accesso <b>ONE</b> : Username: <b>admin</b>, password: <b>admin</b>"
+msgstr ""
+
+#: ../promogest/ui/Login.py:143 ../promogest/ui/Login.py:156
+msgid "<b>PromoGest 'ONE'</b>"
+msgstr ""
+
+#: ../promogest/ui/Login.py:146 ../promogest/ui/Login.py:164
+msgid "<b>PromoGest 'PRO'</b>"
+msgstr ""
 
 #: ../promogest/ui/Login.py:192
 msgid "Inserire nome utente e password"
@@ -32,6 +45,16 @@ msgstr ""
 
 #: ../promogest/ui/Login.py:292
 msgid "Nome utente o password errati"
+msgstr ""
+
+#: ../promogest/ui/Main.py:74
+msgid ""
+"ATTENIONE! modulo xhtml2pdf mancante,\n"
+" qualcosa non ha funzionato nell'installazione?"
+msgstr ""
+
+#: ../promogest/ui/Main.py:176
+msgid "Aggiornamento del database completato con successo! Riavviare PromoGest"
 msgstr ""
 
 #: ../promogest/ui/Main.py:187
@@ -83,6 +106,13 @@ msgstr ""
 msgid "AGGIORNATO "
 msgstr ""
 
+#: ../promogest/ui/Main.py:615
+msgid ""
+"Campo obbligatorio !\n"
+"\n"
+"Tipo AnagraficaSecondaria"
+msgstr ""
+
 #: ../promogest/ui/Main.py:849
 msgid "Importazione modulo"
 msgstr ""
@@ -97,6 +127,10 @@ msgstr ""
 msgid ""
 "ATTENZIONE, MODULO NON INSTALLATO, CORROTTO O NON CORRETTO, CONTATTARE "
 "L'ASSISTENZA"
+msgstr ""
+
+#: ../promogest/ui/Main.py:911
+msgid "<b>                CODICE ATTIVAZIONE PACCHETTO               </b>"
 msgstr ""
 
 #: ../promogest/ui/Main.py:916
@@ -150,6 +184,26 @@ msgstr ""
 
 #: ../promogest/ui/Main.py:1024
 msgid "Lavori in corso ...."
+msgstr ""
+
+#: ../promogest/ui/Main.py:1046
+msgid ""
+"NELLA VERSIONE LITE IL BACKUP SI\n"
+"EFFETTUA COPIANDO IL FILE db CHE SI TROVA NELLA CARTELLA\n"
+"promogest2 IN /HOME/NOMEUTENTE/ O IN C:/UTENTI/NOMEUTENTE"
+msgstr ""
+
+#: ../promogest/ui/Main.py:1053
+#, python-format
+msgid ""
+"Il \"dump\" del database verrà salvato in\n"
+"\n"
+"    %s\n"
+"    ed avrà il nome\n"
+"\n"
+"    %s.zip\n"
+"\n"
+"    ATTENZIONE!!!! la procedura potrebbe richiedere diversi minuti."
 msgstr ""
 
 #: ../promogest/ui/Main.py:1098
