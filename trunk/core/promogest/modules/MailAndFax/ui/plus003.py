@@ -421,7 +421,8 @@ class SpamFrame(GladeWidget):
                 return False
 
             # Instanziare finestra di progresso e schedulare funzione di pulse
-            progressDialog = GladeWidget('spam_sending_dialog',
+            progressDialog = GladeWidget(root='spam_sending_dialog',
+                                            path="spam_sending_dialog.glade",
                                          callbacks_proxy=self)
             progressDialog.getTopLevel().set_transient_for(self.mainWindow.getTopLevel())
             progressDialog.getTopLevel().show_all()

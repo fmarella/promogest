@@ -893,7 +893,7 @@ class Main(GladeWidget):
             fileDialog.destroy()
 
     def on_credits_menu_activate(self, widget):
-        creditsDialog = GladeWidget('credits_dialog', callbacks_proxy=self)
+        creditsDialog = GladeWidget(root='credits_dialog',path="credit_dialog.glade",  callbacks_proxy=self)
         creditsDialog.getTopLevel().set_transient_for(self.getTopLevel())
         info = "%s Build: %s" % (Environment.VERSIONE, Environment.rev_locale)
         creditsDialog.versione_label.set_markup(info)
@@ -1013,7 +1013,7 @@ class Main(GladeWidget):
 
 
     def on_licenza_menu_activate(self, widget):
-        licenzaDialog = GladeWidget('licenza_dialog', callbacks_proxy=self)
+        licenzaDialog = GladeWidget(root='licenza_dialog',path="licenza_dialog.glade",  callbacks_proxy=self)
         licenzaDialog.getTopLevel().set_transient_for(self.getTopLevel())
         licenseText = ''
         try:

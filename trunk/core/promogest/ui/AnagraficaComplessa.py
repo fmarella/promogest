@@ -374,7 +374,7 @@ class Anagrafica(GladeWidget):
             saveDialog.destroy()
 
     def on_credits_menu_activate(self, widget):
-        creditsDialog = GladeWidget('credits_dialog', callbacks_proxy=self)
+        creditsDialog = GladeWidget(root='credits_dialog',path="credits_dialog.glade",  callbacks_proxy=self)
         creditsDialog.getTopLevel().set_transient_for(self.getTopLevel())
         creditsDialog.getTopLevel().show_all()
         response = creditsDialog.credits_dialog.run()
@@ -385,7 +385,7 @@ class Anagrafica(GladeWidget):
         SendEmail()
 
     def on_licenza_menu_activate(self, widget):
-        licenzaDialog = GladeWidget('licenza_dialog', callbacks_proxy=self)
+        licenzaDialog = GladeWidget(root='licenza_dialog',path="licenza_dialog.glade",  callbacks_proxy=self)
         licenzaDialog.getTopLevel().set_transient_for(self.getTopLevel())
         licenseText = ''
         try:
@@ -615,8 +615,9 @@ class Anagrafica(GladeWidget):
         # FIXME: refactor this mess!!!
 
         # tiro su la finestrella con la progress bar
-        progressDialog = GladeWidget('records_print_progress_dialog',
-                                     callbacks_proxy=self)
+        progressDialog = GladeWidget(root='records_print_progress_dialog',
+                                     callbacks_proxy=self,
+                                     path='records_print_progress_dialog.glade')
         progressDialog.getTopLevel().set_transient_for(self.getTopLevel())
         progressDialog.getTopLevel().show_all()
         pbar = progressDialog.records_print_progress_bar
@@ -649,7 +650,8 @@ class Anagrafica(GladeWidget):
             progressDialog.getTopLevel().destroy()
             gobject.source_remove(self.__pulseSourceTag)
 
-            printDialog = GladeWidget('records_print_dialog',
+            printDialog = GladeWidget(root='records_print_dialog',
+            path='records_print_dialog.glade',
                                       callbacks_proxy=self)
             printDialog.getTopLevel().set_transient_for(self.getTopLevel())
             if "/" in self._pdfName:

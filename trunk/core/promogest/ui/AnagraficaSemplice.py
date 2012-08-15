@@ -86,7 +86,7 @@ class Anagrafica(GladeWidget):
         self.anagrafica_semplice_window.show_all()
 
     def on_credits_menu_activate(self, widget):
-        creditsDialog = GladeWidget('credits_dialog', callbacks_proxy=self)
+        creditsDialog = GladeWidget(root='credits_dialog',path='credits_dialog.glade', callbacks_proxy=self)
         creditsDialog.getTopLevel().set_transient_for(self.getTopLevel())
         creditsDialog.getTopLevel().show_all()
         response = creditsDialog.credits_dialog.run()
@@ -98,7 +98,7 @@ class Anagrafica(GladeWidget):
 
 
     def on_licenza_menu_activate(self, widget):
-        licenzaDialog = GladeWidget('licenza_dialog', callbacks_proxy=self)
+        licenzaDialog = GladeWidget(root='licenza_dialog',path="licenza_dialog.glade",  callbacks_proxy=self)
         licenzaDialog.getTopLevel().set_transient_for(self.getTopLevel())
         licenseText = ''
         try:
