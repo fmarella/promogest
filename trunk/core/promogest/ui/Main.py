@@ -71,7 +71,7 @@ if posso("GN"):
 try:
     from  xhtml2pdf import pisa
 except:
-    messageError(msg="ATTENIONE! modulo xhtml2pdf mancante,\n qualcosa non ha funzionato nell'installazione?")
+    messageError(msg=_("ATTENIONE! modulo xhtml2pdf mancante,\n qualcosa non ha funzionato nell'installazione?"))
 
 from promogest.dao.Setconf import SetConf
 
@@ -173,7 +173,7 @@ Al termine dell'aggiornamento PromoGest verrà chiuso.""")
         else:
             kbb[0].value="True"
             kbb[0].persist()
-        messageInfo("Aggiornamento del database completato con successo! Riavviare PromoGest")
+        messageInfo(_("Aggiornamento del database completato con successo! Riavviare PromoGest"))
         import sys
         sys.exit(0)
 
@@ -612,7 +612,7 @@ class Main(GladeWidget):
         if not findIdFromCombobox(self.anag_minori_combobox):
             obligatoryField(None,
                             self.anag_minori_combobox,
-                            msg='Campo obbligatorio !\n\nTipo AnagraficaSecondaria')
+                            msg=_('Campo obbligatorio !\n\nTipo AnagraficaSecondaria'))
             toggleButton.set_active(False)
         model = self.anag_minori_combobox.get_model()
         iterator = self.anag_minori_combobox.get_active_iter()
@@ -908,7 +908,7 @@ class Main(GladeWidget):
                                    GTK_DIALOG_MODAL
                                    | GTK_DIALOG_DESTROY_WITH_PARENT,
                                    GTK_DIALOG_MESSAGE_INFO, GTK_BUTTON_OK)
-        dialog.set_markup("""<b>                CODICE ATTIVAZIONE PACCHETTO               </b>""")
+        dialog.set_markup(_("""<b>                CODICE ATTIVAZIONE PACCHETTO               </b>"""))
         hbox = gtk.HBox()
         entry___ = gtk.Entry()
 
@@ -1043,21 +1043,21 @@ class Main(GladeWidget):
         """ Si prepara un file zip con il dump del DB """
 
         if Environment.tipodb == "sqlite":
-            msg = """NELLA VERSIONE LITE IL BACKUP SI
+            msg = _("""NELLA VERSIONE LITE IL BACKUP SI
 EFFETTUA COPIANDO IL FILE db CHE SI TROVA NELLA CARTELLA
-promogest2 IN /HOME/NOMEUTENTE/ O IN C:/UTENTI/NOMEUTENTE"""
+promogest2 IN /HOME/NOMEUTENTE/ O IN C:/UTENTI/NOMEUTENTE""")
             messageInfo(msg= msg)
         else:
             st= Environment.startdir()
             nameDump = "promoGest2_dump_"+self.aziendaStr+"_"+ datetime.now().strftime('%d_%m_%Y_%H_%M')
-            msgg = """Il "dump" del database verrà salvato in
+            msgg = _("""Il "dump" del database verrà salvato in
 
     %s
     ed avrà il nome
 
     %s.zip
 
-    ATTENZIONE!!!! la procedura potrebbe richiedere diversi minuti.""" %(st, nameDump)
+    ATTENZIONE!!!! la procedura potrebbe richiedere diversi minuti.""") %(st, nameDump)
             messageInfo(msg= msgg, transient=self.getTopLevel())
             #if response == gtk.RESPONSE_OK:
             st= Environment.startdir()

@@ -82,8 +82,8 @@ class Login(SimpleGladeApp):
             and len(azs) == 1 and azs[0].schemaa == "AziendaPromo":
             self.azienda_combobox.destroy()
             self.azienda_label.destroy()
-            self.logina_label.set_markup(
-    "Dati accesso <b>ONE</b> : Username: <b>admin</b>, password: <b>admin</b>")
+            self.logina_label.set_markup(_(
+    "Dati accesso <b>ONE</b> : Username: <b>admin</b>, password: <b>admin</b>"))
         else:
             self.azienda_combobox_listore.clear()
 
@@ -140,10 +140,10 @@ class Login(SimpleGladeApp):
                             + str(randomFile) \
                             + "].png"
             if Environment.engine.name == "sqlite":
-                self.login_tipo_label.set_markup("<b>PromoGest 'ONE'</b>")
+                self.login_tipo_label.set_markup(_("<b>PromoGest 'ONE'</b>"))
                 self.urll = "http://www.promogest.me/promoGest/preventivo_one"
             else:
-                self.login_tipo_label.set_markup("<b>PromoGest 'PRO'</b>")
+                self.login_tipo_label.set_markup(_("<b>PromoGest 'PRO'</b>"))
                 self.urll = "http://www.promogest.me/promoGest/preventivo_pro"
         else:
             if Environment.engine.name == "sqlite":
@@ -153,7 +153,7 @@ class Login(SimpleGladeApp):
                                 + "one[" \
                                 + str(randomFile) \
                                 + "].png"
-                self.login_tipo_label.set_markup("<b>PromoGest 'ONE'</b>")
+                self.login_tipo_label.set_markup(_("<b>PromoGest 'ONE'</b>"))
                 self.urll = "http://www.promogest.me/promoGest/preventivo_one"
             else:
                 randomFile = random.sample([1, 2, 3, 4, 5, 6], 1)[0]
@@ -161,7 +161,7 @@ class Login(SimpleGladeApp):
                                     + "pro[" \
                                     + str(randomFile) \
                                     + "].png"
-                self.login_tipo_label.set_markup("<b>PromoGest 'PRO'</b>")
+                self.login_tipo_label.set_markup(_("<b>PromoGest 'PRO'</b>"))
                 self.urll = "http://www.promogest.me/promoGest/preventivo_pro"
         self.splash_image.set_from_file(fileSplashImage)
 
