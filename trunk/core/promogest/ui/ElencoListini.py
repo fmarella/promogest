@@ -77,9 +77,10 @@ class ElencoListini(GladeWidget):
 
     def on_elenco_listini_treeview_cursor_changed(self, treeview):
         sel = treeview.get_selection()
-        (model, iterator) = sel.get_selected()
-        if iterator is not None:
-            self._currentDao = model.get_value(iterator,0)
+        if sel:
+            (model, iterator) = sel.get_selected()
+            if iterator is not None:
+                self._currentDao = model.get_value(iterator,0)
 
     def on_elenco_listini_treeview_row_activated(self, treeview, path, column):
         self.articoli_listino_togglebutton.set_active(True)

@@ -59,9 +59,10 @@ class ElencoMagazzini(GladeWidget):
 
     def on_elenco_magazzini_treeview_cursor_changed(self, treeview):
         sel = treeview.get_selection()
-        (model, iterator) = sel.get_selected()
-        if iterator is not None:
-            self._currentDao = model.get_value(iterator,0)
+        if sel:
+            (model, iterator) = sel.get_selected()
+            if iterator is not None:
+                self._currentDao = model.get_value(iterator,0)
 
     def on_magazzini_togglebutton_clicked(self, toggleButton):
         if not(toggleButton.get_active()):

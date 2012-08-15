@@ -623,7 +623,7 @@
               </object>
               <packing>
                 <property name="expand">False</property>
-                <property name="fill">False</property>
+                <property name="fill">True</property>
                 <property name="position">0</property>
               </packing>
             </child>
@@ -632,7 +632,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label_xalign">0</property>
-                <property name="shadow_type">etched-out</property>
+                <property name="shadow_type">in</property>
                 <child>
                   <object class="GtkAlignment" id="alignment302">
                     <property name="visible">True</property>
@@ -839,7 +839,6 @@
                                                     </child>
                                                     <child>
                                                       <object class="GtkLabel" id="label176">
-                                                        <property name="width_request">100</property>
                                                         <property name="visible">True</property>
                                                         <property name="can_focus">False</property>
                                                         <property name="xalign">0</property>
@@ -865,7 +864,9 @@
                                                             <property name="can_focus">True</property>
                                                             <property name="invisible_char">●</property>
                                                             <property name="text" translatable="yes">0.000     </property>
+                                                            <property name="overwrite_mode">True</property>
                                                             <property name="invisible_char_set">True</property>
+                                                            <property name="progress_pulse_step">0.10999999940395355</property>
                                                             <property name="secondary_icon_stock">gtk-clear</property>
                                                             <property name="primary_icon_activatable">False</property>
                                                             <signal name="focus-out-event" handler="on_quantita_entry_focus_out_event" swapped="no"/>
@@ -1596,6 +1597,9 @@
                                       </packing>
                                     </child>
                                   </object>
+                                  <packing>
+                                    <property name="tab_expand">True</property>
+                                  </packing>
                                 </child>
                                 <child type="tab">
                                   <object class="GtkLabel" id="label9">
@@ -1606,7 +1610,7 @@
                                     <property name="use_underline">True</property>
                                   </object>
                                   <packing>
-                                    <property name="tab_fill">False</property>
+                                    <property name="tab_expand">True</property>
                                   </packing>
                                 </child>
                                 <child>
@@ -2388,6 +2392,7 @@
                                   </object>
                                   <packing>
                                     <property name="position">1</property>
+                                    <property name="tab_expand">True</property>
                                   </packing>
                                 </child>
                                 <child type="tab">
@@ -2400,11 +2405,11 @@
                                   </object>
                                   <packing>
                                     <property name="position">1</property>
-                                    <property name="tab_fill">False</property>
+                                    <property name="tab_expand">True</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkFrame" id="frame3">
+                                  <object class="GtkFrame" id="SN_frame">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <property name="label_xalign">0</property>
@@ -2514,6 +2519,7 @@
                                   </object>
                                   <packing>
                                     <property name="position">2</property>
+                                    <property name="tab_expand">True</property>
                                   </packing>
                                 </child>
                                 <child type="tab">
@@ -2792,6 +2798,7 @@
                                   </object>
                                   <packing>
                                     <property name="position">3</property>
+                                    <property name="tab_expand">True</property>
                                   </packing>
                                 </child>
                                 <child type="tab">
@@ -2804,6 +2811,7 @@
                                   </object>
                                   <packing>
                                     <property name="position">3</property>
+                                    <property name="tab_expand">True</property>
                                     <property name="tab_fill">False</property>
                                   </packing>
                                 </child>
@@ -2995,7 +3003,7 @@
                       </object>
                       <packing>
                         <property name="expand">True</property>
-                        <property name="fill">False</property>
+                        <property name="fill">True</property>
                         <property name="position">0</property>
                       </packing>
                     </child>
@@ -3051,7 +3059,7 @@
                       </object>
                       <packing>
                         <property name="expand">True</property>
-                        <property name="fill">False</property>
+                        <property name="fill">True</property>
                         <property name="position">1</property>
                       </packing>
                     </child>
@@ -3105,7 +3113,7 @@
                       </object>
                       <packing>
                         <property name="expand">True</property>
-                        <property name="fill">False</property>
+                        <property name="fill">True</property>
                         <property name="position">2</property>
                       </packing>
                     </child>
@@ -3159,7 +3167,7 @@
                       </object>
                       <packing>
                         <property name="expand">True</property>
-                        <property name="fill">False</property>
+                        <property name="fill">True</property>
                         <property name="position">3</property>
                       </packing>
                     </child>
@@ -3213,7 +3221,7 @@
                       </object>
                       <packing>
                         <property name="expand">True</property>
-                        <property name="fill">False</property>
+                        <property name="fill">True</property>
                         <property name="position">4</property>
                       </packing>
                     </child>
@@ -3438,6 +3446,9 @@ nella sezione riepiloghi</property>
               </packing>
             </child>
           </object>
+          <packing>
+            <property name="tab_expand">True</property>
+          </packing>
         </child>
         <child type="tab">
           <object class="GtkLabel" id="label345">
@@ -4076,6 +4087,7 @@ _
           </object>
           <packing>
             <property name="position">1</property>
+            <property name="tab_expand">True</property>
           </packing>
         </child>
         <child type="tab">
