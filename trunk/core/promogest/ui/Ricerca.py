@@ -32,8 +32,8 @@ class Ricerca(GladeWidget):
     """ Classe base per le ricerche di Promogest """
 
     def __init__(self, windowTitle, filterElement, htmlHandler=None):
-        GladeWidget.__init__(self, root='ricerca_window'
-                                    path="ricerca_window.glade")
+        GladeWidget.__init__(self, root='ricerca_window',
+                                path="ricerca_window.glade")
 
         self.ricerca_window.set_title(windowTitle)
 

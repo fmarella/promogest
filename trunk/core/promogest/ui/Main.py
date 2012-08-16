@@ -1043,7 +1043,7 @@ class Main(GladeWidget):
         """ Si prepara un file zip con il dump del DB """
 
         if Environment.tipodb == "sqlite":
-            msg = _("""NELLA VERSIONE LITE IL BACKUP SI
+            msg = _("""NELLA VERSIONE ONE IL BACKUP SI
 EFFETTUA COPIANDO IL FILE db CHE SI TROVA NELLA CARTELLA
 promogest2 IN /HOME/NOMEUTENTE/ O IN C:/UTENTI/NOMEUTENTE""")
             messageInfo(msg= msg)
