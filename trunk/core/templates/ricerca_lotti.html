@@ -32,14 +32,14 @@ table.ed td {
 <table class="ed" style="width:100%;">
 	<tr>
 		<th><b>Data fornitura</b></th>
-        <th><b>Fornitore</b></th>
-        <th><b>Documenti</b></th>
+		<th><b>Fornitore</b></th>
+		<th><b>Documenti</b></th>
 	</tr>
 {% for riga in pageData['data'] %}
 	<tr>
 		<td>{{utils.dateToString(riga['data_fornitura'])}}</td>
-        <td>{{riga['fornitore'].ragione_sociale}}</td>
-        <td>
+		<td>{{riga['fornitore'].ragione_sociale}}</td>
+		<td>
 
 		<table class="ed" style="width:100%;">
 			<tr>
@@ -51,14 +51,14 @@ table.ed td {
 		{% for doc in riga['docs'] %}
 			<tr>
 				<td>{{utils.dateToString(doc.data_documento)}}</td>
-		        <td>{{doc.numero}}</td>
-		        <td>{{doc.operazione}}</td>
-		        <td>{{doc.intestatario}}</td>
+				<td>{{doc.numero}}</td>
+				<td>{{doc.operazione}}</td>
+				<td>{{doc.intestatario}}</td>
 			</tr>
 		{% endfor %}
 		</table>
 
-        </td>
+		</td>
 	</tr>
 {% endfor %}
 </table>
