@@ -1,0 +1,66 @@
+{% extends 'index.html' %}
+
+{% block body %}
+<style type="text/css">
+table.ed {
+	border-width: 0px;
+	border-spacing: 1px;
+	border-style: solid;
+	border-color: gray;
+	border-collapse: separate;
+	background-color: white;
+}
+table.ed th {
+	border-width: 1px;
+	padding: 3px;
+	border-style: solid;
+	border-color: gray;
+	background-color: white;
+	-moz-border-radius: ;
+}
+table.ed td {
+	border-width: 1px;
+	padding: 3px;
+	border-style: solid;
+	border-color: gray;
+	background-color: white;
+	-moz-border-radius: ;
+}
+</style>
+<h2>Risultati per numero lotto: <b>{{pageData["numero_lotto"]}}</b></h2>
+
+<table class="ed" style="width:100%;">
+	<tr>
+		<th><b>Data fornitura</b></th>
+        <th><b>Fornitore</b></th>
+        <th><b>Documenti</b></th>
+	</tr>
+{% for riga in pageData['data'] %}
+	<tr>
+		<td>{{utils.dateToString(riga['data_fornitura'])}}</td>
+        <td>{{riga['fornitore'].ragione_sociale}}</td>
+        <td>
+
+		<table class="ed" style="width:100%;">
+			<tr>
+				<th><b>Data Documento</b></th>
+				<th><b>Numero</b></th>
+				<th><b>Operazione</b></th>
+				<th><b>Intestatario</b></th>
+			</tr>
+		{% for doc in riga['docs'] %}
+			<tr>
+				<td>{{utils.dateToString(doc.data_documento)}}</td>
+		        <td>{{doc.numero}}</td>
+		        <td>{{doc.operazione}}</td>
+		        <td>{{doc.intestatario}}</td>
+			</tr>
+		{% endfor %}
+		</table>
+
+        </td>
+	</tr>
+{% endfor %}
+</table>
+
+{% endblock %}

@@ -457,6 +457,11 @@ class Main(GladeWidget):
         self.main_iconview.unselect_all()
         self.main_hbox.show_all()
 
+    def on_ricerca_lotto_menuitem_activate(self, button):
+        from promogest.ui.RicercaLottiWindow import RicercaLottiWindow
+        anag = RicercaLottiWindow(self)
+        showAnagrafica(self.getTopLevel(), anag)
+
     def on_button_help_clicked(self, button):
         SendEmail()
 
