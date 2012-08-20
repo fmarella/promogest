@@ -535,7 +535,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self.id_vettore_customcombobox.set_sensitive(False)
         self.porto_combobox.set_sensitive(False)
         findComboboxRowFromId(self.id_destinazione_merce_customcombobox.combobox, -1)
-        self.id_destinazione_merce_customcombobox.combobox.set_sensitive(False)
+        #self.id_destinazione_merce_customcombobox.combobox.set_sensitive(False)
 
     def _refresh(self):
         """ Funzione importantissima di "impianto" del documento nella UI"""
@@ -569,14 +569,14 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         if self._tipoPersonaGiuridica == "fornitore":
             self.id_persona_giuridica_customcombobox.setId(self.dao.id_fornitore)
             self.id_destinazione_merce_customcombobox.combobox.clear()
-            self.id_destinazione_merce_customcombobox.set_sensitive(False)
+            #self.id_destinazione_merce_customcombobox.set_sensitive(False)
         elif self._tipoPersonaGiuridica == "cliente":
             self.id_persona_giuridica_customcombobox.setId(self.dao.id_cliente)
             fillComboboxDestinazioniMerce(self.id_destinazione_merce_customcombobox.combobox,
                     self.dao.id_cliente)
             findComboboxRowFromId(self.id_destinazione_merce_customcombobox.combobox,
                     (self.dao.id_destinazione_merce or -1))
-            self.id_destinazione_merce_customcombobox.combobox.set_sensitive(True)
+            #self.id_destinazione_merce_customcombobox.combobox.set_sensitive(True)
 
         self.data_documento_entry.set_text(dateToString(self.dao.data_documento))
         self.numero_documento_entry.set_text(str(self.dao.numero or '0'))
@@ -2013,19 +2013,20 @@ del documento.
                 findComboboxRowFromId(self.pagamenti_page.id_banca_customcombobox.combobox, self._id_banca)
 
         if self._tipoPersonaGiuridica == "cliente":
-            self.id_destinazione_merce_customcombobox.set_sensitive(True)
+            #self.id_destinazione_merce_customcombobox.set_sensitive(True)
             if self.id_persona_giuridica_customcombobox.getId() is None:
-                self.id_destinazione_merce_customcombobox.combobox.clear
+                self.id_destinazione_merce_customcombobox.combobox.clear()
                 self.id_destinazione_merce_customcombobox.set_sensitive(False)
             else:
                 fillComboboxDestinazioniMerce(self.id_destinazione_merce_customcombobox.combobox,
                         self.id_persona_giuridica_customcombobox.getId())
                 if not self.dao.id:
                     if setconf('Documenti', 'primo_dest_merce'):
-                        findComboboxRowFromId(self.id_destinazione_merce_customcombobox.combobox, 1)
+                        self.id_destinazione_merce_customcombobox.combobox.set_active(1)
                 self.id_destinazione_merce_customcombobox.set_sensitive(True)
             self.refresh_combobox_listini()
         else:
+            self.id_destinazione_merce_customcombobox.combobox.clear()
             self.id_destinazione_merce_customcombobox.set_sensitive(False)
 
     def on_id_magazzino_combobox_changed(self, combobox):
