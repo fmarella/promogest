@@ -35,14 +35,17 @@ from promogest.dao.AliquotaIva import AliquotaIva
 riga=Table('riga', params['metadata'],schema = params['schema'],autoload=True)
 
 if "id_iva" not in [c.name for c in riga.columns]:
+    delete_pickle()
     col = Column('id_iva', Integer)
     col.create(riga)
 
 if "posizione" not in [c.name for c in riga.columns]:
+    delete_pickle()
     col = Column('posizione', Integer)
     col.create(riga)
 
 if "id_riga_padre" not in [c.name for c in riga.columns]:
+    delete_pickle()
     col = Column('id_riga_padre', Integer)
     col.create(riga)
 
