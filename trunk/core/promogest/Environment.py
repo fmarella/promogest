@@ -23,7 +23,7 @@
 
 
 from promogest import preEnv
-# leggiamo da preEnv che è diventato anche un file di configurazioni pre-environment
+# leggiamo da preEnv che è anche un file di configurazioni pre-environment
 pg3 = preEnv.pg3_cla
 aziendaforce = preEnv.aziendaforce
 tipodbforce = preEnv.tipodbforce
@@ -231,6 +231,7 @@ port = main_conf.Database.port
 user = main_conf.Database.user
 password = main_conf.Database.password
 
+
 preEnv.port = port
 preEnv.user = user
 preEnv.password = password
@@ -239,7 +240,6 @@ preEnv.host = host
 preEnv.tipodb = tipodb
 SUB = ""
 userdata = ["", "", "", user]
-
 engine = None
 if tipodb == "sqlite":
     azienda = None

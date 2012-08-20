@@ -33,7 +33,7 @@ from sqlalchemy.orm import *
 from sqlalchemy.interfaces import PoolListener
 from sqlalchemy.exc import *
 from sqlalchemy.interfaces import ConnectionProxy
-from promogest.preEnv import *
+#from promogest.preEnv import *
 
 class MyProxy(ConnectionProxy):
 

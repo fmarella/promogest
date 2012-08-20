@@ -70,8 +70,12 @@ i DAO, i filtri o tutto"""
         from promogest import preEnv, bindtextdomain
         bindtextdomain('promogest', locale_dir='./po/locale')
         if options.pg3_classi == True:
-            reload(sys)
-            sys.setdefaultencoding('utf-8')
+            try:
+                import imp
+                imp.reload(sys)
+            except:
+                reload(sys)
+                sys.setdefaultencoding('utf-8')
             preEnv.pg3_cla = True
         if options.nome_database:
             preEnv.dbforce = options.nome_database

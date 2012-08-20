@@ -1066,9 +1066,9 @@ promogest2 IN /HOME/NOMEUTENTE/ O IN C:/UTENTI/NOMEUTENTE""")
             messageInfo(msg= msgg, transient=self.getTopLevel())
             #if response == gtk.RESPONSE_OK:
             st= Environment.startdir()
-
             stname = st+nameDump
-            os.environ["PGPASSWORD"]=Environment.password
+            os.environ["PGPASSWORD"] = Environment.password
+
             retcode = call(["pg_dump",
                             "-h",Environment.host,
                             "-p",Environment.port,

@@ -23,7 +23,6 @@
 # USA
 
 import os
-import sys
 import re
 import warnings
 with warnings.catch_warnings(record=True) as w:
@@ -33,15 +32,14 @@ from promogest import Environment
 from promogest.ui.gtk_compat import *
 import weakref
 import inspect
-import os.path, glob, zipfile, warnings
-from promogest import Environment
+import os.path, warnings
 
 __version__ = "1.0"
 __author__ = 'Sandino "tigrux" Flores-Moreno'
 
 
 class SimpleGladeWrapper:
-
+    """ """
     def __init__(self, path=None, root=None, domain=None,\
                             callbacks_proxy=None, isModule=False, **kwargs):
         """
@@ -88,21 +86,19 @@ class SimpleGladeWrapper:
         pp = './gui/'
         self.glade = None
         #else:
-        if path and os.path.exists(pp+prefix+path) and not isModule:
-            self.glade_path = pp+prefix+path
+        if path and os.path.exists(pp + prefix + path) and not isModule:
+            self.glade_path = pp + prefix + path
         elif isModule:
-            self.glade_path = './promogest/modules/'+path
-            file_glade = prefix+os.path.split(self.glade_path)[1]
-            self.glade_path = os.path.join(os.path.split(self.glade_path)[0],file_glade)
+            self.glade_path = './promogest/modules/'+ path
+            file_glade = prefix + os.path.split(self.glade_path)[1]
+            self.glade_path = os.path.join(os.path.split(self.glade_path)[0], file_glade)
         #else:
                 #glade_dir = os.path.dirname( sys.argv[0] )
                 #self.glade_path = os.path.join(glade_dir, path)
 
-
-
         for key, value in kwargs.items():
             try:
-                setattr(self, key, weakref.proxy(value) )
+                setattr(self, key, weakref.proxy(value))
             except TypeError:
                 setattr(self, key, value)
         if not gl:
@@ -112,7 +108,7 @@ class SimpleGladeWrapper:
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
             gl.add_from_file(self.glade_path)
-        print "FILE GLADE:"+str(self.glade_path)
+        print "FILE GLADE:" + str(self.glade_path)
 #        Environment.pg2log.info("FILE GLADE:"+str(self.glade_path))
         self.widgets = gl.get_objects()
         if root:

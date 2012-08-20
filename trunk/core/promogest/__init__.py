@@ -35,7 +35,7 @@ def bindtextdomain(app_name, locale_dir=None):
         If omitted or None, then the current binding for app_name is used.
     """
     # installa _() e ngettext() builtin
-    gettext.install(app_name, localedir=locale_dir, unicode=True,
+    gettext.install(app_name, localedir=locale_dir,
                     names=("ngettext",))
     try:
         locale.bindtextdomain(app_name, locale_dir)
@@ -45,5 +45,5 @@ def bindtextdomain(app_name, locale_dir=None):
 
     try:
         locale.setlocale(locale.LC_ALL, "")
-    except locale.Error, e:
+    except locale.Error as e:
         pass
