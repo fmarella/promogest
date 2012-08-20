@@ -20,6 +20,8 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
+import datetime
+
 from promogest import Environment as env
 from promogest.ui.gtk_compat import *
 from promogest.ui.GladeWidget import GladeWidget
@@ -37,6 +39,11 @@ class RicercaLottiWindow(GladeWidget):
         self.placeWindow(self.getTopLevel())
         self.__setup_webview()
 
+        self.draw()
+
+    def draw(self):
+        self.anno_entry.set_text(str(datetime.datetime.now().year))
+
     def __setup_webview(self):
         from webkit import WebView
         self.view = WebView()
@@ -46,8 +53,9 @@ class RicercaLottiWindow(GladeWidget):
         num_lotto = self.numero_lotto_entry.get_text()
         if not num_lotto:
             return
+        anno = int(self.anno_entry.get_text())
 
-        result = ricerca_lotto(num_lotto)
+        result = ricerca_lotto(num_lotto, anno)
 
         pageData = {
             'file': 'ricerca_lotti.html',

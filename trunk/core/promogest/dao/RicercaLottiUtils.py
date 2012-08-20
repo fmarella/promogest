@@ -20,6 +20,8 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
+import datetime
+
 from promogest.dao.Fornitura import Fornitura
 from promogest.dao.RigaMovimentoFornitura import RigaMovimentoFornitura
 from promogest.dao.NumeroLottoTemp import NumeroLottoTemp
@@ -27,9 +29,14 @@ from promogest.dao.TestataMovimento import TestataMovimento
 from promogest.dao.TestataDocumento import TestataDocumento
 
 
-def ricerca_lotto(numero_lotto):
+def ricerca_lotto(numero_lotto, anno):
     lista_fornitori = []
-    forniture = Fornitura().select(numeroLotto=numero_lotto, batchSize=None)
+    
+    forniture = Fornitura().select(numeroLotto=numero_lotto,
+        daDataFornitura=datetime.datetime(anno, 1, 1),
+        aDataFornitura=datetime.datetime.now(),
+        batchSize=None)
+
     for fornitura in forniture:
 
         righe_mf = RigaMovimentoFornitura().select(idFornitura=fornitura.id)
