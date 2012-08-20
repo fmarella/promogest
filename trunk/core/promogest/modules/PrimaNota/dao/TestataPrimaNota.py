@@ -19,7 +19,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-
+import datetime
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
@@ -179,8 +179,10 @@ class TestataPrimaNota(Dao):
     def persist(self):
         """ salvataggio righe associate alla testata """
         pg2log.info("DENTRO IL TESTATA PRIMA NOTA CASSA")
+        if not self.data_inizio:
+            self.data_inizio = datetime.datetime.now()
         if not self.numero:
-            self.numero = getNuovoNumero()
+            self.numero = getNuovoNumero(self.data_inizio)
         params["session"].add(self)
         params["session"].commit()
         if self.__righePrimaNota:
@@ -189,18 +191,19 @@ class TestataPrimaNota(Dao):
                 riga.persist()
         self.__righePrimaNota = []
 
-def getNuovoNumero():
-    date = workingYear
-    numeroSEL= TestataPrimaNota().select(complexFilter=(and_(TestataPrimaNota.data_inizio.between(datetime.date(int(date), 1, 1), datetime.date(int(date) + 1, 1, 1)))), batchSize=None)
-    if numeroSEL:
-        numero = max([p.numero for p in numeroSEL]) +1
-    else:
-        numero = 1
+def getNuovoNumero(data_inizio):
+    anno = data_inizio.year
+    num = Environment.session.query(func.max(TestataPrimaNota.numero)).filter((and_(TestataPrimaNota.data_inizio.between(datetime.date(int(anno), 1, 1), datetime.date(int(anno) + 1, 1, 1))))).one()[0]
+    numero = 1
+    if num:
+        numero = num + 1
     return numero
 
-std_mapper = mapper(TestataPrimaNota, testataprimanota,properties={
-        "rigatest": relation(RigaPrimaNota,primaryjoin=
-                testataprimanota.c.id==RigaPrimaNota.id_testata_prima_nota,
-                foreign_keys=[RigaPrimaNota.id_testata_prima_nota],
-                cascade="all, delete")},
-                order_by=testataprimanota.c.numero.desc())
+std_mapper = mapper(TestataPrimaNota, testataprimanota,
+    properties={
+        "rigatest": relation(RigaPrimaNota,
+            primaryjoin=testataprimanota.c.id==RigaPrimaNota.id_testata_prima_nota,
+            foreign_keys=[RigaPrimaNota.id_testata_prima_nota],
+            cascade="all, delete")
+    },
+    order_by=testataprimanota.c.numero.desc())

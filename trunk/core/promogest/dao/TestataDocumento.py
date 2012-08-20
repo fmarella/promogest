@@ -630,19 +630,7 @@ class TestataDocumento(Dao):
                 stringa += "%s \n%s%s, %s" %(self.intestatario, str_importo_doc, self._getPI_CF(), tipo_pag)
 
                 tpn = TestataPrimaNota()
-                def getNuovoNumeroTPN(data_rif):
-                    anno = data_rif.year
-                    numero = 1
-                    num = TestataPrimaNota().select(complexFilter=(and_(TestataPrimaNota.data_inizio.between(datetime.date(int(anno), 1, 1), datetime.date(int(anno) + 1, 1, 1)))), batchSize=None)
-                    if num:
-                        numero = max([p.numero for p in num]) + 1
-                    return numero
-                if scad.data_pagamento:
-                    tpn.data_inizio = scad.data_pagamento
-                else:
-                    tpn.data_inizio = datetime.datetime.now()
-                if not tpn.numero:
-                    tpn.numero = getNuovoNumeroTPN(tpn.data_inizio)
+                tpn.data_inizio = scad.data_pagamento
                 tpn.note = ""
                 rigaprimanota = RigaPrimaNota()
                 rigaprimanota.denominazione = stringa
