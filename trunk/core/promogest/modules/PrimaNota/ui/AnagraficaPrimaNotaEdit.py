@@ -260,14 +260,6 @@ class AnagraficaPrimaNotaEdit(AnagraficaEdit):
         self.editRiga = self.rigaIter[0]
 
     def saveDao(self, chiusura=False, tipo=None):
-        if not self.dao.numero:
-            date = Environment.workingYear
-            numeroSEL= TestataPrimaNota().select(complexFilter=(and_(TestataPrimaNota.data_inizio.between(datetime.date(int(date), 1, 1), datetime.date(int(date) + 1, 1, 1)))), batchSize=None)
-            if numeroSEL:
-                numero = max([p.numero for p in numeroSEL]) +1
-            else:
-                numero = 1
-            self.dao.numero = numero
         self.dao.data_inizio = stringToDate(self.data_inserimento_datewidget.get_text())
         if self.dao.data_inizio == '' or self.dao.data_inizio ==None:
             obligatoryField(None,self.data_inserimento_datewidget)
