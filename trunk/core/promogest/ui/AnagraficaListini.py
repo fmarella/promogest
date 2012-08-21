@@ -181,12 +181,9 @@ class AnagraficaListiniEdit(AnagraficaEdit):
                     on_id_listino_customcombobox_clicked)
 
     def setDao(self, dao):
+        self.dao = dao
         if dao is None:
-            # Crea un nuovo Dao vuoto
             self.dao = Listino()
-        else:
-            # Ricrea il Dao con una connessione al DBMS SQL
-            self.dao = Listino().select(id=dao.id)[0]
         self._refresh()
         return self.dao
 

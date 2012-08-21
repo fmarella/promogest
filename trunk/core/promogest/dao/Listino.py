@@ -84,8 +84,8 @@ class Listino(Dao):
     magazzini = property(_getMagazzini, _setMagazzini)
 
     def _getListinoComplesso(self):
-        #self.__dbListinoComplesso = ListinoComplessoListino().select(idListinoComplesso=self.id, batchSize=None)
-        self.__dbListinoComplesso = self.listino_complesso
+        self.__dbListinoComplesso = ListinoComplessoListino().select(idListinoComplesso=self.id, batchSize=None)
+        #self.__dbListinoComplesso = self.listino_complesso
         self.__listinocomplesso = self.__dbListinoComplesso[:]
         return self.__listinocomplesso
 
