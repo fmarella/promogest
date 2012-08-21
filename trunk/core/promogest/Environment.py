@@ -369,11 +369,14 @@ def delete_pickle():
     if os.path.exists(os.path.join(SRC_PATH, meta_pickle)):
         os.remove(os.path.join(SRC_PATH, meta_pickle))
 
-if os.name=="nt" and sqlalchemy.__version__ < "0.7":
+if sqlalchemy.__version__ < "0.7":
     delete_pickle()
-    from setuptools.command import easy_install
-    easy_install.main( ["-U","sqlalchemy==0.7.8"] )
-    sys.exit()
+    try:
+        from setuptools.command import easy_install
+        easy_install.main( ["-U","sqlalchemy==0.7.8"] )
+        sys.exit()
+    except:
+        pg2log.info("ERRORE NELL'AGGIORNARE SQLALCHEMY")
 
 
 cadenza = ["MENSILE", "BIMESTRALE", "TRIMESTRALE",
