@@ -22,7 +22,7 @@
 
 from sqlalchemy import Table
 from sqlalchemy.orm import mapper
-from promogest.Environment import params
+from promogest.Environment import params, delete_pickle
 from Dao import Dao
 from migrate import *
 from sqlalchemy.schema import Column
@@ -64,6 +64,7 @@ banca_table = Table('banca',
 t_banca = banca_table #TODO: rimuovere questo alias una volta standardizzato il DAO...
 
 if 'bic_swift' not in [c.name for c in banca_table.columns]:
+    delete_pickle()
     col = Column('bic_swift', String)
     col.create(banca_table, populate_default=True)
 
