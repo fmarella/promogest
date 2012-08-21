@@ -148,12 +148,10 @@ class AnagraficaBancheAziendaEdit(AnagraficaEdit):
         pass
 
     def setDao(self, dao):
+        self.dao = dao
         if dao is None:
             # Crea un nuovo Dao vuoto
             self.dao = BancheAzienda()
-        else:
-            # Ricrea il Dao con una connessione al DBMS SQL
-            self.dao = BancheAzienda().getRecord(id=dao.id)
         self._refresh()
         return self.dao
 
