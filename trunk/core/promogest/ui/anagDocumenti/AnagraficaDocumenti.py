@@ -79,19 +79,21 @@ class AnagraficaDocumentiHtml(AnagraficaHtml):
     def __init__(self, anagrafica):
         AnagraficaHtml.__init__(self, anagrafica, 'documento',
                                 'Documento')
-
+    @timeit
     def variations(self):
-        from promogest.dao.RigaMovimentoFornitura import RigaMovimentoFornitura
+        #from promogest.dao.RigaMovimentoFornitura import RigaMovimentoFornitura
         if self.dao:
             for r in self.dao.righe:
                 l = ""
                 #setattr(r, "aggiuntalottoindescrizione",l)
                 if self.dao.id_fornitore and r.id_articolo:
-                    aa = RigaMovimentoFornitura().select(
-                                idRigaMovimentoAcquisto=r.id, batchSize=None)
+                    #aa = RigaMovimentoFornitura().select(
+                                #idRigaMovimentoAcquisto=r.id, batchSize=None)
+                    aa = r.rmfac
                 else:
-                    aa = RigaMovimentoFornitura().select(
-                                  idRigaMovimentoVendita=r.id, batchSize=None)
+                    #aa = RigaMovimentoFornitura().select(
+                                  #idRigaMovimentoVendita=r.id, batchSize=None)
+                    aa = r.rmfve
                 #ll = r.descrizione
                 if aa:
                     lotti = []
@@ -119,10 +121,11 @@ class AnagraficaDocumentiHtml(AnagraficaHtml):
                                 scadstr = _(" Data Sc. %s") % scad
                         l += lottostr + scadstr
                 else:
-                    from promogest.dao.NumeroLottoTemp import NumeroLottoTemp
-                    aa = NumeroLottoTemp().select(
-                                    idRigaMovimentoVenditaTemp=r.id,
-                                        batchSize=None)
+                    #from promogest.dao.NumeroLottoTemp import NumeroLottoTemp
+                    #aa = NumeroLottoTemp().select(
+                                    #idRigaMovimentoVenditaTemp=r.id,
+                                        #batchSize=None)
+                    aa = r.NLT
                     if aa:
                         l += _("<br /> Lotto %s") % (aa[0].lotto_temp)
                 setattr(r, "aggiuntalottoindescrizione", l)
