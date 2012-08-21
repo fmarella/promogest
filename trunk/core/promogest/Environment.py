@@ -295,10 +295,22 @@ from pickle import load as pickle_load
 meta = MetaData(engine)
 metatmp = MetaData()
 
+
+def delete_pickle():
+    """ Cancella il file pickle del metadata
+    """
+    import os
+    if os.path.exists(os.path.join(SRC_PATH, meta_pickle)):
+        os.remove(os.path.join(SRC_PATH, meta_pickle))
+
+
 if os.path.exists(os.path.join(SRC_PATH, meta_pickle)) \
                                     and sqlalchemy.__version__ > "0.5.8":
     with open(os.path.join(SRC_PATH, meta_pickle), 'rb') as f:
-        meta = pickle_load(f)
+        try:
+            meta = pickle_load(f)
+        except:
+            delete_pickle()
         meta.bind = engine
 else:
     meta = MetaData(engine)
@@ -360,14 +372,8 @@ def hook(et, ev, eb):
 sys.excepthook = hook
 
 # DA SPOSTARE ASSOLUTAMENTE QUANTO PRIMA
+print "SQLALCHEMY VERSION", sqlalchemy.__version__
 
-
-def delete_pickle():
-    """ Cancella il file pickle del metadata
-    """
-    import os
-    if os.path.exists(os.path.join(SRC_PATH, meta_pickle)):
-        os.remove(os.path.join(SRC_PATH, meta_pickle))
 
 if os.name=="nt" and sqlalchemy.__version__ < "0.7":
     delete_pickle()
