@@ -111,7 +111,7 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         self.id_articolo_filter_customcombobox.set_active(0)
         self.refresh()
 
-
+    @timeit
     def refresh(self):
         """
         Aggiornamento TreeView
@@ -173,8 +173,8 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
 
         def filterCountClosure():
             if idArticolo:
-                a = TestataDocumento().count(filterDict = self.filterDict,idArticoloMov=idArticolo) or 0
-                b = TestataDocumento().count(filterDict = self.filterDict,idArticoloDoc=idArticolo) or 0
+                a = TestataDocumento().count(filterDict = self.filterDict, idArticoloMov=idArticolo) or 0
+                b = TestataDocumento().count(filterDict = self.filterDict, idArticoloDoc=idArticolo) or 0
                 return a+b
             return TestataDocumento().count(filterDict = self.filterDict)
 

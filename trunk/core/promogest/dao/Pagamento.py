@@ -38,6 +38,8 @@ class Pagamento(Dao):
     def filter_values(self,k,v):
         if k == "denominazione":
             dic= {k : pagamento.c.denominazione.ilike("%"+v+"%")}
+        if k == "denominazioneEM":
+            dic= {k : pagamento.c.denominazione == v}
         elif k == "tipo":
             dic= {k : pagamento.c.tipo == v} # cassa o banca
         return  dic[k]

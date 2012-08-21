@@ -61,33 +61,29 @@ class TestataMovimento(Dao):
 
 
     def _getRigheMovimento(self):
-        #if not self.__righeMovimento:
-        #self.__dbRigheMovimento = params['session'].query(RigaMovimento)\
-                                        #.with_parent(self)\
-                                        #.filter_by(id_testata_movimento=self.id)\
-                                        #.all()
-        self.__dbRigheMovimento = self.rigamov
-        self.__righeMovimento = self.__dbRigheMovimento[:]
-        if self.operazione == "Trasferimento merce magazzino" and self.id_to_magazzino:
-            for r in self.__righeMovimento[:]:
-                if r.id_magazzino==self.id_to_magazzino:
-                    self.__righeMovimento.remove(r)
-                else:
+        if not self.__righeMovimento:
+            self.__dbRigheMovimento = self.rigamov
+            self.__righeMovimento = self.__dbRigheMovimento[:]
+            if self.operazione == "Trasferimento merce magazzino" and self.id_to_magazzino:
+                for r in self.__righeMovimento[:]:
+                    if r.id_magazzino==self.id_to_magazzino:
+                        self.__righeMovimento.remove(r)
+                    else:
+                        if r.quantita <0:
+                            r.quantita= -1*r.quantita
+            if self.operazione == "Carico da composizione kit":
+                for r in self.__righeMovimento[:]:
                     if r.quantita <0:
-                        r.quantita= -1*r.quantita
-        if self.operazione == "Carico da composizione kit":
-            for r in self.__righeMovimento[:]:
-                if r.quantita <0:
-                    self.__righeMovimento.remove(r)
-        if self.operazione == "Scarico Scomposizione kit":
+                        self.__righeMovimento.remove(r)
+            if self.operazione == "Scarico Scomposizione kit":
 
-            for r in self.__righeMovimento[:]:
-                if "$SSK$" in r.descrizione:
-                    self.__righeMovimento.remove(r)
-                else:
-                    if r.quantita <0:
-                        r.quantita= -1*r.quantita
-                        #self.rev = True
+                for r in self.__righeMovimento[:]:
+                    if "$SSK$" in r.descrizione:
+                        self.__righeMovimento.remove(r)
+                    else:
+                        if r.quantita <0:
+                            r.quantita= -1*r.quantita
+                            #self.rev = True
 
         return self.__righeMovimento
 
@@ -195,7 +191,7 @@ class TestataMovimento(Dao):
         return  dic[k]
 
     @timeit
-    def righeMovimentoDel(self,id=None, sm = False):
+    def righeMovimentoDel(self, sm = False):
         """
         Cancella le righe associate ad un documento
         """
@@ -248,11 +244,11 @@ class TestataMovimento(Dao):
             self.numero = valori[0]
             self.registro_numerazione= valori[1]
         params["session"].add(self)
-        params["session"].commit()
+
 
         sm = posso("SM")
         if self.righeMovimento:
-            self.righeMovimentoDel(id=self.id, sm=sm)
+            self.righeMovimentoDel(sm=sm)
             if self.operazione == "Carico da composizione kit":
                 #print "DEVO AGGIUNGERE IN NEGATIVO LE RIGHE KIT"
                 righeMov = []
@@ -336,6 +332,8 @@ class TestataMovimento(Dao):
                     riga.id_testata_documento = self.id_testata_documento
                     riga.persist(sm=sm)
                 else:
+                    if not self.id:
+                        params["session"].commit()
                     riga.id_testata_movimento = self.id
                     riga.persist(sm=sm)
                     if self.id_fornitore and riga.id_articolo:
@@ -449,8 +447,7 @@ class TestataMovimento(Dao):
                             n.lotto_temp = riga.lotto_temp
                             params["session"].add(n)
             params["session"].commit()
-
-            self.__righeMovimento = []
+        self.init_on_load()
 
 #riga=Table('riga',params['metadata'],schema = params['schema'],autoload=True)
 testata_mov=Table('testata_movimento', params['metadata'],schema = params['schema'],autoload=True)

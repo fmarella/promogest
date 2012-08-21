@@ -613,6 +613,32 @@ def ivaCache():
     return dictIva
 
 
+def operazioneCache():
+    from promogest.dao.Operazione import Operazione
+    if not Environment.operazionecache:
+        ope = Environment.session.query(Operazione.denominazione,Operazione).all()
+        Environment.operazionecache = ope
+    else:
+        ope = Environment.operazionecache
+    dictOpe = {}
+    for a in ope:
+        dictOpe[a[0]] = a[1]
+    return dictOpe
+
+
+def pagCache():
+    from promogest.dao.Pagamento import Pagamento
+    if not Environment.pagamentocache:
+        ope = Environment.session.query(Pagamento.denominazione,Pagamento).all()
+        Environment.pagamentocache = ope
+    else:
+        ope = Environment.pagamentocache
+    dictOpe = {}
+    for a in ope:
+        dictOpe[a[0]] = a[1]
+    return dictOpe
+
+
 def codeIncrement(value):
     """
     FIXME

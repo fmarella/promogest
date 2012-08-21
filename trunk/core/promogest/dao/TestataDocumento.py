@@ -50,7 +50,7 @@ from promogest.modules.Pagamenti.dao.TestataDocumentoScadenza import TestataDocu
 from promogest.dao.InformazioniFatturazioneDocumento import InformazioniFatturazioneDocumento
 import promogest.lib.ibanlib
 
-from promogest.dao.DaoUtils import ivaCache, numeroRegistroGet
+from promogest.dao.DaoUtils import ivaCache, numeroRegistroGet, pagCache
 from decimal import *
 
 from promogest.Environment import *
@@ -62,7 +62,7 @@ class TipoDocumento:
     DDT_VENDITA = 'DDT vendita'
 
 class TestataDocumento(Dao):
-
+    @timeit
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
 
@@ -106,19 +106,20 @@ class TestataDocumento(Dao):
         return '<Documento ID={0} operazione="{1}">'.format(self.numero, self.operazione)
 
     def _getScadenzeDocumento(self):
-        if self.id:
-            self.__dbScadenzeDocumento = params['session']\
-                                    .query(TestataDocumentoScadenza)\
-                                    .with_parent(self)\
-                                    .filter_by(id_testata_documento=self.id)\
-                                    .all()
-        self.__ScadenzeDocumento = self.__dbScadenzeDocumento[:]
+        if not self.__dbScadenzeDocumento:
+            if self.id:
+                #self.__dbScadenzeDocumento = params['session']\
+                                        #.query(TestataDocumentoScadenza)\
+                                        #.with_parent(self)\
+                                        #.filter_by(id_testata_documento=self.id)\
+                                        #.all()
+                self.__dbScadenzeDocumento = self.testata_documento_scadenza
+            self.__ScadenzeDocumento = self.__dbScadenzeDocumento[:]
         return self.__ScadenzeDocumento
 
     def _setScadenzeDocumento(self, value):
         self.__ScadenzeDocumento = value
 
-    #if Environment.conf.hasPagamenti == True:
     scadenze = property(_getScadenzeDocumento, _setScadenzeDocumento)
 
     def sort_by_attr(self, seq,attr):
@@ -126,24 +127,23 @@ class TestataDocumento(Dao):
         intermed.sort()
         return [tup[-1] for tup in intermed]
 
+    @timeit
     def _getRigheDocumento(self):
-        self.__dbRigheMovimentoPart = []
-        self.__dbRigheDocumentoPart = []
-        if self.id:
-            #self.__dbRigheDocumentoPart = object_session(self)\
-                                        #.query(RigaDocumento )\
-                                        #.filter(RigaDocumento.id_testata_documento == self.id).all()
-            self.__dbRigheDocumentoPart = self.rigadoc
-            if self.TM and len(self.TM) ==1:
-                self.__dbRigheMovimentoPart = self.TM[0].rigamov
-            elif self.TM and len(self.TM) >1:
-                Environment.pg2log.info("ATTENZIONE due movimenti fanno riferimento ad una sola testata documento:"+str(self.id))
-                raise Exception("Più di un movimento fa riferimento allo stesso documento!")
-            self.__dbRigheDocumento = self.__dbRigheDocumentoPart + self.__dbRigheMovimentoPart
-            self.__dbRigheDocumento = self.sort_by_attr(self.__dbRigheDocumento,"posizione")
-            self.__righeDocumento = self.__dbRigheDocumento[:]
-        else:
-            self.__righeDocumento = []
+        if not self.__righeDocumento:
+            self.__dbRigheMovimentoPart = []
+            self.__dbRigheDocumentoPart = []
+            if self.id:
+                self.__dbRigheDocumentoPart = self.rigadoc
+                if self.TM and len(self.TM) ==1:
+                    self.__dbRigheMovimentoPart = self.TM[0].rigamov
+                elif self.TM and len(self.TM) >1:
+                    Environment.pg2log.info("ATTENZIONE due movimenti fanno riferimento ad una sola testata documento:"+str(self.id))
+                    raise Exception("Più di un movimento fa riferimento allo stesso documento!")
+                self.__dbRigheDocumento = self.__dbRigheDocumentoPart + self.__dbRigheMovimentoPart
+                self.__dbRigheDocumento = self.sort_by_attr(self.__dbRigheDocumento,"posizione")
+                self.__righeDocumento = self.__dbRigheDocumento[:]
+            else:
+                self.__righeDocumento = []
         return self.__righeDocumento
 
     def _setRigheDocumento(self, value):
@@ -194,15 +194,10 @@ class TestataDocumento(Dao):
     numeroMagazzini = property(_getNumeroMagazzini)
 
     def _getScontiTestataDocumento(self):
-        if self.STD:
-        #if not self.__scontiTestataDocumento and self.id:
-            #self.__dbScontiTestataDocumento = ScontoTestataDocumento().select(
-                                    #join = ScontoTestataDocumento.TD,
-                                    #idScontoTestataDocumento=self.id,
-                                    #batchSize=None)
-            #, self.__dbScontiTestataDocumento
-            self.__dbScontiTestataDocumento = self.STD
-        self.__scontiTestataDocumento = self.__dbScontiTestataDocumento
+        if not self.__scontiTestataDocumento:
+            if self.STD:
+                self.__dbScontiTestataDocumento = self.STD
+            self.__scontiTestataDocumento = self.__dbScontiTestataDocumento
         return self.__scontiTestataDocumento
 
     def _setScontiTestataDocumento(self, value):
@@ -275,6 +270,8 @@ class TestataDocumento(Dao):
         else:
             return ''
 
+
+    @timeit
     def _getTotaliDocumento(self):
         """ funzione di calcolo dei totali documento """
         self.__operazione = leggiOperazione(self.operazione)
@@ -290,11 +287,12 @@ class TestataDocumento(Dao):
         totaleRicaricatoLordo = Decimal(0)
         totaleScontato = Decimal(0)
         castellettoIva = {}
-
         def getSpesePagamento(pagamento):
-            p = Pagamento().select(denominazione=pagamento)
-            if p:
-                p = p[0]
+            pp = pagCache()
+            #p = Pagamento().select(denominazioneEM=pagamento, batchSize=None)
+            if pagamento in  pp:
+                #p = p[0]
+                p = pp[pagamento]
                 if Decimal(str(p.spese or 0)) != Decimal(0):
                     return Decimal(str(p.spese)), calcolaPrezzoIva(Decimal(str(p.spese)), Decimal(str(p.perc_aliquota_iva)))
                 else:
@@ -306,10 +304,12 @@ class TestataDocumento(Dao):
         impon_spese = Decimal(0)
         imposta_spese = Decimal(0)
         if self.id_cliente:
-            cliente = leggiCliente(self.id_cliente)
-            if not cliente['pagante']:
+            #cliente = leggiCliente(self.id_cliente)
+            #if not cliente['pagante']:
+            if not self.CLI.pagante:
                 for scad in self.scadenze:
                     if scad:
+
                         impon_spese_, spese_ = getSpesePagamento(scad.pagamento)
                         spese += spese_
                         impon_spese += impon_spese_
@@ -317,7 +317,6 @@ class TestataDocumento(Dao):
         self._totaleSpese = spese
         self._totaleImponibileSpese = impon_spese
         self._totaleImpostaSpese = imposta_spese
-
         totaleEsclusoBaseImponibileRiga = 0
         totaleImponibileRiga = 0
         merca = setconf("General", "gestione_totali_mercatino")
@@ -400,7 +399,6 @@ class TestataDocumento(Dao):
                 castellettoIva[idAliquotaIva]['imposta'] += totaleImpostaRiga
                 castellettoIva[idAliquotaIva]['totale'] += totaleRiga
         totaleImposta = totaleNonScontato - (totaleImponibile+totaleEsclusoBaseImponibile)
-
         totaleImponibileScontato = totaleImponibile
         totaleImpostaScontata = totaleImposta
         totaleScontato = totaleNonScontato
@@ -419,7 +417,6 @@ class TestataDocumento(Dao):
                                           'sconosciuto: %s' % s.tipo_sconto)
                 elif s.tipo_sconto == 'valore':
                     totaleImponibileScontato = totaleImponibileScontato - Decimal(s.valore)
-
             # riporta l'insieme di sconti ad una percentuale globale
 #            if totaleNonScontato == 0:
  #               totaleNonScontato = 1
@@ -441,7 +438,6 @@ class TestataDocumento(Dao):
                 totaleImpostaScontata += Decimal(castellettoIva[k]['imposta'])
 
             totaleScontato = mN(totaleImponibileScontato + totaleImpostaScontata, 2)
-
         self._totaleNonScontato = mN(totaleImponibile + totaleImposta + totaleEsclusoBaseImponibile + spese, 2)
         self._totaleScontato = mN(totaleImponibileScontato + totaleImpostaScontata + totaleEsclusoBaseImponibile + spese, 2)
         self._totaleImponibile = totaleImponibile + impon_spese
@@ -474,6 +470,8 @@ class TestataDocumento(Dao):
 
     totali = property(_getTotaliDocumento, )
 
+
+    @timeit
     def contieneMovimentazione(self, righe=None):
         """
             Verifica se sono e devono essere presenti righe di movimentazione magazzino
@@ -651,7 +649,7 @@ class TestataDocumento(Dao):
                 a.id_riga_prima_nota = rigaprimanota.id
                 a.id_testata_documento_scadenza = scad.id
                 params["session"].add(a)
-                params["session"].commit()
+                #params["session"].commit()
         Environment.session.commit()
 
         #parte relativa al noleggio
@@ -672,6 +670,7 @@ class TestataDocumento(Dao):
             self.scontiSuTotale = []
 #                scontisutot.persist()
         Environment.pg2log.info("FINE SALVATAGGIO DOCUMENTO")
+        self.init_on_load()
 
     @timeit
     def righeDocumentoDel(self, id=None):

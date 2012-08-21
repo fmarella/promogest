@@ -588,7 +588,9 @@ def leggiOperazione(id):
     """
     Restituisce un dizionario con le informazioni sulla operazione letta
     """
-    from promogest.dao.Operazione import Operazione
+    #from promogest.dao.Operazione import Operazione
+    from promogest.dao.DaoUtils import operazioneCache
+    ope = operazioneCache()
     _denominazione = id
     _fonteValore = ''
     _segno = ''
@@ -596,7 +598,8 @@ def leggiOperazione(id):
     _tipoOperazione = ""
 
     if id is not None:
-        res = Operazione().getRecord(id=(id).strip())
+        #res = Operazione().getRecord(id=(id).strip())
+        res = ope[id]
         if res:
             _fonteValore = res.fonte_valore or ''
             _segno = res.segno or ''
