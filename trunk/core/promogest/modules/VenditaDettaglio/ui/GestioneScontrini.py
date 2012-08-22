@@ -64,7 +64,7 @@ class GestioneScontrini(GladeWidget):
                 path="VenditaDettaglio/gui/scontrini_emessi.glade",
                 isModule=True)
         self._window = self.scontrini_emessi
-
+        self.getTopLevel().set_modal(modal=True)
         self.placeWindow(self._window)
         self.draw()
 
