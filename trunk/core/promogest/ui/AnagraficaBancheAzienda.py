@@ -137,7 +137,7 @@ class AnagraficaBancheAziendaEdit(AnagraficaEdit):
         AnagraficaEdit.__init__(self,
             anagrafica,
             'Dati banche azienda',
-            root'anagrafica_banche_azienda_detail_table',
+            root='anagrafica_banche_azienda_detail_table',
             path='_anagrafica_banche_azienda_elements.glade')
         self._widgetFirstFocus = self.numero_conto_entry
         fillComboboxBanche(self.id_banca_ccb.combobox, short=20)
