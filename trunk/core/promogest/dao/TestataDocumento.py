@@ -123,11 +123,6 @@ class TestataDocumento(Dao):
 
     scadenze = property(_getScadenzeDocumento, _setScadenzeDocumento)
 
-    def sort_by_attr(self, seq,attr):
-        intermed = [(getattr(seq[i], attr), i, seq[i]) for i in xrange(len(seq))]
-        intermed.sort()
-        return [tup[-1] for tup in intermed]
-
     @timeit
     def _getRigheDocumento(self):
         if not self.__righeDocumento:
@@ -141,7 +136,7 @@ class TestataDocumento(Dao):
                     Environment.pg2log.info("ATTENZIONE due movimenti fanno riferimento ad una sola testata documento:"+str(self.id))
                     raise Exception("Più di un movimento fa riferimento allo stesso documento!")
                 self.__dbRigheDocumento = self.__dbRigheDocumentoPart + self.__dbRigheMovimentoPart
-                self.__dbRigheDocumento = self.sort_by_attr(self.__dbRigheDocumento,"posizione")
+                self.__dbRigheDocumento.sort(key=lambda x: x.posizione)
                 self.__righeDocumento = self.__dbRigheDocumento[:]
             else:
                 self.__righeDocumento = []
