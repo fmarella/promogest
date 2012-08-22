@@ -138,9 +138,6 @@ a_data_inizio_primanota = None
 azienda_in_conf = None
 idACT = []
 confDict = {}
-ivacache = []  # lista di aliquote e deniminazione ...utile come cache
-operazionecache = []
-pagamentocache = []
 SRC_PATH = os.path.split(os.path.dirname(__file__))[0]
 
 STATIC_PATH = os.path.join(SRC_PATH, 'templates')

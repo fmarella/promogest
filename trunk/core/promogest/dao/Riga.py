@@ -24,7 +24,7 @@ from sqlalchemy.orm import mapper
 from migrate import *
 from promogest.Environment import *
 from promogest.dao.Dao import Dao
-from promogest.dao.DaoUtils import ivaCache
+from promogest.dao.CachedDaosDict import CachedDaosDict
 from promogest.dao.Magazzino import Magazzino
 from promogest.dao.Listino import Listino
 from promogest.dao.Multiplo import Multiplo
@@ -84,9 +84,8 @@ class Riga(Dao):
 
     def _getAliquotaIva(self):
         if self.id_iva:
-            dictIva = ivaCache()
-            #ali = AliquotaIva().getRecord(id=self.id_iva)
-            return dictIva[self.id_iva][0].denominazione_breve or ""
+            cache = CachedDaosDict()
+            return cache['aliquotaiva'][self.id_iva][0].denominazione_breve or ""
         else:
             return ""
     aliquota = property(_getAliquotaIva)

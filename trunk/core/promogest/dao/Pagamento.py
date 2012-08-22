@@ -25,10 +25,9 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
 from Dao import Dao
-from promogest.dao.AliquotaIva import AliquotaIva
 from migrate import *
-from promogest.dao.DaoUtils import ivaCache, get_columns
-
+from promogest.dao.DaoUtils import get_columns
+from promogest.dao.CachedDaosDict import CachedDaosDict
 
 class Pagamento(Dao):
 
@@ -47,10 +46,9 @@ class Pagamento(Dao):
     @property
     def aliquota_iva(self):
         if self.id_aliquota_iva:
-            dictIva = ivaCache()
-            #ali = AliquotaIva().getRecord(id=self.id_iva)
-            if self.id_aliquota_iva in dictIva:
-                return dictIva[self.id_aliquota_iva][0].denominazione_breve or ""
+            cache = CachedDaosDict()
+            if self.id_aliquota_iva in cache['aliquotaiva']:
+                return cache['aliquotaiva'][self.id_aliquota_iva][0].denominazione_breve or ""
             else:
                 return ""
         else:
@@ -59,10 +57,9 @@ class Pagamento(Dao):
     @property
     def perc_aliquota_iva(self):
         if self.id_aliquota_iva:
-            dictIva = ivaCache()
-            #ali = AliquotaIva().getRecord(id=self.id_iva)
-            if self.id_aliquota_iva in dictIva:
-                return dictIva[self.id_aliquota_iva][0].percentuale or ""
+            cache = CachedDaosDict()
+            if self.id_aliquota_iva in cache['aliquotaiva']:
+                return cache['aliquotaiva'][self.id_aliquota_iva][0].percentuale or ""
             else:
                 return 0
         else:

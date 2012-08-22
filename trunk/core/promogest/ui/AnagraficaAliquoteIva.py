@@ -179,5 +179,4 @@ class AnagraficaAliquoteIvaEdit(AnagraficaEdit):
         self.dao.descrizione_detrazione = self.descrizione_detrazione_entry.\
                                                                     get_text()
         self.dao.id_tipo = findIdFromCombobox(self.id_tipo_combobox)
-        Environment.ivacache = []
         self.dao.persist()

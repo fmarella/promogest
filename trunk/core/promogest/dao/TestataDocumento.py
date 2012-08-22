@@ -50,7 +50,8 @@ from promogest.modules.Pagamenti.dao.TestataDocumentoScadenza import TestataDocu
 from promogest.dao.InformazioniFatturazioneDocumento import InformazioniFatturazioneDocumento
 import promogest.lib.ibanlib
 
-from promogest.dao.DaoUtils import ivaCache, numeroRegistroGet, pagCache
+from promogest.dao.DaoUtils import numeroRegistroGet
+from promogest.dao.CachedDaosDict import CachedDaosDict
 from decimal import *
 
 from promogest.Environment import *
@@ -276,7 +277,7 @@ class TestataDocumento(Dao):
         """ funzione di calcolo dei totali documento """
         self.__operazione = leggiOperazione(self.operazione)
         fonteValore = self.__operazione["fonteValore"]
-        dictIva = ivaCache()
+        cache = CachedDaosDict()
         # FIXME: duplicated in AnagraficaDocumenti.py
         totaleImponibile = Decimal(0)
         totaleImposta = Decimal(0)
@@ -288,11 +289,11 @@ class TestataDocumento(Dao):
         totaleScontato = Decimal(0)
         castellettoIva = {}
         def getSpesePagamento(pagamento):
-            pp = pagCache()
+            cache = CachedDaosDict()
             #p = Pagamento().select(denominazioneEM=pagamento, batchSize=None)
-            if pagamento in  pp:
+            if pagamento in cache['pagamento']:
                 #p = p[0]
-                p = pp[pagamento]
+                p = cache['pagamento'][pagamento]
                 if Decimal(str(p.spese or 0)) != Decimal(0):
                     return Decimal(str(p.spese)), calcolaPrezzoIva(Decimal(str(p.spese)), Decimal(str(p.perc_aliquota_iva)))
                 else:
@@ -345,8 +346,8 @@ class TestataDocumento(Dao):
             daoiva = None
             aliquotaIvaRiga = None
             if idAliquotaIva:
-                if idAliquotaIva in dictIva:
-                    daoiva = dictIva[idAliquotaIva][0]
+                if idAliquotaIva in cache['aliquotaiva']:
+                    daoiva = cache['aliquotaiva'][idAliquotaIva][0]
                 if daoiva:
                     aliquotaIvaRiga = daoiva.percentuale
             if not aliquotaIvaRiga: # solo se non l'ho trovato dall'id prendo quello della percentuale
@@ -358,14 +359,14 @@ class TestataDocumento(Dao):
             totaleRiga = riga.totaleRiga
 
             if (fonteValore == "vendita_iva" or fonteValore == "acquisto_iva"):
-                if daoiva and dictIva[idAliquotaIva][1] == "Non imponibile":
+                if daoiva and cache['aliquotaiva'][idAliquotaIva][1] == "Non imponibile":
                     totaleEsclusoBaseImponibileRiga = totaleRiga
                     totaleImponibileRiga = 0
                 else:
                     totaleEsclusoBaseImponibileRiga = 0
                     totaleImponibileRiga = calcolaPrezzoIva(totaleRiga, -1 * percentualeIvaRiga)
             else:
-                if daoiva and dictIva[idAliquotaIva][1] == "Non imponibile":
+                if daoiva and cache['aliquotaiva'][idAliquotaIva][1] == "Non imponibile":
                     totaleEsclusoBaseImponibileRiga = totaleRiga
                     totaleImponibileRiga = 0
                     totaleRiga = calcolaPrezzoIva(totaleRiga, percentualeIvaRiga)

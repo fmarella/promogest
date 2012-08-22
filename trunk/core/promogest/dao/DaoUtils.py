@@ -600,45 +600,6 @@ def ckd(dao):
             return True
     return True
 
-def ivaCache():
-    from promogest.dao.AliquotaIva import AliquotaIva
-    if not Environment.ivacache:
-        ive = Environment.session.query(AliquotaIva.id,AliquotaIva).all()
-        Environment.ivacache = ive
-    else:
-        ive = Environment.ivacache
-    dictIva = {}
-    for a in ive:
-        dictIva[a[0]] = (a[1],a[1].tipo_ali_iva)
-    return dictIva
-
-
-def operazioneCache():
-    from promogest.dao.Operazione import Operazione
-    if not Environment.operazionecache:
-        ope = Environment.session.query(Operazione.denominazione,Operazione).all()
-        Environment.operazionecache = ope
-    else:
-        ope = Environment.operazionecache
-    dictOpe = {}
-    for a in ope:
-        dictOpe[a[0]] = a[1]
-    return dictOpe
-
-
-def pagCache():
-    from promogest.dao.Pagamento import Pagamento
-    if not Environment.pagamentocache:
-        ope = Environment.session.query(Pagamento.denominazione,Pagamento).all()
-        Environment.pagamentocache = ope
-    else:
-        ope = Environment.pagamentocache
-    dictOpe = {}
-    for a in ope:
-        dictOpe[a[0]] = a[1]
-    return dictOpe
-
-
 def codeIncrement(value):
     """
     FIXME

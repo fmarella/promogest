@@ -45,7 +45,7 @@ from promogest.ui.gtk_compat import *
 from promogest.dao.DaoUtils import *
 from promogest.lib.HtmlViewer import HtmlViewer
 from promogest.lib.relativedelta import relativedelta
-from promogest.dao.DaoUtils import ivaCache
+from promogest.dao.CachedDaosDict import CachedDaosDict
 
 class StatisticaGenerale(GladeWidget):
     """ Questa classe nasce con l'intenzione di gestire una interfaccia di
@@ -533,7 +533,7 @@ class StatisticaGenerale(GladeWidget):
         #print self.produttore
 
         diz = OrderedDict()
-        dictIva =ivaCache()
+        cache = CachedDaosDict()
         for c in clienti:
             pbar(self.pbar,parziale=clienti.index(c), totale=len(clienti),text="GEN DATI", noeta = True)
             docu = TestataDocumento().select(idCliente = c.id,daData=daData, aData=aData, batchSize=None)
@@ -574,7 +574,7 @@ class StatisticaGenerale(GladeWidget):
                                 if cc.testata_movimento.opera.fonte_valore == "vendita_iva":
                                     # scorporo l'iva per avere tutti valori imponibili
                                     idAliquotaIva = cc.id_iva
-                                    daoiva = dictIva[idAliquotaIva][0]
+                                    daoiva = cache['aliquotaiva'][idAliquotaIva][0]
                                     aliquotaIvaRiga = daoiva.percentuale
                                     totRigaImponibile = cc.valore_unitario_netto/(1+aliquotaIvaRiga/100)
                                     totRiga += totRigaImponibile
@@ -603,7 +603,7 @@ class StatisticaGenerale(GladeWidget):
                                 if cc.testata_movimento.opera.fonte_valore == "vendita_iva":
                                     # scorporo l'iva per avere tutti valori imponibili
                                     idAliquotaIva = cc.id_iva
-                                    daoiva = dictIva[idAliquotaIva][0]
+                                    daoiva = cache['aliquotaiva'][idAliquotaIva][0]
                                     aliquotaIvaRiga = daoiva.percentuale
                                     totRigaImponibile = cc.valore_unitario_netto/(1+aliquotaIvaRiga/100)
                                     totRiga += totRigaImponibile

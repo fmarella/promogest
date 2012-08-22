@@ -50,6 +50,7 @@ from promogest.dao.RigaMovimentoFornitura import RigaMovimentoFornitura
 from promogest.lib.utils import *
 from promogest.ui.utilsCombobox import *
 from promogest.dao.DaoUtils import giacenzaArticolo
+from promogest.dao.CachedDaosDict import CachedDaosDict
 from promogest.dao.RigaRitenutaAcconto import RigaRitenutaAcconto
 
 if posso("PW"):
@@ -535,6 +536,8 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self.id_vettore_customcombobox.set_sensitive(False)
         self.porto_combobox.set_sensitive(False)
         findComboboxRowFromId(self.id_destinazione_merce_customcombobox.combobox, -1)
+        self.id_operazione_combobox.set_active(-1)
+        self.id_persona_giuridica_customcombobox.set_active(-1)
         #self.id_destinazione_merce_customcombobox.combobox.set_sensitive(False)
 
     def _refresh(self):
@@ -554,17 +557,11 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self.data_documento_entry.set_sensitive(self.dao.id is None)
         self.edit_date_and_number_button.set_sensitive(self.dao.id is not None)
         self.numero_documento_entry.set_sensitive(False)
-
         self.id_operazione_combobox.set_sensitive(self.dao.id is None)
-
-        self.id_persona_giuridica_customcombobox.set_sensitive(self.dao.id is None)
-
-        self.id_operazione_combobox.set_active(-1)
-        self.id_persona_giuridica_customcombobox.set_active(-1)
-
         self._operazione = self.dao.operazione
         findComboboxRowFromId(self.id_operazione_combobox, self.dao.operazione)
         self.on_id_operazione_combobox_changed(self.id_operazione_combobox)
+        self.id_persona_giuridica_customcombobox.set_sensitive(self.dao.id is None)
         self.id_persona_giuridica_customcombobox.refresh(clear=True, filter=False)
         if self._tipoPersonaGiuridica == "fornitore":
             self.id_persona_giuridica_customcombobox.setId(self.dao.id_fornitore)
@@ -1863,26 +1860,16 @@ del documento.
     def on_id_operazione_combobox_changed(self, combobox):
         """ Funzione di gestione cambiamento combo operazione"""
         self._operazione = findIdFromCombobox(self.id_operazione_combobox)
-#        page = self.notebook.get_nth_page(3)
-#        if page:
-#            if self._operazione not in Environment.hapag:
-#                page.set_visible(False)
-#            else:
-#                page.set_visible(True)
-        #operazione = leggiOperazione(self._operazione)
-        operazione = Operazione().getRecord(id=self._operazione)
-        if operazione:
-            if self._tipoPersonaGiuridica != operazione.tipo_persona_giuridica:
+        if not self._operazione:
+            return
+        cache = CachedDaosDict()
+        operazioneDao = cache['operazione'][self._operazione]
+        if operazioneDao:
+            if self._tipoPersonaGiuridica != operazioneDao.tipo_persona_giuridica:
                 self.id_persona_giuridica_customcombobox.refresh(clear=True, filter=False)
-            self._tipoPersonaGiuridica = operazione.tipo_persona_giuridica
-            self._fonteValore = operazione.fonte_valore
-            self._segno = operazione.segno
-
-        #if self._tipoPersonaGiuridica != operazione["tipoPersonaGiuridica"]:
-            #self.id_persona_giuridica_customcombobox.refresh(clear=True, filter=False)
-        #self._tipoPersonaGiuridica = operazione["tipoPersonaGiuridica"]
-        #self._fonteValore = operazione["fonteValore"]
-        #self._segno = operazione["segno"]
+            self._tipoPersonaGiuridica = operazioneDao.tipo_persona_giuridica
+            self._fonteValore = operazioneDao.fonte_valore
+            self._segno = operazioneDao.segno
 
         if (self._tipoPersonaGiuridica == "fornitore"):
             self.persona_giuridica_label.set_text('Fornitore')
