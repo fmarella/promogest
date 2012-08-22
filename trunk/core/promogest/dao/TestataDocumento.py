@@ -703,10 +703,10 @@ class TestataDocumento(Dao):
         """
         Cancella la scadenza documento associato ad un documento
         """
-        #row = TestataDocumentoScadenza().select(idTestataDocumento= dao.id,
-                        #offset = None,
-                        #batchSize = None)
-        row = self.testata_documento_scadenza
+        row = TestataDocumentoScadenza().select(idTestataDocumento= dao.id,
+                        offset = None,
+                        batchSize = None)
+        #row = self.testata_documento_scadenza
         for r in row:
             #a cascata
 #            if dao.ripartire_importo: #aka prima nota
