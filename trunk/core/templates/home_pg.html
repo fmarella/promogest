@@ -1,12 +1,17 @@
 <img src="http://www.promotux.it/templates/promoGest/img/testata_promogest2.png" alt="Logo PromoGest" />
 <hr></hr>
+<!--
 <h2 align="left">Riepiloghi:</h2>
+-->
+<!--
 {% if pageData["troppi"] == 0 %}
 <h3 align="center">TOTALI del Fatturato relativi all'ultimo mese: ({{pageData["sospesi"]}})</h3>
 {% else %}
 <h3 align="center">TOTALI Fatturato:( Ultimi{{ pageData["sospesi"]}})</h3>
 <p>Periodo dal {{utils.dateToString(pageData["objects"][0].data_documento)}} al {{utils.dateToString(pageData["objects"][-1].data_documento)}}</p>
 {% endif %}
+-->
+<!--
             <table style="width:360px;">
             {% set tot = utils.calcolaTotali(pageData["objects"]) %}
             {% for k, v in tot['imponibile_aliquote'].items() %}
@@ -55,6 +60,7 @@
                 <td style="width:120px;text-align:right;font-size:12px"><b>{{utils.mNLC(tot["totale_pagato"],2)}}</b></td>
             </tr>
         </table>
+-->
         <a style="text-color:black;" href="http://www.promogest.me/promoGest/news_list">
 <div style="text-align:center;color:black;"><br />
     <h3 style="color:black;">NEWS dal SITO</a></h3></div>

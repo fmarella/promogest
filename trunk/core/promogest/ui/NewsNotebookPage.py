@@ -61,12 +61,13 @@ class NewsNotebookPage(GladeWidget):
     def build_news_frame(self):
         htmlwidget = createHtmlObj(self)
         self.feed_scrolled.add(htmlwidget)
-        oggi = datetime.datetime.today()
-        one_month = relativedelta(months=1)
-        lastmonth =  oggi - one_month
+        #oggi = datetime.datetime.today()
+        #one_month = relativedelta(months=1)
+        #lastmonth =  oggi - one_month
         #if lendocu > 200:
         #quanti= TestataDocumento().count(daData=dateToString(lastmonth),batchSize=None)
-        docu = TestataDocumento().select(daData=lastmonth, batchSize=None)
+        #docu = TestataDocumento().select(daData=lastmonth, batchSize=None)
+        docu = []
         if len(docu) > 30:
             docu = docu[-30:]
             sospesi = 30
