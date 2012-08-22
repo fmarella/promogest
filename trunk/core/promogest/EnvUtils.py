@@ -69,6 +69,10 @@ def connect():
         from promogest.preEnv import *
         a = psycopg2.connect(user=user, host=host, port=port,
                             password=password, database=database)
+        cursor = a.cursor()
+        cursor.execute("SELECT * FROM pg_stat_activity")
+        records = cursor.fetchall()
+        print "RECORDSSSSSSSSSSSSSSSSSSSSSSSSSS", records
     except Exception, e:
         a = "CONNESSIONE AL DATABASE PRO NON RIUSCITA.\n DETTAGLIO ERRORE: [%s]" % str(e)
         messageInfo(msg=a)
