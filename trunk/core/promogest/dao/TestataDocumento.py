@@ -719,13 +719,13 @@ class TestataDocumento(Dao):
                     if rpn:
                         tpn = TestataPrimaNota().getRecord(id=rpn.id_testata_prima_nota)
                     params['session'].delete(p)
-                    #params["session"].commit()
+                    params["session"].commit()
                     if rpn:
                         params['session'].delete(rpn)
-                        #params["session"].commit()
+                        params["session"].commit()
                     if tpn and len(tpn.righeprimanota)==0:
                         params['session'].delete(tpn)
-                        #params["session"].commit()
+                        params["session"].commit()
             params['session'].delete(r)
         params["session"].commit()
         return True
