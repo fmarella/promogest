@@ -81,54 +81,57 @@ class AnagraficaDocumentiHtml(AnagraficaHtml):
                                 'Documento')
     @timeit
     def variations(self):
-        from promogest.dao.RigaMovimentoFornitura import RigaMovimentoFornitura
-        if self.dao:
-            for r in self.dao.righe:
-                l = ""
-                #setattr(r, "aggiuntalottoindescrizione",l)
-                if self.dao.id_fornitore and r.id_articolo:
-                    aa = RigaMovimentoFornitura().select(
-                                idRigaMovimentoAcquisto=r.id, batchSize=None)
-                    #aa = r.rmfac
-                else:
-                    aa = RigaMovimentoFornitura().select(
-                                  idRigaMovimentoVendita=r.id, batchSize=None)
-                    #aa = r.rmfve
-                #ll = r.descrizione
-                if aa:
-                    lotti = []
-                    scadenze = []
-                    for a in aa:
-                        lottostr = ""
-                        scadstr = ""
-                        if a.forni and a.forni.numero_lotto \
-                                            and a.forni.numero_lotto != "":
-                            lotto = a.forni.numero_lotto
-                            if lotto in lotti:
-                                continue
-                            else:
-                                lotti.append(lotto)
-                            if lotto:
-                                lottostr = _("<br /> Lotto %s  - ") % lotto
-
-                        if a.forni and a.forni.data_scadenza:
-                            scad = dateToString(a.forni.data_scadenza)
-                            if scad in scadenze:
-                                continue
-                            else:
-                                scadenze.append(scad)
-                            if scad:
-                                scadstr = _(" Data Sc. %s") % scad
-                        l += lottostr + scadstr
-                else:
-                    from promogest.dao.NumeroLottoTemp import NumeroLottoTemp
-                    aa = NumeroLottoTemp().select(
-                                    idRigaMovimentoVenditaTemp=r.id,
-                                        batchSize=None)
-                    #aa = r.NLT
+        aa= []
+        if setconf("General", "gestione_lotti"):
+            from promogest.dao.RigaMovimentoFornitura import RigaMovimentoFornitura
+            if self.dao:
+                for r in self.dao.righe:
+                    l = ""
+                    #setattr(r, "aggiuntalottoindescrizione",l)
+                    if self.dao.id_fornitore and r.id_articolo:
+                        aa = RigaMovimentoFornitura().select(
+                                    idRigaMovimentoAcquisto=r.id, batchSize=None)
+                        #aa = r.rmfac
+                    else:
+                        aa = RigaMovimentoFornitura().select(
+                                      idRigaMovimentoVendita=r.id, batchSize=None)
+                        #aa = r.rmfve
+                    #ll = r.descrizione
                     if aa:
-                        l += _("<br /> Lotto %s") % (aa[0].lotto_temp)
-                setattr(r, "aggiuntalottoindescrizione", l)
+                        lotti = []
+                        scadenze = []
+                        for a in aa:
+                            lottostr = ""
+                            scadstr = ""
+                            if a.forni and a.forni.numero_lotto \
+                                                and a.forni.numero_lotto != "":
+                                lotto = a.forni.numero_lotto
+                                if lotto in lotti:
+                                    continue
+                                else:
+                                    lotti.append(lotto)
+                                if lotto:
+                                    lottostr = _("<br /> Lotto %s  - ") % lotto
+
+                            if a.forni and a.forni.data_scadenza:
+                                scad = dateToString(a.forni.data_scadenza)
+                                if scad in scadenze:
+                                    continue
+                                else:
+                                    scadenze.append(scad)
+                                if scad:
+                                    scadstr = _(" Data Sc. %s") % scad
+                            l += lottostr + scadstr
+                    else:
+                        if setconf("Documenti", "lotto_temp"):
+                            from promogest.dao.NumeroLottoTemp import NumeroLottoTemp
+                            aa = NumeroLottoTemp().select(
+                                            idRigaMovimentoVenditaTemp=r.id,
+                                                batchSize=None)
+                            #aa = r.NLT
+                        if aa:
+                            l += _("<br /> Lotto %s") % (aa[0].lotto_temp)
+                    setattr(r, "aggiuntalottoindescrizione", l)
         return self.dao
 
 

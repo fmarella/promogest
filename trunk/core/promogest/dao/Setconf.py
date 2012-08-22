@@ -30,7 +30,6 @@ from promogest.lib.utils import orda
 try:
     setconf=Table('setconf',params['metadata'] ,schema = params['schema'],autoload=True)
 except:
-    print "UFFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", params['schema'], params['metadata']
     setconf  = Table('setconf', params["metadata"],
             Column('id',Integer,primary_key=True),
             Column('key',String(50), nullable=False),
@@ -523,6 +522,18 @@ if not ("zeri_in_totali", "Stampa") in allkey:
     kuu1.date = datetime.datetime.now()
     session.add(kuu1)
 
+if not ("gestione_lotti", "General") in allkey:
+    krr = SetConf()
+    krr.key = "gestione_lotti"
+    krr.value = "False"
+    krr.section = "General"
+    krr.description = "Gestione lotti e scadenze"
+    krr.tipo_section = "Generico"
+    krr.active = True
+    krr.tipo = "bool"
+    krr.visible = True
+    krr.date = datetime.datetime.now()
+    session.add(krr)
 
 COOKIENAME = SetConf().select(key="cookie_name")[0].value
 

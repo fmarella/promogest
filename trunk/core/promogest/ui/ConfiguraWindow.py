@@ -117,6 +117,12 @@ class ConfiguraWindow(GladeWidget):
             self.mercatino_check.set_active(0)
 
         try:
+            self.gestione_lotti_check.set_active(int(setconf("General", "gestione_lotti")))
+        except:
+            self.gestione_lotti_check.set_active(0)
+
+
+        try:
             self.vettore_codice_upper_check.set_active(int(setconf("Vettori", "vettore_codice_upper")))
         except:
             self.vettore_codice_upper_check.set_active(1)
@@ -203,6 +209,11 @@ class ConfiguraWindow(GladeWidget):
 
         c = SetConf().select(key="gestione_totali_mercatino", section="General")
         c[0].value = str(self.mercatino_check.get_active())
+        c[0].tipo = "bool"
+        Environment.session.add(c[0])
+
+        c = SetConf().select(key="gestione_lotti", section="General")
+        c[0].value = str(self.gestione_lotti_check.get_active())
         c[0].tipo = "bool"
         Environment.session.add(c[0])
 

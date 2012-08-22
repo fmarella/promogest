@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <requires lib="gtk+" version="2.16"/>
-  <!-- interface-requires pythonplugin 0.0 -->
   <!-- interface-naming-policy toplevel-contextual -->
   <object class="GtkWindow" id="configura_window">
     <property name="visible">True</property>
@@ -163,6 +162,7 @@
                                     <child>
                                       <object class="GtkHBox" id="hbox4">
                                         <property name="visible">True</property>
+                                        <property name="sensitive">False</property>
                                         <property name="can_focus">False</property>
                                         <child>
                                           <object class="GtkLabel" id="label7">
@@ -179,25 +179,24 @@
                                           </packing>
                                         </child>
                                         <child>
-                                          <object class="UnsignedIntegerEntryField" id="altezza_logo_entry">
+                                          <object class="GtkEntry" id="altezza_logo_entry">
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
-                                            <property name="invisible_char">●</property>
-                                            <property name="secondary_icon_stock">gtk-clear</property>
+                                            <property name="invisible_char">•</property>
                                             <property name="primary_icon_activatable">False</property>
-                                            <property name="secondary_icon_activatable">True</property>
+                                            <property name="secondary_icon_activatable">False</property>
                                             <property name="primary_icon_sensitive">True</property>
                                             <property name="secondary_icon_sensitive">True</property>
                                           </object>
                                           <packing>
-                                            <property name="expand">False</property>
-                                            <property name="fill">False</property>
+                                            <property name="expand">True</property>
+                                            <property name="fill">True</property>
                                             <property name="position">1</property>
                                           </packing>
                                         </child>
                                       </object>
                                       <packing>
-                                        <property name="expand">True</property>
+                                        <property name="expand">False</property>
                                         <property name="fill">True</property>
                                         <property name="position">2</property>
                                       </packing>
@@ -222,25 +221,25 @@
                                           </packing>
                                         </child>
                                         <child>
-                                          <object class="UnsignedIntegerEntryField" id="larghezza_logo_entry">
+                                          <object class="GtkEntry" id="larghezza_logo_entry">
                                             <property name="visible">True</property>
+                                            <property name="sensitive">False</property>
                                             <property name="can_focus">True</property>
-                                            <property name="invisible_char">●</property>
-                                            <property name="secondary_icon_stock">gtk-clear</property>
+                                            <property name="invisible_char">•</property>
                                             <property name="primary_icon_activatable">False</property>
-                                            <property name="secondary_icon_activatable">True</property>
+                                            <property name="secondary_icon_activatable">False</property>
                                             <property name="primary_icon_sensitive">True</property>
                                             <property name="secondary_icon_sensitive">True</property>
                                           </object>
                                           <packing>
-                                            <property name="expand">False</property>
-                                            <property name="fill">False</property>
+                                            <property name="expand">True</property>
+                                            <property name="fill">True</property>
                                             <property name="position">1</property>
                                           </packing>
                                         </child>
                                       </object>
                                       <packing>
-                                        <property name="expand">True</property>
+                                        <property name="expand">False</property>
                                         <property name="fill">True</property>
                                         <property name="position">3</property>
                                       </packing>
@@ -858,9 +857,24 @@ VETTORE ( VE0000 )</property>
                             <property name="draw_indicator">True</property>
                           </object>
                           <packing>
-                            <property name="expand">True</property>
+                            <property name="expand">False</property>
                             <property name="fill">True</property>
                             <property name="position">6</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkCheckButton" id="gestione_lotti_check">
+                            <property name="label" translatable="yes">Abilita la gestione dei lotti e delle scadenze</property>
+                            <property name="use_action_appearance">False</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">False</property>
+                            <property name="draw_indicator">True</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">7</property>
                           </packing>
                         </child>
                         <child>
@@ -937,9 +951,9 @@ VETTORE ( VE0000 )</property>
                             </child>
                           </object>
                           <packing>
-                            <property name="expand">True</property>
+                            <property name="expand">False</property>
                             <property name="fill">True</property>
-                            <property name="position">7</property>
+                            <property name="position">8</property>
                           </packing>
                         </child>
                       </object>
@@ -1008,27 +1022,27 @@ VETTORE ( VE0000 )</property>
     <data>
       <row>
         <col id="0" translatable="yes">ogni 5 minuti</col>
-        <col id="1" translatable="no">300</col>
+        <col id="1">300</col>
       </row>
       <row>
         <col id="0" translatable="yes">ogni 10 minuti</col>
-        <col id="1" translatable="no">600</col>
+        <col id="1">600</col>
       </row>
       <row>
         <col id="0" translatable="yes">ogni 15 minuti</col>
-        <col id="1" translatable="no">900</col>
+        <col id="1">900</col>
       </row>
       <row>
         <col id="0" translatable="yes">ogni 30 minuti</col>
-        <col id="1" translatable="no">1800</col>
+        <col id="1">1800</col>
       </row>
       <row>
         <col id="0" translatable="yes">ogni ora</col>
-        <col id="1" translatable="no">3600</col>
+        <col id="1">3600</col>
       </row>
       <row>
         <col id="0" translatable="yes">Mai</col>
-        <col id="1" translatable="no">0</col>
+        <col id="1">0</col>
       </row>
     </data>
   </object>
