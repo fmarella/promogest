@@ -111,7 +111,6 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         self.id_articolo_filter_customcombobox.set_active(0)
         self.refresh()
 
-    @timeit
     def refresh(self):
         """
         Aggiornamento TreeView

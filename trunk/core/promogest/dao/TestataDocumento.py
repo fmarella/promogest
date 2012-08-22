@@ -63,7 +63,6 @@ class TipoDocumento:
     DDT_VENDITA = 'DDT vendita'
 
 class TestataDocumento(Dao):
-    @timeit
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
 
@@ -123,7 +122,6 @@ class TestataDocumento(Dao):
 
     scadenze = property(_getScadenzeDocumento, _setScadenzeDocumento)
 
-    @timeit
     def _getRigheDocumento(self):
         if not self.__righeDocumento:
             self.__dbRigheMovimentoPart = []
@@ -267,7 +265,6 @@ class TestataDocumento(Dao):
             return ''
 
 
-    @timeit
     def _getTotaliDocumento(self):
         """ funzione di calcolo dei totali documento """
         self.__operazione = leggiOperazione(self.operazione)
@@ -466,8 +463,6 @@ class TestataDocumento(Dao):
 
     totali = property(_getTotaliDocumento, )
 
-
-    @timeit
     def contieneMovimentazione(self, righe=None):
         """
             Verifica se sono e devono essere presenti righe di movimentazione magazzino
@@ -484,9 +479,7 @@ class TestataDocumento(Dao):
                         break
         return righeMovimentazione
 
-
     #Salvataggi subordinati alla testata Documento, iniziamo da righe documento e poi righe
-    @timeit
     def persist(self):
         if not self.ckdd(self):
             return
@@ -668,7 +661,6 @@ class TestataDocumento(Dao):
         Environment.pg2log.info("FINE SALVATAGGIO DOCUMENTO")
         self.init_on_load()
 
-    @timeit
     def righeDocumentoDel(self, id=None):
         """
         Cancella le righe associate ad un documento
@@ -693,7 +685,6 @@ class TestataDocumento(Dao):
             #params["session"].commit()
             return True
 
-    @timeit
     def scontiTestataDocumentoDel(self,id=None):
         """
         Cancella gli sconti associati ad un documento
@@ -708,7 +699,6 @@ class TestataDocumento(Dao):
             params["session"].commit()
             return True
 
-    @timeit
     def testataDocumentoScadenzaDel(self,dao=None):
         """
         Cancella la scadenza documento associato ad un documento
