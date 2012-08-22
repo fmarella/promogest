@@ -1196,23 +1196,49 @@ clie = Table('cliente',params['metadata'],schema = params['schema'],autoload=Tru
 banc = Table('banca',params['metadata'],schema = params['schema'],autoload=True)
 fornitor=Table('fornitore', params['metadata'], schema = params['schema'], autoload=True)
 
-std_mapper = mapper(TestataDocumento, testata_documento, properties={
-        "rigadoc": relation(RigaDocumento, cascade="all, delete",backref="testata_documento"),
-        "testata_documento_scadenza" :relation(TestataDocumentoScadenza,cascade="all, delete", backref="testata_documento"),
-        "PG":relation(Pagamento,primaryjoin = testata_documento.c.id_pagamento==paga.c.id),
-        "BN":relation(Banca,primaryjoin = (testata_documento.c.id_banca==banc.c.id)),
-        "AL":relation(AliquotaIva,primaryjoin = (testata_documento.c.id_aliquota_iva_esenzione==AliquotaIva.id)),
-        "PV":relation(Vettore,primaryjoin = (testata_documento.c.id_vettore==vettore.c.id)),
-        "DM":relation(DestinazioneMerce, primaryjoin=(testata_documento.c.id_destinazione_merce==DestinazioneMerce.id)),
-        "TM":relation(TestataMovimento,primaryjoin = (testata_documento.c.id==testata_movi.c.id_testata_documento),cascade="all, delete", backref='TD'),
-        "CLI":relation(Cliente,primaryjoin = (testata_documento.c.id_cliente==clie.c.id)),
-        "FORN":relation(Fornitore,primaryjoin = (testata_documento.c.id_fornitore==fornitor.c.id)),
-        "AGE":relation(Agente,primaryjoin = (testata_documento.c.id_agente==agen.c.id)),
-        "OP":relation(Operazione,primaryjoin = (testata_documento.c.operazione==Operazione.denominazione), backref="TD"),
-        "STD":relation(ScontoTestataDocumento,primaryjoin = (testata_documento.c.id==ScontoTestataDocumento.id_testata_documento),cascade="all, delete", backref="TD"),
+std_mapper = mapper(TestataDocumento, testata_documento,
+    properties={
+        "rigadoc": relation(RigaDocumento,
+            cascade="all, delete",
+            backref="testata_documento"),
+        "testata_documento_scadenza": relation(TestataDocumentoScadenza,
+            cascade="all, delete",
+            backref="testata_documento"),
+        "PG": relation(Pagamento,
+            primaryjoin=testata_documento.c.id_pagamento==paga.c.id),
+        "BN": relation(Banca,
+            primaryjoin=(testata_documento.c.id_banca==banc.c.id)),
+        "AL": relation(AliquotaIva,
+            primaryjoin=(testata_documento.c.id_aliquota_iva_esenzione==AliquotaIva.id)),
+        "PV": relation(Vettore,
+            primaryjoin=(testata_documento.c.id_vettore==vettore.c.id)),
+        "DM": relation(DestinazioneMerce,
+            primaryjoin=(testata_documento.c.id_destinazione_merce==DestinazioneMerce.id)),
+        "TM": relation(TestataMovimento,
+            primaryjoin=(testata_documento.c.id==testata_movi.c.id_testata_documento),
+            cascade="all, delete",
+            backref='TD'),
+        "CLI": relation(Cliente,
+            primaryjoin=(testata_documento.c.id_cliente==clie.c.id)),
+        "FORN": relation(Fornitore,
+            primaryjoin=(testata_documento.c.id_fornitore==fornitor.c.id)),
+        "AGE": relation(Agente,
+            primaryjoin=(testata_documento.c.id_agente==agen.c.id)),
+        "OP": relation(Operazione,
+            primaryjoin=(testata_documento.c.operazione==Operazione.denominazione),
+            backref="TD"),
+        "STD": relation(ScontoTestataDocumento,
+            primaryjoin=(testata_documento.c.id==ScontoTestataDocumento.id_testata_documento),
+            cascade="all, delete",
+            backref="TD"),
         #'lang':relation(Language, backref='user')
-        }, order_by=testata_documento.c.data_inserimento.desc())
+    },
+    order_by=testata_documento.c.data_inserimento.desc())
 
 if (hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes") or ("GestioneNoleggio" in Environment.modulesList):
     from promogest.modules.GestioneNoleggio.dao.TestataGestioneNoleggio import TestataGestioneNoleggio
-    std_mapper.add_property("TGN",relation(TestataGestioneNoleggio,primaryjoin=(testata_documento.c.id==TestataGestioneNoleggio.id_testata_documento),cascade="all, delete",backref=backref("TD"),uselist = False))
+    std_mapper.add_property("TGN", relation(TestataGestioneNoleggio,
+        primaryjoin=(testata_documento.c.id==TestataGestioneNoleggio.id_testata_documento),
+        cascade="all, delete",
+        backref=backref("TD"),
+        uselist=False))
