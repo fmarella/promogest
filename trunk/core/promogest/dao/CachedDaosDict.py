@@ -23,10 +23,17 @@
 from promogest import Environment
 
 class _CachedDaosDict(object):
+    """
+    """
     def __init__(self):
         self._dict = {}
+        self._params = {}
 
     def add(self, klass, use_key='id', fetch_field=None):
+        """
+        """
+        klass_name = str(klass.__name__).lower()
+        self._params[klass_name] = {'use_key': use_key, 'fetch_field': fetch_field}
         result = Environment.session.query(getattr(klass, use_key), klass).all()
         subdict = {}
         for row in result:
@@ -34,10 +41,26 @@ class _CachedDaosDict(object):
                 subdict[row[0]] = row[1]
             else:
                 subdict[row[0]] = (row[1], getattr(row[1], fetch_field))
-        self._dict[str(klass.__name__).lower()] = subdict
+        self._dict[klass_name] = subdict
+
+    def update(self, klass):
+        """
+        """
+        klass_name = str(klass.__name__).lower()
+        if klass_name not in self._dict:
+            raise KeyError("'%s'" % klass_name)
+        del self._dict[klass_name]
+        self.add(klass, **self._params[klass_name])
 
     def __getitem__(self, obj):
         return self._dict[obj]
+
+    def delete(self, obj):
+        """
+        """
+        if obj not in self._dict:
+            raise KeyError("'%s'" % obj)
+        del self._dict[obj]
 _cachedobject = _CachedDaosDict()
 def CachedDaosDict(): return _cachedobject
 
