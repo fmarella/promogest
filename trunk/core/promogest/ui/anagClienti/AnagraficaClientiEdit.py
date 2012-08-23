@@ -510,7 +510,7 @@ class AnagraficaClientiEdit(AnagraficaEdit, AnagraficaPGEdit):
             else:
                 toggleButton.set_active(False)
                 return
-        from AbbinamentoPersonaGiuridica import AbbinamentoPersonaGiuridica
+        from promogest.ui.AbbinamentoPersonaGiuridica import AbbinamentoPersonaGiuridica
         anag = AbbinamentoPersonaGiuridica(self.dao.id)
         anagWindow = anag.getTopLevel()
 
@@ -569,7 +569,7 @@ class AnagraficaClientiEdit(AnagraficaEdit, AnagraficaPGEdit):
                 toggleButton.set_active(False)
                 return
 
-        from AnagraficaDestinazioniMerce import AnagraficaDestinazioniMerce
+        from promogest.ui.AnagraficaDestinazioniMerce import AnagraficaDestinazioniMerce
         anag = AnagraficaDestinazioniMerce(self.dao.id)
         anagWindow = anag.getTopLevel()
 
