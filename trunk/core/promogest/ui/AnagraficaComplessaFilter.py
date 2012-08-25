@@ -34,7 +34,6 @@ class AnagraficaFilter(GladeWidget):
     def __init__(self, anagrafica, root=None,
                                     path=None,
                                     isModule=False):
-        print "QQQQQQQQQQQQQQQQQQQQQQQQQQQ", path
         GladeWidget.__init__(self, root=root, path=path,
                                 isModule=isModule)
         self._anagrafica = anagrafica

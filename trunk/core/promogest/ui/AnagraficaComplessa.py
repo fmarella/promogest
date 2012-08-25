@@ -39,7 +39,6 @@ from promogest import Environment
 from promogest.ui.SendEmail import SendEmail
 from promogest.lib.HtmlHandler import createHtmlObj, renderHTML
 
-@timeit
 def get_selected_daos(treeview):
     """Ritorna una lista di DAO selezionati.
 
@@ -468,13 +467,11 @@ class Anagrafica(GladeWidget):
 
             self.record_fattura_button.set_sensitive(False)
 
-    @timeit
     def on_anagrafica_filter_treeview_row_activated(self, widget, path, colum):
         """ Funzione che si attiva nel momento in cui si fa doppio click per
             l'apertura del dao in modifica"""
         self.on_record_edit_activate(widget, path, colum)
 
-    @timeit
     def on_anagrafica_filter_treeview_selection_changed(self, treeSelection):
         daos = get_selected_daos(self.anagrafica_filter_treeview)
 

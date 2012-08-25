@@ -79,7 +79,7 @@ class AnagraficaDocumentiHtml(AnagraficaHtml):
     def __init__(self, anagrafica):
         AnagraficaHtml.__init__(self, anagrafica, 'documento',
                                 'Documento')
-    @timeit
+
     def variations(self):
         aa= []
         if setconf("General", "gestione_lotti"):

@@ -854,7 +854,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self._oldDaoRicreato = True #il dao è nuovo il controllo sul nuovo codice non  è necessario
         self._refresh()
         return self.dao
-    @timeit
+
     def saveDao(self, tipo=None):
         """ Salvataggio del Dao
         """
