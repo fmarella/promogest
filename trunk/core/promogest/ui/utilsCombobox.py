@@ -1245,6 +1245,11 @@ def on_main_window_key_press_eventPart(ui, widget, event):
                     ui.main_iconview.select_path('0')
                 except:
                     pass
+            elif gdk_keyval_name(event.keyval) == 'q':
+                from promogest.ui.DebugWindow import DebugWindow
+                debug_win = DebugWindow(ui)
+                anagWindow = debug_win.getTopLevel()
+                anagWindow.show()
             elif gdk_keyval_name(event.keyval) == 'p':
                 try:
                     ui.main_iconview.select_path('1')
