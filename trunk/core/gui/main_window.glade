@@ -146,19 +146,11 @@
                 <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">_File</property>
-                <property name="use_underline">True</property>
-              </object>
-            </child>
-            <child>
-              <object class="GtkMenuItem" id="opzioni_menu">
-                <property name="use_action_appearance">False</property>
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">_Opzioni</property>
+                <property name="label" translatable="yes">_Azienda</property>
                 <property name="use_underline">True</property>
                 <child type="submenu">
-                  <object class="GtkMenu" id="opzioni_menu_menu">
+                  <object class="GtkMenu" id="menu1">
+                    <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <child>
                       <object class="GtkMenuItem" id="dati_azienda">
@@ -172,6 +164,57 @@
                       </object>
                     </child>
                     <child>
+                      <object class="GtkMenuItem" id="configurazione_menu">
+                        <property name="use_action_appearance">False</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Preferenze</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="on_configurazione_menu_activate" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSeparatorMenuItem" id="separatormenuitem1">
+                        <property name="use_action_appearance">False</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="disconnetti_menuitem">
+                        <property name="use_action_appearance">False</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Disconnetti</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="on_disconnect" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="esci_menuitem">
+                        <property name="use_action_appearance">False</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Esci</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="on_quit" swapped="no"/>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkMenuItem" id="strumenti_menu">
+                <property name="use_action_appearance">False</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">_Strumenti</property>
+                <property name="use_underline">True</property>
+                <child type="submenu">
+                  <object class="GtkMenu" id="opzioni_menu_menu">
+                    <property name="can_focus">False</property>
+                    <child>
                       <object class="GtkMenuItem" id="aggiorna">
                         <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
@@ -183,59 +226,59 @@
                       </object>
                     </child>
                     <child>
+                      <object class="GtkMenuItem" id="sincro_db">
+                        <property name="use_action_appearance">False</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">_Sincronizzazione DB</property>
+                        <property name="use_underline">True</property>
+                        <child type="submenu">
+                          <object class="GtkMenu" id="sincro_db_menu">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <child>
+                              <object class="GtkMenuItem" id="master_sincro_db">
+                                <property name="use_action_appearance">False</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="label" translatable="yes">server</property>
+                                <property name="use_underline">True</property>
+                                <signal name="activate" handler="on_master_sincro_db_activate" swapped="no"/>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkMenuItem" id="client_sincro_db">
+                                <property name="use_action_appearance">False</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="label" translatable="yes">client</property>
+                                <property name="use_underline">True</property>
+                                <signal name="activate" handler="on_client_sincro_db_activate" swapped="no"/>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
                       <object class="GtkMenuItem" id="Back-Up Database">
                         <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="tooltip_text" translatable="yes">Se il Client è nello stesso pc del database è possibile effettuare una copia di sicurezza del database</property>
-                        <property name="label" translatable="yes">Back up DB</property>
+                        <property name="label" translatable="yes">Backup DB</property>
                         <property name="use_underline">True</property>
                         <signal name="activate" handler="on_Back_up_Database_activate" swapped="no"/>
                       </object>
                     </child>
                     <child>
-                      <object class="GtkMenuItem" id="configurazione_menu">
+                      <object class="GtkMenuItem" id="inserimento_codice">
                         <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">Preferenze</property>
+                        <property name="label" translatable="yes">Inserimento codice</property>
                         <property name="use_underline">True</property>
-                        <signal name="activate" handler="on_configurazione_menu_activate" swapped="no"/>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-              </object>
-            </child>
-            <child>
-              <object class="GtkMenuItem" id="sincro_db">
-                <property name="use_action_appearance">False</property>
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">_Sincronizzazione db</property>
-                <property name="use_underline">True</property>
-                <child type="submenu">
-                  <object class="GtkMenu" id="sincro_db_menu">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <child>
-                      <object class="GtkMenuItem" id="master_sincro_db">
-                        <property name="use_action_appearance">False</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">server</property>
-                        <property name="use_underline">True</property>
-                        <signal name="activate" handler="on_master_sincro_db_activate" swapped="no"/>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkMenuItem" id="client_sincro_db">
-                        <property name="use_action_appearance">False</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">client</property>
-                        <property name="use_underline">True</property>
-                        <signal name="activate" handler="on_client_sincro_db_activate" swapped="no"/>
+                        <signal name="activate" handler="on_inserimento_codice_activate" swapped="no"/>
                       </object>
                     </child>
                   </object>
@@ -247,7 +290,7 @@
                 <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">statistiche</property>
+                <property name="label" translatable="yes">Statistiche</property>
                 <property name="use_underline">True</property>
                 <child type="submenu">
                   <object class="GtkMenu" id="statistiche_menu">
@@ -268,7 +311,7 @@
                         <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">STATISTICHE E REPORT</property>
+                        <property name="label" translatable="yes">Statistiche e Report</property>
                         <property name="use_underline">True</property>
                         <signal name="activate" handler="on_ricmedio_activate" swapped="no"/>
                       </object>
@@ -281,34 +324,9 @@
                         <property name="tooltip_text" translatable="yes">Esport una CSV abbastanza
 generico del magazzino
 articoli per un certo </property>
-                        <property name="label" translatable="yes">EXPORT MAGAZZINO</property>
+                        <property name="label" translatable="yes">Export magazzino</property>
                         <property name="use_underline">True</property>
                         <signal name="activate" handler="on_export_magazzino_activate" swapped="no"/>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-              </object>
-            </child>
-            <child>
-              <object class="GtkMenuItem" id="codice">
-                <property name="use_action_appearance">False</property>
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">codice</property>
-                <property name="use_underline">True</property>
-                <child type="submenu">
-                  <object class="GtkMenu" id="codice_menu">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <child>
-                      <object class="GtkMenuItem" id="inserimento_codice">
-                        <property name="use_action_appearance">False</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">Inserimento codice</property>
-                        <property name="use_underline">True</property>
-                        <signal name="activate" handler="on_inserimento_codice_activate" swapped="no"/>
                       </object>
                     </child>
                   </object>
