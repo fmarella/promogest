@@ -126,11 +126,9 @@ class Main(GladeWidget):
                 anagrafiche_dirette_modules, frame_modules, permanent_frames):
 
         GladeWidget.__init__(self, root= 'main_window', path="main_window.glade")
-        self.main_window.set_title(_('*** PromoGest2 *** Azienda : ') \
-                                + aziendaStr \
-                                + _('  *** Utente : ') \
-                                + Environment.params['usernameLoggedList'][1] \
-                                + ' ***')
+        welcome_str = _("Benvenuto {0} ({1})!".format(Environment.params['usernameLoggedList'][1],
+            aziendaStr))
+        self.welcome_label.set_text(welcome_str)
         self.aziendaStr = aziendaStr
         self.statusBarHandler()
         #for filename in glob.glob(Environment.promogestDir + \
@@ -170,8 +168,6 @@ class Main(GladeWidget):
         """ Visualizza la finestra
         """
         #documenti_image = self.documenti_image.get_image()
-        self.anno_lavoro_label.set_markup(_('<b>Anno di lavoro:   ') + \
-                                        Environment.workingYear + '</b>')
         model = self.iconview_listore
         model.append([3, _("Documenti\n(Fatture,DDT\nPreventivi)"),
                         self.documenti_image.get_pixbuf(), None])
@@ -251,10 +247,10 @@ class Main(GladeWidget):
             leggiRevisioni()
             if Environment.rev_locale < Environment.rev_remota:
                 self.active_img.set_from_file("gui/active_off.png")
-                self.aggiornamento_label.set_label(_("DA AGGIORNARE!!! "))
+                # self.aggiornamento_label.set_label(_("DA AGGIORNARE!!! "))
             else:
                 self.active_img.set_from_file("gui/active_on.png")
-                self.aggiornamento_label.set_label(_("AGGIORNATO "))
+                # self.aggiornamento_label.set_label(_("AGGIORNATO "))
             return True
         #if timeout >= 300:
         glib.timeout_add_seconds(600, update_timer)
@@ -483,19 +479,14 @@ class Main(GladeWidget):
         self._refresh()
 
     def setModulesButtons(self):
-
-        if self.anagrafiche_modules is not None:
-            for module in self.anagrafiche_modules.iteritems():
-                module_button = gtk.Button()
-                module_butt_image = gtk.Image()
-                module_butt_image.set_from_file(module[1]['guiDir']+'/'+module[1]['module'].VIEW_TYPE[2])
-                module_button.set_image(module_butt_image)
-                module_button.set_label(module[1]['module'].VIEW_TYPE[1])
-                module_button.connect('clicked', self.on_module_button_clicked)
-                self.anagrafiche_moduli_vbox.pack_start(module_button, False, False, 0)
-            return
-        else:
-            return
+        for module in self.anagrafiche_modules.iteritems():
+            module_button = gtk.Button()
+            module_butt_image = gtk.Image()
+            module_butt_image.set_from_file(module[1]['guiDir']+'/'+module[1]['module'].VIEW_TYPE[2])
+            module_button.set_image(module_butt_image)
+            module_button.set_label(module[1]['module'].VIEW_TYPE[1])
+            module_button.connect('clicked', self.on_module_button_clicked)
+            self.anagrafiche_moduli_vbox.pack_start(module_button, False, False, 0)
 
     def on_module_button_clicked(self, button):
         label = button.get_label()
@@ -1222,7 +1213,7 @@ Procedere all'installazione del modulo PromoShop? """)
         else:
             textStatusBar = _(" %s Build: %s - %s" % (Environment.VERSIONE, Environment.rev_locale, Environment.partner))
         context_id =  self.pg2_statusbar.get_context_id("main_window")
-        self.pg2_statusbar.push(context_id,textStatusBar)
+        self.pg2_statusbar.push(context_id, textStatusBar)
 
 class MainWindowFrame(VistaPrincipale):
     def __init__(self, mainWindow, azs):
