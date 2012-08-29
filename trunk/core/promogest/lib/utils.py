@@ -335,7 +335,7 @@ def leggiMagazzino(id):
             "email": _email}
 
 
-def leggiListino(idListino=None, idArticolo=None, tiny=False, conVariazioniListino=False):
+def leggiListino(idListino=None, idArticolo=None, tiny=False):
     """
     Restituisce un dizionario con le informazioni sul listino letto
     """
@@ -356,8 +356,7 @@ def leggiListino(idListino=None, idArticolo=None, tiny=False, conVariazioniListi
                     "scontiDettaglio":[],
                     "scontiIngrosso":[],
                     'applicazioneScontiDettaglio':None,
-                    'applicazioneScontiIngrosso':[],
-                    'variazioniListino': []}
+                    'applicazioneScontiIngrosso':[]}
 
     if idListino:
         daoListinoo = Listino().select(idListino=idListino, listinoAttuale=True)
@@ -451,30 +450,7 @@ def leggiListino(idListino=None, idArticolo=None, tiny=False, conVariazioniListi
                     listinoDict['applicazioneScontiDettaglio'] = _applicazioneDettaglio
                     listinoDict['applicazioneScontiIngrosso'] = _applicazioneIngrosso
 
-                    if conVariazioniListino:
-                        from promogest.dao.VariazioneListino import VariazioneListino
-                        # Leggo tutte le variazioni listino per il listino corrente
-                        for vl in VariazioneListino().select(idListino=idListino):
-                            listinoDict['variazioniListino'].append(vl)
-
     return listinoDict
-
-def applica_vl(prezzo, variazioniListino):
-    prezzo_tmp = prezzo
-    data = datetime.datetime.now()
-    for vl in variazioniListino:
-        if data > vl.data_inizio and data < vl.data_fine:
-            if vl.tipo == 'percentuale':
-                if vl.segno == '-':
-                    prezzo_tmp = float(prezzo_tmp) * (1 - float(vl.valore) / 100)
-                else:
-                    prezzo_tmp = float(prezzo_tmp) * (1 + float(vl.valore) / 100)
-            elif vl.tipo == 'valore':
-                if vl.segno == '-':
-                    prezzo_tmp = float(prezzo_tmp) - float(vl.valore)
-                else:
-                    prezzo_tmp = float(prezzo_tmp) + float(vl.valore)
-    return prezzo_tmp
 
 def leggiFornitura(idArticolo, idFornitore=None, data=None, noPreferenziale=False):
     """

@@ -438,8 +438,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         sconti = []
         applicazione = "scalare"
         if idListino is not None and idArticolo is not None:
-            conVariazioniListino = self.dao.CLI and self.dao.CLI.vl is not []
-            listino = leggiListino(idListino, idArticolo, conVariazioniListino=conVariazioniListino)
+            listino = leggiListino(idListino, idArticolo)
             self._righe[0]["listino"] = listino["denominazione"]
             if (self._fonteValore == "vendita_iva"):
                     prezzoLordo = listino["prezzoDettaglio"]
@@ -449,11 +448,6 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                     prezzoLordo = listino["prezzoIngrosso"]
                     sconti = listino["scontiIngrosso"]
                     applicazione = listino["applicazioneScontiIngrosso"]
-            if conVariazioniListino:
-                # calcola intersezione tra le variazioni listino per il cliente e quelle del listino
-                intersect = lambda l1,l2: [x for x in l1 if x in l2]
-                listino['variazioniListino'] = intersect(self.dao.CLI.vl, listino['variazioniListino'])
-                prezzoLordo = applica_vl(prezzoLordo, listino['variazioniListino'])
         self._righe[0]["prezzoLordo"] = prezzoLordo
         self._righe[0]["idListino"] = idListino
         self._righe[0]["sconti"] = sconti
