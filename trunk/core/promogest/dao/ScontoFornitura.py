@@ -4,6 +4,8 @@
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
+#    Author: Francesco Marella <francesco.marella@gmail.com>
+
 #    This file is part of Promogest.
 
 #    Promogest is free software: you can redistribute it and/or modify
@@ -22,28 +24,27 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
-from promogest.dao.Sconto import sconto
-from Dao import Dao
+from promogest.dao.Dao import Dao
+from promogest.dao.Sconto import t_sconto
+
 
 class ScontoFornitura(Dao):
     """  """
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
 
-    def filter_values(self,k,v):
-        dic= {'idFornitura' : sconto_fornitura.c.id_fornitura ==v}
-        return  dic[k]
+    def filter_values(self, k, v):
+        dic = {'idFornitura': t_sconto_fornitura.c.id_fornitura==v}
+        return dic[k]
 
-sconto_fornitura=Table('sconto_fornitura',
-                params['metadata'],
-                schema = params['schema'],
-                autoload=True)
-
-j = join(sconto, sconto_fornitura)
-
+t_sconto_fornitura = Table('sconto_fornitura',
+                           params['metadata'],
+                           schema=params['schema'],
+                           autoload=True)
 
 std_mapper = mapper(ScontoFornitura,
-            j, properties={
-    'id':[sconto.c.id, sconto_fornitura.c.id],},
-            order_by=sconto_fornitura.c.id)
-
+    join(t_sconto, t_sconto_fornitura),
+    properties={
+        'id': [t_sconto.c.id, t_sconto_fornitura.c.id]
+    },
+    order_by=t_sconto_fornitura.c.id)

@@ -4,6 +4,8 @@
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
+#    Author: Francesco Marella <francesco.marella@gmail.com>
+
 #    This file is part of Promogest.
 
 #    Promogest is free software: you can redistribute it and/or modify
@@ -23,6 +25,8 @@ from sqlalchemy import Table
 from sqlalchemy.orm import mapper, join
 from promogest.Environment import params
 from Dao import Dao
+from Sconto import t_sconto
+
 
 class ScontoVenditaDettaglio(Dao):
     """  """
@@ -30,24 +34,22 @@ class ScontoVenditaDettaglio(Dao):
         Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):
-        if k == 'idListino':
-            dic= {k : sconti_vendita_dettaglio.c.id_listino ==v}
-        elif k == 'idArticolo':
-            dic = {k:sconti_vendita_dettaglio.c.id_articolo ==v}
-        elif k == 'dataListinoArticolo':
-            dic = {k:sconti_vendita_dettaglio.c.data_listino_articolo==v}
+        if k=='idListino':
+            dic = {k: t_sconti_vendita_dettaglio.c.id_listino==v}
+        elif k=='idArticolo':
+            dic = {k: t_sconti_vendita_dettaglio.c.id_articolo==v}
+        elif k=='dataListinoArticolo':
+            dic = {k: t_sconti_vendita_dettaglio.c.data_listino_articolo==v}
+        return dic[k]
 
-        return  dic[k]
+t_sconti_vendita_dettaglio = Table('sconti_vendita_dettaglio',
+                                   params['metadata'],
+                                   schema=params['schema'],
+                                   autoload=True)
 
-sconto=Table('sconto', params['metadata'],schema = params['schema'],autoload=True)
-
-sconti_vendita_dettaglio=Table('sconti_vendita_dettaglio',
-                params['metadata'],
-                schema = params['schema'],
-                autoload=True)
-
-j = join(sconto, sconti_vendita_dettaglio)
-
-std_mapper = mapper(ScontoVenditaDettaglio,j, properties={
-                    "id" : [sconto.c.id, sconti_vendita_dettaglio.c.id]},
-                    order_by=sconti_vendita_dettaglio.c.id)
+std_mapper = mapper(ScontoVenditaDettaglio,
+    join(t_sconto, t_sconti_vendita_dettaglio),
+    properties={
+        "id": [t_sconto.c.id, t_sconti_vendita_dettaglio.c.id]
+    },
+    order_by=t_sconti_vendita_dettaglio.c.id)

@@ -4,6 +4,8 @@
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
+#    Author: Francesco Marella <francesco.marella@gmail.com>
+
 #    This file is part of Promogest.
 
 #    Promogest is free software: you can redistribute it and/or modify
@@ -25,17 +27,18 @@ from sqlalchemy.orm import *
 from promogest.Environment import *
 from Dao import Dao
 
+
 class Sconto(Dao):
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
 
-    def filter_values(self, k,v):
-        dic= {}
-        return  dic[k]
+    def filter_values(self, k, v):
+        dic = {}
+        return dic[k]
 
-sconto=Table('sconto',
-            params['metadata'],
-            schema = params['schema'],
-            autoload=True)
-std_mapper = mapper(Sconto, sconto, order_by=sconto.c.id)
+t_sconto = Table('sconto',
+                 params['metadata'],
+                 schema=params['schema'],
+                 autoload=True)
+std_mapper = mapper(Sconto, t_sconto, order_by=t_sconto.c.id)
