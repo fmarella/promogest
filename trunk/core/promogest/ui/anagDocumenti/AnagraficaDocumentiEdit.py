@@ -1381,7 +1381,10 @@ del documento.
         self._righe[self._numRiga]["prezzoLordo"] = self._righe[0]["prezzoLordo"]
         self._righe[self._numRiga]["applicazioneSconti"] = self._righe[0]["applicazioneSconti"]
         self._righe[self._numRiga]["sconti"] = self._righe[0]["sconti"]
-        self._righe[self._numRiga]["variazioniListino"] = self._righe[0]["variazioniListino"]
+        if 'variazioniListino' in self._righe[0]:
+            self._righe[self._numRiga]["variazioniListino"] = self._righe[0]["variazioniListino"]
+        else:
+            self._righe[self._numRiga]["variazioniListino"] = []
         self._righe[self._numRiga]["prezzoNetto"] = self._righe[0]["prezzoNetto"]
 
         if posso("GN") and self.noleggio:
