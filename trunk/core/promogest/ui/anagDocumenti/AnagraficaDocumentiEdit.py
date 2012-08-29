@@ -343,6 +343,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self.quantita_entry.set_text('1')
         self.prezzo_netto_label.set_text('0')
         self.sconti_widget.clearValues()
+        self.variazioni_listino_label.set_text('')
         self.totale_riga_label.set_text('0')
         self.giacenza_label.set_text('0')
         self.quantitaMinima_label.set_text('0')
@@ -432,6 +433,13 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self._righe[0]["moltiplicatore"] = multiplo.moltiplicatore
         self.calcolaTotaleRiga()
 
+    def get_variazioni_listino(self, idListino):
+        data = datetime.datetime.now()
+        if self.dao.CLI and self.dao.CLI.vl is not []:
+            return [var for var in self.dao.CLI.vl if ((var.id_listino == idListino) and (data > var.data_inizio and data < var.data_fine))]
+        else:
+            return []
+
     def getPrezzoVenditaLordo(self, idListino, idArticolo):
         """ cerca il prezzo di vendita """
         prezzoLordo = 0
@@ -452,6 +460,16 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self._righe[0]["idListino"] = idListino
         self._righe[0]["sconti"] = sconti
         self._righe[0]["applicazioneSconti"] = applicazione
+        variazioniListino = self.get_variazioni_listino(idListino)
+        self._righe[0]['variazioniListino'] = variazioniListino
+        buff = ''
+        for var in variazioniListino:
+            buff += str(var.valore).strip()
+            if var.tipo == 'percentuale':
+                buff += '%; '
+            elif var.tipo == 'valore':
+                buff += '; '
+        self.variazioni_listino_label.set_text(buff)
 
     def _getPrezzoAcquisto(self):
         """ Lettura del prezzo di acquisto netto che serve per i noleggi """
@@ -532,6 +550,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         findComboboxRowFromId(self.id_destinazione_merce_customcombobox.combobox, -1)
         self.id_operazione_combobox.set_active(-1)
         self.id_persona_giuridica_customcombobox.set_active(-1)
+        self.variazioni_listino_label.set_text('')
         #self.id_destinazione_merce_customcombobox.combobox.set_sensitive(False)
 
     def _refresh(self):
@@ -701,6 +720,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self._righe[0]["prezzoLordo"] = mN(riga.valore_unitario_lordo)
             self._righe[0]["sconti"] = sconti
             self._righe[0]["applicazioneSconti"] = applicazione
+            self._righe[0]["variazioniListino"] = self.get_variazioni_listino(riga.id_listino)
             self._righe[0]["prezzoNetto"] = Decimal(riga.valore_unitario_netto)
             self._righe[0]["prezzoNettoUltimo"] = Decimal(riga.valore_unitario_netto)
             self._righe[0]["totale"] = 0
@@ -1160,6 +1180,16 @@ del documento.
         self._righe[0]["idAliquotaIva"] = self._righe[self._numRiga]["idAliquotaIva"]
         self._righe[0]["applicazioneSconti"] = self._righe[self._numRiga]["applicazioneSconti"]
         self._righe[0]["sconti"] = self._righe[self._numRiga]["sconti"]
+        variazioniListino = self._righe[self._numRiga]["variazioniListino"]
+        self._righe[0]["variazioniListino"] = variazioniListino
+        buff = ''
+        for var in variazioniListino:
+            buff += str(var.valore).strip()
+            if var.tipo == 'percentuale':
+                buff += '%; '
+            elif var.tipo == 'valore':
+                buff += '; '
+        self.variazioni_listino_label.set_text(buff)
         self._righe[0]["prezzoNetto"] = self._righe[self._numRiga]["prezzoNetto"]
         self._righe[0]["totale"] = self._righe[self._numRiga]["totale"]
         self._righe[0]["prezzoNettoUltimo"] = self._righe[self._numRiga]["prezzoNettoUltimo"]
@@ -1351,6 +1381,7 @@ del documento.
         self._righe[self._numRiga]["prezzoLordo"] = self._righe[0]["prezzoLordo"]
         self._righe[self._numRiga]["applicazioneSconti"] = self._righe[0]["applicazioneSconti"]
         self._righe[self._numRiga]["sconti"] = self._righe[0]["sconti"]
+        self._righe[self._numRiga]["variazioniListino"] = self._righe[0]["variazioniListino"]
         self._righe[self._numRiga]["prezzoNetto"] = self._righe[0]["prezzoNetto"]
 
         if posso("GN") and self.noleggio:
@@ -1727,6 +1758,8 @@ del documento.
         prezzoNetto = self._righe[0]["prezzoLordo"]
         applicazione = self._righe[0]["applicazioneSconti"]
         sconti = self._righe[0]["sconti"]
+        variazioniListino = self._righe[0]["variazioniListino"]
+
         for s in sconti:
             if s["tipo"] == 'percentuale':
                 if applicazione == 'scalare':
@@ -1737,6 +1770,18 @@ del documento.
                     prezzoNetto = prezzoNetto - prezzoLordo * Decimal(discaunt) / 100
             elif s["tipo"] == 'valore':
                 prezzoNetto = prezzoNetto - Decimal(str(s["valore"]))
+
+        applicazione = 'scalare'
+        for s in variazioniListino:
+            if s.tipo == 'percentuale':
+                if applicazione == 'scalare':
+                    discaunt = str(s.valore).strip().replace(",",".")
+                    prezzoNetto = prezzoNetto * (1 - Decimal(discaunt) / 100)
+                elif applicazione == 'non scalare':
+                    discaunt = str(s.valore).strip().replace(",",".")
+                    prezzoNetto = prezzoNetto - prezzoLordo * Decimal(discaunt) / 100
+            elif s.tipo == 'valore':
+                prezzoNetto = prezzoNetto - Decimal(str(s.valore))
 
         self._righe[0]["prezzoNetto"] = prezzoNetto
 
