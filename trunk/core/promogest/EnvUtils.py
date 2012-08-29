@@ -90,7 +90,18 @@ def psycopg2new():
                 proxy=MyProxy())
         return engine
     except:
-        return None
+        try:
+            if os.name=="nt":
+                from setuptools.command import easy_install
+                easy_install.main( ["-U","psycopg2"] )
+                engine = create_engine('postgresql://', creator=connect,
+                        convert_unicode=True,
+                        encoding='utf-8',
+                        proxy=MyProxy())
+                return engine
+            #sys.exit()
+        except:
+            return None
 
 def psycopg2old():
     try:
