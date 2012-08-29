@@ -29,7 +29,7 @@ from promogest.dao.TestataMovimento import TestataMovimento
 from promogest.dao.TestataDocumento import TestataDocumento
 
 
-def ricerca_lotto(numero_lotto, anno):
+def ricerca_lotto(numero_lotto, anno, progress=None):
     lista_fornitori = []
     
     forniture = Fornitura().select(numeroLotto=numero_lotto,
@@ -41,6 +41,11 @@ def ricerca_lotto(numero_lotto, anno):
 
         righe_mf = RigaMovimentoFornitura().select(idFornitura=fornitura.id)
         righe_mov = [riga_mf.rigamovven or riga_mf.rigamovacq for riga_mf in righe_mf]
+
+        if progress:
+            from promogest.lib.utils import pbar
+            pbar(progress, parziale=forniture.index(fornitura), totale=len(forniture),
+                text="Attendere...", noeta=True)
 
         docs = []
         for riga_mov in righe_mov:
