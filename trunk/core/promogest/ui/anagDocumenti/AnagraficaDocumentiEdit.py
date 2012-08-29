@@ -1758,7 +1758,9 @@ del documento.
         prezzoNetto = self._righe[0]["prezzoLordo"]
         applicazione = self._righe[0]["applicazioneSconti"]
         sconti = self._righe[0]["sconti"]
-        variazioniListino = self._righe[0]["variazioniListino"]
+        variazioniListino = []
+        if 'variazioniListino' in self._righe[0]:
+            variazioniListino = self._righe[0]["variazioniListino"]
 
         for s in sconti:
             if s["tipo"] == 'percentuale':
