@@ -2095,6 +2095,18 @@ del documento.
         self.getPrezzoVenditaLordo(idListino, idArticolo)
         self.prezzo_lordo_entry.set_text(str(self._righe[0]["prezzoLordo"]))
         self.sconti_widget.setValues(self._righe[0]["sconti"], self._righe[0]["applicazioneSconti"], True)
+
+        variazioniListino = self.get_variazioni_listino(idListino)
+        self._righe[0]['variazioniListino'] = variazioniListino
+        buff = ''
+        for var in variazioniListino:
+            buff += str(var.valore).strip()
+            if var.tipo == 'percentuale':
+                buff += '%; '
+            elif var.tipo == 'valore':
+                buff += '; '
+        self.variazioni_listino_label.set_text(buff)
+        
         self.on_show_totali_riga()
 
     def on_new_row_button_clicked(self, widget):
