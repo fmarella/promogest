@@ -48,9 +48,11 @@ class ClienteVariazioneListino(Dao):
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
 
-    def filter_values(self,k,v):
-        if k =='idCliente':
-            dic= {k : t_cliente_variazione_listino.c.id_cliente ==v}
-        elif k =='idVariazioneList':
-            dic= {k : t_cliente_variazione_listino.c.id_variazione.in_(v)}
-        return  dic[k]
+    def filter_values(self, k, v):
+        if k == 'idCliente':
+            dic = {k: t_cliente_variazione_listino.c.id_cliente==v}
+        elif k == 'idVariazione':
+            dic = {k: t_cliente_variazione_listino.c.id_variazione==v}
+        elif k == 'idVariazioneList':
+            dic = {k: t_cliente_variazione_listino.c.id_variazione.in_(v)}
+        return dic[k]
