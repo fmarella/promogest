@@ -380,5 +380,3 @@ class Dao(object):
                 arg= self.filter_values(str(elem[1]),elem[0])
                 filters.append(arg)
         return and_(*filters)
-
-

@@ -139,7 +139,7 @@ class TestataScontrino(Dao):
 
         #salvataggio testata scontrino
         params['session'].add(self)
-        params['session'].commit()
+        self.commit()
 
         #self.scontiTestataScontrinoDel(id=self.id)
 

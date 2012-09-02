@@ -113,12 +113,12 @@ def newSingleDoc(data, operazione, note, daoDocumento, newDao=None):
         daoSconto.tipo_sconto = s.tipo_sconto
         sconti.append(daoSconto)
     newDao.scontiSuTotale = sconti
-    if posso("PA"):
-        newDao.totale_pagato = daoDocumento.totale_pagato
-        newDao.totale_sospeso = daoDocumento.totale_sospeso
-        newDao.documento_saldato = daoDocumento.documento_saldato
-        newDao.id_primo_riferimento = daoDocumento.id_primo_riferimento
-        newDao.id_secondo_riferimento = daoDocumento.id_secondo_riferimento
+
+    newDao.totale_pagato = daoDocumento.totale_pagato
+    newDao.totale_sospeso = daoDocumento.totale_sospeso
+    newDao.documento_saldato = daoDocumento.documento_saldato
+    newDao.id_primo_riferimento = daoDocumento.id_primo_riferimento
+    newDao.id_secondo_riferimento = daoDocumento.id_secondo_riferimento
 
     newDao.ripartire_importo = daoDocumento.ripartire_importo
     newDao.costo_da_ripartire = daoDocumento.costo_da_ripartire

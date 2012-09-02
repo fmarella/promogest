@@ -36,9 +36,8 @@ from promogest.ui.GladeWidget import GladeWidget
 from promogest.lib.utils import *
 from promogest.ui.gtk_compat import *
 
-if posso("PA"):
-    import promogest.modules.Pagamenti.dao.TestataDocumentoScadenza
-    from promogest.modules.Pagamenti.dao.TestataDocumentoScadenza import TestataDocumentoScadenza
+import promogest.modules.Pagamenti.dao.TestataDocumentoScadenza
+from promogest.modules.Pagamenti.dao.TestataDocumentoScadenza import TestataDocumentoScadenza
 
 
 class DuplicazioneMovimento(GladeWidget):

@@ -101,8 +101,8 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         self.id_cliente_filter_customcombobox.set_active(0)
         self.id_fornitore_filter_customcombobox.set_active(0)
         self.id_agente_filter_customcombobox.set_active(0)
-        if posso("PA"):
-            self.tutto_radio.set_active(1)
+
+        self.tutto_radio.set_active(1)
         if posso("GN"):
             self.a_data_inizio_noleggio_filter_entry.set_text('')
             self.da_data_inizio_noleggio_filter_entry.set_text('')
@@ -207,7 +207,7 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         self._filterClosure = filterClosure
         tdos = self.runFilter()
         self.filter_listore.clear()
-        pa = posso("PA")
+        pa = True
         for t in tdos:
             totali = t.totali
             totaleImponibile = mNLC(t._totaleImponibileScontato,2) or 0

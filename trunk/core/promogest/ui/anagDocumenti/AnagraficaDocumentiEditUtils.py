@@ -39,8 +39,7 @@ if posso("SM"):
     from promogest.modules.SuMisura.ui import AnagraficaDocumentiEditSuMisuraExt
 if posso("GN"):
     from promogest.modules.GestioneNoleggio.ui import AnagraficaDocumentiEditGestioneNoleggioExt
-if posso("PA"):
-    from promogest.modules.Pagamenti.ui import AnagraficadocumentiPagamentExt
+from promogest.modules.Pagamenti.ui import AnagraficadocumentiPagamentExt
 if posso("ADR"):
     from promogest.modules.ADR.ui import AnagraficaDocumentiEditADRExt
 

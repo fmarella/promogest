@@ -570,34 +570,47 @@ def ckd(dao):
     classe = dao.__class__.__name__
 
     stopp = False
+    if classe not in ["TestataScontrino",
+    "Articolo", "ArticoloTagliaColore", "TestataDocumento"]:
+        return True
+    records = Environment.session.query(dao.__class__).count()
+    #print "CLASSE", classe, records,Environment.modulesList, "BASIC" in Environment.modulesList
     if "BASIC" in Environment.modulesList:
         if Environment.tipodb == "sqlite":
-            records = Environment.session.query(dao.__class__).count()
-            for a in Environment.modulesList:
-                if "+S" not in a:
-                    if "TestataScontrino" in classe:
-                        print "SHOP LIMITATO"
-                        if records > 16:
-                            stopp = True
+            if "TestataScontrino" in classe:
+                if records > 16:
+                    stopp = True
             if "TestataDocumento" in classe:
                 if records > 48:
                     stopp = True
             if "Articolo" in classe:
                 if records > 400:
                     stopp = True
-            if stopp:
-                msg = """HAI RAGGIUNTO IL LIMITE MASSIMO CONSENTITO
-    DALLA VERSIONE ONE BASIC GRATUITA
-    ACQUISTA A VERSIONE "ONE STANDARD" PER ELIMINARE TUTTI I LIMITI
-    O LA "ONE FULL" PER ATTIVARE ANCHE TUTTI I MODULI
+            if "ArticoloTagliaColore" in classe:
+                if records > 600:
+                    stopp = True
+    elif "STANDARD" in Environment.modulesList or "FULL" in Environment.modulesList:
+        if "+S" not in Environment.modulesList:
+            if "TestataScontrino" in classe:
+                if records > 20:
+                    stopp = True
+        if "+W" not in Environment.modulesList:
+            if "ArticoloTagliaColore" in classe:
+                if records > 600:
+                    stopp = True
+    if stopp:
+        msg = """ATTENZIONE!
+Hai raggiunto il limite massimo di inserimenti consentito
+dalla versione del programma da te in uso
+Acquista la versione "STANDARD" O "FULL" per attivarei moduli semplici
+Oppure il modulo SHOP e/o WEAR per vendere al dettaglio
+e/o la gestiore taglie e colori.
 
     GRAZIE"""
-                from promogest.lib.utils import messageError
-                messageError(msg=msg)
-                Environment.params["session"].rollback()
-                return False
-        else:
-            return True
+        from promogest.lib.utils import messageError
+        messageError(msg=msg)
+        Environment.params["session"].rollback()
+        return False
     return True
 
 def codeIncrement(value):

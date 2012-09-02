@@ -36,9 +36,8 @@ from promogest.dao.Operazione import Operazione
 from promogest.dao.Fornitura import Fornitura
 from promogest.dao.DaoUtils import numeroRegistroGet
 from promogest.ui.anagDocumenti.AnagraficaDocumenti import *
-if posso("PA"):
-    import promogest.modules.Pagamenti.dao.TestataDocumentoScadenza
-    from promogest.modules.Pagamenti.dao.TestataDocumentoScadenza import TestataDocumentoScadenza
+import promogest.modules.Pagamenti.dao.TestataDocumentoScadenza
+from promogest.modules.Pagamenti.dao.TestataDocumentoScadenza import TestataDocumentoScadenza
 from promogest.lib.utils import *
 from promogest.ui.gtk_compat import *
 
@@ -282,30 +281,25 @@ class DuplicazioneDocumento(GladeWidget):
         #return
         newDao.righeDocumento = righeDocumento
         scadenze = []
-        if posso("PA"):
-            if self.mantieni_pagamenti_checkbutton.get_active():
-                scad = self.dao.scadenze
-                for s in scad:
-                    daoTestataDocumentoScadenza = TestataDocumentoScadenza()
-                    daoTestataDocumentoScadenza.id_testata_documento = newDao.id
-                    daoTestataDocumentoScadenza.data = s.data
-                    daoTestataDocumentoScadenza.importo = s.importo
-                    daoTestataDocumentoScadenza.pagamento = s.pagamento
-                    daoTestataDocumentoScadenza.id_banca = s.id_banca
-                    daoTestataDocumentoScadenza.data_pagamento= s.data_pagamento
-                    daoTestataDocumentoScadenza.note_per_primanota = s.note_per_primanota
-                    daoTestataDocumentoScadenza.numero_scadenza = s.numero_scadenza
-                    scadenze.append(daoTestataDocumentoScadenza)
-                newDao.scadenze = scadenze
-                newDao.totale_pagato = self.dao.totale_pagato
-                newDao.totale_sospeso = self.dao.totale_sospeso
-                newDao.documento_saldato = self.dao.documento_saldato
-                newDao.id_primo_riferimento = self.dao.id_primo_riferimento
-                newDao.id_secondo_riferimento = self.dao.id_secondo_riferimento
-            else:
-                newDao.documento_saldato = False
-                newDao.totale_pagato = self.dao.totale_pagato
-                newDao.totale_sospeso = self.dao.totale_sospeso
+        if self.mantieni_pagamenti_checkbutton.get_active():
+            scad = self.dao.scadenze
+            for s in scad:
+                daoTestataDocumentoScadenza = TestataDocumentoScadenza()
+                daoTestataDocumentoScadenza.id_testata_documento = newDao.id
+                daoTestataDocumentoScadenza.data = s.data
+                daoTestataDocumentoScadenza.importo = s.importo
+                daoTestataDocumentoScadenza.pagamento = s.pagamento
+                daoTestataDocumentoScadenza.id_banca = s.id_banca
+                daoTestataDocumentoScadenza.data_pagamento= s.data_pagamento
+                daoTestataDocumentoScadenza.note_per_primanota = s.note_per_primanota
+                daoTestataDocumentoScadenza.numero_scadenza = s.numero_scadenza
+                scadenze.append(daoTestataDocumentoScadenza)
+            newDao.scadenze = scadenze
+            newDao.totale_pagato = self.dao.totale_pagato
+            newDao.totale_sospeso = self.dao.totale_sospeso
+            newDao.documento_saldato = self.dao.documento_saldato
+            newDao.id_primo_riferimento = self.dao.id_primo_riferimento
+            newDao.id_secondo_riferimento = self.dao.id_secondo_riferimento
 
 
 

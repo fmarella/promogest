@@ -60,9 +60,8 @@ if posso("SM"):
     from promogest.modules.SuMisura.dao.MisuraPezzo import MisuraPezzo
 if posso("GN"):
     from promogest.modules.GestioneNoleggio.ui import AnagraficaDocumentiEditGestioneNoleggioExt
-if posso("PA"):
-    from promogest.modules.Pagamenti.ui.PagamentiNotebookPage import PagamentiNotebookPage
-    from promogest.modules.Pagamenti.ui import AnagraficadocumentiPagamentExt
+from promogest.modules.Pagamenti.ui.PagamentiNotebookPage import PagamentiNotebookPage
+from promogest.modules.Pagamenti.ui import AnagraficadocumentiPagamentExt
 if posso("ADR"):
     from promogest.modules.ADR.ui import AnagraficaDocumentiEditADRExt
 
@@ -135,8 +134,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self.deleted_rows = []
 #        self.completion.set_minimum_key_length(3)
 
-#        if not posso("PA"):
-#            self.notebook.remove_page(3)
+
         if posso("PW"):
             self.promowear_manager_taglia_colore_togglebutton.set_property(
                                                             "visible", True)
@@ -180,10 +178,9 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
     def draw(self, cplx=False):
         self.cplx = cplx
         drawPart(self)
-        if posso("PA"):
-            self.pagamenti_page = PagamentiNotebookPage(self)
-            self.notebook.append_page(self.pagamenti_page.pagamenti_vbox,
-                                    self.pagamenti_page.pagamenti_page_label)
+        self.pagamenti_page = PagamentiNotebookPage(self)
+        self.notebook.append_page(self.pagamenti_page.pagamenti_vbox,
+                                self.pagamenti_page.pagamenti_page_label)
 
     def on_scorporo_button_clicked(self, button):
         """ Bottone con una "s" minuscola, che permette di effettuare "al volo"
@@ -500,26 +497,20 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         if page_num == 2:
             self.calcolaTotale()
         elif page_num == 3:
-            if not posso("PA"):
-                fencemsg()
-                self.pagamenti_page.calcola_importi_scadenza_button.set_sensitive(False)
-                self.pagamenti_page.controlla_rate_scadenza_button.set_sensitive(False)
-                self.pagamenti_page.pulisci_scadenza_button.set_sensitive(False)
+            id_pag = findIdFromCombobox(self.pagamenti_page.id_pagamento_customcombobox.combobox)
+            pago = Pagamento().getRecord(id=id_pag)
+            if pago:
+                self.pagamenti_page.metodo_pagamento_label.set_markup('<b><span foreground="black" size="16000">'+str(pago.denominazione)+'</span></b>')
+                if not self.dao.documento_saldato and not self.dao.id:
+                    self.pagamenti_page.on_calcola_importi_scadenza_button_clicked(None)
             else:
-                id_pag = findIdFromCombobox(self.pagamenti_page.id_pagamento_customcombobox.combobox)
-                pago = Pagamento().getRecord(id=id_pag)
-                if pago:
-                    self.pagamenti_page.metodo_pagamento_label.set_markup('<b><span foreground="black" size="16000">'+str(pago.denominazione)+'</span></b>')
-                    if not self.dao.documento_saldato and not self.dao.id:
-                        self.pagamenti_page.on_calcola_importi_scadenza_button_clicked(None)
-                else:
-                    self.pagamenti_page.metodo_pagamento_label.set_markup('<b><span foreground="black" size="16000">'+str(_("NESSUNO?"))+'</span></b>')
-                if self.dao.documento_saldato:
-                    self.pagamenti_page.chiudi_pagamento_documento_button.set_sensitive(False)
-                    self.pagamenti_page.apri_pagamento_documento_button.set_sensitive(True)
-                else:
-                    self.pagamenti_page.chiudi_pagamento_documento_button.set_sensitive(True)
-                    self.pagamenti_page.apri_pagamento_documento_button.set_sensitive(False)
+                self.pagamenti_page.metodo_pagamento_label.set_markup('<b><span foreground="black" size="16000">'+str(_("NESSUNO?"))+'</span></b>')
+            if self.dao.documento_saldato:
+                self.pagamenti_page.chiudi_pagamento_documento_button.set_sensitive(False)
+                self.pagamenti_page.apri_pagamento_documento_button.set_sensitive(True)
+            else:
+                self.pagamenti_page.chiudi_pagamento_documento_button.set_sensitive(True)
+                self.pagamenti_page.apri_pagamento_documento_button.set_sensitive(False)
 
     def on_rent_checkbutton_toggled(self, checkbutton=None):
         """ check button in schermata documenti relativa al noleggio """
@@ -815,9 +806,9 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self.id_operazione_combobox.grab_focus()
         else:
             self.id_magazzino_combobox.grab_focus()
-        if posso("PA"):
-            self.pagamenti_page.getScadenze()
-            self.pagamenti_page.ricalcola_sospeso_e_pagato()
+
+        self.pagamenti_page.getScadenze()
+        self.pagamenti_page.ricalcola_sospeso_e_pagato()
 
     def setDao(self, dao):
         """
@@ -1079,9 +1070,7 @@ del documento.
                 daoRiga.ritenute = daoRiteAcc
             righeDocumento.append(daoRiga)
         self.dao.righeDocumento = righeDocumento
-        if posso("PA"):
-            #questa parte rimanda ai pagamenti
-            self.pagamenti_page.saveScadenze()
+        self.pagamenti_page.saveScadenze()
 
         #porto in persist tre dizionari: uno per gli sconti sul totale, l'altro per gli sconti sulle righe e le righe stesse
         self.dao.persist()

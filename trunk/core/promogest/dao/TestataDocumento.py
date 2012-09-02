@@ -491,7 +491,7 @@ class TestataDocumento(Dao):
             self.registro_numerazione = valori[1]
 
         params["session"].add(self)
-        params["session"].commit()
+        self.commit()
 
         #Environment.pg2log.info("INIZIO SALVATAGGIO DOCUMENTO")
 

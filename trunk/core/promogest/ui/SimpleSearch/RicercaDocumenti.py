@@ -97,8 +97,7 @@ class RicercaDocumentiFilter(RicercaFilter):
         self.id_cliente_filter_customcombobox.set_active(0)
         self.id_fornitore_filter_customcombobox.set_active(0)
         self.id_agente_filter_customcombobox.set_active(0)
-        #if posso("PA"):
-            #self.stato_documento_filter_combobox.set_active(-1)
+
         if posso("GN"):
             self.a_data_inizio_noleggio_filter_entry.set_text('')
             self.da_data_inizio_noleggio_filter_entry.set_text('')
@@ -197,13 +196,13 @@ class RicercaDocumentiFilter(RicercaFilter):
             totaleImposta = mN(t._totaleImpostaScontata,2) or 0
             totale = mN(t._totaleScontato,2) or 0
             col = None
-            if posso("PA") and t.documento_saldato == 1:
+            if t.documento_saldato == 1:
                 documento_saldato_filter = "Si"
                 if t.operazione in Environment.hapag:
                     col = "#CCFFAA"
                 else:
                     col = None
-            elif posso("PA") and t.documento_saldato == 0:
+            elif t.documento_saldato == 0:
                 documento_saldato_filter = "No"
                 if t.operazione in Environment.hapag:
                     col = "#FFD7D7"
