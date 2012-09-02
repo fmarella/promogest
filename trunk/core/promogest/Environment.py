@@ -378,7 +378,6 @@ if os.name=="nt" and sqlalchemy.__version__ < "0.7":
     easy_install.main( ["-U","sqlalchemy==0.7.8"] )
     sys.exit()
 
-
 cadenza = ["MENSILE", "BIMESTRALE", "TRIMESTRALE",
             "SEMESTRALE", "ANNUALE"]
 

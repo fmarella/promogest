@@ -82,6 +82,10 @@ if (u'Preventivo dettaglio',) not in s or s==[]:
     ope.execute(denominazione = "Preventivo dettaglio", fonte_valore = "vendita_iva",
     tipo_persona_giuridica="cliente",tipo_operazione="documento")
 
+if (u'Buono visione merce',) not in s or s==[]:
+    ope = operazione.insert()
+    ope.execute(denominazione='Buono visione merce', segno='-', fonte_valore='vendita_senza_iva', tipo_persona_giuridica='cliente' )
+
 #    setting.execute(key = "registro_fattura_proforma.rotazione", description = "Tipologia di rotazione registro associato a Fattura proforma ", value= "annuale")
 
 

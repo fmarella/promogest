@@ -2975,28 +2975,28 @@ def checkInstallation():
         values = urllib.urlencode(data)
         req = urllib2.Request(url, values)
         response = urllib2.urlopen(req)
-        t = Timer(5.0, response.close)
-        t.start()
+        #t = Timer(5.0, response.close)
+        #t.start()
         content = response.read()
         conte = json.loads(content)
         if conte == {}:
             print "CODICE NON PRESENTE DARE UN MESSAGGIO"
-        #elif conte and conte["codice"] == None and conte["tipo"] == None:
-            #print "CODICE VUOTO RESETTO I DATI"
-            #confy = SetConf().select(key="install_code",section="Master")
-            #if confy:
-                #con = confy[0]
-            #else:
-                #con = SetConf()
-            #con.key = "install_code"
-            #con.value =str(hashlib.sha224("aziendapromo"+orda("aziendapromo")).hexdigest())
-            #con.section = "Master"
-            #con.description = "codice identificativo della propria installazione"
-            #con.tipo_section = "General"
-            #con.tipo = "ONE BASIC"
-            #con.active = True
-            #con.date = datetime.datetime.now()
-            #con.persist()
+        elif conte and conte["codice"] == None and conte["tipo"] == None:
+            print "CODICE VUOTO RESETTO I DATI"
+            confy = SetConf().select(key="install_code",section="Master")
+            if confy:
+                con = confy[0]
+            else:
+                con = SetConf()
+            con.key = "install_code"
+            con.value =str(hashlib.sha224("aziendapromo"+orda("aziendapromo")).hexdigest())
+            con.section = "Master"
+            con.description = "codice identificativo della propria installazione"
+            con.tipo_section = "General"
+            con.tipo = "ONE BASIC"
+            con.active = True
+            con.date = datetime.datetime.now()
+            con.persist()
         else:
             print " CODICE TROVATO",conte
             confy = SetConf().select(key="tipo",section="Master")
@@ -3020,25 +3020,25 @@ def checkInstallation():
             Environment.tipo_pg= str(conte["tipo"])
     except:
         print "ERRORE NEL COLLEGAMENTO AL CHECK INSTALLAZIONE"
-        data = SetConf().select(key="tipo",section="Master")
-        if data:
-            Environment.modulesList.append(str(data[0].tipo))
-            Environment.tipo_pg= str(data[0].tipo)
-            a = SetConf().select(key="errcheck",section="Master")
-            if a :
-                a[0].value = str(int(a[0].value)+1)
-                a[0].persist()
-            else:
-                k = SetConf()
-                k.key = "errcheck"
-                k.value ="1"
-                k.section = "Master"
-                k.description = "errcheck"
-                k.tipo_section = "General"
-                k.tipo = ""
-                k.active = True
-                k.date = datetime.datetime.now()
-                k.persist()
+        #data = SetConf().select(key="tipo",section="Master")
+        #if data:
+            #Environment.modulesList.append(str(data[0].tipo))
+            #Environment.tipo_pg= str(data[0].tipo)
+            #a = SetConf().select(key="errcheck",section="Master")
+            #if a :
+                #a[0].value = str(int(a[0].value)+1)
+                #a[0].persist()
+            #else:
+                #k = SetConf()
+                #k.key = "errcheck"
+                #k.value ="1"
+                #k.section = "Master"
+                #k.description = "errcheck"
+                #k.tipo_section = "General"
+                #k.tipo = ""
+                #k.active = True
+                #k.date = datetime.datetime.now()
+                #k.persist()
 
 
 

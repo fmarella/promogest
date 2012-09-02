@@ -498,7 +498,7 @@ class Articolo(Dao):
 
     def persist(self):
         session.add(self)
-        self.save_update()
+        self.commit()
         #salvataggio , immagine ....per il momento viene gestita
         #una immagine per articolo ...
         #in seguito sarà l'immagine a comandare non l'articolo
@@ -510,7 +510,7 @@ class Articolo(Dao):
                 img.id_famiglia = self.id_famiglia_articolo
                 self.id_immagine = self.id
                 session.add(img)
-                self.save_update()
+                self.commit()
                 session.add(self)
                 self.save_update()
             elif self._url_immagine:
@@ -549,7 +549,7 @@ class Articolo(Dao):
                         isTc.delete()
                     self.__articoloTagliaColore.id_articolo = self.id
                     session.add(self.__articoloTagliaColore)
-                    self.save_update()
+                    self.commit()
                     if self.isArticoloPadre():
                         for var in self.getArticoliTagliaColore():
                             var.id_genere = self.__articoloTagliaColore.id_genere
@@ -569,7 +569,7 @@ class Articolo(Dao):
                         articoloADR[0].delete()
                 self.articolo_adr_dao.id_articolo = self.id
                 session.add(self.articolo_adr_dao)
-                self.save_update()
+                self.commit()
         session.commit()
 
     def delete(self):
