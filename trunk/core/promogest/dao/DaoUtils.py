@@ -592,7 +592,7 @@ def ckd(dao):
     elif "STANDARD" in Environment.modulesList or "FULL" in Environment.modulesList:
         if "+S" not in Environment.modulesList:
             if "TestataScontrino" in classe:
-                if records > 20:
+                if records > 16:
                     stopp = True
         if "+W" not in Environment.modulesList:
             if "ArticoloTagliaColore" in classe:

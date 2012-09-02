@@ -740,7 +740,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         dao.totale_scontrino = mN(self.label_totale.get_text())
         dao.totale_sconto = mN(self.sconto_totale_entry.get_text())
         dao.totale_subtotale = mN(self.label_subtotale.get_text())
-        dao.tipo_sconto_scontrino = self.tipo_sconto_scontrino
+        dao.tipo_sconto_scontrino = self.tipo_sconto_scontrino or "percentuale"
         dao.id_magazzino = int(self.idMagazzino)
         if self.idPuntoCassa:
             dao.id_pos = int(self.idPuntoCassa)
