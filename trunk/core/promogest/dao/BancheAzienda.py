@@ -37,9 +37,10 @@ def gen_banche_azienda():
     for dao in daos:
         if dao.banca:
             if dao.banca.agenzia:
-                yield (dao.banca, dao.banca.id, ("{0} ({1})".format(dao.banca.denominazione, dao.banca.agenzia)))
+                yield (dao.banca, dao.banca.id, ("{0} ({1})\nNum. conto: {2}".format(dao.banca.denominazione, dao.banca.agenzia, dao.numero_conto)))
             else:
-                yield (dao.banca, dao.banca.id, ("{0}".format(dao.banca.denominazione)))
+                yield (dao.banca, dao.banca.id, ("{0}\nNum. conto: {1}".format(dao.banca.denominazione, dao.numero_conto)))
+
 
 try:
     t_banche_azienda = Table('banche_azienda',
