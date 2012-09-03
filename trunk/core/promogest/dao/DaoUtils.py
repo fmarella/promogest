@@ -453,8 +453,9 @@ def righeMovimentoDel(id=None):
                                 offset=None,
                                 batchSize=None)
     if row:
+        sm = posso("SM")
         for r in row:
-            if posso("SM"):
+            if sm:
                 mp = MisuraPezzo().select(idRiga=r.id)
                 if mp:
                     for m in mp:
