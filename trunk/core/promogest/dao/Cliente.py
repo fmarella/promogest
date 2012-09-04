@@ -266,7 +266,7 @@ std_mapper = mapper(Cliente,
                         'cliente_categoria_cliente': relation(ClienteCategoriaCliente,
                                                              backref='cliente_'),
                         "dm": relation(DestinazioneMerce),
-                        'vl': relationship(VariazioneListino,
+                        'vl': relation(VariazioneListino,
                             lazy='joined',
                             secondary=t_cliente_variazione_listino)
                     },
