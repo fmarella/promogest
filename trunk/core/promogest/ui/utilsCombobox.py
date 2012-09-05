@@ -548,7 +548,8 @@ def listinoCandidateSel(OrderBy=None, idArticolo=None,
         if listid:
             listinoSelezionato = Environment.session.query(Listino).filter(
                 and_(Listino.id.in_(listid),
-                     Listino.listino_attuale == True)).all()
+                     Listino.listino_attuale == True,
+                     Listino.visible == True)).all()
         return listinoSelezionato
 
     listin = _dirtyWork(OrderBy=OrderBy, idArticolo=idArticolo,
@@ -579,7 +580,7 @@ def fillComboboxListiniFiltrati(combobox,
     model = gtk.ListStore(object, int, str)
     liss = listinoCandidateSel(idArticolo=idArticolo,
                                 idMagazzino=idMagazzino,
-                                idCliente=idCliente)
+                                idCliente=idCliente,)
     if not filter:
         emptyRow = ''
     else:
