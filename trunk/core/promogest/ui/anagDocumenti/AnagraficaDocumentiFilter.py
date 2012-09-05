@@ -115,6 +115,7 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         """
         Aggiornamento TreeView
         """
+
         daData = stringToDate(self.da_data_filter_entry.get_text())
         if Environment.tipodb == "sqlite":
             aData = stringToDateBumped(self.a_data_filter_entry.get_text())
@@ -170,6 +171,7 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
                                     daDataFineNoleggio = daDataFineNoleggio,
                                     aDataFineNoleggio = aDataFineNoleggio)
 
+        @timeit
         def filterCountClosure():
             if idArticolo:
                 a = TestataDocumento().count(filterDict = self.filterDict, idArticoloMov=idArticolo) or 0

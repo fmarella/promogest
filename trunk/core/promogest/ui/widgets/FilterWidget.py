@@ -228,6 +228,7 @@ class FilterWidget(GladeWidget):
         """
         currPage = self._getCurrentPage()
         self.filter_current_page_entry.set_text(str(currPage))
+        Environment.session.expunge_all()
         self.refresh()
 
     def _refreshPageCount(self):
