@@ -145,14 +145,14 @@ def getNuovoCodiceFornitore():
 
     return codice
 
-t_fornitore=Table('fornitore',
-    params['metadata'],
-    schema = params['schema'],
-    autoload=True)
+t_fornitore = Table('fornitore',
+                    params['metadata'],
+                    schema = params['schema'],
+                    autoload=True)
 
-j = join(t_fornitore, t_persona_giuridica)
-
-std_mapper = mapper(Fornitore,j, properties={
-        'id':[t_fornitore.c.id, t_persona_giuridica.c.id],
-        "categoria_fornitore":relation(CategoriaFornitore,backref="fornitore")
-        }, order_by=t_fornitore.c.id)
+std_mapper = mapper(Fornitore, join(t_fornitore, t_persona_giuridica),
+    properties={
+        'id': [t_fornitore.c.id, t_persona_giuridica.c.id],
+        "categoria_fornitore": relation(CategoriaFornitore, backref="fornitore")
+    },
+    order_by=t_fornitore.c.id)

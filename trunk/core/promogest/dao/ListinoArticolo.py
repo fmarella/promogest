@@ -228,19 +228,19 @@ class ListinoArticolo(Dao):
 
     def filter_values(self,k,v):
         if k=="listinoAttuale":
-            dic={ k : listinoarticolo.c.listino_attuale ==v}
+            dic={ k : t_listino_articolo.c.listino_attuale ==v}
         elif k=="idArticolo":
-            dic= { k : listinoarticolo.c.id_articolo==v}
+            dic= { k : t_listino_articolo.c.id_articolo==v}
         elif k=='idArticoloList':
-            dic={ k :listinoarticolo.c.id_articolo.in_(v)}
+            dic={ k :t_listino_articolo.c.id_articolo.in_(v)}
         elif k=="idListino":
-            dic={ k: listinoarticolo.c.id_listino==v}
+            dic={ k: t_listino_articolo.c.id_listino==v}
         elif k=="idListinoList":
-            dic={ k: listinoarticolo.c.id_listino.in_(v)}
+            dic={ k: t_listino_articolo.c.id_listino.in_(v)}
         elif k=="dataListinoArticoloList":
-            dic={ k: listinoarticolo.c.data_listino_articolo.in_(v)}
+            dic={ k: t_listino_articolo.c.data_listino_articolo.in_(v)}
         elif k=="dataListinoArticolo":
-            dic={ k: listinoarticolo.c.data_listino_articolo ==v}
+            dic={ k: t_listino_articolo.c.data_listino_articolo ==v}
         return  dic[k]
 
     def scontiVenditaDettaglioDel(self, idListino=None,idArticolo=None,dataListinoArticolo=None):
@@ -334,22 +334,22 @@ class ListinoArticolo(Dao):
 
 
 
-listinoarticolo=Table('listino_articolo',
+t_listino_articolo=Table('listino_articolo',
                 params['metadata'],
                 schema = params['schema'],
                 autoload=True)
 
-std_mapper=mapper(ListinoArticolo, listinoarticolo, properties={
+std_mapper=mapper(ListinoArticolo, t_listino_articolo, properties={
             "arti" : relation(Articolo,primaryjoin=
-                and_(listinoarticolo.c.id_articolo==Articolo.id,Articolo.cancellato==False), backref=backref("listinoarticolo",cascade="all, delete")),
+                and_(t_listino_articolo.c.id_articolo==Articolo.id,Articolo.cancellato==False), backref=backref("listinoarticolo",cascade="all, delete")),
             "SVD": relation(ScontoVenditaDettaglio,primaryjoin=and_(
-                listinoarticolo.c.id_listino==ScontoVenditaDettaglio.id_listino,
-                listinoarticolo.c.id_articolo==ScontoVenditaDettaglio.id_articolo,
-                listinoarticolo.c.data_listino_articolo==ScontoVenditaDettaglio.data_listino_articolo)),
+                t_listino_articolo.c.id_listino==ScontoVenditaDettaglio.id_listino,
+                t_listino_articolo.c.id_articolo==ScontoVenditaDettaglio.id_articolo,
+                t_listino_articolo.c.data_listino_articolo==ScontoVenditaDettaglio.data_listino_articolo)),
             "SVI": relation(ScontoVenditaIngrosso,primaryjoin=and_(
-                listinoarticolo.c.id_listino==ScontoVenditaIngrosso.id_listino,
-                listinoarticolo.c.id_articolo==ScontoVenditaIngrosso.id_articolo,
-                listinoarticolo.c.data_listino_articolo==ScontoVenditaIngrosso.data_listino_articolo)),
+                t_listino_articolo.c.id_listino==ScontoVenditaIngrosso.id_listino,
+                t_listino_articolo.c.id_articolo==ScontoVenditaIngrosso.id_articolo,
+                t_listino_articolo.c.data_listino_articolo==ScontoVenditaIngrosso.data_listino_articolo)),
             "listi" : relation(Listino,primaryjoin=
-                listinoarticolo.c.id_listino==Listino.id, backref="listinoarticolo")},
-                order_by=listinoarticolo.c.id_listino)
+                t_listino_articolo.c.id_listino==Listino.id, backref="listinoarticolo")},
+                order_by=t_listino_articolo.c.id_listino)

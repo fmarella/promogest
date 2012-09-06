@@ -28,18 +28,18 @@ from Dao import Dao
 from Operazione import Operazione
 from ScontoTestataDocumento import ScontoTestataDocumento
 from DestinazioneMerce import DestinazioneMerce
-from TestataMovimento import TestataMovimento
-from Pagamento import Pagamento
-from Vettore import Vettore
-from promogest.dao.daoAgenti.Agente import Agente
-from Fornitore import Fornitore
-from Cliente import Cliente
+from TestataMovimento import TestataMovimento, t_testata_movimento
+from Pagamento import Pagamento, t_pagamento
+from Vettore import Vettore, t_vettore
+from promogest.dao.daoAgenti.Agente import Agente, t_agente
+from Fornitore import Fornitore, t_fornitore
+from Cliente import Cliente, t_cliente
 from RigaDocumento import RigaDocumento
 from RigaDocumento import *
 from AliquotaIva import AliquotaIva
 from RigaMovimento import RigaMovimento
-from Banca import Banca
-from Riga import Riga
+from Banca import Banca, t_banca
+from Riga import Riga, t_riga
 from promogest.dao.NumeroLottoTemp import NumeroLottoTemp
 from promogest.modules.PrimaNota.dao.TestataPrimaNota import TestataPrimaNota
 from promogest.modules.PrimaNota.dao.RigaPrimaNota import RigaPrimaNota
@@ -1108,81 +1108,78 @@ class TestataDocumento(Dao):
             "Nota di credito da fornitore","Fattura accompagnatoria",
              "Vendita dettaglio","Fattura differita vendita", "Fattura differita acquisto"]
         if k == 'daNumero':
-            dic = {k:testata_documento.c.numero >= v}
+            dic = {k:t_testata_documento.c.numero >= v}
         elif k == 'aNumero':
-            dic = {k:testata_documento.c.numero <= v}
+            dic = {k:t_testata_documento.c.numero <= v}
         elif k == 'numero':
-            dic = {k:testata_documento.c.numero == v}
+            dic = {k:t_testata_documento.c.numero == v}
         elif k == 'daParte':
-            dic = {k:testata_documento.c.parte >= v}
+            dic = {k:t_testata_documento.c.parte >= v}
         elif k == 'aParte':
-            dic = {k:testata_documento.c.parte <= v}
+            dic = {k:t_testata_documento.c.parte <= v}
         elif k == 'daData':
-            dic = {k:testata_documento.c.data_documento >= v}
+            dic = {k:t_testata_documento.c.data_documento >= v}
         elif k== 'aData':
-            dic = {k:testata_documento.c.data_documento <= v}
+            dic = {k:t_testata_documento.c.data_documento <= v}
         elif k =='protocollo':
-            dic = {k:testata_documento.c.protocollo.ilike("%"+v+"%")}
+            dic = {k:t_testata_documento.c.protocollo.ilike("%"+v+"%")}
         elif k == 'idOperazione':
-            dic = {k:testata_documento.c.operazione == v}
+            dic = {k:t_testata_documento.c.operazione == v}
         elif k == 'idPagamento':
-            dic = {k:testata_documento.c.id_pagamento == v}
+            dic = {k:t_testata_documento.c.id_pagamento == v}
         elif k == 'soloContabili':
-            dic = {k:testata_documento.c.operazione.in_(contabili)}
+            dic = {k:t_testata_documento.c.operazione.in_(contabili)}
         elif k == 'idCliente':
-            dic = {k:testata_documento.c.id_cliente == v}
+            dic = {k:t_testata_documento.c.id_cliente == v}
         elif k=='idClienteList':
-            dic={ k :testata_documento.c.id_cliente.in_(v)}
+            dic={ k :t_testata_documento.c.id_cliente.in_(v)}
         elif k == 'idFornitore':
-            dic = {k:testata_documento.c.id_fornitore == v}
+            dic = {k:t_testata_documento.c.id_fornitore == v}
         elif k == 'idAgente':
-            dic = {k:testata_documento.c.id_agente == v}
+            dic = {k:t_testata_documento.c.id_agente == v}
         elif k == 'statoDocumento':
-            dic = {k:testata_documento.c.documento_saldato == v}
+            dic = {k:t_testata_documento.c.documento_saldato == v}
         elif k == 'idArticoloMov' or k == "idArticolo":
             dic = {k: and_(v ==Riga.id_articolo,
-                    riga.c.id==RigaMovimento.id,
+                    t_riga.c.id==RigaMovimento.id,
                     RigaMovimento.id_testata_movimento == TestataMovimento.id,
-                    TestataMovimento.id_testata_documento == testata_documento.c.id)}
+                    TestataMovimento.id_testata_documento == t_testata_documento.c.id)}
         elif k == 'idArticoloDoc':
             dic = {k: and_(v==Riga.id_articolo,
                     Riga.id==RigaDocumento.id,
                     RigaDocumento.id_testata_documento == TestataDocumento.id)}
         elif k == 'idMagazzino':
             dic = {k:and_(v == Riga.id_magazzino,
-                    riga.c.id==RigaMovimento.id,
+                    t_riga.c.id==RigaMovimento.id,
                     RigaMovimento.id_testata_movimento == TestataMovimento.id,
-                    TestataMovimento.id_testata_documento == testata_documento.c.id)}
+                    TestataMovimento.id_testata_documento == t_testata_documento.c.id)}
 
         elif (hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes") or ("GestioneNoleggio" in Environment.modulesList):
             if k == 'daDataInizioNoleggio':
-                dic = {k:and_(testata_documento.c.id == TestataGestioneNoleggio.id_testata_documento,
+                dic = {k:and_(t_testata_documento.c.id == TestataGestioneNoleggio.id_testata_documento,
                             TestataGestioneNoleggio.data_inizio_noleggio >= v)}
             elif k== 'aDataInizioNoleggio':
-                dic = {k:and_(testata_documento.c.id == TestataGestioneNoleggio.id_testata_documento,
+                dic = {k:and_(t_testata_documento.c.id == TestataGestioneNoleggio.id_testata_documento,
                             TestataGestioneNoleggio.data_inizio_noleggio <= v)}
             if k == 'daDataFineNoleggio':
-                dic = {k:and_(testata_documento.c.id == TestataGestioneNoleggio.id_testata_documento,
+                dic = {k:and_(t_testata_documento.c.id == TestataGestioneNoleggio.id_testata_documento,
                             TestataGestioneNoleggio.data_fine_noleggio >= v)}
             elif k== 'aDataFineNoleggio':
-                dic = {k:and_(testata_documento.c.id == TestataGestioneNoleggio.id_testata_documento,
+                dic = {k:and_(t_testata_documento.c.id == TestataGestioneNoleggio.id_testata_documento,
                             TestataGestioneNoleggio.data_fine_noleggio <= v)}
         return  dic[k]
 
-riga_mov =Table('riga_movimento',params['metadata'],schema = params['schema'],autoload=True)
-articolo = Table('articolo',params['metadata'],schema = params['schema'],autoload=True)
-riga=Table('riga',params['metadata'],schema = params['schema'],autoload=True)
-riga_doc=Table('riga_documento',params['metadata'],schema = params['schema'],autoload=True)
-testata_documento=Table('testata_documento',params['metadata'],schema = params['schema'],autoload=True)
-vettore = Table('vettore',params['metadata'],schema = params['schema'],autoload=True)
-testata_movi=Table('testata_movimento',params['metadata'],schema = params['schema'],autoload=True)
-agen = Table('agente',params['metadata'],schema = params['schema'],autoload=True)
-paga = Table('pagamento',params['metadata'],schema = params['schema'],autoload=True)
-clie = Table('cliente',params['metadata'],schema = params['schema'],autoload=True)
-banc = Table('banca',params['metadata'],schema = params['schema'],autoload=True)
-fornitor=Table('fornitore', params['metadata'], schema = params['schema'], autoload=True)
+t_testata_documento = Table('testata_documento',
+                          params['metadata'],
+                          schema=params['schema'],
+                          autoload=True)
 
-std_mapper = mapper(TestataDocumento, testata_documento,
+if 'esclusione_spese' not in [c.name for c in t_testata_documento.columns]:
+    delete_pickle()
+    col = Column('esclusione_spese', Boolean, default=True)
+    col.create(t_testata_documento, populate_default=True)
+
+std_mapper = mapper(TestataDocumento, t_testata_documento,
     properties={
         "rigadoc": relation(RigaDocumento,
             cascade="all, delete",
@@ -1191,40 +1188,40 @@ std_mapper = mapper(TestataDocumento, testata_documento,
             cascade="all, delete",
             backref="testata_documento"),
         "PG": relation(Pagamento,
-            primaryjoin=testata_documento.c.id_pagamento==paga.c.id),
+            primaryjoin=t_testata_documento.c.id_pagamento==t_pagamento.c.id),
         "BN": relation(Banca,
-            primaryjoin=(testata_documento.c.id_banca==banc.c.id)),
+            primaryjoin=(t_testata_documento.c.id_banca==t_banca.c.id)),
         "AL": relation(AliquotaIva,
-            primaryjoin=(testata_documento.c.id_aliquota_iva_esenzione==AliquotaIva.id)),
+            primaryjoin=(t_testata_documento.c.id_aliquota_iva_esenzione==AliquotaIva.id)),
         "PV": relation(Vettore,
-            primaryjoin=(testata_documento.c.id_vettore==vettore.c.id)),
+            primaryjoin=(t_testata_documento.c.id_vettore==t_vettore.c.id)),
         "DM": relation(DestinazioneMerce,
-            primaryjoin=(testata_documento.c.id_destinazione_merce==DestinazioneMerce.id)),
+            primaryjoin=(t_testata_documento.c.id_destinazione_merce==DestinazioneMerce.id)),
         "TM": relation(TestataMovimento,
-            primaryjoin=(testata_documento.c.id==testata_movi.c.id_testata_documento),
+            primaryjoin=(t_testata_documento.c.id==t_testata_movimento.c.id_testata_documento),
             cascade="all, delete",
             backref='TD'),
         "CLI": relation(Cliente,
-            primaryjoin=(testata_documento.c.id_cliente==clie.c.id)),
+            primaryjoin=(t_testata_documento.c.id_cliente==t_cliente.c.id)),
         "FORN": relation(Fornitore,
-            primaryjoin=(testata_documento.c.id_fornitore==fornitor.c.id)),
+            primaryjoin=(t_testata_documento.c.id_fornitore==t_fornitore.c.id)),
         "AGE": relation(Agente,
-            primaryjoin=(testata_documento.c.id_agente==agen.c.id)),
+            primaryjoin=(t_testata_documento.c.id_agente==t_agente.c.id)),
         "OP": relation(Operazione,
-            primaryjoin=(testata_documento.c.operazione==Operazione.denominazione),
+            primaryjoin=(t_testata_documento.c.operazione==Operazione.denominazione),
             backref="TD"),
         "STD": relation(ScontoTestataDocumento,
-            primaryjoin=(testata_documento.c.id==ScontoTestataDocumento.id_testata_documento),
+            primaryjoin=(t_testata_documento.c.id==ScontoTestataDocumento.id_testata_documento),
             cascade="all, delete",
             backref="TD"),
         #'lang':relation(Language, backref='user')
     },
-    order_by=testata_documento.c.data_inserimento.desc())
+    order_by=t_testata_documento.c.data_inserimento.desc())
 
 if (hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes") or ("GestioneNoleggio" in Environment.modulesList):
     from promogest.modules.GestioneNoleggio.dao.TestataGestioneNoleggio import TestataGestioneNoleggio
     std_mapper.add_property("TGN", relation(TestataGestioneNoleggio,
-        primaryjoin=(testata_documento.c.id==TestataGestioneNoleggio.id_testata_documento),
+        primaryjoin=(t_testata_documento.c.id==TestataGestioneNoleggio.id_testata_documento),
         cascade="all, delete",
         backref=backref("TD"),
         uselist=False))

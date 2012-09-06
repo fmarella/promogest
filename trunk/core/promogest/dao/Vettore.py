@@ -24,6 +24,7 @@ from sqlalchemy.orm import mapper, join
 from promogest.Environment import params, conf
 from Dao import Dao
 from promogest.dao.DaoUtils import codeIncrement
+from promogest.dao.PersonaGiuridica import t_persona_giuridica
 
 class Vettore(Dao):
 
@@ -32,19 +33,21 @@ class Vettore(Dao):
 
     def filter_values(self,k,v):
         if k == 'codice':
-            dic = {k:persona_giuridica.c.codice.ilike("%"+v+"%")}
+            dic = {k: t_persona_giuridica.c.codice.ilike("%"+v+"%")}
         elif k == 'ragioneSociale':
-            dic = {k:persona_giuridica.c.ragione_sociale.ilike("%"+v+"%")}
+            dic = {k: t_persona_giuridica.c.ragione_sociale.ilike("%"+v+"%")}
         elif k == 'insegna':
-            dic = {k:persona_giuridica.c.insegna.ilike("%"+v+"%")}
+            dic = {k: t_persona_giuridica.c.insegna.ilike("%"+v+"%")}
         elif k == 'cognomeNome':
-            dic = {k:or_(persona_giuridica.c.cognome.ilike("%"+v+"%"),persona_giuridica.c.nome.ilike("%"+v+"%"))}
+            dic = {k: or_(t_persona_giuridica.c.cognome.ilike("%"+v+"%"),
+                         t_persona_giuridica.c.nome.ilike("%"+v+"%"))}
         elif k == 'localita':
-            dic = {k:or_(persona_giuridica.c.sede_operativa_localita.ilike("%"+v+"%"),persona_giuridica.c.sede_legale_localita.ilike("%"+v+"%"))}
+            dic = {k: or_(t_persona_giuridica.c.sede_operativa_localita.ilike("%"+v+"%"),
+                         t_persona_giuridica.c.sede_legale_localita.ilike("%"+v+"%"))}
         elif k == 'partitaIva':
-            dic = {k:persona_giuridica.c.partita_iva.ilike("%"+v+"%")}
+            dic = {k: t_persona_giuridica.c.partita_iva.ilike("%"+v+"%")}
         elif k== 'codiceFiscale':
-            dic ={k:persona_giuridica.c.codice_fiscale.ilike("%"+v+"%")}
+            dic ={k: t_persona_giuridica.c.codice_fiscale.ilike("%"+v+"%")}
         return  dic[k]
 
 def getNuovoCodiceVettore():
@@ -70,18 +73,11 @@ def getNuovoCodiceVettore():
     return codice
 
 
-persona_giuridica=Table('persona_giuridica',
-                        params['metadata'],
-                        schema = params['schema'],
-                        autoload=True)
+t_vettore = Table('vettore',
+                  params['metadata'],
+                  schema=params['schema'],
+                  autoload=True)
 
-vettore=Table('vettore',
-                params['metadata'],
-                schema = params['schema'],
-                autoload=True)
-
-j = join(vettore, persona_giuridica)
-
-std_mapper = mapper(Vettore, j, properties={
-    'id':[vettore.c.id, persona_giuridica.c.id]},
-    order_by=vettore.c.id)
+std_mapper = mapper(Vettore, join(t_vettore, t_persona_giuridica), properties={
+    'id':[t_vettore.c.id, t_persona_giuridica.c.id]},
+    order_by=t_vettore.c.id)

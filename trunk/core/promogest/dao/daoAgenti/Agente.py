@@ -24,6 +24,7 @@ from sqlalchemy.orm import mapper, join
 from promogest.Environment import params, conf
 from promogest.dao.Dao import Dao
 from promogest.dao.DaoUtils import codeIncrement
+from promogest.dao.PersonaGiuridica import t_persona_giuridica
 
 class Agente(Dao):
 
@@ -38,21 +39,21 @@ class Agente(Dao):
         Creazione dei parametri del filtro
         """
         if k == 'codice':
-            dic= {k : persona_giuridica.c.codice.ilike("%"+v+"%")}
+            dic= {k : t_persona_giuridica.c.codice.ilike("%"+v+"%")}
         elif k == 'ragioneSociale':
-            dic = {k:persona_giuridica.c.ragione_sociale.ilike("%"+v+"%")}
+            dic = {k:t_persona_giuridica.c.ragione_sociale.ilike("%"+v+"%")}
         elif k == 'insegna':
-            dic = {k:persona_giuridica.c.insegna.ilike("%"+v+"%")}
+            dic = {k:t_persona_giuridica.c.insegna.ilike("%"+v+"%")}
         elif k == 'cognomeNome':
-            dic = {k: or_(persona_giuridica.c.cognome.ilike("%"+v+"%"),
-                                persona_giuridica.c.cognome.ilike("%"+v+"%"))}
+            dic = {k: or_(t_persona_giuridica.c.cognome.ilike("%"+v+"%"),
+                                t_persona_giuridica.c.cognome.ilike("%"+v+"%"))}
         elif k == 'localita':
-            dic = {k:or_(persona_giuridica.c.sede_operativa_localita.ilike("%"+v+"%"),
-                        persona_giuridica.c.sede_legale_localita.ilike("%"+v+"%"))}
+            dic = {k:or_(t_persona_giuridica.c.sede_operativa_localita.ilike("%"+v+"%"),
+                        t_persona_giuridica.c.sede_legale_localita.ilike("%"+v+"%"))}
         elif k == 'partitaIva':
-            dic = {k:persona_giuridica.c.partita_iva.ilike("%"+v+"%")}
+            dic = {k:t_persona_giuridica.c.partita_iva.ilike("%"+v+"%")}
         elif k == 'codiceFiscale':
-            dic = { k:persona_giuridica.c.codice_fiscale.ilike("%"+v+"%")}
+            dic = { k:t_persona_giuridica.c.codice_fiscale.ilike("%"+v+"%")}
         return  dic[k]
 
 def getNuovoCodiceAgente():
@@ -77,15 +78,14 @@ def getNuovoCodiceAgente():
             pass
     return codice
 
+t_agente = Table('agente',
+                 params['metadata'],
+                 schema=params['schema'],
+                 autoload=True)
 
-persona_giuridica=Table('persona_giuridica',params['metadata'],
-                                                        schema=params['schema'],
-                                                        autoload=True)
-
-agent=Table('agente',params['metadata'],schema = params['schema'],autoload=True)
-
-j = join(agent, persona_giuridica)
-
-std_mapper = mapper(Agente,j, properties={
-                    'id':[agent.c.id, persona_giuridica.c.id]},
-                    order_by=agent.c.id)
+std_mapper = mapper(Agente,
+                    join(t_agente, t_persona_giuridica),
+                    properties={
+                        'id': [t_agente.c.id, t_persona_giuridica.c.id]
+                    },
+                    order_by=t_agente.c.id)

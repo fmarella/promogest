@@ -36,11 +36,11 @@ class Pagamento(Dao):
 
     def filter_values(self,k,v):
         if k == "denominazione":
-            dic= {k : pagamento.c.denominazione.ilike("%"+v+"%")}
+            dic= {k : t_pagamento.c.denominazione.ilike("%"+v+"%")}
         if k == "denominazioneEM":
-            dic= {k : pagamento.c.denominazione == v}
+            dic= {k : t_pagamento.c.denominazione == v}
         elif k == "tipo":
-            dic= {k : pagamento.c.tipo == v} # cassa o banca
+            dic= {k : t_pagamento.c.tipo == v} # cassa o banca
         return  dic[k]
 
     @property
@@ -65,25 +65,25 @@ class Pagamento(Dao):
         else:
             return 0
 
-pagamento = Table('pagamento',
+t_pagamento = Table('pagamento',
                   params['metadata'],
                   schema=params['schema'],
                   autoload=True)
 
-colonne = get_columns(pagamento)
+colonne = get_columns(t_pagamento)
 
 if 'tipo' not in colonne:
     col = Column('tipo', String, default='banca')
-    col.create(pagamento, populate_default=True)
+    col.create(t_pagamento, populate_default=True)
 
 if 'spese' not in colonne:
     col = Column('spese', Numeric(16, 4), nullable=True)
-    col.create(pagamento, populate_default=True)
+    col.create(t_pagamento, populate_default=True)
 
 if 'id_aliquota_iva' not in colonne:
     col = Column('id_aliquota_iva', Integer, nullable=True)
-    col.create(pagamento, populate_default=True)
+    col.create(t_pagamento, populate_default=True)
 
 std_mapper = mapper(Pagamento,
-                    pagamento,
-                    order_by=pagamento.c.id)
+                    t_pagamento,
+                    order_by=t_pagamento.c.id)

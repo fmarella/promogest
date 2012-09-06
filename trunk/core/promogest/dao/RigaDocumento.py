@@ -33,7 +33,7 @@ from Magazzino import Magazzino
 from Listino import Listino
 from Multiplo import Multiplo
 from DaoUtils import scontiRigaDocumentoDel
-from Riga import Riga, riga
+from Riga import Riga, t_riga
 from promogest.lib.utils import *
 if posso("SM"):
     from promogest.modules.SuMisura.dao.MisuraPezzo import MisuraPezzo
@@ -231,7 +231,7 @@ class RigaDocumento(Dao):
     sconti = property(_getScontiRigaDocumento, _setScontiRigaDocumento)
 
     def filter_values(self,k,v):
-        dic= {  'idTestataDocumento' : riga_doc.c.id_testata_documento==v }
+        dic= {  'idTestataDocumento' : t_riga_documento.c.id_testata_documento==v }
         return  dic[k]
 
     @timeit
@@ -271,23 +271,24 @@ class RigaDocumento(Dao):
             #params["session"].commit()
         self.__dbMisuraPezzo = []
 
-#riga=Table('riga', params['metadata'],schema = params['schema'], autoload=True)
-riga_doc=Table('riga_documento',params['metadata'],schema = params['schema'],autoload=True)
+t_riga_documento = Table('riga_documento',
+                         params['metadata'],
+                         schema=params['schema'],
+                         autoload=True)
 
-j = join(riga_doc, riga)
-
-std_mapper = mapper(RigaDocumento, j,properties={
-        'id':[riga_doc.c.id, riga.c.id],
-        "rig":relation(Riga,primaryjoin = riga_doc.c.id==riga.c.id, backref="RD"),
-        'totaleRiga': column_property(riga.c.quantita * riga.c.moltiplicatore * riga.c.valore_unitario_netto ),
-        'totaleRigaLordo': column_property(riga.c.quantita * riga.c.moltiplicatore * riga.c.valore_unitario_lordo ),
-        #"maga":relation(Magazzino,primaryjoin=riga.c.id_magazzino==Magazzino.id),
-        #"arti":relation(Articolo,primaryjoin=riga.c.id_articolo==Articolo.id),
-        #"listi":relation(Listino,primaryjoin=riga.c.id_listino==Listino.id),
-        "multi":relation(Multiplo,primaryjoin=riga.c.id_multiplo==Multiplo.id),
-        "SCD":relation(ScontoRigaDocumento,primaryjoin = riga_doc.c.id==ScontoRigaDocumento.id_riga_documento, cascade="all, delete", backref="RD"),
-            },order_by=riga.c.posizione)
+std_mapper = mapper(RigaDocumento, join(t_riga_documento, t_riga),
+    properties={
+        'id':[t_riga_documento.c.id, t_riga.c.id],
+        "rig":relation(Riga,primaryjoin = t_riga_documento.c.id==t_riga.c.id, backref="RD"),
+        'totaleRiga': column_property(t_riga.c.quantita * t_riga.c.moltiplicatore * t_riga.c.valore_unitario_netto ),
+        'totaleRigaLordo': column_property(t_riga.c.quantita * t_riga.c.moltiplicatore * t_riga.c.valore_unitario_lordo ),
+        #"maga":relation(Magazzino,primaryjoin=t_riga.c.id_magazzino==Magazzino.id),
+        #"arti":relation(Articolo,primaryjoin=t_riga.c.id_articolo==Articolo.id),
+        #"listi":relation(Listino,primaryjoin=t_riga.c.id_listino==Listino.id),
+        "multi":relation(Multiplo,primaryjoin=t_riga.c.id_multiplo==Multiplo.id),
+        "SCD":relation(ScontoRigaDocumento,primaryjoin = t_riga_documento.c.id==ScontoRigaDocumento.id_riga_documento, cascade="all, delete", backref="RD"),
+            },order_by=t_riga.c.posizione)
 
 if (hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes") or ("GestioneNoleggio" in modulesList):
     from promogest.modules.GestioneNoleggio.dao.NoleggioRiga import NoleggioRiga
-    std_mapper.add_property("NR",relation(NoleggioRiga,primaryjoin=NoleggioRiga.id_riga==riga.c.id,cascade="all, delete",backref="RD",uselist=False))
+    std_mapper.add_property("NR",relation(NoleggioRiga,primaryjoin=NoleggioRiga.id_riga==t_riga.c.id,cascade="all, delete",backref="RD",uselist=False))

@@ -28,13 +28,13 @@ from Dao import Dao
 from DaoUtils import *
 from promogest.dao.Articolo import Articolo
 from promogest.dao.Multiplo import Multiplo
-from promogest.dao.RigaMovimento import RigaMovimento
+from promogest.dao.RigaMovimento import RigaMovimento, t_riga_movimento
 from promogest.dao.RigaDocumento import RigaDocumento
 from promogest.dao.Riga import Riga
 from promogest.dao.RigaMovimentoFornitura import RigaMovimentoFornitura
 from promogest.dao.NumeroLottoTemp import NumeroLottoTemp
 from Fornitore import Fornitore
-from Cliente import Cliente
+from Cliente import Cliente, t_cliente
 from Fornitura import Fornitura
 from Operazione import Operazione
 from ScontoFornitura import ScontoFornitura
@@ -151,37 +151,39 @@ class TestataMovimento(Dao):
 
     def filter_values(self,k,v):
         if k == 'daNumero':
-            dic = {k:testata_mov.c.numero >= v}
+            dic = {k:t_testata_movimento.c.numero >= v}
         elif k == 'aNumero':
-            dic = {k:testata_mov.c.numero <= v}
+            dic = {k:t_testata_movimento.c.numero <= v}
         elif k == 'daParte':
-            dic = {k:testata_mov.c.parte >= v}
+            dic = {k:t_testata_movimento.c.parte >= v}
         elif k == 'aParte':
-            dic = {k:testata_mov.c.parte <= v}
+            dic = {k:t_testata_movimento.c.parte <= v}
         elif k == 'daData':
-            dic = {k:testata_mov.c.data_movimento >= v}
+            dic = {k:t_testata_movimento.c.data_movimento >= v}
         elif k == 'aData':
-            dic = {k:testata_mov.c.data_movimento <= v}
+            dic = {k:t_testata_movimento.c.data_movimento <= v}
         elif k == 'idOperazione':
-            dic = {k:testata_mov.c.operazione == v}
+            dic = {k:t_testata_movimento.c.operazione == v}
         elif k == 'idMagazzino':
-            dic = {k:testata_mov.c.id.in_(select([RigaMovimento.id_testata_movimento],and_(Riga.id==RigaMovimento.id,Riga.id_magazzino== v)))}
+            dic = {k:t_testata_movimento.c.id.in_(select([RigaMovimento.id_testata_movimento],
+                     and_(Riga.id==RigaMovimento.id,Riga.id_magazzino== v)))}
         elif k == 'idMagazzinoList':
-            dic = {k:testata_mov.c.id.in_(select([RigaMovimento.id_testata_movimento],and_(Riga.id==RigaMovimento.id,Riga.id_magazzino.in_(v))))}
+            dic = {k:t_testata_movimento.c.id.in_(select([RigaMovimento.id_testata_movimento],
+                     and_(Riga.id==RigaMovimento.id,Riga.id_magazzino.in_(v))))}
         elif k == 'idCliente':
-            dic = {k:testata_mov.c.id_cliente == v}
+            dic = {k:t_testata_movimento.c.id_cliente == v}
         elif k == 'idClienteList':
-            dic = {k:and_(testata_mov.c.id_cliente.in_(v))}
+            dic = {k:and_(t_testata_movimento.c.id_cliente.in_(v))}
         elif k == 'idFornitore':
-            dic = {k:testata_mov.c.id_fornitore == v}
+            dic = {k:t_testata_movimento.c.id_fornitore == v}
         elif k == 'dataMovimento':
-            dic = {k: testata_mov.c.data_movimento == v}
+            dic = {k: t_testata_movimento.c.data_movimento == v}
         elif k == 'registroNumerazione':
-            dic = {k:testata_mov.c.registro_numerazione==v}
+            dic = {k:t_testata_movimento.c.registro_numerazione==v}
         elif k == 'id_testata_documento':
-            dic = {k:testata_mov.c.id_testata_documento ==v}
+            dic = {k:t_testata_movimento.c.id_testata_documento ==v}
         elif k == 'idTestataDocumento':
-            dic = {k:testata_mov.c.id_testata_documento ==v}
+            dic = {k:t_testata_movimento.c.id_testata_documento ==v}
         elif k == 'idArticolo':
             dic = {k:and_(RigaMovimento.id_testata_movimento == TestataMovimento.id,
                             Riga.id==RigaMovimento.id,
@@ -455,25 +457,24 @@ class TestataMovimento(Dao):
             params["session"].commit()
         self.init_on_load()
 
-#riga=Table('riga',params['metadata'],schema = params['schema'],autoload=True)
-testata_mov=Table('testata_movimento', params['metadata'],schema = params['schema'],autoload=True)
-clie = Table('cliente',params['metadata'],schema = params['schema'],autoload=True)
-rigamovi = Table('riga_movimento',params['metadata'],schema = params['schema'],autoload=True)
-operaz = Table('operazione',params['metadata'],schema = params['mainSchema'],autoload=True)
+t_testata_movimento = Table('testata_movimento',
+                            params['metadata'],
+                            schema=params['schema'],
+                            autoload=True)
 
-if "id_to_magazzino" not in [c.name for c in testata_mov.columns]:
+if "id_to_magazzino" not in [c.name for c in t_testata_movimento.columns]:
     col = Column('id_to_magazzino', Integer)
-    col.create(testata_mov)
+    col.create(t_testata_movimento)
 
-std_mapper = mapper(TestataMovimento, testata_mov,properties={
+std_mapper = mapper(TestataMovimento, t_testata_movimento,properties={
         "rigamov": relation(RigaMovimento,primaryjoin=
-                testata_mov.c.id==rigamovi.c.id_testata_movimento,
+                t_testata_movimento.c.id==t_riga_movimento.c.id_testata_movimento,
                 cascade="all, delete",
                 backref="testata_movimento"),
         #"fornitore": relation(Fornitore, backref="testata_movimento"),
         "forni":relation(Fornitore,primaryjoin=
-                    (testata_mov.c.id_fornitore==Fornitore.id), backref="testata_movimento"),
+                    (t_testata_movimento.c.id_fornitore==Fornitore.id), backref="testata_movimento"),
         "cli":relation(Cliente,primaryjoin=
-                    (testata_mov.c.id_cliente==clie.c.id), backref="testata_movimento"),
-        "opera": relation(Operazione,primaryjoin = (testata_mov.c.operazione==Operazione.denominazione),backref="testata_movimento"),
-        }, order_by=testata_mov.c.id)
+                    (t_testata_movimento.c.id_cliente==t_cliente.c.id), backref="testata_movimento"),
+        "opera": relation(Operazione,primaryjoin = (t_testata_movimento.c.operazione==Operazione.denominazione),backref="testata_movimento"),
+        }, order_by=t_testata_movimento.c.id)

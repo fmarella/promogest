@@ -174,7 +174,6 @@ t_fornitura = Table('fornitura',
                     params['metadata'],
                     schema=params['schema'],
                     autoload=True)
-fornitura = t_fornitura
 
 if "numero_lotto" not in [c.name for c in t_fornitura.columns]:
     col = Column('numero_lotto', String(200))

@@ -24,11 +24,11 @@ from sqlalchemy.orm import *
 from promogest.Environment import *
 from promogest.dao.Dao import Dao
 from promogest.modules.GestioneFile.dao.Immagine import ImageFile,immagine
-from promogest.dao.Articolo import Articolo,articolo
+from promogest.dao.Articolo import Articolo, t_articolo
 
 
 try:
-    articoloimmagine=Table('articolo_immagine',
+    t_articoloimmagine=Table('articolo_immagine',
                 params['metadata'],
                 schema = params['schema'],
                 autoload=True)
@@ -40,7 +40,7 @@ except:
         immagineFK = params['schema']+'.immagine.id'
         articoloFK = params['schema']+'.articolo.id'
 
-    articoloimmagine = Table('articolo_immagine', params['metadata'],
+    t_articoloimmagine = Table('articolo_immagine', params['metadata'],
             Column('id_immagine',Integer,
                 ForeignKey(immagineFK,
                     onupdate="CASCADE",
@@ -52,7 +52,7 @@ except:
                     ondelete="CASCADE"),
                     primary_key=True),
             schema=params['schema'])
-    articoloimmagine.create(checkfirst=True)
+    t_articoloimmagine.create(checkfirst=True)
 
 class ArticoloImmagine(Dao):
     """ ArticoloImmagine class database functions  """
@@ -62,14 +62,14 @@ class ArticoloImmagine(Dao):
 
     def filter_values(self,k,v):
         if k == 'id_immagine':
-            dic = {k:articoloimmagine.c.id_immagine == v}
+            dic = {k:t_articoloimmagine.c.id_immagine == v}
         elif k == 'idArticolo':
-            dic = {k:articoloimmagine.c.id_articolo == v}
+            dic = {k:t_articoloimmagine.c.id_articolo == v}
         elif k == 'denominazione':
-            dic = {k:and_(articoloimmagine.id_articolo==articolo.id,immagine.ilike("%"+v+"%"))}
+            dic = {k:and_(t_articoloimmagine.id_articolo==t_articolo.id,immagine.ilike("%"+v+"%"))}
         return  dic[k]
 
-std_mapper = mapper(ArticoloImmagine, articoloimmagine, properties={
+std_mapper = mapper(ArticoloImmagine, t_articoloimmagine, properties={
                  'immagine': relation(ImageFile, backref='artima',cascade="all, delete"),
                  'articolo': relation(Articolo, backref='artima'),
-                }, order_by=articoloimmagine.c.id_immagine)
+                }, order_by=t_articoloimmagine.c.id_immagine)

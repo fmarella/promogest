@@ -36,7 +36,7 @@ from StatoArticolo import StatoArticolo, stato_articolo
 from FamigliaArticolo import FamigliaArticolo, famiglia
 from CategoriaArticolo import CategoriaArticolo, categoria_articolo
 from CodiceABarreArticolo import CodiceABarreArticolo,codice_barre_articolo
-from Fornitura import Fornitura
+from Fornitura import Fornitura, t_fornitura
 from promogest.dao.ScontoVenditaDettaglio import ScontoVenditaDettaglio
 from promogest.dao.ScontoVenditaIngrosso import ScontoVenditaIngrosso
 
@@ -618,149 +618,143 @@ class Articolo(Dao):
         pg2log.info("DELETE ARTICOLO")
 
     def filter_values(self, k, v):
+        from promogest.dao.ListinoArticolo import t_listino_articolo
         if k == "codice":
-            dic = {k: articolo.c.codice.ilike("%" + v + "%")}
+            dic = {k: t_articolo.c.codice.ilike("%" + v + "%")}
         elif k == "codicesatto" or k == "codiceEM":
-            dic = {k: articolo.c.codice == v}
+            dic = {k: t_articolo.c.codice == v}
         elif k == 'denominazione':
-            dic = {k: articolo.c.denominazione.ilike("%" + v + "%")}
+            dic = {k: t_articolo.c.denominazione.ilike("%" + v + "%")}
         elif k == 'codiceABarre':
-            dic = {k: and_(articolo.c.id == CodiceABarreArticolo.id_articolo,
+            dic = {k: and_(t_articolo.c.id == CodiceABarreArticolo.id_articolo,
                 CodiceABarreArticolo.codice.ilike("%" + v + "%"))}
         elif k == 'codiceABarreEM':
-            dic = {k: and_(articolo.c.id == CodiceABarreArticolo.id_articolo,
+            dic = {k: and_(t_articolo.c.id == CodiceABarreArticolo.id_articolo,
                 CodiceABarreArticolo.codice == v)}
         elif k == 'codiceArticoloFornitore':
-            dic = {k: and_(articolo.c.id == fornitura.c.id_articolo,
-                fornitura.c.codice_articolo_fornitore.ilike("%" + v + "%"))}
+            dic = {k: and_(t_articolo.c.id == t_fornitura.c.id_articolo,
+                t_fornitura.c.codice_articolo_fornitore.ilike("%" + v + "%"))}
         elif k == 'codiceArticoloFornitoreEM':
-            dic = {k: and_(articolo.c.id == fornitura.c.id_articolo,
-                fornitura.c.codice_articolo_fornitore == v)}
+            dic = {k: and_(t_articolo.c.id == t_fornitura.c.id_articolo,
+                t_fornitura.c.codice_articolo_fornitore == v)}
         elif k == 'produttore':
-            dic = {k: articolo.c.produttore.ilike("%" + v + "%")}
+            dic = {k: t_articolo.c.produttore.ilike("%" + v + "%")}
         elif k == 'produttoreEM':
-            dic = {k: articolo.c.produttore == v}
+            dic = {k: t_articolo.c.produttore == v}
         elif k == 'idFamiglia':
-            dic = {k: articolo.c.id_famiglia_articolo == v}
+            dic = {k: t_articolo.c.id_famiglia_articolo == v}
         elif k == 'idAliquotaIva':
-            dic = {k: articolo.c.id_aliquota_iva == v}
+            dic = {k: t_articolo.c.id_aliquota_iva == v}
         elif k == 'idCategoria':
-            dic = {k: articolo.c.id_categoria_articolo == v}
+            dic = {k: t_articolo.c.id_categoria_articolo == v}
         elif k == 'idCategoriaList':
-            dic = {k: articolo.c.id_categoria_articolo.in_(v)}
+            dic = {k: t_articolo.c.id_categoria_articolo.in_(v)}
         elif k == 'idStato':
-            dic = {k: articolo.c.id_stato_articolo == v}
+            dic = {k: t_articolo.c.id_stato_articolo == v}
         elif k == 'cancellato':
-            dic = {k: or_(articolo.c.cancellato != v)}
+            dic = {k: or_(t_articolo.c.cancellato != v)}
         elif k == 'idArticolo':
-            dic = {k: or_(articolo.c.id == v)}
+            dic = {k: or_(t_articolo.c.id == v)}
         elif k == "listinoFissato":
-            dic = {k: and_(listinoarticolo.c.id_articolo == articolo.c.id,
-                listinoarticolo.c.id_listino == v)}
+            dic = {k: and_(t_listino_articolo.c.id_articolo == t_articolo.c.id,
+                t_listino_articolo.c.id_listino == v)}
         elif posso("PW"):
             if k == 'figliTagliaColore':
-                dic = {k: and_(articolo.c.id == ArticoloTagliaColore.id_articolo,
+                dic = {k: and_(t_articolo.c.id == ArticoloTagliaColore.id_articolo,
                     ArticoloTagliaColore.id_articolo_padre == None)}
             elif k == 'idTaglia':
-                dic = {k: and_(articolo.c.id == ArticoloTagliaColore.id_articolo,
+                dic = {k: and_(t_articolo.c.id == ArticoloTagliaColore.id_articolo,
                     ArticoloTagliaColore.id_taglia == v)}
             elif k == 'idModello':
-                dic = {k: and_(articolo.c.id == ArticoloTagliaColore.id_articolo,
+                dic = {k: and_(t_articolo.c.id == ArticoloTagliaColore.id_articolo,
                     ArticoloTagliaColore.id_modello == v)}
             elif k == 'idGruppoTaglia':
-                dic = {k: and_(articolo.c.id == ArticoloTagliaColore.id_articolo,
+                dic = {k: and_(t_articolo.c.id == ArticoloTagliaColore.id_articolo,
                     ArticoloTagliaColore.id_gruppo_taglia == v)}
             elif k == 'padriTagliaColore':
-                dic = {k: and_(articolo.c.id == ArticoloTagliaColore.id_articolo,
+                dic = {k: and_(t_articolo.c.id == ArticoloTagliaColore.id_articolo,
                     ArticoloTagliaColore.id_articolo_padre != None)}
             elif k == 'idColore':
-                dic = {k: and_(articolo.c.id == ArticoloTagliaColore.id_articolo,
+                dic = {k: and_(t_articolo.c.id == ArticoloTagliaColore.id_articolo,
                     ArticoloTagliaColore.id_colore == v)}
             elif k == 'idStagione':
-                dic = {k: and_(articolo.c.id == ArticoloTagliaColore.id_articolo,
+                dic = {k: and_(t_articolo.c.id == ArticoloTagliaColore.id_articolo,
                     ArticoloTagliaColore.id_stagione == v)}
             elif k == 'idAnno':
-                dic = {k: and_(articolo.c.id == ArticoloTagliaColore.id_articolo,
+                dic = {k: and_(t_articolo.c.id == ArticoloTagliaColore.id_articolo,
                     ArticoloTagliaColore.id_anno == v)}
             elif k == 'idGenere':
-                dic = {k: and_(articolo.c.id == ArticoloTagliaColore.id_articolo,
+                dic = {k: and_(t_articolo.c.id == ArticoloTagliaColore.id_articolo,
                     ArticoloTagliaColore.id_genere == v)}
         elif posso("SL"):
             if k == "node":
-                dic = {k: and_(AssociazioneArticolo.id_padre == articolo.c.id,
-                        AssociazioneArticolo.id_figlio == articolo.c.id)}
+                dic = {k: and_(AssociazioneArticolo.id_padre == t_articolo.c.id,
+                        AssociazioneArticolo.id_figlio == t_articolo.c.id)}
         return  dic[k]
 
-listinoarticolo = Table('listino_articolo', meta, schema=params["schema"],
-    autoload=True)
-fornitura = Table('fornitura', meta, schema=params["schema"],
-    autoload=True)
-articolo = Table('articolo', meta, schema=params["schema"],
-    autoload=True)
-img = Table('image', meta, schema=params["schema"],
-    autoload=True)
+t_articolo = Table('articolo', meta, schema=params["schema"], autoload=True)
 
 std_mapper = mapper(
     Articolo,
-    articolo,
+    t_articolo,
     properties=dict(
         cod_barre=relation(CodiceABarreArticolo,
-            primaryjoin=articolo.c.id == codice_barre_articolo.c.id_articolo,
+            primaryjoin=t_articolo.c.id == codice_barre_articolo.c.id_articolo,
             backref="arti",
             cascade="all, delete"),
         imba=relation(Imballaggio,
-            primaryjoin=articolo.c.id_imballaggio == imballaggio.c.id),
+            primaryjoin=t_articolo.c.id_imballaggio == imballaggio.c.id),
         ali_iva=relation(AliquotaIva,
-            primaryjoin=(articolo.c.id_aliquota_iva == aliquota_iva.c.id)),
+            primaryjoin=(t_articolo.c.id_aliquota_iva == aliquota_iva.c.id)),
         den_famiglia=relation(FamigliaArticolo,
-            primaryjoin=articolo.c.id_famiglia_articolo == famiglia.c.id),
+            primaryjoin=t_articolo.c.id_famiglia_articolo == famiglia.c.id),
         den_categoria=relation(CategoriaArticolo,
-            primaryjoin=(articolo.c.id_categoria_articolo == categoria_articolo.c.id)),
+            primaryjoin=(t_articolo.c.id_categoria_articolo == categoria_articolo.c.id)),
         den_unita=relation(UnitaBase,
-            primaryjoin=articolo.c.id_unita_base == unitabase.c.id),
-        #image=relation(Immagine,primaryjoin= articolo.c.id_immagine==img.c.id,
+            primaryjoin=t_articolo.c.id_unita_base == unitabase.c.id),
+        #image=relation(Immagine,primaryjoin= t_articolo.c.id_immagine==img.c.id,
                             #cascade="all, delete",
                             #backref="arti"),
         sa=relation(StatoArticolo,
-            primaryjoin=(articolo.c.id_stato_articolo == stato_articolo.c.id)),
+            primaryjoin=(t_articolo.c.id_stato_articolo == stato_articolo.c.id)),
         fornitur=relation(Fornitura,
-            primaryjoin=(fornitura.c.id_articolo == articolo.c.id),
+            primaryjoin=(t_fornitura.c.id_articolo == t_articolo.c.id),
                 backref="arti"),
         multi=relation(Multiplo,
-            primaryjoin=(Multiplo.id_articolo == articolo.c.id),
+            primaryjoin=(Multiplo.id_articolo == t_articolo.c.id),
                 backref="arti"),
 
 
 
-        id_immagine = deferred(articolo.c.id_immagine, group='id_unita_base'),
-        id_unita_base = deferred(articolo.c.id_unita_base),
-        unita_dimensioni = deferred(articolo.c.unita_dimensioni, group='id_unita_base'),
-        lunghezza = deferred(articolo.c.lunghezza, group='id_unita_base'),
-        altezza = deferred(articolo.c.altezza, group='id_unita_base'),
-        unita_volume = deferred(articolo.c.unita_volume, group='id_unita_base'),
-        volume = deferred(articolo.c.volume, group='id_unita_base'),
-        unita_peso = deferred(articolo.c.unita_peso, group='id_unita_base'),
-        peso_lordo = deferred(articolo.c.peso_lordo, group='id_unita_base'),
-        id_imballaggio = deferred(articolo.c.id_imballaggio, group='id_unita_base'),
-        peso_imballaggio = deferred(articolo.c.peso_imballaggio, group='id_unita_base'),
-        stampa_etichetta = deferred(articolo.c.stampa_etichetta, group='id_unita_base'),
-        codice_etichetta = deferred(articolo.c.codice_etichetta, group='id_unita_base'),
-        descrizione_etichetta = deferred(articolo.c.descrizione_etichetta, group='id_unita_base'),
-        stampa_listino = deferred(articolo.c.stampa_listino, group='id_unita_base'),
-        descrizione_listino = deferred(articolo.c.descrizione_listino, group='id_unita_base'),
-        aggiornamento_listino_auto = deferred(articolo.c.aggiornamento_listino_auto, group='id_unita_base'),
-        timestamp_variazione = deferred(articolo.c.timestamp_variazione, group='id_unita_base'),
-        note = deferred(articolo.c.note, group='id_unita_base'),
-        contenuto = deferred(articolo.c.contenuto, group='id_unita_base'),
-        quantita_minima = deferred(articolo.c.quantita_minima, group='id_unita_base'),
-            ), order_by=articolo.c.codice)
+        id_immagine = deferred(t_articolo.c.id_immagine, group='id_unita_base'),
+        id_unita_base = deferred(t_articolo.c.id_unita_base),
+        unita_dimensioni = deferred(t_articolo.c.unita_dimensioni, group='id_unita_base'),
+        lunghezza = deferred(t_articolo.c.lunghezza, group='id_unita_base'),
+        altezza = deferred(t_articolo.c.altezza, group='id_unita_base'),
+        unita_volume = deferred(t_articolo.c.unita_volume, group='id_unita_base'),
+        volume = deferred(t_articolo.c.volume, group='id_unita_base'),
+        unita_peso = deferred(t_articolo.c.unita_peso, group='id_unita_base'),
+        peso_lordo = deferred(t_articolo.c.peso_lordo, group='id_unita_base'),
+        id_imballaggio = deferred(t_articolo.c.id_imballaggio, group='id_unita_base'),
+        peso_imballaggio = deferred(t_articolo.c.peso_imballaggio, group='id_unita_base'),
+        stampa_etichetta = deferred(t_articolo.c.stampa_etichetta, group='id_unita_base'),
+        codice_etichetta = deferred(t_articolo.c.codice_etichetta, group='id_unita_base'),
+        descrizione_etichetta = deferred(t_articolo.c.descrizione_etichetta, group='id_unita_base'),
+        stampa_listino = deferred(t_articolo.c.stampa_listino, group='id_unita_base'),
+        descrizione_listino = deferred(t_articolo.c.descrizione_listino, group='id_unita_base'),
+        aggiornamento_listino_auto = deferred(t_articolo.c.aggiornamento_listino_auto, group='id_unita_base'),
+        timestamp_variazione = deferred(t_articolo.c.timestamp_variazione, group='id_unita_base'),
+        note = deferred(t_articolo.c.note, group='id_unita_base'),
+        contenuto = deferred(t_articolo.c.contenuto, group='id_unita_base'),
+        quantita_minima = deferred(t_articolo.c.quantita_minima, group='id_unita_base'),
+            ), order_by=t_articolo.c.codice)
 if hasattr(conf, "PromoWear")\
             and getattr(conf.PromoWear, 'mod_enable') == "yes":
     from promogest.modules.PromoWear.dao.ArticoloTagliaColore \
                                             import ArticoloTagliaColore
     std_mapper.add_property("ATC",
         relation(ArticoloTagliaColore,
-            primaryjoin=(articolo.c.id == ArticoloTagliaColore.id_articolo),
+            primaryjoin=(t_articolo.c.id == ArticoloTagliaColore.id_articolo),
             backref="ARTI",
             uselist=False))
 if hasattr(conf, "DistintaBase") and \
@@ -769,11 +763,11 @@ if hasattr(conf, "DistintaBase") and \
          import AssociazioneArticolo
     std_mapper.add_property("AAPadre",
         relation(AssociazioneArticolo,
-            primaryjoin=(articolo.c.id == AssociazioneArticolo.id_padre),
+            primaryjoin=(t_articolo.c.id == AssociazioneArticolo.id_padre),
                 backref="ARTIPADRE"))
     std_mapper.add_property("AAFiglio",
         relation(AssociazioneArticolo,
-            primaryjoin=(articolo.c.id == AssociazioneArticolo.id_figlio),
+            primaryjoin=(t_articolo.c.id == AssociazioneArticolo.id_figlio),
                 backref="ARTIFIGLIO"))
 if (hasattr(conf, "GestioneNoleggio") and \
             getattr(conf.GestioneNoleggio, 'mod_enable') == "yes") or\
@@ -782,7 +776,7 @@ if (hasattr(conf, "GestioneNoleggio") and \
             import ArticoloGestioneNoleggio
     std_mapper.add_property("APGN",
         relation(ArticoloGestioneNoleggio,
-        primaryjoin=(articolo.c.id == ArticoloGestioneNoleggio.id_articolo),
+        primaryjoin=(t_articolo.c.id == ArticoloGestioneNoleggio.id_articolo),
             backref="ARTI",
                 uselist=False))
 
@@ -791,13 +785,13 @@ if (hasattr(conf, "ADR") and getattr(conf.ADR, 'mod_enable') == "yes") or\
     from promogest.modules.ADR.dao.ArticoloADR import ArticoloADR
     std_mapper.add_property("APADR",
                     relation(ArticoloADR,
-                    primaryjoin=(articolo.c.id == ArticoloADR.id_articolo),
+                    primaryjoin=(t_articolo.c.id == ArticoloADR.id_articolo),
                     backref="ARTI",
                     uselist=False))
 
 
 def isNuovoCodiceByFamiglia():
-    """ Indica se un nuovo codice articolo dipende dalla famiglia o meno """
+    """ Indica se un nuovo codice t_articolo dipende dalla famiglia o meno """
     dependsOn = False
 
     if hasattr(conf, 'Articoli'):
@@ -809,7 +803,7 @@ def isNuovoCodiceByFamiglia():
 
 
 def getNuovoCodiceArticolo(idFamiglia=None):
-    """ Restituisce il codice progressivo per un nuovo articolo
+    """ Restituisce il codice progressivo per un nuovo t_articolo
         05/03/2011: rivista e semplificata, forse troppo però adesso
         è velocissima
     """

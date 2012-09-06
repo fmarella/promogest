@@ -24,30 +24,36 @@ from sqlalchemy.orm import mapper
 from migrate import *
 from promogest.Environment import *
 from promogest.dao.Dao import Dao
+from promogest.dao.DaoUtils import get_columns
 from promogest.dao.CachedDaosDict import CachedDaosDict
 from promogest.dao.Magazzino import Magazzino
 from promogest.dao.Listino import Listino
 from promogest.dao.Multiplo import Multiplo
-from promogest.dao.Articolo import Articolo, articolo
+from promogest.dao.Articolo import Articolo
 from promogest.dao.UnitaBase import UnitaBase
 from promogest.dao.AliquotaIva import AliquotaIva
 
-riga=Table('riga', params['metadata'],schema = params['schema'],autoload=True)
+t_riga = Table('riga',
+               params['metadata'],
+               schema=params['schema'],
+               autoload=True)
 
-if "id_iva" not in [c.name for c in riga.columns]:
+columns_t_riga = get_columns(t_riga)
+
+if "id_iva" not in columns_t_riga:
     delete_pickle()
     col = Column('id_iva', Integer)
-    col.create(riga)
+    col.create(t_riga)
 
-if "posizione" not in [c.name for c in riga.columns]:
+if "posizione" not in columns_t_riga:
     delete_pickle()
     col = Column('posizione', Integer)
-    col.create(riga)
+    col.create(t_riga)
 
-if "id_riga_padre" not in [c.name for c in riga.columns]:
+if "id_riga_padre" not in columns_t_riga:
     delete_pickle()
     col = Column('id_riga_padre', Integer)
-    col.create(riga)
+    col.create(t_riga)
 
 class Riga(Dao):
     """ Mapper to handle the Row Table """
@@ -57,9 +63,9 @@ class Riga(Dao):
     def filter_values(self,k,v):
         """ Filtro del Mapper Riga"""
         if k=='descrizione':
-            dic= {k: riga.c.descrizione.ilike("%"+v+"%")}
+            dic= {k: t_riga.c.descrizione.ilike("%"+v+"%")}
         elif k=="id_articolo":
-            dic={k: riga.c.id_articolo==v}
+            dic={k: t_riga.c.id_articolo==v}
         return  dic[k]
 
     def __magazzino(self):
@@ -158,9 +164,9 @@ class Riga(Dao):
             if self.arti:return self.arti.denominazione_modello
         denominazione_modello = property(_modello)
 
-std_mapper = mapper(Riga, riga, properties={
-            "maga":relation(Magazzino,primaryjoin=riga.c.id_magazzino==Magazzino.id),
-            "listi":relation(Listino,primaryjoin=riga.c.id_listino==Listino.id),
-            "multi":relation(Multiplo,primaryjoin=riga.c.id_multiplo==Multiplo.id),
-            "arti":relation(Articolo,primaryjoin=riga.c.id_articolo==articolo.c.id),
-}, order_by=riga.c.posizione)
+std_mapper = mapper(Riga, t_riga, properties={
+            "maga":relation(Magazzino,primaryjoin=t_riga.c.id_magazzino==Magazzino.id),
+            "listi":relation(Listino,primaryjoin=t_riga.c.id_listino==Listino.id),
+            "multi":relation(Multiplo,primaryjoin=t_riga.c.id_multiplo==Multiplo.id),
+            "arti":relation(Articolo,primaryjoin=t_riga.c.id_articolo==Articolo.id),
+}, order_by=t_riga.c.posizione)

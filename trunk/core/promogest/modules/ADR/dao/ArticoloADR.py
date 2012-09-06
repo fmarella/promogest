@@ -25,7 +25,6 @@ from sqlalchemy.orm import *
 from promogest.Environment import *
 from promogest.dao.Dao import Dao
 from migrate import *
-from promogest.dao.Articolo import articolo
 from promogest.modules.ADR.dao.CategoriaTrasporto import CategoriaTrasporto
 from promogest.modules.ADR.dao.CodiceClassificazione import CodiceClassificazione
 from promogest.modules.ADR.dao.GruppoImballaggio import GruppoImballaggio
@@ -33,11 +32,11 @@ from promogest.modules.ADR.dao.ClassePericolo import ClassePericolo
 from promogest.modules.ADR.dao.Galleria import Galleria
 
 try:
-    articolo_adr_t = Table('articolo_adr', params['metadata'],
+    t_articolo_adr = Table('articolo_adr', params['metadata'],
                          schema=params['schema'], autoload=True)
 except:
 
-    articolo_adr_t = Table(
+    t_articolo_adr = Table(
         'articolo_adr',
         params['metadata'],
         Column('id', Integer, primary_key=True),
@@ -63,7 +62,7 @@ except:
         schema=params['schema'],
         useexisting=True,
         )
-    articolo_adr_t.create(checkfirst=True)
+    t_articolo_adr.create(checkfirst=True)
 
 
 class ArticoloADR(Dao):
@@ -73,9 +72,9 @@ class ArticoloADR(Dao):
 
     def filter_values(self, k, v):
         if k == 'id':
-            dic = {k: articolo_adr_t.c.id==v}
+            dic = {k: t_articolo_adr.c.id==v}
         elif k == 'id_articolo':
-            dic = {k: articolo_adr_t.c.id_articolo==v}
+            dic = {k: t_articolo_adr.c.id_articolo==v}
         return dic[k]
 
     @property
@@ -134,5 +133,5 @@ class ArticoloADR(Dao):
         else:
             return ''
 
-std_mapper = mapper(ArticoloADR, articolo_adr_t,
-                    order_by=articolo_adr_t.c.id_articolo)
+std_mapper = mapper(ArticoloADR, t_articolo_adr,
+                    order_by=t_articolo_adr.c.id_articolo)
