@@ -25,13 +25,8 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
 from promogest.lib.utils import setconf
-#from promogest.dao.Dao import Dao
 from promogest.dao.CCardType import c_card_type
-from promogest.dao.Magazzino import magazzino
-from promogest.dao.Articolo import articolo
-from promogest.dao.TestataMovimento import testata_mov
 from promogest.modules.VenditaDettaglio.dao.Pos import pos
-from promogest.dao.Cliente import j as cliente
 
 if tipodb=="sqlite":
     magazzinoFK = 'magazzino.id'
