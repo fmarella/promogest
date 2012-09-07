@@ -1174,10 +1174,10 @@ t_testata_documento = Table('testata_documento',
                           schema=params['schema'],
                           autoload=True)
 
-if 'esclusione_spese' not in [c.name for c in t_testata_documento.columns]:
-    delete_pickle()
-    col = Column('esclusione_spese', Boolean, default=True)
-    col.create(t_testata_documento, populate_default=True)
+# if 'esclusione_spese' not in [c.name for c in t_testata_documento.columns]:
+#     delete_pickle()
+#     col = Column('esclusione_spese', Boolean, default=True)
+#     col.create(t_testata_documento, populate_default=True)
 
 std_mapper = mapper(TestataDocumento, t_testata_documento,
     properties={
