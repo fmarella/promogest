@@ -114,6 +114,8 @@ class DuplicazioneDocumento(GladeWidget):
         else:
             note = ""
 
+        mantieni_pagamenti = self.mantieni_pagamenti_checkbutton.get_active()
+
         newDao = TestataDocumento()
         newDao.data_documento = stringToDate(self.data_documento_entry.get_text())
         newDao.operazione = findIdFromCombobox(self.id_operazione_combobox)
@@ -281,7 +283,8 @@ class DuplicazioneDocumento(GladeWidget):
         #return
         newDao.righeDocumento = righeDocumento
         scadenze = []
-        if self.mantieni_pagamenti_checkbutton.get_active():
+
+        if mantieni_pagamenti:
             scad = self.dao.scadenze
             for s in scad:
                 daoTestataDocumentoScadenza = TestataDocumentoScadenza()
