@@ -562,14 +562,9 @@ class Articolo(Dao):
                 print "ARTICOLO NORMALE SENZA TAGLIE O COLORI"
 
         if posso("ADR"):
-            from promogest.modules.ADR.dao.ArticoloADR import ArticoloADR
             if self.articolo_adr_dao and self.id:
-                articoloADR = ArticoloADR().select(id_articolo=self.id)
-                if articoloADR:
-                        articoloADR[0].delete()
                 self.articolo_adr_dao.id_articolo = self.id
-                session.add(self.articolo_adr_dao)
-                self.commit()
+                self.APADR = self.articolo_adr_dao
         session.commit()
 
     def delete(self):
@@ -599,10 +594,8 @@ class Articolo(Dao):
                 if atc:
                     atc.delete()
             if posso('ADR'):
-                from promogest.modules.ADR.dao.ArticoloADR import ArticoloADR
-                artADR = ArticoloADR().select(id_articolo=self.id)
-                if artADR:
-                    session.delete(artADR[0])
+                if self.APADR:
+                    session.delete(self.APADR)
             session.delete(self)
         la = ListinoArticolo().select(idArticolo=self.id)
         if la:
@@ -786,7 +779,6 @@ if (hasattr(conf, "ADR") and getattr(conf.ADR, 'mod_enable') == "yes") or\
     std_mapper.add_property("APADR",
                     relation(ArticoloADR,
                     primaryjoin=(t_articolo.c.id == ArticoloADR.id_articolo),
-                    backref="ARTI",
                     uselist=False))
 
 

@@ -81,12 +81,7 @@ class ADRNotebookPage(GladeWidget):
         if not dao.id:
             self.dao_articolo_adr = ArticoloADR()
         else:
-            self.dao_articolo_adr = ArticoloADR().select(id_articolo=dao.id)
-            if self.dao_articolo_adr:
-                self.dao_articolo_adr = self.dao_articolo_adr[0]
-            else:
-                self.dao_articolo_adr = ArticoloADR()
-        #self.adr_refresh()
+            self.dao_articolo_adr = dao.APADR
 
     def adr_refresh(self):
         if self.dao_articolo_adr:
@@ -101,14 +96,13 @@ class ADRNotebookPage(GladeWidget):
         numero_un = self.numero_un_adr_entry.get_text() or ''
         if not numero_un:
             return None
-        dao_articolo_adr = ArticoloADR()
-        dao_articolo_adr.numero_un = numero_un
-        dao_articolo_adr.id_gruppo_imballaggio = self.id_gruppo_imballaggio_adr_customcombobox.combobox.get_active()
-        dao_articolo_adr.id_codice_classificazione = self.id_codice_classificazione_adr_customcombobox.combobox.get_active()
-        dao_articolo_adr.id_classe = self.id_classe_pericolo_adr_customcombobox.combobox.get_active()
-        dao_articolo_adr.id_galleria = self.id_galleria_adr_customcombobox.combobox.get_active()
-        dao_articolo_adr.id_categoria_trasporto = self.id_categoria_trasporto_adr_customcombobox.combobox.get_active()
-        return dao_articolo_adr
+        self.dao_articolo_adr.numero_un = numero_un
+        self.dao_articolo_adr.id_gruppo_imballaggio = self.id_gruppo_imballaggio_adr_customcombobox.combobox.get_active()
+        self.dao_articolo_adr.id_codice_classificazione = self.id_codice_classificazione_adr_customcombobox.combobox.get_active()
+        self.dao_articolo_adr.id_classe = self.id_classe_pericolo_adr_customcombobox.combobox.get_active()
+        self.dao_articolo_adr.id_galleria = self.id_galleria_adr_customcombobox.combobox.get_active()
+        self.dao_articolo_adr.id_categoria_trasporto = self.id_categoria_trasporto_adr_customcombobox.combobox.get_active()
+        return self.dao_articolo_adr
 
 # Categoria trasporto
 
