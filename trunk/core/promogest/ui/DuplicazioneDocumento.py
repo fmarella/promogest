@@ -300,8 +300,10 @@ class DuplicazioneDocumento(GladeWidget):
             newDao.documento_saldato = self.dao.documento_saldato
             newDao.id_primo_riferimento = self.dao.id_primo_riferimento
             newDao.id_secondo_riferimento = self.dao.id_secondo_riferimento
-
-
+        else:
+            newDao.totale_pagato = Decimal(0)
+            newDao.totale_sospeso = self.dao._totaleScontato
+            newDao.documento_saldato = False
 
         newDao.persist()
 
