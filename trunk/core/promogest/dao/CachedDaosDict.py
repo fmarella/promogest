@@ -61,6 +61,9 @@ class _CachedDaosDict(object):
         if obj not in self._dict:
             raise KeyError("'%s'" % obj)
         del self._dict[obj]
+
+    def __repr__(self):
+        return '<CachedDaosDict>'
 _cachedobject = _CachedDaosDict()
 def CachedDaosDict(): return _cachedobject
 
