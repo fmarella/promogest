@@ -319,9 +319,7 @@ class DuplicazioneDocumento(GladeWidget):
 
         #se il segno dell'operazione non è cambiato duplico il documento, altrimenti duplico ma apro la finestra di new/modifica documento
 
-        res = TestataDocumento().getRecord(id=newDao.id)
-
-        msg = "Nuovo documento creato !\n\nIl nuovo documento e' il n. " + str(res.numero) + " del " + dateToString(res.data_documento) + " (" + newDao.operazione + ")\n" + "Lo vuoi modificare?"
+        msg = "Nuovo documento creato !\n\nIl nuovo documento e' il n. " + str(newDao.numero) + " del " + dateToString(newDao.data_documento) + " (" + newDao.operazione + ")\n" + "Lo vuoi modificare?"
         if YesNoDialog(msg=msg, transient=self.getTopLevel()):
           self.anagrafica_documenti.editElement.setVisible(True)
           self.anagrafica_documenti.editElement.setDao(newDao)
