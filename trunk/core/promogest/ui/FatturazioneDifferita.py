@@ -340,6 +340,8 @@ def do_fatt_diff(lista_documenti, data_documento, operazione, no_rif_righe_cumul
                             daoRiga.scontiRigaDocumento = sconti
                             righe.insert(0, daoRiga)
                     #return
+                for r in righe:
+                    r.posizione = righe.index(r)
                 fattura.righeDocumento = righe
                 if not fattura.numero:
                     valori = numeroRegistroGet(tipo=operazione,
