@@ -26,7 +26,7 @@ import os
 import sys
 import shutil
 import glob
-from config import Config
+from promogest.lib.config import Config
 from promogest.EnvUtils import getConfigureDir
 from promogest import Environment
 

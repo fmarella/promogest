@@ -52,9 +52,9 @@ class Dao(object):
 
     def __repr__(self):
         if hasattr(self, 'id'):
-            return "<{0} ID={1}>".format(self.__class__.__name__, self.id)
+            return "<obj {0} ID={1}>".format(self.__class__.__name__, self.id)
         else:
-            return "<{0}>".format(self.__class__.__name__)
+            return "<obj {0}>".format(self.__class__.__name__)
 
     def getRecord(self,id=None):
         """ Restituisce un record ( necessita di un ID )"""

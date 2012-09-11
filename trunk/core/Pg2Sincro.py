@@ -3,7 +3,7 @@
 
 from promogest.modules.SincroDB.ui.SincroDB import SincroDB
 from optparse import OptionParser
-from config import Config
+from promogest.lib.config import Config
 
 
 class Pg2Sincro(object):

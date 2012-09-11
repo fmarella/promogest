@@ -37,7 +37,7 @@ shop = preEnv.shop
 if web:
     main_conf = preEnv.main_conf_force
 
-from config import Config
+from promogest.lib.config import Config
 if not web:
     if pg3:
         print " USIAMO LA VERSIONE CON PYGI"
