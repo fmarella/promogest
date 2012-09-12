@@ -40,7 +40,7 @@ class ManageSizeAndColor(GladeWidget):
                 root='gestione_varianti_taglie_colore',
                 path='PromoWear/gui/gestione_varianti_taglia_colore.glade',
                 isModule=True)
-        self.placeWindow(self.getTopLevel())
+        #self.placeWindow(self.getTopLevel())
         self.getTopLevel().set_modal(modal=True)
         #self.getTopLevel().set_transient_for(mainWindow)
         self.articoloPadre= articolo
@@ -479,11 +479,11 @@ class ManageSizeAndColor(GladeWidget):
 
         self.mainWindow.tagliaColoreRigheList = resultList # rimando indietro la lista
         self.mainWindow.promowear_manager_taglia_colore_togglebutton.set_active(False)
-        self.destroy()
+        self.getTopLevel().destroy()
 
     def on_cancel_button_clicked(self, button):
         """ """
         self.mainWindow.promowear_manager_taglia_colore_togglebutton.set_active(False)
         resultList = []
         Environment.tagliacoloretempdata= (True, resultList)
-        self.destroy()
+        self.getTopLevel().destroy()

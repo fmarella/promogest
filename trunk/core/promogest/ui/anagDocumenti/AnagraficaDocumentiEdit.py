@@ -1633,8 +1633,8 @@ del documento.
                                         idPerGiu=idPerGiu,
                                         idListino=self._id_listino,
                                         fonteValore=self._fonteValore)
-            anagWindow = manag.getTopLevel()
-            anagWindow.set_transient_for(self.dialogTopLevel)
+            #anagWindow = manag.getTopLevel()
+            #anagWindow.set_transient_for(self.dialogTopLevel)
         else:
             if self.tagliaColoreRigheList:
                 for var in self.tagliaColoreRigheList:
@@ -2042,7 +2042,7 @@ del documento.
         self.getPrezzoVenditaLordo(idListino, idArticolo)
         self.prezzo_lordo_entry.set_text(str(self._righe[0]["prezzoLordo"]))
         self.sconti_widget.setValues(self._righe[0]["sconti"], self._righe[0]["applicazioneSconti"], True)
-        
+
         self.on_show_totali_riga()
 
     def on_new_row_button_clicked(self, widget):
