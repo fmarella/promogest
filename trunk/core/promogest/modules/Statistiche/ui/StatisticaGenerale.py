@@ -129,8 +129,8 @@ class StatisticaGenerale(GladeWidget):
         datata = self.da_data_entry.get_text()
         adata= self.a_data_entry.get_text()
 
-        buffer= self.sommario_textview.get_buffer()
-        line_count = buffer.get_line_count()
+        buf= self.sommario_textview.get_buffer()
+        line_count = buf.get_line_count()
 
         stringa ="""
         Stiamo per creare un REPORT relativo alla statistica: %s
@@ -166,10 +166,10 @@ class StatisticaGenerale(GladeWidget):
         if self.cliente[3]:
             stringa += "\n" + self.cliente[0] + ": " + "TUTTI"
 
-        buffer.set_text(stringa)
+        buf.set_text(stringa)
         self.stringa = stringa
 
-        self.sommario_textview.set_buffer(buffer)
+        self.sommario_textview.set_buffer(buf)
 
     def on_column_selected_edited(self, cell, path, treeview,value, editNext=True):
         """ Function to set the value quantita edit in the cell"""
