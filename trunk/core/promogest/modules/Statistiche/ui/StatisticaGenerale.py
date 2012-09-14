@@ -110,6 +110,21 @@ class StatisticaGenerale(GladeWidget):
         self.treeview.set_model(self._treeViewModel)
         self._refresh()
 
+    def __setup_view(self, tipo):
+        self.statistica_dialog.show_all()
+        if tipo == 2:
+            self.fornitore_button.hide()
+        elif tipo == 4:
+            self.produttore_button.hide()
+            self.categoria_cliente_button.hide()
+            self.famiglia_articolo.hide()
+            self.categoria_articolo.hide()
+            self.cliente_button.hide()
+            self.magazzino_button.hide()
+            self.checkbutton1.hide()
+            self.ordine_fattu_radio.hide()
+            self.ordine_alfa_radio.hide()
+
     def _refresh(self):
         datata = self.da_data_entry.get_text()
         adata= self.a_data_entry.get_text()
@@ -341,6 +356,7 @@ class StatisticaGenerale(GladeWidget):
         if tree_iter != None:
             model = combo.get_model()
             self.tipo_stat = model[tree_iter][0]
+        self.__setup_view(self.tipo_stat)
 
     def calcolo_ricarico_medio_e_influenza_sulle_vendite(self):
         idsCliente = []

@@ -4,6 +4,7 @@
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy project-wide -->
   <object class="GtkListStore" id="liststore1"/>
+  <object class="GtkTextBuffer" id="sommario_textbuffer"/>
   <object class="GtkListStore" id="tipo_statistica_listore">
     <columns>
       <!-- column-name tipo -->
@@ -26,7 +27,6 @@
       </row>
     </data>
   </object>
-  <object class="GtkTextBuffer" id="sommario_textbuffer"/>
   <object class="GtkDialog" id="statistica_dialog">
     <property name="visible">True</property>
     <property name="can_focus">True</property>
@@ -157,41 +157,41 @@
                     <property name="position">1</property>
                   </packing>
                 </child>
+                <child>
+                  <object class="GtkAspectFrame" id="aspectframe1">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label_xalign">0</property>
+                    <property name="shadow_type">in</property>
+                    <child>
+                      <object class="GtkLabel" id="info_stats_label">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="xalign">0.0099999997764825821</property>
+                        <property name="yalign">0.0099999997764825821</property>
+                        <property name="xpad">5</property>
+                        <property name="ypad">5</property>
+                        <property name="label" translatable="yes">Il controllo per fatturato consiste in un elenco di clienti
+con i indicato il relativo valore di quanto acquistato in un
+determinato arco temporale. Sono presenti anche altre
+informazioni sul numero degli acquisti ed il loro valore medio.</property>
+                        <property name="justify">fill</property>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="padding">1</property>
+                    <property name="position">2</property>
+                  </packing>
+                </child>
               </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">False</property>
                 <property name="padding">6</property>
                 <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkAspectFrame" id="aspectframe1">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label_xalign">0</property>
-                <property name="shadow_type">in</property>
-                <child>
-                  <object class="GtkLabel" id="info_stats_label">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="xalign">0.0099999997764825821</property>
-                    <property name="yalign">0.0099999997764825821</property>
-                    <property name="xpad">10</property>
-                    <property name="ypad">5</property>
-                    <property name="label" translatable="yes">Il controllo per fatturato consiste in un elenco di clienti con i indicato
-il relativo valore di quanto acquistato in un determinato
-arco temporale. Sono presenti anche altre informazioni
-sul numero degli acquisti ed il loro valore medio.</property>
-                    <property name="justify">fill</property>
-                  </object>
-                </child>
-              </object>
-              <packing>
-                <property name="expand">True</property>
-                <property name="fill">True</property>
-                <property name="padding">1</property>
-                <property name="position">1</property>
               </packing>
             </child>
             <child>
@@ -265,7 +265,7 @@ sul numero degli acquisti ed il loro valore medio.</property>
                           <object class="GtkLabel" id="da_data_label">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="label" translatable="yes">Da data</property>
+                            <property name="label" translatable="yes">Dal</property>
                           </object>
                           <packing>
                             <property name="x_options">GTK_FILL</property>
@@ -276,7 +276,7 @@ sul numero degli acquisti ed il loro valore medio.</property>
                           <object class="GtkLabel" id="a_data_label">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="label" translatable="yes">A data</property>
+                            <property name="label" translatable="yes">Al</property>
                           </object>
                           <packing>
                             <property name="top_attach">1</property>
@@ -554,7 +554,7 @@ sul numero degli acquisti ed il loro valore medio.</property>
               <packing>
                 <property name="expand">True</property>
                 <property name="fill">True</property>
-                <property name="position">2</property>
+                <property name="position">1</property>
               </packing>
             </child>
           </object>
