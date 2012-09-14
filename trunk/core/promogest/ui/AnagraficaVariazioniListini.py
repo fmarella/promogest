@@ -118,7 +118,7 @@ class AnagraficaVariazioniListiniFilter(AnagraficaFilter):
     def clear(self):
         # Annullamento filtro
         self.denominazione_filter_entry.set_text('')
-        self.listino_filter_ccb.set_active(-1)
+        self.listino_filter_ccb.combobox.set_active(-1)
         self.da_data_inizio_datetimewidget.set_text('')
         self.a_data_inizio_datetimewidget.set_text('')
         self.da_data_fine_datetimewidget.set_text('')
