@@ -44,6 +44,7 @@ from promogest.dao.Magazzino import Magazzino
 from promogest.dao.Operazione import Operazione
 from promogest.dao.Multiplo import Multiplo
 from promogest.dao.Pagamento import Pagamento
+from promogest.dao.Cliente import Cliente
 #from promogest.dao.RigaRitenutaAcconto import RigaRitenutaAcconto
 from promogest.ui.DettaglioGiacenzaWindow import DettaglioGiacenzaWindow
 from promogest.dao.RigaMovimentoFornitura import RigaMovimentoFornitura
@@ -429,10 +430,10 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self._righe[0]["moltiplicatore"] = multiplo.moltiplicatore
         self.calcolaTotaleRiga()
 
-    def get_variazioni_listino(self, idListino):
+    def get_variazioni_listino(self, cliente, idListino):
         data = datetime.datetime.now()
-        if self.dao.CLI and self.dao.CLI.vl is not []:
-            return [{'valore':var.valore.strip(), 'tipo':var.tipo} for var in self.dao.CLI.vl if ((var.id_listino == idListino) and (data > var.data_inizio and data < var.data_fine))]
+        if cliente and cliente.vl is not []:
+            return [{'valore':var.valore.strip(), 'tipo':var.tipo} for var in cliente.vl if ((var.id_listino == idListino) and (data > var.data_inizio and data < var.data_fine))]
         else:
             return []
 
@@ -456,6 +457,8 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self._righe[0]["idListino"] = idListino
         self._righe[0]["sconti"] = sconti
         self._righe[0]["applicazioneSconti"] = applicazione
+        cliente = Cliente().getRecord(id=self.id_persona_giuridica_customcombobox.getId()) if not self.dao.id else self.dao.CLI
+        self._righe[0]["VL"] = self.get_variazioni_listino(cliente, idListino)
 
     def _getPrezzoAcquisto(self):
         """ Lettura del prezzo di acquisto netto che serve per i noleggi """
@@ -2041,7 +2044,9 @@ del documento.
 
         self.getPrezzoVenditaLordo(idListino, idArticolo)
         self.prezzo_lordo_entry.set_text(str(self._righe[0]["prezzoLordo"]))
-        self.sconti_widget.setValues(self._righe[0]["sconti"], self._righe[0]["applicazioneSconti"], True)
+        self._righe[0]["sconti"] = [{'valore':sconto.valore, 'tipo': sconto.tipo_sconto} for sconto in self._righe[0]["sconti"]]
+        self._righe[0]["sconti"] += self._righe[0]["VL"]
+        self.sconti_widget.setValues(self._righe[0]["sconti"], self._righe[0]["applicazioneSconti"], False)
 
         self.on_show_totali_riga()
 
