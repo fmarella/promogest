@@ -4,21 +4,29 @@
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy project-wide -->
   <object class="GtkListStore" id="liststore1"/>
-  <object class="GtkTextBuffer" id="sommario_textbuffer"/>
   <object class="GtkListStore" id="tipo_statistica_listore">
     <columns>
-      <!-- column-name gchararray1 -->
+      <!-- column-name tipo -->
+      <column type="gint"/>
+      <!-- column-name descrizione_tipo -->
       <column type="gchararray"/>
     </columns>
     <data>
       <row>
-        <col id="0" translatable="yes">CONTROLLO FATTURATO</col>
+        <col id="0">2</col>
+        <col id="1" translatable="yes">CONTROLLO FATTURATO CLIENTI</col>
       </row>
       <row>
-        <col id="0" translatable="yes">CALCOLO RICARICO MEDIO E INFLUENZA SULLE VENDITE</col>
+        <col id="0">1</col>
+        <col id="1" translatable="yes">CALCOLO RICARICO MEDIO E INFLUENZA SULLE VENDITE</col>
+      </row>
+      <row>
+        <col id="0">4</col>
+        <col id="1" translatable="yes">CONTROLLO FATTURATO FORNITORI</col>
       </row>
     </data>
   </object>
+  <object class="GtkTextBuffer" id="sommario_textbuffer"/>
   <object class="GtkDialog" id="statistica_dialog">
     <property name="visible">True</property>
     <property name="can_focus">True</property>
@@ -139,7 +147,7 @@
                     <child>
                       <object class="GtkCellRendererText" id="cellrenderertext1"/>
                       <attributes>
-                        <attribute name="text">0</attribute>
+                        <attribute name="text">1</attribute>
                       </attributes>
                     </child>
                   </object>
@@ -201,7 +209,7 @@ sul numero degli acquisti ed il loro valore medio.</property>
                       <object class="GtkTable" id="filters_table">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="n_rows">10</property>
+                        <property name="n_rows">11</property>
                         <property name="n_columns">2</property>
                         <child>
                           <object class="GtkButton" id="categoria_cliente_button">
@@ -364,8 +372,8 @@ sul numero degli acquisti ed il loro valore medio.</property>
                           </object>
                           <packing>
                             <property name="right_attach">2</property>
-                            <property name="top_attach">8</property>
-                            <property name="bottom_attach">9</property>
+                            <property name="top_attach">9</property>
+                            <property name="bottom_attach">10</property>
                           </packing>
                         </child>
                         <child>
@@ -380,8 +388,8 @@ sul numero degli acquisti ed il loro valore medio.</property>
                             <property name="group">ordine_alfa_radio</property>
                           </object>
                           <packing>
-                            <property name="top_attach">9</property>
-                            <property name="bottom_attach">10</property>
+                            <property name="top_attach">10</property>
+                            <property name="bottom_attach">11</property>
                           </packing>
                         </child>
                         <child>
@@ -397,8 +405,25 @@ sul numero degli acquisti ed il loro valore medio.</property>
                           <packing>
                             <property name="left_attach">1</property>
                             <property name="right_attach">2</property>
-                            <property name="top_attach">9</property>
-                            <property name="bottom_attach">10</property>
+                            <property name="top_attach">10</property>
+                            <property name="bottom_attach">11</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="fornitore_button">
+                            <property name="label" translatable="yes">Fornitori</property>
+                            <property name="use_action_appearance">False</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">True</property>
+                            <signal name="clicked" handler="on_fornitore_button_clicked" swapped="no"/>
+                          </object>
+                          <packing>
+                            <property name="right_attach">2</property>
+                            <property name="top_attach">8</property>
+                            <property name="bottom_attach">9</property>
+                            <property name="x_options">GTK_FILL</property>
+                            <property name="y_options">GTK_FILL</property>
                           </packing>
                         </child>
                       </object>

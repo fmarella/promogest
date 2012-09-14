@@ -47,6 +47,7 @@ from promogest.lib.HtmlViewer import HtmlViewer
 from promogest.lib.relativedelta import relativedelta
 from promogest.dao.CachedDaosDict import CachedDaosDict
 
+
 class StatisticaGenerale(GladeWidget):
     """ Questa classe nasce con l'intenzione di gestire una interfaccia di
     creazione delle statistiche più generale possibile,per il momento ne
@@ -65,14 +66,17 @@ class StatisticaGenerale(GladeWidget):
         self.da_data_entry.show_all()
         self.a_data_entry.show_all()
 
-        self.nomestatistica = self.tipo_statistica_combo.get_active_text()
+        tree_iter = self.tipo_statistica_combo.get_active_iter()
+        if tree_iter != None:
+            model = self.tipo_statistica_combo.get_model()
+            self.nomestatistica = model[tree_iter][1]
         self.cateCliente = ["CATEGORIA CLIENTE", [], [],False, object]
         self.cateArticolo = ["CATEGORIA ARTICOLO", [], [],False, object]
         self.magazzino = ["MAGAZZINO", [], [], False, object]
         self.produttore = ["PRODUTTORE", [], [], False, str]
         self.cliente = ["CLIENTE", [], [], False, object]
 
-        self.tipo_stat = 2 # CONTROLLO FATTURATO
+        self.tipo_stat = 2 # CONTROLLO FATTURATO CLIENTI
 
         self.draw()
 
@@ -181,8 +185,9 @@ class StatisticaGenerale(GladeWidget):
             if self.tipo_stat == 1:
                 self.calcolo_ricarico_medio_e_influenza_sulle_vendite()
             elif self.tipo_stat == 2:
-                self.controllo_fatturato()
-                #messageInfo(msg=" ANCORA NON GESTITO")
+                self.controllo_fatturato_clienti()
+            elif self.tipo_stat == 4:
+                pass
             elif self.tipo_stat == 3:
                 messageInfo(msg=" ANCORA NON GESTITO")
 
@@ -332,13 +337,10 @@ class StatisticaGenerale(GladeWidget):
         self._refresh()
 
     def on_tipo_statistica_combo_changed(self, combo):
-        tipo = combo.get_active_text()
-        if tipo == "CALCOLO RICARICO MEDIO E INFLUENZA SULLE VENDITE":
-            self.tipo_stat = 1
-        elif tipo =="CONTROLLO FATTURATO":
-            self.tipo_stat = 2
-        elif tipo == "TOTALI FATTURATO":
-            self.tipo_stat == 3
+        tree_iter = combo.get_active_iter()
+        if tree_iter != None:
+            model = combo.get_model()
+            self.tipo_stat = model[tree_iter][0]
 
     def calcolo_ricarico_medio_e_influenza_sulle_vendite(self):
         idsCliente = []
@@ -501,7 +503,7 @@ class StatisticaGenerale(GladeWidget):
         view = HtmlViewer(pageData)
         return
 
-    def controllo_fatturato(self):
+    def controllo_fatturato_clienti(self):
         #print "I CLIENTI", self.cliente
         clienti1 = []
 
