@@ -77,6 +77,7 @@ class StatisticaGenerale(GladeWidget):
         self.cliente = ["CLIENTE", [], [], False, object]
 
         self.tipo_stat = 2 # CONTROLLO FATTURATO CLIENTI
+        self.__setup_view(self.tipo_stat)
 
         self.draw()
 
