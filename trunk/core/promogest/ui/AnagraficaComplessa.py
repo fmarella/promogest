@@ -538,8 +538,7 @@ class Anagrafica(GladeWidget):
         if not YesNoDialog(msg='Confermi l\'eliminazione ?',
                                             transient=self.getTopLevel()):
             return
-        dao = self.filter.getSelectedDao()
-        if dao:
+        for dao in get_selected_daos(self.anagrafica_filter_treeview):
             dao.delete()
         self.filter.refresh()
         self.htmlHandler.setDao(None)
