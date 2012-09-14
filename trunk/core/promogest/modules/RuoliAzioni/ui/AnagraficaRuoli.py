@@ -110,7 +110,7 @@ class AnagraficaRuoliFilter(AnagraficaFilter):
         AnagraficaFilter.__init__(self,
                                   anagrafica,
                                   root='anagrafica_ruoli_filter_table',
-                                  path='./promogest/modules/RuoliAzioni/gui/_anagrafica_ruoli_elements.glade',
+                                  path='RuoliAzioni/gui/_anagrafica_ruoli_elements.glade',
                                     isModule=True)
         self._widgetFirstFocus = self.name_filter_entry
 
@@ -128,7 +128,7 @@ class AnagraficaRuoliDetail(AnagraficaDetail):
     def __init__(self, anagrafica):
         AnagraficaDetail.__init__(self,
                                   anagrafica,
-                                  path='_anagrafica_ruoli_elements.glade')
+                                  path='RuoliAzioni/gui/_anagrafica_ruoli_elements.glade')
 
 
     def setDao(self, dao):
