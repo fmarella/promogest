@@ -204,6 +204,6 @@ std_mapper = mapper(TestataPrimaNota, testataprimanota,
         "rigatest": relation(RigaPrimaNota,
             primaryjoin=testataprimanota.c.id==RigaPrimaNota.id_testata_prima_nota,
             foreign_keys=[RigaPrimaNota.id_testata_prima_nota],
-            cascade="all, delete")
+            cascade="all, delete", backref="__tpn")
     },
     order_by=testataprimanota.c.numero.desc())

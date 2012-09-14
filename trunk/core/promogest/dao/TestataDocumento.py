@@ -102,6 +102,7 @@ class TestataDocumento(Dao):
         self.__data_inizio_noleggio = None
         self.__data_fine_noleggio = None
 
+
     def __repr__(self):
         return '<Documento ID={0} operazione="{1}">'.format(self.numero, self.operazione)
 
@@ -302,7 +303,6 @@ class TestataDocumento(Dao):
             if not self.CLI.pagante:
                 for scad in self.scadenze:
                     if scad:
-
                         impon_spese_, spese_ = getSpesePagamento(scad.pagamento)
                         spese += spese_
                         impon_spese += impon_spese_
@@ -703,29 +703,32 @@ class TestataDocumento(Dao):
         """
         Cancella la scadenza documento associato ad un documento
         """
-        row = TestataDocumentoScadenza().select(idTestataDocumento= dao.id,
-                        offset = None,
-                        batchSize = None)
-        #row = self.testata_documento_scadenza
+        #row = TestataDocumentoScadenza().select(idTestataDocumento= dao.id,
+                        #offset = None,
+                        #batchSize = None)
+        row = self.testata_documento_scadenza
         for r in row:
             #a cascata
 #            if dao.ripartire_importo: #aka prima nota
-            rpntds = RigaPrimaNotaTestataDocumentoScadenza().\
-                    select(idTestataDocumentoScadenza=r.id, batchSize=None)
-            if rpntds:
-                for p in rpntds:
-                    rpn = RigaPrimaNota().getRecord(id=p.id_riga_prima_nota)
+            #rpntds = RigaPrimaNotaTestataDocumentoScadenza().\
+                    #select(idTestataDocumentoScadenza=r.id, batchSize=None)
+            #r.rpntds
+            if r.rpntds:
+                for p in r.rpntds:
+                    #rpn = RigaPrimaNota().getRecord(id=p.id_riga_prima_nota)
+                    rpn = r._rpn_
                     tpn = None
                     if rpn:
-                        tpn = TestataPrimaNota().getRecord(id=rpn.id_testata_prima_nota)
+                        #tpn = TestataPrimaNota().getRecord(id=rpn.id_testata_prima_nota)
+                        tpn = rpn.__tpn
                     params['session'].delete(p)
-                    params["session"].commit()
+                    #params["session"].commit()
                     if rpn:
                         params['session'].delete(rpn)
-                        params["session"].commit()
+                        #params["session"].commit()
                     if tpn and len(tpn.righeprimanota)==0:
                         params['session'].delete(tpn)
-                        params["session"].commit()
+                        #params["session"].commit()
             params['session'].delete(r)
         params["session"].commit()
         return True

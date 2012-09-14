@@ -25,6 +25,7 @@ from sqlalchemy.orm import mapper, relation, backref
 from promogest.Environment import params
 from promogest.dao.Dao import Dao
 from promogest.modules.Pagamenti.dao.TestataDocumentoScadenza import TestataDocumentoScadenza
+from promogest.modules.PrimaNota.dao.RigaPrimaNota import RigaPrimaNota, rigaprimanota
 
 riga_primanotaTable = Table('riga_prima_nota',
                             params['metadata'],
@@ -80,6 +81,8 @@ class RigaPrimaNotaTestataDocumentoScadenza(Dao):
 std_mapper = mapper(RigaPrimaNotaTestataDocumentoScadenza,
                    rigaprimanotatestatadocumentoscadenza,
                    properties={
-                    "tds" :relation(TestataDocumentoScadenza, backref="rpntds")
+                    "tds" :relation(TestataDocumentoScadenza, backref="rpntds"),
+                    "_rpn_": relation(RigaPrimaNota,
+                        primaryjoin=rigaprimanotatestatadocumentoscadenza.c.id_riga_prima_nota==rigaprimanota.c.id),
                    },
                    order_by=rigaprimanotatestatadocumentoscadenza.c.id_riga_prima_nota)
