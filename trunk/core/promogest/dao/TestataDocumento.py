@@ -715,12 +715,16 @@ class TestataDocumento(Dao):
             #r.rpntds
             if r.rpntds:
                 for p in r.rpntds:
-                    #rpn = RigaPrimaNota().getRecord(id=p.id_riga_prima_nota)
-                    rpn = r._rpn_
+                    try:
+                        rpn = r._rpn_
+                    except:
+                        rpn = RigaPrimaNota().getRecord(id=p.id_riga_prima_nota)
                     tpn = None
                     if rpn:
-                        #tpn = TestataPrimaNota().getRecord(id=rpn.id_testata_prima_nota)
-                        tpn = rpn.__tpn
+                        try:
+                            tpn = rpn.__tpn
+                        except:
+                            tpn = TestataPrimaNota().getRecord(id=rpn.id_testata_prima_nota)
                     params['session'].delete(p)
                     #params["session"].commit()
                     if rpn:
