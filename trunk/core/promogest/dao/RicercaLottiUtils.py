@@ -54,12 +54,12 @@ def ricerca_lotto(numero_lotto, anno, progress=None):
             tm = TestataMovimento().getRecord(id=riga_mov.id_testata_movimento)
             if tm:
                 td = TestataDocumento().getRecord(id=tm.id_testata_documento)
-                if td:
+                if td and td not in docs:
                     docs.append(td)
 
             docs.extend(ricerca_in_lottotemp(numero_lotto))
             
-            lista_fornitori.append({'data_fornitura': fornitura.data_fornitura,
+        lista_fornitori.append({'data_fornitura': fornitura.data_fornitura,
                 'fornitore': fornitura.forni, 'docs': docs})
     return lista_fornitori
 
@@ -71,6 +71,6 @@ def ricerca_in_lottotemp(numero_lotto):
         tm = TestataMovimento().getRecord(id=nltemp.rigamovventemp.id_testata_movimento)
         if tm:
             td = TestataDocumento().getRecord(id=tm.id_testata_documento)
-            if td:
+            if td and td not in docs:
                 docs.append(td)
     return docs
