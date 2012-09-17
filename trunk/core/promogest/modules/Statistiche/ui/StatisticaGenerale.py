@@ -35,6 +35,7 @@ from promogest.dao.RigaMovimento import RigaMovimento
 from promogest.dao.Riga import Riga
 from promogest.dao.Articolo import Articolo
 from promogest.dao.Cliente import Cliente
+from promogest.dao.Fornitore import Fornitore
 from promogest.dao.Magazzino import Magazzino
 from promogest.dao.CategoriaCliente import CategoriaCliente
 from promogest.dao.CategoriaArticolo import CategoriaArticolo
@@ -46,6 +47,18 @@ from promogest.dao.DaoUtils import *
 from promogest.lib.HtmlViewer import HtmlViewer
 from promogest.lib.relativedelta import relativedelta
 from promogest.dao.CachedDaosDict import CachedDaosDict
+
+(
+    RIC_MEDIO_INFL_VEND,
+    CONTROLLO_FATT_CLIENTI,
+    CONTROLLO_FATT_FORNITORI
+) = range(3)
+
+tipo_statistica_dict = {
+    RIC_MEDIO_INFL_VEND: 'CALCOLO RICARICO MEDIO E INFLUENZA SULLE VENDITE',
+    CONTROLLO_FATT_CLIENTI: 'CONTROLLO FATTURATO CLIENTI',
+    CONTROLLO_FATT_FORNITORI: 'CONTROLLO FATTURATO FORNITORI'
+}
 
 
 class StatisticaGenerale(GladeWidget):
@@ -66,19 +79,19 @@ class StatisticaGenerale(GladeWidget):
         self.da_data_entry.show_all()
         self.a_data_entry.show_all()
 
-        tree_iter = self.tipo_statistica_combo.get_active_iter()
-        if tree_iter != None:
-            model = self.tipo_statistica_combo.get_model()
-            self.nomestatistica = model[tree_iter][1]
+        for k, v in tipo_statistica_dict.iteritems():
+            self.tipo_statistica_listore.append([k, v])
+
+        self.tipo_statistica_combo.set_active(CONTROLLO_FATT_CLIENTI)
+
         self.cateCliente = ["CATEGORIA CLIENTE", [], [],False, object]
         self.cateArticolo = ["CATEGORIA ARTICOLO", [], [],False, object]
         self.magazzino = ["MAGAZZINO", [], [], False, object]
         self.produttore = ["PRODUTTORE", [], [], False, str]
         self.cliente = ["CLIENTE", [], [], False, object]
+        self.fornitore = ["FORNITORE", [], [], False, object]
 
-        self.tipo_stat = 2 # CONTROLLO FATTURATO CLIENTI
-        self.__setup_view(self.tipo_stat)
-
+        self.__setup_view()
         self.draw()
 
     def draw(self):
@@ -111,11 +124,25 @@ class StatisticaGenerale(GladeWidget):
         self.treeview.set_model(self._treeViewModel)
         self._refresh()
 
-    def __setup_view(self, tipo):
+    @property
+    def tipo_stat(self):
+        tree_iter = self.tipo_statistica_combo.get_active_iter()
+        if tree_iter != None:
+            model = self.tipo_statistica_combo.get_model()
+            return model[tree_iter][0]
+
+    @property
+    def nome_stat(self):
+        tree_iter = self.tipo_statistica_combo.get_active_iter()
+        if tree_iter != None:
+            model = self.tipo_statistica_combo.get_model()
+            return model[tree_iter][1]
+
+    def __setup_view(self):
         self.statistica_dialog.show_all()
-        if tipo == 2:
+        if self.tipo_stat == CONTROLLO_FATT_CLIENTI:
             self.fornitore_button.hide()
-        elif tipo == 4:
+        elif self.tipo_stat == CONTROLLO_FATT_FORNITORI:
             self.produttore_button.hide()
             self.categoria_cliente_button.hide()
             self.famiglia_articolo.hide()
@@ -142,7 +169,7 @@ class StatisticaGenerale(GladeWidget):
 
         Criteri di ricerca e selezione:
 
-        """%(self.nomestatistica, datata, adata)
+        """%(self.nome_stat, datata, adata)
 
         if self.produttore[2]:
             stringa += "\n" + self.produttore[0] + ": " + ", ".join(self.produttore[2])
@@ -166,6 +193,10 @@ class StatisticaGenerale(GladeWidget):
             stringa += "\n" + self.cliente[0] + ": " + ", ".join(self.cliente[2])
         if self.cliente[3]:
             stringa += "\n" + self.cliente[0] + ": " + "TUTTI"
+        if self.fornitore[2]:
+            stringa += "\n" + self.fornitore[0] + ": " + ", ".join(self.fornitore[2])
+        if self.fornitore[3]:
+            stringa += "\n" + self.fornitore[0] + ": " + "TUTTI"
 
         buf.set_text(stringa)
         self.stringa = stringa
@@ -186,6 +217,8 @@ class StatisticaGenerale(GladeWidget):
             self.magazzino[3] = False
         elif self._treeViewModel[0][3].lower() == "cliente":
             self.cliente[3] = False
+        elif self._treeViewModel[0][3].lower() == "fornitore":
+            self.fornitore[3] = False
         elif self._treeViewModel[0][3].lower() == "produttore":
             self.produttore[3] = False
 
@@ -198,13 +231,13 @@ class StatisticaGenerale(GladeWidget):
     def on_ok_button_clicked(self, button):
         """ cb del bottone ELABORA """
         if posso("STA"):
-            if self.tipo_stat == 1:
+            if self.tipo_stat == RIC_MEDIO_INFL_VEND:
                 self.calcolo_ricarico_medio_e_influenza_sulle_vendite()
-            elif self.tipo_stat == 2:
+            elif self.tipo_stat == CONTROLLO_FATT_CLIENTI:
                 self.controllo_fatturato_clienti()
-            elif self.tipo_stat == 4:
+            elif self.tipo_stat == CONTROLLO_FATT_FORNITORI:
                 pass
-            elif self.tipo_stat == 3:
+            else:
                 messageInfo(msg=" ANCORA NON GESTITO")
 
         else:
@@ -223,6 +256,8 @@ class StatisticaGenerale(GladeWidget):
             self.cateArticolo[3] = bo
         if tipo == "cliente":
             self.cliente[3] = bo
+        if tipo == "fornitore":
+            self.fornitore[3] = bo
         if tipo == "produttore":
             self.produttore[3] = bo
         if tipo == "magazzino":
@@ -291,6 +326,16 @@ class StatisticaGenerale(GladeWidget):
                 self._treeViewModel.append([c, False, c.ragione_sociale,self.cliente[0]])
         self.treeview.set_model(self._treeViewModel)
 
+    def on_fornitore_button_clicked(self, button):
+        self._treeViewModel.clear()
+        daos = Fornitore().select(batchSize=None, orderBy="ragione_sociale")
+        for c in daos:
+            if c.ragione_sociale in self.fornitore[2] or self.fornitore[3]:
+                self._treeViewModel.append([c, True, c.ragione_sociale,self.fornitore[0]])
+            else:
+                self._treeViewModel.append([c, False, c.ragione_sociale,self.fornitore[0]])
+        self.treeview.set_model(self._treeViewModel)
+
 
     def on_famiglia_articolo_clicked(self, button):
         return
@@ -311,6 +356,9 @@ class StatisticaGenerale(GladeWidget):
             elif self._treeViewModel[0][3].lower() == "cliente":
                 self.cliente[1] = []
                 self.cliente[2] = []
+            elif self._treeViewModel[0][3].lower() == "fornitore":
+                self.fornitore[1] = []
+                self.fornitore[2] = []
             elif self._treeViewModel[0][3].lower() == "produttore":
                 self.produttore[1] = []
                 self.produttore[2] = []
@@ -343,6 +391,12 @@ class StatisticaGenerale(GladeWidget):
                     elif riga[1] == True:
                         self.cliente[1].append(riga[0])
                         self.cliente[2].append(riga[2])
+                elif riga[3].lower() == "fornitore":
+                    if self.fornitore[3]:
+                        break
+                    elif riga[1] == True:
+                        self.fornitore[1].append(riga[0])
+                        self.fornitore[2].append(riga[2])
                 elif riga[3].lower() == "produttore":
                     if self.produttore[3]:
                         break
@@ -353,11 +407,7 @@ class StatisticaGenerale(GladeWidget):
         self._refresh()
 
     def on_tipo_statistica_combo_changed(self, combo):
-        tree_iter = combo.get_active_iter()
-        if tree_iter != None:
-            model = combo.get_model()
-            self.tipo_stat = model[tree_iter][0]
-        self.__setup_view(self.tipo_stat)
+        self.__setup_view()
 
     def calcolo_ricarico_medio_e_influenza_sulle_vendite(self):
         idsCliente = []
@@ -515,7 +565,7 @@ class StatisticaGenerale(GladeWidget):
                 "produttore": produt,
                 "cateclienti": self.cateClienteDen,
                 "magazzini": self.magazzinoDen,
-                "nomestatistica":self.nomestatistica}
+                "nomestatistica":self.nome_stat}
 
         view = HtmlViewer(pageData)
         return
@@ -637,7 +687,7 @@ class StatisticaGenerale(GladeWidget):
         pageData = {
                 "file": "statistica_controllo_fatturato.html",
                 "diz": diz,
-                "nomestatistica":self.nomestatistica,
+                "nomestatistica":self.nome_stat,
                 "ricerca_stringa" : self.stringa.replace("\n","<br />"),
 
                 }
