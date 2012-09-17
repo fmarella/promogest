@@ -584,7 +584,7 @@ class StatisticaGenerale(GladeWidget):
         diz = []
 
         for fornitore in fornitori:
-            res = ricerca_forniture(fornitore, daData, aData)
+            res = ricerca_forniture(fornitore, daData, aData, progress=self.pbar)
 
             totale_acq = 0
             totale_ven = 0
@@ -603,6 +603,7 @@ class StatisticaGenerale(GladeWidget):
                 'totale_acquistato': totale_acq
                 })
 
+        pbar(self.pbar,stop=True)
         pageData = {
                 "file": "statistica_controllo_fatturato_fornitori.html",
                 "diz": diz,
