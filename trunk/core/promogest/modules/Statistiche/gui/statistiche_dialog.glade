@@ -20,6 +20,7 @@
     <property name="is_focus">True</property>
     <property name="has_default">True</property>
     <property name="border_width">5</property>
+    <property name="title" translatable="yes">Statistiche</property>
     <property name="modal">True</property>
     <property name="window_position">center-on-parent</property>
     <property name="default_width">900</property>
