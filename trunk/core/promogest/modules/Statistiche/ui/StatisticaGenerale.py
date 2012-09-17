@@ -236,7 +236,7 @@ class StatisticaGenerale(GladeWidget):
             elif self.tipo_stat == CONTROLLO_FATT_CLIENTI:
                 self.controllo_fatturato_clienti()
             elif self.tipo_stat == CONTROLLO_FATT_FORNITORI:
-                pass
+                self.controllo_fatturato_fornitori()
             else:
                 messageInfo(msg=" ANCORA NON GESTITO")
 
@@ -570,6 +570,47 @@ class StatisticaGenerale(GladeWidget):
         view = HtmlViewer(pageData)
         return
 
+    def controllo_fatturato_fornitori(self):
+        from promogest.modules.Statistiche.ui.StatisticheFatturatoUtils import ricerca_forniture
+        fornitori = []
+        if self.fornitore[3]:
+            fornitori = Fornitore().select(batchSize=None)
+        else:
+            fornitori = self.fornitore[1]
+
+        daData = stringToDate(self.da_data_entry.get_text())
+        aData = stringToDate(self.a_data_entry.get_text())
+
+        diz = []
+
+        for fornitore in fornitori:
+            res = ricerca_forniture(fornitore, daData, aData)
+
+            totale_acq = 0
+            totale_ven = 0
+            for doc in res['docs_a']:
+                doc.totali
+                if doc.operazione.strip() == 'DDT acquisto':
+                    totale_acq += doc._totaleScontato
+
+            for doc in res['docs_v']:
+                doc.totali
+                if doc.operazione.strip() == 'DDT vendita':
+                    totale_ven += doc._totaleScontato
+
+            diz.append({'fornitore':fornitore,
+                'totale_venduto': totale_ven,
+                'totale_acquistato': totale_acq
+                })
+
+        pageData = {
+                "file": "statistica_controllo_fatturato_fornitori.html",
+                "diz": diz,
+                "nomestatistica": self.nome_stat,
+                "ricerca_stringa" : self.stringa.replace("\n","<br />"),
+                }
+        view = HtmlViewer(pageData)
+
     def controllo_fatturato_clienti(self):
         #print "I CLIENTI", self.cliente
         clienti1 = []
@@ -591,10 +632,6 @@ class StatisticaGenerale(GladeWidget):
         else:
             clienti2 = self.cliente[1]
         clienti = clienti1+clienti2
-
-
-
-
 
         daData = stringToDate(self.da_data_entry.get_text())
         aData = stringToDate(self.a_data_entry.get_text())

@@ -1,0 +1,61 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+    <META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=utf-8">
+    <TITLE></TITLE>
+    <STYLE TYPE="text/css">
+    <!--
+        @page { size: landscape; margin: 2cm }
+        P { margin-bottom: 0.21cm }
+        TD P { margin-bottom: 0cm }
+        TH P { margin-bottom: 0cm }
+        A:link { so-language: zxx }
+    -->
+    </STYLE>
+</HEAD>
+<BODY LANG="it-IT" DIR="LTR">
+<P>Prospetto risultante per la statistica :{{pageData["ricerca_stringa"]}}</P>
+
+
+<P>Fornitore:</P>
+<TABLE WIDTH=100% BORDER=1 BORDERCOLOR="#000000" CELLPADDING=4 CELLSPACING=0>
+    <COL WIDTH=37*>
+    <COL WIDTH=37*>
+    <COL WIDTH=37*>
+    <COL WIDTH=37*>
+    <COL WIDTH=37*>
+    <COL WIDTH=37*>
+    <COL WIDTH=37*>
+    <THEAD>
+        <TR VALIGN=TOP>
+            <TH WIDTH=18%>
+                <P>Ragione Sociale</P>
+            </TH>
+            <TH WIDTH=14%>
+                <P>Totale acquistato</P>
+            </TH>
+            <TH WIDTH=14%>
+                <P>Totale venduto</P>
+            </TH>
+        </TR>
+    </THEAD>
+    <TBODY>
+    {% for c in pageData["diz"] %}
+        <TR VALIGN=TOP>
+            <TD WIDTH=18%>
+                <P>{{c['fornitore'].ragione_sociale}}</P>
+            </TD>
+            <TD WIDTH=14%>
+                <P>{{utils.mNLC(c['totale_acquistato'],2)}}</P>
+            </TD>
+                <TD WIDTH=14%>
+                <P>{{utils.mNLC(c["totale_venduto"],2)}}</P>
+            </TD>
+        </TR >
+    {% endfor %}
+    </TBODY>
+</TABLE>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+</BODY>
+</HTML>
