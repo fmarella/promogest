@@ -53,9 +53,8 @@ def ricerca_lotto(numero_lotto, anno, progress=None):
                 continue
             tm = TestataMovimento().getRecord(id=riga_mov.id_testata_movimento)
             if tm:
-                td = TestataDocumento().getRecord(id=tm.id_testata_documento)
-                if td and td not in docs:
-                    docs.append(td)
+                if tm.TD and tm.TD not in docs:
+                    docs.append(tm.TD)
 
             docs.extend(ricerca_in_lottotemp(numero_lotto))
             
@@ -70,7 +69,6 @@ def ricerca_in_lottotemp(numero_lotto):
     for nltemp in nltemps:
         tm = TestataMovimento().getRecord(id=nltemp.rigamovventemp.id_testata_movimento)
         if tm:
-            td = TestataDocumento().getRecord(id=tm.id_testata_documento)
-            if td and td not in docs:
-                docs.append(td)
+            if tm.TD and tm.TD not in docs:
+                docs.append(tm.TD)
     return docs
