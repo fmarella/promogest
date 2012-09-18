@@ -26,8 +26,8 @@ from promogest import Environment as env
 from promogest.ui.gtk_compat import *
 from promogest.ui.GladeWidget import GladeWidget
 from promogest.dao.RicercaLottiUtils import ricerca_lotto
-from promogest.lib.HtmlHandler import renderTemplate, renderHTML
 from promogest.lib.utils import pbar
+from promogest.ui.widgets.HTMLViewerWidget import HTMLViewerWidget
 
 
 class RicercaLottiWindow(GladeWidget):
@@ -38,17 +38,14 @@ class RicercaLottiWindow(GladeWidget):
                              path='ricerca_lotti_window.glade')
         self.__parent = parent
         self.placeWindow(self.getTopLevel())
-        self.__setup_webview()
+
+        self.html_viewer = HTMLViewerWidget(self)
+        self.viewer_placeholder.add(self.html_viewer.get_viewer())
 
         self.draw()
 
     def draw(self):
         self.anno_entry.set_text(str(datetime.datetime.now().year))
-
-    def __setup_webview(self):
-        from webkit import WebView
-        self.view = WebView()
-        self.webview_scrolledwindow.add(self.view)
 
     def on_trova_button_clicked(self, button):
         num_lotto = self.numero_lotto_entry.get_text()
@@ -64,4 +61,4 @@ class RicercaLottiWindow(GladeWidget):
             'data': result
         }
 
-        renderHTML(self.view, renderTemplate(pageData))
+        self.html_viewer.renderHTML(pageData)
