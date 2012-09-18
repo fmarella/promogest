@@ -69,6 +69,9 @@ def ricerca_lotto(numero_lotto, anno, progress=None):
 
     docs.extend(ricerca_in_lottotemp(numero_lotto))
 
+    if progress:
+        pbar(progress, stop=True)
+
     lista_fornitori.append({'data_fornitura': fornitura.data_fornitura,
                 'fornitore': fornitura.forni, 'docs': docs})
     return lista_fornitori

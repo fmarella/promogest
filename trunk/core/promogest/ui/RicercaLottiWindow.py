@@ -58,8 +58,6 @@ class RicercaLottiWindow(GladeWidget):
 
         result = ricerca_lotto(num_lotto, anno, progress=self.progressbar1)
 
-        pbar(self.progressbar1, stop=True)
-
         pageData = {
             'file': 'ricerca_lotti.html',
             'numero_lotto': num_lotto,
