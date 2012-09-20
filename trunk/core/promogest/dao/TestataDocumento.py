@@ -107,15 +107,15 @@ class TestataDocumento(Dao):
         return '<Documento ID={0} operazione="{1}">'.format(self.numero, self.operazione)
 
     def _getScadenzeDocumento(self):
-        if not self.__dbScadenzeDocumento:
-            if self.id:
-                #self.__dbScadenzeDocumento = params['session']\
-                                        #.query(TestataDocumentoScadenza)\
-                                        #.with_parent(self)\
-                                        #.filter_by(id_testata_documento=self.id)\
-                                        #.all()
-                self.__dbScadenzeDocumento = self.testata_documento_scadenza
-            self.__ScadenzeDocumento = self.__dbScadenzeDocumento[:]
+        #if not self.__dbScadenzeDocumento:
+        if self.id:
+            #self.__dbScadenzeDocumento = params['session']\
+                                    #.query(TestataDocumentoScadenza)\
+                                    #.with_parent(self)\
+                                    #.filter_by(id_testata_documento=self.id)\
+                                    #.all()
+            self.__dbScadenzeDocumento = self.testata_documento_scadenza
+        self.__ScadenzeDocumento = self.__dbScadenzeDocumento[:]
         return self.__ScadenzeDocumento
 
     def _setScadenzeDocumento(self, value):
