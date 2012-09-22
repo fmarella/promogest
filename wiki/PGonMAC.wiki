@@ -1,3 +1,3 @@
-Installazione MAC
+Installazione MAC  ok
 
-http://python.6.n6.nabble.com/Testing-PyGTK-installer-for-Mac-OS-X-td1948270.html
+http://python.6.n6.nabble.com/Testing-PyGTK-installer-for-Mac-OS-X-td1948270.html  > ok il pygtk-demo funziona
