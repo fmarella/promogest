@@ -35,6 +35,7 @@ from promogest.dao.Articolo import Articolo
 from promogest.dao.Listino import Listino
 from promogest.dao.Setconf import SetConf
 from promogest.dao.ListinoArticolo import ListinoArticolo
+from promogest.dao.DaoUtils import giacenzaArticolo
 from GestioneScontrini import GestioneScontrini
 from GestioneChiusuraFiscale import GestioneChiusuraFiscale
 from venditaDettaglioUiPart import drawPart
@@ -539,6 +540,9 @@ class AnagraficaVenditaDettaglio(GladeWidget):
                                             +" - " \
                                             +model.get_value(self.currentIteratorRow, 4)\
                                             +'</span></b>')
+            self.giacenza_label.set_text(str(giacenzaArticolo(year=Environment.workingYear,
+                                    idArticolo=idArticolo,
+                                    idMagazzino=self.idMagazzino)[0]))
             self.refreshTotal()
 
     def on_confirm_button_clicked(self, button):
