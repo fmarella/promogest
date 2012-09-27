@@ -267,7 +267,10 @@ class RigaMovimento(Dao):
 
 
     def filter_values(self,k,v):
-        dic= {  'idTestataMovimento' :t_riga_movimento.c.id_testata_movimento ==v,}
+        if k == 'idTestataMovimento':
+            dic= {k: t_riga_movimento.c.id_testata_movimento ==v}
+        elif k =="idArticolo":
+            dic= {k: t_riga.c.id_articolo == v}
         return  dic[k]
 
     #def scontiRigaMovimentoDel(self,id=None):

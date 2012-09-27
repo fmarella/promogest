@@ -112,10 +112,21 @@ class AnagraficaListiniArticoliFilter(AnagraficaFilter):
         column.set_expand(False)
         column.set_min_width(100)
         treeview.append_column(column)
+
+        column = gtk.TreeViewColumn('Ultimo costo', rendererDx, text=7)
+        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
+        column.set_clickable(True)
+        column.connect("clicked", self._changeOrderBy, (None, 'prezzo_dettaglio'))
+        column.set_resizable(True)
+        column.set_expand(False)
+        column.set_min_width(100)
+        treeview.append_column(column)
+
+
         if posso("PW"):
             drawPromoWearExpand1(self)
         else:
-            self._treeViewModel = gtk.ListStore(object, str, str, str, str, str, str)
+            self._treeViewModel = gtk.ListStore(object, str, str, str, str, str, str, str)
         self._anagrafica.anagrafica_filter_treeview.set_model(self._treeViewModel)
 
 
@@ -216,7 +227,8 @@ class AnagraficaListiniArticoliFilter(AnagraficaFilter):
                         (l.articolo or ''),
                         dateToString(l.data_listino_articolo),
                         str(mN(l.prezzo_dettaglio) or 0),
-                        str(mN(l.prezzo_ingrosso) or 0)]
+                        str(mN(l.prezzo_ingrosso) or 0),
+                        str(mN(l.ultimo_costo) or 0)]
 
             if posso("PW"):
                 modelRowPromoWear=[(l.denominazione_gruppo_taglia or ''),
