@@ -285,6 +285,7 @@ class GestioneScontrini(GladeWidget):
             pageData = {
                     "file": "scontrino.html",
                     "dao" :self.dao,
+                    "tutto":True,
                     }
             self.html = renderTemplate(pageData)
         renderHTML(self.detail,self.html)

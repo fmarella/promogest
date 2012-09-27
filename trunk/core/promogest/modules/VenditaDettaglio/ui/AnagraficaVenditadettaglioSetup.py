@@ -68,6 +68,11 @@ class VenditadettaglioSetup(GladeWidget):
             self.disabilita_stampa_check.set_active(int(setconf("VenditaDettaglio", "disabilita_stampa")))
         except:
             self.disabilita_stampa_check.set_active(1)
+        try:
+            self.create_pdf_check.set_active(int(setconf("VenditaDettaglio", "create_pdf_check")))
+        except:
+            self.create_pdf_check.set_active(0)
+
         if setconf("VenditaDettaglio", "listino_vendita"):
             findComboboxRowFromId(self.id_listino_filter_combobox, int(setconf("VenditaDettaglio", "listino_vendita")))
         if setconf("VenditaDettaglio", "magazzino_vendita"):
@@ -112,6 +117,25 @@ class VenditadettaglioSetup(GladeWidget):
             a.value = str(self.disabilita_stampa_check.get_active())
             a.active = True
             Environment.session.add(a)
+
+
+        c = SetConf().select(key="create_pdf_check", section="VenditaDettaglio")
+        if c:
+            c[0].value = str(self.create_pdf_check.get_active())
+            c[0].tipo = "bool"
+            Environment.session.add(c[0])
+        else:
+            a = SetConf()
+            a.section = "VenditaDettaglio"
+            a.tipo_section ="Modulo"
+            a.description = "create_pdf_check"
+            a.tipo = "bool"
+            a.key = "create_pdf_check"
+            a.value = str(self.create_pdf_check.get_active())
+            a.active = True
+            Environment.session.add(a)
+
+
 
         c = SetConf().select(key="jolly", section="VenditaDettaglio")
         if c:

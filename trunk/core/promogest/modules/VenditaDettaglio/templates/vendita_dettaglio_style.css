@@ -1,43 +1,52 @@
 <style>
 
-/*    body {*/
-/*        font-family: Times;*/
-/*    }*/
 
     table {
+/*
         width: 100%;
+*/
+/*
         border : 1px solid #c0c0c0;
+*/
     }
 
     td.odd-detail {
         text-align: left;
         color :black;
+/*
         border-bottom : 1px solid #c0c0c0;
+*/
     }
 
     td.even-detail {
         text-align: left;
         color :black;
+/*
         background: #efefef;
+*/
         border-bottom : 1px solid #FFFFFF;
     }
 
     td.odd-number {
         text-align: right;
         color :black;
+/*
         border-bottom : 1px solid #c0c0c0;
+*/
     }
 
     td.even-number {
         text-align: right;
         color :black;
-        background: #efefef;
+        background: #c0c0c0;
     }
 
     tr.even-detail {
         text-align: left;
         color :black;
+/*
         border : 1px solid #000000;
+*/
     }
 
     th {
@@ -55,19 +64,20 @@
     .table-header {
         color: #000000;
 /*        font-weight : bold;*/
+/*
         border-width: 1px 0px 1px 0px;
+*/
+/*
         border-style: solid;
+*/
+/*
         border-color: #000000;
-        padding: 0px;
-        margin: 0px;
+*/
+        padding: 1px;
+        margin: 5px;
 /*        font-size: 1.2em;*/
-        background : #FFFFC0;
+        background : #c0c0c0;
     }
 
-
-@page {
-size: A4 landscape;
-margin: 1cm;
-}
 
 </style>

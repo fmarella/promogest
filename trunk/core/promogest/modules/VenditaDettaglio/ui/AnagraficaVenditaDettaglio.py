@@ -39,6 +39,9 @@ from GestioneScontrini import GestioneScontrini
 from GestioneChiusuraFiscale import GestioneChiusuraFiscale
 from venditaDettaglioUiPart import drawPart
 from VenditaDettaglioUtils import fillComboboxPos
+from promogest.ui.PrintDialog import PrintDialogHandler
+from promogest.lib.HtmlHandler import createHtmlObj, renderTemplate, renderHTML
+
 from promogest.ui.gtk_compat import *
 AAA = False
 if Environment.params["schema"]:
@@ -706,9 +709,9 @@ class AnagraficaVenditaDettaglio(GladeWidget):
                     totale_sconto = total*(Decimal(self.sconto)/100)
                     totale_scontato = total-totale_sconto
 
-        self.label_totale.set_markup('<b><span foreground="black" size="40000">' + italianizza(mN(totale_scontato),curr="€ ") +'</span></b>')
-        self.label_sconto.set_markup('<b><span foreground="#338000" size="24000">' + italianizza(mN(totale_sconto),curr="€ ") +'</span></b>')
-        self.label_subtotale.set_markup('<b><span foreground="#338000" size="26000">' + italianizza(mN(total),curr="€ ") +'</span></b>')
+        self.label_totale.set_markup('<b><span foreground="black" size="40000">' + mNLC(totale_scontato,2) +'</span></b>')
+        self.label_sconto.set_markup('<b><span foreground="#338000" size="24000">' + mNLC(totale_sconto,2) +'</span></b>')
+        self.label_subtotale.set_markup('<b><span foreground="#338000" size="26000">' + mNLC(total,2) +'</span></b>')
 
 #        self.label_totale.set_markup('<b><span foreground="black" size="40000">' + str(mN(totale_scontato)) +'</span></b>')
 #        self.label_sconto.set_markup('<b><span foreground="#338000" size="24000">' + str(mN(totale_sconto)) +'</span></b>')
@@ -829,6 +832,29 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             print "SIAMO QUI PRONTI A MANDARE LO SCONTRINO IN CASSA"
             filescontrino = self.createFileToPos(dao)
             print "TORNATI", filescontrino
+        if setconf("VenditaDettaglio", "create_pdf_check") and not self.no_print_toggled.get_active() :
+            from  xhtml2pdf import pisa
+            if dao:
+                pageData = {}
+                #html = '<html></html>'
+                pageData = {
+                    "file": "scontrino.html",
+                    "dao" :dao,
+                    "tutto":False
+                    }
+                html = renderTemplate(pageData)
+                #renderHTML(self.detail,self.html)
+                f = str(html)
+        #        f = "Hello <strong>World</strong>"
+                filename =Environment.tempDir + "ristampa.pdf"
+                g = file(filename, "wb")
+                pdf = pisa.CreatePDF(f,g)
+                g .close()
+                anag = PrintDialogHandler(self,"SCONTRINO", tempFile=Environment.tempDir + "ristampa.pdf")
+                anagWindow = anag.getTopLevel()
+                returnWindow = self.getTopLevel().get_toplevel()
+                anagWindow.set_transient_for(returnWindow)
+                anagWindow.show_all()
         self.codice_a_barre_entry.grab_focus()
         self.last_scontr_label.set_text("Tot. scontrino precedente: "+str(dao.totale_scontrino))
         # Svuoto transazione e mi rimetto in stato di ricerca
