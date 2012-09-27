@@ -345,10 +345,10 @@ class TestataMovimento(Dao):
                     riga.id_testata_movimento = self.id
                     riga.persist(sm=sm)
                     if self.id_fornitore and riga.id_articolo:
-                        if hasattr(riga,"data_prezzo"):
-                            data_prezzo = stringToDateTime(riga.data_prezzo) or stringToDateTime(self.data_movimento)
+                        if hasattr(riga,"data_prezzo") and riga.data_prezzo is not None:
+                            data_prezzo = stringToDateTime(riga.data_prezzo)
                         else:
-                            data_prezzo = stringToDateTime(self.data_movimento)
+                            data_prezzo = self.data_movimento
                         """aggiornamento forniture cerca la fornitura relativa al fornitore
                             con data <= alla data del movimento"""
                         fors = Fornitura().select(idArticolo=riga.id_articolo,
