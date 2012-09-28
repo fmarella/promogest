@@ -124,21 +124,21 @@ class TestataDocumento(Dao):
     scadenze = property(_getScadenzeDocumento, _setScadenzeDocumento)
 
     def _getRigheDocumento(self):
-        if not self.__righeDocumento:
-            self.__dbRigheMovimentoPart = []
-            self.__dbRigheDocumentoPart = []
-            if self.id:
-                self.__dbRigheDocumentoPart = self.rigadoc
-                if self.TM and len(self.TM) ==1:
-                    self.__dbRigheMovimentoPart = self.TM[0].rigamov
-                elif self.TM and len(self.TM) >1:
-                    Environment.pg2log.info("ATTENZIONE due movimenti fanno riferimento ad una sola testata documento:"+str(self.id))
-                    raise Exception("Più di un movimento fa riferimento allo stesso documento!")
-                self.__dbRigheDocumento = self.__dbRigheDocumentoPart + self.__dbRigheMovimentoPart
-                self.__dbRigheDocumento.sort(key=lambda x: x.posizione or x.id)
-                self.__righeDocumento = self.__dbRigheDocumento[:]
-            else:
-                self.__righeDocumento = []
+        #if not self.__righeDocumento:
+        self.__dbRigheMovimentoPart = []
+        self.__dbRigheDocumentoPart = []
+        if self.id:
+            self.__dbRigheDocumentoPart = self.rigadoc
+            if self.TM and len(self.TM) ==1:
+                self.__dbRigheMovimentoPart = self.TM[0].rigamov
+            elif self.TM and len(self.TM) >1:
+                Environment.pg2log.info("ATTENZIONE due movimenti fanno riferimento ad una sola testata documento:"+str(self.id))
+                raise Exception("Più di un movimento fa riferimento allo stesso documento!")
+            self.__dbRigheDocumento = self.__dbRigheDocumentoPart + self.__dbRigheMovimentoPart
+            self.__dbRigheDocumento.sort(key=lambda x: x.posizione or x.id)
+            self.__righeDocumento = self.__dbRigheDocumento[:]
+        else:
+            self.__righeDocumento = []
         return self.__righeDocumento
 
     def _setRigheDocumento(self, value):

@@ -61,29 +61,29 @@ class TestataMovimento(Dao):
 
 
     def _getRigheMovimento(self):
-        if not self.__righeMovimento:
-            self.__dbRigheMovimento = self.rigamov
-            self.__righeMovimento = self.__dbRigheMovimento[:]
-            if self.operazione == "Trasferimento merce magazzino" and self.id_to_magazzino:
-                for r in self.__righeMovimento[:]:
-                    if r.id_magazzino==self.id_to_magazzino:
-                        self.__righeMovimento.remove(r)
-                    else:
-                        if r.quantita <0:
-                            r.quantita= -1*r.quantita
-            if self.operazione == "Carico da composizione kit":
-                for r in self.__righeMovimento[:]:
+        #if not self.__righeMovimento:
+        self.__dbRigheMovimento = self.rigamov
+        self.__righeMovimento = self.__dbRigheMovimento[:]
+        if self.operazione == "Trasferimento merce magazzino" and self.id_to_magazzino:
+            for r in self.__righeMovimento[:]:
+                if r.id_magazzino==self.id_to_magazzino:
+                    self.__righeMovimento.remove(r)
+                else:
                     if r.quantita <0:
-                        self.__righeMovimento.remove(r)
-            if self.operazione == "Scarico Scomposizione kit":
+                        r.quantita= -1*r.quantita
+        if self.operazione == "Carico da composizione kit":
+            for r in self.__righeMovimento[:]:
+                if r.quantita <0:
+                    self.__righeMovimento.remove(r)
+        if self.operazione == "Scarico Scomposizione kit":
 
-                for r in self.__righeMovimento[:]:
-                    if "$SSK$" in r.descrizione:
-                        self.__righeMovimento.remove(r)
-                    else:
-                        if r.quantita <0:
-                            r.quantita= -1*r.quantita
-                            #self.rev = True
+            for r in self.__righeMovimento[:]:
+                if "$SSK$" in r.descrizione:
+                    self.__righeMovimento.remove(r)
+                else:
+                    if r.quantita <0:
+                        r.quantita= -1*r.quantita
+                        #self.rev = True
 
         return self.__righeMovimento
 
