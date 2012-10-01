@@ -102,7 +102,6 @@ class TestataDocumento(Dao):
         self.__data_inizio_noleggio = None
         self.__data_fine_noleggio = None
 
-
     def __repr__(self):
         return '<Documento ID={0} operazione="{1}">'.format(self.numero, self.operazione)
 
@@ -297,16 +296,13 @@ class TestataDocumento(Dao):
         spese = Decimal(0)
         impon_spese = Decimal(0)
         imposta_spese = Decimal(0)
-        if self.id_cliente:
-            #cliente = leggiCliente(self.id_cliente)
-            #if not cliente['pagante']:
-            if not self.CLI.pagante:
-                for scad in self.scadenze:
-                    if scad:
-                        impon_spese_, spese_ = getSpesePagamento(scad.pagamento)
-                        spese += spese_
-                        impon_spese += impon_spese_
-                        imposta_spese += spese_ - impon_spese_
+        if self.esclusione_spese == False:
+            for scad in self.scadenze:
+                if scad:
+                    impon_spese_, spese_ = getSpesePagamento(scad.pagamento)
+                    spese += spese_
+                    impon_spese += impon_spese_
+                    imposta_spese += spese_ - impon_spese_
         self._totaleSpese = spese
         self._totaleImponibileSpese = impon_spese
         self._totaleImpostaSpese = imposta_spese

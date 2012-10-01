@@ -478,18 +478,24 @@ un importo in sospeso. Il documento, per poter essere collegato, deve essere com
             return float(0)
         if not self.ana.dao.id or not self.ana.dao.id_cliente:
             return float(0)
-        cliente = leggiCliente(self.ana.dao.id_cliente)
+        if self.ana.dao.esclusione_spese == True:
+            return float(0)
         spese = float(0)
-        if not cliente['pagante']:
-            # Controllo l'acconto e le rate
-            if self.acconto:
-                dao = self.acconto.get()
+        # Controllo l'acconto e le rate
+        if self.acconto:
+            dao = self.acconto.get()
+            spese += getSpesePagamento(dao.pagamento)
+        if len(self.rate) > 0:
+            for rata in self.rate:
+                dao = rata.get()
                 spese += getSpesePagamento(dao.pagamento)
-            if len(self.rate) > 0:
-                for rata in self.rate:
-                    dao = rata.get()
-                    spese += getSpesePagamento(dao.pagamento)
         return spese
+
+    def on_esclusione_spese_checkbutton_toggled(self, widget):
+        if self.ana._loading:
+            return
+        self.ana.dao.esclusione_spese = widget.get_active()
+        self.ricalcola_sospeso_e_pagato()
 
     def controlla_rate_scadenza(self, messaggio):
         """

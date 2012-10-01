@@ -130,10 +130,10 @@
                 <child>
                   <object class="GtkToggleButton" id="acconto_scheda_togglebutton">
                     <property name="label" translatable="yes">Acconto</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="image">acconto_scheda_image</property>
                     <signal name="toggled" handler="on_acconto_scheda_togglebutton_toggled" swapped="no"/>
                   </object>
@@ -146,10 +146,10 @@
                 <child>
                   <object class="GtkButton" id="aggiungi_rate_button">
                     <property name="label" translatable="yes">Rata</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="image">image1</property>
                     <signal name="clicked" handler="on_aggiungi_rate_button_clicked" swapped="no"/>
                   </object>
@@ -162,10 +162,10 @@
                 <child>
                   <object class="GtkButton" id="rimuovi_rate_button">
                     <property name="label" translatable="yes">Rata</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="image">image2</property>
                     <signal name="clicked" handler="on_rimuovi_rate_button_clicked" swapped="no"/>
                   </object>
@@ -202,10 +202,10 @@
                 <child>
                   <object class="GtkButton" id="aggiorna_pagamenti_button">
                     <property name="label">gtk-refresh</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="use_stock">True</property>
                     <signal name="clicked" handler="on_aggiorna_pagamenti_button_clicked" swapped="no"/>
                   </object>
@@ -218,11 +218,11 @@
                 <child>
                   <object class="GtkButton" id="calcola_importi_scadenza_button">
                     <property name="label" translatable="yes">(Ri) Calcola Importi</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
                     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="image">calcola_importi_image1</property>
                     <signal name="clicked" handler="on_calcola_importi_scadenza_button_clicked" swapped="no"/>
                   </object>
@@ -235,12 +235,12 @@
                 <child>
                   <object class="GtkButton" id="pulisci_scadenza_button">
                     <property name="label">gtk-clear</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="height_request">40</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
                     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="use_stock">True</property>
                     <signal name="clicked" handler="on_pulisci_scadenza_button_clicked" swapped="no"/>
                   </object>
@@ -253,10 +253,10 @@
                 <child>
                   <object class="GtkButton" id="apri_pagamento_documento_button">
                     <property name="label" translatable="yes">(Ri) Apri Pagamento</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <property name="use_action_appearance">False</property>
                     <signal name="clicked" handler="on_apri_pagamento_documento_button_clicked" swapped="no"/>
                   </object>
                   <packing>
@@ -268,10 +268,10 @@
                 <child>
                   <object class="GtkButton" id="chiudi_pagamento_documento_button">
                     <property name="label" translatable="yes">(Ri) Chiudi Pagamento</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <property name="use_action_appearance">False</property>
                     <signal name="clicked" handler="on_chiudi_pagamento_documento_button_clicked" swapped="no"/>
                   </object>
                   <packing>
@@ -289,6 +289,23 @@
                 <property name="fill">False</property>
                 <property name="pack_type">end</property>
                 <property name="position">2</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkCheckButton" id="esclusione_spese_checkbutton">
+                <property name="label" translatable="yes">Escludi le spese di pagamento per questo documento</property>
+                <property name="use_action_appearance">False</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">False</property>
+                <property name="tooltip_text" translatable="yes">Se il cliente è esentato dal pagamento delle spese questa opzione verrà attivata in automatico.</property>
+                <property name="draw_indicator">True</property>
+                <signal name="toggled" handler="on_esclusione_spese_checkbutton_toggled" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">3</property>
               </packing>
             </child>
           </object>
@@ -365,11 +382,11 @@
                     </child>
                     <child>
                       <object class="GtkButton" id="seleziona_prima_nota_button">
+                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
                         <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                        <property name="use_action_appearance">False</property>
                         <signal name="clicked" handler="on_seleziona_prima_nota_button_clicked" swapped="no"/>
                         <child>
                           <object class="GtkHBox" id="hbox25">
@@ -491,12 +508,12 @@
                     </child>
                     <child>
                       <object class="GtkButton" id="seleziona_seconda_nota_button">
+                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="sensitive">False</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
                         <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                        <property name="use_action_appearance">False</property>
                         <signal name="clicked" handler="on_seleziona_seconda_nota_button_clicked" swapped="no"/>
                         <child>
                           <object class="GtkHBox" id="hbox26">
@@ -836,10 +853,10 @@
                     </child>
                     <child>
                       <object class="GtkCheckButton" id="primanota_check">
+                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="use_underline">True</property>
                         <property name="yalign">0.55000001192092896</property>
                         <property name="draw_indicator">True</property>
@@ -866,10 +883,10 @@
                     <child>
                       <object class="GtkButton" id="apri_primanota">
                         <property name="label" translatable="yes">Apri Prima Nota</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
-                        <property name="use_action_appearance">False</property>
                         <signal name="clicked" handler="on_apri_primanota_clicked" swapped="no"/>
                       </object>
                       <packing>

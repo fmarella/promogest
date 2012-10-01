@@ -317,7 +317,10 @@ class AnagraficaClientiEdit(AnagraficaEdit, AnagraficaPGEdit):
         self.email_principale_entry.set_text(self.dao.email_principale or "")
         self.fax_principale_entry.set_text(self.dao.fax_principale or "")
         self.sito_web_principale_entry.set_text(self.dao.sito_principale or "")
-        self.spese_checkbox.set_active(self.dao.pagante or False)
+        if self.dao.pagante == True:
+            self.spese_checkbox.set_active(False)
+        else:
+            self.spese_checkbox.set_active(True)
 
         self._refresh_variazioni_listini()
 
@@ -367,7 +370,7 @@ class AnagraficaClientiEdit(AnagraficaEdit, AnagraficaPGEdit):
                                 msg='Campo obbligatorio !\n\nNome')
 #        self.verificaListino()
 
-        self.dao.pagante = self.spese_checkbox.get_active()
+        self.dao.pagante = not self.spese_checkbox.get_active()
         self.dao.codice = self.codice_entry.get_text().upper()
         self.dao.codice = omogeneousCode(section="Clienti",
                                         string=self.dao.codice)
