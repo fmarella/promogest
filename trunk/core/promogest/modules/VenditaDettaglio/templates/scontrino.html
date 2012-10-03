@@ -70,7 +70,7 @@
 </tr>
 <tr class="row">
             {% if dao.sconti %}
-                <td class="odd-number" style="height:50px">{{utils.mNLC(dao.sconti[0].valore)}}{{utils.scontiTipo(dao.sconti[0].tipo_sconto)}}</td>
+                <td class="odd-number" style="height:50px">{{utils.mNLC(dao.sconti[0].valore or 0,2)}}{{utils.scontiTipo(dao.sconti[0].tipo_sconto)}}</td>
             {% else %}
                 <td class="odd-number" style="height:50px">0</td>
             {% endif %}
