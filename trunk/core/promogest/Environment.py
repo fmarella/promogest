@@ -270,13 +270,13 @@ else:
 if not engine:
     raise RuntimeError("Non è stato trovato un backend per il database.")
 
-if not preEnv.web:
-    tipo_eng = engine.name
-    engine.echo = echosa
-    Session = sessionmaker(bind=engine)
-    session = Session()
-else:
-    session = scoped_session(lambda: create_session(engine, autocommit=False))
+#if not preEnv.web:
+tipo_eng = engine.name
+engine.echo = echosa
+Session = sessionmaker(bind=engine)
+session = Session()
+#else:
+    #session = scoped_session(lambda: create_session(engine, autocommit=False))
 
 schema_azienda = azienda
 # Determiniamo il nome del file pickle in base all'azienda e alla ver python.
@@ -289,7 +289,7 @@ else:
 meta_pickle += sys.version[:1]
 
 from pickle import load as pickle_load
-meta = MetaData(engine)
+#meta = MetaData(engine)
 metatmp = MetaData()
 
 

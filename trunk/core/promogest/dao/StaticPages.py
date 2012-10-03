@@ -86,4 +86,3 @@ std_mapper = mapper(StaticPages, staticpage,
         #'user' : relation(User)
         },
         order_by=staticpage.c.id)
-print " PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP"

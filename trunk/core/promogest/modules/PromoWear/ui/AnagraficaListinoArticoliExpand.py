@@ -28,7 +28,7 @@ def drawPromoWearExpand1(analistiarti):
     treeview = analistiarti._anagrafica.anagrafica_filter_treeview
     rendererSx = gtk.CellRendererText()
     rendererDx = gtk.CellRendererText()
-    column = gtk.TreeViewColumn('Gruppo taglia', rendererSx, text=7)
+    column = gtk.TreeViewColumn('Gruppo taglia', rendererSx, text=8)
     column.set_sizing(GTK_COLUMN_GROWN_ONLY)
     column.set_clickable(True)
     column.connect("clicked", analistiarti._changeOrderBy, 'gruppo_taglia')
@@ -37,7 +37,7 @@ def drawPromoWearExpand1(analistiarti):
     column.set_min_width(100)
     treeview.append_column(column)
 
-    column = gtk.TreeViewColumn('Taglia', rendererSx, text=8)
+    column = gtk.TreeViewColumn('Taglia', rendererSx, text=9)
     column.set_sizing(GTK_COLUMN_GROWN_ONLY)
     column.set_clickable(True)
     column.connect("clicked", analistiarti._changeOrderBy, 'taglia')
@@ -46,7 +46,7 @@ def drawPromoWearExpand1(analistiarti):
     column.set_min_width(70)
     treeview.append_column(column)
 
-    column = gtk.TreeViewColumn('Colore', rendererSx, text=9)
+    column = gtk.TreeViewColumn('Colore', rendererSx, text=10)
     column.set_sizing(GTK_COLUMN_GROWN_ONLY)
     column.set_clickable(True)
     column.connect("clicked", analistiarti._changeOrderBy, 'colore')
@@ -56,7 +56,7 @@ def drawPromoWearExpand1(analistiarti):
     treeview.append_column(column)
 
 
-    column = gtk.TreeViewColumn('Anno', rendererSx, text=10)
+    column = gtk.TreeViewColumn('Anno', rendererSx, text=11)
     column.set_sizing(GTK_COLUMN_GROWN_ONLY)
     column.set_clickable(True)
     column.connect("clicked", analistiarti._changeOrderBy, 'anno')
@@ -65,7 +65,7 @@ def drawPromoWearExpand1(analistiarti):
     column.set_min_width(50)
     treeview.append_column(column)
 
-    column = gtk.TreeViewColumn('Stagione', rendererSx, text=11)
+    column = gtk.TreeViewColumn('Stagione', rendererSx, text=12)
     column.set_sizing(GTK_COLUMN_GROWN_ONLY)
     column.set_clickable(True)
     column.connect("clicked", analistiarti._changeOrderBy, 'stagione')
@@ -74,7 +74,7 @@ def drawPromoWearExpand1(analistiarti):
     column.set_min_width(100)
     treeview.append_column(column)
 
-    column = gtk.TreeViewColumn('Genere', rendererSx, text=12)
+    column = gtk.TreeViewColumn('Genere', rendererSx, text=13)
     column.set_sizing(GTK_COLUMN_GROWN_ONLY)
     column.set_clickable(True)
     column.connect("clicked", analistiarti._changeOrderBy, 'genere')
@@ -82,7 +82,7 @@ def drawPromoWearExpand1(analistiarti):
     column.set_expand(False)
     column.set_min_width(50)
     treeview.append_column(column)
-    analistiarti._treeViewModel = gtk.ListStore(object, str, str, str, str, str, str, str, str, str, str, str, str)
+    analistiarti._treeViewModel = gtk.ListStore(object, str, str, str, str, str, str, str, str, str, str, str, str, str)
 
 def drawPromoWearExpand2(analistiarti):
     column = analistiarti._anagrafica.anagrafica_filter_treeview.get_column(6)
