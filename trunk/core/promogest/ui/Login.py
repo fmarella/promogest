@@ -60,12 +60,10 @@ class Login(SimpleGladeApp):
         :param shop: default False
         """
         self.azienda = None
-        self._dbConnString = ''
         self.modules = {}
         SimpleGladeApp.__init__(self,
                 path='login_window.glade',
                 root="login_window")
-        Environment.exceptionHandler = GtkExceptionHandler()
         self.draw()
         self.getTopLevel().show_all()
         #Pg2StatusIcon()
@@ -108,14 +106,7 @@ class Login(SimpleGladeApp):
                     self.azienda_combobox.set_active_iter(r.iter)
         else:
             self.azienda_combobox.set_active(0)
-        #ATTENZIONE METTO COME RUOLO ADMIN PER IL MOMENTO RICONTROLLARE
 
-        #self.username_combobox_listore.clear()
-        #for a in usrs:
-            #self.username_combobox_listore.append((a.username, a.email))
-        #self.username_comboxentry.set_model(self.username_combobox_listore)
-        #if not Environment.pg3:  #necessario per windows
-            #self.username_comboxentry.set_text_column(0)
         self.username_entry.grab_focus()
         data = datetime.datetime.now()
         self.anno_lavoro_spinbutton.set_value(data.year)
@@ -123,7 +114,6 @@ class Login(SimpleGladeApp):
 
     def on_logo_button_clicked(self, button):
         """Apre il sito web del PromoGest
-
         :param button: il tasto che ha generato l'evento
         """
         webbrowser.open_new_tab(self.urll)
@@ -188,6 +178,7 @@ class Login(SimpleGladeApp):
         #username = self.username_comboxentry.child.get_text()
         username = self.username_entry.get_text()
         password = self.password_entry.get_text()
+
         if username == '' or password == '':
             messageInfo(msg=_('Inserire nome utente e password'))
             return

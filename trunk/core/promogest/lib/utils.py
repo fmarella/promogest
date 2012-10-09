@@ -2779,7 +2779,7 @@ def leggiRevisioni():
                     "http://promogest.googlecode.com/svn/trunk",
                             recurse=False)[0][1]["rev"].number
         except pysvn.ClientError:
-            pass
+            print "IMPOSSIBILE VERIFICARE SE IL PG E' AGGIORNATO"
         Environment.pg2log.info("VERSIONE IN USO LOCALE E REMOTA "+str(Environment.rev_locale)+" "+str(Environment.rev_remota))
     if pysvn:
         thread = threading.Thread(target=fetch)
