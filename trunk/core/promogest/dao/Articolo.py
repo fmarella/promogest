@@ -75,6 +75,8 @@ class Articolo(Dao):
                 for a in self.cod_barre:
                     if a.primario:
                         return a.codice or ""
+                    else:
+                        return self.cod_barre[0].codice or ""
             elif len(list(self.cod_barre)) ==1:
                 return self.cod_barre[0].codice or ""
             else:
