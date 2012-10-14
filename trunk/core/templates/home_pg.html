@@ -1,66 +1,94 @@
-<div style="width:100%;text-align:center"><a style="text-color:black;" href="http://www.promogest.me"><img src="gui/testata_promogest2.png" alt="Logo PromoGest" /></a></div>
-<hr></hr>
-<!--
-<h2 align="left">Riepiloghi:</h2>
--->
-<!--
-{% if pageData["troppi"] == 0 %}
-<h3 align="center">TOTALI del Fatturato relativi all'ultimo mese: ({{pageData["sospesi"]}})</h3>
-{% else %}
-<h3 align="center">TOTALI Fatturato:( Ultimi{{ pageData["sospesi"]}})</h3>
-<p>Periodo dal {{utils.dateToString(pageData["objects"][0].data_documento)}} al {{utils.dateToString(pageData["objects"][-1].data_documento)}}</p>
-{% endif %}
--->
-<!--
-            <table style="width:360px;">
-            {% set tot = utils.calcolaTotali(pageData["objects"]) %}
-            {% for k, v in tot['imponibile_aliquote'].items() %}
-                <tr>
-                    <th style="width:200px;text-align:left;font-size:12px" >IMPONIBILE Aliquota {{ utils.mN(k, 0) }}%</th>
-                    <td style="width:120px;text-align:right;font-size:12px" ><b>{{utils.mNLC(v, 2)}}</b></td>
-                </tr>
-            {% endfor %}
-            <tr>
-                <th style="width:200px;text-align:left;font-size:12px" >IMPONIBILE. NON SCONTATO.</th>
-                <td style="width:120px;text-align:right;font-size:12px" ><b>{{utils.mNLC(tot["totale_imponibile_non_scontato"],2)}}</b></td>
-            </tr>
-            {% for k, v in tot['imposta_aliquote'].items() %}
-                <tr>
-                    <th style="width:200px;text-align:left;font-size:12px" >IMPOSTA Aliquota {{ utils.mN(k, 0) }}%</th>
-                    <td style="width:120px;text-align:right;font-size:12px" ><b>{{utils.mNLC(v, 2)}}</b></td>
-                </tr>
-            {% endfor %}
-            <tr>
-                <th style="width:200px;text-align:left;font-size:12px">IMPOSTA NON SCONTATA</th>
-                <td style="width:120px;text-align:right;font-size:12px"><b>{{utils.mNLC(tot["totale_imposta_non_scontata"],2)}}</b></td>
-            </tr>
-             <tr>
-                <th style="width:200px;text-align:left;font-size:12px">GENERALE NON SCONTATO </th>
-                <td style="width:120px;text-align:right;font-size:12px"><b>{{utils.mNLC(tot["totale_non_scontato"],2)}}</b></td>
-            </tr>
-                        <tr><td></td></tr>
-            <tr>
-                <th style="width:200px;text-align:left;font-size:14px;">IMPONIBILE SCONTATO</th>
-                <td style="width:120px;text-align:right;font-size:14px;"><b>{{utils.mNLC(tot["totale_imponibile_scontato"],2)}}</b></td>
-            </tr>
-            <tr>
-                <th style="width:200px;text-align:left;font-size:14px;" >IMPOSTA SCONTATA </th>
-                <td style="width:120px;text-align:right;font-size:14px;"><b>{{utils.mNLC(tot["totale_imposta_scontata"],2)}}</b></td>
-            </tr>
-                <th style="width:200px;text-align:left;font-size:16px;">GENERALE SCONTATO</th>
-                <td style="width:120px;text-align:right;font-size:16px;"><b>{{utils.mNLC(tot["totale_scontato"],2)}}</b></td>
-            </tr>
-            <tr><td></td></tr>
-           <tr>
-                <th style="width:200px;text-align:left;font-size:12px">SOSPESO</th>
-                <td style="width:120px;text-align:right;font-size:12px"><b>{{utils.mNLC(tot["totale_sospeso"],2)}}</b></td>
-            </tr>
-            <tr>
-                <th style="width:200px;text-align:left;font-size:12px">PAGATO</th>
-                <td style="width:120px;text-align:right;font-size:12px"><b>{{utils.mNLC(tot["totale_pagato"],2)}}</b></td>
-            </tr>
-        </table>
--->
-        <a style="text-color:black;" href="http://www.promogest.me/promoGest/news_list">
-<div style="text-align:center;color:black;"><br />
-    <h3 style="color:black;">NEWS dal SITO</a></h3></div>
+{% extends 'index.html' %}
+
+{% block body %}
+<div style="width:100%;text-align:center"><a style="text-color:black;" href="http://www.promogest.me"><img src="gui/testata_promogest2.png" alt="Logo PromoGest" /></a>
+</div>
+<table >
+<tr>
+<td style="width:120px;height:110px;text-align:left">
+    <a style="text-color:black;" href="http://www.promogest.me/promoGest/news_list">
+                <img src="gui/rss_128X128.png"  width=100 height=100 alt="Logo PromoGest" />
+    </a>
+</td>
+<td style="width:100%;height:110px;text-align:left"><p><b>LE NEWS:</b> Pagina del sito principale del Promogest in cui vengono inserite le ultime notizie relative allo sviluppo, a nuove funzionalità o ad importanti informazioni sugli aggiornamenti, da consultare regolarmente.</p>
+</td>
+
+</tr>
+  <tr>
+<td style="width:120px;height:110px;text-align:left">
+<a style="text-color:black;" href="http://www.facebook.com/pages/PromoGest-Software-gestionale-open-source/173754852637691"><img src="gui/facebook_logo.png" width=100 height=100 alt="Logo PromoGest" /></a> </td> <td style="width:100%;height:128px;text-align:left"><p><b>FACEBOOK: </b>Abbiamo raccolto qui tutta la produzione di notizie ed informazioni provenienti da tutti i siti di comunicazione. Troverete una o due post al giorno con gli ultimi bug corretti, o segnalati e le ultime notizie. Clicca sul "Ti Piace"</p>
+</td>  </tr>
+<tr>
+<td style="width:120px;height:110px;text-align:left">
+<a style="text-color:black;" href="https://plus.google.com/b/104073853486550857191/104073853486550857191/posts"><img src="gui/GooglePlus-512-Red.png" width=98 height=98 alt="Logo PromoGest" /></a> </td>
+<td style="width:100%;text-align:left"><p><b>GOOGLE +</b>: Altro Social di prima grandezza, abbiamo una pagina anche qui con le più importanti novità</p>
+</td>
+
+</tr>
+<tr>
+<td style="width:120px;height:110px;text-align:left">
+<a style="text-color:black;" href="https://twitter.com/promotux"><img src="gui/twitter-logo.png" width=100 height=100 alt="Logo PromoGest" /></a> </td>
+<td style="width:100%;text-align:left"><p><b>TWITTER: </b> Non poteva mancare il cinguettio per eccellenza, tutte le novità dello sviluppo le troverai in automatico qui</p>
+</td>
+
+</tr>
+<tr>
+<td style="width:120px;height:110px;text-align:left">
+<a style="text-color:black;" href="http://code.google.com/p/promogest/"><img src="gui/Google_Code.png" width=100 height=100 alt="Logo PromoGest" /></a> </td>
+<td style="width:100%;text-align:left"><p><b>GOOGLE CODE:</b>La pagina del wiki, dei sorgenti e della segnalazione <b>bug</b>, consulta con regolarità la sezione degli issues e segnala il tuo problema con il promoGest. Tutte le novità più tecniche dello sviluppo quotdiano, correzioni ed implementazioni</p>
+</td>
+</tr>
+<tr>
+<td style="width:120px;height:110px;text-align:left">
+<a style="text-color:black;" href="https://groups.google.com/forum/?fromgroups#!forum/promogest"><img src="gui/google-groups-logo.jpeg" width=100 height=100 alt="Logo PromoGest" /></a> </td>
+<td style="width:100%;text-align:left"><p><b>GRUPPO/FORUM: </b> Abbiamo anche il gruppo su google per le segnalazioni più articolate e dialettiche.</p>
+</td>
+</tr>
+
+<tr>
+<td style="width:120px;height:110px;text-align:left">
+<a style="text-color:black;" href="http://www.promogest.me/"><img src="gui/paypalLogo.png" width=100 height=100 alt="Logo PromoGest" /></a> </td>
+<td style="width:100%;text-align:left"><p>A breve ...</p>
+</td>
+
+</tr>
+</table>
+{% if "BASIC" in pageData["tipopg"] %}
+<div style="width:100%;text-align:center">
+
+<script type="text/javascript"><!--
+google_ad_client = "pub-8889827396162022";
+google_ad_width = 728;
+google_ad_height = 15;
+google_ad_format = "728x15_0ads_al_s";
+google_ad_channel = "";
+google_color_border = "000000";
+google_color_bg = "F5F5F5";
+google_color_link = "990033";
+google_color_text = "000000";
+google_color_url = "FF9000";
+//-->
+</script>
+<script type="text/javascript"
+  src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>    <br /><br />
+  <script type="text/javascript"><!--
+google_ad_client = "pub-8889827396162022";
+google_ad_width = 728;
+google_ad_height = 15;
+google_ad_format = "728x15_0ads_al_s";
+google_ad_channel = "";
+google_color_border = "000000";
+google_color_bg = "F5F5F5";
+google_color_link = "990033";
+google_color_text = "000000";
+google_color_url = "FF9000";
+//-->
+</script>
+<script type="text/javascript"
+  src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>    <br /><br />
+
+</div>
+{% endif%}
+    {% endblock %}

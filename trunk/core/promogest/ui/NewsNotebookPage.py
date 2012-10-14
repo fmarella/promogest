@@ -53,38 +53,21 @@ class NewsNotebookPage(GladeWidget):
         self.main_wind = main
         self.aziendaStr = azienda or ""
         gobject.idle_add(self.create_news_frame)
+        self.htmlnewswidget = createHtmlObj(self)
+        self.feed_scrolled.add(self.htmlnewswidget)
 
     def draw(self):
         return self
 
 
     def build_news_frame(self):
-        htmlwidget = createHtmlObj(self)
-        self.feed_scrolled.add(htmlwidget)
-        #oggi = datetime.datetime.today()
-        #one_month = relativedelta(months=1)
-        #lastmonth =  oggi - one_month
-        #if lendocu > 200:
-        #quanti= TestataDocumento().count(daData=dateToString(lastmonth),batchSize=None)
-        #docu = TestataDocumento().select(daData=lastmonth, batchSize=None)
-        docu = []
-        if len(docu) > 30:
-            docu = docu[-30:]
-            sospesi = 30
-            troppi = 1
-        else:
-            sospesi = len(docu)
-            troppi = 0
-
-        totaleSospeso = 0
+        print "TADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", Environment.modulesList
         pageData = {
                     "file": "home_pg.html",
-                    "sospesi": sospesi,
-                    "objects": docu,
-                    "troppi" : troppi
+                    "tipopg" :Environment.modulesList
         }
-        html = renderTemplate(pageData)
-        renderHTML(htmlwidget, html)
+        self.html_news = renderTemplate(pageData)
+        renderHTML(self.htmlnewswidget, self.html_news)
 
 
 
@@ -111,6 +94,12 @@ class NewsNotebookPage(GladeWidget):
                     #gobject.idle_add(self.getfeedFromSite)
                 #except:
                     #Environment.pg2log.info("LEGGERO RITARDO NEL RECUPERO DEI FEED")
+
+    def on_refresh_button_clicked(self, button):
+        self.html_news = ""
+        self.build_news_frame()
+
+
 
     def on_nuovo_articolo_button_clicked(self, widget):
         if not hasAction(actionID=8):return

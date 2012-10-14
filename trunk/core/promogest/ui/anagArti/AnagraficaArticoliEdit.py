@@ -146,12 +146,12 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
             self.new=True
         else:
             # Ricrea il Dao con una connessione al DBMS SQL
-            self.dao = Articolo().getRecord(id=dao.id)
+            self.dao = dao
             self.new=False
 
         if posso("ADR"):
             self.adr_page.adrSetDao(self.dao)
-
+        print self.dao.__dict__
         self._refresh()
         return self.dao
 
