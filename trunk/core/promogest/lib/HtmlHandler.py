@@ -239,7 +239,7 @@ def _on_navigation_requested(view, frame, req, data=None):
                 #return
     elif "ads" in uri or "cdn" in uri:
         return False
-    elif uri.startswith("http://"):
+    elif "http" in uri:
         linkOpen(uri)
     else:
         return False
