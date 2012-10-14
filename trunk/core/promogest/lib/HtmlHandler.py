@@ -197,7 +197,6 @@ def getfeedFromSite():
 
 def _on_navigation_requested(view, frame, req, data=None):
     uri = req.get_uri()
-    print "URIIIIIIIIIIIIIIIIIIII", uri
     if uri.startswith("program:/"):
         agg = uri.split("/")[1]
         if "articoloId" in agg:
@@ -239,10 +238,8 @@ def _on_navigation_requested(view, frame, req, data=None):
             #except:
                 #return
     elif "ads" in uri or "cdn" in uri:
-        print " BECCATO"
         return False
     elif uri.startswith("http://"):
-        print "WNON HAI BECCATO"
         linkOpen(uri)
     else:
         return False
