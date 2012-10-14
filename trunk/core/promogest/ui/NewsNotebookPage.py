@@ -61,7 +61,6 @@ class NewsNotebookPage(GladeWidget):
 
 
     def build_news_frame(self):
-        print "TADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", Environment.modulesList
         pageData = {
                     "file": "home_pg.html",
                     "tipopg" :Environment.modulesList
