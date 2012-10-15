@@ -113,6 +113,7 @@ class AnagraficaHtml(object):
         pageData = {
                 "file": self.defaultFileName + ".html",
                 "dao": self.dao,
+                "tipopg" :Environment.modulesList,
                 "objects": self.dao,
                 "eventipreves": eventipreves,
                 "eventiprevesAT": eventiprevesAT,
