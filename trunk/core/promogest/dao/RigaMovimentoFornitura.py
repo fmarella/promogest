@@ -64,7 +64,11 @@ class RigaMovimentoFornitura(Dao):
             dic= {k:rigamovimentofornitura.c.id_riga_movimento_vendita ==v}
         elif k == "idRigaMovimentoVenditaBool":
             dic= {k:rigamovimentofornitura.c.id_riga_movimento_vendita != None}
+        elif k == "idRigaMovimentoAcquistoBool":
+            dic= {k:rigamovimentofornitura.c.id_riga_movimento_vendita != None}
         elif k == "idRigaMovimentoVenditaBoolFalse":
+            dic= {k:rigamovimentofornitura.c.id_riga_movimento_vendita == None}
+        elif k == "idRigaMovimentoAcquistoBoolFalse":
             dic= {k:rigamovimentofornitura.c.id_riga_movimento_vendita == None}
         elif k == "idArticolo":
             dic= {k:rigamovimentofornitura.c.id_articolo ==v}

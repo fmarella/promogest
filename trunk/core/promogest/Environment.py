@@ -241,6 +241,7 @@ SUB = ""
 userdata = ["", "", "", user]
 engine = None
 if tipodb == "sqlite":
+    print "QUIIIIIIIII"
     azienda = None
     mainSchema = None
     if sqlalchemy.__version__ >= "0.7":
@@ -258,6 +259,7 @@ if tipodb == "sqlite":
     else:
         engine = create_engine("sqlite:///" + startdir() + "db", listeners=[SetTextFactory()], proxy=MyProxy())
 else:
+    print "SEI QUIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII£"
     from promogest.EnvUtils import *
     mainSchema = "promogest2"
     engine = pg8000()

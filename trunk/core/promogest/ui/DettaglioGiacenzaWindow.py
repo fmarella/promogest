@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 #    Copyright (C) 2005-2012 2011
-#by Promotux di Francesco Meloni snc - http://www.promotux.it/
+#    by Promotux di Francesco Meloni snc - http://www.promotux.it/
 
 # Author: Francesco Meloni <francesco@promotux.it>
 
@@ -50,6 +50,8 @@ class DettaglioGiacenzaWindow(GladeWidget):
         self.idArticolo = riga["idArticolo"]
         self.idMagazzino = riga["idMagazzino"]
         self.rigamovimentofornituralist = riga["rigaMovimentoFornituraList"]
+        #treeselection = self.dettaglio_giacenza_treeview.get_selection()
+        #treeselection.set_mode(GTK_SELECTIONMODE_MULTIPLE)
         self.draw()
 
     def draw(self):
@@ -58,66 +60,46 @@ class DettaglioGiacenzaWindow(GladeWidget):
         """
         self.__refresh()
 
-    #def selectFilter(self, model, path, iter):
-        ##lista = []
-        #check = model.get_value(iter, 1)
-        #fatherPath = model.get_path(iter)
-        #if check:
-            #if len(fatherPath) ==1:
-                #return
-            #oggetto = model.get_value(iter, 0)
-            #quantita = model.get_value(iter, 5)
-            #for ogg in range(0,int(quantita)):
-                #oggetto.codice_a_barre = model.get_value(iter, 4)
-                #self.resultList.append(oggetto)
-
-    #def get_active_text(self, combobox):
-        #model = combobox.get_model()
-        #active = combobox.get_active()
-        #if active < 0:
-            #return None
-        #return model[active][0]
-
     def on_dg_ok_button_clicked(self,button):
         self.rigamovimentofornituralist = []
-        model = self.dettaglio_giacenza_listore
-        for m in model:
-            if m[0]:
-                self.rigamovimentofornituralist.append(m[7])
-        self.mainWindow._righe[0]["rigaMovimentoFornituraList"] = self.rigamovimentofornituralist
+        sel = self.dettaglio_giacenza_treeview.get_selection()
+        (model, iterator) = sel.get_selected()
+        riga = model[iterator]
+        self.mainWindow._righe[0]["rigaMovimentoFornituraList"] = [riga[6].id_fornitura]
         self.getTopLevel().destroy()
 
-    def on_selezionato_toggle_toggled(self, cell, path):
-        """ Function to set the value quantita edit in the cell"""
-        model = self.dettaglio_giacenza_listore
-        model[path][0] = not model[path][0]
 
     def __refresh(self):
         # Aggiornamento TreeView
         self.dettaglio_giacenza_listore.clear()
-        arti = RigaMovimentoFornitura().select(idArticolo=self.idArticolo, batchSize=None)
+        rmf = RigaMovimentoFornitura().select(idArticolo=self.idArticolo, idRigaMovimentoAcquistoBoolFalse=True, batchSize=None)
         a = leggiArticolo(self.idArticolo)
-        for i in arti:
-            boleann = False
-            if i.id_riga_movimento_vendita and self.idRiga == i.id_riga_movimento_vendita:
-                boleann = True
-            elif i.id_riga_movimento_vendita and self.idRiga != i.id_riga_movimento_vendita:
-                continue
-            idrigamov = RigaMovimento().getRecord(i.id_riga_movimento_acquisto)
-            movi = TestataMovimento().getRecord(id= idrigamov.id_testata_movimento)
-            if i in self.rigamovimentofornituralist:
-                boleann = True
-            self.dettaglio_giacenza_listore.append((boleann,
-                                        i.forni.numero_lotto,
-                                        dateToString(i.forni.data_scadenza),
-                                        str(movi.numero),
-                                        dateToString(i.forni.data_fornitura),
-                                        dateToString(i.forni.data_produzione),
-                                        "",i))
+        for i in rmf:
+            rmfv = RigaMovimentoFornitura().select(idArticolo=i.id_articolo, idFornitura=i.id_fornitura, idRigaMovimentoVenditaBool=True, batchSize=None)
+            quantita_evasa = 0
+            for r in rmfv:
+                print r.__dict__  , r.rigamovven.quantita, quantita_evasa
+                #if self.idRiga or self.idRiga != r.id_riga_movimento_vendita:
+                quantita_evasa += r.rigamovven.quantita
+                print quantita_evasa
+            quantita_totale = i.rigamovacq.quantita
+            quantita_residua = quantita_totale - quantita_evasa
+            self.dettaglio_giacenza_listore.append((
+                        str(mN(quantita_totale,1)) +" - " + str(mN(quantita_evasa,1)) + " - " + str(mN(quantita_residua,1)),
+                        i.forni.numero_lotto,
+                        dateToString(i.forni.data_scadenza),
+                        dateToString(i.forni.data_fornitura),
+                        dateToString(i.forni.data_produzione),
+                        "",i))
         testo = a["codice"]+"-"+a["denominazione"] +"\n\n STAI VENDENDO " + str(int(self.quantita)) +" ARTICOLI \n CE NE SONO " + str(int(len(self.dettaglio_giacenza_listore)))
         self.articolo_info_label.set_text(testo)
 
-        ##self.dettaglio_giacenza_treeview.set_model(self.dettaglio_giacenza_listore)
+
+    def on_column_quantita_edited(self, cell, path, value):
+        """ Set the value "quantita" edit in the cell """
+        value=value.replace(",",".")
+        value = mN(value,1)
+        self.dettaglio_giacenza_listore[path][0] = value
 
 
     def on_dg_annulla_button_clicked(self, button):

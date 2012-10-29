@@ -32,6 +32,7 @@ from promogest.dao.RigaMovimento import RigaMovimento, t_riga_movimento
 from promogest.dao.RigaDocumento import RigaDocumento
 from promogest.dao.Riga import Riga
 from promogest.dao.RigaMovimentoFornitura import RigaMovimentoFornitura
+#from promogest.dao.RigaMovFornituraRigaMovVendita import RMovFornituraRMovVendita
 from promogest.dao.NumeroLottoTemp import NumeroLottoTemp
 from Fornitore import Fornitore
 from Cliente import Cliente, t_cliente
@@ -201,8 +202,6 @@ class TestataMovimento(Dao):
         self.rmfv= None
         row = self.rigamov
         if row :
-            self.rmfv = RigaMovimentoFornitura().select(idRigaMovimentoVenditaBool = True, batchSize=None)
-            #self.rmfv = []
             #sm = posso("SM")
             gl = setconf("General", "gestione_lotti")
             lt = setconf("Documenti", "lotto_temp")
@@ -215,21 +214,15 @@ class TestataMovimento(Dao):
                     if mp:
                         for m in mp:
                             params['session'].delete(m)
-                        #params["session"].commit()
-                #rmfa = RigaMovimentoFornitura().select(idRigaMovimentoAcquisto = r.id, batchSize=None)
                 if gl:
                     rmfa = r.rmfac
                     if rmfa:
                         for f in rmfa:
                             params['session'].delete(f)
-                        #params["session"].commit()
-                    #precedentiRighe= RigaMovimentoFornitura().select(idRigaMovimentoVendita=r.id, batchSize=None)
-                    precedentiRighe = r.rmfve
-                    if precedentiRighe:
-                        for p in precedentiRighe:
-                            p.id_riga_movimento_vendita = None
-                            params["session"].add(p)
-                        #params['session'].commit()
+                    rmfve = r.rmfve
+                    if rmfve:
+                        for p in rmfve:
+                            params["session"].delete(p)
                 #nn = NumeroLottoTemp().select(idRigaMovimentoVenditaTemp=r.id)
                 if lt:
                     nn = r.NLT
@@ -340,70 +333,43 @@ class TestataMovimento(Dao):
                     riga.id_testata_documento = self.id_testata_documento
                     riga.persist(sm=sm)
                 else:
+                    #se non ho un id salvo il dao e me ne faccio dare uno
                     if not self.id:
                         params["session"].commit()
                     riga.id_testata_movimento = self.id
+                    # vado a salvare le righe movimento
                     riga.persist(sm=sm)
                     if self.id_fornitore and riga.id_articolo:
-                        if hasattr(riga,"data_prezzo") and riga.data_prezzo is not None:
-                            data_prezzo = stringToDateTime(riga.data_prezzo)
-                        else:
-                            data_prezzo = self.data_movimento
-                        """aggiornamento forniture cerca la fornitura relativa al fornitore
-                            con data <= alla data del movimento"""
                         fors = Fornitura().select(idArticolo=riga.id_articolo,
                                                     idFornitore=self.id_fornitore,
-                                                    daDataPrezzo=None,
-                                                    aDataPrezzo= data_prezzo,
-                                                    orderBy = 'data_prezzo DESC',
+                                                    #daDataPrezzo=None,
+                                                    dataFornitura = self.data_movimento,
+                                                    orderBy = 'data_fornitura DESC',
                                                     offset = None,
                                                     batchSize = None)
-                        if not fors:
-                            # a causa dell'aggiunta di lotti e scadenze, qui è necessario
-                            # controllare anche per data prezzo
-                            fors = Fornitura().select(idArticolo=riga.id_articolo,
-                                                        idFornitore=self.id_fornitore,
-                                                        #daDataPrezzo=None,
-                                                        aDataFornitura = data_prezzo,
-                                                        orderBy = 'data_fornitura DESC',
-                                                        offset = None,
-                                                        batchSize = None)
-                        daoFornitura = None
                         if fors:
-                            if fors[0].data_prezzo == data_prezzo:
-                                # ha trovato una fornitura con stessa data: aggiorno questa fornitura
-                                #daoFornitura = Fornitura().getRecord(id=fors[0].id)
-                                daoFornitura = fors[0]
-                            else:
-                                """creo una nuova fornitura con data_prezzo pari alla data del movimento
-                                    copio alcuni dati dalla fornitura piu' prossima"""
-                                daoFornitura = Fornitura()
+                            daoFornitura = fors[0]
                         else:
-                            # nessuna fornitura utilizzabile, ne creo una nuova (alcuni dati mancheranno)
                             daoFornitura = Fornitura()
-                        if hasattr(riga, "ordine_minimo") and riga.ordine_minimo:
+
+                        if hasattr(riga,"data_prezzo") and riga.data_prezzo is not None:
+                            daoFornitura.data_prezzo = stringToDateTime(riga.data_prezzo)
+                        if hasattr(riga, "ordine_minimo") and riga.ordine_minimo is not None and riga.ordine_minimo != "":
                             daoFornitura.scorta_minima = int(riga.ordine_minimo)
-                        #daoFornitura.id_multiplo = None
-                        if hasattr(riga, "tempo_arrivo") and riga.tempo_arrivo:
+                        if hasattr(riga, "tempo_arrivo") and riga.tempo_arrivo is not None and riga.tempo_arrivo != "":
                             daoFornitura.tempo_arrivo_merce = int(riga.tempo_arrivo)
-                        daoFornitura.fornitore_preferenziale = True
                         if hasattr(riga,"numero_lotto"):
                             daoFornitura.numero_lotto = riga.numero_lotto or ""
                         if hasattr(riga, "data_scadenza"):
                             daoFornitura.data_scadenza = stringToDate(riga.data_scadenza) or None
                         if hasattr(riga, "data_produzione"):
                             daoFornitura.data_produzione = stringToDate(riga.data_produzione) or None
-                        if hasattr(riga,"data_prezzo"):
-                            daoFornitura.data_prezzo = data_prezzo
-                        if not daoFornitura.data_prezzo:
-                            daoFornitura.data_prezzo = stringToDateTime(self.data_movimento)
+
+                        daoFornitura.data_fornitura = self.data_movimento
+                        daoFornitura.fornitore_preferenziale = True
                         daoFornitura.id_fornitore = self.id_fornitore
                         daoFornitura.id_articolo = riga.id_articolo
-                        if daoFornitura.data_fornitura is not None:
-                            if self.data_movimento > daoFornitura.data_fornitura:
-                                daoFornitura.data_fornitura = self.data_movimento
-                        else:
-                            daoFornitura.data_fornitura = self.data_movimento
+
                         if "_RigaMovimento__codiceArticoloFornitore" in riga.__dict__:
                             daoFornitura.codice_articolo_fornitore = riga.__dict__["_RigaMovimento__codiceArticoloFornitore"]
                         daoFornitura.prezzo_lordo = riga.valore_unitario_lordo
@@ -421,33 +387,26 @@ class TestataMovimento(Dao):
                         daoFornitura.sconti = sconti
                         params["session"].add(daoFornitura)
                         params["session"].commit()
-                    if gl and self.id_fornitore and riga.id_articolo:
-                        for q in range(0,riga.quantita):
+                        if gl:
+                            #cambiata la logica, adesso le righe su rmf sono sempre e solo una
+                            #viene gestita invece un'altra tabella di raccordo per le quantità
                             a = RigaMovimentoFornitura()
                             a.id_articolo = riga.id_articolo
                             a.id_riga_movimento_acquisto = riga.id
-                            if self.rmfv:
-                                for v in self.rmfv:
-                                    if v.id_articolo==riga.id_articolo and v.id_fornitura == daoFornitura.id:
-                                        a.id_riga_movimento_vendita = v.id_riga_movimento_vendita
-                                        self.rmfv.remove(v)
                             a.id_fornitura = daoFornitura.id
                             params["session"].add(a)
-                        #params["session"].commit()
+                            #params["session"].commit()
+
                     elif gl:
                         if hasattr(riga,"righe_movimento_fornitura"):
-                            if riga.righe_movimento_fornitura:
-                                #precedentiRighe= RigaMovimentoFornitura().select(idRigaMovimentoVendita=riga.id, batchSize=None)
-                                precedentiRighe = riga.rmfve
-                                if precedentiRighe:
-                                    for p in precedentiRighe:
-                                        p.id_riga_movimento_vendita = None
-                                        params["session"].add(p)
-                                    #params["session"].commit()
-                                for r in riga.righe_movimento_fornitura:
-                                    r.id_riga_movimento_vendita = riga.id
-                                    params["session"].add(r)
-                                #params["session"].commit()
+                            for g in riga.righe_movimento_fornitura:
+                                a = RigaMovimentoFornitura()
+                                a.id_articolo = riga.id_articolo
+                                a.id_riga_movimento_vendita = riga.id
+                                a.id_fornitura = g
+                                params["session"].add(a)
+                            #params["session"].commit()
+
                         if lt and hasattr(riga,"lotto_temp") and riga.lotto_temp:
                             # Salvare il lotto temporaneo
                             n = NumeroLottoTemp()

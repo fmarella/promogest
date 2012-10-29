@@ -152,6 +152,8 @@ class Fornitura(Dao):
             dic = {k: t_fornitura.c.data_fornitura <= v}
         elif k == 'numeroLotto':
             dic = {k: t_fornitura.c.numero_lotto == v}
+        elif k == 'noLotto':
+            dic = {k: t_fornitura.c.numero_lotto == None}
         return dic[k]
 
     def scontiFornituraDel(self, idDao):

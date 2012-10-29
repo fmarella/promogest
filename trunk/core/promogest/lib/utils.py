@@ -470,52 +470,16 @@ def leggiFornitura(idArticolo, idFornitore=None, data=None, noPreferenziale=Fals
     _ordineMinimoFornitura = None
     _tempoArrivoFornitura = None
 
-    if (idArticolo is not None):
-        fors = Fornitura().select(idArticolo=idArticolo,
-                                    idFornitore=idFornitore,
-                                    #daDataFornitura=None,
-                                    aDataFornitura=data,
-                                    #daDataPrezzo=None,
-                                    #aDataPrezzo=data,
-                                    #codiceArticoloFornitore=None,
-                                    orderBy = 'data_fornitura',
-                                    #offset = None,
-                                    batchSize = None)
-        if not fors:
-            fors = Fornitura().select(idArticolo=idArticolo,
-                            idFornitore=idFornitore,
-                            #daDataFornitura=None,
-                            #aDataFornitura=None,
-                            #daDataPrezzo=None,
-                            aDataPrezzo=data,
-                            #codiceArticoloFornitore=None,
-                            orderBy = 'data_prezzo',
-                            #offset = None,
-                            batchSize = None)
-        if not fors:
-            fors = Fornitura().select(idArticolo=idArticolo,
-                            idFornitore=idFornitore,
-                            #daDataFornitura=None,
-                            #aDataFornitura=None,
-                            #daDataPrezzo=None,
-                            #aDataPrezzo=data,
-                            #codiceArticoloFornitore=None,
-                            orderBy = 'data_prezzo',
-                            #offset = None,
-                            batchSize = None)
+    if idArticolo:
+        fors = Fornitura().select(
+                                idArticolo=idArticolo,
+                                idFornitore=idFornitore,
+                                dataFornitura=data,
+                                batchSize = None
+                                )
         fornitura = None
-        if idFornitore:
-#            print "FOOOOOOOOOOOOOOOOOOOOORSA2", fors
-            # cerca tra tutti i fornitori quello utile, o in sua assenza, quello preferenziale
-            for f in fors:
-                if f.id_fornitore == idFornitore:
-                    fornitura = f
-                    break
-                elif not(noPreferenziale) and f.fornitore_preferenziale:
-                    fornitura = f
-        else:
-            if len(fors) > 0:
-                fornitura = fors[0]
+        if len(fors) > 0:
+            fornitura = fors[-1]
 
         if fornitura is not None:
             _codiceArticoloFornitore = fornitura.codice_articolo_fornitore or ''

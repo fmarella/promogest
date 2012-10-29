@@ -47,8 +47,24 @@ class AnagraficaDocumenti(Anagrafica):
                         reportHandler=AnagraficaDocumentiReport(self),
                         editElement=AnagraficaDocumentiEdit(self),
                         aziendaStr=aziendaStr)
-
         self.records_file_export.set_sensitive(True)
+
+
+
+
+    def aggiornaforniture(self):
+        gl = setconf("General", "gestione_lotti")
+        messageInfo(msg = "SI EFFETTUERA' ADESSO UN AGGIORNAMENTO PER I LOTTI\n ATTENDERE ANCHE QUALCHE MINUTO\n\n GRAZIE")
+        if gl:
+            #print " DEVI FARE LA CONVERSIONEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE", dir(self._anagrafica)
+            #gobject.idle_add(self.pbar_anag_complessa.show)
+            self.pbar_anag_complessa.show()
+            from scripts.fixRigaMovForniture import fixRigaMovimentoTable
+            fixRigaMovimentoTable(pbar_wid=self.pbar_anag_complessa)
+            #gobject.idle_add(fixRigaMovimentoTable,self.pbar_anag_complessa)
+        #else:
+            #print "NON LA DEVI FAREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE"
+
 
     def on_gestione_riba_menu_activate(self, widget):
         from promogest.ui.RiBaExportWindow import RiBaExportWindow

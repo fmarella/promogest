@@ -737,9 +737,13 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                 self._righe[0]["dataPrezzoFornitura"] = fornitura["dataPrezzoFornitura"]
                 self._righe[0]["ordineMinimoFornitura"] = fornitura["ordineMinimoFornitura"]
                 self._righe[0]["tempoArrivoFornitura"] = fornitura["tempoArrivoFornitura"]
-            else:
+            else: # persona giuridica cliente, quindi per la vendita
                 if self._righe[0]["idRiga"] and not self._righe[0]["rigaMovimentoFornituraList"]:
-                    self._righe[0]["rigaMovimentoFornituraList"] = RigaMovimentoFornitura().select(idRigaMovimentoVendita=self._righe[0]["idRiga"], batchSize=None)
+                    ids = []
+                    rmf = RigaMovimentoFornitura().select(idRigaMovimentoVendita=self._righe[0]["idRiga"], batchSize=None)
+                    for r in rmf:
+                        ids.append(r.id_fornitura)
+                    self._righe[0]["rigaMovimentoFornituraList"] = ids
                 else:
                     self._righe[0]["rigaMovimentoFornituraList"] = []
                 #TODO: AGGIUNGERE UN RICHIAMO A RIGAMOVIMENTOFORNITURA CON I DATI PRESI DAL DB
@@ -1009,12 +1013,12 @@ del documento.
             daoRiga.codiceArticoloFornitore = self._righe[i]["codiceArticoloFornitore"]
             #aggancio degli attributi all'oggetto riga per portarli in salvataggio
             # alla fornitura...
-            setattr(daoRiga,"numero_lotto",self._righe[i]["numeroLottoArticoloFornitura"])
-            setattr(daoRiga,"data_scadenza",self._righe[i]["dataScadenzaArticoloFornitura"])
-            setattr(daoRiga,"data_produzione",self._righe[i]["dataProduzioneArticoloFornitura"])
-            setattr(daoRiga,"data_prezzo",self._righe[i]["dataPrezzoFornitura"])
-            setattr(daoRiga,"ordine_minimo",self._righe[i]["ordineMinimoFornitura"])
-            setattr(daoRiga,"tempo_arrivo",self._righe[i]["tempoArrivoFornitura"])
+            setattr(daoRiga,"numero_lotto", self._righe[i]["numeroLottoArticoloFornitura"])
+            setattr(daoRiga,"data_scadenza", self._righe[i]["dataScadenzaArticoloFornitura"])
+            setattr(daoRiga,"data_produzione", self._righe[i]["dataProduzioneArticoloFornitura"])
+            setattr(daoRiga,"data_prezzo", self._righe[i]["dataPrezzoFornitura"])
+            setattr(daoRiga,"ordine_minimo", self._righe[i]["ordineMinimoFornitura"])
+            setattr(daoRiga,"tempo_arrivo", self._righe[i]["tempoArrivoFornitura"])
             if self.nolottotemp:
                 setattr(daoRiga,"lotto_temp",self._righe[i]["numeroLottoTemp"])
             if "rigaMovimentoFornituraList" in self._righe[i]:

@@ -71,6 +71,7 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
                                                                  on_combobox_agente_search_clicked)
         self.id_agente_filter_customcombobox.setChangedHandler(idHandler)
         self.clear()
+        self._anagrafica.aggiornaforniture()
 
     def _reOrderBy(self, column):
         if column.get_name() == "numero_column":
@@ -170,6 +171,7 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
                                     aDataInizioNoleggio = aDataInizioNoleggio,
                                     daDataFineNoleggio = daDataFineNoleggio,
                                     aDataFineNoleggio = aDataFineNoleggio)
+
 
         @timeit
         def filterCountClosure():

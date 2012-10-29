@@ -115,7 +115,6 @@ if not ("articolo_immagini", "Articoli") in allkey:
     kbb.date = datetime.datetime.now()
     session.add(kbb)
 
-#bb = SetConf().select(key="cliente_struttura_codice", section="Clienti")
 if not ("cliente_struttura_codice", "Clienti") in allkey:
     kbb = SetConf()
     kbb.key = "cliente_struttura_codice"
@@ -127,7 +126,6 @@ if not ("cliente_struttura_codice", "Clienti") in allkey:
     kbb.tipo = "str"
     kbb.date = datetime.datetime.now()
     session.add(kbb)
-#bb = SetConf().select(key="cliente_codice_upper", section="Clienti")
 if not ("cliente_codice_upper", "Clienti") in allkey:
     kbb = SetConf()
     kbb.key = "cliente_codice_upper"
@@ -139,7 +137,6 @@ if not ("cliente_codice_upper", "Clienti") in allkey:
     kbb.tipo = "bool"
     kbb.date = datetime.datetime.now()
     session.add(kbb)
-#bb = SetConf().select(key="cliente_nome_cognome", section="Clienti")
 if not ("cliente_nome_cognome", "Clienti") in allkey:
     kbb = SetConf()
     kbb.key = "cliente_nome_cognome"
@@ -152,7 +149,6 @@ if not ("cliente_nome_cognome", "Clienti") in allkey:
     kbb.date = datetime.datetime.now()
     session.add(kbb)
 
-#bb = SetConf().select(key="fornitore_struttura_codice", section="Fornitori")
 if not ("fornitore_struttura_codice", "Fornitori") in allkey:
     kbb = SetConf()
     kbb.key = "fornitore_struttura_codice"
@@ -165,7 +161,6 @@ if not ("fornitore_struttura_codice", "Fornitori") in allkey:
     kbb.date = datetime.datetime.now()
     session.add(kbb)
 
-#bb = SetConf().select(key="fornitore_codice_upper", section="Fornitori")
 if not ("fornitore_codice_upper", "Fornitori") in allkey:
     kbb = SetConf()
     kbb.key = "fornitore_codice_upper"
@@ -177,7 +172,6 @@ if not ("fornitore_codice_upper", "Fornitori") in allkey:
     kbb.tipo = "bool"
     kbb.date = datetime.datetime.now()
     session.add(kbb)
-#bb = SetConf().select(key="fornitore_nome_cognome", section="Fornitori")
 if not ("fornitore_nome_cognome", "Fornitori") in allkey:
     kbb = SetConf()
     kbb.key = "fornitore_nome_cognome"
@@ -190,7 +184,6 @@ if not ("fornitore_nome_cognome", "Fornitori") in allkey:
     kbb.date = datetime.datetime.now()
     session.add(kbb)
 
-#bb = SetConf().select(key="vettore_struttura_codice", section="Vettori")
 if not ("vettore_struttura_codice", "Vettori") in allkey:
     kbb = SetConf()
     kbb.key = "vettore_struttura_codice"
@@ -203,7 +196,6 @@ if not ("vettore_struttura_codice", "Vettori") in allkey:
     kbb.date = datetime.datetime.now()
     session.add(kbb)
 
-#bb = SetConf().select(key="valuta_curr", section="Valuta")
 if not ("valuta_curr", "Valuta") in allkey:
     kbb = SetConf()
     kbb.key = "valuta_curr"
@@ -216,7 +208,6 @@ if not ("valuta_curr", "Valuta") in allkey:
     kbb.date = datetime.datetime.now()
     session.add(kbb)
 
-#bb = SetConf().select(key="vettore_codice_upper", section="Vettori")
 if not ("vettore_codice_upper", "Vettori") in allkey:
     kbb = SetConf()
     kbb.key = "vettore_codice_upper"
@@ -535,6 +526,17 @@ if not ("gestione_lotti", "General") in allkey:
     krr.date = datetime.datetime.now()
     session.add(krr)
 
-COOKIENAME = SetConf().select(key="cookie_name")[0].value
+if not ("fix_riga_movimento", "General") in allkey:
+    kbb = SetConf()
+    kbb.key = "fix_riga_movimento"
+    kbb.value ="False"
+    kbb.section = "General"
+    kbb.tipo_section = "Generico"
+    kbb.description = "Sposta i dati su rigamov forni riga mov vendita"
+    kbb.active = True
+    kbb.tipo = "bool"
+    kbb.date = datetime.datetime.now()
+    session.add(kbb)
+
 
 params["session"].commit()

@@ -8,6 +8,22 @@
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
   </object>
+  <object class="GtkListStore" id="label_liststore">
+    <columns>
+      <!-- column-name PyObject1 -->
+      <column type="PyObject"/>
+      <!-- column-name gchararray1 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray2 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray3 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray4 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray5 -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
   <object class="GtkDialog" id="label_dialog">
     <property name="can_focus">False</property>
     <property name="border_width">5</property>
@@ -21,9 +37,6 @@
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="spacing">2</property>
-        <child>
-          <placeholder/>
-        </child>
         <child internal-child="action_area">
           <object class="GtkHButtonBox" id="dialog-action_area2">
             <property name="visible">True</property>
@@ -43,10 +56,10 @@
             <child>
               <object class="GtkButton" id="discard_button">
                 <property name="label">gtk-cancel</property>
+                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
                 <signal name="clicked" handler="on_discard_button_clicked" swapped="no"/>
               </object>
@@ -59,10 +72,10 @@
             <child>
               <object class="GtkButton" id="revert_button">
                 <property name="label">gtk-revert-to-saved</property>
+                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
                 <signal name="clicked" handler="on_revert_button_clicked" swapped="no"/>
               </object>
@@ -75,10 +88,10 @@
             <child>
               <object class="GtkButton" id="apply_button">
                 <property name="label">gtk-apply</property>
+                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
                 <signal name="clicked" handler="on_apply_button_clicked" swapped="no"/>
               </object>
@@ -91,10 +104,10 @@
             <child>
               <object class="GtkButton" id="ok_button">
                 <property name="label">gtk-ok</property>
+                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
                 <signal name="clicked" handler="on_ok_button_clicked" swapped="no"/>
               </object>
@@ -111,6 +124,9 @@
             <property name="pack_type">end</property>
             <property name="position">0</property>
           </packing>
+        </child>
+        <child>
+          <placeholder/>
         </child>
         <child>
           <object class="GtkFrame" id="frame12">
@@ -146,10 +162,10 @@
                                 <child>
                                   <object class="GtkRadioButton" id="ricerca_codice_button">
                                     <property name="label" translatable="yes">C-Art</property>
+                                    <property name="use_action_appearance">False</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">False</property>
-                                    <property name="use_action_appearance">False</property>
                                     <property name="use_underline">True</property>
                                     <property name="draw_indicator">True</property>
                                   </object>
@@ -162,10 +178,10 @@
                                 <child>
                                   <object class="GtkRadioButton" id="ricerca_codice_a_barre_button">
                                     <property name="label" translatable="yes">C-Bar</property>
+                                    <property name="use_action_appearance">False</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">False</property>
-                                    <property name="use_action_appearance">False</property>
                                     <property name="use_underline">True</property>
                                     <property name="active">True</property>
                                     <property name="draw_indicator">True</property>
@@ -180,10 +196,10 @@
                                 <child>
                                   <object class="GtkRadioButton" id="ricerca_descrizione_button">
                                     <property name="label" translatable="yes">Desc</property>
+                                    <property name="use_action_appearance">False</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">False</property>
-                                    <property name="use_action_appearance">False</property>
                                     <property name="use_underline">True</property>
                                     <property name="draw_indicator">True</property>
                                     <property name="group">ricerca_codice_button</property>
@@ -197,10 +213,10 @@
                                 <child>
                                   <object class="GtkRadioButton" id="ricerca_codice_articolo_fornitore_button">
                                     <property name="label" translatable="yes">C-Forn</property>
+                                    <property name="use_action_appearance">False</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">False</property>
-                                    <property name="use_action_appearance">False</property>
                                     <property name="use_underline">True</property>
                                     <property name="draw_indicator">True</property>
                                     <property name="group">ricerca_codice_button</property>
@@ -251,10 +267,10 @@
                                 <child>
                                   <object class="GtkButton" id="search_row_button">
                                     <property name="label">gtk-find</property>
+                                    <property name="use_action_appearance">False</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">True</property>
-                                    <property name="use_action_appearance">False</property>
                                     <property name="use_stock">True</property>
                                     <signal name="clicked" handler="on_search_row_button_clicked" swapped="no"/>
                                   </object>
@@ -274,10 +290,10 @@
                             </child>
                             <child>
                               <object class="GtkToggleButton" id="promowear_manager_taglia_colore_togglebutton">
+                                <property name="use_action_appearance">False</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
-                                <property name="use_action_appearance">False</property>
                                 <child>
                                   <object class="GtkImage" id="promowear_manager_taglia_colore_image">
                                     <property name="visible">True</property>
@@ -320,7 +336,6 @@
                       <object class="GtkComboBox" id="ricerca_criterio_combobox">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="model">ricerca_criterio_listore</property>
                         <child>
                           <object class="GtkCellRendererText" id="cellrenderertext5"/>
                           <attributes>
@@ -375,10 +390,10 @@
                     <child>
                       <object class="GtkButton" id="search_row_button1">
                         <property name="label">gtk-find</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="use_stock">True</property>
                       </object>
                       <packing>
@@ -434,6 +449,7 @@
                       <object class="GtkCheckButton" id="listino_vendita_dettaglio">
                         <property name="label" translatable="yes">Preseleziona Listino
 per la vendita al Dettaglio</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
@@ -441,7 +457,6 @@ per la vendita al Dettaglio</property>
 cerchi un Listino preimpostato per la vendita al 
 dettaglio e cerchi di usare quello, in caso di fallimento 
 userà il listino classico</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="active">True</property>
                         <property name="draw_indicator">True</property>
                       </object>
@@ -461,13 +476,13 @@ userà il listino classico</property>
                 <child>
                   <object class="GtkButton" id="add_button">
                     <property name="label">gtk-add</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="use_stock">True</property>
-                    <accelerator key="Return" signal="clicked"/>
                     <accelerator key="KP_Enter" signal="clicked"/>
+                    <accelerator key="Return" signal="clicked"/>
                     <signal name="clicked" handler="on_add_button_clicked" swapped="no"/>
                   </object>
                   <packing>
@@ -571,10 +586,10 @@ userà il listino classico</property>
                             <child>
                               <object class="GtkRadioButton" id="manuale_radio">
                                 <property name="label" translatable="yes">manuale</property>
+                                <property name="use_action_appearance">False</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
-                                <property name="use_action_appearance">False</property>
                                 <property name="active">True</property>
                                 <property name="draw_indicator">True</property>
                                 <signal name="toggled" handler="on_manuale_radio_toggled" swapped="no"/>
@@ -607,10 +622,10 @@ userà il listino classico</property>
                             <child>
                               <object class="GtkRadioButton" id="giacenza_radio">
                                 <property name="label" translatable="yes">giacenza</property>
+                                <property name="use_action_appearance">False</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
-                                <property name="use_action_appearance">False</property>
                                 <property name="draw_indicator">True</property>
                                 <property name="group">manuale_radio</property>
                               </object>
@@ -623,10 +638,10 @@ userà il listino classico</property>
                             <child>
                               <object class="GtkRadioButton" id="movimento_radio">
                                 <property name="label" translatable="yes">movimento</property>
+                                <property name="use_action_appearance">False</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
-                                <property name="use_action_appearance">False</property>
                                 <property name="draw_indicator">True</property>
                                 <property name="group">manuale_radio</property>
                               </object>
@@ -642,10 +657,10 @@ userà il listino classico</property>
                             <child>
                               <object class="GtkButton" id="calculate_button">
                                 <property name="label">gtk-refresh</property>
+                                <property name="use_action_appearance">False</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
-                                <property name="use_action_appearance">False</property>
                                 <property name="use_stock">True</property>
                                 <signal name="clicked" handler="on_calculate_button_clicked" swapped="no"/>
                               </object>
@@ -831,10 +846,10 @@ userà il listino classico</property>
                         <child>
                           <object class="GtkRadioButton" id="classic_radio">
                             <property name="label" translatable="yes">Cassico ( multi label A4)</property>
+                            <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">False</property>
-                            <property name="use_action_appearance">False</property>
                             <property name="active">True</property>
                             <property name="draw_indicator">True</property>
                           </object>
@@ -847,10 +862,10 @@ userà il listino classico</property>
                         <child>
                           <object class="GtkRadioButton" id="single_radio">
                             <property name="label" translatable="yes">Single Label ( Dymo )</property>
+                            <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">False</property>
-                            <property name="use_action_appearance">False</property>
                             <property name="active">True</property>
                             <property name="draw_indicator">True</property>
                             <property name="group">classic_radio</property>
@@ -928,22 +943,6 @@ userà il listino classico</property>
       <action-widget response="0">apply_button</action-widget>
       <action-widget response="0">ok_button</action-widget>
     </action-widgets>
-  </object>
-  <object class="GtkListStore" id="label_liststore">
-    <columns>
-      <!-- column-name PyObject1 -->
-      <column type="PyObject"/>
-      <!-- column-name gchararray1 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray2 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray3 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray4 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray5 -->
-      <column type="gchararray"/>
-    </columns>
   </object>
   <object class="GtkTreeStore" id="label_treestore">
     <columns>
