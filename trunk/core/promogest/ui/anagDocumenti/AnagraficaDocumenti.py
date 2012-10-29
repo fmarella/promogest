@@ -54,16 +54,14 @@ class AnagraficaDocumenti(Anagrafica):
 
     def aggiornaforniture(self):
         gl = setconf("General", "gestione_lotti")
-        messageInfo(msg = "SI EFFETTUERA' ADESSO UN AGGIORNAMENTO PER I LOTTI\n ATTENDERE ANCHE QUALCHE MINUTO\n\n GRAZIE")
         if gl:
-            #print " DEVI FARE LA CONVERSIONEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE", dir(self._anagrafica)
-            #gobject.idle_add(self.pbar_anag_complessa.show)
-            self.pbar_anag_complessa.show()
-            from scripts.fixRigaMovForniture import fixRigaMovimentoTable
-            fixRigaMovimentoTable(pbar_wid=self.pbar_anag_complessa)
-            #gobject.idle_add(fixRigaMovimentoTable,self.pbar_anag_complessa)
-        #else:
-            #print "NON LA DEVI FAREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE"
+            from promogest.dao.Setconf import SetConf
+            a = SetConf().select(key="fix_riga_movimento", section="General")
+            if a and a[0].value =="False":
+                messageInfo(msg = "SI EFFETTUERA' ADESSO UN AGGIORNAMENTO PER I LOTTI\n ATTENDERE ANCHE QUALCHE MINUTO\n\n GRAZIE")
+                self.pbar_anag_complessa.show()
+                from scripts.fixRigaMovForniture import fixRigaMovimentoTable
+                fixRigaMovimentoTable(pbar_wid=self.pbar_anag_complessa)
 
 
     def on_gestione_riba_menu_activate(self, widget):
