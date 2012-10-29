@@ -342,10 +342,8 @@ class TestataMovimento(Dao):
                     if self.id_fornitore and riga.id_articolo:
                         fors = Fornitura().select(idArticolo=riga.id_articolo,
                                                     idFornitore=self.id_fornitore,
-                                                    #daDataPrezzo=None,
                                                     dataFornitura = self.data_movimento,
                                                     orderBy = 'data_fornitura DESC',
-                                                    offset = None,
                                                     batchSize = None)
                         if fors:
                             daoFornitura = fors[0]

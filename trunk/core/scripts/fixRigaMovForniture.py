@@ -31,7 +31,7 @@ rmovfornirigamoovend per gestire meglio le quantità
 """
 from promogest import preEnv
 preEnv.tipodbforce = "postgresql"
-preEnv.aziendaforce = "urbani"
+preEnv.aziendaforce = "veterfarma"
 from promogest.Environment import params  , session , azienda
 from promogest.dao.RigaMovimento import RigaMovimento
 from promogest.dao.RigaMovimentoFornitura import RigaMovimentoFornitura
@@ -49,8 +49,8 @@ def fixRigaMovimentoTable(pbar_wid=None):
         #print "RMFALL", rmfall
         num = len(rmfall)
         for riga in rmfall:
-            if pbar:
-                pbar(pbar_wid,parziale=rmfall.index(riga), totale=num, text="MIGRAZIONE TABELLA LOTTI ACQUISTO", noeta=False)
+            #if pbar:
+                #pbar(pbar_wid,parziale=rmfall.index(riga), totale=num, text="MIGRAZIONE TABELLA LOTTI ACQUISTO", noeta=False)
             #print "riga", riga
             print "RESIDUI DA GESTIRE ACQ", num - rmfall.index(riga)
             rmf = RigaMovimentoFornitura().select(idArticolo=riga[0], idRigaMovimentoAcquisto=riga[2], idFornitura=riga[1], batchSize=None)
@@ -72,26 +72,29 @@ def fixRigaMovimentoTable(pbar_wid=None):
                         #session.add(r)
         session.commit()
         print " FINITO ACQ"
-        rmfall2 = session.query(RigaMovimentoFornitura.id_articolo, RigaMovimentoFornitura.id_fornitura, RigaMovimentoFornitura.id_riga_movimento_vendita).distinct().all()
-        num2 = len(rmfall2)
+        rmfall2 = session.query(RigaMovimentoFornitura.id_riga_movimento_vendita).distinct().all()
+        #print rmfall2
+        #num2 = len(rmfall2)
         for riga2 in rmfall2:
-            if pbar_wid:
-                pbar(pbar_wid,parziale=rmfall2.index(riga2), totale=num2, text="MIGRAZIONE TABELLA LOTTI VENDITA", noeta=False)
-            print "RESIDUI DA GESTIRE VEN", num2 - rmfall2.index(riga2)
-            rmf2 = RigaMovimentoFornitura().select(idArticolo=riga2[0], idRigaMovimentoVendita=riga2[2], idFornitura=riga2[1], batchSize=None)
-            for r in rmf2:
-                if rmf2.index(r) != 0:
-                    session.delete(r)
-        session.commit()
-        if pbar_wid:
-            pbar(pbar_wid,stop=True)
-        c = SetConf().select(key="fix_riga_movimento", section="General")
-        c[0].value = str(True)
-        session.add(c[0])
-        session.commit()
-        if pbar_wid:
-            pbar_wid.set_property("visible",False)
-        print "FATTO IL FIX"
+            ##if pbar_wid:
+                ##pbar(pbar_wid,parziale=rmfall2.index(riga2), totale=num2, text="MIGRAZIONE TABELLA LOTTI VENDITA", noeta=False)
+            #print "RESIDUI DA GESTIRE VEN", num2 - rmfall2.index(riga2)
+            if riga2[0] is not None:
+                rmf2 = RigaMovimentoFornitura().select(idRigaMovimentoVendita=riga2[0], batchSize=None)
+                #print "RMFFFFFFFFFFFFFFFFFFF", rmf2
+                for ff in rmf2[1:]:
+                    if ff.id_riga_movimento_acquisto is None:
+                        session.delete(ff)
+                session.commit()
+        #if pbar_wid:
+            #pbar(pbar_wid,stop=True)
+        #c = SetConf().select(key="fix_riga_movimento", section="General")
+        #c[0].value = str(True)
+        #session.add(c[0])
+        #session.commit()
+        #if pbar_wid:
+            #pbar_wid.set_property("visible",False)
+        #print "FATTO IL FIX"
         #if Environment.azienda =="urbani"
     else:
         print "NIENTE DA FIXARE"

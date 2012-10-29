@@ -65,31 +65,37 @@ class DettaglioGiacenzaWindow(GladeWidget):
         sel = self.dettaglio_giacenza_treeview.get_selection()
         (model, iterator) = sel.get_selected()
         riga = model[iterator]
-        self.mainWindow._righe[0]["rigaMovimentoFornituraList"] = [riga[6].id_fornitura]
+        self.mainWindow._righe[0]["rigaMovimentoFornituraList"] = [riga[6]]
         self.getTopLevel().destroy()
 
 
     def __refresh(self):
         # Aggiornamento TreeView
         self.dettaglio_giacenza_listore.clear()
-        rmf = RigaMovimentoFornitura().select(idArticolo=self.idArticolo, idRigaMovimentoAcquistoBoolFalse=True, batchSize=None)
+        rmf = RigaMovimentoFornitura().select(idArticolo=self.idArticolo, idRigaMovimentoAcquistoBool=True, batchSize=None)
         a = leggiArticolo(self.idArticolo)
-        for i in rmf:
-            rmfv = RigaMovimentoFornitura().select(idArticolo=i.id_articolo, idFornitura=i.id_fornitura, idRigaMovimentoVenditaBool=True, batchSize=None)
+        idForni = [ x.id_fornitura for x in rmf if x.id_fornitura]
+        idForni = set(idForni)
+        print len (rmf)
+        for i in idForni:
+            rmfv = RigaMovimentoFornitura().select(idArticolo=self.idArticolo, idFornitura=i, batchSize=None)
             quantita_evasa = 0
+            quantita_totale = 0
+            quantita_residua = 0
             for r in rmfv:
-                print r.__dict__  , r.rigamovven.quantita, quantita_evasa
-                #if self.idRiga or self.idRiga != r.id_riga_movimento_vendita:
-                quantita_evasa += r.rigamovven.quantita
-                print quantita_evasa
-            quantita_totale = i.rigamovacq.quantita
+                #print r.__dict__  , r.rigamovven.quantita, quantita_evasa
+                if r.id_riga_movimento_vendita:
+                    quantita_evasa += r.rigamovven.quantita
+                if r.id_riga_movimento_acquisto:
+                    quantita_totale = r.rigamovacq.quantita
             quantita_residua = quantita_totale - quantita_evasa
+            ff = Fornitura().getRecord(id=i)
             self.dettaglio_giacenza_listore.append((
                         str(mN(quantita_totale,1)) +" - " + str(mN(quantita_evasa,1)) + " - " + str(mN(quantita_residua,1)),
-                        i.forni.numero_lotto,
-                        dateToString(i.forni.data_scadenza),
-                        dateToString(i.forni.data_fornitura),
-                        dateToString(i.forni.data_produzione),
+                        ff.numero_lotto,
+                        dateToString(ff.data_fornitura),
+                        dateToString(ff.data_scadenza),
+                        dateToString(ff.data_produzione),
                         "",i))
         testo = a["codice"]+"-"+a["denominazione"] +"\n\n STAI VENDENDO " + str(int(self.quantita)) +" ARTICOLI \n CE NE SONO " + str(int(len(self.dettaglio_giacenza_listore)))
         self.articolo_info_label.set_text(testo)
