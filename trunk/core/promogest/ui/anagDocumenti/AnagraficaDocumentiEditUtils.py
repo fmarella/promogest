@@ -360,15 +360,15 @@ def calcolaTotalePart(anaedit, dao=None):
         totaleScontato = totaleImponibileScontato + totaleImpostaScontata
     totaleInPagamenti = totaleScontato + Decimal(str(anaedit.pagamenti_page.calcola_spese()))
 
-    anaedit.totale_generale_label.set_text(str(mN(totaleImponibile + totaleImposta + totaleEsclusoBaseImponibile, 2)))
-    anaedit.totale_generale_riepiloghi_label.set_text(str(mN(totaleImponibile + totaleImposta + totaleEsclusoBaseImponibile, 2)))
+    anaedit.totale_generale_label.set_text(str(mN(totaleImponibile,2) + mN(totaleImposta,2) + mN(totaleEsclusoBaseImponibile, 2)))
+    anaedit.totale_generale_riepiloghi_label.set_text(str(mN(totaleImponibile,2) + mN(totaleImposta,2) + mN(totaleEsclusoBaseImponibile, 2)))
     anaedit.totale_imponibile_label.set_text(str(mN(totaleImponibileScontato, 2)))
     anaedit.totale_imponibile_riepiloghi_label.set_text(str(mN(totaleImponibile, 2)))
     anaedit.totale_imposta_label.set_text(str(mN(totaleImpostaScontata, 2)))
     anaedit.totale_imposta_riepiloghi_label.set_text(str(mN(totaleImposta, 2)))
     anaedit.totale_imponibile_scontato_riepiloghi_label.set_text(str(mN(totaleImponibileScontato, 2)))
     anaedit.totale_imposta_scontata_riepiloghi_label.set_text(str(mN(totaleImpostaScontata, 2)))
-    anaedit.totale_scontato_riepiloghi_label.set_text(str(mN(totaleImponibileScontato + totaleImpostaScontata, 2)))
+    anaedit.totale_scontato_riepiloghi_label.set_text(str(mN(totaleImponibileScontato,2) + mN(totaleImpostaScontata, 2)))
     anaedit.pagamenti_page.totale_in_pagamenti_label.set_markup('<b><span foreground="black" size="24000">'+str(mN(totaleInPagamenti, 2))+'</span></b>')
     anaedit.totale_non_base_imponibile_label.set_text(str(mN(totaleEsclusoBaseImponibile, 2)))
 

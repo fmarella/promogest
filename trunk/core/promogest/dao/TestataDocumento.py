@@ -427,13 +427,13 @@ class TestataDocumento(Dao):
                 totaleImpostaScontata += Decimal(castellettoIva[k]['imposta'])
 
             totaleScontato = mN(totaleImponibileScontato + totaleImpostaScontata, 2)
-        self._totaleNonScontato = mN(totaleImponibile + totaleImposta + totaleEsclusoBaseImponibile + spese, 2)
-        self._totaleScontato = mN(totaleImponibileScontato + totaleImpostaScontata + totaleEsclusoBaseImponibile + spese, 2)
-        self._totaleImponibile = totaleImponibile + impon_spese
+        self._totaleNonScontato = mN(totaleImponibile,2) + mN(totaleImposta,2) + mN(totaleEsclusoBaseImponibile,2) + mN(spese, 2)
+        self._totaleScontato = mN(totaleImponibileScontato,2) + mN(totaleImpostaScontata,2) + mN(totaleEsclusoBaseImponibile,2) + mN(spese, 2)
+        self._totaleImponibile = mN(totaleImponibile,2) + mN(impon_spese,2)
         self._totaleNonBaseImponibile = totaleEsclusoBaseImponibile
-        self._totaleImposta = totaleImposta  + imposta_spese
-        self._totaleImponibileScontato = totaleImponibileScontato + impon_spese
-        self._totaleRicaricatoLordo = self._totaleImponibileScontato - totaleRicaricatoLordo
+        self._totaleImposta = mN(totaleImposta,2)  + mN(imposta_spese,2)
+        self._totaleImponibileScontato = mN(totaleImponibileScontato,2) + mN(impon_spese,2)
+        self._totaleRicaricatoLordo = self._totaleImponibileScontato - mN(totaleRicaricatoLordo,2)
         try:
             if self.data_documento < datetime.datetime(2011,9,16):
                 self._totaleRicaricatoImponibile = Decimal(self._totaleRicaricatoLordo)/(1+Decimal(20)/100)
@@ -445,16 +445,17 @@ class TestataDocumento(Dao):
             else:
                 self._totaleRicaricatoImponibile = Decimal(self._totaleRicaricatoLordo)/(1+Decimal(21)/100)
 
-        self._totaleRicaricatoIva = self._totaleRicaricatoLordo - self._totaleRicaricatoImponibile
+        self._totaleRicaricatoIva = mN(self._totaleRicaricatoLordo,2) - mN(self._totaleRicaricatoImponibile,2)
         self._totaleOggetti = self._totaleScontato - self._totaleRicaricatoLordo
         #print " self._totaleOggetti", self._totaleOggetti
-        self._totaleImpostaScontata = totaleImpostaScontata + imposta_spese
+        self._totaleImpostaScontata = mN(totaleImpostaScontata,2) + mN(imposta_spese,2)
         self._castellettoIva = []
         for k in castellettoIva.keys():
             #if k !=0:
             dictCastellettoIva = castellettoIva[k]
             dictCastellettoIva['aliquota'] = castellettoIva[k]["percentuale"]
             self._castellettoIva.append(dictCastellettoIva)
+
         return None
 
     totali = property(_getTotaliDocumento, )
