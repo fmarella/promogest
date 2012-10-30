@@ -167,7 +167,7 @@ Verificare i permessi della cartella"""
                     if response == GTK_RESPONSE_YES:
                         can_save = 1
                         #overwrite the file if user click  yes
-                        break
+                        #break
                     else:
                         response =  fileDialog.run()
                         if response == GTK_RESPONSE_CANCEL or response == GTK_RESPONSE_DELETE_EVENT:

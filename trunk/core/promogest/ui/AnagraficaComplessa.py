@@ -949,7 +949,7 @@ html contatti <b>assistenza@promotux.it</b> per informazioni.""")
                     if YesNoDialog(msg=msg, transient=self.getTopLevel()):
                         can_save = 1
                         #overwrite the file if user click  yes
-                        break
+                        #break
                     else:
                         response =  fileDialog.run()
                         if response == GTK_RESPONSE_CANCEL or response == GTK_RESPONSE_DELETE_EVENT:
