@@ -477,6 +477,18 @@ def leggiFornitura(idArticolo, idFornitore=None, data=None, noPreferenziale=Fals
                                 dataFornitura=data,
                                 batchSize = None
                                 )
+        if not fors:
+            fors = Fornitura().select(
+                        idArticolo=idArticolo,
+                        idFornitore=idFornitore,
+                        batchSize = None
+                        )
+        if not fors:
+            fors = Fornitura().select(
+                        idArticolo=idArticolo,
+                        batchSize = None
+                        )
+
         fornitura = None
         if len(fors) > 0:
             fornitura = fors[-1]
@@ -494,11 +506,11 @@ def leggiFornitura(idArticolo, idFornitore=None, data=None, noPreferenziale=Fals
             _tempoArrivoFornitura = fornitura.tempo_arrivo_merce or None
 
             idFornitura = fornitura.id
-            if idFornitura is not None:
-                scos = ScontoFornitura().select(join= ScontoFornitura.fornitura,
-                                                            idFornitura=idFornitura,
-                                                            batchSize=None)
-
+            if idFornitura:
+                #scos = ScontoFornitura().select(join= ScontoFornitura.fornitura,
+                                                            #idFornitura=idFornitura,
+                                                            #batchSize=None)
+                scos = fornitura.sconto_fornitura
                 for s in scos:
                     _sconti.append({"valore": s.valore, "tipo": s.tipo_sconto})
 
