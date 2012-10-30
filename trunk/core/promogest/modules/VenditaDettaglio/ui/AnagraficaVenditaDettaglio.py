@@ -66,6 +66,11 @@ if hasattr(Environment.conf, "VenditaDettaglio"):
         Environment.conf.VenditaDettaglio.disabilita_stampa == 'no':
         from promogest.modules.VenditaDettaglio.lib.ditron import Ditron
         DRIVER = "D"
+    elif hasattr(Environment.conf.VenditaDettaglio,"backend") and\
+        Environment.conf.VenditaDettaglio.backend.upper() == "CUSTOM" and\
+        Environment.conf.VenditaDettaglio.disabilita_stampa == 'no':
+        from promogest.modules.VenditaDettaglio.lib.custom import Custom
+        DRIVER = "C"
     elif Environment.conf.VenditaDettaglio.disabilita_stampa == 'yes':
         DRIVER = None
     else:
@@ -74,6 +79,9 @@ if hasattr(Environment.conf, "VenditaDettaglio"):
         DRIVER = "D"
 elif setconf("VenditaDettaglio","disabilita_stampa"):
     DRIVER = None
+
+
+print "DRIVER", DRIVER
 
 class AnagraficaVenditaDettaglio(GladeWidget):
     """ Frame per la gestione delle vendite a dettaglio """
@@ -833,9 +841,9 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             a.persist()
         # Creo il file e lo stampo
         if DRIVER and not self.no_print_toggled.get_active():
-            print "SIAMO QUI PRONTI A MANDARE LO SCONTRINO IN CASSA"
+            #print "SIAMO QUI PRONTI A MANDARE LO SCONTRINO IN CASSA"
             filescontrino = self.createFileToPos(dao)
-            print "TORNATI", filescontrino
+            #print "TORNATI", filescontrino
         if setconf("VenditaDettaglio", "create_pdf_check") and not self.no_print_toggled.get_active() :
             from  xhtml2pdf import pisa
             if dao:
@@ -1057,8 +1065,9 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             filescontrino = Ditron().create_export_file(daoScontrino=dao)
             Ditron().sendToPrint(filescontrino)
             return True
-        else:
-            print " WHAT ELSE?"
+        elif DRIVER == "C":
+            print "DRIVER CUSTOM"
+            filescontrino = Custom().create_export_file(daoScontrino=dao)
 
     def on_chiusura_fiscale_activate(self, widget):
 #        if DRIVER=="D":

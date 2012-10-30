@@ -28,28 +28,41 @@ if path not in sys.path:
 
 from promogest import preEnv
 
-preEnv.tipodbforce = True
-preEnv.aziendaforce = "ferchim"
-#preEnv.echo = True
+preEnv.tipodbforce = "postgresql"
+preEnv.aziendaforce = "veterfarma"
 
 from promogest import Environment
-from promogest.dao.CategoriaCliente import CategoriaCliente
-from promogest.dao.Listino import Listino
-from promogest.dao.CategoriaCliente import CategoriaCliente
-from promogest.dao.ListinoArticolo import ListinoArticolo
+import datetime
+from promogest.lib.utils import *
+import serial
 
-listini = Listino().select(batchSize=None)
-listino5 = Listino().select(idListino=5)
 
-print listino5[0].__dict__
+from promogest.modules.VenditaDettaglio.dao.TestataScontrino import TestataScontrino
 
-arti = ListinoArticolo().select(idListino=5, batchSize=None)
-#print arti
-for a in arti:
-    la = ListinoArticolo().select(idArticolo=a.id_articolo, batchSize=None)
-    for l in la:
-        l.ultimo_costo = a.prezzo_ingrosso
-        #print l, l.__dict__
-        Environment.params["session"].add(l)
-    Environment.params["session"].commit()
-print "FATTO"
+
+scons = TestataScontrino().select(batchSize=None, orderBy=desc("data_inserimento"))[:1]
+if scons:
+    daoScontrino = scons[0]
+
+print daoScontrino.righe
+from promogest.modules.VenditaDettaglio.lib.custom import Custom
+
+a = Custom()
+a.create_export_file(daoScontrino)
+
+
+#def serial_manager():
+    #ser = serial.Serial()
+    #ser.baud = 9600
+    #ser.port = '/dev/ttyUSB0'
+    #ser.xonxoff = True
+    #ser.open()
+    #print ser
+    #with open("scontrino_custom.txt","r") as f:
+        #scontr = f.read()
+    ##ser.write("1000H1R=15.25*2M100H4M1T")
+    ##ser.write(scontr)
+    #f.close()
+    #ser.close()
+
+#serial_manager()
