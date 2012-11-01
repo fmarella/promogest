@@ -3254,7 +3254,7 @@ def posso(mod=None):
         return False
     if mod == "GC" or mod =="GestioneCommesse":
         if "GestioneCommesse" in modulis :return True
-        if "BASIC" in modulis: return True
+        #if "BASIC" in modulis: return True
         if "STANDARD" in modulis: return True
         if "FULL" in modulis: return True
         return False

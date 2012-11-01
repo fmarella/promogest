@@ -317,22 +317,9 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkLabel" id="info_dao_label">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="xalign">0.0099999997764825821</property>
-                        <property name="label" translatable="yes">-</property>
-                        <property name="selectable">True</property>
-                      </object>
-                      <packing>
-                        <property name="expand">True</property>
-                        <property name="fill">True</property>
-                        <property name="position">2</property>
-                      </packing>
-                    </child>
-                    <child>
                       <object class="GtkButton" id="trova_button">
                         <property name="label">gtk-find</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
@@ -340,19 +327,22 @@
 nella nostra commessa, da usare anche dopo il tasto nuovo 
 per cercare l'oggetto appena inserito 
 e metterlo nella commessa</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="use_stock">True</property>
                         <signal name="clicked" handler="on_trova_button_clicked" swapped="no"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
                         <property name="fill">False</property>
-                        <property name="position">3</property>
+                        <property name="position">2</property>
                       </packing>
+                    </child>
+                    <child>
+                      <placeholder/>
                     </child>
                     <child>
                       <object class="GtkButton" id="new_dao_button">
                         <property name="label">gtk-new</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
@@ -360,7 +350,6 @@ e metterlo nella commessa</property>
 un preventivo, un DDT o una fattura 
 dopo averlo creato per inserirlo si dovrà comunque 
 usare il pulsante di ricerca posto qui di fianco</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="use_stock">True</property>
                         <signal name="clicked" handler="on_new_dao_button_clicked" swapped="no"/>
                       </object>
@@ -373,12 +362,12 @@ usare il pulsante di ricerca posto qui di fianco</property>
                     <child>
                       <object class="GtkButton" id="open_button">
                         <property name="label">gtk-open</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
                         <property name="tooltip_text" translatable="yes">Permette di visualizzare ed eventualmente 
 modificare l'oggetto inserito</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="use_stock">True</property>
                         <signal name="clicked" handler="on_open_button_clicked" swapped="no"/>
                       </object>
@@ -391,11 +380,11 @@ modificare l'oggetto inserito</property>
                     <child>
                       <object class="GtkButton" id="stampa_dao_button">
                         <property name="label">gtk-print</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
                         <property name="tooltip_text" translatable="yes">Stampiamo l'oggetto inserito</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="use_stock">True</property>
                         <signal name="clicked" handler="on_stampa_dao_button_clicked" swapped="no"/>
                       </object>
@@ -410,6 +399,20 @@ modificare l'oggetto inserito</property>
                     <property name="expand">False</property>
                     <property name="fill">True</property>
                     <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="info_dao_label">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="xalign">0.0099999997764825821</property>
+                    <property name="label" translatable="yes">-</property>
+                    <property name="selectable">True</property>
+                  </object>
+                  <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">False</property>
+                    <property name="position">1</property>
                   </packing>
                 </child>
                 <child>
@@ -473,11 +476,12 @@ modificare l'oggetto inserito</property>
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">False</property>
-                    <property name="position">1</property>
+                    <property name="position">2</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkFrame" id="note__riga_frame">
+                    <property name="height_request">130</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="label_xalign">0</property>
@@ -512,9 +516,9 @@ modificare l'oggetto inserito</property>
                     </child>
                   </object>
                   <packing>
-                    <property name="expand">True</property>
-                    <property name="fill">True</property>
-                    <property name="position">2</property>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">3</property>
                   </packing>
                 </child>
               </object>
@@ -533,8 +537,8 @@ modificare l'oggetto inserito</property>
         </child>
       </object>
       <packing>
-        <property name="expand">True</property>
-        <property name="fill">True</property>
+        <property name="expand">False</property>
+        <property name="fill">False</property>
         <property name="position">1</property>
       </packing>
     </child>
@@ -546,10 +550,10 @@ modificare l'oggetto inserito</property>
         <child>
           <object class="GtkButton" id="add_row_button">
             <property name="label">gtk-add</property>
+            <property name="use_action_appearance">False</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
-            <property name="use_action_appearance">False</property>
             <property name="use_stock">True</property>
             <signal name="clicked" handler="on_add_row_button_clicked" swapped="no"/>
           </object>
@@ -562,10 +566,10 @@ modificare l'oggetto inserito</property>
         <child>
           <object class="GtkButton" id="delete_row_button">
             <property name="label">gtk-remove</property>
+            <property name="use_action_appearance">False</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
-            <property name="use_action_appearance">False</property>
             <property name="use_stock">True</property>
             <signal name="clicked" handler="on_delete_row_button_clicked" swapped="no"/>
           </object>
@@ -573,22 +577,6 @@ modificare l'oggetto inserito</property>
             <property name="expand">True</property>
             <property name="fill">True</property>
             <property name="position">1</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkButton" id="annulla_row_button">
-            <property name="label">gtk-undo</property>
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <property name="use_action_appearance">False</property>
-            <property name="use_stock">True</property>
-            <signal name="clicked" handler="on_annulla_row_button_clicked" swapped="no"/>
-          </object>
-          <packing>
-            <property name="expand">True</property>
-            <property name="fill">True</property>
-            <property name="position">2</property>
           </packing>
         </child>
       </object>
@@ -713,7 +701,7 @@ modificare l'oggetto inserito</property>
       <packing>
         <property name="left_attach">1</property>
         <property name="right_attach">2</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
       </packing>
     </child>
     <child>
@@ -724,8 +712,8 @@ modificare l'oggetto inserito</property>
         <property name="label" translatable="yes">Numero</property>
       </object>
       <packing>
-        <property name="x_options"></property>
-        <property name="y_options"></property>
+        <property name="x_options"/>
+        <property name="y_options"/>
         <property name="x_padding">10</property>
       </packing>
     </child>
@@ -738,8 +726,8 @@ modificare l'oggetto inserito</property>
       <packing>
         <property name="top_attach">1</property>
         <property name="bottom_attach">2</property>
-        <property name="x_options"></property>
-        <property name="y_options"></property>
+        <property name="x_options"/>
+        <property name="y_options"/>
       </packing>
     </child>
     <child>
@@ -751,8 +739,8 @@ modificare l'oggetto inserito</property>
       <packing>
         <property name="top_attach">2</property>
         <property name="bottom_attach">3</property>
-        <property name="x_options"></property>
-        <property name="y_options"></property>
+        <property name="x_options"/>
+        <property name="y_options"/>
       </packing>
     </child>
     <child>
@@ -764,8 +752,8 @@ modificare l'oggetto inserito</property>
       <packing>
         <property name="top_attach">3</property>
         <property name="bottom_attach">4</property>
-        <property name="x_options"></property>
-        <property name="y_options"></property>
+        <property name="x_options"/>
+        <property name="y_options"/>
       </packing>
     </child>
     <child>
@@ -777,8 +765,8 @@ modificare l'oggetto inserito</property>
       <packing>
         <property name="top_attach">4</property>
         <property name="bottom_attach">5</property>
-        <property name="x_options"></property>
-        <property name="y_options"></property>
+        <property name="x_options"/>
+        <property name="y_options"/>
       </packing>
     </child>
     <child>
@@ -790,8 +778,8 @@ modificare l'oggetto inserito</property>
       <packing>
         <property name="top_attach">5</property>
         <property name="bottom_attach">6</property>
-        <property name="x_options"></property>
-        <property name="y_options"></property>
+        <property name="x_options"/>
+        <property name="y_options"/>
       </packing>
     </child>
     <child>
@@ -804,7 +792,7 @@ modificare l'oggetto inserito</property>
         <property name="right_attach">2</property>
         <property name="top_attach">5</property>
         <property name="bottom_attach">6</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
       </packing>
     </child>
     <child>
@@ -817,7 +805,7 @@ modificare l'oggetto inserito</property>
         <property name="right_attach">2</property>
         <property name="top_attach">1</property>
         <property name="bottom_attach">2</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
       </packing>
     </child>
     <child>
@@ -830,7 +818,7 @@ modificare l'oggetto inserito</property>
         <property name="right_attach">2</property>
         <property name="top_attach">2</property>
         <property name="bottom_attach">3</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
       </packing>
     </child>
     <child>
@@ -843,7 +831,7 @@ modificare l'oggetto inserito</property>
         <property name="right_attach">2</property>
         <property name="top_attach">3</property>
         <property name="bottom_attach">4</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
       </packing>
     </child>
     <child>
@@ -856,29 +844,9 @@ modificare l'oggetto inserito</property>
         <property name="right_attach">2</property>
         <property name="top_attach">4</property>
         <property name="bottom_attach">5</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
       </packing>
     </child>
-  </object>
-  <object class="GtkListStore" id="commesse_filter_listore">
-    <columns>
-      <!-- column-name PyObject1 -->
-      <column type="PyObject"/>
-      <!-- column-name gchararray1 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray2 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray3 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray4 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray5 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray6 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray7 -->
-      <column type="gchararray"/>
-    </columns>
   </object>
   <object class="GtkTreeView" id="anagrafica_filter_treeview">
     <property name="visible">True</property>
@@ -963,6 +931,26 @@ modificare l'oggetto inserito</property>
         </child>
       </object>
     </child>
+  </object>
+  <object class="GtkListStore" id="commesse_filter_listore">
+    <columns>
+      <!-- column-name PyObject1 -->
+      <column type="PyObject"/>
+      <!-- column-name gchararray1 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray2 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray3 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray4 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray5 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray6 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray7 -->
+      <column type="gchararray"/>
+    </columns>
   </object>
   <object class="GtkTextBuffer" id="note_commessa_buffer"/>
   <object class="GtkTextBuffer" id="note_riga_buffer"/>

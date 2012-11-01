@@ -87,7 +87,7 @@ class AnagraficaCommesseEdit(AnagraficaEdit):
             info = "<b>%s</b>  - <b>del</b> %s <b>N°</b> %s - <b>Da/A</b> %s  - <b>TOT: €</b> %s" %(str(dao.operazione),
                                                                 dateToString(dao.data_documento),
                                                                 str(dao.numero),
-                                                                dao.intestatario,
+                                                                dao.intestatario.replace("&", "&amp;"),
                                                                 str(mN(dao._totaleScontato,2)))
         elif dao.__class__.__name__ == "Promemoria":
             info = "Promemoria <b>del</b> %s  <b>Descr:</b> %s" %(str(dateToString(dao.data_inserimento)),
@@ -119,7 +119,7 @@ class AnagraficaCommesseEdit(AnagraficaEdit):
 
     def on_new_dao_button_clicked(self, button):
         if self.tipo_dao == "DOCUMENTO".lower():
-            from promogest.ui.AnagraficaDocumenti import AnagraficaDocumenti
+            from promogest.ui.anagDocumenti.AnagraficaDocumenti import AnagraficaDocumenti
             anag = AnagraficaDocumenti(self.aziendaStr)
             showAnagrafica(self.getTopLevel(), anag)
             anag.on_record_new_activate()
