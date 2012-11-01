@@ -410,7 +410,7 @@ class AnagraficaPromemoriaEdit(AnagraficaEdit):
             anag.on_ricerca_window_close(self)
 
         if combobox.get_child().get_text() == stringClienti:
-            from RicercaComplessaClienti import RicercaComplessaClienti
+            from promogest.ui.RicercaComplessaClienti import RicercaComplessaClienti
             anag = RicercaComplessaClienti()
             anag.setTreeViewSelectionType(GTK_SELECTIONMODE_SINGLE)
             anagWindow = anag.getTopLevel()
@@ -419,7 +419,7 @@ class AnagraficaPromemoriaEdit(AnagraficaEdit):
             anagWindow.set_transient_for(returnWindow)
             anag.show_all()
         elif combobox.get_child().get_text() == stringFornitori:
-            from RicercaComplessaFornitori import RicercaComplessaFornitori
+            from promogest.ui.RicercaComplessaFornitori import RicercaComplessaFornitori
             anag = RicercaComplessaFornitori()
             anag.setTreeViewSelectionType(GTK_SELECTIONMODE_SINGLE)
             anagWindow = anag.getTopLevel()
