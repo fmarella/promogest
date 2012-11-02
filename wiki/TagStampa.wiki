@@ -34,9 +34,9 @@ I TAG SPECIALI si suddividono in *FORMATO*, *TEMPORALI* , *POSIZIONAMENTO*, *PAG
      * Sintassi: _{{{[[bcview(codice_a_barre,altezzaXlarghezza)]]}}}_. 
      * Esempio: _{{{[[bcview(codice_a_barre,1X2)]]}}}_  creerà un codice a barre alto un centimetro e largo due
 
-  * *approxit:* Il TAG approxit si comporta come approx ma modifica il formato finale mettendo la virgola per i decimali e il punto come separatore migliaia.  
+  * *approxit:* Il TAG approxit si comporta come approx ma modifica il formato finale mettendo la virgola per i decimali e il punto come separatore migliaia ed il simbolo di valuta ( €) .  
      * Sintassi: _{{{[[approxit(tagnormale,approssimazione)]]}}}_. 
-     * Esempio: _{{{[[approxit(_totaleScontato,2)]]}}}_ renderà il numero finale con un massimo di due decimali, 1.234,80
+     * Esempio: _{{{[[approxit(_totaleScontato,2)]]}}}_ renderà il numero finale con un massimo di due decimali,  € 1.234,80
 
 ==TAG TEMPORALI:==
 
