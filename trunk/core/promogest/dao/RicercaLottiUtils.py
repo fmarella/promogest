@@ -30,26 +30,25 @@ from promogest.dao.TestataDocumento import TestataDocumento
 
 
 def ricerca_lotto(numero_lotto, anno, progress=None):
-    lista_fornitori = []
+    dati = []
     
     forniture = Fornitura().select(numeroLotto=numero_lotto,
         daDataFornitura=datetime.datetime(anno, 1, 1),
         aDataFornitura=datetime.datetime.now(),
         batchSize=None)
 
-    docs = []
-
     for fornitura in forniture:
-
-        righe_mf = RigaMovimentoFornitura().select(idFornitura=fornitura.id)
-
-        righe_mov_acq = [riga_mf.rigamovacq for riga_mf in righe_mf if riga_mf.rigamovacq]
-        righe_mov_ven = [riga_mf.rigamovven for riga_mf in righe_mf if riga_mf.rigamovven]
+        docs = []
 
         if progress:
             from promogest.lib.utils import pbar
             pbar(progress, parziale=forniture.index(fornitura), totale=len(forniture),
                 text="Attendere...", noeta=True)
+
+        righe_mf = RigaMovimentoFornitura().select(idFornitura=fornitura.id)
+
+        righe_mov_acq = [riga_mf.rigamovacq for riga_mf in righe_mf if riga_mf.rigamovacq]
+        righe_mov_ven = [riga_mf.rigamovven for riga_mf in righe_mf if riga_mf.rigamovven]
 
         for riga_mov in righe_mov_acq:
             if not riga_mov:
@@ -67,14 +66,17 @@ def ricerca_lotto(numero_lotto, anno, progress=None):
                 if tm.TD and tm.TD not in docs:
                     docs.append(tm.TD)
 
-    docs.extend(ricerca_in_lottotemp(numero_lotto))
+        #docs.extend(ricerca_in_lottotemp(numero_lotto))
+        
+        dati.append({'data_fornitura': fornitura.data_fornitura,
+                 'fornitore': fornitura.forni,
+                 'docs': docs})
 
     if progress:
+        from promogest.lib.utils import pbar
         pbar(progress, stop=True)
 
-    lista_fornitori.append({'data_fornitura': fornitura.data_fornitura,
-                'fornitore': fornitura.forni, 'docs': docs})
-    return lista_fornitori
+    return dati
 
 def ricerca_in_lottotemp(numero_lotto):
     nltemps = NumeroLottoTemp().select(lottoTemp=numero_lotto)

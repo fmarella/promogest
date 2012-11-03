@@ -31,9 +31,9 @@ table.ed td {
 
 <table class="ed" style="width:100%;">
 	<tr>
-		<th><b>Data fornitura</b></th>
-		<th><b>Fornitore</b></th>
-		<th><b>Documenti</b></th>
+		<th style="width:10%"><b>Data fornitura</b></th>
+		<th style="width:30%"><b>Fornitore</b></th>
+		<th style="width:70%"><b>Documenti</b></th>
 	</tr>
 {% for riga in pageData['data'] %}
 	<tr>
@@ -43,10 +43,10 @@ table.ed td {
 
 		<table class="ed" style="width:100%;">
 			<tr>
-				<th><b>Data Documento</b></th>
-				<th><b>Numero</b></th>
-				<th><b>Operazione</b></th>
-				<th><b>Intestatario</b></th>
+				<th style="width:10%"><b>Data Documento</b></th>
+				<th style="width:10%"><b>Numero</b></th>
+				<th style="width:40%"><b>Operazione</b></th>
+				<th style="width:40%"><b>Intestatario</b></th>
 			</tr>
 		{% for doc in riga['docs'] %}
 			<tr>
