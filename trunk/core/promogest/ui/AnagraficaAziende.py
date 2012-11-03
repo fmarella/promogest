@@ -23,7 +23,7 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 from promogest.ui.GladeWidget import GladeWidget
-import Image
+from PIL import Image
 import os
 from promogest import Environment
 from promogest.dao.Azienda import Azienda
