@@ -236,7 +236,6 @@ class RigaDocumento(Dao):
 
     @timeit
     def persist(self, sm=False):
-
         #salvataggio riga
         params["session"].add(self)
         #params["session"].commit()
@@ -250,7 +249,7 @@ class RigaDocumento(Dao):
         if (hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes") or ("GestioneNoleggio" in modulesList):
             if not self.id:
                 params["session"].commit()
-        #if self.__coeficente_noleggio and self.__prezzo_acquisto_noleggio:
+            #if self.__coeficente_noleggio and self.__prezzo_acquisto_noleggio:
             nr = NoleggioRiga()
             nr.coeficente = self.coeficente_noleggio
             nr.prezzo_acquisto = self.prezzo_acquisto_noleggio

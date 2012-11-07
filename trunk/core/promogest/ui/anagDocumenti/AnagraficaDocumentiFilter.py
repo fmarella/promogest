@@ -116,7 +116,7 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         """
         Aggiornamento TreeView
         """
-
+        self.anagrafica_filter_treeview.set_model(model=None)
         daData = stringToDate(self.da_data_filter_entry.get_text())
         if Environment.tipodb == "sqlite":
             aData = stringToDateBumped(self.a_data_filter_entry.get_text())
@@ -186,12 +186,14 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         self._refreshPageCount()
 
         # Let's save the current search as a closure
+        @timeit
         def filterClosure(offset, batchSize):
             """ questo trucchetto su idArticolo è stato necessario perchè
             l'articolo puà essere sia in righe documento che in righe movimento
             e la query "percorre strade" diverse che unite in una sola query
             con "OR_" anche se con i join diventava molto lenta,
             così invece sembra non perdere in velocità """
+            self.batchSize = batchSize
             if idArticolo:
                 a = TestataDocumento().select(orderBy=self.orderBy,
                                                 offset=offset,
@@ -213,10 +215,16 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         self.filter_listore.clear()
         pa = True
         for t in tdos:
-            totali = t.totali
-            totaleImponibile = mNLC(t._totaleImponibileScontato,2) or 0
-            totaleImposta = mNLC(t._totaleImpostaScontata,2) or 0
-            totale = mNLC(t._totaleScontato,2) or 0
+            if self.batchSize <= 99:
+                totali = t.totali
+                totaleImponibile = mNLC(t._totaleImponibileScontato,2) or 0
+                totaleImposta = mNLC(t._totaleImpostaScontata,2) or 0
+                totale = mNLC(t._totaleScontato,2) or 0
+            else:
+                totali = "#"
+                totaleImponibile = "#"
+                totaleImposta = "#"
+                totale = "#"
             col = None
             if pa and t.documento_saldato == 1:
                 documento_saldato_filter = "Si"
@@ -245,6 +253,7 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
                                     col,
                                     (str(documento_saldato_filter) or '')
                                     ))
+        self.anagrafica_filter_treeview.set_model(model=self.filter_listore)
 
 
     def on_filter_radiobutton_toggled(self, widget=None):

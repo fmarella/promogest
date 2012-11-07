@@ -25,7 +25,7 @@ import hashlib
 import datetime
 import base64
 from base64 import b64decode
-import Image
+from PIL import Image
 
 from promogest.ui.AnagraficaComplessa import Anagrafica
 from promogest.ui.AnagraficaComplessaEdit import AnagraficaEdit
