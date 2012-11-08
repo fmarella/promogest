@@ -298,9 +298,9 @@ class DuplicazioneDocumento(GladeWidget):
                 daoTestataDocumentoScadenza.numero_scadenza = s.numero_scadenza
                 scadenze.append(daoTestataDocumentoScadenza)
             newDao.scadenze = scadenze
-            #newDao.totale_pagato = self.dao.totale_pagato
-            #newDao.totale_sospeso = self.dao.totale_sospeso
-            #newDao.documento_saldato = self.dao.documento_saldato
+            newDao.totale_pagato = 0
+            newDao.totale_sospeso = 0
+            newDao.documento_saldato = False
             #newDao.id_primo_riferimento = self.dao.id_primo_riferimento
             #newDao.id_secondo_riferimento = self.dao.id_secondo_riferimento
         else:
