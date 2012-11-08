@@ -450,14 +450,14 @@ class Main(GladeWidget):
             else:
                 fencemsg()
         elif selection == 10: #gestione commessa
-            if posso("GC"):
-                from promogest.modules.GestioneCommesse.ui.AnagraficaCommesse import AnagraficaCommesse
-                anag = AnagraficaCommesse(aziendaStr=self.aziendaStr)
-                showAnagrafica(self.getTopLevel(), anag, mainClass=self)
-                icon_view.unselect_all()
-                return
-            else:
-                fencemsg()
+            #if posso("GC"):
+            from promogest.modules.GestioneCommesse.ui.AnagraficaCommesse import AnagraficaCommesse
+            anag = AnagraficaCommesse(aziendaStr=self.aziendaStr)
+            showAnagrafica(self.getTopLevel(), anag, mainClass=self)
+            icon_view.unselect_all()
+            return
+            #else:
+                #fencemsg()
         else:
             if Environment.pg3:
                 i = selected[0]
