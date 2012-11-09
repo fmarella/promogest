@@ -255,6 +255,41 @@ class Main(GladeWidget):
         #if timeout >= 300:
         glib.timeout_add_seconds(600, update_timer)
 
+        def pulizia_lottotemp():
+            from promogest.dao.NumeroLottoTemp import NumeroLottoTemp
+            from promogest.dao.RigaMovimentoFornitura import RigaMovimentoFornitura
+            from promogest.dao.Fornitura import Fornitura
+            ltemp = setconf("Documenti", "lotto_temp")
+            if not ltemp:
+                return
+            print "Avvio pulizia lotti temp..."
+            lt = NumeroLottoTemp().select(batchSize=None)
+            n = len(lt)
+            g = 0
+            for l in lt:
+                rmf =  RigaMovimentoFornitura().select(idRigaMovimentoVendita=l.id_riga_movimento_vendita_temp)
+                if not rmf:
+                    #cerchiamo una fornitura precisa
+                    daoForn = Fornitura().select(idArticolo=l.rigamovventemp.id_articolo,
+                                            numeroLotto = l.lotto_temp,
+                                            batchSize = None)
+                    
+                    if daoForn:
+                        a = RigaMovimentoFornitura()
+                        a.id_articolo = l.rigamovventemp.id_articolo
+                        a.id_riga_movimento_vendita = l.id_riga_movimento_vendita_temp
+                        a.id_fornitura = daoForn[0].id
+                        Environment.params["session"].add(a)
+                        Environment.params["session"].delete(l)
+                        g += 1
+                        if g == 2000:
+                            Environment.params["session"].commit()
+                            g = 0
+                else:
+                    Environment.params["session"].delete(l)
+            Environment.params["session"].commit()
+        glib.timeout_add_seconds(600, pulizia_lottotemp)
+
         def pickle_meta():
             from pickle import dump
             if not os.path.exists(os.path.join(Environment.SRC_PATH,
