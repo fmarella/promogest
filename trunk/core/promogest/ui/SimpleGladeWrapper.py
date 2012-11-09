@@ -88,6 +88,8 @@ class SimpleGladeWrapper:
         #else:
         if path and os.path.exists(pp + prefix + path) and not isModule:
             self.glade_path = pp + prefix + path
+        elif path and os.path.exists(pp + path) and not isModule:
+            self.glade_path = pp + path
         elif isModule:
             self.glade_path = './promogest/modules/'+ path
             file_glade = prefix + os.path.split(self.glade_path)[1]

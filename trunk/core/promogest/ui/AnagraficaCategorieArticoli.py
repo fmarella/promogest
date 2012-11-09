@@ -121,7 +121,7 @@ class AnagraficaCategorieArticoliDetail(AnagraficaDetail):
         if dao is None:
             self.dao = CategoriaArticolo()
             self._anagrafica._newRow((self.dao, '', ''))
-        self._refresh()
+        #self._refresh()
         return self.dao
 
     def updateDao(self):

@@ -55,13 +55,9 @@ class AnagraficaCategorieContatti(Anagrafica):
                                                         orderBy=self.orderBy,
                                                         offset=self.offset,
                                                         batchSize=self.batchSize)
-
         self._filterClosure = filterClosure
-
         cats = self.runFilter()
-
         self._treeViewModel.clear()
-
         for c in cats:
             self._treeViewModel.append((c,
                                         (c.denominazione or '')))
@@ -99,12 +95,11 @@ class AnagraficaCategorieContattiDetail(AnagraficaDetail):
                   )
 
     def setDao(self, dao):
+        self.dao = dao
         if dao is None:
             self.dao = CategoriaContatto()
             self._anagrafica._newRow((self.dao, ''))
-            self._refresh()
-        else:
-            self.dao = dao
+            #self._refresh()
         return self.dao
 
     def updateDao(self):
@@ -117,7 +112,7 @@ class AnagraficaCategorieContattiDetail(AnagraficaDetail):
         if not iterator:
             return
         model.set_value(iterator, 0, self.dao)
-        model.set_value(iterator, 1, self.dao.denominazione or "")
+        model.set_value(iterator, 1, self.dao.denominazione)
 
 
 

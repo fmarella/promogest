@@ -26,7 +26,7 @@ from promogest.ui.AnagraficaComplessaEdit import AnagraficaEdit
 from promogest.ui.AnagraficaComplessaReport import AnagraficaReport
 from promogest.ui.AnagraficaComplessaHtml import AnagraficaHtml
 from promogest.ui.AnagraficaComplessaFilter import AnagraficaFilter
-from promogest.lib.utils import obligatoryField, prepareFilterString, mN
+from promogest.lib.utils import obligatoryField, prepareFilterString, mN , findStrFromCombobox
 from promogest.lib.utils import on_id_aliquota_iva_customcombobox_clicked
 from promogest.ui.utilsCombobox import fillComboboxAliquoteIva, findComboboxRowFromStr
 from promogest.ui.utilsCombobox import findComboboxRowFromId, findIdFromCombobox
@@ -97,8 +97,9 @@ class AnagraficaPagamentiFilter(AnagraficaFilter):
             self._treeViewModel.append((p,
                                         (p.denominazione or ''),
                                         (p.tipo or ''),
-                                        (mN(p.spese, 2)),
-                                        (p.aliquota_iva)))
+                                        str(mN(p.spese, 2)),
+                                        str(p.aliquota_iva),
+                                        ))
 
         self._anagrafica.anagrafica_filter_treeview.set_model(self._treeViewModel)
 
@@ -149,12 +150,11 @@ class AnagraficaPagamentiEdit(AnagraficaEdit):
                               self.dao.id_aliquota_iva)
 
     def saveDao(self, tipo=None):
-        if (self.denominazione_entry.get_text() == ''):
+        if self.denominazione_entry.get_text() == '':
             obligatoryField(self.dialogTopLevel,
                             self.denominazione_entry,
                             msg='Inserire la denominazione!')
-
-        if (self.tipo_combobox.get_active_text() == ''):
+        if findStrFromCombobox(self.tipo_combobox, 0) == '':
             obligatoryField(self.dialogTopLevel,
                             self.tipo_combobox,
                             msg='Inserire il tipo di pagamento!')
@@ -162,6 +162,5 @@ class AnagraficaPagamentiEdit(AnagraficaEdit):
         self.dao.id_aliquota_iva = findIdFromCombobox(self.id_aliquota_iva_ccb.combobox)
         self.dao.denominazione = self.denominazione_entry.get_text()
         self.dao.spese = float(self.spese_entry.get_text())
-        self.dao.tipo = self.tipo_combobox.get_active_text()
-
+        self.dao.tipo = findStrFromCombobox(self.tipo_combobox, 0)
         self.dao.persist()

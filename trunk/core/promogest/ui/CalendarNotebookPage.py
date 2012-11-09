@@ -136,7 +136,8 @@ class CalendarNotebookPage(GladeWidget):
             dayName2 = calendar.day_name
             dayName = [x.decode("iso8859-1") for x in dayName2]
         else:
-            dayName = calendar.day_name
+            dayName2 = calendar.day_name
+            dayName = [x.decode("iso8859-1") for x in dayName2]
         monthName = calendar.month_name
 
         cale = calendar.Calendar().monthdatescalendar(workinYearc,workinMonth)

@@ -99,13 +99,12 @@ class AnagraficaImballaggiDetail(AnagraficaDetail):
                         path='_anagrafica_imballaggi_elements.glade')
 
     def setDao(self, dao):
+        self.dao = dao
         if dao is None:
             self.dao = Imballaggio()
             #self.dao = self.imb.record
             self._anagrafica._newRow((self.dao, ''))
-            self._refresh()
-        else:
-            self.dao = dao
+            #self._refresh()
         return self.dao
 
     def updateDao(self):

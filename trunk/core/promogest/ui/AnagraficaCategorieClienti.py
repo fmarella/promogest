@@ -43,7 +43,8 @@ class AnagraficaCategorieClienti(Anagrafica):
         massima della cella di testo
         """
         self.filter.descrizione_column.get_cells()[0].set_data(
-                                                        'max_length', 200)
+                                                        'max_length', 40)
+
         self._treeViewModel = self.filter.filter_listore
         self.refresh()
 
@@ -101,12 +102,11 @@ class AnagraficaCategorieClientiDetail(AnagraficaDetail):
                       path='_anagrafica_categorie_clienti_elements.glade')
 
     def setDao(self, dao):
+        self.dao = dao
         if dao is None:
             self.dao = CategoriaCliente()
             self._anagrafica._newRow((self.dao, ''))
-            self._refresh()
-        else:
-            self.dao = dao
+            #self._refresh()
         return self.dao
 
     def updateDao(self):

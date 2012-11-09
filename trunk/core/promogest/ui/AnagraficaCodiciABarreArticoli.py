@@ -107,13 +107,9 @@ class AnagraficaCodiciABarreArticoli(Anagrafica):
                                                      orderBy=self.orderBy,
                                                      offset=self.offset,
                                                      batchSize=self.batchSize)
-
         self._filterClosure = filterClosure
-
         bars = self.runFilter()
-
         self._treeViewModel.clear()
-
         for b in bars:
             self._treeViewModel.append((b,
                                         (b.codice or ''),
@@ -155,7 +151,7 @@ class AnagraficaCodiciABarreArticoliDetail(AnagraficaDetail):
                 self._anagrafica._newRow((self.dao, codice, False))
             else:
                 self._anagrafica._newRow((self.dao, '', False))
-            self._refresh()
+            #self._refresh()
         return self.dao
 
     def updateDao(self):
