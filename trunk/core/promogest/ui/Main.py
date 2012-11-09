@@ -832,7 +832,7 @@ class Main(GladeWidget):
             fileDialog.destroy()
 
     def on_credits_menu_activate(self, widget):
-        creditsDialog = GladeWidget(root='credits_dialog',path="credit_dialog.glade",  callbacks_proxy=self)
+        creditsDialog = GladeWidget(root='credits_dialog',path="credits_dialog.glade",  callbacks_proxy=self)
         creditsDialog.getTopLevel().set_transient_for(self.getTopLevel())
         info = "%s Build: %s" % (Environment.VERSIONE, Environment.rev_locale)
         creditsDialog.versione_label.set_markup(info)
