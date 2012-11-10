@@ -267,13 +267,14 @@ class Main(GladeWidget):
             n = len(lt)
             g = 0
             for l in lt:
+                print "RESIDUI DA ELABORARE", n-lt.index(l)
                 rmf =  RigaMovimentoFornitura().select(idRigaMovimentoVendita=l.id_riga_movimento_vendita_temp)
                 if not rmf:
                     #cerchiamo una fornitura precisa
                     daoForn = Fornitura().select(idArticolo=l.rigamovventemp.id_articolo,
                                             numeroLotto = l.lotto_temp,
                                             batchSize = None)
-                    
+
                     if daoForn:
                         a = RigaMovimentoFornitura()
                         a.id_articolo = l.rigamovventemp.id_articolo
