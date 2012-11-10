@@ -62,7 +62,7 @@ def set_configuration(company=None, year = None, pg_path=None):
         elif c == "temp":
             Environment.tempDir = pa
         elif c == "images":
-            Environment.tempDir = pa
+            Environment.imagesDir = pa
         elif c == "templates":
             Environment.templatesDir = pa
             slas = glob.glob(os.path.join(c, '*.sla'))
