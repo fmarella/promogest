@@ -256,12 +256,12 @@ class Main(GladeWidget):
         glib.timeout_add_seconds(600, update_timer)
 
         def pulizia_lottotemp():
-            from promogest.dao.NumeroLottoTemp import NumeroLottoTemp
-            from promogest.dao.RigaMovimentoFornitura import RigaMovimentoFornitura
-            from promogest.dao.Fornitura import Fornitura
             ltemp = setconf("Documenti", "lotto_temp")
             if not ltemp:
                 return
+            from promogest.dao.NumeroLottoTemp import NumeroLottoTemp
+            from promogest.dao.RigaMovimentoFornitura import RigaMovimentoFornitura
+            from promogest.dao.Fornitura import Fornitura
             print "Avvio pulizia lotti temp..."
             lt = NumeroLottoTemp().select(batchSize=None)
             n = len(lt)
@@ -282,10 +282,10 @@ class Main(GladeWidget):
                         a.id_fornitura = daoForn[0].id
                         Environment.params["session"].add(a)
                         Environment.params["session"].delete(l)
-                        g += 1
-                        if g == 2000:
-                            Environment.params["session"].commit()
-                            g = 0
+                        #g += 1
+                        #if g == 2000:
+                            #Environment.params["session"].commit()
+                            #g = 0
                 else:
                     Environment.params["session"].delete(l)
             Environment.params["session"].commit()
