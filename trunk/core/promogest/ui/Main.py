@@ -289,7 +289,7 @@ class Main(GladeWidget):
                 else:
                     Environment.params["session"].delete(l)
             Environment.params["session"].commit()
-        pulizia_lottotemp()
+        #pulizia_lottotemp()
 
         def pickle_meta():
             from pickle import dump
