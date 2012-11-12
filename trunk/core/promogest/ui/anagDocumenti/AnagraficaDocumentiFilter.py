@@ -134,6 +134,7 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         """
         Aggiornamento TreeView
         """
+        self._anagrafica.pbar_anag_complessa.show()
         self.anagrafica_filter_treeview.set_model(model=None)
         daData = stringToDate(self.da_data_filter_entry.get_text())
         if Environment.tipodb == "sqlite":
@@ -293,6 +294,7 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
                                     ))
         self.anagrafica_filter_treeview.set_model(model=self.filter_listore)
         pbar(self._anagrafica.pbar_anag_complessa,stop=True)
+        self._anagrafica.pbar_anag_complessa.set_property("visible",False)
 
 
 
