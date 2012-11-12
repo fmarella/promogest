@@ -4,6 +4,7 @@
 
 {% block body %}
     {% if dao %}
+    {% set toota = dao.totali %}
     <table>
         <tr>
             <td colspan="3" style="font-size:18px;" class="report-header"><h3>Numero: <strong>{{dao.numero}} {{dao.parte|nonone}}</strong></h3></td>
@@ -38,6 +39,7 @@
                     <td colspan="8" class="table-header">TOTALI DOCUMENTO</td>
                 </tr>
                 <tr>
+
                     <td class="even-detail">IMPONIBILE LORDO:</td>
                     <td style="width:70px;" class="odd-detail"><strong>{{utils.mNLC(dao._totaleImponibile,2)}}</strong></td>
 
