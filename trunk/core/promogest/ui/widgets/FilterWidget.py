@@ -296,7 +296,7 @@ class FilterWidget(GladeWidget):
         """
         Refresh of results output
         """
-        self._owner._anagrafica.pbar_anag_complessa.show()
+        #self._owner._anagrafica.pbar_anag_complessa.show()
         self._owner.orderBy = self.orderBy
         if hasattr(self._owner,"_anagrafica"):
             if self._owner._anagrafica.batchsize_combo.get_active_iter():
@@ -322,7 +322,7 @@ class FilterWidget(GladeWidget):
         self._owner.offset = self.offset
         self._owner.join = self.join
         self._owner.refresh()
-        self._owner._anagrafica.pbar_anag_complessa.set_property("visible",False)
+        #self._owner._anagrafica.pbar_anag_complessa.set_property("visible",False)
 
     def runFilter(self, offset='__default__', batchSize='__default__',
                   progressCB=None, progressBatchSize=0, filterClosure=None,
