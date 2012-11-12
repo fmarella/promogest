@@ -89,6 +89,8 @@ class TestataDocumento(Dao):
         self._totaleSpese = 0
         self._totaleImponibileSpese = 0
         self._totaleImpostaSpese = 0
+        #if self.id:
+            #self.totali
 
     @reconstructor
     def init_on_load(self):
@@ -101,6 +103,8 @@ class TestataDocumento(Dao):
         self.__scontiTestataDocumento = []
         self.__data_inizio_noleggio = None
         self.__data_fine_noleggio = None
+        #if self.id:
+            #self.totali
 
     def __repr__(self):
         return '<Documento ID={0} operazione="{1}">'.format(self.numero, self.operazione)
@@ -206,41 +210,59 @@ class TestataDocumento(Dao):
     stringaSconti = property(_getStringaScontiTestataDocumento)
 
 
+    #def _getIntestatario(self):
+        #"""
+        #Restituisce la ragione sociale o cognome + nome
+        #se la ragione sociale e' vuota
+        #"""
+        #intestatario = ''
+
+        #if self.id_cliente is not None:
+            #if (hasattr(self, 'ragione_sociale_cliente') and
+                #hasattr(self, 'cognome_cliente') and
+                #hasattr(self, 'nome_cliente')):
+                #intestatario = self.ragione_sociale_cliente
+                #if intestatario == '':
+                    #intestatario = self.cognome_cliente + ' ' + self.nome_cliente
+                #return intestatario
+            #else:
+                #cliente = leggiCliente(self.id_cliente)
+                #intestatario = cliente['ragioneSociale']
+                #if intestatario == '':
+                    #intestatario = cliente['cognome'] + ' ' + cliente['nome']
+                #return intestatario
+        #elif self.id_fornitore is not None:
+            #if (hasattr(self, 'ragione_sociale_fornitore') and
+                #hasattr(self, 'cognome_fornitore') and
+                #hasattr(self, 'nome_fornitore')):
+                #intestatario = self.ragione_sociale_fornitore
+                #if intestatario == '':
+                    #intestatario = self.cognome_fornitore + ' ' + self.nome_fornitore
+                #return intestatario
+            #else:
+                #fornitore = leggiFornitore(self.id_fornitore)
+                #intestatario = fornitore['ragioneSociale']
+                #if intestatario == '':
+                    #intestatario = fornitore['cognome'] + ' ' + fornitore['nome']
+                #return intestatario
+        #else:
+            #return ''
+
     def _getIntestatario(self):
         """
         Restituisce la ragione sociale o cognome + nome
         se la ragione sociale e' vuota
         """
-        intestatario = ''
-
-        if self.id_cliente is not None:
-            if (hasattr(self, 'ragione_sociale_cliente') and
-                hasattr(self, 'cognome_cliente') and
-                hasattr(self, 'nome_cliente')):
-                intestatario = self.ragione_sociale_cliente
-                if intestatario == '':
-                    intestatario = self.cognome_cliente + ' ' + self.nome_cliente
-                return intestatario
+        if self.id_cliente is not None and self.CLI:
+            if self.CLI.ragione_sociale != "":
+                return  self.CLI.ragione_sociale
             else:
-                cliente = leggiCliente(self.id_cliente)
-                intestatario = cliente['ragioneSociale']
-                if intestatario == '':
-                    intestatario = cliente['cognome'] + ' ' + cliente['nome']
-                return intestatario
-        elif self.id_fornitore is not None:
-            if (hasattr(self, 'ragione_sociale_fornitore') and
-                hasattr(self, 'cognome_fornitore') and
-                hasattr(self, 'nome_fornitore')):
-                intestatario = self.ragione_sociale_fornitore
-                if intestatario == '':
-                    intestatario = self.cognome_fornitore + ' ' + self.nome_fornitore
-                return intestatario
+                return self.CLI.cognome + ' ' + self.CLI.nome
+        elif self.id_fornitore is not None and self.FORN:
+            if self.FORN.ragione_sociale != "":
+                return  self.FORN.ragione_sociale
             else:
-                fornitore = leggiFornitore(self.id_fornitore)
-                intestatario = fornitore['ragioneSociale']
-                if intestatario == '':
-                    intestatario = fornitore['cognome'] + ' ' + fornitore['nome']
-                return intestatario
+                return self.FORN.cognome + ' ' + self.FORN.nome
         else:
             return ''
 
@@ -1204,11 +1226,11 @@ std_mapper = mapper(TestataDocumento, t_testata_documento,
         "TM": relation(TestataMovimento,
             primaryjoin=(t_testata_documento.c.id==t_testata_movimento.c.id_testata_documento),
             cascade="all, delete",
-            backref='TD'),
+            backref='TD',),
         "CLI": relation(Cliente,
-            primaryjoin=(t_testata_documento.c.id_cliente==t_cliente.c.id)),
+            primaryjoin=(t_testata_documento.c.id_cliente==t_cliente.c.id),lazy='joined'),
         "FORN": relation(Fornitore,
-            primaryjoin=(t_testata_documento.c.id_fornitore==t_fornitore.c.id)),
+            primaryjoin=(t_testata_documento.c.id_fornitore==t_fornitore.c.id),lazy='joined'),
         "AGE": relation(Agente,
             primaryjoin=(t_testata_documento.c.id_agente==t_agente.c.id)),
         "OP": relation(Operazione,

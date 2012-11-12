@@ -34,21 +34,29 @@ from promogest import Environment
 conf = set_configuration("urbani", "2012")
 Environment.conf = conf
 print conf
+from multiprocessing import Pool
 
 from promogest.dao.TestataDocumento import TestataDocumento
-daos = TestataDocumento().select(batchSize=100)
+daos = TestataDocumento().select(batchSize=1000)
 
 class TestTestataDocumentoTotali(unittest.TestCase):
 
-    #def setUp(self):
+    def setUp(self):
+        self.p = Pool(4)
         #self.daos = TestataDocumento().select(batchSize=1)
 
+    def tota(self, d):
+        d.totali
+
     def test_totali(self):
+        self.p.imap(totali, daos)
+        #results = self.p.map(d.totali,daos) for d in daos
+        self.p.terminate()
         #print 1
         # make sure the shuffled sequence does not lose any elements
         for d in daos:
-            d.totali
-            #print d.id ,  len(d.righe), d._totaleImponibileScontato
+            #d.totali
+            print d.id ,  len(d.righe), d._totaleImponibileScontato
             #self.assertEqual(d.id, 10)
 
         # should raise an exception for an immutable sequence

@@ -296,6 +296,7 @@ class FilterWidget(GladeWidget):
         """
         Refresh of results output
         """
+        self._owner._anagrafica.pbar_anag_complessa.show()
         self._owner.orderBy = self.orderBy
         if hasattr(self._owner,"_anagrafica"):
             if self._owner._anagrafica.batchsize_combo.get_active_iter():
@@ -321,9 +322,11 @@ class FilterWidget(GladeWidget):
         self._owner.offset = self.offset
         self._owner.join = self.join
         self._owner.refresh()
+        self._owner._anagrafica.pbar_anag_complessa.set_property("visible",False)
 
     def runFilter(self, offset='__default__', batchSize='__default__',
-                  progressCB=None, progressBatchSize=0, filterClosure=None):
+                  progressCB=None, progressBatchSize=0, filterClosure=None,
+                  batchSizeForce=False):
         """
         Run the filter with the current search parameters.  Return a
         list of Dao's limited by the given offset and batchSize.
@@ -341,6 +344,8 @@ class FilterWidget(GladeWidget):
             offset = self.offset
         if batchSize == '__default__':
             batchSize = self.batchSize
+
+
 
         objList = filterClosure(offset, batchSize)
 

@@ -40,7 +40,7 @@ class AnagraficaFilter(GladeWidget):
         self._widgetFirstFocus = None
         self._isSensitive = True
         self._treeViewModel = None
-
+        self.funzione_ordinamento = None
         # A closure that returns a list of Dao's that match the
         # current filter parameters.  It is invoked through
         # self.runFilter() (unless the derived classes redefine it)
@@ -109,7 +109,8 @@ class AnagraficaFilter(GladeWidget):
                                                             treeSelection)
 
     def runFilter(self, offset='__default__', batchSize='__default__',
-                                      progressCB=None, progressBatchSize=0):
+                                      progressCB=None, progressBatchSize=0,
+                                      batchSizeForce=False):
         """ Recupera i dati """
         self.bodyWidget.orderBy = self.orderBy
         if batchSize == '__default__' and \
@@ -118,10 +119,16 @@ class AnagraficaFilter(GladeWidget):
             model = self._anagrafica.batchsize_combo.get_model()
             if iterator is not None:
                 batchSize = model.get_value(iterator, 0)
-        return self.bodyWidget.runFilter(offset=offset, batchSize=batchSize,
-                                         progressCB=progressCB,
-                                         progressBatchSize=progressBatchSize,
-                                         filterClosure=self._filterClosure)
+        if batchSizeForce:
+            self.batchSize2 = batchSize
+            batchSize = None
+
+        return self.bodyWidget.runFilter(offset=offset,
+                                        batchSize=batchSize,
+                                        progressCB=progressCB,
+                                        progressBatchSize=progressBatchSize,
+                                        filterClosure=self._filterClosure,
+                                        batchSizeForce= batchSizeForce)
 
     def countFilterResults(self):
         """ Conta i dati """

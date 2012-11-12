@@ -2886,18 +2886,6 @@ def setconf(section, key, value=False):
         confList = SetConf().select(batchSize=None)
         for d in confList:
             Environment.confDict[(d.key,d.section)] = d
-        #Environment.confList = confList
-
-    #confff = None
-    #for d in confList:
-        #if not value:
-            #if d.key==key and d.section==section:
-                #confff = d
-                #break
-        #else:
-            #if d.key==key and d.section==section and d.value == value:
-                #confff = d
-                #break
     if (key,section) not in Environment.confDict:
         if not value:
             confff = SetConf().select(key=key, section=section)

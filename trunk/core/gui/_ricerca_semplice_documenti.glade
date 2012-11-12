@@ -813,6 +813,7 @@
         <property name="resizable">True</property>
         <property name="title" translatable="yes">Cliente / Fornitore</property>
         <property name="expand">True</property>
+        <property name="clickable">True</property>
         <property name="reorderable">True</property>
         <property name="sort_indicator">True</property>
         <child>
@@ -837,7 +838,7 @@
       </object>
     </child>
     <child>
-      <object class="GtkTreeViewColumn" id="treeviewcolumn1">
+      <object class="GtkTreeViewColumn" id="imponibile_column">
         <property name="title" translatable="yes">Imponibile</property>
         <child>
           <object class="GtkCellRendererText" id="cellrenderertext6">
@@ -867,7 +868,7 @@
       </object>
     </child>
     <child>
-      <object class="GtkTreeViewColumn" id="treeviewcolumn3">
+      <object class="GtkTreeViewColumn" id="totale_column">
         <property name="title" translatable="yes">Totale</property>
         <child>
           <object class="GtkCellRendererText" id="cellrenderertext9">
@@ -897,8 +898,9 @@
       </object>
     </child>
     <child>
-      <object class="GtkTreeViewColumn" id="treeviewcolumn5">
+      <object class="GtkTreeViewColumn" id="saldato_column">
         <property name="title" translatable="yes">Saldato</property>
+        <property name="clickable">True</property>
         <child>
           <object class="GtkCellRendererText" id="cellrenderertext11"/>
           <attributes>

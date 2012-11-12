@@ -107,20 +107,23 @@ def to_pdf(daos, output, anag=None):
     i = 1
     if anag:
         anag.pbar_anag_complessa.show()
-    from operator import attrgetter
-    daos = sorted(daos, key=attrgetter('operazione', 'numero'), reverse=True)
+    #from operator import attrgetter
+    #daos = sorted(daos, key=attrgetter('operazione', 'numero'), reverse=True)
+    #daos.sort(key=lambda x: x.intestatario.strip().upper())
     for dao in daos:
+        print "D", dao.intestatario
         if anag:
             pbar(anag.pbar_anag_complessa,parziale=daos.index(dao), totale=len(daos), text="GEN STAMPE MULTIPLE", noeta=False)
         if dao.__class__.__name__ == 'TestataDocumento':
             dao.totali
 
-        with file(os.path.join(PDF_WORKING_DIR, '%s.pdf'% i), 'wb') as f:
+        with file(os.path.join(PDF_WORKING_DIR, '%s.pdf'% str(int(i)+10000)), 'wb') as f:
             f.write(_to_pdf(dao))
         i += 1
 
     merger = PyPDF2.PdfFileMerger()
     filesPdf = glob.glob(os.path.join(PDF_WORKING_DIR, '*.pdf'))
+    filesPdf.sort()
     for infile in filesPdf:
         if anag:
             pbar(anag.pbar_anag_complessa,parziale=filesPdf.index(infile), totale=len(filesPdf), text="UNIONE PDF", noeta=False)

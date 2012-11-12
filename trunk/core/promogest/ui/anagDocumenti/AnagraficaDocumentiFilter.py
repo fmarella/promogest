@@ -46,6 +46,7 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         self.orderBy = 'data_documento'
         self.xptDaoList = None
         self.id_clienti_abbinati = None
+        self.aa = 1
 
     def draw(self):
         """
@@ -74,12 +75,29 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         self._anagrafica.aggiornaforniture()
 
     def _reOrderBy(self, column):
+
         if column.get_name() == "numero_column":
+            self.funzione_ordinamento = None
             return self._changeOrderBy(column,(None,TestataDocumento.numero))
         if column.get_name() == "data_column":
-            return self._changeOrderBy(column,(None,"data_documento"))
+            self.funzione_ordinamento = None
+            return self._changeOrderBy(column,(None,TestataDocumento.data_documento))
         if column.get_name() == "tipo_documento_column":
+            self.funzione_ordinamento = None
             return self._changeOrderBy(column,(None,TestataDocumento.operazione))
+        if column.get_name() == "saldato_column":
+            self.funzione_ordinamento = None
+            return self._changeOrderBy(column,(None,TestataDocumento.documento_saldato))
+        if column.get_name() == "cliente_fornitore_column":
+            #from promogest.dao.Cliente import Cliente
+            #return self._changeOrderBy(column,(None,TestataDocumento.intestatario))
+            self.aa = -1*self.aa
+            self.funzione_ordinamento = "cliforn"
+            self.refresh()
+        if column.get_name() == "imponibile_column":
+            self.aa = -1*self.aa
+            self.funzione_ordinamento = "impo"
+            self.refresh()
 
     def clear(self):
         """
@@ -112,7 +130,7 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         self.id_articolo_filter_customcombobox.set_active(0)
         self.refresh()
 
-    def refresh(self):
+    def refresh(self, funzione=None):
         """
         Aggiornamento TreeView
         """
@@ -210,18 +228,38 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
                                                 offset=offset,
                                                 batchSize=batchSize,
                                                 filterDict = self.filterDict)
-        self._filterClosure = filterClosure
-        tdos = self.runFilter()
+        if self.funzione_ordinamento == "cliforn":
+            self._filterClosure = filterClosure
+            tdoss = self.runFilter(batchSizeForce=True)
+            if self.aa < 0:
+                tdoss.sort(key=lambda x: x.intestatario.strip().upper())
+            else:
+                tdoss.sort(key=lambda x: x.intestatario.strip().upper(),reverse=True)
+            tdos = tdoss[self.offset:self.batchSize2+self.offset]
+        elif self.funzione_ordinamento == "impo":
+            self._filterClosure = filterClosure
+            tdoss = self.runFilter(batchSizeForce=True)
+            if self.aa < 0:
+                tdoss.sort(key=lambda x: x._totaleImponibileScontato)
+            else:
+                tdoss.sort(key=lambda x: x._totaleImponibileScontato,reverse=True)
+            tdos = tdoss[self.offset:self.batchSize2+self.offset]
+        else:
+            self._filterClosure = filterClosure
+            tdos = self.runFilter()
         self.filter_listore.clear()
         pa = True
         for t in tdos:
-            if self.batchSize <= 99:
+            pbar(self._anagrafica.pbar_anag_complessa, parziale=tdos.index(t), totale=len(tdos), text="", noeta=False)
+            if len(tdos) <=99:
+                #if self.batchSize <= 99:
                 totali = t.totali
+            try:
                 totaleImponibile = mNLC(t._totaleImponibileScontato,2) or 0
                 totaleImposta = mNLC(t._totaleImpostaScontata,2) or 0
                 totale = mNLC(t._totaleScontato,2) or 0
-            else:
-                totali = "#"
+            except:
+                #totali = "#"
                 totaleImponibile = "#"
                 totaleImposta = "#"
                 totale = "#"
@@ -254,6 +292,8 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
                                     (str(documento_saldato_filter) or '')
                                     ))
         self.anagrafica_filter_treeview.set_model(model=self.filter_listore)
+        pbar(self._anagrafica.pbar_anag_complessa,stop=True)
+
 
 
     def on_filter_radiobutton_toggled(self, widget=None):
