@@ -584,26 +584,14 @@ class StatisticaGenerale(GladeWidget):
         diz = []
 
         for fornitore in fornitori:
-            res = ricerca_forniture(fornitore, daData, aData, progress=self.pbar)
+            totale_acq, totale_ven = ricerca_forniture(fornitore, daData, aData, progress=self.pbar)
 
-            totale_acq = 0
-            totale_ven = 0
-            for doc in res['docs_a']:
-                doc.totali
-                if doc.operazione.strip() == 'DDT acquisto':
-                    totale_acq += doc._totaleScontato
-
-            for doc in res['docs_v']:
-                doc.totali
-                if doc.operazione.strip() == 'DDT vendita':
-                    totale_ven += doc._totaleScontato
-
-            diz.append({'fornitore':fornitore,
+            diz.append({'fornitore': fornitore,
                 'totale_venduto': totale_ven,
                 'totale_acquistato': totale_acq
                 })
 
-        pbar(self.pbar,stop=True)
+        pbar(self.pbar, stop=True)
         pageData = {
                 "file": "statistica_controllo_fatturato_fornitori.html",
                 "diz": diz,
