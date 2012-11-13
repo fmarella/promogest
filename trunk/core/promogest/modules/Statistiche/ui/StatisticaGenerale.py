@@ -612,20 +612,15 @@ class StatisticaGenerale(GladeWidget):
         clie = [x.id_cliente for x in ClienteCategoriaCliente().select(idCategoria = idcates, batchSize=None)]
         for c in clie:
             clienti1.append(Cliente().getRecord(id=c))
-        #print "clientiiiiiiiiiiiiiiiiiiiiiiiiii", clienti
 
         if self.cliente[3]:
             clienti2 = Cliente().select(batchSize=None)
-        #elif not self.cliente[2]:
-            #messageError(msg="NESSUN CLIENTE SELEZIONATO")
         else:
             clienti2 = self.cliente[1]
         clienti = clienti1+clienti2
 
         daData = stringToDate(self.da_data_entry.get_text())
         aData = stringToDate(self.a_data_entry.get_text())
-        #print self.cateArticolo
-        #print self.produttore
 
         diz = OrderedDict()
         cache = CachedDaosDict()
@@ -665,8 +660,18 @@ class StatisticaGenerale(GladeWidget):
                     categoria = Articolo().getRecord(id=d).denominazione_categoria
                     if d in idArt:
                         for cc in rowDiz[d]:
-                            if str(cc.testata_movimento.opera.segno) == "-":
+                            if hasattr(cc,"testata_movimento") and str(cc.testata_movimento.opera.segno) == "-":
                                 if cc.testata_movimento.opera.fonte_valore == "vendita_iva":
+                                    # scorporo l'iva per avere tutti valori imponibili
+                                    idAliquotaIva = cc.id_iva
+                                    daoiva = cache['aliquotaiva'][idAliquotaIva][0]
+                                    aliquotaIvaRiga = daoiva.percentuale
+                                    totRigaImponibile = cc.valore_unitario_netto/(1+aliquotaIvaRiga/100)
+                                    totRiga += totRigaImponibile
+                                else:
+                                    totRiga += cc.totaleRiga
+                            elif hasattr(cc,"testata_documento") and str(cc.testata_documento.OP.segno) == "-":
+                                if cc.testata_documento.OP.fonte_valore == "vendita_iva":
                                     # scorporo l'iva per avere tutti valori imponibili
                                     idAliquotaIva = cc.id_iva
                                     daoiva = cache['aliquotaiva'][idAliquotaIva][0]
@@ -694,8 +699,18 @@ class StatisticaGenerale(GladeWidget):
                 for d in rowDiz:
                     if d in idArt:
                         for cc in rowDiz[d]:
-                            if str(cc.testata_movimento.opera.segno) == "-":
+                            if hasattr(cc,"testata_movimento") and str(cc.testata_movimento.opera.segno) == "-":
                                 if cc.testata_movimento.opera.fonte_valore == "vendita_iva":
+                                    # scorporo l'iva per avere tutti valori imponibili
+                                    idAliquotaIva = cc.id_iva
+                                    daoiva = cache['aliquotaiva'][idAliquotaIva][0]
+                                    aliquotaIvaRiga = daoiva.percentuale
+                                    totRigaImponibile = cc.valore_unitario_netto/(1+aliquotaIvaRiga/100)
+                                    totRiga += totRigaImponibile
+                                else:
+                                    totRiga += cc.totaleRiga
+                            elif hasattr(cc,"testata_documento") and str(cc.testata_documento.OP.segno) == "-":
+                                if cc.testata_documento.OP.fonte_valore == "vendita_iva":
                                     # scorporo l'iva per avere tutti valori imponibili
                                     idAliquotaIva = cc.id_iva
                                     daoiva = cache['aliquotaiva'][idAliquotaIva][0]
