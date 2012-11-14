@@ -56,9 +56,6 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
         self.prz_totale_label.destroy()
         self.id_multiplo_customcombobox.destroy()
         self.unita_derivate_label.destroy()
-
-        # contenitore (dizionario) righe (riga 0 riservata per
-        # variazioni in corso)
         self._righe = []
         self._righe.append({})
         # numero riga corrente

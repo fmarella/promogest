@@ -650,6 +650,7 @@ class Anagrafica(GladeWidget):
             path='records_print_dialog.glade',
                                       callbacks_proxy=self)
             printDialog.getTopLevel().set_transient_for(self.getTopLevel())
+            printDialog.getTopLevel().set_modal(True)
             if "/" in self._pdfName:
                 self._pdfName = self._pdfName.split("/")[1]
             printDialog.records_print_dialog_description_label.set_text(
