@@ -36,6 +36,7 @@
     <property name="default_width">640</property>
     <property name="default_height">400</property>
     <property name="icon">maschera.ico</property>
+    <property name="skip_pager_hint">True</property>
     <property name="urgency_hint">True</property>
     <property name="deletable">False</property>
     <property name="gravity">center</property>
