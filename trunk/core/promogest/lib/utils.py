@@ -2392,6 +2392,7 @@ def mN(value, decimal=None):
     RICORDA: Per un valore TOTALE quindi con due decimali si deve forzare il 2
     UPDATE: adesso supporta anche lo zero
     """
+
     if not value or value == '' or value == "None":
         return Decimal(0)
     value = deItalianizza(value)
@@ -2420,9 +2421,10 @@ def mNLC(value,decimal=None, curr="€ "):
         dp="."
         sep=","
     elif curr =="€":
+        curr = u"€"
         dp=","
         sep="."
-
+    #print "CUUUUUUUUUUUUUUUUUUUUUUUURRRRRRRRRRRRRRRRRRRRRRRR", u"€"
     return italianizza(value, decimal=decimal,curr=curr+" ", dp=dp, sep=sep)
 
 

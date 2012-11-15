@@ -285,9 +285,9 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
                                     (t.operazione or ''),
                                     (t.intestatario or ''),
                                     (t.protocollo or ''),
-                                    str(totaleImponibile),
-                                    str(totaleImposta),
-                                    str(totale),
+                                    (totaleImponibile),
+                                    (totaleImposta),
+                                    (totale),
                                     (t.note_interne or ''),
                                     col,
                                     (str(documento_saldato_filter) or '')
