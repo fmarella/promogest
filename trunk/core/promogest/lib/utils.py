@@ -2900,8 +2900,8 @@ def setconf(section, key, value=False):
     c = []
     if confff:
         valore = confff.value
-        if ";" in str(valore):
-            val = str(valore).split(";")
+        if ";" in valore:
+            val = valore.split(";")
             for a in val:
                 c.append(a.strip())
             return c
@@ -2909,12 +2909,12 @@ def setconf(section, key, value=False):
             if valore == "":
                 return None
             elif valore and len(valore.split("/"))>=2:
-                return str(valore)
+                return valore
             else:
                 try:
                     return eval(valore)
                 except:
-                    return str(valore)
+                    return valore
 
     else:
         return ""
