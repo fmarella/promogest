@@ -282,10 +282,10 @@ class Main(GladeWidget):
                         a.id_fornitura = daoForn[0].id
                         Environment.params["session"].add(a)
                         Environment.params["session"].delete(l)
-                        #g += 1
-                        #if g == 2000:
-                            #Environment.params["session"].commit()
-                            #g = 0
+                        g += 1
+                        if g == 2000:
+                            Environment.params["session"].commit()
+                            g = 0
                 else:
                     Environment.params["session"].delete(l)
             Environment.params["session"].commit()
