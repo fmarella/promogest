@@ -134,7 +134,7 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         """
         Aggiornamento TreeView
         """
-        self._anagrafica.pbar_anag_complessa.show()
+        #self._anagrafica.pbar_anag_complessa.show()
         self.anagrafica_filter_treeview.set_model(model=None)
         daData = stringToDate(self.da_data_filter_entry.get_text())
         if Environment.tipodb == "sqlite":
@@ -251,7 +251,7 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         self.filter_listore.clear()
         pa = True
         for t in tdos:
-            pbar(self._anagrafica.pbar_anag_complessa, parziale=tdos.index(t), totale=len(tdos), text="", noeta=False)
+            #pbar(self._anagrafica.pbar_anag_complessa, parziale=tdos.index(t), totale=len(tdos), text="", noeta=False)
             if len(tdos) <=99:
                 #if self.batchSize <= 99:
                 totali = t.totali
@@ -293,8 +293,8 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
                                     (str(documento_saldato_filter) or '')
                                     ))
         self.anagrafica_filter_treeview.set_model(model=self.filter_listore)
-        pbar(self._anagrafica.pbar_anag_complessa,stop=True)
-        self._anagrafica.pbar_anag_complessa.set_property("visible",False)
+        #pbar(self._anagrafica.pbar_anag_complessa,stop=True)
+        #self._anagrafica.pbar_anag_complessa.set_property("visible",False)
 
 
 
