@@ -2900,7 +2900,7 @@ def setconf(section, key, value=False):
     c = []
     if confff:
         valore = confff.value
-        if ";" in valore:
+        if valore and ";" in valore:
             val = valore.split(";")
             for a in val:
                 c.append(a.strip())
