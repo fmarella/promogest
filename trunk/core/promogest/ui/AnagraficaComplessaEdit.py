@@ -62,7 +62,8 @@ class AnagraficaEdit(GladeWidget):
             self.dialogTopLevel.show_all()
             self.setFocus()
         else:
-            Environment.windowGroup.remove(self.dialogTopLevel)
+            if self.dialogTopLevel in  Environment.windowGroup:
+                Environment.windowGroup.remove(self.dialogTopLevel)
             self.dialogTopLevel.get_content_area().remove(self.getTopLevel())
             self.on_top_level_closed()
             self.dialogTopLevel.destroy()
