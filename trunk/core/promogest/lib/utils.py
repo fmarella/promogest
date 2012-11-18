@@ -2127,7 +2127,9 @@ def multilinedirtywork(param):
     if operazione:
         if operazione == 'Fattura accompagnatoria' or 'DDT' in operazione:
             strippa = False
-
+        parte = param[0]['parte']
+        if parte is not None:
+               param[0]['numero'] = str(param[0]['numero']) + " / " + str(parte)
     for i in param:
         if not costi_ddt_totale:
             for k in ['_totaleOggetti', '_totaleImponibile',

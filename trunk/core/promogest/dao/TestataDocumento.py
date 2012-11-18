@@ -1139,6 +1139,8 @@ class TestataDocumento(Dao):
             dic = {k:t_testata_documento.c.numero <= v}
         elif k == 'numero':
             dic = {k:t_testata_documento.c.numero == v}
+        elif k == 'parte':
+            dic = {k:t_testata_documento.c.parte == v}
         elif k == 'daParte':
             dic = {k:t_testata_documento.c.parte >= v}
         elif k == 'aParte':

@@ -112,6 +112,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         #campi controllo modifica
         self._controllo_data_documento = None
         self._controllo_numero_documento = None
+        self._controllo_parte_documento = None
         self.reuseDataRow = False
         self.NoRowUsableArticle = False
         self.noleggio = True
@@ -552,6 +553,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self.data_documento_entry.set_sensitive(self.dao.id is None)
         self.edit_date_and_number_button.set_sensitive(self.dao.id is not None)
         self.numero_documento_entry.set_sensitive(False)
+        self.parte_spinbutton.set_sensitive(False)
         self.id_operazione_combobox.set_sensitive(self.dao.id is None)
         self._operazione = self.dao.operazione
         findComboboxRowFromId(self.id_operazione_combobox, self.dao.operazione)
@@ -572,6 +574,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
 
         self.data_documento_entry.set_text(dateToString(self.dao.data_documento))
         self.numero_documento_entry.set_text(str(self.dao.numero or '0'))
+        self.parte_spinbutton.set_value(self.dao.parte or 0)
         self.showDatiMovimento()
 
         if posso("GN"):
@@ -808,6 +811,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         """
             imposta un nuovo dao Testata documento
         """
+        self.variazioni_dati_testata = False
         self.destinatario_radiobutton.set_active(True)
         self.id_vettore_customcombobox.set_sensitive(False)
         if dao is None:
@@ -849,6 +853,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self.dao = TestataDocumento().getRecord(id=dao.id)
             self._controllo_data_documento = dateToString(self.dao.data_documento)
             self._controllo_numero_documento = self.dao.numero
+            self._controllo_parte_documento  = self.dao.parte
             self.oneshot = False
             self._oldDaoRicreato = True #il dao è nuovo il controllo sul nuovo codice non  è necessario
         self._refresh()
@@ -886,28 +891,37 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
 
         if self.dao.id is not None and self.numero_documento_entry.get_text() != '0':
 
-            if self.data_documento_entry.get_text() != self._controllo_data_documento\
-                        or str(self.numero_documento_entry.get_text()) != str(self._controllo_numero_documento):
+            #if self.data_documento_entry.get_text() != self._controllo_data_documento\
+                        #or str(self.numero_documento_entry.get_text()) != str(self._controllo_numero_documento) \
+                        #or str(self.parte_spinbutton.get_value_as_int()) != str(self._controllo_parte_documento):
+            if self.variazioni_dati_testata:
                 numero = self.numero_documento_entry.get_text()
+                parte = self.parte_spinbutton.get_value_as_int()
+                if parte == 0:
+                    parte = None
                 idOperazione = findIdFromCombobox(self.id_operazione_combobox)
                 daData, aData = getDateRange(self.data_documento_entry.get_text())
-                docs = TestataDocumento().select(daNumero=numero,
-                                                    aNumero=numero,
+                docs = TestataDocumento().select(numero=numero,
+                                                    parte= parte,
                                                     daData=daData, aData=aData,
                                                     idOperazione=idOperazione,
                                                     offset=None,
                                                     batchSize=None)
-                if len(docs) > 0:
+                if docs:
                     msg = """Attenzione!
-Esiste già un documento numero %s per
-l'anno di esercizio indicato nella data
-del documento.
+    Esiste già un documento numero %s per
+    l'anno di esercizio indicato nella data
+    del documento.
     Continuare comunque?""" % numero
 
                     if not YesNoDialog(msg=msg, transient=None):
                         return
 
                 self.dao.numero = numero
+                if parte == 0:
+                    self.dao.parte = None
+                else:
+                    self.dao.parte = parte
         self.dao.operazione = self._operazione
         pbar(self.dialog.pbar,parziale=1, totale=4)
         if self._tipoPersonaGiuridica == "fornitore":
@@ -1754,8 +1768,10 @@ del documento.
         if YesNoDialog(msg=msg, transient=self.dialogTopLevel):
             self.data_documento_entry.set_sensitive(True)
             self.numero_documento_entry.set_sensitive(True)
+            self.parte_spinbutton.set_sensitive(True)
             self.data_documento_entry.grab_focus()
             self.id_persona_giuridica_customcombobox.set_sensitive(True)
+            self.variazioni_dati_testata = True
 
     def showDatiMovimento(self):
         """ Show movimento related informations"""

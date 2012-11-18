@@ -279,9 +279,13 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
                     col = None
             else:
                 documento_saldato_filter = ''
+            if t.parte and t.parte > 0 :
+                parte = " / "+ str(t.parte)
+            else:
+                parte = ""
             self.filter_listore.append((t,
                                     dateTimeToString(t.data_documento),
-                                    (str(t.numero) or 0),
+                                    (str(str(t.numero) + parte) or "0"),
                                     (t.operazione or ''),
                                     (t.intestatario or ''),
                                     (t.protocollo or ''),
