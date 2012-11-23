@@ -135,8 +135,8 @@ class AnagraficaClientiFilter(AnagraficaFilter):
             else:
                 pvcf = (c.codice_fiscale or '')
             self.filter_listore.append((c,
-                        (c.codice or ''),
-                        (c.ragione_sociale or ''),
-                        (c.cognome or '') + ' ' + (c.nome or ''),
-                        (c.sede_legale_localita or ''),
+                        c.codice,
+                        c.ragione_sociale or ((c.cognome or '') + ' ' + (c.nome or '')),
+                        c.sede_legale_localita or '',
+                        c.telefono_principale or c.cellulare_principale or c.email_principale or "",
                         pvcf))
