@@ -89,8 +89,7 @@ class TestataDocumento(Dao):
         self._totaleSpese = 0
         self._totaleImponibileSpese = 0
         self._totaleImpostaSpese = 0
-        #if self.id:
-            #self.totali
+
 
     @reconstructor
     def init_on_load(self):
@@ -103,8 +102,6 @@ class TestataDocumento(Dao):
         self.__scontiTestataDocumento = []
         self.__data_inizio_noleggio = None
         self.__data_fine_noleggio = None
-        #if self.id:
-            #self.totali
 
     def __repr__(self):
         return '<Documento ID={0} operazione="{1}">'.format(self.numero, self.operazione)
@@ -162,21 +159,6 @@ class TestataDocumento(Dao):
 
     totalConfections = property(_getDocumentTotalConfections)
 
-#    def _getRigheInPrimaNota(self):
-#        """
-#        Ritorna le righe in prima nota in cui questo documento è presente
-#        """
-#        __righePrimaNota = []
-#        tdscad = TestataDocumentoScadenza().select(idTestataDocumento=self.id, batchSize=None)
-#        if tdscad:
-#            for r in tdscad:
-#                rpn_in_tdsc = RigaPrimaNotaTestataDocumentoScadenza().select(idTestataDocumentoScadenza = r.id, batchSize=None)
-#                if rpn_in_tdsc:
-#                    for c in rpn_in_tdsc:
-#                        rpn = RigaPrimaNota().select(id=c.id_riga_prima_nota)
-#                        __righePrimaNota.append(rpn)
-#        return __righePrimaNota
-#    righeinprimanota = property(_getRigheInPrimaNota)
 
 
     def _getNumeroMagazzini(self):
@@ -909,6 +891,13 @@ class TestataDocumento(Dao):
     def codice_cliente(self):
         if self.CLI:
             return self.CLI.codice
+        else:
+            return ""
+    
+    @property
+    def nazione_cliente(self):
+        if self.CLI:
+            return self.CLI.nazione
         else:
             return ""
 
