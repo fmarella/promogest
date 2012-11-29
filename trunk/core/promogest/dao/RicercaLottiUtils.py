@@ -24,10 +24,7 @@ import datetime
 
 from promogest.dao.Fornitura import Fornitura
 from promogest.dao.RigaMovimentoFornitura import RigaMovimentoFornitura
-from promogest.dao.NumeroLottoTemp import NumeroLottoTemp
 from promogest.dao.TestataMovimento import TestataMovimento
-from promogest.dao.TestataDocumento import TestataDocumento
-
 
 def ricerca_lotto(numero_lotto, anno, progress=None):
     dati = []
@@ -66,8 +63,6 @@ def ricerca_lotto(numero_lotto, anno, progress=None):
                 if tm.TD and tm.TD not in docs:
                     docs.append(tm.TD)
 
-        #docs.extend(ricerca_in_lottotemp(numero_lotto))
-        
         dati.append({'data_fornitura': fornitura.data_fornitura,
                  'fornitore': fornitura.forni,
                  'docs': docs})
@@ -77,14 +72,3 @@ def ricerca_lotto(numero_lotto, anno, progress=None):
         pbar(progress, stop=True)
 
     return dati
-
-def ricerca_in_lottotemp(numero_lotto):
-    nltemps = NumeroLottoTemp().select(lottoTemp=numero_lotto)
-
-    docs = []
-    for nltemp in nltemps:
-        tm = TestataMovimento().getRecord(id=nltemp.rigamovventemp.id_testata_movimento)
-        if tm:
-            if tm.TD and tm.TD not in docs:
-                docs.append(tm.TD)
-    return docs
