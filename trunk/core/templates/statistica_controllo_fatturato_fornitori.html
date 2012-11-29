@@ -46,10 +46,10 @@
                 <P>{{c['fornitore'].ragione_sociale}}</P>
             </TD>
             <TD WIDTH=14%>
-                <P>{{utils.mNLC(c['totale_acquistato'],2)}}</P>
+                <P>{{utils.mNLC(c['data']['totale_acquisto'],2)}}</P>
             </TD>
                 <TD WIDTH=14%>
-                <P>{{utils.mNLC(c["totale_venduto"],2)}}</P>
+                <P>{{utils.mNLC(c['data']["totale_vendita"],2)}}</P>
             </TD>
         </TR >
     {% endfor %}

@@ -47,17 +47,20 @@ from promogest.dao.DaoUtils import *
 from promogest.lib.HtmlViewer import HtmlViewer
 from promogest.lib.relativedelta import relativedelta
 from promogest.dao.CachedDaosDict import CachedDaosDict
+from promogest.modules.Statistiche.ui.StatisticheFatturatoUtils import ricerca_forniture, ricerca_forniture_lotti
 
 (
     RIC_MEDIO_INFL_VEND,
     CONTROLLO_FATT_CLIENTI,
-    CONTROLLO_FATT_FORNITORI
-) = range(3)
+    CONTROLLO_FATT_FORNITORI,
+    CONTROLLO_FATT_FORNITORI_LOTTI
+) = range(4)
 
 tipo_statistica_dict = {
-    RIC_MEDIO_INFL_VEND: 'CALCOLO RICARICO MEDIO E INFLUENZA SULLE VENDITE',
-    CONTROLLO_FATT_CLIENTI: 'CONTROLLO FATTURATO CLIENTI',
-    CONTROLLO_FATT_FORNITORI: 'CONTROLLO FATTURATO FORNITORI'
+    RIC_MEDIO_INFL_VEND: 'Calcolo ricarico medio e influenza sulle vendite',
+    CONTROLLO_FATT_CLIENTI: 'Controllo fatturato clienti',
+    CONTROLLO_FATT_FORNITORI: 'Controllo fatturato fornitori',
+    CONTROLLO_FATT_FORNITORI_LOTTI: 'Controllo fatturato fornitori tramite lotti'
 }
 
 
@@ -142,7 +145,7 @@ class StatisticaGenerale(GladeWidget):
         self.statistica_dialog.show_all()
         if self.tipo_stat == CONTROLLO_FATT_CLIENTI:
             self.fornitore_button.hide()
-        elif self.tipo_stat == CONTROLLO_FATT_FORNITORI:
+        elif self.tipo_stat in [CONTROLLO_FATT_FORNITORI, CONTROLLO_FATT_FORNITORI_LOTTI]:
             self.produttore_button.hide()
             self.categoria_cliente_button.hide()
             self.famiglia_articolo.hide()
@@ -235,7 +238,7 @@ class StatisticaGenerale(GladeWidget):
                 self.calcolo_ricarico_medio_e_influenza_sulle_vendite()
             elif self.tipo_stat == CONTROLLO_FATT_CLIENTI:
                 self.controllo_fatturato_clienti()
-            elif self.tipo_stat == CONTROLLO_FATT_FORNITORI:
+            elif self.tipo_stat in [CONTROLLO_FATT_FORNITORI, CONTROLLO_FATT_FORNITORI_LOTTI]:
                 self.controllo_fatturato_fornitori()
             else:
                 messageInfo(msg=" ANCORA NON GESTITO")
@@ -571,7 +574,6 @@ class StatisticaGenerale(GladeWidget):
         return
 
     def controllo_fatturato_fornitori(self):
-        from promogest.modules.Statistiche.ui.StatisticheFatturatoUtils import ricerca_forniture
         fornitori = []
         if self.fornitore[3]:
             fornitori = Fornitore().select(batchSize=None)
@@ -582,14 +584,15 @@ class StatisticaGenerale(GladeWidget):
         aData = stringToDate(self.a_data_entry.get_text())
 
         diz = []
+        result = None
 
         for fornitore in fornitori:
-            totale_acq, totale_ven = ricerca_forniture(fornitore, daData, aData, progress=self.pbar)
+            if self.tipo_stat == CONTROLLO_FATT_FORNITORI:
+                result = ricerca_forniture(fornitore, daData, aData, progress=self.pbar)
+            elif self.tipo_stat == CONTROLLO_FATT_FORNITORI_LOTTI:
+                result = ricerca_forniture_lotti(fornitore, daData, aData, progress=self.pbar)
 
-            diz.append({'fornitore': fornitore,
-                'totale_venduto': totale_ven,
-                'totale_acquistato': totale_acq
-                })
+            diz.append({'fornitore': fornitore, 'data': result})
 
         pbar(self.pbar, stop=True)
         pageData = {

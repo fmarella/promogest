@@ -190,7 +190,11 @@ class TestataMovimento(Dao):
                             Riga.id==RigaMovimento.id,
                             Articolo.id ==Riga.id_articolo,
                            Articolo.id ==v)}
-
+        elif k == 'idArticoloList':
+            dic = {k: and_(RigaMovimento.id_testata_movimento==TestataMovimento.id,
+                           Riga.id==RigaMovimento.id,
+                           Articolo.id==Riga.id_articolo,
+                           Articolo.id.in_(v))}
         return  dic[k]
 
     @timeit
