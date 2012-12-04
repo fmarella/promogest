@@ -44,8 +44,8 @@
             <TD>{{c['data'][k]['DAO_ART'].denominazione}}</TD>
             <TD>{{utils.mNLC(c['data'][k]['TOTACQ'],2)}}</TD>
             <TD>{{utils.mNLC(c['data'][k]["TOTVEN"],2)}}</TD>
-            <TD>{{utils.mN(c['data'][k]['QTAACQ'],0)}}</TD>
-	    <TD>{{utils.mN(c['data'][k]["QTAVEN"],0)}}</TD>
+            <TD>{{utils.mN(c['data'][k]['QTAACQ'],2)}}</TD>
+	    <TD>{{utils.mN(c['data'][k]["QTAVEN"],2)}}</TD>
 	    {% if c['data'][k]['QTAACQ'] == 0 or c['data'][k]['QTAVEN'] == 0 %} 
 	    <td>0</td>
 	    <td>0</td>
@@ -64,8 +64,8 @@
 		<TD><b>TOTALI</b></TD>
 		<TD>{{utils.mNLC(c['totali']['totale_acq'], 2)}}</TD>
                 <TD>{{utils.mNLC(c['totali']['totale_ven'], 2)}}</TD>
-        	<TD>{{utils.mN(c['totali']['totale_qta_acq'], 0)}}</TD>
-        	<TD>{{utils.mN(c['totali']['totale_qta_ven'], 0)}}</TD>
+        	<TD>{{utils.mN(c['totali']['totale_qta_acq'], 2)}}</TD>
+        	<TD>{{utils.mN(c['totali']['totale_qta_ven'], 2)}}</TD>
 		<td></td>
 		<td></td>
 	</tr>
