@@ -588,11 +588,15 @@ class StatisticaGenerale(GladeWidget):
 
         for fornitore in fornitori:
             if self.tipo_stat == CONTROLLO_FATT_FORNITORI:
-                result = ricerca_forniture(fornitore, daData, aData, progress=self.pbar)
+                result, totali = ricerca_forniture(fornitore,
+                        daData, aData, progress=self.pbar)
             elif self.tipo_stat == CONTROLLO_FATT_FORNITORI_LOTTI:
-                result = ricerca_forniture_lotti(fornitore, daData, aData, progress=self.pbar)
+                result, totali = ricerca_forniture_lotti(fornitore,
+                        daData, aData, progress=self.pbar)
 
-            diz.append({'fornitore': fornitore, 'data': result})
+            diz.append({'fornitore': fornitore,
+                'data': result,
+                'totali': totali})
 
         pbar(self.pbar, stop=True)
         pageData = {

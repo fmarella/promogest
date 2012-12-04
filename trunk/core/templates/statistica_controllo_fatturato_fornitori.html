@@ -16,46 +16,63 @@
 <BODY LANG="it-IT" DIR="LTR">
 <P>Prospetto risultante per la statistica :{{pageData["ricerca_stringa"]}}</P>
 
-
-<P>Fornitore:</P>
+{% for c in pageData["diz"] %}
+<P>Fornitore: {{c['fornitore'].ragione_sociale}}</P>
 <TABLE WIDTH=100% BORDER=1 BORDERCOLOR="#000000" CELLPADDING=4 CELLSPACING=0>
+    <!--<COL WIDTH=37*>
     <COL WIDTH=37*>
     <COL WIDTH=37*>
     <COL WIDTH=37*>
     <COL WIDTH=37*>
     <COL WIDTH=37*>
-    <COL WIDTH=37*>
-    <COL WIDTH=37*>
+    <COL WIDTH=37*>-->
     <THEAD>
         <TR VALIGN=TOP>
-            <TH WIDTH=18%>
-                <P>Ragione Sociale</P>
-            </TH>
-            <TH WIDTH=14%>
-                <P>Totale acquistato</P>
-            </TH>
-            <TH WIDTH=14%>
-                <P>Totale venduto</P>
-            </TH>
+            <TH WIDTH=38%>Articolo</TH>
+            <TH WIDTH=14%>Tot imponibile acquistato</TH>
+            <TH WIDTH=14%>Tot imponibile venduto</TH>
+            <TH WIDTH=14%>Quantità acquistata</TH>
+        <TH WIDTH=14%>Quantità venduta</TH>
+	<th width=14%>Margine</th>
+	<th width=14%>Ricarico</th>
+	<th width=14%>Residuo</th>
         </TR>
     </THEAD>
     <TBODY>
-    {% for c in pageData["diz"] %}
+	    {% for k in c['data'] %}
         <TR VALIGN=TOP>
-            <TD WIDTH=18%>
-                <P>{{c['fornitore'].ragione_sociale}}</P>
-            </TD>
-            <TD WIDTH=14%>
-                <P>{{utils.mNLC(c['data']['totale_acquisto'],2)}}</P>
-            </TD>
-                <TD WIDTH=14%>
-                <P>{{utils.mNLC(c['data']["totale_vendita"],2)}}</P>
-            </TD>
+            <TD>{{c['data'][k]['DAO_ART'].denominazione}}</TD>
+            <TD>{{utils.mNLC(c['data'][k]['TOTACQ'],2)}}</TD>
+            <TD>{{utils.mNLC(c['data'][k]["TOTVEN"],2)}}</TD>
+            <TD>{{utils.mN(c['data'][k]['QTAACQ'],0)}}</TD>
+	    <TD>{{utils.mN(c['data'][k]["QTAVEN"],0)}}</TD>
+	    {% if c['data'][k]['QTAACQ'] == 0 or c['data'][k]['QTAVEN'] == 0 %} 
+	    <td>0</td>
+	    <td>0</td>
+	    {% else %}
+	    {%
+	        set margine = utils.mN(utils.calcolaMargine(c['data'][k]['TOTACQ']/c['data'][k]['QTAACQ'],
+		            c['data'][k]['TOTVEN']/c['data'][k]['QTAVEN']), 0)
+	    %}
+	    <td>{{ margine }} %</td>
+	    <td>{{ utils.mN(utils.calcolaRicaricoDaMargine(margine), 0) }} %</td>
+	    {% endif %}
+	    <td>0</td>
         </TR >
-    {% endfor %}
+	{% endfor %}
+	<tr>
+		<TD><b>TOTALI</b></TD>
+		<TD>{{utils.mNLC(c['totali']['totale_acq'], 2)}}</TD>
+                <TD>{{utils.mNLC(c['totali']['totale_ven'], 2)}}</TD>
+        	<TD>{{utils.mN(c['totali']['totale_qta_acq'], 0)}}</TD>
+        	<TD>{{utils.mN(c['totali']['totale_qta_ven'], 0)}}</TD>
+		<td></td>
+		<td></td>
+	</tr>
     </TBODY>
 </TABLE>
 <P STYLE="margin-bottom: 0cm"><BR>
 </P>
+{% endfor %}
 </BODY>
 </HTML>
