@@ -9,6 +9,7 @@
         P { margin-bottom: 0.21cm }
         TD P { margin-bottom: 0cm }
         TH P { margin-bottom: 0cm }
+	.numerico { text-align: right; }
         A:link { so-language: zxx }
     -->
     </STYLE>
@@ -33,8 +34,8 @@
             <TH WIDTH=14%>Tot imponibile venduto</TH>
             <TH WIDTH=14%>Quantità acquistata</TH>
         <TH WIDTH=14%>Quantità venduta</TH>
-	<th width=14%>Margine</th>
-	<th width=14%>Ricarico</th>
+	<th width=14%>% margine</th>
+	<th width=14%>% ricarico</th>
 	<th width=14%>Residuo</th>
         </TR>
     </THEAD>
@@ -42,32 +43,33 @@
 	    {% for k in c['data'] %}
         <TR VALIGN=TOP>
             <TD>{{c['data'][k]['DAO_ART'].denominazione}}</TD>
-            <TD>{{utils.mNLC(c['data'][k]['TOTACQ'],2)}}</TD>
-            <TD>{{utils.mNLC(c['data'][k]["TOTVEN"],2)}}</TD>
-            <TD>{{utils.mN(c['data'][k]['QTAACQ'],2)}}</TD>
-	    <TD>{{utils.mN(c['data'][k]["QTAVEN"],2)}}</TD>
+            <TD class="numerico">{{utils.mNLC(c['data'][k]['TOTACQ'],2)}}</TD>
+            <TD class="numerico">{{utils.mNLC(c['data'][k]["TOTVEN"],2)}}</TD>
+            <TD class="numerico">{{utils.mN(c['data'][k]['QTAACQ'],2)}}</TD>
+	    <TD class="numerico">{{utils.mN(c['data'][k]["QTAVEN"],2)}}</TD>
 	    {% if c['data'][k]['QTAACQ'] == 0 or c['data'][k]['QTAVEN'] == 0 %} 
-	    <td>0</td>
-	    <td>0</td>
+	    <td class="numerico">0</td>
+	    <td class="numerico">0</td>
 	    {% else %}
 	    {%
 	        set margine = utils.mN(utils.calcolaMargine(c['data'][k]['TOTACQ']/c['data'][k]['QTAACQ'],
 		            c['data'][k]['TOTVEN']/c['data'][k]['QTAVEN']), 0)
 	    %}
-	    <td>{{ margine }} %</td>
-	    <td>{{ utils.mN(utils.calcolaRicaricoDaMargine(margine), 0) }} %</td>
+	    <td class="numerico">{{ margine }}</td>
+	    <td class="numerico">{{ utils.mN(utils.calcolaRicaricoDaMargine(margine), 0) }}</td>
 	    {% endif %}
-	    <td>0</td>
+	    <td class="numerico">0</td>
         </TR >
 	{% endfor %}
 	<tr>
 		<TD><b>TOTALI</b></TD>
-		<TD>{{utils.mNLC(c['totali']['totale_acq'], 2)}}</TD>
-                <TD>{{utils.mNLC(c['totali']['totale_ven'], 2)}}</TD>
-        	<TD>{{utils.mN(c['totali']['totale_qta_acq'], 2)}}</TD>
-        	<TD>{{utils.mN(c['totali']['totale_qta_ven'], 2)}}</TD>
-		<td></td>
-		<td></td>
+		<TD class="numerico">{{utils.mNLC(c['totali']['totale_acq'], 2)}}</TD>
+                <TD class="numerico">{{utils.mNLC(c['totali']['totale_ven'], 2)}}</TD>
+        	<TD class="numerico">{{utils.mN(c['totali']['totale_qta_acq'], 2)}}</TD>
+        	<TD class="numerico">{{utils.mN(c['totali']['totale_qta_ven'], 2)}}</TD>
+		<td class="numerico"></td>
+		<td class="numerico"></td>
+		<td class="numerico"></td>
 	</tr>
     </TBODY>
 </TABLE>
