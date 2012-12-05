@@ -4,7 +4,7 @@
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Dr astico (Pinna Marco) <zoccolodignu@gmail.com>
-#    Author: Francesco Marella <francesco.marella@gmail.com>
+#    Author: Francesco Marella <francesco.marella@anche.no>
 #
 #    This file is part of Promogest.
 

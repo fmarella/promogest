@@ -7,7 +7,7 @@
 #    Author: Andrea Argiolas <andrea@promotux.it>
 #    Author: JJDaNiMoTh <jjdanimoth@gmail.com>
 #    Author: Dr astico <zoccolodignu@gmail.com>
-#    Author: Francesco Marella <francesco.marella@gmail.com>
+#    Author: Francesco Marella <francesco.marella@anche.no>
 
 #    This file is part of Promogest.
 

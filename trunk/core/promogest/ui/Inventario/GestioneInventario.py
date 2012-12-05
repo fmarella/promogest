@@ -5,7 +5,7 @@
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
 #    Author: Andrea Argiolas <andrea@promotux.it>
-#    Author: Francesco Marella <francesco.marella@gmail.com>
+#    Author: Francesco Marella <francesco.marella@anche.no>
 
 #    This file is part of Promogest.
 

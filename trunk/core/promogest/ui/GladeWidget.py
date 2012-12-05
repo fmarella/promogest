@@ -6,7 +6,7 @@
 # Author: Alceste Scalas <alceste@promotux.it>
 # Author: Andrea Argiolas <andrea@promotux.it>
 # Author: Francesco Meloni  <francesco@promotux.it>
-# Author: Francesco Marella <francesco.marella@gmail.com>
+# Author: Francesco Marella <francesco.marella@anche.no>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 '''
-Copyright (c) 2011-2012 Francesco Marella <francesco.marella@gmail.com>
+Copyright (c) 2011-2012 Francesco Marella <francesco.marella@anche.no>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -19,7 +19,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 Created on 09/dic/2011
 
-@author: Francesco Marella <francesco.marella@gmail.com>
+@author: Francesco Marella <francesco.marella@anche.no>
 '''
 
 __version__ = '1.0'

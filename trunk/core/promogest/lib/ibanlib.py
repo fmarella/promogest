@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2011-2012 Francesco Marella <francesco.marella@gmail.com>
+#    Copyright (C) 2011-2012 Francesco Marella <francesco.marella@anche.no>
 
 #    Promogest is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by

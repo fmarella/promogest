@@ -8,7 +8,7 @@
 #             JJDaNiMoTh <jjdanimoth@gmail.com>
 #             Dr astico (Marco Pinna) <marco@promotux.it>
 #             Francesco Meloni <francesco@promotux.it>
-#             Francesco Marella <francesco.marella@gmail.com>
+#             Francesco Marella <francesco.marella@anche.no>
 
 #    This file is part of Promogest.
 

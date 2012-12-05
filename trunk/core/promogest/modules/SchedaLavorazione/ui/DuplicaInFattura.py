@@ -5,7 +5,7 @@
 
 #    Author: Dr astico  (Marco Pinna)<marco@promotux.it>
 #    Author: Francesco Meloni  <francesco@promotux.it>
-#    Author: Francesco Marella <francesco.marella@gmail.com>
+#    Author: Francesco Marella <francesco.marella@anche.no>
 
 #    This file is part of Promogest.
 
