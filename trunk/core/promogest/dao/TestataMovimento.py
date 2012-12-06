@@ -346,10 +346,12 @@ class TestataMovimento(Dao):
                     if self.id_fornitore and riga.id_articolo:
                         fors = Fornitura().select(idArticolo=riga.id_articolo,
                                                     idFornitore=self.id_fornitore,
-                                                    dataFornitura = self.data_movimento,
+                                                    dataPrezzo =  stringToDateTime(riga.data_prezzo) or self.data_movimento,
                                                     orderBy = 'data_fornitura DESC',
                                                     batchSize = None)
                         if fors:
+                            if len(fors) >1:
+                                fors[0].delete()
                             daoFornitura = fors[0]
                         else:
                             daoFornitura = Fornitura()
@@ -371,7 +373,8 @@ class TestataMovimento(Dao):
                         daoFornitura.fornitore_preferenziale = True
                         daoFornitura.id_fornitore = self.id_fornitore
                         daoFornitura.id_articolo = riga.id_articolo
-
+                        if not daoFornitura.data_prezzo:
+                            daoFornitura.data_prezzo = self.data_movimento
                         if "_RigaMovimento__codiceArticoloFornitore" in riga.__dict__:
                             daoFornitura.codice_articolo_fornitore = riga.__dict__["_RigaMovimento__codiceArticoloFornitore"]
                         daoFornitura.prezzo_lordo = riga.valore_unitario_lordo
