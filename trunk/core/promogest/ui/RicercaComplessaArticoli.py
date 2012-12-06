@@ -1558,7 +1558,8 @@ class RicercaArticoliFilter(GladeWidget):
                                             batchSize=None,
                                             complexFilter =self.complexFilter,
                                             filterDict = self.filterDict)
-        model.clear()
+        if model:
+            model.clear()
         for a in arts:
             modelRowPromoWear = []
             modelRow = []
