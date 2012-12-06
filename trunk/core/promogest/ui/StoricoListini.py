@@ -50,7 +50,8 @@ class StoricoListiniFilter(VisualizzazioneFilter):
     def __init__(self, visualizzazione):
         VisualizzazioneFilter.__init__(self,
                                     visualizzazione,
-                                    'storico_listini_articoli_filter_table')
+                                    root='storico_listini_articoli_filter_table',
+                                    path ='storico_listini_articoli_filter_table.glade' )
 #        self.orderBy = 'data_listino'
 
     def on_filter_treeview_selection_changed(self, treeview):

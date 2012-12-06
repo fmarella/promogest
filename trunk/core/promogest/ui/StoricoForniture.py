@@ -49,7 +49,8 @@ class StoricoFornitureFilter(VisualizzazioneFilter):
 
     def __init__(self, visualizzazione):
         VisualizzazioneFilter.__init__(self, visualizzazione,
-                                         'anagrafica_forniture_filter_table')
+                                     root='anagrafica_forniture_filter_table',
+                                    path ='anagrafica_forniture_filter_table.glade')
         self.orderBy = 'data_prezzo'
 
     def on_filter_treeview_selection_changed(self, treeview):
