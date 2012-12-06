@@ -35,6 +35,7 @@ class Fornitura(Dao):
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
+        self.__scontiFornitura = None
 
     def sconti():
         doc = "The sconti property."
