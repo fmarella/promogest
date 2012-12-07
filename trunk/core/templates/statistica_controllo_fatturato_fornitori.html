@@ -10,6 +10,8 @@
         TD P { margin-bottom: 0cm }
         TH P { margin-bottom: 0cm }
 	.numerico { text-align: right; }
+    .inevidenza { font-weight: bold;}
+    .rosso { color: #EE2C2C; }
         A:link { so-language: zxx }
     -->
     </STYLE>
@@ -18,7 +20,7 @@
 <P>Prospetto risultante per la statistica :{{pageData["ricerca_stringa"]}}</P>
 
 {% for c in pageData["diz"] %}
-<P>Fornitore: {{c['fornitore'].ragione_sociale}}</P>
+<P>Fornitore: <b>{{c['fornitore'].ragione_sociale}}</b></P>
 <TABLE WIDTH=100% BORDER=1 BORDERCOLOR="#000000" CELLPADDING=4 CELLSPACING=0>
     <!--<COL WIDTH=37*>
     <COL WIDTH=37*>
@@ -34,9 +36,9 @@
             <TH WIDTH=14%>Tot imponibile venduto</TH>
             <TH WIDTH=14%>Quantità acquistata</TH>
         <TH WIDTH=14%>Quantità venduta</TH>
-	<th width=14%>% margine</th>
-	<th width=14%>% ricarico</th>
 	<th width=14%>Residuo</th>
+    <th width=14%>% margine</th>
+    <th width=14%>% ricarico</th>
         </TR>
     </THEAD>
     <TBODY>
@@ -47,29 +49,48 @@
             <TD class="numerico">{{utils.mNLC(c['data'][k]["TOTVEN"],2)}}</TD>
             <TD class="numerico">{{utils.mN(c['data'][k]['QTAACQ'],2)}}</TD>
 	    <TD class="numerico">{{utils.mN(c['data'][k]["QTAVEN"],2)}}</TD>
-	    {% if c['data'][k]['QTAACQ'] == 0 or c['data'][k]['QTAVEN'] == 0 %} 
-	    <td class="numerico">0</td>
-	    <td class="numerico">0</td>
-	    {% else %}
-	    {%
-	        set margine = utils.mN(utils.calcolaMargine(c['data'][k]['TOTACQ']/c['data'][k]['QTAACQ'],
-		            c['data'][k]['TOTVEN']/c['data'][k]['QTAVEN']), 0)
-	    %}
-	    <td class="numerico">{{ margine }}</td>
-	    <td class="numerico">{{ utils.mN(utils.calcolaRicaricoDaMargine(margine), 0) }}</td>
-	    {% endif %}
-	    <td class="numerico">0</td>
+        {% set residuo = c['data'][k]['QTAACQ'] - c['data'][k]["QTAVEN"] %}
+        {% if residuo<0 %}
+          <td class="numerico rosso">{{ utils.mN(residuo, 2) }}</td>
+        {% else %}
+          <td class="numerico">{{ utils.mN(residuo, 2) }}</td>
+        {% endif %}
+        {% if c['data'][k]['QTAACQ'] == 0 or c['data'][k]['QTAVEN'] == 0 %}
+        <td class="numerico">0</td>
+        <td class="numerico">0</td>
+        {% else %}
+        {%
+            set margine = utils.mN(utils.calcolaMargine(c['data'][k]['TOTACQ']/c['data'][k]['QTAACQ'],
+                    c['data'][k]['TOTVEN']/c['data'][k]['QTAVEN']), 0)
+        %}
+        <td class="numerico">{{ margine }}</td>
+        <td class="numerico">{{ utils.mN(utils.calcolaRicaricoDaMargine(margine), 0) }}</td>
+        {% endif %}
         </TR >
 	{% endfor %}
 	<tr>
 		<TD><b>TOTALI</b></TD>
-		<TD class="numerico">{{utils.mNLC(c['totali']['totale_acq'], 2)}}</TD>
-                <TD class="numerico">{{utils.mNLC(c['totali']['totale_ven'], 2)}}</TD>
-        	<TD class="numerico">{{utils.mN(c['totali']['totale_qta_acq'], 2)}}</TD>
-        	<TD class="numerico">{{utils.mN(c['totali']['totale_qta_ven'], 2)}}</TD>
-		<td class="numerico"></td>
-		<td class="numerico"></td>
-		<td class="numerico"></td>
+		<TD class="numerico inevidenza">{{utils.mNLC(c['totali']['totale_acq'], 2)}}</TD>
+                <TD class="numerico inevidenza">{{utils.mNLC(c['totali']['totale_ven'], 2)}}</TD>
+        	<TD class="numerico inevidenza">{{utils.mN(c['totali']['totale_qta_acq'], 2)}}</TD>
+        	<TD class="numerico inevidenza">{{utils.mN(c['totali']['totale_qta_ven'], 2)}}</TD>
+        {% set residuo_totale = c['totali']['totale_qta_acq'] - c['totali']['totale_qta_ven'] %}
+        {% if residuo_totale < 0 %}
+          <td class="numerico inevidenza rosso">{{ utils.mN(residuo_totale, 2) }}</td>
+        {% else %}
+		  <td class="numerico inevidenza">{{ utils.mN(residuo_totale, 2) }}</td>
+        {% endif %}
+        {% if c['totali']['totale_qta_acq'] == 0 or c['totali']['totale_qta_ven'] == 0 %}
+        <td class="numerico inevidenza">0</td>
+        <td class="numerico inevidenza">0</td>
+        {% else %}
+        {%
+            set margine_totale = utils.mN(utils.calcolaMargine(c['totali']['totale_acq']/c['totali']['totale_qta_acq'],
+                c['totali']['totale_ven']/c['totali']['totale_qta_ven']), 0)
+        %}
+        <td class="numerico inevidenza">{{ margine_totale }}</td>
+        <td class="numerico inevidenza">{{ utils.mN(utils.calcolaRicaricoDaMargine(margine_totale), 0) }}</td>
+        {% endif %}
 	</tr>
     </TBODY>
 </TABLE>
