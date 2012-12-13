@@ -81,6 +81,8 @@ class ADRNotebookPage(GladeWidget):
         if not dao.id:
             self.dao_articolo_adr = ArticoloADR()
         else:
+            if dao.APADR is None:
+                dao.APADR = ArticoloADR()
             self.dao_articolo_adr = dao.APADR
 
     def adr_refresh(self):
