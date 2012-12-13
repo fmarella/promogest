@@ -108,7 +108,7 @@ class Fornitore(Dao):
         elif k == 'codiceFiscale':
             dic = {k: t_persona_giuridica.c.codice_fiscale.ilike("%"+v+"%")}
         elif k == 'idCategoria':
-            dic = {k: fornitore.c.id_categoria_fornitore==v}
+            dic = {k: t_fornitore.c.id_categoria_fornitore==v}
         return  dic[k]
 
 def getNuovoCodiceFornitore():
