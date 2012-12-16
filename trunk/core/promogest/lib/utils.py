@@ -2875,15 +2875,18 @@ def setconf(section, key, value=False):
     Tentativo abbastanza rudimentale per gestire le liste attraverso i ; ma
     forse si potrebbero gestire più semplicemente con le virgole
     """
-    if Environment.tipo_eng =="postgresql" or Environment.tipo_eng =="postgres" :
-        if not hasattr(Environment.conf, "Documenti"):
-            Environment.conf.add_section("Documenti")
-            Environment.conf.save()
-        if  hasattr(Environment.conf, "Documenti") and not hasattr(Environment.conf.Documenti, "cartella_predefinita"):
-            setattr(Environment.conf.Documenti,"cartella_predefinita",Environment.documentsDir)
-            Environment.conf.save()
-        if key == "cartella_predefinita":
-            return Environment.conf.Documenti.cartella_predefinita
+    try:
+        if Environment.tipo_eng =="postgresql" or Environment.tipo_eng =="postgres" :
+            if not hasattr(Environment.conf, "Documenti"):
+                Environment.conf.add_section("Documenti")
+                Environment.conf.save()
+            if  hasattr(Environment.conf, "Documenti") and not hasattr(Environment.conf.Documenti, "cartella_predefinita"):
+                setattr(Environment.conf.Documenti,"cartella_predefinita",Environment.documentsDir)
+                Environment.conf.save()
+            if key == "cartella_predefinita":
+                return Environment.conf.Documenti.cartella_predefinita
+    except:
+        pass
     from promogest.dao.Setconf import SetConf
     #confList = Environment.confList
     if not Environment.confDict:
@@ -3370,3 +3373,6 @@ def fill_treeview_with_data(treeview, data_provider, flag=False, clear=True):
     for data in data_provider:
         model.append([data, data.id, flag, data.denominazione])
     treeview.set_model(model)
+
+def prep2json(daos):
+    return [d.jsanity() for d in daos]

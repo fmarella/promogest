@@ -91,6 +91,7 @@ i DAO, i filtri o tutto"""
             preEnv.debugDao = True
         elif 'FILTER' in options.debug:
             preEnv.debugFilter = True
+        preEnv.table_to_load = ["promogest2.azienda", "promogest2.role" , "promogest2.action", "promogest2.roleaction","promogest2.utente"]
         from promogest.ui.Login import Login
         if shop:
             preEnv.shop = True
