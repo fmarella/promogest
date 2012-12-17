@@ -32,6 +32,7 @@ from promogest.dao.DestinazioneMerce import DestinazioneMerce
 from promogest.dao.DaoUtils import codeIncrement, getRecapitiCliente, get_columns
 from promogest.dao.VariazioneListino import VariazioneListino
 from promogest.dao.ClienteVariazioneListino import t_cliente_variazione_listino
+from promogest.lib.utils import posso
 
 
 def getNuovoCodiceCliente():
@@ -105,12 +106,34 @@ class Cliente(Dao):
         """
         Rimuove il cliente
         """
-        categ = self._getCategorieCliente()
-        if categ:
-            for c in categ:
-                c.delete()
+        if len(self.TD) > 0:
+            return """<big><b>Non è possibile cancellare il cliente.</b></big>
+
+ESISTONO DOCUMENTI COLLEGATI"""
+
+        if self.id_user:
+            utente = User().getRecord(id=self.dao.id_user)
+            if utente:
+                utente.delete()
+
+        if posso("IP"):
+            from promogest.modules.InfoPeso.dao.TestataInfoPeso import\
+                                                             TestataInfoPeso
+            from promogest.modules.InfoPeso.dao.ClienteGeneralita import\
+                                                             ClienteGeneralita
+            cltip = TestataInfoPeso().select(idCliente=dao.id, batchSize=None)
+            if cltip:
+                for l in cltip:
+                    l.delete()
+            clcg = ClienteGeneralita().select(idCliente=dao.id, batchSize=None)
+            if clcg:
+                for l in clcg:
+                    l.delete()
+
+        #self.delete()
         session.delete(self)
         session.commit()
+#        return "OK"
 
     @property
     def username_login(self):
@@ -263,9 +286,9 @@ std_mapper = mapper(Cliente,
                     properties={
 
                         'id': [t_cliente.c.id, t_persona_giuridica.c.id],
-                        'cliente_categoria_cliente': relation(ClienteCategoriaCliente,
+                        'cliente_categoria_cliente': relation(ClienteCategoriaCliente,cascade="all, delete",
                                                              backref='cliente_'),
-                        "dm": relation(DestinazioneMerce),
+                        "dm": relation(DestinazioneMerce,cascade="all, delete",),
                         'vl': relation(VariazioneListino,
                             lazy='joined',
                             secondary=t_cliente_variazione_listino)

@@ -56,10 +56,24 @@ except:
             schema=params['schema']
             )
     staticpage.create(checkfirst=True)
+    
+colonne =[c.name for c in staticpage.columns]
 
-if 'permalink' not in [c.name for c in staticpage.columns]:
+if 'permalink' not in colonne:
     col = Column('permalink', String(500), nullable=True)
     col.create(staticpage, populate_default=True)
+if 'clicks' not in colonne:
+    col = Column('clicks', Integer, nullable=True)
+    col.create(staticpage)
+if 'abstract' not in colonne:
+    col = Column('abstract', String(400), nullable=True)
+    col.create(staticpage)
+if 'active' not in colonne:
+    col = Column('active', Boolean, nullable=False)
+    col.create(staticpage, populate_default=False)
+if 'imagepath' not in colonne:
+    col = Column('imagepath',String(400), nullable=True)
+    col.create(staticpage)
 
 class StaticPages(Dao):
 

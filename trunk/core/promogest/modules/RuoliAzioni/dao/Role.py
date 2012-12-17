@@ -27,20 +27,20 @@ from promogest.dao.Dao import Dao
 
 
 try:
-    role=Table('role',params['metadata'],schema = params['mainSchema'],autoload=True)
+    t_role=Table('role',params['metadata'],schema = params['mainSchema'],autoload=True)
 except:
     if tipodb == "sqlite":
-        role = Table('role', params['metadata'],
+        t_role = Table('role', params['metadata'],
             Column('id', Integer, primary_key=True),
             Column('name', String(50), nullable=False),
             Column('descrizione', String(250), nullable=False),
             Column('id_listino', Integer),
             Column('active', Boolean, default=False),
             useexisting=True)
-        role.create(checkfirst=True)
-        s= select([role.c.name]).execute().fetchall()
+        t_role.create(checkfirst=True)
+        s= select([t_role.c.name]).execute().fetchall()
         if (u'Admin',) not in s or s ==[]:
-            ruoli = role.insert()
+            ruoli = t_role.insert()
             ruoli.execute(name = "Admin", descrizione = "Gestore del promogest", active = True)
             ruoli.execute(name = "Magazzinieri", descrizione = "Personale gestione magazzino", active = True)
             ruoli.execute(name = "Venditori", descrizione = "Addetti alla vendita", active = True)
@@ -57,8 +57,8 @@ class Role(Dao):
 
     def filter_values(self,k,v):
         if k =="idRole":
-            dic= {k : role.c.id == v}
+            dic= {k : t_role.c.id == v}
         elif k == "name":
-            dic= { k : role.c.name.ilike("%"+v+"%")}
+            dic= { k : t_role.c.name.ilike("%"+v+"%")}
         return  dic[k]
-std_mapper = mapper(Role, role, order_by=role.c.id)
+std_mapper = mapper(Role, t_role, order_by=t_role.c.id)

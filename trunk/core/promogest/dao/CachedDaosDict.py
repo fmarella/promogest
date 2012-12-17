@@ -70,6 +70,7 @@ def CachedDaosDict(): return _cachedobject
 from promogest.dao.Operazione import Operazione
 from promogest.dao.Pagamento import Pagamento
 from promogest.dao.AliquotaIva import AliquotaIva
+
 cache_obj = CachedDaosDict()
 cache_obj.add(Operazione, use_key='denominazione')
 cache_obj.add(Pagamento, use_key='denominazione')

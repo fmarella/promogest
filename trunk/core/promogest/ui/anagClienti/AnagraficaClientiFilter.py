@@ -130,13 +130,14 @@ class AnagraficaClientiFilter(AnagraficaFilter):
         self.filter_listore.clear()
 
         for c in clis:
-            if c.partita_iva != '':
-                pvcf = (c.partita_iva or '')
-            else:
-                pvcf = (c.codice_fiscale or '')
-            self.filter_listore.append((c,
-                        c.codice,
-                        c.ragione_sociale or ((c.cognome or '') + ' ' + (c.nome or '')),
-                        c.sede_legale_localita or '',
-                        c.telefono_principale or c.cellulare_principale or c.email_principale or "",
-                        pvcf))
+            t = (c.sede_legale_localita + " (" + c.sede_legale_provincia + ")" or 
+                    c.sede_operativa_localita + " (" + c.sede_operativa_provincia + ")" or "")
+            if t == " ()":
+                t = ""
+            self.filter_listore.append((
+                c,
+                c.codice,
+                c.ragione_sociale or ((c.cognome or '') + ' ' + (c.nome or '')),
+                t,
+                c.telefono_principale or c.cellulare_principale or c.email_principale or "",
+                c.partita_iva or c.codice_fiscale or ""))

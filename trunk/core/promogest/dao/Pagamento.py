@@ -27,7 +27,8 @@ from promogest.Environment import *
 from Dao import Dao
 from migrate import *
 from promogest.dao.DaoUtils import get_columns
-from promogest.dao.CachedDaosDict import CachedDaosDict
+
+
 
 class Pagamento(Dao):
 
@@ -46,6 +47,7 @@ class Pagamento(Dao):
     @property
     def aliquota_iva(self):
         if self.id_aliquota_iva:
+            from promogest.dao.CachedDaosDict import CachedDaosDict
             cache = CachedDaosDict()
             if self.id_aliquota_iva in cache['aliquotaiva']:
                 return cache['aliquotaiva'][self.id_aliquota_iva][0].denominazione_breve or ""
@@ -57,6 +59,7 @@ class Pagamento(Dao):
     @property
     def perc_aliquota_iva(self):
         if self.id_aliquota_iva:
+            from promogest.dao.CachedDaosDict import CachedDaosDict
             cache = CachedDaosDict()
             if self.id_aliquota_iva in cache['aliquotaiva']:
                 return cache['aliquotaiva'][self.id_aliquota_iva][0].percentuale or ""

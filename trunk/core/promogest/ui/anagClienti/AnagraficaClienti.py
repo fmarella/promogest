@@ -59,61 +59,15 @@ class AnagraficaClienti(Anagrafica):
     def on_record_delete_activate(self, widget):
         widget.set_sensitive(False)
         dao = self.filter.getSelectedDao()
-
-        tdoc = TestataDocumento().select(idCliente=dao.id, batchSize=None)
-        if tdoc:
-            msg = """<big><b>Non è possibile cancellare il cliente.</b></big>
-
-Alcuni documenti sono legati a questo cliente."""
-            messageInfo(msg=msg,
-                        transient=self.getTopLevel())
-            widget.set_sensitive(True)
-            return
         if not YesNoDialog(
                 msg='Confermi l\'eliminazione ?', transient=self.getTopLevel()):
             widget.set_sensitive(True)
             return
-        #Environment.session.commit()
-        #Environment.session.flush()
-        #verificare se ci sono relazioni con documenti o con contatti o recapiti
-        #chiedere se si vuole rimuovere ugualmente tutto, nel caso procedere
-        #davvero alla rimozione ed a quel punto gestire il "delete" a livello di
-        #dao
-
-        #try:
-        cnnt = ContattoCliente().select(idCliente=dao.id, batchSize=None)
-        if cnnt:
-            for c in cnnt:
-                for l in c.recapiti:
-                    l.delete()
-                c.delete()
-
-        cnnt = ClienteCategoriaCliente().select(idCliente=dao.id,
-                batchSize=None)
-        if cnnt:
-            for c in cnnt:
-                c.delete()
-        if self.dao.id_user:
-            utente = User().getRecord(id=self.dao.id_user)
-            self.dao.id_user = None
-            if utente:
-                utente.delete()
-
-        if posso("IP"):
-            from promogest.modules.InfoPeso.dao.TestataInfoPeso import\
-                                                             TestataInfoPeso
-            from promogest.modules.InfoPeso.dao.ClienteGeneralita import\
-                                                             ClienteGeneralita
-            cltip = TestataInfoPeso().select(idCliente=dao.id, batchSize=None)
-            if cltip:
-                for l in cltip:
-                    l.delete()
-            clcg = ClienteGeneralita().select(idCliente=dao.id, batchSize=None)
-            if clcg:
-                for l in clcg:
-                    l.delete()
-
-        dao.delete()
+        a = dao.delete()
+        if a:
+            messageInfo(msg=a,transient=self.getTopLevel())
+            widget.set_sensitive(True)
+            return
 
         self.filter.refresh()
         self.htmlHandler.setDao(None)

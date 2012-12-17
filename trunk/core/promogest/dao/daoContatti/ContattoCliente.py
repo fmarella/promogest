@@ -101,7 +101,7 @@ j = join(contatto, contattocliente)
 
 std_mapper = mapper(ContattoCliente, j,properties={
                 'id':[contatto.c.id, contattocliente.c.id],
-                "cc" : relation(Contatto, backref="contatto_cliente"),
+                "cc" : relation(Contatto, backref="contatto_cliente", cascade="all, delete"),
                 'tipo_contatto':[contatto.c.tipo_contatto, contattocliente.c.tipo_contatto],
-                "cliente":relation(Cliente, backref="contatto_cliente")
+                "cliente":relation(Cliente, backref=backref("contatto_cliente",cascade="all,delete"))
                 }, order_by=contattocliente.c.id)

@@ -110,6 +110,6 @@ contatto=Table('contatto',
         autoload=True)
 
 std_mapper=mapper(Contatto, contatto,properties={
-    'recapito' : relation(RecapitoContatto, backref=backref('contatto')),
-    "contatto_cat_cont": relation(ContattoCategoriaContatto, backref=backref("contatto")),
+    'recapito' : relation(RecapitoContatto, backref=backref('contatto'),cascade="all, delete"),
+    "contatto_cat_cont": relation(ContattoCategoriaContatto, backref=backref("contatto"), cascade="all, delete"),
     }, order_by=contatto.c.id)
