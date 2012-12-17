@@ -65,10 +65,13 @@ class AnagraficaDocumenti(Anagrafica):
 
 
     def on_gestione_riba_menu_activate(self, widget):
-        from promogest.ui.RiBaExportWindow import RiBaExportWindow
-        anag = RiBaExportWindow(self)
-        showAnagraficaRichiamata(self.getTopLevel(), anag.getTopLevel(),
-                                                None, self.filter.refresh)
+        if posso('GRB'):
+            from promogest.ui.RiBaExportWindow import RiBaExportWindow
+            anag = RiBaExportWindow(self)
+            showAnagraficaRichiamata(self.getTopLevel(), anag.getTopLevel(),
+                                                    None, self.filter.refresh)
+        else:
+            fencemsg()
 
     def duplicate(self, dao):
         """

@@ -132,9 +132,6 @@ class Anagrafica(GladeWidget):
             self.modifiche_menu.destroy()
         if self.__class__.__name__ != 'AnagraficaDocumenti':
             self.strumenti_menu.destroy()
-        else:
-            if not posso('GRB'):
-                self.gestione_riba_menu.destroy()
         self.placeWindow(self.anagrafica_complessa_window)
         self.filter.draw()
         self.editElement.draw(cplx=True)
