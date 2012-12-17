@@ -142,7 +142,10 @@ class Sla2Pdf_ng(SlaParser):
                 contRows= int(v/columns)
                 contColumns = ((v)%columns)
 #            print "VVVVVVVVVVVVV E CELLE", "celle", celle,"V:",v, "LEN DI CELLE",len(celle), "NCELLS", n_cells, group
-            background = self.backgroundFunc(celle[v])# Finding background
+            try:
+                background = self.backgroundFunc(celle[v])# Finding background
+            except Exception as e:
+                Environment.pg2log.info("ERRORE NEL GRUPPO TABELLA"+ group + "ERRORE:" + str(e.args))
             hexBorderColor = self.hexBorderColorFunc(celle[v].get('PCOLOR2'))
             stile.add('ROWBACKGROUNDS', (contColumns,contRows),
                                 (contColumns,contRows),
