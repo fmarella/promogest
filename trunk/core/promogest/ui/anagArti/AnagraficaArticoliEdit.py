@@ -367,6 +367,7 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
         if self.dao.aggiornamento_listino_auto == None:
             self.dao.aggiornamento_listino_auto = False
         self.dao.url_immagine = self.url_articolo_entry.get_text()
+        print " NON TI SALVI", self.dao.url_immagine, self.url_articolo_entry.get_text() 
         pbar(self.dialog.pbar,parziale=3, totale=4)
         self.dao.persist()
         pbar(self.dialog.pbar,parziale=4, totale=4)

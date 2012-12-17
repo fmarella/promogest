@@ -29,7 +29,7 @@ from Multiplo import Multiplo
 from promogest.dao.DaoUtils import giacenzaArticolo, codeIncrement
 from promogest.modules.GestioneKit.dao.ArticoloKit import ArticoloKit
 from Imballaggio import Imballaggio, imballaggio
-from AliquotaIva import AliquotaIva, aliquota_iva
+from AliquotaIva import AliquotaIva, t_aliquota_iva
 from StatoArticolo import StatoArticolo, stato_articolo
 #from Immagine import Immagine
 
@@ -700,7 +700,7 @@ std_mapper = mapper(
         imba=relation(Imballaggio,
             primaryjoin=t_articolo.c.id_imballaggio == imballaggio.c.id),
         ali_iva=relation(AliquotaIva,
-            primaryjoin=(t_articolo.c.id_aliquota_iva == aliquota_iva.c.id)),
+            primaryjoin=(t_articolo.c.id_aliquota_iva == t_aliquota_iva.c.id)),
         den_famiglia=relation(FamigliaArticolo,
             primaryjoin=t_articolo.c.id_famiglia_articolo == famiglia.c.id),
         den_categoria=relation(CategoriaArticolo,

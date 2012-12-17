@@ -33,11 +33,11 @@ class AliquotaIva(Dao):
 
     def filter_values(self, k, v):
         if k == 'denominazione':
-            dic = {k: aliquota_iva.c.denominazione.ilike("%" + v + "%")}
+            dic = {k: t_aliquota_iva.c.denominazione.ilike("%" + v + "%")}
         elif k == "percentuale":
-            dic = {k: aliquota_iva.c.percentuale == v}
+            dic = {k: t_aliquota_iva.c.percentuale == v}
         elif k == "idTipo":
-            dic = {k: aliquota_iva.c.id_tipo == v}
+            dic = {k: t_aliquota_iva.c.id_tipo == v}
         return  dic[k]
 
     def _tipoAliquota(self):
@@ -47,9 +47,9 @@ class AliquotaIva(Dao):
             return None
     tipo_ali_iva = property(_tipoAliquota)
 
-aliquota_iva = Table('aliquota_iva', meta,
+t_aliquota_iva = Table('aliquota_iva', meta,
         schema=params["schema"], autoload=True)
 
-std_mapper = mapper(AliquotaIva, aliquota_iva, properties={
+std_mapper = mapper(AliquotaIva, t_aliquota_iva, properties={
         'tipo_aliquota_iva': relation(TipoAliquotaIva, backref='aliquota_iva')
-            }, order_by=aliquota_iva.c.id)
+            }, order_by=t_aliquota_iva.c.id)

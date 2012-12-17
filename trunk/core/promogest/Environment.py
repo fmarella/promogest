@@ -281,12 +281,11 @@ session = Session()
 schema_azienda = azienda
 # Determiniamo il nome del file pickle in base all'azienda e alla ver python.
 if azienda:
-    meta_pickle = azienda + "_meta_pickle"
+    meta_pickle = azienda + "_meta_pickle"+sys.version[:1]
     promogestDir = os.path.expanduser('~') + os.sep + "promogest2" + os.sep + azienda + os.sep
 else:
-    meta_pickle = "azienda_meta_pickle"
+    meta_pickle = "AziendaPromo_meta_pickle"+sys.version[:1]
     promogestDir = os.path.expanduser('~') + os.sep + "promogest2" + os.sep + "AziendaPromo" + os.sep
-meta_pickle += sys.version[:1]
 
 from pickle import load as pickle_load
 #meta = MetaData(engine)
@@ -300,16 +299,19 @@ def delete_pickle():
     if os.path.exists(os.path.join(SRC_PATH, meta_pickle)):
         os.remove(os.path.join(SRC_PATH, meta_pickle))
 
-
+print os.path.exists(os.path.join(SRC_PATH, meta_pickle)), os.path.join(SRC_PATH, meta_pickle)
 if os.path.exists(os.path.join(SRC_PATH, meta_pickle)) \
                                     and sqlalchemy.__version__ > "0.5.8":
     with open(os.path.join(SRC_PATH, meta_pickle), 'rb') as f:
         try:
             meta = pickle_load(f)
+            meta.bind = engine
         except:
             delete_pickle()
-        meta.bind = engine
+        print "USO META PICKLE"
+        meta = MetaData(engine)
 else:
+    print "USO META NORMALE" 
     meta = MetaData(engine)
 
 
