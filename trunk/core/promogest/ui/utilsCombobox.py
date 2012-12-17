@@ -1132,12 +1132,7 @@ def on_typeComboBox_changed(combobox, dialogWidget, currentName, isEvent=True):
             _file_name = str(setFileName(file_string, value))
             return (value, _file_name)
 
-
-def fillComboBoxNazione(combobox, default=None):
-    """
-    nazione
-    """
-    nationList = ["Afganistan", "Albania", "Algeria", "Arabia Saudita",
+nationList = ["Afganistan", "Albania", "Algeria", "Arabia Saudita",
                 "Argentina", "Australia",
                 "Austria", "Belgio", "Bermude", "Bielorussia", "Bolivia",
                 "Bosnia-Erzegovina", "Brasile",
@@ -1160,6 +1155,12 @@ def fillComboBoxNazione(combobox, default=None):
                 "Taiwan", "Tunisia", "Turchia", "Ucraina", "Ungheria",
                 "Unione Europea", "Uruguay", "Vaticano", "Venezuela",
                 "Vietnam"]
+
+def fillComboBoxNazione(combobox, default=None):
+    """
+    nazione
+    """
+
     model = gtk.ListStore(str)
     if not default:
         emptyRow = 'Italia'

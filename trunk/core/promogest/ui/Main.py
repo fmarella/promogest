@@ -21,6 +21,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
+import sys
 import hashlib
 import os
 import glob
@@ -293,10 +294,11 @@ class Main(GladeWidget):
 
         def pickle_meta():
             from pickle import dump
+            meta_pickle = self.aziendaStr + "_meta_pickle"+sys.version[:1]
             if not os.path.exists(os.path.join(Environment.SRC_PATH,
-                                                Environment.meta_pickle)):
+                                                meta_pickle)):
                 with open(os.path.join(Environment.SRC_PATH,
-                                        Environment.meta_pickle), 'wb') as f:
+                                        meta_pickle), 'wb') as f:
                     dump(Environment.meta, f)
         pickle_meta()
 
