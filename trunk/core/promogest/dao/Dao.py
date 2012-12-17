@@ -269,6 +269,22 @@ class Dao(object):
             return (self.__hash__ == dao.__hash__ )
         return True
 
+    def jsanity(self):
+        import json
+        d = self.dictionary(complete=True)
+        for k,v in d.iteritems():
+#            print type(v), v
+            if type(v) == datetime.datetime or type(v) == datetime.date:
+                v = v.strftime("%d-%m-%Y")
+            if type(v) == bool:
+                v = str(v).lower()
+#            elif type(v) == datetime.date:
+#                v = v.strftime("%d-%m-%Y")
+            d[k] = str(v)
+        return d
+
+
+
     def dictionary(self, complete=False):
         """
         Return a dictionary containing DAO data.  'complete' tells
@@ -302,8 +318,8 @@ class Dao(object):
             # Let's filter boring stuff
             if '__' in att: # Private data
                 continue
-            elif att[0]=='_':
-                continue
+#            elif att[0]=='_':
+#                continue
             attrs[att] = getattr(self, att)
 
         sqlDict.update(props)
