@@ -343,10 +343,13 @@ class TestataMovimento(Dao):
                     riga.id_testata_movimento = self.id
                     # vado a salvare le righe movimento
                     riga.persist(sm=sm)
+                    datta = self.data_movimento
+                    if hasattr(riga,"data_prezzo") and riga.data_prezzo is not None:
+                        datta = stringToDateTime(riga.data_prezzo)
                     if self.id_fornitore and riga.id_articolo:
                         fors = Fornitura().select(idArticolo=riga.id_articolo,
                                                     idFornitore=self.id_fornitore,
-                                                    dataPrezzo =  stringToDateTime(riga.data_prezzo) or self.data_movimento,
+                                                    dataPrezzo =  datta,
                                                     orderBy = 'data_fornitura DESC',
                                                     batchSize = None)
                         if fors:
@@ -356,7 +359,7 @@ class TestataMovimento(Dao):
                         else:
                             daoFornitura = Fornitura()
 
-                        if hasattr(riga,"data_prezzo") and riga.data_prezzo is not None:
+                        if hasattr(riga,"data_prezzo") and riga.data_prezzo is not None and riga.data_prezzo != "":
                             daoFornitura.data_prezzo = stringToDateTime(riga.data_prezzo)
                         if hasattr(riga, "ordine_minimo") and riga.ordine_minimo is not None and riga.ordine_minimo != "":
                             daoFornitura.scorta_minima = int(riga.ordine_minimo)
