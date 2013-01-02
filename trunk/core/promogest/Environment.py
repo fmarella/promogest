@@ -129,7 +129,7 @@ puntoB = None
 puntoP = None
 eta = 0
 tipo_pg = None
-workingYear = 2012
+workingYear = 2013
 cartella_moduli = 'promogest/modules'
 totale_pn_con_riporto = 0
 aaa = 648
@@ -311,7 +311,7 @@ if os.path.exists(os.path.join(SRC_PATH, meta_pickle)) \
         print "USO META PICKLE"
         meta = MetaData(engine)
 else:
-    print "USO META NORMALE" 
+    print "USO META NORMALE"
     meta = MetaData(engine)
 
 
