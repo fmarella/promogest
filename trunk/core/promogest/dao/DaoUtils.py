@@ -252,8 +252,9 @@ def giacenzaArticolo(year=None, idMagazzino=None, idArticolo=None,
     from promogest.dao.RigaMovimento import RigaMovimento
     from promogest.dao.Operazione import Operazione
     from promogest.dao.Magazzino import Magazzino
-
-    if not idArticolo or not year or (not idMagazzino and not allMag):
+    if not year:
+        year = Environment.workingYear
+    if not idArticolo or (not idMagazzino and not allMag):
         return "0"
     if allMag:
         magazzini = Environment.params["session"].query(Magazzino.id).all()
