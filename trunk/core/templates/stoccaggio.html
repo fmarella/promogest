@@ -33,7 +33,7 @@
                 <td class="even-number" style="text-align:center;" width="15%">Valore</td>
 
             </tr>
-            {% for item in dao._getTotaliOperazioniMovimento() %}
+            {% for item in dao._getTotaliOperazioniMovimento(year=environment.workingYear) %}
             <tr >
             <td class="odd-detail" style="padding-left:5px;"><a href="program:/testataDocumentoId={{item['daoTestataDocumento'].id}}"><b>DOC:</b> N° {{item['daoTestataDocumento'].numero}} </a>-- <a href="program:/testataMovimentoId={{item['daoTestataMovimento'].id}}"><b>MOV:</b> N° {{item['numero']}}</a> - {{item['operazione']}} - Del: {{utils.dateToString(item['data_movimento'])}} -
             {% if item["daoTestataMovimento"].id_cliente or item["daoTestataMovimento"].id_fornitore %}
