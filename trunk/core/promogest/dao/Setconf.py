@@ -345,6 +345,18 @@ if not ("larghezza_logo", "Documenti") in allkey:
     kpp.date = datetime.datetime.now()
     session.add(kpp)
 
+if not ("separatore_numerazione", "Documenti") in allkey:
+    kpp = SetConf()
+    kpp.key = "separatore_numerazione"
+    kpp.value ="/"
+    kpp.section = "Documenti"
+    kpp.description = "separatore numerazione"
+    kpp.tipo_section = "Generico"
+    kpp.active = True
+    kpp.date = datetime.datetime.now()
+    session.add(kpp)
+
+
 if not ("ricerca_per", "Documenti") in allkey:
     krr = SetConf()
     krr.key = "ricerca_per"

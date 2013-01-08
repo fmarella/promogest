@@ -109,6 +109,8 @@ class ConfiguraWindow(GladeWidget):
                 self.dollaro_radio.set_active(1)
             elif curr =="£":
                 self.sterlina_radio.set_active(1)
+            elif curr =="CHR":
+                self.francosvizzero_radio.set_active(1)
         except:
             self.euro_radio.set_active(1)
         try:
@@ -132,6 +134,7 @@ class ConfiguraWindow(GladeWidget):
         self.larghezza_logo_entry.set_text(str(setconf("Documenti", "larghezza_logo")))
         self.combo_column_entry.set_text(str(setconf("Numbers", "combo_column")))
         self.decimals_entry.set_text(str(setconf("Numbers","decimals")))
+        self.separatore_entry.set_text(str(setconf("Documenti","separatore_numerazione") or ""))
         self.batch_size_entry.set_text(str(setconf("Numbers","batch_size")))
         self.documenti_setup_page._refresh()
         self.articoli_setup_page._refresh()
@@ -197,6 +200,11 @@ class ConfiguraWindow(GladeWidget):
         g[0].tipo = "int"
         Environment.session.add(g[0])
 
+        g = SetConf().select(key="separatore_numerazione", section="Documenti")
+        g[0].value = str(self.separatore_entry.get_text()) or ""
+        g[0].tipo = "str"
+        Environment.session.add(g[0])
+
         f = SetConf().select(key="batch_size", section="Numbers")
         f[0].value = str(self.batch_size_entry.get_text()) or "3"
         f[0].tipo = "int"
@@ -230,6 +238,8 @@ class ConfiguraWindow(GladeWidget):
             g[0].value = "$"
         elif self.sterlina_radio.get_active():
             g[0].value = "£"
+        elif self.francosvizzero_radio.get_active():
+            g[0].value = "CHR"
         g[0].tipo = "str"
         Environment.session.add(g[0])
 
