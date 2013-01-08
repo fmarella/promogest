@@ -353,8 +353,8 @@ class TestataMovimento(Dao):
                                                     orderBy = 'data_fornitura DESC',
                                                     batchSize = None)
                         if fors:
-                            if len(fors) >1:
-                                fors[0].delete()
+                            #if len(fors) >1:
+                                #fors[0].delete()
                             daoFornitura = fors[0]
                         else:
                             daoFornitura = Fornitura()
