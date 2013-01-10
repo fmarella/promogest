@@ -1116,7 +1116,7 @@ class GestioneInventario(RicercaComplessaArticoli):
 
     def confermaValorizzazione(self):
         """ Chiede conferma per la modifica dei dati """
-        return YesNoDialog(msg='Confermi l\'eliminazione ?', transient=self.getTopLevel())
+        return YesNoDialog(msg='Confermi l\'valorizzazione?', transient=self.getTopLevel())
 
     def fineElaborazione(self):
         """ Messaggio di fine elaborazione """
