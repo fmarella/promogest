@@ -2132,7 +2132,7 @@ def multilinedirtywork(param):
                param[0]['numero'] = str(param[0]['numero']) + " / " + str(parte)
         sep_nume = setconf("Documenti","separatore_numerazione") or None
         if sep_nume and sep_nume != "":
-            param[0]['numero'] = str(param[0]['numero']) + sep_nume + str(Environment.workingYear)
+            param[0]['numero'] = str(param[0]['numero']) + sep_nume + str(param[0]['data_documento'].year)
 
     for i in param:
         if not costi_ddt_totale:
