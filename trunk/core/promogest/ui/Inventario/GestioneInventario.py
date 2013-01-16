@@ -896,11 +896,11 @@ class GestioneInventario(RicercaComplessaArticoli):
                 if s.quantita >0:
 #                    print s.quantita
                     righeArticoloMovimentate = Environment.params["session"]\
-                        .query(func.max(RigaMovimento.valore_unitario_netto), func.max(TestataMovimento.data_movimento))\
+                        .query(RigaMovimento.valore_unitario_netto, func.max(TestataMovimento.data_movimento))\
                         .join(TestataMovimento, Articolo)\
                         .filter(TestataMovimento.data_movimento.between(datetime.date(int(self.annoScorso),1, 1), datetime.date(int(self.annoScorso), 12, 31)))\
                         .filter(RigaMovimento.id_testata_movimento == TestataMovimento.id)\
-                        .filter(Operazione.denominazione=="Fattura acquisto")\
+                        .filter(TestataMovimento.operazione.ilike("%acquisto%"))\
                         .filter(Riga.id_magazzino==idMagazzino)\
                         .filter(Riga.id_articolo==s.id_articolo)\
                         .filter(Riga.valore_unitario_netto!=0)\
