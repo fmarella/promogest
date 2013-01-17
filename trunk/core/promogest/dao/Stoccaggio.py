@@ -63,7 +63,7 @@ class Stoccaggio(Dao):
                                          #_setTotaliOperazioniMovimento)
 
     def _getGiacenza(self):
-        return giacenzaArticolo(year=workingYear,
+        return giacenzaArticolo(
             idMagazzino=self.id_magazzino,
             idArticolo=self.id_articolo) or 0
     giacenza = property(_getGiacenza, )

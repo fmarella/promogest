@@ -107,6 +107,7 @@ def ricerca_forniture(fornitore, dataInizio, dataFine, progress=None):
     id_articoli_forniture = session.query(Fornitura.id_articolo) \
             .distinct(Fornitura.id_articolo) \
             .filter(Fornitura.id_fornitore==fornitore.id) \
+            .filter(Fornitura.data_fornitura>datetime.date(dataInizio.year,1,1)) \
             .all()
 
     for id_articol in id_articoli_forniture:
