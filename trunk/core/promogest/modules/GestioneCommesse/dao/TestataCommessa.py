@@ -26,42 +26,29 @@ from promogest.Environment import *
 from promogest.dao.Dao import Dao
 from promogest.dao.DaoUtils import *
 from promogest.lib.utils import *
-from promogest.dao.Cliente import Cliente
-from promogest.dao.Articolo import Articolo
-from promogest.modules.GestioneCommesse.dao.StadioCommessa import StadioCommessa
+from promogest.dao.Cliente import Cliente, t_cliente
+from promogest.dao.Articolo import Articolo , t_articolo
+from promogest.modules.GestioneCommesse.dao.StadioCommessa import StadioCommessa , t_stadiocommessa
 
 try:
-    testatacommessa = Table('testata_commessa',
+    t_testatacommessa = Table('testata_commessa',
             params['metadata'],
             schema = params['schema'],
             autoload=True)
 except:
-    clienteTable = Table('cliente', params['metadata'], autoload=True, schema=params['schema'])
-    articoloTable = Table('articolo', params['metadata'], autoload=True, schema=params['schema'])
-    stadiocommessaTable = Table('stadio_commessa', params['metadata'], autoload=True, schema=params['schema'])
-
-    if params["tipo_db"] == "sqlite":
-        clienteFK ='cliente.id'
-        stadiocommessaFK ='stadio_commessa.id'
-        articoloFK ='articolo.id'
-    else:
-        clienteFK = params['schema']+'.cliente.id'
-        stadiocommessaFK = params['schema']+'.stadio_commessa.id'
-        articoloFK =params['schema']+'.articolo.id'
-
-    testatacommessa = Table('testata_commessa', params["metadata"],
+    t_testatacommessa = Table('testata_commessa', params["metadata"],
             Column('id', Integer, primary_key=True),
             Column('numero', Integer, nullable=False),
             Column('denominazione', String(300), nullable=False),
             Column('note', Text, nullable=True),
-            Column('id_cliente', Integer,ForeignKey(clienteFK,onupdate="CASCADE",ondelete="CASCADE")),
-            Column('id_articolo', Integer,ForeignKey(articoloFK)),
-            Column('id_stadio_commessa', Integer,ForeignKey(stadiocommessaFK,onupdate="CASCADE",ondelete="RESTRICT"),nullable=True),
+            Column('id_cliente', Integer,ForeignKey(fk_prefix +'cliente.id',onupdate="CASCADE",ondelete="CASCADE")),
+            Column('id_articolo', Integer,ForeignKey(fk_prefix +'articolo.id')),
+            Column('id_stadio_commessa', Integer,ForeignKey(fk_prefix +'stadio_commessa.id',onupdate="CASCADE",ondelete="RESTRICT"),nullable=True),
             Column('data_inizio', DateTime, nullable=True),
             Column('data_fine', DateTime, nullable=True),
             schema=params["schema"],
             useexisting=True)
-    testatacommessa.create(checkfirst=True)
+    t_testatacommessa.create(checkfirst=True)
 
 from RigaCommessa import RigaCommessa
 
@@ -115,16 +102,7 @@ class TestataCommessa(Dao):
             return art.codice + " " + art.denominazione
         else:
             return ""
-
-#    @property
-#    def articolo(self):
-#        """ esempio di funzione  unita alla property """
-#        art=  Articolo().getRecord(id=self.id_articolo)
-#        if art:
-#            return art.codice + " " + art.denominazione
-#        else:
-#            return ""
-
+        return ""
 
     @property
     def stadio_commessa(self):
@@ -137,23 +115,23 @@ class TestataCommessa(Dao):
 
     def filter_values(self,k,v):
         if k == 'daNumero':
-            dic = {k:testatacommessa.c.numero >= v}
+            dic = {k:t_testatacommessa.c.numero >= v}
         elif k == 'aNumero':
-            dic = {k:testatacommessa.c.numero <= v}
+            dic = {k:t_testatacommessa.c.numero <= v}
         elif k == 'datafinecheck':
-            dic = {k:testatacommessa.c.data_fine == None}
+            dic = {k:t_testatacommessa.c.data_fine == None}
         elif k == 'datafine':
-            dic = {k:testatacommessa.c.data_fine == v}
+            dic = {k:t_testatacommessa.c.data_fine == v}
         elif k == 'numero':
-            dic = {k:testatacommessa.c.numero == v}
+            dic = {k:t_testatacommessa.c.numero == v}
         elif k == 'daDataInizio':
-            dic = {k:testatacommessa.c.data_inizio >= v}
+            dic = {k:t_testatacommessa.c.data_inizio >= v}
         elif k== 'aDataInizio':
-            dic = {k:testatacommessa.c.data_inizio <= v}
+            dic = {k:t_testatacommessa.c.data_inizio <= v}
         elif k == 'daDataFine':
-            dic = {k:testatacommessa.c.data_fine >= v}
+            dic = {k:t_testatacommessa.c.data_fine >= v}
         elif k== 'aDataFine':
-            dic = {k:testatacommessa.c.data_fine <= v}
+            dic = {k:t_testatacommessa.c.data_fine <= v}
         elif k == 'idStadioCommessa':
             dic = {k:rigacommessa.c.id_stadio_commessa==v}
         return  dic[k]
@@ -194,9 +172,9 @@ class TestataCommessa(Dao):
                 riga.persist()
         self.__righeCommessa = []
 
-std_mapper = mapper(TestataCommessa, testatacommessa,properties={
+std_mapper = mapper(TestataCommessa, t_testatacommessa,properties={
         "rigatestcomm": relation(RigaCommessa,primaryjoin=
-                testatacommessa.c.id==RigaCommessa.id_testata_commessa,
+                t_testatacommessa.c.id==RigaCommessa.id_testata_commessa,
 #                foreign_keys=[RigaPrimaNota.id_testata_prima_nota],
                 cascade="all, delete")},
-                order_by=testatacommessa.c.id)
+                order_by=t_testatacommessa.c.id)

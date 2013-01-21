@@ -28,33 +28,23 @@ from migrate import *
 
 
 try:
-    rigacommessa=Table('riga_commessa',
+    t_rigacommessa=Table('riga_commessa',
                 params['metadata'],
                 schema = params['schema'],
                 autoload=True)
 except:
-    testatacommessaTable = Table('testata_commessa', params['metadata'], autoload=True, schema=params['schema'])
-
-
-    if params["tipo_db"] == "sqlite":
-        testatacommessaFK ='testata_commessa.id'
-
-    else:
-        testatacommessaFK = params['schema']+'.testata_commessa.id'
-
-    rigacommessa = Table('riga_commessa', params["metadata"],
+    t_rigacommessa = Table('riga_commessa', params["metadata"],
             Column('id', Integer, primary_key=True),
             Column('numero', Integer, nullable=False),
             Column('denominazione', String(300), nullable=False),
-            Column('id_testata_commessa', Integer,ForeignKey(testatacommessaFK,onupdate="CASCADE",ondelete="CASCADE")),
-#            Column('numero', Integer, nullable=False),
+            Column('id_testata_commessa', Integer,ForeignKey(fk_prefix+'testata_commessa.id',onupdate="CASCADE",ondelete="CASCADE")),
             Column('data_registrazione', DateTime, nullable=True),
             Column('dao_class', String(100), nullable=True),
             Column('note',Text,nullable=True),
             Column('id_dao', Integer, nullable=True),
             schema=params["schema"],
             useexisting=True)
-    rigacommessa.create(checkfirst=True)
+    t_rigacommessa.create(checkfirst=True)
 
 
 class RigaCommessa(Dao):
@@ -64,17 +54,17 @@ class RigaCommessa(Dao):
 
     def filter_values(self,k,v):
         if k == "id":
-            dic= {k:rigacommessa.c.id ==v}
+            dic= {k:t_rigacommessa.c.id ==v}
         elif k == 'idTestataCommessa':
-            dic = {k:rigacommessa.c.id_testata_commessa==v}
+            dic = {k:t_rigacommessa.c.id_testata_commessa==v}
 #        elif k == 'numero':
 #            dic = {k:rigacommessa.c.numero==v}
         elif k == 'daoClass':
-            dic = {k:rigacommessa.c.dao_class==v}
+            dic = {k:t_rigacommessa.c.dao_class==v}
         elif k == 'idDao':
-            dic = {k:rigacommessa.c.id_dao==v}
+            dic = {k:t_rigacommessa.c.id_dao==v}
         return  dic[k]
 
 
-std_mapper = mapper(RigaCommessa,rigacommessa,
-                properties={}, order_by=rigacommessa.c.id)
+std_mapper = mapper(RigaCommessa,t_rigacommessa,
+            order_by=t_rigacommessa.c.id)

@@ -26,15 +26,15 @@ from promogest.Environment import *
 from promogest.dao.Dao import Dao
 
 try:
-    stadiocommessa=Table('stadio_commessa', params['metadata'],schema = params['schema'],autoload=True)
+    t_stadiocommessa=Table('stadio_commessa', params['metadata'],schema = params['schema'],autoload=True)
 
 except:
-    stadiocommessa  = Table('stadio_commessa', params["metadata"],
+    t_stadiocommessa  = Table('stadio_commessa', params["metadata"],
             Column('id',Integer,primary_key=True),
             Column('denominazione',String(100)),
             schema = params['schema'])
 
-    stadiocommessa.create(checkfirst=True)
+    t_stadiocommessa.create(checkfirst=True)
 
 
 class StadioCommessa(Dao):
@@ -44,8 +44,8 @@ class StadioCommessa(Dao):
 
     def filter_values(self,k,v):
         dic= {
-            'denominazione':stadiocommessa.c.denominazione == v,
+            'denominazione':t_stadiocommessa.c.denominazione == v,
                 }
         return  dic[k]
 
-std_mapper = mapper(StadioCommessa, stadiocommessa,order_by=stadiocommessa.c.denominazione)
+std_mapper = mapper(StadioCommessa, t_stadiocommessa,order_by=t_stadiocommessa.c.denominazione)

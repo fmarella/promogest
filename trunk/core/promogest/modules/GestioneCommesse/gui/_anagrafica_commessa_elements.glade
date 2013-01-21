@@ -53,6 +53,23 @@
                       </packing>
                     </child>
                     <child>
+                      <object class="GtkButton" id="visualizza_master_button">
+                        <property name="label" translatable="yes">Visualizza</property>
+                        <property name="use_action_appearance">False</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="position">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
                       <object class="GtkLabel" id="data_inizio_label">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
@@ -62,7 +79,7 @@
                       <packing>
                         <property name="expand">False</property>
                         <property name="fill">False</property>
-                        <property name="position">2</property>
+                        <property name="position">4</property>
                       </packing>
                     </child>
                     <child>
@@ -73,7 +90,7 @@
                       <packing>
                         <property name="expand">False</property>
                         <property name="fill">False</property>
-                        <property name="position">3</property>
+                        <property name="position">5</property>
                       </packing>
                     </child>
                     <child>
@@ -86,7 +103,7 @@
                       <packing>
                         <property name="expand">False</property>
                         <property name="fill">False</property>
-                        <property name="position">4</property>
+                        <property name="position">6</property>
                       </packing>
                     </child>
                     <child>
@@ -97,14 +114,8 @@
                       <packing>
                         <property name="expand">False</property>
                         <property name="fill">False</property>
-                        <property name="position">5</property>
+                        <property name="position">7</property>
                       </packing>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
                     </child>
                     <child>
                       <object class="GtkLabel" id="articolo_label">
@@ -337,26 +348,18 @@ e metterlo nella commessa</property>
                       </packing>
                     </child>
                     <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <object class="GtkButton" id="new_dao_button">
-                        <property name="label">gtk-new</property>
+                      <object class="GtkButton" id="show_button">
+                        <property name="label" translatable="yes">visualizza</property>
                         <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
-                        <property name="tooltip_text" translatable="yes">Usare questo bottone per creare un documento
-un preventivo, un DDT o una fattura 
-dopo averlo creato per inserirlo si dovrà comunque 
-usare il pulsante di ricerca posto qui di fianco</property>
-                        <property name="use_stock">True</property>
-                        <signal name="clicked" handler="on_new_dao_button_clicked" swapped="no"/>
+                        <signal name="clicked" handler="on_show_button_clicked" swapped="no"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
                         <property name="fill">False</property>
-                        <property name="position">4</property>
+                        <property name="position">3</property>
                       </packing>
                     </child>
                     <child>
@@ -374,7 +377,7 @@ modificare l'oggetto inserito</property>
                       <packing>
                         <property name="expand">False</property>
                         <property name="fill">False</property>
-                        <property name="position">5</property>
+                        <property name="position">4</property>
                       </packing>
                     </child>
                     <child>
@@ -391,8 +394,11 @@ modificare l'oggetto inserito</property>
                       <packing>
                         <property name="expand">False</property>
                         <property name="fill">False</property>
-                        <property name="position">6</property>
+                        <property name="position">5</property>
                       </packing>
+                    </child>
+                    <child>
+                      <placeholder/>
                     </child>
                   </object>
                   <packing>
@@ -577,6 +583,21 @@ modificare l'oggetto inserito</property>
             <property name="expand">True</property>
             <property name="fill">True</property>
             <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="button1">
+            <property name="label">gtk-clear</property>
+            <property name="use_action_appearance">False</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="use_stock">True</property>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">2</property>
           </packing>
         </child>
       </object>
@@ -866,34 +887,12 @@ modificare l'oggetto inserito</property>
       </object>
     </child>
     <child>
-      <object class="GtkTreeViewColumn" id="treeviewcolumn2">
-        <property name="title" translatable="yes">Cliente</property>
-        <child>
-          <object class="GtkCellRendererText" id="cellrenderertext3"/>
-          <attributes>
-            <attribute name="text">2</attribute>
-          </attributes>
-        </child>
-      </object>
-    </child>
-    <child>
-      <object class="GtkTreeViewColumn" id="treeviewcolumn7">
-        <property name="title" translatable="yes">Titolo</property>
-        <child>
-          <object class="GtkCellRendererText" id="cellrenderertext8"/>
-          <attributes>
-            <attribute name="text">3</attribute>
-          </attributes>
-        </child>
-      </object>
-    </child>
-    <child>
       <object class="GtkTreeViewColumn" id="treeviewcolumn3">
         <property name="title" translatable="yes">Data inizio</property>
         <child>
           <object class="GtkCellRendererText" id="cellrenderertext4"/>
           <attributes>
-            <attribute name="text">4</attribute>
+            <attribute name="text">2</attribute>
           </attributes>
         </child>
       </object>
@@ -903,6 +902,28 @@ modificare l'oggetto inserito</property>
         <property name="title" translatable="yes">Data fine</property>
         <child>
           <object class="GtkCellRendererText" id="cellrenderertext5"/>
+          <attributes>
+            <attribute name="text">3</attribute>
+          </attributes>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkTreeViewColumn" id="treeviewcolumn2">
+        <property name="title" translatable="yes">Cliente</property>
+        <child>
+          <object class="GtkCellRendererText" id="cellrenderertext3"/>
+          <attributes>
+            <attribute name="text">4</attribute>
+          </attributes>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkTreeViewColumn" id="treeviewcolumn7">
+        <property name="title" translatable="yes">Titolo</property>
+        <child>
+          <object class="GtkCellRendererText" id="cellrenderertext8"/>
           <attributes>
             <attribute name="text">5</attribute>
           </attributes>

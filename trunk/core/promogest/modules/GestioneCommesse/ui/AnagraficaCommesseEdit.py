@@ -75,7 +75,7 @@ class AnagraficaCommesseEdit(AnagraficaEdit):
             model.append((t,))
         self.open_button.set_sensitive(False)
         self.trova_button.set_sensitive(False)
-        self.new_dao_button.set_sensitive(False)
+        #self.new_dao_button.set_sensitive(False)
         self.stampa_dao_button.set_sensitive(False)
 
 
@@ -84,6 +84,7 @@ class AnagraficaCommesseEdit(AnagraficaEdit):
         if not dao:
             info = ""
         elif dao.__class__.__name__ == "TestataDocumento":
+            dao.totali
             info = "<b>%s</b>  - <b>del</b> %s <b>N°</b> %s - <b>Da/A</b> %s  - <b>TOT: €</b> %s" %(str(dao.operazione),
                                                                 dateToString(dao.data_documento),
                                                                 str(dao.numero),
@@ -99,6 +100,9 @@ class AnagraficaCommesseEdit(AnagraficaEdit):
                                         dao.nome)
         elif dao.__class__.__name__ =="Magazzino":
             info = "Magazzino: %s , %s " %(str(dao.denominazione), str(dao.pvcode))
+        elif dao.__class__.__name__ =="Articolo":
+            info = "Articolo: %s , %s " %(str(dao.codice), str(dao.denominazione))
+
         self.info_dao_label.set_markup(info)
 
 
@@ -106,13 +110,13 @@ class AnagraficaCommesseEdit(AnagraficaEdit):
         """ """
         self.open_button.set_sensitive(False)
         self.trova_button.set_sensitive(False)
-        self.new_dao_button.set_sensitive(False)
+        #self.new_dao_button.set_sensitive(False)
         self.stampa_dao_button.set_sensitive(False)
         self.tipo_dao = combobox.get_model().get_value(combobox.get_active_iter(), 0).lower()
         if self.tipo_dao:
 #            self.open_button.set_sensitive(True)
             self.trova_button.set_sensitive(True)
-            self.new_dao_button.set_sensitive(True)
+            #self.new_dao_button.set_sensitive(True)
 #            self.stampa_dao_button.set_sensitive(True)
         else:
             self.composeInfoDaoLabel(None)

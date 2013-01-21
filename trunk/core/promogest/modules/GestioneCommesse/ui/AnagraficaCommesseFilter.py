@@ -83,14 +83,15 @@ class AnagraficaCommesseFilter(AnagraficaFilter):
                 offset=offset,
                 batchSize=batchSize)
         self._filterClosure = filterClosure
+
         valis = self.runFilter()
         self.commesse_filter_listore.clear()
         for i in valis:
             self.commesse_filter_listore.append((i,
                                         (str(i.numero) or ''),
-                                        i.cliente,
-                                        i.denominazione,
                                         (dateToString(i.data_inizio) or ''),
                                         (dateToString(i.data_fine) or ''),
+                                        i.cliente,
+                                        i.denominazione,
                                         i.stadio_commessa,
                                         i.articolo))
