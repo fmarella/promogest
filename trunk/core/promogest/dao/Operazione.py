@@ -71,7 +71,6 @@ if (u'Trasferimento merce magazzino',) not in s or s==[]:
     ope.execute(denominazione = "Trasferimento merce magazzino", fonte_valore = "acquisto_senza_iva",
     tipo_operazione="movimento",tipo_persona_giuridica="magazzino", segno="=")
 
-
 if (u'Ordine beni strumentali',) not in s or s==[]:
     ope  = operazione.insert()
     ope.execute(denominazione = "Ordine beni strumentali", fonte_valore = "acquisto_senza_iva",

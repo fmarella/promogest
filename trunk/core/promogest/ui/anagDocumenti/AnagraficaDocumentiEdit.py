@@ -136,7 +136,6 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self.deleted_rows = []
 #        self.completion.set_minimum_key_length(3)
 
-
         if posso("PW"):
             self.promowear_manager_taglia_colore_togglebutton.set_property(
                                                             "visible", True)
@@ -166,10 +165,9 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self.nolottotemp = False
 
     def on_lotto_temp_entry_changed(self, entry):
-        '''
-        Conferma automaticamente la riga dopo 3 secondi se viene
+        """ Conferma automaticamente la riga dopo 3 secondi se viene
         inserito il lotto temp.
-        '''
+        """
         def do_confirm_row():
             if (len(self.lotto_temp_entry.get_text()) >= 6) and \
                     self.auto_lotto_temp:
@@ -178,6 +176,8 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             gobject.timeout_add(500, do_confirm_row)
 
     def draw(self, cplx=False):
+        """ Funzione che si occupa di disegnare l'interfaccia
+        """
         self.cplx = cplx
         drawPart(self)
         self.pagamenti_page = PagamentiNotebookPage(self)
@@ -202,6 +202,8 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                 self.prezzo_lordo_entry.grab_focus()
 
     def on_switch_prezzo_button_clicked(self, button):
+        """ Bottone che alterna il prezzo ingrosso e quello dettaglio
+        """
         idListino = findIdFromCombobox(self.id_listino_customcombobox.combobox)
         idArticolo = self._righe[0]["idArticolo"]
         prezzi = leggiListino(idListino, idArticolo)
@@ -213,9 +215,9 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self.visualizza_prezzo_alternativo = False
 
     def on_articolo_entry_focus_in_event(self, widget, event):
-        """ controlliamo prima di effettuare una ricerca che il magazzino sia
-        selezionato per rendere la ricerca possibile e corretta"""
-
+        """ Controlliamo prima di effettuare una ricerca che il magazzino sia
+        selezionato per rendere la ricerca possibile e corretta
+        """
         if not findIdFromCombobox(self.id_magazzino_combobox) \
                                                     and self.checkMAGAZZINO:
             messageInfo(msg=_(
@@ -225,7 +227,8 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
 
     def on_anagrafica_documenti_detail_vbox_key_press_event(self,
                                                 widget=None, event=None):
-        """ Mappiamo un po' di tasti su ana documenti"""
+        """ Mappiamo un po' di tasti su anag documenti
+        """
         keyname = gdk_keyval_name(event.keyval)
         if keyname == 'F4':  # confermo e pulisco
             self.on_confirm_row_button_clicked(widget=None)
@@ -275,6 +278,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                                 "tempoArrivoFornitura": None,
                                 "rigaMovimentoFornituraList": [],
                                 }
+        #chiavi aggiuntive al dizionario RIGA
         if posso("SM"):
             AnagraficaDocumentiEditSuMisuraExt.azzeraRiga(self, numero)
         if posso("PW"):
@@ -283,8 +287,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             AnagraficaDocumentiEditGestioneNoleggioExt.azzeraRiga(self, numero)
 
     def azzeraRigaPartial(self, numero=0, rigatampone=None):
-        """
-        Azzera i campi del dizionario privato delle righe, alla riga
+        """Azzera i campi del dizionario privato delle righe, alla riga
         indicata (o alla 0-esima)
         """
         self._righe[numero] = {"idRiga": None,
@@ -318,8 +321,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                                                             rigatampone)
 
     def nuovaRiga(self):
-        """
-        Prepara per l'inserimento di una nuova riga
+        """ Prepara la UI per l'inserimento di una nuova riga
         """
         self._numRiga = 0
         self.azzeraRiga(0)
@@ -335,7 +337,6 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self.tempo_arrivo_merce_entry.set_text('')
         self.data_prezzo_datewidget.set_text('')
         self.id_iva_customcombobox.combobox.set_active(-1)
-#        self.percentuale_iva_entry.set_text('0')
         self.id_multiplo_customcombobox.combobox.clear()
         self.id_listino_customcombobox.combobox.clear()
         self.prezzo_lordo_entry.set_text('0')
@@ -380,8 +381,8 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
 
     def nuovaRigaNoClean(self, rigatampone=None):
         """ Prepara per l'inserimento di una nuova riga seza cancellare i campi
-        TODO: aggiungere campi fornitura"""
-
+        TODO: aggiungere campi fornitura (F6)
+        """
         self._numRiga = 0
         self.azzeraRigaPartial(0, rigatampone=rigatampone)
         self.unitaBaseLabel.set_text(rigatampone['unitaBase'])
@@ -389,7 +390,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                                     rigatampone['codiceArticoloFornitore'])
 
     def clearRows(self):
-        """ pulisce i campi per il trattamento e la conservazione delle righe
+        """Pulisce i campi per il trattamento e la conservazione delle righe
         """
         self._righe = []
         self._righe.append({})
@@ -416,7 +417,8 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                                                             self._id_listino)
 
     def on_id_multiplo_customcombobox_button_clicked(self, widget, toggleButton):
-        """ FIXME """
+        """ I multipli di fatto non vengono quasi mai usati ....
+        """
         on_id_multiplo_customcombobox_clicked(widget, toggleButton, self._righe[0]["idArticolo"])
 
     def on_id_multiplo_customcombobox_changed(self, combobox):
@@ -439,7 +441,8 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             return []
 
     def getPrezzoVenditaLordo(self, idListino, idArticolo):
-        """ cerca il prezzo di vendita """
+        """Cerca il prezzo di vendita
+        """
         prezzoLordo = 0
         sconti = []
         applicazione = "scalare"
@@ -462,13 +465,15 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self._righe[0]["VL"] = self.get_variazioni_listino(cliente, idListino)
 
     def _getPrezzoAcquisto(self):
-        """ Lettura del prezzo di acquisto netto che serve per i noleggi """
+        """ Lettura del prezzo di acquisto netto che serve per i noleggi
+        """
         fornitura = leggiFornitura(self._righe[0]["idArticolo"], data=datetime.datetime.now())
         prezzo = fornitura["prezzoNetto"]
         self.prezzo_aquisto_entry.set_text(str(prezzo) or "0")
 
     def on_sconti_widget_button_toggled(self, button):
-        """ """
+        """ Apre il widget SCONTI
+        """
         if button.get_property('active') is True:
             return
 
@@ -483,7 +488,8 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self.calcolaTotale()
 
     def on_notebook_select_page(self, notebook, move_focus=None, page=None, page_num=None):
-        """ AL MOMENTO INUTILIZZATA"""
+        """ AL MOMENTO INUTILIZZATA
+        """
         return
 
     def on_notebook_switch_page(self, notebook, page, page_num):
@@ -537,7 +543,8 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         #self.id_destinazione_merce_customcombobox.combobox.set_sensitive(False)
 
     def _refresh(self):
-        """ Funzione importantissima di "impianto" del documento nella UI"""
+        """ Funzione importantissima di "impianto" del documento nella UI
+        """
         self._loading = True
 
         self.pagamenti_page.clear()
@@ -669,25 +676,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self._righe[0]["descrizione"] = riga.descrizione
             self._righe[0]["percentualeIva"] = mN(riga.percentuale_iva,0)
 
-
-            # Questo valore potrebbe essere a none per le righe
-            #precedenti il 19/02/2011 , cerchiamo di derurre l'id e lo settiamo
             idiva = None
-#            if riga.id_iva == None:
-#                if riga.id_articolo is not None:
-#                    #siamo di fronte ad un articolo "vecchio"
-#                    art = Articolo().getRecord(id=riga.id_articolo)
-#                    ivaart = art.id_aliquota_iva
-#                    daoiva = AliquotaIva().select(percentuale=riga.percentuale_iva)
-#                    if daoiva:
-#                        idiva = daoiva[0].id
-#                else:
-#                    if riga.percentuale_iva != 0:
-#                        #riga descrittiva
-#                        daoiva = AliquotaIva().select(percentuale=riga.percentuale_iva)
-#                        if daoiva:
-#                            idiva = daoiva[0].id
-#            else:
             idiva = riga.id_iva
             self._righe[0]["idAliquotaIva"] = idiva
 
@@ -808,8 +797,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self.pagamenti_page.ricalcola_sospeso_e_pagato()
 
     def setDao(self, dao):
-        """
-            imposta un nuovo dao Testata documento
+        """ Imposta un nuovo dao Testata documento
         """
         self.variazioni_dati_testata = False
         self.destinatario_radiobutton.set_active(True)
@@ -850,7 +838,8 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
 
         else:
             # Ricrea il Dao prendendolo dal DB
-            self.dao = TestataDocumento().getRecord(id=dao.id)
+            #self.dao = TestataDocumento().getRecord(id=dao.id)
+            self.dao= dao
             self._controllo_data_documento = dateToString(self.dao.data_documento)
             self._controllo_numero_documento = self.dao.numero
             self._controllo_parte_documento  = self.dao.parte
@@ -1091,6 +1080,8 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         print " \nFINE DEL SALVATAGGIO DEL DOCUMENTO\n\n"
 
     def on_importo_da_ripartire_entry_changed(self, entry):
+        """Fesseria voluta da un cliente ....alla fine non serviva
+        """
         return
         self.dao.removeDividedCost()
 #        self.dao.ripartire_importo = False
@@ -1105,14 +1096,10 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self.riga_partenza =  model.get_path(iter_to_copy)
 
     def on_righe_treeview_drag_leave(self, treeview, drag_context, timestamp):
-        """ questa è la funzione di "scarico" del drop, abbiamo la riga di
+        """ Questa è la funzione di "scarico" del drop, abbiamo la riga di
         destinazione con la funzione get_drag_dest_row() e prendiamo
-        la riga di partenza con la funzione precedente """
-        #model = treeview.get_model()
-        #for m in model:
-            #print "CURIOSEO", m[17]
-        for i in range(0, len(self._righe)):
-            print "PRIMA", i, self._righe[i]["descrizione"]
+        la riga di partenza con la funzione precedente
+        """
         if not treeview:
             return
         duplicarighe= []
@@ -1129,12 +1116,10 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                 self._righe.insert(row[0]+2,duplicarighe[self.riga_partenza[0]+1])
                 self._righe.pop(self.riga_partenza[0]+1)
             duplicarighe= []
-        for i in range(0, len(self._righe)):
-            print "DOPO ELABORAZIONE", i, self._righe[i]["descrizione"]
-
 
     def on_righe_treeview_row_activated(self, treeview, path, column):
-        """ riporta la riga selezionata in primo piano per la modifica"""
+        """ Riporta la riga selezionata in primo piano per la modifica
+        """
         # Disabilita la conferma automatica su lotto temp
         self.auto_lotto_temp = False
 
@@ -1144,49 +1129,8 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self._numRiga = selRow + 1
         self.azzeraRiga(0)
         self._loading = True
-
-        self._righe[0]["idRiga"] = self._righe[self._numRiga]["idRiga"]
-        self._righe[0]["idMagazzino"] = self._righe[self._numRiga]["idMagazzino"]
-        self._righe[0]["magazzino"] = self._righe[self._numRiga]["magazzino"]
-        self._righe[0]["idArticolo"] = self._righe[self._numRiga]["idArticolo"]
-        self._righe[0]["codiceArticolo"] = self._righe[self._numRiga]["codiceArticolo"]
-        self._righe[0]["descrizione"] = self._righe[self._numRiga]["descrizione"]
-        self._righe[0]["codiceArticoloFornitore"] = self._righe[self._numRiga]["codiceArticoloFornitore"]
-
-        self._righe[0]["numeroLottoArticoloFornitura"] = self._righe[self._numRiga]["numeroLottoArticoloFornitura"]
-        self._righe[0]["numeroLottoTemp"] = self._righe[self._numRiga]["numeroLottoTemp"]
-        self._righe[0]["dataScadenzaArticoloFornitura"] = self._righe[self._numRiga]["dataScadenzaArticoloFornitura"]
-        self._righe[0]["dataProduzioneArticoloFornitura"] = self._righe[self._numRiga]["dataProduzioneArticoloFornitura"]
-        self._righe[0]["dataPrezzoFornitura"] = self._righe[self._numRiga]["dataPrezzoFornitura"]
-        self._righe[0]["ordineMinimoFornitura"] = self._righe[self._numRiga]["ordineMinimoFornitura"]
-        self._righe[0]["tempoArrivoFornitura"] = self._righe[self._numRiga]["tempoArrivoFornitura"]
-        if "rigaMovimentoFornituraList" in self._righe[self._numRiga]:
-            self._righe[0]["rigaMovimentoFornituraList"] = self._righe[self._numRiga]["rigaMovimentoFornituraList"]
-
-        self._righe[0]["idUnitaBase"] = self._righe[self._numRiga]["idUnitaBase"]
-        self._righe[0]["unitaBase"] = self._righe[self._numRiga]["unitaBase"]
-        self._righe[0]["idMultiplo"] = self._righe[self._numRiga]["idMultiplo"]
-        self._righe[0]["multiplo"] = self._righe[self._numRiga]["multiplo"]
-        self._righe[0]["idListino"] = self._righe[self._numRiga]["idListino"]
-        self._righe[0]["listino"] = self._righe[self._numRiga]["listino"]
-        self._righe[0]["quantita"] = self._righe[self._numRiga]["quantita"]
+        self._righe[0] = self._righe[self._numRiga]
         self.last_qta = self._righe[self._numRiga]["quantita"]
-        self._righe[0]["moltiplicatore"] = self._righe[self._numRiga]["moltiplicatore"]
-        self._righe[0]["prezzoLordo"] = self._righe[self._numRiga]["prezzoLordo"]
-        self._righe[0]["percentualeIva"] = self._righe[self._numRiga]["percentualeIva"]
-        self._righe[0]["idAliquotaIva"] = self._righe[self._numRiga]["idAliquotaIva"]
-        self._righe[0]["applicazioneSconti"] = self._righe[self._numRiga]["applicazioneSconti"]
-        self._righe[0]["sconti"] = self._righe[self._numRiga]["sconti"]
-        self._righe[0]["prezzoNetto"] = self._righe[self._numRiga]["prezzoNetto"]
-        self._righe[0]["totale"] = self._righe[self._numRiga]["totale"]
-        self._righe[0]["prezzoNettoUltimo"] = self._righe[self._numRiga]["prezzoNettoUltimo"]
-        if posso("SM"):
-            self._righe[0]["altezza"] = self._righe[self._numRiga]["altezza"]
-            self._righe[0]["larghezza"] = self._righe[self._numRiga]["larghezza"]
-            self._righe[0]["molt_pezzi"] = self._righe[self._numRiga]["molt_pezzi"]
-        if posso("GN"):
-            self._righe[0]["divisore_noleggio"] = self._righe[self._numRiga]["divisore_noleggio"]
-            self._righe[0]["prezzo_acquisto"] = self._righe[self._numRiga]["prezzo_acquisto"]
         self.giacenza_label.set_text(str(giacenzaArticolo(year=Environment.workingYear,
                                                 idMagazzino=self._righe[0]["idMagazzino"],
                                                 idArticolo=self._righe[0]["idArticolo"])[0]))
@@ -1335,54 +1279,17 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self._righe[0]["altezza"] = self.altezza_entry.get_text()
             self._righe[0]["larghezza"] = self.larghezza_entry.get_text()
             self._righe[0]["molt_pezzi"] = self.moltiplicatore_entry.get_text()
-
-
-        self._righe[self._numRiga]["idRiga"] = self._righe[0]["idRiga"]
-        self._righe[self._numRiga]["idMagazzino"] = self._righe[0]["idMagazzino"]
-        self._righe[self._numRiga]["magazzino"] = self._righe[0]["magazzino"]
-        self._righe[self._numRiga]["idArticolo"] = self._righe[0]["idArticolo"]
-        self._righe[self._numRiga]["codiceArticolo"] = self._righe[0]["codiceArticolo"]
-        self._righe[self._numRiga]["descrizione"] = self._righe[0]["descrizione"]
-        self._righe[self._numRiga]["codiceArticoloFornitore"] = self._righe[0]["codiceArticoloFornitore"]
-
-        self._righe[self._numRiga]["numeroLottoArticoloFornitura"] = self._righe[0]["numeroLottoArticoloFornitura"]
-        self._righe[self._numRiga]["numeroLottoTemp"] = self._righe[0]["numeroLottoTemp"]
-        self._righe[self._numRiga]["dataScadenzaArticoloFornitura"] = self._righe[0]["dataScadenzaArticoloFornitura"]
-        self._righe[self._numRiga]["dataProduzioneArticoloFornitura"] = self._righe[0]["dataProduzioneArticoloFornitura"]
-        self._righe[self._numRiga]["dataPrezzoFornitura"] = self._righe[0]["dataPrezzoFornitura"]
-        self._righe[self._numRiga]["ordineMinimoFornitura"] = self._righe[0]["ordineMinimoFornitura"]
-        self._righe[self._numRiga]["tempoArrivoFornitura"] = self._righe[0]["tempoArrivoFornitura"]
-        if "rigaMovimentoFornituraList" in self._righe[0]:
-            self._righe[self._numRiga]["rigaMovimentoFornituraList"] = self._righe[0]["rigaMovimentoFornituraList"]
-
-        self._righe[self._numRiga]["percentualeIva"] = self._righe[0]["percentualeIva"]
-        self._righe[self._numRiga]["idAliquotaIva"] = self._righe[0]["idAliquotaIva"]
-        self._righe[self._numRiga]["idUnitaBase"] = self._righe[0]["idUnitaBase"]
-        self._righe[self._numRiga]["unitaBase"] = self._righe[0]["unitaBase"]
-        self._righe[self._numRiga]["idMultiplo"] = self._righe[0]["idMultiplo"]
-        self._righe[self._numRiga]["multiplo"] = self._righe[0]["multiplo"]
-        self._righe[self._numRiga]["idListino"] = self._righe[0]["idListino"]
-        self._righe[self._numRiga]["listino"] = self._righe[0]["listino"]
-        self._righe[self._numRiga]["quantita"] = self._righe[0]["quantita"]
-        self._righe[self._numRiga]["moltiplicatore"] = self._righe[0]["moltiplicatore"]
-        self._righe[self._numRiga]["prezzoLordo"] = self._righe[0]["prezzoLordo"]
-        self._righe[self._numRiga]["applicazioneSconti"] = self._righe[0]["applicazioneSconti"]
-        self._righe[self._numRiga]["sconti"] = self._righe[0]["sconti"]
-        self._righe[self._numRiga]["prezzoNetto"] = self._righe[0]["prezzoNetto"]
-
+        self._righe[self._numRiga] = self._righe[0]
         if posso("GN") and self.noleggio:
-            self._righe[self._numRiga]["divisore_noleggio"] = self._righe[0]["divisore_noleggio"]
-            if "prezzo_acquisto" in self._righe[0]:
-                self._righe[self._numRiga]["prezzo_acquisto"] = self._righe[0]["prezzo_acquisto"]
-            else:
+            if not "prezzo_acquisto" in self._righe[0]:
                 messageInfo(msg=_("ATTENZIONE!!, SEMBRA UN NOLEGGIO MA MANCA PREZZO ACQUISTO.\n RICONTROLLARE RIGA"))
-            arco_temporale = self._righe[self._numRiga]["arco_temporale"] = self._righe[0]["arco_temporale"]
+            arco_temporale = self._righe[self._numRiga]["arco_temporale"]
         else:
             arco_temporale="NO"
         if posso("SM"):
-            altezza =self._righe[self._numRiga]["altezza"] = self._righe[0]["altezza"]
-            larghezza=self._righe[self._numRiga]["larghezza"] = self._righe[0]["larghezza"]
-            molt_pezzi=self._righe[self._numRiga]["molt_pezzi"] = self._righe[0]["molt_pezzi"]
+            altezza =self._righe[self._numRiga]["altezza"]
+            larghezza=self._righe[self._numRiga]["larghezza"]
+            molt_pezzi=self._righe[self._numRiga]["molt_pezzi"]
         else:
             altezza= larghezza= molt_pezzi= ""
         # inserisci è true quando si sta editando la riga selezionata
@@ -1774,7 +1681,8 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self.variazioni_dati_testata = True
 
     def showDatiMovimento(self):
-        """ Show movimento related informations"""
+        """ Show movimento related informations
+        """
         stringLabel = '-'
         if self.dao.id is not None:
             res = TestataMovimento().select(id_testata_documento= self.dao.id)
@@ -1868,11 +1776,14 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
 
 
     def on_multi_line_button_clicked(self, widget):
-        """ gestione multilinea in utils"""
+        """ gestione multilinea in utils
+        TODO: il multilinea è da rifare assolutamente
+        """
         on_multi_line_button_clickedPart(self, widget)
 
     def on_id_operazione_combobox_changed(self, combobox):
-        """ Funzione di gestione cambiamento combo operazione"""
+        """ Funzione di gestione cambiamento combo operazione
+        """
         self._operazione = findIdFromCombobox(self.id_operazione_combobox)
         if not self._operazione:
             return
@@ -1910,10 +1821,10 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self.tempo_arrivo_merce_label.set_property('visible', True)
             self.tempo_arrivo_merce_entry.set_property('visible', True)
             self.dettaglio_giacenza_togglebutton.set_property("visible", False)
-
             self.protocollo_label.set_property('visible', True)
             self.protocollo_entry1.set_property('visible', True)
             self.numero_documento_label.set_text('N. reg.')
+
         elif (self._tipoPersonaGiuridica == "cliente"):
             self.persona_giuridica_label.set_text('Cliente')
             self.id_persona_giuridica_customcombobox.setType(self._tipoPersonaGiuridica)
