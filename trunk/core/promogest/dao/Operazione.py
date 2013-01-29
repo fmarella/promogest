@@ -93,9 +93,9 @@ def addOpDirette():
     if (u'DDT vendita diretto',) not in s or s==[]:
         ope = operazione.insert()
         ope.execute(denominazione='DDT vendita diretto', fonte_valore='vendita_senza_iva', tipo_persona_giuridica='fornitore',tipo_operazione="documento" )
-    if (u'Fatture vendita diretta',) not in s or s==[]:
+    if (u'Fattura vendita diretta',) not in s or s==[]:
         ope = operazione.insert()
-        ope.execute(denominazione='Fatture vendita diretta', fonte_valore='vendita_senza_iva', tipo_persona_giuridica='cliente',tipo_operazione="documento" )
+        ope.execute(denominazione='Fattura vendita diretta', fonte_valore='vendita_senza_iva', tipo_persona_giuridica='cliente',tipo_operazione="documento" )
 
 
 std_mapper = mapper(Operazione, operazione, order_by=operazione.c.denominazione)

@@ -920,10 +920,14 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         if self._tipoPersonaGiuridica == "fornitore":
             self.dao.id_fornitore = self.id_persona_giuridica_customcombobox.getId()
             self.dao.id_cliente = None
+            if Environment.azienda == "daog" and "dirett" in self.dao.operazione:
+                self.dao.id_cliente = self.id_persona_giuridica_diretta_customcombobox.getId()
             self.dao.id_destinazione_merce = None
         elif self._tipoPersonaGiuridica == "cliente":
             self.dao.id_cliente = self.id_persona_giuridica_customcombobox.getId()
             self.dao.id_fornitore = None
+            if Environment.azienda == "daog" and "dirett" in self.dao.operazione:
+                self.dao.id_fornitore = self.id_persona_giuridica_diretta_customcombobox.getId()
             self.dao.id_destinazione_merce = findIdFromCombobox(self.id_destinazione_merce_customcombobox.combobox)
         self.dao.id_pagamento = findIdFromCombobox(self.pagamenti_page.id_pagamento_customcombobox.combobox)
         self.dao.id_banca = findIdFromCombobox(self.pagamenti_page.id_banca_customcombobox.combobox)
