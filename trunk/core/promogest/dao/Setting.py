@@ -105,4 +105,16 @@ if (u'registro_preventivo_dettaglio.rotazione',) not in s or s==[]:
     settinggg  = settingg.insert()
     settinggg.execute(key = "registro_preventivo_dettaglio.rotazione", description = "Tipologia di rotazione registro associato a preventivo dettaglio ", value= "annuale")
 
+def addregistriDiretti():
+    if (u'registro_ordine_da_cliente_diretto.rotazione',) not in s or s==[]:
+        settinggg  = settingg.insert()
+        settinggg.execute(key = "registro_ordine_da_cliente_diretto.rotazione", description = "registro_ordine_da_cliente_diretto.rotazione ", value= "annuale")
+    if (u'registro_ddt_vendita_diretto.rotazione',) not in s or s==[]:
+        settinggg  = settingg.insert()
+        settinggg.execute(key = "registro_ddt_vendita_diretto.rotazione", description = "registro_ddt_vendita_diretto.rotazione ", value= "annuale")
+    if (u'registro_fatture_vendita_diretta.rotazione',) not in s or s==[]:
+        settinggg  = settingg.insert()
+        settinggg.execute(key = "registro_fatture_vendita_diretta.rotazione", description = "registro_fatture_vendita_diretta.rotazione ", value= "annuale")
+
+
 std_mapper = mapper(Setting, settingg, order_by=settingg.c.key)

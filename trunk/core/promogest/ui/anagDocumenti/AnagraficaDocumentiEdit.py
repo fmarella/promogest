@@ -163,6 +163,10 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         if not setconf("Documenti", "lotto_temp"):
             self.lotto_temp_hbox.destroy()
             self.nolottotemp = False
+        if Environment.azienda != "daog":
+            self.id_persona_giuridica_diretta_customcombobox.destroy()
+            self.persona_giuridica_diretta_label.destroy()
+            self.diretta_label.destroy()
 
     def on_lotto_temp_entry_changed(self, entry):
         """ Conferma automaticamente la riga dopo 3 secondi se viene
@@ -1800,6 +1804,14 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self.persona_giuridica_label.set_text('Fornitore')
             self.id_persona_giuridica_customcombobox.setType(self._tipoPersonaGiuridica)
             self.id_persona_giuridica_customcombobox.set_sensitive(True)
+            if Environment.azienda == "daog" and "dirett" in operazioneDao.denominazione:
+                self.id_persona_giuridica_diretta_customcombobox.setType("cliente")
+                self.id_persona_giuridica_diretta_customcombobox.set_sensitive(True)
+                self.persona_giuridica_diretta_label.set_text("Cli")
+            else:
+                self.id_persona_giuridica_diretta_customcombobox.set_sensitive(False)
+
+
             self.label_listino.set_property('visible', False)
             self.id_listino_customcombobox.set_property('visible', False)
             self.prz_lordo_label.set_text('Costo')
@@ -1829,6 +1841,14 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self.persona_giuridica_label.set_text('Cliente')
             self.id_persona_giuridica_customcombobox.setType(self._tipoPersonaGiuridica)
             self.id_persona_giuridica_customcombobox.set_sensitive(True)
+            if Environment.azienda == "daog" and "dirett" in operazioneDao.denominazione:
+                self.id_persona_giuridica_diretta_customcombobox.setType("fornitore")
+                self.id_persona_giuridica_diretta_customcombobox.set_sensitive(True)
+                self.persona_giuridica_diretta_label.set_text("Forn")
+            else:
+                self.id_persona_giuridica_diretta_customcombobox.set_sensitive(False)
+
+
             self.label_listino.set_property('visible', True)
             self.id_listino_customcombobox.set_property('visible', True)
             self.prz_lordo_label.set_text('Prezzo')
@@ -1856,6 +1876,9 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         else:
             self.persona_giuridica_label.set_text('Cliente/Fornitore ?')
             self.id_persona_giuridica_customcombobox.set_sensitive(False)
+            if Environment.azienda == "daog":
+                self.id_persona_giuridica_diretta_customcombobox.set_sensitive(False)
+                self.persona_giuridica_diretta_label.set_sensitive(False)
             self.label_listino.set_property('visible', True)
             self.id_listino_customcombobox.set_property('visible', True)
             self.prz_lordo_label.set_text('Prezzo')

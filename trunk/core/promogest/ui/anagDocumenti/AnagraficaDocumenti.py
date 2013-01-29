@@ -48,6 +48,11 @@ class AnagraficaDocumenti(Anagrafica):
                         editElement=AnagraficaDocumentiEdit(self),
                         aziendaStr=aziendaStr)
         self.records_file_export.set_sensitive(True)
+        if Environment.azienda == "daog":
+            from promogest.dao.Operazione import addOpDirette
+            from promogest.dao.Setting import addregistriDiretti
+            addOpDirette()
+            addregistriDiretti()
 
 
 
