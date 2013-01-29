@@ -109,13 +109,13 @@ def ricerca_forniture(fornitore, dataInizio, dataFine, progress=None):
             .filter(Fornitura.id_fornitore==fornitore.id) \
             .filter(Fornitura.data_fornitura>datetime.date(dataInizio.year,1,1)) \
             .all()
-
+    # + datetime.timedelta(days=1)
     for id_articol in id_articoli_forniture:
         id_articolo = id_articol[0]
         res = session.query(Riga, RigaMovimento, TestataMovimento) \
                 .join(RigaMovimento, TestataMovimento) \
                 .filter(Riga.id_articolo==id_articolo) \
-                .filter(TestataMovimento.data_movimento.between(dataInizio, dataFine + datetime.timedelta(days=1))) \
+                .filter(TestataMovimento.data_movimento.between(dataInizio, dataFine)) \
                 .all()
 
         for item in res:
