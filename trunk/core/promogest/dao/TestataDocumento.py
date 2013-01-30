@@ -364,9 +364,9 @@ class TestataDocumento(Dao):
                     totaleRiga = calcolaPrezzoIva(totaleRiga, percentualeIvaRiga)
                 else:
                     totaleEsclusoBaseImponibileRiga = 0
-                    totaleImponibileRiga = totaleRiga
+                    totaleImponibileRiga = totaleRiga or 0
                     totaleRiga = calcolaPrezzoIva(totaleRiga, percentualeIvaRiga)
-            totaleImpostaRiga = totaleRiga - (totaleImponibileRiga+totaleEsclusoBaseImponibileRiga)
+            totaleImpostaRiga = totaleRiga - (totaleImponibileRiga + totaleEsclusoBaseImponibileRiga)
             totaleNonScontato += totaleRiga
             totaleImponibile += totaleImponibileRiga
             totaleImposta += totaleImpostaRiga
@@ -893,7 +893,7 @@ class TestataDocumento(Dao):
             return self.CLI.codice
         else:
             return ""
-    
+
     @property
     def nazione_cliente(self):
         if self.CLI:
