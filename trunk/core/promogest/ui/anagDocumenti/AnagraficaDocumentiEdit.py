@@ -698,8 +698,8 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self._righe[0]["prezzoLordo"] = mN(riga.valore_unitario_lordo)
             self._righe[0]["sconti"] = sconti
             self._righe[0]["applicazioneSconti"] = applicazione
-            self._righe[0]["prezzoNetto"] = Decimal(riga.valore_unitario_netto)
-            self._righe[0]["prezzoNettoUltimo"] = Decimal(riga.valore_unitario_netto)
+            self._righe[0]["prezzoNetto"] = Decimal(riga.valore_unitario_netto or 0)
+            self._righe[0]["prezzoNettoUltimo"] = Decimal(riga.valore_unitario_netto or 0)
             self._righe[0]["totale"] = 0
             if adr:
                 if riga.id_articolo is not None:
