@@ -82,10 +82,12 @@ class Fornitore(Dao):
 
 
     def delete(self):
-        categ = self._categoria()
-        if categ:
-            for c in categ:
-                c.delete()
+        if self.categoria_fornitore:
+            try:
+                for c in self.categoria_fornitore:
+                    c.delete()
+            except:
+                self.categoria_fornitore.delete()
         session.delete(self)
         session.commit()
 
