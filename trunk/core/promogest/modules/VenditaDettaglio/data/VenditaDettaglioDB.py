@@ -25,6 +25,8 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
 from promogest.lib.utils import setconf
+from promogest.dao.Magazzino import Magazzino
+from promogest.dao.TestataMovimento import TestataMovimento
 from promogest.dao.CCardType import c_card_type
 from promogest.modules.VenditaDettaglio.dao.Pos import pos
 

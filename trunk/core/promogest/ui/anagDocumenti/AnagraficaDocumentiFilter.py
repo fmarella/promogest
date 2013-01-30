@@ -89,8 +89,6 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
             self.funzione_ordinamento = None
             return self._changeOrderBy(column,(None,TestataDocumento.documento_saldato))
         if column.get_name() == "cliente_fornitore_column":
-            #from promogest.dao.Cliente import Cliente
-            #return self._changeOrderBy(column,(None,TestataDocumento.intestatario))
             self.aa = -1*self.aa
             self.funzione_ordinamento = "cliforn"
             self.refresh()

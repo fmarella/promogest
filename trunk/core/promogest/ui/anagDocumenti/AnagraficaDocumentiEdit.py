@@ -84,7 +84,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self._righe.append({})
         # numero riga corrente
         self._numRiga = 0
-        self.noClean=False
+        self.noClean = False
         # iteratore riga corrente
         self._iteratorRiga = None
         # cliente o fornitore ?
@@ -440,7 +440,9 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
     def get_variazioni_listino(self, cliente, idListino):
         data = datetime.datetime.now()
         if cliente and cliente.vl is not []:
-            return [{'valore':var.valore.strip(), 'tipo':var.tipo} for var in cliente.vl if ((var.id_listino == idListino) and (data > var.data_inizio and data < var.data_fine))]
+            return [{'valore':var.valore.strip(), 'tipo':var.tipo}
+                        for var in cliente.vl if ((var.id_listino == idListino)
+                        and (data > var.data_inizio and data < var.data_fine))]
         else:
             return []
 

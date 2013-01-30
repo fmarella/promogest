@@ -25,10 +25,8 @@
 from promogest.ui.AnagraficaComplessa import Anagrafica
 from promogest.ui.AnagraficaComplessaReport import AnagraficaReport
 from promogest.ui.AnagraficaComplessaHtml import AnagraficaHtml
-from promogest.ui.anagDocumenti.AnagraficaDocumentiFilter import \
-                                                    AnagraficaDocumentiFilter
-from promogest.ui.anagDocumenti.AnagraficaDocumentiEdit import \
-                                                        AnagraficaDocumentiEdit
+from promogest.ui.anagDocumenti.AnagraficaDocumentiFilter import AnagraficaDocumentiFilter
+from promogest.ui.anagDocumenti.AnagraficaDocumentiEdit import AnagraficaDocumentiEdit
 from promogest.dao.TestataDocumento import TestataDocumento
 from promogest.lib.utils import *
 
