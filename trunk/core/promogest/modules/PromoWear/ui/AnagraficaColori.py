@@ -22,11 +22,20 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
+import sys
 from promogest.ui.AnagraficaSemplice import Anagrafica,\
                                      AnagraficaDetail, AnagraficaFilter
 from promogest import Environment
-from promogest.modules.PromoWear.dao.Colore import Colore
 from promogest.lib.utils import *
+try:
+    from promogest.modules.PromoWear.dao.Colore import Colore
+except:
+    Environment.conf.PromoWear.mod_enable = "no"
+    Environment.conf.PromoWear.primoavvio="yes"
+    messageInfo(msg="RISULTA RIMOSSO IL DB PROMOWEAR,\n SISTEMO IL FILE CONFIGURE E CHIUDO IL PROGRAMMA, RILANCIALO")
+    Environment.conf.save()
+    sys.exit()
+
 from promogest.ui.gtk_compat import *
 
 

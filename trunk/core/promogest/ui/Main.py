@@ -1111,13 +1111,12 @@ Procedere all'installazione del modulo PromoWear? """)
             Environment.conf.add_section("PromoWear")
             Environment.conf.save()
             Environment.conf.PromoWear.primoavvio = "yes"
-            Environment.conf.PromoWear.mod_enable = "yes"
             Environment.conf.save()
-            tables = [t.name for t in Environment.params["metadata"].sorted_tables]
-            if "colore" not in tables and "taglia" not in tables:
-                from promogest.modules.PromoWear.data.PromoWearDB import *
-                msg = _(" TABELLE AGGIUNTE, RIAVVIARE IL PROGRAMMA ")
-                messageInfo(msg=msg)
+        tables = [t.name for t in Environment.params["metadata"].sorted_tables]
+        if "colore" not in tables and "taglia" not in tables:
+            from promogest.modules.PromoWear.data.PromoWearDB import *
+            msg = _(" TABELLE AGGIUNTE, RIAVVIARE IL PROGRAMMA ")
+            messageInfo(msg=msg)
         else:
             msg= _("PULSANTE DI TEST GIA' PREMUTO")
             messageInfo(msg=msg, transient=self.getTopLevel())

@@ -192,4 +192,5 @@ if hasattr(conf, 'PromoWear'):
         articoloTagliaColoreTable.create(checkfirst=True)
 
         conf.PromoWear.primoavvio = "no"
+        conf.PromoWear.mod_enable = "yes"
         conf.save()
