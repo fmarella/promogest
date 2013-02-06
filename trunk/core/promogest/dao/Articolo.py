@@ -783,6 +783,13 @@ if (hasattr(conf, "ADR") and getattr(conf.ADR, 'mod_enable') == "yes") or\
                     primaryjoin=(t_articolo.c.id == ArticoloADR.id_articolo),
                     uselist=False))
 
+if (hasattr(conf, "CSA") and getattr(conf.CSA, 'mod_enable') == "yes") or\
+                                                ("CSA" in modulesList):
+    from promogest.modules.CSA.dao.ArticoloCSA import ArticoloCSA
+    std_mapper.add_property("APCSA",
+                    relation(ArticoloCSA,
+                    primaryjoin=(t_articolo.c.id == ArticoloCSA.id_articolo),
+                    uselist=False))
 
 def isNuovoCodiceByFamiglia():
     """ Indica se un nuovo codice t_articolo dipende dalla famiglia o meno """

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2013 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -25,7 +25,6 @@
 from promogest.ui.AnagraficaComplessaEdit import AnagraficaEdit
 from promogest.ui.gtk_compat import *
 from promogest import Environment
-#from promogest.dao.Dao import Dao
 import promogest.dao.Fornitura
 import promogest.dao.Articolo
 from promogest.dao.Articolo import Articolo
@@ -47,6 +46,9 @@ if posso("PW"):
 
 if posso("ADR"):
     from promogest.modules.ADR.ui.ADRNotebookPage import ADRNotebookPage
+if posso("CSA"):
+    from promogest.modules.CSA.ui.CSANotebookPage import CSANotebookPage
+
 
 
 class AnagraficaArticoliEdit(AnagraficaEdit):
@@ -131,6 +133,9 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
         if posso("ADR"):
             self.adr_page = ADRNotebookPage(self)
             self.notebook1.append_page(self.adr_page.adr_frame, self.adr_page.adr_page_label)
+        if posso("CSA"):
+            self.csa_page = CSANotebookPage(self)
+            self.notebook1.append_page(self.csa_page.csa_frame, self.csa_page.csa_page_label)
 
 
     def setDao(self, dao):
@@ -151,7 +156,8 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
 
         if posso("ADR"):
             self.adr_page.adrSetDao(self.dao)
-        print self.dao.__dict__
+        if posso("CSA"):
+            self.csa_page.csaSetDao(self.dao)
         self._refresh()
         return self.dao
 
@@ -209,6 +215,8 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
             self.divisore_noleggio_entry.set_text(str(self.dao.divisore_noleggio))
         if posso("ADR"):
             self.adr_page.adr_refresh()
+        if posso("CSA"):
+            self.csa_page.csa_refresh()
         self._loading = False
 
     def saveDao(self, tipo=None):
@@ -315,6 +323,8 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
             self.dao.divisore_noleggio_value_set = self.divisore_noleggio_entry.get_text().strip()
         if posso("ADR"):
             self.dao.articolo_adr_dao = self.adr_page.adrSaveDao()
+        if posso("CSA"):
+            self.dao.articolo_csa_dao = self.csa_page.csaSaveDao()
         self.dao.id_aliquota_iva = findIdFromCombobox(self.id_aliquota_iva_customcombobox.combobox)
         self.dao.id_famiglia_articolo = findIdFromCombobox(self.id_famiglia_articolo_customcombobox.combobox)
         self.dao.id_categoria_articolo = findIdFromCombobox(self.id_categoria_articolo_customcombobox.combobox)
@@ -325,34 +335,13 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
         self.dao.unita_dimensioni = self.unita_dimensioni_comboboxentry.get_child().get_text()
         self.dao.unita_volume = self.unita_volume_comboboxentry.get_child().get_text()
         self.dao.unita_peso = self.unita_peso_comboboxentry.get_child().get_text()
-        try:
-            self.dao.lunghezza = float(self.lunghezza_entry.get_text())
-        except:
-            self.dao.lunghezza = float(0)
-        try:
-            self.dao.larghezza = float(self.larghezza_entry.get_text())
-        except:
-            self.dao.larghezza = float(0)
-        try:
-            self.dao.altezza = float(self.altezza_entry.get_text())
-        except:
-            self.dao.altezza = float(0)
-        try:
-            self.dao.volume = float(self.volume_entry.get_text())
-        except:
-            self.dao.volume = float(0)
-        try:
-            self.dao.peso_lordo = float(self.peso_lordo_entry.get_text())
-        except:
-            self.dao.peso_lordo = float(0)
-        try:
-            self.dao.peso_imballaggio = float(self.peso_imballaggio_entry.get_text())
-        except:
-            self.dao.peso_imballaggio = float(0)
-        try:
-            self.dao.quantita_minima = float(self.quantita_minima_entry.get_text() or 0)
-        except:
-            self.dao.quantita_minima=float(0)
+        self.dao.lunghezza = float(self.lunghezza_entry.get_text() or 0)
+        self.dao.larghezza = float(self.larghezza_entry.get_text() or 0)
+        self.dao.altezza = float(self.altezza_entry.get_text() or 0)
+        self.dao.volume = float(self.volume_entry.get_text() or 0)
+        self.dao.peso_lordo = float(self.peso_lordo_entry.get_text() or 0)
+        self.dao.peso_imballaggio = float(self.peso_imballaggio_entry.get_text() or 0)
+        self.dao.quantita_minima = float(self.quantita_minima_entry.get_text() or 0)
         self.dao.stampa_etichetta = self.stampa_etichetta_checkbutton.get_active()
         self.dao.codice_etichetta = self.codice_etichetta_entry.get_text()
         self.dao.descrizione_etichetta = self.descrizione_etichetta_entry.get_text()
@@ -367,7 +356,6 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
         if self.dao.aggiornamento_listino_auto == None:
             self.dao.aggiornamento_listino_auto = False
         self.dao.url_immagine = self.url_articolo_entry.get_text()
-        print " NON TI SALVI", self.dao.url_immagine, self.url_articolo_entry.get_text() 
         pbar(self.dialog.pbar,parziale=3, totale=4)
         self.dao.persist()
         pbar(self.dialog.pbar,parziale=4, totale=4)
@@ -457,8 +445,6 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
 
 
     def on_abbina_immagine_togglebutton_toggled(self, toggleButton):
-        #messageInfo(msg="FUNZIONE PRONTA A BREVE")
-        #return
         if not(toggleButton.get_active()):
             toggleButton.set_active(False)
             return
@@ -552,16 +538,6 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
             fencemsg()
         toggleButton.set_active(False)
 
-
-        #from AnagraficaListiniArticoli import AnagraficaListiniArticoli
-        #anag = AnagraficaListiniArticoli(self.dao.id)
-        #anagWindow = anag.getTopLevel()
-
-        #showAnagraficaRichiamata(self.dialogTopLevel, anagWindow, toggleButton)
-
-
-
-
     def duplicaListini(self):
         """ Duplica i listini relativi ad un articolo scelto su un nuovo articolo """
         if self._duplicatedDaoId is None:
@@ -580,7 +556,6 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
             sconti_ingrosso = []
             sconti_dettaglio = []
             if listino.sconto_vendita_dettaglio:
-#                print "SCNTOOOO", listino.sconto_vendita_dettaglio[0].__dict__
                 daoLA.applicazione_sconti = "scalare"
                 for s in listino.sconto_vendita_dettaglio:
                     daoScontod = ScontoVenditaDettaglio()
@@ -596,12 +571,12 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
                     daoScontoi.tipo_sconto = s.tipo_sconto
                     sconti_ingrosso.append(daoScontoi)
             daoLA.persist(sconti={"dettaglio":sconti_dettaglio,"ingrosso":sconti_ingrosso})
-#            daoLA.persist()
 
         self._duplicatedDaoId = None
 
     def on_id_famiglia_articolo_customcombobox_changed(self, combobox):
-        """ Restituisce un nuovo codice articolo al cambiamento della famiglia """
+        """ Restituisce un nuovo codice articolo al cambiamento della famiglia
+        """
         if self._loading:
             return
 
@@ -721,9 +696,6 @@ dei dati accessori. Continuare?"""
                                 msg='Campo obbligatorio !\nColore')
 
         tagcol = GestioneTaglieColori(articolo=self.dao)
-        #tagcolWindow = tagcol.getTopLevel()
-
-        #showAnagraficaRichiamata(self.dialogTopLevel, tagcolWindow, toggleButton)
 
     def on_id_taglia_customcombobox_clicked(self, widget, button):
         articoliTagliaColore = self.dao.articoliTagliaColore
@@ -743,11 +715,3 @@ dei dati accessori. Continuare?"""
         on_id_colore_customcombobox_clicked(widget,
                                             button,
                                             ignore=list(idColori))
-
-    #def on_id_modello_customcombobox_clicked(self, widget, button):
-        #articoliTagliaColore = self.dao.articoliTagliaColore
-        #idModelli = set(a.id_colore for a in articoliTagliaColore)
-        #idColori.remove(self.dao.id_colore)
-        #on_id_colore_customcombobox_clicked(widget,
-                                            #button,
-                                            #ignore=list(idColori))

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2013 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -39,8 +39,8 @@ if posso("PW"):
     from promogest.modules.PromoWear.ui import AnagraficaArticoliPromoWearExpand
 
 class AnagraficaArticoli(Anagrafica):
-    """ Anagrafica articoli """
-
+    """ Anagrafica articoli
+    """
     def __init__(self, aziendaStr=None):
         Anagrafica.__init__(self,
                             windowTitle='Promogest - Anagrafica articoli',
@@ -50,8 +50,6 @@ class AnagraficaArticoli(Anagrafica):
                             reportHandler=AnagraficaArticoliReport(self),
                             editElement=AnagraficaArticoliEdit(self),
                             aziendaStr=aziendaStr)
-#        checkCodBarOrphan = removeCodBarorphan()
-#        self.duplica_button.set_sensitive(True)
         self.record_duplicate_menu.set_property('visible', True)
         self.records_file_export.set_sensitive(True)
 
@@ -70,12 +68,11 @@ class AnagraficaArticoli(Anagrafica):
                     sel = self.anagrafica_filter_treeview.get_selection()
                     (model, iterator) = sel.get_selected()
                     model.set_value(iterator, 1, None)
-        else:
-            return
-        Anagrafica.on_record_edit_activate(self, widget, path, column, dao=dao)
+            Anagrafica.on_record_edit_activate(self, widget, path, column, dao=dao)
 
     def duplicate(self,dao):
-        """ Duplica le informazioni relative ad un articolo scelto su uno nuovo (a meno del codice) """
+        """ Duplica le informazioni relative ad un articolo scelto su uno nuovo (a meno del codice)
+        """
         if dao is None:
             return
 
@@ -137,7 +134,8 @@ class AnagraficaArticoli(Anagrafica):
 
 
 class AnagraficaArticoliFilter(AnagraficaFilter):
-    """ Filtro per la ricerca nell'anagrafica degli articoli """
+    """ Filtro per la ricerca nell'anagrafica degli articoli
+    """
 
     def __init__(self, anagrafica):
         AnagraficaFilter.__init__(self,
@@ -145,9 +143,7 @@ class AnagraficaArticoliFilter(AnagraficaFilter):
                                   root='ricerca_semplice_articoli_filter_vbox',
                                   path='_ricerca_semplice_articoli.glade')
         self._widgetFirstFocus = self.denominazione_filter_entry
-        #self.ricerca_avanzata_articoli_filter_hbox.set_no_show_all(True)
         self.ricerca_avanzata_button_alignment.destroy()
-        #self.ricerca_semplice_articoli_filter_vbox.show()
 
     def draw(self):
         treeview = self._anagrafica.anagrafica_filter_treeview
@@ -304,7 +300,6 @@ class AnagraficaArticoliFilter(AnagraficaFilter):
         arts = self.runFilter()
         self._treeViewModel.clear()
         for a in arts:
-#            print a, a.__dict__
             modelRowPromoWear = []
             modelRow = []
             col = None
