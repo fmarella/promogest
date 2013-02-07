@@ -79,8 +79,14 @@ class CSANotebookPage(GladeWidget):
     def csaSaveDao(self):
         self.dao_articolo_csa.sigla = self.sigla_csa_entry.get_text() or ''
         self.dao_articolo_csa.potenza = self.potenza_csa_entry.get_text() or ''
-        self.dao_articolo_csa.id_gas_refrigerante = self.id_gas_refrigerante_csa_customcombobox.combobox.get_active()
-        self.dao_articolo_csa.id_tipo_apparecchio = self.id_tipo_apparecchio_csa_customcombobox.combobox.get_active()
+        gr = None
+        if self.id_gas_refrigerante_csa_customcombobox.combobox.get_active() != -1:
+            gr = self.id_gas_refrigerante_csa_customcombobox.combobox.get_active()
+        ta = None
+        if self.id_tipo_apparecchio_csa_customcombobox.combobox.get_active() != -1:
+            ta = self.id_tipo_apparecchio_csa_customcombobox.combobox.get_active()
+        self.dao_articolo_csa.id_gas_refrigerante = gr
+        self.dao_articolo_csa.id_tipo_apparecchio = ta
         return self.dao_articolo_csa
 
 # Categoria trasporto
