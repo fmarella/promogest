@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2013 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Authors:
@@ -78,8 +78,6 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                                 path='anagrafica_documenti.glade')
         #self.placeWindow(self.getTopLevel())
         self._widgetFirstFocus = self.data_documento_entry
-        # contenitore (dizionario) righe (
-#           riga 0 riservata per  variazioni in corso)
         self._righe = []
         self._righe.append({})
         # numero riga corrente
@@ -232,6 +230,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
     def on_anagrafica_documenti_detail_vbox_key_press_event(self,
                                                 widget=None, event=None):
         """ Mappiamo un po' di tasti su anag documenti
+        TODO: da ricontrollare
         """
         keyname = gdk_keyval_name(event.keyval)
         if keyname == 'F4':  # confermo e pulisco
@@ -1229,7 +1228,10 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self._righe[0]["numeroLottoTemp"] = self.lotto_temp_entry.get_text()
         if setconf("Documenti", "add_quantita") and not inserisci:
             for r in self._righe[1:]:
-                if self._righe[0]["idArticolo"] == r["idArticolo"] and \
+
+                if self._righe[0]["numeroLottoTemp"] is not  "" and \
+                        r["numeroLottoTemp"] is not  "" and \
+                        self._righe[0]["idArticolo"] == r["idArticolo"] and \
                         self._righe[0]["prezzoNetto"] == r["prezzoNetto"] and\
                         self._righe[0]["numeroLottoTemp"] == r["numeroLottoTemp"] and \
                         self._righe[0]["descrizione"] == r["descrizione"] and self._numRiga == 0:
