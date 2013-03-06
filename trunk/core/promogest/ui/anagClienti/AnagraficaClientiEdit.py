@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2013 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -38,6 +38,9 @@ from promogest.ui.utilsCombobox import *
 if posso("IP"):
     from promogest.modules.InfoPeso.ui.InfoPesoNotebookPage import \
                                                 InfoPesoNotebookPage
+if posso("Provvigione"):
+    from promogest.modules.Provvigione.ui.ProvvNotebookPage import \
+                                                ProvvNotebookPage
 
 
 class AnagraficaClientiEdit(AnagraficaEdit, AnagraficaPGEdit):
@@ -101,6 +104,11 @@ class AnagraficaClientiEdit(AnagraficaEdit, AnagraficaPGEdit):
             self.anagrafica_clienti_detail_notebook.append_page(
                             self.infopeso_page.infopeso_frame,
                             self.infopeso_page.infopeso_page_label)
+        if posso("Provvigione"):
+            self.provv_page = ProvvNotebookPage(self)
+            self.anagrafica_clienti_detail_notebook.append_page(
+                            self.provv_page.provv_frame,
+                            self.provv_page.provv_page_label)
 
     def on_anag_variazioni_listini_togglebutton_toggled(self, toggleButton):
         if toggleButton.get_active():
@@ -222,6 +230,8 @@ class AnagraficaClientiEdit(AnagraficaEdit, AnagraficaPGEdit):
                             str(self.dao.cognome) or \
                             "" + " " + \
                             str(self.dao.nome) or "")
+        if posso("Provvigione"):
+            self.provv_page.provvSetDao(self.dao)
 
         if dao is None:
             self.dao_contatto = ContattoCliente()
@@ -309,6 +319,9 @@ class AnagraficaClientiEdit(AnagraficaEdit, AnagraficaPGEdit):
         #if Environment.conf.hasPagamenti == True:
         if posso("IP"):
             self.infopeso_page.infoPeso_refresh()
+        if posso("Provvigione"):
+
+            self.provv_page.provvRefresh()
         self.showTotaliDareAvere()
         self.cellulare_principale_entry.set_text(
             self.dao.cellulare_principale or "")
@@ -365,22 +378,14 @@ class AnagraficaClientiEdit(AnagraficaEdit, AnagraficaPGEdit):
                 obligatoryField(self.dialogTopLevel,
                                 self.nome_entry,
                                 msg='Campo obbligatorio !\n\nNome')
-#        self.verificaListino()
 
         self.dao.pagante = self.spese_checkbox.get_active()
         self.dao.codice = self.codice_entry.get_text().upper()
         self.dao.codice = omogeneousCode(section="Clienti",
                                         string=self.dao.codice)
         self.dao.ragione_sociale = self.ragione_sociale_entry.get_text()
-
-        #self.cliente_nome = setconf("Clienti", "cliente_nome") or False
-        #if self.cliente_nome:
         self.dao.nome = self.nome_entry.get_text()
-
-        #self.cliente_cognome = setconf("Clienti", "cliente_cognome") or False
-        #if self.cliente_cognome:
         self.dao.cognome = self.cognome_entry.get_text()
-
         if self.cliente_insegna:
             self.dao.insegna = self.insegna_entry.get_text()
         if self.pf_radio.get_active():
@@ -440,7 +445,8 @@ class AnagraficaClientiEdit(AnagraficaEdit, AnagraficaPGEdit):
             dao_testata_infopeso.persist()
             dao_generalita_infopeso.id_cliente = self.dao.id
             dao_generalita_infopeso.persist()
-
+        if posso("Provvigione"):
+            self.provv_page.provvSaveDao()
         model = self.categorie_treeview.get_model()
         cleanClienteCategoriaCliente = ClienteCategoriaCliente()\
                                             .select(idCliente=self.dao.id,

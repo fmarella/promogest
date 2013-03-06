@@ -333,6 +333,7 @@ params = {'engine': engine,
         'usernameLoggedList': userdata}
 
 fk_prefix = params['schema'] + '.' if params['tipo_db'] == 'postgresql' else ''
+fk_prefix_main = "promogest2" +'.' if params['tipo_db'] == 'postgresql' else ''
 
 
 if not preEnv.web:
