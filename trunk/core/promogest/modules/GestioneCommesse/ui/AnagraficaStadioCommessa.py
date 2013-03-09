@@ -145,3 +145,6 @@ class AnagraficaStadioCommessaDetail(AnagraficaDetail):
         if self.dao.denominazione == '' or self.dao.denominazione == None:
             obligatoryField(self._anagrafica.getTopLevel(), self._anagrafica.anagrafica_treeview)
         self.dao.persist()
+
+    def deleteDao(self):
+        self.dao.delete()
