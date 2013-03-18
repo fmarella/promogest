@@ -479,8 +479,8 @@ class AnagraficaSchedeOrdinazioniEdit(AnagraficaEdit):
         scontiRiga = []
         _descrizione = daoRiga.descrizione[0:6]
         _descrizione1 = daoRiga.descrizione[0:12]
-        #print "TEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEST", daoRiga.descrizione.lower().strip()
-        if daoRiga.descrizione.lower() in ['stampa', 'contrassegno','confezione',"iniziali","lista noz","segnalibro","tableau", "sped.", "matrice","l. messa", "guest", "bomb.sol.","bustine a", "bustine b", "bustine c", "01 bollino"]:
+        #print "TEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEST", daoRiga.codice.lower()
+        if daoRiga.codice.lower() in ['stampa', 'z-contra','confez.',"iniziali","lista noz","segnalib.","tableau", "sped.", "matrice","l. messa", "guest", "bomb. sol.","bustine a", "bustine b", "bustine c", "01 bollino"]:
             daoRiga.applicazione_sconti = 'scalare'
             daoRiga.scontiRiga = []
             #print "1111111111111111111111"
