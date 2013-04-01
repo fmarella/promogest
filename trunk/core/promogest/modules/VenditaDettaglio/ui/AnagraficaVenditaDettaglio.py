@@ -106,7 +106,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         self.vendita_dettaglio_statusbar.push(context_id, textStatusBar)
         azienda = Azienda().getRecord(id=Environment.azienda)
         if azienda:
-            self.logo_articolo.set_from_file(azienda.percorso_immagine)
+            self.logo_articolo.set_from_file(azienda.percorso_immagine or '')
         self.createPopupMenu()
         #nascondo i dati riga e le info aggiuntive
         self.dati_riga_frame.destroy()
