@@ -109,7 +109,7 @@ class ConfiguraWindow(GladeWidget):
                 self.dollaro_radio.set_active(1)
             elif curr =="£":
                 self.sterlina_radio.set_active(1)
-            elif curr =="CHR":
+            elif curr =="CHF":
                 self.francosvizzero_radio.set_active(1)
         except:
             self.euro_radio.set_active(1)
@@ -239,7 +239,7 @@ class ConfiguraWindow(GladeWidget):
         elif self.sterlina_radio.get_active():
             g[0].value = "£"
         elif self.francosvizzero_radio.get_active():
-            g[0].value = "CHR"
+            g[0].value = "CHF"
         g[0].tipo = "str"
         Environment.session.add(g[0])
 
