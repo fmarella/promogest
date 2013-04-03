@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2013 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -82,6 +82,7 @@ class AnagraficaFornitoriEdit(AnagraficaEdit, AnagraficaPGEdit):
                 self.dao_contatto = self.dao_contatto[0]
             else:
                 self.dao_contatto = ContattoFornitore()
+            self.daohash = dao.__hash__()
         self._refresh()
         return self.dao
 
@@ -102,13 +103,13 @@ class AnagraficaFornitoriEdit(AnagraficaEdit, AnagraficaPGEdit):
             obligatoryField(self.dialogTopLevel,
                             self.ragione_sociale_entry,
                             msg='Campo obbligatorio !\n\nRagione sociale')
-        #cod = Fornitore().select(codicesatto=self.codice_entry.get_text().upper().strip())
-        #if cod:
-            #obligatoryField(self.dialogTopLevel,
-                            #self.ragione_sociale_entry,
-                            #msg='CODICE GIÀ PRESENTE')
-        #self.dao.codice = self.codice_entry.get_text().upper()
-#        self.dao.codice = omogeneousCode(section="Fornitori", string=self.dao.codice )
+        cod = Fornitore().select(codicesatto=self.codice_entry.get_text().upper().strip())
+        if len(cod) >1 or (cod and cod[0].id != self.dao.id):
+            obligatoryField(self.dialogTopLevel,
+                            self.ragione_sociale_entry,
+                            msg='CODICE GIÀ PRESENTE')
+        self.dao.codice = self.codice_entry.get_text().upper()
+        self.dao.codice = omogeneousCode(section="Fornitori", string=self.dao.codice )
         self.dao.ragione_sociale = self.ragione_sociale_entry.get_text()
         if self.fornitore_insegna:
             self.dao.insegna = self.insegna_entry.get_text()
@@ -144,7 +145,6 @@ class AnagraficaFornitoriEdit(AnagraficaEdit, AnagraficaPGEdit):
         self.dao.id_magazzino = findIdFromCombobox(self.id_magazzino_customcombobox.combobox)
         self.dao.nazione = findStrFromCombobox(self.nazione_combobox,0)
         self.dao.persist()
-
 
         self.aggiungi_contatto_pg(self, "fornitore")
 

@@ -38,10 +38,6 @@ from promogest.ui.utilsCombobox import *
 if posso("IP"):
     from promogest.modules.InfoPeso.ui.InfoPesoNotebookPage import \
                                                 InfoPesoNotebookPage
-if posso("Provvigione"):
-    from promogest.modules.Provvigione.ui.ProvvNotebookPage import \
-                                                ProvvNotebookPage
-
 
 class AnagraficaClientiEdit(AnagraficaEdit, AnagraficaPGEdit):
     """ Modifica un record dell'anagrafica dei clienti """
@@ -58,7 +54,7 @@ class AnagraficaClientiEdit(AnagraficaEdit, AnagraficaPGEdit):
         self.anagrafica_clienti_detail_notebook.set_current_page(0)
 
     def draw(self, cplx=False):
-        #Popola combobox categorie clienti
+        """ Popola la finestra dei clienti"""
         fillComboboxCategorieClienti(
             self.id_categoria_cliente_customcombobox.combobox)
         self.id_categoria_cliente_customcombobox.connect('clicked',
@@ -104,11 +100,7 @@ class AnagraficaClientiEdit(AnagraficaEdit, AnagraficaPGEdit):
             self.anagrafica_clienti_detail_notebook.append_page(
                             self.infopeso_page.infopeso_frame,
                             self.infopeso_page.infopeso_page_label)
-        if posso("Provvigione"):
-            self.provv_page = ProvvNotebookPage(self)
-            self.anagrafica_clienti_detail_notebook.append_page(
-                            self.provv_page.provv_frame,
-                            self.provv_page.provv_page_label)
+
 
     def on_anag_variazioni_listini_togglebutton_toggled(self, toggleButton):
         if toggleButton.get_active():
@@ -230,8 +222,8 @@ class AnagraficaClientiEdit(AnagraficaEdit, AnagraficaPGEdit):
                             str(self.dao.cognome) or \
                             "" + " " + \
                             str(self.dao.nome) or "")
-        if posso("Provvigione"):
-            self.provv_page.provvSetDao(self.dao)
+#        if posso("Provvigione"):
+#            self.provv_page.provvSetDao(self.dao)
 
         if dao is None:
             self.dao_contatto = ContattoCliente()
@@ -319,9 +311,8 @@ class AnagraficaClientiEdit(AnagraficaEdit, AnagraficaPGEdit):
         #if Environment.conf.hasPagamenti == True:
         if posso("IP"):
             self.infopeso_page.infoPeso_refresh()
-        if posso("Provvigione"):
-
-            self.provv_page.provvRefresh()
+#        if posso("Provvigione"):
+#            self.provv_page.provvRefresh()
         self.showTotaliDareAvere()
         self.cellulare_principale_entry.set_text(
             self.dao.cellulare_principale or "")
@@ -380,6 +371,11 @@ class AnagraficaClientiEdit(AnagraficaEdit, AnagraficaPGEdit):
                                 msg='Campo obbligatorio !\n\nNome')
 
         self.dao.pagante = self.spese_checkbox.get_active()
+        cod = Cliente().select(codicesatto=self.codice_entry.get_text().upper().strip())
+        if len(cod) >1 or (cod and cod[0].id != self.dao.id):
+            obligatoryField(self.dialogTopLevel,
+                            self.ragione_sociale_entry,
+                            msg='CODICE GIÀ PRESENTE')
         self.dao.codice = self.codice_entry.get_text().upper()
         self.dao.codice = omogeneousCode(section="Clienti",
                                         string=self.dao.codice)
@@ -601,6 +597,34 @@ class AnagraficaClientiEdit(AnagraficaEdit, AnagraficaPGEdit):
                                                 ManageLabelsToPrintCliente
             a = ManageLabelsToPrintCliente(mainWindow=self, daos=[],
                                                         cliente=self.dao)
+            anagWindow = a.getTopLevel()
+            returnWindow = self.getTopLevel().get_toplevel()
+            anagWindow.set_transient_for(returnWindow)
+            anagWindow.show_all()
+        else:
+            fencemsg()
+        toggleButton.set_active(False)
+
+    def on_provv_togglebutton_clicked(self, toggleButton):
+        if not(toggleButton.get_active()):
+            toggleButton.set_active(False)
+            return
+
+        if self.dao.id is None:
+            msg = 'Prima di poter abbinare una provvigione occorre salvare l\' il cliente.\n Salvare ?'
+            if YesNoDialog(msg=msg, transient=self.dialogTopLevel):
+                self.on_anagrafica_complessa_detail_dialog_response(
+                    self.dialogTopLevel,
+                    GTK_RESPONSE_APPLY)
+            else:
+                toggleButton.set_active(False)
+                return
+
+        if posso("Provvigione"):
+            from promogest.modules.Provvigione.ui.AnagraficaProvv import\
+                                                AnagraficaProvv
+            a = AnagraficaProvv(mainWindow=self, daos=[],
+                                                cliente=self.dao)
             anagWindow = a.getTopLevel()
             returnWindow = self.getTopLevel().get_toplevel()
             anagWindow.set_transient_for(returnWindow)
