@@ -28,6 +28,20 @@ from promogest.Environment import *
 from Dao import Dao
 from migrate import *
 
+
+
+t_persona_giuridica = Table('persona_giuridica',
+                params['metadata'],
+                schema=params['schema'],
+                autoload=True)
+#cons = UniqueConstraint('codice', table=t_persona_giuridica)
+#cons.create(params['session'])
+
+
+if "note" not in [c.name for c in t_persona_giuridica.columns]:
+    col = Column('note', String)
+    col.create(t_persona_giuridica)
+
 class PersonaGiuridica_(Dao):
 
     def __init__(self, req=None):
@@ -38,14 +52,7 @@ class PersonaGiuridica_(Dao):
             dic = {k: t_persona_giuridica.c.id_user == v}
         return  dic[k]
 
-t_persona_giuridica = Table('persona_giuridica',
-                params['metadata'],
-                schema=params['schema'],
-                autoload=True)
 
-if "note" not in [c.name for c in t_persona_giuridica.columns]:
-    col = Column('note', String)
-    col.create(t_persona_giuridica)
 
 std_mapper = mapper(PersonaGiuridica_,
         t_persona_giuridica,
