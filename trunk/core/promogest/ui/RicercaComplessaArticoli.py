@@ -1112,7 +1112,7 @@ class RicercaArticoliFilter(GladeWidget):
 
     def on_descrizione_articolo_filter_treeview_key_press_event(self, widget, event):
         """ Gestione della pressione di tasti all'interno della treeview delle descrizioni """
-        keyname = gtk.gdk.keyval_name(event.keyval)
+        keyname = gdk_keyval_name(event.keyval)
         return analyze_treeview_key_press_event(widget,
                                                 keyname,
                                                 self.insertDescrizione,
@@ -1122,7 +1122,7 @@ class RicercaArticoliFilter(GladeWidget):
 
     def on_produttore_articolo_filter_treeview_key_press_event(self, widget, event):
         """ Gestione della pressione di tasti all'interno della treeview dei produttori """
-        keyname = gtk.gdk.keyval_name(event.keyval)
+        keyname = gdk_keyval_name(event.keyval)
         return analyze_treeview_key_press_event(widget,
                                                 keyname,
                                                 self.insertProduttore,
@@ -1132,7 +1132,7 @@ class RicercaArticoliFilter(GladeWidget):
 
     def on_codice_articolo_filter_treeview_key_press_event(self, widget, event):
         """ Gestione della pressione di tasti all'interno della treeview dei codici """
-        keyname = gtk.gdk.keyval_name(event.keyval)
+        keyname = gdk_keyval_name(event.keyval)
         return analyze_treeview_key_press_event(widget,
                                                 keyname,
                                                 self.insertCodice,
@@ -1142,7 +1142,7 @@ class RicercaArticoliFilter(GladeWidget):
 
     def on_codice_a_barre_articolo_filter_treeview_key_press_event(self, widget, event):
         """ Gestione della pressione di tasti all'interno della treeview dei codici a barre """
-        keyname = gtk.gdk.keyval_name(event.keyval)
+        keyname = gdk_keyval_name(event.keyval)
         return analyze_treeview_key_press_event(widget,
                                                 keyname,
                                                 self.insertCodiceABarre,
@@ -1152,7 +1152,7 @@ class RicercaArticoliFilter(GladeWidget):
 
     def on_codice_articolo_fornitore_articolo_filter_treeview_key_press_event(self, widget, event):
         """ Gestione della pressione di tasti all'interno della treeview dei codici articolo fornitore """
-        keyname = gtk.gdk.keyval_name(event.keyval)
+        keyname = gdk_keyval_name(event.keyval)
         return analyze_treeview_key_press_event(widget,
                                                 keyname,
                                                 self.insertCodiceArticoloFornitore,
@@ -1274,7 +1274,7 @@ class RicercaArticoliFilter(GladeWidget):
 
     def on_campo_filter_entry_key_press_event(self, widget, event):
         """ Conferma parametri filtro x ricerca semplice da tastiera """
-        keyname = gtk.gdk.keyval_name(event.keyval)
+        keyname = gdk_keyval_name(event.keyval)
 
         if keyname == 'Return' or keyname == 'KP_Enter':
             self._parentObject.refresh()
