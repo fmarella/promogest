@@ -52,7 +52,10 @@ class NewsNotebookPage(GladeWidget):
         self.main = main
         self.main_wind = main
         self.aziendaStr = azienda or ""
-        gobject.idle_add(self.create_news_frame)
+        if Environment.pg3:
+            glib.idle_add(self.create_news_frame)
+        else:
+            gobject.idle_add(self.create_news_frame)
         self.htmlnewswidget = createHtmlObj(self)
         self.feed_scrolled.add(self.htmlnewswidget)
 
@@ -77,7 +80,10 @@ class NewsNotebookPage(GladeWidget):
             self.email_button.hide()
             self.promogest_button.hide()
 
-        gobject.idle_add(self.build_news_frame)
+        if Environment.pg3:
+            glib.idle_add(self.build_news_frame)
+        else:
+            gobject.idle_add(self.build_news_frame)
         #lendocu = TestataDocumento().count(daData="2012-01-01",batchSize=None)
 
 

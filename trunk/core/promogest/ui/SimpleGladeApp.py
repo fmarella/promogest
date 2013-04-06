@@ -83,10 +83,7 @@ class SimpleGladeApp(SimpleGladeWrapper):
         Use the method run() instead.
         """
         if Environment.pg3:
-            gdk.threads_init()
-            gdk.threads_enter()
             gtk.main()
-            gdk.threads_leave()
         else:
             gtk.gdk.threads_init()
             gtk.gdk.threads_enter()
