@@ -1236,12 +1236,12 @@ def gestione_testo(gest_entry, event, filtro):
 
 
 def on_main_window_key_press_eventPart(ui, widget, event):
-    if event.type == gtk.gdk.KEY_PRESS:
-        if event.state & gtk.gdk.MOD1_MASK:
+    if event.type == GDK_EVENTTYPE_KEY_PRESS:
+        if event.state & GDK_MOD1_MASK:
             if gdk_keyval_name(event.keyval) >= '1' and \
                     gdk_keyval_name(event.keyval) <= '8':
                 ui.main_notebook.set_current_page(int(event.keyval) - 49)
-        elif event.state & gtk.gdk.CONTROL_MASK:
+        elif event.state & GDK_CONTROL_MASK:
             if gdk_keyval_name(event.keyval) == 'd':
                 try:
                     ui.main_iconview.select_path('0')

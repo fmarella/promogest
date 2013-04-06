@@ -76,6 +76,7 @@ if not Environment.pg3:
         GDK_EVENT = gtk.gdk.Event
         GDK_EVENT_DESTROY = gtk.gdk.DESTROY
         GDK_CONTROL_MASK = gtk.gdk.CONTROL_MASK
+        GDK_MOD1_MASK = gtk.gdk.MOD1_MASK
 
         GDK_KEY_F1 = gtk.keysyms.F1
         GDK_KEY_F2 = gtk.keysyms.F2
@@ -184,6 +185,7 @@ else:
     GDK_EVENT_DESTROY = gdk.EventType.DESTROY
 
     GDK_CONTROL_MASK = gdk.ModifierType.CONTROL_MASK
+    GDK_MOD1_MASK = gdk.ModifierType.MOD1_MASK
 
     GDK_KEY_F1 = gdk.KEY_F1
     GDK_KEY_F2 = gdk.KEY_F2
