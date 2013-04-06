@@ -192,7 +192,10 @@ class SimpleGladeWrapper:
                 else:
                     setattr(self, widget_api_name, widget)
                     if prefixes:
-                        gtk.Widget.set_data(widget, "prefixes", prefixes)
+                        if Environment.pg3:
+                            widget.prefixes = prefixes
+                        else:
+                            gtk.Widget.set_data(widget, "prefixes", prefixes)
                 if widget.__gtype__.name == "UnsignedIntegerEntryField":
                     setattr(widget, "nomee",widget_api_name)
                     self.entryGlobalcb(widget)
@@ -265,7 +268,10 @@ class SimpleGladeWrapper:
         prefix_actions_d = dict( map(drop_prefix, prefix_actions_t) )
 
         for widget in self.widgets:
-            prefixes = gtk.Widget.get_data(widget, "prefixes")
+            if Environment.pg3:
+                prefixes = widget.prefixes
+            else:
+                prefixes = gtk.Widget.get_data(widget, "prefixes")
             if prefixes:
                 for prefix in prefixes:
                     if prefix in prefix_actions_d:
