@@ -24,6 +24,8 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
 from promogest.dao.Dao import Dao
+from promogest.dao.Articolo import Articolo, t_articolo
+from promogest.dao.PersonaGiuridica import PersonaGiuridica_, t_persona_giuridica
 from promogest.modules.Provvigione.dao.Provvigione import Provvigione, t_provvigione
 from migrate import *
 
@@ -65,19 +67,32 @@ class ProvvPgAzArt(Dao):
 
     def filter_values(self, k, v):
         if k == 'id':
-            dic = {k: t_provv_pg_az_art.c.id==v}
+            dic = {k: t_provv_pg_az_art.c.id == v}
         elif k == 'id_persona_giuridica_to':
-            dic = {k: t_provv_pg_az_art.c.id_persona_giuridica_to==v}
+            dic = {k: t_provv_pg_az_art.c.id_persona_giuridica_to == v}
         elif k == 'id_persona_giuridica_from':
-            dic = {k: t_provv_pg_az_art.c.id_persona_giuridica_from==v}
+            dic = {k: t_provv_pg_az_art.c.id_persona_giuridica_from == v}
         elif k == 'id_provvigione':
-            dic = {k: t_provv_pg_az_art.c.id_provvigione==v}
+            dic = {k: t_provv_pg_az_art.c.id_provvigione == v}
         return dic[k]
 
 
-std_mapper = mapper(ProvvPgAzArt, t_provv_pg_az_art,   properties=dict(
-        provv=relation(Provvigione,
+std_mapper = mapper(ProvvPgAzArt, t_provv_pg_az_art,   properties={
+        "provv":relation(Provvigione,
             primaryjoin=t_provv_pg_az_art.c.id_provvigione == t_provvigione.c.id,
             backref="provv_pg_az_art",
-            cascade="all, delete")),
+            cascade="all, delete"),
+        "arti":relation(Articolo,
+            primaryjoin=t_provv_pg_az_art.c.id_articolo== t_articolo.c.id,
+            backref="provv_pg_az_art"),
+        "pg_from":relation(PersonaGiuridica_,
+            primaryjoin=t_provv_pg_az_art.c.id_persona_giuridica_from== t_persona_giuridica.c.id,
+            backref="provv_pg_az_art_from"),
+        "pg_to":relation(PersonaGiuridica_,
+            primaryjoin=t_provv_pg_az_art.c.id_persona_giuridica_to== t_persona_giuridica.c.id,
+            backref="provv_pg_az_art_to"),
+#        "azi:"relation(Azienda,
+#            primaryjoin=t_provv_pg_az_art.c.id_schemaa_azienza== t_azienda.c.denominazione,
+#            backref="provv_pg_az_art_to"),
+            },
                     order_by=t_provv_pg_az_art.c.id)

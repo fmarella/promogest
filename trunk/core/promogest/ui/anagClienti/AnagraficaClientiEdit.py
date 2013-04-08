@@ -37,7 +37,8 @@ from promogest.ui.utilsCombobox import *
 
 if posso("IP"):
     from promogest.modules.InfoPeso.ui.InfoPesoNotebookPage import \
-                                                InfoPesoNotebookPage
+        InfoPesoNotebookPage
+
 
 class AnagraficaClientiEdit(AnagraficaEdit, AnagraficaPGEdit):
     """ Modifica un record dell'anagrafica dei clienti """
@@ -58,7 +59,7 @@ class AnagraficaClientiEdit(AnagraficaEdit, AnagraficaPGEdit):
         fillComboboxCategorieClienti(
             self.id_categoria_cliente_customcombobox.combobox)
         self.id_categoria_cliente_customcombobox.connect('clicked',
-                             on_id_categoria_cliente_customcombobox_clicked)
+                                on_id_categoria_cliente_customcombobox_clicked)
         #Elenco categorie
 
         fillComboBoxNazione(self.nazione_combobox, default="Italia")
@@ -586,17 +587,18 @@ class AnagraficaClientiEdit(AnagraficaEdit, AnagraficaPGEdit):
             msg = 'Prima di poter stampare una label occorre salvare l\' il cliente.\n Salvare ?'
             if YesNoDialog(msg=msg, transient=self.dialogTopLevel):
                 self.on_anagrafica_complessa_detail_dialog_response(
-                            self.dialogTopLevel,
-                            GTK_RESPONSE_APPLY)
+                    self.dialogTopLevel,
+                    GTK_RESPONSE_APPLY)
             else:
                 toggleButton.set_active(False)
                 return
 
         if posso("LA"):
             from promogest.modules.Label.ui.ManageLabelsToPrintCliente import\
-                                                ManageLabelsToPrintCliente
-            a = ManageLabelsToPrintCliente(mainWindow=self, daos=[],
-                                                        cliente=self.dao)
+                ManageLabelsToPrintCliente
+            a = ManageLabelsToPrintCliente(mainWindow=self,
+                                           daos=[],
+                                           cliente=self.dao)
             anagWindow = a.getTopLevel()
             returnWindow = self.getTopLevel().get_toplevel()
             anagWindow.set_transient_for(returnWindow)
@@ -622,9 +624,11 @@ class AnagraficaClientiEdit(AnagraficaEdit, AnagraficaPGEdit):
 
         if posso("Provvigione"):
             from promogest.modules.Provvigione.ui.AnagraficaProvv import\
-                                                AnagraficaProvv
-            a = AnagraficaProvv(mainWindow=self, daos=[],
-                                                cliente=self.dao)
+                AnagraficaProvv
+            a = AnagraficaProvv(mainWindow=self,
+                                daos=[],
+                                dao=self.dao,
+                                tipo = "Cliente")
             anagWindow = a.getTopLevel()
             returnWindow = self.getTopLevel().get_toplevel()
             anagWindow.set_transient_for(returnWindow)
@@ -641,7 +645,7 @@ class AnagraficaClientiEdit(AnagraficaEdit, AnagraficaPGEdit):
         #output.close()
 
         print "LA FOTO SELEZIONATA", filechooser.get_file().get_path(), \
-                                                     filechooser.get_file()
+            filechooser.get_file()
         self.photo_src = filechooser.get_filename()
         self.userlogo_image.set_from_file(self.photo_src)
         #im1 = Image.fromstring(self.photo_src)
