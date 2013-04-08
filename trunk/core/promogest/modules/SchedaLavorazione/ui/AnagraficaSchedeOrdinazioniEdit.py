@@ -480,7 +480,7 @@ class AnagraficaSchedeOrdinazioniEdit(AnagraficaEdit):
         _descrizione = daoRiga.descrizione[0:6]
         _descrizione1 = daoRiga.descrizione[0:12]
         #print "TEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEST", daoRiga.descrizione.lower()
-        if daoRiga.descrizione.lower() in ['stampa', 'contrassegno','confezione',"iniziali in rilievo","cartoncino lista nozze","cartoncino segnalibro formato 21x5","tableau de mariage - stampa a colori", "spedizione internazionale", "matrice supplementare","libretto messa", "guestbook 20 pagine", "bomboniera solidale","buste avorio liscio 9x14", "buste bianche liscio 9x14", "buste carta conchiglia 9x14", "bollino in carta adesiva art. 01","sigillo adesivo art. 0011"]:
+        if daoRiga.descrizione.lower() in ['stampa', 'contrassegno','confezione',"iniziali in rilievo","cartoncino lista nozze","cartoncino segnalibro formato 21x5","tableau de mariage - stampa a colori", "spedizione internazionale", "matrice supplementare","libretto messa", "guestbook 20 pagine", "bomboniera solidale","buste avorio liscio 9x14", "buste bianche liscio 9x14", "buste carta conchiglia 9x14", "bollino in carta adesiva art. 01","sigillo adesivo art. 0011","campionario nozze"]:
             daoRiga.applicazione_sconti = 'scalare'
             daoRiga.scontiRiga = []
             #print "1111111111111111111111"
