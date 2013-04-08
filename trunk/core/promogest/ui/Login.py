@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2013 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -30,7 +30,7 @@ import webbrowser
 from promogest.ui.SimpleGladeApp import SimpleGladeApp
 from promogest.dao.User import User
 from promogest.dao.Azienda import Azienda
-from GtkExceptionHandler import GtkExceptionHandler
+#from GtkExceptionHandler import GtkExceptionHandler
 from promogest.ui.UpdateDialog import UpdateDialog
 from promogest.lib.utils import leggiRevisioni, hasAction, checkInstallation, \
     installId, messageInfo
@@ -47,8 +47,8 @@ Alcune parti potrebbero dare errore
 Si consiglia di aggiornare alla versione 0.6.3 o superiore
 su forum.promotux.it troverete come fare
 """)
-from sqlalchemy import *
-from sqlalchemy.orm import *
+#from sqlalchemy import *
+#from sqlalchemy.orm import *
 from promogest.lib import feedparser
 from promogest.lib import HtmlHandler
 
@@ -66,8 +66,6 @@ class Login(SimpleGladeApp):
                 root="login_window")
         self.draw()
         self.getTopLevel().show_all()
-        #Pg2StatusIcon()
-        # da risolvere in futuro magari con una soluzione all-glade
 
     def draw(self):
         """Disegna la finestra di login
@@ -114,11 +112,13 @@ class Login(SimpleGladeApp):
 
     def on_logo_button_clicked(self, button):
         """Apre il sito web del PromoGest
-        :param button: il tasto che ha generato l'evento
         """
         webbrowser.open_new_tab(self.urll)
 
     def splashHandler(self):
+        """ Funzione di gestione dello splash, gestisce il random e il cambio
+            dello splash per il periodo natalizio
+        """
         data = datetime.datetime.now()
         if (data > datetime.datetime(data.year, 12, 15) \
                 and data < datetime.datetime(data.year, 12, 31)) or \
@@ -154,12 +154,13 @@ class Login(SimpleGladeApp):
                 self.login_tipo_label.set_markup(_("<b>PromoGest 'PRO'</b>"))
                 self.urll = "http://www.promogest.me/promoGest/preventivo_pro"
         if Environment.pg3:
-            self.login_tipo_label.set_markup(_("<span weight='bold' size='larger'>PROMOGEST 3 BETA1</span>"))
-
+            self.login_tipo_label.set_markup(_("<span weight='bold' size='larger'>PROMOGEST 3 BETA2</span>"))
+        #settiamo l'immagine
         self.splash_image.set_from_file(fileSplashImage)
 
     def feddretreive(self):
         """Carica il feed RSS
+        WARNING: attualmente non in uso
         """
         d = feedparser.parse("http://www.promogest.me/newsfeed")
         Environment.feedAll = d
@@ -254,17 +255,6 @@ class Login(SimpleGladeApp):
                         "LOGIN  id, user, role azienda: %s, %s" % (
                             repr(Environment.params['usernameLoggedList']),
                                 self.azienda))
-                    #if os.path.exists(os.path.join(Environment.CONFIGPATH,
-#                                    Environment.meta_pickle)):
-                        #import pickle
-                    #print ">>>>>>> STO CARICANDO IL METADATA DA FILE..."
-                    #with open(os.path.join(Environment.CONFIGPATH,
-#                                        Environment.meta_pickle), 'rb') as f:
-                            #print ">>>>>>> LEGGO IL FILE PICKLE..."
-                            #Environment.meta.clear()
-                            #Environment.meta = pickle.load(f)
-                    #_end = time.time()
-                    #import promogest.ui.SetConf
                     checkInstallation()
                     self.importModulesFromDir('promogest/modules')
 
@@ -286,7 +276,7 @@ class Login(SimpleGladeApp):
                         gobject.idle_add(mainmain)
 
         else:
-            messageInfo(msg=_('Nome utente o password errati'))
+            messageInfo(msg=_('Nome utente o password errati, Riprova'))
 
     def on_aggiorna_button_clicked(self, widget):
         """Evento associato alla richiesta di aggiornamento
