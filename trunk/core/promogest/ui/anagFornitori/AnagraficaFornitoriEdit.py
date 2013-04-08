@@ -82,7 +82,6 @@ class AnagraficaFornitoriEdit(AnagraficaEdit, AnagraficaPGEdit):
                 self.dao_contatto = self.dao_contatto[0]
             else:
                 self.dao_contatto = ContattoFornitore()
-            self.daohash = dao.__hash__()
         self._refresh()
         return self.dao
 
