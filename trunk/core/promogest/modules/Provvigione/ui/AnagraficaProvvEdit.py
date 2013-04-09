@@ -30,7 +30,7 @@ from promogest.modules.Provvigione.dao.ProvvPgAzArt import ProvvPgAzArt
 
 class AnagraficaProvvEdit(AnagraficaEdit):
     """ Modifica un record dell'anagrafica delle provvigioni """
-    def __init__(self, anagrafica, dao=None, tipo="Cliente"):
+    def __init__(self, anagrafica, daoFrom=None, tipo="Cliente"):
         AnagraficaEdit.__init__(self,
                 anagrafica,
                 'Gestione Provvigioni',
@@ -39,7 +39,7 @@ class AnagraficaProvvEdit(AnagraficaEdit):
                 isModule=True)
         self._widgetFirstFocus = self.provv_ArticoloSearchWidget
         self.anagrafica = anagrafica
-        self.dao = dao
+        self.daoFrom = daoFrom
         self.tipo = tipo
 
     def draw(self, cplx=False):
@@ -67,13 +67,16 @@ class AnagraficaProvvEdit(AnagraficaEdit):
         """Funzione che rinfresca la UI all'apertura e dopo alcune operazioni
         di modifica
         """
-        self.valore_provv_entry.set_text(str(self.dao.provv.valore_provv))
-        if self.dao.provv.tipo_provv == "%":
-            tippo = 0
+        if self.dao.provv:
+            self.valore_provv_entry.set_value(mN(self.dao.provv.valore_provv,1))
         else:
+            self.valore_provv_entry.set_text("")
+        if self.dao.provv and self.dao.provv.tipo_provv == "€":
             tippo = 1
+        else:
+            tippo = 0
         self.tipo_provv_euro_radiobutton.set_active(tippo)
-        self.provv_ClienteSearchWidget.setId(self.dao.id_persona_giuridica_from)
+        self.provv_ClienteSearchWidget.setId(self.daoFrom.id)
         self.provv_FornitoreSearchWidget.setId(self.dao.id_persona_giuridica_to)
         self.provv_ArticoloSearchWidget.setId(self.dao.id_articolo)
 
@@ -87,7 +90,7 @@ class AnagraficaProvvEdit(AnagraficaEdit):
         di campi obbligatori ei provvedere a salvare il record dopo
         aver assegnato i valori necessari
         """
-        provv_valore = self.valore_provv_entry.get_text()
+        provv_valore = self.valore_provv_entry.get_value()
         if self.tipo_provv_euro_radiobutton.get_active():
             tippo = "€"
         else:
@@ -97,11 +100,9 @@ class AnagraficaProvvEdit(AnagraficaEdit):
         self.__dao_provv.tipo_provv = provv_tipo
         self.__dao_provv.persist()
 
-        self.dao.id_fornitore = self.id_persona_giuridica_customcombobox.getId()
-        self.dao.id_fornitore = self.id_persona_giuridica_customcombobox.getId()
-
-        self.dao.id_persona_giuridica_to = 1
-        self.dao.id_persona_giuridica_from = 1
+        self.dao.id_articolo = self.provv_ArticoloSearchWidget.getId()
+        self.dao.id_persona_giuridica_from = self.daoFrom.id
+        self.dao.id_persona_giuridica_to = self.provv_FornitoreSearchWidget.getId()
         self.dao.id_provvigione = self.__dao_provv.id
         self.dao.persist()
 

@@ -29,14 +29,14 @@ from promogest.ui.utilsCombobox import *
 class AnagraficaProvvFilter(AnagraficaFilter):
     """ Filtro per la ricerca nei file """
 
-    def __init__(self, anagrafica, dao=None, tipo="Cliente"):
+    def __init__(self, anagrafica, daoFrom=None, tipo="Cliente"):
         AnagraficaFilter.__init__(self,
                                   anagrafica,
                                   root='anagrafica_provv_filter_table',
                                   path='Provvigione/gui/_anagrafica_provv_elements.glade',
                                   isModule=True)
         self._widgetFirstFocus = self.denominazione_filter_entry
-        self.dao = dao
+        self.daoFrom = daoFrom
         self.tipo = tipo
 
     def draw(self):
@@ -60,7 +60,7 @@ class AnagraficaProvvFilter(AnagraficaFilter):
 
         def filterCountClosure():
             return ProvvPgAzArt().count(
-                        id_persona_giuridica_from = self.dao.id,
+                        id_persona_giuridica_from = self.daoFrom.id,
                         )
         self._filterCountClosure = filterCountClosure
 
@@ -70,7 +70,7 @@ class AnagraficaProvvFilter(AnagraficaFilter):
         # Let's save the current search as a closure
         def filterClosure(offset, batchSize):
             return ProvvPgAzArt().select(
-                            id_persona_giuridica_from = self.dao.id,
+                            id_persona_giuridica_from = self.daoFrom.id,
                             offset=offset,
                             batchSize=batchSize)
 
@@ -82,10 +82,14 @@ class AnagraficaProvvFilter(AnagraficaFilter):
         valore = 0
         for i in valis:
 #            print i.__dict__
+            if i.arti:
+                art = i.arti.denominazione
+            else:
+                art = "TUTTI"
             self.anagrafica_provv_filter_listore.append((i,
-                                                        str(i.provv.valore_provv),
+                                                        str(mN(i.provv.valore_provv,1)),
                                                         str(i.provv.tipo_provv),
-                                                        "ARTICOLO",
+                                                        str(art),
                                                         str(i.pg_from.ragione_sociale),
                                                         str(i.pg_to.ragione_sociale),
 

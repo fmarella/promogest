@@ -627,7 +627,7 @@ class AnagraficaClientiEdit(AnagraficaEdit, AnagraficaPGEdit):
                 AnagraficaProvv
             a = AnagraficaProvv(mainWindow=self,
                                 daos=[],
-                                dao=self.dao,
+                                daoFrom=self.dao,
                                 tipo = "Cliente")
             anagWindow = a.getTopLevel()
             returnWindow = self.getTopLevel().get_toplevel()

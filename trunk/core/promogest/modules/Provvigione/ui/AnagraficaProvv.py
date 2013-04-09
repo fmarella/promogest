@@ -32,14 +32,14 @@ from promogest.modules.Provvigione.ui.AnagraficaProvvFilter import \
 class AnagraficaProvv(Anagrafica):
     """ Anagrafica gestione file """
 
-    def __init__(self, mainWindow=None, daos=None, dao=None, tipo=""):
+    def __init__(self, mainWindow=None, daos=None, daoFrom=None, tipo=""):
         Anagrafica.__init__(self,
                             windowTitle='Promogest - Anagrafica Provvigioni',
                             recordMenuLabel='_Anagrafica Provvigioni',
-                            filterElement=AnagraficaProvvFilter(self, dao=dao, tipo=tipo),
+                            filterElement=AnagraficaProvvFilter(self, daoFrom=daoFrom, tipo=tipo),
                             htmlHandler=AnagraficaProvvHtml(self),
                             reportHandler=AnagraficaProvvReport(self),
-                            editElement=AnagraficaProvvEdit(self, dao=dao, tipo=tipo),
+                            editElement=AnagraficaProvvEdit(self, daoFrom=daoFrom, tipo=tipo),
                             aziendaStr=Environment.azienda,
                             )
 #        self.records_print_on_screen_button.set_sensitive(False)
