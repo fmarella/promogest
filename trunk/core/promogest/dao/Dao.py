@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2013 by Promotux
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -43,12 +43,10 @@ class Dao(object):
         self._DaoModule = entity.__class__
         self._exceptionHandler = exceptionHandler
         self.campi = []
-        #print "CAMPOOOOOOOOOOOOOOOOOOOOO", campo
-        # NON SO COME TIRARE FUORI CIÒ CHE SERVE .....
-        if campo:
-            for a in campo:
-                print dir(entity)
-                self.campi.append(getattr(entity, a))
+        #if campo:
+            #for a in campo:
+                #print dir(entity)
+                #self.campi.append(getattr(entity, a))
 
     def __repr__(self):
         if hasattr(self, 'id'):
@@ -84,29 +82,7 @@ class Dao(object):
             else:
                 filter2= self.prepareFilter(kwargs)
         filter = and_(filter1,filter2)
-        #print filter
-#        try:
-#            if join and filter and orderBy:
-#                self.record= self._session.query(self._DaoModule).join(join).filter(filter).order_by(orderBy).limit(batchSize).offset(offset).all()
-#            elif filter and orderBy:
-#                self.record= self._session.query(self._DaoModule).filter(filter).order_by(orderBy).limit(batchSize).offset(offset).all()
-#            elif join and orderBy:
-#                self.record= self._session.query(self._DaoModule).join(join).order_by(orderBy).limit(batchSize).offset(offset).all()
-#            elif filter and join:
-#                self.record= self._session.query(self._DaoModule).join(join).filter(filter).limit(batchSize).offset(offset).all()
-#            elif filter:
-#                self.record= self._session.query(self._DaoModule).filter(filter).limit(batchSize).offset(offset).all()
-#            elif join:
-#                self.record= self._session.query(self._DaoModule).join(join).limit(batchSize).offset(offset).all()
-#            elif orderBy:
-#                self.record= self._session.query(self._DaoModule).order_by(orderBy).limit(batchSize).offset(offset).all()
-#            else:
-#                self.record= self._session.query(self._DaoModule).limit(batchSize).offset(offset).all()
-#            return self.record
-#        except Exception, e:
-#            self.raiseException(e)
 
-#        try:
         if self.campi:
             self.record= self._session.query(Azienda.schemaa)
         else:
@@ -126,25 +102,7 @@ class Dao(object):
                 self.record = self.record.offset(offset)
             if groupBy is not None:
                 self.record = self.record.group_by(groupBy)
-#            else:
-#                if join:
-#                    self.record = self.record.join(join)
-#                if filter:
-#                    self.record = self.record.filter(filter)
-#                if orderBy:
-#                    self.record = self.record.order_by(orderBy)
-#                if batchSize:
-#                    self.record = self.record.limit(batchSize)
-#                if distinct:
-#                    self.record = self.record.distinct(distinct)
-#                if offset:
-#                    self.record = self.record.offset(offset)
-#                if groupBy:
-#                    self.record = self.record.group_by(groupBy)
         return self.record.all()
-#        except Exception, e:
-#            self.raiseException(e)
-
 
 
     def count(self, complexFilter=None,distinct =None,**kwargs):
@@ -181,10 +139,19 @@ class Dao(object):
         except Exception, e:
             self.raiseException(e)
 
+    def preSave(self):
+        """ Recall a function in every single DAO to check if the
+        data is correct
+        """
+        return True
+
     def persist(self,multiple=False, record=True):
         if self.dd(self.__class__.__name__):
-            params["session"].add(self)
-            self.saveAppLog(self)
+            if self.preSave():
+                params["session"].add(self)
+                self.saveAppLog(self)
+            else:
+                return
         else:
             return
 
@@ -201,6 +168,7 @@ class Dao(object):
         self.saveAppLog(self)
 
     def saveAppLog(self,dao):
+        """ this is a function for saving, it recall another func """
         self.saveToAppLog(self)
 #        self.commit()
 
@@ -240,36 +208,34 @@ class Dao(object):
         return True
 
     def saveToAppLog(self, status=True,action=None, value=None):
-        """
-        Salviamo l'operazione nella tabella di log con un oggetto
-        pickeld
-        """
-#        if params["session"].dirty:
-#            message = "UPDATE;"+ self.__class__.__name__
-#        elif params["session"].new:
-#            message = "INSERT;" + self.__class__.__name__
-#        elif params["session"].deleted:
-#            message = "DELETE;"+ self.__class__.__name__
-#        else:
-#            message = "UNKNOWN ACTION;"
+        """ This is the real func for saving ....it commit the record"""
+        if params["session"].dirty:
+            message = "UPDATE;"+ self.__class__.__name__
+        elif params["session"].new:
+            message = "INSERT;" + self.__class__.__name__
+        elif params["session"].deleted:
+            message = "DELETE;"+ self.__class__.__name__
+        else:
+            message = "UNKNOWN ACTION;"
+        print "AZIONE SUL RECORD:", message
         return self.commit()
 
     def _resetId(self):
-        """
-        Riporta l'id a None
-        """
+        """ Riporta l'id a None """
+
         self.id = None
 
     def sameRecord(self, dao):
-        """
-        Check whether this Dao represents the same SQL DBMS record of
-        the given Dao
+        """ Check whether this Dao represents the same SQL DBMS
+        record of the given Dao
         """
         if dao and self:
             return (self.__hash__ == dao.__hash__ )
         return True
 
     def jsanity(self):
+        """ Return a jsonized object of the dao """
+
         import json
         d = self.dictionary(complete=True)
         for k,v in d.iteritems():
@@ -284,10 +250,8 @@ class Dao(object):
         return d
 
 
-
     def dictionary(self, complete=False):
-        """
-        Return a dictionary containing DAO data.  'complete' tells
+        """ Return a dictionary containing DAO data.  'complete' tells
         whether we should return *all* the data, even the one that's
         not SQL-related
         """
@@ -347,20 +311,16 @@ class Dao(object):
         pass
 
     def raiseException(self, exception):
-        """
-        Pump an exception instance or type through the object exception
-        handler (if any)
+        """ Pump an exception instance or type through
+        the object exception handler (if any)
         """
         #if self._exceptionHandler is not None:
         print exception
         GtkExceptionHandler().handle(exception)
 
-        # Now let's raise the exception, in order to stop further processing
-        #raise exception
-
     def prepareFilter(self, kwargs):
-        """
-        Take filter data from the gui and build the dictionary for the filter
+        """ Take filter data from the gui and build the
+        dictionary for the filter
         """
         filter_parameters = []
         for key,value in kwargs.items():

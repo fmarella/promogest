@@ -39,6 +39,13 @@ class CategoriaArticolo(Dao):
             dic= {k : categoria_articolo.c.denominazione_breve == v}
         return  dic[k]
 
+    def preSave(self):
+        """ Put in this Func all the integrity checks """
+        if len(self.denominazione_breve) > 10:
+            self.denominazione_breve = self.denominazione_breve[0:9]
+        else:
+            return True
+
 categoria_articolo=Table('categoria_articolo',
             params['metadata'],
             schema = params['schema'],
