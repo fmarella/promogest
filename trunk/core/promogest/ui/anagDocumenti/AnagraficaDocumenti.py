@@ -69,7 +69,7 @@ class AnagraficaDocumenti(Anagrafica):
 
     def on_gestione_riba_menu_activate(self, widget):
         if posso('GRB'):
-            from promogest.ui.RiBaExportWindow import RiBaExportWindow
+            from promogest.modules.Riba.ui.RiBaExportWindow import RiBaExportWindow
             anag = RiBaExportWindow(self)
             showAnagraficaRichiamata(self.getTopLevel(), anag.getTopLevel(),
                                                     None, self.filter.refresh)

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2013 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Marella <francesco.marella@anche.no>
@@ -22,7 +22,7 @@
 
 from promogest import Environment as env
 from promogest.ui.GladeWidget import GladeWidget
-from promogest.lib.riba import RiBa, Creditore, Debitore
+from promogest.modules.Riba.lib.riba import RiBa, Creditore, Debitore
 from promogest.dao.TestataDocumento import TestataDocumento
 from promogest.dao.Azienda import Azienda
 from promogest.dao.Cliente import Cliente
@@ -222,7 +222,9 @@ class RiBaExportWindow(GladeWidget):
         '''
         Constructor
         '''
-        GladeWidget.__init__(self, root='riba_window', path='riba_window.glade')
+        GladeWidget.__init__(self, root='riba_window',
+                             path='Riba/gui/riba_window.glade',
+                             isModule=True)
         self.__parent = parent
         self.placeWindow(self.getTopLevel())
         self.__setup_webview()

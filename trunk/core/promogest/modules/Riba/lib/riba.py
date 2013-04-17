@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 '''
-Copyright (c) 2011-2012 Francesco Marella <francesco.marella@anche.no>
+Copyright (c) 2011-2013 Francesco Marella <francesco.marella@anche.no>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -100,7 +100,7 @@ class Creditore(object):
         self.numero_conto = numero_conto
         self.descrizione[3] = codice_fiscale
         self.denominazione_breve = denominazione_breve # nome dell azienda
-        
+
 
 
 class RiBa(object):
