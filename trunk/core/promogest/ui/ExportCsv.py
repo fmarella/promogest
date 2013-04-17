@@ -150,7 +150,7 @@ class ExportCsv(GladeWidget):
             for o,p in dic.items():
 
                 if "_" != o[0]:
-                    if o !="session" and o !="metadata" and o !="DaoModule":
+                    if o !="session" and o !="metadata" and o !="DaoModule" and o != "campi":
                         if  o not in cic:
                             model.append((False,o))
 
