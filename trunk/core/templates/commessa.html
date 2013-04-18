@@ -32,13 +32,15 @@ margin: 1cm;
         <th><b>DATA</b></th>
         <th><b>DESCRIZIONE</b></th>
         <th><b>TIPO</b></th>
+        <th><b>NOTE</b></th>
 
         {% for riga in dao.righecommessa %}
         <tr >
         <td width ="44px" class="odd-detail">{{dao.righecommessa.index(riga)+1}}</td>
         <td width ="80px" class="odd-detail">{{utils.dateToString(riga.data_registrazione)}}</td>
         <td width ="50%" class="odd-detail">{{riga.denominazione}}</td>
-        <td width ="50%" class="odd-detail">{{riga.tipo}}</td>
+        <td width ="20%" class="odd-detail">{{riga.dao_class}}</td>
+        <td width ="50%" class="odd-detail">{{riga.note[0:50]}}</td>
 
         </tr>
         {% endfor %}

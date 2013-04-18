@@ -20,6 +20,7 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 import sys
+import datetime
 from decimal import *
 from promogest import Environment
 from promogest.ui.AnagraficaComplessaEdit import AnagraficaEdit
@@ -268,43 +269,50 @@ class AnagraficaCommesseEdit(AnagraficaEdit):
 
 
     def on_add_row_button_clicked(self, button):
-        """ Aggiunge la riga """
+        """ Aggiunge la riga ad una commessa"""
         titolo_riga = self.titolo_riga_commessa_entry.get_text()
         if not titolo_riga:
             titolo_riga = self.info_dao_label.get_text()
+
         bufferNoteRiga= self.riga_testo.get_buffer()
         note_riga = bufferNoteRiga.get_text(bufferNoteRiga.get_start_iter(), bufferNoteRiga.get_end_iter(),True) or ""
         if self.dao_temp:
             self.dao_id = self.dao_temp.id
             self.dao_class = self.dao_temp.__class__.__name__
 
-        if titolo_riga =="" or titolo_riga =="-":
+        if titolo_riga == "" or titolo_riga == "-":
             obligatoryField(self.dialogTopLevel, self.titolo_riga_commessa_entry,
             msg="Campo obbligatorio: TITOLO RIGA!")
-        data_ins_riga = dateToString(self.data_ins_riga.get_text())
+        data_ins_riga = dateToString(self.data_ins_riga.get_text() or datetime.datetime.now())
 
-        model = self.riga_commessa_treeview.get_model()
+        #model = self.riga_commessa_treeview.get_model()
         if self.editRiga:
             riga = self.editRiga
             riga.numero = self.editRiga.numero
         else:
             riga = RigaCommessa()
-            riga.numero = len(model)+1
+            riga.numero = len(self.riga_commessa_listore)+1
+
         riga.dao_class = self.dao_class
         riga.id_dao = self.dao_id
         riga.data_registrazione = stringToDate(data_ins_riga)
         riga.denominazione = titolo_riga
         riga.note = note_riga
+
         if self.dao_class =="TestataDocumento":
             dc = self.dao_temp.operazione
         else:
             dc = self.dao_class
-        dati = (riga,str(len(model)+1),data_ins_riga,
-                        titolo_riga,
-                        str(dc),
-                        note_riga,
-                        self.dao_class,
-                        str(self.dao_id))
+
+        dati = (riga,
+                str(len(self.riga_commessa_listore)+1),
+                data_ins_riga,
+                titolo_riga,
+                str(dc),
+                note_riga,
+                self.dao_class,
+                str(self.dao_id))
+
         if self.editRiga:
             if riga.dao_class=="TestataDocumento":
                 td = TestataDocumento().getRecord(id=riga.id_dao)
@@ -320,8 +328,8 @@ class AnagraficaCommesseEdit(AnagraficaEdit):
             self.rigaIter[6] =  riga.dao_class
             self.rigaIter[7] =  riga.id_dao
         else:
-            model.append(dati)
-        self.riga_commessa_treeview.set_model(model)
+            self.riga_commessa_listore.append(dati)
+        #self.riga_commessa_treeview.set_model(model)
         self.editRiga = None
 
         self.clear()
@@ -372,6 +380,7 @@ class AnagraficaCommesseEdit(AnagraficaEdit):
 
     def saveDao(self, chiusura=False, tipo=None):
         """ Salvataggio della commessa nel tabase
+
         """
         model = self.riga_commessa_treeview.get_model()
         righe_ = []
