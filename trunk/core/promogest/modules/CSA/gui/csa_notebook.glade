@@ -20,8 +20,20 @@
             <property name="n_rows">6</property>
             <property name="n_columns">2</property>
             <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
               <object class="GtkEntry" id="sigla_csa_entry">
-                <property name="visible">True</property>
+                <property name="sensitive">False</property>
                 <property name="can_focus">True</property>
                 <property name="invisible_char">●</property>
                 <property name="invisible_char_set">True</property>
@@ -110,7 +122,7 @@
             </child>
             <child>
               <object class="CustomComboBoxModify" id="id_tipo_apparecchio_csa_customcombobox">
-                <property name="visible">True</property>
+                <property name="sensitive">False</property>
                 <property name="can_focus">False</property>
                 <child>
                   <placeholder/>
@@ -143,18 +155,6 @@
                 <property name="x_options">GTK_FILL</property>
                 <property name="y_options"/>
               </packing>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
             </child>
           </object>
         </child>

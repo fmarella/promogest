@@ -176,5 +176,10 @@ std_mapper = mapper(TestataCommessa, t_testatacommessa,properties={
         "rigatestcomm": relation(RigaCommessa,primaryjoin=
                 t_testatacommessa.c.id==RigaCommessa.id_testata_commessa,
 #                foreign_keys=[RigaPrimaNota.id_testata_prima_nota],
-                cascade="all, delete")},
+                cascade="all, delete"),
+        "cli": relation(Cliente,primaryjoin=
+                t_testatacommessa.c.id_cliente==Cliente.id,
+                backref="testata_commessa"),
+
+                },
                 order_by=t_testatacommessa.c.id)

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2013 by Promotux
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -382,20 +382,23 @@ class AnagraficaCommesseEdit(AnagraficaEdit):
             obligatoryField(self.dialogTopLevel,
                     self.data_inizio_commessa_entry,
                     'Inserire la data della commessa !')
+        self.dao.id_cliente = findIdFromCombobox(self.id_cliente_combobox)
+        if self.dao.id_cliente == None:
+            obligatoryField(self.dialogTopLevel, self.id_cliente_combobox,
+            msg="Campo obbligatorio: CLIENTE!")
         self.dao.data_fine = stringToDate(self.data_fine_commessa_entry.get_text())
         self.dao.denominazione = self.titolo_commessa_entry.get_text()
-        if self.dao.denominazione =="":
-            obligatoryField(self.dialogTopLevel, self.titolo_commessa_entry,
-            msg="Campo obbligatorio: TITOLO COMMESSA!")
+        if not self.dao.denominazione:
+            try:
+                self.dao.denominazione = self.dao.cli.ragione_sociale
+            except:
+                cli = Cliente().getRecord(id= self.dao.id_cliente)
+                self.dao.denominazione = cli.ragione_sociale
         bufferNoteRiga= self.commessa_testo.get_buffer()
         self.dao.note = bufferNoteRiga.get_text(bufferNoteRiga.get_start_iter(), bufferNoteRiga.get_end_iter(),True) or ""
         self.dao.righecommessa = righe_
         self.dao.id_stadio_commessa = findIdFromCombobox(self.stadio_commessa_combobox.combobox)
-        self.dao.id_cliente = findIdFromCombobox(self.id_cliente_combobox)
         self.dao.id_articolo =findIdFromCombobox(self.id_articolo_combobox)
-        if self.dao.id_cliente == None:
-            obligatoryField(self.dialogTopLevel, self.id_cliente_combobox,
-            msg="Campo obbligatorio: CLIENTE!")
         self.dao.persist()
         self.clear()
 
