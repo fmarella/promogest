@@ -43,10 +43,10 @@ class Dao(object):
         self._DaoModule = entity.__class__
         self._exceptionHandler = exceptionHandler
         self.campi = []
-        #if campo:
-            #for a in campo:
+        if campo:
+            for a in campo:
                 #print dir(entity)
-                #self.campi.append(getattr(entity, a))
+                self.campi.append(getattr(entity, a))
 
     def __repr__(self):
         if hasattr(self, 'id'):
