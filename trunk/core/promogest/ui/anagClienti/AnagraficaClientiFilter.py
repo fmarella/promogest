@@ -130,7 +130,7 @@ class AnagraficaClientiFilter(AnagraficaFilter):
         self.filter_listore.clear()
 
         for c in clis:
-            t = (c.sede_legale_localita + " (" + c.sede_legale_provincia + ")" or 
+            t = (c.sede_legale_localita + " (" + c.sede_legale_provincia + ")" or
                     c.sede_operativa_localita + " (" + c.sede_operativa_provincia + ")" or "")
             if t == " ()":
                 t = ""

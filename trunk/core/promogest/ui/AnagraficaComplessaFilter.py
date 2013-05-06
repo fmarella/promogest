@@ -94,8 +94,11 @@ class AnagraficaFilter(GladeWidget):
 
     def on_filter_treeview_row_activated(self, treeview, path, column):
         """ Gestisce la conferma ed apertura della anagrafica """
-        self._anagrafica.on_anagrafica_filter_treeview_row_activated(
+        try:
+            self._anagrafica.on_anagrafica_filter_treeview_row_activated(
                                                 treeview, path, column)
+        except:
+            pass
 
     def on_filter_treeview_cursor_changed(self, treeview):
         """ Gestisce lo spostamento tra le righe """

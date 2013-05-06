@@ -65,6 +65,7 @@ class AnagraficaServCSAEdit(AnagraficaEdit):
         """Funzione che rinfresca la UI all'apertura e dopo alcune operazioni
         di modifica
         """
+        return
         if self.dao:
             self.valore_provv_entry.set_value(mN(self.dao.provv.valore_provv,1))
         else:

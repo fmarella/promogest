@@ -1,23 +1,24 @@
 # -*- coding: utf-8 -*-
 
-# Promogest
-#
-# Copyright (C) 2005 - 2010by Promotux Informatica - http://www.promotux.it/
-# Author: Francesco Meloni <francesco@promotux.it>
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#    Copyright (C) 2005-2013 by Promotux
+#                        di Francesco Meloni snc - http://www.promotux.it/
+
+#    Author: Francesco Meloni  <francesco@promotux.it>
+
+#    This file is part of Promogest.
+
+#    Promogest is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 2 of the License, or
+#    (at your option) any later version.
+
+#    Promogest is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+
+#    You should have received a copy of the GNU General Public License
+#    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 import os
 from promogest.ui.GladeWidget import GladeWidget
@@ -71,6 +72,18 @@ class Ricerca(GladeWidget):
         """ Visualizza/aggiorna tutta la struttura della ricerca """
         Environment.windowGroup.append(self.ricerca_window)
         self.ricerca_window.show_all()
+
+    def on_anagrafica_filter_treeview_row_activated(self, treeview):
+        """ Gestisce lo spostamento tra le righe """
+        pass
+        #self.on_filter_treeview_row_activated(treeview)
+
+    def on_anagrafica_filter_treeview_cursor_changed(self, treeview):
+        """ Gestisce lo spostamento tra le righe """
+        self.on_filter_treeview_cursor_changed(treeview)
+
+    def on_anagrafica_filter_treeview_selection_changed(self, selection):
+        self.on_filter_treeview_selection_changed(selection)
 
 
     def on_filter_treeview_row_activated(self, widget, path, column):
@@ -186,6 +199,12 @@ class RicercaFilter(GladeWidget):
         """ Aggiorna la paginazione """
         self.bodyWidget.numRecords = self.numRecords
         self.bodyWidget._refreshPageCount()
+
+    def on_filter_entry_changed(self, text):
+        stringa = text.get_text()
+        def bobo():
+            self.refresh()
+        gobject.idle_add(bobo)
 
 class RicercaHtml(object):
     """ Interfaccia HTML read-only per la lettura dell'anagrafica """
