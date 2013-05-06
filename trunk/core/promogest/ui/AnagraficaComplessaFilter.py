@@ -98,7 +98,7 @@ class AnagraficaFilter(GladeWidget):
             self._anagrafica.on_anagrafica_filter_treeview_row_activated(
                                                 treeview, path, column)
         except:
-            pass
+            self.on_filter_treeview_cursor_changed(treeview)
 
     def on_filter_treeview_cursor_changed(self, treeview):
         """ Gestisce lo spostamento tra le righe """

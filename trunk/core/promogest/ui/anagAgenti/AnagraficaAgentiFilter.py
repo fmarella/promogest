@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2013 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Authors: Francesco Meloni  <francesco@promotux.it>
@@ -28,6 +28,7 @@ from promogest import Environment
 from promogest.dao.daoAgenti.Agente import Agente, getNuovoCodiceAgente
 from promogest.lib.utils import *
 from promogest.ui.utilsCombobox import *
+from promogest.ui.Ricerca import Ricerca
 
 
 class AnagraficaAgentiFilter(AnagraficaFilter):
@@ -127,3 +128,22 @@ class AnagraficaAgentiFilter(AnagraficaFilter):
                                         (f.cognome or '') + ' ' + (f.nome or ''),
                                         (f.sede_operativa_localita or ''),
                                         pvcf))
+
+class RicercaAgenti(Ricerca):
+    """ Ricerca agenti
+    """
+    def __init__(self):
+        Ricerca.__init__(self, 'Promogest - Ricerca agenti',
+                         AnagraficaAgentiFilter(self))
+
+    def insert(self, toggleButton, returnWindow):
+
+        def refresh():
+            self.filter.refresh()
+            self.filter.ragione_sociale_filter_entry.grab_focus()
+
+        from promogest.ui.anagAgenti.AnagraficaAgenti import AnagraficaAgenti
+        anag = AnagraficaAgenti()
+        anagWindow = anag.getTopLevel()
+        showAnagraficaRichiamata(returnWindow, anagWindow, toggleButton, refresh)
+        anag.on_record_new_activate(anag.record_new_button)

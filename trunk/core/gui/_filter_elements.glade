@@ -70,10 +70,10 @@
                         <property name="events">GDK_KEY_PRESS_MASK | GDK_STRUCTURE_MASK</property>
                         <property name="tooltip_markup">Premi ( F3 )  o invio per avviare la ricerca</property>
                         <property name="image">trova_image</property>
-                        <accelerator key="F3" signal="clicked"/>
-                        <accelerator key="KP_F3" signal="clicked"/>
-                        <accelerator key="KP_Enter" signal="clicked"/>
                         <accelerator key="Return" signal="clicked"/>
+                        <accelerator key="KP_Enter" signal="clicked"/>
+                        <accelerator key="KP_F3" signal="clicked"/>
+                        <accelerator key="F3" signal="clicked"/>
                         <signal name="clicked" handler="on_filter_search_button_clicked" swapped="no"/>
                       </object>
                       <packing>
@@ -117,7 +117,7 @@
         <property name="homogeneous">True</property>
         <child>
           <object class="GtkButton" id="generic_button">
-            <property name="label" translatable="yes">button</property>
+            <property name="label" translatable="yes">buttonn</property>
             <property name="use_action_appearance">False</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>

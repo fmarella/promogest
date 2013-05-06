@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2013 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -20,7 +20,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-
+from promogest.ui.Ricerca import Ricerca
 from promogest.ui.AnagraficaComplessaFilter import AnagraficaFilter
 from promogest.dao.Cliente import Cliente
 from promogest.dao.PersonaGiuridica import PersonaGiuridica_
@@ -141,3 +141,22 @@ class AnagraficaClientiFilter(AnagraficaFilter):
                 t,
                 c.telefono_principale or c.cellulare_principale or c.email_principale or "",
                 c.partita_iva or c.codice_fiscale or ""))
+
+class RicercaClienti(Ricerca):
+    """ Ricerca clienti """
+    def __init__(self):
+        Ricerca.__init__(self, 'Promogest - Ricerca clienti',
+                         AnagraficaClientiFilter(self))
+        self.filter.ricerca_avanzata_clienti_filter_vbox.destroy()
+
+    def insert(self, toggleButton, returnWindow):
+
+        def refresh():
+            self.filter.refresh()
+            self.filter.ragione_sociale_filter_entry.grab_focus()
+
+        from promogest.ui.anagClienti.AnagraficaClienti import AnagraficaClienti
+        anag = AnagraficaClienti()
+        anagWindow = anag.getTopLevel()
+        showAnagraficaRichiamata(returnWindow, anagWindow, toggleButton, refresh)
+        anag.on_record_new_activate(anag.record_new_button)

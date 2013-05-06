@@ -47,6 +47,7 @@ class Ricerca(GladeWidget):
         self.filter.draw()
 
 
+
     def _setFilterElement(self, gladeWidget):
         self.bodyWidget = FilterWidget(owner=gladeWidget, filtersElement=gladeWidget)
         self.ricerca_viewport.add(self.bodyWidget.getTopLevel())
@@ -56,7 +57,7 @@ class Ricerca(GladeWidget):
         self.filter = self.bodyWidget.filtersElement
         self.filterTopLevel = self.filter.getTopLevel()
         self.filterTopLevel.set_sensitive(True)
-
+        self.bodyWidget.generic_button.destroy()
         self.ricerca_filter_treeview = self.bodyWidget.resultsElement
         self._treeViewModel = None
 
@@ -96,12 +97,22 @@ class Ricerca(GladeWidget):
     def on_filter_treeview_cursor_changed(self, treeview):
         """ Gestisce lo spostamento tra le righe """
         sel = self.ricerca_filter_treeview.get_selection()
-        (model, iterator) = sel.get_selected()
-
+        #(model, iterator) = sel.get_selected()
+        if sel.get_mode() != GTK_SELECTIONMODE_MULTIPLE:
+            (model, iterator) = sel.get_selected()
+            if iterator is not None:
+                self.dao = model.get_value(iterator, 0)
+            else:
+                self.dao = None
+        else:
+            model, iterator = sel.get_selected_rows()
+            count = sel.count_selected_rows()
+            if count == 1:
+                self.dao = model[iterator[0]][0]
         if iterator is None:
             return
 
-        self.dao = model.get_value(iterator, 0)
+        #self.dao = model.get_value(iterator, 0)
         if self.htmlHandler is not None:
             self.htmlHandler.setDao(self.dao)
 

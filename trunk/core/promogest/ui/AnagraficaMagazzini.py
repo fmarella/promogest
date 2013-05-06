@@ -28,6 +28,7 @@ from promogest.ui.AnagraficaComplessaReport import AnagraficaReport
 from promogest.ui.AnagraficaComplessaHtml import AnagraficaHtml
 from promogest import Environment
 from promogest.dao.Magazzino import Magazzino
+from promogest.ui.Ricerca import Ricerca
 
 from promogest.lib.utils import *
 from promogest.ui.utilsCombobox import *
@@ -62,12 +63,12 @@ class AnagraficaMagazziniFilter(AnagraficaFilter):
 
     def draw(self, cplx=False):
         ## Colonne della Treeview per il filtro
-        if self._anagrafica._denominazione:
+        if hasattr(self._anagrafica, "_denominazione") and self._anagrafica._denominazione:
             self.denominazione_filter_entry.set_text(self._anagrafica._denominazione)
         self._treeViewModel = self.filter_listore
         self.refresh()
-        if self._anagrafica._denominazione:
-            self._anagrafica.anagrafica_filter_treeview.grab_focus()
+        #if  hasattr(self._anagrafica, "_denominazione") and self._anagrafica._denominazione:
+            #self._anagrafica.anagrafica_filter_treeview.grab_focus()
 
     def clear(self):
         # Annullamento filtro
@@ -199,3 +200,22 @@ Verrà aggiornata la precedente.""")
         else:
             fencemsg()
             toggleButton.set_active(False)
+
+class RicercaMagazzini(Ricerca):
+    """ Ricerca magazzini """
+    def __init__(self):
+        Ricerca.__init__(self, 'Promogest - Ricerca magazzini',
+                         AnagraficaMagazziniFilter(self))
+        #self.filter.ricerca_avanzata_magazzini_filter_vbox.destroy()
+
+    def insert(self, toggleButton, returnWindow):
+
+        def refresh():
+            self.filter.refresh()
+            self.filter.denominazione.grab_focus()
+
+        #from promogest.ui.AnagraficaMagazzini import AnagraficaMagazzini
+        anag = AnagraficaMagazzini()
+        anagWindow = anag.getTopLevel()
+        showAnagraficaRichiamata(returnWindow, anagWindow, toggleButton, refresh)
+        anag.on_record_new_activate(anag.record_new_button)

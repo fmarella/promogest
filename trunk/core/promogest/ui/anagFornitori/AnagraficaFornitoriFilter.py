@@ -20,6 +20,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
+
 from promogest.ui.AnagraficaComplessaFilter import AnagraficaFilter
 from promogest.dao.PersonaGiuridica import PersonaGiuridica_
 from promogest import Environment
@@ -29,7 +30,7 @@ from promogest.dao.DaoUtils import *
 from promogest.lib.utils import *
 from promogest.ui.utilsCombobox import *
 from promogest.ui.gtk_compat import *
-
+from promogest.ui.Ricerca import Ricerca
 
 class AnagraficaFornitoriFilter(AnagraficaFilter):
     """ Filtro per la ricerca nell'anagrafica dei fornitori """
@@ -134,3 +135,23 @@ class AnagraficaFornitoriFilter(AnagraficaFilter):
                                         (f.cognome or '') + ' ' + (f.nome or ''),
                                         (f.sede_operativa_localita or ''),
                                         pvcf))
+
+class RicercaFornitori(Ricerca):
+    """ Ricerca clienti """
+    def __init__(self):
+        Ricerca.__init__(self, 'Promogest - Ricerca fornitori',
+                         AnagraficaFornitoriFilter(self))
+        self.filter.ricerca_alignment.destroy()
+        self.filter.ricerca_avanzata_fornitori_filter_vbox.destroy()
+
+    def insert(self, toggleButton, returnWindow):
+
+        def refresh():
+            self.filter.refresh()
+            self.filter.ragione_sociale_filter_entry.grab_focus()
+
+        from promogest.ui.anagFornitori.AnagraficaFornitori import AnagraficaFornitori
+        anag = AnagraficaFornitori()
+        anagWindow = anag.getTopLevel()
+        showAnagraficaRichiamata(returnWindow, anagWindow, toggleButton, refresh)
+        anag.on_record_new_activate(anag.record_new_button)

@@ -172,28 +172,28 @@ class AnagraficaCommesseEdit(AnagraficaEdit):
 
         if self.tipo_dao !="":
             if self.tipo_dao =="DOCUMENTO".lower():
-                from promogest.ui.SimpleSearch.RicercaDocumenti import RicercaDocumenti
+                from promogest.ui.anagDocumenti.AnagraficaDocumentiFilter import RicercaDocumenti
                 anag = RicercaDocumenti()
             elif self.tipo_dao =="PROMEMORIA".lower():
-                from promogest.ui.SimpleSearch.RicercaPromemoria import RicercaPromemoria
+                from promogest.ui.anagPromemoria.AnagraficaPromemoria import RicercaPromemoria
                 anag = RicercaPromemoria()
             elif self.tipo_dao =="FORNITORE".lower():
-                from promogest.ui.SimpleSearch.RicercaFornitori import RicercaFornitori
+                from promogest.ui.anagFornitori.AnagraficaFornitoriFilter import RicercaFornitori
                 anag = RicercaFornitori()
             elif self.tipo_dao =="ARTICOLO".lower():
-                from promogest.ui.SimpleSearch.RicercaArticoli import RicercaArticoli
+                from promogest.ui.anagArti.AnagraficaArticoli import RicercaArticoli
                 anag = RicercaArticoli()
             elif self.tipo_dao =="VETTORE".lower():
-                from promogest.ui.SimpleSearch.RicercaVettori import RicercaVettori
+                from promogest.ui.anagVettori.AnagraficaVettoriFilter import RicercaVettori
                 anag = RicercaVettori()
             elif self.tipo_dao =="MAGAZZINO".lower():
-                from promogest.ui.SimpleSearch.RicercaMagazzini import RicercaMagazzini
+                from promogest.ui.AnagraficaMagazzini import RicercaMagazzini
                 anag = RicercaMagazzini()
             elif self.tipo_dao =="CLIENTE".lower():
-                from promogest.ui.SimpleSearch.RicercaClienti import RicercaClienti
+                from promogest.ui.anagClienti.AnagraficaClientiFilter import RicercaClienti
                 anag = RicercaClienti()
             elif self.tipo_dao =="AGENTE".lower():
-                from promogest.ui.SimpleSearch.RicercaAgenti import RicercaAgenti
+                from promogest.ui.anagAgenti.AnagraficaAgentiFilter import RicercaAgenti
                 anag = RicercaAgenti()
             anagWindow = anag.getTopLevel()
             anagWindow.show_all()

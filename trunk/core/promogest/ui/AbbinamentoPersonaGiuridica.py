@@ -109,16 +109,16 @@ class AbbinamentoPersonaGiuridica(GladeWidget):
         self.tipo_dao = self.abbinamento_pg_listore.get_value(
                     self.abbinamento_pg_combobox.get_active_iter(), 0).lower()
         if self.tipo_dao == "CLIENTE".lower():
-            from promogest.ui.SimpleSearch.RicercaClienti import RicercaClienti
+            from promogest.ui.anagClienti.AnagraficaClientiFilter import RicercaClienti
             anag = RicercaClienti()
         elif self.tipo_dao == "VETTORE".lower():
-            from promogest.ui.SimpleSearch.RicercaVettori import RicercaVettori
+            from promogest.ui.anagVettori.AnagraficaVettoriFilter import RicercaVettori
             anag = RicercaVettori()
         elif self.tipo_dao == "AGENTE".lower():
-            from promogest.ui.SimpleSearch.RicercaAgenti import RicercaAgenti
+            from promogest.ui.anagAgenti.AnagraficaAgentiFilter import RicercaAgenti
             anag = RicercaAgenti()
         elif self.tipo_dao == "FORNITORE".lower():
-            from promogest.ui.SimpleSearch.RicercaFornitori import\
+            from promogest.ui.anagFornitori.AnagraficaFornitoriFilter import\
                                                              RicercaFornitori
             anag = RicercaFornitori()
         else:
@@ -153,16 +153,16 @@ class AbbinamentoPersonaGiuridica(GladeWidget):
         self.tipo_dao = self.riferimento_pg_listore.get_value(
                     self.riferimento_pg_combobox.get_active_iter(), 0).lower()
         if self.tipo_dao == "CLIENTE".lower():
-            from promogest.ui.SimpleSearch.RicercaClienti import RicercaClienti
+            from promogest.ui.anagClienti.AnagraficaClientiFilter import RicercaClienti
             anag = RicercaClienti()
         elif self.tipo_dao == "VETTORE".lower():
-            from promogest.ui.SimpleSearch.RicercaVettori import RicercaVettori
+            from promogest.ui.anagVettori.AnagraficaVettoriFilter import RicercaVettori
             anag = RicercaVettori()
         elif self.tipo_dao == "AGENTE".lower():
-            from promogest.ui.SimpleSearch.RicercaAgenti import RicercaAgenti
+            from promogest.ui.anagAgenti.AnagraficaAgentiFilter import RicercaAgenti
             anag = RicercaAgenti()
         elif self.tipo_dao == "FORNITORE".lower():
-            from promogest.ui.SimpleSearch.RicercaFornitori import\
+            from promogest.ui.anagFornitori.AnagraficaFornitoriFilter import\
                                                              RicercaFornitori
             anag = RicercaFornitori()
         else:

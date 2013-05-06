@@ -146,7 +146,7 @@ class AnagraficaArticoliFilter(AnagraficaFilter):
         self.ricerca_avanzata_button_alignment.destroy()
 
     def draw(self):
-        treeview = self._anagrafica.anagrafica_filter_treeview
+        treeview = self.anagrafica_filter_treeview
 
         renderer = gtk.CellRendererText()
         column = gtk.TreeViewColumn('Codice', renderer, text=2, background=1)
@@ -224,7 +224,7 @@ class AnagraficaArticoliFilter(AnagraficaFilter):
             self.promowear_expander_semplice.destroy()
         treeview.set_search_column(2)
 
-        self._anagrafica.anagrafica_filter_treeview.set_model(self._treeViewModel)
+        self.anagrafica_filter_treeview.set_model(self._treeViewModel)
         self.id_famiglia_articolo_filter_combobox.set_wrap_width(int(setconf("Numbers", "combo_column")))
         self.id_categoria_articolo_filter_combobox.set_wrap_width(int(setconf("Numbers", "combo_column")))
 
@@ -344,3 +344,23 @@ class AnagraficaArticoliReport(AnagraficaReport):
                                   defaultFileName='articoli',
                                   htmlTemplate='articoli',
                                   sxwTemplate='articoli')
+
+from promogest.ui.Ricerca import Ricerca
+
+class RicercaArticoli(Ricerca):
+    """ Ricerca articoli """
+    def __init__(self):
+        Ricerca.__init__(self, 'Promogest - Ricerca articoli',
+                         AnagraficaArticoliFilter(self))
+
+    def insert(self, toggleButton, returnWindow):
+
+        def refresh():
+            self.filter.refresh()
+            self.filter.denominazione_filter_entry.grab_focus()
+
+        from promogest.ui.AnagArti.AnagraficaArticoli import AnagraficaArticoli
+        anag = AnagraficaArticoli()
+        anagWindow = anag.getTopLevel()
+        showAnagraficaRichiamata(returnWindow, anagWindow, toggleButton, refresh)
+        anag.on_record_new_activate(anag.record_new_button)

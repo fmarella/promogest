@@ -29,6 +29,7 @@ from promogest.ui.AnagraficaComplessaFilter import AnagraficaFilter
 from promogest.lib.utils import *
 from promogest.dao.TestataDocumento import TestataDocumento
 import datetime
+from promogest.ui.Ricerca import Ricerca
 from promogest.ui.utilsCombobox import *
 from promogest import Environment
 
@@ -59,7 +60,6 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         fillComboboxOperazioni(self.id_operazione_filter_combobox, 'documento',True)
         self.id_operazione_filter_combobox.set_active(0)
         fillComboboxMagazzini(self.id_magazzino_filter_combobox, True)
-        self._anagrafica.info_anag_complessa_label.destroy()
         self.id_operazione_filter_combobox.set_wrap_width(setconf("Numbers", "combo_column"))
 
         self.cliente_filter_radiobutton.connect('toggled',
@@ -71,8 +71,13 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         idHandler = self.id_agente_filter_customcombobox.connect('changed',
                                                                  on_combobox_agente_search_clicked)
         self.id_agente_filter_customcombobox.setChangedHandler(idHandler)
+        try:
+            self._anagrafica.info_anag_complessa_label.destroy()
+            self._anagrafica.aggiornaforniture()
+        except:
+            pass
         self.clear()
-        self._anagrafica.aggiornaforniture()
+
 
     def _reOrderBy(self, column):
 
@@ -109,10 +114,10 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         self.protocollo_entry.set_text('')
         self.id_pagamento_filter_combobox.set_active(-1)
         self.id_operazione_filter_combobox.set_active(0)
-        if not self._anagrafica._magazzinoFissato:
+        if hasattr(self._anagrafica,"_magazzinoFissato") and not self._anagrafica._magazzinoFissato:
             fillComboboxMagazzini(self.id_magazzino_filter_combobox, True)
             self.id_magazzino_filter_combobox.set_active(0)
-        else:
+        elif hasattr(self._anagrafica,"_magazzinoFissato"):
             findComboboxRowFromId(self.id_magazzino_filter_combobox,
                                   self._anagrafica._idMagazzino)
         self.id_cliente_filter_customcombobox.set_active(0)
@@ -311,3 +316,22 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
             self.id_fornitore_filter_customcombobox.grab_focus()
             self.id_cliente_filter_customcombobox.set_active(0)
             self.id_cliente_filter_customcombobox.set_sensitive(False)
+
+class RicercaDocumenti(Ricerca):
+    """ Ricerca documenti """
+    def __init__(self):
+        Ricerca.__init__(self, 'Promogest - Ricerca documenti',
+                         AnagraficaDocumentiFilter(self))
+        #self.filter.ricerca_avanzata_documenti_filter_vbox.destroy()
+
+    def insert(self, toggleButton, returnWindow):
+
+        def refresh():
+            self.filter.refresh()
+            self.filter.ragione_sociale_filter_entry.grab_focus()
+
+        from promogest.ui.AnagDocumenti.AnagraficaDocumenti import AnagraficaDocumenti
+        anag = AnagraficaDocumenti()
+        anagWindow = anag.getTopLevel()
+        showAnagraficaRichiamata(returnWindow, anagWindow, toggleButton, refresh)
+        anag.on_record_new_activate(anag.record_new_button)

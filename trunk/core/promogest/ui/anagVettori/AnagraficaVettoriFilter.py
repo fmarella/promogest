@@ -26,7 +26,7 @@ from promogest.dao.PersonaGiuridica import PersonaGiuridica_
 from promogest import Environment
 import promogest.dao.Vettore
 from promogest.dao.Vettore import Vettore
-
+from promogest.ui.Ricerca import Ricerca
 from promogest.lib.utils import *
 from promogest.ui.utilsCombobox import *
 
@@ -122,3 +122,22 @@ class AnagraficaVettoriFilter(AnagraficaFilter):
                 (f.cognome or '') + ' ' + (f.nome or ''),
                 (f.sede_operativa_localita or ''),
                 pvcf))
+
+class RicercaVettori(Ricerca):
+    """ Ricerca vettori
+    """
+    def __init__(self):
+        Ricerca.__init__(self, 'Promogest - Ricerca vettori',
+                         AnagraficaVettoriFilter(self))
+
+    def insert(self, toggleButton, returnWindow):
+
+        def refresh():
+            self.filter.refresh()
+            self.filter.ragione_sociale_filter_entry.grab_focus()
+
+        from promogest.ui.anagVettori.AnagraficaVettori import AnagraficaVettori
+        anag = AnagraficaVettori()
+        anagWindow = anag.getTopLevel()
+        showAnagraficaRichiamata(returnWindow, anagWindow, toggleButton, refresh)
+        anag.on_record_new_activate(anag.record_new_button)

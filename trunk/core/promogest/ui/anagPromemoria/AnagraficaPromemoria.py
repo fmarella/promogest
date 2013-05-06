@@ -64,7 +64,7 @@ class AnagraficaPromemoriaFilter(AnagraficaFilter):
 
     def draw(self,cplx=False):
         # Colonne della Treeview per il filtro
-        treeview = self._anagrafica.anagrafica_filter_treeview
+        treeview = self.anagrafica_filter_treeview
         renderer = gtk.CellRendererText()
 
         column = gtk.TreeViewColumn('Data inserimento', renderer, text=1)
@@ -151,7 +151,7 @@ class AnagraficaPromemoriaFilter(AnagraficaFilter):
         treeview.set_search_column(1)
 
         self._treeViewModel = gtk.ListStore(object, str, str, str, str, str, str, str, str, str)
-        self._anagrafica.anagrafica_filter_treeview.set_model(self._treeViewModel)
+        self.anagrafica_filter_treeview.set_model(self._treeViewModel)
 
         self.clear()
 
@@ -438,3 +438,23 @@ class AnagraficaPromemoriaEdit(AnagraficaEdit):
                 anag.show_all()
             else:
                 fenceDialog()
+
+from promogest.ui.Ricerca import Ricerca
+
+class RicercaPromemoria(Ricerca):
+    """ Ricerca promemoria """
+    def __init__(self):
+        Ricerca.__init__(self, 'Promogest - Ricerca promemoria',
+                         AnagraficaPromemoriaFilter(self))
+
+    def insert(self, toggleButton, returnWindow):
+
+        def refresh():
+            self.filter.refresh()
+            self.filter.ragione_sociale_filter_entry.grab_focus()
+
+        #from promogest.ui.AnagPromemoria.AnagraficaPromemoria import AnagraficaPromemoria
+        anag = AnagraficaPromemoria()
+        anagWindow = anag.getTopLevel()
+        showAnagraficaRichiamata(returnWindow, anagWindow, toggleButton, refresh)
+        anag.on_record_new_activate(anag.record_new_button)
