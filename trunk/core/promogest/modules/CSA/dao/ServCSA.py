@@ -61,7 +61,7 @@ except:
         Column('manutenzione', String(100), nullable=True),
         Column('cadenza', String(1000), nullable=True),
         schema=params['schema'],
-        extend_existing=True,
+        useexisting=True,
         )
     t_serv_csa.create(checkfirst=True)
 
