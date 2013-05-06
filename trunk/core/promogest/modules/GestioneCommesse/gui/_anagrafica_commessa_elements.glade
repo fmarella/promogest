@@ -404,13 +404,13 @@ modificare l'oggetto inserito</property>
                       <placeholder/>
                     </child>
                     <child>
-                      <object class="GtkButton" id="csa_button">
+                      <object class="GtkToggleButton" id="csa_toggle">
                         <property name="label" translatable="yes">CSA</property>
                         <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
-                        <signal name="clicked" handler="on_csa_button_clicked" swapped="no"/>
+                        <signal name="toggled" handler="on_csa_toggle_toggled" swapped="no"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>

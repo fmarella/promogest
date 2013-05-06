@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2013 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni <francesco@promotux.it>
@@ -25,42 +25,48 @@ from sqlalchemy.orm import *
 from promogest.Environment import *
 from promogest.dao.Dao import Dao
 from migrate import *
-from promogest.modules.CSA.dao.GasRefrigerante import GasRefrigerante
-from promogest.modules.CSA.dao.TipoApparecchio import TipoApparecchio
+from promogest.modules.CSA.dao.LuogoInstallazione import LuogoInstallazione
+#from promogest.modules.CSA.dao.TipoApparecchio import TipoApparecchio
+from promogest.modules.GestioneCommesse.dao.TestataCommessa import TestataCommessa,t_testatacommessa
 
 try:
-    t_articolo_csa = Table('gestione_commesse_csa', params['metadata'],
+    t_serv_csa = Table('servizio_csa', params['metadata'],
                          schema=params['schema'], autoload=True)
 except:
-
-    t_articolo_csa = Table(
-        'gestione_commesse_csa',
+    params["session"].close() # Questo comando chiude la sessione appesa
+                              # e permette la creazione della tabella
+    t_serv_csa = Table('servizio_csa',
         params['metadata'],
         Column('id', Integer, primary_key=True),
         Column('id_articolo', Integer,
                ForeignKey(fk_prefix + 'articolo.id',
-                          onupdate='CASCADE', ondelete='CASCADE')),
+                          onupdate='CASCADE', ondelete='CASCADE'),nullable=True),
+        Column('id_cliente', Integer,
+               ForeignKey(fk_prefix + 'cliente.id',
+                          onupdate='CASCADE', ondelete='CASCADE'),nullable=True),
+        Column('id_testata_commessa', Integer,
+               ForeignKey(fk_prefix + 'testata_commessa.id',
+                          onupdate='CASCADE', ondelete='CASCADE'),nullable=True),
         Column('numero_serie', String(200), nullable=True),
         Column('combustibile', String(200), nullable=True),
         Column('data_avviamento', DateTime, nullable=True),
         Column('tenuta_libretto', Boolean, default=False, nullable=False),
-        Column('tenuta_libretto', Boolean),
+
         Column('id_luogo_installazione', Integer,
                ForeignKey(fk_prefix + 'luogo_installazione.id',
-                          onupdate='CASCADE', ondelete='CASCADE')),
-        Column('id_cliente_installatore', Integer,
-               ForeignKey(fk_prefix + 'installatore.id',
-                          onupdate='CASCADE', ondelete='CASCADE')),
-        Column('id_cadenza', Integer,
-               ForeignKey(fk_prefix + 'anagrafica_cadenze.id',
-                          onupdate='CASCADE', ondelete='CASCADE')),
+                          onupdate='CASCADE', ondelete='CASCADE'),nullable=True),
+        Column('id_persona_giuridica', Integer,
+               ForeignKey(fk_prefix + 'persona_giuridica.id',
+                          onupdate='CASCADE', ondelete='CASCADE'),nullable=True),
+        Column('manutenzione', String(100), nullable=True),
+        Column('cadenza', String(1000), nullable=True),
         schema=params['schema'],
-        useexisting=True,
+        extend_existing=True,
         )
-    t_articolo_csa.create(checkfirst=True)
+    t_serv_csa.create(checkfirst=True)
 
 
-class ArticoloCSA(Dao):
+class ServCSA(Dao):
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
@@ -72,22 +78,6 @@ class ArticoloCSA(Dao):
             dic = {k: t_articolo_csa.c.id_articolo==v}
         return dic[k]
 
-    @property
-    def tipo_apparecchio(self):
-        a = TipoApparecchio().getRecord(id=self.id_tipo_apparecchio)
-        if a:
-            return a.denominazione
-        else:
-            return _('tipo apparecchio indeterminato')
 
-    @property
-    def gas_refrigerante(self):
-        a = GasRefrigerante().getRecord(id=self.id_gas_refrigerante)
-        if a:
-            return a.denominazione
-        else:
-            return _('gas refrigerante indeterminato')
-
-
-std_mapper = mapper(ArticoloCSA, t_articolo_csa,
-                    order_by=t_articolo_csa.c.id_articolo)
+std_mapper = mapper(ServCSA, t_serv_csa,
+                    order_by=t_serv_csa.c.id)

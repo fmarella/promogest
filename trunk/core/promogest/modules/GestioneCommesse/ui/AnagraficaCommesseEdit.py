@@ -200,6 +200,18 @@ class AnagraficaCommesseEdit(AnagraficaEdit):
             anagWindow.connect("hide",returnDao)
 
 
+    def on_csa_toggle_toggled(self, toggleButton):
+        if not(toggleButton.get_active()):
+            toggleButton.set_active(False)
+            return
+
+        from promogest.modules.CSA.ui.AnagraficaServCSA import AnagraficaServCSA
+        anag = AnagraficaServCSA(self.dao.id)
+        anagWindow = anag.getTopLevel()
+
+        showAnagraficaRichiamata(self.dialogTopLevel, anagWindow, toggleButton)
+
+
     def setDao(self, dao):
         if dao is None:
             # Ricrea il Dao con una connessione al DBMS SQL
