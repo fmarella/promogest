@@ -166,14 +166,14 @@
       </packing>
     </child>
     <child>
-      <object class="GtkHBox" id="valore_provv_hbox">
+      <object class="GtkHBox" id="matricola_provv_hbox">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <child>
-          <object class="GtkLabel" id="valore_provv_label">
+          <object class="GtkLabel" id="matricola_label">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="label" translatable="yes">Valore</property>
+            <property name="label" translatable="yes">Matricola</property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -183,7 +183,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkEntry" id="entry1">
+          <object class="GtkEntry" id="matricola_entry">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="invisible_char">●</property>
@@ -277,10 +277,9 @@
           </packing>
         </child>
         <child>
-          <object class="GtkComboBox" id="luogo_installazione_combobox">
+          <object class="CustomComboBoxModify" id="luogo_installazione_combobox">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="model">come_store</property>
+            <property name="can_focus">True</property>
           </object>
           <packing>
             <property name="expand">True</property>
@@ -551,99 +550,6 @@
     <property name="n_rows">4</property>
     <property name="n_columns">2</property>
     <child>
-      <placeholder/>
-    </child>
-    <child>
-      <placeholder/>
-    </child>
-    <child>
-      <placeholder/>
-    </child>
-    <child>
-      <placeholder/>
-    </child>
-    <child>
-      <placeholder/>
-    </child>
-    <child>
-      <placeholder/>
-    </child>
-    <child>
-      <placeholder/>
-    </child>
-    <child>
-      <placeholder/>
-    </child>
-    <child>
-      <placeholder/>
-    </child>
-    <child>
-      <placeholder/>
-    </child>
-    <child>
-      <placeholder/>
-    </child>
-    <child>
-      <placeholder/>
-    </child>
-    <child>
-      <placeholder/>
-    </child>
-    <child>
-      <placeholder/>
-    </child>
-    <child>
-      <placeholder/>
-    </child>
-    <child>
-      <placeholder/>
-    </child>
-    <child>
-      <placeholder/>
-    </child>
-    <child>
-      <placeholder/>
-    </child>
-    <child>
-      <placeholder/>
-    </child>
-    <child>
-      <placeholder/>
-    </child>
-    <child>
-      <placeholder/>
-    </child>
-    <child>
-      <placeholder/>
-    </child>
-    <child>
-      <placeholder/>
-    </child>
-    <child>
-      <placeholder/>
-    </child>
-    <child>
-      <placeholder/>
-    </child>
-    <child>
-      <placeholder/>
-    </child>
-    <child>
-      <placeholder/>
-    </child>
-    <child>
-      <placeholder/>
-    </child>
-    <child>
-      <placeholder/>
-    </child>
-    <child>
-      <placeholder/>
-    </child>
-    <child>
-      <placeholder/>
-    </child>
-    <child>
       <object class="GtkLabel" id="denominazione_filter_label">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
@@ -672,6 +578,24 @@
         <property name="right_attach">2</property>
         <property name="y_options"/>
       </packing>
+    </child>
+    <child>
+      <placeholder/>
+    </child>
+    <child>
+      <placeholder/>
+    </child>
+    <child>
+      <placeholder/>
+    </child>
+    <child>
+      <placeholder/>
+    </child>
+    <child>
+      <placeholder/>
+    </child>
+    <child>
+      <placeholder/>
     </child>
   </object>
   <object class="GtkListStore" id="anagrafica_serv_csa_riga_listore">
