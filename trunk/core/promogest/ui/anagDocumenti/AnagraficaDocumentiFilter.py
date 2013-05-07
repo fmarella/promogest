@@ -195,7 +195,6 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
                                     aDataFineNoleggio = aDataFineNoleggio)
 
 
-        @timeit
         def filterCountClosure():
             if idArticolo:
                 a = TestataDocumento().count(filterDict = self.filterDict, idArticoloMov=idArticolo) or 0
@@ -208,7 +207,6 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         self._refreshPageCount()
 
         # Let's save the current search as a closure
-        @timeit
         def filterClosure(offset, batchSize):
             """ questo trucchetto su idArticolo è stato necessario perchè
             l'articolo puà essere sia in righe documento che in righe movimento

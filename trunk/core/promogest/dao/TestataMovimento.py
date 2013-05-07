@@ -197,7 +197,6 @@ class TestataMovimento(Dao):
                            Articolo.id.in_(v))}
         return  dic[k]
 
-    @timeit
     def righeMovimentoDel(self, sm = False):
         """
         Cancella le righe associate ad un documento
@@ -238,7 +237,6 @@ class TestataMovimento(Dao):
             #params["session"].commit()
         return True
 
-    @timeit
     def persist(self):
         """cancellazione righe associate alla testata
             conn.execStoredProcedure('RigheMovimentoDel',(self.id, ))"""

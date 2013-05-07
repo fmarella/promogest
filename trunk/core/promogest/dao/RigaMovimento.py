@@ -33,7 +33,7 @@ from Listino import Listino
 from Multiplo import Multiplo
 from Stoccaggio import Stoccaggio
 from Riga import Riga, t_riga
-from promogest.lib.utils import getScontiFromDao, getStringaSconti, posso, timeit
+from promogest.lib.utils import getScontiFromDao, getStringaSconti, posso
 
 if hasattr(conf, "SuMisura") and getattr(conf.SuMisura,'mod_enable') == "yes":
     #from promogest.modules.SuMisura.data.SuMisuraDb import *
@@ -286,7 +286,6 @@ class RigaMovimento(Dao):
             #params["session"].commit()
             #return True
 
-    @timeit
     def persist(self,sm=False):
 
         params["session"].add(self)

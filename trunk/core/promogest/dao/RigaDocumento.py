@@ -234,7 +234,6 @@ class RigaDocumento(Dao):
         dic= {  'idTestataDocumento' : t_riga_documento.c.id_testata_documento==v }
         return  dic[k]
 
-    @timeit
     def persist(self, sm=False):
         #salvataggio riga
         params["session"].add(self)
