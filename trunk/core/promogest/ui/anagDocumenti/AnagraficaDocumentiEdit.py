@@ -694,7 +694,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                 self._righe[0]["multiplo"] = ''
             self._righe[0]["idListino"] = riga.id_listino
             self._righe[0]["listino"] = listino["denominazione"]
-            self._righe[0]["quantita"] = mN(riga.quantita)
+            self._righe[0]["quantita"] = riga.quantita
             self._righe[0]["moltiplicatore"] = mN(riga.moltiplicatore,2)
             self._righe[0]["prezzoLordo"] = mN(riga.valore_unitario_lordo)
             self._righe[0]["sconti"] = sconti
