@@ -286,6 +286,8 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
                 parte = " / "+ str(t.parte)
             else:
                 parte = ""
+            if "Preventivo" in t.operazione:
+				col = "#B5FBFF"
             self.filter_listore.append((t,
                                     dateTimeToString(t.data_documento),
                                     (str(str(t.numero) + parte) or "0"),
