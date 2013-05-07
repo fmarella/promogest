@@ -678,7 +678,7 @@ def on_combobox_agente_search_clicked(combobox, callName=None):
 
 
     if combobox.on_selection_changed():
-        from promogest.ui.SimpleSearch.RicercaAgenti import RicercaAgenti
+        from promogest.ui.anagAgenti.AnagraficaAgentiFilter import RicercaAgenti
         anag = RicercaAgenti()
 
         anagWindow = anag.getTopLevel()
@@ -715,7 +715,7 @@ def on_combobox_vettore_search_clicked(combobox, callName=None):
 
 
     if combobox.on_selection_changed():
-        from promogest.ui.SimpleSearch.RicercaVettori import RicercaVettori
+        from promogest.ui.anagVettori.AnagraficaVettoriFilter import RicercaVettori
         anag = RicercaVettori()
 
         anagWindow = anag.getTopLevel()
@@ -750,7 +750,7 @@ def on_combobox_magazzino_search_clicked(combobox, callName=None):
 
 
     if combobox.on_selection_changed():
-        from promogest.ui.SimpleSearch.RicercaMagazzini import RicercaMagazzini
+        from promogest.ui.AnagraficaMagazzini import RicercaMagazzini
         anag = RicercaMagazzini()
 
         anagWindow = anag.getTopLevel()
@@ -818,7 +818,7 @@ def on_combobox_cliente_search_clicked(combobox, callName=None):
             callName()
 
     if combobox.on_selection_changed():
-        from promogest.ui.SimpleSearch.RicercaClienti import RicercaClienti
+        from promogest.ui.anagClienti.AnagraficaClientiFilter import RicercaClienti
         anag = RicercaClienti()
 
         anagWindow = anag.getTopLevel()
@@ -854,7 +854,7 @@ def on_combobox_fornitore_search_clicked(combobox, callName=None):
 
 
     if combobox.on_selection_changed():
-        from promogest.ui.SimpleSearch.RicercaFornitori import RicercaFornitori
+        from promogest.ui.anagFornitori.AnagraficaFornitoriFilter import RicercaFornitori
         anag = RicercaFornitori()
 
         anagWindow = anag.getTopLevel()
