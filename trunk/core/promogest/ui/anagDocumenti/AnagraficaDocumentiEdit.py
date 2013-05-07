@@ -429,11 +429,11 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         if self._loading:
             return
         self._righe[0]["idMultiplo"] = findIdFromCombobox(self.id_multiplo_customcombobox.combobox)
-        #multiplo = leggiMultiplo(self._righe[0]["idMultiplo"])
-        multiplo = Multiplo().getRecord(id=self._righe[0]["idMultiplo"])
+        multiplo = leggiMultiplo(self._righe[0]["idMultiplo"])
+        #multiplo = Multiplo().getRecord(id=self._righe[0]["idMultiplo"])
         if multiplo:
-            self._righe[0]["multiplo"] = multiplo.denominazione_breve + ' ( ' + str(multiplo.moltiplicatore) + ' X )'
-            self._righe[0]["moltiplicatore"] = multiplo.moltiplicatore
+            self._righe[0]["multiplo"] = multiplo["denominazioneBreve"] + ' ( ' + str(multiplo["moltiplicatore"]) + ' X )'
+            self._righe[0]["moltiplicatore"] = multiplo["moltiplicatore"]
         self.calcolaTotaleRiga()
 
     def get_variazioni_listino(self, cliente, idListino):
