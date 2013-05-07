@@ -76,7 +76,9 @@ class Ricerca(GladeWidget):
 
     def on_anagrafica_filter_treeview_row_activated(self, treeview):
         """ Gestisce lo spostamento tra le righe """
-        pass
+        if self.getTopLevel() in Environment.windowGroup:
+            Environment.windowGroup.remove(self.getTopLevel())
+            self.getTopLevel().hide()
         #self.on_filter_treeview_row_activated(treeview)
 
     def on_anagrafica_filter_treeview_cursor_changed(self, treeview):

@@ -22,19 +22,19 @@
 
 from promogest.ui.AnagraficaSemplice import \
                         Anagrafica, AnagraficaDetail, AnagraficaFilter
-from promogest.modules.CSA.dao.TipoApparecchio import TipoApparecchio
+from promogest.modules.CSA.dao.LuogoInstallazione import LuogoInstallazione
 from promogest.lib.utils import *
 from promogest.ui.utilsCombobox import *
 
 
-class AnagraficaTipoApparecchio(Anagrafica):
+class AnagraficaLuogoInstallazione(Anagrafica):
     """ Anagrafica categorie clienti """
 
     def __init__(self):
-        Anagrafica.__init__(self, 'Promogest - Anagrafica tipo apparecchio',
-                            '_Tipo apparecchio',
-                            AnagraficaTipoApparecchioFilter(self),
-                            AnagraficaTipoApparecchioDetail(self))
+        Anagrafica.__init__(self, 'Promogest - Anagrafica luogo installazione',
+                            '_Luogo installazione',
+                            AnagraficaLuogoInstallazioneFilter(self),
+                            AnagraficaLuogoInstallazioneDetail(self))
 
     def draw(self):
         """ Facoltativo ma suggerito per indicare la lunghezza
@@ -50,13 +50,13 @@ class AnagraficaTipoApparecchio(Anagrafica):
         # Aggiornamento TreeView
         denominazione = prepareFilterString(
                         self.filter.denominazione_filter_entry.get_text())
-        self.numRecords = TipoApparecchio().count(denominazione=denominazione)
+        self.numRecords = LuogoInstallazione().count(denominazione=denominazione)
 
         self._refreshPageCount()
 
         # Let's save the current search as a closure
         def filterClosure(offset, batchSize):
-            return TipoApparecchio().select(denominazione=denominazione,
+            return LuogoInstallazione().select(denominazione=denominazione,
                                             orderBy=self.orderBy,
                                             offset=self.offset,
                                             batchSize=self.batchSize)
@@ -69,21 +69,22 @@ class AnagraficaTipoApparecchio(Anagrafica):
                                         (c.denominazione or '')))
 
 
-class AnagraficaTipoApparecchioFilter(AnagraficaFilter):
-    """ Filtro per la ricerca nell'anagrafica delle tipi apparecchio """
+class AnagraficaLuogoInstallazioneFilter(AnagraficaFilter):
+    """ Filtro per la ricerca nell'anagrafica dei luoghi installazione
+    """
 
     def __init__(self, anagrafica):
         AnagraficaFilter.__init__(self,
                       anagrafica,
-                      root='anagrafica_tipo_apparecchio_filter_table',
-                      path='CSA/gui/_anagrafica_tipo_apparecchio_elements.glade',
+                      root='anagrafica_luogo_installazione_filter_table',
+                      path='CSA/gui/_anagrafica_luogo_installazione_elements.glade',
                       isModule=True)
         self._widgetFirstFocus = self.denominazione_filter_entry
 
     def _reOrderBy(self, column):
         if column.get_name() == "denominazione_column":
             return self._anagrafica._changeOrderBy(
-                    column, (None, TipoApparecchio.denominazione))
+                    column, (None, LuogoInstallazione.denominazione))
 
     def clear(self):
         # Annullamento filtro
@@ -92,25 +93,25 @@ class AnagraficaTipoApparecchioFilter(AnagraficaFilter):
         self._anagrafica.refresh()
 
 
-class AnagraficaTipoApparecchioDetail(AnagraficaDetail):
-    """ Dettaglio dell'anagrafica delle tipo apparecchio
+class AnagraficaLuogoInstallazioneDetail(AnagraficaDetail):
+    """ Dettaglio dell'anagrafica dei luoghi installazione
     """
     def __init__(self, anagrafica):
         AnagraficaDetail.__init__(self,
                       anagrafica,
-                      path='CSA/gui/_anagrafica_categorie_clienti_elements.glade',
+                      path='CSA/gui/_anagrafica_luogo_installazione_elements.glade',
                       isModule=True)
 
     def setDao(self, dao):
         self.dao = dao
         if dao is None:
-            self.dao = TipoApparecchio()
+            self.dao = LuogoInstallazione()
             self._anagrafica._newRow((self.dao, ''))
             #self._refresh()
         return self.dao
 
     def updateDao(self):
-        self.dao = TipoApparecchio().getRecord(id=self.dao.id)
+        self.dao = LuogoInstallazione().getRecord(id=self.dao.id)
         self._refresh()
 
     def _refresh(self):
