@@ -8,6 +8,73 @@
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
   </object>
+  <object class="GtkTreeView" id="anagrafica_filter_treeview">
+    <property name="visible">True</property>
+    <property name="can_focus">True</property>
+    <property name="model">anagrafica_serv_csa_filter_listore</property>
+    <property name="headers_clickable">False</property>
+    <property name="search_column">1</property>
+    <property name="enable_grid_lines">both</property>
+    <child>
+      <object class="GtkTreeViewColumn" id="Valore">
+        <property name="title" translatable="yes">Valore</property>
+        <property name="clickable">True</property>
+        <child>
+          <object class="GtkCellRendererText" id="cellrenderertext1"/>
+          <attributes>
+            <attribute name="text">1</attribute>
+          </attributes>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkTreeViewColumn" id="tipo">
+        <property name="title" translatable="yes">Tipo</property>
+        <property name="clickable">True</property>
+        <child>
+          <object class="GtkCellRendererText" id="cellrenderertext10"/>
+          <attributes>
+            <attribute name="text">2</attribute>
+          </attributes>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkTreeViewColumn" id="articolo">
+        <property name="resizable">True</property>
+        <property name="title" translatable="yes">Articolo</property>
+        <property name="expand">True</property>
+        <child>
+          <object class="GtkCellRendererText" id="cellrenderertext15"/>
+          <attributes>
+            <attribute name="text">3</attribute>
+          </attributes>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkTreeViewColumn" id="persona_giuridica_da">
+        <property name="title" translatable="yes">Persona Giuridica Da</property>
+        <child>
+          <object class="GtkCellRendererText" id="cellrenderertext2"/>
+          <attributes>
+            <attribute name="text">4</attribute>
+          </attributes>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkTreeViewColumn" id="persona_giuridica_a">
+        <property name="title" translatable="yes">Persona giuridica A</property>
+        <child>
+          <object class="GtkCellRendererText" id="cellrenderertext3"/>
+          <attributes>
+            <attribute name="text">5</attribute>
+          </attributes>
+        </child>
+      </object>
+    </child>
+  </object>
   <object class="GtkVBox" id="anagrafica_serv_csa_detail_vbox">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -78,7 +145,7 @@
           </packing>
         </child>
         <child>
-          <object class="ClienteSearchWidget" id="provv_ClienteSearchWidget">
+          <object class="ClienteSearchWidget" id="serv_csa_cliente_ClienteSearchWidget">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
           </object>
@@ -96,14 +163,14 @@
       </packing>
     </child>
     <child>
-      <object class="GtkHBox" id="fornitore_provv_hbox">
+      <object class="GtkHBox" id="commesse_csa_hbox">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <child>
-          <object class="GtkLabel" id="fornitore_provv_label">
+          <object class="GtkLabel" id="commesse_csa_label">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="label" translatable="yes">Fornitore</property>
+            <property name="label" translatable="yes">Commessa</property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -113,14 +180,39 @@
           </packing>
         </child>
         <child>
-          <object class="FornitoreSearchWidget" id="provv_FornitoreSearchWidget">
+          <object class="GtkButton" id="commesse_button">
+            <property name="label" translatable="yes">click me</property>
+            <property name="use_action_appearance">False</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <signal name="clicked" handler="on_commesse_button_clicked" swapped="no"/>
           </object>
           <packing>
             <property name="expand">True</property>
             <property name="fill">True</property>
             <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="cancel_commessa_button">
+            <property name="use_action_appearance">False</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <signal name="clicked" handler="on_cancel_commessa_button_clicked" swapped="no"/>
+            <child>
+              <object class="GtkImage" id="image2">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="stock">gtk-clear</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">2</property>
           </packing>
         </child>
       </object>
@@ -138,7 +230,7 @@
           <object class="GtkLabel" id="pg_provv_label">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="label" translatable="yes">Agente</property>
+            <property name="label" translatable="yes">Installatore</property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -166,14 +258,14 @@
       </packing>
     </child>
     <child>
-      <object class="GtkHBox" id="matricola_provv_hbox">
+      <object class="GtkHBox" id="valore_provv_hbox">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <child>
-          <object class="GtkLabel" id="matricola_label">
+          <object class="GtkLabel" id="valore_provv_label">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="label" translatable="yes">Matricola</property>
+            <property name="label" translatable="yes">Valore</property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -183,7 +275,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkEntry" id="matricola_entry">
+          <object class="GtkEntry" id="entry1">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="invisible_char">●</property>
@@ -550,6 +642,99 @@
     <property name="n_rows">4</property>
     <property name="n_columns">2</property>
     <child>
+      <placeholder/>
+    </child>
+    <child>
+      <placeholder/>
+    </child>
+    <child>
+      <placeholder/>
+    </child>
+    <child>
+      <placeholder/>
+    </child>
+    <child>
+      <placeholder/>
+    </child>
+    <child>
+      <placeholder/>
+    </child>
+    <child>
+      <placeholder/>
+    </child>
+    <child>
+      <placeholder/>
+    </child>
+    <child>
+      <placeholder/>
+    </child>
+    <child>
+      <placeholder/>
+    </child>
+    <child>
+      <placeholder/>
+    </child>
+    <child>
+      <placeholder/>
+    </child>
+    <child>
+      <placeholder/>
+    </child>
+    <child>
+      <placeholder/>
+    </child>
+    <child>
+      <placeholder/>
+    </child>
+    <child>
+      <placeholder/>
+    </child>
+    <child>
+      <placeholder/>
+    </child>
+    <child>
+      <placeholder/>
+    </child>
+    <child>
+      <placeholder/>
+    </child>
+    <child>
+      <placeholder/>
+    </child>
+    <child>
+      <placeholder/>
+    </child>
+    <child>
+      <placeholder/>
+    </child>
+    <child>
+      <placeholder/>
+    </child>
+    <child>
+      <placeholder/>
+    </child>
+    <child>
+      <placeholder/>
+    </child>
+    <child>
+      <placeholder/>
+    </child>
+    <child>
+      <placeholder/>
+    </child>
+    <child>
+      <placeholder/>
+    </child>
+    <child>
+      <placeholder/>
+    </child>
+    <child>
+      <placeholder/>
+    </child>
+    <child>
+      <placeholder/>
+    </child>
+    <child>
       <object class="GtkLabel" id="denominazione_filter_label">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
@@ -579,24 +764,6 @@
         <property name="y_options"/>
       </packing>
     </child>
-    <child>
-      <placeholder/>
-    </child>
-    <child>
-      <placeholder/>
-    </child>
-    <child>
-      <placeholder/>
-    </child>
-    <child>
-      <placeholder/>
-    </child>
-    <child>
-      <placeholder/>
-    </child>
-    <child>
-      <placeholder/>
-    </child>
   </object>
   <object class="GtkListStore" id="anagrafica_serv_csa_riga_listore">
     <columns>
@@ -617,73 +784,6 @@
       <!-- column-name colore_tipo -->
       <column type="gchararray"/>
     </columns>
-  </object>
-  <object class="GtkTreeView" id="anagrafica_filter_treeview">
-    <property name="visible">True</property>
-    <property name="can_focus">True</property>
-    <property name="model">anagrafica_serv_csa_filter_listore</property>
-    <property name="headers_clickable">False</property>
-    <property name="search_column">1</property>
-    <property name="enable_grid_lines">both</property>
-    <child>
-      <object class="GtkTreeViewColumn" id="Valore">
-        <property name="title" translatable="yes">Valore</property>
-        <property name="clickable">True</property>
-        <child>
-          <object class="GtkCellRendererText" id="cellrenderertext1"/>
-          <attributes>
-            <attribute name="text">1</attribute>
-          </attributes>
-        </child>
-      </object>
-    </child>
-    <child>
-      <object class="GtkTreeViewColumn" id="tipo">
-        <property name="title" translatable="yes">Tipo</property>
-        <property name="clickable">True</property>
-        <child>
-          <object class="GtkCellRendererText" id="cellrenderertext10"/>
-          <attributes>
-            <attribute name="text">2</attribute>
-          </attributes>
-        </child>
-      </object>
-    </child>
-    <child>
-      <object class="GtkTreeViewColumn" id="articolo">
-        <property name="resizable">True</property>
-        <property name="title" translatable="yes">Articolo</property>
-        <property name="expand">True</property>
-        <child>
-          <object class="GtkCellRendererText" id="cellrenderertext15"/>
-          <attributes>
-            <attribute name="text">3</attribute>
-          </attributes>
-        </child>
-      </object>
-    </child>
-    <child>
-      <object class="GtkTreeViewColumn" id="persona_giuridica_da">
-        <property name="title" translatable="yes">Persona Giuridica Da</property>
-        <child>
-          <object class="GtkCellRendererText" id="cellrenderertext2"/>
-          <attributes>
-            <attribute name="text">4</attribute>
-          </attributes>
-        </child>
-      </object>
-    </child>
-    <child>
-      <object class="GtkTreeViewColumn" id="persona_giuridica_a">
-        <property name="title" translatable="yes">Persona giuridica A</property>
-        <child>
-          <object class="GtkCellRendererText" id="cellrenderertext3"/>
-          <attributes>
-            <attribute name="text">5</attribute>
-          </attributes>
-        </child>
-      </object>
-    </child>
   </object>
   <object class="GtkListStore" id="come_store">
     <columns>

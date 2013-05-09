@@ -1120,7 +1120,7 @@ def on_id_famiglia_articolo_customcombobox_clicked(widget, button):
                         on_anagrafica_famiglie_articoli_destroyed)
 
 def on_stadio_commessa_combobox_clicked(widget, button):
-    """Richiama l'anagrafica delle categorie articoli """
+    """Richiama l'anagrafica degli stadi commessa """
 
     def on_anagrafica_stadio_commessa_destroyed(window):
         """    """
@@ -1142,6 +1142,31 @@ def on_stadio_commessa_combobox_clicked(widget, button):
     anagWindow.show_all()
     anagWindow.connect("destroy",
                         on_anagrafica_stadio_commessa_destroyed)
+
+
+def on_luogo_installazione_combobox_clicked(widget, button):
+    """Richiama l'anagrafica degli stadi commessa """
+
+    def on_anagrafica_luogo_installazione_destroyed(window):
+        """    """
+        # all'uscita dall'anagrafica richiamata, aggiorna l'elenco associato
+        widget.button.set_active(False)
+        id = findIdFromCombobox(widget.combobox)
+        fillComboboxLuogoInstallazione(widget.combobox)
+        findComboboxRowFromId(widget.combobox, id)
+
+    if widget.button.get_property('active') is False:
+        return
+
+    from promogest.modules.CSA.ui.AnagraficaLuogoInstallazione import AnagraficaLuogoInstallazione
+    anag = AnagraficaLuogoInstallazione()
+
+    anagWindow = anag.getTopLevel()
+    returnWindow = widget.get_toplevel()
+    anagWindow.set_transient_for(returnWindow)
+    anagWindow.show_all()
+    anagWindow.connect("destroy",
+                        on_anagrafica_luogo_installazione_destroyed)
 
 
 def on_id_imballaggio_customcombobox_clicked(widget, button):

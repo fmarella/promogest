@@ -46,8 +46,6 @@ class Ricerca(GladeWidget):
         self.placeWindow(self.ricerca_window)
         self.filter.draw()
 
-
-
     def _setFilterElement(self, gladeWidget):
         self.bodyWidget = FilterWidget(owner=gladeWidget, filtersElement=gladeWidget)
         self.ricerca_viewport.add(self.bodyWidget.getTopLevel())

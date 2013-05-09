@@ -48,7 +48,13 @@ class AnagraficaServCSAEdit(AnagraficaEdit):
         """ Funzione che "disegna l'interfaccia, devi annullare alcune combo
         a seconda di cosa richiama la finestra...iniziamo dal caso cliente
         """
-        return
+        fillComboboxLuogoInstallazione(self.luogo_installazione_combobox.combobox)
+        self.luogo_installazione_combobox.connect('clicked',
+                                            on_luogo_installazione_combobox_clicked)
+        model = self.manutenzione_combobox.get_model()
+        model.clear()
+        for t in ["MENSILE","ANNUALE","BIENNALE"]:
+            model.append((t,))
 
     def setDao(self, dao):
         """ Si istanzia un nuovo DAO o nuovo o prelevato dalla Treeview
@@ -59,22 +65,34 @@ class AnagraficaServCSAEdit(AnagraficaEdit):
         else:
             self.dao = dao
         self._refresh()
+        #self.daoDict = self.dao.dictionary(complete=True)
+        #print dict(self.dao.c.columns)
         return self.dao
 
     def _refresh(self):
         """Funzione che rinfresca la UI all'apertura e dopo alcune operazioni
         di modifica
         """
-        return
-        if self.dao:
-            self.valore_provv_entry.set_value(mN(self.dao.provv.valore_provv,1))
-        else:
-            self.valore_provv_entry.set_text("")
+        findComboboxRowFromId(self.luogo_installazione_combobox.combobox, self.dao.id_luogo_installazione)
 
-        self.tipo_provv_euro_radiobutton.set_active(tippo)
-        self.provv_ClienteSearchWidget.setId(self.daoFrom.id)
-        self.provv_FornitoreSearchWidget.setId(self.dao.id_persona_giuridica_to)
-        self.provv_ArticoloSearchWidget.setId(self.dao.id_articolo)
+        #self.tipo_provv_euro_radiobutton.set_active(tippo)
+        self.serv_csa_cliente_ClienteSearchWidget.setId(self.dao.id_cliente)
+        #self.provv_FornitoreSearchWidget.setId(self.dao.id_persona_giuridica_to)
+        #self.provv_ArticoloSearchWidget.setId(self.dao.id_articolo)
+
+    def on_commesse_button_clicked(self, button):
+        from promogest.modules.GestioneCommesse.ui.AnagraficaCommesseFilter import RicercaCommessa
+        def returnDao(anagWindow):
+            if anag.dao:
+                self.commesse_button.set_label(self.dao.denominazione[0:50])
+        anag = RicercaCommessa()
+        anagWindow = anag.getTopLevel()
+        anagWindow.show_all()
+        anagWindow.connect("hide",returnDao)
+
+    def on_cancel_commessa_button_clicked(self,button):
+        self.commesse_button.set_label("Click me")
+
 
 
     def clear(self):
