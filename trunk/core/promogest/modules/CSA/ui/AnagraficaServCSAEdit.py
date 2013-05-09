@@ -25,7 +25,7 @@ from promogest.ui.AnagraficaComplessaEdit import AnagraficaEdit
 from promogest.lib.utils import *
 from promogest.ui.utilsCombobox import *
 from promogest.dao.Fornitore import Fornitore
-from promogest.modules.CSA.dao.ServCSA import ServCSA
+from promogest.modules.CSA.dao.ServCSA import ServCSA , t_serv_csa
 
 
 class AnagraficaServCSAEdit(AnagraficaEdit):
@@ -66,7 +66,7 @@ class AnagraficaServCSAEdit(AnagraficaEdit):
             self.dao = dao
         self._refresh()
         #self.daoDict = self.dao.dictionary(complete=True)
-        #print dict(self.dao.c.columns)
+        self.daoDict = dict(t_serv_csa.columns)
         return self.dao
 
     def _refresh(self):
@@ -84,14 +84,17 @@ class AnagraficaServCSAEdit(AnagraficaEdit):
         from promogest.modules.GestioneCommesse.ui.AnagraficaCommesseFilter import RicercaCommessa
         def returnDao(anagWindow):
             if anag.dao:
-                self.commesse_button.set_label(self.dao.denominazione[0:50])
+                self.commesse_button.set_label(anag.dao.denominazione[0:50])
+                self.daoDict["id_testata_commessa"] = anag.dao.id
         anag = RicercaCommessa()
         anagWindow = anag.getTopLevel()
         anagWindow.show_all()
         anagWindow.connect("hide",returnDao)
 
+
     def on_cancel_commessa_button_clicked(self,button):
         self.commesse_button.set_label("Click me")
+        self.daoDict["id_testata_commessa"] = None
 
 
 
@@ -104,13 +107,14 @@ class AnagraficaServCSAEdit(AnagraficaEdit):
         di campi obbligatori ei provvedere a salvare il record dopo
         aver assegnato i valori necessari
         """
-        provv_valore = self.valore_provv_entry.get_value()
-        if self.tipo_provv_euro_radiobutton.get_active():
-            tippo = "€"
-        else:
-            tippo = "%"
-        provv_tipo = tippo
-        self.__dao_provv.valore_provv = provv_valore
-        self.__dao_provv.tipo_provv = provv_tipo
-        self.__dao_provv.persist()
-        self.clear()
+        print "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", self.daoDict
+        #provv_valore = self.valore_provv_entry.get_value()
+        #if self.tipo_provv_euro_radiobutton.get_active():
+            #tippo = "€"
+        #else:
+            #tippo = "%"
+        #provv_tipo = tippo
+        #self.__dao_provv.valore_provv = provv_valore
+        #self.__dao_provv.tipo_provv = provv_tipo
+        #self.__dao_provv.persist()
+        #self.clear()
