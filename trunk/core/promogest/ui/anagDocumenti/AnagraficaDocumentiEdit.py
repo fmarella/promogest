@@ -605,6 +605,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         textview_set_text(self.note_interne_textview, self.dao.note_interne or '')
         if not self.dao.id:
             self.dao.causale_trasporto = setconf("Documenti", "causale_vendita") or ''
+            self.dao.inizio_trasporto = datetime.datetime.now()
         self.causale_trasporto_comboboxentry.get_child().set_text(self.dao.causale_trasporto or '')
         self.aspetto_esteriore_beni_comboboxentry.get_child().set_text(self.dao.aspetto_esteriore_beni or '')
         self.inizio_trasporto_entry.set_text(dateTimeToString(self.dao.inizio_trasporto))
