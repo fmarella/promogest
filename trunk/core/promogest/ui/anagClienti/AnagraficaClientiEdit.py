@@ -27,6 +27,7 @@ from promogest.ui.gtk_compat import *
 from promogest.ui.AnagraficaComplessaEdit import AnagraficaEdit
 from promogest.ui.AnagraficaPGEdit import AnagraficaPGEdit
 import promogest.dao.Cliente
+from promogest.dao.TestataDocumento import TestataDocumento
 
 from promogest.dao.Cliente import Cliente
 from promogest.dao.ClienteCategoriaCliente import ClienteCategoriaCliente
@@ -423,8 +424,18 @@ class AnagraficaClientiEdit(AnagraficaEdit, AnagraficaPGEdit):
             #partiva = checkPartIva(self.dao.partita_iva)
             #if not partiva:
                 #raise Exception, 'Operation aborted: Partita iva non corretta'
+
+        old_pagamento = self.dao.id_pagamento
         self.dao.id_pagamento = findIdFromCombobox(
             self.id_pagamento_customcombobox.combobox)
+        if old_pagamento != self.dao.id_pagamento:
+            if YesNoDialog('Modificare il tipo di pagamento per i documenti già registrati per il cliente?'):
+                docs = TestataDocumento().select(idCliente=self.dao.id, daData=datetime.datetime(Environment.workingYear, 1, 1))
+                for doc in docs:
+                    if not doc.documento_saldato:
+                        doc.id_pagamento = self.dao.id_pagamento
+                        doc.persist()
+
         self.dao.id_magazzino = findIdFromCombobox(
             self.id_magazzino_customcombobox.combobox)
         self.dao.id_listino = findIdFromCombobox(
