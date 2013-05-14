@@ -103,6 +103,7 @@ class AnagraficaDocumenti(Anagrafica):
             doc.totale_pagato = doc.totale_sospeso
             doc.totale_sospeso = 0
         Environment.session.commit()
+        self.filter.refresh()
 
 
 class AnagraficaDocumentiHtml(AnagraficaHtml):
