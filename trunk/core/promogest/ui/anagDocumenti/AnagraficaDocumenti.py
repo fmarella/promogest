@@ -94,6 +94,16 @@ class AnagraficaDocumenti(Anagrafica):
         showAnagraficaRichiamata(self.getTopLevel(), anag.getTopLevel(),
                                 button=None, callName=self.filter.refresh)
 
+    def on_segna_pagato_button_clicked(self, button=None):
+        selection = self.anagrafica_filter_treeview.get_selection()
+        (model, iterator) = selection.get_selected_rows()
+        for i in iterator:
+            doc = model[i][0]
+            doc.documento_saldato = True
+            doc.totale_pagato = doc.totale_sospeso
+            doc.totale_sospeso = 0
+        Environment.session.commit()
+
 
 class AnagraficaDocumentiHtml(AnagraficaHtml):
     def __init__(self, anagrafica):

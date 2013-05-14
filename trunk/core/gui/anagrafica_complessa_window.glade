@@ -550,6 +550,23 @@ dei farmaci venduti in un determinato arco temporale</property>
               </packing>
             </child>
             <child>
+              <object class="GtkToolButton" id="segna_pagato_button">
+                <property name="use_action_appearance">False</property>
+                <property name="visible">True</property>
+                <property name="sensitive">False</property>
+                <property name="can_focus">False</property>
+                <property name="tooltip_text" translatable="yes">Segna come pagato uno o più documenti.</property>
+                <property name="use_underline">True</property>
+                <property name="label_widget">label2</property>
+                <property name="stock_id">gtk-dnd-multiple</property>
+                <signal name="clicked" handler="on_segna_pagato_button_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
               <object class="GtkToolButton" id="calcolatrice_button">
                 <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
@@ -854,6 +871,12 @@ dei farmaci venduti in un determinato arco temporale</property>
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="pixbuf">duplica24x24.png</property>
+  </object>
+  <object class="GtkLabel" id="label2">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="tooltip_text" translatable="yes">Chiudere il pagamento di uno o più documenti.</property>
+    <property name="label" translatable="yes">Chiudi pagamento</property>
   </object>
   <object class="GtkListStore" id="liststore1">
     <columns>
