@@ -27,7 +27,6 @@ from promogest.ui.AnagraficaComplessaReport import AnagraficaReport
 from promogest.ui.AnagraficaComplessaHtml import AnagraficaHtml
 from promogest.ui.anagDocumenti.AnagraficaDocumentiFilter import AnagraficaDocumentiFilter
 from promogest.ui.anagDocumenti.AnagraficaDocumentiEdit import AnagraficaDocumentiEdit
-from promogest.dao.TestataDocumento import TestataDocumento
 from promogest.lib.utils import *
 
 
@@ -95,15 +94,16 @@ class AnagraficaDocumenti(Anagrafica):
                                 button=None, callName=self.filter.refresh)
 
     def on_segna_pagato_button_clicked(self, button=None):
-        selection = self.anagrafica_filter_treeview.get_selection()
-        (model, iterator) = selection.get_selected_rows()
-        for i in iterator:
-            doc = model[i][0]
-            doc.documento_saldato = True
-            doc.totale_pagato = doc.totale_sospeso
-            doc.totale_sospeso = 0
-        Environment.session.commit()
-        self.filter.refresh()
+        if YesNoDialog('Si sta chiudendo il pagamento per i documenti selezionati, continuare?'):
+            selection = self.anagrafica_filter_treeview.get_selection()
+            (model, iterator) = selection.get_selected_rows()
+            for i in iterator:
+                doc = model[i][0]
+                doc.documento_saldato = True
+                doc.totale_pagato = doc.totale_sospeso
+                doc.totale_sospeso = 0
+            Environment.session.commit()
+            self.filter.refresh()
 
 
 class AnagraficaDocumentiHtml(AnagraficaHtml):
