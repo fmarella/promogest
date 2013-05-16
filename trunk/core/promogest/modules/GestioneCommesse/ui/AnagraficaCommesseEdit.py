@@ -244,10 +244,12 @@ class AnagraficaCommesseEdit(AnagraficaEdit):
 
         model = self.riga_commessa_treeview.get_model()
         model.clear()
+
         for r in self.dao.righecommessa:
+            if r.dao_class:
+                cl = eval(r.dao_class)().getRecord(id=r.id_dao)
             if r.dao_class=="TestataDocumento":
-                td = TestataDocumento().getRecord(id=r.id_dao)
-                dc = td.operazione
+                dc = cl.operazione
             else:
                 dc = r.dao_class
             model.append((r, str(len(model)+1),

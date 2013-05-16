@@ -22,10 +22,17 @@
 
 from promogest import Environment
 import promogest.ui.Login
+from promogest.modules.CSA.ui.AnagraficaServCSA import AnagraficaServCSA
 
 MODULES_NAME = "CSA"
-MODULES_FOR_EXPORT = []
+MODULES_FOR_EXPORT = ["CSA"]
 GUI_DIR = Environment.cartella_moduli+ '/CSA/gui/'
 START_CALL_IS_IN_THREAD = True        # False if you  do NOT want to put execution
 START_CALL = None                              # of this call in a separated Thread
 TEMPLATES = Environment.cartella_moduli+'/CSA/templates/'
+
+class CSA(object):
+    VIEW_TYPE = ('anagrafica', 'CSA', 'taglia48x48.png')
+    def getApplication(self):
+        anag = AnagraficaServCSA()
+        return anag

@@ -27,7 +27,7 @@ from promogest.dao.Dao import Dao
 from migrate import *
 from promogest.modules.CSA.dao.LuogoInstallazione import LuogoInstallazione
 #from promogest.modules.CSA.dao.TipoApparecchio import TipoApparecchio
-from promogest.modules.GestioneCommesse.dao.TestataCommessa import TestataCommessa,t_testatacommessa
+#from promogest.modules.GestioneCommesse.dao.TestataCommessa import TestataCommessa,t_testatacommessa
 
 try:
     t_serv_csa = Table('servizio_csa', params['metadata'],
@@ -43,9 +43,6 @@ except:
                           onupdate='CASCADE', ondelete='CASCADE'),nullable=True),
         Column('id_cliente', Integer,
                ForeignKey(fk_prefix + 'cliente.id',
-                          onupdate='CASCADE', ondelete='CASCADE'),nullable=True),
-        Column('id_testata_commessa', Integer,
-               ForeignKey(fk_prefix + 'testata_commessa.id',
                           onupdate='CASCADE', ondelete='CASCADE'),nullable=True),
         Column('numero_serie', String(200), nullable=True),
         Column('combustibile', String(200), nullable=True),
@@ -63,6 +60,8 @@ except:
         schema=params['schema'],
         useexisting=True,
         )
+
+
     t_serv_csa.create(checkfirst=True)
 
 

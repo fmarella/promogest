@@ -25,6 +25,7 @@ from promogest.ui.AnagraficaComplessaEdit import AnagraficaEdit
 from promogest.lib.utils import *
 from promogest.ui.utilsCombobox import *
 from promogest.dao.Fornitore import Fornitore
+from promogest.dao.DaoUtils import get_columns
 from promogest.modules.CSA.dao.ServCSA import ServCSA , t_serv_csa
 
 
@@ -65,8 +66,7 @@ class AnagraficaServCSAEdit(AnagraficaEdit):
         else:
             self.dao = dao
         self._refresh()
-        #self.daoDict = self.dao.dictionary(complete=True)
-        self.daoDict = dict(t_serv_csa.columns)
+        self.daoDict =  dict.fromkeys(get_columns(t_serv_csa))
         return self.dao
 
     def _refresh(self):
@@ -93,10 +93,8 @@ class AnagraficaServCSAEdit(AnagraficaEdit):
 
 
     def on_cancel_commessa_button_clicked(self,button):
-        self.commesse_button.set_label("Click me")
+        self.commesse_button.set_label("click me")
         self.daoDict["id_testata_commessa"] = None
-
-
 
     def clear(self):
         """ Funzione di reset o pulizia della UI """
