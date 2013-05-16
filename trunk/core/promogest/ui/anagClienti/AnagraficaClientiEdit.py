@@ -428,7 +428,7 @@ class AnagraficaClientiEdit(AnagraficaEdit, AnagraficaPGEdit):
         old_pagamento = self.dao.id_pagamento
         self.dao.id_pagamento = findIdFromCombobox(
             self.id_pagamento_customcombobox.combobox)
-        if old_pagamento != self.dao.id_pagamento:
+        if old_pagamento != self.dao.id_pagamento and self.dao.id:
             if YesNoDialog('Modificare il tipo di pagamento per i documenti già registrati per il cliente?'):
                 docs = TestataDocumento().select(idCliente=self.dao.id, daData=datetime.datetime(Environment.workingYear, 1, 1))
                 for doc in docs:
