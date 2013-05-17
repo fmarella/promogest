@@ -62,7 +62,7 @@ class TestTestataDocumentoTotali(unittest.TestCase):
             if info_iva['aliquota'] == Decimal(10):
                 assert info_iva['imponibile'] == Decimal("224.04")
                 assert info_iva['imposta'] == Decimal("22.40")
-#                assert info_iva['totale'] == Decimal("97.37")
+                assert info_iva['totale'] == Decimal("246.44")
 
     def test_doc3(self):
         """controllo totali per il documento 23699"""
