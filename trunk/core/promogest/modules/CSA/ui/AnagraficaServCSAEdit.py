@@ -39,7 +39,7 @@ class AnagraficaServCSAEdit(AnagraficaEdit):
                 root='anagrafica_serv_csa_detail_vbox',
                 path='CSA/gui/_anagrafica_serv_csa_elements.glade',
                 isModule=True)
-        self._widgetFirstFocus = self.provv_ArticoloSearchWidget
+        self._widgetFirstFocus = self.serv_csa_art_ArticoloSearchWidget
         self.anagrafica = anagrafica
 
         self.daoFrom = daoFrom
@@ -52,10 +52,12 @@ class AnagraficaServCSAEdit(AnagraficaEdit):
         fillComboboxLuogoInstallazione(self.luogo_installazione_combobox.combobox)
         self.luogo_installazione_combobox.connect('clicked',
                                             on_luogo_installazione_combobox_clicked)
+
         model = self.manutenzione_combobox.get_model()
         model.clear()
         for t in ["MENSILE","ANNUALE","BIENNALE"]:
             model.append((t,))
+
 
     def setDao(self, dao):
         """ Si istanzia un nuovo DAO o nuovo o prelevato dalla Treeview
@@ -77,8 +79,9 @@ class AnagraficaServCSAEdit(AnagraficaEdit):
 
         #self.tipo_provv_euro_radiobutton.set_active(tippo)
         self.serv_csa_cliente_ClienteSearchWidget.setId(self.dao.id_cliente)
-        #self.provv_FornitoreSearchWidget.setId(self.dao.id_persona_giuridica_to)
-        #self.provv_ArticoloSearchWidget.setId(self.dao.id_articolo)
+        self.serv_csa_pg_PersonaGiuridicaSearchWidget.setId(self.dao.id_persona_giuridica)
+        self.serv_csa_art_ArticoloSearchWidget.setId(self.dao.id_articolo)
+        self.commesse_button.set_label(str(self.dao.id_testata_commessa) or "click me")
 
     def on_commesse_button_clicked(self, button):
         from promogest.modules.GestioneCommesse.ui.AnagraficaCommesseFilter import RicercaCommessa

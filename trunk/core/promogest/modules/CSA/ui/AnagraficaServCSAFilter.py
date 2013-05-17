@@ -34,7 +34,7 @@ class AnagraficaServCSAFilter(AnagraficaFilter):
                                   root='anagrafica_serv_csa_filter_table',
                                   path='CSA/gui/_anagrafica_serv_csa_elements.glade',
                                   isModule=True)
-        self._widgetFirstFocus = self.denominazione_filter_entry
+        self._widgetFirstFocus = self.seriale_filter_entry
         self.daoFrom = daoFrom
         self.tipo = tipo
 
@@ -49,7 +49,7 @@ class AnagraficaServCSAFilter(AnagraficaFilter):
             #return self._changeOrderBy(column,(None,TestataPrimaNota.data_inizio))
 
     def clear(self):
-        self.denominazione_filter_entry.set_text('')
+        self.seriale_filter_entry.set_text('')
         self.refresh()
 
     def refresh(self):
