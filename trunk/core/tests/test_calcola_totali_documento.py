@@ -46,6 +46,7 @@ class TestTestataDocumentoTotali(unittest.TestCase):
         doc.totali
         assert doc._totaleImponibile == Decimal('88.52')
         assert doc._totaleImposta == Decimal('8.85')
+        assert doc._totaleScontato == Decimal('97.37')
         for info_iva in doc._castellettoIva:
             if info_iva['aliquota'] == Decimal(10):
                 assert info_iva['imponibile'] == Decimal("88.52")
@@ -58,6 +59,7 @@ class TestTestataDocumentoTotali(unittest.TestCase):
         doc.totali
         assert doc._totaleImponibile == Decimal('224.04')
         assert doc._totaleImposta == Decimal('22.40')
+        assert doc._totaleScontato == Decimal('246.44')
         for info_iva in doc._castellettoIva:
             if info_iva['aliquota'] == Decimal(10):
                 assert info_iva['imponibile'] == Decimal("224.04")
@@ -70,6 +72,7 @@ class TestTestataDocumentoTotali(unittest.TestCase):
         doc.totali
         assert doc._totaleImponibile == Decimal('90.21')
         assert doc._totaleImposta == Decimal('8.34')
+        assert doc._totaleScontato == Decimal('98.55')
         for info_iva in doc._castellettoIva:
             if info_iva['aliquota'] == Decimal(4):
                 assert info_iva['imponibile'] == Decimal("11.4")
@@ -86,6 +89,7 @@ class TestTestataDocumentoTotali(unittest.TestCase):
         doc.totali
         assert doc._totaleImponibile == Decimal('63.44')
         assert doc._totaleImposta == Decimal('2.54')
+        assert doc._totaleScontato == Decimal('65.98')
         for info_iva in doc._castellettoIva:
             if info_iva['aliquota'] == Decimal(4):
                 assert info_iva['imponibile'] == Decimal("63.44")
@@ -98,6 +102,7 @@ class TestTestataDocumentoTotali(unittest.TestCase):
         doc.totali
         assert doc._totaleImponibile == Decimal('79.86')
         assert doc._totaleImposta == Decimal('7.99')
+        assert doc._totaleScontato == Decimal('87.85')
         for info_iva in doc._castellettoIva:
             if info_iva['aliquota'] == Decimal(10):
                 assert info_iva['imponibile'] == Decimal("79.86")
