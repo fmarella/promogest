@@ -142,7 +142,7 @@ riga_tratteggiata = False,riga_vuota = False, gui=False):
             esiste, msg = daoGiaPresente(InformazioniFatturazioneDocumento()\
                                                 .select(id_fattura=ddt[0].id))
 
-            if esiste and operazione in ["Fattura vendita","Fattura differita vendita"]:
+            if esiste and operazione in ["Fattura vendita","Fattura differita vendita","Fattura differita vendita ford"]:
                 logfattdiff += msg
             else:
                 #ok il ddt non è già presente in nessuna fatturato
@@ -426,7 +426,7 @@ class FatturazioneDifferita(GladeWidget):
                                     segno=None)
         model = gtk.ListStore(object, str, str)
         for o in res:
-            if o.denominazione == "Fattura differita vendita":
+            if "Fattura differita vendita" in o.denominazione:
                 model.append((o, o.denominazione, (o.denominazione or '')[0:30]))
         #self.id_operazione_combobox.clear()
         renderer = gtk.CellRendererText()
