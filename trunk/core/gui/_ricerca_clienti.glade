@@ -1628,8 +1628,11 @@
       </object>
     </child>
     <child>
-      <object class="GtkTreeViewColumn" id="cognome_nome_column">
+      <object class="GtkTreeViewColumn" id="localita_column">
         <property name="title" translatable="yes">Località</property>
+        <property name="clickable">True</property>
+        <property name="reorderable">True</property>
+        <property name="sort_indicator">True</property>
         <signal name="clicked" handler="orderColumn" swapped="no"/>
         <child>
           <object class="GtkCellRendererText" id="cellrenderertext8"/>
@@ -1640,7 +1643,7 @@
       </object>
     </child>
     <child>
-      <object class="GtkTreeViewColumn" id="localita_column">
+      <object class="GtkTreeViewColumn" id="recapito_column">
         <property name="title" translatable="yes">Recapito</property>
         <child>
           <object class="GtkCellRendererText" id="cellrenderertext4"/>

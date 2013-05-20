@@ -55,6 +55,9 @@ class AnagraficaClientiFilter(AnagraficaFilter):
         if column.get_name() == "ragione_sociale_column":
             return self._changeOrderBy(column, (
                                     None, PersonaGiuridica_.ragione_sociale))
+        if column.get_name() == "localita_column":
+            return self._changeOrderBy(column, (
+                                    None, PersonaGiuridica_.sede_legale_localita))
 
     def clear(self):
         # Annullamento filtro
@@ -130,8 +133,8 @@ class AnagraficaClientiFilter(AnagraficaFilter):
         self.filter_listore.clear()
 
         for c in clis:
-            t = (c.sede_legale_localita + " (" + c.sede_legale_provincia + ")" or
-                    c.sede_operativa_localita + " (" + c.sede_operativa_provincia + ")" or "")
+            t = (str(c.sede_legale_localita or "") + " (" + str(c.sede_legale_provincia or "") + ")" or
+                    str(c.sede_operativa_localita or "") + " (" + str(c.sede_operativa_provincia or "") + ")" or "")
             if t == " ()":
                 t = ""
             self.filter_listore.append((
