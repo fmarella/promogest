@@ -26,7 +26,7 @@ import hashlib
 import os
 from datetime import datetime
 import webbrowser
-#from  subprocess import *
+from  subprocess import *
 from promogest import Environment
 from promogest.ui.GladeWidget import GladeWidget
 from promogest.ui.ElencoMagazzini import ElencoMagazzini
