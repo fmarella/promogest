@@ -654,8 +654,6 @@ class Articolo(Dao):
             dic = {k: or_(t_articolo.c.cancellato != v)}
         elif k == 'idArticolo':
             dic = {k: or_(t_articolo.c.id == v)}
-        elif k == 'omni':
-            dic = {k: or_(t_articolo.c.codice.ilike("%" + v + "%"),t_articolo.c.denominazione.ilike("%" + v + "%"))}
         elif k == "listinoFissato":
             dic = {k: and_(t_listino_articolo.c.id_articolo == t_articolo.c.id,
                 t_listino_articolo.c.id_listino == v)}

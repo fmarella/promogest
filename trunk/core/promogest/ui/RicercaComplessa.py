@@ -28,6 +28,7 @@ from promogest.ui.widgets.FilterWidget import FilterWidget
 import Login
 from promogest.lib.utils import *
 
+
 class RicercaComplessa(GladeWidget):
     """ Classe base per le ricerche avanzate di Promogest """
 
@@ -49,6 +50,7 @@ class RicercaComplessa(GladeWidget):
         self.filter.filter_body_label.set_property('visible', False)
 
         self.window.set_title(windowTitle)
+
         self.placeWindow(self.window)
 
     def on_filter_treeview_selection_changed(self,selection):

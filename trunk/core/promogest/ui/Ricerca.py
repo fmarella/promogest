@@ -49,7 +49,6 @@ class Ricerca(GladeWidget):
     def _setFilterElement(self, gladeWidget):
         self.bodyWidget = FilterWidget(owner=gladeWidget, filtersElement=gladeWidget)
         self.ricerca_viewport.add(self.bodyWidget.getTopLevel())
-
         self.bodyWidget.filter_body_label.set_no_show_all(True)
         self.bodyWidget.filter_body_label.set_property('visible', False)
 
@@ -81,6 +80,7 @@ class Ricerca(GladeWidget):
         #self.on_filter_treeview_row_activated(treeview)
 
     def on_anagrafica_filter_treeview_cursor_changed(self, treeview):
+        """ Gestisce lo spostamento tra le righe """
         self.on_filter_treeview_cursor_changed(treeview)
 
     def on_anagrafica_filter_treeview_selection_changed(self, selection):
@@ -92,7 +92,6 @@ class Ricerca(GladeWidget):
         self.ricerca_window.hide()
         if self.ricerca_window in Environment.windowGroup:
             Environment.windowGroup.remove(self.ricerca_window)
-        print " SEI TU"
 
 
     def on_filter_treeview_cursor_changed(self, treeview):
@@ -118,10 +117,7 @@ class Ricerca(GladeWidget):
             self.htmlHandler.setDao(self.dao)
 
     def on_filter_treeview_selection_changed(self, selection):
-        """ questo gestisce la sola selezione
-        """
-        return
-
+        pass
 
     def insert(self, toggleButton, returnWindow):
         """ Richiama l'anagrafica per l'inserimento """

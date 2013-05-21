@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2013 by Promotux
+#    Copyright (C) 2005-2012 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -30,76 +30,62 @@ class ClienteSearchWidget(CustomComboBoxSearch):
     def __init__(self):
         CustomComboBoxSearch.__init__(self)
 
-        #idHandler = self.connect('changed',
-                                 #self.on_combobox_cliente_search_clicked)
-        #self.setChangedHandler(idHandler)
-        #self.connect("focus-out-event", self.on_focus_out_event)
+        idHandler = self.connect('changed',
+                                 self.on_combobox_cliente_search_clicked)
+        self.setChangedHandler(idHandler)
+
         self.connect("destroy-event", self.on_widget_destroy)
-        self.connect("icon-press", self.on_icon_press)
+
         self._callName = None
         self._ricerca = None
         self._filter = True
         self._resultsCount = 0
         self.clear()
 
-    #def on_focus_out_event(self, entry, event):
-        #from promogest.dao.Cliente import Cliente
-        #keyname = entry.get_text()
-        #cli = Cliente().select(ragioneSociale=keyname, batchSize=5)
-        #if len(cli) >1:
-            #messageWarning("ATTENZIONE! RISULTATO NON UNIVOCO AZZERIAMO")
-            #self._id = None
-            #self.set_text("")
 
-    def on_icon_press(self,entry,position,event):
-        """
-        scopettina agganciata ad un segnale generico
-        """
-        if position.value_nick == "primary":
+    def on_combobox_cliente_search_clicked(self, combobox):
+        #richiama la ricerca dei clienti
 
-            def refresh_entry(anagWindow):
-                self._resultsCount = self._ricerca.getResultsCount()
-                resultsElement = self._ricerca.getResultsElement()
-                if not(self._resultsCount > 0):
-                    self.set_active(0)
-                    return
+        def refresh_combobox_cliente(anagWindow):
+            self._resultsCount = self._ricerca.getResultsCount()
+            resultsElement = self._ricerca.getResultsElement()
+            if not(self._resultsCount > 0):
+                self.set_active(0)
+                return
 
-                if self._resultsCount == 1:
-                    id = resultsElement.id
-                    res = leggiCliente(id)
-                    denominazione = res["ragioneSociale"]
-                    if denominazione == '':
-                        denominazione = res["nome"] + ' ' + res["cognome"]
-                    self.set_text(denominazione)
-                    self._id = id
+            if self._resultsCount == 1:
+                id = resultsElement.id
+                res = leggiCliente(id)
+                denominazione = res["ragioneSociale"]
+                if denominazione == '':
+                    denominazione = res["nome"] + ' ' + res["cognome"]
+                combobox.refresh(id, denominazione, res)
+            else:
+                self.idlist = []
+                for ids in resultsElement:
+                    self.idlist.append(ids.id)
+                combobox.refresh(self.idlist, ('< %d clienti selezionati... >' % self._resultsCount), None, rowType='old_search')
+            if self._callName is not None:
+                self._callName()
 
-            from promogest.ui.RicercaComplessaClienti import RicercaComplessaClienti
-            #from promogest.ui.anagClienti.AnagraficaClientiFilter import RicercaClienti
-            self._ricerca = RicercaComplessaClienti()
-            #self._ricerca = RicercaClienti()
-
-            if not self._filter:
-                self._ricerca.setTreeViewSelectionType(GTK_SELECTIONMODE_SINGLE)
+        if combobox.on_selection_changed():
+            if self._ricerca is None:
+                from promogest.ui.RicercaComplessaClienti import RicercaComplessaClienti
+                self._ricerca = RicercaComplessaClienti()
+                if not self._filter:
+                    self._ricerca.setTreeViewSelectionType(GTK_SELECTIONMODE_SINGLE)
             else:
                 self._ricerca.refresh()
             anagWindow = self._ricerca.getTopLevel()
-            returnWindow = self.get_toplevel()
+            returnWindow = combobox.get_toplevel()
             anagWindow.set_transient_for(returnWindow)
             anagWindow.connect("hide",
-                               refresh_entry)
+                               refresh_combobox_cliente)
             self._ricerca.show_all()
-        else:                            #secondary
-            self.clean_entry()
 
-    def ricercaDao(self, keyname):
-        from promogest.dao.Cliente import Cliente
-        print "RICERCA DAO ", keyname
-        cli = Cliente().select(ragioneSociale=keyname, batchSize=40)
-        model = self.completion.get_model()
-        model.clear()
-        for m in cli:
-            rag = m.ragione_sociale or m.cognome + " " + m.nome
-            model.append(('empty', m.id, rag, m))
+        elif self._callName is not None:
+            self._callName()
+
 
     def setId(self, value):
         self.insertComboboxSearchCliente(self, value)

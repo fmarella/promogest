@@ -1049,8 +1049,7 @@ def findIdFromCombobox(combobox):
     """
     Restituisce l' id relativo alla riga selezionata in un elenco a discesa
     """
-    if "SearchWidget" in  combobox.__class__.__name__:
-        return combobox._id
+
     model = combobox.get_model()
     iterator = combobox.get_active_iter()
     if iterator is not None:

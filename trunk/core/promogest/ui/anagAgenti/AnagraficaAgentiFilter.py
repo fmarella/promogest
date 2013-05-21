@@ -129,14 +129,6 @@ class AnagraficaAgentiFilter(AnagraficaFilter):
                                         (f.sede_operativa_localita or ''),
                                         pvcf))
 
-
-def ricercaDaoAgenti(model, keyname):
-    cli = Agente().select(ragioneSociale=keyname, batchSize=40)
-    for m in cli:
-        rag = m.ragione_sociale or m.cognome + " " + m.nome
-        model.append(('empty', m.id, rag, m))
-
-
 class RicercaAgenti(Ricerca):
     """ Ricerca agenti
     """

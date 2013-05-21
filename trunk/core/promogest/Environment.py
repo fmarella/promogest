@@ -124,7 +124,6 @@ rev_remota = None
 magazzino_pos = None
 windowGroup = []
 view = "month"
-news = []
 puntoA = None
 puntoB = None
 puntoP = None

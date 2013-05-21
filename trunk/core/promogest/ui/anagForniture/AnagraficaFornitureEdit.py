@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2013 by Promotux
+#    Copyright (C) 2005-2012 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -50,9 +50,9 @@ class AnagraficaFornitureEdit(AnagraficaEdit):
         self.number_format = '%-14.'+ str(setconf("Numbers", "decimals")) +'f'
 
     def draw(self,cplx=False):
-        #self.id_articolo_customcombobox.setSingleValue()
-        #self.id_articolo_customcombobox.setOnChangedCall(self.on_id_articolo_customcombobox_changed)
-        #self.id_fornitore_customcombobox.setSingleValue()
+        self.id_articolo_customcombobox.setSingleValue()
+        self.id_articolo_customcombobox.setOnChangedCall(self.on_id_articolo_customcombobox_changed)
+        self.id_fornitore_customcombobox.setSingleValue()
 
         self.sconti_widget.button.connect('toggled',
                                         self.on_sconti_widget_button_toggled)
@@ -107,16 +107,12 @@ class AnagraficaFornitureEdit(AnagraficaEdit):
         else:
             self.id_articolo_customcombobox.set_sensitive(False)
         self.id_articolo_customcombobox.setId(self.dao.id_articolo)
-        print " CHE CAZZOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO"
         res = self.id_articolo_customcombobox.getData()
-        print " CAZZOTTOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO", res
         self.descrizione_breve_aliquota_iva_label.set_text(res["denominazioneBreveAliquotaIva"])
         self._percentualeIva = res["percentualeAliquotaIva"]
         self.percentuale_aliquota_iva_label.set_text('%5.2f' % self._percentualeIva + ' %')
         #self.id_fornitore_customcombobox.refresh(clear=True, filter=False)
-        print "FIGOTTOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO"
         self.id_fornitore_customcombobox.set_sensitive(True)
-        print " HO UN IDEEEEEEEEEEEEEEEEEEEE", self.dao.id_fornitore
         if self.dao.id_fornitore is None:
             if self._anagrafica._fornitoreFissato:
                 self.dao.id_fornitore = self._anagrafica._idFornitore
@@ -179,8 +175,8 @@ class AnagraficaFornitureEdit(AnagraficaEdit):
         self.prezzo_netto_label.set_text(self.number_format % float(prezzoNetto or 0))
 
     def clear(self):
-        ####################self.id_articolo_customcombobox.refresh(clear=True, filter=False)
-        ####################self.id_fornitore_customcombobox.refresh(clear=True, filter=False)
+        self.id_articolo_customcombobox.refresh(clear=True, filter=False)
+        self.id_fornitore_customcombobox.refresh(clear=True, filter=False)
         self.data_prezzo_entry.set_text('')
         self.data_fornitura_entry.set_text('')
         self.codice_articolo_fornitore_entry.set_text('')
