@@ -58,6 +58,7 @@ class AnagraficaFilter(GladeWidget):
     def build(self):
         """ reindirizza alcuni campi e metodi dal filterWidget """
         self.bodyWidget = self._anagrafica.bodyWidget
+        #Environment.windowGroup.append(self.bodyWidget)
         # mapping fields and methods from bodyWidget to this class
         self._changeOrderBy = self.bodyWidget._changeOrderBy
         self.orderBy = self.bodyWidget.orderBy = None
@@ -70,6 +71,7 @@ class AnagraficaFilter(GladeWidget):
 
         self.offset = self.bodyWidget.offset = 0
         self.numRecords = self.bodyWidget.numRecords = 0
+
 
     def draw(self):
         """
@@ -100,7 +102,7 @@ class AnagraficaFilter(GladeWidget):
         except:
             if self.getTopLevel() in Environment.windowGroup:
                 Environment.windowGroup.remove(self.getTopLevel())
-                self.getTopLevel().hide()
+            self._anagrafica.hide()
 
     def on_filter_treeview_cursor_changed(self, treeview):
         """ Gestisce lo spostamento tra le righe """

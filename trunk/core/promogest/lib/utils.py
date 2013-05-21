@@ -659,37 +659,7 @@ def on_combobox_agente_search_clicked(combobox, callName=None):
     """
     Richiama la ricerca degli agenti
     """
-    def refresh_combobox_agente(anagWindow):
-        """
-        FIXME
-        """
-        if anag.dao is None:
-            id = None
-        else:
-            id = anag.dao.id
-        res = leggiAgente(id)
-        if res["ragioneSociale"] != '':
-            combobox.refresh(id, res["ragioneSociale"], res)
-        else:
-            combobox.refresh(id, res["cognome"] + ' ' + res["nome"], res)
-        anagWindow.destroy()
-        if callName is not None:
-            callName()
-
-
-    if combobox.on_selection_changed():
-        from promogest.ui.anagAgenti.AnagraficaAgentiFilter import RicercaAgenti
-        anag = RicercaAgenti()
-
-        anagWindow = anag.getTopLevel()
-        returnWindow = combobox.get_toplevel()
-        anagWindow.set_transient_for(returnWindow)
-        anagWindow.show_all()
-
-        anagWindow.connect("hide",
-                           refresh_combobox_agente)
-    elif callName is not None:
-        callName()
+    combobox.nome = "Agente"
 
 def on_combobox_vettore_search_clicked(combobox, callName=None):
     """
@@ -1023,7 +993,8 @@ def findIdFromCombobox(combobox):
     """
     Restituisce l' id relativo alla riga selezionata in un elenco a discesa
     """
-
+    if "SearchWidget" in  combobox.__class__.__name__:
+        return combobox._id
     model = combobox.get_model()
     iterator = combobox.get_active_iter()
     if iterator is not None:
@@ -2983,6 +2954,7 @@ def checkInstallation():
         #t.start()
         content = response.read()
         conte = json.loads(content)
+        Environment.news = conte["news"]
         if conte == {}:
             print "CODICE NON PRESENTE DARE UN MESSAGGIO"
         elif conte and conte["codice"] == None and conte["tipo"] == None:
@@ -3024,27 +2996,7 @@ def checkInstallation():
             Environment.tipo_pg= str(conte["tipo"])
     except:
         print "ERRORE NEL COLLEGAMENTO AL CHECK INSTALLAZIONE"
-        #data = SetConf().select(key="tipo",section="Master")
-        #if data:
-            #Environment.modulesList.append(str(data[0].tipo))
-            #Environment.tipo_pg= str(data[0].tipo)
-            #a = SetConf().select(key="errcheck",section="Master")
-            #if a :
-                #a[0].value = str(int(a[0].value)+1)
-                #a[0].persist()
-            #else:
-                #k = SetConf()
-                #k.key = "errcheck"
-                #k.value ="1"
-                #k.section = "Master"
-                #k.description = "errcheck"
-                #k.tipo_section = "General"
-                #k.tipo = ""
-                #k.active = True
-                #k.date = datetime.datetime.now()
-                #k.persist()
-
-
+    return Environment.news
 
 
 def last_day_of_month(y, m):

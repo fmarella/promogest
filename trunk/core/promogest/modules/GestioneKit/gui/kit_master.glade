@@ -130,10 +130,14 @@ in fondo alla finestra </property>
                         <property name="width_request">190</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
+                        <property name="primary_icon_activatable">False</property>
+                        <property name="secondary_icon_activatable">False</property>
+                        <property name="primary_icon_sensitive">True</property>
+                        <property name="secondary_icon_sensitive">True</property>
                       </object>
                       <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">False</property>
+                        <property name="expand">True</property>
+                        <property name="fill">True</property>
                         <property name="position">1</property>
                       </packing>
                     </child>
@@ -213,11 +217,11 @@ in fondo alla finestra </property>
                     <child>
                       <object class="GtkCheckButton" id="attivo_componente_check">
                         <property name="label" translatable="yes">Attivo</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="width_request">80</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="active">True</property>
                         <property name="draw_indicator">True</property>
                       </object>
@@ -230,10 +234,10 @@ in fondo alla finestra </property>
                     <child>
                       <object class="GtkCheckButton" id="print_sub_kit_checkbutton">
                         <property name="label" translatable="yes">stampa sotto liste</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="draw_indicator">True</property>
                       </object>
                       <packing>
@@ -298,11 +302,11 @@ in fondo alla finestra </property>
                     <child>
                       <object class="GtkButton" id="elimina_componente_button">
                         <property name="label">gtk-delete</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="width_request">120</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="use_stock">True</property>
                         <signal name="clicked" handler="on_elimina_componente_button_clicked" swapped="no"/>
                       </object>
@@ -315,11 +319,11 @@ in fondo alla finestra </property>
                     <child>
                       <object class="GtkButton" id="aggiungi_componente_button">
                         <property name="label">gtk-add</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="width_request">120</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="use_stock">True</property>
                         <signal name="clicked" handler="on_aggiungi_componente_button_clicked" swapped="no"/>
                       </object>
@@ -612,11 +616,11 @@ al dettaglio. </property>
             <child>
               <object class="GtkButton" id="ok_kit_button">
                 <property name="label">gtk-save</property>
+                <property name="use_action_appearance">False</property>
                 <property name="width_request">120</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
                 <signal name="clicked" handler="on_ok_kit_button_clicked" swapped="no"/>
               </object>
@@ -629,10 +633,10 @@ al dettaglio. </property>
             <child>
               <object class="GtkButton" id="print_kit">
                 <property name="label">gtk-print</property>
+                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
                 <signal name="clicked" handler="on_print_kit_clicked" swapped="no"/>
               </object>
@@ -645,11 +649,11 @@ al dettaglio. </property>
             <child>
               <object class="GtkButton" id="annulla_kit_button">
                 <property name="label">gtk-close</property>
+                <property name="use_action_appearance">False</property>
                 <property name="width_request">120</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
                 <signal name="clicked" handler="on_chiudi_kit_button_clicked" swapped="no"/>
               </object>
