@@ -188,6 +188,7 @@ def drawPart(anaedit):
 
     anaedit.id_persona_giuridica_customcombobox.setSingleValue()
     anaedit.id_persona_giuridica_customcombobox.setOnChangedCall(anaedit.persona_giuridica_changed)
+    anaedit.id_persona_giuridica_customcombobox.giveAnag(anaedit)
 
     anaedit.id_destinazione_merce_customcombobox.connect('clicked',
             anaedit.on_id_destinazione_merce_customcombobox_button_clicked)

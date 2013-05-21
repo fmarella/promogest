@@ -58,12 +58,17 @@ class PersonaGiuridicaSearchWidget(CustomComboBoxSearch):
 
                 if self._resultsCount == 1:
                     id = resultsElement.id
-                    res = leggiCliente(id)
+                    if self._type == 'cliente':
+                        res = leggiCliente(id)
+                    else:
+                        res = leggiFornitore(id)
                     denominazione = res["ragioneSociale"]
                     if denominazione == '':
                         denominazione = res["nome"] + ' ' + res["cognome"]
                     self.set_text(denominazione)
                     self._id = id
+                    #self.on_entry_key_press_event(self)
+                    self.anaedit.persona_giuridica_changed(self)
 
             if self._type == 'cliente':
                 from promogest.ui.RicercaComplessaClienti import RicercaComplessaClienti
@@ -81,7 +86,6 @@ class PersonaGiuridicaSearchWidget(CustomComboBoxSearch):
             anagWindow.connect("hide",
                                refresh_entry)
             self._ricerca.show_all()
-            print "CERCA"
         else:                            #secondary
             self.set_text("")
             self._id = None
@@ -90,7 +94,6 @@ class PersonaGiuridicaSearchWidget(CustomComboBoxSearch):
     def ricercaDao(self, keyname):
         from promogest.dao.Cliente import Cliente
         from promogest.dao.Fornitore import Fornitore
-        print keyname
         if self._type == "fornitore":
             cli = Fornitore().select(ragioneSociale=keyname, batchSize=40)
         else:
@@ -169,6 +172,7 @@ class PersonaGiuridicaSearchWidget(CustomComboBoxSearch):
 
 
     def getData(self):
+        self.insertComboboxSearchPersonaGiuridica(self, self._id)
         return self._container
 
 
@@ -181,6 +185,7 @@ class PersonaGiuridicaSearchWidget(CustomComboBoxSearch):
         if denominazione == '':
             denominazione = res["nome"] + ' ' + res["cognome"]
         combobox.refresh(id, denominazione, res, clear, filter)
+        self._container = res
 
 
     def clear(self):

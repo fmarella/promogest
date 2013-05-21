@@ -55,11 +55,18 @@ class CustomComboBoxSearch(gtk.Entry):
         self.draw()
 
 
-    def on_entry_key_press_event(self, widget, event):
+    def on_entry_key_press_event(self, widget, event=None):
         """ """
         keyname = widget.get_text().lstrip()
+        #print "KEYNAME", keyname, self._id
         if len(keyname) > 1:
             self.ricercaDao(keyname)
+
+    def giveAnag(self, anag):
+        """Faccio scendere l'anag nel caso servisse per
+        richiamare qualche metodo
+        """
+        self.anaedit = anag
 
     def ricercaDao(self, keyname):
         """ Qui si rimanda per la gestione della completition
@@ -76,24 +83,30 @@ class CustomComboBoxSearch(gtk.Entry):
 
 
     def match_func(self, completion, key, iter, user_data=None):
-        model = self.completion.get_model()
-
+        model = completion.get_model()
         self._id = None
-        #self._container = None
+        self._container = None
         if model[iter][2] and self.get_text().lower() in model[iter][2].lower() :
             self._id =  model[iter][1]
-            #self._container = model[iter][3]
-            #print "CONTA +ID", self._container,self._id
+            self._container = model[iter][3]
+            #print "CONTAINER+ID", self._container,self._id
             return model[iter][2]
         else:
             self._id = None
             self._container = None
             return None
 
-    #def on_completion_match(self, completion=None, model=None, iter=None):
-        #self.mattu = True
+    def on_completion_match_main(self, completion=None, model=None, iter=None):
+        return
+        print " PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP"
         #self.articolo_matchato = model[iter][2]
         #self.set_position(-1)
+        #model = self.completion.get_model()
+        self._id =  model[iter][1]
+        print " ARTICOLO MATCHATO", self._id, model[iter][2]
+        #if model[iter][2] and self.get_text().lower() in model[iter][2].lower():
+            #self.set_text(model[iter][2])
+        #return model[iter][2]
 
     def set_active(self, data):
         self.set_text("")
@@ -123,8 +136,8 @@ class CustomComboBoxSearch(gtk.Entry):
 
 
     def refresh(self, id=None, denominazione=None, container=None, clear=False, filter=True, idType=None, rowType='element'):
-        self._id = id
-        self.set_text(denominazione or "")
+        #self._id = id
+        #self.set_text(denominazione or "")
         return
         #if self._idChangedHandler is not None:
             #self.handler_block(self._idChangedHandler)
@@ -173,6 +186,8 @@ class CustomComboBoxSearch(gtk.Entry):
             self.completion.set_match_func(self.match_func, None)
         else:
             self.completion.set_match_func(self.match_func)
+        #self.completion.connect('match-selected',
+                         #self.on_completion_match_main)
         self.completion.set_model(model)
         self.completion.set_text_column(2)
         self.set_completion(self.completion)

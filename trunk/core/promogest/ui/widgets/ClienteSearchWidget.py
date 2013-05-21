@@ -72,6 +72,7 @@ class ClienteSearchWidget(CustomComboBoxSearch):
                         denominazione = res["nome"] + ' ' + res["cognome"]
                     self.set_text(denominazione)
                     self._id = id
+                    #self.on_completion_match_main()
 
             from promogest.ui.RicercaComplessaClienti import RicercaComplessaClienti
             #from promogest.ui.anagClienti.AnagraficaClientiFilter import RicercaClienti
@@ -93,7 +94,6 @@ class ClienteSearchWidget(CustomComboBoxSearch):
 
     def ricercaDao(self, keyname):
         from promogest.dao.Cliente import Cliente
-        print "RICERCA DAO ", keyname
         cli = Cliente().select(ragioneSociale=keyname, batchSize=40)
         model = self.completion.get_model()
         model.clear()

@@ -544,7 +544,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self.porto_combobox.set_sensitive(False)
         findComboboxRowFromId(self.id_destinazione_merce_customcombobox.combobox, -1)
         self.id_operazione_combobox.set_active(-1)
-        ###############################################self.id_persona_giuridica_customcombobox.set_active(-1)
+        self.id_persona_giuridica_customcombobox.clean_entry()
         #self.id_destinazione_merce_customcombobox.combobox.set_sensitive(False)
 
     def _refresh(self):
@@ -571,7 +571,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         findComboboxRowFromId(self.id_operazione_combobox, self.dao.operazione)
         self.on_id_operazione_combobox_changed(self.id_operazione_combobox)
         self.id_persona_giuridica_customcombobox.set_sensitive(self.dao.id is None)
-        self.id_persona_giuridica_customcombobox.refresh(clear=True, filter=False)
+        #self.id_persona_giuridica_customcombobox.refresh(clear=True, filter=False)
         if self._tipoPersonaGiuridica == "fornitore":
             self.id_persona_giuridica_customcombobox.setId(self.dao.id_fornitore)
             self.id_destinazione_merce_customcombobox.combobox.clear()
@@ -1926,30 +1926,11 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self.data_documento_entry.grab_focus()
 
 
-    def on_dettaglio_giacenza_togglebutton_toggled(self, toggleButton):
-        if not(toggleButton.get_active()):
-            toggleButton.set_active(False)
-            return
-        idArt =  self._righe[0]["idArticolo"]
-        if not idArt:
-            messageInfo(msg=_("NESSUN ARTICOLO o RIGA SELEZIONATO"))
-            toggleButton.set_active(False)
-            return
-        a = DettaglioGiacenzaWindow(mainWindow=self,
-                                    riga= self._righe[0])
-        anagWindow = a.getTopLevel()
-        returnWindow = self.getTopLevel().get_toplevel()
-        anagWindow.set_transient_for(returnWindow)
-        anagWindow.show_all()
-        toggleButton.set_active(False)
-
-
-
-    def persona_giuridica_changed(self):
+    def persona_giuridica_changed(self, entry=None):
         if self._loading:
             self.refresh_combobox_listini()
             return
-
+        #print " VEDIAMO L'ID", self.id_persona_giuridica_customcombobox.getId() ,self.id_persona_giuridica_customcombobox._id
         inseritoIntestatario = (self.id_persona_giuridica_customcombobox.getId() is not None)
         if inseritoIntestatario:
             datiIntestatario = self.id_persona_giuridica_customcombobox.getData()
@@ -1981,6 +1962,27 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         else:
             self.id_destinazione_merce_customcombobox.combobox.clear()
             self.id_destinazione_merce_customcombobox.set_sensitive(False)
+
+
+
+    def on_dettaglio_giacenza_togglebutton_toggled(self, toggleButton):
+        if not(toggleButton.get_active()):
+            toggleButton.set_active(False)
+            return
+        idArt =  self._righe[0]["idArticolo"]
+        if not idArt:
+            messageInfo(msg=_("NESSUN ARTICOLO o RIGA SELEZIONATO"))
+            toggleButton.set_active(False)
+            return
+        a = DettaglioGiacenzaWindow(mainWindow=self,
+                                    riga= self._righe[0])
+        anagWindow = a.getTopLevel()
+        returnWindow = self.getTopLevel().get_toplevel()
+        anagWindow.set_transient_for(returnWindow)
+        anagWindow.show_all()
+        toggleButton.set_active(False)
+
+
 
     def on_id_magazzino_combobox_changed(self, combobox):
         if self._loading:

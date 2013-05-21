@@ -911,6 +911,7 @@ def fillComboboxDestinazioniMerce(combobox, idCliente=None, filter=False):
     model = gtk.ListStore(object, int, str)
     dems = DestinazioneMerce().select(idCliente=idCliente,
                                                 batchSize=None, offset=None)
+    print " E ARRIVIAMO QUI", dems
     if not filter:
         emptyRow = ''
     else:

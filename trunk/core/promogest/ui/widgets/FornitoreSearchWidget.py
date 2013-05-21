@@ -67,6 +67,7 @@ class FornitoreSearchWidget(CustomComboBoxSearch):
                         denominazione = res["nome"] + ' ' + res["cognome"]
                     self.set_text(denominazione)
                     self._id = id
+                    #self.on_completion_match_main()
 
             from promogest.ui.RicercaComplessaFornitori import RicercaComplessaFornitori
             self._ricerca = RicercaComplessaFornitori()
