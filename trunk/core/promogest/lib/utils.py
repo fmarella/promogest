@@ -659,37 +659,7 @@ def on_combobox_agente_search_clicked(combobox, callName=None):
     """
     Richiama la ricerca degli agenti
     """
-    def refresh_combobox_agente(anagWindow):
-        """
-        FIXME
-        """
-        if anag.dao is None:
-            id = None
-        else:
-            id = anag.dao.id
-        res = leggiAgente(id)
-        if res["ragioneSociale"] != '':
-            combobox.refresh(id, res["ragioneSociale"], res)
-        else:
-            combobox.refresh(id, res["cognome"] + ' ' + res["nome"], res)
-        anagWindow.destroy()
-        if callName is not None:
-            callName()
-
-
-    if combobox.on_selection_changed():
-        from promogest.ui.anagAgenti.AnagraficaAgentiFilter import RicercaAgenti
-        anag = RicercaAgenti()
-
-        anagWindow = anag.getTopLevel()
-        returnWindow = combobox.get_toplevel()
-        anagWindow.set_transient_for(returnWindow)
-        anagWindow.show_all()
-
-        anagWindow.connect("hide",
-                           refresh_combobox_agente)
-    elif callName is not None:
-        callName()
+    combobox.nome = "Agente"
 
 def on_combobox_vettore_search_clicked(combobox, callName=None):
     """
@@ -1023,7 +993,8 @@ def findIdFromCombobox(combobox):
     """
     Restituisce l' id relativo alla riga selezionata in un elenco a discesa
     """
-
+    if "SearchWidget" in  combobox.__class__.__name__:
+        return combobox._id
     model = combobox.get_model()
     iterator = combobox.get_active_iter()
     if iterator is not None:

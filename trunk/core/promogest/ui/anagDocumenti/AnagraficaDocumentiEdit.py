@@ -544,7 +544,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self.porto_combobox.set_sensitive(False)
         findComboboxRowFromId(self.id_destinazione_merce_customcombobox.combobox, -1)
         self.id_operazione_combobox.set_active(-1)
-        self.id_persona_giuridica_customcombobox.set_active(-1)
+        ###############################################self.id_persona_giuridica_customcombobox.set_active(-1)
         #self.id_destinazione_merce_customcombobox.combobox.set_sensitive(False)
 
     def _refresh(self):
@@ -575,14 +575,14 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         if self._tipoPersonaGiuridica == "fornitore":
             self.id_persona_giuridica_customcombobox.setId(self.dao.id_fornitore)
             self.id_destinazione_merce_customcombobox.combobox.clear()
-            #self.id_destinazione_merce_customcombobox.set_sensitive(False)
+            self.id_destinazione_merce_customcombobox.set_sensitive(False)
         elif self._tipoPersonaGiuridica == "cliente":
             self.id_persona_giuridica_customcombobox.setId(self.dao.id_cliente)
             fillComboboxDestinazioniMerce(self.id_destinazione_merce_customcombobox.combobox,
                     self.dao.id_cliente)
             findComboboxRowFromId(self.id_destinazione_merce_customcombobox.combobox,
                     (self.dao.id_destinazione_merce or -1))
-            #self.id_destinazione_merce_customcombobox.combobox.set_sensitive(True)
+            self.id_destinazione_merce_customcombobox.combobox.set_sensitive(True)
 
         self.data_documento_entry.set_text(dateToString(self.dao.data_documento))
         self.numero_documento_entry.set_text(str(self.dao.numero or '0'))
@@ -1444,7 +1444,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             return None
 
     def on_completion_match(self, completion=None, model=None, iter=None):
-        #print "QUANTO CHIAMI QUESTA FUNZ", model[iter][1]
+        #print "QUANTO CHIAMI QUESTA FUNZIIIIIIIIIIIIIIIIIIIIIIII", model[iter][1]
         self.mattu = True
         self.articolo_matchato = model[iter][1]
         self.articolo_entry.set_position(-1)
@@ -1808,7 +1808,8 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self._tipoPersonaGiuridica = operazioneDao.tipo_persona_giuridica
             self._fonteValore = operazioneDao.fonte_valore
             self._segno = operazioneDao.segno
-
+        self.id_persona_giuridica_customcombobox.set_property("primary_icon_sensitive", True)
+        self.id_persona_giuridica_customcombobox.set_property("secondary_icon_sensitive", True)
         if (self._tipoPersonaGiuridica == "fornitore"):
             self.persona_giuridica_label.set_text('Fornitore')
             self.id_persona_giuridica_customcombobox.setType(self._tipoPersonaGiuridica)
@@ -1850,6 +1851,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self.persona_giuridica_label.set_text('Cliente')
             self.id_persona_giuridica_customcombobox.setType(self._tipoPersonaGiuridica)
             self.id_persona_giuridica_customcombobox.set_sensitive(True)
+            self.id_persona_giuridica_customcombobox.grab_focus()
             if Environment.azienda == "daog" and "dirett" in operazioneDao.denominazione:
                 self.id_persona_giuridica_diretta_customcombobox.setType("fornitore")
                 self.id_persona_giuridica_diretta_customcombobox.set_sensitive(True)
@@ -1913,6 +1915,13 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self.numero_documento_label.set_text('Numero')
             self.lotto_temp_label.set_property('visible', False)
             self.lotto_temp_entry.set_property('visible', False)
+
+        self.id_persona_giuridica_customcombobox.set_property("secondary_icon_stock", "gtk-clear")
+        self.id_persona_giuridica_customcombobox.set_property("secondary-icon-activatable", True)
+        self.id_persona_giuridica_customcombobox.set_property("secondary-icon-sensitive", True)
+        self.id_persona_giuridica_customcombobox.set_property("primary_icon_stock", "gtk-find")
+        self.id_persona_giuridica_customcombobox.set_property("primary-icon-activatable", True)
+        self.id_persona_giuridica_customcombobox.set_property("primary-icon-sensitive", True)
         self.persona_giuridica_changed()
         self.data_documento_entry.grab_focus()
 

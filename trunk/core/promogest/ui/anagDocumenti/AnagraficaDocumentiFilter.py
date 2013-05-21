@@ -68,9 +68,9 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
                                                   self.on_filter_radiobutton_toggled)
         self.cliente_filter_radiobutton.set_active(True)
         self.on_filter_radiobutton_toggled()
-        idHandler = self.id_agente_filter_customcombobox.connect('changed',
-                                                                 on_combobox_agente_search_clicked)
-        self.id_agente_filter_customcombobox.setChangedHandler(idHandler)
+        #idHandler = self.id_agente_filter_customcombobox.connect('changed',
+                                                                #on_combobox_agente_search_clicked)
+        self.id_agente_filter_customcombobox.setChangedHandler("Agente")
         try:
             self._anagrafica.info_anag_complessa_label.destroy()
             self._anagrafica.aggiornaforniture()
@@ -285,7 +285,7 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
             else:
                 parte = ""
             if "Preventivo" in t.operazione:
-				col = "#E0FDFF"
+                col = "#E0FDFF"
             self.filter_listore.append((t,
                                     dateTimeToString(t.data_documento),
                                     (str(str(t.numero) + parte) or "0"),
