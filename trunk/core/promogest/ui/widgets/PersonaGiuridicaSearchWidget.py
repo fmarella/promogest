@@ -188,6 +188,9 @@ class PersonaGiuridicaSearchWidget(CustomComboBoxSearch):
         if denominazione == '':
             denominazione = res["nome"] + ' ' + res["cognome"]
         combobox.refresh(id, denominazione, res, clear, filter)
+        #self.set_text(denominazione)
+        #print "IDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD", id
+        #self._id = id
         self._container = res
 
 

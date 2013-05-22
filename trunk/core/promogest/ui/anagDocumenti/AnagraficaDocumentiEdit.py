@@ -583,7 +583,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             findComboboxRowFromId(self.id_destinazione_merce_customcombobox.combobox,
                     (self.dao.id_destinazione_merce or -1))
             self.id_destinazione_merce_customcombobox.combobox.set_sensitive(True)
-        print " VEDIAMO",  self._tipoPersonaGiuridica, self.id_persona_giuridica_customcombobox.setId(self.dao.id_cliente)
+        #print " VEDIAMO",self.dao.id_fornitore,self.dao.id_cliente, self._tipoPersonaGiuridica, self.id_persona_giuridica_customcombobox.setId(self.dao.id_fornitore)
         self.data_documento_entry.set_text(dateToString(self.dao.data_documento))
         self.numero_documento_entry.set_text(str(self.dao.numero or '0'))
         self.parte_spinbutton.set_value(self.dao.parte or 0)
