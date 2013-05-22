@@ -136,8 +136,8 @@ class CustomComboBoxSearch(gtk.Entry):
 
 
     def refresh(self, id=None, denominazione=None, container=None, clear=False, filter=True, idType=None, rowType='element'):
-        #self._id = id
-        #self.set_text(denominazione or "")
+        self._id = id
+        self.set_text(denominazione or "")
         return
         #if self._idChangedHandler is not None:
             #self.handler_block(self._idChangedHandler)

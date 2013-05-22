@@ -571,7 +571,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         findComboboxRowFromId(self.id_operazione_combobox, self.dao.operazione)
         self.on_id_operazione_combobox_changed(self.id_operazione_combobox)
         self.id_persona_giuridica_customcombobox.set_sensitive(self.dao.id is None)
-        #self.id_persona_giuridica_customcombobox.refresh(clear=True, filter=False)
+        self.id_persona_giuridica_customcombobox.refresh(clear=True, filter=False)
         if self._tipoPersonaGiuridica == "fornitore":
             self.id_persona_giuridica_customcombobox.setId(self.dao.id_fornitore)
             self.id_destinazione_merce_customcombobox.combobox.clear()
@@ -583,7 +583,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             findComboboxRowFromId(self.id_destinazione_merce_customcombobox.combobox,
                     (self.dao.id_destinazione_merce or -1))
             self.id_destinazione_merce_customcombobox.combobox.set_sensitive(True)
-
+        print " VEDIAMO",  self._tipoPersonaGiuridica, self.id_persona_giuridica_customcombobox.setId(self.dao.id_cliente)
         self.data_documento_entry.set_text(dateToString(self.dao.data_documento))
         self.numero_documento_entry.set_text(str(self.dao.numero or '0'))
         self.parte_spinbutton.set_value(self.dao.parte or 0)
