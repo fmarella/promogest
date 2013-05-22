@@ -54,6 +54,7 @@ class AnagraficaContatti(Anagrafica):
                                              (ownerKey is not None)):
             self._ownerKey = ownerKey
             self._ownerType = ownerType
+        print " VEDIAMO SE SONO PIENE QUESTE VARIABILI", self._ownerKey,self._ownerType
 
         Anagrafica.__init__(self,
                             windowTitle='Promogest - Anagrafica contatti',
@@ -138,17 +139,19 @@ class AnagraficaContattiFilter(AnagraficaFilter):
             findComboboxRowFromId(self.schema_azienda_filter_combobox, self._anagrafica._ownerKey)
         else:
             self.generico_filter_radiobutton.set_active(True)
+        if self._anagrafica._ownerKey:
+            self.pg_toggle_hbox.set_sensitive(False)
 
-        self.cliente_filter_radiobutton.connect('toggled',
-                                                self.on_filter_radiobutton_toggled)
-        self.fornitore_filter_radiobutton.connect('toggled',
-                                                  self.on_filter_radiobutton_toggled)
-        self.magazzino_filter_radiobutton.connect('toggled',
-                                                  self.on_filter_radiobutton_toggled)
-        self.azienda_filter_radiobutton.connect('toggled',
-                                                self.on_filter_radiobutton_toggled)
-        self.generico_filter_radiobutton.connect('toggled',
-                                                 self.on_filter_radiobutton_toggled)
+        #self.cliente_filter_radiobutton.connect('toggled',
+                                                #self.on_filter_radiobutton_toggled)
+        #self.fornitore_filter_radiobutton.connect('toggled',
+                                                  #self.on_filter_radiobutton_toggled)
+        #self.magazzino_filter_radiobutton.connect('toggled',
+                                                  #self.on_filter_radiobutton_toggled)
+        #self.azienda_filter_radiobutton.connect('toggled',
+                                                #self.on_filter_radiobutton_toggled)
+        #self.generico_filter_radiobutton.connect('toggled',
+                                                 #self.on_filter_radiobutton_toggled)
         self.on_filter_radiobutton_toggled()
 
         self.refresh()
@@ -382,6 +385,8 @@ class AnagraficaContattiFilter(AnagraficaFilter):
         if self.cliente_filter_radiobutton.get_active():
             self.id_cliente_filter_customcombobox.set_sensitive(True)
             self.id_cliente_filter_customcombobox.grab_focus()
+            self.id_cliente_filter_customcombobox.set_property("secondary-icon-activatable", True)
+            self.id_cliente_filter_customcombobox.set_property("primary-icon-activatable", True)
             self.id_fornitore_filter_customcombobox.set_active(0)
             self.id_fornitore_filter_customcombobox.set_sensitive(False)
             self.id_magazzino_filter_combobox.set_active(0)
@@ -392,6 +397,8 @@ class AnagraficaContattiFilter(AnagraficaFilter):
         elif self.fornitore_filter_radiobutton.get_active():
             self.id_fornitore_filter_customcombobox.set_sensitive(True)
             self.id_fornitore_filter_customcombobox.grab_focus()
+            self.id_fornitore_filter_customcombobox.set_property("secondary-icon-activatable", True)
+            self.id_fornitore_filter_customcombobox.set_property("primary-icon-activatable", True)
             self.id_cliente_filter_customcombobox.set_active(0)
             self.id_cliente_filter_customcombobox.set_sensitive(False)
             self.id_magazzino_filter_combobox.set_active(0)
@@ -530,21 +537,22 @@ class AnagraficaContattiEdit(AnagraficaEdit):
 
         self.recapiti_treeview.set_search_column(2)
 
-        idHandler = self.appartenenza_customcombobox.connect('changed',
-                                                             self.on_appartenenza_customcombobox_changed)
-        self.appartenenza_customcombobox.setChangedHandler(idHandler)
-        self.appartenenza_customcombobox.refresh(clear=True, filter=False)
+        #idHandler = self.appartenenza_customcombobox.connect('changed',
+                                                             #self.on_appartenenza_customcombobox_changed)
+        #if self.dao:
+            #self.appartenenza_customcombobox.setChangedHandler(self.dao.tipo_contatto)
+        #self.appartenenza_customcombobox.refresh(clear=True, filter=False)
 
-        self.cliente_radiobutton.connect('toggled',
-                                         self.on_radiobutton_toggled)
-        self.fornitore_radiobutton.connect('toggled',
-                                           self.on_radiobutton_toggled)
-        self.magazzino_radiobutton.connect('toggled',
-                                           self.on_radiobutton_toggled)
-        self.azienda_radiobutton.connect('toggled',
-                                         self.on_radiobutton_toggled)
-        self.generico_radiobutton.connect('toggled',
-                                          self.on_radiobutton_toggled)
+        #self.cliente_radiobutton.connect('toggled',
+                                         #self.on_radiobutton_toggled)
+        #self.fornitore_radiobutton.connect('toggled',
+                                           #self.on_radiobutton_toggled)
+        #self.magazzino_radiobutton.connect('toggled',
+                                           #self.on_radiobutton_toggled)
+        #self.azienda_radiobutton.connect('toggled',
+                                         #self.on_radiobutton_toggled)
+        #self.generico_radiobutton.connect('toggled',
+                                          #self.on_radiobutton_toggled)
         self.generico_radiobutton.set_active(True)
         self.on_radiobutton_toggled()
 
@@ -557,6 +565,8 @@ class AnagraficaContattiEdit(AnagraficaEdit):
         self.recapiti_delete_row_button.set_sensitive(False)
         self.recapiti_undelete_row_button.set_sensitive(False)
         self.recapiti_treeview.get_selection().unselect_all()
+        if self._anagrafica._ownerKey:
+            self.pg_toggle_hbox.set_sensitive(False)
 
 
     def on_categorie_contatti_add_row_button_clicked(self, widget):
@@ -764,6 +774,7 @@ class AnagraficaContattiEdit(AnagraficaEdit):
                 self.dao = ContattoAzienda().getRecord(id=(dao.id,'azienda'))
             elif dao.tipo_contatto == 'generico':
                 self.dao = Contatto().getRecord(id=(dao.id,'generico'))
+        #self.appartenenza_customcombobox.setChangedHandler(self.dao.tipo_contatto)
         self._refresh()
 
 
@@ -771,15 +782,20 @@ class AnagraficaContattiEdit(AnagraficaEdit):
         self.on_radiobutton_toggled()
 
         if self.dao.tipo_contatto == 'cliente':
-            self.appartenenza_customcombobox.refresh(clear=True, filter=False)
+            #self.appartenenza_customcombobox.refresh(clear=True, filter=False)
             self.cliente_radiobutton.set_active(True)
             insertComboboxSearchCliente(self.appartenenza_customcombobox,
                                         self.dao.id_cliente)
+            if self._anagrafica._ownerKey:
+                self.appartenenza_customcombobox.set_sensitive(False)
         elif self.dao.tipo_contatto == 'fornitore':
-            self.appartenenza_customcombobox.refresh(clear=True, filter=False)
+            #self.appartenenza_customcombobox.refresh(clear=True, filter=False)
             self.fornitore_radiobutton.set_active(True)
+            self.appartenenza_customcombobox.setId(self.dao.id_fornitore)
             insertComboboxSearchFornitore(self.appartenenza_customcombobox,
                                           self.dao.id_fornitore)
+            if self._anagrafica._ownerKey:
+                self.appartenenza_customcombobox.set_sensitive(False)
         elif self.dao.tipo_contatto == 'magazzino':
             self.appartenenza_customcombobox.refresh(clear=True, filter=False)
             self.magazzino_radiobutton.set_active(True)
@@ -829,6 +845,7 @@ class AnagraficaContattiEdit(AnagraficaEdit):
 
 
     def on_radiobutton_toggled(self, widget=None):
+        print " TOGGLEEEEEEEEEEEEEEEEEEEEEEEEED"
         if self.dao.id is not None:
             if self.dao.tipo_contatto == 'cliente':
                 self.cliente_radiobutton.set_active(True)
@@ -885,17 +902,29 @@ class AnagraficaContattiEdit(AnagraficaEdit):
             if self.dao.id is None:
                 self.appartenenza_customcombobox.set_sensitive(True)
                 self.appartenenza_customcombobox.grab_focus()
+                self.appartenenza_customcombobox.set_property("secondary_icon_stock", "gtk-clear")
+                self.appartenenza_customcombobox.set_property("secondary-icon-activatable", True)
+                self.appartenenza_customcombobox.set_property("secondary-icon-sensitive", True)
+                self.appartenenza_customcombobox.set_property("primary_icon_stock", "gtk-find")
+                self.appartenenza_customcombobox.set_property("primary-icon-activatable", True)
+                self.appartenenza_customcombobox.set_property("primary-icon-sensitive", True)
             else:
                 self.appartenenza_customcombobox.set_sensitive(False)
                 self.cognome_entry.grab_focus()
             if self.cliente_radiobutton.get_active():
                 self.appartenenza_label.set_text('Cliente')
+                self.appartenenza_customcombobox.setChangedHandler("cliente")
             elif self.fornitore_radiobutton.get_active():
                 self.appartenenza_label.set_text('Fornitore')
+                self.appartenenza_customcombobox.setChangedHandler("fornitore")
             elif self.magazzino_radiobutton.get_active():
                 self.appartenenza_label.set_text('Magazzino')
+                self.appartenenza_customcombobox.setChangedHandler("magazzino")
             elif self.azienda_radiobutton.get_active():
                 self.appartenenza_label.set_text('Azienda')
+                self.appartenenza_customcombobox.setChangedHandler("azienda")
+
+
 
     def saveDao(self, tipo=None):
         if not self.generico_radiobutton.get_active():

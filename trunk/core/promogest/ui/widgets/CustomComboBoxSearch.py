@@ -217,7 +217,7 @@ class CustomComboBoxSearch(gtk.Entry):
 
     def setChangedHandler(self, idHandler):
         self._idChangedHandler = idHandler
-        print "PASSATO QUI"
+        print "PASSATO QUI" , idHandler
 
         if idHandler == "Agente":
 
@@ -239,18 +239,39 @@ class CustomComboBoxSearch(gtk.Entry):
                             denominazione = res["nome"] + ' ' + res["cognome"]
                         self.set_text(denominazione)
                         self._id = id
-
-                    #from promogest.ui.RicercaComplessaClienti import RicercaComplessaClienti
-                    #from promogest.ui.anagClienti.AnagraficaClientiFilter import RicercaClienti
-                    #self._ricerca = RicercaComplessaClienti()
-                    #self._ricerca = RicercaClienti()
                     from promogest.ui.anagAgenti.AnagraficaAgentiFilter import RicercaAgenti
                     anag = RicercaAgenti()
+                    anagWindow = anag.getTopLevel()
+                    anagWindow.show_all()
+                    anagWindow.connect("hide",
+                                       refresh_entry)
+                    anag.show_all()
+                else:                            #secondary
+                    self.clear_entry()
+            self.connect("icon-press", on_icon_press)
 
-                    #if not self._filter:
-                        #self._ricerca.setTreeViewSelectionType(GTK_SELECTIONMODE_SINGLE)
-                    #else:
-                        #self._ricerca.refresh()
+        elif idHandler == "cliente":
+            print " MA QUANTE VOLTE OASSI QUI"
+            def on_icon_press(entry,position,event):
+                """
+                scopettina agganciata ad un segnale generico
+                """
+                if position.value_nick == "primary":
+
+                    def refresh_entry(anagWindow):
+                        if not anag.dao:
+                            self.set_active(0)
+                            return
+
+                        id = anag.dao.id
+                        res = leggiCliente(id)
+                        denominazione = res["ragioneSociale"]
+                        if denominazione == '':
+                            denominazione = res["nome"] + ' ' + res["cognome"]
+                        self.set_text(denominazione)
+                        self._id = id
+                    from promogest.ui.anagClienti.AnagraficaClientiFilter import RicercaClienti
+                    anag = RicercaClienti()
                     anagWindow = anag.getTopLevel()
                     anagWindow.show_all()
                     anagWindow.connect("hide",

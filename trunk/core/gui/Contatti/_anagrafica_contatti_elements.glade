@@ -3,6 +3,392 @@
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-requires pythonplugin 0.0 -->
   <!-- interface-naming-policy toplevel-contextual -->
+  <object class="GtkTable" id="anagrafica_contatti_filter_table">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="n_rows">11</property>
+    <property name="n_columns">2</property>
+    <child>
+      <placeholder/>
+    </child>
+    <child>
+      <object class="GtkEntry" id="cognome_nome_filter_entry">
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="invisible_char">●</property>
+        <property name="primary_icon_activatable">False</property>
+        <property name="secondary_icon_activatable">False</property>
+        <property name="primary_icon_sensitive">True</property>
+        <property name="secondary_icon_sensitive">True</property>
+        <signal name="key-press-event" handler="on_campo_filter_entry_key_press_event" swapped="no"/>
+      </object>
+      <packing>
+        <property name="left_attach">1</property>
+        <property name="right_attach">2</property>
+        <property name="top_attach">5</property>
+        <property name="bottom_attach">6</property>
+        <property name="x_options">GTK_SHRINK | GTK_FILL</property>
+        <property name="y_options"/>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkEntry" id="ruolo_filter_entry">
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="invisible_char">●</property>
+        <property name="primary_icon_activatable">False</property>
+        <property name="secondary_icon_activatable">False</property>
+        <property name="primary_icon_sensitive">True</property>
+        <property name="secondary_icon_sensitive">True</property>
+        <signal name="key-press-event" handler="on_campo_filter_entry_key_press_event" swapped="no"/>
+      </object>
+      <packing>
+        <property name="left_attach">1</property>
+        <property name="right_attach">2</property>
+        <property name="top_attach">6</property>
+        <property name="bottom_attach">7</property>
+        <property name="x_options">GTK_SHRINK | GTK_FILL</property>
+        <property name="y_options"/>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkEntry" id="descrizione_filter_entry">
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="invisible_char">●</property>
+        <property name="primary_icon_activatable">False</property>
+        <property name="secondary_icon_activatable">False</property>
+        <property name="primary_icon_sensitive">True</property>
+        <property name="secondary_icon_sensitive">True</property>
+        <signal name="key-press-event" handler="on_campo_filter_entry_key_press_event" swapped="no"/>
+      </object>
+      <packing>
+        <property name="left_attach">1</property>
+        <property name="right_attach">2</property>
+        <property name="top_attach">7</property>
+        <property name="bottom_attach">8</property>
+        <property name="x_options">GTK_SHRINK | GTK_FILL</property>
+        <property name="y_options"/>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkLabel" id="label209">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="xalign">0</property>
+        <property name="label" translatable="yes">Cognome - Nome</property>
+      </object>
+      <packing>
+        <property name="top_attach">5</property>
+        <property name="bottom_attach">6</property>
+        <property name="x_options">GTK_FILL</property>
+        <property name="y_options"/>
+        <property name="x_padding">10</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkLabel" id="label210">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="xalign">0</property>
+        <property name="label" translatable="yes">Ruolo</property>
+      </object>
+      <packing>
+        <property name="top_attach">6</property>
+        <property name="bottom_attach">7</property>
+        <property name="x_options">GTK_FILL</property>
+        <property name="y_options"/>
+        <property name="x_padding">10</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkLabel" id="label211">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="xalign">0</property>
+        <property name="label" translatable="yes">Descrizione</property>
+      </object>
+      <packing>
+        <property name="top_attach">7</property>
+        <property name="bottom_attach">8</property>
+        <property name="x_options">GTK_FILL</property>
+        <property name="y_options"/>
+        <property name="x_padding">10</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkEntry" id="recapito_filter_entry">
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="invisible_char">●</property>
+        <property name="primary_icon_activatable">False</property>
+        <property name="secondary_icon_activatable">False</property>
+        <property name="primary_icon_sensitive">True</property>
+        <property name="secondary_icon_sensitive">True</property>
+        <signal name="key-press-event" handler="on_campo_filter_entry_key_press_event" swapped="no"/>
+      </object>
+      <packing>
+        <property name="left_attach">1</property>
+        <property name="right_attach">2</property>
+        <property name="top_attach">8</property>
+        <property name="bottom_attach">9</property>
+        <property name="x_options">GTK_SHRINK | GTK_FILL</property>
+        <property name="y_options"/>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkComboBox" id="id_magazzino_filter_combobox">
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+      </object>
+      <packing>
+        <property name="left_attach">1</property>
+        <property name="right_attach">2</property>
+        <property name="top_attach">2</property>
+        <property name="bottom_attach">3</property>
+        <property name="x_options">GTK_SHRINK | GTK_FILL</property>
+        <property name="y_options"/>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkComboBox" id="schema_azienda_filter_combobox">
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+      </object>
+      <packing>
+        <property name="left_attach">1</property>
+        <property name="right_attach">2</property>
+        <property name="top_attach">3</property>
+        <property name="bottom_attach">4</property>
+        <property name="x_options">GTK_SHRINK | GTK_FILL</property>
+        <property name="y_options"/>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkComboBoxEntry" id="tipo_recapito_filter_comboboxentry">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="text_column">0</property>
+        <signal name="key-press-event" handler="on_campo_filter_entry_key_press_event" swapped="no"/>
+        <child internal-child="entry">
+          <object class="GtkEntry" id="comboboxentry-entry6">
+            <property name="can_focus">False</property>
+            <property name="primary_icon_activatable">False</property>
+            <property name="secondary_icon_activatable">False</property>
+            <property name="primary_icon_sensitive">True</property>
+            <property name="secondary_icon_sensitive">True</property>
+          </object>
+        </child>
+      </object>
+      <packing>
+        <property name="left_attach">1</property>
+        <property name="right_attach">2</property>
+        <property name="top_attach">9</property>
+        <property name="bottom_attach">10</property>
+        <property name="x_options">GTK_SHRINK | GTK_FILL</property>
+        <property name="y_options"/>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkComboBox" id="id_categoria_contatto_filter_combobox">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+      </object>
+      <packing>
+        <property name="left_attach">1</property>
+        <property name="right_attach">2</property>
+        <property name="top_attach">10</property>
+        <property name="bottom_attach">11</property>
+        <property name="x_options">GTK_SHRINK | GTK_FILL</property>
+        <property name="y_options"/>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkRadioButton" id="cliente_filter_radiobutton">
+        <property name="label" translatable="yes">Cliente</property>
+        <property name="use_action_appearance">False</property>
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="receives_default">False</property>
+        <property name="use_underline">True</property>
+        <property name="active">True</property>
+        <property name="draw_indicator">True</property>
+        <signal name="toggled" handler="on_filter_radiobutton_toggled" swapped="no"/>
+      </object>
+      <packing>
+        <property name="x_options">GTK_FILL</property>
+        <property name="y_options"/>
+        <property name="x_padding">10</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkRadioButton" id="fornitore_filter_radiobutton">
+        <property name="label" translatable="yes">Fornitore</property>
+        <property name="use_action_appearance">False</property>
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="receives_default">False</property>
+        <property name="use_underline">True</property>
+        <property name="draw_indicator">True</property>
+        <property name="group">cliente_filter_radiobutton</property>
+        <signal name="toggled" handler="on_filter_radiobutton_toggled" swapped="no"/>
+      </object>
+      <packing>
+        <property name="top_attach">1</property>
+        <property name="bottom_attach">2</property>
+        <property name="x_options">GTK_FILL</property>
+        <property name="y_options"/>
+        <property name="x_padding">10</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkRadioButton" id="magazzino_filter_radiobutton">
+        <property name="label" translatable="yes">Magazzino</property>
+        <property name="use_action_appearance">False</property>
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="receives_default">False</property>
+        <property name="use_underline">True</property>
+        <property name="draw_indicator">True</property>
+        <property name="group">cliente_filter_radiobutton</property>
+        <signal name="toggled" handler="on_filter_radiobutton_toggled" swapped="no"/>
+      </object>
+      <packing>
+        <property name="top_attach">2</property>
+        <property name="bottom_attach">3</property>
+        <property name="x_options">GTK_FILL</property>
+        <property name="y_options"/>
+        <property name="x_padding">10</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkRadioButton" id="azienda_filter_radiobutton">
+        <property name="label" translatable="yes">Azienda</property>
+        <property name="use_action_appearance">False</property>
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="receives_default">False</property>
+        <property name="use_underline">True</property>
+        <property name="draw_indicator">True</property>
+        <property name="group">cliente_filter_radiobutton</property>
+        <signal name="toggled" handler="on_filter_radiobutton_toggled" swapped="no"/>
+      </object>
+      <packing>
+        <property name="top_attach">3</property>
+        <property name="bottom_attach">4</property>
+        <property name="x_options">GTK_FILL</property>
+        <property name="y_options"/>
+        <property name="x_padding">10</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkRadioButton" id="generico_filter_radiobutton">
+        <property name="label" translatable="yes">Generico</property>
+        <property name="use_action_appearance">False</property>
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="receives_default">False</property>
+        <property name="use_underline">True</property>
+        <property name="draw_indicator">True</property>
+        <property name="group">cliente_filter_radiobutton</property>
+        <signal name="toggled" handler="on_filter_radiobutton_toggled" swapped="no"/>
+      </object>
+      <packing>
+        <property name="top_attach">4</property>
+        <property name="bottom_attach">5</property>
+        <property name="x_options">GTK_FILL</property>
+        <property name="y_options"/>
+        <property name="x_padding">10</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkLabel" id="label552">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="xalign">0</property>
+        <property name="label" translatable="yes">Recapito</property>
+      </object>
+      <packing>
+        <property name="top_attach">8</property>
+        <property name="bottom_attach">9</property>
+        <property name="x_options">GTK_FILL</property>
+        <property name="y_options"/>
+        <property name="x_padding">10</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkLabel" id="label553">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="xalign">0</property>
+        <property name="label" translatable="yes">Tipo recapito</property>
+      </object>
+      <packing>
+        <property name="top_attach">9</property>
+        <property name="bottom_attach">10</property>
+        <property name="x_options">GTK_FILL</property>
+        <property name="y_options"/>
+        <property name="x_padding">10</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkLabel" id="label554">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="xalign">0</property>
+        <property name="label" translatable="yes">Categoria</property>
+      </object>
+      <packing>
+        <property name="top_attach">10</property>
+        <property name="bottom_attach">11</property>
+        <property name="x_options">GTK_FILL</property>
+        <property name="y_options"/>
+        <property name="x_padding">10</property>
+      </packing>
+    </child>
+    <child>
+      <object class="ClienteSearchWidget" id="id_cliente_filter_customcombobox">
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="primary_icon_activatable">False</property>
+        <property name="secondary_icon_activatable">False</property>
+        <property name="primary_icon_sensitive">True</property>
+        <property name="secondary_icon_sensitive">True</property>
+      </object>
+      <packing>
+        <property name="left_attach">1</property>
+        <property name="right_attach">2</property>
+      </packing>
+    </child>
+    <child>
+      <object class="FornitoreSearchWidget" id="id_fornitore_filter_customcombobox">
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="primary_icon_activatable">False</property>
+        <property name="secondary_icon_activatable">False</property>
+        <property name="primary_icon_sensitive">True</property>
+        <property name="secondary_icon_sensitive">True</property>
+      </object>
+      <packing>
+        <property name="left_attach">1</property>
+        <property name="right_attach">2</property>
+        <property name="top_attach">1</property>
+        <property name="bottom_attach">2</property>
+      </packing>
+    </child>
+  </object>
+  <object class="GtkListStore" id="categorie_liststore">
+    <columns>
+      <!-- column-name gint1 -->
+      <column type="gint"/>
+      <!-- column-name gchararray1 -->
+      <column type="gchararray"/>
+      <!-- column-name GdkPixbuf1 -->
+      <column type="GdkPixbuf"/>
+      <!-- column-name gchararray2 -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
   <object class="GtkTable" id="anagrafica_contatti_detail_table">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -33,7 +419,7 @@ relative al contatto</property>
         <property name="top_attach">8</property>
         <property name="bottom_attach">9</property>
         <property name="x_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
       </packing>
     </child>
     <child>
@@ -53,7 +439,7 @@ relative al contatto</property>
         <property name="top_attach">4</property>
         <property name="bottom_attach">5</property>
         <property name="x_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
       </packing>
     </child>
     <child>
@@ -73,7 +459,7 @@ relative al contatto</property>
         <property name="top_attach">5</property>
         <property name="bottom_attach">6</property>
         <property name="x_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
       </packing>
     </child>
     <child>
@@ -109,7 +495,7 @@ Personale di norma si rfiersce ad una persona fisica legata alla ragione sociale
         <property name="top_attach">7</property>
         <property name="bottom_attach">8</property>
         <property name="x_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
       </packing>
     </child>
     <child>
@@ -120,7 +506,7 @@ Personale di norma si rfiersce ad una persona fisica legata alla ragione sociale
       <packing>
         <property name="right_attach">2</property>
         <property name="x_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
       </packing>
     </child>
     <child>
@@ -133,7 +519,7 @@ Personale di norma si rfiersce ad una persona fisica legata alla ragione sociale
         <property name="top_attach">3</property>
         <property name="bottom_attach">4</property>
         <property name="x_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
       </packing>
     </child>
     <child>
@@ -147,7 +533,7 @@ Personale di norma si rfiersce ad una persona fisica legata alla ragione sociale
         <property name="top_attach">2</property>
         <property name="bottom_attach">3</property>
         <property name="x_options">GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
       </packing>
     </child>
     <child>
@@ -180,25 +566,26 @@ Personale di norma si rfiersce ad una persona fisica legata alla ragione sociale
         <property name="top_attach">6</property>
         <property name="bottom_attach">7</property>
         <property name="x_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
       </packing>
     </child>
     <child>
-      <object class="GtkHBox" id="hbox113">
+      <object class="GtkHBox" id="pg_toggle_hbox">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="homogeneous">True</property>
         <child>
           <object class="GtkRadioButton" id="cliente_radiobutton">
             <property name="label" translatable="yes">Cliente</property>
+            <property name="use_action_appearance">False</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">False</property>
             <property name="tooltip_text" translatable="yes">Contatti relativi ad un cliente</property>
-            <property name="use_action_appearance">False</property>
             <property name="use_underline">True</property>
             <property name="active">True</property>
             <property name="draw_indicator">True</property>
+            <signal name="toggled" handler="on_radiobutton_toggled" swapped="no"/>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -209,14 +596,15 @@ Personale di norma si rfiersce ad una persona fisica legata alla ragione sociale
         <child>
           <object class="GtkRadioButton" id="fornitore_radiobutton">
             <property name="label" translatable="yes">Fornitore</property>
+            <property name="use_action_appearance">False</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">False</property>
             <property name="tooltip_text" translatable="yes">Contatti relativi ad un fornitore</property>
-            <property name="use_action_appearance">False</property>
             <property name="use_underline">True</property>
             <property name="draw_indicator">True</property>
             <property name="group">cliente_radiobutton</property>
+            <signal name="toggled" handler="on_radiobutton_toggled" swapped="no"/>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -227,14 +615,15 @@ Personale di norma si rfiersce ad una persona fisica legata alla ragione sociale
         <child>
           <object class="GtkRadioButton" id="magazzino_radiobutton">
             <property name="label" translatable="yes">Magazzino</property>
+            <property name="use_action_appearance">False</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">False</property>
             <property name="tooltip_text" translatable="yes">Contatti relativi al magazzino</property>
-            <property name="use_action_appearance">False</property>
             <property name="use_underline">True</property>
             <property name="draw_indicator">True</property>
             <property name="group">cliente_radiobutton</property>
+            <signal name="toggled" handler="on_radiobutton_toggled" swapped="no"/>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -245,14 +634,15 @@ Personale di norma si rfiersce ad una persona fisica legata alla ragione sociale
         <child>
           <object class="GtkRadioButton" id="azienda_radiobutton">
             <property name="label" translatable="yes">Azienda</property>
+            <property name="use_action_appearance">False</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">False</property>
             <property name="tooltip_text" translatable="yes">Contatti legati alla prorpria azienda</property>
-            <property name="use_action_appearance">False</property>
             <property name="use_underline">True</property>
             <property name="draw_indicator">True</property>
             <property name="group">cliente_radiobutton</property>
+            <signal name="toggled" handler="on_radiobutton_toggled" swapped="no"/>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -263,16 +653,17 @@ Personale di norma si rfiersce ad una persona fisica legata alla ragione sociale
         <child>
           <object class="GtkRadioButton" id="generico_radiobutton">
             <property name="label" translatable="yes">Generico</property>
+            <property name="use_action_appearance">False</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">False</property>
             <property name="tooltip_text" translatable="yes">Contatto che non è legato a
 nessuna tipologia precedente 
 es: L'assicuratore</property>
-            <property name="use_action_appearance">False</property>
             <property name="use_underline">True</property>
             <property name="draw_indicator">True</property>
             <property name="group">cliente_radiobutton</property>
+            <signal name="toggled" handler="on_radiobutton_toggled" swapped="no"/>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -285,8 +676,7 @@ es: L'assicuratore</property>
         <property name="right_attach">2</property>
         <property name="top_attach">1</property>
         <property name="bottom_attach">2</property>
-        <property name="x_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
       </packing>
     </child>
     <child>
@@ -300,7 +690,7 @@ es: L'assicuratore</property>
         <property name="top_attach">4</property>
         <property name="bottom_attach">5</property>
         <property name="x_options">GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
       </packing>
     </child>
     <child>
@@ -314,7 +704,7 @@ es: L'assicuratore</property>
         <property name="top_attach">5</property>
         <property name="bottom_attach">6</property>
         <property name="x_options">GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
       </packing>
     </child>
     <child>
@@ -328,7 +718,7 @@ es: L'assicuratore</property>
         <property name="top_attach">6</property>
         <property name="bottom_attach">7</property>
         <property name="x_options">GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
       </packing>
     </child>
     <child>
@@ -342,7 +732,7 @@ es: L'assicuratore</property>
         <property name="top_attach">7</property>
         <property name="bottom_attach">8</property>
         <property name="x_options">GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
       </packing>
     </child>
     <child>
@@ -356,7 +746,7 @@ es: L'assicuratore</property>
         <property name="top_attach">8</property>
         <property name="bottom_attach">9</property>
         <property name="x_options">GTK_SHRINK | GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
       </packing>
     </child>
     <child>
@@ -414,10 +804,10 @@ es: L'assicuratore</property>
                     <child>
                       <object class="GtkButton" id="categorie_contatti_add_row_button">
                         <property name="label">gtk-add</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="use_stock">True</property>
                         <signal name="clicked" handler="on_categorie_contatti_add_row_button_clicked" swapped="no"/>
                       </object>
@@ -431,11 +821,11 @@ es: L'assicuratore</property>
                     <child>
                       <object class="GtkButton" id="categorie_contatti_delete_row_button">
                         <property name="label">gtk-delete</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="sensitive">False</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="use_stock">True</property>
                         <signal name="clicked" handler="on_categorie_contatti_delete_row_button_clicked" swapped="no"/>
                       </object>
@@ -449,11 +839,11 @@ es: L'assicuratore</property>
                     <child>
                       <object class="GtkButton" id="categorie_contatti_undelete_row_button">
                         <property name="label">gtk-revert-to-saved</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="sensitive">False</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="use_stock">True</property>
                         <signal name="clicked" handler="on_categorie_contatti_undelete_row_button_clicked" swapped="no"/>
                       </object>
@@ -549,10 +939,10 @@ es: L'assicuratore</property>
                     <child>
                       <object class="GtkButton" id="recapiti_add_row_button">
                         <property name="label">gtk-add</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="use_stock">True</property>
                         <signal name="clicked" handler="on_recapiti_add_row_button_clicked" swapped="no"/>
                       </object>
@@ -566,11 +956,11 @@ es: L'assicuratore</property>
                     <child>
                       <object class="GtkButton" id="recapiti_delete_row_button">
                         <property name="label">gtk-delete</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="sensitive">False</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="use_stock">True</property>
                         <signal name="clicked" handler="on_recapiti_delete_row_button_clicked" swapped="no"/>
                       </object>
@@ -584,11 +974,11 @@ es: L'assicuratore</property>
                     <child>
                       <object class="GtkButton" id="recapiti_undelete_row_button">
                         <property name="label">gtk-revert-to-saved</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="sensitive">False</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="use_stock">True</property>
                         <signal name="clicked" handler="on_recapiti_undelete_row_button_clicked" swapped="no"/>
                       </object>
@@ -656,388 +1046,19 @@ es: L'assicuratore</property>
       <object class="CustomComboBoxSearch" id="appartenenza_customcombobox">
         <property name="visible">True</property>
         <property name="can_focus">True</property>
+        <property name="primary_icon_activatable">False</property>
+        <property name="secondary_icon_activatable">False</property>
+        <property name="primary_icon_sensitive">True</property>
+        <property name="secondary_icon_sensitive">True</property>
       </object>
       <packing>
         <property name="left_attach">1</property>
         <property name="right_attach">2</property>
         <property name="top_attach">2</property>
         <property name="bottom_attach">3</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
       </packing>
     </child>
-  </object>
-  <object class="GtkTable" id="anagrafica_contatti_filter_table">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="n_rows">11</property>
-    <property name="n_columns">2</property>
-    <child>
-      <object class="GtkEntry" id="cognome_nome_filter_entry">
-        <property name="visible">True</property>
-        <property name="can_focus">True</property>
-        <property name="invisible_char">●</property>
-        <property name="primary_icon_activatable">False</property>
-        <property name="secondary_icon_activatable">False</property>
-        <property name="primary_icon_sensitive">True</property>
-        <property name="secondary_icon_sensitive">True</property>
-        <signal name="key-press-event" handler="on_campo_filter_entry_key_press_event" swapped="no"/>
-      </object>
-      <packing>
-        <property name="left_attach">1</property>
-        <property name="right_attach">2</property>
-        <property name="top_attach">5</property>
-        <property name="bottom_attach">6</property>
-        <property name="x_options">GTK_SHRINK | GTK_FILL</property>
-        <property name="y_options"></property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkEntry" id="ruolo_filter_entry">
-        <property name="visible">True</property>
-        <property name="can_focus">True</property>
-        <property name="invisible_char">●</property>
-        <property name="primary_icon_activatable">False</property>
-        <property name="secondary_icon_activatable">False</property>
-        <property name="primary_icon_sensitive">True</property>
-        <property name="secondary_icon_sensitive">True</property>
-        <signal name="key-press-event" handler="on_campo_filter_entry_key_press_event" swapped="no"/>
-      </object>
-      <packing>
-        <property name="left_attach">1</property>
-        <property name="right_attach">2</property>
-        <property name="top_attach">6</property>
-        <property name="bottom_attach">7</property>
-        <property name="x_options">GTK_SHRINK | GTK_FILL</property>
-        <property name="y_options"></property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkEntry" id="descrizione_filter_entry">
-        <property name="visible">True</property>
-        <property name="can_focus">True</property>
-        <property name="invisible_char">●</property>
-        <property name="primary_icon_activatable">False</property>
-        <property name="secondary_icon_activatable">False</property>
-        <property name="primary_icon_sensitive">True</property>
-        <property name="secondary_icon_sensitive">True</property>
-        <signal name="key-press-event" handler="on_campo_filter_entry_key_press_event" swapped="no"/>
-      </object>
-      <packing>
-        <property name="left_attach">1</property>
-        <property name="right_attach">2</property>
-        <property name="top_attach">7</property>
-        <property name="bottom_attach">8</property>
-        <property name="x_options">GTK_SHRINK | GTK_FILL</property>
-        <property name="y_options"></property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkLabel" id="label209">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="xalign">0</property>
-        <property name="label" translatable="yes">Cognome - Nome</property>
-      </object>
-      <packing>
-        <property name="top_attach">5</property>
-        <property name="bottom_attach">6</property>
-        <property name="x_options">GTK_FILL</property>
-        <property name="y_options"></property>
-        <property name="x_padding">10</property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkLabel" id="label210">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="xalign">0</property>
-        <property name="label" translatable="yes">Ruolo</property>
-      </object>
-      <packing>
-        <property name="top_attach">6</property>
-        <property name="bottom_attach">7</property>
-        <property name="x_options">GTK_FILL</property>
-        <property name="y_options"></property>
-        <property name="x_padding">10</property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkLabel" id="label211">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="xalign">0</property>
-        <property name="label" translatable="yes">Descrizione</property>
-      </object>
-      <packing>
-        <property name="top_attach">7</property>
-        <property name="bottom_attach">8</property>
-        <property name="x_options">GTK_FILL</property>
-        <property name="y_options"></property>
-        <property name="x_padding">10</property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkEntry" id="recapito_filter_entry">
-        <property name="visible">True</property>
-        <property name="can_focus">True</property>
-        <property name="invisible_char">●</property>
-        <property name="primary_icon_activatable">False</property>
-        <property name="secondary_icon_activatable">False</property>
-        <property name="primary_icon_sensitive">True</property>
-        <property name="secondary_icon_sensitive">True</property>
-        <signal name="key-press-event" handler="on_campo_filter_entry_key_press_event" swapped="no"/>
-      </object>
-      <packing>
-        <property name="left_attach">1</property>
-        <property name="right_attach">2</property>
-        <property name="top_attach">8</property>
-        <property name="bottom_attach">9</property>
-        <property name="x_options">GTK_SHRINK | GTK_FILL</property>
-        <property name="y_options"></property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkComboBox" id="id_magazzino_filter_combobox">
-        <property name="visible">True</property>
-        <property name="can_focus">True</property>
-      </object>
-      <packing>
-        <property name="left_attach">1</property>
-        <property name="right_attach">2</property>
-        <property name="top_attach">2</property>
-        <property name="bottom_attach">3</property>
-        <property name="x_options">GTK_SHRINK | GTK_FILL</property>
-        <property name="y_options"></property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkComboBox" id="schema_azienda_filter_combobox">
-        <property name="visible">True</property>
-        <property name="can_focus">True</property>
-      </object>
-      <packing>
-        <property name="left_attach">1</property>
-        <property name="right_attach">2</property>
-        <property name="top_attach">3</property>
-        <property name="bottom_attach">4</property>
-        <property name="x_options">GTK_SHRINK | GTK_FILL</property>
-        <property name="y_options"></property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkComboBoxEntry" id="tipo_recapito_filter_comboboxentry">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="text_column">0</property>
-        <signal name="key-press-event" handler="on_campo_filter_entry_key_press_event" swapped="no"/>
-        <child internal-child="entry">
-          <object class="GtkEntry" id="comboboxentry-entry6">
-            <property name="can_focus">False</property>
-            <property name="primary_icon_activatable">False</property>
-            <property name="secondary_icon_activatable">False</property>
-            <property name="primary_icon_sensitive">True</property>
-            <property name="secondary_icon_sensitive">True</property>
-          </object>
-        </child>
-      </object>
-      <packing>
-        <property name="left_attach">1</property>
-        <property name="right_attach">2</property>
-        <property name="top_attach">9</property>
-        <property name="bottom_attach">10</property>
-        <property name="x_options">GTK_SHRINK | GTK_FILL</property>
-        <property name="y_options"></property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkComboBox" id="id_categoria_contatto_filter_combobox">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-      </object>
-      <packing>
-        <property name="left_attach">1</property>
-        <property name="right_attach">2</property>
-        <property name="top_attach">10</property>
-        <property name="bottom_attach">11</property>
-        <property name="x_options">GTK_SHRINK | GTK_FILL</property>
-        <property name="y_options"></property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkRadioButton" id="cliente_filter_radiobutton">
-        <property name="label" translatable="yes">Cliente</property>
-        <property name="visible">True</property>
-        <property name="can_focus">True</property>
-        <property name="receives_default">False</property>
-        <property name="use_action_appearance">False</property>
-        <property name="use_underline">True</property>
-        <property name="active">True</property>
-        <property name="draw_indicator">True</property>
-      </object>
-      <packing>
-        <property name="x_options">GTK_FILL</property>
-        <property name="y_options"></property>
-        <property name="x_padding">10</property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkRadioButton" id="fornitore_filter_radiobutton">
-        <property name="label" translatable="yes">Fornitore</property>
-        <property name="visible">True</property>
-        <property name="can_focus">True</property>
-        <property name="receives_default">False</property>
-        <property name="use_action_appearance">False</property>
-        <property name="use_underline">True</property>
-        <property name="draw_indicator">True</property>
-        <property name="group">cliente_filter_radiobutton</property>
-      </object>
-      <packing>
-        <property name="top_attach">1</property>
-        <property name="bottom_attach">2</property>
-        <property name="x_options">GTK_FILL</property>
-        <property name="y_options"></property>
-        <property name="x_padding">10</property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkRadioButton" id="magazzino_filter_radiobutton">
-        <property name="label" translatable="yes">Magazzino</property>
-        <property name="visible">True</property>
-        <property name="can_focus">True</property>
-        <property name="receives_default">False</property>
-        <property name="use_action_appearance">False</property>
-        <property name="use_underline">True</property>
-        <property name="draw_indicator">True</property>
-        <property name="group">cliente_filter_radiobutton</property>
-      </object>
-      <packing>
-        <property name="top_attach">2</property>
-        <property name="bottom_attach">3</property>
-        <property name="x_options">GTK_FILL</property>
-        <property name="y_options"></property>
-        <property name="x_padding">10</property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkRadioButton" id="azienda_filter_radiobutton">
-        <property name="label" translatable="yes">Azienda</property>
-        <property name="visible">True</property>
-        <property name="can_focus">True</property>
-        <property name="receives_default">False</property>
-        <property name="use_action_appearance">False</property>
-        <property name="use_underline">True</property>
-        <property name="draw_indicator">True</property>
-        <property name="group">cliente_filter_radiobutton</property>
-      </object>
-      <packing>
-        <property name="top_attach">3</property>
-        <property name="bottom_attach">4</property>
-        <property name="x_options">GTK_FILL</property>
-        <property name="y_options"></property>
-        <property name="x_padding">10</property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkRadioButton" id="generico_filter_radiobutton">
-        <property name="label" translatable="yes">Generico</property>
-        <property name="visible">True</property>
-        <property name="can_focus">True</property>
-        <property name="receives_default">False</property>
-        <property name="use_action_appearance">False</property>
-        <property name="use_underline">True</property>
-        <property name="draw_indicator">True</property>
-        <property name="group">cliente_filter_radiobutton</property>
-      </object>
-      <packing>
-        <property name="top_attach">4</property>
-        <property name="bottom_attach">5</property>
-        <property name="x_options">GTK_FILL</property>
-        <property name="y_options"></property>
-        <property name="x_padding">10</property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkLabel" id="label552">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="xalign">0</property>
-        <property name="label" translatable="yes">Recapito</property>
-      </object>
-      <packing>
-        <property name="top_attach">8</property>
-        <property name="bottom_attach">9</property>
-        <property name="x_options">GTK_FILL</property>
-        <property name="y_options"></property>
-        <property name="x_padding">10</property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkLabel" id="label553">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="xalign">0</property>
-        <property name="label" translatable="yes">Tipo recapito</property>
-      </object>
-      <packing>
-        <property name="top_attach">9</property>
-        <property name="bottom_attach">10</property>
-        <property name="x_options">GTK_FILL</property>
-        <property name="y_options"></property>
-        <property name="x_padding">10</property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkLabel" id="label554">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="xalign">0</property>
-        <property name="label" translatable="yes">Categoria</property>
-      </object>
-      <packing>
-        <property name="top_attach">10</property>
-        <property name="bottom_attach">11</property>
-        <property name="x_options">GTK_FILL</property>
-        <property name="y_options"></property>
-        <property name="x_padding">10</property>
-      </packing>
-    </child>
-    <child>
-      <object class="ClienteSearchWidget" id="id_cliente_filter_customcombobox">
-        <property name="visible">True</property>
-        <property name="can_focus">True</property>
-      </object>
-      <packing>
-        <property name="left_attach">1</property>
-        <property name="right_attach">2</property>
-      </packing>
-    </child>
-    <child>
-      <object class="FornitoreSearchWidget" id="id_fornitore_filter_customcombobox">
-        <property name="visible">True</property>
-        <property name="can_focus">True</property>
-      </object>
-      <packing>
-        <property name="left_attach">1</property>
-        <property name="right_attach">2</property>
-        <property name="top_attach">1</property>
-        <property name="bottom_attach">2</property>
-      </packing>
-    </child>
-    <child>
-      <placeholder/>
-    </child>
-  </object>
-  <object class="GtkListStore" id="categorie_liststore">
-    <columns>
-      <!-- column-name gint1 -->
-      <column type="gint"/>
-      <!-- column-name gchararray1 -->
-      <column type="gchararray"/>
-      <!-- column-name GdkPixbuf1 -->
-      <column type="GdkPixbuf"/>
-      <!-- column-name gchararray2 -->
-      <column type="gchararray"/>
-    </columns>
   </object>
   <object class="GtkListStore" id="liststore1">
     <columns>
@@ -1055,7 +1076,7 @@ es: L'assicuratore</property>
         <col id="0" translatable="yes">Commerciale</col>
       </row>
       <row>
-        <col id="0" translatable="yes"></col>
+        <col id="0" translatable="yes"/>
       </row>
     </data>
   </object>
