@@ -22,6 +22,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
+import subprocess
 from promogest import Environment
 from promogest.ui.gtk_compat import *
 from promogest.ui.AnagraficaComplessaEdit import AnagraficaEdit
@@ -507,6 +508,7 @@ class AnagraficaClientiEdit(AnagraficaEdit, AnagraficaPGEdit):
         showAnagraficaRichiamata(self.dialogTopLevel, anagWindow,
                 toggleButton)
         anag.filter.id_cliente_filter_customcombobox.setId(self.dao.id)
+        anag.filter.da_data_filter_entry.set_text('')
         anag.filter.solo_contabili_check.set_active(True)
         anag.filter.refresh()
 
@@ -671,3 +673,12 @@ class AnagraficaClientiEdit(AnagraficaEdit, AnagraficaPGEdit):
     def on_rimuovi_foto_button_clicked(self, button):
         self.imgblob = "RIMUOVO"
         self.userlogo_image.set_from_file("")
+
+
+    def on_email_send_button_clicked(self, button):
+        body = Environment.conf.body
+        if self.dao.email_principale:
+            arghi = "xdg-email --subject '%s' --body '%s' '%s'" %("[PromoGest]",body,self.dao.email_principale)
+        else:
+            arghi = "xdg-email --subject '%s' --body '%s'" %("[PromoGest]",body)
+        subprocess.Popen(arghi, shell=True)
