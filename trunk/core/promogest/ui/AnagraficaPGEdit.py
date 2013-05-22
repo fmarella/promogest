@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2013 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -158,7 +158,7 @@ class AnagraficaPGEdit(object):
                     return
 
             from promogest.ui.Contatti.AnagraficaContatti import AnagraficaContatti
-            anag = AnagraficaContatti(self.dao.id, 'fornitore')
+            anag = AnagraficaContatti(self.dao.id, self.tipo)
             anagWindow = anag.getTopLevel()
 
             showAnagraficaRichiamata(self.dialogTopLevel, anagWindow, toggleButton)

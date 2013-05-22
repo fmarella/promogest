@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2013 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -124,7 +124,6 @@ class AnagraficaContattiFilter(AnagraficaFilter):
         self._anagrafica.anagrafica_filter_treeview.set_model(self._treeViewModel)
 
         self.clear()
-
         if self._anagrafica._ownerType == 'cliente':
             self.cliente_filter_radiobutton.set_active(True)
             self.id_cliente_filter_customcombobox.setId(self._anagrafica._ownerKey)
