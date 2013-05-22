@@ -103,7 +103,7 @@ class AnagraficaSchedeOrdinazioniEdit(AnagraficaEdit):
         fillComboboxMagazzini(self.magazzino_combobox)
         fillComboboxAssociazioneArticoli(self.associazione_articoli_comboboxentry)
         self.id_cliente_customcombobox.setSingleValue()
-        self.id_cliente_customcombobox.setOnChangedCall(self.on_cliente_changed)
+        self.id_cliente_customcombobox.connect("changed",self.on_cliente_changed)
         self.id_cliente_customcombobox.setType(self._tipoPersonaGiuridica)
         fillComboboxCarattereStampa(self.carattere_stampa_combobox)
         fillComboboxColoreStampa(self.colore_stampa_combobox)
@@ -1049,7 +1049,7 @@ class AnagraficaSchedeOrdinazioniEdit(AnagraficaEdit):
         anagWindow = anag.getTopLevel()
         showAnagraficaRichiamata(None, anagWindow, self._refresh)
 
-    def on_cliente_changed(self):
+    def on_cliente_changed(self, entry):
         if self._loading:
             return
         from promogest.dao.Cliente import Cliente
