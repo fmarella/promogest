@@ -58,16 +58,7 @@ class PersonaGiuridicaSearchWidget(CustomComboBoxSearch):
 
                 if self._resultsCount == 1:
                     id = resultsElement.id
-                    if self._type == 'cliente':
-                        res = leggiCliente(id)
-                    else:
-                        res = leggiFornitore(id)
-                    denominazione = res["ragioneSociale"]
-                    if denominazione == '':
-                        denominazione = res["nome"] + ' ' + res["cognome"]
-                    self.set_text(denominazione)
-                    self._id = id
-                    #self.on_entry_key_press_event(self)
+                    self.setId(id)
                     try:
                         self.anaedit.persona_giuridica_changed(self)
                     except:
@@ -90,9 +81,8 @@ class PersonaGiuridicaSearchWidget(CustomComboBoxSearch):
                                refresh_entry)
             self._ricerca.show_all()
         else:                            #secondary
-            self.set_text("")
-            self._id = None
-            self.grab_focus()
+            self.clean_entry()
+
 
     def ricercaDao(self, keyname):
         from promogest.dao.Cliente import Cliente
@@ -107,70 +97,18 @@ class PersonaGiuridicaSearchWidget(CustomComboBoxSearch):
             rag = m.ragione_sociale or (m.cognome + " " + m.nome)
             model.append(('empty', m.id, rag, m))
 
-    #def on_combobox_persona_giuridica_search_clicked(self, combobox):
-        ##richiama la ricerca clienti/fornitori
-
-        #def refresh_combobox_persona_giuridica(anagWindow):
-            #self._resultsCount = self._ricerca.getResultsCount()
-            #resultsElement = self._ricerca.getResultsElement()
-            #if not(self._resultsCount > 0):
-                #self.set_active(0)
-                #return
-
-            #if self._resultsCount == 1:
-                #id = resultsElement.id
-                #if self._type == 'cliente':
-                    #res = leggiCliente(id)
-                #elif self._type == 'fornitore':
-                    #res = leggiFornitore(id)
-                #denominazione = res["ragioneSociale"]
-                #if denominazione == '':
-                    #denominazione = res["nome"] + ' ' + res["cognome"]
-                #combobox.refresh(id, denominazione, res)
-            #else:
-                #self.idlist = []
-                #for ids in resultsElement:
-                    #self.idlist.append(ids.id)
-                #if self._type == 'cliente':
-                    #combobox.refresh(self.idlist, ('< %d clienti selezionati... >' % self._resultsCount), None, rowType='old_search')
-                #elif self._type == 'fornitore':
-                    #combobox.refresh(self.idlist, ('< %d fornitori selezionati... >' % self._resultsCount), None, rowType='old_search')
-            #if self._callName is not None:
-                #self._callName()
-
-        #if combobox.on_selection_changed():
-            ##if self._ricerca is None:
-            #if self._type == 'cliente':
-                #from promogest.ui.RicercaComplessaClienti import RicercaComplessaClienti
-                #self._ricerca = RicercaComplessaClienti()
-            #elif self._type == 'fornitore':
-                #from promogest.ui.RicercaComplessaFornitori import RicercaComplessaFornitori
-                #self._ricerca = RicercaComplessaFornitori()
-            #if not self._filter:
-                #self._ricerca.setTreeViewSelectionType(GTK_SELECTIONMODE_SINGLE)
-            ##else:
-                ##self._ricerca.refresh()
-            #anagWindow = self._ricerca.getTopLevel()
-            #returnWindow = combobox.get_toplevel()
-            #anagWindow.set_transient_for(returnWindow)
-            #anagWindow.connect("hide",
-                               #refresh_combobox_persona_giuridica)
-            #self._ricerca.show_all()
-
-        #elif self._callName is not None:
-            #self._callName()
-
 
     def setId(self, value):
         self.insertComboboxSearchPersonaGiuridica(self, value)
+        self._id = value
 
 
     def getId(self):
-        if self.isEmpty():
-            self.clear()
-        elif (self._resultsCount > 1) and (self._ricerca is not None):
-            self._ricerca.refresh()
-            return self.idlist
+        #if self.isEmpty():
+            #self.clear()
+        #elif (self._resultsCount > 1) and (self._ricerca is not None):
+            #self._ricerca.refresh()
+            #return self.idlist
         return self._id
 
 
@@ -184,13 +122,14 @@ class PersonaGiuridicaSearchWidget(CustomComboBoxSearch):
             res = leggiCliente(id)
         elif self._type == 'fornitore':
             res = leggiFornitore(id)
-        denominazione = res["ragioneSociale"]
-        if denominazione == '':
-            denominazione = res["nome"] + ' ' + res["cognome"]
+        denominazione = res["ragioneSociale"] or (res["nome"] + ' ' + res["cognome"])
+        #if denominazione == '':
+            #denominazione = res["nome"] + ' ' + res["cognome"]
         combobox.refresh(id, denominazione, res, clear, filter)
         #self.set_text(denominazione)
         #print "IDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD", id
         #self._id = id
+        #self.set_text(denominazione)
         self._container = res
 
 

@@ -98,7 +98,6 @@ class CustomComboBoxSearch(gtk.Entry):
 
     def on_completion_match_main(self, completion=None, model=None, iter=None):
         return
-        print " PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP"
         #self.articolo_matchato = model[iter][2]
         #self.set_position(-1)
         #model = self.completion.get_model()
@@ -136,6 +135,7 @@ class CustomComboBoxSearch(gtk.Entry):
 
 
     def refresh(self, id=None, denominazione=None, container=None, clear=False, filter=True, idType=None, rowType='element'):
+        #print "SEI TU IL PROBLEMA"
         self._id = id
         self.set_text(denominazione or "")
         return

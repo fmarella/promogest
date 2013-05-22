@@ -187,7 +187,7 @@ def drawPart(anaedit):
         anaedit.ricerca_criterio_combobox.set_active(2)
 
     anaedit.id_persona_giuridica_customcombobox.setSingleValue()
-    anaedit.id_persona_giuridica_customcombobox.setOnChangedCall(anaedit.persona_giuridica_changed)
+    #anaedit.id_persona_giuridica_customcombobox.setOnChangedCall(anaedit.persona_giuridica_changed)
     anaedit.id_persona_giuridica_customcombobox.giveAnag(anaedit)
 
     anaedit.id_destinazione_merce_customcombobox.connect('clicked',

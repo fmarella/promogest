@@ -574,7 +574,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self.id_persona_giuridica_customcombobox.refresh(clear=True, filter=False)
         if self._tipoPersonaGiuridica == "fornitore":
             self.id_persona_giuridica_customcombobox.setId(self.dao.id_fornitore)
-            self.id_destinazione_merce_customcombobox.combobox.clear()
+            #self.id_destinazione_merce_customcombobox.combobox.clear()
             self.id_destinazione_merce_customcombobox.set_sensitive(False)
         elif self._tipoPersonaGiuridica == "cliente":
             self.id_persona_giuridica_customcombobox.setId(self.dao.id_cliente)
