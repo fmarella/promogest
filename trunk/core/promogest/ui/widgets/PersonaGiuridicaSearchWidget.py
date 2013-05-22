@@ -68,7 +68,10 @@ class PersonaGiuridicaSearchWidget(CustomComboBoxSearch):
                     self.set_text(denominazione)
                     self._id = id
                     #self.on_entry_key_press_event(self)
-                    self.anaedit.persona_giuridica_changed(self)
+                    try:
+                        self.anaedit.persona_giuridica_changed(self)
+                    except:
+                        pass
 
             if self._type == 'cliente':
                 from promogest.ui.RicercaComplessaClienti import RicercaComplessaClienti
