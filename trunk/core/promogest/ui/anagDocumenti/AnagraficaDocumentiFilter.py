@@ -57,7 +57,7 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         treeselection.set_mode(GTK_SELECTIONMODE_MULTIPLE)
 
         fillComboboxPagamenti(self.id_pagamento_filter_combobox)
-        fillComboboxOperazioni(self.id_operazione_filter_combobox, 'documento',True)
+        fillComboboxOperazioni(self.id_operazione_filter_combobox, 'documento',True, extra=True)
         self.id_operazione_filter_combobox.set_active(0)
         fillComboboxMagazzini(self.id_magazzino_filter_combobox, True)
         self.id_operazione_filter_combobox.set_wrap_width(setconf("Numbers", "combo_column"))

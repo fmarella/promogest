@@ -81,7 +81,7 @@ class AnagraficaServCSAEdit(AnagraficaEdit):
         self.serv_csa_cliente_ClienteSearchWidget.setId(self.dao.id_cliente)
         self.serv_csa_pg_PersonaGiuridicaSearchWidget.setId(self.dao.id_persona_giuridica)
         self.serv_csa_art_ArticoloSearchWidget.setId(self.dao.id_articolo)
-        self.commesse_button.set_label(str(self.dao.id_testata_commessa) or "click me")
+        #self.commesse_button.set_label(str(self.dao.id_testata_commessa) or "click me")
 
     def on_commesse_button_clicked(self, button):
         from promogest.modules.GestioneCommesse.ui.AnagraficaCommesseFilter import RicercaCommessa
