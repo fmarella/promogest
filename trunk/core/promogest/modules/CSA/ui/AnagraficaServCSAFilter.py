@@ -50,12 +50,17 @@ class AnagraficaServCSAFilter(AnagraficaFilter):
 
     def clear(self):
         self.seriale_filter_entry.set_text('')
+
         self.refresh()
 
     def refresh(self):
         # Aggiornamento TreeView
         #deno = prepareFilterString(self.denominazione_filter_entry.get_text())
-        deno = ""
+        idCliente = None
+        idArticolo = None
+        idPg = None
+        numeroSeriale = None
+        manutenzione = None
 
         def filterCountClosure():
             return ServCSA().count(
@@ -81,7 +86,7 @@ class AnagraficaServCSAFilter(AnagraficaFilter):
         valore = 0
         for i in valis:
             self.anagrafica_serv_csa_filter_listore.append((i,
-                                                        str(mN(i.id_articolo)),
+                                                        str(mN(i.id_cliente)),
                                                         str(i.id_cliente),
                                                         str(""),
                                                         str(i.id_persona_giuridica),
