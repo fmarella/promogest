@@ -80,17 +80,11 @@ class AnagraficaServCSAFilter(AnagraficaFilter):
         self.anagrafica_serv_csa_filter_listore.clear()
         valore = 0
         for i in valis:
-#            print i.__dict__
-            if i.arti:
-                art = i.arti.denominazione
-            else:
-                art = "TUTTI"
             self.anagrafica_serv_csa_filter_listore.append((i,
-                                                        str(mN(i.provv.valore_provv,1)),
-                                                        str(i.provv.tipo_provv),
-                                                        str(art),
-                                                        str(i.pg_from.ragione_sociale),
-                                                        str(i.pg_to.ragione_sociale),
+                                                        str(mN(i.id_articolo)),
+                                                        str(i.id_cliente),
+                                                        str(""),
+                                                        str(i.id_persona_giuridica),
+                                                        str(""),
 
-#                                                        str(i.arti.denominazione or ""),
                                                         ))

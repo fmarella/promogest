@@ -8,22 +8,6 @@
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
   </object>
-  <object class="GtkListStore" id="anagrafica_serv_csa_filter_listore">
-    <columns>
-      <!-- column-name PyObject1 -->
-      <column type="PyObject"/>
-      <!-- column-name gchararray1 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray2 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray3 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray4 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray5 -->
-      <column type="gchararray"/>
-    </columns>
-  </object>
   <object class="GtkTreeView" id="anagrafica_filter_treeview">
     <property name="visible">True</property>
     <property name="can_focus">True</property>
@@ -126,7 +110,7 @@
           </packing>
         </child>
         <child>
-          <object class="ArticoloSearchWidget" id="serv_csa_art_ArticoloSearchWidget">
+          <object class="ArticoloSearchWidget" id="id_articolo_customcombobox">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="primary_icon_activatable">True</property>
@@ -165,7 +149,7 @@
           </packing>
         </child>
         <child>
-          <object class="ClienteSearchWidget" id="serv_csa_cliente_ClienteSearchWidget">
+          <object class="ClienteSearchWidget" id="id_cliente_customcombobox">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="primary_icon_activatable">True</property>
@@ -214,7 +198,6 @@
             <property name="secondary_icon_activatable">True</property>
             <property name="primary_icon_sensitive">True</property>
             <property name="secondary_icon_sensitive">True</property>
-            <signal name="changed" handler="on_id_commessa_customcombobox_changed" swapped="no"/>
           </object>
           <packing>
             <property name="expand">True</property>
@@ -247,7 +230,7 @@
           </packing>
         </child>
         <child>
-          <object class="PersonaGiuridicaSearchWidget" id="serv_csa_pg_PersonaGiuridicaSearchWidget">
+          <object class="PersonaGiuridicaSearchWidget" id="id_persona_giuridica_customcombobox">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="primary_icon_activatable">False</property>
@@ -631,6 +614,22 @@
       <placeholder/>
     </child>
   </object>
+  <object class="GtkListStore" id="anagrafica_serv_csa_filter_listore">
+    <columns>
+      <!-- column-name PyObject1 -->
+      <column type="PyObject"/>
+      <!-- column-name gchararray1 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray2 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray3 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray4 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray5 -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
   <object class="GtkTable" id="anagrafica_serv_csa_filter_table">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -667,11 +666,11 @@
       </packing>
     </child>
     <child>
-      <object class="ClienteSearchWidget" id="ClienteSearchWidget1">
+      <object class="ClienteSearchWidget" id="id_cliente_filter_customcombobox">
         <property name="visible">True</property>
         <property name="can_focus">True</property>
-        <property name="primary_icon_activatable">False</property>
-        <property name="secondary_icon_activatable">False</property>
+        <property name="primary_icon_activatable">True</property>
+        <property name="secondary_icon_activatable">True</property>
         <property name="primary_icon_sensitive">True</property>
         <property name="secondary_icon_sensitive">True</property>
       </object>
@@ -697,11 +696,11 @@
       </packing>
     </child>
     <child>
-      <object class="ArticoloSearchWidget" id="art_search_ArticoloSearchWidget1">
+      <object class="ArticoloSearchWidget" id="id_articolo_filter_customcombobox">
         <property name="visible">True</property>
         <property name="can_focus">True</property>
-        <property name="primary_icon_activatable">False</property>
-        <property name="secondary_icon_activatable">False</property>
+        <property name="primary_icon_activatable">True</property>
+        <property name="secondary_icon_activatable">True</property>
         <property name="primary_icon_sensitive">True</property>
         <property name="secondary_icon_sensitive">True</property>
       </object>
@@ -934,7 +933,7 @@
       </packing>
     </child>
     <child>
-      <object class="GtkLabel" id="manutenzione_labe">
+      <object class="GtkLabel" id="manutenzione_labl">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="label" translatable="yes">Manutenzione</property>

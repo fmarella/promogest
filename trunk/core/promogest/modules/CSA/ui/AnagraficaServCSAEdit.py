@@ -39,7 +39,7 @@ class AnagraficaServCSAEdit(AnagraficaEdit):
                 root='anagrafica_serv_csa_detail_vbox',
                 path='CSA/gui/_anagrafica_serv_csa_elements.glade',
                 isModule=True)
-        self._widgetFirstFocus = self.serv_csa_art_ArticoloSearchWidget
+        self._widgetFirstFocus = self.id_articolo_customcombobox
         self.anagrafica = anagrafica
 
         self.daoFrom = daoFrom
@@ -69,7 +69,6 @@ class AnagraficaServCSAEdit(AnagraficaEdit):
         else:
             self.dao = dao
         self._refresh()
-        self.daoDict =  dict.fromkeys(get_columns(t_serv_csa))
         return self.dao
 
     def _refresh(self):
@@ -77,46 +76,29 @@ class AnagraficaServCSAEdit(AnagraficaEdit):
         di modifica
         """
         findComboboxRowFromId(self.luogo_installazione_combobox.combobox, self.dao.id_luogo_installazione)
-
-        #self.tipo_provv_euro_radiobutton.set_active(tippo)
-        self.serv_csa_cliente_ClienteSearchWidget.setId(self.dao.id_cliente)
-        self.serv_csa_pg_PersonaGiuridicaSearchWidget.setId(self.dao.id_persona_giuridica)
-        self.serv_csa_art_ArticoloSearchWidget.setId(self.dao.id_articolo)
-        #self.commesse_button.set_label(str(self.dao.id_testata_commessa) or "click me")
-
-    def on_commesse_button_clicked(self, button):
-        from promogest.modules.GestioneCommesse.ui.AnagraficaCommesseFilter import RicercaCommessa
-        def returnDao(anagWindow):
-            if anag.dao:
-                self.commesse_button.set_label(anag.dao.denominazione[0:50])
-                self.daoDict["id_testata_commessa"] = anag.dao.id
-        anag = RicercaCommessa()
-        anagWindow = anag.getTopLevel()
-        anagWindow.show_all()
-        anagWindow.connect("hide",returnDao)
-
-
-    def on_cancel_commessa_button_clicked(self,button):
-        self.commesse_button.set_label("click me")
-        self.daoDict["id_testata_commessa"] = None
+        self.numero_seriale_entry.set_text(self.dao.numero_serie or "")
+        self.combustibile_entry.set_text(self.dao.combustibile or "")
+        self.id_cliente_customcombobox.setId(self.dao.id_cliente)
+        self.id_persona_giuridica_customcombobox.setId(self.dao.id_persona_giuridica)
+        self.id_articolo_customcombobox.setId(self.dao.id_articolo)
+        #self.id_commessa_customcombobox.setId(self.dao.id_testata_commessa)
 
     def clear(self):
         """ Funzione di reset o pulizia della UI """
         return
 
     def saveDao(self, tipo=None):
-        """ Si effettuano controlli di coerenza, eventuale presenza
-        di campi obbligatori ei provvedere a salvare il record dopo
-        aver assegnato i valori necessari
-        """
-        print "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", self.daoDict
-        #provv_valore = self.valore_provv_entry.get_value()
-        #if self.tipo_provv_euro_radiobutton.get_active():
-            #tippo = "€"
-        #else:
-            #tippo = "%"
-        #provv_tipo = tippo
-        #self.__dao_provv.valore_provv = provv_valore
-        #self.__dao_provv.tipo_provv = provv_tipo
-        #self.__dao_provv.persist()
-        #self.clear()
+        #if findIdFromCombobox(
+                        #self.id_magazzino_customcombobox.combobox) is None:
+            #obligatoryField(self.dialogTopLevel,
+                    #self.id_magazzino_customcombobox.combobox)
+        #idMagazzino = findIdFromCombobox(
+                    #self.id_magazzino_customcombobox.combobox)
+        #idArticolo = self.id_articolo_customcombobox.getId()
+
+        self.dao.id_cliente = self.id_cliente_customcombobox.getId()
+        self.dao.id_articolo = self.id_articolo_customcombobox.getId()
+        #self.dao.id_commessa = self.id_articolo_customcombobox.getId()
+        self.dao.combustibile = self.combustibile_entry.get_text()
+        self.dao.tenuta_libretto = bool(self.libretto_checkbutton.get_active())
+        self.dao.persist()
