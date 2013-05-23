@@ -682,7 +682,8 @@ def fillComboboxOperazioni(combobox, tipo=None, filter=False):
     model.append((None, '', emptyRow))
     for o in res:
         model.append((o, o.denominazione, (o.denominazione or '')[0:30]))
-
+    model.append((None, 'TUTTI Doc vendita', "TUTTI Doc vendita"))
+    model.append((None, 'TUTTI Doc acquisto', "TUTTI Doc acquisto"))
     combobox.clear()
     renderer = gtk.CellRendererText()
     combobox.pack_start(renderer, True)

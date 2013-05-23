@@ -1156,6 +1156,13 @@ class TestataDocumento(Dao):
             dic = {k:t_testata_documento.c.id_agente == v}
         elif k == 'statoDocumento':
             dic = {k:t_testata_documento.c.documento_saldato == v}
+        elif k =="extra":
+            if v == "tutti_vendita":
+                dic = {k:t_testata_documento.c.operazione.in_(Environment.solo_vendita)}
+            elif v == "tutti_acquisto":
+                dic = {k:t_testata_documento.c.operazione.in_(Environment.solo_acquisto)}
+
+
         elif k == 'idArticoloMov' or k == "idArticolo":
             dic = {k: and_(v ==Riga.id_articolo,
                     t_riga.c.id==RigaMovimento.id,

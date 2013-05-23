@@ -148,6 +148,14 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         aNumero = prepareFilterString(self.a_numero_filter_entry.get_text())
         protocollo = prepareFilterString(self.protocollo_entry.get_text())
         idOperazione = prepareFilterString(findIdFromCombobox(self.id_operazione_filter_combobox))
+        stringaOpe = findStrFromCombobox(self.id_operazione_filter_combobox,2)
+        extra = None
+        if stringaOpe == "TUTTI Doc vendita":
+            extra = "tutti_vendita"
+            idOperazione = None
+        elif stringaOpe == "TUTTI Doc acquisto":
+            extra = "tutti_acquisto"
+            idOperazione = None
         idMagazzino = findIdFromCombobox(self.id_magazzino_filter_combobox)
         idCliente = self.id_cliente_filter_customcombobox.getId()
         idFornitore = self.id_fornitore_filter_customcombobox.getId()
@@ -182,7 +190,8 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
                             "idFornitore":idFornitore,
                             "idAgente":idAgente,
                             "statoDocumento":statoDocumento,
-                            "soloContabili":soloContabili}
+                            "soloContabili":soloContabili,
+                            "extra":extra}
 
         if posso("GN"):
             daDataInizioNoleggio = stringToDate(self.da_data_inizio_noleggio_filter_entry.get_text())

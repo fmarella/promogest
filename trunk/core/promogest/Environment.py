@@ -395,6 +395,15 @@ hapag = ["Fattura accompagnatoria",
         "Nota di credito a cliente",
         "Nota di credito da fornitore"]
 
+solo_vendita = ["Fattura accompagnatoria",
+        "Fattura differita vendita",
+        "Fattura vendita",
+        "Vendita dettaglio",
+        ]
+solo_acquisto = ["Fattura acquisto",
+        "Fattura differita acquisto",
+        ]
+
 fromHtmlLits = ["Promemoria", "TestataPrimaNota",
                 "Articolo", "Cliente",
                 "Contatto", "Fornitore",

@@ -32,8 +32,8 @@ class CustomComboBoxSearch(gtk.Entry):
         self._container = None
         self.__rebuildList = False
         self._idChangedHandler = None
-
         gtk.Entry.__init__(self)
+
         #renderer = gtk.CellRendererText()
         #self.pack_start(renderer, True)
         #self.add_attribute(renderer, 'text', 2)
