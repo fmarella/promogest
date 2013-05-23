@@ -2941,7 +2941,7 @@ def checkInstallation():
     fallisce il check """
     from promogest.dao.Setconf import SetConf
     try:
-#        url = "http://localhost:8080/check"
+        #url = "http://localhost:3031/check"
         url = "http://www.promogest.me/check"
         data = {"masterkey" : SetConf().select(key="install_code",
                                             section="Master")[0].value,
