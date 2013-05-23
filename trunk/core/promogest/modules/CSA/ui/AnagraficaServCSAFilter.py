@@ -61,6 +61,7 @@ class AnagraficaServCSAFilter(AnagraficaFilter):
         idPg = None
         numeroSeriale = None
         manutenzione = None
+        dataAvviamento = stringToDate(self.data_avviamento_filter_datewidget.get_text())
 
         def filterCountClosure():
             return ServCSA().count(
@@ -87,9 +88,10 @@ class AnagraficaServCSAFilter(AnagraficaFilter):
         for i in valis:
             self.anagrafica_serv_csa_filter_listore.append((i,
                                                         str(i.CLI.ragione_sociale or (i.CLI.cognome+" "+i.CLI.nome)),
+                                                        str(dateToString(i.data_avviamento)),
                                                         str(i.arti.denominazione),
                                                         str(""),
-                                                        str(i.id_persona_giuridica),
-                                                        str(""),
+                                                        str(i.numero_serie or ""),
+                                                        str(i.manutenzione or ""),
 
                                                         ))

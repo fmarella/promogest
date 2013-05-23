@@ -792,10 +792,15 @@ if (hasattr(conf, "ADR") and getattr(conf.ADR, 'mod_enable') == "yes") or\
 if (hasattr(conf, "CSA") and getattr(conf.CSA, 'mod_enable') == "yes") or\
                                                 ("CSA" in modulesList):
     from promogest.modules.CSA.dao.ArticoloCSA import ArticoloCSA
+    from promogest.modules.CSA.dao.ServCSA import ServCSA
     std_mapper.add_property("APCSA",
                     relation(ArticoloCSA,
                     primaryjoin=(t_articolo.c.id == ArticoloCSA.id_articolo),
                     uselist=False))
+    std_mapper.add_property("SERVCSA",
+                    relation(ServCSA,
+                    primaryjoin=(t_articolo.c.id == ServCSA.id_articolo),
+                    uselist=False, backref="arti"))
 
 def isNuovoCodiceByFamiglia():
     """ Indica se un nuovo codice t_articolo dipende dalla famiglia o meno """

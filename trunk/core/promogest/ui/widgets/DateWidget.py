@@ -57,7 +57,7 @@ class DateWidget(gtk.HBox):
 
 
 
-    def insert_today(self, button):
+    def insert_today(self, button=None):
         current = datetime.datetime.now()
         self.entry.set_text(str(current.day) + '/' + str(current.month) + '/' + str(current.year))
 

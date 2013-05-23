@@ -20,7 +20,6 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-
 from promogest.ui.AnagraficaComplessaEdit import AnagraficaEdit
 from promogest.lib.utils import *
 from promogest.ui.utilsCombobox import *
@@ -75,16 +74,20 @@ class AnagraficaServCSAEdit(AnagraficaEdit):
         """Funzione che rinfresca la UI all'apertura e dopo alcune operazioni
         di modifica
         """
+        self._clear()
         findComboboxRowFromId(self.luogo_installazione_combobox.combobox, self.dao.id_luogo_installazione)
         self.numero_seriale_entry.set_text(self.dao.numero_serie or "")
         self.combustibile_entry.set_text(self.dao.combustibile or "")
         self.id_cliente_customcombobox.setId(self.dao.id_cliente)
         self.id_persona_giuridica_customcombobox.setId(self.dao.id_persona_giuridica)
         self.id_articolo_customcombobox.setId(self.dao.id_articolo)
+        findComboboxRowFromStr(self.manutenzione_combobox, self.dao.manutenzione,0)
+        dataAvviamento = stringToDate(self.data_avviamento_datewidget.get_text())
         #self.id_commessa_customcombobox.setId(self.dao.id_testata_commessa)
 
-    def clear(self):
+    def _clear(self):
         """ Funzione di reset o pulizia della UI """
+        self.data_avviamento_datewidget.insert_today()
         return
 
     def saveDao(self, tipo=None):
@@ -100,5 +103,8 @@ class AnagraficaServCSAEdit(AnagraficaEdit):
         self.dao.id_articolo = self.id_articolo_customcombobox.getId()
         #self.dao.id_commessa = self.id_articolo_customcombobox.getId()
         self.dao.combustibile = self.combustibile_entry.get_text()
+        self.dao.numero_serie = self.numero_seriale_entry.get_text()
+        self.dao.manutenzione = findStrFromCombobox(self.manutenzione_combobox,0)
         self.dao.tenuta_libretto = bool(self.libretto_checkbutton.get_active())
+        self.dao.data_avviamento = stringToDate(self.data_avviamento_datewidget.get_text())
         self.dao.persist()
