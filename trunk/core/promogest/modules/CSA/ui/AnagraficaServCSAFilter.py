@@ -50,22 +50,28 @@ class AnagraficaServCSAFilter(AnagraficaFilter):
 
     def clear(self):
         self.seriale_filter_entry.set_text('')
+        self.id_cliente_filter_customcombobox.clean_entry()
+        self.id_articolo_filter_customcombobox.clean_entry()
+        self.data_avviamento_filter_datewidget.set_text("")
 
         self.refresh()
 
     def refresh(self):
         # Aggiornamento TreeView
         #deno = prepareFilterString(self.denominazione_filter_entry.get_text())
-        idCliente = None
-        idArticolo = None
+        idCliente = self.id_cliente_filter_customcombobox.getId()
+        idArticolo = self.id_articolo_filter_customcombobox.getId()
         idPg = None
-        numeroSeriale = None
+        numeroSerie = self.seriale_filter_entry.get_text()
         manutenzione = None
         dataAvviamento = stringToDate(self.data_avviamento_filter_datewidget.get_text())
 
         def filterCountClosure():
             return ServCSA().count(
-                        #id_persona_giuridica_from = self.dao.id,
+                        idArticolo = idArticolo,
+                        idCliente = idCliente,
+                        numeroSerie = numeroSerie,
+                        batchSize = None
                         )
         self._filterCountClosure = filterCountClosure
 
@@ -75,7 +81,9 @@ class AnagraficaServCSAFilter(AnagraficaFilter):
         # Let's save the current search as a closure
         def filterClosure(offset, batchSize):
             return ServCSA().select(
-                            #id_persona_giuridica_from = self.dao.id,
+                            idArticolo = idArticolo,
+                            idCliente = idCliente,
+                            numeroSerie=numeroSerie,
                             offset=offset,
                             batchSize=batchSize)
 

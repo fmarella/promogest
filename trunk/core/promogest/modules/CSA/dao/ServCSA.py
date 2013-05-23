@@ -75,9 +75,13 @@ class ServCSA(Dao):
 
     def filter_values(self, k, v):
         if k == 'id':
-            dic = {k: t_articolo_csa.c.id==v}
-        elif k == 'id_articolo':
-            dic = {k: t_articolo_csa.c.id_articolo==v}
+            dic = {k: t_serv_csa.c.id==v}
+        elif k == 'idArticolo':
+            dic = {k: t_serv_csa.c.id_articolo==v}
+        elif k == 'idCliente':
+            dic = {k: t_serv_csa.c.id_cliente==v}
+        elif k == 'numeroSerie':
+            dic = {k: t_serv_csa.c.numero_serie.ilike("%"+v+"%")}
         return dic[k]
 
 
