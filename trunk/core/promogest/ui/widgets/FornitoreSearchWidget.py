@@ -33,9 +33,8 @@ class FornitoreSearchWidget(CustomComboBoxSearch):
     def __init__(self):
         CustomComboBoxSearch.__init__(self)
 
-        #idHandler = self.connect('changed',
-                                 #self.on_combobox_fornitore_search_clicked)
-        #self.setChangedHandler(idHandler)
+        self.connect('changed',
+                           self.on_entry_key_press_event)
 
         self.connect("destroy-event", self.on_widget_destroy)
         self.connect("icon-press", self.on_icon_press)

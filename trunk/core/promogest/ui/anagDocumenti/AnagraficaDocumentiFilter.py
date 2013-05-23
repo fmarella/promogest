@@ -70,7 +70,7 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         self.on_filter_radiobutton_toggled()
         #idHandler = self.id_agente_filter_customcombobox.connect('changed',
                                                                 #on_combobox_agente_search_clicked)
-        self.id_agente_filter_customcombobox.setChangedHandler("Agente")
+        self.id_agente_filter_customcombobox.setHandler("agente")
         try:
             self._anagrafica.info_anag_complessa_label.destroy()
             self._anagrafica.aggiornaforniture()

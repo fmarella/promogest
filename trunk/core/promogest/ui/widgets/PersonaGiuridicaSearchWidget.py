@@ -33,7 +33,8 @@ class PersonaGiuridicaSearchWidget(CustomComboBoxSearch):
         CustomComboBoxSearch.__init__(self)
 
         self.connect("delete-event", self.on_widget_delete)
-
+        self.connect('changed',
+                           self.on_entry_key_press_event)
         #self.connect("destroy-event", self.on_widget_destroy)
         self.connect("icon-press", self.on_icon_press)
         self._callName = None

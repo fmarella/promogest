@@ -36,8 +36,8 @@ class ArticoloSearchWidget(CustomComboBoxSearch):
     def __init__(self):
         CustomComboBoxSearch.__init__(self)
 
-        #idHandler = self.connect('changed',
-         #                        self.on_combobox_articolo_search_clicked)
+        self.connect('changed',
+                           self.on_entry_key_press_event)
         #self.setChangedHandler(idHandler)
 
         #self.connect("destroy-event", self.on_widget_destroy)
@@ -94,53 +94,6 @@ class ArticoloSearchWidget(CustomComboBoxSearch):
         model.clear()
         for m in cli:
             model.append(('empty', m.id, m.denominazione, m))
-
-
-    #def on_combobox_articolo_search_clicked(self, combobox):
-        ##richiama la ricerca degli articoli
-
-        #def refresh_combobox_articolo(anagWindow):
-            #"""
-                #Si è resa necessaria una modifica a questa funzione per prelevare
-                #i risultati passati alla combo dalla ricerca complessa
-                #nel primo campo, si prelevano gli id  e si passano per l'elaborazione
-            #"""
-            #self._resultsCount = self._ricerca.getResultsCount()
-            #resultsElement = self._ricerca.getResultsElement()
-            #if not(self._resultsCount > 0):
-                #self.set_active(0)
-                #return
-
-            #if self._resultsCount == 1:
-                #id = resultsElement.id
-                #res = leggiArticolo(id)
-                #combobox.refresh(id, res["denominazione"], res)
-            #else:
-                #self.idlist = []
-                #for ids in resultsElement:
-                    #self.idlist.append(ids.id)
-                #combobox.refresh(self.idlist, ('< %d articoli selezionati... >' % self._resultsCount), None, rowType='old_search')
-            #if self._callName is not None:
-                #self._callName()
-
-        #if combobox.on_selection_changed():
-##            if self._ricerca is None:
-            #self._ricerca = RicercaComplessaArticoli(listinoFissato=Environment.listinoFissato)
-            #Environment.listinoFissato = None
-            #if not self._filter:
-                #self._ricerca.setTreeViewSelectionType(GTK_SELECTIONMODE_SINGLE)
-##            else:
-##                self._ricerca.refresh()
-            #anagWindow = self._ricerca.getTopLevel()
-            #returnWindow = combobox.get_toplevel()
-            #anagWindow.set_transient_for(returnWindow)
-            #anagWindow.connect("hide",
-                               #refresh_combobox_articolo)
-            #self._ricerca.show_all()
-
-        #elif self._callName is not None:
-            #self._callName()
-
 
     def setId(self, value):
         self.insertComboboxSearchArticolo(self, value)

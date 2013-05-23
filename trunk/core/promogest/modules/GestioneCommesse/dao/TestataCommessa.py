@@ -134,6 +134,8 @@ class TestataCommessa(Dao):
             dic = {k:t_testatacommessa.c.data_fine <= v}
         elif k == 'idStadioCommessa':
             dic = {k:rigacommessa.c.id_stadio_commessa==v}
+        elif k == 'denominazione':
+            dic = {k:t_testatacommessa.c.denominazione.ilike("%"+v+"%")}
         return  dic[k]
 
     def righeCommessaDel(self,id=None):

@@ -654,50 +654,135 @@ def leggiAgente(id):
 
 # ---
 
-# Usate nel custom widget CustomComboBoxModify
-def on_combobox_agente_search_clicked(combobox, callName=None):
-    """
-    Richiama la ricerca degli agenti
-    """
-    combobox.nome = "Agente"
+### --funzioni di gestione customcombobox search di tipo agente -- ###
+def on_agente_icon_press(entry, position, event):
 
-def on_combobox_vettore_search_clicked(combobox, callName=None):
-    """
-    richiama la ricerca dei vettori
-    """
+    if position.value_nick == "primary":
+        from promogest.dao.daoAgenti.Agente import Agente
+        from promogest.ui.anagAgenti.AnagraficaAgentiFilter import RicercaAgenti
 
-    def refresh_combobox_vettore(anagWindow):
-        """
-        FIXME
-        """
-        if anag.dao is None:
-            id = None
-        else:
+        def refresh_entry(anagWindow):
+            if not anag.dao:
+                entry.set_active(0)
+                return
+
             id = anag.dao.id
-        res = leggiVettore(id)
-        if res["ragioneSociale"] != '':
-            combobox.refresh(id, res["ragioneSociale"], res)
-        else:
-            combobox.refresh(id, res["cognome"] + ' ' + res["nome"], res)
-        anagWindow.destroy()
-        if callName is not None:
-            callName()
+            res = leggiAgente(id)
+            denominazione = res["ragioneSociale"]
+            if denominazione == '':
+                denominazione = res["nome"] + ' ' + res["cognome"]
+            entry.set_text(denominazione)
+            entry._id = id
 
-
-    if combobox.on_selection_changed():
-        from promogest.ui.anagVettori.AnagraficaVettoriFilter import RicercaVettori
-        anag = RicercaVettori()
-
+        anag = RicercaAgenti()
         anagWindow = anag.getTopLevel()
-        returnWindow = combobox.get_toplevel()
-        anagWindow.set_transient_for(returnWindow)
         anagWindow.show_all()
+        anagWindow.connect("hide",refresh_entry)
+        anag.show_all()
+    else:                            #secondary
+        entry.clear_entry()
 
-        anagWindow.connect("hide",
-                           refresh_combobox_vettore)
-    elif callName is not None:
-        callName()
+def on_agente_customcombobox_changed(entry):
+    from promogest.dao.daoAgenti.Agente import Agente
+    model = entry.completion.get_model()
+    model.clear()
 
+    def ricercaDao(keyname):
+        cli = Agente().select(ragioneSociale=keyname, batchSize=40)
+        for m in cli:
+            rag = m.ragione_sociale or m.cognome + " " + m.nome
+            model.append(('empty', m.id, rag, m))
+
+    keyname = entry.get_text().lstrip()
+    if len(keyname) > 1:
+        ricercaDao(keyname)
+
+### --funzioni di gestione customcombobox search di tipo commesse -- ###
+
+def on_commesse_icon_press(entry, position, event):
+
+    if position.value_nick == "primary":
+        from promogest.modules.GestioneCommesse.dao.TestataCommessa import TestataCommessa
+        from promogest.modules.GestioneCommesse.ui.AnagraficaCommesseFilter import RicercaCommessa
+
+        def refresh_entry(anagWindow):
+            if not anag.dao:
+                entry.set_active(0)
+                return
+
+            id = anag.dao.id
+            res = TestataCommessa().getRecord(id=id)
+            if res:
+                entry.set_text(res.denominazione)
+                entry._id = id
+
+        anag = RicercaCommessa()
+        anagWindow = anag.getTopLevel()
+        anagWindow.show_all()
+        anagWindow.connect("hide",refresh_entry)
+        anag.show_all()
+    else:                            #secondary
+        entry.clear_entry()
+
+def on_commesse_customcombobox_changed(entry):
+    from promogest.modules.GestioneCommesse.dao.TestataCommessa import TestataCommessa
+    model = entry.completion.get_model()
+    model.clear()
+
+    def ricercaDao(keyname):
+        cli = TestataCommessa().select(denominazione=keyname, batchSize=40)
+        for m in cli:
+            model.append(('empty', m.id, m.denominazione, m))
+
+    keyname = entry.get_text().lstrip()
+    if len(keyname) > 1:
+        ricercaDao(keyname)
+
+
+### --funzioni di gestione customcombobox search di tipo vettore -- ###
+def on_vettore_icon_press(entry, position, event):
+
+    if position.value_nick == "primary":
+        from promogest.dao.Vettore import Vettore
+        from promogest.ui.anagVettori.AnagraficaVettoriFilter import RicercaVettori
+
+        def refresh_entry(anagWindow):
+            if not anag.dao:
+                entry.set_active(0)
+                return
+
+            id = anag.dao.id
+            res = leggiVettore(id)
+            denominazione = res["ragioneSociale"]
+            if denominazione == '':
+                denominazione = res["nome"] + ' ' + res["cognome"]
+            entry.set_text(denominazione)
+            entry._id = id
+
+        anag = RicercaVettori()
+        anagWindow = anag.getTopLevel()
+        anagWindow.show_all()
+        anagWindow.connect("hide",refresh_entry)
+        anag.show_all()
+    else:                            #secondary
+        entry.clear_entry()
+
+def on_vettore_customcombobox_changed(entry):
+    from promogest.dao.Vettore import Vettore
+    model = entry.completion.get_model()
+    model.clear()
+
+    def ricercaDao(keyname):
+        cli = Vettore().select(ragioneSociale=keyname, batchSize=40)
+        for m in cli:
+            rag = m.ragione_sociale or m.cognome + " " + m.nome
+            model.append(('empty', m.id, rag, m))
+
+    keyname = entry.get_text().lstrip()
+    if len(keyname) > 1:
+        ricercaDao(keyname)
+
+### --funzioni di gestione customcombobox search di tipo magazzino -- ###
 
 def on_combobox_magazzino_search_clicked(combobox, callName=None):
     """

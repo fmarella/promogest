@@ -33,14 +33,10 @@ class CustomComboBoxSearch(gtk.Entry):
         self.__rebuildList = False
         self._idChangedHandler = None
         gtk.Entry.__init__(self)
-
-        #renderer = gtk.CellRendererText()
-        #self.pack_start(renderer, True)
-        #self.add_attribute(renderer, 'text', 2)
         self.set_property("can-focus", True)
         self.connect("show", self.on_show)
-        self.connect('changed',
-                         self.on_entry_key_press_event,self)
+        #self.connect('changed',
+                         #self.on_entry_key_press_event,self)
         #self.connect("icon-press", self.on_icon_press)
         #self.connect("focus-in-event", self.on_focus_in_event)
         #self.connect("focus-out-event", self.on_focus_out_event)
@@ -54,11 +50,13 @@ class CustomComboBoxSearch(gtk.Entry):
         self.set_property("primary-icon-sensitive", True)
         self.draw()
 
+    def on_icon_press(self, entry):
+        print "GENERIC ICON PRESS"
 
     def on_entry_key_press_event(self, widget, event=None):
         """ """
         keyname = widget.get_text().lstrip()
-        #print "KEYNAME", keyname, self._id
+        #print "KEYNAME PRINCIPALE", keyname, self._id
         if len(keyname) > 1:
             self.ricercaDao(keyname)
 
@@ -73,14 +71,7 @@ class CustomComboBoxSearch(gtk.Entry):
             Basta un import di una piccola funzione che fa la query
             e inserisce i risultati nella tendina per la selezione
         """
-        model = self.completion.get_model()
-        model.clear()
-
-        if self._idChangedHandler == "Agente":
-            from promogest.ui.anagAgenti.AnagraficaAgentiFilter import ricercaDaoAgenti
-            ricercaDaoAgenti(model, keyname)
-
-
+        pass
 
     def match_func(self, completion, key, iter, user_data=None):
         model = completion.get_model()
@@ -114,62 +105,13 @@ class CustomComboBoxSearch(gtk.Entry):
 
     def on_selection_changed(self):
         return
-        #if self.__rebuildList:
-            #return False
-        #model = self.get_model()
-        #rowIndex = self.get_active()
-        #if rowIndex == -1:
-            #self._id = None
-            #self._container = None
-            #self.clear()
-        #elif model[rowIndex][0] == 'new_search' or model[rowIndex][0] =='old_search':
-            #return True
-        #elif model[rowIndex][0] == 'empty':
-            #self._id = None
-            #self._container = None
-            #self.clear()
-        #else:
-            #self._id = model[rowIndex][1]
-            #self._container = model[rowIndex][3]
-        #return False
-
 
     def refresh(self, id=None, denominazione=None, container=None, clear=False, filter=True, idType=None, rowType='element'):
         #print "SEI TU IL PROBLEMA"
         self._id = id
         self.set_text(denominazione or "")
         return
-        #if self._idChangedHandler is not None:
-            #self.handler_block(self._idChangedHandler)
-        #if clear:
-            #self.draw(filter, idType)
-        #self.__rebuildList = True
-        #model = self.get_model()
-        #if rowType == 'old_search':
-            #for r in model:
-                #if r[0] == rowType:
-                    #model.remove(r.iter)
-            #id = 0
-            #self._id = None
-            #self._container = container
-            #model.insert(1, (rowType, id, denominazione[0:40], container))
-            #self.set_active(1)
-        #elif id is not None and container is not None:
-            #for r in model:
-                #if r[1] == id:
-                    #model.remove(r.iter)
-            #self._id = id
-            #self._container = container
-            #model.insert(1, (rowType, id, denominazione[0:20], container))
-            #self.set_active(1)
-            #if len(model) > 12:
-                #model.remove(model[11].iter)
-        #else:
-            #self._id = id
-            #self._container = container
-        #if self._idChangedHandler is not None:
-            #self.handler_unblock(self._idChangedHandler)
-        #self.__rebuildList = False
+
 
 
     def draw(self, filter=True, idType=None):
@@ -192,12 +134,6 @@ class CustomComboBoxSearch(gtk.Entry):
         self.completion.set_text_column(2)
         self.set_completion(self.completion)
         model.clear()
-        #if filter:
-            #model.append(('empty', 0, '< Tutti >', None))
-        #else:
-            #model.append(('empty', 0, '', None))
-        #self.set_active(0)
-        #model.append(('new_search', 0, '< Altro... >', None))
         self.__rebuildList = False
 
     def clear_entry(self):
@@ -214,44 +150,32 @@ class CustomComboBoxSearch(gtk.Entry):
     def getContainer(self):
         return self._container
 
-
     def setChangedHandler(self, idHandler):
+        return self.setHandler(idHandler)
+
+    def setHandler(self,tipo):
+        if tipo == "commessa":
+            self.connect("icon-press", on_commesse_icon_press)
+            self.connect("changed", on_commesse_customcombobox_changed)
+        elif tipo == "agente":
+            self.connect("icon-press", on_agente_icon_press)
+            self.connect("changed", on_agente_customcombobox_changed)
+        elif tipo == "vettore":
+            self.connect("icon-press", on_vettore_icon_press)
+            self.connect("changed", on_vettore_customcombobox_changed)
+
+
+        self.set_property("secondary_icon_stock", "gtk-clear")
+        self.set_property("secondary-icon-activatable", True)
+        self.set_property("secondary-icon-sensitive", True)
+        self.set_property("primary_icon_stock", "gtk-find")
+        self.set_property("primary-icon-activatable", True)
+        self.set_property("primary-icon-sensitive", True)
+
+        return
         self._idChangedHandler = idHandler
-        print "PASSATO QUI" , idHandler
 
-        if idHandler == "Agente":
-
-            def on_icon_press(entry,position,event):
-                """
-                scopettina agganciata ad un segnale generico
-                """
-                if position.value_nick == "primary":
-
-                    def refresh_entry(anagWindow):
-                        if not anag.dao:
-                            self.set_active(0)
-                            return
-
-                        id = anag.dao.id
-                        res = leggiAgente(id)
-                        denominazione = res["ragioneSociale"]
-                        if denominazione == '':
-                            denominazione = res["nome"] + ' ' + res["cognome"]
-                        self.set_text(denominazione)
-                        self._id = id
-                    from promogest.ui.anagAgenti.AnagraficaAgentiFilter import RicercaAgenti
-                    anag = RicercaAgenti()
-                    anagWindow = anag.getTopLevel()
-                    anagWindow.show_all()
-                    anagWindow.connect("hide",
-                                       refresh_entry)
-                    anag.show_all()
-                else:                            #secondary
-                    self.clear_entry()
-            self.connect("icon-press", on_icon_press)
-
-        elif idHandler == "cliente":
-            print " MA QUANTE VOLTE OASSI QUI"
+        if idHandler == "cliente":
             def on_icon_press(entry,position,event):
                 """
                 scopettina agganciata ad un segnale generico

@@ -187,13 +187,10 @@ def drawPart(anaedit):
         anaedit.ricerca_criterio_combobox.set_active(2)
 
     anaedit.id_persona_giuridica_customcombobox.setSingleValue()
-    #anaedit.id_persona_giuridica_customcombobox.setOnChangedCall(anaedit.persona_giuridica_changed)
     anaedit.id_persona_giuridica_customcombobox.giveAnag(anaedit)
 
     anaedit.id_destinazione_merce_customcombobox.connect('clicked',
             anaedit.on_id_destinazione_merce_customcombobox_button_clicked)
-    idHandler = anaedit.id_vettore_customcombobox.connect('changed',
-            on_combobox_vettore_search_clicked)
     anaedit.id_multiplo_customcombobox.combobox.connect('changed',
             anaedit.on_id_multiplo_customcombobox_changed)
     anaedit.id_listino_customcombobox.combobox.connect('changed',
@@ -202,9 +199,10 @@ def drawPart(anaedit):
             anaedit.on_id_listino_customcombobox_button_toggled)
     anaedit.id_aliquota_iva_esenzione_customcombobox.connect('clicked',
                         on_id_aliquota_iva_customcombobox_clicked)
-    anaedit.id_vettore_customcombobox.setChangedHandler(idHandler)
-    idHandler = anaedit.id_agente_customcombobox.connect('changed',
-            on_combobox_agente_search_clicked)
+
+    anaedit.id_agente_customcombobox.setHandler("agente")
+    anaedit.id_vettore_customcombobox.setHandler("vettore")
+
     anaedit.sconti_widget.button.connect('toggled',
             anaedit.on_sconti_widget_button_toggled)
     anaedit.sconti_testata_widget.button.connect('toggled',

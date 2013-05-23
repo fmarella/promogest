@@ -129,8 +129,8 @@
           <object class="ArticoloSearchWidget" id="serv_csa_art_ArticoloSearchWidget">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <property name="primary_icon_activatable">False</property>
-            <property name="secondary_icon_activatable">False</property>
+            <property name="primary_icon_activatable">True</property>
+            <property name="secondary_icon_activatable">True</property>
             <property name="primary_icon_sensitive">True</property>
             <property name="secondary_icon_sensitive">True</property>
           </object>
@@ -168,8 +168,8 @@
           <object class="ClienteSearchWidget" id="serv_csa_cliente_ClienteSearchWidget">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <property name="primary_icon_activatable">False</property>
-            <property name="secondary_icon_activatable">False</property>
+            <property name="primary_icon_activatable">True</property>
+            <property name="secondary_icon_activatable">True</property>
             <property name="primary_icon_sensitive">True</property>
             <property name="secondary_icon_sensitive">True</property>
           </object>
@@ -214,6 +214,7 @@
             <property name="secondary_icon_activatable">True</property>
             <property name="primary_icon_sensitive">True</property>
             <property name="secondary_icon_sensitive">True</property>
+            <signal name="changed" handler="on_id_commessa_customcombobox_changed" swapped="no"/>
           </object>
           <packing>
             <property name="expand">True</property>

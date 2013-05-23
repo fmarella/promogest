@@ -49,6 +49,8 @@ class AnagraficaServCSAEdit(AnagraficaEdit):
         """ Funzione che "disegna l'interfaccia, devi annullare alcune combo
         a seconda di cosa richiama la finestra...iniziamo dal caso cliente
         """
+        self.id_commessa_customcombobox.setHandler("commessa")
+
         fillComboboxLuogoInstallazione(self.luogo_installazione_combobox.combobox)
         self.luogo_installazione_combobox.connect('clicked',
                                             on_luogo_installazione_combobox_clicked)
@@ -57,7 +59,6 @@ class AnagraficaServCSAEdit(AnagraficaEdit):
         model.clear()
         for t in ["MENSILE","ANNUALE","BIENNALE"]:
             model.append((t,))
-
 
     def setDao(self, dao):
         """ Si istanzia un nuovo DAO o nuovo o prelevato dalla Treeview
