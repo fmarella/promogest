@@ -86,8 +86,8 @@ class AnagraficaServCSAFilter(AnagraficaFilter):
         valore = 0
         for i in valis:
             self.anagrafica_serv_csa_filter_listore.append((i,
-                                                        str(mN(i.id_cliente)),
-                                                        str(i.id_cliente),
+                                                        str(i.CLI.ragione_sociale or (i.CLI.cognome+" "+i.CLI.nome)),
+                                                        str(i.arti.denominazione),
                                                         str(""),
                                                         str(i.id_persona_giuridica),
                                                         str(""),
