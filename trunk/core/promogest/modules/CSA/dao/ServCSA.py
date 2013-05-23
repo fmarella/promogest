@@ -25,7 +25,7 @@ from sqlalchemy.orm import *
 from promogest.Environment import *
 from promogest.dao.Dao import Dao
 from migrate import *
-from promogest.modules.CSA.dao.LuogoInstallazione import LuogoInstallazione
+from promogest.modules.CSA.dao.LuogoInstallazione import LuogoInstallazione , t_luogo_installazione
 #from promogest.dao.Articolo import Articolo
 
 from promogest.dao.Cliente import Cliente, t_cliente
@@ -83,9 +83,9 @@ class ServCSA(Dao):
 
 std_mapper = mapper(ServCSA, t_serv_csa,   properties={
 
-        #"arti":relation(Articolo,
-            #primaryjoin=t_serv_csa.c.id_articolo== t_articolo.c.id,
-            #backref="serv_csa"),
+        "luogoinsta":relation(LuogoInstallazione,
+            primaryjoin=t_serv_csa.c.id_luogo_installazione== t_luogo_installazione.c.id,
+            backref="serv_csa"),
         "CLI":relation(Cliente,
             primaryjoin=t_serv_csa.c.id_cliente== t_cliente.c.id,
             backref="serv_csa"),

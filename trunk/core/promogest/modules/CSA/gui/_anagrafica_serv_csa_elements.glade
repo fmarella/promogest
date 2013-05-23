@@ -8,6 +8,85 @@
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
   </object>
+  <object class="GtkTreeView" id="anagrafica_filter_treeview">
+    <property name="visible">True</property>
+    <property name="can_focus">True</property>
+    <property name="model">anagrafica_serv_csa_filter_listore</property>
+    <property name="headers_clickable">False</property>
+    <property name="search_column">1</property>
+    <property name="enable_grid_lines">both</property>
+    <child>
+      <object class="GtkTreeViewColumn" id="cliente_column">
+        <property name="title" translatable="yes">Cliente</property>
+        <property name="expand">True</property>
+        <property name="clickable">True</property>
+        <child>
+          <object class="GtkCellRendererText" id="cellrenderertext1"/>
+          <attributes>
+            <attribute name="text">1</attribute>
+          </attributes>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkTreeViewColumn" id="data_avviamento_column">
+        <property name="title" translatable="yes">Data Avviamento</property>
+        <child>
+          <object class="GtkCellRendererText" id="cellrenderertext6"/>
+          <attributes>
+            <attribute name="text">2</attribute>
+          </attributes>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkTreeViewColumn" id="articolo_column">
+        <property name="title" translatable="yes">Articolo</property>
+        <property name="clickable">True</property>
+        <child>
+          <object class="GtkCellRendererText" id="cellrenderertext10"/>
+          <attributes>
+            <attribute name="text">3</attribute>
+          </attributes>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkTreeViewColumn" id="installatore_column">
+        <property name="resizable">True</property>
+        <property name="title" translatable="yes">Installatore</property>
+        <property name="expand">True</property>
+        <child>
+          <object class="GtkCellRendererText" id="cellrenderertext15"/>
+          <attributes>
+            <attribute name="text">4</attribute>
+          </attributes>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkTreeViewColumn" id="seriale_column">
+        <property name="title" translatable="yes">Numero Seriale</property>
+        <child>
+          <object class="GtkCellRendererText" id="cellrenderertext2"/>
+          <attributes>
+            <attribute name="text">5</attribute>
+          </attributes>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkTreeViewColumn" id="manutenzione_column">
+        <property name="title" translatable="yes">Manutenzione</property>
+        <child>
+          <object class="GtkCellRendererText" id="cellrenderertext3"/>
+          <attributes>
+            <attribute name="text">6</attribute>
+          </attributes>
+        </child>
+      </object>
+    </child>
+  </object>
   <object class="GtkVBox" id="anagrafica_serv_csa_detail_vbox">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -395,7 +474,7 @@
         <property name="n_rows">3</property>
         <property name="n_columns">4</property>
         <child>
-          <object class="GtkCheckButton" id="01_checkbutton">
+          <object class="GtkCheckButton" id="checkbutton_01">
             <property name="label" translatable="yes">Gennaio</property>
             <property name="use_action_appearance">False</property>
             <property name="visible">True</property>
@@ -405,7 +484,7 @@
           </object>
         </child>
         <child>
-          <object class="GtkCheckButton" id="05_checkbutton">
+          <object class="GtkCheckButton" id="checkbutton_05">
             <property name="label" translatable="yes">Maggio</property>
             <property name="use_action_appearance">False</property>
             <property name="visible">True</property>
@@ -419,7 +498,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkCheckButton" id="09_checkbutton">
+          <object class="GtkCheckButton" id="checkbutton_09">
             <property name="label" translatable="yes">Settembre</property>
             <property name="use_action_appearance">False</property>
             <property name="visible">True</property>
@@ -433,7 +512,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkCheckButton" id="02_checkbutton">
+          <object class="GtkCheckButton" id="checkbutton_02">
             <property name="label" translatable="yes">Febbraio</property>
             <property name="use_action_appearance">False</property>
             <property name="visible">True</property>
@@ -447,7 +526,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkCheckButton" id="06_checkbutton">
+          <object class="GtkCheckButton" id="checkbutton_06">
             <property name="label" translatable="yes">Giugno</property>
             <property name="use_action_appearance">False</property>
             <property name="visible">True</property>
@@ -463,7 +542,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkCheckButton" id="10_checkbutton">
+          <object class="GtkCheckButton" id="checkbutton_10">
             <property name="label" translatable="yes">Ottobre</property>
             <property name="use_action_appearance">False</property>
             <property name="visible">True</property>
@@ -479,7 +558,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkCheckButton" id="03_checkbutton">
+          <object class="GtkCheckButton" id="checkbutton_03">
             <property name="label" translatable="yes">Marzo</property>
             <property name="use_action_appearance">False</property>
             <property name="visible">True</property>
@@ -493,7 +572,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkCheckButton" id="07_checkbutton">
+          <object class="GtkCheckButton" id="checkbutton_07">
             <property name="label" translatable="yes">Luglio</property>
             <property name="use_action_appearance">False</property>
             <property name="visible">True</property>
@@ -509,7 +588,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkCheckButton" id="11_checkbutton">
+          <object class="GtkCheckButton" id="checkbutton_11">
             <property name="label" translatable="yes">Novembre</property>
             <property name="use_action_appearance">False</property>
             <property name="visible">True</property>
@@ -525,7 +604,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkCheckButton" id="04_checkbutton">
+          <object class="GtkCheckButton" id="checkbutton_04">
             <property name="label" translatable="yes">Aprile</property>
             <property name="use_action_appearance">False</property>
             <property name="visible">True</property>
@@ -539,7 +618,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkCheckButton" id="08_checkbutton">
+          <object class="GtkCheckButton" id="checkbutton_08">
             <property name="label" translatable="yes">Agosto</property>
             <property name="use_action_appearance">False</property>
             <property name="visible">True</property>
@@ -555,7 +634,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkCheckButton" id="12_checkbutton">
+          <object class="GtkCheckButton" id="checkbutton_12">
             <property name="label" translatable="yes">Dicembre</property>
             <property name="use_action_appearance">False</property>
             <property name="visible">True</property>
@@ -595,85 +674,6 @@
       <!-- column-name gchararray6 -->
       <column type="gchararray"/>
     </columns>
-  </object>
-  <object class="GtkTreeView" id="anagrafica_filter_treeview">
-    <property name="visible">True</property>
-    <property name="can_focus">True</property>
-    <property name="model">anagrafica_serv_csa_filter_listore</property>
-    <property name="headers_clickable">False</property>
-    <property name="search_column">1</property>
-    <property name="enable_grid_lines">both</property>
-    <child>
-      <object class="GtkTreeViewColumn" id="cliente_column">
-        <property name="title" translatable="yes">Cliente</property>
-        <property name="expand">True</property>
-        <property name="clickable">True</property>
-        <child>
-          <object class="GtkCellRendererText" id="cellrenderertext1"/>
-          <attributes>
-            <attribute name="text">1</attribute>
-          </attributes>
-        </child>
-      </object>
-    </child>
-    <child>
-      <object class="GtkTreeViewColumn" id="data_avviamento_column">
-        <property name="title" translatable="yes">Data Avviamento</property>
-        <child>
-          <object class="GtkCellRendererText" id="cellrenderertext6"/>
-          <attributes>
-            <attribute name="text">2</attribute>
-          </attributes>
-        </child>
-      </object>
-    </child>
-    <child>
-      <object class="GtkTreeViewColumn" id="articolo_column">
-        <property name="title" translatable="yes">Articolo</property>
-        <property name="clickable">True</property>
-        <child>
-          <object class="GtkCellRendererText" id="cellrenderertext10"/>
-          <attributes>
-            <attribute name="text">3</attribute>
-          </attributes>
-        </child>
-      </object>
-    </child>
-    <child>
-      <object class="GtkTreeViewColumn" id="installatore_column">
-        <property name="resizable">True</property>
-        <property name="title" translatable="yes">Installatore</property>
-        <property name="expand">True</property>
-        <child>
-          <object class="GtkCellRendererText" id="cellrenderertext15"/>
-          <attributes>
-            <attribute name="text">4</attribute>
-          </attributes>
-        </child>
-      </object>
-    </child>
-    <child>
-      <object class="GtkTreeViewColumn" id="seriale_column">
-        <property name="title" translatable="yes">Numero Seriale</property>
-        <child>
-          <object class="GtkCellRendererText" id="cellrenderertext2"/>
-          <attributes>
-            <attribute name="text">5</attribute>
-          </attributes>
-        </child>
-      </object>
-    </child>
-    <child>
-      <object class="GtkTreeViewColumn" id="manutenzione_column">
-        <property name="title" translatable="yes">Manutenzione</property>
-        <child>
-          <object class="GtkCellRendererText" id="cellrenderertext3"/>
-          <attributes>
-            <attribute name="text">6</attribute>
-          </attributes>
-        </child>
-      </object>
-    </child>
   </object>
   <object class="GtkTable" id="anagrafica_serv_csa_filter_table">
     <property name="visible">True</property>
