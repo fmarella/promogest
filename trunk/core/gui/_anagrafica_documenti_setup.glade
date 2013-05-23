@@ -3,28 +3,6 @@
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-requires pythonplugin 0.0 -->
   <!-- interface-naming-policy project-wide -->
-  <object class="GtkLabel" id="documenti_setup_page_label">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="label" translatable="yes">DOCUMENTI</property>
-  </object>
-  <object class="GtkListStore" id="incaricato_predef_liststore">
-    <columns>
-      <!-- column-name tipo -->
-      <column type="gchararray"/>
-    </columns>
-    <data>
-      <row>
-        <col id="0" translatable="yes">destinatario</col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">mittente</col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">vettore</col>
-      </row>
-    </data>
-  </object>
   <object class="GtkFrame" id="_anagrafica_documenti_setup_frame">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -342,6 +320,21 @@ dei documenti  ( 60 )</property>
                   </packing>
                 </child>
                 <child>
+                  <object class="GtkCheckButton" id="save_new_doc_check">
+                    <property name="label" translatable="yes">Prepara all'inserimento di un nuovo documento dopo il salvataggio</property>
+                    <property name="use_action_appearance">False</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="draw_indicator">True</property>
+                  </object>
+                  <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
+                    <property name="position">6</property>
+                  </packing>
+                </child>
+                <child>
                   <object class="GtkCheckButton" id="lotto_temp_check">
                     <property name="label" translatable="yes">Gestione Lotti temporanei</property>
                     <property name="use_action_appearance">False</property>
@@ -353,7 +346,7 @@ dei documenti  ( 60 )</property>
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">False</property>
-                    <property name="position">6</property>
+                    <property name="position">7</property>
                   </packing>
                 </child>
                 <child>
@@ -370,7 +363,7 @@ questo rende la ricerca più veloce ed evita la pressione del tasto F3</property
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">False</property>
-                    <property name="position">7</property>
+                    <property name="position">8</property>
                   </packing>
                 </child>
                 <child>
@@ -386,7 +379,7 @@ quanto una stessa riga prodotto è già stata inserita</property>
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">False</property>
-                    <property name="position">8</property>
+                    <property name="position">9</property>
                   </packing>
                 </child>
                 <child>
@@ -401,7 +394,7 @@ quanto una stessa riga prodotto è già stata inserita</property>
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">False</property>
-                    <property name="position">9</property>
+                    <property name="position">10</property>
                   </packing>
                 </child>
                 <child>
@@ -416,7 +409,7 @@ quanto una stessa riga prodotto è già stata inserita</property>
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">False</property>
-                    <property name="position">10</property>
+                    <property name="position">11</property>
                   </packing>
                 </child>
                 <child>
@@ -431,7 +424,7 @@ quanto una stessa riga prodotto è già stata inserita</property>
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">False</property>
-                    <property name="position">11</property>
+                    <property name="position">12</property>
                   </packing>
                 </child>
                 <child>
@@ -478,7 +471,7 @@ quanto una stessa riga prodotto è già stata inserita</property>
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">True</property>
-                    <property name="position">12</property>
+                    <property name="position">13</property>
                   </packing>
                 </child>
                 <child>
@@ -494,7 +487,7 @@ quanto una stessa riga prodotto è già stata inserita</property>
                     <property name="expand">False</property>
                     <property name="fill">True</property>
                     <property name="padding">5</property>
-                    <property name="position">13</property>
+                    <property name="position">14</property>
                   </packing>
                 </child>
                 <child>
@@ -534,7 +527,7 @@ quanto una stessa riga prodotto è già stata inserita</property>
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">True</property>
-                    <property name="position">14</property>
+                    <property name="position">15</property>
                   </packing>
                 </child>
               </object>
@@ -551,6 +544,28 @@ quanto una stessa riga prodotto è già stata inserita</property>
         <property name="use_markup">True</property>
       </object>
     </child>
+  </object>
+  <object class="GtkLabel" id="documenti_setup_page_label">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="label" translatable="yes">DOCUMENTI</property>
+  </object>
+  <object class="GtkListStore" id="incaricato_predef_liststore">
+    <columns>
+      <!-- column-name tipo -->
+      <column type="gchararray"/>
+    </columns>
+    <data>
+      <row>
+        <col id="0" translatable="yes">destinatario</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">mittente</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">vettore</col>
+      </row>
+    </data>
   </object>
   <object class="GtkListStore" id="tipo_documento_predefinito_listore">
     <columns>

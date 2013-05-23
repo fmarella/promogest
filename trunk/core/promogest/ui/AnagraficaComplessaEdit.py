@@ -109,7 +109,10 @@ class AnagraficaEdit(GladeWidget):
             self._anagrafica.filter.refresh()
             self._anagrafica.filter.selectCurrentDao()
             self._anagrafica.filter.getSelectedDao()
-            self.setVisible(False)
+            if self._anagrafica.__class__.__name__ == 'AnagraficaDocumenti' and setconf("Documenti", "save_new_doc"):
+                self.setDao(None)
+            else:
+                self.setVisible(False)
         elif responseId == GTK_RESPONSE_APPLY:
             self.saveDao(tipo=GTK_RESPONSE_APPLY)
             self._anagrafica.filter.refresh()

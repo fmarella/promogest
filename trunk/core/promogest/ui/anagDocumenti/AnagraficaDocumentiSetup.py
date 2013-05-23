@@ -84,6 +84,10 @@ class AnagraficaDocumentiSetup(GladeWidget):
         except:
             self.lotto_temp_check.set_active(0)
         try:
+            self.save_new_doc_check.set_active(int(setconf("Documenti", "save_new_doc")))
+        except:
+            self.save_new_doc_check.set_active(0)
+        try:
             self.add_quantita_check.set_active(int(setconf("Documenti", "add_quantita")))
         except:
             self.add_quantita_check.set_active(0)
@@ -349,3 +353,21 @@ class AnagraficaDocumentiSetup(GladeWidget):
         c.visible = True
         c.date = datetime.datetime.now()
         Environment.session.add(c)
+
+
+        c = SetConf().select(key="save_new_doc", section="Documenti")
+        if c:
+            c=c[0]
+        else:
+            c = SetConf()
+        c.key = "save_new_doc"
+        c.section = "Documenti"
+        c.tipo = "bool"
+        c.value = str(self.save_new_doc_check.get_active())
+        c.description = "opzione per attivare l'inserimento del nuovo documento dopo il salvataggio"
+        c.tipo_section = "Generico"
+        c.active = False
+        c.visible = True
+        c.date = datetime.datetime.now()
+        Environment.session.add(c)
+
