@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2013 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -394,7 +394,7 @@ class RicercaFornitoriFilter(GladeWidget):
         self.codice_fiscale_filter_entry.set_text(self._codiceFiscale or '')
         self.partita_iva_filter_entry.set_text(self._partitaIva or '')
         if self._idCategoria is not None:
-            findComboboxowFromId(self.id_categoria_fornitore_filter_combobox, self._idFamiglia)
+            findComboboxRowFromId(self.id_categoria_fornitore_filter_combobox, self._idCategoria)
 
 
     def drawRicercaComplessa(self):

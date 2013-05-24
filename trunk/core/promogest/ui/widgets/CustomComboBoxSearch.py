@@ -48,6 +48,7 @@ class CustomComboBoxSearch(gtk.Entry):
         self.set_property("primary_icon_stock", "gtk-find")
         self.set_property("primary-icon-activatable", True)
         self.set_property("primary-icon-sensitive", True)
+        self.anaedit = None
         self.draw()
 
     def on_icon_press(self, entry):

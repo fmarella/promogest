@@ -8,6 +8,26 @@
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
   </object>
+  <object class="GtkListStore" id="anagrafica_serv_csa_riga_listore">
+    <columns>
+      <!-- column-name PyObject1 -->
+      <column type="PyObject"/>
+      <!-- column-name gchararray1 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray3 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray4 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray5 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray6 -->
+      <column type="gchararray"/>
+      <!-- column-name colore_valore -->
+      <column type="gchararray"/>
+      <!-- column-name colore_tipo -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
   <object class="GtkTreeView" id="anagrafica_filter_treeview">
     <property name="visible">True</property>
     <property name="can_focus">True</property>
@@ -225,7 +245,7 @@
       </packing>
     </child>
     <child>
-      <object class="GtkHBox" id="pg_provv_hbox">
+      <object class="GtkHBox" id="pg_csa_hbox">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <child>
@@ -242,11 +262,14 @@
           </packing>
         </child>
         <child>
-          <object class="PersonaGiuridicaSearchWidget" id="id_persona_giuridica_customcombobox">
+          <object class="FornitoreSearchWidget" id="id_fornitore_customcombobox">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <property name="primary_icon_activatable">False</property>
-            <property name="secondary_icon_activatable">False</property>
+            <property name="invisible_char">●</property>
+            <property name="primary_icon_stock">gtk-find</property>
+            <property name="secondary_icon_stock">gtk-clear</property>
+            <property name="primary_icon_activatable">True</property>
+            <property name="secondary_icon_activatable">True</property>
             <property name="primary_icon_sensitive">True</property>
             <property name="secondary_icon_sensitive">True</property>
           </object>
@@ -254,6 +277,29 @@
             <property name="expand">True</property>
             <property name="fill">True</property>
             <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="categ_forni_label">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label" translatable="yes">Cat.Forn</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="CustomComboBoxModify" id="id_categoria_fornitore_customcombobox">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">3</property>
           </packing>
         </child>
       </object>
@@ -1043,26 +1089,6 @@
         <property name="y_options"/>
       </packing>
     </child>
-  </object>
-  <object class="GtkListStore" id="anagrafica_serv_csa_riga_listore">
-    <columns>
-      <!-- column-name PyObject1 -->
-      <column type="PyObject"/>
-      <!-- column-name gchararray1 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray3 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray4 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray5 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray6 -->
-      <column type="gchararray"/>
-      <!-- column-name colore_valore -->
-      <column type="gchararray"/>
-      <!-- column-name colore_tipo -->
-      <column type="gchararray"/>
-    </columns>
   </object>
   <object class="GtkListStore" id="come_store">
     <columns>

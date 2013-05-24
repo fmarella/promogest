@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2013 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -23,7 +23,7 @@
 
 from promogest.ui.gtk_compat import *
 from CustomComboBoxSearch import CustomComboBoxSearch
-from promogest.lib.utils import leggiFornitore
+from promogest.lib.utils import leggiFornitore, findIdFromCombobox
 
 
 class FornitoreSearchWidget(CustomComboBoxSearch):
@@ -67,9 +67,13 @@ class FornitoreSearchWidget(CustomComboBoxSearch):
                     self.set_text(denominazione)
                     self._id = id
                     #self.on_completion_match_main()
-
             from promogest.ui.RicercaComplessaFornitori import RicercaComplessaFornitori
-            self._ricerca = RicercaComplessaFornitori()
+            try:
+                idCat = findIdFromCombobox(self.anaedit.
+                id_categoria_fornitore_customcombobox.combobox)
+            except:
+                idCat = None
+            self._ricerca = RicercaComplessaFornitori(idCategoria = idCat)
             if not self._filter:
                 self._ricerca.setTreeViewSelectionType(GTK_SELECTIONMODE_SINGLE)
             else:
@@ -86,56 +90,17 @@ class FornitoreSearchWidget(CustomComboBoxSearch):
 
     def ricercaDao(self, keyname):
         from promogest.dao.Fornitore import Fornitore
-        print keyname
-        cli = Fornitore().select(ragioneSociale=keyname, batchSize=40)
+        try:
+            idCat = findIdFromCombobox(self.anaedit.
+            id_categoria_fornitore_customcombobox.combobox)
+        except:
+            idCat = None
+        cli = Fornitore().select(ragioneSociale=keyname,idCategoria=idCat, batchSize=40)
         model = self.completion.get_model()
         model.clear()
         for m in cli:
             model.append(('empty', m.id, m.ragione_sociale, m))
 
-    #def on_combobox_fornitore_search_clicked(self, combobox, callName=None):
-        ##richiama la ricerca dei fornitori
-
-
-        #def refresh_combobox_cliente(anagWindow):
-            #self._resultsCount = self._ricerca.getResultsCount()
-            #resultsElement = self._ricerca.getResultsElement()
-            #if not(self._resultsCount > 0):
-                #self.set_active(0)
-                #return
-
-            #if self._resultsCount == 1:
-                #id = resultsElement.id
-                #res = leggiFornitore(id)
-                #denominazione = res["ragioneSociale"]
-                #if denominazione == '':
-                    #denominazione = res["nome"] + ' ' + res["cognome"]
-                #combobox.refresh(id, denominazione, res)
-            #else:
-                #self.idlist = []
-                #for ids in resultsElement:
-                    #self.idlist.append(ids.id)
-                #combobox.refresh(self.idlist, ('< %d fornitori selezionati... >' % self._resultsCount), None, rowType='old_search')
-            #if self._callName is not None:
-                #self._callName()
-
-        #if combobox.on_selection_changed():
-            #if self._ricerca is None:
-                #from promogest.ui.RicercaComplessaFornitori import RicercaComplessaFornitori
-                #self._ricerca = RicercaComplessaFornitori()
-                #if not self._filter:
-                    #self._ricerca.setTreeViewSelectionType(GTK_SELECTIONMODE_SINGLE)
-            #else:
-                #self._ricerca.refresh()
-            #anagWindow = self._ricerca.getTopLevel()
-            #returnWindow = combobox.get_toplevel()
-            #anagWindow.set_transient_for(returnWindow)
-            #anagWindow.connect("hide",
-                               #refresh_combobox_fornitore)
-            #self._ricerca.show_all()
-
-        #elif self._callName is not None:
-            #self._callName()
 
     def setId(self, value):
         self.insertComboboxSearchFornitore(self, value)

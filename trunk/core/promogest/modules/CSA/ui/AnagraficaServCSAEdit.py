@@ -58,6 +58,9 @@ class AnagraficaServCSAEdit(AnagraficaEdit):
         model.clear()
         for t in ["MENSILE","ANNUALE","BIENNALE"]:
             model.append((t,))
+        fillComboboxCategorieFornitori(self.id_categoria_fornitore_customcombobox.combobox)
+        self.id_fornitore_customcombobox.giveAnag(self)
+        
 
     def setDao(self, dao):
         """ Si istanzia un nuovo DAO o nuovo o prelevato dalla Treeview
@@ -79,12 +82,22 @@ class AnagraficaServCSAEdit(AnagraficaEdit):
         self.numero_seriale_entry.set_text(self.dao.numero_serie or "")
         self.combustibile_entry.set_text(self.dao.combustibile or "")
         self.id_cliente_customcombobox.setId(self.dao.id_cliente)
-        self.id_persona_giuridica_customcombobox.setId(self.dao.id_persona_giuridica)
+        self.id_fornitore_customcombobox.setId(self.dao.id_persona_giuridica)
         self.id_articolo_customcombobox.setId(self.dao.id_articolo)
         findComboboxRowFromStr(self.manutenzione_combobox, self.dao.manutenzione,0)
         self.data_avviamento_datewidget.set_text(dateToString(self.dao.data_avviamento))
         self.libretto_checkbutton.set_active(bool(self.dao.tenuta_libretto))
         #self.id_commessa_customcombobox.setId(self.dao.id_testata_commessa)
+        self.categoriaInstallatore()
+
+
+    def categoriaInstallatore(self):
+        """ Questa funzione serve a controllare il dao precedente,
+        vedere quale categoria fornitore è abbinata all'installatore
+        e proporla preimpostata"""
+        print " DA FARE"
+        #self.id_fornitore_customcombobox.presetCategoria = "CICCIO"
+
 
     def setMonth(self):
         mesi = self.dao.cadenza.split() or []
