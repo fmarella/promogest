@@ -2,6 +2,9 @@
 
 = Linee guida =
 
+*Environment.workingYear* viene memorizzato come stringa. Potrebbe essere necessario convertire
+tale valore ad intero in alcuni casi. (es. datetime(int(workingYear), 1, 1))
+
 DAO:
   * il nome del file e il nome della classe seguono la convenzione python per le classi ( CamelCase ) (es. BancheAzienda.py -> class BancheAzienda(Dao): pass);
   * il nome assegnato all'istanza della tabella *deve avere* il prefisso *t`_`*  e segue la convenzione python per le variabili (minuscolo con underscore) (es. t_banche_azienda);
