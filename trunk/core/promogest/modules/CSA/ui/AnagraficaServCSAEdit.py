@@ -82,7 +82,7 @@ class AnagraficaServCSAEdit(AnagraficaEdit):
         self.id_persona_giuridica_customcombobox.setId(self.dao.id_persona_giuridica)
         self.id_articolo_customcombobox.setId(self.dao.id_articolo)
         findComboboxRowFromStr(self.manutenzione_combobox, self.dao.manutenzione,0)
-        dataAvviamento = stringToDate(self.data_avviamento_datewidget.get_text())
+        self.data_avviamento_datewidget.set_text(dateToString(self.dao.data_avviamento))
         self.libretto_checkbutton.set_active(bool(self.dao.tenuta_libretto))
         #self.id_commessa_customcombobox.setId(self.dao.id_testata_commessa)
 
