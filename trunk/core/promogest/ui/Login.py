@@ -207,8 +207,7 @@ class Login(SimpleGladeApp):
                 dialog.destroy()
                 return
             else:
-                Environment.workingYear = str(
-                        self.anno_lavoro_spinbutton.get_value_as_int())
+                Environment.workingYear = self.anno_lavoro_spinbutton.get_value_as_int()
                 Environment.azienda = self.azienda
                 Environment.schema_azienda = self.azienda
                 if Environment.engine.name != "sqlite":
