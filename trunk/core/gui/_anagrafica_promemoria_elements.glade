@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <requires lib="gtk+" version="2.16"/>
   <!-- interface-requires pythonplugin 0.0 -->
+  <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy toplevel-contextual -->
+  <object class="GtkTreeView" id="anagrafica_filter_treeview">
+    <property name="visible">True</property>
+    <property name="can_focus">True</property>
+  </object>
   <object class="GtkTable" id="anagrafica_promemoria_filter_table">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -10,9 +14,6 @@
     <property name="n_columns">5</property>
     <property name="column_spacing">2</property>
     <property name="row_spacing">6</property>
-    <child>
-      <placeholder/>
-    </child>
     <child>
       <object class="GtkEntry" id="riferimento_filter_entry">
         <property name="visible">True</property>
@@ -473,6 +474,9 @@
         <property name="x_padding">10</property>
       </packing>
     </child>
+    <child>
+      <placeholder/>
+    </child>
   </object>
   <object class="GtkListStore" id="liststore1">
     <columns>
@@ -507,10 +511,6 @@
         <col id="0" translatable="yes">Contatti..</col>
       </row>
     </data>
-  </object>
-  <object class="GtkTreeView" id="anagrafica_filter_treeview">
-    <property name="visible">True</property>
-    <property name="can_focus">True</property>
   </object>
   <object class="GtkAdjustment" id="preavviso_adj">
     <property name="upper">500</property>
@@ -833,30 +833,6 @@
       </packing>
     </child>
     <child>
-      <object class="GtkComboBoxEntry" id="autore_combobox_entry">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="text_column">0</property>
-        <child internal-child="entry">
-          <object class="GtkEntry" id="comboboxentry-entry4">
-            <property name="can_focus">False</property>
-            <property name="primary_icon_activatable">False</property>
-            <property name="secondary_icon_activatable">False</property>
-            <property name="primary_icon_sensitive">True</property>
-            <property name="secondary_icon_sensitive">True</property>
-          </object>
-        </child>
-      </object>
-      <packing>
-        <property name="left_attach">1</property>
-        <property name="right_attach">2</property>
-        <property name="top_attach">4</property>
-        <property name="bottom_attach">5</property>
-        <property name="x_options">GTK_FILL</property>
-        <property name="y_options">GTK_FILL</property>
-      </packing>
-    </child>
-    <child>
       <object class="GtkComboBoxEntry" id="incaricato_combobox_entry">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
@@ -870,7 +846,11 @@
         </child>
         <child internal-child="entry">
           <object class="GtkEntry" id="comboboxentry-entry6">
-            <property name="can_focus">False</property>
+            <property name="visible">True</property>
+            <property name="app_paintable">True</property>
+            <property name="can_focus">True</property>
+            <property name="has_focus">True</property>
+            <property name="can_default">True</property>
             <property name="primary_icon_activatable">False</property>
             <property name="secondary_icon_activatable">False</property>
             <property name="primary_icon_sensitive">True</property>
@@ -936,6 +916,33 @@
         <property name="top_attach">8</property>
         <property name="bottom_attach">9</property>
         <property name="y_options"/>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkComboBoxEntry" id="autore_combobox_entry">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="has_entry">True</property>
+        <property name="text_column">0</property>
+        <child internal-child="entry">
+          <object class="GtkEntry" id="comboboxentry-entry">
+            <property name="visible">True</property>
+            <property name="app_paintable">True</property>
+            <property name="can_focus">True</property>
+            <property name="has_focus">True</property>
+            <property name="can_default">True</property>
+            <property name="primary_icon_activatable">False</property>
+            <property name="secondary_icon_activatable">False</property>
+            <property name="primary_icon_sensitive">True</property>
+            <property name="secondary_icon_sensitive">True</property>
+          </object>
+        </child>
+      </object>
+      <packing>
+        <property name="left_attach">1</property>
+        <property name="right_attach">2</property>
+        <property name="top_attach">4</property>
+        <property name="bottom_attach">5</property>
       </packing>
     </child>
   </object>
