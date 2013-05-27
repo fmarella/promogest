@@ -26,6 +26,7 @@ from promogest.ui.utilsCombobox import *
 from promogest.dao.Fornitore import Fornitore
 from promogest.dao.DaoUtils import get_columns
 from promogest.modules.CSA.dao.ServCSA import ServCSA , t_serv_csa
+import json 
 
 
 class AnagraficaServCSAEdit(AnagraficaEdit):
@@ -89,18 +90,19 @@ class AnagraficaServCSAEdit(AnagraficaEdit):
         self.libretto_checkbutton.set_active(bool(self.dao.tenuta_libretto))
         #self.id_commessa_customcombobox.setId(self.dao.id_testata_commessa)
         self.categoriaInstallatore()
+        self.setMonth()
 
 
     def categoriaInstallatore(self):
         """ Questa funzione serve a controllare il dao precedente,
         vedere quale categoria fornitore è abbinata all'installatore
         e proporla preimpostata"""
-        print " DA FARE"
+        print "DEVO CERCARE LA CATEGORIA DEL PRECEDENTE RECORD E IMPOSTARLO"
         #self.id_fornitore_customcombobox.presetCategoria = "CICCIO"
 
 
     def setMonth(self):
-        mesi = self.dao.cadenza.split() or []
+        mesi = json.loads( self.dao.cadenza or [])#.split(",")
         if "01" in mesi: self.checkbutton_01.set_active(True)
         else: self.checkbutton_01.set_active(False)
         if "02" in mesi: self.checkbutton_02.set_active(True)
@@ -152,7 +154,7 @@ class AnagraficaServCSAEdit(AnagraficaEdit):
             mesi.append("11")
         if self.checkbutton_12.get_active() and "12" not in mesi:
             mesi.append("12")
-        return mesi
+        return json.dumps(mesi)
 
     def _clear(self):
         """ Funzione di reset o pulizia della UI """
@@ -169,6 +171,7 @@ class AnagraficaServCSAEdit(AnagraficaEdit):
         #idArticolo = self.id_articolo_customcombobox.getId()
 
         self.dao.id_cliente = self.id_cliente_customcombobox.getId()
+        self.dao.id_persona_giuridica = self.id_fornitore_customcombobox.getId()
         self.dao.id_articolo = self.id_articolo_customcombobox.getId()
         #self.dao.id_commessa = self.id_articolo_customcombobox.getId()
         self.dao.combustibile = self.combustibile_entry.get_text()
