@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <!-- interface-requires pythonplugin 0.0 -->
   <requires lib="gtk+" version="2.16"/>
+  <!-- interface-requires pythonplugin 0.0 -->
   <!-- interface-naming-policy toplevel-contextual -->
   <object class="GtkAdjustment" id="adjustment1">
     <property name="upper">100</property>
@@ -12,11 +12,6 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="stock">gtk-execute</property>
-  </object>
-  <object class="GtkImage" id="avvertimento_sconto_image">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">gtk-dialog-warning</property>
   </object>
   <object class="GtkVBox" id="anagrafica_documenti_detail_vbox">
     <property name="visible">True</property>
@@ -1495,12 +1490,11 @@
                                                             <object class="GtkLabel" id="lotto_temp_label">
                                                             <property name="visible">True</property>
                                                             <property name="can_focus">False</property>
-                                                            <property name="label" translatable="yes">Lotto</property>
+                                                            <property name="label" translatable="yes">Lotto Ven</property>
                                                             </object>
                                                             <packing>
                                                             <property name="expand">False</property>
                                                             <property name="fill">False</property>
-                                                            <property name="padding">2</property>
                                                             <property name="position">0</property>
                                                             </packing>
                                                             </child>
@@ -1522,24 +1516,6 @@
                                                             <property name="expand">True</property>
                                                             <property name="fill">True</property>
                                                             <property name="position">1</property>
-                                                            </packing>
-                                                            </child>
-                                                            <child>
-                                                            <object class="GtkEntry" id="numero_lotto_entry">
-                                                            <property name="width_request">160</property>
-                                                            <property name="visible">True</property>
-                                                            <property name="can_focus">True</property>
-                                                            <property name="invisible_char">●</property>
-                                                            <property name="invisible_char_set">True</property>
-                                                            <property name="primary_icon_activatable">False</property>
-                                                            <property name="secondary_icon_activatable">False</property>
-                                                            <property name="primary_icon_sensitive">True</property>
-                                                            <property name="secondary_icon_sensitive">True</property>
-                                                            </object>
-                                                            <packing>
-                                                            <property name="expand">False</property>
-                                                            <property name="fill">False</property>
-                                                            <property name="position">2</property>
                                                             </packing>
                                                             </child>
                                                           </object>
@@ -2194,15 +2170,15 @@
                                                   </packing>
                                                 </child>
                                                 <child>
-                                                  <object class="GtkHBox" id="hbox41">
+                                                  <object class="GtkHBox" id="hbox40">
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">False</property>
                                                     <child>
-                                                      <object class="GtkLabel" id="data_scadenza_label">
+                                                      <object class="GtkLabel" id="numero_lotto_label">
                                                         <property name="width_request">110</property>
                                                         <property name="visible">True</property>
                                                         <property name="can_focus">False</property>
-                                                        <property name="label" translatable="yes">Data scadenza</property>
+                                                        <property name="label" translatable="yes">Numero lotto </property>
                                                       </object>
                                                       <packing>
                                                         <property name="expand">False</property>
@@ -2211,15 +2187,57 @@
                                                       </packing>
                                                     </child>
                                                     <child>
-                                                      <object class="DateWidget" id="data_scadenza_datewidget">
+                                                      <object class="GtkEntry" id="numero_lotto_entry">
                                                         <property name="width_request">160</property>
                                                         <property name="visible">True</property>
-                                                        <property name="can_focus">False</property>
+                                                        <property name="can_focus">True</property>
+                                                        <property name="invisible_char">●</property>
+                                                        <property name="invisible_char_set">True</property>
+                                                        <property name="primary_icon_activatable">False</property>
+                                                        <property name="secondary_icon_activatable">False</property>
+                                                        <property name="primary_icon_sensitive">True</property>
+                                                        <property name="secondary_icon_sensitive">True</property>
                                                       </object>
                                                       <packing>
                                                         <property name="expand">False</property>
                                                         <property name="fill">False</property>
                                                         <property name="position">1</property>
+                                                      </packing>
+                                                    </child>
+                                                    <child>
+                                                      <object class="GtkHBox" id="hbox41">
+                                                        <property name="visible">True</property>
+                                                        <property name="can_focus">False</property>
+                                                        <child>
+                                                          <object class="GtkLabel" id="data_scadenza_label">
+                                                            <property name="width_request">110</property>
+                                                            <property name="visible">True</property>
+                                                            <property name="can_focus">False</property>
+                                                            <property name="label" translatable="yes">Data scadenza</property>
+                                                          </object>
+                                                          <packing>
+                                                            <property name="expand">False</property>
+                                                            <property name="fill">False</property>
+                                                            <property name="position">0</property>
+                                                          </packing>
+                                                        </child>
+                                                        <child>
+                                                          <object class="DateWidget" id="data_scadenza_datewidget">
+                                                            <property name="width_request">160</property>
+                                                            <property name="visible">True</property>
+                                                            <property name="can_focus">False</property>
+                                                          </object>
+                                                          <packing>
+                                                            <property name="expand">False</property>
+                                                            <property name="fill">False</property>
+                                                            <property name="position">1</property>
+                                                          </packing>
+                                                        </child>
+                                                      </object>
+                                                      <packing>
+                                                        <property name="expand">False</property>
+                                                        <property name="fill">False</property>
+                                                        <property name="position">2</property>
                                                       </packing>
                                                     </child>
                                                   </object>
@@ -2273,7 +2291,7 @@
                                                         <signal name="toggled" handler="on_dettaglio_giacenza_togglebutton_toggled" swapped="no"/>
                                                       </object>
                                                       <packing>
-                                                        <property name="expand">False</property>
+                                                        <property name="expand">True</property>
                                                         <property name="fill">True</property>
                                                         <property name="position">3</property>
                                                       </packing>
@@ -4762,6 +4780,11 @@ _
         <property name="position">1</property>
       </packing>
     </child>
+  </object>
+  <object class="GtkImage" id="avvertimento_sconto_image">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-dialog-warning</property>
   </object>
   <object class="GtkImage" id="calcola_importi_image">
     <property name="visible">True</property>
