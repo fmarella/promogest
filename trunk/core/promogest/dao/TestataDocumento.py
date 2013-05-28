@@ -44,7 +44,6 @@ from promogest.dao.NumeroLottoTemp import NumeroLottoTemp
 from promogest.modules.PrimaNota.dao.TestataPrimaNota import TestataPrimaNota
 from promogest.modules.PrimaNota.dao.RigaPrimaNota import RigaPrimaNota
 from promogest.modules.PrimaNota.dao.RigaPrimaNotaTestataDocumentoScadenza import RigaPrimaNotaTestataDocumentoScadenza
-from ScontoRigaMovimento import ScontoRigaMovimento
 from promogest.dao.RigaMovimentoFornitura import RigaMovimentoFornitura
 from promogest.modules.Pagamenti.dao.TestataDocumentoScadenza import TestataDocumentoScadenza
 from promogest.dao.InformazioniFatturazioneDocumento import InformazioniFatturazioneDocumento
@@ -191,45 +190,6 @@ class TestataDocumento(Dao):
         return getStringaSconti(listSconti)
     stringaSconti = property(_getStringaScontiTestataDocumento)
 
-
-    #def _getIntestatario(self):
-        #"""
-        #Restituisce la ragione sociale o cognome + nome
-        #se la ragione sociale e' vuota
-        #"""
-        #intestatario = ''
-
-        #if self.id_cliente is not None:
-            #if (hasattr(self, 'ragione_sociale_cliente') and
-                #hasattr(self, 'cognome_cliente') and
-                #hasattr(self, 'nome_cliente')):
-                #intestatario = self.ragione_sociale_cliente
-                #if intestatario == '':
-                    #intestatario = self.cognome_cliente + ' ' + self.nome_cliente
-                #return intestatario
-            #else:
-                #cliente = leggiCliente(self.id_cliente)
-                #intestatario = cliente['ragioneSociale']
-                #if intestatario == '':
-                    #intestatario = cliente['cognome'] + ' ' + cliente['nome']
-                #return intestatario
-        #elif self.id_fornitore is not None:
-            #if (hasattr(self, 'ragione_sociale_fornitore') and
-                #hasattr(self, 'cognome_fornitore') and
-                #hasattr(self, 'nome_fornitore')):
-                #intestatario = self.ragione_sociale_fornitore
-                #if intestatario == '':
-                    #intestatario = self.cognome_fornitore + ' ' + self.nome_fornitore
-                #return intestatario
-            #else:
-                #fornitore = leggiFornitore(self.id_fornitore)
-                #intestatario = fornitore['ragioneSociale']
-                #if intestatario == '':
-                    #intestatario = fornitore['cognome'] + ' ' + fornitore['nome']
-                #return intestatario
-        #else:
-            #return ''
-
     def _getIntestatario(self):
         """
         Restituisce la ragione sociale o cognome + nome
@@ -268,9 +228,21 @@ class TestataDocumento(Dao):
         else:
             return ''
 
-
-    def _getTotaliDocumento(self):
+    @property
+    def totali(self):
         """ funzione di calcolo dei totali documento """
+
+        def getSpesePagamento(pagamento):
+            cache = CachedDaosDict()
+            if pagamento in cache['pagamento']:
+                p = cache['pagamento'][pagamento]
+                if Decimal(str(p.spese or 0)) != Decimal(0):
+                    return Decimal(str(p.spese)), calcolaPrezzoIva(Decimal(str(p.spese)), Decimal(str(p.perc_aliquota_iva)))
+                else:
+                    return (Decimal(0), Decimal(0))
+            else:
+                return (Decimal(0), Decimal(0))
+
         self.__operazione = leggiOperazione(self.operazione)
         fonteValore = self.__operazione["fonteValore"]
         cache = CachedDaosDict()
@@ -284,18 +256,6 @@ class TestataDocumento(Dao):
         totaleRicaricatoLordo = Decimal(0)
         totaleScontato = Decimal(0)
         castellettoIva = {}
-        def getSpesePagamento(pagamento):
-            cache = CachedDaosDict()
-            #p = Pagamento().select(denominazioneEM=pagamento, batchSize=None)
-            if pagamento in cache['pagamento']:
-                #p = p[0]
-                p = cache['pagamento'][pagamento]
-                if Decimal(str(p.spese or 0)) != Decimal(0):
-                    return Decimal(str(p.spese)), calcolaPrezzoIva(Decimal(str(p.spese)), Decimal(str(p.perc_aliquota_iva)))
-                else:
-                    return (Decimal(0), Decimal(0))
-            else:
-                return (Decimal(0), Decimal(0))
 
         spese = Decimal(0)
         impon_spese = Decimal(0)
@@ -344,10 +304,6 @@ class TestataDocumento(Dao):
                     aliquotaIvaRiga = daoiva.percentuale
             if not aliquotaIvaRiga: # solo se non l'ho trovato dall'id prendo quello della percentuale
                 aliquotaIvaRiga =  percentualeIvaRiga
-#                idAliquotaIvas = AliquotaIva().select(percentuale=aliquotaIvaRiga)
-#                if idAliquotaIvas:
-#                    idAliquotaIva = idAliquotaIvas[0].id
-#                    daoiva = idAliquotaIvas[0]
             totaleRiga = riga.totaleRiga
 
             if (fonteValore == "vendita_iva" or fonteValore == "acquisto_iva"):
@@ -377,7 +333,6 @@ class TestataDocumento(Dao):
             else:
                 denominazione = ""
                 denominazione_breve = ""
-#                daoiva = AliquotaIva().getRecord(id=1)
             if idAliquotaIva not in castellettoIva.keys():
                 castellettoIva[idAliquotaIva] = {
                     'percentuale': percentualeIvaRiga,
@@ -411,8 +366,6 @@ class TestataDocumento(Dao):
                 elif s.tipo_sconto == 'valore':
                     totaleImponibileScontato = totaleImponibileScontato - Decimal(s.valore)
             # riporta l'insieme di sconti ad una percentuale globale
-#            if totaleNonScontato == 0:
- #               totaleNonScontato = 1
             if totaleScontato >0:
                 percentualeScontoGlobale = (1 - totaleImponibileScontato / totaleImponibile) * 100
             else:
@@ -420,7 +373,6 @@ class TestataDocumento(Dao):
 
             totaleImpostaScontata = 0
             totaleImponibileScontato = 0
-#            totaleScontato = 0
             # riproporzione del totale, dell'imponibile e dell'imposta
             for k in castellettoIva.keys():
                 castellettoIva[k]['totale'] = mN(castellettoIva[k]['totale'] * (1 - Decimal(percentualeScontoGlobale) / 100), 2)
@@ -451,18 +403,14 @@ class TestataDocumento(Dao):
 
         self._totaleRicaricatoIva = mN(self._totaleRicaricatoLordo,2) - mN(self._totaleRicaricatoImponibile,2)
         self._totaleOggetti = self._totaleScontato - self._totaleRicaricatoLordo
-        #print " self._totaleOggetti", self._totaleOggetti
         self._totaleImpostaScontata = mN(totaleImpostaScontata,2) + mN(imposta_spese,2)
         self._castellettoIva = []
         for k in castellettoIva.keys():
-            #if k !=0:
             dictCastellettoIva = castellettoIva[k]
             dictCastellettoIva['aliquota'] = castellettoIva[k]["percentuale"]
             self._castellettoIva.append(dictCastellettoIva)
 
         return None
-
-    totali = property(_getTotaliDocumento, )
 
     def contieneMovimentazione(self, righe=None):
         """
