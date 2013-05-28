@@ -237,6 +237,9 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self.on_confirm_row_button_clicked(widget=None)
         elif keyname == 'F6':  # confermo e non pulisco
             self.on_confirm_row_withoutclean_button_clicked(widget=None)
+        elif keyname == 'F7':
+            self.notebook.set_current_page(2)
+            self.totale_colli_entry.grab_focus()
 
     def azzeraRiga(self, numero=0):
         """
