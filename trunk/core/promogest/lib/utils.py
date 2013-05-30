@@ -2836,6 +2836,23 @@ def fenceDialog():
     dialog.run()
     dialog.destroy()
 
+def inputDialog(messaggio, parentWindow=None):
+    dialog = gtk.Dialog('Richiesta dati',
+                        parentWindow,
+                        GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
+                        (gtk.STOCK_OK, gtk.RESPONSE_ACCEPT))
+    dialog.set_resizable(False)
+    label = gtk.Label(messaggio)
+    entry = gtk.Entry()
+    box = dialog.get_content_area()
+    box.add(label)
+    box.add(entry)
+    dialog.show_all()
+    dialog.run()
+    testo = entry.get_text()
+    dialog.destroy()
+    return testo
+
 def inputPasswordDialog(parentWindow=None):
     dialog = gtk.Dialog('Richiesta password',
                         parentWindow,
@@ -2853,7 +2870,6 @@ def inputPasswordDialog(parentWindow=None):
     pwd = entry.get_text()
     dialog.destroy()
     return pwd
-
 
 def leggiRevisioni():
     """ controllo se il pg2 è da aggiornare o no"""
