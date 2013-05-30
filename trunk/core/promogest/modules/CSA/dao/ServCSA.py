@@ -26,11 +26,11 @@ from promogest.Environment import *
 from promogest.dao.Dao import Dao
 from migrate import *
 from promogest.modules.CSA.dao.LuogoInstallazione import LuogoInstallazione , t_luogo_installazione
+from promogest.modules.CSA.dao.TipoCombustibile import TipoCombustibile , t_tipo_combustibile
 #from promogest.dao.Articolo import Articolo
 
 from promogest.dao.Cliente import Cliente, t_cliente
-#from promogest.modules.CSA.dao.TipoApparecchio import TipoApparecchio
-#from promogest.modules.GestioneCommesse.dao.TestataCommessa import TestataCommessa,t_testatacommessa
+from promogest.dao.PersonaGiuridica import PersonaGiuridica_ , t_persona_giuridica
 
 try:
     t_serv_csa = Table('servizio_csa', params['metadata'],
@@ -48,12 +48,15 @@ except:
                ForeignKey(fk_prefix + 'cliente.id',
                           onupdate='CASCADE', ondelete='CASCADE'),nullable=True),
         Column('numero_serie', String(200), nullable=True),
-        Column('combustibile', String(200), nullable=True),
+        #Column('combustibile', String(200), nullable=True),
         Column('data_avviamento', DateTime, nullable=True),
         Column('tenuta_libretto', Boolean, default=False, nullable=False),
 
         Column('id_luogo_installazione', Integer,
                ForeignKey(fk_prefix + 'luogo_installazione.id',
+                          onupdate='CASCADE', ondelete='CASCADE'),nullable=True),
+        Column('id_tipo_combustibile', Integer,
+               ForeignKey(fk_prefix + 'tipo_combustibile.id',
                           onupdate='CASCADE', ondelete='CASCADE'),nullable=True),
         Column('id_persona_giuridica', Integer,
                ForeignKey(fk_prefix + 'persona_giuridica.id',
@@ -63,7 +66,6 @@ except:
         schema=params['schema'],
         useexisting=True,
         )
-
 
     t_serv_csa.create(checkfirst=True)
 
@@ -84,6 +86,21 @@ class ServCSA(Dao):
             dic = {k: t_serv_csa.c.numero_serie.ilike("%"+v+"%")}
         return dic[k]
 
+    @property
+    def luogo_installazione(self):
+        #a = GasRefrigerante().getRecord(id=self.id_gas_refrigerante)
+        if self.luogoinsta:
+            return self.luogoinsta.denominazione
+        else:
+            return _('luogo installazione indeterminato')
+
+    @property
+    def tipo_combustibile(self):
+        #a = GasRefrigerante().getRecord(id=self.id_gas_refrigerante)
+        if self.tipocombu:
+            return self.tipocombu.denominazione
+        else:
+            return _('tipo combustibile indeterminato')
 
 std_mapper = mapper(ServCSA, t_serv_csa,   properties={
 
@@ -92,6 +109,12 @@ std_mapper = mapper(ServCSA, t_serv_csa,   properties={
             backref="serv_csa"),
         "CLI":relation(Cliente,
             primaryjoin=t_serv_csa.c.id_cliente== t_cliente.c.id,
+            backref="serv_csa"),
+        "PG":relation(PersonaGiuridica_,
+            primaryjoin=t_serv_csa.c.id_persona_giuridica== t_persona_giuridica.c.id,
+            backref="serv_csa"),
+        "tipocombu":relation(TipoCombustibile,
+            primaryjoin=t_serv_csa.c.id_tipo_combustibile== t_tipo_combustibile.c.id,
             backref="serv_csa"),
 
 

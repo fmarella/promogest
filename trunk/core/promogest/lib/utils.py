@@ -1225,6 +1225,31 @@ def on_luogo_installazione_combobox_clicked(widget, button):
                         on_anagrafica_luogo_installazione_destroyed)
 
 
+def on_tipo_combustibile_combobox_clicked(widget, button):
+    """Richiama l'anagrafica degli stadi commessa """
+
+    def on_anagrafica_tipo_combustibile_destroyed(window):
+        """    """
+        # all'uscita dall'anagrafica richiamata, aggiorna l'elenco associato
+        widget.button.set_active(False)
+        id = findIdFromCombobox(widget.combobox)
+        fillComboboxTipoCombustibile(widget.combobox)
+        findComboboxRowFromId(widget.combobox, id)
+
+    if widget.button.get_property('active') is False:
+        return
+
+    from promogest.modules.CSA.ui.AnagraficaTipoCombustibile import AnagraficaTipoCombustibile
+    anag = AnagraficaTipoCombustibile()
+
+    anagWindow = anag.getTopLevel()
+    returnWindow = widget.get_toplevel()
+    anagWindow.set_transient_for(returnWindow)
+    anagWindow.show_all()
+    anagWindow.connect("destroy",
+                        on_anagrafica_tipo_combustibile_destroyed)
+
+
 def on_id_imballaggio_customcombobox_clicked(widget, button):
     """
     richiama l'anagrafica degli imballaggi
@@ -3491,4 +3516,3 @@ def resolve_save_file_path():
         elif os.name == 'nt':
             cartella = os.environ['USERPROFILE']
     return os.path.join(cartella, "documenti_" + time.strftime('%d_%m_%Y') + '.pdf')
-

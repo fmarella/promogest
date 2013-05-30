@@ -432,6 +432,25 @@ def fillComboboxLuogoInstallazione(combobox, filter=False):
     combobox.add_attribute(renderer, 'text', 2)
     combobox.set_model(model)
 
+def fillComboboxTipoCombustibile(combobox, filter=False):
+    """ Riempi combo degli stadi commessa """
+    from promogest.modules.CSA.dao.TipoCombustibile import \
+                                                    TipoCombustibile
+    model = gtk.ListStore(object, int, str)
+    stcom = TipoCombustibile().select(batchSize=None)
+    if not filter:
+        emptyRow = ''
+#    else:
+#        emptyRow = '< Tutti >'
+    model.append((None, 0, emptyRow))
+    for c in stcom:
+        model.append((c, c.id, (c.denominazione or '')[0:20]))
+
+    combobox.clear()
+    renderer = gtk.CellRendererText()
+    combobox.pack_start(renderer, True)
+    combobox.add_attribute(renderer, 'text', 2)
+    combobox.set_model(model)
 
 def fillComboboxMultipli(combobox, idArticolo=None,
                                 noSottoMultipli=False, filter=False):

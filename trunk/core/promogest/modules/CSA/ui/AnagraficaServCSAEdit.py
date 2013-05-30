@@ -52,8 +52,11 @@ class AnagraficaServCSAEdit(AnagraficaEdit):
         self.id_commessa_customcombobox.setHandler("commessa")
 
         fillComboboxLuogoInstallazione(self.luogo_installazione_combobox.combobox)
+        fillComboboxTipoCombustibile(self.tipo_combustibile_combobox.combobox)
         self.luogo_installazione_combobox.connect('clicked',
                                             on_luogo_installazione_combobox_clicked)
+        self.tipo_combustibile_combobox.connect('clicked',
+                                            on_tipo_combustibile_combobox_clicked)
 
         model = self.manutenzione_combobox.get_model()
         model.clear()
@@ -80,8 +83,8 @@ class AnagraficaServCSAEdit(AnagraficaEdit):
         """
         self._clear()
         findComboboxRowFromId(self.luogo_installazione_combobox.combobox, self.dao.id_luogo_installazione)
+        findComboboxRowFromId(self.tipo_combustibile_combobox.combobox, self.dao.id_tipo_combustibile)
         self.numero_seriale_entry.set_text(self.dao.numero_serie or "")
-        self.combustibile_entry.set_text(self.dao.combustibile or "")
         self.id_cliente_customcombobox.setId(self.dao.id_cliente)
         self.id_installatore_customcombobox.setId(self.dao.id_persona_giuridica)
         self.id_articolo_customcombobox.setId(self.dao.id_articolo)
@@ -102,7 +105,7 @@ class AnagraficaServCSAEdit(AnagraficaEdit):
 
 
     def setMonth(self):
-        mesi = json.loads( self.dao.cadenza or [])#.split(",")
+        mesi = json.loads( self.dao.cadenza or str([]))#.split(",")
         if "01" in mesi: self.checkbutton_01.set_active(True)
         else: self.checkbutton_01.set_active(False)
         if "02" in mesi: self.checkbutton_02.set_active(True)
@@ -174,11 +177,11 @@ class AnagraficaServCSAEdit(AnagraficaEdit):
         self.dao.id_persona_giuridica = self.id_installatore_customcombobox.getId()
         self.dao.id_articolo = self.id_articolo_customcombobox.getId()
         #self.dao.id_commessa = self.id_articolo_customcombobox.getId()
-        self.dao.combustibile = self.combustibile_entry.get_text()
         self.dao.numero_serie = self.numero_seriale_entry.get_text()
         self.dao.manutenzione = findStrFromCombobox(self.manutenzione_combobox,0)
         self.dao.tenuta_libretto = bool(self.libretto_checkbutton.get_active())
         self.dao.data_avviamento = stringToDate(self.data_avviamento_datewidget.get_text())
+        self.dao.id_tipo_combustibile = findIdFromCombobox(self.tipo_combustibile_combobox.combobox)
         self.dao.id_luogo_installazione = findIdFromCombobox(self.luogo_installazione_combobox.combobox)
         self.dao.cadenza = self.getMonth()
         self.dao.persist()
