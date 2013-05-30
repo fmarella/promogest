@@ -30,8 +30,6 @@ from promogest.dao.Articolo import Articolo
 from promogest.dao.AliquotaIva import AliquotaIva
 from promogest.dao.DaoUtils import giacenzaArticolo
 from promogest.dao.Pagamento import Pagamento
-from promogest.dao.Fornitura import Fornitura
-from promogest.dao.TestataMovimento import TestataMovimento
 
 if posso("PW"):
     from promogest.modules.PromoWear.ui import AnagraficaDocumentiEditPromoWearExt
@@ -39,7 +37,6 @@ if posso("SM"):
     from promogest.modules.SuMisura.ui import AnagraficaDocumentiEditSuMisuraExt
 if posso("GN"):
     from promogest.modules.GestioneNoleggio.ui import AnagraficaDocumentiEditGestioneNoleggioExt
-from promogest.modules.Pagamenti.ui import AnagraficadocumentiPagamentExt
 if posso("ADR"):
     from promogest.modules.ADR.ui import AnagraficaDocumentiEditADRExt
 
