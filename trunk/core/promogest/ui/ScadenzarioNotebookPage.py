@@ -65,6 +65,8 @@ class ScadenzarioNotebookPage(GladeWidget):
         tipo_doc = ''
         for t in tds:
             doc = TestataDocumento().getRecord(id=t.id_testata_documento)
+            if doc.operazione not in Environment.hapag:
+                continue
             if doc.documento_saldato:
                 continue
             if doc.id_fornitore and self.da_pagare:
