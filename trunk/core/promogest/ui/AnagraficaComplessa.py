@@ -437,6 +437,7 @@ class Anagrafica(GladeWidget):
 
                 self.record_fattura_button.set_sensitive(False)
                 self.segna_pagato_button.set_sensitive(dao is not None)
+                self.email_toolbutton.set_sensitive(dao is not None)
             elif len(daos) > 1:
                 self.record_edit_button.set_sensitive(False)
                 self.record_edit_menu.set_sensitive(False)
@@ -453,6 +454,7 @@ class Anagrafica(GladeWidget):
                 if daos[0].__class__.__name__ == 'TestataDocumento':
                     self.record_fattura_button.set_sensitive(True)
                     self.segna_pagato_button.set_sensitive(True)
+                    self.email_toolbutton.set_sensitive(True)
         else:
             self.record_edit_button.set_sensitive(False)
             self.record_edit_menu.set_sensitive(False)
@@ -468,6 +470,7 @@ class Anagrafica(GladeWidget):
 
             self.record_fattura_button.set_sensitive(False)
             self.segna_pagato_button.set_sensitive(False)
+            self.email_toolbutton.set_sensitive(False)
 
     def on_anagrafica_filter_treeview_row_activated(self, widget, path, colum):
         """ Funzione che si attiva nel momento in cui si fa doppio click per
@@ -499,6 +502,7 @@ class Anagrafica(GladeWidget):
 
                 self.record_fattura_button.set_sensitive(False)
                 self.segna_pagato_button.set_sensitive(dao is not None)
+                self.email_toolbutton.set_sensitive(dao is not None)
             elif len(daos) > 1:
                 self.record_edit_button.set_sensitive(False)
                 self.record_edit_menu.set_sensitive(False)
@@ -515,6 +519,7 @@ class Anagrafica(GladeWidget):
                 if daos[0].__class__.__name__ == 'TestataDocumento':
                     self.record_fattura_button.set_sensitive(True)
                     self.segna_pagato_button.set_sensitive(True)
+                    self.email_toolbutton.set_sensitive(True)
         else:
             self.record_edit_button.set_sensitive(False)
             self.record_edit_menu.set_sensitive(False)
@@ -530,6 +535,7 @@ class Anagrafica(GladeWidget):
 
             self.record_fattura_button.set_sensitive(False)
             self.segna_pagato_button.set_sensitive(False)
+            self.email_toolbutton.set_sensitive(False)
 
     def on_record_new_activate(self, widget=None, from_other_dao=None):
         self.editElement.setVisible(True)
