@@ -21,16 +21,13 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 import PyPDF2
-from calendar import Calendar
 import os
 import glob
 import tempfile
 from promogest import Environment
-from promogest.lib.utils import *
+from promogest.lib.utils import multilinedirtywork, pbar
 from promogest.lib.sla2pdf.Sla2Pdf_ng import Sla2Pdf_ng
 from promogest.lib.sla2pdf.SlaTpl2Sla import SlaTpl2Sla as SlaTpl2Sla_ng
-from promogest.lib.SlaTpl2Sla import SlaTpl2Sla
-from promogest.lib.HtmlHandler import renderTemplate, renderHTML
 from promogest.dao.Azienda import Azienda
 
 
@@ -41,7 +38,6 @@ def _to_pdf(dao, classic=None, template_file=None):
     operationNameUnderscored = operationName.replace(' ', '_').lower()
 
     _slaTemplate = None
-    _slaTemplateObj = None
 
     # aggiungo i dati azienda al dao in modo che si gestiscano a monte
     azienda = Azienda().getRecord(id=Environment.azienda)
@@ -107,11 +103,11 @@ def to_pdf(daos, output, anag=None):
     i = 1
     if anag:
         anag.pbar_anag_complessa.show()
-    #from operator import attrgetter
-    #daos = sorted(daos, key=attrgetter('operazione', 'numero'), reverse=True)
-    #daos.sort(key=lambda x: x.intestatario.strip().upper())
     for dao in daos:
-        print "D", dao.intestatario
+        # Per i clienti con PEC non invio il documento in stampa
+        if dao.id_cliente:
+            if dao.email_pec:
+                continue
         if anag:
             pbar(anag.pbar_anag_complessa,parziale=daos.index(dao), totale=len(daos), text="GEN STAMPE MULTIPLE", noeta=False)
         if dao.__class__.__name__ == 'TestataDocumento':
@@ -134,3 +130,90 @@ def to_pdf(daos, output, anag=None):
     if anag:
         pbar(anag.pbar_anag_complessa,stop=True)
         anag.pbar_anag_complessa.set_property("visible",False)
+
+import time
+try:
+    import keyring
+except:
+    keyring = None
+import smtplib
+from os.path import basename
+import mimetypes
+from email import encoders
+from email.mime.base import MIMEBase
+from email.mime.multipart import MIMEMultipart
+from email.utils import formataddr
+
+from promogest.Environment import session, azienda
+from promogest.lib.utils import resolve_save_file_path
+from promogest.dao.AccountEmail import AccountEmail
+
+class NoAccountEmailFound(Exception): pass
+class NetworkError(Exception): pass
+
+def do_send_mail(daos, anag=None):
+    if anag:
+        anag.pbar_anag_complessa.show()
+    # recupera informazioni account posta elettronica
+    try:
+        account_email = session.query(AccountEmail).filter_by(id_azienda=azienda, preferito=True).one()
+    except: # NoResultFound
+        raise NoAccountEmailFound("Nessun account email configurato")
+
+    password = ''
+    if keyring:
+        password = keyring.get_password('promogest2', account_email.username)
+    else:
+        # TODO: leggere la password da input utente
+        password = ''
+
+    s = None
+    try:
+        s = smtplib.SMTP_SSL(account_email.server_smtp)
+        s.login(account_email.username, password)
+    except:
+        raise NetworkError('Errore di connessione al server di posta in uscita.')
+
+    for dao in daos:
+        if not dao.id_cliente:
+            continue
+
+        # recupera email destinatario
+        destinatario = dao.CLI.email_pec or dao.CLI.email_principale
+        if not destinatario:
+            continue
+
+        if anag:
+            pbar(anag.pbar_anag_complessa,
+                 parziale=daos.index(dao), totale=len(daos),
+                 text="INVIO EMAIL MULTIPLO", noeta=False)
+
+        # genera il documento in formato pdf
+        path = resolve_save_file_path()
+        fp = open(path, 'wb')
+        fp.write(_to_pdf(dao))
+        fp.close()
+        # prepara il messaggio email con allegato
+        outer = MIMEMultipart()
+        outer['Subject'] = 'invio fattura'
+        outer['To'] = formataddr((destinatario, destinatario))
+        outer['From'] = formataddr((account_email.indirizzo, account_email.indirizzo))
+        ctype, encoding = mimetypes.guess_type(path)
+        maintype, subtype = ctype.split('/', 1)
+        fp = open(path, 'rb')
+        msg = MIMEBase(maintype, subtype)
+        msg.set_payload(fp.read())
+        fp.close()
+        encoders.encode_base64(msg)
+        msg.add_header('Content-Disposition', 'attachment', filename=basename(path))
+        outer.attach(msg)
+        try:
+            s.sendmail(account_email.indirizzo, [destinatario], outer.as_string())
+        except:
+            raise NetworkError('Invio fattura a "{0}" non riuscito.'.format(destinatario))
+        time.sleep(5)
+    s.quit()
+    if anag:
+        pbar(anag.pbar_anag_complessa, stop=True)
+        anag.pbar_anag_complessa.set_property("visible", False)
+

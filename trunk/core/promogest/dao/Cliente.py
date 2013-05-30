@@ -202,6 +202,18 @@ class Cliente(Dao):
         return ""
 
     @property
+    def email_pec(self):
+        """
+        Ritorna l'indirizzo email pec del cliente
+        """
+        if self.id:
+            for reca in getRecapitiCliente(self.id):
+                if reca.tipo_recapito == "Email PEC":
+                    return reca.recapito
+        return ""
+
+
+    @property
     def fax_principale(self):
         """
         Ritorna il fax principale del cliente

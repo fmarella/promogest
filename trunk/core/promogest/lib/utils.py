@@ -3446,3 +3446,14 @@ def fill_treeview_with_data(treeview, data_provider, flag=False, clear=True):
 
 def prep2json(daos):
     return [d.jsanity() for d in daos]
+
+def resolve_save_file_path():
+    """ risoluzione della cartella di salvataggio del file e del nome del file """
+    cartella = setconf("General", "cartella_predefinita") or ""
+    if cartella == '':
+        if os.name == 'posix':
+            cartella = os.environ['HOME']
+        elif os.name == 'nt':
+            cartella = os.environ['USERPROFILE']
+    return os.path.join(cartella, "documenti_" + time.strftime('%d_%m_%Y') + '.pdf')
+

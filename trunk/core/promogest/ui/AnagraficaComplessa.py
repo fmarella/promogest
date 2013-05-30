@@ -575,19 +575,23 @@ class Anagrafica(GladeWidget):
         else:
             fenceDialog()
 
+    def on_email_toolbutton_clicked(self, widget):
+        from promogest.lib.DaoTransform import do_send_mail, \
+                NoAccountEmailFound, NetworkError
+        daos = get_selected_daos(self.anagrafica_filter_treeview)
+        if len(daos) > 0:
+            if YesNoDialog('Si stanno inviando i documenti selezionati tramite posta elettronica, continuare?'):
+                try:
+                    do_send_mail(daos, self)
+                except (NoAccountEmailFound, NetworkError) as ex:
+                    messageError(str(ex))
+
     def on_selected_record_print_activate(self, widget):
         from promogest.lib.utils import do_print
         from promogest.lib.DaoTransform import to_pdf
         daos = get_selected_daos(self.anagrafica_filter_treeview)
         if len(daos) > 1:
-            # risoluzione della cartella di salvataggio del file e del nome del file
-            cartella = setconf("General", "cartella_predefinita") or ""
-            if cartella == '':
-                if os.name == 'posix':
-                    cartella = os.environ['HOME']
-                elif os.name == 'nt':
-                    cartella = os.environ['USERPROFILE']
-            fileName = os.path.join(cartella, "documenti_" + time.strftime('%d_%m_%Y') + '.pdf')
+            fileName = resolve_save_file_path()
             # conversione dei DAO in un unico documento PDF
             to_pdf(daos, fileName, self)
             try:
