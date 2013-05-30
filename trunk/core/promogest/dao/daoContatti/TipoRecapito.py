@@ -2,8 +2,10 @@
 
 #    Copyright (C) 2005-2012,2011 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
+#    Copyright (C) 2013 Francesco Marella <francesco.marella@anche.no>
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
+#    Author: Francesco Marella <francesco.marella@anche.no>
 
 #    This file is part of Promogest.
 
@@ -36,8 +38,14 @@ class TipoRecapito(Dao):
         dic= { 'denominazione' : tipo_recapito.c.denominazione.ilike("%"+v+"%") }
         return  dic[k]
 
+
 tipo_recapito = Table('tipo_recapito',
                         params['metadata'],
                         schema = params['mainSchema'],
                         autoload=True)
 std_mapper = mapper(TipoRecapito, tipo_recapito, order_by=tipo_recapito.c.denominazione)
+
+if TipoRecapito().select(denominazione="Email PEC") is []:
+    tr = TipoRecapito()
+    tr.denominazione = "Email PEC"
+    tr.persist()
