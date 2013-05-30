@@ -2,6 +2,7 @@
 
 #    Copyright (C) 2005-2012 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
+#    Copyright (C) 2013 Francesco Marella <francesco.marella@anche.no>
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
 #    Author: Andrea Argiolas  <andrea@promotux.it>
@@ -25,8 +26,14 @@
 from promogest.ui.GladeWidget import GladeWidget
 from PIL import Image
 import os
+try:
+    import keyring
+except:
+    keyring = None
 from promogest import Environment
+from promogest.Environment import session, azienda
 from promogest.dao.Azienda import Azienda
+from promogest.dao.AccountEmail import AccountEmail
 from promogest.lib.utils import *
 from promogest.ui.utilsCombobox import *
 
@@ -34,6 +41,7 @@ from promogest.ui.utilsCombobox import *
 class AnagraficaAziende(GladeWidget):
     """ Anagrafica aziende """
     filename = None
+    account_model = None
 
     def __init__(self, mainWindow):
         self._mainWindow = mainWindow
@@ -50,8 +58,7 @@ class AnagraficaAziende(GladeWidget):
     def draw(self):
         # Popolamento campi in maschera dal dao
         self.setDao()
-        #self.show_all()
-        #self.getTopLevel().show_all()
+        self.__load_account_email()
         self.denominazione_entry.grab_focus()
 
     def show_all(self):
@@ -238,3 +245,71 @@ class AnagraficaAziende(GladeWidget):
         returnWindow = button.get_toplevel()
         anagWindow.set_transient_for(returnWindow)
         anagWindow.show_all()
+
+    # GESTIONE ACCOUNT EMAIL
+    def __clear_account_email(self):
+        self.nome_entry.set_text('')
+        self.indirizzo_entry.set_text('')
+        self.preferito_checkbutton.set_active(False)
+        self.server_smtp_entry.set_text('')
+        self.porta_smtp_entry.set_text('')
+        self.crypto_ssl_checkbutton.set_active(False)
+        self.username_entry.set_text('')
+        self.password_entry.set_text('')
+        self.memo_password_checkbutton.set_active(False)
+        self.save_button.set_sensitive(False)
+
+    def __load_account_email(self):
+        self.accounts_liststore.clear()
+        for account in session.query(AccountEmail).all():
+            self.accounts_liststore.append([account, account.denominazione])
+
+    def on_accounts_treeview_cursor_changed(self, treeview):
+        sel = treeview.get_selection()
+        (model, iterator) = sel.get_selected()
+        if iterator:
+            account = model.get_value(iterator, 0)
+            self.nome_entry.set_text(account.denominazione)
+            self.indirizzo_entry.set_text(account.indirizzo or '')
+            self.preferito_checkbutton.set_active(account.preferito or False)
+            self.server_smtp_entry.set_text(account.server_smtp or '')
+            self.porta_smtp_entry.set_text(str(account.porta_smtp) or 0)
+            self.crypto_ssl_checkbutton.set_active(account.cripto_SSL or False)
+            self.username_entry.set_text(account.username or '')
+            #self.password_entry.set_text(account.password or '')
+            #self.memo_password_checkbutton.set_active(False)
+            # keyring.get_password('promogest2', account.username)
+            self.account_model = account
+            self.save_button.set_sensitive(True)
+
+    def on_new_account_button_clicked(self, button):
+        self.__clear_account_email()
+        self.save_button.set_sensitive(True)
+        self.account_model = AccountEmail()
+        self.nome_entry.grab_focus()
+
+    def on_remove_account_button_clicked(self, button):
+        self.__clear_account_email()
+        self.account_model.delete()
+        self.__load_account_email()
+
+    def on_save_button_clicked(self, button):
+        self.account_model.id_azienda = azienda
+        self.account_model.denominazione = self.nome_entry.get_text()
+        self.account_model.indirizzo = self.indirizzo_entry.get_text()
+        self.account_model.preferito = self.preferito_checkbutton.get_active()
+        self.account_model.server_smtp = self.server_smtp_entry.get_text()
+        self.account_model.porta_smtp = int(self.porta_smtp_entry.get_text() or 0)
+        self.account_model.cripto_SSL = self.crypto_ssl_checkbutton.get_active()
+        self.account_model.username = self.username_entry.get_text()
+        #self.account_model.memo_password = self.memo_password_checkbutton.get_active()
+        self.account_model.persist()
+        if keyring:
+            password = self.password_entry.get_text()
+            try:
+                keyring.set_password('promogest2', self.account_model.username, password)
+            except Exception as ex:
+                messageWarning('Impossibile salvare la password nel portachiavi di sistema:\n\n%s.' % str(ex))
+        self.__clear_account_email()
+        self.__load_account_email()
+    # FINE GESTIONE ACCOUNT EMAIL
