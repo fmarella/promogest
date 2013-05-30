@@ -31,6 +31,10 @@ try:
     import keyring
 except:
     keyring = None
+    msg = """Attenzione: la libreria "keyring" necessaria per salvare la password
+in modo sicuro non è installata."""
+    messageWarning(msg)
+
 
 class AnagraficaAccountMail(Anagrafica):
     """ Anagrafica account posta elettronica """
