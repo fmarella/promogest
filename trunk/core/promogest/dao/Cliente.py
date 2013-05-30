@@ -107,33 +107,30 @@ class Cliente(Dao):
         Rimuove il cliente
         """
         if len(self.TD) > 0:
-            return """<big><b>Non è possibile cancellare il cliente.</b></big>
+            self.cancellato = True
+            session.add(self)
+        else:
+            if self.id_user:
+                utente = User().getRecord(id=self.dao.id_user)
+                if utente:
+                    utente.delete()
 
-ESISTONO DOCUMENTI COLLEGATI"""
+            if posso("IP"):
+                from promogest.modules.InfoPeso.dao.TestataInfoPeso import\
+                                                                 TestataInfoPeso
+                from promogest.modules.InfoPeso.dao.ClienteGeneralita import\
+                                                                 ClienteGeneralita
+                cltip = TestataInfoPeso().select(idCliente=dao.id, batchSize=None)
+                if cltip:
+                    for l in cltip:
+                        l.delete()
+                clcg = ClienteGeneralita().select(idCliente=dao.id, batchSize=None)
+                if clcg:
+                    for l in clcg:
+                        l.delete()
 
-        if self.id_user:
-            utente = User().getRecord(id=self.dao.id_user)
-            if utente:
-                utente.delete()
-
-        if posso("IP"):
-            from promogest.modules.InfoPeso.dao.TestataInfoPeso import\
-                                                             TestataInfoPeso
-            from promogest.modules.InfoPeso.dao.ClienteGeneralita import\
-                                                             ClienteGeneralita
-            cltip = TestataInfoPeso().select(idCliente=dao.id, batchSize=None)
-            if cltip:
-                for l in cltip:
-                    l.delete()
-            clcg = ClienteGeneralita().select(idCliente=dao.id, batchSize=None)
-            if clcg:
-                for l in clcg:
-                    l.delete()
-
-        #self.delete()
-        session.delete(self)
+            session.delete(self)
         session.commit()
-#        return "OK"
 
     @property
     def username_login(self):
@@ -251,6 +248,8 @@ ESISTONO DOCUMENTI COLLEGATI"""
             dic = {k: t_persona_giuridica.c.codice_fiscale.ilike("%"+v+"%")}
         elif k == 'idCategoria':
             dic = {k:and_(Cliente.id==ClienteCategoriaCliente.id_cliente,ClienteCategoriaCliente.id_categoria_cliente==v)}
+        elif k == 'cancellato':
+            dic = {k: or_(t_persona_giuridica.c.cancellato!=v)}
         return dic[k]
 
 t_cliente = Table('cliente',

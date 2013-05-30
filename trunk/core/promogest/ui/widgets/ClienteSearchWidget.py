@@ -93,7 +93,7 @@ class ClienteSearchWidget(CustomComboBoxSearch):
 
     def ricercaDao(self, keyname):
         from promogest.dao.Cliente import Cliente
-        cli = Cliente().select(ragioneSociale=keyname, batchSize=40)
+        cli = Cliente().select(ragioneSociale=keyname, cancellato=True, batchSize=40)
         model = self.completion.get_model()
         model.clear()
         for m in cli:

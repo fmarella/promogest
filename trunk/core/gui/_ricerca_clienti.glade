@@ -13,7 +13,7 @@
           <object class="GtkTable" id="anagrafica_clienti_filter_table">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="n_rows">9</property>
+            <property name="n_rows">10</property>
             <property name="n_columns">2</property>
             <child>
               <object class="GtkLabel" id="label34">
@@ -346,6 +346,25 @@
                 <property name="bottom_attach">6</property>
                 <property name="x_options">GTK_SHRINK | GTK_FILL</property>
                 <property name="y_options"/>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkCheckButton" id="cancellati_checkbutton">
+                <property name="label" translatable="yes">Includere cancellati</property>
+                <property name="use_action_appearance">False</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">False</property>
+                <property name="draw_indicator">True</property>
+              </object>
+              <packing>
+                <property name="right_attach">2</property>
+                <property name="top_attach">9</property>
+                <property name="bottom_attach">10</property>
+                <property name="x_options">GTK_SHRINK | GTK_FILL</property>
+                <property name="y_options"/>
+                <property name="x_padding">5</property>
+                <property name="y_padding">2</property>
               </packing>
             </child>
           </object>
@@ -1588,6 +1607,22 @@
       </packing>
     </child>
   </object>
+  <object class="GtkListStore" id="filter_listore">
+    <columns>
+      <!-- column-name PyObject1 -->
+      <column type="PyObject"/>
+      <!-- column-name gchararray1 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray2 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray3 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray4 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray5 -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
   <object class="GtkTreeView" id="anagrafica_filter_treeview">
     <property name="visible">True</property>
     <property name="can_focus">True</property>
@@ -1664,21 +1699,5 @@
         </child>
       </object>
     </child>
-  </object>
-  <object class="GtkListStore" id="filter_listore">
-    <columns>
-      <!-- column-name PyObject1 -->
-      <column type="PyObject"/>
-      <!-- column-name gchararray1 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray2 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray3 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray4 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray5 -->
-      <column type="gchararray"/>
-    </columns>
   </object>
 </interface>

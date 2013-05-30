@@ -72,6 +72,7 @@ class AnagraficaClientiFilter(AnagraficaFilter):
         fillComboboxCategorieClienti(
                         self.id_categoria_cliente_filter_combobox, True)
         self.id_categoria_cliente_filter_combobox.set_active(0)
+        self.cancellati_checkbutton.set_active(False)
         self.refresh()
 
     def refresh(self):
@@ -92,6 +93,7 @@ class AnagraficaClientiFilter(AnagraficaFilter):
                         self.codice_fiscale_filter_entry.get_text())
         idCategoria = findIdFromCombobox(
                         self.id_categoria_cliente_filter_combobox)
+        cancellati = not self.cancellati_checkbutton.get_active()
 
         def filterCountClosure():
             return Cliente().count(codice=codice,
@@ -101,6 +103,7 @@ class AnagraficaClientiFilter(AnagraficaFilter):
                                     localita=localita,
                                     provincia=provincia,
                                     partitaIva=partitaIva,
+                                    cancellato=cancellati,
                                     codiceFiscale=codiceFiscale,
                                     idCategoria=idCategoria)
 
@@ -123,6 +126,7 @@ class AnagraficaClientiFilter(AnagraficaFilter):
                                     partitaIva=partitaIva,
                                     codiceFiscale=codiceFiscale,
                                     idCategoria=idCategoria,
+                                    cancellato=cancellati,
                                     offset=offset,
                                     batchSize=batchSize)
 
