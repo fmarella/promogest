@@ -304,7 +304,14 @@ class TestataDocumento(Dao):
                     aliquotaIvaRiga = daoiva.percentuale
             if not aliquotaIvaRiga: # solo se non l'ho trovato dall'id prendo quello della percentuale
                 aliquotaIvaRiga =  percentualeIvaRiga
-            totaleRiga = riga.totaleRiga
+            if daoiva:
+                denominazione = daoiva.denominazione
+                denominazione_breve = daoiva.denominazione_breve
+            else:
+                denominazione = ""
+                denominazione_breve = ""
+
+            totaleRiga = mN(riga.totaleRiga,2)
 
             if (fonteValore == "vendita_iva" or fonteValore == "acquisto_iva"):
                 if daoiva and cache['aliquotaiva'][idAliquotaIva][1] == "Non imponibile":
@@ -312,44 +319,54 @@ class TestataDocumento(Dao):
                     totaleImponibileRiga = 0
                 else:
                     totaleEsclusoBaseImponibileRiga = 0
-                    totaleImponibileRiga = calcolaPrezzoIva(totaleRiga, -1 * percentualeIvaRiga)
+                    totaleImponibileRiga = mN(calcolaPrezzoIva(Decimal(totaleRiga), Decimal(-1 * percentualeIvaRiga)), 2)
             else:
                 if daoiva and cache['aliquotaiva'][idAliquotaIva][1] == "Non imponibile":
                     totaleEsclusoBaseImponibileRiga = totaleRiga
                     totaleImponibileRiga = 0
-                    totaleRiga = calcolaPrezzoIva(totaleRiga, percentualeIvaRiga)
+                    totaleRiga = mN(calcolaPrezzoIva(Decimal(totaleRiga), Decimal(percentualeIvaRiga)), 2)
                 else:
                     totaleEsclusoBaseImponibileRiga = 0
                     totaleImponibileRiga = totaleRiga or 0
-                    totaleRiga = calcolaPrezzoIva(totaleRiga, percentualeIvaRiga)
-            totaleImpostaRiga = totaleRiga - (totaleImponibileRiga + totaleEsclusoBaseImponibileRiga)
-            totaleNonScontato += totaleRiga
-            totaleImponibile += totaleImponibileRiga
-            totaleImposta += totaleImpostaRiga
-            totaleEsclusoBaseImponibile += totaleEsclusoBaseImponibileRiga
-            if daoiva:
-                denominazione = daoiva.denominazione
-                denominazione_breve = daoiva.denominazione_breve
-            else:
-                denominazione = ""
-                denominazione_breve = ""
+                    totaleRiga = mN(calcolaPrezzoIva(Decimal(totaleRiga), Decimal(percentualeIvaRiga)), 2)
+
             if idAliquotaIva not in castellettoIva.keys():
                 castellettoIva[idAliquotaIva] = {
                     'percentuale': percentualeIvaRiga,
                     'imponibile': totaleImponibileRiga,
-                    'imposta': totaleImpostaRiga,
-                    'totale': totaleRiga,
+                    'esclusoBaseImponibile': totaleEsclusoBaseImponibileRiga,
                     "denominazione_breve": denominazione_breve,
-                    "denominazione": denominazione}
+                    "denominazione": denominazione
+                }
             else:
-                castellettoIva[idAliquotaIva]['percentuale'] = percentualeIvaRiga
                 castellettoIva[idAliquotaIva]['imponibile'] += totaleImponibileRiga
-                castellettoIva[idAliquotaIva]['imposta'] += totaleImpostaRiga
-                castellettoIva[idAliquotaIva]['totale'] += totaleRiga
-        totaleImposta = totaleNonScontato - (totaleImponibile+totaleEsclusoBaseImponibile)
+                castellettoIva[idAliquotaIva]['esclusoBaseImponibile'] += totaleEsclusoBaseImponibileRiga
+
+        # totali e calcolo imposta
+        totaleImponibile = 0
+        totaleEsclusoBaseImponibile = 0
+        totaleImposta = 0
+        totaleNonScontato = 0
+        for k in castellettoIva.keys():
+            totaleImponibile += castellettoIva[k]['imponibile']
+            totaleEsclusoBaseImponibile += castellettoIva[k]['esclusoBaseImponibile']
+
+            castellettoIva[k]['imposta'] = mN(castellettoIva[k]['imponibile'] * castellettoIva[k]['percentuale'] / 100, 2) + castellettoIva[k]['esclusoBaseImponibile']
+            totaleImposta += castellettoIva[k]['imposta']
+
+            castellettoIva[k]['totale'] = castellettoIva[k]['imponibile'] + castellettoIva[k]['esclusoBaseImponibile'] + castellettoIva[k]['imposta']
+            totaleNonScontato += castellettoIva[k]['totale']
+
+        self._totaleNonScontato = mN(totaleImponibile, 2) + mN(totaleImposta, 2) + mN(totaleEsclusoBaseImponibile, 2) + mN(spese, 2)
+        self._totaleNonBaseImponibile = totaleEsclusoBaseImponibile
+        self._totaleImponibile = mN(totaleImponibile, 2) + mN(impon_spese, 2)
+        self._totaleImposta = mN(totaleImposta,2)  + mN(imposta_spese,2)
+
+        # ricalcolo totali con sconti
         totaleImponibileScontato = totaleImponibile
         totaleImpostaScontata = totaleImposta
         totaleScontato = totaleNonScontato
+
         scontiSuTotale = self.sconti
         applicazioneSconti = self.applicazione_sconti
 
@@ -361,8 +378,7 @@ class TestataDocumento(Dao):
                     elif applicazioneSconti == 'non scalare':
                         totaleImponibileScontato = totaleImponibileScontato - totaleNonScontato * totaleImponibileScontato * Decimal(s.valore) / 100
                     else:
-                        raise Exception, ('BUG! Tipo di applicazione sconto '
-                                          'sconosciuto: %s' % s.tipo_sconto)
+                        pass
                 elif s.tipo_sconto == 'valore':
                     totaleImponibileScontato = totaleImponibileScontato - Decimal(s.valore)
             # riporta l'insieme di sconti ad una percentuale globale
@@ -383,13 +399,11 @@ class TestataDocumento(Dao):
                 totaleImpostaScontata += Decimal(castellettoIva[k]['imposta'])
 
             totaleScontato = mN(totaleImponibileScontato + totaleImpostaScontata, 2)
-        self._totaleNonScontato = mN(totaleImponibile,2) + mN(totaleImposta,2) + mN(totaleEsclusoBaseImponibile,2) + mN(spese, 2)
+
         self._totaleScontato = mN(totaleImponibileScontato,2) + mN(totaleImpostaScontata,2) + mN(totaleEsclusoBaseImponibile,2) + mN(spese, 2)
-        self._totaleImponibile = mN(totaleImponibile,2) + mN(impon_spese,2)
-        self._totaleNonBaseImponibile = totaleEsclusoBaseImponibile
-        self._totaleImposta = mN(totaleImposta,2)  + mN(imposta_spese,2)
         self._totaleImponibileScontato = mN(totaleImponibileScontato,2) + mN(impon_spese,2)
         self._totaleRicaricatoLordo = self._totaleImponibileScontato - mN(totaleRicaricatoLordo,2)
+
         try:
             if self.data_documento < datetime.datetime(2011,9,16):
                 self._totaleRicaricatoImponibile = Decimal(self._totaleRicaricatoLordo)/(1+Decimal(20)/100)
@@ -404,6 +418,7 @@ class TestataDocumento(Dao):
         self._totaleRicaricatoIva = mN(self._totaleRicaricatoLordo,2) - mN(self._totaleRicaricatoImponibile,2)
         self._totaleOggetti = self._totaleScontato - self._totaleRicaricatoLordo
         self._totaleImpostaScontata = mN(totaleImpostaScontata,2) + mN(imposta_spese,2)
+
         self._castellettoIva = []
         for k in castellettoIva.keys():
             dictCastellettoIva = castellettoIva[k]
