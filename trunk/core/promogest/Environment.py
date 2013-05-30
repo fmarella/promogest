@@ -382,11 +382,11 @@ if os.name=="nt" and sqlalchemy.__version__ < "0.7":
     easy_install.main( ["-U","sqlalchemy==0.7.8"] )
     sys.exit()
 
-try:
-    import keyring
-except:
-    from setuptools.command import easy_install
-    easy_install.main(['-U', 'keyring'])
+#try:
+#    import keyring
+#except:
+#    from setuptools.command import easy_install
+#    easy_install.main(['-U', 'keyring'])
 
 cadenza = ["MENSILE", "BIMESTRALE", "TRIMESTRALE",
             "SEMESTRALE", "ANNUALE"]
