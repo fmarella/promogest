@@ -59,6 +59,7 @@ from promogest.ui.PanUi import PanUi, checkPan
 from promogest.ui.NewsNotebookPage import NewsNotebookPage
 from promogest.ui.CalendarNotebookPage import CalendarNotebookPage
 from promogest.ui.NotificaAllarmiNotebookPage import NotificaAllarmiNotebookPage
+from promogest.ui.ScadenzarioNotebookPage import ScadenzarioNotebookPage
 
 #inizializzano il customwidget
 from promogest.ui.widgets.ArticoloSearchWidget import ArticoloSearchWidget
@@ -1114,6 +1115,11 @@ Procedere all'installazione del modulo PromoShop? """)
 
         self.elenco_listini_page = ElencoListini(self, self.aziendaStr).draw()
         self.main_notebook.append_page(self.elenco_listini_page.elenco_listini_frame,self.elenco_listini_page.elenco_listini_label)
+
+        self.scadenzario = ScadenzarioNotebookPage(self, self.aziendaStr)
+        scadenzario_label = gtk.Label()
+        scadenzario_label.set_markup(_("<b>SCADENZARIO</b>"))
+        self.main_notebook.append_page(self.scadenzario.scadenzario_frame, scadenzario_label)
 
         self.calendar_page = CalendarNotebookPage(self, self.aziendaStr).draw()
         calendar_page_label = gtk.Label()
