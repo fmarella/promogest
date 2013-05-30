@@ -25,7 +25,7 @@ from promogest.ui.AnagraficaComplessaHtml import AnagraficaHtml
 from promogest.ui.AnagraficaComplessaFilter import AnagraficaFilter
 from promogest.dao.AccountEmail import AccountEmail
 from promogest.lib.utils import prepareFilterString, obligatoryField,\
-    messageWarning
+    messageWarning, textview_get_text, textview_set_text
 
 try:
     import keyring
@@ -161,6 +161,9 @@ class AnagraficaAccountMailEdit(AnagraficaEdit):
         self.username_entry.set_text('')
         self.password_entry.set_text('')
         self.memo_password_checkbutton.set_active(False)
+        self.oggetto_entry.set_text('')
+        self.firma_entry.set_text('')
+        textview_set_text(self.body_textview, '')
         self.save_button.set_sensitive(False)
 
     def _refresh(self):
@@ -171,6 +174,9 @@ class AnagraficaAccountMailEdit(AnagraficaEdit):
         self.porta_smtp_entry.set_text(str(self.dao.porta_smtp or '465'))
         self.crypto_ssl_checkbutton.set_active(self.dao.cripto_SSL or False)
         self.username_entry.set_text(self.dao.username or '')
+        self.oggetto_entry.set_text(self.dao.oggetto or '')
+        self.firma_entry.set_text(self.dao.firma or '')
+        textview_set_text(self.body_textview, self.dao.body or '')
         #self.password_entry.set_text(self.dao.password or '')
         #self.memo_password_checkbutton.set_active(False)
         # keyring.get_password('promogest2', self.dao.username)
@@ -187,6 +193,9 @@ class AnagraficaAccountMailEdit(AnagraficaEdit):
         self.dao.porta_smtp = int(self.porta_smtp_entry.get_text())
         self.dao.cripto_SSL = self.crypto_ssl_checkbutton.get_active()
         self.dao.username = self.username_entry.get_text()
+        self.dao.oggetto = self.oggetto_entry.get_text()
+        self.dao.firma = self.firma_entry.get_text()
+        self.dao.body = textview_get_text(self.body_textview)
         #self.dao.memo_password = self.memo_password_checkbutton.get_active()
         self.dao.persist()
 

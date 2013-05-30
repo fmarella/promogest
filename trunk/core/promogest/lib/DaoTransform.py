@@ -141,6 +141,7 @@ from os.path import basename
 import mimetypes
 from email import encoders
 from email.mime.base import MIMEBase
+from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.utils import formataddr
 
@@ -195,7 +196,8 @@ def do_send_mail(daos, anag=None):
         fp.close()
         # prepara il messaggio email con allegato
         outer = MIMEMultipart()
-        outer['Subject'] = 'invio fattura'
+        outer.set_charset('UTF-8')
+        outer['Subject'] = account_email.oggetto
         outer['To'] = formataddr((destinatario, destinatario))
         outer['From'] = formataddr((account_email.indirizzo, account_email.indirizzo))
         ctype, encoding = mimetypes.guess_type(path)
@@ -207,6 +209,8 @@ def do_send_mail(daos, anag=None):
         encoders.encode_base64(msg)
         msg.add_header('Content-Disposition', 'attachment', filename=basename(path))
         outer.attach(msg)
+        text_msg = MIMEText(account_email.body + '\n' + account_email.firma)
+        outer.attach(text_msg)
         try:
             s.sendmail(account_email.indirizzo, [destinatario], outer.as_string())
         except:

@@ -21,7 +21,8 @@
 
 from sqlalchemy import *
 from sqlalchemy.orm import *
-from promogest.Environment import params, session, azienda
+from promogest.Environment import params, session, azienda, \
+        delete_pickle
 from promogest.dao.Dao import Dao
 from promogest.dao.Azienda import Azienda
 
@@ -45,10 +46,15 @@ except:
         Column('preferito', Boolean),
         Column('username', String(250)),
         Column('password', String(250)),
+        Column('oggetto', String(500)),
+        Column('body', Text),
+        Column('firma', String(250)),
+        Column('intervallo_invio', Integer),
         UniqueConstraint('denominazione'),
         schema=params['schema'],
         useexisting=True)
     t_account_email.create(checkfirst=True)
+    delete_pickle()
 
 def reimposta_preferito(newDao):
     daos = AccountEmail().select(complexFilter=(and_(not_(AccountEmail.id==newDao.id),
