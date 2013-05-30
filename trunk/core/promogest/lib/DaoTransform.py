@@ -165,8 +165,8 @@ def do_send_mail(daos, anag=None):
     if keyring:
         password = keyring.get_password('promogest2', account_email.username)
     else:
-        # TODO: leggere la password da input utente
-        password = ''
+        from promogest.lib.utils import inputPasswordDialog
+        password = inputPasswordDialog()
 
     s = None
     try:
@@ -174,6 +174,7 @@ def do_send_mail(daos, anag=None):
         s.login(account_email.username, password)
     except:
         raise NetworkError('Errore di connessione al server di posta in uscita.')
+    del password
 
     for dao in daos:
         if not dao.id_cliente:
