@@ -60,6 +60,8 @@ class AnagraficaAziende(GladeWidget):
         self.setDao()
         self.__load_account_email()
         self.denominazione_entry.grab_focus()
+        if session.query(AccountEmail).count() == 0:
+            self.on_new_account_button_clicked(None)
 
     def show_all(self):
         """ Visualizza/aggiorna tutta la struttura dell'anagrafica """
