@@ -40,7 +40,7 @@ class AnagraficaAccountMail(Anagrafica):
         self._idAzienda = idAzienda
         Anagrafica.__init__(self,
                             windowTitle='Promogest - Anagrafica account di posta elettronica',
-                            recordMenuLabel='_Account Posta Elettronica',
+                            recordMenuLabel='_Account',
                             filterElement=AnagraficaAccountMailFilter(self),
                             htmlHandler=AnagraficaAccountMailHtml(self),
                             reportHandler=AnagraficaAccountMailReport(self),
