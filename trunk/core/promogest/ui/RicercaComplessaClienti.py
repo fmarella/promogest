@@ -43,7 +43,7 @@ import Login
 from promogest.ui.GladeWidget import GladeWidget
 
 from promogest.lib.utils import prepareFilterString, showAnagraficaRichiamata
-from promogest.ui.utilsCombobox import fillComboboxCategorieClienti, findIdFromCombobox
+from promogest.ui.utilsCombobox import fillComboboxCategorieClienti, findIdFromCombobox, findComboboxRowFromId
 
 
 class RicercaComplessaClienti(RicercaComplessa):
@@ -406,7 +406,7 @@ class RicercaClientiFilter(GladeWidget):
         self.codice_fiscale_filter_entry.set_text(self._codiceFiscale or '')
         self.partita_iva_filter_entry.set_text(self._partitaIva or '')
         if self._idCategoria is not None:
-            findComboboxowFromId(self.id_categoria_cliente_filter_combobox, self._idFamiglia)
+            findComboboxRowFromId(self.id_categoria_cliente_filter_combobox, self._idCategoria)
 
     def drawRicercaComplessa(self):
         """ Disegna e imposta i widgets relativi alla sola parte avanzata della ricerca """

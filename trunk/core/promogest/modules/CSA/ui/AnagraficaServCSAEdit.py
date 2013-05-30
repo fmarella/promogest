@@ -26,7 +26,7 @@ from promogest.ui.utilsCombobox import *
 from promogest.dao.Fornitore import Fornitore
 from promogest.dao.DaoUtils import get_columns
 from promogest.modules.CSA.dao.ServCSA import ServCSA , t_serv_csa
-import json 
+import json
 
 
 class AnagraficaServCSAEdit(AnagraficaEdit):
@@ -59,9 +59,9 @@ class AnagraficaServCSAEdit(AnagraficaEdit):
         model.clear()
         for t in ["MENSILE","ANNUALE","BIENNALE"]:
             model.append((t,))
-        fillComboboxCategorieFornitori(self.id_categoria_fornitore_customcombobox.combobox)
-        self.id_fornitore_customcombobox.giveAnag(self)
-        
+        fillComboboxCategorieClienti(self.id_categoria_clienti_customcombobox.combobox)
+        self.id_installatore_customcombobox.giveAnag(self)
+
 
     def setDao(self, dao):
         """ Si istanzia un nuovo DAO o nuovo o prelevato dalla Treeview
@@ -83,7 +83,7 @@ class AnagraficaServCSAEdit(AnagraficaEdit):
         self.numero_seriale_entry.set_text(self.dao.numero_serie or "")
         self.combustibile_entry.set_text(self.dao.combustibile or "")
         self.id_cliente_customcombobox.setId(self.dao.id_cliente)
-        self.id_fornitore_customcombobox.setId(self.dao.id_persona_giuridica)
+        self.id_installatore_customcombobox.setId(self.dao.id_persona_giuridica)
         self.id_articolo_customcombobox.setId(self.dao.id_articolo)
         findComboboxRowFromStr(self.manutenzione_combobox, self.dao.manutenzione,0)
         self.data_avviamento_datewidget.set_text(dateToString(self.dao.data_avviamento))
@@ -171,7 +171,7 @@ class AnagraficaServCSAEdit(AnagraficaEdit):
         #idArticolo = self.id_articolo_customcombobox.getId()
 
         self.dao.id_cliente = self.id_cliente_customcombobox.getId()
-        self.dao.id_persona_giuridica = self.id_fornitore_customcombobox.getId()
+        self.dao.id_persona_giuridica = self.id_installatore_customcombobox.getId()
         self.dao.id_articolo = self.id_articolo_customcombobox.getId()
         #self.dao.id_commessa = self.id_articolo_customcombobox.getId()
         self.dao.combustibile = self.combustibile_entry.get_text()

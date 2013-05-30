@@ -22,7 +22,7 @@
 
 from promogest.ui.gtk_compat import *
 from CustomComboBoxSearch import CustomComboBoxSearch
-from promogest.lib.utils import leggiCliente
+from promogest.lib.utils import leggiCliente , findIdFromCombobox
 
 class ClienteSearchWidget(CustomComboBoxSearch):
     """ Classe base per la ricerca clienti """
@@ -75,7 +75,13 @@ class ClienteSearchWidget(CustomComboBoxSearch):
 
             from promogest.ui.RicercaComplessaClienti import RicercaComplessaClienti
             #from promogest.ui.anagClienti.AnagraficaClientiFilter import RicercaClienti
-            self._ricerca = RicercaComplessaClienti()
+            try:
+                idCat = findIdFromCombobox(self.anaedit.
+                id_categoria_clienti_customcombobox.combobox)
+            except:
+                idCat = None
+
+            self._ricerca = RicercaComplessaClienti(idCategoria = idCat)
             #self._ricerca = RicercaClienti()
 
             if not self._filter:
@@ -93,12 +99,18 @@ class ClienteSearchWidget(CustomComboBoxSearch):
 
     def ricercaDao(self, keyname):
         from promogest.dao.Cliente import Cliente
-        cli = Cliente().select(ragioneSociale=keyname, cancellato=True, batchSize=40)
+        try:
+            idCat = findIdFromCombobox(self.anaedit.
+            id_categoria_clienti_customcombobox.combobox)
+        except:
+            idCat = None
+        cli = Cliente().select(ragioneSociale=keyname, cancellato=True, idCategoria=idCat, batchSize=40)
         model = self.completion.get_model()
         model.clear()
         for m in cli:
             rag = m.ragione_sociale or m.cognome + " " + m.nome
             model.append(('empty', m.id, rag, m))
+
 
     def setId(self, value):
         self.insertComboboxSearchCliente(self, value)
