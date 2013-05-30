@@ -63,17 +63,6 @@ class AccountEmail(Dao):
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
 
-#    @property
-#    def denominazione_banca(self):
-#        banca = Banca().getRecord(id=self.id_banca)
-#        denominazione = ''
-#        if banca:
-#            if banca.agenzia:
-#                denominazione = "{0} ({1})".format(banca.denominazione, banca.agenzia)
-#            else:
-#                denominazione = "{0}".format(banca.denominazione)
-#        return denominazione
-
     def persist(self):
         if self.preferito == True:
             reimposta_preferito(self)
@@ -86,6 +75,9 @@ class AccountEmail(Dao):
         elif k == 'denominazione':
             dic = {k: and_(t_account_email.c.id_azienda==Azienda.schemaa,
                            t_account_email.c.denominazione.ilike("%" + v + "%"))}
+        elif k == 'indirizzo':
+            dic = {k: and_(t_account_email.c.id_azienda==Azienda.schemaa,
+                           t_account_email.c.indirizzo.ilike("%" + v + "%"))}
         return dic[k]
 
 std_mapper = mapper(AccountEmail, t_account_email)

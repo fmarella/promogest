@@ -1,0 +1,14 @@
+{% extends 'index.html' %}
+
+{% block body %}
+
+<table cellpadding="0" cellspacing="0" border="0">
+    <tr>
+        <td class="report-header" colspan="2"><h3><img src= "gui/foo.png"> Denominazione: <strong>{{dao.denominazione}}</strong></h3></td>
+    </tr>
+    <tr>
+        <td width="140px" class="odd-detail">Indirizzo</td>
+        <td class="odd-detail"><strong>{{dao.indirizzo}}</strong></td>
+    </tr>
+</table>
+{% endblock %}
