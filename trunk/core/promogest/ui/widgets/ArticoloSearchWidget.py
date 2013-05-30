@@ -89,7 +89,7 @@ class ArticoloSearchWidget(CustomComboBoxSearch):
     def ricercaDao(self, keyname):
         from promogest.dao.Articolo import Articolo
         #print keyname
-        cli = Articolo().select(denominazione=keyname, batchSize=40)
+        cli = Articolo().select(denominazione=keyname, cancellato=True, batchSize=40)
         model = self.completion.get_model()
         model.clear()
         for m in cli:
