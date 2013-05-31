@@ -103,7 +103,6 @@ class AnagraficaClientiFilter(AnagraficaFilter):
                                     localita=localita,
                                     provincia=provincia,
                                     partitaIva=partitaIva,
-                                    cancellato=cancellati,
                                     codiceFiscale=codiceFiscale,
                                     idCategoria=idCategoria)
 
@@ -126,7 +125,6 @@ class AnagraficaClientiFilter(AnagraficaFilter):
                                     partitaIva=partitaIva,
                                     codiceFiscale=codiceFiscale,
                                     idCategoria=idCategoria,
-                                    cancellato=cancellati,
                                     offset=offset,
                                     batchSize=batchSize)
 
