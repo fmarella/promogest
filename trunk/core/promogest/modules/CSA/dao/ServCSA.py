@@ -27,7 +27,7 @@ from promogest.dao.Dao import Dao
 from migrate import *
 from promogest.modules.CSA.dao.LuogoInstallazione import LuogoInstallazione , t_luogo_installazione
 from promogest.modules.CSA.dao.TipoCombustibile import TipoCombustibile , t_tipo_combustibile
-from promogest.dao.Articolo import Articolo
+#from promogest.dao.Articolo import Articolo
 
 from promogest.dao.Cliente import Cliente, t_cliente
 from promogest.dao.PersonaGiuridica import PersonaGiuridica_ , t_persona_giuridica
