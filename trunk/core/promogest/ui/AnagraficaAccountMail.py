@@ -189,7 +189,7 @@ class AnagraficaAccountMailEdit(AnagraficaEdit):
                                             self.dao.username)
         except:
             pass
-        self.password_entry.set_text(password)
+        self.password_entry.set_text(password or '')
         del password
         #self.memo_password_checkbutton.set_active(False)
 
