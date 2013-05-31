@@ -227,9 +227,6 @@ class AnagraficaAccountMailEdit(AnagraficaEdit):
             try:
                 s = smtplib.SMTP_SSL(self.server_smtp_entry.get_text(),
                                     port=self.porta_smtp_entry.get_text())
-                time.sleep(1)
-                s.login(self.username_entry.get_text(),
-                        self.password_entry.get_text())
             except:
                 self.result_test_label.set_text('Connessione al server non riuscita.')
                 return
@@ -241,12 +238,15 @@ class AnagraficaAccountMailEdit(AnagraficaEdit):
                 s.ehlo()
                 time.sleep(1)
                 s.starttls()
-                time.sleep(1)
-                s.login(self.username_entry.get_text(),
-                        self.password_entry.get_text())
             except:
                 self.result_test_label.set_text('Connessione al server non riuscita.')
                 return
+        try:
+            s.login(self.username_entry.get_text(),
+                    self.password_entry.get_text())
+        except:
+            self.result_test_label.set_text('Nome utente o password non validi.')
+            return
         if s:
             s.quit()
         self.result_test_label.set_text('Connessione riuscita con successo.')
