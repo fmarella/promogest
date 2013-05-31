@@ -348,11 +348,14 @@ class TestataDocumento(Dao):
         totaleImposta = 0
         totaleNonScontato = 0
         for k in castellettoIva.keys():
+
             totaleImponibile += castellettoIva[k]['imponibile']
             totaleEsclusoBaseImponibile += castellettoIva[k]['esclusoBaseImponibile']
-
-            castellettoIva[k]['imposta'] = mN(castellettoIva[k]['imponibile'] * castellettoIva[k]['percentuale'] / 100, 2) + castellettoIva[k]['esclusoBaseImponibile']
-            totaleImposta += castellettoIva[k]['imposta']
+            if castellettoIva[k]['percentuale'] != Decimal(0):
+                castellettoIva[k]['imposta'] = mN(castellettoIva[k]['imponibile'] * castellettoIva[k]['percentuale'] / 100, 2) + castellettoIva[k]['esclusoBaseImponibile']
+                totaleImposta += castellettoIva[k]['imposta']
+            else:
+                castellettoIva[k]['imposta'] = 0
 
             castellettoIva[k]['totale'] = castellettoIva[k]['imponibile'] + castellettoIva[k]['esclusoBaseImponibile'] + castellettoIva[k]['imposta']
             totaleNonScontato += castellettoIva[k]['totale']
@@ -424,7 +427,6 @@ class TestataDocumento(Dao):
             dictCastellettoIva = castellettoIva[k]
             dictCastellettoIva['aliquota'] = castellettoIva[k]["percentuale"]
             self._castellettoIva.append(dictCastellettoIva)
-
         return None
 
     def contieneMovimentazione(self, righe=None):
