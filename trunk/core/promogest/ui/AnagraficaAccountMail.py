@@ -17,6 +17,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
+import smtplib
 from promogest import Environment as env
 from promogest.ui.AnagraficaComplessa import Anagrafica
 from promogest.ui.AnagraficaComplessaEdit import AnagraficaEdit
@@ -168,9 +169,10 @@ class AnagraficaAccountMailEdit(AnagraficaEdit):
         self.oggetto_entry.set_text('')
         textview_set_text(self.firma_textview, 'Documento creato e inviato tramite Promogest http://www.promogest.me')
         textview_set_text(self.body_textview, '')
-        self.save_button.set_sensitive(False)
+        self.result_test_label.set_text('')
 
     def _refresh(self):
+        self.clear()
         self.denominazione_entry.set_text(self.dao.denominazione or '')
         self.indirizzo_entry.set_text(self.dao.indirizzo or '')
         self.preferito_checkbutton.set_active(self.dao.preferito or False)
@@ -181,9 +183,15 @@ class AnagraficaAccountMailEdit(AnagraficaEdit):
         self.oggetto_entry.set_text(self.dao.oggetto or '')
         textview_set_text(self.firma_textview, self.dao.firma or 'Documento creato e inviato tramite Promogest http://www.promogest.me')
         textview_set_text(self.body_textview, self.dao.body or '')
-        #self.password_entry.set_text(self.dao.password or '')
+        password = ''
+        try:
+            password = keyring.get_password('promogest2',
+                                            self.dao.username)
+        except:
+            pass
+        self.password_entry.set_text(password)
+        del password
         #self.memo_password_checkbutton.set_active(False)
-        # keyring.get_password('promogest2', self.dao.username)
 
     def saveDao(self, tipo=None):
         denominazione = self.denominazione_entry.get_text()
@@ -209,4 +217,22 @@ class AnagraficaAccountMailEdit(AnagraficaEdit):
                 keyring.set_password('promogest2', self.dao.username, password)
             except Exception as ex:
                 messageWarning('Impossibile salvare la password nel portachiavi di sistema:\n\n%s.' % str(ex))
+
+    def on_test_conn_button_clicked(self, widget):
+        s = None
+        self.result_test_label.set_text('Connessione in corso...')
+        try:
+            s = smtplib.SMTP_SSL(self.server_smtp_entry.get_text())
+        except:
+            self.result_test_label.set_text('Connessione al server non riuscita.')
+            return
+        self.result_test_label.set_text('Login in corso...')
+        try:
+            s.login(self.username_entry.get_text(),
+                    self.password_entry.get_text())
+        except:
+            self.result_test_label.set_text('Username o password non corretti.')
+            return
+        self.result_test_label.set_text('Connessione riuscita con successo.')
+        s.quit()
 
