@@ -232,11 +232,7 @@ class AnagraficaAccountMailEdit(AnagraficaEdit):
                 return
         else:
             try:
-                s = smtplib.SMTP(self.server_smtp_entry.get_text(),
-                                 port=self.porta_smtp_entry.get_text())
-                time.sleep(1)
-                s.ehlo()
-                time.sleep(1)
+                s = smtplib.SMTP(self.server_smtp_entry.get_text())
                 s.starttls()
             except:
                 self.result_test_label.set_text('Connessione al server non riuscita.')

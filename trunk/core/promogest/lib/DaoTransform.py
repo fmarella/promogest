@@ -178,9 +178,7 @@ def do_send_mail(daos, anag=None):
             raise NetworkError('Errore di connessione al server di posta in uscita.')
     else:
         try:
-            s = smtplib.SMTP(account_email.server_smtp, port=account_email.porta_smtp)
-            time.sleep(1)
-            s.ehlo()
+            s = smtplib.SMTP(account_email.server_smtp)
             time.sleep(1)
             s.starttls()
             time.sleep(1)
