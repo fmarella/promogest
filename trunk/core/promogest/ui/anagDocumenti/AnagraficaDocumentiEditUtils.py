@@ -40,6 +40,22 @@ if posso("GN"):
 if posso("ADR"):
     from promogest.modules.ADR.ui import AnagraficaDocumentiEditADRExt
 
+import csv
+import os
+from promogest.Environment import promogestDir
+def get_qta_prezzo_articoli():
+    ''' Ritorna un dizionario con la quantità soglia e il nuovo prezzo
+        per gli articoli leggendo da un file in formato CSV.
+    '''
+    filename = os.path.join(promogestDir, 'qta_prezzo.csv')
+    if not os.path.isfile(filename):
+        return None
+    dict_art_qta_prezzo = {}
+    with open(filename, 'rb') as f:
+        reader = csv.reader(f, delimiter=';', quoting=csv.QUOTE_NONE)
+        for row in reader:
+            dict_art_qta_prezzo[row[0]] = (float(row[1]), float(row[2]))
+    return dict_art_qta_prezzo
 
 def drawPart(anaedit):
     treeview = anaedit.righe_treeview

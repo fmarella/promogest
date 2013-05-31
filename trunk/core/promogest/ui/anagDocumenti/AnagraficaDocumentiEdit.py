@@ -1604,6 +1604,17 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         """ calcola il prezzo netto """
         self._righe[0]["quantita"] = Decimal(self.quantita_entry.get_text().strip() or 0)
         self._righe[0]["prezzoLordo"] = Decimal(self.prezzo_lordo_entry.get_text().strip() or 0)
+
+        # Variazioni di prezzo in base alla quantità
+        from promogest.ui.anagDocumenti.AnagraficaDocumentiEditUtils import get_qta_prezzo_articoli
+        if self._righe[0]['codiceArticolo']:
+            dictQtaPrezzo = get_qta_prezzo_articoli()
+            if dictQtaPrezzo:
+                if self._righe[0]['codiceArticolo'] in dictQtaPrezzo.keys():
+                    soglia_qta, nuovo_prezzo = dictQtaPrezzo[self._righe[0]['codiceArticolo']]
+                    if float(self._righe[0]['quantita']) > float(soglia_qta):
+                        self._righe[0]['prezzoLordo'] = mN(Decimal(nuovo_prezzo), 3)
+
         iva = findStrFromCombobox(self.id_iva_customcombobox.combobox,0)
         if iva and type(iva) != type("CIAO"):
             self._righe[0]["percentualeIva"] = mN(iva.percentuale,0) or 0
