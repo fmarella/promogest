@@ -17,6 +17,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
+import time
 import smtplib
 from promogest import Environment as env
 from promogest.ui.AnagraficaComplessa import Anagrafica
@@ -221,18 +222,32 @@ class AnagraficaAccountMailEdit(AnagraficaEdit):
     def on_test_conn_button_clicked(self, widget):
         s = None
         self.result_test_label.set_text('Connessione in corso...')
-        try:
-            s = smtplib.SMTP_SSL(self.server_smtp_entry.get_text())
-        except:
-            self.result_test_label.set_text('Connessione al server non riuscita.')
-            return
-        self.result_test_label.set_text('Login in corso...')
-        try:
-            s.login(self.username_entry.get_text(),
-                    self.password_entry.get_text())
-        except:
-            self.result_test_label.set_text('Username o password non corretti.')
-            return
+
+        if self.crypto_ssl_checkbutton.get_active():
+            try:
+                s = smtplib.SMTP_SSL(self.server_smtp_entry.get_text(),
+                                    port=self.porta_smtp_entry.get_text())
+                time.sleep(1)
+                s.login(self.username_entry.get_text(),
+                        self.password_entry.get_text())
+            except:
+                self.result_test_label.set_text('Connessione al server non riuscita.')
+                return
+        else:
+            try:
+                s = smtplib.SMTP(self.server_smtp_entry.get_text(),
+                                 port=self.porta_smtp_entry.get_text())
+                time.sleep(1)
+                s.ehlo()
+                time.sleep(1)
+                s.starttls()
+                time.sleep(1)
+                s.login(self.username_entry.get_text(),
+                        self.password_entry.get_text())
+            except:
+                self.result_test_label.set_text('Connessione al server non riuscita.')
+                return
+        if s:
+            s.quit()
         self.result_test_label.set_text('Connessione riuscita con successo.')
-        s.quit()
 

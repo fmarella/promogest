@@ -169,11 +169,24 @@ def do_send_mail(daos, anag=None):
         password = inputPasswordDialog()
 
     s = None
-    try:
-        s = smtplib.SMTP_SSL(account_email.server_smtp)
-        s.login(account_email.username, password)
-    except:
-        raise NetworkError('Errore di connessione al server di posta in uscita.')
+    if account_email.cripto_SSL:
+        try:
+            s = smtplib.SMTP_SSL(account_email.server_smtp, port=account_email.porta_smtp)
+            time.sleep(1)
+            s.login(account_email.username, password or '')
+        except:
+            raise NetworkError('Errore di connessione al server di posta in uscita.')
+    else:
+        try:
+            s = smtplib.SMTP(account_email.server_smtp, port=account_email.porta_smtp)
+            time.sleep(1)
+            s.ehlo()
+            time.sleep(1)
+            s.starttls()
+            time.sleep(1)
+            s.login(account_email.username, password or '')
+        except:
+            raise NetworkError('Errore di connessione al server di posta in uscita.')
     del password
 
     for dao in daos:
@@ -217,7 +230,8 @@ def do_send_mail(daos, anag=None):
         except:
             raise NetworkError('Invio fattura a "{0}" non riuscito.'.format(destinatario))
         time.sleep(5)
-    s.quit()
+    if s:
+        s.quit()
     if anag:
         pbar(anag.pbar_anag_complessa, stop=True)
         anag.pbar_anag_complessa.set_property("visible", False)
