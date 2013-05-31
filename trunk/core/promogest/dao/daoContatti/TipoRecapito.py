@@ -45,7 +45,13 @@ tipo_recapito = Table('tipo_recapito',
                         autoload=True)
 std_mapper = mapper(TipoRecapito, tipo_recapito, order_by=tipo_recapito.c.denominazione)
 
-if TipoRecapito().select(denominazione="Email PEC") is []:
+recapiti = TipoRecapito().select()
+t = False
+for recapito in recapiti:
+    if recapito.denominazione == 'Email PEC':
+        t = True
+        break
+if not t:
     tr = TipoRecapito()
     tr.denominazione = "Email PEC"
     tr.persist()
