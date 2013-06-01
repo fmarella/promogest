@@ -146,89 +146,43 @@ class AnagraficaArticoliFilter(AnagraficaFilter):
         self.ricerca_avanzata_button_alignment.destroy()
 
     def draw(self):
-        treeview = self.anagrafica_filter_treeview
-
-        renderer = gtk.CellRendererText()
-        column = gtk.TreeViewColumn('Codice', renderer, text=2, background=1)
-        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
-        column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, (None, Articolo.codice))
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(100)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Descrizione', renderer, text=3, background=1)
-        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
-        column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, (None, Articolo.denominazione))
-        column.set_resizable(True)
-        column.set_expand(True)
-        column.set_min_width(100)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Produttore', renderer, text=4, background=1)
-        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
-        column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, (None, Articolo.produttore))
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(100)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Codice a barre', renderer, text=5, background=1)
-        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
-        column.set_clickable(True)
-        from promogest.dao.CodiceABarreArticolo import CodiceABarreArticolo
-        column.connect("clicked", self._changeOrderBy, (CodiceABarreArticolo, CodiceABarreArticolo.codice))
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(100)
-        treeview.append_column(column)
-
-        #column = gtk.TreeViewColumn('Codice articolo fornitore', renderer, text=6, background=1)
-        column = gtk.TreeViewColumn('', renderer, text=6, background=1)
-        #column.set_sizing(GTK_COLUMN_GROWN_ONLY)
-        #column.set_clickable(True)
-        #from promogest.dao.Fornitura import Fornitura
-        #column.connect("clicked", self._changeOrderBy, (Fornitura, Fornitura.codice_articolo_fornitore))
-        #column.set_resizable(True)
-        #column.set_expand(False)
-        #column.set_min_width(100)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Famiglia', renderer, text=7, background=1)
-        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
-        column.set_clickable(True)
-        from promogest.dao.FamigliaArticolo import FamigliaArticolo
-        column.connect("clicked", self._changeOrderBy, (FamigliaArticolo, FamigliaArticolo.denominazione))
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(100)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Categoria', renderer, text=8, background=1)
-        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
-        column.set_clickable(True)
-        from promogest.dao.CategoriaArticolo import CategoriaArticolo
-        column.connect("clicked", self._changeOrderBy, (CategoriaArticolo, CategoriaArticolo.denominazione))
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(100)
-        treeview.append_column(column)
         if posso("PW"):
-            AnagraficaArticoliPromoWearExpand.treeViewExpand(self, treeview, renderer)
+            AnagraficaArticoliPromoWearExpand.treeViewExpand(self, self.anagrafica_filter_treeview)
         else:
-            self._treeViewModel = gtk.ListStore(object, str, str, str, str, str, str, str, str)
-            #self.promowear_filter_frame.destroy()
+            self._treeViewModel = self.standard_liststore
             self.promowear_expander_semplice.destroy()
-        treeview.set_search_column(2)
 
         self.anagrafica_filter_treeview.set_model(self._treeViewModel)
         self.id_famiglia_articolo_filter_combobox.set_wrap_width(int(setconf("Numbers", "combo_column")))
         self.id_categoria_articolo_filter_combobox.set_wrap_width(int(setconf("Numbers", "combo_column")))
 
         self.clear()
+
+
+    def _reOrderBy(self, column):
+        if column.get_name() == "codice_column":
+            return self._changeOrderBy(column, (
+                                    None, Articolo.codice))
+        if column.get_name() == "descrizione_column":
+            return self._changeOrderBy(column, (
+                                    None, Articolo.denominazione))
+        if column.get_name() == "produttore_column":
+            return self._changeOrderBy(column, (
+                                    None, Articolo.produttore))
+        if column.get_name() == "codiceabarre_column":
+            from promogest.dao.CodiceABarreArticolo import CodiceABarreArticolo
+            return self._changeOrderBy(column, (CodiceABarreArticolo,
+                                        CodiceABarreArticolo.codice))
+        if column.get_name() == "famiglia_column":
+            from promogest.dao.FamigliaArticolo import FamigliaArticolo
+            return self._changeOrderBy(column, (FamigliaArticolo, FamigliaArticolo.denominazione))
+        if column.get_name() == "categoria_column":
+            from promogest.dao.CategoriaArticolo import CategoriaArticolo
+            return self._changeOrderBy(column, (CategoriaArticolo, CategoriaArticolo.denominazione))
+
+
+
+
 
     def _refresh_filter_comboboxes(self, widget=None):
         self.refresh()

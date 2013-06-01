@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2013 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -28,8 +28,9 @@ from promogest.modules.PromoWear.ui.PromowearUtils import *
 from promogest.modules.PromoWear.dao.ArticoloTagliaColore import ArticoloTagliaColore
 from promogest.dao.Articolo import Articolo
 
-def treeViewExpand(gtkgui, treeview, renderer):
+def treeViewExpand(gtkgui, treeview):
     """ Expand the normal article treeview """
+    renderer = gtk.CellRendererText()
     if posso("PW"):
         column = gtk.TreeViewColumn('Gruppo taglia', renderer, text=9, background=1)
         column.set_sizing(GTK_COLUMN_GROWN_ONLY)
@@ -93,7 +94,7 @@ def treeViewExpand(gtkgui, treeview, renderer):
         column.set_expand(False)
         column.set_min_width(100)
         treeview.append_column(column)
-        gtkgui._treeViewModel = gtk.ListStore(object, str, str, str, str, str, str, str, str, str, str, str, str, str, str, str)
+        gtkgui._treeViewModel = gtkgui.promowear_liststore
     else:
         pass
 

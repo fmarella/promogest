@@ -51,6 +51,7 @@ if posso("CSA"):
 
 
 
+
 class AnagraficaArticoliEdit(AnagraficaEdit):
     """ Modifica un record dell'anagrafica degli articoli """
 
@@ -136,7 +137,8 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
         if posso("CSA"):
             self.csa_page = CSANotebookPage(self)
             self.notebook1.append_page(self.csa_page.csa_frame, self.csa_page.csa_page_label)
-
+        else:
+            self.csa_togglebutton.destroy()
 
     def setDao(self, dao):
         if dao is None:
