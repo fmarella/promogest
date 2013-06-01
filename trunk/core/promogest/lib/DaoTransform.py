@@ -104,10 +104,6 @@ def to_pdf(daos, output, anag=None):
     if anag:
         anag.pbar_anag_complessa.show()
     for dao in daos:
-        # Per i clienti con PEC non invio il documento in stampa
-        if dao.id_cliente:
-            if dao.email_pec:
-                continue
         if anag:
             pbar(anag.pbar_anag_complessa,parziale=daos.index(dao), totale=len(daos), text="GEN STAMPE MULTIPLE", noeta=False)
         if dao.__class__.__name__ == 'TestataDocumento':
