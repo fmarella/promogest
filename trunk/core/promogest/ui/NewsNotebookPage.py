@@ -199,7 +199,7 @@ class NewsNotebookPage(GladeWidget):
         anag.on_record_new_activate()
         findComboboxRowFromStr(anag.editElement.id_operazione_combobox, kind, 1)
         anag.editElement.id_persona_giuridica_customcombobox.grab_focus()
-        findComboboxRowFromStr(anag.editElement.id_persona_giuridica_customcombobox, "Altro", 1)
+        #findComboboxRowFromStr(anag.editElement.id_persona_giuridica_customcombobox, "Altro", 1)
 
     def on_promotux_button_clicked(self, button):
         url ="http://www.promotux.it"

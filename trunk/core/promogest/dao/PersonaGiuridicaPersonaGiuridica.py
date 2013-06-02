@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2013 by Promotux
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -69,5 +69,3 @@ class PersonaGiuridicaPersonaGiuridica(Dao):
 std_mapper = mapper(PersonaGiuridicaPersonaGiuridica,
     personagiuridica_personagiuridica, properties={},
     order_by=personagiuridica_personagiuridica.c.id_persona_giuridica_abbinata)
-
-#print "PK Listino complesso listino", len(listinocomplessolistino.primary_key)

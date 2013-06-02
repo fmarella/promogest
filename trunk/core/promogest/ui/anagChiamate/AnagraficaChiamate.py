@@ -4,7 +4,6 @@
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
-#    Author: Francesco Marella <francesco.marella@anche.no>
 
 #    This file is part of Promogest.
 
@@ -24,20 +23,17 @@
 from promogest.ui.AnagraficaComplessa import Anagrafica
 from promogest.ui.AnagraficaComplessaReport import AnagraficaReport
 from promogest.ui.AnagraficaComplessaHtml import AnagraficaHtml
-from promogest.ui.anagStoccaggi.AnagraficaStoccaggiEdit import\
-                                                     AnagraficaStoccaggiEdit
-from promogest.ui.anagStoccaggi.AnagraficaStoccaggiFilter import\
-                                                     AnagraficaStoccaggiFilter
+from promogest.ui.anagChiamate.AnagraficaChiamateEdit import\
+                                                     AnagraficaChiamateEdit
+from promogest.ui.anagChiamate.AnagraficaChiamateFilter import\
+                                                     AnagraficaChiamateFilter
 
 from promogest.lib.utils import *
 from promogest.ui.utilsCombobox import *
 from promogest.ui.gtk_compat import *
 
-if posso("PW"):
-    from promogest.modules.PromoWear.ui.PromowearUtils import *
 
-
-class AnagraficaStoccaggi(Anagrafica):
+class AnagraficaChiamate(Anagrafica):
     """ Anagrafica stoccaggi articoli """
 
     def __init__(self, idArticolo=None, idMagazzino=None, aziendaStr=None):
