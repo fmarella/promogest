@@ -52,16 +52,16 @@ class AnagraficaChiamate(Anagrafica):
         self.records_file_export.set_sensitive(True)
 
 
-class AnagraficaStoccaggiHtml(AnagraficaHtml):
+class AnagraficaChiamateHtml(AnagraficaHtml):
     def __init__(self, anagrafica):
-        AnagraficaHtml.__init__(self, anagrafica, 'stoccaggio',
-                                'Informazioni sullo stoccaggio')
+        AnagraficaHtml.__init__(self, anagrafica, 'chiamate',
+                                'Informazioni sulle chiamate')
 
 
-class AnagraficaStoccaggiReport(AnagraficaReport):
+class AnagraficaChiamateReport(AnagraficaReport):
     def __init__(self, anagrafica):
         AnagraficaReport.__init__(self, anagrafica=anagrafica,
-                                  description='Elenco degli stoccaggi',
-                                  defaultFileName='stoccaggi',
-                                  htmlTemplate='stoccaggi',
-                                  sxwTemplate='stoccaggi')
+                                  description='Elenco delle chiamate',
+                                  defaultFileName='chiamate',
+                                  htmlTemplate='chiamate',
+                                  sxwTemplate='chiamate')

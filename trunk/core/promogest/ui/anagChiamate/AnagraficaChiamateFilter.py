@@ -22,14 +22,11 @@
 
 from promogest.ui.AnagraficaComplessaFilter import AnagraficaFilter
 
-from promogest.dao.Stoccaggio import Stoccaggio
+from promogest.dao.Chiamata import Chiamata
 from promogest.dao.Magazzino import Magazzino
 from promogest.lib.utils import *
 from promogest.ui.utilsCombobox import *
 from promogest.ui.gtk_compat import *
-
-if posso("PW"):
-    from promogest.modules.PromoWear.ui.PromowearUtils import *
 
 
 class AnagraficaStoccaggiFilter(AnagraficaFilter):
@@ -72,30 +69,6 @@ class AnagraficaStoccaggiFilter(AnagraficaFilter):
             #self.id_magazzino_filter_combobox.set_sensitive(False)
             column = self._anagrafica.anagrafica_filter_treeview.get_column(0)
             column.set_property('visible', False)
-        if posso("PW"):
-            fillComboboxGruppiTaglia(
-                        self.id_gruppo_taglia_articolo_filter_combobox, True)
-            self.id_gruppo_taglia_articolo_filter_combobox.set_active(0)
-            fillComboboxTaglie(self.id_taglia_articolo_filter_combobox)
-            self.id_taglia_articolo_filter_combobox.set_active(0)
-            fillComboboxColori(self.id_colore_articolo_filter_combobox, True)
-            self.id_colore_articolo_filter_combobox.set_active(0)
-            fillComboboxModelli(self.id_modello_filter_combobox, True)
-            self.id_modello_filter_combobox.set_active(0)
-
-            fillComboboxAnniAbbigliamento(
-                        self.id_anno_articolo_filter_combobox, True)
-            self.id_anno_articolo_filter_combobox.set_active(0)
-
-            fillComboboxStagioniAbbigliamento(
-                        self.id_stagione_articolo_filter_combobox, True)
-            self.id_stagione_articolo_filter_combobox.set_active(0)
-
-            fillComboboxGeneriAbbigliamento(
-                        self.id_genere_articolo_filter_combobox, True)
-            self.id_genere_articolo_filter_combobox.set_active(0)
-        else:
-            self.promowear_expander_semplice.destroy()
         self.clear()
 
     def _reOrderBy(self, column):

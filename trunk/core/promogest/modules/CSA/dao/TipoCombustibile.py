@@ -46,7 +46,7 @@ class TipoCombustibile(Dao):
         if k=="id":
             dic= {k: t_tipo_combustibile.c.id ==v}
         elif k =="denominazione":
-            dic= {k: t_tipo_combustibile.c.denominazione == v}
+            dic= {k: t_tipo_combustibile.c.denominazione.ilike("%" + v + "%")}
         return  dic[k]
 
 

@@ -21,27 +21,22 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 from promogest.ui.AnagraficaComplessaEdit import AnagraficaEdit
-from promogest.dao.Stoccaggio import Stoccaggio
+from promogest.dao.Chiamate import Chiamate
 from promogest.lib.utils import *
 from promogest.ui.utilsCombobox import *
 from promogest.ui.gtk_compat import *
 
-if posso("PW"):
-    from promogest.modules.PromoWear.ui.PromowearUtils import *
 
-
-class AnagraficaStoccaggiEdit(AnagraficaEdit):
-    """ Modifica un record dell'anagrafica dei stoccaggi """
+class AnagraficaChiamateEdit(AnagraficaEdit):
+    """ Modifica un record dell'anagrafica delle chiamate """
 
     def __init__(self, anagrafica):
         AnagraficaEdit.__init__(self,
                 anagrafica,
-                'Dati stoccaggi',
-                root='anagrafica_stoccaggi_detail_table',
-                path='_anagrafica_stoccaggi_articoli_elements.glade')
+                'Dati chiamate',
+                root='anagrafica_chiamate_detail_table',
+                path='_anagrafica_chiamate_elements.glade')
         self._widgetFirstFocus = self.id_magazzino_customcombobox
-        if not posso("PW"):
-            self.promowear_frame.destroy()
 
     def draw(self, cplx=False):
         self.id_articolo_customcombobox.setSingleValue()
@@ -97,17 +92,7 @@ class AnagraficaStoccaggiEdit(AnagraficaEdit):
                     dateToString(self.dao.data_fine_scorte))
         self.data_prossimo_ordine_entry.set_text(
                     dateToString(self.dao.data_prossimo_ordine))
-        if posso("PW"):
-            self.colore_label.set_text(self.dao.denominazione_colore or "")
-            self.stagione_label.set_text(self.dao.stagione or "")
-            self.genere_label.set_text(self.dao.genere or "")
-            try:
-                tggruppotaglia = self.dao.denominazione_gruppo_taglia\
-                                             + " " + \
-                                            self.dao.denominazione_taglia
-            except:
-                tggruppotaglia = ""
-            self.taglia_label.set_markup(tggruppotaglia)
+
 
     def saveDao(self, tipo=None):
         if findIdFromCombobox(

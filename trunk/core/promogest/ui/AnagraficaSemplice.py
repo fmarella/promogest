@@ -81,6 +81,17 @@ class Anagrafica(GladeWidget):
         self.setFocus()
 
 
+    def draw(self):
+        """ Facoltativo ma suggerito per indicare la lunghezza
+        massima della cella di testo
+        """
+        self.filter.denominazione_column.get_cells()[0].set_data(
+                                                        'max_length', 50)
+
+        self._treeViewModel = self.filter.filter_listore
+        self.refresh()
+
+
     def show_all(self):
         """ Visualizza/aggiorna tutta la struttura dell'anagrafica """
         self.anagrafica_semplice_window.show_all()
@@ -491,12 +502,12 @@ class Anagrafica(GladeWidget):
         self.destroy()
 
 
-    def draw(self):
-        """
-        Disegna i contenuti dell'elenco dell' anagrafica. Metodo invocato
-        una sola volta, dopo la costruzione dell'oggetto
-        """
-        raise NotImplementedError
+    #def draw(self):
+        #"""
+        #Disegna i contenuti dell'elenco dell' anagrafica. Metodo invocato
+        #una sola volta, dopo la costruzione dell'oggetto
+        #"""
+        #raise NotImplementedError
 
 
     def refresh(self):
@@ -528,8 +539,10 @@ class Anagrafica(GladeWidget):
 class AnagraficaFilter(GladeWidget):
     """ Filtro per la ricerca nell'anagrafica """
 
-    def __init__(self, anagrafica, root=None,
-                                    path=None,isModule=False):
+    def __init__(self, anagrafica,
+                    root='anagrafica_semplice_filter_table',
+                    path='_anagrafica_semplice.glade',
+                    isModule=False):
         GladeWidget.__init__(self, root=root,
                         path=path,isModule=isModule)
 
@@ -570,8 +583,11 @@ class AnagraficaFilter(GladeWidget):
 
 
     def clear(self):
-        """ Annulla i parametri impostati per la ricerca """
-        raise NotImplementedError
+        # Annullamento filtro
+        self.denominazione_filter_entry.set_text('')
+        self.denominazione_filter_entry.grab_focus()
+        self._anagrafica.refresh()
+
 
 
     def _filterClosure(self, offset, batchSize):
@@ -587,7 +603,8 @@ class AnagraficaFilter(GladeWidget):
 class AnagraficaDetail(object):
     """ Dettaglio dell'anagrafica """
 
-    def __init__(self, anagrafica, path=None,isModule=False):
+    def __init__(self, anagrafica, path='_anagrafica_semplice.glade',
+                    isModule=False):
         self._anagrafica = anagrafica
         self._widgetFirstFocus = None
 
@@ -605,6 +622,15 @@ class AnagraficaDetail(object):
         raise NotImplementedError
 
 
+    def _refresh(self):
+        sel = self._anagrafica.anagrafica_treeview.get_selection()
+        (model, iterator) = sel.get_selected()
+        if iterator and self.dao:
+            model.set_value(iterator, 0, self.dao)
+            model.set_value(iterator, 1, self.dao.denominazione)
+
+
+
     def updateDao(self):
         """ Aggiorna il dao selezionato all'ultima versione sul DB """
         raise NotImplementedError
@@ -614,7 +640,5 @@ class AnagraficaDetail(object):
         """ Salva il Dao attualmente selezionato """
         raise NotImplementedError
 
-
     def deleteDao(self):
-        """ Elimina il dao selezionato """
-        raise NotImplementedError
+        self.dao.delete()
