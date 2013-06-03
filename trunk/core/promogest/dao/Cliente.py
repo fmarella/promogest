@@ -99,6 +99,7 @@ class Cliente(Dao):
     def persist(self):
         if not self.codice:
             self.codice = getNuovoCodiceCliente()
+            self.cancellato = False
         session.add(self)
         session.commit()
 
