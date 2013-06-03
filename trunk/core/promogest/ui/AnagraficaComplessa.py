@@ -853,7 +853,8 @@ class Anagrafica(GladeWidget):
             f.close()
         except:
             msg = """Errore nel salvataggio!
-Verificare i permessi della cartella"""
+    Verificare i permessi della cartella o che NON sia
+    errata nella sezione di configurazione"""
             messageError(msg=msg)
             return
 
@@ -989,7 +990,8 @@ html contatti <b>assistenza@promotux.it</b> per informazioni.""")
                             break
                         except:
                             msg = """Errore nel salvataggio!
-    Verificare i permessi della cartella"""
+    Verificare i permessi della cartella o che NON sia
+    errata nella sezione di configurazione"""
                             response = messageError(msg=msg)
                             if response == GTK_RESPONSE_CANCEL or \
                                             response == GTK_RESPONSE_DELETE_EVENT:

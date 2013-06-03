@@ -65,7 +65,8 @@ class PrintDialogHandler(GladeWidget):
             f.close()
         except:
             msg = """Errore nel salvataggio!
-Verificare i permessi della cartella"""
+    Verificare i permessi della cartella o che NON sia
+    errata nella sezione di configurazione"""
             messageError(msg=msg)
             return
 
@@ -190,7 +191,9 @@ Verificare i permessi della cartella"""
                             esci = True
                             break
                         except:
-                            msg = 'Errore nel salvataggio!\n Verificare i permessi della cartella'
+                            msg = """Errore nel salvataggio!
+    Verificare i permessi della cartella o che NON sia
+    errata nella sezione di configurazione"""
                             overDialog = gtk.MessageDialog(None, GTK_DIALOG_MODAL
                                                                 | GTK_DIALOG_DESTROY_WITH_PARENT,
                                                                 GTK_DIALOG_MESSAGE_ERROR,
