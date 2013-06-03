@@ -65,7 +65,7 @@ class AnagraficaCategorieClientiFilter(AnagraficaFilter):
     """ Filtro per la ricerca nell'anagrafica delle categorie clienti """
 
     def __init__(self, anagrafica):
-        AnagraficaFilter.__init__(self, anagrafica,)
+        AnagraficaFilter.__init__(self, anagrafica)
         self._widgetFirstFocus = self.denominazione_filter_entry
 
     def _reOrderBy(self, column):

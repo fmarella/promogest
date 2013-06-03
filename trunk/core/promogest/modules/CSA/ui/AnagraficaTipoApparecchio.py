@@ -36,25 +36,13 @@ class AnagraficaTipoApparecchio(Anagrafica):
                             AnagraficaTipoApparecchioFilter(self),
                             AnagraficaTipoApparecchioDetail(self))
 
-    def draw(self):
-        """ Facoltativo ma suggerito per indicare la lunghezza
-        massima della cella di testo
-        """
-        self.filter.denominazione_column.get_cells()[0].set_data(
-                                                        'max_length', 50)
-
-        self._treeViewModel = self.filter.filter_listore
-        self.refresh()
-
     def refresh(self):
-        # Aggiornamento TreeView
         denominazione = prepareFilterString(
                         self.filter.denominazione_filter_entry.get_text())
         self.numRecords = TipoApparecchio().count(denominazione=denominazione)
 
         self._refreshPageCount()
 
-        # Let's save the current search as a closure
         def filterClosure(offset, batchSize):
             return TipoApparecchio().select(denominazione=denominazione,
                                             orderBy=self.orderBy,
@@ -73,11 +61,7 @@ class AnagraficaTipoApparecchioFilter(AnagraficaFilter):
     """ Filtro per la ricerca nell'anagrafica delle tipi apparecchio """
 
     def __init__(self, anagrafica):
-        AnagraficaFilter.__init__(self,
-                      anagrafica,
-                      root='anagrafica_tipo_apparecchio_filter_table',
-                      path='CSA/gui/_anagrafica_tipo_apparecchio_elements.glade',
-                      isModule=True)
+        AnagraficaFilter.__init__(self, anagrafica)
         self._widgetFirstFocus = self.denominazione_filter_entry
 
     def _reOrderBy(self, column):
@@ -85,40 +69,24 @@ class AnagraficaTipoApparecchioFilter(AnagraficaFilter):
             return self._anagrafica._changeOrderBy(
                     column, (None, TipoApparecchio.denominazione))
 
-    def clear(self):
-        # Annullamento filtro
-        self.denominazione_filter_entry.set_text('')
-        self.denominazione_filter_entry.grab_focus()
-        self._anagrafica.refresh()
-
 
 class AnagraficaTipoApparecchioDetail(AnagraficaDetail):
     """ Dettaglio dell'anagrafica delle tipo apparecchio
     """
     def __init__(self, anagrafica):
-        AnagraficaDetail.__init__(self,
-                      anagrafica,
-                      path='CSA/gui/_anagrafica_categorie_clienti_elements.glade',
-                      isModule=True)
+        AnagraficaDetail.__init__(self,anagrafica)
 
     def setDao(self, dao):
         self.dao = dao
         if dao is None:
             self.dao = TipoApparecchio()
             self._anagrafica._newRow((self.dao, ''))
-            #self._refresh()
         return self.dao
 
     def updateDao(self):
         self.dao = TipoApparecchio().getRecord(id=self.dao.id)
         self._refresh()
 
-    def _refresh(self):
-        sel = self._anagrafica.anagrafica_treeview.get_selection()
-        (model, iterator) = sel.get_selected()
-        if iterator and self.dao:
-            model.set_value(iterator, 0, self.dao)
-            model.set_value(iterator, 1, self.dao.denominazione)
 
     def saveDao(self):
         sel = self._anagrafica.anagrafica_treeview.get_selection()
@@ -129,6 +97,3 @@ class AnagraficaTipoApparecchioDetail(AnagraficaDetail):
                                 self._anagrafica.anagrafica_treeview)
         self.dao.denominazione = denominazione
         self.dao.persist()
-
-    def deleteDao(self):
-        self.dao.delete()

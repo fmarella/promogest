@@ -24,7 +24,6 @@ from promogest.ui.AnagraficaSemplice import \
                         Anagrafica, AnagraficaDetail, AnagraficaFilter
 from promogest.modules.CSA.dao.LuogoInstallazione import LuogoInstallazione
 from promogest.lib.utils import *
-from promogest.ui.utilsCombobox import *
 
 
 class AnagraficaLuogoInstallazione(Anagrafica):
@@ -36,25 +35,13 @@ class AnagraficaLuogoInstallazione(Anagrafica):
                             AnagraficaLuogoInstallazioneFilter(self),
                             AnagraficaLuogoInstallazioneDetail(self))
 
-    def draw(self):
-        """ Facoltativo ma suggerito per indicare la lunghezza
-        massima della cella di testo
-        """
-        self.filter.denominazione_column.get_cells()[0].set_data(
-                                                        'max_length', 50)
-
-        self._treeViewModel = self.filter.filter_listore
-        self.refresh()
-
     def refresh(self):
-        # Aggiornamento TreeView
         denominazione = prepareFilterString(
                         self.filter.denominazione_filter_entry.get_text())
         self.numRecords = LuogoInstallazione().count(denominazione=denominazione)
 
         self._refreshPageCount()
 
-        # Let's save the current search as a closure
         def filterClosure(offset, batchSize):
             return LuogoInstallazione().select(denominazione=denominazione,
                                             orderBy=self.orderBy,
@@ -74,11 +61,7 @@ class AnagraficaLuogoInstallazioneFilter(AnagraficaFilter):
     """
 
     def __init__(self, anagrafica):
-        AnagraficaFilter.__init__(self,
-                      anagrafica,
-                      root='anagrafica_luogo_installazione_filter_table',
-                      path='CSA/gui/_anagrafica_luogo_installazione_elements.glade',
-                      isModule=True)
+        AnagraficaFilter.__init__(self, anagrafica)
         self._widgetFirstFocus = self.denominazione_filter_entry
 
     def _reOrderBy(self, column):
@@ -86,40 +69,22 @@ class AnagraficaLuogoInstallazioneFilter(AnagraficaFilter):
             return self._anagrafica._changeOrderBy(
                     column, (None, LuogoInstallazione.denominazione))
 
-    def clear(self):
-        # Annullamento filtro
-        self.denominazione_filter_entry.set_text('')
-        self.denominazione_filter_entry.grab_focus()
-        self._anagrafica.refresh()
-
-
 class AnagraficaLuogoInstallazioneDetail(AnagraficaDetail):
     """ Dettaglio dell'anagrafica dei luoghi installazione
     """
     def __init__(self, anagrafica):
-        AnagraficaDetail.__init__(self,
-                      anagrafica,
-                      path='CSA/gui/_anagrafica_luogo_installazione_elements.glade',
-                      isModule=True)
+        AnagraficaDetail.__init__(self, anagrafica)
 
     def setDao(self, dao):
         self.dao = dao
         if dao is None:
             self.dao = LuogoInstallazione()
             self._anagrafica._newRow((self.dao, ''))
-            #self._refresh()
         return self.dao
 
     def updateDao(self):
         self.dao = LuogoInstallazione().getRecord(id=self.dao.id)
         self._refresh()
-
-    def _refresh(self):
-        sel = self._anagrafica.anagrafica_treeview.get_selection()
-        (model, iterator) = sel.get_selected()
-        if iterator and self.dao:
-            model.set_value(iterator, 0, self.dao)
-            model.set_value(iterator, 1, self.dao.denominazione)
 
     def saveDao(self):
         sel = self._anagrafica.anagrafica_treeview.get_selection()
@@ -130,6 +95,3 @@ class AnagraficaLuogoInstallazioneDetail(AnagraficaDetail):
                                 self._anagrafica.anagrafica_treeview)
         self.dao.denominazione = denominazione
         self.dao.persist()
-
-    def deleteDao(self):
-        self.dao.delete()
