@@ -79,7 +79,7 @@ class AnagraficaCategorieClientiDetail(AnagraficaDetail):
     """ Dettaglio dell'anagrafica delle categorie clienti """
 
     def __init__(self, anagrafica):
-        AnagraficaDetail.__init__(self, anagrafica,)
+        AnagraficaDetail.__init__(self, anagrafica)
 
     def setDao(self, dao):
         self.dao = dao
