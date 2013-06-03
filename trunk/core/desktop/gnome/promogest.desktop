@@ -1,6 +1,6 @@
 [Desktop Entry]
 Encoding=UTF-8
-Name=Promogest-2
+Name=PromoGest
 Comment=Gestionale Open Source
 GenericName=Gestionale
 Exec=/usr/bin/promoGest2
@@ -9,4 +9,3 @@ X-MultipleArgs=false
 Type=Application
 Icon=promogest.png
 Categories=Application;Office;
-

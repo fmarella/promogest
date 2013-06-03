@@ -11,11 +11,11 @@ from distutils.core import setup
 
 setup(name='PromoGest2',
       version='2.0.0-rev341',
-      license="GNU GENERAL PUBLIC LICENSE (see LICENSE for details), Copyright (c) 2005, Promotux Informatica",
+      license="GNU GENERAL PUBLIC LICENSE (see LICENSE for details), Copyright (c) 2005-2013, Promotux Informatica",
       description='PROMOGEST Gestionale Open Source',
       author='PromoTux Informatica',
       author_email='info@promotux.it',
-      url='http://promogest.promotux.it/',
+      url='http://www.promogest.me',
       package_dir = {'':'core'},                #stabilisce /core come dir dei packages
       packages = [
                 'promogest',
