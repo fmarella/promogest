@@ -85,7 +85,7 @@
                 <td class="odd-number" colspan="2">{{utils.mNLC(riga.valore_unitario_lordo,2)}}</td>
                 <td class="odd-detail" colspan="2">{{utils.getStringaSconti(utils.getScontiFromDao(riga.sconti)[0])}}</td>
                 <td class="odd-number" colspan="2">{{utils.mNLC(riga.valore_unitario_netto,2)}}</td>
-                <td class="odd-number" colspan="2" >{{utils.mN(riga.quantita,2)}}</td>
+                <td class="odd-number" colspan="2" >{{riga.quantita}}</td>
                 {% if riga.moltiplicatore > 1 %}
                 <td class="odd-number" colspan="2">{{riga.multiplo}} ( {{utils.mN(riga.moltiplicatore,2)}} )</td>
                 {% else %}
