@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2013 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -35,23 +35,17 @@ class AnagraficaImballaggi(Anagrafica):
                             AnagraficaImballaggiFilter(self),
                             AnagraficaImballaggiDetail(self))
 
-    def draw(self):
-        """ Facoltativo ma suggerito per indicare la lunghezza
-        massima della cella di testo
-        """
-        self.filter.descrizione_column.get_cells()[0].set_data('max_length', 200)
-        self._treeViewModel = self.filter.filter_listore
-        self.refresh()
+
 
     def refresh(self):
-        # Aggiornamento TreeView
-        denominazione = prepareFilterString(self.filter.denominazione_filter_entry.get_text())
 
-        self.numRecords = Imballaggio().count(denominazione=denominazione)
+        denominazione = prepareFilterString(
+                        self.filter.denominazione_filter_entry.get_text())
+        self.numRecords = CategoriaCliente().count(denominazione=denominazione)
 
         self._refreshPageCount()
 
-        # Let's save the current search as a closure
+
         def filterClosure(offset, batchSize):
             return Imballaggio().select(denominazione=denominazione,
                                                     orderBy=self.orderBy,
@@ -59,14 +53,12 @@ class AnagraficaImballaggi(Anagrafica):
                                                     batchSize=self.batchSize)
 
         self._filterClosure = filterClosure
-
-        imbs = self.runFilter()
-
+        cats = self.runFilter()
         self._treeViewModel.clear()
+        for c in cats:
+            self._treeViewModel.append((c,
+                                        (c.denominazione or '')))
 
-        for i in imbs:
-            self._treeViewModel.append((i,
-                                        (i.denominazione or '')))
 
 
 class AnagraficaImballaggiFilter(AnagraficaFilter):
@@ -75,58 +67,38 @@ class AnagraficaImballaggiFilter(AnagraficaFilter):
     def __init__(self, anagrafica):
         AnagraficaFilter.__init__(self,
                                   anagrafica,
-                                  root='anagrafica_imballaggi_filter_table',
-                                  path='_anagrafica_imballaggi_elements.glade')
         self._widgetFirstFocus = self.denominazione_filter_entry
 
     def _reOrderBy(self, column):
-        if column.get_name() == "descrizione_column":
+        if column.get_name() == "denominazione_column":
             return self._anagrafica._changeOrderBy(column,(None,Imballaggio.denominazione))
 
-    def clear(self):
-        # Annullamento filtro
-        self.denominazione_filter_entry.set_text('')
-        self.denominazione_filter_entry.grab_focus()
-        self._anagrafica.refresh()
 
 
 class AnagraficaImballaggiDetail(AnagraficaDetail):
     """ Dettaglio dell'anagrafica degli imballaggi """
 
     def __init__(self, anagrafica):
-        AnagraficaDetail.__init__(self,
-                        anagrafica,
-                        path='_anagrafica_imballaggi_elements.glade')
+        AnagraficaDetail.__init__(self, anagrafica,)
 
     def setDao(self, dao):
         self.dao = dao
         if dao is None:
             self.dao = Imballaggio()
-            #self.dao = self.imb.record
             self._anagrafica._newRow((self.dao, ''))
-            #self._refresh()
         return self.dao
 
     def updateDao(self):
         self.dao = Imballaggio().getRecord(id=self.dao.id)
-        #self.dao = self.imb.record
         self._refresh()
 
-    def _refresh(self):
-        sel = self._anagrafica.anagrafica_treeview.get_selection()
-        (model, iterator) = sel.get_selected()
-        if iterator and self.dao:
-            model.set_value(iterator, 0, self.dao)
-            model.set_value(iterator, 1, self.dao.denominazione)
 
     def saveDao(self):
         sel = self._anagrafica.anagrafica_treeview.get_selection()
         (model, iterator) = sel.get_selected()
         denominazione = model.get_value(iterator, 1) or ''
         if (denominazione == ''):
-            obligatoryField(self._anagrafica.getTopLevel(), self._anagrafica.anagrafica_treeview)
+            obligatoryField(self._anagrafica.getTopLevel(),
+                                self._anagrafica.anagrafica_treeview)
         self.dao.denominazione = denominazione
         self.dao.persist()
-
-    def deleteDao(self):
-        self.dao.delete()

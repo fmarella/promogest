@@ -75,7 +75,6 @@ class AnagraficaCategorieClientiFilter(AnagraficaFilter):
 
 
 
-
 class AnagraficaCategorieClientiDetail(AnagraficaDetail):
     """ Dettaglio dell'anagrafica delle categorie clienti """
 
