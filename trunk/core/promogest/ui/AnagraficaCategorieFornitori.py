@@ -62,9 +62,7 @@ class AnagraficaCategorieFornitoriFilter(AnagraficaFilter):
     """
 
     def __init__(self, anagrafica):
-        AnagraficaFilter.__init__(self,
-                      anagrafica,
-                      )
+        AnagraficaFilter.__init__(self, anagrafica,)
         self._widgetFirstFocus = self.denominazione_filter_entry
 
     def _reOrderBy(self, column):
@@ -77,9 +75,7 @@ class AnagraficaCategorieFornitoriDetail(AnagraficaDetail):
     """ Dettaglio dell'anagrafica delle categorie fornitori 
     """
     def __init__(self, anagrafica):
-        AnagraficaDetail.__init__(self,
-                      anagrafica,
-                      )
+        AnagraficaDetail.__init__(self, anagrafica,)
 
     def setDao(self, dao):
         self.dao = dao
