@@ -41,7 +41,7 @@ class AnagraficaImballaggi(Anagrafica):
 
         denominazione = prepareFilterString(
                         self.filter.denominazione_filter_entry.get_text())
-        self.numRecords = CategoriaCliente().count(denominazione=denominazione)
+        self.numRecords = Imballaggio().count(denominazione=denominazione)
 
         self._refreshPageCount()
 
@@ -66,7 +66,7 @@ class AnagraficaImballaggiFilter(AnagraficaFilter):
 
     def __init__(self, anagrafica):
         AnagraficaFilter.__init__(self,
-                                  anagrafica,
+                                  anagrafica)
         self._widgetFirstFocus = self.denominazione_filter_entry
 
     def _reOrderBy(self, column):

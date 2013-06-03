@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2013 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -34,22 +34,15 @@ class AnagraficaCategorieContatti(Anagrafica):
                             AnagraficaCategorieContattiFilter(self),
                             AnagraficaCategorieContattiDetail(self))
 
-    def draw(self):
-        """ Facoltativo ma suggerito per indicare la lunghezza
-        massima della cella di testo
-        """
-        self.filter.descrizione_column.get_cells()[0].set_data('max_length', 200)
-        self._treeViewModel = self.filter.filter_listore
-        self.refresh()
 
     def refresh(self):
-        # Aggiornamento TreeView
+
         denominazione = prepareFilterString(self.filter.denominazione_filter_entry.get_text())
         self.numRecords = CategoriaContatto().count(denominazione=denominazione)
 
         self._refreshPageCount()
 
-        # Let's save the current search as a closure
+ 
         def filterClosure(offset, batchSize):
             return CategoriaContatto().select(denominazione=denominazione,
                                                         orderBy=self.orderBy,
@@ -67,53 +60,32 @@ class AnagraficaCategorieContattiFilter(AnagraficaFilter):
     """ Filtro per la ricerca nell'anagrafica delle categorie clienti """
 
     def __init__(self, anagrafica):
-        AnagraficaFilter.__init__(self,
-                                  anagrafica,
-                                  root='anagrafica_categorie_contatti_filter_table',
-                                  path='Contatti/_anagrafica_categorie_contatti_elements.glade',
-                                   )
+        AnagraficaFilter.__init__(self, anagrafica)
         self._widgetFirstFocus = self.denominazione_filter_entry
 
     def _reOrderBy(self, column):
         if column.get_name() == "descrizione_column":
             return self._anagrafica._changeOrderBy(column,(None,CategoriaContatto.denominazione))
 
-    def clear(self):
-        # Annullamento filtro
-        self.denominazione_filter_entry.set_text('')
-        self.denominazione_filter_entry.grab_focus()
-        self._anagrafica.refresh()
+
 
 
 class AnagraficaCategorieContattiDetail(AnagraficaDetail):
     """ Dettaglio dell'anagrafica delle categorie contatti """
 
     def __init__(self, anagrafica):
-        AnagraficaDetail.__init__(self,
-                                  anagrafica,
-                  path='Contatti/_anagrafica_categorie_contatti_elements.glade',
-                  )
+        AnagraficaDetail.__init__(self, anagrafica,)
 
     def setDao(self, dao):
         self.dao = dao
         if dao is None:
             self.dao = CategoriaContatto()
             self._anagrafica._newRow((self.dao, ''))
-            #self._refresh()
         return self.dao
 
     def updateDao(self):
         self.dao = CategoriaContatto().getRecord(id=self.dao.id)
         self._refresh()
-
-    def _refresh(self):
-        sel = self._anagrafica.anagrafica_treeview.get_selection()
-        (model, iterator) = sel.get_selected()
-        if not iterator:
-            return
-        model.set_value(iterator, 0, self.dao)
-        model.set_value(iterator, 1, self.dao.denominazione)
-
 
 
     def saveDao(self):
@@ -125,6 +97,3 @@ class AnagraficaCategorieContattiDetail(AnagraficaDetail):
                                 self._anagrafica.anagrafica_treeview)
         self.dao.denominazione = denominazione
         self.dao.persist()
-
-    def deleteDao(self):
-        self.dao.delete()
