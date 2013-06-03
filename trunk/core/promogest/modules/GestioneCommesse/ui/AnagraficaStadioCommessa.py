@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2013,2011 by Promotux
+#    Copyright (C) 2005-2013 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -36,75 +36,43 @@ class AnagraficaStadioCommessa(Anagrafica):
                             AnagraficaStadioCommessaFilter(self),
                             AnagraficaStadioCommessaDetail(self))
 
-    def draw(self):
-        # Colonne della Treeview per il filtro
 
-        treeview = self.anagrafica_treeview
-
-        renderer = gtk.CellRendererText()
-        renderer.set_property('editable', False)
-        renderer.connect('edited', self.on_column_edited, treeview, True)
-        renderer.set_data('column', 0)
-        renderer.set_data('max_length', 200)
-        column = gtk.TreeViewColumn('Denominazione', renderer, text=1,
-                                    sensitive=3)
-        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
-        column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, (None, 'denominazione'))
-        column.set_resizable(True)
-        column.set_expand(True)
-        treeview.append_column(column)
-
-        treeview.set_search_column(1)
-
-        # Model: Dao, denominazione, denominazione_breve, sensitive
-        self._treeViewModel = gtk.ListStore(object, str)
-        treeview.set_model(self._treeViewModel)
-
-        self.refresh()
 
     def refresh(self):
-        # Aggiornamento TreeView
-        denominazione = prepareFilterString(self.filter.denominazione_filter_entry.get_text())
 
+        denominazione = prepareFilterString(
+                        self.filter.denominazione_filter_entry.get_text())
         self.numRecords = StadioCommessa().count(denominazione=denominazione)
 
         self._refreshPageCount()
 
-        # Let's save the current search as a closure
+
         def filterClosure(offset, batchSize):
             return StadioCommessa().select(denominazione=denominazione,
-                                               orderBy = self.orderBy,
-                                               offset = self.offset,
-                                               batchSize = self.batchSize)
+                                               orderBy=self.orderBy,
+                                               offset=self.offset,
+                                               batchSize=self.batchSize)
 
         self._filterClosure = filterClosure
-
-        models = self.runFilter()
-
+        cats = self.runFilter()
         self._treeViewModel.clear()
+        for c in cats:
+            self._treeViewModel.append((c,
+                                        (c.denominazione or '')))
 
-        for m in models:
-            self._treeViewModel.append((m, m.denominazione
-                                ))
 
 
 class AnagraficaStadioCommessaFilter(AnagraficaFilter):
     """ Filtro per la ricerca nell'anagrafica deistadi commessa """
 
     def __init__(self, anagrafica):
-        AnagraficaFilter.__init__(self,
-                anagrafica,
-                root='anagrafica_stadio_commessa_filter_table',
-                path='GestioneCommesse/gui/_anagrafica_stadio_commessa_elements.glade',
-                isModule=True)
+        AnagraficaFilter.__init__(self, anagrafica,)
         self._widgetFirstFocus = self.denominazione_filter_entry
 
-    def clear(self):
-        # Annullamento filtro
-        self.denominazione_filter_entry.set_text('')
-        self.denominazione_filter_entry.grab_focus()
-        self._anagrafica.refresh()
+    def _reOrderBy(self, column):
+        if column.get_name() == "denominazione_column":
+            return self._anagrafica._changeOrderBy(
+                    column, (None, StadioCommessa.denominazione))
 
 
 class AnagraficaStadioCommessaDetail(AnagraficaDetail):
@@ -115,35 +83,22 @@ class AnagraficaStadioCommessaDetail(AnagraficaDetail):
                                   anagrafica)
 
     def setDao(self, dao):
+        self.dao = dao
         if dao is None:
             self.dao = StadioCommessa()
             self._anagrafica._newRow((self.dao, ''))
-            self._refresh()
-        else:
-            self.dao = dao
         return self.dao
 
     def updateDao(self):
-        if self.dao is not None:
-            self.dao = StadioCommessa().getRecord(id=self.dao.id)
-            self._refresh()
-        else:
-            raise Exception, 'Update not possible dao is none'
+        self.dao = StadioCommessa().getRecord(id=self.dao.id)
+        self._refresh()
 
-    def _refresh(self):
-        sel = self._anagrafica.anagrafica_treeview.get_selection()
-        (model, iterator) = sel.get_selected()
-        if iterator and self.dao:
-            model.set_value(iterator, 0, self.dao)
-            model.set_value(iterator, 1, self.dao.denominazione)
 
     def saveDao(self):
         sel = self._anagrafica.anagrafica_treeview.get_selection()
         (model, iterator) = sel.get_selected()
-        self.dao.denominazione = model.get_value(iterator, 1)
-        if self.dao.denominazione == '' or self.dao.denominazione == None:
+        denominazione = model.get_value(iterator, 1) or ''
+        if (denominazione == ''):
             obligatoryField(self._anagrafica.getTopLevel(), self._anagrafica.anagrafica_treeview)
+        self.dao.denominazione = denominazione
         self.dao.persist()
-
-    def deleteDao(self):
-        self.dao.delete()
