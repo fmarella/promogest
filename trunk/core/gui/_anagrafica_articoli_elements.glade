@@ -9,10 +9,10 @@
     <property name="n_columns">2</property>
     <child>
       <object class="GtkCheckButton" id="cancellato_filter_checkbutton">
+        <property name="use_action_appearance">False</property>
         <property name="visible">True</property>
         <property name="can_focus">True</property>
         <property name="receives_default">False</property>
-        <property name="use_action_appearance">False</property>
         <property name="use_underline">True</property>
         <property name="draw_indicator">True</property>
       </object>
@@ -22,7 +22,7 @@
         <property name="top_attach">8</property>
         <property name="bottom_attach">9</property>
         <property name="x_options">GTK_SHRINK | GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
       </packing>
     </child>
     <child>
@@ -43,7 +43,7 @@
         <property name="left_attach">1</property>
         <property name="right_attach">2</property>
         <property name="x_options">GTK_SHRINK | GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
       </packing>
     </child>
     <child>
@@ -55,7 +55,7 @@
       </object>
       <packing>
         <property name="x_options">GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
         <property name="x_padding">10</property>
       </packing>
     </child>
@@ -70,7 +70,7 @@
         <property name="top_attach">8</property>
         <property name="bottom_attach">9</property>
         <property name="x_options">GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
         <property name="x_padding">10</property>
       </packing>
     </child>
@@ -85,7 +85,7 @@
         <property name="top_attach">7</property>
         <property name="bottom_attach">8</property>
         <property name="x_options">GTK_SHRINK | GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
       </packing>
     </child>
     <child>
@@ -99,7 +99,7 @@
         <property name="top_attach">6</property>
         <property name="bottom_attach">7</property>
         <property name="x_options">GTK_SHRINK | GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
       </packing>
     </child>
     <child>
@@ -113,7 +113,7 @@
         <property name="top_attach">5</property>
         <property name="bottom_attach">6</property>
         <property name="x_options">GTK_SHRINK | GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
       </packing>
     </child>
     <child>
@@ -135,7 +135,7 @@
         <property name="top_attach">4</property>
         <property name="bottom_attach">5</property>
         <property name="x_options">GTK_SHRINK | GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
       </packing>
     </child>
     <child>
@@ -157,7 +157,7 @@
         <property name="top_attach">3</property>
         <property name="bottom_attach">4</property>
         <property name="x_options">GTK_SHRINK | GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
       </packing>
     </child>
     <child>
@@ -181,7 +181,7 @@
         <property name="top_attach">2</property>
         <property name="bottom_attach">3</property>
         <property name="x_options">GTK_SHRINK | GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
       </packing>
     </child>
     <child>
@@ -203,7 +203,7 @@
         <property name="top_attach">1</property>
         <property name="bottom_attach">2</property>
         <property name="x_options">GTK_SHRINK | GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
       </packing>
     </child>
     <child>
@@ -217,7 +217,7 @@
         <property name="top_attach">1</property>
         <property name="bottom_attach">2</property>
         <property name="x_options">GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
         <property name="x_padding">10</property>
       </packing>
     </child>
@@ -232,7 +232,7 @@
         <property name="top_attach">4</property>
         <property name="bottom_attach">5</property>
         <property name="x_options">GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
         <property name="x_padding">10</property>
       </packing>
     </child>
@@ -247,7 +247,7 @@
         <property name="top_attach">3</property>
         <property name="bottom_attach">4</property>
         <property name="x_options">GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
         <property name="x_padding">10</property>
       </packing>
     </child>
@@ -262,7 +262,7 @@
         <property name="top_attach">7</property>
         <property name="bottom_attach">8</property>
         <property name="x_options">GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
         <property name="x_padding">10</property>
       </packing>
     </child>
@@ -277,7 +277,7 @@
         <property name="top_attach">6</property>
         <property name="bottom_attach">7</property>
         <property name="x_options">GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
         <property name="x_padding">10</property>
       </packing>
     </child>
@@ -292,7 +292,7 @@
         <property name="top_attach">5</property>
         <property name="bottom_attach">6</property>
         <property name="x_options">GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
         <property name="x_padding">10</property>
       </packing>
     </child>
@@ -307,7 +307,7 @@
         <property name="top_attach">2</property>
         <property name="bottom_attach">3</property>
         <property name="x_options">GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
         <property name="x_padding">10</property>
       </packing>
     </child>
@@ -347,7 +347,7 @@
                         <property name="top_attach">7</property>
                         <property name="bottom_attach">8</property>
                         <property name="x_options">GTK_FILL</property>
-                        <property name="y_options"></property>
+                        <property name="y_options"/>
                         <property name="x_padding">10</property>
                       </packing>
                     </child>
@@ -363,7 +363,7 @@
                         <property name="top_attach">7</property>
                         <property name="bottom_attach">8</property>
                         <property name="x_options">GTK_SHRINK | GTK_FILL</property>
-                        <property name="y_options"></property>
+                        <property name="y_options"/>
                       </packing>
                     </child>
                     <child>
@@ -378,7 +378,7 @@
                         <property name="top_attach">6</property>
                         <property name="bottom_attach">7</property>
                         <property name="x_options">GTK_SHRINK | GTK_FILL</property>
-                        <property name="y_options"></property>
+                        <property name="y_options"/>
                       </packing>
                     </child>
                     <child>
@@ -393,7 +393,7 @@
                         <property name="top_attach">3</property>
                         <property name="bottom_attach">4</property>
                         <property name="x_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
-                        <property name="y_options"></property>
+                        <property name="y_options"/>
                       </packing>
                     </child>
                     <child>
@@ -405,7 +405,7 @@
                         <property name="left_attach">1</property>
                         <property name="right_attach">2</property>
                         <property name="x_options">GTK_SHRINK | GTK_FILL</property>
-                        <property name="y_options"></property>
+                        <property name="y_options"/>
                       </packing>
                     </child>
                     <child>
@@ -421,7 +421,7 @@
                         <property name="top_attach">2</property>
                         <property name="bottom_attach">3</property>
                         <property name="x_options">GTK_SHRINK | GTK_FILL</property>
-                        <property name="y_options"></property>
+                        <property name="y_options"/>
                       </packing>
                     </child>
                     <child>
@@ -442,7 +442,7 @@
                         <property name="top_attach">1</property>
                         <property name="bottom_attach">2</property>
                         <property name="x_options">GTK_SHRINK | GTK_FILL</property>
-                        <property name="y_options"></property>
+                        <property name="y_options"/>
                       </packing>
                     </child>
                     <child>
@@ -456,7 +456,7 @@
                         <property name="top_attach">1</property>
                         <property name="bottom_attach">2</property>
                         <property name="x_options">GTK_FILL</property>
-                        <property name="y_options"></property>
+                        <property name="y_options"/>
                         <property name="x_padding">10</property>
                       </packing>
                     </child>
@@ -469,7 +469,7 @@
                       </object>
                       <packing>
                         <property name="x_options">GTK_FILL</property>
-                        <property name="y_options"></property>
+                        <property name="y_options"/>
                         <property name="x_padding">10</property>
                       </packing>
                     </child>
@@ -485,7 +485,7 @@
                         <property name="top_attach">5</property>
                         <property name="bottom_attach">6</property>
                         <property name="x_options">GTK_SHRINK | GTK_FILL</property>
-                        <property name="y_options"></property>
+                        <property name="y_options"/>
                       </packing>
                     </child>
                     <child>
@@ -500,7 +500,7 @@
                         <property name="top_attach">4</property>
                         <property name="bottom_attach">5</property>
                         <property name="x_options">GTK_SHRINK | GTK_FILL</property>
-                        <property name="y_options"></property>
+                        <property name="y_options"/>
                       </packing>
                     </child>
                     <child>
@@ -514,7 +514,7 @@
                         <property name="top_attach">6</property>
                         <property name="bottom_attach">7</property>
                         <property name="x_options">GTK_FILL</property>
-                        <property name="y_options"></property>
+                        <property name="y_options"/>
                         <property name="x_padding">10</property>
                       </packing>
                     </child>
@@ -529,7 +529,7 @@
                         <property name="top_attach">5</property>
                         <property name="bottom_attach">6</property>
                         <property name="x_options">GTK_FILL</property>
-                        <property name="y_options"></property>
+                        <property name="y_options"/>
                         <property name="x_padding">10</property>
                       </packing>
                     </child>
@@ -544,7 +544,7 @@
                         <property name="top_attach">4</property>
                         <property name="bottom_attach">5</property>
                         <property name="x_options">GTK_FILL</property>
-                        <property name="y_options"></property>
+                        <property name="y_options"/>
                         <property name="x_padding">10</property>
                       </packing>
                     </child>
@@ -559,7 +559,7 @@
                         <property name="top_attach">3</property>
                         <property name="bottom_attach">4</property>
                         <property name="x_options">GTK_FILL</property>
-                        <property name="y_options"></property>
+                        <property name="y_options"/>
                         <property name="x_padding">10</property>
                       </packing>
                     </child>
@@ -574,7 +574,7 @@
                         <property name="top_attach">2</property>
                         <property name="bottom_attach">3</property>
                         <property name="x_options">GTK_FILL</property>
-                        <property name="y_options"></property>
+                        <property name="y_options"/>
                         <property name="x_padding">10</property>
                       </packing>
                     </child>
@@ -631,10 +631,10 @@
                 <child>
                   <object class="GtkButton" id="ricerca_avanzata_articoli_button">
                     <property name="label" translatable="yes">Vai a Ricerca Avanzata Multipla</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="use_underline">True</property>
                     <property name="focus_on_click">False</property>
                     <signal name="clicked" handler="on_ricerca_avanzata_articoli_button_clicked" swapped="no"/>
@@ -687,10 +687,10 @@
             <child>
               <object class="GtkButton" id="ricerca_semplice_articoli_button">
                 <property name="label" translatable="yes">Vai a Ricerca Semplice Singola</property>
+                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
                 <property name="use_underline">True</property>
                 <signal name="clicked" handler="on_ricerca_semplice_articoli_button_clicked" swapped="no"/>
               </object>
@@ -811,10 +811,10 @@
                         <property name="spacing">3</property>
                         <child>
                           <object class="GtkButton" id="nuova_descrizione_articolo_filter_button">
+                            <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
-                            <property name="use_action_appearance">False</property>
                             <signal name="clicked" handler="on_nuova_descrizione_articolo_filter_button_clicked" swapped="no"/>
                             <child>
                               <object class="GtkImage" id="image322">
@@ -832,11 +832,11 @@
                         </child>
                         <child>
                           <object class="GtkButton" id="cancella_descrizione_articolo_filter_button">
+                            <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="sensitive">False</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
-                            <property name="use_action_appearance">False</property>
                             <signal name="clicked" handler="on_cancella_descrizione_articolo_filter_button_clicked" swapped="no"/>
                             <child>
                               <object class="GtkImage" id="image330">
@@ -923,10 +923,10 @@
                         <property name="spacing">3</property>
                         <child>
                           <object class="GtkButton" id="nuovo_produttore_articolo_filter_button">
+                            <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
-                            <property name="use_action_appearance">False</property>
                             <signal name="clicked" handler="on_nuovo_produttore_articolo_filter_button_clicked" swapped="no"/>
                             <child>
                               <object class="GtkImage" id="image331">
@@ -944,11 +944,11 @@
                         </child>
                         <child>
                           <object class="GtkButton" id="cancella_produttore_articolo_filter_button">
+                            <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="sensitive">False</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
-                            <property name="use_action_appearance">False</property>
                             <signal name="clicked" handler="on_cancella_produttore_articolo_filter_button_clicked" swapped="no"/>
                             <child>
                               <object class="GtkImage" id="image332">
@@ -1035,10 +1035,10 @@
                         <property name="spacing">3</property>
                         <child>
                           <object class="GtkButton" id="nuovo_codice_articolo_filter_button">
+                            <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
-                            <property name="use_action_appearance">False</property>
                             <signal name="clicked" handler="on_nuovo_codice_articolo_filter_button_clicked" swapped="no"/>
                             <child>
                               <object class="GtkImage" id="image333">
@@ -1056,11 +1056,11 @@
                         </child>
                         <child>
                           <object class="GtkButton" id="cancella_codice_articolo_filter_button">
+                            <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="sensitive">False</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
-                            <property name="use_action_appearance">False</property>
                             <signal name="clicked" handler="on_cancella_codice_articolo_filter_button_clicked" swapped="no"/>
                             <child>
                               <object class="GtkImage" id="image334">
@@ -1147,10 +1147,10 @@
                         <property name="spacing">3</property>
                         <child>
                           <object class="GtkButton" id="nuovo_codice_a_barre_articolo_filter_button">
+                            <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
-                            <property name="use_action_appearance">False</property>
                             <signal name="clicked" handler="on_nuovo_codice_a_barre_articolo_filter_button_clicked" swapped="no"/>
                             <child>
                               <object class="GtkImage" id="image335">
@@ -1168,11 +1168,11 @@
                         </child>
                         <child>
                           <object class="GtkButton" id="cancella_codice_a_barre_articolo_filter_button">
+                            <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="sensitive">False</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
-                            <property name="use_action_appearance">False</property>
                             <signal name="clicked" handler="on_cancella_codice_a_barre_articolo_filter_button_clicked" swapped="no"/>
                             <child>
                               <object class="GtkImage" id="image336">
@@ -1259,10 +1259,10 @@
                         <property name="spacing">3</property>
                         <child>
                           <object class="GtkButton" id="nuovo_codice_articolo_fornitore_articolo_filter_button">
+                            <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
-                            <property name="use_action_appearance">False</property>
                             <signal name="clicked" handler="on_nuovo_codice_articolo_fornitore_articolo_filter_button_clicked" swapped="no"/>
                             <child>
                               <object class="GtkImage" id="image337">
@@ -1280,11 +1280,11 @@
                         </child>
                         <child>
                           <object class="GtkButton" id="cancella_codice_articolo_fornitore_articolo_filter_button">
+                            <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="sensitive">False</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
-                            <property name="use_action_appearance">False</property>
                             <signal name="clicked" handler="on_cancella_codice_articolo_fornitore_articolo_filter_button_clicked" swapped="no"/>
                             <child>
                               <object class="GtkImage" id="image338">
@@ -1514,10 +1514,10 @@
                     <child>
                       <object class="GtkCheckButton" id="includi_eliminati_articolo_filter_checkbutton">
                         <property name="label" translatable="yes">Includi eliminati</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="use_underline">True</property>
                         <property name="draw_indicator">True</property>
                         <signal name="toggled" handler="on_includi_eliminati_articolo_filter_checkbutton_toggled" swapped="no"/>
@@ -1531,10 +1531,10 @@
                     <child>
                       <object class="GtkCheckButton" id="solo_eliminati_articolo_filter_checkbutton">
                         <property name="label" translatable="yes">Solo eliminati</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="use_underline">True</property>
                         <property name="draw_indicator">True</property>
                         <signal name="toggled" handler="on_solo_eliminati_articolo_filter_checkbutton_toggled" swapped="no"/>

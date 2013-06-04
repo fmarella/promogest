@@ -279,7 +279,7 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="xalign">0</property>
-            <property name="label" translatable="yes">Descrizioneee</property>
+            <property name="label" translatable="yes">Descrizione</property>
           </object>
           <packing>
             <property name="x_options">GTK_FILL</property>
