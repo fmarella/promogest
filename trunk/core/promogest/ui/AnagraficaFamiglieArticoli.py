@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012,2011 by Promotux
+#    Copyright (C) 2005-2013 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -21,7 +21,7 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 
-from AnagraficaComplessa import Anagrafica
+from promogest.ui.AnagraficaComplessa import Anagrafica
 from promogest.ui.AnagraficaComplessaFilter import AnagraficaFilter
 from promogest.ui.AnagraficaComplessaEdit import AnagraficaEdit
 from promogest.ui.AnagraficaComplessaReport import AnagraficaReport
@@ -217,13 +217,10 @@ class AnagraficaFamiglieArticoliEdit(AnagraficaEdit):
         fillComboboxFamiglieArticoli(self.id_padre_combobox)
 
     def setDao(self, dao):
+        self.dao = dao
         if dao is None:
             # Crea un nuovo Dao vuoto
             self.dao = FamigliaArticolo()
-        else:
-            # Ricrea il Dao con una connessione al DBMS SQL
-            #self.dao = FamigliaArticolo().getRecord(id = dao.id)
-            self.dao = dao
         self._refresh()
         return self.dao
 
