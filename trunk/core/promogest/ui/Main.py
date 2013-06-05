@@ -293,15 +293,7 @@ class Main(GladeWidget):
             Environment.params["session"].commit()
         #pulizia_lottotemp()
 
-        def pickle_meta():
-            from pickle import dump
-            meta_pickle = self.aziendaStr + "_meta_pickle"+sys.version[:1]
-            if not os.path.exists(os.path.join(Environment.SRC_PATH,
-                                                meta_pickle)):
-                with open(os.path.join(Environment.SRC_PATH,
-                                        meta_pickle), 'wb') as f:
-                    dump(Environment.meta, f)
-        pickle_meta()
+
 
    # ATTENZIONE: Tutto il codice di cambio IVA è stato spostato in __init__.py
 
@@ -320,6 +312,16 @@ class Main(GladeWidget):
         """
         self.main_iconview.unselect_all()
         self.main_hbox.show_all()
+
+
+        def pickle_meta():
+            from pickle import dump
+            meta_pickle = self.aziendaStr + "-meta.pickle"+sys.version[:1]
+            if not os.path.exists(str(os.path.join(Environment.promogestDir.replace("_",""),meta_pickle.replace("_","")).strip())):
+                with open(str(os.path.join(Environment.promogestDir.replace("_",""),meta_pickle.replace("_","")).strip()), 'wb') as f:
+                    dump(Environment.meta, f)
+        pickle_meta()
+
 
     def on_ricerca_lotto_menuitem_activate(self, button):
         from promogest.ui.RicercaLottiWindow import RicercaLottiWindow

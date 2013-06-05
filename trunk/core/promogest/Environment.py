@@ -282,10 +282,10 @@ session = Session()
 schema_azienda = azienda
 # Determiniamo il nome del file pickle in base all'azienda e alla ver python.
 if azienda:
-    meta_pickle = azienda + "_meta_pickle"+sys.version[:1]
+    meta_pickle = azienda + "-meta.pickle"+sys.version[:1]
     promogestDir = os.path.expanduser('~') + os.sep + "promogest2" + os.sep + azienda + os.sep
 else:
-    meta_pickle = "AziendaPromo_meta_pickle"+sys.version[:1]
+    meta_pickle = "AziendaPromo-meta.pickle"+sys.version[:1]
     promogestDir = os.path.expanduser('~') + os.sep + "promogest2" + os.sep + "AziendaPromo" + os.sep
 
 from pickle import load as pickle_load
@@ -300,21 +300,20 @@ def delete_pickle():
     if os.path.exists(os.path.join(SRC_PATH, meta_pickle)):
         os.remove(os.path.join(SRC_PATH, meta_pickle))
 
-print os.path.exists(os.path.join(SRC_PATH, meta_pickle)), os.path.join(SRC_PATH, meta_pickle)
-if os.path.exists(os.path.join(SRC_PATH, meta_pickle)) \
-                                    and sqlalchemy.__version__ > "0.5.8":
-    with open(os.path.join(SRC_PATH, meta_pickle), 'rb') as f:
+print "OK", os.path.exists(str(os.path.join(promogestDir.replace("_",""),meta_pickle.replace("_","")).strip())), str(os.path.join(promogestDir.replace("_",""),meta_pickle.replace("_","")))
+
+if os.path.exists(str(os.path.join(promogestDir.replace("_",""),meta_pickle.replace("_","")).strip())):
+    with open(str(os.path.join(promogestDir.replace("_",""),meta_pickle.replace("_","")).strip()), 'rb') as f:
         try:
             meta = pickle_load(f)
             meta.bind = engine
         except:
             delete_pickle()
-        print "USO META PICKLE"
-        meta = MetaData(engine)
+        print "USO META PICKLE FAST"
+        #meta = MetaData(engine)
 else:
     print "USO META NORMALE"
     meta = MetaData(engine)
-
 
 #meta = MetaData(engine)
 schema_azienda = azienda
