@@ -22,6 +22,7 @@
 
 import hashlib
 import os
+import glob
 from promogest import Environment
 from promogest.ui.gtk_compat import *
 import datetime
@@ -235,6 +236,10 @@ class Login(SimpleGladeApp):
 #                        thread = threading.Thread(target=self.feddretreive)
 #                        thread.start()
 #                        thread.join(2.3)
+
+                files = glob.glob(Environment.tempDir+"/*")
+                for f in files:
+                    os.remove(f)
                 Environment.params['usernameLoggedList'][0] = users[0].id
                 Environment.params['usernameLoggedList'][1] =\
                                                  users[0].username

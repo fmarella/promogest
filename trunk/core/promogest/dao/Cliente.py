@@ -290,6 +290,7 @@ if 'id_aliquota_iva' not in colonne:
 if 'tipo' not in colonne:
     col = Column('tipo', String(2), default="PG")
     col.create(t_cliente, populate_default=True)
+    delete_pickle()
 
 j = join(t_cliente, t_persona_giuridica)
 
