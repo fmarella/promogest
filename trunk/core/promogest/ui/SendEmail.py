@@ -58,14 +58,14 @@ class SendEmail(GladeWidget):
         if setconf("Smtp", "emailmittente"):
             self.fromaddr = str(setconf("Smtp", "emailmittente"))
             self.from_email_entry.set_text(self.fromaddr)
-        try:
-            fileName = Environment.guiDir + 'logo_promogest.png'
-            f = open(fileName,'rb')
-            content = f.read()
-            f.close()
-            self.codec = 'Codice installazione: ' + str(hashlib.md5(content).hexdigest().upper())
-        except:
-            pass
+        #try:
+            #fileName = Environment.guiDir + 'logo_promogest.png'
+            #f = open(fileName,'rb')
+            #content = f.read()
+            #f.close()
+            #self.codec = 'Codice installazione: ' + str(hashlib.md5(content).hexdigest().upper())
+        #except:
+            #pass
             #msg = 'Impossibile generare il codice !!!'
         #self.anagrafica()
         #self.placeWindow()
@@ -104,9 +104,9 @@ class SendEmail(GladeWidget):
         """
         self.total_addrs = []
         self.toaddrs  = ["info@promotux.it"]
-        msg = """%s
+        msg = """
 
-        %s""" %(self.codec,self.bodytext)
+        %s""" %(self.bodytext)
         subject = self.obj + "  " + self.sobject
         self.fromaddr = self.fromm.strip()
         self.bccaddrs = ["assistenza@promotux.it"]
