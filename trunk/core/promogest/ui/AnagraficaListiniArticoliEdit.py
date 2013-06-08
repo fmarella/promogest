@@ -266,7 +266,7 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
         if self._anagrafica._listinoFissato:
             findComboboxRowFromId(self.id_listino_customcombobox.combobox, self._anagrafica._idListino)
             self.id_listino_customcombobox.set_sensitive(False)
-
+        self.id_articolo_customcombobox.giveAnag(self)
         self.sconti_dettaglio_widget.setValues()
         self.sconti_ingrosso_widget.setValues()
 
