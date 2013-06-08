@@ -274,7 +274,10 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
 
     def on_id_articolo_customcombobox_changed(self):
         """        """
-        res = self.id_articolo_customcombobox.getData()
+        re = self.id_articolo_customcombobox.getData()
+        res = None
+        if re:
+            res = leggiArticolo(re.id)
         if res:
             self.descrizione_breve_aliquota_iva_label.set_text(res["denominazioneBreveAliquotaIva"])
             self._percentualeIva = res["percentualeAliquotaIva"]

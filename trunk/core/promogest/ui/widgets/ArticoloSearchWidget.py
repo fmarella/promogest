@@ -68,10 +68,11 @@ class ArticoloSearchWidget(CustomComboBoxSearch):
                     denominazione = res["denominazione"]
                     self.set_text(denominazione)
                     self._id = id
+                    self._container = res["daoArticolo"]
                     try:
-                        self.anaedit.on_id_articolo_customcombobox_changed(self)
+                        self.anaedit.on_id_articolo_customcombobox_changed()
                     except:
-                        print "NON CE"
+                        pass
 
             from promogest.ui.RicercaComplessaArticoli import RicercaComplessaArticoli
             self._ricerca = RicercaComplessaArticoli()

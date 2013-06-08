@@ -82,6 +82,10 @@ class CustomComboBoxSearch(gtk.Entry):
             self._id =  model[iter][1]
             self._container = model[iter][3]
             #print "CONTAINER+ID", self._container,self._id
+            try:
+                self.anaedit.on_id_articolo_customcombobox_changed()
+            except:
+                pass
             return model[iter][2]
         else:
             self._id = None
