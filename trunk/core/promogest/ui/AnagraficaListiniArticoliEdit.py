@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2013 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
-# Author: Andrea Argiolas <andrea@promotux.it>
 # Author: Francesco Meloni <francesco@promotux.it>
 
 #    This file is part of Promogest.
@@ -270,6 +269,8 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
 
         self.sconti_dettaglio_widget.setValues()
         self.sconti_ingrosso_widget.setValues()
+
+
 
     def on_id_articolo_customcombobox_changed(self):
         """        """
