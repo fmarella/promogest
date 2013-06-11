@@ -146,7 +146,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="tooltip_text" translatable="yes">Provincia sede operativa</property>
-                <property name="max_length">2</property>
+                <property name="max_length">10</property>
                 <property name="invisible_char">●</property>
                 <property name="primary_icon_activatable">False</property>
                 <property name="secondary_icon_activatable">False</property>
@@ -798,7 +798,7 @@ della sede legale del cliente</property>
                 <property name="width_request">160</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <property name="max_length">2</property>
+                <property name="max_length">10</property>
                 <property name="invisible_char">●</property>
                 <property name="primary_icon_activatable">False</property>
                 <property name="secondary_icon_activatable">False</property>
@@ -830,7 +830,7 @@ della sede legale del cliente</property>
               <object class="UnsignedIntegerEntryField" id="cap_sede_legale_entry">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <property name="max_length">5</property>
+                <property name="max_length">10</property>
                 <property name="invisible_char">●</property>
                 <property name="primary_icon_activatable">False</property>
                 <property name="secondary_icon_activatable">False</property>
@@ -859,7 +859,7 @@ della sede legale del cliente</property>
               <object class="UnsignedIntegerEntryField" id="cap_sede_operativa_entry">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <property name="max_length">5</property>
+                <property name="max_length">10</property>
                 <property name="invisible_char">●</property>
                 <property name="primary_icon_activatable">False</property>
                 <property name="secondary_icon_activatable">False</property>

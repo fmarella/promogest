@@ -42,7 +42,7 @@ def findDoc(selection):
     newmodel = []
     (model, iterator) = selection.get_selected_rows()
     for i in iterator:
-        if model[i][3] == "DDT vendita":
+        if "DDT vendita" in model[i][3]:
             newmodel.append(model[i])
     newmodel.reverse()
     return newmodel
