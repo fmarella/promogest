@@ -42,7 +42,7 @@ if "note" not in colonne:
 
 if 'cancellato' not in colonne:
     col = Column('cancellato', Boolean, default=False)
-    col.create(t_persona_giuridica)
+    col.create(t_persona_giuridica, populate_default=True)
     delete_pickle()
 
 class PersonaGiuridica_(Dao):

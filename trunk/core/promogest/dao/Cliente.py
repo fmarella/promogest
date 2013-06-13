@@ -307,3 +307,8 @@ std_mapper = mapper(Cliente,
                             secondary=t_cliente_variazione_listino)
                     },
                     order_by=t_cliente.c.id)
+
+for cli in Cliente().select(batchSize=None):
+    if cli.cancellato is None:
+        cli.cancellato = False
+        cli.persist()
