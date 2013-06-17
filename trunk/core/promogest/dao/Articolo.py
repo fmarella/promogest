@@ -568,7 +568,7 @@ class Articolo(Dao):
                 self.articolo_adr_dao.id_articolo = self.id
                 self.APADR = self.articolo_adr_dao
         if posso("CSA"):
-            if self.articolo_csa_dao and self.id:
+            if hasattr(self, "articolo_csa_dao") and self.articolo_csa_dao and self.id:
                 self.articolo_csa_dao.id_articolo = self.id
                 self.APCSA = self.articolo_csa_dao
         session.commit()
