@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: promogest\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/promogest/updates/list\n"
 "POT-Creation-Date: 2013-06-26 09:17+0200\n"
-"PO-Revision-Date: 2013-06-26 09:08+0000\n"
+"PO-Revision-Date: 2013-06-26 09:21+0000\n"
 "Last-Translator: promotux <info@promotux.it>\n"
 "Language-Team: English (http://www.transifex.com/projects/p/promogest_i18n/language/en/)\n"
 "MIME-Version: 1.0\n"
@@ -34,7 +34,7 @@ msgstr ""
 #: ../promogest/ui/Login.py:83
 msgid ""
 "Dati accesso <b>ONE</b> : Username: <b>admin</b>, password: <b>admin</b>"
-msgstr ""
+msgstr "Login <b>ONE</b> : Username: <b>admin</b>, password: <b>admin</b>"
 
 #: ../promogest/ui/Login.py:134 ../promogest/ui/Login.py:147
 msgid "<b>PromoGest 'ONE'</b>"
@@ -5526,11 +5526,11 @@ msgstr ""
 
 #: ../gui/email_dialog.glade.h:7
 msgid "Invio Email"
-msgstr ""
+msgstr "Send email"
 
 #: ../gui/email_dialog.glade.h:9 ../gui/spedizione_mail_fax.glade.h:10
 msgid "Spedisci"
-msgstr ""
+msgstr "Send"
 
 #: ../gui/email_dialog.glade.h:10
 msgid ""
@@ -5773,7 +5773,7 @@ msgstr ""
 
 #: ../gui/main_window.glade.h:4
 msgid "PromoGest2"
-msgstr ""
+msgstr "PromoGest2"
 
 #: ../gui/main_window.glade.h:5
 msgid "_Azienda"
