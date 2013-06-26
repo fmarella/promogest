@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: promogest\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/promogest/updates/list\n"
 "POT-Creation-Date: 2013-06-26 09:17+0200\n"
-"PO-Revision-Date: 2013-06-26 09:21+0000\n"
+"PO-Revision-Date: 2013-06-26 21:44+0000\n"
 "Last-Translator: promotux <info@promotux.it>\n"
 "Language-Team: English (http://www.transifex.com/projects/p/promogest_i18n/language/en/)\n"
 "MIME-Version: 1.0\n"
@@ -418,7 +418,7 @@ msgstr ""
 #: ../promogest/modules/VenditaDettaglio/gui/pg3__vendita_dettaglio_setup.glade.h:2
 #: ../promogest/modules/VenditaDettaglio/gui/_vendita_dettaglio_setup.glade.h:2
 msgid "Magazzino"
-msgstr ""
+msgstr "Warehouse"
 
 #: ../promogest/ui/anagDocumenti/AnagraficaDocumentiEditUtils.py:80
 #: ../promogest/modules/VenditaDettaglio/gui/pg3_vendita_dettaglio_window.glade.h:38
@@ -534,7 +534,7 @@ msgstr "U.M."
 #: ../promogest/modules/VenditaDettaglio/gui/pg3_vendita_dettaglio_window.glade.h:53
 #: ../promogest/modules/VenditaDettaglio/gui/vendita_dettaglio_window.glade.h:54
 msgid "Quantita'"
-msgstr ""
+msgstr "Quantity"
 
 #: ../promogest/ui/anagDocumenti/AnagraficaDocumentiEditUtils.py:132
 #: ../gui/_anagrafica_fornitura_articoli_elements.glade.h:13
@@ -554,7 +554,7 @@ msgstr ""
 #: ../gui/pg3_anagrafica_documenti.glade.h:40
 #: ../gui/pg3__anagrafica_movimenti_elements.glade.h:34
 msgid "Prezzo netto"
-msgstr ""
+msgstr "Net price"
 
 #: ../promogest/ui/anagDocumenti/AnagraficaDocumentiEditUtils.py:156
 #: ../gui/anagrafica_documenti.glade.h:43
@@ -793,7 +793,7 @@ msgstr ""
 #: ../promogest/modules/RuoliAzioni/gui/_anagrafica_ruoli_elements.glade.h:1
 #: ../promogest/modules/RuoliAzioni/gui/pg3__anagrafica_ruoli_elements.glade.h:1
 msgid "Nome"
-msgstr ""
+msgstr "Name"
 
 #: ../gui/abbinamento_persone_giuridiche.glade.h:9
 msgid "<b>Persone Giuridiche Abbinate</b>"
@@ -1086,7 +1086,7 @@ msgstr ""
 #: ../promogest/modules/Statistiche/gui/statistiche_dialog.glade.h:16
 #: ../report-templates/articoli.html:13
 msgid "Produttore"
-msgstr ""
+msgstr "Manufacturer"
 
 #: ../gui/_anagrafica_articoli_detail.glade.h:8
 #: ../gui/pg3__anagrafica_articoli_detail.glade.h:8
@@ -1495,7 +1495,7 @@ msgstr ""
 #: ../gui/pg3__ricerca_semplice_articoli.glade.h:13
 #: ../gui/_ricerca_semplice_articoli.glade.h:16
 msgid "Modello"
-msgstr ""
+msgstr "Model"
 
 #: ../gui/_anagrafica_articoli_detail.glade.h:110
 #: ../gui/_anagrafica_articoli_elements.glade.h:16
@@ -1507,7 +1507,7 @@ msgstr ""
 #: ../gui/_ricerca_complessa_articoli.glade.h:21
 #: ../gui/_ricerca_semplice_articoli.glade.h:22
 msgid "Taglia"
-msgstr ""
+msgstr "Size"
 
 #: ../gui/_anagrafica_articoli_detail.glade.h:111
 #: ../gui/pg3__anagrafica_articoli_detail.glade.h:107
@@ -1619,7 +1619,7 @@ msgstr ""
 #: ../promogest/modules/GestioneNoleggio/gui/schedalavorazione_plugins.glade.h:8
 #: ../promogest/modules/SchedaLavorazione/gui/SchedaLavorazione.glade.h:84
 msgid "Stato"
-msgstr ""
+msgstr "Status"
 
 #: ../gui/_anagrafica_articoli_elements.glade.h:7
 #: ../gui/anagrafica_articoli_semplice_dialog.glade.h:5
@@ -1709,7 +1709,7 @@ msgstr "Year"
 #: ../gui/pg3__ricerca_semplice_articoli.glade.h:20
 #: ../gui/_ricerca_semplice_articoli.glade.h:23
 msgid "Gr Taglia"
-msgstr ""
+msgstr "Gr. Size"
 
 #: ../gui/_anagrafica_articoli_elements.glade.h:18
 #: ../gui/_anagrafica_stoccaggi_articoli_elements.glade.h:33
@@ -1718,7 +1718,7 @@ msgstr ""
 #: ../gui/pg3__ricerca_semplice_articoli.glade.h:21
 #: ../gui/_ricerca_semplice_articoli.glade.h:24
 msgid "Taglia Colore"
-msgstr ""
+msgstr "Color Size"
 
 #: ../gui/_anagrafica_articoli_elements.glade.h:19
 #: ../gui/pg3__anagrafica_articoli_elements.glade.h:19
@@ -2099,7 +2099,7 @@ msgstr ""
 #: ../gui/_anagrafica_aziende_elements.glade.h:12
 #: ../gui/pg3_anagrafica_azienda.glade.h:27
 msgid "Logo"
-msgstr ""
+msgstr "Logo"
 
 #: ../gui/_anagrafica_aziende_elements.glade.h:1
 msgid "Anagrafica aziende "
@@ -2142,7 +2142,7 @@ msgstr ""
 #: ../gui/_anagrafica_aziende_elements.glade.h:23
 #: ../gui/_anagrafica_magazzini_elements.glade.h:6
 msgid "Contatti"
-msgstr ""
+msgstr "Contacts"
 
 #: ../gui/_anagrafica_aziende_elements.glade.h:26
 msgid "Modifica dati azienda corrente"
@@ -2265,7 +2265,7 @@ msgstr ""
 #: ../gui/pg3__anagrafica_clienti_elements.glade.h:1
 #: ../gui/pg3__anagrafica_fornitori_elements.glade.h:1
 msgid "Nazione"
-msgstr ""
+msgstr "Nation"
 
 #: ../gui/_anagrafica_clienti_elements.glade.h:2
 #: ../gui/_anagrafica_secondaria_elements.glade.h:2
@@ -2312,7 +2312,7 @@ msgstr ""
 #: ../gui/pg3__anagrafica_clienti_elements.glade.h:13
 #: ../gui/pg3__anagrafica_fornitori_elements.glade.h:3
 msgid "<b>Codice</b>"
-msgstr ""
+msgstr "<b>Code</b>"
 
 #: ../gui/_anagrafica_clienti_elements.glade.h:14
 #: ../gui/pg3__anagrafica_clienti_elements.glade.h:14
@@ -2728,13 +2728,13 @@ msgstr ""
 #: ../gui/anagrafica_semplice_window.glade.h:1
 #: ../gui/anagrafica_window.glade.h:1
 msgid "Anagrafica"
-msgstr ""
+msgstr "Data"
 
 #: ../gui/anagrafica_complessa_window.glade.h:2
 #: ../gui/anagrafica_semplice_window.glade.h:2
 #: ../gui/anagrafica_window.glade.h:2
 msgid "Record"
-msgstr ""
+msgstr "Record"
 
 #: ../gui/anagrafica_complessa_window.glade.h:3
 msgid "_Nuovo"
@@ -2808,7 +2808,7 @@ msgstr ""
 #: ../gui/anagrafica_semplice_window.glade.h:4 ../gui/credits_dialog.glade.h:1
 #: ../gui/main_window.glade.h:30
 msgid "Credits"
-msgstr ""
+msgstr "Credits"
 
 #: ../gui/anagrafica_complessa_window.glade.h:21
 #: ../gui/anagrafica_semplice_window.glade.h:5
@@ -2818,7 +2818,7 @@ msgstr ""
 #: ../gui/anagrafica_complessa_window.glade.h:22
 #: ../gui/anagrafica_semplice_window.glade.h:6 ../gui/main_window.glade.h:32
 msgid "Codice installazione..."
-msgstr ""
+msgstr "Installation code"
 
 #: ../gui/anagrafica_complessa_window.glade.h:23
 #: ../gui/anagrafica_semplice_window.glade.h:7 ../gui/main_window.glade.h:28
@@ -3047,7 +3047,7 @@ msgstr "/ coef."
 #: ../gui/anagrafica_documenti.glade.h:23
 #: ../gui/pg3_anagrafica_documenti.glade.h:24
 msgid "Prezzo acq"
-msgstr ""
+msgstr "Purch. price"
 
 #: ../gui/anagrafica_documenti.glade.h:25
 #: ../gui/_anagrafica_movimenti_elements.glade.h:28
@@ -3163,7 +3163,7 @@ msgstr "<b>_1 VALUES</b>"
 #: ../gui/anagrafica_documenti.glade.h:47
 #: ../gui/pg3_anagrafica_documenti.glade.h:45
 msgid "Ritenuta"
-msgstr ""
+msgstr "Withholding"
 
 #: ../gui/anagrafica_documenti.glade.h:49
 #: ../gui/_anagrafica_listini_articoli_elements.glade.h:38
@@ -3192,7 +3192,7 @@ msgstr ""
 #: ../gui/anagrafica_documenti.glade.h:53
 #: ../gui/pg3_anagrafica_documenti.glade.h:51
 msgid "<b>Ritenuta  Acconto</b>"
-msgstr ""
+msgstr "<b>Withholding Service</b>"
 
 #: ../gui/anagrafica_documenti.glade.h:54
 #: ../gui/pg3_anagrafica_documenti.glade.h:52
@@ -3233,7 +3233,7 @@ msgstr ""
 #: ../gui/_anagrafica_fornitura_articoli_elements.glade.h:11
 #: ../gui/pg3_anagrafica_documenti.glade.h:58
 msgid "Ordine minimo"
-msgstr ""
+msgstr "Minimum order"
 
 #: ../gui/anagrafica_documenti.glade.h:61
 #: ../gui/pg3_anagrafica_documenti.glade.h:59
@@ -3243,7 +3243,7 @@ msgstr ""
 #: ../gui/anagrafica_documenti.glade.h:62
 #: ../gui/pg3_anagrafica_documenti.glade.h:60
 msgid "<b>Dati aggiuntivi fornitura articolo</b>"
-msgstr ""
+msgstr "<b>Additional data supply item</b>"
 
 #: ../gui/anagrafica_documenti.glade.h:63
 #: ../gui/pg3_anagrafica_documenti.glade.h:61
@@ -3358,7 +3358,7 @@ msgstr "Base Unit"
 #: ../gui/pg3_anagrafica_documenti.glade.h:78
 #: ../gui/pg3__anagrafica_movimenti_elements.glade.h:23
 msgid "Q. minima:"
-msgstr ""
+msgstr "Minimum Order Quantity:"
 
 #: ../gui/anagrafica_documenti.glade.h:81
 #: ../gui/_anagrafica_movimenti_elements.glade.h:24
@@ -3543,7 +3543,7 @@ msgstr "Target merchandise"
 #: ../gui/anagrafica_documenti.glade.h:117
 #: ../gui/pg3_anagrafica_documenti.glade.h:115
 msgid "Aspetto esteriore beni"
-msgstr ""
+msgstr "Appearance goods"
 
 #: ../gui/anagrafica_documenti.glade.h:118
 #: ../gui/pg3_anagrafica_documenti.glade.h:116
@@ -3558,7 +3558,7 @@ msgstr "Internal notes"
 #: ../gui/anagrafica_documenti.glade.h:120
 #: ../gui/pg3_anagrafica_documenti.glade.h:118
 msgid "Note pie' di pagina"
-msgstr ""
+msgstr "Notes pie 'page"
 
 #: ../gui/anagrafica_documenti.glade.h:121
 #: ../gui/_anagrafica_movimenti_elements.glade.h:39
@@ -3639,7 +3639,7 @@ msgstr "<b>WEIGHT AND PACKAGES</b>"
 #: ../gui/pg3_anagrafica_documenti.glade.h:133
 #: ../gui/pg3__anagrafica_movimenti_elements.glade.h:46
 msgid "Riepiloghi"
-msgstr ""
+msgstr "Summaries"
 
 #: ../gui/anagrafica_documenti.glade.h:136
 #: ../gui/pg3_anagrafica_documenti.glade.h:134
@@ -3898,7 +3898,7 @@ msgstr "Article"
 #: ../promogest/modules/GestioneKit/gui/_anagrafica_kit_filter_elements.glade.h:2
 #: ../promogest/modules/Provvigione/gui/_anagrafica_provv_elements.glade.h:4
 msgid "Fornitore"
-msgstr ""
+msgstr "Supplier"
 
 #: ../gui/_anagrafica_fornitura_articoli_elements.glade.h:4
 msgid "Fornitore preferenziale"
@@ -4394,7 +4394,7 @@ msgstr ""
 #: ../promogest/modules/VenditaDettaglio/gui/pg3__scontrini_emessi_elements.glade.h:6
 #: ../promogest/modules/VenditaDettaglio/gui/_scontrini_emessi_elements.glade.h:6
 msgid "Cliente"
-msgstr ""
+msgstr "Customer"
 
 #: ../gui/_anagrafica_noleggi_elements.glade.h:6
 #: ../gui/pg3__ricerca_semplice_movimenti.glade.h:5
@@ -4583,7 +4583,7 @@ msgstr ""
 #: ../gui/anagrafica_semplice_window.glade.h:13
 #: ../gui/anagrafica_window.glade.h:12
 msgid "Salva"
-msgstr ""
+msgstr "Save"
 
 #: ../gui/anagrafica_semplice_window.glade.h:14
 #: ../gui/anagrafica_window.glade.h:13
@@ -4597,7 +4597,7 @@ msgstr ""
 
 #: ../gui/anagrafica_semplice_window.glade.h:16 ../gui/export_csv.glade.h:7
 msgid "Export CSV"
-msgstr ""
+msgstr "Export CSV"
 
 #: ../gui/_anagrafica_stoccaggi_articoli_elements.glade.h:2
 #: ../gui/cross_filter_pricelist.glade.h:6
@@ -4880,7 +4880,7 @@ msgstr ""
 #: ../promogest/modules/PromoWear/gui/_anagrafiche_principali_select.glade.h:10
 #: ../promogest/modules/PromoWear/gui/pg3__anagrafiche_principali_select.glade.h:10
 msgid "Anagrafiche"
-msgstr ""
+msgstr "Data"
 
 #: ../gui/azioni_veloce_notebook.glade.h:4 ../gui/news_notebook.glade.h:5
 msgid "Ordine Da Cliente"
@@ -4918,11 +4918,11 @@ msgstr "Estimates"
 
 #: ../gui/azioni_veloce_notebook.glade.h:13 ../gui/news_notebook.glade.h:14
 msgid "Sito PromoTux"
-msgstr ""
+msgstr "PromoTux Site"
 
 #: ../gui/azioni_veloce_notebook.glade.h:14 ../gui/news_notebook.glade.h:15
 msgid "Sito PromoGest"
-msgstr ""
+msgstr "PromoGest Site"
 
 #: ../gui/azioni_veloce_notebook.glade.h:15 ../gui/news_notebook.glade.h:16
 msgid "Email Assistenza"
@@ -5346,7 +5346,7 @@ msgstr ""
 #: ../gui/duplicazione_movimento.glade.h:9
 #: ../gui/fatturazione_differita.glade.h:15
 msgid "_Ok"
-msgstr ""
+msgstr "_Ok"
 
 #: ../gui/duplicazione_listino.glade.h:1
 msgid "Duplicazione listino"
@@ -5506,11 +5506,11 @@ msgstr ""
 
 #: ../gui/email_dialog.glade.h:2
 msgid "[PromoGest2 - Domanda Generica]"
-msgstr ""
+msgstr "[PromoGest2 - Generic Question]"
 
 #: ../gui/email_dialog.glade.h:3
 msgid "[PromoGest2 - Domanda Tecnica ]"
-msgstr ""
+msgstr "[PromoGest2 - Tecnical Question ]"
 
 #: ../gui/email_dialog.glade.h:4
 msgid "[PromoGest2 - Richiesta Commerciale ]"
@@ -5518,7 +5518,7 @@ msgstr ""
 
 #: ../gui/email_dialog.glade.h:5
 msgid "[PromoGest2 - Attivazione Moduli ]"
-msgstr ""
+msgstr "[PromoGest2 - Module Activation ]"
 
 #: ../gui/email_dialog.glade.h:6
 msgid "[PromoGest2 - Segnalazione BUG]"
@@ -5695,7 +5695,7 @@ msgstr ""
 #: ../gui/generic_dialog.glade.h:1
 #: ../promogest/modules/VenditaDettaglio/gui/generic_dialog.glade.h:1
 msgid "FIXME"
-msgstr ""
+msgstr "FIXME"
 
 #: ../gui/htmlviewer.glade.h:1 ../gui/_ricerca_semplice_articoli.glade.h:5
 msgid "\"\""
@@ -5725,7 +5725,7 @@ msgstr ""
 
 #: ../gui/licenza_dialog.glade.h:1 ../gui/main_window.glade.h:31
 msgid "Licenza"
-msgstr ""
+msgstr "License"
 
 #: ../gui/login_window.glade.h:1
 msgid "Accesso a PromoGest2 \"MentoR\" "
@@ -5785,11 +5785,11 @@ msgstr ""
 
 #: ../gui/main_window.glade.h:7
 msgid "Dati Azienda"
-msgstr ""
+msgstr "Company data"
 
 #: ../gui/main_window.glade.h:8
 msgid "Preferenze"
-msgstr ""
+msgstr "Preference"
 
 #: ../gui/main_window.glade.h:9
 msgid "Disconnetti"
@@ -5859,7 +5859,7 @@ msgstr ""
 
 #: ../gui/main_window.glade.h:33
 msgid "Manuale online"
-msgstr ""
+msgstr "Help online"
 
 #: ../gui/main_window.glade.h:34
 msgid "Registrati sul sito"
@@ -5882,7 +5882,7 @@ msgstr ""
 
 #: ../gui/main_window.glade.h:40
 msgid "PROVA PromoShop"
-msgstr ""
+msgstr "TEST PromoShop"
 
 #: ../gui/main_window.glade.h:41
 msgid ""
@@ -5895,7 +5895,7 @@ msgstr ""
 
 #: ../gui/main_window.glade.h:46
 msgid "PROVA PromoWear"
-msgstr ""
+msgstr "TEST PromoWear"
 
 #: ../gui/main_window.glade.h:47
 msgid ""
@@ -5918,7 +5918,7 @@ msgid ""
 "Creazione, modifica e cancellazione \n"
 "dei clienti sia come persona fisica \n"
 "che come persona giuridica"
-msgstr ""
+msgstr "Customers Data Access ⏎\nCreating, editing and deleting ⏎\nclients both as an individual ⏎\nthat as a company"
 
 #: ../gui/main_window.glade.h:63
 msgid "Selez. Anag Secondaria"
@@ -5930,7 +5930,7 @@ msgstr ""
 
 #: ../gui/main_window.glade.h:66
 msgid "<b>ANAGRAFICHE</b>"
-msgstr ""
+msgstr "<b>DATA</b>"
 
 #: ../gui/main_window.glade.h:67 ../gui/_parametri_select.glade.h:1
 msgid "_Categorie articoli"
@@ -5990,7 +5990,7 @@ msgstr ""
 
 #: ../gui/main_window.glade.h:81 ../gui/_parametri_select.glade.h:15
 msgid "Parametri"
-msgstr ""
+msgstr "Parameters"
 
 #: ../gui/main_window.glade.h:82
 msgid "<b>PARAMETRI</b>"
@@ -6114,7 +6114,7 @@ msgstr ""
 #: ../promogest/modules/VenditaDettaglio/gui/pg3_tastierino_dialog.glade.h:1
 #: ../promogest/modules/VenditaDettaglio/gui/tastierino_dialog.glade.h:1
 msgid "OK"
-msgstr ""
+msgstr "OK"
 
 #: ../gui/news_notebook.glade.h:1
 msgid "<b>AZIONI VELOCI</b>"
@@ -7898,7 +7898,7 @@ msgstr "Amount"
 #: ../promogest/modules/Pagamenti/gui/pagamenti_notebook.glade.h:16
 #: ../promogest/modules/Pagamenti/gui/pg3_pagamenti_notebook.glade.h:14
 msgid "<b>Assegnazione Note Di Credito</b>"
-msgstr ""
+msgstr "<b>Assigning Credit Notes</b>"
 
 #: ../promogest/modules/Pagamenti/gui/pagamenti_notebook.glade.h:17
 #: ../promogest/modules/Pagamenti/gui/pg3_pagamenti_notebook.glade.h:15
@@ -7970,7 +7970,7 @@ msgstr ""
 #: ../promogest/modules/Pagamenti/gui/_pagamento_elements.glade.h:4
 #: ../promogest/modules/Pagamenti/gui/pg3__pagamento_elements.glade.h:4
 msgid "Pagata per:"
-msgstr ""
+msgstr "Paid for:"
 
 #: ../promogest/modules/Pagamenti/gui/_pagamento_elements.glade.h:6
 #: ../promogest/modules/Pagamenti/gui/pg3__pagamento_elements.glade.h:6
