@@ -62,10 +62,6 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         fillComboboxMagazzini(self.id_magazzino_filter_combobox, True)
         self.id_operazione_filter_combobox.set_wrap_width(setconf("Numbers", "combo_column"))
 
-        self.cliente_filter_radiobutton.connect('toggled',
-                                                self.on_filter_radiobutton_toggled)
-        self.fornitore_filter_radiobutton.connect('toggled',
-                                                  self.on_filter_radiobutton_toggled)
         self.cliente_filter_radiobutton.set_active(True)
         self.on_filter_radiobutton_toggled()
         #idHandler = self.id_agente_filter_customcombobox.connect('changed',
@@ -101,6 +97,8 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
             self.aa = -1*self.aa
             self.funzione_ordinamento = "impo"
             self.refresh()
+        self._anagrafica.funzione_ordinamento = self.funzione_ordinamento
+        self._anagrafica.aa = self.aa
 
     def clear(self):
         """
@@ -250,6 +248,12 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         elif self.funzione_ordinamento == "impo":
             self._filterClosure = filterClosure
             tdoss = self.runFilter(batchSizeForce=True)
+            for t in tdoss:
+                #pbar(self._anagrafica.pbar_anag_complessa, parziale=tdoss.index(t), totale=len(tdoss), text="CALCOLO TOTALI DEI DOC   ", noeta=False)
+                try:
+                    t._totaleImponibileScontato
+                except:
+                    t.totali
             if self.aa < 0:
                 tdoss.sort(key=lambda x: x._totaleImponibileScontato)
             else:
@@ -313,7 +317,6 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         #self._anagrafica.pbar_anag_complessa.set_property("visible",False)
 
 
-
     def on_filter_radiobutton_toggled(self, widget=None):
         if self.cliente_filter_radiobutton.get_active():
             self.id_cliente_filter_customcombobox.set_sensitive(True)
@@ -325,6 +328,7 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
             self.id_fornitore_filter_customcombobox.grab_focus()
             self.id_cliente_filter_customcombobox.set_active(0)
             self.id_cliente_filter_customcombobox.set_sensitive(False)
+
 
 class RicercaDocumenti(Ricerca):
     """ Ricerca documenti """

@@ -120,10 +120,24 @@ class AnagraficaPrintPreview(GladeWidget):
                                         batchSize=None,
                                         filterClosure=self._filterClosure,
                                         )
+        if hasattr(self._anagrafica,"funzione_ordinamento") and self._anagrafica.funzione_ordinamento == "cliforn":
+            if self._anagrafica.aa < 0:
+                daos.sort(key=lambda x: x.intestatario.strip().upper())
+            else:
+                daos.sort(key=lambda x: x.intestatario.strip().upper(),reverse=True)
+        elif hasattr(self._anagrafica,"funzione_ordinamento") and self._anagrafica.funzione_ordinamento == "impo":
+            for t in daos:
+                try:
+                    t._totaleImponibileScontato
+                except:
+                    t.totali
+            if self._anagrafica.aa < 0:
+                daos.sort(key=lambda x: x._totaleImponibileScontato)
+            else:
+                daos.sort(key=lambda x: x._totaleImponibileScontato,reverse=True)
         self.numRecords = self.bodyWidget.countFilterResults(
                                         self._filterCountClosure,
                                         )
-
 #        self._refreshPageCount()
         pageData = {}
         self.html_code = "<html><body></body></html>"

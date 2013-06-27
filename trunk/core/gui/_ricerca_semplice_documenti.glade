@@ -35,6 +35,7 @@
         <property name="use_underline">True</property>
         <property name="draw_indicator">True</property>
         <property name="group">cliente_filter_radiobutton</property>
+        <signal name="toggled" handler="on_filter_radiobutton_toggled" swapped="no"/>
       </object>
       <packing>
         <property name="top_attach">6</property>
@@ -54,6 +55,7 @@
         <property name="use_underline">True</property>
         <property name="active">True</property>
         <property name="draw_indicator">True</property>
+        <signal name="toggled" handler="on_filter_radiobutton_toggled" swapped="no"/>
       </object>
       <packing>
         <property name="top_attach">5</property>
@@ -192,6 +194,10 @@
           <object class="ArticoloSearchWidget" id="id_articolo_filter_customcombobox">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
+            <property name="primary_icon_activatable">True</property>
+            <property name="secondary_icon_activatable">True</property>
+            <property name="primary_icon_sensitive">True</property>
+            <property name="secondary_icon_sensitive">True</property>
           </object>
         </child>
       </object>
@@ -694,6 +700,10 @@
       <object class="ClienteSearchWidget" id="id_cliente_filter_customcombobox">
         <property name="visible">True</property>
         <property name="can_focus">True</property>
+        <property name="primary_icon_activatable">True</property>
+        <property name="secondary_icon_activatable">True</property>
+        <property name="primary_icon_sensitive">True</property>
+        <property name="secondary_icon_sensitive">True</property>
       </object>
       <packing>
         <property name="left_attach">1</property>
@@ -707,6 +717,10 @@
       <object class="FornitoreSearchWidget" id="id_fornitore_filter_customcombobox">
         <property name="visible">True</property>
         <property name="can_focus">True</property>
+        <property name="primary_icon_activatable">True</property>
+        <property name="secondary_icon_activatable">True</property>
+        <property name="primary_icon_sensitive">True</property>
+        <property name="secondary_icon_sensitive">True</property>
       </object>
       <packing>
         <property name="left_attach">1</property>
@@ -720,6 +734,10 @@
       <object class="CustomComboBoxSearch" id="id_agente_filter_customcombobox">
         <property name="visible">True</property>
         <property name="can_focus">True</property>
+        <property name="primary_icon_activatable">True</property>
+        <property name="secondary_icon_activatable">True</property>
+        <property name="primary_icon_sensitive">True</property>
+        <property name="secondary_icon_sensitive">True</property>
       </object>
       <packing>
         <property name="left_attach">1</property>
@@ -840,6 +858,9 @@
     <child>
       <object class="GtkTreeViewColumn" id="imponibile_column">
         <property name="title" translatable="yes">Imponibile</property>
+        <property name="clickable">True</property>
+        <property name="reorderable">True</property>
+        <property name="sort_indicator">True</property>
         <child>
           <object class="GtkCellRendererText" id="cellrenderertext6">
             <property name="xalign">1</property>

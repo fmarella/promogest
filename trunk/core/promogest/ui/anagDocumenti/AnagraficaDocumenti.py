@@ -50,8 +50,8 @@ class AnagraficaDocumenti(Anagrafica):
             from promogest.dao.Setting import addregistriDiretti
             addOpDirette()
             addregistriDiretti()
-
-
+        self.funzione_ordinamento = None
+        self.aa = None
 
 
     def aggiornaforniture(self):
