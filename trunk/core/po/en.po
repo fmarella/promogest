@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: promogest\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/promogest/updates/list\n"
 "POT-Creation-Date: 2013-06-26 09:17+0200\n"
-"PO-Revision-Date: 2013-06-27 13:10+0000\n"
+"PO-Revision-Date: 2013-06-27 16:25+0000\n"
 "Last-Translator: promotux <info@promotux.it>\n"
 "Language-Team: English (http://www.transifex.com/projects/p/promogest_i18n/language/en/)\n"
 "MIME-Version: 1.0\n"
@@ -982,7 +982,7 @@ msgstr "0.00      "
 #: ../promogest/modules/ADR/gui/_anagrafica_categorie_trasporto_elements.glade.h:1
 #: ../promogest/modules/ADR/gui/pg3__anagrafica_categorie_trasporto_elements.glade.h:1
 msgid "Descrizione della aliquota (max 100 )"
-msgstr ""
+msgstr "VAT rate description (max 100)"
 
 #: ../gui/_anagrafica_aliquote_iva_elements.glade.h:9
 msgid ""
@@ -1014,11 +1014,11 @@ msgstr ""
 
 #: ../gui/_anagrafica_aliquote_iva_elements.glade.h:18
 msgid "Descrizione Breve ( max 10 )"
-msgstr ""
+msgstr "Short Description ( max 10 )"
 
 #: ../gui/_anagrafica_aliquote_iva_elements.glade.h:19
 msgid "<b>Descrizione breve</b>"
-msgstr ""
+msgstr "<b>Short description</b>"
 
 #: ../gui/_anagrafica_aliquote_iva_elements.glade.h:20
 #: ../gui/_anagrafica_listini_elements.glade.h:47
@@ -1026,7 +1026,7 @@ msgstr ""
 #: ../promogest/modules/ADR/gui/_anagrafica_categorie_trasporto_elements.glade.h:2
 #: ../promogest/modules/ADR/gui/pg3__anagrafica_categorie_trasporto_elements.glade.h:2
 msgid "<b>Descrizione</b>"
-msgstr ""
+msgstr "<b>Description</b>"
 
 #: ../gui/_anagrafica_aliquote_iva_elements.glade.h:22
 #: ../gui/_anagrafica_categorie_articoli_elements.glade.h:4
@@ -1057,7 +1057,7 @@ msgstr "Description *"
 #: ../gui/_anagrafica_articoli_detail.glade.h:4
 #: ../gui/pg3__anagrafica_articoli_detail.glade.h:4
 msgid "Inserire la descrizione o denominazione dell'articolo"
-msgstr ""
+msgstr "Fill article description"
 
 #: ../gui/_anagrafica_articoli_detail.glade.h:5
 #: ../gui/pg3__anagrafica_articoli_detail.glade.h:5
@@ -1367,7 +1367,7 @@ msgstr ""
 #: ../gui/_anagrafica_articoli_detail.glade.h:81
 #: ../gui/pg3__anagrafica_articoli_detail.glade.h:77
 msgid "Descrizione nel listino"
-msgstr ""
+msgstr "Description in list"
 
 #: ../gui/_anagrafica_articoli_detail.glade.h:82
 #: ../gui/pg3__anagrafica_articoli_detail.glade.h:78
@@ -1377,7 +1377,7 @@ msgstr ""
 #: ../gui/_anagrafica_articoli_detail.glade.h:83
 #: ../gui/pg3__anagrafica_articoli_detail.glade.h:79
 msgid "Descrizione etichetta"
-msgstr ""
+msgstr "Label description"
 
 #: ../gui/_anagrafica_articoli_detail.glade.h:84
 #: ../gui/pg3__anagrafica_articoli_detail.glade.h:80
@@ -1413,7 +1413,7 @@ msgid ""
 "per la vendita. E, normalmente \n"
 "una descrizione ridotta o comunque \n"
 "più corta"
-msgstr ""
+msgstr "Use in conjunction with ⏎\nthe module\"Label\"\nNormally ⏎\na description reduced or otherwise ⏎\nshorter"
 
 #: ../gui/_anagrafica_articoli_detail.glade.h:97
 #: ../gui/pg3__anagrafica_articoli_detail.glade.h:93
@@ -1602,7 +1602,7 @@ msgstr ""
 #: ../promogest/modules/DistintaBase/gui/_distinta_base_plugins.glade.h:13
 #: ../promogest/modules/GestioneNoleggio/gui/schedalavorazione_plugins.glade.h:9
 msgid "Codice a barre"
-msgstr ""
+msgstr "Barcode"
 
 #: ../gui/_anagrafica_articoli_elements.glade.h:6
 #: ../gui/_anagrafica_stoccaggi_articoli_elements.glade.h:35
@@ -3701,11 +3701,11 @@ msgstr ""
 
 #: ../gui/_anagrafica_documenti_setup.glade.h:7
 msgid "codice a barre"
-msgstr ""
+msgstr "barcode"
 
 #: ../gui/_anagrafica_documenti_setup.glade.h:8
 msgid "descrizione"
-msgstr "Description"
+msgstr "description"
 
 #: ../gui/_anagrafica_documenti_setup.glade.h:9
 msgid "codice art fornitore"
@@ -3731,7 +3731,7 @@ msgid ""
 "Quando si seleziona \"codice a barre\" come criterio di ricerca\n"
 "si può decidere di non avere il menù con i risultati incrementali\n"
 "questo rende la ricerca più veloce ed evita la pressione del tasto F3"
-msgstr ""
+msgstr "When you select \"bar code\" as the search criteria ⏎\nyou may decide not to have the menu with the incremental results ⏎\nThis makes the search faster and avoid pressing the F3"
 
 #: ../gui/_anagrafica_documenti_setup.glade.h:18
 msgid ""
@@ -4612,7 +4612,7 @@ msgstr ""
 #: ../promogest/modules/DistintaBase/gui/_distinta_base_plugins.glade.h:16
 #: ../promogest/modules/ImportPriceList/gui/import_price_list_models_window.glade.h:24
 msgid "Codice a Barre"
-msgstr ""
+msgstr "Barcode"
 
 #: ../gui/_anagrafica_stoccaggi_articoli_elements.glade.h:5
 #: ../gui/pg3__anagrafica_stoccaggi_articoli_elements.glade.h:5
@@ -6301,7 +6301,7 @@ msgstr ""
 #: ../promogest/modules/PromoWear/gui/gestione_varianti_taglia_colore.glade.h:3
 #: ../promogest/modules/PromoWear/gui/pg3_gestione_varianti_taglia_colore.glade.h:3
 msgid "Descrizione:"
-msgstr ""
+msgstr "Description:"
 
 #: ../gui/records_print_dialog.glade.h:3
 msgid "Formato:"
@@ -7526,7 +7526,7 @@ msgstr ""
 
 #: ../promogest/modules/ImportPriceList/gui/import_price_list_models_window.glade.h:26
 msgid "Descrizione Articolo"
-msgstr ""
+msgstr "Article description"
 
 #: ../promogest/modules/ImportPriceList/gui/import_price_list_models_window.glade.h:30
 msgid "Unit&#xE0; Base"
@@ -8035,7 +8035,7 @@ msgstr ""
 #: ../promogest/modules/PrimaNota/gui/_anagrafica_primanota_elements.glade.h:16
 #: ../promogest/modules/PrimaNota/gui/pg3__anagrafica_primanota_elements.glade.h:16
 msgid "Descrizione operazione"
-msgstr ""
+msgstr "Operation description"
 
 #: ../promogest/modules/PrimaNota/gui/_anagrafica_primanota_elements.glade.h:17
 #: ../promogest/modules/PrimaNota/gui/pg3__anagrafica_primanota_elements.glade.h:17
@@ -9112,7 +9112,7 @@ msgstr ""
 #: ../promogest/modules/VenditaDettaglio/gui/pg3_vendita_dettaglio_window.glade.h:37
 #: ../promogest/modules/VenditaDettaglio/gui/vendita_dettaglio_window.glade.h:38
 msgid "Codice a barre (<b>F8</b>)"
-msgstr ""
+msgstr "Barcode (<b>F8</b>)"
 
 #: ../promogest/modules/VenditaDettaglio/gui/pg3_vendita_dettaglio_window.glade.h:40
 #: ../promogest/modules/VenditaDettaglio/gui/vendita_dettaglio_window.glade.h:41
@@ -9132,7 +9132,7 @@ msgstr ""
 #: ../promogest/modules/VenditaDettaglio/gui/pg3_vendita_dettaglio_window.glade.h:44
 #: ../promogest/modules/VenditaDettaglio/gui/vendita_dettaglio_window.glade.h:45
 msgid "Descrizione articolo"
-msgstr ""
+msgstr "Article description"
 
 #: ../promogest/modules/VenditaDettaglio/gui/pg3_vendita_dettaglio_window.glade.h:45
 #: ../promogest/modules/VenditaDettaglio/gui/vendita_dettaglio_window.glade.h:46
