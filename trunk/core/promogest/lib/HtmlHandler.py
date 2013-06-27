@@ -52,8 +52,8 @@ jinja_env = None
 
 def env(templates_dir):
     jinja_env = Env(loader=FileSystemLoader(templates_dir),
-                    bytecode_cache=FileSystemBytecodeCache(os.path.join(Environment.promogestDir, 'temp'), '%s.cache'),
                     extensions=['jinja2.ext.i18n'])
+# Era un parametro della classe Env  bytecode_cache=FileSystemBytecodeCache(os.path.join(Environment.promogestDir, 'temp'), '%s.cache'),
     jinja_env.globals['environment'] = Environment
     jinja_env.globals['utils'] = utils
     jinja_env.globals['daoutils'] = daoutils
