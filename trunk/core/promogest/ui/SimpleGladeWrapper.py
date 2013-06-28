@@ -22,9 +22,11 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
 # USA
 
+from __future__ import division
 import os
 import re
 import warnings
+
 with warnings.catch_warnings(record=True) as w:
     warnings.simplefilter('ignore')
 import tokenize
@@ -226,6 +228,7 @@ class SimpleGladeWrapper:
         entry.connect("icon-press", self.on_icon_press)
         entry.connect("focus-in-event", self.on_focus_in_event)
         entry.connect("focus-out-event", self.on_focus_out_event)
+        entry.connect("focus-out-event", self.on_focus_out_event_calcolate)
         if gtk.Buildable.get_name(entry) != "password_entry":
             entry.set_property("secondary_icon_stock", "gtk-clear")
             entry.set_property("secondary_icon_activatable", True)
@@ -239,6 +242,18 @@ class SimpleGladeWrapper:
 
     def on_focus_out_event(self, widget, event):
         pass
+
+    def on_focus_out_event_calcolate(self, widget, event):
+        testo =  widget.get_text()
+        if len(testo) > 0 and testo[0] == "=":
+            dt = testo[1:]
+
+            try:
+                nt = eval(dt)
+            except:
+                nt=""
+            widget.set_text(str(nt))
+            print " VALUTATA in ", nt
 
     def add_prefix_actions(self, prefix_actions_proxy):
         """
