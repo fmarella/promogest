@@ -533,8 +533,8 @@
                       <object class="PersonaGiuridicaSearchWidget" id="id_persona_giuridica_diretta_customcombobox">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="primary_icon_activatable">False</property>
-                        <property name="secondary_icon_activatable">False</property>
+                        <property name="primary_icon_activatable">True</property>
+                        <property name="secondary_icon_activatable">True</property>
                         <property name="primary_icon_sensitive">True</property>
                         <property name="secondary_icon_sensitive">True</property>
                       </object>
