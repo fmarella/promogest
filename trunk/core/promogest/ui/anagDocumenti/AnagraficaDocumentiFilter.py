@@ -300,7 +300,7 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
             if "Preventivo" in t.operazione:
                 col = "#E0FDFF"
             if "DDT" in t.operazione and t.IFDDDT:
-                col = "DCF0C0"
+                col = "#FFE7B8"
             self.filter_listore.append((t,
                                     dateTimeToString(t.data_documento),
                                     (str(str(t.numero) + parte) or "0"),
