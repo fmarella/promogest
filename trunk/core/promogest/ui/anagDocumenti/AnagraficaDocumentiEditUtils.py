@@ -224,6 +224,10 @@ def drawPart(anaedit):
 def calcolaTotalePart(anaedit, dao=None):
     """ calcola i totali documento """
     # FIXME: duplicated in TestataDocumenti.py
+
+    anaedit.avvertimento_sconti_button.set_sensitive(False)
+    anaedit.avvertimento_sconti_button.hide()
+
     totaleImponibile = Decimal(0)
     totaleImposta = Decimal(0)
     totaleNonScontato = Decimal(0)
@@ -232,15 +236,15 @@ def calcolaTotalePart(anaedit, dao=None):
     totaleEsclusoBaseImponibile = Decimal(0)
     totaleScontato = Decimal(0)
     castellettoIva = {}
+    totaleEsclusoBaseImponibileRiga = 0
+    totaleImponibileRiga = 0
+
     ive = Environment.session.query(AliquotaIva.id,AliquotaIva).all()
     dictIva = {}
     for a in ive:
         dictIva[a[0]] = (a[1],a[1].tipo_ali_iva)
-    anaedit.avvertimento_sconti_button.set_sensitive(False)
-    anaedit.avvertimento_sconti_button.hide()
 
-    totaleEsclusoBaseImponibileRiga = 0
-    totaleImponibileRiga = 0
+
     gn = posso("GN")
     for riga in anaedit._righe[1:]:
         prezzoNetto = Decimal(riga["prezzoNetto"])
@@ -264,14 +268,6 @@ def calcolaTotalePart(anaedit, dao=None):
                 totaleRiga = mN(totaleRiga *Decimal(riga["arco_temporale"]))
             else:
                 totaleRiga= mN(totaleRiga *Decimal(str(sqrt(int(riga["arco_temporale"])))))
-
-#        if not aliquotaIvaRiga: # solo se non l'ho trovato dall'id prendo quello della percentuale
-#            aliquotaIvaRiga =  percentualeIvaRiga
-#            idAliquotaIvas = AliquotaIva().select(percentuale=aliquotaIvaRiga)
-#            if idAliquotaIvas:
-#                idAliquotaIva = idAliquotaIvas[0].id
-#                daoiva = idAliquotaIvas[0]
-#        percentualeIvaRiga = percentualeIva
 
         if (anaedit._fonteValore == "vendita_iva" or anaedit._fonteValore == "acquisto_iva"):
             if daoiva and dictIva[idAliquotaIva][1]== "Non imponibile":
@@ -315,16 +311,7 @@ def calcolaTotalePart(anaedit, dao=None):
             castellettoIva[idAliquotaIva]['imposta'] += totaleImpostaRiga
             castellettoIva[idAliquotaIva]['totale'] += totaleRiga
 
-#    totaleNonScontato = totaleNonScontato
-#    totaleImponibile = totaleImponibile
     totaleImposta = totaleNonScontato - (totaleImponibile+totaleEsclusoBaseImponibile)
-#    totaleEsclusoBaseImponibile = totaleEsclusoBaseImponibile
-#    for percentualeIva in castellettoIva: #????????????????????????
-#        castellettoIva[percentualeIva]['imponibile'] = castellettoIva[percentualeIva]['imponibile']
-#        castellettoIva[percentualeIva]['imposta'] = castellettoIva[percentualeIva]['imposta']
-#        castellettoIva[percentualeIva]['totale'] = castellettoIva[percentualeIva]['totale']
-
-
     totaleImponibileScontato = totaleImponibile
     totaleImpostaScontata = totaleImposta
     totaleScontato = totaleNonScontato

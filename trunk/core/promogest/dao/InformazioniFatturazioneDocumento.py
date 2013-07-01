@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2013 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -24,10 +24,9 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
 from Dao import Dao
-#from promogest.dao.TestataDocumento import TestataDocumento
 
 try:
-    informazionifatturazionedocumento = Table('informazioni_fatturazione_documento',
+    t_informazionifatturazionedocumento = Table('informazioni_fatturazione_documento',
                 params['metadata'],
                 schema = params['schema'],
                 autoload=True)
@@ -38,12 +37,12 @@ except:
     else:
         testata_documentoFK =params['schema']+'.testata_documento.id'
 
-    informazionifatturazionedocumento = Table('informazioni_fatturazione_documento', params['metadata'],
+    t_informazionifatturazionedocumento = Table('informazioni_fatturazione_documento', params['metadata'],
             Column('id_fattura',Integer,ForeignKey(testata_documentoFK),primary_key=True),
             Column('id_ddt',Integer,ForeignKey(testata_documentoFK,),primary_key=True,nullable=False),
             schema=params["schema"]
             )
-    informazionifatturazionedocumento.create(checkfirst=True)
+    t_informazionifatturazionedocumento.create(checkfirst=True)
 
 class InformazioniFatturazioneDocumento(Dao):
 
@@ -52,12 +51,11 @@ class InformazioniFatturazioneDocumento(Dao):
 
     def filter_values(self,k,v):
         if k == "id_fattura":
-            dic= {k:informazionifatturazionedocumento.c.id_fattura ==v}
+            dic= {k:t_informazionifatturazionedocumento.c.id_fattura ==v}
         elif k == 'id_ddt':
-            dic = {k:informazionifatturazionedocumento.c.id_ddt==v}
+            dic = {k:t_informazionifatturazionedocumento.c.id_ddt==v}
         return  dic[k]
 
 
-std_mapper = mapper(InformazioniFatturazioneDocumento,informazionifatturazionedocumento,properties={
-#"TD":relation(TestataDocumento,primaryjoin = (TestataDocumento.id==informazionifatturazionedocumento.c.id_fattura),cascade="all, delete", backref='IFD'
-        }, order_by=informazionifatturazionedocumento.c.id_fattura)
+std_mapper = mapper(InformazioniFatturazioneDocumento, t_informazionifatturazionedocumento,properties={
+        }, order_by=t_informazionifatturazionedocumento.c.id_fattura)

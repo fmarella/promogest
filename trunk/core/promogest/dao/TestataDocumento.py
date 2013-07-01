@@ -46,7 +46,7 @@ from promogest.modules.PrimaNota.dao.RigaPrimaNota import RigaPrimaNota
 from promogest.modules.PrimaNota.dao.RigaPrimaNotaTestataDocumentoScadenza import RigaPrimaNotaTestataDocumentoScadenza
 from promogest.dao.RigaMovimentoFornitura import RigaMovimentoFornitura
 from promogest.modules.Pagamenti.dao.TestataDocumentoScadenza import TestataDocumentoScadenza
-from promogest.dao.InformazioniFatturazioneDocumento import InformazioniFatturazioneDocumento
+from promogest.dao.InformazioniFatturazioneDocumento import InformazioniFatturazioneDocumento, t_informazionifatturazionedocumento
 import promogest.lib.ibanlib
 
 from promogest.dao.DaoUtils import numeroRegistroGet
@@ -247,6 +247,7 @@ class TestataDocumento(Dao):
         fonteValore = self.__operazione["fonteValore"]
         cache = CachedDaosDict()
         # FIXME: duplicated in AnagraficaDocumenti.py
+
         totaleImponibile = Decimal(0)
         totaleImposta = Decimal(0)
         totaleNonScontato = Decimal(0)
@@ -256,6 +257,8 @@ class TestataDocumento(Dao):
         totaleRicaricatoLordo = Decimal(0)
         totaleScontato = Decimal(0)
         castellettoIva = {}
+        totaleEsclusoBaseImponibileRiga = 0
+        totaleImponibileRiga = 0
 
         spese = Decimal(0)
         impon_spese = Decimal(0)
@@ -270,8 +273,6 @@ class TestataDocumento(Dao):
         self._totaleSpese = spese
         self._totaleImponibileSpese = impon_spese
         self._totaleImpostaSpese = imposta_spese
-        totaleEsclusoBaseImponibileRiga = 0
-        totaleImponibileRiga = 0
         merca = setconf("General", "gestione_totali_mercatino")
         for riga in self.righe:
             # FIXME: added for supporting dumb rows when printing
@@ -1196,6 +1197,10 @@ std_mapper = mapper(TestataDocumento, t_testata_documento,
             primaryjoin=(t_testata_documento.c.id_fornitore==t_fornitore.c.id),lazy='joined', backref="TD"),
         "AGE": relation(Agente,
             primaryjoin=(t_testata_documento.c.id_agente==t_agente.c.id)),
+        "IFDDDT": relation(InformazioniFatturazioneDocumento,
+            primaryjoin=(t_testata_documento.c.id==t_informazionifatturazionedocumento.c.id_ddt)),
+        "IFDFAT": relation(InformazioniFatturazioneDocumento,
+            primaryjoin=(t_testata_documento.c.id==t_informazionifatturazionedocumento.c.id_fattura)),
         "OP": relation(Operazione,
             primaryjoin=(t_testata_documento.c.operazione==Operazione.denominazione),
             backref="TD"),
