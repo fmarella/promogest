@@ -1317,9 +1317,6 @@ class RicercaClientiFilter(GladeWidget):
         columnSelectAll(column, treeview, self.setRiepilogoCliente)
 
 
-    def getClientResult(self):
-        return self.clientResult or None
-
     def on_any_expander_expanded(self, expander):
         """ Permette ad un solo expander alla volta di essere espanso """
         if self._activeExpander is not None and self._activeExpander != expander:
@@ -1558,6 +1555,24 @@ class RicercaClientiFilter(GladeWidget):
         self._parentObject.refresh()
 
 
+    def getClientResult(self):
+        self.clientResult = Cliente().select(
+                                            ragioneSociale = self.filterDict["ragioneSociale"],
+                                            insegna = self.filterDict["insegna"],
+                                            cognomeNome = self.filterDict["cognomeNome"],
+                                            codice = self.filterDict["codice"],
+                                            localita = self.filterDict["localita"],
+                                            codiceFiscale = self.filterDict["codiceFiscale"],
+                                            partitaIva = self.filterDict["partitaIva"],
+                                            idCategoria = self.filterDict["idCategoria"],
+                                            offset=None,
+                                            batchSize=None,
+                                            complexFilter=self.complexFilter)
+        return self.clientResult or None
+
+
+
+
     def refresh(self):
         # Aggiornamento TreeView
         model = self._parentObject.filter.resultsElement.get_model()
@@ -1585,6 +1600,16 @@ class RicercaClientiFilter(GladeWidget):
             partitaIva = None
             idCategoria = None
 
+        self.filterDict= {"ragioneSociale": ragioneSociale,
+                    "insegna":insegna,
+                    "codice":codice,
+                    "localita":localita,
+                    "codiceFiscale":codiceFiscale,
+                    "partitaIva":partitaIva,
+                    "idCategoria": idCategoria,
+                    }
+
+
         self.filter.numRecords = Cliente().count(ragioneSociale = ragioneSociale,
                                                             insegna = insegna,
                                                             cognomeNome = cognomeNome,
@@ -1597,18 +1622,17 @@ class RicercaClientiFilter(GladeWidget):
         self.resultsCount = self.filter.numRecords
         self.filter._refreshPageCount()
 
-        clis = Cliente().select(
-                                            ragioneSociale = ragioneSociale,
-                                            insegna = insegna,
-                                            cognomeNome = cognomeNome,
-                                            codice = codice,
-                                            localita = localita,
-                                            codiceFiscale = codiceFiscale,
-                                            partitaIva = partitaIva,
-                                            idCategoria = idCategoria,
-                                            offset=self.filter.offset,
-                                            batchSize=self.filter.batchSize,
-                                            complexFilter=self.complexFilter)
+        clis = Cliente().select( ragioneSociale = ragioneSociale,
+                                insegna = insegna,
+                                cognomeNome = cognomeNome,
+                                codice = codice,
+                                localita = localita,
+                                codiceFiscale = codiceFiscale,
+                                partitaIva = partitaIva,
+                                idCategoria = idCategoria,
+                                offset=self.filter.offset,
+                                batchSize=self.filter.batchSize,
+                                complexFilter=self.complexFilter)
         model.clear()
 
         for c in clis:
@@ -1626,18 +1650,7 @@ class RicercaClientiFilter(GladeWidget):
                           (c.cognome or '') + ' ' + (c.nome or ''),
                           loc,
                           pi_cf))
-        self.clientResult = Cliente().select(
-                                            ragioneSociale = ragioneSociale,
-                                            insegna = insegna,
-                                            cognomeNome = cognomeNome,
-                                            codice = codice,
-                                            localita = localita,
-                                            codiceFiscale = codiceFiscale,
-                                            partitaIva = partitaIva,
-                                            idCategoria = idCategoria,
-                                            offset=None,
-                                            batchSize=None,
-                                            complexFilter=self.complexFilter)
+
 
     def _prepare(self):
         """

@@ -1552,6 +1552,15 @@ class RicercaFornitoriFilter(GladeWidget):
             partitaIva = None
             idCategoria = None
 
+        self.filterDict= {"ragioneSociale": ragioneSociale,
+                    "insegna":insegna,
+                    "codice":codice,
+                    "localita":localita,
+                    "codiceFiscale":codiceFiscale,
+                    "partitaIva":partitaIva,
+                    "idCategoria": idCategoria,
+                    }
+
         self.filter.numRecords = Fornitore().count(ragioneSociale = ragioneSociale,
                                                                insegna = insegna,
                                                                cognomeNome = cognomeNome,
@@ -1595,20 +1604,21 @@ class RicercaFornitoriFilter(GladeWidget):
                           loc,
                           pi_cf))
 
-        self.forniResult =  Fornitore().select(
-                                              ragioneSociale = ragioneSociale,
-                                              insegna = insegna,
-                                              cognomeNome = cognomeNome,
-                                              codice = codice,
-                                              localita = localita,
-                                              codiceFiscale = codiceFiscale,
-                                              partitaIva = partitaIva,
-                                              idCategoria = idCategoria,
-                                              offset=None,
-                                              batchSize=None,
-                                              complexFilter=self.complexFilter)
 
     def getForniResult(self):
+        self.forniResult =  Fornitore().select(
+                                            ragioneSociale = self.filterDict["ragioneSociale"],
+                                            insegna = self.filterDict["insegna"],
+                                            cognomeNome = self.filterDict["cognomeNome"],
+                                            codice = self.filterDict["codice"],
+                                            localita = self.filterDict["localita"],
+                                            codiceFiscale = self.filterDict["codiceFiscale"],
+                                            partitaIva = self.filterDict["partitaIva"],
+                                            idCategoria = self.filterDict["idCategoria"],
+                                            offset=None,
+                                            batchSize=None,
+                                            complexFilter=self.complexFilter)
+
         return self.forniResult or None
 
     def _prepare(self):
