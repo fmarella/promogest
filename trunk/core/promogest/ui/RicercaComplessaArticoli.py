@@ -1590,7 +1590,7 @@ class RicercaArticoliFilter(GladeWidget):
                             (a.codice or ''),
                             (a.denominazione or ''),
                             (a.produttore or ''),
-                            (''), #a.codice_a_barre or
+                            (a.codice_a_barre or''), #
                             ('' ),#or a.codice_articolo_fornitore),
                             (a.denominazione_famiglia or ''),
                             (a.denominazione_categoria or '')]

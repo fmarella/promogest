@@ -303,7 +303,7 @@ std_mapper = mapper(Cliente,
 
                         'id': [t_cliente.c.id, t_persona_giuridica.c.id],
                         'cliente_categoria_cliente': relation(ClienteCategoriaCliente,cascade="all, delete",
-                                                             backref='cliente_'),
+                                                             backref='cliente_',lazy='joined'),
                         "dm": relation(DestinazioneMerce,cascade="all, delete",),
                         'vl': relation(VariazioneListino,
                             lazy='joined',

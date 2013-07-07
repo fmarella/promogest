@@ -37,6 +37,7 @@ try:
         autoload=True)
 
 except Exception as e:
+    params["session"].close()
     ruoloTable = Table('role',
         meta,
         autoload=True,

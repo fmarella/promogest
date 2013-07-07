@@ -32,7 +32,7 @@ try:
     t_articolo_csa = Table('articolo_csa', params['metadata'],
                          schema=params['schema'], autoload=True)
 except:
-
+    params["session"].close()
     t_articolo_csa = Table(
         'articolo_csa',
         params['metadata'],
