@@ -262,7 +262,10 @@ class Cliente(Dao):
         elif k == 'idCategoria':
             dic = {k:and_(Cliente.id==ClienteCategoriaCliente.id_cliente,ClienteCategoriaCliente.id_categoria_cliente==v)}
         elif k == 'cancellato':
-            dic = {k: or_(t_persona_giuridica.c.cancellato!=v)}
+            if v is not True:
+                dic = {k: or_(t_persona_giuridica.c.cancellato!=v)}
+            else:
+                dic = {k:None}
         return dic[k]
 
 t_cliente = Table('cliente',
