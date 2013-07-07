@@ -139,6 +139,9 @@ a_data_inizio_primanota = None
 azienda_in_conf = None
 idACT = []
 confDict = {}
+famiglie_articolo = []
+categorie_articolo = []
+stati_articolo = []
 SRC_PATH = os.path.split(os.path.dirname(__file__))[0]
 
 STATIC_PATH = os.path.join(SRC_PATH, 'templates')

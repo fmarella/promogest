@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012
+#    Copyright (C) 2005-2013
 #by Promotux di Francesco Meloni snc - http://www.promotux.it/
 
 # Author: Francesco Meloni <francesco@promotux.it>
@@ -268,6 +268,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         value=value.replace(",",".")
         value = mN(value)
         model[path][9] = value
+        model[path][12] = mN(Decimal(value)* Decimal(model[path][8].replace(",",".")))
         self.refreshTotal()
         self.on_cancel_button_clicked(self.getTopLevel)
 
@@ -450,6 +451,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         self._currentRow['tipoSconto'] = None
         self._currentRow['prezzoScontato'] = 0
         self._currentRow['quantita'] = 0
+        self._currentRow['totale'] = 0
 
         self.codice_a_barre_entry.set_text('')
         self.codice_entry.set_text('')
@@ -507,7 +509,8 @@ class AnagraficaVenditaDettaglio(GladeWidget):
                             'valoreSconto' : valoreSconto,
                             'tipoSconto' : tipoSconto,
                             'prezzoScontato':prezzoScontato,
-                            'quantita' : quantita}
+                            'quantita' : quantita,
+                            'totale':prezzoScontato*quantita}
 
     def on_scontrino_treeview_selection_changed(self, treeSelection):
         (model, iterator) = treeSelection.get_selected()
@@ -575,9 +578,11 @@ class AnagraficaVenditaDettaglio(GladeWidget):
                         str(mN(self._currentRow['valoreSconto'])),
                         self._currentRow['tipoSconto'],
                         str(mN(self._currentRow['prezzoScontato'])),
-                        str(Decimal(self._currentRow['quantita'])),
+                        str(Decimal(self._currentRow['quantita'])) ,
                         self.rowBackGround,
-                        self.rowBoldFont))
+                        self.rowBoldFont,
+                        str(Decimal(self._currentRow['quantita'])*Decimal(self._currentRow['prezzoScontato'])),
+            ))
         elif self._state == 'editing':
             model.set_value(self.currentIteratorRow, 0, self._currentRow['idArticolo'])
             model.set_value(self.currentIteratorRow, 1, self._currentRow['listinoRiga'][1])
@@ -589,6 +594,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             model.set_value(self.currentIteratorRow, 7, self._currentRow['tipoSconto'])
             model.set_value(self.currentIteratorRow, 8, str(mN(self._currentRow['prezzoScontato'])))
             model.set_value(self.currentIteratorRow, 9, str(Decimal(self._currentRow['quantita'])))
+            model.set_value(self.currentIteratorRow, 12, str(Decimal(self._currentRow['quantita'])*self._currentRow['prezzoScontato']))
 
         self.marginevalue_label.set_text('')
         self.ultimocostovalue_label.set_text('')
@@ -1150,7 +1156,8 @@ class AnagraficaVenditaDettaglio(GladeWidget):
                             str(prezzoScontato),
                             str(quantita),
                             self.rowBackGround,
-                             self.rowBoldFont))
+                             self.rowBoldFont),
+                             str(quantita*prezzoScontato))
 
         notEmpty = (len(model) > 0)
         self.total_button.set_sensitive(notEmpty)

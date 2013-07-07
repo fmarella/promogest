@@ -43,7 +43,7 @@ def drawPart(anag):
 
     # Costruisco treeview scontrino
     anag.modelRiga = gtk.ListStore(int, str, str, str, str,
-                                            str, str, str, str, str,str,str)
+                                            str, str, str, str, str,str,str,str)
 
     treeview = anag.scontrino_treeview
     rendererSx = gtk.CellRendererText()
@@ -177,6 +177,15 @@ def drawPart(anag):
     column.set_expand(False)
     column.set_min_width(50)
     treeview.append_column(column)
+
+    column = gtk.TreeViewColumn('Totale', rendererSx, text=12, background=10,font=11)
+    column.set_sizing(GTK_COLUMN_GROWN_ONLY)
+    column.set_clickable(False)
+    column.set_resizable(True)
+    column.set_expand(False)
+    column.set_min_width(70)
+    treeview.append_column(column)
+
 
     treeview.set_model(anag.modelRiga)
 

@@ -617,7 +617,6 @@ class Articolo(Dao):
         pg2log.info("DELETE ARTICOLO")
 
     def filter_values(self, k, v):
-        from promogest.dao.ListinoArticolo import t_listino_articolo
         if k == "codice":
             dic = {k: t_articolo.c.codice.ilike("%" + v + "%")}
         elif k == "codicesatto" or k == "codiceEM":
@@ -651,12 +650,16 @@ class Articolo(Dao):
         elif k == 'idStato':
             dic = {k: t_articolo.c.id_stato_articolo == v}
         elif k == 'cancellato':
-            dic = {k: or_(t_articolo.c.cancellato != v)}
+            if v is not True:
+                dic = {k: or_(t_articolo.c.cancellato != v)}
+            else:
+                dic = {k:None}
         elif k == 'idArticolo':
             dic = {k: or_(t_articolo.c.id == v)}
         elif k == 'omni':
             dic = {k: or_(t_articolo.c.codice.ilike("%" + v + "%"),t_articolo.c.denominazione.ilike("%" + v + "%"))}
         elif k == "listinoFissato":
+            from promogest.dao.ListinoArticolo import t_listino_articolo
             dic = {k: and_(t_listino_articolo.c.id_articolo == t_articolo.c.id,
                 t_listino_articolo.c.id_listino == v)}
         elif posso("PW"):
@@ -702,7 +705,8 @@ std_mapper = mapper(
         cod_barre=relation(CodiceABarreArticolo,
             primaryjoin=t_articolo.c.id == codice_barre_articolo.c.id_articolo,
             backref="arti",
-            cascade="all, delete"),
+            cascade="all, delete",
+            lazy='dynamic'),
         imba=relation(Imballaggio,
             primaryjoin=t_articolo.c.id_imballaggio == imballaggio.c.id),
         ali_iva=relation(AliquotaIva,
@@ -720,7 +724,7 @@ std_mapper = mapper(
             primaryjoin=(t_articolo.c.id_stato_articolo == stato_articolo.c.id)),
         fornitur=relation(Fornitura,
             primaryjoin=(t_fornitura.c.id_articolo == t_articolo.c.id),
-                backref="arti"),
+                backref="arti",lazy='dynamic'),
         multi=relation(Multiplo,
             primaryjoin=(Multiplo.id_articolo == t_articolo.c.id),
                 backref="arti"),

@@ -110,8 +110,12 @@ def fillComboboxCategorieArticoli(combobox, filter=False):
     """
     from promogest.dao.CategoriaArticolo import CategoriaArticolo
     model = gtk.ListStore(object, int, str)
-    cats = CategoriaArticolo().select(offset=None, batchSize=None,
-                                orderBy=CategoriaArticolo.denominazione)
+    if not Environment.categorie_articolo:
+        cats = CategoriaArticolo().select(offset=None, batchSize=None,
+                                    orderBy=CategoriaArticolo.denominazione)
+        Environment.categorie_articolo = cats
+    else:
+        cats = Environment.categorie_articolo
     if not filter:
         emptyRow = ''
     else:
@@ -157,6 +161,12 @@ def fillComboboxFamiglieArticoli(combobox, filter=False, ignore=[]):
     Crea l'elenco delle famiglie articoli
     """
     from promogest.dao.FamigliaArticolo import FamigliaArticolo
+    if not Environment.famiglie_articolo:
+        fams = FamigliaArticolo().select(batchSize=None)
+        Environment.famiglie_articolo = fams
+    else:
+        fams = Environment.famiglie_articolo
+
     model = gtk.TreeStore(object, int, str)
     if not filter:
         emptyRow = ''
@@ -171,7 +181,7 @@ def fillComboboxFamiglieArticoli(combobox, filter=False, ignore=[]):
                                 (s.denominazione or ''),
                                 ))
             recurse(figlio1, s)
-    for f in FamigliaArticolo().select(batchSize=None):
+    for f in fams:
         if not f.parent:
             padre = model.append(None, (f,
                                 (f.id),
@@ -213,7 +223,11 @@ def fillComboboxStatiArticoli(combobox, filter=False):
     """ Crea l'elenco degli stati articoli """
     from promogest.dao.StatoArticolo import StatoArticolo
     model = gtk.ListStore(object, int, str)
-    stas = StatoArticolo().select(offset=None, batchSize=None)
+    if not Environment.stati_articolo:
+        stas = StatoArticolo().select(offset=None, batchSize=None)
+        Environment.stati_articolo = stas
+    else:
+        stas = Environment.stati_articolo
     if not filter:
         emptyRow = ''
     else:

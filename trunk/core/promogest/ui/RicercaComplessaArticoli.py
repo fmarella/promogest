@@ -458,6 +458,12 @@ class RicercaArticoliFilter(GladeWidget):
 
     def getArtsResult(self):
         try:
+            self.artsResult = Articolo().select(orderBy=self.filter.orderBy,
+                                            join=self.filter.join,
+                                            offset=None,
+                                            batchSize=None,
+                                            complexFilter =self.complexFilter,
+                                            filterDict = self.filterDict)
             return self.artsResult
         except:
             return []
@@ -494,8 +500,11 @@ class RicercaArticoliFilter(GladeWidget):
         treeview.append_column(column)
 
         treeview.set_search_column(3)
-
-        stas = StatoArticolo().select(offset=None, batchSize=None)
+        if not Environment.stati_articolo:
+            stas = StatoArticolo().select(batchSize=None)
+            Environment.stati_articolo = stas
+        else:
+            stas = Environment.stati_articolo
 
         for s in stas:
             included = excluded = False
@@ -837,6 +846,11 @@ class RicercaArticoliFilter(GladeWidget):
         treeview.append_column(column)
 
         treeview.set_search_column(5)
+        if not Environment.famiglie_articolo:
+            fams = FamigliaArticolo().select(batchSize=None)
+            Environment.famiglie_articolo = fams
+        else:
+            fams = Environment.famiglie_articolo
 
         def recurse(padre,f):
             for s in f.children:
@@ -854,7 +868,7 @@ class RicercaArticoliFilter(GladeWidget):
                                     ))
                 recurse(figlio1,s)
 
-        for f in FamigliaArticolo().select(batchSize=None):
+        for f in fams:
             if not f.parent:
                 included = excluded = False
                 if self._idFamiglia is not None:
@@ -911,7 +925,12 @@ class RicercaArticoliFilter(GladeWidget):
 
         treeview.set_search_column(4)
 
-        cats = CategoriaArticolo().select(offset=None, batchSize=None)
+        if not Environment.categorie_articolo:
+            cats = CategoriaArticolo().select(offset=None, batchSize=None,
+                                    orderBy=CategoriaArticolo.denominazione)
+            Environment.categorie_articolo = cats
+        else:
+            cats = Environment.categorie_articolo
 
         for c in cats:
             included = excluded = False
@@ -960,7 +979,11 @@ class RicercaArticoliFilter(GladeWidget):
 
         treeview.set_search_column(3)
 
-        stas = StatoArticolo().select(offset=None, batchSize=None)
+        if not Environment.stati_articolo:
+            stas = StatoArticolo().select(offset=None, batchSize=None)
+            Environment.stati_articolo = stas
+        else:
+            stas = Environment.stati_articolo
 
         for s in stas:
             included = excluded = False
@@ -1017,6 +1040,7 @@ class RicercaArticoliFilter(GladeWidget):
         treeview.set_search_column(4)
 
         units=UnitaBase().select(batchSize=None,offset=None)
+
         for u in units:
             model.append((False,
                           False,
@@ -1492,7 +1516,6 @@ class RicercaArticoliFilter(GladeWidget):
                 cancellato = False
             else:
                 cancellato = True
-#            cancellato = False
             listinoFissato = self._listinoFissato
             #if posso("PW"):
                 #RicercaComplessaArticoliPromoWearExpand.refreshPromoWearPart(self)
@@ -1550,14 +1573,9 @@ class RicercaArticoliFilter(GladeWidget):
                                             filterDict = self.filterDict,
                                             complexFilter =self.complexFilter,
                                             batchSize=self.filter.batchSize)
-        if ( self._tipoRicerca == 'avanzata' and self.complexFilter is not None) or \
-                        ( self._tipoRicerca == 'semplice' and self.filterDict):
-            self.artsResult = Articolo().select(orderBy=self.filter.orderBy,
-                                            join=self.filter.join,
-                                            offset=None,
-                                            batchSize=None,
-                                            complexFilter =self.complexFilter,
-                                            filterDict = self.filterDict)
+        #if ( self._tipoRicerca == 'avanzata' and self.complexFilter is not None) or \
+                        #( self._tipoRicerca == 'semplice' and self.filterDict):
+
         if model:
             model.clear()
         for a in arts:
@@ -1572,8 +1590,8 @@ class RicercaArticoliFilter(GladeWidget):
                             (a.codice or ''),
                             (a.denominazione or ''),
                             (a.produttore or ''),
-                            (a.codice_a_barre or ''),
-                            (a.codice_articolo_fornitore or ''),
+                            (''), #a.codice_a_barre or
+                            ('' ),#or a.codice_articolo_fornitore),
                             (a.denominazione_famiglia or ''),
                             (a.denominazione_categoria or '')]
 
