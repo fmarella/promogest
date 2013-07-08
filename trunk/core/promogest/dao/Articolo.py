@@ -650,10 +650,10 @@ class Articolo(Dao):
         elif k == 'idStato':
             dic = {k: t_articolo.c.id_stato_articolo == v}
         elif k == 'cancellato':
-            if v is not True:
-                dic = {k: or_(t_articolo.c.cancellato != v)}
-            else:
-                dic = {k:None}
+            #if v is not True:
+            dic = {k: or_(t_articolo.c.cancellato != v)}
+            #else:
+                #dic = {k:None}
         elif k == 'idArticolo':
             dic = {k: or_(t_articolo.c.id == v)}
         elif k == 'omni':
