@@ -3293,28 +3293,23 @@ def posso(mod=None):
     modulis = Environment.modulesList
     if mod == "RA":
         if "RuoliAzioni"in modulis: return True
-        else: return False
-        if "FULL" in modulis :return True
-        else: return False
-        if "STANDARD" in modulis: return True
+        elif "FULL" in modulis :return True
+        elif "STANDARD" in modulis: return True
         else: return False
     if mod == "PW" or mod=="PromoWear":
         if "PromoWear" in modulis or "+W" in modulis:return True
         else: return False
     if mod == "AG":
         if "Agenti" in modulis: return True
-        else: return False
-        if "FULL" in modulis :return True
-        else: return False
-        if "STANDARD" in modulis: return True
+        elif "FULL" in modulis :return True
+        elif "STANDARD" in modulis: return True
         else: return False
     if mod == "GN":
         if "GestioneNoleggio" in modulis: return True
         else: return False
     if mod == "VD" or mod=="VenditaDettaglio":
         if "VenditaDettaglio" in modulis:return True
-        else: return False
-        if "+S" in modulis:return True
+        elif "+S" in modulis:return True
         else: return False
     if mod == "DB":
         if "DistintaBase" in modulis: return True
@@ -3324,36 +3319,27 @@ def posso(mod=None):
         else: return False
     if mod == "CN" or mod=="Contatti":
         if "Contatti" in modulis:return True
-        else: return False
-        if "BASIC" in modulis : return True
-        else: return False
-        if "STANDARD" in modulis: return True
-        else: return False
-        if "FULL" in modulis: return True
+        elif "BASIC" in modulis : return True
+        elif "STANDARD" in modulis: return True
+        elif "FULL" in modulis: return True
         else: return False
     if mod == "PR" or mod=="Promemoria":
         if "Promemoria" in modulis:return True
-        else: return False
-        if "BASIC" in modulis : return True
-        else: return False
-        if "STANDARD" in modulis: return True
-        else: return False
-        if "FULL" in modulis: return True
+        elif "BASIC" in modulis : return True
+        elif "STANDARD" in modulis: return True
+        elif "FULL" in modulis: return True
         else: return False
     if mod == "IN":
         if "Inventario"  in modulis: return True
-        else: return False
-        if "FULL" in modulis: return True
+        elif "FULL" in modulis: return True
         else: return False
     if mod == "IPL":
         if "ImportPriceList" in modulis:return True
-        else: return False
-        if "FULL" in modulis: return True
+        elif "FULL" in modulis: return True
         else: return False
     if mod == "LA":
         if "Label" in modulis: return True
-        else: return False
-        if "FULL" in modulis: return True
+        elif "FULL" in modulis: return True
         else: return False
     if mod == "GRB":
         if "FULL" in modulis: return True
@@ -3366,31 +3352,23 @@ def posso(mod=None):
         else: return False
     if mod == "PA" or mod=="Pagamenti":
         if "Pagamenti" in modulis: return True
-        else: return False
-        if "BASIC" in modulis: return True
-        else: return False
-        if "STANDARD" in modulis: return True
-        else: return False
-        if "FULL" in modulis: return True
+        elif "BASIC" in modulis: return True
+        elif "STANDARD" in modulis: return True
+        elif "FULL" in modulis: return True
         else: return False
     if mod == "PN" or mod=="PrimaNota":
         if "PrimaNota" in modulis: return True
-        else: return False
-        if "BASIC" in modulis: return True
-        else: return False
-        if "STANDARD" in modulis: return True
-        else: return False
-        if "FULL" in modulis: return True
+        elif "BASIC" in modulis: return True
+        elif "STANDARD" in modulis: return True
+        elif "FULL" in modulis: return True
         else: return False
     if mod == "STA":
         if "STA" in modulis: return True
-        else: return False
-        if "FULL" in modulis: return True
+        elif "FULL" in modulis: return True
         else: return False
     if mod == "STA_DETT":
         if "STA_DETT" in modulis: return True
-        else: return False
-        if "FULL" in modulis: return True
+        elif "FULL" in modulis: return True
         else: return False
     if mod == "SD":
         if "SincroDB" in modulis :return True
@@ -3400,11 +3378,8 @@ def posso(mod=None):
         else: return False
     if mod == "GC" or mod =="GestioneCommesse":
         if "GestioneCommesse" in modulis :return True
-        else: return False
-        #if "BASIC" in modulis: return True
-        if "STANDARD" in modulis: return True
-        else: return False
-        if "FULL" in modulis: return True
+        elif "STANDARD" in modulis: return True
+        elif "FULL" in modulis: return True
         else: return False
     d = setconf(mod,"mod_enable", value="yes")
     if d:
