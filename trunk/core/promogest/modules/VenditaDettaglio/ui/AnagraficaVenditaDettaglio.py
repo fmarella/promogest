@@ -510,7 +510,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
                             'tipoSconto' : tipoSconto,
                             'prezzoScontato':prezzoScontato,
                             'quantita' : quantita,
-                            'totale':prezzoScontato*quantita}
+                            'totale':Decimal(prezzoScontato or 0)*Decimal(quantita or 0 )}
 
     def on_scontrino_treeview_selection_changed(self, treeSelection):
         (model, iterator) = treeSelection.get_selected()
