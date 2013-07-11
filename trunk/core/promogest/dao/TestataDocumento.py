@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2013 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 # Author: Francesco Meloni <francesco@promotux.it>
@@ -1204,11 +1204,11 @@ std_mapper = mapper(TestataDocumento, t_testata_documento,
             primaryjoin=(t_testata_documento.c.id==t_informazionifatturazionedocumento.c.id_fattura)),
         "OP": relation(Operazione,
             primaryjoin=(t_testata_documento.c.operazione==Operazione.denominazione),
-            backref="TD"),
+            backref="TD",lazy='joined'),
         "STD": relation(ScontoTestataDocumento,
             primaryjoin=(t_testata_documento.c.id==ScontoTestataDocumento.id_testata_documento),
             cascade="all, delete",
-            backref="TD"),
+            backref="TD",lazy='joined'),
         #'lang':relation(Language, backref='user')
     },
     order_by=t_testata_documento.c.data_inserimento.desc())
