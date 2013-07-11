@@ -225,18 +225,7 @@ def approxValue(value, decimals):
     value = float(value)
     return ((value != '' and value is not None) and (format % (value or 0.0)) or '')
 
-#def approxValueIt(value, decimals):
-    #"""
-    #Approximate the floating point values of the element with the
-    #given number of decimals
-    #"""
-    #format = '%%.%df' % decimals
-    ##print value
-    #value = float(value)
-    #if value !="" and value is not None:
-        #return italianizza((format % (value)),decimal=decimals)
-    #else:
-        #return "0"
+
 def approxValueIt(value, decimals):
     """
     Approximate the floating point values of the element with the
