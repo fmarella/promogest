@@ -34,11 +34,12 @@ class StatoArticolo(Dao):
         dic= {}
         return  dic[k]
 
+    def preSave(self):
+        stati_articolo = []
+        return True
+
 stato_articolo=Table('stato_articolo',
                         params['metadata'],
                         schema = params['mainSchema'],
                         autoload=True)
 std_mapper = mapper(StatoArticolo, stato_articolo, order_by=stato_articolo.c.id)
-
-
-

@@ -40,6 +40,11 @@ class FamigliaArticolo(Dao):
             dic= {k : famiglia.c.denominazione_breve.ilike("%"+v+"%")}
         return  dic[k]
 
+    def preSave(self):
+        famiglie_articolo = None
+        return True
+
+
     def fathers(self):
         ok = params['session'].query(FamigliaArticolo).filter(and_(FamigliaArticolo.id_padre==None)).all()
         return ok

@@ -186,14 +186,3 @@ class SlaParser(object):
                             iteratableGroups.append(str(groupname))
 #            print "GRUPPI ITERANTI", iteratableGroups
         return iteratableGroups
-
-#    def scribusVersion(self):
-##        root = self.slaRootTag()
-##        self.slaversion = self.root.get('Version')
-##        print "VERSIONE FILE SLA", self.slaversion
-##        if self.slaversion == "1.3.4" or  "1.3.5" in self.slaversion:
-##            version=True
-##        else:
-##            version = False
-##        return version
-#        return True

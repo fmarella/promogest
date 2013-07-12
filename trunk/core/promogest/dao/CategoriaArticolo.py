@@ -41,10 +41,12 @@ class CategoriaArticolo(Dao):
 
     def preSave(self):
         """ Put in this Func all the integrity checks """
+        categorie_articolo = None
         if len(self.denominazione_breve) > 10:
             self.denominazione_breve = self.denominazione_breve[0:9]
         else:
             return True
+
 
 categoria_articolo=Table('categoria_articolo',
             params['metadata'],
