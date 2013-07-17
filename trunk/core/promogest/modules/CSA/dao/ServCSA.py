@@ -68,7 +68,8 @@ except:
         )
 
     t_serv_csa.create(checkfirst=True)
-
+    Session = sessionmaker(bind=engine)
+    session = Session()
 
 class ServCSA(Dao):
 

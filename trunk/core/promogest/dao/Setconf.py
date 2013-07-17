@@ -551,4 +551,4 @@ if not ("fix_riga_movimento", "General") in allkey:
     session.add(kbb)
 
 
-params["session"].commit()
+session.commit()

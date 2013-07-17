@@ -55,7 +55,8 @@ except:
         useexisting=True,
         )
     t_articolo_csa.create(checkfirst=True)
-
+    Session = sessionmaker(bind=engine)
+    session = Session()
 
 class ArticoloCSA(Dao):
 

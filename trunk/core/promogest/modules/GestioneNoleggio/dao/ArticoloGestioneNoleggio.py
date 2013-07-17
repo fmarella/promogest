@@ -43,7 +43,9 @@ except:
                     Column('divisore_noleggio_value',Numeric(4), nullable=False),
                     schema=params['schema'])
     articologestionenoleggio.create(checkfirst=True)
-    conn.close()
+    #conn.close()
+    Session = sessionmaker(bind=engine)
+    session = Session()
 
 class ArticoloGestioneNoleggio(Dao):
 

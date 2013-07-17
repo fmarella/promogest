@@ -104,7 +104,8 @@ except Exception as e:
             useexisting=True,
             )
     anagraficasecondaria.create(checkfirst=True)
-
+    Session = sessionmaker(bind=engine)
+    session = Session()
 
 class AnagraficaSecondaria_(Dao):
 

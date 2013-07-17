@@ -60,7 +60,8 @@ except:
         )
 
     t_chiamata.create(checkfirst=True)
-
+    Session = sessionmaker(bind=engine)
+    session = Session()
 
 class Chiamata(Dao):
 
