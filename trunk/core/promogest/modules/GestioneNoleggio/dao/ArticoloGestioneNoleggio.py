@@ -36,7 +36,7 @@ except:
         articoloFK = 'articolo.id'
     else:
         articoloFK = params['schema']+'.articolo.id'
-    params["session"].close()
+    #params["session"].close()
     conn = params["engine"].connect()
     articologestionenoleggio = Table('articolo_gestione_noleggio', params['metadata'],
                     Column('id_articolo',Integer,ForeignKey(articoloFK,onupdate="CASCADE",ondelete="CASCADE"),primary_key=True),
@@ -44,8 +44,8 @@ except:
                     schema=params['schema'])
     articologestionenoleggio.create(checkfirst=True)
     #conn.close()
-    Session = sessionmaker(bind=engine)
-    session = Session()
+    #Session = sessionmaker(bind=engine)
+    #session = Session()
 
 class ArticoloGestioneNoleggio(Dao):
 

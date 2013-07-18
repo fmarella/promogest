@@ -32,7 +32,7 @@ try:
     t_articolo_csa = Table('articolo_csa', params['metadata'],
                          schema=params['schema'], autoload=True)
 except:
-    params["session"].close()
+    #params["session"].close()
     t_articolo_csa = Table(
         'articolo_csa',
         params['metadata'],
@@ -55,8 +55,8 @@ except:
         useexisting=True,
         )
     t_articolo_csa.create(checkfirst=True)
-    Session = sessionmaker(bind=engine)
-    session = Session()
+    #Session = sessionmaker(bind=engine)
+    #session = Session()
 
 class ArticoloCSA(Dao):
 

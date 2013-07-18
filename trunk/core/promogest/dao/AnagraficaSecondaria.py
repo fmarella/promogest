@@ -37,7 +37,7 @@ try:
         autoload=True)
 
 except Exception as e:
-    params["session"].close()
+    #params["session"].close()
     ruoloTable = Table('role',
         meta,
         autoload=True,
@@ -104,8 +104,8 @@ except Exception as e:
             useexisting=True,
             )
     anagraficasecondaria.create(checkfirst=True)
-    Session = sessionmaker(bind=engine)
-    session = Session()
+    #Session = sessionmaker(bind=engine)
+    #session = Session()
 
 class AnagraficaSecondaria_(Dao):
 
