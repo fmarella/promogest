@@ -938,35 +938,34 @@ class TestataDocumento(Dao):
         else:
             return ""
 
-    #@property
-    #def destinazione_merce(self):
-        #print " BEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEP"
-        #if self.DM: return self.DM.denominazione
-        #else: return ""
+    @property
+    def destinazione_merce(self):
+        if self.DM: return self.DM.denominazione
+        else: return ""
 
-    #@property
-    #def indirizzo_destinazione_merce(self):
-        #if self.DM: return self.DM.indirizzo
-        #else: return ""
+    @property
+    def indirizzo_destinazione_merce(self):
+        if self.DM: return self.DM.indirizzo
+        else: return ""
 
-    #@property
-    #def localita_destinazione_merce(self):
-        #if self.DM: return self.DM.localita
-        #else: return ""
+    @property
+    def localita_destinazione_merce(self):
+        if self.DM: return self.DM.localita
+        else: return ""
 
-    #@property
-    #def cap_destinazione_merce(self):
-        #if self.DM:
-            #return self.DM.cap
-        #else:
-            #return ""
+    @property
+    def cap_destinazione_merce(self):
+        if self.DM:
+            return self.DM.cap
+        else:
+            return ""
 
-    #@property
-    #def provincia_destinazione_merce(self):
-        #if self.DM:
-            #return self.DM.provincia
-        #else:
-            #return ""
+    @property
+    def provincia_destinazione_merce(self):
+        if self.DM:
+            return self.DM.provincia
+        else:
+            return ""
 
     @property
     def banca(self):
