@@ -277,7 +277,7 @@ if not engine:
 #if not preEnv.web:
 tipo_eng = engine.name
 engine.echo = echosa
-Session = sessionmaker(bind=engine,expire_on_commit=False)
+Session = sessionmaker(bind=engine)
 session = Session()
 #else:
     #session = scoped_session(lambda: create_session(engine, autocommit=False))

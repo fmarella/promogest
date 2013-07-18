@@ -406,7 +406,7 @@ class SlaTpl2Sla(SlaParser):
                     for itext in itexts:
                         ch = str(itext.get('CH'))
                         tags = Sla2pdfUtils.findTags(ch)
-                        #print "Stampo il tag", tags
+                        print "Stampo il tag", tags
                         if tags is not None:
                             tagsKeys = tags.keys()
                             #print "Dizionario dei tags tagsKeys",  tagsKeys
@@ -427,7 +427,25 @@ class SlaTpl2Sla(SlaParser):
                                     value = Sla2pdfUtils.getNowValue(tagkey)
                                 else:
                                     if self.cycle <= (len(self.objects) - 1):
-                                        value = self.objects[self.cycle][tagkey] or ''
+                                        print "COSA SEIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII", self.daos, self.cycle, tagkey
+                                        try:
+                                            value = self.objects[self.cycle][tagkey] or ''
+                                        except:
+                                            if "destinazione_merce" in tagkey:
+                                                print "VEDIAMO COSIIIIIIIIIIIIIIIIIIIIII", hasattr(self.daos, "DM")
+                                                if tagkey == "destinazione_merce":
+                                                    value = self.daos.DM.denominazione or ""
+                                                elif tagkey == "indirizzo_destinazione_merce":
+                                                    value = self.daos.DM.indirizzo
+                                                elif tagkey == "localita_destinazione_merce":
+                                                    value = self.daos.DM.localita or ""
+                                                elif tagkey == "cap_destinazione_merce":
+                                                    value = self.daos.DM.cap or ""
+                                                elif tagkey == "provincia_destinazione_merce":
+                                                    value = self.daos.DM.provincia or ""
+                                            #else:
+                                                #try:
+
                                     else:
                                         value = ''
                                 # Function

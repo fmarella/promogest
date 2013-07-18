@@ -194,19 +194,19 @@
             </tr>
             <tr>
                 <td class="even-detail" width="150px">Destinazione</td>
-                <td class="odd-detail"><strong>{{dao.destinazione_merce}}</strong></td>
+                <td class="odd-detail"><strong>{{dao.DM.denominazione or ""}}</strong></td>
                 <td class="even-detail" width="80px">Indirizzo</td>
-                <td class="odd-detail" colspan="3"><strong>{{dao.indirizzo_destinazione_merce}}</strong></td>
+                <td class="odd-detail" colspan="3"><strong>{{dao.DM.indirizzo or ""}}</strong></td>
             </tr>
             <tr>
                 <td class="even-detail">Localita'</td>
                 <td class="odd-detail">
-                    <strong>{{dao.localita_destinazione_merce}}</strong>
+                    <strong>{{dao.DM.localita or ""}}</strong>
                 </td>
                 <td class="even-detail">CAP</td>
-                <td class="odd-detail"><strong>{{dao.cap_destinazione_merce}}</strong></td>
+                <td class="odd-detail"><strong>{{dao.DM.cap or ""}}</strong></td>
                 <td class="even-detail">Provincia</td>
-                <td class="odd-detail" width="50px"><strong>{{dao.provincia_destinazione_merce}}</strong></td>
+                <td class="odd-detail" width="50px"><strong>{{dao.DM.provincia}}</strong></td>
             </tr>
 
         </table>

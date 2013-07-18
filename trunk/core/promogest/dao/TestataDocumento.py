@@ -938,34 +938,35 @@ class TestataDocumento(Dao):
         else:
             return ""
 
-    @property
-    def destinazione_merce(self):
-        if self.DM: return self.DM.denominazione
-        else: return ""
+    #@property
+    #def destinazione_merce(self):
+        #print " BEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEP"
+        #if self.DM: return self.DM.denominazione
+        #else: return ""
 
-    @property
-    def indirizzo_destinazione_merce(self):
-        if self.DM: return self.DM.indirizzo
-        else: return ""
+    #@property
+    #def indirizzo_destinazione_merce(self):
+        #if self.DM: return self.DM.indirizzo
+        #else: return ""
 
-    @property
-    def localita_destinazione_merce(self):
-        if self.DM: return self.DM.localita
-        else: return ""
+    #@property
+    #def localita_destinazione_merce(self):
+        #if self.DM: return self.DM.localita
+        #else: return ""
 
-    @property
-    def cap_destinazione_merce(self):
-        if self.DM:
-            return self.DM.cap
-        else:
-            return ""
+    #@property
+    #def cap_destinazione_merce(self):
+        #if self.DM:
+            #return self.DM.cap
+        #else:
+            #return ""
 
-    @property
-    def provincia_destinazione_merce(self):
-        if self.DM:
-            return self.DM.provincia
-        else:
-            return ""
+    #@property
+    #def provincia_destinazione_merce(self):
+        #if self.DM:
+            #return self.DM.provincia
+        #else:
+            #return ""
 
     @property
     def banca(self):
@@ -1363,7 +1364,7 @@ std_mapper = mapper(TestataDocumento, t_testata_documento,
         "rigadoc": relation(RigaDocumento,
             cascade="all, delete",
             backref="testata_documento",
-            lazy='joined'),
+            ),
         "testata_documento_scadenza": relation(TestataDocumentoScadenza,
             cascade="all, delete",
             backref="testata_documento"),
@@ -1382,9 +1383,9 @@ std_mapper = mapper(TestataDocumento, t_testata_documento,
             cascade="all, delete",
             backref='TD',lazy='joined'),
         "CLI": relation(Cliente,
-            primaryjoin=(t_testata_documento.c.id_cliente==t_cliente.c.id),lazy='joined', backref="TD"),
+            primaryjoin=(t_testata_documento.c.id_cliente==t_cliente.c.id), backref="TD"),
         "FORN": relation(Fornitore,
-            primaryjoin=(t_testata_documento.c.id_fornitore==t_fornitore.c.id),lazy='joined', backref="TD"),
+            primaryjoin=(t_testata_documento.c.id_fornitore==t_fornitore.c.id), backref="TD"),
         "AGE": relation(Agente,
             primaryjoin=(t_testata_documento.c.id_agente==t_agente.c.id)),
         "IFDDDT": relation(InformazioniFatturazioneDocumento,
@@ -1393,11 +1394,11 @@ std_mapper = mapper(TestataDocumento, t_testata_documento,
             primaryjoin=(t_testata_documento.c.id==t_informazionifatturazionedocumento.c.id_fattura)),
         "OP": relation(Operazione,
             primaryjoin=(t_testata_documento.c.operazione==Operazione.denominazione),
-            backref="TD",lazy='joined'),
+            backref="TD"),
         "STD": relation(ScontoTestataDocumento,
             primaryjoin=(t_testata_documento.c.id==ScontoTestataDocumento.id_testata_documento),
             cascade="all, delete",
-            backref="TD",lazy='joined'),
+            backref="TD"),
         #'lang':relation(Language, backref='user')
     },
     order_by=t_testata_documento.c.data_inserimento.desc())

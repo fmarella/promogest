@@ -435,11 +435,11 @@ std_mapper = mapper(TestataMovimento, t_testata_movimento,properties={
         "rigamov": relation(RigaMovimento,primaryjoin=
                 t_testata_movimento.c.id==t_riga_movimento.c.id_testata_movimento,
                 cascade="all, delete",
-                backref="testata_movimento",lazy='joined'),
+                backref="testata_movimento"),
         #"fornitore": relation(Fornitore, backref="testata_movimento"),
         "forni":relation(Fornitore,primaryjoin=
                     (t_testata_movimento.c.id_fornitore==Fornitore.id), backref="testata_movimento"),
         "cli":relation(Cliente,primaryjoin=
                     (t_testata_movimento.c.id_cliente==t_cliente.c.id), backref="testata_movimento"),
-        "opera": relation(Operazione,primaryjoin = (t_testata_movimento.c.operazione==Operazione.denominazione),backref="testata_movimento",lazy='joined'),
+        "opera": relation(Operazione,primaryjoin = (t_testata_movimento.c.operazione==Operazione.denominazione),backref="testata_movimento"),
         }, order_by=t_testata_movimento.c.id)
