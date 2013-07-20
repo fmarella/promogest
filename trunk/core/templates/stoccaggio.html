@@ -4,6 +4,12 @@
     <table cellpadding="0" cellspacing="0" border="0">
             <tr><td colspan="5" class="table-header"><b>MAGAZZINO:</b> {{dao.magazzino}} <br/><b>ARTICOLO: CODICE:</b> {{dao.codice_articolo}}  - <b>C/BARRE:</b> {{dao.arti.codice_a_barre}} <br /> <b>DENOM:</b> {{dao.articolo}}</td></tr>
             <tr>
+                <td width="25%" class="odd-detail">PERIODO DA DATA</td>
+                <td width="25%" class="odd-detail"><strong>{{utils.dateToString(dao.daData)}}</strong></td>
+                <td width="25%" class="odd-detail">A DATA </td>
+                <td width="25%" class="odd-detail"><strong>{{utils.dateToString(dao.aData)}}</strong></td>
+            </tr>
+            <tr>
                 <td width="25%" class="odd-detail">Scorta minima</td>
                 <td width="25%" class="odd-detail"><strong>{{dao.scorta_minima|nonone}}</strong></td>
                 <td width="25%" class="odd-detail">Livello riordino</td>
@@ -33,7 +39,7 @@
                 <td class="even-number" style="text-align:center;" width="15%">Valore</td>
 
             </tr>
-            {% for item in dao._getTotaliOperazioniMovimento(year=environment.workingYear) %}
+            {% for item in dao._getTotaliOperazioniMovimento(daData=dao.daData,aData=dao.aData, year=environment.workingYear) %}
             <tr >
             <td class="odd-detail" style="padding-left:5px;"><a href="program:/testataDocumentoId={{item['daoTestataDocumento'].id}}"><b>DOC:</b> N° {{item['daoTestataDocumento'].numero}} </a>-- <a href="program:/testataMovimentoId={{item['daoTestataMovimento'].id}}"><b>MOV:</b> N° {{item['numero']}}</a> - {{item['operazione']}} - Del: {{utils.dateToString(item['data_movimento'])}} -
             {% if item["daoTestataMovimento"].id_cliente or item["daoTestataMovimento"].id_fornitore %}
@@ -49,8 +55,8 @@
             </tr>
             {% endfor %}
             <tr>
-                <td class="totale-detail"><strong>Totali</strong></td>
-                <td class="totale-number" style="text-align:center;"><strong>T{{'%14.1f' % (dao.giacenza[0], )}} <br/> A:{{'%14.1f' % (dao.giacenza[2], )}}<br /> V:{{'%14.1f' % (dao.giacenza[3], )}}</strong></td>
+                <td class="totale-detail"><strong>TOTALI</strong></td>
+                <td colspan="2", class="totale-number" style="text-align:right;"><strong>A MAGAZZINO:{{'%14.1f' % (dao.giacenza[0], )}} <br/> ACQUISTATI:{{'%14.1f' % (dao.giacenza[2], )}} <br /> VENDUTI:{{'%14.1f' % (dao.giacenza[3], )}}&nbsp;</strong></td>
                 <td class="totale-number" style="text-align:center;"><strong>{#{utils.mNLC(dao.giacenza[1],2)}#}</strong></td>
             </tr>
             <tr><td colspan="3"><br /><br />GIACENZA GENERALE IN TUTTI I MAGAZZINI: {{dao.arti.getGiacenza()|nonone or 0}}</td></tr>

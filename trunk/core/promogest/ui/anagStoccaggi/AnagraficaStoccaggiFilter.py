@@ -121,10 +121,17 @@ class AnagraficaStoccaggiFilter(AnagraficaFilter):
         self.codice_filter_entry.set_text("")
         self.codice_a_barre_filter_entry.set_text("")
         self.codice_articolo_fornitore_filter_entry.set_text("")
+        self.da_data_filter_entry.set_text('01/01/' + Environment.workingYear)
+        self.a_data_filter_entry.set_text('')
         self.refresh()
 
     def refresh(self):
         # Aggiornamento TreeView
+        daData = stringToDate(self.da_data_filter_entry.get_text())
+        if Environment.tipodb == "sqlite":
+            aData = stringToDateBumped(self.a_data_filter_entry.get_text())
+        else:
+            aData = stringToDate(self.a_data_filter_entry.get_text())
         idArticolo = self.id_articolo_filter_customcombobox.getId()
         idMagazzino = findIdFromCombobox(self.id_magazzino_filter_combobox)
         denominazione = prepareFilterString(
@@ -184,6 +191,8 @@ class AnagraficaStoccaggiFilter(AnagraficaFilter):
         self.filter_listore.clear()
 
         for s in stos:
+            setattr(s, "daData", daData)
+            setattr(s,  "aData", aData)
             self.filter_listore.append((s,
                                         (s.magazzino or ''),
                                         (s.codice_articolo or ''),

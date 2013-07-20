@@ -66,6 +66,16 @@ i DAO, i filtri o tutto"""
                             #default="False",
                             type="string",
                             dest="nome_database")
+        parser.add_option("-s", "--schema",
+                            help="crea uno schema azienda",
+                            #default="False",
+                            type="string",
+                            dest="schema")
+        parser.add_option("-m", "--main",
+                            help="crea una nuova azienda con o senza main False=con promogest2 mentre True senza promogest2",
+                            default="False",
+                            #type="string",
+                            dest="main")
         (options, args) = parser.parse_args()
         from promogest import preEnv, bindtextdomain
         bindtextdomain('promogest', locale_dir='./po/locale')
@@ -91,6 +101,16 @@ i DAO, i filtri o tutto"""
             preEnv.debugDao = True
         elif 'FILTER' in options.debug:
             preEnv.debugFilter = True
+        if options.tipoDB and options.schema:
+            print " DOBBIAMO CREARE UN NUOVO DB CON AZIENDA " ,  options.schema
+            if options.main =="True":
+                print "A SCHEMA UNICO"
+                preEnv.conMain = False
+            else:
+                print " CON SCHEMA MAIN CONDIVISO"
+                preEnv.conMain = True
+            preEnv.buildSchema = schema
+            sys.exit()
         preEnv.table_to_load = ["promogest2.azienda", "promogest2.role" , "promogest2.action", "promogest2.roleaction","promogest2.utente"]
         from promogest.ui.Login import Login
         if shop:

@@ -63,3 +63,5 @@ port = None
 tipodb = None
 azienda = None
 SUB = ""
+buildSchema = None
+conMain = False

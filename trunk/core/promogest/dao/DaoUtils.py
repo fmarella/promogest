@@ -65,8 +65,9 @@ def numeroRegistroGet(tipo=None, date=None):
     return (numero, registrovalue)
 
 
-def giacenzaDettaglio(year=None, idMagazzino=None,
-                                            idArticolo=None, allMag=None):
+def giacenzaDettaglio( daData=None, aData=None,
+                        year=None, idMagazzino=None,
+                        idArticolo=None, allMag=None):
     """
     Calcola la quantità di oggetti presenti in magazzino
     """
@@ -94,8 +95,8 @@ def giacenzaDettaglio(year=None, idMagazzino=None,
         righeArticoloMovimentate = Environment.params["session"]\
                 .query(RigaMovimento, TestataMovimento)\
                 .filter(TestataMovimento.data_movimento.between(
-                            datetime.date(int(year), 1, 1),
-                            datetime.date(int(year) + 1, 1, 1)))\
+                            daData or datetime.date(int(year), 1, 1),
+                            aData or datetime.date(int(year) + 1, 1, 1)))\
                 .filter(
                     RigaMovimento.id_testata_movimento == TestataMovimento.id)\
                 .filter(Riga.id_articolo == idArticolo)\
@@ -107,8 +108,8 @@ def giacenzaDettaglio(year=None, idMagazzino=None,
         righeArticoloMovimentate = Environment.params["session"]\
                 .query(RigaMovimento, TestataMovimento)\
                 .filter(TestataMovimento.data_movimento.between(
-                    datetime.date(int(year), 1, 1),
-                    datetime.date(int(year) + 1, 1, 1)))\
+                    daData or datetime.date(int(year), 1, 1),
+                    aData or datetime.date(int(year) + 1, 1, 1)))\
                 .filter(
                     RigaMovimento.id_testata_movimento == TestataMovimento.id)\
                 .filter(Riga.id_articolo == idArticolo)\
@@ -243,7 +244,8 @@ def articoloStatistiche(arti=None, righe=None):
     return arti
 
 
-def giacenzaArticolo(year=None, idMagazzino=None, idArticolo=None,
+def giacenzaArticolo(
+daData=None, aData=None,year=None, idMagazzino=None, idArticolo=None,
                                                                 allMag=None):
     """
     Calcola la quantità di oggetti presenti in magazzino
@@ -274,8 +276,8 @@ def giacenzaArticolo(year=None, idMagazzino=None, idArticolo=None,
                         RigaMovimento.descrizione)\
                 .join(TestataMovimento, Operazione)\
                 .filter(TestataMovimento.data_movimento.between(
-                    datetime.date(int(year), 1, 1),
-                    datetime.date(int(year) + 1, 1, 1)))\
+                    daData or datetime.date(int(year), 1, 1),
+                    aData or datetime.date(int(year) + 1, 1, 1)))\
                 .filter(
                     RigaMovimento.id_testata_movimento == TestataMovimento.id)\
                 .filter(RigaMovimento.id_magazzino.in_(magazzini))\
@@ -292,8 +294,8 @@ def giacenzaArticolo(year=None, idMagazzino=None, idArticolo=None,
                         RigaMovimento.descrizione)\
                 .join(TestataMovimento, Operazione)\
                 .filter(TestataMovimento.data_movimento.between(
-                    datetime.date(int(year), 1, 1),
-                    datetime.date(int(year) + 1, 1, 1)))\
+                    daData or datetime.date(int(year), 1, 1),
+                    aData or datetime.date(int(year) + 1, 1, 1)))\
                 .filter(
                     RigaMovimento.id_testata_movimento == TestataMovimento.id)\
                 .filter(RigaMovimento.id_magazzino == magazzini)\

@@ -46,10 +46,12 @@ class Stoccaggio(Dao):
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
 
-    def _getTotaliOperazioniMovimento(self,year=None):
+    def _getTotaliOperazioniMovimento(self,daData=None, aData=None,year=None):
         if not year:
             year = workingYear
-        self.__dbTotaliOperazioniMovimento = giacenzaDettaglio(year= year,
+        self.__dbTotaliOperazioniMovimento = giacenzaDettaglio(
+                                        daData=daData, aData=aData,
+                                        year= year,
                                         idMagazzino=self.id_magazzino,
                                         idArticolo=self.id_articolo)
         self.__totaliOperazioniMovimento = self.__dbTotaliOperazioniMovimento[:]
@@ -64,6 +66,7 @@ class Stoccaggio(Dao):
 
     def _getGiacenza(self):
         return giacenzaArticolo(
+            daData=self.daData, aData=self.aData,
             idMagazzino=self.id_magazzino,
             idArticolo=self.id_articolo) or 0
     giacenza = property(_getGiacenza, )
