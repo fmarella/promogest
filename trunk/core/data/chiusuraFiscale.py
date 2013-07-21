@@ -20,33 +20,28 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-import os
-import locale
-import gettext
 
-def bindtextdomain(app_name, locale_dir=None):
-    """
-    Bind the domain represented by app_name to the locale directory locale_dir.
-    It has the effect of loading translations, enabling applications for different
-    languages.
+from sqlalchemy import *
 
-    app_name:
-        a domain to look for translations, tipically the name of an application.
+class ChiusuraFiscaleDb(object):
 
-    locale_dir:
-        a directory with locales like locale_dir/lang_isocode/LC_MESSAGES/app_name.mo
-        If omitted or None, then the current binding for app_name is used.
-    """
-    # installa _() e ngettext() builtin
-    gettext.install(app_name, localedir=locale_dir,
-                    names=("ngettext",))
-    try:
-        locale.bindtextdomain(app_name, locale_dir)
-        locale.bind_textdomain_codeset(app_name, "UTF-8")
-    except AttributeError:
+    def __init__(self, schema = None,mainSchema=None, metadata=None, session=None,debug=False):
+        self.metadata = metadata
+        self.session_sl = session
+        self.schema = schema
+        self.debug = debug
+
+    def create(self):
+
+        chiusuraFiscaleTable = Table('chiusura_fiscale', self.metadata,
+                Column('id',Integer,primary_key=True),
+                Column('data_chiusura',DateTime, unique=True, nullable=False),
+                schema=self.schema
+                )
+        chiusuraFiscaleTable.create(checkfirst=True)
+
+    def update(self, req=None, arg=None):
         pass
 
-    try:
-        locale.setlocale(locale.LC_ALL, "")
-    except locale.Error as e:
+    def alter(self, req=None, arg=None):
         pass

@@ -20,33 +20,26 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-import os
-import locale
-import gettext
+from sqlalchemy import *
 
-def bindtextdomain(app_name, locale_dir=None):
-    """
-    Bind the domain represented by app_name to the locale directory locale_dir.
-    It has the effect of loading translations, enabling applications for different
-    languages.
+class CategoriaContattoDb(object):
 
-    app_name:
-        a domain to look for translations, tipically the name of an application.
+    def __init__(self, schema = None,mainSchema=None, metadata=None, session=None,debug=False):
+        self.metadata = metadata
+        self.session_sl = session
+        self.schema = schema
+        self.debug = debug
 
-    locale_dir:
-        a directory with locales like locale_dir/lang_isocode/LC_MESSAGES/app_name.mo
-        If omitted or None, then the current binding for app_name is used.
-    """
-    # installa _() e ngettext() builtin
-    gettext.install(app_name, localedir=locale_dir,
-                    names=("ngettext",))
-    try:
-        locale.bindtextdomain(app_name, locale_dir)
-        locale.bind_textdomain_codeset(app_name, "UTF-8")
-    except AttributeError:
+    def create(self):
+        categoriaContattoTable = Table('categoria_contatto', self.metadata,
+                Column('id',Integer,primary_key=True),
+                Column('denominazione',String(100),nullable=False),
+                schema=self.schema
+                )
+        categoriaContattoTable.create(checkfirst=True)
+
+    def update(self, req=None, arg=None):
         pass
 
-    try:
-        locale.setlocale(locale.LC_ALL, "")
-    except locale.Error as e:
+    def alter(self, req=None, arg=None):
         pass

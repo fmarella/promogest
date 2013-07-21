@@ -53,9 +53,9 @@ class UpdateDialog(GladeWidget):
                 data.msg_label.set_text("Lettura versioni locale e remota in corso...")
                 data._rev_locale = client.info('.').revision.number
                 data._rev_remota = pysvn.Client().info2("http://promogest.googlecode.com/svn/trunk", recurse=False)[0][1]["rev"].number
-            except:
+            except pysvn.ClientError as e:
                 data.__stop = True
-                data.msg_label.set_text("Si è verificato un errore nella lettura della revisioni,\nattendere alcuni minuti e riprovare")
+                data.msg_label.set_text("Si è verificato un errore nella lettura della revisioni,\nattendere alcuni minuti e riprovare\n Errore:"+str(e))
                 self.cancel_button.set_sensitive(True)
 
         def refreshUI():
