@@ -276,8 +276,8 @@ if not engine:
 
 #if not preEnv.web:
 tipo_eng = engine.name
-#engine.echo = echosa
-engine.echo = True
+engine.echo = echosa
+#engine.echo = True
 Session = sessionmaker(bind=engine)
 session = Session()
 #else:
