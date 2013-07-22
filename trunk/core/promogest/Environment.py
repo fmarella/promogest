@@ -321,11 +321,11 @@ else:
 #meta = MetaData(engine)
 schema_azienda = azienda
 preEnv.azienda = azienda
-print " ENGINE", engine,preEnv.conSchemaPromogest2
-if preEnv.conSchemaPromogest2 == False:
-    mainSchema = preEnv.buildSchema
-else:
-    mainSchema = "promogest2"
+#print " ENGINE", engine,preEnv.conSchemaPromogest2
+#if preEnv.conSchemaPromogest2 == False:
+    #mainSchema = preEnv.buildSchema
+#else:
+    #mainSchema = "promogest2"
 params = {'engine': engine,
         'mainSchema': mainSchema,
         'schema': azienda,
