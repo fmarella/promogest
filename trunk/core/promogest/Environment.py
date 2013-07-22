@@ -263,6 +263,7 @@ if tipodb == "sqlite":
         engine = create_engine("sqlite:///" + startdir() + "db", listeners=[SetTextFactory()], proxy=MyProxy())
 else:
     from promogest.EnvUtils import *
+    mainSchema = "promogest2"
     engine = pg8000()
     if not engine:
         engine = py_postgresql()
