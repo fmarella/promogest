@@ -107,9 +107,12 @@ i DAO, i filtri o tutto"""
                 print "A SCHEMA UNICO"
                 preEnv.conMain = False
             else:
-                print " CON SCHEMA MAIN CONDIVISO"
+                print " CON promogest2 CONDIVISO"
                 preEnv.conMain = True
-            preEnv.buildSchema = schema
+            preEnv.buildSchema = options.schema
+            preEnv.aziendaforce = options.schema
+            from createSchemaDb import *
+            buildAll()
             sys.exit()
         preEnv.table_to_load = ["promogest2.azienda", "promogest2.role" , "promogest2.action", "promogest2.roleaction","promogest2.utente"]
         from promogest.ui.Login import Login

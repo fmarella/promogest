@@ -22,49 +22,28 @@
 
 
 from sqlalchemy import *
+from promogest.Environment import *
 
-class PersonaGiuridicaDb(object):
 
-    def __init__(self, schema = None,mainSchema=None, metadata=None, session=None,debug=False):
-        self.metadata = metadata
-        self.schema = schema
-        self.mainSchema = mainSchema
-        self.debug = debug
-
-    def create(self):
-
-        userTable = Table('utente',self.metadata, autoload=True, schema=self.mainSchema)
-
-        if self.mainSchema:
-            utenteFK = self.mainSchema+'.utente.id'
-        else:
-            utenteFK = 'utente.id'
-
-        personaGiuridicaTable = Table('persona_giuridica', self.metadata,
-                Column('id', Integer, primary_key=True),
-                Column('codice', String(50), nullable=True,),
-                Column('ragione_sociale',String(200), nullable=True),
-                Column('insegna',String(100), nullable=True),
-                Column('cognome',String(70), nullable=True),
-                Column('nome',String(70), nullable=True),
-                Column('sede_operativa_indirizzo',String(300), nullable=True),
-                Column('sede_operativa_cap',String(10), nullable=True),
-                Column('sede_operativa_provincia',String(50), nullable=True),
-                Column('sede_operativa_localita',String(200), nullable=True),
-                Column('sede_legale_indirizzo',String(300), nullable=True),
-                Column('sede_legale_cap',String(10), nullable=True),
-                Column('sede_legale_provincia',String(50), nullable=True),
-                Column('sede_legale_localita',String(200), nullable=True),
-                Column('nazione',String(100), nullable=True),
-                Column('codice_fiscale',String(16), nullable=True),
-                Column('partita_iva',String(30), nullable=True),
-                Column('id_user',Integer, ForeignKey(utenteFK)),
-                schema=self.schema
-                )
-        personaGiuridicaTable.create(checkfirst=True)
-
-    def update(self, req=None, arg=None):
-        pass
-
-    def alter(self, req=None, arg=None):
-        pass
+t_persona_giuridica = Table('persona_giuridica', params["metadata"],
+        Column('id', Integer, primary_key=True),
+        Column('codice', String(50), nullable=True,),
+        Column('ragione_sociale',String(200), nullable=True),
+        Column('insegna',String(100), nullable=True),
+        Column('cognome',String(70), nullable=True),
+        Column('nome',String(70), nullable=True),
+        Column('sede_operativa_indirizzo',String(300), nullable=True),
+        Column('sede_operativa_cap',String(10), nullable=True),
+        Column('sede_operativa_provincia',String(50), nullable=True),
+        Column('sede_operativa_localita',String(200), nullable=True),
+        Column('sede_legale_indirizzo',String(300), nullable=True),
+        Column('sede_legale_cap',String(10), nullable=True),
+        Column('sede_legale_provincia',String(50), nullable=True),
+        Column('sede_legale_localita',String(200), nullable=True),
+        Column('nazione',String(100), nullable=True),
+        Column('codice_fiscale',String(16), nullable=True),
+        Column('partita_iva',String(30), nullable=True),
+        Column('id_user',Integer, ForeignKey(fk_prefix_main+'utente.id')),
+        schema=params["schema"]
+        )
+t_persona_giuridica.create(checkfirst=True)

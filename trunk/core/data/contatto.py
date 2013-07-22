@@ -21,32 +21,18 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 from sqlalchemy import *
+from promogest.Environment import *
 
-class ContattoDb(object):
-    """contatto - Tabella dei contatti"""
-
-    def __init__(self, schema = None,mainSchema=None, metadata=None, session=None,debug=False):
-        self.metadata = metadata
-        self.schema = schema
-        self.debug = debug
-
-    def create(self):
-        contattoTable = Table('contatto', self.metadata,
-                    Column('id', Integer, primary_key=True),
-                    Column('tipo_contatto', String(50),primary_key=True),
-                    Column('nome',String(100), nullable=True),
-                    Column('cognome',String(100), nullable=True),
-                    Column('ruolo',String(200), nullable=True),
-                    Column('descrizione',String(300), nullable=True),
-                    Column('note',Text, nullable=True),
-                    UniqueConstraint('id'),
-                    CheckConstraint("(tipo_contatto = 'cliente') OR (tipo_contatto = 'fornitore') OR (tipo_contatto = 'magazzino') OR (tipo_contatto = 'azienda') OR (tipo_contatto = 'generico')"),
-                    schema=self.schema
-                    )
-        contattoTable.create(checkfirst=True)
-
-    def update(self, req=None, arg=None):
-        pass
-
-    def alter(self, req=None, arg=None):
-        pass
+t_contatto = Table('contatto', params["metadata"],
+            Column('id', Integer, primary_key=True),
+            Column('tipo_contatto', String(50),primary_key=True),
+            Column('nome',String(100), nullable=True),
+            Column('cognome',String(100), nullable=True),
+            Column('ruolo',String(200), nullable=True),
+            Column('descrizione',String(300), nullable=True),
+            Column('note',Text, nullable=True),
+            UniqueConstraint('id'),
+            CheckConstraint("(tipo_contatto = 'cliente') OR (tipo_contatto = 'fornitore') OR (tipo_contatto = 'magazzino') OR (tipo_contatto = 'azienda') OR (tipo_contatto = 'generico')"),
+            schema=params["schema"]
+            )
+t_contatto.create(checkfirst=True)

@@ -22,23 +22,13 @@
 
 
 from sqlalchemy import *
+from promogest.Environment import *
 
-class CategoriaArticoloDb(object):
 
-    def __init__(self, schema = None,mainSchema=None, metadata=None, session=None,debug=False):
-        self.metadata = metadata
-        self.session_sl = session
-        self.schema = schema
-        self.debug = debug
-
-    def create(self):
-        categoria_articoloTable = Table('categoria_articolo', self.metadata,
-                Column('id', Integer, primary_key=True),
-                Column('denominazione', String(200), nullable=False ),
-                Column('denominazione_breve', String(10), nullable=False),
-                schema=self.schema
-                )
-        categoria_articoloTable.create(checkfirst=True)
-
-    def alter(self, req=None, arg=None):
-        pass
+t_categoria_articolo = Table('categoria_articolo', params["metadata"],
+        Column('id', Integer, primary_key=True),
+        Column('denominazione', String(200), nullable=False ),
+        Column('denominazione_breve', String(10), nullable=False),
+        schema=params["schema"]
+        )
+t_categoria_articolo.create(checkfirst=True)

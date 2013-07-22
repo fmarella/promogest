@@ -22,38 +22,23 @@
 
 
 from sqlalchemy import *
+from promogest.Environment import *
 
-class UnitaBaseDb(object):
+t_unita_base = Table('unita_base', params["metadata"],
+            Column('id', Integer, primary_key=True),
+            Column('denominazione_breve', String(50), nullable=True, unique=True),
+            Column('denominazione', String(200), nullable=True),
+            schema=params["mainSchema"]
+            )
+t_unita_base.create(checkfirst=True)
 
-    def __init__(self, schema = None, mainSchema=None, metadata=None, session=None,debug=False):
-        self.metadata = metadata
-        self.session_sl = session
-        self.schema = schema
-        self.mainSchema=mainSchema
-        self.debug = debug
-
-    def create(self):
-        unita_baseTable = Table('unita_base', self.metadata,
-                    Column('id', Integer, primary_key=True),
-                    Column('denominazione_breve', String(50), nullable=True, unique=True),
-                    Column('denominazione', String(200), nullable=True),
-                    schema=self.mainSchema
-                    )
-        unita_baseTable.create(checkfirst=True)
-        s= select([unita_baseTable.c.denominazione_breve]).execute().fetchall()
-        if (u'pz',) not in s or s==[]:
-            unit = unita_baseTable.insert()
-            unit.execute(denominazione_breve='pz', denominazione='pezzi')
-            unit.execute(denominazione_breve='m', denominazione='Metri')
-            unit.execute(denominazione_breve='l', denominazione='Litri')
-            unit.execute(denominazione_breve='kg', denominazione='Chilogrammi')
-            unit.execute(denominazione_breve='N', denominazione='Numero')
-            unit.execute(denominazione_breve='h', denominazione='Ore')
-            unit.execute(denominazione_breve='mq', denominazione='Metri Quadri')
-
-
-    def update(self, req=None, arg=None):
-        pass
-
-    def alter(self, req=None, arg=None):
-        pass
+s= select([t_unita_base.c.denominazione_breve]).execute().fetchall()
+if (u'pz',) not in s or s==[]:
+    unit = t_unita_base.insert()
+    unit.execute(denominazione_breve='pz', denominazione='pezzi')
+    unit.execute(denominazione_breve='m', denominazione='Metri')
+    unit.execute(denominazione_breve='l', denominazione='Litri')
+    unit.execute(denominazione_breve='kg', denominazione='Chilogrammi')
+    unit.execute(denominazione_breve='N', denominazione='Numero')
+    unit.execute(denominazione_breve='h', denominazione='Ore')
+    unit.execute(denominazione_breve='mq', denominazione='Metri Quadri')

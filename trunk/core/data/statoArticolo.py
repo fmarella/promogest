@@ -22,31 +22,18 @@
 
 
 from sqlalchemy import *
+from promogest.Environment import *
 
-class StatoArticoloDb(object):
+t_stato_articolo = Table('stato_articolo', params["metadata"],
+        Column('id', Integer, primary_key=True),
+        Column('denominazione',String(100),nullable=True),
+        schema=params["mainSchema"])
+t_stato_articolo.create(checkfirst=True)
 
-    def __init__(self, schema = None,mainSchema=None,  metadata=None, session=None,debug=False):
-        self.metadata = metadata
-        self.schema = schema
-        self.mainSchema= mainSchema
-        self.debug = debug
 
-    def create(self):
-        statoArticoloTable = Table('stato_articolo', self.metadata,
-                Column('id', Integer, primary_key=True),
-                Column('denominazione',String(100),nullable=True),
-                schema=self.mainSchema
-                )
-        statoArticoloTable.create(checkfirst=True)
-        s= select([statoArticoloTable.c.denominazione]).execute().fetchall()
-        if (u'In vendita',) not in s or s==[]:
-            tipo = statoArticoloTable.insert()
-            tipo.execute(denominazione='In vendita')
-            tipo.execute(denominazione='In offerta')
-            tipo.execute(denominazione='Interno')
-
-    def update(self, req=None, arg=None):
-        pass
-
-    def alter(self, req=None, arg=None):
-        pass
+s= select([t_stato_articolo.c.denominazione]).execute().fetchall()
+if (u'In vendita',) not in s or s==[]:
+    tipo = t_stato_articolo.insert()
+    tipo.execute(denominazione='In vendita')
+    tipo.execute(denominazione='In offerta')
+    tipo.execute(denominazione='Interno')

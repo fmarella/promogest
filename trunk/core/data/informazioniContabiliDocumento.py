@@ -21,32 +21,17 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 from sqlalchemy import *
+from promogest.Environment import *
 
-class InformazioniContabiliDocumentoDb(object):
 
-    def __init__(self, schema = None,mainSchema=None, metadata=None, session=None,debug=False):
-        self.metadata = metadata
-        self.schema = schema
-        self.debug = debug
-
-    def create(self):
-        azTable = Table('testata_documento', self.metadata, autoload=True, schema=self.schema)
-        if self.schema:
-            testata_documentoFK =self.schema+'.testata_documento.id'
-        else:
-            testata_documentoFK = 'testata_documento.id'
-
-        informazioniContabiliDocumentoTable = Table('informazioni_contabili_documento', self.metadata,
-                Column('id', Integer, primary_key=True),
-                Column('documento_saldato', Boolean, default=False),
-                Column('id_documento',Integer,ForeignKey(testata_documentoFK,onupdate="CASCADE",ondelete="RESTRICT"),nullable=False, ),
-                Column('id_primo_riferimento',Integer,ForeignKey(testata_documentoFK,onupdate="CASCADE",ondelete="RESTRICT")),
-                Column('id_secondo_riferimento',Integer,ForeignKey(testata_documentoFK,onupdate="CASCADE",ondelete="RESTRICT")),
-                Column('totale_pagato', Numeric(16,4), nullable=False, default=0),
-                Column('totale_sospeso', Numeric(16,4), nullable=False, default=0),
-                schema=self.schema
-                )
-        informazioniContabiliDocumentoTable.create(checkfirst=True)
-
-    def alter(self, req=None, arg=None):
-        pass
+t_informazioni_contabili_documento = Table('informazioni_contabili_documento', params["metadata"],
+        Column('id', Integer, primary_key=True),
+        Column('documento_saldato', Boolean, default=False),
+        Column('id_documento',Integer,ForeignKey(fk_prefix+'testata_documento.id',onupdate="CASCADE",ondelete="RESTRICT"),nullable=False, ),
+        Column('id_primo_riferimento',Integer,ForeignKey(fk_prefix+'testata_documento.id',onupdate="CASCADE",ondelete="RESTRICT")),
+        Column('id_secondo_riferimento',Integer,ForeignKey(fk_prefix+'testata_documento.id',onupdate="CASCADE",ondelete="RESTRICT")),
+        Column('totale_pagato', Numeric(16,4), nullable=False, default=0),
+        Column('totale_sospeso', Numeric(16,4), nullable=False, default=0),
+        schema=params["schema"]
+        )
+t_informazioni_contabili_documento.create(checkfirst=True)

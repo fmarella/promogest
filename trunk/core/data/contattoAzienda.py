@@ -21,41 +21,14 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 from sqlalchemy import *
+from promogest.Environment import *
 
-class ContattoAziendaDb(object):
-
-    def __init__(self, schema = None, mainSchema=None, metadata=None, session=None,debug=False):
-        self.metadata = metadata
-        self.session_sl = session
-        self.schema = schema
-        self.mainSchema = mainSchema
-        self.debug = debug
-
-    def create(self):
-        coTable = Table('contatto', self.metadata, autoload=True, schema=self.schema)
-        azTable = Table('azienda', self.metadata, autoload=True, schema=self.mainSchema)
-        if self.mainSchema:
-            aziendaFK = self.mainSchema+'.azienda.schemaa'
-            contattoFKid = self.schema+'.contatto.id'
-            contattoFKtipo_contatto = self.schema+'.contatto.tipo_contatto'
-
-        else:
-            aziendaFK = 'azienda.schemaa'
-            contattoFKid = 'contatto.id'
-            contattoFKtipo_contatto = 'contatto.tipo_contatto'
-
-        contattoAziendaTable = Table('contatto_azienda', self.metadata,
-                Column('id',Integer,primary_key=True),
-                Column('tipo_contatto',String(50),primary_key=True),
-                Column('schema_azienda',String(100),ForeignKey(aziendaFK,onupdate="CASCADE",ondelete="RESTRICT"),nullable=False),
-                ForeignKeyConstraint(['id', 'tipo_contatto'],[contattoFKid, contattoFKtipo_contatto],onupdate="CASCADE", ondelete="CASCADE"),
-                CheckConstraint("tipo_contatto = 'azienda'"),
-                schema=self.schema
-                )
-        contattoAziendaTable.create(checkfirst=True)
-
-    def update(self, req=None, arg=None):
-        pass
-
-    def alter(self, req=None, arg=None):
-        pass
+t_contatto_azienda = Table('contatto_azienda', params["metadata"],
+        Column('id',Integer,primary_key=True),
+        Column('tipo_contatto',String(50),primary_key=True),
+        Column('schema_azienda',String(100),ForeignKey(fk_prefix_main+'azienda.schemaa',onupdate="CASCADE",ondelete="RESTRICT"),nullable=False),
+        ForeignKeyConstraint(['id', 'tipo_contatto'],[fk_prefix+'contatto.id', fk_prefix+'contatto.tipo_contatto'],onupdate="CASCADE", ondelete="CASCADE"),
+        CheckConstraint("tipo_contatto = 'azienda'"),
+        schema=params["schema"]
+        )
+t_contatto_azienda.create(checkfirst=True)

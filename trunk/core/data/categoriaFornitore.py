@@ -21,25 +21,11 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 from sqlalchemy import *
+from promogest.Environment import *
 
-class CategoriaFornitoreDb(object):
-
-    def __init__(self, schema = None,mainSchema=None, metadata=None, session=None,debug=False):
-        self.metadata = metadata
-        self.session_sl = session
-        self.schema = schema
-        self.debug = debug
-
-    def create(self):
-        categoriaFornitoreTable = Table('categoria_fornitore', self.metadata,
-                Column('id',Integer,primary_key=True),
-                Column('denominazione',String(200),nullable=False),
-                schema=self.schema
-                )
-        categoriaFornitoreTable.create(checkfirst=True)
-
-    def update(self, req=None, arg=None):
-        pass
-
-    def alter(self, req=None, arg=None):
-        pass
+t_categoria_fornitore = Table('categoria_fornitore', params["metadata"],
+        Column('id',Integer,primary_key=True),
+        Column('denominazione',String(200),nullable=False),
+        schema=params["schema"]
+        )
+t_categoria_fornitore.create(checkfirst=True)

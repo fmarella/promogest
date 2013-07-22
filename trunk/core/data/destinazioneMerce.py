@@ -22,36 +22,16 @@
 
 
 from sqlalchemy import *
+from promogest.Environment import *
 
-class DestinazioneMerceDb(object):
-
-    def __init__(self, schema = None,mainSchema=None, metadata=None, session=None,debug=False):
-        self.metadata = metadata
-        self.schema = schema
-        self.debug = debug
-
-    def create(self):
-#        clienteTable = Table('cliente', self.metadata, autoload=True, schema=self.schema)
-
-        if self.schema:
-            clienteFK = self.schema+'.cliente.id'
-        else:
-            clienteFK = 'cliente.id'
-
-        destinazioneMerceTable = Table('destinazione_merce', self.metadata,
-                Column('id',Integer,primary_key=True),
-                Column('denominazione',String(200),nullable=False),
-                Column('indirizzo',String(200),nullable=True),
-                Column('localita',String(100),nullable=True),
-                Column('cap',String(10),nullable=True),
-                Column('provincia',String(50),nullable=True),
-                Column('id_cliente',Integer,ForeignKey(clienteFK,onupdate="CASCADE",ondelete="RESTRICT")),
-                schema=self.schema
-                )
-        destinazioneMerceTable.create(checkfirst=True)
-
-    def update(self, req=None, arg=None):
-        pass
-
-    def alter(self, req=None, arg=None):
-        pass
+t_destinazione_merce = Table('destinazione_merce', params["metadata"],
+        Column('id',Integer,primary_key=True),
+        Column('denominazione',String(200),nullable=False),
+        Column('indirizzo',String(200),nullable=True),
+        Column('localita',String(100),nullable=True),
+        Column('cap',String(10),nullable=True),
+        Column('provincia',String(50),nullable=True),
+        Column('id_cliente',Integer,ForeignKey(fk_prefix+'cliente.id',onupdate="CASCADE",ondelete="RESTRICT")),
+        schema=params["schema"]
+        )
+t_destinazione_merce.create(checkfirst=True)

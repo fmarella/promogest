@@ -21,34 +21,12 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 from sqlalchemy import *
+from promogest.Environment import *
 
-class ScontoFornituraDb(object):
 
-    def __init__(self, schema = None,mainSchema=None, metadata=None, session=None,debug=False):
-        self.metadata = metadata
-        self.session_sl = session
-        self.schema = schema
-        self.debug = debug
-
-    def create(self):
-
-        scontoTable = Table('sconto', self.metadata, autoload=True, schema=self.schema)
-        if self.schema:
-            scontoFK = self.schema+'.sconto.id'
-            fornituraFK = self.schema+'.fornitura.id'
-        else:
-            scontoFK = 'sconto.id'
-            fornituraFK = 'fornitura.id'
-
-        scontoFornituraTable = Table('sconto_fornitura', self.metadata,
-                Column('id',Integer,ForeignKey(scontoFK,onupdate="CASCADE",ondelete="CASCADE"),primary_key=True),
-                Column('id_fornitura',Integer,ForeignKey(fornituraFK,onupdate="CASCADE",ondelete="CASCADE")),
-                schema=self.schema
-                )
-        scontoFornituraTable.create(checkfirst=True)
-
-    def update(self, req=None, arg=None):
-        pass
-
-    def alter(self, req=None, arg=None):
-        pass
+t_sconto_fornitura = Table('sconto_fornitura', params["metadata"],
+        Column('id',Integer,ForeignKey(fk_prefix+'sconto.id',onupdate="CASCADE",ondelete="CASCADE"),primary_key=True),
+        Column('id_fornitura',Integer,ForeignKey(fk_prefix+'fornitura.id',onupdate="CASCADE",ondelete="CASCADE")),
+        schema=params["schema"]
+        )
+t_sconto_fornitura.create(checkfirst=True)

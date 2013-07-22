@@ -21,40 +21,15 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 from sqlalchemy import *
+from promogest.Environment import *
 
-class ContattoClienteDb(object):
-
-    def __init__(self, schema = None,mainSchema=None, metadata=None, session=None,debug=False):
-        self.metadata = metadata
-        self.schema = schema
-        self.debug = debug
-
-    def create(self):
-        toTable = Table('contatto', self.metadata, autoload=True, schema=self.schema)
-        cliTable = Table('cliente', self.metadata, autoload=True, schema=self.schema)
-
-        if self.schema:
-            contattoFKid =self.schema+'.contatto.id'
-            clienteFK =self.schema+'.cliente.id'
-            contattoFKtipocontatto = self.schema+'.contatto.tipo_contatto'
-        else:
-            contattoFKid ='contatto.id'
-            clienteFK = 'cliente.id'
-            contattoFKtipocontatto = 'contatto.tipo_contatto'
-
-        contattoClienteTable = Table('contatto_cliente', self.metadata,
-                Column('id',Integer,primary_key=True), #ForeignKey(self.schema+'.contatto.id',onupdate="CASCADE",ondelete="CASCADE"),primary_key=True),
-                Column('tipo_contatto',String(50),primary_key=True),# ForeignKey(self.schema+'.contatto.tipo_contatto',onupdate="CASCADE",ondelete="CASCADE"),primary_key=True,default="cliente"),
-                Column('id_cliente',Integer,ForeignKey(clienteFK,onupdate="CASCADE",ondelete="RESTRICT"),nullable=False),
-                CheckConstraint("tipo_contatto = 'cliente'"),
-                ForeignKeyConstraint(['id', 'tipo_contatto'],[contattoFKid, contattoFKtipocontatto],onupdate="CASCADE", ondelete="CASCADE"),
-                UniqueConstraint('id', 'tipo_contatto'),
-                schema=self.schema
-                )
-        contattoClienteTable.create(checkfirst=True)
-
-    def update(self, req=None, arg=None):
-        pass
-
-    def alter(self, req=None, arg=None):
-        pass
+t_contatto_cliente = Table('contatto_cliente', params["metadata"],
+        Column('id',Integer,primary_key=True),
+        Column('tipo_contatto',String(50),primary_key=True),
+        Column('id_cliente',Integer,ForeignKey(fk_prefix+'cliente.id',onupdate="CASCADE",ondelete="RESTRICT"),nullable=False),
+        CheckConstraint("tipo_contatto = 'cliente'"),
+        ForeignKeyConstraint(['id', 'tipo_contatto'],[fk_prefix+'contatto.id', fk_prefix+'contatto.tipo_contatto'],onupdate="CASCADE", ondelete="CASCADE"),
+        UniqueConstraint('id', 'tipo_contatto'),
+        schema=params["schema"]
+        )
+t_contatto_cliente.create(checkfirst=True)

@@ -22,38 +22,23 @@
 
 
 from sqlalchemy import *
+from promogest.Environment import *
 
-class RoleDb(object):
 
-    def __init__(self, schema = None,mainSchema=None, metadata=None, session=None,debug=False):
-        self.metadata = metadata
-        self.schema = schema
-        self.mainSchema= mainSchema
-        self.debug = debug
+t_role = Table('role', params["metadata"],
+        Column('id', Integer, primary_key=True),
+        Column('name', String(50), nullable=False),
+        Column('descrizione', String(250), nullable=False),
+        Column('id_listino', Integer),
+        Column('active', Boolean, default=0),
+        schema=params["mainSchema"]
+        )
+t_role.create(checkfirst=True)
 
-    def create(self):
-        roleTable = Table('role', self.metadata,
-                Column('id', Integer, primary_key=True),
-                Column('name', String(50), nullable=False),
-                Column('descrizione', String(250), nullable=False),
-                Column('id_listino', Integer),
-                Column('active', Boolean, default=0),
-                schema=self.mainSchema
-                )
-        roleTable.create(checkfirst=True)
-        s= select([roleTable.c.name]).execute().fetchall()
-        if (u'Admin',) not in s or s ==[]:
-            ruoli = roleTable.insert()
-            ruoli.execute(name = "Admin", descrizione = "Gestore del promogest", active = True)
-            ruoli.execute(name = "Magazzino", descrizione = "Gestione magazzino", active = True)
-            ruoli.execute(name = "Venditore", descrizione = "Addetto alla vendita", active = True)
-            ruoli.execute(name = "Fatturazione", descrizione = "Fatturazione", active = True)
-
-    def data(self):
-        pass
-        #roleTable = Table('role',self.metadata, autoload=True, schema=self.mainSchema)
-        #ruoli = roleTable.insert()
-        #ruoli.execute(name = "Admin", descrizione = "Gestore del sottodominio", active = True)
-        #ruoli.execute(name = "Cliente", descrizione = "Cliente semplice del sito", active = True)
-        #ruoli.execute(name = "ClientePRO", descrizione = "Cliente di tipo Professionale", active = True)
-        #ruoli.execute(name = "Guest", descrizione = "Visitatore", active = True)
+s= select([t_role.c.name]).execute().fetchall()
+if (u'Admin',) not in s or s ==[]:
+    ruoli = t_role.insert()
+    ruoli.execute(name = "Admin", descrizione = "Gestore del promogest", active = True)
+    ruoli.execute(name = "Magazzino", descrizione = "Gestione magazzino", active = True)
+    ruoli.execute(name = "Venditore", descrizione = "Addetto alla vendita", active = True)
+    ruoli.execute(name = "Fatturazione", descrizione = "Fatturazione", active = True)

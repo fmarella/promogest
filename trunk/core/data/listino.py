@@ -21,40 +21,32 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 from sqlalchemy import *
+from promogest.Environment import *
 
-class ListinoDb(object):
+if tipo_eng == "postgresql":
+    colId = Column('id', Integer,Sequence('listino_id_seq',schema=params["schema"]),nullable=False,unique=True)
+else:
+    colId = Column('id', Integer,nullable=False)
 
-    def __init__(self, schema = None,mainSchema=None, metadata=None, session=None,debug=False):
-        self.metadata = metadata
-        self.session = session
-        self.schema = schema
-        self.debug = debug
+t_listino = Table('listino', params["metadata"],
+        colId,
+        Column('denominazione', String(200), nullable=False, primary_key=True),
+        Column('descrizione', String(300), nullable=False),
+        Column('data_listino', DateTime,default=func.now(), nullable=False, primary_key=True),
+        Column('listino_attuale', Boolean, nullable=True),
+        Column('visible', Boolean, default=0),
+        schema=params["schema"])
 
 
-    def create(self):
+#sequence = Sequence('listino_id_seq',metadata= params["metadata"], schema=params["schema"],for_update=fk_prefix+"listino.id")
+#sequence.create( checkfirst=True)
 
-        if self.schema:
-            colId = Column('id', Integer,Sequence('listino_id_seq',schema=self.schema),nullable=False,unique=True)
-        else:
-            colId = Column('id', Integer,nullable=False)
 
-        listinoTable = Table('listino', self.metadata,
-                colId,
-                Column('denominazione', String(200), nullable=False, primary_key=True),
-                Column('descrizione', String(300), nullable=False),
-                Column('data_listino', DateTime,default=func.now(), nullable=False, primary_key=True),
-                Column('listino_attuale', Boolean, nullable=True),
-                Column('visible', Boolean, default=0),
-                schema=self.schema)
-        try:
-            #msg = "DROP SEQUENCE %s.listino_id_seq" %self.schema
-            #DDL(msg).execute_at('before-create', listinoTable)
-            msg = "CREATE SEQUENCE %s.listino_id_seq" %self.schema
-            DDL(msg).execute_at('before-create', listinoTable)
-        except:
-            print "la relazione listino_id_seq esiste già"
-        listinoTable.create(checkfirst=True)
-
-    def alter(self, req=None, arg=None):
-        pass
-#Column('id', Integer,Sequence('listino_id_seq',schema=self.schema),nullable=False, unique=True),
+#try:
+    ##msg = "DROP SEQUENCE %s.listino_id_seq" %self.schema
+    ##DDL(msg).execute_at('before-create', listinoTable)
+    #msg = "CREATE SEQUENCE %s.listino_id_seq" %self.schema
+    #DDL(msg).execute_at('before-create', listinoTable)
+#except:
+    #print "la relazione listino_id_seq esiste già"
+t_listino.create(checkfirst=True)

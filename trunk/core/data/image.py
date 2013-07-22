@@ -21,27 +21,11 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 from sqlalchemy import *
+from promogest.Environment import *
 
-class ImageDb(object):
-
-    def __init__(self, schema = None,mainSchema=None, metadata=None, session=None,debug=False):
-        self.metadata = metadata
-        self.session_sl = session
-        self.schema = schema
-        self.debug = debug
-
-
-    def create(self):
-        famiglia_articoloTable = Table('famiglia_articolo',self.metadata, autoload=True, schema=self.schema)
-        if self.schema:
-            famigliaFK = self.schema+'.famiglia_articolo.id'
-        else:
-            famigliaFK = 'famiglia_articolo.id'
-
-
-        imageTable = Table('image', self.metadata,
-                Column('id', Integer, primary_key=True),
-                Column('filename', String(300), nullable=True),
-                Column('id_famiglia',Integer, ForeignKey(famigliaFK,onupdate="CASCADE",ondelete="RESTRICT")),
-                schema=self.schema)
-        self.metadata.create_all(checkfirst=True)
+t_image = Table('image', params["metadata"],
+        Column('id', Integer, primary_key=True),
+        Column('filename', String(300), nullable=True),
+        Column('id_famiglia',Integer, ForeignKey(fk_prefix+'famiglia_articolo.id',onupdate="CASCADE",ondelete="RESTRICT")),
+        schema=params["schema"])
+t_image.create(checkfirst=True)

@@ -22,37 +22,17 @@
 
 
 from sqlalchemy import *
+from promogest.Environment import *
 
-class StoccaggioDb(object):
 
-    def __init__(self, schema = None, mainSchema=None,metadata=None, session=None,debug=False):
-        self.metadata = metadata
-        self.session_sl = session
-        self.schema = schema
-        self.debug = debug
-
-    def create(self):
-        azTable = Table('articolo', self.metadata, autoload=True, schema=self.schema)
-        ffTable = Table('magazzino', self.metadata, autoload=True, schema=self.schema)
-
-        if self.schema:
-            articoloFK = self.schema+'.articolo.id'
-            magazzinoFK = self.schema+'.magazzino.id'
-        else:
-            articoloFK = 'articolo.id'
-            magazzinoFK = 'magazzino.id'
-
-        stoccaggioTable = Table('stoccaggio', self.metadata,
-                Column('id', Integer, primary_key=True),
-                Column('scorta_minima', Integer, nullable=True),
-                Column('livello_riordino', Integer, nullable=True),
-                Column('data_fine_scorte', DateTime,nullable=True),
-                Column('data_prossimo_ordine', DateTime, nullable=True),
-                Column('id_articolo', Integer,ForeignKey(articoloFK,onupdate="CASCADE",ondelete="CASCADE"), nullable=True),
-                Column('id_magazzino', Integer, ForeignKey(magazzinoFK,onupdate="CASCADE",ondelete="RESTRICT"), nullable=False),
-                schema=self.schema
-                )
-        stoccaggioTable.create(checkfirst=True)
-
-    def alter(self, req=None, arg=None):
-        pass
+t_stoccaggio = Table('stoccaggio', params["metadata"],
+        Column('id', Integer, primary_key=True),
+        Column('scorta_minima', Integer, nullable=True),
+        Column('livello_riordino', Integer, nullable=True),
+        Column('data_fine_scorte', DateTime,nullable=True),
+        Column('data_prossimo_ordine', DateTime, nullable=True),
+        Column('id_articolo', Integer,ForeignKey(fk_prefix+'articolo.id',onupdate="CASCADE",ondelete="CASCADE"), nullable=True),
+        Column('id_magazzino', Integer, ForeignKey(fk_prefix+'magazzino.id',onupdate="CASCADE",ondelete="RESTRICT"), nullable=False),
+        schema=params["schema"]
+        )
+t_stoccaggio.create(checkfirst=True)

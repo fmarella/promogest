@@ -22,40 +22,28 @@
 
 
 from sqlalchemy import *
+from promogest.Environment import *
 
-class TipoRecapitoDb(object):
+t_tipo_recapito = Table('tipo_recapito', params["metadata"],
+        Column('denominazione',String(100),primary_key=True),
+        schema=params["mainSchema"]
+        )
+t_tipo_recapito.create(checkfirst=True)
 
-    def __init__(self, schema=None,mainSchema=None, metadata=None, session=None, debug=False):
-        self.metadata = metadata
-        self.schema = schema
-        self.mainSchema=mainSchema
-        self.debug = debug
 
-    def create(self):
-        tipoRecapitoTable = Table('tipo_recapito', self.metadata,
-                Column('denominazione',String(100),primary_key=True),
-                schema=self.mainSchema
-                )
-        tipoRecapitoTable.create(checkfirst=True)
-        s= select([tipoRecapitoTable.c.denominazione]).execute().fetchall()
-        if (u'Telefono',) not in s or s==[]:
-            tipo = tipoRecapitoTable.insert()
-            tipo.execute(denominazione='Telefono')
-            tipo.execute(denominazione='Cellulare')
-            tipo.execute(denominazione='Indirizzo')
-            tipo.execute(denominazione= "Citta'")
-            tipo.execute(denominazione='CAP')
-            tipo.execute(denominazione='Nazione')
-            tipo.execute(denominazione='Info')
-            tipo.execute(denominazione='Fax')
-            tipo.execute(denominazione='Email')
-            tipo.execute(denominazione='MSN')
-            tipo.execute(denominazione='Provincia')
-            tipo.execute(denominazione='Sito')
-            tipo.execute(denominazione='Skype')
-
-    def update(self, req=None, arg=None):
-        pass
-
-    def alter(self, req=None, arg=None):
-        pass
+s= select([t_tipo_recapito.c.denominazione]).execute().fetchall()
+if (u'Telefono',) not in s or s==[]:
+    tipo = t_tipo_recapito.insert()
+    tipo.execute(denominazione='Telefono')
+    tipo.execute(denominazione='Cellulare')
+    tipo.execute(denominazione='Indirizzo')
+    tipo.execute(denominazione= "Citta'")
+    tipo.execute(denominazione='CAP')
+    tipo.execute(denominazione='Nazione')
+    tipo.execute(denominazione='Info')
+    tipo.execute(denominazione='Fax')
+    tipo.execute(denominazione='Email')
+    tipo.execute(denominazione='MSN')
+    tipo.execute(denominazione='Provincia')
+    tipo.execute(denominazione='Sito')
+    tipo.execute(denominazione='Skype')

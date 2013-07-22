@@ -154,7 +154,7 @@ CACHE_DIR = os.path.join("./", 'cache')
 URL_CHARS = 'abcdefghijkmpqrstuvwxyzABCDEFGHIJKLMNPQRST23456789'
 COOKIENAME = "promogest_web"
 ALLOWED_SCHEMES = frozenset(['http', 'https', 'ftp', 'ftps'])
-
+#mainSchema = "promogest2"
 
 modulesList = []
 
@@ -263,12 +263,12 @@ if tipodb == "sqlite":
         engine = create_engine("sqlite:///" + startdir() + "db", listeners=[SetTextFactory()], proxy=MyProxy())
 else:
     from promogest.EnvUtils import *
-    mainSchema = "promogest2"
     engine = pg8000()
     if not engine:
         engine = py_postgresql()
     if not engine:
         engine = psycopg2new()
+
     if not engine:
         engine = psycopg2old()
 if not engine:
@@ -277,6 +277,7 @@ if not engine:
 #if not preEnv.web:
 tipo_eng = engine.name
 engine.echo = echosa
+#engine.echo = True
 Session = sessionmaker(bind=engine)
 session = Session()
 #else:
@@ -294,7 +295,6 @@ else:
 from pickle import load as pickle_load
 #meta = MetaData(engine)
 metatmp = MetaData()
-
 
 def delete_pickle():
     """ Cancella il file pickle del metadata
@@ -321,7 +321,11 @@ else:
 #meta = MetaData(engine)
 schema_azienda = azienda
 preEnv.azienda = azienda
-
+print " ENGINE", engine,preEnv.conMain
+#if preEnv.conMain == False:
+    #mainSchema = preEnv.buildSchema
+#else:
+mainSchema = "promogest2"
 params = {'engine': engine,
         'mainSchema': mainSchema,
         'schema': azienda,
@@ -336,7 +340,7 @@ params = {'engine': engine,
         'usernameLoggedList': userdata}
 
 fk_prefix = params['schema'] + '.' if params['tipo_db'] == 'postgresql' else ''
-fk_prefix_main = "promogest2" +'.' if params['tipo_db'] == 'postgresql' else ''
+fk_prefix_main = mainSchema or "promogest2" +'.' if params['tipo_db'] == 'postgresql' else ''
 
 
 if not preEnv.web:
@@ -384,14 +388,14 @@ if os.name=="nt" and sqlalchemy.__version__ < "0.7":
     easy_install.main( ["-U","sqlalchemy==0.7.8"] )
     sys.exit()
 
-try:
-    import keyring
-except:
-    if os.name == 'nt':
-        from setuptools.command import easy_install
-        easy_install.main(['-U', 'keyring'])
-    else:
-        pass
+#try:
+    #import keyring
+#except:
+    #if os.name == 'nt':
+        #from setuptools.command import easy_install
+        #easy_install.main(['-U', 'keyring'])
+    #else:
+        #pass
 
 cadenza = ["MENSILE", "BIMESTRALE", "TRIMESTRALE",
             "SEMESTRALE", "ANNUALE"]

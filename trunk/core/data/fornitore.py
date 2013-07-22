@@ -22,45 +22,13 @@
 
 
 from sqlalchemy import *
+from promogest.Environment import *
 
-class FornitoreDb(object):
-
-    def __init__(self, schema = None,mainSchema=None, metadata=None, session=None,debug=False):
-        self.metadata = metadata
-        self.session_sl = session
-        self.schema = schema
-        self.debug = debug
-
-    def create(self):
-        contattoTable = Table('persona_giuridica', self.metadata, autoload=True, schema=self.schema)
-        categoriaFornitoreTable = Table('categoria_fornitore', self.metadata, autoload=True, schema=self.schema)
-        magazzinoTable = Table('magazzino', self.metadata, autoload=True, schema=self.schema)
-        pagamentoTable = Table('pagamento', self.metadata, autoload=True, schema=self.schema)
-
-        if self.schema:
-            personagiuridicaFK = self.schema+'.persona_giuridica.id'
-            pagamentoFK = self.schema+'.pagamento.id'
-            magazzinoFK = self.schema+'.magazzino.id'
-            categoriafornitoreFK =self.schema+'.categoria_fornitore.id'
-
-        else:
-            personagiuridicaFK = 'persona_giuridica.id'
-            pagamentoFK = 'pagamento.id'
-            magazzinoFK = 'magazzino.id'
-            categoriafornitoreFK = 'categoria_fornitore.id'
-
-
-        fornitoreTable = Table('fornitore', self.metadata,
-                Column('id',Integer,ForeignKey(personagiuridicaFK,onupdate="CASCADE",ondelete="CASCADE"),primary_key=True),
-                Column('id_categoria_fornitore',Integer,ForeignKey(categoriafornitoreFK)),
-                Column('id_pagamento',Integer,ForeignKey(pagamentoFK)),
-                Column('id_magazzino',Integer,ForeignKey(magazzinoFK)),
-                schema=self.schema
-                )
-        fornitoreTable.create(checkfirst=True)
-
-    def update(self, req=None, arg=None):
-        pass
-
-    def alter(self, req=None, arg=None):
-        pass
+t_fornitore = Table('fornitore', params["metadata"],
+        Column('id',Integer,ForeignKey(fk_prefix+'persona_giuridica.id',onupdate="CASCADE",ondelete="CASCADE"),primary_key=True),
+        Column('id_categoria_fornitore',Integer,ForeignKey(fk_prefix+'categoria_fornitore.id')),
+        Column('id_pagamento',Integer,ForeignKey(fk_prefix+'pagamento.id')),
+        Column('id_magazzino',Integer,ForeignKey(fk_prefix+'magazzino.id')),
+        schema=params["schema"]
+        )
+t_fornitore.create(checkfirst=True)

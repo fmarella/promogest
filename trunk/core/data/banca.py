@@ -22,27 +22,15 @@
 
 
 from sqlalchemy import *
+from promogest.Environment import *
 
-
-class BancaDb(object):
-
-    def __init__(self, schema = None,mainSchema=None, metadata=None, session=None,debug=False):
-        self.metadata = metadata
-        self.session_sl = session
-        self.schema = schema
-        self.debug = debug
-
-    def create(self):
-        bancaTable = Table('banca', self.metadata,
-                Column('id', Integer, primary_key=True),
-                Column('denominazione', String(200), nullable=False,unique=True),
-                Column('agenzia', String(200), nullable=True),
-                Column('iban', String(30), nullable=True),
-                Column('abi', String(5), nullable=True),
-                Column('cab', String(5), nullable=True),
-                schema=self.schema
-                )
-        bancaTable.create(checkfirst=True)
-
-    def alter(self, req=None, arg=None):
-        pass
+t_banca = Table('banca', params["metadata"],
+        Column('id', Integer, primary_key=True),
+        Column('denominazione', String(200), nullable=False,unique=True),
+        Column('agenzia', String(200), nullable=True),
+        Column('iban', String(30), nullable=True),
+        Column('abi', String(5), nullable=True),
+        Column('cab', String(5), nullable=True),
+        schema=params["schema"]
+        )
+t_banca.create(checkfirst=True)

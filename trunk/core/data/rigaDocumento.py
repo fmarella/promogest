@@ -22,34 +22,11 @@
 
 
 from sqlalchemy import *
+from promogest.Environment import *
 
-class RigaDocumentoDb(object):
-
-    def __init__(self, schema = None,mainSchema=None, metadata=None, session=None,debug=False):
-        self.metadata = metadata
-        self.session_sl = session
-        self.schema = schema
-        self.debug = debug
-
-    def create(self):
-        azTable = Table('testata_documento', self.metadata, autoload=True, schema=self.schema)
-        ddTable = Table('riga', self.metadata, autoload=True, schema=self.schema)
-        if self.schema:
-            rigaFK = self.schema+'.riga.id'
-            testatadocumentoFK = self.schema+'.testata_documento.id'
-        else:
-            rigaFK = 'riga.id'
-            testatadocumentoFK = 'testata_documento.id'
-
-        rigaDocumentoTable = Table('riga_documento', self.metadata,
-                Column('id', Integer,ForeignKey(rigaFK,onupdate="CASCADE",ondelete="CASCADE"), primary_key=True ),
-                Column('id_testata_documento', Integer,ForeignKey(testatadocumentoFK,onupdate="CASCADE",ondelete="CASCADE"), nullable=True ),
-                schema=self.schema
-                )
-        rigaDocumentoTable.create(checkfirst=True)
-
-    def update(self, req=None, arg=None):
-        pass
-
-    def alter(self, req=None, arg=None):
-        pass
+t_riga_documento = Table('riga_documento', params["metadata"],
+        Column('id', Integer,ForeignKey(fk_prefix+'riga.id',onupdate="CASCADE",ondelete="CASCADE"), primary_key=True ),
+        Column('id_testata_documento', Integer,ForeignKey(fk_prefix+'testata_documento.id',onupdate="CASCADE",ondelete="CASCADE"), nullable=True ),
+        schema=params["schema"]
+        )
+t_riga_documento.create(checkfirst=True)

@@ -22,29 +22,18 @@
 
 
 from sqlalchemy import *
+from promogest.Environment import *
 
-class MagazzinoDb(object):
-
-    def __init__(self, schema = None,mainSchema=None, metadata=None, session=None,debug=False):
-        self.metadata = metadata
-        self.session_sl = session
-        self.schema = schema
-        self.debug = debug
-
-    def create(self):
-        magazzinoTable = Table('magazzino', self.metadata,
-                Column('id',Integer,primary_key=True),
-                Column('denominazione',String(100),nullable=False, unique=True),
-                Column('indirizzo',String(200),nullable=True),
-                Column('localita',String(200),nullable=True),
-                Column('cap',String(20),nullable=True),
-                Column('provincia',String(100),nullable=True),
-                Column('nazione',String(100),nullable=True),
-                Column('pvcode',String(3),nullable=True),
-                Column('data_ultima_stampa_giornale',Date,nullable=True),
-                schema=self.schema
-                )
-        magazzinoTable.create(checkfirst=True)
-
-    def alter(self, req=None, arg=None):
-        pass
+t_magazzino = Table('magazzino', params["metadata"],
+        Column('id',Integer,primary_key=True),
+        Column('denominazione',String(100),nullable=False, unique=True),
+        Column('indirizzo',String(200),nullable=True),
+        Column('localita',String(200),nullable=True),
+        Column('cap',String(20),nullable=True),
+        Column('provincia',String(100),nullable=True),
+        Column('nazione',String(100),nullable=True),
+        Column('pvcode',String(3),nullable=True),
+        Column('data_ultima_stampa_giornale',Date,nullable=True),
+        schema=params["schema"]
+        )
+t_magazzino.create(checkfirst=True)

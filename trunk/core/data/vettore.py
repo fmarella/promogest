@@ -21,23 +21,15 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 from sqlalchemy import *
+from promogest.Environment import *
 
-class VettoreDb(object):
 
-    def __init__(self, schema = None, mainSchema=None,metadata=None, session=None,debug=False):
-        self.metadata = metadata
-        self.schema = schema
-        self.debug = debug
-
-    def create(self):
-        contattoTable = Table('persona_giuridica', self.metadata, autoload=True, schema=self.schema)
-        if self.schema:
-            personagiuridicaFK = self.schema+'.persona_giuridica.id'
-        else:
-            personagiuridicaFK = 'persona_giuridica.id'
-
-        vettoreTable = Table('vettore', self.metadata,
-                Column('id',Integer, ForeignKey(personagiuridicaFK, onupdate="CASCADE", ondelete="CASCADE"),primary_key=True),
-                schema=self.schema
-                )
-        vettoreTable.create(checkfirst=True)
+t_vettore = Table('vettore', params["metadata"],
+        Column('id',Integer,
+                ForeignKey(fk_prefix+'persona_giuridica.id',
+                            onupdate="CASCADE",
+                            ondelete="CASCADE"),
+                primary_key=True),
+        schema=params["schema"]
+        )
+t_vettore.create(checkfirst=True)

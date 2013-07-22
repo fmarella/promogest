@@ -22,34 +22,21 @@
 
 
 from sqlalchemy import *
+from promogest.Environment import *
 
-class TipoAliquotaIvaDb(object):
+t_tipo_aliquota_iva = Table('tipo_aliquota_iva', params["metadata"],
+        Column('id', Integer, primary_key=True),
+        Column('denominazione',String(100),nullable=True, unique=True),
+        schema=params["mainSchema"]
+        )
+t_tipo_aliquota_iva.create(checkfirst=True)
 
-    def __init__(self, schema = None,mainSchema=None, metadata=None, session=None,debug=False):
-        self.metadata = metadata
-        self.session_sl = session
-        self.schema = schema
-        self.mainSchema=mainSchema
-        self.debug = debug
 
-    def create(self):
-        tipoAliquotaIvaTable = Table('tipo_aliquota_iva', self.metadata,
-                Column('id', Integer, primary_key=True),
-                Column('denominazione',String(100),nullable=True, unique=True),
-                schema=self.mainSchema
-                )
-        tipoAliquotaIvaTable.create(checkfirst=True)
-        s= select([tipoAliquotaIvaTable.c.denominazione]).execute().fetchall()
-        if (u'Ordinaria',) not in s or s==[]:
-            tipo = tipoAliquotaIvaTable.insert()
-            tipo.execute(denominazione='Ordinaria')
-            tipo.execute(denominazione='Non imponibile')
-            tipo.execute(denominazione='Esente')
-            tipo.execute(denominazione='Fuori campo Iva')
-            tipo.execute(denominazione='Escluso')
-
-    def update(self, req=None, arg=None):
-        pass
-
-    def alter(self, req=None, arg=None):
-        pass
+s= select([t_tipo_aliquota_iva.c.denominazione]).execute().fetchall()
+if (u'Ordinaria',) not in s or s==[]:
+    tipo = t_tipo_aliquota_iva.insert()
+    tipo.execute(denominazione='Ordinaria')
+    tipo.execute(denominazione='Non imponibile')
+    tipo.execute(denominazione='Esente')
+    tipo.execute(denominazione='Fuori campo Iva')
+    tipo.execute(denominazione='Escluso')

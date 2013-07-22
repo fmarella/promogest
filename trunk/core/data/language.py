@@ -21,45 +21,24 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 from sqlalchemy import *
-
-class LanguageDb(object):
-
-    def __init__(self, schema = None,mainSchema=None, metadata=None, session=None,debug=False):
-        self.metadata = metadata
-        self.schema = schema
-        self.mainSchema=mainSchema
-        self.debug = debug
-
-    def create(self):
-        languageTable = Table('language', self.metadata,
-                Column('id', Integer, primary_key=True),
-                Column('denominazione_breve', String(50), nullable=True),
-                Column('denominazione', String(200), nullable=True),
-                schema=self.mainSchema
-                )
-        languageTable.create(checkfirst=True)
-        s= select([languageTable.c.denominazione]).execute().fetchall()
-        if (u'Italiano',) not in s or s==[]:
-            lang = languageTable.insert()
-            lang.execute(denominazione = 'Italiano', denominazione_breve = 'it')
-            lang.execute(denominazione = 'Inglese', denominazione_breve = 'en')
-            lang.execute(denominazione = 'Tedesco', denominazione_breve = 'de')
-            lang.execute(denominazione = 'Francese', denominazione_breve = 'fr')
-            lang.execute(denominazione = 'Cinese', denominazione_breve = 'ci')
-            lang.execute(denominazione = 'Spagnolo', denominazione_breve = 'es')
-            lang.execute(denominazione = 'TUTTE', denominazione_breve = 'all')
-
-    def data(self):
-        languageTable = Table('language',self.metadata, autoload=True, schema=self.mainSchema)
-        lang = languageTable.insert()
-        lang.execute(denominazione = 'Italiano', denominazione_breve = 'it')
-        lang.execute(denominazione = 'Inglese', denominazione_breve = 'en')
-        lang.execute(denominazione = 'Tedesco', denominazione_breve = 'de')
-        lang.execute(denominazione = 'Francese', denominazione_breve = 'fr')
-        lang.execute(denominazione = 'Cinese', denominazione_breve = 'ci')
-        lang.execute(denominazione = 'Spagnolo', denominazione_breve = 'es')
-        lang.execute(denominazione = 'All', denominazione_breve = 'all')
+from promogest.Environment import *
 
 
-    def alter(self, req=None, arg=None):
-        pass
+t_language = Table('language', params["metadata"],
+        Column('id', Integer, primary_key=True),
+        Column('denominazione_breve', String(50), nullable=True),
+        Column('denominazione', String(200), nullable=True),
+        schema=params["mainSchema"]
+        )
+t_language.create(checkfirst=True)
+
+s= select([t_language.c.denominazione]).execute().fetchall()
+if (u'Italiano',) not in s or s==[]:
+    lang = t_language.insert()
+    lang.execute(denominazione = 'Italiano', denominazione_breve = 'it')
+    lang.execute(denominazione = 'Inglese', denominazione_breve = 'en')
+    lang.execute(denominazione = 'Tedesco', denominazione_breve = 'de')
+    lang.execute(denominazione = 'Francese', denominazione_breve = 'fr')
+    lang.execute(denominazione = 'Cinese', denominazione_breve = 'ci')
+    lang.execute(denominazione = 'Spagnolo', denominazione_breve = 'es')
+    lang.execute(denominazione = 'TUTTE', denominazione_breve = 'all')

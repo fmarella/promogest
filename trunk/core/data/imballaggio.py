@@ -22,19 +22,11 @@
 
 
 from sqlalchemy import *
+from promogest.Environment import *
 
-class ImballaggioDb(object):
-
-    def __init__(self, schema = None, mainSchema=None,metadata=None, session=None,debug=False):
-        self.metadata = metadata
-        self.session_sl = session
-        self.schema = schema
-        self.debug = debug
-
-    def create(self):
-        imballaggioTable = Table('imballaggio', self.metadata,
-            Column('id', Integer, primary_key=True),
-            Column('denominazione', String(200), nullable=False, unique=True),
-            schema=self.schema
-            )
-        imballaggioTable.create(checkfirst=True)
+t_imballaggio = Table('imballaggio', params["metadata"],
+    Column('id', Integer, primary_key=True),
+    Column('denominazione', String(200), nullable=False, unique=True),
+    schema=params["schema"]
+    )
+t_imballaggio.create(checkfirst=True)

@@ -21,34 +21,11 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 from sqlalchemy import *
+from promogest.Environment import *
 
-class ListinoMagazzinoDb(object):
-
-    def __init__(self, schema = None,mainSchema=None, metadata=None, session=None,debug=False):
-        self.metadata = metadata
-        self.schema = schema
-        self.debug = debug
-
-    def create(self):
-        listinoTable = Table('listino', self.metadata, autoload=True, schema=self.schema)
-        magazzinoTable = Table('magazzino', self.metadata, autoload=True, schema=self.schema)
-
-        if self.schema:
-            listinoFK = self.schema+'.listino.id'
-            magazzinoFK = self.schema+'.magazzino.id'
-        else:
-            listinoFK = 'listino.id'
-            magazzinoFK = 'magazzino.id'
-
-        listinoMagazzinoTable = Table('listino_magazzino', self.metadata,
-                Column('id_listino',Integer,ForeignKey(listinoFK,onupdate="CASCADE",ondelete="RESTRICT"),primary_key=True),
-                Column('id_magazzino',Integer,ForeignKey(magazzinoFK,onupdate="CASCADE",ondelete="RESTRICT"),primary_key=True),
-                schema=self.schema
-                )
-        listinoMagazzinoTable.create(checkfirst=True)
-
-    def update(self, req=None, arg=None):
-        pass
-
-    def alter(self, req=None, arg=None):
-        pass
+t_listino_magazzino = Table('listino_magazzino', params["metadata"],
+        Column('id_listino',Integer,ForeignKey(fk_prefix+'listino.id',onupdate="CASCADE",ondelete="RESTRICT"),primary_key=True),
+        Column('id_magazzino',Integer,ForeignKey(fk_prefix+'magazzino.id',onupdate="CASCADE",ondelete="RESTRICT"),primary_key=True),
+        schema=params["schema"]
+        )
+t_listino_magazzino.create(checkfirst=True)

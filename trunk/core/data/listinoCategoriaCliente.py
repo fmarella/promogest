@@ -21,35 +21,11 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 from sqlalchemy import *
+from promogest.Environment import *
 
-class ListinoCategoriaClienteDb(object):
-
-    def __init__(self, schema = None,mainSchema=None, metadata=None, session=None,debug=False):
-        self.metadata = metadata
-        self.session_sl = session
-        self.schema = schema
-        self.debug = debug
-
-    def create(self):
-        listinoTable = Table('listino', self.metadata, autoload=True, schema=self.schema)
-        categoriaClienteTable = Table('categoria_cliente', self.metadata, autoload=True, schema=self.schema)
-
-        if self.schema:
-            listinoFK = self.schema+'.listino.id'
-            categoriaclienteFK = self.schema+'.categoria_cliente.id'
-        else:
-            listinoFK = 'listino.id'
-            categoriaclienteFK = 'categoria_cliente.id'
-
-        listinoCategoriaClienteTable = Table('listino_categoria_cliente', self.metadata,
-                Column('id_listino',Integer,ForeignKey(listinoFK,onupdate="CASCADE",ondelete="RESTRICT"),primary_key=True),
-                Column('id_categoria_cliente',Integer, ForeignKey(categoriaclienteFK,onupdate="CASCADE",ondelete="RESTRICT"),primary_key=True),
-                schema=self.schema
-                )
-        listinoCategoriaClienteTable.create(checkfirst=True)
-
-    def update(self, req=None, arg=None):
-        pass
-
-    def alter(self, req=None, arg=None):
-        pass
+t_listino_categoria_cliente = Table('listino_categoria_cliente', params["metadata"],
+        Column('id_listino',Integer,ForeignKey(fk_prefix+'listino.id',onupdate="CASCADE",ondelete="RESTRICT"),primary_key=True),
+        Column('id_categoria_cliente',Integer, ForeignKey(fk_prefix+'categoria_cliente.id',onupdate="CASCADE",ondelete="RESTRICT"),primary_key=True),
+        schema=params["schema"]
+        )
+t_listino_categoria_cliente.create(checkfirst=True)

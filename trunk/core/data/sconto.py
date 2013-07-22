@@ -21,26 +21,13 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 from sqlalchemy import *
+from promogest.Environment import *
 
-class ScontoDb(object):
-
-    def __init__(self, schema = None,mainSchema=None, metadata=None, session=None,debug=False):
-        self.metadata = metadata
-        self.schema = schema
-        self.debug = debug
-
-    def create(self):
-        scontoTable = Table('sconto', self.metadata,
-                Column('id',Integer,primary_key=True),
-                Column('valore',Numeric(16,4),nullable=True),
-                Column('tipo_sconto',String(50),nullable=False),
-                CheckConstraint( "tipo_sconto = 'valore' or tipo_sconto = 'percentuale'" ),
-                schema=self.schema
-                )
-        scontoTable.create(checkfirst=True)
-
-    def update(self, req=None, arg=None):
-        pass
-
-    def alter(self, req=None, arg=None):
-        pass
+t_sconto = Table('sconto', params["metadata"],
+        Column('id',Integer,primary_key=True),
+        Column('valore',Numeric(16,4),nullable=True),
+        Column('tipo_sconto',String(50),nullable=False),
+        CheckConstraint( "tipo_sconto = 'valore' or tipo_sconto = 'percentuale'" ),
+        schema=params["schema"]
+        )
+t_sconto.create(checkfirst=True)

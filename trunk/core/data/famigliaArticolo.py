@@ -20,15 +20,16 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-
 from sqlalchemy import *
 from promogest.Environment import *
 
-t_cliente = Table('cliente', params["metadata"],
-        Column('id',Integer,ForeignKey(fk_prefix+'persona_giuridica.id',onupdate="CASCADE",ondelete="CASCADE"),primary_key=True),
-        Column('id_pagamento',Integer,ForeignKey(fk_prefix+'pagamento.id',onupdate="CASCADE",ondelete="RESTRICT")),
-        Column('id_magazzino',Integer,ForeignKey(fk_prefix+'magazzino.id',onupdate="CASCADE",ondelete="RESTRICT")),
-        Column('id_listino',Integer,ForeignKey(fk_prefix+'listino.id',onupdate="CASCADE",ondelete="RESTRICT")),
-        Column('id_banca',Integer,ForeignKey(fk_prefix+'banca.id',onupdate="CASCADE",ondelete="RESTRICT")),
-        schema=params["schema"])
-t_cliente.create(checkfirst=True)
+t_famiglia_articolo = Table('famiglia_articolo', params["metadata"],
+            Column('id', Integer, primary_key=True),
+            Column('codice', String(10), nullable=False, unique=True),
+            Column('denominazione_breve', String(10), nullable=False),
+            Column('denominazione', String(200), nullable=False),
+            Column('visible', Boolean, default=0),
+            Column('id_padre', Integer,ForeignKey(fk_prefix+"famiglia_articolo.id")),
+            schema = params["schema"]
+            )
+t_famiglia_articolo.create(checkfirst=True)

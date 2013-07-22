@@ -21,40 +21,14 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 from sqlalchemy import *
+from promogest.Environment import *
 
-class ContattoMagazzinoDb(object):
-
-    def __init__(self, schema = None, mainSchema=None,metadata=None, session=None,debug=False):
-        self.metadata = metadata
-        self.session_sl = session
-        self.schema = schema
-        self.debug = debug
-
-    def create(self):
-        coTable = Table('contatto', self.metadata, autoload=True, schema=self.schema)
-        azTable = Table('magazzino', self.metadata, autoload=True, schema=self.schema)
-        if self.schema:
-            contattoFKid =self.schema+'.contatto.id'
-            magazzinoFK =self.schema+'.magazzino.id'
-            contattoFKtipocontatto = self.schema+'.contatto.tipo_contatto'
-        else:
-            contattoFKid ='contatto.id'
-            magazzinoFK = 'magazzino.id'
-            contattoFKtipocontatto = 'contatto.tipo_contatto'
-
-
-        contattoMagazzinoTable = Table('contatto_magazzino', self.metadata,
-                Column('id',Integer,primary_key=True),
-                Column('tipo_contatto',String(50),primary_key=True),
-                Column('id_magazzino',Integer,ForeignKey(magazzinoFK,onupdate="CASCADE",ondelete="RESTRICT"),nullable=False),
-                ForeignKeyConstraint(['id', 'tipo_contatto'],[contattoFKid, contattoFKtipocontatto],onupdate="CASCADE", ondelete="CASCADE"),
-                CheckConstraint("tipo_contatto = 'magazzino'"),
-                schema=self.schema
-                )
-        contattoMagazzinoTable.create(checkfirst=True)
-
-    def update(self, req=None, arg=None):
-        pass
-
-    def alter(self, req=None, arg=None):
-        pass
+t_contatto_magazzino = Table('contatto_magazzino', params["metadata"],
+        Column('id',Integer,primary_key=True),
+        Column('tipo_contatto',String(50),primary_key=True),
+        Column('id_magazzino',Integer,ForeignKey(fk_prefix+'magazzino.id',onupdate="CASCADE",ondelete="RESTRICT"),nullable=False),
+        ForeignKeyConstraint(['id', 'tipo_contatto'],[fk_prefix+'contatto.id', fk_prefix+'contatto.tipo_contatto'],onupdate="CASCADE", ondelete="CASCADE"),
+        CheckConstraint("tipo_contatto = 'magazzino'"),
+        schema=params["schema"]
+        )
+t_contatto_magazzino.create(checkfirst=True)

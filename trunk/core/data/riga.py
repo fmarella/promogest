@@ -21,51 +21,22 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 from sqlalchemy import *
+from promogest.Environment import *
 
-class RigaDb(object):
-
-    def __init__(self, schema = None,mainSchema=None, metadata=None, session=None,debug=False):
-        self.metadata = metadata
-        self.schema = schema
-        self.debug = debug
-
-    def create(self):
-        a = Table('articolo',self.metadata, autoload=True, schema=self.schema)
-        b = Table('magazzino',self.metadata, autoload=True, schema=self.schema)
-        c = Table('multiplo',self.metadata, autoload=True, schema=self.schema)
-        d = Table('listino',self.metadata, autoload=True, schema=self.schema)
-
-        if self.schema:
-            articoloFK = self.schema+'.articolo.id'
-            magazzinoFK = self.schema+'.magazzino.id'
-            multiploFK = self.schema+'.multiplo.id'
-            listinoFK = self.schema+'.listino.id'
-        else:
-            articoloFK = 'articolo.id'
-            magazzinoFK = 'magazzino.id'
-            multiploFK = 'multiplo.id'
-            listinoFK = 'listino.id'
-
-        rigaTable = Table('riga', self.metadata,
-                Column('id', Integer, primary_key=True),
-                Column('valore_unitario_netto', Numeric(16,4), nullable=True),
-                Column('valore_unitario_lordo', Numeric(16,4), nullable=True),
-                Column('quantita', Numeric(16,4), nullable=True),
-                Column('moltiplicatore', Numeric(16,4), nullable=True),
-                Column('applicazione_sconti', String(20), nullable=True),
-                Column('percentuale_iva', Numeric(8,4), nullable=False, default=0),
-                Column('descrizione', String(500), nullable=True),
-                #chiavi esterne
-                Column('id_articolo',Integer,ForeignKey(articoloFK,onupdate="CASCADE",ondelete="RESTRICT"), nullable=True),
-                Column('id_magazzino',Integer,ForeignKey(magazzinoFK,onupdate="CASCADE",ondelete="RESTRICT"), nullable=True),
-                Column('id_multiplo',Integer,ForeignKey(multiploFK,onupdate="CASCADE",ondelete="RESTRICT"), nullable=True),
-                Column('id_listino',Integer,ForeignKey(listinoFK,onupdate="CASCADE",ondelete="RESTRICT"), nullable=True),
-                schema=self.schema
-                )
-        rigaTable.create(checkfirst=True)
-
-    def update(self, req=None, arg=None):
-        pass
-
-    def alter(self, req=None, arg=None):
-        pass
+t_riga = Table('riga', params["metadata"],
+        Column('id', Integer, primary_key=True),
+        Column('valore_unitario_netto', Numeric(16,4), nullable=True),
+        Column('valore_unitario_lordo', Numeric(16,4), nullable=True),
+        Column('quantita', Numeric(16,4), nullable=True),
+        Column('moltiplicatore', Numeric(16,4), nullable=True),
+        Column('applicazione_sconti', String(20), nullable=True),
+        Column('percentuale_iva', Numeric(8,4), nullable=False, default=0),
+        Column('descrizione', String(500), nullable=True),
+        #chiavi esterne
+        Column('id_articolo',Integer,ForeignKey(fk_prefix+'articolo.id',onupdate="CASCADE",ondelete="RESTRICT"), nullable=True),
+        Column('id_magazzino',Integer,ForeignKey(fk_prefix+'magazzino.id',onupdate="CASCADE",ondelete="RESTRICT"), nullable=True),
+        Column('id_multiplo',Integer,ForeignKey(fk_prefix+'multiplo.id',onupdate="CASCADE",ondelete="RESTRICT"), nullable=True),
+        Column('id_listino',Integer,ForeignKey(fk_prefix+'listino.id',onupdate="CASCADE",ondelete="RESTRICT"), nullable=True),
+        schema=params["schema"]
+        )
+t_riga.create(checkfirst=True)

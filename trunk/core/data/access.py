@@ -21,34 +21,13 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 from sqlalchemy import *
-from sqlalchemy.orm import *
-from promogest.
+from promogest.Environment import *
 
-class AccessDb(object):
-    """
-    create and drop single and all  tables
-    """
-    def __init__(self, schema = None, mainSchema=None, metadata=None, session=None,debug=False):
-        self.metadata = metadata
-        self.session_sl = session
-        self.schema = schema
-        self.mainSchema = mainSchema
-        self.debug = debug
-
-
-    def create(self):
-        userTable = Table('utente',self.metadata, autoload=True, schema=self.mainSchema)
-
-        if self.mainSchema:
-            utenteFK = self.mainSchema+'.utente.id'
-        else:
-            utenteFK = 'utente.id'
-
-        accessTable = Table('access', self.metadata,
-                Column('id',Integer,primary_key=True),
-                Column('id_user',Integer,ForeignKey(utenteFK,onupdate="CASCADE",ondelete="CASCADE")),
-                Column('login', Date, nullable=True),
-                Column('logout', Date, nullable=True),
-                schema=self.schema
-                )
-        accessTable.create(checkfirst=True)
+t_access = Table('access', params["metadata"],
+        Column('id',Integer,primary_key=True),
+        Column('id_user',Integer,ForeignKey(fk_prefix+'utente.id',onupdate="CASCADE",ondelete="CASCADE")),
+        Column('login', Date, nullable=True),
+        Column('logout', Date, nullable=True),
+        schema=params["schema"]
+        )
+t_access.create(checkfirst=True)

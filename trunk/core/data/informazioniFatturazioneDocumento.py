@@ -21,28 +21,12 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 from sqlalchemy import *
+from promogest.Environment import *
 
-class InformazioniFatturazioneDocumentoDb(object):
 
-    def __init__(self, schema = None,mainSchema=None, metadata=None, session=None,debug=False):
-        self.metadata = metadata
-        self.session_sl = session
-        self.schema = schema
-        self.debug = debug
-
-    def create(self):
-        azTable = Table('testata_documento', self.metadata, autoload=True, schema=self.schema)
-        if self.schema:
-            testata_documentoFK =self.schema+'.testata_documento.id'
-        else:
-            testata_documentoFK = 'testata_documento.id'
-
-        InformazioniFatturazioneDocumentoTable = Table('informazioni_fatturazione_documento', self.metadata,
-                Column('id_fattura',Integer,ForeignKey(testata_documentoFK,onupdate="CASCADE",ondelete="RESTRICT"),primary_key=True),
-                Column('id_ddt',Integer,ForeignKey(testata_documentoFK,onupdate="CASCADE",ondelete="RESTRICT"),primary_key=True,nullable=False),
-                schema=self.schema
-                )
-        InformazioniFatturazioneDocumentoTable.create(checkfirst=True)
-
-    def alter(self, req=None, arg=None):
-        pass
+t_informazioni_fatturazione_documento = Table('informazioni_fatturazione_documento',  params["metadata"],
+        Column('id_fattura',Integer,ForeignKey(fk_prefix+'testata_documento.id',onupdate="CASCADE",ondelete="RESTRICT"),primary_key=True),
+        Column('id_ddt',Integer,ForeignKey(fk_prefix+'testata_documento.id',onupdate="CASCADE",ondelete="RESTRICT"),primary_key=True,nullable=False),
+        schema=params["schema"]
+        )
+t_informazioni_fatturazione_documento.create(checkfirst=True)

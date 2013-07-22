@@ -21,34 +21,11 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 from sqlalchemy import *
+from promogest.Environment import *
 
-class ClienteCategoriaClienteDb(object):
-    """ cliente_categoria_cliente - Tabella associazioni cliente <-> categoria_cliente"""
-
-    def __init__(self, schema = None,mainSchema=None, metadata=None, session=None,debug=False):
-        self.metadata = metadata
-        self.session_sl = session
-        self.schema = schema
-        self.debug = debug
-
-    def create(self):
-        clienteTable = Table('cliente', self.metadata, autoload=True, schema=self.schema)
-        categoriaClienteTable = Table('categoria_cliente', self.metadata, autoload=True, schema=self.schema)
-
-        if self.schema:
-            clienteFK =self.schema+'.cliente.id'
-            categoriaclienteFK = self.schema+'.categoria_cliente.id'
-        else:
-            clienteFK = 'cliente.id'
-            categoriaclienteFK = 'categoria_cliente.id'
-
-
-        clienteCategoriaClienteTable = Table('cliente_categoria_cliente', self.metadata,
-                Column('id_cliente',Integer,ForeignKey(clienteFK,onupdate="CASCADE",ondelete="CASCADE"),primary_key=True),
-                Column('id_categoria_cliente',Integer,ForeignKey(categoriaclienteFK,onupdate="CASCADE",ondelete="RESTRICT"),primary_key=True),
-                schema=self.schema
-                )
-        clienteCategoriaClienteTable.create(checkfirst=True)
-
-    def alter(self, req=None, arg=None):
-        pass
+t_cliente_categoria_cliente = Table('cliente_categoria_cliente', params["metadata"],
+        Column('id_cliente',Integer,ForeignKey(fk_prefix+'cliente.id',onupdate="CASCADE",ondelete="CASCADE"),primary_key=True),
+        Column('id_categoria_cliente',Integer,ForeignKey(fk_prefix+'categoria_cliente.id',onupdate="CASCADE",ondelete="RESTRICT"),primary_key=True),
+        schema=params["schema"]
+        )
+t_cliente_categoria_cliente.create(checkfirst=True)

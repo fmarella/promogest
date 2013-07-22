@@ -22,35 +22,14 @@
 
 
 from sqlalchemy import *
-
-class CodiceBarreArticoloDb(object):
-
-    def __init__(self, schema = None,mainSchema=None, metadata=None, session=None,debug=False):
-        self.metadata = metadata
-        self.session_sl = session
-        self.schema = schema
-        self.debug = debug
-
-    def create(self):
-        articleTable = Table('articolo', self.metadata, autoload=True, schema=self.schema)
-
-        if self.schema:
-            articoloFK = self.schema+'.articolo.id'
-        else:
-            articoloFK = 'articolo.id'
+from promogest.Environment import *
 
 
-        codiceBarreArticoloTable = Table('codice_a_barre_articolo', self.metadata,
-                Column('id',Integer,primary_key=True),
-                Column('codice',String(50),nullable=False, unique=True),
-                Column('id_articolo',Integer,ForeignKey(articoloFK, onupdate="CASCADE", ondelete="CASCADE")),
-                Column('primario',Boolean,nullable=True),
-                schema=self.schema
-                )
-        codiceBarreArticoloTable.create(checkfirst=True)
-
-    def update(self, req=None, arg=None):
-        pass
-
-    def alter(self, req=None, arg=None):
-        pass
+t_codice_barre_articolo = Table('codice_a_barre_articolo', params["metadata"],
+        Column('id',Integer,primary_key=True),
+        Column('codice',String(50),nullable=False, unique=True),
+        Column('id_articolo',Integer,ForeignKey(fk_prefix+'articolo.id', onupdate="CASCADE", ondelete="CASCADE")),
+        Column('primario',Boolean,nullable=True),
+        schema=params["schema"]
+        )
+t_codice_barre_articolo.create(checkfirst=True)

@@ -22,31 +22,15 @@
 
 
 from sqlalchemy import *
+from promogest.Environment import *
 
-class PagamentoDb(object):
 
-    def __init__(self, schema = None,mainSchema=None, metadata=None, session=None,debug=False):
-        self.metadata = metadata
-        self.schema = schema
-        self.mainSchema = mainSchema
-        self.debug = debug
 
-    def create(self):
-        languageTable = Table('language', self.metadata, autoload=True, schema=self.mainSchema)
-
-        if self.mainSchema:
-            languageFK = self.mainSchema+'.language.id'
-        else:
-            languageFK = 'language.id'
-
-        pagamentoTable = Table('pagamento', self.metadata,
-                Column('id',Integer,primary_key=True),
-                Column('denominazione',String(100),nullable=False, unique=True),
-                Column('visible', Boolean, default=0),
-                Column('id_language', Integer,ForeignKey(languageFK)),
-                schema=self.schema
-                    )
-        pagamentoTable.create(checkfirst=True )
-
-    def alter(self, req=None, arg=None):
-        pass
+t_pagamento = Table('pagamento', params["metadata"],
+        Column('id',Integer,primary_key=True),
+        Column('denominazione',String(100),nullable=False, unique=True),
+        Column('visible', Boolean, default=0),
+        Column('id_language', Integer,ForeignKey(fk_prefix_main+'language.id')),
+        schema=params["schema"]
+            )
+t_pagamento.create(checkfirst=True )
