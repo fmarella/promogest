@@ -2898,8 +2898,9 @@ def inputPasswordDialog(parentWindow=None):
 
 def leggiRevisioni():
     """ controllo se il pg2 è da aggiornare o no"""
-    e = ""
+
     def fetch():
+        e = ""
         try:
             client = pysvn.Client()
             if not Environment.rev_locale:
