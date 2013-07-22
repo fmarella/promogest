@@ -67,9 +67,12 @@ class Stoccaggio(Dao):
                                          #_setTotaliOperazioniMovimento)
 
     def _getGiacenza(self):
-
+        if not hasattr(self, "daData"):
+            self.daData = None
+        if not hasattr(self, "aData"):
+            self.aData = None
         return giacenzaArticolo(
-            daData=self.daData, aData=self.aData,
+            daData=self.daData or None, aData=self.aData or None,
             idMagazzino=self.id_magazzino,
             idArticolo=self.id_articolo) or 0
     giacenza = property(_getGiacenza, )
