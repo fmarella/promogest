@@ -105,10 +105,10 @@ i DAO, i filtri o tutto"""
             print " DOBBIAMO CREARE UN NUOVO DB CON AZIENDA " ,  options.schema
             if options.main =="True":
                 print "A SCHEMA UNICO"
-                preEnv.conMain = False
+                preEnv.conSchemaPromogest2 = False
             else:
                 print " CON promogest2 CONDIVISO"
-                preEnv.conMain = True
+                preEnv.conSchemaPromogest2 = True
             preEnv.buildSchema = options.schema
             preEnv.aziendaforce = options.schema
             from createSchemaDb import *

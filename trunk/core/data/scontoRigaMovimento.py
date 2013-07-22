@@ -21,38 +21,11 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 from sqlalchemy import *
+from promogest.Environment import *
 
-class ScontoRigaMovimentoDb(object):
-
-    def __init__(self, schema = None,mainSchema=None, metadata=None, session=None,debug=False):
-        self.metadata = metadata
-        self.session_sl = session
-        self.schema = schema
-        self.debug = debug
-
-    def create(self):
-
-        rigaMovimentoTable = Table('riga_movimento', self.metadata, autoload=True, schema=self.schema)
-        scTable = Table('sconto', self.metadata, autoload=True, schema=self.schema)
-
-        if self.schema:
-            scontoFK =self.schema+'.sconto.id'
-            rigamovimentoFK =self.schema+'.riga_movimento.id'
-        else:
-            scontoFK ='sconto.id'
-            rigamovimentoFK = 'riga_movimento.id'
-
-
-
-        scontoRigaMovimentoTable = Table('sconto_riga_movimento', self.metadata,
-                Column('id',Integer,ForeignKey(scontoFK,onupdate="CASCADE",ondelete="CASCADE"),primary_key=True),
-                Column('id_riga_movimento',Integer,ForeignKey(rigamovimentoFK,onupdate="CASCADE",ondelete="CASCADE")),
-                schema=self.schema
-                )
-        scontoRigaMovimentoTable.create(checkfirst=True)
-
-    def update(self, req=None, arg=None):
-        pass
-
-    def alter(self, req=None, arg=None):
-        pass
+t_sconto_riga_movimento = Table('sconto_riga_movimento', params["metadata"],
+        Column('id',Integer,ForeignKey(fk_prefix+'sconto.id',onupdate="CASCADE",ondelete="CASCADE"),primary_key=True),
+        Column('id_riga_movimento',Integer,ForeignKey(fk_prefix+'riga_movimento.id',onupdate="CASCADE",ondelete="CASCADE")),
+        schema=params["schema"]
+        )
+t_sconto_riga_movimento.create(checkfirst=True)

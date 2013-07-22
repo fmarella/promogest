@@ -65,7 +65,7 @@
 #                               from schemi.fornitore import FornitoreDb
 #                               from schemi.fornitura import FornituraDb
 #                               from schemi.scontoFornitura import ScontoFornituraDb
-#from schemi.scontoRigaMovimento import ScontoRigaMovimentoDb
+#                               from schemi.scontoRigaMovimento import ScontoRigaMovimentoDb
 #                               from schemi.vettore import VettoreDb
 #                               from schemi.access import AccessDb
 #                               from schemi.image import ImageDb
@@ -74,32 +74,32 @@
 #                               from schemi.user import UserDb
 #                               from schemi.role import RoleDb
 #                               from schemi.roleAction import RoleActionDb
-#from schemi.cart import CartDb
-#from schemi.pages import PagesDb
-#from schemi.scontoWeb import ScontoWebDb
-#from schemi.staticMenu import StaticMenuDb
-#from schemi.articoloAssociato import ArticoloAssociatoDb
+################################from schemi.cart import CartDb
+################################from schemi.pages import PagesDb
+################################from schemi.scontoWeb import ScontoWebDb
+################################from schemi.staticMenu import StaticMenuDb
+################################from schemi.articoloAssociato import ArticoloAssociatoDb
 #                               from schemi.language import LanguageDb
-#from schemi.setting import SettingDb
-#from schemi.feed import FeedDb
-#from schemi.spesa import SpesaDb
-#                              from schemi.stoccaggio import StoccaggioDb
-#from schemi.inventario import InventarioDb
-#from schemi.promemoria import PromemoriaDb
-#from schemi.chiusuraFiscale import ChiusuraFiscaleDb
-#                              from schemi.rigaDocumento import RigaDocumentoDb
-#from schemi.rigaScontrino import RigaScontrinoDb
-#from schemi.testataScontrino import TestataScontrinoDb
+#                               from schemi.setting import SettingDb
+################################from schemi.feed import FeedDb
+################################from schemi.spesa import SpesaDb
+#                               from schemi.stoccaggio import StoccaggioDb
+#                               from schemi.inventario import InventarioDb
+#                               from schemi.promemoria import PromemoriaDb
+#                               from schemi.rigaDocumento import RigaDocumentoDb
+#                               from schemi.scontoTestataDocumento import ScontoTestataDocumentoDb
+#                               from schemi.testataDocumentoScadenza import TestataDocumentoScadenzaDb
+#                               from schemi.scontiVenditaDettaglio import ScontiVenditaDettaglioDb
+#                               from schemi.scontiVenditaIngrosso import ScontiVenditaIngrossoDb
+#                               from schemi.listinoComplessoListino import ListinoComplessoListinoDb
+#                               from schemi.listinoComplessoArticoloPrevalente import ListinoComplessoArticoloPrevalenteDb
 #from schemi.appLog import AppLogDb
 #from schemi.chiaviPrimarieLog import ChiaviPrimarieLogDb
-#from schemi.scontoRigaDocumento import ScontoRigaDocumentoDb
-#from schemi.scontoRigaScontrino import ScontoRigaScontrinoDb
-#from schemi.scontoTestataDocumento import ScontoTestataDocumentoDb
-#from schemi.testataDocumentoScadenza import TestataDocumentoScadenzaDb
-#from schemi.scontiVenditaDettaglio import ScontiVenditaDettaglioDb
-#from schemi.scontiVenditaIngrosso import ScontiVenditaIngrossoDb
-#from schemi.listinoComplessoListino import ListinoComplessoListinoDb
-#from schemi.listinoComplessoArticoloPrevalente import ListinoComplessoArticoloPrevalenteDb
-#from schemi.stadio_commessa import StadioCommessaDb
-#from schemi.testataCommessa import TestataCommessaDb
-#from schemi.rigaCommessa import RigaCommessaDb
+#                                from schemi.scontoRigaDocumento import ScontoRigaDocumentoDb
+#################################from schemi.scontoRigaScontrino import ScontoRigaScontrinoDb
+#################################from schemi.rigaScontrino import RigaScontrinoDb
+#################################from schemi.testataScontrino import TestataScontrinoDb
+#################################from schemi.chiusuraFiscale import ChiusuraFiscaleDb
+#################################from schemi.stadio_commessa import StadioCommessaDb
+#################################from schemi.testataCommessa import TestataCommessaDb
+#################################from schemi.rigaCommessa import RigaCommessaDb

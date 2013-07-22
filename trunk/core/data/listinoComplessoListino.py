@@ -21,32 +21,11 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 from sqlalchemy import *
+from promogest.Environment import *
 
-class ListinoComplessoListinoDb(object):
 
-    def __init__(self, schema = None,mainSchema=None, metadata=None, session=None,debug=False):
-        self.metadata = metadata
-        self.session_sl = session
-        self.schema = schema
-        self.debug = debug
-
-    def create(self):
-        # aggiunta delle due tabelle listino_complesso_listino e listino_complesso_articolo_prevalente
-        listinoTable = Table('listino', self.metadata, autoload=True, schema=self.schema)
-
-        if self.schema:
-            listinoFK = self.schema+'.listino.id'
-        else:
-            listinoFK = 'listino.id'
-
-        listinoComplessoListinoTable = Table('listino_complesso_listino',self.metadata,
-                    Column('id_listino_complesso',Integer, primary_key=True),
-                    Column('id_listino', Integer,ForeignKey(listinoFK,onupdate="CASCADE",ondelete="CASCADE"), primary_key=True),
-                    schema=self.schema)
-        listinoComplessoListinoTable.create(checkfirst=True)
-
-    def update(self, req=None, arg=None):
-        pass
-
-    def alter(self, req=None, arg=None):
-        pass
+t_listino_complesso_listino = Table('listino_complesso_listino',params["metadata"],
+            Column('id_listino_complesso',Integer, primary_key=True),
+            Column('id_listino', Integer,ForeignKey(fk_prefix+'listino.id',onupdate="CASCADE",ondelete="CASCADE"), primary_key=True),
+            schema=params["schema"])
+t_listino_complesso_listino.create(checkfirst=True)

@@ -64,4 +64,4 @@ tipodb = None
 azienda = None
 SUB = ""
 buildSchema = None
-conMain = False
+conSchemaPromogest2 = True

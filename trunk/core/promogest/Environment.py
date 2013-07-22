@@ -276,8 +276,8 @@ if not engine:
 
 #if not preEnv.web:
 tipo_eng = engine.name
-engine.echo = echosa
-#engine.echo = True
+#engine.echo = echosa
+engine.echo = True
 Session = sessionmaker(bind=engine)
 session = Session()
 #else:
@@ -321,11 +321,11 @@ else:
 #meta = MetaData(engine)
 schema_azienda = azienda
 preEnv.azienda = azienda
-print " ENGINE", engine,preEnv.conMain
-#if preEnv.conMain == False:
-    #mainSchema = preEnv.buildSchema
-#else:
-mainSchema = "promogest2"
+print " ENGINE", engine,preEnv.conSchemaPromogest2
+if preEnv.conSchemaPromogest2 == False:
+    mainSchema = preEnv.buildSchema
+else:
+    mainSchema = "promogest2"
 params = {'engine': engine,
         'mainSchema': mainSchema,
         'schema': azienda,
@@ -340,7 +340,7 @@ params = {'engine': engine,
         'usernameLoggedList': userdata}
 
 fk_prefix = params['schema'] + '.' if params['tipo_db'] == 'postgresql' else ''
-fk_prefix_main = mainSchema or "promogest2" +'.' if params['tipo_db'] == 'postgresql' else ''
+fk_prefix_main = mainSchema  +'.' if params['tipo_db'] == 'postgresql' else ''
 
 
 if not preEnv.web:

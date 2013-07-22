@@ -22,48 +22,26 @@
 
 
 from sqlalchemy import *
-
-class TestataDocumentoScadenzaDb(object):
-
-    def __init__(self, schema = None,mainSchema=None, metadata=None, session=None,debug=False):
-        self.metadata = metadata
-        self.schema = schema
-        self.mainSchema= mainSchema
-        self.debug = debug
-
-    def create(self):
-        tdTable = Table('testata_documento',self.metadata, autoload=True, schema=self.schema)
-
-        if self.schema:
-            testatadocumentoFK = self.schema+'.testata_documento.id'
-        else:
-            testatadocumentoFK = 'testata_documento.id'
-
-        testataDocumentoScadenzaTable = Table('testata_documento_scadenza', self.metadata,
-                Column('id', Integer, primary_key=True),
-                Column('id_testata_documento', Integer,ForeignKey(testatadocumentoFK,onupdate="CASCADE",ondelete="CASCADE"), nullable=False),
-                Column('data',DateTime, nullable=False),
-                Column('id_banca', Integer, nullable=True),
-                Column('importo', Numeric(16,4),nullable=False),
-                Column('pagamento',String(100),nullable=False),
-                Column('note_per_primanota', String(400),nullable=False),
-                Column('data_pagamento',DateTime,nullable=True),
-                Column('numero_scadenza', Integer, nullable=False),
-                schema=self.schema
-                )
-        testataDocumentoScadenzaTable.create(checkfirst=True)
-        self.metadata.remove(testataDocumentoScadenzaTable)
-        tryToUpdate = Table('testata_documento_scadenza', self.metadata,schema=self.schema,autoload=True)
-        if len(tryToUpdate.c) <7:
-            tryToUpdate.drop()
-            print "CANCELLO TABELLA TESTATA DOCUMENTO SCADENZA PERCHE' ERRATA"
-            testataDocumentoScadenzaTable.create(checkfirst=True)
-            print "RICREO TABELLA TESTATA DOCUMENTO SCADENZA CORRETTO"
+from promogest.Environment import *
 
 
-
-    def update(self, req=None, arg=None):
-        pass
-
-    def alter(self, req=None, arg=None):
-        pass
+t_testata_documento_scadenza = Table('testata_documento_scadenza', params["metadata"],
+        Column('id', Integer, primary_key=True),
+        Column('id_testata_documento', Integer,ForeignKey(fk_prefix+'testata_documento.id',onupdate="CASCADE",ondelete="CASCADE"), nullable=False),
+        Column('data',DateTime, nullable=False),
+        Column('id_banca', Integer, nullable=True),
+        Column('importo', Numeric(16,4),nullable=False),
+        Column('pagamento',String(100),nullable=False),
+        Column('note_per_primanota', String(400),nullable=False),
+        Column('data_pagamento',DateTime,nullable=True),
+        Column('numero_scadenza', Integer, nullable=False),
+        schema=params["schema"]
+        )
+t_testata_documento_scadenza.create(checkfirst=True)
+#self.metadata.remove(testataDocumentoScadenzaTable)
+#tryToUpdate = Table('testata_documento_scadenza', self.metadata,schema=self.schema,autoload=True)
+#if len(tryToUpdate.c) <7:
+    #tryToUpdate.drop()
+    #print "CANCELLO TABELLA TESTATA DOCUMENTO SCADENZA PERCHE' ERRATA"
+    #testataDocumentoScadenzaTable.create(checkfirst=True)
+    #print "RICREO TABELLA TESTATA DOCUMENTO SCADENZA CORRETTO"

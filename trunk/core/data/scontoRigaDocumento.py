@@ -21,34 +21,11 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 from sqlalchemy import *
+from promogest.Environment import *
 
-class ScontoRigaDocumentoDb(object):
-    def __init__(self, schema = None,mainSchema=None, metadata=None, session=None,debug=False):
-        self.metadata = metadata
-        self.session_sl = session
-        self.schema = schema
-        self.debug = debug
-
-    def create(self):
-        rigaentoTable = Table('sconto', self.metadata, autoload=True, schema=self.schema)
-        rigaDocumentoTable = Table('riga_documento', self.metadata, autoload=True, schema=self.schema)
-
-        if self.schema:
-            scontoFK =self.schema+'.sconto.id'
-            rigadocumentoFK =self.schema+'.riga_documento.id'
-        else:
-            scontoFK ='sconto.id'
-            rigadocumentoFK = 'riga_documento.id'
-
-        scontoRigaDocumentoTable = Table('sconto_riga_documento', self.metadata,
-                Column('id',Integer,ForeignKey(scontoFK,onupdate="CASCADE",ondelete="CASCADE"),primary_key=True),
-                Column('id_riga_documento',Integer,ForeignKey(rigadocumentoFK,onupdate="CASCADE",ondelete="CASCADE")),
-                schema=self.schema
-                )
-        scontoRigaDocumentoTable.create(checkfirst=True)
-
-    def update(self, req=None, arg=None):
-        pass
-
-    def alter(self, req=None, arg=None):
-        pass
+t_sconto_riga_documento = Table('sconto_riga_documento', params["metadata"],
+        Column('id',Integer,ForeignKey(fk_prefix+'sconto.id',onupdate="CASCADE",ondelete="CASCADE"),primary_key=True),
+        Column('id_riga_documento',Integer,ForeignKey(fk_prefix+'riga_documento.id',onupdate="CASCADE",ondelete="CASCADE")),
+        schema=params["schema"]
+        )
+t_sconto_riga_documento.create(checkfirst=True)
