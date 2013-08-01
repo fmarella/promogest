@@ -130,6 +130,7 @@ class Main(GladeWidget):
         GladeWidget.__init__(self, root= 'main_window', path="main_window.glade")
         welcome_str = _("Benvenuto {0} ({1})!".format(Environment.params['usernameLoggedList'][1],
             aziendaStr))
+        welcome_str += "- Avvii:"+str(Environment.avvii)
         self.welcome_label.set_text(welcome_str)
         self.aziendaStr = aziendaStr
         self.statusBarHandler()

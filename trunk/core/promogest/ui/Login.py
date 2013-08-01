@@ -259,11 +259,12 @@ class Login(SimpleGladeApp):
                     avv = SetConf().select(key="avvii")
                     if avv:
                         avv[0].value = int(avv[0].value)+1
+                        Environment.avvii = int(avv[0].value)+1
                         avv[0].persist()
                     Environment.settaggi = Environment.session.query(SetConf.key,SetConf.value).all()
                     Environment.pg2log.info(
                         "SETAGGI: %s" % (str(Environment.settaggi)))
-                    import platform
+
                     self.importModulesFromDir('promogest/modules')
 
                     def mainmain():

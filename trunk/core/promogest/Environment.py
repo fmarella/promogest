@@ -143,7 +143,7 @@ famiglie_articolo = []
 categorie_articolo = []
 stati_articolo = []
 cache_obj = None
-settaggi = None
+avvii = 1
 SRC_PATH = os.path.split(os.path.dirname(__file__))[0]
 
 STATIC_PATH = os.path.join(SRC_PATH, 'templates')
