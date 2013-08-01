@@ -219,7 +219,7 @@ if tipodb == "sqlite" and not (os.path.exists(startdir() + "db")) and not tipodb
 
 database = preEnv.dbforce or main_conf.Database.database
 port = main_conf.Database.port
-print "PORTA1", port
+
 user = main_conf.Database.user
 password = main_conf.Database.password
 
@@ -322,9 +322,9 @@ def usePickleToMeta():
         print "USO META NORMALE"
         meta = MetaData(engine)
     return meta
-meta = usePickleToMeta()
+#meta = usePickleToMeta()
 
-#meta = MetaData(engine)
+meta = MetaData(engine)
 preEnv.azienda = azienda
 
 if tipo_eng=="sqlite" or tipo_eng=="mysql":
@@ -356,7 +356,7 @@ else:
     fk_prefix = ""
     fk_prefix_main = ""
 
-
+print "PARAMSSSSSSSSSSSSSSSSSSSSS", params, fk_prefix, fk_prefix_main
 
 if not preEnv.web:
     pg2log = pg_log()

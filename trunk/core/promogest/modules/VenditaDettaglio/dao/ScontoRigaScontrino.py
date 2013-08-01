@@ -24,7 +24,7 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
 from promogest.dao.Dao import Dao
-from promogest.modules.VenditaDettaglio.dao.ScontoScontrino import ScontoScontrino
+from promogest.modules.VenditaDettaglio.dao.ScontoScontrino import ScontoScontrino, sconto_scontrino
 from promogest.modules.VenditaDettaglio.ui.VenditaDettaglioUtils import scontoRigaScontrinoDel
 
 
@@ -44,11 +44,7 @@ sconto_riga_scontrino=Table('sconto_riga_scontrino',
                             schema = params['schema'],
                             autoload=True)
 
-
-sconto_scontrino = Table('sconto_scontrino',
-                                params['metadata'],
-                                schema = params['schema'],
-                                autoload=True)
+print "PARAMSSSSSSSSSSSS", params["schema"], sconto_riga_scontrino, sconto_scontrino
 
 j = join(sconto_scontrino, sconto_riga_scontrino)
 

@@ -25,8 +25,6 @@ from promogest.Environment import *
 from promogest.dao.Dao import Dao
 from promogest.dao.Articolo import Articolo
 from promogest.dao.CodiceABarreArticolo import CodiceABarreArticolo
-#from promogest.modules.VenditaDettaglio.dao.TestataScontrino import TestataScontrino
-#import promogest.dao.ScontoRigaScontrino
 from promogest.modules.VenditaDettaglio.dao.ScontoScontrino import ScontoScontrino
 from promogest.modules.VenditaDettaglio.ui.VenditaDettaglioUtils import scontoRigaScontrinoDel
 from promogest.modules.VenditaDettaglio.dao.ScontoRigaScontrino import ScontoRigaScontrino

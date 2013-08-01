@@ -87,6 +87,14 @@ from promogest.dao.daoContatti.ContattoFornitore import t_contatto_fornitore
 from promogest.dao.daoContatti.ContattoAzienda import t_contatto_azienda
 
 from promogest.dao.Riga import t_riga
+try:
+
+    from promogest.modules.VenditaDettaglio.dao.TestataScontrino import *
+    from promogest.modules.VenditaDettaglio.dao.RigaScontrino import *
+    from promogest.modules.VenditaDettaglio.dao.ScontoScontrino import *
+    from promogest.modules.VenditaDettaglio.dao.ScontoRigaScontrino import *
+except:
+    print "IMPORT VENDITA DETTAGLIO DA RIVEDERE"
 
 def orderedImport():
     return

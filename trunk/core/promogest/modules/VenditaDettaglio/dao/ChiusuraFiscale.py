@@ -24,7 +24,7 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
 from promogest.dao.Dao import Dao
-from promogest.dao.Magazzino import magazzino
+from promogest.dao.Magazzino import t_magazzino
 from promogest.modules.VenditaDettaglio.dao.Pos import pos
 
 try:
