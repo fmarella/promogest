@@ -22,7 +22,15 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
-from Dao import Dao
+from promogest.dao.Dao import Dao
+
+try:
+    t_tipo_aliquota_iva=Table('tipo_aliquota_iva',
+                            params['metadata'],
+                            schema = params['mainSchema'],
+                            autoload=True)
+except:
+    from data.tipoAliquotaiva import t_tipo_aliquota_iva
 
 class TipoAliquotaIva(Dao):
 
@@ -33,8 +41,4 @@ class TipoAliquotaIva(Dao):
         dic= { }
         return  dic[k]
 
-tipo_aliquota_iva=Table('tipo_aliquota_iva',
-                            params['metadata'],
-                            schema = params['mainSchema'],
-                            autoload=True)
-std_mapper = mapper(TipoAliquotaIva, tipo_aliquota_iva, order_by=tipo_aliquota_iva.c.id)
+std_mapper = mapper(TipoAliquotaIva, t_tipo_aliquota_iva, order_by=t_tipo_aliquota_iva.c.id)

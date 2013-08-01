@@ -28,19 +28,12 @@ from Role import Role
 from Action import Action
 
 try:
-    roleaction=Table('roleaction',
+    t_roleaction=Table('roleaction',
                 params['metadata'],
                 schema = params['mainSchema'],
                 autoload=True)
 except:
-    if tipodb == "sqlite":
-        roleTable = Table('role',params["metadata"], autoload=True, schema=params["mainSchema"])
-        actionTable = Table('action',params["metadata"], autoload=True, schema=params["mainSchema"])
-        roleaction = Table('roleaction', params["metadata"],
-            Column('id_role', Integer, ForeignKey('role.id'),primary_key=True),
-            Column('id_action', Integer, ForeignKey('action.id'),primary_key=True),
-            useexisting=True)
-        roleaction.create(checkfirst=True)
+    from data.roleAction import t_roleaction
 
 class RoleAction(Dao):
     """ RoleAction class database functions  """
@@ -49,19 +42,16 @@ class RoleAction(Dao):
 
     def filter_values(self,k,v):
         if k == 'id_role':
-            dic = {k:roleaction.c.id_role == v}
+            dic = {k:t_roleaction.c.id_role == v}
         elif k == 'id_action':
-            dic = {k:roleaction.c.id_action == v}
+            dic = {k:t_roleaction.c.id_action == v}
         return  dic[k]
 
-roleaction=Table('roleaction',
-                params['metadata'],
-                schema = params['mainSchema'],
-                autoload=True)
-std_mapper = mapper(RoleAction, roleaction, properties={
+
+std_mapper = mapper(RoleAction, t_roleaction, properties={
             'role':relation(Role, backref='roleaction'),
             'action':relation(Action, backref='roleaction'),
-                }, order_by=roleaction.c.id_role)
+                }, order_by=t_roleaction.c.id_role)
 
 idAdmin = Role().select(name ="Admin")
 if not idAdmin:

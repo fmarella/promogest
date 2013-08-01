@@ -22,36 +22,21 @@
 
 
 from sqlalchemy import *
+from promogest.Environment import *
 
-class TestataScontrinoDb(object):
-
-    def __init__(self, schema = None,mainSchema=None, metadata=None, session=None,debug=False):
-        self.metadata = metadata
-        self.session_sl = session
-        self.schema = schema
-        self.debug = debug
-
-    def create(self):
-        testataMovimentoTable = Table('testata_movimento', self.metadata, autoload=True, schema=self.schema)
-        if self.schema:
-            testatamovimentoFK = self.schema+'.testata_movimento.id'
-        else:
-            "testata_movimento.id"
-        self.testataScontrinoTable = Table('testata_scontrino', self.metadata,
-                Column('id',Integer,primary_key=True),
-                Column('data_inserimento',DateTime,PassiveDefault(func.now()),nullable=False),
-                Column('totale_scontrino',Numeric(16,4),nullable=False),
-                Column('totale_contanti',Numeric(16,4),nullable=False),
-                Column('totale_assegni',Numeric(16,4),nullable=False),
-                Column('totale_carta_credito',Numeric(16,4),nullable=False),
-                #chiavi esterne
-                Column('id_testata_movimento',Integer,ForeignKey(testatamovimentoFK, onupdate="CASCADE", ondelete="RESTRICT")),
-                schema=self.schema
-                )
-        self.testataScontrinoTable.create(checkfirst=True)
-
-    def update(self, req=None, arg=None):
-        pass
-
-    def alter(self, req=None, arg=None):
-        pass
+t_testata_scontrino = Table('testata_scontrino', params['metadata'],
+            Column('id',Integer,primary_key=True),
+            Column('data_inserimento',DateTime,DefaultClause(func.now()),nullable=False),
+            Column('totale_scontrino',Numeric(16,4),nullable=False),
+            Column('totale_contanti',Numeric(16,4),nullable=False),
+            Column('totale_assegni',Numeric(16,4),nullable=False),
+            Column('totale_carta_credito',Numeric(16,4),nullable=False),
+            Column('id_magazzino',Integer,ForeignKey(fk_prefix + "magazzino.id", onupdate="CASCADE", ondelete="RESTRICT")),
+            Column('id_pos',Integer,ForeignKey(fk_prefix +"pos.id", onupdate="CASCADE", ondelete="RESTRICT")),
+            Column('id_ccardtype',Integer,ForeignKey(fk_prefix +"credit_card_type.id", onupdate="CASCADE", ondelete="RESTRICT")),
+            Column('id_user',Integer),
+            Column('id_testata_movimento',Integer,ForeignKey(fk_prefix + "testata_movimento.id", onupdate="CASCADE", ondelete="RESTRICT")),
+            schema=params['schema'],
+            useexisting =True
+            )
+t_testata_scontrino.create(checkfirst=True)

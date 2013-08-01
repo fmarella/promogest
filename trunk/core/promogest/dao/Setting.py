@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2013 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -23,7 +23,14 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import params
-from Dao import Dao
+from promogest.dao.Dao import Dao
+
+
+try:
+    t_setting=Table('setting',params['metadata'],schema = params['schema'],autoload=True)
+except:
+    from data.setting import t_setting
+
 
 class Setting(Dao):
     """SCHEMA: cl | registro | registro da modificare | registro da assegnare
@@ -56,68 +63,27 @@ class Setting(Dao):
 
     def filter_values(self,k,v):
         if k=='keys':
-            dic= {  k : settingg.c.key.ilike("%"+v+"%")}
+            dic= {  k : t_setting.c.key.ilike("%"+v+"%")}
         elif k == 'description':
-            dic = {k:settingg.c.description.ilike("%"+v+"%")}
+            dic = {k:t_setting.c.description.ilike("%"+v+"%")}
         elif k == 'value':
-            dic = {k:settingg.c.value == v}
+            dic = {k:t_setting.c.value == v}
         return  dic[k]
 
-settingg=Table('setting',params['metadata'],schema = params['schema'],autoload=True)
-
-s= select([settingg.c.key]).execute().fetchall()
-if (u'Fattura pro-forma.registro',) not in s or s==[]:
-    settinggg  = settingg.insert()
-    settinggg.execute(key = "Fattura pro-forma.registro", description = "Registro associato a Fattura pro-forma", value= "registro_fattura_pro-forma")
-    settinggg.execute(key = "registro_fattura_pro-forma.rotazione", description = "Tipologia di rotazione registro associato a Fattura pro-forma ", value= "annuale")
-
-if (u'Ordine a magazzino.registro',) not in s or s==[]:
-    settinggg  = settingg.insert()
-    settinggg.execute(key = "Ordine a magazzino.registro", description = "Registro associato a Ordine a magazzino", value= "registro_ordine_a_magazzino")
-    settinggg.execute(key = "registro_ordine_a_magazzino.rotazione", description = "Tipologia di rotazione registro associato a Ordine a magazzino ", value= "annuale")
-
-if (u'Carico da composizione kit.registro',) not in s or s==[]:
-    settinggg  = settingg.insert()
-    settinggg.execute(key = "Carico da composizione kit.registro", description = "Registro associato a Carico da composizione kit", value= "registro_carico_da_composizione_kit")
-    settinggg.execute(key = "carico_da_composizione_kit.rotazione", description = "Tipologia di rotazione registro associato a Carico da composizione kit", value= "annuale")
-
-if (u'Scarico Scomposizione kit.registro',) not in s or s==[]:
-    settinggg  = settingg.insert()
-    settinggg.execute(key = "Scarico Scomposizione kit.registro", description = "Registro associato a Scarico Scomposizione kit", value= "registro_scarico_scomposizione_kit")
-    settinggg.execute(key = "scarico_scomposizione_kit.rotazione", description = "Tipologia di rotazione registro associato a Scarico Scomposizione kit", value= "annuale")
-
-if (u'Trasferimento merce magazzino.registro',) not in s or s==[]:
-    settinggg  = settingg.insert()
-    settinggg.execute(key = "Trasferimento merce magazzino.registro", description = "Registro associato a Trasferimento merce magazzino", value= "trasferimento_merce_magazzino")
-    settinggg.execute(key = "trasferimento_merce_magazzino.rotazione", description = "Tipologia di rotazione registro associato a Trasferimento merce magazzino", value= "annuale")
-
-
-if (u'Ordine beni strumentali.registro',) not in s or s==[]:
-    settinggg  = settingg.insert()
-    settinggg.execute(key = "Ordine beni strumentali.registro", description = "Registro associato a Ordine beni strumentali", value= "registro_ordine_beni_strumentali")
-    settinggg.execute(key = "registro_ordine_beni_strumentali.rotazione", description = "Tipologia di rotazione registro associato a Ordine beni strumentali ", value= "annuale")
-
-if (u'Preventivo dettaglio.registro',) not in s or s==[]:
-    settinggg  = settingg.insert()
-    settinggg.execute(key = "Preventivo dettaglio.registro", description = "Registro associato a Preventivo dettaglio", value= "registro_preventivo")
-
-if (u'registro_preventivo_dettaglio.rotazione',) not in s or s==[]:
-    settinggg  = settingg.insert()
-    settinggg.execute(key = "registro_preventivo_dettaglio.rotazione", description = "Tipologia di rotazione registro associato a preventivo dettaglio ", value= "annuale")
-
 def addregistriDiretti():
+    s= select([t_setting.c.key]).execute().fetchall()
     if (u'registro_ordine_da_cliente_diretto.rotazione',) not in s or s==[]:
-        settinggg  = settingg.insert()
-        settinggg.execute(key = "Ordine da cliente diretto.registro", description = "ordine da cliente diretto", value= "registro_ordine_da_cliente_diretto")
-        settinggg.execute(key = "registro_ordine_da_cliente_diretto.rotazione", description = "registro_ordine_da_cliente_diretto.rotazione ", value= "annuale")
+        t_settingg  = t_setting.insert()
+        t_settingg.execute(key = "Ordine da cliente diretto.registro", description = "ordine da cliente diretto", value= "registro_ordine_da_cliente_diretto")
+        t_settingg.execute(key = "registro_ordine_da_cliente_diretto.rotazione", description = "registro_ordine_da_cliente_diretto.rotazione ", value= "annuale")
     if (u'registro_ddt_vendita_diretto.rotazione',) not in s or s==[]:
-        settinggg  = settingg.insert()
-        settinggg.execute(key = "DDT vendita diretto.registro", description = "DDT vendita diretto", value= "registro_ddt_vendita_diretto")
-        settinggg.execute(key = "registro_ddt_vendita_diretto.rotazione", description = "registro_ddt_vendita_diretto.rotazione ", value= "annuale")
+        t_settingg  = t_setting.insert()
+        t_settingg.execute(key = "DDT vendita diretto.registro", description = "DDT vendita diretto", value= "registro_ddt_vendita_diretto")
+        t_settingg.execute(key = "registro_ddt_vendita_diretto.rotazione", description = "registro_ddt_vendita_diretto.rotazione ", value= "annuale")
     if (u'registro_fattura_vendita_diretta.rotazione',) not in s or s==[]:
-        settinggg  = settingg.insert()
-        settinggg.execute(key = "Fattura vendita diretta.registro", description = "Fattura vendita diretta", value= "registro_fattura_vendita_diretta")
-        settinggg.execute(key = "registro_fattura_vendita_diretta.rotazione", description = "registro_fattura_vendita_diretta.rotazione ", value= "annuale")
+        t_settingg  = t_setting.insert()
+        t_settingg.execute(key = "Fattura vendita diretta.registro", description = "Fattura vendita diretta", value= "registro_fattura_vendita_diretta")
+        t_settingg.execute(key = "registro_fattura_vendita_diretta.rotazione", description = "registro_fattura_vendita_diretta.rotazione ", value= "annuale")
 
 
-std_mapper = mapper(Setting, settingg, order_by=settingg.c.key)
+std_mapper = mapper(Setting, t_setting, order_by=t_setting.c.key)

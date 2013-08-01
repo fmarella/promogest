@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2013 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
-# Author: Francesco Meloni <francesco@promotux.it>
+#    Author: Francesco Meloni  <francesco@promotux.it>
 
 #    This file is part of Promogest.
 
@@ -21,28 +21,14 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 from sqlalchemy import *
-from sqlalchemy.orm import *
 from promogest.Environment import *
-from promogest.dao.Dao import Dao
 
-try:
-    t_categoria_contatto=Table('categoria_contatto',
-                    params['metadata'],
-                    schema = params['schema'],
-                    autoload=True)
-except:
-    from promogest.dao.daoContatti.CategoriaContatto import t_categoria_contatto
-
-
-class CategoriaContatto(Dao):
-
-    def __init__(self, req=None):
-        Dao.__init__(self, entity=self)
-
-    def filter_values(self,k,v):
-        dic= {'denominazione' : t_categoria_contatto.c.denominazione.ilike("%"+v+"%")}
-        return  dic[k]
-
-
-
-std_mapper = mapper(CategoriaContatto,t_categoria_contatto, order_by=t_categoria_contatto.c.id)
+t_sconto_scontrino= Table('sconto_scontrino', params['metadata'],
+            Column('id',Integer,primary_key=True),
+            Column('valore',Numeric(16,4),nullable=True),
+            Column('tipo_sconto',String(50),nullable=False),
+            CheckConstraint( "tipo_sconto = 'valore' or tipo_sconto = 'percentuale'" ),
+            schema = params['schema'],
+            useexisting =True
+        )
+t_sconto_scontrino.create(checkfirst=True)

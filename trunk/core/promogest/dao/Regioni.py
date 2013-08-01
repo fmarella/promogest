@@ -23,9 +23,9 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
-from Dao import Dao
+from promogest.dao.Dao import Dao
 
-regioni=Table('regione', params['metadata'],schema = params['mainSchema'],autoload=True)
+t_regione=Table('regione', params['metadata'],schema = params['mainSchema'],autoload=True)
 
 
 
@@ -36,11 +36,11 @@ class Regioni(Dao):
 
     def filter_values(self,k,v):
         dic= {
-            'denominazione':regioni.c.denominazione == v,
+            'denominazione':t_regione.c.denominazione == v,
                 }
         return  dic[k]
 
-std_mapper = mapper(Regioni, regioni,order_by=regioni.c.denominazione)
+std_mapper = mapper(Regioni, t_regione,order_by=regioni.c.denominazione)
 
 
 #f = Regioni().select(denominazione="Piemonte")

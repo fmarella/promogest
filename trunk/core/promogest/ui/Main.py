@@ -1047,11 +1047,9 @@ Procedere all'installazione del modulo PromoShop? """)
             a.value = "True"
             a.active = True
             a.persist()
-            #tables = [t.name for t in Environment.params["metadata"].sorted_tables]
-            #if "testata_scontrino" not in tables:
-                #from promogest.modules.VenditaDettaglio.data.VenditaDettaglioDB import *
-                #msg = " TABELLE AGGIUNTE, RIAVVIARE IL PROGRAMMA "
-                #messageInfo(msg=msg)
+            from promogest.dao.DaoOrderedImport import orderedImport
+            orderedImportVenditaDettaglio()
+
         else:
             messageInfo(msg=_("RISULTA GIA' ATTIVATO"))
 

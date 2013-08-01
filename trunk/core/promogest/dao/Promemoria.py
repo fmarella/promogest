@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2013 by Promotux
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -23,7 +23,16 @@ import datetime
 from sqlalchemy import Table
 from sqlalchemy.orm import mapper
 from promogest.Environment import *
-from Dao import Dao
+from promogest.dao.Dao import Dao
+
+try:
+    t_promemoria = Table('promemoria',
+            params['metadata'],
+            schema = params['schema'],
+            autoload=True)
+except:
+    from data.promemoria import t_promemoria
+
 
 class Promemoria(Dao):
     """ User class provides to make a Users dao which include more used"""
@@ -33,31 +42,31 @@ class Promemoria(Dao):
 
     def filter_values(self,k,v):
         if k=="incaricato":
-            dic = { k : promemoria.c.incaricato.ilike("%"+v+"%") }
+            dic = { k : t_promemoria.c.incaricato.ilike("%"+v+"%") }
         elif k == 'in_scadenza':
-            dic = { k :promemoria.c.in_scadenza ==v}
+            dic = { k :t_promemoria.c.in_scadenza ==v}
         elif k == 'scaduto':
-            dic = { k :promemoria.c.scaduto ==v}
+            dic = { k :t_promemoria.c.scaduto ==v}
         elif k == "autore":
-            dic = { k : promemoria.c.autore.contains(v)}
+            dic = { k : t_promemoria.c.autore.contains(v)}
         elif k == "annotazione":
-            dic = { k : promemoria.c.annotazione.ilike("%"+v+"%") }
+            dic = { k : t_promemoria.c.annotazione.ilike("%"+v+"%") }
         elif k == "riferimento":
-            dic = { k: promemoria.c.riferimento.ilike("%"+v+"%")}
+            dic = { k: t_promemoria.c.riferimento.ilike("%"+v+"%")}
         elif k == "completato":
-            dic = { k:promemoria.c.completato == v }
+            dic = { k:t_promemoria.c.completato == v }
         elif k == "descrizione":
-            dic = { k:promemoria.c.descrizione.ilike("%"+v+"%") }
+            dic = { k:t_promemoria.c.descrizione.ilike("%"+v+"%") }
         elif k == "oggetto":
-            dic = { k:promemoria.c.oggetto.ilike("%"+v+"%") }
+            dic = { k:t_promemoria.c.oggetto.ilike("%"+v+"%") }
         elif k == "a_data_scadenza":
-            dic = { k:promemoria.c.data_scadenza <= v }
+            dic = { k:t_promemoria.c.data_scadenza <= v }
         elif k == "da_data_scadenza":
-            dic = { k:promemoria.c.data_scadenza >= v }
+            dic = { k:t_promemoria.c.data_scadenza >= v }
         elif k == "a_data_inserimento":
-            dic = { k:promemoria.c.data_inserimento <= v }
+            dic = { k:t_promemoria.c.data_inserimento <= v }
         elif k == "da_data_inserimento":
-            dic = { k:promemoria.c.data_inserimento >= v }
+            dic = { k:t_promemoria.c.data_inserimento >= v }
         return  dic[k]
 
 
@@ -85,24 +94,6 @@ def getScadenze():
     Ritorna una lista di id di oggetti Promemoria in scadenza (e quindi da notificare)
     """
     alarms = Promemoria().select(in_scadenza=True,offset=None, batchSize=None)
-    #returnList = []
-    #if alarms:
-        #for alarm in alarms:
-            #returnList.append(alarm.id)
-    #return returnList
     return alarms
 
-#if params['schema'] + ".promemoria" in metatmp.tables.keys():
-    #t = metatmp.tables[params['schema'] + ".promemoria"]
-    #t.tometadata(meta)
-    #promemoria = Table('promemoria',
-                #params['metadata'],
-                #schema = params['schema'],
-                #autoload=True)
-
-promemoria = Table('promemoria',
-            params['metadata'],
-            schema = params['schema'],
-            autoload=True)
-
-std_mapper= mapper(Promemoria, promemoria, order_by=promemoria.c.id)
+std_mapper= mapper(Promemoria, t_promemoria, order_by=t_promemoria.c.id)

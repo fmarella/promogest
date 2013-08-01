@@ -29,23 +29,7 @@ from promogest.dao.Dao import Dao
 try:
     t_role=Table('role',params['metadata'],schema = params['mainSchema'],autoload=True)
 except:
-    if tipodb == "sqlite":
-        t_role = Table('role', params['metadata'],
-            Column('id', Integer, primary_key=True),
-            Column('name', String(50), nullable=False),
-            Column('descrizione', String(250), nullable=False),
-            Column('id_listino', Integer),
-            Column('active', Boolean, default=False),
-            useexisting=True)
-        t_role.create(checkfirst=True)
-        s= select([t_role.c.name]).execute().fetchall()
-        if (u'Admin',) not in s or s ==[]:
-            ruoli = t_role.insert()
-            ruoli.execute(name = "Admin", descrizione = "Gestore del promogest", active = True)
-            ruoli.execute(name = "Magazzinieri", descrizione = "Personale gestione magazzino", active = True)
-            ruoli.execute(name = "Venditori", descrizione = "Addetti alla vendita", active = True)
-            ruoli.execute(name = "Impiegati", descrizione = "Impiegati", active = True)
-
+    from data.role import t_role
 
 class Role(Dao):
     """

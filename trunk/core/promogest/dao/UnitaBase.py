@@ -26,13 +26,13 @@ from sqlalchemy.orm import *
 from promogest.Environment import *
 from Dao import Dao
 
-#try:
-t_unita_base=Table('unita_base',
+try:
+    t_unita_base=Table('unita_base',
                 params['metadata'],
                 schema = params['mainSchema'],
                 autoload=True)
-#except:
-    #from data.unitaBase import t_unita_base
+except:
+    from data.unitaBase import t_unita_base
 
 
 class UnitaBase(Dao):

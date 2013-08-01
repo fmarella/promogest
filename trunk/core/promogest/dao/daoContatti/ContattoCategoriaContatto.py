@@ -26,15 +26,24 @@ from promogest.Environment import params
 from promogest.dao.daoContatti.CategoriaContatto import CategoriaContatto
 from promogest.dao.Dao import Dao
 
+try:
+    t_contatto_categoria_contatto=Table('contatto_categoria_contatto',
+                            params['metadata'],
+                            schema = params['schema'],
+                            autoload=True)
+except:
+    from data.contattoCategoriaContatto import t_contatto_categoria_contatto
+
+
 class ContattoCategoriaContatto(Dao):
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):
-        dic= {'idContatto':contatto_categoria_contatto.c.id_contatto==v,
-            'id':contatto_categoria_contatto.c.id_contatto==v,
-            'idCategoriaContatto':contatto_categoria_contatto.c.id_categoria_contatto==v}
+        dic= {'idContatto':t_contatto_categoria_contatto.c.id_contatto==v,
+            'id':t_contatto_categoria_contatto.c.id_contatto==v,
+            'idCategoriaContatto':t_contatto_categoria_contatto.c.id_categoria_contatto==v}
         return  dic[k]
 
     def _categoria_contatto(self):
@@ -42,11 +51,8 @@ class ContattoCategoriaContatto(Dao):
         else: return ""
     categoria_contatto= property(_categoria_contatto)
 
-contatto_categoria_contatto=Table('contatto_categoria_contatto',
-                            params['metadata'],
-                            schema = params['schema'],
-                            autoload=True)
 
-std_mapper= mapper(ContattoCategoriaContatto, contatto_categoria_contatto,properties={
+
+std_mapper= mapper(ContattoCategoriaContatto, t_contatto_categoria_contatto,properties={
 "categoria_con":relation(CategoriaContatto,backref=backref("contatto_categoria_contatto"))},
-                    order_by=contatto_categoria_contatto.c.id_contatto)
+                    order_by=t_contatto_categoria_contatto.c.id_contatto)

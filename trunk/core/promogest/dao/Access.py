@@ -26,16 +26,10 @@ from Dao import Dao
 
 
 try:
-    access=Table('access', params['metadata'],schema = params['schema'],autoload=True)
+    t_access=Table('access', params['metadata'],schema = params['schema'],autoload=True)
 except:
+    from data.access import t_access
 
-    access = Table('access', params['metadata'],
-            Column('id',Integer,primary_key=True),
-            Column('id_user',Integer),
-            Column('login', Date, nullable=True),
-            Column('logout', Date, nullable=True),
-            schema=params['schema'])
-    access.create(checkfirst=True)
 
 class Access(Dao):
 
@@ -44,11 +38,7 @@ class Access(Dao):
 
     def filter_values(self, k, v):
         if k == 'idUser':
-            dic = {k: access.c.id_user == v}
-
+            dic = {k: t_access.c.id_user == v}
         return  dic[k]
 
-
-std_mapper = mapper(Access, access, properties={
-                           # 'utente':relation(User)
-                            })
+std_mapper = mapper(Access, t_access)
