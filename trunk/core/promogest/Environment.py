@@ -356,7 +356,7 @@ else:
     fk_prefix = ""
     fk_prefix_main = ""
 
-print "PARAMSSSSSSSSSSSSSSSSSSSSS", params, fk_prefix, fk_prefix_main
+#print "PARAMSSSSSSSSSSSSSSSSSSSSS", params, fk_prefix, fk_prefix_main
 
 if not preEnv.web:
     pg2log = pg_log()
