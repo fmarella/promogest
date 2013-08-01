@@ -32,11 +32,6 @@ from promogest import Environment
 
 #""" Sets configuration value """
 def set_configuration(company=None, year = None, pg_path=None):
-    #global conf,connection, exceptionHandler, promogestDir, feed,  emailcompose,\
-                #emailmittente, smtpServer, \
-                #multilinelimit, mltext,\
-                #imagesDir, labelTemplatesDir, templatesDir, documentsDir, reportTemplatesDir,\
-                #bordoDestro, bordoSinistro, magazzini, listini, tempDir, tracciatiDir
     dire = getConfigureDir(company)
     promogestDir = None
     if pg_path:

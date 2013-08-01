@@ -579,5 +579,31 @@ if not ("fix_riga_movimento", "General") in allkey:
     session.add(kbb)
     a = True
 
+if not ("avvii", "General") in allkey:
+    kbb = SetConf()
+    kbb.key = "avvii"
+    kbb.value ="1"
+    kbb.section = "General"
+    kbb.tipo_section = "Generico"
+    kbb.description = "conta gli avvii"
+    kbb.active = True
+    kbb.tipo = "int"
+    kbb.date = datetime.datetime.now()
+    session.add(kbb)
+    a = True
+
+if not ("data_installazione", "General") in allkey:
+    kbb = SetConf()
+    kbb.key = "data_installazione"
+    kbb.value = str(datetime.datetime.now())
+    kbb.section = "General"
+    kbb.tipo_section = "Generico"
+    kbb.description = "conta gli avvii"
+    kbb.active = True
+    kbb.tipo = "str"
+    kbb.date = datetime.datetime.now()
+    session.add(kbb)
+    a = True
+
 if a:
     session.commit()

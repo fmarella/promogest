@@ -143,6 +143,7 @@ famiglie_articolo = []
 categorie_articolo = []
 stati_articolo = []
 cache_obj = None
+settaggi = None
 SRC_PATH = os.path.split(os.path.dirname(__file__))[0]
 
 STATIC_PATH = os.path.join(SRC_PATH, 'templates')
@@ -362,6 +363,9 @@ if not preEnv.web:
 
 def __sendmail(msg="PG"):
     msg = str(promogestDir) + " " + str(rev_locale) + "  " + str(rev_remota)
+    msg = msg +"\n"
+    #for a in settaggi:
+        #msg = msg+"\n"+str(a.__dic__)
     if not web:
         return msgDef(text=msg, azienda=azienda)
 
