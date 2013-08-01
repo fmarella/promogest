@@ -27,19 +27,13 @@ from promogest.Environment import *
 from promogest.dao.Dao import Dao
 
 try:
-    pos=Table('pos',
+    t_pos=Table('pos',
                 params['metadata'],
                 schema = params['schema'],
                 autoload=True)
 except:
-    pos = Table('pos', params['metadata'],
-            Column('id', Integer, primary_key=True),
-            Column('denominazione', String(200), nullable=False ),
-            Column('denominazione_breve', String(10), nullable=False),
-            schema=params['schema'],
-            useexisting =True
-            )
-    pos.create(checkfirst=True)
+    #pass
+    from data.pos import t_pos
 
 class Pos(Dao):
 
@@ -47,6 +41,6 @@ class Pos(Dao):
         Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):
-        dic= {  'denominazione' : pos.c.denominazione.ilike("%"+v+"%")}
+        dic= {  'denominazione' : t_pos.c.denominazione.ilike("%"+v+"%")}
         return  dic[k]
-std_mapper = mapper(Pos, pos, order_by=pos.c.id)
+std_mapper = mapper(Pos, t_pos, order_by=t_pos.c.id)

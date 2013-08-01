@@ -22,26 +22,14 @@
 
 
 from sqlalchemy import *
+from promogest.Environment import *
 
-class ChiusuraFiscaleDb(object):
-
-    def __init__(self, schema = None,mainSchema=None, metadata=None, session=None,debug=False):
-        self.metadata = metadata
-        self.session_sl = session
-        self.schema = schema
-        self.debug = debug
-
-    def create(self):
-
-        chiusuraFiscaleTable = Table('chiusura_fiscale', self.metadata,
-                Column('id',Integer,primary_key=True),
-                Column('data_chiusura',DateTime, unique=True, nullable=False),
-                schema=self.schema
-                )
-        chiusuraFiscaleTable.create(checkfirst=True)
-
-    def update(self, req=None, arg=None):
-        pass
-
-    def alter(self, req=None, arg=None):
-        pass
+t_chiusura_fiscale = Table('chiusura_fiscale', params['metadata'],
+            Column('id',Integer,primary_key=True),
+            Column('data_chiusura',DateTime,nullable=False),
+            Column('id_magazzino',Integer,ForeignKey(fk_prefix+'magazzino.id', onupdate="CASCADE", ondelete="RESTRICT")),
+            Column('id_pos',Integer,ForeignKey(fk_prefix+"pos.id", onupdate="CASCADE", ondelete="RESTRICT")),
+            schema=params['schema'],
+            useexisting =True
+            )
+t_chiusura_fiscale.create(checkfirst=True)

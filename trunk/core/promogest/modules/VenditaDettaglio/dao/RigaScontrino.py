@@ -23,8 +23,18 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
 from promogest.dao.Dao import Dao
+
+try:
+    t_riga_scontrino=Table('riga_scontrino',
+                params['metadata'],
+                schema = params['schema'],
+                autoload=True)
+except:
+    #pass
+    from data.testataScontrino import t_testata_scontrino
+    from data.rigaScontrino import t_riga_scontrino
+
 from promogest.dao.Articolo import Articolo
-from promogest.dao.CodiceABarreArticolo import CodiceABarreArticolo
 from promogest.modules.VenditaDettaglio.dao.ScontoScontrino import ScontoScontrino
 from promogest.modules.VenditaDettaglio.ui.VenditaDettaglioUtils import scontoRigaScontrinoDel
 from promogest.modules.VenditaDettaglio.dao.ScontoRigaScontrino import ScontoRigaScontrino
@@ -102,16 +112,9 @@ class RigaScontrino(Dao):
                 rigasconto.id_riga_scontrino = self.id
                 #salvataggio sconto
                 rigasconto.persist()
-        #params['session'].flush()
 
 
-
-riga_scontrino=Table('riga_scontrino',
-                params['metadata'],
-                schema = params['schema'],
-                autoload=True)
-
-std_mapper = mapper(RigaScontrino, riga_scontrino,properties={
-        "arti":relation(Articolo,primaryjoin=riga_scontrino.c.id_articolo==Articolo.id),
-        "srs":relation(ScontoRigaScontrino, primaryjoin=riga_scontrino.c.id ==ScontoRigaScontrino.id_riga_scontrino,cascade="all, delete")
-        }, order_by=riga_scontrino.c.id)
+std_mapper = mapper(RigaScontrino, t_riga_scontrino,properties={
+        "arti":relation(Articolo,primaryjoin=t_riga_scontrino.c.id_articolo==Articolo.id),
+        "srs":relation(ScontoRigaScontrino, primaryjoin=t_riga_scontrino.c.id ==ScontoRigaScontrino.id_riga_scontrino,cascade="all, delete")
+        }, order_by=t_riga_scontrino.c.id)

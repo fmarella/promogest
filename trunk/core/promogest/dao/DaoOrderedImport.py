@@ -24,7 +24,7 @@
 #from promogest.Environment import *
 
 def orderedImport():
-    from promogest.dao.Azienda import t_azienda, Azienda
+    from promogest.dao.Azienda import t_azienda #v
     from promogest.dao.Language import t_language #v
     from promogest.modules.RuoliAzioni.dao.Role import t_role #v
     from promogest.dao.User import t_utente #v
@@ -54,10 +54,9 @@ def orderedImport():
     from promogest.dao.ListinoArticolo import t_listino_articolo #v
     from promogest.dao.Multiplo import t_multiplo #v
 
-    from promogest.dao.ListinoComplessoListino import t_listino_complesso_listino
-    from promogest.dao.ListinoComplessoArticoloPrevalente import t_listino_complesso_articolo_prevalente
-    from promogest.dao.VariazioneListino import t_variazione_listino
-
+    from promogest.dao.ListinoComplessoListino import t_listino_complesso_listino #v
+    from promogest.dao.ListinoComplessoArticoloPrevalente import t_listino_complesso_articolo_prevalente  #v
+    from promogest.dao.VariazioneListino import t_variazione_listino #v
 
     from promogest.dao.daoContatti.RecapitoContatto import t_recapito #v
     from promogest.dao.daoContatti.CategoriaContatto import t_categoria_contatto #v
@@ -85,21 +84,25 @@ def orderedImport():
     from promogest.dao.daoContatti.ContattoCliente import t_contatto_cliente
     from promogest.dao.daoContatti.ContattoFornitore import t_contatto_fornitore
     from promogest.dao.daoContatti.ContattoAzienda import t_contatto_azienda
-
+    from promogest.dao.CCardType import t_credit_card_type #v
     from promogest.dao.Riga import t_riga
+    from promogest.dao.TestataMovimento import t_testata_movimento   #v
 
-#def orderedImportVenditaDettaglio():
-try:
-    from promogest.modules.VenditaDettaglio.dao.TestataScontrino import *
-    from promogest.modules.VenditaDettaglio.dao.RigaScontrino import *
-    from promogest.modules.VenditaDettaglio.dao.ScontoScontrino import *
-    from promogest.modules.VenditaDettaglio.dao.ScontoRigaScontrino import *
-    from promogest.modules.VenditaDettaglio.dao.ScontoTestataScontrino import *
-    from promogest.modules.VenditaDettaglio.dao.ChiusuraFiscale import *
-    from promogest.modules.VenditaDettaglio.dao.TestataScontrinoCliente import *
-    from promogest.modules.VenditaDettaglio.dao.Pos import *
-except:
-    print " DETTAGLIO DA SISTEARE"
+def orderedImportVenditaDettaglio():
+#try:
+    from promogest.modules.VenditaDettaglio.dao.Pos import t_pos #v
+    from promogest.modules.VenditaDettaglio.dao.ScontoScontrino import t_sconto_scontrino #v
+    from promogest.modules.VenditaDettaglio.dao.RigaScontrino import t_riga_scontrino #v
+    from promogest.modules.VenditaDettaglio.dao.ScontoRigaScontrino import t_sconto_riga_scontrino #v
+    from promogest.modules.VenditaDettaglio.dao.TestataScontrino import t_testata_scontrino #v
+
+    from promogest.modules.VenditaDettaglio.dao.ScontoTestataScontrino import t_sconto_testata_scontrino #v
+    from promogest.modules.VenditaDettaglio.dao.ChiusuraFiscale import t_chiusura_fiscale #v
+    from promogest.modules.VenditaDettaglio.dao.TestataScontrinoCliente import t_testata_scontrino_cliente #v
+
+    print "CARICAMENTO/INSERIMENTO TABELLE VENDITA DETTAGLIO  ANDATO BENE"
+#except:
+    #print " DETTAGLIO DA SISTEARE"
 
 
     #from data.contattoMagazzino import t_contatto_magazzino

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2013 by Promotux
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -25,22 +25,15 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
 from promogest.dao.Dao import Dao
-#from promogest.modules.VenditaDettaglio.dao.TestataScontrino import TestataScontrino
 
 
 try:
-    c_card_type =Table('credit_card_type',
+    t_credit_card_type =Table('credit_card_type',
             params['metadata'],
             schema = params['schema'],
             autoload=True)
 except:
-    c_card_type = Table('credit_card_type', params['metadata'],
-        Column('id', Integer, primary_key=True),
-        Column('denominazione', String(200), nullable=False ),
-        Column('denominazione_breve', String(10), nullable=False),
-        schema=params['schema'],
-        )
-c_card_type.create(checkfirst=True)
+    from data.ccardType import t_credit_card_type
 
 
 class CCardType(Dao):
@@ -49,9 +42,9 @@ class CCardType(Dao):
         Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):
-        dic= {  'denominazione' : c_card_type.c.denominazione.ilike("%"+v+"%")}
+        dic= {  'denominazione' : t_credit_card_type.c.denominazione.ilike("%"+v+"%")}
         return  dic[k]
 
 
-std_mapper = mapper(CCardType, c_card_type, order_by=c_card_type.c.id,properties={
+std_mapper = mapper(CCardType, t_credit_card_type, order_by=t_credit_card_type.c.id,properties={
         })

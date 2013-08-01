@@ -1016,7 +1016,7 @@ QUESTA FUNZIONALITÀ È STATA AGGIUNTA PER
 PERMETTERE DI PROVARE IL PROMOGEST ONE BASIC CON
 IL MODULO VENDITA DETTAGLIO
 
-Procedere all'installazione del modulo PromoShop? """)
+Procedo all'installazione del modulo PromoShop? """)
         if not YesNoDialog(msg=msg, transient=self.getTopLevel()):
             return
         if not setconf("VenditaDettaglio","mod_enable",value="yes"):
@@ -1047,8 +1047,9 @@ Procedere all'installazione del modulo PromoShop? """)
             a.value = "True"
             a.active = True
             a.persist()
-            from promogest.dao.DaoOrderedImport import orderedImport
-            orderedImportVenditaDettaglio()
+            #from promogest.dao.DaoOrderedImport import orderedImportVenditaDettaglio
+            #orderedImportVenditaDettaglio()
+            messageInfo(msg=_("RIAVVIA IL PROMOGEST"))
 
         else:
             messageInfo(msg=_("RISULTA GIA' ATTIVATO"))

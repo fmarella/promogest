@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
 #    Copyright (C) 2005-2013 by Promotux
-#                       di Francesco Meloni snc - http://www.promotux.it/
+#                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
+
 #    This file is part of Promogest.
 
 #    Promogest is free software: you can redistribute it and/or modify
@@ -19,30 +20,15 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
+
 from sqlalchemy import *
-from sqlalchemy.orm import *
 from promogest.Environment import *
-from promogest.dao.Dao import Dao
 
-try:
-    t_sconto_scontrino=Table('sconto_scontrino',
-            params['metadata'],
-            schema = params['schema'],
-            autoload=True)
-except:
-    #pass
-    from data.scontoScontrino import t_sconto_scontrino
-
-
-
-class ScontoScontrino(Dao):
-
-    def __init__(self, req=None):
-        Dao.__init__(self, entity=self)
-
-    def filter_values(self, k,v):
-        dic= {}
-        return  dic[k]
-
-
-std_mapper = mapper(ScontoScontrino, t_sconto_scontrino, order_by=t_sconto_scontrino.c.id)
+t_pos = Table('pos', params['metadata'],
+        Column('id', Integer, primary_key=True),
+        Column('denominazione', String(200), nullable=False ),
+        Column('denominazione_breve', String(10), nullable=False),
+        schema=params['schema'],
+        useexisting =True
+        )
+t_pos.create(checkfirst=True)

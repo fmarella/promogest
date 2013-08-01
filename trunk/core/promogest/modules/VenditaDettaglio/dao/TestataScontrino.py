@@ -25,16 +25,27 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
 from promogest.dao.Dao import Dao
+
+try:
+    t_testata_scontrino=Table('testata_scontrino',
+                    params['metadata'],
+                    schema = params['schema'],
+                    autoload=True)
+except:
+    #pass
+    from data.testataScontrino import t_testata_scontrino
+
 from promogest.dao.TestataMovimento import TestataMovimento
 from promogest.dao.CCardType import CCardType
 from promogest.dao.Magazzino import Magazzino
 from promogest.dao.User import User
 from promogest.dao.Cliente import Cliente
-from promogest.modules.VenditaDettaglio.dao.RigaScontrino import RigaScontrino
+from promogest.modules.VenditaDettaglio.dao.RigaScontrino import RigaScontrino,t_riga_scontrino
 from promogest.modules.VenditaDettaglio.dao.ScontoTestataScontrino import ScontoTestataScontrino
 from promogest.modules.VenditaDettaglio.dao.TestataScontrinoCliente import TestataScontrinoCliente
 from promogest.modules.VenditaDettaglio.dao.Pos import Pos
 from promogest.lib.utils import *
+
 
 
 class TestataScontrino(Dao):
@@ -113,21 +124,21 @@ class TestataScontrino(Dao):
 
     def filter_values(self, k, v):
         if k == 'id':
-            dic= {k: testata_scontrino.c.id ==v}
+            dic= {k: t_testata_scontrino.c.id ==v}
         elif k == 'idTestataMovimento':
-            dic= {k: testata_scontrino.c.id_testata_movimento==v}
+            dic= {k: t_testata_scontrino.c.id_testata_movimento==v}
         elif k == 'daData':
-            dic = {k: testata_scontrino.c.data_inserimento >= v}
+            dic = {k: t_testata_scontrino.c.data_inserimento >= v}
         elif k == 'aData':
-            dic = {k: testata_scontrino.c.data_inserimento <= v}
+            dic = {k: t_testata_scontrino.c.data_inserimento <= v}
         elif k == 'idMagazzino':
-            dic = {k: testata_scontrino.c.id_magazzino == v}
+            dic = {k: t_testata_scontrino.c.id_magazzino == v}
         elif k == 'idPuntoCassa':
-            dic = {k: testata_scontrino.c.id_pos == v}
+            dic = {k: t_testata_scontrino.c.id_pos == v}
         elif k== 'idArticolo':
-            dic = {k: and_(testata_scontrino.c.id==riga_scontrinoo.c.id_testata_scontrino, riga_scontrinoo.c.id_articolo==v)}
+            dic = {k: and_(t_testata_scontrino.c.id==riga_scontrinoo.c.id_testata_scontrino, t_riga_scontrino.c.id_articolo==v)}
         elif k=='idArticoloList':
-            dic={ k :and_(testata_scontrino.c.id==riga_scontrinoo.c.id_testata_scontrino, riga_scontrinoo.c.id_articolo.in_(v))}
+            dic={ k :and_(t_testata_scontrino.c.id==riga_scontrinoo.c.id_testata_scontrino, t_riga_scontrino.c.id_articolo.in_(v))}
         elif k=='idCliente':
             dic={ k :and_(testata_scontrino.c.id==TestataScontrinoCliente.id_testata_scontrino, TestataScontrinoCliente.id_cliente ==v)}
         return  dic[k]
@@ -177,31 +188,13 @@ class TestataScontrino(Dao):
             params["session"].commit()
             return True
 
-riga_scontrinoo=Table('riga_scontrino',
-                params['metadata'],
-                schema = params['schema'],
-                autoload=True)
 
-testata_scontrino=Table('testata_scontrino',
-                    params['metadata'],
-                    schema = params['schema'],
-                    autoload=True)
-
-
-std_mapper = mapper(TestataScontrino, testata_scontrino,properties={
-        "cctypee":relation(CCardType,primaryjoin=(testata_scontrino.c.id_ccardtype==CCardType.id)),
-        "mag":relation(Magazzino,primaryjoin=(testata_scontrino.c.id_magazzino==Magazzino.id)),
-
-#         'usr': relation(User, primaryjoin=
-#                testata_scontrino.c.id_user==User.id,
-#                foreign_keys=[User.id]),
-
-
-
-#        "usr":relation(User,primaryjoin=(testata_scontrino.c.id_user==User.id)),
-        "poss":relation(Pos,primaryjoin=(testata_scontrino.c.id_pos==Pos.id)),
+std_mapper = mapper(TestataScontrino, t_testata_scontrino,properties={
+        "cctypee":relation(CCardType,primaryjoin=(t_testata_scontrino.c.id_ccardtype==CCardType.id)),
+        "mag":relation(Magazzino,primaryjoin=(t_testata_scontrino.c.id_magazzino==Magazzino.id)),
+        "poss":relation(Pos,primaryjoin=(t_testata_scontrino.c.id_pos==Pos.id)),
         "testatamovimento": relation(TestataMovimento,primaryjoin=
-                (testata_scontrino.c.id_testata_movimento==TestataMovimento.id), backref="testata_scontrino"),
-        "riga_scontr":relation(RigaScontrino,primaryjoin=RigaScontrino.id_testata_scontrino==testata_scontrino.c.id, backref="testata_scontrino",cascade="all, delete"),
-        "STS":relation(ScontoTestataScontrino,primaryjoin = (testata_scontrino.c.id==ScontoTestataScontrino.id_testata_scontrino), backref="TS",cascade="all, delete"),
-        }, order_by=testata_scontrino.c.id)
+                (t_testata_scontrino.c.id_testata_movimento==TestataMovimento.id), backref="testata_scontrino"),
+        "riga_scontr":relation(RigaScontrino,primaryjoin=RigaScontrino.id_testata_scontrino==t_testata_scontrino.c.id, backref="testata_scontrino",cascade="all, delete"),
+        "STS":relation(ScontoTestataScontrino,primaryjoin = (t_testata_scontrino.c.id==ScontoTestataScontrino.id_testata_scontrino), backref="TS",cascade="all, delete"),
+        }, order_by=t_testata_scontrino.c.id)

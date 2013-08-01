@@ -24,9 +24,18 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
 from promogest.dao.Dao import Dao
-from promogest.modules.VenditaDettaglio.dao.ScontoScontrino import ScontoScontrino, sconto_scontrino
-from promogest.modules.VenditaDettaglio.ui.VenditaDettaglioUtils import scontoRigaScontrinoDel
 
+try:
+    t_sconto_riga_scontrino=Table('sconto_riga_scontrino',
+                            params['metadata'],
+                            schema = params['schema'],
+                            autoload=True)
+except:
+    from data.rigaScontrino import t_riga_scontrino
+    from data.scontoScontrino import t_sconto_scontrino
+    from data.scontoRigaScontrino import t_sconto_riga_scontrino
+
+from promogest.modules.VenditaDettaglio.dao.ScontoScontrino import t_sconto_scontrino
 
 class ScontoRigaScontrino(Dao):
 
@@ -34,20 +43,15 @@ class ScontoRigaScontrino(Dao):
         Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):
-        dic= {'id':sconto_riga_scontrino.c.id ==v,
-        'idRigaScontrino':sconto_riga_scontrino.c.id_riga_scontrino==v,}
+        dic= {'id':t_sconto_riga_scontrino.c.id ==v,
+        'idRigaScontrino':t_sconto_riga_scontrino.c.id_riga_scontrino==v,}
         return  dic[k]
 
 
-sconto_riga_scontrino=Table('sconto_riga_scontrino',
-                            params['metadata'],
-                            schema = params['schema'],
-                            autoload=True)
 
-print "PARAMSSSSSSSSSSSS", params["schema"], sconto_riga_scontrino, sconto_scontrino
 
-j = join(sconto_scontrino, sconto_riga_scontrino)
 
-std_mapper = mapper(ScontoRigaScontrino,j, properties={
-            'id':[sconto_scontrino.c.id, sconto_riga_scontrino.c.id],
-            }, order_by=sconto_riga_scontrino.c.id)
+std_mapper = mapper(ScontoRigaScontrino,join(t_sconto_scontrino, t_sconto_riga_scontrino),
+        properties={
+            'id':[t_sconto_scontrino.c.id, t_sconto_riga_scontrino.c.id],
+            }, order_by=t_sconto_riga_scontrino.c.id)

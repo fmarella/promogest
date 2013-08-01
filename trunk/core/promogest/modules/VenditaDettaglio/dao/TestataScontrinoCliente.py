@@ -26,6 +26,16 @@ from sqlalchemy.orm import mapper, join
 from promogest.Environment import params
 from promogest.dao.Dao import Dao
 
+
+try:
+    t_testata_scontrino_cliente=Table('testata_scontrino_cliente',
+                                params['metadata'],
+                                schema = params['schema'],
+                                autoload=True)
+except:
+    #pass
+    from data.testataScontrinoCliente import t_testata_scontrino_cliente
+
 class TestataScontrinoCliente(Dao):
 
     def __init__(self, req=None):
@@ -33,17 +43,14 @@ class TestataScontrinoCliente(Dao):
 
     def filter_values(self,k,v):
         if k == 'id':
-            dic= { k :testata_scontrino_cliente.c.id == v}
+            dic= { k :t_testata_scontrino_cliente.c.id == v}
         elif k== 'id_cliente':
-            dic ={k:testata_scontrino_cliente.c.id_cliente==v}
+            dic ={k:t_testata_scontrino_cliente.c.id_cliente==v}
         elif k== 'id_testata_scontrino':
-            dic ={k:testata_scontrino_cliente.c.id_testata_scontrino==v}
+            dic ={k:t_testata_scontrino_cliente.c.id_testata_scontrino==v}
         return  dic[k]
 
-testata_scontrino_cliente=Table('testata_scontrino_cliente',
-                                params['metadata'],
-                                schema = params['schema'],
-                                autoload=True)
 
-std_mapper = mapper(TestataScontrinoCliente,testata_scontrino_cliente,
-                order_by=testata_scontrino_cliente.c.id)
+
+std_mapper = mapper(TestataScontrinoCliente,t_testata_scontrino_cliente,
+                order_by=t_testata_scontrino_cliente.c.id)

@@ -25,6 +25,16 @@ from sqlalchemy.orm import *
 from migrate import *
 from promogest.Environment import *
 from Dao import Dao
+
+try:
+    t_testata_movimento = Table('testata_movimento',
+                            params['metadata'],
+                            schema=params['schema'],
+                            autoload=True)
+except:
+    from data.testataMovimento import t_testata_movimento
+
+
 from DaoUtils import *
 from promogest.dao.Articolo import Articolo
 from promogest.dao.Multiplo import Multiplo
@@ -422,10 +432,6 @@ class TestataMovimento(Dao):
             params["session"].commit()
         self.init_on_load()
 
-t_testata_movimento = Table('testata_movimento',
-                            params['metadata'],
-                            schema=params['schema'],
-                            autoload=True)
 
 if "id_to_magazzino" not in [c.name for c in t_testata_movimento.columns]:
     col = Column('id_to_magazzino', Integer)

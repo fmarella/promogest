@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012
+#    Copyright (C) 2005-2013
 #by Promotux di Francesco Meloni snc - http://www.promotux.it/
 
 # Author: Francesco Meloni <francesco@promotux.it>
@@ -26,6 +26,14 @@ from sqlalchemy.orm import mapper, join
 from promogest.Environment import params
 from promogest.dao.Dao import Dao
 
+try:
+    t_sconto_testata_scontrino=Table('sconto_testata_scontrino',params['metadata'],
+                                schema = params['schema'],autoload=True)
+except:
+    from data.scontoTestataScontrino import t_sconto_testata_scontrino
+
+from promogest.modules.VenditaDettaglio.dao.ScontoScontrino import t_sconto_scontrino
+
 class ScontoTestataScontrino(Dao):
 
     def __init__(self, req=None):
@@ -33,20 +41,13 @@ class ScontoTestataScontrino(Dao):
 
     def filter_values(self,k,v):
         if k == 'id':
-            dic= { k :sconto_testata_documento.c.id == v}
+            dic= { k :t_sconto_testata_scontrino.c.id == v}
         elif k== 'idScontoTestataScontrino':
-            dic ={k:sconto_testata_scontrino.c.id_testata_scontrino==v}
+            dic ={k:t_sconto_testata_scontrino.c.id_testata_scontrino==v}
         return  dic[k]
 
 
-
-sconto_scontrino=Table('sconto_scontrino', params['metadata'], schema = params['schema'], autoload=True)
-
-sconto_testata_scontrino=Table('sconto_testata_scontrino',params['metadata'],
-                                schema = params['schema'],autoload=True)
-
-j = join(sconto_scontrino, sconto_testata_scontrino)
-
-std_mapper = mapper(ScontoTestataScontrino,j, properties={
-    'id':[sconto_scontrino.c.id, sconto_testata_scontrino.c.id],
-    }, order_by=sconto_testata_scontrino.c.id)
+std_mapper = mapper(ScontoTestataScontrino,join(t_sconto_scontrino, t_sconto_testata_scontrino),
+    properties={
+    'id':[t_sconto_scontrino.c.id, t_sconto_testata_scontrino.c.id],
+    }, order_by=t_sconto_testata_scontrino.c.id)
