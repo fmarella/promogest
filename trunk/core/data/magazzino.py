@@ -32,7 +32,7 @@ t_magazzino = Table('magazzino', params["metadata"],
         Column('cap',String(20),nullable=True),
         Column('provincia',String(100),nullable=True),
         Column('nazione',String(100),nullable=True),
-        Column('pvcode',String(3),nullable=True),
+        Column('pvcode',String(5),nullable=True),
         Column('data_ultima_stampa_giornale',Date,nullable=True),
         schema=params["schema"]
         )

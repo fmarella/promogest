@@ -24,6 +24,7 @@
 
 import sys
 import md5
+import datetime
 from sqlalchemy import *
 from promogest.Environment import *
 
@@ -32,15 +33,16 @@ t_utente = Table('utente', params["metadata"],
         Column('username', String(50), nullable=False),
         Column('password', String(50), nullable=False),
         Column('email', String(70), nullable=True),
-        Column('registration_date', DateTime,PassiveDefault(func.now())),
-        Column('last_modified', DateTime, onupdate=func.current_timestamp()),
+        Column('registration_date', DateTime,ColumnDefault(datetime.datetime.now)),
+        Column('last_modified', DateTime),
         Column('photo_src', String(150), nullable=True),
         Column('id_role', Integer, ForeignKey(fk_prefix_main+'role.id',onupdate="CASCADE",ondelete="RESTRICT")),
         Column('active', Boolean, default=False),
         Column('schemaa_azienda', String(100), ForeignKey(fk_prefix_main+'azienda.schemaa'), nullable=True),
         Column('tipo_user', String(50), nullable=True),
         Column('id_language', Integer,ForeignKey(fk_prefix_main+'language.id')),
-        schema=params["mainSchema"]
+        Column('email_confirmed', Boolean, default=False),
+        schema=params["mainSchema"],
         )
 t_utente.create(checkfirst=True)
 

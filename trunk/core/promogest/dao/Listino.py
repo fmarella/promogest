@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2013 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -29,7 +29,10 @@ from ListinoMagazzino import ListinoMagazzino
 from ListinoComplessoListino import ListinoComplessoListino
 from migrate import *
 
-listinoT=Table('listino', params['metadata'],schema = params['schema'],autoload=True)
+try:
+    t_listino=Table('listino', params['metadata'],schema = params['schema'],autoload=True)
+except:
+    from data.listino import t_listino
 
 def idListinoGet():
     if tipo_eng == "postgresql":
@@ -134,25 +137,25 @@ class Listino(Dao):
 
     def filter_values(self,k,v):
         if k=='id' or k=='idListino':
-            dic= {k:listinoT.c.id ==v}
+            dic= {k:t_listino.c.id ==v}
         elif k =='listinoAttuale':
-            dic= {k:listinoT.c.listino_attuale ==v}
+            dic= {k:t_listino.c.listino_attuale ==v}
         elif k=='denominazione':
-            dic= {k:listinoT.c.denominazione.ilike("%"+v+"%")}
+            dic= {k:t_listino.c.denominazione.ilike("%"+v+"%")}
         elif k=='denominazioneEM':
-            dic= {k:listinoT.c.denominazione ==v}
+            dic= {k:t_listino.c.denominazione ==v}
         elif k=='dataListino':
-            dic= {k:listinoT.c.data_listino ==v}
+            dic= {k:t_listino.c.data_listino ==v}
         elif k=='visibileCheck':
-            dic= {k:listinoT.c.visible ==None}
+            dic= {k:t_listino.c.visible ==None}
         elif k=='visibili':
-            dic= {k:listinoT.c.visible ==v}
+            dic= {k:t_listino.c.visible ==v}
         return  dic[k]
 
 
-std_mapper = mapper(Listino, listinoT, properties={
+std_mapper = mapper(Listino, t_listino, properties={
     "listino_categoria_cliente" :relation(ListinoCategoriaCliente, backref="listino"),
     "listino_magazzino" :relation(ListinoMagazzino, backref="listino"),
     "listino_complesso":relation(ListinoComplessoListino,primaryjoin=
-                        ListinoComplessoListino.id_listino==listinoT.c.id, backref="listino")},
-        order_by=listinoT.c.id)
+                        ListinoComplessoListino.id_listino==t_listino.c.id, backref="listino")},
+        order_by=t_listino.c.id)

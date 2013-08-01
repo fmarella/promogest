@@ -24,9 +24,9 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import params, workingYear, conf
-from Dao import Dao
-from Articolo import Articolo
-from Magazzino import Magazzino
+from promogest.dao.Dao import Dao
+from promogest.dao.Articolo import Articolo , t_articolo
+from promogest.dao.Magazzino import Magazzino
 from promogest.dao.Fornitura import Fornitura
 from promogest.dao.Riga import Riga
 from promogest.dao.CodiceABarreArticolo import CodiceABarreArticolo
@@ -37,7 +37,13 @@ if posso("PW"):
     from promogest.modules.PromoWear.dao.ArticoloTagliaColore import \
                                                     ArticoloTagliaColore
 
-#TODO: This Dao is a mess!
+
+try:
+    t_stoccaggio = Table('stoccaggio', params['metadata'], schema=params['schema'],
+                autoload=True)
+except:
+    from data.stoccaggio import t_stoccaggio
+
 
 
 class Stoccaggio(Dao):
@@ -84,26 +90,27 @@ class Stoccaggio(Dao):
         return self.giacenza[0]
     valoreGiacenza = property(_getValoreGiacenza, )
 
-    def _codiceArticolo(self):
+    @property
+    def codice_articolo(self):
         if self.arti:
             return self.arti.codice
         else:
             return ""
-    codice_articolo = property(_codiceArticolo)
 
-    def _denoArticolo(self):
+    @property
+    def articolo(self):
         if self.arti:
             return self.arti.denominazione
         else:
             return ""
-    articolo = property(_denoArticolo)
 
-    def _magazzino(self):
+    @property
+    def magazzino(self):
         if self.arti:
             return self.maga.denominazione
         else:
             return ""
-    magazzino = property(_magazzino)
+
 
     if posso("SL"):
         from promogest.modules.SchedaLavorazione.dao.RigaSchedaOrdinazione\
@@ -127,6 +134,7 @@ class Stoccaggio(Dao):
                 return t
 
         impegnato_su_lavorazione = property(_impegnatoSuLavorazione)
+
 
     if hasattr(conf, "PromoWear") and getattr(
                                     conf.PromoWear, 'mod_enable') == "yes":
@@ -178,110 +186,101 @@ class Stoccaggio(Dao):
                 return self.arti.anno
         anno = property(_anno)
 
-        def _stagione(self):
+        @property
+        def stagione(self):
             if self.arti:
                 return self.arti.stagione
-        stagione = property(_stagione)
 
-        def _genere(self):
+        @property
+        def genere(self):
             if self.arti:
                 return self.arti.genere
-        genere = property(_genere)
 
     def filter_values(self, k, v):
         if k == 'idArticolo':
-            dic = {k: stoc.c.id_articolo == v}
+            dic = {k: t_stoccaggio.c.id_articolo == v}
         elif k == "idArticoloList":
-            dic = {k: stoc.c.id_articolo.in_(v)}
+            dic = {k: t_stoccaggio.c.id_articolo.in_(v)}
         elif k == 'idMagazzino':
-            dic = {k: stoc.c.id_magazzino == v}
+            dic = {k: t_stoccaggio.c.id_magazzino == v}
         elif k == 'articolo':
-            dic = {k: and_(stoc.c.id_articolo == Articolo.id,
+            dic = {k: and_(t_stoccaggio.c.id_articolo == Articolo.id,
                             Articolo.denominazione.ilike("%" + v + "%"))}
         elif k == 'codice':
-            dic = {k: and_(stoc.c.id_articolo == Articolo.id,
+            dic = {k: and_(t_stoccaggio.c.id_articolo == Articolo.id,
                             Articolo.codice.ilike("%" + v + "%"))}
         elif k == 'codiceABarre':
-            dic = {k: and_(stoc.c.id_articolo == Articolo.id,
+            dic = {k: and_(t_stoccaggio.c.id_articolo == Articolo.id,
                             Articolo.id == CodiceABarreArticolo.id_articolo,
                             CodiceABarreArticolo.codice.ilike("%" + v + "%"))}
         elif k == 'produttore':
-            dic = {k: and_(stoc.c.id_articolo == Articolo.id,
+            dic = {k: and_(t_stoccaggio.c.id_articolo == Articolo.id,
                             Articolo.produttore.ilike("%" + v + "%"))}
         elif k == 'codiceArticoloFornitoreEM':
-            dic = {k: and_(stoc.c.id_articolo == Articolo.id,
+            dic = {k: and_(t_stoccaggio.c.id_articolo == Articolo.id,
                             Articolo.id == Fornitura.id_articolo,
                             Fornitura.codice_articolo_fornitore == v)}
         elif k == 'codiceArticoloFornitore':
-            dic = {k: and_(stoc.c.id_articolo == Articolo.id,
+            dic = {k: and_(t_stoccaggio.c.id_articolo == Articolo.id,
                     Articolo.id == Fornitura.id_articolo,
                     Fornitura.codice_articolo_fornitore.ilike("%" + v + "%"))}
         elif k == 'idFamiglia':
-            dic = {k: and_(stoc.c.id_articolo == Articolo.id,
+            dic = {k: and_(t_stoccaggio.c.id_articolo == Articolo.id,
                             Articolo.id_famiglia_articolo == v)}
         elif k == 'idCategoria':
-            dic = {k: and_(stoc.c.id_articolo == Articolo.id,
+            dic = {k: and_(t_stoccaggio.c.id_articolo == Articolo.id,
                             Articolo.id_categoria_articolo == v)}
         elif k == 'idStato':
-            dic = {k: and_(stoc.c.id_articolo == Articolo.id,
+            dic = {k: and_(t_stoccaggio.c.id_articolo == Articolo.id,
                             Articolo.id_stato_articolo == v)}
         elif k == 'cancellato':
-            dic = {k: or_(and_(stoc.c.id_articolo == Articolo.id,
+            dic = {k: or_(and_(t_stoccaggio.c.id_articolo == Articolo.id,
                             Articolo.cancellato != v))}
         elif posso("PW"):
             if k == 'figliTagliaColore':
-                dic = {k: and_(stoc.c.id_articolo == Articolo.id,
+                dic = {k: and_(t_stoccaggio.c.id_articolo == Articolo.id,
                         Articolo.id == ArticoloTagliaColore.id_articolo,
                         ArticoloTagliaColore.id_articolo_padre == None)}
             elif k == 'idTaglia':
-                dic = {k: and_(stoc.c.id_articolo == Articolo.id,
+                dic = {k: and_(t_stoccaggio.c.id_articolo == Articolo.id,
                         Articolo.id == ArticoloTagliaColore.id_articolo,
                         ArticoloTagliaColore.id_taglia == v)}
             elif k == 'idModello':
-                dic = {k: and_(stoc.c.id_articolo == Articolo.id,
+                dic = {k: and_(t_stoccaggio.c.id_articolo == Articolo.id,
                             Articolo.id == ArticoloTagliaColore.id_articolo,
                             ArticoloTagliaColore.id_modello == v)}
             elif k == 'idGruppoTaglia':
-                dic = {k: and_(stoc.c.id_articolo == Articolo.id,
+                dic = {k: and_(t_stoccaggio.c.id_articolo == Articolo.id,
                             Articolo.id == ArticoloTagliaColore.id_articolo,
                             ArticoloTagliaColore.id_gruppo_taglia == v)}
             elif k == 'padriTagliaColore':
-                dic = {k: and_(stoc.c.id_articolo == Articolo.id,
+                dic = {k: and_(t_stoccaggio.c.id_articolo == Articolo.id,
                             Articolo.id == ArticoloTagliaColore.id_articolo,
                             ArticoloTagliaColore.id_articolo_padre != None)}
             elif k == 'idColore':
-                dic = {k: and_(stoc.c.id_articolo == Articolo.id,
+                dic = {k: and_(t_stoccaggio.c.id_articolo == Articolo.id,
                             Articolo.id == ArticoloTagliaColore.id_articolo,
                             ArticoloTagliaColore.id_colore == v)}
             elif k == 'idStagione':
-                dic = {k: and_(stoc.c.id_articolo == Articolo.id,
+                dic = {k: and_(t_stoccaggio.c.id_articolo == Articolo.id,
                             Articolo.id == ArticoloTagliaColore.id_articolo,
                             ArticoloTagliaColore.id_stagione == v)}
             elif k == 'idAnno':
-                dic = {k: and_(stoc.c.id_articolo == Articolo.id,
+                dic = {k: and_(t_stoccaggio.c.id_articolo == Articolo.id,
                             Articolo.id == ArticoloTagliaColore.id_articolo,
                             ArticoloTagliaColore.id_anno == v)}
             elif k == 'idGenere':
-                dic = {k: and_(stoc.c.id_articolo == Articolo.id,
+                dic = {k: and_(t_stoccaggio.c.id_articolo == Articolo.id,
                             Articolo.id == ArticoloTagliaColore.id_articolo,
                             ArticoloTagliaColore.id_genere == v)}
         return  dic[k]
 
-articolo = Table('articolo',
-        params['metadata'],
-        schema=params['schema'],
-        autoload=True)
 
-stoc = Table('stoccaggio',
-        params['metadata'],
-        schema=params['schema'],
-        autoload=True)
-
-std_mapper = mapper(Stoccaggio, stoc, properties={
+std_mapper = mapper(Stoccaggio, t_stoccaggio, properties={
         "arti": relation(Articolo,
-                primaryjoin=stoc.c.id_articolo == articolo.c.id,
+                primaryjoin=t_stoccaggio.c.id_articolo == t_articolo.c.id,
                 backref="stoccaggio"),
         "maga": relation(Magazzino,
-                primaryjoin=stoc.c.id_magazzino == Magazzino.id,
+                primaryjoin=t_stoccaggio.c.id_magazzino == Magazzino.id,
                 backref="stoccaggio"),
-        }, order_by=stoc.c.id)
+        }, order_by=t_stoccaggio.c.id)

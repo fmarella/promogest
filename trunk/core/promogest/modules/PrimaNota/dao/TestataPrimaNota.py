@@ -28,22 +28,10 @@ from promogest.dao.DaoUtils import *
 from promogest.lib.utils import *
 
 
-try:
-    testataprimanota = Table('testata_prima_nota',
+testataprimanota = Table('testata_prima_nota',
         params['metadata'],
         schema = params['schema'],
         autoload=True)
-except:
-    testataprimanota = Table('testata_prima_nota',
-        params["metadata"],
-        Column('id', Integer, primary_key=True),
-        Column('numero', Integer, nullable=False),
-        Column('note', Text, nullable=True),
-        Column('data_inizio', DateTime, nullable=True),
-        Column('data_fine', DateTime, nullable=True),
-        schema=params["schema"],
-        useexisting=True)
-    testataprimanota.create(checkfirst=True)
 
 from promogest.modules.PrimaNota.dao.RigaPrimaNota import RigaPrimaNota
 

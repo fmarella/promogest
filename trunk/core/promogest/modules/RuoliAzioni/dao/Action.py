@@ -33,32 +33,7 @@ try:
             schema = params['mainSchema'],
             autoload=True)
 except:
-    if tipodb == "sqlite":
-        t_action = Table('action', params["metadata"],
-            Column('id', Integer, primary_key=True),
-            Column('denominazione_breve', String(25), nullable=False),
-            Column('denominazione', String(200), nullable=False),
-            schema=params["mainSchema"],
-            useexisting=True)
-        t_action.create(checkfirst=True)
-        s= select([t_action.c.denominazione_breve]).execute().fetchall()
-        if (u'LOGIN',) not in s or s==[]:
-            azioni  = t_action.insert()
-            azioni.execute(denominazione_breve="LOGIN", denominazione="Puo' effettuare il login nell'applicazione")
-            azioni.execute(denominazione_breve="DOCUMENTI", denominazione="Puo' accedere alla sezione documenti")
-            azioni.execute(denominazione_breve="SALVA", denominazione="Puo' effettuare degli inserimenti nell'applicazione")
-            azioni.execute(denominazione_breve="MODIFICA", denominazione="Puo' effettuare delle modifiche ai dati nel Database")
-            azioni.execute(denominazione_breve="INSERIMENTO", denominazione="Puo' effettuare degli inserimenti nel database")
-            azioni.execute(denominazione_breve="PARAMETRI", denominazione="Gestione parametri ")
-            azioni.execute(denominazione_breve="RUOLI", denominazione="Gestione Ruoli")
-            azioni.execute(denominazione_breve="ARTICOLI", denominazione="Gestione articoli")
-            azioni.execute(denominazione_breve="LISTINI", denominazione="Accesso alla sezione Listini")
-            azioni.execute(denominazione_breve="DETTAGLIO", denominazione="Accesso al modulo al dettaglio")
-            azioni.execute(denominazione_breve="ANAGRAFICHE", denominazione="Accesso alla sezione Anagrafiche del Programma")
-            azioni.execute(denominazione_breve="MAGAZZINI", denominazione="Accesso alla sezione Magazzini")
-            azioni.execute(denominazione_breve="PROMEMORIA", denominazione="Accesso alla sezione promemoria")
-            azioni.execute(denominazione_breve="CONFIGURAZIONE", denominazione="Puo' effettuare modifiche alla configurazione")
-            azioni.execute(denominazione_breve="PRIMANOTA", denominazione="Accesso alla sezione prima nota cassa")
+    from data.action import t_action
 
 
 class Action(Dao):
@@ -74,10 +49,3 @@ class Action(Dao):
         return  dic[k]
 
 std_mapper = mapper(Action, t_action, order_by=t_action.c.id)
-
-#pn = Action().select(denominazione_breve = "PRIMANOTA")
-#if not pn:
-    #a = Action()
-    #a.denominazione_breve = "PRIMANOTA"
-    #a.denominazione =  "Accesso alla sezione prima nota cassa"
-    #a.persist()

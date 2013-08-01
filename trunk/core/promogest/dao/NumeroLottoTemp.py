@@ -26,20 +26,11 @@ from promogest.Environment import *
 from promogest.dao.RigaMovimento import RigaMovimento, t_riga_movimento
 from Dao import Dao
 
-try:
-    numerolottotemp = Table('numero_lotto_temp',
+numerolottotemp = Table('numero_lotto_temp',
                 params['metadata'],
                 schema = params['schema'],
                 autoload=True)
-except:
-    numerolottotemp = Table('numero_lotto_temp', params['metadata'],
-            Column('id', Integer, primary_key=True),
-            Column('id_riga_movimento_vendita_temp', Integer,
-                ForeignKey(fk_prefix + 'riga_movimento.id'), nullable=False),
-            Column('lotto_temp', String(50), nullable=False),
-            Column('data_lotto_temp', DateTime, nullable=True),
-            schema=params["schema"])
-    numerolottotemp.create(checkfirst=True)
+
 
 class NumeroLottoTemp(Dao):
 

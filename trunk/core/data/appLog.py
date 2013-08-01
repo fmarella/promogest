@@ -32,23 +32,6 @@ class AppLogDb(object):
         self.debug = debug
 
     def create(self):
-        #utenteTable = Table('utente',self.metadata, autoload=True, schema=self.mainSchema)
-        #app_table = Table('application_log', self.metadata,
-                #Column('id', Integer, primary_key=True),
-                #Column('id_utente', Integer,ForeignKey(self.mainSchema+'.utente.id'), nullable=False),
-                #Column('utentedb', String(100), nullable=False),
-                #Column('schema', String(100), nullable=False),
-                #Column('level', String(1)),
-                #Column('object', String(300), nullable=True),
-                #Column('message', String(1000), nullable=True),
-                #Column('strvalue', String(100), nullable=True),
-                #Column('value', Integer, nullable=True),
-                #Column('registration_date', DateTime,PassiveDefault(func.now())),
-                #Column('pkid', String(100), nullable=True),
-                #schema=self.mainSchema
-                #)
-        #app_table.create(checkfirst=True)
-
         app_table = Table('app_log', self.metadata,
             Column('id', Integer, primary_key=True),
             Column('id_utente', Integer),

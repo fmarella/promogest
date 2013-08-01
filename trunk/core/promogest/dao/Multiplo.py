@@ -23,9 +23,19 @@
 
 from sqlalchemy import Table
 from sqlalchemy.orm import mapper, relation
-from promogest.Environment import params, conf
-from UnitaBase import UnitaBase
+from promogest.Environment import *
+from UnitaBase import UnitaBase , t_unita_base
 from Dao import Dao
+
+
+
+try:
+    t_multiplo = Table('multiplo',
+                   params['metadata'],
+                   schema=params['schema'],
+                   autoload=True)
+except:
+    from data.multiplo import t_multiplo
 
 
 class Multiplo(Dao):
@@ -113,12 +123,7 @@ class Multiplo(Dao):
             if self.arti:
                 return self.arti.genere
 
-t_multiplo = Table('multiplo',
-                   params['metadata'],
-                   schema=params['schema'],
-                   autoload=True)
-
 std_mapper = mapper(Multiplo, t_multiplo, properties={
-        "uniba":relation(UnitaBase, primaryjoin=t_multiplo.c.id_unita_base==UnitaBase.id),
+        "uniba":relation(UnitaBase, primaryjoin=t_multiplo.c.id_unita_base==t_unita_base.c.id),
         #"arti":relation(Articolo,primaryjoin=multiplo.c.id_articolo==Articolo.id)
     }, order_by=t_multiplo.c.id)

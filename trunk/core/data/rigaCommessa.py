@@ -22,42 +22,17 @@
 
 
 from sqlalchemy import *
+from promogest.Environment import *
 
-class RigaCommessaDb(object):
-
-    def __init__(self, schema = None,mainSchema=None, metadata=None, session=None,debug=False):
-        self.metadata = metadata
-        self.session_sl = session
-        self.schema = schema
-        self.debug = debug
-
-    def create(self):
-        testatacommessaTable = Table('testata_commessa', self.metadata, autoload=True, schema=self.schema)
-
-
-        if not self.schema:
-            testatacommessaFK ='testata_commessa.id'
-
-        else:
-            testatacommessaFK = self.schema+'.testata_commessa.id'
-
-        rigacommessa = Table('riga_commessa', self.metadata,
-                Column('id', Integer, primary_key=True),
-                Column('numero', Integer, nullable=False),
-                Column('denominazione', String(300), nullable=False),
-                Column('id_testata_commessa', Integer,ForeignKey(testatacommessaFK,onupdate="CASCADE",ondelete="CASCADE")),
-    #            Column('numero', Integer, nullable=False),
-                Column('data_registrazione', DateTime, nullable=True),
-                Column('dao_class', String(100), nullable=True),
-                Column('note',Text,nullable=True),
-                Column('id_dao', Integer, nullable=True),
-                schema=self.schema,
-                useexisting=True)
-        rigacommessa.create(checkfirst=True)
-
-
-    def update(self, req=None, arg=None):
-        pass
-
-    def alter(self, req=None, arg=None):
-        pass
+t_riga_commessa = Table('riga_commessa', params["metadata"],
+        Column('id', Integer, primary_key=True),
+        Column('numero', Integer, nullable=False),
+        Column('denominazione', String(300), nullable=False),
+        Column('id_testata_commessa', Integer,ForeignKey(fk_prefix+'testata_commessa.id',onupdate="CASCADE",ondelete="CASCADE")),
+        Column('data_registrazione', DateTime, nullable=True),
+        Column('dao_class', String(100), nullable=True),
+        Column('note',Text,nullable=True),
+        Column('id_dao', Integer, nullable=True),
+        schema=params["schema"],
+        useexisting=True)
+t_riga_commessa.create(checkfirst=True)

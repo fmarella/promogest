@@ -423,7 +423,6 @@ def mostraArticoloPart(anaedit, id, art=None, quan=None):
             anaedit._righe[0]["idUnitaBase"] = articolo["idUnitaBase"]
             anaedit._righe[0]["unitaBase"] = articolo["unitaBase"]
             anaedit.unitaBaseLabel.set_text(anaedit._righe[0]["unitaBase"])
-            #print " FIN QUI SIAMO AL CAZZEGGIO "
             if ((anaedit._fonteValore == "acquisto_iva") or  (anaedit._fonteValore == "acquisto_senza_iva")):
                 costoLordo = str(articolo['valori']["prezzoLordo"])
                 if costoLordo:

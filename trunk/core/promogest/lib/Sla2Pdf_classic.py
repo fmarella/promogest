@@ -930,7 +930,6 @@ class Sla2Pdf_classic(object):
                             # Font size
                             if self.version:
                                 try:
-                                    print "TEEEEE", itext.get('FONTSIZE')
                                     fontSize = float(itext.get('FONTSIZE'))
                                 except:
                                     fontSize = float(10)

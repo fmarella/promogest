@@ -23,20 +23,20 @@ from promogest.lib.utils import posso
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
-from Dao import Dao
-from UnitaBase import UnitaBase, unitabase
-from Multiplo import Multiplo
+from promogest.dao.Dao import Dao
+from promogest.dao.UnitaBase import UnitaBase, t_unita_base
+from promogest.dao.Multiplo import Multiplo
 from promogest.dao.DaoUtils import giacenzaArticolo, codeIncrement
 from promogest.modules.GestioneKit.dao.ArticoloKit import ArticoloKit
-from Imballaggio import Imballaggio, imballaggio
-from AliquotaIva import AliquotaIva, t_aliquota_iva
-from StatoArticolo import StatoArticolo, stato_articolo
+from promogest.dao.Imballaggio import Imballaggio, t_imballaggio
+from promogest.dao.AliquotaIva import AliquotaIva, t_aliquota_iva
+from promogest.dao.StatoArticolo import StatoArticolo, t_stato_articolo
 #from Immagine import Immagine
 
-from FamigliaArticolo import FamigliaArticolo, famiglia
-from CategoriaArticolo import CategoriaArticolo, categoria_articolo
-from CodiceABarreArticolo import CodiceABarreArticolo,codice_barre_articolo
-from Fornitura import Fornitura, t_fornitura
+from promogest.dao.FamigliaArticolo import FamigliaArticolo, t_famiglia_articolo
+from promogest.dao.CategoriaArticolo import CategoriaArticolo, t_categoria_articolo
+from promogest.dao.CodiceABarreArticolo import CodiceABarreArticolo, t_codice_barre_articolo
+from promogest.dao.Fornitura import Fornitura, t_fornitura
 from promogest.dao.ScontoVenditaDettaglio import ScontoVenditaDettaglio
 from promogest.dao.ScontoVenditaIngrosso import ScontoVenditaIngrosso
 
@@ -54,6 +54,12 @@ if hasattr(conf, "PromoWear") and \
                                     import StagioneAbbigliamento
     from promogest.modules.PromoWear.dao.GenereAbbigliamento \
                                     import GenereAbbigliamento
+
+
+try:
+    t_articolo = Table('articolo', meta, schema=params["schema"], autoload=True)
+except:
+    from data.articolo import t_articolo
 
 
 class Articolo(Dao):
@@ -86,9 +92,12 @@ class Articolo(Dao):
             return ""
 
     def getGiacenza(self):
-        giace = giacenzaArticolo(year=workingYear,
+        try:
+            giace = giacenzaArticolo(year=workingYear,
                                     idArticolo=self.id,
                                     allMag=True)[0]
+        except:
+            giace = 0
         return giace
 
     @property
@@ -696,40 +705,38 @@ class Articolo(Dao):
                         AssociazioneArticolo.id_figlio == t_articolo.c.id)}
         return  dic[k]
 
-t_articolo = Table('articolo', meta, schema=params["schema"], autoload=True)
+
 
 std_mapper = mapper(
     Articolo,
     t_articolo,
     properties=dict(
         cod_barre=relation(CodiceABarreArticolo,
-            primaryjoin=t_articolo.c.id == codice_barre_articolo.c.id_articolo,
+            primaryjoin=t_articolo.c.id == t_codice_barre_articolo.c.id_articolo,
             backref="arti",
             cascade="all, delete",
             lazy='joined'),
         imba=relation(Imballaggio,
-            primaryjoin=t_articolo.c.id_imballaggio == imballaggio.c.id),
+            primaryjoin=t_articolo.c.id_imballaggio == t_imballaggio.c.id),
         ali_iva=relation(AliquotaIva,
             primaryjoin=(t_articolo.c.id_aliquota_iva == t_aliquota_iva.c.id)),
         den_famiglia=relation(FamigliaArticolo,
-            primaryjoin=t_articolo.c.id_famiglia_articolo == famiglia.c.id,lazy='joined'),
+            primaryjoin=t_articolo.c.id_famiglia_articolo == t_famiglia_articolo.c.id,lazy='joined'),
         den_categoria=relation(CategoriaArticolo,
-            primaryjoin=(t_articolo.c.id_categoria_articolo == categoria_articolo.c.id),lazy='joined'),
+            primaryjoin=(t_articolo.c.id_categoria_articolo == t_categoria_articolo.c.id),lazy='joined'),
         den_unita=relation(UnitaBase,
-            primaryjoin=t_articolo.c.id_unita_base == unitabase.c.id, lazy='joined'),
+            primaryjoin=t_articolo.c.id_unita_base == t_unita_base.c.id),
         #image=relation(Immagine,primaryjoin= t_articolo.c.id_immagine==img.c.id,
                             #cascade="all, delete",
                             #backref="arti"),
         sa=relation(StatoArticolo,
-            primaryjoin=(t_articolo.c.id_stato_articolo == stato_articolo.c.id)),
+            primaryjoin=(t_articolo.c.id_stato_articolo == t_stato_articolo.c.id)),
         fornitur=relation(Fornitura,
             primaryjoin=(t_fornitura.c.id_articolo == t_articolo.c.id),
                 backref="arti",lazy='dynamic'),
         multi=relation(Multiplo,
             primaryjoin=(Multiplo.id_articolo == t_articolo.c.id),
                 backref="arti"),
-
-
 
         id_immagine = deferred(t_articolo.c.id_immagine, group='id_unita_base'),
         id_unita_base = deferred(t_articolo.c.id_unita_base),
@@ -753,6 +760,7 @@ std_mapper = mapper(
         contenuto = deferred(t_articolo.c.contenuto, group='id_unita_base'),
         quantita_minima = deferred(t_articolo.c.quantita_minima, group='id_unita_base'),
             ), order_by=t_articolo.c.codice)
+
 if hasattr(conf, "PromoWear")\
             and getattr(conf.PromoWear, 'mod_enable') == "yes":
     from promogest.modules.PromoWear.dao.ArticoloTagliaColore \

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2013 by Promotux
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -24,6 +24,14 @@ from sqlalchemy.orm import mapper
 from promogest.Environment import params
 from Dao import Dao
 
+try:
+    t_codice_barre_articolo=Table('codice_a_barre_articolo',
+                            params['metadata'],
+                            schema = params['schema'],
+                            autoload=True)
+except:
+    from data.codiceBarreArticolo import t_codice_barre_articolo
+
 class CodiceABarreArticolo(Dao):
 
     def __init__(self, req=None):
@@ -31,21 +39,16 @@ class CodiceABarreArticolo(Dao):
 
     def filter_values(self,k,v):
         if k == 'codice':
-            dic = {k:codice_barre_articolo.c.codice.ilike("%"+v+"%")}
+            dic = {k:t_codice_barre_articolo.c.codice.ilike("%"+v+"%")}
         elif k == 'codiceEM':
-            dic = {k:codice_barre_articolo.c.codice == v}
+            dic = {k:t_codice_barre_articolo.c.codice == v}
         elif k == 'idArticolo':
-            dic = {k:codice_barre_articolo.c.id_articolo == v}
+            dic = {k:t_codice_barre_articolo.c.id_articolo == v}
         elif k == 'idArticoloNone':
-            dic = {k:codice_barre_articolo.c.id_articolo == None}
+            dic = {k:t_codice_barre_articolo.c.id_articolo == None}
         elif k == 'primario':
-            dic = {k:codice_barre_articolo.c.primario ==v}
+            dic = {k:t_codice_barre_articolo.c.primario ==v}
         return  dic[k]
 
-codice_barre_articolo=Table('codice_a_barre_articolo',
-                            params['metadata'],
-                            schema = params['schema'],
-                            autoload=True)
-
-std_mapper = mapper(CodiceABarreArticolo, codice_barre_articolo,
-                                        order_by=codice_barre_articolo.c.codice)
+std_mapper = mapper(CodiceABarreArticolo, t_codice_barre_articolo,
+                                        order_by=t_codice_barre_articolo.c.codice)

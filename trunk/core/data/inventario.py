@@ -21,39 +21,17 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 from sqlalchemy import *
-
-class InventarioDb(object):
-
-    def __init__(self, schema = None,mainSchema=None, metadata=None, session=None,debug=False):
-        self.metadata = metadata
-        self.schema = schema
-        self.debug = debug
-
-    def create(self):
-        azTable = Table('magazzino', self.metadata, autoload=True, schema=self.schema)
-        bbTable = Table('articolo', self.metadata, autoload=True, schema=self.schema)
-        if self.schema:
-            magazzinoFK =self.schema+'.magazzino.id'
-            articoloFK =self.schema+'.articolo.id'
-        else:
-            magazzinoFK ='magazzino.id'
-            articoloFK = 'articolo.id'
+from promogest.Environment import *
 
 
-        inventarioTable = Table('inventario', self.metadata,
-                Column('id',Integer,primary_key=True),
-                Column('anno',Integer,nullable=False),
-                Column('id_magazzino',Integer,ForeignKey(magazzinoFK,onupdate="CASCADE",ondelete="CASCADE"),nullable=False),
-                Column('id_articolo',Integer,ForeignKey(articoloFK,onupdate="CASCADE",ondelete="CASCADE"),nullable=False),
-                Column('quantita',Numeric(16,4),nullable=True),
-                Column('valore_unitario',Numeric(16,4),nullable=True),
-                Column('data_aggiornamento',DateTime,nullable=True),
-                schema=self.schema
-                )
-        inventarioTable.create(checkfirst=True)
-
-    def update(self, req=None, arg=None):
-        pass
-
-    def alter(self, req=None, arg=None):
-        pass
+t_inventario = Table('inventario', params["metadata"],
+        Column('id',Integer,primary_key=True),
+        Column('anno',Integer,nullable=False),
+        Column('id_magazzino',Integer,ForeignKey(fk_prefix+'magazzino.id',onupdate="CASCADE",ondelete="CASCADE"),nullable=False),
+        Column('id_articolo',Integer,ForeignKey(fk_prefix+'articolo.id',onupdate="CASCADE",ondelete="CASCADE"),nullable=False),
+        Column('quantita',Numeric(16,4),nullable=True),
+        Column('valore_unitario',Numeric(16,4),nullable=True),
+        Column('data_aggiornamento',DateTime,nullable=True),
+        schema=params["schema"]
+        )
+t_inventario.create(checkfirst=True)

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2013 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -34,6 +34,13 @@ from promogest.dao.VariazioneListino import VariazioneListino
 from promogest.dao.ClienteVariazioneListino import t_cliente_variazione_listino
 from promogest.lib.utils import posso
 
+try:
+    t_cliente = Table('cliente',
+              params['metadata'],
+              schema=params['schema'],
+              autoload=True)
+except:
+    from data.cliente import t_cliente
 
 def getNuovoCodiceCliente():
     """
@@ -155,8 +162,6 @@ class Cliente(Dao):
 
     @property
     def password_login(self):
-        """
-        """
         if self.id:
             user = User().getRecord(id=self.id_user)
             if user and user.tipo_user == "PLAIN":
@@ -268,50 +273,19 @@ class Cliente(Dao):
                 #dic = {k:None}
         return dic[k]
 
-t_cliente = Table('cliente',
-              params['metadata'],
-              schema=params['schema'],
-              autoload=True)
-
-colonne = get_columns(t_cliente)
-
-if 'pagante' not in colonne:
-    col = Column('pagante', Boolean, default=False)
-    col.create(t_cliente, populate_default=True)
-    delete_pickle()
-
-if 'id_aliquota_iva' not in colonne:
-    col = Column('id_aliquota_iva', Integer, nullable=True)
-    col.create(t_cliente, populate_default=True)
-    delete_pickle()
-
-
-# Sistema di definizione della tipologia di cliente
-#opzioni PF ( Persona fisica ) o PG
-# PG ( Persona Giusridica )
-
-if 'tipo' not in colonne:
-    col = Column('tipo', String(2), default="PG")
-    col.create(t_cliente, populate_default=True)
-    delete_pickle()
-
-j = join(t_cliente, t_persona_giuridica)
-
 std_mapper = mapper(Cliente,
-                    j,
+                    join(t_cliente, t_persona_giuridica),
                     properties={
-
                         'id': [t_cliente.c.id, t_persona_giuridica.c.id],
                         'cliente_categoria_cliente': relation(ClienteCategoriaCliente,cascade="all, delete",
                                                              backref='cliente_',lazy='joined'),
-                        "dm": relation(DestinazioneMerce,cascade="all, delete",),
+                        "dm": relation(DestinazioneMerce,cascade="all, delete"),
                         'vl': relation(VariazioneListino,
-                            lazy='joined',
                             secondary=t_cliente_variazione_listino)
                     },
                     order_by=t_cliente.c.id)
 
-for cli in Cliente().select(batchSize=None):
-    if cli.cancellato is None:
-        cli.cancellato = False
-        cli.persist()
+#for cli in Cliente().select(batchSize=None):
+    #if cli.cancellato is None:
+        #cli.cancellato = False
+        #cli.persist()

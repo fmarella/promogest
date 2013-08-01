@@ -427,12 +427,10 @@ class SlaTpl2Sla(SlaParser):
                                     value = Sla2pdfUtils.getNowValue(tagkey)
                                 else:
                                     if self.cycle <= (len(self.objects) - 1):
-                                        print "COSA SEIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII", self.daos, self.cycle, tagkey
                                         try:
                                             value = self.objects[self.cycle][tagkey] or ''
                                         except:
                                             if "destinazione_merce" in tagkey:
-                                                print "VEDIAMO COSIIIIIIIIIIIIIIIIIIIIII", hasattr(self.daos, "DM")
                                                 if tagkey == "destinazione_merce":
                                                     value = self.daos.DM.denominazione or ""
                                                 elif tagkey == "indirizzo_destinazione_merce":

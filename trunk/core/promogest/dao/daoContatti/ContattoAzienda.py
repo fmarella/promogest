@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012,2011 by Promotux
+#    Copyright (C) 2005-2013 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -25,8 +25,19 @@ from sqlalchemy.orm import *
 from promogest.Environment import *
 from promogest.dao.Dao import Dao
 from promogest.dao.Azienda import Azienda
-from promogest.dao.daoContatti.RecapitoContatto import RecapitoContatto
+from promogest.dao.daoContatti.Contatto import Contatto, t_contatto
+from promogest.dao.daoContatti.RecapitoContatto import RecapitoContatto, t_recapito
 from promogest.dao.daoContatti.ContattoCategoriaContatto import ContattoCategoriaContatto
+
+
+try:
+    t_contatto_azienda=Table('contatto_azienda',
+        params['metadata'],
+        schema = params['schema'],
+        autoload=True)
+except:
+    from data.contattoAzienda import t_contatto_azienda
+
 
 class ContattoAzienda(Dao):
 
@@ -64,30 +75,19 @@ class ContattoAzienda(Dao):
 
     def filter_values(self,k,v):
         dic= {  'idCategoria' : None,
-                'schemaAzienda' : contattoazienda.c.schema_azienda == v,
-                'cognomeNome' : or_(contatto.c.cognome.ilike("%"+v+"%"),contatto.c.nome.ilike("%"+v+"%")),
-                'ruolo': contatto.c.ruolo.ilike("%"+v+"%"),
-                'descrizione': contatto.c.descrizione.ilike("%"+v+"%"),
-                'recapito': and_(contatto.c.id == RecapitoContatto.id_contatto,RecapitoContatto.recapito.ilike("%"+v+"%")),
-                'tipoRecapito': and_(contatto.c.id == RecapitoContatto.id_contatto,RecapitoContatto.tipo_recapito.contains(v)),
+                'schemaAzienda' : t_contatto_azienda.c.schema_azienda == v,
+                'cognomeNome' : or_(t_contatto.c.cognome.ilike("%"+v+"%"),t_contatto.c.nome.ilike("%"+v+"%")),
+                'ruolo': t_contatto.c.ruolo.ilike("%"+v+"%"),
+                'descrizione': t_contatto.c.descrizione.ilike("%"+v+"%"),
+                'recapito': and_(t_contatto.c.id == RecapitoContatto.id_contatto,RecapitoContatto.recapito.ilike("%"+v+"%")),
+                'tipoRecapito': and_(t_contatto.c.id == RecapitoContatto.id_contatto,RecapitoContatto.tipo_recapito.contains(v)),
             }
         return dic[k]
 
-
-contatto=Table('contatto',
-        params['metadata'],
-        schema = params['schema'],
-        autoload=True)
-
-contattoazienda=Table('contatto_azienda',
-        params['metadata'],
-        schema = params['schema'],
-        autoload=True)
-
-j = join(contatto, contattoazienda)
-std_mapper = mapper(ContattoAzienda, j,properties={
-                'id':[contatto.c.id, contattoazienda.c.id],
-                'tipo_contatto':[contatto.c.tipo_contatto, contattoazienda.c.tipo_contatto],
+std_mapper = mapper(ContattoAzienda, join(t_contatto, t_contatto_azienda),
+                properties={
+                'id':[t_contatto.c.id, t_contatto_azienda.c.id],
+                'tipo_contatto':[t_contatto.c.tipo_contatto, t_contatto_azienda.c.tipo_contatto],
                 "azienda":relation(Azienda, backref="contatto_azienda")
                 },
-                order_by=contatto.c.id)
+                order_by=t_contatto_azienda.c.id)

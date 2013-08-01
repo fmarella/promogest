@@ -268,7 +268,6 @@ riga_tratteggiata = False,riga_vuota = False, gui=False):
                                 righeDict[r.id_articolo] = [r]
                         else:
                             rrighe.append(r)
-                    #print "OKOKOK", righeDict, rrighe
                     righe = []
                     for r in rrighe:
                         daoRiga = RigaDocumento()

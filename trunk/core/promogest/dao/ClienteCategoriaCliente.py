@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 2011
-#by Promotux di Francesco Meloni snc - http://www.promotux.it/
+#    Copyright (C) 2005-2013 by Promotux
+#                        di Francesco Meloni snc - http://www.promotux.it/
 
-# Author: Francesco Meloni <francesco@promotux.it>
+#    Author: Francesco Meloni  <francesco@promotux.it>
 
 #    This file is part of Promogest.
 
@@ -23,8 +23,18 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
-from Dao import Dao
-from CategoriaCliente import CategoriaCliente
+from promogest.dao.Dao import Dao
+from promogest.dao.CategoriaCliente import CategoriaCliente
+
+try:
+    t_cliente_categoria_cliente=Table('cliente_categoria_cliente',
+                        params['metadata'],
+                        schema = params['schema'],
+                        autoload=True)
+except:
+    from data.clienteCategoriaCliente import t_cliente_categoria_cliente
+
+
 
 class ClienteCategoriaCliente(Dao):
 
@@ -33,18 +43,12 @@ class ClienteCategoriaCliente(Dao):
 
     def filter_values(self,k,v):
         if k =='idCliente':
-            dic= {k : cliente_categoria_cliente.c.id_cliente ==v}
+            dic= {k : t_cliente_categoria_cliente.c.id_cliente ==v}
         elif k =='idCategoriaList':
-            dic= {k : cliente_categoria_cliente.c.id_categoria_cliente.in_(v)}
+            dic= {k : t_cliente_categoria_cliente.c.id_categoria_cliente.in_(v)}
         return  dic[k]
 
-cliente_categoria_cliente=Table('cliente_categoria_cliente',
-                        params['metadata'],
-                        schema = params['schema'],
-                        autoload=True)
-
-std_mapper =mapper(ClienteCategoriaCliente, cliente_categoria_cliente,
+std_mapper =mapper(ClienteCategoriaCliente, t_cliente_categoria_cliente,
             properties={
-            #'cliente':relation(Cliente, backref='cliente_categoria_cliente'),
                 'categoria_cliente':relation(CategoriaCliente, backref='cliente_categoria_cliente'),
-            }, order_by=cliente_categoria_cliente.c.id_cliente)
+            }, order_by=t_cliente_categoria_cliente.c.id_cliente)

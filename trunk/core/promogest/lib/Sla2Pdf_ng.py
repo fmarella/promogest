@@ -230,14 +230,12 @@ class Sla2Pdf_ng(object):
 #            for h in range(0,len(heights),rows):
 #                hei.append(heights[h])
 #            heights = hei
-#        print "MATRIXXXXXXXXXXXXXXXXX", matrix,widths[:columns],heights[:rows], rows
         table=Table(matrix,style=stile,  colWidths=widths[:columns], rowHeights=heights[:rows])
 
         lst.append(table)
         # Effective table size
         sumRows = Sla2pdfUtils.sumRowsFunc(heights,rows)
         sumColumns = Sla2pdfUtils.sumColumnsFunc(widths,columns)
-#        print "MAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", sumRows, sumColumns
         f = Frame(x1=(xpos[0] - self.pageProperties[self.pdfPage][9]),
                     y1=(self.pageProperties[self.pdfPage][7] - ypos[0] - sumRows + self.pageProperties[self.pdfPage][10] - 12),
                     width=sumColumns,

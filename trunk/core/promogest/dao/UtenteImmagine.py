@@ -24,27 +24,12 @@ from sqlalchemy.orm import *
 from promogest.Environment import *
 from promogest.dao.Dao import Dao
 
-immagineTable = Table('immagine', params['metadata'], autoload=True, schema=params['schema'])
-utenteTable = Table('utente', params['metadata'], autoload=True, schema=params['mainSchema'])
 
-try:
-    utenteimmagine=Table('utente_immagine',
+utenteimmagine=Table('utente_immagine',
                 params['metadata'],
                 schema = params['schema'],
                 autoload=True)
-except:
-    if params["tipo_db"] == "sqlite":
-        immagineFK = 'immagine.id'
-        utenteFK = 'utente.id'
-    else:
-        immagineFK = params['schema']+'.immagine.id'
-        utenteFK = params['mainSchema']+'.utente.id'
 
-    utenteimmagine = Table('utente_immagine', params['metadata'],
-            Column('id_immagine',Integer,ForeignKey(immagineFK,onupdate="CASCADE",ondelete="CASCADE"),primary_key=True),
-            Column('id_utente',Integer,primary_key=True),
-            schema=params['schema'])
-    utenteimmagine.create(checkfirst=True)
 
 class UtenteImmagine(Dao):
     """ RoleAction class database functions  """

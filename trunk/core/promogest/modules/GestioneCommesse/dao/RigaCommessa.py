@@ -27,25 +27,10 @@ from promogest.dao.Dao import Dao
 from migrate import *
 
 
-try:
-    t_rigacommessa=Table('riga_commessa',
+t_rigacommessa=Table('riga_commessa',
                 params['metadata'],
                 schema = params['schema'],
                 autoload=True)
-except:
-    t_rigacommessa = Table('riga_commessa', params["metadata"],
-            Column('id', Integer, primary_key=True),
-            Column('numero', Integer, nullable=False),
-            Column('denominazione', String(300), nullable=False),
-            Column('id_testata_commessa', Integer,ForeignKey(fk_prefix+'testata_commessa.id',onupdate="CASCADE",ondelete="CASCADE")),
-            Column('data_registrazione', DateTime, nullable=True),
-            Column('dao_class', String(100), nullable=True),
-            Column('note',Text,nullable=True),
-            Column('id_dao', Integer, nullable=True),
-            schema=params["schema"],
-            useexisting=True)
-    t_rigacommessa.create(checkfirst=True)
-
 
 class RigaCommessa(Dao):
 

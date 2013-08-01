@@ -28,6 +28,14 @@ from sqlalchemy.orm import *
 from promogest.Environment import *
 from promogest.dao.Dao import Dao
 
+try:
+    t_tipo_recapito = Table('tipo_recapito',
+                        params['metadata'],
+                        schema = params['mainSchema'],
+                        autoload=True)
+except:
+    from data.tiporecapito import t_tipo_recapito
+
 
 class TipoRecapito(Dao):
 
@@ -35,15 +43,11 @@ class TipoRecapito(Dao):
         Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):
-        dic= { 'denominazione' : tipo_recapito.c.denominazione.ilike("%"+v+"%") }
+        dic= { 'denominazione' : T_tipo_recapito.c.denominazione.ilike("%"+v+"%") }
         return  dic[k]
 
 
-tipo_recapito = Table('tipo_recapito',
-                        params['metadata'],
-                        schema = params['mainSchema'],
-                        autoload=True)
-std_mapper = mapper(TipoRecapito, tipo_recapito, order_by=tipo_recapito.c.denominazione)
+std_mapper = mapper(TipoRecapito, t_tipo_recapito, order_by=t_tipo_recapito.c.denominazione)
 
 recapiti = TipoRecapito().select()
 t = False

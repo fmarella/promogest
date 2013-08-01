@@ -27,28 +27,11 @@ from promogest.dao.Fornitura import Fornitura
 from promogest.dao.RigaMovimento import RigaMovimento, t_riga_movimento
 from Dao import Dao
 
-try:
-    rigamovimentofornitura = Table('riga_movimento_fornitura',
+rigamovimentofornitura = Table('riga_movimento_fornitura',
                 params['metadata'],
                 schema = params['schema'],
                 autoload=True)
-except:
-    rigamovimentofornitura = Table('riga_movimento_fornitura', params['metadata'],
-            Column('id', Integer, primary_key=True),
-            Column('id_articolo', Integer,
-                ForeignKey(fk_prefix + 'articolo.id'),
-                nullable=False),
-            Column('id_riga_movimento_acquisto', Integer,
-                ForeignKey(fk_prefix + 'riga_movimento.id'),
-                nullable=True),
-            Column('id_riga_movimento_vendita', Integer,
-                ForeignKey(fk_prefix + 'riga_movimento.id'),
-                nullable=True),
-            Column('id_fornitura', Integer,
-                ForeignKey(fk_prefix + 'fornitura.id'),
-                nullable=False),
-            schema=params["schema"])
-    rigamovimentofornitura.create(checkfirst=True)
+
 
 class RigaMovimentoFornitura(Dao):
 

@@ -25,17 +25,7 @@ from sqlalchemy.orm import *
 from promogest.Environment import *
 from promogest.dao.Dao import Dao
 
-try:
-    t_stadiocommessa=Table('stadio_commessa', params['metadata'],schema = params['schema'],autoload=True)
-
-except:
-    t_stadiocommessa  = Table('stadio_commessa', params["metadata"],
-            Column('id',Integer,primary_key=True),
-            Column('denominazione',String(100)),
-            schema = params['schema'])
-
-    t_stadiocommessa.create(checkfirst=True)
-
+t_stadiocommessa=Table('stadio_commessa', params['metadata'],schema = params['schema'],autoload=True)
 
 class StadioCommessa(Dao):
 

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012,2011 by Promotux
+#    Copyright (C) 2005-2013 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -44,33 +44,11 @@ azTable = Table('anagrafica_secondaria',
     autoload=True,
     schema = params['schema'])
 
-try:
-    contattoanagraficasecondaria=Table('contatto_anagraficasecondaria',
+contattoanagraficasecondaria=Table('contatto_anagraficasecondaria',
         params['metadata'],
         schema = params['schema'],
         autoload=True)
-except:
 
-    if params["tipo_db"] == "sqlite":
-        contattoFKid ='contatto.id'
-        anagraficasecondariaFK = 'anagrafica_secondaria.id'
-        contattoFKtipocontatto = 'contatto.tipo_contatto'
-    else:
-        contattoFKid = params['schema'] +'.contatto.id'
-        anagraficasecondariaFK = params['schema'] +'.anagrafica_secondaria.id'
-        contattoFKtipocontatto = params['schema'] +'.contatto.tipo_contatto'
-
-
-    contattoanagraficasecondaria = Table('contatto_anagraficasecondaria',
-        params['metadata'],
-        Column('id',Integer,primary_key=True),
-        Column('tipo_contatto',String(50),primary_key=True),
-        Column('id_anagraficasecondaria',Integer,ForeignKey(anagraficasecondariaFK,onupdate="CASCADE",ondelete="RESTRICT"),nullable=False),
-        ForeignKeyConstraint(['id', 'tipo_contatto'],[contattoFKid, contattoFKtipocontatto],onupdate="CASCADE", ondelete="CASCADE"),
-        #CheckConstraint("tipo_contatto = 'fornitore'"),
-        schema = params['schema']
-            )
-    contattoanagraficasecondaria.create(checkfirst=True)
 
 class ContattoAnagraficaSecondaria(Dao):
 

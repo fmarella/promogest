@@ -74,7 +74,6 @@ def connect():
         records = cursor.fetchall()
         st = "CI SONO  ----- {0} ------- CONNESSIONI ATTIVE AL MOMENTO".format(len(records))
         #print st
-        #print "RECORDSSSSSSSSSSSSSSSSSSSSSSSSSS", records
     except Exception, e:
         a = "CONNESSIONE AL DATABASE PRO NON RIUSCITA.\n DETTAGLIO ERRORE: [%s]" % str(e)
         messageInfo(msg=a)

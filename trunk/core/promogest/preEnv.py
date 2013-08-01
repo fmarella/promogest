@@ -65,3 +65,4 @@ azienda = None
 SUB = ""
 buildSchema = None
 conSchemaPromogest2 = True
+schemi_presenti = None

@@ -491,7 +491,6 @@ class StatisticaGenerale(GladeWidget):
                                 .filter(Riga.id_magazzino.in_(self.magazzinoId))\
                                 .filter(Riga.id_articolo == art.id)\
                                 .all()
-                    print "RIGHE DI MOVIMENTO ACQUISTOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO", rigaArticoloMovimentata
                     if not rigaArticoloMovimentata:
                         forni=  leggiFornitura(art.id)
                         valoreAcquisto += (forni["prezzoNetto"]*quantitaVendutaUNO)

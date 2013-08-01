@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
-#                       di Francesco Meloni snc - http://www.promotux.it/
+#    Copyright (C) 2005-2013 by Promotux
+#                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
+
 #    This file is part of Promogest.
 
 #    Promogest is free software: you can redistribute it and/or modify
@@ -33,27 +34,32 @@ from promogest.dao.Articolo import Articolo
 from promogest.dao.UnitaBase import UnitaBase
 from promogest.dao.AliquotaIva import AliquotaIva
 
-t_riga = Table('riga',
+
+
+try:
+    t_riga = Table('riga',
                params['metadata'],
                schema=params['schema'],
                autoload=True)
+except:
+    from data.riga import t_riga
 
-columns_t_riga = get_columns(t_riga)
+#columns_t_riga = get_columns(t_riga)
 
-if "id_iva" not in columns_t_riga:
-    delete_pickle()
-    col = Column('id_iva', Integer)
-    col.create(t_riga)
+#if "id_iva" not in columns_t_riga:
+    #delete_pickle()
+    #col = Column('id_iva', Integer)
+    #col.create(t_riga)
 
-if "posizione" not in columns_t_riga:
-    delete_pickle()
-    col = Column('posizione', Integer)
-    col.create(t_riga)
+#if "posizione" not in columns_t_riga:
+    #delete_pickle()
+    #col = Column('posizione', Integer)
+    #col.create(t_riga)
 
-if "id_riga_padre" not in columns_t_riga:
-    delete_pickle()
-    col = Column('id_riga_padre', Integer)
-    col.create(t_riga)
+#if "id_riga_padre" not in columns_t_riga:
+    #delete_pickle()
+    #col = Column('id_riga_padre', Integer)
+    #col.create(t_riga)
 
 class Riga(Dao):
     """ Mapper to handle the Row Table """

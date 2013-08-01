@@ -31,6 +31,7 @@ t_destinazione_merce = Table('destinazione_merce', params["metadata"],
         Column('localita',String(100),nullable=True),
         Column('cap',String(10),nullable=True),
         Column('provincia',String(50),nullable=True),
+        Column('codice', String(30)),
         Column('id_cliente',Integer,ForeignKey(fk_prefix+'cliente.id',onupdate="CASCADE",ondelete="RESTRICT")),
         schema=params["schema"]
         )

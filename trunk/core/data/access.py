@@ -23,11 +23,12 @@
 from sqlalchemy import *
 from promogest.Environment import *
 
+
 t_access = Table('access', params["metadata"],
-        Column('id',Integer,primary_key=True),
-        Column('id_user',Integer,ForeignKey(fk_prefix+'utente.id',onupdate="CASCADE",ondelete="CASCADE")),
-        Column('login', Date, nullable=True),
-        Column('logout', Date, nullable=True),
+        Column('id', Integer, primary_key=True),
+        Column('id_user',Integer, ForeignKey(fk_prefix_main+'utente.id',onupdate="CASCADE",ondelete="CASCADE")),
+        Column('login', DateTime, nullable=True),
+        Column('logout', DateTime, nullable=True),
         schema=params["schema"]
         )
 t_access.create(checkfirst=True)

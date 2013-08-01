@@ -23,25 +23,14 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import params
 #from Listino import Listino
-from migrate.changeset.constraint import PrimaryKeyConstraint
-from Dao import Dao
+#from migrate.changeset.constraint import PrimaryKeyConstraint
+from promogest.dao.Dao import Dao
 
-
-
-sconto=Table('sconto', params['metadata'],schema = params['schema'],autoload=True)
-listinoTable = Table('listino', params['metadata'], autoload=True, schema=params['schema'])
 try:
-    listinocomplessolistino=Table('listino_complesso_listino',params['metadata'],schema = params['schema'],autoload=True)
+    t_listino_complesso_listino=Table('listino_complesso_listino',params['metadata'],schema = params['schema'],autoload=True)
 except:
-    if params["tipo_db"] == "sqlite":
-        listinoFK = 'listino.id'
-    else:
-        listinoFK = params['schema']+'.listino.id'
-    listinocomplessolistino = Table('listino_complesso_listino',params['metadata'],
-                Column('id_listino_complesso',Integer, primary_key=True),
-                Column('id_listino', Integer,ForeignKey(listinoFK,onupdate="CASCADE",ondelete="CASCADE"), primary_key=True),
-                schema=params['schema'])
-    listinocomplessolistino.create(checkfirst=True)
+    from data.listinoComplessoListino import t_listino_complesso_listino
+
 
 class ListinoComplessoListino(Dao):
     """  """
@@ -50,9 +39,9 @@ class ListinoComplessoListino(Dao):
 
     def filter_values(self,k,v):
         if k == 'idListinoComplesso':
-            dic= {k : listinocomplessolistino.c.id_listino_complesso ==v}
+            dic= {k : t_listino_complesso_listino.c.id_listino_complesso ==v}
         elif k == 'idListino':
-            dic = {k:listinocomplessolistino.c.id_listino==v}
+            dic = {k:t_listino_complesso_listino.c.id_listino==v}
         return  dic[k]
 
     def _listino(self):
@@ -61,14 +50,13 @@ class ListinoComplessoListino(Dao):
     listino_denominazione= property(_listino)
 
 
-std_mapper = mapper(ListinoComplessoListino,listinocomplessolistino, properties={
+std_mapper = mapper(ListinoComplessoListino,t_listino_complesso_listino, properties={
                                             },
-                    order_by=listinocomplessolistino.c.id_listino_complesso)
+                    order_by=t_listino_complesso_listino.c.id_listino_complesso)
 
-#print "PK Listino complesso listino", len(listinocomplessolistino.primary_key)
+##print "PK Listino complesso listino", len(listinocomplessolistino.primary_key)
 
-if len(listinocomplessolistino.primary_key) ==1 and params["tipo_db"] != "sqlite":
-    cons = PrimaryKeyConstraint(listinocomplessolistino.c.id_listino, listinocomplessolistino.c.id_listino_complesso)
-    cons.drop(cascade=True)
-    cons.create()
-
+#if len(listinocomplessolistino.primary_key) ==1 and params["tipo_db"] != "sqlite":
+    #cons = PrimaryKeyConstraint(listinocomplessolistino.c.id_listino, listinocomplessolistino.c.id_listino_complesso)
+    #cons.drop(cascade=True)
+    #cons.create()

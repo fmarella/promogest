@@ -27,6 +27,8 @@ from promogest.ui.AnagraficaSemplice import Anagrafica,\
                                      AnagraficaDetail, AnagraficaFilter
 from promogest import Environment
 from promogest.lib.utils import *
+
+
 try:
     from promogest.modules.PromoWear.dao.Colore import Colore
 except:

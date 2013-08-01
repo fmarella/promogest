@@ -23,27 +23,12 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
 from promogest.dao.Dao import Dao
-from promogest.modules.GestioneFile.dao.Immagine import immagine
-from promogest.modules.GestioneFile.dao.SlaFile import slafile
 
-try:
-    slafileimmagine=Table('slafile_immagine',
+slafileimmagine=Table('slafile_immagine',
                 params['metadata'],
                 schema = params['schema'],
                 autoload=True)
-except:
-    if params["tipo_db"] == "sqlite":
-        immagineFK = 'immagine.id'
-        slafileFK = 'sla_file.id'
-    else:
-        immagineFK = params['schema']+'.immagine.id'
-        slafileFK = params['schema']+'.sla_file.id'
 
-    slafileimmagine = Table('slafile_immagine', params['metadata'],
-            Column('id_immagine',Integer,ForeignKey(immagineFK,onupdate="CASCADE",ondelete="CASCADE"),primary_key=True),
-            Column('id_slafile',Integer,ForeignKey(slafileFK,onupdate="CASCADE",ondelete="CASCADE"),primary_key=True),
-            schema=params['schema'])
-    slafileimmagine.create(checkfirst=True)
 
 class SlaFileImmagine(Dao):
     """ RoleAction class database functions  """

@@ -1398,7 +1398,6 @@ std_mapper = mapper(TestataDocumento, t_testata_documento,
             primaryjoin=(t_testata_documento.c.id==ScontoTestataDocumento.id_testata_documento),
             cascade="all, delete",
             backref="TD"),
-        #'lang':relation(Language, backref='user')
     },
     order_by=t_testata_documento.c.data_inserimento.desc())
 

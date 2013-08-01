@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2013 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -27,6 +27,16 @@ from promogest.dao.Dao import Dao
 from promogest.lib.utils import getCategorieContatto, getRecapitiContatto
 from promogest.dao.daoContatti.RecapitoContatto import RecapitoContatto
 from promogest.dao.daoContatti.ContattoCategoriaContatto import ContattoCategoriaContatto
+
+
+try:
+    t_contatto=Table('contatto',
+        params['metadata'],
+        schema = params['schema'] if tipo_eng=="postgresql" else None,
+        autoload=True)
+except:
+    from data.contatto import t_contatto
+
 
 class Contatto(Dao):
 
@@ -74,19 +84,19 @@ class Contatto(Dao):
     #FIXME: verificare TUTTI i filtri Contatto!!!
     def filter_values(self,k,v):
         if k == 'cognomeNome':
-            dic = {k:or_(contatto.c.cognome.ilike("%"+v+"%"),contatto.c.nome.ilike("%"+v+"%"))}
+            dic = {k:or_(t_contatto.c.cognome.ilike("%"+v+"%"),t_contatto.c.nome.ilike("%"+v+"%"))}
         elif k == 'id':
-            dic = {k:contatto.c.id == v}
+            dic = {k:t_contatto.c.id == v}
         elif k == 'ruolo':
-            dic = {k:contatto.c.ruolo.ilike("%"+v+"%")}
+            dic = {k:t_contatto.c.ruolo.ilike("%"+v+"%")}
         elif k=='descrizione':
-            dic = {k:contatto.c.descrizione.ilike("%"+v+"%")}
+            dic = {k:t_contatto.c.descrizione.ilike("%"+v+"%")}
         elif k =='recapito':
-            dic = {k:and_(contatto.c.id == RecapitoContatto.id_contatto,RecapitoContatto.recapito.ilike("%"+v+"%")) }
+            dic = {k:and_(t_contatto.c.id == RecapitoContatto.id_contatto,RecapitoContatto.recapito.ilike("%"+v+"%")) }
         elif k == 'tipoRecapito':
-            dic = {k:and_(contatto.c.id == RecapitoContatto.id_contatto,RecapitoContatto.tipo_recapito.contains(v))}
+            dic = {k:and_(t_contatto.c.id == RecapitoContatto.id_contatto,RecapitoContatto.tipo_recapito.contains(v))}
         elif k == 'idCategoria':
-            dic = {k:and_(contatto.c.id == ContattoCategoriaContatto.id_contatto, ContattoCategoriaContatto.id_categoria_contatto == v)}
+            dic = {k:and_(t_contatto.c.id == ContattoCategoriaContatto.id_contatto, ContattoCategoriaContatto.id_categoria_contatto == v)}
         return dic[k]
 
     def delete(self, multiple=False, record = True):
@@ -100,16 +110,9 @@ class Contatto(Dao):
             contatto.delete()
         params['session'].delete(self)
         params['session'].commit()
-        #params["session"].refresh(self)
-#        params["session"].clear()
 
 
-contatto=Table('contatto',
-        params['metadata'],
-        schema = params['schema'],
-        autoload=True)
-
-std_mapper=mapper(Contatto, contatto,properties={
+std_mapper=mapper(Contatto, t_contatto,properties={
     'recapito' : relation(RecapitoContatto, backref=backref('contatto'),cascade="all, delete"),
     "contatto_cat_cont": relation(ContattoCategoriaContatto, backref=backref("contatto"), cascade="all, delete"),
-    }, order_by=contatto.c.id)
+    }, order_by=t_contatto.c.id)

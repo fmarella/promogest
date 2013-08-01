@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2013 by Promotux
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -23,7 +23,16 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
-from Dao import Dao
+from promogest.dao.Dao import Dao
+
+try:
+    t_categoria_fornitore=Table('categoria_fornitore',
+                        params['metadata'],
+                        schema = params['schema'],
+                        autoload=True)
+except:
+    from data.categoriaFornitore import t_categoria_fornitore
+
 
 class CategoriaFornitore(Dao):
 
@@ -31,12 +40,7 @@ class CategoriaFornitore(Dao):
         Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):
-        dic= {'denominazione' : categoria_fornitore.c.denominazione.ilike("%"+v+"%")}
+        dic= {'denominazione' : t_categoria_fornitore.c.denominazione.ilike("%"+v+"%")}
         return  dic[k]
 
-categoria_fornitore=Table('categoria_fornitore',
-                        params['metadata'],
-                        schema = params['schema'],
-                        autoload=True)
-
-std_mapper = mapper(CategoriaFornitore,categoria_fornitore)
+std_mapper = mapper(CategoriaFornitore,t_categoria_fornitore, order_by=t_categoria_fornitore.c.id)

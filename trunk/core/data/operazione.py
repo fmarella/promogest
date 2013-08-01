@@ -59,3 +59,12 @@ if (u'Fattura vendita',) not in s or s ==[]:
     tipo.execute(denominazione='Vendita dettaglio', segno='-', fonte_valore='vendita_iva', tipo_persona_giuridica='cliente')
     tipo.execute(denominazione='Fattura differita vendita', fonte_valore='vendita_senza_iva', tipo_persona_giuridica='cliente', tipo_operazione="documento" )
     tipo.execute(denominazione='Fattura differita acquisto', fonte_valore='acquisto_senza_iva', tipo_persona_giuridica='fornitore', tipo_operazione="documento" )
+
+    tipo.execute(denominazione = "Fattura pro-forma", fonte_valore = "vendita_senza_iva", tipo_persona_giuridica="cliente", tipo_operazione="documento")
+    tipo.execute(denominazione = "Ordine a magazzino", fonte_valore = "acquisto_senza_iva", tipo_persona_giuridica="fornitore",tipo_operazione="documento")
+    tipo.execute(denominazione = "Carico da composizione kit", fonte_valore = "acquisto_senza_iva", tipo_operazione="movimento", segno="+")
+    tipo.execute(denominazione = "Scarico Scomposizione kit", fonte_valore = "vendita_senza_iva", tipo_operazione="movimento", segno="-")
+    tipo.execute(denominazione = "Trasferimento merce magazzino", fonte_valore = "acquisto_senza_iva", tipo_operazione="movimento",tipo_persona_giuridica="magazzino", segno="=")
+    tipo.execute(denominazione = "Ordine beni strumentali", fonte_valore = "acquisto_senza_iva", tipo_persona_giuridica="fornitore",tipo_operazione="documento")
+    tipo.execute(denominazione = "Preventivo dettaglio", fonte_valore = "vendita_iva", tipo_persona_giuridica="cliente",tipo_operazione="documento")
+    tipo.execute(denominazione='Buono visione merce', segno='-', fonte_valore='vendita_senza_iva', tipo_persona_giuridica='cliente' )

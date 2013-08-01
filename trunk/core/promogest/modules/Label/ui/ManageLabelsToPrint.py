@@ -322,7 +322,6 @@ class ManageLabelsToPrint(GladeWidget):
         model = self.completion.get_model()
         self.mattu = False
         self.articolo_matchato = None
-#        print "MODELLLLLLLLLLLLLLLLLL", model[iter][0], key, completion.get_text_column()
         if model[iter][0] and self.articolo_entry.get_text().lower() in model[iter][0].lower():
             return model[iter][0]
         else:

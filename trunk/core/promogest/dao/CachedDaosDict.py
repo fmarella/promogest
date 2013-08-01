@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2013 by Promotux
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Marella <francesco.marella@anche.no>
@@ -70,8 +70,8 @@ def CachedDaosDict(): return _cachedobject
 from promogest.dao.Operazione import Operazione
 from promogest.dao.Pagamento import Pagamento
 from promogest.dao.AliquotaIva import AliquotaIva
-
 cache_obj = CachedDaosDict()
+#Environment.cache_obj = cache_objj
 cache_obj.add(Operazione, use_key='denominazione')
 cache_obj.add(Pagamento, use_key='denominazione')
 cache_obj.add(AliquotaIva, fetch_field='tipo_ali_iva')

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2013 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -21,7 +21,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-# coding=utf-8
+
 import os
 import sys
 from optparse import OptionParser
@@ -53,9 +53,14 @@ i DAO, i filtri o tutto"""
                             dest="tipoDB")
         parser.add_option("-c", "--config-dir",
                             help="Specifica la cartella di configurazione",
-                            default="False",
+                            #default="False",
                             type="string",
                             dest="configDir")
+        parser.add_option("-f", "--config-file",
+                            help="Specifica di configurazione",
+                            #default="False",
+                            type="string",
+                            dest="configFile")
         parser.add_option("-r", "--rapid-start",
                             help="Imposta il tipo db e l'azienda (es. azienda@host)",
                             default="False",
@@ -71,11 +76,6 @@ i DAO, i filtri o tutto"""
                             #default="False",
                             type="string",
                             dest="schema")
-        parser.add_option("-m", "--main",
-                            help="crea una nuova azienda con o senza main False=con promogest2 mentre True senza promogest2",
-                            default="False",
-                            #type="string",
-                            dest="main")
         (options, args) = parser.parse_args()
         from promogest import preEnv, bindtextdomain
         bindtextdomain('promogest', locale_dir='./po/locale')
@@ -87,6 +87,19 @@ i DAO, i filtri o tutto"""
                 reload(sys)
                 sys.setdefaultencoding('utf-8')
             preEnv.pg3_cla = True
+        if options.configFile:
+            from promogest.lib.config import Config
+            conf = Config(options.configFile)
+            print conf.__dict__
+            preEnv.user = preEnv.userforce = conf.Database.user
+            preEnv.database = preEnv.dbforce = conf.Database.database
+            preEnv.password = preEnv.pwdforce= conf.Database.password
+            preEnv.host = preEnv.hostdbforce = conf.Database.host
+            preEnv.port = conf.Database.port
+            preEnv.portforce = conf.Database.port
+            preEnv.tipodb = preEnv.tipodbforce = conf.Database.tipodb
+            preEnv.conf = conf
+
         if options.nome_database:
             preEnv.dbforce = options.nome_database
         if options.tipoDB:
@@ -103,12 +116,6 @@ i DAO, i filtri o tutto"""
             preEnv.debugFilter = True
         if options.tipoDB and options.schema:
             print " DOBBIAMO CREARE UN NUOVO DB CON AZIENDA " ,  options.schema
-            if options.main =="True":
-                print "A SCHEMA UNICO"
-                preEnv.conSchemaPromogest2 = False
-            else:
-                print " CON promogest2 CONDIVISO"
-                preEnv.conSchemaPromogest2 = True
             preEnv.buildSchema = options.schema
             preEnv.aziendaforce = options.schema
             from createSchemaDb import *

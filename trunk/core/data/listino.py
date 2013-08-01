@@ -29,13 +29,16 @@ else:
     colId = Column('id', Integer,nullable=False)
 
 t_listino = Table('listino', params["metadata"],
-        colId,
+        #colId,
+        Column('id',Integer,nullable=False, autoincrement=True,unique=True),
         Column('denominazione', String(200), nullable=False, primary_key=True),
         Column('descrizione', String(300), nullable=False),
-        Column('data_listino', DateTime,default=func.now(), nullable=False, primary_key=True),
+        Column('data_listino', DateTime,ColumnDefault(datetime.datetime.now), nullable=False, primary_key=True),
         Column('listino_attuale', Boolean, nullable=True),
         Column('visible', Boolean, default=0),
-        schema=params["schema"])
+        schema=params["schema"],
+        mysql_engine='InnoDB'
+        )
 
 
 #sequence = Sequence('listino_id_seq',metadata= params["metadata"], schema=params["schema"],for_update=fk_prefix+"listino.id")

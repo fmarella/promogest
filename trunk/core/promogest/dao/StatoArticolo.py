@@ -25,6 +25,15 @@ from sqlalchemy.orm import *
 from promogest.Environment import *
 from Dao import Dao
 
+try:
+    t_stato_articolo=Table('stato_articolo',
+                        params['metadata'],
+                        schema = params['mainSchema'],
+                        autoload=True)
+except:
+    from data.statoArticolo import t_stato_articolo
+
+
 class StatoArticolo(Dao):
 
     def __init__(self, req=None):
@@ -38,8 +47,5 @@ class StatoArticolo(Dao):
         stati_articolo = []
         return True
 
-stato_articolo=Table('stato_articolo',
-                        params['metadata'],
-                        schema = params['mainSchema'],
-                        autoload=True)
-std_mapper = mapper(StatoArticolo, stato_articolo, order_by=stato_articolo.c.id)
+
+std_mapper = mapper(StatoArticolo, t_stato_articolo, order_by=t_stato_articolo.c.id)

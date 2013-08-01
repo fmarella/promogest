@@ -575,7 +575,6 @@ class AnagraficaSchedeOrdinazioniEdit(AnagraficaEdit):
                 rif_num_scheda = max([p.numero for p in numeroSEL]) +1
             else:
                 rif_num_scheda = 1
-            print "NUMEROPPPPPPPPPPPPPPPPPPPPPPPPPPPP", rif_num_scheda
 
 #            return
 #            queryString = Environment.params['session'].query(SchedaOrdinazione.numero).order_by(desc("numero")).all()

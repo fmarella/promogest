@@ -26,29 +26,15 @@ from promogest.Environment import *
 from promogest.dao.Dao import Dao
 from promogest.dao.DaoUtils import *
 from promogest.lib.utils import *
-from promogest.dao.Cliente import Cliente, t_cliente
-from promogest.dao.Articolo import Articolo , t_articolo
-from promogest.modules.GestioneCommesse.dao.StadioCommessa import StadioCommessa , t_stadiocommessa
+from promogest.dao.Cliente import Cliente
+from promogest.dao.Articolo import Articolo
+from promogest.modules.GestioneCommesse.dao.StadioCommessa import StadioCommessa
 
-try:
-    t_testatacommessa = Table('testata_commessa',
-            params['metadata'],
-            schema = params['schema'],
-            autoload=True)
-except:
-    t_testatacommessa = Table('testata_commessa', params["metadata"],
-            Column('id', Integer, primary_key=True),
-            Column('numero', Integer, nullable=False),
-            Column('denominazione', String(300), nullable=False),
-            Column('note', Text, nullable=True),
-            Column('id_cliente', Integer,ForeignKey(fk_prefix +'cliente.id',onupdate="CASCADE",ondelete="CASCADE")),
-            Column('id_articolo', Integer,ForeignKey(fk_prefix +'articolo.id')),
-            Column('id_stadio_commessa', Integer,ForeignKey(fk_prefix +'stadio_commessa.id',onupdate="CASCADE",ondelete="RESTRICT"),nullable=True),
-            Column('data_inizio', DateTime, nullable=True),
-            Column('data_fine', DateTime, nullable=True),
-            schema=params["schema"],
-            useexisting=True)
-    t_testatacommessa.create(checkfirst=True)
+
+t_testatacommessa = Table('testata_commessa',
+        params['metadata'],
+        schema = params['schema'],
+        autoload=True)
 
 from RigaCommessa import RigaCommessa
 

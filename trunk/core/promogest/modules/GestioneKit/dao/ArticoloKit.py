@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2013 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
+#    Author: Francesco Marella <francesco.marella@anche.no>
 
 #    This file is part of Promogest.
 
@@ -26,40 +27,13 @@ from promogest.Environment import *
 from promogest.dao.Dao import Dao
 from migrate import *
 
-
 try:
-    articolokit = Table('articolo_kit',
+    t_articolo_kit = Table('articolo_kit',
         params['metadata'],
         schema=params['schema'],
         autoload=True)
-
 except:
-    articoloTable = Table('articolo',
-        params['metadata'],
-        autoload=True,
-        schema=params['schema'])
-
-    if params["tipo_db"] == "sqlite":
-        articoloFK = 'articolo.id'
-    else:
-        articoloFK = params['schema'] + '.articolo.id'
-
-
-    articolokit = Table('articolo_kit', params["metadata"],
-            Column('id', Integer, primary_key=True),
-            Column('id_articolo_wrapper', Integer,
-                ForeignKey(articoloFK, onupdate="CASCADE", ondelete="CASCADE")),
-            Column('id_articolo_filler', Integer,
-                ForeignKey(articoloFK, onupdate="CASCADE", ondelete="CASCADE"),
-                nullable=True),
-            Column('quantita', Numeric(16, 4), nullable=False),
-            Column('data_inserimento', DateTime, nullable=False),
-            Column('data_esclusione', DateTime, nullable=True),
-            Column('attivo', Boolean, default=True), #potrebbe non servire ma lasciamolo
-            Column('note', Text, nullable=True),
-            schema=params["schema"],
-            useexisting=True)
-    articolokit.create(checkfirst=True)
+    from data.articoloKit import t_articolo_kit
 
 
 class ArticoloKit(Dao):
@@ -69,26 +43,14 @@ class ArticoloKit(Dao):
 
     def filter_values(self, k, v):
         if k == "id":
-            dic = {k: articolokit.c.id == v}
+            dic = {k: t_articolo_kit.c.id == v}
         elif k == 'idArticoloWrapper':
-            dic = {k: articolokit.c.id_articolo_wrapper == v}
+            dic = {k: t_articolo_kit.c.id_articolo_wrapper == v}
         elif k == 'idArticoloFiller':
-            dic = {k: articolokit.c.id_articolo_filler == v}
-        elif k == 'dataInserimento':
-            dic = {k: rigaprimanota.c.data_inserimento >= v}
-        elif k == 'dataEsclusione':
-            dic = {k: rigaprimanota.c.data_esclusione <= v}
+            dic = {k: t_articolo_kit.c.id_articolo_filler == v}
         return dic[k]
 
-    #def _banca(self):
-        #bn = Banca().getRecord(id=self.id_banca)
-        #if bn:
-            #return bn.denominazione
-        #else:
-            #return ""
-    #banca= property(_banca)
-
 std_mapper = mapper(ArticoloKit,
-                    articolokit,
+                    t_articolo_kit,
                     properties={},
-                    order_by=articolokit.c.id)
+                    order_by=t_articolo_kit.c.id)

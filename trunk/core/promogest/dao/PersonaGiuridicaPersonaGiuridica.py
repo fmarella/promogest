@@ -21,37 +21,18 @@
 
 from sqlalchemy import *
 from sqlalchemy.orm import *
-from promogest.Environment import params
-#from Listino import Listino
-from migrate.changeset.constraint import PrimaryKeyConstraint
-from Dao import Dao
-
-
-pg=Table('persona_giuridica', params['metadata'],schema = params['schema'],autoload=True)
+from promogest.Environment import *
+from promogest.dao.Dao import Dao
 
 try:
-    personagiuridica_personagiuridica=Table('personagiuridica_personagiuridica',
+    t_personagiuridica_personagiuridica=Table('personagiuridica_personagiuridica',
         params['metadata'],
         schema = params['schema'],
         autoload=True)
 except:
-    if params["tipo_db"] == "sqlite":
-        pgFK = 'persona_giuridica.id'
-    else:
-        pgFK = params['schema']+'.persona_giuridica.id'
+    from data.personaGiuridicaPersonaGiuridica import t_personagiuridica_personagiuridica
 
-    personagiuridica_personagiuridica = Table('personagiuridica_personagiuridica',
-        params['metadata'],
-        Column('id_persona_giuridica', Integer,
-                ForeignKey(pgFK, onupdate="CASCADE", ondelete="CASCADE"),
-                primary_key=True),
-        Column('id_persona_giuridica_abbinata', Integer,
-                ForeignKey(pgFK, onupdate="CASCADE", ondelete="CASCADE"),
-                primary_key=True,
-                nullable=False),
-        Column('note', Text, nullable=True),
-        schema=params['schema'])
-    personagiuridica_personagiuridica.create(checkfirst=True)
+
 
 class PersonaGiuridicaPersonaGiuridica(Dao):
     """  """
@@ -60,12 +41,12 @@ class PersonaGiuridicaPersonaGiuridica(Dao):
 
     def filter_values(self,k,v):
         if k == 'idPersonaGiuridica':
-            dic= {k : personagiuridica_personagiuridica.c.id_persona_giuridica == v}
+            dic= {k : t_personagiuridica_personagiuridica.c.id_persona_giuridica == v}
         elif k == 'idPersonaGiuridicaAbbinata':
-            dic = {k:personagiuridica_personagiuridica.c.id_persona_giuridica_abbinata == v}
+            dic = {k:t_personagiuridica_personagiuridica.c.id_persona_giuridica_abbinata == v}
         return  dic[k]
 
 
 std_mapper = mapper(PersonaGiuridicaPersonaGiuridica,
-    personagiuridica_personagiuridica, properties={},
-    order_by=personagiuridica_personagiuridica.c.id_persona_giuridica_abbinata)
+    t_personagiuridica_personagiuridica, properties={},
+    order_by=t_personagiuridica_personagiuridica.c.id_persona_giuridica_abbinata)

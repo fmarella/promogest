@@ -40,7 +40,7 @@ from promogest.ui.utilsCombobox import *
 from promogest.ui.gtk_compat import *
 from ParametriFrame import ParametriFrame
 from AnagraficaPrincipaleFrame import AnagrafichePrincipaliFrame
-
+Environment.params["schema"] = Environment.params['schema']  if Environment.tipo_eng=="postgresql" else None
 #ATTENZIONE: tenere perchè servono a caricare i dao nel giusto ordine
 from promogest.dao.VariazioneListino import VariazioneListino
 from promogest.dao.AnagraficaSecondaria import AnagraficaSecondaria_
@@ -937,7 +937,6 @@ promogest2 IN /HOME/NOMEUTENTE/ O IN C:/UTENTI/NOMEUTENTE""")
                             Environment.database])
 
             Environment.pg2log.info("STO EFFETTUANDO UN BACKUP DEL FILE %s" %stname)
-            #print "YYYYYYYYYYYYYYYYYY", retcode
             if not retcode:
                 #zfilename = nameDump +".zip"
                 #zout = zipfile.ZipFile(str(stname) +".zip", "w")

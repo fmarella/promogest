@@ -31,6 +31,7 @@ t_banca = Table('banca', params["metadata"],
         Column('iban', String(30), nullable=True),
         Column('abi', String(5), nullable=True),
         Column('cab', String(5), nullable=True),
+        Column('bic_swift', String(200)),
         schema=params["schema"]
         )
 t_banca.create(checkfirst=True)

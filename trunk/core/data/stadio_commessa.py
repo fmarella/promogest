@@ -22,22 +22,11 @@
 
 
 from sqlalchemy import *
+from promogest.Environment import *
 
-class StadioCommessaDb(object):
+t_stadio_commessa  = Table('stadio_commessa', params["metadata"],
+        Column('id',Integer,primary_key=True),
+        Column('denominazione',String(100)),
+        schema = params['schema'])
 
-    def __init__(self, schema = None,mainSchema=None, metadata=None, session=None,debug=False):
-        self.metadata = metadata
-        self.session_sl = session
-        self.schema = schema
-        self.debug = debug
-
-    def create(self):
-        stadiocommessa  = Table('stadio_commessa', self.metadata,
-                Column('id',Integer,primary_key=True),
-                Column('denominazione',String(100)),
-                schema = self.schema)
-
-        stadiocommessa.create(checkfirst=True)
-
-    def alter(self, req=None, arg=None):
-        pass
+t_stadio_commessa.create(checkfirst=True)

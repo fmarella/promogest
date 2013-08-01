@@ -29,16 +29,19 @@ from Dao import Dao
 from migrate import *
 from promogest.dao.DaoUtils import get_columns
 
-
-t_persona_giuridica = Table('persona_giuridica',
+try:
+    t_persona_giuridica = Table('persona_giuridica',
                 params['metadata'],
                 schema=params['schema'],
                 autoload=True)
+except:
+    from data.personaGiuridica import t_persona_giuridica
 
 colonne = get_columns(t_persona_giuridica)
 if "note" not in colonne:
-    col = Column('note', String)
+    col = Column('note', Text)
     col.create(t_persona_giuridica)
+    delete_pickle()
 
 if 'cancellato' not in colonne:
     col = Column('cancellato', Boolean, default=False)

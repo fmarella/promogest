@@ -27,32 +27,11 @@ from promogest.modules.GestioneFile.dao.Immagine import ImageFile,immagine
 from promogest.dao.Articolo import Articolo, t_articolo
 
 
-try:
-    t_articoloimmagine=Table('articolo_immagine',
+t_articoloimmagine=Table('articolo_immagine',
                 params['metadata'],
                 schema = params['schema'],
                 autoload=True)
-except:
-    if params["tipo_db"] == "sqlite":
-        immagineFK = 'immagine.id'
-        articoloFK = 'articolo.id'
-    else:
-        immagineFK = params['schema']+'.immagine.id'
-        articoloFK = params['schema']+'.articolo.id'
 
-    t_articoloimmagine = Table('articolo_immagine', params['metadata'],
-            Column('id_immagine',Integer,
-                ForeignKey(immagineFK,
-                    onupdate="CASCADE",
-                    ondelete="CASCADE"),
-                    primary_key=True),
-            Column('id_articolo',Integer,
-                ForeignKey(articoloFK,
-                    onupdate="CASCADE",
-                    ondelete="CASCADE"),
-                    primary_key=True),
-            schema=params['schema'])
-    t_articoloimmagine.create(checkfirst=True)
 
 class ArticoloImmagine(Dao):
     """ ArticoloImmagine class database functions  """

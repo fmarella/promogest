@@ -30,5 +30,9 @@ t_cliente = Table('cliente', params["metadata"],
         Column('id_magazzino',Integer,ForeignKey(fk_prefix+'magazzino.id',onupdate="CASCADE",ondelete="RESTRICT")),
         Column('id_listino',Integer,ForeignKey(fk_prefix+'listino.id',onupdate="CASCADE",ondelete="RESTRICT")),
         Column('id_banca',Integer,ForeignKey(fk_prefix+'banca.id',onupdate="CASCADE",ondelete="RESTRICT")),
-        schema=params["schema"])
+        Column('pagante', Boolean, default=False),
+        Column('id_aliquota_iva', Integer, nullable=True),
+        Column('tipo', String(2), default="PG"),
+        schema=params["schema"]
+        )
 t_cliente.create(checkfirst=True)

@@ -23,8 +23,16 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
-from promogest.dao.daoContatti.TipoRecapito import TipoRecapito
 from promogest.dao.Dao import Dao
+from promogest.dao.daoContatti.TipoRecapito import TipoRecapito
+
+try:
+    t_recapito=Table('recapito',
+                    params['metadata'],
+                    autoload=True,
+                    schema=params['schema'])
+except:
+    from data.recapito import t_recapito
 
 class RecapitoContatto(Dao):
 
@@ -33,18 +41,15 @@ class RecapitoContatto(Dao):
 
     def filter_values(self, k,v):
         if k =="id":
-            dic= {k:recapito.c.id_contatto==v}
+            dic= {k:t_recapito.c.id_contatto==v}
         elif k =="idContatto":
-            dic = {k:recapito.c.id_contatto==v}
+            dic = {k:t_recapito.c.id_contatto==v}
         elif k =="tipoRecapito":
-            dic = {k:recapito.c.tipo_recapito==v}
+            dic = {k:t_recapito.c.tipo_recapito==v}
         return  dic[k]
 
-recapito=Table('recapito',
-        params['metadata'],
-        autoload=True,
-        schema = params['schema'])
 
-std_mapper = mapper(RecapitoContatto, recapito,properties={
+
+std_mapper = mapper(RecapitoContatto, t_recapito,properties={
     'tipo_reca':relation(TipoRecapito, backref='recapito')
-    }, order_by=recapito.c.id)
+    }, order_by=t_recapito.c.id)

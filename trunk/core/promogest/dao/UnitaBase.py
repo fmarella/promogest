@@ -26,60 +26,22 @@ from sqlalchemy.orm import *
 from promogest.Environment import *
 from Dao import Dao
 
+#try:
+t_unita_base=Table('unita_base',
+                params['metadata'],
+                schema = params['mainSchema'],
+                autoload=True)
+#except:
+    #from data.unitaBase import t_unita_base
+
+
 class UnitaBase(Dao):
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
-        #self.addMC()
 
     def filter_values(self,k,v):
-        dic= {'denominazione' : unitabase.c.denominazione ==v}
+        dic= {'denominazione' : t_unita_base.c.denominazione ==v}
         return  dic[k]
 
-    #def addMC(self):
-        #mc = self.select(denominazione ="Metri Cubi")
-        #if not mc:
-            #self.denominazione_breve = "mc"
-            #self.denominazione = "Metri Cubi"
-            #self.persist()
-        #gr = self.select(denominazione ="Grammi")
-        #if not gr:
-            #self.denominazione_breve = "gr"
-            #self.denominazione = "Grammi"
-            #self.persist()
-        #ml = self.select(denominazione ="Millilitri")
-        #if not ml:
-            #self.denominazione_breve = "ml"
-            #self.denominazione = "Millilitri"
-            #self.persist()
-        #q = self.select(denominazione ="Quintali")
-        #if not q:
-            #self.denominazione_breve = "q"
-            #self.denominazione = "Quintali"
-            #self.persist()
-
-unitabase=Table('unita_base',
-                params['metadata'],
-                schema = params['mainSchema'],
-                autoload=True)
-
-s= select([unitabase.c.denominazione_breve]).execute().fetchall()
-if (u'mc',) not in s or s==[]:
-    o = unitabase.insert()
-    o.execute(denominazione = "Metri Cubi",denominazione_breve="mc")
-if (u'gr',) not in s or s==[]:
-    o = unitabase.insert()
-    o.execute(denominazione = "Grammi",denominazione_breve="gr")
-if (u'ml',) not in s or s==[]:
-    o = unitabase.insert()
-    o.execute(denominazione = "Millilitri",denominazione_breve="ml")
-if (u'q',) not in s or s==[]:
-    o = unitabase.insert()
-    o.execute(denominazione = "Quintali",denominazione_breve="q")
-if (u't',) not in s or s==[]:
-    o = unitabase.insert()
-    o.execute(denominazione = "Tonnellate",denominazione_breve="t")
-
-
-
-std_mapper = mapper(UnitaBase,unitabase)
+std_mapper = mapper(UnitaBase,t_unita_base, order_by=t_unita_base.c.denominazione)

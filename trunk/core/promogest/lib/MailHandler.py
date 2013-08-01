@@ -52,7 +52,6 @@ class SendMail(object):
             self.total_addrs.append(i)
         for i in self.bccaddrs:
             self.total_addrs.append(i)
-        print "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", self.to
         self.s_toaddrs = string.join(self.to, ",")
         self.s_bccaddrs = string.join(self.bccaddrs, ",")
 
@@ -246,7 +245,6 @@ Grazie per aver scelto %s
                 pass
             else:
                 break
-        print "ADDRESSSSSSSSSSSSSSSSSSSSSSSSSSSSSS", self._from, self.s_toaddrs, self.s_bccaddrs
         msg = MIMEMultipart('alternative')
         msg['Subject'] = Header(unicode(subject), header_charset)
         msg['From'] = self._from

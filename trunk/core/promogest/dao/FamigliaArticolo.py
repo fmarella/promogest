@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2013 by Promotux
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -24,6 +24,13 @@ from sqlalchemy.orm import *
 from promogest.Environment import *
 from Dao import Dao
 
+
+try:
+    t_famiglia_articolo = Table('famiglia_articolo', params['metadata'], schema=params['schema'], autoload=True)
+except:
+    from data.famigliaArticolo import t_famiglia_articolo
+
+
 class FamigliaArticolo(Dao):
 
     def __init__(self, req=None):
@@ -31,13 +38,13 @@ class FamigliaArticolo(Dao):
 
     def filter_values(self,k,v):
         if k == 'denominazione':
-            dic= {k : famiglia.c.denominazione.ilike("%"+v+"%")}
+            dic= {k : t_famiglia_articolo.c.denominazione.ilike("%"+v+"%")}
         elif k == "idPadre":
-            dic= {k : famiglia.c.id_padre == v}
+            dic= {k : t_famiglia_articolo.c.id_padre == v}
         elif k == "codice":
-            dic= {k : famiglia.c.codice == v}
+            dic= {k : t_famiglia_articolo.c.codice == v}
         elif k == "denominazioneBreve":
-            dic= {k : famiglia.c.denominazione_breve.ilike("%"+v+"%")}
+            dic= {k : t_famiglia_articolo.c.denominazione_breve.ilike("%"+v+"%")}
         return  dic[k]
 
     def preSave(self):
@@ -49,9 +56,7 @@ class FamigliaArticolo(Dao):
         ok = params['session'].query(FamigliaArticolo).filter(and_(FamigliaArticolo.id_padre==None)).all()
         return ok
 
-famiglia=Table('famiglia_articolo', params['metadata'], schema = params['schema'], autoload=True)
-#std_mapper = mapper(FamigliaArticolo,famiglia,order_by=famiglia.c.id_padre)
 
-std_mapper = mapper(FamigliaArticolo, famiglia, properties={
-    'children': relation(FamigliaArticolo, backref=backref('parent', remote_side=[famiglia.c.id]))
-},order_by=famiglia.c.denominazione)
+std_mapper = mapper(FamigliaArticolo, t_famiglia_articolo, properties={
+    'children': relation(FamigliaArticolo, backref=backref('parent', remote_side=[t_famiglia_articolo.c.id]))
+},order_by=t_famiglia_articolo.c.denominazione)

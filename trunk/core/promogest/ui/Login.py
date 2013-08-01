@@ -23,6 +23,7 @@
 import hashlib
 import os
 import glob
+
 from promogest import Environment
 from promogest.ui.gtk_compat import *
 import datetime
@@ -58,7 +59,6 @@ class Login(SimpleGladeApp):
 
     def __init__(self):
         """Inizializza la finestra di login
-        :param shop: default False
         """
         self.azienda = None
         self.modules = {}
@@ -71,25 +71,25 @@ class Login(SimpleGladeApp):
     def draw(self):
         """Disegna la finestra di login
         """
-        azs = Azienda().select(batchSize=None, orderBy=Azienda.schemaa)
+        self.azs = Azienda().select(batchSize=None, orderBy=Azienda.schemaa)
         ultima_azienda = None
         if Environment.nobrand:
             self.logo_image.set_from_file(Environment.guiDir + "mask_32.png" )
-        if Environment.engine.name == "sqlite" \
-            and len(azs) == 1 and azs[0].schemaa == "AziendaPromo":
-            self.azienda_combobox.destroy()
-            self.azienda_label.destroy()
+        if Environment.tipodb == "sqlite" \
+            and len(self.azs) == 1 :
+            #self.azienda_combobox.destroy()
+            #self.azienda_label.destroy()
             self.logina_label.set_markup(_(
     "Dati accesso <b>ONE</b> : Username: <b>admin</b>, password: <b>admin</b>"))
-        else:
-            self.azienda_combobox_listore.clear()
+        #else:
+        self.azienda_combobox_listore.clear()
 
-            for a in azs:
-                if a.tipo_schemaa == "last":
-                    ultima_azienda = a.schemaa
-                self.azienda_combobox_listore.append((a.schemaa,
-                                            (a.denominazione or "")[0:30]))
-            self.azienda_combobox.set_model(self.azienda_combobox_listore)
+        for a in self.azs:
+            if a.tipo_schemaa == "last":
+                ultima_azienda = a.schemaa
+            self.azienda_combobox_listore.append((a.schemaa,
+                                        (a.denominazione or "")[0:30]))
+        self.azienda_combobox.set_model(self.azienda_combobox_listore)
         #if not Environment.pg3: #necessario per windows, non va bene in gtk3
             #self.azienda_combobox.set_text_column(0)
         Environment.windowGroup.append(self.getTopLevel())
@@ -196,8 +196,8 @@ class Login(SimpleGladeApp):
             self.azienda = findStrFromCombobox(self.azienda_combobox, 0)
             findComboboxRowFromStr(self.azienda_combobox, self.azienda, 0)
             self.azienda_combobox.get_active() != -1
-            if not self.azienda:
-                self.azienda = "AziendaPromo"
+            #if not self.azienda:
+                #self.azienda = "AziendaPromo"
 
         #superati i check di login
         users = User().select(username=username,
@@ -210,23 +210,19 @@ class Login(SimpleGladeApp):
             else:
                 Environment.workingYear = str(self.anno_lavoro_spinbutton.get_value_as_int())
                 Environment.azienda = self.azienda
-                Environment.schema_azienda = self.azienda
-                if Environment.engine.name != "sqlite":
-                    azs = Azienda().select(batchSize=None)
-                    for a in azs:
-                        if a.schemaa == self.azienda:
-                            a.tipo_schemaa = "last"
-                        else:
-                            a.tipo_schemaa = ""
-                        Environment.session.add(a)
-                    Environment.session.commit()
-                if Environment.tipodb != "sqlite":
+                for a in self.azs:
+                    if a.schemaa == self.azienda:
+                        a.tipo_schemaa = "last"
+                    else:
+                        a.tipo_schemaa = ""
+                    Environment.session.add(a)
+                Environment.session.commit()
+                if Environment.tipodb == "postgresql":
                     Environment.params["schema"] = self.azienda
-                    Environment.schema_azienda = self.azienda
-                    if hashlib.md5(self.azienda).hexdigest() == \
-                                    "46d3e603f127254cdc30e5a397413fc7":
-                        raise Exception(":P")
-                        return
+                if hashlib.md5(self.azienda).hexdigest() == \
+                                "46d3e603f127254cdc30e5a397413fc7":
+                    raise Exception(":P")
+                    return
 # Lancio la funzione di generazione della dir di configurazione
                 from promogest.buildEnv import set_configuration
                 Environment.conf = set_configuration(Environment.azienda,
@@ -249,6 +245,8 @@ class Login(SimpleGladeApp):
                 except:
                     Environment.params['usernameLoggedList'][2] = 1
                 if hasAction(actionID=1):
+                    from promogest.dao.DaoOrderedImport import orderedImport
+                    orderedImport()
                     self.login_window.hide()
                     Environment.windowGroup.remove(self.getTopLevel())
                     installId()
@@ -264,7 +262,7 @@ class Login(SimpleGladeApp):
 
                     def mainmain():
                         from Main import Main
-                        main = Main(self.azienda or "AziendaPromo",
+                        main = Main(self.azienda,
                                     self.anagrafiche_modules,
                                     self.parametri_modules,
                                     self.anagrafiche_dirette_modules,

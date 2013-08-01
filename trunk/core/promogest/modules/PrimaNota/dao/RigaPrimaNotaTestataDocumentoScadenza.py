@@ -27,43 +27,11 @@ from promogest.dao.Dao import Dao
 from promogest.modules.Pagamenti.dao.TestataDocumentoScadenza import TestataDocumentoScadenza
 from promogest.modules.PrimaNota.dao.RigaPrimaNota import RigaPrimaNota, rigaprimanota
 
-riga_primanotaTable = Table('riga_prima_nota',
-                            params['metadata'],
-                            autoload=True,
-                            schema=params['schema'])
-testata_documento_scadenzaTable = Table('testata_documento_scadenza',
-                                      params['metadata'],
-                                      schema=params['schema'],
-                                      autoload=True)
-
-try:
-    rigaprimanotatestatadocumentoscadenza = Table('riga_primanota_testata_documento_scadenza',
+rigaprimanotatestatadocumentoscadenza = Table('riga_primanota_testata_documento_scadenza',
                                                   params['metadata'],
                                                   schema=params['schema'],
                                                   autoload=True)
-except:
-    if params["tipo_db"] == "sqlite":
-        rigaprimanotaFK = 'riga_prima_nota.id'
-        testatadocumentoscadenzaFK = 'testata_documento_scadenza.id'
-    else:
-        rigaprimanotaFK = params['schema'] + '.riga_prima_nota.id'
-        testatadocumentoscadenzaFK = params['schema'] + '.testata_documento_scadenza.id'
 
-    rigaprimanotatestatadocumentoscadenza = Table('riga_primanota_testata_documento_scadenza',
-                                                  params["metadata"],
-                                                  Column('id', Integer, primary_key=True),
-                                                  Column('id_riga_prima_nota',
-                                                         Integer,
-                                                         ForeignKey(rigaprimanotaFK),
-                                                         nullable=False),
-                                                  Column('id_testata_documento_scadenza',
-                                                         Integer,
-                                                         ForeignKey(testatadocumentoscadenzaFK),
-                                                         nullable=False),
-                                                  schema=params["schema"],
-                                                  useexisting=True)
-
-    rigaprimanotatestatadocumentoscadenza.create(checkfirst=True)
 
 
 class RigaPrimaNotaTestataDocumentoScadenza(Dao):

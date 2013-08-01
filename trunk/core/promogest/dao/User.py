@@ -24,48 +24,17 @@ from sqlalchemy import Table
 from sqlalchemy.orm import mapper, relation
 
 from promogest.Environment import *
-from Dao import Dao
-from Regioni import Regioni
-from Province import Province
+from promogest.dao.Dao import Dao
+#from promogest.dao.Regioni import Regioni
+#from promogest.dao.Province import Province
 from migrate import *
 from promogest.modules.RuoliAzioni.dao.Role import Role
 from promogest.dao.DaoUtils import get_columns
 
-
-user = Table('utente', params['metadata'],schema = params['mainSchema'],autoload=True)
-
-colonne = get_columns(user)
-if 'id_role' not in colonne:
-    col = Column('id_role', Integer, nullable=True)
-    col.create(user)
-    delete_pickle()
-
-if 'email_confirmed' not in colonne:
-    col = Column('email_confirmed', Boolean, default=False)
-    col.create(user)
-    delete_pickle()
-
 try:
-    from sqlalchemy.orm import relationship
-    if tipodb =="sqlite":
-        std_mapper.add_property("role",relationship(Role,
-            primaryjoin=(user.c.id_role==Role.id),
-                        foreign_keys=[Role.id],
-                        backref="users",
-                        uselist=False,
-                        passive_deletes=True))
+    t_utente = Table('utente', params['metadata'],schema = params['mainSchema'],autoload=True)
 except:
-    pass
-    #pg2log.info("AGGIORNARE SQLALCHEMY RUOLI NON FUNZIONERANNO")
-if hasattr(conf, "MultiLingua") and getattr(conf.MultiLingua,'mod_enable')=="yes":
-    from promogest.modules.MultiLingua.dao.UserLanguage import UserLanguage
-    std_mapper.add_property("userlang",
-            relation(UserLanguage,
-                    primaryjoin=(user.c.id==UserLanguage.id_user),
-                    backref="users",
-                    uselist=False)
-                    )
-
+    from data.utente import t_utente
 
 class User(Dao):
     """ User class provides to make a Users dao which include more used"""
@@ -75,19 +44,19 @@ class User(Dao):
 
     def filter_values(self,k,v):
         if k == 'username':
-            dic = {k:user.c.username == v}
+            dic = {k:t_utente.c.username == v}
         elif k == 'password':
-            dic = {k:user.c.password == v}
+            dic = {k:t_utente.c.password == v}
         elif k == 'usern':
-            dic = {k:user.c.username.ilike("%"+v+"%")}
+            dic = {k:t_utente.c.username.ilike("%"+v+"%")}
         elif k == 'email':
-            dic = {k:user.c.email.ilike("%"+v+"%")}
+            dic = {k:t_utente.c.email.ilike("%"+v+"%")}
         elif k == 'active':
-            dic = {k:user.c.active == v}
+            dic = {k:t_utente.c.active == v}
         elif k == 'tipoUser':
-            dic = {k:user.c.tipo_user == v}
+            dic = {k:t_utente.c.tipo_user == v}
         elif k == 'idRole':
-            dic = {k:user.c.id_role == v}
+            dic = {k:t_utente.c.id_role == v}
         return  dic[k]
 
 
@@ -113,20 +82,13 @@ class User(Dao):
                 return ""
 
 
-    if hasattr(conf, "MultiLingua") and getattr(conf.MultiLingua,
-                                                'mod_enable')=="yes":
-        @property
-        def lingua(self):
-            if self.userlang: return self.userlang.lan.denominazione
-            else: return ""
+std_mapper = mapper(User, t_utente,
+    properties={
+        'email':deferred(t_utente.c.email),
+        'registration_date':deferred(t_utente.c.registration_date),
+        'last_modified':deferred(t_utente.c.last_modified),
+        'photo_src':deferred(t_utente.c.photo_src),
+        #'id_language':deferred(user.c.id_language),
+        'schemaa_azienda':deferred(t_utente.c.schemaa_azienda),
 
-std_mapper = mapper(User, user,
-properties={
-    'email':deferred(user.c.email),
-    'registration_date':deferred(user.c.registration_date),
-    'last_modified':deferred(user.c.last_modified),
-    'photo_src':deferred(user.c.photo_src),
-    #'id_language':deferred(user.c.id_language),
-    'schemaa_azienda':deferred(user.c.schemaa_azienda),
-
-}, order_by=user.c.username)
+}, order_by=t_utente.c.username)

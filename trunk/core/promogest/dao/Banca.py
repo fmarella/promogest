@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2013 by Promotux
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -28,6 +28,14 @@ from migrate import *
 from sqlalchemy.schema import Column
 from sqlalchemy.types import String
 
+try:
+    t_banca = Table('banca',
+                      params['metadata'],
+                      schema=params['schema'],
+                      autoload=True)
+except:
+    from data.banca import t_banca
+
 
 def gen_banca():
     banks = Banca().select(offset=None, batchSize=None)
@@ -44,28 +52,24 @@ class Banca(Dao):
 
     def filter_values(self,k,v):
         if k == 'denominazione':
-            dic= {  k : banca_table.c.denominazione.ilike("%"+v+"%")}
+            dic= {  k : t_banca.c.denominazione.ilike("%"+v+"%")}
         elif k == 'iban':
-            dic = {k: banca_table.c.iban.ilike("%"+v+"%")}
+            dic = {k: t_banca.c.iban.ilike("%"+v+"%")}
         elif k == 'abi':
-            dic = {k: banca_table.c.abi.ilike("%"+v+"%")}
+            dic = {k: t_banca.c.abi.ilike("%"+v+"%")}
         elif k == 'cab':
-            dic = {k: banca_table.c.cab.ilike("%"+v+"%")}
+            dic = {k: t_banca.c.cab.ilike("%"+v+"%")}
         elif k == 'bic_swift':
-            dic = {k: banca_table.c.bic_swift.ilike('%' + v + '%')}
+            dic = {k: t_banca.c.bic_swift.ilike('%' + v + '%')}
         elif k == 'agenzia':
-            dic = {k:banca_table.c.agenzia.ilike("%"+v+"%")}
+            dic = {k:t_banca.c.agenzia.ilike("%"+v+"%")}
         return  dic[k]
 
-banca_table = Table('banca',
-                      params['metadata'],
-                      schema=params['schema'],
-                      autoload=True)
-t_banca = banca_table #TODO: rimuovere questo alias una volta standardizzato il DAO...
 
-if 'bic_swift' not in [c.name for c in banca_table.columns]:
-    delete_pickle()
-    col = Column('bic_swift', String)
-    col.create(banca_table, populate_default=True)
 
-std_mapper = mapper(Banca, banca_table, order_by=banca_table.c.id)
+#if 'bic_swift' not in [c.name for c in t_banca.columns]:
+    #delete_pickle()
+    #col = Column('bic_swift', String(200))
+    #col.create(t_banca, populate_default=True)
+
+std_mapper = mapper(Banca, t_banca, order_by=t_banca.c.id)

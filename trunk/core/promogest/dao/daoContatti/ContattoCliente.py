@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012,2011 by Promotux
+#    Copyright (C) 2005-2013 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
-#    This file is part of Promogest. http://www.promogest.me
+
+#    This file is part of Promogest.
 
 #    Promogest is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -24,9 +25,17 @@ from sqlalchemy.orm import *
 from promogest.Environment import params
 from promogest.dao.Dao import Dao
 from promogest.dao.Cliente import Cliente
-from promogest.dao.daoContatti.Contatto import Contatto
-from promogest.dao.daoContatti.RecapitoContatto import RecapitoContatto
+from promogest.dao.daoContatti.Contatto import Contatto, t_contatto
+from promogest.dao.daoContatti.RecapitoContatto import RecapitoContatto, t_recapito
 from promogest.dao.daoContatti.ContattoCategoriaContatto import ContattoCategoriaContatto
+
+
+try:
+    t_contatto_cliente=Table('contatto_cliente', params['metadata'],schema = params['schema'], autoload=True)
+except:
+    from data.contattoCliente import t_contatto_cliente
+
+
 
 class ContattoCliente(Dao):
 
@@ -73,35 +82,27 @@ class ContattoCliente(Dao):
 
     def filter_values(self,k,v):
         if k == 'idCategoria':
-            dic = {k:and_(ContattoCategoriaContatto.id_contatto==contatto.c.id, ContattoCategoriaContatto.id_categoria_contatto==v)}
+            dic = {k:and_(ContattoCategoriaContatto.id_contatto==t_contatto.c.id, ContattoCategoriaContatto.id_categoria_contatto==v)}
         elif k == 'idCliente':
-            dic = {k:contattocliente.c.id_cliente == v}
+            dic = {k:t_contatto_cliente.c.id_cliente == v}
         elif k == "idClienteList":
-            dic = {k:contattocliente.c.id_cliente.in_(v)}
+            dic = {k:t_contatto_cliente.c.id_cliente.in_(v)}
         elif k == 'cognomeNome':
-            dic = {k:or_(contatto.c.cognome.ilike("%"+v+"%"),contatto.c.nome.ilike("%"+v+"%"))}
+            dic = {k:or_(t_contatto.c.cognome.ilike("%"+v+"%"),t_contatto.c.nome.ilike("%"+v+"%"))}
         elif k == 'ruolo':
-            dic = {k:contatto.c.ruolo.ilike("%"+v+"%")}
+            dic = {k:t_contatto.c.ruolo.ilike("%"+v+"%")}
         elif k == "recapito":
-            dic={k:and_(contattocliente.c.id==recapito.c.id_contatto,recapito.c.recapito.ilike("%"+v+"%"))}
+            dic={k:and_(t_contatto_cliente.c.id==t_recapito.c.id_contatto,t_recapito.c.recapito.ilike("%"+v+"%"))}
         elif k == "tipoRecapito":
-            dic={k:and_(contattocliente.c.id==recapito.c.id_contatto,recapito.c.tipo_recapito ==v)}
+            dic={k:and_(t_contatto_cliente.c.id==t_recapito.c.id_contatto,t_recapito.c.tipo_recapito ==v)}
         elif k=='descrizione':
-            dic = {k:contatto.c.descrizione.ilike("%"+v+"%")}
-
-        #FIXME: #'recapito'
-        #FIXME : #'tipoRecapito':
+            dic = {k:t_contatto.c.descrizione.ilike("%"+v+"%")}
         return dic[k]
 
-recapito=Table('recapito',params['metadata'],autoload=True,schema = params['schema'])
-contatto=Table('contatto', params['metadata'],schema = params['schema'], autoload=True)
-contattocliente=Table('contatto_cliente', params['metadata'],schema = params['schema'], autoload=True)
-
-j = join(contatto, contattocliente)
-
-std_mapper = mapper(ContattoCliente, j,properties={
-                'id':[contatto.c.id, contattocliente.c.id],
+std_mapper = mapper(ContattoCliente, join(t_contatto, t_contatto_cliente),
+            properties={
+                'id':[t_contatto.c.id, t_contatto_cliente.c.id],
                 "cc" : relation(Contatto, backref="contatto_cliente", cascade="all, delete"),
-                'tipo_contatto':[contatto.c.tipo_contatto, contattocliente.c.tipo_contatto],
+                'tipo_contatto':[t_contatto.c.tipo_contatto, t_contatto_cliente.c.tipo_contatto],
                 "cliente":relation(Cliente, backref=backref("contatto_cliente",cascade="all,delete"))
-                }, order_by=contattocliente.c.id)
+                }, order_by=t_contatto_cliente.c.id)

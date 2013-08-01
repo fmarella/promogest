@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2013 by Promotux
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Marella <francesco.marella@anche.no>
@@ -27,6 +27,15 @@ from promogest.dao.Dao import Dao
 from promogest.dao.Azienda import Azienda
 from promogest.dao.Banca import Banca, t_banca
 
+try:
+    t_banche_azienda = Table('banche_azienda',
+                                params['metadata'],
+                                schema=params['schema'],
+                                autoload=True,
+                                )
+except:
+    from data.bancheAzienda import t_banche_azienda
+
 
 def gen_banche_azienda():
     daos = []
@@ -40,30 +49,6 @@ def gen_banche_azienda():
                 yield (dao.banca, dao.banca.id, ("{0} ({1})\nNum. conto: {2}".format(dao.banca.denominazione, dao.banca.agenzia, dao.numero_conto)))
             else:
                 yield (dao.banca, dao.banca.id, ("{0}\nNum. conto: {1}".format(dao.banca.denominazione, dao.numero_conto)))
-
-
-try:
-    t_banche_azienda = Table('banche_azienda',
-                            params['metadata'],
-                            schema=params['schema'],
-                            autoload=True,
-                            useexisting=True)
-except:
-    t_banche_azienda = Table('banche_azienda',
-        params['metadata'],
-        Column('id', Integer, primary_key=True),
-        Column('id_banca', Integer),
-        Column('id_azienda', String(100)),
-        Column('id_persona_giuridica', Integer),
-        Column('numero_conto', String(30)),
-        Column('data_riporto', Date()),
-        Column('valore_riporto', Numeric(16, 4)),
-        Column('codice_sia', String(15)),
-        Column('banca_predefinita', Boolean),
-        UniqueConstraint('id_banca', 'numero_conto'),
-        schema=params['schema'],
-        useexisting=True)
-    t_banche_azienda.create(checkfirst=True)
 
 def reimposta_banca_predefinita(newDao):
     daos = BancheAzienda().select(complexFilter=(and_(not_(BancheAzienda.id==newDao.id), BancheAzienda.id_azienda==newDao.id_azienda, BancheAzienda.banca_predefinita==True)), batchSize=None)

@@ -25,6 +25,12 @@ from promogest.Environment import *
 from promogest.dao.Dao import Dao
 from promogest.dao.TipoAliquotaIva import TipoAliquotaIva
 
+try:
+    t_aliquota_iva = Table('aliquota_iva', meta,
+                        schema=params["schema"], autoload=True)
+except:
+    from data.aliquotaIva import t_aliquota_iva
+
 
 class AliquotaIva(Dao):
 
@@ -40,16 +46,17 @@ class AliquotaIva(Dao):
             dic = {k: t_aliquota_iva.c.id_tipo == v}
         return  dic[k]
 
-    def _tipoAliquota(self):
+    @property
+    def tipo_ali_iva(self):
         if self.tipo_aliquota_iva:
             return self.tipo_aliquota_iva.denominazione
         else:
             return None
-    tipo_ali_iva = property(_tipoAliquota)
-
-t_aliquota_iva = Table('aliquota_iva', meta,
-        schema=params["schema"], autoload=True)
 
 std_mapper = mapper(AliquotaIva, t_aliquota_iva, properties={
         'tipo_aliquota_iva': relation(TipoAliquotaIva, backref='aliquota_iva')
             }, order_by=t_aliquota_iva.c.id)
+
+#from promogest.dao.CachedDaosDict import cache_objj
+#cache_objj.add(AliquotaIva, use_key='denominazione')
+#cache_obj = cache_objj

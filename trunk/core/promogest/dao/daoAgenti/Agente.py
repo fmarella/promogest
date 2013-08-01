@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2013 by Promotux
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -25,6 +25,16 @@ from promogest.Environment import params, conf
 from promogest.dao.Dao import Dao
 from promogest.dao.DaoUtils import codeIncrement
 from promogest.dao.PersonaGiuridica import t_persona_giuridica
+
+try:
+    t_agente = Table('agente',
+                 params['metadata'],
+                 schema=params['schema'],
+                 autoload=True)
+except:
+    from data.agente import t_agente
+
+
 
 class Agente(Dao):
 
@@ -78,10 +88,7 @@ def getNuovoCodiceAgente():
             pass
     return codice
 
-t_agente = Table('agente',
-                 params['metadata'],
-                 schema=params['schema'],
-                 autoload=True)
+
 
 std_mapper = mapper(Agente,
                     join(t_agente, t_persona_giuridica),

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2013 by Promotux
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -22,8 +22,9 @@
 #from sqlalchemy import *
 #from sqlalchemy.orm import *
 #from promogest.Environment import *
-from promogest.dao.Azienda import *
-from promogest.modules.Multilingua.dao.Language import *
+
+from promogest.dao.Azienda import t_azienda, Azienda
+from promogest.dao.Language import *
 from promogest.modules.RuoliAzioni.dao.Role import *
 from promogest.dao.User import *
 from promogest.dao.Regioni import *
@@ -36,60 +37,66 @@ from promogest.dao.Setconf import *
 from promogest.dao.Pagamento import *
 from promogest.dao.Operazione import *
 from promogest.dao.TipoAliquotaIva import *
+from promogest.dao.daoContatti.TipoRecapito import *
 from promogest.dao.UnitaBase import *
+from promogest.dao.StatoArticolo import *
 from promogest.dao.AliquotaIva import *
+from promogest.dao.CategoriaArticolo import *
+from promogest.dao.Banca import t_banca, Banca
+from promogest.dao.BancheAzienda import t_banche_azienda, BancheAzienda
+from promogest.dao.FamigliaArticolo import *
+#from promogest.dao.Image import *  ???????????????????
+from promogest.dao.Imballaggio import *
+from promogest.dao.Listino import *
+from promogest.dao.Articolo import *
+from promogest.dao.CodiceABarreArticolo import *
+from promogest.dao.ListinoArticolo import *
+from promogest.dao.Multiplo import *
 
+from promogest.dao.ListinoComplessoListino import *
+from promogest.dao.ListinoComplessoArticoloPrevalente import *
+from promogest.dao.VariazioneListino import *
+
+
+from promogest.dao.daoContatti.RecapitoContatto import *
+from promogest.dao.daoContatti.CategoriaContatto import *
+from promogest.dao.daoContatti.ContattoCategoriaContatto import *
+from promogest.dao.daoContatti.Contatto import *
+
+from promogest.dao.Magazzino import *
+from promogest.dao.Stoccaggio import *
+from promogest.dao.PersonaGiuridica import *
+from promogest.dao.PersonaGiuridicaPersonaGiuridica import *
+
+from promogest.dao.CategoriaCliente import *
+from promogest.dao.CategoriaFornitore import *
+
+from promogest.dao.Vettore import t_vettore
+from promogest.dao.ListinoMagazzino import t_listino_magazzino
+
+from promogest.dao.Cliente import t_cliente, Cliente
+from promogest.dao.Fornitore import t_fornitore, Fornitore
+from promogest.dao.daoAgenti.Agente import t_agente, Agente
+from promogest.dao.ClienteCategoriaCliente import t_cliente_categoria_cliente, ClienteCategoriaCliente
+from promogest.dao.ClienteVariazioneListino import t_cliente_variazione_listino
+
+from promogest.dao.daoContatti.Contatto import t_contatto
+from promogest.dao.daoContatti.RecapitoContatto import t_recapito
+from promogest.dao.daoContatti.ContattoCliente import t_contatto_cliente
+from promogest.dao.daoContatti.ContattoFornitore import t_contatto_fornitore
+from promogest.dao.daoContatti.ContattoAzienda import t_contatto_azienda
+
+from promogest.dao.Riga import t_riga
 
 def orderedImport():
     return
 
 
-    #from data.categoria_articolo import t_categoria_articolo
-    #from data.banca import t_banca
-    #from data.bancheAzienda import t_banche_azienda
-    #from data.statoArticolo import t_stato_articolo
-    #from data.famigliaArticolo import t_famiglia_articolo
-    #from data.image import t_image
-    #from data.imballaggio import t_imballaggio
-    #from data.listino import t_listino
-    #from data.articolo import t_articolo
-    #from data.codiceBarreArticolo import t_codice_barre_articolo
-    #from data.articoloKit import t_articolo_kit
-    #from data.listinoArticolo import t_listino_articolo
-    #from data.multiplo import t_multiplo
-    #from data.listinoComplessoListino import t_listino_complesso_listino
-    #from data.listinoComplessoArticoloPrevalente import t_listino_complesso_articolo_prevalente
-    #from data.variazioneListino import t_variazione_listino
-
-    #from data.tiporecapito import t_tipo_recapito
-    #from data.categoriaCliente import t_categoria_cliente
-    #from data.categoriaFornitore import t_categoria_fornitore
-    #from data.categoriaContatto import t_categoria_contatto
-
-    #from data.magazzino import t_magazzino
-    #from data.stoccaggio import t_stoccaggio
-    #from data.personaGiuridica import t_persona_giuridica
-    #from data.personaGiuridicaPersonaGiuridica import t_personagiuridica_personagiuridica
-    #from data.vettore import t_vettore
-    #from data.listinoMagazzino import t_listino_magazzino
-
-    #from data.cliente import t_cliente
-    #from data.fornitore import t_fornitore
-    #from data.agente import t_agente
-    #from data.clienteCategoriaCliente import t_cliente_categoria_cliente
-    #from data.clienteVariazioneListino import t_cliente_variazione_listino
-
-    #from data.contatto import t_contatto
-    #from data.recapito import t_recapito
-    #from data.contattoCliente import t_contatto_cliente
-    #from data.contattoFornitore import t_contatto_fornitore
-    #from data.contattoAzienda import t_contatto_azienda
     #from data.contattoMagazzino import t_contatto_magazzino
     #from data.destinazioneMerce import t_destinazione_merce
     #from data.contattoCategoriaContatto import t_contatto_categoria_contatto
     #from data.listinoCategoriaCliente import t_listino_categoria_cliente
 
-    #from data.riga import t_riga
     #from data.testataDocumento import t_testata_documento
     #from data.testataMovimento import t_testata_movimento
     #from data.rigaMovimento import t_riga_movimento

@@ -76,7 +76,7 @@ t_pagamento = Table('pagamento',
 colonne = get_columns(t_pagamento)
 
 if 'tipo' not in colonne:
-    col = Column('tipo', String, default='banca')
+    col = Column('tipo', String(20), default='banca')
     col.create(t_pagamento, populate_default=True)
 
 if 'spese' not in colonne:
@@ -90,3 +90,7 @@ if 'id_aliquota_iva' not in colonne:
 std_mapper = mapper(Pagamento,
                     t_pagamento,
                     order_by=t_pagamento.c.id)
+
+#from promogest.dao.CachedDaosDict import cache_objj
+#cache_objj.add(Pagamento, use_key='denominazione')
+#cache_obj = cache_objj

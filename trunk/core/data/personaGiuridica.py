@@ -44,6 +44,8 @@ t_persona_giuridica = Table('persona_giuridica', params["metadata"],
         Column('codice_fiscale',String(16), nullable=True),
         Column('partita_iva',String(30), nullable=True),
         Column('id_user',Integer, ForeignKey(fk_prefix_main+'utente.id')),
+        Column('note', Text),
+        Column('cancellato', Boolean, default=False),
         schema=params["schema"]
         )
 t_persona_giuridica.create(checkfirst=True)

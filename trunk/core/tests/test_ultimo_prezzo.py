@@ -73,7 +73,6 @@ class TestUltimiPrezzi(unittest.TestCase):
                     .filter(Riga.valore_unitario_netto!=0)\
                     .all()
 
-                print "RIGHEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE", righeArticoloMovimentate  ,s.id_articolo
 
 suite = unittest.TestLoader().loadTestsFromTestCase(TestUltimiPrezzi)
 unittest.TextTestRunner(verbosity=2).run(suite)

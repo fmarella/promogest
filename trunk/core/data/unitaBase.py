@@ -33,12 +33,28 @@ t_unita_base = Table('unita_base', params["metadata"],
 t_unita_base.create(checkfirst=True)
 
 s= select([t_unita_base.c.denominazione_breve]).execute().fetchall()
+unit = t_unita_base.insert()
 if (u'pz',) not in s or s==[]:
-    unit = t_unita_base.insert()
     unit.execute(denominazione_breve='pz', denominazione='pezzi')
+if (u'm',) not in s or s==[]:
     unit.execute(denominazione_breve='m', denominazione='Metri')
+if (u'l',) not in s or s==[]:
     unit.execute(denominazione_breve='l', denominazione='Litri')
+if (u'kg',) not in s or s==[]:
     unit.execute(denominazione_breve='kg', denominazione='Chilogrammi')
+if (u'N',) not in s or s==[]:
     unit.execute(denominazione_breve='N', denominazione='Numero')
+if (u'h',) not in s or s==[]:
     unit.execute(denominazione_breve='h', denominazione='Ore')
+if (u'mq',) not in s or s==[]:
     unit.execute(denominazione_breve='mq', denominazione='Metri Quadri')
+if (u'mc',) not in s or s==[]:
+    unit.execute(denominazione = "Metri Cubi",denominazione_breve="mc")
+if (u'gr',) not in s or s==[]:
+    unit.execute(denominazione = "Grammi",denominazione_breve="gr")
+if (u'ml',) not in s or s==[]:
+    unit.execute(denominazione = "Millilitri",denominazione_breve="ml")
+if (u'q',) not in s or s==[]:
+    unit.execute(denominazione = "Quintali",denominazione_breve="q")
+if (u't',) not in s or s==[]:
+    unit.execute(denominazione = "Tonnellate",denominazione_breve="t")

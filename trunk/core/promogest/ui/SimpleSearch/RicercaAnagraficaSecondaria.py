@@ -140,7 +140,6 @@ class RicercaAnagraficaSecondariaFilter(RicercaFilter):
         partitaIva = prepareFilterString(self.partita_iva_filter_entry.get_text())
         codiceFiscale = prepareFilterString(self.codice_fiscale_filter_entry.get_text())
         #idCategoria = findIdFromCombobox(self.id_categoria_cliente_filter_combobox)
-        print "TIPOOOOOOOOOOOOOOOOOOOODAOOOOOOOOOOOOOOOOOOOO", self.tipo_dao
         role = Role().select(name=self.tipo_dao)
         if role:
             idRole= role[0].id

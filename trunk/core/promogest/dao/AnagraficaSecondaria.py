@@ -30,82 +30,12 @@ persona_giuridica = Table('persona_giuridica',
                         schema=params["schema"],
                         autoload=True)
 
-try:
-    anagraficasecondaria = Table('anagrafica_secondaria',
+anagraficasecondaria = Table('anagrafica_secondaria',
         meta,
         schema=params["schema"],
         autoload=True)
 
-except Exception as e:
-    #params["session"].close()
-    ruoloTable = Table('role',
-        meta,
-        autoload=True,
-        schema=params["mainSchema"])
 
-    utenteTable = Table('utente',
-        meta,
-        schema=params["mainSchema"],
-        autoload=True)
-
-    pagamentoTable = Table('pagamento',
-        meta,
-        schema=params["schema"],
-        autoload=True)
-
-    bancaTable = Table('banca',
-        meta,
-        schema=params["schema"],
-        autoload=True)
-
-    magazzinoTable = Table('magazzino',
-        meta,
-        schema=params["schema"],
-        autoload=True)
-
-    listinoTable = Table('listino',
-        meta,
-        schema=params["schema"],
-        autoload=True)
-
-    if params["tipo_db"] == "sqlite":
-        ruoloFK = 'role.id'
-        personagiuridicaFK = 'persona_giuridica.id'
-        utenteFK = "utente.id"
-        pagamentoFK = "pagamento.id"
-        bancaFK = "banca.id"
-        magazzinoFK = "magazzino.id"
-        listinoFK = "listino.id"
-    else:
-        ruoloFK = params["mainSchema"] + '.role.id'
-        personagiuridicaFK = params["schema"] + '.persona_giuridica.id'
-        utenteFK = params["mainSchema"] + ".utente.id"
-        pagamentoFK = params["schema"] + '.pagamento.id'
-        bancaFK = schema_azienda + '.banca.id'
-        magazzinoFK = params["schema"] + '.magazzino.id'
-        listinoFK = params["schema"] + '.listino.id'
-
-    anagraficasecondaria = Table('anagrafica_secondaria', meta,
-            Column('id', Integer, ForeignKey(personagiuridicaFK,
-                onupdate="CASCADE", ondelete="CASCADE"), primary_key=True),
-            Column('id_ruolo', Integer, ForeignKey(ruoloFK,
-                onupdate="CASCADE", ondelete="CASCADE")),
-            Column('id_utente', Integer, ForeignKey(utenteFK,
-                onupdate="CASCADE", ondelete="CASCADE")),
-            Column('id_pagamento', Integer, ForeignKey(pagamentoFK,
-                onupdate="CASCADE", ondelete="CASCADE")),
-            Column('id_banca', Integer, ForeignKey(bancaFK,
-                onupdate="CASCADE", ondelete="CASCADE")),
-            Column('id_magazzino', Integer, ForeignKey(magazzinoFK,
-                onupdate="CASCADE", ondelete="CASCADE")),
-            Column('id_listino', Integer, ForeignKey(listinoFK,
-                onupdate="CASCADE", ondelete="CASCADE")),
-            schema=params["schema"],
-            useexisting=True,
-            )
-    anagraficasecondaria.create(checkfirst=True)
-    #Session = sessionmaker(bind=engine)
-    #session = Session()
 
 class AnagraficaSecondaria_(Dao):
 

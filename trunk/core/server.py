@@ -25,7 +25,6 @@ from core import views
 # pybabel init -i ngsresine.pot -l en -d ./lang/
 # pybabel compile -d ./lang/
 
-#Environment.meta = MetaData().reflect(Environment.engine,schema=self.azienda )
 
 
 class Janas(object):
@@ -57,4 +56,3 @@ class Janas(object):
 
     def __call__(self, environ, start_response):
         return self.dispatch(environ, start_response)
-

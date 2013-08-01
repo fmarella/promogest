@@ -22,11 +22,20 @@
 from sqlalchemy import Table, or_
 from sqlalchemy.orm import mapper, relation, join
 from promogest.Environment import params, conf, session
-from Dao import Dao
+from promogest.dao.Dao import Dao
 from promogest.dao.PersonaGiuridica import t_persona_giuridica
 from CategoriaFornitore import CategoriaFornitore
 from promogest.dao.daoContatti.Contatto import Contatto
 from promogest.dao.DaoUtils import codeIncrement, getRecapitiFornitore
+
+try:
+    t_fornitore = Table('fornitore',
+                    params['metadata'],
+                    schema = params['schema'],
+                    autoload=True)
+except:
+    from data.fornitore import t_fornitore
+
 
 class Fornitore(Dao):
 
@@ -147,10 +156,7 @@ def getNuovoCodiceFornitore():
 
     return codice
 
-t_fornitore = Table('fornitore',
-                    params['metadata'],
-                    schema = params['schema'],
-                    autoload=True)
+
 
 std_mapper = mapper(Fornitore, join(t_fornitore, t_persona_giuridica),
     properties={

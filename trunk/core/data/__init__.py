@@ -100,6 +100,6 @@
 #################################from schemi.rigaScontrino import RigaScontrinoDb
 #################################from schemi.testataScontrino import TestataScontrinoDb
 #################################from schemi.chiusuraFiscale import ChiusuraFiscaleDb
-#################################from schemi.stadio_commessa import StadioCommessaDb
-#################################from schemi.testataCommessa import TestataCommessaDb
-#################################from schemi.rigaCommessa import RigaCommessaDb
+#                                from schemi.stadio_commessa import StadioCommessaDb
+#                                from schemi.testataCommessa import TestataCommessaDb
+#                                from schemi.rigaCommessa import RigaCommessaDb

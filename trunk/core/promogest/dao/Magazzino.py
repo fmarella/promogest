@@ -23,8 +23,11 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
 from Dao import Dao
-from migrate import *
 
+try:
+    t_magazzino=Table('magazzino', params['metadata'], schema=params['schema'], autoload=True)
+except:
+    from data.magazzino import t_magazzino
 
 class Magazzino(Dao):
 
@@ -32,28 +35,17 @@ class Magazzino(Dao):
         Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):
-        dic= {  'denominazione' : magazzino.c.denominazione.ilike("%"+v+"%")}
+        dic= {'denominazione' : t_magazzino.c.denominazione.ilike("%"+v+"%")}
         return  dic[k]
 
-magazzino=Table('magazzino',params['metadata'],schema = params['schema'],autoload=True)
 
-#if "pvcode_" not in [c.name for c in magazzino.columns]:
-#    col = Column('pvcode_', String)
-#    col.create(magazzino)
-
-if "pvcode" not in [c.name for c in magazzino.columns]:
-    col = Column('pvcode', String)
-    col.create(magazzino)
-
-
-std_mapper = mapper(Magazzino, magazzino,
+std_mapper = mapper(Magazzino, t_magazzino,
         properties={
-        'indirizzo':deferred(magazzino.c.indirizzo),
-        'cap':deferred(magazzino.c.cap),
-        'provincia':deferred(magazzino.c.provincia),
-        'nazione':deferred(magazzino.c.nazione),
-        'pvcode':deferred(magazzino.c.pvcode),
-        'data_ultima_stampa_giornale':deferred(magazzino.c.data_ultima_stampa_giornale),
-
+        'indirizzo':deferred(t_magazzino.c.indirizzo),
+        'cap':deferred(t_magazzino.c.cap),
+        'provincia':deferred(t_magazzino.c.provincia),
+        'nazione':deferred(t_magazzino.c.nazione),
+        'pvcode':deferred(t_magazzino.c.pvcode),
+        'data_ultima_stampa_giornale':deferred(t_magazzino.c.data_ultima_stampa_giornale),
     },
- order_by=magazzino.c.id)
+ order_by=t_magazzino.c.id)

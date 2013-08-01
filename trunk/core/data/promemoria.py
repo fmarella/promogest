@@ -22,10 +22,11 @@
 
 from sqlalchemy import *
 from promogest.Environment import *
+import datetime
 
 t_promemoria = Table('promemoria', params["metadata"],
         Column('id',Integer,primary_key=True),
-        Column('data_inserimento',DateTime,PassiveDefault(func.now()),nullable=False),
+        Column('data_inserimento',DateTime,ColumnDefault(datetime.datetime.now),nullable=False),
         Column('data_scadenza',DateTime,nullable=False),
         Column('oggetto',String(100),nullable=False),
         Column('incaricato',String(100),nullable=True),

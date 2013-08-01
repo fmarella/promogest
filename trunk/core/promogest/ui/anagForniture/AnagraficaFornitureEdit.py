@@ -107,16 +107,12 @@ class AnagraficaFornitureEdit(AnagraficaEdit):
         else:
             self.id_articolo_customcombobox.set_sensitive(False)
         self.id_articolo_customcombobox.setId(self.dao.id_articolo)
-        print " CHE CAZZOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO"
         res = self.id_articolo_customcombobox.getData()
-        print " CAZZOTTOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO", res
         self.descrizione_breve_aliquota_iva_label.set_text(res["denominazioneBreveAliquotaIva"])
         self._percentualeIva = res["percentualeAliquotaIva"]
         self.percentuale_aliquota_iva_label.set_text('%5.2f' % self._percentualeIva + ' %')
         #self.id_fornitore_customcombobox.refresh(clear=True, filter=False)
-        print "FIGOTTOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO"
         self.id_fornitore_customcombobox.set_sensitive(True)
-        print " HO UN IDEEEEEEEEEEEEEEEEEEEE", self.dao.id_fornitore
         if self.dao.id_fornitore is None:
             if self._anagrafica._fornitoreFissato:
                 self.dao.id_fornitore = self._anagrafica._idFornitore

@@ -21,46 +21,18 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 from sqlalchemy import *
+from promogest.Environment import *
 
-class TestataCommessaDb(object):
-
-    def __init__(self, schema = None,mainSchema=None, metadata=None, session=None,debug=False):
-        self.metadata = metadata
-        self.session_sl = session
-        self.schema = schema
-        self.debug = debug
-
-    def create(self):
-
-        clienteTable = Table('cliente', self.metadata, autoload=True, schema=self.schema)
-        articoloTable = Table('articolo', self.metadata, autoload=True, schema=self.schema)
-        stadiocommessaTable = Table('stadio_commessa', self.metadata, autoload=True, schema=self.schema)
-
-        if not self.schema:
-            clienteFK ='cliente.id'
-            stadiocommessaFK ='stadio_commessa.id'
-            articoloFK ='articolo.id'
-        else:
-            clienteFK = self.schema+'.cliente.id'
-            stadiocommessaFK = self.schema+'.stadio_commessa.id'
-            articoloFK =self.schema+'.articolo.id'
-
-        testatacommessa = Table('testata_commessa', self.metadata,
-                Column('id', Integer, primary_key=True),
-                Column('numero', Integer, nullable=False),
-                Column('denominazione', String(300), nullable=False),
-                Column('note', Text, nullable=True),
-                Column('id_cliente', Integer,ForeignKey(clienteFK,onupdate="CASCADE",ondelete="CASCADE")),
-                Column('id_articolo', Integer,ForeignKey(articoloFK)),
-                Column('id_stadio_commessa', Integer,ForeignKey(stadiocommessaFK,onupdate="CASCADE",ondelete="RESTRICT"),nullable=True),
-                Column('data_inizio', DateTime, nullable=True),
-                Column('data_fine', DateTime, nullable=True),
-                schema=self.schema,
-                useexisting=True)
-        testatacommessa.create(checkfirst=True)
-
-    def update(self, req=None, arg=None):
-        pass
-
-    def alter(self, req=None, arg=None):
-        pass
+t_testata_commessa = Table('testata_commessa', params["metadata"],
+        Column('id', Integer, primary_key=True),
+        Column('numero', Integer, nullable=False),
+        Column('denominazione', String(300), nullable=False),
+        Column('note', Text, nullable=True),
+        Column('id_cliente', Integer,ForeignKey(fk_prefix +'cliente.id',onupdate="CASCADE",ondelete="CASCADE")),
+        Column('id_articolo', Integer,ForeignKey(fk_prefix +'articolo.id')),
+        Column('id_stadio_commessa', Integer,ForeignKey(fk_prefix +'stadio_commessa.id',onupdate="CASCADE",ondelete="RESTRICT"),nullable=True),
+        Column('data_inizio', DateTime, nullable=True),
+        Column('data_fine', DateTime, nullable=True),
+        schema=params["schema"],
+        useexisting=True)
+t_testata_commessa.create(checkfirst=True)

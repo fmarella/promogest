@@ -25,27 +25,10 @@ from sqlalchemy.orm import *
 from promogest.Environment import *
 from promogest.dao.Dao import Dao
 
-try:
-    ritenutaaccontoriga = Table('ritenuta_acconto_riga', params['metadata'],
+ritenutaaccontoriga = Table('ritenuta_acconto_riga', params['metadata'],
                                     schema = params['schema'], autoload=True)
-except:
-    rigaTable = Table('riga', params['metadata'], autoload=True, schema=params['schema'])
 
-    if tipodb == "sqlite":
-        rigaFK = 'riga.id'
-    else:
-        rigaFK = params['schema']+'.riga.id'
 
-    ritenutaaccontoriga = Table('ritenuta_acconto_riga', params['metadata'],
-                        Column('id',Integer,primary_key=True),
-                        Column('provvigionale', Boolean,nullable=False),
-                        Column('ritenuta_percentuale',Numeric(8,4),nullable=True),
-                        Column('rivalsa_percentuale',Numeric(8,4),nullable=True),
-                        Column('inarcassa_percentuale',Numeric(8,4),nullable=True),
-                        Column('id_riga',Integer,ForeignKey(rigaFK, onupdate="CASCADE", ondelete="RESTRICT"),nullable=False),
-                        UniqueConstraint('id_riga'),
-                        schema=params['schema'])
-    ritenutaaccontoriga.create(checkfirst=True)
 
 class RigaRitenutaAcconto(Dao):
     """ TABELLA:  ritenuta_acconto_riga,

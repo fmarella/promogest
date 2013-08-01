@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2013 by Promotux
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -25,6 +25,15 @@ from sqlalchemy.orm import *
 from promogest.Environment import *
 from Dao import Dao
 
+try:
+    t_categoria_articolo=Table('categoria_articolo',
+            params['metadata'],
+            schema = params['schema'],
+            autoload=True)
+except:
+    from data.categoria_articolo import t_categoria_articolo
+
+
 class CategoriaArticolo(Dao):
 
     def __init__(self, req=None):
@@ -32,11 +41,11 @@ class CategoriaArticolo(Dao):
 
     def filter_values(self,k,v):
         if k == 'denominazione':
-            dic= {k : categoria_articolo.c.denominazione.ilike("%"+v+"%")}
+            dic= {k : t_categoria_articolo.c.denominazione.ilike("%"+v+"%")}
         elif k == "denominazioneBreve":
-            dic= {k : categoria_articolo.c.denominazione_breve.ilike("%"+v+"%")}
+            dic= {k : t_categoria_articolo.c.denominazione_breve.ilike("%"+v+"%")}
         elif k == "denominazioneBreveEM":
-            dic= {k : categoria_articolo.c.denominazione_breve == v}
+            dic= {k : t_categoria_articolo.c.denominazione_breve == v}
         return  dic[k]
 
     def preSave(self):
@@ -47,10 +56,4 @@ class CategoriaArticolo(Dao):
         else:
             return True
 
-
-categoria_articolo=Table('categoria_articolo',
-            params['metadata'],
-            schema = params['schema'],
-            autoload=True)
-
-std_mapper = mapper(CategoriaArticolo, categoria_articolo, order_by=categoria_articolo.c.id)
+std_mapper = mapper(CategoriaArticolo, t_categoria_articolo, order_by=t_categoria_articolo.c.id)

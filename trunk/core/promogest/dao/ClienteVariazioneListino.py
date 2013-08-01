@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2013 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Marella <francesco.marella@anche.no>
+#    Author: Francesco Meloni  <francesco@promotux.it>
 
 #    This file is part of Promogest.
 
@@ -32,16 +33,8 @@ try:
                              schema=params['schema'],
                              autoload=True)
 except:
-    t_cliente_variazione_listino = Table('cliente_variazione_listino', params["metadata"],
-        Column('id_cliente', Integer,
-            ForeignKey(fk_prefix + 'cliente.id', onupdate="CASCADE", ondelete="CASCADE"),
-             primary_key=True),
-        Column('id_variazione', Integer,
-            ForeignKey(fk_prefix + 'variazione_listino.id', onupdate="CASCADE", ondelete="RESTRICT"),
-             primary_key=True),
-        schema=params["schema"],
-        useexisting=True)
-    t_cliente_variazione_listino.create(checkfirst=True)
+    from data.clienteVariazioneListino import t_cliente_variazione_listino
+
 
 class ClienteVariazioneListino(Dao):
 

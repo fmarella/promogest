@@ -187,7 +187,6 @@ class AnagraficaListiniArticoliFilter(AnagraficaFilter):
         idArticolo = self.id_articolo_filter_customcombobox.getId()
         idListino = findIdFromCombobox(self.id_listino_filter_combobox)
         idSottoListino = findIdFromCombobox(self.id_sotto_listino_filter_combobox)
-        #print " ID SOTTO SLIIIIIIIIIIIIIIIIIIII", idSottoListino, idListino, idArticolo
         if not idSottoListino and self.isComplexPriceList:
             for sottolist in self.isComplexPriceList:
                 multilist.append(sottolist.id_listino)

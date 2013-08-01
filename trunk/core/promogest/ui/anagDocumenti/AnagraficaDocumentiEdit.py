@@ -1447,7 +1447,6 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             return None
 
     def on_completion_match(self, completion=None, model=None, iter=None):
-        #print "QUANTO CHIAMI QUESTA FUNZIIIIIIIIIIIIIIIIIIIIIIII", model[iter][1]
         self.mattu = True
         self.articolo_matchato = model[iter][1]
         self.articolo_entry.set_position(-1)
@@ -1491,36 +1490,22 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         codiceArticoloFornitore = None
         join = None
         orderBy = None
+        batchSize = setconf("Numbers", "batch_size")
+
         if self.ricerca_criterio_combobox.get_active() == 0:
             codice = self.articolo_entry.get_text()
-            if Environment.tipo_eng =="sqlite":
-                orderBy = "articolo.codice"
-            else:
-                orderBy = Environment.params["schema"]+".articolo.codice"
-                batchSize = setconf("Numbers", "batch_size")
+            orderBy = Environment.fk_prefix+"articolo.codice"
         elif self.ricerca_criterio_combobox.get_active() == 1:
             codiceABarre = self.articolo_entry.get_text()
             join= Articolo.cod_barre
-            if Environment.tipo_eng =="sqlite":
-                orderBy = "codice_a_barre_articolo.codice"
-            else:
-                orderBy = Environment.params["schema"]+".codice_a_barre_articolo.codice"
-            batchSize = setconf("Numbers", "batch_size")
+            orderBy = Environment.fk_prefix+"codice_a_barre_articolo.codice"
         elif self.ricerca_criterio_combobox.get_active() == 2:
             denominazione = self.articolo_entry.get_text()
-            if Environment.tipo_eng =="sqlite":
-                orderBy = "articolo.denominazione"
-            else:
-                orderBy = Environment.params["schema"]+".articolo.denominazione"
-            batchSize = setconf("Numbers", "batch_size")
+            orderBy = Environment.fk_prefix+"articolo.denominazione"
         elif self.ricerca_criterio_combobox.get_active() == 3:
             codiceArticoloFornitore = self.articolo_entry.get_text()
             join= Articolo.fornitur
-            if Environment.tipo_eng =="sqlite":
-                orderBy = "fornitura.codice_articolo_fornitore"
-            else:
-                orderBy = Environment.params["schema"]+".fornitura.codice_articolo_fornitore"
-        batchSize = setconf("Numbers", "batch_size")
+            orderBy = Environment.fk_prefix+"fornitura.codice_articolo_fornitore"
         quantita = 1
         if self.articolo_matchato:
             arts = [self.articolo_matchato]
@@ -1537,7 +1522,6 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                                         offset=None,
                                         batchSize=None)
         if not arts and self.ricerca_criterio_combobox.get_active() == 1:
-            #print " PROVIAMO LA CARTA DEL PESO VARIABILE A SEI CIFRE",prepareFilterString(codiceABarre[0:6])
             arts = Articolo().select(
                                      codiceABarreEM = prepareFilterString(codiceABarre[0:6]),
                                      offset=None,

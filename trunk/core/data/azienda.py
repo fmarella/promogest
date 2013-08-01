@@ -22,6 +22,7 @@
 
 from sqlalchemy import *
 from promogest.Environment import *
+from promogest.preEnv import buildSchema
 
 t_azienda = Table('azienda', params["metadata"],
     Column('schemaa', String(100), primary_key=True),
@@ -52,11 +53,15 @@ t_azienda = Table('azienda', params["metadata"],
     Column('cab', String(20), nullable=True),
     Column('percorso_immagine', String(300), nullable=True),
     Column('tipo_schemaa', String(10), nullable=True),
-    schema=params["mainSchema"]
+    schema=params["mainSchema"],
         )
 t_azienda.create(checkfirst=True)
+
 try:
     company = t_azienda.insert()
-    company.execute(schemaa = params["schema"])
+    if buildSchema:
+        company.execute(schemaa = buildSchema)
+    else:
+        company.execute(schemaa = params["schema"])
 except:
-    print"azienda presente nello schema"
+    print"AZIENDA PRESENTE NELLO SCHEMA"

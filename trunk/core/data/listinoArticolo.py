@@ -24,15 +24,17 @@ from sqlalchemy import *
 from promogest.Environment import *
 
 t_listino_articolo = Table('listino_articolo', params["metadata"],
-        Column('id_listino', Integer,ForeignKey(fk_prefix+"listino.id",onupdate="CASCADE",ondelete="CASCADE"),primary_key=True),
-        Column('id_articolo', Integer, ForeignKey(fk_prefix+"articolo.id",onupdate="CASCADE",ondelete="CASCADE"),primary_key=True),
+        Column('id_listino', Integer,ForeignKey(fk_prefix+"listino.id"),primary_key=True),
+        Column('id_articolo', Integer, ForeignKey(fk_prefix+"articolo.id"),primary_key=True),
         Column('prezzo_dettaglio', Numeric(16,4)),
         Column('prezzo_ingrosso', Numeric(16,4)),
         Column('ultimo_costo', Numeric(16,4), nullable=True),
-        Column('data_listino_articolo', DateTime,default=func.now(),nullable=False,primary_key=True),
+        Column('data_listino_articolo', DateTime,ColumnDefault(datetime.datetime.now),nullable=False,primary_key=True),
         Column('listino_attuale', Boolean, nullable=False),
-        #ForeignKeyConstraint(['id_listino', 'id_articolo'],[self.schema+'.listino.id', self.schema+'.articolo.id'],onupdate="CASCADE", ondelete="CASCADE"),
+        #ForeignKeyConstraint(['id_listino', 'id_articolo'],[fk_prefix+'.listino.id', fk_prefix+'.articolo.id'],onupdate="CASCADE", ondelete="CASCADE"),
         CheckConstraint("prezzo_dettaglio is not NULL OR prezzo_ingrosso is not NULL"),
-        schema=params["schema"]
+        schema=params["schema"],
+        mysql_engine='InnoDB'
+
         )
 t_listino_articolo.create(checkfirst=True)

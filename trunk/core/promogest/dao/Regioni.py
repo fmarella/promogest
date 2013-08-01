@@ -24,17 +24,10 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
 from Dao import Dao
-try:
-    regioni=Table('regione', params['metadata'],schema = params['mainSchema'],autoload=True)
 
-except:
-    regioni  = Table('regione', params["metadata"],
-            Column('id',Integer,primary_key=True),
-            Column('denominazione',String(100)),
-            Column('codice',Integer),
-            schema = params['mainSchema'])
+regioni=Table('regione', params['metadata'],schema = params['mainSchema'],autoload=True)
 
-    regioni.create(checkfirst=True)
+
 
 class Regioni(Dao):
 
@@ -48,26 +41,7 @@ class Regioni(Dao):
         return  dic[k]
 
 std_mapper = mapper(Regioni, regioni,order_by=regioni.c.denominazione)
-regis = [ ("01",'Piemonte'),
-        ("02","Valle D'Aosta"),
-        ("03","Lombardia"),
-        ("04","Trentino Alto Adige"),
-        ("05","Veneto"),
-        ("06","Friuli Venezia Giulia"),
-        ("07","Liguria"),
-        ("08","Emilia Romagna"),
-        ("09","Toscana"),
-        ("10","Umbria"),
-        ("11","Marche"),
-        ("12","Lazio"),
-        ("13","Abruzzo"),
-        ("14","Molise"),
-        ("15","Campania"),
-        ("16","Puglia"),
-        ("17","Basilicata"),
-        ("18","Calabria"),
-        ("19","Sicilia"),
-        ("20","Sardegna"),]
+
 
 #f = Regioni().select(denominazione="Piemonte")
 #if not f:

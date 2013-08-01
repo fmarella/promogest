@@ -21,7 +21,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-
+import datetime
 from sqlalchemy import Table
 from sqlalchemy.orm import mapper, relation
 from promogest.Environment import *
@@ -33,7 +33,16 @@ from promogest.dao.ScontoVenditaDettaglio import ScontoVenditaDettaglio
 from promogest.dao.ScontoVenditaIngrosso import ScontoVenditaIngrosso
 from promogest.lib.utils import *
 
-import datetime
+
+
+try:
+    t_listino_articolo=Table('listino_articolo',
+                params['metadata'],
+                schema = params['schema'],
+                autoload=True)
+except:
+    from data.listinoArticolo import t_listino_articolo
+
 
 class ListinoArticolo(Dao):
 
@@ -53,57 +62,56 @@ class ListinoArticolo(Dao):
             for f in falsi:
                 f.delete()
 
-    def _denominazione(self):
+    @property
+    def denominazione(self):
         if self.listi:return self.listi.denominazione
         else: return ""
-    denominazione= property(_denominazione)
 
-    def _data_listino(self):
+    @property
+    def data_listino(self):
         if self.listi:return self.listi.data_listino
         else: return ""
-    data_listino= property(_data_listino)
 
-    def _codice_articolo(self):
+    @property
+    def codice_articolo(self):
         if self.arti:return self.arti.codice
         else: return ""
-    codice_articolo= property(_codice_articolo)
 
-    def _articolo_famiglia(self):
+    @property
+    def articolo_famiglia(self):
         if self.arti:return self.arti.denominazione_famiglia
         else: return ""
-    articolo_famiglia= property(_articolo_famiglia)
 
-    def _articolo_categoria(self):
+    @property
+    def articolo_categoria(self):
         if self.arti:return self.arti.denominazione_categoria
         else: return ""
-    articolo_categoria= property(_articolo_categoria)
 
-    def _articolo(self):
+    @property
+    def articolo(self):
         if self.arti:return self.arti.denominazione
         else: return ""
-    articolo= property(_articolo)
 
-
-    def _aliquota_iva(self):
+    @property
+    def aliquota_iva(self):
         if self.arti:return self.arti.denominazione_aliquota_iva
         else: return ""
-    aliquota_iva= property(_aliquota_iva)
 
-    def _percentuale_iva(self):
+    @property
+    def percentuale_iva(self):
         if self.arti:return self.arti.percentuale_aliquota_iva
         else: return ""
-    percentuale_iva= property(_percentuale_iva)
 
-    def _codice_a_barre(self):
+    @property
+    def codice_a_barre(self):
         if self.arti:return self.arti.codice_a_barre
         else: return ""
-    codice_a_barre= property(_codice_a_barre)
 
     if hasattr(conf, "PromoWear") and getattr(conf.PromoWear,'mod_enable')=="yes":
 
-        def _denominazione_gruppo_taglia(self):
+        @property
+        def denominazione_gruppo_taglia(self):
             if self.arti:return self.arti.denominazione_gruppo_taglia
-        denominazione_gruppo_taglia = property(_denominazione_gruppo_taglia)
 
         def _id_articolo_padre(self):
             if self.arti:return self.arti.id_articolo_padre
@@ -131,30 +139,30 @@ class ListinoArticolo(Dao):
             if self.arti:return self.arti.denominazione_taglia
         denominazione_taglia = property(_denominazione_taglia)
 
-        def _denominazione_colore(self):
+        @property
+        def denominazione_colore(self):
             """ esempio di funzione  unita alla property """
             if self.arti:return self.arti.denominazione_colore
-        denominazione_colore = property(_denominazione_colore)
 
-        def _denominazione_modello(self):
+        @property
+        def denominazione_modello(self):
             """ esempio di funzione  unita alla property """
             if self.arti:return self.arti.denominazione_modello
-        denominazione_modello = property(_denominazione_modello)
 
-        def _anno(self):
+        @property
+        def anno(self):
             """ esempio di funzione  unita alla property """
             if self.arti:return self.arti.anno
-        anno = property(_anno)
 
-        def _stagione(self):
+        @property
+        def stagione(self):
             """ esempio di funzione  unita alla property """
             if self.arti:return self.arti.stagione
-        stagione = property(_stagione)
 
-        def _genere(self):
+        @property
+        def genere(self):
             """ esempio di funzione  unita alla property """
             if self.arti:return self.arti.genere
-        genere = property(_genere)
 
     def _getScontiVenditaDettaglio(self):
         #self.__dbScontiVenditaDett = params['session'].\
@@ -247,12 +255,6 @@ class ListinoArticolo(Dao):
         """
         cancella gli sconti associati al listino articolo
         """
-        #row = ScontoVenditaDettaglio().select(idListino=idListino,
-                                                #idArticolo=idArticolo,
-                                                #dataListinoArticolo=dataListinoArticolo,
-                                                #offset = None,
-                                                #batchSize = None,
-                                                #orderBy=ScontoVenditaDettaglio.id_listino)
         if self.SVD:
             for r in self.SVD:
                 params['session'].delete(r)
@@ -263,13 +265,6 @@ class ListinoArticolo(Dao):
         """
         cancella gli sconti associati al listino articolo
         """
-
-        #row = ScontoVenditaIngrosso().select(idListino=idListino,
-                                                        #idArticolo=idArticolo,
-                                                        #dataListinoArticolo=dataListinoArticolo,
-                                                        #offset = None,
-                                                        #batchSize = None,
-                                                        #orderBy=ScontoVenditaIngrosso.id_listino)
         if self.SVI:
             for r in self.SVI:
                 params['session'].delete(r)
@@ -332,12 +327,6 @@ class ListinoArticolo(Dao):
 
         params["session"].commit()
 
-
-
-t_listino_articolo=Table('listino_articolo',
-                params['metadata'],
-                schema = params['schema'],
-                autoload=True)
 
 std_mapper=mapper(ListinoArticolo, t_listino_articolo, properties={
             "arti" : relation(Articolo,primaryjoin=

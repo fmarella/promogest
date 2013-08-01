@@ -23,31 +23,36 @@
 from sqlalchemy import Table
 from sqlalchemy.orm import mapper, relation
 from promogest.Environment import params
-from Dao import Dao
-from Magazzino import Magazzino
+from promogest.dao.Dao import Dao
+from promogest.dao.Magazzino import Magazzino
+
+try:
+    t_listino_magazzino = Table('listino_magazzino',
+            params['metadata'],
+            schema = params['schema'],
+            autoload=True)
+except:
+    from data.listinoMagazzino import t_listino_magazzino
 
 class ListinoMagazzino(Dao):
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
 
-    def _magazzino(self):
+    @property
+    def magazzino(self):
         if self.magazzin:
             mag = self.magazzin.denominazione
             return mag
         else:
             return ""
-    magazzino = property(_magazzino)
 
     def filter_values(self,k,v):
-        dic= {  'idListino' : listino_magazzino.c.id_listino ==v,
-                'idMagazzino' : listino_magazzino.c.id_magazzino ==v}
+        dic= {  'idListino' : t_listino_magazzino.c.id_listino ==v,
+                'idMagazzino' : t_listino_magazzino.c.id_magazzino ==v}
         return  dic[k]
 
-listino_magazzino = Table('listino_magazzino',
-            params['metadata'],
-            schema = params['schema'],
-            autoload=True)
-std_mapper = mapper(ListinoMagazzino, listino_magazzino, properties={
+
+std_mapper = mapper(ListinoMagazzino, t_listino_magazzino, properties={
         "magazzin": relation(Magazzino, backref="listino_magazzino")
-            }, order_by=listino_magazzino.c.id_listino)
+            }, order_by=t_listino_magazzino.c.id_listino)

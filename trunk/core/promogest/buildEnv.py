@@ -37,10 +37,6 @@ def set_configuration(company=None, year = None, pg_path=None):
                 #multilinelimit, mltext,\
                 #imagesDir, labelTemplatesDir, templatesDir, documentsDir, reportTemplatesDir,\
                 #bordoDestro, bordoSinistro, magazzini, listini, tempDir, tracciatiDir
-    if Environment.tipodb != 'sqlite':
-        #Environment.azienda = company
-        Environment.fk_prefix = company + '.'
-    print "COSTRUISCO "
     dire = getConfigureDir(company)
     promogestDir = None
     if pg_path:
