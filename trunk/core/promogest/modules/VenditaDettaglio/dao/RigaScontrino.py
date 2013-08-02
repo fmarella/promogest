@@ -92,7 +92,7 @@ class RigaScontrino(Dao):
     codice_a_barre = property(_codice_a_barre)
 
     def filter_values(self,k,v):
-        dic= {'id':riga_scontrino.c.id ==v,
+        dic= {'id':t_riga_scontrino.c.id ==v,
             'idArticolo':t_riga_scontrino.c.id_articolo==v,
             'idTestataScontrino': t_riga_scontrino.c.id_testata_scontrino==v}
         return  dic[k]
