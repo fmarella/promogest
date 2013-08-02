@@ -330,12 +330,10 @@ preEnv.azienda = azienda
 if tipo_eng=="sqlite" or tipo_eng=="mysql":
     mainSchema = None
     schema = None
-    print " DEVI PASSARE QUI"
 else:
-    print " E NON QUI"
     mainSchema = "promogest2"
     schema = azienda
-    print "AZIENDAAAAAAAAAAAAAAAAAAAAAAAAA", azienda
+    #print "AZIENDAAAAAAAAAAAAAAAAAAAAAAAAA", azienda
 
 params = {'engine': engine,
         'mainSchema': mainSchema,

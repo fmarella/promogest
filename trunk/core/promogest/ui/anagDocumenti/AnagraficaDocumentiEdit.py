@@ -1498,7 +1498,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             orderBy = Environment.fk_prefix+"articolo.codice"
         elif self.ricerca_criterio_combobox.get_active() == 1:
             codiceABarre = self.articolo_entry.get_text()
-            join= Articolo.cod_barre
+            #join= Articolo.cod_barre
             orderBy = Environment.fk_prefix+"codice_a_barre_articolo.codice"
         elif self.ricerca_criterio_combobox.get_active() == 2:
             denominazione = self.articolo_entry.get_text()
@@ -1508,20 +1508,22 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             join= Articolo.fornitur
             orderBy = Environment.fk_prefix+"fornitura.codice_articolo_fornitore"
         quantita = 1
+        arts = []
         if self.articolo_matchato:
             arts = [self.articolo_matchato]
         else:
-            arts = Articolo().select(codiceEM=prepareFilterString(codice),
-                                        orderBy=orderBy,
-                                        join = join,
-                                        denominazione=prepareFilterString(denominazione),
-                                        codiceABarre = prepareFilterString(codiceABarre),
-                                        codiceArticoloFornitore=prepareFilterString(codiceArticoloFornitore),
-                                        idFamiglia=None,
-                                        idCategoria=None,
-                                        idStato=None,
-                                        offset=None,
-                                        batchSize=None)
+            if codice is not (None or "") and codiceABarre is not (None or "") and denominazione is not (None or "") and codiceArticoloFornitore is not (None or ""):
+                arts = Articolo().select(codiceEM=prepareFilterString(codice),
+                                            orderBy=orderBy,
+                                            join = join,
+                                            denominazione=prepareFilterString(denominazione),
+                                            codiceABarre = prepareFilterString(codiceABarre),
+                                            codiceArticoloFornitore=prepareFilterString(codiceArticoloFornitore),
+                                            #idFamiglia=None,
+                                            #idCategoria=None,
+                                            #idStato=None,
+                                            offset=None,
+                                            batchSize=None)
         if not arts and self.ricerca_criterio_combobox.get_active() == 1:
             #print " PROVIAMO LA CARTA DEL PESO VARIABILE A SEI CIFRE",prepareFilterString(codiceABarre[0:6])
             arts = Articolo().select(
