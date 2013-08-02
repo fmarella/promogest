@@ -144,3 +144,8 @@ def buildAll():
         print " FINITA L'AGGIUNTA DELLE TABELLE"
     except Exception as e:
         print "DELLA CREAZIONE TABELLE QUALCOSA NON E' ANDATO BENE", e
+
+def buildWeb():
+    from data.staticPages import t_static_page
+    from data.categoriaNews import t_news_category
+    from data.news import t_news

@@ -143,22 +143,12 @@ def orderedImportVenditaDettaglio():
 #except:
     #print " DETTAGLIO DA SISTEARE"
 
-
     #from data.scontoFornitura import t_sconto_fornitura
 
-    #from data.rigaRitenutaAcconto import t_ritenuta_acconto_riga
-
-    #from data.inventario import t_inventario
     #from data.contattoAnagraficaSecondaria import t_contatto_anagraficasecondaria
 def orderedImportWeb():
 #try:
-    from promogest.dao.Pos import t_pos #v
-    from promogest.dao.ScontoScontrino import t_sconto_scontrino #v
-    from promogest.dao.RigaScontrino import t_riga_scontrino #v
-    from promogest.dao.ScontoRigaScontrino import t_sconto_riga_scontrino #v
-    from promogest.dao.TestataScontrino import t_testata_scontrino #v
-    from promogest.dao.ScontoTestataScontrino import t_sconto_testata_scontrino #v
-    from promogest.dao.ChiusuraFiscale import t_chiusura_fiscale #v
-    from promogest.dao.TestataScontrinoCliente import t_testata_scontrino_cliente #v
+    from promogest.dao.NewsCategory import t_news_category
+    from promogest.dao.News import t_news #v
 
-    print "CARICAMENTO/INSERIMENTO TABELLE VENDITA DETTAGLIO  ANDATO BENE"
+    print "CARICAMENTO/INSERIMENTO TABELLE WEB  ANDATO BENE"

@@ -23,43 +23,17 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
+
+try:
+    t_news=Table('news', params['metadata'],schema = params['schema'],autoload=True)
+except:
+    from data.news import t_news
+
 from promogest.dao.Dao import Dao
 from promogest.dao.NewsCategory import NewsCategory
 from promogest.dao.Language import Language
-from User import User
+from promogest.dao.User import User
 
-languageTable = Table('language', params['metadata'], autoload=True, schema=params['mainSchema'])
-userTable = Table('utente', params['metadata'], autoload=True, schema=params['mainSchema'])
-neswCategoryTable = Table('news_category', params['metadata'], autoload=True, schema=params['schema'])
-
-if params["tipo_db"] == "sqlite":
-    utenteFK ='utente.id'
-    languageFK = 'language.id'
-    categoriaFK = 'news_category.id'
-else:
-    utenteFK =params['mainSchema']+'.utente.id'
-    languageFK =params['mainSchema']+'.language.id'
-    categoriaFK =params['schema']+'.news_category.id'
-
-newsTable= Table('news', params['metadata'],
-        Column('id', Integer, primary_key=True),
-        Column('title', String(200), nullable=False),
-        Column('abstract', String(400), nullable=True),
-        Column('body', Text, nullable=True),
-        Column('source_url', String(400), nullable=True),
-        Column('source_url_alt_text', String(400), nullable=True),
-        Column('imagepath', String(400), nullable=True),
-        Column('insert_date', DateTime, nullable=True),
-        Column('publication_date', DateTime, nullable=True),
-        Column('clicks', Integer),
-        Column("permalink", String(500), nullable=True),
-        Column('active', Boolean, default=0),
-        Column('id_categoria', Integer,ForeignKey(categoriaFK)),
-        Column('id_user', Integer,ForeignKey(utenteFK)),
-        Column('id_language', Integer,ForeignKey(languageFK)),
-        schema=params['schema']
-        )
-newsTable.create(checkfirst=True)
 
 class News(Dao):
 
@@ -68,23 +42,20 @@ class News(Dao):
 
     def filter_values(self,k,v):
         if k == "title":
-            dic= { k :news.c.title == v}
+            dic= { k :t_news.c.title == v}
         elif k =="active":
-            dic= { k :news.c.active == v}
+            dic= { k :t_news.c.active == v}
         elif k =="permalink":
-            dic= { k :news.c.permalink == v}
+            dic= { k :t_news.c.permalink == v}
         elif k == 'searchkey':
-            dic = {k:or_(news.c.title.ilike("%"+v+"%"),
-                        news.c.abstract.ilike("%"+v+"%"),
-                        news.c.body.ilike("%"+v+"%"))
+            dic = {k:or_(t_news.c.title.ilike("%"+v+"%"),
+                        t_news.c.abstract.ilike("%"+v+"%"),
+                        t_news.c.body.ilike("%"+v+"%"))
 }
         return  dic[k]
 
-
-
-news=Table('news', params['metadata'],schema = params['schema'],autoload=True)
-std_mapper = mapper(News, news, properties={
+std_mapper = mapper(News, t_news, properties={
             'categor':relation(NewsCategory, backref='news'),
             'lang' : relation(Language),
             'user' : relation(User)
-                }, order_by=news.c.id.desc())
+                }, order_by=t_news.c.id.desc())
