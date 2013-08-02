@@ -93,8 +93,8 @@ class RigaScontrino(Dao):
 
     def filter_values(self,k,v):
         dic= {'id':riga_scontrino.c.id ==v,
-            'idArticolo':riga_scontrino.c.id_articolo==v,
-            'idTestataScontrino': riga_scontrino.c.id_testata_scontrino==v}
+            'idArticolo':t_riga_scontrino.c.id_articolo==v,
+            'idTestataScontrino': t_riga_scontrino.c.id_testata_scontrino==v}
         return  dic[k]
 
     def persist(self):
