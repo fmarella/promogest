@@ -4,8 +4,8 @@
 import sqlalchemy as sa
 from sqlalchemy.databases import oracle as sa_base
 
-from migrate import exceptions
-from migrate.changeset import ansisql
+from promogest.lib.migrate import exceptions
+from promogest.lib.migrate.changeset import ansisql
 
 
 OracleSchemaGenerator = sa_base.OracleDDLCompiler

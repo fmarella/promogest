@@ -35,7 +35,7 @@ except:
 from promogest.dao.Dao import Dao
 #from promogest.dao.Regioni import Regioni
 #from promogest.dao.Province import Province
-from migrate import *
+from promogest.lib.migrate import *
 from promogest.modules.RuoliAzioni.dao.Role import Role
 from promogest.dao.DaoUtils import get_columns
 

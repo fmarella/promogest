@@ -27,7 +27,7 @@ from promogest.dao.Dao import Dao
 from promogest.dao.DaoUtils import *
 from promogest.lib.utils import *
 from promogest.dao.Cliente import Cliente
-from migrate import *
+from promogest.lib.migrate import *
 
 
 try:

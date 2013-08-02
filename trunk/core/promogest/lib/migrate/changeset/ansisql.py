@@ -16,8 +16,8 @@ from sqlalchemy.schema import (ForeignKeyConstraint,
                                UniqueConstraint,
                                Index)
 
-from migrate import exceptions
-from migrate.changeset import constraint
+from promogest.lib.migrate import exceptions
+from promogest.lib.migrate.changeset import constraint
 
 from sqlalchemy.schema import AddConstraint, DropConstraint
 from sqlalchemy.sql.compiler import DDLCompiler
@@ -55,7 +55,7 @@ class AlterTableVisitor(SchemaVisitor):
             # adapt to 0.6 which uses a string-returning
             # object
             self.append(" %s" % ret)
-            
+
     def _to_table(self, param):
         """Returns the table object for the given param object."""
         if isinstance(param, (sa.Column, sa.Index, sa.schema.Constraint)):
@@ -112,7 +112,7 @@ class ANSIColumnGenerator(AlterTableVisitor, SchemaGenerator):
         # SA bounds FK constraints to table, add manually
         for fk in column.foreign_keys:
             self.add_foreignkey(fk.constraint)
-        
+
         # add primary key constraint if needed
         if column.primary_key_name:
             cons = constraint.PrimaryKeyConstraint(column,

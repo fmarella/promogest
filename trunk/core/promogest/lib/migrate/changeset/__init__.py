@@ -18,8 +18,8 @@ SQLA_07 = _sa_version >= (0, 7)
 del re
 del _sa_version
 
-from migrate.changeset.schema import *
-from migrate.changeset.constraint import *
+from promogest.lib.migrate.changeset.schema import *
+from promogest.lib.migrate.changeset.constraint import *
 
 sqlalchemy.schema.Table.__bases__ += (ChangesetTable, )
 sqlalchemy.schema.Column.__bases__ += (ChangesetColumn, )

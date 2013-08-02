@@ -22,7 +22,7 @@
 
 from sqlalchemy import Table
 from sqlalchemy.orm import mapper
-from migrate import *
+from promogest.lib.migrate import *
 from promogest.Environment import *
 from promogest.dao.Dao import Dao
 from promogest.dao.DaoUtils import get_columns

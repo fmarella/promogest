@@ -24,7 +24,7 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
 from promogest.dao.Dao import Dao
-from migrate import *
+from promogest.lib.migrate import *
 from promogest.modules.CSA.dao.LuogoInstallazione import LuogoInstallazione , t_luogo_installazione
 from promogest.modules.CSA.dao.TipoCombustibile import TipoCombustibile , t_tipo_combustibile
 #from promogest.dao.Articolo import Articolo

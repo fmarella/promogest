@@ -3,8 +3,8 @@
 """
 from sqlalchemy.databases import firebird as sa_base
 from sqlalchemy.schema import PrimaryKeyConstraint
-from migrate import exceptions
-from migrate.changeset import ansisql
+from promogest.lib.migrate import exceptions
+from promogest.lib.migrate.changeset import ansisql
 
 
 FBSchemaGenerator = sa_base.FBDDLCompiler
@@ -31,7 +31,7 @@ class FBColumnDropper(ansisql.ANSIColumnDropper):
             if column.name in [col.name for col in index.columns]:
                 index.drop()
                 # TODO: recreate index if it references more than this column
-        
+
         for cons in column.table.constraints:
             if isinstance(cons,PrimaryKeyConstraint):
                 # will be deleted only when the column its on

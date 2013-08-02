@@ -26,7 +26,7 @@ from promogest.Environment import *
 from promogest.dao.Dao import Dao
 from promogest.modules.Multilingua.dao.Language import Language, lang
 from promogest.dao.User import User
-from migrate import *
+from promogest.lib.migrate import *
 
 try:
     staticpage=Table('static_page',
@@ -56,7 +56,7 @@ except:
             schema=params['schema']
             )
     staticpage.create(checkfirst=True)
-    
+
 colonne =[c.name for c in staticpage.columns]
 
 if 'permalink' not in colonne:

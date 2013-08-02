@@ -3,7 +3,7 @@
 
    .. _`PostgreSQL`: http://www.postgresql.org/
 """
-from migrate.changeset import ansisql
+from promogest.lib.migrate.changeset import ansisql
 
 from sqlalchemy.databases import postgresql as sa_base
 PGSchemaGenerator = sa_base.PGDDLCompiler

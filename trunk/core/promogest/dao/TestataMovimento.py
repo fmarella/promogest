@@ -22,7 +22,7 @@
 
 from sqlalchemy import *
 from sqlalchemy.orm import *
-from migrate import *
+from promogest.lib.migrate import *
 from promogest.Environment import *
 
 try:

@@ -26,7 +26,7 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
 from Dao import Dao
-from migrate import *
+from promogest.lib.migrate import *
 from promogest.dao.DaoUtils import get_columns
 
 try:

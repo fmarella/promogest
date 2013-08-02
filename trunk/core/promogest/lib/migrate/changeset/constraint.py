@@ -3,7 +3,7 @@
 """
 from sqlalchemy import schema
 
-from migrate.exceptions import *
+from promogest.lib.migrate.exceptions import *
 
 class ConstraintChangeset(object):
     """Base class for Constraint classes."""

@@ -27,7 +27,7 @@ from promogest.dao.Dao import Dao
 from promogest.dao.Articolo import Articolo, t_articolo
 from promogest.dao.PersonaGiuridica import PersonaGiuridica_, t_persona_giuridica
 from promogest.modules.Provvigione.dao.Provvigione import Provvigione, t_provvigione
-from migrate import *
+from promogest.lib.migrate import *
 
 
 try:

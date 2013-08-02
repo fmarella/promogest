@@ -24,7 +24,7 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
 from promogest.dao.Dao import Dao
-from migrate import *
+from promogest.lib.migrate import *
 from promogest.modules.ADR.dao.CategoriaTrasporto import CategoriaTrasporto
 from promogest.modules.ADR.dao.CodiceClassificazione import CodiceClassificazione
 from promogest.modules.ADR.dao.GruppoImballaggio import GruppoImballaggio

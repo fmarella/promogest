@@ -3,8 +3,8 @@
 """
 import sqlalchemy as sa
 
-from migrate.changeset import ansisql
-from migrate.changeset.databases import (sqlite,
+from promogest.lib.migrate.changeset import ansisql
+from promogest.lib.migrate.changeset.databases import (sqlite,
                                          postgres,
                                          mysql,
                                          oracle,

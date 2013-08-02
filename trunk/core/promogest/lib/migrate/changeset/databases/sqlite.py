@@ -8,8 +8,8 @@ from copy import copy
 
 from sqlalchemy.databases import sqlite as sa_base
 
-from migrate import exceptions
-from migrate.changeset import ansisql
+from promogest.lib.migrate import exceptions
+from promogest.lib.migrate.changeset import ansisql
 
 
 SQLiteSchemaGenerator = sa_base.SQLiteDDLCompiler
@@ -42,7 +42,7 @@ class SQLiteHelper(SQLiteCommon):
         self.execute()
         self.append('DROP TABLE migration_tmp')
         self.execute()
-        
+
     def visit_column(self, delta):
         if isinstance(delta, DictMixin):
             column = delta.result_column
@@ -52,7 +52,7 @@ class SQLiteHelper(SQLiteCommon):
             table = self._to_table(column.table)
         self.recreate_table(table,column,delta)
 
-class SQLiteColumnGenerator(SQLiteSchemaGenerator, 
+class SQLiteColumnGenerator(SQLiteSchemaGenerator,
                             ansisql.ANSIColumnGenerator,
                             # at the end so we get the normal
                             # visit_column by default
@@ -78,7 +78,7 @@ class SQLiteColumnDropper(SQLiteHelper, ansisql.ANSIColumnDropper):
     """SQLite ColumnDropper"""
 
     def _modify_table(self, table, column, delta):
-        
+
         columns = ' ,'.join(map(self.preparer.format_column, table.columns))
         return 'INSERT INTO %(table_name)s SELECT ' + columns + \
             ' from migration_tmp'

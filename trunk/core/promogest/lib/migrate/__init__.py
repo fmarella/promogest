@@ -5,7 +5,7 @@
    using Python.
 """
 
-from migrate.versioning import *
-from migrate.changeset import *
+#from migrate.versioning import *
+from promogest.lib.migrate.changeset import *
 
 __version__ = '0.7.2'

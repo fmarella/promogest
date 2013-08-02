@@ -24,7 +24,7 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
 from promogest.dao.Dao import Dao
-from migrate import *
+from promogest.lib.migrate import *
 
 try:
     t_riga_commessa=Table('riga_commessa',
