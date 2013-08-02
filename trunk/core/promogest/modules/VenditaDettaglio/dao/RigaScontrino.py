@@ -62,7 +62,7 @@ class RigaScontrino(Dao):
     def _valoreSconto(self):
         #if self.srs:return self.srs.valore_sconto
         #else: return ""
-        a = params["session"].query(ScontoRigaScontrino).with_parent(self).filter(and_(ScontoRigaScontrino.id_riga_scontrino==riga_scontrino.c.id, ScontoRigaScontrino.id==ScontoScontrino.id)).all()
+        a = params["session"].query(ScontoRigaScontrino).with_parent(self).filter(and_(ScontoRigaScontrino.id_riga_scontrino==t_riga_scontrino.c.id, ScontoRigaScontrino.id==ScontoScontrino.id)).all()
         if not a:
             return a
         else:
@@ -70,9 +70,7 @@ class RigaScontrino(Dao):
     valore_sconto= property(_valoreSconto)
 
     def _tipoSconto(self):
-        a = params["session"].query(ScontoRigaScontrino).with_parent(self).filter(ScontoRigaScontrino.id_riga_scontrino==riga_scontrino.c.id).all()
-        #if self.srs:return self.srs.tipo_sconto
-        #else: return ""
+        a = params["session"].query(ScontoRigaScontrino).with_parent(self).filter(ScontoRigaScontrino.id_riga_scontrino==t_riga_scontrino.c.id).all()
         if not a:
             return a
         else:
