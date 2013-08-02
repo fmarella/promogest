@@ -1491,36 +1491,22 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         codiceArticoloFornitore = None
         join = None
         orderBy = None
+        batchSize = setconf("Numbers", "batch_size")
+
         if self.ricerca_criterio_combobox.get_active() == 0:
             codice = self.articolo_entry.get_text()
-            if Environment.tipo_eng =="sqlite":
-                orderBy = "articolo.codice"
-            else:
-                orderBy = Environment.params["schema"]+".articolo.codice"
-                batchSize = setconf("Numbers", "batch_size")
+            orderBy = Environment.fk_prefix+"articolo.codice"
         elif self.ricerca_criterio_combobox.get_active() == 1:
             codiceABarre = self.articolo_entry.get_text()
             join= Articolo.cod_barre
-            if Environment.tipo_eng =="sqlite":
-                orderBy = "codice_a_barre_articolo.codice"
-            else:
-                orderBy = Environment.params["schema"]+".codice_a_barre_articolo.codice"
-            batchSize = setconf("Numbers", "batch_size")
+            orderBy = Environment.fk_prefix+"codice_a_barre_articolo.codice"
         elif self.ricerca_criterio_combobox.get_active() == 2:
             denominazione = self.articolo_entry.get_text()
-            if Environment.tipo_eng =="sqlite":
-                orderBy = "articolo.denominazione"
-            else:
-                orderBy = Environment.params["schema"]+".articolo.denominazione"
-            batchSize = setconf("Numbers", "batch_size")
+            orderBy = Environment.fk_prefix+"articolo.denominazione"
         elif self.ricerca_criterio_combobox.get_active() == 3:
             codiceArticoloFornitore = self.articolo_entry.get_text()
             join= Articolo.fornitur
-            if Environment.tipo_eng =="sqlite":
-                orderBy = "fornitura.codice_articolo_fornitore"
-            else:
-                orderBy = Environment.params["schema"]+".fornitura.codice_articolo_fornitore"
-        batchSize = setconf("Numbers", "batch_size")
+            orderBy = Environment.fk_prefix+"fornitura.codice_articolo_fornitore"
         quantita = 1
         if self.articolo_matchato:
             arts = [self.articolo_matchato]

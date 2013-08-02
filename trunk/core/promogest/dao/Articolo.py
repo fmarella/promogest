@@ -24,6 +24,9 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
 
+
+#print " VEDIAMOOOOOOOOOOOOOOOOOOOOOOOO", params["schema"], fk_prefix, fk_prefix_main
+
 try:
     t_articolo = Table('articolo', meta, schema=params["schema"], autoload=True)
 except:

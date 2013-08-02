@@ -219,6 +219,7 @@ class Login(SimpleGladeApp):
                 Environment.session.commit()
                 if Environment.tipodb == "postgresql":
                     Environment.params["schema"] = self.azienda
+                    Environment.fk_prefix = Environment.params["schema"] + '.'
                 if hashlib.md5(self.azienda).hexdigest() == \
                                 "46d3e603f127254cdc30e5a397413fc7":
                     raise Exception(":P")

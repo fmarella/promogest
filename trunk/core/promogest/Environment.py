@@ -335,6 +335,7 @@ else:
     print " E NON QUI"
     mainSchema = "promogest2"
     schema = azienda
+    print "AZIENDAAAAAAAAAAAAAAAAAAAAAAAAA", azienda
 
 params = {'engine': engine,
         'mainSchema': mainSchema,
