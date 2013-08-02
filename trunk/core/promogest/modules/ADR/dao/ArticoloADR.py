@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2013 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Marella <francesco.marella@anche.no>
@@ -40,7 +40,7 @@ except:
         'articolo_adr',
         params['metadata'],
         Column('id', Integer, primary_key=True),
-        Column('id_articolo', Integer, 
+        Column('id_articolo', Integer,
                ForeignKey(fk_prefix + 'articolo.id',
                           onupdate='CASCADE', ondelete='CASCADE')),
         Column('numero_un', String(20), nullable=True),

@@ -150,3 +150,15 @@ def orderedImportVenditaDettaglio():
 
     #from data.inventario import t_inventario
     #from data.contattoAnagraficaSecondaria import t_contatto_anagraficasecondaria
+def orderedImportWeb():
+#try:
+    from promogest.dao.Pos import t_pos #v
+    from promogest.dao.ScontoScontrino import t_sconto_scontrino #v
+    from promogest.dao.RigaScontrino import t_riga_scontrino #v
+    from promogest.dao.ScontoRigaScontrino import t_sconto_riga_scontrino #v
+    from promogest.dao.TestataScontrino import t_testata_scontrino #v
+    from promogest.dao.ScontoTestataScontrino import t_sconto_testata_scontrino #v
+    from promogest.dao.ChiusuraFiscale import t_chiusura_fiscale #v
+    from promogest.dao.TestataScontrinoCliente import t_testata_scontrino_cliente #v
+
+    print "CARICAMENTO/INSERIMENTO TABELLE VENDITA DETTAGLIO  ANDATO BENE"

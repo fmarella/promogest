@@ -1,15 +1,37 @@
 # -*- coding: utf-8 -*-
 
-# Promogest
-#
-# Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
-# Author: Andrea Argiolas <andrea@promotux.it>
+#    Copyright (C) 2005-2013 by Promotux
+#                        di Francesco Meloni snc - http://www.promotux.it/
+
+#    Author: Francesco Meloni  <francesco@promotux.it>
+
+#    This file is part of Promogest.
+
+#    Promogest is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 2 of the License, or
+#    (at your option) any later version.
+
+#    Promogest is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+
+#    You should have received a copy of the GNU General Public License
+#    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 
 from promogest import Environment
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
+
+try:
+    t_inventario=Table('inventario',params['metadata'],schema = params['schema'],autoload=True)
+except:
+    from data.inventario import t_inventario
+
+
 from promogest.dao.Articolo import Articolo
 from promogest.dao.Fornitura import Fornitura
 from promogest.dao.CodiceABarreArticolo import CodiceABarreArticolo
@@ -71,64 +93,64 @@ class Inventario(Dao):
 
     def filter_values(self,k,v):
         if k == 'denominazione':
-            dic= {k :inventario.c.anno == v}
+            dic= {k :t_inventario.c.anno == v}
         elif k == 'idMagazzino':
-            dic = {k:inventario.c.id_magazzino == v}
+            dic = {k:t_inventario.c.id_magazzino == v}
         elif k == 'idArticolo':
-            dic = {k:inventario.c.id_articolo == v}
+            dic = {k:t_inventario.c.id_articolo == v}
         elif k == 'anno':
-            dic = {k:inventario.c.anno == v}
+            dic = {k:t_inventario.c.anno == v}
         elif k == 'daDataAggiornamento':
-            dic = {k:inventario.c.data_aggiornamento >= v}
+            dic = {k:t_inventario.c.data_aggiornamento >= v}
         elif k == 'aDataAggiornamento':
-            dic = {k:inventario.c.data_aggiornamento <= v}
+            dic = {k:t_inventario.c.data_aggiornamento <= v}
         elif k == 'qa_zero':
-            dic = {k:inventario.c.quantita == 0}
+            dic = {k:t_inventario.c.quantita == 0}
         elif k == 'quantita':
-            dic = {k:inventario.c.quantita > 0}
+            dic = {k:t_inventario.c.quantita > 0}
         elif k == 'qa_negativa':
-            dic = {k:inventario.c.quantita < 0}
+            dic = {k:t_inventario.c.quantita < 0}
         elif k == 'val_negativo':
-            dic = {k:inventario.c.valore_unitario == None}
+            dic = {k:t_inventario.c.valore_unitario == None}
         elif k == 'inventariato':
-            dic = {k:inventario.c.quantita >= 1}
+            dic = {k:t_inventario.c.quantita >= 1}
         elif k == 'articolo':
-            dic = {k:and_(inventario.c.id_articolo==Articolo.id, Articolo.denominazione.ilike("%"+v+"%"))}
+            dic = {k:and_(t_inventario.c.id_articolo==Articolo.id, Articolo.denominazione.ilike("%"+v+"%"))}
         elif k == 'codice':
-            dic = {k:and_(inventario.c.id_articolo==Articolo.id,Articolo.codice.ilike("%"+v+"%"))}
+            dic = {k:and_(t_inventario.c.id_articolo==Articolo.id,Articolo.codice.ilike("%"+v+"%"))}
         elif k == 'codiceABarre':
-            dic = {k:and_(inventario.c.id_articolo==Articolo.id,Articolo.id==CodiceABarreArticolo.id_articolo,CodiceABarreArticolo.codice.ilike("%"+v+"%"))}
+            dic = {k:and_(t_inventario.c.id_articolo==Articolo.id,Articolo.id==CodiceABarreArticolo.id_articolo,CodiceABarreArticolo.codice.ilike("%"+v+"%"))}
         elif k == 'produttore':
-            dic = {k:and_(inventario.c.id_articolo==Articolo.id,Articolo.produttore.ilike("%"+v+"%"))}
+            dic = {k:and_(t_inventario.c.id_articolo==Articolo.id,Articolo.produttore.ilike("%"+v+"%"))}
         elif k== 'codiceArticoloFornitoreEM':
-            dic = {k:and_(inventario.c.id_articolo==Articolo.id,Articolo.id==Fornitura.id_articolo,Fornitura.codice_articolo_fornitore == v)}
+            dic = {k:and_(t_inventario.c.id_articolo==Articolo.id,Articolo.id==Fornitura.id_articolo,Fornitura.codice_articolo_fornitore == v)}
         elif k=='idFamiglia':
-            dic = {k:and_(inventario.c.id_articolo==Articolo.id,Articolo.id_famiglia_articolo ==v)}
+            dic = {k:and_(t_inventario.c.id_articolo==Articolo.id,Articolo.id_famiglia_articolo ==v)}
         elif k == 'idCategoria':
-            dic = {k:and_(inventario.c.id_articolo==Articolo.id,Articolo.id_categoria_articolo ==v)}
+            dic = {k:and_(t_inventario.c.id_articolo==Articolo.id,Articolo.id_categoria_articolo ==v)}
         elif k == 'idStato':
-            dic= {k:and_(inventario.c.id_articolo==Articolo.id,Articolo.id_stato_articolo == v)}
+            dic= {k:and_(t_inventario.c.id_articolo==Articolo.id,Articolo.id_stato_articolo == v)}
         elif k == 'cancellato':
-            dic = {k:or_(and_(inventario.c.id_articolo==Articolo.id,Articolo.cancellato != v))}
+            dic = {k:or_(and_(t_inventario.c.id_articolo==Articolo.id,Articolo.cancellato != v))}
         elif posso("PW"):
             if k == 'figliTagliaColore':
-                dic = {k:and_(inventario.c.id_articolo==Articolo.id,Articolo.id==ArticoloTagliaColore.id_articolo, ArticoloTagliaColore.id_articolo_padre==None)}
+                dic = {k:and_(t_inventario.c.id_articolo==Articolo.id,Articolo.id==ArticoloTagliaColore.id_articolo, ArticoloTagliaColore.id_articolo_padre==None)}
             elif k == 'idTaglia':
-                dic = {k:and_(inventario.c.id_articolo==Articolo.id,Articolo.id==ArticoloTagliaColore.id_articolo, ArticoloTagliaColore.id_taglia==v)}
+                dic = {k:and_(t_inventario.c.id_articolo==Articolo.id,Articolo.id==ArticoloTagliaColore.id_articolo, ArticoloTagliaColore.id_taglia==v)}
             elif k == 'idModello':
-                dic = {k:and_(inventario.c.id_articolo==Articolo.id,Articolo.id==ArticoloTagliaColore.id_articolo, ArticoloTagliaColore.id_modello==v)}
+                dic = {k:and_(t_inventario.c.id_articolo==Articolo.id,Articolo.id==ArticoloTagliaColore.id_articolo, ArticoloTagliaColore.id_modello==v)}
             elif k == 'idGruppoTaglia':
-                dic = {k:and_(inventario.c.id_articolo==Articolo.id,Articolo.id==ArticoloTagliaColore.id_articolo, ArticoloTagliaColore.id_gruppo_taglia ==v)}
+                dic = {k:and_(t_inventario.c.id_articolo==Articolo.id,Articolo.id==ArticoloTagliaColore.id_articolo, ArticoloTagliaColore.id_gruppo_taglia ==v)}
             elif k == 'padriTagliaColore':
-                dic = {k:and_(inventario.c.id_articolo==Articolo.id,Articolo.id==ArticoloTagliaColore.id_articolo, ArticoloTagliaColore.id_articolo_padre!=None)}
+                dic = {k:and_(t_inventario.c.id_articolo==Articolo.id,Articolo.id==ArticoloTagliaColore.id_articolo, ArticoloTagliaColore.id_articolo_padre!=None)}
             elif k == 'idColore':
-                dic = {k:and_(inventario.c.id_articolo==Articolo.id,Articolo.id==ArticoloTagliaColore.id_articolo, ArticoloTagliaColore.id_colore ==v)}
+                dic = {k:and_(t_inventario.c.id_articolo==Articolo.id,Articolo.id==ArticoloTagliaColore.id_articolo, ArticoloTagliaColore.id_colore ==v)}
             elif k == 'idStagione':
-                dic = {k:and_(inventario.c.id_articolo==Articolo.id,Articolo.id==ArticoloTagliaColore.id_articolo, ArticoloTagliaColore.id_stagione ==v)}
+                dic = {k:and_(t_inventario.c.id_articolo==Articolo.id,Articolo.id==ArticoloTagliaColore.id_articolo, ArticoloTagliaColore.id_stagione ==v)}
             elif k == 'idAnno':
-                dic = {k:and_(inventario.c.id_articolo==Articolo.id,Articolo.id==ArticoloTagliaColore.id_articolo, ArticoloTagliaColore.id_anno == v)}
+                dic = {k:and_(t_inventario.c.id_articolo==Articolo.id,Articolo.id==ArticoloTagliaColore.id_articolo, ArticoloTagliaColore.id_anno == v)}
             elif k == 'idGenere':
-                dic = {k:and_(inventario.c.id_articolo==Articolo.id,Articolo.id==ArticoloTagliaColore.id_articolo, ArticoloTagliaColore.id_genere ==v)}
+                dic = {k:and_(t_inventario.c.id_articolo==Articolo.id,Articolo.id==ArticoloTagliaColore.id_articolo, ArticoloTagliaColore.id_genere ==v)}
         return  dic[k]
 
     def update(self):
@@ -201,7 +223,7 @@ class Inventario(Dao):
                     "delle merci nei magazzini.\n")
                 messageInfoEnv(msg=msg)
 
-inventario=Table('inventario',params['metadata'],schema = params['schema'],autoload=True)
-std_mapper = mapper(Inventario, inventario,properties={
-        "arti":relation(Articolo,primaryjoin=inventario.c.id_articolo==Articolo.id,backref ="inve")
-        }, order_by=inventario.c.id)
+
+std_mapper = mapper(Inventario, t_inventario,properties={
+        "arti":relation(Articolo,primaryjoin=t_inventario.c.id_articolo==Articolo.id,backref ="inve")
+        }, order_by=t_inventario.c.id)

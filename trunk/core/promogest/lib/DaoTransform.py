@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2013 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Marella <francesco.marella@anche.no>
+#    Author: Francesco Meloni  <francesco@promotux.it>
 
 #    This file is part of Promogest.
 
@@ -20,7 +21,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-import PyPDF2
+import promogest.lib.PyPDF2
 import os
 import glob
 import tempfile
@@ -229,4 +230,3 @@ def do_send_mail(daos, anag=None):
     if anag:
         pbar(anag.pbar_anag_complessa, stop=True)
         anag.pbar_anag_complessa.set_property("visible", False)
-
