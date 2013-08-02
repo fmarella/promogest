@@ -24,6 +24,13 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import params, workingYear, conf
+
+try:
+    t_stoccaggio = Table('stoccaggio', params['metadata'], schema=params['schema'],
+                autoload=True)
+except:
+    from data.stoccaggio import t_stoccaggio
+
 from promogest.dao.Dao import Dao
 from promogest.dao.Articolo import Articolo , t_articolo
 from promogest.dao.Magazzino import Magazzino
@@ -36,13 +43,6 @@ from promogest.lib.utils import posso
 if posso("PW"):
     from promogest.modules.PromoWear.dao.ArticoloTagliaColore import \
                                                     ArticoloTagliaColore
-
-
-try:
-    t_stoccaggio = Table('stoccaggio', params['metadata'], schema=params['schema'],
-                autoload=True)
-except:
-    from data.stoccaggio import t_stoccaggio
 
 
 

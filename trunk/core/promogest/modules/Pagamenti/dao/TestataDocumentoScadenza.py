@@ -25,6 +25,15 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from migrate import *
 from promogest.Environment import *
+
+try:
+    t_testata_documento_scadenza = Table('testata_documento_scadenza',
+                  params['metadata'],
+                  schema=params['schema'],
+                  autoload=True)
+except:
+    from data.testataDocumentoScadenza import t_testata_documento_scadenza
+
 from promogest.dao.Dao import Dao
 from promogest.dao.DaoUtils import get_columns
 
@@ -35,28 +44,23 @@ class TestataDocumentoScadenza(Dao):
 
     def filter_values(self, k, v):
         if k == "idTestataDocumento":
-            dic = {k: tesdocsca.c.id_testata_documento == v}
+            dic = {k: t_testata_documento_scadenza.c.id_testata_documento == v}
         elif k == "numeroScadenza":
-            dic = {k: tesdocsca.c.numero_scadenza == v}
+            dic = {k: t_testata_documento_scadenza.c.numero_scadenza == v}
         return dic[k]
 
-tesdocsca = Table('testata_documento_scadenza',
-                  params['metadata'],
-                  schema=params['schema'],
-                  autoload=True)
+#colonne = get_columns(tesdocsca)
 
-colonne = get_columns(tesdocsca)
+#if "id_banca" not in colonne:
+    #col = Column('id_banca', Integer, nullable=True)
+    ## ForeignKey(bancaFK, onupdate="CASCADE", ondelete="RESTRICT"),
+    #col.create(tesdocsca)
 
-if "id_banca" not in colonne:
-    col = Column('id_banca', Integer, nullable=True)
-    # ForeignKey(bancaFK, onupdate="CASCADE", ondelete="RESTRICT"),
-    col.create(tesdocsca)
-
-if "note_per_primanota" not in colonne:
-    col = Column('note_per_primanota', String(400), nullable=True)
-    col.create(tesdocsca)
+#if "note_per_primanota" not in colonne:
+    #col = Column('note_per_primanota', String(400), nullable=True)
+    #col.create(tesdocsca)
 
 std_mapper = mapper(TestataDocumentoScadenza,
-                    tesdocsca,
+                    t_testata_documento_scadenza,
                     properties={},
-                    order_by=tesdocsca.c.id)
+                    order_by=t_testata_documento_scadenza.c.id)

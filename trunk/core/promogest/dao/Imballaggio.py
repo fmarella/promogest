@@ -23,7 +23,7 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
-from Dao import Dao
+from promogest.dao.Dao import Dao
 
 try:
     t_imballaggio=Table('imballaggio',params['metadata'],schema = params['schema'],

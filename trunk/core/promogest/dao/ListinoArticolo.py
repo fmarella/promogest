@@ -25,6 +25,15 @@ import datetime
 from sqlalchemy import Table
 from sqlalchemy.orm import mapper, relation
 from promogest.Environment import *
+
+try:
+    t_listino_articolo=Table('listino_articolo',
+                params['metadata'],
+                schema = params['schema'],
+                autoload=True)
+except:
+    from data.listinoArticolo import t_listino_articolo
+
 from promogest.dao.Dao import Dao
 from promogest.dao.DaoUtils import *
 from promogest.dao.Listino import Listino
@@ -35,13 +44,6 @@ from promogest.lib.utils import *
 
 
 
-try:
-    t_listino_articolo=Table('listino_articolo',
-                params['metadata'],
-                schema = params['schema'],
-                autoload=True)
-except:
-    from data.listinoArticolo import t_listino_articolo
 
 
 class ListinoArticolo(Dao):

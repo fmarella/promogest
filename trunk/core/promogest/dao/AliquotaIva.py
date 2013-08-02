@@ -22,8 +22,6 @@
 from sqlalchemy import Table
 from sqlalchemy.orm import mapper, relation
 from promogest.Environment import *
-from promogest.dao.Dao import Dao
-from promogest.dao.TipoAliquotaIva import TipoAliquotaIva
 
 try:
     t_aliquota_iva = Table('aliquota_iva', meta,
@@ -31,6 +29,8 @@ try:
 except:
     from data.aliquotaIva import t_aliquota_iva
 
+from promogest.dao.Dao import Dao
+from promogest.dao.TipoAliquotaIva import TipoAliquotaIva
 
 class AliquotaIva(Dao):
 

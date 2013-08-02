@@ -24,6 +24,16 @@
 from sqlalchemy import Table
 from sqlalchemy.orm import mapper, join
 from promogest.Environment import params
+
+try:
+    t_sconti_vendita_dettaglio = Table('sconti_vendita_dettaglio',
+                                   params['metadata'],
+                                   schema=params['schema'],
+                                   autoload=True)
+except:
+    from data.listinoArticolo import t_listino_articolo
+    from data.scontiVenditaDettaglio import t_sconti_vendita_dettaglio
+
 from Dao import Dao
 from Sconto import t_sconto
 
@@ -41,11 +51,6 @@ class ScontoVenditaDettaglio(Dao):
         elif k=='dataListinoArticolo':
             dic = {k: t_sconti_vendita_dettaglio.c.data_listino_articolo==v}
         return dic[k]
-
-t_sconti_vendita_dettaglio = Table('sconti_vendita_dettaglio',
-                                   params['metadata'],
-                                   schema=params['schema'],
-                                   autoload=True)
 
 std_mapper = mapper(ScontoVenditaDettaglio,
     join(t_sconto, t_sconti_vendita_dettaglio),

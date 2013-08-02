@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2013 by Promotux
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -25,7 +25,15 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from migrate import *
 from promogest.Environment import *
-from Dao import Dao
+from promogest.dao.Dao import Dao
+
+try:
+    t_destinazione_merce=Table('destinazione_merce',
+                params['metadata'],
+                schema = params['schema'],
+                autoload=True)
+except:
+    from data.destinazioneMerce import t_destinazione_merce
 
 class DestinazioneMerce(Dao):
 
@@ -34,24 +42,19 @@ class DestinazioneMerce(Dao):
 
     def filter_values(self,k,v):
         if k=='idCliente':
-            dic= {k:destinazione_merce.c.id_cliente==v}
+            dic= {k:t_destinazione_merce.c.id_cliente==v}
         elif k == 'denominazione':
-            dic ={k:destinazione_merce.c.denominazione.ilike("%"+v+"%")}
+            dic ={k:t_destinazione_merce.c.denominazione.ilike("%"+v+"%")}
         elif k== 'indirizzo':
-            dic = {k:destinazione_merce.c.indirizzo.ilike("%"+v+"%")}
+            dic = {k:t_destinazione_merce.c.indirizzo.ilike("%"+v+"%")}
         elif k=='localita':
-            dic = {k:destinazione_merce.c.localita.ilike("%"+v+"%")}
+            dic = {k:t_destinazione_merce.c.localita.ilike("%"+v+"%")}
         elif k == 'provincia':
-            dic = {k:destinazione_merce.c.provincia.ilike("%"+v+"%")}
+            dic = {k:t_destinazione_merce.c.provincia.ilike("%"+v+"%")}
         return  dic[k]
 
-destinazione_merce=Table('destinazione_merce',
-                params['metadata'],
-                schema = params['schema'],
-                autoload=True)
+#if 'codice' not in [c.name for c in t_destinazione_merce.columns]:
+    #col = Column('codice', String(30))
+    #col.create(t_destinazione_merce, populate_default=True)
 
-if 'codice' not in [c.name for c in destinazione_merce.columns]:
-    col = Column('codice', String(30))
-    col.create(destinazione_merce, populate_default=True)
-
-std_mapper = mapper(DestinazioneMerce,destinazione_merce, order_by=destinazione_merce.c.id)
+std_mapper = mapper(DestinazioneMerce,t_destinazione_merce, order_by=t_destinazione_merce.c.id)

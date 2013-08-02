@@ -23,6 +23,16 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
+
+try:
+    t_testata_commessa = Table('testata_commessa',
+        params['metadata'],
+        schema = params['schema'],
+        autoload=True)
+except:
+    from data.testataCommessa import t_testata_commessa
+
+
 from promogest.dao.Dao import Dao
 from promogest.dao.DaoUtils import *
 from promogest.lib.utils import *
@@ -31,10 +41,7 @@ from promogest.dao.Articolo import Articolo
 from promogest.modules.GestioneCommesse.dao.StadioCommessa import StadioCommessa
 
 
-t_testatacommessa = Table('testata_commessa',
-        params['metadata'],
-        schema = params['schema'],
-        autoload=True)
+
 
 from RigaCommessa import RigaCommessa
 
@@ -101,27 +108,27 @@ class TestataCommessa(Dao):
 
     def filter_values(self,k,v):
         if k == 'daNumero':
-            dic = {k:t_testatacommessa.c.numero >= v}
+            dic = {k:t_testata_commessa.c.numero >= v}
         elif k == 'aNumero':
-            dic = {k:t_testatacommessa.c.numero <= v}
+            dic = {k:t_testata_commessa.c.numero <= v}
         elif k == 'datafinecheck':
-            dic = {k:t_testatacommessa.c.data_fine == None}
+            dic = {k:t_testata_commessa.c.data_fine == None}
         elif k == 'datafine':
-            dic = {k:t_testatacommessa.c.data_fine == v}
+            dic = {k:t_testata_commessa.c.data_fine == v}
         elif k == 'numero':
-            dic = {k:t_testatacommessa.c.numero == v}
+            dic = {k:t_testata_commessa.c.numero == v}
         elif k == 'daDataInizio':
-            dic = {k:t_testatacommessa.c.data_inizio >= v}
+            dic = {k:t_testata_commessa.c.data_inizio >= v}
         elif k== 'aDataInizio':
-            dic = {k:t_testatacommessa.c.data_inizio <= v}
+            dic = {k:t_testata_commessa.c.data_inizio <= v}
         elif k == 'daDataFine':
-            dic = {k:t_testatacommessa.c.data_fine >= v}
+            dic = {k:t_testata_commessa.c.data_fine >= v}
         elif k== 'aDataFine':
-            dic = {k:t_testatacommessa.c.data_fine <= v}
+            dic = {k:t_testata_commessa.c.data_fine <= v}
         elif k == 'idStadioCommessa':
-            dic = {k:rigacommessa.c.id_stadio_commessa==v}
+            dic = {k:t_riga_commessa.c.id_stadio_commessa==v}
         elif k == 'denominazione':
-            dic = {k:t_testatacommessa.c.denominazione.ilike("%"+v+"%")}
+            dic = {k:t_testata_commessa.c.denominazione.ilike("%"+v+"%")}
         return  dic[k]
 
     def righeCommessaDel(self,id=None):
@@ -160,14 +167,14 @@ class TestataCommessa(Dao):
                 riga.persist()
         self.__righeCommessa = []
 
-std_mapper = mapper(TestataCommessa, t_testatacommessa,properties={
+std_mapper = mapper(TestataCommessa, t_testata_commessa,properties={
         "rigatestcomm": relation(RigaCommessa,primaryjoin=
-                t_testatacommessa.c.id==RigaCommessa.id_testata_commessa,
+                t_testata_commessa.c.id==RigaCommessa.id_testata_commessa,
 #                foreign_keys=[RigaPrimaNota.id_testata_prima_nota],
                 cascade="all, delete"),
         "cli": relation(Cliente,primaryjoin=
-                t_testatacommessa.c.id_cliente==Cliente.id,
+                t_testata_commessa.c.id_cliente==Cliente.id,
                 backref="testata_commessa"),
 
                 },
-                order_by=t_testatacommessa.c.id)
+                order_by=t_testata_commessa.c.id)

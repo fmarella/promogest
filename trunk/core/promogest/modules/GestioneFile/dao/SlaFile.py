@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2013 by Promotux
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -26,11 +26,13 @@ from sqlalchemy.orm import *
 from promogest.Environment import *
 from promogest.dao.Dao import Dao
 
-
-slafile =Table('sla_file',
-            params['metadata'],
-            schema = params['schema'],
-            autoload=True)
+try:
+    t_sla_file =Table('sla_file',
+                params['metadata'],
+                schema = params['schema'],
+                autoload=True)
+except:
+    from data.slafile import t_sla_file
 
 
 
@@ -40,8 +42,8 @@ class SlaFile(Dao):
         Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):
-        dic= { 'denominazione' : slafile.c.denominazione == v }
+        dic= { 'denominazione' : t_sla_file.c.denominazione == v }
         return  dic[k]
 
 
-std_mapper = mapper(SlaFile, slafile, order_by = slafile.c.id)
+std_mapper = mapper(SlaFile, t_sla_file, order_by = t_sla_file.c.id)

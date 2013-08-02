@@ -23,6 +23,15 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import params, conf, modulesList
+
+try:
+    t_riga_movimento = Table('riga_movimento',
+                         params['metadata'],
+                         schema=params['schema'],
+                         autoload=True)
+except:
+    from data.rigaMovimento import t_riga_movimento
+
 from Dao import Dao
 from Magazzino import Magazzino
 from ScontoRigaMovimento import ScontoRigaMovimento
@@ -329,10 +338,6 @@ class RigaMovimento(Dao):
             self.__misuraPezzo = []
         #params["session"].commit()
 
-t_riga_movimento = Table('riga_movimento',
-                         params['metadata'],
-                         schema=params['schema'],
-                         autoload=True)
 
 std_mapper = mapper(RigaMovimento, join(t_riga_movimento, t_riga),
     properties={

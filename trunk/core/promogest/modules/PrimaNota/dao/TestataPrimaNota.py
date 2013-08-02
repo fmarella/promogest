@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2013 by Promotux
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -23,15 +23,19 @@ import datetime
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
+try:
+    t_testata_prima_nota = Table('testata_prima_nota',
+        params['metadata'],
+        schema = params['schema'],
+        autoload=True)
+except:
+    from data.testataPrimaNota import t_testata_prima_nota
+
+
 from promogest.dao.Dao import Dao
 from promogest.dao.DaoUtils import *
 from promogest.lib.utils import *
 
-
-testataprimanota = Table('testata_prima_nota',
-        params['metadata'],
-        schema = params['schema'],
-        autoload=True)
 
 from promogest.modules.PrimaNota.dao.RigaPrimaNota import RigaPrimaNota
 
@@ -62,7 +66,7 @@ class TestataPrimaNota(Dao):
     righeprimanota = property(_getRighePrimanota, _setRighePrimaNota)
 
     def ultimaNota(self):
-        a = select([func.max(testataprimanota.c.data_fine)]).execute().fetchall()
+        a = select([func.max(t_testata_prima_nota.c.data_fine)]).execute().fetchall()
         if a:
             return a[0][0]
         else:
@@ -70,32 +74,32 @@ class TestataPrimaNota(Dao):
 
     def filter_values(self,k,v):
         if k == 'daNumero':
-            dic = {k:testataprimanota.c.numero >= v}
+            dic = {k:t_testata_prima_nota.c.numero >= v}
         elif k == 'aNumero':
-            dic = {k:testataprimanota.c.numero <= v}
+            dic = {k:t_testata_prima_nota.c.numero <= v}
         elif k == 'numero':
-            dic = {k:testataprimanota.c.numero == v}
+            dic = {k:t_testata_prima_nota.c.numero == v}
         elif k == 'daDataInizio':
-            dic = {k:testataprimanota.c.data_inizio >= v}
+            dic = {k:t_testata_prima_nota.c.data_inizio >= v}
         elif k== 'aDataInizio':
-            dic = {k:testataprimanota.c.data_inizio <= v}
+            dic = {k:t_testata_prima_nota.c.data_inizio <= v}
         elif k== 'tipoCassa':
-            dic = {k:and_(testataprimanota.c.id== RigaPrimaNota.id_testata_prima_nota,
+            dic = {k:and_(t_testata_prima_nota.c.id== RigaPrimaNota.id_testata_prima_nota,
                             RigaPrimaNota.tipo !="cassa")}
         elif k== 'denominazione':
-            dic = {k:and_(testataprimanota.c.id== RigaPrimaNota.id_testata_prima_nota,
+            dic = {k:and_(t_testata_prima_nota.c.id== RigaPrimaNota.id_testata_prima_nota,
                             RigaPrimaNota.denominazione.ilike("%"+v+"%"))}
         elif k== 'tipoBanca':
-            dic = {k:and_(testataprimanota.c.id== RigaPrimaNota.id_testata_prima_nota,
+            dic = {k:and_(t_testata_prima_nota.c.id== RigaPrimaNota.id_testata_prima_nota,
                             RigaPrimaNota.tipo !="banca")}
         elif k== 'idBanca':
-            dic = {k:and_(testataprimanota.c.id== RigaPrimaNota.id_testata_prima_nota,
+            dic = {k:and_(t_testata_prima_nota.c.id== RigaPrimaNota.id_testata_prima_nota,
                             RigaPrimaNota.id_banca ==v)}
         elif k== 'segnoEntrate':
-            dic = {k:and_(testataprimanota.c.id== RigaPrimaNota.id_testata_prima_nota,
+            dic = {k:and_(t_testata_prima_nota.c.id== RigaPrimaNota.id_testata_prima_nota,
                             RigaPrimaNota.segno !="entrata")}
         elif k== 'segnoUscite':
-            dic = {k:and_(testataprimanota.c.id== RigaPrimaNota.id_testata_prima_nota,
+            dic = {k:and_(t_testata_prima_nota.c.id== RigaPrimaNota.id_testata_prima_nota,
                             RigaPrimaNota.segno !="uscita")}
         return  dic[k]
 
@@ -187,11 +191,11 @@ def getNuovoNumero(data_inizio):
         numero = num + 1
     return numero
 
-std_mapper = mapper(TestataPrimaNota, testataprimanota,
+std_mapper = mapper(TestataPrimaNota, t_testata_prima_nota,
     properties={
         "rigatest": relation(RigaPrimaNota,
-            primaryjoin=testataprimanota.c.id==RigaPrimaNota.id_testata_prima_nota,
+            primaryjoin=t_testata_prima_nota.c.id==RigaPrimaNota.id_testata_prima_nota,
             foreign_keys=[RigaPrimaNota.id_testata_prima_nota],
             cascade="all, delete", backref="__tpn")
     },
-    order_by=testataprimanota.c.numero.desc())
+    order_by=t_testata_prima_nota.c.numero.desc())

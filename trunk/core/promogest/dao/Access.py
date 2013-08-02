@@ -24,7 +24,6 @@ from sqlalchemy.orm import *
 from promogest.Environment import *
 from Dao import Dao
 
-
 try:
     t_access=Table('access', params['metadata'],schema = params['schema'],autoload=True)
 except:

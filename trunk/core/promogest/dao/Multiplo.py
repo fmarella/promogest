@@ -24,10 +24,6 @@
 from sqlalchemy import Table
 from sqlalchemy.orm import mapper, relation
 from promogest.Environment import *
-from UnitaBase import UnitaBase , t_unita_base
-from Dao import Dao
-
-
 
 try:
     t_multiplo = Table('multiplo',
@@ -37,6 +33,8 @@ try:
 except:
     from data.multiplo import t_multiplo
 
+from promogest.dao.Dao import Dao
+from promogest.dao.UnitaBase import UnitaBase , t_unita_base
 
 class Multiplo(Dao):
 

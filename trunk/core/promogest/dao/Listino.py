@@ -23,16 +23,19 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
-from Dao import Dao
-from ListinoCategoriaCliente import ListinoCategoriaCliente
-from ListinoMagazzino import ListinoMagazzino
-from ListinoComplessoListino import ListinoComplessoListino
-from migrate import *
 
 try:
     t_listino=Table('listino', params['metadata'],schema = params['schema'],autoload=True)
 except:
     from data.listino import t_listino
+
+from promogest.dao.Dao import Dao
+from promogest.dao.ListinoCategoriaCliente import ListinoCategoriaCliente
+from promogest.dao.ListinoMagazzino import ListinoMagazzino
+from promogest.dao.ListinoComplessoListino import ListinoComplessoListino
+from migrate import *
+
+
 
 def idListinoGet():
     if tipo_eng == "postgresql":

@@ -23,8 +23,6 @@
 from sqlalchemy import Table
 from sqlalchemy.orm import mapper, relation, backref
 from promogest.Environment import params
-from promogest.dao.daoContatti.CategoriaContatto import CategoriaContatto
-from promogest.dao.Dao import Dao
 
 try:
     t_contatto_categoria_contatto=Table('contatto_categoria_contatto',
@@ -32,7 +30,12 @@ try:
                             schema = params['schema'],
                             autoload=True)
 except:
+    from data.categoriaContatto import t_categoria_contatto
     from data.contattoCategoriaContatto import t_contatto_categoria_contatto
+
+from promogest.dao.Dao import Dao
+from promogest.dao.daoContatti.CategoriaContatto import CategoriaContatto
+
 
 
 class ContattoCategoriaContatto(Dao):

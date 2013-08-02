@@ -32,6 +32,7 @@ try:
                     autoload=True,
                     schema=params['schema'])
 except:
+    from data.contatto import t_contatto
     from data.recapito import t_recapito
 
 class RecapitoContatto(Dao):

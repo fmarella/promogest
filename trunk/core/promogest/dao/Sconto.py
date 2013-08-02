@@ -27,6 +27,14 @@ from sqlalchemy.orm import *
 from promogest.Environment import *
 from Dao import Dao
 
+try:
+    t_sconto = Table('sconto',
+                 params['metadata'],
+                 schema=params['schema'],
+                 autoload=True)
+except:
+    from data.sconto import t_sconto
+
 
 class Sconto(Dao):
 
@@ -37,8 +45,5 @@ class Sconto(Dao):
         dic = {}
         return dic[k]
 
-t_sconto = Table('sconto',
-                 params['metadata'],
-                 schema=params['schema'],
-                 autoload=True)
+
 std_mapper = mapper(Sconto, t_sconto, order_by=t_sconto.c.id)

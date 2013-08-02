@@ -32,7 +32,7 @@ from promogest.modules.VenditaDettaglio.dao.ScontoRigaScontrino import ScontoRig
 from promogest.modules.VenditaDettaglio.ui.Distinta import Distinta
 from promogest.modules.VenditaDettaglio.dao.TestataScontrinoCliente import TestataScontrinoCliente
 from promogest.ui.widgets.FilterWidget import FilterWidget
-from promogest.dao.Inventario import Inventario
+
 from promogest.dao.Magazzino import Magazzino
 from promogest.dao.Articolo import Articolo
 from promogest.dao.TestataDocumento import TestataDocumento
@@ -344,6 +344,8 @@ class GestioneScontrini(GladeWidget):
     def on_aggiorna_inve_activate(self, item):
         """ Questa funzione serve a ricalibrare le giacenze di inventario con
             gli articoli venduti al dettaglio """
+        return
+        from promogest.dao.Inventario import Inventario
         msg = """ ATTENZIONE!!!!
             QUESTA OPERAZIONE È PERICOLOSSIMA!!!!
             è stata aggiunta per corprire una casistica specifica

@@ -23,6 +23,13 @@ from promogest.lib.utils import posso
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
+
+try:
+    t_articolo = Table('articolo', meta, schema=params["schema"], autoload=True)
+except:
+    from data.image import t_image
+    from data.articolo import t_articolo
+
 from promogest.dao.Dao import Dao
 from promogest.dao.UnitaBase import UnitaBase, t_unita_base
 from promogest.dao.Multiplo import Multiplo
@@ -54,12 +61,6 @@ if hasattr(conf, "PromoWear") and \
                                     import StagioneAbbigliamento
     from promogest.modules.PromoWear.dao.GenereAbbigliamento \
                                     import GenereAbbigliamento
-
-
-try:
-    t_articolo = Table('articolo', meta, schema=params["schema"], autoload=True)
-except:
-    from data.articolo import t_articolo
 
 
 class Articolo(Dao):

@@ -22,7 +22,7 @@
 from sqlalchemy import Table
 from sqlalchemy.orm import mapper
 from promogest.Environment import params
-from Dao import Dao
+from promogest.dao.Dao import Dao
 
 try:
     t_codice_barre_articolo=Table('codice_a_barre_articolo',

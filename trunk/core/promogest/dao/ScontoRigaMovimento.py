@@ -22,7 +22,17 @@
 from sqlalchemy import Table
 from sqlalchemy.orm import mapper, join
 from promogest.Environment import params
+
+try:
+    t_sconto_riga_movimento=Table('sconto_riga_movimento',
+            params['metadata'],
+            schema = params['schema'],
+            autoload=True)
+except:
+    from data.scontoRigaMovimento import t_sconto_riga_movimento
+
 from Dao import Dao
+from promogest.dao.Sconto import t_sconto
 
 class ScontoRigaMovimento(Dao):
 
@@ -31,24 +41,13 @@ class ScontoRigaMovimento(Dao):
 
     def filter_values(self, k,v):
         if k=='id':
-            dic = {k:sconto_riga_movimento.c.id==v}
+            dic = {k:t_sconto_riga_movimento.c.id==v}
         elif k=='idRigaMovimento':
-            dic= {k:sconto_riga_movimento.c.id_riga_movimento==v}
+            dic= {k:t_sconto_riga_movimento.c.id_riga_movimento==v}
         return  dic[k]
 
-sconto=Table('sconto',params['metadata'],schema=params['schema'],autoload=True)
 
-
-sconto_riga_movimento=Table('sconto_riga_movimento',
-            params['metadata'],
-            schema = params['schema'],
-            autoload=True)
-
-j = join(sconto, sconto_riga_movimento)
-
-std_mapper = mapper(ScontoRigaMovimento,j, properties={
-    'id':[sconto.c.id, sconto_riga_movimento.c.id],
-    }, order_by=sconto_riga_movimento.c.id)
-
-
-
+std_mapper = mapper(ScontoRigaMovimento,join(t_sconto, t_sconto_riga_movimento),
+    properties={
+    'id':[t_sconto.c.id, t_sconto_riga_movimento.c.id],
+    }, order_by=t_sconto_riga_movimento.c.id)

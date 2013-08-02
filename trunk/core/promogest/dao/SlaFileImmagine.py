@@ -24,10 +24,13 @@ from sqlalchemy.orm import *
 from promogest.Environment import *
 from promogest.dao.Dao import Dao
 
-slafileimmagine=Table('slafile_immagine',
-                params['metadata'],
-                schema = params['schema'],
-                autoload=True)
+try:
+    t_slafile_immagine=Table('slafile_immagine',
+                    params['metadata'],
+                    schema = params['schema'],
+                    autoload=True)
+except:
+    from data.slafileImmagine import t_slafile_immagine
 
 
 class SlaFileImmagine(Dao):
@@ -38,10 +41,10 @@ class SlaFileImmagine(Dao):
 
     def filter_values(self,k,v):
         if k == 'id_immagine':
-            dic = {k:slafileimmagine.c.id_immagine == v}
+            dic = {k:t_slafile_immagine.c.id_immagine == v}
         elif k == 'id_slafile':
-            dic = {k:slafileimmagine.c.id_slafile == v}
+            dic = {k:t_slafile_immagine.c.id_slafile == v}
         return  dic[k]
 
-std_mapper = mapper(SlaFileImmagine, slafileimmagine, properties={
-                }, order_by=slafileimmagine.c.id_immagine)
+std_mapper = mapper(SlaFileImmagine, t_slafile_immagine, properties={
+                }, order_by=t_slafile_immagine.c.id_immagine)

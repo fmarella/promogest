@@ -23,9 +23,6 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
-from promogest.dao.Dao import Dao
-from Role import Role
-from Action import Action
 
 try:
     t_roleaction=Table('roleaction',
@@ -33,7 +30,14 @@ try:
                 schema = params['mainSchema'],
                 autoload=True)
 except:
+    from data.action import t_action
     from data.roleAction import t_roleaction
+
+from promogest.dao.Dao import Dao
+from Role import Role
+from Action import Action
+
+
 
 class RoleAction(Dao):
     """ RoleAction class database functions  """

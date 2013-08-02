@@ -46,7 +46,11 @@ def orderedImport():
     from promogest.dao.Banca import t_banca #v
     from promogest.dao.BancheAzienda import t_banche_azienda #v
     from promogest.dao.FamigliaArticolo import t_famiglia_articolo #v
-    #from promogest.dao.Image import *  ???????????????????
+    #from promogest.dao.Image import * # ???????????????????
+    from promogest.dao.CategoriaCliente import t_categoria_cliente #v
+    from promogest.dao.CategoriaFornitore import t_categoria_fornitore #v
+    from promogest.dao.Magazzino import t_magazzino  #v
+
     from promogest.dao.Imballaggio import t_imballaggio #v
     from promogest.dao.Listino import t_listino #v
     from promogest.dao.Articolo import t_articolo #v
@@ -63,30 +67,66 @@ def orderedImport():
     from promogest.dao.daoContatti.ContattoCategoriaContatto import t_contatto_categoria_contatto #v
     from promogest.dao.daoContatti.Contatto import t_contatto #v
 
-    from promogest.dao.Magazzino import t_magazzino  #v
+
     from promogest.dao.Stoccaggio import t_stoccaggio #v
     from promogest.dao.PersonaGiuridica import t_persona_giuridica #v
     from promogest.dao.PersonaGiuridicaPersonaGiuridica import t_personagiuridica_personagiuridica #v
 
-    from promogest.dao.CategoriaCliente import t_categoria_cliente #v
-    from promogest.dao.CategoriaFornitore import t_categoria_fornitore #v
+
 
     from promogest.dao.Vettore import t_vettore #v
     from promogest.dao.ListinoMagazzino import t_listino_magazzino #v
 
     from promogest.dao.Cliente import t_cliente #v
     from promogest.dao.Fornitore import t_fornitore #v
+    from promogest.dao.Fornitura import t_fornitura  #v
     from promogest.dao.daoAgenti.Agente import t_agente #v
     from promogest.dao.ClienteCategoriaCliente import t_cliente_categoria_cliente #v
     from promogest.dao.ClienteVariazioneListino import t_cliente_variazione_listino #v
-
+    from promogest.dao.Sconto import t_sconto
     from promogest.dao.daoContatti.RecapitoContatto import t_recapito
     from promogest.dao.daoContatti.ContattoCliente import t_contatto_cliente
     from promogest.dao.daoContatti.ContattoFornitore import t_contatto_fornitore
     from promogest.dao.daoContatti.ContattoAzienda import t_contatto_azienda
+    from promogest.dao.daoContatti.ContattoMagazzino import t_contatto_magazzino
+    from promogest.dao.daoContatti.ContattoCategoriaContatto import t_contatto_categoria_contatto
+
     from promogest.dao.CCardType import t_credit_card_type #v
     from promogest.dao.Riga import t_riga
+
+    from promogest.dao.TestataDocumento import t_testata_documento #v
     from promogest.dao.TestataMovimento import t_testata_movimento   #v
+    from promogest.dao.RigaDocumento import t_riga_documento
+    from promogest.dao.RigaMovimento import t_riga_movimento #v
+    from promogest.dao.RigaMovimentoFornitura import t_riga_movimento_fornitura
+    from promogest.modules.Pagamenti.dao.TestataDocumentoScadenza import t_testata_documento_scadenza
+    from promogest.dao.ScontoRigaMovimento import t_sconto_riga_movimento
+    from promogest.dao.ScontoRigaDocumento import t_sconto_riga_documento
+    from promogest.dao.NumeroLottoTemp import t_numero_lotto_temp
+    from promogest.dao.DestinazioneMerce import t_destinazione_merce #v
+
+    from promogest.dao.ListinoCategoriaCliente import t_listino_categoria_cliente #v
+
+    from promogest.dao.ScontoVenditaDettaglio import t_sconti_vendita_dettaglio
+    from promogest.dao.ScontoVenditaIngrosso import t_sconti_vendita_ingrosso
+    from promogest.dao.ScontoTestataDocumento import t_sconto_testata_documento
+    from promogest.dao.InformazioniFatturazioneDocumento import t_informazioni_fatturazione_documento
+
+    from promogest.modules.PrimaNota.dao.RigaPrimaNota import t_riga_prima_nota
+    from promogest.modules.PrimaNota.dao.TestataPrimaNota import t_testata_prima_nota
+    from promogest.modules.PrimaNota.dao.RigaPrimaNotaTestataDocumentoScadenza import t_riga_primanota_testata_documento_scadenza
+    from promogest.dao.RigaRitenutaAcconto import t_ritenuta_acconto_riga
+
+    from promogest.dao.AnagraficaSecondaria import t_anagrafica_secondaria
+    from promogest.modules.GestioneFile.dao.Immagine import t_immagine
+    from promogest.dao.UtenteImmagine import t_utente_immagine
+    from promogest.modules.GestioneFile.dao.ArticoloImmagine import t_articolo_immagine
+    from promogest.modules.GestioneFile.dao.SlaFile import t_sla_file
+    from promogest.dao.SlaFileImmagine import t_slafile_immagine
+
+    from promogest.modules.GestioneCommesse.dao.StadioCommessa import t_stadio_commessa
+    from promogest.modules.GestioneCommesse.dao.TestataCommessa import t_testata_commessa
+    from promogest.modules.GestioneCommesse.dao.RigaCommessa import t_riga_commessa
 
 def orderedImportVenditaDettaglio():
 #try:
@@ -95,7 +135,6 @@ def orderedImportVenditaDettaglio():
     from promogest.modules.VenditaDettaglio.dao.RigaScontrino import t_riga_scontrino #v
     from promogest.modules.VenditaDettaglio.dao.ScontoRigaScontrino import t_sconto_riga_scontrino #v
     from promogest.modules.VenditaDettaglio.dao.TestataScontrino import t_testata_scontrino #v
-
     from promogest.modules.VenditaDettaglio.dao.ScontoTestataScontrino import t_sconto_testata_scontrino #v
     from promogest.modules.VenditaDettaglio.dao.ChiusuraFiscale import t_chiusura_fiscale #v
     from promogest.modules.VenditaDettaglio.dao.TestataScontrinoCliente import t_testata_scontrino_cliente #v
@@ -105,45 +144,9 @@ def orderedImportVenditaDettaglio():
     #print " DETTAGLIO DA SISTEARE"
 
 
-    #from data.contattoMagazzino import t_contatto_magazzino
-    #from data.destinazioneMerce import t_destinazione_merce
-    #from data.contattoCategoriaContatto import t_contatto_categoria_contatto
-    #from data.listinoCategoriaCliente import t_listino_categoria_cliente
-
-    #from data.testataDocumento import t_testata_documento
-    #from data.testataMovimento import t_testata_movimento
-    #from data.rigaMovimento import t_riga_movimento
-    #from data.rigaDocumento import t_riga_documento
-    #from data.informazioniContabiliDocumento import t_informazioni_contabili_documento
-    #from data.informazioniFatturazioneDocumento import t_informazioni_fatturazione_documento
-    #from data.testataDocumentoScadenza import t_testata_documento_scadenza
-
-    #from data.fornitura import t_fornitura
-    #from data.sconto import t_sconto
     #from data.scontoFornitura import t_sconto_fornitura
-    #from data.scontoRigaMovimento import t_sconto_riga_movimento
-    #from data.scontoRigaDocumento import t_sconto_riga_documento
-    #from data.scontoTestataDocumento import t_sconto_testata_documento
-    #from data.scontiVenditaDettaglio import t_sconti_vendita_dettaglio
-    #from data.scontiVenditaIngrosso import t_sconti_vendita_ingrosso
-    #from data.rigaMovimentoFornitura import t_riga_movimento_fornitura
+
     #from data.rigaRitenutaAcconto import t_ritenuta_acconto_riga
 
     #from data.inventario import t_inventario
-    #from data.anagraficaSecondaria import t_anagrafica_secondaria
     #from data.contattoAnagraficaSecondaria import t_contatto_anagraficasecondaria
-
-    #from data.stadio_commessa import t_stadio_commessa
-    #from data.testataCommessa import t_testata_commessa
-    #from data.rigaCommessa import t_riga_commessa
-
-    #from data.immagine import t_immagine
-    #from data.utenteImmagine import t_utente_immagine
-    #from data.articoloImmagine import t_articolo_immagine
-    #from data.slafile import t_sla_file
-    #from data.slafileImmagine import t_slafile_immagine
-    #from data.numerolottotemp import t_numero_lotto_temp
-
-    #from data.testataPrimaNota import t_testata_prima_nota
-    #from data.rigaPrimaNota import t_riga_prima_nota
-    #from data.rigaPrimaNotaTestataDocumentoScadenza import t_riga_primanota_testata_documento_scadenza

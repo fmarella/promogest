@@ -23,9 +23,6 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import params, session, azienda
-from promogest.dao.Dao import Dao
-from promogest.dao.Azienda import Azienda
-from promogest.dao.Banca import Banca, t_banca
 
 try:
     t_banche_azienda = Table('banche_azienda',
@@ -36,6 +33,9 @@ try:
 except:
     from data.bancheAzienda import t_banche_azienda
 
+from promogest.dao.Dao import Dao
+from promogest.dao.Azienda import Azienda
+from promogest.dao.Banca import Banca, t_banca
 
 def gen_banche_azienda():
     daos = []

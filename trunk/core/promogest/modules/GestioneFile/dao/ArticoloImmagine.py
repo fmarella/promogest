@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2013 by Promotux
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -22,15 +22,21 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
-from promogest.dao.Dao import Dao
-from promogest.modules.GestioneFile.dao.Immagine import ImageFile,immagine
-from promogest.dao.Articolo import Articolo, t_articolo
-
-
-t_articoloimmagine=Table('articolo_immagine',
+try:
+    t_articolo_immagine=Table('articolo_immagine',
                 params['metadata'],
                 schema = params['schema'],
                 autoload=True)
+except:
+    from data.articoloImmagine import t_articolo_immagine
+
+
+from promogest.dao.Dao import Dao
+from promogest.modules.GestioneFile.dao.Immagine import ImageFile, t_immagine
+from promogest.dao.Articolo import Articolo, t_articolo
+
+
+
 
 
 class ArticoloImmagine(Dao):
@@ -41,14 +47,14 @@ class ArticoloImmagine(Dao):
 
     def filter_values(self,k,v):
         if k == 'id_immagine':
-            dic = {k:t_articoloimmagine.c.id_immagine == v}
+            dic = {k:t_articolo_immagine.c.id_immagine == v}
         elif k == 'idArticolo':
-            dic = {k:t_articoloimmagine.c.id_articolo == v}
+            dic = {k:t_articolo_immagine.c.id_articolo == v}
         elif k == 'denominazione':
-            dic = {k:and_(t_articoloimmagine.id_articolo==t_articolo.id,immagine.ilike("%"+v+"%"))}
+            dic = {k:and_(t_articolo_immagine.id_articolo==t_articolo.id,t_immagine.ilike("%"+v+"%"))}
         return  dic[k]
 
-std_mapper = mapper(ArticoloImmagine, t_articoloimmagine, properties={
+std_mapper = mapper(ArticoloImmagine, t_articolo_immagine, properties={
                  'immagine': relation(ImageFile, backref='artima',cascade="all, delete"),
                  'articolo': relation(Articolo, backref='artima'),
-                }, order_by=t_articoloimmagine.c.id_immagine)
+                }, order_by=t_articolo_immagine.c.id_immagine)

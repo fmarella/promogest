@@ -24,6 +24,16 @@
 
 from sqlalchemy import *
 from sqlalchemy.orm import *
+from promogest.Environment import *
+try:
+    t_testata_documento = Table('testata_documento',
+                              params['metadata'],
+                              schema=params['schema'],
+                              autoload=True)
+except:
+    from data.testataDocumento import t_testata_documento
+
+
 from Dao import Dao
 from Operazione import Operazione
 from ScontoTestataDocumento import ScontoTestataDocumento
@@ -46,14 +56,14 @@ from promogest.modules.PrimaNota.dao.RigaPrimaNota import RigaPrimaNota
 from promogest.modules.PrimaNota.dao.RigaPrimaNotaTestataDocumentoScadenza import RigaPrimaNotaTestataDocumentoScadenza
 from promogest.dao.RigaMovimentoFornitura import RigaMovimentoFornitura
 from promogest.modules.Pagamenti.dao.TestataDocumentoScadenza import TestataDocumentoScadenza
-from promogest.dao.InformazioniFatturazioneDocumento import InformazioniFatturazioneDocumento, t_informazionifatturazionedocumento
+from promogest.dao.InformazioniFatturazioneDocumento import InformazioniFatturazioneDocumento, t_informazioni_fatturazione_documento
 import promogest.lib.ibanlib
 
 from promogest.dao.DaoUtils import numeroRegistroGet
 from promogest.dao.CachedDaosDict import CachedDaosDict
 from decimal import *
 
-from promogest.Environment import *
+
 from promogest import Environment
 
 import datetime
@@ -1348,10 +1358,6 @@ class TestataDocumento(Dao):
                             TestataGestioneNoleggio.data_fine_noleggio <= v)}
         return  dic[k]
 
-t_testata_documento = Table('testata_documento',
-                          params['metadata'],
-                          schema=params['schema'],
-                          autoload=True)
 
 if 'esclusione_spese' not in [c.name for c in t_testata_documento.columns]:
     delete_pickle()
@@ -1388,9 +1394,9 @@ std_mapper = mapper(TestataDocumento, t_testata_documento,
         "AGE": relation(Agente,
             primaryjoin=(t_testata_documento.c.id_agente==t_agente.c.id)),
         "IFDDDT": relation(InformazioniFatturazioneDocumento,
-            primaryjoin=(t_testata_documento.c.id==t_informazionifatturazionedocumento.c.id_ddt)),
+            primaryjoin=(t_testata_documento.c.id==t_informazioni_fatturazione_documento.c.id_ddt)),
         "IFDFAT": relation(InformazioniFatturazioneDocumento,
-            primaryjoin=(t_testata_documento.c.id==t_informazionifatturazionedocumento.c.id_fattura)),
+            primaryjoin=(t_testata_documento.c.id==t_informazioni_fatturazione_documento.c.id_fattura)),
         "OP": relation(Operazione,
             primaryjoin=(t_testata_documento.c.operazione==Operazione.denominazione),
             backref="TD"),

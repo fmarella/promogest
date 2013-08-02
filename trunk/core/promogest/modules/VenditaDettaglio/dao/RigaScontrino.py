@@ -22,7 +22,6 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
-from promogest.dao.Dao import Dao
 
 try:
     t_riga_scontrino=Table('riga_scontrino',
@@ -30,10 +29,10 @@ try:
                 schema = params['schema'],
                 autoload=True)
 except:
-    #pass
     from data.testataScontrino import t_testata_scontrino
     from data.rigaScontrino import t_riga_scontrino
 
+from promogest.dao.Dao import Dao
 from promogest.dao.Articolo import Articolo
 from promogest.modules.VenditaDettaglio.dao.ScontoScontrino import ScontoScontrino
 from promogest.modules.VenditaDettaglio.ui.VenditaDettaglioUtils import scontoRigaScontrinoDel

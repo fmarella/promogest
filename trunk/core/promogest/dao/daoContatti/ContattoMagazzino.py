@@ -23,9 +23,19 @@
 from sqlalchemy import Table, or_
 from sqlalchemy.orm import join, relation, mapper
 from promogest.Environment import params
+
+try:
+    t_contatto_magazzino=Table('contatto_magazzino',
+        params['metadata'],
+        schema = params['schema'],
+        autoload=True)
+except:
+    from data.contattoMagazzino import t_contatto_magazzino
+
 from promogest.dao.Dao import Dao
 from promogest.dao.Magazzino import Magazzino
-from promogest.dao.daoContatti.RecapitoContatto import RecapitoContatto
+from promogest.dao.daoContatti.RecapitoContatto import RecapitoContatto, t_recapito
+from promogest.dao.daoContatti.Contatto import t_contatto
 from promogest.dao.daoContatti.ContattoCategoriaContatto import ContattoCategoriaContatto
 
 class ContattoMagazzino(Dao):
@@ -65,40 +75,28 @@ class ContattoMagazzino(Dao):
 
     def filter_values(self,k,v):
         if k == 'idCategoria':
-            dic = {k:and_(ContattoCategoriaContatto.id_contatto==contatto.c.id, ContattoCategoriaContatto.id_categoria_contatto==v)}
+            dic = {k:and_(ContattoCategoriaContatto.id_contatto==t_contatto.c.id, ContattoCategoriaContatto.id_categoria_contatto==v)}
         elif k == 'idMagazzino':
-            dic = {k : contattomagazzino.c.id_magazzino == v}
+            dic = {k : t_contatto_magazzino.c.id_magazzino == v}
         elif k == 'idMagazzinoList':
-            dic = {k : contattomagazzino.c.id_magazzino.in_(v)}
+            dic = {k : t_contatto_magazzino.c.id_magazzino.in_(v)}
         elif k == 'cognomeNome':
-            dic = {k : or_(contatto.c.cognome.ilike("%"+v+"%"),contatto.c.nome.ilike("%"+v+"%"))}
+            dic = {k : or_(t_contatto.c.cognome.ilike("%"+v+"%"),t_contatto.c.nome.ilike("%"+v+"%"))}
         elif k == 'ruolo':
-            dic = {k : contatto.c.ruolo.ilike("%"+v+"%")}
+            dic = {k : t_contatto.c.ruolo.ilike("%"+v+"%")}
         elif k == "recapito":
-            dic={k:and_(contattocliente.c.id==recapito.c.id_contatto,recapito.c.recapito.ilike("%"+v+"%"))}
+            dic={k:and_(contattocliente.c.id==t_recapito.c.id_contatto,recapito.c.recapito.ilike("%"+v+"%"))}
         elif k == "tipoRecapito":
-            dic={k:and_(contattocliente.c.id==recapito.c.id_contatto,recapito.c.tipo_recapito ==v)}
+            dic={k:and_(contattocliente.c.id==t_recapito.c.id_contatto,t_recapito.c.tipo_recapito ==v)}
         elif k =='descrizione':
-            dic = {k : contatto.c.descrizione.ilike("%"+v+"%")}
+            dic = {k : t_contatto.c.descrizione.ilike("%"+v+"%")}
         #'recapito':
         #'tipoRecapito':
         return dic[k]
 
-recapito=Table('recapito',params['metadata'],autoload=True,schema = params['schema'])
-contatto=Table('contatto',
-        params['metadata'],
-        schema = params['schema'],
-        autoload=True)
-
-contattomagazzino=Table('contatto_magazzino',
-        params['metadata'],
-        schema = params['schema'],
-        autoload=True)
-
-j = join(contatto, contattomagazzino)
-
-std_mapper = mapper(ContattoMagazzino, j,properties={
-               'id':[contatto.c.id, contattomagazzino.c.id],
-                'tipo_contatto':[contatto.c.tipo_contatto, contattomagazzino.c.tipo_contatto],
+std_mapper = mapper(ContattoMagazzino, join(t_contatto, t_contatto_magazzino),
+            properties={
+               'id':[t_contatto.c.id, t_contatto_magazzino.c.id],
+                'tipo_contatto':[t_contatto.c.tipo_contatto, t_contatto_magazzino.c.tipo_contatto],
                 "magazzino":relation(Magazzino, backref="contatto_magazzino")},
-                order_by=contattomagazzino.c.id)
+                order_by=t_contatto_magazzino.c.id)

@@ -22,11 +22,6 @@
 from sqlalchemy import Table, or_
 from sqlalchemy.orm import mapper, relation, join
 from promogest.Environment import params, conf, session
-from promogest.dao.Dao import Dao
-from promogest.dao.PersonaGiuridica import t_persona_giuridica
-from CategoriaFornitore import CategoriaFornitore
-from promogest.dao.daoContatti.Contatto import Contatto
-from promogest.dao.DaoUtils import codeIncrement, getRecapitiFornitore
 
 try:
     t_fornitore = Table('fornitore',
@@ -36,6 +31,11 @@ try:
 except:
     from data.fornitore import t_fornitore
 
+from promogest.dao.Dao import Dao
+from promogest.dao.PersonaGiuridica import t_persona_giuridica
+from promogest.dao.CategoriaFornitore import CategoriaFornitore
+from promogest.dao.daoContatti.Contatto import Contatto
+from promogest.dao.DaoUtils import codeIncrement, getRecapitiFornitore
 
 class Fornitore(Dao):
 
@@ -153,10 +153,7 @@ def getNuovoCodiceFornitore():
             codice = codeIncrement(dd)
     except:
         pass
-
     return codice
-
-
 
 std_mapper = mapper(Fornitore, join(t_fornitore, t_persona_giuridica),
     properties={

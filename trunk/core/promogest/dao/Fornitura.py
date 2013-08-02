@@ -24,7 +24,18 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
-from Dao import Dao
+
+try:
+    t_fornitura = Table('fornitura',
+                    params['metadata'],
+                    schema=params['schema'],
+                    autoload=True)
+except:
+    from data.personaGiuridica import t_persona_giuridica
+    from data.fornitore import t_fornitore
+    from data.fornitura import t_fornitura
+
+from promogest.dao.Dao import Dao
 from Multiplo import Multiplo, t_multiplo
 from ScontoFornitura import ScontoFornitura
 from Fornitore import Fornitore, t_fornitore
@@ -173,20 +184,17 @@ class Fornitura(Dao):
                 sco.id_fornitura = self.id
                 sco.persist()
 
-t_fornitura = Table('fornitura',
-                    params['metadata'],
-                    schema=params['schema'],
-                    autoload=True)
 
-if "numero_lotto" not in [c.name for c in t_fornitura.columns]:
-    col = Column('numero_lotto', String(200))
-    col.create(t_fornitura)
-if "data_scadenza" not in [c.name for c in t_fornitura.columns]:
-    col = Column('data_scadenza', DateTime)
-    col.create(t_fornitura)
-if "data_produzione" not in [c.name for c in t_fornitura.columns]:
-    col = Column('data_produzione', DateTime)
-    col.create(t_fornitura)
+
+#if "numero_lotto" not in [c.name for c in t_fornitura.columns]:
+    #col = Column('numero_lotto', String(200))
+    #col.create(t_fornitura)
+#if "data_scadenza" not in [c.name for c in t_fornitura.columns]:
+    #col = Column('data_scadenza', DateTime)
+    #col.create(t_fornitura)
+#if "data_produzione" not in [c.name for c in t_fornitura.columns]:
+    #col = Column('data_produzione', DateTime)
+    #col.create(t_fornitura)
 
 std_mapper = mapper(Fornitura, t_fornitura,
     properties={

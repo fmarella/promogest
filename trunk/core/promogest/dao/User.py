@@ -22,8 +22,16 @@
 
 from sqlalchemy import Table
 from sqlalchemy.orm import mapper, relation
-
 from promogest.Environment import *
+
+try:
+    t_utente = Table('utente', params['metadata'],schema = params['mainSchema'],autoload=True)
+except:
+    from data.azienda import t_azienda
+    from data.language import t_language
+    from data.role import t_role
+    from data.utente import t_utente
+
 from promogest.dao.Dao import Dao
 #from promogest.dao.Regioni import Regioni
 #from promogest.dao.Province import Province
@@ -31,10 +39,6 @@ from migrate import *
 from promogest.modules.RuoliAzioni.dao.Role import Role
 from promogest.dao.DaoUtils import get_columns
 
-try:
-    t_utente = Table('utente', params['metadata'],schema = params['mainSchema'],autoload=True)
-except:
-    from data.utente import t_utente
 
 class User(Dao):
     """ User class provides to make a Users dao which include more used"""

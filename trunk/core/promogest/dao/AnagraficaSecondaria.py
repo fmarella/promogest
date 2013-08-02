@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2013 by Promotux
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -22,20 +22,20 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
-from Dao import Dao
-from promogest.dao.DaoUtils import codeIncrement, getRecapitiAnagraficaSecondaria
-
-persona_giuridica = Table('persona_giuridica',
-                        meta,
-                        schema=params["schema"],
-                        autoload=True)
-
-anagraficasecondaria = Table('anagrafica_secondaria',
+try:
+    t_anagrafica_secondaria = Table('anagrafica_secondaria',
         meta,
         schema=params["schema"],
         autoload=True)
+except:
+    from data.anagraficaSecondaria import t_anagrafica_secondaria
 
 
+
+
+from Dao import Dao
+from promogest.dao.PersonaGiuridica import t_persona_giuridica
+from promogest.dao.DaoUtils import codeIncrement, getRecapitiAnagraficaSecondaria
 
 class AnagraficaSecondaria_(Dao):
 
@@ -44,24 +44,24 @@ class AnagraficaSecondaria_(Dao):
 
     def filter_values(self, k, v):
         if k == 'codice':
-            dic = {k: persona_giuridica.c.codice.ilike("%" + v + "%")}
+            dic = {k: t_persona_giuridica.c.codice.ilike("%" + v + "%")}
         elif k == 'ragioneSociale':
-            dic = {k: persona_giuridica.c.ragione_sociale.ilike("%" + v + "%")}
+            dic = {k: t_persona_giuridica.c.ragione_sociale.ilike("%" + v + "%")}
         elif k == 'idRole':
-            dic = {k: anagraficasecondaria.c.id_ruolo == v}
+            dic = {k: t_anagrafica_secondaria.c.id_ruolo == v}
         elif k == 'idMagazzino':
-            dic = {k: anagraficasecondaria.c.id_magazzino == v}
+            dic = {k: t_anagrafica_secondaria.c.id_magazzino == v}
         elif k == 'cognomeNome':
-            dic = {k: or_(persona_giuridica.c.cognome.ilike("%" + v + "%"),
-                persona_giuridica.c.nome.ilike("%" + v + "%"))}
+            dic = {k: or_(t_persona_giuridica.c.cognome.ilike("%" + v + "%"),
+                t_persona_giuridica.c.nome.ilike("%" + v + "%"))}
         elif k == 'localita':
             dic = {k: or_(
-            persona_giuridica.c.sede_operativa_localita.ilike("%" + v + "%"),
-                persona_giuridica.c.sede_legale_localita.ilike("%" + v + "%"))}
+            t_persona_giuridica.c.sede_operativa_localita.ilike("%" + v + "%"),
+                t_persona_giuridica.c.sede_legale_localita.ilike("%" + v + "%"))}
         elif k == 'partitaIva':
-            dic = {k: persona_giuridica.c.partita_iva.ilike("%" + v + "%")}
+            dic = {k: t_persona_giuridica.c.partita_iva.ilike("%" + v + "%")}
         elif k == 'codiceFiscale':
-            dic = {k: persona_giuridica.c.codice_fiscale.ilike("%" + v + "%")}
+            dic = {k: t_persona_giuridica.c.codice_fiscale.ilike("%" + v + "%")}
         return  dic[k]
 
     def _cellularePrincipale(self):
@@ -125,8 +125,6 @@ def getNuovoCodiceAnagraficaSecondaria():
         pass
     return codice
 
-j = join(anagraficasecondaria, persona_giuridica)
-
-std_mapper = mapper(AnagraficaSecondaria_, j, properties={
-    'id': [anagraficasecondaria.c.id, persona_giuridica.c.id]},
-    order_by=anagraficasecondaria.c.id)
+std_mapper = mapper(AnagraficaSecondaria_, join(t_anagrafica_secondaria, t_persona_giuridica), properties={
+    'id': [t_anagrafica_secondaria.c.id, t_persona_giuridica.c.id]},
+    order_by=t_anagrafica_secondaria.c.id)

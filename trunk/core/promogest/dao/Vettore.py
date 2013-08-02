@@ -22,9 +22,6 @@
 from sqlalchemy import Table, or_
 from sqlalchemy.orm import mapper, join
 from promogest.Environment import params, conf
-from promogest.dao.Dao import Dao
-from promogest.dao.DaoUtils import codeIncrement
-from promogest.dao.PersonaGiuridica import t_persona_giuridica
 
 try:
     t_vettore = Table('vettore',
@@ -33,6 +30,11 @@ try:
                   autoload=True)
 except:
     from data.vettore import t_vettore
+
+from promogest.dao.Dao import Dao
+from promogest.dao.DaoUtils import codeIncrement
+from promogest.dao.PersonaGiuridica import t_persona_giuridica
+
 
 class Vettore(Dao):
 

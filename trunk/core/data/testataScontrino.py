@@ -20,13 +20,13 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-
+import datetime
 from sqlalchemy import *
 from promogest.Environment import *
 
 t_testata_scontrino = Table('testata_scontrino', params['metadata'],
             Column('id',Integer,primary_key=True),
-            Column('data_inserimento',DateTime,DefaultClause(func.now()),nullable=False),
+            Column('data_inserimento',DateTime,ColumnDefault(datetime.datetime.now),nullable=False),
             Column('totale_scontrino',Numeric(16,4),nullable=False),
             Column('totale_contanti',Numeric(16,4),nullable=False),
             Column('totale_assegni',Numeric(16,4),nullable=False),
@@ -37,6 +37,5 @@ t_testata_scontrino = Table('testata_scontrino', params['metadata'],
             Column('id_user',Integer),
             Column('id_testata_movimento',Integer,ForeignKey(fk_prefix + "testata_movimento.id", onupdate="CASCADE", ondelete="RESTRICT")),
             schema=params['schema'],
-            useexisting =True
             )
 t_testata_scontrino.create(checkfirst=True)

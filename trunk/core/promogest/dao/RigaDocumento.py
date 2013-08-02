@@ -23,6 +23,16 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import params, conf, modulesList
+
+try:
+    t_riga_documento = Table('riga_documento',
+                         params['metadata'],
+                         schema=params['schema'],
+                         autoload=True)
+except:
+    from data.rigaDocumento import t_riga_documento
+
+
 from Dao import Dao
 from UnitaBase import UnitaBase
 from ScontoRigaDocumento import ScontoRigaDocumento
@@ -268,11 +278,6 @@ class RigaDocumento(Dao):
                 params["session"].add(value)
             #params["session"].commit()
         self.__dbMisuraPezzo = []
-
-t_riga_documento = Table('riga_documento',
-                         params['metadata'],
-                         schema=params['schema'],
-                         autoload=True)
 
 std_mapper = mapper(RigaDocumento, join(t_riga_documento, t_riga),
     properties={

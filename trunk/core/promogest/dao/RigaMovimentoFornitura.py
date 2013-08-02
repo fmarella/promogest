@@ -23,14 +23,21 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
-from promogest.dao.Fornitura import Fornitura
-from promogest.dao.RigaMovimento import RigaMovimento, t_riga_movimento
-from Dao import Dao
 
-rigamovimentofornitura = Table('riga_movimento_fornitura',
+try:
+    t_riga_movimento_fornitura = Table('riga_movimento_fornitura',
                 params['metadata'],
                 schema = params['schema'],
                 autoload=True)
+except:
+    from data.rigaMovimentoFornitura import t_riga_movimento_fornitura
+
+from Dao import Dao
+from promogest.dao.Fornitura import Fornitura
+from promogest.dao.RigaMovimento import RigaMovimento, t_riga_movimento
+
+
+
 
 
 class RigaMovimentoFornitura(Dao):
@@ -40,31 +47,31 @@ class RigaMovimentoFornitura(Dao):
 
     def filter_values(self,k,v):
         if k == "idRigaMovimentoAcquisto":
-            dic= {k:rigamovimentofornitura.c.id_riga_movimento_acquisto ==v}
+            dic= {k:t_riga_movimento_fornitura.c.id_riga_movimento_acquisto ==v}
         elif k == 'idFornitura':
-            dic = {k:rigamovimentofornitura.c.id_fornitura==v}
+            dic = {k:t_riga_movimento_fornitura.c.id_fornitura==v}
         elif k == "idRigaMovimentoVendita":
-            dic= {k:rigamovimentofornitura.c.id_riga_movimento_vendita ==v}
+            dic= {k:t_riga_movimento_fornitura.c.id_riga_movimento_vendita ==v}
         elif k == "idRigaMovimentoVenditaBool":
-            dic= {k:rigamovimentofornitura.c.id_riga_movimento_vendita != None}
+            dic= {k:t_riga_movimento_fornitura.c.id_riga_movimento_vendita != None}
         elif k == "idRigaMovimentoAcquistoBool":
-            dic= {k:rigamovimentofornitura.c.id_riga_movimento_acquisto != None}
+            dic= {k:t_riga_movimento_fornitura.c.id_riga_movimento_acquisto != None}
         elif k == "idRigaMovimentoVenditaBoolFalse":
-            dic= {k:rigamovimentofornitura.c.id_riga_movimento_vendita == None}
+            dic= {k:t_riga_movimento_fornitura.c.id_riga_movimento_vendita == None}
         elif k == "idRigaMovimentoAcquistoBoolFalse":
-            dic= {k:rigamovimentofornitura.c.id_riga_movimento_acquisto == None}
+            dic= {k:t_riga_movimento_fornitura.c.id_riga_movimento_acquisto == None}
         elif k == "idArticolo":
-            dic= {k:rigamovimentofornitura.c.id_articolo ==v}
+            dic= {k:t_riga_movimento_fornitura.c.id_articolo ==v}
         return  dic[k]
 
 
-std_mapper = mapper(RigaMovimentoFornitura, rigamovimentofornitura,
+std_mapper = mapper(RigaMovimentoFornitura, t_riga_movimento_fornitura,
     properties={
         "forni": relation(Fornitura,
-            primaryjoin = (rigamovimentofornitura.c.id_fornitura==Fornitura.id)),
+            primaryjoin = (t_riga_movimento_fornitura.c.id_fornitura==Fornitura.id)),
         "rigamovacq": relation(RigaMovimento,
-            primaryjoin = (rigamovimentofornitura.c.id_riga_movimento_acquisto==t_riga_movimento.c.id), backref="rmfac"),
+            primaryjoin = (t_riga_movimento_fornitura.c.id_riga_movimento_acquisto==t_riga_movimento.c.id), backref="rmfac"),
         "rigamovven": relation(RigaMovimento,
-            primaryjoin = (rigamovimentofornitura.c.id_riga_movimento_vendita==t_riga_movimento.c.id), backref="rmfve"),
+            primaryjoin = (t_riga_movimento_fornitura.c.id_riga_movimento_vendita==t_riga_movimento.c.id), backref="rmfve"),
     },
-    order_by=rigamovimentofornitura.c.id)
+    order_by=t_riga_movimento_fornitura.c.id)

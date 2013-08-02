@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2013 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -23,13 +23,19 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
-from promogest.dao.RigaMovimento import RigaMovimento, t_riga_movimento
-from Dao import Dao
 
-numerolottotemp = Table('numero_lotto_temp',
+try:
+    t_numero_lotto_temp = Table('numero_lotto_temp',
                 params['metadata'],
                 schema = params['schema'],
                 autoload=True)
+except:
+    from data.numerolottotemp import t_numero_lotto_temp
+
+from Dao import Dao
+from promogest.dao.RigaMovimento import RigaMovimento, t_riga_movimento
+
+
 
 
 class NumeroLottoTemp(Dao):
@@ -39,15 +45,15 @@ class NumeroLottoTemp(Dao):
 
     def filter_values(self, k, v):
         if k == "lottoTemp":
-            dic = {k: numerolottotemp.c.lotto_temp==v}
+            dic = {k: t_numero_lotto_temp.c.lotto_temp==v}
         elif k == "idRigaMovimentoVenditaTemp":
-            dic = {k: numerolottotemp.c.id_riga_movimento_vendita_temp==v}
+            dic = {k: t_numero_lotto_temp.c.id_riga_movimento_vendita_temp==v}
         return dic[k]
 
-std_mapper = mapper(NumeroLottoTemp, numerolottotemp,
+std_mapper = mapper(NumeroLottoTemp, t_numero_lotto_temp,
     properties={
         "rigamovventemp": relation(RigaMovimento,
-            primaryjoin=(numerolottotemp.c.id_riga_movimento_vendita_temp==t_riga_movimento.c.id),
+            primaryjoin=(t_numero_lotto_temp.c.id_riga_movimento_vendita_temp==t_riga_movimento.c.id),
             backref="NLT"),
     },
-    order_by=numerolottotemp.c.id)
+    order_by=t_numero_lotto_temp.c.id)

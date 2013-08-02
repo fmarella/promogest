@@ -30,8 +30,8 @@ import datetime
 import random
 import webbrowser
 from promogest.ui.SimpleGladeApp import SimpleGladeApp
-from promogest.dao.User import User
-from promogest.dao.Azienda import Azienda
+from promogest.dao.User import t_utente, User
+from promogest.dao.Azienda import t_azienda, Azienda
 #from GtkExceptionHandler import GtkExceptionHandler
 from promogest.ui.UpdateDialog import UpdateDialog
 from promogest.lib.utils import leggiRevisioni, hasAction, checkInstallation, \

@@ -25,9 +25,11 @@ from sqlalchemy.orm import *
 from promogest.Environment import *
 from promogest.dao.Dao import Dao
 
-ritenutaaccontoriga = Table('ritenuta_acconto_riga', params['metadata'],
-                                    schema = params['schema'], autoload=True)
-
+try:
+    t_ritenuta_acconto_riga = Table('ritenuta_acconto_riga', params['metadata'],
+                                        schema = params['schema'], autoload=True)
+except:
+    from data.rigaRitenutaAcconto import t_ritenuta_acconto_riga
 
 
 class RigaRitenutaAcconto(Dao):
@@ -38,10 +40,10 @@ class RigaRitenutaAcconto(Dao):
 
     def filter_values(self,k,v):
         if k == 'id':
-            dic= {k:ritenutaaccontoriga.c.id ==v}
+            dic= {k:t_ritenuta_acconto_riga.c.id ==v}
         elif k == 'idRiga':
-            dic= {k:ritenutaaccontoriga.c.id_riga ==v}
+            dic= {k:t_ritenuta_acconto_riga.c.id_riga ==v}
         return  dic[k]
 
-std_mapper = mapper(RigaRitenutaAcconto, ritenutaaccontoriga,properties={
-                    }, order_by=ritenutaaccontoriga.c.id)
+std_mapper = mapper(RigaRitenutaAcconto, t_ritenuta_acconto_riga,properties={
+                    }, order_by=t_ritenuta_acconto_riga.c.id)

@@ -24,11 +24,13 @@ from sqlalchemy.orm import *
 from promogest.Environment import *
 from promogest.dao.Dao import Dao
 
-
-utenteimmagine=Table('utente_immagine',
+try:
+    t_utente_immagine=Table('utente_immagine',
                 params['metadata'],
                 schema = params['schema'],
                 autoload=True)
+except:
+    from data.utenteImmagine import t_utente_immagine
 
 
 class UtenteImmagine(Dao):
@@ -39,10 +41,10 @@ class UtenteImmagine(Dao):
 
     def filter_values(self,k,v):
         if k == 'id_immagine':
-            dic = {k:utenteimmagine.c.id_immagine == v}
+            dic = {k:t_utente_immagine.c.id_immagine == v}
         elif k == 'idUtente':
-            dic = {k:utenteimmagine.c.id_utente == v}
+            dic = {k:t_utente_immagine.c.id_utente == v}
         return  dic[k]
 
-std_mapper = mapper(UtenteImmagine, utenteimmagine, properties={
-                }, order_by=utenteimmagine.c.id_immagine)
+std_mapper = mapper(UtenteImmagine, t_utente_immagine, properties={
+                }, order_by=t_utente_immagine.c.id_immagine)

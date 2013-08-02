@@ -24,7 +24,6 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
-from promogest.dao.Dao import Dao
 
 try:
     t_testata_scontrino=Table('testata_scontrino',
@@ -35,6 +34,7 @@ except:
     #pass
     from data.testataScontrino import t_testata_scontrino
 
+from promogest.dao.Dao import Dao
 from promogest.dao.TestataMovimento import TestataMovimento
 from promogest.dao.CCardType import CCardType
 from promogest.dao.Magazzino import Magazzino

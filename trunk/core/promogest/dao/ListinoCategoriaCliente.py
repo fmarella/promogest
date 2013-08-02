@@ -23,8 +23,17 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
-from Dao import Dao
-from CategoriaCliente import CategoriaCliente
+
+try:
+    t_listino_categoria_cliente=Table('listino_categoria_cliente',
+            params['metadata'],
+            schema = params['schema'],
+            autoload=True)
+except:
+    from data.listinoCategoriaCliente import t_listino_categoria_cliente
+
+from promogest.dao.Dao import Dao
+from promogest.dao.CategoriaCliente import CategoriaCliente
 
 class ListinoCategoriaCliente(Dao):
 
@@ -37,22 +46,13 @@ class ListinoCategoriaCliente(Dao):
     categoria_cliente = property(_categoriaCliente)
 
     def filter_values(self,k,v):
-        dic= {  'idListino' : listino_categoria_cliente.c.id_listino == v}
+        dic= {  'idListino' : t_listino_categoria_cliente.c.id_listino == v}
         return  dic[k]
 
-listino_categoria_cliente=Table('listino_categoria_cliente',
-            params['metadata'],
-            schema = params['schema'],
-            autoload=True)
-
-std_mapper = mapper(ListinoCategoriaCliente, listino_categoria_cliente, properties={
+std_mapper = mapper(ListinoCategoriaCliente, t_listino_categoria_cliente, properties={
         #"listino" : relation(Listino, backref="listino_categoria_cliente"),
         #"catecli":relation(CategoriaCliente,primaryjoin=
                         #(listino_categoria_cliente.c.id_categoria_cliente==CategoriaCliente.id)),
         "catecli" : relation(CategoriaCliente, backref="listino_categoria_cliente")
         },
-        order_by=listino_categoria_cliente.c.id_listino)
-
-
-
-
+        order_by=t_listino_categoria_cliente.c.id_listino)

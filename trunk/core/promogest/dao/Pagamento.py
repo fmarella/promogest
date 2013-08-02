@@ -24,6 +24,16 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
+
+try:
+    t_pagamento = Table('pagamento',
+                  params['metadata'],
+                  schema=params['schema'],
+                  autoload=True)
+except:
+    from data.pagamento import t_pagamento
+
+
 from Dao import Dao
 from migrate import *
 from promogest.dao.DaoUtils import get_columns
@@ -68,24 +78,19 @@ class Pagamento(Dao):
         else:
             return 0
 
-t_pagamento = Table('pagamento',
-                  params['metadata'],
-                  schema=params['schema'],
-                  autoload=True)
+#colonne = get_columns(t_pagamento)
 
-colonne = get_columns(t_pagamento)
+#if 'tipo' not in colonne:
+    #col = Column('tipo', String(20), default='banca')
+    #col.create(t_pagamento, populate_default=True)
 
-if 'tipo' not in colonne:
-    col = Column('tipo', String(20), default='banca')
-    col.create(t_pagamento, populate_default=True)
+#if 'spese' not in colonne:
+    #col = Column('spese', Numeric(16, 4), nullable=True)
+    #col.create(t_pagamento, populate_default=True)
 
-if 'spese' not in colonne:
-    col = Column('spese', Numeric(16, 4), nullable=True)
-    col.create(t_pagamento, populate_default=True)
-
-if 'id_aliquota_iva' not in colonne:
-    col = Column('id_aliquota_iva', Integer, nullable=True)
-    col.create(t_pagamento, populate_default=True)
+#if 'id_aliquota_iva' not in colonne:
+    #col = Column('id_aliquota_iva', Integer, nullable=True)
+    #col.create(t_pagamento, populate_default=True)
 
 std_mapper = mapper(Pagamento,
                     t_pagamento,

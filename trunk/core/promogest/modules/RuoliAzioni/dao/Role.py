@@ -30,6 +30,8 @@ try:
     t_role=Table('role',params['metadata'],schema = params['mainSchema'],autoload=True)
 except:
     from data.role import t_role
+    from data.action import t_action
+    from data.roleAction import t_roleaction
 
 class Role(Dao):
     """

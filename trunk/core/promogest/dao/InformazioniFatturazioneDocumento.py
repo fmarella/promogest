@@ -23,26 +23,15 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
-from Dao import Dao
+from promogest.dao.Dao import Dao
 
 try:
-    t_informazionifatturazionedocumento = Table('informazioni_fatturazione_documento',
+    t_informazioni_fatturazione_documento = Table('informazioni_fatturazione_documento',
                 params['metadata'],
                 schema = params['schema'],
                 autoload=True)
 except:
-    azTable = Table('testata_documento', params['metadata'], autoload=True, schema=params['schema'])
-    if params["tipo_db"] == "sqlite":
-        testata_documentoFK = 'testata_documento.id'
-    else:
-        testata_documentoFK =params['schema']+'.testata_documento.id'
-
-    t_informazionifatturazionedocumento = Table('informazioni_fatturazione_documento', params['metadata'],
-            Column('id_fattura',Integer,ForeignKey(testata_documentoFK),primary_key=True),
-            Column('id_ddt',Integer,ForeignKey(testata_documentoFK,),primary_key=True,nullable=False),
-            schema=params["schema"]
-            )
-    t_informazionifatturazionedocumento.create(checkfirst=True)
+    from data.informazioniFatturazioneDocumento import t_informazioni_fatturazione_documento
 
 class InformazioniFatturazioneDocumento(Dao):
 
@@ -51,11 +40,11 @@ class InformazioniFatturazioneDocumento(Dao):
 
     def filter_values(self,k,v):
         if k == "id_fattura":
-            dic= {k:t_informazionifatturazionedocumento.c.id_fattura ==v}
+            dic= {k:t_informazioni_fatturazione_documento.c.id_fattura ==v}
         elif k == 'id_ddt':
-            dic = {k:t_informazionifatturazionedocumento.c.id_ddt==v}
+            dic = {k:t_informazioni_fatturazione_documento.c.id_ddt==v}
         return  dic[k]
 
 
-std_mapper = mapper(InformazioniFatturazioneDocumento, t_informazionifatturazionedocumento,properties={
-        }, order_by=t_informazionifatturazionedocumento.c.id_fattura)
+std_mapper = mapper(InformazioniFatturazioneDocumento, t_informazioni_fatturazione_documento,properties={
+        }, order_by=t_informazioni_fatturazione_documento.c.id_fattura)

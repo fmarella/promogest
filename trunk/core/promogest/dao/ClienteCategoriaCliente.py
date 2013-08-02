@@ -23,8 +23,6 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
-from promogest.dao.Dao import Dao
-from promogest.dao.CategoriaCliente import CategoriaCliente
 
 try:
     t_cliente_categoria_cliente=Table('cliente_categoria_cliente',
@@ -34,7 +32,8 @@ try:
 except:
     from data.clienteCategoriaCliente import t_cliente_categoria_cliente
 
-
+from promogest.dao.Dao import Dao
+from promogest.dao.CategoriaCliente import CategoriaCliente
 
 class ClienteCategoriaCliente(Dao):
 

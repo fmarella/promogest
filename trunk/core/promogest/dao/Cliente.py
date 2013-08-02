@@ -24,6 +24,15 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import params, conf, session, delete_pickle
+
+try:
+    t_cliente = Table('cliente',
+              params['metadata'],
+              schema=params['schema'],
+              autoload=True)
+except:
+    from data.cliente import t_cliente
+
 from promogest.dao.Dao import Dao
 from ClienteCategoriaCliente import ClienteCategoriaCliente
 from promogest.dao.PersonaGiuridica import t_persona_giuridica
@@ -34,13 +43,7 @@ from promogest.dao.VariazioneListino import VariazioneListino
 from promogest.dao.ClienteVariazioneListino import t_cliente_variazione_listino
 from promogest.lib.utils import posso
 
-try:
-    t_cliente = Table('cliente',
-              params['metadata'],
-              schema=params['schema'],
-              autoload=True)
-except:
-    from data.cliente import t_cliente
+
 
 def getNuovoCodiceCliente():
     """

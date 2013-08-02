@@ -20,7 +20,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-
+import datetime
 from sqlalchemy import *
 from promogest.Environment import *
 
@@ -32,7 +32,7 @@ t_testata_documento = Table('testata_documento', params["metadata"],
     Column('registro_numerazione', String(50), nullable=False),
     Column('note_interne', Text, nullable=True),
     Column('note_pie_pagina', String(800), nullable=True),
-    Column('data_documento',DateTime,ColumnDefault(datetime.datetime.now), nullable=True),
+    Column('data_documento',DateTime, nullable=True),
     Column('data_inserimento',DateTime,ColumnDefault(datetime.datetime.now), nullable=True),
     Column('protocollo', String(100), nullable=True),
     Column('causale_trasporto', String(100), nullable=True),

@@ -24,7 +24,6 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from migrate import *
 from promogest.Environment import *
-from Dao import Dao
 
 try:
     t_testata_movimento = Table('testata_movimento',
@@ -34,7 +33,7 @@ try:
 except:
     from data.testataMovimento import t_testata_movimento
 
-
+from Dao import Dao
 from DaoUtils import *
 from promogest.dao.Articolo import Articolo
 from promogest.dao.Multiplo import Multiplo

@@ -25,7 +25,10 @@ from sqlalchemy.orm import *
 from promogest.Environment import *
 from promogest.dao.Dao import Dao
 
-t_stadiocommessa=Table('stadio_commessa', params['metadata'],schema = params['schema'],autoload=True)
+try:
+    t_stadio_commessa=Table('stadio_commessa', params['metadata'],schema = params['schema'],autoload=True)
+except:
+    from data.stadio_commessa import t_stadio_commessa
 
 class StadioCommessa(Dao):
 
@@ -34,8 +37,8 @@ class StadioCommessa(Dao):
 
     def filter_values(self,k,v):
         dic= {
-            'denominazione':t_stadiocommessa.c.denominazione == v,
+            'denominazione':t_stadio_commessa.c.denominazione == v,
                 }
         return  dic[k]
 
-std_mapper = mapper(StadioCommessa, t_stadiocommessa,order_by=t_stadiocommessa.c.denominazione)
+std_mapper = mapper(StadioCommessa, t_stadio_commessa,order_by=t_stadio_commessa.c.denominazione)

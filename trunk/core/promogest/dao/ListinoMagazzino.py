@@ -23,8 +23,6 @@
 from sqlalchemy import Table
 from sqlalchemy.orm import mapper, relation
 from promogest.Environment import params
-from promogest.dao.Dao import Dao
-from promogest.dao.Magazzino import Magazzino
 
 try:
     t_listino_magazzino = Table('listino_magazzino',
@@ -33,6 +31,9 @@ try:
             autoload=True)
 except:
     from data.listinoMagazzino import t_listino_magazzino
+
+from promogest.dao.Dao import Dao
+from promogest.dao.Magazzino import Magazzino
 
 class ListinoMagazzino(Dao):
 

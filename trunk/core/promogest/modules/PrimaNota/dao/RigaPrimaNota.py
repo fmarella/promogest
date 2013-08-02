@@ -24,25 +24,32 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
+
+try:
+    t_riga_prima_nota = Table('riga_prima_nota',
+                            params['metadata'],
+                            schema=params['schema'],
+                            autoload=True)
+except:
+    from data.rigaPrimaNota import t_riga_prima_nota
+
+
 from promogest.dao.Dao import Dao
 from promogest.dao.Banca import Banca
 from migrate import *
 
 
-rigaprimanota = Table('riga_prima_nota',
-    params['metadata'],
-    schema=params['schema'],
-    autoload=True)
 
-if "id_banca" not in [c.name for c in rigaprimanota.columns]:
-    col = Column('id_banca', Integer,
-#            ForeignKey(bancaFK, onupdate="CASCADE", ondelete="RESTRICT"),
-        nullable=True)
-    col.create(rigaprimanota)
 
-if "note_primanota" not in [c.name for c in rigaprimanota.columns]:
-    col = Column('note_primanota', Text, nullable=True)
-    col.create(rigaprimanota)
+#if "id_banca" not in [c.name for c in t_riga_prima_nota.columns]:
+    #col = Column('id_banca', Integer,
+##            ForeignKey(bancaFK, onupdate="CASCADE", ondelete="RESTRICT"),
+        #nullable=True)
+    #col.create(t_riga_prima_nota)
+
+#if "note_primanota" not in [c.name for c in t_riga_prima_nota.columns]:
+    #col = Column('note_primanota', Text, nullable=True)
+    #col.create(t_riga_prima_nota)
 
 class RigaPrimaNota(Dao):
 
@@ -51,15 +58,15 @@ class RigaPrimaNota(Dao):
 
     def filter_values(self, k, v):
         if k == "id":
-            dic = {k: rigaprimanota.c.id == v}
+            dic = {k: t_riga_prima_nota.c.id == v}
         elif k == 'idTestataDocumento':
-            dic = {k: rigaprimanota.c.id_testata_documento == v}
+            dic = {k: t_riga_prima_nota.c.id_testata_documento == v}
         elif k == 'segno':
-            dic = {k: rigaprimanota.c.segno == v}
+            dic = {k: t_riga_prima_nota.c.segno == v}
         elif k == 'tipo':
-            dic = {k: rigaprimanota.c.tipo == v}
+            dic = {k: t_riga_prima_nota.c.tipo == v}
         elif k == 'idTestataPrimaNota':
-            dic = {k: rigaprimanota.c.id_testata_prima_nota == v}
+            dic = {k: t_riga_prima_nota.c.id_testata_prima_nota == v}
         return dic[k]
 
     @property
@@ -71,6 +78,6 @@ class RigaPrimaNota(Dao):
             return ''
 
 std_mapper = mapper(RigaPrimaNota,
-                    rigaprimanota,
+                    t_riga_prima_nota,
                     properties={},
-                    order_by=rigaprimanota.c.id)
+                    order_by=t_riga_prima_nota.c.id)

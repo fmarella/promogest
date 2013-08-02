@@ -24,6 +24,17 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
+
+try:
+    t_sconto_fornitura = Table('sconto_fornitura',
+                           params['metadata'],
+                           schema=params['schema'],
+                           autoload=True)
+except:
+    from data.sconto import t_sconto
+    from data.scontoFornitura import t_sconto_fornitura
+
+
 from promogest.dao.Dao import Dao
 from promogest.dao.Sconto import t_sconto
 
@@ -37,10 +48,7 @@ class ScontoFornitura(Dao):
         dic = {'idFornitura': t_sconto_fornitura.c.id_fornitura==v}
         return dic[k]
 
-t_sconto_fornitura = Table('sconto_fornitura',
-                           params['metadata'],
-                           schema=params['schema'],
-                           autoload=True)
+
 
 std_mapper = mapper(ScontoFornitura,
     join(t_sconto, t_sconto_fornitura),

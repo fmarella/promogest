@@ -322,9 +322,9 @@ def usePickleToMeta():
         print "USO META NORMALE"
         meta = MetaData(engine)
     return meta
-#meta = usePickleToMeta()
+meta = usePickleToMeta()
 
-meta = MetaData(engine)
+#meta = MetaData(engine)
 preEnv.azienda = azienda
 
 if tipo_eng=="sqlite" or tipo_eng=="mysql":
@@ -342,6 +342,7 @@ params = {'engine': engine,
         'metadata': meta,
         'session': session,
         "tipo_db": tipodb,
+        "nomedb": database,
         'defaultLimit': 5,
         'bccaddr': ["assistenza@promotux.it"],
         'objects': ["Informazioni Tecniche",

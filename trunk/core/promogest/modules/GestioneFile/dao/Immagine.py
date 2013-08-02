@@ -26,11 +26,13 @@ from sqlalchemy.orm import *
 from promogest.Environment import *
 from promogest.dao.Dao import Dao
 
-
-immagine =Table('immagine',
+try:
+    t_immagine =Table('immagine',
             params['metadata'],
             schema = params['schema'],
             autoload=True)
+except:
+    from data.immagine import t_immagine
 
 class ImageFile(Dao):
 
@@ -38,8 +40,8 @@ class ImageFile(Dao):
         Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):
-        dic= { 'denominazione' : immagine.c.denominazione == v }
+        dic= { 'denominazione' : t_immagine.c.denominazione == v }
         return  dic[k]
 
 
-std_mapper = mapper(ImageFile, immagine, order_by = immagine.c.id)
+std_mapper = mapper(ImageFile, t_immagine, order_by = t_immagine.c.id)

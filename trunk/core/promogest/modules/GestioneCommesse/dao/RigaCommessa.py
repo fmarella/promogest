@@ -26,11 +26,13 @@ from promogest.Environment import *
 from promogest.dao.Dao import Dao
 from migrate import *
 
-
-t_rigacommessa=Table('riga_commessa',
-                params['metadata'],
-                schema = params['schema'],
-                autoload=True)
+try:
+    t_riga_commessa=Table('riga_commessa',
+                    params['metadata'],
+                    schema = params['schema'],
+                    autoload=True)
+except:
+    from data.rigaCommessa import t_riga_commessa
 
 class RigaCommessa(Dao):
 
@@ -39,17 +41,17 @@ class RigaCommessa(Dao):
 
     def filter_values(self,k,v):
         if k == "id":
-            dic= {k:t_rigacommessa.c.id ==v}
+            dic= {k:t_riga_commessa.c.id ==v}
         elif k == 'idTestataCommessa':
-            dic = {k:t_rigacommessa.c.id_testata_commessa==v}
+            dic = {k:t_riga_commessa.c.id_testata_commessa==v}
 #        elif k == 'numero':
 #            dic = {k:rigacommessa.c.numero==v}
         elif k == 'daoClass':
-            dic = {k:t_rigacommessa.c.dao_class==v}
+            dic = {k:t_riga_commessa.c.dao_class==v}
         elif k == 'idDao':
-            dic = {k:t_rigacommessa.c.id_dao==v}
+            dic = {k:t_riga_commessa.c.id_dao==v}
         return  dic[k]
 
 
-std_mapper = mapper(RigaCommessa,t_rigacommessa,
-            order_by=t_rigacommessa.c.id)
+std_mapper = mapper(RigaCommessa,t_riga_commessa,
+            order_by=t_riga_commessa.c.id)

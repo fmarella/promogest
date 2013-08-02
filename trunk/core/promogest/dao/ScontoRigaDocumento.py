@@ -23,7 +23,18 @@
 from sqlalchemy import Table
 from sqlalchemy.orm import mapper, join
 from promogest.Environment import *
+
+try:
+    t_sconto_riga_documento=Table('sconto_riga_documento',
+                        params['metadata'],
+                        schema = params['schema'],
+                        autoload=True)
+except:
+    from data.rigaDocumento import t_riga_documento
+    from data.scontoRigaDocumento import t_sconto_riga_documento
+
 from Dao import Dao
+from promogest.dao.Sconto import t_sconto
 
 class ScontoRigaDocumento(Dao):
 
@@ -31,22 +42,11 @@ class ScontoRigaDocumento(Dao):
         Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):
-        dic= {'id':sconto_riga_documento.c.id ==v,
-            'idRigaDocumento':sconto_riga_documento.c.id_riga_documento==v,}
+        dic= {'id':t_sconto_riga_documento.c.id ==v,
+            'idRigaDocumento':t_sconto_riga_documento.c.id_riga_documento==v,}
         return  dic[k]
 
-sconto_riga_documento=Table('sconto_riga_documento',
-                        params['metadata'],
-                        schema = params['schema'],
-                        autoload=True)
 
-sconto=Table('sconto',
-            params['metadata'],
-            schema = params['schema'],
-            autoload=True)
-
-j = join(sconto, sconto_riga_documento)
-
-std_mapper = mapper(ScontoRigaDocumento,j, properties={
-    'id':[sconto.c.id, sconto_riga_documento.c.id],
-    }, order_by=sconto_riga_documento.c.id)
+std_mapper = mapper(ScontoRigaDocumento,join(t_sconto, t_sconto_riga_documento), properties={
+    'id':[t_sconto.c.id, t_sconto_riga_documento.c.id],
+    }, order_by=t_sconto_riga_documento.c.id)
