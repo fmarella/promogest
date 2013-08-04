@@ -21,7 +21,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-import promogest.lib.PyPDF2
+from  promogest.lib.PyPDF2 import *
 import os
 import glob
 import tempfile
@@ -114,7 +114,7 @@ def to_pdf(daos, output, anag=None):
             f.write(_to_pdf(dao))
         i += 1
 
-    merger = PyPDF2.PdfFileMerger()
+    merger = PdfFileMerger()
     filesPdf = glob.glob(os.path.join(PDF_WORKING_DIR, '*.pdf'))
     filesPdf.sort()
     for infile in filesPdf:
