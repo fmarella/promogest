@@ -38,6 +38,7 @@ shop = preEnv.shop
 
 if web:
     main_conf = preEnv.main_conf_force
+    preEnv.conf = main_conf
 
 from promogest.lib.config import Config
 if not web:
@@ -188,6 +189,7 @@ def putMainconf():
         main_conf = Config(configFile)
         return main_conf
 
+
 if preEnv.conf is None:
     main_conf = putMainconf()
 else:
@@ -195,9 +197,21 @@ else:
 
 windowsrc = startdir() + 'windowsrc.xml'
 
-azienda = preEnv.aziendaforce or main_conf.Database.azienda
-tipodb = preEnv.tipodbforce or main_conf.Database.tipodb
-host = preEnv.hostdbforce or main_conf.Database.host
+
+if preEnv.aziendaforce:
+    azienda = preEnv.aziendaforce
+else:
+    azienda = main_conf.Database.azienda
+
+if preEnv.tipodbforce:
+    tipodb = preEnv.tipodbforce
+else:
+    tipodb = main_conf.Database.tipodb
+
+if preEnv.hostdbforce:
+    host = preEnv.hostdbforce
+else:
+    host = main_conf.Database.host
 
 try:
     nobrand = bool(main_conf.Database.nobrand)
@@ -217,7 +231,12 @@ if tipodb == "sqlite" and not (os.path.exists(startdir() + "db")) and not tipodb
     else:
         print("ERRORE NON RIESCO A CREARE IL DB")
 
-database = preEnv.dbforce or main_conf.Database.database
+
+if preEnv.dbforce:
+    database = preEnv.dbforce
+else:
+    database = main_conf.Database.database
+
 port = main_conf.Database.port
 
 user = main_conf.Database.user
@@ -235,6 +254,7 @@ userdata = ["", "", "", user]
 
 def handleEngine():
     engine = None
+    print "TIPO DBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB",tipodb
     if tipodb == "sqlite":
         azienda = None
         mainSchema = None
@@ -251,6 +271,7 @@ def handleEngine():
         else:
             engine = create_engine("sqlite:///" + startdir() + "db", listeners=[SetTextFactory()], proxy=MyProxy())
     elif tipodb =="postgresql":
+        print "ED ECCOI QII"
         from promogest.EnvUtils import *
         mainSchema = "promogest2"
         engine = pg8000()
@@ -261,6 +282,7 @@ def handleEngine():
         if not engine:
             engine = psycopg2old()
     elif tipodb =="mysql":
+        from sqlalchemy.pool import NullPool
         if preEnv.buildSchema:
             database = preEnv.buildSchema
             main_conf.Database.database = database
@@ -268,8 +290,8 @@ def handleEngine():
             main_conf.save()
             print "RICORDATI DI CREARE UN  DB CHE SI CHIAMI", preEnv.buildSchema
         try:
-            engine = create_engine("mysql+mysqlconnector://"+user+":"+password+"@"+host+":"+preEnv.port+"/"+preEnv.database+"?charset=utf8",proxy=MyProxy())
-            connection = engine.connect()
+            engine = create_engine("mysql+mysqlconnector://"+user+":"+password+"@"+host+":"+preEnv.port+"/"+preEnv.database+"?charset=utf8", poolclass=NullPool)
+            #connection = engine.connect()
         except Exception as e:
             print "NON SONO RIUSCITO A CREARE L'ENGINE, NOME DEL DB NON PRESENTE? ERRORE:",e
 
@@ -283,10 +305,15 @@ def handleEngine():
 
 engine = handleEngine()
 tipo_eng = engine.name
-Session = sessionmaker(bind=engine)
-session = Session()
-#else:
-    #session = scoped_session(lambda: create_session(engine, autocommit=False))
+#session = None
+if not web:
+    Session = sessionmaker(bind=engine)
+    session = Session()
+else:
+    #if not session:
+        #print "SESSIONNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN", session
+    print " USI QUESTA SEISSIONE SCOPED"
+    session = scoped_session(lambda: create_session(engine, autocommit=False))
 
 # Determiniamo il nome del file pickle in base all'azienda e alla ver python.
 #if azienda:

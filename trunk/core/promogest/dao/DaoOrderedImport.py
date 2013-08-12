@@ -150,5 +150,6 @@ def orderedImportWeb():
 #try:
     from promogest.dao.NewsCategory import t_news_category
     from promogest.dao.News import t_news #v
-
+    from promogest.dao.StaticPages import t_static_page
+    from promogest.dao.Faq import t_faq
     print "CARICAMENTO/INSERIMENTO TABELLE WEB  ANDATO BENE"

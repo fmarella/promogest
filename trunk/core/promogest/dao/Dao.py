@@ -246,6 +246,12 @@ class Dao(object):
                 v = str(v).lower()
 #            elif type(v) == datetime.date:
 #                v = v.strftime("%d-%m-%Y")
+            if type(v) == bool and Environment.tipo_eng == "postgresql":
+                if not v:
+                    v = 0
+                else:
+                    v = 1
+
             d[k] = str(v)
         return d
 

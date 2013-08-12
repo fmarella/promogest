@@ -604,6 +604,5 @@ if not ("data_installazione", "General") in allkey:
     kbb.date = datetime.datetime.now()
     session.add(kbb)
     a = True
-
 if a:
     session.commit()

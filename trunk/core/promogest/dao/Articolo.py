@@ -80,14 +80,16 @@ class Articolo(Dao):
 
     @property
     def codice_a_barre(self):
+        codice = ""
         if self.cod_barre:
             if len(list(self.cod_barre)) >1:
                 for a in self.cod_barre:
                     if a.primario:
-                        return a.codice or ""
-                    else:
-                        return self.cod_barre[0].codice or ""
+                        codice = a.codice  or ""
+                        return codice
             elif len(list(self.cod_barre)) ==1:
+                return self.cod_barre[0].codice or ""
+            if not codice and len(list(self.cod_barre)) >1:
                 return self.cod_barre[0].codice or ""
             else:
                 return ""
