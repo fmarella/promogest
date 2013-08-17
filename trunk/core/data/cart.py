@@ -21,42 +21,18 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>."
 
 from sqlalchemy import *
+from promogest.Environment import *
 
-class CartDb(object):
-
-    def __init__(self, schema = None,mainSchema=None, metadata=None, session=None,debug=False):
-        self.metadata = metadata
-        self.session_sl = session
-        self.schema = schema
-        self.mainSchema = mainSchema
-        self.debug = debug
-
-    def create(self):
-        pagamentoTable = Table('pagamento',self.metadata, autoload=True, schema=self.schema)
-        articleTable = Table('articolo',self.metadata, autoload=True, schema=self.schema)
-        userTable = Table('utente',self.metadata, autoload=True, schema=self.mainSchema)
-
-        if self.schema:
-            articoloFK = self.schema+'.articolo.id'
-            pagamentoFK = self.schema+'.pagamento.id'
-        else:
-            articoloFK = 'articolo.id'
-            pagamentoFK = 'pagamento.id'
-
-        if self.mainSchema:
-            utenteFK = self.mainSchema+'.utente.id'
-        else:
-            utenteFK = 'utente.id'
-
-        cartTable = Table('cart', self.metadata,
-                Column('id', Integer, primary_key=True),
-                Column('id_articolo',Integer, ForeignKey(articoloFK)),
-                Column('quantita', Integer, nullable=True),
-                Column('id_utente', Integer, ForeignKey(utenteFK)),
-                Column('data_inserimento',DateTime, nullable=True),
-                Column('data_conferma',DateTime, nullable=True),
-                Column('sessionid',String(50), nullable=True),
-                Column('id_pagamento', Integer, ForeignKey(pagamentoFK)),
-                schema=self.schema
-                )
-        cartTable.create(checkfirst=True)
+t_cart = Table('cart', params['metadata'],
+        Column('id', Integer, primary_key=True),
+        Column('id_articolo',Integer, ForeignKey(fk_prefix+'articolo.id')),
+        Column('quantita', Integer, nullable=True),
+        Column('id_utente', Integer, ForeignKey(fk_prefix_main+'utente.id')),
+        Column('data_inserimento',DateTime, nullable=True),
+        Column('data_conferma',DateTime, nullable=True),
+        Column('sessionid',String(50), nullable=True),
+        Column('id_pagamento', Integer, ForeignKey(fk_prefix+'pagamento.id')),
+        Column('id_cliente', Integer),
+        schema=params["schema"]
+        )
+t_cart.create(checkfirst=True)

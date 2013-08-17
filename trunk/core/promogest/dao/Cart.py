@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010, 2011 by Promotux
+#    Copyright (C) 2005-2013 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -26,45 +26,12 @@ from sqlalchemy.orm import *
 from promogest.lib.migrate import *
 from promogest.Environment import *
 from promogest.dao.Dao import Dao
-from promogest.dao.User import User, user
-
-#userTable = Table('utente', params['metadata'], autoload=True, schema=params['mainSchema'])
-pagamentoTable = Table('pagamento',params['metadata'], autoload=True, schema=params['schema'])
-articleTable = Table('articolo',params['metadata'], autoload=True, schema=params['schema'])
-#clienteTable = Table('cliente',params['metadata'], autoload=True, schema=params['schema'])
-
+from promogest.dao.User import User, t_utente
 
 try:
-    cart=Table('cart', params['metadata'],schema = params['schema'],autoload=True)
-
-    if 'id_cliente' not in [c.name for c in cart.columns]:
-        col = Column('id_cliente', Integer, nullable=True)
-        col.create(cart)
-
-
+    t_cart=Table('cart', params['metadata'],schema = params['schema'],autoload=True)
 except:
-    if params["tipo_db"] == "sqlite":
-        utenteFK = 'utente.id'
-        pagamentoFK = 'pagamento.id'
-        articleFK = 'articolo.id'
-    else:
-        utenteFK = params['mainSchema']+'.utente.id'
-        pagamentoFK = params["schema"] +'.pagamento.id'
-        articleFK = params["schema"] +'.articolo.id'
-
-    cart = Table('cart', params['metadata'],
-            Column('id', Integer, primary_key=True),
-            Column('id_articolo',Integer, ForeignKey(self.schema+'.articolo.id')),
-            Column('quantita', Integer, nullable=True),
-            Column('id_utente', Integer, ForeignKey(self.mainSchema+'.utente.id')),
-            Column('data_inserimento',DateTime, nullable=True),
-            Column('data_conferma',DateTime, nullable=True),
-            Column('sessionid',String(50), nullable=True),
-            Column('id_pagamento', Integer, ForeignKey(self.schema+'.pagamento.id')),
-            Column('id_cliente', Integer),
-            schema=self.schema
-            )
-    cart.create(checkfirst=True)
+    from data.cart import t_cart
 
 class Cart(Dao):
 
@@ -74,18 +41,18 @@ class Cart(Dao):
 
     def filter_values(self, k,v):
         if k == "idArticolo":
-            dic= { k : cart.c.id_articolo==v}
+            dic= { k : t_cart.c.id_articolo==v}
         elif k == "sessionid":
-            dic= { k : cart.c.sessionid == v}
+            dic= { k : t_cart.c.sessionid == v}
         elif k == "idUser":
-            dic= { k : cart.c.id_user == v}
+            dic= { k : t_cart.c.id_user == v}
         elif k == "idCliente":
-            dic= { k : cart.c.id_cliente == v}
+            dic= { k : t_cart.c.id_cliente == v}
         return  dic[k]
 
 
-std_mapper = mapper(Cart, cart, properties={
+std_mapper = mapper(Cart, t_cart, properties={
             'user' : relation(User,primaryjoin=
-                    cart.c.id_utente==user.c.id,
-                    foreign_keys=[user.c.id], backref="cart"),
-                }, order_by=cart.c.id)
+                    t_cart.c.id_utente==t_utente.c.id,
+                    foreign_keys=[t_utente.c.id], backref="cart"),
+                }, order_by=t_cart.c.id)

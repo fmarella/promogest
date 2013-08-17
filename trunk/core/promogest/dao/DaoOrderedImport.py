@@ -152,4 +152,5 @@ def orderedImportWeb():
     from promogest.dao.News import t_news #v
     from promogest.dao.StaticPages import t_static_page
     from promogest.dao.Faq import t_faq
+    from promogest.dao.Cart import t_cart
     print "CARICAMENTO/INSERIMENTO TABELLE WEB  ANDATO BENE"

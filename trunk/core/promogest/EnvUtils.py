@@ -64,6 +64,7 @@ class MyProxy(ConnectionProxy):
 def connect():
     import psycopg2
     from promogest.lib.utils import messageInfo
+
     a=None
     try:
         from promogest.preEnv import *
@@ -83,10 +84,12 @@ def connect():
 
 def psycopg2new():
     try:
+        from sqlalchemy.pool import NullPool
         engine = create_engine('postgresql://', creator=connect,
                 convert_unicode=True,
                 encoding='utf-8',
-                proxy=MyProxy())
+                proxy=MyProxy(),
+                poolclass=NullPool)
         return engine
     except:
         try:

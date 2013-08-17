@@ -40,94 +40,112 @@ from decimal import Decimal
 
 class TestTestataDocumentoTotali(unittest.TestCase):
 
-    def test_doc1(self):
-        """controllo totali per il documento 23701"""
-        doc = session.query(TestataDocumento).filter_by(operazione="Fattura differita vendita", id=23701).one()
-        doc.totali
-        assert doc._totaleImponibile == Decimal('88.52')
-        assert doc._totaleImposta == Decimal('8.85')
-        assert doc._totaleScontato == Decimal('97.37')
-        for info_iva in doc._castellettoIva:
-            if info_iva['aliquota'] == Decimal(10):
-                assert info_iva['imponibile'] == Decimal("88.52")
-                assert info_iva['imposta'] == Decimal("8.85")
-                assert info_iva['totale'] == Decimal("97.37")
+    #def test_doc1(self):
+        #"""controllo totali per il documento 23701"""
+        #doc = session.query(TestataDocumento).filter_by(operazione="Fattura differita vendita", id=23701).one()
+        #doc.totali
+        #assert doc._totaleImponibile == Decimal('88.52')
+        #assert doc._totaleImposta == Decimal('8.85')
+        #assert doc._totaleScontato == Decimal('97.37')
+        #for info_iva in doc._castellettoIva:
+            #if info_iva['aliquota'] == Decimal(10):
+                #assert info_iva['imponibile'] == Decimal("88.52")
+                #assert info_iva['imposta'] == Decimal("8.85")
+                #assert info_iva['totale'] == Decimal("97.37")
 
-    def test_doc2(self):
-        """controllo totali per il documento 23700"""
-        doc = session.query(TestataDocumento).filter_by(operazione="Fattura differita vendita", id=23700).one()
-        doc.totali
-        assert doc._totaleImponibile == Decimal('224.04')
-        assert doc._totaleImposta == Decimal('22.40')
-        assert doc._totaleScontato == Decimal('246.44')
-        for info_iva in doc._castellettoIva:
-            if info_iva['aliquota'] == Decimal(10):
-                assert info_iva['imponibile'] == Decimal("224.04")
-                assert info_iva['imposta'] == Decimal("22.40")
-                assert info_iva['totale'] == Decimal("246.44")
+    #def test_doc2(self):
+        #"""controllo totali per il documento 23700"""
+        #doc = session.query(TestataDocumento).filter_by(operazione="Fattura differita vendita", id=23700).one()
+        #doc.totali
+        #assert doc._totaleImponibile == Decimal('224.04')
+        #assert doc._totaleImposta == Decimal('22.40')
+        #assert doc._totaleScontato == Decimal('246.44')
+        #for info_iva in doc._castellettoIva:
+            #if info_iva['aliquota'] == Decimal(10):
+                #assert info_iva['imponibile'] == Decimal("224.04")
+                #assert info_iva['imposta'] == Decimal("22.40")
+                #assert info_iva['totale'] == Decimal("246.44")
 
-    def test_doc3(self):
-        """controllo totali per il documento 23699"""
-        doc = session.query(TestataDocumento).filter_by(operazione="Fattura differita vendita", id=23699).one()
+    #def test_doc3(self):
+        #"""controllo totali per il documento 23699"""
+        #doc = session.query(TestataDocumento).filter_by(operazione="Fattura differita vendita", id=23699).one()
+        #doc.totali
+        #assert doc._totaleImponibile == Decimal('90.21')
+        #assert doc._totaleImposta == Decimal('8.34')
+        #assert doc._totaleScontato == Decimal('98.55')
+        #for info_iva in doc._castellettoIva:
+            #if info_iva['aliquota'] == Decimal(4):
+                #assert info_iva['imponibile'] == Decimal("11.4")
+                #assert info_iva['imposta'] == Decimal("0.46")
+                #assert info_iva['totale'] == Decimal("11.86")
+            #if info_iva['aliquota'] == Decimal(10):
+                #assert info_iva['imponibile'] == Decimal("78.81")
+                #assert info_iva['imposta'] == Decimal("7.88")
+                #assert info_iva['totale'] == Decimal("86.69")
+
+    #def test_doc4(self):
+        #"""controllo totali per il documento 23697"""
+        #doc = session.query(TestataDocumento).filter_by(operazione="Fattura differita vendita",
+                                                        #id=23697).one()
+        #doc.totali
+        #assert doc._totaleImponibile == Decimal('63.44')
+        #assert doc._totaleImposta == Decimal('2.54')
+        #assert doc._totaleScontato == Decimal('65.98')
+        #for info_iva in doc._castellettoIva:
+            #if info_iva['aliquota'] == Decimal(4):
+                #assert info_iva['imponibile'] == Decimal("63.44")
+                #assert info_iva['imposta'] == Decimal("2.54")
+                #assert info_iva['totale'] == Decimal("65.98")
+
+    #def test_doc5(self):
+        #"""controllo totali per il documento 23694"""
+        #doc = session.query(TestataDocumento).filter_by(operazione="Fattura differita vendita",
+                                                        #id=23694).one()
+        #doc.totali
+        #assert doc._totaleImponibile == Decimal('79.86')
+        #assert doc._totaleImposta == Decimal('7.99')
+        #assert doc._totaleScontato == Decimal('87.85')
+        #for info_iva in doc._castellettoIva:
+            #if info_iva['aliquota'] == Decimal(10):
+                #assert info_iva['imponibile'] == Decimal("79.86")
+                #assert info_iva['imposta'] == Decimal("7.99")
+                #assert info_iva['totale'] == Decimal("87.85")
+
+    #def test_doc6(self):
+        #"""controllo totali per il documento 23691"""
+        #doc = session.query(TestataDocumento).filter_by(operazione="Fattura differita vendita",
+                                                        #id=23691).one()
+        #doc.totali
+        #assert doc._totaleImponibile == Decimal('110.55')
+        #assert doc._totaleImposta == Decimal('10.38')
+        #assert doc._totaleScontato == Decimal('120.93')
+        #for info_iva in doc._castellettoIva:
+            #if info_iva['aliquota'] == Decimal(4):
+                #assert info_iva['imponibile'] == Decimal("11.40")
+                #assert info_iva['imposta'] == Decimal("0.46")
+                #assert info_iva['totale'] == Decimal("11.86")
+            #if info_iva['aliquota'] == Decimal(10):
+                #assert info_iva['imponibile'] == Decimal("99.15")
+                #assert info_iva['imposta'] == Decimal("9.92")
+                #assert info_iva['totale'] == Decimal("109.07")
+
+    def test_doc7(self):
+        """controllo totali per il documento 23672 my db"""
+        doc = session.query(TestataDocumento).filter_by(operazione="DDT vendita",
+                                                        id=23672).one()
         doc.totali
-        assert doc._totaleImponibile == Decimal('90.21')
-        assert doc._totaleImposta == Decimal('8.34')
-        assert doc._totaleScontato == Decimal('98.55')
+        assert doc._totaleImponibile == Decimal('59.36')
+        assert doc._totaleImposta == Decimal('4.57')
+        assert doc._totaleScontato == Decimal('63.93')
         for info_iva in doc._castellettoIva:
             if info_iva['aliquota'] == Decimal(4):
-                assert info_iva['imponibile'] == Decimal("11.4")
-                assert info_iva['imposta'] == Decimal("0.46")
-                assert info_iva['totale'] == Decimal("11.86")
+                assert info_iva['imponibile'] == Decimal("22.80")
+                assert info_iva['imposta'] == Decimal("0.91")
+                assert info_iva['totale'] == Decimal("23.71")
             if info_iva['aliquota'] == Decimal(10):
-                assert info_iva['imponibile'] == Decimal("78.81")
-                assert info_iva['imposta'] == Decimal("7.88")
-                assert info_iva['totale'] == Decimal("86.69")
-
-    def test_doc4(self):
-        """controllo totali per il documento 23697"""
-        doc = session.query(TestataDocumento).filter_by(operazione="Fattura differita vendita",
-                                                        id=23697).one()
-        doc.totali
-        assert doc._totaleImponibile == Decimal('63.44')
-        assert doc._totaleImposta == Decimal('2.54')
-        assert doc._totaleScontato == Decimal('65.98')
-        for info_iva in doc._castellettoIva:
-            if info_iva['aliquota'] == Decimal(4):
-                assert info_iva['imponibile'] == Decimal("63.44")
-                assert info_iva['imposta'] == Decimal("2.54")
-                assert info_iva['totale'] == Decimal("65.98")
-
-    def test_doc5(self):
-        """controllo totali per il documento 23694"""
-        doc = session.query(TestataDocumento).filter_by(operazione="Fattura differita vendita",
-                                                        id=23694).one()
-        doc.totali
-        assert doc._totaleImponibile == Decimal('79.86')
-        assert doc._totaleImposta == Decimal('7.99')
-        assert doc._totaleScontato == Decimal('87.85')
-        for info_iva in doc._castellettoIva:
-            if info_iva['aliquota'] == Decimal(10):
-                assert info_iva['imponibile'] == Decimal("79.86")
-                assert info_iva['imposta'] == Decimal("7.99")
-                assert info_iva['totale'] == Decimal("87.85")
-
-    def test_doc6(self):
-        """controllo totali per il documento 23691"""
-        doc = session.query(TestataDocumento).filter_by(operazione="Fattura differita vendita",
-                                                        id=23691).one()
-        doc.totali
-        assert doc._totaleImponibile == Decimal('110.55')
-        assert doc._totaleImposta == Decimal('10.38')
-        assert doc._totaleScontato == Decimal('120.93')
-        for info_iva in doc._castellettoIva:
-            if info_iva['aliquota'] == Decimal(4):
-                assert info_iva['imponibile'] == Decimal("11.40")
-                assert info_iva['imposta'] == Decimal("0.46")
-                assert info_iva['totale'] == Decimal("11.86")
-            if info_iva['aliquota'] == Decimal(10):
-                assert info_iva['imponibile'] == Decimal("99.15")
-                assert info_iva['imposta'] == Decimal("9.92")
-                assert info_iva['totale'] == Decimal("109.07")
+                assert info_iva['imponibile'] == Decimal("36.56")
+                assert info_iva['imposta'] == Decimal("3.66")
+                assert info_iva['totale'] == Decimal("40.22")
 
 suite = unittest.TestLoader().loadTestsFromTestCase(TestTestataDocumentoTotali)
 unittest.TextTestRunner(verbosity=3).run(suite)

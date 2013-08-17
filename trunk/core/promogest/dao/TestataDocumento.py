@@ -349,14 +349,14 @@ class TestataDocumento(Dao):
                     'percentuale': percentualeIvaRiga,
                     'imponibile': totaleImponibileRiga,
                     'imposta': totaleImpostaRiga,
-                    'totale': totaleRiga,
+                    'totale': (totaleImponibileRiga+totaleImpostaRiga),
                     "denominazione_breve": denominazione_breve,
                     "denominazione": denominazione}
             else:
                 castellettoIva[idAliquotaIva]['percentuale'] = percentualeIvaRiga
                 castellettoIva[idAliquotaIva]['imponibile'] += totaleImponibileRiga
                 castellettoIva[idAliquotaIva]['imposta'] += totaleImpostaRiga
-                castellettoIva[idAliquotaIva]['totale'] += totaleRiga
+                castellettoIva[idAliquotaIva]['totale'] += (totaleImponibileRiga+totaleImpostaRiga)
         totaleImposta = totaleNonScontato - (totaleImponibile+totaleEsclusoBaseImponibile)
         totaleImponibileScontato = totaleImponibile
         totaleImpostaScontata = totaleImposta
@@ -419,6 +419,9 @@ class TestataDocumento(Dao):
         for k in castellettoIva.keys():
             dictCastellettoIva = castellettoIva[k]
             dictCastellettoIva['aliquota'] = castellettoIva[k]["percentuale"]
+            dictCastellettoIva["imponibile"] = mN(dictCastellettoIva["imponibile"],2)
+            dictCastellettoIva["imposta"] = mN(dictCastellettoIva["imposta"],2)
+            dictCastellettoIva["totale"] = mN(dictCastellettoIva["imponibile"],2)+ mN(dictCastellettoIva["imposta"],2)
             self._castellettoIva.append(dictCastellettoIva)
 
         return None
