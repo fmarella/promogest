@@ -22,11 +22,13 @@
 
 from promogest.ui.gtk_compat import *
 from CustomComboBoxSearch import CustomComboBoxSearch
-from promogest.lib.utils import leggiCliente , findIdFromCombobox
+from promogest.lib.utils import leggiCliente, findIdFromCombobox
+
 
 class ClienteSearchWidget(CustomComboBoxSearch):
     """ Classe base per la ricerca clienti """
     __gtype_name__ = 'ClienteSearchWidget'
+
     def __init__(self):
         CustomComboBoxSearch.__init__(self)
 
@@ -50,7 +52,7 @@ class ClienteSearchWidget(CustomComboBoxSearch):
             #self._id = None
             #self.set_text("")
 
-    def on_icon_press(self,entry,position,event):
+    def on_icon_press(self, entry, position, event):
         """
         scopettina agganciata ad un segnale generico
         """
@@ -74,14 +76,13 @@ class ClienteSearchWidget(CustomComboBoxSearch):
                     #self.on_completion_match_main()
 
             from promogest.ui.RicercaComplessaClienti import RicercaComplessaClienti
-            #from promogest.ui.anagClienti.AnagraficaClientiFilter import RicercaClienti
             try:
                 idCat = findIdFromCombobox(self.anaedit.
                 id_categoria_clienti_customcombobox.combobox)
             except:
                 idCat = None
 
-            self._ricerca = RicercaComplessaClienti(idCategoria = idCat)
+            self._ricerca = RicercaComplessaClienti(idCategoria=idCat)
             #self._ricerca = RicercaClienti()
 
             if not self._filter:
@@ -94,7 +95,7 @@ class ClienteSearchWidget(CustomComboBoxSearch):
             anagWindow.connect("hide",
                                refresh_entry)
             self._ricerca.show_all()
-        else:                            #secondary
+        else:                            # secondary
             self.clean_entry()
 
     def ricercaDao(self, keyname):
@@ -104,17 +105,16 @@ class ClienteSearchWidget(CustomComboBoxSearch):
             id_categoria_clienti_customcombobox.combobox)
         except:
             idCat = None
-        cli = Cliente().select(ragioneSociale=keyname, cancellato=True, idCategoria=idCat, batchSize=40)
+        cli = Cliente().select(ragioneSociale=keyname,
+                            cancellato=True, idCategoria=idCat, batchSize=40)
         model = self.completion.get_model()
         model.clear()
         for m in cli:
             rag = m.ragione_sociale or m.cognome + " " + m.nome
             model.append(('empty', m.id, rag, m))
 
-
     def setId(self, value):
         self.insertComboboxSearchCliente(self, value)
-
 
     def getId(self):
         if self.isEmpty():
@@ -124,34 +124,28 @@ class ClienteSearchWidget(CustomComboBoxSearch):
             return self.idlist
         return self._id
 
-
     def getData(self):
         return self._container
 
-
-    def insertComboboxSearchCliente(self, combobox, idCliente, clear=False, filter=True):
+    def insertComboboxSearchCliente(self, combobox, idCliente,
+                                                    clear=False, filter=True):
         res = leggiCliente(idCliente)
         denominazione = res["ragioneSociale"]
         if denominazione == '':
             denominazione = res["nome"] + ' ' + res["cognome"]
         combobox.refresh(idCliente, denominazione, res, clear, filter)
 
-
     def clear(self):
         self.set_active(0)
-
 
     def setOnChangedCall(self, callName=None):
         self._callName = callName
 
-
     def setSingleValue(self):
         self._filter = False
 
-
     def setMultipleValues(self):
         self._filter = True
-
 
     def on_widget_destroy(self, widget, event):
         if self._ricerca is not None:

@@ -24,6 +24,7 @@
 from promogest.ui.gtk_compat import *
 from promogest.lib.utils import *
 
+
 class CustomComboBoxSearch(gtk.Entry):
     __gtype_name__ = 'CustomComboBoxSearch'
 
@@ -51,6 +52,28 @@ class CustomComboBoxSearch(gtk.Entry):
         self.anaedit = None
         self.draw()
 
+    def draw(self, filter=True, idType=None):
+        self.__rebuildList = True
+        if idType == 'str':
+            model = gtk.ListStore(str, str, str, object)
+        else:
+            model = gtk.ListStore(str, int, str, object)
+        #self.set_model(model)
+        self.__model = model
+
+        self.completion = gtk.EntryCompletion()
+        if Environment.pg3:
+            self.completion.set_match_func(self.match_func, None)
+        else:
+            self.completion.set_match_func(self.match_func)
+        self.completion.connect('match-selected',
+                         self.on_completion_match_main)
+        self.completion.set_model(model)
+        self.completion.set_text_column(2)
+        self.set_completion(self.completion)
+        model.clear()
+        self.__rebuildList = False
+
     def on_icon_press(self, entry):
         print "GENERIC ICON PRESS"
 
@@ -76,31 +99,38 @@ class CustomComboBoxSearch(gtk.Entry):
 
     def match_func(self, completion, key, iter, user_data=None):
         model = completion.get_model()
-        self._id = None
-        self._container = None
-        if model[iter][2] and self.get_text().lower() in model[iter][2].lower() :
-            self._id =  model[iter][1]
-            self._container = model[iter][3]
-            #print "CONTAINER+ID", self._container,self._id
+        #self._id = None
+        #self._container = None
+        if model[iter][2] and self.get_text().lower() in model[iter][2].lower():
+            #self._id = model[iter][1]
+            #self._container = model[iter][3]
+            #print "CONTAINER+ID", self._container, self._id
             try:
                 self.anaedit.on_id_articolo_customcombobox_changed()
             except:
                 pass
             return model[iter][2]
-        else:
-            self._id = None
-            self._container = None
-            return None
+        #else:
+            #self._id = None
+            #self._container = None
+            #return None
 
     def on_completion_match_main(self, completion=None, model=None, iter=None):
-        return
+        #print "SEI L?ULTIMO STEPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP"
+        #return
         #self.articolo_matchato = model[iter][2]
         #self.set_position(-1)
         #model = self.completion.get_model()
-        self._id =  model[iter][1]
-        print " ARTICOLO MATCHATO", self._id, model[iter][2]
+        self._id = model[iter][1]
+        self._container = model[iter][3]
+        #print " ARTICOLO MATCHATO", self._id, model[iter][2]
+        #try:
+            #self.anaedit.on_id_articolo_customcombobox_changed()
+        #except:
+            #pass
         #if model[iter][2] and self.get_text().lower() in model[iter][2].lower():
             #self.set_text(model[iter][2])
+        self.set_position(-1)
         #return model[iter][2]
 
     def set_active(self, data):
@@ -117,30 +147,6 @@ class CustomComboBoxSearch(gtk.Entry):
         self.set_text(denominazione or "")
         return
 
-
-
-    def draw(self, filter=True, idType=None):
-        self.__rebuildList = True
-        if idType == 'str':
-            model = gtk.ListStore(str, str, str, object)
-        else:
-            model = gtk.ListStore(str, int, str, object)
-        #self.set_model(model)
-        self.__model = model
-
-        self.completion = gtk.EntryCompletion()
-        if Environment.pg3:
-            self.completion.set_match_func(self.match_func, None)
-        else:
-            self.completion.set_match_func(self.match_func)
-        #self.completion.connect('match-selected',
-                         #self.on_completion_match_main)
-        self.completion.set_model(model)
-        self.completion.set_text_column(2)
-        self.set_completion(self.completion)
-        model.clear()
-        self.__rebuildList = False
-
     def clear_entry(self):
         self.set_text("")
         self._id = None
@@ -151,14 +157,13 @@ class CustomComboBoxSearch(gtk.Entry):
         self._id = None
         self.grab_focus()
 
-
     def getContainer(self):
         return self._container
 
     def setChangedHandler(self, idHandler):
         return self.setHandler(idHandler)
 
-    def setHandler(self,tipo):
+    def setHandler(self, tipo):
         if tipo == "commessa":
             self.connect("icon-press", on_commesse_icon_press)
             self.connect("changed", on_commesse_customcombobox_changed)
@@ -168,7 +173,6 @@ class CustomComboBoxSearch(gtk.Entry):
         elif tipo == "vettore":
             self.connect("icon-press", on_vettore_icon_press)
             self.connect("changed", on_vettore_customcombobox_changed)
-
 
         self.set_property("secondary_icon_stock", "gtk-clear")
         self.set_property("secondary-icon-activatable", True)
@@ -181,7 +185,7 @@ class CustomComboBoxSearch(gtk.Entry):
         self._idChangedHandler = idHandler
 
         if idHandler == "cliente":
-            def on_icon_press(entry,position,event):
+            def on_icon_press(entry, position, event):
                 """
                 scopettina agganciata ad un segnale generico
                 """
@@ -206,18 +210,16 @@ class CustomComboBoxSearch(gtk.Entry):
                     anagWindow.connect("hide",
                                        refresh_entry)
                     anag.show_all()
-                else:                            #secondary
+                else:                            # secondary
                     self.clear_entry()
 
             self.connect("icon-press", on_icon_press)
         self.refresh()
 
-
     def on_show(self, event):
         (width, heigth) = self.get_size_request()
         if width == -1:
             self.setSize()
-
 
     def setSize(self, size=None):
         if size is None:
@@ -230,10 +232,8 @@ class CustomComboBoxSearch(gtk.Entry):
 
         self.set_size_request(size, -1)
 
-
     def clear(self):
         pass
-
 
     def isEmpty(self):
         return
