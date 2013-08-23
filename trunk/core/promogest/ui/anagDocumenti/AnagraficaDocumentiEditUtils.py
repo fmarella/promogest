@@ -43,6 +43,7 @@ if posso("ADR"):
 import csv
 import os
 from promogest.Environment import promogestDir
+
 def get_qta_prezzo_articoli():
     ''' Ritorna un dizionario con la quantità soglia e il nuovo prezzo
         per gli articoli leggendo da un file in formato CSV.

@@ -2170,7 +2170,9 @@ def modificaLottiScadenze(riga):
     ll = riga["descrizione"]
     if 'id' in riga:
         from promogest.dao.RigaMovimentoFornitura import RigaMovimentoFornitura
-        aa = RigaMovimentoFornitura().select(idRigaMovimentoVendita = riga["id"], batchSize=None)
+        aa = RigaMovimentoFornitura().select(idRigaMovimentoVendita=riga["id"], batchSize=None)
+        if not aa:
+            aa = RigaMovimentoFornitura().select(idRigaMovimentoAcquisto=riga["id"], batchSize=None)
         if aa:
             l = ""
             lotti= []

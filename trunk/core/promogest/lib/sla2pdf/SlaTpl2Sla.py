@@ -406,7 +406,7 @@ class SlaTpl2Sla(SlaParser):
                     for itext in itexts:
                         ch = str(itext.get('CH'))
                         tags = Sla2pdfUtils.findTags(ch)
-                        print "Stampo il tag", tags
+                        #print "Stampo il tag", tags
                         if tags is not None:
                             tagsKeys = tags.keys()
                             #print "Dizionario dei tags tagsKeys",  tagsKeys
