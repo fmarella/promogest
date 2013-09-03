@@ -168,6 +168,7 @@ languages = ""
 confList = []
 configDir = None
 
+
 def putMainconf():
     if not preEnv.web:
         #controlliamo che ci sia la cartella promogest2
@@ -271,7 +272,6 @@ def handleEngine():
         else:
             engine = create_engine("sqlite:///" + startdir() + "db", listeners=[SetTextFactory()], proxy=MyProxy())
     elif tipodb =="postgresql":
-        print "ED ECCOI QII"
         from promogest.EnvUtils import *
         mainSchema = "promogest2"
         engine = pg8000()
@@ -290,10 +290,12 @@ def handleEngine():
             main_conf.save()
             print "RICORDATI DI CREARE UN  DB CHE SI CHIAMI", preEnv.buildSchema
         try:
-            engine = create_engine("mysql+mysqlconnector://"+user+":"+password+"@"+host+":"+preEnv.port+"/"+preEnv.database+"?charset=utf8", poolclass=NullPool)
-            #connection = engine.connect()
+            engine = create_engine("mysql+mysqlconnector://" + user + ":" + \
+                                    password + "@" + host + ":" + preEnv.port +\
+                                    "/" + preEnv.database + "?charset=utf8",
+                                    poolclass=NullPool)
         except Exception as e:
-            print "NON SONO RIUSCITO A CREARE L'ENGINE, NOME DEL DB NON PRESENTE? ERRORE:",e
+            print "NON SONO RIUSCITO A CREARE L'ENGINE, NOME DEL DB NON PRESENTE? ERRORE:", e
 
 
     if not engine:
@@ -305,13 +307,10 @@ def handleEngine():
 
 engine = handleEngine()
 tipo_eng = engine.name
-#session = None
 if not web:
     Session = sessionmaker(bind=engine)
     session = Session()
 else:
-    #if not session:
-        #print "SESSIONNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN", session
     print " USI QUESTA SEISSIONE SCOPED"
     session = scoped_session(lambda: create_session(engine, autocommit=False))
 

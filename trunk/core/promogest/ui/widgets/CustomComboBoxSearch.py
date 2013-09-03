@@ -62,6 +62,7 @@ class CustomComboBoxSearch(gtk.Entry):
         self.__model = model
 
         self.completion = gtk.EntryCompletion()
+        self.completion.set_popup_single_match(True)
         if Environment.pg3:
             self.completion.set_match_func(self.match_func, None)
         else:
