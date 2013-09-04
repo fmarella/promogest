@@ -75,6 +75,16 @@ class AnagraficaDocumenti(Anagrafica):
         else:
             fencemsg()
 
+    def on_importa_ordine_json_activate(self, widget):
+        #if posso('GRB'):
+        from promogest.ui.ImportJsonDocumenti import ImportJsonDocumenti
+        anag = ImportJsonDocumenti(self)
+        showAnagraficaRichiamata(self.getTopLevel(), anag.getTopLevel(),
+                                                None, self.filter.refresh)
+        #else:
+            #fencemsg()
+
+
     def duplicate(self, dao):
         """
         Duplica le informazioni relative ad un documento scelto su uno nuovo
