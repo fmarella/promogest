@@ -134,7 +134,7 @@ class ImportJsonDocumenti(GladeWidget):
         righeDocumento=[]
         totale = 0
         for k,v in dati["prodotti"].iteritems():
-            print " ERRREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE", k,v
+            #print " ERRREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE", k,v
             quantita = int(v)
             art = Articolo().select(codiceEM=k)
             if art:
@@ -164,7 +164,7 @@ class ImportJsonDocumenti(GladeWidget):
         newDao.righeDocumento = righeDocumento
         newDao.totale_pagato = None
         newDao.totale_sospeso = None
-        newDao.documento_saldato = None
+        newDao.documento_saldato = False
         newDao.id_primo_riferimento = None
         newDao.id_secondo_riferimento = None
         tipo = "Ordine da cliente"
@@ -173,4 +173,6 @@ class ImportJsonDocumenti(GladeWidget):
         newDao.registro_numerazione= valori[1]
         if len(righeDocumento) > 0:
             newDao.persist()
-        print "NEW DAO", newDao.__dict__
+            messageInfo(msg="ORDINE INSERITO")
+            self.destroy()
+        #print "NEW DAO", newDao.__dict__
