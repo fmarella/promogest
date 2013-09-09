@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 
 #    Copyright (C) 2005-2013 by Promotux
-#                        di Francesco Meloni snc - http://www.promotux.it/
+#                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
-
 #    This file is part of Promogest.
 
 #    Promogest is free software: you can redistribute it and/or modify
@@ -20,11 +19,27 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-from sqlalchemy import *
-from promogest.Environment import *
+from sqlalchemy import Table
+from sqlalchemy.orm import mapper
+from promogest.Environment import params
+from promogest.dao.Dao import Dao
 
-t_news_category = Table('news_category', params["metadata"],
-        Column('id', Integer, primary_key=True),
-        Column('denominazione', String(100), unique=True),
-        schema=params['schema'])
-t_news_category.create(checkfirst=True)
+try:
+    t_news_category = Table('news_category',
+                       params['metadata'],
+                       schema=params['schema'],
+                       autoload=True)
+except:
+    from data.categoriaNews import t_news_category
+
+
+class CategoriaNews(Dao):
+
+    def __init__(self, req=None):
+        Dao.__init__(self, entity=self)
+
+    def filter_values(self, k, v):
+        dic = {'denominazione': t_news_category.c.denominazione.ilike("%" + v + "%")}
+        return  dic[k]
+
+std_mapper = mapper(CategoriaNews, t_news_category, order_by=t_news_category.c.id)
