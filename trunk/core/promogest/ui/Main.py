@@ -256,7 +256,6 @@ class Main(GladeWidget):
         #glib.timeout_add_seconds(600, update_timer)
         update_timer()
 
-
         def pulizia_lottotemp():
             ltemp = setconf("Documenti", "lotto_temp")
             if not ltemp:
@@ -317,9 +316,12 @@ class Main(GladeWidget):
         def pickle_meta():
             from pickle import dump
             meta_pickle = self.aziendaStr + "-meta.pickle"+sys.version[:1]
-            if not os.path.exists(str(os.path.join(Environment.promogestDir.replace("_",""),meta_pickle.replace("_","")).strip())):
-                with open(str(os.path.join(Environment.promogestDir.replace("_",""),meta_pickle.replace("_","")).strip()), 'wb') as f:
-                    dump(Environment.meta, f)
+            try:
+                if not os.path.exists(str(os.path.join(Environment.promogestDir.replace("_",""),meta_pickle.replace("_","")).strip())):
+                    with open(str(os.path.join(Environment.promogestDir.replace("_",""),meta_pickle.replace("_","")).strip()), 'wb') as f:
+                        dump(Environment.meta, f)
+            except:
+                print " FALLITA CREAZIONE META"
         pickle_meta()
 
 
