@@ -21,19 +21,14 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
 # USA
 
-import os
-import sys
-import re
 
-import tokenize
 from promogest import Environment
 from promogest.ui.gtk_compat import *
-import weakref
-import inspect
 from SimpleGladeWrapper import SimpleGladeWrapper
 
 __version__ = "1.0"
 __author__ = 'Sandino "tigrux" Flores-Moreno'
+
 
 class SimpleGladeApp(SimpleGladeWrapper):
 
@@ -62,13 +57,10 @@ class SimpleGladeApp(SimpleGladeWrapper):
         **kwargs:
             a dictionary representing the named extra arguments.
             It is useful to set attributes of new instances, for example:
-                glade_app = SimpleGladeApp("ui.glade", foo="some value", bar="another value")
+            glade_app = SimpleGladeApp("ui.glade", foo="some value", bar="another value")
             sets two attributes (foo and bar) to glade_app.
         """
         SimpleGladeWrapper.__init__(self, path=path, root=root, domain=domain)
-
-
-
 
     def main(self):
         """
@@ -110,7 +102,7 @@ class SimpleGladeApp(SimpleGladeWrapper):
         widget.modify_base(GTK_STATE_NORMAL, GDK_COLOR_PARSE("white"))
         widget.modify_text(GTK_STATE_NORMAL, GDK_COLOR_PARSE("black"))
 
-    def insert_text_decimal(self,editable, new_text, new_text_length, position):
+    def insert_text_decimal(self, editable, new_text, new_text_length, position):
         """Questa funzione permette di far inserire in una entry solo
         numeri ed un punto """
         stringg = editable.get_text()

@@ -29,30 +29,30 @@ from promogest.dao.Dao import Dao
 from promogest.dao.User import User, t_utente
 
 try:
-    t_cart=Table('cart', params['metadata'],schema = params['schema'],autoload=True)
+    t_cart=Table('cart', params['metadata'], schema=params['schema'], autoload=True)
 except:
     from data.cart import t_cart
 
+
 class Cart(Dao):
 
-    def __init__(self, req= None,arg=None):
+    def __init__(self, req=None, arg=None):
         Dao.__init__(self, entity=self)
 
-
-    def filter_values(self, k,v):
+    def filter_values(self, k, v):
         if k == "idArticolo":
-            dic= { k : t_cart.c.id_articolo==v}
+            dic = {k: t_cart.c.id_articolo == v}
         elif k == "sessionid":
-            dic= { k : t_cart.c.sessionid == v}
+            dic = {k: t_cart.c.sessionid == v}
         elif k == "idUser":
-            dic= { k : t_cart.c.id_user == v}
+            dic = {k: t_cart.c.id_user == v}
         elif k == "idCliente":
-            dic= { k : t_cart.c.id_cliente == v}
+            dic = {k: t_cart.c.id_cliente == v}
         return  dic[k]
 
 
 std_mapper = mapper(Cart, t_cart, properties={
-            'user' : relation(User,primaryjoin=
-                    t_cart.c.id_utente==t_utente.c.id,
+            'user': relation(User,
+                    primaryjoin=t_cart.c.id_utente == t_utente.c.id,
                     foreign_keys=[t_utente.c.id], backref="cart"),
                 }, order_by=t_cart.c.id)
