@@ -33,6 +33,31 @@
     <property name="can_focus">False</property>
     <property name="pixbuf">duplica24x24.png</property>
   </object>
+  <object class="GtkImage" id="image2">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">fornitura48x48.png</property>
+  </object>
+  <object class="GtkImage" id="image3">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">cliente48x48.png</property>
+  </object>
+  <object class="GtkImage" id="image4_">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">fornitore48x48.png</property>
+  </object>
+  <object class="GtkImage" id="image5">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">vettore48x48.png</property>
+  </object>
+  <object class="GtkImage" id="image6">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">agente48x48.png</property>
+  </object>
   <object class="GtkImage" id="documenti_image">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -62,31 +87,6 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="pixbuf">gest_commessa48X48.png</property>
-  </object>
-  <object class="GtkImage" id="image2">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="pixbuf">fornitura48x48.png</property>
-  </object>
-  <object class="GtkImage" id="image3">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="pixbuf">cliente48x48.png</property>
-  </object>
-  <object class="GtkImage" id="image4_">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="pixbuf">fornitore48x48.png</property>
-  </object>
-  <object class="GtkImage" id="image5">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="pixbuf">vettore48x48.png</property>
-  </object>
-  <object class="GtkImage" id="image6">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="pixbuf">agente48x48.png</property>
   </object>
   <object class="GtkListStore" id="iconview_listore">
     <columns>
@@ -126,7 +126,7 @@
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">PromoGest2</property>
     <property name="window_position">center</property>
-    <property name="icon">promogest.png</property>
+    <property name="icon">mask_24.png</property>
     <signal name="key-press-event" handler="on_main_window_key_press_event" swapped="no"/>
     <child>
       <object class="GtkVBox" id="dialog-vbox2">
@@ -138,7 +138,6 @@
             <property name="can_focus">False</property>
             <child>
               <object class="GtkMenuItem" id="file_menu">
-                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">_Azienda</property>
@@ -149,7 +148,6 @@
                     <property name="can_focus">False</property>
                     <child>
                       <object class="GtkMenuItem" id="dati_azienda">
-                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="tooltip_text" translatable="yes">i dati della azienda</property>
@@ -160,7 +158,6 @@
                     </child>
                     <child>
                       <object class="GtkMenuItem" id="configurazione_menu">
-                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Preferenze</property>
@@ -170,14 +167,12 @@
                     </child>
                     <child>
                       <object class="GtkSeparatorMenuItem" id="separatormenuitem1">
-                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                       </object>
                     </child>
                     <child>
                       <object class="GtkMenuItem" id="disconnetti_menuitem">
-                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Disconnetti</property>
@@ -187,7 +182,6 @@
                     </child>
                     <child>
                       <object class="GtkMenuItem" id="esci_menuitem">
-                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Esci</property>
@@ -201,7 +195,6 @@
             </child>
             <child>
               <object class="GtkMenuItem" id="strumenti_menu">
-                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">_Strumenti</property>
@@ -211,7 +204,6 @@
                     <property name="can_focus">False</property>
                     <child>
                       <object class="GtkMenuItem" id="aggiorna">
-                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="tooltip_text" translatable="yes">Clicca qui per aggiornare il promogest ( solo sistemi linux)</property>
@@ -222,7 +214,6 @@
                     </child>
                     <child>
                       <object class="GtkMenuItem" id="sincro_db">
-                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">_Sincronizzazione DB</property>
@@ -233,7 +224,6 @@
                             <property name="can_focus">False</property>
                             <child>
                               <object class="GtkMenuItem" id="master_sincro_db">
-                                <property name="use_action_appearance">False</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="label" translatable="yes">server</property>
@@ -243,7 +233,6 @@
                             </child>
                             <child>
                               <object class="GtkMenuItem" id="client_sincro_db">
-                                <property name="use_action_appearance">False</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="label" translatable="yes">client</property>
@@ -257,7 +246,6 @@
                     </child>
                     <child>
                       <object class="GtkMenuItem" id="Back-Up Database">
-                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="tooltip_text" translatable="yes">Se il Client è nello stesso pc del database è possibile effettuare una copia di sicurezza del database</property>
@@ -268,7 +256,6 @@
                     </child>
                     <child>
                       <object class="GtkMenuItem" id="inserimento_codice">
-                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Inserimento codice</property>
@@ -282,7 +269,6 @@
             </child>
             <child>
               <object class="GtkMenuItem" id="statistiche">
-                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Statistiche</property>
@@ -293,7 +279,6 @@
                     <property name="can_focus">False</property>
                     <child>
                       <object class="GtkMenuItem" id="ricerca_lotto_menuitem">
-                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Tracciabilità lotti</property>
@@ -303,7 +288,6 @@
                     </child>
                     <child>
                       <object class="GtkMenuItem" id="ricmedio">
-                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Statistiche e Report</property>
@@ -313,7 +297,6 @@
                     </child>
                     <child>
                       <object class="GtkMenuItem" id="export_magazzino">
-                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="tooltip_text" translatable="yes">Esport una CSV abbastanza
@@ -330,7 +313,6 @@ articoli per un certo </property>
             </child>
             <child>
               <object class="GtkMenuItem" id="aiuto_menu">
-                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">A_iuto</property>
@@ -340,7 +322,6 @@ articoli per un certo </property>
                     <property name="can_focus">False</property>
                     <child>
                       <object class="GtkMenuItem" id="send_Email">
-                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
@@ -352,7 +333,6 @@ articoli per un certo </property>
                     </child>
                     <child>
                       <object class="GtkMenuItem" id="credits_menu">
-                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Credits</property>
@@ -362,7 +342,6 @@ articoli per un certo </property>
                     </child>
                     <child>
                       <object class="GtkMenuItem" id="licenza_menu">
-                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Licenza</property>
@@ -372,7 +351,6 @@ articoli per un certo </property>
                     </child>
                     <child>
                       <object class="GtkMenuItem" id="seriale_menu">
-                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Codice installazione...</property>
@@ -382,7 +360,6 @@ articoli per un certo </property>
                     </child>
                     <child>
                       <object class="GtkMenuItem" id="manuale_online">
-                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Manuale online</property>
@@ -392,7 +369,6 @@ articoli per un certo </property>
                     </child>
                     <child>
                       <object class="GtkMenuItem" id="menuitem1">
-                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Registrati sul sito</property>
@@ -434,7 +410,6 @@ articoli per un certo </property>
             <child>
               <object class="GtkButton" id="button_quit">
                 <property name="label">gtk-quit</property>
-                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
@@ -452,7 +427,6 @@ articoli per un certo </property>
             <child>
               <object class="GtkButton" id="button_disconnect">
                 <property name="label">gtk-disconnect</property>
-                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
@@ -481,7 +455,18 @@ articoli per un certo </property>
               </packing>
             </child>
             <child>
-              <placeholder/>
+              <object class="GtkButton" id="upgrade_iva_button">
+                <property name="label" translatable="yes">UPGRADE IVA 22%</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <signal name="clicked" handler="on_upgrade_iva_button_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">4</property>
+              </packing>
             </child>
             <child>
               <object class="GtkLabel" id="pan_label_info">
@@ -504,7 +489,6 @@ stai usando </property>
             <child>
               <object class="GtkButton" id="test_promoshop_button">
                 <property name="label" translatable="yes">PROVA PromoShop</property>
-                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -526,7 +510,6 @@ con registratore di cassa. </property>
             <child>
               <object class="GtkButton" id="test_promowear_button">
                 <property name="label" translatable="yes">PROVA PromoWear</property>
-                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -545,7 +528,6 @@ per gli articoli secondo una logica di articoli principali
             </child>
             <child>
               <object class="GtkButton" id="aggiorna_button">
-                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -632,7 +614,6 @@ per gli articoli secondo una logica di articoli principali
                             <child>
                               <object class="GtkToggleButton" id="articoli_button">
                                 <property name="label" translatable="yes">_Articoli</property>
-                                <property name="use_action_appearance">False</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
@@ -652,7 +633,6 @@ degli Articoli in uso nel gestionale</property>
                             <child>
                               <object class="GtkToggleButton" id="clienti_button">
                                 <property name="label" translatable="yes">_Clienti</property>
-                                <property name="use_action_appearance">False</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
@@ -673,7 +653,6 @@ che come persona giuridica</property>
                             <child>
                               <object class="GtkToggleButton" id="fornitori_button">
                                 <property name="label" translatable="yes">_Fornitori</property>
-                                <property name="use_action_appearance">False</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
@@ -690,7 +669,6 @@ che come persona giuridica</property>
                             <child>
                               <object class="GtkToggleButton" id="vettori_button">
                                 <property name="label" translatable="yes">_Vettori</property>
-                                <property name="use_action_appearance">False</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
@@ -707,7 +685,6 @@ che come persona giuridica</property>
                             <child>
                               <object class="GtkToggleButton" id="agenti_button">
                                 <property name="label" translatable="yes">A_genti</property>
-                                <property name="use_action_appearance">False</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
@@ -759,7 +736,6 @@ che come persona giuridica</property>
                             <child>
                               <object class="GtkToggleButton" id="apri_anag_secondarie_toggle">
                                 <property name="label" translatable="yes">Apri Anagrafia Secondaria</property>
-                                <property name="use_action_appearance">False</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
@@ -870,7 +846,6 @@ che come persona giuridica</property>
                             </child>
                             <child>
                               <object class="GtkToggleButton" id="categoti">
-                                <property name="use_action_appearance">False</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
@@ -923,7 +898,6 @@ che come persona giuridica</property>
                             </child>
                             <child>
                               <object class="GtkToggleButton" id="togglebutton49">
-                                <property name="use_action_appearance">False</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
@@ -978,7 +952,6 @@ che come persona giuridica</property>
                             </child>
                             <child>
                               <object class="GtkToggleButton" id="togglebutton50">
-                                <property name="use_action_appearance">False</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
@@ -1033,7 +1006,6 @@ che come persona giuridica</property>
                             </child>
                             <child>
                               <object class="GtkToggleButton" id="togglebutton51">
-                                <property name="use_action_appearance">False</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
@@ -1089,7 +1061,6 @@ che come persona giuridica</property>
                             </child>
                             <child>
                               <object class="GtkToggleButton" id="togglebutton54">
-                                <property name="use_action_appearance">False</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
@@ -1144,7 +1115,6 @@ che come persona giuridica</property>
                             </child>
                             <child>
                               <object class="GtkToggleButton" id="togglebutton45">
-                                <property name="use_action_appearance">False</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
@@ -1201,7 +1171,6 @@ che come persona giuridica</property>
                             </child>
                             <child>
                               <object class="GtkToggleButton" id="togglebutton52">
-                                <property name="use_action_appearance">False</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
@@ -1258,7 +1227,6 @@ che come persona giuridica</property>
                             </child>
                             <child>
                               <object class="GtkToggleButton" id="togglebutton53">
-                                <property name="use_action_appearance">False</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
@@ -1315,7 +1283,6 @@ che come persona giuridica</property>
                             </child>
                             <child>
                               <object class="GtkToggleButton" id="togglebutton46">
-                                <property name="use_action_appearance">False</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
@@ -1370,7 +1337,6 @@ che come persona giuridica</property>
                             </child>
                             <child>
                               <object class="GtkToggleButton" id="togglebutton47">
-                                <property name="use_action_appearance">False</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
@@ -1427,7 +1393,6 @@ che come persona giuridica</property>
                             </child>
                             <child>
                               <object class="GtkToggleButton" id="utenti_button">
-                                <property name="use_action_appearance">False</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
@@ -1482,7 +1447,6 @@ che come persona giuridica</property>
                             </child>
                             <child>
                               <object class="GtkToggleButton" id="ruoli_button">
-                                <property name="use_action_appearance">False</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
@@ -1539,7 +1503,6 @@ che come persona giuridica</property>
                             </child>
                             <child>
                               <object class="GtkToggleButton" id="ruoli_azioni_button">
-                                <property name="use_action_appearance">False</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
@@ -1596,7 +1559,6 @@ che come persona giuridica</property>
                             </child>
                             <child>
                               <object class="GtkToggleButton" id="stadio_commessa_button">
-                                <property name="use_action_appearance">False</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
@@ -1795,14 +1757,16 @@ che come persona giuridica</property>
     <property name="pixbuf">vendita24x24.png</property>
   </object>
   <object class="GtkDialog" id="upgrade_iva">
-    <property name="width_request">550</property>
+    <property name="width_request">600</property>
     <property name="can_focus">False</property>
     <property name="border_width">5</property>
+    <property name="title" translatable="yes">Aliquota iva al 22%</property>
     <property name="modal">True</property>
     <property name="window_position">center</property>
-    <property name="type_hint">dialog</property>
+    <property name="icon">mask_24.png</property>
+    <property name="type_hint">normal</property>
     <property name="urgency_hint">True</property>
-    <property name="transient_for">main_window</property>
+    <property name="mnemonics_visible">False</property>
     <property name="has_separator">True</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox1">
@@ -1820,7 +1784,6 @@ che come persona giuridica</property>
             <child>
               <object class="GtkButton" id="upgrade_iva_chiudi_button">
                 <property name="label">gtk-close</property>
-                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -1846,13 +1809,11 @@ che come persona giuridica</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="label" translatable="yes">&lt;b&gt;ATTENZIONE&lt;/b&gt;
-Questa dialog serve ad aggiornare l'anagrafica articoli 
-alla nuova disposizione iva che entra in vigore il 
-17/09/2011 . La nuova aliquota passa dal 20% al 21%.
-Gli articoli al 20% verranno automaticamente abbinati 
-a quella al 21% mentre TUTTI i documenti emessi resteranno 
-con i precedenti riferimenti al 20%
-Per quanto riguarda le Fatture Differite con DDT emessi prima del 17/09
+Questa procedura serve ad aggiornare l'anagrafica articoli alla nuova disposizione iva che entra in vigore
+il 01/10/2013 . La nuova aliquota passa dal 21% al 22%.
+Gli articoli al 21% verranno automaticamente abbinati a quella al 22% mentre TUTTI i documenti già 
+emessi resteranno con i precedenti riferimenti al 21%.
+Per quanto riguarda le Fatture Differite con DDT emessi prima del 01/10
 vi invitiamo a riferirvi alla normativa di attuazione del decreto.
 </property>
             <property name="use_markup">True</property>
@@ -1882,10 +1843,9 @@ vi invitiamo a riferirvi alla normativa di attuazione del decreto.
                     <property name="can_focus">False</property>
                     <child>
                       <object class="GtkRadioButton" id="scegli_iva_radio">
-                        <property name="label" translatable="yes">Ho già creato una aliquota al 21%
+                        <property name="label" translatable="yes">Ho già creato una aliquota al 22%
 e voglio associare gli articoli a questa aliquota
 che seleziono qui in basso</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
@@ -1917,7 +1877,7 @@ che seleziono qui in basso</property>
                   <object class="GtkLabel" id="label3">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="label" translatable="yes">&lt;b&gt;Ho già creato io  l'aliquota al 21%&lt;/b&gt;</property>
+                    <property name="label" translatable="yes">&lt;b&gt;Ho già creato io  l'aliquota al 22%&lt;/b&gt;</property>
                     <property name="use_markup">True</property>
                   </object>
                 </child>
@@ -1939,12 +1899,11 @@ che seleziono qui in basso</property>
                 <property name="shadow_type">in</property>
                 <child>
                   <object class="GtkRadioButton" id="crea_iva_radio">
-                    <property name="label" translatable="yes">Creami una aliquota a cui associare gli articoli
-Descrizione breve "21%" 
-Descrizione normale "Aliquota IVA 21%"
-Valore "21"
+                    <property name="label" translatable="yes">Creami una aliquota a cui associare gli articoli:
+Descrizione breve "22%" 
+Descrizione normale "Aliquota IVA 22%"
+Valore "22"
 Tipo "Ordinaria"</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
@@ -1957,7 +1916,7 @@ Tipo "Ordinaria"</property>
                   <object class="GtkLabel" id="label2">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="label" translatable="yes">&lt;b&gt;Creami una nuova aliquota al 21%&lt;/b&gt;</property>
+                    <property name="label" translatable="yes">&lt;b&gt;Creami una nuova aliquota al 22%&lt;/b&gt;</property>
                     <property name="use_markup">True</property>
                   </object>
                 </child>
@@ -1971,7 +1930,6 @@ Tipo "Ordinaria"</property>
             <child>
               <object class="GtkButton" id="esegui_upgrade_iva_button">
                 <property name="label">gtk-execute</property>
-                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>

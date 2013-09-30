@@ -141,7 +141,7 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
             self.csa_togglebutton.destroy()
 
     def setDao(self, dao):
-        if dao is None:
+        if not dao:
             # Crea un nuovo Dao vuoto
             self.dao = Articolo()
             # Assegna il codice se ne e' prevista la crazione automatica, ma non per famiglia
@@ -158,6 +158,7 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
 
         if posso("ADR"):
             self.adr_page.adrSetDao(self.dao)
+
         if posso("CSA"):
             self.csa_page.csaSetDao(self.dao)
         self._refresh()

@@ -65,6 +65,9 @@ class Custom(object):
         except: # prendo la cartella temp standard
             self.path = Environment.documentsDir
 
+
+
+
     def create_export_file(self, daoScontrino=None):
         # Genero nome file
         filename = self.path\
@@ -104,7 +107,6 @@ Credito cliente                         12
                             sco=str(sconto.valore)+"*1M"
                         else:
                             sco=str(sconto.valore * quantita)+"H3M\n"
-            print " VEDIAMOOOOOOOOOOOOOOOOOOOOOOOOO", str(mN(riga.prezzo,2)).replace(".","")
             p = str(mN(riga.prezzo,2)).replace(".","")
             if riga.quantita < 0:
                 # riga reso
@@ -112,10 +114,10 @@ Credito cliente                         12
                 f.write(stringa)
             elif quantita != 1:
                 # quantita' non unitaria
-                stringa = '"'+ deaccenta(riga.descrizione[:19])+'"'+ str(quantita) +"*"+ p +"H1R"+sco+"\n"
+                stringa = '"'+ deaccenta(riga.descrizione[:19])+'"'+ str(quantita) +"*"+ p+"H1R"+sco+"\n"
                 f.write(stringa)
             elif riga.quantita == 1:
-                stringa = '"'+ deaccenta(riga.descrizione[:19])+'"'+ p +"H1R"+sco+"\n"
+                stringa = '"'+ deaccenta(riga.descrizione[:19])+'"'+ p+"H1R"+sco+"\n"
                 f.write(stringa)
 
             """ GESTIONE SUBTOTALE ED EVENTUALI SCONTI
@@ -200,7 +202,7 @@ Es. chiusura a contanti / assegni con calcolo del resto:
         with open(filesToSend,"r") as f:
             scontr = f.read()
         #ser.write("1000H1R=15.25*2M100H4M1T")
-        print scontr
+        #print scontr
         ser.write(scontr)
         f.close()
         ser.close()

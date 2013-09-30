@@ -46,6 +46,11 @@ if hasattr(conf, 'PromoWear'):
             tipo.execute(denominazione='2011')
             tipo.execute(denominazione='2012')
             tipo.execute(denominazione='2013')
+            tipo.execute(denominazione='2014')
+            tipo.execute(denominazione='2015')
+            tipo.execute(denominazione='2016')
+            tipo.execute(denominazione='2017')
+
 
         #creo tabella genere_abbigliamento e ci metto i valori di default
         genereAbbigliamentoTable = Table('genere_abbigliamento', params['metadata'],

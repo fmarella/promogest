@@ -24,7 +24,7 @@
 import sys
 import hashlib
 import os
-from datetime import datetime
+from datetime import datetime, date
 import webbrowser
 from  subprocess import *
 from promogest import Environment
@@ -245,6 +245,18 @@ class Main(GladeWidget):
             # Environment.session.add(conf_timeout)
         # else:
             # timeout = conf_timeout[0].value
+        # lets do the iv upgrade
+        if date.today() >= date(2013, 10, 1):
+            kbb = SetConf().select(key="upgrade_iva_22", section="Articoli")
+            if kbb and kbb[0].value=="True":
+                return
+            else:
+                fillComboboxAliquoteIva(self.iva_upgrade_combobox.combobox)
+                self.iva_upgrade_combobox.show_all()
+                self.crea_iva_radio.set_active(True)
+                self.upgrade_iva.show()
+                #self.upgrade_iva.destroy()
+
 
         def update_timer():
             leggiRevisioni()
@@ -293,6 +305,113 @@ class Main(GladeWidget):
         #pulizia_lottotemp()
 
 
+    def on_upgrade_iva_button_clicked(self, button):
+        from promogest.dao.Setconf import SetConf
+        kbb = SetConf().select(key="upgrade_iva_22", section="Articoli")
+        if kbb and kbb[0].value=="True":
+            messageInfo(msg="ATTENIONE, L'aggiornamento risuta già fatto\n si consiglia di richiudere la finestra di dialogo ")
+        fillComboboxAliquoteIva(self.iva_upgrade_combobox.combobox)
+        self.iva_upgrade_combobox.show_all()
+        self.crea_iva_radio.set_active(True)
+        self.upgrade_iva.show()
+        #self.upgrade_iva.destroy()
+
+    def on_esegui_upgrade_iva_button_clicked(self, button):
+        from promogest.dao.AliquotaIva import AliquotaIva
+        from promogest.dao.Articolo import Articolo
+        from promogest.dao.Setconf import SetConf
+        if self.scegli_iva_radio.get_active():
+            if not findIdFromCombobox(self.iva_upgrade_combobox.combobox):
+                messageError(msg= _("Selezionare l'aliquota al 22% dal menù a tendina!"))
+                return
+            else:
+                idAli = findIdFromCombobox(self.iva_upgrade_combobox.combobox)
+                ali = AliquotaIva().getRecord(id=idAli)
+                if ali.percentuale != 22:
+                    messageError(msg="ATTENZIONE, aliquota diversa da 22%")
+                    return
+
+        else:
+            ali = AliquotaIva().select(percentuale=22,idTipo=1)
+            if ali:
+                messageError(msg="Aliquota iva al 22% già presente, uso quella")
+                idAli = ali[0].id
+            else:
+                a = AliquotaIva()
+                a.denominazione = "Aliquota IVA 22%"
+                a.denominazione_breve = "22%"
+                a.id_tipo = 1
+                a.percentuale = 22
+                a.persist()
+                idAli = a.id
+
+        vecchiaIva = AliquotaIva().select(percentuale=21,idTipo=1)
+        vecchiaIdIva = None
+        if not vecchiaIva:
+            messageError(msg="NON RIESCO A TROVARE UNA ALIQUOTA IVA AL 21 NEL SISTEMA")
+            return
+        else:
+            if len(vecchiaIva) >1:
+                messageInfo(msg= "PIÙ DI UNA IVA AL 21% PRESENTE \n contattare l'assistenza")
+                return
+            else:
+                vecchiaIdIva = vecchiaIva[0].id
+        print "sono pronto a ciclare sugli articoli", idAli, vecchiaIdIva
+        arti = Articolo().select(idAliquotaIva=vecchiaIdIva, batchSize=None)
+        if not arti:
+            messageInfo(msg="Nessun articolo con iva al 21% trovato")
+            kbb = SetConf().select(key="upgrade_iva_22", section="Articoli")
+            if not kbb:
+                kbb = SetConf()
+                kbb.key = "upgrade_iva_22"
+                kbb.value ="True"
+                kbb.section = "Articoli"
+                kbb.tipo_section = "Generico"
+                kbb.description = "upgrade_iva_22%"
+                kbb.active = True
+                kbb.tipo = "bool"
+                kbb.date = datetime.now()
+                kbb.persist()
+            else:
+                kbb[0].value="True"
+                kbb[0].persist()
+        else:
+            for a in arti:
+                a.id_aliquota_iva = idAli
+                Environment.session.add(a)
+            Environment.session.commit()
+            messageInfo(msg="PROCESSO TERMINATO!")
+            kbb = SetConf().select(key="upgrade_iva_22", section="Articoli")
+            if not kbb:
+                kbb = SetConf()
+                kbb.key = "upgrade_iva_22"
+                kbb.value ="True"
+                kbb.section = "Articoli"
+                kbb.tipo_section = "Generico"
+                kbb.description = "upgrade_iva_22%"
+                kbb.active = True
+                kbb.tipo = "bool"
+                kbb.date = datetime.now()
+                kbb.persist()
+            else:
+                kbb[0].value="True"
+                kbb[0].persist()
+
+    def on_scegli_iva_radio_toggled(self, radioButton):
+        if radioButton.get_active():
+            print "CREA"
+            self.iva_upgrade_combobox.set_sensitive(True)
+        else:
+            print "SELEZIONA"
+            self.iva_upgrade_combobox.set_sensitive(False)
+
+    def on_upgrade_iva_chiudi_button_clicked(self, button):
+        #print " MA INSMMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        self.upgrade_iva.hide()
+        #self.show()
+
+
+
 
    # ATTENZIONE: Tutto il codice di cambio IVA è stato spostato in __init__.py
 
@@ -301,9 +420,12 @@ class Main(GladeWidget):
         TODO: it needs some work and maybe threads
 
         """
+        return
         from promogest.dao.Promemoria import updateScadenzePromemoria
         if posso("PR"):
             glib.timeout_add_seconds(20, updateScadenzePromemoria)
+
+
 
     def _refresh(self):
         """ Update the window, setting the appropriate frame
