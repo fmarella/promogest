@@ -39,7 +39,7 @@ class CategoriaCliente(Dao):
         Dao.__init__(self, entity=self)
 
     def filter_values(self, k,v):
-        dic= {'denominazione' : t_.c.denominazione.ilike("%"+v+"%")}
+        dic= {'denominazione' : t_categoria_cliente.c.denominazione.ilike("%"+v+"%")}
         return  dic[k]
 
 
