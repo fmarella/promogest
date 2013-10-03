@@ -1534,7 +1534,10 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                 quan = codiceABarre[7:-1]
                 quantita = list(quan)
                 quantita.insert(-3,".")
-                quantita =  str(Decimal(",".join(quantita).replace(",","").strip('[]')))
+                try:
+                    quantita =  str(Decimal(",".join(quantita).replace(",","").strip('[]')))
+                except:
+                    quantita = 1
         if (len(arts) == 1):
             self.mostraArticolo(arts[0].id, quan=quantita)
             self.articolo_matchato = None
