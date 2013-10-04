@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012  by Promotux
+#    Copyright (C) 2005-2013  by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -22,8 +22,8 @@
 
 import os, popen2
 
-from promogest.dao.DaoUtils import giacenzaDettaglio, numeroRegistroGet
-from datetime import datetime, timedelta
+from promogest.dao.DaoUtils import numeroRegistroGet
+from datetime import datetime
 from promogest import Environment
 from promogest.ui.GladeWidget import GladeWidget
 from promogest.modules.VenditaDettaglio.dao.TestataScontrino import TestataScontrino
@@ -442,7 +442,7 @@ class GestioneScontrini(GladeWidget):
         note = "Rif. Scontrino" + " n. " + str(posizione) + " del " + dateToString(self.daoTse.data_inserimento)
 
         newDao = TestataDocumento()
-        newDao.data_documento = stringToDate(self.daoTse.data_inserimento)
+        newDao.data_documento = datetime.datetime.now()
         newDao.operazione = findStrFromCombobox(self.operazione_combobox,0)
         newDao.id_cliente = self.id_cliente_emessi_customcombobox.getId()
         newDao.note_pie_pagina = note
