@@ -96,8 +96,11 @@ class Riga(Dao):
 
     def _getAliquotaIva(self):
         if self.id_iva:
-            cache = CachedDaosDict()
-            return cache['aliquotaiva'][self.id_iva][0].denominazione_breve or ""
+            try:
+                cache = CachedDaosDict()
+                return cache['aliquotaiva'][self.id_iva][0].denominazione_breve or ""
+            except:
+                return AliquotaIva().getRecord(id=self.id_iva).denominazione_breve or ""
         else:
             return ""
     aliquota = property(_getAliquotaIva)
