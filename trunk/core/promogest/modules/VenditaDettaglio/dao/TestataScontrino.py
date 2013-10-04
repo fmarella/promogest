@@ -136,7 +136,7 @@ class TestataScontrino(Dao):
         elif k == 'idPuntoCassa':
             dic = {k: t_testata_scontrino.c.id_pos == v}
         elif k== 'idArticolo':
-            dic = {k: and_(t_testata_scontrino.c.id==riga_scontrinoo.c.id_testata_scontrino, t_riga_scontrino.c.id_articolo==v)}
+            dic = {k: and_(t_testata_scontrino.c.id==riga_scontrino.c.id_testata_scontrino, t_riga_scontrino.c.id_articolo==v)}
         elif k=='idArticoloList':
             dic={ k :and_(t_testata_scontrino.c.id==riga_scontrinoo.c.id_testata_scontrino, t_riga_scontrino.c.id_articolo.in_(v))}
         elif k=='idCliente':

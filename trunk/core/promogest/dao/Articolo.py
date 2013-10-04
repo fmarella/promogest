@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2013 by Promotux
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -24,8 +24,6 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
 
-
-#print " VEDIAMOOOOOOOOOOOOOOOOOOOOOOOO", params["schema"], fk_prefix, fk_prefix_main
 
 try:
     t_articolo = Table('articolo', meta, schema=params["schema"], autoload=True)
@@ -837,10 +835,6 @@ def getNuovoCodiceArticolo(idFamiglia=None):
         05/03/2011: rivista e semplificata, forse troppo però adesso
         è velocissima
     """
-
-    lunghezzaProgressivo = 0
-    lunghezzaCodiceFamiglia = 0
-    numeroFamiglie = 0
     codice = ''
     try:
         art = session.query(Articolo.codice).order_by(desc(Articolo.id))\
