@@ -255,7 +255,7 @@ userdata = ["", "", "", user]
 
 def handleEngine():
     engine = None
-    print "TIPO DBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB",tipodb
+    print "TIPO DB",tipodb
     if tipodb == "sqlite":
         azienda = None
         mainSchema = None
@@ -382,7 +382,6 @@ else:
     fk_prefix = ""
     fk_prefix_main = ""
 
-#print "PARAMSSSSSSSSSSSSSSSSSSSSS", params, fk_prefix, fk_prefix_main
 
 if not preEnv.web:
     pg2log = pg_log()
@@ -417,6 +416,9 @@ def hook(et, ev, eb):
     if "ArgumentError" in str(ev):
         delete_pickle()
         return
+    if "InvalidRequestError: This Session's transaction has been rolled back due to a previous exception during flush" in str(ev):
+        from promogest.lib.utils import messageError
+        messageError(msg="Si consiglia di riavviare il software, l'errore è stato segnalato")
 
     pg2log.info("\n  ".join(["Error occurred: traceback follows"] + list(traceback.format_exception(et, ev, eb))))
     print "\n  ".join(list(traceback.format_exception(et, ev, eb)))
@@ -431,7 +433,7 @@ print "SQLALCHEMY VERSION", sqlalchemy.__version__
 if os.name=="nt" and sqlalchemy.__version__ < "0.7":
     delete_pickle()
     from setuptools.command import easy_install
-    easy_install.main( ["-U","sqlalchemy==0.7.8"] )
+    easy_install.main( ["-U","sqlalchemy"] )
     sys.exit()
 
 #try:
