@@ -1330,7 +1330,10 @@ class TestataDocumento(Dao):
                 dic = {k:t_testata_documento.c.operazione.in_(Environment.solo_vendita)}
             elif v == "tutti_acquisto":
                 dic = {k:t_testata_documento.c.operazione.in_(Environment.solo_acquisto)}
-
+        elif k == 'descrizioneRiga':
+            dic = {k: and_(Riga.descrizione.ilike("%"+v+"%"),
+                    Riga.id==RigaDocumento.id,
+                    RigaDocumento.id_testata_documento == TestataDocumento.id)}
 
         elif k == 'idArticoloMov' or k == "idArticolo":
             dic = {k: and_(v ==Riga.id_articolo,

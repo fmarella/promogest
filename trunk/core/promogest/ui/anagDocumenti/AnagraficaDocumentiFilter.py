@@ -122,6 +122,7 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         self.da_numero_filter_entry.set_text('')
         self.a_numero_filter_entry.set_text('')
         self.protocollo_entry.set_text('')
+        self.descrizione_riga_entry.set_text("")
         self.id_pagamento_filter_combobox.set_active(-1)
         self.id_operazione_filter_combobox.set_active(0)
         if hasattr(self._anagrafica,"_magazzinoFissato") and not self._anagrafica._magazzinoFissato:
@@ -160,6 +161,7 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         daNumero = prepareFilterString(self.da_numero_filter_entry.get_text())
         aNumero = prepareFilterString(self.a_numero_filter_entry.get_text())
         protocollo = prepareFilterString(self.protocollo_entry.get_text())
+        descrizioneRiga = self.descrizione_riga_entry.get_text()
         idOperazione = prepareFilterString(findIdFromCombobox(self.id_operazione_filter_combobox))
         stringaOpe = findStrFromCombobox(self.id_operazione_filter_combobox,2)
         extra = None
@@ -213,6 +215,7 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
                             "idAgente":idAgente,
                             "statoDocumento":statoDocumento,
                             "soloContabili":soloContabili,
+                            "descrizioneRiga": descrizioneRiga,
                             "extra":extra}
 
         if posso("GN"):
@@ -240,7 +243,7 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         # Let's save the current search as a closure
         def filterClosure(offset, batchSize):
             """ questo trucchetto su idArticolo è stato necessario perchè
-            l'articolo puà essere sia in righe documento che in righe movimento
+            l'articolo può essere sia in righe documento che in righe movimento
             e la query "percorre strade" diverse che unite in una sola query
             con "OR_" anche se con i join diventava molto lenta,
             così invece sembra non perdere in velocità """

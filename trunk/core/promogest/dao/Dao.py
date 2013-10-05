@@ -81,7 +81,7 @@ class Dao(object):
                 filter1 = complexFilter
             else:
                 filter2= self.prepareFilter(kwargs)
-        filter = and_(filter1,filter2)
+        __filter__ = and_(filter1,filter2)
 
         if self.campi:
             self.record= self._session.query(Azienda.schemaa)
@@ -90,8 +90,8 @@ class Dao(object):
         if sqlalchemy.__version__ > '0.6':
             if join is not None:
                 self.record = self.record.join(join)
-            if filter is not None:
-                self.record = self.record.filter(filter)
+            if __filter__ is not None:
+                self.record = self.record.filter(__filter__)
             if orderBy is not None:
                 self.record = self.record.order_by(orderBy)
             if batchSize is not None:
@@ -330,26 +330,25 @@ class Dao(object):
         """
         filter_parameters = []
         for key,value in kwargs.items():
-            if str(key).upper() =="filterDict".upper():
+            if str(key).upper() == "filterDict".upper():
                 for k,v in value.items():
                     if v is not None:
-                        if type(v)==list:
-                            filter_parameters.append((v,k,"Lista"))
+                        if type(v) == list:
+                            filter_parameters.append((v, k, "Lista"))
                         else:
-                            filter_parameters.append((v,k,"s"))
+                            filter_parameters.append((v, k, "s"))
             else:
-                if type(value)==list:
+                if type(value) == list:
                     filter_parameters.append((value,key,"Lista"))
-                elif type(value) ==bool:
-                    filter_parameters.append((bool(value),key,"s"))
+                elif type(value) == bool:
+                    filter_parameters.append((bool(value), key, "s"))
                 elif value:
-                    filter_parameters.append((value,key,"s"))
+                    filter_parameters.append((value, key, "s"))
         if filter_parameters != []:
             if debugFilter:
                 print "FILTER PARAM:",self._DaoModule.__name__, filter_parameters
-            filter = self.getFilter(filter_parameters)
-            return filter
-        return
+            __filter__ = self.getFilter(filter_parameters)
+            return __filter__
 
     def getFilter(self,filter_parameters):
         """ Send the filter dict to the function """
