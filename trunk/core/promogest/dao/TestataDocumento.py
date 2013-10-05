@@ -1310,15 +1310,15 @@ class TestataDocumento(Dao):
         elif k =='protocollo':
             dic = {k:t_testata_documento.c.protocollo.ilike("%"+v+"%")}
         elif k == 'idOperazione':
-            dic = {k:t_testata_documento.c.operazione == v}
+            dic = {k: t_testata_documento.c.operazione == v}
         elif k == 'idPagamento':
-            dic = {k:t_testata_documento.c.id_pagamento == v}
+            dic = {k: t_testata_documento.c.id_pagamento == v}
         elif k == 'soloContabili':
-            dic = {k:t_testata_documento.c.operazione.in_(contabili)}
+            dic = {k: t_testata_documento.c.operazione.in_(contabili)}
         elif k == 'idCliente':
-            dic = {k:t_testata_documento.c.id_cliente == v}
-        elif k=='idClienteList':
-            dic={ k :t_testata_documento.c.id_cliente.in_(v)}
+            dic = {k: t_testata_documento.c.id_cliente == v}
+        elif k == 'idClienteList':
+            dic = {k: t_testata_documento.c.id_cliente.in_(v)}
         elif k == 'idFornitore':
             dic = {k:t_testata_documento.c.id_fornitore == v}
         elif k == 'idAgente':

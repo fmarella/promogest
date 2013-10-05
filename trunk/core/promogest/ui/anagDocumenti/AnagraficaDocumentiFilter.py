@@ -28,6 +28,7 @@ from promogest.ui.gtk_compat import *
 from promogest.ui.AnagraficaComplessaFilter import AnagraficaFilter
 from promogest.lib.utils import *
 from promogest.dao.TestataDocumento import TestataDocumento
+from promogest.dao.Cliente import Cliente
 import datetime
 from promogest.ui.Ricerca import Ricerca
 from promogest.ui.utilsCombobox import *
@@ -73,6 +74,17 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         except:
             pass
         self.clear()
+        self.altri_filtri_frame.hide()
+
+    def on_altri_filtri_togglebutton_toggled(self, button):
+        if button.get_active():
+            self.position = self._anagrafica.anagrafica_hpaned.get_position()
+            self._anagrafica.anagrafica_hpaned.set_position(self.position+300)
+            self.altri_filtri_frame.show()
+        else:
+            self.altri_filtri_frame.hide()
+            self._anagrafica.anagrafica_hpaned.set_position(self.position)
+
 
 
     def _reOrderBy(self, column):
@@ -129,6 +141,9 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
             self.a_data_fine_noleggio_filter_entry.set_text('')
             self.da_data_fine_noleggio_filter_entry.set_text('')
         self.id_articolo_filter_customcombobox.set_active(0)
+        fillComboboxCategorieClienti(
+                        self.id_categoria_cliente_filter_combobox, True)
+        self.id_categoria_cliente_filter_combobox.set_active(0)
         self.refresh()
 
     def refresh(self, funzione=None):
@@ -159,6 +174,15 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         idFornitore = self.id_fornitore_filter_customcombobox.getId()
         idPagamento = findIdFromCombobox(self.id_pagamento_filter_combobox)
         idAgente = self.id_agente_filter_customcombobox._id
+        idCategoriaCliente = findIdFromCombobox(self.id_categoria_cliente_filter_combobox)
+        idCatClis = []
+        if idCategoriaCliente:
+            test = Cliente("id").select(idCategoria=idCategoriaCliente, batchSize=None)
+            idCatClis = [x.id for x in test]
+            if idCatClis:
+                idCliente = idCatClis
+
+
         if self.tutto_radio.get_active():
             statoDocumento = None
         elif self.saldato_radio.get_active():
