@@ -823,15 +823,21 @@ class GestioneInventario(RicercaComplessaArticoli):
         buttonVenditaMedio.connect('clicked', self.on_buttonVenditaMedio_clicked)
         buttonVenditaDaListino = gtk.Button(label = 'Prezzo da listino\n di vendita')
         buttonVenditaDaListino.connect('clicked', self.on_buttonVenditaDaListino_clicked)
+        buttonClose = gtk.Button(label = 'Chiudi')
+        buttonClose.connect('clicked', self.on_buttonClose_clicked, dialog)
         dialog.get_action_area().pack_start(buttonAcquistoUltimo, True, True, 0)
         dialog.get_action_area().pack_start(buttonVenditaUltimo, True, True, 0)
         dialog.get_action_area().pack_start(buttonAcquistoMedio, True, True, 0)
         dialog.get_action_area().pack_start(buttonVenditaMedio, True, True, 0)
         dialog.get_action_area().pack_start(buttonVenditaDaListino, True, True, 0)
-
+        dialog.get_action_area().pack_start(buttonClose, True, True, 0)
         dialog.show_all()
-        result = dialog.run()
+        dialog.run()
         dialog.destroy()
+
+    def on_buttonClose_clicked(self, button, dialog):
+        dialog.destroy()
+
 
     def on_buttonVenditaDaListino_clicked(self, button):
         if self.confermaValorizzazione():
@@ -887,29 +893,29 @@ class GestioneInventario(RicercaComplessaArticoli):
         EXECUTE sql_statement;
         sql_statement:= \'UPDATE inventario SET valore_unitario = (SELECT prezzo FROM valorizzazione_tmp T WHERE inventario.id_magazzino = T.id_magazzino AND inventario.id_articolo = T.id_articolo) WHERE anno = \' || _anno || \' AND (valore_unitario IS NULL OR valore_unitario = 0)\';
         EXECUTE sql_statement;"""
+
+        print " INIZIAMO DA QUI" ,self.confermaValorizzazione()
         if self.confermaValorizzazione():
             idMagazzino = findIdFromCombobox(self.additional_filter.id_magazzino_filter_combobox2)
             sel = Inventario().select(anno=self.annoScorso,
                                     idMagazzino=idMagazzino, batchSize=None)
             for s in sel:
-#                print  s.id_articolo
-                if s.quantita >0:
-#                    print s.quantita
-                    righeArticoloMovimentate = Environment.params["session"]\
-                        .query(RigaMovimento.valore_unitario_netto, func.max(TestataMovimento.data_movimento))\
-                        .join(TestataMovimento, Articolo)\
+                print  s.id_articolo
+                if s.quantita >0: #.join(TestataMovimento, Articolo)\
+                    righeArticoloMovimentate = Environment.session\
+                        .query(func.max(RigaMovimento.valore_unitario_netto), func.max(TestataMovimento.data_movimento))\
+                        .join(TestataMovimento,RigaMovimento)\
                         .filter(TestataMovimento.data_movimento.between(datetime.date(int(self.annoScorso),1, 1), datetime.date(int(self.annoScorso), 12, 31)))\
                         .filter(RigaMovimento.id_testata_movimento == TestataMovimento.id)\
-                        .filter(TestataMovimento.operazione.ilike("%acquisto%"))\
+                        .filter(Operazione.denominazione.ilike("%acquisto%"))\
                         .filter(Riga.id_magazzino==idMagazzino)\
                         .filter(Riga.id_articolo==s.id_articolo)\
                         .filter(Riga.valore_unitario_netto!=0)\
                         .all()
-
                     if righeArticoloMovimentate and righeArticoloMovimentate[0][0]:
                         s.valore_unitario = righeArticoloMovimentate[0][0]
                         Environment.params['session'].add(s)
-#            print "VALORIZZA"
+            print "VALORIZZA"
             Environment.params['session'].commit()
             self.refresh()
             self.fineElaborazione()
