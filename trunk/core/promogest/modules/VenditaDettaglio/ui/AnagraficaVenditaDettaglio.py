@@ -1158,8 +1158,8 @@ class AnagraficaVenditaDettaglio(GladeWidget):
                             str(prezzoScontato),
                             str(quantita),
                             self.rowBackGround,
-                             self.rowBoldFont),
-                             str(quantita*prezzoScontato))
+                            self.rowBoldFont,
+                            str(mN(quantita * prezzoScontato,2))))
 
         notEmpty = (len(model) > 0)
         self.total_button.set_sensitive(notEmpty)

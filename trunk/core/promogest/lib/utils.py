@@ -2513,6 +2513,11 @@ def mN(value, decimal=None):
 
     if not value or value == '' or value == "None":
         return Decimal(0)
+    #negativo = False
+    #if "-" in str(value):
+        #negativo = True
+        #value = value*-1
+
     value = deItalianizza(value)
     if decimal >= 0:
         precisione = decimal
@@ -2523,6 +2528,8 @@ def mN(value, decimal=None):
     else:
         decimals = Decimal(10) ** - (precisione)
     newvalue= Decimal(str(value).strip()).quantize(Decimal(decimals), rounding=ROUND_HALF_UP)
+    #if negativo:
+        #newvalue = newvalue*-1
     return newvalue
 
 
@@ -2542,7 +2549,6 @@ def mNLC(value,decimal=None, curr="€ "):
         curr = u"€"
         dp=","
         sep="."
-    #print "CUUUUUUUUUUUUUUUUUUUUUUUURRRRRRRRRRRRRRRRRRRRRRRR", u"€"
     return italianizza(value, decimal=decimal,curr=curr+" ", dp=dp, sep=sep)
 
 
@@ -2564,6 +2570,7 @@ def deItalianizza(value):
             value = value.replace(",", ".")
         elif "," in str(value):
             value = value.replace(",", ".")
+        value = value.replace(" ", "")
     return value
 
 
