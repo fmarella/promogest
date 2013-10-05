@@ -25,7 +25,8 @@
 
 from promogest.ui.AnagraficaComplessaFilter import AnagraficaFilter
 from promogest import Environment
-from promogest.dao.daoAgenti.Agente import Agente, getNuovoCodiceAgente
+from promogest.dao.daoAgenti.Agente import Agente
+from promogest.dao.PersonaGiuridica import PersonaGiuridica_
 from promogest.lib.utils import *
 from promogest.ui.utilsCombobox import *
 from promogest.ui.Ricerca import Ricerca
