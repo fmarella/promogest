@@ -44,6 +44,7 @@ class UpdateDialog(GladeWidget):
         self._rev_locale = None
         self._rev_remota = None
         self.__stop = False
+        self.__aggiornato=False
 
     def aggiornaLabel(self):
 
@@ -128,10 +129,8 @@ class UpdateDialog(GladeWidget):
                 data.msg_label.set_text("Ripristino completato, riavviare PromoGest.")
             else:
                 data.update_progress_bar.set_fraction(1.0)
-                data.msg_label.set_text("Aggiornamento eseguito con successo, riavviare PromoGest.")
+                data.msg_label.set_text("Aggiornamento eseguito con successo, riavvio.")
                 data.cancel_button.set_sensitive(True)
-                import sys
-                sys.exit(0)
 
         def refreshUI():
             if self.__stop:
@@ -154,6 +153,9 @@ class UpdateDialog(GladeWidget):
 
     def on_update_button_clicked(self, widget):
         self.sync()
+        self.__aggiornato=True
 
     def on_cancel_button_clicked(self, widget):
         self.update_progress_dialog.destroy()
+        if self.__aggiornato:
+            Environment.restart_program()

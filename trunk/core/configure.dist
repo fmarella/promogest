@@ -1,10 +1,10 @@
 [Database]
 user = promoadmin
-password = admin
-host = db.promotux.it
+password = cambiare
+host = cambiare
 port = 5432
-database = promogest_demo2
-azienda= AziendaDemo
+database = OneBasic
+azienda= OneBasic
 tipodb = sqlite
 pw = No
 [RuoliAzioni]

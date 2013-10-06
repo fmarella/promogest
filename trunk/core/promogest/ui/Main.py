@@ -164,7 +164,10 @@ class Main(GladeWidget):
 #            self.whatcant_button.destroy()
             self.test_promowear_button.destroy()
             self.test_promoshop_button.destroy()
-        self.addNoteBookPage()
+        try:
+            self.addNoteBookPage()
+        except:
+            print " QUALCOSA NELL'AGGIUNTA DEI TAB NON E? ANDATO A BUON FINE"
         self.updates()
 
     def show(self):
@@ -1102,20 +1105,15 @@ promogest2 IN /HOME/NOMEUTENTE/ O IN C:/UTENTI/NOMEUTENTE""")
             showAnagrafica(self.getTopLevel(), anag)
 
     def on_test_promowear_button_clicked(self, button):
-        msg = _("""ATTENZIONE!!
+        msg = _("""
 QUESTA FUNZIONALITÀ È STATA AGGIUNTA PER
-PERMETTERE DI PROVARE IL PROMOGEST ONE BASIC CON
-IL MODULO TAGLIA E COLORE PROMOWEAR
-QUESTO MODULO SERVE A CHI DEVE GESTIRE
-UNA ATTIVITÀ CHE MOVIMENTA E VENDE
-ABBIGLIAMENTO O CALZATURE.
-L'OPERAZIONE È IRREVERSIBILE,AGGIUNGE DIVERSE
-TABELLE NEL DATABASE E NUOVE INTERFACCE UTENTE
-DEDICATE,NON CAUSA PERDITA DI DATI
-MA NON È CONSIGLIATO FARLO SE NON
-NE AVETE BISOGNO
+PROVARE IL PROMOWEAR
+QUESTO MODULO TAGLIA E COLORE SERVE A CHI DEVE GESTIRE
+UNA ATTIVITÀ CHE MOVIMENTA E VENDE ABBIGLIAMENTO E/O CALZATURE.
+L'OPERAZIONE È IRREVERSIBILE,NON CAUSA PERDITA DI DATI
+MA ATTIVATELO SOLO SE NE AVETE BISOGNO
 
-Procedere all'installazione del modulo PromoWear? """)
+Procedo all'installazione del modulo PromoWear? """)
         if not YesNoDialog(msg=msg, transient=self.getTopLevel()):
             return
         if not hasattr(Environment.conf,"PromoWear"):
@@ -1126,19 +1124,17 @@ Procedere all'installazione del modulo PromoWear? """)
         tables = [t.name for t in Environment.params["metadata"].sorted_tables]
         if "colore" not in tables and "taglia" not in tables:
             from promogest.modules.PromoWear.data.PromoWearDB import *
-            msg = _(" TABELLE AGGIUNTE, RIAVVIARE IL PROGRAMMA ")
-            messageInfo(msg=msg)
+            messageInfo(msg=_(" MODULO ATTIVATO, RIAVVIARE IL PROGRAMMA! "))
+            Environment.delete_pickle()
         else:
-            msg= _("PULSANTE DI TEST GIA' PREMUTO")
+            msg= _("MODULO GIA' ATTIVATO")
             messageInfo(msg=msg, transient=self.getTopLevel())
 
 
     def on_test_promoshop_button_clicked(self, button):
         from promogest.dao.Setconf import SetConf
-        msg = _("""ATTENZIONE!!
-QUESTA FUNZIONALITÀ È STATA AGGIUNTA PER
-PERMETTERE DI PROVARE IL PROMOGEST ONE BASIC CON
-IL MODULO VENDITA DETTAGLIO
+        msg = _("""
+STAI PER PROVARE IL MODULO VENDITA DETTAGLIO o PROMOSHOP
 
 Procedo all'installazione del modulo PromoShop? """)
         if not YesNoDialog(msg=msg, transient=self.getTopLevel()):

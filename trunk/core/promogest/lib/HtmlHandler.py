@@ -322,6 +322,8 @@ def renderHTML(widget, html):
             widget.set_settings(c)
         except:
             print " VERSIONE DI WEBKIT NON AGGIORNATA... KARMIC?"
+        #widget.load_string( html,"text/html", "UTF-8","file:///"+sys.path[0]+os.sep)
+        # quella qui sopra è la versione compatibile da usare in futuro
         widget.load_html_string(html, "file:///"+sys.path[0]+os.sep)
         widget.show()
     else:

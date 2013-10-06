@@ -252,6 +252,12 @@ preEnv.tipodb = tipodb
 SUB = ""
 userdata = ["", "", "", user]
 
+def restart_program():
+    """Restarts the current program.
+    Note: this function does not return. Any cleanup action (like
+    saving data) must be done before calling this function."""
+    python = sys.executable
+    os.execl(python, python, * sys.argv)
 
 def handleEngine():
     engine = None
@@ -332,6 +338,7 @@ def delete_pickle():
     if os.path.exists(str(os.path.join(promogestDir.replace("_",""),meta_pickle.replace("_","")).strip())):
         os.remove(str(os.path.join(promogestDir.replace("_",""),meta_pickle.replace("_","")).strip()))
         print "\n\n\n\nHO CANCELLATO IL FILE PICKLE QUASI SICURAMENTE BISOGNA RILANCIARE\n\n\n\n"
+        restart_program()
         #sys.exit()
 
 def usePickleToMeta():
@@ -479,3 +486,4 @@ package = ["ONE BASIC", "ONE FULL", "ONE STANDARD",
             "PRO BASIC", "PRO STANDARD",
             "PRO FULL", "ONE PROMOWEAR", "ONE PROMOSHOP",
             "PRO PROMOWEAR", "PRO PROMOSHOP"]
+

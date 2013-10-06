@@ -35,10 +35,17 @@ class Colore(Dao):
             "denominazione": colore.c.denominazione==v}
         return  dic[k]
 
-colore=Table('colore',
+try:
+    colore=Table('colore',
            params['metadata'],
            schema = params['schema'],
            autoload=True)
+    std_mapper = mapper(Colore, colore, properties={},
+            order_by=colore.c.denominazione)
+except:
+    conf.PromoWear.primoavvio = "yes"
+    conf.PromoWear.mod_enable="no"
+    conf.save()
+    delete_pickle()
 
-std_mapper = mapper(Colore, colore, properties={},
-        order_by=colore.c.denominazione)
+
