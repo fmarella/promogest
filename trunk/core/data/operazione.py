@@ -27,7 +27,7 @@ from promogest.Environment import *
 
 t_operazione = Table('operazione', params["metadata"],
         Column('denominazione', String(100), primary_key=True),
-        Column('segno',String(3), nullable=True),
+        Column('segno', String(3), nullable=True),
         Column('fonte_valore', String(50), nullable=True),
         Column('tipo_persona_giuridica', String(50), nullable=True),
         Column('tipo_operazione', String(50), nullable=True),
@@ -36,8 +36,8 @@ t_operazione = Table('operazione', params["metadata"],
 t_operazione.create(checkfirst=True)
 
 
-s= select([t_operazione.c.denominazione]).execute().fetchall()
-if (u'Fattura vendita',) not in s or s ==[]:
+s = select([t_operazione.c.denominazione]).execute().fetchall()
+if (u'Fattura vendita',) not in s or s == []:
     tipo = t_operazione.insert()
     tipo.execute(denominazione='Fattura vendita', segno='-', fonte_valore='vendita_senza_iva', tipo_persona_giuridica='cliente' )
     tipo.execute(denominazione='Fattura acquisto', segno='+', fonte_valore='acquisto_senza_iva', tipo_persona_giuridica='fornitore' )

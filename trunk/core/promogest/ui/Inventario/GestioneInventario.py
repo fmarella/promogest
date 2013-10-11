@@ -30,6 +30,8 @@ from promogest import Environment
 from promogest.dao.Operazione import Operazione
 from promogest.dao.Inventario import Inventario
 from promogest.dao.TestataMovimento import TestataMovimento
+from promogest.dao.TestataDocumento import TestataDocumento
+from promogest.dao.RigaDocumento import RigaDocumento
 from promogest.dao.RigaMovimento import RigaMovimento
 from promogest.dao.Riga import Riga
 from promogest.dao.Magazzino import Magazzino
@@ -894,27 +896,42 @@ class GestioneInventario(RicercaComplessaArticoli):
         sql_statement:= \'UPDATE inventario SET valore_unitario = (SELECT prezzo FROM valorizzazione_tmp T WHERE inventario.id_magazzino = T.id_magazzino AND inventario.id_articolo = T.id_articolo) WHERE anno = \' || _anno || \' AND (valore_unitario IS NULL OR valore_unitario = 0)\';
         EXECUTE sql_statement;"""
 
-        print " INIZIAMO DA QUI" ,self.confermaValorizzazione()
         if self.confermaValorizzazione():
             idMagazzino = findIdFromCombobox(self.additional_filter.id_magazzino_filter_combobox2)
             sel = Inventario().select(anno=self.annoScorso,
                                     idMagazzino=idMagazzino, batchSize=None)
             for s in sel:
-                print  s.id_articolo
-                if s.quantita >0: #.join(TestataMovimento, Articolo)\
-                    righeArticoloMovimentate = Environment.session\
-                        .query(func.max(RigaMovimento.valore_unitario_netto), func.max(TestataMovimento.data_movimento))\
-                        .join(TestataMovimento,RigaMovimento)\
-                        .filter(TestataMovimento.data_movimento.between(datetime.date(int(self.annoScorso),1, 1), datetime.date(int(self.annoScorso), 12, 31)))\
-                        .filter(RigaMovimento.id_testata_movimento == TestataMovimento.id)\
-                        .filter(Operazione.denominazione.ilike("%acquisto%"))\
-                        .filter(Riga.id_magazzino==idMagazzino)\
-                        .filter(Riga.id_articolo==s.id_articolo)\
-                        .filter(Riga.valore_unitario_netto!=0)\
-                        .all()
-                    if righeArticoloMovimentate and righeArticoloMovimentate[0][0]:
-                        s.valore_unitario = righeArticoloMovimentate[0][0]
-                        Environment.params['session'].add(s)
+                righeArticoloMovimentateMov = Environment.params["session"]\
+                    .query(Riga.valore_unitario_netto, TestataMovimento.data_movimento,TestataMovimento.operazione)\
+                    .filter(Riga.id_articolo==s.id_articolo)\
+                    .filter(Riga.id==RigaMovimento.id)\
+                    .filter(Riga.id_magazzino==idMagazzino)\
+                    .filter(RigaMovimento.id_testata_movimento == TestataMovimento.id)\
+                    .filter(TestataMovimento.data_movimento.between(datetime.date(self.annoScorso,1, 1), datetime.date(self.annoScorso, 12, 31)))\
+                    .filter(TestataMovimento.operazione.ilike("%acquisto%"))\
+                    .filter(Riga.valore_unitario_netto!=0)\
+                    .all()
+
+                righeArticoloMovimentateDoc = Environment.params["session"]\
+                    .query(Riga.valore_unitario_netto, TestataDocumento.data_documento, TestataDocumento.operazione)\
+                    .filter(Riga.id_articolo==s.id_articolo)\
+                    .filter(Riga.id==RigaDocumento.id)\
+                    .filter(Riga.id_magazzino==idMagazzino)\
+                    .filter(RigaDocumento.id_testata_documento == TestataDocumento.id)\
+                    .filter(TestataDocumento.data_documento.between(datetime.date(self.annoScorso,1, 1), datetime.date(self.annoScorso, 12, 31)))\
+                    .filter(TestataDocumento.operazione.ilike("%acquisto%"))\
+                    .filter(Riga.valore_unitario_netto!=0)\
+                    .all()
+
+
+
+                righeArticoloMovimentate = righeArticoloMovimentateDoc+righeArticoloMovimentateMov
+                righeArticoloMovimentate.sort(key=lambda x: x[1], reverse=True)
+
+                if righeArticoloMovimentate and righeArticoloMovimentate[0][0]:
+                    s.valore_unitario = righeArticoloMovimentate[0][0]
+                    Environment.params['session'].add(s)
+
             print "VALORIZZA"
             Environment.params['session'].commit()
             self.refresh()
