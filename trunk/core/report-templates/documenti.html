@@ -22,9 +22,9 @@
                 <td style="width:100px;text-align:center;font-size:10px;">{{dao.operazione}}</td>
                 <td style="width:80px;text-align:center;font-size:10px;" class="detail">{{utils.dateToString(dao.data_documento)}}</td>
                 <td style="width:350px;text-align:left;font-size:10px;" class="detail">{{dao.intestatario}}</td>
-                <td style="width:70px;text-align:right;font-size:10px;" class="detail">{{utils.mNLC(dao._totaleImponibile,2)}}</td>
-                <td style="width:70px;text-align:right;font-size:10px;"class="detail">{{utils.mNLC(dao._totaleImposta,2)}}</td>
-                <td style="width:70px;text-align:right;font-size:10px;" class="detail">{{utils.mNLC(dao._totaleNonScontato,2)}}</td>
+                <td style="width:70px;text-align:right;font-size:10px;" class="detail">{{utils.mNLC(dao._totaleImponibileScontato,2)}}</td>
+                <td style="width:70px;text-align:right;font-size:10px;"class="detail">{{utils.mNLC(dao._totaleImpostaScontata,2)}}</td>
+                <td style="width:70px;text-align:right;font-size:10px;" class="detail">{{utils.mNLC(dao._totaleScontato,2)}}</td>
                 {% if dao.documento_saldato == True %}
                     <td style="width:70px;text-align:right;font-size:10px;" class="detail">{{utils.mNLC(0,2)}}</td>
                     <td style="width:70px;text-align:right;font-size:10px;" class="detail">{{utils.mNLC(dao._totaleScontato,2)}}</td>
@@ -41,21 +41,21 @@
             <table style="width:360px;">
             {% set tot = utils.calcolaTotali(pageData["objects"]) %}
             {% for k, v in tot['imponibile_aliquote'].items() %}
-	            <tr>
-	                <th style="width:200px;text-align:left;font-size:12px" >IMPONIBILE Aliquota {{ utils.mN(k, 0) }}%</th>
-	                <td style="width:120px;text-align:right;font-size:12px" ><b>{{utils.mNLC(v, 2)}}</b></td>
-	            </tr>
-			{% endfor %}
+                <tr>
+                    <th style="width:200px;text-align:left;font-size:12px" >IMPONIBILE Aliquota {{ utils.mN(k, 0) }}%</th>
+                    <td style="width:120px;text-align:right;font-size:12px" ><b>{{utils.mNLC(v, 2)}}</b></td>
+                </tr>
+            {% endfor %}
             <tr>
                 <th style="width:200px;text-align:left;font-size:12px" >IMPONIBILE. NON SCONTATO.</th>
                 <td style="width:120px;text-align:right;font-size:12px" ><b>{{utils.mNLC(tot["totale_imponibile_non_scontato"],2)}}</b></td>
             </tr>
             {% for k, v in tot['imposta_aliquote'].items() %}
-	            <tr>
-	                <th style="width:200px;text-align:left;font-size:12px" >IMPOSTA Aliquota {{ utils.mN(k, 0) }}%</th>
-	                <td style="width:120px;text-align:right;font-size:12px" ><b>{{utils.mNLC(v, 2)}}</b></td>
-	            </tr>
-			{% endfor %}
+                <tr>
+                    <th style="width:200px;text-align:left;font-size:12px" >IMPOSTA Aliquota {{ utils.mN(k, 0) }}%</th>
+                    <td style="width:120px;text-align:right;font-size:12px" ><b>{{utils.mNLC(v, 2)}}</b></td>
+                </tr>
+            {% endfor %}
             <tr>
                 <th style="width:200px;text-align:left;font-size:12px">IMPOSTA NON SCONTATA</th>
                 <td style="width:120px;text-align:right;font-size:12px"><b>{{utils.mNLC(tot["totale_imposta_non_scontata"],2)}}</b></td>
