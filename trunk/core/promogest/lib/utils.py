@@ -2727,6 +2727,7 @@ def calcolaTotali(daos, pbarr=None, onlypag=True):
     totale_scontato = 0
     totale_sospeso = 0
     totale_pagato = 0
+    totale_sconto = 0
     numero_documenti = 0
 
     _cast_imponibile = {}
@@ -2839,7 +2840,8 @@ def calcolaTotali(daos, pbarr=None, onlypag=True):
         "totale_sospeso": totale_sospeso,
         "imponibile_aliquote": _cast_imponibile,
         "imposta_aliquote": _cast_imposta,
-        "numero_documenti": numero_documenti
+        "numero_documenti": numero_documenti,
+        "totale_sconto": totale_non_scontato - totale_scontato
                         }
     return totaliGenerali
 
