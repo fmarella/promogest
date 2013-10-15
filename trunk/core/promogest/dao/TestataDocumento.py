@@ -777,12 +777,14 @@ class TestataDocumento(Dao):
 
                 stringa = "%s %s - %s Rif.interni N.%s " %(self.operazione, self.protocollo, \
                     dateToString(self.data_documento), str(self.numero))
-                if ope["segno"] == "-":
+                if ope["denominazione"] in Environment.solo_vendita:
                     stringa += 'a '
                     segno = "entrata"
-                else:
+                elif ope["denominazione"] in Environment.solo_acquisto:
                     stringa += 'da '
                     segno = "uscita"
+                else:  # FIXME: non mi piace molto
+                    segno = "entrata"
                 str_importo_doc = "Importo doc. %s " % mN(self.totale_sospeso + self.totale_pagato, 2)
                 stringa += "%s \n%s%s, %s" %(self.intestatario, str_importo_doc, self._getPI_CF(), tipo_pag)
 

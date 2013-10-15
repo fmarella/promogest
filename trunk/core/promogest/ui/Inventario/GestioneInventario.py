@@ -958,16 +958,32 @@ class GestioneInventario(RicercaComplessaArticoli):
             sel = Inventario().select(anno=self.annoScorso,
                         idMagazzino=idMagazzino, batchSize=None)
             for s in sel:
-                righeArticoloMovimentate = Environment.params["session"]\
-                    .query(func.max(RigaMovimento.valore_unitario_netto), func.max(TestataMovimento.data_movimento))\
-                    .join(TestataMovimento, Articolo)\
-                    .filter(TestataMovimento.data_movimento.between(datetime.date(int(self.annoScorso), 1, 1), datetime.date(int(self.annoScorso), 12, 31)))\
-                    .filter(RigaMovimento.id_testata_movimento == TestataMovimento.id)\
-                    .filter(Operazione.segno=="-")\
-                    .filter(Riga.id_magazzino==idMagazzino)\
+                righeArticoloMovimentateMov = Environment.params["session"]\
+                    .query(Riga.valore_unitario_netto, TestataMovimento.data_movimento,TestataMovimento.operazione)\
                     .filter(Riga.id_articolo==s.id_articolo)\
+                    .filter(Riga.id==RigaMovimento.id)\
+                    .filter(Riga.id_magazzino==idMagazzino)\
+                    .filter(RigaMovimento.id_testata_movimento == TestataMovimento.id)\
+                    .filter(TestataMovimento.data_movimento.between(datetime.date(self.annoScorso,1, 1), datetime.date(self.annoScorso, 12, 31)))\
+                    .filter(TestataMovimento.operazione.in_(Environment.solo_vendita_completo))\
                     .filter(Riga.valore_unitario_netto!=0)\
                     .all()
+
+                righeArticoloMovimentateDoc = Environment.params["session"]\
+                    .query(Riga.valore_unitario_netto, TestataDocumento.data_documento, TestataDocumento.operazione)\
+                    .filter(Riga.id_articolo==s.id_articolo)\
+                    .filter(Riga.id==RigaDocumento.id)\
+                    .filter(Riga.id_magazzino==idMagazzino)\
+                    .filter(RigaDocumento.id_testata_documento == TestataDocumento.id)\
+                    .filter(TestataDocumento.data_documento.between(datetime.date(self.annoScorso,1, 1), datetime.date(self.annoScorso, 12, 31)))\
+                    .filter(TestataDocumento.operazione.in_(Environment.solo_vendita_completo))\
+                    .filter(Riga.valore_unitario_netto!=0)\
+                    .all()
+
+
+
+                righeArticoloMovimentate = righeArticoloMovimentateDoc+righeArticoloMovimentateMov
+                righeArticoloMovimentate.sort(key=lambda x: x[1], reverse=True)
                 if righeArticoloMovimentate and righeArticoloMovimentate[0][0]:
                     s.valore_unitario = righeArticoloMovimentate[0][0]
                     Environment.params['session'].add(s)
@@ -995,16 +1011,28 @@ class GestioneInventario(RicercaComplessaArticoli):
             sel = Inventario().select(anno=self.annoScorso,
                         idMagazzino=idMagazzino, batchSize=None)
             for s in sel:
-                righeArticoloMovimentate = Environment.params["session"]\
+                righeArticoloMovimentateMov = Environment.params["session"]\
                     .query(func.avg(RigaMovimento.valore_unitario_netto))\
-                    .join(TestataMovimento, Articolo)\
-                    .filter(TestataMovimento.data_movimento.between(datetime.date(int(self.annoScorso), 1, 1), datetime.date(int(self.annoScorso), 12, 31)))\
-                    .filter(RigaMovimento.id_testata_movimento == TestataMovimento.id)\
-                    .filter(Operazione.segno=="+")\
-                    .filter(Riga.id_magazzino==idMagazzino)\
                     .filter(Riga.id_articolo==s.id_articolo)\
+                    .filter(Riga.id_magazzino==idMagazzino)\
                     .filter(Riga.valore_unitario_netto!=0)\
+                    .filter(RigaMovimento.id_testata_movimento == TestataMovimento.id)\
+                    .filter(TestataMovimento.data_movimento.between(datetime.date(self.annoScorso, 1, 1), datetime.date(self.annoScorso, 12, 31)))\
+                    .filter(Operazione.segno=="+")\
                     .all()
+
+                righeArticoloMovimentateDoc = Environment.params["session"]\
+                    .query(func.avg(RigaMovimento.valore_unitario_netto))\
+                    .filter(Riga.id_articolo==s.id_articolo)\
+                    .filter(Riga.id_magazzino==idMagazzino)\
+                    .filter(Riga.valore_unitario_netto!=0)\
+                    .filter(RigaMovimento.id_testata_movimento == TestataMovimento.id)\
+                    .filter(TestataMovimento.data_movimento.between(datetime.date(self.annoScorso, 1, 1), datetime.date(self.annoScorso, 12, 31)))\
+                    .filter(Operazione.segno=="+")\
+                    .all()
+
+                righeArticoloMovimentate = righeArticoloMovimentateDoc+righeArticoloMovimentateMov
+
                 if righeArticoloMovimentate and righeArticoloMovimentate[0][0]:
                     s.valore_unitario = righeArticoloMovimentate[0][0]
                     Environment.params['session'].add(s)

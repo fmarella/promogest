@@ -478,6 +478,13 @@ solo_acquisto_con_DDT = ["Fattura acquisto",
         "DDT acquisto"
         ]
 
+solo_vendita_completo = ["Fattura accompagnatoria",
+        "Fattura differita vendita",
+        "Fattura vendita",
+        "Vendita dettaglio","Scarico venduto da cassa",
+        "DDT vendita"
+        ]
+
 fromHtmlLits = ["Promemoria", "TestataPrimaNota",
                 "Articolo", "Cliente",
                 "Contatto", "Fornitore",
