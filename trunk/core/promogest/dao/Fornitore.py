@@ -129,17 +129,14 @@ def getNuovoCodiceFornitore():
     prefissoCodice = 'FO'
     codice = ''
     listacodici = []
-#    if hasattr(conf,'Fornitori'):
     try:
-        forni = session.query(Fornitore.codice).all()[-500:]
-        forni.reverse()
-
-        for q in forni:
+        fornitori = session.query(Fornitore.codice).order_by(desc(Fornitore.id)).all()
+        for q in fornitori:
             codice = codeIncrement(q[0])
-            if not codice or Fornitore().select(codicesatto=codice):
+            if not codice or (codice,) in fornitori:
                 continue
             else:
-                if not Fornitore().select(codicesatto=codice):
+                if (codice,) not in fornitori:
                     return codice
 
     except:

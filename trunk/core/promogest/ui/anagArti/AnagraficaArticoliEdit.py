@@ -144,10 +144,7 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
         if not dao:
             # Crea un nuovo Dao vuoto
             self.dao = Articolo()
-            # Assegna il codice se ne e' prevista la crazione automatica, ma non per famiglia
-            #if not self._codiceByFamiglia:
-                #self.dao.codice = promogest.dao.Articolo.getNuovoCodiceArticolo(idFamiglia=None)
-                #print "STAMPO IL NUOVO CODICE ARTICOLO IN SETDAO GENERATO",self.dao.codice
+            self.dao.codice = promogest.dao.Articolo.getNuovoCodiceArticolo()
             # Prova a impostare "pezzi" come unita' di misura base
             self.dao.id_unita_base = 1
             self.new=True

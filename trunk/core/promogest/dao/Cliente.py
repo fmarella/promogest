@@ -41,10 +41,10 @@ from promogest.dao.DestinazioneMerce import DestinazioneMerce
 from promogest.dao.DaoUtils import codeIncrement, getRecapitiCliente, get_columns
 from promogest.dao.VariazioneListino import VariazioneListino
 from promogest.dao.ClienteVariazioneListino import t_cliente_variazione_listino
-from promogest.lib.utils import posso
+from promogest.lib.utils import posso, timeit
 
 
-
+@timeit
 def getNuovoCodiceCliente():
     """
     Restituisce il codice progressivo per un nuovo cliente
@@ -56,15 +56,13 @@ def getNuovoCodiceCliente():
     listacodici= []
     try:
         n = 1
-        clienti = session.query(Cliente.codice).all()
-        clienti.reverse()
-
+        clienti = session.query(Cliente.codice).order_by(desc(Cliente.id)).all()
         for q in clienti:
             codice = codeIncrement(q[0])
-            if not codice or Cliente().select(codicesatto=codice):
+            if not codice or (codice,) in clienti:
                 continue
             else:
-                if not Cliente().select(codicesatto=codice):
+                if (codice,) not in clienti:
                     return codice
 
     except:

@@ -837,14 +837,14 @@ def getNuovoCodiceArticolo(idFamiglia=None):
     """
     codice = ''
     try:
-        art = session.query(Articolo.codice).order_by(desc(Articolo.id))\
-                        .limit(500).all()
+        art = session.query(Articolo.codice).order_by(desc(Articolo.id)).all()
         for q in art:
             codice = codeIncrement(q[0])
-            if not codice or Articolo().select(codicesatto=codice):
+            if not codice or (codice,) in art:
                 continue
             else:
-                return codice
+                if (codice,) not in art:
+                    return codice
     except:
         pass
     try:

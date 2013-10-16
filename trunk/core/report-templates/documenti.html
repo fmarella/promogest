@@ -43,7 +43,7 @@
             {% for k, v in tot['imponibile_aliquote'].items() %}
                         <tr>
                 <th style="width:200px;text-align:left;font-size:12px;">Totale Sconto</th>
-                <td style="width:120px;text-align:right;font-size:12px;"><b>{{utils.mNLC(tot["totale_sconto"],2)}}</b></td>
+                <td style="width:120px;text-align:right;font-size:12px;"><b>{{utils.mNLC(tot["totale_sconto_imponibile"],2)}}</b></td>
             </tr>
                 <tr>
                     <th style="width:200px;text-align:left;font-size:12px" >IMPONIBILE Aliquota {{ utils.mN(k, 0) }}%</th>
