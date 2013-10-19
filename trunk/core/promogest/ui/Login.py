@@ -246,8 +246,6 @@ class Login(SimpleGladeApp):
                 except:
                     Environment.params['usernameLoggedList'][2] = 1
                 if hasAction(actionID=1):
-                    from promogest.dao.DaoOrderedImport import orderedImport
-                    orderedImport()
                     self.login_window.hide()
                     Environment.windowGroup.remove(self.getTopLevel())
                     installId()
@@ -267,7 +265,8 @@ class Login(SimpleGladeApp):
                         "SETAGGI: %s" % (str(Environment.settaggi)))
 
                     self.importModulesFromDir('promogest/modules')
-
+                    from promogest.dao.DaoOrderedImport import orderedImport
+                    orderedImport()
                     def mainmain():
                         from Main import Main
                         main = Main(self.azienda,
