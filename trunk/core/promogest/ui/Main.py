@@ -249,15 +249,15 @@ class Main(GladeWidget):
         # else:
             # timeout = conf_timeout[0].value
         # lets do the iv upgrade
-        if date.today() >= date(2013, 10, 1):
-            kbb = SetConf().select(key="upgrade_iva_22", section="Articoli")
-            if kbb and kbb[0].value=="True":
-                return
-            else:
-                fillComboboxAliquoteIva(self.iva_upgrade_combobox.combobox)
-                self.iva_upgrade_combobox.show_all()
-                self.crea_iva_radio.set_active(True)
-                self.upgrade_iva.show()
+        #if date.today() >= date(2013, 10, 1):
+            #kbb = SetConf().select(key="upgrade_iva_22", section="Articoli")
+            #if kbb and kbb[0].value=="True":
+                #return
+            #else:
+                #fillComboboxAliquoteIva(self.iva_upgrade_combobox.combobox)
+                #self.iva_upgrade_combobox.show_all()
+                #self.crea_iva_radio.set_active(True)
+                #self.upgrade_iva.show()
                 #self.upgrade_iva.destroy()
 
 
@@ -359,7 +359,6 @@ class Main(GladeWidget):
                 return
             else:
                 vecchiaIdIva = vecchiaIva[0].id
-        print "sono pronto a ciclare sugli articoli", idAli, vecchiaIdIva
         arti = Articolo().select(idAliquotaIva=vecchiaIdIva, batchSize=None)
         if not arti:
             messageInfo(msg="Nessun articolo con iva al 21% trovato")
