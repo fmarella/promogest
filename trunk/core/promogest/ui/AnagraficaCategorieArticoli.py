@@ -35,7 +35,8 @@ class AnagraficaCategorieArticoli(Anagrafica):
         Anagrafica.__init__(self, 'Promogest - Anagrafica categorie articoli',
                             '_Categorie',
                             AnagraficaCategorieArticoliFilter(self),
-                            AnagraficaCategorieArticoliDetail(self))
+                            AnagraficaCategorieArticoliDetail(self),
+                            url_help ="http://www.promogest.me/promoGest/faq_detail/come-si-inserisce-una-categoria-articolo")
 
     def draw(self):
         """ Facoltativo ma suggerito per indicare la lunghezza
@@ -90,7 +91,8 @@ class AnagraficaCategorieArticoliFilter(AnagraficaFilter):
         AnagraficaFilter.__init__(self,
                       anagrafica,
                       root='anagrafica_categorie_articoli_filter_table',
-                      path='_anagrafica_categorie_articoli_elements.glade')
+                      path='_anagrafica_categorie_articoli_elements.glade',
+                      )
         self._widgetFirstFocus = self.denominazione_filter_entry
 
     def _reOrderBy(self, column):

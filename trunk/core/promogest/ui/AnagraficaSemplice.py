@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2013 by Promotux
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Alceste Scalas <alceste@promotux.it>
@@ -27,16 +27,15 @@ from promogest.ui.gtk_compat import *
 from promogest.ui.GladeWidget import GladeWidget
 from promogest.ui.widgets.FilterWidget import FilterWidget
 from promogest.ui.SendEmail import SendEmail
-import Login
 from promogest.lib.utils import *
 from promogest import Environment
-
+import webbrowser
 
 class Anagrafica(GladeWidget):
     """ Classe base per le anagrafiche semplici """
 
     def __init__(self, windowTitle, recordMenuLabel,
-                 filterElement, detailElement, path=None):
+                 filterElement, detailElement, path=None, url_help="http://www.promogest.me"):
         if not path:
             path='anagrafica_semplice_window.glade'
         GladeWidget.__init__(self, root='anagrafica_semplice_window',
@@ -54,7 +53,7 @@ class Anagrafica(GladeWidget):
         self.bodyWidget.generic_button.set_property('visible', False)
 
         self.filter = self.bodyWidget.filtersElement
-
+        self.url_help = url_help
         self.filterTopLevel = self.filter.getTopLevel()
         self.filterTopLevel.set_sensitive(True)
 
@@ -107,6 +106,8 @@ class Anagrafica(GladeWidget):
     def on_send_Email_activate(self, widget):
         sendemail = SendEmail()
 
+    def on_help_activated(self, widget):
+        webbrowser.open_new_tab(self.url_help)
 
     def on_licenza_menu_activate(self, widget):
         licenzaDialog = GladeWidget(root='licenza_dialog',path="licenza_dialog.glade",  callbacks_proxy=self)

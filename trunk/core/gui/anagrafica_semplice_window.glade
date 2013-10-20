@@ -2,8 +2,15 @@
 <interface>
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy toplevel-contextual -->
+  <object class="GtkAccelGroup" id="accelgroup1"/>
+  <object class="GtkImage" id="image1">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">esporta_24.png</property>
+  </object>
   <object class="GtkWindow" id="anagrafica_semplice_window">
     <property name="width_request">480</property>
+    <property name="can_focus">False</property>
     <property name="title" translatable="yes">Anagrafica</property>
     <property name="modal">True</property>
     <property name="window_position">center</property>
@@ -13,36 +20,42 @@
     <accel-groups>
       <group name="accelgroup1"/>
     </accel-groups>
-    <signal name="destroy_event" handler="on_anagrafica_window_close"/>
-    <signal name="delete_event" handler="on_anagrafica_window_close"/>
+    <signal name="destroy-event" handler="on_anagrafica_window_close" swapped="no"/>
+    <signal name="delete-event" handler="on_anagrafica_window_close" swapped="no"/>
     <child>
       <object class="GtkVBox" id="anagrafica_main_vbox">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <child>
           <object class="GtkMenuBar" id="menubar1">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <child>
               <object class="GtkMenuItem" id="record_menu">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Record</property>
                 <property name="use_underline">True</property>
-                <signal name="activate" handler="on_record_menu_activate"/>
+                <signal name="activate" handler="on_record_menu_activate" swapped="no"/>
                 <child type="submenu">
                   <object class="GtkMenu" id="record_menu_menu">
+                    <property name="can_focus">False</property>
                     <child>
                       <object class="GtkImageMenuItem" id="record_new_menu">
                         <property name="label">gtk-new</property>
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <property name="accel_group">accelgroup1</property>
                         <accelerator key="N" signal="activate" modifiers="GDK_CONTROL_MASK"/>
-                        <signal name="activate" handler="on_record_new_activate"/>
+                        <signal name="activate" handler="on_record_new_activate" swapped="no"/>
                       </object>
                     </child>
                     <child>
                       <object class="GtkSeparatorMenuItem" id="separatore1">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                       </object>
                     </child>
                     <child>
@@ -50,11 +63,12 @@
                         <property name="label">gtk-edit</property>
                         <property name="visible">True</property>
                         <property name="sensitive">False</property>
+                        <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <property name="accel_group">accelgroup1</property>
                         <accelerator key="M" signal="activate" modifiers="GDK_CONTROL_MASK"/>
-                        <signal name="activate" handler="on_record_edit_activate"/>
+                        <signal name="activate" handler="on_record_edit_activate" swapped="no"/>
                       </object>
                     </child>
                     <child>
@@ -62,16 +76,18 @@
                         <property name="label">gtk-delete</property>
                         <property name="visible">True</property>
                         <property name="sensitive">False</property>
+                        <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <property name="accel_group">accelgroup1</property>
                         <accelerator key="E" signal="activate" modifiers="GDK_CONTROL_MASK"/>
-                        <signal name="activate" handler="on_record_delete_activate"/>
+                        <signal name="activate" handler="on_record_delete_activate" swapped="no"/>
                       </object>
                     </child>
                     <child>
                       <object class="GtkSeparatorMenuItem" id="separatore3">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                       </object>
                     </child>
                     <child>
@@ -79,26 +95,29 @@
                         <property name="label">gtk-save</property>
                         <property name="visible">True</property>
                         <property name="sensitive">False</property>
+                        <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <property name="accel_group">accelgroup1</property>
                         <accelerator key="S" signal="activate" modifiers="GDK_CONTROL_MASK"/>
-                        <signal name="activate" handler="on_record_save_activate"/>
+                        <signal name="activate" handler="on_record_save_activate" swapped="no"/>
                       </object>
                     </child>
                     <child>
                       <object class="GtkImageMenuItem" id="record_cancel_menu">
                         <property name="label">gtk-cancel</property>
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <property name="accel_group">accelgroup1</property>
-                        <signal name="activate" handler="on_record_cancel_activate"/>
+                        <signal name="activate" handler="on_record_cancel_activate" swapped="no"/>
                       </object>
                     </child>
                     <child>
                       <object class="GtkSeparatorMenuItem" id="separatore2">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                       </object>
                     </child>
                     <child>
@@ -106,27 +125,30 @@
                         <property name="label">gtk-revert-to-saved</property>
                         <property name="visible">True</property>
                         <property name="sensitive">False</property>
+                        <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <property name="accel_group">accelgroup1</property>
                         <accelerator key="Z" signal="activate" modifiers="GDK_CONTROL_MASK"/>
-                        <signal name="activate" handler="on_record_undo_activate"/>
+                        <signal name="activate" handler="on_record_undo_activate" swapped="no"/>
                       </object>
                     </child>
                     <child>
                       <object class="GtkSeparatorMenuItem" id="separatore4">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                       </object>
                     </child>
                     <child>
                       <object class="GtkImageMenuItem" id="record_menu_close">
                         <property name="label">gtk-close</property>
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <property name="accel_group">accelgroup1</property>
                         <accelerator key="Q" signal="activate" modifiers="GDK_CONTROL_MASK"/>
-                        <signal name="activate" handler="on_anagrafica_window_close"/>
+                        <signal name="activate" handler="on_anagrafica_window_close" swapped="no"/>
                       </object>
                     </child>
                   </object>
@@ -136,42 +158,57 @@
             <child>
               <object class="GtkMenuItem" id="aiuto_menu">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <property name="label" translatable="yes">A_iuto</property>
                 <property name="use_underline">True</property>
                 <child type="submenu">
                   <object class="GtkMenu" id="aiuto_menu_menu">
+                    <property name="can_focus">False</property>
                     <child>
                       <object class="GtkMenuItem" id="credits_menu">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Credits</property>
                         <property name="use_underline">True</property>
-                        <signal name="activate" handler="on_credits_menu_activate"/>
+                        <signal name="activate" handler="on_credits_menu_activate" swapped="no"/>
                       </object>
                     </child>
                     <child>
                       <object class="GtkMenuItem" id="licenza_menu">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Vedi la licenza</property>
                         <property name="use_underline">True</property>
-                        <signal name="activate" handler="on_licenza_menu_activate"/>
+                        <signal name="activate" handler="on_licenza_menu_activate" swapped="no"/>
                       </object>
                     </child>
                     <child>
                       <object class="GtkMenuItem" id="seriale_menu">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Codice installazione...</property>
                         <property name="use_underline">True</property>
-                        <signal name="activate" handler="on_seriale_menu_activate"/>
+                        <signal name="activate" handler="on_seriale_menu_activate" swapped="no"/>
                       </object>
                     </child>
                     <child>
                       <object class="GtkMenuItem" id="send_Email">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                         <property name="tooltip_text" translatable="yes">Permette di spedire una email all'asitenza con  segnalazioni bug, consigli, critiche.</property>
                         <property name="label" translatable="yes">Spedisci email Assistenza</property>
                         <property name="use_underline">True</property>
-                        <signal name="activate" handler="on_send_Email_activate"/>
+                        <signal name="activate" handler="on_send_Email_activate" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="Help">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Help</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="on_help_activated" swapped="no"/>
                       </object>
                     </child>
                   </object>
@@ -188,14 +225,16 @@
         <child>
           <object class="GtkToolbar" id="toolbar1">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="toolbar_style">both</property>
             <child>
               <object class="GtkToolButton" id="record_new_button">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <property name="tooltip_text" translatable="yes">Nuovo record</property>
                 <property name="use_underline">True</property>
                 <property name="stock_id">gtk-new</property>
-                <signal name="clicked" handler="on_record_new_activate"/>
+                <signal name="clicked" handler="on_record_new_activate" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -205,6 +244,7 @@
             <child>
               <object class="GtkSeparatorToolItem" id="separatortoolitem2">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -214,10 +254,11 @@
               <object class="GtkToolButton" id="record_edit_button">
                 <property name="visible">True</property>
                 <property name="sensitive">False</property>
+                <property name="can_focus">False</property>
                 <property name="tooltip_text" translatable="yes">Modifica il record selezionato</property>
                 <property name="use_underline">True</property>
                 <property name="stock_id">gtk-edit</property>
-                <signal name="clicked" handler="on_record_edit_activate"/>
+                <signal name="clicked" handler="on_record_edit_activate" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -228,10 +269,11 @@
               <object class="GtkToolButton" id="record_delete_button">
                 <property name="visible">True</property>
                 <property name="sensitive">False</property>
+                <property name="can_focus">False</property>
                 <property name="tooltip_text" translatable="yes">Elimina il record selezionato</property>
                 <property name="use_underline">True</property>
                 <property name="stock_id">gtk-delete</property>
-                <signal name="clicked" handler="on_record_delete_activate"/>
+                <signal name="clicked" handler="on_record_delete_activate" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -241,6 +283,7 @@
             <child>
               <object class="GtkSeparatorToolItem" id="separatortoolitem3">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -250,11 +293,12 @@
               <object class="GtkToolButton" id="record_save_button">
                 <property name="visible">True</property>
                 <property name="sensitive">False</property>
+                <property name="can_focus">False</property>
                 <property name="tooltip_text" translatable="yes">Salva le modifiche</property>
                 <property name="label" translatable="yes">Salva</property>
                 <property name="use_underline">True</property>
                 <property name="stock_id">gtk-save</property>
-                <signal name="clicked" handler="on_record_save_activate"/>
+                <signal name="clicked" handler="on_record_save_activate" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -265,10 +309,11 @@
               <object class="GtkToolButton" id="record_cancel_button">
                 <property name="visible">True</property>
                 <property name="sensitive">False</property>
+                <property name="can_focus">False</property>
                 <property name="tooltip_text" translatable="yes">Non salva le modifiche</property>
                 <property name="use_underline">True</property>
                 <property name="stock_id">gtk-cancel</property>
-                <signal name="clicked" handler="on_record_cancel_activate"/>
+                <signal name="clicked" handler="on_record_cancel_activate" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -278,6 +323,7 @@
             <child>
               <object class="GtkSeparatorToolItem" id="separatortoolitem4">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -287,10 +333,11 @@
               <object class="GtkToolButton" id="record_undo_button">
                 <property name="visible">True</property>
                 <property name="sensitive">False</property>
+                <property name="can_focus">False</property>
                 <property name="tooltip_text" translatable="yes">Annulla i cambiamenti</property>
                 <property name="use_underline">True</property>
                 <property name="stock_id">gtk-revert-to-saved</property>
-                <signal name="clicked" handler="on_record_undo_activate"/>
+                <signal name="clicked" handler="on_record_undo_activate" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -300,10 +347,24 @@
             <child>
               <object class="GtkToolButton" id="export_csv_button">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Export CSV</property>
                 <property name="use_underline">True</property>
                 <property name="icon_widget">image1</property>
-                <signal name="clicked" handler="on_export_csv_button_clicked"/>
+                <signal name="clicked" handler="on_export_csv_button_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkToolButton" id="help">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="use_underline">True</property>
+                <property name="stock_id">gtk-help</property>
+                <signal name="clicked" handler="on_help_activated" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -326,6 +387,7 @@
             <child>
               <object class="GtkViewport" id="anagrafica_viewport">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <child>
                   <placeholder/>
                 </child>
@@ -333,12 +395,15 @@
             </child>
           </object>
           <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
             <property name="position">2</property>
           </packing>
         </child>
         <child>
           <object class="GtkStatusbar" id="statusbar1">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -348,10 +413,5 @@
         </child>
       </object>
     </child>
-  </object>
-  <object class="GtkAccelGroup" id="accelgroup1"/>
-  <object class="GtkImage" id="image1">
-    <property name="visible">True</property>
-    <property name="pixbuf">esporta_24.png</property>
   </object>
 </interface>
