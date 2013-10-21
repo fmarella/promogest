@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2013 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Alceste Scalas <alceste@promotux.it>
@@ -23,6 +23,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
+import sys
 from promogest.ui.gtk_compat import *
 from promogest.ui.GladeWidget import GladeWidget
 from promogest.ui.widgets.FilterWidget import FilterWidget
@@ -52,7 +53,6 @@ class AnagraficaPrintPreview(GladeWidget):
         self._gtkHtmlDocuments = None
         self._previewTemplate = previewTemplate
         self.html = createHtmlObj(self)
-
         #Prendo tutti i dati dalla finestra di filtraggio, compresi i dati
         # di ordinamento e di batchSize
         self._changeOrderBy = self.bodyWidget._changeOrderBy
@@ -64,11 +64,23 @@ class AnagraficaPrintPreview(GladeWidget):
         self._filterCountClosure = self._anagrafica.filter._filterCountClosure
         self.placeWindow(self.visualizzatore_html)
         self.bodyWidget.generic_button.set_property('visible', False)
-
+        def test():
+            self.html_code = "<html><body></body></html>"
+            #self.html.load_html_string(self.html_code, "file:///"+sys.path[0]+os.sep)
+            #self.html.show()
+            #renderHTML(self.print_on_screen_html, self.html_code)
         #generaButton = self.bodyWidget.generic_button
         #generaButton.connect('clicked', self.on_generic_button_clicked )
         #generaButton.set_label("Genera Pdf Anteprima Html")
-        self.refresh()
+        #if Environment.pg3:
+            #glib.idle_add(test)
+        #else:
+            #gobject.idle_add(test)
+        if Environment.pg3:
+            glib.idle_add(self.refresh)
+        else:
+            gobject.idle_add(self.refresh)
+        #self.refresh()
 
     def on_pdf_button_clicked(self, button):
         from PrintDialog import PrintDialogHandler
@@ -112,14 +124,19 @@ class AnagraficaPrintPreview(GladeWidget):
         self.bodyWidget.numRecords = self.numRecords
         self.bodyWidget._refreshPageCount()
 
+    @timeit
     def refresh(self):
         """ show the html page in the custom widget"""
         self.bodyWidget.orderBy = self.orderBy
         self.bodyWidget.veter = self._veter
+        #self.pbar_dialog.run()
+        #self.pbar_dialog.destroy()
         daos = self.bodyWidget.runFilter(offset=None,
                                         batchSize=None,
                                         filterClosure=self._filterClosure,
                                         )
+        #pbar(self.pbar_report,parziale=daos.index(ragsoc), totale=len(nomi), text=ragsoc, noeta=False)
+        #pbar(self.pbar_report,parziale=1, totale=4)
         if hasattr(self._anagrafica,"funzione_ordinamento") and self._anagrafica.funzione_ordinamento == "cliforn":
             if self._anagrafica.aa < 0:
                 daos.sort(key=lambda x: x.intestatario.strip().upper())
@@ -139,6 +156,7 @@ class AnagraficaPrintPreview(GladeWidget):
                                         self._filterCountClosure,
                                         )
 #        self._refreshPageCount()
+        #pbar(self.pbar_report,parziale=2, totale=4)
         pageData = {}
         self.html_code = "<html><body></body></html>"
         if self._veter:
@@ -152,6 +170,7 @@ class AnagraficaPrintPreview(GladeWidget):
                 if len(c)>0:
                     da.append(d)
             daos = da
+        #pbar(self.pbar_report,parziale=2.5, totale=4)
         if daos:
             pageData = {
                     "file": self._previewTemplate[1],
@@ -159,6 +178,9 @@ class AnagraficaPrintPreview(GladeWidget):
                     "objects": daos
                     }
             self.html_code = renderTemplate(pageData)
+        #pbar(self.pbar_report,parziale=3.75, totale=4)
+        #pbar(self.pbar_report,stop=True)
+        #self.pbar_dialog.hide()
         renderHTML(self.print_on_screen_html, self.html_code)
 
     def on_print_on_screen_dialog_response(self, dialog, responseId):

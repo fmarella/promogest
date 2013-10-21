@@ -35,7 +35,7 @@ class Anagrafica(GladeWidget):
     """ Classe base per le anagrafiche semplici """
 
     def __init__(self, windowTitle, recordMenuLabel,
-                 filterElement, detailElement, path=None, url_help="http://www.promogest.me"):
+                 filterElement, detailElement, path=None, url_help="http://www.promogest.me/promoGest/faq"):
         if not path:
             path='anagrafica_semplice_window.glade'
         GladeWidget.__init__(self, root='anagrafica_semplice_window',

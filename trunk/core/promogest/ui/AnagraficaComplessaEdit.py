@@ -23,6 +23,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
+import webbrowser
 from promogest.ui.GladeWidget import GladeWidget
 from promogest.lib.utils import *
 from promogest import Environment
@@ -34,15 +35,19 @@ class AnagraficaEdit(GladeWidget):
     """ Interfaccia di editing dell'anagrafica """
 
     def __init__(self, anagrafica, windowTitle,
-                                root=None,path=None, isModule=False):
+                                root=None,path=None, isModule=False,
+                                url_help="http://www.promogest.me/promoGest/faq"):
         GladeWidget.__init__(self, root=root,
             path=path, isModule=isModule)
-
+        self.url_help = url_help
         self._anagrafica = anagrafica
         self._widgetFirstFocus = None
         self._isSensitive = True
         self._windowTitle = windowTitle
         self.dao = None
+
+    def on_help_button_activate(self, widget):
+        webbrowser.open_new_tab(self.url_help)
 
     def setVisible(self, isVisible):
         """ Make the window visible/invisible """

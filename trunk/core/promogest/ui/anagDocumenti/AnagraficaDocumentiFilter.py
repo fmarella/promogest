@@ -76,17 +76,6 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         self.clear()
         self.altri_filtri_frame.hide()
 
-    def on_altri_filtri_togglebutton_toggled(self, button):
-        if button.get_active():
-            self.position = self._anagrafica.anagrafica_hpaned.get_position()
-            self._anagrafica.anagrafica_hpaned.set_position(self.position+300)
-            self.altri_filtri_frame.show()
-        else:
-            self.altri_filtri_frame.hide()
-            self._anagrafica.anagrafica_hpaned.set_position(self.position)
-
-
-
     def _reOrderBy(self, column):
 
         if column.get_name() == "numero_column":

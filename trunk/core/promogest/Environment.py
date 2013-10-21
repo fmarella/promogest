@@ -404,7 +404,7 @@ def __sendmail(msg="PG"):
 def hook(et, ev, eb):
     import traceback
     if "Operation aborted" in str(ev):
-        delete_pickle()
+        #delete_pickle()
         return
     if "ATTENZIONE, TENTATIVO DI SALVATAGGIO SENZA RIGHE?????" in ev:
         return
@@ -497,4 +497,3 @@ package = ["ONE BASIC", "ONE FULL", "ONE STANDARD",
             "PRO BASIC", "PRO STANDARD",
             "PRO FULL", "ONE PROMOWEAR", "ONE PROMOSHOP",
             "PRO PROMOWEAR", "PRO PROMOSHOP"]
-

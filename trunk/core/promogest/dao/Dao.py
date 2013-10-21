@@ -42,11 +42,11 @@ class Dao(object):
         self._numRecords = None
         self._DaoModule = entity.__class__
         self._exceptionHandler = exceptionHandler
-        self.campi = []
-        if campo:
-            for a in campo:
-                #print dir(entity)
-                self.campi.append(getattr(entity, a))
+        self.__campi__ = []
+        #if campo:
+            #for a in campo:
+                ##print dir(entity)
+                #self.__campi__.append(getattr(entity, a))
 
     def __repr__(self):
         if hasattr(self, 'id'):
@@ -83,10 +83,10 @@ class Dao(object):
                 filter2= self.prepareFilter(kwargs)
         __filter__ = and_(filter1,filter2)
 
-        if self.campi:
-            self.record= self._session.query(Azienda.schemaa)
-        else:
-            self.record= self._session.query(self._DaoModule)
+        #if self.__campi__:
+            #self.record= self._session.query(Azienda.schemaa)
+        #else:
+        self.record= self._session.query(self._DaoModule)
         if sqlalchemy.__version__ > '0.6':
             if join is not None:
                 self.record = self.record.join(join)

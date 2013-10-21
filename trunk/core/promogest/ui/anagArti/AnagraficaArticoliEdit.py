@@ -50,8 +50,6 @@ if posso("CSA"):
     from promogest.modules.CSA.ui.CSANotebookPage import CSANotebookPage
 
 
-
-
 class AnagraficaArticoliEdit(AnagraficaEdit):
     """ Modifica un record dell'anagrafica degli articoli """
 
@@ -60,7 +58,8 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
                                 anagrafica,
                                 'Dati articolo',
                                 root='anagrafica_articoli_detail_table',
-                                path='_anagrafica_articoli_detail.glade')
+                                path='_anagrafica_articoli_detail.glade',
+                                url_help="http://www.promogest.me")
         self._widgetFirstFocus = self.codice_entry
         self._loading = False
         #FIXME: promogest.dao.Articolo.isNuovoCodiceByFamiglia()

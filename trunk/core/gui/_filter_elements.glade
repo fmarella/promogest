@@ -36,12 +36,28 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="border_width">6</property>
-                    <property name="spacing">6</property>
-                    <property name="layout_style">end</property>
+                    <property name="spacing">4</property>
+                    <property name="layout_style">start</property>
+                    <child>
+                      <object class="GtkToggleButton" id="altri_filtri_togglebutton">
+                        <property name="label" translatable="yes">ALTRI FILTRI</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <property name="image">image1__</property>
+                        <signal name="toggled" handler="on_altri_filtri_togglebutton_toggled" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="padding">2</property>
+                        <property name="pack_type">end</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
                     <child>
                       <object class="GtkButton" id="filter_clear_button">
                         <property name="label">gtk-clear</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="can_default">True</property>
@@ -55,13 +71,13 @@
                       <packing>
                         <property name="expand">False</property>
                         <property name="fill">False</property>
-                        <property name="position">0</property>
+                        <property name="pack_type">end</property>
+                        <property name="position">1</property>
                       </packing>
                     </child>
                     <child>
                       <object class="GtkButton" id="filter_search_button">
                         <property name="label">Trova (F3)</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="can_default">True</property>
@@ -79,7 +95,8 @@
                       <packing>
                         <property name="expand">False</property>
                         <property name="fill">False</property>
-                        <property name="position">1</property>
+                        <property name="pack_type">end</property>
+                        <property name="position">2</property>
                       </packing>
                     </child>
                   </object>
@@ -118,7 +135,6 @@
         <child>
           <object class="GtkButton" id="generic_button">
             <property name="label" translatable="yes">buttonn</property>
-            <property name="use_action_appearance">False</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
@@ -223,7 +239,6 @@
             <child>
               <object class="GtkButton" id="filter_first_button">
                 <property name="label">gtk-goto-first</property>
-                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -239,7 +254,6 @@
             <child>
               <object class="GtkButton" id="filter_prev_button">
                 <property name="label">gtk-go-back</property>
-                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -322,7 +336,6 @@
             <child>
               <object class="GtkButton" id="filter_next_button">
                 <property name="label">gtk-go-forward</property>
-                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -338,7 +351,6 @@
             <child>
               <object class="GtkButton" id="filter_last_button">
                 <property name="label">gtk-goto-last</property>
-                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -365,6 +377,11 @@
         <property name="position">2</property>
       </packing>
     </child>
+  </object>
+  <object class="GtkImage" id="image1__">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-execute</property>
   </object>
   <object class="GtkImage" id="trova_image">
     <property name="visible">True</property>

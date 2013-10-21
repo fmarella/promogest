@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2013 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -29,15 +29,15 @@ from promogest.ui.RicercaComplessa import parseModel, onColumnEdited, columnSele
 from promogest.ui.RicercaComplessa import optimizeString, insertTreeViewRow, deleteTreeViewRow, clearWhereString
 
 from promogest import Environment
-import promogest.dao.Cliente
+#import promogest.dao.Cliente
 from promogest.dao.Cliente import Cliente
-import promogest.dao.CategoriaCliente
+#import promogest.dao.CategoriaCliente
 from promogest.dao.CategoriaCliente import CategoriaCliente
-import promogest.dao.Pagamento
+#import promogest.dao.Pagamento
 from promogest.dao.Pagamento import Pagamento
-import promogest.dao.Magazzino
+#import promogest.dao.Magazzino
 from promogest.dao.Magazzino import Magazzino
-import promogest.dao.Listino
+#import promogest.dao.Listino
 from promogest.dao.Listino import Listino
 import Login
 from promogest.ui.GladeWidget import GladeWidget

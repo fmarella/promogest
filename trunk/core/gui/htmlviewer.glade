@@ -45,11 +45,9 @@
             <child>
               <object class="GtkButton" id="csv_button">
                 <property name="label" translatable="yes">CREA CSV</property>
-                <property name="visible">True</property>
                 <property name="sensitive">False</property>
-                <property name="can_focus">True</property>
+                <property name="can_focus">False</property>
                 <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
                 <property name="image">crea_csv</property>
                 <signal name="clicked" handler="on_csv_button_clicked" swapped="no"/>
               </object>
@@ -66,7 +64,6 @@
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="tooltip_text" translatable="yes">Genera il pdf della distinta</property>
-                <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
                 <signal name="clicked" handler="on_pdf_button_clicked" swapped="no"/>
               </object>
@@ -83,7 +80,6 @@
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="tooltip_text" translatable="yes">Chiudi la finestra</property>
-                <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
                 <signal name="clicked" handler="on_quit_button_clicked" swapped="no"/>
                 <signal name="clicked" handler="on_print_on_screen_dialog_delete_event" swapped="no"/>

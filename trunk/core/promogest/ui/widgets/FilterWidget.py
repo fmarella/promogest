@@ -74,6 +74,8 @@ class FilterWidget(GladeWidget):
         else:
             self.filter_scrolledwindow.set_property('visible', True)
             self._setResultsElement(resultsElement)
+        if self._owner.__class__.__name__ not in ["AnagraficaDocumentiFilter", "AnagraficaArticoliFilter"]:
+            self.altri_filtri_togglebutton.destroy()
 
         self.setFocus()
 
@@ -107,6 +109,20 @@ class FilterWidget(GladeWidget):
         Designs results layout
         """
         self._owner.draw()
+
+    def on_altri_filtri_togglebutton_toggled(self, button):
+        if button.get_active():
+            try:
+                self.position = self._owner._anagrafica.anagrafica_hpaned.get_position()
+                self._owner._anagrafica.anagrafica_hpaned.set_position(self.position+300)
+                self._owner.altri_filtri_frame.show()
+            except:
+                print "NO ALTRI FILTRI PRESENTI"
+        else:
+            self._owner.altri_filtri_frame.hide()
+            self._owner._anagrafica.anagrafica_hpaned.set_position(self.position)
+
+
 
     def on_filter_search_button_clicked(self, widget):
         """

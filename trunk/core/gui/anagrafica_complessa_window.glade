@@ -43,21 +43,6 @@
     <property name="xpad">1</property>
     <property name="pixbuf">stampa_selezione16x16.png</property>
   </object>
-  <object class="GtkImage" id="image7">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="pixbuf">report24x24.png</property>
-  </object>
-  <object class="GtkImage" id="image8">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="pixbuf">esporta_24.png</property>
-  </object>
-  <object class="GtkImage" id="image9">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="pixbuf">duplica24x24.png</property>
-  </object>
   <object class="GtkWindow" id="anagrafica_complessa_window">
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">Anagrafica</property>
@@ -371,6 +356,15 @@ dei farmaci venduti in un determinato arco temporale</property>
                         <signal name="activate" handler="on_send_Email_activate" swapped="no"/>
                       </object>
                     </child>
+                    <child>
+                      <object class="GtkMenuItem" id="Help">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">_Help</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="on_Help_activate" swapped="no"/>
+                      </object>
+                    </child>
                   </object>
                 </child>
               </object>
@@ -609,14 +603,12 @@ dei farmaci venduti in un determinato arco temporale</property>
               </packing>
             </child>
             <child>
-              <object class="GtkToolButton" id="calcolatrice_button">
+              <object class="GtkToolButton" id="help">
                 <property name="visible">True</property>
-                <property name="sensitive">False</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Calcolatrice</property>
                 <property name="use_underline">True</property>
-                <property name="icon_widget">image10</property>
-                <signal name="clicked" handler="on_calcolatrice_button_clicked" swapped="no"/>
+                <property name="stock_id">gtk-help</property>
+                <signal name="clicked" handler="on_Help_activate" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -856,6 +848,21 @@ dei farmaci venduti in un determinato arco temporale</property>
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="stock">gtk-print</property>
+  </object>
+  <object class="GtkImage" id="image7">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">report24x24.png</property>
+  </object>
+  <object class="GtkImage" id="image8">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">esporta_24.png</property>
+  </object>
+  <object class="GtkImage" id="image9">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">duplica24x24.png</property>
   </object>
   <object class="GtkLabel" id="label2">
     <property name="visible">True</property>

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2013 by Promotux
 #                  di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Alceste Scalas <alceste@promotux.it>
@@ -28,6 +28,7 @@ import os
 import threading
 import os.path
 import subprocess
+import webbrowser
 from hashlib import md5
 from promogest.ui.gtk_compat import *
 from promogest.ui.GladeWidget import GladeWidget
@@ -69,7 +70,8 @@ class Anagrafica(GladeWidget):
     def __init__(self, windowTitle, recordMenuLabel,
             filterElement, htmlHandler, reportHandler,
             editElement, labelHandler=None,
-            path=None, aziendaStr=None):
+            path=None, aziendaStr=None,
+            url_help="http://www.promogest.me/promoGest/faq"):
         if not path:
             path = "anagrafica_complessa_window.glade"
         GladeWidget.__init__(self, root='anagrafica_complessa_window',
@@ -114,6 +116,7 @@ class Anagrafica(GladeWidget):
                 + " www.promogest.me - assistenza@promotux.it  *****"
         context_id = self.pg2_statusbar.get_context_id(
                                             "anagrafica_complessa_windows")
+        self.url_help = url_help
         self.pg2_statusbar.push(context_id, textStatusBar)
         self.record_delete_button.set_sensitive(False)
         self.record_delete_menu.set_sensitive(False)
@@ -278,12 +281,6 @@ class Anagrafica(GladeWidget):
 
     def on_records_file_export_clicked(self, widget):
         dao = self.editElement.setDao(None)
-        #print "DAOO", dao
-#        data = self.set_export_data()
-#        data_export = self.filter.xptDaoList
-
-#        values = self.set_data_list(data_export)
-
         from ExportCsv import ExportCsv
         ExportCsv(self, dao=dao)
         dao = None
@@ -369,6 +366,10 @@ class Anagrafica(GladeWidget):
             saveDialog.destroy()
         elif response == GTK_RESPONSE_CANCEL:
             saveDialog.destroy()
+
+    def on_Help_activate(self, widget):
+        webbrowser.open_new_tab(self.url_help)
+
 
     def on_credits_menu_activate(self, widget):
         creditsDialog = GladeWidget(root='credits_dialog',path="credits_dialog.glade",  callbacks_proxy=self)
@@ -797,7 +798,11 @@ class Anagrafica(GladeWidget):
     def on_records_print_on_screen_activate(self, widget):
         """ Questo segnale rimanda a AnagraficaComplessaReport
         che a sua volta rimanda a AnagraficaComplessaPrinterPreview che
-        si occupa della visualizzazione e della stampa"""
+        si occupa della visualizzazione e della stampa
+
+        Gestione dei REPORT
+
+        """
         self.reportHandler.buildPreviewWidget()
 
     def on_report_farmacia_veterinaria_activate(self, widget):

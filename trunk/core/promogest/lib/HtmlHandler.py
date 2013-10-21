@@ -253,11 +253,11 @@ def createHtmlObj(mainWidget,widget=None):
     except:
         return gtkhtml2.View()
 
+#@utils.timeit
 def renderTemplate(pageData):
     jinja_env.globals['environment'] = Environment
     jinja_env.globals['utils'] = utils
     pageData["titolo"] = pageData["file"].split(".")[0].capitalize()
-
     if "dao" in pageData:
         html = jinja_env.get_template("/"+pageData["file"]).render(pageData = pageData, dao=pageData["dao"])
     else:

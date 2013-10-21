@@ -50,7 +50,8 @@ class AnagraficaArticoli(Anagrafica):
                             htmlHandler=AnagraficaArticoliHtml(self),
                             reportHandler=AnagraficaArticoliReport(self),
                             editElement=AnagraficaArticoliEdit(self),
-                            aziendaStr=aziendaStr)
+                            aziendaStr=aziendaStr,
+                            url_help ="http://www.promogest.me/promoGest/faq_detail/come-si-inserisce-una-categoria-articolo")
         self.record_duplicate_menu.set_property('visible', True)
         self.records_file_export.set_sensitive(True)
 
