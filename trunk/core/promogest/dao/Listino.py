@@ -28,29 +28,12 @@ try:
     t_listino=Table('listino', params['metadata'],schema = params['schema'],autoload=True)
 except:
     from data.listino import t_listino
-
 from promogest.dao.Dao import Dao
 from promogest.dao.ListinoCategoriaCliente import ListinoCategoriaCliente
 from promogest.dao.ListinoMagazzino import ListinoMagazzino
 from promogest.dao.ListinoComplessoListino import ListinoComplessoListino
 from promogest.lib.migrate import *
 
-
-
-def idListinoGet():
-    if tipo_eng == "postgresql":
-        listino_sequence = Sequence("listino_id_seq",
-                                    schema=params['schema'])
-        return params['session'].connection().execute(listino_sequence)
-    elif tipo_eng == "sqlite":
-        # TODO: ottimizzare questa query usando func.max da sqlalchemy
-        listini = Listino().select(orderBy=Listino.id, batchSize=None)
-        if not listini:
-            return 1
-        else:
-            return max([p.id for p in listini]) + 1
-    else:
-        raise Exception("Impossibile generare l'ID listino per l'engine in uso.")
 
 
 class Listino(Dao):
@@ -63,7 +46,7 @@ class Listino(Dao):
 
     def persist(self):
         if not self.id:
-            self.id = idListinoGet()
+            self.id = self.idListinoGet()
         params["session"].add(self)
         params["session"].commit()
 
@@ -137,6 +120,29 @@ class Listino(Dao):
         params['session'].commit()
         #self.saveToLogApp(self)
 
+
+    def idListinoGet(self):
+        if tipo_eng == "postgresql":
+            try:
+                listino_sequence = Sequence("listino_id_seq",
+                                    schema=params['schema'])
+                return params['session'].connection().execute(listino_sequence)
+            except:
+                params['session'].rollback()
+                __listini__ = self.select(batchSize=None)
+                if not __listini__:
+                    return 1
+                else:
+                    return max([p.id for p in __listini__]) + 1
+        elif tipo_eng == "sqlite":
+            # TODO: ottimizzare questa query usando func.max da sqlalchemy
+            listini = self.select(batchSize=None)
+            if not listini:
+                return 1
+            else:
+                return max([p.id for p in listini]) + 1
+        else:
+            raise Exception("Impossibile generare l'ID listino per l'engine in uso.")
 
     def filter_values(self,k,v):
         if k=='id' or k=='idListino':

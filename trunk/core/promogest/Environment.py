@@ -404,7 +404,8 @@ def __sendmail(msg="PG"):
 def hook(et, ev, eb):
     import traceback
     if "Operation aborted" in str(ev):
-        #delete_pickle()
+        pg2log.info("\n  ".join(["Error occurred: traceback follows"] + list(traceback.format_exception(et, ev, eb))))
+        print "\n  ".join(list(traceback.format_exception(et, ev, eb)))
         return
     if "ATTENZIONE, TENTATIVO DI SALVATAGGIO SENZA RIGHE?????" in ev:
         return
@@ -412,15 +413,26 @@ def hook(et, ev, eb):
         return
     if "Handler" in str(ev):
         print "ATTENZIONE!!! MANCA L'HANDLER", ev
+        pg2log.info("\n  ".join(["Error occurred: traceback follows"] + list(traceback.format_exception(et, ev, eb))))
+        print "\n  ".join(list(traceback.format_exception(et, ev, eb)))
         delete_pickle()
         return
     if "ProgrammingError" in str(ev):
+        pg2log.info("\n  ".join(["Error occurred: traceback follows"] + list(traceback.format_exception(et, ev, eb))))
+        print "\n  ".join(list(traceback.format_exception(et, ev, eb)))
+        __sendmail()
         delete_pickle()
         return
     if "OperationalError" in str(ev):
+        pg2log.info("\n  ".join(["Error occurred: traceback follows"] + list(traceback.format_exception(et, ev, eb))))
+        print "\n  ".join(list(traceback.format_exception(et, ev, eb)))
+        __sendmail()
         delete_pickle()
         return
     if "ArgumentError" in str(ev):
+        pg2log.info("\n  ".join(["Error occurred: traceback follows"] + list(traceback.format_exception(et, ev, eb))))
+        print "\n  ".join(list(traceback.format_exception(et, ev, eb)))
+        __sendmail()
         delete_pickle()
         return
     if "InvalidRequestError: This Session's transaction has been rolled back due to a previous exception during flush" in str(ev):

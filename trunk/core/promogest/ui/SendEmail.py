@@ -45,7 +45,7 @@ class SendEmail(GladeWidget):
         self.title_label.set_markup("""
     Questo semplice form ti permette di inviare
     <b>E-mail</b> al team di sviluppo o al settore commerciale,
-    L'email verrà inviata A: <b>info@promotux.it</b>
+    L'email verrà inviata A: <b>assistenza@promotux.it</b>
 
     Grazie per il tuo contributo
                                     """)
