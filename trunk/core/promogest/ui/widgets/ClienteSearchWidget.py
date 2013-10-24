@@ -106,7 +106,7 @@ class ClienteSearchWidget(CustomComboBoxSearch):
         except:
             idCat = None
         cli = Cliente().select(ragioneSociale=keyname,
-                            cancellato=True, idCategoria=idCat, batchSize=40)
+                            idCategoria=idCat, batchSize=40)
         model = self.completion.get_model()
         model.clear()
         for m in cli:
