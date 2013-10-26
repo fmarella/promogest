@@ -21,6 +21,10 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
+try:
+    from collections import OrderedDict
+except:
+    from promogest.lib.ordereddict import OrderedDict
 #from promogest import Environment as env
 from promogest.ui.GladeWidget import GladeWidget
 from promogest.dao.Articolo import Articolo, t_articolo
@@ -92,7 +96,7 @@ class ImportJsonDocumenti(GladeWidget):
                                             text_buffer.get_end_iter(), True)
         print "NOTE", note
         try:
-            dati = json.loads(note)
+            dati = json.JSONDecoder(object_pairs_hook=OrderedDict).decode(note)
         except:
             print "ERRORE DATI DELLA TEXTVIEW NON JSON"
             messageError("ERRORE DATI NELLA TEXTVIEW NON JSON")
@@ -133,8 +137,9 @@ class ImportJsonDocumenti(GladeWidget):
         newDao.applicazione_sconti = "scalare"
         righeDocumento=[]
         totale = 0
-        for k,v in dati["prodotti"].iteritems():
-            #print " ERRREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE", k,v
+        #print " LORO ORDINE", OrderedDict(dati["prodotti"]).items()
+        for k,v in OrderedDict(dati["prodotti"]).items():
+            #print " ERRREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE", k,v,int(dati["prodotti"].items().index((k,v)))+1
             quantita = int(v)
             art = Articolo().select(codiceEM=k)
             if art:
