@@ -157,6 +157,7 @@ class ImportJsonDocumenti(GladeWidget):
             daoRiga.quantita = quantita
             daoRiga.id_multiplo = None
             daoRiga.moltiplicatore = 1
+            daoRiga.posizione =  int(dati["prodotti"].items().index((k,v)))+1
             daoRiga.scontiRigaDocumento = []
             righeDocumento.append(daoRiga)
             parziale = float(quantita) * float(leggiListino(pricelist[0].id, idArticolo, tiny=True)["prezzoDettaglio"])
