@@ -340,7 +340,11 @@ def calcolaTotalePart(anaedit, dao=None):
 
         # riporta l'insieme di sconti ad una percentuale globale
         if totaleScontato >0:
-            percentualeScontoGlobale = (1 - totaleImponibileScontato / totaleImponibile) * 100
+            try:
+                percentualeScontoGlobale = (1 - totaleImponibileScontato / totaleImponibile) * 100
+            except:
+                percentualeScontoGlobale = 100
+
         else:
             percentualeScontoGlobale = 100
 
