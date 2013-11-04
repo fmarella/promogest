@@ -141,7 +141,8 @@ class TestataDocumento(Dao):
             if self.TM and len(self.TM) ==1:
                 self.__dbRigheMovimentoPart = self.TM[0].rigamov
             elif self.TM and len(self.TM) >1:
-                Environment.pg2log.info("ATTENZIONE due movimenti fanno riferimento ad una sola testata documento:"+str(self.id))
+                if not Environment.web:
+                    Environment.pg2log.info("ATTENZIONE due movimenti fanno riferimento ad una sola testata documento:"+str(self.id))
                 raise Exception("Più di un movimento fa riferimento allo stesso documento!")
             self.__dbRigheDocumento = self.__dbRigheDocumentoPart + self.__dbRigheMovimentoPart
             self.__dbRigheDocumento.sort(key=lambda x: x.posizione or x.id)
@@ -378,7 +379,11 @@ class TestataDocumento(Dao):
                     totaleImponibileScontato = totaleImponibileScontato - Decimal(s.valore)
             # riporta l'insieme di sconti ad una percentuale globale
             if totaleScontato >0:
-                percentualeScontoGlobale = (1 - totaleImponibileScontato / totaleImponibile) * 100
+                try:
+                    percentualeScontoGlobale = (1 - totaleImponibileScontato / totaleImponibile) * 100
+                except:
+                    percentualeScontoGlobale = 100
+
             else:
                 percentualeScontoGlobale = 100
 
@@ -830,7 +835,8 @@ class TestataDocumento(Dao):
             self.sconti = []
             self.scontiSuTotale = []
 #                scontisutot.persist()
-        Environment.pg2log.info("FINE SALVATAGGIO DOCUMENTO")
+        if not Environment.web:
+            Environment.pg2log.info("FINE SALVATAGGIO DOCUMENTO")
         self.init_on_load()
 
     def righeDocumentoDel(self, id=None):
