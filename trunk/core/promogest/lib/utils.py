@@ -2929,60 +2929,64 @@ def leggiRevisioni():
 
 def messageInfo(msg="Messaggio generico", transient=None):
     """generic msg dialog """
-    dialoggg = gtk.MessageDialog(transient,
-                        GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
-                        GTK_DIALOG_MESSAGE_INFO,
-                        GTK_BUTTON_OK)
-    dialoggg.set_markup(msg)
-    response = dialoggg.run()
-    dialoggg.destroy()
-    return response
+    if Environment.web is not True:
+        dialoggg = gtk.MessageDialog(transient,
+                            GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
+                            GTK_DIALOG_MESSAGE_INFO,
+                            GTK_BUTTON_OK)
+        dialoggg.set_markup(msg)
+        response = dialoggg.run()
+        dialoggg.destroy()
+        return response
 
 def messageError(msg="Messaggio generico", transient=None):
     """generic msg dialog """
-    dialoggg = gtk.MessageDialog(transient,
-                        GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
-                        gtk.MESSAGE_ERROR,
-                        gtk.BUTTONS_CANCEL)
-    #dialoggg.set_markup(msg)
-    print "MESSAGGIO", msg
-    return
-    response = dialoggg.run()
-    dialoggg.destroy()
-    return response
+    if Environment.web is not True:
+        dialoggg = gtk.MessageDialog(transient,
+                            GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
+                            gtk.MESSAGE_ERROR,
+                            gtk.BUTTONS_CANCEL)
+        #dialoggg.set_markup(msg)
+        print "MESSAGGIO", msg
+        return
+        response = dialoggg.run()
+        dialoggg.destroy()
+        return response
 
 def messageWarning(msg="Messaggio generico", transient=None):
     """generic msg dialog """
-    dialoggg = gtk.MessageDialog(transient,
-                        GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
-                        GTK_DIALOG_MESSAGE_WARNING,
-                        GTK_BUTTON_OK)
-    dialoggg.set_markup(msg)
-    response = dialoggg.run()
-    dialoggg.destroy()
-    return response
+    if Environment.web is not True:
+        dialoggg = gtk.MessageDialog(transient,
+                            GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
+                            GTK_DIALOG_MESSAGE_WARNING,
+                            GTK_BUTTON_OK)
+        dialoggg.set_markup(msg)
+        response = dialoggg.run()
+        dialoggg.destroy()
+        return response
 
 
 def YesNoDialog(msg="MESSAGGIO", transient=None,show_entry=False ):
-    dialog = gtk.MessageDialog(transient,
-                           GTK_DIALOG_MODAL
-                           | GTK_DIALOG_DESTROY_WITH_PARENT,
-                           GTK_DIALOG_MESSAGE_QUESTION, GTK_BUTTON_YES_NO,
-                           msg)
-    __entry_codi = gtk.Entry()
-    dialog.get_content_area().pack_start(__entry_codi, False, False, 0)
-    if show_entry:
-        __entry_codi.show()
-    response = dialog.run()
-    entry_text = __entry_codi.get_text()
-    dialog.destroy()
-    if response == -8:
+    if Environment.web is not True:
+        dialog = gtk.MessageDialog(transient,
+                               GTK_DIALOG_MODAL
+                               | GTK_DIALOG_DESTROY_WITH_PARENT,
+                               GTK_DIALOG_MESSAGE_QUESTION, GTK_BUTTON_YES_NO,
+                               msg)
+        __entry_codi = gtk.Entry()
+        dialog.get_content_area().pack_start(__entry_codi, False, False, 0)
         if show_entry:
-            return (True, entry_text)
-        return True
-    else:
-        return False
-    return response
+            __entry_codi.show()
+        response = dialog.run()
+        entry_text = __entry_codi.get_text()
+        dialog.destroy()
+        if response == -8:
+            if show_entry:
+                return (True, entry_text)
+            return True
+        else:
+            return False
+        return response
 
 def textview_insert_at_cursor(textview, string):
     _buffer = textview.get_buffer()
