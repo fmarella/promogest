@@ -42,3 +42,4 @@ if (u'Admin',) not in s or s ==[]:
     ruoli.execute(name = "Magazzino", descrizione = "Gestione magazzino", active = True)
     ruoli.execute(name = "Venditore", descrizione = "Addetto alla vendita", active = True)
     ruoli.execute(name = "Fatturazione", descrizione = "Fatturazione", active = True)
+    ruoli.execute(name = "Cliente", descrizione = "Cliente", active = True)

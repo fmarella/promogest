@@ -146,7 +146,6 @@ stati_articolo = []
 cache_obj = None
 avvii = 1
 SRC_PATH = os.path.split(os.path.dirname(__file__))[0]
-
 STATIC_PATH = os.path.join(SRC_PATH, 'templates')
 STATIC_PATH_FEED = os.path.join(SRC_PATH, 'feed')
 IMAGE_PATH = os.path.join(STATIC_PATH, 'images/')
@@ -317,7 +316,7 @@ if not web:
     Session = sessionmaker(bind=engine)
     session = Session()
 else:
-    print " USI QUESTA SEISSIONE SCOPED"
+    print " USI QUESTA SESSIONE SCOPED"
     session = scoped_session(lambda: create_session(engine, autocommit=False))
 
 # Determiniamo il nome del file pickle in base all'azienda e alla ver python.

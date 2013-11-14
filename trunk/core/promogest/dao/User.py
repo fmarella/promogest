@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2013 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -55,6 +55,8 @@ class User(Dao):
             dic = {k:t_utente.c.username.ilike("%"+v+"%")}
         elif k == 'email':
             dic = {k:t_utente.c.email.ilike("%"+v+"%")}
+        elif k == 'emailEM':
+            dic = {k:t_utente.c.email == v}
         elif k == 'active':
             dic = {k:t_utente.c.active == v}
         elif k == 'tipoUser':
@@ -86,13 +88,4 @@ class User(Dao):
                 return ""
 
 
-std_mapper = mapper(User, t_utente,
-    properties={
-        'email':deferred(t_utente.c.email),
-        'registration_date':deferred(t_utente.c.registration_date),
-        'last_modified':deferred(t_utente.c.last_modified),
-        'photo_src':deferred(t_utente.c.photo_src),
-        #'id_language':deferred(user.c.id_language),
-        'schemaa_azienda':deferred(t_utente.c.schemaa_azienda),
-
-}, order_by=t_utente.c.username)
+std_mapper = mapper(User, t_utente, order_by=t_utente.c.username)

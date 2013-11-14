@@ -21,13 +21,30 @@
 
 #from sqlalchemy import *
 #from sqlalchemy.orm import *
-#from promogest.Environment import *
+from promogest.Environment import delete_pickle
+from promogest.dao.DaoUtils import get_columns
+from sqlalchemy import *
+from sqlalchemy.orm import *
 
 def orderedImport():
     from promogest.dao.Azienda import t_azienda #v
     from promogest.dao.Language import t_language #v
     from promogest.modules.RuoliAzioni.dao.Role import t_role #v
     from promogest.dao.User import t_utente #v
+    colonne_utente = colonne = get_columns(t_utente)
+    #print "COLONNNNE", colonne_utente,"mailing_list" not in colonne_utente
+    if "mailing_list" not in colonne_utente:
+        try:
+            col = Column('mailing_list', Boolean, default=False)
+            col.create(t_utente)
+        except:
+            delete_pickle()
+    if "privacy" not in colonne_utente:
+        try:
+            col = Column('privacy', Boolean, default=False)
+            col.create(t_utente)
+        except:
+            delete_pickle()
     #from promogest.dao.Regioni import t_regione
     from promogest.modules.RuoliAzioni.dao.Action import t_action  #v
     from promogest.modules.RuoliAzioni.dao.RoleAction import t_roleaction #v
@@ -148,9 +165,20 @@ def orderedImportVenditaDettaglio():
     #from data.contattoAnagraficaSecondaria import t_contatto_anagraficasecondaria
 def orderedImportWeb():
 #try:
+    """ RICORDARSI CHE È POSSIBILE CHE CART NON ABBIA ID_CLIENTE E
+    STATIC PAGES NON ABBIA PERMALINK, VANNO DROPPATE E RICREATE
+    AGGIUNGERE UN CHECK QUI CHE DROPPI E RICREI"""
     from promogest.dao.NewsCategory import t_news_category
     from promogest.dao.News import t_news #v
     from promogest.dao.StaticPages import t_static_page
+    colonne_st_pages = colonne = get_columns(t_static_page)
+    if "permalink" not in colonne_st_pages:
+        col = Column('permalink', Integer)
+        col.create(t_static_page)
     from promogest.dao.Faq import t_faq
     from promogest.dao.Cart import t_cart
+    colonne_cart = colonne = get_columns(t_cart)
+    if "id_cliente" not in colonne_cart:
+        col = Column('id_cliente', Integer)
+        col.create(t_cart)
     print "CARICAMENTO/INSERIMENTO TABELLE WEB  ANDATO BENE"

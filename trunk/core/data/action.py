@@ -51,3 +51,5 @@ if (u'LOGIN',) not in s or s==[]:
     azioni.execute(denominazione_breve = "PROMEMORIA", denominazione = "Accesso alla sezione promemoria")
     azioni.execute(denominazione_breve = "CONFIGURAZIONE", denominazione = "Puo' effettuare modifiche alla configurazione")
     azioni.execute(denominazione_breve = "PRIMANOTA", denominazione = "Accesso prima nota cassa")
+    azioni.execute(denominazione_breve = "WEB-LOGIN", denominazione = "Accesso semplice alla piattaforma WEB")
+    azioni.execute(denominazione_breve = "WEB-ADMIN", denominazione = "Accesso completo alla piattaforma WEB")

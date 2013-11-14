@@ -114,6 +114,8 @@ class Fornitore(Dao):
             dic = {k: or_(t_persona_giuridica.c.cognome.ilike("%"+v+"%"),t_persona_giuridica.c.nome.ilike("%"+v+"%"))}
         elif k == 'localita':
             dic = {k: or_(t_persona_giuridica.c.sede_operativa_localita.ilike("%"+v+"%"), t_persona_giuridica.c.sede_legale_localita.ilike("%"+v+"%"))}
+        elif k == 'provincia':
+            dic = {k: or_(t_persona_giuridica.c.sede_operativa_provincia.ilike("%"+v+"%"), t_persona_giuridica.c.sede_legale_provincia.ilike("%"+v+"%"))}
         elif k == 'partitaIva':
             dic = {k: t_persona_giuridica.c.partita_iva.ilike("%"+v+"%")}
         elif k == 'codiceFiscale':

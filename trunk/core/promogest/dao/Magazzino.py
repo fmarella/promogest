@@ -40,12 +40,4 @@ class Magazzino(Dao):
 
 
 std_mapper = mapper(Magazzino, t_magazzino,
-        properties={
-        'indirizzo':deferred(t_magazzino.c.indirizzo),
-        'cap':deferred(t_magazzino.c.cap),
-        'provincia':deferred(t_magazzino.c.provincia),
-        'nazione':deferred(t_magazzino.c.nazione),
-        'pvcode':deferred(t_magazzino.c.pvcode),
-        'data_ultima_stampa_giornale':deferred(t_magazzino.c.data_ultima_stampa_giornale),
-    },
- order_by=t_magazzino.c.id)
+ order_by=t_magazzino.c.denominazione)

@@ -52,7 +52,7 @@ class Cart(Dao):
 
 
 std_mapper = mapper(Cart, t_cart, properties={
-            'user': relation(User,
-                    primaryjoin=t_cart.c.id_utente == t_utente.c.id,
-                    foreign_keys=[t_utente.c.id], backref="cart"),
+            #'user': relation(User,
+                    #primaryjoin=t_cart.c.id_utente == t_utente.c.id,
+                    #foreign_keys=[t_utente.c.id], backref="cart"),
                 }, order_by=t_cart.c.id)

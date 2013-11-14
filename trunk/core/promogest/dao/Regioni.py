@@ -40,7 +40,7 @@ class Regioni(Dao):
                 }
         return  dic[k]
 
-std_mapper = mapper(Regioni, t_regione,order_by=regioni.c.denominazione)
+std_mapper = mapper(Regioni, t_regione,order_by=t_regione.c.denominazione)
 
 
 #f = Regioni().select(denominazione="Piemonte")

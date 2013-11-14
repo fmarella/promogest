@@ -120,7 +120,7 @@ class Cliente(Dao):
             session.add(self)
         else:
             if self.id_user:
-                utente = User().getRecord(id=self.dao.id_user)
+                utente = User().getRecord(id=self.id_user)
                 if utente:
                     utente.delete()
 
@@ -249,6 +249,8 @@ class Cliente(Dao):
             dic = {k: t_persona_giuridica.c.codice.ilike("%"+v+"%")}
         elif k == 'codicesatto':
             dic = {k : t_persona_giuridica.c.codice == v}
+        elif k == 'idUser':
+            dic = {k : t_persona_giuridica.c.id_user == v}
         elif k == 'idList':
             dic = {k: t_persona_giuridica.c.id.in_(v)}
         elif k == 'ragioneSociale':
@@ -279,7 +281,7 @@ std_mapper = mapper(Cliente,
                     properties={
                         'id': [t_cliente.c.id, t_persona_giuridica.c.id],
                         'cliente_categoria_cliente': relation(ClienteCategoriaCliente,cascade="all, delete",
-                                                             backref='cliente_',lazy='joined'),
+                                                             backref='cliente_'),
                         "dm": relation(DestinazioneMerce,cascade="all, delete"),
                         'vl': relation(VariazioneListino,
                             secondary=t_cliente_variazione_listino)

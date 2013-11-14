@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012,2011 by Promotux
+#    Copyright (C) 2005-2013 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -49,3 +49,13 @@ class Action(Dao):
         return  dic[k]
 
 std_mapper = mapper(Action, t_action, order_by=t_action.c.id)
+if not Action().select(denominazione_breve="WEB-LOGIN"):
+    a = Action()
+    a.denominazione_breve = "WEB-LOGIN"
+    a.denominazione = "Accesso semplice alla piattaforma WEB"
+    a.persist()
+if not Action().select(denominazione_breve="WEB-ADMIN"):
+    a = Action()
+    a.denominazione_breve = "WEB-ADMIN"
+    a.denominazione = "Accesso completo alla piattaforma WEB"
+    a.persist()

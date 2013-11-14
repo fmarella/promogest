@@ -627,7 +627,10 @@ class Articolo(Dao):
             if artGN:
                 session.delete(artGN[0])
         session.commit()
-        pg2log.info("DELETE ARTICOLO")
+        try:
+            pg2log.info("DELETE ARTICOLO")
+        except:
+            pass
 
     def filter_values(self, k, v):
         if k == "codice":

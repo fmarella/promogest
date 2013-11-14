@@ -42,6 +42,8 @@ t_utente = Table('utente', params["metadata"],
         Column('tipo_user', String(50), nullable=True),
         Column('id_language', Integer,ForeignKey(fk_prefix_main+'language.id')),
         Column('email_confirmed', Boolean, default=False),
+        Column('privacy', Boolean, default=False),
+        Column('mailing_list', Boolean, default=False),
         schema=params["mainSchema"],
         )
 t_utente.create(checkfirst=True)
