@@ -237,7 +237,12 @@ if preEnv.dbforce:
 else:
     database = main_conf.Database.database
 
-port = main_conf.Database.port
+if preEnv.dbforce:
+    port = preEnv.portforce
+else:
+    port = main_conf.Database.port
+
+
 
 user = main_conf.Database.user
 password = main_conf.Database.password
