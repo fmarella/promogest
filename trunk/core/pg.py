@@ -76,6 +76,11 @@ i DAO, i filtri o tutto"""
                             #default="False",
                             type="string",
                             dest="schema")
+        parser.add_option("-w", "--web",
+                            help="simula un utulizzo web senza gtk",
+                            action="store_true",
+                            default="False",
+                            dest="web")
         (options, args) = parser.parse_args()
         from promogest import preEnv, bindtextdomain
         bindtextdomain('promogest', locale_dir='./po/locale')
@@ -114,6 +119,8 @@ i DAO, i filtri o tutto"""
             preEnv.debugDao = True
         elif 'FILTER' in options.debug:
             preEnv.debugFilter = True
+        if options.web == True:
+            preEnv.web = True
         if options.tipoDB and options.schema:
             print " DOBBIAMO CREARE UN NUOVO DB CON AZIENDA " ,  options.schema
             preEnv.buildSchema = options.schema
