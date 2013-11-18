@@ -27,12 +27,10 @@ from promogest.lib.migrate import *
 from promogest.Environment import *
 from promogest.dao.Dao import Dao
 from promogest.dao.User import User, t_utente
-
 try:
     t_cart=Table('cart', params['metadata'], schema=params['schema'], autoload=True)
 except:
     from data.cart import t_cart
-
 
 class Cart(Dao):
 

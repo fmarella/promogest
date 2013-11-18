@@ -22,7 +22,7 @@
 
 from sqlalchemy import *
 from promogest.Environment import *
-
+params["session"].close()
 t_cart = Table('cart', params['metadata'],
         Column('id', Integer, primary_key=True),
         Column('id_articolo',Integer, ForeignKey(fk_prefix+'articolo.id')),
