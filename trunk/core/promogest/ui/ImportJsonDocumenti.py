@@ -72,25 +72,15 @@ class ImportJsonDocumenti(GladeWidget):
         self.destroy()
 
     def on_importa_json_button_clicked(self, button):
-        a = """{
-    "data":"2013-07-21 06:14:48",
-    "promogest_id":"130",
-    "utente":"Mario Rossi",
-    "email":"mario@rossi.com",
-    "prodotti":{
-        "CALS5500LTAM35":"32",
-        "COPZ21TASBI":"1",
-        "COPZ21TAS23":"2",
-        "COPZ21TAS45":"3",
-        "COPZ21TASN":"4",
-        "COPZ21TAGS37":"5",
-        "COPZ21TAGS19":"6",
-        "COPZ21TAGS63":"67",
-        "COPZ21TAGS20":"8",
-        "COPZ21TAGSR":"9",
-        "COPZ21TAGSV":"10"
-    }
-}"""
+        a = """{"data":"2013-11-18 17:54:52",
+        "promogest_id":590,
+        "utente":"RUDOLF DISTRIBUZIONE CAGLIARI",
+        "email":"info@rudolfdanza.it",
+         "prodotti":{"RUDSYLVIASan4645":{"qty":"5","price":"7.50"},
+         "RUDSYLVIASan81045":{"qty":"5","price":"7.50"},
+         "RUDSYLVIASan121445":{"qty":"5","price":"7.50"},
+         "RUDPAQUITABLO8-1045":{"qty":"3","price":"9.50"}}
+         }"""
         text_buffer = self.importa_json_textview.get_buffer()
         note = text_buffer.get_text(text_buffer.get_start_iter(),
                                             text_buffer.get_end_iter(), True)
@@ -140,13 +130,14 @@ class ImportJsonDocumenti(GladeWidget):
         #print " LORO ORDINE", OrderedDict(dati["prodotti"]).items()
         for k,v in OrderedDict(dati["prodotti"]).items():
             #print " ERRREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE", k,v,int(dati["prodotti"].items().index((k,v)))+1
-            quantita = int(v)
+            quantita = int(v["qty"])
+            prezzo = float(v["price"])
             art = Articolo().select(codiceEM=k)
             if art:
                 idArticolo = art[0].id
             else:
                 raise "non trovo l'articolo nel db"
-            prezzo = leggiListino(pricelist[0].id, idArticolo, tiny=True)["prezzoIngrosso"]
+            #prezzo = leggiListino(pricelist[0].id, idArticolo, tiny=True)["prezzoIngrosso"]
             articolo = leggiArticolo(idArticolo)
             daoRiga = RigaDocumento()
             daoRiga.id_testata_documento = newDao.id
