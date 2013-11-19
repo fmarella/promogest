@@ -30,6 +30,7 @@ from promogest.modules.VenditaDettaglio.dao.TestataScontrino import TestataScont
 from promogest.modules.VenditaDettaglio.dao.RigaScontrino import RigaScontrino
 from promogest.modules.VenditaDettaglio.dao.ScontoRigaScontrino import ScontoRigaScontrino
 from promogest.modules.VenditaDettaglio.ui.Distinta import Distinta
+from promogest.modules.VenditaDettaglio.ui.AcquistoMedioCliente import AcquistoMedioCliente
 from promogest.modules.VenditaDettaglio.dao.TestataScontrinoCliente import TestataScontrinoCliente
 from promogest.ui.widgets.FilterWidget import FilterWidget
 
@@ -383,6 +384,12 @@ class GestioneScontrini(GladeWidget):
         gest = Distinta(righe = self.scontrini)
         gestWnd = gest.getTopLevel()
         showAnagraficaRichiamata(self.getTopLevel(), gestWnd, None, None)
+
+    def on_acqmedcli_menu_activate(self, menu):
+        gest = AcquistoMedioCliente(righe = self.scontrini)
+        gestWnd = gest.getTopLevel()
+        showAnagraficaRichiamata(self.getTopLevel(), gestWnd, None, None)
+
 
     def ricercaListino(self):
         """ check if there is a priceList like setted on configure file

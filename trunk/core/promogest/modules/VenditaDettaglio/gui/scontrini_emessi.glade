@@ -134,7 +134,7 @@
     </columns>
     <data>
       <row>
-        <col id="0" translatable="yes"></col>
+        <col id="0" translatable="yes"/>
       </row>
       <row>
         <col id="0" translatable="yes">Fattura vendita</col>
@@ -182,7 +182,6 @@
               <object class="GtkMenuItem" id="menuitem1__">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">_Altre Funzioni</property>
                 <property name="use_underline">True</property>
                 <child type="submenu">
@@ -194,10 +193,18 @@
                         <property name="label" translatable="yes">Aggiorna Inventario</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="image">image5</property>
                         <property name="use_stock">False</property>
                         <signal name="activate" handler="on_aggiorna_inve_activate" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="acqmedcli_menu">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Acquisto Medio Cliente</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="on_acqmedcli_menu_activate" swapped="no"/>
                       </object>
                     </child>
                   </object>
@@ -221,7 +228,6 @@
               <object class="GtkToolButton" id="distinta_button">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">Distinta giornaliera</property>
                 <property name="use_underline">True</property>
                 <property name="stock_id">gtk-dnd</property>
@@ -236,7 +242,6 @@
               <object class="GtkToolButton" id="affluenza_oraria_chart">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">Grafico affluenza oraria</property>
                 <property name="use_underline">True</property>
                 <property name="icon_widget">image2</property>
@@ -251,7 +256,6 @@
               <object class="GtkToolButton" id="affluenza_mensile_chart">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">Grafico affluenza mensile</property>
                 <property name="use_underline">True</property>
                 <property name="icon_widget">image4</property>
@@ -266,7 +270,6 @@
               <object class="GtkToolButton" id="affluenza_annuale_chart">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">Grafico affluenza annuale</property>
                 <property name="use_underline">True</property>
                 <property name="icon_widget">image3</property>
@@ -281,7 +284,6 @@
               <object class="GtkToolButton" id="esporta_affluenza_csv">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">Affluenza csv</property>
                 <property name="use_underline">True</property>
                 <property name="stock_id">gtk-execute</property>
@@ -429,6 +431,10 @@
                 <property name="visible">True</property>
                 <property name="sensitive">False</property>
                 <property name="can_focus">True</property>
+                <property name="primary_icon_activatable">False</property>
+                <property name="secondary_icon_activatable">False</property>
+                <property name="primary_icon_sensitive">True</property>
+                <property name="secondary_icon_sensitive">True</property>
               </object>
               <packing>
                 <property name="expand">True</property>
@@ -462,7 +468,6 @@
                 <property name="sensitive">False</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
                 <signal name="clicked" handler="on_crea_fattura_button_clicked" swapped="no"/>
               </object>
               <packing>
@@ -478,7 +483,6 @@
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
                 <signal name="clicked" handler="on_rhesus_button_clicked" swapped="no"/>
               </object>
               <packing>
@@ -493,7 +497,6 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
                 <signal name="clicked" handler="on_delete_button_clicked" swapped="no"/>
               </object>
@@ -509,7 +512,6 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
                 <signal name="clicked" handler="on_stampa_button_clicked" swapped="no"/>
               </object>
@@ -526,7 +528,6 @@
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
                 <signal name="clicked" handler="on_scontrini_window_close" swapped="no"/>
               </object>

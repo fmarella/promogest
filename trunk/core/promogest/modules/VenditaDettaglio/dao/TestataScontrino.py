@@ -140,7 +140,7 @@ class TestataScontrino(Dao):
         elif k=='idArticoloList':
             dic={ k :and_(t_testata_scontrino.c.id==t_riga_scontrinoo.c.id_testata_scontrino, t_riga_scontrino.c.id_articolo.in_(v))}
         elif k=='idCliente':
-            dic={ k :and_(testata_scontrino.c.id==TestataScontrinoCliente.id_testata_scontrino, TestataScontrinoCliente.id_cliente ==v)}
+            dic={ k :and_(t_testata_scontrino.c.id==TestataScontrinoCliente.id_testata_scontrino, TestataScontrinoCliente.id_cliente ==v)}
         return  dic[k]
 
     def update(self):

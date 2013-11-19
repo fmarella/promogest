@@ -1,0 +1,25 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+    <META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=utf-8">
+    <STYLE TYPE="text/css">
+        @page { margin: 1.5cm }
+        P { margin-bottom: 0.21cm }
+        TD P { margin-bottom: 0cm }
+        A:link { so-language: zxx }
+
+    </STYLE>
+</HEAD>
+<BODY LANG="it-IT" DIR="LTR">
+<p>Questo elenco ripoterà i clienti , il numero di acquisti e la loro spesa totale e media</p>
+    {% for k,v in pageData["dizio"].iteritems() %}
+<div><p>{{k.ragione_sociale}} - Num. scontrini: {{v|length}} TOT. Acquistato {{utils.mNLC(v|sum(attribute='totale_scontrino'),2)}} - Media:  {{utils.mNLC(v|sum(attribute='totale_scontrino')/v|length,2)}} </p></div>
+     {% endfor %}
+
+<DIV TYPE=FOOTER>
+    <P ALIGN=CENTER STYLE="margin-top: 0.5cm; margin-bottom: 0cm; font-style: normal">
+    <FONT SIZE=2>Distinta realizzata con modulo Gestione negozio di
+    PromoGest</FONT></P>
+</DIV>
+</BODY>
+</HTML>

@@ -24,16 +24,15 @@ from datetime import datetime
 from promogest.ui.GladeWidget import GladeWidget
 from promogest.lib.utils import *
 from promogest import Environment
-from promogest.dao.CategoriaArticolo import CategoriaArticolo
-from promogest.dao.Magazzino import Magazzino
-from promogest.dao.Articolo import Articolo
-from promogest.modules.VenditaDettaglio.dao.ChiusuraFiscale import ChiusuraFiscale
+from promogest.dao.Cliente import Cliente
+from promogest.modules.VenditaDettaglio.dao.TestataScontrinoCliente import TestataScontrinoCliente
+from promogest.modules.VenditaDettaglio.dao.TestataScontrino import TestataScontrino
 from promogest.lib.HtmlHandler import createHtmlObj, renderTemplate, renderHTML
 from promogest.ui.PrintDialog import PrintDialogHandler
 
 
 
-class Distinta(GladeWidget):
+class AcquistoMedioCliente(GladeWidget):
     """ Classe per la gestione della distinta di fine giornata
     """
 
@@ -44,9 +43,7 @@ class Distinta(GladeWidget):
         GladeWidget.__init__(self, root='visualizzatore_html',
                 path="htmlviewer.glade")
         self._window = self.visualizzatore_html
-        self.windowTitle = "Distinta giornaliera"
-#        self.set_title("Distinta giornaliera")
-        self.categorie = CategoriaArticolo().select(batchSize=None)
+        self.windowTitle = "Acquisto medio Cliente"
         self.placeWindow(self._window)
         self.draw()
 
@@ -123,81 +120,37 @@ class Distinta(GladeWidget):
 
     def refreshHtml(self, dao=None):
         pageData = {}
-        parziali = []
-        totali = self.calcolaTotale(self._scontrini)
-        catelist =[]
+        #totali = self.calcolaTotale(self._scontrini)
         self.html = '<html></html>'
         dataeora = datetime.datetime.now()
-        ragione_sociale = Environment.azienda
-        chiusure = ChiusuraFiscale().select( dataChiusura = dataeora,
-                                                offset = None,
-                                                batchSize = None)
-        if chiusure:
-            aperto = "NO"
-        else:
-            aperto ="SI"
-        if self._scontrini:
-            cateDict = {}
-            for s in self._scontrini:
-                for una in s.righe:
-                    articolo = Articolo().getRecord(id=una.id_articolo)
-                    if articolo.id_categoria_articolo in cateDict:
-                        righe = cateDict[articolo.id_categoria_articolo]
-                        righe.append(una)
-                        cateDict[articolo.id_categoria_articolo] = righe
-                    else:
-                        righe = []
-                        righe.append(una)
-                        cateDict[articolo.id_categoria_articolo] = righe
+        dizio = {}
+        for s in self._scontrini:
+            tsc = TestataScontrinoCliente().select(id_testata_scontrino = s.id, batchSize=None)
+            if tsc:
+                cli_id = tsc[0].id_cliente
+                cli = Cliente().getRecord(id=cli_id)
+                if cli in dizio:
+                    trini = dizio[cli]
+                    trini.append(s)
+                    dizio[cli] = trini
+                else:
+                    dizio[cli] = [s]
 
-            partz = self.aggiungiTotaliXRiga(cateDict)
-            if hasattr(Environment.conf, "VenditaDettaglio"):
-                magazzino = Environment.conf.VenditaDettaglio.magazzino
-            else:
-                magdao = setconf("VenditaDettaglio", "magazzino_vendita")
-                if magdao:
-                    magazzino = Magazzino().getRecord(id=magdao).denominazione
-            castellettoIva = {}
-            for s in self._scontrini:
-                for r in s.righe:
-                    a = leggiArticolo(r.id_articolo)
-                    ali = a["percentualeAliquotaIva"]
-                    prezzo_scontato = r.prezzo_scontato * r.quantita
-                    imponibile = float(prezzo_scontato)/(1+float(ali)/100)
-                    iva = float(prezzo_scontato) - imponibile
-                    if ali not in castellettoIva.keys():
-                        castellettoIva[ali] = {'percentuale': ali,
-                                               'imponibile': imponibile,
-                                                'imposta': iva,
-                                                'totale': prezzo_scontato
-                                                }
-                    else:
-                        castellettoIva[ali]['percentuale'] = ali
-                        castellettoIva[ali]['imponibile'] += imponibile
-                        castellettoIva[ali]['imposta'] += iva
-                        castellettoIva[ali]['totale'] += prezzo_scontato
-            pageData = {
-                    "file": "distinta_giornaliera.html",
-                    "parziali": partz,
-                    "totali": totali,
-                    "dataeora": dataeora,
-                    "ragione_sociale": ragione_sociale,
-                    "aperto": aperto,
-                    "magazzino":magazzino,
-                    "castellettoIva": castellettoIva
-                    }
-            self.html = renderTemplate(pageData)
+        pageData = {
+                "file": "acquisto_medio_cliente.html",
+                "dizio":dizio
+                }
+        self.html = renderTemplate(pageData)
         renderHTML(self.detail,self.html)
 
     def on_pdf_button_clicked(self, button):
         from  xhtml2pdf import pisa
         f = str(self.html)
-#        f = "Hello <strong>World</strong>"
-        filename =Environment.tempDir + "distintaTemp.pdf"
+        filename =Environment.tempDir + "acqmedcliTemp.pdf"
         g = file(filename, "wb")
         pdf = pisa.CreatePDF(f,g)
         g .close()
-        anag = PrintDialogHandler(self,self.windowTitle, tempFile=Environment.tempDir + "distintaTemp.pdf")
+        anag = PrintDialogHandler(self,self.windowTitle, tempFile=Environment.tempDir + "acqmedcliTemp.pdf")
         anagWindow = anag.getTopLevel()
         returnWindow = self.getTopLevel().get_toplevel()
         anagWindow.set_transient_for(returnWindow)
