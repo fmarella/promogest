@@ -224,7 +224,7 @@ class AnagraficaListiniArticoliFilter(AnagraficaFilter):
                         (l.denominazione or 'PP'),
                         (l.codice_articolo or ''),
                         (l.articolo or ''),
-                        dateToString(l.data_listino_articolo0'),
+                        dateToString(l.data_listino_articolo'),
                         str(mN(l.prezzo_dettaglio) or 0),
                         str(mN(l.prezzo_ingrosso) or 0),
                         str(mN(l.ultimo_costo) or 0)]
