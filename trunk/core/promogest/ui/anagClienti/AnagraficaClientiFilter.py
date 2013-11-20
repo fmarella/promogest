@@ -47,6 +47,7 @@ class AnagraficaClientiFilter(AnagraficaFilter):
     def draw(self):
         """ Disegno la treeview e gli altri oggetti della gui """
         self.clear()
+        self.altri_filtri_frame.hide()
 
     def _reOrderBy(self, column):
         if column.get_name() == "codice_column":
@@ -69,6 +70,8 @@ class AnagraficaClientiFilter(AnagraficaFilter):
         self.provincia_filter_entry.set_text('')
         self.codice_fiscale_filter_entry.set_text('')
         self.partita_iva_filter_entry.set_text('')
+        self.cap_filter_entry.set_text('')
+        self.indirizzo_filter_entry.set_text('')
         fillComboboxCategorieClienti(
                         self.id_categoria_cliente_filter_combobox, True)
         self.id_categoria_cliente_filter_combobox.set_active(0)
@@ -89,6 +92,8 @@ class AnagraficaClientiFilter(AnagraficaFilter):
         provincia = prepareFilterString(self.provincia_filter_entry.get_text())
         partitaIva = prepareFilterString(
                         self.partita_iva_filter_entry.get_text())
+        cap = prepareFilterString(self.cap_filter_entry.get_text())
+        indirizzo = prepareFilterString(self.indirizzo_filter_entry.get_text())
         codiceFiscale = prepareFilterString(
                         self.codice_fiscale_filter_entry.get_text())
         idCategoria = findIdFromCombobox(
@@ -103,6 +108,8 @@ class AnagraficaClientiFilter(AnagraficaFilter):
                                     localita=localita,
                                     provincia=provincia,
                                     partitaIva=partitaIva,
+                                    cap=cap,
+                                    indirizzo=indirizzo,
                                     codiceFiscale=codiceFiscale,
                                     idCategoria=idCategoria)
 
@@ -121,6 +128,8 @@ class AnagraficaClientiFilter(AnagraficaFilter):
                                     insegna=insegna,
                                     cognomeNome=cognomeNome,
                                     localita=localita,
+                                    cap=cap,
+                                    indirizzo=indirizzo,
                                     provincia=provincia,
                                     partitaIva=partitaIva,
                                     codiceFiscale=codiceFiscale,

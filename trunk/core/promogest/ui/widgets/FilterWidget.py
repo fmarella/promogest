@@ -74,7 +74,7 @@ class FilterWidget(GladeWidget):
         else:
             self.filter_scrolledwindow.set_property('visible', True)
             self._setResultsElement(resultsElement)
-        if self._owner.__class__.__name__ not in ["AnagraficaDocumentiFilter", "AnagraficaArticoliFilter"]:
+        if self._owner.__class__.__name__ not in ["AnagraficaDocumentiFilter", "AnagraficaArticoliFilter", "AnagraficaClientiFilter"]:
             self.altri_filtri_togglebutton.destroy()
 
         self.setFocus()
