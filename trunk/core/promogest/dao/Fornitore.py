@@ -19,8 +19,8 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-from sqlalchemy import Table, or_
-from sqlalchemy.orm import mapper, relation, join
+from sqlalchemy import *
+from sqlalchemy.orm import *
 from promogest.Environment import params, conf, session
 
 try:
