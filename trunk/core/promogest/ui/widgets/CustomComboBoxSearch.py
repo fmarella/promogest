@@ -115,7 +115,7 @@ class CustomComboBoxSearch(gtk.Entry):
                 self.anaedit.persona_giuridica_changed()
             except:
                 #print " TEST SU DOCUMENTI MODIFICA CLIENTE/LISTINO, poi togliere"
-                #pass
+                pass
             return model[iter][2]
         #else:
             #self._id = None

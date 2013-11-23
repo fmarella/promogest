@@ -344,7 +344,6 @@ def leggiListino(idListino=None, idArticolo=None, tiny=False):
     from promogest.dao.ListinoComplessoArticoloPrevalente import ListinoComplessoArticoloPrevalente
     from promogest.dao.Articolo import Articolo
     daoListinoArticolo = None
-
     #liss = Listino().select(batchSize=None)
 
     listinoDict = {"denominazione": "",
@@ -359,6 +358,7 @@ def leggiListino(idListino=None, idArticolo=None, tiny=False):
                     'applicazioneScontiIngrosso':[]}
 
     if idListino:
+        #idListino = int(idListino)
         daoListinoo = Listino().select(idListino=idListino, listinoAttuale=True)
         if daoListinoo:
             daoListino = daoListinoo[0]
@@ -370,7 +370,8 @@ def leggiListino(idListino=None, idArticolo=None, tiny=False):
                 _sottoListiniID = daoListino._sottoListiniIDD()
                 listinoDict["sottoListiniID"] = _sottoListiniID
 
-            if idArticolo:       #abbiamo anche un id Articolo daoListinoArticolo = None
+            if idArticolo:
+                #idArticolo = int(idArticolo)       #abbiamo anche un id Articolo daoListinoArticolo = None
                 if _complesso:
                     #se il listino è complesso gestisco il suo listino articolo
                     daoListinoArticolo1 = ListinoArticolo().select(
@@ -3533,3 +3534,10 @@ def resolve_save_file_path():
         elif os.name == 'nt':
             cartella = os.environ['USERPROFILE']
     return os.path.join(cartella, "documenti_" + time.strftime('%d_%m_%Y') + '.pdf')
+
+
+class DecimalEncoder(json.JSONEncoder):
+    def default(self, o):
+        if isinstance(o, Decimal):
+            return float(o)
+        super(DecimalEncoder, self).default(o)
