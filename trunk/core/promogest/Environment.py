@@ -145,6 +145,7 @@ categorie_articolo = []
 stati_articolo = []
 cache_obj = None
 avvii = 1
+generic_counter= 0
 SRC_PATH = os.path.split(os.path.dirname(__file__))[0]
 STATIC_PATH = os.path.join(SRC_PATH, 'templates')
 STATIC_PATH_FEED = os.path.join(SRC_PATH, 'feed')

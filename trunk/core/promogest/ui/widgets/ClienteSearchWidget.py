@@ -43,15 +43,6 @@ class ClienteSearchWidget(CustomComboBoxSearch):
         self._resultsCount = 0
         self.clear()
 
-    #def on_focus_out_event(self, entry, event):
-        #from promogest.dao.Cliente import Cliente
-        #keyname = entry.get_text()
-        #cli = Cliente().select(ragioneSociale=keyname, batchSize=5)
-        #if len(cli) >1:
-            #messageWarning("ATTENZIONE! RISULTATO NON UNIVOCO AZZERIAMO")
-            #self._id = None
-            #self.set_text("")
-
     def on_icon_press(self, entry, position, event):
         """
         scopettina agganciata ad un segnale generico

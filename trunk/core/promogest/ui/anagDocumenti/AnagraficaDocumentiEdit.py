@@ -577,7 +577,6 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self.id_persona_giuridica_customcombobox.refresh(clear=True, filter=False)
         if self._tipoPersonaGiuridica == "fornitore":
             self.id_persona_giuridica_customcombobox.setId(self.dao.id_fornitore)
-            #self.id_destinazione_merce_customcombobox.combobox.clear()
             self.id_destinazione_merce_customcombobox.set_sensitive(False)
         elif self._tipoPersonaGiuridica == "cliente":
             self.id_persona_giuridica_customcombobox.setId(self.dao.id_cliente)
@@ -1703,9 +1702,9 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         """
         stringLabel = '-'
         if self.dao.id is not None:
-            res = TestataMovimento().select(id_testata_documento= self.dao.id)
-            if len(res) > 0:
-                stringLabel = 'N.' + str(res[0].numero) + ' del ' + dateToString(res[0].data_movimento)
+            #res = TestataMovimento().select(id_testata_documento= self.dao.id)
+            if len(self.dao.TM) > 0:
+                stringLabel = 'N.' + str(self.dao.TM[0].numero) + ' del ' + dateToString(self.dao.TM[0].data_movimento)
         self.rif_movimento_label.set_text(stringLabel)
 
 
@@ -1963,6 +1962,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                     if setconf('Documenti', 'primo_dest_merce'):
                         self.id_destinazione_merce_customcombobox.combobox.set_active(1)
                 self.id_destinazione_merce_customcombobox.set_sensitive(True)
+
             self.refresh_combobox_listini()
         else:
             self.id_destinazione_merce_customcombobox.combobox.clear()

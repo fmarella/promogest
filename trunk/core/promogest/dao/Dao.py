@@ -199,8 +199,11 @@ class Dao(object):
     rincontrollare i campi e riprovare
     Grazie!
     """ %e
-            messageError(msg=msg)
-            pg2log.info("ERRORE IN DAO COMMIT  "+str(e))
+            try:
+                messageError(msg=msg)
+                pg2log.info("ERRORE IN DAO COMMIT  "+str(e))
+            except:
+                print "ERRORE in dao commit", str(e)
             params["session"].rollback()
             return 0
 

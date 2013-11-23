@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2013 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Andrea Argiolas <andrea@promotux.it>
@@ -110,6 +110,12 @@ class CustomComboBoxSearch(gtk.Entry):
                 self.anaedit.on_id_articolo_customcombobox_changed()
             except:
                 pass
+            #print " QUANTO VIENI TRIGGATO", self.anaedit
+            try:
+                self.anaedit.persona_giuridica_changed()
+            except:
+                #print " TEST SU DOCUMENTI MODIFICA CLIENTE/LISTINO, poi togliere"
+                #pass
             return model[iter][2]
         #else:
             #self._id = None
@@ -117,7 +123,7 @@ class CustomComboBoxSearch(gtk.Entry):
             #return None
 
     def on_completion_match_main(self, completion=None, model=None, iter=None):
-        #print "SEI L?ULTIMO STEPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP"
+        #print "SEI L?ULTIMO STEPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP" , self.anaedit
         #return
         #self.articolo_matchato = model[iter][2]
         #self.set_position(-1)
@@ -126,8 +132,9 @@ class CustomComboBoxSearch(gtk.Entry):
         self._container = model[iter][3]
         #print " ARTICOLO MATCHATO", self._id, model[iter][2]
         #try:
-            #self.anaedit.on_id_articolo_customcombobox_changed()
+            #self.anaedit.persona_giuridica_changed()
         #except:
+            #print " TEST SU DOCUMENTI MODIFICA CLIENTE/LISTINO, poi togliere"
             #pass
         #if model[iter][2] and self.get_text().lower() in model[iter][2].lower():
             #self.set_text(model[iter][2])
