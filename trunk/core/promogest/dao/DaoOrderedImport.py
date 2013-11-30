@@ -164,6 +164,9 @@ def orderedImportVenditaDettaglio():
 
     #from data.contattoAnagraficaSecondaria import t_contatto_anagraficasecondaria
 def orderedImportWeb():
+    from promogest.dao.DaoUtils import get_columns
+    from sqlalchemy import *
+    from sqlalchemy.orm import *
 #try:
     """ RICORDARSI CHE È POSSIBILE CHE CART NON ABBIA ID_CLIENTE E
     STATIC PAGES NON ABBIA PERMALINK, VANNO DROPPATE E RICREATE

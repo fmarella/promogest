@@ -1920,7 +1920,7 @@ def getScadenza(data_documento, ngiorniscad, FM = True):
         data_scadenza = data_documento + datetime.timedelta(ngiorniscad)
         return data_scadenza
 
-def getScontiFromDao(daoSconti = [], daoApplicazione = 'scalare'):
+def getScontiFromDao(daoSconti = [], daoApplicazione = 'scalare', jsonn=False):
     """
     FIXME
     @param daoSconti:
@@ -1936,6 +1936,9 @@ def getScontiFromDao(daoSconti = [], daoApplicazione = 'scalare'):
     if daoSconti:
         for s in daoSconti:
             sconti.append({"valore": s.valore, "tipo": s.tipo_sconto})
+    if jsonn:
+        sconti = json.dumps(sconti,cls=DecimalEncoder)
+    print "SCONTIIIIIIIIIIIIIII", sconti
     return (sconti, applicazione)
 
 def getMisureFromRiga(daoMisura = []):
@@ -1970,6 +1973,10 @@ def getStringaSconti(listSconti):
     @param listSconti:
     @type listSconti:
     """
+    try:
+        listSconti= json.loads(listSconti)
+    except:
+        pass
     stringaSconti = ''
     for s in listSconti:
         decimals = '1'
