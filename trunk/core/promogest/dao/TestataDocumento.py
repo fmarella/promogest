@@ -401,10 +401,12 @@ class TestataDocumento(Dao):
             totaleScontato = mN(totaleImponibileScontato + totaleImpostaScontata, 2)
         self._totaleNonScontato = mN(totaleImponibile,2) + mN(totaleImposta,2) + mN(totaleEsclusoBaseImponibile,2) + mN(spese, 2)
         self._totaleScontato = mN(totaleImponibileScontato,2) + mN(totaleImpostaScontata,2) + mN(totaleEsclusoBaseImponibile,2) + mN(spese, 2)
+        self._totaleScontatoIT = mNLC(self._totaleScontato,2)
         self._totaleImponibile = mN(totaleImponibile,2) + mN(impon_spese,2)
         self._totaleNonBaseImponibile = totaleEsclusoBaseImponibile
         self._totaleImposta = mN(totaleImposta,2)  + mN(imposta_spese,2)
         self._totaleImponibileScontato = mN(totaleImponibileScontato,2) + mN(impon_spese,2)
+        self._totaleImponibileScontatoIT = mNLC(self._totaleImponibileScontato,2)
         self._totaleValoreSconto = self._totaleImponibile - self._totaleImponibileScontato
         self._totaleRicaricatoLordo = self._totaleImponibileScontato - mN(totaleRicaricatoLordo,2)
         try:
@@ -421,6 +423,7 @@ class TestataDocumento(Dao):
         self._totaleRicaricatoIva = mN(self._totaleRicaricatoLordo,2) - mN(self._totaleRicaricatoImponibile,2)
         self._totaleOggetti = self._totaleScontato - self._totaleRicaricatoLordo
         self._totaleImpostaScontata = mN(totaleImpostaScontata,2) + mN(imposta_spese,2)
+        self._totaleImpostaScontataIT = mNLC(self._totaleImpostaScontata,2)
         self._castellettoIva = []
         for k in castellettoIva.keys():
             dictCastellettoIva = castellettoIva[k]

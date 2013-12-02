@@ -1867,11 +1867,11 @@ def stringToDateTime(stringa):
         return None
     else:
         try:
-            d = time.strptime(stringa, "%d/%m/%Y %H:%M")
+            d = time.strptime(stringa.strip(), "%d/%m/%Y %H:%M")
             data = datetime.datetime(d[0], d[1], d[2], d[3], d[4])
         except:
             try:
-                d = time.strptime(stringa, "%d/%m/%Y")
+                d = time.strptime(stringa.strip(), "%d/%m/%Y")
                 data = datetime.datetime(d[0], d[1], d[2])
 #            messageInfo(msg= "LA DATA E' IN QUALCHE MODO ERRATA O INCOMPLETA")
             except:
@@ -1922,11 +1922,6 @@ def getScadenza(data_documento, ngiorniscad, FM = True):
 
 def getScontiFromDao(daoSconti = [], daoApplicazione = 'scalare', jsonn=False):
     """
-    FIXME
-    @param daoSconti:
-    @type daoSconti:
-    @param daoApplicazione:
-    @type daoApplicazione:
     """
     applicazione = 'scalare'
     sconti = []
@@ -1938,14 +1933,10 @@ def getScontiFromDao(daoSconti = [], daoApplicazione = 'scalare', jsonn=False):
             sconti.append({"valore": s.valore, "tipo": s.tipo_sconto})
     if jsonn:
         sconti = json.dumps(sconti,cls=DecimalEncoder)
-    print "SCONTIIIIIIIIIIIIIII", sconti
     return (sconti, applicazione)
 
 def getMisureFromRiga(daoMisura = []):
     """
-    FIXME
-    @param daoMisura:
-    @type daoMisura:
     """
     misura = []
 
@@ -1956,11 +1947,6 @@ def getMisureFromRiga(daoMisura = []):
 
 def getDato(dictMisura, dato):
     """
-    FIXME
-    @param dictMisura:
-    @type dictMisura:
-    @param dato:
-    @type dato:
     """
     returned = ''
     for s in dictMisura:
@@ -1969,14 +1955,7 @@ def getDato(dictMisura, dato):
 
 def getStringaSconti(listSconti):
     """
-    FIXME
-    @param listSconti:
-    @type listSconti:
     """
-    try:
-        listSconti= json.loads(listSconti)
-    except:
-        pass
     stringaSconti = ''
     for s in listSconti:
         decimals = '1'
@@ -1984,7 +1963,7 @@ def getStringaSconti(listSconti):
         if tipo == 'percentuale':
             tipo = '%'
         elif tipo == 'valore':
-            tipo = ''
+            tipo = '€'
             decimals = int(setconf(key="decimals", section="Numbers"))
         if tipo =="%" and (float(s["valore"]) - float(int(float(s["valore"])))) == 0:
             valore = str(int(float(s["valore"])))
@@ -1992,8 +1971,6 @@ def getStringaSconti(listSconti):
             valore = ('%.' + str(decimals) + 'f') % float(s["valore"])
         stringaSconti = stringaSconti + valore + tipo + ';'
     return stringaSconti
-
-
 
 
 def scontiTipo(stringa):
@@ -3548,3 +3525,24 @@ class DecimalEncoder(json.JSONEncoder):
         if isinstance(o, Decimal):
             return float(o)
         super(DecimalEncoder, self).default(o)
+
+def getPrezzoNettoInRiga(riga=None):
+    """ calcola il prezzo netto dal prezzo lordo e dagli sconti
+    spostata qui per condivisione codice con promoWeb """
+    riga = eval(riga)
+    prezzoLordo = riga["prezzoLordo"]
+    prezzoNetto = riga["prezzoLordo"]
+    applicazione = riga["applicazioneSconti"]
+    sconti = riga["sconti"]
+    for s in sconti:
+        if s["tipo"] == 'percentuale' or s["tipo"] =="%":
+            if applicazione == 'scalare':
+                discaunt = str(s["valore"]).strip().replace(",",".")
+                prezzoNetto = Decimal(prezzoNetto) * (1 - Decimal(discaunt) / 100)
+            elif applicazione == 'non scalare':
+                discaunt = str(s["valore"]).strip().replace(",",".")
+                prezzoNetto = Decimal(prezzoNetto) - Decimal(prezzoLordo) * Decimal(discaunt) / 100
+        elif s["tipo"] == 'valore' or s["tipo"] =="€" or s["tipo"] == '\xe2\x82\xac':
+            prezzoNetto = Decimal(prezzoNetto) - Decimal(str(s["valore"]))
+
+    return prezzoNetto
