@@ -142,7 +142,7 @@ class ImportJsonDocumenti(GladeWidget):
             daoRiga = RigaDocumento()
             daoRiga.id_testata_documento = newDao.id
             daoRiga.id_articolo = idArticolo
-            daoRiga.id_magazzino = 1
+            daoRiga.id_magazzino = 3
             daoRiga.descrizione = articolo["denominazione"]
             daoRiga.id_iva = articolo["idAliquotaIva"]
             daoRiga.id_listino = pricelist[0].id
