@@ -1635,7 +1635,7 @@ def insertComboboxSearchAgente(combobox, idAgente, clear=False, filter=True):
 def calcolaListinoDaRicarico(costo=0, ricarico=0, iva=0):
     """
     Calcola il prezzo di vendita a partire dal costo, dal ricarico e dall'iva
-    sel gli argomenti sono tutti oggetti Decimal, lo � anche il valore di ritorno
+    sel gli argomenti sono tutti oggetti Decimal, lo è anche il valore di ritorno
     """
     if type(costo)==type("stringa") or costo is None:
         costo = Decimal(sanitizer(costo) or 0)

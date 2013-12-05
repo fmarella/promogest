@@ -105,6 +105,11 @@ class ListinoArticolo(Dao):
         else: return ""
 
     @property
+    def id_aliquota_iva(self):
+        if self.arti:return self.arti.id_aliquota_iva
+        else: return ""
+
+    @property
     def codice_a_barre(self):
         if self.arti:return self.arti.codice_a_barre
         else: return ""

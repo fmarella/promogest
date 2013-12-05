@@ -22,6 +22,7 @@
 import datetime
 import hashlib
 import sqlalchemy
+import decimal
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from sqlalchemy.ext.serializer import loads, dumps
@@ -242,7 +243,9 @@ class Dao(object):
         import json
         d = self.dictionary(complete=True)
         for k,v in d.iteritems():
-#            print type(v), v
+            #print type(v), v
+            if type(v) == decimal.Decimal:
+                v = float(v)
             if type(v) == datetime.datetime or type(v) == datetime.date:
                 v = v.strftime("%d-%m-%Y")
             if type(v) == bool:
