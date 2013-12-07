@@ -44,7 +44,6 @@ from promogest.dao.ClienteVariazioneListino import t_cliente_variazione_listino
 from promogest.lib.utils import posso, timeit
 
 
-@timeit
 def getNuovoCodiceCliente():
     """
     Restituisce il codice progressivo per un nuovo cliente
@@ -106,8 +105,8 @@ class Cliente(Dao):
 
     def persist(self):
         if not self.codice:
-            self.codice = getNuovoCodiceCliente()
             self.cancellato = False
+            self.codice = getNuovoCodiceCliente()
         session.add(self)
         session.commit()
 
@@ -274,10 +273,7 @@ class Cliente(Dao):
         elif k == 'idCategoria':
             dic = {k:and_(Cliente.id==ClienteCategoriaCliente.id_cliente,ClienteCategoriaCliente.id_categoria_cliente==v)}
         elif k == 'cancellato':
-            #if v is not True:
-            dic = {k: or_(t_persona_giuridica.c.cancellato!=v)}
-            #else:
-                #dic = {k:None}
+            dic = {k: and_(t_persona_giuridica.c.cancellato==v)}
         return dic[k]
 
 std_mapper = mapper(Cliente,
@@ -291,7 +287,7 @@ std_mapper = mapper(Cliente,
                             secondary=t_cliente_variazione_listino)
                     },
                     order_by=t_cliente.c.id)
-
+                    
 #for cli in Cliente().select(batchSize=None):
     #if cli.cancellato is None:
         #cli.cancellato = False
