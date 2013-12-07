@@ -444,7 +444,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         if cliente and cliente.vl is not []:
             return [{'valore':var.valore.strip(), 'tipo':var.tipo}
                         for var in cliente.vl if ((var.id_listino == idListino)
-                        and (data > var.data_inizio and data < var.data_fine))]
+                        and (data >= var.data_inizio and data <= var.data_fine))]
         else:
             return []
 
