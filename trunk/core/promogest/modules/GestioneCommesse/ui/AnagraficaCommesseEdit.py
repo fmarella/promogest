@@ -181,7 +181,7 @@ class AnagraficaCommesseEdit(AnagraficaEdit):
                 from promogest.ui.anagFornitori.AnagraficaFornitoriFilter import RicercaFornitori
                 anag = RicercaFornitori()
             elif self.tipo_dao =="ARTICOLO".lower():
-                from promogest.ui.anagArti.AnagraficaArticoli import RicercaArticoli
+                from promogest.ui.anagArti.AnagraficaArticoliFilter import RicercaArticoli
                 anag = RicercaArticoli()
             elif self.tipo_dao =="VETTORE".lower():
                 from promogest.ui.anagVettori.AnagraficaVettoriFilter import RicercaVettori
