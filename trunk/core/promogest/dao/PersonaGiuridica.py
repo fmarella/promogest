@@ -65,3 +65,9 @@ std_mapper = mapper(PersonaGiuridica_,
         order_by=t_persona_giuridica.c.id)
 
 from promogest.dao.PersonaGiuridicaPersonaGiuridica import PersonaGiuridicaPersonaGiuridica
+
+
+for pg in session.query(PersonaGiuridica_).filter_by(cancellato=None).all():
+    pg.cancellato = False
+    session.add(pg)
+session.commit()
