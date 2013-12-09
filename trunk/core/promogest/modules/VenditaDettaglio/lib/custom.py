@@ -168,13 +168,13 @@ Es. chiusura a contanti / assegni con calcolo del resto:
 
         if t_contanti > 0 and t_assegni == 0 and t_carta == 0:
             #abbiamo un pagamento in contanti con gli altri metodi a zero
-            f.write(str(t_contanti)+"H1T\n")
+            f.write(str(mN(t_contanti,2)).replace(".", "") + "H1T\n")
         elif t_contanti == 0 and t_assegni > 0 and t_carta == 0:
             #abbiamo un pagamento con assegno con gli altri metodi a zero
-            f.write(str(t_contanti)+"H2T\n")
+            f.write(str(mN(t_contanti,2)).replace(".", "") + "H2T\n")
         elif t_contanti == 0 and t_assegni == 0 and t_carta > 0:
             #abbiamo un pagamento con carta con gli altri metodi a zero
-            f.write(str(t_contanti)+"H3T\n")
+            f.write(str(mN(t_contanti,2)).replace(".", "") + "H3T\n")
         elif t_contanti == 0 and t_assegni == 0 and t_carta == 0:
             #abbiamo un pagamento senza segnare contanti o altro
             f.write("1T\n")
