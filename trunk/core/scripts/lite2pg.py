@@ -51,11 +51,11 @@ engine_source = create_engine("sqlite:///" + startdir() + "db", encoding='utf-8'
 print engine_source
 if tipodb_dest == "mysql":
     from sqlalchemy.pool import NullPool
-    engine_dest = create_engine("mysql+mysqldb://" + user_dest + ":" + \
+    engine_dest = create_engine("mysql+mysqlconnector://" + user_dest + ":" + \
                                         password_dest + "@" + host_dest + ":" + port_dest +\
                                         "/" + database_dest + "?charset=utf8",
                                         poolclass=NullPool)
-
+#mysqldb
 db_source = SQLSoup(engine_source)
 db_dest =  SQLSoup(engine_dest)
 
@@ -73,20 +73,121 @@ meta_dest = MetaData()
 meta_dest.reflect(bind=engine_dest)
 
 # TODO: Se la tabella non viene trovata, venga creata usando la dir data
+tabelle = [ "access",
+            "action",
+            "agente",
+            "anagrafica_secondaria",
+            "azienda",
+            "categoria_articolo",
+            "categoria_cliente",
+            "categoria_contatto",
+            "informazioni_contabili_documento",
+            "informazioni_fatturazione_documento",
+            "testata_documento",
+            "cliente",
+            "cliente_categoria_cliente",
+            "cliente_variazione_listino",
+            "codice_a_barre_articolo",
+            "contatto",
+            "contatto_anagraficasecondaria",
+            "contatto_azienda",
+            "contatto_categoria_contatto",
+            "contatto_cliente",
+            "contatto_magazzino",
+            "destinazione_merce",
+            "famiglia_articolo",
+            "banche_azienda",
+            "banca",
+            "categoria_fornitore",
+            "fornitore",
+            "fornitura",
+            "image",
+            "imballaggio",
+            "immagine",
+            "inventario",
+            "language",
+            "listino",
+            "listino_articolo",
+            "listino_categoria_cliente",
+            "listino_complesso_articolo_prevalente",
+            "listino_complesso_listino",
+            "listino_magazzino",
+            "magazzino",
+            "multiplo",
+            "numero_lotto_temp",
+            "operazione",
+            "pagamento",
+            "personagiuridica_personagiuridica",
+            "persona_giuridica",
+            "promemoria",
+            "recapito",
+            "regione",
+            "contatto_fornitore",
+            "riga",
+            "riga_commessa",
+            "riga_documento",
+            "riga_movimento",
+            "riga_movimento_fornitura",
+            "riga_primanota_testata_documento_scadenza",
+            "riga_prima_nota",
+            "ritenuta_acconto_riga",
+            "role",
+            "roleaction",
+            "sconti_vendita_dettaglio",
+            "sconti_vendita_ingrosso",
+            "sconto",
+            "sconto_fornitura",
+            "sconto_riga_documento",
+            "sconto_riga_movimento",
+            "sconto_testata_documento",
+            "setconf",
+            "setting",
+            "slafile_immagine",
+            "sla_file",
+            "stadio_commessa",
+            "stato_articolo",
+            "stoccaggio",
+            "testata_commessa",
+
+            "testata_documento_scadenza",
+            "testata_movimento",
+            "testata_prima_nota",
+            "tipo_aliquota_iva",
+            "tipo_recapito",
+            "unita_base",
+            "utente",
+            "utente_immagine",
+            "variazione_listino",
+            "vettore",
+            "articolo",
+            "articolo_immagine",
+            "articolo_kit",
+            "aliquota_iva",
+]
+
+
+
+#for t in tabelle:
+    #print "DA PULIRE",tabelle.index(t),"/",len(tabelle),  t
+    #db_dest.entity(str(t)).delete()
+    #db_dest.commit()
+
+
+
 
 for m in reversed(meta_dest.sorted_tables):
     print "DA PULIRE",meta_dest.sorted_tables.index(m),"/",len(meta_dest.sorted_tables),  m
-    #d_dest = db_dest.entity(str(m)).all()
     try:
         db_dest.entity(str(m)).delete()
         db_dest.commit()
     except:
         db_dest.rollback()
-        if str(m).strip() in ["famiglia_articolo"]:
-            d_dest = db_dest.entity(str(m)).all()
-            for k in reversed(d_dest):
-                db_dest.delete(k)
-                db_dest.commit()
+        #if str(m).strip() in ["famiglia_articolo"]:
+        d_dest = db_dest.entity(str(m)).all()
+        for k in reversed(d_dest):
+            print k
+            db_dest.delete(k)
+            db_dest.commit()
 
 
 
@@ -98,6 +199,8 @@ for t in meta_source.sorted_tables:
         #daos_dest = db_dest.entity(str(t)).all()
         print " Nella tabella ci sono",len(daos_source)
         for dao_s  in daos_source:
+            if daos_source.index(dao_s)%100 == 0:
+                print "RIMANGONO", len(daos_source)-daos_source.index(dao_s), "righe"
             #print "RIGA",daos_source.index(dao_s),"/",len(daos_source), str(t).strip()
             #if dao_s in daos_dest:
                 #print " ESISTE"
@@ -157,21 +260,21 @@ for t in meta_source.sorted_tables:
                 c = getattr(dao_s,k.name)
                 setattr(a,k.name,c)
             session_dest.add(a)
-            try:
-                db_dest.commit()
-            except Exception as e:
-                print "QUESTO ERRORE:", e
-                db_dest.rollback()
-                continue
+        try:
+            db_dest.commit()
+        except Exception as e:
+            print "QUESTO ERRORE:", e
+            db_dest.rollback()
+            continue
 
-# chiusura con tabelle anomale
-rpn_s = db_source.riga_prima_nota.all()
-#rpn_d = db_dest.riga_prima_nota.all()
-for d_s  in rpn_s:
-    a = db_dest.riga_prima_nota()
-    for k in d_s.c:
-        c = getattr(d_s,k.name)
-        setattr(a,k.name,c)
-    session_dest.add(a)
-db_dest.commit()
-print " FINITO TUTTO"
+## chiusura con tabelle anomale
+#rpn_s = db_source.riga_prima_nota.all()
+##rpn_d = db_dest.riga_prima_nota.all()
+#for d_s  in rpn_s:
+    #a = db_dest.riga_prima_nota()
+    #for k in d_s.c:
+        #c = getattr(d_s,k.name)
+        #setattr(a,k.name,c)
+    #session_dest.add(a)
+#db_dest.commit()
+#print " FINITO TUTTO"
