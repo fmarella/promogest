@@ -455,8 +455,8 @@ class AnagraficaClientiEdit(AnagraficaEdit, AnagraficaPGEdit):
             dao_testata_infopeso.persist()
             dao_generalita_infopeso.id_cliente = self.dao.id
             dao_generalita_infopeso.persist()
-        if posso("Provvigione"):
-            self.provv_page.provvSaveDao()
+        #if posso("Provvigione"):
+            #self.provv_page.provvSaveDao()
         model = self.categorie_treeview.get_model()
         cleanClienteCategoriaCliente = ClienteCategoriaCliente()\
                                             .select(idCliente=self.dao.id,
