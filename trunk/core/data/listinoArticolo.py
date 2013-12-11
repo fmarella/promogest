@@ -23,6 +23,7 @@
 import datetime
 from sqlalchemy import *
 from promogest.Environment import *
+#from sqlalchemy.dialects import mysql
 
 t_listino_articolo = Table('listino_articolo', params["metadata"],
         Column('id_listino', Integer,ForeignKey(fk_prefix+"listino.id"),primary_key=True),

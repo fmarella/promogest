@@ -110,6 +110,7 @@ def orderedImport():
 
     from promogest.dao.CCardType import t_credit_card_type #v
     from promogest.dao.Riga import t_riga
+    from promogest.dao.AccountEmail import t_account_email
 
     from promogest.dao.TestataDocumento import t_testata_documento #v
     from promogest.dao.TestataMovimento import t_testata_movimento   #v

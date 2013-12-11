@@ -83,6 +83,12 @@ class RigaScontrino(Dao):
         else: return ""
     codice_articolo= property(__codiceArticolo)
 
+    @property
+    def iva_articolo(self):
+        """ esempio di funzione  unita alla property """
+        if self.arti: return self.arti.percentuale_aliquota_iva
+        else: return ""
+
     def _codice_a_barre(self):
         """ esempio di funzione  unita alla property """
         if self.arti: return self.arti.codice_a_barre

@@ -40,9 +40,10 @@ t_listino = Table('listino', params["metadata"],
         schema=params["schema"],
         mysql_engine='InnoDB'
         )
-try:
-    msg = "CREATE SEQUENCE %s.listino_id_seq" %params["schema"]
-    DDL(msg).execute_at('before-create', t_listino)
-except:
-    print "la relazione listino_id_seq esiste già"
+if tipo_eng == "postgresql":
+    try:
+        msg = "CREATE SEQUENCE %s.listino_id_seq" %params["schema"]
+        DDL(msg).execute_at('before-create', t_listino)
+    except:
+        print "la relazione listino_id_seq esiste già"
 t_listino.create(checkfirst=True)

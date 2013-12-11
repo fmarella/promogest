@@ -26,7 +26,6 @@ from promogest.Environment import params, session, azienda, \
 from promogest.dao.Dao import Dao
 from promogest.dao.Azienda import Azienda
 
-
 try:
     t_account_email = Table('account_email',
                             params['metadata'],
@@ -34,27 +33,8 @@ try:
                             autoload=True,
                             useexisting=True)
 except:
-    t_account_email = Table('account_email',
-        params['metadata'],
-        Column('id', Integer, primary_key=True),
-        Column('id_azienda', String(100)),
-        Column('denominazione', String(250)),
-        Column('indirizzo', String(250)),
-        Column('server_smtp', String(500)),
-        Column('porta_smtp', Integer),
-        Column('cripto_SSL', Boolean),
-        Column('preferito', Boolean),
-        Column('username', String(250)),
-        Column('password', String(250)),
-        Column('oggetto', String(500)),
-        Column('body', Text),
-        Column('firma', String(250)),
-        Column('intervallo_invio', Integer),
-        UniqueConstraint('denominazione'),
-        schema=params['schema'],
-        useexisting=True)
-    t_account_email.create(checkfirst=True)
-    delete_pickle()
+    from data.accountEmail import t_account_email
+
 
 def reimposta_preferito(newDao):
     daos = AccountEmail().select(complexFilter=(and_(not_(AccountEmail.id==newDao.id),

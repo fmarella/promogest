@@ -64,9 +64,7 @@ class Custom(object):
             self.path = Environment.VenditaDettaglio.export_path
         except: # prendo la cartella temp standard
             self.path = Environment.documentsDir
-
-
-
+        # assegnazione_iva_reparti
 
     def create_export_file(self, daoScontrino=None):
         # Genero nome file
@@ -108,16 +106,25 @@ Credito cliente                         12
                         else:
                             sco=str(sconto.valore * quantita)+"H3M\n"
             p = str(mN(riga.prezzo,2)).replace(".","")
+            iva = riga.iva_articolo
+            if iva and int(iva) == 22:
+                rep = "1"
+            elif iva and int(iva) == 10:
+                rep = "2"
+            elif iva and int(iva) == 4:
+                rep = "3"
+            elif iva and int(iva) == 0:
+                rep = "4"
             if riga.quantita < 0:
                 # riga reso
-                stringa = '"'+ deaccenta(riga.descrizione[:19])+'"'+ str(quantita) +"*"+ p+'H9M'+"H1R\n"
+                stringa = '"'+ deaccenta(riga.descrizione[:19])+'"'+ str(quantita) +"*"+ p+'H9M'+"H"+rep+"R\n"
                 f.write(stringa)
             elif quantita != 1:
                 # quantita' non unitaria
-                stringa = '"'+ deaccenta(riga.descrizione[:19])+'"'+ str(quantita) +"*"+ p+"H1R"+sco+"\n"
+                stringa = '"'+ deaccenta(riga.descrizione[:19])+'"'+ str(quantita) +"*"+ p+"H"+rep+"R"+sco+"\n"
                 f.write(stringa)
             elif riga.quantita == 1:
-                stringa = '"'+ deaccenta(riga.descrizione[:19])+'"'+ p+"H1R"+sco+"\n"
+                stringa = '"'+ deaccenta(riga.descrizione[:19])+'"'+ p+"H"+rep+"R"+sco+"\n"
                 f.write(stringa)
 
             """ GESTIONE SUBTOTALE ED EVENTUALI SCONTI
