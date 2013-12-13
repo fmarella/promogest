@@ -65,6 +65,8 @@ class RigaPrimaNota(Dao):
             dic = {k: t_riga_prima_nota.c.segno == v}
         elif k == 'tipo':
             dic = {k: t_riga_prima_nota.c.tipo == v}
+        elif k == 'idBanca':
+            dic = {k: t_riga_prima_nota.c.id_banca == v}
         elif k == 'idTestataPrimaNota':
             dic = {k: t_riga_prima_nota.c.id_testata_prima_nota == v}
         return dic[k]
@@ -81,3 +83,15 @@ std_mapper = mapper(RigaPrimaNota,
                     t_riga_prima_nota,
                     properties={},
                     order_by=t_riga_prima_nota.c.id)
+if tipodb=="sqlite":
+    a = session.query(Banca.id).all()
+    b = session.query(RigaPrimaNota.id_banca).all()
+    fixit =  list(set(b)-set(a))
+    print "fixt-riga-prima-nota-banca", fixit
+    for f in fixit:
+        if f[0] != "None" and f[0] != None:
+            aa = RigaPrimaNota().select(idBanca=f[0], batchSize=None)
+            for z in aa:
+                z.id_banca = None
+                session.add(z)
+    session.commit()

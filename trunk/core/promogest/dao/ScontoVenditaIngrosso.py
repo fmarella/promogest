@@ -58,3 +58,16 @@ std_mapper = mapper(ScontoVenditaIngrosso,
         "id": [t_sconto.c.id, t_sconti_vendita_ingrosso.c.id]
     },
     order_by=t_sconti_vendita_ingrosso.c.id)
+
+if tipodb=="sqlite":
+    from promogest.dao.Listino import Listino
+    a = session.query(Listino.data_listino).all()
+    b = session.query(ScontoVenditaIngrosso.data_listino_articolo).all()
+    fixit =  list(set(b)-set(a))
+    print "fixt-sv-ing", fixit
+    for f in fixit:
+        if f[0] != "None" and f[0] != None:
+            aa = ScontoVenditaIngrosso().select(dataListinoArticolo=f[0], batchSize=None)
+            for a in aa:
+                session.delete(a)
+                session.commit

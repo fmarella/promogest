@@ -23,7 +23,7 @@
 
 from sqlalchemy import *
 from sqlalchemy.orm import *
-from promogest.Environment import params, conf, session, delete_pickle
+from promogest.Environment import params, conf, session, delete_pickle , tipodb
 
 try:
     t_cliente = Table('cliente',
@@ -250,6 +250,10 @@ class Cliente(Dao):
             dic = {k : t_persona_giuridica.c.codice == v}
         elif k == 'idUser':
             dic = {k : t_persona_giuridica.c.id_user == v}
+        elif k == 'idPagamento':
+            dic = {k : t_cliente.c.id_pagamento == v}
+        elif k == 'idBanca':
+            dic = {k : t_cliente.c.id_banca == v}
         elif k == 'idList':
             dic = {k: t_persona_giuridica.c.id.in_(v)}
         elif k == 'ragioneSociale':
@@ -287,8 +291,28 @@ std_mapper = mapper(Cliente,
                             secondary=t_cliente_variazione_listino)
                     },
                     order_by=t_cliente.c.id)
-                    
-#for cli in Cliente().select(batchSize=None):
-    #if cli.cancellato is None:
-        #cli.cancellato = False
-        #cli.persist()
+
+if tipodb=="sqlite":
+    from promogest.dao.Pagamento import Pagamento
+    a = session.query(Pagamento.id).all()
+    b = session.query(Cliente.id_pagamento).all()
+    fixit =  list(set(b)-set(a))
+    print "fixt-cliente-pagamento", fixit
+    for f in fixit:
+        if f[0] != "None" and f[0] != None:
+            aa = Cliente().select(idPagamento=f[0], batchSize=None)
+            for a in aa:
+                a.id_pagamento = None
+            session.add(a)
+    from promogest.dao.Banca import Banca
+    c = session.query(Banca.id).all()
+    d = session.query(Cliente.id_banca).all()
+    fixit2 =  list(set(d)-set(c))
+    print "fixt-cliente-banca", fixit2
+    for f in fixit2:
+        if f[0] != "None" and f[0] != None:
+            aa = Cliente().select(idBanca=f[0], batchSize=None)
+            for a in aa:
+                a.id_banca = None
+                session.add(a)
+    session.commit()

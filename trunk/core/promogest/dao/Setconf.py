@@ -67,7 +67,10 @@ std_mapper = mapper(SetConf, t_setconf,
     }, order_by=t_setconf.c.key)
 
 allkey = session.query(SetConf.key, SetConf.section).all()
-#bb = SetConf().select(key="articolo_struttura_codice", section="Articoli")
+bb = SetConf().select(section="Primanota", batchSize=None)
+for b in bb:
+    session.delete(b)
+    session.commit()
 a = False
 if not ("articolo_struttura_codice", "Articoli") in allkey:
     kbb = SetConf()
@@ -310,11 +313,11 @@ if not ("self_confirm", "Project") in allkey:
     session.add(key_nln)
     a = True
 
-if not ("rotazione_primanota", "Primanota") in allkey:
+if not ("rotazione_primanota", "PrimaNota") in allkey:
     kee = SetConf()
     kee.key = "rotazione_primanota"
     kee.value = "mensile"
-    kee.section = "Primanota"
+    kee.section = "PrimaNota"
     kee.tipo_section = "Generico"
     kee.description = "Gestione della creazione della prima nota, valori ammessi, MESE, SETTIMANA, TRIMESTRE"
     kee.active = True

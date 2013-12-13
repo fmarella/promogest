@@ -1328,6 +1328,10 @@ class TestataDocumento(Dao):
             dic = {k: t_testata_documento.c.operazione.in_(contabili)}
         elif k == 'idCliente':
             dic = {k: t_testata_documento.c.id_cliente == v}
+        elif k == 'idBanca':
+            dic = {k: t_testata_documento.c.id_banca == v}
+        elif k == 'idPrimoRiferimento':
+            dic = {k: t_testata_documento.c.id_primo_riferimento == v}
         elif k == 'idClienteList':
             dic = {k: t_testata_documento.c.id_cliente.in_(v)}
         elif k == 'idFornitore':
@@ -1434,3 +1438,37 @@ if (hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_ena
         cascade="all, delete",
         backref=backref("TD"),
         uselist=False))
+
+if tipodb=="sqlite":
+    a = session.query(Banca.id).all()
+    b = session.query(TestataDocumento.id_banca).all()
+    fixit =  list(set(b)-set(a))
+    print "fixt-td-banca", fixit
+    for f in fixit:
+        if f[0] != "None" and f[0] != None:
+            aa = TestataDocumento().select(idBanca=f[0], batchSize=None)
+            for a in aa:
+                a.id_banca = None
+                session.add(a)
+    c = session.query(Pagamento.id).all()
+    d = session.query(TestataDocumento.id_pagamento).all()
+    fixit2 =  list(set(d)-set(c))
+    print "fixt-td-pag", fixit2
+    for f in fixit2:
+        if f[0] != "None" and f[0] != None:
+            aa = TestataDocumento().select(idPagamento=f[0], batchSize=None)
+            for a in aa:
+                a.id_pagamento = None
+                session.add(a)
+    session.commit()
+    e = session.query(TestataDocumento.id).all()
+    f = session.query(TestataDocumento.id_primo_riferimento).all()
+    fixit3 =  list(set(f)-set(e))
+    print "fixt-td-primo_pag", fixit3
+    for f in fixit3:
+        if f[0] != "None" and f[0] != None:
+            aa = TestataDocumento().select(idPrimoRiferimento=f[0], batchSize=None)
+            for a in aa:
+                a.id_primo_riferimento = None
+                session.add(a)
+    session.commit()

@@ -21,7 +21,7 @@
 
 from sqlalchemy import *
 from sqlalchemy.orm import *
-from promogest.Environment import params, conf, session
+from promogest.Environment import params, conf, session, tipodb
 
 try:
     t_fornitore = Table('fornitore',
@@ -110,6 +110,8 @@ class Fornitore(Dao):
             dic = {k: t_persona_giuridica.c.ragione_sociale.ilike("%"+v+"%")}
         elif k == 'insegna':
             dic = {k: t_persona_giuridica.c.insegna.ilike("%"+v+"%")}
+        elif k == 'idPagamento':
+            dic = {k : t_fornitore.c.id_pagamento == v}
         elif k == 'cognomeNome':
             dic = {k: or_(t_persona_giuridica.c.cognome.ilike("%"+v+"%"),t_persona_giuridica.c.nome.ilike("%"+v+"%"))}
         elif k == 'localita':
@@ -160,3 +162,17 @@ std_mapper = mapper(Fornitore, join(t_fornitore, t_persona_giuridica),
         "categoria_fornitore": relation(CategoriaFornitore, backref="fornitore")
     },
     order_by=t_fornitore.c.id)
+
+if tipodb=="sqlite":
+    from promogest.dao.Pagamento import Pagamento
+    a = session.query(Pagamento.id).all()
+    b = session.query(Fornitore.id_pagamento).all()
+    fixit =  list(set(b)-set(a))
+    print "fixt-fornitore", fixit
+    for f in fixit:
+        if f[0] != "None" and f[0] != None:
+            aa = Fornitore().select(idPagamento=f[0], batchSize=None)
+            for a in aa:
+                a.id_pagamento = None
+                session.add(a)
+            session.commit()

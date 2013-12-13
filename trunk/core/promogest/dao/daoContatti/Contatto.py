@@ -116,3 +116,14 @@ std_mapper=mapper(Contatto, t_contatto,properties={
     'recapito' : relation(RecapitoContatto, backref=backref('contatto'),cascade="all, delete"),
     "contatto_cat_cont": relation(ContattoCategoriaContatto, backref=backref("contatto"), cascade="all, delete"),
     }, order_by=t_contatto.c.id)
+
+if tipodb=="sqlite":
+    a = session.query(Contatto.id).all()
+    b = session.query(RecapitoContatto.id_contatto).all()
+    fixit =  list(set(b)-set(a))
+    print "fixt-contatto", fixit
+    for f in fixit:
+        aa = RecapitoContatto().select(idContatto=f[0], batchSize=None)
+        for a in aa:
+            session.delete(a)
+    session.commit()

@@ -23,7 +23,7 @@
 
 from sqlalchemy import *
 from sqlalchemy.orm import *
-from promogest.Environment import params, workingYear, conf
+from promogest.Environment import params, workingYear, conf , tipodb, session
 
 try:
     t_stoccaggio = Table('stoccaggio', params['metadata'], schema=params['schema'],
@@ -284,3 +284,14 @@ std_mapper = mapper(Stoccaggio, t_stoccaggio, properties={
                 primaryjoin=t_stoccaggio.c.id_magazzino == Magazzino.id,
                 backref="stoccaggio"),
         }, order_by=t_stoccaggio.c.id)
+
+if tipodb=="sqlite":
+    a = session.query(Articolo.id).all()
+    b = session.query(Stoccaggio.id_articolo).all()
+    fixit =  list(set(b)-set(a))
+    print "fixt-stoccaggio", fixit
+    for f in fixit:
+        aa = Stoccaggio().select(idArticolo=f[0], batchSize=None)
+        for a in aa:
+            session.delete(a)
+        session.commit()

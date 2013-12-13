@@ -75,3 +75,15 @@ std_mapper = mapper(RigaMovimentoFornitura, t_riga_movimento_fornitura,
             primaryjoin = (t_riga_movimento_fornitura.c.id_riga_movimento_vendita==t_riga_movimento.c.id), backref="rmfve"),
     },
     order_by=t_riga_movimento_fornitura.c.id)
+
+if tipodb=="sqlite":
+    a = session.query(RigaMovimento.id).all()
+    b = session.query(RigaMovimentoFornitura.id_riga_movimento_acquisto).all()
+    fixit =  list(set(b)-set(a))
+    print "fixt-rigamovforni", fixit
+    for f in fixit:
+        if f[0] != "None" and f[0] != None:
+            aa = RigaMovimentoFornitura().select(idRigaMovimentoAcquisto=f[0], batchSize=None)
+            for a in aa:
+                session.delete(a)
+    session.commit()

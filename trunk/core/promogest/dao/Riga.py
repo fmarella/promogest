@@ -69,9 +69,11 @@ class Riga(Dao):
     def filter_values(self,k,v):
         """ Filtro del Mapper Riga"""
         if k=='descrizione':
-            dic= {k: t_riga.c.descrizione.ilike("%"+v+"%")}
+            dic= {k: t_riga.c.descrizione.ilike("%" + v + "%")}
         elif k=="id_articolo":
-            dic={k: t_riga.c.id_articolo==v}
+            dic={k: t_riga.c.id_articolo == v}
+        elif k=="idMultiplo":
+            dic={k: t_riga.c.id_multiplo == v}
         return  dic[k]
 
     def __magazzino(self):
@@ -179,3 +181,17 @@ std_mapper = mapper(Riga, t_riga, properties={
             "multi":relation(Multiplo,primaryjoin=t_riga.c.id_multiplo==Multiplo.id),
             "arti":relation(Articolo,primaryjoin=t_riga.c.id_articolo==Articolo.id),
 }, order_by=t_riga.c.posizione)
+
+if tipodb=="sqlite":
+    from promogest.dao.Multiplo import Multiplo
+    a = session.query(Multiplo.id).all()
+    b = session.query(Riga.id_multiplo).all()
+    fixit =  list(set(b)-set(a))
+    print "fixt-riga_multiplo", fixit
+    for f in fixit:
+        if f[0] != "None" and f[0] != None:
+            aa = Riga().select(idMultiplo=f[0], batchSize=None)
+            for a in aa:
+                a.id_multiplo = None
+                session.add(a)
+            session.commit()

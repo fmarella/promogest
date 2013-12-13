@@ -32,6 +32,7 @@ from sqlalchemy.exc import *
 from sqlsoup import SQLSoup
 
 from promogest.Environment import startdir, MyProxy
+from promogest.lib.utils import timeit
 #[Database_source]
 tipodb_source = "sqlite"
 
@@ -51,10 +52,11 @@ engine_source = create_engine("sqlite:///" + startdir() + "db", encoding='utf-8'
 print engine_source
 if tipodb_dest == "mysql":
     from sqlalchemy.pool import NullPool
-    engine_dest = create_engine("mysql+mysqlconnector://" + user_dest + ":" + \
+    engine_dest = create_engine("mysql+mysqldb://" + user_dest + ":" + \
                                         password_dest + "@" + host_dest + ":" + port_dest +\
                                         "/" + database_dest + "?charset=utf8",
-                                        poolclass=NullPool)
+                                        #poolclass=NullPool
+                                        )
 #mysqldb
 db_source = SQLSoup(engine_source)
 db_dest =  SQLSoup(engine_dest)
@@ -173,108 +175,132 @@ tabelle = [ "access",
     #db_dest.commit()
 
 
-
-
-for m in reversed(meta_dest.sorted_tables):
-    print "DA PULIRE",meta_dest.sorted_tables.index(m),"/",len(meta_dest.sorted_tables),  m
-    try:
-        db_dest.entity(str(m)).delete()
-        db_dest.commit()
-    except:
-        db_dest.rollback()
-        #if str(m).strip() in ["famiglia_articolo"]:
-        d_dest = db_dest.entity(str(m)).all()
-        for k in reversed(d_dest):
-            print k
-            db_dest.delete(k)
-            db_dest.commit()
-
-
-
-
-for t in meta_source.sorted_tables:
-    print "SORGENTE",meta_source.sorted_tables.index(t),"/",len(meta_source.sorted_tables), str(t).strip()
-    if str(t).strip() not in ["sqlite_stat1", "section_user","app_log", "feed", "spesa", "provincia", "cart", "chiavi_primarie_log", "static_page", "articolo_associato", "static_menu", "credit_card_type","migration_tmp", "account_email", "pos","riga_prima_nota"]:
-        daos_source = db_source.entity(str(t)).all()
-        #daos_dest = db_dest.entity(str(t)).all()
-        print " Nella tabella ci sono",len(daos_source)
-        for dao_s  in daos_source:
-            if daos_source.index(dao_s)%100 == 0:
-                print "RIMANGONO", len(daos_source)-daos_source.index(dao_s), "righe"
-            #print "RIGA",daos_source.index(dao_s),"/",len(daos_source), str(t).strip()
-            #if dao_s in daos_dest:
-                #print " ESISTE"
-                #continue
-            #else:
-                #print "SO", dao_s
-                #try:
-                #dd = None
-                #if str(t).strip() in ["contatto_cliente", "contatto_fornitore","contatto_magazzino", "contatto"]:
-                    ##print "DE C", db_dest.entity(str(t)).get((dao_s.id, dao_s.tipo_contatto))
-                    #dd = db_dest.entity(str(t)).get((dao_s.id, dao_s.tipo_contatto))
-                #elif str(t).strip() in ["listino_articolo"]:
-                    #pass
-                    ##print "SO LART", dao_s
-                #elif str(t).strip() in ["informazioni_fatturazione_documento"]:
-                    #dd = db_dest.entity(str(t)).get((dao_s.id_fattura, dao_s.id_ddt))
-                #elif str(t).strip() in ["informazioni_fatturazione_documento"]:
-                    #dd = db_dest.entity(str(t)).get((dao_s.id_fattura, dao_s.id_ddt))
-                #elif str(t).strip() in ["roleaction"]:
-                    #dd = db_dest.entity(str(t)).get((dao_s.id_role, dao_s.id_action))
-                #elif str(t).strip() in ["listino_magazzino"]:
-                    #dd = db_dest.entity(str(t)).get((dao_s.id_listino, dao_s.id_magazzino))
-                #elif str(t).strip() in ["listino"]:
-                    #pass
-                #elif str(t).strip() in ["setting"]:
-                    #dd = db_dest.entity(str(t)).get(dao_s.key)
-                #elif str(t).strip() in ["tipo_recapito", "operazione"]:
-                    #dd = db_dest.entity(str(t)).get(dao_s.denominazione)
-                #elif str(t).strip() in ["azienda"]:
-                    #dd = db_dest.entity(str(t)).get(dao_s.schemaa)
-                #else:
-                    ##print "DE", db_dest.entity(str(t)).get(dao_s.id)
-                    #dd = db_dest.entity(str(t)).get(dao_s.id)
-                #if dd:
-                    #db_dest.delete(dd)
-                    #db_dest.commit()
-                #except:
-                    #print "cancellazione RIGA non riuscita"
-                    #print "RIMUOVO TUTTA LA TABELLA"
-                    #for gg in daos_dest:
-                        #if gg:
-                            #try:
-                                #db_dest.delete(gg)
-                                #db_dest.commit()
-                                #print "E LIMINATO RECORD "
-                            #except:
-                                #print "SEMPLICE EXCEPT POI DA TOGLIERE"
-                    #print "RILANCIARE"
-                    #python = sys.executable
-                    #os.execl(python, python, * sys.argv)
-                #try:
-            a = db_dest.entity(str(t))()
-            #except:
-                #print " NON SONO RIUSCITO A ISTANZIARE LA TABELLA", t
-
-            for k in dao_s.c:
-                c = getattr(dao_s,k.name)
-                setattr(a,k.name,c)
-            session_dest.add(a)
+@timeit
+def pulisciTabelle():
+    for m in reversed(meta_dest.sorted_tables):
+        print "DA PULIRE",meta_dest.sorted_tables.index(m),"/",len(meta_dest.sorted_tables),  m
         try:
+            db_dest.entity(str(m)).delete()
             db_dest.commit()
-        except Exception as e:
-            print "QUESTO ERRORE:", e
+        except:
             db_dest.rollback()
-            continue
+            if str(m) == "testata_documento":
+                rows = db_dest.entity(str(m)).filter(db_dest.testata_documento.id_primo_riferimento !="None").all()
+                for r in rows:
+                    db_dest.delete(r)
+                    db_dest.commit()
+                db_dest.entity(str(m)).delete()
+                db_dest.commit()
+            print " PULISCO MA USO LA MODALITA' LENTA "
+            d_dest = db_dest.entity(str(m)).all()
+            for k in reversed(d_dest):
+                #print k
+                db_dest.delete(k)
+                db_dest.commit()
 
-## chiusura con tabelle anomale
-#rpn_s = db_source.riga_prima_nota.all()
-##rpn_d = db_dest.riga_prima_nota.all()
-#for d_s  in rpn_s:
-    #a = db_dest.riga_prima_nota()
-    #for k in d_s.c:
-        #c = getattr(d_s,k.name)
-        #setattr(a,k.name,c)
-    #session_dest.add(a)
-#db_dest.commit()
-#print " FINITO TUTTO"
+
+@timeit
+def spostaDati():
+    ritestare = []
+    for t in meta_source.sorted_tables:
+        print "\nSORGENTE",meta_source.sorted_tables.index(t),"/",len(meta_source.sorted_tables), str(t).strip() ,"\n"
+        if str(t).strip() not in ["sqlite_stat1", "section_user","app_log", "feed", "spesa", "provincia", "cart", "chiavi_primarie_log", "static_page", "articolo_associato", "static_menu", "credit_card_type","migration_tmp", "account_email", "pos", "riga_prima_nota"]:
+            if str(t).strip() == "testata_documento":
+                nope = []
+                rows = db_source.entity(str(t)).filter(db_source.testata_documento.id_primo_riferimento !="None").all()
+                #print " ROWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWS", len(rows)
+                for r in rows:
+                    print r.id, r.id_primo_riferimento
+                    dao_principale = db_source.entity(str(t)).get(r.id_primo_riferimento)
+                    #print "DAO PRINCIPALE", dao_principale
+                    m = db_dest.entity(str(t))()
+                    for k in dao_principale.c:
+                        c = getattr(dao_principale,k.name)
+                        setattr(m,k.name,c)
+                    session_dest.add(m)
+                    try:
+                        db_dest.commit()
+                    except:
+                        db_dest.rollback()
+                    nope.append(m)
+            daos_source_count = db_source.entity(str(t)).count()
+            batchSize = 200
+            blocchi = daos_source_count/200
+            #print daos_source_count, blocchi
+            x = 0
+            offset = 0
+            while offset < daos_source_count+batchSize:
+                print daos_source_count, daos_source_count-offset
+                daos_source = db_source.entity(str(t)).limit(batchSize).offset(offset).all()
+                offset += batchSize
+                #print daos_source
+                #daos_source = db_source.entity(str(t)).all()
+                #daos_dest = db_dest.entity(str(t)).all()
+                #print " Nella tabella ci sono",len(daos_source)
+                docu_pri_ref = []
+                if str(t) in["testata_documento"]:
+                    for dao_s  in daos_source:
+                        if dao_s not in nope:
+                            a = db_dest.entity(str(t))()
+                            for k in dao_s.c:
+                                c = getattr(dao_s,k.name)
+                                setattr(a,k.name,c)
+                            session_dest.add(a)
+                            #try:
+                    db_dest.commit()
+                            #except:
+                                #db_dest.rollback()
+                                #print " NON SALVABILE", a
+                elif  str(t) in["riga_prima_nota"]:
+                    for dao_s  in daos_source:
+                        a = db_dest.entity(str(t))()
+                        for k in dao_s.c:
+                            c = getattr(dao_s,k.name)
+                            setattr(a,k.name,c)
+                        session_dest.add(a)
+                        db_dest.commit()
+                else:
+                    for dao_s  in daos_source:
+                        #if daos_source.index(dao_s)%250 == 0:
+                            ##print "RIMANGONO", len(daos_source)-daos_source.index(dao_s), "righe", str(t).strip() ,"su", len(daos_source)
+                            #db_dest.commit()
+                        a = db_dest.entity(str(t))()
+                        for k in dao_s.c:
+                            c = getattr(dao_s,k.name)
+                            setattr(a,k.name,c)
+                        session_dest.add(a)
+                    try:
+                        db_dest.commit()
+                    except Exception as e:
+                        print "QUESTO ERRORE:", e
+                        db_dest.rollback()
+                        ritestare.append(a)
+                        continue
+            if str(t) in["testata_documento"]:
+                daos_source_countt = db_source.riga_prima_nota.count()
+                batchSizee = 200
+                blocchii = daos_source_countt/200
+                x = 0
+                offsett = 0
+                print " SIAMO IN RIGA PRIMA NOTA"
+                while offsett < daos_source_countt+batchSizee:
+                    print daos_source_countt, daos_source_countt-offsett
+                    daos_sourcee = db_source.riga_prima_nota.limit(batchSizee).offset(offsett).all()
+                    offsett += batchSizee
+                    for dao_s  in daos_sourcee:
+                        a = db_dest.riga_prima_nota()
+                        for k in dao_s.c:
+                            c = getattr(dao_s,k.name)
+                            setattr(a,k.name,c)
+                        session_dest.add(a)
+                    db_dest.commit()
+    if ritestare:
+        print "ADESSO RIPROVIAMO I RITESTARE", len(ritestare)
+        for r in ritestare:
+            session_dest.add(r)
+            db_dest.commit()
+    else:
+        print " ABBIAMO FINITO LA MIGRAZIONE.... OLE'"
+
+pulisciTabelle()
+spostaDati()

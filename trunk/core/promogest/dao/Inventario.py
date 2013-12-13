@@ -227,3 +227,14 @@ class Inventario(Dao):
 std_mapper = mapper(Inventario, t_inventario,properties={
         "arti":relation(Articolo,primaryjoin=t_inventario.c.id_articolo==Articolo.id,backref ="inve")
         }, order_by=t_inventario.c.id)
+
+if tipodb=="sqlite":
+    a = session.query(Articolo.id).all()
+    b = session.query(Inventario.id_articolo).all()
+    fixit =  list(set(b)-set(a))
+    print "fixt-inventario", fixit
+    for f in fixit:
+        aa = Inventario().select(idArticolo=f[0], batchSize=None)
+        for a in aa:
+            session.delete(a)
+        session.commit()
