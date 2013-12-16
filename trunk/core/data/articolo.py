@@ -27,7 +27,7 @@ from promogest.Environment import *
 t_articolo= Table('articolo', params["metadata"],
     Column('id', Integer, primary_key=True),
     Column('codice', String(50), nullable=False, unique=True),
-    Column('denominazione', String(300), nullable=False),
+    Column('denominazione', String(600), nullable=False),
     Column('id_aliquota_iva', Integer, ForeignKey(fk_prefix+"aliquota_iva.id" ,onupdate="CASCADE",ondelete="RESTRICT")),
     Column('id_famiglia_articolo', Integer, ForeignKey(fk_prefix+'famiglia_articolo.id',onupdate="CASCADE",ondelete="RESTRICT")),
     Column('id_categoria_articolo', Integer, ForeignKey(fk_prefix+'categoria_articolo.id',onupdate="CASCADE",ondelete="RESTRICT")),
