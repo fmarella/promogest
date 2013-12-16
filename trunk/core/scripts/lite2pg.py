@@ -54,11 +54,11 @@ from promogest.lib.utils import timeit , messageInfo
  *******************************************************************"""
 
 """      [Database_source]     """
-tipodb_source = "sqlite"
-database_source = "cambiare"
+tipodb_source = "mysql"
+database_source = "aziendaciccio"
 host_source = "192.168.1.3"
 user_source = "promoadmin"
-password_source = "cambiare"
+password_source = "admin"
 port_source = "3306"
 azienda_source = "aziendaciccio"
 
@@ -84,12 +84,33 @@ def startdir():
     promogestStartDir = os.path.expanduser('~') + os.sep + startDir + os.sep
     return promogestStartDir
 
-#ORIGINE
+def sanitazer(c, tipo):
+    """ funzione di controllo e pulizia dei tipi
+    per il momento gestiamo i bool
+    """
+    #print "CCC", c, tipo, type(tipo), "TINYINT" in str(tipo)
+    if str(tipo) == "BOOLEAN" or "TINYINT" in str(tipo):
+        #print " SONO PASSATO"
+        if c == 0 or c =="0":
+            return False
+        elif c == 1 or c == "1":
+            return True
+        else:
+            return c
+    else:
+        return c
+
+
+# **************  DATABASE DI ORIGINE
 if tipodb_source == "sqlite":
     engine_source = create_engine("sqlite:///" + startdir() + "db", encoding='utf-8')
     print " MIGRAZIONE DA SQLITE A "
 elif tipodb_source == "mysql":
     print "MIGRAZIONE DA MYSQL A "
+    engine_source = create_engine("mysql+mysqldb://" + user_source + ":" + \
+                                        password_source + "@" + host_source + ":" + port_source +\
+                                        "/" + database_source + "?charset=utf8",
+                                        poolclass=NullPool)
 elif tipodb_source == "postgresql":
     print "MIGRAZIONE DA POSTGRESQL A "
     import psycopg2
@@ -103,7 +124,7 @@ elif tipodb_source == "postgresql":
 else:
     print "ORIGINE MIGRAZIONE NON RICONOSCIUTO"
 
-#DESTINAZIONE
+# ****************** DATABASE DI DESTINAZIONE
 if tipodb_dest == "mysql":
     print " MYSQL ...."
     engine_dest = create_engine("mysql+mysqldb://" + user_dest + ":" + \
@@ -141,9 +162,12 @@ if tipodb_dest == "postgresql":
     meta_dest_main = MetaData()
     meta_dest_main.reflect(bind=engine_dest, schema="promogest2")
     meta_dest.reflect(bind=engine_dest, schema=azienda_dest)
+    tbl_main =  [x.split(".")[1] for x in meta_dest_main.tables]
+    tbl = [x.split(".")[1] for x in meta_dest.tables]
 else:
     meta_dest = MetaData()
     meta_dest.reflect(bind=engine_dest)
+    tbl = [x for x in meta_dest.tables]
 
 
 session_source = db_source.session
@@ -151,9 +175,6 @@ session_dest = db_dest.session
 #print meta_dest.tables, meta_dest_main.tables
 
 #raise
-tbl = [x.split(".")[1] for x in meta_dest.tables]
-tbl_main =  [x.split(".")[1] for x in meta_dest_main.tables]
-print tbl, tbl_main
 @timeit
 def pulisciTabelleMain():
     for m in reversed(meta_dest_main.sorted_tables):
@@ -166,12 +187,18 @@ def pulisciTabelleMain():
 @timeit
 def pulisciTabelle():
     for m in reversed(meta_dest.sorted_tables):
-        print "DA PULIRE",meta_dest.sorted_tables.index(m),"/",len(meta_dest.sorted_tables),  m
+        print "DA PULIRE",meta_dest.sorted_tables.index(m),"/",len(meta_dest.sorted_tables),  m #, m.columns
         try:
-            if str(m).split(".")[0] == azienda_dest:
+            if tipodb_dest =="postgresql":
+                if str(m).split(".")[0] == azienda_dest:
+                    db_dest.schema = azienda_dest
+                    db_dest.entity(str(m).split(".")[1]).delete()
+                    db_dest.commit()
+            else:
                 db_dest.schema = azienda_dest
-                db_dest.entity(str(m).split(".")[1]).delete()
+                db_dest.entity(str(m)).delete()
                 db_dest.commit()
+
         except:
             db_dest.rollback()
             if str(m) == "testata_documento":
@@ -206,6 +233,7 @@ def spostaDati():
                     m = db_dest.entity(str(t))()
                     for k in dao_principale.c:
                         c = getattr(dao_principale,k.name)
+                        c = sanitazer(c, k.type)
                         setattr(m,k.name,c)
                     session_dest.add(m)
                     try:
@@ -234,6 +262,7 @@ def spostaDati():
                             a = db_dest.entity(str(t))()
                             for k in dao_s.c:
                                 c = getattr(dao_s,k.name)
+                                c = sanitazer(c, k.type)
                                 setattr(a,k.name,c)
                             session_dest.add(a)
                             #try:
@@ -246,6 +275,7 @@ def spostaDati():
                         #a = db_dest.entity(str(t))()
                         #for k in dao_s.c:
                             #c = getattr(dao_s,k.name)
+                            #c = sanitazer(c, k.type)
                             #setattr(a,k.name,c)
                         #session_dest.add(a)
                         #db_dest.commit()
@@ -257,6 +287,7 @@ def spostaDati():
                         a = db_dest.entity(str(t))()
                         for k in dao_s.c:
                             c = getattr(dao_s,k.name)
+                            c = sanitazer(c, k.type)
                             setattr(a,k.name,c)
                         session_dest.add(a)
                     try:
@@ -281,6 +312,7 @@ def spostaDati():
                         a = db_dest.riga_prima_nota()
                         for k in dao_s.c:
                             c = getattr(dao_s,k.name)
+                            c = sanitazer(c, k.type)
                             setattr(a,k.name,c)
                         session_dest.add(a)
                     db_dest.commit()
@@ -321,7 +353,8 @@ pulisciTabelle()
 if tipodb_dest == "postgresql":
     pulisciTabelleMain()
 spostaDati()
-syncaSequence()
+if tipodb_dest == "postgresql":
+    syncaSequence()
 
 tabelle = [ "access",
             "action",
