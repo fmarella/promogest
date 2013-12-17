@@ -54,21 +54,21 @@ from promogest.lib.utils import timeit , messageInfo
  *******************************************************************"""
 
 """      [Database_source]     """
-tipodb_source = "mysql"
-database_source = "aziendaciccio"
+tipodb_source = "sqlite"
+database_source = "pg_pt_db"
 host_source = "192.168.1.3"
 user_source = "promoadmin"
 password_source = "admin"
-port_source = "3306"
-azienda_source = "aziendaciccio"
+port_source = "5432"
+azienda_source = "promotux2"
 
 """      [Database_dest]       """
-tipodb_dest = "postgresql"
-database_dest = "aziendaciccio_db"
+tipodb_dest = "mysql"
+database_dest = "aziendaciccio"
 host_dest = "192.168.1.3"
 user_dest = "promoadmin"
 password_dest = "admin"
-port_dest = "5432"
+port_dest = "3306"
 azienda_dest = "aziendaciccio"
 
 
@@ -113,16 +113,35 @@ elif tipodb_source == "mysql":
                                         poolclass=NullPool)
 elif tipodb_source == "postgresql":
     print "MIGRAZIONE DA POSTGRESQL A "
-    import psycopg2
-    a = psycopg2.connect(user=user_source, host=host_source, port=port_source,
-                            password=password_source, database=database_source)
-    engine_dest = create_engine('postgresql://', creator=a,
+    engine_source = create_engine('postgresql+psycopg2://' +
+                                    user_source + ":" +
+                                    password_source + "@" +
+                                    host_source + ":" +
+                                    port_source + "/" +
+                                    database_source,
                                 convert_unicode=True,
                                 encoding='utf-8',
-
                                 poolclass=NullPool)
 else:
     print "ORIGINE MIGRAZIONE NON RICONOSCIUTO"
+
+db_source = SQLSoup(engine_source)
+
+if tipodb_source == "postgresql":
+    db_source_main = SQLSoup(engine_source)
+    db_source.schema = azienda_source
+    db_source_main.schema = "promogest2"
+
+if tipodb_source == "postgresql":
+    meta_source = MetaData()
+    meta_source_main = MetaData()
+    meta_source_main.reflect(bind=engine_source, schema="promogest2")
+    meta_source.reflect(bind=engine_source, schema=azienda_source)
+else:
+    meta_source = MetaData()
+    meta_source.reflect(bind=engine_source)
+
+
 
 # ****************** DATABASE DI DESTINAZIONE
 if tipodb_dest == "mysql":
@@ -133,6 +152,7 @@ if tipodb_dest == "mysql":
                                         poolclass=NullPool)
 elif tipodb_dest == "sqlite":
     print "SQLITE....."
+    engine_dest = create_engine("sqlite:///" + startdir() + "db", encoding='utf-8')
 elif tipodb_dest == "postgresql":
     print "POSTGRESQL......"
     engine_dest = create_engine('postgresql+psycopg2://' +
@@ -147,15 +167,7 @@ elif tipodb_dest == "postgresql":
 else:
     print " DESTINAZIONE NON RICONOSCIUTA"
 
-
-db_source = SQLSoup(engine_source)
 db_dest =  SQLSoup(engine_dest)
-#db_dest.schema = azienda_dest
-#db_dest.schema = "promogest2"
-#engine_dest.echo=True
-
-meta_source = MetaData()
-meta_source.reflect(bind=engine_source)
 
 if tipodb_dest == "postgresql":
     meta_dest = MetaData()
@@ -172,9 +184,9 @@ else:
 
 session_source = db_source.session
 session_dest = db_dest.session
-#print meta_dest.tables, meta_dest_main.tables
 
-#raise
+
+
 @timeit
 def pulisciTabelleMain():
     for m in reversed(meta_dest_main.sorted_tables):
@@ -194,8 +206,11 @@ def pulisciTabelle():
                     db_dest.schema = azienda_dest
                     db_dest.entity(str(m).split(".")[1]).delete()
                     db_dest.commit()
+                else:
+                    db_dest.schema = azienda_dest
+                    db_dest.entity(str(m)).delete()
+                    db_dest.commit()
             else:
-                db_dest.schema = azienda_dest
                 db_dest.entity(str(m)).delete()
                 db_dest.commit()
 
@@ -208,6 +223,13 @@ def pulisciTabelle():
                     db_dest.commit()
                 db_dest.entity(str(m)).delete()
                 db_dest.commit()
+            if str(m) == "famiglia_articolo":
+                rows = db_dest.entity(str(m)).filter(db_dest.famiglia_articolo.id_padre !="None").all()
+                for r in rows:
+                    db_dest.delete(r)
+                    db_dest.commit()
+                db_dest.entity(str(m)).delete()
+                db_dest.commit()
             print " PULISCO MA USO LA MODALITA' LENTA "
             d_dest = db_dest.entity(str(m)).all()
             for k in reversed(d_dest):
@@ -215,21 +237,65 @@ def pulisciTabelle():
                 db_dest.delete(k)
                 db_dest.commit()
 
+@timeit
+def spostaDatiMain():
+    ritestare = []
+    for t in meta_source_main.sorted_tables:
+        print "\nSORGENTE MAIN",meta_source_main.sorted_tables.index(t),"/",len(meta_source_main.sorted_tables), str(t).strip() ,"\n"
+        if str(t).split(".")[1].strip() not in ["anno_abbigliamento", "stagione_abbigliamento","genere_abbigliamento", "provincia", "application_log", "userrole","chiavi_primarie_log"]:
+            daos_source_count = db_source_main.entity(str(t).split(".")[1].strip()).count()
+            batchSize = 200
+            blocchi = daos_source_count/200
+            #print daos_source_count, blocchi
+            x = 0
+            offset = 0
+            while offset < daos_source_count+batchSize:
+                print daos_source_count, daos_source_count-offset
+                daos_source = db_source_main.entity(str(t).split(".")[1].strip()).limit(batchSize).offset(offset).all()
+                offset += batchSize
+                for dao_s  in daos_source:
+                    a = db_dest.entity(str(t).split(".")[1].strip())()
+                    for k in dao_s.c:
+                        c = getattr(dao_s,k.name)
+                        c = sanitazer(c, k.type)
+                        setattr(a,k.name,c)
+                    session_dest.add(a)
+                try:
+                    db_dest.commit()
+                except Exception as e:
+                    print "QUESTO ERRORE:", e
+                    db_dest.rollback()
+                    ritestare.append(a)
+                    continue
+    if ritestare:
+        print "ADESSO RIPROVIAMO I RITESTARE MAIN", len(ritestare)
+        for r in ritestare:
+            session_dest.add(r)
+            db_dest.commit()
+    else:
+        print " ABBIAMO FINITO LA MIGRAZIONE DI MAIN.... OLE'"
 
 @timeit
 def spostaDati():
     ritestare = []
     for t in meta_source.sorted_tables:
         print "\nSORGENTE",meta_source.sorted_tables.index(t),"/",len(meta_source.sorted_tables), str(t).strip() ,"\n"
-        if str(t).strip() not in ["sqlite_stat1", "section_user","app_log", "feed", "spesa", "provincia", "cart", "chiavi_primarie_log", "static_page", "articolo_associato", "static_menu", "credit_card_type","migration_tmp", "account_email", "pos", "riga_prima_nota"]:
+        if tipodb_source=="postgresql":
+            if str(t).split(".")[0].strip() not in [azienda_source]:
+                print " PASSI QUI"
+                continue
+            else:
+                t = str(t).split(".")[1].strip()
+        if str(t).strip() not in ["sqlite_stat1", "section_user","app_log", "feed", "spesa", "provincia", "cart", "chiavi_primarie_log", "static_page", "articolo_associato", "static_menu", "credit_card_type","migration_tmp", "account_email", "pos","language","news_category","news","testata_scontrino", "riga_scontrino", "riga_prima_nota"]:
             if str(t).strip() == "testata_documento":
                 nope = []
-                rows = db_source.entity(str(t)).filter(db_source.testata_documento.id_primo_riferimento !="None").all()
-                #print " ROWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWS", len(rows)
+                if tipodb_source == "postgresql":
+                    rows = db_source.entity(str(t)).filter(db_source.testata_documento.id_primo_riferimento !=None).all()
+                else:
+                    rows = db_source.entity(str(t)).filter(db_source.testata_documento.id_primo_riferimento !="None").all()
                 for r in rows:
                     print r.id, r.id_primo_riferimento
                     dao_principale = db_source.entity(str(t)).get(r.id_primo_riferimento)
-                    #print "DAO PRINCIPALE", dao_principale
                     m = db_dest.entity(str(t))()
                     for k in dao_principale.c:
                         c = getattr(dao_principale,k.name)
@@ -241,6 +307,26 @@ def spostaDati():
                     except:
                         db_dest.rollback()
                     nope.append(m)
+            if str(t).strip() == "famiglia_articolo":
+                nope_fa = []
+                if tipodb_source == "postgresql":
+                    rowss = db_source.entity(str(t)).filter(db_source.famiglia_articolo.id_padre !=None).all()
+                else:
+                    rowss = db_source.entity(str(t)).filter(db_source.famiglia_articolo.id_padre !="None").all()
+                for r in rowss:
+                    print r.id, r.id_padre
+                    dao_principalee = db_source.entity(str(t)).get(r.id_padre)
+                    mm = db_dest.entity(str(t))()
+                    for k in dao_principalee.c:
+                        c = getattr(dao_principalee,k.name)
+                        c = sanitazer(c, k.type)
+                        setattr(mm,k.name,c)
+                    session_dest.add(mm)
+                    try:
+                        db_dest.commit()
+                    except:
+                        db_dest.rollback()
+                    nope_fa.append(mm)
             daos_source_count = db_source.entity(str(t)).count()
             batchSize = 200
             blocchi = daos_source_count/200
@@ -251,11 +337,6 @@ def spostaDati():
                 print daos_source_count, daos_source_count-offset
                 daos_source = db_source.entity(str(t)).limit(batchSize).offset(offset).all()
                 offset += batchSize
-                #print daos_source
-                #daos_source = db_source.entity(str(t)).all()
-                #daos_dest = db_dest.entity(str(t)).all()
-                #print " Nella tabella ci sono",len(daos_source)
-                docu_pri_ref = []
                 if str(t) in["testata_documento"]:
                     for dao_s  in daos_source:
                         if dao_s not in nope:
@@ -265,25 +346,19 @@ def spostaDati():
                                 c = sanitazer(c, k.type)
                                 setattr(a,k.name,c)
                             session_dest.add(a)
-                            #try:
                     db_dest.commit()
-                            #except:
-                                #db_dest.rollback()
-                                #print " NON SALVABILE", a
-                #elif  str(t) in["articolo"]:
-                    #for dao_s  in daos_source:
-                        #a = db_dest.entity(str(t))()
-                        #for k in dao_s.c:
-                            #c = getattr(dao_s,k.name)
-                            #c = sanitazer(c, k.type)
-                            #setattr(a,k.name,c)
-                        #session_dest.add(a)
-                        #db_dest.commit()
+                elif str(t) in["famiglia_articolo"]:
+                    for dao_s  in daos_source:
+                        if dao_s not in nope_fa:
+                            a = db_dest.entity(str(t))()
+                            for k in dao_s.c:
+                                c = getattr(dao_s,k.name)
+                                c = sanitazer(c, k.type)
+                                setattr(a,k.name,c)
+                            session_dest.add(a)
+                    db_dest.commit()
                 else:
                     for dao_s  in daos_source:
-                        #if daos_source.index(dao_s)%250 == 0:
-                            ##print "RIMANGONO", len(daos_source)-daos_source.index(dao_s), "righe", str(t).strip() ,"su", len(daos_source)
-                            #db_dest.commit()
                         a = db_dest.entity(str(t))()
                         for k in dao_s.c:
                             c = getattr(dao_s,k.name)
@@ -323,6 +398,7 @@ def spostaDati():
             db_dest.commit()
     else:
         print " ABBIAMO FINITO LA MIGRAZIONE.... OLE'"
+
 @timeit
 def syncaSequence():
     for s in tbl:
@@ -332,7 +408,6 @@ def syncaSequence():
             try:
                 nextid = db_dest.connection().execute("select setval("+"'"+azienda_dest+"."+ str(s)+'_id_seq'+"',"+ str(daos_source.id) +')')
             except Exception as r:
-                #print "ERRORE SEQUENCE STD", r
                 db_dest.rollback()
         except:
             print "NON HA UN ID E DI CONSEGUENZA NESSUNA SEQUENCE", s
@@ -349,9 +424,15 @@ def syncaSequence():
             print "NON HA UN ID E DI CONSEGUENZA NESSUNA SEQUENCE", s
     print " FINITO TUTTO"
 
+
+# AZIONI DA SVOLGERE
+
 pulisciTabelle()
 if tipodb_dest == "postgresql":
     pulisciTabelleMain()
+
+if tipodb_source == "postgresql":
+    spostaDatiMain()
 spostaDati()
 if tipodb_dest == "postgresql":
     syncaSequence()

@@ -72,6 +72,7 @@ for b in bb:
     session.delete(b)
     session.commit()
 a = False
+
 if not ("articolo_struttura_codice", "Articoli") in allkey:
     kbb = SetConf()
     kbb.key = "articolo_struttura_codice"

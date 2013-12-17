@@ -281,7 +281,7 @@ class AnagraficaUtentiEdit(AnagraficaEdit):
         self.dao.email = self.email_entry.get_text()
         self.dao.photo_src = self.url_entry.get_text()
         self.dao.id_role = findIdFromCombobox(self.id_role_combobox)
-        self.dao.schemaa_azienda = findStrFromCombobox(self.azienda_combobox,0)
+        self.dao.schemaa_azienda = findStrFromCombobox(self.azienda_combobox,0) or None
         self.dao.last_modified = datetime.datetime.now()
 #        self.dao.id_language = findIdFromCombobox(self.id_language_combobox)
         self.dao.active = self.active_user_checkbutton.get_active()

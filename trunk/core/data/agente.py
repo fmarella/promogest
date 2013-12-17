@@ -25,7 +25,7 @@ from promogest.Environment import *
 
 t_agente = Table('agente', params["metadata"],
         Column('id',Integer, ForeignKey(fk_prefix+'persona_giuridica.id', onupdate="CASCADE", ondelete="CASCADE"),primary_key=True),
-        Column('percentuale', Numeric(8,4), nullable=False),
+        Column('percentuale', Numeric(8,4), nullable=True),
         schema=params["schema"]
         )
 t_agente.create(checkfirst=True)

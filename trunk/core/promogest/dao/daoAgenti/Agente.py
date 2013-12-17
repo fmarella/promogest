@@ -74,7 +74,6 @@ def getNuovoCodiceAgente():
     listacodici= []
     if hasattr(conf,'Agenti'):
         try:
-            #codicesel  = select([func.max(Cliente.c.codice)]).execute().fetchall()
             codicesel = Agente().select(batchSize=None)
             for cod in codicesel:
                 listacodici.append(cod.codice)
