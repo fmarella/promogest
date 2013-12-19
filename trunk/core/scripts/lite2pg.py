@@ -51,6 +51,16 @@ from promogest.lib.utils import timeit , messageInfo
  tipodb_source e tipodb_dest possono essere sqlite (ONE) , mysql (MY)  o postgresql (PRO)
  port_source e port_dest sono 3306 per mysql e 5432 per postgresql
 
+ Lo script funziona in entrambe le direzioni abbastanza bene
+ da ONE A MY , da ONE A PRO DA MY A PRO
+ da PRO A ONE e da PRO A MY
+ da MY a PRO
+ Mancano poche combinazioni da testare ma dovrebbe essere ok.
+
+ Quel che manca al momento è la creazione delle tabelle di destinazione quando il db
+ di partenza ha promowear o promoShop attivi. ...
+ Serve un sistema che richiami il dao e aggiunga le tabelle al volo
+
  *******************************************************************"""
 
 """      [Database_source]     """
