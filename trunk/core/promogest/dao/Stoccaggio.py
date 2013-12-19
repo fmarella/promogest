@@ -105,6 +105,13 @@ class Stoccaggio(Dao):
             return ""
 
     @property
+    def codice_a_barre(self):
+        if self.arti:
+            return self.arti.codice_a_barre
+        else:
+            return ""
+
+    @property
     def magazzino(self):
         if self.arti:
             return self.maga.denominazione

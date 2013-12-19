@@ -48,6 +48,10 @@ class Action(Dao):
             dic= {k: t_action.c.denominazione_breve ==v}
         return  dic[k]
 
+    def delete(self):
+        return
+
+
 std_mapper = mapper(Action, t_action, order_by=t_action.c.id)
 if not Action().select(denominazione_breve="WEB-LOGIN"):
     a = Action()
@@ -58,4 +62,14 @@ if not Action().select(denominazione_breve="WEB-ADMIN"):
     a = Action()
     a.denominazione_breve = "WEB-ADMIN"
     a.denominazione = "Accesso completo alla piattaforma WEB"
+    a.persist()
+if not Action().select(denominazione_breve="GEST-COMMESSE"):
+    a = Action()
+    a.denominazione_breve = "GEST-COMMESSE"
+    a.denominazione = "Accesso completo gestione commesse"
+    a.persist()
+if not Action().select(denominazione_breve="CANCELLAZIONE"):
+    a = Action()
+    a.denominazione_breve = "CANCELLAZIONE"
+    a.denominazione = "Può cancellare dati dal Database"
     a.persist()
