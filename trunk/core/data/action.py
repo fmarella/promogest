@@ -33,23 +33,40 @@ t_action = Table('action', params["metadata"],
 t_action.create(checkfirst=True)
 
 
-s= select([t_action.c.denominazione_breve]).execute().fetchall()
-if (u'LOGIN',) not in s or s==[]:
-    azioni  = t_action.insert()
-    azioni.execute(denominazione_breve = "LOGIN", denominazione = "Puo' effettuare il login nell'applicazione")
-    azioni.execute(denominazione_breve = "DOCUMENTI", denominazione = "Puo' accedere alla sezione documenti")
-    azioni.execute(denominazione_breve = "SALVA", denominazione = "Puo' effettuare degli inserimenti nell'applicazione")
-    azioni.execute(denominazione_breve = "MODIFICA", denominazione = "Puo' effettuare delle modifiche ai dati nel Database")
-    azioni.execute(denominazione_breve = "INSERIMENTO", denominazione = "Puo' effettuare degli inserimenti nel database")
-    azioni.execute(denominazione_breve = "PARAMETRI", denominazione = "Gestione parametri ")
-    azioni.execute(denominazione_breve = "RUOLI", denominazione = "Gestione Ruoli")
-    azioni.execute(denominazione_breve = "ARTICOLI", denominazione = "Gestione articoli")
-    azioni.execute(denominazione_breve = "LISTINI", denominazione = "Accesso alla sezione Listini")
-    azioni.execute(denominazione_breve = "DETTAGLIO", denominazione = "Accesso al modulo al dettaglio")
-    azioni.execute(denominazione_breve = "ANAGRAFICHE", denominazione = "Accesso alla sezione Anagrafiche del Programma")
-    azioni.execute(denominazione_breve = "MAGAZZINI", denominazione = "Accesso alla sezione Magazzini")
-    azioni.execute(denominazione_breve = "PROMEMORIA", denominazione = "Accesso alla sezione promemoria")
-    azioni.execute(denominazione_breve = "CONFIGURAZIONE", denominazione = "Puo' effettuare modifiche alla configurazione")
-    azioni.execute(denominazione_breve = "PRIMANOTA", denominazione = "Accesso prima nota cassa")
-    azioni.execute(denominazione_breve = "WEB-LOGIN", denominazione = "Accesso semplice alla piattaforma WEB")
-    azioni.execute(denominazione_breve = "WEB-ADMIN", denominazione = "Accesso completo alla piattaforma WEB")
+s= select([t_action.c.id]).execute().fetchall()
+azioni  = t_action.insert()
+
+if (1,) not in s:
+    azioni.execute(id=1, denominazione_breve = "LOGIN", denominazione = "Puo' effettuare il login nell'applicazione")
+if (2,) not in s:
+    azioni.execute(id=2, denominazione_breve = "DOCUMENTI", denominazione = "Puo' accedere alla sezione documenti")
+if (3,) not in s:
+    azioni.execute(id=3, denominazione_breve = "SALVA", denominazione = "Puo' effettuare degli inserimenti nell'applicazione")
+if (4,) not in s:
+    azioni.execute(id=4, denominazione_breve = "MODIFICA", denominazione = "Puo' effettuare delle modifiche ai dati nel Database")
+#if (5,) not in s:
+    #azioni.execute(id=5, denominazione_breve = "INSERIMENTO", denominazione = "Puo' effettuare degli inserimenti nel database")
+if (6,) not in s:
+    azioni.execute(id=6, denominazione_breve = "PARAMETRI", denominazione = "Gestione parametri ")
+if (7,) not in s:
+    azioni.execute(id=7, denominazione_breve = "RUOLI", denominazione = "Gestione Ruoli")
+if (8,) not in s:
+    azioni.execute(id=8, denominazione_breve = "ARTICOLI", denominazione = "Gestione articoli")
+if (9,) not in s:
+    azioni.execute(id=9, denominazione_breve = "LISTINI", denominazione = "Accesso alla sezione Listini")
+if (10,) not in s:
+    azioni.execute(id=10, denominazione_breve = "DETTAGLIO", denominazione = "Accesso al modulo al dettaglio")
+if (11,) not in s:
+    azioni.execute(id=11, denominazione_breve = "ANAGRAFICHE", denominazione = "Accesso alla sezione Anagrafiche del Programma")
+if (12,) not in s:
+    azioni.execute(id=12, denominazione_breve = "MAGAZZINI", denominazione = "Accesso alla sezione Magazzini")
+if (13,) not in s:
+    azioni.execute(id=13, denominazione_breve = "PROMEMORIA", denominazione = "Accesso alla sezione promemoria")
+if (14,) not in s:
+    azioni.execute(id=14, denominazione_breve = "CONFIGURAZIONE", denominazione = "Puo' effettuare modifiche alla configurazione")
+if (15,) not in s:
+    azioni.execute(id=15, denominazione_breve = "PRIMANOTA", denominazione = "Accesso prima nota cassa")
+if (16,) not in s:
+    azioni.execute(id=16, denominazione_breve = "WEB-LOGIN", denominazione = "Accesso semplice alla piattaforma WEB")
+if (17,) not in s:
+    azioni.execute(id=17, denominazione_breve = "WEB-ADMIN", denominazione = "Accesso completo alla piattaforma WEB")

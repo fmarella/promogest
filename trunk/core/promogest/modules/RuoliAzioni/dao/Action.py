@@ -53,23 +53,16 @@ class Action(Dao):
 
 
 std_mapper = mapper(Action, t_action, order_by=t_action.c.id)
-if not Action().select(denominazione_breve="WEB-LOGIN"):
-    a = Action()
-    a.denominazione_breve = "WEB-LOGIN"
-    a.denominazione = "Accesso semplice alla piattaforma WEB"
-    a.persist()
-if not Action().select(denominazione_breve="WEB-ADMIN"):
-    a = Action()
-    a.denominazione_breve = "WEB-ADMIN"
-    a.denominazione = "Accesso completo alla piattaforma WEB"
-    a.persist()
-if not Action().select(denominazione_breve="GEST-COMMESSE"):
-    a = Action()
-    a.denominazione_breve = "GEST-COMMESSE"
-    a.denominazione = "Accesso completo gestione commesse"
-    a.persist()
-if not Action().select(denominazione_breve="CANCELLAZIONE"):
-    a = Action()
-    a.denominazione_breve = "CANCELLAZIONE"
-    a.denominazione = "Può cancellare dati dal Database"
-    a.persist()
+
+s= select([t_action.c.id]).execute().fetchall()
+azioni  = t_action.insert()
+if (16,) not in s:
+    azioni.execute(id=16, denominazione_breve = "WEB-LOGIN", denominazione = "Accesso semplice alla piattaforma WEB")
+if (17,) not in s:
+    azioni.execute(id=17, denominazione_breve = "WEB-ADMIN", denominazione = "Accesso completo alla piattaforma WEB")
+if (18,) not in s:
+    azioni.execute(id=18, denominazione_breve = "GEST-COMMESSE", denominazione = "Accesso completo gestione commesse")
+if (19,) not in s:
+    azioni.execute(id=19, denominazione_breve = "CANCELLAZIONE", denominazione = "Può cancellare dati dal Database")
+if (20,) not in s:
+    azioni.execute(id=20, denominazione_breve = "CMS", denominazione = "Può scrivere e modificare i contenuti")

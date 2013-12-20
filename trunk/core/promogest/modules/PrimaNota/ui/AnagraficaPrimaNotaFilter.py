@@ -68,7 +68,7 @@ class AnagraficaPrimaNotaFilter(AnagraficaFilter):
 
 
     def inizializzaValoriPrimaNotaSaldo(self):
-        messageInfo(msg="Nessun riporto settato, imposto uno standard al primo gennaio")
+        #messageInfo(msg="Nessun riporto settato, imposto uno standard al primo gennaio")
         tpn = TestataPrimaNota().select(aDataInizio=stringToDate('01/01/' + Environment.workingYear), batchSize=None)
         tot = calcolaTotaliPrimeNote(tpn, tpn)
 
@@ -267,39 +267,39 @@ class AnagraficaPrimaNotaFilter(AnagraficaFilter):
                                         col_tipo
                                         ))
 
-    def checkOldPN(self, dao):
-        numero = None
-        numeroSEL = None
-        date = []
-        if len(dao.righeprimanota)>1 :
-            for f in dao.righeprimanota:
-                if f.data_registrazione not in date:
-                    date.append(f.data_registrazione)
-            if len(date)>1:
-                if not self.aggiornamento:
-                    messageInfo(msg="""ATTENZIONE! Alcune parti del modulo PrimaNota sono
-state modificate ed è necessario un aggiornamento di quelle precedentemente
-inserite. Saranno salvaguardati i riferimenti interni e quelli con i pagamenti documenti.
-La differenza sarà che principalmente verrà creata una primanota per ogni operazione
-di cassa o di banca effettuata. Non ci sarà la "chiusura" della prima nota.
-Si potranno ancora fare PrimeNote con più operazioni. Rimandiamo comunque alla
-lettura delle novità sul sito del programma o nella sezione news interna.
-Si avvisa che la migrazione potrebbe richiedere anche qualche minuto""")
-                    self.aggiornamento = True
-                for r in dao.righeprimanota:
-                    print "DATA REGISTRAZIONE", r.numero, r.data_registrazione.day, r.data_registrazione.month, r.data_registrazione.year
-                    a = TestataPrimaNota()
-                    a.data_inizio = r.data_registrazione
-                    date = Environment.workingYear
-                    numeroSEL= TestataPrimaNota().select(complexFilter=(and_(TestataPrimaNota.data_inizio.between(datetime.date(int(r.data_registrazione.year), 1, 1), datetime.date(int(r.data_registrazione.year) + 1, 1, 1)))), batchSize=None)
-                    if numeroSEL:
-                        numero = max([p.numero for p in numeroSEL]) +1
-                    else:
-                        numero = 1
-                    a.numero = numero
-                    a.persist()
-                    r.id_testata_prima_nota = a.id
-                    r.persist()
-                dao.delete()
-        elif len(dao.righeprimanota) ==0:
-            dao.delete()
+    #def checkOldPN(self, dao):
+        #numero = None
+        #numeroSEL = None
+        #date = []
+        #if len(dao.righeprimanota)>1 :
+            #for f in dao.righeprimanota:
+                #if f.data_registrazione not in date:
+                    #date.append(f.data_registrazione)
+            #if len(date)>1:
+                #if not self.aggiornamento:
+                    #messageInfo(msg="""ATTENZIONE! Alcune parti del modulo PrimaNota sono
+#state modificate ed è necessario un aggiornamento di quelle precedentemente
+#inserite. Saranno salvaguardati i riferimenti interni e quelli con i pagamenti documenti.
+#La differenza sarà che principalmente verrà creata una primanota per ogni operazione
+#di cassa o di banca effettuata. Non ci sarà la "chiusura" della prima nota.
+#Si potranno ancora fare PrimeNote con più operazioni. Rimandiamo comunque alla
+#lettura delle novità sul sito del programma o nella sezione news interna.
+#Si avvisa che la migrazione potrebbe richiedere anche qualche minuto""")
+                    #self.aggiornamento = True
+                #for r in dao.righeprimanota:
+                    #print "DATA REGISTRAZIONE", r.numero, r.data_registrazione.day, r.data_registrazione.month, r.data_registrazione.year
+                    #a = TestataPrimaNota()
+                    #a.data_inizio = r.data_registrazione
+                    #date = Environment.workingYear
+                    #numeroSEL= TestataPrimaNota().select(complexFilter=(and_(TestataPrimaNota.data_inizio.between(datetime.date(int(r.data_registrazione.year), 1, 1), datetime.date(int(r.data_registrazione.year) + 1, 1, 1)))), batchSize=None)
+                    #if numeroSEL:
+                        #numero = max([p.numero for p in numeroSEL]) +1
+                    #else:
+                        #numero = 1
+                    #a.numero = numero
+                    #a.persist()
+                    #r.id_testata_prima_nota = a.id
+                    #r.persist()
+                #dao.delete()
+        #elif len(dao.righeprimanota) ==0:
+            #dao.delete()
