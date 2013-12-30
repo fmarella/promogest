@@ -298,7 +298,8 @@ if tipodb=="sqlite":
     fixit =  list(set(b)-set(a))
     print "fixt-stoccaggio", fixit
     for f in fixit:
-        aa = Stoccaggio().select(idArticolo=f[0], batchSize=None)
-        for a in aa:
-            session.delete(a)
-        session.commit()
+        if f[0] != "None" and f[0] != None:
+            aa = Stoccaggio().select(idArticolo=f[0], batchSize=None)
+            for a in aa:
+                session.delete(a)
+            session.commit()
