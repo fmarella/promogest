@@ -303,3 +303,16 @@ if tipodb=="sqlite":
             for a in aa:
                 session.delete(a)
             session.commit()
+if tipodb=="sqlite":
+    mag_id = session.query(Magazzino.id).all()
+    art_id = session.query(Articolo.id).all()
+    for m in mag_id:
+        for a in art_id:
+            #print " CHE DATI SIETE", m, a
+            if m[0] != "None" and m[0] != None and a[0] != "None" and a[0] != None:
+                if Riga().select(idMagazzino=m[0], id_articolo=a[0]) and not Stoccaggio().select(idMagazzino=m[0], idArticolo=a[0]):
+                    s = Stoccaggio()
+                    s.id_articolo = a[0]
+                    s.id_magazzino = m[0]
+                    session.add(s)
+    session.commit()

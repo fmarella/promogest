@@ -74,6 +74,8 @@ class Riga(Dao):
             dic={k: t_riga.c.id_articolo == v}
         elif k=="idMultiplo":
             dic={k: t_riga.c.id_multiplo == v}
+        elif k=="idMagazzino":
+            dic={k: t_riga.c.id_magazzino == v}
         return  dic[k]
 
     def __magazzino(self):
