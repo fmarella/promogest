@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2013 by Promotux
+#    Copyright (C) 2005-2014 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -221,7 +221,7 @@ except:
 try:
     partner = main_conf.Database.partner
 except:
-    partner = "070 8649702 -- www.promogest.me -- assistenza@promotux.it"
+    partner = "070 8649705 -- www.promogest.me -- assistenza@promotux.it"
 
 if tipodb == "sqlite" and not (os.path.exists(startdir() + "db")) and not tipodbforce and not preEnv.web:
     if os.path.exists("data/db"):
