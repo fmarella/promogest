@@ -24,7 +24,6 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
 from promogest.dao.Dao import Dao
-from promogest.lib.migrate import *
 from promogest.dao.TipoRichiesta import TipoRichiesta, t_tipo_richiesta
 from promogest.dao.PersonaGiuridica import PersonaGiuridica_ , t_persona_giuridica
 

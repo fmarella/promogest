@@ -35,7 +35,7 @@ except:
 
 
 from Dao import Dao
-from promogest.lib.migrate import *
+#from promogest.lib.migrate import *
 from promogest.dao.DaoUtils import get_columns
 
 

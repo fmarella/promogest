@@ -71,7 +71,8 @@ class Dao(object):
         tornati al sistema iniziale che invece non penalizza le prestazioni
         ed è molto più flessibile
         """
-        filter1 = filter2 = None
+        filter1 = None
+        filter2 = None
         if sqlalchemy.__version__ > '0.6':
             if complexFilter is not None:
                 filter1 = complexFilter
@@ -82,11 +83,15 @@ class Dao(object):
                 filter1 = complexFilter
             else:
                 filter2= self.prepareFilter(kwargs)
-        __filter__ = and_(filter1,filter2)
+        if filter1 is not None and filter2 is not None:
+            __filter__ = and_(filter1,filter2)
+        elif filter1 is not None:
+            __filter__ = filter1
+        elif filter2 is not None:
+            __filter__ = filter2
+        else:
+            __filter__ = None
 
-        #if self.__campi__:
-            #self.record= self._session.query(Azienda.schemaa)
-        #else:
         self.record= self._session.query(self._DaoModule)
         if sqlalchemy.__version__ > '0.6':
             if join is not None:
