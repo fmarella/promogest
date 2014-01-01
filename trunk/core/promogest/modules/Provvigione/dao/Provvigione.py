@@ -24,7 +24,6 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
 from promogest.dao.Dao import Dao
-from promogest.lib.migrate import *
 
 
 try:

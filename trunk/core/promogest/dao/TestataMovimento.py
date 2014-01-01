@@ -22,7 +22,7 @@
 
 from sqlalchemy import *
 from sqlalchemy.orm import *
-from promogest.lib.migrate import *
+#from promogest.lib.migrate import *
 from promogest.Environment import *
 
 try:
@@ -432,9 +432,9 @@ class TestataMovimento(Dao):
         self.init_on_load()
 
 
-if "id_to_magazzino" not in [c.name for c in t_testata_movimento.columns]:
-    col = Column('id_to_magazzino', Integer)
-    col.create(t_testata_movimento)
+#if "id_to_magazzino" not in [c.name for c in t_testata_movimento.columns]:
+    #col = Column('id_to_magazzino', Integer)
+    #col.create(t_testata_movimento)
 
 std_mapper = mapper(TestataMovimento, t_testata_movimento,properties={
         "rigamov": relation(RigaMovimento,primaryjoin=

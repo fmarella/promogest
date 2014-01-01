@@ -36,7 +36,7 @@ except:
 
 from promogest.dao.Dao import Dao
 from promogest.dao.Banca import Banca
-from promogest.lib.migrate import *
+#from promogest.lib.migrate import *
 
 
 

@@ -27,7 +27,7 @@ from promogest.dao.Dao import Dao
 from promogest.dao.DaoUtils import *
 from promogest.lib.utils import *
 from promogest.dao.Cliente import Cliente
-from promogest.lib.migrate import *
+#from promogest.lib.migrate import *
 
 
 try:
@@ -55,18 +55,18 @@ except:
             useexisting=True)
     testatainfopeso.create(checkfirst=True)
 
-if 'metodo_saved' not in [c.name for c in testatainfopeso.columns]:
-    col = Column('metodo_saved', Text)
-    col.create(testatainfopeso)
+##if 'metodo_saved' not in [c.name for c in testatainfopeso.columns]:
+    ##col = Column('metodo_saved', Text)
+    ##col.create(testatainfopeso)
 
-if 'metodo_data_creazione' not in [c.name for c in testatainfopeso.columns]:
-    col = Column('metodo_data_creazione', DateTime,
-        default=datetime.datetime.now())
-    col.create(testatainfopeso)
+##if 'metodo_data_creazione' not in [c.name for c in testatainfopeso.columns]:
+    ##col = Column('metodo_data_creazione', DateTime,
+        ##default=datetime.datetime.now())
+    ##col.create(testatainfopeso)
 
-if 'sblocca_ordini' not in [c.name for c in testatainfopeso.columns]:
-    col = Column('sblocca_ordini', Boolean)
-    col.create(testatainfopeso)
+##if 'sblocca_ordini' not in [c.name for c in testatainfopeso.columns]:
+    ##col = Column('sblocca_ordini', Boolean)
+    ##col.create(testatainfopeso)
 
 from promogest.modules.InfoPeso.dao.RigaInfoPeso import RigaInfoPeso
 

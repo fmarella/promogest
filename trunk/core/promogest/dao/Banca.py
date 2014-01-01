@@ -24,7 +24,7 @@ from sqlalchemy import Table
 from sqlalchemy.orm import mapper
 from promogest.Environment import params, delete_pickle
 from Dao import Dao
-from promogest.lib.migrate import *
+#from promogest.lib.migrate import *
 from sqlalchemy.schema import Column
 from sqlalchemy.types import String
 
