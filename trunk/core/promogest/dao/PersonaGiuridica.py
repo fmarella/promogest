@@ -27,6 +27,9 @@ from sqlalchemy.orm import *
 from promogest.Environment import *
 from Dao import Dao
 #from promogest.lib.migrate import *
+from promogest.lib.alembic.migration import MigrationContext
+from promogest.lib.alembic.operations import Operations
+from promogest.lib.alembic import op
 from promogest.dao.DaoUtils import get_columns
 
 try:
@@ -38,15 +41,19 @@ except:
     from data.personaGiuridica import t_persona_giuridica
 
 colonne = get_columns(t_persona_giuridica)
-#if "note" not in colonne:
-    #col = Column('note', Text)
-    #col.create(t_persona_giuridica)
-    #delete_pickle()
+if "note" not in colonne:
+    conn = engine.connect()
+    ctx = MigrationContext.configure(conn)
+    op = Operations(ctx)
+    op.add_column('persona_giuridica', Column('note', Text))
+    delete_pickle()
 
-#if 'cancellato' not in colonne:
-    #col = Column('cancellato', Boolean, default=False)
-    #col.create(t_persona_giuridica, populate_default=True)
-    #delete_pickle()
+if "cancellato" not in colonne:
+    conn = engine.connect()
+    ctx = MigrationContext.configure(conn)
+    op = Operations(ctx)
+    op.add_column('persona_giuridica',Column('cancellato', Boolean, default=False))
+    delete_pickle()
 
 class PersonaGiuridica_(Dao):
 
