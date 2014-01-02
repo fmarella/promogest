@@ -40,8 +40,7 @@ else:
     from ConfigParser import SafeConfigParser
     import ConfigParser as configparser
 
-if py2k:
-    from mako.util import parse_encoding
+#sposto l'import di mako
 
 if py33:
     from importlib import machinery
@@ -54,6 +53,8 @@ if py33:
 else:
     import imp
     def load_module_py(module_id, path):
+        if py2k:
+        from mako.util import parse_encoding
         with open(path, 'rb') as fp:
             mod = imp.load_source(module_id, path, fp)
             if py2k:
@@ -126,5 +127,3 @@ if py2k:
         def __init__(self, file_, encoding):
             super(EncodedIO, self).__init__(
                     ActLikePy3kIO(file_), encoding=encoding)
-
-

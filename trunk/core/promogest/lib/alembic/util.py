@@ -6,7 +6,7 @@ import re
 import inspect
 import uuid
 
-from mako.template import Template
+#SPOSTO l' import di mako
 from sqlalchemy.engine import url
 from sqlalchemy import __version__
 
@@ -44,6 +44,7 @@ except (ImportError, IOError):
 
 
 def template_to_file(template_file, dest, **kw):
+    from mako.template import Template
     with open(dest, 'w') as f:
         f.write(
             Template(filename=template_file).render(**kw)
@@ -325,6 +326,3 @@ def _with_legacy_names(translations):
         return update_wrapper(decorated, fn)
 
     return decorate
-
-
-
