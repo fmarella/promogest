@@ -54,7 +54,7 @@ else:
     import imp
     def load_module_py(module_id, path):
         if py2k:
-        from mako.util import parse_encoding
+            from mako.util import parse_encoding
         with open(path, 'rb') as fp:
             mod = imp.load_source(module_id, path, fp)
             if py2k:
