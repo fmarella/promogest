@@ -108,7 +108,6 @@ def orderedImport():
     from promogest.dao.daoContatti.ContattoMagazzino import t_contatto_magazzino
     from promogest.dao.daoContatti.ContattoCategoriaContatto import t_contatto_categoria_contatto
 
-    from promogest.dao.CCardType import t_credit_card_type #v
     from promogest.dao.Riga import t_riga
     from promogest.dao.AccountEmail import t_account_email
 
@@ -150,6 +149,7 @@ def orderedImportVenditaDettaglio():
 #try:
     from promogest.modules.VenditaDettaglio.dao.Pos import t_pos #v
     from promogest.modules.VenditaDettaglio.dao.ScontoScontrino import t_sconto_scontrino #v
+    from promogest.dao.CCardType import t_credit_card_type #v
     from promogest.modules.VenditaDettaglio.dao.RigaScontrino import t_riga_scontrino #v
     from promogest.modules.VenditaDettaglio.dao.ScontoRigaScontrino import t_sconto_riga_scontrino #v
     from promogest.modules.VenditaDettaglio.dao.TestataScontrino import t_testata_scontrino #v
