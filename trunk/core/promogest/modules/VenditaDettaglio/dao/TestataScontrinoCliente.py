@@ -33,7 +33,6 @@ try:
                                 schema = params['schema'],
                                 autoload=True)
 except:
-    #pass
     from data.testataScontrinoCliente import t_testata_scontrino_cliente
 
 class TestataScontrinoCliente(Dao):

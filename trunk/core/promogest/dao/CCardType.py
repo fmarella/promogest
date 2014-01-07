@@ -28,9 +28,10 @@ from promogest.dao.Dao import Dao
 
 try:
     t_credit_card_type =Table('credit_card_type',
-            params['metadata'],
-            schema = params['schema'],
-            autoload=True)
+                params['metadata'],
+                schema = params['schema'],
+                autoload=True,)
+                #extend_existing=True)
 except:
     from data.ccardType import t_credit_card_type
 

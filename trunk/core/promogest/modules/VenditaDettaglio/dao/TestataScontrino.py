@@ -31,7 +31,6 @@ try:
                     schema = params['schema'],
                     autoload=True)
 except:
-    #pass
     from data.testataScontrino import t_testata_scontrino
 
 from promogest.dao.Dao import Dao

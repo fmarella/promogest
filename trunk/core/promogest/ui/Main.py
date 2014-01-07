@@ -1132,10 +1132,7 @@ Procedo all'installazione del modulo PromoWear? """)
 
     def on_test_promoshop_button_clicked(self, button):
         from promogest.dao.Setconf import SetConf
-        msg = _("""
-STAI PER PROVARE IL MODULO VENDITA DETTAGLIO o PROMOSHOP
-
-Procedo all'installazione del modulo PromoShop? """)
+        msg = _(""" PROVIAMO IL MODULO VENDITA DETTAGLIO o PROMOSHOP, Procedo? """)
         if not YesNoDialog(msg=msg, transient=self.getTopLevel()):
             return
         if not setconf("VenditaDettaglio","mod_enable",value="yes"):
@@ -1166,8 +1163,8 @@ Procedo all'installazione del modulo PromoShop? """)
             a.value = "True"
             a.active = True
             a.persist()
-            #from promogest.dao.DaoOrderedImport import orderedImportVenditaDettaglio
-            #orderedImportVenditaDettaglio()
+            from promogest.dao.DaoOrderedImport import orderedImportVenditaDettaglio
+            orderedImportVenditaDettaglio()
             messageInfo(msg=_("RIAVVIA IL PROMOGEST"))
 
         else:

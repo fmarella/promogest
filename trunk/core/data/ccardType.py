@@ -29,5 +29,6 @@ t_credit_card_type = Table('credit_card_type', params['metadata'],
         Column('denominazione', String(200), nullable=False ),
         Column('denominazione_breve', String(10), nullable=False),
         schema=params['schema'],
+        extend_existing=True,
         )
 t_credit_card_type.create(checkfirst=True)
