@@ -1636,10 +1636,7 @@ class RicercaClientiFilter(GladeWidget):
         model.clear()
 
         for c in clis:
-            if c.ragione_sociale:
-                pi_cf = (c.partita_iva or '')
-            else:
-                pi_cf = (c.codice_fiscale or '')
+            pi_cf = (c.partita_iva or '') + " / " + (c.codice_fiscale or '')
             if c.sede_legale_localita:
                 loc = (c.sede_legale_localita or '') + " (" + (c.sede_legale_indirizzo or '') + ")"
             else:
