@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2014 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -573,8 +573,8 @@ class GestioneInventario(RicercaComplessaArticoli):
 
     def on_giacenze_button_clicked(self, button):
         sovrascrivi = False
-        msg = """Stiamo per aggiungere le giacenze,
-        si dovranno sovrascrivere quelle già presenti?
+        msg = """Aggiungiamo le giacenze ricavandole dai movimenti dell'anno scorso,
+        Sovrascriviamo quelle già presenti?
             """
         if YesNoDialog(msg=msg, transient=self.getTopLevel()):
             sovrascrivi = True
@@ -601,7 +601,8 @@ class GestioneInventario(RicercaComplessaArticoli):
         """
 
         def calcolaGiacenza(quantita=None, moltiplicatore=None, segno=None, valunine=None):
-            giacenza=0
+            giacenza = 0
+            valore = 0
             if segno =="-":
                 giacenza -= quantita*moltiplicatore
             else:
