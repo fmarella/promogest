@@ -41,6 +41,7 @@ from promogest.dao.Listino import Listino
 from promogest.ui.GladeWidget import GladeWidget
 from promogest.lib.utils import *
 from promogest.dao.DaoUtils import giacenzaArticolo
+from promogest.dao.ListinoArticolo import ListinoArticolo
 from sqlalchemy import func
 
 if posso("PW"):
@@ -930,10 +931,17 @@ class GestioneInventario(RicercaComplessaArticoli):
                 righeArticoloMovimentate.sort(key=lambda x: x[1], reverse=True)
 
                 if righeArticoloMovimentate and righeArticoloMovimentate[0][0]:
+                    print "CHE VALORE HAI", righeArticoloMovimentate[0][0]
                     s.valore_unitario = righeArticoloMovimentate[0][0]
                     Environment.params['session'].add(s)
-
-            print "VALORIZZA"
+                else:
+                    la = ListinoArticolo().select(idArticolo=s.id_articolo,batchSize=None, orderBy="data_listino_articolo")
+                    if la:
+                        ultimo = la[-1].ultimo_costo
+                        #print "ULTIMOOOOOOOOOO", ultimo
+                        s.valore_unitario = ultimo
+                        Environment.params['session'].add(s)
+            #print "VALORIZZA"
             Environment.params['session'].commit()
             self.refresh()
             self.fineElaborazione()
@@ -988,6 +996,14 @@ class GestioneInventario(RicercaComplessaArticoli):
                 if righeArticoloMovimentate and righeArticoloMovimentate[0][0]:
                     s.valore_unitario = righeArticoloMovimentate[0][0]
                     Environment.params['session'].add(s)
+                else:
+                    la = ListinoArticolo().select(idArticolo=s.id_articolo,batchSize=None, orderBy="data_listino_articolo")
+                    if la:
+                        prezzo_dettaglio = la[-1].prezzo_dettaglio
+                        #print "ULTIMOOOOOOOOOO", ultimo
+                        s.valore_unitario = prezzo_dettaglio
+                        Environment.params['session'].add(s)
+
             self.refresh()
             self.fineElaborazione()
 

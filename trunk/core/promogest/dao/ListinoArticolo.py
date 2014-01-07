@@ -53,6 +53,9 @@ class ListinoArticolo(Dao):
         self.__scontiVenditaDett = None
         self.__scontiVenditaIngr = None
 
+    def __repr__(self):
+        return "<VariazioneListino ID_LIST={0} ID_ART={1} DATA_LI={2}>".format(self.id_listino, self.id_articolo, self.data_listino_articolo)
+
     @reconstructor
     def init_on_load(self):
         self.__scontiVenditaDett = None
