@@ -141,7 +141,7 @@ class RicercaComplessaClienti(RicercaComplessa):
         column.set_expand(True)
         treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('Cognome e nome', renderer, text=3)
+        column = gtk.TreeViewColumn('Cognome/nome', renderer, text=3)
         column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.connect("clicked", self.filter._changeOrderBy,(None, 'cognome'))
@@ -1641,9 +1641,9 @@ class RicercaClientiFilter(GladeWidget):
             else:
                 pi_cf = (c.codice_fiscale or '')
             if c.sede_legale_localita:
-                loc = (c.sede_legale_localita or '')
+                loc = (c.sede_legale_localita or '') + " (" + (c.sede_legale_indirizzo or '') + ")"
             else:
-                loc = (c.sede_operativa_indirizzo or '')
+                loc = (c.sede_operativa_localita or '') + " (" + (c.sede_operativa_indirizzo or '') + ")"
             model.append((c,
                           (c.codice or ''),
                           (c.ragione_sociale or ''),
