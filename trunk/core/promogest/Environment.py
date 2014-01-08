@@ -72,6 +72,35 @@ try:
 except:
     pass
 import sqlalchemy
+if "0.7.4" > sqlalchemy.__version__:
+    dialoggg = gtk.MessageDialog(None,
+                        GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
+                        gtk.MESSAGE_ERROR,
+                        gtk.BUTTONS_CANCEL)
+    dialoggg.set_markup("E' necessaria una versione di sqlalchemy superiore alla 0.7.3")
+    response = dialoggg.run()
+    dialoggg.destroy()
+    sys.exit()
+
+try:
+    import jinja2
+    import webkit
+    import reportlab
+except Exception as e:
+    dialoggg = gtk.MessageDialog(None,
+                        GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
+                        gtk.MESSAGE_ERROR,
+                        gtk.BUTTONS_CANCEL)
+    msg = """ Manca la libreria python indicata qui in basso,
+Su linux installarla singolarmente usando il software manager o yum o apt-get
+Su windows provare a disinstallare e reinstallare il PromoGest
+disattivando l'antivirus per qualche minuto
+
+{0}""".format(str(e))
+    dialoggg.set_markup(msg)
+    response = dialoggg.run()
+    dialoggg.destroy()
+    sys.exit()
 from sqlalchemy import *
 from sqlalchemy.orm import *
 #from sqlalchemy.interfaces import PoolListener
@@ -475,6 +504,9 @@ if os.name=="nt" and sqlalchemy.__version__ < "0.7":
         #easy_install.main(['-U', 'keyring'])
     #else:
         #pass
+pg2log.info("SQLALCHEMY:" + str(sqlalchemy.__version__))
+
+
 
 cadenza = ["MENSILE", "BIMESTRALE", "TRIMESTRALE",
             "SEMESTRALE", "ANNUALE"]

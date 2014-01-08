@@ -41,16 +41,7 @@ from promogest.ui.utilsCombobox import findComboboxRowFromStr,findStrFromCombobo
 Environment.pg2log.info("GTK+: " + str(GTK_VERSION))
 
 import sqlalchemy
-Environment.pg2log.info("SQLALCHEMY:" + str(sqlalchemy.__version__))
-if sqlalchemy.__version__ < "0.5.8":
-    messageInfo(msg="""
-ATTENZIONE!! Versione di python-sqlalchemy inferiore a 0.5.8
-Alcune parti potrebbero dare errore
-Si consiglia di aggiornare alla versione 0.6.3 o superiore
-su forum.promotux.it troverete come fare
-""")
-#from sqlalchemy import *
-#from sqlalchemy.orm import *
+
 from promogest.lib import feedparser
 from promogest.lib import HtmlHandler
 
