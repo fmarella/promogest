@@ -73,6 +73,8 @@ class ProvvPgAzArt(Dao):
             dic = {k: t_provv_pg_az_art.c.id_persona_giuridica_from == v}
         elif k == 'id_provvigione':
             dic = {k: t_provv_pg_az_art.c.id_provvigione == v}
+        elif k == 'id_articolo':
+            dic = {k: t_provv_pg_az_art.c.id_articolo == v}
         return dic[k]
 
 

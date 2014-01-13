@@ -1891,6 +1891,11 @@ def controllaDateFestivi(data):
         data = data[:4]
     return data in festivi
 
+def get_data_mese_precedente(data=None):
+    from datetime import timedelta
+    if not data:
+        data = datetime.datetime.utcnow()
+    return data.replace(day=1) - timedelta(days=1)
 
 def dataInizioFineMese(data):
     import calendar

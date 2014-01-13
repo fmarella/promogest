@@ -305,6 +305,15 @@ dei farmaci venduti in un determinato arco temporale</property>
                         <signal name="activate" handler="on_importa_ordine_json_activate" swapped="no"/>
                       </object>
                     </child>
+                    <child>
+                      <object class="GtkMenuItem" id="genera_fatture_menu">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Fatturazione provvigioni</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="on_genera_fatture_menu_activate" swapped="no"/>
+                      </object>
+                    </child>
                   </object>
                 </child>
               </object>

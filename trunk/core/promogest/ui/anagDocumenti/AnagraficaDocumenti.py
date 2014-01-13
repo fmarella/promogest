@@ -50,6 +50,8 @@ class AnagraficaDocumenti(Anagrafica):
             from promogest.dao.Setting import addregistriDiretti
             addOpDirette()
             addregistriDiretti()
+        else:
+            self.on_genera_fatture_menu.destroy()
         self.funzione_ordinamento = None
         self.aa = None
 
@@ -65,6 +67,14 @@ class AnagraficaDocumenti(Anagrafica):
                 from scripts.fixRigaMovForniture import fixRigaMovimentoTable
                 fixRigaMovimentoTable(pbar_wid=self.pbar_anag_complessa)
 
+    def on_genera_fatture_menu_activate(self, widget):
+        #if Environment.azienda == 'daog':
+        #    do_genera_fatture_daog(self)
+        from promogest.ui.FatturazioneProvvigioni import FatturazioneProvvigioni
+        anag = FatturazioneProvvigioni(
+                            self.anagrafica_filter_treeview.get_selection())
+        showAnagraficaRichiamata(self.getTopLevel(), anag.getTopLevel(),
+                                button=None, callName=self.filter.refresh)
 
     def on_gestione_riba_menu_activate(self, widget):
         if posso('GRB'):
