@@ -143,6 +143,7 @@ class TestataDocumento(Dao):
             elif self.TM and len(self.TM) >1:
                 if not Environment.web:
                     Environment.pg2log.info("ATTENZIONE due movimenti fanno riferimento ad una sola testata documento:"+str(self.id))
+                print "ID DEL DOCUMENTO", str(self.id)
                 raise Exception("Più di un movimento fa riferimento allo stesso documento!")
             self.__dbRigheDocumento = self.__dbRigheDocumentoPart + self.__dbRigheMovimentoPart
             self.__dbRigheDocumento.sort(key=lambda x: x.posizione or x.id)

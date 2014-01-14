@@ -77,7 +77,7 @@ if "0.7.4" > sqlalchemy.__version__:
                         GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
                         gtk.MESSAGE_ERROR,
                         gtk.BUTTONS_CANCEL)
-    dialoggg.set_markup("E' necessaria una versione di sqlalchemy superiore alla 0.7.3")
+    dialoggg.set_markup("E' necessaria una versione di sqlalchemy superiore alla 0.7.3, tu hai la "+str(sqlalchemy.__version__))
     response = dialoggg.run()
     dialoggg.destroy()
     sys.exit()
