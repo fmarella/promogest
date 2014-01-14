@@ -50,8 +50,8 @@ class AnagraficaDocumenti(Anagrafica):
             from promogest.dao.Setting import addregistriDiretti
             addOpDirette()
             addregistriDiretti()
-        #else:
-            #self.on_genera_fatture_menu.destroy()
+        else:
+            self.genera_fatture_menu.destroy()
         self.funzione_ordinamento = None
         self.aa = None
 
