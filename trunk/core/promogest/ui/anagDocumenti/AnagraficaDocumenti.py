@@ -68,8 +68,6 @@ class AnagraficaDocumenti(Anagrafica):
                 fixRigaMovimentoTable(pbar_wid=self.pbar_anag_complessa)
 
     def on_genera_fatture_menu_activate(self, widget):
-        #if Environment.azienda == 'daog':
-        #    do_genera_fatture_daog(self)
         from promogest.ui.FatturazioneProvvigioni import FatturazioneProvvigioni
         anag = FatturazioneProvvigioni(
                             self.anagrafica_filter_treeview.get_selection())
