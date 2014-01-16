@@ -1384,10 +1384,10 @@ class TestataDocumento(Dao):
         return  dic[k]
 
 
-if 'esclusione_spese' not in [c.name for c in t_testata_documento.columns]:
-    delete_pickle()
-    col = Column('esclusione_spese', Boolean)
-    col.create(t_testata_documento, populate_default=True)
+#if 'esclusione_spese' not in [c.name for c in t_testata_documento.columns]:
+    #delete_pickle()
+    #col = Column('esclusione_spese', Boolean)
+    #col.create(t_testata_documento, populate_default=True)
 
 std_mapper = mapper(TestataDocumento, t_testata_documento,
     properties={

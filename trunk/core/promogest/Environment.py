@@ -479,8 +479,10 @@ def hook(et, ev, eb):
     if "InvalidRequestError: This Session's transaction has been rolled back due to a previous exception during flush" in str(ev):
         from promogest.lib.utils import messageError
         messageError(msg="Si consiglia di riavviare il software, l'errore è stato segnalato")
-
-    pg2log.info("\n  ".join(["Error occurred: traceback follows"] + list(traceback.format_exception(et, ev, eb))))
+    try:
+        pg2log.info("\n  ".join(["Error occurred: traceback follows"] + list(traceback.format_exception(et, ev, eb))))
+    except:
+        pass
     print "\n  ".join(list(traceback.format_exception(et, ev, eb)))
     __sendmail()
 #if not preEnv.web:
@@ -504,7 +506,8 @@ if os.name=="nt" and sqlalchemy.__version__ < "0.7":
         #easy_install.main(['-U', 'keyring'])
     #else:
         #pass
-pg2log.info("SQLALCHEMY:" + str(sqlalchemy.__version__))
+if not preEnv.web:
+    pg2log.info("SQLALCHEMY:" + str(sqlalchemy.__version__))
 
 
 
