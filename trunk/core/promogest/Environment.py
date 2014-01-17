@@ -384,6 +384,7 @@ def delete_pickle():
 
 def usePickleToMeta():
     if os.path.exists(str(os.path.join(promogestDir.replace("_",""),meta_pickle.replace("_","")).strip())):
+        print " CONTROLLO DELL'ESISTENZA DEL FILE PICKLE", str(os.path.join(promogestDir.replace("_","")))
         with open(str(os.path.join(promogestDir.replace("_",""),meta_pickle.replace("_","")).strip()), 'rb') as f:
             try:
                 meta = pickle_load(f)
@@ -479,6 +480,9 @@ def hook(et, ev, eb):
     if "InvalidRequestError: This Session's transaction has been rolled back due to a previous exception during flush" in str(ev):
         from promogest.lib.utils import messageError
         messageError(msg="Si consiglia di riavviare il software, l'errore è stato segnalato")
+    if "is already defined for this MetaData instance" in str(ev):
+        delete_pickle()
+
     try:
         pg2log.info("\n  ".join(["Error occurred: traceback follows"] + list(traceback.format_exception(et, ev, eb))))
     except:

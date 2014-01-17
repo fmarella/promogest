@@ -35,5 +35,12 @@ s= select([t_stato_articolo.c.denominazione]).execute().fetchall()
 if (u'In vendita',) not in s or s==[]:
     tipo = t_stato_articolo.insert()
     tipo.execute(denominazione='In vendita')
+if  (u'In offerta',) not in s or s==[]:
+    tipo = t_stato_articolo.insert()
     tipo.execute(denominazione='In offerta')
+if  (u'Interno',) not in s or s==[]:
+    tipo = t_stato_articolo.insert()
     tipo.execute(denominazione='Interno')
+if  (u'Web',) not in s or s==[]:
+    tipo = t_stato_articolo.insert()
+    tipo.execute(denominazione='Web')
