@@ -1,9 +1,24 @@
 # -*- coding: utf-8 -*-
 
-# Promogest
-#
-# Copyright (C) 2005-2008 by Promotux Informatica - http://www.promotux.it/
-# Author: Francesco Meloni <francesco@promotux.it>
+#    Copyright (C) 2005-2014 by Promotux
+#                        di Francesco Meloni snc - http://www.promotux.it/
+
+#    Author: Francesco Meloni  <francesco@promotux.it>
+
+#    This file is part of Promogest.
+
+#    Promogest is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 2 of the License, or
+#    (at your option) any later version.
+
+#    Promogest is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+
+#    You should have received a copy of the GNU General Public License
+#    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 import os, popen2
 from datetime import datetime
@@ -110,7 +125,7 @@ class GestioneChiusuraFiscale(GladeWidget):
 
         dictRigheProv = {}
 
-        for scontrino in scontrini:
+        for scontrino in scontrini[:]:
             for riga in scontrino.righe:
                 cri = str(riga.id_articolo)+"_"+str(riga.prezzo_scontato)
                 if  cri in dictRigheProv:
@@ -127,13 +142,14 @@ class GestioneChiusuraFiscale(GladeWidget):
             if len(v) ==1:
                 listRighe.append(v[0])
                 #print " QUESTO é SOLO", v[0].quantita
+                v[0].quantitaaa = v[0].quantita
             else:
                 listPrezzi = []
                 quantita = 0
                 for a in v:
                     #print "IN COMPAGNIA", a.id_articolo, a.prezzo_scontato, a.quantita
                     quantita += a.quantita
-                v[0].quantita = quantita
+                v[0].quantitaaa = quantita
                 listRighe.append(v[0])
 
         for riga in listRighe:
@@ -146,7 +162,7 @@ class GestioneChiusuraFiscale(GladeWidget):
             daoRiga = RigaMovimento()
             daoRiga.valore_unitario_lordo = riga.prezzo
             daoRiga.valore_unitario_netto = riga.prezzo_scontato
-            daoRiga.quantita = riga.quantita
+            daoRiga.quantita = riga.quantitaaa
             daoRiga.moltiplicatore = 1
             daoRiga.descrizione = riga.descrizione
             daoRiga.id_magazzino = self.idMagazzino
