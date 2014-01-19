@@ -104,7 +104,8 @@ Credito cliente                         12
                         if sconto.tipo_sconto == 'percentuale':
                             sco=str(sconto.valore)+"*1M"
                         else:
-                            sco=str(sconto.valore * quantita)+"H3M\n"
+                            sco=str(mN(sconto.valore * quantita,2)).replace(".","")+"H3M"
+                            #raise
             p = str(mN(riga.prezzo,2)).replace(".","")
             iva = riga.iva_articolo
             if iva and int(iva) == 22:
