@@ -231,6 +231,10 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             model[path][8] = model[path][5]
         else:
             if tipoSconto == "percentuale":
+                if DRIVER == "C" and int(model[path][6]) == 100:
+                    messageInfo(msg="ATTENZIONE, QUESTO MODELLO DI CASSA NON SUPPORTA UNA PERCENTUALE SCONTO DEL 100% MA SOLO FINO AL 99.99%, USARE QUELLO A VALORE")
+                    model[path][6] = ""
+                    model[path][7] = ""
                 prezzoscontato = mN(model[path][5]) - (mN(model[path][5]) * mN(model[path][6])) / 100
             else:
                 prezzoscontato = mN(model[path][5]) -mN(model[path][6])
