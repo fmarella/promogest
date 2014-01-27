@@ -46,6 +46,10 @@
           <object class="ArticoloSearchWidget" id="provv_ArticoloSearchWidget">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
+            <property name="primary_icon_activatable">False</property>
+            <property name="secondary_icon_activatable">False</property>
+            <property name="primary_icon_sensitive">True</property>
+            <property name="secondary_icon_sensitive">True</property>
           </object>
           <packing>
             <property name="expand">True</property>
@@ -81,6 +85,10 @@
           <object class="ClienteSearchWidget" id="provv_ClienteSearchWidget">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
+            <property name="primary_icon_activatable">False</property>
+            <property name="secondary_icon_activatable">False</property>
+            <property name="primary_icon_sensitive">True</property>
+            <property name="secondary_icon_sensitive">True</property>
           </object>
           <packing>
             <property name="expand">True</property>
@@ -116,6 +124,10 @@
           <object class="FornitoreSearchWidget" id="provv_FornitoreSearchWidget">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
+            <property name="primary_icon_activatable">False</property>
+            <property name="secondary_icon_activatable">False</property>
+            <property name="primary_icon_sensitive">True</property>
+            <property name="secondary_icon_sensitive">True</property>
           </object>
           <packing>
             <property name="expand">True</property>
@@ -151,6 +163,10 @@
           <object class="PersonaGiuridicaSearchWidget" id="provv_PersonaGiuridicaSearchWidget">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
+            <property name="primary_icon_activatable">False</property>
+            <property name="secondary_icon_activatable">False</property>
+            <property name="primary_icon_sensitive">True</property>
+            <property name="secondary_icon_sensitive">True</property>
           </object>
           <packing>
             <property name="expand">True</property>
@@ -193,7 +209,7 @@
             <property name="secondary_icon_sensitive">True</property>
             <property name="adjustment">adjustment1</property>
             <property name="climb_rate">1</property>
-            <property name="digits">1</property>
+            <property name="digits">2</property>
             <property name="numeric">True</property>
           </object>
           <packing>
@@ -229,7 +245,6 @@
         <child>
           <object class="GtkRadioButton" id="tipo_provv_euro_radiobutton">
             <property name="label" translatable="yes">€</property>
-            <property name="use_action_appearance">False</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">False</property>
@@ -247,7 +262,6 @@
         <child>
           <object class="GtkRadioButton" id="tipo_provv_percentuale_radiobutton">
             <property name="label" translatable="yes">%</property>
-            <property name="use_action_appearance">False</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">False</property>
@@ -360,6 +374,15 @@
     <property name="can_focus">False</property>
     <property name="n_rows">4</property>
     <property name="n_columns">2</property>
+    <child>
+      <placeholder/>
+    </child>
+    <child>
+      <placeholder/>
+    </child>
+    <child>
+      <placeholder/>
+    </child>
     <child>
       <placeholder/>
     </child>
