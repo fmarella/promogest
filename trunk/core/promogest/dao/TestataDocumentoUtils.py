@@ -57,7 +57,7 @@ def do_genera_fatture_provvigioni(data_da, data_a, data_doc, progress=None):
                     if p[0].provv.tipo_provv == "%":
                         totaleProvvRiga = riga.totaleRiga * p[0].provv.valore_provv / 100
                     else:
-                        totaleProvvRiga = p[0].provv.valore_provv
+                        totaleProvvRiga = riga.quantita * p[0].provv.valore_provv
                 else:
                     p = ProvvPgAzArt().select(id_persona_giuridica_to=doc.id_fornitore,
                                               id_persona_giuridica_from=doc.id_cliente,
@@ -65,7 +65,7 @@ def do_genera_fatture_provvigioni(data_da, data_a, data_doc, progress=None):
                     if p[0].provv.tipo_provv == "%":
                         totaleProvvRiga = riga.totaleRiga * p[0].provv.valore_provv / 100
                     else:
-                        totaleProvvRiga = p[0].provv.valore_provv
+                        totaleProvvRiga = riga.quantita * p[0].provv.valore_provv
 
                 totaleProvvDoc += totaleProvvRiga
             if doc.id_fornitore not in forn_totaledoc_dict:
