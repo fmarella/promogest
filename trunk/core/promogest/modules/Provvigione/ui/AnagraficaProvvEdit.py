@@ -68,7 +68,7 @@ class AnagraficaProvvEdit(AnagraficaEdit):
         di modifica
         """
         if self.dao.provv:
-            self.valore_provv_entry.set_value(mN(self.dao.provv.valore_provv,1))
+            self.valore_provv_entry.set_value(mN(self.dao.provv.valore_provv, 2))
         else:
             self.valore_provv_entry.set_text("")
         if self.dao.provv and self.dao.provv.tipo_provv == "€":
