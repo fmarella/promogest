@@ -42,7 +42,7 @@ def findDoc(selection):
     newmodel = []
     (model, iterator) = selection.get_selected_rows()
     for i in iterator:
-        if "DDT vendita" in model[i][3]:
+        if "DDT vendita" in model[i][3] or "DDT acquisto" in model[i][3]:
             newmodel.append(model[i])
     newmodel.reverse()
     return newmodel
@@ -87,8 +87,10 @@ def newSingleDoc(data, operazione, note, daoDocumento, newDao=None):
         newDao = TestataDocumento()
     newDao.data_documento = stringToDate(data)
     newDao.operazione = operazione
-    newDao.id_cliente = daoDocumento.id_cliente
-    #newDao.id_fornitore = daoDocumento.id_fornitore
+    if operazione == "Fattura differita vendita":
+        newDao.id_cliente = daoDocumento.id_cliente
+    elif operazione == "Fattura differita acquisto":
+        newDao.id_fornitore = daoDocumento.id_fornitore
     newDao.id_destinazione_merce = daoDocumento.id_destinazione_merce
     newDao.id_pagamento = daoDocumento.id_pagamento
     newDao.id_banca = daoDocumento.id_banca
@@ -421,11 +423,10 @@ class FatturazioneDifferita(GladeWidget):
     def draw(self):
 
         res = Operazione().select(tipoOperazione = 'documento',
-                                    tipoPersonaGiuridica = 'cliente',
                                     segno=None)
         model = gtk.ListStore(object, str, str)
         for o in res:
-            if "Fattura differita vendita" in o.denominazione:
+            if "Fattura differita vendita" in o.denominazione or "Fattura differita acquisto" in o.denominazione:
                 model.append((o, o.denominazione, (o.denominazione or '')[0:30]))
         #self.id_operazione_combobox.clear()
         renderer = gtk.CellRendererText()
@@ -454,6 +455,14 @@ class FatturazioneDifferita(GladeWidget):
         note = self.note_check.get_active()
         data_consegna = self.data_consegna_check.get_active()
         no_row = self.no_row_check.get_active() #SE TRUE inserisce il dettaglio righe
-
-        do_fatt_diff(self.listdoc, data_documento, operazione, no_rif_righe_cumul, note, data_consegna, no_row, riga_tratteggiata,riga_vuota, gui=self)
+        ddts = []
+        if operazione == "Fattura differita vendita":
+            for l in self.listdoc:
+                if l[3] == "DDT vendita":
+                    ddts.append(l)
+        elif operazione =="Fattura differita acquisto":
+            for l in self.listdoc:
+                if l[3] == "DDT acquisto":
+                    ddts.append(l)
+        do_fatt_diff(ddts, data_documento, operazione, no_rif_righe_cumul, note, data_consegna, no_row, riga_tratteggiata,riga_vuota, gui=self)
         self.getTopLevel().destroy()
