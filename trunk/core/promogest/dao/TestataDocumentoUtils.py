@@ -42,38 +42,36 @@ def do_genera_fatture_provvigioni(data_da, data_a, data_doc, progress=None):
         messageInfo(msg="Non sono stati trovati documenti utili a completare l'operazione.")
     else:
         forn_totaledoc_dict = {}
-        totaleProvv = Decimal(0)
-        for doc in documenti:
 
+        for doc in documenti:
             if progress:
                 pbar(progress, parziale=documenti.index(doc), totale=len(documenti), text="Elaborazione documenti...", noeta=False)
-
             totaleProvvDoc = Decimal(0)
             for riga in doc.righe:
+                if not riga.id_articolo:
+                    continue
                 p = ProvvPgAzArt().select(id_persona_giuridica_to=doc.id_fornitore,
                                           id_persona_giuridica_from=doc.id_cliente,
                                           id_articolo=riga.id_articolo)
                 if p:
                     if p[0].provv.tipo_provv == "%":
-                        totaleProvvRiga = riga.totaleRiga * p[0].provv.valore_provv / 100
+                        totaleProvvDoc += riga.totaleRiga * p[0].provv.valore_provv / 100
                     else:
-                        totaleProvvRiga = riga.quantita * p[0].provv.valore_provv
+                        totaleProvvDoc += riga.quantita * p[0].provv.valore_provv
                 else:
                     p = ProvvPgAzArt().select(id_persona_giuridica_to=doc.id_fornitore,
                                               id_persona_giuridica_from=doc.id_cliente,
                                               id_articolo=None)
-                    if p[0].provv.tipo_provv == "%":
-                        totaleProvvRiga = riga.totaleRiga * p[0].provv.valore_provv / 100
-                    else:
-                        totaleProvvRiga = riga.quantita * p[0].provv.valore_provv
+                    if p:
+                        if p[0].provv.tipo_provv == "%":
+                            totaleProvvDoc += riga.totaleRiga * p[0].provv.valore_provv / 100
+                        else:
+                            totaleProvvDoc += riga.quantita * p[0].provv.valore_provv
 
-                totaleProvvDoc += totaleProvvRiga
             if doc.id_fornitore not in forn_totaledoc_dict:
                 forn_totaledoc_dict[doc.id_fornitore] = totaleProvvDoc
             else:
                 forn_totaledoc_dict[doc.id_fornitore] += totaleProvvDoc
-
-            totaleProvv += totaleProvvDoc
 
         operazione = "Fattura vendita"
 
