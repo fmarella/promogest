@@ -52,21 +52,22 @@ def do_genera_fatture_provvigioni(data_da, data_a, data_doc, progress=None):
                     continue
                 p = ProvvPgAzArt().select(id_persona_giuridica_to=doc.id_fornitore,
                                           id_persona_giuridica_from=doc.id_cliente,
-                                          id_articolo=riga.id_articolo)
+                                          id_articolo=riga.id_articolo, batchSize=None)
                 if p:
                     if p[0].provv.tipo_provv == "%":
-                        totaleProvvDoc += riga.totaleRiga * p[0].provv.valore_provv / 100
+                        provv_row = riga.totaleRiga * p[0].provv.valore_provv / 100
                     else:
-                        totaleProvvDoc += riga.quantita * p[0].provv.valore_provv
+                        provv_row = riga.quantita * p[0].provv.valore_provv
                 else:
-                    p = ProvvPgAzArt().select(id_persona_giuridica_to=doc.id_fornitore,
+                    q = ProvvPgAzArt().select(id_persona_giuridica_to=doc.id_fornitore,
                                               id_persona_giuridica_from=doc.id_cliente,
-                                              id_articolo=None)
-                    if p:
-                        if p[0].provv.tipo_provv == "%":
-                            totaleProvvDoc += riga.totaleRiga * p[0].provv.valore_provv / 100
+                                              id_articolo=None, batchSize=None)
+                    if q:
+                        if q[0].provv.tipo_provv == "%":
+                            provv_row = riga.totaleRiga * q[0].provv.valore_provv / 100
                         else:
-                            totaleProvvDoc += riga.quantita * p[0].provv.valore_provv
+                            provv_row = riga.quantita * q[0].provv.valore_provv
+                totaleProvvDoc += provv_row
 
             if doc.id_fornitore not in forn_totaledoc_dict:
                 forn_totaledoc_dict[doc.id_fornitore] = totaleProvvDoc
@@ -91,10 +92,10 @@ FUORI CAMPO IVA ARTICOLO 7 ter D.P.R. 633/72""" % data_da.strftime('%B %Y')
 
             forn = Fornitore().getRecord(id=k)
             if forn.ragione_sociale:
-                cli = Cliente().select(ragioneSociale=forn.ragione_sociale)
+                cli = Cliente().select(ragioneSociale=forn.ragione_sociale, batchSize=None)
 
             if not cli and forn.cognome and forn.nome:
-                cli = Cliente().select(cognomeNome=forn.cognome + ' ' + forn.nome)
+                cli = Cliente().select(cognomeNome=forn.cognome + ' ' + forn.nome, batchSize=None)
 
             if not cli:
                 flag = True
