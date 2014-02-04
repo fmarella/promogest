@@ -55,11 +55,11 @@ class ProvvNotebookPage(GladeWidget):
 
     def provvRefresh(self):
         self.provv_listore.clear()
-        forni = Fornitore().select(BatchSize=None)
+        forni = Fornitore().select(batchSize=None)
         for c in forni:
             pp = ProvvPgAzArt().select(id_persona_giuridica_to=c.id)
             if pp and pp[0].id_persona_giuridica_from == self.ana.dao.id:
-                p = mN(pp[0].provv.valore_provv,1)
+                p = mN(pp[0].provv.valore_provv,2)
                 t = pp[0].provv.tipo_provv
             else:
                 p = ""
@@ -71,7 +71,7 @@ class ProvvNotebookPage(GladeWidget):
                 t))
 
     def provvSaveDao(self):
-        self.dao_provv_pg_az_art = ProvvPgAzArt().select(id_persona_giuridica_from=self.ana.dao.id, BatchSize=None)
+        self.dao_provv_pg_az_art = ProvvPgAzArt().select(id_persona_giuridica_from=self.ana.dao.id, batchSize=None)
         for a in self.dao_provv_pg_az_art:
             a.delete()
         for a in self.provv_listore:
