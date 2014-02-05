@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2014 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -87,7 +87,7 @@ def newSingleDoc(data, operazione, note, daoDocumento, newDao=None):
         newDao = TestataDocumento()
     newDao.data_documento = stringToDate(data)
     newDao.operazione = operazione
-    if operazione == "Fattura differita vendita":
+    if operazione in ["Fattura differita vendita","Fattura differita vendita ford"]:
         newDao.id_cliente = daoDocumento.id_cliente
     elif operazione == "Fattura differita acquisto":
         newDao.id_fornitore = daoDocumento.id_fornitore
@@ -126,8 +126,10 @@ def newSingleDoc(data, operazione, note, daoDocumento, newDao=None):
     #newDao.costo_da_ripartire = daoDocumento.costo_da_ripartire
     return newDao
 
-def do_fatt_diff(lista_documenti, data_documento, operazione, no_rif_righe_cumul=False, note=False, data_consegna=False, no_row=False,
-riga_tratteggiata = False,riga_vuota = False, gui=False):
+def do_fatt_diff(lista_documenti, data_documento,
+                operazione, no_rif_righe_cumul=False,
+                note=False, data_consegna=False, no_row=False,
+                riga_tratteggiata = False,riga_vuota = False, gui=False):
 
     fattura = None
     logfattdiff = ''
