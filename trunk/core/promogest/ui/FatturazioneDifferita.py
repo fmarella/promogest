@@ -458,9 +458,9 @@ class FatturazioneDifferita(GladeWidget):
         data_consegna = self.data_consegna_check.get_active()
         no_row = self.no_row_check.get_active() #SE TRUE inserisce il dettaglio righe
         ddts = []
-        if operazione == "Fattura differita vendita":
+        if operazione in ["Fattura differita vendita","Fattura differita vendita ford"] :
             for l in self.listdoc:
-                if l[3] == "DDT vendita":
+                if l[3] in [ "DDT vendita", "DDT vendita ford"]:
                     ddts.append(l)
         elif operazione =="Fattura differita acquisto":
             for l in self.listdoc:
