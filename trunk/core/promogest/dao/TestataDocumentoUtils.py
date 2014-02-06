@@ -70,11 +70,15 @@ def do_genera_fatture_provvigioni(data_da, data_a, data_doc, progress=None):
                         forn_provv_file.write("%s;%s;%s;%s;%s;%s;%s;%s\n" % (leggiFornitore(doc.id_fornitore)['ragioneSociale'],
                             leggiCliente(doc.id_cliente)['ragioneSociale'],
                             leggiArticolo(riga.id_articolo)['denominazione'],
-                            riga.totaleRiga,
+                            mN(riga.totaleRiga, 2),
                             riga.quantita,
                             p[0].provv.tipo_provv,
-                            p[0].provv.valore_provv,
-                            provv_row))
+                            mN(p[0].provv.valore_provv, 2),
+                            mN(provv_row, 2)))
+                        if doc.id_fornitore not in forn_totaledoc_dict:
+                            forn_totaledoc_dict[doc.id_fornitore] = provv_row
+                        else:
+                            forn_totaledoc_dict[doc.id_fornitore] += provv_row
                 else:
                     q = ProvvPgAzArt().select(id_persona_giuridica_to=doc.id_fornitore,
                                               id_persona_giuridica_from=doc.id_cliente,
@@ -87,17 +91,15 @@ def do_genera_fatture_provvigioni(data_da, data_a, data_doc, progress=None):
                         forn_provv_file.write("%s;%s;%s;%s;%s;%s;%s;%s\n" % (leggiFornitore(doc.id_fornitore)['ragioneSociale'],
                             leggiCliente(doc.id_cliente)['ragioneSociale'],
                             leggiArticolo(riga.id_articolo)['denominazione'],
-                            riga.totaleRiga,
+                            mN(riga.totaleRiga, 2),
                             riga.quantita,
                             q[0].provv.tipo_provv,
-                            q[0].provv.valore_provv,
-                            provv_row))
-                totaleProvvDoc += provv_row
-
-            if doc.id_fornitore not in forn_totaledoc_dict:
-                forn_totaledoc_dict[doc.id_fornitore] = totaleProvvDoc
-            else:
-                forn_totaledoc_dict[doc.id_fornitore] += totaleProvvDoc
+                            mN(q[0].provv.valore_provv, 2),
+                            mN(provv_row, 2)))
+                        if doc.id_fornitore not in forn_totaledoc_dict:
+                            forn_totaledoc_dict[doc.id_fornitore] = provv_row
+                        else:
+                            forn_totaledoc_dict[doc.id_fornitore] += provv_row
 
         forn_provv_file.close()
 
@@ -112,7 +114,7 @@ FUORI CAMPO IVA ARTICOLO 7 ter D.P.R. 633/72""" % data_da.strftime('%B %Y')
 
         i = 0
         flag = False
-        for k,v in forn_totaledoc_dict.iteritems():
+        for k in forn_totaledoc_dict:
 
             if pbar:
                 pbar(progress, parziale=i, totale=len(forn_totaledoc_dict), text="Creazione fatture...", noeta=False)
@@ -137,9 +139,9 @@ FUORI CAMPO IVA ARTICOLO 7 ter D.P.R. 633/72""" % data_da.strftime('%B %Y')
             daoRiga.descrizione = DESCR_RIGA
             daoRiga.quantita = 1.0
             daoRiga.percentuale_iva = 0
-            daoRiga.valore_unitario_lordo = v
+            daoRiga.valore_unitario_lordo = forn_totaledoc_dict[k]
             daoRiga.moltiplicatore = 1
-            daoRiga.valore_unitario_netto = v
+            daoRiga.valore_unitario_netto = forn_totaledoc_dict[k]
             daoRiga.scontiRigaDocumento = []
             td.righeDocumento = [daoRiga]
             td.persist()
