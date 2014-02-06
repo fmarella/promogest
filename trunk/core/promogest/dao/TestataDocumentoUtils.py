@@ -29,6 +29,10 @@ from promogest.modules.Provvigione.dao.ProvvPgAzArt import ProvvPgAzArt
 from promogest.lib.utils import *
 import datetime
 
+import os
+from promogest.Environment import tempDir
+from promogest.lib.utils import leggiFornitore, leggiCliente
+
 
 def do_genera_fatture_provvigioni(data_da, data_a, data_doc, progress=None):
     '''
@@ -42,13 +46,18 @@ def do_genera_fatture_provvigioni(data_da, data_a, data_doc, progress=None):
         messageInfo(msg="Non sono stati trovati documenti utili a completare l'operazione.")
     else:
         forn_totaledoc_dict = {}
-
+        forn_provv_file = file(os.path.join(tempDir, 'riepilogo_provv.csv'), 'w')
+        forn_provv_file.write('fornitore;cliente;articolo;totaleRiga;qta;tipo_provv;valore_provv;provv_articolo\n')
         for doc in documenti:
             if progress:
                 pbar(progress, parziale=documenti.index(doc), totale=len(documenti), text="Elaborazione documenti...", noeta=False)
             totaleProvvDoc = Decimal(0)
             for riga in doc.righe:
                 if not riga.id_articolo:
+                    continue
+                if leggiArticolo(riga.id_articolo)['denominazione'] in ['SACCHI', 'TRASPORTO']:
+                    continue
+                if Decimal(riga.totaleRiga) == Decimal(0) or Decimal(riga.quantita) == Decimal(0):
                     continue
                 p = ProvvPgAzArt().select(id_persona_giuridica_to=doc.id_fornitore,
                                           id_persona_giuridica_from=doc.id_cliente,
@@ -58,6 +67,14 @@ def do_genera_fatture_provvigioni(data_da, data_a, data_doc, progress=None):
                         provv_row = riga.totaleRiga * p[0].provv.valore_provv / 100
                     else:
                         provv_row = riga.quantita * p[0].provv.valore_provv
+                        forn_provv_file.write("%s;%s;%s;%s;%s;%s;%s;%s\n" % (leggiFornitore(doc.id_fornitore)['ragioneSociale'],
+                            leggiCliente(doc.id_cliente)['ragioneSociale'],
+                            leggiArticolo(riga.id_articolo)['denominazione'],
+                            riga.totaleRiga,
+                            riga.quantita,
+                            p[0].provv.tipo_provv,
+                            p[0].provv.valore_provv,
+                            provv_row))
                 else:
                     q = ProvvPgAzArt().select(id_persona_giuridica_to=doc.id_fornitore,
                                               id_persona_giuridica_from=doc.id_cliente,
@@ -67,12 +84,22 @@ def do_genera_fatture_provvigioni(data_da, data_a, data_doc, progress=None):
                             provv_row = riga.totaleRiga * q[0].provv.valore_provv / 100
                         else:
                             provv_row = riga.quantita * q[0].provv.valore_provv
+                        forn_provv_file.write("%s;%s;%s;%s;%s;%s;%s;%s\n" % (leggiFornitore(doc.id_fornitore)['ragioneSociale'],
+                            leggiCliente(doc.id_cliente)['ragioneSociale'],
+                            leggiArticolo(riga.id_articolo)['denominazione'],
+                            riga.totaleRiga,
+                            riga.quantita,
+                            q[0].provv.tipo_provv,
+                            q[0].provv.valore_provv,
+                            provv_row))
                 totaleProvvDoc += provv_row
 
             if doc.id_fornitore not in forn_totaledoc_dict:
                 forn_totaledoc_dict[doc.id_fornitore] = totaleProvvDoc
             else:
                 forn_totaledoc_dict[doc.id_fornitore] += totaleProvvDoc
+
+        forn_provv_file.close()
 
         operazione = "Fattura vendita"
 

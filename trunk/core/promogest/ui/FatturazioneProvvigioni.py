@@ -21,6 +21,9 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
+import os
+from shutil import copy2
+
 from promogest.ui.gtk_compat import *
 from promogest.lib.utils import *
 from promogest.ui.GladeWidget import GladeWidget
@@ -42,6 +45,30 @@ class FatturazioneProvvigioni(GladeWidget):
         self.data_documento_entry.set_text(dateToString(datetime.datetime.today()))
         self.data_documento_entry.grab_focus()
 
+    def on_esporta_button_clicked(self, widget):
+        fileDialog = gtk.FileChooserDialog(title='Salva il file',
+                                           parent=self.getTopLevel(),
+                                           action=gtk.FILE_CHOOSER_ACTION_SAVE,
+                                           buttons=(gtk.STOCK_CANCEL,
+                                                    gtk.RESPONSE_CANCEL,
+                                                    gtk.STOCK_SAVE,
+                                                    gtk.RESPONSE_OK),
+                                           backend=None)
+        fileDialog.set_current_name("fatturazione_provvigioni.csv")
+        fileDialog.set_current_folder(Environment.documentsDir)
+
+        response = fileDialog.run()
+        # FIXME: handle errors here
+        if ( (response == gtk.RESPONSE_CANCEL) or ( response == gtk.RESPONSE_DELETE_EVENT)) :
+            fileDialog.destroy()
+        elif response == gtk.RESPONSE_OK:
+            filename = fileDialog.get_filename()
+            if not filename:
+                messageInfo(msg="Nessun nome scelto per il file")
+            else:
+                fileDialog.destroy()
+                copy2(os.path.join(Environment.tempDir, "riepilogo_provv.csv"), filename)
+
     def on_confirm_button_clicked(self, button=None):
         if self.da_data_entry.get_text() == '':
             obligatoryField(self.getTopLevel(), self.da_data_entry)
@@ -55,5 +82,3 @@ class FatturazioneProvvigioni(GladeWidget):
         data_documento = self.data_documento_entry.get_text()
 
         do_genera_fatture_provvigioni(stringToDate(da_data), stringToDate(a_data), stringToDate(data_documento), self.progress)
-
-        self.getTopLevel().destroy()
