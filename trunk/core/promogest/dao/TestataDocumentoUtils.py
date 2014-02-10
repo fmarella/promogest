@@ -59,8 +59,8 @@ def do_genera_fatture_provvigioni(data_da, data_a, data_doc, progress=None):
             for riga in doc.righe:
                 if not riga.id_articolo:
                     continue
-                for e in leggiArticolo(riga.id_articolo)['denominazione'].lower().split(" "):
-                    if e in articoli_esclusi_list:
+                for e in articoli_esclusi_list:
+                    if e in leggiArticolo(riga.id_articolo)['denominazione'].lower():
                         continue
                 if Decimal(riga.totaleRiga) == Decimal(0) or Decimal(riga.quantita) == Decimal(0):
                     continue
