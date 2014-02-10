@@ -37,6 +37,10 @@ from promogest.lib.utils import leggiFornitore, leggiCliente
 def do_genera_fatture_provvigioni(data_da, data_a, data_doc, progress=None):
     '''
     '''
+    
+    # definisco gli articoli da escludere (usare il minuscolo)
+    articoli_esclusi_list = ['sacchi', 'trasporto', 'contributo energetico', 'riempimento', 'commissioni', 'cappucci', 'europalette', 'big bag']
+    
     documenti = TestataDocumento().select(complexFilter=(and_(TestataDocumento.operazione=='DDT vendita diretto',
             TestataDocumento.data_documento.between(data_da, data_a))),
         batchSize=None,
@@ -55,7 +59,7 @@ def do_genera_fatture_provvigioni(data_da, data_a, data_doc, progress=None):
             for riga in doc.righe:
                 if not riga.id_articolo:
                     continue
-                if leggiArticolo(riga.id_articolo)['denominazione'] in ['SACCHI', 'TRASPORTO']:
+                if leggiArticolo(riga.id_articolo)['denominazione'].lower() in articoli_esclusi_list:
                     continue
                 if Decimal(riga.totaleRiga) == Decimal(0) or Decimal(riga.quantita) == Decimal(0):
                     continue
