@@ -32,15 +32,15 @@ import datetime
 import os
 from promogest.Environment import tempDir
 from promogest.lib.utils import leggiFornitore, leggiCliente
-
+import re
 
 def do_genera_fatture_provvigioni(data_da, data_a, data_doc, progress=None):
     '''
     '''
-    
-    # definisco gli articoli da escludere (usare il minuscolo)
-    articoli_esclusi_list = ['sacchi', 'trasporto', 'contributo energetico', 'riempimento', 'commissioni', 'cappucci', 'europalette', 'big bag']
-    
+
+    # definisco gli articoli da escludere
+    articoli_esclusi = r"(.*)(sacchi|trasporto|contributo energetico|riempimento|commissioni|cappucci|europalette|big bag)(.*)"
+
     documenti = TestataDocumento().select(complexFilter=(and_(TestataDocumento.operazione=='DDT vendita diretto',
             TestataDocumento.data_documento.between(data_da, data_a))),
         batchSize=None,
@@ -57,11 +57,10 @@ def do_genera_fatture_provvigioni(data_da, data_a, data_doc, progress=None):
                 pbar(progress, parziale=documenti.index(doc), totale=len(documenti), text="Elaborazione documenti...", noeta=False)
             totaleProvvDoc = Decimal(0)
             for riga in doc.righe:
-                if not riga.id_articolo:
+                if riga.id_articolo is None or leggiArticolo(riga.id_articolo)['denominazione'] == '':
                     continue
-                for e in articoli_esclusi_list:
-                    if e in leggiArticolo(riga.id_articolo)['denominazione'].lower():
-                        continue
+                if re.match(articoli_esclusi, leggiArticolo(riga.id_articolo)['denominazione'], flags=re.IGNORECASE):
+                    continue
                 if Decimal(riga.totaleRiga) == Decimal(0) or Decimal(riga.quantita) == Decimal(0):
                     continue
                 p = ProvvPgAzArt().select(id_persona_giuridica_to=doc.id_fornitore,
