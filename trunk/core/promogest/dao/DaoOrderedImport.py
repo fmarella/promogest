@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2013 by Promotux
+#    Copyright (C) 2005-2014 by Promotux
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -21,10 +21,13 @@
 
 #from sqlalchemy import *
 #from sqlalchemy.orm import *
-from promogest.Environment import delete_pickle
+from promogest.Environment import delete_pickle, engine
 from promogest.dao.DaoUtils import get_columns
 from sqlalchemy import *
 from sqlalchemy.orm import *
+from promogest.lib.alembic.migration import MigrationContext
+from promogest.lib.alembic.operations import Operations
+from promogest.lib.alembic import op
 
 def orderedImport():
     from promogest.dao.Azienda import t_azienda #v
@@ -35,15 +38,20 @@ def orderedImport():
     #print "COLONNNNE", colonne_utente,"mailing_list" not in colonne_utente
     if "mailing_list" not in colonne_utente:
         try:
-            col = Column('mailing_list', Boolean, default=False)
-            col.create(t_utente)
+            conn = engine.connect()
+            ctx = MigrationContext.configure(conn)
+            op = Operations(ctx)
+            op.add_column('utente', Column('mailing_list', Boolean, default=False))
         except:
             delete_pickle()
     if "privacy" not in colonne_utente:
         try:
-            col = Column('privacy', Boolean, default=False)
-            col.create(t_utente)
+            conn = engine.connect()
+            ctx = MigrationContext.configure(conn)
+            op = Operations(ctx)
+            op.add_column('utente', Column('privacy', Boolean, default=False))
         except:
+            print " O TU"
             delete_pickle()
     #from promogest.dao.Regioni import t_regione
     from promogest.modules.RuoliAzioni.dao.Action import t_action  #v

@@ -30,8 +30,7 @@ try:
     t_account_email = Table('account_email',
                             params['metadata'],
                             schema=params['schema'],
-                            autoload=True,
-                            useexisting=True)
+                            autoload=True)
 except:
     from data.accountEmail import t_account_email
 

@@ -391,6 +391,7 @@ def usePickleToMeta():
                 meta = pickle_load(f)
                 meta.bind = engine
             except:
+                print "DEVO CANCELLARE IL PICKLE PERCHé NON RIESCO A TROVARLO O LEGGERLO"
                 delete_pickle()
             print "USO META PICKLE FAST"
             #meta = MetaData(engine)
