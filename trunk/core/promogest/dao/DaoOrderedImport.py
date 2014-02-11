@@ -51,7 +51,6 @@ def orderedImport():
             op = Operations(ctx)
             op.add_column('utente', Column('privacy', Boolean, default=False))
         except:
-            print " O TU"
             delete_pickle()
     #from promogest.dao.Regioni import t_regione
     from promogest.modules.RuoliAzioni.dao.Action import t_action  #v

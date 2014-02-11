@@ -43,7 +43,6 @@ try:
     std_mapper = mapper(Colore, colore, properties={},
             order_by=colore.c.denominazione)
 except:
-    print " NON SCHERZIAMO"
     conf.PromoWear.primoavvio = "yes"
     conf.PromoWear.mod_enable="no"
     conf.save()
