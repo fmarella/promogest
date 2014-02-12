@@ -28,7 +28,7 @@ from promogest.ui.gtk_compat import *
 from promogest.lib.utils import *
 from promogest.ui.GladeWidget import GladeWidget
 from promogest import Environment
-from promogest.dao.TestataDocumentoUtils import do_genera_fatture_provvigioni
+from promogest.dao.TestataDocumentoUtils import do_genera_fatture_provvigioni, TIPO_DATA_DOC, TIPO_DATA_SPED
 
 
 class FatturazioneProvvigioni(GladeWidget):
@@ -70,6 +70,11 @@ class FatturazioneProvvigioni(GladeWidget):
                 copy2(os.path.join(Environment.tempDir, "riepilogo_provv.csv"), filename)
 
     def on_confirm_button_clicked(self, button=None):
+        tipo_data = None
+        if self.data_spedizione_radiobutton.get_active():
+            tipo_data = TIPO_DATA_SPED
+        if self.data_documento_radiobutton.get_active():
+            tipo_data = TIPO_DATA_DOC
         if self.da_data_entry.get_text() == '':
             obligatoryField(self.getTopLevel(), self.da_data_entry)
         if self.a_data_entry.get_text() == '':
@@ -81,4 +86,4 @@ class FatturazioneProvvigioni(GladeWidget):
         a_data = self.a_data_entry.get_text()
         data_documento = self.data_documento_entry.get_text()
 
-        do_genera_fatture_provvigioni(stringToDate(da_data), stringToDate(a_data), stringToDate(data_documento), self.progress)
+        do_genera_fatture_provvigioni(tipo_data, stringToDate(da_data), stringToDate(a_data), stringToDate(data_documento), self.progress)

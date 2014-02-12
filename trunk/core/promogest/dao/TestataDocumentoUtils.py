@@ -34,17 +34,28 @@ from promogest.Environment import tempDir
 from promogest.lib.utils import leggiFornitore, leggiCliente
 import re
 
-def do_genera_fatture_provvigioni(data_da, data_a, data_doc, progress=None):
+TIPO_DATA_DOC = 0
+TIPO_DATA_SPED = 1
+
+def do_genera_fatture_provvigioni(tipo_data, data_da, data_a, data_doc, progress=None):
     '''
     '''
 
     # definisco gli articoli da escludere
     articoli_esclusi = r"(.*)(sacchi|trasporto|contributo energetico|riempimento|commissioni|cappucci|europalette|big bag)(.*)"
 
-    documenti = TestataDocumento().select(complexFilter=(and_(TestataDocumento.operazione=='DDT vendita diretto',
-            TestataDocumento.data_documento.between(data_da, data_a))),
-        batchSize=None,
-        orderBy=TestataDocumento.id_fornitore)
+    documenti = []
+
+    if tipo_data == TIPO_DATA_DOC:
+        documenti = TestataDocumento().select(complexFilter=(and_(TestataDocumento.operazione=='DDT vendita diretto',
+                TestataDocumento.data_documento.between(data_da, data_a))),
+            batchSize=None,
+            orderBy=TestataDocumento.id_fornitore)
+    if tipo_data == TIPO_DATA_SPED:
+        documenti = TestataDocumento().select(complexFilter=(and_(TestataDocumento.operazione=='DDT vendita diretto',
+                TestataDocumento.fine_trasporto.between(data_da, data_a))),
+            batchSize=None,
+            orderBy=TestataDocumento.id_fornitore)
 
     if not documenti:
         messageInfo(msg="Non sono stati trovati documenti utili a completare l'operazione.")
