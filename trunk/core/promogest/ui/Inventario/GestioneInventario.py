@@ -1003,7 +1003,7 @@ class GestioneInventario(RicercaComplessaArticoli):
                         #print "ULTIMOOOOOOOOOO", ultimo
                         s.valore_unitario = prezzo_dettaglio
                         Environment.params['session'].add(s)
-
+            Environment.params['session'].commit()
             self.refresh()
             self.fineElaborazione()
 
