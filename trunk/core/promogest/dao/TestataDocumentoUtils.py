@@ -62,7 +62,7 @@ def do_genera_fatture_provvigioni(tipo_data, data_da, data_a, data_doc, progress
     else:
         forn_totaledoc_dict = {}
         forn_provv_file = file(os.path.join(tempDir, 'riepilogo_provv.csv'), 'w')
-        forn_provv_file.write('fornitore;cliente;articolo;totaleRiga;qta;tipo_provv;valore_provv;provv_articolo\n')
+        forn_provv_file.write('docNum;fornitore;cliente;articolo;totaleRiga;qta;tipo_provv;valore_provv;provv_articolo\n')
         for doc in documenti:
             if progress:
                 pbar(progress, parziale=documenti.index(doc), totale=len(documenti), text="Elaborazione documenti...", noeta=False)
@@ -82,18 +82,19 @@ def do_genera_fatture_provvigioni(tipo_data, data_da, data_a, data_doc, progress
                         provv_row = riga.totaleRiga * p[0].provv.valore_provv / 100
                     else:
                         provv_row = riga.quantita * p[0].provv.valore_provv
-                        forn_provv_file.write("%s;%s;%s;%s;%s;%s;%s;%s\n" % (leggiFornitore(doc.id_fornitore)['ragioneSociale'],
-                            leggiCliente(doc.id_cliente)['ragioneSociale'],
-                            leggiArticolo(riga.id_articolo)['denominazione'],
-                            mN(riga.totaleRiga, 2),
-                            riga.quantita,
-                            p[0].provv.tipo_provv,
-                            mN(p[0].provv.valore_provv, 2),
-                            mN(provv_row, 2)))
-                        if doc.id_fornitore not in forn_totaledoc_dict:
-                            forn_totaledoc_dict[doc.id_fornitore] = provv_row
-                        else:
-                            forn_totaledoc_dict[doc.id_fornitore] += provv_row
+                    forn_provv_file.write("%s;%s;%s;%s;%s;%s;%s;%s;%s\n" % (doc.numero,
+                        leggiFornitore(doc.id_fornitore)['ragioneSociale'],
+                        leggiCliente(doc.id_cliente)['ragioneSociale'],
+                        leggiArticolo(riga.id_articolo)['denominazione'],
+                        mN(riga.totaleRiga, 2),
+                        riga.quantita,
+                        p[0].provv.tipo_provv,
+                        mN(p[0].provv.valore_provv, 2),
+                        mN(provv_row, 2)))
+                    if doc.id_fornitore not in forn_totaledoc_dict:
+                        forn_totaledoc_dict[doc.id_fornitore] = provv_row
+                    else:
+                        forn_totaledoc_dict[doc.id_fornitore] += provv_row
                 else:
                     q = ProvvPgAzArt().select(id_persona_giuridica_to=doc.id_fornitore,
                                               id_persona_giuridica_from=doc.id_cliente,
@@ -103,7 +104,8 @@ def do_genera_fatture_provvigioni(tipo_data, data_da, data_a, data_doc, progress
                             provv_row = riga.totaleRiga * q[0].provv.valore_provv / 100
                         else:
                             provv_row = riga.quantita * q[0].provv.valore_provv
-                        forn_provv_file.write("%s;%s;%s;%s;%s;%s;%s;%s\n" % (leggiFornitore(doc.id_fornitore)['ragioneSociale'],
+                        forn_provv_file.write("%s;%s;%s;%s;%s;%s;%s;%s;%s\n" % (doc.numero,
+                            leggiFornitore(doc.id_fornitore)['ragioneSociale'],
                             leggiCliente(doc.id_cliente)['ragioneSociale'],
                             leggiArticolo(riga.id_articolo)['denominazione'],
                             mN(riga.totaleRiga, 2),
@@ -129,10 +131,14 @@ FUORI CAMPO IVA ARTICOLO 7 ter D.P.R. 633/72""" % data_da.strftime('%B %Y')
 
         i = 0
         flag = False
+        buff = ""
         for k in forn_totaledoc_dict:
 
             if pbar:
                 pbar(progress, parziale=i, totale=len(forn_totaledoc_dict), text="Creazione fatture...", noeta=False)
+
+            #import pdb
+            #pdb.set_trace()
 
             forn = Fornitore().getRecord(id=k)
             if forn.ragione_sociale:
@@ -142,6 +148,7 @@ FUORI CAMPO IVA ARTICOLO 7 ter D.P.R. 633/72""" % data_da.strftime('%B %Y')
                 cli = Cliente().select(cognomeNome=forn.cognome + ' ' + forn.nome, batchSize=None)
 
             if not cli:
+                buff += u"%s \n" % forn.ragione_sociale
                 flag = True
                 continue
 
@@ -166,5 +173,7 @@ FUORI CAMPO IVA ARTICOLO 7 ter D.P.R. 633/72""" % data_da.strftime('%B %Y')
         if progress:
             pbar(progress, stop=True)
         if flag:
-            messageWarning(msg="Non è stato possibile creare alcune fatture!")
+            msg=u"Non è stato possibile creare alcune fatture!"
+            print buff
+            messageWarning(msg=msg)
         messageInfo(msg="Operazione completata, sono state create %d nuove fatture." % i)
