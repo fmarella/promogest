@@ -131,14 +131,10 @@ FUORI CAMPO IVA ARTICOLO 7 ter D.P.R. 633/72""" % data_da.strftime('%B %Y')
 
         i = 0
         flag = False
-        buff = ""
         for k in forn_totaledoc_dict:
 
             if pbar:
                 pbar(progress, parziale=i, totale=len(forn_totaledoc_dict), text="Creazione fatture...", noeta=False)
-
-            #import pdb
-            #pdb.set_trace()
 
             forn = Fornitore().getRecord(id=k)
             if forn.ragione_sociale:
@@ -148,7 +144,6 @@ FUORI CAMPO IVA ARTICOLO 7 ter D.P.R. 633/72""" % data_da.strftime('%B %Y')
                 cli = Cliente().select(cognomeNome=forn.cognome + ' ' + forn.nome, batchSize=None)
 
             if not cli:
-                buff += u"%s \n" % forn.ragione_sociale
                 flag = True
                 continue
 
@@ -173,7 +168,5 @@ FUORI CAMPO IVA ARTICOLO 7 ter D.P.R. 633/72""" % data_da.strftime('%B %Y')
         if progress:
             pbar(progress, stop=True)
         if flag:
-            msg=u"Non è stato possibile creare alcune fatture!"
-            print buff
-            messageWarning(msg=msg)
+            messageWarning(msg="Non è stato possibile creare alcune fatture!")
         messageInfo(msg="Operazione completata, sono state create %d nuove fatture." % i)
