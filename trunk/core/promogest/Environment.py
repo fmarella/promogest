@@ -544,7 +544,7 @@ solo_acquisto_con_DDT = ["Fattura acquisto",
         ]
 
 solo_vendita_completo = ["Fattura accompagnatoria",
-        "Fattura differita vendita",
+        "Fattura differita vendita", "Fattura servizi",
         "Fattura vendita",
         "Vendita dettaglio","Scarico venduto da cassa",
         "DDT vendita"
