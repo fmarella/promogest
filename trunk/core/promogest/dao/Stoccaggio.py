@@ -292,27 +292,27 @@ std_mapper = mapper(Stoccaggio, t_stoccaggio, properties={
                 backref="stoccaggio"),
         }, order_by=t_stoccaggio.c.id)
 
-if tipodb=="sqlite":
-    a = session.query(Articolo.id).all()
-    b = session.query(Stoccaggio.id_articolo).all()
-    fixit =  list(set(b)-set(a))
-    print "fixt-stoccaggio", fixit
-    for f in fixit:
-        if f[0] != "None" and f[0] != None:
-            aa = Stoccaggio().select(idArticolo=f[0], batchSize=None)
-            for a in aa:
-                session.delete(a)
-            session.commit()
-if tipodb=="sqlite":
-    mag_id = session.query(Magazzino.id).all()
-    art_id = session.query(Articolo.id).all()
-    for m in mag_id:
-        for a in art_id:
-            #print " CHE DATI SIETE", m, a
-            if m[0] != "None" and m[0] != None and a[0] != "None" and a[0] != None:
-                if Riga().select(idMagazzino=m[0], id_articolo=a[0]) and not Stoccaggio().select(idMagazzino=m[0], idArticolo=a[0]):
-                    s = Stoccaggio()
-                    s.id_articolo = a[0]
-                    s.id_magazzino = m[0]
-                    session.add(s)
-    session.commit()
+#if tipodb=="sqlite":
+    #a = session.query(Articolo.id).all()
+    #b = session.query(Stoccaggio.id_articolo).all()
+    #fixit =  list(set(b)-set(a))
+    #print "fixt-stoccaggio", fixit
+    #for f in fixit:
+        #if f[0] != "None" and f[0] != None:
+            #aa = Stoccaggio().select(idArticolo=f[0], batchSize=None)
+            #for a in aa:
+                #session.delete(a)
+            #session.commit()
+#if tipodb=="sqlite":
+    #mag_id = session.query(Magazzino.id).all()
+    #art_id = session.query(Articolo.id).all()
+    #for m in mag_id:
+        #for a in art_id:
+            ##print " CHE DATI SIETE", m, a
+            #if m[0] != "None" and m[0] != None and a[0] != "None" and a[0] != None:
+                #if Riga().select(idMagazzino=m[0], id_articolo=a[0]) and not Stoccaggio().select(idMagazzino=m[0], idArticolo=a[0]):
+                    #s = Stoccaggio()
+                    #s.id_articolo = a[0]
+                    #s.id_magazzino = m[0]
+                    #session.add(s)
+    #session.commit()
