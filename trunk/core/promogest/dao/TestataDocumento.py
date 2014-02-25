@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2013 by Promotux
+#    Copyright (C) 2005-2014 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 # Author: Francesco Meloni <francesco@promotux.it>
@@ -306,8 +306,8 @@ class TestataDocumento(Dao):
                         lf = leggiFornitura(riga.id_articolo)
                         totaleRicaricatoLordo += (trn * (lf["prezzoNetto"]*Decimal(riga.quantita or 0)) / trl)
 
-            percentualeIvaRiga = Decimal(riga.percentuale_iva) #campo non piÃ¹ da usare
-            idAliquotaIva = riga.id_iva  # campo da usare perchÃ¨ l'id Ã¨ piÃ¹ preciso
+            percentualeIvaRiga = Decimal(riga.percentuale_iva) #campo non più da usare
+            idAliquotaIva = riga.id_iva  # campo da usare perchè l'id è più preciso
             daoiva = None
             aliquotaIvaRiga = None
             if idAliquotaIva:
@@ -413,13 +413,17 @@ class TestataDocumento(Dao):
         try:
             if self.data_documento < datetime.datetime(2011,9,16):
                 self._totaleRicaricatoImponibile = Decimal(self._totaleRicaricatoLordo)/(1+Decimal(20)/100)
-            else:
+            elif self.data_documento < datetime.datetime(2013,10,1):
                 self._totaleRicaricatoImponibile = Decimal(self._totaleRicaricatoLordo)/(1+Decimal(21)/100)
+            else:
+                self._totaleRicaricatoImponibile = Decimal(self._totaleRicaricatoLordo)/(1+Decimal(22)/100)
         except:
             if self.data_documento < datetime.date(2011,9,16):
                 self._totaleRicaricatoImponibile = Decimal(self._totaleRicaricatoLordo)/(1+Decimal(20)/100)
-            else:
+            elif self.data_documento < datetime.date(2013,10,1):
                 self._totaleRicaricatoImponibile = Decimal(self._totaleRicaricatoLordo)/(1+Decimal(21)/100)
+            else:
+                self._totaleRicaricatoImponibile = Decimal(self._totaleRicaricatoLordo)/(1+Decimal(22)/100)
 
         self._totaleRicaricatoIva = mN(self._totaleRicaricatoLordo,2) - mN(self._totaleRicaricatoImponibile,2)
         self._totaleOggetti = self._totaleScontato - self._totaleRicaricatoLordo
