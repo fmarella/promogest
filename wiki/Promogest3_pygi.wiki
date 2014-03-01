@@ -1,14 +1,10 @@
-#summary Migrazione di Promogest verso Python 3 e GTK+ 3.
+#summary Migrazione di Promogest a Python 3.
 
 = Problemi/Soluzioni =
- # P: utilizzo di librerie di terze parti inserite in promogest (es. migrate, feedparser)
+ # P: utilizzo di librerie di terze parti inserite in promogest (es. feedparser)
      S: rimuovere queste librerie dai sorgenti e installare tramite package manager / easy_install
  # P:  modulo *six* come nuova dipendenza per compatibilità tra Python 2/3
      S: installare il modulo tramite package manager / easy_install
- # P: modulo *migrate* per python3 non è ancora disponibile
-     S: DIY or [https://elveos.org/en/features/1150/description?title=port-sqlalchemy-migrate-to-python3 donate]
- # P: file pickle generati da python2 e  python3 non sono compatibili tra loro
-     S: utilizzare un file pickle specifico a seconda della versione di python
  # P: ooolib-python è deprecato
      S: utilizzare [http://code.google.com/p/odslib-python/ odslib-python] (supporta python 2/3)
  # P: print diventa una funzione in python3
@@ -18,18 +14,17 @@
 
 = Dettagli =
 
-== Stato del porting dei moduli Python ==
+== Stato delle dipendenze  ==
 
-I moduli già compatibili con python3:
- * python3-sqlalchemy
- * python3-jinja2
- * python3-gobject (Gtk, Gdk, Webkit, Poppler ... via gi)
+compatibili con py3:
+ * sqlalchemy
+ * jinja2
+ * Gtk, Gdk, Webkit, Poppler, ect via gi
+ * reportlab
 
-I moduli che non supportano python3 o presentano problemi:
+non compatibili:
  * [http://code.google.com/p/html5lib/ html5lib], (presenta alcuni bug, esistono patch per renderlo compatibile)
- * [http://www.reportlab.com/ reportlab] (sconosciuto)
- * [http://www.xhtml2pdf.com/ pisa] (~~una versione specifica verrà rilasciata appena python 3 sarà stabile~~ Ora conosciuto come xhtml2pdf; compatibile con python3?)
- * migrate
+ * [https://github.com/chrisglass/xhtml2pdf pisa,xhtml2pdf] (~~una versione specifica verrà rilasciata appena python 3 sarà stabile
 
 == Strumenti utili ==
 
@@ -40,26 +35,5 @@ Da terminale eseguire il comando:
 $ cd promogest/core
 $ 2to3 -n -w .
 }}}
-
-*Glade* alla versione 3.8 va bene per portare i file a 2.24, fare una prima scrematura delle comboboxEntry che vanno sostituite con combobox has_entry = True.
-Glade3.10 porta invece l'intero file glade a gtk3. La nuova funzione di preview è molto utile e permette di vedere anche i widget minori con minore approssimazione.
-
-Alcuni problemi si stanno verificando nel porting delle treeview in fase di recupero dati. Pygi obbliga al passaggio di argomenti normalmente di default. 
-
-Nota. Ctrl+c non funziona perchè ancora non implementato ma si può usare in alternativa ctrl+4 ."It is not trivial" come mi hanno detto su #python
-
-= Articoli interessanti =
-
-[http://lucumr.pocoo.org/2011/1/22/forwards-compatible-python/ Writing Forwards Compatible Python Code]
-
-= Screenshots =
-
-http://dl.dropbox.com/u/8630608/PromoGest3/Accesso_PromoGest3_001.png
-
-http://dl.dropbox.com/u/8630608/PromoGest3/PromoGest3_main_002.png
-
-http://dl.dropbox.com/u/8630608/PromoGest3/Dati%20articolo_Pg3_003.png
-
-http://dl.dropbox.com/u/8630608/PromoGest3/Finestra%20di%20configurazione%20PromoGest3_004.png
 
 [http://www.promogest.me Promogest]
