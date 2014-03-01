@@ -1,8 +1,17 @@
-#summary Attività: spostare la creazione widget in Glade.
+#summary Attività: migrazione a PyGI
 
 = Introduction =
 
 L'obiettivo di questa attività è quella di spostare la creazione di vari widget (es. CellRendererText, ListStore) utilizzati per le interfacce di PromoGest, nei rispettivi file glade.
+
+= Dettagli =
+
+*Glade* alla versione 3.8 va bene per portare i file a 2.24, fare una prima scrematura delle comboboxEntry che vanno sostituite con combobox has_entry = True.
+Glade3.10 porta invece l'intero file glade a gtk3. La nuova funzione di preview è molto utile e permette di vedere anche i widget minori con minore approssimazione.
+
+Alcuni problemi si stanno verificando nel porting delle treeview in fase di recupero dati. Pygi obbliga al passaggio di argomenti normalmente di default. 
+
+Nota. Ctrl+c non funziona perchè ancora non implementato ma si può usare in alternativa ctrl+4 ."It is not trivial" come mi hanno detto su #python
 
 == Stato ==
 
@@ -52,3 +61,13 @@ _Attenzione: a causa dei lavori in corso sull'attività, le informazioni contenu
 || Pagamenti ||  ||
 || PromoWear ||  ||
 || SuMisura ||  ||
+
+= Screenshots =
+
+http://dl.dropbox.com/u/8630608/PromoGest3/Accesso_PromoGest3_001.png
+
+http://dl.dropbox.com/u/8630608/PromoGest3/PromoGest3_main_002.png
+
+http://dl.dropbox.com/u/8630608/PromoGest3/Dati%20articolo_Pg3_003.png
+
+http://dl.dropbox.com/u/8630608/PromoGest3/Finestra%20di%20configurazione%20PromoGest3_004.png
