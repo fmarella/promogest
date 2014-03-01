@@ -11,8 +11,6 @@ Glade3.10 porta invece l'intero file glade a gtk3. La nuova funzione di preview 
 
 Alcuni problemi si stanno verificando nel porting delle treeview in fase di recupero dati. Pygi obbliga al passaggio di argomenti normalmente di default. 
 
-Nota. Ctrl+c non funziona perchè ancora non implementato ma si può usare in alternativa ctrl+4 ."It is not trivial" come mi hanno detto su #python
-
 == Stato ==
 
 _Attenzione: a causa dei lavori in corso sull'attività, le informazioni contenute potrebbero essere obsolete._
