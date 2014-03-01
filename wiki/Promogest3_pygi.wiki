@@ -36,6 +36,11 @@ $ cd promogest/core
 $ 2to3 -n -w .
 }}}
 
+= Altre info =
+
+Nota. Ctrl+c non funziona perchè ancora non implementato ma si può usare in alternativa ctrl+4 ."It is not trivial" come mi hanno detto su #python
+
 = Links = 
 [http://lucumr.pocoo.org/2011/1/22/forwards-compatible-python/ Writing Forwards Compatible Python Code]
+
 [http://www.promogest.me Promogest]
