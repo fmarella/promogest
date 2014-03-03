@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2013 by Promotux
+#    Copyright (C) 2005-2014 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -26,5 +26,7 @@ from promogest.Environment import *
 t_news_category = Table('news_category', params["metadata"],
         Column('id', Integer, primary_key=True),
         Column('denominazione', String(100), unique=True),
-        schema=params['schema'])
+        schema=params['schema'],
+        extend_existing=True,)
+        
 t_news_category.create(checkfirst=True)

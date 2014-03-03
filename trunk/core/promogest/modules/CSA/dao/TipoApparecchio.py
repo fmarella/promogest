@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2013 by Promotux
+#    Copyright (C) 2005-2014 by Promotux
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -33,7 +33,8 @@ except:
     t_tipo_apparecchio  = Table('tipo_apparecchio', params["metadata"],
             Column('id',Integer,primary_key=True),
             Column('denominazione',String(100)),
-            schema = params['schema'])
+            schema = params['schema'],
+            extend_existing=True,)
 
     t_tipo_apparecchio.create(checkfirst=True)
 

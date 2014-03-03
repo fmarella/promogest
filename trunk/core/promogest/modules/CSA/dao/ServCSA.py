@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2013 by Promotux
+#    Copyright (C) 2005-2014 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni <francesco@promotux.it>
@@ -63,7 +63,7 @@ except:
         Column('manutenzione', String(100), nullable=True),
         Column('cadenza', String(1000), nullable=True),
         schema=params['schema'],
-        useexisting=True,
+        extend_existing=True,
         )
 
     t_serv_csa.create(checkfirst=True)
@@ -92,7 +92,7 @@ class ServCSA(Dao):
         if self.luogoinsta:
             return self.luogoinsta.denominazione
         else:
-            return _('luogo installazione indeterminato')
+            return ""
 
     @property
     def tipo_combustibile(self):
@@ -100,7 +100,28 @@ class ServCSA(Dao):
         if self.tipocombu:
             return self.tipocombu.denominazione
         else:
-            return _('tipo combustibile indeterminato')
+            return ""
+
+    @property
+    def cliente(self):
+        if self.CLI:
+            return self.CLI.ragione_sociale or self.CLI.cognome+" "+self.CLI.nome
+        else:
+            return ""
+    @property
+    def installatore(self):
+        if self.PG:
+            return self.PG.ragione_sociale or self.PG.cognome+" "+self.PG.nome
+        else:
+            return ""
+
+
+    @property
+    def articolo(self):
+        if self.arti:
+            return self.arti.denominazione
+        else:
+            return ""
 
 std_mapper = mapper(ServCSA, t_serv_csa,   properties={
 

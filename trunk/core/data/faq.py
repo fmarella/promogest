@@ -35,6 +35,7 @@ t_faq= Table('faq', params['metadata'],
         Column('clicks', Integer),
         Column("permalink", String(500), nullable=True),
         Column('active', Boolean, default=0),
-        schema=params['schema']
+        schema=params['schema'],
+        extend_existing=True,
         )
 t_faq.create(checkfirst=True)

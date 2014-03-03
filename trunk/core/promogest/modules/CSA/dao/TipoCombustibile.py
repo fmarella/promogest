@@ -33,7 +33,8 @@ except:
     t_tipo_combustibile  = Table('tipo_combustibile', params["metadata"],
             Column('id',Integer,primary_key=True),
             Column('denominazione',String(100)),
-            schema = params['schema'])
+            schema = params['schema'],
+            extend_existing=True,)
 
     t_tipo_combustibile.create(checkfirst=True)
 

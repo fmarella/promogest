@@ -6,7 +6,7 @@
 
 {% block body %}
     {% if dao %}
-        <div id="img" ><img src= "{{dao.url_immagine}}"></div>
+
     <div id="testo">{{ui|replace("_"," ")|capitalize()}}</div>
   </div>  <div id="rigaheader"></div>
 
@@ -147,17 +147,17 @@
             </tr>
                 <tr><td colspan="4" class="table-header">PRESENTE NEI LISTINI:</td></tr>
                 {% for li in utils.getListiniArticolo(dao.id) %}
-		{% set tmp = utils.leggiListino(li.id_listino, li.id_articolo) %}
-		
+        {% set tmp = utils.leggiListino(li.id_listino, li.id_articolo) %}
+
             <tr>
-	      {% if tmp["denominazione"] %}
+          {% if tmp["denominazione"] %}
                 <td colspan="4" class="odd-detail">
-		  <b>{{tmp["denominazione"]}}:</b>&nbsp;&nbsp;
-		  <b>PR. DETTAGLIO:  </b>{{utils.mNLC(tmp["prezzoDettaglio"],2)}}&nbsp;
+          <b>{{tmp["denominazione"]}}:</b>&nbsp;&nbsp;
+          <b>PR. DETTAGLIO:  </b>{{utils.mNLC(tmp["prezzoDettaglio"],2)}}&nbsp;
                   <b>PR. INGROSSO:  </b>{{utils.mNLC(tmp["prezzoIngrosso"],2)}}&nbsp;
                   <lr>
-		</td>
-		{% endif %}
+        </td>
+        {% endif %}
                 {% endfor %}
             </tr>
         </table>

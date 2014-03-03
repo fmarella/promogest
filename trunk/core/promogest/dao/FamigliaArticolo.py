@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2013 by Promotux
+#    Copyright (C) 2005-2014 by Promotux
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -43,6 +43,8 @@ class FamigliaArticolo(Dao):
             dic= {k : t_famiglia_articolo.c.id_padre == v}
         elif k == "codice":
             dic= {k : t_famiglia_articolo.c.codice == v}
+        elif k == "visible":
+            dic= {k : t_famiglia_articolo.c.visible == v}
         elif k == "denominazioneBreve":
             dic= {k : t_famiglia_articolo.c.denominazione_breve.ilike("%"+v+"%")}
         return  dic[k]

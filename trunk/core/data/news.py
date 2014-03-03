@@ -39,6 +39,7 @@ t_news= Table('news', params['metadata'],
         Column('id_categoria', Integer,ForeignKey(fk_prefix+'news_category.id')),
         Column('id_user', Integer,ForeignKey(fk_prefix_main+'utente.id')),
         Column('id_language', Integer,ForeignKey(fk_prefix_main+'language.id')),
-        schema=params['schema']
+        schema=params['schema'],
+        extend_existing=True,
         )
 t_news.create(checkfirst=True)

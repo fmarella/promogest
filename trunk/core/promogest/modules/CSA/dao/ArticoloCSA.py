@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2013 by Promotux
+#    Copyright (C) 2005-2014 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni <francesco@promotux.it>
@@ -49,8 +49,8 @@ except:
                ForeignKey(fk_prefix + 'tipo_apparecchio.id',
                           onupdate='CASCADE', ondelete='RESTRICT'),
                           nullable=True),
-
         schema=params['schema'],
+        extend_existing=True,
         useexisting=True,
         )
     t_articolo_csa.create(checkfirst=True)

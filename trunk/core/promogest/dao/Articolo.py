@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2013 by Promotux
+#    Copyright (C) 2005-2014 by Promotux
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -807,7 +807,6 @@ if (hasattr(conf, "ADR") and getattr(conf.ADR, 'mod_enable') == "yes") or\
                     relation(ArticoloADR,
                     primaryjoin=(t_articolo.c.id == ArticoloADR.id_articolo),
                     uselist=False))
-
 if (hasattr(conf, "CSA") and getattr(conf.CSA, 'mod_enable') == "yes") or\
                                                 ("CSA" in modulesList):
     from promogest.modules.CSA.dao.ArticoloCSA import ArticoloCSA
