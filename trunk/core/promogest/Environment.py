@@ -48,16 +48,20 @@ if not web:
         GTK_DIALOG_MODAL = gtk.DialogFlags.MODAL
         GTK_DIALOG_DESTROY_WITH_PARENT = gtk.DialogFlags.DESTROY_WITH_PARENT
         GTK_BUTTON_OK = gtk.ButtonsType.OK
+        GTK_RESPONSE_CANCEL = gtk.ResponseType.CANCEL
         GTK_DIALOG_MESSAGE_INFO = gtk.MessageType.INFO
+        GTK_DIALOG_MESSAGE_ERROR = gtk.MessageType.ERROR
         GTK_RESPONSE_OK = gtk.ResponseType.OK
         settings = gtk.Settings.get_default()
         gtk.Settings.set_long_property(settings, "gtk-button-images", 1, "main")
     else:
         import gtk
+        GTK_BUTTON_CANCEL = gtk.BUTTONS_CANCEL
         GTK_DIALOG_MODAL = gtk.DIALOG_MODAL
         GTK_DIALOG_DESTROY_WITH_PARENT = gtk.DIALOG_DESTROY_WITH_PARENT
         GTK_BUTTON_OK = gtk.BUTTONS_OK
         GTK_DIALOG_MESSAGE_INFO = gtk.MESSAGE_INFO
+        GTK_DIALOG_MESSAGE_ERROR = gtk.MESSAGE_ERROR
         GTK_RESPONSE_OK = gtk.RESPONSE_OK
         settings = gtk.settings_get_default()
         gtk.Settings.set_long_property(settings, "gtk-button-images", 1, "main")
@@ -75,8 +79,8 @@ import sqlalchemy
 if "0.7.4" > sqlalchemy.__version__:
     dialoggg = gtk.MessageDialog(None,
                         GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
-                        gtk.MESSAGE_ERROR,
-                        gtk.BUTTONS_CANCEL)
+                        GTK_DIALOG_MESSAGE_ERROR,
+                        GTK_RESPONSE_CANCEL)
     dialoggg.set_markup("E' necessaria una versione di sqlalchemy superiore alla 0.7.3, tu hai la "+str(sqlalchemy.__version__))
     response = dialoggg.run()
     dialoggg.destroy()
@@ -84,14 +88,19 @@ if "0.7.4" > sqlalchemy.__version__:
 
 try:
     import jinja2
-    import webkit
+    if preEnv.pg3_cla:
+            from gi.repository.WebKit import WebView
+            from gi.repository.WebKit import WebSettings
+    else:
+        from webkit import WebView
+        from webkit import WebSettings
     import reportlab
 except Exception as e:
     if not preEnv.web:
         dialoggg = gtk.MessageDialog(None,
                         GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
-                        gtk.MESSAGE_ERROR,
-                        gtk.BUTTONS_CANCEL)
+                        GTK_DIALOG_MESSAGE_ERROR,
+                        GTK_RESPONSE_CANCEL)
         msg = """ Manca la libreria python indicata qui in basso,
 Su linux installarla singolarmente usando il software manager o yum o apt-get
 Su windows provare a disinstallare e reinstallare il PromoGest
