@@ -1,0 +1,24 @@
+#summary Creazione Windows installer.
+
+Descrizione del processo di creazione di un installer per
+sistemi operativi Microsoft Windows.
+
+= Dettagli =
+
+== Strumenti necessari ==
+ * NSIS
+ * installer Python
+ * PyGI-AIO da http://opensourcepack.blogspot.it/p/pygobject-pygi-aio.html (thanks to TumaGonx Zakkum!)
+ * PySVN http://pysvn.tigris.org/servlets/ProjectDocumentList?folderID=1768
+ * PyWin32 http://sourceforge.net/projects/pywin32/files/pywin32/Build%20218/
+ * sorgenti installer PromoGest
+ * 7zip
+
+== Procedura ==
+
+ * Decomprimere il PyGI-AIO scaricato in precedenza
+ * Dalla cartella bindings scegliere l'archivio 7z corrispondente alla versione target di Python
+
+ * [...]
+
+ * Compilare il file promogest.nsis
