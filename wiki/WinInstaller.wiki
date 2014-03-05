@@ -3,6 +3,8 @@
 Descrizione del processo di creazione di un installer per
 sistemi operativi Microsoft Windows.
 
+Le versioni di Python supportate da PyGI-AIO al momento della scrittura di questa procedura sono: 2.7, 3.1, 3.2, 3.3, 3.4
+
 = Dettagli =
 
 == Strumenti necessari ==
@@ -17,8 +19,24 @@ sistemi operativi Microsoft Windows.
 == Procedura ==
 
  * Decomprimere il PyGI-AIO scaricato in precedenza
- * Dalla cartella bindings scegliere l'archivio 7z corrispondente alla versione target di Python
-
- * [...]
-
- * Compilare il file promogest.nsis
+ * Dalla cartella *binding* di PyGI-AIO, scegliere l'archivio 7z corrispondente alla versione target di Python. Questa cartella (d'ora in poi chiamiamola BASE) funziona da base su cui aggiungere le librerie Gtk+, Gdk, ect.
+ * Ora dobbiamo decomprimere le librerie nella cartella _BASE_.
+Attenzione: Se abbiamo scelto una versione di Python tra 2.7,3.1,3.2, le librerie a cui dobbiamo fare riferimento sono nella cartella *rtvc9*, altrimenti *rtvc10*.
+ * Decomprimere il contenuto gli archivi seguenti in _BASE_, unendo eventualmente le cartelle già presenti:
+   * Base
+   * Atk
+   * Aspell
+   * GTK
+   * GDK
+   * GDKPixbuf
+   * Orc
+   * Pango
+   * Poppler
+   * Soup
+   * WebkitGTK
+   * Gstreamer
+   * GXML
+Le dipendenze di ciascuna libreria sono nel file depends.txt della libreria se presente.
+ * Aprire il file promogest.nsi per modificare il percorso alla cartella BASE, il percorso agli installer per le librerie PySVN, PyWin32, all'installer di Python
+ * Copiare le librerie dll AccessControl e AccessControlW nella cartella Plugins di NSIS
+ * Compilare il file *promogest.nsi* per ottenere l'installer.
