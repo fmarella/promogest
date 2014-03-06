@@ -464,12 +464,12 @@ def hook(et, ev, eb):
         return
     if "[Errno 9] Bad file descriptor" in ev:
         return
-    if "Handler" in str(ev):
-        print "ATTENZIONE!!! MANCA L'HANDLER", ev
-        pg2log.info("\n  ".join(["Error occurred: traceback follows"] + list(traceback.format_exception(et, ev, eb))))
-        print "\n  ".join(list(traceback.format_exception(et, ev, eb)))
-        delete_pickle()
-        return
+    #if "Handler" in str(ev):
+        #print "ATTENZIONE!!! MANCA L'HANDLER", ev
+        #pg2log.info("\n  ".join(["Error occurred: traceback follows"] + list(traceback.format_exception(et, ev, eb))))
+        #print "\n  ".join(list(traceback.format_exception(et, ev, eb)))
+        #delete_pickle()
+        #return
     if "ProgrammingError" in str(ev):
         pg2log.info("\n  ".join(["Error occurred: traceback follows"] + list(traceback.format_exception(et, ev, eb))))
         print "\n  ".join(list(traceback.format_exception(et, ev, eb)))
