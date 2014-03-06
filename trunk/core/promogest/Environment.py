@@ -451,7 +451,7 @@ def __sendmail(msg="PG"):
     msg = msg +"\n"
     #for a in settaggi:
         #msg = msg+"\n"+str(a.__dic__)
-    if not web:
+    if not web and not preEnv.pg3_cla:
         return msgDef(text=msg, azienda=azienda)
 
 def hook(et, ev, eb):
@@ -499,8 +499,7 @@ def hook(et, ev, eb):
     except:
         pass
     print "\n  ".join(list(traceback.format_exception(et, ev, eb)))
-    if not preEnv.pg3_cla:
-        __sendmail()
+    __sendmail()
 #if not preEnv.web:
 sys.excepthook = hook
 
