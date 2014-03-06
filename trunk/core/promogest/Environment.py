@@ -499,7 +499,8 @@ def hook(et, ev, eb):
     except:
         pass
     print "\n  ".join(list(traceback.format_exception(et, ev, eb)))
-    __sendmail()
+    if not preEnv.pg3_cla:
+        __sendmail()
 #if not preEnv.web:
 sys.excepthook = hook
 
