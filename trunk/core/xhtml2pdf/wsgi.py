@@ -18,10 +18,12 @@ import xhtml2pdf.pisa as pisa
 import StringIO
 
 import logging
+
+
 log = logging.getLogger("xhtml2pdf.wsgi")
 
-class Filter(object):
 
+class Filter(object):
     def __init__(self, app):
         self.app = app
 
@@ -30,12 +32,14 @@ class Filter(object):
         path_info = environ.get('PATH_INFO', '')
         sent = []
         written_response = StringIO.StringIO()
+
         def replacement_start_response(status, headers, exc_info=None):
             if not self.should_filter(status, headers):
                 return start_response(status, headers, exc_info)
             else:
                 sent[:] = [status, headers, exc_info]
                 return written_response.write
+
         app_iter = self.app(environ, replacement_start_response)
         if not sent:
             return app_iter
@@ -60,7 +64,6 @@ class Filter(object):
 
 
 class HTMLFilter(Filter):
-
     def should_filter(self, status, headers):
         if not status.startswith('200'):
             return False
@@ -69,26 +72,16 @@ class HTMLFilter(Filter):
                 return value.startswith('text/html')
         return False
 
-class PisaMiddleware(HTMLFilter):
 
-    def filter(self,
-            script_name,
-            path_info,
-            environ,
-            status,
-            headers,
-            body):
+class PisaMiddleware(HTMLFilter):
+    def filter(self, script_name, path_info, environ, status, headers, body):
         topdf = environ.get("pisa.topdf", "")
         if topdf:
             dst = StringIO.StringIO()
-            result = pisa.CreatePDF(
-                body,
-                dst,
-                show_error_as_pdf=True,
-                )
+            pisa.CreatePDF(body, dst, show_error_as_pdf=True)
             headers = [
                 ("content-type", "application/pdf"),
                 ("content-disposition", "attachment; filename=" + topdf)
-                ]
+            ]
             body = dst.getvalue()
         return status, headers, body
