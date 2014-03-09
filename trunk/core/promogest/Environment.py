@@ -25,7 +25,20 @@
 from promogest import preEnv
 # leggiamo da preEnv che è anche un file di configurazioni pre-environment
 
+# XXX: Su piattaforma Windows, forziamo PyGI se disponibile
+try:
+    import gi
+    pygi_available = True
+except ImportError:
+    pygi_available = False
+
 pg3 = preEnv.pg3_cla
+# bypassiamo il paramentro iniziale o passato da linea di comando se siamo su win32
+import os
+if os.name == 'nt' and pygi_available:
+    pg3 = True
+    preEnv.pg3_cla = True
+
 aziendaforce = preEnv.aziendaforce
 tipodbforce = preEnv.tipodbforce
 hostdbforce = preEnv.hostdbforce
