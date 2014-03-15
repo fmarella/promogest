@@ -1391,13 +1391,13 @@ class TestataDocumento(Dao):
 
 
 if 'esclusione_spese' not in [c.name for c in t_testata_documento.columns]:
-    try:
-        conn = engine.connect()
-        ctx = MigrationContext.configure(conn)
-        op = Operations(ctx)
-        op.add_column('t_testata_documento', Column('esclusione_spese', Boolean, default=True))
-    except:
-        delete_pickle()
+    #try:
+    conn = engine.connect()
+    ctx = MigrationContext.configure(conn)
+    op = Operations(ctx)
+    op.add_column('t_testata_documento', Column('esclusione_spese', Boolean, default=True))
+    #except:
+    #    delete_pickle()
 
 
 std_mapper = mapper(TestataDocumento, t_testata_documento,
