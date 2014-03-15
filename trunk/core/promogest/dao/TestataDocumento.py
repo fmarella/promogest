@@ -58,7 +58,9 @@ from promogest.dao.RigaMovimentoFornitura import RigaMovimentoFornitura
 from promogest.modules.Pagamenti.dao.TestataDocumentoScadenza import TestataDocumentoScadenza
 from promogest.dao.InformazioniFatturazioneDocumento import InformazioniFatturazioneDocumento, t_informazioni_fatturazione_documento
 import promogest.lib.ibanlib
-
+from promogest.lib.alembic.migration import MigrationContext
+from promogest.lib.alembic.operations import Operations
+from promogest.lib.alembic import op
 from promogest.dao.DaoUtils import numeroRegistroGet
 from promogest.dao.CachedDaosDict import CachedDaosDict
 from decimal import *
@@ -1388,10 +1390,15 @@ class TestataDocumento(Dao):
         return  dic[k]
 
 
-#if 'esclusione_spese' not in [c.name for c in t_testata_documento.columns]:
-    #delete_pickle()
-    #col = Column('esclusione_spese', Boolean)
-    #col.create(t_testata_documento, populate_default=True)
+if 'esclusione_spese' not in [c.name for c in t_testata_documento.columns]:
+    try:
+        conn = engine.connect()
+        ctx = MigrationContext.configure(conn)
+        op = Operations(ctx)
+        op.add_column('t_testata_documento', Column('esclusione_spese', Boolean, default=True))
+    except:
+        delete_pickle()
+
 
 std_mapper = mapper(TestataDocumento, t_testata_documento,
     properties={
