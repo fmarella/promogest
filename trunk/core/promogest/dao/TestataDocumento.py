@@ -1395,7 +1395,7 @@ if 'esclusione_spese' not in [c.name for c in t_testata_documento.columns]:
         conn = engine.connect()
         ctx = MigrationContext.configure(conn)
         op = Operations(ctx)
-        op.add_column('testata_documento', Column('esclusione_spese', Boolean, default=True))
+        op.add_column('testata_documento', Column('esclusione_spese', Boolean, default=True),schema=params['schema'])
     except:
         delete_pickle()
 
