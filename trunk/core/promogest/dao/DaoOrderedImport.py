@@ -21,7 +21,7 @@
 
 #from sqlalchemy import *
 #from sqlalchemy.orm import *
-from promogest.Environment import delete_pickle, engine
+from promogest.Environment import delete_pickle, engine , params
 from promogest.dao.DaoUtils import get_columns
 from sqlalchemy import *
 from sqlalchemy.orm import *
@@ -41,7 +41,7 @@ def orderedImport():
             conn = engine.connect()
             ctx = MigrationContext.configure(conn)
             op = Operations(ctx)
-            op.add_column('utente', Column('mailing_list', Boolean, default=False))
+            op.add_column('utente', Column('mailing_list', Boolean, default=False), schema=params["mainSchema"])
         except:
             delete_pickle()
     if "privacy" not in colonne_utente:
@@ -49,7 +49,7 @@ def orderedImport():
             conn = engine.connect()
             ctx = MigrationContext.configure(conn)
             op = Operations(ctx)
-            op.add_column('utente', Column('privacy', Boolean, default=False))
+            op.add_column('utente', Column('privacy', Boolean, default=False),schema=params["mainSchema"])
         except:
             delete_pickle()
     #from promogest.dao.Regioni import t_regione

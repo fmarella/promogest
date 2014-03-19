@@ -44,8 +44,8 @@ if (3,) not in s:
     azioni.execute(id=3, denominazione_breve = "SALVA", denominazione = "Puo' effettuare degli inserimenti nell'applicazione")
 if (4,) not in s:
     azioni.execute(id=4, denominazione_breve = "MODIFICA", denominazione = "Puo' effettuare delle modifiche ai dati nel Database")
-#if (5,) not in s:
-    #azioni.execute(id=5, denominazione_breve = "INSERIMENTO", denominazione = "Puo' effettuare degli inserimenti nel database")
+if (5,) not in s:
+    azioni.execute(id=5, denominazione_breve = "INSERIMENTO", denominazione = "Puo' effettuare degli inserimenti nel database")
 if (6,) not in s:
     azioni.execute(id=6, denominazione_breve = "PARAMETRI", denominazione = "Gestione parametri ")
 if (7,) not in s:

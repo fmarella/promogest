@@ -77,8 +77,9 @@ else:
 
 #SERVER per eliminare una riga inutile ...ricordati di usare gli id
 aa = RoleAction().select(id_action=5, batchSize=None)
-for a in aa:
-    a.delete()
+if aa:
+    for a in aa:
+        a.delete()
 a = Action().getRecord(id=5)
 if a:
     if a.denominazione_breve =="INSERIMENTO":
