@@ -892,9 +892,10 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         self.delete_button.set_sensitive(False)
         self.on_empty_button_clicked(self.empty_button)
         self.righe_label.set_markup('<b> [ 0 ] Righe scontrino</b>')
-        self.codice_a_barre_entry.grab_focus()
+        #self.codice_a_barre_entry.grab_focus()
         self._state = 'search'
         self.id_cliente_customcombobox.set_active(0)
+        self.codice_a_barre_entry.grab_default(True)
         self.codice_a_barre_entry.grab_focus()
 
 #    def on_chiusura_fiscale_activate(self, widget):
