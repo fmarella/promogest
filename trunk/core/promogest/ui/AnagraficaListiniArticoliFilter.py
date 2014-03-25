@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2013 by Promotux
+#    Copyright (C) 2005-2014 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 # Author: Andrea Argiolas <andrea@promotux.it>
@@ -140,6 +140,8 @@ class AnagraficaListiniArticoliFilter(AnagraficaFilter):
                                         idListinoComplesso = self._anagrafica._idListino,filter=True)
 
         fillComboboxListini(self.id_listino_filter_combobox, True)
+        fillComboboxFamiglieArticoli(self.id_famiglia_articolo_filter_combobox, True)
+        fillComboboxCategorieArticoli(self.id_categoria_articolo_filter_combobox, True)
 
         if self._anagrafica._articoloFissato:
             self.id_articolo_filter_customcombobox.setId(self._anagrafica._idArticolo)
@@ -166,10 +168,14 @@ class AnagraficaListiniArticoliFilter(AnagraficaFilter):
         """
         # Annullamento filtro
         if not(self._anagrafica._articoloFissato):
-            self.id_articolo_filter_customcombobox.set_active(0)
+            #self.id_articolo_filter_customcombobox.set_active(0)
+            self.id_articolo_filter.set_text("")
+            self.id_famiglia_articolo_filter_combobox.set_active(0)
+            self.id_categoria_articolo_filter_combobox.set_active(0)
         if not(self._anagrafica._listinoFissato):
             self.id_listino_filter_combobox.set_active(0)
             self.id_sotto_listino_filter_combobox.set_active(0)
+
         self.refresh()
 
     def refresh(self):
@@ -184,8 +190,24 @@ class AnagraficaListiniArticoliFilter(AnagraficaFilter):
         multilistCount = 0
         multilist = []
 
-        idArticolo = self.id_articolo_filter_customcombobox.getId()
+        idArt = []
+        #idArticolo = self.id_articolo_filter_customcombobox.getId()
+        articolo = self.id_articolo_filter.get_text()
+        if articolo:
+            idArt = [a.id for a in Articolo().select(denominazione=articolo, batchSize=None)]
+
         idListino = findIdFromCombobox(self.id_listino_filter_combobox)
+        idFami = findIdFromCombobox(self.id_famiglia_articolo_filter_combobox)
+        idCate = findIdFromCombobox(self.id_categoria_articolo_filter_combobox)
+        idArt2 = []
+        if idFami:
+            idArt2 = [a.id for a in Articolo().select(idFamiglia= idFami, batchSize=None)]
+        idArt3 = []
+        if idCate:
+            idArt3 = [a.id for a in Articolo().select(idCategoria= idCate, batchSize=None)]
+        idArticolo = idArt+idArt2+idArt3
+        if idArticolo == []:
+            idArticolo=None
         idSottoListino = findIdFromCombobox(self.id_sotto_listino_filter_combobox)
         if not idSottoListino and self.isComplexPriceList:
             for sottolist in self.isComplexPriceList:

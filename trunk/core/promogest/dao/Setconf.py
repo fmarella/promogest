@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2013 by Promotux
+#    Copyright (C) 2005-2014 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -62,8 +62,8 @@ class SetConf(Dao):
 
 std_mapper = mapper(SetConf, t_setconf,
     properties={
-        'description': deferred(t_setconf.c.description),
-        'date': deferred(t_setconf.c.date),
+        #'description': deferred(t_setconf.c.description),
+        #'date': deferred(t_setconf.c.date),
     }, order_by=t_setconf.c.key)
 
 allkey = session.query(SetConf.key, SetConf.section).all()

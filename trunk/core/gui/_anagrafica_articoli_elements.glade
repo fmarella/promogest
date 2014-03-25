@@ -9,7 +9,6 @@
     <property name="n_columns">2</property>
     <child>
       <object class="GtkCheckButton" id="cancellato_filter_checkbutton">
-        <property name="use_action_appearance">False</property>
         <property name="visible">True</property>
         <property name="can_focus">True</property>
         <property name="receives_default">False</property>
@@ -631,7 +630,6 @@
                 <child>
                   <object class="GtkButton" id="ricerca_avanzata_articoli_button">
                     <property name="label" translatable="yes">Vai a Ricerca Avanzata Multipla</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
@@ -687,7 +685,6 @@
             <child>
               <object class="GtkButton" id="ricerca_semplice_articoli_button">
                 <property name="label" translatable="yes">Vai a Ricerca Semplice Singola</property>
-                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -811,7 +808,6 @@
                         <property name="spacing">3</property>
                         <child>
                           <object class="GtkButton" id="nuova_descrizione_articolo_filter_button">
-                            <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
@@ -832,7 +828,6 @@
                         </child>
                         <child>
                           <object class="GtkButton" id="cancella_descrizione_articolo_filter_button">
-                            <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="sensitive">False</property>
                             <property name="can_focus">True</property>
@@ -923,7 +918,6 @@
                         <property name="spacing">3</property>
                         <child>
                           <object class="GtkButton" id="nuovo_produttore_articolo_filter_button">
-                            <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
@@ -944,7 +938,6 @@
                         </child>
                         <child>
                           <object class="GtkButton" id="cancella_produttore_articolo_filter_button">
-                            <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="sensitive">False</property>
                             <property name="can_focus">True</property>
@@ -1035,7 +1028,6 @@
                         <property name="spacing">3</property>
                         <child>
                           <object class="GtkButton" id="nuovo_codice_articolo_filter_button">
-                            <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
@@ -1056,7 +1048,6 @@
                         </child>
                         <child>
                           <object class="GtkButton" id="cancella_codice_articolo_filter_button">
-                            <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="sensitive">False</property>
                             <property name="can_focus">True</property>
@@ -1147,7 +1138,6 @@
                         <property name="spacing">3</property>
                         <child>
                           <object class="GtkButton" id="nuovo_codice_a_barre_articolo_filter_button">
-                            <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
@@ -1168,7 +1158,6 @@
                         </child>
                         <child>
                           <object class="GtkButton" id="cancella_codice_a_barre_articolo_filter_button">
-                            <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="sensitive">False</property>
                             <property name="can_focus">True</property>
@@ -1259,7 +1248,6 @@
                         <property name="spacing">3</property>
                         <child>
                           <object class="GtkButton" id="nuovo_codice_articolo_fornitore_articolo_filter_button">
-                            <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
@@ -1280,7 +1268,6 @@
                         </child>
                         <child>
                           <object class="GtkButton" id="cancella_codice_articolo_fornitore_articolo_filter_button">
-                            <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="sensitive">False</property>
                             <property name="can_focus">True</property>
@@ -1514,7 +1501,6 @@
                     <child>
                       <object class="GtkCheckButton" id="includi_eliminati_articolo_filter_checkbutton">
                         <property name="label" translatable="yes">Includi eliminati</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
@@ -1531,7 +1517,6 @@
                     <child>
                       <object class="GtkCheckButton" id="solo_eliminati_articolo_filter_checkbutton">
                         <property name="label" translatable="yes">Solo eliminati</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>

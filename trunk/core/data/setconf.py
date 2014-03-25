@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2013 by Promotux
+#    Copyright (C) 2005-2014 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -36,5 +36,6 @@ t_setconf  = Table('setconf', params["metadata"],
         Column('active', Boolean, default=True),
         Column('visible', Boolean, default=True),
         UniqueConstraint('key', "section"),
+        extend_existing=True,
         schema = params['schema'])
 t_setconf.create(checkfirst=True)

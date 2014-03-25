@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <!-- interface-requires pythonplugin 0.0 -->
   <requires lib="gtk+" version="2.16"/>
+  <!-- interface-requires pythonplugin 0.0 -->
   <!-- interface-naming-policy toplevel-contextual -->
   <object class="GtkTable" id="anagrafica_listini_articoli_detail_table">
     <property name="visible">True</property>
@@ -271,7 +271,6 @@
             <child>
               <object class="GtkButton" id="calcola_costo_ultimo_da_ingrosso_button">
                 <property name="label" translatable="yes">Calcola c.u. da ingrosso</property>
-                <property name="use_action_appearance">False</property>
                 <property name="width_request">150</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -288,7 +287,6 @@
             <child>
               <object class="GtkButton" id="calcola_costo_ultimo_da_dettaglio_button">
                 <property name="label" translatable="yes">Calcola c.u. da dettaglio</property>
-                <property name="use_action_appearance">False</property>
                 <property name="width_request">150</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -552,7 +550,6 @@
             <child>
               <object class="GtkButton" id="calcola_ingrosso_da_ricarico_button">
                 <property name="label" translatable="yes">Calcola prezzo</property>
-                <property name="use_action_appearance">False</property>
                 <property name="width_request">150</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -569,7 +566,6 @@
             <child>
               <object class="GtkButton" id="calcola_ingrosso_da_margine_button">
                 <property name="label" translatable="yes">Calcola prezzo</property>
-                <property name="use_action_appearance">False</property>
                 <property name="width_request">150</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -588,7 +584,6 @@
             <child>
               <object class="GtkButton" id="calcola_percentuali_ingrosso_button">
                 <property name="label" translatable="yes">Calcola percentuali</property>
-                <property name="use_action_appearance">False</property>
                 <property name="width_request">150</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -851,7 +846,6 @@
             <child>
               <object class="GtkButton" id="calcola_dettaglio_da_ricarico_button">
                 <property name="label" translatable="yes">Calcola prezzo</property>
-                <property name="use_action_appearance">False</property>
                 <property name="width_request">150</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -868,7 +862,6 @@
             <child>
               <object class="GtkButton" id="calcola_dettaglio_da_margine_button">
                 <property name="label" translatable="yes">Calcola prezzo</property>
-                <property name="use_action_appearance">False</property>
                 <property name="width_request">150</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -887,7 +880,6 @@
             <child>
               <object class="GtkButton" id="calcola_percentuali_dettaglio_button">
                 <property name="label" translatable="yes">Calcola percentuali</property>
-                <property name="use_action_appearance">False</property>
                 <property name="width_request">150</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -1090,7 +1082,7 @@
     <property name="height_request">270</property>
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="n_rows">3</property>
+    <property name="n_rows">5</property>
     <property name="n_columns">2</property>
     <child>
       <object class="GtkComboBox" id="id_sotto_listino_filter_combobox">
@@ -1164,7 +1156,7 @@
       </packing>
     </child>
     <child>
-      <object class="ArticoloSearchWidget" id="id_articolo_filter_customcombobox">
+      <object class="ArticoloSearchWidget" id="id_articolo_filter">
         <property name="visible">True</property>
         <property name="app_paintable">True</property>
         <property name="can_focus">True</property>
@@ -1178,6 +1170,63 @@
         <property name="right_attach">2</property>
         <property name="top_attach">1</property>
         <property name="bottom_attach">2</property>
+        <property name="y_options"/>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkComboBox" id="id_famiglia_articolo_filter_combobox">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+      </object>
+      <packing>
+        <property name="left_attach">1</property>
+        <property name="right_attach">2</property>
+        <property name="top_attach">3</property>
+        <property name="bottom_attach">4</property>
+        <property name="x_options">GTK_SHRINK | GTK_FILL</property>
+        <property name="y_options"/>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkLabel" id="label84">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="xalign">0</property>
+        <property name="label" translatable="yes">Famiglia </property>
+      </object>
+      <packing>
+        <property name="top_attach">3</property>
+        <property name="bottom_attach">4</property>
+        <property name="x_options">GTK_FILL</property>
+        <property name="y_options"/>
+        <property name="x_padding">10</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkLabel" id="label6">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="xalign">0</property>
+        <property name="label" translatable="yes">Categoria</property>
+      </object>
+      <packing>
+        <property name="top_attach">4</property>
+        <property name="bottom_attach">5</property>
+        <property name="x_options">GTK_FILL</property>
+        <property name="y_options"/>
+        <property name="x_padding">10</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkComboBox" id="id_categoria_articolo_filter_combobox">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+      </object>
+      <packing>
+        <property name="left_attach">1</property>
+        <property name="right_attach">2</property>
+        <property name="top_attach">4</property>
+        <property name="bottom_attach">5</property>
         <property name="y_options"/>
       </packing>
     </child>
@@ -1207,7 +1256,6 @@
             <child>
               <object class="GtkButton" id="annulla_ml_button">
                 <property name="label">gtk-cancel</property>
-                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -1223,7 +1271,6 @@
             <child>
               <object class="GtkButton" id="ok_ml_button">
                 <property name="label">gtk-ok</property>
-                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -1298,7 +1345,6 @@
                 <child>
                   <object class="GtkRadioButton" id="percentuale_ml_radio">
                     <property name="label" translatable="yes">%</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
@@ -1314,7 +1360,6 @@
                 <child>
                   <object class="GtkRadioButton" id="valore_ml_radio">
                     <property name="label" translatable="yes">€</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
@@ -1344,7 +1389,6 @@
                 <child>
                   <object class="GtkRadioButton" id="aggiungi_ml_radio">
                     <property name="label" translatable="yes">Aggiungi +</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
@@ -1362,7 +1406,6 @@
                 <child>
                   <object class="GtkRadioButton" id="sottrai_ml_radio">
                     <property name="label" translatable="yes">Sottrai -</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
