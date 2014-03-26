@@ -144,8 +144,8 @@ class AnagraficaListiniArticoliFilter(AnagraficaFilter):
         fillComboboxCategorieArticoli(self.id_categoria_articolo_filter_combobox, True)
 
         if self._anagrafica._articoloFissato:
-            self.id_articolo_filter_customcombobox.setId(self._anagrafica._idArticolo)
-            self.id_articolo_filter_customcombobox.set_sensitive(False)
+            self.id_articolo_filter.setId(self._anagrafica._idArticolo)
+            self.id_articolo_filter.set_sensitive(False)
             if not (self._anagrafica._listinoFissato):
                 column = self._anagrafica.anagrafica_filter_treeview.get_column(1)
                 column.set_property('visible', False)
