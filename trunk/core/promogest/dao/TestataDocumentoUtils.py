@@ -42,7 +42,7 @@ def do_genera_fatture_provvigioni(tipo_data, data_da, data_a, data_doc, progress
     '''
 
     # definisco gli articoli da escludere
-    articoli_esclusi = r"(.*)(sacchi|trasporto|contributo energetico|riempimento|commissioni|cappucci|europalette|big bag)(.*)"
+    articoli_esclusi = r"(.*)(sacchi|trasporto|contributo energetico|riempimento|commissioni|cappucci|europalette|big bag|commissione quantit)(.*)"
 
     documenti = []
 
