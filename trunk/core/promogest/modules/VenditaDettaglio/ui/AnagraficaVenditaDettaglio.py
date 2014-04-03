@@ -1080,7 +1080,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             return True
         elif DRIVER == "C":
             print "DRIVER CUSTOM"
-            filescontrino = Custom().create_export_file(daoScontrino=dao)
+            filescontrino = Custom().create_export_file(daoScontrino=dao, anag=self)
 
     def on_chiusura_fiscale_activate(self, widget):
 #        if DRIVER=="D":

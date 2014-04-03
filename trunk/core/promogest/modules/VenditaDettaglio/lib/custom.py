@@ -57,7 +57,7 @@ class Custom(object):
     baud = 9600
 
     """
-    def __init__(self):
+    def __init__(self, anag=None):
         #conf = set_configuration(company=Environment.azienda) #serve per i test
         try: # vecchio stile ...adattamento ai dati in setconf
             #self.path = conf.VenditaDettaglio.export_path  #serve per i test
@@ -65,6 +65,7 @@ class Custom(object):
         except: # prendo la cartella temp standard
             self.path = Environment.documentsDir
         # assegnazione_iva_reparti
+        self.anag = anag
 
     def create_export_file(self, daoScontrino=None):
         # Genero nome file
@@ -214,3 +215,5 @@ Es. chiusura a contanti / assegni con calcolo del resto:
         ser.write(scontr)
         f.close()
         ser.close()
+        if self.anag:
+            self.anag.codice_a_barre_entry.grab_focus()
