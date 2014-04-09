@@ -28,6 +28,10 @@ from promogest.Environment import *
 from promogest.lib.utils import orda
 
 try:
+    try:
+        meta.tables[azienda+".articolo"]
+    except:
+        delete_pickle()
     t_setconf = Table('setconf', params['metadata'],
                     schema=params['schema'], autoload=True)
 except:

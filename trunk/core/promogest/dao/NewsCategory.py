@@ -25,6 +25,10 @@ from promogest.Environment import *
 from Dao import Dao
 
 try:
+    try:
+        meta.tables[azienda+".news_category"]
+    except:
+        delete_pickle()
     t_news_category=Table('news_category', params['metadata'],schema = params['schema'],autoload=True)
 except:
     from data.categoriaNews import t_news_category

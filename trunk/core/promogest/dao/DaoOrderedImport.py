@@ -21,7 +21,7 @@
 
 #from sqlalchemy import *
 #from sqlalchemy.orm import *
-from promogest.Environment import delete_pickle, engine , params
+from promogest.Environment import *
 from promogest.dao.DaoUtils import get_columns
 from sqlalchemy import *
 from sqlalchemy.orm import *

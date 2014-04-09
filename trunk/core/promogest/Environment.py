@@ -183,7 +183,7 @@ puntoB = None
 puntoP = None
 eta = 0
 tipo_pg = None
-workingYear = 2013
+workingYear = 2014
 cartella_moduli = 'promogest/modules'
 totale_pn_con_riporto = 0
 aaa = 648
@@ -322,7 +322,7 @@ def restart_program():
     saving data) must be done before calling this function."""
     python = sys.executable
     os.execl(python, python, * sys.argv)
-
+print " AZIENDAAAA", azienda
 def handleEngine():
     engine = None
     print "TIPO DB",tipodb
@@ -374,7 +374,8 @@ def handleEngine():
     engine.echo = echosa
     #engine.echo = True
     return engine
-
+if tipodb=="sqlite":
+    azienda = None
 engine = handleEngine()
 tipo_eng = engine.name
 if not web:
@@ -385,12 +386,15 @@ else:
     session = scoped_session(lambda: create_session(engine, autocommit=False))
 
 # Determiniamo il nome del file pickle in base all'azienda e alla ver python.
-#if azienda:
-meta_pickle = azienda + "-meta.pickle"+sys.version[:1]
-promogestDir = os.path.expanduser('~') + os.sep + "promogest2" + os.sep + azienda + os.sep
+print " AZIENDAAAA", azienda
+if azienda:
+    meta_pickle = azienda + "-meta.pickle"+sys.version[:1]
+    promogestDir = os.path.expanduser('~') + os.sep + "promogest2" + os.sep + azienda + os.sep
 #else:
-    #meta_pickle = "AziendaPromo-meta.pickle"+sys.version[:1]
+    #meta_pickle = ""
     #promogestDir = os.path.expanduser('~') + os.sep + "promogest2" + os.sep + "AziendaPromo" + os.sep
+meta_pickle_da_conf = main_conf.Database.azienda + "-meta.pickle"+sys.version[:1]
+promogestDir_da_conf = os.path.expanduser('~') + os.sep + "promogest2" + os.sep + main_conf.Database.azienda + os.sep
 
 from pickle import load as pickle_load
 metatmp = MetaData()
@@ -401,17 +405,23 @@ def delete_pickle():
     import os
     if os.path.exists(str(os.path.join(promogestDir.replace("_",""),meta_pickle.replace("_","")).strip())):
         os.remove(str(os.path.join(promogestDir.replace("_",""),meta_pickle.replace("_","")).strip()))
+    if os.path.exists(str(os.path.join(promogestDir_da_conf.replace("_",""),meta_pickle_da_conf.replace("_","")).strip())):
+        os.remove(str(os.path.join(promogestDir_da_conf.replace("_",""),meta_pickle_da_conf.replace("_","")).strip()))
         print "\n\n\n\nHO CANCELLATO IL FILE PICKLE QUASI SICURAMENTE BISOGNA RILANCIARE\n\n\n\n"
         restart_program()
         #sys.exit()
 
 def usePickleToMeta():
-    if os.path.exists(str(os.path.join(promogestDir.replace("_",""),meta_pickle.replace("_","")).strip())):
+    if azienda and os.path.exists(str(os.path.join(promogestDir.replace("_",""),meta_pickle.replace("_","")).strip())):
         print " CONTROLLO DELL'ESISTENZA DEL FILE PICKLE", str(os.path.join(promogestDir.replace("_","")))
         with open(str(os.path.join(promogestDir.replace("_",""),meta_pickle.replace("_","")).strip()), 'rb') as f:
             try:
                 meta = pickle_load(f)
                 meta.bind = engine
+                try:
+                    meta.tables[azienda+".articolo"]
+                except:
+                    delete_pickle()
             except:
                 print "DEVO CANCELLARE IL PICKLE PERCHé NON RIESCO A TROVARLO O LEGGERLO"
                 delete_pickle()
@@ -505,6 +515,8 @@ def hook(et, ev, eb):
         from promogest.lib.utils import messageError
         messageError(msg="Si consiglia di riavviare il software, l'errore è stato segnalato")
     if "is already defined for this MetaData instance" in str(ev):
+        delete_pickle()
+    if "AttributeError: 'MetaData' object has no attribute 'naming_convention'" in str(ev):
         delete_pickle()
 
     try:

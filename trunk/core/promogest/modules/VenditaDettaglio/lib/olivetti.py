@@ -65,7 +65,7 @@ class ElaExecute(object):
                 f.write(stringa)
             elif quantita != 1:
                 # quantita' non unitaria
-                stringa = "1325;"+str(quantita*riga.prezzo)+" ; "+deaccenta(riga.descrizione[:16])+" ; ; "+ str(quantita) +"x"+ str(riga.prezzo)+"\n"
+                stringa = "1325;"+str(quantita*riga.prezzo)+" ; "+deaccenta(riga.descrizione[:16])+" ;"+str(int(riga.arti.percentuale_aliquota_iva))+" ; "+ str(quantita) +"x"+ str(riga.prezzo)+"\n"
                 f.write(stringa)
 
 
@@ -79,7 +79,7 @@ class ElaExecute(object):
 #            reparto = str(reparto).zfill(2)
 
             elif not (riga.quantita < 0):
-                stringa = "1325 ; "+str(riga.prezzo).replace(".",",")+" ; "+deaccenta(riga.descrizione[:16])+"\n"
+                stringa = "1325 ; "+str(riga.prezzo).replace(".",",")+" ; "+deaccenta(riga.descrizione[:16])+" ; "+str(int(riga.arti.percentuale_aliquota_iva))+"\n"
                 f.write(stringa)
                 if riga.sconti:
                     for sconto in riga.sconti:
