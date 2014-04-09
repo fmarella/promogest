@@ -117,6 +117,12 @@ class ElaExecute(object):
             print "SITUAZIONE POCO CHIARA METTO UN VALORE SEMPLICE "
             f.write("1329\n")
 
+        #questa è la stringa per la gestione dei CF in scontrino olivetti
+        #112 ; ; 0 ; 1 ; 1
+        #112 ; C.F. RBTLLN34H27L999A ; 0 ; ; 1
+        #112 ; ; 0 ; 1 ; 1
+
+
         f.write("1323\n")
         f.write("912 ; 1\n")
         f.close()
