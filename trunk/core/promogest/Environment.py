@@ -418,10 +418,10 @@ def usePickleToMeta():
             try:
                 meta = pickle_load(f)
                 meta.bind = engine
-                try:
-                    meta.tables[azienda+".articolo"]
-                except:
-                    delete_pickle()
+                #try:
+                    #meta.tables[azienda+".articolo"]
+                #except:
+                    #delete_pickle()
             except:
                 print "DEVO CANCELLARE IL PICKLE PERCHé NON RIESCO A TROVARLO O LEGGERLO"
                 delete_pickle()
