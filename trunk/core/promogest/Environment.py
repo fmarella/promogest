@@ -390,8 +390,8 @@ print " AZIENDAAAA", azienda
 if azienda:
     meta_pickle = azienda + "-meta.pickle"+sys.version[:1]
     promogestDir = os.path.expanduser('~') + os.sep + "promogest2" + os.sep + azienda + os.sep
-#else:
-    #meta_pickle = ""
+else:
+    meta_pickle = None
     #promogestDir = os.path.expanduser('~') + os.sep + "promogest2" + os.sep + "AziendaPromo" + os.sep
 meta_pickle_da_conf = main_conf.Database.azienda + "-meta.pickle"+sys.version[:1]
 promogestDir_da_conf = os.path.expanduser('~') + os.sep + "promogest2" + os.sep + main_conf.Database.azienda + os.sep
@@ -403,13 +403,14 @@ def delete_pickle():
     """ Cancella il file pickle del metadata
     """
     import os
-    if os.path.exists(str(os.path.join(promogestDir.replace("_",""),meta_pickle.replace("_","")).strip())):
-        os.remove(str(os.path.join(promogestDir.replace("_",""),meta_pickle.replace("_","")).strip()))
-    if os.path.exists(str(os.path.join(promogestDir_da_conf.replace("_",""),meta_pickle_da_conf.replace("_","")).strip())):
-        os.remove(str(os.path.join(promogestDir_da_conf.replace("_",""),meta_pickle_da_conf.replace("_","")).strip()))
-        print "\n\n\n\nHO CANCELLATO IL FILE PICKLE QUASI SICURAMENTE BISOGNA RILANCIARE\n\n\n\n"
-        restart_program()
-        #sys.exit()
+    if meta_pickle:
+        if os.path.exists(str(os.path.join(promogestDir.replace("_",""),meta_pickle.replace("_","")).strip())):
+            os.remove(str(os.path.join(promogestDir.replace("_",""),meta_pickle.replace("_","")).strip()))
+        if os.path.exists(str(os.path.join(promogestDir_da_conf.replace("_",""),meta_pickle_da_conf.replace("_","")).strip())):
+            os.remove(str(os.path.join(promogestDir_da_conf.replace("_",""),meta_pickle_da_conf.replace("_","")).strip()))
+            print "\n\n\n\nHO CANCELLATO IL FILE PICKLE QUASI SICURAMENTE BISOGNA RILANCIARE\n\n\n\n"
+            restart_program()
+            #sys.exit()
 
 def usePickleToMeta():
     if azienda and os.path.exists(str(os.path.join(promogestDir.replace("_",""),meta_pickle.replace("_","")).strip())):
