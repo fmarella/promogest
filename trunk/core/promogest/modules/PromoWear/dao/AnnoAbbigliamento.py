@@ -42,5 +42,14 @@ annoabbigliamento=Table('anno_abbigliamento',
     schema = params['mainSchema'],
     autoload=True)
 
+s= select([annoabbigliamento.c.denominazione]).execute().fetchall()
+if (u'2014', ) not in s or s==[]:
+    tipo = annoabbigliamento.insert()
+    tipo.execute(denominazione='2014')
+    tipo.execute(denominazione='2015')
+    tipo.execute(denominazione='2016')
+    tipo.execute(denominazione='2017')
+
+
 std_mapper = mapper(AnnoAbbigliamento, annoabbigliamento, properties={},
                 order_by=annoabbigliamento.c.id)
