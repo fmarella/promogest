@@ -3551,3 +3551,24 @@ def getPrezzoNettoInRiga(riga=None):
             prezzoNetto = Decimal(prezzoNetto) - Decimal(str(s["valore"]))
 
     return prezzoNetto
+
+def toTempPng(png_b64text):
+    import base64
+    import shutil
+    png_recovered = base64.decodestring(png_b64text)
+
+    #'png_b64text' contains the text from your mongoDB image field.
+
+    #Then you just write "png_recovered" to a file:
+
+    f = open("atemp.png", "w")
+    f.write(png_recovered)
+    f.close()
+    shutil.copy("atemp.png","gui/atemp.png")
+    return "gui/atemp.png"
+
+def osname():
+    if os.name=="nt":
+        return "WIN"
+    else:
+        return "NIX"

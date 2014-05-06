@@ -164,7 +164,11 @@
         <tr>
             {% if dao.artima %}
             {% for a in dao.artima %}
-            <td><img src="data:image/png;base64,{{a.immagine.data}}" width="500" /></td>
+            {% if utils.osname=="NIX" %}
+            <td><img src="data:image/png;base64,{{a.immagine.data}}" width="200" /></td>
+            {% else %}
+            <td><img src="{{utils.toTempPng(a.immagine.data)}}" width="200" /></td>
+            {% endif %}
             {% endfor %}
             {% else %}
             <td></td>
