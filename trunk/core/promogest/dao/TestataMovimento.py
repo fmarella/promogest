@@ -22,8 +22,11 @@
 
 from sqlalchemy import *
 from sqlalchemy.orm import *
-#from promogest.lib.migrate import *
+from promogest.lib.alembic.migration import MigrationContext
+from promogest.lib.alembic.operations import Operations
+from promogest.lib.alembic import op
 from promogest.Environment import *
+from promogest.dao.DaoUtils import get_columns
 
 try:
     t_testata_movimento = Table('testata_movimento',
@@ -32,6 +35,16 @@ try:
                             autoload=True)
 except:
     from data.testataMovimento import t_testata_movimento
+
+if "id_to_magazzino" not in [c.name for c in t_testata_movimento.columns]:
+    print " AGGIUNGI COLONNA TO MAGAZZINO"
+    try:
+        conn = engine.connect()
+        ctx = MigrationContext.configure(conn)
+        op = Operations(ctx)
+        op.add_column('testata_movimento',Column('id_to_magazzino', Integer), schema=params["schema"])
+    except:
+        delete_pickle()
 
 from Dao import Dao
 from DaoUtils import *
@@ -430,11 +443,6 @@ class TestataMovimento(Dao):
                             params["session"].add(n)
             params["session"].commit()
         self.init_on_load()
-
-
-#if "id_to_magazzino" not in [c.name for c in t_testata_movimento.columns]:
-    #col = Column('id_to_magazzino', Integer)
-    #col.create(t_testata_movimento)
 
 std_mapper = mapper(TestataMovimento, t_testata_movimento,properties={
         "rigamov": relation(RigaMovimento,primaryjoin=
