@@ -154,6 +154,7 @@ def orderedImport():
 
 def orderedImportVenditaDettaglio():
     print "| QUANDO VIENI CHIAMATO"
+    orderedImport()
 #try:
     from promogest.modules.VenditaDettaglio.dao.Pos import t_pos #v
     from promogest.modules.VenditaDettaglio.dao.ScontoScontrino import t_sconto_scontrino #v
