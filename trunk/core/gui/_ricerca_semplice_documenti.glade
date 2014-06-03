@@ -1,164 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <requires lib="gtk+" version="2.16"/>
   <!-- interface-requires pythonplugin 0.0 -->
+  <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy project-wide -->
-  <object class="GtkTreeView" id="anagrafica_filter_treeview">
-    <property name="visible">True</property>
-    <property name="can_focus">True</property>
-    <property name="border_width">1</property>
-    <property name="model">filter_listore</property>
-    <property name="search_column">1</property>
-    <property name="enable_grid_lines">both</property>
-    <child>
-      <object class="GtkTreeViewColumn" id="data_column">
-        <property name="title" translatable="yes">Data</property>
-        <property name="clickable">True</property>
-        <property name="reorderable">True</property>
-        <property name="sort_indicator">True</property>
-        <child>
-          <object class="GtkCellRendererText" id="cellrenderertext1"/>
-          <attributes>
-            <attribute name="cell-background">10</attribute>
-            <attribute name="text">1</attribute>
-          </attributes>
-        </child>
-      </object>
-    </child>
-    <child>
-      <object class="GtkTreeViewColumn" id="numero_column">
-        <property name="title" translatable="yes">Numero</property>
-        <property name="clickable">True</property>
-        <property name="reorderable">True</property>
-        <property name="sort_indicator">True</property>
-        <child>
-          <object class="GtkCellRendererText" id="cellrenderertext3"/>
-          <attributes>
-            <attribute name="cell-background">10</attribute>
-            <attribute name="text">2</attribute>
-          </attributes>
-        </child>
-      </object>
-    </child>
-    <child>
-      <object class="GtkTreeViewColumn" id="tipo_documento_column">
-        <property name="title" translatable="yes">Tipo Documento</property>
-        <property name="clickable">True</property>
-        <child>
-          <object class="GtkCellRendererText" id="cellrenderertext8"/>
-          <attributes>
-            <attribute name="cell-background">10</attribute>
-            <attribute name="text">3</attribute>
-          </attributes>
-        </child>
-      </object>
-    </child>
-    <child>
-      <object class="GtkTreeViewColumn" id="cliente_fornitore_column">
-        <property name="resizable">True</property>
-        <property name="title" translatable="yes">Cliente / Fornitore</property>
-        <property name="expand">True</property>
-        <property name="clickable">True</property>
-        <property name="reorderable">True</property>
-        <property name="sort_indicator">True</property>
-        <child>
-          <object class="GtkCellRendererText" id="cellrenderertext4"/>
-          <attributes>
-            <attribute name="cell-background">10</attribute>
-            <attribute name="text">4</attribute>
-          </attributes>
-        </child>
-      </object>
-    </child>
-    <child>
-      <object class="GtkTreeViewColumn" id="rif_doc_fornitore_column">
-        <property name="title" translatable="yes">Rif.doc.Fornitore</property>
-        <child>
-          <object class="GtkCellRendererText" id="cellrenderertext5"/>
-          <attributes>
-            <attribute name="cell-background">10</attribute>
-            <attribute name="text">5</attribute>
-          </attributes>
-        </child>
-      </object>
-    </child>
-    <child>
-      <object class="GtkTreeViewColumn" id="imponibile_column">
-        <property name="title" translatable="yes">Imponibile</property>
-        <property name="clickable">True</property>
-        <property name="reorderable">True</property>
-        <property name="sort_indicator">True</property>
-        <child>
-          <object class="GtkCellRendererText" id="cellrenderertext6">
-            <property name="xalign">1</property>
-            <property name="alignment">right</property>
-          </object>
-          <attributes>
-            <attribute name="cell-background">10</attribute>
-            <attribute name="text">6</attribute>
-          </attributes>
-        </child>
-      </object>
-    </child>
-    <child>
-      <object class="GtkTreeViewColumn" id="treeviewcolumn2">
-        <property name="title" translatable="yes">Imposta</property>
-        <child>
-          <object class="GtkCellRendererText" id="cellrenderertext7">
-            <property name="xalign">0.99000000953674316</property>
-            <property name="alignment">right</property>
-          </object>
-          <attributes>
-            <attribute name="cell-background">10</attribute>
-            <attribute name="text">7</attribute>
-          </attributes>
-        </child>
-      </object>
-    </child>
-    <child>
-      <object class="GtkTreeViewColumn" id="totale_column">
-        <property name="title" translatable="yes">Totale</property>
-        <child>
-          <object class="GtkCellRendererText" id="cellrenderertext9">
-            <property name="xalign">0.99000000953674316</property>
-            <property name="alignment">right</property>
-            <property name="variant">small-caps</property>
-          </object>
-          <attributes>
-            <attribute name="cell-background">10</attribute>
-            <attribute name="text">8</attribute>
-          </attributes>
-        </child>
-      </object>
-    </child>
-    <child>
-      <object class="GtkTreeViewColumn" id="treeviewcolumn4">
-        <property name="resizable">True</property>
-        <property name="title" translatable="yes">Note interne</property>
-        <property name="expand">True</property>
-        <child>
-          <object class="GtkCellRendererText" id="cellrenderertext10"/>
-          <attributes>
-            <attribute name="cell-background">10</attribute>
-            <attribute name="text">9</attribute>
-          </attributes>
-        </child>
-      </object>
-    </child>
-    <child>
-      <object class="GtkTreeViewColumn" id="saldato_column">
-        <property name="title" translatable="yes">Saldato</property>
-        <property name="clickable">True</property>
-        <child>
-          <object class="GtkCellRendererText" id="cellrenderertext11"/>
-          <attributes>
-            <attribute name="cell-background">10</attribute>
-            <attribute name="text">11</attribute>
-          </attributes>
-        </child>
-      </object>
-    </child>
-  </object>
   <object class="GtkHBox" id="anagrafica_documenti_filter_table">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -166,7 +10,7 @@
       <object class="GtkTable" id="anagrafica_documenti_filter_table1">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="n_rows">12</property>
+        <property name="n_rows">13</property>
         <property name="n_columns">2</property>
         <property name="column_spacing">3</property>
         <property name="row_spacing">1</property>
@@ -508,8 +352,8 @@
           </object>
           <packing>
             <property name="right_attach">2</property>
-            <property name="top_attach">11</property>
-            <property name="bottom_attach">12</property>
+            <property name="top_attach">12</property>
+            <property name="bottom_attach">13</property>
             <property name="y_options"/>
             <property name="x_padding">1</property>
             <property name="y_padding">3</property>
@@ -819,6 +663,86 @@
             <property name="y_options"/>
           </packing>
         </child>
+        <child>
+          <object class="GtkHBox" id="data_hbox_pagamento">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="spacing">2</property>
+            <child>
+              <object class="GtkLabel" id="da_data_pagamento_label">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Da</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="padding">2</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="DateWidget" id="da_data_pagamento_filter_entry">
+                <property name="width_request">150</property>
+                <property name="visible">True</property>
+                <property name="app_paintable">True</property>
+                <property name="can_focus">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="a_data_pagamento_label">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">A</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="padding">2</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
+            <child>
+              <object class="DateWidget" id="a_data_pagamento_filter_entry">
+                <property name="width_request">150</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">3</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="right_attach">2</property>
+            <property name="top_attach">11</property>
+            <property name="bottom_attach">12</property>
+            <property name="x_options">GTK_FILL</property>
+            <property name="y_options"/>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="labeldata_pagamento">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="xalign">0</property>
+            <property name="label" translatable="yes">Data Pagamento</property>
+          </object>
+          <packing>
+            <property name="top_attach">11</property>
+            <property name="bottom_attach">12</property>
+            <property name="x_options">GTK_FILL</property>
+            <property name="y_options"/>
+          </packing>
+        </child>
       </object>
       <packing>
         <property name="expand">True</property>
@@ -1086,7 +1010,22 @@
                   </packing>
                 </child>
                 <child>
-                  <placeholder/>
+                  <object class="GtkHBox" id="hbox1_data_pagamento">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="can_default">True</property>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
+                    <property name="position">6</property>
+                  </packing>
                 </child>
                 <child>
                   <placeholder/>
@@ -1109,6 +1048,162 @@
         <property name="fill">True</property>
         <property name="position">1</property>
       </packing>
+    </child>
+  </object>
+  <object class="GtkTreeView" id="anagrafica_filter_treeview">
+    <property name="visible">True</property>
+    <property name="can_focus">True</property>
+    <property name="border_width">1</property>
+    <property name="model">filter_listore</property>
+    <property name="search_column">1</property>
+    <property name="enable_grid_lines">both</property>
+    <child>
+      <object class="GtkTreeViewColumn" id="data_column">
+        <property name="title" translatable="yes">Data</property>
+        <property name="clickable">True</property>
+        <property name="reorderable">True</property>
+        <property name="sort_indicator">True</property>
+        <child>
+          <object class="GtkCellRendererText" id="cellrenderertext1"/>
+          <attributes>
+            <attribute name="cell-background">10</attribute>
+            <attribute name="text">1</attribute>
+          </attributes>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkTreeViewColumn" id="numero_column">
+        <property name="title" translatable="yes">Numero</property>
+        <property name="clickable">True</property>
+        <property name="reorderable">True</property>
+        <property name="sort_indicator">True</property>
+        <child>
+          <object class="GtkCellRendererText" id="cellrenderertext3"/>
+          <attributes>
+            <attribute name="cell-background">10</attribute>
+            <attribute name="text">2</attribute>
+          </attributes>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkTreeViewColumn" id="tipo_documento_column">
+        <property name="title" translatable="yes">Tipo Documento</property>
+        <property name="clickable">True</property>
+        <child>
+          <object class="GtkCellRendererText" id="cellrenderertext8"/>
+          <attributes>
+            <attribute name="cell-background">10</attribute>
+            <attribute name="text">3</attribute>
+          </attributes>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkTreeViewColumn" id="cliente_fornitore_column">
+        <property name="resizable">True</property>
+        <property name="title" translatable="yes">Cliente / Fornitore</property>
+        <property name="expand">True</property>
+        <property name="clickable">True</property>
+        <property name="reorderable">True</property>
+        <property name="sort_indicator">True</property>
+        <child>
+          <object class="GtkCellRendererText" id="cellrenderertext4"/>
+          <attributes>
+            <attribute name="cell-background">10</attribute>
+            <attribute name="text">4</attribute>
+          </attributes>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkTreeViewColumn" id="rif_doc_fornitore_column">
+        <property name="title" translatable="yes">Rif.doc.Fornitore</property>
+        <child>
+          <object class="GtkCellRendererText" id="cellrenderertext5"/>
+          <attributes>
+            <attribute name="cell-background">10</attribute>
+            <attribute name="text">5</attribute>
+          </attributes>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkTreeViewColumn" id="imponibile_column">
+        <property name="title" translatable="yes">Imponibile</property>
+        <property name="clickable">True</property>
+        <property name="reorderable">True</property>
+        <property name="sort_indicator">True</property>
+        <child>
+          <object class="GtkCellRendererText" id="cellrenderertext6">
+            <property name="xalign">1</property>
+            <property name="alignment">right</property>
+          </object>
+          <attributes>
+            <attribute name="cell-background">10</attribute>
+            <attribute name="text">6</attribute>
+          </attributes>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkTreeViewColumn" id="treeviewcolumn2">
+        <property name="title" translatable="yes">Imposta</property>
+        <child>
+          <object class="GtkCellRendererText" id="cellrenderertext7">
+            <property name="xalign">0.99000000953674316</property>
+            <property name="alignment">right</property>
+          </object>
+          <attributes>
+            <attribute name="cell-background">10</attribute>
+            <attribute name="text">7</attribute>
+          </attributes>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkTreeViewColumn" id="totale_column">
+        <property name="title" translatable="yes">Totale</property>
+        <child>
+          <object class="GtkCellRendererText" id="cellrenderertext9">
+            <property name="xalign">0.99000000953674316</property>
+            <property name="alignment">right</property>
+            <property name="variant">small-caps</property>
+          </object>
+          <attributes>
+            <attribute name="cell-background">10</attribute>
+            <attribute name="text">8</attribute>
+          </attributes>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkTreeViewColumn" id="treeviewcolumn4">
+        <property name="resizable">True</property>
+        <property name="title" translatable="yes">Note interne</property>
+        <property name="expand">True</property>
+        <child>
+          <object class="GtkCellRendererText" id="cellrenderertext10"/>
+          <attributes>
+            <attribute name="cell-background">10</attribute>
+            <attribute name="text">9</attribute>
+          </attributes>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkTreeViewColumn" id="saldato_column">
+        <property name="title" translatable="yes">Saldato</property>
+        <property name="clickable">True</property>
+        <child>
+          <object class="GtkCellRendererText" id="cellrenderertext11"/>
+          <attributes>
+            <attribute name="cell-background">10</attribute>
+            <attribute name="text">11</attribute>
+          </attributes>
+        </child>
+      </object>
     </child>
   </object>
   <object class="GtkListStore" id="filter_listore">

@@ -1374,6 +1374,13 @@ class TestataDocumento(Dao):
                     RigaMovimento.id_testata_movimento == TestataMovimento.id,
                     TestataMovimento.id_testata_documento == t_testata_documento.c.id)}
 
+        elif k == 'daDataPagamento':
+            dic = {k:and_(t_testata_documento.c.id == TestataDocumentoScadenza.id_testata_documento,
+                            TestataDocumentoScadenza.data_pagamento >= v)}
+        elif k== 'aDataPagamento':
+            dic = {k:and_(t_testata_documento.c.id == TestataDocumentoScadenza.id_testata_documento,
+                            TestataDocumentoScadenza.data_pagamento <= v)}
+
         elif (hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes") or ("GestioneNoleggio" in Environment.modulesList):
             if k == 'daDataInizioNoleggio':
                 dic = {k:and_(t_testata_documento.c.id == TestataGestioneNoleggio.id_testata_documento,

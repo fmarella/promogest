@@ -108,6 +108,8 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
 
         self.da_data_filter_entry.set_text('01/01/' + Environment.workingYear)
         self.a_data_filter_entry.set_text('')
+        self.da_data_pagamento_filter_entry.set_text('')
+        self.a_data_pagamento_filter_entry.set_text('')
         self.da_numero_filter_entry.set_text('')
         self.a_numero_filter_entry.set_text('')
         self.protocollo_entry.set_text('')
@@ -143,6 +145,8 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         #self._anagrafica.pbar_anag_complessa.show()
         self.anagrafica_filter_treeview.set_model(model=None)
         daData = stringToDate(self.da_data_filter_entry.get_text())
+        daDataPagamento = stringToDateTime(self.da_data_pagamento_filter_entry.get_text())
+        aDataPagamento = stringToDateTime(self.a_data_pagamento_filter_entry.get_text())
         if Environment.tipodb == "sqlite":
             aData = stringToDateBumped(self.a_data_filter_entry.get_text())
         else:
@@ -205,6 +209,8 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
                             "statoDocumento":statoDocumento,
                             "soloContabili":soloContabili,
                             "descrizioneRiga": descrizioneRiga,
+                            "daDataPagamento":daDataPagamento,
+                            "aDataPagamento":aDataPagamento,
                             "extra":extra}
 
         if posso("GN"):

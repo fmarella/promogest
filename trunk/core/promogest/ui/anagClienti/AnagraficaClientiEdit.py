@@ -427,16 +427,16 @@ class AnagraficaClientiEdit(AnagraficaEdit, AnagraficaPGEdit):
             #if not partiva:
                 #raise Exception, 'Operation aborted: Partita iva non corretta'
 
-        old_pagamento = self.dao.id_pagamento
+        #old_pagamento = self.dao.id_pagamento
         self.dao.id_pagamento = findIdFromCombobox(
             self.id_pagamento_customcombobox.combobox)
-        if old_pagamento != self.dao.id_pagamento and self.dao.id:
-            if YesNoDialog('Modificare il tipo di pagamento per i documenti già registrati per il cliente?'):
-                docs = TestataDocumento().select(idCliente=self.dao.id, daData=datetime.datetime(int(Environment.workingYear), 1, 1))
-                for doc in docs:
-                    if not doc.documento_saldato:
-                        doc.id_pagamento = self.dao.id_pagamento
-                        doc.persist()
+        #if old_pagamento != self.dao.id_pagamento and self.dao.id:
+            #if YesNoDialog('Modificare il tipo di pagamento per i documenti già registrati per il cliente?'):
+                #docs = TestataDocumento().select(idCliente=self.dao.id, daData=datetime.datetime(int(Environment.workingYear), 1, 1))
+                #for doc in docs:
+                    #if not doc.documento_saldato:
+                        #doc.id_pagamento = self.dao.id_pagamento
+                        #doc.persist()
 
         self.dao.id_magazzino = findIdFromCombobox(
             self.id_magazzino_customcombobox.combobox)

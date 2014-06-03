@@ -24,13 +24,13 @@ from sqlalchemy.orm import mapper
 from promogest.Environment import params
 from promogest.dao.Dao import Dao
 
-try:
-    t_news_category = Table('news_category',
-                       params['metadata'],
-                       schema=params['schema'],
-                       autoload=True)
-except:
-    from data.categoriaNews import t_news_category
+#try:
+t_news_category = Table('news_category',
+                   params['metadata'],
+                   schema=params['schema'],
+                   autoload=True)
+#except:
+    #from data.categoriaNews import t_news_category
 
 
 class CategoriaNews(Dao):
