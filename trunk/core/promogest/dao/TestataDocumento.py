@@ -25,6 +25,10 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
+from promogest.lib.alembic.migration import MigrationContext
+from promogest.lib.alembic.operations import Operations
+from promogest.lib.alembic import op
+
 try:
     t_testata_documento = Table('testata_documento',
                               params['metadata'],
@@ -58,13 +62,18 @@ from promogest.dao.RigaMovimentoFornitura import RigaMovimentoFornitura
 from promogest.modules.Pagamenti.dao.TestataDocumentoScadenza import TestataDocumentoScadenza
 from promogest.dao.InformazioniFatturazioneDocumento import InformazioniFatturazioneDocumento, t_informazioni_fatturazione_documento
 import promogest.lib.ibanlib
-from promogest.lib.alembic.migration import MigrationContext
-from promogest.lib.alembic.operations import Operations
-from promogest.lib.alembic import op
-from promogest.dao.DaoUtils import numeroRegistroGet
+
+from promogest.dao.DaoUtils import get_columns
 from promogest.dao.CachedDaosDict import CachedDaosDict
 from decimal import *
 
+columns_t_t_doc = get_columns(t_testata_documento)
+
+if "esclusione_spese" not in columns_t_t_doc:
+    conn = engine.connect()
+    ctx = MigrationContext.configure(conn)
+    op = Operations(ctx)
+    op.add_column('testata_documento', Column('esclusione_spese', Boolean, default=True),schema=params["schema"])
 
 from promogest import Environment
 
