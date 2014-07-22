@@ -23,6 +23,9 @@
 from sqlalchemy import Table
 from sqlalchemy.orm import mapper
 #from promogest.lib.migrate import *
+from promogest.lib.alembic.migration import MigrationContext
+from promogest.lib.alembic.operations import Operations
+from promogest.lib.alembic import op
 from promogest.Environment import *
 from promogest.dao.Dao import Dao
 from promogest.dao.DaoUtils import get_columns
@@ -44,7 +47,7 @@ try:
 except:
     from data.riga import t_riga
 
-#columns_t_riga = get_columns(t_riga)
+columns_t_riga = get_columns(t_riga)
 
 #if "id_iva" not in columns_t_riga:
     #delete_pickle()
@@ -55,6 +58,13 @@ except:
     #delete_pickle()
     #col = Column('posizione', Integer)
     #col.create(t_riga)
+
+if "posizione" not in columns_t_riga:
+    conn = engine.connect()
+    ctx = MigrationContext.configure(conn)
+    op = Operations(ctx)
+    op.add_column('riga', Column('posizione', Integer),schema=params["schema"])
+
 
 #if "id_riga_padre" not in columns_t_riga:
     #delete_pickle()
