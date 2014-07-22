@@ -63,7 +63,7 @@ from promogest.modules.Pagamenti.dao.TestataDocumentoScadenza import TestataDocu
 from promogest.dao.InformazioniFatturazioneDocumento import InformazioniFatturazioneDocumento, t_informazioni_fatturazione_documento
 import promogest.lib.ibanlib
 
-from promogest.dao.DaoUtils import get_columns
+from promogest.dao.DaoUtils import get_columns  , numeroRegistroGet
 from promogest.dao.CachedDaosDict import CachedDaosDict
 from decimal import *
 
