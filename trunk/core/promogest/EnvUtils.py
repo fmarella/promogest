@@ -208,7 +208,7 @@ def _send(fromaddr=None, total_addrs=None, msg=None):
         server.ehlo()
         server.starttls()
         server.ehlo()
-        server.login("promogestlogs@gmail.com", "pr0m0t0x2")
+        server.login("promogestlogs@gmail.com", "pr0m0t0x3")
         return server.sendmail("promogestlogs@gmail.com",
                         "promogestlogs@gmail.com",
                             msg.as_string())

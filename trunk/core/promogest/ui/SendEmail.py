@@ -137,7 +137,7 @@ Bcc: %s
             server.ehlo()
             server.starttls()
             server.ehlo()
-            server.login("promogestlogs@gmail.com", "pr0m0t0x2")
+            server.login("promogestlogs@gmail.com", "pr0m0t0x3")
             server.sendmail(fromaddr, total_addrs , msg)
             msg = """Invio della email riuscito!!!
             grazie per la segnalazione
