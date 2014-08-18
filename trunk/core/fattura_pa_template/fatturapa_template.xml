@@ -109,26 +109,32 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 			</DatiTrasporto>
 		</DatiGenerali>
 		<DatiBeniServizi>
-            {% for riga in dao.righe %}<DettaglioLinee>
+            {% for riga in dao.righe %}
+			<DettaglioLinee>
 				<NumeroLinea>{{loop.index}}</NumeroLinea>
 				<Descrizione>{{riga.descrizione|nonone}} {{riga.aggiuntalottoindescrizione}}</Descrizione>
 				<PrezzoUnitario>{{utils.mNLC(riga.valore_unitario_lordo,2)}}</PrezzoUnitario>
 				<PrezzoTotale>{{utils.mNLC(( riga.totaleRiga ),2)}}</PrezzoTotale>
 				<AliquotaIVA>{{riga.percentuale_iva|int}}</AliquotaIVA>
-			</DettaglioLinee>{% endfor %}
-            {% for iva in riepilogo_iva %}<DatiRiepilogo>
+			</DettaglioLinee>
+            {% endfor %}
+            {% for iva in riepilogo_iva %}
+			<DatiRiepilogo>
 				<AliquotaIVA>{{iva.totale_aliquota}}</AliquotaIVA>
 				<ImponibileImporto>{{iva.imponibile_iva}}</ImponibileImporto>
 				<Imposta>{{iva.imposta}}</Imposta>
-			</DatiRiepilogo>{% endfor %}
+			</DatiRiepilogo>
+            {% endfor %}
 		</DatiBeniServizi>
 		 <DatiPagamento>
       <CondizioniPagamento>{{dao.condizioni_pagamento}}</CondizioniPagamento>
-      {% for scadenza in dao.scadenze %}<DettaglioPagamento>
+      {% for scadenza in dao.scadenze %}
+      <DettaglioPagamento>
         <ModalitaPagamento>{{ scadenza.pagamento }}</ModalitaPagamento>
         <DataScadenzaPagamento>{{ scadenza.data_pagamento|dateformat }}</DataScadenzaPagamento>
         <ImportoPagamento>{{ utils.mNLC(scadenza.importo, 2) }}</ImportoPagamento>
-    </DettaglioPagamento>{% endfor %}
-      </DatiPagamento>
+      </DettaglioPagamento>
+      {% endfor %}
+    </DatiPagamento>
   </FatturaElettronicaBody>
 </p:FatturaElettronica>

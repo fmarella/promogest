@@ -50,7 +50,9 @@ def noNone(value):
         return value
 
 def renderFatturaPA(pageData):
-    env = Env(loader=FileSystemLoader([os.path.join('fattura_pa_template')]))
+    env = Env(loader=FileSystemLoader([os.path.join('fattura_pa_template')]),
+              trim_blocks=True,
+              lstrip_blocks=True)
     env.filters['dateformat'] = dateformat
     env.filters['nonone'] = noNone
     env.globals['utils'] = utils
@@ -65,7 +67,6 @@ def renderFatturaPA(pageData):
         committente = pageData['committente'])
 
 def to_fatturapa(daos, output, anag=None):
-    #PDF_WORKING_DIR = tempfile.mkdtemp()
     if anag:
         anag.pbar_anag_complessa.show()
     progressivo = 1
