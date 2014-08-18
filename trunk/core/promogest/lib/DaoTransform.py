@@ -26,10 +26,71 @@ import os
 import glob
 import tempfile
 from promogest import Environment
-from promogest.lib.utils import multilinedirtywork, pbar
+from  promogest.lib import utils
 from promogest.lib.sla2pdf.Sla2Pdf_ng import Sla2Pdf_ng
 from promogest.lib.sla2pdf.SlaTpl2Sla import SlaTpl2Sla as SlaTpl2Sla_ng
 from promogest.dao.Azienda import Azienda
+
+from jinja2 import Environment as Env
+from jinja2 import FileSystemLoader,FileSystemBytecodeCache,environmentfilter, Markup, escape
+
+
+def dateformat(value, format='%Y/%m/%d'):
+    if not value:
+        return ""
+    else:
+        return value.strftime(format)
+
+def noNone(value):
+    if value =="None":
+        return ""
+    elif not value:
+        return ""
+    else:
+        return value
+
+def renderFatturaPA(pageData):
+    env = Env(loader=FileSystemLoader([os.path.join('fattura_pa_template')]))
+    env.filters['dateformat'] = dateformat
+    env.filters['nonone'] = noNone
+    env.globals['utils'] = utils
+    print pageData
+    return env.get_template('/' + 'fatturapa_template.xml').render(pageData = pageData,
+        dao = pageData['dao'],
+        progressivo = pageData['progressivo'],
+        trasmittente = pageData['trasmittente'],
+        trasmissione = pageData['trasmissione'],
+        prestatore = pageData['prestatore'],
+        organizzazione = pageData['organizzazione'],
+        committente = pageData['committente'])
+
+def to_fatturapa(daos, output, anag=None):
+    #PDF_WORKING_DIR = tempfile.mkdtemp()
+    if anag:
+        anag.pbar_anag_complessa.show()
+    progressivo = 1
+    for dao in daos:
+        if anag:
+            utils.pbar(anag.pbar_anag_complessa,parziale=daos.index(dao), totale=len(daos), text="GEN FatturePA MULTIPLE", noeta=False)
+        if dao.__class__.__name__ == 'TestataDocumento':
+            dao.totali
+            # Riempiamo la fattura elettronica
+            pageData = {}
+            pageData['dao'] = dao
+            pageData['progressivo'] = progressivo
+            pageData['trasmittente'] = progressivo
+            pageData['trasmissione'] = progressivo
+            pageData['prestatore'] = progressivo
+            pageData['organizzazione'] = progressivo
+            pageData['committente'] = progressivo
+
+            xml = renderFatturaPA(pageData)
+            with open('output_fattura_pa.xml', 'w') as out:
+                out.write(xml)
+            progressivo += 1
+    if anag:
+        utils.pbar(anag.pbar_anag_complessa,stop=True)
+        anag.pbar_anag_complessa.set_property("visible",False)
 
 
 def _to_pdf(dao, classic=None, template_file=None):
@@ -65,7 +126,7 @@ def _to_pdf(dao, classic=None, template_file=None):
 
     param = [dao.dictionary(complete=True)]
 
-    multilinedirtywork(param)
+    utils.multilinedirtywork(param)
 
     try:
         if hasattr(Environment.conf.Documenti, "jnet"):
@@ -106,7 +167,7 @@ def to_pdf(daos, output, anag=None):
         anag.pbar_anag_complessa.show()
     for dao in daos:
         if anag:
-            pbar(anag.pbar_anag_complessa,parziale=daos.index(dao), totale=len(daos), text="GEN STAMPE MULTIPLE", noeta=False)
+            utils.pbar(anag.pbar_anag_complessa,parziale=daos.index(dao), totale=len(daos), text="GEN STAMPE MULTIPLE", noeta=False)
         if dao.__class__.__name__ == 'TestataDocumento':
             dao.totali
 
@@ -119,13 +180,13 @@ def to_pdf(daos, output, anag=None):
     filesPdf.sort()
     for infile in filesPdf:
         if anag:
-            pbar(anag.pbar_anag_complessa,parziale=filesPdf.index(infile), totale=len(filesPdf), text="UNIONE PDF", noeta=False)
+            utils.pbar(anag.pbar_anag_complessa,parziale=filesPdf.index(infile), totale=len(filesPdf), text="UNIONE PDF", noeta=False)
         merger.append(fileobj=file(infile, 'rb'))
 
     merger.write(output)
     merger.close()
     if anag:
-        pbar(anag.pbar_anag_complessa,stop=True)
+        utils.pbar(anag.pbar_anag_complessa,stop=True)
         anag.pbar_anag_complessa.set_property("visible",False)
 
 import time
@@ -194,7 +255,7 @@ def do_send_mail(daos, anag=None):
             continue
 
         if anag:
-            pbar(anag.pbar_anag_complessa,
+            utils.pbar(anag.pbar_anag_complessa,
                  parziale=daos.index(dao), totale=len(daos),
                  text="INVIO EMAIL MULTIPLO", noeta=False)
 
@@ -228,5 +289,5 @@ def do_send_mail(daos, anag=None):
     if s:
         s.quit()
     if anag:
-        pbar(anag.pbar_anag_complessa, stop=True)
+        utils.pbar(anag.pbar_anag_complessa, stop=True)
         anag.pbar_anag_complessa.set_property("visible", False)

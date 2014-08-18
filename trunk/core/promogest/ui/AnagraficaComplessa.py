@@ -611,6 +611,12 @@ class Anagrafica(GladeWidget):
             self._handlePrinting(daos=daos,
                                  pdfGenerator=self.htmlHandler,
                                  report=True)
+                                 
+    def on_export_fatturapa_toolbutton_clicked(self, widget):
+        from promogest.lib.DaoTransform import to_fatturapa
+        daos = get_selected_daos(self.anagrafica_filter_treeview)
+        fileName = resolve_save_file_path()
+        to_fatturapa(daos, fileName, self)
 
     def manageLabels(self, results):
         from promogest.modules.Label.ui.ManageLabelsToPrint import\
