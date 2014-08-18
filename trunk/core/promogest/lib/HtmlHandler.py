@@ -75,15 +75,6 @@ def env(templates_dir):
     jinja_env.filters['nonone'] = noNone
     return jinja_env
 
-
-def noNone(value):
-    if value =="None":
-        return ""
-    elif not value:
-        return ""
-    else:
-        return value
-
 def datetimeformat(value, format='%d/%m/%Y %H:%M '):
     if not value:
         return ""
@@ -263,6 +254,7 @@ def renderTemplate(pageData):
     else:
         html = jinja_env.get_template("/"+pageData["file"]).render(pageData = pageData)
     return html
+
 
 
 
