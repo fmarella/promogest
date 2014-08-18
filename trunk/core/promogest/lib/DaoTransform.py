@@ -85,7 +85,7 @@ def to_fatturapa(daos, output, anag=None):
             pageData['committente'] = progressivo
 
             xml = renderFatturaPA(pageData)
-            with open('output_fattura_pa.xml', 'w') as out:
+            with open(os.path.join(os.path.dirname(output), 'output_fattura_pa.xml'), 'w') as out:
                 out.write(xml)
             progressivo += 1
     if anag:
