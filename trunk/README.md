@@ -1,11 +1,20 @@
 # Promogest
 
-Il PromoGest è un programma di gestionale per la vostra attività.
+Italian managerial program (ERP) for small and medium size businesses.
 
-## Installazione
+Promogest is written in Python and the following software components:
 
-...
+- Gtk+ toolkit library
+- SQLAlchemy
+- Reportlab
+- Alembic
+- pyPDF2
 
-## Licenza
+It uses the following open-source software:
 
-Il software viene rilasciato con licenza GPLv2.
+- PostgreSQL, MySQL, SQLite
+- Scribus
+
+## License
+
+This software is distributed under the GPLv2 license.
