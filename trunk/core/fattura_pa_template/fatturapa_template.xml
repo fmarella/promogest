@@ -7,9 +7,9 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <DatiTrasmissione>
       <IdTrasmittente>
         <IdPaese>IT</IdPaese>
-        <IdCodice>{{trasmittente.codice}}</IdCodice>
+        <IdCodice>{{codice_trasmittente}}</IdCodice>
       </IdTrasmittente>
-      <ProgressivoInvio>{{trasmissione.progressivo_invio}}</ProgressivoInvio>
+      <ProgressivoInvio>{{trasmissione.progressivo}}</ProgressivoInvio>
       <FormatoTrasmissione>{{trasmissione.formato_trasmissione}}</FormatoTrasmissione>
       <CodiceDestinatario>{{trasmissione.codice_destinatario}}</CodiceDestinatario>
     </DatiTrasmissione>
@@ -17,44 +17,70 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
       <DatiAnagrafici>
         <IdFiscaleIVA>
           <IdPaese>IT</IdPaese>
-          <IdCodice>{{prestatore.codice}}</IdCodice>
+          <IdCodice>{{cedente.partita_iva}}</IdCodice>
         </IdFiscaleIVA>
         <Anagrafica>
-          <Denominazione>{{prestatore.denominazione}}</Denominazione>
+            {% if cedente.denominazione %}
+          <Denominazione>{{cedente.denominazione}}</Denominazione>
+            {% else %}
+            <Nome>{{cedente.nome}}</Nome>
+            <Cognome>{{cedente.cognome}}</Cognome>
+            {% endif %}
         </Anagrafica>
-        <RegimeFiscale>{{prestatore.codice_regime_fiscale}}</RegimeFiscale>
+        <RegimeFiscale>{{cedente.regime_fiscale}}</RegimeFiscale>
       </DatiAnagrafici>
       <Sede>
-		<Indirizzo>{{prestatore.sede_indirizzo}}</Indirizzo>
-		<CAP>{{prestatore.sede_cap}}</CAP>
-		<Comune>{{prestatore.sede_comune}}</Comune>
-		<Provincia>{{prestatore.sede_provincia}}</Provincia>
-		<Nazione>{{prestatore.sede_nazione}}</Nazione>
+		<Indirizzo>{{cedente.sede_indirizzo}}</Indirizzo>
+        <NumeroCivico>{{cedente.numero_civico}}</NumeroCivico>
+		<CAP>{{cedente.sede_cap}}</CAP>
+		<Comune>{{cedente.sede_comune}}</Comune>
+		<Provincia>{{cedente.sede_provincia}}</Provincia>
+		<Nazione>{{cedente.sede_nazione}}</Nazione>
       </Sede>
+      {% if cedente.stabile_indirizzo %}
       <StabileOrganizzazione>
-		<Indirizzo>{{organizzazione.stabile_indirizzo}}</Indirizzo>
-		<CAP>{{organizzazione.stabile_cap}}</CAP>
-		<Comune>{{organizzazione.stabile_comune}}</Comune>
-		<Provincia>{{organizzazione.stabile_provincia}}</Provincia>
-		<Nazione>{{organizzazione.stabile_nazione}}</Nazione>
+		<Indirizzo>{{cedente.stabile_indirizzo}}</Indirizzo>
+		<CAP>{{cedente.stabile_cap}}</CAP>
+		<Comune>{{cedente.stabile_comune}}</Comune>
+		<Provincia>{{cedente.stabile_provincia}}</Provincia>
+		<Nazione>{{cedente.stabile_nazione}}</Nazione>
       </StabileOrganizzazione>
+      {% endif %}
+      {% if cedente.iscrizioneREA_numeroREA %}
+      <IscrizioneREA>
+          <Ufficio>{{cedente.iscrizioneREA_ufficio}}</Ufficio>
+          <NumeroREA>{{cedente.iscrizioneREA_numeroREA}}</NumeroREA>
+          <CapitaleSociale>{{cedente.capitale_sociale}}</CapitaleSociale>
+          <SocioUnico>{{cedente.socio_unico}}</SocioUnico>
+          <StatoLiquidazione>{{cedente.liquidazione}}</StatoLiquidazione>
+      </IscrizioneREA>
     </CedentePrestatore>
     <CessionarioCommittente>
       <DatiAnagrafici>
+        <IdFiscaleIVA>
+          <IdPaese>IT</IdPaese>
+          <IdCodice>{{committente.partita_iva}}</IdCodice>
+        </IdFiscaleIVA>
         <CodiceFiscale>{{committente.codice_fiscale}}</CodiceFiscale>
         <Anagrafica>
+            {% if committente.denominazione %}
           <Denominazione>{{committente.denominazione}}</Denominazione>
+            {% else %}
+            <Nome>{{committente.nome}}</Nome>
+            <Cognome>{{committente.cognome}}</Cognome>
+            {% endif %}
         </Anagrafica>
       </DatiAnagrafici>
       <Sede>
         <Indirizzo>{{committente.sede_indirizzo}}</Indirizzo>
+        <NumeroCivico>{{committente.numero_civico}}</NumeroCivico>
 		<CAP>{{committente.sede_cap}}</CAP>
 		<Comune>{{committente.sede_comune}}</Comune>
 		<Provincia>{{committente.sede_provincia}}</Provincia>
 		<Nazione>{{committente.sede_nazione}}</Nazione>
       </Sede>
     </CessionarioCommittente>
-    <SoggettoEmittente>CC</SoggettoEmittente>
+    <SoggettoEmittente>{{soggetto_emittente}}</SoggettoEmittente>
   </FatturaElettronicaHeader>
 	<FatturaElettronicaBody>
 		<DatiGenerali>

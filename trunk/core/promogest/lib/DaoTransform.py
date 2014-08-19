@@ -64,7 +64,8 @@ def renderFatturaPA(pageData):
         trasmissione = pageData['trasmissione'],
         prestatore = pageData['prestatore'],
         organizzazione = pageData['organizzazione'],
-        committente = pageData['committente'])
+        committente = pageData['committente'],
+        soggetto_emittente = pageData['soggetto_emittente'])
 
 def to_fatturapa(daos, output, anag=None):
     if anag:
@@ -75,15 +76,57 @@ def to_fatturapa(daos, output, anag=None):
             utils.pbar(anag.pbar_anag_complessa,parziale=daos.index(dao), totale=len(daos), text="GEN FatturePA MULTIPLE", noeta=False)
         if dao.__class__.__name__ == 'TestataDocumento':
             dao.totali
+            azienda = Azienda().getRecord(id=Environment.azienda)
             # Riempiamo la fattura elettronica
             pageData = {}
             pageData['dao'] = dao
-            pageData['progressivo'] = progressivo
-            pageData['trasmittente'] = progressivo
-            pageData['trasmissione'] = progressivo
-            pageData['prestatore'] = progressivo
-            pageData['organizzazione'] = progressivo
-            pageData['committente'] = progressivo
+            pageData['codice_trasmittente'] = azienda.codice_fiscale
+            # campi di trasmissione
+            pageData['trasmissione'] = {
+                'progressivo': progressivo,
+                'formato_trasmissione': '11',
+                'codice_destinatario': 'codice ufficio'
+            }
+            pageData['cedente'] = {
+                'partita_iva': '',
+                'denominazione': 'denominazione ditta',
+                'nome': '',
+                'cognome': '',
+                'regime_fiscale': '',
+                'sede_indirizzo': '',
+                'sede_numero_civico': '',
+                'sede_cap': '',
+                'sede_comune': '',
+                'sede_provincia': '',
+                'sede_nazione': '',
+                'stabile_indirizzo': '',
+                'stabile_numero_civico': '',
+                'stabile_cap': '',
+                'stabile_comune': '',
+                'stabile_provincia': '',
+                'stabile_nazione': '',
+                'iscrizioneREA_numeroREA': '',
+                'iscrizioneREA_ufficio': '',
+                'capitale_sociale': '',
+                'socio_unico': '',
+                'liquidazione': ''
+            }
+
+            pageData['committente'] = {
+                'partita_iva': '',
+                'codice_fiscale': '',
+                'denominazione': 'denominazione ditta',
+                'nome': '',
+                'cognome': '',
+                'sede_indirizzo': '',
+                'sede_numero_civico': '',
+                'sede_cap': '',
+                'sede_comune': '',
+                'sede_provincia': '',
+                'sede_nazione': '',
+            }
+
+            pageData['soggetto_emittente'] = ''
 
             xml = renderFatturaPA(pageData)
             with open(os.path.join(os.path.dirname(output), 'output_fattura_pa.xml'), 'w') as out:
