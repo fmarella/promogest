@@ -3572,3 +3572,7 @@ def osname():
         return "WIN"
     else:
         return "NIX"
+
+
+def tipoDocumentoFPA(operazione):
+    return 'TD01'

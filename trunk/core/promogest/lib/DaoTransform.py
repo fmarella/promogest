@@ -126,6 +126,8 @@ def to_fatturapa(daos, output, anag=None):
 
             pageData['soggetto_emittente'] = ''
 
+            
+
             xml = renderFatturaPA(pageData)
             with open(os.path.join(os.path.dirname(output), 'output_fattura_pa.xml'), 'w') as out:
                 out.write(xml)

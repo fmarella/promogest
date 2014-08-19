@@ -86,69 +86,35 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<FatturaElettronicaBody>
 		<DatiGenerali>
 			<DatiGeneraliDocumento>
-				<TipoDocumento>TD01</TipoDocumento>
+				<TipoDocumento>{{utils.tipoDocumentoFPA(dao.operazione)}}</TipoDocumento>
 				<Divisa>EUR</Divisa>
-				<Data>2012-11-27</Data>
-				<Numero>00001</Numero>
-				<Art73>SI</Art73>
+				<Data>{{dao.data}}</Data>
+				<Numero>{{dao.numero}}</Numero>
 			</DatiGeneraliDocumento>
-			<DatiOrdineAcquisto>
-				<RiferimentoNumeroLinea>1</RiferimentoNumeroLinea>
-				<IdDocumento>123</IdDocumento>
-				<CodiceCUP>123abc</CodiceCUP>
-				<CodiceCIG>456def</CodiceCIG>
-			</DatiOrdineAcquisto>
-			<DatiContratto>
-				<RiferimentoNumeroLinea>1</RiferimentoNumeroLinea>
-				<IdDocumento>123</IdDocumento>
-				<Data>2012-09-01</Data>
-				<NumItem>5</NumItem>
-				<CodiceCUP>123abc</CodiceCUP>
-				<CodiceCIG>456def</CodiceCIG>
-			</DatiContratto>
-			<DatiConvenzione>
-				<RiferimentoNumeroLinea>1</RiferimentoNumeroLinea>
-				<IdDocumento>123</IdDocumento>
-				<Data>2012-09-01</Data>
-				<NumItem>5</NumItem>
-				<CodiceCUP>123abc</CodiceCUP>
-				<CodiceCIG>456def</CodiceCIG>
-			</DatiConvenzione>
-			<DatiRicezione>
-				<RiferimentoNumeroLinea>1</RiferimentoNumeroLinea>
-				<IdDocumento>123</IdDocumento>
-				<Data>2012-09-01</Data>
-				<NumItem>5</NumItem>
-				<CodiceCUP>123abc</CodiceCUP>
-				<CodiceCIG>456def</CodiceCIG>
-			</DatiRicezione>
-			<DatiTrasporto>
-				<DatiAnagraficiVettore>
-					<IdFiscaleIVA>
-						<IdPaese>IT</IdPaese>
-						<IdCodice>{{dao.codice_vettore}}</IdCodice>
-					</IdFiscaleIVA>
-					<Anagrafica>
-						<Denominazione>{{dao.ragione_sociale_vettore}}</Denominazione>
-					</Anagrafica>
-				</DatiAnagraficiVettore>
-				<DataOraConsegna>{{utils.dateTimeToString(dao.fine_trasporto)}}</DataOraConsegna>
-			</DatiTrasporto>
 		</DatiGenerali>
 		<DatiBeniServizi>
             {% for riga in dao.righe %}
 			<DettaglioLinee>
 				<NumeroLinea>{{loop.index}}</NumeroLinea>
 				<Descrizione>{{riga.descrizione|nonone}} {{riga.aggiuntalottoindescrizione}}</Descrizione>
-				<PrezzoUnitario>{{utils.mNLC(riga.valore_unitario_lordo,2)}}</PrezzoUnitario>
-				<PrezzoTotale>{{utils.mNLC(( riga.totaleRiga ),2)}}</PrezzoTotale>
+                <Quantita>{{riga.quantita}}</Quantita>
+                <UnitaMisura></UnitaMisura>
+                <DataInizioPeriodo></DataInizioPeriodo>
+                <DataFinePeriodo></DataFinePeriodo>
+				<PrezzoUnitario>{{utils.mN(riga.valore_unitario_lordo,2)}}</PrezzoUnitario>
+				<PrezzoTotale>{{utils.mN(( riga.totaleRiga ),2)}}</PrezzoTotale>
 				<AliquotaIVA>{{riga.percentuale_iva|int}}</AliquotaIVA>
+                <ScontoMaggiorazione>
+                    <Tipo></Tipo>
+                    <Percentuale></Percentuale>
+                    <Importo></Importo>
+                </ScontoMaggiorazione>
 			</DettaglioLinee>
             {% endfor %}
-            {% for iva in riepilogo_iva %}
+            {% for iva in dao._castellettoIva %}
 			<DatiRiepilogo>
-				<AliquotaIVA>{{iva.totale_aliquota}}</AliquotaIVA>
-				<ImponibileImporto>{{iva.imponibile_iva}}</ImponibileImporto>
+				<AliquotaIVA>{{iva.aliquota}}</AliquotaIVA>
+				<ImponibileImporto>{{iva.imponibile}}</ImponibileImporto>
 				<Imposta>{{iva.imposta}}</Imposta>
 			</DatiRiepilogo>
             {% endfor %}
@@ -159,7 +125,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
       <DettaglioPagamento>
         <ModalitaPagamento>{{ scadenza.pagamento }}</ModalitaPagamento>
         <DataScadenzaPagamento>{{ scadenza.data_pagamento|dateformat }}</DataScadenzaPagamento>
-        <ImportoPagamento>{{ utils.mNLC(scadenza.importo, 2) }}</ImportoPagamento>
+        <ImportoPagamento>{{ utils.mN(scadenza.importo, 2) }}</ImportoPagamento>
       </DettaglioPagamento>
       {% endfor %}
     </DatiPagamento>
