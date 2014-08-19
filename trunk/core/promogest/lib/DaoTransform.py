@@ -59,11 +59,9 @@ def renderFatturaPA(pageData):
     print pageData
     return env.get_template('/' + 'fatturapa_template.xml').render(pageData = pageData,
         dao = pageData['dao'],
-        progressivo = pageData['progressivo'],
-        trasmittente = pageData['trasmittente'],
+        codice_trasmittente = pageData['codice_trasmittente'],
         trasmissione = pageData['trasmissione'],
-        prestatore = pageData['prestatore'],
-        organizzazione = pageData['organizzazione'],
+        cedente = pageData['cedente'],
         committente = pageData['committente'],
         soggetto_emittente = pageData['soggetto_emittente'])
 

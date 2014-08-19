@@ -54,6 +54,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
           <SocioUnico>{{cedente.socio_unico}}</SocioUnico>
           <StatoLiquidazione>{{cedente.liquidazione}}</StatoLiquidazione>
       </IscrizioneREA>
+      {% endif %}
     </CedentePrestatore>
     <CessionarioCommittente>
       <DatiAnagrafici>
