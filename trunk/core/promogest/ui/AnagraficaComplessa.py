@@ -137,6 +137,7 @@ class Anagrafica(GladeWidget):
             self.strumenti_menu.destroy()
             self.email_toolbutton.destroy()
             self.segna_pagato_button.destroy()
+            self.export_fatturapa_toolbutton.destroy()
         self.placeWindow(self.anagrafica_complessa_window)
         self.filter.draw()
         self.editElement.draw(cplx=True)
@@ -611,7 +612,7 @@ class Anagrafica(GladeWidget):
             self._handlePrinting(daos=daos,
                                  pdfGenerator=self.htmlHandler,
                                  report=True)
-                                 
+
     def on_export_fatturapa_toolbutton_clicked(self, widget):
         from promogest.lib.DaoTransform import to_fatturapa
         daos = get_selected_daos(self.anagrafica_filter_treeview)
