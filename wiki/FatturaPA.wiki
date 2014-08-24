@@ -1,5 +1,21 @@
 =FatturaPA notes=
 
+Specifiche Operative dal sito: http://indicepa.gov.it/documentale/index.php
+
+http://indicepa.gov.it/public-services/docs-read-service.php?dstype=FS&filename=IDENTIFICAZIONE_UNIVOCA_UFFICI_FATTURAZIONE_ELETTRONICA.pdf
+
+le informazioni sotto forma di dataset sono disponibili tramite il formato Open data.
+
+{{{
+Gli attributi dei dataset open data contenenti i dati utili al processo di fatturazione elettronica sono
+riportati in tabella 5 colonna B.
+I dataset sono aggiornati ogni 24 ore, alle ore 6.00 del mattino.
+}}}
+
+nello stesso documento vengono specificate le informazioni necessarie per la creazione del servizio di fatturazione elettronica. Vedi *tabella 5*.
+
+--------------------------------------------------------------------
+
 data di fine trasporto deve essere nel formato lungo
 es. 2012-10-22T16:46:12.000+02:00
 
