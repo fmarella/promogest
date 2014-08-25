@@ -34,7 +34,6 @@ from promogest.dao.Azienda import Azienda
 from jinja2 import Environment as Env
 from jinja2 import FileSystemLoader, FileSystemBytecodeCache, environmentfilter, Markup, escape
 
-from promogest.lib.fatturapa_common import REGIMI_FISCALI
 
 def dateformat(value, format='%Y/%m/%d'):
     if not value:
