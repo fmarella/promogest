@@ -3514,7 +3514,7 @@ def fill_treeview_with_data(treeview, data_provider, flag=False, clear=True):
 def prep2json(daos):
     return [d.jsanity() for d in daos]
 
-def resolve_save_file_path():
+def resolve_save_file_path(ext='pdf'):
     """ risoluzione della cartella di salvataggio del file e del nome del file """
     cartella = setconf("General", "cartella_predefinita") or ""
     if cartella == '':
@@ -3522,7 +3522,7 @@ def resolve_save_file_path():
             cartella = os.environ['HOME']
         elif os.name == 'nt':
             cartella = os.environ['USERPROFILE']
-    return os.path.join(cartella, "documenti_" + time.strftime('%d_%m_%Y') + '.pdf')
+    return os.path.join(cartella, "documenti_" + time.strftime('%d_%m_%Y') + '.' + ext)
 
 
 class DecimalEncoder(json.JSONEncoder):
@@ -3573,6 +3573,23 @@ def osname():
     else:
         return "NIX"
 
+# Fattura PA
+TIPO_DOCUMENTO = (
+    ('TD01', 'Fattura'),
+    ('TD02', 'Acconto/Anticipo su fattura'),
+    ('TD03', 'Acconto/Anticipo su parcella'),
+    ('TD04', 'Nota di credito'),
+    ('TD05', 'Nota di debito'),
+    ('TD06', 'Parcella')
+)
 
 def tipoDocumentoFPA(operazione):
-    return 'TD01'
+    # TODO: incrociare il nostro tipo di fattura con quello della fattura PA
+    #tipo_doc_dict = {}
+    #for t in TIPO_DOCUMENTO:
+    #    tipo_doc_dict[t[0]] = t[1]
+    #if operazione in ['Fattura vendita', 'Fattura acquisto']:
+    #    return 'TD01'
+    return 'TD01' # fattura
+
+#end fattura PA

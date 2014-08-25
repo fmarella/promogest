@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2013 by Promotux
-#                        di Francesco Meloni snc - http://www.promotux.it/
+# Copyright (C) 2005-2013 by Promotux
+# di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Marella <francesco.marella@anche.no>
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -21,7 +21,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-from  promogest.lib.PyPDF2 import *
+from promogest.lib.PyPDF2 import *
 import os
 import glob
 import tempfile
@@ -32,8 +32,9 @@ from promogest.lib.sla2pdf.SlaTpl2Sla import SlaTpl2Sla as SlaTpl2Sla_ng
 from promogest.dao.Azienda import Azienda
 
 from jinja2 import Environment as Env
-from jinja2 import FileSystemLoader,FileSystemBytecodeCache,environmentfilter, Markup, escape
+from jinja2 import FileSystemLoader, FileSystemBytecodeCache, environmentfilter, Markup, escape
 
+from promogest.lib.fatturapa_common import REGIMI_FISCALI
 
 def dateformat(value, format='%Y/%m/%d'):
     if not value:
@@ -41,13 +42,15 @@ def dateformat(value, format='%Y/%m/%d'):
     else:
         return value.strftime(format)
 
+
 def noNone(value):
-    if value =="None":
+    if value == "None":
         return ""
     elif not value:
         return ""
     else:
         return value
+
 
 def renderFatturaPA(pageData):
     env = Env(loader=FileSystemLoader([os.path.join('fattura_pa_template')]),
@@ -57,88 +60,86 @@ def renderFatturaPA(pageData):
     env.filters['nonone'] = noNone
     env.globals['utils'] = utils
     print pageData
-    return env.get_template('/' + 'fatturapa_template.xml').render(pageData = pageData,
-        dao = pageData['dao'],
-        codice_trasmittente = pageData['codice_trasmittente'],
-        trasmissione = pageData['trasmissione'],
-        cedente = pageData['cedente'],
-        committente = pageData['committente'],
-        soggetto_emittente = pageData['soggetto_emittente'])
+    return env.get_template('/' + 'fatturapa_template.xml').render(pageData=pageData,
+                                                                   dao=pageData['dao'],
+                                                                   codice_trasmittente=pageData['codice_trasmittente'],
+                                                                   trasmissione=pageData['trasmissione'],
+                                                                   cedente=pageData['cedente'],
+                                                                   committente=pageData['committente'],
+                                                                   soggetto_emittente=pageData['soggetto_emittente'])
 
-def to_fatturapa(daos, output, anag=None):
-    if anag:
-        anag.pbar_anag_complessa.show()
-    progressivo = 1
-    for dao in daos:
-        if anag:
-            utils.pbar(anag.pbar_anag_complessa,parziale=daos.index(dao), totale=len(daos), text="GEN FatturePA MULTIPLE", noeta=False)
-        if dao.__class__.__name__ == 'TestataDocumento':
-            dao.totali
-            azienda = Azienda().getRecord(id=Environment.azienda)
-            # Riempiamo la fattura elettronica
-            pageData = {}
-            pageData['dao'] = dao
-            pageData['codice_trasmittente'] = azienda.codice_fiscale
-            # campi di trasmissione
-            pageData['trasmissione'] = {
-                'progressivo': progressivo,
-                'formato_trasmissione': '11',
-                'codice_destinatario': 'codice ufficio'
-            }
-            pageData['cedente'] = {
-                'partita_iva': '',
-                'denominazione': 'denominazione ditta',
-                'nome': '',
-                'cognome': '',
-                'regime_fiscale': '',
-                'sede_indirizzo': '',
-                'sede_numero_civico': '',
-                'sede_cap': '',
-                'sede_comune': '',
-                'sede_provincia': '',
-                'sede_nazione': '',
-                'stabile_indirizzo': '',
-                'stabile_numero_civico': '',
-                'stabile_cap': '',
-                'stabile_comune': '',
-                'stabile_provincia': '',
-                'stabile_nazione': '',
-                'iscrizioneREA_numeroREA': '',
-                'iscrizioneREA_ufficio': '',
-                'capitale_sociale': '',
-                'socio_unico': '',
-                'liquidazione': ''
-            }
 
-            pageData['committente'] = {
-                'partita_iva': '',
-                'codice_fiscale': '',
-                'denominazione': 'denominazione ditta',
-                'nome': '',
-                'cognome': '',
-                'sede_indirizzo': '',
-                'sede_numero_civico': '',
-                'sede_cap': '',
-                'sede_comune': '',
-                'sede_provincia': '',
-                'sede_nazione': '',
-            }
+def to_fatturapa(dao, output, progressivo, anag=None):
+    #if anag:
+    #    anag.pbar_anag_complessa.show()
+    #progressivo = 1
+    #for dao in daos:
+    #if anag:
+    #    utils.pbar(anag.pbar_anag_complessa,parziale=daos.index(dao), totale=len(daos), text="GEN FatturePA MULTIPLE", noeta=False)
+    if dao.__class__.__name__ == 'TestataDocumento':
+        dao.totali
+        azienda = Azienda().getRecord(id=Environment.azienda)
+        # Riempiamo la fattura elettronica
+        pageData = {}
+        pageData['dao'] = dao
+        pageData['codice_trasmittente'] = azienda.codice_fiscale
+        # campi di trasmissione
+        pageData['trasmissione'] = {
+            'progressivo': progressivo,
+            'formato_trasmissione': '11',
+            'codice_destinatario': dao.CLI.codice
+        }
+        pageData['cedente'] = {
+            'partita_iva': '',
+            'denominazione': azienda.ragione_sociale,
+            'nome': '',
+            'cognome': '',
+            'regime_fiscale': 'RF01',
+            'sede_indirizzo': azienda.sede_operativa_indirizzo,
+            'sede_numero_civico': azienda.sede_operativa_numero,
+            'sede_cap': azienda.sede_operativa_cap,
+            'sede_comune': azienda.sede_operativa_localita,
+            'sede_provincia': azienda.sede_operativa_provincia,
+            'sede_nazione': 'IT',
+            'stabile_indirizzo': '',
+            'stabile_numero_civico': '',
+            'stabile_cap': '',
+            'stabile_comune': '',
+            'stabile_provincia': '',
+            'stabile_nazione': '',
+            'iscrizioneREA_numeroREA': azienda.codice_rea,
+            'iscrizioneREA_ufficio': '',
+            'capitale_sociale': '',
+            'socio_unico': '',
+            'liquidazione': ''
+        }
 
-            pageData['soggetto_emittente'] = ''
+        pageData['committente'] = {
+            'partita_iva': dao.CLI.partita_iva,
+            'codice_fiscale': dao.CLI.codice_fiscale,
+            'denominazione': dao.CLI.denominazione,
+            'nome':  dao.CLI.nome,
+            'cognome':  dao.CLI.cognome,
+            'sede_indirizzo': dao.CLI.sede_operativa_indirizzo,
+            'sede_numero_civico': '',
+            'sede_cap': dao.CLI.sede_operativa_cap,
+            'sede_comune': dao.CLI.sede_operativa_localita,
+            'sede_provincia': dao.CLI.sede_operativa_provincia,
+            'sede_nazione': 'IT',
+        }
 
-            
+        pageData['soggetto_emittente'] = 'CC'
 
-            xml = renderFatturaPA(pageData)
-            with open(os.path.join(os.path.dirname(output), 'output_fattura_pa.xml'), 'w') as out:
-                out.write(xml)
-            progressivo += 1
-    if anag:
-        utils.pbar(anag.pbar_anag_complessa,stop=True)
-        anag.pbar_anag_complessa.set_property("visible",False)
+        xml = renderFatturaPA(pageData)
+        with open(os.path.join(os.path.dirname(output), 'output_fattura_pa.xml'), 'w') as out:
+            out.write(xml)
+            #progressivo += 1
+            #if anag:
+            #    utils.pbar(anag.pbar_anag_complessa,stop=True)
+            #   anag.pbar_anag_complessa.set_property("visible",False)
 
 
 def _to_pdf(dao, classic=None, template_file=None):
-
     operationName = dao.operazione
 
     operationNameUnderscored = operationName.replace(' ', '_').lower()
@@ -151,7 +152,7 @@ def _to_pdf(dao, classic=None, template_file=None):
     if os.path.exists(Environment.templatesDir + operationNameUnderscored + '.sla'):
         _slaTemplate = Environment.templatesDir + operationNameUnderscored + '.sla'
     elif "DDT" in operationName and \
-                    os.path.exists(Environment.templatesDir + 'ddt.sla'):
+            os.path.exists(Environment.templatesDir + 'ddt.sla'):
         _slaTemplate = Environment.templatesDir + 'ddt.sla'
     else:
         _slaTemplate = Environment.templatesDir + 'documento.sla'
@@ -174,8 +175,9 @@ def _to_pdf(dao, classic=None, template_file=None):
 
     try:
         if hasattr(Environment.conf.Documenti, "jnet"):
-            from promogest.modules.NumerazioneComplessa.jnet import\
-                                                         numerazioneJnet
+            from promogest.modules.NumerazioneComplessa.jnet import \
+                numerazioneJnet
+
             param[0]["numero"] = numerazioneJnet(dao)
     except:
         pass
@@ -190,19 +192,20 @@ def _to_pdf(dao, classic=None, template_file=None):
 
     if 'operazione' in param[0] and 'causale_trasporto' in param[0]:
         if (param[0]["operazione"] in ["DDT vendita", "DDT acquisto"]) \
-             and param[0]["causale_trasporto"] != "":
+                and param[0]["causale_trasporto"] != "":
             param[0]["operazione"] = "DDT"
 
     _anagrafica_folder = tempfile.gettempdir() + os.sep
 
     stpl2sla = SlaTpl2Sla_ng(slafile=None, label=None, report=None,
-                            objects=param,
-                            daos=dao,
-                            slaFileName=_slaTemplate,
-                            pdfFolder=_anagrafica_folder,
-                            classic=True,
-                            template_file=None).fileElaborated()
+                             objects=param,
+                             daos=dao,
+                             slaFileName=_slaTemplate,
+                             pdfFolder=_anagrafica_folder,
+                             classic=True,
+                             template_file=None).fileElaborated()
     return Sla2Pdf_ng(slafile=stpl2sla).translate()
+
 
 def to_pdf(daos, output, anag=None):
     PDF_WORKING_DIR = tempfile.mkdtemp()
@@ -211,11 +214,12 @@ def to_pdf(daos, output, anag=None):
         anag.pbar_anag_complessa.show()
     for dao in daos:
         if anag:
-            utils.pbar(anag.pbar_anag_complessa,parziale=daos.index(dao), totale=len(daos), text="GEN STAMPE MULTIPLE", noeta=False)
+            utils.pbar(anag.pbar_anag_complessa, parziale=daos.index(dao), totale=len(daos), text="GEN STAMPE MULTIPLE",
+                       noeta=False)
         if dao.__class__.__name__ == 'TestataDocumento':
             dao.totali
 
-        with file(os.path.join(PDF_WORKING_DIR, '%s.pdf'% str(int(i)+10000)), 'wb') as f:
+        with file(os.path.join(PDF_WORKING_DIR, '%s.pdf' % str(int(i) + 10000)), 'wb') as f:
             f.write(_to_pdf(dao))
         i += 1
 
@@ -224,16 +228,19 @@ def to_pdf(daos, output, anag=None):
     filesPdf.sort()
     for infile in filesPdf:
         if anag:
-            utils.pbar(anag.pbar_anag_complessa,parziale=filesPdf.index(infile), totale=len(filesPdf), text="UNIONE PDF", noeta=False)
+            utils.pbar(anag.pbar_anag_complessa, parziale=filesPdf.index(infile), totale=len(filesPdf),
+                       text="UNIONE PDF", noeta=False)
         merger.append(fileobj=file(infile, 'rb'))
 
     merger.write(output)
     merger.close()
     if anag:
-        utils.pbar(anag.pbar_anag_complessa,stop=True)
-        anag.pbar_anag_complessa.set_property("visible",False)
+        utils.pbar(anag.pbar_anag_complessa, stop=True)
+        anag.pbar_anag_complessa.set_property("visible", False)
+
 
 import time
+
 try:
     import keyring
 except:
@@ -251,16 +258,20 @@ from promogest.Environment import session, azienda
 from promogest.lib.utils import resolve_save_file_path
 from promogest.dao.AccountEmail import AccountEmail
 
+
 class NoAccountEmailFound(Exception): pass
+
+
 class NetworkError(Exception): pass
 
-def do_send_mail(daos, anag=None):
+
+def do_send_mail(daos, anag=None, formato='pdf'):
     if anag:
         anag.pbar_anag_complessa.show()
     # recupera informazioni account posta elettronica
     try:
         account_email = session.query(AccountEmail).filter_by(id_azienda=azienda, preferito=True).one()
-    except: # NoResultFound
+    except:  # NoResultFound
         raise NoAccountEmailFound("Nessun account email configurato")
 
     password = ''
@@ -268,6 +279,7 @@ def do_send_mail(daos, anag=None):
         password = keyring.get_password('promogest2', account_email.username)
     else:
         from promogest.lib.utils import inputPasswordDialog
+
         password = inputPasswordDialog()
 
     s = None
@@ -289,6 +301,7 @@ def do_send_mail(daos, anag=None):
             raise NetworkError('Errore di connessione al server di posta in uscita.')
     del password
 
+    progressivo = 1
     for dao in daos:
         if not dao.id_cliente:
             continue
@@ -300,14 +313,21 @@ def do_send_mail(daos, anag=None):
 
         if anag:
             utils.pbar(anag.pbar_anag_complessa,
-                 parziale=daos.index(dao), totale=len(daos),
-                 text="INVIO EMAIL MULTIPLO", noeta=False)
+                       parziale=daos.index(dao), totale=len(daos),
+                       text="INVIO EMAIL MULTIPLO", noeta=False)
 
-        # genera il documento in formato pdf
-        path = resolve_save_file_path()
-        fp = open(path, 'wb')
-        fp.write(_to_pdf(dao))
-        fp.close()
+        # genera il documento
+        path = resolve_save_file_path(ext=formato)
+        mymode = 'wb'
+        if formato == 'xml':
+            mymode = 'w'
+        with open(path, mode=mymode) as fp:
+            if formato == 'pdf':
+                fp.write(_to_pdf(dao))
+            elif formato == 'xml':
+                fp.write(to_fatturapa(dao, progressivo=progressivo))
+
+
         # prepara il messaggio email con allegato
         outer = MIMEMultipart()
         outer.set_charset('UTF-8')
@@ -329,6 +349,7 @@ def do_send_mail(daos, anag=None):
             s.sendmail(account_email.indirizzo, [destinatario], outer.as_string())
         except:
             raise NetworkError('Invio fattura a "{0}" non riuscito.'.format(destinatario))
+        progressivo += 1
         time.sleep(5)
     if s:
         s.quit()
