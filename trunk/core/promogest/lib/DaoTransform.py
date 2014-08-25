@@ -69,7 +69,7 @@ def renderFatturaPA(pageData):
                                                                    soggetto_emittente=pageData['soggetto_emittente'])
 
 
-def to_fatturapa(dao, output, progressivo, anag=None):
+def to_fatturapa(dao, progressivo, anag=None):
     #if anag:
     #    anag.pbar_anag_complessa.show()
     #progressivo = 1
@@ -117,7 +117,7 @@ def to_fatturapa(dao, output, progressivo, anag=None):
         pageData['committente'] = {
             'partita_iva': dao.CLI.partita_iva,
             'codice_fiscale': dao.CLI.codice_fiscale,
-            'denominazione': dao.CLI.denominazione,
+            'denominazione': dao.CLI.ragione_sociale,
             'nome':  dao.CLI.nome,
             'cognome':  dao.CLI.cognome,
             'sede_indirizzo': dao.CLI.sede_operativa_indirizzo,
@@ -130,13 +130,7 @@ def to_fatturapa(dao, output, progressivo, anag=None):
 
         pageData['soggetto_emittente'] = 'CC'
 
-        xml = renderFatturaPA(pageData)
-        with open(os.path.join(os.path.dirname(output), 'output_fattura_pa.xml'), 'w') as out:
-            out.write(xml)
-            #progressivo += 1
-            #if anag:
-            #    utils.pbar(anag.pbar_anag_complessa,stop=True)
-            #   anag.pbar_anag_complessa.set_property("visible",False)
+        return renderFatturaPA(pageData)
 
 
 def _to_pdf(dao, classic=None, template_file=None):
