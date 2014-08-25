@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2013 by Promotux
+# Copyright (C) 2005-2013 by Promotux
 #                  di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Alceste Scalas <alceste@promotux.it>
@@ -40,6 +40,9 @@ from promogest import Environment
 from promogest.ui.SendEmail import SendEmail
 from promogest.lib.HtmlHandler import createHtmlObj, renderHTML
 
+from promogest.lib.DaoTransform import do_send_mail, NoAccountEmailFound, NetworkError
+
+
 def get_selected_daos(treeview):
     """Ritorna una lista di DAO selezionati.
 
@@ -64,23 +67,24 @@ def get_selected_daos(treeview):
         else:
             return []
 
+
 class Anagrafica(GladeWidget):
     """ Classe base per le anagrafiche di Promogest """
 
     def __init__(self, windowTitle, recordMenuLabel,
-            filterElement, htmlHandler, reportHandler,
-            editElement, labelHandler=None,
-            path=None, aziendaStr=None,
-            url_help="http://www.promogest.me/promoGest/faq"):
+                 filterElement, htmlHandler, reportHandler,
+                 editElement, labelHandler=None,
+                 path=None, aziendaStr=None,
+                 url_help="http://www.promogest.me/promoGest/faq"):
         if not path:
             path = "anagrafica_complessa_window.glade"
         GladeWidget.__init__(self, root='anagrafica_complessa_window',
-                            path=path)
+                             path=path)
         if aziendaStr is not None:
             self.anagrafica_complessa_window.set_title(
-                windowTitle[:12]\
+                windowTitle[:12] \
                 + ' su (' + \
-                aziendaStr\
+                aziendaStr \
                 + ') - ' + \
                 windowTitle[11:])
         else:
@@ -99,23 +103,25 @@ class Anagrafica(GladeWidget):
         self._selectedDao = None
         if self.__class__.__name__ == 'AnagraficaDocumenti':
             from promogest.export import tracciati_disponibili
-            for tracciato in tracciati_disponibili():
 
+            for tracciato in tracciati_disponibili():
                 def build_menuitem(name):
                     import string
+
                     labe = "Esporta " + string.capwords(name.replace('_', ' '))
                     mi = gtk.MenuItem(label=labe)
                     mi.show()
                     mi.connect('activate',
-                        self.on_esporta_tracciato_menuitem_activate, (name,))
+                               self.on_esporta_tracciato_menuitem_activate, (name,))
                     return mi
+
                 self.menu3.append(build_menuitem(tracciato))
             self.records_file_export.set_menu(self.menu3)
         # Initial (in)sensitive widgets
         textStatusBar = "     *****   PromoGest - 070 8649705 -" \
-                + " www.promogest.me - assistenza@promotux.it  *****"
+                        + " www.promogest.me - assistenza@promotux.it  *****"
         context_id = self.pg2_statusbar.get_context_id(
-                                            "anagrafica_complessa_windows")
+            "anagrafica_complessa_windows")
         self.url_help = url_help
         self.pg2_statusbar.push(context_id, textStatusBar)
         self.record_delete_button.set_sensitive(False)
@@ -125,8 +131,8 @@ class Anagrafica(GladeWidget):
         self.record_edit_menu.set_sensitive(False)
         self.duplica_in_cliente.set_sensitive(False)
         self.duplica_in_fornitore.set_sensitive(False)
-#        self.record_duplicate_menu.set_property('visible', False)
-#        self.record_duplicate_menu.set_no_show_all(True)
+        #        self.record_duplicate_menu.set_property('visible', False)
+        #        self.record_duplicate_menu.set_no_show_all(True)
         self.record_duplicate_menu.set_sensitive(False)
         self.duplica_button.set_sensitive(False)
         self.selected_record_print_button.set_sensitive(False)
@@ -144,12 +150,12 @@ class Anagrafica(GladeWidget):
         self.email = ""
         if self.__class__.__name__ != "AnagraficaPrimaNota":
             self.info_anag_complessa_label.destroy()
-        self.pbar_anag_complessa.set_property("visible",False)
+        self.pbar_anag_complessa.set_property("visible", False)
         self.setFocus()
 
     def _setFilterElement(self, gladeWidget):
         self.bodyWidget = FilterWidget(owner=gladeWidget,
-                                                filtersElement=gladeWidget)
+                                       filtersElement=gladeWidget)
 
         self.filter = self.bodyWidget.filtersElement
         self.filterTopLevel = self.filter.getTopLevel()
@@ -170,13 +176,14 @@ class Anagrafica(GladeWidget):
         accelGroup = gtk.AccelGroup()
         self.getTopLevel().add_accel_group(accelGroup)
         self.bodyWidget.filter_clear_button.add_accelerator('clicked',
-                            accelGroup, GDK_KEY_ESCAPE, 0, GTK_ACCEL_VISIBLE)
+                                                            accelGroup, GDK_KEY_ESCAPE, 0, GTK_ACCEL_VISIBLE)
         self.bodyWidget.filter_search_button.add_accelerator('clicked',
-                            accelGroup, GDK_KEY_F3, 0, GTK_ACCEL_VISIBLE)
-#        self.bodyWidget.filter_search_button.add_accelerator('clicked',
-#                accelGroup, gtk.keysyms.KP_Enter, 0, gtk.ACCEL_VISIBLE)
-#        self.bodyWidget.filter_search_button.add_accelerator('clicked',
-#                accelGroup, gtk.keysyms.Return, 0, gtk.ACCEL_VISIBLE)
+                                                             accelGroup, GDK_KEY_F3, 0, GTK_ACCEL_VISIBLE)
+
+    #        self.bodyWidget.filter_search_button.add_accelerator('clicked',
+    #                accelGroup, gtk.keysyms.KP_Enter, 0, gtk.ACCEL_VISIBLE)
+    #        self.bodyWidget.filter_search_button.add_accelerator('clicked',
+    #                accelGroup, gtk.keysyms.Return, 0, gtk.ACCEL_VISIBLE)
 
     def _setHtmlHandler(self, htmlHandler):
         self.htmlHandler = htmlHandler
@@ -195,7 +202,7 @@ class Anagrafica(GladeWidget):
     def placeWindow(self, window):
         GladeWidget.placeWindow(self, window)
         if (self.width is None and self.height is None and
-            self.left is None and self.top is None):
+                    self.left is None and self.top is None):
             window.maximize()
 
     def show_all(self):
@@ -227,29 +234,29 @@ class Anagrafica(GladeWidget):
         operationName = dao.operazione
         intestatario = permalinkaTitle(dao.intestatario)[0:15] or ""
         filename = operationName + \
-                        '_' +\
-                        str(dao.numero) +\
-                        '_' +\
-                        intestatario + \
-                        '_' +\
-                        data.strftime('%d-%m-%Y')
+                   '_' + \
+                   str(dao.numero) + \
+                   '_' + \
+                   intestatario + \
+                   '_' + \
+                   data.strftime('%d-%m-%Y')
         # Generiamo i dati utili dal documento
         dati = dati_file(dao)
         if dati is None:
             return
         xml_file = open(os.path.join(Environment.tracciatiDir,
-                                                nome_tracciato + '.xml'))
+                                     nome_tracciato + '.xml'))
 
         def get_save_filename(filename):
             dialog = gtk.FileChooserDialog("Inserisci il nome del file",
-                                       None,
-                                       GTK_FILE_CHOOSER_ACTION_SAVE,
-                                       (gtk.STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                                        gtk.STOCK_SAVE, GTK_RESPONSE_OK))
+                                           None,
+                                           GTK_FILE_CHOOSER_ACTION_SAVE,
+                                           (gtk.STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+                                            gtk.STOCK_SAVE, GTK_RESPONSE_OK))
             dialog.set_default_response(GTK_RESPONSE_OK)
 
             self.__homeFolder = setconf("General",
-                                    "cartella_predefinita") or None
+                                        "cartella_predefinita") or None
             if self.__homeFolder is None:
                 if os.name == 'posix':
                     self.__homeFolder = os.environ['HOME']
@@ -283,17 +290,18 @@ class Anagrafica(GladeWidget):
     def on_records_file_export_clicked(self, widget):
         dao = self.editElement.setDao(None)
         from ExportCsv import ExportCsv
+
         ExportCsv(self, dao=dao)
         dao = None
         return
 
         data = self.set_export_data()
         saveDialog = gtk.FileChooserDialog("export in a file...",
-                                            None,
-                                            gtk.FILE_CHOOSER_ACTION_SAVE,
-                                            (gtk.STOCK_CANCEL,
-                                                GTK_RESPONSE_CANCEL,
-                                                gtk.STOCK_SAVE,
+                                           None,
+                                           gtk.FILE_CHOOSER_ACTION_SAVE,
+                                           (gtk.STOCK_CANCEL,
+                                            GTK_RESPONSE_CANCEL,
+                                            gtk.STOCK_SAVE,
                                             GTK_RESPONSE_OK))
         saveDialog.set_default_response(GTK_RESPONSE_OK)
 
@@ -327,11 +335,11 @@ class Anagrafica(GladeWidget):
         saveDialog.set_filter(filter1)
         saveDialog.set_current_name(currentName)
         cb_typeList = [['CSV', 'Csv compatibile Excel'],
-                                            ['XML', 'MS Excel 2003 Xml format']]
+                       ['XML', 'MS Excel 2003 Xml format']]
         typeComboBox = insertFileTypeChooser(filechooser=saveDialog,
-                                                        typeList=cb_typeList)
+                                             typeList=cb_typeList)
         typeComboBox.connect('changed', on_typeComboBox_changed,
-                                                        saveDialog, currentName)
+                             saveDialog, currentName)
         typeComboBox.set_active(1)
         xmlMarkup = data['XmlMarkup']
 
@@ -348,21 +356,21 @@ class Anagrafica(GladeWidget):
             if fileType == "CSV":
                 csvFile = CsvFileGenerator(file_name)
                 csvFile.setAttributes(head=xmlMarkup[0],
-                                        cols=xmlMarkup[2],
-                                        data=values,
-                                        totColumns=xmlMarkup[1])
+                                      cols=xmlMarkup[2],
+                                      data=values,
+                                      totColumns=xmlMarkup[1])
                 csvFile.createFile(wtot=True)
             elif fileType == "XML":
                 xmlFile = XlsXmlGenerator(file_name)
                 xmlFile.setAttributes(head=xmlMarkup[0],
-                            cols=xmlMarkup[2],
-                            data=values,
-                            totColumns=xmlMarkup[1])
-        # wtot is to tell the function if it can close
-        #the worksheet after filling it with data.
+                                      cols=xmlMarkup[2],
+                                      data=values,
+                                      totColumns=xmlMarkup[1])
+                # wtot is to tell the function if it can close
+                #the worksheet after filling it with data.
                 xmlFile.createFile(wtot=True)
-        #the previous function by default closes automatically the worksheet
-        #xmlFile.close_sheet()
+                #the previous function by default closes automatically the worksheet
+                #xmlFile.close_sheet()
                 xmlFile.XlsXmlFooter()
             saveDialog.destroy()
         elif response == GTK_RESPONSE_CANCEL:
@@ -373,7 +381,7 @@ class Anagrafica(GladeWidget):
 
 
     def on_credits_menu_activate(self, widget):
-        creditsDialog = GladeWidget(root='credits_dialog',path="credits_dialog.glade",  callbacks_proxy=self)
+        creditsDialog = GladeWidget(root='credits_dialog', path="credits_dialog.glade", callbacks_proxy=self)
         creditsDialog.getTopLevel().set_transient_for(self.getTopLevel())
         creditsDialog.getTopLevel().show_all()
         response = creditsDialog.credits_dialog.run()
@@ -384,7 +392,7 @@ class Anagrafica(GladeWidget):
         SendEmail()
 
     def on_licenza_menu_activate(self, widget):
-        licenzaDialog = GladeWidget(root='licenza_dialog',path="licenza_dialog.glade",  callbacks_proxy=self)
+        licenzaDialog = GladeWidget(root='licenza_dialog', path="licenza_dialog.glade", callbacks_proxy=self)
         licenzaDialog.getTopLevel().set_transient_for(self.getTopLevel())
         licenseText = ''
         try:
@@ -409,7 +417,7 @@ class Anagrafica(GladeWidget):
             content = f.read()
             f.close()
             msg = 'Codice installazione:\n\n' \
-                    + str(md5.new(content).hexdigest().upper())
+                  + str(md5.new(content).hexdigest().upper())
         except:
             msg = 'Impossibile generare il codice !!!'
         messageInfo(msg=msg)
@@ -425,9 +433,9 @@ class Anagrafica(GladeWidget):
                 self.record_edit_button.set_sensitive(dao is not None)
                 self.record_edit_menu.set_sensitive(dao is not None)
                 if dao.__class__.__name__ in ["TestataDocumento",
-                                                "Articolo",
-                                                "TestataMovimento",
-                                                "Listino"]:
+                                              "Articolo",
+                                              "TestataMovimento",
+                                              "Listino"]:
                     self.duplica_button.set_sensitive(dao is not None)
                     self.record_duplicate_menu.set_sensitive(dao is not None)
 
@@ -549,7 +557,7 @@ class Anagrafica(GladeWidget):
 
     def on_record_delete_activate(self, widget):
         if not YesNoDialog(msg='Confermi l\'eliminazione ?',
-                                            transient=self.getTopLevel()):
+                           transient=self.getTopLevel()):
             return
         for dao in get_selected_daos(self.anagrafica_filter_treeview):
             dao.delete()
@@ -558,7 +566,7 @@ class Anagrafica(GladeWidget):
         self.setFocus()
 
     def on_record_edit_activate(self, widget=None,
-                                            path=None, column=None, dao=None):
+                                path=None, column=None, dao=None):
         if not dao:
             dao = self.filter.getSelectedDao()
         self._selectedDao = dao
@@ -586,19 +594,18 @@ class Anagrafica(GladeWidget):
             fenceDialog()
 
     def on_email_toolbutton_clicked(self, widget):
-        from promogest.lib.DaoTransform import do_send_mail, \
-                NoAccountEmailFound, NetworkError
         daos = get_selected_daos(self.anagrafica_filter_treeview)
-        if len(daos) > 0:
-            if YesNoDialog('Si stanno inviando i documenti selezionati tramite posta elettronica, continuare?'):
-                try:
-                    do_send_mail(daos, self)
-                except (NoAccountEmailFound, NetworkError) as ex:
-                    messageError(str(ex))
+        if len(daos) > 0 and YesNoDialog(
+                'Si stanno inviando i documenti selezionati tramite posta elettronica, continuare?'):
+            try:
+                do_send_mail(daos, self, formato='pdf')
+            except (NoAccountEmailFound, NetworkError) as ex:
+                messageError(str(ex))
 
     def on_selected_record_print_activate(self, widget):
         from promogest.lib.utils import do_print
         from promogest.lib.DaoTransform import to_pdf
+
         daos = get_selected_daos(self.anagrafica_filter_treeview)
         if len(daos) > 1:
             fileName = resolve_save_file_path()
@@ -614,14 +621,18 @@ class Anagrafica(GladeWidget):
                                  report=True)
 
     def on_export_fatturapa_toolbutton_clicked(self, widget):
-        from promogest.lib.DaoTransform import to_fatturapa
         daos = get_selected_daos(self.anagrafica_filter_treeview)
-        fileName = resolve_save_file_path()
-        to_fatturapa(daos, fileName, self)
+        if len(daos) > 0:
+            if YesNoDialog('Si stanno inviando i documenti selezionati tramite posta elettronica, continuare?'):
+                try:
+                    do_send_mail(daos, self, formato='xml')
+                except (NoAccountEmailFound, NetworkError) as ex:
+                    messageError(str(ex))
 
     def manageLabels(self, results):
-        from promogest.modules.Label.ui.ManageLabelsToPrint import\
-                                                         ManageLabelsToPrint
+        from promogest.modules.Label.ui.ManageLabelsToPrint import \
+            ManageLabelsToPrint
+
         a = ManageLabelsToPrint(mainWindow=self, daos=results)
         anagWindow = a.getTopLevel()
         returnWindow = self.getTopLevel().get_toplevel()
@@ -670,17 +681,17 @@ class Anagrafica(GladeWidget):
             gobject.source_remove(self.__pulseSourceTag)
 
             printDialog = GladeWidget(root='records_print_dialog',
-            path='records_print_dialog.glade',
+                                      path='records_print_dialog.glade',
                                       callbacks_proxy=self)
             printDialog.getTopLevel().set_transient_for(self.getTopLevel())
             printDialog.getTopLevel().set_modal(True)
             if "/" in self._pdfName:
                 self._pdfName = self._pdfName.split("/")[1]
             printDialog.records_print_dialog_description_label.set_text(
-                                                                self._pdfName)
+                self._pdfName)
             printDialog.email_destinatario_entry.set_text(self.email)
             printDialog.records_print_dialog_size_label.set_text(str(
-                                    len(self.__pdfReport) / 1024) + ' Kb')
+                len(self.__pdfReport) / 1024) + ' Kb')
             printDialog.placeWindow(printDialog.getTopLevel())
             printDialog.getTopLevel().show_all()
             self.printDialog = printDialog
@@ -699,6 +710,7 @@ class Anagrafica(GladeWidget):
                     frac = len(results) / float(totalLen)
                     pbar.set_fraction(frac)
                 return False
+
             gobject.idle_add(updateProgressBarIdle)
 
             if len(results) == totalLen:
@@ -714,9 +726,11 @@ class Anagrafica(GladeWidget):
                     def pulsePBar():
                         pbar.pulse()
                         return True
+
                     self.__pulseSourceTag = gobject.timeout_add(33, pulsePBar)
 
                     return False
+
                 gobject.idle_add(renewProgressBarIdle)
 
                 # In the end, let's launch the template rendering thread
@@ -741,41 +755,42 @@ class Anagrafica(GladeWidget):
                         intestatario = permalinkaTitle(dao.intestatario)[0:15] or ""
                         #intestatario = dao.intestatario[0:15].replace(" ","_").replace("\\n","") or ""
                         self._pdfName = operationName + \
-                                        '_' +\
-                                        str(dao.numero) +\
-                                        '_' +\
+                                        '_' + \
+                                        str(dao.numero) + \
+                                        '_' + \
                                         intestatario + \
-                                        '_' +\
+                                        '_' + \
                                         data.strftime('%d-%m-%Y')
                     elif pdfGenerator.defaultFileName == 'promemoria':
                         dao = self.filter.getSelectedDao()
-                        self._pdfName = self.__pdfGenerator.defaultFileName +\
+                        self._pdfName = self.__pdfGenerator.defaultFileName + \
                                         '_' + \
                                         str(dao.id)
                     elif pdfGenerator.defaultFileName == 'label':
 
-                        self._pdfName = pdfGenerator.defaultFileName +\
+                        self._pdfName = pdfGenerator.defaultFileName + \
                                         '_' + \
                                         time.strftime('%d-%m-%Y')
                         operationName = "label"
                     self.__pdfReport = pdfGenerator.pdf(operationName,
-                                                classic=self._classic,
-                                                template_file=self._template_file)
+                                                        classic=self._classic,
+                                                        template_file=self._template_file)
 
                     # When we're done, let's schedule the printing
                     # dialog (going back to the main GTK loop)
                     gobject.idle_add(showPrintingDialog)
+
                 if pdfGenerator.defaultFileName == 'label' and self.__returnResults == None:
                     progressDialog.getTopLevel().destroy()
                     #gobject.idle_add(self.manageLabels,results)
                     self.manageLabels(results)
                 else:
-                    if Environment.tipo_eng =="sqlite":
+                    if Environment.tipo_eng == "sqlite":
                         renderingThread()
                     else:
                         t = threading.Thread(group=None, target=renderingThread,
-                                            name='Data rendering thread', args=(),
-                                            kwargs={})
+                                             name='Data rendering thread', args=(),
+                                             kwargs={})
                         #t.setDaemon(True) # FIXME: are we sure?
                         t.start()
 
@@ -784,8 +799,8 @@ class Anagrafica(GladeWidget):
             if daos is None:
                 # Let's fetch the data
                 self.unused = self.filter.runFilter(offset=None, batchSize=None,
-                                               progressCB=progressCB,
-                                               progressBatchSize=5)
+                                                    progressCB=progressCB,
+                                                    progressBatchSize=5)
                 progressCB(results=self.unused, prevLen=0, totalLen=len(self.unused))
             else:
                 # We've got all the data we need, let's jump to the
@@ -793,12 +808,12 @@ class Anagrafica(GladeWidget):
                 progressCB(results=daos, prevLen=0, totalLen=len(daos))
 
         # Qui c'è il cuore della funzione di stampa con il lancio del thread separato
-        if Environment.tipo_eng =="sqlite":
+        if Environment.tipo_eng == "sqlite":
             fetchingThread(daos=daos)
         else:
             t = threading.Thread(group=None, target=fetchingThread,
-                                name='Data fetching thread', args=(),
-                                kwargs={'daos' : daos})
+                                 name='Data fetching thread', args=(),
+                                 kwargs={'daos': daos})
             #t.setDaemon(True) # FIXME: are we sure?
             t.start()
 
@@ -825,8 +840,8 @@ class Anagrafica(GladeWidget):
                 gobject.source_remove(self.__pulseSourceTag)
 
             self.on_records_print_dialog_close(dialog)
-#            del self.__pdfReport
-#            del self.__pdfGenerator
+        #            del self.__pdfReport
+        #            del self.__pdfGenerator
 
 
     def on_records_print_progress_dialog_close(self, dialog, event=None):
@@ -859,7 +874,7 @@ class Anagrafica(GladeWidget):
 
     def tryToSavePdf(self, pdfFile):
         try:
-        ##trying to save the file with the right name
+            ##trying to save the file with the right name
             f = file(pdfFile, 'wb')
             f.write(self.__pdfReport)
             f.close()
@@ -872,6 +887,7 @@ class Anagrafica(GladeWidget):
 
     def on_directprint_button_clicked(self, button):
         from promogest.lib.utils import do_print
+
         pdfFile = os.path.join(self._folder, self._pdfName + '.pdf')
         self.tryToSavePdf(pdfFile)
         try:
@@ -883,12 +899,12 @@ class Anagrafica(GladeWidget):
         '''
         '''
         self.email = self.printDialog.email_destinatario_entry.get_text()
-        pdfFile = os.path.join(self._folder + self._pdfName +'.pdf')
+        pdfFile = os.path.join(self._folder + self._pdfName + '.pdf')
         self.tryToSavePdf(pdfFile)
 
-        fileName = self._pdfName +'.pdf'
-        subject= "Invio: %s" % fileName
-        body = Environment.conf.body %fileName
+        fileName = self._pdfName + '.pdf'
+        subject = "Invio: %s" % fileName
+        body = Environment.conf.body % fileName
 
         messageInfo(msg="""Il client di posta consigliato è <b>Thunderbird</b>.
 
@@ -896,21 +912,24 @@ Chi avesse bisogno di un template di spedizione email più complesso anche in fo
 html contatti <b>assistenza@promotux.it</b> per informazioni.""")
 
         if os.name == "nt":
-            arghi = "start thunderbird -compose subject='%s',body='%s',attachment='file:///%s',to='%s'" %(subject, body, str(pdfFile), self.email)
+            arghi = "start thunderbird -compose subject='%s',body='%s',attachment='file:///%s',to='%s'" % (
+                subject, body, str(pdfFile), self.email)
         else:
             clients = ('thunderbird', 'icedove')
             flag = False
             for client in clients:
                 if subprocess.call('which %s' % client, shell=True) == 0:
-                    arghi = "%s -compose subject='%s',body='%s',attachment='file:///%s',to='%s'" % (client, subject, body, str(pdfFile), self.email)
+                    arghi = "%s -compose subject='%s',body='%s',attachment='file:///%s',to='%s'" % (
+                        client, subject, body, str(pdfFile), self.email)
                     flag = True
                     break
             #TODO: dividere self.email al carattere ';' e accodare ciascun indirizzo come 'a@email.com' 'b@email.com'
             if not flag:
-                arghi = "xdg-email --utf8 --subject '%s' --body '%s' --attach '%s' '%s'" %(subject, body, str(pdfFile), self.email)
+                arghi = "xdg-email --utf8 --subject '%s' --body '%s' --attach '%s' '%s'" % (
+                    subject, body, str(pdfFile), self.email)
         subprocess.Popen(arghi, shell=True)
 
-    def on_close_button_clicked(self,widget):
+    def on_close_button_clicked(self, widget):
         self.on_records_print_dialog_close(self.printDialog)
 
     def on_save_button_clicked(self, widget):
@@ -923,16 +942,18 @@ html contatti <b>assistenza@promotux.it</b> per informazioni.""")
 
     def on_records_print_dialog_close(self, dialog, event=None):
         dialog.hide()
-#        del self.__pdfReport
-#        del self.__pdfGenerator
+
+    #        del self.__pdfReport
+    #        del self.__pdfGenerator
 
     def __handleOpenResponse(self, dialog):
         """ Qui gestiamo l'apertura
         """
-        pdfFile = os.path.join(self._folder + self._pdfName +'.pdf')
+        pdfFile = os.path.join(self._folder + self._pdfName + '.pdf')
         self.pdfFile = pdfFile
         self.tryToSavePdf(pdfFile)
         from promogest.lib.utils import start_viewer
+
         start_viewer(pdfFile)
 
     def __handleSaveResponse(self, dialog):
@@ -944,7 +965,7 @@ html contatti <b>assistenza@promotux.it</b> per informazioni.""")
                                                     gtk.STOCK_SAVE,
                                                     GTK_RESPONSE_OK),
                                            backend=None)
-        fileDialog.set_current_name(self._pdfName+".pdf")
+        fileDialog.set_current_name(self._pdfName + ".pdf")
         fileDialog.set_current_folder(self._folder)
 
         fltr = gtk.FileFilter()
@@ -961,7 +982,7 @@ html contatti <b>assistenza@promotux.it</b> per informazioni.""")
 
         response = fileDialog.run()
         # FIXME: handle errors here
-        if ( (response == GTK_RESPONSE_CANCEL) or ( response == GTK_RESPONSE_DELETE_EVENT)) :
+        if ( (response == GTK_RESPONSE_CANCEL) or ( response == GTK_RESPONSE_DELETE_EVENT)):
             pass
         elif response == GTK_RESPONSE_OK:
             filename = fileDialog.get_filename()
@@ -980,7 +1001,7 @@ html contatti <b>assistenza@promotux.it</b> per informazioni.""")
                         #overwrite the file if user click  yes
                         #break
                     else:
-                        response =  fileDialog.run()
+                        response = fileDialog.run()
                         if response == GTK_RESPONSE_CANCEL or response == GTK_RESPONSE_DELETE_EVENT:
                             #exit but don't save the file
                             esci = True
@@ -1009,14 +1030,13 @@ html contatti <b>assistenza@promotux.it</b> per informazioni.""")
                                             response == GTK_RESPONSE_DELETE_EVENT:
                                 response = fileDialog.run()
                                 if response == GTK_RESPONSE_CANCEL or \
-                                            response == GTK_RESPONSE_DELETE_EVENT:
+                                                response == GTK_RESPONSE_DELETE_EVENT:
                                     #exit but don't save the file
-                                    esci  = True
+                                    esci = True
                                     break
                                 elif response == GTK_RESPONSE_OK:
                                     filename = fileDialog.get_filename()
                                     break
-
 
         fileDialog.destroy()
 
