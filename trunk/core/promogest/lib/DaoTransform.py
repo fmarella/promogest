@@ -59,7 +59,6 @@ def renderFatturaPA(pageData):
     env.filters['dateformat'] = dateformat
     env.filters['nonone'] = noNone
     env.globals['utils'] = utils
-    print pageData
     return env.get_template('/' + 'fatturapa_template.xml').render(pageData=pageData,
                                                                    dao=pageData['dao'],
                                                                    codice_trasmittente=pageData['codice_trasmittente'],
