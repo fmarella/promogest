@@ -38,7 +38,18 @@ from Dao import Dao
 #from promogest.lib.migrate import *
 from promogest.dao.DaoUtils import get_columns
 
+from promogest.lib.alembic.migration import MigrationContext
+from promogest.lib.alembic.operations import Operations
+from promogest.lib.alembic import op
+from promogest.dao.DaoUtils import get_columns
 
+columns_t_pagamento = get_columns(t_pagamento)
+
+if "posizione" not in columns_t_pagamento:
+    conn = engine.connect()
+    ctx = MigrationContext.configure(conn)
+    op = Operations(ctx)
+    op.add_column('pagamento', Column('codice', String(4), nullable=True), schema=params["schema"])
 
 class Pagamento(Dao):
 

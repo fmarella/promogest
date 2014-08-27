@@ -28,6 +28,7 @@ from promogest.Environment import *
 
 t_pagamento = Table('pagamento', params["metadata"],
         Column('id',Integer,primary_key=True),
+        Column('codice', String(4), nullable=True),
         Column('denominazione',String(100),nullable=False, unique=True),
         Column('visible', Boolean, default=0),
         Column('id_language', Integer,ForeignKey(fk_prefix_main+'language.id')),

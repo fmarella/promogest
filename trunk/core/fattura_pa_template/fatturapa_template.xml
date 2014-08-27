@@ -123,7 +123,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
       <CondizioniPagamento>{{dao.condizioni_pagamento}}</CondizioniPagamento>
       {% for scadenza in dao.scadenze %}
       <DettaglioPagamento>
-        <ModalitaPagamento>{{ utils.tipoPagamentoPA(scadenza.pagamento) }}</ModalitaPagamento>
+        <ModalitaPagamento>{{ modalita_pagamento|nonone }}</ModalitaPagamento>
         <DataScadenzaPagamento>{{ scadenza.data_pagamento|dateformat }}</DataScadenzaPagamento>
         <ImportoPagamento>{{ utils.mN(scadenza.importo, 2) }}</ImportoPagamento>
       </DettaglioPagamento>

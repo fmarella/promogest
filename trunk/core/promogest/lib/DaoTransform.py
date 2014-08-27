@@ -64,7 +64,8 @@ def renderFatturaPA(pageData):
                                                                    trasmissione=pageData['trasmissione'],
                                                                    cedente=pageData['cedente'],
                                                                    committente=pageData['committente'],
-                                                                   soggetto_emittente=pageData['soggetto_emittente'])
+                                                                   soggetto_emittente=pageData['soggetto_emittente'],
+                                                                   modalita_pagamento=pageData['modalita_pagamento'])
 
 
 def to_fatturapa(dao, progressivo, anag=None):
@@ -125,6 +126,8 @@ def to_fatturapa(dao, progressivo, anag=None):
             'sede_provincia': dao.CLI.sede_operativa_provincia,
             'sede_nazione': 'IT',
         }
+
+        pageData['modalita_pagamento'] = dao.PG.codice
 
         pageData['soggetto_emittente'] = 'CC'
 
