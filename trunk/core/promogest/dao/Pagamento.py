@@ -45,7 +45,7 @@ from promogest.dao.DaoUtils import get_columns
 
 columns_t_pagamento = get_columns(t_pagamento)
 
-if "posizione" not in columns_t_pagamento:
+if "codice" not in columns_t_pagamento:
     conn = engine.connect()
     ctx = MigrationContext.configure(conn)
     op = Operations(ctx)
