@@ -99,6 +99,7 @@ class AnagraficaPagamentiFilter(AnagraficaFilter):
                                         (p.tipo or ''),
                                         str(mN(p.spese, 2)),
                                         str(p.aliquota_iva),
+                                        (p.codice or '')
                                         ))
 
         self._anagrafica.anagrafica_filter_treeview.set_model(self._treeViewModel)
@@ -145,6 +146,7 @@ class AnagraficaPagamentiEdit(AnagraficaEdit):
     def _refresh(self):
         self.denominazione_entry.set_text(self.dao.denominazione or '')
         self.spese_entry.set_text(str(self.dao.spese or 0))
+        self.codice_entry.set_text(self.dao.codice or '')
         findComboboxRowFromStr(self.tipo_combobox, self.dao.tipo, 0)
         findComboboxRowFromId(self.id_aliquota_iva_ccb.combobox,
                               self.dao.id_aliquota_iva)
@@ -162,5 +164,6 @@ class AnagraficaPagamentiEdit(AnagraficaEdit):
         self.dao.id_aliquota_iva = findIdFromCombobox(self.id_aliquota_iva_ccb.combobox)
         self.dao.denominazione = self.denominazione_entry.get_text()
         self.dao.spese = float(self.spese_entry.get_text())
+        self.dao.codice = self.codice_entry.get_text()
         self.dao.tipo = findStrFromCombobox(self.tipo_combobox, 0)
         self.dao.persist()
