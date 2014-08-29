@@ -43,3 +43,5 @@ self.html_viewer.renderHTML(pageData)
 }}}
 
 4. profit!
+
+PS: il widget ha anche una progressbar: *self.html_viewer.progressbar*.
