@@ -40,8 +40,7 @@ from promogest import Environment
 from promogest.ui.SendEmail import SendEmail
 from promogest.lib.HtmlHandler import createHtmlObj, renderHTML
 
-from promogest.lib.DaoTransform import do_send_mail, NoAccountEmailFound, NetworkError
-
+from promogest.lib.DaoTransform import do_send_mail, NoAccountEmailFound, NetworkError, to_fatturapa
 
 def get_selected_daos(treeview):
     """Ritorna una lista di DAO selezionati.
@@ -623,11 +622,61 @@ class Anagrafica(GladeWidget):
     def on_export_fatturapa_toolbutton_clicked(self, widget):
         daos = get_selected_daos(self.anagrafica_filter_treeview)
         if len(daos) > 0:
-            if YesNoDialog('Si stanno inviando i documenti selezionati tramite posta elettronica, continuare?'):
-                try:
-                    do_send_mail(daos, self, formato='xml')
-                except (NoAccountEmailFound, NetworkError) as ex:
-                    messageError(str(ex))
+            if YesNoDialog('Si stanno esportando i documenti selezionati, continuare?'):
+                #try:
+                #    do_send_mail(daos, self, formato='xml')
+                #except (NoAccountEmailFound, NetworkError) as ex:
+                #    messageError(str(ex))
+                progressivo = 1
+                for dao in daos:
+                    saveDialog = gtk.FileChooserDialog("export in a file...",
+                                                       None,
+                                                       gtk.FILE_CHOOSER_ACTION_SAVE,
+                                                       (gtk.STOCK_CANCEL,
+                                                        GTK_RESPONSE_CANCEL,
+                                                        gtk.STOCK_SAVE,
+                                                        GTK_RESPONSE_OK))
+                    saveDialog.set_default_response(GTK_RESPONSE_OK)
+
+                    self.__homeFolder = setconf("General", "cartella_predefinita") or ""
+                    if self.__homeFolder == '':
+                        if os.name == 'posix':
+                            self.__homeFolder = os.environ['HOME']
+                        elif os.name == 'nt':
+                            self.__homeFolder = os.environ['USERPROFILE']
+                    saveDialog.set_current_folder(self.__homeFolder)
+                    # folder = self.__homeFolder
+
+                    filter = gtk.FileFilter()
+                    filter.set_name("All files")
+                    filter.add_pattern("*")
+                    saveDialog.add_filter(filter)
+
+                    filter1 = gtk.FileFilter()
+                    filter1.set_name("XML files")
+                    filter1.add_pattern("*.xml")
+                    filter1.add_pattern("*.XML")
+                    saveDialog.add_filter(filter1)
+
+                    current_name = ''
+
+                    saveDialog.set_filter(filter1)
+                    saveDialog.set_current_name(current_name)
+
+                    saveDialog.show_all()
+                    response = saveDialog.run()
+                    if response == GTK_RESPONSE_OK:
+                        filename = saveDialog.get_filename()
+                        with open(filename, 'w') as fp:
+                            try:
+                                xml = to_fatturapa(dao, progressivo=progressivo)
+                                fp.write(xml)
+                            except AttributeError as e:
+                                messageError("Errore nell'esportazione: %s" % str(e))
+                        saveDialog.destroy()
+                    elif response == GTK_RESPONSE_CANCEL:
+                        saveDialog.destroy()
+                    progressivo += 1
 
     def manageLabels(self, results):
         from promogest.modules.Label.ui.ManageLabelsToPrint import \
