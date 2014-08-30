@@ -2897,21 +2897,34 @@ def inputPasswordDialog(parentWindow=None):
     dialog.destroy()
     return pwd
 
+def get_local_version():
+    version = 0
+    if pysvn:
+        try:
+            version = pysvn.Client().info(".").revision.number
+        except pysvn.ClientError:
+            pass
+    return version
+
+def get_remote_version():
+    version = 0
+    if pysvn:
+        try:
+            version = pysvn.Client().info2(
+                "http://promogest.googlecode.com/svn/trunk",
+                        recurse=False)[0][1]["rev"].number
+        except pysvn.ClientError:
+            pass
+    return version
+
 def leggiRevisioni():
     """ controllo se il pg2 è da aggiornare o no"""
 
     def fetch():
-        e = ""
-        try:
-            client = pysvn.Client()
-            if not Environment.rev_locale:
-                Environment.rev_locale = client.info(".").revision.number
-            if not Environment.rev_remota:
-                Environment.rev_remota = pysvn.Client().info2(
-                    "http://promogest.googlecode.com/svn/trunk",
-                            recurse=False)[0][1]["rev"].number
-        except pysvn.ClientError as e:
-            print "IMPOSSIBILE VERIFICARE SE IL PG E' AGGIORNATO" ,e
+        if not Environment.rev_locale:
+                Environment.rev_locale = get_local_version()
+        if not Environment.rev_remota:
+                Environment.rev_remota = get_remote_version()
         Environment.pg2log.info("VERSIONE IN USO LOCALE E REMOTA "+str(Environment.rev_locale)+" "+str(Environment.rev_remota)+" Errore: "+str(e))
     if pysvn:
         thread = threading.Thread(target=fetch)
