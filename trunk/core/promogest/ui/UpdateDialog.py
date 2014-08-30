@@ -49,14 +49,18 @@ class UpdateDialog(GladeWidget):
     def aggiornaLabel(self):
 
         def fetchThread(data):
-            try:
-                client = pysvn.Client()
-                data.msg_label.set_text("Lettura versioni locale e remota in corso...")
-                data._rev_locale = client.info('.').revision.number
-                data._rev_remota = pysvn.Client().info2("http://promogest.googlecode.com/svn/trunk", recurse=False)[0][1]["rev"].number
-            except pysvn.ClientError as e:
-                data.__stop = True
-                data.msg_label.set_text("Si è verificato un errore nella lettura della revisioni,\nattendere alcuni minuti e riprovare\n Errore:"+str(e))
+            if pysvn:
+                try:
+                    client = pysvn.Client()
+                    data.msg_label.set_text("Lettura versioni locale e remota in corso...")
+                    data._rev_locale = client.info('.').revision.number
+                    data._rev_remota = pysvn.Client().info2("http://promogest.googlecode.com/svn/trunk", recurse=False)[0][1]["rev"].number
+                except pysvn.ClientError as e:
+                    data.__stop = True
+                    data.msg_label.set_text("Si è verificato un errore nella lettura della revisioni,\nattendere alcuni minuti e riprovare\n Errore:"+str(e))
+                    self.cancel_button.set_sensitive(True)
+            else:
+                data.msg_label.set_text("Si è verificato un errore,\nattendere alcuni minuti e riprovare\n")
                 self.cancel_button.set_sensitive(True)
 
         def refreshUI():
@@ -105,10 +109,10 @@ class UpdateDialog(GladeWidget):
             return True
         gobject.timeout_add(100, refreshUI)
 
-        t = threading.Thread(group=None, target=fetchThread,
+        self.t = threading.Thread(group=None, target=fetchThread,
                         name='Data rendering thread', args=([self]),
                         kwargs={})
-        t.start()
+        self.t.start()
 
 
     def sync(self):
@@ -141,10 +145,10 @@ class UpdateDialog(GladeWidget):
                 return True
         gobject.timeout_add(100, refreshUI)
 
-        t = threading.Thread(group=None, target=updateThread,
+        self.t = threading.Thread(group=None, target=updateThread,
                         name='Data rendering thread', args=([self]),
                         kwargs={})
-        t.start()
+        self.t.start()
 
 
     def show(self):
@@ -157,6 +161,7 @@ class UpdateDialog(GladeWidget):
 
 
     def on_cancel_button_clicked(self, widget):
+        self.t.join()
         self.update_progress_dialog.destroy()
         if self.__aggiornato:
             Environment.restart_program()
