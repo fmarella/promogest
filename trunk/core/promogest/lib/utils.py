@@ -2935,7 +2935,7 @@ def leggiRevisioni():
         if not Environment.rev_locale:
                 Environment.rev_locale = get_local_version()
         if not Environment.rev_remota:
-                Environment.rev_remota = get_remote_version()
+                Environment.rev_remota = get_web_remote_version()
         Environment.pg2log.info("VERSIONE IN USO LOCALE E REMOTA "+str(Environment.rev_locale)+" "+str(Environment.rev_remota)+" Errore: "+str(e))
     if pysvn:
         thread = threading.Thread(target=fetch)

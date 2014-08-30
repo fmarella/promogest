@@ -22,12 +22,12 @@
 
 try:
     import pysvn
-except:
+except ImportError:
     pysvn = None
 import threading
 from promogest.ui.GladeWidget import GladeWidget
 from promogest.ui.gtk_compat import *
-from promogest.lib.utils import messageWarning
+from promogest.lib.utils import get_local_version, get_web_remote_version
 
 
 class UpdateDialog(GladeWidget):
@@ -49,19 +49,9 @@ class UpdateDialog(GladeWidget):
     def aggiornaLabel(self):
 
         def fetchThread(data):
-            if pysvn:
-                try:
-                    client = pysvn.Client()
-                    data.msg_label.set_text("Lettura versioni locale e remota in corso...")
-                    data._rev_locale = client.info('.').revision.number
-                    data._rev_remota = pysvn.Client().info2("http://promogest.googlecode.com/svn/trunk", recurse=False)[0][1]["rev"].number
-                except pysvn.ClientError as e:
-                    data.__stop = True
-                    data.msg_label.set_text("Si è verificato un errore nella lettura della revisioni,\nattendere alcuni minuti e riprovare\n Errore:"+str(e))
-                    self.cancel_button.set_sensitive(True)
-            else:
-                data.msg_label.set_text("Si è verificato un errore,\nattendere alcuni minuti e riprovare\n")
-                self.cancel_button.set_sensitive(True)
+            data.msg_label.set_text("Lettura versioni locale e remota in corso...")
+            data._rev_locale = get_local_version()
+            data._rev_remota = get_web_remote_version()
 
         def refreshUI():
             if self.__stop:
@@ -76,26 +66,6 @@ class UpdateDialog(GladeWidget):
                     else:
                         self.msg_label.set_text('Sono disponibili %d aggiornamenti.' % num)
 
-                    # client = pysvn.Client()
-                    # critico = False
-
-                    # rev_locale = client.info('.').revision.number
-
-                    # logs  = client.log(
-                        # "http://svn.promotux.it/svn/promogest2/trunk/",
-                        # revision_start=pysvn.Revision( pysvn.opt_revision_kind.number, rev_locale),
-                        # revision_end=pysvn.Revision( pysvn.opt_revision_kind.number, self._rev_remota),
-                        # strict_node_history=True,
-                        # limit=0,
-                        # include_merged_revisions=False,
-                        # )
-
-                    # for commit in logs:
-                        # if 'DBWARN' in commit.message:
-                            # critico = True
-
-                    # if critico:
-                        # messageWarning("Attenzione: E' necessario chiudere PromoGest su tutte le postazioni collegate prima di premere Aggiorna.\n\nNel caso non sia possibile consigliamo di rinviare l'aggiornamento.")
                     self.update_button.set_sensitive(True)
                     self.cancel_button.set_sensitive(True)
                     self.update_progress_bar.set_fraction(1.0)
@@ -118,6 +88,9 @@ class UpdateDialog(GladeWidget):
     def sync(self):
 
         def updateThread(data):
+            if not pysvn:
+                data.__stop = True
+                return
             try:
                 client = pysvn.Client()
                 data.msg_label.set_text("Aggiornamento in corso...")
