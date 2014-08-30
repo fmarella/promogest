@@ -2917,6 +2917,17 @@ def get_remote_version():
             pass
     return version
 
+def get_web_remote_version():
+    try:
+        import urllib2
+        from lxml import html
+        response = urllib2.urlopen('https://code.google.com/p/promogest/wiki/Stable')
+        tree = html.fromstring(response.read())
+        el = tree.xpath('//*[@id="wikimaincol"]/p')[0]
+        return int(el.text.strip().split(' ')[1])
+    except:
+        return 0
+
 def leggiRevisioni():
     """ controllo se il pg2 è da aggiornare o no"""
 
