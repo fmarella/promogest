@@ -75,7 +75,9 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
           <IdPaese>IT</IdPaese>
           <IdCodice>{{committente.partita_iva}}</IdCodice>
         </IdFiscaleIVA>
+          {% if committente.codice_fiscale %}
         <CodiceFiscale>{{committente.codice_fiscale}}</CodiceFiscale>
+          {% endif %}
         <Anagrafica>
             {% if committente.denominazione != '' %}
           <Denominazione>{{committente.denominazione}}</Denominazione>
