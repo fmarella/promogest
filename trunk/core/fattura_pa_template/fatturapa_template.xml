@@ -57,9 +57,15 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
           <Ufficio>{{cedente.iscrizioneREA_ufficio}}</Ufficio>
           {% endif %}
           <NumeroREA>{{cedente.iscrizioneREA_numeroREA}}</NumeroREA>
+          {% if cedente.capitale_sociale %}
           <CapitaleSociale>{{cedente.capitale_sociale}}</CapitaleSociale>
+          {% endif %}
+          {% if cedente.socio_unico %}
           <SocioUnico>{{cedente.socio_unico}}</SocioUnico>
+          {% endif %}
+          {% if cedente.liquidazione %}
           <StatoLiquidazione>{{cedente.liquidazione}}</StatoLiquidazione>
+          {% endif %}
       </IscrizioneREA>
       {% endif %}
     </CedentePrestatore>
