@@ -12,10 +12,16 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
       <ProgressivoInvio>{{trasmissione.progressivo}}</ProgressivoInvio>
       <FormatoTrasmissione>{{trasmissione.formato_trasmissione}}</FormatoTrasmissione>
       <CodiceDestinatario>{{trasmissione.codice_destinatario}}</CodiceDestinatario>
-      <ContattiTrasmittente>
+      {% if trasmittente.telefono or trasmittente.email %}
+        <ContattiTrasmittente>
+          {% if trasmittente.telefono %}
         <Telefono>{{trasmittente.telefono}}</Telefono>
+          {% endif %}
+          {% if trasmittente.email %}
         <Email>{{trasmittente.email}}</Email>
+          {% endif %}
       </ContattiTrasmittente>
+        {% endif %}
     </DatiTrasmissione>
     <CedentePrestatore>
       <DatiAnagrafici>
@@ -87,6 +93,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
             {% endif %}
         </Anagrafica>
       </DatiAnagrafici>
+        {% if committente.sede_indirizzo %}
       <Sede>
         <Indirizzo>{{committente.sede_indirizzo}}</Indirizzo>
         <NumeroCivico>{{committente.numero_civico}}</NumeroCivico>
@@ -95,6 +102,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 		<Provincia>{{committente.sede_provincia}}</Provincia>
 		<Nazione>{{committente.sede_nazione}}</Nazione>
       </Sede>
+        {% endif %}
     </CessionarioCommittente>
     <SoggettoEmittente>{{soggetto_emittente}}</SoggettoEmittente>
   </FatturaElettronicaHeader>
@@ -109,13 +117,13 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 			</DatiGeneraliDocumento>
             <DatiOrdineAcquisto>
                 <RiferimentoNumeroLinea>1</RiferimentoNumeroLinea>
-                <IdDocumento>123</IdDocumento>
+                <IdDocumento>{{dao.numero}}</IdDocumento>
                 <CodiceCUP>{{trasmittente.codice_cup}}</CodiceCUP>
                 <CodiceCIG>{{trasmittente.codice_cig}}</CodiceCIG>
             </DatiOrdineAcquisto>
             <DatiContratto>
                 <RiferimentoNumeroLinea>1</RiferimentoNumeroLinea>
-                <IdDocumento>123</IdDocumento>
+                <IdDocumento>{{dao.numero}}</IdDocumento>
                 <Data>{{dao.data|dateformat}}</Data>
                 <NumItem>5</NumItem>
                 <CodiceCUP>{{trasmittente.codice_cup}}</CodiceCUP>
@@ -123,7 +131,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
             </DatiContratto>
             <DatiConvenzione>
                 <RiferimentoNumeroLinea>1</RiferimentoNumeroLinea>
-                <IdDocumento>123</IdDocumento>
+                <IdDocumento>{{dao.numero}}</IdDocumento>
                 <Data>{{dao.data|dateformat}}</Data>
                 <NumItem>5</NumItem>
                 <CodiceCUP>{{trasmittente.codice_cup}}</CodiceCUP>
@@ -131,12 +139,13 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
             </DatiConvenzione>
             <DatiRicezione>
                 <RiferimentoNumeroLinea>1</RiferimentoNumeroLinea>
-                <IdDocumento>123</IdDocumento>
+                <IdDocumento>{{dao.numero}}</IdDocumento>
                 <Data>{{dao.data|dateformat}}</Data>
                 <NumItem>5</NumItem>
                 <CodiceCUP>{{trasmittente.codice_cup}}</CodiceCUP>
                 <CodiceCIG>{{trasmittente.codice_cig}}</CodiceCIG>
             </DatiRicezione>
+            {% if pageData['trasporto'] %}
             <DatiTrasporto>
                 <DatiAnagraficiVettore>
                     <IdFiscaleIVA>
@@ -149,6 +158,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
                 </DatiAnagraficiVettore>
                 <DataOraConsegna>2012-10-22T16:46:12.000+02:00</DataOraConsegna>
             </DatiTrasporto>
+            {% endif %}
 		</DatiGenerali>
 		<DatiBeniServizi>
             {% for riga in dao.righe %}
@@ -156,17 +166,9 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 				<NumeroLinea>{{loop.index}}</NumeroLinea>
 				<Descrizione>{{riga.descrizione|nonone}} {{riga.aggiuntalottoindescrizione}}</Descrizione>
                 <Quantita>{{riga.quantita}}</Quantita>
-                <UnitaMisura></UnitaMisura>
-                <DataInizioPeriodo></DataInizioPeriodo>
-                <DataFinePeriodo></DataFinePeriodo>
 				<PrezzoUnitario>{{utils.mN(riga.valore_unitario_lordo,2)}}</PrezzoUnitario>
 				<PrezzoTotale>{{utils.mN(( riga.totaleRiga ),2)}}</PrezzoTotale>
 				<AliquotaIVA>{{riga.percentuale_iva|int}}</AliquotaIVA>
-                <ScontoMaggiorazione>
-                    <Tipo></Tipo>
-                    <Percentuale></Percentuale>
-                    <Importo></Importo>
-                </ScontoMaggiorazione>
 			</DettaglioLinee>
             {% endfor %}
             {% for iva in dao._castellettoIva %}
@@ -183,7 +185,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
              {% endif %}
       {% for scadenza in dao.scadenze %}
       <DettaglioPagamento>
-        <ModalitaPagamento>{{ scadenza.pagamento }}</ModalitaPagamento>
+        <ModalitaPagamento>{{ utils.getCodicePagamento(scadenza.pagamento) }}</ModalitaPagamento>
         <DataScadenzaPagamento>{{ scadenza.data_pagamento|dateformat }}</DataScadenzaPagamento>
         <ImportoPagamento>{{ utils.mN(scadenza.importo, 2) }}</ImportoPagamento>
       </DettaglioPagamento>

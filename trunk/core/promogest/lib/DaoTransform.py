@@ -67,7 +67,8 @@ def renderFatturaPA(pageData):
                                                                    cedente=pageData['cedente'],
                                                                    committente=pageData['committente'],
                                                                    soggetto_emittente=pageData['soggetto_emittente'],
-                                                                   modalita_pagamento=pageData['modalita_pagamento'])
+                                                                   modalita_pagamento=pageData['modalita_pagamento'],
+                                                                   trasporto=pageData['trasporto'])
 
 
 def to_fatturapa(dao, progressivo, anag=None):
@@ -80,17 +81,23 @@ def to_fatturapa(dao, progressivo, anag=None):
     if dao.__class__.__name__ == 'TestataDocumento':
         dao.totali
         azienda = Azienda().getRecord(id=Environment.azienda)
-        indirizzo_email_preferito = AccountEmail().select(idAzienda=Environment.azienda,
+        indirizzi_email = AccountEmail().select(idAzienda=Environment.azienda,
                                                 preferito=True,
                                                 batchSize=None)
+
+        if indirizzi_email:
+            indirizzo_email_preferito = indirizzi_email[0]
+        else:
+            indirizzo_email_preferito = ''
+
 
         # Riempiamo la fattura elettronica
         pageData = {}
         pageData['dao'] = dao
         pageData['trasmittente'] = {
-            'codice': azienda.codice_fiscale,
+            'codice': azienda.codice_fiscale or azienda.partita_iva,
             'telefono': azienda.telefono,
-            'email': indirizzo_email_preferito[0].indirizzo,
+            'email': indirizzo_email_preferito,
             'codice_cup': azienda.codice_cup,
             'codice_cig': azienda.codice_cig
         }
@@ -142,6 +149,8 @@ def to_fatturapa(dao, progressivo, anag=None):
         pageData['modalita_pagamento'] = dao.pagamento_codice
 
         pageData['soggetto_emittente'] = 'CC'
+
+        pageData['trasporto'] = None
 
         return renderFatturaPA(pageData)
 

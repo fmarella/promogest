@@ -1077,6 +1077,13 @@ class TestataDocumento(Dao):
             return ""
 
     @property
+    def pagamento_codice(self):
+        if self.PG:
+            return self.PG.codice
+        else:
+            return ""
+
+    @property
     def ragione_sociale_cliente(self):
         if self.CLI:
             return self.CLI.ragione_sociale

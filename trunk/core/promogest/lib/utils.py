@@ -3621,4 +3621,12 @@ def tipoDocumentoFPA(operazione):
     #    return 'TD01'
     return 'TD01' # fattura
 
+def getCodicePagamento(denominazione):
+    from promogest.dao.Pagamento import Pagamento
+    daos = Pagamento().select(denominazioneEM=denominazione, batchSize=None)
+    if daos:
+        codice = daos[0].codice
+    else:
+        codice = None
+    return codice
 #end fattura PA
