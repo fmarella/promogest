@@ -109,7 +109,9 @@ class AnagraficaAziende(GladeWidget):
         #self.path_label.set_text(self.dao.percorso_immagine or '')
         self.logo_azienda.set_from_file(
             self.dao.percorso_immagine or "")
-
+        self.telefono_entry.set_text(self.dao.telefono or '')
+        self.codice_cup_entry.set_text(self.dao.codice_cup or '')
+        self.codice_cig_entry.set_text(self.dao.codice_cig or '')
         #self.percorso_immagine_entry.set_text(self.dao.percorso_immagine or '')
 
     def saveDao(self):
@@ -144,6 +146,11 @@ class AnagraficaAziende(GladeWidget):
                             self.numero_iscrizione_tribunale_entry.get_text()
         self.dao.codice_rea = self.codice_rea_entry.get_text()
         self.dao.matricola_inps = self.matricola_inps_entry.get_text()
+
+        self.dao.telefono = self.telefono_entry.get_text()
+        self.dao.codice_cup = self.codice_cup_entry.get_text()
+        self.dao.codice_cig = self.codice_cig_entry.get_text()
+
 
         self.dao.percorso_immagine = self.filename or ''
         #self.path_label.get_text() #+"/"+self.filena

@@ -7,22 +7,27 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <DatiTrasmissione>
       <IdTrasmittente>
         <IdPaese>IT</IdPaese>
-        <IdCodice>{{codice_trasmittente}}</IdCodice>
+        <IdCodice>{{trasmittente.codice}}</IdCodice>
       </IdTrasmittente>
       <ProgressivoInvio>{{trasmissione.progressivo}}</ProgressivoInvio>
       <FormatoTrasmissione>{{trasmissione.formato_trasmissione}}</FormatoTrasmissione>
       <CodiceDestinatario>{{trasmissione.codice_destinatario}}</CodiceDestinatario>
+      <ContattiTrasmittente>
+        <Telefono>{{trasmittente.telefono}}</Telefono>
+        <Email>{{trasmittente.email}}</Email>
+      </ContattiTrasmittente>
     </DatiTrasmissione>
     <CedentePrestatore>
       <DatiAnagrafici>
         <IdFiscaleIVA>
           <IdPaese>IT</IdPaese>
-          <IdCodice>{{cedente.partita_iva}}</IdCodice>
+          <IdCodice>{{trasmittente.codice}}</IdCodice>
         </IdFiscaleIVA>
         <Anagrafica>
             {% if cedente.denominazione %}
           <Denominazione>{{cedente.denominazione}}</Denominazione>
-            {% else %}
+            {% endif %}
+            {% if cedente.nome and cedente.cognome %}
             <Nome>{{cedente.nome}}</Nome>
             <Cognome>{{cedente.cognome}}</Cognome>
             {% endif %}
@@ -48,7 +53,9 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
       {% endif %}
       {% if cedente.iscrizioneREA_numeroREA %}
       <IscrizioneREA>
+          {% if cedente.iscrizioneREA_ufficio %}
           <Ufficio>{{cedente.iscrizioneREA_ufficio}}</Ufficio>
+          {% endif %}
           <NumeroREA>{{cedente.iscrizioneREA_numeroREA}}</NumeroREA>
           <CapitaleSociale>{{cedente.capitale_sociale}}</CapitaleSociale>
           <SocioUnico>{{cedente.socio_unico}}</SocioUnico>
@@ -64,7 +71,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
         </IdFiscaleIVA>
         <CodiceFiscale>{{committente.codice_fiscale}}</CodiceFiscale>
         <Anagrafica>
-            {% if committente.denominazione %}
+            {% if committente.denominazione != '' %}
           <Denominazione>{{committente.denominazione}}</Denominazione>
             {% else %}
             <Nome>{{committente.nome}}</Nome>
@@ -88,9 +95,52 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 			<DatiGeneraliDocumento>
 				<TipoDocumento>{{utils.tipoDocumentoFPA(dao.operazione)}}</TipoDocumento>
 				<Divisa>EUR</Divisa>
-				<Data>{{dao.data}}</Data>
+				<Data>{{dao.data|dateformat}}</Data>
 				<Numero>{{dao.numero}}</Numero>
+                <Art73>SI</Art73>
 			</DatiGeneraliDocumento>
+            <DatiOrdineAcquisto>
+                <RiferimentoNumeroLinea>1</RiferimentoNumeroLinea>
+                <IdDocumento>123</IdDocumento>
+                <CodiceCUP>{{trasmittente.codice_cup}}</CodiceCUP>
+                <CodiceCIG>{{trasmittente.codice_cig}}</CodiceCIG>
+            </DatiOrdineAcquisto>
+            <DatiContratto>
+                <RiferimentoNumeroLinea>1</RiferimentoNumeroLinea>
+                <IdDocumento>123</IdDocumento>
+                <Data>{{dao.data|dateformat}}</Data>
+                <NumItem>5</NumItem>
+                <CodiceCUP>{{trasmittente.codice_cup}}</CodiceCUP>
+                <CodiceCIG>{{trasmittente.codice_cig}}</CodiceCIG>
+            </DatiContratto>
+            <DatiConvenzione>
+                <RiferimentoNumeroLinea>1</RiferimentoNumeroLinea>
+                <IdDocumento>123</IdDocumento>
+                <Data>{{dao.data|dateformat}}</Data>
+                <NumItem>5</NumItem>
+                <CodiceCUP>{{trasmittente.codice_cup}}</CodiceCUP>
+                <CodiceCIG>{{trasmittente.codice_cig}}</CodiceCIG>
+            </DatiConvenzione>
+            <DatiRicezione>
+                <RiferimentoNumeroLinea>1</RiferimentoNumeroLinea>
+                <IdDocumento>123</IdDocumento>
+                <Data>{{dao.data|dateformat}}</Data>
+                <NumItem>5</NumItem>
+                <CodiceCUP>{{trasmittente.codice_cup}}</CodiceCUP>
+                <CodiceCIG>{{trasmittente.codice_cig}}</CodiceCIG>
+            </DatiRicezione>
+            <DatiTrasporto>
+                <DatiAnagraficiVettore>
+                    <IdFiscaleIVA>
+                        <IdPaese>IT</IdPaese>
+                        <IdCodice>24681012141</IdCodice>
+                    </IdFiscaleIVA>
+                    <Anagrafica>
+                        <Denominazione>Trasporto spa</Denominazione>
+                    </Anagrafica>
+                </DatiAnagraficiVettore>
+                <DataOraConsegna>2012-10-22T16:46:12.000+02:00</DataOraConsegna>
+            </DatiTrasporto>
 		</DatiGenerali>
 		<DatiBeniServizi>
             {% for riga in dao.righe %}
@@ -120,10 +170,12 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
             {% endfor %}
 		</DatiBeniServizi>
 		 <DatiPagamento>
-      <CondizioniPagamento>{{dao.condizioni_pagamento}}</CondizioniPagamento>
+             {% if dao.condizioni_pagamento %}
+                <CondizioniPagamento>{{dao.condizioni_pagamento}}</CondizioniPagamento>
+             {% endif %}
       {% for scadenza in dao.scadenze %}
       <DettaglioPagamento>
-        <ModalitaPagamento>{{ modalita_pagamento|nonone }}</ModalitaPagamento>
+        <ModalitaPagamento>{{ scadenza.pagamento }}</ModalitaPagamento>
         <DataScadenzaPagamento>{{ scadenza.data_pagamento|dateformat }}</DataScadenzaPagamento>
         <ImportoPagamento>{{ utils.mN(scadenza.importo, 2) }}</ImportoPagamento>
       </DettaglioPagamento>

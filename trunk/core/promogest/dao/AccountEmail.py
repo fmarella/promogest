@@ -63,6 +63,8 @@ class AccountEmail(Dao):
         elif k == 'indirizzo':
             dic = {k: and_(t_account_email.c.id_azienda==Azienda.schemaa,
                            t_account_email.c.indirizzo.ilike("%" + v + "%"))}
+        elif k == 'preferito':
+            dic = {k: t_account_email.c.preferito == True}
         return dic[k]
 
 std_mapper = mapper(AccountEmail, t_account_email)

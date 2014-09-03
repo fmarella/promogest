@@ -30,17 +30,17 @@ from  promogest.lib import utils
 from promogest.lib.sla2pdf.Sla2Pdf_ng import Sla2Pdf_ng
 from promogest.lib.sla2pdf.SlaTpl2Sla import SlaTpl2Sla as SlaTpl2Sla_ng
 from promogest.dao.Azienda import Azienda
+from promogest.dao.AccountEmail import AccountEmail
 
 from jinja2 import Environment as Env
 from jinja2 import FileSystemLoader, FileSystemBytecodeCache, environmentfilter, Markup, escape
 
 
-def dateformat(value, format='%Y/%m/%d'):
+def dateformat(value):
     if not value:
         return ""
     else:
-        return value.strftime(format)
-
+        return value.strftime('%Y-%m-%d')
 
 def noNone(value):
     if value == "None":
@@ -58,9 +58,11 @@ def renderFatturaPA(pageData):
     env.filters['dateformat'] = dateformat
     env.filters['nonone'] = noNone
     env.globals['utils'] = utils
+    from pprint import pprint
+    pprint (pageData)
     return env.get_template('/' + 'fatturapa_template.xml').render(pageData=pageData,
                                                                    dao=pageData['dao'],
-                                                                   codice_trasmittente=pageData['codice_trasmittente'],
+                                                                   trasmittente=pageData['trasmittente'],
                                                                    trasmissione=pageData['trasmissione'],
                                                                    cedente=pageData['cedente'],
                                                                    committente=pageData['committente'],
@@ -78,19 +80,29 @@ def to_fatturapa(dao, progressivo, anag=None):
     if dao.__class__.__name__ == 'TestataDocumento':
         dao.totali
         azienda = Azienda().getRecord(id=Environment.azienda)
+        indirizzo_email_preferito = AccountEmail().select(idAzienda=Environment.azienda,
+                                                preferito=True,
+                                                batchSize=None)
+
         # Riempiamo la fattura elettronica
         pageData = {}
         pageData['dao'] = dao
-        pageData['codice_trasmittente'] = azienda.codice_fiscale
+        pageData['trasmittente'] = {
+            'codice': azienda.codice_fiscale,
+            'telefono': azienda.telefono,
+            'email': indirizzo_email_preferito[0].indirizzo,
+            'codice_cup': azienda.codice_cup,
+            'codice_cig': azienda.codice_cig
+        }
         # campi di trasmissione
         pageData['trasmissione'] = {
-            'progressivo': progressivo,
-            'formato_trasmissione': '11',
+            'progressivo': str(progressivo)*5,
+            'formato_trasmissione': 'SDI10',
             'codice_destinatario': dao.CLI.codice
         }
         pageData['cedente'] = {
             'partita_iva': '',
-            'denominazione': azienda.ragione_sociale,
+            'denominazione': azienda.denominazione,
             'nome': '',
             'cognome': '',
             'regime_fiscale': 'RF01',
@@ -127,7 +139,7 @@ def to_fatturapa(dao, progressivo, anag=None):
             'sede_nazione': 'IT',
         }
 
-        pageData['modalita_pagamento'] = dao.PG.codice
+        pageData['modalita_pagamento'] = dao.pagamento_codice
 
         pageData['soggetto_emittente'] = 'CC'
 
