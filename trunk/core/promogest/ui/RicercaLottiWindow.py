@@ -26,7 +26,6 @@ from promogest import Environment as env
 from promogest.ui.gtk_compat import *
 from promogest.ui.GladeWidget import GladeWidget
 from promogest.dao.RicercaLottiUtils import ricerca_lotto
-from promogest.lib.utils import pbar
 from promogest.ui.widgets.HTMLViewerWidget import HTMLViewerWidget
 
 
@@ -53,7 +52,7 @@ class RicercaLottiWindow(GladeWidget):
             return
         anno = int(self.anno_entry.get_text())
 
-        result = ricerca_lotto(num_lotto, anno, progress=self.progressbar1)
+        result = ricerca_lotto(num_lotto, anno, progress=self.html_viewer.progressbar)
 
         pageData = {
             'file': 'ricerca_lotti.html',

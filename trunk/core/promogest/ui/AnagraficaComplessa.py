@@ -880,6 +880,10 @@ class Anagrafica(GladeWidget):
     def on_report_farmacia_veterinaria_activate(self, widget):
         self.reportHandler.buildPreviewWidget(veter=True)
 
+    def on_report_mov_sped_menuitem_activate(self, widget):
+        from .ReportMovimentiSpedizioniWindow import ReportMovimentiSpedizioniWindow
+        anag = ReportMovimentiSpedizioniWindow(self)
+
     def on_records_print_progress_dialog_response(self, dialog, responseId):
         if responseId == GTK_RESPONSE_CANCEL:
             self.__cancelOperation = True

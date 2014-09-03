@@ -67,6 +67,9 @@ if posso("ADR"):
     from promogest.modules.ADR.ui import AnagraficaDocumentiEditADRExt
 
 
+from promogest.ui.StoricoDocumentoPage import StoricoDocumentoPage
+
+
 class AnagraficaDocumentiEdit(AnagraficaEdit):
     """ Modifica un record dei documenti """
 
@@ -185,6 +188,10 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self.pagamenti_page = PagamentiNotebookPage(self)
         self.notebook.append_page(self.pagamenti_page.pagamenti_vbox,
                                 self.pagamenti_page.pagamenti_page_label)
+
+        self.storico_page = StoricoDocumentoPage(self)
+        self.notebook.append_page(self.storico_page.storico_vbox,
+                                self.storico_page.storico_page_label)
 
     def on_scorporo_button_clicked(self, button):
         """ Bottone con una "s" minuscola, che permette di effettuare "al volo"

@@ -38,9 +38,19 @@
         <property name="can_focus">False</property>
         <property name="spacing">5</property>
         <child>
+          <object class="GtkProgressBar" id="progressbar">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
           <object class="GtkButton" id="pdf_button">
             <property name="label">gtk-print</property>
-            <property name="use_action_appearance">False</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
@@ -57,7 +67,6 @@
         <child>
           <object class="GtkButton" id="csv_button">
             <property name="label" translatable="yes">CREA CSV</property>
-            <property name="use_action_appearance">False</property>
             <property name="visible">True</property>
             <property name="sensitive">False</property>
             <property name="can_focus">True</property>

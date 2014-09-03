@@ -1,0 +1,22 @@
+{% extends 'index.html' %}
+{% block body %}
+        <div class="storico">
+        <ul>
+            {% if pageData['padre'] %}
+                <li class="detail">{{pageData['padre'].operazione}} {{pageData['padre'].protocollo}} - {{pageData['padre'].data_documento|dateformat}} Rif.interni N. {{pageData['padre'].numero}}</li>
+            {% endif %}
+            <ul>
+                {% if pageData['dao'] %}
+                <li class="detail-red">{{pageData['dao'].operazione}} {{pageData['dao'].protocollo}} - {{pageData['dao'].data_documento|dateformat}} Rif.interni N. {{pageData['dao'].numero}}</li>
+                {% endif %}
+                <ul>
+                    {% for figlio in pageData['figli'] %}
+                        {% if figlio %}
+                        <li class="detail">{{figlio.operazione}} {{figlio.protocollo}} - {{figlio.data_documento|dateformat}} Rif.interni N. {{figlio.numero}}</li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </ul>
+        </ul>
+        </div>
+{% endblock %}

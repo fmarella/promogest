@@ -41,6 +41,9 @@ from promogest.modules.Pagamenti.dao.TestataDocumentoScadenza import TestataDocu
 from promogest.lib.utils import *
 from promogest.ui.gtk_compat import *
 
+import datetime
+from promogest.dao.StoricoDocumento import add_relazione
+
 
 class DuplicazioneDocumento(GladeWidget):
 
@@ -115,6 +118,7 @@ class DuplicazioneDocumento(GladeWidget):
             note = ""
 
         mantieni_pagamenti = self.mantieni_pagamenti_checkbutton.get_active()
+        associa_doc_padre_figlio = self.associa_doc_padre_figlio_checkbutton.get_active()
 
         newDao = TestataDocumento()
         newDao.data_documento = stringToDate(self.data_documento_entry.get_text())
@@ -309,6 +313,9 @@ class DuplicazioneDocumento(GladeWidget):
             newDao.documento_saldato = False
 
         newDao.persist()
+
+        if associa_doc_padre_figlio:
+            add_relazione(self.dao.id, newDao.id)
 
         if posso("GN"):
             if self.dao.data_inizio_noleggio or self.dao.data_fine_noleggio:

@@ -33,10 +33,25 @@
                   <object class="GtkTable" id="table19">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="n_rows">8</property>
+                    <property name="n_rows">10</property>
                     <property name="n_columns">2</property>
                     <property name="column_spacing">3</property>
                     <property name="row_spacing">5</property>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
                     <child>
                       <object class="GtkLabel" id="label495">
                         <property name="visible">True</property>
@@ -48,7 +63,7 @@
                         <property name="top_attach">1</property>
                         <property name="bottom_attach">2</property>
                         <property name="x_options">GTK_FILL</property>
-                        <property name="y_options"></property>
+                        <property name="y_options"/>
                         <property name="x_padding">10</property>
                       </packing>
                     </child>
@@ -61,7 +76,7 @@
                       </object>
                       <packing>
                         <property name="x_options">GTK_FILL</property>
-                        <property name="y_options"></property>
+                        <property name="y_options"/>
                         <property name="x_padding">10</property>
                       </packing>
                     </child>
@@ -78,7 +93,7 @@
                         <property name="top_attach">1</property>
                         <property name="bottom_attach">2</property>
                         <property name="x_options">GTK_FILL</property>
-                        <property name="y_options"></property>
+                        <property name="y_options"/>
                       </packing>
                     </child>
                     <child>
@@ -113,7 +128,7 @@
                         <property name="top_attach">2</property>
                         <property name="bottom_attach">3</property>
                         <property name="x_options">GTK_FILL</property>
-                        <property name="y_options"></property>
+                        <property name="y_options"/>
                         <property name="x_padding">10</property>
                       </packing>
                     </child>
@@ -128,7 +143,7 @@
                         <property name="top_attach">3</property>
                         <property name="bottom_attach">4</property>
                         <property name="x_options">GTK_FILL</property>
-                        <property name="y_options"></property>
+                        <property name="y_options"/>
                         <property name="x_padding">10</property>
                       </packing>
                     </child>
@@ -144,7 +159,7 @@
                         <property name="top_attach">2</property>
                         <property name="bottom_attach">3</property>
                         <property name="x_options">GTK_FILL</property>
-                        <property name="y_options"></property>
+                        <property name="y_options"/>
                       </packing>
                     </child>
                     <child>
@@ -159,7 +174,7 @@
                         <property name="top_attach">3</property>
                         <property name="bottom_attach">4</property>
                         <property name="x_options">GTK_FILL</property>
-                        <property name="y_options"></property>
+                        <property name="y_options"/>
                       </packing>
                     </child>
                     <child>
@@ -170,17 +185,16 @@
                         <property name="label" translatable="yes">Cliente</property>
                       </object>
                       <packing>
-                        <property name="top_attach">6</property>
-                        <property name="bottom_attach">7</property>
+                        <property name="top_attach">8</property>
+                        <property name="bottom_attach">9</property>
                         <property name="x_options">GTK_FILL</property>
-                        <property name="y_options"></property>
+                        <property name="y_options"/>
                         <property name="x_padding">10</property>
                       </packing>
                     </child>
                     <child>
                       <object class="GtkCheckButton" id="mantieni_sconti_checkbutton">
                         <property name="label" translatable="yes">Mantieni sconti</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
@@ -192,26 +206,29 @@
                         <property name="right_attach">2</property>
                         <property name="top_attach">4</property>
                         <property name="bottom_attach">5</property>
-                        <property name="y_options"></property>
+                        <property name="y_options"/>
                       </packing>
                     </child>
                     <child>
                       <object class="PersonaGiuridicaSearchWidget" id="id_persona_giuridica_customcombobox">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
+                        <property name="primary_icon_activatable">False</property>
+                        <property name="secondary_icon_activatable">False</property>
+                        <property name="primary_icon_sensitive">True</property>
+                        <property name="secondary_icon_sensitive">True</property>
                       </object>
                       <packing>
                         <property name="left_attach">1</property>
                         <property name="right_attach">2</property>
-                        <property name="top_attach">6</property>
-                        <property name="bottom_attach">7</property>
-                        <property name="y_options"></property>
+                        <property name="top_attach">8</property>
+                        <property name="bottom_attach">9</property>
+                        <property name="y_options"/>
                       </packing>
                     </child>
                     <child>
                       <object class="GtkCheckButton" id="note_check">
                         <property name="label" translatable="yes">Inserisci RIf. in note piè di pagina </property>
-                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
@@ -221,14 +238,13 @@
                       <packing>
                         <property name="left_attach">1</property>
                         <property name="right_attach">2</property>
-                        <property name="top_attach">7</property>
-                        <property name="bottom_attach">8</property>
+                        <property name="top_attach">9</property>
+                        <property name="bottom_attach">10</property>
                       </packing>
                     </child>
                     <child>
                       <object class="GtkCheckButton" id="mantieni_pagamenti_checkbutton">
                         <property name="label" translatable="yes">Mantieni pagamenti</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
@@ -241,17 +257,41 @@
                         <property name="right_attach">2</property>
                         <property name="top_attach">5</property>
                         <property name="bottom_attach">6</property>
-                        <property name="y_options"></property>
+                        <property name="y_options"/>
                       </packing>
                     </child>
                     <child>
-                      <placeholder/>
+                      <object class="GtkCheckButton" id="associa_doc_padre_figlio_checkbutton">
+                        <property name="label" translatable="yes">Associa il nuovo documento al documento di origine</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">False</property>
+                        <property name="tooltip_text" translatable="yes">Rimuovendo eventuali pagamenti il documento copiato risulterà contabilmente aperto.</property>
+                        <property name="yalign">0.68000000715255737</property>
+                        <property name="draw_indicator">True</property>
+                      </object>
+                      <packing>
+                        <property name="left_attach">1</property>
+                        <property name="right_attach">2</property>
+                        <property name="top_attach">6</property>
+                        <property name="bottom_attach">7</property>
+                        <property name="y_options"/>
+                      </packing>
                     </child>
                     <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
+                      <object class="GtkCheckButton" id="abbina_quantita_checkbutton">
+                        <property name="label" translatable="yes">Abbina le quantità al nuovo documento</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">False</property>
+                        <property name="draw_indicator">True</property>
+                      </object>
+                      <packing>
+                        <property name="left_attach">1</property>
+                        <property name="right_attach">2</property>
+                        <property name="top_attach">7</property>
+                        <property name="bottom_attach">8</property>
+                      </packing>
                     </child>
                   </object>
                 </child>
@@ -291,7 +331,6 @@
             <property name="layout_style">end</property>
             <child>
               <object class="GtkButton" id="confirm_button">
-                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
