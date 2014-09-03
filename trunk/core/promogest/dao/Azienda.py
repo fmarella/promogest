@@ -42,19 +42,19 @@ if "telefono" not in c_t_azienda:
     conn = engine.connect()
     ctx = MigrationContext.configure(conn)
     op = Operations(ctx)
-    op.add_column('azienda', Column('telefono', String(12), nullable=True), schema=params["schema"])
+    op.add_column('azienda', Column('telefono', String(12), nullable=True), schema=params["mainSchema"])
 
 if "codice_cup" not in c_t_azienda:
     conn = engine.connect()
     ctx = MigrationContext.configure(conn)
     op = Operations(ctx)
-    op.add_column('azienda', Column('codice_cup', String(15), nullable=True), schema=params["schema"])
+    op.add_column('azienda', Column('codice_cup', String(15), nullable=True), schema=params["mainSchema"])
 
 if "codice_cig" not in c_t_azienda:
     conn = engine.connect()
     ctx = MigrationContext.configure(conn)
     op = Operations(ctx)
-    op.add_column('azienda', Column('codice_cig', String(15), nullable=True), schema=params["schema"])
+    op.add_column('azienda', Column('codice_cig', String(15), nullable=True), schema=params["mainSchema"])
 
 
 class Azienda(Dao):
