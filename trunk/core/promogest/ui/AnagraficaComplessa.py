@@ -660,9 +660,9 @@ class Anagrafica(GladeWidget):
 
                 azienda = Azienda().getRecord(id=Environment.azienda)
                 if azienda.codice_fiscale:
-                    current_name = "".join(['IT', azienda.codice_fiscale, '_', str(progressivo)*5, '.xml'])
+                    current_name = "".join(['IT', azienda.codice_fiscale, '_', str(progressivo).zfill(5), '.xml'])
                 if azienda.partita_iva:
-                    current_name = "".join(['IT', azienda.partita_iva, '_', str(progressivo)*5, '.xml'])
+                    current_name = "".join(['IT', azienda.partita_iva, '_', str(progressivo).zfill(5), '.xml'])
 
                 saveDialog.set_filter(filter1)
                 saveDialog.set_current_name(current_name)

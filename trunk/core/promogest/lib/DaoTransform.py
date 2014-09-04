@@ -50,6 +50,12 @@ def noNone(value):
     else:
         return value
 
+def datetimelongformat(value):
+    if not value:
+        return ''
+    else:
+        return value.strftime('%Y-%m-%dT%H:%M:%S.000+01:00')
+
 
 def renderFatturaPA(pageData):
     env = Env(loader=FileSystemLoader([os.path.join('fattura_pa_template')]),
@@ -103,7 +109,7 @@ def to_fatturapa(dao, progressivo, anag=None):
         }
         # campi di trasmissione
         pageData['trasmissione'] = {
-            'progressivo': str(progressivo)*5,
+            'progressivo': str(progressivo).zfill(5),
             'formato_trasmissione': 'SDI10',
             'codice_destinatario': dao.CLI.codice
         }
@@ -151,6 +157,8 @@ def to_fatturapa(dao, progressivo, anag=None):
         pageData['soggetto_emittente'] = 'CC'
 
         pageData['trasporto'] = None
+        pageData['contratto'] = None
+        pageData['convenzione'] = None
 
         return renderFatturaPA(pageData)
 

@@ -121,6 +121,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
                 <CodiceCUP>{{trasmittente.codice_cup}}</CodiceCUP>
                 <CodiceCIG>{{trasmittente.codice_cig}}</CodiceCIG>
             </DatiOrdineAcquisto>
+            {% if pageData['contratto'] %}
             <DatiContratto>
                 <RiferimentoNumeroLinea>1</RiferimentoNumeroLinea>
                 <IdDocumento>{{dao.numero}}</IdDocumento>
@@ -129,6 +130,8 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
                 <CodiceCUP>{{trasmittente.codice_cup}}</CodiceCUP>
                 <CodiceCIG>{{trasmittente.codice_cig}}</CodiceCIG>
             </DatiContratto>
+            {% endif %}
+            {% if pageData['convenzione'] %}
             <DatiConvenzione>
                 <RiferimentoNumeroLinea>1</RiferimentoNumeroLinea>
                 <IdDocumento>{{dao.numero}}</IdDocumento>
@@ -137,6 +140,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
                 <CodiceCUP>{{trasmittente.codice_cup}}</CodiceCUP>
                 <CodiceCIG>{{trasmittente.codice_cig}}</CodiceCIG>
             </DatiConvenzione>
+            {% endif %}
             <DatiRicezione>
                 <RiferimentoNumeroLinea>1</RiferimentoNumeroLinea>
                 <IdDocumento>{{dao.numero}}</IdDocumento>
@@ -156,7 +160,9 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
                         <Denominazione>Trasporto spa</Denominazione>
                     </Anagrafica>
                 </DatiAnagraficiVettore>
-                <DataOraConsegna>2012-10-22T16:46:12.000+02:00</DataOraConsegna>
+                {% if dao.fine_trasporto %}
+                <DataOraConsegna>{{dao.fine_trasporto|datetimelongformat}}</DataOraConsegna>
+                {% endif %}
             </DatiTrasporto>
             {% endif %}
 		</DatiGenerali>
