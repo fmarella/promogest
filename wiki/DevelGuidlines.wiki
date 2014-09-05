@@ -13,6 +13,13 @@ DAO:
 
 http://pythonguy.wordpress.com/2011/08/17/sqlalchemy-tips-performance/
 
+== Creazione di una nuova tabella ==
+
+Inserire in ./core/promogest/dao/DaoOrderedImport.py il riferimento dopo la/le tabella/e da cui dipende la nuova tabella.
+
+TODO: utilizzare session.close e delete_pickle
+
+
 = Custom Widgets =
 
 == HTMLViewerWidget ==
