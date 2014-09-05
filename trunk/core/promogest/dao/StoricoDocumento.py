@@ -40,6 +40,7 @@ try:
     t_storico_documento = Table('storico_documento', params['metadata'], schema=params['schema'], autoload=True)
 
 except:
+    session.close()
     t_storico_documento = Table('storico_documento', params["metadata"],
                                 Column('id', Integer, primary_key=True),
                                 Column('padre', Integer, ForeignKey(fk_prefix + 'testata_documento.id')),
