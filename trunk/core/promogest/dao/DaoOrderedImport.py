@@ -129,6 +129,8 @@ def orderedImport():
     from promogest.dao.NumeroLottoTemp import t_numero_lotto_temp
     from promogest.dao.DestinazioneMerce import t_destinazione_merce #v
 
+    from promogest.dao.StoricoDocumento import t_storico_documento #v
+
     from promogest.dao.ListinoCategoriaCliente import t_listino_categoria_cliente #v
 
     from promogest.dao.ScontoVenditaDettaglio import t_sconti_vendita_dettaglio

@@ -25,7 +25,7 @@ from sqlalchemy import Table, Column, Integer, ForeignKey, DateTime, and_, Text
 from sqlalchemy.orm import mapper, relation, backref
 from sqlalchemy.orm.exc import NoResultFound
 
-from promogest.Environment import params, fk_prefix, session
+from promogest.Environment import params, fk_prefix, session, delete_pickle
 from promogest.dao.Dao import Dao
 from promogest.dao.TestataDocumento import t_testata_documento, TestataDocumento
 
@@ -54,7 +54,7 @@ except:
                                 schema=params['schema'])
 
     t_storico_documento.create(checkfirst=True)
-
+    delete_pickle()
 
 class StoricoDocumento(Dao):
     def __init__(self, req=None, arg=None):
