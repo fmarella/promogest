@@ -39,6 +39,7 @@ if Environment.pg3:
 else:
     from webkit import WebView
 
+from promogest.dao.StoricoDocumento import StoricoDocumento
 from promogest.dao.StoricoDocumento import get_padre, get_figli, add_relazione
 
 class StoricoDocumentoPage(GladeWidget):

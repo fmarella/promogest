@@ -25,9 +25,10 @@ from sqlalchemy import Table, Column, Integer, ForeignKey, DateTime, and_, Text
 from sqlalchemy.orm import mapper, relation, backref
 from sqlalchemy.orm.exc import NoResultFound
 
-from promogest.Environment import params, fk_prefix, session, delete_pickle
+from promogest.Environment import params, fk_prefix, session, delete_pickle, restart_program
 from promogest.dao.Dao import Dao
 from promogest.dao.TestataDocumento import t_testata_documento, TestataDocumento
+from promogest.lib.utils import messageInfo
 
 NEUTRO = 0
 ASCALARE = 1
@@ -55,6 +56,8 @@ except:
 
     t_storico_documento.create(checkfirst=True)
     delete_pickle()
+    messageInfo(msg="HO AGGIUNTO LA TABELLA STORICO DOCUMENTI, RIAVVIO IL PROMOGEST")
+    restart_program()
 
 class StoricoDocumento(Dao):
     def __init__(self, req=None, arg=None):
