@@ -52,7 +52,8 @@ except:
                                 Column('stato', Integer, nullable=True),
                                 Column('tipo', Integer, nullable=True, default=NEUTRO),
                                 Column('note', Text, nullable=True),
-                                schema=params['schema'])
+                                schema=params['schema'],
+                                extend_existing=True)
 
     t_storico_documento.create(checkfirst=True)
     delete_pickle()
