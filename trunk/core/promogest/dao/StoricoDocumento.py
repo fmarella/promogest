@@ -150,11 +150,16 @@ def get_figli(doc_id):
     :return: i documenti figli
     '''
     if doc_id:
-        objs = session.query(StoricoDocumento).filter(StoricoDocumento.padre==doc_id).all()
+        try:
+            objs = session.query(StoricoDocumento).filter(StoricoDocumento.padre==doc_id).all()
+        except:
+            return []
         docs = []
         for obj in objs:
             docs.append(TestataDocumento().getRecord(obj.figlio))
         return docs
+    else:
+        return []
 
 def rimuovi_da_storico(doc_id):
     '''
