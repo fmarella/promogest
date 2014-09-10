@@ -38,6 +38,8 @@ Per ciascun ente della PA presente in anagrafica cliente inserire le informazion
 
 == Creazione di una file XML per la Fattura PA ==
 
-In anagrafica documenti, creare un documento e salvarlo. Selezionarlo nella lista e fare click su Esporta Fattura PA. Comparira una schermata per il salvataggio del file XML su disco, lasciate il nome del file inalterato e selezionate Salva.
+In anagrafica documenti, creare un documento e salvarlo.
 
-Ora è pronto il file XML per l'invio alla pubblica amministrazione.
+Selezionare il documento nella lista e fare click su Esporta Fattura PA. Comparirà una schermata per il salvataggio del file XML su disco, lasciate il nome del file inalterato e selezionate Salva.
+
+Ora il file XML è pronto per l'invio alla pubblica amministrazione.
