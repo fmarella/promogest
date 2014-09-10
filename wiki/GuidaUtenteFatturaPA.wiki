@@ -1,5 +1,7 @@
 #summary Guida Utente Fattura PA.
 
+== Fase preparatoria ==
+
 Informazioni da compilare prima di usare la fattura PA.
 
 Dati azienda:
@@ -32,3 +34,10 @@ Nell'anagrafica dei pagamenti inserire in corrispondenza di ciascun pagamento un
   * MP19 per carta multicard
 
 Per ciascun ente della PA presente in anagrafica cliente inserire le informazioni generali di ragione sociale, denominazione, partita IVA, codice fiscale, sede. Il campo *codice* deve essere valorizzato con il codice dell'ufficio dell’amministrazione dello stato destinatario della fattura, definito dall'amministrazione di appartenenza come riportato nella rubrica “Indice PA”.
+
+
+== Creazione di una file XML per la Fattura PA ==
+
+In anagrafica documenti, creare un documento e salvarlo. Selezionarlo nella lista e fare click su Esporta Fattura PA. Comparira una schermata per il salvataggio del file XML su disco, lasciate il nome del file inalterato e selezionate Salva.
+
+Ora è pronto il file XML per l'invio alla pubblica amministrazione.
