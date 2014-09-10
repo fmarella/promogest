@@ -43,3 +43,9 @@ In anagrafica documenti, creare un documento e salvarlo.
 Selezionare il documento nella lista e fare click su Esporta Fattura PA. Comparirà una schermata per il salvataggio del file XML su disco, lasciate il nome del file inalterato e selezionate Salva.
 
 Ora il file XML è pronto per l'invio alla pubblica amministrazione.
+
+== Risorse aggiuntive ==
+
+  # Come firmare la Fattura PA? Leggi qui: http://fatturapa.gov.it/export/fatturazione/it/c-12.htm
+  # Come inviare la Fattura PA? Leggi qui: http://fatturapa.gov.it/export/fatturazione/it/c-13.htm
+  # Come faccio a monitorare lo stato del mio invio? Leggi qui: http://fatturapa.gov.it/export/fatturazione/it/c-14.htm
