@@ -45,7 +45,7 @@ def ricerca_movimenti_spedizione(da_data, al_data, progress=None):
         figli = get_figli(ordine.id)
         for figlio in figli:
             if figlio.operazione in tipi_ddt_figlio:
-                figlio._padre = get_padre(figlio.id)
+                figlio._padre = ordine #get_padre(figlio.id)
                 res.append(figlio)
 
     if progress:
