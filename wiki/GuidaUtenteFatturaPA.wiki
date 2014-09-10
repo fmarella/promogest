@@ -1,0 +1,32 @@
+#summary Guida Utente Fattura PA.
+
+Informazioni da compilare prima di usare la fattura PA.
+
+Dati azienda:
+  * denominazione o ragione sociale
+  * telefono
+  * numeri CIG, CUP e REA
+  * codice fiscale o partita IVA
+  * account di posta elettronica (inserire anche solo l'indirizzo email)
+  * informazioni sulle sedi operativa e legale
+
+Nell'anagrafica dei pagamenti inserire in corrispondenza di ciascun pagamento un codice appropriato tra i seguenti:
+  * MP01 per contanti 
+  * MP02 per assegno 
+  * MP03 per assegno circolare 
+  * MP04 per contanti presso Tesoreria 
+  * MP05 per bonifico 
+  * MP06 per vaglia cambiario 
+  * MP07 per bollettino bancario 
+  * MP08 per carta di credito 
+  * MP09 per RID 
+  * MP10 per RID utenze 
+  * MP11 per RID veloce 
+  * MP12 per Riba 
+  * MP13 per MAV 
+  * MP14 per quietanza erario stato 
+  * MP15 per giroconto su conti di contabilità speciale 
+  * MP16 per domiciliazione bancaria
+  * MP17 per domiciliazione postale 
+  * MP18 per bollettino di c/c postale 
+  * MP19 per carta multicard
