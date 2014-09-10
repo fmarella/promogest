@@ -42,7 +42,7 @@ from promogest.lib.utils import *
 from promogest.ui.gtk_compat import *
 
 import datetime
-from promogest.dao.StoricoDocumento import add_relazione
+from promogest.dao.StoricoDocumento import add_relazione, CHIUSO, modifica_relazione, controlla_quantita
 
 
 class DuplicazioneDocumento(GladeWidget):
@@ -316,6 +316,11 @@ class DuplicazioneDocumento(GladeWidget):
 
         if associa_doc_padre_figlio:
             add_relazione(self.dao.id, newDao.id)
+            if controlla_quantita(self.dao):
+                modifica_relazione(self.dao.id, stato=CHIUSO)
+                self.dao.totale_pagato = self.dao._totaleScontato
+                self.dao.totale_sospeso = Decimal(0)
+                self.dao.documento_saldato = True
 
         if posso("GN"):
             if self.dao.data_inizio_noleggio or self.dao.data_fine_noleggio:

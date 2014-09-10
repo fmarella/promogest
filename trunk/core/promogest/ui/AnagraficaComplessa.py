@@ -886,6 +886,8 @@ class Anagrafica(GladeWidget):
     def on_report_mov_sped_menuitem_activate(self, widget):
         from .ReportMovimentiSpedizioniWindow import ReportMovimentiSpedizioniWindow
         anag = ReportMovimentiSpedizioniWindow(self)
+        anag.placeWindow(anag.getTopLevel())
+        anag.getTopLevel().show_all()
 
     def on_records_print_progress_dialog_response(self, dialog, responseId):
         if responseId == GTK_RESPONSE_CANCEL:

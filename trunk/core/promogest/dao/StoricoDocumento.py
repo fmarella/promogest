@@ -27,14 +27,23 @@ from sqlalchemy.orm.exc import NoResultFound
 
 from promogest.Environment import params, fk_prefix, session, delete_pickle, restart_program
 from promogest.dao.Dao import Dao
-from promogest.dao.TestataDocumento import t_testata_documento, TestataDocumento
+from promogest.dao.TestataDocumento import TestataDocumento
 from promogest.lib.utils import messageInfo
+from promogest.dao.Operazione import Operazione
+
 
 NEUTRO = 0
 ASCALARE = 1
-STATO = (
+TIPO = (
     (0, 'Neutro'),
     (1, 'A scalare')
+)
+
+CHIUSO = 0
+APERTO = 1
+STATO = (
+    (0, "Chiuso"),
+    (1, "Aperto")
 )
 
 try:
@@ -76,11 +85,21 @@ class StoricoDocumento(Dao):
 
 
 std_mapper = mapper(StoricoDocumento, t_storico_documento)
-    # ,
-    #                 properties = {
-    #                     'children': relation(StoricoDocumento,
-    #                                          backref=backref('parent'), remote_side=[t_testata_documento.c.id])
-    #                 })
+
+
+def modifica_relazione(padre_id, stato=None, tipo=None):
+    storico = None
+    try:
+        storico = session.query(StoricoDocumento).filter(StoricoDocumento.padre == padre_id).one()
+    except NoResultFound:
+        return
+    if stato:
+        storico.stato = stato
+        if stato == CHIUSO:
+            storico.data_chiusura = datetime.date.today()
+        elif stato == APERTO:
+            storico.ultima_modifica = datetime.date.today()
+
 
 def add_relazione(padre_id, figlio_id):
     '''
@@ -154,3 +173,38 @@ def rimuovi_da_storico(doc_id):
             session.delete(obj)
         except NoResultFound:
             pass
+
+def controlla_quantita(ordine):
+
+    # costruisco un dizionario con gli id articolo e le quantità richieste per ciascun articolo
+    qta_ordine = {}
+
+    tipo = Operazione().getRecord(id=ordine.operazione)
+    if tipo.segno != '' and tipo.segno is not None:
+        tipoDOC = "MOV"
+    else:
+        tipoDOC = "DOC"
+
+    for r in ordine.righe:
+        if (tipoDOC == "MOV" and r.id_articolo == None) or tipoDOC == "DOC":
+            continue
+        else:
+            # riga movimento
+            qta_ordine[r.id_articolo] = r.quantita
+
+    # raccolgo le quantità già inserite nei precedenti DDT
+    qta_richieste = {}
+    objs_figli = get_figli(ordine.id)
+    for figlio in objs_figli:
+        for r in figlio.righe:
+            if r.id_articolo not in qta_richieste.keys():
+                qta_richieste[r.id_articolo] = r.quantita
+            else:
+                qta_richieste[r.id_articolo] += r.quantita
+
+    posso_chiudere = True
+    for k in qta_ordine:
+        if qta_ordine[k] - qta_richieste[k] != 0:
+            posso_chiudere = False
+
+    return posso_chiudere
