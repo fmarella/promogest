@@ -884,8 +884,9 @@ class Anagrafica(GladeWidget):
         self.reportHandler.buildPreviewWidget(veter=True)
 
     def on_report_mov_sped_menuitem_activate(self, widget):
+        daos = get_selected_daos(self.anagrafica_filter_treeview)
         from .ReportMovimentiSpedizioniWindow import ReportMovimentiSpedizioniWindow
-        anag = ReportMovimentiSpedizioniWindow(self)
+        anag = ReportMovimentiSpedizioniWindow(self, daos=daos)
         anag.placeWindow(anag.getTopLevel())
         anag.getTopLevel().show_all()
 

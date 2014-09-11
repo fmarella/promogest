@@ -1,7 +1,6 @@
 {% extends 'index.html' %}
 {% block body %}
         <p style="text-align: center; font-size:12px;"> Riepilogo movimenti di spedizione </p>
-        <p style="text-align: center; font-size:12px;"> dal {{pageData['data_inizio_report']|dateformat}} al {{pageData['data_fine_report']|dateformat}}</p>
         <table cellpadding="5" cellspacing="5" border="0">
             <tr style="">
                 <th style="width:5%;">N.</th>
@@ -19,7 +18,7 @@
                     <td style="text-align:center;font-size:10px;">{{riga.descrizione}}</td>
                     <td style="text-align:center;font-size:10px;">{{riga.quantita}} {{riga.unita_base}}</td>
                     <td style="text-align:center;font-size:10px;">{{dao.totale_colli}}</td>
-                    <td style="text-align:center;font-size:10px;">{{dao._padre.operazione}}</td>
+                    <td style="text-align:center;font-size:10px;">{{dao._padre.operazione}} N.{{dao._padre.numero}} del {{dao._padre.data_documento|dateformat}}</td>
                 </tr>
                 {% endfor %}
             {% endfor %}

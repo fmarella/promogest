@@ -20,47 +20,37 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-import datetime
-
-from promogest.Environment import session, workingYear
 from promogest.ui.GladeWidget import GladeWidget
 from promogest.lib.utils import pbar
 from promogest.ui.widgets.HTMLViewerWidget import HTMLViewerWidget
-from promogest.dao.TestataDocumento import TestataDocumento
-from promogest.dao.StoricoDocumento import get_figli, get_padre
+from promogest.dao.StoricoDocumento import get_padre
 
-def ricerca_movimenti_spedizione(da_data, al_data, progress=None):
+
+def ricerca_movimenti_spedizione(daos, progress=None):
     tipi_ddt_figlio = ['DDT vendita', 'DDT vendita diretta']
-    # Tutti i documenti (ordini) non saldati dall'inizio dell'anno
-    ordini = session.query(TestataDocumento).filter(TestataDocumento.data_documento >= da_data,
-                                                    TestataDocumento.operazione == 'Ordine da cliente',
-                                                    TestataDocumento.documento_saldato == False).all()
+
     res = []
 
-    for ordine in ordini:
+    for doc in daos:
         if progress:
-            pbar(progress, parziale=ordini.index(ordine), totale=len(ordini),
-                text="Attendere...", noeta=True)
-        # ottengo tutti i figli di questo ordine
-        figli = get_figli(ordine.id)
-        for figlio in figli:
-            if figlio.operazione in tipi_ddt_figlio:
-                figlio._padre = ordine #get_padre(figlio.id)
-                res.append(figlio)
+            pbar(progress, parziale=daos.index(doc), totale=len(daos), text="Attendere...", noeta=True)
+        if doc.operazione in tipi_ddt_figlio:
+            doc._padre = get_padre(doc.id)
+            res.append(doc)
 
     if progress:
         pbar(progress, stop=True)
 
     return res
 
-
 class ReportMovimentiSpedizioniWindow(GladeWidget):
 
-    def __init__(self, parent):
+    def __init__(self, parent, daos=None):
         GladeWidget.__init__(self,
                              root='report_mov_sped_window',
                              path='report_mov_sped.glade')
         self.__parent = parent
+        self.__daos = daos
         self.placeWindow(self.getTopLevel())
 
         self.html_viewer = HTMLViewerWidget(self)
@@ -69,18 +59,11 @@ class ReportMovimentiSpedizioniWindow(GladeWidget):
         self.draw()
 
     def draw(self):
-        da_data = datetime.datetime(int(workingYear), 1, 1)
-        al_data = datetime.date.today()
-        ddt = ricerca_movimenti_spedizione(da_data, al_data, progress=self.html_viewer.progressbar)
+        ddt = ricerca_movimenti_spedizione(self.__daos, progress=self.html_viewer.progressbar)
 
         pageData = {
-            'data_inizio_report': da_data,
-            'data_fine_report': al_data,
             'file': 'spedizione_documenti.html',
             'objects': ddt
         }
 
         self.html_viewer.renderHTML(pageData)
-
-
-

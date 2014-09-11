@@ -316,12 +316,6 @@ class DuplicazioneDocumento(GladeWidget):
 
         if associa_doc_padre_figlio:
             add_relazione(self.dao.id, newDao.id)
-            if controlla_quantita(self.dao):
-                modifica_relazione(self.dao.id, stato=CHIUSO)
-                self.dao.totale_pagato = self.dao._totaleScontato
-                self.dao.totale_sospeso = Decimal(0)
-                self.dao.documento_saldato = True
-                self.dao.persist()
 
         if posso("GN"):
             if self.dao.data_inizio_noleggio or self.dao.data_fine_noleggio:
