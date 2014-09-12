@@ -62,6 +62,7 @@ def renderFatturaPA(pageData):
               trim_blocks=True,
               lstrip_blocks=True)
     env.filters['dateformat'] = dateformat
+    env.filters['datetimelongformat'] = datetimelongformat
     env.filters['nonone'] = noNone
     env.globals['utils'] = utils
     from pprint import pprint
