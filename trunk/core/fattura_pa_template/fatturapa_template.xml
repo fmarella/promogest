@@ -111,7 +111,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 			<DatiGeneraliDocumento>
 				<TipoDocumento>{{utils.tipoDocumentoFPA(dao.operazione)}}</TipoDocumento>
 				<Divisa>EUR</Divisa>
-				<Data>{{dao.data|dateformat}}</Data>
+				<Data>{{dao.data_documento|dateformat}}</Data>
 				<Numero>{{dao.numero}}</Numero>
                 <Art73>SI</Art73>
 			</DatiGeneraliDocumento>
@@ -191,7 +191,9 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
              {% endif %}
       {% for scadenza in dao.scadenze %}
       <DettaglioPagamento>
+          {% if scadenza.pagamento %}
         <ModalitaPagamento>{{ utils.getCodicePagamento(scadenza.pagamento) }}</ModalitaPagamento>
+          {% endif %}
         <DataScadenzaPagamento>{{ scadenza.data_pagamento|dateformat }}</DataScadenzaPagamento>
         <ImportoPagamento>{{ utils.mN(scadenza.importo, 2) }}</ImportoPagamento>
       </DettaglioPagamento>

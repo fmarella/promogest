@@ -93,7 +93,7 @@ def to_fatturapa(dao, progressivo, anag=None):
                                                 batchSize=None)
 
         if indirizzi_email:
-            indirizzo_email_preferito = indirizzi_email[0]
+            indirizzo_email_preferito = indirizzi_email[0].indirizzo
         else:
             indirizzo_email_preferito = ''
 
