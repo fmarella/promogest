@@ -124,7 +124,7 @@ def to_fatturapa(dao, progressivo, anag=None):
             'sede_numero_civico': azienda.sede_operativa_numero,
             'sede_cap': azienda.sede_operativa_cap,
             'sede_comune': azienda.sede_operativa_localita,
-            'sede_provincia': azienda.sede_operativa_provincia,
+            'sede_provincia': azienda.sede_operativa_provincia.upper(),
             'sede_nazione': 'IT',
             'stabile_indirizzo': '',
             'stabile_numero_civico': '',
@@ -149,7 +149,7 @@ def to_fatturapa(dao, progressivo, anag=None):
             'sede_numero_civico': '',
             'sede_cap': dao.CLI.sede_operativa_cap,
             'sede_comune': dao.CLI.sede_operativa_localita,
-            'sede_provincia': dao.CLI.sede_operativa_provincia,
+            'sede_provincia': dao.CLI.sede_operativa_provincia.upper(),
             'sede_nazione': 'IT',
         }
 
