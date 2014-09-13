@@ -80,6 +80,11 @@ class SimpleGladeWrapper:
         if Environment.pg3:
             prefix = "pg3_"
 
+        from sys import platform
+        if platform == 'darwin' or platform.startswith('linux'):
+            if 'anagrafica_documenti.glade' == path or '_anagrafica_articoli_detail.glade' == path:
+                path = "".join(['alt_', path])
+
         #print "PATH o NOME FILE --> ", path
         #print "ROOT --> ", root
         #print "DOMAIN --> ", domain
