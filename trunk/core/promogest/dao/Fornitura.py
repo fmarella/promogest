@@ -176,13 +176,16 @@ class Fornitura(Dao):
             session.commit()
 
     def persist(self):
-        session.add (self)
-        session.commit()
-        self.scontiFornituraDel(self)
-        if self.__scontiFornitura is not None:
-            for sco in self.__scontiFornitura:
-                sco.id_fornitura = self.id
-                sco.persist()
+        try:
+            session.add (self)        
+            session.commit()
+            self.scontiFornituraDel(self)
+            if self.__scontiFornitura is not None:
+                for sco in self.__scontiFornitura:
+                    sco.id_fornitura = self.id
+                    sco.persist()
+        except:
+            session.rollback()
 
 
 

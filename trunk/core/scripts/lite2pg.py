@@ -212,14 +212,18 @@ def pulisciTabelle():
         print "DA PULIRE",meta_dest.sorted_tables.index(m),"/",len(meta_dest.sorted_tables),  m #, m.columns
         try:
             if tipodb_dest =="postgresql":
+                print "AZIENDA DEST", azienda_dest, str(m).split(".")[0]
                 if str(m).split(".")[0] == azienda_dest:
                     db_dest.schema = azienda_dest
                     db_dest.entity(str(m).split(".")[1]).delete()
                     db_dest.commit()
                 else:
-                    db_dest.schema = azienda_dest
-                    db_dest.entity(str(m)).delete()
-                    db_dest.commit()
+                    try:
+                        db_dest.schema = azienda_dest
+                        db_dest.entity(str(m)).delete()
+                        db_dest.commit()
+                    except:
+                        print " ERRORE MA LO GESTIAMO IN UN TRY"
             else:
                 db_dest.entity(str(m)).delete()
                 db_dest.commit()
@@ -322,9 +326,9 @@ def spostaDati():
                 if tipodb_source == "postgresql":
                     rowss = db_source.entity(str(t)).filter(db_source.famiglia_articolo.id_padre !=None).all()
                 else:
-                    rowss = db_source.entity(str(t)).filter(db_source.famiglia_articolo.id_padre !="None").all()
+                    rowss = db_source.entity(str(t)).filter(db_source.famiglia_articolo.id_padre !="None").order_by("id_padre").all()
                 for r in rowss:
-                    print r.id, r.id_padre
+                    print "ID FAMIGLIA SOURCE", r.id, "ID PADRE SOURCE", r.id_padre
                     dao_principalee = db_source.entity(str(t)).get(r.id_padre)
                     mm = db_dest.entity(str(t))()
                     for k in dao_principalee.c:

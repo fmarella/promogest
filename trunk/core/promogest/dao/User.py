@@ -23,6 +23,10 @@
 from sqlalchemy import Table
 from sqlalchemy.orm import mapper, relation
 from promogest.Environment import *
+from promogest.lib.alembic.migration import MigrationContext
+from promogest.lib.alembic.operations import Operations
+from promogest.lib.alembic import op
+from promogest.dao.DaoUtils import get_columns
 
 try:
     t_utente = Table('utente', params['metadata'],schema = params['mainSchema'],autoload=True)
@@ -39,6 +43,13 @@ from promogest.dao.Dao import Dao
 from promogest.modules.RuoliAzioni.dao.Role import Role
 from promogest.dao.DaoUtils import get_columns
 
+columns_t_utente = get_columns(t_utente)
+
+if "schemaa_azienda" not in columns_t_utente:
+    conn = engine.connect()
+    ctx = MigrationContext.configure(conn)
+    op = Operations(ctx)
+    op.add_column('utente', Column('schemaa_azienda', String(100), ForeignKey(fk_prefix_main+'azienda.schemaa'), nullable=True), schema=mainSchema)
 
 class User(Dao):
     """ User class provides to make a Users dao which include more used"""
