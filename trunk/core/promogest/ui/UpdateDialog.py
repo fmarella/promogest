@@ -27,7 +27,7 @@ except ImportError:
 import threading
 from promogest.ui.GladeWidget import GladeWidget
 from promogest.ui.gtk_compat import *
-from promogest.lib.utils import get_local_version, get_web_remote_version
+from promogest.lib.utils import get_local_version, get_remote_version
 
 
 class UpdateDialog(GladeWidget):
@@ -51,7 +51,7 @@ class UpdateDialog(GladeWidget):
         def fetchThread(data):
             data.msg_label.set_text("Lettura versioni locale e remota in corso...")
             data._rev_locale = get_local_version()
-            data._rev_remota = get_web_remote_version()
+            data._rev_remota = get_remote_version()
 
         def refreshUI():
             if self.__stop:
