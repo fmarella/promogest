@@ -1441,6 +1441,7 @@ if "codice_cig" not in [c.name for c in t_testata_documento.columns]:
         op.add_column('testata_documento', Column('codice_cig', String(15), nullable=True), schema=params["schema"])
     except:
         delete_pickle()
+        restart_program()
 
 
 std_mapper = mapper(TestataDocumento, t_testata_documento,
