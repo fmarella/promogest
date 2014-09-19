@@ -79,7 +79,11 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
       <DatiAnagrafici>
         <IdFiscaleIVA>
           <IdPaese>IT</IdPaese>
-          <IdCodice>{{committente.partita_iva}}</IdCodice>
+            {% if committente.codice_fiscale %}
+          <IdCodice>{{committente.codice_fiscale}}</IdCodice>
+            {% else %}
+            <IdCodice>{{committente.partita_iva}}</IdCodice>
+            {% endif %}
         </IdFiscaleIVA>
           {% if committente.codice_fiscale %}
         <CodiceFiscale>{{committente.codice_fiscale}}</CodiceFiscale>
@@ -137,7 +141,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
             <DatiConvenzione>
                 <RiferimentoNumeroLinea>1</RiferimentoNumeroLinea>
                 <IdDocumento>{{dao.numero}}</IdDocumento>
-                <Data>{{dao.data|dateformat}}</Data>
+                <Data>{{dao.data_documento|dateformat}}</Data>
                 <NumItem>5</NumItem>
                 <CodiceCUP>{{dao.codice_cup}}</CodiceCUP>
                 <CodiceCIG>{{dao.codice_cig}}</CodiceCIG>
@@ -146,7 +150,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
             <DatiRicezione>
                 <RiferimentoNumeroLinea>1</RiferimentoNumeroLinea>
                 <IdDocumento>{{dao.numero}}</IdDocumento>
-                <Data>{{dao.data|dateformat}}</Data>
+                <Data>{{dao.data_documento|dateformat}}</Data>
                 <NumItem>5</NumItem>
                 <CodiceCUP>{{dao.codice_cup}}</CodiceCUP>
                 <CodiceCIG>{{dao.codice_cig}}</CodiceCIG>
