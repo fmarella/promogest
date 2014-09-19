@@ -619,6 +619,8 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self.aspetto_esteriore_beni_comboboxentry.get_child().set_text(self.dao.aspetto_esteriore_beni or '')
         self.inizio_trasporto_entry.set_text(dateTimeToString(self.dao.inizio_trasporto))
         self.fine_trasporto_entry.set_text(dateTimeToString(self.dao.fine_trasporto))
+        self.codice_cup_entry.set_text(self.dao.codice_cup or '')
+        self.codice_cig_entry.set_text(self.dao.codice_cig or '')
         self.id_vettore_customcombobox.refresh(clear=True, filter=False)
         if not self.dao.id:
            self.dao.incaricato_trasporto = setconf("Documenti","incaricato_predef") or 'destinatario'
@@ -949,6 +951,9 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self.dao.aspetto_esteriore_beni = self.aspetto_esteriore_beni_comboboxentry.get_child().get_text()
         self.dao.inizio_trasporto = stringToDateTime(self.inizio_trasporto_entry.get_text())
         self.dao.fine_trasporto = stringToDateTime(self.fine_trasporto_entry.get_text())
+        self.dao.codice_cup = self.codice_cup_entry.get_text()
+        self.dao.codice_cig = self.codice_cig_entry.get_text()
+
 
         if self.vettore_radiobutton.get_active():
             self.dao.id_vettore = self.id_vettore_customcombobox._id

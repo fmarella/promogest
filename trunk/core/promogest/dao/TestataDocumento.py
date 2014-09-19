@@ -1424,6 +1424,24 @@ if 'esclusione_spese' not in [c.name for c in t_testata_documento.columns]:
     except:
         delete_pickle()
 
+if "codice_cup" not in [c.name for c in t_testata_documento.columns]:
+    try:
+        conn = engine.connect()
+        ctx = MigrationContext.configure(conn)
+        op = Operations(ctx)
+        op.add_column('testata_documento', Column('codice_cup', String(15), nullable=True), schema=params["schema"])
+    except:
+        delete_pickle()
+
+if "codice_cig" not in [c.name for c in t_testata_documento.columns]:
+    try:
+        conn = engine.connect()
+        ctx = MigrationContext.configure(conn)
+        op = Operations(ctx)
+        op.add_column('testata_documento', Column('codice_cig', String(15), nullable=True), schema=params["schema"])
+    except:
+        delete_pickle()
+
 
 std_mapper = mapper(TestataDocumento, t_testata_documento,
     properties={

@@ -118,8 +118,8 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
             <DatiOrdineAcquisto>
                 <RiferimentoNumeroLinea>1</RiferimentoNumeroLinea>
                 <IdDocumento>{{dao.numero}}</IdDocumento>
-                <CodiceCUP>{{trasmittente.codice_cup}}</CodiceCUP>
-                <CodiceCIG>{{trasmittente.codice_cig}}</CodiceCIG>
+                <CodiceCUP>{{dao.codice_cup}}</CodiceCUP>
+                <CodiceCIG>{{dao.codice_cig}}</CodiceCIG>
             </DatiOrdineAcquisto>
             {% if pageData['contratto'] %}
             <DatiContratto>
@@ -127,8 +127,8 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
                 <IdDocumento>{{dao.numero}}</IdDocumento>
                 <Data>{{dao.data|dateformat}}</Data>
                 <NumItem>5</NumItem>
-                <CodiceCUP>{{trasmittente.codice_cup}}</CodiceCUP>
-                <CodiceCIG>{{trasmittente.codice_cig}}</CodiceCIG>
+                <CodiceCUP>{{dao.codice_cup}}</CodiceCUP>
+                <CodiceCIG>{{dao.codice_cig}}</CodiceCIG>
             </DatiContratto>
             {% endif %}
             {% if pageData['convenzione'] %}
@@ -137,8 +137,8 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
                 <IdDocumento>{{dao.numero}}</IdDocumento>
                 <Data>{{dao.data|dateformat}}</Data>
                 <NumItem>5</NumItem>
-                <CodiceCUP>{{trasmittente.codice_cup}}</CodiceCUP>
-                <CodiceCIG>{{trasmittente.codice_cig}}</CodiceCIG>
+                <CodiceCUP>{{dao.codice_cup}}</CodiceCUP>
+                <CodiceCIG>{{dao.codice_cig}}</CodiceCIG>
             </DatiConvenzione>
             {% endif %}
             <DatiRicezione>
@@ -146,8 +146,8 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
                 <IdDocumento>{{dao.numero}}</IdDocumento>
                 <Data>{{dao.data|dateformat}}</Data>
                 <NumItem>5</NumItem>
-                <CodiceCUP>{{trasmittente.codice_cup}}</CodiceCUP>
-                <CodiceCIG>{{trasmittente.codice_cig}}</CodiceCIG>
+                <CodiceCUP>{{dao.codice_cup}}</CodiceCUP>
+                <CodiceCIG>{{dao.codice_cig}}</CodiceCIG>
             </DatiRicezione>
             {% if pageData['trasporto'] %}
             <DatiTrasporto>

@@ -65,8 +65,6 @@ def renderFatturaPA(pageData):
     env.filters['datetimelongformat'] = datetimelongformat
     env.filters['nonone'] = noNone
     env.globals['utils'] = utils
-    from pprint import pprint
-    pprint (pageData)
     return env.get_template('/' + 'fatturapa_template.xml').render(pageData=pageData,
                                                                    dao=pageData['dao'],
                                                                    trasmittente=pageData['trasmittente'],
@@ -105,8 +103,6 @@ def to_fatturapa(dao, progressivo, anag=None):
             'codice': azienda.codice_fiscale or azienda.partita_iva,
             'telefono': azienda.telefono,
             'email': indirizzo_email_preferito,
-            'codice_cup': azienda.codice_cup,
-            'codice_cig': azienda.codice_cig
         }
         # campi di trasmissione
         pageData['trasmissione'] = {
