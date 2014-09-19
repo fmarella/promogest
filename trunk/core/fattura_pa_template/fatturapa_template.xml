@@ -96,7 +96,9 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
         {% if committente.sede_indirizzo %}
       <Sede>
         <Indirizzo>{{committente.sede_indirizzo}}</Indirizzo>
+          {% if committente.numero_civico %}
         <NumeroCivico>{{committente.numero_civico}}</NumeroCivico>
+          {% endif %}
 		<CAP>{{committente.sede_cap}}</CAP>
 		<Comune>{{committente.sede_comune}}</Comune>
 		<Provincia>{{committente.sede_provincia}}</Provincia>
