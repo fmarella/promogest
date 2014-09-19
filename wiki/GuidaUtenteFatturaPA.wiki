@@ -54,7 +54,7 @@ Ora il file XML è pronto per l'invio alla pubblica amministrazione.
 
 Se si usa Windows e la finestra di salvataggio del documento rimane aperta dopo aver premuto il tasto Salva, seguire questa procedura:
 
-1. Selezionare il menu Start -> Esegui -> cmd
-2. nella finestra appena aperta digitare: cd c:\Python26\Scripts e premere Invio
-3. ora digitare easy_install.exe -U jinja2 e premere Invio
-4. una volta che la procedura è terminata chiudere la finestra
+  #. Selezionare il menu Start -> Esegui -> cmd
+  #. nella finestra appena aperta digitare: cd c:\Python26\Scripts e premere Invio
+  #. ora digitare easy_install.exe -U jinja2 e premere Invio
+  #. una volta che la procedura è terminata chiudere la finestra
