@@ -7,10 +7,12 @@ Informazioni da compilare prima di usare la fattura PA.
 Dati azienda:
   * denominazione o ragione sociale
   * telefono
-  * numeri CIG, CUP e REA
+  * numero REA
   * codice fiscale o partita IVA
   * account di posta elettronica (inserire anche solo l'indirizzo email)
   * informazioni sulle sedi operativa e legale
+
+Associare a ciascun documento i numeri CIG, CUP tramite i campi del documento (guardare la tab Informazioni Aggiuntive).
 
 Nell'anagrafica dei pagamenti inserire in corrispondenza di ciascun pagamento un codice appropriato tra i seguenti:
   * MP01 per contanti 
