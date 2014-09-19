@@ -124,8 +124,12 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
             <DatiOrdineAcquisto>
                 <RiferimentoNumeroLinea>1</RiferimentoNumeroLinea>
                 <IdDocumento>{{dao.numero}}</IdDocumento>
+                {% if dao.codice_cup %}
                 <CodiceCUP>{{dao.codice_cup}}</CodiceCUP>
+                {% endif %}
+                {% if dao.codice_cig %}
                 <CodiceCIG>{{dao.codice_cig}}</CodiceCIG>
+                {% endif %}
             </DatiOrdineAcquisto>
             {% if pageData['contratto'] %}
             <DatiContratto>
@@ -133,8 +137,12 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
                 <IdDocumento>{{dao.numero}}</IdDocumento>
                 <Data>{{dao.data|dateformat}}</Data>
                 <NumItem>5</NumItem>
+                {% if dao.codice_cup %}
                 <CodiceCUP>{{dao.codice_cup}}</CodiceCUP>
+                {% endif %}
+                {% if dao.codice_cig %}
                 <CodiceCIG>{{dao.codice_cig}}</CodiceCIG>
+                {% endif %}
             </DatiContratto>
             {% endif %}
             {% if pageData['convenzione'] %}
@@ -143,8 +151,12 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
                 <IdDocumento>{{dao.numero}}</IdDocumento>
                 <Data>{{dao.data_documento|dateformat}}</Data>
                 <NumItem>5</NumItem>
+                {% if dao.codice_cup %}
                 <CodiceCUP>{{dao.codice_cup}}</CodiceCUP>
+                {% endif %}
+                {% if dao.codice_cig %}
                 <CodiceCIG>{{dao.codice_cig}}</CodiceCIG>
+                {% endif %}
             </DatiConvenzione>
             {% endif %}
             <DatiRicezione>
@@ -152,8 +164,12 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
                 <IdDocumento>{{dao.numero}}</IdDocumento>
                 <Data>{{dao.data_documento|dateformat}}</Data>
                 <NumItem>5</NumItem>
+                {% if dao.codice_cup %}
                 <CodiceCUP>{{dao.codice_cup}}</CodiceCUP>
+                {% endif %}
+                {% if dao.codice_cig %}
                 <CodiceCIG>{{dao.codice_cig}}</CodiceCIG>
+                {% endif %}
             </DatiRicezione>
             {% if pageData['trasporto'] %}
             <DatiTrasporto>
