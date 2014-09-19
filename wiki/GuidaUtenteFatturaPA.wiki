@@ -49,3 +49,12 @@ Ora il file XML è pronto per l'invio alla pubblica amministrazione.
   # Come firmare la Fattura PA? Leggi qui: http://fatturapa.gov.it/export/fatturazione/it/c-12.htm
   # Come inviare la Fattura PA? Leggi qui: http://fatturapa.gov.it/export/fatturazione/it/c-13.htm
   # Come faccio a monitorare lo stato del mio invio? Leggi qui: http://fatturapa.gov.it/export/fatturazione/it/c-14.htm
+
+== Risoluzione di Problemi ==
+
+Se si usa Windows e la finestra di salvataggio del documento rimane aperta dopo aver premuto il tasto Salva, seguire questa procedura:
+
+1. Selezionare il menu Start -> Esegui -> cmd
+2. nella finestra appena aperta digitare: cd c:\Python26\Scripts e premere Invio
+3. ora digitare easy_install.exe -U jinja2 e premere Invio
+4. una volta che la procedura è terminata chiudere la finestra
