@@ -77,14 +77,6 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     </CedentePrestatore>
     <CessionarioCommittente>
       <DatiAnagrafici>
-        <IdFiscaleIVA>
-          <IdPaese>IT</IdPaese>
-            {% if committente.codice_fiscale %}
-          <IdCodice>{{committente.codice_fiscale}}</IdCodice>
-            {% else %}
-            <IdCodice>{{committente.partita_iva}}</IdCodice>
-            {% endif %}
-        </IdFiscaleIVA>
           {% if committente.codice_fiscale %}
         <CodiceFiscale>{{committente.codice_fiscale}}</CodiceFiscale>
           {% endif %}

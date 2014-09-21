@@ -111,7 +111,7 @@ def to_fatturapa(dao, progressivo, anag=None):
             'codice_destinatario': dao.CLI.codice
         }
         pageData['cedente'] = {
-            'partita_iva': '',
+            'partita_iva': azienda.partita_iva,
             'denominazione': azienda.denominazione,
             'nome': '',
             'cognome': '',
