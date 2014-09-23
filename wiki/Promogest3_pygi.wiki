@@ -36,6 +36,8 @@ $ cd promogest/core
 $ 2to3 -n -w .
 }}}
 
+Glade e custom widget necessita di essere compilato con il supporto a python3. Vedi [https://bugzilla.gnome.org/show_bug.cgi?id=732328, bug 732328]
+
 = Altre info =
 
 Nota. Ctrl+c non funziona perchè ancora non implementato ma si può usare in alternativa ctrl+4 ."It is not trivial" come mi hanno detto su #python
