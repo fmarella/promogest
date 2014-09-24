@@ -171,15 +171,13 @@ def to_fatturapa(dao, progressivo, anag=None):
         pageData['ricezione'] = None
 
         if len(dao.scadenze) == 1:
-            pageData['condizioni_pagamento'] = 'TP02'
-            acconto = False
+            pageData['condizioni_pagamento'] = 'TP02' # pagamento completo
             for scadenza in dao.scadenze:
                 if scadenza.numero_scadenza == 0:
-                    acconto = True
-                    pageData['condizioni_pagamento'] = 'TP03'
+                    pageData['condizioni_pagamento'] = 'TP03' # anticipo
                     break
-        if len(dao.scadenze) > 1:
-            pageData['condizioni_pagamento'] = 'TP01'
+        if len(dao.scadenze) >= 2:
+            pageData['condizioni_pagamento'] = 'TP01' #pagamento a rate
 
         return renderFatturaPA(pageData)
 
