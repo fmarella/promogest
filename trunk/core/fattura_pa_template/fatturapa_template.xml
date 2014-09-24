@@ -211,7 +211,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
             {% endfor %}
 		</DatiBeniServizi>
 		 <DatiPagamento>
-             {% if dao.condizioni_pagamento %}
+             {% if pageData['condizioni_pagamento'] %}
                 <CondizioniPagamento>{{pageData['condizioni_pagamento']}}</CondizioniPagamento>
              {% endif %}
       {% for scadenza in dao.scadenze %}
