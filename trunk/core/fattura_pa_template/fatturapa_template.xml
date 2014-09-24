@@ -79,12 +79,6 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     </CedentePrestatore>
     <CessionarioCommittente>
       <DatiAnagrafici>
-          {% if committente.partita_iva %}
-        <IdFiscaleIVA>
-          <IdPaese>IT</IdPaese>
-          <IdCodice>{{committente.partita_iva}}</IdCodice>
-        </IdFiscaleIVA>
-          {% endif %}
           {% if committente.codice_fiscale %}
         <CodiceFiscale>{{committente.codice_fiscale}}</CodiceFiscale>
           {% endif %}
@@ -121,7 +115,6 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 				<Numero>{{dao.numero}}</Numero>
 			</DatiGeneraliDocumento>
             <DatiOrdineAcquisto>
-                <RiferimentoNumeroLinea>1</RiferimentoNumeroLinea>
                 <IdDocumento>{{dao.numero}}</IdDocumento>
                 <Data>{{dao.data_documento}}</Data>
                 {% if dao.codice_cup %}
@@ -147,7 +140,6 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
             {% endif %}
             {% if pageData['convenzione'] %}
             <DatiConvenzione>
-                <RiferimentoNumeroLinea>1</RiferimentoNumeroLinea>
                 <IdDocumento>{{dao.numero}}</IdDocumento>
                 <Data>{{dao.data_documento|dateformat}}</Data>
                 <NumItem>5</NumItem>
@@ -161,7 +153,6 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
             {% endif %}
             {% if pageData['ricezione'] %}
             <DatiRicezione>
-                <RiferimentoNumeroLinea>1</RiferimentoNumeroLinea>
                 <IdDocumento>{{dao.numero}}</IdDocumento>
                 <Data>{{dao.data_documento|dateformat}}</Data>
                 <NumItem>5</NumItem>

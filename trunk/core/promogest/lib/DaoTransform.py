@@ -136,7 +136,7 @@ def to_fatturapa(dao, progressivo, anag=None):
             'stabile_comune': '',
             'stabile_provincia': '',
             'stabile_nazione': '',
-            'iscrizioneREA_numeroREA': azienda.codice_rea,
+            'iscrizioneREA_numeroREA': '', #azienda.codice_rea,
             'iscrizioneREA_ufficio': '',
             'capitale_sociale': '',
             'socio_unico': '',
@@ -145,6 +145,10 @@ def to_fatturapa(dao, progressivo, anag=None):
 
         if dao.CLI.sede_operativa_indirizzo == '':
             utils.messageError("Inserire le informazioni sulla sede del committente.")
+            return
+
+        if dao.codice_cig == '' or dao.codice_cig == '':
+            utils.messageError("Inserire il codice CUP e CIG associati al documento")
             return
 
         pageData['committente'] = {
