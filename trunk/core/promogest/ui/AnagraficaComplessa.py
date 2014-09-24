@@ -890,6 +890,10 @@ class Anagrafica(GladeWidget):
         anag.placeWindow(anag.getTopLevel())
         anag.getTopLevel().show_all()
 
+    def on_chiusura_ordini_menuitem_activate(self, widget):
+        from .ReportMovimentiSpedizioniUtils import chiusura_ordini
+        chiusura_ordini(self.pbar_anag_complessa)
+
     def on_records_print_progress_dialog_response(self, dialog, responseId):
         if responseId == GTK_RESPONSE_CANCEL:
             self.__cancelOperation = True
