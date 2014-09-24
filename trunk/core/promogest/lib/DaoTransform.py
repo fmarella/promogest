@@ -151,6 +151,11 @@ def to_fatturapa(dao, progressivo, anag=None):
             utils.messageError("Inserire il codice CUP e CIG associati al documento")
             return
 
+        for riga in dao.righe:
+            if len(" ".join([riga.descrizione, riga.aggiuntalottoindescrizione])) > 100:
+                utils.messageError("La descrizione per un riga del documento supera la lunghezza massima di 100 caratteri. Abbreviarla e riprovare.")
+                return
+
         pageData['committente'] = {
             'partita_iva': dao.CLI.partita_iva,
             'codice_fiscale': dao.CLI.codice_fiscale,
