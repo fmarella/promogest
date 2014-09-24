@@ -77,6 +77,10 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     </CedentePrestatore>
     <CessionarioCommittente>
       <DatiAnagrafici>
+        <IdFiscaleIVA>
+          <IdPaese>IT</IdPaese>
+          <IdCodice>{{committente.codice_fiscale}}</IdCodice>
+        </IdFiscaleIVA>
           {% if committente.codice_fiscale %}
         <CodiceFiscale>{{committente.codice_fiscale}}</CodiceFiscale>
           {% endif %}
@@ -111,11 +115,11 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 				<Divisa>EUR</Divisa>
 				<Data>{{dao.data_documento|dateformat}}</Data>
 				<Numero>{{dao.numero}}</Numero>
-                <Art73>SI</Art73>
 			</DatiGeneraliDocumento>
             <DatiOrdineAcquisto>
                 <RiferimentoNumeroLinea>1</RiferimentoNumeroLinea>
                 <IdDocumento>{{dao.numero}}</IdDocumento>
+                <Data>{{dao.data_documento}}</Data>
                 {% if dao.codice_cup %}
                 <CodiceCUP>{{dao.codice_cup}}</CodiceCUP>
                 {% endif %}
@@ -151,6 +155,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
                 {% endif %}
             </DatiConvenzione>
             {% endif %}
+            {% if pageData['ricezione'] %}
             <DatiRicezione>
                 <RiferimentoNumeroLinea>1</RiferimentoNumeroLinea>
                 <IdDocumento>{{dao.numero}}</IdDocumento>
@@ -163,6 +168,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
                 <CodiceCIG>{{dao.codice_cig}}</CodiceCIG>
                 {% endif %}
             </DatiRicezione>
+            {% endif %}
             {% if pageData['trasporto'] %}
             <DatiTrasporto>
                 <DatiAnagraficiVettore>
@@ -186,6 +192,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 				<NumeroLinea>{{loop.index}}</NumeroLinea>
 				<Descrizione>{{riga.descrizione|nonone}} {{riga.aggiuntalottoindescrizione}}</Descrizione>
                 <Quantita>{{riga.quantita}}</Quantita>
+                <UnitaMisura>{{riga.unita_base}}</UnitaMisura>
 				<PrezzoUnitario>{{utils.mN(riga.valore_unitario_lordo,2)}}</PrezzoUnitario>
 				<PrezzoTotale>{{utils.mN(( riga.totaleRiga ),2)}}</PrezzoTotale>
 				<AliquotaIVA>{{riga.percentuale_iva|int}}</AliquotaIVA>

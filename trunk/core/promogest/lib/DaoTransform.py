@@ -156,6 +156,7 @@ def to_fatturapa(dao, progressivo, anag=None):
         pageData['trasporto'] = None
         pageData['contratto'] = None
         pageData['convenzione'] = None
+        pageData['ricezione'] = None
 
         return renderFatturaPA(pageData)
 
