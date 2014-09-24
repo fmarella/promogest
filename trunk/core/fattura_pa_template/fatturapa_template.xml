@@ -42,7 +42,9 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
       </DatiAnagrafici>
       <Sede>
 		<Indirizzo>{{cedente.sede_indirizzo}}</Indirizzo>
+          {% if cedente.numero_civico %}
         <NumeroCivico>{{cedente.numero_civico}}</NumeroCivico>
+          {% endif %}
 		<CAP>{{cedente.sede_cap}}</CAP>
 		<Comune>{{cedente.sede_comune}}</Comune>
 		<Provincia>{{cedente.sede_provincia}}</Provincia>
@@ -77,10 +79,12 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     </CedentePrestatore>
     <CessionarioCommittente>
       <DatiAnagrafici>
+          {% if committente.partita_iva %}
         <IdFiscaleIVA>
           <IdPaese>IT</IdPaese>
-          <IdCodice>{{committente.codice_fiscale}}</IdCodice>
+          <IdCodice>{{committente.partita_iva}}</IdCodice>
         </IdFiscaleIVA>
+          {% endif %}
           {% if committente.codice_fiscale %}
         <CodiceFiscale>{{committente.codice_fiscale}}</CodiceFiscale>
           {% endif %}
@@ -190,32 +194,34 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
             {% for riga in dao.righe %}
 			<DettaglioLinee>
 				<NumeroLinea>{{loop.index}}</NumeroLinea>
-				<Descrizione>{{riga.descrizione|nonone}} {{riga.aggiuntalottoindescrizione}}</Descrizione>
+				<Descrizione>{{riga.descrizione|notags}} {{riga.aggiuntalottoindescrizione}}</Descrizione>
                 <Quantita>{{riga.quantita}}</Quantita>
                 <UnitaMisura>{{riga.unita_base}}</UnitaMisura>
 				<PrezzoUnitario>{{utils.mN(riga.valore_unitario_lordo,2)}}</PrezzoUnitario>
 				<PrezzoTotale>{{utils.mN(( riga.totaleRiga ),2)}}</PrezzoTotale>
-				<AliquotaIVA>{{riga.percentuale_iva|int}}</AliquotaIVA>
+				<AliquotaIVA>{{utils.mN(riga.percentuale_iva,2)}}</AliquotaIVA>
 			</DettaglioLinee>
             {% endfor %}
             {% for iva in dao._castellettoIva %}
 			<DatiRiepilogo>
-				<AliquotaIVA>{{iva.aliquota}}</AliquotaIVA>
-				<ImponibileImporto>{{iva.imponibile}}</ImponibileImporto>
-				<Imposta>{{iva.imposta}}</Imposta>
+				<AliquotaIVA>{{utils.mN(iva.aliquota,2)}}</AliquotaIVA>
+				<ImponibileImporto>{{utils.mN(iva.imponibile,2)}}</ImponibileImporto>
+				<Imposta>{{utils.mN(iva.imposta,2)}}</Imposta>
 			</DatiRiepilogo>
             {% endfor %}
 		</DatiBeniServizi>
 		 <DatiPagamento>
              {% if dao.condizioni_pagamento %}
-                <CondizioniPagamento>{{dao.condizioni_pagamento}}</CondizioniPagamento>
+                <CondizioniPagamento>{{pageData['condizioni_pagamento']}}</CondizioniPagamento>
              {% endif %}
       {% for scadenza in dao.scadenze %}
       <DettaglioPagamento>
           {% if scadenza.pagamento %}
         <ModalitaPagamento>{{ utils.getCodicePagamento(scadenza.pagamento) }}</ModalitaPagamento>
           {% endif %}
+          {% if scadenza.data_pagamento %}
         <DataScadenzaPagamento>{{ scadenza.data_pagamento|dateformat }}</DataScadenzaPagamento>
+          {% endif %}
         <ImportoPagamento>{{ utils.mN(scadenza.importo, 2) }}</ImportoPagamento>
       </DettaglioPagamento>
       {% endfor %}

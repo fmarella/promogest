@@ -56,6 +56,13 @@ def datetimelongformat(value):
     else:
         return value.strftime('%Y-%m-%dT%H:%M:%S.000+01:00')
 
+def notags(value):
+    if not value:
+        return ''
+    if value == 'None':
+        return ''
+    return value.replace('<b>', '').replace('</b>', '')
+
 
 def renderFatturaPA(pageData):
     env = Env(loader=FileSystemLoader([os.path.join('fattura_pa_template')]),
@@ -64,6 +71,7 @@ def renderFatturaPA(pageData):
     env.filters['dateformat'] = dateformat
     env.filters['datetimelongformat'] = datetimelongformat
     env.filters['nonone'] = noNone
+    env.filters['notags'] = notags
     env.globals['utils'] = utils
     return env.get_template('/' + 'fatturapa_template.xml').render(pageData=pageData,
                                                                    dao=pageData['dao'],
@@ -135,6 +143,10 @@ def to_fatturapa(dao, progressivo, anag=None):
             'liquidazione': ''
         }
 
+        if dao.CLI.sede_operativa_indirizzo == '':
+            utils.messageError("Inserire le informazioni sulla sede del committente.")
+            return
+
         pageData['committente'] = {
             'partita_iva': dao.CLI.partita_iva,
             'codice_fiscale': dao.CLI.codice_fiscale,
@@ -157,6 +169,17 @@ def to_fatturapa(dao, progressivo, anag=None):
         pageData['contratto'] = None
         pageData['convenzione'] = None
         pageData['ricezione'] = None
+
+        if len(dao.scadenze) == 1:
+            pageData['condizioni_pagamento'] = 'TP02'
+            acconto = False
+            for scadenza in dao.scadenze:
+                if scadenza.numero_scadenza == 0:
+                    acconto = True
+                    pageData['condizioni_pagamento'] = 'TP03'
+                    break
+        if len(dao.scadenze) > 1:
+            pageData['condizioni_pagamento'] = 'TP01'
 
         return renderFatturaPA(pageData)
 
