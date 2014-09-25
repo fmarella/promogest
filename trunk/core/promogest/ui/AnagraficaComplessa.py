@@ -628,7 +628,7 @@ class Anagrafica(GladeWidget):
             #except (NoAccountEmailFound, NetworkError) as ex:
             #    messageError(str(ex))
             azienda = Azienda().getRecord(id=Environment.azienda)
-            progressivo = azienda.progressivo_fatturapa
+            progressivo = azienda.progressivo_fatturapa or 'A0001'
             for dao in daos:
                 saveDialog = gtk.FileChooserDialog("export in a file...",
                                                    None,
