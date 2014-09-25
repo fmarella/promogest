@@ -110,7 +110,7 @@ class AnagraficaAziende(GladeWidget):
         self.logo_azienda.set_from_file(
             self.dao.percorso_immagine or "")
         self.telefono_entry.set_text(self.dao.telefono or '')
-
+        self.progressivo_entry.set_text(self.dao.progressivo_fatturapa or 'A0001')
         #self.percorso_immagine_entry.set_text(self.dao.percorso_immagine or '')
 
     def saveDao(self):
@@ -147,8 +147,7 @@ class AnagraficaAziende(GladeWidget):
         self.dao.matricola_inps = self.matricola_inps_entry.get_text()
 
         self.dao.telefono = self.telefono_entry.get_text()
-
-
+        self.dao.progressivo_fatturapa = self.progressivo_entry.get_text()
 
         self.dao.percorso_immagine = self.filename or ''
         #self.path_label.get_text() #+"/"+self.filena

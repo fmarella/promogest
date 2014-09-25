@@ -114,7 +114,7 @@ def to_fatturapa(dao, progressivo, anag=None):
         }
         # campi di trasmissione
         pageData['trasmissione'] = {
-            'progressivo': str(progressivo).zfill(5),
+            'progressivo': azienda.progressivo_fatturapa,
             'formato_trasmissione': 'SDI10',
             'codice_destinatario': dao.CLI.codice
         }

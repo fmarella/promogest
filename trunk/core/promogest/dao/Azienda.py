@@ -21,7 +21,7 @@
 
 from sqlalchemy import Table, Column, String
 from sqlalchemy.orm import mapper
-from promogest.Environment import params, engine
+from promogest.Environment import params, engine, delete_pickle, restart_program
 from Dao import Dao
 
 from promogest.lib.alembic.migration import MigrationContext
@@ -44,7 +44,13 @@ if "telefono" not in c_t_azienda:
     op = Operations(ctx)
     op.add_column('azienda', Column('telefono', String(12), nullable=True), schema=params["mainSchema"])
 
-
+if "progressivo_fatturapa" not in c_t_azienda:
+    conn = engine.connect()
+    ctx = MigrationContext.configure(conn)
+    op = Operations(ctx)
+    op.add_column('azienda', Column('progressivo_fatturapa', String(5), nullable=True), schema=params["mainSchema"])
+    delete_pickle()
+    restart_program()
 
 class Azienda(Dao):
 
