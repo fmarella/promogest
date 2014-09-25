@@ -191,6 +191,9 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 				<PrezzoUnitario>{{utils.mN(riga.valore_unitario_lordo,2)}}</PrezzoUnitario>
 				<PrezzoTotale>{{utils.mN(( riga.totaleRiga ),2)}}</PrezzoTotale>
 				<AliquotaIVA>{{utils.mN(riga.percentuale_iva,2)}}</AliquotaIVA>
+                {% if riga.percentuale_iva == 0 %}
+                <Natura>N2</Natura>
+                {% endif %}
 			</DettaglioLinee>
             {% endfor %}
             {% for iva in dao._castellettoIva %}
