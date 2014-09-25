@@ -185,7 +185,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
             {% for riga in dao.righe %}
 			<DettaglioLinee>
 				<NumeroLinea>{{loop.index}}</NumeroLinea>
-				<Descrizione>{{riga.descrizione|notags}} {{riga.aggiuntalottoindescrizione}}</Descrizione>
+				<Descrizione>{{riga.descrizione|notags}}</Descrizione>
                 <Quantita>{{riga.quantita}}</Quantita>
                 <UnitaMisura>{{riga.unita_base}}</UnitaMisura>
 				<PrezzoUnitario>{{utils.mN(riga.valore_unitario_lordo,2)}}</PrezzoUnitario>

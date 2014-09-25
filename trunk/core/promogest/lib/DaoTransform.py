@@ -152,7 +152,7 @@ def to_fatturapa(dao, progressivo, anag=None):
             return
 
         for riga in dao.righe:
-            if len(" ".join([riga.descrizione, riga.aggiuntalottoindescrizione])) > 100:
+            if len(riga.descrizione) > 100:
                 utils.messageError("La descrizione per un riga del documento supera la lunghezza massima di 100 caratteri. Abbreviarla e riprovare.")
                 return
 
