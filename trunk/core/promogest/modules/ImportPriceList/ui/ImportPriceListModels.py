@@ -64,9 +64,9 @@ class ImportPriceListModels(GladeWidget):
 
     def draw(self):
 
-        cbe_renderer = gtk.CellRendererText()
-        self.model_name_comboboxentry.pack_start(cbe_renderer, True)
-        self.model_name_comboboxentry.add_attribute(cbe_renderer, 'text', 0)
+        #cbe_renderer = gtk.CellRendererText()
+        #self.model_name_comboboxentry.pack_start(cbe_renderer, True)
+        #self.model_name_comboboxentry.add_attribute(cbe_renderer, 'text', 0)
 
         #Creating fields treeview
 
@@ -91,7 +91,7 @@ class ImportPriceListModels(GladeWidget):
         if not first_call:
             self.getCsvModelSyntax()
         fillModelCombobox(self.model_name_comboboxentry)
-        self.model_name_comboboxentry.set_text_column(0)
+        #self.model_name_comboboxentry.set_text_column(0)
         fillComboboxUnitaBase(self.default_unita_base_combobox)
         fillComboboxCategorieArticoli(self.default_categoria_combobox)
         fillComboboxFamiglieArticoli(self.default_famiglia_combobox)

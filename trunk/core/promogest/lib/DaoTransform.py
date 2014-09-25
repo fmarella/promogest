@@ -108,7 +108,8 @@ def to_fatturapa(dao, progressivo, anag=None):
         pageData = {}
         pageData['dao'] = dao
         pageData['trasmittente'] = {
-            'codice': azienda.codice_fiscale or azienda.partita_iva,
+            'cf': azienda.codice_fiscale,
+            'piva': azienda.partita_iva,
             'telefono': azienda.telefono,
             'email': indirizzo_email_preferito,
         }

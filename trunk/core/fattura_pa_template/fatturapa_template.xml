@@ -7,7 +7,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <DatiTrasmissione>
       <IdTrasmittente>
         <IdPaese>IT</IdPaese>
-        <IdCodice>{{trasmittente.codice}}</IdCodice>
+        <IdCodice>{{trasmittente.cf}}</IdCodice>
       </IdTrasmittente>
       <ProgressivoInvio>{{trasmissione.progressivo}}</ProgressivoInvio>
       <FormatoTrasmissione>{{trasmissione.formato_trasmissione}}</FormatoTrasmissione>
@@ -27,7 +27,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
       <DatiAnagrafici>
         <IdFiscaleIVA>
           <IdPaese>IT</IdPaese>
-          <IdCodice>{{trasmittente.codice}}</IdCodice>
+          <IdCodice>{{trasmittente.piva}}</IdCodice>
         </IdFiscaleIVA>
         <Anagrafica>
             {% if cedente.denominazione %}
@@ -41,22 +41,22 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
         <RegimeFiscale>{{cedente.regime_fiscale}}</RegimeFiscale>
       </DatiAnagrafici>
       <Sede>
-		<Indirizzo>{{cedente.sede_indirizzo}}</Indirizzo>
+        <Indirizzo>{{cedente.sede_indirizzo}}</Indirizzo>
           {% if cedente.numero_civico %}
         <NumeroCivico>{{cedente.numero_civico}}</NumeroCivico>
           {% endif %}
-		<CAP>{{cedente.sede_cap}}</CAP>
-		<Comune>{{cedente.sede_comune}}</Comune>
-		<Provincia>{{cedente.sede_provincia}}</Provincia>
-		<Nazione>{{cedente.sede_nazione}}</Nazione>
+        <CAP>{{cedente.sede_cap}}</CAP>
+        <Comune>{{cedente.sede_comune}}</Comune>
+        <Provincia>{{cedente.sede_provincia}}</Provincia>
+        <Nazione>{{cedente.sede_nazione}}</Nazione>
       </Sede>
       {% if cedente.stabile_indirizzo %}
       <StabileOrganizzazione>
-		<Indirizzo>{{cedente.stabile_indirizzo}}</Indirizzo>
-		<CAP>{{cedente.stabile_cap}}</CAP>
-		<Comune>{{cedente.stabile_comune}}</Comune>
-		<Provincia>{{cedente.stabile_provincia}}</Provincia>
-		<Nazione>{{cedente.stabile_nazione}}</Nazione>
+        <Indirizzo>{{cedente.stabile_indirizzo}}</Indirizzo>
+        <CAP>{{cedente.stabile_cap}}</CAP>
+        <Comune>{{cedente.stabile_comune}}</Comune>
+        <Provincia>{{cedente.stabile_provincia}}</Provincia>
+        <Nazione>{{cedente.stabile_nazione}}</Nazione>
       </StabileOrganizzazione>
       {% endif %}
       {% if cedente.iscrizioneREA_numeroREA %}
@@ -97,26 +97,26 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
           {% if committente.numero_civico %}
         <NumeroCivico>{{committente.numero_civico}}</NumeroCivico>
           {% endif %}
-		<CAP>{{committente.sede_cap}}</CAP>
-		<Comune>{{committente.sede_comune}}</Comune>
-		<Provincia>{{committente.sede_provincia}}</Provincia>
-		<Nazione>{{committente.sede_nazione}}</Nazione>
+        <CAP>{{committente.sede_cap}}</CAP>
+        <Comune>{{committente.sede_comune}}</Comune>
+        <Provincia>{{committente.sede_provincia}}</Provincia>
+        <Nazione>{{committente.sede_nazione}}</Nazione>
       </Sede>
         {% endif %}
     </CessionarioCommittente>
     <SoggettoEmittente>{{soggetto_emittente}}</SoggettoEmittente>
   </FatturaElettronicaHeader>
-	<FatturaElettronicaBody>
-		<DatiGenerali>
-			<DatiGeneraliDocumento>
-				<TipoDocumento>{{utils.tipoDocumentoFPA(dao.operazione)}}</TipoDocumento>
-				<Divisa>EUR</Divisa>
-				<Data>{{dao.data_documento|dateformat}}</Data>
-				<Numero>{{dao.numero}}</Numero>
-			</DatiGeneraliDocumento>
+    <FatturaElettronicaBody>
+        <DatiGenerali>
+            <DatiGeneraliDocumento>
+                <TipoDocumento>{{utils.tipoDocumentoFPA(dao.operazione)}}</TipoDocumento>
+                <Divisa>EUR</Divisa>
+                <Data>{{dao.data_documento|dateformat}}</Data>
+                <Numero>{{dao.numero}}</Numero>
+            </DatiGeneraliDocumento>
             <DatiOrdineAcquisto>
                 <IdDocumento>{{dao.numero}}</IdDocumento>
-                <Data>{{dao.data_documento}}</Data>
+                <Data>{{dao.data_documento|dateformat}}</Data>
                 {% if dao.codice_cup %}
                 <CodiceCUP>{{dao.codice_cup}}</CodiceCUP>
                 {% endif %}
@@ -169,10 +169,10 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
                 <DatiAnagraficiVettore>
                     <IdFiscaleIVA>
                         <IdPaese>IT</IdPaese>
-                        <IdCodice>24681012141</IdCodice>
+                        <IdCodice>00000000000</IdCodice>
                     </IdFiscaleIVA>
                     <Anagrafica>
-                        <Denominazione>Trasporto spa</Denominazione>
+                        <Denominazione>Vetore</Denominazione>
                     </Anagrafica>
                 </DatiAnagraficiVettore>
                 {% if dao.fine_trasporto %}
@@ -180,31 +180,59 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
                 {% endif %}
             </DatiTrasporto>
             {% endif %}
-		</DatiGenerali>
-		<DatiBeniServizi>
+        </DatiGenerali>
+        <DatiBeniServizi>
             {% for riga in dao.righe %}
-			<DettaglioLinee>
-				<NumeroLinea>{{loop.index}}</NumeroLinea>
-				<Descrizione>{{riga.descrizione|notags}}</Descrizione>
-                <Quantita>{{riga.quantita}}</Quantita>
-                <UnitaMisura>{{riga.unita_base}}</UnitaMisura>
-				<PrezzoUnitario>{{utils.mN(riga.valore_unitario_lordo,2)}}</PrezzoUnitario>
-				<PrezzoTotale>{{utils.mN(( riga.totaleRiga ),2)}}</PrezzoTotale>
-				<AliquotaIVA>{{utils.mN(riga.percentuale_iva,2)}}</AliquotaIVA>
-                {% if riga.percentuale_iva == 0 %}
-                <Natura>N2</Natura>
+            <DettaglioLinee>
+                <NumeroLinea>{{loop.index}}</NumeroLinea>
+                <Descrizione>{{riga.descrizione|notags}}</Descrizione>
+                {% if riga.quantita == 0 %}
+                <Quantita>0.00</Quantita>
+                {% else %}
+                <Quantita>{{utils.mN(riga.quantita,2)}}</Quantita>
                 {% endif %}
-			</DettaglioLinee>
+                {% if riga.unita_base %}
+                <UnitaMisura>{{riga.unita_base}}</UnitaMisura>
+                {% endif %}
+                {% if riga.valore_unitario_lordo == 0 %}
+                <PrezzoUnitario>0.00</PrezzoUnitario>
+                {% else %}
+                <PrezzoUnitario>{{utils.mN(riga.valore_unitario_lordo,2)}}</PrezzoUnitario>
+                {% endif %}
+                {% if riga.totaleRiga == 0 %}
+                <PrezzoTotale>0.00</PrezzoTotale>
+                {% else %}
+                <PrezzoTotale>{{utils.mN(( riga.totaleRiga ),2)}}</PrezzoTotale>
+                {% endif %}
+                {% if riga.percentuale_iva == 0 %}
+                <AliquotaIVA>0.00</AliquotaIVA>
+                <Natura>N2</Natura>
+                {% else %}
+                <AliquotaIVA>{{utils.mN(riga.percentuale_iva,2)}}</AliquotaIVA>
+                {% endif %}
+            </DettaglioLinee>
             {% endfor %}
             {% for iva in dao._castellettoIva %}
-			<DatiRiepilogo>
-				<AliquotaIVA>{{utils.mN(iva.aliquota,2)}}</AliquotaIVA>
-				<ImponibileImporto>{{utils.mN(iva.imponibile,2)}}</ImponibileImporto>
-				<Imposta>{{utils.mN(iva.imposta,2)}}</Imposta>
-			</DatiRiepilogo>
+            <DatiRiepilogo>
+                {% if iva.aliquota == 0 %}
+                <AliquotaIVA>0.00</AliquotaIVA>
+                {% else %}
+                <AliquotaIVA>{{utils.mN(iva.aliquota,2)}}</AliquotaIVA>
+                {% endif %}
+                {% if iva.imponibile == 0 %}
+                <ImponibileImporto>0.00</ImponibileImporto>
+                {% else %}
+                <ImponibileImporto>{{utils.mN(iva.imponibile,2)}}</ImponibileImporto>
+                {% endif %}
+                {% if iva.imposta == 0 %}
+                <Imposta>0.00</Imposta>
+                {% else %}
+                <Imposta>{{utils.mN(iva.imposta,2)}}</Imposta>
+                {% endif %}
+            </DatiRiepilogo>
             {% endfor %}
-		</DatiBeniServizi>
-		 <DatiPagamento>
+        </DatiBeniServizi>
+        <DatiPagamento>
              {% if pageData['condizioni_pagamento'] %}
                 <CondizioniPagamento>{{pageData['condizioni_pagamento']}}</CondizioniPagamento>
              {% endif %}
