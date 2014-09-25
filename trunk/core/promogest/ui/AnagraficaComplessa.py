@@ -627,7 +627,8 @@ class Anagrafica(GladeWidget):
             #    do_send_mail(daos, self, formato='xml')
             #except (NoAccountEmailFound, NetworkError) as ex:
             #    messageError(str(ex))
-            progressivo = 1
+            azienda = Azienda().getRecord(id=Environment.azienda)
+            progressivo = azienda.progressivo_fatturapa
             for dao in daos:
                 saveDialog = gtk.FileChooserDialog("export in a file...",
                                                    None,
@@ -658,11 +659,10 @@ class Anagrafica(GladeWidget):
                 filter1.add_pattern("*.XML")
                 saveDialog.add_filter(filter1)
 
-                azienda = Azienda().getRecord(id=Environment.azienda)
                 if azienda.codice_fiscale:
-                    current_name = "".join(['IT', azienda.codice_fiscale, '_', str(progressivo).zfill(5), '.xml'])
+                    current_name = "".join(['IT', azienda.codice_fiscale, '_', progressivo, '.xml'])
                 if azienda.partita_iva:
-                    current_name = "".join(['IT', azienda.partita_iva, '_', str(progressivo).zfill(5), '.xml'])
+                    current_name = "".join(['IT', azienda.partita_iva, '_', progressivo, '.xml'])
 
                 saveDialog.set_filter(filter1)
                 saveDialog.set_current_name(current_name)
@@ -674,13 +674,16 @@ class Anagrafica(GladeWidget):
                     with open(filename, 'w') as fp:
                         try:
                             xml = to_fatturapa(dao, progressivo=progressivo)
-                            fp.write(xml)
+                            if xml:
+                                fp.write(xml)
+                                # incrementa il progressivo
+                                azienda.progressivo_fatturapa = ''.join([progressivo[0], int(progressivo[1:]) + 1])
+                                Environment.session.commit()
                         except AttributeError as e:
                             messageError("Errore nell'esportazione: %s" % str(e))
                     saveDialog.destroy()
                 elif response == GTK_RESPONSE_CANCEL:
                     saveDialog.destroy()
-                progressivo += 1
 
     def manageLabels(self, results):
         from promogest.modules.Label.ui.ManageLabelsToPrint import \
