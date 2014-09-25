@@ -11,8 +11,21 @@ Dati azienda:
   * codice fiscale o partita IVA
   * account di posta elettronica (inserire anche solo l'indirizzo email)
   * informazioni sulle sedi operativa e legale
+  * progressivo di invio
+
+===Alcune note sul progressivo di invio===
+Il progressivo di invio è un numero che viene incrementato in automatico ogni volta che viene generata con successo un file XML per la fattura PA.
+Nel caso in cui l'invio al Sistema di Interscambio fallisce perché vengono riportati errori nel file XML bisogna decrementare il progressivo.
+Per decrementare il progressivo basta andare nei dati Azienda, selezionare la tab Fattura PA e modificare il progressivo.
 
 Associare a ciascun documento i numeri CIG, CUP tramite i campi del documento (guardare la tab Informazioni Aggiuntive).
+
+===Alcune note relative al documento===
+
+  # Ciascuna riga di descrizione dell'articolo o del servizio deve essere lunga 100 caratteri. Viene effettuato un controllo e in caso la lunghezza è maggiore viene riportato un errore.
+
+  # I codici CIG e CUP hanno lunghezza massima di 15 caratteri. Viene effettuato un controllo e in caso la lunghezza è maggiore viene riportato un errore.
+
 
 Nell'anagrafica dei pagamenti inserire in corrispondenza di ciascun pagamento un codice appropriato tra i seguenti:
   * MP01 per contanti 
