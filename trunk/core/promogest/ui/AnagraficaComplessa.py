@@ -677,7 +677,7 @@ class Anagrafica(GladeWidget):
                             if xml:
                                 fp.write(xml)
                                 # incrementa il progressivo
-                                azienda.progressivo_fatturapa = ''.join([progressivo[0], int(progressivo[1:]) + 1])
+                                azienda.progressivo_fatturapa = ''.join([progressivo[0], str(int(progressivo[1:]) + 1).zfill(4)])
                                 Environment.session.commit()
                         except AttributeError as e:
                             messageError("Errore nell'esportazione: %s" % str(e))
