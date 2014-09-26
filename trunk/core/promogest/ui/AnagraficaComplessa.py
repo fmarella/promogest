@@ -664,6 +664,10 @@ class Anagrafica(GladeWidget):
                 if azienda.partita_iva:
                     current_name = "".join(['IT', azienda.partita_iva, '_', progressivo, '.xml'])
 
+                xml = to_fatturapa(dao, progressivo=progressivo)
+                if not xml:
+                    return
+
                 saveDialog.set_filter(filter1)
                 saveDialog.set_current_name(current_name)
 
@@ -672,15 +676,10 @@ class Anagrafica(GladeWidget):
                 if response == GTK_RESPONSE_OK:
                     filename = saveDialog.get_filename()
                     with open(filename, 'w') as fp:
-                        try:
-                            xml = to_fatturapa(dao, progressivo=progressivo)
-                            if xml:
-                                fp.write(xml)
-                                # incrementa il progressivo
-                                azienda.progressivo_fatturapa = ''.join([progressivo[0], str(int(progressivo[1:]) + 1).zfill(4)])
-                                Environment.session.commit()
-                        except AttributeError as e:
-                            messageError("Errore nell'esportazione: %s" % str(e))
+                        fp.write(xml)
+                        # incrementa il progressivo
+                        azienda.progressivo_fatturapa = ''.join([progressivo[0], str(int(progressivo[1:]) + 1).zfill(4)])
+                        Environment.session.commit()
                     saveDialog.destroy()
                 elif response == GTK_RESPONSE_CANCEL:
                     saveDialog.destroy()
