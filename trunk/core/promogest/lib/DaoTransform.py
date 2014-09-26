@@ -144,19 +144,6 @@ def to_fatturapa(dao, progressivo, anag=None):
             'liquidazione': ''
         }
 
-        if dao.CLI.sede_operativa_indirizzo == '':
-            utils.messageError("Inserire le informazioni sulla sede del committente.")
-            return
-
-        if dao.codice_cig == '' or dao.codice_cig == '':
-            utils.messageError("Inserire il codice CUP e CIG associati al documento")
-            return
-
-        for riga in dao.righe:
-            if len(riga.descrizione) > 100:
-                utils.messageError("La descrizione per un riga del documento supera la lunghezza massima di 100 caratteri. Abbreviarla e riprovare.")
-                return
-
         pageData['committente'] = {
             'partita_iva': dao.CLI.partita_iva,
             'codice_fiscale': dao.CLI.codice_fiscale,
@@ -179,6 +166,21 @@ def to_fatturapa(dao, progressivo, anag=None):
         pageData['contratto'] = None
         pageData['convenzione'] = None
         pageData['ricezione'] = None
+
+        # Controlli di validità dei dati
+
+        if dao.CLI.sede_legale_indirizzo == '':
+            utils.messageError("Inserire le informazioni sulla sede legale del committente.")
+            return
+
+        if dao.codice_cig == '' or dao.codice_cig == '':
+            utils.messageError("Inserire il codice CUP e CIG associati al documento")
+            return
+
+        for riga in dao.righe:
+            if len(riga.descrizione) > 100:
+                utils.messageError("La descrizione per un riga del documento supera la lunghezza massima di 100 caratteri. Abbreviarla e riprovare.")
+                return
 
         if len(dao.scadenze) == 1:
             pageData['condizioni_pagamento'] = 'TP02' # pagamento completo
