@@ -2962,7 +2962,6 @@ def messageError(msg="Messaggio generico", transient=None):
                             gtk.BUTTONS_CANCEL)
         dialoggg.set_markup(msg)
         print "MESSAGGIO", msg
-        return
         response = dialoggg.run()
         dialoggg.destroy()
         return response
