@@ -1,6 +1,7 @@
 {% extends 'index.html' %}
 {% block body %}
         <div class="storico">
+        {% if pageData['dao'].id %}
         <ul>
             {% if pageData['padre'] %}
                 <li class="detail">{{pageData['padre'].operazione}} {{pageData['padre'].protocollo}} - {{pageData['padre'].data_documento|dateformat}} Rif.interni N. {{pageData['padre'].numero}}</li>
@@ -18,5 +19,8 @@
                 </ul>
             </ul>
         </ul>
+        {% else %}
+          <p>Salvare prima il documento corrente e riprovare</p>
+        {% endif %}
         </div>
 {% endblock %}

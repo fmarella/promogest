@@ -64,7 +64,7 @@ class StoricoDocumentoPage(GladeWidget):
         self.clear()
 
     def on_mostra_storico_button_clicked(self, widget):
-        if self.ana.dao:
+        if self.ana.dao.id:
 
             my_page_data = {
                 'file': 'storico_documenti.html',
@@ -75,6 +75,8 @@ class StoricoDocumentoPage(GladeWidget):
 
             html = renderTemplate(pageData=my_page_data)
             self.web_view.load_html_string(html, "file:///"+sys.path[0]+os.sep)
+        else:
+            messageWarning("E' necessario salvare il documento prima di mostrarne lo storico.")
 
     def on_aggiungi_figlio_button_clicked(self, widget):
         def returnDao(anagWindow):
