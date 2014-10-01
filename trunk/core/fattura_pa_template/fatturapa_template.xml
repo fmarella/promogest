@@ -114,7 +114,8 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
                 <Data>{{dao.data_documento|dateformat}}</Data>
                 <Numero>{{dao.numero}}</Numero>
             </DatiGeneraliDocumento>
-            <DatiOrdineAcquisto>
+			{% if pageData['ordine'] %}
+			<DatiOrdineAcquisto>
                 <IdDocumento>{{dao.numero}}</IdDocumento>
                 <Data>{{dao.data_documento|dateformat}}</Data>
                 {% if dao.codice_cup %}
@@ -124,6 +125,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
                 <CodiceCIG>{{dao.codice_cig}}</CodiceCIG>
                 {% endif %}
             </DatiOrdineAcquisto>
+			{% endif %}
             {% if pageData['contratto'] %}
             <DatiContratto>
                 <RiferimentoNumeroLinea>1</RiferimentoNumeroLinea>
@@ -241,8 +243,8 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
           {% if scadenza.pagamento %}
         <ModalitaPagamento>{{ utils.getCodicePagamento(scadenza.pagamento) }}</ModalitaPagamento>
           {% endif %}
-          {% if scadenza.data_pagamento %}
-        <DataScadenzaPagamento>{{ scadenza.data_pagamento|dateformat }}</DataScadenzaPagamento>
+          {% if scadenza.data %}
+        <DataScadenzaPagamento>{{ scadenza.data|dateformat }}</DataScadenzaPagamento>
           {% endif %}
         <ImportoPagamento>{{ utils.mN(scadenza.importo, 2) }}</ImportoPagamento>
       </DettaglioPagamento>
