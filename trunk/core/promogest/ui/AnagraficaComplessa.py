@@ -889,8 +889,13 @@ class Anagrafica(GladeWidget):
         daos = get_selected_daos(self.anagrafica_filter_treeview)
         from .ReportMovimentiSpedizioniWindow import ReportMovimentiSpedizioniWindow
         anag = ReportMovimentiSpedizioniWindow(self, daos=daos)
-        anag.placeWindow(anag.getTopLevel())
-        anag.getTopLevel().show_all()
+#        anag.placeWindow(anag.getTopLevel())
+#        anag.getTopLevel().show_all()
+        anagWindow = anag.getTopLevel()
+        returnWindow = self.getTopLevel().get_toplevel()
+        anagWindow.set_transient_for(returnWindow)
+        anagWindow.show_all()
+
 
     def on_chiusura_ordini_menuitem_activate(self, widget):
         from .ReportMovimentiSpedizioniUtils import chiusura_ordini
