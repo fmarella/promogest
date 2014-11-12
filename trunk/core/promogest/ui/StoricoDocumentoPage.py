@@ -90,6 +90,8 @@ class StoricoDocumentoPage(GladeWidget):
         from promogest.ui.anagDocumenti.AnagraficaDocumentiFilter import RicercaDocumenti
         anag = RicercaDocumenti()
         anagWindow = anag.getTopLevel()
+        returnWindow = self.getTopLevel().get_toplevel()
+        anagWindow.set_transient_for(returnWindow)
         anagWindow.show_all()
         anagWindow.connect("hide",returnDao)
 
@@ -104,6 +106,8 @@ class StoricoDocumentoPage(GladeWidget):
         from promogest.ui.anagDocumenti.AnagraficaDocumentiFilter import RicercaDocumenti
         anag = RicercaDocumenti()
         anagWindow = anag.getTopLevel()
+        returnWindow = self.getTopLevel().get_toplevel()
+        anagWindow.set_transient_for(returnWindow)
         anagWindow.show_all()
         anagWindow.connect("hide",returnDao)
 
