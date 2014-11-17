@@ -75,8 +75,10 @@ class DettaglioGiacenzaWindow(GladeWidget):
         rmf = RigaMovimentoFornitura().select(idArticolo=self.idArticolo, idRigaMovimentoAcquistoBool=True, batchSize=None)
         a = leggiArticolo(self.idArticolo)
         idForni = [ x.id_fornitura for x in rmf if x.id_fornitura]
-        idForni = set(idForni)
+        #idForni = set(idForni)
         print len (rmf)
+        if not self.show_all_check.get_active():
+            idForni = idForni[0:2]
         for i in idForni:
             rmfv = RigaMovimentoFornitura().select(idArticolo=self.idArticolo, idFornitura=i, batchSize=None)
             quantita_evasa = 0
@@ -99,6 +101,10 @@ class DettaglioGiacenzaWindow(GladeWidget):
                         "",i))
         testo = a["codice"]+"-"+a["denominazione"] +"\n\n STAI VENDENDO " + str(int(self.quantita)) +" ARTICOLI \n CE NE SONO " + str(int(len(self.dettaglio_giacenza_listore)))
         self.articolo_info_label.set_text(testo)
+
+
+    def on_show_all_check_toggled(self, check):
+        self.__refresh()
 
 
     def on_column_quantita_edited(self, cell, path, value):
