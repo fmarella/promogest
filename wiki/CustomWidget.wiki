@@ -1,0 +1,8 @@
+Per poter gestire i custom widgets del PromoGest con Glade è necessario ricompilare il Glade 3.8.5  dai sorgenti facendo attenzione che sia presente il pygtk-devel 
+
+poi servono queste due stringhe nella bash 
+
+$ export GLADE_CATALOG_PATH=~/WORK/w_pg/core/glade38/
+$ export GLADE_MODULE_PATH=~/WORK/w_pg/core/glade38/
+
+e poi si lancia 
