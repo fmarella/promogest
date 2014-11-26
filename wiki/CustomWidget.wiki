@@ -2,7 +2,16 @@ Per poter gestire i custom widgets del PromoGest con Glade è necessario ricompi
 
 poi servono queste due stringhe nella bash 
 
-$ export GLADE_CATALOG_PATH=~/WORK/w_pg/core/glade38/
-$ export GLADE_MODULE_PATH=~/WORK/w_pg/core/glade38/
+"$ export GLADE_CATALOG_PATH=~/WORK/w_pg/core/glade38/"
+"$ export GLADE_MODULE_PATH=~/WORK/w_pg/core/glade38/"
 
-e poi si lancia 
+e poi si lancia
+
+per la versione gtk3 invece, sempre dopo aver compilato i sorgenti si devono passare i due export: 
+
+"export GLADE_MODULE_SEARCH_PATH=~/WORK/w_pg/core/glade310/"
+"export GLADE_CATALOG_SEARCH_PATH=~/WORK/w_pg/core/glade310/"
+
+e si lancia ....
+
+certo che se fedora avesse i pacchetti glade con i moduli già abilitati
