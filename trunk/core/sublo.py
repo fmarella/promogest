@@ -25,23 +25,6 @@
 import os
 import sys
 from optparse import OptionParser
-try:
-    import pysvn
-except:
-    pysvn = None
-    print 'Modulo pysvn non trovato: gli aggiornamenti non saranno disponibili!'
-
-version = 0
-if pysvn:
-    try:
-        version = pysvn.Client().info(".").revision.number
-        if version > 4001:
-            print " ATTENZIONE SI DEVE RETROCEDERE"
-        else:
-            print " OK SI PUO' PROSEGUIRE"
-    except pysvn.ClientError:
-        pass
-
 
 
 class BigBang(object):
@@ -146,9 +129,11 @@ i DAO, i filtri o tutto"""
             buildAll()
             sys.exit()
         preEnv.table_to_load = ["promogest2.azienda", "promogest2.role" , "promogest2.action", "promogest2.roleaction","promogest2.utente"]
+        preEnv.sublo = True
         from promogest.ui.Login import Login
         if shop:
             preEnv.shop = True
+
         login = Login()
         login.run()
 

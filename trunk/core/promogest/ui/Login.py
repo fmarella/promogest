@@ -111,6 +111,15 @@ class Login(SimpleGladeApp):
         """ Funzione di gestione dello splash, gestisce il random e il cambio
             dello splash per il periodo natalizio
         """
+        if Environment.sublo ==True:
+            self.login_window.set_title("FINESTRA LOGIN SUBLIMA ERP")
+            fileSplashImage = Environment.subloguiDir + "sublo_splash.jpg"
+            self.login_tipo_label.set_markup(_("<b>SUBLIMA ERP</b>"))
+            self.urll = "http://www.sublima.it"
+            self.splash_image.set_from_file(fileSplashImage)
+            self.logina_label.destroy()
+            self.logo_image.destroy()
+            return
         data = datetime.datetime.now()
         if (data > datetime.datetime(data.year, 12, 15) \
                 and data < datetime.datetime(data.year, 12, 31)) or \

@@ -40,6 +40,24 @@ class News(Dao):
     def __init__(self, req= None,arg=None):
         Dao.__init__(self, entity=self)
 
+    @property
+    def tipo_news(self):
+        if self.id_categoria and self.categor:
+            return self.categor.denominazione
+        else:
+            return ""
+
+            #a = NewsCategory().getRecord(id=self.id_categoria)
+            #if a:
+                #return a.denominazione
+            #else:
+                #return None
+        #else:
+            #return None
+
+
+
+
     def filter_values(self,k,v):
         if k == "title":
             dic= { k :t_news.c.title == v}
@@ -53,6 +71,9 @@ class News(Dao):
                         t_news.c.body.ilike("%"+v+"%"))
 }
         return  dic[k]
+
+
+
 
 std_mapper = mapper(News, t_news, properties={
             'categor':relation(NewsCategory, backref='news'),

@@ -78,7 +78,7 @@ class DettaglioGiacenzaWindow(GladeWidget):
         #idForni = set(idForni)
         print len (rmf)
         if not self.show_all_check.get_active():
-            idForni = idForni[0:2]
+            idForni = idForni[0:3]
         for i in idForni:
             rmfv = RigaMovimentoFornitura().select(idArticolo=self.idArticolo, idFornitura=i, batchSize=None)
             quantita_evasa = 0

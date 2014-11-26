@@ -48,6 +48,7 @@ echosa = preEnv.echo
 debugFilter = preEnv.debugFilter
 debugDao = preEnv.debugDao
 shop = preEnv.shop
+sublo = preEnv.sublo
 
 if web:
     main_conf = preEnv.main_conf_force
@@ -203,6 +204,7 @@ STATIC_PATH = os.path.join(SRC_PATH, 'templates')
 STATIC_PATH_FEED = os.path.join(SRC_PATH, 'feed')
 IMAGE_PATH = os.path.join(STATIC_PATH, 'images/')
 guiDir = '.' + os.sep + 'gui' + os.sep
+subloguiDir = '.' + os.sep + 'gui_sublo' + os.sep
 
 SESSION_DIR = os.path.join("./", 'session')
 CACHE_DIR = os.path.join("./", 'cache')

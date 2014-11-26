@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2013 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -134,6 +134,11 @@ class Main(GladeWidget):
         self.welcome_label.set_text(welcome_str)
         self.aziendaStr = aziendaStr
         self.statusBarHandler()
+        if Environment.sublo ==True:
+            self.main_window.set_title("SUBLIMA ERP")
+            #self.logina_label.destroy()
+            #self.logo_image.destroy()
+
         #for filename in glob.glob(Environment.promogestDir + \
                                                     #"temp" + \
                                                     #os.sep + \
@@ -231,35 +236,6 @@ class Main(GladeWidget):
         self.on_button_refresh_clicked()
 
         fillComboboxRole(self.anag_minori_combobox, noAdmin=True)
-
-        # conf_timeout = SetConf().select(key="updates_timeout",
-#                                                        section="General")
-        # timeout = '300'
-        # if not conf_timeout:
-            # conf_timeout = SetConf()
-            # conf_timeout.key = "updates_timeout"
-            # conf_timeout.value = '300'
-            # conf_timeout.section = "General"
-            # conf_timeout.tipo_section = "Generico"
-            # conf_timeout.description = "intervallo controllo aggiornamenti"
-            # conf_timeout.active = True
-            # conf_timeout.tipo = "str"
-            # conf_timeout.date = datetime.datetime.now()
-            # Environment.session.add(conf_timeout)
-        # else:
-            # timeout = conf_timeout[0].value
-        # lets do the iv upgrade
-        #if date.today() >= date(2013, 10, 1):
-            #kbb = SetConf().select(key="upgrade_iva_22", section="Articoli")
-            #if kbb and kbb[0].value=="True":
-                #return
-            #else:
-                #fillComboboxAliquoteIva(self.iva_upgrade_combobox.combobox)
-                #self.iva_upgrade_combobox.show_all()
-                #self.crea_iva_radio.set_active(True)
-                #self.upgrade_iva.show()
-                #self.upgrade_iva.destroy()
-
 
         def update_timer():
             leggiRevisioni()
@@ -835,54 +811,6 @@ class Main(GladeWidget):
         anag =AnagraficaAziende(self)
         showAnagrafica(self.getTopLevel(), anag)
 
-    def on_importa_modulo_activate(self, widget):
-        return
-        fileDialog = gtk.FileChooserDialog(title=_('Importazione modulo'),
-                                           parent=self.getTopLevel(),
-                                           action=GTK_FILE_CHOOSER_ACTION_OPEN,
-                                           buttons=(gtk.STOCK_CANCEL,
-                                                    GTK_RESPONSE_CANCEL,
-                                                    gtk.STOCK_OK,
-                                                    GTK_RESPONSE_OK),
-                                           backend=None)
-        fltr = gtk.FileFilter()
-        fltr.add_pattern('*.pg2')
-        fltr.set_name('File Pg2 (*.pg2)')
-        fileDialog.add_filter(fltr)
-        fltr = gtk.FileFilter()
-        fltr.add_pattern('*')
-        fltr.set_name('Tutti i file')
-        fileDialog.add_filter(fltr)
-        n = ""
-        response = fileDialog.run()
-        if response == GTK_RESPONSE_OK:
-            filename = fileDialog.get_filename()
-            f = open(filename)
-            r = f.readline()
-            al = f.readlines()
-            for a in al:
-                if "MODULES_NAME" in a:
-                    n = a.split("=")[1].strip()[1:-1]
-                    break
-                else:
-                    continue
-            c = Environment.PRODOTTO.strip()
-            v = Environment.VERSIONE.strip()
-            p = hashlib.sha224(n+c+v).hexdigest()
-            if p.strip()==r.strip():
-                pa = os.path.join(Environment.cartella_moduli,n+"/"+"module.py")
-                g = file(pa,"w")
-                for a in al:
-                    g.write(a)
-                g.close()
-                f.close()
-                msg = _("MODULO CORRETTAMENTE INSTALLATO, CHIUDERE L'APPLICAZIONE\nED AGGIUNGERE I PARAMETRI NECESSARI\n")
-            else:
-                msg = _("ATTENZIONE, MODULO NON INSTALLATO, CORROTTO O NON CORRETTO, CONTATTARE L'ASSISTENZA")
-            messageInfo(msg=msg)
-                #self.path_file_entry.set_text(filename)
-            fileDialog.destroy()
-
     def on_credits_menu_activate(self, widget):
         creditsDialog = GladeWidget(root='credits_dialog',path="credits_dialog.glade",  callbacks_proxy=self)
         creditsDialog.getTopLevel().set_transient_for(self.getTopLevel())
@@ -1260,6 +1188,10 @@ Procedo all'installazione del modulo PromoWear? """)
         else:
             textStatusBar = _(" %s Build: %s - %s" % (Environment.VERSIONE, Environment.rev_locale, Environment.partner))
         context_id =  self.pg2_statusbar.get_context_id("main_window")
+        if Environment.sublo:
+            context_id=0
+            textStatusBar = _(" %s Build: %s " % ("SUBLIMA" , Environment.rev_locale))
+
         self.pg2_statusbar.push(context_id, textStatusBar)
 
 class MainWindowFrame(VistaPrincipale):

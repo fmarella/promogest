@@ -53,17 +53,18 @@ import serial
 
 
 def serial_manager():
-    ser = serial.Serial()
-    ser.baud = 9600
+    ser = serial.Serial(timeout=1)
+    ser.baudrate = 115200
     ser.port = '/dev/ttyUSB0'
     ser.xonxoff = True
     ser.open()
     print ser
-    with open("scontrino_custom.txt","r") as f:
-        scontr = f.read()
-    #ser.write("1000H1R=15.25*2M100H4M1T")
-    ser.write(scontr)
-    f.close()
+    #with open("scontrino_custom.txt","r") as f:
+        #scontr = f.read()
+    ser.write("1000H1R=15.25*2M100H4M1T")
+    print " PORTA APERTA", ser.isOpen()
+    #ser.write(scontr)
+    #f.close()
     ser.close()
 
 serial_manager()

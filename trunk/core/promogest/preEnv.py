@@ -38,7 +38,7 @@ debugFilter = False
 debugDao = False
 wsgi = False
 connetion= None
-
+sublo = False
 
 aziendaforce = None
 tipodbforce = None

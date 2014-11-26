@@ -25,11 +25,7 @@ from promogest.Environment import *
 from Dao import Dao
 
 try:
-    try:
-        meta.tables[azienda+".news_category"]
-    except:
-        delete_pickle()
-    t_news_category=Table('news_category', params['metadata'],schema = params['schema'],autoload=True)
+    t_news_category=Table('news_category', params['metadata'], schema=params['schema'], autoload=True)
 except:
     from data.categoriaNews import t_news_category
 
@@ -45,4 +41,4 @@ class NewsCategory(Dao):
                 }
         return  dic[k]
 
-std_mapper = mapper(NewsCategory, t_news_category)
+std_mapper = mapper(NewsCategory, t_news_category, order_by=t_news_category.c.id)
