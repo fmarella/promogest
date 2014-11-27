@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <requires lib="gtk+" version="2.16"/>
   <!-- interface-requires pythonplugin 0.0 -->
+  <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy project-wide -->
   <object class="GtkListStore" id="articoli_componenti_listore">
     <columns>
@@ -130,8 +130,8 @@ in fondo alla finestra </property>
                         <property name="width_request">190</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="primary_icon_activatable">False</property>
-                        <property name="secondary_icon_activatable">False</property>
+                        <property name="primary_icon_activatable">True</property>
+                        <property name="secondary_icon_activatable">True</property>
                         <property name="primary_icon_sensitive">True</property>
                         <property name="secondary_icon_sensitive">True</property>
                       </object>
@@ -217,7 +217,6 @@ in fondo alla finestra </property>
                     <child>
                       <object class="GtkCheckButton" id="attivo_componente_check">
                         <property name="label" translatable="yes">Attivo</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="width_request">80</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
@@ -234,7 +233,6 @@ in fondo alla finestra </property>
                     <child>
                       <object class="GtkCheckButton" id="print_sub_kit_checkbutton">
                         <property name="label" translatable="yes">stampa sotto liste</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
@@ -302,7 +300,6 @@ in fondo alla finestra </property>
                     <child>
                       <object class="GtkButton" id="elimina_componente_button">
                         <property name="label">gtk-delete</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="width_request">120</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
@@ -319,7 +316,6 @@ in fondo alla finestra </property>
                     <child>
                       <object class="GtkButton" id="aggiungi_componente_button">
                         <property name="label">gtk-add</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="width_request">120</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
@@ -616,7 +612,6 @@ al dettaglio. </property>
             <child>
               <object class="GtkButton" id="ok_kit_button">
                 <property name="label">gtk-save</property>
-                <property name="use_action_appearance">False</property>
                 <property name="width_request">120</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -633,7 +628,6 @@ al dettaglio. </property>
             <child>
               <object class="GtkButton" id="print_kit">
                 <property name="label">gtk-print</property>
-                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -649,7 +643,6 @@ al dettaglio. </property>
             <child>
               <object class="GtkButton" id="annulla_kit_button">
                 <property name="label">gtk-close</property>
-                <property name="use_action_appearance">False</property>
                 <property name="width_request">120</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
