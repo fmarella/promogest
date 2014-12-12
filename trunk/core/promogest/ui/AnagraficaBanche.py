@@ -38,12 +38,7 @@ class AnagraficaBanche(Anagrafica):
                             AnagraficaBancheDetail(self))
 
     def draw(self):
-        self.filter.denominazione_column.get_cells()[0].set_data(
-                                                        'max_length', 200)
-        self.filter.agenzia_column.get_cells()[0].set_data('max_length', 200)
-        self.filter.iban_column.get_cells()[0].set_data('max_length', 30)
-        self.filter.abi_column.get_cells()[0].set_data('max_length', 30)
-        self.filter.cab_column.get_cells()[0].set_data('max_length', 30)
+	#TODO: Gestire la lunghezza delle entry in qualche modo
         self._treeViewModel = self.filter.filter_listore
         self.refresh()
 

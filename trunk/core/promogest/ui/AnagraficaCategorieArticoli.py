@@ -47,13 +47,6 @@ class AnagraficaCategorieArticoli(Anagrafica):
         purtroppo pygi gestisce la cosa in maniera diversa vedi quella funzione
         SOLUZIONE Trovata...monitorare
         """
-        self.filter.descrizione_column.get_cells()[0].set_data(
-                                                        'max_length', 200)
-        self.filter.descrizione_breve_column.get_cells()[0].set_data(
-                                                        'max_length', 10)
-        #self.filter.descrizione_column.get_cells()[0].set_data('column', 0)
-        #self.filter.descrizione_breve_column.get_cells()[0].set_data(
-#                                                            'column', 1)
         self._treeViewModel = self.filter.filter_listore
         self.refresh()
 

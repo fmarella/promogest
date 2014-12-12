@@ -56,7 +56,6 @@ class UpdateDialog(GladeWidget):
         def refreshUI():
             if self.__stop:
                 return False
-
             if self._rev_locale and self._rev_remota:
                 if self._rev_locale < self._rev_remota:
                     #TODO: usare ngettext
@@ -65,9 +64,19 @@ class UpdateDialog(GladeWidget):
                         self.msg_label.set_text('E\' disponibile un aggiornamento.')
                     else:
                         self.msg_label.set_text('Sono disponibili %d aggiornamenti.' % num)
+                    if version > 4015:
+                        try:
+                            import gi
+                            self.update_button.set_sensitive(True)
+                            self.cancel_button.set_sensitive(True)
+                        except:
+                            self.msg_label.set_text("Attezione!\n Il promogest è passato alla versione 3 per cui non è più possibile effettuare gli aggiornamenti.\n Su windows è possibile scaricare dal sito la nuova versione.\n Su linux il passaggio dovrebbe essere trasparente\nChi avesse acquistato l'assistenza potrà contattarci usando i soliti canali")
+                            print " ATTENZIONE NON e' possibile aggiornare"
+                            self.cancel_button.set_sensitive(True)
+                    else:
+                        self.update_button.set_sensitive(True)
+                        self.cancel_button.set_sensitive(True)
 
-                    self.update_button.set_sensitive(True)
-                    self.cancel_button.set_sensitive(True)
                     self.update_progress_bar.set_fraction(1.0)
                     return False
                 else:

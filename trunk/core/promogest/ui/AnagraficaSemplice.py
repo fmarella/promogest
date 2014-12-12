@@ -84,9 +84,6 @@ class Anagrafica(GladeWidget):
         """ Facoltativo ma suggerito per indicare la lunghezza
         massima della cella di testo
         """
-        self.filter.denominazione_column.get_cells()[0].set_data(
-                                                        'max_length', 50)
-
         self._treeViewModel = self.filter.filter_listore
         self.refresh()
 
