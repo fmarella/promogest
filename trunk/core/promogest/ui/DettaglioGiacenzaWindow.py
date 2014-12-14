@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 2011
-#    by Promotux di Francesco Meloni snc - http://www.promotux.it/
+#    Copyright (C) 2005-2015 by Promotux
+#                        di Francesco Meloni snc - http://www.promotux.it/
 
-# Author: Francesco Meloni <francesco@promotux.it>
+#    Author: Francesco Meloni  <francesco@promotux.it>
 
 #    This file is part of Promogest.
 
@@ -21,6 +21,7 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 from decimal import *
+from sqlalchemy import asc, desc
 from promogest.ui.gtk_compat import *
 from promogest import Environment
 from promogest.ui.GladeWidget import GladeWidget
@@ -38,8 +39,7 @@ from promogest.dao.RigaMovimentoFornitura import RigaMovimentoFornitura
 class DettaglioGiacenzaWindow(GladeWidget):
 
     def __init__(self, mainWindow=None,riga=None):
-        """Widget di transizione per visualizzare e confermare gli oggetti
-            preparati per la stampa ( Multi_dialog.glade tab 1)
+        """Finestra di selezione dei lotti in evasione nel documento
         """
         GladeWidget.__init__(self, root='dettaglio_giacenza_window',
                         path='dettaglio_giacenza_window.glade',
@@ -50,8 +50,6 @@ class DettaglioGiacenzaWindow(GladeWidget):
         self.idArticolo = riga["idArticolo"]
         self.idMagazzino = riga["idMagazzino"]
         self.rigamovimentofornituralist = riga["rigaMovimentoFornituraList"]
-        #treeselection = self.dettaglio_giacenza_treeview.get_selection()
-        #treeselection.set_mode(GTK_SELECTIONMODE_MULTIPLE)
         self.draw()
 
     def draw(self):
@@ -72,7 +70,7 @@ class DettaglioGiacenzaWindow(GladeWidget):
     def __refresh(self):
         # Aggiornamento TreeView
         self.dettaglio_giacenza_listore.clear()
-        rmf = RigaMovimentoFornitura().select(idArticolo=self.idArticolo, idRigaMovimentoAcquistoBool=True, batchSize=None)
+        rmf = RigaMovimentoFornitura().select(idArticolo=self.idArticolo, idRigaMovimentoAcquistoBool=True, batchSize=None, join=Fornitura, orderBy=desc(Fornitura.data_fornitura))
         a = leggiArticolo(self.idArticolo)
         idForni = [ x.id_fornitura for x in rmf if x.id_fornitura]
         #idForni = set(idForni)

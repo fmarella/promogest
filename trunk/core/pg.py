@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2013 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -35,14 +35,14 @@ version = 0
 if pysvn:
     try:
         version = pysvn.Client().info(".").revision.number
-        if version > 4015:
+        if version > 4020:
             try:
                 import gi
             except:
-                print " ATTENZIONE SI DEVE RETROCEDERE e fare un rev alla 4000"
+                print " ATTENZIONE SI DEVE RETROCEDERE e fare un rev alla 4020"
                 client = pysvn.Client()
                 client.update(".",
-                revision=pysvn.Revision(pysvn.opt_revision_kind.number, 4015 ))
+                revision=pysvn.Revision(pysvn.opt_revision_kind.number, 4020 ))
         else:
             print " OK SI PUO' PROSEGUIRE" , version
     except pysvn.ClientError:
