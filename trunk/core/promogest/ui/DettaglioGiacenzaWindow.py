@@ -55,7 +55,7 @@ class DettaglioGiacenzaWindow(GladeWidget):
         self.draw()
 
     def draw(self):
-        """Creo una treeviewper la visualizzazione degli articoli che
+        """Creo una treeview per la visualizzazione degli articoli che
             andranno poi in stampa
         """
         self.__refresh()
