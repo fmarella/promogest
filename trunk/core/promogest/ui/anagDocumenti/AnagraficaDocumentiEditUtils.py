@@ -347,6 +347,25 @@ def calcolaTotalePart(anaedit, dao=None):
         totaleScontato = totaleImponibileScontato + totaleImpostaScontata
     totaleInPagamenti = totaleScontato + Decimal(str(anaedit.pagamenti_page.calcola_spese()))
 
+
+    if len(scontiSuTotale) ==0:
+        imposta = 0
+        imponibile = 0
+        for k in castellettoIva.keys():
+            dictCastellettoIva = castellettoIva[k]
+            dictCastellettoIva['aliquota'] = castellettoIva[k]["percentuale"]
+            dictCastellettoIva["imponibile"] = mN(dictCastellettoIva["imponibile"],2)
+            imponibile += dictCastellettoIva["imponibile"]
+            dictCastellettoIva["imposta"] = mN(dictCastellettoIva["imposta"],2)
+            imposta += dictCastellettoIva["imposta"]
+            dictCastellettoIva["totale"] = mN(dictCastellettoIva["imponibile"],2)+ mN(dictCastellettoIva["imposta"],2)
+        if imposta !=  totaleImpostaScontata:
+            totaleImpostaScontata = imposta
+            totaleImposta = imposta
+        if imponibile != totaleImponibileScontato:
+            totaleImponibileScontato = imponibile
+            totaleImponibile = imponibile
+
     anaedit.totale_generale_label.set_text(str(mN(totaleImponibile,2) + mN(totaleImposta,2) + mN(totaleEsclusoBaseImponibile, 2)))
     anaedit.totale_generale_riepiloghi_label.set_text(str(mN(totaleImponibile,2) + mN(totaleImposta,2) + mN(totaleEsclusoBaseImponibile, 2)))
     anaedit.totale_imponibile_label.set_text(str(mN(totaleImponibileScontato, 2)))
@@ -372,6 +391,7 @@ def calcolaTotalePart(anaedit, dao=None):
             anaedit.liststore_iva.append(((str(mN(castellettoIva[k]['percentuale'],1))),
                             (str(mN(castellettoIva[k]['imponibile'],2))),
                             (str(mN(castellettoIva[k]['imposta'],2))),))
+
 
 
 def mostraArticoloPart(anaedit, id, art=None, quan=None):

@@ -370,7 +370,8 @@ class TestataDocumento(Dao):
                 castellettoIva[idAliquotaIva]['imponibile'] += totaleImponibileRiga
                 castellettoIva[idAliquotaIva]['imposta'] += totaleImpostaRiga
                 castellettoIva[idAliquotaIva]['totale'] += (totaleImponibileRiga+totaleImpostaRiga)
-        totaleImposta = totaleNonScontato - (totaleImponibile+totaleEsclusoBaseImponibile)
+        #totaleImposta = totaleNonScontato - (totaleImponibile+totaleEsclusoBaseImponibile)
+        totaleImposta = totaleImposta + totaleEsclusoBaseImponibile
         totaleImponibileScontato = totaleImponibile
         totaleImpostaScontata = totaleImposta
         totaleScontato = totaleNonScontato
@@ -403,12 +404,13 @@ class TestataDocumento(Dao):
             totaleImponibileScontato = 0
             # riproporzione del totale, dell'imponibile e dell'imposta
             for k in castellettoIva.keys():
-                castellettoIva[k]['totale'] = mN(castellettoIva[k]['totale'] * (1 - Decimal(percentualeScontoGlobale) / 100), 2)
-                castellettoIva[k]['imponibile'] = mN(castellettoIva[k]['imponibile'] * (1 - Decimal(percentualeScontoGlobale) / 100),2)
-                castellettoIva[k]['imposta'] = mN(castellettoIva[k]['totale'] - castellettoIva[k]['imponibile'],2)
+                castellettoIva[k]['totale'] = castellettoIva[k]['totale'] * (1 - Decimal(percentualeScontoGlobale) / 100)
+                castellettoIva[k]['imponibile'] = castellettoIva[k]['imponibile'] * (1 - Decimal(percentualeScontoGlobale) / 100)
+                castellettoIva[k]['imposta'] = castellettoIva[k]['totale'] * (1 - Decimal(percentualeScontoGlobale) / 100) - castellettoIva[k]['imponibile'] * (1 - Decimal(percentualeScontoGlobale) / 100)
 
                 totaleImponibileScontato += Decimal(castellettoIva[k]['imponibile'])
                 totaleImpostaScontata += Decimal(castellettoIva[k]['imposta'])
+
 
             totaleScontato = mN(totaleImponibileScontato + totaleImpostaScontata, 2)
         self._totaleNonScontato = mN(totaleImponibile,2) + mN(totaleImposta,2) + mN(totaleEsclusoBaseImponibile,2) + mN(spese, 2)
@@ -441,14 +443,21 @@ class TestataDocumento(Dao):
         self._totaleImpostaScontata = mN(totaleImpostaScontata,2) + mN(imposta_spese,2)
         self._totaleImpostaScontataIT = mNLC(self._totaleImpostaScontata,2)
         self._castellettoIva = []
+        imposta = 0
+        imponibile = 0
         for k in castellettoIva.keys():
             dictCastellettoIva = castellettoIva[k]
             dictCastellettoIva['aliquota'] = castellettoIva[k]["percentuale"]
             dictCastellettoIva["imponibile"] = mN(dictCastellettoIva["imponibile"],2)
+            imponibile += dictCastellettoIva["imponibile"]
             dictCastellettoIva["imposta"] = mN(dictCastellettoIva["imposta"],2)
+            imposta += dictCastellettoIva["imposta"]
             dictCastellettoIva["totale"] = mN(dictCastellettoIva["imponibile"],2)+ mN(dictCastellettoIva["imposta"],2)
             self._castellettoIva.append(dictCastellettoIva)
-
+        if imposta !=  self._totaleImpostaScontata:
+            self._totaleImpostaScontata = imposta
+        if imponibile != self._totaleImponibileScontato:
+            self._totaleImponibileScontato = imponibile
         return None
 
 
