@@ -458,6 +458,8 @@ class TestataDocumento(Dao):
             self._totaleImpostaScontata = imposta
         if imponibile != self._totaleImponibileScontato:
             self._totaleImponibileScontato = imponibile
+        if (imposta+imponibile) != self._totaleScontato:
+            self._totaleScontato = imposta+imponibile
         return None
 
 
