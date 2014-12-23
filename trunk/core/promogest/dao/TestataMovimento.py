@@ -373,8 +373,6 @@ class TestataMovimento(Dao):
                                                     orderBy = 'data_fornitura DESC',
                                                     batchSize = None)
                         if fors:
-                            #if len(fors) >1:
-                                #fors[0].delete()
                             daoFornitura = fors[0]
                         else:
                             daoFornitura = Fornitura()
@@ -413,8 +411,12 @@ class TestataMovimento(Dao):
                             sconti.append(daoSconto)
 
                         daoFornitura.sconti = sconti
-                        params["session"].add(daoFornitura)
-                        params["session"].commit()
+                        try:
+                            params["session"].add(daoFornitura)
+                            params["session"].commit()
+                        except:
+                            params["session"].rollback()
+
                         if gl:
                             #cambiata la logica, adesso le righe su rmf sono sempre e solo una
                             #viene gestita invece un'altra tabella di raccordo per le quantità
