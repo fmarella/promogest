@@ -370,8 +370,8 @@ class TestataDocumento(Dao):
                 castellettoIva[idAliquotaIva]['imponibile'] += totaleImponibileRiga
                 castellettoIva[idAliquotaIva]['imposta'] += totaleImpostaRiga
                 castellettoIva[idAliquotaIva]['totale'] += (totaleImponibileRiga+totaleImpostaRiga)
-        #totaleImposta = totaleNonScontato - (totaleImponibile+totaleEsclusoBaseImponibile)
-        totaleImposta = totaleImposta + totaleEsclusoBaseImponibile
+        totaleImposta = totaleNonScontato - (totaleImponibile+totaleEsclusoBaseImponibile)
+        #totaleImposta = totaleImposta + totaleEsclusoBaseImponibile
         totaleImponibileScontato = totaleImponibile
         totaleImpostaScontata = totaleImposta
         totaleScontato = totaleNonScontato
@@ -454,13 +454,12 @@ class TestataDocumento(Dao):
             imposta += dictCastellettoIva["imposta"]
             dictCastellettoIva["totale"] = mN(dictCastellettoIva["imponibile"],2)+ mN(dictCastellettoIva["imposta"],2)
             self._castellettoIva.append(dictCastellettoIva)
-        if imposta !=  self._totaleImpostaScontata:
+        if imposta !=  self._totaleImpostaScontata and totaleEsclusoBaseImponibile == 0 and spese == 0:
             self._totaleImpostaScontata = imposta
-        if imponibile != self._totaleImponibileScontato:
+        if imponibile != self._totaleImponibileScontato and totaleEsclusoBaseImponibile == 0 and spese == 0:
             self._totaleImponibileScontato = imponibile
-        if (imposta+imponibile) != self._totaleScontato:
+        if (imposta+imponibile) != self._totaleScontato and totaleEsclusoBaseImponibile == 0 and spese == 0:
             self._totaleScontato = imposta+imponibile
-        return None
 
 
     #@property
