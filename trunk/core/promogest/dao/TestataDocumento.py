@@ -454,11 +454,11 @@ class TestataDocumento(Dao):
             imposta += dictCastellettoIva["imposta"]
             dictCastellettoIva["totale"] = mN(dictCastellettoIva["imponibile"],2)+ mN(dictCastellettoIva["imposta"],2)
             self._castellettoIva.append(dictCastellettoIva)
-        if imposta !=  self._totaleImpostaScontata and totaleEsclusoBaseImponibile == 0 and spese == 0:
+        if imposta !=  self._totaleImpostaScontata and totaleEsclusoBaseImponibile == 0 and spese == 0 and len(scontiSuTotale) == 0:
             self._totaleImpostaScontata = imposta
-        if imponibile != self._totaleImponibileScontato and totaleEsclusoBaseImponibile == 0 and spese == 0:
+        if imponibile != self._totaleImponibileScontato and totaleEsclusoBaseImponibile == 0 and spese == 0 and len(scontiSuTotale) == 0:
             self._totaleImponibileScontato = imponibile
-        if (imposta+imponibile) != self._totaleScontato and totaleEsclusoBaseImponibile == 0 and spese == 0:
+        if (imposta+imponibile) != self._totaleScontato and totaleEsclusoBaseImponibile == 0 and spese == 0 and len(scontiSuTotale) == 0:
             self._totaleScontato = imposta+imponibile
 
 
