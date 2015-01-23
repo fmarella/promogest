@@ -365,10 +365,10 @@ class GestioneInventario(RicercaComplessaArticoli):
             else:
                 valore_unitario = mN(i.valore_unitario )or 0
             model.append((i,
-                          quantita,
-                          valore_unitario,
+                          str(quantita),
+                          str(valore_unitario),
                           (i.denominazione_breve_unita_base or ''),
-                          mN(valore_unitario*quantita ) or 0 ,
+                          mN(valore_unitario*quantita ) or str(0) ,
                           dateTimeToString(i.data_aggiornamento),
                           (i.codice_articolo or ''),
                           (i.articolo or ''),
@@ -654,35 +654,28 @@ class GestioneInventario(RicercaComplessaArticoli):
 
     def on_aggiorna_button_clicked(self, button):
         """ Aggiornamento inventario con gli articoli eventualmente non presenti """
-        #sql_statement:= \'INSERT INTO inventario (anno, id_magazzino, id_articolo, quantita, valore_unitario, data_aggiornamento)
-                            #(SELECT \' || _anno || \', M.id, A.id, NULL, NULL, NULL
-                            #FROM magazzino M CROSS JOIN articolo A
-                            #WHERE (M.id, A.id) NOT IN (SELECT I.id_magazzino, I.id_articolo FROM INVENTARIO I WHERE I.anno = \' || _anno || \')
-                            #AND A.cancellato <> True)\';
         self.idMagazzino = findIdFromCombobox(self.additional_filter.id_magazzino_filter_combobox2)
         sel2 = Environment.params['session'].\
-                query(Inventario.id_magazzino,
-                    Inventario.id_articolo).\
-                    filter(Inventario.id_magazzino==self.idMagazzino).\
-                    filter(Inventario.anno == self.annoScorso).\
+                query(Inventario.id_magazzino,Inventario.id_articolo).\
+                    filter(and_(Inventario.id_magazzino==self.idMagazzino,Inventario.anno == self.annoScorso)).\
                     order_by(Inventario.id_articolo).all()
         sel = Environment.params['session'].\
-                query(Stoccaggio.id_magazzino,
-                    Stoccaggio.id_articolo).\
-                    filter(Magazzino.id==self.idMagazzino).\
+                query(Stoccaggio.id_magazzino, Stoccaggio.id_articolo).\
+                    filter(Stoccaggio.id_magazzino==self.idMagazzino).\
                     order_by(Stoccaggio.id_articolo).all()
-        print "AGGIORNA" , self.idMagazzino
-        print "SEL", sel,sel2
-        if sel != sel2:
-            for s in sel:
-                if s not in sel2:
-                    if s[1]:
-                        inv = Inventario()
-                        inv.anno = self.annoScorso
-                        inv.id_magazzino = s[0]
-                        inv.id_articolo = s[1]
-                        Environment.params['session'].add(inv)
-            Environment.params['session'].commit()
+        print "AGGIORNA" ,self.annoScorso,  self.idMagazzino,
+        diffe = list(set(sel)-set(sel2))
+        #print "SEL", sel,"ok\n\n\n\n\n\n\ok", sel2, "oo\n\n\n\n\n\n\n", diffe
+        #if sel != sel2:
+        for s in diffe:
+            #if s not in sel2:
+            if s[1]:
+                inv = Inventario()
+                inv.anno = self.annoScorso
+                inv.id_magazzino = s[0]
+                inv.id_articolo = s[1]
+                Environment.params['session'].add(inv)
+        Environment.params['session'].commit()
         self.refresh()
 
     def on_aggiorna_da_ana_articoli_clicked(self, button):
