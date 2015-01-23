@@ -591,7 +591,7 @@ class GestioneInventario(RicercaComplessaArticoli):
                     giacenza, valore, piu, meno = giacenzaArticolo(year=self.annoScorso,
                                                         idMagazzino=idMagazzino,
                                                         idArticolo=r.id_articolo)
-                    print "---", r.denominazione,"giacenza",  giacenza, "RESIDUI DA ELABORARE",len(res) - res.index(r)  , "di ",  quanti
+                    print "---", r.articolo,"giacenza",  giacenza, "RESIDUI DA ELABORARE",len(res) - res.index(r)  , "di ",  quanti
                     r.quantita = giacenza
                     if giacenza > 0:
                         r.data_aggiornamento = datetime.datetime.today().date()
