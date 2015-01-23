@@ -583,12 +583,15 @@ class GestioneInventario(RicercaComplessaArticoli):
         idMagazzino = findIdFromCombobox(self.additional_filter.id_magazzino_filter_combobox2)
         res = Inventario().select(anno=self.annoScorso,
                                   idMagazzino=idMagazzino, batchSize=None)
+
         if res:
+            quanti = len(res)
             for r in res:
                 if (sovrascrivi) or (not sovrascrivi and not r.quantita):
                     giacenza, valore, piu, meno = giacenzaArticolo(year=self.annoScorso,
                                                         idMagazzino=idMagazzino,
                                                         idArticolo=r.id_articolo)
+                    print "---", r.denominazione,"giacenza",  giacenza, "RESIDUI DA ELABORARE",len(res) - res.index(r)  , "di ",  quanti
                     r.quantita = giacenza
                     if giacenza > 0:
                         r.data_aggiornamento = datetime.datetime.today().date()
