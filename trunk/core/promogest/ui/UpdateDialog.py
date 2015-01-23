@@ -64,7 +64,7 @@ class UpdateDialog(GladeWidget):
                         self.msg_label.set_text('E\' disponibile un aggiornamento.')
                     else:
                         self.msg_label.set_text('Sono disponibili %d aggiornamenti.' % num)
-                    if self._rev_locale > 4020:
+                    if self._rev_locale > 4025:
                         try:
                             import gi
                             self.update_button.set_sensitive(True)

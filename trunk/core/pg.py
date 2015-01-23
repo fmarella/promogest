@@ -35,14 +35,14 @@ version = 0
 if pysvn:
     try:
         version = pysvn.Client().info(".").revision.number
-        if version > 4020:
+        if version > 4025:
             try:
                 import gi
             except:
-                print " ATTENZIONE SI DEVE RETROCEDERE e fare un rev alla 4020"
+                print " ATTENZIONE SI DEVE RETROCEDERE e fare un rev alla 4025"
                 client = pysvn.Client()
                 client.update(".",
-                revision=pysvn.Revision(pysvn.opt_revision_kind.number, 4020 ))
+                revision=pysvn.Revision(pysvn.opt_revision_kind.number, 4025 ))
         else:
             print " OK SI PUO' PROSEGUIRE" , version
     except pysvn.ClientError:
