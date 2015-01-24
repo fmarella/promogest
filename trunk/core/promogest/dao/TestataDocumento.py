@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2014 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 # Author: Francesco Meloni <francesco@promotux.it>
@@ -25,64 +25,75 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
-from promogest.lib.alembic.migration import MigrationContext
-from promogest.lib.alembic.operations import Operations
-from promogest.lib.alembic import op
-
-try:
-    t_testata_documento = Table('testata_documento',
-                              params['metadata'],
-                              schema=params['schema'],
-                              autoload=True)
-except:
-    from data.testataDocumento import t_testata_documento
-
-
-from Dao import Dao
-from Operazione import Operazione
-from ScontoTestataDocumento import ScontoTestataDocumento
-from DestinazioneMerce import DestinazioneMerce
-from TestataMovimento import TestataMovimento, t_testata_movimento
-from Pagamento import Pagamento, t_pagamento
-from Vettore import Vettore, t_vettore
-from promogest.dao.daoAgenti.Agente import Agente, t_agente
-from Fornitore import Fornitore, t_fornitore
-from Cliente import Cliente, t_cliente
-from RigaDocumento import RigaDocumento
-from RigaDocumento import *
-from AliquotaIva import AliquotaIva
-from RigaMovimento import RigaMovimento
-from Banca import Banca, t_banca
-from Riga import Riga, t_riga
+from promogest.dao.Dao import Dao, Base
+from promogest.dao.Operazione import Operazione
+from promogest.dao.ScontoTestataDocumento import ScontoTestataDocumento
+from promogest.dao.DestinazioneMerce import DestinazioneMerce
+from promogest.dao.TestataMovimento import TestataMovimento
+from promogest.dao.Pagamento import Pagamento
+from promogest.dao.Vettore import Vettore
+from promogest.dao.daoAgenti.Agente import Agente
+from promogest.dao.Fornitore import Fornitore
+from promogest.dao.Cliente import Cliente
+from promogest.dao.AliquotaIva import AliquotaIva
+from promogest.dao.Riga import Riga
+from promogest.dao.RigaDocumento import *
+from promogest.dao.RigaMovimento import RigaMovimento, t_riga_movimento, t_riga
+from promogest.dao.Banca import Banca
 from promogest.dao.NumeroLottoTemp import NumeroLottoTemp
 from promogest.modules.PrimaNota.dao.TestataPrimaNota import TestataPrimaNota
 from promogest.modules.PrimaNota.dao.RigaPrimaNota import RigaPrimaNota
 from promogest.modules.PrimaNota.dao.RigaPrimaNotaTestataDocumentoScadenza import RigaPrimaNotaTestataDocumentoScadenza
 from promogest.dao.RigaMovimentoFornitura import RigaMovimentoFornitura
 from promogest.modules.Pagamenti.dao.TestataDocumentoScadenza import TestataDocumentoScadenza
-from promogest.dao.InformazioniFatturazioneDocumento import InformazioniFatturazioneDocumento, t_informazioni_fatturazione_documento
+from promogest.dao.InformazioniFatturazioneDocumento import InformazioniFatturazioneDocumento
 import promogest.lib.ibanlib
 
-from promogest.dao.DaoUtils import get_columns  , numeroRegistroGet
+from promogest.dao.DaoUtils import numeroRegistroGet
 from promogest.dao.CachedDaosDict import CachedDaosDict
 from decimal import *
-
-columns_t_t_doc = get_columns(t_testata_documento)
-
-if "esclusione_spese" not in columns_t_t_doc:
-    conn = engine.connect()
-    ctx = MigrationContext.configure(conn)
-    op = Operations(ctx)
-    op.add_column('testata_documento', Column('esclusione_spese', Boolean, default=True),schema=params["schema"])
-
 from promogest import Environment
-
 import datetime
 
 class TipoDocumento:
     DDT_VENDITA = 'DDT vendita'
 
-class TestataDocumento(Dao):
+class TestataDocumento(Base, Dao):
+    try:
+        __table__ = Table('testata_documento',
+                              meta,
+                              schema=params["schema"],
+                              autoload=True)
+    except:
+        from data.testataDocumento import t_testata_documento
+        __table__ = t_testata_documento
+
+
+    rigadoc = relationship("RigaDocumento", cascade="all, delete", backref="testata_documento")
+    testata_documento_scadenza = relation("TestataDocumentoScadenza", cascade="all, delete", backref="testata_documento")
+    PG = relationship("Pagamento")
+    BN = relationship("Banca")
+    AL = relationship("AliquotaIva")
+    PV = relationship("Vettore")
+    DM = relationship("DestinazioneMerce")
+    TM = relationship("TestataMovimento", cascade="all, delete", backref='TD',lazy='joined')
+    CLI = relationship("Cliente",backref="TD")
+    FORN = relationship("Fornitore", backref="TD")
+    AGE = relationship("Agente",primaryjoin=(__table__.c.id_agente == Agente.id))
+    IFDDDT = relationship("InformazioniFatturazioneDocumento", primaryjoin=(__table__.c.id==InformazioniFatturazioneDocumento.__table__.c.id_ddt))
+    IFDFAT = relationship("InformazioniFatturazioneDocumento",primaryjoin=(__table__.c.id==InformazioniFatturazioneDocumento.__table__.c.id_fattura))
+    OP = relationship("Operazione", backref="TD")
+    STD = relationship("ScontoTestataDocumento", cascade="all, delete", backref="TD")
+
+    __mapper_args__ = {
+        'order_by' : __table__.c.data_inserimento.desc()
+    }
+
+    if (hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes") or ("GestioneNoleggio" in Environment.modulesList):
+        from promogest.modules.GestioneNoleggio.dao.TestataGestioneNoleggio import TestataGestioneNoleggio
+        TGN =  relationship("TestataGestioneNoleggio", cascade="all, delete", backref="TD", uselist=False)
+
+
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
 
@@ -181,9 +192,8 @@ class TestataDocumento(Dao):
 
     totalConfections = property(_getDocumentTotalConfections)
 
-
-
-    def _getNumeroMagazzini(self):
+    @property
+    def numeroMagazzini(self):
         """
         Restituisce il numero di magazzini presenti nel documento. Ci serve per poter effettuare
         il trasferimento di articoli che partono tutti dallo stesso magazzino
@@ -193,7 +203,6 @@ class TestataDocumento(Dao):
             if riga.id_magazzino not in __numeroMagazzini and riga.id_magazzino !=None:
                 __numeroMagazzini.append(riga.id_magazzino)
         return len(__numeroMagazzini)
-    numeroMagazzini = property(_getNumeroMagazzini)
 
     def _getScontiTestataDocumento(self):
         if not self.__scontiTestataDocumento:
@@ -207,13 +216,14 @@ class TestataDocumento(Dao):
 
     sconti = property(_getScontiTestataDocumento, _setScontiTestataDocumento)
 
-    def _getStringaScontiTestataDocumento(self):
+    @property
+    def stringaSconti(self):
         #(listSconti, applicazione) = getScontiFromDao(self._getScontiTestataDocumento(), self.applicazione_sconti)
         (listSconti, applicazione) = getScontiFromDao(self.STD, self.applicazione_sconti)
         return getStringaSconti(listSconti)
-    stringaSconti = property(_getStringaScontiTestataDocumento)
 
-    def _getIntestatario(self):
+    @property
+    def intestatario(self):
         """
         Restituisce la ragione sociale o cognome + nome
         se la ragione sociale e' vuota
@@ -231,7 +241,6 @@ class TestataDocumento(Dao):
         else:
             return ''
 
-    intestatario = property(_getIntestatario, )
 
     def _getPI_CF(self):
         """
@@ -460,212 +469,8 @@ class TestataDocumento(Dao):
             self._totaleImponibileScontato = imponibile
         if (imposta+imponibile) != self._totaleScontato and totaleEsclusoBaseImponibile == 0 and spese == 0 and len(scontiSuTotale) == 0:
             self._totaleScontato = imposta+imponibile
+        return None
 
-
-    #@property
-    #def totali(self, anag=None):
-        #""" funzione di calcolo dei totali documento """
-
-        #def getSpesePagamento(pagamento):
-            #cache = CachedDaosDict()
-            #if pagamento in cache['pagamento']:
-                #p = cache['pagamento'][pagamento]
-                #if Decimal(str(p.spese or 0)) != Decimal(0):
-                    #return Decimal(str(p.spese)), calcolaPrezzoIva(Decimal(str(p.spese)), Decimal(str(p.perc_aliquota_iva)))
-                #else:
-                    #return (Decimal(0), Decimal(0))
-            #else:
-                #return (Decimal(0), Decimal(0))
-
-        #self.__operazione = leggiOperazione(self.operazione)
-        #fonteValore = self.__operazione["fonteValore"]
-        #cache = CachedDaosDict()
-        ## FIXME: duplicated in AnagraficaDocumenti.py
-
-        #totaleImponibile = Decimal(0)
-        #totaleImposta = Decimal(0)
-        #totaleNonScontato = Decimal(0)
-        #totaleImpostaScontata = Decimal(0)
-        #totaleImponibileScontato = Decimal(0)
-        #totaleEsclusoBaseImponibile = Decimal(0)
-        #totaleRicaricatoLordo = Decimal(0)
-        #totaleScontato = Decimal(0)
-        #castellettoIva = {}
-        #totaleEsclusoBaseImponibileRiga = 0
-        #totaleImponibileRiga = 0
-
-        #spese = Decimal(0)
-        #impon_spese = Decimal(0)
-        #imposta_spese = Decimal(0)
-        #if self.esclusione_spese == False:
-            #for scad in self.scadenze:
-                #if scad:
-                    #impon_spese_, spese_ = getSpesePagamento(scad.pagamento)
-                    #spese += spese_
-                    #impon_spese += impon_spese_
-                    #imposta_spese += spese_ - impon_spese_
-        #self._totaleSpese = spese
-        #self._totaleImponibileSpese = impon_spese
-        #self._totaleImpostaSpese = imposta_spese
-        #merca = setconf("General", "gestione_totali_mercatino")
-
-        #for riga in self.righe:
-            ## FIXME: added for supporting dumb rows when printing
-            #if riga is None:
-                #continue
-            #if not riga.moltiplicatore:
-                #moltiplicatore = 1
-            #else:
-                #moltiplicatore = riga.moltiplicatore
-
-            #if merca:
-                #trn = riga.totaleRiga
-                #trl = riga.totaleRigaLordo
-                #if trn != 0 and trl != 0:
-                    #if riga.id_articolo and riga.id_listino:
-                        #from promogest.lib.utils import leggiListino
-                        #ll = leggiListino(riga.id_listino, riga.id_articolo)
-                        #totaleRicaricatoLordo += (trn * (ll["ultimoCosto"]*Decimal(riga.quantita or 0)) / trl)
-                    #elif riga.id_articolo and not riga.id_listino:
-                        #lf = leggiFornitura(riga.id_articolo)
-                        #totaleRicaricatoLordo += (trn * (lf["prezzoNetto"]*Decimal(riga.quantita or 0)) / trl)
-
-
-            #percentualeIvaRiga = Decimal(riga.percentuale_iva) #campo non più da usare
-            #idAliquotaIva = riga.id_iva  # campo da usare perchè l'id è più preciso
-            #daoiva = None
-            #aliquotaIvaRiga = None
-            #if idAliquotaIva:
-                #if idAliquotaIva in cache['aliquotaiva']:
-                    #daoiva = cache['aliquotaiva'][idAliquotaIva][0]
-                #if daoiva:
-                    #aliquotaIvaRiga = daoiva.percentuale
-            #if not aliquotaIvaRiga: # solo se non l'ho trovato dall'id prendo quello della percentuale
-                #aliquotaIvaRiga =  percentualeIvaRiga
-            #if daoiva:
-                #denominazione = daoiva.denominazione
-                #denominazione_breve = daoiva.denominazione_breve
-            #else:
-                #denominazione = ""
-                #denominazione_breve = ""
-
-            #totaleRiga = mN(riga.totaleRiga,2)
-
-            #if (fonteValore == "vendita_iva" or fonteValore == "acquisto_iva"):
-                #if daoiva and cache['aliquotaiva'][idAliquotaIva][1] == "Non imponibile":
-                    #totaleEsclusoBaseImponibileRiga = totaleRiga
-                    #totaleImponibileRiga = 0
-                #else:
-                    #totaleEsclusoBaseImponibileRiga = 0
-                    #totaleImponibileRiga = mN(calcolaPrezzoIva(Decimal(totaleRiga), Decimal(-1 * percentualeIvaRiga)), 2)
-            #else:
-                #if daoiva and cache['aliquotaiva'][idAliquotaIva][1] == "Non imponibile":
-                    #totaleEsclusoBaseImponibileRiga = totaleRiga
-                    #totaleImponibileRiga = 0
-                    #totaleRiga = mN(calcolaPrezzoIva(Decimal(totaleRiga), Decimal(percentualeIvaRiga)), 2)
-                #else:
-                    #totaleEsclusoBaseImponibileRiga = 0
-                    #totaleImponibileRiga = totaleRiga or 0
-                    #totaleRiga = mN(calcolaPrezzoIva(Decimal(totaleRiga), Decimal(percentualeIvaRiga)), 2)
-
-            #if idAliquotaIva not in castellettoIva.keys():
-                #castellettoIva[idAliquotaIva] = {
-                    #'percentuale': percentualeIvaRiga,
-                    #'imponibile': totaleImponibileRiga,
-                    #'esclusoBaseImponibile': totaleEsclusoBaseImponibileRiga,
-                    #"denominazione_breve": denominazione_breve,
-                    #"denominazione": denominazione
-                #}
-            #else:
-                #castellettoIva[idAliquotaIva]['imponibile'] += totaleImponibileRiga
-                #castellettoIva[idAliquotaIva]['esclusoBaseImponibile'] += totaleEsclusoBaseImponibileRiga
-
-        ## totali e calcolo imposta
-        #totaleImponibile = 0
-        #totaleEsclusoBaseImponibile = 0
-        #totaleImposta = 0
-        #totaleNonScontato = 0
-        #for k in castellettoIva.keys():
-
-            #totaleImponibile += castellettoIva[k]['imponibile']
-            #totaleEsclusoBaseImponibile += castellettoIva[k]['esclusoBaseImponibile']
-            #if castellettoIva[k]['percentuale'] != Decimal(0):
-                #castellettoIva[k]['imposta'] = mN(castellettoIva[k]['imponibile'] * castellettoIva[k]['percentuale'] / 100, 2) + castellettoIva[k]['esclusoBaseImponibile']
-                #totaleImposta += castellettoIva[k]['imposta']
-            #else:
-                #castellettoIva[k]['imposta'] = 0
-
-            #castellettoIva[k]['totale'] = castellettoIva[k]['imponibile'] + castellettoIva[k]['esclusoBaseImponibile'] + castellettoIva[k]['imposta']
-            #totaleNonScontato += castellettoIva[k]['totale']
-
-        #self._totaleNonScontato = mN(totaleImponibile, 2) + mN(totaleImposta, 2) + mN(totaleEsclusoBaseImponibile, 2) + mN(spese, 2)
-        #self._totaleNonBaseImponibile = totaleEsclusoBaseImponibile
-        #self._totaleImponibile = mN(totaleImponibile, 2) + mN(impon_spese, 2)
-        #self._totaleImposta = mN(totaleImposta,2)  + mN(imposta_spese,2)
-
-        ## ricalcolo totali con sconti
-        #totaleImponibileScontato = totaleImponibile
-        #totaleImpostaScontata = totaleImposta
-        #totaleScontato = totaleNonScontato
-
-        #scontiSuTotale = self.sconti
-        #applicazioneSconti = self.applicazione_sconti
-
-        #if len(scontiSuTotale) > 0:
-            #for s in scontiSuTotale:
-                #if s.tipo_sconto == 'percentuale':
-                    #if applicazioneSconti == 'scalare':
-                        #totaleImponibileScontato = totaleImponibileScontato * (1 - Decimal(s.valore) / 100)
-                    #elif applicazioneSconti == 'non scalare':
-                        #totaleImponibileScontato = totaleImponibileScontato - totaleNonScontato * totaleImponibileScontato * Decimal(s.valore) / 100
-                    #else:
-                        #pass
-                #elif s.tipo_sconto == 'valore':
-                    #totaleImponibileScontato = totaleImponibileScontato - Decimal(s.valore)
-            ## riporta l'insieme di sconti ad una percentuale globale
-            #if totaleScontato >0:
-                #percentualeScontoGlobale = (1 - totaleImponibileScontato / totaleImponibile) * 100
-            #else:
-                #percentualeScontoGlobale = 100
-
-            #totaleImpostaScontata = 0
-            #totaleImponibileScontato = 0
-            ## riproporzione del totale, dell'imponibile e dell'imposta
-            #for k in castellettoIva.keys():
-                #castellettoIva[k]['totale'] = mN(castellettoIva[k]['totale'] * (1 - Decimal(percentualeScontoGlobale) / 100), 2)
-                #castellettoIva[k]['imponibile'] = mN(castellettoIva[k]['imponibile'] * (1 - Decimal(percentualeScontoGlobale) / 100),2)
-                #castellettoIva[k]['imposta'] = mN(castellettoIva[k]['totale'] - castellettoIva[k]['imponibile'],2)
-
-                #totaleImponibileScontato += Decimal(castellettoIva[k]['imponibile'])
-                #totaleImpostaScontata += Decimal(castellettoIva[k]['imposta'])
-
-            #totaleScontato = mN(totaleImponibileScontato + totaleImpostaScontata, 2)
-
-        #self._totaleScontato = mN(totaleImponibileScontato,2) + mN(totaleImpostaScontata,2) + mN(totaleEsclusoBaseImponibile,2) + mN(spese, 2)
-        #self._totaleImponibileScontato = mN(totaleImponibileScontato,2) + mN(impon_spese,2)
-        #self._totaleRicaricatoLordo = self._totaleImponibileScontato - mN(totaleRicaricatoLordo,2)
-
-        #try:
-            #if self.data_documento < datetime.datetime(2011,9,16):
-                #self._totaleRicaricatoImponibile = Decimal(self._totaleRicaricatoLordo)/(1+Decimal(20)/100)
-            #else:
-                #self._totaleRicaricatoImponibile = Decimal(self._totaleRicaricatoLordo)/(1+Decimal(21)/100)
-        #except:
-            #if self.data_documento < datetime.date(2011,9,16):
-                #self._totaleRicaricatoImponibile = Decimal(self._totaleRicaricatoLordo)/(1+Decimal(20)/100)
-            #else:
-                #self._totaleRicaricatoImponibile = Decimal(self._totaleRicaricatoLordo)/(1+Decimal(21)/100)
-
-        #self._totaleRicaricatoIva = mN(self._totaleRicaricatoLordo,2) - mN(self._totaleRicaricatoImponibile,2)
-        #self._totaleOggetti = self._totaleScontato - self._totaleRicaricatoLordo
-        #self._totaleImpostaScontata = mN(totaleImpostaScontata,2) + mN(imposta_spese,2)
-
-        #self._castellettoIva = []
-        #for k in castellettoIva.keys():
-            #dictCastellettoIva = castellettoIva[k]
-            #dictCastellettoIva['aliquota'] = castellettoIva[k]["percentuale"]
-            #self._castellettoIva.append(dictCastellettoIva)
-        #return None
 
     def contieneMovimentazione(self, righe=None):
         """
@@ -1114,41 +919,40 @@ class TestataDocumento(Dao):
         else:
             return ""
 
-    def _insegna_cliente(self):
+    @property
+    def insegna_cliente(self):
         if self.CLI: return self.CLI.insegna
         else: return ""
-    insegna_cliente= property(_insegna_cliente)
 
-
-    def _indirizzo_cliente(self):
+    @property
+    def indirizzo_cliente(self):
         if self.CLI: return self.CLI.sede_legale_indirizzo
         else: return ""
-    indirizzo_cliente= property(_indirizzo_cliente)
 
-    def _indirizzo_cliente_operativa(self):
+    @property
+    def indirizzo_cliente_operativa(self):
         if self.CLI: return self.CLI.sede_operativa_indirizzo
         else: return ""
-    indirizzo_cliente_operativa= property(_indirizzo_cliente_operativa)
 
-    def _cap_cliente(self):
+    @property
+    def cap_cliente(self):
         if self.CLI: return self.CLI.sede_legale_cap
         else:return ""
-    cap_cliente= property(_cap_cliente)
 
-    def _cap_cliente_operativa(self):
+    @property
+    def cap_cliente_operativa(self):
         if self.CLI: return self.CLI.sede_operativa_cap
         else:return ""
-    cap_cliente_operativa= property(_cap_cliente_operativa)
 
-    def _localita_cliente(self):
+    @property
+    def localita_cliente(self):
         if self.CLI: return self.CLI.sede_legale_localita
         else: return ""
-    localita_cliente= property(_localita_cliente)
 
-    def _localita_cliente_operativa(self):
+    @property
+    def localita_cliente_operativa(self):
         if self.CLI: return self.CLI.sede_operativa_localita
         else: return ""
-    localita_cliente_operativa= property(_localita_cliente_operativa)
 
     def _provincia_cliente(self):
         if self.CLI: return self.CLI.sede_legale_provincia
@@ -1338,172 +1142,133 @@ class TestataDocumento(Dao):
             "Nota di credito da fornitore","Fattura accompagnatoria",
              "Vendita dettaglio","Fattura differita vendita", "Fattura differita acquisto"]
         if k == 'daNumero':
-            dic = {k:t_testata_documento.c.numero >= v}
+            dic = {k:TestataDocumento.__table__.c.numero >= v}
         elif k == 'aNumero':
-            dic = {k:t_testata_documento.c.numero <= v}
+            dic = {k:TestataDocumento.__table__.c.numero <= v}
         elif k == 'numero':
-            dic = {k:t_testata_documento.c.numero == v}
+            dic = {k:TestataDocumento.__table__.c.numero == v}
         elif k == 'parte':
-            dic = {k:t_testata_documento.c.parte == v}
+            dic = {k:TestataDocumento.__table__.c.parte == v}
         elif k == 'daParte':
-            dic = {k:t_testata_documento.c.parte >= v}
+            dic = {k:TestataDocumento.__table__.c.parte >= v}
         elif k == 'aParte':
-            dic = {k:t_testata_documento.c.parte <= v}
+            dic = {k:TestataDocumento.__table__.c.parte <= v}
         elif k == 'daData':
-            dic = {k:t_testata_documento.c.data_documento >= v}
+            dic = {k:TestataDocumento.__table__.c.data_documento >= v}
         elif k== 'aData':
-            dic = {k:t_testata_documento.c.data_documento <= v}
+            dic = {k:TestataDocumento.__table__.c.data_documento <= v}
         elif k =='protocollo':
-            dic = {k:t_testata_documento.c.protocollo.ilike("%"+v+"%")}
+            dic = {k:TestataDocumento.__table__.c.protocollo.ilike("%"+v+"%")}
         elif k == 'idOperazione':
-            dic = {k: t_testata_documento.c.operazione == v}
+            dic = {k: TestataDocumento.__table__.c.operazione == v}
         elif k == 'idPagamento':
-            dic = {k: t_testata_documento.c.id_pagamento == v}
+            dic = {k: TestataDocumento.__table__.c.id_pagamento == v}
         elif k == 'soloContabili':
-            dic = {k: t_testata_documento.c.operazione.in_(contabili)}
+            dic = {k: TestataDocumento.__table__.c.operazione.in_(contabili)}
         elif k == 'idCliente':
-            dic = {k: t_testata_documento.c.id_cliente == v}
+            dic = {k: TestataDocumento.__table__.c.id_cliente == v}
         elif k == 'idBanca':
-            dic = {k: t_testata_documento.c.id_banca == v}
+            dic = {k: TestataDocumento.__table__.c.id_banca == v}
         elif k == 'idPrimoRiferimento':
-            dic = {k: t_testata_documento.c.id_primo_riferimento == v}
+            dic = {k: TestataDocumento.__table__.c.id_primo_riferimento == v}
         elif k == 'idClienteList':
-            dic = {k: t_testata_documento.c.id_cliente.in_(v)}
+            dic = {k: TestataDocumento.__table__.c.id_cliente.in_(v)}
         elif k == 'idFornitore':
-            dic = {k:t_testata_documento.c.id_fornitore == v}
+            dic = {k:TestataDocumento.__table__.c.id_fornitore == v}
         elif k == 'idAgente':
-            dic = {k:t_testata_documento.c.id_agente == v}
+            dic = {k:TestataDocumento.__table__.c.id_agente == v}
         elif k == 'statoDocumento':
-            dic = {k:t_testata_documento.c.documento_saldato == v}
+            dic = {k:TestataDocumento.__table__.c.documento_saldato == v}
         elif k =="extra":
             if v == "tutti_vendita":
-                dic = {k:t_testata_documento.c.operazione.in_(Environment.solo_vendita)}
+                dic = {k:TestataDocumento.__table__.c.operazione.in_(Environment.solo_vendita)}
             elif v == "tutti_acquisto":
-                dic = {k:t_testata_documento.c.operazione.in_(Environment.solo_acquisto)}
+                dic = {k:TestataDocumento.__table__.c.operazione.in_(Environment.solo_acquisto)}
             elif v == "tutti_acquisto_con_ddt":
-                dic = {k:t_testata_documento.c.operazione.ilike("%acquisto%")}
+                dic = {k:TestataDocumento.__table__.c.operazione.ilike("%acquisto%")}
         elif k == 'descrizioneRiga':
             dic = {k: and_(Riga.descrizione.ilike("%"+v+"%"),
                     Riga.id==RigaDocumento.id,
                     RigaDocumento.id_testata_documento == TestataDocumento.id)}
 
         elif k == 'idArticoloMov' or k == "idArticolo":
-            dic = {k: and_(v ==Riga.id_articolo,
-                    t_riga.c.id==RigaMovimento.id,
-                    RigaMovimento.id_testata_movimento == TestataMovimento.id,
-                    TestataMovimento.id_testata_documento == t_testata_documento.c.id)}
+            #from data.testataMovimento import t_testata_movimento
+            dic = {k: and_(v ==t_riga.c.id_articolo,
+                    t_riga.c.id==t_riga_movimento.c.id,
+                    t_riga_movimento.c.id_testata_movimento == TestataMovimento.__table__.c.id,
+                    TestataMovimento.__table__.c.id_testata_documento == self.__table__.c.id)}
+            #dic = {k: self.__table__.c.id.in_(select([t_testata_movimento.c.id_testata_documento],
+                     #and_(t_riga.c.id==t_riga_movimento.c.id,
+                     #t_riga_movimento.c.id_testata_movimento==t_testata_movimento.c.id,
+                     #t_testata_movimento.c.id_testata_documento ==self.__table__.c.id,
+                        #t_riga.c.id_articolo == v)))}
         elif k == 'idArticoloDoc':
-            dic = {k: and_(v==Riga.id_articolo,
-                    Riga.id==RigaDocumento.id,
-                    RigaDocumento.id_testata_documento == TestataDocumento.id)}
+            #dic = {k: and_(v==t_riga.c.id_articolo,
+                    #t_riga.c.id==RigaDocumento.id,
+                    #RigaDocumento.id_testata_documento == self.__table__.c.id)}
+            dic = {k: self.__table__.c.id.in_(select([t_riga_documento.c.id_testata_documento],
+                     and_(t_riga.c.id==t_riga_documento.c.id,
+                     t_riga_documento.c.id_testata_documento==self.__table__.c.id,
+                        t_riga.c.id_articolo == v)))}
         elif k == 'idMagazzino':
-            dic = {k:and_(v == Riga.id_magazzino,
-                    t_riga.c.id==RigaMovimento.id,
-                    RigaMovimento.id_testata_movimento == TestataMovimento.id,
-                    TestataMovimento.id_testata_documento == t_testata_documento.c.id)}
+            #dic = {k:and_(v == Riga.id_magazzino,
+                    #Riga.__table__.c.id==RigaMovimento.id,
+                    #RigaMovimento.id_testata_movimento == TestataMovimento.id,
+                    #TestataMovimento.id_testata_documento == TestataDocumento.__table__.c.id)}
+            dic = {k: self.__table__.c.id.in_(select([t_riga_movimento.c.id_testata_movimento],
+                     and_(t_riga.c.id==t_riga_movimento.c.id,t_riga.c.id_magazzino == v)))}
 
         elif k == 'daDataPagamento':
-            dic = {k:and_(t_testata_documento.c.id == TestataDocumentoScadenza.id_testata_documento,
+            dic = {k:and_(TestataDocumento.__table__.c.id == TestataDocumentoScadenza.id_testata_documento,
                             TestataDocumentoScadenza.data_pagamento >= v)}
         elif k== 'aDataPagamento':
-            dic = {k:and_(t_testata_documento.c.id == TestataDocumentoScadenza.id_testata_documento,
+            dic = {k:and_(TestataDocumento.__table__.c.id == TestataDocumentoScadenza.id_testata_documento,
                             TestataDocumentoScadenza.data_pagamento <= v)}
 
         elif (hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes") or ("GestioneNoleggio" in Environment.modulesList):
             if k == 'daDataInizioNoleggio':
-                dic = {k:and_(t_testata_documento.c.id == TestataGestioneNoleggio.id_testata_documento,
+                dic = {k:and_(TestataDocumento.__table__.c.id == TestataGestioneNoleggio.id_testata_documento,
                             TestataGestioneNoleggio.data_inizio_noleggio >= v)}
             elif k== 'aDataInizioNoleggio':
-                dic = {k:and_(t_testata_documento.c.id == TestataGestioneNoleggio.id_testata_documento,
+                dic = {k:and_(TestataDocumento.__table__.c.id == TestataGestioneNoleggio.id_testata_documento,
                             TestataGestioneNoleggio.data_inizio_noleggio <= v)}
             if k == 'daDataFineNoleggio':
-                dic = {k:and_(t_testata_documento.c.id == TestataGestioneNoleggio.id_testata_documento,
+                dic = {k:and_(TestataDocumento.__table__.c.id == TestataGestioneNoleggio.id_testata_documento,
                             TestataGestioneNoleggio.data_fine_noleggio >= v)}
             elif k== 'aDataFineNoleggio':
-                dic = {k:and_(t_testata_documento.c.id == TestataGestioneNoleggio.id_testata_documento,
+                dic = {k:and_(TestataDocumento.__table__.c.id == TestataGestioneNoleggio.id_testata_documento,
                             TestataGestioneNoleggio.data_fine_noleggio <= v)}
         return  dic[k]
 
 
-if 'esclusione_spese' not in [c.name for c in t_testata_documento.columns]:
-    try:
-        conn = engine.connect()
-        ctx = MigrationContext.configure(conn)
-        op = Operations(ctx)
-        op.add_column('testata_documento', Column('esclusione_spese', Boolean, default=True),schema=params['schema'])
-    except:
-        delete_pickle()
+try:
+    TestataDocumento.__table__.c.esclusione_spese
+except:
+    conn = engine.connect()
+    ctx = MigrationContext.configure(conn)
+    op = Operations(ctx)
+    op.add_column('testata_documento', Column('esclusione_spese', Boolean, default=True),schema=params['schema'])
+    delete_pickle()
 
-if "codice_cup" not in [c.name for c in t_testata_documento.columns]:
-    try:
-        conn = engine.connect()
-        ctx = MigrationContext.configure(conn)
-        op = Operations(ctx)
-        op.add_column('testata_documento', Column('codice_cup', String(15), nullable=True), schema=params["schema"])
-    except:
-        delete_pickle()
+try:
+    TestataDocumento.__table__.c.codice_cup
+except:
+    conn = engine.connect()
+    ctx = MigrationContext.configure(conn)
+    op = Operations(ctx)
+    op.add_column('testata_documento', Column('codice_cup', String(15), nullable=True), schema=params["schema"])
+    delete_pickle()
 
-if "codice_cig" not in [c.name for c in t_testata_documento.columns]:
-    try:
-        conn = engine.connect()
-        ctx = MigrationContext.configure(conn)
-        op = Operations(ctx)
-        op.add_column('testata_documento', Column('codice_cig', String(15), nullable=True), schema=params["schema"])
-    except:
-        delete_pickle()
-        restart_program()
+try:
+    TestataDocumento.__table__.c.codice_cig
+except:
+    conn = engine.connect()
+    ctx = MigrationContext.configure(conn)
+    op = Operations(ctx)
+    op.add_column('testata_documento', Column('codice_cig', String(15), nullable=True), schema=params["schema"])
+    delete_pickle()
+    restart_program()
 
-
-std_mapper = mapper(TestataDocumento, t_testata_documento,
-    properties={
-        "rigadoc": relation(RigaDocumento,
-            cascade="all, delete",
-            backref="testata_documento",
-            ),
-        "testata_documento_scadenza": relation(TestataDocumentoScadenza,
-            cascade="all, delete",
-            backref="testata_documento"),
-        "PG": relation(Pagamento,
-            primaryjoin=t_testata_documento.c.id_pagamento==t_pagamento.c.id),
-        "BN": relation(Banca,
-            primaryjoin=(t_testata_documento.c.id_banca==t_banca.c.id)),
-        "AL": relation(AliquotaIva,
-            primaryjoin=(t_testata_documento.c.id_aliquota_iva_esenzione==AliquotaIva.id)),
-        "PV": relation(Vettore,
-            primaryjoin=(t_testata_documento.c.id_vettore==t_vettore.c.id)),
-        "DM": relation(DestinazioneMerce,
-            primaryjoin=(t_testata_documento.c.id_destinazione_merce==DestinazioneMerce.id)),
-        "TM": relation(TestataMovimento,
-            primaryjoin=(t_testata_documento.c.id==t_testata_movimento.c.id_testata_documento),
-            cascade="all, delete",
-            backref='TD',lazy='joined'),
-        "CLI": relation(Cliente,
-            primaryjoin=(t_testata_documento.c.id_cliente==t_cliente.c.id), backref="TD"),
-        "FORN": relation(Fornitore,
-            primaryjoin=(t_testata_documento.c.id_fornitore==t_fornitore.c.id), backref="TD"),
-        "AGE": relation(Agente,
-            primaryjoin=(t_testata_documento.c.id_agente==t_agente.c.id)),
-        "IFDDDT": relation(InformazioniFatturazioneDocumento,
-            primaryjoin=(t_testata_documento.c.id==t_informazioni_fatturazione_documento.c.id_ddt)),
-        "IFDFAT": relation(InformazioniFatturazioneDocumento,
-            primaryjoin=(t_testata_documento.c.id==t_informazioni_fatturazione_documento.c.id_fattura)),
-        "OP": relation(Operazione,
-            primaryjoin=(t_testata_documento.c.operazione==Operazione.denominazione),
-            backref="TD"),
-        "STD": relation(ScontoTestataDocumento,
-            primaryjoin=(t_testata_documento.c.id==ScontoTestataDocumento.id_testata_documento),
-            cascade="all, delete",
-            backref="TD"),
-    },
-    order_by=t_testata_documento.c.data_inserimento.desc())
-
-if (hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes") or ("GestioneNoleggio" in Environment.modulesList):
-    from promogest.modules.GestioneNoleggio.dao.TestataGestioneNoleggio import TestataGestioneNoleggio
-    std_mapper.add_property("TGN", relation(TestataGestioneNoleggio,
-        primaryjoin=(t_testata_documento.c.id==TestataGestioneNoleggio.id_testata_documento),
-        cascade="all, delete",
-        backref=backref("TD"),
-        uselist=False))
 
 if tipodb=="sqlite":
     a = session.query(Banca.id).all()
