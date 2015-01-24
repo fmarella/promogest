@@ -23,5 +23,5 @@
 import pysvn
 
 client = pysvn.Client()
-client.exception_style = 0
-client.update('.')
+client.update(".",
+            revision=pysvn.Revision(pysvn.opt_revision_kind.number, 4025 ))
