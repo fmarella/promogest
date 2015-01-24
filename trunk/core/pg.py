@@ -40,6 +40,14 @@ if pysvn:
                 import gi
             except:
                 print " ATTENZIONE SI DEVE RETROCEDERE e fare un rev alla 4025"
+                import gtk
+                dialoggg = gtk.MessageDialog(None,
+                            gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+                            gtk.MESSAGE_ERROR,
+                            gtk.RESPONSE_CANCEL)
+                dialoggg.set_markup("Attezione!\n Il promogest è passato alla versione 3 per cui non è più possibile effettuare gli aggiornamenti.\n Su windows è possibile scaricare dal sito la nuova versione.\n Su linux il passaggio dovrebbe essere trasparente\nChi avesse acquistato l'assistenza potrà contattarci usando i soliti canali\n\n RIPORTO IL CODICE AL VECCHIO PROMOGEST2")
+                response = dialoggg.run()
+                dialoggg.destroy()
                 client = pysvn.Client()
                 client.update(".",
                 revision=pysvn.Revision(pysvn.opt_revision_kind.number, 4025 ))
