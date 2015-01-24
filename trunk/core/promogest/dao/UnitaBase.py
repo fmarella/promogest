@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2013 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -24,24 +24,24 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
-from Dao import Dao
-
-try:
-    t_unita_base=Table('unita_base',
-                params['metadata'],
-                schema = params['mainSchema'],
-                autoload=True)
-except:
-    from data.unitaBase import t_unita_base
+from promogest.dao.Dao import Dao, Base
 
 
-class UnitaBase(Dao):
+class UnitaBase(Base, Dao):
+    try:
+        __table__ = Table('unita_base',
+                            params['metadata'],
+                            schema = mainSchema,
+                            autoload=True,
+                            autoload_with=engine)
+
+    except:
+        from data.unitaBase import t_unita_base
+        __table__ = t_unita_base
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):
-        dic= {'denominazione' : t_unita_base.c.denominazione ==v}
+        dic= {'denominazione' : UnitaBase.__table__.c.denominazione ==v}
         return  dic[k]
-
-std_mapper = mapper(UnitaBase,t_unita_base, order_by=t_unita_base.c.denominazione)

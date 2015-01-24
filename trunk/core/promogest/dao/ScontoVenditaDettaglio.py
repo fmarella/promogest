@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -21,40 +21,27 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-from sqlalchemy import Table
-from sqlalchemy.orm import mapper, join
-from promogest.Environment import params
+from sqlalchemy import *
+from sqlalchemy.orm import *
+from promogest.Environment import *
+from promogest.dao.Dao import Dao, Base
 
-try:
-    t_sconti_vendita_dettaglio = Table('sconti_vendita_dettaglio',
-                                   params['metadata'],
-                                   schema=params['schema'],
-                                   autoload=True)
-except:
-    from data.listinoArticolo import t_listino_articolo
-    from data.scontiVenditaDettaglio import t_sconti_vendita_dettaglio
+from data.sconto import t_sconto
+from data.scontiVenditaDettaglio import t_sconti_vendita_dettaglio
+s_svd = join(t_sconto, t_sconti_vendita_dettaglio)
 
-from Dao import Dao
-from Sconto import t_sconto
+class ScontoVenditaDettaglio(Base, Dao):
+    __table__ = s_svd
+    id = column_property(t_sconto.c.id, t_sconti_vendita_dettaglio.c.id)
 
-
-class ScontoVenditaDettaglio(Dao):
-    """  """
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):
         if k=='idListino':
-            dic = {k: t_sconti_vendita_dettaglio.c.id_listino==v}
+            dic = {k: ScontoVenditaDettaglio.__table__.c.id_listino==v}
         elif k=='idArticolo':
-            dic = {k: t_sconti_vendita_dettaglio.c.id_articolo==v}
+            dic = {k: ScontoVenditaDettaglio.__table__.c.id_articolo==v}
         elif k=='dataListinoArticolo':
-            dic = {k: t_sconti_vendita_dettaglio.c.data_listino_articolo==v}
+            dic = {k: ScontoVenditaDettaglio.__table__.c.data_listino_articolo==v}
         return dic[k]
-
-std_mapper = mapper(ScontoVenditaDettaglio,
-    join(t_sconto, t_sconti_vendita_dettaglio),
-    properties={
-        "id": [t_sconto.c.id, t_sconti_vendita_dettaglio.c.id]
-    },
-    order_by=t_sconti_vendita_dettaglio.c.id)

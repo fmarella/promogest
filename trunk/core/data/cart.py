@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2013 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -22,6 +22,7 @@
 
 from sqlalchemy import *
 from promogest.Environment import *
+
 params["session"].close()
 t_cart = Table('cart', params['metadata'],
         Column('id', Integer, primary_key=True),

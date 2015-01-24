@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.18.3 -->
 <interface>
-  <requires lib="gtk+" version="2.16"/>
-  <!-- interface-naming-policy toplevel-contextual -->
+  <requires lib="gtk+" version="3.4"/>
   <object class="GtkWindow" id="visualizzazione_window">
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">Visualizzazione</property>
@@ -10,8 +10,8 @@
     <property name="default_width">900</property>
     <property name="default_height">600</property>
     <property name="icon">promogest.png</property>
-    <signal name="destroy-event" handler="on_visualizzazione_window_close" swapped="no"/>
     <signal name="delete-event" handler="on_visualizzazione_window_close" swapped="no"/>
+    <signal name="destroy-event" handler="on_visualizzazione_window_close" swapped="no"/>
     <child>
       <object class="GtkHBox" id="hbox80">
         <property name="visible">True</property>
@@ -34,7 +34,7 @@
                     <property name="xpad">4</property>
                     <property name="ypad">4</property>
                     <property name="stock">gtk-directory</property>
-                    <property name="icon-size">3</property>
+                    <property name="icon_size">3</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -46,7 +46,6 @@
                   <object class="GtkScrolledWindow" id="scrolledwindow53">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="hscrollbar_policy">automatic</property>
                     <property name="vscrollbar_policy">never</property>
                     <child>
                       <object class="GtkViewport" id="visualizzazione_viewport">
@@ -94,12 +93,10 @@
                     <property name="layout_style">end</property>
                     <child>
                       <object class="GtkButton" id="confirm_button">
-                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="can_default">True</property>
                         <property name="receives_default">False</property>
-                        <accelerator key="F3" signal="clicked"/>
                         <signal name="clicked" handler="on_confirm_button_clicked" swapped="no"/>
                         <child>
                           <object class="GtkAlignment" id="alignment516">
@@ -141,6 +138,7 @@
                             </child>
                           </object>
                         </child>
+                        <accelerator key="F3" signal="clicked"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>

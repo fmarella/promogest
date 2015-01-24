@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -244,9 +244,10 @@ def articoloStatistiche(arti=None, righe=None):
     return arti
 
 
-def giacenzaArticolo(
-daData=None, aData=None,year=None, idMagazzino=None, idArticolo=None,
-                                                                allMag=None):
+def giacenzaArticolo(daData=None, aData=None,year=None,
+                                        idMagazzino=None,
+                                        idArticolo=None,
+                                                allMag=None):
     """
     Calcola la quantità di oggetti presenti in magazzino
     """

@@ -1,7 +1,128 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.18.3 -->
 <interface>
-  <requires lib="gtk+" version="2.16"/>
-  <!-- interface-naming-policy project-wide -->
+  <requires lib="gtk+" version="3.4"/>
+  <object class="GtkTable" id="anagrafica_account_mail_filter_table">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="n_rows">2</property>
+    <property name="n_columns">2</property>
+    <property name="column_spacing">2</property>
+    <property name="row_spacing">2</property>
+    <child>
+      <object class="GtkLabel" id="label34">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="xalign">0</property>
+        <property name="label" translatable="yes">Denominazione</property>
+      </object>
+      <packing>
+        <property name="x_options">GTK_FILL</property>
+        <property name="y_options"/>
+        <property name="x_padding">10</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkEntry" id="denominazione_filter_entry">
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="invisible_char">●</property>
+        <property name="primary_icon_activatable">False</property>
+        <property name="secondary_icon_activatable">False</property>
+      </object>
+      <packing>
+        <property name="left_attach">1</property>
+        <property name="right_attach">2</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkLabel" id="label1">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">Indirizzo</property>
+      </object>
+      <packing>
+        <property name="top_attach">1</property>
+        <property name="bottom_attach">2</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkEntry" id="indirizzo_filter_entry">
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="invisible_char">●</property>
+        <property name="primary_icon_activatable">False</property>
+        <property name="secondary_icon_activatable">False</property>
+      </object>
+      <packing>
+        <property name="left_attach">1</property>
+        <property name="right_attach">2</property>
+        <property name="top_attach">1</property>
+        <property name="bottom_attach">2</property>
+      </packing>
+    </child>
+  </object>
+  <object class="GtkListStore" id="filter_listore">
+    <columns>
+      <!-- column-name PyObject1 -->
+      <column type="PyObject"/>
+      <!-- column-name denominazione -->
+      <column type="gchararray"/>
+      <!-- column-name indirizzo -->
+      <column type="gchararray"/>
+      <!-- column-name preferito -->
+      <column type="gboolean"/>
+    </columns>
+  </object>
+  <object class="GtkTreeView" id="anagrafica_semplice_treeview">
+    <property name="visible">True</property>
+    <property name="can_focus">True</property>
+    <property name="model">filter_listore</property>
+    <property name="headers_clickable">False</property>
+    <property name="search_column">2</property>
+    <property name="enable_grid_lines">both</property>
+    <child internal-child="selection">
+      <object class="GtkTreeSelection" id="treeview-selection1"/>
+    </child>
+    <child>
+      <object class="GtkTreeViewColumn" id="denominazione_column">
+        <property name="title" translatable="yes">Denominazione</property>
+        <child>
+          <object class="GtkCellRendererText" id="cellrenderertext5"/>
+          <attributes>
+            <attribute name="text">1</attribute>
+          </attributes>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkTreeViewColumn" id="indirizzo_column">
+        <property name="title" translatable="yes">Indirizzo</property>
+        <child>
+          <object class="GtkCellRendererText" id="cellrenderertext1"/>
+          <attributes>
+            <attribute name="text">2</attribute>
+          </attributes>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkTreeViewColumn" id="preferito_column">
+        <property name="title" translatable="yes">Predefinita</property>
+        <child>
+          <object class="GtkCellRendererToggle" id="cellrenderercombo1"/>
+          <attributes>
+            <attribute name="active">3</attribute>
+          </attributes>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkImage" id="image1">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-connect</property>
+  </object>
   <object class="GtkTable" id="anagrafica_account_mail_detail_table">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -45,11 +166,8 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="invisible_char">●</property>
-                        <property name="invisible_char_set">True</property>
                         <property name="primary_icon_activatable">False</property>
                         <property name="secondary_icon_activatable">False</property>
-                        <property name="primary_icon_sensitive">True</property>
-                        <property name="secondary_icon_sensitive">True</property>
                       </object>
                       <packing>
                         <property name="left_attach">1</property>
@@ -72,11 +190,8 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="invisible_char">●</property>
-                        <property name="invisible_char_set">True</property>
                         <property name="primary_icon_activatable">False</property>
                         <property name="secondary_icon_activatable">False</property>
-                        <property name="primary_icon_sensitive">True</property>
-                        <property name="secondary_icon_sensitive">True</property>
                       </object>
                       <packing>
                         <property name="left_attach">1</property>
@@ -92,6 +207,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
+                        <property name="xalign">0.5</property>
                         <property name="draw_indicator">True</property>
                       </object>
                       <packing>
@@ -157,11 +273,8 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="invisible_char">●</property>
-                        <property name="invisible_char_set">True</property>
                         <property name="primary_icon_activatable">False</property>
                         <property name="secondary_icon_activatable">False</property>
-                        <property name="primary_icon_sensitive">True</property>
-                        <property name="secondary_icon_sensitive">True</property>
                       </object>
                       <packing>
                         <property name="left_attach">1</property>
@@ -184,11 +297,8 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="invisible_char">●</property>
-                        <property name="invisible_char_set">True</property>
                         <property name="primary_icon_activatable">False</property>
                         <property name="secondary_icon_activatable">False</property>
-                        <property name="primary_icon_sensitive">True</property>
-                        <property name="secondary_icon_sensitive">True</property>
                       </object>
                       <packing>
                         <property name="left_attach">3</property>
@@ -202,6 +312,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
+                        <property name="xalign">0.5</property>
                         <property name="draw_indicator">True</property>
                       </object>
                       <packing>
@@ -267,9 +378,6 @@
                           <placeholder/>
                         </child>
                         <child>
-                          <placeholder/>
-                        </child>
-                        <child>
                           <object class="GtkLabel" id="label24">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
@@ -281,11 +389,8 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="invisible_char">●</property>
-                            <property name="invisible_char_set">True</property>
                             <property name="primary_icon_activatable">False</property>
                             <property name="secondary_icon_activatable">False</property>
-                            <property name="primary_icon_sensitive">True</property>
-                            <property name="secondary_icon_sensitive">True</property>
                           </object>
                           <packing>
                             <property name="left_attach">1</property>
@@ -309,11 +414,8 @@
                             <property name="can_focus">True</property>
                             <property name="visibility">False</property>
                             <property name="invisible_char">●</property>
-                            <property name="invisible_char_set">True</property>
                             <property name="primary_icon_activatable">False</property>
                             <property name="secondary_icon_activatable">False</property>
-                            <property name="primary_icon_sensitive">True</property>
-                            <property name="secondary_icon_sensitive">True</property>
                           </object>
                           <packing>
                             <property name="left_attach">1</property>
@@ -329,6 +431,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">False</property>
+                            <property name="xalign">0.5</property>
                             <property name="draw_indicator">True</property>
                           </object>
                           <packing>
@@ -365,6 +468,9 @@
                             <property name="top_attach">3</property>
                             <property name="bottom_attach">4</property>
                           </packing>
+                        </child>
+                        <child>
+                          <placeholder/>
                         </child>
                       </object>
                     </child>
@@ -422,11 +528,8 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="invisible_char">●</property>
-                        <property name="invisible_char_set">True</property>
                         <property name="primary_icon_activatable">False</property>
                         <property name="secondary_icon_activatable">False</property>
-                        <property name="primary_icon_sensitive">True</property>
-                        <property name="secondary_icon_sensitive">True</property>
                       </object>
                       <packing>
                         <property name="left_attach">1</property>
@@ -449,8 +552,6 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="border_width">1</property>
-                        <property name="hscrollbar_policy">automatic</property>
-                        <property name="vscrollbar_policy">automatic</property>
                         <child>
                           <object class="GtkTextView" id="body_textview">
                             <property name="height_request">80</property>
@@ -481,8 +582,6 @@
                       <object class="GtkScrolledWindow" id="scrolledwindow2">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="hscrollbar_policy">automatic</property>
-                        <property name="vscrollbar_policy">automatic</property>
                         <child>
                           <object class="GtkTextView" id="firma_textview">
                             <property name="visible">True</property>
@@ -521,128 +620,5 @@
         </child>
       </object>
     </child>
-  </object>
-  <object class="GtkTable" id="anagrafica_account_mail_filter_table">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="n_rows">2</property>
-    <property name="n_columns">2</property>
-    <property name="column_spacing">2</property>
-    <property name="row_spacing">2</property>
-    <child>
-      <object class="GtkLabel" id="label34">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="xalign">0</property>
-        <property name="label" translatable="yes">Denominazione</property>
-      </object>
-      <packing>
-        <property name="x_options">GTK_FILL</property>
-        <property name="y_options"/>
-        <property name="x_padding">10</property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkEntry" id="denominazione_filter_entry">
-        <property name="visible">True</property>
-        <property name="can_focus">True</property>
-        <property name="invisible_char">●</property>
-        <property name="invisible_char_set">True</property>
-        <property name="primary_icon_activatable">False</property>
-        <property name="secondary_icon_activatable">False</property>
-        <property name="primary_icon_sensitive">True</property>
-        <property name="secondary_icon_sensitive">True</property>
-      </object>
-      <packing>
-        <property name="left_attach">1</property>
-        <property name="right_attach">2</property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkLabel" id="label1">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="label" translatable="yes">Indirizzo</property>
-      </object>
-      <packing>
-        <property name="top_attach">1</property>
-        <property name="bottom_attach">2</property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkEntry" id="indirizzo_filter_entry">
-        <property name="visible">True</property>
-        <property name="can_focus">True</property>
-        <property name="invisible_char">●</property>
-        <property name="primary_icon_activatable">False</property>
-        <property name="secondary_icon_activatable">False</property>
-        <property name="primary_icon_sensitive">True</property>
-        <property name="secondary_icon_sensitive">True</property>
-      </object>
-      <packing>
-        <property name="left_attach">1</property>
-        <property name="right_attach">2</property>
-        <property name="top_attach">1</property>
-        <property name="bottom_attach">2</property>
-      </packing>
-    </child>
-  </object>
-  <object class="GtkTreeView" id="anagrafica_semplice_treeview">
-    <property name="visible">True</property>
-    <property name="can_focus">True</property>
-    <property name="model">filter_listore</property>
-    <property name="headers_clickable">False</property>
-    <property name="search_column">2</property>
-    <property name="enable_grid_lines">both</property>
-    <child>
-      <object class="GtkTreeViewColumn" id="denominazione_column">
-        <property name="title" translatable="yes">Denominazione</property>
-        <child>
-          <object class="GtkCellRendererText" id="cellrenderertext5"/>
-          <attributes>
-            <attribute name="text">1</attribute>
-          </attributes>
-        </child>
-      </object>
-    </child>
-    <child>
-      <object class="GtkTreeViewColumn" id="indirizzo_column">
-        <property name="title" translatable="yes">Indirizzo</property>
-        <child>
-          <object class="GtkCellRendererText" id="cellrenderertext1"/>
-          <attributes>
-            <attribute name="text">2</attribute>
-          </attributes>
-        </child>
-      </object>
-    </child>
-    <child>
-      <object class="GtkTreeViewColumn" id="preferito_column">
-        <property name="title" translatable="yes">Predefinita</property>
-        <child>
-          <object class="GtkCellRendererToggle" id="cellrenderercombo1"/>
-          <attributes>
-            <attribute name="active">3</attribute>
-          </attributes>
-        </child>
-      </object>
-    </child>
-  </object>
-  <object class="GtkListStore" id="filter_listore">
-    <columns>
-      <!-- column-name PyObject1 -->
-      <column type="PyObject"/>
-      <!-- column-name denominazione -->
-      <column type="gchararray"/>
-      <!-- column-name indirizzo -->
-      <column type="gchararray"/>
-      <!-- column-name preferito -->
-      <column type="gboolean"/>
-    </columns>
-  </object>
-  <object class="GtkImage" id="image1">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">gtk-connect</property>
   </object>
 </interface>

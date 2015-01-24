@@ -57,18 +57,6 @@ class SendEmail(GladeWidget):
         if setconf("Smtp", "emailmittente"):
             self.fromaddr = str(setconf("Smtp", "emailmittente"))
             self.from_email_entry.set_text(self.fromaddr)
-        #try:
-            #fileName = Environment.guiDir + 'logo_promogest.png'
-            #f = open(fileName,'rb')
-            #content = f.read()
-            #f.close()
-            #self.codec = 'Codice installazione: ' + str(hashlib.md5(content).hexdigest().upper())
-        #except:
-            #pass
-            #msg = 'Impossibile generare il codice !!!'
-        #self.anagrafica()
-        #self.placeWindow()
-        #self.setFocus()
 
     def preSetEmailBody(self, string=""):
         textview_set_text(self.emailBody_textview, string)

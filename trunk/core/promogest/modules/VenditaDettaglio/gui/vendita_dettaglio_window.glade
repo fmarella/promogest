@@ -1,437 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.18.3 -->
 <interface>
-  <requires lib="gtk+" version="2.16"/>
-  <!-- interface-requires pythonplugin 0.0 -->
-  <!-- interface-naming-policy toplevel-contextual -->
-  <object class="GtkMessageDialog" id="altre_opzioni_dialog">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="is_focus">True</property>
-    <property name="can_default">True</property>
-    <property name="has_default">True</property>
-    <property name="receives_default">True</property>
-    <property name="border_width">5</property>
-    <property name="title" translatable="yes">opzioni varie dialog</property>
-    <property name="window_position">center-on-parent</property>
-    <property name="default_width">400</property>
-    <property name="default_height">115</property>
-    <property name="destroy_with_parent">True</property>
-    <property name="type_hint">dialog</property>
-    <property name="urgency_hint">True</property>
-    <property name="transient_for">vendita_dettaglio_window</property>
-    <property name="message_type">warning</property>
-    <property name="text" translatable="yes">&lt;b&gt;ATTENZIONE&lt;/b&gt;
-Le seguenti combobox permettono di selezionare 
-il punto vendita ed il punto cassa da cui si sta 
-effettuando la vendita.
-Il punto vendita è obbligatorio ma è vivamente 
-consigliato aggiungere e settare anche gli eventuali 
-punti cassa dal menu "opzioni" della finestra principale
-dell'interfaccia di vendita</property>
-    <property name="use_markup">True</property>
-    <child internal-child="vbox">
-      <object class="GtkVBox" id="dialog-vbox7">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="spacing">2</property>
-        <child internal-child="action_area">
-          <object class="GtkHButtonBox" id="dialog-action_area7">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="layout_style">end</property>
-            <child>
-              <object class="GtkButton" id="ao_annulla_button">
-                <property name="label">gtk-cancel</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="use_stock">True</property>
-                <signal name="clicked" handler="on_ao_annulla_button_clicked" swapped="no"/>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton" id="ao_ok_button">
-                <property name="label">gtk-ok</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="use_stock">True</property>
-                <signal name="clicked" handler="on_ao_ok_button_clicked" swapped="no"/>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
-                <property name="position">2</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="pack_type">end</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkFrame" id="altre_opzioni_frame">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="label_xalign">0</property>
-            <property name="shadow_type">in</property>
-            <child>
-              <object class="GtkAlignment" id="ao_alignment">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="left_padding">12</property>
-                <child>
-                  <object class="GtkVBox" id="vbox2XX">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <object class="GtkHBox" id="hbox1pp">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <child>
-                          <object class="GtkLabel" id="ao_magazzino_label">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="xpad">3</property>
-                            <property name="label" translatable="yes">&lt;b&gt;Magazzino /P Vendita&lt;/b&gt;</property>
-                            <property name="use_markup">True</property>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">False</property>
-                            <property name="position">0</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkComboBox" id="ao_magazzino_combobox">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                          </object>
-                          <packing>
-                            <property name="expand">True</property>
-                            <property name="fill">True</property>
-                            <property name="position">1</property>
-                          </packing>
-                        </child>
-                      </object>
-                      <packing>
-                        <property name="expand">True</property>
-                        <property name="fill">True</property>
-                        <property name="position">1</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkHBox" id="ao_hbox2">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <child>
-                          <object class="GtkLabel" id="ao_punto_cassa_label">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="xpad">30</property>
-                            <property name="label" translatable="yes">&lt;b&gt;Punto Cassa&lt;/b&gt;</property>
-                            <property name="use_markup">True</property>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">False</property>
-                            <property name="position">0</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkComboBox" id="ao_punto_cassa_combobox">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                          </object>
-                          <packing>
-                            <property name="expand">True</property>
-                            <property name="fill">True</property>
-                            <property name="position">1</property>
-                          </packing>
-                        </child>
-                      </object>
-                      <packing>
-                        <property name="expand">True</property>
-                        <property name="fill">True</property>
-                        <property name="position">2</property>
-                      </packing>
-                    </child>
-                  </object>
-                </child>
-              </object>
-            </child>
-            <child type="label">
-              <object class="GtkLabel" id="ao_label">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">&lt;b&gt;Altre Opzioni di vendita&lt;/b&gt;</property>
-                <property name="use_markup">True</property>
-              </object>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">5</property>
-          </packing>
-        </child>
-      </object>
-    </child>
-    <action-widgets>
-      <action-widget response="0">ao_annulla_button</action-widget>
-      <action-widget response="0">ao_ok_button</action-widget>
-    </action-widgets>
-  </object>
+  <requires lib="gtk+" version="3.4"/>
+  <requires lib="pythonplugin" version="0.0"/>
   <object class="GtkImage" id="annulla_img">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="stock">gtk-cancel</property>
-  </object>
-  <object class="GtkMessageDialog" id="articolo_generico_dialogo">
-    <property name="can_focus">False</property>
-    <property name="border_width">5</property>
-    <property name="title" translatable="yes">Gestione articolo generico F9</property>
-    <property name="modal">True</property>
-    <property name="window_position">center</property>
-    <property name="destroy_with_parent">True</property>
-    <property name="type_hint">normal</property>
-    <property name="skip_taskbar_hint">True</property>
-    <property name="deletable">False</property>
-    <property name="transient_for">vendita_dettaglio_window</property>
-    <property name="message_type">question</property>
-    <property name="text" translatable="yes">Articolo Generico. </property>
-    <property name="use_markup">True</property>
-    <property name="secondary_text" translatable="yes">Inserire un prezzo ed una quantità se diversa da uno. 
-Premere  &lt;b&gt;+&lt;/b&gt;  e &lt;b&gt;-&lt;/b&gt; per variare i valori 
-ALT +n per annullare INVIO  per confermare</property>
-    <property name="secondary_use_markup">True</property>
-    <signal name="destroy-event" handler="on_annulla_generico_button_clicked" swapped="no"/>
-    <child internal-child="vbox">
-      <object class="GtkVBox" id="dialog_genrico_vbox">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="spacing">2</property>
-        <child internal-child="action_area">
-          <object class="GtkHButtonBox" id="dialog-action_area4">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="layout_style">end</property>
-            <child>
-              <object class="GtkButton" id="annulla_generico_button">
-                <property name="label">gtk-cancel</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="use_stock">True</property>
-                <signal name="clicked" handler="on_annulla_generico_button_clicked" swapped="no"/>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton" id="generico_ok_button">
-                <property name="label">gtk-ok</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="tooltip_markup">Conferma con invio</property>
-                <property name="border_width">1</property>
-                <property name="use_stock">True</property>
-                <accelerator key="KP_Enter" signal="clicked"/>
-                <accelerator key="Return" signal="clicked"/>
-                <signal name="clicked" handler="on_generico_ok_button_clicked" swapped="no"/>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
-                <property name="position">1</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="pack_type">end</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkHBox" id="hbox2___">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="spacing">2</property>
-            <child>
-              <object class="GtkLabel" id="label2___">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Quantità</property>
-              </object>
-              <packing>
-                <property name="expand">True</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="UnsignedDecimalEntryField" id="quantita_f9_entry">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="invisible_char">•</property>
-                <property name="text" translatable="yes">0.00      </property>
-                <property name="primary_icon_activatable">False</property>
-                <property name="secondary_icon_activatable">False</property>
-                <property name="primary_icon_sensitive">True</property>
-                <property name="secondary_icon_sensitive">True</property>
-              </object>
-              <packing>
-                <property name="expand">True</property>
-                <property name="fill">True</property>
-                <property name="position">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton" id="plus2_button">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="tooltip_markup">(+) aumenta</property>
-                <property name="image">image2_plus</property>
-                <accelerator key="plus" signal="clicked"/>
-                <accelerator key="KP_Add" signal="clicked"/>
-                <signal name="clicked" handler="on_plus2_button_clicked" swapped="no"/>
-              </object>
-              <packing>
-                <property name="expand">True</property>
-                <property name="fill">True</property>
-                <property name="position">2</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton" id="minus2_button">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="tooltip_markup">(-) diminuisce</property>
-                <property name="image">image4_minus2</property>
-                <accelerator key="minus" signal="clicked"/>
-                <accelerator key="KP_Subtract" signal="clicked"/>
-                <signal name="clicked" handler="on_minus2_button_clicked" swapped="no"/>
-              </object>
-              <packing>
-                <property name="expand">True</property>
-                <property name="fill">True</property>
-                <property name="position">3</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">False</property>
-            <property name="pack_type">end</property>
-            <property name="position">1</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkHBox" id="hbox1___">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="spacing">2</property>
-            <child>
-              <object class="GtkLabel" id="label1__">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="xpad">6</property>
-                <property name="label" translatable="yes">Prezzo</property>
-              </object>
-              <packing>
-                <property name="expand">True</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="UnsignedMoneyEntryField" id="prezzo_f9_entry">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="has_focus">True</property>
-                <property name="is_focus">True</property>
-                <property name="can_default">True</property>
-                <property name="has_default">True</property>
-                <property name="invisible_char">•</property>
-                <property name="text" translatable="yes">0.000     </property>
-                <property name="primary_icon_activatable">False</property>
-                <property name="secondary_icon_activatable">False</property>
-                <property name="primary_icon_sensitive">True</property>
-                <property name="secondary_icon_sensitive">True</property>
-              </object>
-              <packing>
-                <property name="expand">True</property>
-                <property name="fill">True</property>
-                <property name="position">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton" id="plus_button">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="tooltip_markup">ctrl +( +) aumenta</property>
-                <property name="image">image_plus</property>
-                <accelerator key="plus" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
-                <accelerator key="KP_Add" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
-                <signal name="clicked" handler="on_plus_button_clicked" swapped="no"/>
-              </object>
-              <packing>
-                <property name="expand">True</property>
-                <property name="fill">True</property>
-                <property name="position">2</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton" id="minus_button">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="tooltip_markup">ctrl +( - ) diminisce</property>
-                <property name="image">image3_minus</property>
-                <accelerator key="minus" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
-                <accelerator key="KP_Subtract" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
-                <signal name="clicked" handler="on_minus_button_clicked" swapped="no"/>
-              </object>
-              <packing>
-                <property name="expand">True</property>
-                <property name="fill">True</property>
-                <property name="position">3</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">False</property>
-            <property name="pack_type">end</property>
-            <property name="position">2</property>
-          </packing>
-        </child>
-      </object>
-    </child>
-    <action-widgets>
-      <action-widget response="0">annulla_generico_button</action-widget>
-      <action-widget response="0">generico_ok_button</action-widget>
-    </action-widgets>
   </object>
   <object class="DateWidget" id="data_chiusura">
     <property name="visible">True</property>
@@ -441,13 +16,13 @@ ALT +n per annullare INVIO  per confermare</property>
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="stock">gtk-print</property>
-    <property name="icon-size">1</property>
+    <property name="icon_size">1</property>
   </object>
   <object class="GtkImage" id="image11">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="stock">gtk-file</property>
-    <property name="icon-size">1</property>
+    <property name="icon_size">1</property>
   </object>
   <object class="GtkImage" id="image2_plus">
     <property name="visible">True</property>
@@ -468,25 +43,25 @@ ALT +n per annullare INVIO  per confermare</property>
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="stock">gtk-print</property>
-    <property name="icon-size">1</property>
+    <property name="icon_size">1</property>
   </object>
   <object class="GtkImage" id="image7">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="stock">gtk-print</property>
-    <property name="icon-size">1</property>
+    <property name="icon_size">1</property>
   </object>
   <object class="GtkImage" id="image8">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="stock">gtk-print</property>
-    <property name="icon-size">1</property>
+    <property name="icon_size">1</property>
   </object>
   <object class="GtkImage" id="image9">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="stock">gtk-print</property>
-    <property name="icon-size">1</property>
+    <property name="icon_size">1</property>
   </object>
   <object class="GtkImage" id="image_plus">
     <property name="visible">True</property>
@@ -496,8 +71,8 @@ ALT +n per annullare INVIO  per confermare</property>
   <object class="GtkImage" id="no_prinnt_image">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="tooltip_text" translatable="yes">Quando questo bottone è premuto 
-verrà generato lo scontrino ma non 
+    <property name="tooltip_text" translatable="yes">Quando questo bottone è premuto
+verrà generato lo scontrino ma non
 verrà mandata la stampa
 all stampante fiscale.</property>
     <property name="stock">gtk-print</property>
@@ -519,9 +94,9 @@ all stampante fiscale.</property>
     <property name="modal">True</property>
     <property name="window_position">center</property>
     <property name="icon">promogest.png</property>
+    <signal name="delete-event" handler="on_vendita_dettaglio_window_close" swapped="no"/>
     <signal name="destroy-event" handler="on_vendita_dettaglio_window_close" swapped="no"/>
     <signal name="key-press-event" handler="on_vendita_dettaglio_window_key_press_event" swapped="no"/>
-    <signal name="delete-event" handler="on_vendita_dettaglio_window_close" swapped="no"/>
     <child>
       <object class="GtkVBox" id="vbox52">
         <property name="visible">True</property>
@@ -649,8 +224,8 @@ all stampante fiscale.</property>
                       <object class="GtkMenuItem" id="set_pv_pos">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="tooltip_text" translatable="yes">Riapre il menu iniziale per 
-settare un nuovo magazzino 
+                        <property name="tooltip_text" translatable="yes">Riapre il menu iniziale per
+settare un nuovo magazzino
 ed un nuovo punto cassa.</property>
                         <property name="label" translatable="yes">Risetta Punto cassa e P Vendita</property>
                         <property name="use_underline">True</property>
@@ -802,17 +377,13 @@ ed un nuovo punto cassa.</property>
                                             <property name="receives_default">True</property>
                                             <property name="invisible_char">●</property>
                                             <property name="xalign">0.0099999997764825821</property>
-                                            <property name="invisible_char_set">True</property>
                                             <property name="secondary_icon_stock">gtk-clear</property>
                                             <property name="primary_icon_activatable">False</property>
-                                            <property name="secondary_icon_activatable">True</property>
-                                            <property name="primary_icon_sensitive">True</property>
-                                            <property name="secondary_icon_sensitive">True</property>
-                                            <accelerator key="F8" signal="grab-focus"/>
                                             <signal name="activate" handler="on_codice_a_barre_entry_activate" swapped="no"/>
-                                            <signal name="icon-press" handler="on_icon_press" swapped="no"/>
-                                            <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
                                             <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
+                                            <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
+                                            <signal name="icon-press" handler="on_icon_press" swapped="no"/>
+                                            <accelerator key="F8" signal="grab-focus"/>
                                           </object>
                                           <packing>
                                             <property name="expand">True</property>
@@ -872,16 +443,12 @@ ed un nuovo punto cassa.</property>
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="invisible_char">●</property>
-                                            <property name="invisible_char_set">True</property>
                                             <property name="secondary_icon_stock">gtk-clear</property>
                                             <property name="primary_icon_activatable">False</property>
-                                            <property name="secondary_icon_activatable">True</property>
-                                            <property name="primary_icon_sensitive">True</property>
-                                            <property name="secondary_icon_sensitive">True</property>
                                             <signal name="activate" handler="on_codice_entry_activate" swapped="no"/>
-                                            <signal name="icon-press" handler="on_icon_press" swapped="no"/>
-                                            <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
                                             <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
+                                            <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
+                                            <signal name="icon-press" handler="on_icon_press" swapped="no"/>
                                           </object>
                                           <packing>
                                             <property name="expand">True</property>
@@ -932,16 +499,12 @@ ed un nuovo punto cassa.</property>
                                             <property name="can_focus">True</property>
                                             <property name="max_length">200</property>
                                             <property name="invisible_char">●</property>
-                                            <property name="invisible_char_set">True</property>
                                             <property name="secondary_icon_stock">gtk-clear</property>
                                             <property name="primary_icon_activatable">False</property>
-                                            <property name="secondary_icon_activatable">True</property>
-                                            <property name="primary_icon_sensitive">True</property>
-                                            <property name="secondary_icon_sensitive">True</property>
                                             <signal name="activate" handler="on_descrizione_entry_activate" swapped="no"/>
-                                            <signal name="icon-press" handler="on_icon_press" swapped="no"/>
-                                            <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
                                             <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
+                                            <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
+                                            <signal name="icon-press" handler="on_icon_press" swapped="no"/>
                                           </object>
                                           <packing>
                                             <property name="expand">True</property>
@@ -1095,8 +658,6 @@ ed un nuovo punto cassa.</property>
                                         <property name="can_focus">True</property>
                                         <property name="primary_icon_activatable">False</property>
                                         <property name="secondary_icon_activatable">False</property>
-                                        <property name="primary_icon_sensitive">True</property>
-                                        <property name="secondary_icon_sensitive">True</property>
                                       </object>
                                       <packing>
                                         <property name="expand">False</property>
@@ -1415,12 +976,8 @@ ed un nuovo punto cassa.</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="invisible_char">●</property>
-                                    <property name="invisible_char_set">True</property>
                                     <property name="secondary_icon_stock">gtk-clear</property>
                                     <property name="primary_icon_activatable">False</property>
-                                    <property name="secondary_icon_activatable">True</property>
-                                    <property name="primary_icon_sensitive">True</property>
-                                    <property name="secondary_icon_sensitive">True</property>
                                   </object>
                                   <packing>
                                     <property name="top_attach">2</property>
@@ -1444,12 +1001,8 @@ ed un nuovo punto cassa.</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="invisible_char">●</property>
-                                    <property name="invisible_char_set">True</property>
                                     <property name="secondary_icon_stock">gtk-clear</property>
                                     <property name="primary_icon_activatable">False</property>
-                                    <property name="secondary_icon_activatable">True</property>
-                                    <property name="primary_icon_sensitive">True</property>
-                                    <property name="secondary_icon_sensitive">True</property>
                                   </object>
                                   <packing>
                                     <property name="left_attach">2</property>
@@ -1466,12 +1019,8 @@ ed un nuovo punto cassa.</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="invisible_char">●</property>
-                                    <property name="invisible_char_set">True</property>
                                     <property name="secondary_icon_stock">gtk-clear</property>
                                     <property name="primary_icon_activatable">False</property>
-                                    <property name="secondary_icon_activatable">True</property>
-                                    <property name="primary_icon_sensitive">True</property>
-                                    <property name="secondary_icon_sensitive">True</property>
                                   </object>
                                   <packing>
                                     <property name="left_attach">3</property>
@@ -1703,8 +1252,6 @@ ed un nuovo punto cassa.</property>
                           <object class="GtkScrolledWindow" id="scrolledwindow23">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
-                            <property name="hscrollbar_policy">automatic</property>
-                            <property name="vscrollbar_policy">automatic</property>
                             <property name="window_placement">bottom-left</property>
                             <property name="shadow_type">etched-in</property>
                             <child>
@@ -1715,6 +1262,9 @@ ed un nuovo punto cassa.</property>
                                 <signal name="button-press-event" handler="on_scontrino_treeview_button_press_event" swapped="no"/>
                                 <signal name="cursor-changed" handler="on_scontrino_treeview_cursor_changed" swapped="no"/>
                                 <signal name="select-cursor-row" handler="on_scontrino_treeview_row_activated" swapped="no"/>
+                                <child internal-child="selection">
+                                  <object class="GtkTreeSelection" id="treeview-selection1"/>
+                                </child>
                               </object>
                             </child>
                           </object>
@@ -1762,9 +1312,9 @@ ed un nuovo punto cassa.</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">False</property>
+                                        <property name="xalign">0.5</property>
                                         <property name="draw_indicator">False</property>
                                         <property name="group">contanti_radio_button</property>
-                                        <accelerator key="F2" signal="clicked"/>
                                         <signal name="clicked" handler="on_assegni_radio_button_clicked" swapped="no"/>
                                         <child>
                                           <object class="GtkAlignment" id="alignment533">
@@ -1806,6 +1356,7 @@ ed un nuovo punto cassa.</property>
                                             </child>
                                           </object>
                                         </child>
+                                        <accelerator key="F2" signal="clicked"/>
                                       </object>
                                       <packing>
                                         <property name="expand">True</property>
@@ -1818,9 +1369,9 @@ ed un nuovo punto cassa.</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">False</property>
+                                        <property name="xalign">0.5</property>
                                         <property name="draw_indicator">False</property>
                                         <property name="group">contanti_radio_button</property>
-                                        <accelerator key="F2" signal="clicked"/>
                                         <signal name="clicked" handler="on_carta_di_credito_radio_button_clicked" swapped="no"/>
                                         <child>
                                           <object class="GtkAlignment" id="alignment534">
@@ -1862,6 +1413,7 @@ ed un nuovo punto cassa.</property>
                                             </child>
                                           </object>
                                         </child>
+                                        <accelerator key="F2" signal="clicked"/>
                                       </object>
                                       <packing>
                                         <property name="expand">True</property>
@@ -1882,8 +1434,8 @@ ed un nuovo punto cassa.</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">False</property>
+                                    <property name="xalign">0.5</property>
                                     <property name="draw_indicator">False</property>
-                                    <accelerator key="F1" signal="clicked"/>
                                     <signal name="clicked" handler="on_contanti_radio_button_clicked" after="yes" swapped="no"/>
                                     <child>
                                       <object class="GtkAlignment" id="alignment532">
@@ -1925,6 +1477,7 @@ ed un nuovo punto cassa.</property>
                                         </child>
                                       </object>
                                     </child>
+                                    <accelerator key="F1" signal="clicked"/>
                                   </object>
                                   <packing>
                                     <property name="x_options">GTK_FILL</property>
@@ -1939,14 +1492,11 @@ ed un nuovo punto cassa.</property>
                                     <property name="xalign">1</property>
                                     <property name="secondary_icon_stock">gtk-clear</property>
                                     <property name="primary_icon_activatable">False</property>
-                                    <property name="secondary_icon_activatable">True</property>
-                                    <property name="primary_icon_sensitive">True</property>
-                                    <property name="secondary_icon_sensitive">True</property>
-                                    <accelerator key="F10" signal="activate"/>
-                                    <signal name="insert-text" handler="insert_text_decimal" swapped="no"/>
-                                    <signal name="icon-press" handler="on_icon_press" swapped="no"/>
-                                    <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
                                     <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
+                                    <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
+                                    <signal name="icon-press" handler="on_icon_press" swapped="no"/>
+                                    <signal name="insert-text" handler="insert_text_decimal" swapped="no"/>
+                                    <accelerator key="F10" signal="activate"/>
                                   </object>
                                   <packing>
                                     <property name="top_attach">1</property>
@@ -2007,13 +1557,11 @@ ed un nuovo punto cassa.</property>
                                         <property name="secondary_icon_stock">gtk-clear</property>
                                         <property name="primary_icon_activatable">False</property>
                                         <property name="secondary_icon_activatable">False</property>
-                                        <property name="primary_icon_sensitive">True</property>
-                                        <property name="secondary_icon_sensitive">True</property>
-                                        <accelerator key="F4" signal="grab-focus"/>
-                                        <signal name="insert-text" handler="insert_text_decimal" swapped="no"/>
-                                        <signal name="icon-press" handler="on_icon_press" swapped="no"/>
                                         <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
                                         <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
+                                        <signal name="icon-press" handler="on_icon_press" swapped="no"/>
+                                        <signal name="insert-text" handler="insert_text_decimal" swapped="no"/>
+                                        <accelerator key="F4" signal="grab-focus"/>
                                       </object>
                                       <packing>
                                         <property name="expand">True</property>
@@ -2027,6 +1575,7 @@ ed un nuovo punto cassa.</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">False</property>
+                                        <property name="xalign">0.5</property>
                                         <property name="active">True</property>
                                         <property name="draw_indicator">False</property>
                                       </object>
@@ -2043,6 +1592,7 @@ ed un nuovo punto cassa.</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">False</property>
+                                        <property name="xalign">0.5</property>
                                         <property name="draw_indicator">False</property>
                                         <property name="group">tipo_sconto_euro</property>
                                       </object>
@@ -2072,13 +1622,10 @@ ed un nuovo punto cassa.</property>
                                         <property name="width_chars">20</property>
                                         <property name="secondary_icon_stock">gtk-clear</property>
                                         <property name="primary_icon_activatable">False</property>
-                                        <property name="secondary_icon_activatable">True</property>
-                                        <property name="primary_icon_sensitive">True</property>
-                                        <property name="secondary_icon_sensitive">True</property>
-                                        <signal name="insert-text" handler="insert_text_decimal" swapped="no"/>
-                                        <signal name="icon-press" handler="on_icon_press" swapped="no"/>
-                                        <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
                                         <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
+                                        <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
+                                        <signal name="icon-press" handler="on_icon_press" swapped="no"/>
+                                        <signal name="insert-text" handler="insert_text_decimal" swapped="no"/>
                                       </object>
                                       <packing>
                                         <property name="expand">False</property>
@@ -2362,8 +1909,8 @@ Scontrino</property>
                                     <property name="can_default">True</property>
                                     <property name="receives_default">True</property>
                                     <property name="image">subtotale_img</property>
-                                    <accelerator key="F6" signal="clicked"/>
                                     <signal name="clicked" handler="on_subtotal_button_clicked" swapped="no"/>
+                                    <accelerator key="F6" signal="clicked"/>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -2380,9 +1927,9 @@ Scontrino</property>
                                     <property name="receives_default">False</property>
                                     <property name="image">totale_img</property>
                                     <property name="use_underline">True</property>
-                                    <accelerator key="F5" signal="clicked"/>
-                                    <signal name="grab-focus" handler="on_total_button_grab_focus" swapped="no"/>
                                     <signal name="clicked" handler="on_total_button_clicked" swapped="no"/>
+                                    <signal name="grab-focus" handler="on_total_button_grab_focus" swapped="no"/>
+                                    <accelerator key="F5" signal="clicked"/>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -2412,7 +1959,6 @@ Scontrino</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="border_width">5</property>
-                        <property name="layout_style">edge</property>
                         <child>
                           <object class="GtkButton" id="list_button">
                             <property name="visible">True</property>
@@ -2473,8 +2019,8 @@ Scontrino</property>
                             <property name="sensitive">False</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
-                            <accelerator key="F12" signal="clicked"/>
                             <signal name="clicked" handler="on_apri_cassetto_button_clicked" swapped="no"/>
+                            <accelerator key="F12" signal="clicked"/>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -2546,5 +2092,426 @@ Scontrino</property>
         </child>
       </object>
     </child>
+  </object>
+  <object class="GtkMessageDialog" id="altre_opzioni_dialog">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="is_focus">True</property>
+    <property name="can_default">True</property>
+    <property name="has_default">True</property>
+    <property name="receives_default">True</property>
+    <property name="border_width">5</property>
+    <property name="title" translatable="yes">opzioni varie dialog</property>
+    <property name="window_position">center-on-parent</property>
+    <property name="default_width">400</property>
+    <property name="default_height">115</property>
+    <property name="destroy_with_parent">True</property>
+    <property name="type_hint">dialog</property>
+    <property name="urgency_hint">True</property>
+    <property name="transient_for">vendita_dettaglio_window</property>
+    <property name="message_type">warning</property>
+    <property name="text" translatable="yes">&lt;b&gt;ATTENZIONE&lt;/b&gt;
+Le seguenti combobox permettono di selezionare
+il punto vendita ed il punto cassa da cui si sta
+effettuando la vendita.
+Il punto vendita è obbligatorio ma è vivamente
+consigliato aggiungere e settare anche gli eventuali
+punti cassa dal menu "opzioni" della finestra principale
+dell'interfaccia di vendita</property>
+    <property name="use_markup">True</property>
+    <child internal-child="vbox">
+      <object class="GtkBox" id="dialog-vbox7">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="spacing">2</property>
+        <child internal-child="action_area">
+          <object class="GtkButtonBox" id="dialog-action_area7">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="layout_style">end</property>
+            <child>
+              <object class="GtkButton" id="ao_annulla_button">
+                <property name="label">gtk-cancel</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_stock">True</property>
+                <signal name="clicked" handler="on_ao_annulla_button_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="ao_ok_button">
+                <property name="label">gtk-ok</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_stock">True</property>
+                <signal name="clicked" handler="on_ao_ok_button_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkFrame" id="altre_opzioni_frame">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label_xalign">0</property>
+            <property name="shadow_type">in</property>
+            <child>
+              <object class="GtkAlignment" id="ao_alignment">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="left_padding">12</property>
+                <child>
+                  <object class="GtkVBox" id="vbox2XX">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <object class="GtkHBox" id="hbox1pp">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <child>
+                          <object class="GtkLabel" id="ao_magazzino_label">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="xpad">3</property>
+                            <property name="label" translatable="yes">&lt;b&gt;Magazzino /P Vendita&lt;/b&gt;</property>
+                            <property name="use_markup">True</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkComboBox" id="ao_magazzino_combobox">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                          </object>
+                          <packing>
+                            <property name="expand">True</property>
+                            <property name="fill">True</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">True</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkHBox" id="ao_hbox2">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <child>
+                          <object class="GtkLabel" id="ao_punto_cassa_label">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="xpad">30</property>
+                            <property name="label" translatable="yes">&lt;b&gt;Punto Cassa&lt;/b&gt;</property>
+                            <property name="use_markup">True</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkComboBox" id="ao_punto_cassa_combobox">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                          </object>
+                          <packing>
+                            <property name="expand">True</property>
+                            <property name="fill">True</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">True</property>
+                        <property name="fill">True</property>
+                        <property name="position">2</property>
+                      </packing>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child type="label">
+              <object class="GtkLabel" id="ao_label">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">&lt;b&gt;Altre Opzioni di vendita&lt;/b&gt;</property>
+                <property name="use_markup">True</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">5</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+    <action-widgets>
+      <action-widget response="0">ao_annulla_button</action-widget>
+      <action-widget response="0">ao_ok_button</action-widget>
+    </action-widgets>
+  </object>
+  <object class="GtkMessageDialog" id="articolo_generico_dialogo">
+    <property name="can_focus">False</property>
+    <property name="border_width">5</property>
+    <property name="title" translatable="yes">Gestione articolo generico F9</property>
+    <property name="modal">True</property>
+    <property name="window_position">center</property>
+    <property name="destroy_with_parent">True</property>
+    <property name="type_hint">normal</property>
+    <property name="skip_taskbar_hint">True</property>
+    <property name="deletable">False</property>
+    <property name="transient_for">vendita_dettaglio_window</property>
+    <property name="message_type">question</property>
+    <property name="text" translatable="yes">Articolo Generico. </property>
+    <property name="use_markup">True</property>
+    <property name="secondary_text" translatable="yes">Inserire un prezzo ed una quantità se diversa da uno.
+Premere  &lt;b&gt;+&lt;/b&gt;  e &lt;b&gt;-&lt;/b&gt; per variare i valori
+ALT +n per annullare INVIO  per confermare</property>
+    <property name="secondary_use_markup">True</property>
+    <signal name="destroy-event" handler="on_annulla_generico_button_clicked" swapped="no"/>
+    <child internal-child="vbox">
+      <object class="GtkBox" id="dialog_genrico_vbox">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="spacing">2</property>
+        <child internal-child="action_area">
+          <object class="GtkButtonBox" id="dialog-action_area4">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="layout_style">end</property>
+            <child>
+              <object class="GtkButton" id="annulla_generico_button">
+                <property name="label">gtk-cancel</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_stock">True</property>
+                <signal name="clicked" handler="on_annulla_generico_button_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="generico_ok_button">
+                <property name="label">gtk-ok</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="tooltip_markup">Conferma con invio</property>
+                <property name="border_width">1</property>
+                <property name="use_stock">True</property>
+                <signal name="clicked" handler="on_generico_ok_button_clicked" swapped="no"/>
+                <accelerator key="Return" signal="clicked"/>
+                <accelerator key="KP_Enter" signal="clicked"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkHBox" id="hbox2___">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="spacing">2</property>
+            <child>
+              <object class="GtkLabel" id="label2___">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Quantità</property>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="UnsignedDecimalEntryField" id="quantita_f9_entry">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="invisible_char">•</property>
+                <property name="text" translatable="yes">0.00      </property>
+                <property name="primary_icon_activatable">False</property>
+                <property name="secondary_icon_activatable">False</property>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="plus2_button">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="tooltip_markup">(+) aumenta</property>
+                <property name="image">image2_plus</property>
+                <signal name="clicked" handler="on_plus2_button_clicked" swapped="no"/>
+                <accelerator key="KP_Add" signal="clicked"/>
+                <accelerator key="plus" signal="clicked"/>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="minus2_button">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="tooltip_markup">(-) diminuisce</property>
+                <property name="image">image4_minus2</property>
+                <signal name="clicked" handler="on_minus2_button_clicked" swapped="no"/>
+                <accelerator key="KP_Subtract" signal="clicked"/>
+                <accelerator key="minus" signal="clicked"/>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">3</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="pack_type">end</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkHBox" id="hbox1___">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="spacing">2</property>
+            <child>
+              <object class="GtkLabel" id="label1__">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="xpad">6</property>
+                <property name="label" translatable="yes">Prezzo</property>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="UnsignedMoneyEntryField" id="prezzo_f9_entry">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="has_focus">True</property>
+                <property name="is_focus">True</property>
+                <property name="can_default">True</property>
+                <property name="has_default">True</property>
+                <property name="invisible_char">•</property>
+                <property name="text" translatable="yes">0.000     </property>
+                <property name="primary_icon_activatable">False</property>
+                <property name="secondary_icon_activatable">False</property>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="plus_button">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="tooltip_markup">ctrl +( +) aumenta</property>
+                <property name="image">image_plus</property>
+                <signal name="clicked" handler="on_plus_button_clicked" swapped="no"/>
+                <accelerator key="KP_Add" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
+                <accelerator key="plus" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="minus_button">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="tooltip_markup">ctrl +( - ) diminisce</property>
+                <property name="image">image3_minus</property>
+                <signal name="clicked" handler="on_minus_button_clicked" swapped="no"/>
+                <accelerator key="KP_Subtract" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
+                <accelerator key="minus" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">3</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="pack_type">end</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+    <action-widgets>
+      <action-widget response="0">annulla_generico_button</action-widget>
+      <action-widget response="0">generico_ok_button</action-widget>
+    </action-widgets>
   </object>
 </interface>

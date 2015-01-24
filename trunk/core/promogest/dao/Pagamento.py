@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -25,44 +25,32 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
 
-try:
-    t_pagamento = Table('pagamento',
-                  params['metadata'],
-                  schema=params['schema'],
-                  autoload=True)
-except:
-    from data.pagamento import t_pagamento
-
-
-from Dao import Dao
-#from promogest.lib.migrate import *
-from promogest.dao.DaoUtils import get_columns
-
+from promogest.dao.Dao import Dao, Base
 from promogest.lib.alembic.migration import MigrationContext
 from promogest.lib.alembic.operations import Operations
 from promogest.lib.alembic import op
-from promogest.dao.DaoUtils import get_columns
 
-columns_t_pagamento = get_columns(t_pagamento)
 
-if "codice" not in columns_t_pagamento:
-    conn = engine.connect()
-    ctx = MigrationContext.configure(conn)
-    op = Operations(ctx)
-    op.add_column('pagamento', Column('codice', String(4), nullable=True), schema=params["schema"])
-
-class Pagamento(Dao):
+class Pagamento(Base, Dao):
+    try:
+        __table__ = Table('pagamento',
+                  params['metadata'],
+                  schema=params['schema'],
+                  autoload=True)
+    except:
+        from data.pagamento import t_pagamento
+        __table__ = t_pagamento
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):
         if k == "denominazione":
-            dic= {k : t_pagamento.c.denominazione.ilike("%"+v+"%")}
+            dic= {k : Pagamento.__table__.c.denominazione.ilike("%"+v+"%")}
         if k == "denominazioneEM":
-            dic= {k : t_pagamento.c.denominazione == v}
+            dic= {k : Pagamento.__table__.c.denominazione == v}
         elif k == "tipo":
-            dic= {k : t_pagamento.c.tipo == v} # cassa o banca
+            dic= {k : Pagamento.__table__.c.tipo == v} # cassa o banca
         return  dic[k]
 
     @property
@@ -89,23 +77,16 @@ class Pagamento(Dao):
         else:
             return 0
 
-#colonne = get_columns(t_pagamento)
+try:
+    Pagamento.__table__.c.codice
+except:
+    conn = engine.connect()
+    ctx = MigrationContext.configure(conn)
+    op = Operations(ctx)
+    op.add_column('pagamento', Column('codice', String(4), nullable=True), schema=params["schema"])
+    delete_pickle()
+    restart_program()
 
-#if 'tipo' not in colonne:
-    #col = Column('tipo', String(20), default='banca')
-    #col.create(t_pagamento, populate_default=True)
-
-#if 'spese' not in colonne:
-    #col = Column('spese', Numeric(16, 4), nullable=True)
-    #col.create(t_pagamento, populate_default=True)
-
-#if 'id_aliquota_iva' not in colonne:
-    #col = Column('id_aliquota_iva', Integer, nullable=True)
-    #col.create(t_pagamento, populate_default=True)
-
-std_mapper = mapper(Pagamento,
-                    t_pagamento,
-                    order_by=t_pagamento.c.id)
 
 #from promogest.dao.CachedDaosDict import cache_objj
 #cache_objj.add(Pagamento, use_key='denominazione')

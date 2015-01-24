@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2013 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -22,53 +22,41 @@
 
 from sqlalchemy import *
 from sqlalchemy.orm import *
-from promogest.lib.alembic.migration import MigrationContext
-from promogest.lib.alembic.operations import Operations
-from promogest.lib.alembic import op
 from promogest.Environment import *
-from promogest.dao.DaoUtils import get_columns
-
-try:
-    t_testata_movimento = Table('testata_movimento',
-                            params['metadata'],
-                            schema=params['schema'],
-                            autoload=True)
-except:
-    from data.testataMovimento import t_testata_movimento
-
-if "id_to_magazzino" not in [c.name for c in t_testata_movimento.columns]:
-    print " AGGIUNGI COLONNA TO MAGAZZINO"
-    try:
-        conn = engine.connect()
-        ctx = MigrationContext.configure(conn)
-        op = Operations(ctx)
-        op.add_column('testata_movimento',Column('id_to_magazzino', Integer), schema=params["schema"])
-    except:
-        delete_pickle()
-
-from Dao import Dao
-from DaoUtils import *
+from promogest.dao.Dao import Dao, Base
+from promogest.dao.DaoUtils import *
 from promogest.dao.Articolo import Articolo
 from promogest.dao.Multiplo import Multiplo
-from promogest.dao.RigaMovimento import RigaMovimento, t_riga_movimento
-from promogest.dao.RigaDocumento import RigaDocumento
 from promogest.dao.Riga import Riga
+from promogest.dao.RigaMovimento import RigaMovimento, t_riga_movimento, t_riga
+from promogest.dao.RigaDocumento import RigaDocumento
 from promogest.dao.RigaMovimentoFornitura import RigaMovimentoFornitura
-#from promogest.dao.RigaMovFornituraRigaMovVendita import RMovFornituraRMovVendita
 from promogest.dao.NumeroLottoTemp import NumeroLottoTemp
-from Fornitore import Fornitore
-from Cliente import Cliente, t_cliente
-from Fornitura import Fornitura
-from Operazione import Operazione
-from ScontoFornitura import ScontoFornitura
+from promogest.dao.Fornitore import Fornitore
+from promogest.dao.Cliente import Cliente
+from promogest.dao.Fornitura import Fornitura
+from promogest.dao.Operazione import Operazione
+from promogest.dao.ScontoFornitura import ScontoFornitura
 from promogest.dao.Magazzino import Magazzino
 from promogest.lib.utils import *
 if hasattr(conf, "SuMisura") and getattr(conf.SuMisura,'mod_enable') == "yes":
     from promogest.modules.SuMisura.dao.MisuraPezzo import MisuraPezzo
 
 
+class TestataMovimento(Base, Dao):
+    try:
+        __table__ = Table('testata_movimento',
+                            params['metadata'],
+                            schema=params['schema'],
+                            autoload=True)
 
-class TestataMovimento(Dao):
+    except:
+        from data.testataMovimento import t_testata_movimento
+        __table__ = t_testata_movimento
+
+    rigamov = relationship("RigaMovimento", cascade="all, delete", backref="testata_movimento")
+    forni = relationship("Fornitore", backref="testata_movimento")
+    cli = relationship("Cliente", backref="testata_movimento")
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
@@ -82,6 +70,13 @@ class TestataMovimento(Dao):
         self.__dbRigheMovimento = []
         #setattr(self, "rev",False)
 
+    @property
+    def opera(self):
+        aa = Operazione().getRecord(id=self.operazione)
+        if aa:
+            return aa
+        else:
+            return None
 
     def _getRigheMovimento(self):
         #if not self.__righeMovimento:
@@ -106,7 +101,6 @@ class TestataMovimento(Dao):
                 else:
                     if r.quantita <0:
                         r.quantita= -1*r.quantita
-                        #self.rev = True
 
         return self.__righeMovimento
 
@@ -115,48 +109,40 @@ class TestataMovimento(Dao):
 
     righe = property(_getRigheMovimento, _setRigheMovimento)
 
-    def _segno_operazione(self):
+    @property
+    def segnoOperazione(self):
         if self.opera: return self.opera.segno
         else: return ""
-    segnoOperazione = property(_segno_operazione)
-
-    def _ragioneSocialeFornitore(self):
+    @property
+    def ragione_sociale_fornitore(self):
         if self.forni: return self.forni.ragione_sociale
         else: return ""
-    ragione_sociale_fornitore = property(_ragioneSocialeFornitore)
-
-    def _ragioneSocialeCliente(self):
+    @property
+    def ragione_sociale_cliente(self):
         if self.cli: return self.cli.ragione_sociale
         else: return ""
-    ragione_sociale_cliente= property(_ragioneSocialeCliente)
-
-    def _cognome_cliente(self):
+    @property
+    def cognome_cliente(self):
         if self.cli: return self.cli.cognome
         else: return ""
-    cognome_cliente= property(_cognome_cliente)
-
-    def _nome_cliente(self):
+    @property
+    def nome_cliente(self):
         if self.cli: return self.cli.nome
         else: return ""
-    nome_cliente= property(_nome_cliente)
-
-    def _cognome_fornitore(self):
+    @property
+    def cognome_fornitore(self):
         if self.forni: return self.forni.cognome
         else: return ""
-    cognome_fornitore= property(_cognome_fornitore)
-
-    def _nome_fornitore(self):
+    @property
+    def nome_fornitore(self):
         if self.forni: return self.forni.nome
         else: return ""
-    nome_fornitore= property(_nome_fornitore)
-
-    def _to_magazzino(self):
+    @property
+    def tomagazzino(self):
         if self.id_to_magazzino:
             a = Magazzino().getRecord(id=self.id_to_magazzino)
             return a.denominazione
         else: return ""
-    tomagazzino= property(_to_magazzino)
-
 
 
     def _getNumeroMagazzini(self):
@@ -173,50 +159,51 @@ class TestataMovimento(Dao):
     numeroMagazzini = property(_getNumeroMagazzini)
 
     def filter_values(self,k,v):
+        dic = {}
         if k == 'daNumero':
-            dic = {k:t_testata_movimento.c.numero >= v}
+            dic = {k:self.__table__.c.numero >= v}
         elif k == 'aNumero':
-            dic = {k:t_testata_movimento.c.numero <= v}
+            dic = {k:self.__table__.c.numero <= v}
         elif k == 'daParte':
-            dic = {k:t_testata_movimento.c.parte >= v}
+            dic = {k:self.__table__.c.parte >= v}
         elif k == 'aParte':
-            dic = {k:t_testata_movimento.c.parte <= v}
+            dic = {k:self.__table__.c.parte <= v}
         elif k == 'daData':
-            dic = {k:t_testata_movimento.c.data_movimento >= v}
+            dic = {k: self.__table__.c.data_movimento >= v}
         elif k == 'aData':
-            dic = {k:t_testata_movimento.c.data_movimento <= v}
+            dic = {k:self.__table__.c.data_movimento <= v}
         elif k == 'idOperazione':
-            dic = {k:t_testata_movimento.c.operazione == v}
+            dic = {k:self.__table__.c.operazione == v}
         elif k == 'idMagazzino':
-            dic = {k:t_testata_movimento.c.id.in_(select([RigaMovimento.id_testata_movimento],
-                     and_(Riga.id==RigaMovimento.id,Riga.id_magazzino== v)))}
+            dic = {k: self.__table__.c.id.in_(select([t_riga_movimento.c.id_testata_movimento],
+                     and_(t_riga.c.id==t_riga_movimento.c.id,t_riga.c.id_magazzino == v)))}
         elif k == 'idMagazzinoList':
-            dic = {k:t_testata_movimento.c.id.in_(select([RigaMovimento.id_testata_movimento],
-                     and_(Riga.id==RigaMovimento.id,Riga.id_magazzino.in_(v))))}
+            dic = {k: self.__table__.c.id.in_(select([t_riga_movimento.c.id_testata_movimento],
+                     and_(t_riga.c.id==t_riga_movimento.c.id,t_riga.c.id_magazzino == v)))}
         elif k == 'idCliente':
-            dic = {k:t_testata_movimento.c.id_cliente == v}
+            dic = {k:self.__table__.c.id_cliente == v}
         elif k == 'idClienteList':
-            dic = {k:and_(t_testata_movimento.c.id_cliente.in_(v))}
+            dic = {k:and_(self.__table__.c.id_cliente.in_(v))}
         elif k == 'idFornitore':
-            dic = {k:t_testata_movimento.c.id_fornitore == v}
+            dic = {k:self.__table__.c.id_fornitore == v}
         elif k == 'dataMovimento':
-            dic = {k: t_testata_movimento.c.data_movimento == v}
+            dic = {k: self.__table__.c.data_movimento == v}
         elif k == 'registroNumerazione':
-            dic = {k:t_testata_movimento.c.registro_numerazione==v}
+            dic = {k:self.__table__.c.registro_numerazione==v}
         elif k == 'id_testata_documento':
-            dic = {k:t_testata_movimento.c.id_testata_documento ==v}
+            dic = {k:self.__table__.c.id_testata_documento ==v}
         elif k == 'idTestataDocumento':
-            dic = {k:t_testata_movimento.c.id_testata_documento ==v}
+            dic = {k:self.__table__.c.id_testata_documento ==v}
         elif k == 'idArticolo':
-            dic = {k:and_(RigaMovimento.id_testata_movimento == TestataMovimento.id,
-                            Riga.id==RigaMovimento.id,
-                            Articolo.id ==Riga.id_articolo,
+            dic = {k:and_(t_riga_movimento.c.id_testata_movimento == self.__table__.c.id,
+                            t_riga.c.id==t_riga_movimento.c.id,
+                            Articolo.id ==t_riga.c.id_articolo,
                            Articolo.id ==v)}
         elif k == 'idArticoloList':
-            dic = {k: and_(RigaMovimento.id_testata_movimento==TestataMovimento.id,
-                           Riga.id==RigaMovimento.id,
-                           Articolo.id==Riga.id_articolo,
-                           Articolo.id.in_(v))}
+            dic = {k:and_(t_riga_movimento.c.id_testata_movimento == self.__table__.c.id,
+                            t_riga.c.id==t_riga_movimento.c.id,
+                            Articolo.id ==t_riga.c.id_articolo,
+                           Articolo.id ==v)}
         return  dic[k]
 
     def righeMovimentoDel(self, sm = False):
@@ -446,15 +433,13 @@ class TestataMovimento(Dao):
             params["session"].commit()
         self.init_on_load()
 
-std_mapper = mapper(TestataMovimento, t_testata_movimento,properties={
-        "rigamov": relation(RigaMovimento,primaryjoin=
-                t_testata_movimento.c.id==t_riga_movimento.c.id_testata_movimento,
-                cascade="all, delete",
-                backref="testata_movimento"),
-        #"fornitore": relation(Fornitore, backref="testata_movimento"),
-        "forni":relation(Fornitore,primaryjoin=
-                    (t_testata_movimento.c.id_fornitore==Fornitore.id), backref="testata_movimento"),
-        "cli":relation(Cliente,primaryjoin=
-                    (t_testata_movimento.c.id_cliente==t_cliente.c.id), backref="testata_movimento"),
-        "opera": relation(Operazione,primaryjoin = (t_testata_movimento.c.operazione==Operazione.denominazione),backref="testata_movimento"),
-        }, order_by=t_testata_movimento.c.id)
+try:
+    TestataMovimento.__table__.c.id_to_magazzino
+except:
+    print " AGGIUNGI COLONNA TO MAGAZZINO"
+    conn = engine.connect()
+    ctx = MigrationContext.configure(conn)
+    op = Operations(ctx)
+    op.add_column('testata_movimento',Column('id_to_magazzino', Integer), schema=params["schema"])
+    delete_pickle()
+    restart_program()

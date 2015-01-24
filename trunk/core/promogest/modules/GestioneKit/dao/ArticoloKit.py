@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2013 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -24,32 +24,38 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
-from promogest.dao.Dao import Dao
+from promogest.dao.Dao import Dao, Base
 
-try:
-    t_articolo_kit = Table('articolo_kit',
+class ArticoloKit(Base, Dao):
+    try:
+        __table__ = Table('articolo_kit',
         params['metadata'],
         schema=params['schema'],
         autoload=True)
-except:
-    from data.articoloKit import t_articolo_kit
-
-
-class ArticoloKit(Dao):
+    except:
+        __table__ = Table('articolo_kit', params["metadata"],
+            Column('id', Integer, primary_key=True),
+            Column('id_articolo_wrapper', Integer,
+                ForeignKey(fk_prefix+'articolo.id', onupdate="CASCADE", ondelete="CASCADE")),
+            Column('id_articolo_filler', Integer,
+                ForeignKey(fk_prefix+'articolo.id', onupdate="CASCADE", ondelete="CASCADE"),
+                nullable=True),
+            Column('quantita', Numeric(16, 4), nullable=False),
+            Column('data_inserimento', DateTime, nullable=False),
+            Column('data_esclusione', DateTime, nullable=True),
+            Column('attivo', Boolean, default=True), #potrebbe non servire ma lasciamolo
+            Column('note', Text, nullable=True),
+            schema=params["schema"],
+            useexisting=True)
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
 
     def filter_values(self, k, v):
         if k == "id":
-            dic = {k: t_articolo_kit.c.id == v}
+            dic = {k: ArticoloKit.__table__.c.id == v}
         elif k == 'idArticoloWrapper':
-            dic = {k: t_articolo_kit.c.id_articolo_wrapper == v}
+            dic = {k: ArticoloKit.__table__.c.id_articolo_wrapper == v}
         elif k == 'idArticoloFiller':
-            dic = {k: t_articolo_kit.c.id_articolo_filler == v}
+            dic = {k: ArticoloKit.__table__.c.id_articolo_filler == v}
         return dic[k]
-
-std_mapper = mapper(ArticoloKit,
-                    t_articolo_kit,
-                    properties={},
-                    order_by=t_articolo_kit.c.id)

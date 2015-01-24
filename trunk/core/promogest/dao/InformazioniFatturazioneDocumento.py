@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2013 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -23,28 +23,25 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
-from promogest.dao.Dao import Dao
+from promogest.dao.Dao import Dao, Base
 
-try:
-    t_informazioni_fatturazione_documento = Table('informazioni_fatturazione_documento',
+
+class InformazioniFatturazioneDocumento(Base, Dao):
+    try:
+        __table__ = Table('informazioni_fatturazione_documento',
                 params['metadata'],
                 schema = params['schema'],
                 autoload=True)
-except:
-    from data.informazioniFatturazioneDocumento import t_informazioni_fatturazione_documento
-
-class InformazioniFatturazioneDocumento(Dao):
+    except:
+        from data.informazioniFatturazioneDocumento import t_informazioni_fatturazione_documento
+        __table__ = t_informazioni_fatturazione_documento
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):
         if k == "id_fattura":
-            dic= {k:t_informazioni_fatturazione_documento.c.id_fattura ==v}
+            dic= {k: InformazioniFatturazioneDocumento.__table__.c.id_fattura == v}
         elif k == 'id_ddt':
-            dic = {k:t_informazioni_fatturazione_documento.c.id_ddt==v}
+            dic = {k: InformazioniFatturazioneDocumento.__table__.c.id_ddt == v}
         return  dic[k]
-
-
-std_mapper = mapper(InformazioniFatturazioneDocumento, t_informazioni_fatturazione_documento,properties={
-        }, order_by=t_informazioni_fatturazione_documento.c.id_fattura)

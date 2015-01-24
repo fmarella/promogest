@@ -1,37 +1,10 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.18.3 -->
 <interface>
-  <!-- interface-requires gtk+ 2.6 -->
-  <!-- interface-naming-policy toplevel-contextual -->
-  <object class="GtkTable" id="anagrafica_gruppo_taglia_filter_table">
-    <property name="visible">True</property>
-    <property name="n_columns">2</property>
-    <child>
-      <object class="GtkLabel" id="label474">
-        <property name="visible">True</property>
-        <property name="xalign">0</property>
-        <property name="label" translatable="yes">Descrizione</property>
-      </object>
-      <packing>
-        <property name="x_options">GTK_FILL</property>
-        <property name="y_options"></property>
-        <property name="x_padding">10</property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkEntry" id="denominazione_filter_entry">
-        <property name="visible">True</property>
-        <property name="can_focus">True</property>
-        <property name="invisible_char">&#x25CF;</property>
-      </object>
-      <packing>
-        <property name="left_attach">1</property>
-        <property name="right_attach">2</property>
-        <property name="y_options"></property>
-      </packing>
-    </child>
-  </object>
+  <requires lib="gtk+" version="3.4"/>
   <object class="GtkTable" id="anagrafica_gruppo_taglia_detail_table">
     <property name="visible">True</property>
+    <property name="can_focus">False</property>
     <property name="border_width">6</property>
     <property name="n_rows">2</property>
     <property name="n_columns">2</property>
@@ -39,12 +12,13 @@
     <child>
       <object class="GtkLabel" id="label482">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="label" translatable="yes">Descrizione</property>
       </object>
       <packing>
         <property name="x_options">GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
         <property name="x_padding">10</property>
       </packing>
     </child>
@@ -52,18 +26,19 @@
       <object class="GtkEntry" id="denominazione_entry">
         <property name="visible">True</property>
         <property name="can_focus">True</property>
-        <property name="invisible_char">&#x25CF;</property>
+        <property name="invisible_char">●</property>
       </object>
       <packing>
         <property name="left_attach">1</property>
         <property name="right_attach">2</property>
         <property name="x_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
       </packing>
     </child>
     <child>
       <object class="GtkLabel" id="label604">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="label" translatable="yes">Descrizione breve</property>
       </object>
@@ -71,13 +46,14 @@
         <property name="top_attach">1</property>
         <property name="bottom_attach">2</property>
         <property name="x_options">GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
         <property name="x_padding">10</property>
       </packing>
     </child>
     <child>
       <object class="GtkAlignment" id="alignment198">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="xscale">0</property>
         <child>
@@ -85,7 +61,7 @@
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="max_length">10</property>
-            <property name="invisible_char">&#x25CF;</property>
+            <property name="invisible_char">●</property>
           </object>
         </child>
       </object>
@@ -95,7 +71,37 @@
         <property name="top_attach">1</property>
         <property name="bottom_attach">2</property>
         <property name="x_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
+      </packing>
+    </child>
+  </object>
+  <object class="GtkTable" id="anagrafica_gruppo_taglia_filter_table">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="n_columns">2</property>
+    <child>
+      <object class="GtkLabel" id="label474">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="xalign">0</property>
+        <property name="label" translatable="yes">Descrizione</property>
+      </object>
+      <packing>
+        <property name="x_options">GTK_FILL</property>
+        <property name="y_options"/>
+        <property name="x_padding">10</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkEntry" id="denominazione_filter_entry">
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="invisible_char">●</property>
+      </object>
+      <packing>
+        <property name="left_attach">1</property>
+        <property name="right_attach">2</property>
+        <property name="y_options"/>
       </packing>
     </child>
   </object>

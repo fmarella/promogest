@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.18.3 -->
 <interface>
-  <requires lib="gtk+" version="2.16"/>
-  <!-- interface-naming-policy project-wide -->
+  <requires lib="gtk+" version="3.4"/>
   <object class="GtkImage" id="articolo_image2">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -52,6 +52,31 @@
     <property name="can_focus">False</property>
     <property name="pixbuf">fornitore24x24.png</property>
   </object>
+  <object class="GtkImage" id="ordine_da_cliente_image1">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">duplica24x24.png</property>
+  </object>
+  <object class="GtkImage" id="preventivo_image2">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">duplica24x24.png</property>
+  </object>
+  <object class="GtkImage" id="promemoria_image2">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">promemoria24x24.png</property>
+  </object>
+  <object class="GtkImage" id="promogest_image2">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">mask_24.png</property>
+  </object>
+  <object class="GtkImage" id="promotux_image2">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">mask_24.png</property>
+  </object>
   <object class="GtkFrame" id="notizie_frame">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -77,8 +102,6 @@
                 <property name="can_focus">True</property>
                 <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                 <property name="border_width">1</property>
-                <property name="hscrollbar_policy">automatic</property>
-                <property name="vscrollbar_policy">automatic</property>
                 <property name="shadow_type">in</property>
                 <child>
                   <placeholder/>
@@ -118,7 +141,6 @@
                 <child>
                   <object class="GtkButton" id="nuovo_articolo_button">
                     <property name="label" translatable="yes">Articolo</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
@@ -129,7 +151,6 @@
                 <child>
                   <object class="GtkButton" id="nuovo_cliente_button">
                     <property name="label" translatable="yes">Cliente</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
@@ -144,7 +165,6 @@
                 <child>
                   <object class="GtkButton" id="nuovo_fornitore_button">
                     <property name="label" translatable="yes">Fornitore</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
@@ -159,7 +179,6 @@
                 <child>
                   <object class="GtkButton" id="nuovo_ordine_da_cliente_button">
                     <property name="label" translatable="yes">Ordine Da Cliente</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
@@ -176,7 +195,6 @@
                 <child>
                   <object class="GtkButton" id="nuovo_ddt_reso_a_fornitore_button">
                     <property name="label" translatable="yes">DDT Reso a Fornitore</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
@@ -193,7 +211,6 @@
                 <child>
                   <object class="GtkButton" id="nuovo_ddt_vendita_button">
                     <property name="label" translatable="yes">DDT Vendita</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
@@ -208,7 +225,6 @@
                 <child>
                   <object class="GtkButton" id="nuovo_ddt_acquisto_button">
                     <property name="label" translatable="yes">DDT Acquisto</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
@@ -225,7 +241,6 @@
                 <child>
                   <object class="GtkButton" id="nuovo_fattura_vendita_button">
                     <property name="label" translatable="yes">Fattura vendita</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
@@ -242,7 +257,6 @@
                 <child>
                   <object class="GtkButton" id="nuovo_promemoria_button">
                     <property name="label" translatable="yes">Promemoria</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
@@ -257,7 +271,6 @@
                 <child>
                   <object class="GtkButton" id="nuovo_contatto_button">
                     <property name="label" translatable="yes">Contatto</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
@@ -274,7 +287,6 @@
                 <child>
                   <object class="GtkButton" id="nuovo_fattura_acquisto_button">
                     <property name="label" translatable="yes">Fattura Acquisto</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
@@ -291,7 +303,6 @@
                 <child>
                   <object class="GtkButton" id="nuovo_preventivo_button">
                     <property name="label" translatable="yes">Preventivo</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
@@ -306,7 +317,6 @@
                 <child>
                   <object class="GtkButton" id="promotux_button">
                     <property name="label" translatable="yes">Sito PromoTux</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
@@ -321,7 +331,6 @@
                 <child>
                   <object class="GtkButton" id="promogest_button">
                     <property name="label" translatable="yes">Sito PromoGest</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
@@ -338,7 +347,6 @@
                 <child>
                   <object class="GtkButton" id="email_button">
                     <property name="label" translatable="yes">Email Assistenza</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
@@ -389,7 +397,6 @@
         </child>
         <child>
           <object class="GtkButton" id="refresh_button">
-            <property name="use_action_appearance">False</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
@@ -410,30 +417,5 @@
         </child>
       </object>
     </child>
-  </object>
-  <object class="GtkImage" id="ordine_da_cliente_image1">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="pixbuf">duplica24x24.png</property>
-  </object>
-  <object class="GtkImage" id="preventivo_image2">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="pixbuf">duplica24x24.png</property>
-  </object>
-  <object class="GtkImage" id="promemoria_image2">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="pixbuf">promemoria24x24.png</property>
-  </object>
-  <object class="GtkImage" id="promogest_image2">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="pixbuf">mask_24.png</property>
-  </object>
-  <object class="GtkImage" id="promotux_image2">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="pixbuf">mask_24.png</property>
   </object>
 </interface>

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -24,35 +24,19 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
+from promogest.dao.Dao import Dao, Base
 
-try:
-    t_sconto_fornitura = Table('sconto_fornitura',
-                           params['metadata'],
-                           schema=params['schema'],
-                           autoload=True)
-except:
-    from data.sconto import t_sconto
-    from data.scontoFornitura import t_sconto_fornitura
+from data.sconto import t_sconto
+from data.scontoFornitura import t_sconto_fornitura
+s_f = join(t_sconto, t_sconto_fornitura)
 
+class ScontoFornitura(Base, Dao):
+    __table__ = s_f
+    id = column_property(t_sconto.c.id, t_sconto_fornitura.c.id)
 
-from promogest.dao.Dao import Dao
-from promogest.dao.Sconto import t_sconto
-
-
-class ScontoFornitura(Dao):
-    """  """
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
 
     def filter_values(self, k, v):
-        dic = {'idFornitura': t_sconto_fornitura.c.id_fornitura==v}
+        dic = {'idFornitura': ScontoFornitura.__table__.c.id_fornitura==v}
         return dic[k]
-
-
-
-std_mapper = mapper(ScontoFornitura,
-    join(t_sconto, t_sconto_fornitura),
-    properties={
-        'id': [t_sconto.c.id, t_sconto_fornitura.c.id]
-    },
-    order_by=t_sconto_fornitura.c.id)

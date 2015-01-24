@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.18.3 -->
 <interface>
-  <requires lib="gtk+" version="2.16"/>
-  <!-- interface-naming-policy project-wide -->
+  <requires lib="gtk+" version="3.4"/>
   <object class="GtkListStore" id="liststore1">
     <columns>
       <!-- column-name PyObject1 -->
@@ -43,15 +43,14 @@
                 <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                 <property name="xpad">8</property>
                 <property name="ypad">4</property>
-                <property name="label" translatable="yes"> &lt;b&gt;Attenzione!&lt;/b&gt;
-Promemoria in scadenza. Verificare?!?</property>
+                <property name="label" translatable="yes"> &lt;b&gt;Attenzione!&lt;/b&gt; Promemoria in scadenza. Verificare?!?</property>
                 <property name="use_markup">True</property>
                 <property name="justify">center</property>
                 <property name="wrap">True</property>
               </object>
               <packing>
                 <property name="expand">False</property>
-                <property name="fill">False</property>
+                <property name="fill">True</property>
                 <property name="padding">1</property>
                 <property name="position">0</property>
               </packing>
@@ -66,7 +65,6 @@ Promemoria in scadenza. Verificare?!?</property>
                 <property name="row_spacing">5</property>
                 <child>
                   <object class="GtkButton" id="snooze_alarm_button">
-                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
@@ -118,8 +116,8 @@ Promemoria in scadenza. Verificare?!?</property>
                   <packing>
                     <property name="left_attach">2</property>
                     <property name="right_attach">3</property>
-                    <property name="x_options"></property>
-                    <property name="y_options"></property>
+                    <property name="x_options"/>
+                    <property name="y_options"/>
                   </packing>
                 </child>
                 <child>
@@ -131,7 +129,6 @@ Promemoria in scadenza. Verificare?!?</property>
                 </child>
                 <child>
                   <object class="GtkButton" id="cancel_alarm_button">
-                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
@@ -183,8 +180,8 @@ Promemoria in scadenza. Verificare?!?</property>
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="right_attach">2</property>
-                    <property name="x_options"></property>
-                    <property name="y_options"></property>
+                    <property name="x_options"/>
+                    <property name="y_options"/>
                   </packing>
                 </child>
               </object>
@@ -198,7 +195,7 @@ Promemoria in scadenza. Verificare?!?</property>
           </object>
           <packing>
             <property name="expand">False</property>
-            <property name="fill">False</property>
+            <property name="fill">True</property>
             <property name="position">0</property>
           </packing>
         </child>
@@ -212,8 +209,6 @@ Promemoria in scadenza. Verificare?!?</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                <property name="hscrollbar_policy">automatic</property>
-                <property name="vscrollbar_policy">automatic</property>
                 <property name="shadow_type">etched-in</property>
                 <child>
                   <object class="GtkTreeView" id="alarm_notify_treeview">
@@ -226,6 +221,9 @@ Promemoria in scadenza. Verificare?!?</property>
                     <property name="rubber_banding">True</property>
                     <property name="enable_grid_lines">both</property>
                     <signal name="row-activated" handler="on_alarm_notify_treeview_row_activated" swapped="no"/>
+                    <child internal-child="selection">
+                      <object class="GtkTreeSelection" id="treeview-selection1"/>
+                    </child>
                     <child>
                       <object class="GtkTreeViewColumn" id="data_scadenza_column">
                         <property name="min_width">200</property>

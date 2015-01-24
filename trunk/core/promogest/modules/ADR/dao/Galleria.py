@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Marella <francesco.marella@anche.no>
+#    Author: Francesco Meloni <francesco@promotux.it>
 
 #    This file is part of Promogest.
 
@@ -23,32 +24,30 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
-from promogest.dao.Dao import Dao
+from promogest.dao.Dao import Dao, Base
 
-try:
-    galleria = Table('adr_galleria', params['metadata'], schema = params['schema'],autoload=True)
+class Galleria(Base, Dao):
+    try:
+        __table__ = Table('adr_galleria', params['metadata'], schema = params['schema'],autoload=True)
 
-except:
-    galleria = Table('adr_galleria', params["metadata"],
+    except:
+        __table__ = Table('adr_galleria', params["metadata"],
             Column('id',Integer, primary_key=True),
             Column('denominazione', String(20)),
             schema = params['schema'])
+    __mapper_args__ = {
+        'order_by' : "denominazione"
+    }
 
-    galleria.create(checkfirst=True)
-
-
-class Galleria(Dao):
 
     def __init__(self, req= None, arg=None):
         Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):
         dic= {
-            'denominazione': galleria.c.denominazione == v,
+            'denominazione': Galleria.__table__.c.denominazione == v,
                 }
         return  dic[k]
-
-std_mapper = mapper(Galleria, galleria, order_by=galleria.c.denominazione)
 
 _gallerie = ["B", "B1000C", "B/D", "B/E", "C",
              "C5000D", "C/D", "C/E", "D", "D/E",

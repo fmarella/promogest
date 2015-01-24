@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2013 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -24,27 +24,21 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
-from promogest.dao.Dao import Dao
+from promogest.dao.Dao import Dao, Base
 
-try:
-    t_credit_card_type =Table('credit_card_type',
+class CCardType(Base, Dao):
+    try:
+        __table__ = Table('credit_card_type',
                 params['metadata'],
                 schema = params['schema'],
-                autoload=True,)
-                #extend_existing=True)
-except:
-    from data.ccardType import t_credit_card_type
-
-
-class CCardType(Dao):
+                autoload=True)
+    except:
+        from data.ccardType import t_credit_card_type
+        __table__ = t_credit_card_type
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):
-        dic= {  'denominazione' : t_credit_card_type.c.denominazione.ilike("%"+v+"%")}
+        dic= {  'denominazione' : CCardType.__table__.c.denominazione.ilike("%"+v+"%")}
         return  dic[k]
-
-
-std_mapper = mapper(CCardType, t_credit_card_type, order_by=t_credit_card_type.c.id,properties={
-        })

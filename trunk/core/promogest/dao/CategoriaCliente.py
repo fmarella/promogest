@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2013 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -19,29 +19,25 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-from sqlalchemy import Table
-from sqlalchemy.orm import mapper
+from sqlalchemy import *
+from sqlalchemy.orm import *
 from promogest.Environment import params
-from promogest.dao.Dao import Dao
+from promogest.dao.Dao import Dao, Base
 
-try:
-    t_categoria_cliente = Table('categoria_cliente',
+class CategoriaCliente(Base, Dao):
+
+    try:
+        __table__ = Table('categoria_cliente',
                        params['metadata'],
                        schema=params['schema'],
                        autoload=True)
-except:
-    from data.categoriaCliente import t_categoria_cliente
-
-
-class CategoriaCliente(Dao):
+    except:
+        from data.categoriaCliente import t_categoria_cliente
+        __table__ = t_categoria_cliente
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
 
     def filter_values(self, k,v):
-        dic= {'denominazione' : t_categoria_cliente.c.denominazione.ilike("%"+v+"%")}
+        dic= {'denominazione' : CategoriaCliente.__table__.c.denominazione.ilike("%"+v+"%")}
         return  dic[k]
-
-
-
-std_mapper = mapper(CategoriaCliente, t_categoria_cliente, order_by=t_categoria_cliente.c.id)

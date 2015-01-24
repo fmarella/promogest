@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.18.3 -->
 <interface>
-  <requires lib="gtk+" version="2.16"/>
-  <!-- interface-requires pythonplugin 0.0 -->
-  <!-- interface-naming-policy toplevel-contextual -->
+  <requires lib="gtk+" version="3.4"/>
+  <requires lib="pythonplugin" version="0.0"/>
   <object class="GtkTable" id="anagrafica_variazioni_listini_detail_table">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -33,7 +33,7 @@
         <property name="top_attach">3</property>
         <property name="bottom_attach">4</property>
         <property name="x_options">GTK_SHRINK | GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
       </packing>
     </child>
     <child>
@@ -44,19 +44,16 @@
         <property name="invisible_char">•</property>
         <property name="secondary_icon_stock">gtk-clear</property>
         <property name="primary_icon_activatable">False</property>
-        <property name="secondary_icon_activatable">True</property>
-        <property name="primary_icon_sensitive">True</property>
-        <property name="secondary_icon_sensitive">True</property>
         <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
-        <signal name="icon-press" handler="on_icon_press" swapped="no"/>
-        <signal name="focus-out-event" handler="on_entry_focus_out_event" swapped="no"/>
         <signal name="focus-in-event" handler="on_entry_focus_in_event" swapped="no"/>
+        <signal name="focus-out-event" handler="on_entry_focus_out_event" swapped="no"/>
+        <signal name="icon-press" handler="on_icon_press" swapped="no"/>
       </object>
       <packing>
         <property name="left_attach">1</property>
         <property name="right_attach">2</property>
         <property name="x_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
       </packing>
     </child>
     <child>
@@ -72,7 +69,7 @@
         <property name="top_attach">5</property>
         <property name="bottom_attach">6</property>
         <property name="x_options">GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
         <property name="x_padding">10</property>
       </packing>
     </child>
@@ -88,7 +85,7 @@
         <property name="top_attach">3</property>
         <property name="bottom_attach">4</property>
         <property name="x_options">GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
         <property name="x_padding">10</property>
       </packing>
     </child>
@@ -111,7 +108,7 @@
         <property name="top_attach">2</property>
         <property name="bottom_attach">3</property>
         <property name="x_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
       </packing>
     </child>
     <child>
@@ -126,7 +123,7 @@
         <property name="top_attach">2</property>
         <property name="bottom_attach">3</property>
         <property name="x_options">GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
         <property name="x_padding">10</property>
       </packing>
     </child>
@@ -140,7 +137,7 @@
       </object>
       <packing>
         <property name="x_options">GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
         <property name="x_padding">10</property>
       </packing>
     </child>
@@ -155,8 +152,6 @@
             <property name="invisible_char">●</property>
             <property name="primary_icon_activatable">False</property>
             <property name="secondary_icon_activatable">False</property>
-            <property name="primary_icon_sensitive">True</property>
-            <property name="secondary_icon_sensitive">True</property>
           </object>
           <packing>
             <property name="expand">True</property>
@@ -183,8 +178,6 @@
             <property name="invisible_char">●</property>
             <property name="primary_icon_activatable">False</property>
             <property name="secondary_icon_activatable">False</property>
-            <property name="primary_icon_sensitive">True</property>
-            <property name="secondary_icon_sensitive">True</property>
           </object>
           <packing>
             <property name="expand">True</property>
@@ -212,17 +205,17 @@
         <property name="top_attach">7</property>
         <property name="bottom_attach">8</property>
         <property name="x_options">GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
         <property name="x_padding">10</property>
       </packing>
     </child>
     <child>
       <object class="GtkRadioButton" id="a_sconto_radiobutton">
         <property name="label" translatable="yes">a sconto</property>
-        <property name="use_action_appearance">False</property>
         <property name="visible">True</property>
         <property name="can_focus">True</property>
         <property name="receives_default">False</property>
+        <property name="xalign">0.5</property>
         <property name="active">True</property>
         <property name="draw_indicator">True</property>
         <signal name="toggled" handler="on_a_sconto_radiobutton_toggled" swapped="no"/>
@@ -230,18 +223,18 @@
       <packing>
         <property name="top_attach">4</property>
         <property name="bottom_attach">5</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
         <property name="x_padding">10</property>
       </packing>
     </child>
     <child>
       <object class="GtkRadioButton" id="a_moltiplicatore_radiobutton">
         <property name="label" translatable="yes">a moltiplicatore</property>
-        <property name="use_action_appearance">False</property>
         <property name="visible">True</property>
         <property name="sensitive">False</property>
         <property name="can_focus">True</property>
         <property name="receives_default">False</property>
+        <property name="xalign">0.5</property>
         <property name="active">True</property>
         <property name="draw_indicator">True</property>
         <property name="group">a_sconto_radiobutton</property>
@@ -256,27 +249,27 @@
     <child>
       <object class="GtkRadioButton" id="stesso_articolo_radiobutton">
         <property name="label" translatable="yes">stesso articolo </property>
-        <property name="use_action_appearance">False</property>
         <property name="visible">True</property>
         <property name="can_focus">True</property>
         <property name="receives_default">False</property>
+        <property name="xalign">0.5</property>
         <property name="active">True</property>
         <property name="draw_indicator">True</property>
       </object>
       <packing>
         <property name="top_attach">8</property>
         <property name="bottom_attach">9</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
         <property name="x_padding">10</property>
       </packing>
     </child>
     <child>
       <object class="GtkRadioButton" id="ogni_articolo_radiobutton">
         <property name="label" translatable="yes">ogni articolo</property>
-        <property name="use_action_appearance">False</property>
         <property name="visible">True</property>
         <property name="can_focus">True</property>
         <property name="receives_default">False</property>
+        <property name="xalign">0.5</property>
         <property name="active">True</property>
         <property name="draw_indicator">True</property>
         <property name="group">stesso_articolo_radiobutton</property>
@@ -286,16 +279,16 @@
         <property name="right_attach">2</property>
         <property name="top_attach">8</property>
         <property name="bottom_attach">9</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
       </packing>
     </child>
     <child>
       <object class="GtkCheckButton" id="priorita_checkbutton">
         <property name="label" translatable="yes">Massima priorità</property>
-        <property name="use_action_appearance">False</property>
         <property name="visible">True</property>
         <property name="can_focus">True</property>
         <property name="receives_default">False</property>
+        <property name="xalign">0.5</property>
         <property name="active">True</property>
         <property name="draw_indicator">True</property>
       </object>
@@ -319,27 +312,27 @@
     <child>
       <object class="GtkRadioButton" id="minus_radio">
         <property name="label" translatable="yes">segno ( - )  </property>
-        <property name="use_action_appearance">False</property>
         <property name="visible">True</property>
         <property name="can_focus">True</property>
         <property name="receives_default">False</property>
+        <property name="xalign">0.5</property>
         <property name="active">True</property>
         <property name="draw_indicator">True</property>
       </object>
       <packing>
         <property name="top_attach">6</property>
         <property name="bottom_attach">7</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
         <property name="x_padding">10</property>
       </packing>
     </child>
     <child>
       <object class="GtkRadioButton" id="plus_radio">
         <property name="label" translatable="yes">segno ( + ) </property>
-        <property name="use_action_appearance">False</property>
         <property name="visible">True</property>
         <property name="can_focus">True</property>
         <property name="receives_default">False</property>
+        <property name="xalign">0.5</property>
         <property name="active">True</property>
         <property name="draw_indicator">True</property>
         <property name="group">minus_radio</property>
@@ -365,7 +358,7 @@
         <property name="top_attach">1</property>
         <property name="bottom_attach">2</property>
         <property name="x_options">GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
         <property name="x_padding">10</property>
       </packing>
     </child>
@@ -398,18 +391,16 @@
         <property name="invisible_char">•</property>
         <property name="primary_icon_activatable">False</property>
         <property name="secondary_icon_activatable">False</property>
-        <property name="primary_icon_sensitive">True</property>
-        <property name="secondary_icon_sensitive">True</property>
         <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
-        <signal name="key-press-event" handler="on_campo_filter_entry_key_press_event" swapped="no"/>
-        <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
         <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
+        <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
+        <signal name="key-press-event" handler="on_campo_filter_entry_key_press_event" swapped="no"/>
       </object>
       <packing>
         <property name="left_attach">1</property>
         <property name="right_attach">2</property>
         <property name="x_options">GTK_SHRINK | GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
       </packing>
     </child>
     <child>
@@ -421,7 +412,7 @@
       </object>
       <packing>
         <property name="x_options">GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
         <property name="x_padding">10</property>
       </packing>
     </child>
@@ -542,7 +533,7 @@
         <property name="top_attach">1</property>
         <property name="bottom_attach">2</property>
         <property name="x_options">GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
         <property name="x_padding">10</property>
       </packing>
     </child>

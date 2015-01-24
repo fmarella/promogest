@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2013 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -24,7 +24,13 @@ from sqlalchemy import *
 from promogest.Environment import *
 
 
-t_vettore = Table('vettore', params["metadata"],
+try:
+    t_vettore = Table('vettore',
+                  params['metadata'],
+                  schema=params['schema'],
+                  autoload=True)
+except:
+    t_vettore = Table('vettore', params["metadata"],
         Column('id',Integer,
                 ForeignKey(fk_prefix+'persona_giuridica.id',
                             onupdate="CASCADE",
@@ -32,4 +38,4 @@ t_vettore = Table('vettore', params["metadata"],
                 primary_key=True),
         schema=params["schema"]
         )
-t_vettore.create(checkfirst=True)
+    t_vettore.create(checkfirst=True)

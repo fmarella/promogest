@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2013 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -20,53 +20,52 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 import datetime
-from sqlalchemy import Table
-from sqlalchemy.orm import mapper
+from sqlalchemy import *
+from sqlalchemy.orm import *
 from promogest.Environment import *
-from promogest.dao.Dao import Dao
+from promogest.dao.Dao import Dao, Base
 
-try:
-    t_promemoria = Table('promemoria',
+class Promemoria(Base, Dao):
+    """ User class provides to make a Users dao which include more used"""
+    try:
+        __table__ = Table('promemoria',
             params['metadata'],
             schema = params['schema'],
             autoload=True)
-except:
-    from data.promemoria import t_promemoria
-
-
-class Promemoria(Dao):
-    """ User class provides to make a Users dao which include more used"""
+    except:
+        from data.promemoria import t_promemoria
+        __table__ = t_promemoria
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):
         if k=="incaricato":
-            dic = { k : t_promemoria.c.incaricato.ilike("%"+v+"%") }
+            dic = { k : Promemoria.__table__.c.incaricato.ilike("%"+v+"%") }
         elif k == 'in_scadenza':
-            dic = { k :t_promemoria.c.in_scadenza ==v}
+            dic = { k :Promemoria.__table__.c.in_scadenza ==v}
         elif k == 'scaduto':
-            dic = { k :t_promemoria.c.scaduto ==v}
+            dic = { k :Promemoria.__table__.c.scaduto ==v}
         elif k == "autore":
-            dic = { k : t_promemoria.c.autore.contains(v)}
+            dic = { k : Promemoria.__table__.c.autore.contains(v)}
         elif k == "annotazione":
-            dic = { k : t_promemoria.c.annotazione.ilike("%"+v+"%") }
+            dic = { k : Promemoria.__table__.c.annotazione.ilike("%"+v+"%") }
         elif k == "riferimento":
-            dic = { k: t_promemoria.c.riferimento.ilike("%"+v+"%")}
+            dic = { k: Promemoria.__table__.c.riferimento.ilike("%"+v+"%")}
         elif k == "completato":
-            dic = { k:t_promemoria.c.completato == v }
+            dic = { k:Promemoria.__table__.c.completato == v }
         elif k == "descrizione":
-            dic = { k:t_promemoria.c.descrizione.ilike("%"+v+"%") }
+            dic = { k:Promemoria.__table__.c.descrizione.ilike("%"+v+"%") }
         elif k == "oggetto":
-            dic = { k:t_promemoria.c.oggetto.ilike("%"+v+"%") }
+            dic = { k:Promemoria.__table__.c.oggetto.ilike("%"+v+"%") }
         elif k == "a_data_scadenza":
-            dic = { k:t_promemoria.c.data_scadenza <= v }
+            dic = { k:Promemoria.__table__.c.data_scadenza <= v }
         elif k == "da_data_scadenza":
-            dic = { k:t_promemoria.c.data_scadenza >= v }
+            dic = { k:Promemoria.__table__.c.data_scadenza >= v }
         elif k == "a_data_inserimento":
-            dic = { k:t_promemoria.c.data_inserimento <= v }
+            dic = { k:Promemoria.__table__.c.data_inserimento <= v }
         elif k == "da_data_inserimento":
-            dic = { k:t_promemoria.c.data_inserimento >= v }
+            dic = { k:Promemoria.__table__.c.data_inserimento >= v }
         return  dic[k]
 
 
@@ -95,5 +94,3 @@ def getScadenze():
     """
     alarms = Promemoria().select(in_scadenza=True,offset=None, batchSize=None)
     return alarms
-
-std_mapper= mapper(Promemoria, t_promemoria, order_by=t_promemoria.c.id)

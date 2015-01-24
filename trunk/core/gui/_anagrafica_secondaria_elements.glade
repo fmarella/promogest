@@ -1,12 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.18.3 -->
 <interface>
-  <requires lib="gtk+" version="2.16"/>
-  <!-- interface-requires pythonplugin 0.0 -->
-  <!-- interface-naming-policy toplevel-contextual -->
+  <requires lib="gtk+" version="3.4"/>
+  <requires lib="pythonplugin" version="0.0"/>
   <object class="GtkImage" id="abb_pg_image">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="stock">gtk-execute</property>
+  </object>
+  <object class="GtkListStore" id="categorie_listore">
+    <columns>
+      <!-- column-name column1 -->
+      <column type="gint"/>
+      <!-- column-name column2 -->
+      <column type="gchararray"/>
+      <!-- column-name GdkPixbuf1 -->
+      <column type="GdkPixbuf"/>
+      <!-- column-name gchararray1 -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
+  <object class="GtkListStore" id="liststore1">
+    <columns>
+      <!-- column-name item -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
+  <object class="GtkImage" id="marcatore_add">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-add</property>
+  </object>
+  <object class="GtkImage" id="marcatore_remove">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-remove</property>
+  </object>
+  <object class="GtkImage" id="utenti_image">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">utenti_12.png</property>
   </object>
   <object class="GtkNotebook" id="anagrafica_secondaria_detail_notebook">
     <property name="visible">True</property>
@@ -174,8 +207,6 @@
                 <property name="invisible_char">●</property>
                 <property name="primary_icon_activatable">False</property>
                 <property name="secondary_icon_activatable">False</property>
-                <property name="primary_icon_sensitive">True</property>
-                <property name="secondary_icon_sensitive">True</property>
               </object>
             </child>
           </object>
@@ -185,7 +216,7 @@
             <property name="top_attach">15</property>
             <property name="bottom_attach">16</property>
             <property name="x_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
-            <property name="y_options"></property>
+            <property name="y_options"/>
           </packing>
         </child>
         <child>
@@ -193,15 +224,13 @@
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-            <property name="tooltip_text" translatable="yes">Saldo del totale di 
-ciò che si è venduto a questo cliente 
+            <property name="tooltip_text" translatable="yes">Saldo del totale di
+ciò che si è venduto a questo cliente
 calcolato sulla base dei documenti dell'anno di lavoro</property>
             <property name="editable">False</property>
             <property name="invisible_char">●</property>
             <property name="primary_icon_activatable">False</property>
             <property name="secondary_icon_activatable">False</property>
-            <property name="primary_icon_sensitive">True</property>
-            <property name="secondary_icon_sensitive">True</property>
             <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
             <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
           </object>
@@ -233,7 +262,7 @@ calcolato sulla base dei documenti dell'anno di lavoro</property>
             <property name="tooltip_text" translatable="yes">Il  campo obbligatorio è uno tra:
 Ragione Sociale
 Insegna
-Cognome 
+Cognome
 Nome</property>
             <property name="xalign">0</property>
             <property name="label" translatable="yes">&lt;b&gt;Codice&lt;/b&gt;</property>
@@ -241,7 +270,7 @@ Nome</property>
           </object>
           <packing>
             <property name="x_options">GTK_FILL</property>
-            <property name="y_options"></property>
+            <property name="y_options"/>
             <property name="x_padding">10</property>
           </packing>
         </child>
@@ -252,7 +281,7 @@ Nome</property>
             <property name="tooltip_text" translatable="yes">Il  campo obbligatorio è uno tra:
 Ragione Sociale
 Insegna
-Cognome 
+Cognome
 Nome</property>
             <property name="xalign">0</property>
             <property name="label" translatable="yes">&lt;b&gt;Ragione Sociale/Cog. Nome&lt;/b&gt;</property>
@@ -262,7 +291,7 @@ Nome</property>
             <property name="top_attach">1</property>
             <property name="bottom_attach">2</property>
             <property name="x_options">GTK_FILL</property>
-            <property name="y_options"></property>
+            <property name="y_options"/>
             <property name="x_padding">10</property>
           </packing>
         </child>
@@ -273,7 +302,7 @@ Nome</property>
             <property name="tooltip_text" translatable="yes">Il  campo obbligatorio è uno tra:
 Ragione Sociale
 Insegna
-Cognome 
+Cognome
 Nome</property>
             <property name="xalign">0</property>
             <property name="label" translatable="yes">&lt;b&gt;Cognome&lt;/b&gt;</property>
@@ -283,7 +312,7 @@ Nome</property>
             <property name="top_attach">3</property>
             <property name="bottom_attach">4</property>
             <property name="x_options">GTK_FILL</property>
-            <property name="y_options"></property>
+            <property name="y_options"/>
             <property name="x_padding">10</property>
           </packing>
         </child>
@@ -294,7 +323,7 @@ Nome</property>
             <property name="tooltip_text" translatable="yes">Il  campo obbligatorio è uno tra:
 Ragione Sociale
 Insegna
-Cognome 
+Cognome
 Nome</property>
             <property name="xalign">0</property>
             <property name="label" translatable="yes">&lt;b&gt;Nome&lt;/b&gt;</property>
@@ -304,7 +333,7 @@ Nome</property>
             <property name="top_attach">4</property>
             <property name="bottom_attach">5</property>
             <property name="x_options">GTK_FILL</property>
-            <property name="y_options"></property>
+            <property name="y_options"/>
             <property name="x_padding">10</property>
           </packing>
         </child>
@@ -319,7 +348,7 @@ Nome</property>
             <property name="top_attach">10</property>
             <property name="bottom_attach">11</property>
             <property name="x_options">GTK_FILL</property>
-            <property name="y_options"></property>
+            <property name="y_options"/>
             <property name="x_padding">10</property>
           </packing>
         </child>
@@ -335,7 +364,7 @@ Nome</property>
             <property name="top_attach">9</property>
             <property name="bottom_attach">10</property>
             <property name="x_options">GTK_FILL</property>
-            <property name="y_options"></property>
+            <property name="y_options"/>
             <property name="x_padding">10</property>
           </packing>
         </child>
@@ -350,7 +379,7 @@ Nome</property>
             <property name="top_attach">11</property>
             <property name="bottom_attach">12</property>
             <property name="x_options">GTK_FILL</property>
-            <property name="y_options"></property>
+            <property name="y_options"/>
             <property name="x_padding">10</property>
           </packing>
         </child>
@@ -367,7 +396,7 @@ Nome</property>
             <property name="top_attach">11</property>
             <property name="bottom_attach">12</property>
             <property name="x_options">GTK_FILL</property>
-            <property name="y_options"></property>
+            <property name="y_options"/>
             <property name="x_padding">10</property>
           </packing>
         </child>
@@ -384,7 +413,7 @@ Nome</property>
             <property name="top_attach">11</property>
             <property name="bottom_attach">12</property>
             <property name="x_options">GTK_FILL</property>
-            <property name="y_options"></property>
+            <property name="y_options"/>
             <property name="x_padding">10</property>
           </packing>
         </child>
@@ -412,7 +441,7 @@ Nome</property>
             <property name="top_attach">13</property>
             <property name="bottom_attach">14</property>
             <property name="x_options">GTK_FILL</property>
-            <property name="y_options"></property>
+            <property name="y_options"/>
             <property name="x_padding">10</property>
           </packing>
         </child>
@@ -427,7 +456,7 @@ Nome</property>
             <property name="top_attach">14</property>
             <property name="bottom_attach">15</property>
             <property name="x_options">GTK_FILL</property>
-            <property name="y_options"></property>
+            <property name="y_options"/>
             <property name="x_padding">10</property>
           </packing>
         </child>
@@ -435,19 +464,16 @@ Nome</property>
           <object class="GtkEntry" id="indirizzo_sede_operativa_entry">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <property name="tooltip_text" translatable="yes">Inserire l'indirizzo di una eventuale sede operativa 
+            <property name="tooltip_text" translatable="yes">Inserire l'indirizzo di una eventuale sede operativa
 se diverso da quella legale</property>
             <property name="max_length">200</property>
             <property name="invisible_char">●</property>
             <property name="secondary_icon_stock">gtk-clear</property>
             <property name="primary_icon_activatable">False</property>
-            <property name="secondary_icon_activatable">True</property>
-            <property name="primary_icon_sensitive">True</property>
-            <property name="secondary_icon_sensitive">True</property>
             <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
-            <signal name="icon-press" handler="on_icon_press" swapped="no"/>
             <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
             <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
+            <signal name="icon-press" handler="on_icon_press" swapped="no"/>
           </object>
           <packing>
             <property name="left_attach">1</property>
@@ -455,7 +481,7 @@ se diverso da quella legale</property>
             <property name="top_attach">14</property>
             <property name="bottom_attach">15</property>
             <property name="x_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
-            <property name="y_options"></property>
+            <property name="y_options"/>
           </packing>
         </child>
         <child>
@@ -469,7 +495,7 @@ se diverso da quella legale</property>
             <property name="top_attach">15</property>
             <property name="bottom_attach">16</property>
             <property name="x_options">GTK_FILL</property>
-            <property name="y_options"></property>
+            <property name="y_options"/>
             <property name="x_padding">10</property>
           </packing>
         </child>
@@ -482,13 +508,10 @@ se diverso da quella legale</property>
             <property name="invisible_char">●</property>
             <property name="secondary_icon_stock">gtk-clear</property>
             <property name="primary_icon_activatable">False</property>
-            <property name="secondary_icon_activatable">True</property>
-            <property name="primary_icon_sensitive">True</property>
-            <property name="secondary_icon_sensitive">True</property>
             <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
-            <signal name="icon-press" handler="on_icon_press" swapped="no"/>
             <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
             <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
+            <signal name="icon-press" handler="on_icon_press" swapped="no"/>
           </object>
           <packing>
             <property name="left_attach">1</property>
@@ -496,7 +519,7 @@ se diverso da quella legale</property>
             <property name="top_attach">15</property>
             <property name="bottom_attach">16</property>
             <property name="x_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
-            <property name="y_options"></property>
+            <property name="y_options"/>
           </packing>
         </child>
         <child>
@@ -512,7 +535,7 @@ se diverso da quella legale</property>
             <property name="top_attach">15</property>
             <property name="bottom_attach">16</property>
             <property name="x_options">GTK_FILL</property>
-            <property name="y_options"></property>
+            <property name="y_options"/>
             <property name="x_padding">10</property>
           </packing>
         </child>
@@ -529,7 +552,7 @@ se diverso da quella legale</property>
             <property name="top_attach">15</property>
             <property name="bottom_attach">16</property>
             <property name="x_options">GTK_FILL</property>
-            <property name="y_options"></property>
+            <property name="y_options"/>
             <property name="x_padding">10</property>
           </packing>
         </child>
@@ -544,7 +567,7 @@ se diverso da quella legale</property>
             <property name="top_attach">5</property>
             <property name="bottom_attach">6</property>
             <property name="x_options">GTK_FILL</property>
-            <property name="y_options"></property>
+            <property name="y_options"/>
             <property name="x_padding">10</property>
           </packing>
         </child>
@@ -559,7 +582,7 @@ se diverso da quella legale</property>
             <property name="top_attach">6</property>
             <property name="bottom_attach">7</property>
             <property name="x_options">GTK_FILL</property>
-            <property name="y_options"></property>
+            <property name="y_options"/>
             <property name="x_padding">10</property>
           </packing>
         </child>
@@ -587,21 +610,17 @@ se diverso da quella legale</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="tooltip_text" translatable="yes">Codice Cliente identificatore unico
-se non ne avete uno premere sulla piccola 
+se non ne avete uno premere sulla piccola
 icona a sinistra per farne generare uno nuovo dal promogest</property>
                 <property name="max_length">100</property>
                 <property name="invisible_char">●</property>
                 <property name="primary_icon_stock">gtk-new</property>
                 <property name="secondary_icon_stock">gtk-clear</property>
-                <property name="primary_icon_activatable">True</property>
-                <property name="secondary_icon_activatable">True</property>
-                <property name="primary_icon_sensitive">True</property>
-                <property name="secondary_icon_sensitive">True</property>
                 <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
-                <signal name="icon-press" handler="on_icon_press" swapped="no"/>
-                <signal name="icon-press" handler="on_icon_press_primary" swapped="no"/>
                 <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
                 <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
+                <signal name="icon-press" handler="on_icon_press" swapped="no"/>
+                <signal name="icon-press" handler="on_icon_press_primary" swapped="no"/>
               </object>
             </child>
           </object>
@@ -609,30 +628,27 @@ icona a sinistra per farne generare uno nuovo dal promogest</property>
             <property name="left_attach">1</property>
             <property name="right_attach">2</property>
             <property name="x_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
-            <property name="y_options"></property>
+            <property name="y_options"/>
           </packing>
         </child>
         <child>
           <object class="GtkEntry" id="ragione_sociale_entry">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <property name="tooltip_text" translatable="yes">Inserire la Ragione sociale 
+            <property name="tooltip_text" translatable="yes">Inserire la Ragione sociale
 Il  campo obbligatorio è uno tra:
 Ragione Sociale
 Insegna
-Cognome 
+Cognome
 Nome</property>
             <property name="max_length">200</property>
             <property name="invisible_char">●</property>
             <property name="secondary_icon_stock">gtk-clear</property>
             <property name="primary_icon_activatable">False</property>
-            <property name="secondary_icon_activatable">True</property>
-            <property name="primary_icon_sensitive">True</property>
-            <property name="secondary_icon_sensitive">True</property>
             <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
-            <signal name="icon-press" handler="on_icon_press" swapped="no"/>
             <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
             <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
+            <signal name="icon-press" handler="on_icon_press" swapped="no"/>
           </object>
           <packing>
             <property name="left_attach">1</property>
@@ -640,7 +656,7 @@ Nome</property>
             <property name="top_attach">1</property>
             <property name="bottom_attach">2</property>
             <property name="x_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
-            <property name="y_options"></property>
+            <property name="y_options"/>
           </packing>
         </child>
         <child>
@@ -650,19 +666,16 @@ Nome</property>
             <property name="tooltip_text" translatable="yes">Il  campo obbligatorio è uno tra:
 Ragione Sociale
 Insegna
-Cognome 
+Cognome
 Nome</property>
             <property name="max_length">100</property>
             <property name="invisible_char">●</property>
             <property name="secondary_icon_stock">gtk-clear</property>
             <property name="primary_icon_activatable">False</property>
-            <property name="secondary_icon_activatable">True</property>
-            <property name="primary_icon_sensitive">True</property>
-            <property name="secondary_icon_sensitive">True</property>
             <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
-            <signal name="icon-press" handler="on_icon_press" swapped="no"/>
             <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
             <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
+            <signal name="icon-press" handler="on_icon_press" swapped="no"/>
           </object>
           <packing>
             <property name="left_attach">1</property>
@@ -670,7 +683,7 @@ Nome</property>
             <property name="top_attach">3</property>
             <property name="bottom_attach">4</property>
             <property name="x_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
-            <property name="y_options"></property>
+            <property name="y_options"/>
           </packing>
         </child>
         <child>
@@ -680,19 +693,16 @@ Nome</property>
             <property name="tooltip_text" translatable="yes">Il  campo obbligatorio è uno tra:
 Ragione Sociale
 Insegna
-Cognome 
+Cognome
 Nome</property>
             <property name="max_length">100</property>
             <property name="invisible_char">●</property>
             <property name="secondary_icon_stock">gtk-clear</property>
             <property name="primary_icon_activatable">False</property>
-            <property name="secondary_icon_activatable">True</property>
-            <property name="primary_icon_sensitive">True</property>
-            <property name="secondary_icon_sensitive">True</property>
             <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
-            <signal name="icon-press" handler="on_icon_press" swapped="no"/>
             <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
             <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
+            <signal name="icon-press" handler="on_icon_press" swapped="no"/>
           </object>
           <packing>
             <property name="left_attach">1</property>
@@ -700,26 +710,23 @@ Nome</property>
             <property name="top_attach">4</property>
             <property name="bottom_attach">5</property>
             <property name="x_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
-            <property name="y_options"></property>
+            <property name="y_options"/>
           </packing>
         </child>
         <child>
           <object class="GtkEntry" id="indirizzo_sede_legale_entry">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <property name="tooltip_text" translatable="yes">Inserimento dell'indirizzo della 
+            <property name="tooltip_text" translatable="yes">Inserimento dell'indirizzo della
 sede legale del cliente</property>
             <property name="max_length">200</property>
             <property name="invisible_char">●</property>
             <property name="secondary_icon_stock">gtk-clear</property>
             <property name="primary_icon_activatable">False</property>
-            <property name="secondary_icon_activatable">True</property>
-            <property name="primary_icon_sensitive">True</property>
-            <property name="secondary_icon_sensitive">True</property>
             <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
-            <signal name="icon-press" handler="on_entry_icon_press" swapped="no"/>
             <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
             <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
+            <signal name="icon-press" handler="on_entry_icon_press" swapped="no"/>
           </object>
           <packing>
             <property name="left_attach">1</property>
@@ -727,26 +734,23 @@ sede legale del cliente</property>
             <property name="top_attach">10</property>
             <property name="bottom_attach">11</property>
             <property name="x_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
-            <property name="y_options"></property>
+            <property name="y_options"/>
           </packing>
         </child>
         <child>
           <object class="GtkEntry" id="localita_sede_legale_entry">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <property name="tooltip_text" translatable="yes">Inserimento della localita 
+            <property name="tooltip_text" translatable="yes">Inserimento della localita
 della sede legale del cliente</property>
             <property name="max_length">100</property>
             <property name="invisible_char">●</property>
             <property name="secondary_icon_stock">gtk-clear</property>
             <property name="primary_icon_activatable">False</property>
-            <property name="secondary_icon_activatable">True</property>
-            <property name="primary_icon_sensitive">True</property>
-            <property name="secondary_icon_sensitive">True</property>
             <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
-            <signal name="icon-press" handler="on_icon_press" swapped="no"/>
             <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
             <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
+            <signal name="icon-press" handler="on_icon_press" swapped="no"/>
           </object>
           <packing>
             <property name="left_attach">1</property>
@@ -754,7 +758,7 @@ della sede legale del cliente</property>
             <property name="top_attach">11</property>
             <property name="bottom_attach">12</property>
             <property name="x_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
-            <property name="y_options"></property>
+            <property name="y_options"/>
           </packing>
         </child>
         <child>
@@ -772,8 +776,6 @@ della sede legale del cliente</property>
                 <property name="invisible_char">●</property>
                 <property name="primary_icon_activatable">False</property>
                 <property name="secondary_icon_activatable">False</property>
-                <property name="primary_icon_sensitive">True</property>
-                <property name="secondary_icon_sensitive">True</property>
                 <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
                 <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
                 <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
@@ -786,7 +788,7 @@ della sede legale del cliente</property>
             <property name="top_attach">11</property>
             <property name="bottom_attach">12</property>
             <property name="x_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
-            <property name="y_options"></property>
+            <property name="y_options"/>
           </packing>
         </child>
         <child>
@@ -804,8 +806,6 @@ della sede legale del cliente</property>
                 <property name="invisible_char">●</property>
                 <property name="primary_icon_activatable">False</property>
                 <property name="secondary_icon_activatable">False</property>
-                <property name="primary_icon_sensitive">True</property>
-                <property name="secondary_icon_sensitive">True</property>
               </object>
             </child>
           </object>
@@ -815,7 +815,7 @@ della sede legale del cliente</property>
             <property name="top_attach">11</property>
             <property name="bottom_attach">12</property>
             <property name="x_options">GTK_SHRINK | GTK_FILL</property>
-            <property name="y_options"></property>
+            <property name="y_options"/>
           </packing>
         </child>
         <child>
@@ -833,8 +833,6 @@ della sede legale del cliente</property>
                 <property name="invisible_char">●</property>
                 <property name="primary_icon_activatable">False</property>
                 <property name="secondary_icon_activatable">False</property>
-                <property name="primary_icon_sensitive">True</property>
-                <property name="secondary_icon_sensitive">True</property>
               </object>
             </child>
           </object>
@@ -844,7 +842,7 @@ della sede legale del cliente</property>
             <property name="top_attach">15</property>
             <property name="bottom_attach">16</property>
             <property name="x_options">GTK_SHRINK | GTK_FILL</property>
-            <property name="y_options"></property>
+            <property name="y_options"/>
           </packing>
         </child>
         <child>
@@ -871,8 +869,6 @@ della sede legale del cliente</property>
             <property name="invisible_char">●</property>
             <property name="primary_icon_activatable">False</property>
             <property name="secondary_icon_activatable">False</property>
-            <property name="primary_icon_sensitive">True</property>
-            <property name="secondary_icon_sensitive">True</property>
           </object>
           <packing>
             <property name="left_attach">1</property>
@@ -902,12 +898,12 @@ della sede legale del cliente</property>
             <child>
               <object class="GtkCheckButton" id="fatturazione_riepilogativa_checkbutton">
                 <property name="label" translatable="yes">Fatturazione Riepilogativa</property>
-                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
                 <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                 <property name="tooltip_text" translatable="yes">???</property>
+                <property name="xalign">0.5</property>
                 <property name="draw_indicator">True</property>
               </object>
             </child>
@@ -934,7 +930,6 @@ della sede legale del cliente</property>
         </child>
         <child>
           <object class="GtkToggleButton" id="scheda_contabile_togglebutton">
-            <property name="use_action_appearance">False</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
@@ -986,12 +981,11 @@ della sede legale del cliente</property>
             <property name="top_attach">6</property>
             <property name="bottom_attach">7</property>
             <property name="x_options">GTK_FILL</property>
-            <property name="y_options"></property>
+            <property name="y_options"/>
           </packing>
         </child>
         <child>
           <object class="GtkToggleButton" id="destinazioni_merce_togglebutton">
-            <property name="use_action_appearance">False</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
@@ -1043,15 +1037,11 @@ della sede legale del cliente</property>
             <property name="top_attach">6</property>
             <property name="bottom_attach">7</property>
             <property name="x_options">GTK_FILL</property>
-            <property name="y_options"></property>
+            <property name="y_options"/>
           </packing>
         </child>
         <child>
-          <placeholder/>
-        </child>
-        <child>
           <object class="GtkToggleButton" id="promemoria_togglebutton">
-            <property name="use_action_appearance">False</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
@@ -1102,7 +1092,7 @@ della sede legale del cliente</property>
             <property name="right_attach">4</property>
             <property name="top_attach">6</property>
             <property name="bottom_attach">7</property>
-            <property name="y_options"></property>
+            <property name="y_options"/>
           </packing>
         </child>
         <child>
@@ -1113,18 +1103,15 @@ della sede legale del cliente</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="invisible_char">●</property>
-            <property name="invisible_char_set">True</property>
             <property name="primary_icon_activatable">False</property>
             <property name="secondary_icon_activatable">False</property>
-            <property name="primary_icon_sensitive">True</property>
-            <property name="secondary_icon_sensitive">True</property>
           </object>
           <packing>
             <property name="left_attach">1</property>
             <property name="right_attach">3</property>
             <property name="top_attach">6</property>
             <property name="bottom_attach">7</property>
-            <property name="y_options"></property>
+            <property name="y_options"/>
           </packing>
         </child>
         <child>
@@ -1133,23 +1120,19 @@ della sede legale del cliente</property>
             <property name="can_focus">True</property>
             <property name="max_length">16</property>
             <property name="invisible_char">●</property>
-            <property name="invisible_char_set">True</property>
             <property name="secondary_icon_stock">gtk-clear</property>
             <property name="primary_icon_activatable">False</property>
-            <property name="secondary_icon_activatable">True</property>
-            <property name="primary_icon_sensitive">True</property>
-            <property name="secondary_icon_sensitive">True</property>
             <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
-            <signal name="icon-press" handler="on_icon_press" swapped="no"/>
             <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
             <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
+            <signal name="icon-press" handler="on_icon_press" swapped="no"/>
           </object>
           <packing>
             <property name="left_attach">1</property>
             <property name="right_attach">3</property>
             <property name="top_attach">5</property>
             <property name="bottom_attach">6</property>
-            <property name="y_options"></property>
+            <property name="y_options"/>
           </packing>
         </child>
         <child>
@@ -1158,7 +1141,6 @@ della sede legale del cliente</property>
         <child>
           <object class="GtkToggleButton" id="abbinamento_utente_togglebutton">
             <property name="label" translatable="yes">Utente</property>
-            <property name="use_action_appearance">False</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
@@ -1171,7 +1153,7 @@ della sede legale del cliente</property>
             <property name="top_attach">5</property>
             <property name="bottom_attach">6</property>
             <property name="x_options">GTK_FILL</property>
-            <property name="y_options"></property>
+            <property name="y_options"/>
           </packing>
         </child>
         <child>
@@ -1179,7 +1161,6 @@ della sede legale del cliente</property>
         </child>
         <child>
           <object class="GtkToggleButton" id="label_togglebutton">
-            <property name="use_action_appearance">False</property>
             <property name="width_request">120</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
@@ -1232,6 +1213,9 @@ della sede legale del cliente</property>
             <property name="top_attach">5</property>
             <property name="bottom_attach">6</property>
           </packing>
+        </child>
+        <child>
+          <placeholder/>
         </child>
       </object>
     </child>
@@ -1439,7 +1423,7 @@ della sede legale del cliente</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="xalign">0</property>
-                        <property name="label" translatable="yes">Aliquota Iva 
+                        <property name="label" translatable="yes">Aliquota Iva
    preferenziale</property>
                       </object>
                       <packing>
@@ -1470,7 +1454,6 @@ della sede legale del cliente</property>
                 <child>
                   <object class="GtkToggleButton" id="abbina_pg_toggle">
                     <property name="label" translatable="yes">Abbinamento Persona Giuridica</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
@@ -1533,8 +1516,6 @@ della sede legale del cliente</property>
                                 <property name="invisible_char">●</property>
                                 <property name="primary_icon_activatable">False</property>
                                 <property name="secondary_icon_activatable">False</property>
-                                <property name="primary_icon_sensitive">True</property>
-                                <property name="secondary_icon_sensitive">True</property>
                               </object>
                               <packing>
                                 <property name="expand">True</property>
@@ -1574,8 +1555,6 @@ della sede legale del cliente</property>
                                 <property name="invisible_char">●</property>
                                 <property name="primary_icon_activatable">False</property>
                                 <property name="secondary_icon_activatable">False</property>
-                                <property name="primary_icon_sensitive">True</property>
-                                <property name="secondary_icon_sensitive">True</property>
                               </object>
                               <packing>
                                 <property name="expand">True</property>
@@ -1613,11 +1592,8 @@ della sede legale del cliente</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="invisible_char">●</property>
-                                <property name="invisible_char_set">True</property>
                                 <property name="primary_icon_activatable">False</property>
                                 <property name="secondary_icon_activatable">False</property>
-                                <property name="primary_icon_sensitive">True</property>
-                                <property name="secondary_icon_sensitive">True</property>
                               </object>
                               <packing>
                                 <property name="expand">True</property>
@@ -1657,8 +1633,6 @@ della sede legale del cliente</property>
                                 <property name="invisible_char">●</property>
                                 <property name="primary_icon_activatable">False</property>
                                 <property name="secondary_icon_activatable">False</property>
-                                <property name="primary_icon_sensitive">True</property>
-                                <property name="secondary_icon_sensitive">True</property>
                               </object>
                               <packing>
                                 <property name="expand">True</property>
@@ -1696,11 +1670,8 @@ della sede legale del cliente</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="invisible_char">●</property>
-                                <property name="invisible_char_set">True</property>
                                 <property name="primary_icon_activatable">False</property>
                                 <property name="secondary_icon_activatable">False</property>
-                                <property name="primary_icon_sensitive">True</property>
-                                <property name="secondary_icon_sensitive">True</property>
                               </object>
                               <packing>
                                 <property name="expand">True</property>
@@ -1719,7 +1690,7 @@ della sede legale del cliente</property>
                           <object class="GtkLabel" id="info_contatti_label">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="label" translatable="yes">Il pulsante Contatti permette di accedere all'anagrafica Contatti. Per ogni cliente 
+                            <property name="label" translatable="yes">Il pulsante Contatti permette di accedere all'anagrafica Contatti. Per ogni cliente
 è possibile abbinare diversi contatti di tipo  aziendale o personale, dividerli per categorie
 ed assegnare loro recapiti telefonici, contatti  skype o msn. </property>
                             <property name="wrap">True</property>
@@ -1732,7 +1703,6 @@ ed assegnare loro recapiti telefonici, contatti  skype o msn. </property>
                         </child>
                         <child>
                           <object class="GtkToggleButton" id="contatti_togglebutton">
-                            <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
@@ -1840,8 +1810,6 @@ ed assegnare loro recapiti telefonici, contatti  skype o msn. </property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="border_width">1</property>
-            <property name="hscrollbar_policy">automatic</property>
-            <property name="vscrollbar_policy">automatic</property>
             <property name="shadow_type">in</property>
             <child>
               <object class="GtkTextView" id="note_textview">
@@ -1873,38 +1841,5 @@ ed assegnare loro recapiti telefonici, contatti  skype o msn. </property>
         <property name="tab_fill">False</property>
       </packing>
     </child>
-  </object>
-  <object class="GtkListStore" id="categorie_listore">
-    <columns>
-      <!-- column-name column1 -->
-      <column type="gint"/>
-      <!-- column-name column2 -->
-      <column type="gchararray"/>
-      <!-- column-name GdkPixbuf1 -->
-      <column type="GdkPixbuf"/>
-      <!-- column-name gchararray1 -->
-      <column type="gchararray"/>
-    </columns>
-  </object>
-  <object class="GtkListStore" id="liststore1">
-    <columns>
-      <!-- column-name item -->
-      <column type="gchararray"/>
-    </columns>
-  </object>
-  <object class="GtkImage" id="marcatore_add">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">gtk-add</property>
-  </object>
-  <object class="GtkImage" id="marcatore_remove">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">gtk-remove</property>
-  </object>
-  <object class="GtkImage" id="utenti_image">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="pixbuf">utenti_12.png</property>
   </object>
 </interface>

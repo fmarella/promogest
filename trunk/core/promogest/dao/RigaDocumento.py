@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -22,18 +22,9 @@
 
 from sqlalchemy import *
 from sqlalchemy.orm import *
-from promogest.Environment import params, conf, modulesList
+from promogest.Environment import *
 
-try:
-    t_riga_documento = Table('riga_documento',
-                         params['metadata'],
-                         schema=params['schema'],
-                         autoload=True)
-except:
-    from data.rigaDocumento import t_riga_documento
-
-
-from Dao import Dao
+from promogest.dao.Dao import Dao, Base
 from UnitaBase import UnitaBase
 from ScontoRigaDocumento import ScontoRigaDocumento
 from ScontoRigaMovimento import ScontoRigaMovimento
@@ -43,14 +34,36 @@ from Magazzino import Magazzino
 from Listino import Listino
 from Multiplo import Multiplo
 from DaoUtils import scontiRigaDocumentoDel
-from Riga import Riga, t_riga
+from Riga import Riga
 from promogest.lib.utils import *
 if posso("SM"):
     from promogest.modules.SuMisura.dao.MisuraPezzo import MisuraPezzo
 
+from data.riga import t_riga
+from data.rigaDocumento import t_riga_documento
 
-class RigaDocumento(Dao):
+riga_documento_riga = join(t_riga, t_riga_documento)
+
+class RigaDocumento(Base, Dao):
     """ User class provides to make a Users dao which include more used"""
+    __table__ = riga_documento_riga
+
+    id = column_property(t_riga.c.id, t_riga_documento.c.id)
+
+
+    rig = relationship("Riga",primaryjoin = t_riga_documento.c.id==t_riga.c.id, backref="RD")
+    totaleRiga = column_property(Riga.__table__.c.quantita * Riga.__table__.c.moltiplicatore * Riga.__table__.c.valore_unitario_netto )
+    totaleRigaLordo = column_property(Riga.__table__.c.quantita * Riga.__table__.c.moltiplicatore * Riga.__table__.c.valore_unitario_lordo )
+    multi = relationship("Multiplo")
+    SCD = relationship("ScontoRigaDocumento", cascade="all, delete", backref="RD")
+
+    __mapper_args__ = {
+        'order_by' : "posizione"
+    }
+
+    if (hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes") or ("GestioneNoleggio" in modulesList):
+        from promogest.modules.GestioneNoleggio.dao.NoleggioRiga import NoleggioRiga
+        NR = relationship("NoleggioRiga",primaryjoin=NoleggioRiga.id_riga==t_riga.c.id,cascade="all, delete",backref="RD",uselist=False)
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
@@ -75,18 +88,16 @@ class RigaDocumento(Dao):
         self.__prezzo_acquisto_noleggio = None
         self.__isrent = None
 
-
-    def __aliquota(self):
+    @property
+    def aliquota(self):
         if self.rig: return self.rig.aliquota
         else: return ""
-    aliquota = property(__aliquota)
 
-
-    def _getStringaScontiRigaDocumento(self):
+    @property
+    def stringaSconti(self):
         (listSconti, applicazione) = getScontiFromDao(self._getScontiRigaDocumento(), self.applicazione_sconti)
         return getStringaSconti(listSconti)
 
-    stringaSconti = property(_getStringaScontiRigaDocumento)
 
     def _getCodiceArticoloFornitore(self):
         self.__codiceArticoloFornitore = None
@@ -97,60 +108,52 @@ class RigaDocumento(Dao):
 
     codiceArticoloFornitore = property(_getCodiceArticoloFornitore, _setCodiceArticoloFornitore)
 
-    def __magazzino(self):
+    @property
+    def magazzino(self):
         if self.rig: return self.rig.magazzino
         else: return ""
-    magazzino= property(__magazzino)
 
-    def __listino(self):
+    @property
+    def listino(self):
         if self.rig: return self.rig.listino
         else: return ""
-    listino= property(__listino)
-
-    def __multiplo(self):
+    @property
+    def multiplo(self):
         if self.rig: return self.rig.multiplo
         else: return ""
-    multiplo = property(__multiplo)
 
-    def __unita_base(self):
+    @property
+    def unita_base(self):
         if self.rig : return self.rig.unita_base
         else: return ""
-    unita_base = property(__unita_base)
 
-
-    def __codiceArticolo(self):
+    @property
+    def codice_articolo(self):
         if self.rig:return self.rig.codice_articolo
         else: return ""
-    codice_articolo= property(__codiceArticolo)
 
     if hasattr(conf, "PromoWear") and getattr(conf.PromoWear,'mod_enable')=="yes":
-        def _denominazione_gruppo_taglia(self):
+        @property
+        def denominazione_gruppo_taglia(self):
             return ""
-        denominazione_gruppo_taglia = property(_denominazione_gruppo_taglia)
-
-        def _denominazione_taglia(self):
+        @property
+        def denominazione_taglia(self):
             return ""
-        denominazione_taglia = property(_denominazione_taglia)
-
-        def _denominazione_colore(self):
+        @property
+        def denominazione_colore(self):
             return ""
-        denominazione_colore = property(_denominazione_colore)
-
-        def _anno(self):
+        @property
+        def anno(self):
             return ""
-        anno = property(_anno)
-
-        def _stagione(self):
+        @property
+        def stagione(self):
             return ""
-        stagione = property(_stagione)
-
-        def _genere(self):
+        @property
+        def genere(self):
             return ""
-        genere = property(_genere)
-
-        def _modello(self):
+        @property
+        def denominazione_modello(self):
             return ""
-        denominazione_modello = property(_modello)
 
     if (hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes") or ("GestioneNoleggio" in modulesList):
 
@@ -161,8 +164,10 @@ class RigaDocumento(Dao):
                 else:
                     self.__coeficente_noleggio =  0
             return self.__coeficente_noleggio
+
         def _set_coeficente_noleggio(self, value):
             self.__coeficente_noleggio = value
+
         coeficente_noleggio = property(_get_coeficente_noleggio, _set_coeficente_noleggio)
 
         def _get_prezzo_acquisto_noleggio(self):
@@ -172,8 +177,10 @@ class RigaDocumento(Dao):
                 else:
                     self.__prezzo_acquisto_noleggio =  0
             return self.__prezzo_acquisto_noleggio
+
         def _set_prezzo_acquisto_noleggio(self, value):
             self.__prezzo_acquisto_noleggio = value
+
         prezzo_acquisto_noleggio = property(_get_prezzo_acquisto_noleggio, _set_prezzo_acquisto_noleggio)
 
         def _get_isrent(self):
@@ -183,6 +190,7 @@ class RigaDocumento(Dao):
                 else:
                     self.__isrent =  True
             return self.__isrent
+
         def _set_isrent(self, value):
             self.__isrent = value
         isrent = property(_get_isrent, _set_isrent)
@@ -227,27 +235,22 @@ class RigaDocumento(Dao):
         #FIXME : il sistema originale aveva una UNION di due view fatte su mov e doc per cui avevano due campi
         # movimento e riga documento con l'id della riga a cui si riferivano ...
         # noi non avendo la union al momento facciamo due query ed appendiamo le liste
-        #self.__dbScontiRigaMovimentoPart = params["session"].query(ScontoRigaMovimento).filter_by(id_riga_movimento=self.id).all()
-        #self.__dbScontiRigaDocumentoPart = params["session"].query(ScontoRigaDocumento).filter_by(id_riga_documento=self.id).all()
         self.__dbScontiRigaDocumento = self.SCD
-        #self.__dbScontiRigaDocumento = self.__dbScontiRigaMovimentoPart + self.__dbScontiRigaDocumentoPart
         self.__scontiRigaDocumento = self.__dbScontiRigaDocumento[:]
         return self.__scontiRigaDocumento
 
     def _setScontiRigaDocumento(self, value):
-
         self.__scontiRigaDocumento = value
 
     sconti = property(_getScontiRigaDocumento, _setScontiRigaDocumento)
 
     def filter_values(self,k,v):
-        dic= {  'idTestataDocumento' : t_riga_documento.c.id_testata_documento==v }
+        dic= {  'idTestataDocumento' : RigaDocumento.__table__.c.id_testata_documento==v }
         return  dic[k]
 
     def persist(self, sm=False):
         #salvataggio riga
         params["session"].add(self)
-        #params["session"].commit()
         if sm:
             if not self.id:
                 params["session"].commit()
@@ -258,7 +261,6 @@ class RigaDocumento(Dao):
         if (hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes") or ("GestioneNoleggio" in modulesList):
             if not self.id:
                 params["session"].commit()
-            #if self.__coeficente_noleggio and self.__prezzo_acquisto_noleggio:
             nr = NoleggioRiga()
             nr.coeficente = self.coeficente_noleggio
             nr.prezzo_acquisto = self.prezzo_acquisto_noleggio
@@ -278,20 +280,3 @@ class RigaDocumento(Dao):
                 params["session"].add(value)
             #params["session"].commit()
         self.__dbMisuraPezzo = []
-
-std_mapper = mapper(RigaDocumento, join(t_riga_documento, t_riga),
-    properties={
-        'id':[t_riga_documento.c.id, t_riga.c.id],
-        "rig":relation(Riga,primaryjoin = t_riga_documento.c.id==t_riga.c.id, backref="RD"),
-        'totaleRiga': column_property(t_riga.c.quantita * t_riga.c.moltiplicatore * t_riga.c.valore_unitario_netto ),
-        'totaleRigaLordo': column_property(t_riga.c.quantita * t_riga.c.moltiplicatore * t_riga.c.valore_unitario_lordo ),
-        #"maga":relation(Magazzino,primaryjoin=t_riga.c.id_magazzino==Magazzino.id),
-        #"arti":relation(Articolo,primaryjoin=t_riga.c.id_articolo==Articolo.id),
-        #"listi":relation(Listino,primaryjoin=t_riga.c.id_listino==Listino.id),
-        "multi":relation(Multiplo,primaryjoin=t_riga.c.id_multiplo==Multiplo.id),
-        "SCD":relation(ScontoRigaDocumento,primaryjoin = t_riga_documento.c.id==ScontoRigaDocumento.id_riga_documento, cascade="all, delete", backref="RD"),
-            },order_by=t_riga.c.posizione)
-
-if (hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes") or ("GestioneNoleggio" in modulesList):
-    from promogest.modules.GestioneNoleggio.dao.NoleggioRiga import NoleggioRiga
-    std_mapper.add_property("NR",relation(NoleggioRiga,primaryjoin=NoleggioRiga.id_riga==t_riga.c.id,cascade="all, delete",backref="RD",uselist=False))

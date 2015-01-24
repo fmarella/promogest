@@ -21,32 +21,26 @@
 
 
 
-from sqlalchemy import Table
-from sqlalchemy.orm import mapper, join
-from promogest.Environment import params
+from sqlalchemy import *
+from sqlalchemy.orm import *
+from promogest.Environment import *
 
-try:
-    t_sconto_testata_documento=Table('sconto_testata_documento',params['metadata'],schema = params['schema'],
-                                autoload=True)
-except:
-    from data.scontoTestataDocumento import t_sconto_testata_documento
+from promogest.dao.Dao import Dao, Base
 
-from Dao import Dao
-from promogest.dao.Sconto import t_sconto
+from data.sconto import t_sconto
+from data.scontoTestataDocumento import t_sconto_testata_documento
+s_std = join(t_sconto, t_sconto_testata_documento)
 
-class ScontoTestataDocumento(Dao):
+class ScontoTestataDocumento(Base, Dao):
+    __table__ = s_std
+    id = column_property(t_sconto.c.id, t_sconto_testata_documento.c.id)
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):
         if k == 'id':
-            dic= { k :t_sconto_testata_documento.c.id == v}
+            dic= { k :ScontoTestataDocumento.__table__.c.id == v}
         elif k== 'idScontoTestataDocumento':
-            dic ={k:t_sconto_testata_documento.c.id_testata_documento==v}
+            dic ={k:ScontoTestataDocumento.__table__.c.id_testata_documento==v}
         return  dic[k]
-
-std_mapper = mapper(ScontoTestataDocumento,join(t_sconto, t_sconto_testata_documento),
-    properties={
-    'id':[t_sconto.c.id, t_sconto_testata_documento.c.id],
-    }, order_by=t_sconto_testata_documento.c.id)

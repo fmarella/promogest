@@ -1,22 +1,26 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.18.3 -->
 <interface>
-  <!-- interface-requires pythonplugin 0.0 -->
-  <requires lib="gtk+" version="2.16"/>
-  <!-- interface-naming-policy project-wide -->
+  <requires lib="gtk+" version="3.4"/>
+  <requires lib="pythonplugin" version="0.0"/>
   <object class="GtkTable" id="storico_listini_articoli_filter_table">
     <property name="visible">True</property>
+    <property name="can_focus">False</property>
     <property name="n_rows">4</property>
     <property name="n_columns">2</property>
     <child>
       <object class="GtkAlignment" id="alignment405">
         <property name="width_request">200</property>
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="xscale">0</property>
         <child>
           <object class="ArticoloSearchWidget" id="id_articolo_filter_customcombobox1">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
+            <property name="primary_icon_activatable">False</property>
+            <property name="secondary_icon_activatable">False</property>
           </object>
         </child>
       </object>
@@ -26,21 +30,20 @@
         <property name="top_attach">1</property>
         <property name="bottom_attach">2</property>
         <property name="x_options">GTK_SHRINK | GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
       </packing>
     </child>
     <child>
       <object class="GtkAlignment" id="alignment404">
         <property name="width_request">120</property>
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="xscale">0</property>
         <child>
           <object class="DateWidget" id="a_data_listino_filter_entry">
             <property name="visible">True</property>
-            <child>
-              <placeholder/>
-            </child>
+            <property name="can_focus">False</property>
           </object>
         </child>
       </object>
@@ -50,21 +53,20 @@
         <property name="top_attach">3</property>
         <property name="bottom_attach">4</property>
         <property name="x_options">GTK_SHRINK | GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
       </packing>
     </child>
     <child>
       <object class="GtkAlignment" id="alignment403">
         <property name="width_request">120</property>
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="xscale">0</property>
         <child>
           <object class="DateWidget" id="da_data_listino_filter_entry">
             <property name="visible">True</property>
-            <child>
-              <placeholder/>
-            </child>
+            <property name="can_focus">False</property>
           </object>
         </child>
       </object>
@@ -74,12 +76,13 @@
         <property name="top_attach">2</property>
         <property name="bottom_attach">3</property>
         <property name="x_options">GTK_SHRINK | GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
       </packing>
     </child>
     <child>
       <object class="GtkLabel" id="label401">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="label" translatable="yes">A data listino</property>
       </object>
@@ -87,13 +90,14 @@
         <property name="top_attach">3</property>
         <property name="bottom_attach">4</property>
         <property name="x_options">GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
         <property name="x_padding">10</property>
       </packing>
     </child>
     <child>
       <object class="GtkLabel" id="label400">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="label" translatable="yes">Da data listino</property>
       </object>
@@ -101,7 +105,7 @@
         <property name="top_attach">2</property>
         <property name="bottom_attach">3</property>
         <property name="x_options">GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
         <property name="x_padding">10</property>
       </packing>
     </child>
@@ -109,29 +113,32 @@
       <object class="GtkComboBox" id="id_listino_filter_combobox1">
         <property name="width_request">200</property>
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
       </object>
       <packing>
         <property name="left_attach">1</property>
         <property name="right_attach">2</property>
         <property name="x_options">GTK_SHRINK | GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
       </packing>
     </child>
     <child>
       <object class="GtkLabel" id="label399">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="label" translatable="yes">Listino</property>
       </object>
       <packing>
         <property name="x_options">GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
         <property name="x_padding">10</property>
       </packing>
     </child>
     <child>
       <object class="GtkLabel" id="label398">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="label" translatable="yes">Articolo</property>
       </object>
@@ -139,7 +146,7 @@
         <property name="top_attach">1</property>
         <property name="bottom_attach">2</property>
         <property name="x_options">GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
         <property name="x_padding">10</property>
       </packing>
     </child>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.18.3 -->
 <interface>
-  <requires lib="gtk+" version="2.16"/>
-  <!-- interface-naming-policy project-wide -->
+  <requires lib="gtk+" version="3.4"/>
   <object class="GtkWindow" id="ricerca_lotti_window">
     <property name="width_request">650</property>
     <property name="height_request">450</property>
@@ -10,8 +10,8 @@
     <property name="title" translatable="yes">Tracciabilità lotti</property>
     <property name="modal">True</property>
     <property name="window_position">center-on-parent</property>
-    <signal name="destroy-event" handler="on_riba_window_destroy_event" swapped="no"/>
     <signal name="delete-event" handler="on_riba_window_delete_event" swapped="no"/>
+    <signal name="destroy-event" handler="on_riba_window_destroy_event" swapped="no"/>
     <child>
       <object class="GtkVBox" id="vbox1">
         <property name="visible">True</property>
@@ -39,8 +39,6 @@
                 <property name="invisible_char">●</property>
                 <property name="primary_icon_activatable">False</property>
                 <property name="secondary_icon_activatable">False</property>
-                <property name="primary_icon_sensitive">True</property>
-                <property name="secondary_icon_sensitive">True</property>
               </object>
               <packing>
                 <property name="left_attach">1</property>
@@ -87,8 +85,6 @@
                 <property name="invisible_char">●</property>
                 <property name="primary_icon_activatable">False</property>
                 <property name="secondary_icon_activatable">False</property>
-                <property name="primary_icon_sensitive">True</property>
-                <property name="secondary_icon_sensitive">True</property>
               </object>
               <packing>
                 <property name="left_attach">3</property>

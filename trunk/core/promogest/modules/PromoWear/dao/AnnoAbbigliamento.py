@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -22,9 +22,20 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
-from promogest.dao.Dao import Dao
+from promogest.dao.Dao import Dao, Base
 
-class AnnoAbbigliamento(Dao):
+class AnnoAbbigliamento(Base, Dao):
+    try:
+        __table__ = Table('anno_abbigliamento',
+                                params['metadata'],
+                                schema = params['mainSchema'],
+                                autoload=True)
+    except:
+        __table__ = Table('anno_abbigliamento', params['metadata'],
+                            Column('id', Integer, primary_key=True),
+                            Column('denominazione', String(50), nullable=False),
+                            schema=params['mainSchema'])
+
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
@@ -32,24 +43,23 @@ class AnnoAbbigliamento(Dao):
 
     def filter_values(self,k,v):
         if k=="id":
-            dic= {k:annoabbigliamento.c.id ==v}
+            dic= {k:AnnoAbbigliamento.__table__.c.id ==v}
         elif k =="denominazione":
-            dic= {k:annoabbigliamento.c.denominazione == v}
+            dic= {k:AnnoAbbigliamento.__table__.c.denominazione == v}
         return  dic[k]
 
-annoabbigliamento=Table('anno_abbigliamento',
-    params['metadata'],
-    schema = params['mainSchema'],
-    autoload=True)
 
-s= select([annoabbigliamento.c.denominazione]).execute().fetchall()
+s= select([AnnoAbbigliamento.__table__.c.denominazione]).execute().fetchall()
+tipo = AnnoAbbigliamento.__table__.insert()
 if (u'2014', ) not in s or s==[]:
-    tipo = annoabbigliamento.insert()
+
+    tipo.execute(denominazione='2008')
+    tipo.execute(denominazione='2009')
+    tipo.execute(denominazione='2010')
+    tipo.execute(denominazione='2011')
+    tipo.execute(denominazione='2012')
+    tipo.execute(denominazione='2013')
     tipo.execute(denominazione='2014')
     tipo.execute(denominazione='2015')
     tipo.execute(denominazione='2016')
     tipo.execute(denominazione='2017')
-
-
-std_mapper = mapper(AnnoAbbigliamento, annoabbigliamento, properties={},
-                order_by=annoabbigliamento.c.id)

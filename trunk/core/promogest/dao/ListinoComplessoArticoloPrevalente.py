@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2013 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -22,45 +22,34 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
-#from migrate.changeset.constraint import PrimaryKeyConstraint
-from Dao import Dao
+from promogest.dao.Dao import Dao, Base
 
 
-try:
-    t_listino_complesso_articolo_prevalente=Table('listino_complesso_articolo_prevalente',
-                                        params['metadata'],
-                                        schema = params['schema'],
-                                        autoload=True)
-except:
-    from data.listinoComplessoArticoloPrevalente import t_listino_complesso_articolo_prevalente
-
-class ListinoComplessoArticoloPrevalente(Dao):
+class ListinoComplessoArticoloPrevalente(Base, Dao):
     """  """
+    try:
+        __table__ = Table('listino_complesso_articolo_prevalente',
+                                            params['metadata'],
+                                            schema = params['schema'],
+                                            autoload=True)
+    except:
+        from data.listinoComplessoArticoloPrevalente import t_listino_complesso_articolo_prevalente
+        __table__ = t_listino_complesso_articolo_prevalente
+
+    __mapper_args__ = {
+        'order_by' : "id_listino_complesso"
+    }
+
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):
         if k == 'idListinoComplesso':
-            dic= {k : t_listino_complesso_articolo_prevalente.c.id_listino_complesso ==v}
+            dic= {k : ListinoComplessoArticoloPrevalente.__table__.c.id_listino_complesso ==v}
         elif k == 'idListino':
-            dic = {k:t_listino_complesso_articolo_prevalente.c.id_listino==v}
+            dic = {k:ListinoComplessoArticoloPrevalente.__table__.c.id_listino==v}
         elif k == 'idArticolo':
-            dic = {k:t_listino_complesso_articolo_prevalente.c.id_articolo ==v}
+            dic = {k:ListinoComplessoArticoloPrevalente.__table__.c.id_articolo ==v}
         elif k == 'dataListinoArticolo':
-            dic = {k:t_listino_complesso_articolo_prevalente.c.data_listino_articolo==v}
+            dic = {k:ListinoComplessoArticoloPrevalente.__table__.c.data_listino_articolo==v}
         return  dic[k]
-
-
-std_mapper = mapper(ListinoComplessoArticoloPrevalente,
-                    t_listino_complesso_articolo_prevalente,
-                    properties={},
-                    order_by=t_listino_complesso_articolo_prevalente.c.id_listino_complesso)
-
-#for pk in t_listino_complesso_articolo_prevalente.primary_key:
-    #if "id_listino_complesso" == pk.name and params["tipo_db"] != "sqlite":
-        ##print "DEVO OPERARE", pk
-        #cons = PrimaryKeyConstraint(t_listino_complesso_articolo_prevalente.c.id_listino_complesso)
-        #cons.drop(cascade=True)
-        #cons = PrimaryKeyConstraint(t_listino_complesso_articolo_prevalente.c.id)
-        ##cons.drop(cascade=True)
-        #cons.create()

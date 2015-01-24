@@ -24,7 +24,6 @@
 
 from promogest.ui.gtk_compat import *
 from promogest.ui.Visualizzazione import Visualizzazione, VisualizzazioneFilter
-from sqlalchemy.orm import mapper, join
 from promogest import Environment
 from promogest.dao.ListinoArticolo import ListinoArticolo
 

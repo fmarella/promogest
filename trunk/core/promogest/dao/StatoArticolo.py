@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2013 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -23,18 +23,18 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
-from Dao import Dao
+from promogest.dao.Dao import Dao, Base
 
-try:
-    t_stato_articolo=Table('stato_articolo',
+class StatoArticolo(Base, Dao):
+    try:
+        __table__ = Table('stato_articolo',
                         params['metadata'],
                         schema = params['mainSchema'],
-                        autoload=True)
-except:
-    from data.statoArticolo import t_stato_articolo
-
-
-class StatoArticolo(Dao):
+                        autoload=True,
+                        autoload_with=engine)
+    except:
+        from data.statoArticolo import t_stato_articolo
+        __table__ = t_stato_articolo
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
@@ -47,11 +47,8 @@ class StatoArticolo(Dao):
         stati_articolo = []
         return True
 
-
-std_mapper = mapper(StatoArticolo, t_stato_articolo, order_by=t_stato_articolo.c.id)
-
-s= select([t_stato_articolo.c.denominazione]).execute().fetchall()
+s= select([StatoArticolo.__table__.c.denominazione]).execute().fetchall()
 
 if  (u'Web',) not in s or s==[]:
-    tipo = t_stato_articolo.insert()
+    tipo = StatoArticolo.__table__.insert()
     tipo.execute(denominazione='Web')

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -22,44 +22,58 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
-from promogest.dao.Dao import Dao
+from promogest.dao.Dao import Dao, Base
 from promogest.modules.PromoWear.dao.Taglia import Taglia
 
+class GruppoTagliaTaglia(Base, Dao):
+    try:
+        __table__ = Table('gruppo_taglia_taglia',
+           params['metadata'],
+           schema = params['schema'],
+           autoload=True)
+    except:
+        __table__ = Table('gruppo_taglia_taglia', params['metadata'],
+                Column('id_gruppo_taglia',Integer,
+                            ForeignKey(fk_prefix + "gruppo_taglia.id",
+                                    onupdate="CASCADE",
+                                    ondelete="RESTRICT"),
+                            primary_key=True),
+                Column('id_taglia',Integer,
+                            ForeignKey(fk_prefix + "taglia.id",
+                                    onupdate="CASCADE",
+                                    ondelete="RESTRICT"),
+                            primary_key=True),
+                Column('ordine',Integer,nullable=False),
+                schema=params["schema"])
 
-class GruppoTagliaTaglia(Dao):
+    TAG = relationship("Taglia",backref="GTTTAG")
+
+    __mapper_args__ = {
+        'order_by' : "ordine"
+    }
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
 
     def filter_values(self, k, v):
         if k == 'idGruppoTaglia':
-            dic= {k: gruppotagliataglia.c.id_gruppo_taglia ==v}
+            dic= {k: GruppoTagliaTaglia.__table__.c.id_gruppo_taglia ==v}
         elif k == 'idTaglia':
-            dic= {k: gruppotagliataglia.c.id_taglia ==v}
+            dic= {k: GruppoTagliaTaglia.__table__.c.id_taglia ==v}
         return  dic[k]
 
-    def _denominazione_breve_gt(self):
+    @property
+    def denominazione_breve_gruppo_taglia(self):
         if self.GTTGT: return self.GTTGT.denominazione_breve or ""
-    denominazione_breve_gruppo_taglia= property(_denominazione_breve_gt)
 
-    def _denominazione_gt(self):
+    @property
+    def denominazione_gruppo_taglia(self):
         if self.GTTGT: return self.GTTGT.denominazione or ""
-    denominazione_gruppo_taglia= property(_denominazione_gt)
 
-    def _denominazione_breve_ta(self):
+    @property
+    def denominazione_breve_taglia(self):
         if self.TAG: return self.TAG.denominazione_breve or ""
-    denominazione_breve_taglia= property(_denominazione_breve_ta)
 
-    def _denominazione_ta(self):
+    @property
+    def denominazione_taglia(self):
         if self.TAG: return self.TAG.denominazione or ""
-    denominazione_taglia= property(_denominazione_ta)
-
-gruppotagliataglia=Table('gruppo_taglia_taglia',
-           params['metadata'],
-           schema = params['schema'],
-           autoload=True)
-
-std_mapper = mapper(GruppoTagliaTaglia, gruppotagliataglia, properties={
-            "TAG": relation(Taglia,primaryjoin=
-            (Taglia.id==gruppotagliataglia.c.id_taglia), backref="GTTTAG"), },
-    order_by=(gruppotagliataglia.c.id_gruppo_taglia,gruppotagliataglia.c.ordine))

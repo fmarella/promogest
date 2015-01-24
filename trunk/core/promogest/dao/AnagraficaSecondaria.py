@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2013 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -22,87 +22,82 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
-try:
-    t_anagrafica_secondaria = Table('anagrafica_secondaria',
-        meta,
-        schema=params["schema"],
-        autoload=True)
-except:
-    from data.anagraficaSecondaria import t_anagrafica_secondaria
 
-
-
-
-from Dao import Dao
-from promogest.dao.PersonaGiuridica import t_persona_giuridica
+from promogest.dao.Dao import Dao, Base
+from promogest.dao.PersonaGiuridica import PersonaGiuridica_
 from promogest.dao.DaoUtils import codeIncrement, getRecapitiAnagraficaSecondaria
 
-class AnagraficaSecondaria_(Dao):
+from data.anagraficaSecondaria import t_anagrafica_secondaria
+from data.personaGiuridica import t_persona_giuridica
+
+anagrafica_secondaria_persona_giuridica = join(t_anagrafica_secondaria, t_persona_giuridica)
+
+
+class AnagraficaSecondaria_(Base, Dao):
+    __table__ = anagrafica_secondaria_persona_giuridica
+
+    id = column_property(t_anagrafica_secondaria.c.id, t_persona_giuridica.c.id)
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
 
     def filter_values(self, k, v):
         if k == 'codice':
-            dic = {k: t_persona_giuridica.c.codice.ilike("%" + v + "%")}
+            dic = {k: PersonaGiuridica_.__table__.c.codice.ilike("%" + v + "%")}
         elif k == 'ragioneSociale':
-            dic = {k: t_persona_giuridica.c.ragione_sociale.ilike("%" + v + "%")}
+            dic = {k: PersonaGiuridica_.__table__.c.ragione_sociale.ilike("%" + v + "%")}
         elif k == 'idRole':
-            dic = {k: t_anagrafica_secondaria.c.id_ruolo == v}
+            dic = {k: AnagraficaSecondaria_.__table__.c.id_ruolo == v}
         elif k == 'idMagazzino':
-            dic = {k: t_anagrafica_secondaria.c.id_magazzino == v}
+            dic = {k: AnagraficaSecondaria_.__table__.c.id_magazzino == v}
         elif k == 'cognomeNome':
-            dic = {k: or_(t_persona_giuridica.c.cognome.ilike("%" + v + "%"),
-                t_persona_giuridica.c.nome.ilike("%" + v + "%"))}
+            dic = {k: or_(PersonaGiuridica_.__table__.c.cognome.ilike("%" + v + "%"),
+                PersonaGiuridica_.__table__.c.nome.ilike("%" + v + "%"))}
         elif k == 'localita':
             dic = {k: or_(
-            t_persona_giuridica.c.sede_operativa_localita.ilike("%" + v + "%"),
-                t_persona_giuridica.c.sede_legale_localita.ilike("%" + v + "%"))}
+            PersonaGiuridica_.__table__.c.sede_operativa_localita.ilike("%" + v + "%"),
+                PersonaGiuridica_.__table__.c.sede_legale_localita.ilike("%" + v + "%"))}
         elif k == 'partitaIva':
-            dic = {k: t_persona_giuridica.c.partita_iva.ilike("%" + v + "%")}
+            dic = {k: PersonaGiuridica_.__table__.c.partita_iva.ilike("%" + v + "%")}
         elif k == 'codiceFiscale':
-            dic = {k: t_persona_giuridica.c.codice_fiscale.ilike("%" + v + "%")}
+            dic = {k: PersonaGiuridica_.__table__.c.codice_fiscale.ilike("%" + v + "%")}
         return  dic[k]
 
-    def _cellularePrincipale(self):
+    @property
+    def cellulare_principale(self):
         if self.id:
             for reca in getRecapitiAnagraficaSecondaria(self.id):
                 if reca.tipo_recapito == "Cellulare":
                     return reca.recapito
         return ""
-    cellulare_principale = property(_cellularePrincipale)
-
-    def _telefonoPrincipale(self):
+    @property
+    def telefono_principale(self):
         if self.id:
             for reca in getRecapitiAnagraficaSecondaria(self.id):
                 if reca.tipo_recapito == "Telefono":
                     return reca.recapito
         return ""
-    telefono_principale = property(_telefonoPrincipale)
-
-    def _emailPrincipale(self):
+    @property
+    def email_principale(self):
         if self.id:
             for reca in getRecapitiAnagraficaSecondaria(self.id):
                 if reca.tipo_recapito == "Email":
                     return reca.recapito
         return ""
-    email_principale = property(_emailPrincipale)
-
-    def _faxPrincipale(self):
+    @property
+    def fax_principale(self):
         if self.id:
             for reca in getRecapitiAnagraficaSecondaria(self.id):
                 if reca.tipo_recapito == "Fax":
                     return reca.recapito
         return ""
-    fax_principale = property(_faxPrincipale)
-
-    def _sitoPrincipale(self):
+    @property
+    def sito_principale(self):
         if self.id:
             for reca in getRecapitiAnagraficaSecondaria(self.id):
                 if reca.tipo_recapito == "Sito":
                     return reca.recapito
         return ""
-    sito_principale = property(_sitoPrincipale)
 
 
 def getNuovoCodiceAnagraficaSecondaria():
@@ -124,7 +119,3 @@ def getNuovoCodiceAnagraficaSecondaria():
     except:
         pass
     return codice
-
-std_mapper = mapper(AnagraficaSecondaria_, join(t_anagrafica_secondaria, t_persona_giuridica), properties={
-    'id': [t_anagrafica_secondaria.c.id, t_persona_giuridica.c.id]},
-    order_by=t_anagrafica_secondaria.c.id)

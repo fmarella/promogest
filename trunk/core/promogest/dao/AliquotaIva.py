@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -19,32 +19,43 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-from sqlalchemy import Table
-from sqlalchemy.orm import mapper, relation
+from sqlalchemy import *
+from sqlalchemy.orm import *
 from promogest.Environment import *
-
-try:
-    t_aliquota_iva = Table('aliquota_iva', meta,
-                        schema=params["schema"], autoload=True)
-except:
-    from data.aliquotaIva import t_aliquota_iva
-
-from promogest.dao.Dao import Dao
+from promogest.dao.Dao import Dao, Base
 from promogest.dao.TipoAliquotaIva import TipoAliquotaIva
 
-class AliquotaIva(Dao):
+class AliquotaIva(Base, Dao):
+    try:
+        __table__ = Table('aliquota_iva', meta,
+                        schema=params["schema"], autoload=True)
+    except:
+        from data.aliquotaIva import t_aliquota_iva
+        __table__ = t_aliquota_iva
+
+    __mapper_args__ = {
+        'order_by' : "id"
+    }
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
 
     def filter_values(self, k, v):
         if k == 'denominazione':
-            dic = {k: t_aliquota_iva.c.denominazione.ilike("%" + v + "%")}
+            dic = {k: AliquotaIva.__table__.c.denominazione.ilike("%" + v + "%")}
         elif k == "percentuale":
-            dic = {k: t_aliquota_iva.c.percentuale == v}
+            dic = {k: AliquotaIva.__table__.c.percentuale == v}
         elif k == "idTipo":
-            dic = {k: t_aliquota_iva.c.id_tipo == v}
+            dic = {k: AliquotaIva.__table__.c.id_tipo == v}
         return  dic[k]
+
+    @property
+    def tipo_aliquota_iva(self):
+        aa = TipoAliquotaIva().getRecord(id=self.id_tipo)
+        if aa:
+            return aa
+        else:
+            return None
 
     @property
     def tipo_ali_iva(self):
@@ -52,11 +63,3 @@ class AliquotaIva(Dao):
             return self.tipo_aliquota_iva.denominazione
         else:
             return None
-
-std_mapper = mapper(AliquotaIva, t_aliquota_iva, properties={
-        'tipo_aliquota_iva': relation(TipoAliquotaIva, backref='aliquota_iva')
-            }, order_by=t_aliquota_iva.c.id)
-
-#from promogest.dao.CachedDaosDict import cache_objj
-#cache_objj.add(AliquotaIva, use_key='denominazione')
-#cache_obj = cache_objj

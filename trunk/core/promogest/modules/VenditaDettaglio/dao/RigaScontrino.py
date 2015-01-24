@@ -23,29 +23,39 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
 
-try:
-    t_riga_scontrino=Table('riga_scontrino',
-                params['metadata'],
-                schema = params['schema'],
-                autoload=True)
-except:
-    from data.testataScontrino import t_testata_scontrino
-    from data.rigaScontrino import t_riga_scontrino
-
-from promogest.dao.Dao import Dao
+from promogest.dao.Dao import Dao, Base
 from promogest.dao.Articolo import Articolo
 from promogest.modules.VenditaDettaglio.dao.ScontoScontrino import ScontoScontrino
 from promogest.modules.VenditaDettaglio.ui.VenditaDettaglioUtils import scontoRigaScontrinoDel
 from promogest.modules.VenditaDettaglio.dao.ScontoRigaScontrino import ScontoRigaScontrino
 
-class RigaScontrino(Dao):
+class RigaScontrino(Base, Dao):
+    try:
+        __table__ = Table('riga_scontrino',
+                params['metadata'],
+                schema = params['schema'],
+                autoload=True)
+    except:
+        __table__ = Table('riga_scontrino', params['metadata'],
+                Column('id',Integer,primary_key=True),
+                Column('prezzo',Numeric(16,4),nullable=True),
+                Column('prezzo_scontato',Numeric(16,4),nullable=True),
+                Column('quantita',Numeric(16,4),nullable=False),
+                Column('descrizione',String(200),nullable=False),
+                Column('id_testata_scontrino',Integer,ForeignKey(fk_prefix +"testata_scontrino.id", onupdate="CASCADE", ondelete="CASCADE"),nullable=True),
+                Column('id_articolo',Integer, ForeignKey(fk_prefix +"articolo.id", onupdate="CASCADE", ondelete="RESTRICT"),nullable=False),
+                schema=params['schema'],
+                useexisting =True
+                )
 
+    arti = relationship("Articolo") #serve
+    srs = relationship("ScontoRigaScontrino",cascade="all, delete") #serve
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
 
     def _getScontiRigaScontrino(self):
-        self.__dbScontiRigaScontrino = ScontoRigaScontrino().select(idRigaScontrino=self.id, batchSize=None)
+        self.__dbScontiRigaScontrino = srs
         if self.__dbScontiRigaScontrino:
             self.__scontiRigaScontrino = self.__dbScontiRigaScontrino[:]
         else:
@@ -59,29 +69,25 @@ class RigaScontrino(Dao):
             self.__scontiRigaScontrino = value
     sconti = property(_getScontiRigaScontrino, _setScontiRigaScontrino)
 
-    def _valoreSconto(self):
-        #if self.srs:return self.srs.valore_sconto
-        #else: return ""
-        a = params["session"].query(ScontoRigaScontrino).with_parent(self).filter(and_(ScontoRigaScontrino.id_riga_scontrino==t_riga_scontrino.c.id, ScontoRigaScontrino.id==ScontoScontrino.id)).all()
-        if not a:
-            return a
+    @property
+    def valore_sconto(self):
+        if self.srs:
+            return self.srs[0].valore
         else:
-            return a[0].valore
-    valore_sconto= property(_valoreSconto)
+            return []
 
-    def _tipoSconto(self):
-        a = params["session"].query(ScontoRigaScontrino).with_parent(self).filter(ScontoRigaScontrino.id_riga_scontrino==t_riga_scontrino.c.id).all()
-        if not a:
-            return a
+    @property
+    def tipo_sconto(self):
+        if self.srs:
+            return self.srs[0].tipo_sconto
         else:
-            return a[0].tipo_sconto
-    tipo_sconto= property(_tipoSconto)
+            return []
 
-    def __codiceArticolo(self):
+    @property
+    def codice_articolo(self):
         """ esempio di funzione  unita alla property """
         if self.arti: return self.arti.codice
         else: return ""
-    codice_articolo= property(__codiceArticolo)
 
     @property
     def iva_articolo(self):
@@ -89,16 +95,19 @@ class RigaScontrino(Dao):
         if self.arti: return self.arti.percentuale_aliquota_iva
         else: return ""
 
-    def _codice_a_barre(self):
+    @property
+    def codice_a_barre(self):
         """ esempio di funzione  unita alla property """
         if self.arti: return self.arti.codice_a_barre
         else: return ""
-    codice_a_barre = property(_codice_a_barre)
 
     def filter_values(self,k,v):
-        dic= {'id':t_riga_scontrino.c.id ==v,
-            'idArticolo':t_riga_scontrino.c.id_articolo==v,
-            'idTestataScontrino': t_riga_scontrino.c.id_testata_scontrino==v}
+        if k == 'id':
+            dic= {k: RigaScontrino.__table__.c.id ==v}
+        elif k == 'idArticolo':
+            dic = {k: RigaScontrino.__table__.c.id_articolo==v}
+        elif k == 'idTestataScontrino':
+            dic = {k: RigaScontrino.__table__.c.id_testata_scontrino==v}
         return  dic[k]
 
     def persist(self):
@@ -115,9 +124,3 @@ class RigaScontrino(Dao):
                 rigasconto.id_riga_scontrino = self.id
                 #salvataggio sconto
                 rigasconto.persist()
-
-
-std_mapper = mapper(RigaScontrino, t_riga_scontrino,properties={
-        "arti":relation(Articolo,primaryjoin=t_riga_scontrino.c.id_articolo==Articolo.id),
-        "srs":relation(ScontoRigaScontrino, primaryjoin=t_riga_scontrino.c.id ==ScontoRigaScontrino.id_riga_scontrino,cascade="all, delete")
-        }, order_by=t_riga_scontrino.c.id)

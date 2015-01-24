@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2014 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -24,27 +24,20 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
 
-
-try:
-    t_articolo = Table('articolo', meta, schema=params["schema"], autoload=True)
-except:
-    from data.image import t_image
-    from data.articolo import t_articolo
-
-from promogest.dao.Dao import Dao
-from promogest.dao.UnitaBase import UnitaBase, t_unita_base
+from promogest.dao.Dao import Dao, Base
+from promogest.dao.UnitaBase import UnitaBase
 from promogest.dao.Multiplo import Multiplo
 from promogest.dao.DaoUtils import giacenzaArticolo, codeIncrement
 from promogest.modules.GestioneKit.dao.ArticoloKit import ArticoloKit
-from promogest.dao.Imballaggio import Imballaggio, t_imballaggio
-from promogest.dao.AliquotaIva import AliquotaIva, t_aliquota_iva
-from promogest.dao.StatoArticolo import StatoArticolo, t_stato_articolo
+from promogest.dao.Imballaggio import Imballaggio
+from promogest.dao.AliquotaIva import AliquotaIva
+from promogest.dao.StatoArticolo import StatoArticolo
 #from Immagine import Immagine
 
-from promogest.dao.FamigliaArticolo import FamigliaArticolo, t_famiglia_articolo
-from promogest.dao.CategoriaArticolo import CategoriaArticolo, t_categoria_articolo
-from promogest.dao.CodiceABarreArticolo import CodiceABarreArticolo, t_codice_barre_articolo
-from promogest.dao.Fornitura import Fornitura, t_fornitura
+from promogest.dao.FamigliaArticolo import FamigliaArticolo
+from promogest.dao.CategoriaArticolo import CategoriaArticolo
+from promogest.dao.CodiceABarreArticolo import CodiceABarreArticolo
+from promogest.dao.Fornitura import Fornitura
 from promogest.dao.ScontoVenditaDettaglio import ScontoVenditaDettaglio
 from promogest.dao.ScontoVenditaIngrosso import ScontoVenditaIngrosso
 
@@ -64,7 +57,64 @@ if hasattr(conf, "PromoWear") and \
                                     import GenereAbbigliamento
 
 
-class Articolo(Dao):
+class Articolo(Base, Dao):
+    try:
+        __table__ = Table('articolo', params["metadata"],
+                                            schema=params['schema'],
+                                            autoload=True)
+    except:
+        from data.image import t_image
+        from data.articolo import t_articolo
+        __table__ = t_articolo
+
+    imba = relationship("Imballaggio")
+    ali_iva = relationship("AliquotaIva")
+    den_famiglia = relationship("FamigliaArticolo", lazy='joined')
+    cod_barre = relationship("CodiceABarreArticolo", backref="arti", cascade="all, delete", lazy='joined')
+    den_categoria = relationship("CategoriaArticolo",lazy='joined')
+    #den_unita=relation(UnitaBase, primaryjoin=t_articolo.c.id_unita_base == t_unita_base.c.id)        #image=relation(Immagine,primaryjoin= t_articolo.c.id_immagine==img.c.id, cascade="all, delete", backref="arti")
+    sa = relationship("StatoArticolo")
+    fornitur = relationship("Fornitura",backref="arti",lazy='dynamic')
+    multi = relationship("Multiplo",backref="arti")
+
+        #id_immagine = deferred(t_articolo.c.id_immagine, group='id_unita_base'),
+        #id_unita_base = deferred(t_articolo.c.id_unita_base),
+        #unita_dimensioni = deferred(t_articolo.c.unita_dimensioni, group='id_unita_base'),
+        #lunghezza = deferred(t_articolo.c.lunghezza, group='id_unita_base'),
+        #altezza = deferred(t_articolo.c.altezza, group='id_unita_base'),
+        #unita_volume = deferred(t_articolo.c.unita_volume, group='id_unita_base'),
+        #volume = deferred(t_articolo.c.volume, group='id_unita_base'),
+        #unita_peso = deferred(t_articolo.c.unita_peso, group='id_unita_base'),
+        #peso_lordo = deferred(t_articolo.c.peso_lordo, group='id_unita_base'),
+        #id_imballaggio = deferred(t_articolo.c.id_imballaggio, group='id_unita_base'),
+        #peso_imballaggio = deferred(t_articolo.c.peso_imballaggio, group='id_unita_base'),
+        #stampa_etichetta = deferred(t_articolo.c.stampa_etichetta, group='id_unita_base'),
+        #codice_etichetta = deferred(t_articolo.c.codice_etichetta, group='id_unita_base'),
+        #descrizione_etichetta = deferred(t_articolo.c.descrizione_etichetta, group='id_unita_base'),
+        #stampa_listino = deferred(t_articolo.c.stampa_listino, group='id_unita_base'),
+        #descrizione_listino = deferred(t_articolo.c.descrizione_listino, group='id_unita_base'),
+        #aggiornamento_listino_auto = deferred(t_articolo.c.aggiornamento_listino_auto, group='id_unita_base'),
+        #timestamp_variazione = deferred(t_articolo.c.timestamp_variazione, group='id_unita_base'),
+        #note = deferred(t_articolo.c.note, group='id_unita_base'),
+        #contenuto = deferred(t_articolo.c.contenuto, group='id_unita_base'),
+        #quantita_minima = deferred(t_articolo.c.quantita_minima, group='id_unita_base'),
+
+
+    if hasattr(conf, "PromoWear")\
+                and getattr(conf.PromoWear, 'mod_enable') == "yes":
+        from promogest.modules.PromoWear.dao.ArticoloTagliaColore \
+                                                import ArticoloTagliaColore
+        ATC = relationship("ArticoloTagliaColore", primaryjoin=(__table__.c.id==ArticoloTagliaColore.__table__.c.id_articolo), backref="ARTI",uselist=False)
+
+    if (hasattr(conf, "ADR") and getattr(conf.ADR, 'mod_enable') == "yes") or\
+                                                    ("ADR" in modulesList):
+        from promogest.modules.ADR.dao.ArticoloADR import ArticoloADR
+        APADR = relationship("ArticoloADR", primaryjoin=(__table__.c.id == ArticoloADR.id_articolo),uselist=False)
+
+
+    __mapper_args__ = {
+        'order_by' : __table__.c.codice
+    }
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
@@ -105,6 +155,15 @@ class Articolo(Dao):
         return giace
 
     @property
+    def den_unita(self):
+        aa = UnitaBase().getRecord(id=self.id_unita_base)
+        if aa:
+            return aa
+        else:
+            return None
+
+
+    @property
     def codice_articolo_fornitore(self):
         codi = []
         if self.fornitur:
@@ -130,11 +189,12 @@ class Articolo(Dao):
         arti = ArticoloKit().select(idArticoloFiller=self.id, batchSize=None)
         return arti
 
-    def _sm(self):
-        if self.stoccaggio:
+    @property
+    def sm(self):
+        if hasattr(self, "stoccaggio"):
             return self.stoccaggio[0].scorta_minima
-        return 0
-    sm = property(_sm)
+        else:
+            return  0
 
     @property
     def imballaggio(self):
@@ -260,8 +320,6 @@ class Articolo(Dao):
         def getArticoloTagliaColore(self):
             """ Restituisce il Dao ArticoloTagliaColore collegato
                 al Dao Articolo """
-            #self.__articoloTagliaColore = ArticoloTagliaColore()\
-                                                #.getRecord(id=self.id)
             self.__articoloTagliaColore = self.ATC
             return self.__articoloTagliaColore
 
@@ -350,10 +408,10 @@ class Articolo(Dao):
                 return self.ATC.id_articolo or None
         id_articolo_taglia_colore = property(_id_articolo)
 
-        def _id_gruppo_taglia(self):
+        @property
+        def id_gruppo_taglia(self):
             if self.ATC:
                 return self.ATC.id_gruppo_taglia or None
-        id_gruppo_taglia = property(_id_gruppo_taglia)
 
         def _id_taglia(self):
             if self.ATC:
@@ -634,149 +692,85 @@ class Articolo(Dao):
 
     def filter_values(self, k, v):
         if k == "codice":
-            dic = {k: t_articolo.c.codice.ilike("%" + v + "%")}
+            dic = {k: self.__table__.c.codice.ilike("%" + v + "%")}
         elif k == "codicesatto" or k == "codiceEM":
-            dic = {k: t_articolo.c.codice == v}
+            dic = {k: self.__table__.c.codice == v}
         elif k == 'denominazione':
-            dic = {k: t_articolo.c.denominazione.ilike("%" + v + "%")}
+            dic = {k: self.__table__.c.denominazione.ilike("%" + v + "%")}
         elif k == 'codiceABarre':
-            dic = {k: and_(t_articolo.c.id == CodiceABarreArticolo.id_articolo,
+            dic = {k: and_(self.__table__.c.id == CodiceABarreArticolo.id_articolo,
                 CodiceABarreArticolo.codice.ilike("%" + v + "%"))}
         elif k == 'codiceABarreEM':
-            dic = {k: and_(t_articolo.c.id == CodiceABarreArticolo.id_articolo,
+            dic = {k: and_(self.__table__.c.id == CodiceABarreArticolo.id_articolo,
                 CodiceABarreArticolo.codice == v)}
         elif k == 'codiceArticoloFornitore':
-            dic = {k: and_(t_articolo.c.id == t_fornitura.c.id_articolo,
-                t_fornitura.c.codice_articolo_fornitore.ilike("%" + v + "%"))}
+            dic = {k: and_(self.__table__.c.id == Fornitura.__table__.c.id_articolo,
+                Fornitura.__table__.c.codice_articolo_fornitore.ilike("%" + v + "%"))}
         elif k == 'codiceArticoloFornitoreEM':
-            dic = {k: and_(t_articolo.c.id == t_fornitura.c.id_articolo,
-                t_fornitura.c.codice_articolo_fornitore == v)}
+            dic = {k: and_(self.__table__.c.id == Fornitura.__table__.c.id_articolo,
+                Fornitura.__table__.c.codice_articolo_fornitore == v)}
         elif k == 'produttore':
-            dic = {k: t_articolo.c.produttore.ilike("%" + v + "%")}
+            dic = {k: self.__table__.c.produttore.ilike("%" + v + "%")}
         elif k == 'produttoreEM':
-            dic = {k: t_articolo.c.produttore == v}
+            dic = {k: self.__table__.c.produttore == v}
         elif k == 'idFamiglia':
-            dic = {k: t_articolo.c.id_famiglia_articolo == v}
+            dic = {k: self.__table__.c.id_famiglia_articolo == v}
         elif k == 'idAliquotaIva':
-            dic = {k: t_articolo.c.id_aliquota_iva == v}
+            dic = {k: self.__table__.c.id_aliquota_iva == v}
         elif k == 'idCategoria':
-            dic = {k: t_articolo.c.id_categoria_articolo == v}
+            dic = {k: self.__table__.c.id_categoria_articolo == v}
         elif k == 'idCategoriaList':
-            dic = {k: t_articolo.c.id_categoria_articolo.in_(v)}
+            dic = {k: self.__table__.c.id_categoria_articolo.in_(v)}
         elif k == 'idStato':
-            dic = {k: t_articolo.c.id_stato_articolo == v}
+            dic = {k: self.__table__.c.id_stato_articolo == v}
         elif k == 'cancellato':
             #if v is not True:
-            dic = {k: or_(t_articolo.c.cancellato != v)}
+            dic = {k: or_(self.__table__.c.cancellato != v)}
             #else:
                 #dic = {k:None}
         elif k == 'idArticolo':
-            dic = {k: or_(t_articolo.c.id == v)}
+            dic = {k: or_(self.__table__.c.id == v)}
         elif k == 'omni':
-            dic = {k: or_(t_articolo.c.codice.ilike("%" + v + "%"),t_articolo.c.denominazione.ilike("%" + v + "%"))}
+            dic = {k: or_(self.__table__.c.codice.ilike("%" + v + "%"),self.__table__.c.denominazione.ilike("%" + v + "%"))}
         elif k == "listinoFissato":
             from promogest.dao.ListinoArticolo import t_listino_articolo
-            dic = {k: and_(t_listino_articolo.c.id_articolo == t_articolo.c.id,
+            dic = {k: and_(t_listino_articolo.c.id_articolo == Articolo.__table__.c.id,
                 t_listino_articolo.c.id_listino == v)}
         elif posso("PW"):
             if k == 'figliTagliaColore':
-                dic = {k: and_(t_articolo.c.id == ArticoloTagliaColore.id_articolo,
+                dic = {k: and_(Articolo.__table__.c.id == ArticoloTagliaColore.id_articolo,
                     ArticoloTagliaColore.id_articolo_padre == None)}
             elif k == 'idTaglia':
-                dic = {k: and_(t_articolo.c.id == ArticoloTagliaColore.id_articolo,
+                dic = {k: and_(self.__table__.c.id == ArticoloTagliaColore.id_articolo,
                     ArticoloTagliaColore.id_taglia == v)}
             elif k == 'idModello':
-                dic = {k: and_(t_articolo.c.id == ArticoloTagliaColore.id_articolo,
+                dic = {k: and_(self.__table__.c.id == ArticoloTagliaColore.id_articolo,
                     ArticoloTagliaColore.id_modello == v)}
             elif k == 'idGruppoTaglia':
-                dic = {k: and_(t_articolo.c.id == ArticoloTagliaColore.id_articolo,
+                dic = {k: and_(self.__table__.c.id == ArticoloTagliaColore.id_articolo,
                     ArticoloTagliaColore.id_gruppo_taglia == v)}
             elif k == 'padriTagliaColore':
-                dic = {k: and_(t_articolo.c.id == ArticoloTagliaColore.id_articolo,
+                dic = {k: and_(self.__table__.c.id == ArticoloTagliaColore.id_articolo,
                     ArticoloTagliaColore.id_articolo_padre != None)}
             elif k == 'idColore':
-                dic = {k: and_(t_articolo.c.id == ArticoloTagliaColore.id_articolo,
+                dic = {k: and_(self.__table__.c.id == ArticoloTagliaColore.id_articolo,
                     ArticoloTagliaColore.id_colore == v)}
             elif k == 'idStagione':
-                dic = {k: and_(t_articolo.c.id == ArticoloTagliaColore.id_articolo,
+                dic = {k: and_(self.__table__.c.id == ArticoloTagliaColore.id_articolo,
                     ArticoloTagliaColore.id_stagione == v)}
             elif k == 'idAnno':
-                dic = {k: and_(t_articolo.c.id == ArticoloTagliaColore.id_articolo,
+                dic = {k: and_(self.__table__.c.id == ArticoloTagliaColore.id_articolo,
                     ArticoloTagliaColore.id_anno == v)}
             elif k == 'idGenere':
-                dic = {k: and_(t_articolo.c.id == ArticoloTagliaColore.id_articolo,
+                dic = {k: and_(self.__table__.c.id == ArticoloTagliaColore.id_articolo,
                     ArticoloTagliaColore.id_genere == v)}
         elif posso("SL"):
             if k == "node":
-                dic = {k: and_(AssociazioneArticolo.id_padre == t_articolo.c.id,
-                        AssociazioneArticolo.id_figlio == t_articolo.c.id)}
+                dic = {k: and_(AssociazioneArticolo.id_padre == self.__table__.c.id,
+                        AssociazioneArticolo.id_figlio == self.__table__.c.id)}
         return  dic[k]
 
 
-
-std_mapper = mapper(
-    Articolo,
-    t_articolo,
-    properties=dict(
-        cod_barre=relation(CodiceABarreArticolo,
-            primaryjoin=t_articolo.c.id == t_codice_barre_articolo.c.id_articolo,
-            backref="arti",
-            cascade="all, delete",
-            lazy='joined'),
-        imba=relation(Imballaggio,
-            primaryjoin=t_articolo.c.id_imballaggio == t_imballaggio.c.id),
-        ali_iva=relation(AliquotaIva,
-            primaryjoin=(t_articolo.c.id_aliquota_iva == t_aliquota_iva.c.id)),
-        den_famiglia=relation(FamigliaArticolo,
-            primaryjoin=t_articolo.c.id_famiglia_articolo == t_famiglia_articolo.c.id,lazy='joined'),
-        den_categoria=relation(CategoriaArticolo,
-            primaryjoin=(t_articolo.c.id_categoria_articolo == t_categoria_articolo.c.id),lazy='joined'),
-        den_unita=relation(UnitaBase,
-            primaryjoin=t_articolo.c.id_unita_base == t_unita_base.c.id),
-        #image=relation(Immagine,primaryjoin= t_articolo.c.id_immagine==img.c.id,
-                            #cascade="all, delete",
-                            #backref="arti"),
-        sa=relation(StatoArticolo,
-            primaryjoin=(t_articolo.c.id_stato_articolo == t_stato_articolo.c.id)),
-        fornitur=relation(Fornitura,
-            primaryjoin=(t_fornitura.c.id_articolo == t_articolo.c.id),
-                backref="arti",lazy='dynamic'),
-        multi=relation(Multiplo,
-            primaryjoin=(Multiplo.id_articolo == t_articolo.c.id),
-                backref="arti"),
-
-        id_immagine = deferred(t_articolo.c.id_immagine, group='id_unita_base'),
-        id_unita_base = deferred(t_articolo.c.id_unita_base),
-        unita_dimensioni = deferred(t_articolo.c.unita_dimensioni, group='id_unita_base'),
-        lunghezza = deferred(t_articolo.c.lunghezza, group='id_unita_base'),
-        altezza = deferred(t_articolo.c.altezza, group='id_unita_base'),
-        unita_volume = deferred(t_articolo.c.unita_volume, group='id_unita_base'),
-        volume = deferred(t_articolo.c.volume, group='id_unita_base'),
-        unita_peso = deferred(t_articolo.c.unita_peso, group='id_unita_base'),
-        peso_lordo = deferred(t_articolo.c.peso_lordo, group='id_unita_base'),
-        id_imballaggio = deferred(t_articolo.c.id_imballaggio, group='id_unita_base'),
-        peso_imballaggio = deferred(t_articolo.c.peso_imballaggio, group='id_unita_base'),
-        stampa_etichetta = deferred(t_articolo.c.stampa_etichetta, group='id_unita_base'),
-        codice_etichetta = deferred(t_articolo.c.codice_etichetta, group='id_unita_base'),
-        descrizione_etichetta = deferred(t_articolo.c.descrizione_etichetta, group='id_unita_base'),
-        stampa_listino = deferred(t_articolo.c.stampa_listino, group='id_unita_base'),
-        descrizione_listino = deferred(t_articolo.c.descrizione_listino, group='id_unita_base'),
-        aggiornamento_listino_auto = deferred(t_articolo.c.aggiornamento_listino_auto, group='id_unita_base'),
-        timestamp_variazione = deferred(t_articolo.c.timestamp_variazione, group='id_unita_base'),
-        note = deferred(t_articolo.c.note, group='id_unita_base'),
-        contenuto = deferred(t_articolo.c.contenuto, group='id_unita_base'),
-        quantita_minima = deferred(t_articolo.c.quantita_minima, group='id_unita_base'),
-            ), order_by=t_articolo.c.codice)
-
-if hasattr(conf, "PromoWear")\
-            and getattr(conf.PromoWear, 'mod_enable') == "yes":
-    from promogest.modules.PromoWear.dao.ArticoloTagliaColore \
-                                            import ArticoloTagliaColore
-    std_mapper.add_property("ATC",
-        relation(ArticoloTagliaColore,
-            primaryjoin=(t_articolo.c.id == ArticoloTagliaColore.id_articolo),
-            backref="ARTI",
-            uselist=False))
 if hasattr(conf, "DistintaBase") and \
                         getattr(conf.DistintaBase, 'mod_enable') == "yes":
     from promogest.modules.DistintaBase.dao.AssociazioneArticolo \
@@ -789,6 +783,8 @@ if hasattr(conf, "DistintaBase") and \
         relation(AssociazioneArticolo,
             primaryjoin=(t_articolo.c.id == AssociazioneArticolo.id_figlio),
                 backref="ARTIFIGLIO"))
+
+
 if (hasattr(conf, "GestioneNoleggio") and \
             getattr(conf.GestioneNoleggio, 'mod_enable') == "yes") or\
              ("GestioneNoleggio"in modulesList):
@@ -800,13 +796,6 @@ if (hasattr(conf, "GestioneNoleggio") and \
             backref="ARTI",
                 uselist=False))
 
-if (hasattr(conf, "ADR") and getattr(conf.ADR, 'mod_enable') == "yes") or\
-                                                ("ADR" in modulesList):
-    from promogest.modules.ADR.dao.ArticoloADR import ArticoloADR
-    std_mapper.add_property("APADR",
-                    relation(ArticoloADR,
-                    primaryjoin=(t_articolo.c.id == ArticoloADR.id_articolo),
-                    uselist=False))
 if (hasattr(conf, "CSA") and getattr(conf.CSA, 'mod_enable') == "yes") or\
                                                 ("CSA" in modulesList):
     from promogest.modules.CSA.dao.ArticoloCSA import ArticoloCSA

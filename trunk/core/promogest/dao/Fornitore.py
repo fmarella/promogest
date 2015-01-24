@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2013 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -21,73 +21,70 @@
 
 from sqlalchemy import *
 from sqlalchemy.orm import *
-from promogest.Environment import params, conf, session, tipodb
+from promogest.Environment import *
 
-try:
-    t_fornitore = Table('fornitore',
-                    params['metadata'],
-                    schema = params['schema'],
-                    autoload=True)
-except:
-    from data.fornitore import t_fornitore
-
-from promogest.dao.Dao import Dao
-from promogest.dao.PersonaGiuridica import t_persona_giuridica
+from promogest.dao.Dao import Dao, Base
+from promogest.dao.PersonaGiuridica import PersonaGiuridica_
 from promogest.dao.CategoriaFornitore import CategoriaFornitore
 from promogest.dao.daoContatti.Contatto import Contatto
 from promogest.dao.DaoUtils import codeIncrement, getRecapitiFornitore
 
-class Fornitore(Dao):
+from data.fornitore import t_fornitore
+from data.personaGiuridica import t_persona_giuridica
+
+fornitore_persona_giuridica = join(t_fornitore, t_persona_giuridica)
+
+
+class Fornitore(Base, Dao):
+    __table__ = fornitore_persona_giuridica
+
+    id = column_property(t_fornitore.c.id, t_persona_giuridica.c.id)
+    categoria_fornitore = relationship("CategoriaFornitore", backref="fornitore")
+
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
 
-    def _categoria(self):
+    @property
+    def categoria(self):
         if self.categoria_fornitore:
             return self.categoria_fornitore.denominazione
-        else:
-            return ""
-    categoria = property(_categoria)
-
-    def _cellularePrincipale(self):
+        else: return ""
+    @property
+    def cellulare_principale(self):
         if self.id:
             for reca in getRecapitiFornitore(self.id):
                 if reca.tipo_recapito =="Cellulare":
                     return reca.recapito
         return ""
-    cellulare_principale = property(_cellularePrincipale)
-
-    def _telefonoPrincipale(self):
+    @property
+    def telefono_principale(self):
         if self.id:
             for reca in getRecapitiFornitore(self.id):
                 if reca.tipo_recapito =="Telefono":
                     return reca.recapito
         return ""
-    telefono_principale = property(_telefonoPrincipale)
-
-    def _emailPrincipale(self):
+    @property
+    def email_principale(self):
         if self.id:
             for reca in getRecapitiFornitore(self.id):
                 if reca.tipo_recapito =="Email":
                     return reca.recapito
         return ""
-    email_principale = property(_emailPrincipale)
-
-    def _faxPrincipale(self):
+    @property
+    def fax_principale(self):
         if self.id:
             for reca in getRecapitiFornitore(self.id):
                 if reca.tipo_recapito =="Fax":
                     return reca.recapito
         return ""
-    fax_principale = property(_faxPrincipale)
-
-    def _sitoPrincipale(self):
+    @property
+    def sito_principale(self):
         if self.id:
             for reca in getRecapitiFornitore(self.id):
                 if reca.tipo_recapito =="Sito":
                     return reca.recapito
         return ""
-    sito_principale = property(_sitoPrincipale)
 
 
     def delete(self):
@@ -156,13 +153,6 @@ def getNuovoCodiceFornitore():
         pass
     return codice
 
-std_mapper = mapper(Fornitore, join(t_fornitore, t_persona_giuridica),
-    properties={
-        'id': [t_fornitore.c.id, t_persona_giuridica.c.id],
-        "categoria_fornitore": relation(CategoriaFornitore, backref="fornitore")
-    },
-    order_by=t_fornitore.c.id)
-
 if tipodb=="sqlite":
     from promogest.dao.Pagamento import Pagamento
     a = session.query(Pagamento.id).all()
@@ -175,4 +165,4 @@ if tipodb=="sqlite":
             for a in aa:
                 a.id_pagamento = None
                 session.add(a)
-            session.commit()
+    session.commit()

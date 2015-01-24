@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2014 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -23,54 +23,57 @@
 import hashlib
 from sqlalchemy import *
 from sqlalchemy.orm import *
-from Dao import Dao
+from promogest.dao.Dao import Dao, Base
 from promogest.Environment import *
 from promogest.lib.utils import orda
 
-try:
+
+class SetConf(Base, Dao):
+
     try:
-        meta.tables[azienda+".articolo"]
+        __table__ = Table('setconf', params['metadata'],
+                        schema=params['schema'], autoload=True)
     except:
-        delete_pickle()
-    t_setconf = Table('setconf', params['metadata'],
-                    schema=params['schema'], autoload=True)
-except:
-    from data.setconf import t_setconf
-
-
-class SetConf(Dao):
+        from data.setconf import t_setconf
+        __table__ = t_setconf
 
     def __init__(self, req=None, arg=None):
         Dao.__init__(self, entity=self)
 
     def filter_values(self, k, v):
         if k == "description":
-            dic = {k: t_setconf.c.description.ilike("%" + v + "%")}
+            dic = {k: SetConf.__table__.c.description.ilike("%" + v + "%")}
         elif k == "value":
-            dic = {k: t_setconf.c.value == v}
+            dic = {k: SetConf.__table__.c.value == v}
         elif k == "body":
-            dic = {k: t_setconf.c.body.ilike("%" + v + "%")}
+            dic = {k: SetConf.__table__.c.body.ilike("%" + v + "%")}
         elif k == "section":
-            dic = {k: t_setconf.c.section == v}
+            dic = {k: SetConf.__table__.c.section == v}
         elif k == "key":
-            dic = {k: t_setconf.c.key == v}
+            dic = {k: SetConf.__table__.c.key == v}
         elif k == 'searchkey':
-            dic = {k: or_(t_setconf.c.key.ilike("%" + v + "%"),
-                        t_setconf.c.value.ilike("%" + v + "%"),
-                        t_setconf.c.description.ilike("%" + v + "%"))}
+            dic = {k: or_(SetConf.__table__.c.key.ilike("%" + v + "%"),
+                        SetConf.__table__.c.value.ilike("%" + v + "%"),
+                        SetConf.__table__.c.description.ilike("%" + v + "%"))}
         elif k == "active":
-            dic = {k: t_setconf.c.active == v}
+            dic = {k: SetConf.__table__.c.active == v}
         elif k == "visible":
-            dic = {k: t_setconf.c.visible == v}
+            dic = {k: SetConf.__table__.c.visible == v}
         return  dic[k]
 
-std_mapper = mapper(SetConf, t_setconf,
-    properties={
-        #'description': deferred(t_setconf.c.description),
-        #'date': deferred(t_setconf.c.date),
-    }, order_by=t_setconf.c.key)
 
-allkey = session.query(SetConf.key, SetConf.section).all()
+try:
+    SetConf.__table__.c.visible
+except:
+    conn = engine.connect()
+    ctx = MigrationContext.configure(conn)
+    op = Operations(ctx)
+    op.add_column('setconf', Column('visible', Boolean, default=True),schema=params["schema"])
+    delete_pickle()
+    restart_program()
+
+
+allkey = session.query(SetConf.__table__.c.key, SetConf.__table__.c.section).all()
 bb = SetConf().select(section="Primanota", batchSize=None)
 for b in bb:
     session.delete(b)

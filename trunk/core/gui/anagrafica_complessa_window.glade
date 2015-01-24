@@ -1,25 +1,126 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.18.3 -->
 <interface>
-  <requires lib="gtk+" version="2.16"/>
-  <!-- interface-naming-policy project-wide -->
+  <requires lib="gtk+" version="3.4"/>
   <object class="GtkImage" id="image1">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="icon_name">edit-copy</property>
   </object>
+  <object class="GtkImage" id="image11">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-copy</property>
+  </object>
+  <object class="GtkImage" id="image12">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-copy</property>
+  </object>
+  <object class="GtkImage" id="image2">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="icon_name">document-new</property>
+  </object>
+  <object class="GtkImage" id="image3">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="icon_name">edit-find-replace</property>
+  </object>
+  <object class="GtkImage" id="image4">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-delete</property>
+  </object>
+  <object class="GtkImage" id="image5">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="xpad">1</property>
+    <property name="pixbuf">stampa_selezione16x16.png</property>
+  </object>
+  <object class="GtkImage" id="image7">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">report24x24.png</property>
+  </object>
+  <object class="GtkImage" id="image8">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">esporta_24.png</property>
+  </object>
+  <object class="GtkImage" id="image9">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">duplica24x24.png</property>
+  </object>
+  <object class="GtkLabel" id="label2">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="tooltip_text" translatable="yes">Chiudere il pagamento di uno o più documenti.</property>
+    <property name="label" translatable="yes">Chiudi pagamento</property>
+  </object>
+  <object class="GtkListStore" id="liststore1">
+    <columns>
+      <!-- column-name gint1 -->
+      <column type="gint"/>
+    </columns>
+    <data>
+      <row>
+        <col id="0">10</col>
+      </row>
+      <row>
+        <col id="0">15</col>
+      </row>
+      <row>
+        <col id="0">20</col>
+      </row>
+      <row>
+        <col id="0">30</col>
+      </row>
+      <row>
+        <col id="0">50</col>
+      </row>
+      <row>
+        <col id="0">100</col>
+      </row>
+      <row>
+        <col id="0">200</col>
+      </row>
+      <row>
+        <col id="0">500</col>
+      </row>
+      <row>
+        <col id="0">700</col>
+      </row>
+      <row>
+        <col id="0">1000</col>
+      </row>
+      <row>
+        <col id="0">10000</col>
+      </row>
+    </data>
+  </object>
   <object class="GtkWindow" id="anagrafica_complessa_window">
     <property name="can_focus">False</property>
+    <property name="margin_left">2</property>
+    <property name="margin_right">2</property>
+    <property name="margin_top">2</property>
+    <property name="margin_bottom">2</property>
+    <property name="hexpand">True</property>
+    <property name="vexpand">True</property>
     <property name="title" translatable="yes">Anagrafica</property>
     <property name="modal">True</property>
-    <property name="default_width">800</property>
-    <property name="default_height">600</property>
+    <property name="default_width">801</property>
+    <property name="default_height">601</property>
     <property name="icon">promogest.png</property>
-    <signal name="destroy-event" handler="on_anagrafica_window_close" swapped="no"/>
+    <property name="gravity">center</property>
     <signal name="delete-event" handler="on_anagrafica_window_close" swapped="no"/>
+    <signal name="destroy-event" handler="on_anagrafica_window_close" swapped="no"/>
     <child>
-      <object class="GtkVBox" id="anagrafica_main_vbox">
+      <object class="GtkBox" id="anagrafica_main_vbox">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
         <child>
           <object class="GtkMenuBar" id="menubar1">
             <property name="visible">True</property>
@@ -87,7 +188,7 @@
                     </child>
                     <child>
                       <object class="GtkImageMenuItem" id="record_edit_menu">
-                        <property name="label">_Modifica</property>
+                        <property name="label" translatable="yes">_Modifica</property>
                         <property name="visible">True</property>
                         <property name="sensitive">False</property>
                         <property name="can_focus">False</property>
@@ -99,7 +200,7 @@
                     </child>
                     <child>
                       <object class="GtkImageMenuItem" id="record_delete_menu">
-                        <property name="label">_Elimina</property>
+                        <property name="label" translatable="yes">_Elimina</property>
                         <property name="visible">True</property>
                         <property name="sensitive">False</property>
                         <property name="can_focus">False</property>
@@ -133,7 +234,7 @@
                     </child>
                     <child>
                       <object class="GtkImageMenuItem" id="records_print_on_screen_menu">
-                        <property name="label">Report A video e Stampa</property>
+                        <property name="label" translatable="yes">Report A video e Stampa</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
@@ -147,8 +248,6 @@
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="tooltip_text" translatable="yes">Questo report riporta l'elenco in dettaglio dei movimenti di spedizione</property>
-                        <property name="label" translatable="yes">Report movimenti di spedizione</property>
-                        <property name="use_underline">True</property>
                         <signal name="activate" handler="on_report_mov_sped_menuitem_activate" swapped="no"/>
                       </object>
                     </child>
@@ -158,8 +257,6 @@
                         <property name="can_focus">False</property>
                         <property name="tooltip_text" translatable="yes">Questo report riporta l'elenco in dettaglio 
 dei farmaci venduti in un determinato arco temporale</property>
-                        <property name="label" translatable="yes">Report Farmacia Veterinaria</property>
-                        <property name="use_underline">True</property>
                         <signal name="activate" handler="on_report_farmacia_veterinaria_activate" swapped="no"/>
                       </object>
                     </child>
@@ -207,7 +304,6 @@ dei farmaci venduti in un determinato arco temporale</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Inserisci prezzo dettaglio da ingrosso</property>
-                        <property name="use_underline">True</property>
                         <signal name="activate" handler="on_dettaglio_da_ingrosso_menuitem_activate" swapped="no"/>
                       </object>
                     </child>
@@ -216,7 +312,6 @@ dei farmaci venduti in un determinato arco temporale</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Aggiungi sconto dettaglio</property>
-                        <property name="use_underline">True</property>
                         <signal name="activate" handler="on_aggiungi_sconto_dettaglio_activate" swapped="no"/>
                       </object>
                     </child>
@@ -224,8 +319,7 @@ dei farmaci venduti in un determinato arco temporale</property>
                       <object class="GtkMenuItem" id="aggiungi_sconto_ingrosso">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">Aggiungi Sconto Ingrosso</property>
-                        <property name="use_underline">True</property>
+                        <property name="label" translatable="yes">Aggiungi sconto ingrosso</property>
                         <signal name="activate" handler="on_aggiungi_sconto_ingrosso_activate" swapped="no"/>
                       </object>
                     </child>
@@ -234,7 +328,6 @@ dei farmaci venduti in un determinato arco temporale</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Variazione Prezzo Dettaglio</property>
-                        <property name="use_underline">True</property>
                         <signal name="activate" handler="on_variazione_dettaglio_activate" swapped="no"/>
                       </object>
                     </child>
@@ -243,7 +336,6 @@ dei farmaci venduti in un determinato arco temporale</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Variazione Prezzo Ingrosso</property>
-                        <property name="use_underline">True</property>
                         <signal name="activate" handler="on_variazione_ingrosso_activate" swapped="no"/>
                       </object>
                     </child>
@@ -266,7 +358,6 @@ dei farmaci venduti in un determinato arco temporale</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Gestione RIBA</property>
-                        <property name="use_underline">True</property>
                         <signal name="activate" handler="on_gestione_riba_menu_activate" swapped="no"/>
                       </object>
                     </child>
@@ -275,7 +366,6 @@ dei farmaci venduti in un determinato arco temporale</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Importa Ordine Json</property>
-                        <property name="use_underline">True</property>
                         <signal name="activate" handler="on_importa_ordine_json_activate" swapped="no"/>
                       </object>
                     </child>
@@ -284,7 +374,6 @@ dei farmaci venduti in un determinato arco temporale</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Fatturazione provvigioni</property>
-                        <property name="use_underline">True</property>
                         <signal name="activate" handler="on_genera_fatture_menu_activate" swapped="no"/>
                       </object>
                     </child>
@@ -293,7 +382,6 @@ dei farmaci venduti in un determinato arco temporale</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Chiusura ordini</property>
-                        <property name="use_underline">True</property>
                         <signal name="activate" handler="on_chiusura_ordini_menuitem_activate" swapped="no"/>
                       </object>
                     </child>
@@ -315,7 +403,6 @@ dei farmaci venduti in un determinato arco temporale</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Credits</property>
-                        <property name="use_underline">True</property>
                         <signal name="activate" handler="on_credits_menu_activate" swapped="no"/>
                       </object>
                     </child>
@@ -324,7 +411,6 @@ dei farmaci venduti in un determinato arco temporale</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Vedi la licenza</property>
-                        <property name="use_underline">True</property>
                         <signal name="activate" handler="on_licenza_menu_activate" swapped="no"/>
                       </object>
                     </child>
@@ -333,7 +419,6 @@ dei farmaci venduti in un determinato arco temporale</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Codice installazione...</property>
-                        <property name="use_underline">True</property>
                         <signal name="activate" handler="on_seriale_menu_activate" swapped="no"/>
                       </object>
                     </child>
@@ -344,7 +429,6 @@ dei farmaci venduti in un determinato arco temporale</property>
                         <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                         <property name="tooltip_text" translatable="yes">Permette di spedire una email all'asitenza con  segnalazioni bug, consigli, critiche.</property>
                         <property name="label" translatable="yes">Spedisci email Assistenza</property>
-                        <property name="use_underline">True</property>
                         <signal name="activate" handler="on_send_Email_activate" swapped="no"/>
                       </object>
                     </child>
@@ -394,6 +478,7 @@ dei farmaci venduti in un determinato arco temporale</property>
               </object>
               <packing>
                 <property name="expand">False</property>
+                <property name="homogeneous">False</property>
               </packing>
             </child>
             <child>
@@ -449,6 +534,7 @@ dei farmaci venduti in un determinato arco temporale</property>
               </object>
               <packing>
                 <property name="expand">False</property>
+                <property name="homogeneous">False</property>
               </packing>
             </child>
             <child>
@@ -487,6 +573,7 @@ dei farmaci venduti in un determinato arco temporale</property>
               </object>
               <packing>
                 <property name="expand">False</property>
+                <property name="homogeneous">False</property>
               </packing>
             </child>
             <child>
@@ -545,6 +632,7 @@ dei farmaci venduti in un determinato arco temporale</property>
               </object>
               <packing>
                 <property name="expand">False</property>
+                <property name="homogeneous">False</property>
               </packing>
             </child>
             <child>
@@ -629,25 +717,26 @@ dei farmaci venduti in un determinato arco temporale</property>
           </packing>
         </child>
         <child>
-          <object class="GtkVPaned" id="anagrafica_vpaned">
+          <object class="GtkPaned" id="anagrafica_vpaned">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
+            <property name="orientation">vertical</property>
             <child>
-              <object class="GtkHPaned" id="anagrafica_hpaned">
+              <object class="GtkPaned" id="anagrafica_hpaned">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <property name="border_width">6</property>
-                <property name="position">300</property>
                 <child>
-                  <object class="GtkVBox" id="vbox1">
+                  <object class="GtkBox" id="box1">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="orientation">vertical</property>
                     <child>
                       <object class="GtkViewport" id="anagrafica_filters_viewport">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="resize_mode">queue</property>
-                        <property name="shadow_type">none</property>
+                        <property name="hscroll_policy">natural</property>
+                        <property name="vscroll_policy">natural</property>
                         <child>
                           <placeholder/>
                         </child>
@@ -659,10 +748,9 @@ dei farmaci venduti in un determinato arco temporale</property>
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkHBox" id="visualizzati_hbox1">
+                      <object class="GtkBox" id="box2">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="spacing">3</property>
                         <child>
                           <object class="GtkLabel" id="visualizzati_label">
                             <property name="visible">True</property>
@@ -721,7 +809,7 @@ dei farmaci venduti in un determinato arco temporale</property>
                       </object>
                       <packing>
                         <property name="expand">False</property>
-                        <property name="fill">False</property>
+                        <property name="fill">True</property>
                         <property name="position">1</property>
                       </packing>
                     </child>
@@ -732,10 +820,10 @@ dei farmaci venduti in un determinato arco temporale</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkVBox" id="complex_vobx">
+                  <object class="GtkBox" id="complex_vobx">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="spacing">2</property>
+                    <property name="orientation">vertical</property>
                     <child>
                       <object class="GtkLabel" id="label1">
                         <property name="visible">True</property>
@@ -754,8 +842,6 @@ dei farmaci venduti in un determinato arco temporale</property>
                       <object class="GtkScrolledWindow" id="anagrafica_detail_scrolledwindow">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="hscrollbar_policy">automatic</property>
-                        <property name="vscrollbar_policy">automatic</property>
                         <property name="shadow_type">etched-in</property>
                         <child>
                           <placeholder/>
@@ -792,9 +878,10 @@ dei farmaci venduti in un determinato arco temporale</property>
               </packing>
             </child>
             <child>
-              <object class="GtkVBox" id="anag_complessa_tree_vbox">
+              <object class="GtkBox" id="box3">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="orientation">vertical</property>
                 <child>
                   <object class="GtkLabel" id="info_anag_complessa_label">
                     <property name="visible">True</property>
@@ -825,7 +912,7 @@ dei farmaci venduti in un determinato arco temporale</property>
               </object>
               <packing>
                 <property name="resize">True</property>
-                <property name="shrink">False</property>
+                <property name="shrink">True</property>
               </packing>
             </child>
           </object>
@@ -849,109 +936,6 @@ dei farmaci venduti in un determinato arco temporale</property>
         </child>
       </object>
     </child>
-  </object>
-  <object class="GtkImage" id="image10">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="pixbuf">calc24x24.png</property>
-  </object>
-  <object class="GtkImage" id="image11">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">gtk-copy</property>
-  </object>
-  <object class="GtkImage" id="image12">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">gtk-copy</property>
-  </object>
-  <object class="GtkImage" id="image2">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="icon_name">document-new</property>
-  </object>
-  <object class="GtkImage" id="image3">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="icon_name">edit-find-replace</property>
-  </object>
-  <object class="GtkImage" id="image4">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">gtk-delete</property>
-  </object>
-  <object class="GtkImage" id="image5">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="xpad">1</property>
-    <property name="pixbuf">stampa_selezione16x16.png</property>
-  </object>
-  <object class="GtkImage" id="image6">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">gtk-print</property>
-  </object>
-  <object class="GtkImage" id="image7">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="pixbuf">report24x24.png</property>
-  </object>
-  <object class="GtkImage" id="image8">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="pixbuf">esporta_24.png</property>
-  </object>
-  <object class="GtkImage" id="image9">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="pixbuf">duplica24x24.png</property>
-  </object>
-  <object class="GtkLabel" id="label2">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="tooltip_text" translatable="yes">Chiudere il pagamento di uno o più documenti.</property>
-    <property name="label" translatable="yes">Chiudi pagamento</property>
-  </object>
-  <object class="GtkListStore" id="liststore1">
-    <columns>
-      <!-- column-name gint1 -->
-      <column type="gint"/>
-    </columns>
-    <data>
-      <row>
-        <col id="0">10</col>
-      </row>
-      <row>
-        <col id="0">15</col>
-      </row>
-      <row>
-        <col id="0">20</col>
-      </row>
-      <row>
-        <col id="0">30</col>
-      </row>
-      <row>
-        <col id="0">50</col>
-      </row>
-      <row>
-        <col id="0">100</col>
-      </row>
-      <row>
-        <col id="0">200</col>
-      </row>
-      <row>
-        <col id="0">500</col>
-      </row>
-      <row>
-        <col id="0">700</col>
-      </row>
-      <row>
-        <col id="0">1000</col>
-      </row>
-      <row>
-        <col id="0">10000</col>
-      </row>
-    </data>
   </object>
   <object class="GtkMenu" id="menu3">
     <property name="visible">True</property>

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2013 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -22,32 +22,26 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
-from promogest.dao.Dao import Dao
+from promogest.dao.Dao import Dao, Base
 
-try:
-    t_tipo_richiesta = Table('tipo_richiesta',
-               params['metadata'],
-               schema = params['schema'],
-               autoload=True)
-except:
-    t_tipo_richiesta  = Table('tipo_richiesta', params["metadata"],
-            Column('id',Integer,primary_key=True),
-            Column('denominazione',String(100)),
-            schema = params['schema'])
+class TipoRichiesta(Base, Dao):
+    try:
+        __table__ = Table('tipo_richiesta',
+                   params['metadata'],
+                   schema = params['schema'],
+                   autoload=True)
+    except:
+        from data.tipoRichiesta import t_tipo_richiesta
+        __table__  = t_tipo_richiesta
 
-    t_tipo_richiesta.create(checkfirst=True)
-
-class TipoRichiesta(Dao):
+    __mapper_args__ = {"order_by": "denominazione"}
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
 
     def filter_values(self, k, v):
         if k=="id":
-            dic= {k: t_tipo_richiesta.c.id ==v}
+            dic= {k: TipoRichiesta.__table__.c.id ==v}
         elif k =="denominazione":
-            dic= {k: t_tipo_richiesta.c.denominazione == v}
+            dic= {k: TipoRichiesta.__table__.c.denominazione == v}
         return  dic[k]
-
-std_mapper = mapper(TipoRichiesta, t_tipo_richiesta,
-        order_by=t_tipo_richiesta.c.denominazione)

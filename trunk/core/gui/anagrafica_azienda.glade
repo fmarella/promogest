@@ -1,12 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.18.3 -->
 <interface>
-  <requires lib="gtk+" version="2.16"/>
-  <!-- interface-requires pythonplugin 0.0 -->
-  <!-- interface-naming-policy project-wide -->
+  <requires lib="gtk+" version="3.4"/>
+  <requires lib="pythonplugin" version="0.0"/>
   <object class="GtkImage" id="aggiungi_logo_image">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="stock">gtk-add</property>
+  </object>
+  <object class="GtkFileFilter" id="filefilter1"/>
+  <object class="GtkImage" id="image2">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-goto-top</property>
+  </object>
+  <object class="GtkImage" id="image3">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">banca48x48.png</property>
+  </object>
+  <object class="GtkImage" id="image4">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">spam_32x32.png</property>
   </object>
   <object class="GtkWindow" id="anagrafica_azienda">
     <property name="can_focus">False</property>
@@ -48,15 +64,11 @@
                                 <property name="can_focus">True</property>
                                 <property name="max_length">100</property>
                                 <property name="invisible_char">●</property>
-                                <property name="invisible_char_set">True</property>
                                 <property name="secondary_icon_stock">gtk-clear</property>
                                 <property name="primary_icon_activatable">False</property>
-                                <property name="secondary_icon_activatable">True</property>
-                                <property name="primary_icon_sensitive">True</property>
-                                <property name="secondary_icon_sensitive">True</property>
-                                <signal name="icon-press" handler="on_icon_press" swapped="no"/>
                                 <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
                                 <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
+                                <signal name="icon-press" handler="on_icon_press" swapped="no"/>
                               </object>
                               <packing>
                                 <property name="left_attach">1</property>
@@ -84,11 +96,8 @@
                                 <property name="can_focus">True</property>
                                 <property name="max_length">100</property>
                                 <property name="invisible_char">●</property>
-                                <property name="invisible_char_set">True</property>
                                 <property name="primary_icon_activatable">False</property>
                                 <property name="secondary_icon_activatable">False</property>
-                                <property name="primary_icon_sensitive">True</property>
-                                <property name="secondary_icon_sensitive">True</property>
                               </object>
                               <packing>
                                 <property name="left_attach">1</property>
@@ -153,12 +162,8 @@
                                 <property name="can_focus">True</property>
                                 <property name="max_length">200</property>
                                 <property name="invisible_char">●</property>
-                                <property name="invisible_char_set">True</property>
                                 <property name="secondary_icon_stock">gtk-clear</property>
                                 <property name="primary_icon_activatable">False</property>
-                                <property name="secondary_icon_activatable">True</property>
-                                <property name="primary_icon_sensitive">True</property>
-                                <property name="secondary_icon_sensitive">True</property>
                                 <signal name="icon-press" handler="on_icon_press" swapped="no"/>
                               </object>
                               <packing>
@@ -200,11 +205,8 @@
                                 <property name="can_focus">True</property>
                                 <property name="max_length">100</property>
                                 <property name="invisible_char">●</property>
-                                <property name="invisible_char_set">True</property>
                                 <property name="primary_icon_activatable">False</property>
                                 <property name="secondary_icon_activatable">False</property>
-                                <property name="primary_icon_sensitive">True</property>
-                                <property name="secondary_icon_sensitive">True</property>
                               </object>
                               <packing>
                                 <property name="left_attach">1</property>
@@ -222,11 +224,8 @@
                                 <property name="can_focus">True</property>
                                 <property name="max_length">10</property>
                                 <property name="invisible_char">●</property>
-                                <property name="invisible_char_set">True</property>
                                 <property name="primary_icon_activatable">False</property>
                                 <property name="secondary_icon_activatable">False</property>
-                                <property name="primary_icon_sensitive">True</property>
-                                <property name="secondary_icon_sensitive">True</property>
                               </object>
                               <packing>
                                 <property name="left_attach">5</property>
@@ -256,11 +255,8 @@
                                 <property name="can_focus">True</property>
                                 <property name="max_length">4</property>
                                 <property name="invisible_char">●</property>
-                                <property name="invisible_char_set">True</property>
                                 <property name="primary_icon_activatable">False</property>
                                 <property name="secondary_icon_activatable">False</property>
-                                <property name="primary_icon_sensitive">True</property>
-                                <property name="secondary_icon_sensitive">True</property>
                               </object>
                               <packing>
                                 <property name="left_attach">5</property>
@@ -316,12 +312,8 @@
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="invisible_char">●</property>
-                                        <property name="invisible_char_set">True</property>
                                         <property name="secondary_icon_stock">gtk-clear</property>
                                         <property name="primary_icon_activatable">False</property>
-                                        <property name="secondary_icon_activatable">True</property>
-                                        <property name="primary_icon_sensitive">True</property>
-                                        <property name="secondary_icon_sensitive">True</property>
                                       </object>
                                       <packing>
                                         <property name="expand">True</property>
@@ -388,12 +380,8 @@
                                 <property name="can_focus">True</property>
                                 <property name="max_length">200</property>
                                 <property name="invisible_char">●</property>
-                                <property name="invisible_char_set">True</property>
                                 <property name="secondary_icon_stock">gtk-clear</property>
                                 <property name="primary_icon_activatable">False</property>
-                                <property name="secondary_icon_activatable">True</property>
-                                <property name="primary_icon_sensitive">True</property>
-                                <property name="secondary_icon_sensitive">True</property>
                               </object>
                               <packing>
                                 <property name="left_attach">1</property>
@@ -434,11 +422,8 @@
                                 <property name="can_focus">True</property>
                                 <property name="max_length">100</property>
                                 <property name="invisible_char">●</property>
-                                <property name="invisible_char_set">True</property>
                                 <property name="primary_icon_activatable">False</property>
                                 <property name="secondary_icon_activatable">False</property>
-                                <property name="primary_icon_sensitive">True</property>
-                                <property name="secondary_icon_sensitive">True</property>
                               </object>
                               <packing>
                                 <property name="left_attach">1</property>
@@ -456,11 +441,8 @@
                                 <property name="can_focus">True</property>
                                 <property name="max_length">10</property>
                                 <property name="invisible_char">●</property>
-                                <property name="invisible_char_set">True</property>
                                 <property name="primary_icon_activatable">False</property>
                                 <property name="secondary_icon_activatable">False</property>
-                                <property name="primary_icon_sensitive">True</property>
-                                <property name="secondary_icon_sensitive">True</property>
                               </object>
                               <packing>
                                 <property name="left_attach">5</property>
@@ -490,11 +472,8 @@
                                 <property name="can_focus">True</property>
                                 <property name="max_length">4</property>
                                 <property name="invisible_char">●</property>
-                                <property name="invisible_char_set">True</property>
                                 <property name="primary_icon_activatable">False</property>
                                 <property name="secondary_icon_activatable">False</property>
-                                <property name="primary_icon_sensitive">True</property>
-                                <property name="secondary_icon_sensitive">True</property>
                               </object>
                               <packing>
                                 <property name="left_attach">5</property>
@@ -550,12 +529,8 @@
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="invisible_char">●</property>
-                                        <property name="invisible_char_set">True</property>
                                         <property name="secondary_icon_stock">gtk-clear</property>
                                         <property name="primary_icon_activatable">False</property>
-                                        <property name="secondary_icon_activatable">True</property>
-                                        <property name="primary_icon_sensitive">True</property>
-                                        <property name="secondary_icon_sensitive">True</property>
                                       </object>
                                       <packing>
                                         <property name="expand">True</property>
@@ -695,13 +670,10 @@
                                 <property name="can_focus">True</property>
                                 <property name="max_length">16</property>
                                 <property name="invisible_char">●</property>
-                                <property name="invisible_char_set">True</property>
                                 <property name="primary_icon_activatable">False</property>
                                 <property name="secondary_icon_activatable">False</property>
-                                <property name="primary_icon_sensitive">True</property>
-                                <property name="secondary_icon_sensitive">True</property>
-                                <signal name="focus-out-event" handler="on_entry_focus_out_event" swapped="no"/>
                                 <signal name="focus-in-event" handler="on_entry_focus_in_event" swapped="no"/>
+                                <signal name="focus-out-event" handler="on_entry_focus_out_event" swapped="no"/>
                               </object>
                               <packing>
                                 <property name="left_attach">1</property>
@@ -739,12 +711,8 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="invisible_char">●</property>
-                                <property name="invisible_char_set">True</property>
                                 <property name="secondary_icon_stock">gtk-clear</property>
                                 <property name="primary_icon_activatable">False</property>
-                                <property name="secondary_icon_activatable">True</property>
-                                <property name="primary_icon_sensitive">True</property>
-                                <property name="secondary_icon_sensitive">True</property>
                                 <signal name="icon-press" handler="on_icon_press" swapped="no"/>
                               </object>
                               <packing>
@@ -772,11 +740,8 @@
                                 <property name="can_focus">True</property>
                                 <property name="max_length">20</property>
                                 <property name="invisible_char">●</property>
-                                <property name="invisible_char_set">True</property>
                                 <property name="primary_icon_activatable">False</property>
                                 <property name="secondary_icon_activatable">False</property>
-                                <property name="primary_icon_sensitive">True</property>
-                                <property name="secondary_icon_sensitive">True</property>
                               </object>
                               <packing>
                                 <property name="left_attach">1</property>
@@ -793,11 +758,8 @@
                                 <property name="can_focus">True</property>
                                 <property name="max_length">50</property>
                                 <property name="invisible_char">●</property>
-                                <property name="invisible_char_set">True</property>
                                 <property name="primary_icon_activatable">False</property>
                                 <property name="secondary_icon_activatable">False</property>
-                                <property name="primary_icon_sensitive">True</property>
-                                <property name="secondary_icon_sensitive">True</property>
                               </object>
                               <packing>
                                 <property name="left_attach">3</property>
@@ -845,11 +807,8 @@
                                 <property name="can_focus">True</property>
                                 <property name="max_length">16</property>
                                 <property name="invisible_char">●</property>
-                                <property name="invisible_char_set">True</property>
                                 <property name="primary_icon_activatable">False</property>
                                 <property name="secondary_icon_activatable">False</property>
-                                <property name="primary_icon_sensitive">True</property>
-                                <property name="secondary_icon_sensitive">True</property>
                               </object>
                               <packing>
                                 <property name="left_attach">1</property>
@@ -917,11 +876,8 @@
                                 <property name="can_focus">True</property>
                                 <property name="max_length">50</property>
                                 <property name="invisible_char">●</property>
-                                <property name="invisible_char_set">True</property>
                                 <property name="primary_icon_activatable">False</property>
                                 <property name="secondary_icon_activatable">False</property>
-                                <property name="primary_icon_sensitive">True</property>
-                                <property name="secondary_icon_sensitive">True</property>
                               </object>
                               <packing>
                                 <property name="left_attach">3</property>
@@ -1038,11 +994,8 @@
                                 <property name="can_focus">True</property>
                                 <property name="max_length">50</property>
                                 <property name="invisible_char">●</property>
-                                <property name="invisible_char_set">True</property>
                                 <property name="primary_icon_activatable">False</property>
                                 <property name="secondary_icon_activatable">False</property>
-                                <property name="primary_icon_sensitive">True</property>
-                                <property name="secondary_icon_sensitive">True</property>
                               </object>
                               <packing>
                                 <property name="left_attach">3</property>
@@ -1109,6 +1062,15 @@
                           <placeholder/>
                         </child>
                         <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
                           <object class="GtkLabel" id="label20">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
@@ -1128,8 +1090,6 @@
                             <property name="invisible_char">●</property>
                             <property name="primary_icon_activatable">False</property>
                             <property name="secondary_icon_activatable">False</property>
-                            <property name="primary_icon_sensitive">True</property>
-                            <property name="secondary_icon_sensitive">True</property>
                           </object>
                           <packing>
                             <property name="left_attach">1</property>
@@ -1144,13 +1104,10 @@
                           <placeholder/>
                         </child>
                         <child>
-                          <placeholder/>
-                        </child>
-                        <child>
                           <object class="GtkLabel" id="label21">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="label" translatable="yes">Reimpostare il progressivo di invio nel caso in cui l'esito 
+                            <property name="label" translatable="yes">Reimpostare il progressivo di invio nel caso in cui l'esito
 dell'invio al Sistema di Interscambio non sia andato a buon fine.</property>
                           </object>
                           <packing>
@@ -1296,8 +1253,8 @@ dell'invio al Sistema di Interscambio non sia andato a buon fine.</property>
                               <object class="GtkLabel" id="label16">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="label" translatable="yes">La dimensione consigliata è di 
-circa 350 x 70 pixel 
+                                <property name="label" translatable="yes">La dimensione consigliata è di
+circa 350 x 70 pixel
 oppure 258 x 66 punti.
 Più o meno come il bordo che contiene
 l'anteprima qui di fianco.</property>
@@ -1377,44 +1334,6 @@ l'anteprima qui di fianco.</property>
       </object>
     </child>
   </object>
-  <object class="GtkFileFilter" id="filefilter1"/>
-  <object class="GtkImage" id="image2">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">gtk-goto-top</property>
-  </object>
-  <object class="GtkImage" id="image3">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="pixbuf">banca48x48.png</property>
-  </object>
-  <object class="GtkImage" id="image4">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="pixbuf">spam_32x32.png</property>
-  </object>
-  <object class="GtkImage" id="image5">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">gtk-goto-top</property>
-  </object>
-  <object class="GtkListStore" id="liststore1">
-    <columns>
-      <!-- column-name gchararray1 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray2 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray3 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray4 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray5 -->
-      <column type="gchararray"/>
-      <!-- column-name gboolean1 -->
-      <column type="gboolean"/>
-    </columns>
-    <signal name="row-changed" handler="on_liststore1_row_changed" swapped="no"/>
-  </object>
   <object class="GtkFileChooserDialog" id="logo_filechooserdialog">
     <property name="can_focus">False</property>
     <property name="border_width">5</property>
@@ -1427,12 +1346,12 @@ l'anteprima qui di fianco.</property>
     <property name="preview_widget_active">False</property>
     <signal name="file-activated" handler="on_logo_filechooserdialog_file_activated" swapped="no"/>
     <child internal-child="vbox">
-      <object class="GtkVBox" id="dialog-vbox4">
+      <object class="GtkBox" id="dialog-vbox4">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="spacing">2</property>
         <child internal-child="action_area">
-          <object class="GtkHButtonBox" id="dialog-action_area4">
+          <object class="GtkButtonBox" id="dialog-action_area4">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="layout_style">end</property>
@@ -1483,6 +1402,28 @@ l'anteprima qui di fianco.</property>
       <action-widget response="0">chiudi_button</action-widget>
       <action-widget response="0">apri_button</action-widget>
     </action-widgets>
+  </object>
+  <object class="GtkImage" id="image5">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-goto-top</property>
+  </object>
+  <object class="GtkListStore" id="liststore1">
+    <columns>
+      <!-- column-name gchararray1 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray2 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray3 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray4 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray5 -->
+      <column type="gchararray"/>
+      <!-- column-name gboolean1 -->
+      <column type="gboolean"/>
+    </columns>
+    <signal name="row-changed" handler="on_liststore1_row_changed" swapped="no"/>
   </object>
   <object class="GtkSizeGroup" id="sizegroup1"/>
 </interface>

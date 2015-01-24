@@ -58,8 +58,9 @@ class AnagraficaColori(Anagrafica):
         renderer = gtk.CellRendererText()
         renderer.set_property('editable', False)
         renderer.connect('edited', self.on_column_edited, treeview, True)
-        renderer.set_data('column', 0)
-        renderer.set_data('max_length', 200)
+        #GTK3
+        #renderer.set_data('column', 0)
+        #renderer.set_data('max_length', 200)
         column = gtk.TreeViewColumn('Denominazione', renderer, text=1,
                                     sensitive=3)
         column.set_sizing(GTK_COLUMN_GROWN_ONLY)
@@ -72,8 +73,9 @@ class AnagraficaColori(Anagrafica):
         renderer = gtk.CellRendererText()
         renderer.set_property('editable', False)
         renderer.connect('edited', self.on_column_edited, treeview, False)
-        renderer.set_data('column', 1)
-        renderer.set_data('max_length', 10)
+        #GTK3
+        #renderer.set_data('column', 1)
+        #renderer.set_data('max_length', 10)
         column = gtk.TreeViewColumn('Descrizione breve', renderer, text=2,
                                                                 sensitive=3)
         column.set_sizing(GTK_COLUMN_GROWN_ONLY)

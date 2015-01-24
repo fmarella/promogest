@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2013 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -23,30 +23,30 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
-from Dao import Dao
-
-try:
-    t_operazione=Table('operazione',params['metadata'],schema = params['mainSchema'],autoload=True)
-except:
-    from data.operazione import t_operazione
+from promogest.dao.Dao import Dao, Base
 
 
-class Operazione(Dao):
+class Operazione(Base, Dao):
+    try:
+        __table__=Table('operazione',params['metadata'],schema = params['mainSchema'],autoload=True)
+    except:
+        from data.operazione import t_operazione
+        __table__ = t_operazione
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):
         if k == 'denominazione':
-            dic= { k: t_operazione.c.denominazione.ilike("%"+v+"%")}
+            dic= { k: Operazione.__table__.c.denominazione.ilike("%"+v+"%")}
         elif k== 'denominazioneEM':
-            dic= { k: t_operazione.c.denominazione == (v).strip()}
+            dic= { k: Operazione.__table__.c.denominazione == (v).strip()}
         elif k=="tipoOperazione":
-            dic = {k:t_operazione.c.tipo_operazione==v}
+            dic = {k:Operazione.__table__.c.tipo_operazione==v}
         elif k=="segno":
-            dic = {k: t_operazione.c.segno ==v}
+            dic = {k: Operazione.__table__.c.segno ==v}
         elif k=="tipoPersonaGiuridica":
-            dic = {k: t_operazione.c.tipo_persona_giuridica ==v}
+            dic = {k: Operazione.__table__.c.tipo_persona_giuridica ==v}
         return  dic[k]
 
 def addOpDirette():
@@ -62,7 +62,6 @@ def addOpDirette():
         ope.execute(denominazione='Fattura vendita diretta', fonte_valore='vendita_senza_iva', tipo_persona_giuridica='cliente',tipo_operazione="documento" )
 
 
-std_mapper = mapper(Operazione, t_operazione, order_by=t_operazione.c.denominazione)
 
 #from promogest.dao.CachedDaosDict import cache_objj
 #cache_objj.add(Operazione, use_key='denominazione')

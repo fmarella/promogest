@@ -1,73 +1,98 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.18.3 -->
 <interface>
-  <requires lib="gtk+" version="2.16"/>
-  <!-- interface-requires pythonplugin 0.0 -->
-  <!-- interface-naming-policy toplevel-contextual -->
-  <object class="GtkTable" id="anagrafica_aliquote_iva_detail_table">
+  <requires lib="gtk+" version="3.4"/>
+  <requires lib="pythonplugin" version="0.0"/>
+  <object class="GtkGrid" id="anagrafica_aliquote_iva_detail_table">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="border_width">6</property>
-    <property name="n_rows">7</property>
-    <property name="n_columns">2</property>
-    <property name="row_spacing">6</property>
+    <property name="margin_left">3</property>
+    <property name="margin_right">3</property>
+    <property name="margin_top">3</property>
+    <property name="margin_bottom">3</property>
+    <property name="row_spacing">3</property>
+    <property name="column_spacing">3</property>
+    <property name="column_homogeneous">True</property>
     <child>
-      <object class="GtkAlignment" id="alignment407">
+      <object class="GtkLabel" id="descrizione_aliquota_iva_label">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="xalign">0</property>
-        <property name="xscale">0</property>
-        <child>
-          <object class="GtkComboBox" id="id_tipo_combobox">
-            <property name="width_request">150</property>
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="tooltip_text" translatable="yes">Tipologie 
-di aliquota iva gestite 
-dal programma</property>
-          </object>
-        </child>
+        <property name="xpad">3</property>
+        <property name="label" translatable="yes">&lt;b&gt;Descrizione&lt;/b&gt;</property>
+        <property name="use_markup">True</property>
       </object>
       <packing>
-        <property name="left_attach">1</property>
-        <property name="right_attach">2</property>
-        <property name="top_attach">5</property>
-        <property name="bottom_attach">6</property>
-        <property name="x_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
-        <property name="y_options"/>
+        <property name="left_attach">0</property>
+        <property name="top_attach">0</property>
       </packing>
     </child>
     <child>
-      <object class="GtkAlignment" id="alignment375">
-        <property name="width_request">50</property>
+      <object class="GtkLabel" id="descrizione_breve_aliquota_iva_label">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="xalign">0</property>
-        <property name="xscale">0</property>
-        <child>
-          <object class="UnsignedDecimalEntryField" id="percentuale_entry">
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="tooltip_text" translatable="yes">Percentuale della aliquota
-quando presente e non 
-esente</property>
-            <property name="invisible_char">•</property>
-            <property name="text" translatable="yes">0.00      </property>
-            <property name="secondary_icon_stock">gtk-clear</property>
-            <property name="primary_icon_activatable">False</property>
-            <property name="secondary_icon_activatable">True</property>
-            <property name="primary_icon_sensitive">True</property>
-            <property name="secondary_icon_sensitive">True</property>
-            <signal name="icon-press" handler="on_icon_press" swapped="no"/>
-          </object>
-        </child>
+        <property name="xpad">3</property>
+        <property name="label" translatable="yes">&lt;b&gt;Descrizione breve&lt;/b&gt;</property>
+        <property name="use_markup">True</property>
       </object>
       <packing>
-        <property name="left_attach">1</property>
-        <property name="right_attach">2</property>
+        <property name="left_attach">0</property>
+        <property name="top_attach">1</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkLabel" id="percentuale_aliquota_label">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="xalign">0</property>
+        <property name="xpad">3</property>
+        <property name="label" translatable="yes">% Aliquota IVA</property>
+      </object>
+      <packing>
+        <property name="left_attach">0</property>
         <property name="top_attach">2</property>
-        <property name="bottom_attach">3</property>
-        <property name="x_options">GTK_SHRINK | GTK_FILL</property>
-        <property name="y_options"/>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkLabel" id="percentuale_detrazione_label">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="xalign">0</property>
+        <property name="xpad">3</property>
+        <property name="label" translatable="yes">% Detrazione</property>
+      </object>
+      <packing>
+        <property name="left_attach">0</property>
+        <property name="top_attach">3</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkLabel" id="descrizione_dotazioni_label">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="xalign">0</property>
+        <property name="yalign">0.47999998927116394</property>
+        <property name="xpad">3</property>
+        <property name="label" translatable="yes">Descrizione detrazione</property>
+      </object>
+      <packing>
+        <property name="left_attach">0</property>
+        <property name="top_attach">4</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkLabel" id="tipo_aliquota_label">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="xalign">0</property>
+        <property name="xpad">3</property>
+        <property name="label" translatable="yes">&lt;b&gt;Tipo Aliquota&lt;/b&gt;</property>
+        <property name="use_markup">True</property>
+      </object>
+      <packing>
+        <property name="left_attach">0</property>
+        <property name="top_attach">5</property>
       </packing>
     </child>
     <child>
@@ -78,51 +103,66 @@ esente</property>
         <property name="invisible_char">•</property>
         <property name="secondary_icon_stock">gtk-clear</property>
         <property name="primary_icon_activatable">False</property>
-        <property name="secondary_icon_activatable">True</property>
-        <property name="primary_icon_sensitive">True</property>
-        <property name="secondary_icon_sensitive">True</property>
         <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
-        <signal name="icon-press" handler="on_icon_press" swapped="no"/>
-        <signal name="focus-out-event" handler="on_entry_focus_out_event" swapped="no"/>
         <signal name="focus-in-event" handler="on_entry_focus_in_event" swapped="no"/>
+        <signal name="focus-out-event" handler="on_entry_focus_out_event" swapped="no"/>
+        <signal name="icon-press" handler="on_icon_press" swapped="no"/>
       </object>
       <packing>
         <property name="left_attach">1</property>
-        <property name="right_attach">2</property>
-        <property name="y_options"/>
+        <property name="top_attach">0</property>
       </packing>
     </child>
     <child>
-      <object class="GtkAlignment" id="alignment263">
-        <property name="width_request">50</property>
+      <object class="GtkEntry" id="denominazione_breve_entry">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="xalign">0</property>
-        <property name="xscale">0</property>
-        <child>
-          <object class="UnsignedDecimalEntryField" id="percentuale_detrazione_entry">
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="tooltip_text" translatable="yes">Percentuale di detrazione 
-quando presente</property>
-            <property name="invisible_char">•</property>
-            <property name="text" translatable="yes">0.00      </property>
-            <property name="secondary_icon_stock">gtk-clear</property>
-            <property name="primary_icon_activatable">False</property>
-            <property name="secondary_icon_activatable">True</property>
-            <property name="primary_icon_sensitive">True</property>
-            <property name="secondary_icon_sensitive">True</property>
-            <signal name="icon-press" handler="on_icon_press" swapped="no"/>
-          </object>
-        </child>
+        <property name="can_focus">True</property>
+        <property name="tooltip_text" translatable="yes">Descrizione Breve ( max 10 )</property>
+        <property name="max_length">10</property>
+        <property name="invisible_char">•</property>
+        <property name="secondary_icon_stock">gtk-clear</property>
+        <property name="primary_icon_activatable">False</property>
+        <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
+        <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
+        <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
+        <signal name="icon-press" handler="on_icon_press" swapped="no"/>
       </object>
       <packing>
         <property name="left_attach">1</property>
-        <property name="right_attach">2</property>
+        <property name="top_attach">1</property>
+      </packing>
+    </child>
+    <child>
+      <object class="UnsignedDecimalEntryField" id="percentuale_entry">
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="tooltip_text" translatable="yes">Percentuale della aliquota
+quando presente e non
+esente</property>
+        <property name="invisible_char">•</property>
+        <property name="text" translatable="yes">0.000     </property>
+        <property name="primary_icon_activatable">False</property>
+        <signal name="icon-press" handler="on_icon_press" swapped="no"/>
+      </object>
+      <packing>
+        <property name="left_attach">1</property>
+        <property name="top_attach">2</property>
+      </packing>
+    </child>
+    <child>
+      <object class="UnsignedDecimalEntryField" id="percentuale_detrazione_entry">
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="tooltip_text" translatable="yes">Percentuale di detrazione
+quando presente</property>
+        <property name="invisible_char">•</property>
+        <property name="text" translatable="yes">0.000     </property>
+        <property name="primary_icon_activatable">False</property>
+        <signal name="icon-press" handler="on_icon_press" swapped="no"/>
+      </object>
+      <packing>
+        <property name="left_attach">1</property>
         <property name="top_attach">3</property>
-        <property name="bottom_attach">4</property>
-        <property name="x_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
-        <property name="y_options"/>
       </packing>
     </child>
     <child>
@@ -133,161 +173,28 @@ quando presente</property>
         <property name="invisible_char">•</property>
         <property name="secondary_icon_stock">gtk-clear</property>
         <property name="primary_icon_activatable">False</property>
-        <property name="secondary_icon_activatable">True</property>
-        <property name="primary_icon_sensitive">True</property>
-        <property name="secondary_icon_sensitive">True</property>
         <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
-        <signal name="icon-press" handler="on_icon_press" swapped="no"/>
-        <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
         <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
+        <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
+        <signal name="icon-press" handler="on_icon_press" swapped="no"/>
       </object>
       <packing>
         <property name="left_attach">1</property>
-        <property name="right_attach">2</property>
         <property name="top_attach">4</property>
-        <property name="bottom_attach">5</property>
-        <property name="x_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
-        <property name="y_options"/>
       </packing>
     </child>
     <child>
-      <object class="GtkLabel" id="tipo_aliquota_label">
+      <object class="GtkComboBox" id="id_tipo_combobox">
+        <property name="width_request">150</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="xalign">0</property>
-        <property name="label" translatable="yes">&lt;b&gt;Tipo Aliquota&lt;/b&gt;</property>
-        <property name="use_markup">True</property>
+        <property name="tooltip_text" translatable="yes">Tipologie
+di aliquota iva gestite
+dal programma</property>
       </object>
       <packing>
+        <property name="left_attach">1</property>
         <property name="top_attach">5</property>
-        <property name="bottom_attach">6</property>
-        <property name="x_options">GTK_FILL</property>
-        <property name="y_options"/>
-        <property name="x_padding">10</property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkLabel" id="descrizione_dotazioni_label">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="xalign">0</property>
-        <property name="yalign">0.47999998927116394</property>
-        <property name="label" translatable="yes">Descrizione detrazione</property>
-      </object>
-      <packing>
-        <property name="top_attach">4</property>
-        <property name="bottom_attach">5</property>
-        <property name="x_options">GTK_FILL</property>
-        <property name="y_options"/>
-        <property name="x_padding">10</property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkLabel" id="percentuale_detrazione_label">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="xalign">0</property>
-        <property name="label" translatable="yes">% Detrazione</property>
-      </object>
-      <packing>
-        <property name="top_attach">3</property>
-        <property name="bottom_attach">4</property>
-        <property name="x_options">GTK_FILL</property>
-        <property name="y_options"/>
-        <property name="x_padding">10</property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkLabel" id="percentuale_aliquota_label">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="xalign">0</property>
-        <property name="label" translatable="yes">% Aliquota IVA</property>
-      </object>
-      <packing>
-        <property name="top_attach">2</property>
-        <property name="bottom_attach">3</property>
-        <property name="x_options">GTK_FILL</property>
-        <property name="y_options"/>
-        <property name="x_padding">10</property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkAlignment" id="alignment55">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="xalign">0</property>
-        <property name="xscale">0</property>
-        <child>
-          <object class="GtkEntry" id="denominazione_breve_entry">
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="tooltip_text" translatable="yes">Descrizione Breve ( max 10 )</property>
-            <property name="max_length">10</property>
-            <property name="invisible_char">•</property>
-            <property name="secondary_icon_stock">gtk-clear</property>
-            <property name="primary_icon_activatable">False</property>
-            <property name="secondary_icon_activatable">True</property>
-            <property name="primary_icon_sensitive">True</property>
-            <property name="secondary_icon_sensitive">True</property>
-            <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
-            <signal name="icon-press" handler="on_icon_press" swapped="no"/>
-            <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
-            <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
-          </object>
-        </child>
-      </object>
-      <packing>
-        <property name="left_attach">1</property>
-        <property name="right_attach">2</property>
-        <property name="top_attach">1</property>
-        <property name="bottom_attach">2</property>
-        <property name="x_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
-        <property name="y_options"/>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkLabel" id="descrizione_breve_aliquota_iva_label">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="xalign">0</property>
-        <property name="label" translatable="yes">&lt;b&gt;Descrizione breve&lt;/b&gt;</property>
-        <property name="use_markup">True</property>
-      </object>
-      <packing>
-        <property name="top_attach">1</property>
-        <property name="bottom_attach">2</property>
-        <property name="x_options">GTK_FILL</property>
-        <property name="y_options"/>
-        <property name="x_padding">10</property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkLabel" id="descrizione_aliquota_iva_label">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="xalign">0</property>
-        <property name="label" translatable="yes">&lt;b&gt;Descrizione&lt;/b&gt;</property>
-        <property name="use_markup">True</property>
-      </object>
-      <packing>
-        <property name="x_options">GTK_FILL</property>
-        <property name="y_options"/>
-        <property name="x_padding">10</property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkLabel" id="shop_reparto">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="label" translatable="yes">Abbinamento reparto vendita</property>
-      </object>
-      <packing>
-        <property name="top_attach">6</property>
-        <property name="bottom_attach">7</property>
-        <property name="x_options"/>
-        <property name="y_options"/>
-        <property name="x_padding">1</property>
       </packing>
     </child>
     <child>
@@ -297,44 +204,37 @@ quando presente</property>
         <property name="invisible_char">●</property>
         <property name="primary_icon_activatable">False</property>
         <property name="secondary_icon_activatable">False</property>
-        <property name="primary_icon_sensitive">True</property>
-        <property name="secondary_icon_sensitive">True</property>
       </object>
       <packing>
         <property name="left_attach">1</property>
-        <property name="right_attach">2</property>
         <property name="top_attach">6</property>
-        <property name="bottom_attach">7</property>
-        <property name="y_options"/>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkLabel" id="descrizione_dotazioni_label1">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="xalign">0</property>
+        <property name="yalign">0.47999998927116394</property>
+        <property name="xpad">3</property>
+        <property name="label" translatable="yes">Reparto Cassa</property>
+      </object>
+      <packing>
+        <property name="left_attach">0</property>
+        <property name="top_attach">6</property>
       </packing>
     </child>
   </object>
-  <object class="GtkTable" id="anagrafica_aliquote_iva_filter_table">
-    <property name="height_request">130</property>
+  <object class="GtkGrid" id="anagrafica_aliquote_iva_filter_table">
+    <property name="height_request">100</property>
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="n_columns">2</property>
-    <child>
-      <object class="GtkEntry" id="denominazione_filter_entry">
-        <property name="visible">True</property>
-        <property name="can_focus">True</property>
-        <property name="invisible_char">•</property>
-        <property name="primary_icon_activatable">False</property>
-        <property name="secondary_icon_activatable">False</property>
-        <property name="primary_icon_sensitive">True</property>
-        <property name="secondary_icon_sensitive">True</property>
-        <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
-        <signal name="key-press-event" handler="on_campo_filter_entry_key_press_event" swapped="no"/>
-        <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
-        <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
-      </object>
-      <packing>
-        <property name="left_attach">1</property>
-        <property name="right_attach">2</property>
-        <property name="x_options">GTK_SHRINK | GTK_FILL</property>
-        <property name="y_options"/>
-      </packing>
-    </child>
+    <property name="margin_left">3</property>
+    <property name="margin_right">4</property>
+    <property name="margin_top">3</property>
+    <property name="margin_bottom">3</property>
+    <property name="row_spacing">3</property>
+    <property name="column_spacing">3</property>
     <child>
       <object class="GtkLabel" id="label34">
         <property name="visible">True</property>
@@ -343,11 +243,39 @@ quando presente</property>
         <property name="label" translatable="yes">Descrizione</property>
       </object>
       <packing>
-        <property name="x_options">GTK_FILL</property>
-        <property name="y_options"/>
-        <property name="x_padding">10</property>
+        <property name="left_attach">0</property>
+        <property name="top_attach">0</property>
       </packing>
     </child>
+    <child>
+      <object class="GtkEntry" id="denominazione_filter_entry">
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="invisible_char">•</property>
+        <property name="primary_icon_activatable">False</property>
+        <property name="secondary_icon_activatable">False</property>
+        <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
+        <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
+        <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
+        <signal name="key-press-event" handler="on_campo_filter_entry_key_press_event" swapped="no"/>
+      </object>
+      <packing>
+        <property name="left_attach">1</property>
+        <property name="top_attach">0</property>
+      </packing>
+    </child>
+  </object>
+  <object class="GtkListStore" id="filter_listore">
+    <columns>
+      <!-- column-name PyObject1 -->
+      <column type="PyObject"/>
+      <!-- column-name gchararray1 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray2 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray3 -->
+      <column type="gchararray"/>
+    </columns>
   </object>
   <object class="GtkTreeView" id="anagrafica_filter_treeview">
     <property name="visible">True</property>
@@ -356,6 +284,9 @@ quando presente</property>
     <property name="model">filter_listore</property>
     <property name="search_column">1</property>
     <property name="enable_grid_lines">both</property>
+    <child internal-child="selection">
+      <object class="GtkTreeSelection" id="treeview-selection1"/>
+    </child>
     <child>
       <object class="GtkTreeViewColumn" id="descrizione_column">
         <property name="resizable">True</property>
@@ -395,17 +326,5 @@ quando presente</property>
         </child>
       </object>
     </child>
-  </object>
-  <object class="GtkListStore" id="filter_listore">
-    <columns>
-      <!-- column-name PyObject1 -->
-      <column type="PyObject"/>
-      <!-- column-name gchararray1 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray2 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray3 -->
-      <column type="gchararray"/>
-    </columns>
   </object>
 </interface>

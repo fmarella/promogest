@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.18.3 -->
 <interface>
-  <requires lib="gtk+" version="2.16"/>
-  <!-- interface-requires pythonplugin 0.0 -->
-  <!-- interface-naming-policy toplevel-contextual -->
+  <requires lib="gtk+" version="3.4"/>
+  <requires lib="pythonplugin" version="0.0"/>
   <object class="GtkNotebook" id="anagrafica_fornitori_detail_notebook">
     <property name="visible">True</property>
     <property name="can_focus">True</property>
@@ -14,6 +14,78 @@
         <property name="n_rows">19</property>
         <property name="n_columns">6</property>
         <property name="row_spacing">6</property>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
         <child>
           <object class="GtkLabel" id="label1">
             <property name="visible">True</property>
@@ -50,8 +122,6 @@
             <property name="invisible_char">●</property>
             <property name="primary_icon_activatable">False</property>
             <property name="secondary_icon_activatable">False</property>
-            <property name="primary_icon_sensitive">True</property>
-            <property name="secondary_icon_sensitive">True</property>
             <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
             <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
           </object>
@@ -388,12 +458,9 @@ Cognome Nome&lt;/b&gt;</property>
             <property name="invisible_char">●</property>
             <property name="secondary_icon_stock">gtk-clear</property>
             <property name="primary_icon_activatable">False</property>
-            <property name="secondary_icon_activatable">True</property>
-            <property name="primary_icon_sensitive">True</property>
-            <property name="secondary_icon_sensitive">True</property>
-            <signal name="icon-press" handler="on_icon_press" swapped="no"/>
             <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
             <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
+            <signal name="icon-press" handler="on_icon_press" swapped="no"/>
           </object>
           <packing>
             <property name="left_attach">1</property>
@@ -419,8 +486,6 @@ Cognome Nome&lt;/b&gt;</property>
                 <property name="invisible_char">●</property>
                 <property name="primary_icon_activatable">False</property>
                 <property name="secondary_icon_activatable">False</property>
-                <property name="primary_icon_sensitive">True</property>
-                <property name="secondary_icon_sensitive">True</property>
                 <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
               </object>
             </child>
@@ -448,10 +513,6 @@ Cognome Nome&lt;/b&gt;</property>
                 <property name="invisible_char">●</property>
                 <property name="primary_icon_stock">gtk-new</property>
                 <property name="secondary_icon_stock">gtk-clear</property>
-                <property name="primary_icon_activatable">True</property>
-                <property name="secondary_icon_activatable">True</property>
-                <property name="primary_icon_sensitive">True</property>
-                <property name="secondary_icon_sensitive">True</property>
                 <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
                 <signal name="icon-press" handler="on_icon_press" swapped="no"/>
                 <signal name="icon-press" handler="on_icon_press_primary" swapped="no"/>
@@ -473,13 +534,10 @@ Cognome Nome&lt;/b&gt;</property>
             <property name="invisible_char">●</property>
             <property name="secondary_icon_stock">gtk-clear</property>
             <property name="primary_icon_activatable">False</property>
-            <property name="secondary_icon_activatable">True</property>
-            <property name="primary_icon_sensitive">True</property>
-            <property name="secondary_icon_sensitive">True</property>
             <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
-            <signal name="icon-press" handler="on_icon_press" swapped="no"/>
             <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
             <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
+            <signal name="icon-press" handler="on_icon_press" swapped="no"/>
           </object>
           <packing>
             <property name="left_attach">1</property>
@@ -498,13 +556,10 @@ Cognome Nome&lt;/b&gt;</property>
             <property name="invisible_char">●</property>
             <property name="secondary_icon_stock">gtk-clear</property>
             <property name="primary_icon_activatable">False</property>
-            <property name="secondary_icon_activatable">True</property>
-            <property name="primary_icon_sensitive">True</property>
-            <property name="secondary_icon_sensitive">True</property>
             <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
-            <signal name="icon-press" handler="on_icon_press" swapped="no"/>
             <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
             <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
+            <signal name="icon-press" handler="on_icon_press" swapped="no"/>
           </object>
           <packing>
             <property name="left_attach">1</property>
@@ -523,13 +578,10 @@ Cognome Nome&lt;/b&gt;</property>
             <property name="invisible_char">●</property>
             <property name="secondary_icon_stock">gtk-clear</property>
             <property name="primary_icon_activatable">False</property>
-            <property name="secondary_icon_activatable">True</property>
-            <property name="primary_icon_sensitive">True</property>
-            <property name="secondary_icon_sensitive">True</property>
             <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
-            <signal name="icon-press" handler="on_icon_press" swapped="no"/>
             <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
             <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
+            <signal name="icon-press" handler="on_icon_press" swapped="no"/>
           </object>
           <packing>
             <property name="left_attach">1</property>
@@ -548,13 +600,10 @@ Cognome Nome&lt;/b&gt;</property>
             <property name="invisible_char">●</property>
             <property name="secondary_icon_stock">gtk-clear</property>
             <property name="primary_icon_activatable">False</property>
-            <property name="secondary_icon_activatable">True</property>
-            <property name="primary_icon_sensitive">True</property>
-            <property name="secondary_icon_sensitive">True</property>
             <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
-            <signal name="icon-press" handler="on_icon_press" swapped="no"/>
             <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
             <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
+            <signal name="icon-press" handler="on_icon_press" swapped="no"/>
           </object>
           <packing>
             <property name="left_attach">1</property>
@@ -579,8 +628,6 @@ Cognome Nome&lt;/b&gt;</property>
                 <property name="invisible_char">●</property>
                 <property name="primary_icon_activatable">False</property>
                 <property name="secondary_icon_activatable">False</property>
-                <property name="primary_icon_sensitive">True</property>
-                <property name="secondary_icon_sensitive">True</property>
                 <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
                 <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
                 <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
@@ -604,13 +651,10 @@ Cognome Nome&lt;/b&gt;</property>
             <property name="invisible_char">●</property>
             <property name="secondary_icon_stock">gtk-clear</property>
             <property name="primary_icon_activatable">False</property>
-            <property name="secondary_icon_activatable">True</property>
-            <property name="primary_icon_sensitive">True</property>
-            <property name="secondary_icon_sensitive">True</property>
             <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
-            <signal name="icon-press" handler="on_icon_press" swapped="no"/>
             <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
             <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
+            <signal name="icon-press" handler="on_icon_press" swapped="no"/>
           </object>
           <packing>
             <property name="left_attach">1</property>
@@ -636,8 +680,6 @@ Cognome Nome&lt;/b&gt;</property>
                 <property name="invisible_char">●</property>
                 <property name="primary_icon_activatable">False</property>
                 <property name="secondary_icon_activatable">False</property>
-                <property name="primary_icon_sensitive">True</property>
-                <property name="secondary_icon_sensitive">True</property>
                 <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
                 <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
                 <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
@@ -661,9 +703,6 @@ Cognome Nome&lt;/b&gt;</property>
             <property name="invisible_char">●</property>
             <property name="secondary_icon_stock">gtk-clear</property>
             <property name="primary_icon_activatable">False</property>
-            <property name="secondary_icon_activatable">True</property>
-            <property name="primary_icon_sensitive">True</property>
-            <property name="secondary_icon_sensitive">True</property>
             <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
           </object>
           <packing>
@@ -689,8 +728,6 @@ Cognome Nome&lt;/b&gt;</property>
                 <property name="invisible_char">●</property>
                 <property name="primary_icon_activatable">False</property>
                 <property name="secondary_icon_activatable">False</property>
-                <property name="primary_icon_sensitive">True</property>
-                <property name="secondary_icon_sensitive">True</property>
               </object>
             </child>
           </object>
@@ -711,13 +748,10 @@ Cognome Nome&lt;/b&gt;</property>
             <property name="invisible_char">●</property>
             <property name="secondary_icon_stock">gtk-clear</property>
             <property name="primary_icon_activatable">False</property>
-            <property name="secondary_icon_activatable">True</property>
-            <property name="primary_icon_sensitive">True</property>
-            <property name="secondary_icon_sensitive">True</property>
             <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
-            <signal name="icon-press" handler="on_entry_icon_press" swapped="no"/>
             <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
             <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
+            <signal name="icon-press" handler="on_entry_icon_press" swapped="no"/>
           </object>
           <packing>
             <property name="left_attach">1</property>
@@ -727,6 +761,9 @@ Cognome Nome&lt;/b&gt;</property>
             <property name="x_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
             <property name="y_options"/>
           </packing>
+        </child>
+        <child>
+          <placeholder/>
         </child>
         <child>
           <object class="GtkAlignment" id="alignment293">
@@ -742,8 +779,6 @@ Cognome Nome&lt;/b&gt;</property>
                 <property name="invisible_char">●</property>
                 <property name="primary_icon_activatable">False</property>
                 <property name="secondary_icon_activatable">False</property>
-                <property name="primary_icon_sensitive">True</property>
-                <property name="secondary_icon_sensitive">True</property>
               </object>
             </child>
           </object>
@@ -770,8 +805,6 @@ Cognome Nome&lt;/b&gt;</property>
                 <property name="invisible_char">●</property>
                 <property name="primary_icon_activatable">False</property>
                 <property name="secondary_icon_activatable">False</property>
-                <property name="primary_icon_sensitive">True</property>
-                <property name="secondary_icon_sensitive">True</property>
               </object>
             </child>
           </object>
@@ -804,6 +837,9 @@ Cognome Nome&lt;/b&gt;</property>
           </packing>
         </child>
         <child>
+          <placeholder/>
+        </child>
+        <child>
           <object class="GtkLabel" id="label22">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
@@ -826,8 +862,6 @@ Cognome Nome&lt;/b&gt;</property>
             <property name="invisible_char">●</property>
             <property name="primary_icon_activatable">False</property>
             <property name="secondary_icon_activatable">False</property>
-            <property name="primary_icon_sensitive">True</property>
-            <property name="secondary_icon_sensitive">True</property>
             <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
             <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
           </object>
@@ -840,7 +874,6 @@ Cognome Nome&lt;/b&gt;</property>
         </child>
         <child>
           <object class="GtkToggleButton" id="promemoria_togglebutton">
-            <property name="use_action_appearance">False</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
@@ -895,7 +928,6 @@ Cognome Nome&lt;/b&gt;</property>
         </child>
         <child>
           <object class="GtkToggleButton" id="forniture_togglebutton">
-            <property name="use_action_appearance">False</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
@@ -950,7 +982,6 @@ Cognome Nome&lt;/b&gt;</property>
         </child>
         <child>
           <object class="GtkToggleButton" id="scheda_contabile_togglebutton">
-            <property name="use_action_appearance">False</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
@@ -1004,8 +1035,10 @@ Cognome Nome&lt;/b&gt;</property>
           </packing>
         </child>
         <child>
+          <placeholder/>
+        </child>
+        <child>
           <object class="GtkToggleButton" id="label_togglebutton">
-            <property name="use_action_appearance">False</property>
             <property name="width_request">120</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
@@ -1062,87 +1095,6 @@ Cognome Nome&lt;/b&gt;</property>
         <child>
           <placeholder/>
         </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
       </object>
     </child>
     <child type="tab">
@@ -1186,7 +1138,7 @@ Cognome Nome&lt;/b&gt;</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="xalign">0</property>
-                <property name="label" translatable="yes">Pagamento 
+                <property name="label" translatable="yes">Pagamento
    preferenziale</property>
               </object>
               <packing>
@@ -1202,7 +1154,7 @@ Cognome Nome&lt;/b&gt;</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="xalign">0</property>
-                <property name="label" translatable="yes">Magazzino 
+                <property name="label" translatable="yes">Magazzino
    preferenziale</property>
               </object>
               <packing>
@@ -1337,11 +1289,8 @@ Cognome Nome&lt;/b&gt;</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="invisible_char">●</property>
-                            <property name="invisible_char_set">True</property>
                             <property name="primary_icon_activatable">False</property>
                             <property name="secondary_icon_activatable">False</property>
-                            <property name="primary_icon_sensitive">True</property>
-                            <property name="secondary_icon_sensitive">True</property>
                           </object>
                           <packing>
                             <property name="expand">True</property>
@@ -1379,11 +1328,8 @@ Cognome Nome&lt;/b&gt;</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="invisible_char">●</property>
-                            <property name="invisible_char_set">True</property>
                             <property name="primary_icon_activatable">False</property>
                             <property name="secondary_icon_activatable">False</property>
-                            <property name="primary_icon_sensitive">True</property>
-                            <property name="secondary_icon_sensitive">True</property>
                           </object>
                           <packing>
                             <property name="expand">True</property>
@@ -1421,11 +1367,8 @@ Cognome Nome&lt;/b&gt;</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="invisible_char">●</property>
-                            <property name="invisible_char_set">True</property>
                             <property name="primary_icon_activatable">False</property>
                             <property name="secondary_icon_activatable">False</property>
-                            <property name="primary_icon_sensitive">True</property>
-                            <property name="secondary_icon_sensitive">True</property>
                           </object>
                           <packing>
                             <property name="expand">True</property>
@@ -1463,11 +1406,8 @@ Cognome Nome&lt;/b&gt;</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="invisible_char">●</property>
-                            <property name="invisible_char_set">True</property>
                             <property name="primary_icon_activatable">False</property>
                             <property name="secondary_icon_activatable">False</property>
-                            <property name="primary_icon_sensitive">True</property>
-                            <property name="secondary_icon_sensitive">True</property>
                           </object>
                           <packing>
                             <property name="expand">True</property>
@@ -1505,11 +1445,8 @@ Cognome Nome&lt;/b&gt;</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="invisible_char">●</property>
-                            <property name="invisible_char_set">True</property>
                             <property name="primary_icon_activatable">False</property>
                             <property name="secondary_icon_activatable">False</property>
-                            <property name="primary_icon_sensitive">True</property>
-                            <property name="secondary_icon_sensitive">True</property>
                           </object>
                           <packing>
                             <property name="expand">True</property>
@@ -1528,7 +1465,7 @@ Cognome Nome&lt;/b&gt;</property>
                       <object class="GtkLabel" id="info_contatti_label">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">Il pulsante Contatti permette di accedere all'anagrafica Contatti. Per ogni fornitore 
+                        <property name="label" translatable="yes">Il pulsante Contatti permette di accedere all'anagrafica Contatti. Per ogni fornitore
 è possibile abbinare diversi contatti di tipo  aziendale o personale, dividerli per categorie
 ed assegnare loro recapiti telefonici, contatti  skype o msn. </property>
                         <property name="wrap">True</property>
@@ -1541,7 +1478,6 @@ ed assegnare loro recapiti telefonici, contatti  skype o msn. </property>
                     </child>
                     <child>
                       <object class="GtkToggleButton" id="contatti_fornitore_togglebutton">
-                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
@@ -1641,8 +1577,6 @@ ed assegnare loro recapiti telefonici, contatti  skype o msn. </property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="border_width">1</property>
-            <property name="hscrollbar_policy">automatic</property>
-            <property name="vscrollbar_policy">automatic</property>
             <child>
               <object class="GtkTextView" id="note_textview">
                 <property name="visible">True</property>

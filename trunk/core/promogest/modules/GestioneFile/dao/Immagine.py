@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -24,24 +24,41 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
-from promogest.dao.Dao import Dao
+from promogest.dao.Dao import Dao, Base
 
-try:
-    t_immagine =Table('immagine',
-            params['metadata'],
-            schema = params['schema'],
-            autoload=True)
-except:
-    from data.immagine import t_immagine
 
-class ImageFile(Dao):
+
+class ImageFile(Base, Dao):
+    try:
+        __table__ =Table('immagine',
+                params['metadata'],
+                schema = params['schema'],
+                autoload=True)
+    except:
+        try:
+            __table__ = Table('immagine', params['metadata'],
+                Column('id', Integer, primary_key=True),
+                Column('denominazione', String(200), nullable=False ),
+                Column('altezza', Numeric(16,4), nullable=True),
+                Column('larghezza', Numeric(16,4), nullable=True),
+                Column('fingerprint', String(200), nullable=False ),
+                Column('data', LargeBinary),
+                schema=params['schema'],
+                )
+        except:
+            __table__ = Table('immagine', params['metadata'],
+                Column('id', Integer, primary_key=True),
+                Column('denominazione', String(200), nullable=False ),
+                Column('altezza', Numeric(16,4), nullable=True),
+                Column('larghezza', Numeric(16,4), nullable=True),
+                Column('fingerprint', String(200), nullable=False ),
+                Column('data', Binary),
+                schema=params['schema'],
+                )
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):
-        dic= { 'denominazione' : t_immagine.c.denominazione == v }
+        dic= { 'denominazione' : ImageFile.__table__.c.denominazione == v }
         return  dic[k]
-
-
-std_mapper = mapper(ImageFile, t_immagine, order_by = t_immagine.c.id)

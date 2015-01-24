@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <requires lib="gtk+" version="2.16"/>
+  <requires lib="gtk+" version="2.24"/>
   <!-- interface-naming-policy project-wide -->
   <object class="GtkImage" id="image1">
     <property name="visible">True</property>
@@ -57,7 +57,6 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
                 <signal name="clicked" handler="on_one_main_button_clicked" swapped="no"/>
                 <child>
                   <object class="GtkImage" id="image2">
@@ -115,7 +114,6 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
                 <signal name="clicked" handler="on_pro_main_button_clicked" swapped="no"/>
                 <child>
                   <object class="GtkImage" id="image3">
@@ -167,7 +165,6 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
                 <signal name="clicked" handler="on_promowear_main_button_clicked" swapped="no"/>
                 <child>
                   <object class="GtkImage" id="image4">
@@ -211,7 +208,6 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <property name="use_action_appearance">False</property>
                     <signal name="clicked" handler="on_promowear_one_button_clicked" swapped="no"/>
                   </object>
                   <packing>
@@ -226,7 +222,6 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <property name="use_action_appearance">False</property>
                     <signal name="clicked" handler="on_promowear_pro_button_clicked" swapped="no"/>
                   </object>
                   <packing>
@@ -260,7 +255,6 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
                 <signal name="clicked" handler="on_promoshop_main_button_clicked" swapped="no"/>
                 <child>
                   <object class="GtkImage" id="image5">
@@ -304,7 +298,6 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <property name="use_action_appearance">False</property>
                     <signal name="clicked" handler="on_promoshop_one_button_clicked" swapped="no"/>
                   </object>
                   <packing>
@@ -319,7 +312,6 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <property name="use_action_appearance">False</property>
                     <signal name="clicked" handler="on_promoshop_pro_button_clicked" swapped="no"/>
                   </object>
                   <packing>

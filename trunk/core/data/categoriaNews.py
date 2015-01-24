@@ -27,7 +27,7 @@ t_news_category = Table('news_category', params["metadata"],
         Column('id', Integer, primary_key=True),
         Column('denominazione', String(100), unique=True),
         Column('icona_categoria_news', Text, nullable=True),
-        schema=params['schema'],
+        schema=mainSchema,
         extend_existing=True,)
-        
+
 t_news_category.create(checkfirst=True)

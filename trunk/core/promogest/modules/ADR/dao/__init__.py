@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Marella <francesco.marella@anche.no>
+#    Author: Francesco Meloni <francesco@promotux.it>
 
 #    This file is part of Promogest.
 
@@ -18,4 +19,4 @@
 #    GNU General Public License for more details.
 
 #    You should have received a copy of the GNU General Public License
-#    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
+#    along with Promogest.  If not, see <http://www.gnu.org/licenses/>..

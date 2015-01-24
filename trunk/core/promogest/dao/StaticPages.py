@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2013 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -24,19 +24,22 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
 
-try:
-    t_static_page=Table('static_page',
-        params['metadata'],
-        schema = params['schema'],
-        autoload=True)
-except:
-    from data.staticPages import t_static_page
-
-from promogest.dao.Dao import Dao
-from promogest.dao.Language import Language, t_language
+from promogest.dao.Dao import Dao, Base
+from promogest.dao.Language import Language
 
 
-class StaticPages(Dao):
+class StaticPages(Base, Dao):
+    try:
+        __table__ = Table('static_page',
+            params['metadata'],
+            schema = params['schema'],
+            autoload=True)
+    except:
+        from data.staticPages import t_static_page
+        __table__ = t_static_page
+
+    #ALERT! Sembra che questa relazione non venga trovata, manon fa niente
+    #lang = relationship("Language")
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
@@ -44,18 +47,9 @@ class StaticPages(Dao):
 
     def filter_values(self,k,v):
         if k=='id_language':
-            dic= {  k : t_static_page.c.id_language == v}
+            dic= {  k : StaticPages.__table__.c.id_language == v}
         elif k == "titlePage":
-            dic = { k: t_static_page.c.title==v }
+            dic = { k: StaticPages.__table__.c.title==v }
         elif k == "permalink":
-            dic = { k: t_static_page.c.permalink==v }
+            dic = { k: StaticPages.__table__.c.permalink==v }
         return  dic[k]
-
-
-std_mapper = mapper(StaticPages, t_static_page,
-        properties = {
-            'lang' : relation(Language,
-                        primaryjoin= t_static_page.c.id_language==t_language.c.id,
-                        foreign_keys=[t_language.c.id]),
-        },
-        order_by=t_static_page.c.id)

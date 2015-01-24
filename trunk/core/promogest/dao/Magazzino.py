@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -22,22 +22,21 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
-from promogest.dao.Dao import Dao
+from promogest.dao.Dao import Dao, Base
 
-try:
-    t_magazzino=Table('magazzino', params['metadata'], schema=params['schema'], autoload=True)
-except:
-    from data.magazzino import t_magazzino
 
-class Magazzino(Dao):
+class Magazzino(Base, Dao):
+
+    try:
+        __table__ = Table('magazzino', params['metadata'], schema=params['schema'], autoload=True)
+    except:
+        from data.magazzino import t_magazzino
+        __table__ = t_magazzino
+
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):
-        dic= {'denominazione' : t_magazzino.c.denominazione.ilike("%"+v+"%")}
+        dic= {'denominazione' : Magazzino.__table__.c.denominazione.ilike("%"+v+"%")}
         return  dic[k]
-
-
-std_mapper = mapper(Magazzino, t_magazzino,
- order_by=t_magazzino.c.denominazione)

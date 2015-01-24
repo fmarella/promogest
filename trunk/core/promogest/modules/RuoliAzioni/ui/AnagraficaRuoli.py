@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -46,10 +46,10 @@ class AnagraficaRuoli(Anagrafica):
         renderer = gtk.CellRendererText()
         renderer.set_property('editable', False)
         renderer.connect('edited', self.on_column_edited, treeview, True)
-        renderer.set_data('column', 0)
-        renderer.set_data('max_length', 50)
+        #GTK3
+        #renderer.set_data('column', 0)
+        #renderer.set_data('max_length', 50)
         column = gtk.TreeViewColumn('Nome', renderer, text=1)
-        #column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
         column.connect("clicked", self._changeOrderBy, (None, 'denominazione'))
         column.set_resizable(True)
@@ -59,8 +59,9 @@ class AnagraficaRuoli(Anagrafica):
         renderer = gtk.CellRendererText()
         renderer.set_property('editable', False)
         renderer.connect('edited', self.on_column_edited, treeview, False)
-        renderer.set_data('column', 1)
-        renderer.set_data('max_length', 250)
+        #GTK3
+        #renderer.set_data('column', 1)
+        #renderer.set_data('max_length', 250)
         column = gtk.TreeViewColumn('Descrizione', renderer, text=2)
         column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)

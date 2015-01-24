@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2013 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Marella <francesco.marella@anche.no>
+#    Author: Francesco Meloni <francesco@promotux.it>
 
 #    This file is part of Promogest.
 
@@ -23,57 +24,58 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
-from promogest.dao.Dao import Dao
+from promogest.dao.Dao import Dao, Base
 from promogest.modules.ADR.dao.CategoriaTrasporto import CategoriaTrasporto
 from promogest.modules.ADR.dao.CodiceClassificazione import CodiceClassificazione
 from promogest.modules.ADR.dao.GruppoImballaggio import GruppoImballaggio
 from promogest.modules.ADR.dao.ClassePericolo import ClassePericolo
 from promogest.modules.ADR.dao.Galleria import Galleria
 
-try:
-    t_articolo_adr = Table('articolo_adr', params['metadata'],
-                         schema=params['schema'], autoload=True)
-except:
+class ArticoloADR(Base, Dao):
+    try:
+        __table__ = Table('articolo_adr', params['metadata'],
+                             schema=params['schema'], autoload=True)
+    except:
 
-    t_articolo_adr = Table(
-        'articolo_adr',
-        params['metadata'],
-        Column('id', Integer, primary_key=True),
-        Column('id_articolo', Integer,
-               ForeignKey(fk_prefix + 'articolo.id',
-                          onupdate='CASCADE', ondelete='CASCADE')),
-        Column('numero_un', String(20), nullable=True),
-        Column('id_gruppo_imballaggio', Integer,
-               ForeignKey(fk_prefix + 'gruppo_imballaggio.id',
-                          onupdate="CASCADE", ondelete="RESTRICT")),
-        Column('id_categoria_trasporto', Integer,
-               ForeignKey(fk_prefix + 'categoria_trasporto.id',
-                          onupdate='CASCADE', ondelete='RESTRICT')),
-        Column('id_galleria', Integer,
-               ForeignKey(fk_prefix + 'adr_galleria.id',
-                          onupdate="CASCADE", ondelete="RESTRICT")),
-        Column('id_classe', Integer,
-               ForeignKey(fk_prefix + 'adr_classe_pericolo.id',
-                          onupdate="CASCADE", ondelete="RESTRICT")),
-        Column('id_codice_classificazione', Integer,
-               ForeignKey(fk_prefix + 'codice_classificazione.id',
-                          onupdate="CASCADE", ondelete="RESTRICT")),
-        schema=params['schema'],
-        useexisting=True,
-        )
-    t_articolo_adr.create(checkfirst=True)
+        __table__ = Table(
+            'articolo_adr',
+            params['metadata'],
+            Column('id', Integer, primary_key=True),
+            Column('id_articolo', Integer,
+                   ForeignKey(fk_prefix + 'articolo.id',
+                              onupdate='CASCADE', ondelete='CASCADE')),
+            Column('numero_un', String(20), nullable=True),
+            Column('id_gruppo_imballaggio', Integer,
+                   ForeignKey(fk_prefix + 'gruppo_imballaggio.id',
+                              onupdate="CASCADE", ondelete="RESTRICT")),
+            Column('id_categoria_trasporto', Integer,
+                   ForeignKey(fk_prefix + 'categoria_trasporto.id',
+                              onupdate='CASCADE', ondelete='RESTRICT')),
+            Column('id_galleria', Integer,
+                   ForeignKey(fk_prefix + 'adr_galleria.id',
+                              onupdate="CASCADE", ondelete="RESTRICT")),
+            Column('id_classe', Integer,
+                   ForeignKey(fk_prefix + 'adr_classe_pericolo.id',
+                              onupdate="CASCADE", ondelete="RESTRICT")),
+            Column('id_codice_classificazione', Integer,
+                   ForeignKey(fk_prefix + 'codice_classificazione.id',
+                              onupdate="CASCADE", ondelete="RESTRICT")),
+            schema=params['schema'],
+            useexisting=True,
+            )
+    __mapper_args__ = {
+        'order_by' : "id_articolo"
+    }
 
-
-class ArticoloADR(Dao):
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
 
     def filter_values(self, k, v):
         if k == 'id':
-            dic = {k: t_articolo_adr.c.id==v}
+            dic = {k: ArticoloADR.__table__.c.id==v}
         elif k == 'id_articolo':
-            dic = {k: t_articolo_adr.c.id_articolo==v}
+            dic = {k: ArticoloADR.__table__.c.id_articolo==v}
         return dic[k]
 
     @property
@@ -131,6 +133,3 @@ class ArticoloADR(Dao):
             return a.denominazione
         else:
             return ''
-
-std_mapper = mapper(ArticoloADR, t_articolo_adr,
-                    order_by=t_articolo_adr.c.id_articolo)

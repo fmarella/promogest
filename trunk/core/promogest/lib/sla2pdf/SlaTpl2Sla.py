@@ -451,11 +451,11 @@ class SlaTpl2Sla(SlaParser):
                                     resolvedTag = self.callFunction(function, value, parameter)
                                 else:
                                     resolvedTag = str(value)
-                                ch = ch.replace(tags[tagkey]['completeTag'], resolvedTag)
+                                ch = ch.replace(tags[tagkey]['completeTag'], resolvedTag).encode("utf-8")
                                   # Save itext
-                                if "€€" in ch.replace(" ",""):
+                                if "€€" == ch.replace(" ",""):
                                     ch = ch.replace('€', '', 1)
-                                itext.set('CH', ch.decode())
+                                itext.set('CH', ch.decode("utf-8"))
 
                 else:
                     if isGroupControl == '1':
@@ -524,11 +524,11 @@ class SlaTpl2Sla(SlaParser):
                                     resolvedTag = self.callFunction(function, value, parameter)
                                 else:
                                     resolvedTag = str(value)
-                                ch = ch.replace(tags[k]['completeTag'], resolvedTag)
+                                ch = ch.replace(tags[k]['completeTag'], resolvedTag).encode("utf-8")
                                 if "€€" in ch.replace(" ",""):
                                     ch = ch.replace('€', '', 1)
                                 try:
-                                    itext.set('CH', ch.decode())
+                                    itext.set('CH', ch.decode("utf-8"))
                                 except:
                                     itext.set('CH', ch)
             iterator += 1

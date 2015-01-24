@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -20,33 +20,24 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 
-from sqlalchemy import Table
-from sqlalchemy.orm import mapper, join
+from sqlalchemy import *
+from sqlalchemy.orm import *
 from promogest.Environment import *
 
-try:
-    t_sconto_riga_documento=Table('sconto_riga_documento',
-                        params['metadata'],
-                        schema = params['schema'],
-                        autoload=True)
-except:
-    from data.rigaDocumento import t_riga_documento
-    from data.scontoRigaDocumento import t_sconto_riga_documento
+from Dao import Dao, Base
 
-from Dao import Dao
-from promogest.dao.Sconto import t_sconto
+from data.sconto import t_sconto
+from data.scontoRigaDocumento import t_sconto_riga_documento
+s_srd = join(t_sconto, t_sconto_riga_documento)
 
-class ScontoRigaDocumento(Dao):
+class ScontoRigaDocumento(Base, Dao):
+    __table__ = s_srd
+    id = column_property(t_sconto.c.id, t_sconto_riga_documento.c.id)
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):
-        dic= {'id':t_sconto_riga_documento.c.id ==v,
-            'idRigaDocumento':t_sconto_riga_documento.c.id_riga_documento==v,}
+        dic= {'id':ScontoRigaDocumento.__table__.c.id ==v,
+            'idRigaDocumento':ScontoRigaDocumento.__table__.c.id_riga_documento==v,}
         return  dic[k]
-
-
-std_mapper = mapper(ScontoRigaDocumento,join(t_sconto, t_sconto_riga_documento), properties={
-    'id':[t_sconto.c.id, t_sconto_riga_documento.c.id],
-    }, order_by=t_sconto_riga_documento.c.id)

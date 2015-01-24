@@ -1,13 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.18.3 -->
 <interface>
-  <requires lib="gtk+" version="2.16"/>
-  <!-- interface-naming-policy project-wide -->
+  <requires lib="gtk+" version="3.4"/>
   <object class="GtkAdjustment" id="anno_calendar_adj">
     <property name="lower">2000</property>
     <property name="upper">9999</property>
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
     <signal name="value-changed" handler="on_anno_calendar_spinbutton_change_value" swapped="no"/>
+  </object>
+  <object class="GtkListStore" id="liststore1">
+    <columns>
+      <!-- column-name nome -->
+      <column type="gchararray"/>
+    </columns>
+    <data>
+      <row>
+        <col id="0" translatable="yes">Mese</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Settimana</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Giorno</col>
+      </row>
+    </data>
   </object>
   <object class="GtkFrame" id="calendario_frame">
     <property name="visible">True</property>
@@ -34,8 +51,6 @@
                 <property name="can_focus">True</property>
                 <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                 <property name="border_width">1</property>
-                <property name="hscrollbar_policy">automatic</property>
-                <property name="vscrollbar_policy">automatic</property>
                 <property name="shadow_type">in</property>
                 <child>
                   <placeholder/>
@@ -60,7 +75,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
-                <property name="use_action_appearance">False</property>
+                <property name="xalign">0.5</property>
                 <property name="draw_indicator">True</property>
                 <signal name="toggled" handler="on_check_toggled" swapped="no"/>
               </object>
@@ -76,7 +91,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
-                <property name="use_action_appearance">False</property>
+                <property name="xalign">0.5</property>
                 <property name="draw_indicator">True</property>
                 <signal name="toggled" handler="on_check_toggled" swapped="no"/>
               </object>
@@ -92,7 +107,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
-                <property name="use_action_appearance">False</property>
+                <property name="xalign">0.5</property>
                 <property name="draw_indicator">True</property>
                 <signal name="toggled" handler="on_check_toggled" swapped="no"/>
               </object>
@@ -108,7 +123,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
-                <property name="use_action_appearance">False</property>
+                <property name="xalign">0.5</property>
                 <property name="draw_indicator">True</property>
                 <signal name="toggled" handler="on_check_toggled" swapped="no"/>
               </object>
@@ -124,7 +139,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
-                <property name="use_action_appearance">False</property>
+                <property name="xalign">0.5</property>
                 <property name="draw_indicator">True</property>
                 <signal name="toggled" handler="on_tutti_check_toggled" swapped="no"/>
               </object>
@@ -189,7 +204,6 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
                 <signal name="clicked" handler="on_menomesi_calendar_button_clicked" swapped="no"/>
               </object>
               <packing>
@@ -204,7 +218,6 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
                 <signal name="clicked" handler="on_menogiorni_calendar_button_clicked" swapped="no"/>
               </object>
               <packing>
@@ -219,7 +232,6 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
                 <signal name="clicked" handler="on_corrente_calendar_button_clicked" swapped="no"/>
               </object>
               <packing>
@@ -234,7 +246,6 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
                 <signal name="clicked" handler="on_piugiorni_calendar_button_clicked" swapped="no"/>
               </object>
               <packing>
@@ -249,7 +260,6 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
                 <signal name="clicked" handler="on_piumesi_calendar_button_clicked" swapped="no"/>
               </object>
               <packing>
@@ -266,12 +276,9 @@
                 <property name="can_focus">True</property>
                 <property name="has_focus">True</property>
                 <property name="invisible_char">●</property>
-                <property name="invisible_char_set">True</property>
                 <property name="progress_pulse_step">1</property>
                 <property name="primary_icon_activatable">False</property>
                 <property name="secondary_icon_activatable">False</property>
-                <property name="primary_icon_sensitive">True</property>
-                <property name="secondary_icon_sensitive">True</property>
                 <property name="adjustment">anno_calendar_adj</property>
                 <property name="climb_rate">1</property>
                 <property name="numeric">True</property>
@@ -288,7 +295,6 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
                 <signal name="clicked" handler="on_print_button_clicked" swapped="no"/>
               </object>
@@ -304,7 +310,6 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
                 <signal name="clicked" handler="on_refresh_button_clicked" swapped="no"/>
               </object>
@@ -338,22 +343,5 @@
         </attributes>
       </object>
     </child>
-  </object>
-  <object class="GtkListStore" id="liststore1">
-    <columns>
-      <!-- column-name nome -->
-      <column type="gchararray"/>
-    </columns>
-    <data>
-      <row>
-        <col id="0" translatable="yes">Mese</col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">Settimana</col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">Giorno</col>
-      </row>
-    </data>
   </object>
 </interface>

@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Marella <francesco.marella@anche.no>
+#    Author: Francesco Meloni <francesco@promotux.it>
 
 #    This file is part of Promogest.
 
@@ -23,32 +24,32 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
-from promogest.dao.Dao import Dao
+from promogest.dao.Dao import Dao, Base
 
-try:
-    gruppo_imballaggio = Table('gruppo_imballaggio', params['metadata'], schema = params['schema'],autoload=True)
 
-except:
-    gruppo_imballaggio = Table('gruppo_imballaggio', params["metadata"],
+class GruppoImballaggio(Base, Dao):
+    try:
+        __table__ = Table('gruppo_imballaggio', params['metadata'], schema = params['schema'],autoload=True)
+
+    except:
+        __table__ = Table('gruppo_imballaggio', params["metadata"],
             Column('id',Integer, primary_key=True),
             Column('denominazione', String(10)),
             schema = params['schema'])
 
-    gruppo_imballaggio.create(checkfirst=True)
-
-
-class GruppoImballaggio(Dao):
+    __mapper_args__ = {
+        'order_by' : "denominazione"
+    }
 
     def __init__(self, req= None, arg=None):
         Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):
         dic= {
-            'denominazione': gruppo_imballaggio.c.denominazione == v,
+            'denominazione': GruppoImballaggio.__table__.c.denominazione == v,
                 }
         return  dic[k]
 
-std_mapper = mapper(GruppoImballaggio, gruppo_imballaggio, order_by=gruppo_imballaggio.c.denominazione)
 
 _imballaggi = ["I", "II", "III"]
 

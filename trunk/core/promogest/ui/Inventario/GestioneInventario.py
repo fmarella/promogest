@@ -583,19 +583,23 @@ class GestioneInventario(RicercaComplessaArticoli):
         idMagazzino = findIdFromCombobox(self.additional_filter.id_magazzino_filter_combobox2)
         res = Inventario().select(anno=self.annoScorso,
                                   idMagazzino=idMagazzino, batchSize=None)
-
+        import timeit
         if res:
             quanti = len(res)
             for r in res:
+                start = timeit.default_timer()
                 if (sovrascrivi) or (not sovrascrivi and not r.quantita):
                     giacenza, valore, piu, meno = giacenzaArticolo(year=self.annoScorso,
                                                         idMagazzino=idMagazzino,
                                                         idArticolo=r.id_articolo)
-                    print "---", r.articolo,"giacenza",  giacenza, "RESIDUI DA ELABORARE",len(res) - res.index(r)  , "di ",  quanti
+
                     r.quantita = giacenza
                     if giacenza > 0:
                         r.data_aggiornamento = datetime.datetime.today().date()
                     Environment.params['session'].add(r)
+                    stop = timeit.default_timer()
+                    print "--", r.articolo,"giac.",  giacenza, "\033[1;36mRESIDUI ",len(res) - res.index(r)  , "di ",  str(quanti)+"\033[1;m" ,"\033[1;31m"+" elaborato in : ", round(stop - start,2) ,"ETA:", int((stop - start) * (len(res) - res.index(r)))/60,"MIN"+"\033[1;m"
+
             Environment.params['session'].commit()
         self.refresh()
         self.fineElaborazione()

@@ -2,7 +2,7 @@
 #
 # Promogest
 #
-# Copyright (C) 2005-2012 by Promotux Informatica - http://www.promotux.it/
+# Copyright (C) 2005-2015 by Promotux Informatica - http://www.promotux.it/
 #
 # Authors: Francesco Meloni  <francesco@promotux.it>
 #          Francesco Marella <francesco.marella@anche.no>
@@ -25,56 +25,41 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
-from Dao import Dao
-#from promogest.lib.migrate import *
-from promogest.lib.alembic.migration import MigrationContext
-from promogest.lib.alembic.operations import Operations
-from promogest.lib.alembic import op
-from promogest.dao.DaoUtils import get_columns
+from promogest.dao.Dao import Dao, Base
 
-try:
-    t_persona_giuridica = Table('persona_giuridica',
-                params['metadata'],
-                schema=params['schema'],
-                autoload=True)
-except:
-    from data.personaGiuridica import t_persona_giuridica
+class PersonaGiuridica_(Base, Dao):
 
-colonne = get_columns(t_persona_giuridica)
-if "note" not in colonne:
-    conn = engine.connect()
-    ctx = MigrationContext.configure(conn)
-    op = Operations(ctx)
-    op.add_column('persona_giuridica', Column('note', Text))
-    delete_pickle()
-
-if "cancellato" not in colonne:
-    conn = engine.connect()
-    ctx = MigrationContext.configure(conn)
-    op = Operations(ctx)
-    op.add_column('persona_giuridica',Column('cancellato', Boolean, default=False))
-    delete_pickle()
-
-class PersonaGiuridica_(Dao):
+    try:
+        __table__ = Table('persona_giuridica',
+                    params['metadata'],
+                    schema=params['schema'],
+                    autoload=True,
+                    autoload_with=engine)
+    except:
+        from data.personaGiuridica import t_persona_giuridica
+        __table__ = t_persona_giuridica
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):
         if k == 'idUser':
-            dic = {k: t_persona_giuridica.c.id_user == v}
+            dic = {k: PersonaGiuridica_.__table__.c.id_user == v}
         return  dic[k]
 
-
-
-std_mapper = mapper(PersonaGiuridica_,
-        t_persona_giuridica,
-        order_by=t_persona_giuridica.c.id)
-
-from promogest.dao.PersonaGiuridicaPersonaGiuridica import PersonaGiuridicaPersonaGiuridica
-
-
-for pg in session.query(PersonaGiuridica_).filter_by(cancellato=None).all():
-    pg.cancellato = False
-    session.add(pg)
-session.commit()
+try:
+    PersonaGiuridica_.__table__.c.note
+except:
+    conn = engine.connect()
+    ctx = MigrationContext.configure(conn)
+    op = Operations(ctx)
+    op.add_column('persona_giuridica', Column('note', Text))
+    delete_pickle()
+try:
+    PersonaGiuridica_.__table__.c.cancellato
+except:
+    conn = engine.connect()
+    ctx = MigrationContext.configure(conn)
+    op = Operations(ctx)
+    op.add_column('persona_giuridica',Column('cancellato', Boolean, default=False))
+    delete_pickle()

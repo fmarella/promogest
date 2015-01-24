@@ -84,27 +84,14 @@ def connect():
         return a
 
 def psycopg2new():
-    try:
-        from sqlalchemy.pool import NullPool
-        engine = create_engine('postgresql://', creator=connect,
-                convert_unicode=True,
-                encoding='utf-8',
-                proxy=MyProxy(),
-                poolclass=NullPool)
-        return engine
-    except:
-        try:
-            if os.name=="nt":
-                from setuptools.command import easy_install
-                easy_install.main( ["-U","psycopg2"] )
-                engine = create_engine('postgresql://', creator=connect,
-                        convert_unicode=True,
-                        encoding='utf-8',
-                        proxy=MyProxy())
-                return engine
-            #sys.exit()
-        except:
-            return None
+    from sqlalchemy.pool import NullPool
+    engine = create_engine('postgresql://', creator=connect,
+            convert_unicode=True,
+            encoding='utf-8',
+            proxy=MyProxy(),
+            poolclass=NullPool)
+    return engine
+
 
 def psycopg2old():
     try:

@@ -1,98 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.18.3 -->
 <interface>
-  <requires lib="gtk+" version="2.16"/>
-  <!-- interface-naming-policy project-wide -->
-  <object class="GtkListStore" id="filter_listore">
-    <columns>
-      <!-- column-name PyObject1 -->
-      <column type="PyObject"/>
-      <!-- column-name gchararray1 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray2 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray3 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray4 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray5 -->
-      <column type="gchararray"/>
-    </columns>
-  </object>
-  <object class="GtkTreeView" id="anagrafica_filter_treeview">
-    <property name="visible">True</property>
-    <property name="can_focus">True</property>
-    <property name="border_width">1</property>
-    <property name="model">filter_listore</property>
-    <property name="headers_clickable">False</property>
-    <property name="reorderable">True</property>
-    <property name="search_column">1</property>
-    <property name="enable_grid_lines">both</property>
-    <child>
-      <object class="GtkTreeViewColumn" id="codice_column">
-        <property name="resizable">True</property>
-        <property name="title" translatable="yes">Codice</property>
-        <property name="expand">True</property>
-        <property name="clickable">True</property>
-        <property name="reorderable">True</property>
-        <property name="sort_indicator">True</property>
-        <child>
-          <object class="GtkCellRendererText" id="cellrenderertext2"/>
-          <attributes>
-            <attribute name="text">1</attribute>
-          </attributes>
-        </child>
-      </object>
-    </child>
-    <child>
-      <object class="GtkTreeViewColumn" id="ragione_sociale_column">
-        <property name="resizable">True</property>
-        <property name="title" translatable="yes">Ragione Sociale</property>
-        <property name="expand">True</property>
-        <property name="clickable">True</property>
-        <property name="reorderable">True</property>
-        <property name="sort_indicator">True</property>
-        <child>
-          <object class="GtkCellRendererText" id="cellrenderertext3"/>
-          <attributes>
-            <attribute name="text">2</attribute>
-          </attributes>
-        </child>
-      </object>
-    </child>
-    <child>
-      <object class="GtkTreeViewColumn" id="cognome_nome_column">
-        <property name="title" translatable="yes">Cognome - Nome</property>
-        <child>
-          <object class="GtkCellRendererText" id="cellrenderertext8"/>
-          <attributes>
-            <attribute name="text">3</attribute>
-          </attributes>
-        </child>
-      </object>
-    </child>
-    <child>
-      <object class="GtkTreeViewColumn" id="localita_column">
-        <property name="title" translatable="yes">Località</property>
-        <child>
-          <object class="GtkCellRendererText" id="cellrenderertext4"/>
-          <attributes>
-            <attribute name="text">4</attribute>
-          </attributes>
-        </child>
-      </object>
-    </child>
-    <child>
-      <object class="GtkTreeViewColumn" id="partita_iva_column">
-        <property name="title" translatable="yes">Partita IVA / C.F.</property>
-        <child>
-          <object class="GtkCellRendererText" id="cellrenderertext5"/>
-          <attributes>
-            <attribute name="text">5</attribute>
-          </attributes>
-        </child>
-      </object>
-    </child>
-  </object>
+  <requires lib="gtk+" version="3.4"/>
   <object class="GtkVBox" id="anagrafica_fornitori_filter_vbox">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -115,7 +24,7 @@
               </object>
               <packing>
                 <property name="x_options">GTK_FILL</property>
-                <property name="y_options"></property>
+                <property name="y_options"/>
                 <property name="x_padding">10</property>
               </packing>
             </child>
@@ -130,7 +39,7 @@
                 <property name="top_attach">1</property>
                 <property name="bottom_attach">2</property>
                 <property name="x_options">GTK_FILL</property>
-                <property name="y_options"></property>
+                <property name="y_options"/>
                 <property name="x_padding">10</property>
               </packing>
             </child>
@@ -145,7 +54,7 @@
                 <property name="top_attach">2</property>
                 <property name="bottom_attach">3</property>
                 <property name="x_options">GTK_FILL</property>
-                <property name="y_options"></property>
+                <property name="y_options"/>
                 <property name="x_padding">10</property>
               </packing>
             </child>
@@ -160,7 +69,7 @@
                 <property name="top_attach">3</property>
                 <property name="bottom_attach">4</property>
                 <property name="x_options">GTK_FILL</property>
-                <property name="y_options"></property>
+                <property name="y_options"/>
                 <property name="x_padding">10</property>
               </packing>
             </child>
@@ -175,7 +84,7 @@
                 <property name="top_attach">4</property>
                 <property name="bottom_attach">5</property>
                 <property name="x_options">GTK_FILL</property>
-                <property name="y_options"></property>
+                <property name="y_options"/>
                 <property name="x_padding">10</property>
               </packing>
             </child>
@@ -190,7 +99,7 @@
                 <property name="top_attach">5</property>
                 <property name="bottom_attach">6</property>
                 <property name="x_options">GTK_FILL</property>
-                <property name="y_options"></property>
+                <property name="y_options"/>
                 <property name="x_padding">10</property>
               </packing>
             </child>
@@ -205,7 +114,7 @@
                 <property name="top_attach">6</property>
                 <property name="bottom_attach">7</property>
                 <property name="x_options">GTK_FILL</property>
-                <property name="y_options"></property>
+                <property name="y_options"/>
                 <property name="x_padding">10</property>
               </packing>
             </child>
@@ -220,7 +129,7 @@
                 <property name="top_attach">7</property>
                 <property name="bottom_attach">8</property>
                 <property name="x_options">GTK_FILL</property>
-                <property name="y_options"></property>
+                <property name="y_options"/>
                 <property name="x_padding">10</property>
               </packing>
             </child>
@@ -231,19 +140,17 @@
                 <property name="invisible_char">●</property>
                 <property name="primary_icon_activatable">False</property>
                 <property name="secondary_icon_activatable">False</property>
-                <property name="primary_icon_sensitive">True</property>
-                <property name="secondary_icon_sensitive">True</property>
                 <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
                 <signal name="changed" handler="on_filter_entry_changed" swapped="no"/>
-                <signal name="key-press-event" handler="on_campo_filter_entry_key_press_event" swapped="no"/>
                 <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
                 <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
+                <signal name="key-press-event" handler="on_campo_filter_entry_key_press_event" swapped="no"/>
               </object>
               <packing>
                 <property name="left_attach">1</property>
                 <property name="right_attach">2</property>
                 <property name="x_options">GTK_SHRINK | GTK_FILL</property>
-                <property name="y_options"></property>
+                <property name="y_options"/>
               </packing>
             </child>
             <child>
@@ -253,13 +160,11 @@
                 <property name="invisible_char">●</property>
                 <property name="primary_icon_activatable">False</property>
                 <property name="secondary_icon_activatable">False</property>
-                <property name="primary_icon_sensitive">True</property>
-                <property name="secondary_icon_sensitive">True</property>
                 <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
                 <signal name="changed" handler="on_filter_entry_changed" swapped="no"/>
-                <signal name="key-press-event" handler="on_campo_filter_entry_key_press_event" swapped="no"/>
                 <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
                 <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
+                <signal name="key-press-event" handler="on_campo_filter_entry_key_press_event" swapped="no"/>
               </object>
               <packing>
                 <property name="left_attach">1</property>
@@ -267,7 +172,7 @@
                 <property name="top_attach">1</property>
                 <property name="bottom_attach">2</property>
                 <property name="x_options">GTK_SHRINK | GTK_FILL</property>
-                <property name="y_options"></property>
+                <property name="y_options"/>
               </packing>
             </child>
             <child>
@@ -277,13 +182,11 @@
                 <property name="invisible_char">●</property>
                 <property name="primary_icon_activatable">False</property>
                 <property name="secondary_icon_activatable">False</property>
-                <property name="primary_icon_sensitive">True</property>
-                <property name="secondary_icon_sensitive">True</property>
                 <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
                 <signal name="changed" handler="on_filter_entry_changed" swapped="no"/>
-                <signal name="key-press-event" handler="on_campo_filter_entry_key_press_event" swapped="no"/>
                 <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
                 <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
+                <signal name="key-press-event" handler="on_campo_filter_entry_key_press_event" swapped="no"/>
               </object>
               <packing>
                 <property name="left_attach">1</property>
@@ -291,7 +194,7 @@
                 <property name="top_attach">2</property>
                 <property name="bottom_attach">3</property>
                 <property name="x_options">GTK_SHRINK | GTK_FILL</property>
-                <property name="y_options"></property>
+                <property name="y_options"/>
               </packing>
             </child>
             <child>
@@ -301,13 +204,11 @@
                 <property name="invisible_char">●</property>
                 <property name="primary_icon_activatable">False</property>
                 <property name="secondary_icon_activatable">False</property>
-                <property name="primary_icon_sensitive">True</property>
-                <property name="secondary_icon_sensitive">True</property>
                 <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
                 <signal name="changed" handler="on_filter_entry_changed" swapped="no"/>
-                <signal name="key-press-event" handler="on_campo_filter_entry_key_press_event" swapped="no"/>
                 <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
                 <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
+                <signal name="key-press-event" handler="on_campo_filter_entry_key_press_event" swapped="no"/>
               </object>
               <packing>
                 <property name="left_attach">1</property>
@@ -315,7 +216,7 @@
                 <property name="top_attach">3</property>
                 <property name="bottom_attach">4</property>
                 <property name="x_options">GTK_SHRINK | GTK_FILL</property>
-                <property name="y_options"></property>
+                <property name="y_options"/>
               </packing>
             </child>
             <child>
@@ -325,13 +226,11 @@
                 <property name="invisible_char">●</property>
                 <property name="primary_icon_activatable">False</property>
                 <property name="secondary_icon_activatable">False</property>
-                <property name="primary_icon_sensitive">True</property>
-                <property name="secondary_icon_sensitive">True</property>
                 <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
                 <signal name="changed" handler="on_filter_entry_changed" swapped="no"/>
-                <signal name="key-press-event" handler="on_campo_filter_entry_key_press_event" swapped="no"/>
                 <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
                 <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
+                <signal name="key-press-event" handler="on_campo_filter_entry_key_press_event" swapped="no"/>
               </object>
               <packing>
                 <property name="left_attach">1</property>
@@ -339,7 +238,7 @@
                 <property name="top_attach">4</property>
                 <property name="bottom_attach">5</property>
                 <property name="x_options">GTK_SHRINK | GTK_FILL</property>
-                <property name="y_options"></property>
+                <property name="y_options"/>
               </packing>
             </child>
             <child>
@@ -349,13 +248,11 @@
                 <property name="invisible_char">●</property>
                 <property name="primary_icon_activatable">False</property>
                 <property name="secondary_icon_activatable">False</property>
-                <property name="primary_icon_sensitive">True</property>
-                <property name="secondary_icon_sensitive">True</property>
                 <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
                 <signal name="changed" handler="on_filter_entry_changed" swapped="no"/>
-                <signal name="key-press-event" handler="on_campo_filter_entry_key_press_event" swapped="no"/>
                 <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
                 <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
+                <signal name="key-press-event" handler="on_campo_filter_entry_key_press_event" swapped="no"/>
               </object>
               <packing>
                 <property name="left_attach">1</property>
@@ -363,7 +260,7 @@
                 <property name="top_attach">5</property>
                 <property name="bottom_attach">6</property>
                 <property name="x_options">GTK_SHRINK | GTK_FILL</property>
-                <property name="y_options"></property>
+                <property name="y_options"/>
               </packing>
             </child>
             <child>
@@ -373,13 +270,11 @@
                 <property name="invisible_char">●</property>
                 <property name="primary_icon_activatable">False</property>
                 <property name="secondary_icon_activatable">False</property>
-                <property name="primary_icon_sensitive">True</property>
-                <property name="secondary_icon_sensitive">True</property>
                 <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
                 <signal name="changed" handler="on_filter_entry_changed" swapped="no"/>
-                <signal name="key-press-event" handler="on_campo_filter_entry_key_press_event" swapped="no"/>
                 <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
                 <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
+                <signal name="key-press-event" handler="on_campo_filter_entry_key_press_event" swapped="no"/>
               </object>
               <packing>
                 <property name="left_attach">1</property>
@@ -387,7 +282,7 @@
                 <property name="top_attach">6</property>
                 <property name="bottom_attach">7</property>
                 <property name="x_options">GTK_SHRINK | GTK_FILL</property>
-                <property name="y_options"></property>
+                <property name="y_options"/>
               </packing>
             </child>
             <child>
@@ -402,7 +297,7 @@
                 <property name="top_attach">7</property>
                 <property name="bottom_attach">8</property>
                 <property name="x_options">GTK_SHRINK | GTK_FILL</property>
-                <property name="y_options"></property>
+                <property name="y_options"/>
               </packing>
             </child>
           </object>
@@ -439,7 +334,6 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <property name="use_action_appearance">False</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -492,13 +386,14 @@
                           <object class="GtkScrolledWindow" id="scrolledwindow53">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
-                            <property name="hscrollbar_policy">automatic</property>
-                            <property name="vscrollbar_policy">automatic</property>
                             <property name="shadow_type">in</property>
                             <child>
                               <object class="GtkTreeView" id="ragione_sociale_fornitore_filter_treeview">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
+                                <child internal-child="selection">
+                                  <object class="GtkTreeSelection" id="treeview-selection1"/>
+                                </child>
                               </object>
                             </child>
                           </object>
@@ -518,7 +413,6 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
-                                <property name="use_action_appearance">False</property>
                                 <child>
                                   <object class="GtkImage" id="image341">
                                     <property name="visible">True</property>
@@ -539,7 +433,6 @@
                                 <property name="sensitive">False</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
-                                <property name="use_action_appearance">False</property>
                                 <child>
                                   <object class="GtkImage" id="image342">
                                     <property name="visible">True</property>
@@ -599,13 +492,14 @@
                           <object class="GtkScrolledWindow" id="scrolledwindow54">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
-                            <property name="hscrollbar_policy">automatic</property>
-                            <property name="vscrollbar_policy">automatic</property>
                             <property name="shadow_type">in</property>
                             <child>
                               <object class="GtkTreeView" id="insegna_fornitore_filter_treeview">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
+                                <child internal-child="selection">
+                                  <object class="GtkTreeSelection" id="treeview-selection2"/>
+                                </child>
                               </object>
                             </child>
                           </object>
@@ -625,7 +519,6 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
-                                <property name="use_action_appearance">False</property>
                                 <child>
                                   <object class="GtkImage" id="image343">
                                     <property name="visible">True</property>
@@ -646,7 +539,6 @@
                                 <property name="sensitive">False</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
-                                <property name="use_action_appearance">False</property>
                                 <child>
                                   <object class="GtkImage" id="image344">
                                     <property name="visible">True</property>
@@ -706,13 +598,14 @@
                           <object class="GtkScrolledWindow" id="scrolledwindow55">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
-                            <property name="hscrollbar_policy">automatic</property>
-                            <property name="vscrollbar_policy">automatic</property>
                             <property name="shadow_type">in</property>
                             <child>
                               <object class="GtkTreeView" id="cognome_nome_fornitore_filter_treeview">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
+                                <child internal-child="selection">
+                                  <object class="GtkTreeSelection" id="treeview-selection3"/>
+                                </child>
                               </object>
                             </child>
                           </object>
@@ -732,7 +625,6 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
-                                <property name="use_action_appearance">False</property>
                                 <child>
                                   <object class="GtkImage" id="image345">
                                     <property name="visible">True</property>
@@ -753,7 +645,6 @@
                                 <property name="sensitive">False</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
-                                <property name="use_action_appearance">False</property>
                                 <child>
                                   <object class="GtkImage" id="image346">
                                     <property name="visible">True</property>
@@ -813,13 +704,14 @@
                           <object class="GtkScrolledWindow" id="scrolledwindow52">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
-                            <property name="hscrollbar_policy">automatic</property>
-                            <property name="vscrollbar_policy">automatic</property>
                             <property name="shadow_type">in</property>
                             <child>
                               <object class="GtkTreeView" id="codice_fornitore_filter_treeview">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
+                                <child internal-child="selection">
+                                  <object class="GtkTreeSelection" id="treeview-selection4"/>
+                                </child>
                               </object>
                             </child>
                           </object>
@@ -839,7 +731,6 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
-                                <property name="use_action_appearance">False</property>
                                 <child>
                                   <object class="GtkImage" id="image339">
                                     <property name="visible">True</property>
@@ -860,7 +751,6 @@
                                 <property name="sensitive">False</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
-                                <property name="use_action_appearance">False</property>
                                 <child>
                                   <object class="GtkImage" id="image340">
                                     <property name="visible">True</property>
@@ -920,13 +810,14 @@
                           <object class="GtkScrolledWindow" id="scrolledwindow64">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
-                            <property name="hscrollbar_policy">automatic</property>
-                            <property name="vscrollbar_policy">automatic</property>
                             <property name="shadow_type">in</property>
                             <child>
                               <object class="GtkTreeView" id="localita_fornitore_filter_treeview">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
+                                <child internal-child="selection">
+                                  <object class="GtkTreeSelection" id="treeview-selection5"/>
+                                </child>
                               </object>
                             </child>
                           </object>
@@ -946,7 +837,6 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
-                                <property name="use_action_appearance">False</property>
                                 <child>
                                   <object class="GtkImage" id="image353">
                                     <property name="visible">True</property>
@@ -967,7 +857,6 @@
                                 <property name="sensitive">False</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
-                                <property name="use_action_appearance">False</property>
                                 <child>
                                   <object class="GtkImage" id="image354">
                                     <property name="visible">True</property>
@@ -1027,13 +916,14 @@
                           <object class="GtkScrolledWindow" id="scrolledwindow58">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
-                            <property name="hscrollbar_policy">automatic</property>
-                            <property name="vscrollbar_policy">automatic</property>
                             <property name="shadow_type">in</property>
                             <child>
                               <object class="GtkTreeView" id="indirizzo_fornitore_filter_treeview">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
+                                <child internal-child="selection">
+                                  <object class="GtkTreeSelection" id="treeview-selection6"/>
+                                </child>
                               </object>
                             </child>
                           </object>
@@ -1053,7 +943,6 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
-                                <property name="use_action_appearance">False</property>
                                 <child>
                                   <object class="GtkImage" id="image351">
                                     <property name="visible">True</property>
@@ -1074,7 +963,6 @@
                                 <property name="sensitive">False</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
-                                <property name="use_action_appearance">False</property>
                                 <child>
                                   <object class="GtkImage" id="image352">
                                     <property name="visible">True</property>
@@ -1134,13 +1022,14 @@
                           <object class="GtkScrolledWindow" id="scrolledwindow56">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
-                            <property name="hscrollbar_policy">automatic</property>
-                            <property name="vscrollbar_policy">automatic</property>
                             <property name="shadow_type">in</property>
                             <child>
                               <object class="GtkTreeView" id="codice_fiscale_fornitore_filter_treeview">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
+                                <child internal-child="selection">
+                                  <object class="GtkTreeSelection" id="treeview-selection7"/>
+                                </child>
                               </object>
                             </child>
                           </object>
@@ -1160,7 +1049,6 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
-                                <property name="use_action_appearance">False</property>
                                 <child>
                                   <object class="GtkImage" id="image347">
                                     <property name="visible">True</property>
@@ -1181,7 +1069,6 @@
                                 <property name="sensitive">False</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
-                                <property name="use_action_appearance">False</property>
                                 <child>
                                   <object class="GtkImage" id="image348">
                                     <property name="visible">True</property>
@@ -1241,13 +1128,14 @@
                           <object class="GtkScrolledWindow" id="scrolledwindow57">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
-                            <property name="hscrollbar_policy">automatic</property>
-                            <property name="vscrollbar_policy">automatic</property>
                             <property name="shadow_type">in</property>
                             <child>
                               <object class="GtkTreeView" id="partita_iva_fornitore_filter_treeview">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
+                                <child internal-child="selection">
+                                  <object class="GtkTreeSelection" id="treeview-selection8"/>
+                                </child>
                               </object>
                             </child>
                           </object>
@@ -1267,7 +1155,6 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
-                                <property name="use_action_appearance">False</property>
                                 <child>
                                   <object class="GtkImage" id="image349">
                                     <property name="visible">True</property>
@@ -1288,7 +1175,6 @@
                                 <property name="sensitive">False</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
-                                <property name="use_action_appearance">False</property>
                                 <child>
                                   <object class="GtkImage" id="image350">
                                     <property name="visible">True</property>
@@ -1343,13 +1229,14 @@
                       <object class="GtkScrolledWindow" id="scrolledwindow59">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="hscrollbar_policy">automatic</property>
-                        <property name="vscrollbar_policy">automatic</property>
                         <property name="shadow_type">in</property>
                         <child>
                           <object class="GtkTreeView" id="categoria_fornitore_filter_treeview">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
+                            <child internal-child="selection">
+                              <object class="GtkTreeSelection" id="treeview-selection9"/>
+                            </child>
                           </object>
                         </child>
                       </object>
@@ -1385,13 +1272,14 @@
                       <object class="GtkScrolledWindow" id="scrolledwindow60">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="hscrollbar_policy">automatic</property>
-                        <property name="vscrollbar_policy">automatic</property>
                         <property name="shadow_type">in</property>
                         <child>
                           <object class="GtkTreeView" id="pagamento_fornitore_filter_treeview">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
+                            <child internal-child="selection">
+                              <object class="GtkTreeSelection" id="treeview-selection10"/>
+                            </child>
                           </object>
                         </child>
                       </object>
@@ -1427,13 +1315,14 @@
                       <object class="GtkScrolledWindow" id="scrolledwindow61">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="hscrollbar_policy">automatic</property>
-                        <property name="vscrollbar_policy">automatic</property>
                         <property name="shadow_type">in</property>
                         <child>
                           <object class="GtkTreeView" id="magazzino_fornitore_filter_treeview">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
+                            <child internal-child="selection">
+                              <object class="GtkTreeSelection" id="treeview-selection11"/>
+                            </child>
                           </object>
                         </child>
                       </object>
@@ -1499,8 +1388,6 @@
                             <property name="height_request">100</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
-                            <property name="hscrollbar_policy">automatic</property>
-                            <property name="vscrollbar_policy">automatic</property>
                             <property name="shadow_type">in</property>
                             <child>
                               <object class="GtkTextView" id="riepilogo_fornitore_filter_textview">
@@ -1565,7 +1452,6 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -1586,6 +1472,100 @@
         <property name="fill">True</property>
         <property name="position">1</property>
       </packing>
+    </child>
+  </object>
+  <object class="GtkListStore" id="filter_listore">
+    <columns>
+      <!-- column-name PyObject1 -->
+      <column type="PyObject"/>
+      <!-- column-name gchararray1 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray2 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray3 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray4 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray5 -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
+  <object class="GtkTreeView" id="anagrafica_filter_treeview">
+    <property name="visible">True</property>
+    <property name="can_focus">True</property>
+    <property name="border_width">1</property>
+    <property name="model">filter_listore</property>
+    <property name="headers_clickable">False</property>
+    <property name="reorderable">True</property>
+    <property name="search_column">1</property>
+    <property name="enable_grid_lines">both</property>
+    <child internal-child="selection">
+      <object class="GtkTreeSelection" id="treeview-selection12"/>
+    </child>
+    <child>
+      <object class="GtkTreeViewColumn" id="codice_column">
+        <property name="resizable">True</property>
+        <property name="title" translatable="yes">Codice</property>
+        <property name="expand">True</property>
+        <property name="clickable">True</property>
+        <property name="reorderable">True</property>
+        <property name="sort_indicator">True</property>
+        <child>
+          <object class="GtkCellRendererText" id="cellrenderertext2"/>
+          <attributes>
+            <attribute name="text">1</attribute>
+          </attributes>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkTreeViewColumn" id="ragione_sociale_column">
+        <property name="resizable">True</property>
+        <property name="title" translatable="yes">Ragione Sociale</property>
+        <property name="expand">True</property>
+        <property name="clickable">True</property>
+        <property name="reorderable">True</property>
+        <property name="sort_indicator">True</property>
+        <child>
+          <object class="GtkCellRendererText" id="cellrenderertext3"/>
+          <attributes>
+            <attribute name="text">2</attribute>
+          </attributes>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkTreeViewColumn" id="cognome_nome_column">
+        <property name="title" translatable="yes">Cognome - Nome</property>
+        <child>
+          <object class="GtkCellRendererText" id="cellrenderertext8"/>
+          <attributes>
+            <attribute name="text">3</attribute>
+          </attributes>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkTreeViewColumn" id="localita_column">
+        <property name="title" translatable="yes">Località</property>
+        <child>
+          <object class="GtkCellRendererText" id="cellrenderertext4"/>
+          <attributes>
+            <attribute name="text">4</attribute>
+          </attributes>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkTreeViewColumn" id="partita_iva_column">
+        <property name="title" translatable="yes">Partita IVA / C.F.</property>
+        <child>
+          <object class="GtkCellRendererText" id="cellrenderertext5"/>
+          <attributes>
+            <attribute name="text">5</attribute>
+          </attributes>
+        </child>
+      </object>
     </child>
   </object>
 </interface>

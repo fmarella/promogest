@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -19,20 +19,20 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-from sqlalchemy import Table
-from sqlalchemy.orm import mapper
+from sqlalchemy import *
+from sqlalchemy.orm import *
 from promogest.Environment import *
-from promogest.dao.Dao import Dao
-
-try:
-    t_language=Table('language', params['metadata'],
-        schema = params['mainSchema'],
-        autoload=True)
-except:
-    from data.language import t_language
+from promogest.dao.Dao import Dao, Base
 
 
-class Language(Dao):
+class Language(Base, Dao):
+    try:
+        __table__ = Table('language', params['metadata'],
+            schema = params['mainSchema'],
+            autoload=True)
+    except:
+        from data.language import t_language
+        __table__ = t_language
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
@@ -40,7 +40,3 @@ class Language(Dao):
     def filter_values(self,k,v):
         dic= {}
         return  dic[k]
-
-
-
-std_mapper = mapper(Language, t_language, order_by=t_language.c.denominazione)

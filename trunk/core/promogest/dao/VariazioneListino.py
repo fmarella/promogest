@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2013 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -25,44 +25,40 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
-from promogest.dao.Dao import Dao
-
-try:
-    t_variazione_listino = Table('variazione_listino',
-            params['metadata'],
-            schema = params['schema'],
-            autoload=True)
-except:
-    from data.variazioneListino import t_variazione_listino
+from promogest.dao.Dao import Dao, Base
 
 
-class VariazioneListino(Dao):
+class VariazioneListino(Base, Dao):
+    try:
+        __table__ = Table('variazione_listino',
+                                        params['metadata'],
+                                        schema=params['schema'],
+                                        autoload=True)
+    except:
+        from data.variazoneListino import t_variazione_listino
+        __table__ = t_variazione_listino
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):
         if k == 'denominazione':
-            dic= {k:t_variazione_listino.c.denominazione.ilike("%"+v+"%")}
+            dic= {k:VariazioneListino.__table__.c.denominazione.ilike("%"+v+"%")}
         elif k == 'daDataInizio':
-            dic = {k:t_variazione_listino.c.data_inizio >= v}
+            dic = {k:VariazioneListino.__table__.c.data_inizio >= v}
         elif k== 'aDataInizio':
-            dic = {k:t_variazione_listino.c.data_inizio <= v}
+            dic = {k:VariazioneListino.__table__.c.data_inizio <= v}
         elif k == 'daDataFine':
-            dic = {k:t_variazione_listino.c.data_fine >= v}
+            dic = {k:VariazioneListino.__table__.c.data_fine >= v}
         elif k== 'aDataFine':
-            dic = {k:t_variazione_listino.c.data_fine <= v}
+            dic = {k:VariazioneListino.__table__.c.data_fine <= v}
         elif k== 'idListino':
-            dic = {k:t_variazione_listino.c.id_listino == v}
+            dic = {k:VariazioneListino.__table__.c.id_listino == v}
         elif k== 'priorita':
-            dic = {k:t_variazione_listino.c.priorita == v}
+            dic = {k:VariazioneListino.__table__.c.priorita == v}
         elif k== 'tipo':
-            dic = {k:t_variazione_listino.c.tipo == v}
+            dic = {k:VariazioneListino.__table__.c.tipo == v}
         return  dic[k]
 
     def __repr__(self):
         return "<VariazioneListino ID={0}>".format(self.id)
-
-std_mapper = mapper(VariazioneListino,
-                    t_variazione_listino,
-                    order_by=t_variazione_listino.c.id)

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2013 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -24,9 +24,15 @@
 from sqlalchemy import *
 from promogest.Environment import *
 
-t_riga_documento = Table('riga_documento', params["metadata"],
-        Column('id', Integer,ForeignKey(fk_prefix+'riga.id',onupdate="CASCADE",ondelete="CASCADE"), primary_key=True ),
-        Column('id_testata_documento', Integer,ForeignKey(fk_prefix+'testata_documento.id',onupdate="CASCADE",ondelete="CASCADE"), nullable=True ),
-        schema=params["schema"]
-        )
-t_riga_documento.create(checkfirst=True)
+
+try:
+    t_riga_documento = Table('riga_documento', params["metadata"],
+                    schema = params['schema'],
+            autoload=True)
+except:
+    t_riga_documento = Table('riga_documento', params["metadata"],
+            Column('id', Integer,ForeignKey(fk_prefix+'riga.id',onupdate="CASCADE",ondelete="CASCADE"), primary_key=True ),
+            Column('id_testata_documento', Integer,ForeignKey(fk_prefix+'testata_documento.id',onupdate="CASCADE",ondelete="CASCADE"), nullable=True ),
+            schema=params["schema"]
+            )
+    t_riga_documento.create(checkfirst=True)

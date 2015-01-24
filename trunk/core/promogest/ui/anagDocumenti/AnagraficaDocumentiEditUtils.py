@@ -347,7 +347,7 @@ def calcolaTotalePart(anaedit, dao=None):
         totaleScontato = totaleImponibileScontato + totaleImpostaScontata
     totaleInPagamenti = totaleScontato + Decimal(str(anaedit.pagamenti_page.calcola_spese()))
 
-
+    #GTK3 ---- ATTENZIONE ------
     if len(scontiSuTotale) ==0:
         imposta = 0
         imponibile = 0

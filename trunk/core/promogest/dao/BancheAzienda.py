@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2013 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Marella <francesco.marella@anche.no>
+#    Author: Francesco Meloni <francesco@promotux.it>
 
 #    This file is part of Promogest.
 
@@ -22,20 +23,11 @@
 
 from sqlalchemy import *
 from sqlalchemy.orm import *
-from promogest.Environment import params, session, azienda
+from promogest.Environment import *
 
-try:
-    t_banche_azienda = Table('banche_azienda',
-                                params['metadata'],
-                                schema=params['schema'],
-                                autoload=True,
-                                )
-except:
-    from data.bancheAzienda import t_banche_azienda
-
-from promogest.dao.Dao import Dao
+from promogest.dao.Dao import Dao, Base
 from promogest.dao.Azienda import Azienda
-from promogest.dao.Banca import Banca, t_banca
+from promogest.dao.Banca import Banca
 
 def gen_banche_azienda():
     daos = []
@@ -55,7 +47,20 @@ def reimposta_banca_predefinita(newDao):
     if daos:
         daos[0].banca_predefinita = False
 
-class BancheAzienda(Dao):
+class BancheAzienda(Base, Dao):
+    try:
+        __table__ = Table('banche_azienda',
+                                params['metadata'],
+                                schema=params['schema'],
+                                autoload=True,
+                                )
+    except:
+        from data.bancheAzienda import t_banche_azienda
+        __table__ = t_banche_azienda
+
+    banca = relationship("Banca", primaryjoin=(__table__.c.id_banca==Banca.__table__.c.id),
+                                    foreign_keys=[Banca.__table__.c.id],
+                                    uselist=False)
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
@@ -79,18 +84,8 @@ class BancheAzienda(Dao):
 
     def filter_values(self, k, v):
         if k == 'idAzienda':
-            dic = {k: t_banche_azienda.c.id_azienda==v}
+            dic = {k: BancheAzienda.__table__.c.id_azienda==v}
         elif k == 'numeroConto':
-            dic = {k: and_(t_banche_azienda.c.id_azienda==Azienda.schemaa,
-                            t_banche_azienda.c.numero_conto.ilike("%" + v + "%"))}
+            dic = {k: and_(BancheAzienda.__table__.c.id_azienda==Azienda.schemaa,
+                            BancheAzienda.__table__.c.numero_conto.ilike("%" + v + "%"))}
         return dic[k]
-
-std_mapper = mapper(BancheAzienda,
-                      t_banche_azienda,
-                      properties={
-                      "banca": relation(Banca,
-                                    primaryjoin=(t_banche_azienda.c.id_banca==t_banca.c.id),
-                                    foreign_keys=[t_banca.c.id],
-                                    uselist=False),
-                      },
-                      order_by=t_banche_azienda.c.id)

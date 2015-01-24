@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -24,66 +24,60 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
 
-try:
-    t_riga_movimento_fornitura = Table('riga_movimento_fornitura',
-                params['metadata'],
-                schema = params['schema'],
-                autoload=True)
-except:
-    from data.rigaMovimentoFornitura import t_riga_movimento_fornitura
-
-from Dao import Dao
+from promogest.dao.Dao import Dao, Base
 from promogest.dao.Fornitura import Fornitura
 from promogest.dao.RigaMovimento import RigaMovimento, t_riga_movimento
 
 
+class RigaMovimentoFornitura(Base, Dao):
+    try:
+        __table__ = Table('riga_movimento_fornitura',
+                params['metadata'],
+                schema = params['schema'],
+                autoload=True)
+    except:
+        from data.rigaMovimentoFornitura import t_riga_movimento_fornitura
+        __table__ = t_riga_movimento_fornitura
 
 
-
-class RigaMovimentoFornitura(Dao):
+    forni =  relationship("Fornitura")
+    rigamovacq = relationship("RigaMovimento",primaryjoin = (__table__.c.id_riga_movimento_acquisto==t_riga_movimento.c.id), backref="rmfac")
+    rigamovven = relationship("RigaMovimento", primaryjoin = (__table__.c.id_riga_movimento_vendita==t_riga_movimento.c.id),backref="rmfve")
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):
         if k == "idRigaMovimentoAcquisto":
-            dic= {k:t_riga_movimento_fornitura.c.id_riga_movimento_acquisto ==v}
+            dic= {k:RigaMovimentoFornitura.__table__.c.id_riga_movimento_acquisto ==v}
         elif k == 'idFornitura':
-            dic = {k:t_riga_movimento_fornitura.c.id_fornitura==v}
+            dic = {k:RigaMovimentoFornitura.__table__.c.id_fornitura==v}
         elif k == "idRigaMovimentoVendita":
-            dic= {k:t_riga_movimento_fornitura.c.id_riga_movimento_vendita ==v}
+            dic= {k:RigaMovimentoFornitura.__table__.c.id_riga_movimento_vendita ==v}
         elif k == "idRigaMovimentoVenditaBool":
-            dic= {k:t_riga_movimento_fornitura.c.id_riga_movimento_vendita != None}
+            dic= {k:RigaMovimentoFornitura.__table__.c.id_riga_movimento_vendita != None}
         elif k == "idRigaMovimentoAcquistoBool":
-            dic= {k:t_riga_movimento_fornitura.c.id_riga_movimento_acquisto != None}
+            dic= {k:RigaMovimentoFornitura.__table__.c.id_riga_movimento_acquisto != None}
         elif k == "idRigaMovimentoVenditaBoolFalse":
-            dic= {k:t_riga_movimento_fornitura.c.id_riga_movimento_vendita == None}
+            dic= {k:RigaMovimentoFornitura.__table__.c.id_riga_movimento_vendita == None}
         elif k == "idRigaMovimentoAcquistoBoolFalse":
-            dic= {k:t_riga_movimento_fornitura.c.id_riga_movimento_acquisto == None}
+            dic= {k:RigaMovimentoFornitura.__table__.c.id_riga_movimento_acquisto == None}
         elif k == "idArticolo":
-            dic= {k:t_riga_movimento_fornitura.c.id_articolo ==v}
+            dic= {k:RigaMovimentoFornitura.__table__.c.id_articolo ==v}
         return  dic[k]
 
-
-std_mapper = mapper(RigaMovimentoFornitura, t_riga_movimento_fornitura,
-    properties={
-        "forni": relation(Fornitura,
-            primaryjoin = (t_riga_movimento_fornitura.c.id_fornitura==Fornitura.id)),
-        "rigamovacq": relation(RigaMovimento,
-            primaryjoin = (t_riga_movimento_fornitura.c.id_riga_movimento_acquisto==t_riga_movimento.c.id), backref="rmfac"),
-        "rigamovven": relation(RigaMovimento,
-            primaryjoin = (t_riga_movimento_fornitura.c.id_riga_movimento_vendita==t_riga_movimento.c.id), backref="rmfve"),
-    },
-    order_by=t_riga_movimento_fornitura.c.id)
-
-if tipodb=="sqlite":
-    a = session.query(RigaMovimento.id).all()
-    b = session.query(RigaMovimentoFornitura.id_riga_movimento_acquisto).all()
-    fixit =  list(set(b)-set(a))
-    print "fixt-rigamovforni", fixit
-    for f in fixit:
-        if f[0] != "None" and f[0] != None:
-            aa = RigaMovimentoFornitura().select(idRigaMovimentoAcquisto=f[0], batchSize=None)
-            for a in aa:
-                session.delete(a)
-    session.commit()
+#if tipodb=="sqlite":
+    #a = session.query(RigaMovimento.id).all()
+    #b = session.query(RigaMovimentoFornitura.id_riga_movimento_acquisto).all()
+    #fixit =  list(set(b)-set(a))
+    #print "fixt-rigamovforni", fixit
+    #for f in fixit:
+        #if f[0] != "None" and f[0] != None:
+            #aa = RigaMovimentoFornitura().select(idRigaMovimentoAcquisto=f[0], batchSize=None)
+            #for a in aa:
+                #session.delete(a)
+    #try:
+        #session.commit()
+    #except:
+        #session.rollback()
+        #print "ERRORE SU FIXIT"

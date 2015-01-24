@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.18.3 -->
 <interface>
-  <requires lib="gtk+" version="2.16"/>
-  <!-- interface-naming-policy toplevel-contextual -->
-  <object class="GtkAccelGroup" id="accelgroup1"/>
+  <requires lib="gtk+" version="3.4"/>
   <object class="GtkIconFactory" id="iconfactory1">
     <sources>
       <source stock-id="generated-icon-modifica24x24-png" filename="modifica24x24.png"/>
@@ -14,6 +13,7 @@
       <source stock-id="generated-icon-nuovo24x24-png" filename="nuovo24x24.png"/>
     </sources>
   </object>
+  <object class="GtkAccelGroup" id="accelgroup1"/>
   <object class="GtkWindow" id="anagrafica_window">
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">Anagrafica</property>
@@ -26,8 +26,8 @@
     <accel-groups>
       <group name="accelgroup1"/>
     </accel-groups>
-    <signal name="destroy-event" handler="on_anagrafica_window_close" swapped="no"/>
     <signal name="delete-event" handler="on_anagrafica_window_close" swapped="no"/>
+    <signal name="destroy-event" handler="on_anagrafica_window_close" swapped="no"/>
     <child>
       <object class="GtkVBox" id="anagrafica_main_vbox">
         <property name="visible">True</property>
@@ -40,7 +40,6 @@
               <object class="GtkMenuItem" id="record_menu">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">Record</property>
                 <property name="use_underline">True</property>
                 <signal name="activate" handler="on_record_menu_activate" swapped="no"/>
@@ -52,7 +51,6 @@
                         <property name="label">_Nuovo</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <property name="accel_group">accelgroup1</property>
@@ -71,7 +69,6 @@
                         <property name="visible">True</property>
                         <property name="sensitive">False</property>
                         <property name="can_focus">False</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <property name="accel_group">accelgroup1</property>
@@ -84,7 +81,6 @@
                         <property name="visible">True</property>
                         <property name="sensitive">False</property>
                         <property name="can_focus">False</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <property name="accel_group">accelgroup1</property>
@@ -103,7 +99,6 @@
                         <property name="visible">True</property>
                         <property name="sensitive">False</property>
                         <property name="can_focus">False</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <property name="accel_group">accelgroup1</property>
@@ -115,7 +110,6 @@
                         <property name="label">_Annulla</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <property name="accel_group">accelgroup1</property>
@@ -133,7 +127,6 @@
                         <property name="label">_Ripristina</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <property name="accel_group">accelgroup1</property>
@@ -151,7 +144,6 @@
                         <property name="label">_Chiudi</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <property name="accel_group">accelgroup1</property>
@@ -166,7 +158,6 @@
               <object class="GtkMenuItem" id="aiuto_menu">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">A_iuto</property>
                 <property name="use_underline">True</property>
                 <signal name="activate" handler="on_aiuto_menu_activate" swapped="no"/>
@@ -177,7 +168,6 @@
                       <object class="GtkMenuItem" id="aiuto_menu_informazioni">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="label" translatable="yes">I_nformazioni</property>
                         <property name="use_underline">True</property>
                         <signal name="activate" handler="on_aiuto_menu_informazioni_activate" swapped="no"/>
@@ -204,7 +194,6 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="tooltip_text" translatable="yes">Nuovo record</property>
-                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">Nuovo</property>
                 <property name="use_underline">True</property>
                 <property name="stock_id">generated-icon-nuovo24x24-png</property>
@@ -222,6 +211,7 @@
               </object>
               <packing>
                 <property name="expand">False</property>
+                <property name="homogeneous">False</property>
               </packing>
             </child>
             <child>
@@ -230,7 +220,6 @@
                 <property name="sensitive">False</property>
                 <property name="can_focus">False</property>
                 <property name="tooltip_text" translatable="yes">Modifica il record selezionato</property>
-                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">Modifica</property>
                 <property name="use_underline">True</property>
                 <property name="stock_id">generated-icon-modifica24x24-png</property>
@@ -247,7 +236,6 @@
                 <property name="sensitive">False</property>
                 <property name="can_focus">False</property>
                 <property name="tooltip_text" translatable="yes">Elimina il record selezionato</property>
-                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">Elimina</property>
                 <property name="use_underline">True</property>
                 <property name="stock_id">generated-icon-elimina24x24-png</property>
@@ -265,6 +253,7 @@
               </object>
               <packing>
                 <property name="expand">False</property>
+                <property name="homogeneous">False</property>
               </packing>
             </child>
             <child>
@@ -273,7 +262,6 @@
                 <property name="sensitive">False</property>
                 <property name="can_focus">False</property>
                 <property name="tooltip_text" translatable="yes">Salva le modifiche</property>
-                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">Salva</property>
                 <property name="use_underline">True</property>
                 <property name="stock_id">generated-icon-salva24x24-png</property>
@@ -290,7 +278,6 @@
                 <property name="sensitive">False</property>
                 <property name="can_focus">False</property>
                 <property name="tooltip_text" translatable="yes">Non salva le modifiche</property>
-                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">Annulla</property>
                 <property name="use_underline">True</property>
                 <property name="stock_id">generated-icon-annulla24x24-png</property>
@@ -308,6 +295,7 @@
               </object>
               <packing>
                 <property name="expand">False</property>
+                <property name="homogeneous">False</property>
               </packing>
             </child>
             <child>
@@ -316,7 +304,6 @@
                 <property name="sensitive">False</property>
                 <property name="can_focus">False</property>
                 <property name="tooltip_text" translatable="yes">Annulla i cambiamenti</property>
-                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">Ripristina</property>
                 <property name="use_underline">True</property>
                 <property name="stock_id">generated-icon-ripristina24x24-png</property>
@@ -334,13 +321,13 @@
               </object>
               <packing>
                 <property name="expand">False</property>
+                <property name="homogeneous">False</property>
               </packing>
             </child>
             <child>
               <object class="GtkToggleToolButton" id="toggle_filter_button">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">Trova</property>
                 <property name="use_underline">True</property>
                 <property name="stock_id">generated-icon-trova24x24-png</property>
@@ -369,7 +356,6 @@
               <object class="GtkScrolledWindow" id="anagrafica_filter_scrolledwindow">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <property name="hscrollbar_policy">automatic</property>
                 <property name="vscrollbar_policy">never</property>
                 <child>
                   <object class="GtkViewport" id="anagrafica_filter_viewport">
@@ -417,7 +403,6 @@
                                                 <property name="receives_default">True</property>
                                                 <property name="has_tooltip">True</property>
                                                 <property name="tooltip_text" translatable="yes">Ripulisci i parametri di ricerca</property>
-                                                <property name="use_action_appearance">False</property>
                                                 <signal name="clicked" handler="on_anagrafica_filter_clear_button_clicked" swapped="no"/>
                                                 <child>
                                                   <object class="GtkAlignment" id="alignment508">
@@ -475,7 +460,6 @@
                                                 <property name="receives_default">True</property>
                                                 <property name="has_tooltip">True</property>
                                                 <property name="tooltip_text" translatable="yes">Ricerca in base ai parametri specificati</property>
-                                                <property name="use_action_appearance">False</property>
                                                 <signal name="clicked" handler="on_anagrafica_filter_search_button_clicked" swapped="no"/>
                                                 <child>
                                                   <object class="GtkAlignment" id="alignment509">
@@ -565,8 +549,6 @@
                           <object class="GtkScrolledWindow" id="anagrafica_filter_scrolledwindow1">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
-                            <property name="hscrollbar_policy">automatic</property>
-                            <property name="vscrollbar_policy">automatic</property>
                             <property name="shadow_type">in</property>
                             <child>
                               <object class="GtkTreeView" id="anagrafica_filter_treeview">
@@ -575,6 +557,9 @@
                                 <property name="rules_hint">True</property>
                                 <signal name="cursor-changed" handler="on_anagrafica_filter_treeview_cursor_changed" swapped="no"/>
                                 <signal name="row-activated" handler="on_record_edit_activate" swapped="no"/>
+                                <child internal-child="selection">
+                                  <object class="GtkTreeSelection" id="treeview-selection1"/>
+                                </child>
                               </object>
                             </child>
                           </object>
@@ -593,7 +578,6 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
-                                <property name="use_action_appearance">False</property>
                                 <signal name="clicked" handler="on_anagrafica_filter_first_button_clicked" swapped="no"/>
                                 <child>
                                   <object class="GtkAlignment" id="alignment15">
@@ -634,7 +618,6 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
-                                <property name="use_action_appearance">False</property>
                                 <signal name="clicked" handler="on_anagrafica_filter_prev_button_clicked" swapped="no"/>
                                 <child>
                                   <object class="GtkAlignment" id="alignment16">
@@ -696,8 +679,6 @@
                                     <property name="text" translatable="yes">1</property>
                                     <property name="primary_icon_activatable">False</property>
                                     <property name="secondary_icon_activatable">False</property>
-                                    <property name="primary_icon_sensitive">True</property>
-                                    <property name="secondary_icon_sensitive">True</property>
                                     <signal name="key-press-event" handler="on_anagrafica_current_page_entry_key_press_event" swapped="no"/>
                                   </object>
                                   <packing>
@@ -742,7 +723,6 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
-                                <property name="use_action_appearance">False</property>
                                 <signal name="clicked" handler="on_anagrafica_filter_next_button_clicked" swapped="no"/>
                                 <child>
                                   <object class="GtkAlignment" id="alignment17">
@@ -783,7 +763,6 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
-                                <property name="use_action_appearance">False</property>
                                 <signal name="clicked" handler="on_anagrafica_filter_last_button_clicked" swapped="no"/>
                                 <child>
                                   <object class="GtkAlignment" id="alignment18">
@@ -840,8 +819,6 @@
               <object class="GtkScrolledWindow" id="anagrafica_detail_scrolledwindow">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <property name="hscrollbar_policy">automatic</property>
-                <property name="vscrollbar_policy">automatic</property>
                 <child>
                   <object class="GtkViewport" id="anagrafica_detail_viewport">
                     <property name="visible">True</property>
@@ -869,7 +846,6 @@
           <object class="GtkStatusbar" id="statusbar1">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="has_resize_grip">False</property>
           </object>
           <packing>
             <property name="expand">False</property>

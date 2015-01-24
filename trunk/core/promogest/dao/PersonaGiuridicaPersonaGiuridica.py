@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2013 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -22,31 +22,30 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
-from promogest.dao.Dao import Dao
-
-try:
-    t_personagiuridica_personagiuridica=Table('personagiuridica_personagiuridica',
-        params['metadata'],
-        schema = params['schema'],
-        autoload=True)
-except:
-    from data.personaGiuridicaPersonaGiuridica import t_personagiuridica_personagiuridica
+from promogest.dao.Dao import Dao, Base
 
 
-
-class PersonaGiuridicaPersonaGiuridica(Dao):
+class PersonaGiuridicaPersonaGiuridica(Base, Dao):
     """  """
+    try:
+        __table__ = Table('personagiuridica_personagiuridica',
+            params['metadata'],
+            schema = params['schema'],
+            autoload=True)
+    except:
+        from data.personaGiuridicaPersonaGiuridica import t_personagiuridica_personagiuridica
+        __table__ = t_personagiuridica_personagiuridica
+
+    __mapper_args__ = {
+        'order_by' : "id_persona_giuridica_abbinata"
+    }
+
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):
         if k == 'idPersonaGiuridica':
-            dic= {k : t_personagiuridica_personagiuridica.c.id_persona_giuridica == v}
+            dic= {k : PersonaGiuridicaPersonaGiuridica.__table__.c.id_persona_giuridica == v}
         elif k == 'idPersonaGiuridicaAbbinata':
-            dic = {k:t_personagiuridica_personagiuridica.c.id_persona_giuridica_abbinata == v}
+            dic = {k:PersonaGiuridicaPersonaGiuridica.__table__.c.id_persona_giuridica_abbinata == v}
         return  dic[k]
-
-
-std_mapper = mapper(PersonaGiuridicaPersonaGiuridica,
-    t_personagiuridica_personagiuridica, properties={},
-    order_by=t_personagiuridica_personagiuridica.c.id_persona_giuridica_abbinata)

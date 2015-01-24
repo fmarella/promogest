@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -22,28 +22,34 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
-from promogest.dao.Dao import Dao
+from promogest.dao.Dao import Dao, Base
 
 
-class Colore(Dao):
+class Colore(Dao, Base):
+    try:
+        __table__ = Table('colore',
+                       params['metadata'],
+                       schema = params['schema'],
+                       autoload=True)
+    except:
+        __table__ = Table('colore', params['metadata'],
+                Column('id',Integer,primary_key=True),
+                Column('denominazione_breve',String(20),nullable=False),
+                Column('denominazione',String(200),nullable=False),
+                UniqueConstraint('denominazione', 'denominazione_breve'),
+                schema=params["schema"])
+
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
 
     def filter_values(self, k, v):
-        dic= {'id': colore.c.id ==v,
-            "denominazione": colore.c.denominazione==v}
+        dic= {'id': Colore.__table__.c.id ==v,
+            "denominazione": Colore.__table__.c.denominazione==v}
         return  dic[k]
 
-try:
-    colore=Table('colore',
-           params['metadata'],
-           schema = params['schema'],
-           autoload=True)
-    std_mapper = mapper(Colore, colore, properties={},
-            order_by=colore.c.denominazione)
-except:
-    conf.PromoWear.primoavvio = "yes"
-    conf.PromoWear.mod_enable="no"
-    conf.save()
-    delete_pickle()
+#ATTENZIONE!!!
+    #conf.PromoWear.primoavvio = "yes"
+    #conf.PromoWear.mod_enable="no"
+    #conf.save()
+    #delete_pickle()

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni <francesco@promotux.it>
@@ -23,27 +23,25 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
-from promogest.dao.Dao import Dao
-
-try:
-    t_ritenuta_acconto_riga = Table('ritenuta_acconto_riga', params['metadata'],
-                                        schema = params['schema'], autoload=True)
-except:
-    from data.rigaRitenutaAcconto import t_ritenuta_acconto_riga
+from promogest.dao.Dao import Dao, Base
 
 
-class RigaRitenutaAcconto(Dao):
+class RigaRitenutaAcconto(Base, Dao):
     """ TABELLA:  ritenuta_acconto_riga,
     """
+    try:
+        __table__ = Table('ritenuta_acconto_riga', params['metadata'],
+                                            schema = params['schema'], autoload=True)
+    except:
+        from data.rigaRitenutaAcconto import t_ritenuta_acconto_riga
+        __table__ = t_ritenuta_acconto_riga
+
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):
         if k == 'id':
-            dic= {k:t_ritenuta_acconto_riga.c.id ==v}
+            dic= {k:RigaRitenutaAcconto.__table__.c.id ==v}
         elif k == 'idRiga':
-            dic= {k:t_ritenuta_acconto_riga.c.id_riga ==v}
+            dic= {k:RigaRitenutaAcconto.__table__.c.id_riga ==v}
         return  dic[k]
-
-std_mapper = mapper(RigaRitenutaAcconto, t_ritenuta_acconto_riga,properties={
-                    }, order_by=t_ritenuta_acconto_riga.c.id)

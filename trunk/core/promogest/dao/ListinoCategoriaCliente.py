@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -24,35 +24,33 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
 
-try:
-    t_listino_categoria_cliente=Table('listino_categoria_cliente',
+from promogest.dao.Dao import Dao, Base
+from promogest.dao.CategoriaCliente import CategoriaCliente
+
+class ListinoCategoriaCliente(Base, Dao):
+    try:
+        __table__ = Table('listino_categoria_cliente',
             params['metadata'],
             schema = params['schema'],
             autoload=True)
-except:
-    from data.listinoCategoriaCliente import t_listino_categoria_cliente
+    except:
+        from data.listinoCategoriaCliente import t_listino_categoria_cliente
+        __table__ = t_listino_categoria_cliente
 
-from promogest.dao.Dao import Dao
-from promogest.dao.CategoriaCliente import CategoriaCliente
+    __mapper_args__ = {
+        'order_by' : "id_listino"
+    }
 
-class ListinoCategoriaCliente(Dao):
+    catecli = relationship(CategoriaCliente, backref="listino_categoria_cliente")
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
 
-    def _categoriaCliente(self):
+    @property
+    def categoria_cliente(self):
         if self.catecli: return self.catecli.denominazione
         else: return ""
-    categoria_cliente = property(_categoriaCliente)
 
     def filter_values(self,k,v):
-        dic= {  'idListino' : t_listino_categoria_cliente.c.id_listino == v}
+        dic= {  'idListino' : ListinoCategoriaCliente.__table__.c.id_listino == v}
         return  dic[k]
-
-std_mapper = mapper(ListinoCategoriaCliente, t_listino_categoria_cliente, properties={
-        #"listino" : relation(Listino, backref="listino_categoria_cliente"),
-        #"catecli":relation(CategoriaCliente,primaryjoin=
-                        #(listino_categoria_cliente.c.id_categoria_cliente==CategoriaCliente.id)),
-        "catecli" : relation(CategoriaCliente, backref="listino_categoria_cliente")
-        },
-        order_by=t_listino_categoria_cliente.c.id_listino)

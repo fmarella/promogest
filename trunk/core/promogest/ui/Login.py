@@ -30,8 +30,8 @@ import datetime
 import random
 import webbrowser
 from promogest.ui.SimpleGladeApp import SimpleGladeApp
-from promogest.dao.User import t_utente, User
-from promogest.dao.Azienda import t_azienda, Azienda
+from promogest.dao.User import User
+from promogest.dao.Azienda import Azienda
 #from GtkExceptionHandler import GtkExceptionHandler
 from promogest.ui.UpdateDialog import UpdateDialog
 from promogest.lib.utils import leggiRevisioni, hasAction, checkInstallation, \
@@ -86,8 +86,8 @@ class Login(SimpleGladeApp):
         Environment.windowGroup.append(self.getTopLevel())
 
         self.splashHandler()
-        dateTimeLabel = datetime.datetime.now().strftime('%d/%m/%Y  %H:%M')
-        self.date_label.set_text(dateTimeLabel)
+        #dateTimeLabel = datetime.datetime.now().strftime('%d/%m/%Y  %H:%M')
+        #self.date_label.set_text(dateTimeLabel)
         if Environment.aziendaforce:
             ultima_azienda = Environment.aziendaforce
         if ultima_azienda:
@@ -155,7 +155,7 @@ class Login(SimpleGladeApp):
                 self.login_tipo_label.set_markup(_("<b>PromoGest 'PRO'</b>"))
                 self.urll = "http://www.promogest.me/promoGest/preventivo_pro"
         if Environment.pg3:
-            self.login_tipo_label.set_markup(_("<span weight='bold' size='larger'>PROMOGEST 3 BETA2</span>"))
+            self.login_tipo_label.set_markup(_("<span weight='bold' size='larger'>PROMOGEST 3</span>"))
         #settiamo l'immagine
         self.splash_image.set_from_file(fileSplashImage)
 
@@ -265,8 +265,9 @@ class Login(SimpleGladeApp):
                         "SETAGGI: %s" % (str(Environment.settaggi)))
 
                     self.importModulesFromDir('promogest/modules')
-                    from promogest.dao.DaoOrderedImport import orderedImport
-                    orderedImport()
+                    #ATTENZIONE!!! RIATTIVARE!!!
+                    #from promogest.dao.DaoOrderedImport import orderedImport
+                    #orderedImport()
                     def mainmain():
                         from Main import Main
                         main = Main(self.azienda,
@@ -384,9 +385,6 @@ class Login(SimpleGladeApp):
             Environment.pg2log.info(
                 "LISTA DEI MODULI CARICATI E FUNZIONANTI %s" % (
                     str(repr(Environment.modulesList))))
-            #HtmlHandler.templates_dir.append(
-                #"/templates/Agenti/")
-# da aggiungere a mano perchè al momento Agenti non è un vero e proprio modulo
             HtmlHandler.jinja_env = HtmlHandler.env(HtmlHandler.templates_dir)
             self.groupModulesByType()
             for a in Environment.modulesList[:]:

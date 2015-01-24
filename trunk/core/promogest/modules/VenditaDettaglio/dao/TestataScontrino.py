@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -25,21 +25,13 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
 
-try:
-    t_testata_scontrino=Table('testata_scontrino',
-                    params['metadata'],
-                    schema = params['schema'],
-                    autoload=True)
-except:
-    from data.testataScontrino import t_testata_scontrino
-
-from promogest.dao.Dao import Dao
+from promogest.dao.Dao import Dao, Base
 from promogest.dao.TestataMovimento import TestataMovimento
 from promogest.dao.CCardType import CCardType
 from promogest.dao.Magazzino import Magazzino
 from promogest.dao.User import User
 from promogest.dao.Cliente import Cliente
-from promogest.modules.VenditaDettaglio.dao.RigaScontrino import RigaScontrino,t_riga_scontrino
+from promogest.modules.VenditaDettaglio.dao.RigaScontrino import RigaScontrino
 from promogest.modules.VenditaDettaglio.dao.ScontoTestataScontrino import ScontoTestataScontrino
 from promogest.modules.VenditaDettaglio.dao.TestataScontrinoCliente import TestataScontrinoCliente
 from promogest.modules.VenditaDettaglio.dao.Pos import Pos
@@ -47,7 +39,34 @@ from promogest.lib.utils import *
 
 
 
-class TestataScontrino(Dao):
+class TestataScontrino(Base, Dao):
+    try:
+        __table__ = Table('testata_scontrino',
+                    params['metadata'],
+                    schema = params['schema'],
+                    autoload=True)
+    except:
+        __table__ = Table('testata_scontrino', params['metadata'],
+                Column('id',Integer,primary_key=True),
+                Column('data_inserimento',DateTime,ColumnDefault(datetime.datetime.now),nullable=False),
+                Column('totale_scontrino',Numeric(16,4),nullable=False),
+                Column('totale_contanti',Numeric(16,4),nullable=False),
+                Column('totale_assegni',Numeric(16,4),nullable=False),
+                Column('totale_carta_credito',Numeric(16,4),nullable=False),
+                Column('id_magazzino',Integer,ForeignKey(fk_prefix + "magazzino.id", onupdate="CASCADE", ondelete="RESTRICT")),
+                Column('id_pos',Integer,ForeignKey(fk_prefix +"pos.id", onupdate="CASCADE", ondelete="RESTRICT")),
+                Column('id_ccardtype',Integer,ForeignKey(fk_prefix +"credit_card_type.id", onupdate="CASCADE", ondelete="RESTRICT")),
+                Column('id_user',Integer),
+                Column('id_testata_movimento',Integer,ForeignKey(fk_prefix + "testata_movimento.id", onupdate="CASCADE", ondelete="RESTRICT")),
+                schema=params['schema'],
+                )
+
+    cctypee = relationship("CCardType")
+    mag = relationship("Magazzino")
+    poss = relationship("Pos")
+    testatamovimento = relationship("TestataMovimento", backref="testata_scontrino") #serve
+    riga_scontr = relationship("RigaScontrino",backref="testata_scontrino",cascade="all, delete") #serve
+    STS = relationship("ScontoTestataScontrino", backref="TS",cascade="all, delete") #serve
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
@@ -60,7 +79,7 @@ class TestataScontrino(Dao):
         self.__idCliTs = None
 
     def _getRigheScontrino(self):
-        self.__dbRigheScontrino = RigaScontrino().select(idTestataScontrino=self.id, batchSize=None)
+        self.__dbRigheScontrino = self.riga_scontr
         self.__righeScontrino = self.__dbRigheScontrino[:]
         return self.__righeScontrino
 
@@ -84,29 +103,28 @@ class TestataScontrino(Dao):
             return None
     cliente_testata_scontrino = property(_clienteTestata)
 
-    def _dataMovimento(self):
+    @property
+    def data_movimento(self):
         if self.testatamovimento: return self.testatamovimento.data_movimento
         else: return ""
-    data_movimento=property(_dataMovimento)
 
-    def _numeroMovimento(self):
+    @property
+    def numero_movimento(self):
         if self.testatamovimento: return self.testatamovimento.numero
         else: return ""
-    numero_movimento=property(_numeroMovimento)
 
-    def _operatore(self):
-        operatore = User().getRecord(id=self.id_user)
-        if operatore:
-            return operatore.username
+    @property
+    def operatore(self):
+        if self.id_user:
+            operatore = User().getRecord(id=self.id_user)
+            if operatore:
+                return operatore.username
         else:
             return "NON DISPONIBILE"
-    operatore=property(_operatore)
 
     def _getScontiTestataScontrino(self):
         if self.id:
-            self.__dbScontiTestataScontrino = ScontoTestataScontrino().select(join = ScontoTestataScontrino.TS,
-                                                                                idScontoTestataScontrino=self.id,
-                                                                                batchSize=None)
+            self.__dbScontiTestataScontrino = self.STS
             self.__scontiTestataScontrino = self.__dbScontiTestataScontrino
         else:
             self.__scontiTestataScontrino = []
@@ -123,23 +141,23 @@ class TestataScontrino(Dao):
 
     def filter_values(self, k, v):
         if k == 'id':
-            dic= {k: t_testata_scontrino.c.id ==v}
+            dic= {k: TestataScontrino.__table__.c.id ==v}
         elif k == 'idTestataMovimento':
-            dic= {k: t_testata_scontrino.c.id_testata_movimento==v}
+            dic= {k: TestataScontrino.__table__.c.id_testata_movimento==v}
         elif k == 'daData':
-            dic = {k: t_testata_scontrino.c.data_inserimento >= v}
+            dic = {k: TestataScontrino.__table__.c.data_inserimento >= v}
         elif k == 'aData':
-            dic = {k: t_testata_scontrino.c.data_inserimento <= v}
+            dic = {k: TestataScontrino.__table__.c.data_inserimento <= v}
         elif k == 'idMagazzino':
-            dic = {k: t_testata_scontrino.c.id_magazzino == v}
+            dic = {k: TestataScontrino.__table__.c.id_magazzino == v}
         elif k == 'idPuntoCassa':
-            dic = {k: t_testata_scontrino.c.id_pos == v}
+            dic = {k: TestataScontrino.__table__.c.id_pos == v}
         elif k== 'idArticolo':
-            dic = {k: and_(t_testata_scontrino.c.id==t_riga_scontrino.c.id_testata_scontrino, t_riga_scontrino.c.id_articolo==v)}
+            dic = {k: and_(TestataScontrino.__table__.c.id==t_riga_scontrino.c.id_testata_scontrino, t_riga_scontrino.c.id_articolo==v)}
         elif k=='idArticoloList':
-            dic={ k :and_(t_testata_scontrino.c.id==t_riga_scontrinoo.c.id_testata_scontrino, t_riga_scontrino.c.id_articolo.in_(v))}
+            dic={ k :and_(TestataScontrino.__table__.c.id==t_riga_scontrinoo.c.id_testata_scontrino, t_riga_scontrino.c.id_articolo.in_(v))}
         elif k=='idCliente':
-            dic={ k :and_(t_testata_scontrino.c.id==TestataScontrinoCliente.id_testata_scontrino, TestataScontrinoCliente.id_cliente ==v)}
+            dic={ k :and_(TestataScontrino.__table__.c.id==TestataScontrinoCliente.id_testata_scontrino, TestataScontrinoCliente.id_cliente ==v)}
         return  dic[k]
 
     def update(self):
@@ -150,14 +168,11 @@ class TestataScontrino(Dao):
         #salvataggio testata scontrino
         params['session'].add(self)
         self.commit()
-
         #self.scontiTestataScontrinoDel(id=self.id)
-
         #se siamo in chiusura fiscale non serve che vengano toccati i dati delle righe
         if not chiusura:
             if self.__righeScontrino:
                 #rigaScontrinoDel(id=self.id)
-
                 #cancellazione righe associate alla testata
                 for riga in self.__righeScontrino:
                     #annullamento id della riga
@@ -171,29 +186,14 @@ class TestataScontrino(Dao):
                 for scontisutot in self.scontiSuTotale:
                     scontisutot.id_testata_scontrino = self.id
                     scontisutot.persist()
-        #params['session'].flush()
 
     def scontiTestataScontrinoDel(self, id=None):
         """
         Cancella gli sconti associati ad un documento
         """
-        row = ScontoTestataScontrino().select(idScontoTestataScontrino= id,
-                                                        offset = None,
-                                                        batchSize = None,
-                                                        orderBy=ScontoTestataScontrino.id_testata_scontrino)
+        row = self.STS
         if row:
             for r in row:
                 params['session'].delete(r)
             params["session"].commit()
             return True
-
-
-std_mapper = mapper(TestataScontrino, t_testata_scontrino,properties={
-        "cctypee":relation(CCardType,primaryjoin=(t_testata_scontrino.c.id_ccardtype==CCardType.id)),
-        "mag":relation(Magazzino,primaryjoin=(t_testata_scontrino.c.id_magazzino==Magazzino.id)),
-        "poss":relation(Pos,primaryjoin=(t_testata_scontrino.c.id_pos==Pos.id)),
-        "testatamovimento": relation(TestataMovimento,primaryjoin=
-                (t_testata_scontrino.c.id_testata_movimento==TestataMovimento.id), backref="testata_scontrino"),
-        "riga_scontr":relation(RigaScontrino,primaryjoin=RigaScontrino.id_testata_scontrino==t_testata_scontrino.c.id, backref="testata_scontrino",cascade="all, delete"),
-        "STS":relation(ScontoTestataScontrino,primaryjoin = (t_testata_scontrino.c.id==ScontoTestataScontrino.id_testata_scontrino), backref="TS",cascade="all, delete"),
-        }, order_by=t_testata_scontrino.c.id)

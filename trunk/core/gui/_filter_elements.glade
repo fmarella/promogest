@@ -1,7 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.18.3 -->
 <interface>
-  <requires lib="gtk+" version="2.16"/>
-  <!-- interface-naming-policy toplevel-contextual -->
+  <requires lib="gtk+" version="3.4"/>
+  <object class="GtkImage" id="image1__">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-execute</property>
+  </object>
+  <object class="GtkImage" id="trova_image">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-find</property>
+  </object>
   <object class="GtkVBox" id="filter_vbox">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -64,9 +74,9 @@
                         <property name="receives_default">True</property>
                         <property name="tooltip_text" translatable="yes">Premi ESC per ripulire i filtri</property>
                         <property name="use_stock">True</property>
-                        <accelerator key="Escape" signal="clicked"/>
-                        <accelerator key="Escape" signal="clicked"/>
                         <signal name="clicked" handler="on_filter_clear_button_clicked" swapped="no"/>
+                        <accelerator key="Escape" signal="clicked"/>
+                        <accelerator key="Escape" signal="clicked"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -86,11 +96,11 @@
                         <property name="events">GDK_KEY_PRESS_MASK | GDK_STRUCTURE_MASK</property>
                         <property name="tooltip_markup">Premi ( F3 )  o invio per avviare la ricerca</property>
                         <property name="image">trova_image</property>
+                        <signal name="clicked" handler="on_filter_search_button_clicked" swapped="no"/>
                         <accelerator key="Return" signal="clicked"/>
                         <accelerator key="KP_Enter" signal="clicked"/>
                         <accelerator key="KP_F3" signal="clicked"/>
                         <accelerator key="F3" signal="clicked"/>
-                        <signal name="clicked" handler="on_filter_search_button_clicked" swapped="no"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -178,9 +188,6 @@
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="border_width">3</property>
-            <property name="hscrollbar_policy">automatic</property>
-            <property name="vscrollbar_policy">automatic</property>
-            <property name="window_placement_set">True</property>
             <property name="shadow_type">in</property>
             <child>
               <placeholder/>
@@ -293,8 +300,6 @@
                     <property name="text" translatable="yes">1</property>
                     <property name="primary_icon_activatable">False</property>
                     <property name="secondary_icon_activatable">False</property>
-                    <property name="primary_icon_sensitive">True</property>
-                    <property name="secondary_icon_sensitive">True</property>
                   </object>
                   <packing>
                     <property name="expand">True</property>
@@ -377,15 +382,5 @@
         <property name="position">2</property>
       </packing>
     </child>
-  </object>
-  <object class="GtkImage" id="image1__">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">gtk-execute</property>
-  </object>
-  <object class="GtkImage" id="trova_image">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">gtk-find</property>
   </object>
 </interface>

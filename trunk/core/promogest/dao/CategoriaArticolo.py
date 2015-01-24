@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2013 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -23,29 +23,29 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
-from Dao import Dao
+from Dao import Dao, Base
 
-try:
-    t_categoria_articolo=Table('categoria_articolo',
+
+class CategoriaArticolo(Base,Dao):
+    try:
+        __table__ = Table('categoria_articolo',
             params['metadata'],
             schema = params['schema'],
             autoload=True)
-except:
-    from data.categoria_articolo import t_categoria_articolo
-
-
-class CategoriaArticolo(Dao):
+    except:
+        from data.categoria_articolo import t_categoria_articolo
+        __table__ = t_categoria_articolo
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):
         if k == 'denominazione':
-            dic= {k : t_categoria_articolo.c.denominazione.ilike("%"+v+"%")}
+            dic= {k: CategoriaArticolo.__table__.c.denominazione.ilike("%"+v+"%")}
         elif k == "denominazioneBreve":
-            dic= {k : t_categoria_articolo.c.denominazione_breve.ilike("%"+v+"%")}
+            dic= {k: CategoriaArticolo.__table__.c.denominazione_breve.ilike("%"+v+"%")}
         elif k == "denominazioneBreveEM":
-            dic= {k : t_categoria_articolo.c.denominazione_breve == v}
+            dic= {k: CategoriaArticolo.__table__.c.denominazione_breve == v}
         return  dic[k]
 
     def preSave(self):
@@ -55,5 +55,3 @@ class CategoriaArticolo(Dao):
             self.denominazione_breve = self.denominazione_breve[0:9]
         else:
             return True
-
-std_mapper = mapper(CategoriaArticolo, t_categoria_articolo, order_by=t_categoria_articolo.c.id)

@@ -22,28 +22,42 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
-from promogest.dao.Dao import Dao
+from promogest.dao.Dao import Dao, Base
 
 
 
-class GenereAbbigliamento(Dao):
+class GenereAbbigliamento(Base, Dao):
+    try:
+        __table__ = Table('genere_abbigliamento',
+                                params['metadata'],
+                                schema=params['mainSchema'],
+                                autoload=True)
+    except:
+        __table__ = Table('genere_abbigliamento', params['metadata'],
+                            Column('id', Integer, primary_key=True),
+                            Column('denominazione', String(50), nullable=False),
+                            schema=params['mainSchema'])
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):
         if k=="id":
-            dic= {k: genereabbigliamento.c.id ==v}
+            dic= {k: GenereAbbigliamento.__table__.c.id ==v}
         elif k == "denominazioneBreve":
-            dic = {k:genereabbigliamento.c.denominazione_breve == v }
+            dic = {k:GenereAbbigliamento.__table__.c.denominazione_breve == v }
         elif k == "denominazione":
-            dic = {k:genereabbigliamento.c.denominazione == v }
+            dic = {k:GenereAbbigliamento.__table__.c.denominazione == v }
         return  dic[k]
 
-genereabbigliamento=Table('genere_abbigliamento',
-    params['metadata'],
-    schema = params['mainSchema'],
-    autoload=True)
 
-std_mapper = mapper(GenereAbbigliamento, genereabbigliamento, properties={},
-                order_by=genereabbigliamento.c.id)
+s= select([GenereAbbigliamento.__table__.c.denominazione]).execute().fetchall()
+tipo = GenereAbbigliamento.__table__.insert()
+if (u'Unisex', ) not in s or s==[]:
+    tipo.execute(denominazione='Unisex')
+if (u"Uomo", ) not in s or s == []:
+    tipo.execute(denominazione='Uomo')
+if (u"Donna", ) not in s or s == []:
+    tipo.execute(denominazione='Donna')
+if (u"Bambino", ) not in s or s == []:
+    tipo.execute(denominazione='Bambino')

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.18.3 -->
 <interface>
-  <requires lib="gtk+" version="2.16"/>
-  <!-- interface-naming-policy project-wide -->
+  <requires lib="gtk+" version="3.4"/>
   <object class="GtkFrame" id="_anagrafica_fornitori_setup_frame">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -31,7 +31,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="xalign">0.10000000149011612</property>
-                        <property name="label" translatable="yes">Struttura base del codice 
+                        <property name="label" translatable="yes">Struttura base del codice
 ( FOR000000 )</property>
                       </object>
                       <packing>
@@ -45,11 +45,8 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="invisible_char">●</property>
-                        <property name="invisible_char_set">True</property>
                         <property name="primary_icon_activatable">False</property>
                         <property name="secondary_icon_activatable">False</property>
-                        <property name="primary_icon_sensitive">True</property>
-                        <property name="secondary_icon_sensitive">True</property>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -67,10 +64,10 @@
                 <child>
                   <object class="GtkCheckButton" id="fornitore_insegna_check">
                     <property name="label" translatable="yes">Visualizza campo per insegna</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
+                    <property name="xalign">0.5</property>
                     <property name="draw_indicator">True</property>
                   </object>
                   <packing>
@@ -82,10 +79,10 @@
                 <child>
                   <object class="GtkCheckButton" id="fornitore_codice_upper_check">
                     <property name="label" translatable="yes">Trasforma il codice in MAIUSCOLO</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
+                    <property name="xalign">0.5</property>
                     <property name="draw_indicator">True</property>
                   </object>
                   <packing>

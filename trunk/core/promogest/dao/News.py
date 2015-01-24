@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2013 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -24,18 +24,23 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
 
-try:
-    t_news=Table('news', params['metadata'],schema = params['schema'],autoload=True)
-except:
-    from data.news import t_news
-
-from promogest.dao.Dao import Dao
-from promogest.dao.NewsCategory import NewsCategory
+from promogest.dao.Dao import Dao, Base
+from promogest.dao.CategoriaNews import CategoriaNews
 from promogest.dao.Language import Language
 from promogest.dao.User import User
 
 
-class News(Dao):
+class News(Base, Dao):
+    try:
+        __table__ = Table('news', params['metadata'], schema=params['schema'], autoload=True)
+    except:
+        from data.categoriaNews import t_news_category
+        from data.news import t_news
+        __table__ = t_news
+
+    __mapper_args__ = {
+        'order_by' : __table__.c.id.desc()
+    }
 
     def __init__(self, req= None,arg=None):
         Dao.__init__(self, entity=self)
@@ -46,37 +51,21 @@ class News(Dao):
             return self.categor.denominazione
         else:
             return ""
-
-            #a = NewsCategory().getRecord(id=self.id_categoria)
-            #if a:
-                #return a.denominazione
-            #else:
-                #return None
-        #else:
-            #return None
-
-
-
+    @property
+    def categor(self):
+        aa = CategoriaNews().getRecord(id=self.id_categoria)
+        return aa
 
     def filter_values(self,k,v):
         if k == "title":
-            dic= { k :t_news.c.title == v}
+            dic= { k :News.__table__.c.title == v}
         elif k =="active":
-            dic= { k :t_news.c.active == v}
+            dic= { k :News.__table__.c.active == v}
         elif k =="permalink":
-            dic= { k :t_news.c.permalink == v}
+            dic= { k :News.__table__.c.permalink == v}
         elif k == 'searchkey':
-            dic = {k:or_(t_news.c.title.ilike("%"+v+"%"),
-                        t_news.c.abstract.ilike("%"+v+"%"),
-                        t_news.c.body.ilike("%"+v+"%"))
+            dic = {k:or_(News.__table__.c.title.ilike("%"+v+"%"),
+                        News.__table__.c.abstract.ilike("%"+v+"%"),
+                        News.__table__.c.body.ilike("%"+v+"%"))
 }
         return  dic[k]
-
-
-
-
-std_mapper = mapper(News, t_news, properties={
-            'categor':relation(NewsCategory, backref='news'),
-            'lang' : relation(Language),
-            'user' : relation(User)
-                }, order_by=t_news.c.id.desc())

@@ -79,16 +79,6 @@ class ContattoAnagraficaSecondaria(Dao):
 
     categorieContatto = property(_getCategorieContatto, _setCategorieContatto)
 
-    #def _appartenenza(self):
-        #a =  params["session"].query(Fornitore).with_parent(self).\
-                            #filter(self.id_fornitore==Fornitore.id).all()
-        #if not a:
-            #return a
-        #else:
-            #return a[0].ragione_sociale or a[0].cognome or a[0].nome
-    #appartenenza = property(_appartenenza)
-
-
     #FIXME: sistemare questo filtro
     def filter_values(self, k,v):
         if k == 'idCategoria':

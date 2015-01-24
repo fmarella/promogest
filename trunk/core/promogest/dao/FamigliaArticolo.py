@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2014 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -22,43 +22,39 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
-from promogest.dao.Dao import Dao
+from promogest.dao.Dao import Dao, Base
 
+class FamigliaArticolo(Base, Dao):
+    try:
+        __table__ = Table('famiglia_articolo', params['metadata'],
+                                    schema=params['schema'], autoload=True)
+    except:
+        from data.famigliaArticolo import t_famiglia_articolo
+        __table__ = t_famiglia_articolo
 
-try:
-    t_famiglia_articolo = Table('famiglia_articolo', params['metadata'], schema=params['schema'], autoload=True)
-except:
-    from data.famigliaArticolo import t_famiglia_articolo
-
-
-class FamigliaArticolo(Dao):
+    children = relationship("FamigliaArticolo", backref=backref('parent',
+                                            remote_side="FamigliaArticolo.id"))
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):
         if k == 'denominazione':
-            dic= {k : t_famiglia_articolo.c.denominazione.ilike("%"+v+"%")}
+            dic= {k : FamigliaArticolo.__table__.c.denominazione.ilike("%"+v+"%")}
         elif k == "idPadre":
-            dic= {k : t_famiglia_articolo.c.id_padre == v}
+            dic= {k : FamigliaArticolo.__table__.c.id_padre == v}
         elif k == "codice":
-            dic= {k : t_famiglia_articolo.c.codice == v}
+            dic= {k : FamigliaArticolo.__table__.c.codice == v}
         elif k == "visible":
-            dic= {k : t_famiglia_articolo.c.visible == v}
+            dic= {k : FamigliaArticolo.__table__.c.visible == v}
         elif k == "denominazioneBreve":
-            dic= {k : t_famiglia_articolo.c.denominazione_breve.ilike("%"+v+"%")}
+            dic= {k : FamigliaArticolo.__table__.c.denominazione_breve.ilike("%"+v+"%")}
         return  dic[k]
 
     def preSave(self):
         famiglie_articolo = None
         return True
 
-
     def fathers(self):
         ok = params['session'].query(FamigliaArticolo).filter(and_(FamigliaArticolo.id_padre==None)).all()
         return ok
-
-
-std_mapper = mapper(FamigliaArticolo, t_famiglia_articolo, properties={
-    'children': relation(FamigliaArticolo, backref=backref('parent', remote_side=[t_famiglia_articolo.c.id]))
-},order_by=t_famiglia_articolo.c.denominazione)

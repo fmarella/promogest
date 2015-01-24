@@ -1,18 +1,51 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.18.3 -->
 <interface>
-  <requires lib="gtk+" version="2.16"/>
-  <!-- interface-naming-policy toplevel-contextual -->
+  <requires lib="gtk+" version="3.4"/>
+  <object class="GtkImage" id="image1">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">articolo48x48.png</property>
+  </object>
+  <object class="GtkImage" id="image2">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">fornitura48x48.png</property>
+  </object>
+  <object class="GtkImage" id="image3">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">cliente48x48.png</property>
+  </object>
+  <object class="GtkImage" id="image4">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">fornitore48x48.png</property>
+  </object>
+  <object class="GtkImage" id="image5">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">vettore48x48.png</property>
+  </object>
+  <object class="GtkImage" id="image6">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">agente48x48.png</property>
+  </object>
   <object class="GtkFrame" id="anagrafiche_principali_select_frame">
     <property name="visible">True</property>
+    <property name="can_focus">False</property>
     <property name="label_xalign">0</property>
     <child>
       <object class="GtkHBox" id="hbox1">
         <property name="width_request">680</property>
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="spacing">5</property>
         <child>
           <object class="GtkVBox" id="vbox4">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="border_width">6</property>
             <property name="spacing">10</property>
             <child>
@@ -23,7 +56,7 @@
                 <property name="receives_default">True</property>
                 <property name="image">image1</property>
                 <property name="use_underline">True</property>
-                <signal name="clicked" handler="on_articoli_button_clicked"/>
+                <signal name="clicked" handler="on_articoli_button_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -39,7 +72,7 @@
                 <property name="receives_default">True</property>
                 <property name="image">image2</property>
                 <property name="use_underline">True</property>
-                <signal name="clicked" handler="on_forniture_button_clicked"/>
+                <signal name="clicked" handler="on_forniture_button_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -55,7 +88,7 @@
                 <property name="receives_default">True</property>
                 <property name="image">image3</property>
                 <property name="use_underline">True</property>
-                <signal name="clicked" handler="on_clienti_button_clicked"/>
+                <signal name="clicked" handler="on_clienti_button_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -71,7 +104,7 @@
                 <property name="receives_default">True</property>
                 <property name="image">image4</property>
                 <property name="use_underline">True</property>
-                <signal name="clicked" handler="on_fornitori_button_clicked"/>
+                <signal name="clicked" handler="on_fornitori_button_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -87,7 +120,7 @@
                 <property name="receives_default">True</property>
                 <property name="image">image5</property>
                 <property name="use_underline">True</property>
-                <signal name="clicked" handler="on_vettori_button_clicked"/>
+                <signal name="clicked" handler="on_vettori_button_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -103,7 +136,7 @@
                 <property name="receives_default">True</property>
                 <property name="image">image6</property>
                 <property name="use_underline">True</property>
-                <signal name="clicked" handler="on_agenti_button_clicked"/>
+                <signal name="clicked" handler="on_agenti_button_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -116,12 +149,15 @@
             </child>
           </object>
           <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
             <property name="position">0</property>
           </packing>
         </child>
         <child>
           <object class="GtkVBox" id="anagrafiche_moduli_vbox">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="border_width">6</property>
             <property name="spacing">10</property>
             <child>
@@ -129,6 +165,8 @@
             </child>
           </object>
           <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
             <property name="position">1</property>
           </packing>
         </child>
@@ -137,34 +175,11 @@
     <child type="label">
       <object class="GtkLabel" id="label23">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="label" translatable="yes">Anagrafiche</property>
         <property name="use_markup">True</property>
         <property name="track_visited_links">False</property>
       </object>
     </child>
-  </object>
-  <object class="GtkImage" id="image1">
-    <property name="visible">True</property>
-    <property name="pixbuf">articolo48x48.png</property>
-  </object>
-  <object class="GtkImage" id="image2">
-    <property name="visible">True</property>
-    <property name="pixbuf">fornitura48x48.png</property>
-  </object>
-  <object class="GtkImage" id="image3">
-    <property name="visible">True</property>
-    <property name="pixbuf">cliente48x48.png</property>
-  </object>
-  <object class="GtkImage" id="image4">
-    <property name="visible">True</property>
-    <property name="pixbuf">fornitore48x48.png</property>
-  </object>
-  <object class="GtkImage" id="image5">
-    <property name="visible">True</property>
-    <property name="pixbuf">vettore48x48.png</property>
-  </object>
-  <object class="GtkImage" id="image6">
-    <property name="visible">True</property>
-    <property name="pixbuf">agente48x48.png</property>
   </object>
 </interface>

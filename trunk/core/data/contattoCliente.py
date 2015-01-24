@@ -23,13 +23,16 @@
 from sqlalchemy import *
 from promogest.Environment import *
 
-t_contatto_cliente = Table('contatto_cliente', params["metadata"],
-        Column('id',Integer,primary_key=True),
-        Column('tipo_contatto',String(50),primary_key=True),
-        Column('id_cliente',Integer,ForeignKey(fk_prefix+'cliente.id',onupdate="CASCADE",ondelete="RESTRICT"),nullable=False),
-        CheckConstraint("tipo_contatto = 'cliente'"),
-        ForeignKeyConstraint(['id', 'tipo_contatto'],[fk_prefix+'contatto.id', fk_prefix+'contatto.tipo_contatto'],onupdate="CASCADE", ondelete="CASCADE"),
-        UniqueConstraint('id', 'tipo_contatto'),
-        schema=params["schema"]
-        )
-t_contatto_cliente.create(checkfirst=True)
+try:
+    t_contatto_cliente=Table('contatto_cliente',params['metadata'],schema = params['schema'],autoload=True)
+except:
+    t_contatto_cliente = Table('contatto_cliente', params["metadata"],
+            Column('id',Integer,primary_key=True),
+            Column('tipo_contatto',String(50),primary_key=True),
+            Column('id_cliente',Integer,ForeignKey(fk_prefix+'cliente.id',onupdate="CASCADE",ondelete="RESTRICT"),nullable=False),
+            CheckConstraint("tipo_contatto = 'cliente'"),
+            ForeignKeyConstraint(['id', 'tipo_contatto'],[fk_prefix+'contatto.id', fk_prefix+'contatto.tipo_contatto'],onupdate="CASCADE", ondelete="CASCADE"),
+            UniqueConstraint('id', 'tipo_contatto'),
+            schema=params["schema"]
+            )
+    t_contatto_cliente.create(checkfirst=True)

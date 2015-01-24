@@ -441,8 +441,12 @@ class RicercaClientiFilter(GladeWidget):
         renderer = gtk.CellRendererToggle()
         renderer.set_property('activatable', True)
         renderer.connect('toggled', self.onColumnEdited, None, treeview)
-        renderer.set_data('model_index', 0)
-        renderer.set_data('column', 1)
+        #GTK +
+        renderer.model_index = 0
+        renderer.column = 1
+        #GTK -
+        #renderer.set_data('model_index', 1)
+        #renderer.set_data('column', 2)
         column = gtk.TreeViewColumn('Includi', renderer, active=0)
         column.connect("clicked", self.columnSelectAll, treeview)
         column.set_sizing(GTK_COLUMN_GROWN_ONLY)
@@ -454,8 +458,12 @@ class RicercaClientiFilter(GladeWidget):
         renderer = gtk.CellRendererToggle()
         renderer.set_property('activatable', True)
         renderer.connect('toggled', self.onColumnEdited, None, treeview)
-        renderer.set_data('model_index', 1)
-        renderer.set_data('column', 2)
+        #GTK +
+        renderer.model_index = 1
+        renderer.column = 2
+        #GTK -
+        #renderer.set_data('model_index', 1)
+        #renderer.set_data('column', 2)
         column = gtk.TreeViewColumn('Escludi', renderer, active=1)
         column.connect("clicked", self.columnSelectAll, treeview)
         column.set_sizing(GTK_COLUMN_GROWN_ONLY)
@@ -467,8 +475,12 @@ class RicercaClientiFilter(GladeWidget):
         renderer = gtk.CellRendererText()
         renderer.set_property('editable', True)
         renderer.connect('edited', self.onColumnEdited, treeview)
-        renderer.set_data('model_index', 2)
-        renderer.set_data('column', 3)
+        #GTK +
+        renderer.model_index = 2
+        renderer.column = 3
+        #GTK -
+        #renderer.set_data('model_index', 1)
+        #renderer.set_data('column', 2)
         column = gtk.TreeViewColumn('Ragione sociale', renderer, text=2)
         column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
@@ -494,8 +506,12 @@ class RicercaClientiFilter(GladeWidget):
         renderer = gtk.CellRendererToggle()
         renderer.set_property('activatable', True)
         renderer.connect('toggled', self.onColumnEdited, None, treeview)
-        renderer.set_data('model_index', 0)
-        renderer.set_data('column', 1)
+        #GTK +
+        renderer.model_index = 0
+        renderer.column = 1
+        #GTK -
+        #renderer.set_data('model_index', 1)
+        #renderer.set_data('column', 2)
         column = gtk.TreeViewColumn('Includi', renderer, active=0)
         column.connect("clicked", self.columnSelectAll, treeview)
         column.set_sizing(GTK_COLUMN_GROWN_ONLY)
@@ -507,8 +523,12 @@ class RicercaClientiFilter(GladeWidget):
         renderer = gtk.CellRendererToggle()
         renderer.set_property('activatable', True)
         renderer.connect('toggled', self.onColumnEdited, None, treeview)
-        renderer.set_data('model_index', 1)
-        renderer.set_data('column', 2)
+        #GTK +
+        renderer.model_index = 1
+        renderer.column = 2
+        #GTK -
+        #renderer.set_data('model_index', 1)
+        #renderer.set_data('column', 2)
         column = gtk.TreeViewColumn('Escludi', renderer, active=1)
         column.connect("clicked", self.columnSelectAll, treeview)
         column.set_sizing(GTK_COLUMN_GROWN_ONLY)
@@ -520,8 +540,12 @@ class RicercaClientiFilter(GladeWidget):
         renderer = gtk.CellRendererText()
         renderer.set_property('editable', True)
         renderer.connect('edited', self.onColumnEdited, treeview)
-        renderer.set_data('model_index', 2)
-        renderer.set_data('column', 3)
+        #GTK +
+        renderer.model_index = 2
+        renderer.column = 3
+        #GTK -
+        #renderer.set_data('model_index', 1)
+        #renderer.set_data('column', 2)
         column = gtk.TreeViewColumn('Insegna', renderer, text=2)
         column.set_sizing(GTK_COLUMN_GROWN_ONLY)
 #        column.set_clickable(False)
@@ -547,8 +571,12 @@ class RicercaClientiFilter(GladeWidget):
         renderer = gtk.CellRendererToggle()
         renderer.set_property('activatable', True)
         renderer.connect('toggled', self.onColumnEdited, None, treeview)
-        renderer.set_data('model_index', 0)
-        renderer.set_data('column', 1)
+        #GTK +
+        renderer.model_index = 0
+        renderer.column = 1
+        #GTK -
+        #renderer.set_data('model_index', 1)
+        #renderer.set_data('column', 2)
         column = gtk.TreeViewColumn('Includi', renderer, active=0)
         column.connect("clicked", self.columnSelectAll, treeview)
         column.set_sizing(GTK_COLUMN_GROWN_ONLY)
@@ -560,8 +588,12 @@ class RicercaClientiFilter(GladeWidget):
         renderer = gtk.CellRendererToggle()
         renderer.set_property('activatable', True)
         renderer.connect('toggled', self.onColumnEdited, None, treeview)
-        renderer.set_data('model_index', 1)
-        renderer.set_data('column', 2)
+        #GTK +
+        renderer.model_index = 1
+        renderer.column = 2
+        #GTK -
+        #renderer.set_data('model_index', 1)
+        #renderer.set_data('column', 2)
         column = gtk.TreeViewColumn('Escludi', renderer, active=1)
         column.connect("clicked", self.columnSelectAll, treeview)
         column.set_sizing(GTK_COLUMN_GROWN_ONLY)
@@ -573,8 +605,12 @@ class RicercaClientiFilter(GladeWidget):
         renderer = gtk.CellRendererText()
         renderer.set_property('editable', True)
         renderer.connect('edited', self.onColumnEdited, treeview)
-        renderer.set_data('model_index', 2)
-        renderer.set_data('column', 3)
+        #GTK +
+        renderer.model_index = 2
+        renderer.column = 3
+        #GTK -
+        #renderer.set_data('model_index', 1)
+        #renderer.set_data('column', 2)
         column = gtk.TreeViewColumn('Cognome e nome', renderer, text=2)
         column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
@@ -600,8 +636,12 @@ class RicercaClientiFilter(GladeWidget):
         renderer = gtk.CellRendererToggle()
         renderer.set_property('activatable', True)
         renderer.connect('toggled', self.onColumnEdited, None, treeview)
-        renderer.set_data('model_index', 0)
-        renderer.set_data('column', 1)
+        #GTK +
+        renderer.model_index = 0
+        renderer.column = 1
+        #GTK -
+        #renderer.set_data('model_index', 1)
+        #renderer.set_data('column', 2)
         column = gtk.TreeViewColumn('Includi', renderer, active=0)
         column.connect("clicked", self.columnSelectAll, treeview)
         column.set_sizing(GTK_COLUMN_GROWN_ONLY)
@@ -612,9 +652,12 @@ class RicercaClientiFilter(GladeWidget):
 
         renderer = gtk.CellRendererToggle()
         renderer.set_property('activatable', True)
-        renderer.connect('toggled', self.onColumnEdited, None, treeview)
-        renderer.set_data('model_index', 1)
-        renderer.set_data('column', 2)
+        #GTK +
+        renderer.model_index = 1
+        renderer.column = 2
+        #GTK -
+        #renderer.set_data('model_index', 1)
+        #renderer.set_data('column', 2)
         column = gtk.TreeViewColumn('Escludi', renderer, active=1)
         column.connect("clicked", self.columnSelectAll, treeview)
         column.set_sizing(GTK_COLUMN_GROWN_ONLY)
@@ -626,8 +669,12 @@ class RicercaClientiFilter(GladeWidget):
         renderer = gtk.CellRendererText()
         renderer.set_property('editable', True)
         renderer.connect('edited', self.onColumnEdited, treeview)
-        renderer.set_data('model_index', 2)
-        renderer.set_data('column', 3)
+        #GTK +
+        renderer.model_index = 2
+        renderer.column = 3
+        #GTK -
+        #renderer.set_data('model_index', 1)
+        #renderer.set_data('column', 2)
         column = gtk.TreeViewColumn('Codice', renderer, text=2)
         column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
@@ -653,8 +700,12 @@ class RicercaClientiFilter(GladeWidget):
         renderer = gtk.CellRendererToggle()
         renderer.set_property('activatable', True)
         renderer.connect('toggled', self.onColumnEdited, None, treeview)
-        renderer.set_data('model_index', 0)
-        renderer.set_data('column', 1)
+        #GTK +
+        renderer.model_index = 0
+        renderer.column = 1
+        #GTK -
+        #renderer.set_data('model_index', 1)
+        #renderer.set_data('column', 2)
         column = gtk.TreeViewColumn('Includi', renderer, active=0)
         column.connect("clicked", self.columnSelectAll, treeview)
         column.set_sizing(GTK_COLUMN_GROWN_ONLY)
@@ -666,8 +717,12 @@ class RicercaClientiFilter(GladeWidget):
         renderer = gtk.CellRendererToggle()
         renderer.set_property('activatable', True)
         renderer.connect('toggled', self.onColumnEdited, None, treeview)
-        renderer.set_data('model_index', 1)
-        renderer.set_data('column', 2)
+        #GTK +
+        renderer.model_index = 1
+        renderer.column = 2
+        #GTK -
+        #renderer.set_data('model_index', 1)
+        #renderer.set_data('column', 2)
         column = gtk.TreeViewColumn('Escludi', renderer, active=1)
         column.connect("clicked", self.columnSelectAll, treeview)
         column.set_sizing(GTK_COLUMN_GROWN_ONLY)
@@ -679,8 +734,12 @@ class RicercaClientiFilter(GladeWidget):
         renderer = gtk.CellRendererText()
         renderer.set_property('editable', True)
         renderer.connect('edited', self.onColumnEdited, treeview)
-        renderer.set_data('model_index', 2)
-        renderer.set_data('column', 3)
+        #GTK +
+        renderer.model_index = 2
+        renderer.column = 3
+        #GTK -
+        #renderer.set_data('model_index', 1)
+        #renderer.set_data('column', 2)
         column = gtk.TreeViewColumn("Località", renderer, text=2)
         column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
@@ -706,8 +765,12 @@ class RicercaClientiFilter(GladeWidget):
         renderer = gtk.CellRendererToggle()
         renderer.set_property('activatable', True)
         renderer.connect('toggled', self.onColumnEdited, None, treeview)
-        renderer.set_data('model_index', 0)
-        renderer.set_data('column', 1)
+        #GTK +
+        renderer.model_index = 0
+        renderer.column = 1
+        #GTK -
+        #renderer.set_data('model_index', 1)
+        #renderer.set_data('column', 2)
         column = gtk.TreeViewColumn('Includi', renderer, active=0)
         column.connect("clicked", self.columnSelectAll, treeview)
         column.set_sizing(GTK_COLUMN_GROWN_ONLY)
@@ -719,8 +782,12 @@ class RicercaClientiFilter(GladeWidget):
         renderer = gtk.CellRendererToggle()
         renderer.set_property('activatable', True)
         renderer.connect('toggled', self.onColumnEdited, None, treeview)
-        renderer.set_data('model_index', 1)
-        renderer.set_data('column', 2)
+        #GTK +
+        renderer.model_index = 1
+        renderer.column = 2
+        #GTK -
+        #renderer.set_data('model_index', 1)
+        #renderer.set_data('column', 2)
         column = gtk.TreeViewColumn('Escludi', renderer, active=1)
         column.connect("clicked", self.columnSelectAll, treeview)
         column.set_sizing(GTK_COLUMN_GROWN_ONLY)
@@ -732,8 +799,12 @@ class RicercaClientiFilter(GladeWidget):
         renderer = gtk.CellRendererText()
         renderer.set_property('editable', True)
         renderer.connect('edited', self.onColumnEdited, treeview)
-        renderer.set_data('model_index', 2)
-        renderer.set_data('column', 3)
+        #GTK +
+        renderer.model_index = 2
+        renderer.column = 3
+        #GTK -
+        #renderer.set_data('model_index', 1)
+        #renderer.set_data('column', 2)
         column = gtk.TreeViewColumn('Indirizzo', renderer, text=2)
         column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
@@ -759,8 +830,12 @@ class RicercaClientiFilter(GladeWidget):
         renderer = gtk.CellRendererToggle()
         renderer.set_property('activatable', True)
         renderer.connect('toggled', self.onColumnEdited, None, treeview)
-        renderer.set_data('model_index', 0)
-        renderer.set_data('column', 1)
+        #GTK +
+        renderer.model_index = 0
+        renderer.column = 1
+        #GTK -
+        #renderer.set_data('model_index', 1)
+        #renderer.set_data('column', 2)
         column = gtk.TreeViewColumn('Includi', renderer, active=0)
         column.connect("clicked", self.columnSelectAll, treeview)
         column.set_sizing(GTK_COLUMN_GROWN_ONLY)
@@ -772,8 +847,12 @@ class RicercaClientiFilter(GladeWidget):
         renderer = gtk.CellRendererToggle()
         renderer.set_property('activatable', True)
         renderer.connect('toggled', self.onColumnEdited, None, treeview)
-        renderer.set_data('model_index', 1)
-        renderer.set_data('column', 2)
+        #GTK +
+        renderer.model_index = 1
+        renderer.column = 2
+        #GTK -
+        #renderer.set_data('model_index', 1)
+        #renderer.set_data('column', 2)
         column = gtk.TreeViewColumn('Escludi', renderer, active=1)
         column.connect("clicked", self.columnSelectAll, treeview)
         column.set_sizing(GTK_COLUMN_GROWN_ONLY)
@@ -785,8 +864,12 @@ class RicercaClientiFilter(GladeWidget):
         renderer = gtk.CellRendererText()
         renderer.set_property('editable', True)
         renderer.connect('edited', self.onColumnEdited, treeview)
-        renderer.set_data('model_index', 2)
-        renderer.set_data('column', 3)
+        #GTK +
+        renderer.model_index = 2
+        renderer.column = 3
+        #GTK -
+        #renderer.set_data('model_index', 1)
+        #renderer.set_data('column', 2)
         column = gtk.TreeViewColumn('Codice fiscale', renderer, text=2)
         column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
@@ -812,8 +895,12 @@ class RicercaClientiFilter(GladeWidget):
         renderer = gtk.CellRendererToggle()
         renderer.set_property('activatable', True)
         renderer.connect('toggled', self.onColumnEdited, None, treeview)
-        renderer.set_data('model_index', 0)
-        renderer.set_data('column', 1)
+        #GTK +
+        renderer.model_index = 0
+        renderer.column = 1
+        #GTK -
+        #renderer.set_data('model_index', 1)
+        #renderer.set_data('column', 2)
         column = gtk.TreeViewColumn('Includi', renderer, active=0)
         column.connect("clicked", self.columnSelectAll, treeview)
         column.set_sizing(GTK_COLUMN_GROWN_ONLY)
@@ -825,8 +912,12 @@ class RicercaClientiFilter(GladeWidget):
         renderer = gtk.CellRendererToggle()
         renderer.set_property('activatable', True)
         renderer.connect('toggled', self.onColumnEdited, None, treeview)
-        renderer.set_data('model_index', 1)
-        renderer.set_data('column', 2)
+        #GTK +
+        renderer.model_index = 1
+        renderer.column = 2
+        #GTK -
+        #renderer.set_data('model_index', 1)
+        #renderer.set_data('column', 2)
         column = gtk.TreeViewColumn('Escludi', renderer, active=1)
         column.connect("clicked", self.columnSelectAll, treeview)
         column.set_sizing(GTK_COLUMN_GROWN_ONLY)
@@ -838,8 +929,12 @@ class RicercaClientiFilter(GladeWidget):
         renderer = gtk.CellRendererText()
         renderer.set_property('editable', True)
         renderer.connect('edited', self.onColumnEdited, treeview)
-        renderer.set_data('model_index', 2)
-        renderer.set_data('column', 3)
+        #GTK +
+        renderer.model_index = 2
+        renderer.column = 3
+        #GTK -
+        #renderer.set_data('model_index', 1)
+        #renderer.set_data('column', 2)
         column = gtk.TreeViewColumn('Partita I.V.A.', renderer, text=2)
         column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
@@ -865,8 +960,12 @@ class RicercaClientiFilter(GladeWidget):
         renderer = gtk.CellRendererToggle()
         renderer.set_property('activatable', True)
         renderer.connect('toggled', self.onColumnEdited, None, treeview)
-        renderer.set_data('model_index', 0)
-        renderer.set_data('column', 1)
+        #GTK +
+        renderer.model_index = 0
+        renderer.column = 1
+        #GTK -
+        #renderer.set_data('model_index', 1)
+        #renderer.set_data('column', 2)
         column = gtk.TreeViewColumn('Includi', renderer, active=0)
         column.connect("clicked", self.columnSelectAll, treeview)
         column.set_sizing(GTK_COLUMN_GROWN_ONLY)
@@ -912,8 +1011,12 @@ class RicercaClientiFilter(GladeWidget):
         renderer = gtk.CellRendererToggle()
         renderer.set_property('activatable', True)
         renderer.connect('toggled', self.onColumnEdited, None, treeview)
-        renderer.set_data('model_index', 0)
-        renderer.set_data('column', 1)
+        #GTK +
+        renderer.model_index = 0
+        renderer.column = 1
+        #GTK -
+        #renderer.set_data('model_index', 1)
+        #renderer.set_data('column', 2)
         column = gtk.TreeViewColumn('Includi', renderer, active=0)
         column.connect("clicked", self.columnSelectAll, treeview)
         column.set_sizing(GTK_COLUMN_GROWN_ONLY)
@@ -959,8 +1062,12 @@ class RicercaClientiFilter(GladeWidget):
         renderer = gtk.CellRendererToggle()
         renderer.set_property('activatable', True)
         renderer.connect('toggled', self.onColumnEdited, None, treeview)
-        renderer.set_data('model_index', 0)
-        renderer.set_data('column', 1)
+        #GTK +
+        renderer.model_index = 0
+        renderer.column = 1
+        #GTK -
+        #renderer.set_data('model_index', 1)
+        #renderer.set_data('column', 2)
         column = gtk.TreeViewColumn('Includi', renderer, active=0)
         column.connect("clicked", self.columnSelectAll, treeview)
         column.set_sizing(GTK_COLUMN_GROWN_ONLY)
@@ -1006,8 +1113,12 @@ class RicercaClientiFilter(GladeWidget):
         renderer = gtk.CellRendererToggle()
         renderer.set_property('activatable', True)
         renderer.connect('toggled', self.onColumnEdited, None, treeview)
-        renderer.set_data('model_index', 0)
-        renderer.set_data('column', 1)
+        #GTK +
+        renderer.model_index = 0
+        renderer.column = 1
+        #GTK -
+        #renderer.set_data('model_index', 1)
+        #renderer.set_data('column', 2)
         column = gtk.TreeViewColumn('Includi', renderer, active=0)
         column.connect("clicked", self.columnSelectAll, treeview)
         column.set_sizing(GTK_COLUMN_GROWN_ONLY)

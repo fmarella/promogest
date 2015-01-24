@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012  by Promotux
+#    Copyright (C) 2005-2015  by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -24,23 +24,26 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
-from promogest.dao.Dao import Dao
+from promogest.dao.Dao import Dao, Base
 
-try:
-    t_pos=Table('pos',
+class Pos(Base, Dao):
+    try:
+        __table__ = Table('pos',
                 params['metadata'],
                 schema = params['schema'],
                 autoload=True)
-except:
-    #pass
-    from data.pos import t_pos
-
-class Pos(Dao):
+    except:
+        __table__ =Table('pos', params['metadata'],
+            Column('id', Integer, primary_key=True),
+            Column('denominazione', String(200), nullable=False ),
+            Column('denominazione_breve', String(10), nullable=False),
+            schema=params['schema'],
+            useexisting =True
+            )
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):
-        dic= {  'denominazione' : t_pos.c.denominazione.ilike("%"+v+"%")}
+        dic= {  'denominazione' : Pos.__table__.c.denominazione.ilike("%"+v+"%")}
         return  dic[k]
-std_mapper = mapper(Pos, t_pos, order_by=t_pos.c.id)

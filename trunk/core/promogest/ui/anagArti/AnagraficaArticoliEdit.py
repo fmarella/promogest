@@ -71,8 +71,8 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
             self.codici_a_barre_label.set_text('')
             self.plus_radiobutton.set_property('visible', False)
             self.plus_radiobutton.set_no_show_all(True)
-            self.codici_a_barre_hseparator.set_property('visible', False)
-            self.codici_a_barre_hseparator.set_no_show_all(True)
+            #self.codici_a_barre_hseparator.set_property('visible', False)
+            #self.codici_a_barre_hseparator.set_no_show_all(True)
             self.con_taglie_colori_radiobutton.set_property('visible', False)
             self.con_taglie_colori_radiobutton.set_no_show_all(True)
             self.taglie_colori_togglebutton.set_property('visible', False)
@@ -633,7 +633,7 @@ dei dati accessori. Continuare?"""
         if active:
             self.plus_radiobutton.set_active(True)
             self.codici_a_barre_togglebutton.set_sensitive(True)
-            self.varianti_taglia_colore_label.set_sensitive(False)
+            #self.varianti_taglia_colore_label.set_sensitive(False)
             self.taglie_colori_togglebutton.set_sensitive(False)
             self.id_colore_customcombobox.set_sensitive(True)
             self.id_taglia_customcombobox.set_sensitive(True)
@@ -645,7 +645,7 @@ dei dati accessori. Continuare?"""
         if active:
             self.con_taglie_colori_radiobutton.set_active(True)
             self.codici_a_barre_togglebutton.set_sensitive(False)
-            self.varianti_taglia_colore_label.set_sensitive(True)
+            #self.varianti_taglia_colore_label.set_sensitive(True)
             self.taglie_colori_togglebutton.set_sensitive(True)
             self.id_colore_customcombobox.set_sensitive(False)
             self.id_taglia_customcombobox.set_sensitive(False)

@@ -1,17 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.18.3 -->
 <interface>
-  <requires lib="gtk+" version="2.16"/>
-  <!-- interface-naming-policy toplevel-contextual -->
-  <object class="GtkListStore" id="elenco_magazzini_listore">
-    <columns>
-      <!-- column-name PyObject1 -->
-      <column type="PyObject"/>
-      <!-- column-name gchararray1 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray2 -->
-      <column type="gchararray"/>
-    </columns>
-  </object>
+  <requires lib="gtk+" version="3.4"/>
   <object class="GtkFrame" id="elenco_magazzini_frame">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -23,17 +13,14 @@
         <property name="left_padding">5</property>
         <property name="right_padding">5</property>
         <child>
-          <object class="GtkVBox" id="vbox12">
-            <property name="width_request">680</property>
+          <object class="GtkBox" id="box2">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="spacing">5</property>
+            <property name="orientation">vertical</property>
             <child>
               <object class="GtkScrolledWindow" id="scrolledwindow14">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <property name="hscrollbar_policy">automatic</property>
-                <property name="vscrollbar_policy">automatic</property>
                 <property name="shadow_type">in</property>
                 <child>
                   <object class="GtkTreeView" id="elenco_magazzini_treeview">
@@ -43,6 +30,9 @@
                     <property name="headers_clickable">False</property>
                     <property name="search_column">1</property>
                     <signal name="cursor-changed" handler="on_elenco_magazzini_treeview_cursor_changed" swapped="no"/>
+                    <child internal-child="selection">
+                      <object class="GtkTreeSelection" id="treeview-selection"/>
+                    </child>
                     <child>
                       <object class="GtkTreeViewColumn" id="denominazione_column">
                         <property name="title" translatable="yes">Denominazione</property>
@@ -77,15 +67,14 @@
               </packing>
             </child>
             <child>
-              <object class="GtkHBox" id="hbox117">
+              <object class="GtkBox" id="box1">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="spacing">5</property>
+                <property name="homogeneous">True</property>
                 <child>
                   <object class="GtkToggleButton" id="magazzini_togglebutton">
                     <property name="label" translatable="yes">Anagrafica
 Magazzino</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
@@ -94,7 +83,7 @@ Magazzino</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
-                    <property name="fill">False</property>
+                    <property name="fill">True</property>
                     <property name="position">0</property>
                   </packing>
                 </child>
@@ -102,7 +91,6 @@ Magazzino</property>
                   <object class="GtkToggleButton" id="stoccaggi_togglebutton">
                     <property name="label" translatable="yes">Situazione
 Magazzino</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
@@ -111,7 +99,7 @@ Magazzino</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
-                    <property name="fill">False</property>
+                    <property name="fill">True</property>
                     <property name="position">1</property>
                   </packing>
                 </child>
@@ -119,7 +107,6 @@ Magazzino</property>
                   <object class="GtkToggleButton" id="movimenti_togglebutton">
                     <property name="label" translatable="yes">Movimenti
 Magazzino</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
@@ -128,14 +115,13 @@ Magazzino</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
-                    <property name="fill">False</property>
+                    <property name="fill">True</property>
                     <property name="position">2</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkToggleButton" id="forniture_button">
                     <property name="label" translatable="yes">Fornit_ure</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
@@ -145,14 +131,13 @@ Magazzino</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
-                    <property name="fill">False</property>
+                    <property name="fill">True</property>
                     <property name="position">3</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkToggleButton" id="inventario_togglebutton">
                     <property name="label" translatable="yes">Inventario</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
@@ -161,14 +146,13 @@ Magazzino</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
-                    <property name="fill">False</property>
+                    <property name="fill">True</property>
                     <property name="position">4</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkButton" id="aggiorna_magazzini_button">
                     <property name="label">gtk-refresh</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
@@ -177,7 +161,7 @@ Magazzino</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
-                    <property name="fill">False</property>
+                    <property name="fill">True</property>
                     <property name="position">5</property>
                   </packing>
                 </child>
@@ -185,7 +169,6 @@ Magazzino</property>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="padding">5</property>
                 <property name="position">1</property>
               </packing>
             </child>
@@ -202,6 +185,16 @@ Magazzino</property>
         <property name="use_markup">True</property>
       </object>
     </child>
+  </object>
+  <object class="GtkListStore" id="elenco_magazzini_listore">
+    <columns>
+      <!-- column-name PyObject1 -->
+      <column type="PyObject"/>
+      <!-- column-name gchararray1 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray2 -->
+      <column type="gchararray"/>
+    </columns>
   </object>
   <object class="GtkImage" id="image1">
     <property name="visible">True</property>

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.18.3 -->
 <interface>
-  <requires lib="gtk+" version="2.16"/>
-  <!-- interface-requires pythonplugin 0.0 -->
-  <!-- interface-naming-policy project-wide -->
+  <requires lib="gtk+" version="3.4"/>
+  <requires lib="pythonplugin" version="0.0"/>
   <object class="GtkImage" id="acconto_scheda_image">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -33,9 +33,10 @@
     <property name="can_focus">False</property>
     <property name="label" translatable="yes">Pagamenti</property>
   </object>
-  <object class="GtkVBox" id="pagamenti_vbox">
+  <object class="GtkBox" id="pagamenti_vbox">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
+    <property name="orientation">vertical</property>
     <child>
       <object class="GtkFrame" id="scadenze_pagamenti_frame">
         <property name="visible">True</property>
@@ -299,6 +300,7 @@
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
                 <property name="tooltip_text" translatable="yes">Se il cliente è esentato dal pagamento delle spese questa opzione verrà attivata in automatico.</property>
+                <property name="xalign">0</property>
                 <property name="draw_indicator">True</property>
                 <signal name="toggled" handler="on_esclusione_spese_checkbutton_toggled" swapped="no"/>
               </object>
@@ -367,12 +369,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="invisible_char">●</property>
-                        <property name="invisible_char_set">True</property>
-                        <property name="secondary_icon_stock">gtk-clear</property>
                         <property name="primary_icon_activatable">False</property>
-                        <property name="secondary_icon_activatable">True</property>
-                        <property name="primary_icon_sensitive">True</property>
-                        <property name="secondary_icon_sensitive">True</property>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -448,12 +445,7 @@
                         <property name="can_focus">True</property>
                         <property name="invisible_char">●</property>
                         <property name="text" translatable="yes">0.00      </property>
-                        <property name="invisible_char_set">True</property>
-                        <property name="secondary_icon_stock">gtk-clear</property>
                         <property name="primary_icon_activatable">False</property>
-                        <property name="secondary_icon_activatable">True</property>
-                        <property name="primary_icon_sensitive">True</property>
-                        <property name="secondary_icon_sensitive">True</property>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -493,12 +485,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="invisible_char">●</property>
-                        <property name="invisible_char_set">True</property>
-                        <property name="secondary_icon_stock">gtk-clear</property>
                         <property name="primary_icon_activatable">False</property>
-                        <property name="secondary_icon_activatable">True</property>
-                        <property name="primary_icon_sensitive">True</property>
-                        <property name="secondary_icon_sensitive">True</property>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -576,12 +563,7 @@
                         <property name="can_focus">True</property>
                         <property name="invisible_char">●</property>
                         <property name="text" translatable="yes">0.00      </property>
-                        <property name="invisible_char_set">True</property>
-                        <property name="secondary_icon_stock">gtk-clear</property>
                         <property name="primary_icon_activatable">False</property>
-                        <property name="secondary_icon_activatable">True</property>
-                        <property name="primary_icon_sensitive">True</property>
-                        <property name="secondary_icon_sensitive">True</property>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -858,7 +840,7 @@
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
                         <property name="use_underline">True</property>
-                        <property name="yalign">0.55000001192092896</property>
+                        <property name="xalign">0</property>
                         <property name="draw_indicator">True</property>
                         <signal name="toggled" handler="on_primanota_check_toggled" swapped="no"/>
                         <child>

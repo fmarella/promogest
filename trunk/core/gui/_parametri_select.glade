@@ -1,25 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <requires lib="gtk+" version="2.16"/>
+  <requires lib="gtk+" version="2.24"/>
   <!-- interface-naming-policy toplevel-contextual -->
   <object class="GtkFrame" id="parametri_select_frame">
     <property name="visible">True</property>
+    <property name="can_focus">False</property>
     <property name="label_xalign">0</property>
     <child>
       <object class="GtkAlignment" id="alignment237">
         <property name="width_request">680</property>
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="xscale">0.25</property>
         <property name="left_padding">12</property>
         <child>
           <object class="GtkTable" id="table10">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="n_rows">5</property>
             <property name="n_columns">3</property>
             <property name="column_spacing">5</property>
             <property name="row_spacing">5</property>
             <property name="homogeneous">True</property>
+            <child>
+              <placeholder/>
+            </child>
             <child>
               <object class="GtkToggleButton" id="togglebutton48">
                 <property name="visible">True</property>
@@ -29,15 +35,18 @@
                 <child>
                   <object class="GtkAlignment" id="alignment249">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <property name="xscale">0</property>
                     <property name="yscale">0</property>
                     <child>
                       <object class="GtkHBox" id="hbox222">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="spacing">2</property>
                         <child>
                           <object class="GtkImage" id="image168">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="pixbuf">categoria_articolo48x48.png</property>
                           </object>
                           <packing>
@@ -49,6 +58,7 @@
                         <child>
                           <object class="GtkLabel" id="label467">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="label" translatable="yes">_Categorie articoli</property>
                             <property name="use_underline">True</property>
                           </object>
@@ -65,7 +75,7 @@
               </object>
               <packing>
                 <property name="x_options">GTK_FILL</property>
-                <property name="y_options"></property>
+                <property name="y_options"/>
               </packing>
             </child>
             <child>
@@ -77,15 +87,18 @@
                 <child>
                   <object class="GtkAlignment" id="alignment250">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <property name="xscale">0</property>
                     <property name="yscale">0</property>
                     <child>
                       <object class="GtkHBox" id="hbox223">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="spacing">2</property>
                         <child>
                           <object class="GtkImage" id="image169">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="pixbuf">famiglia_articolo48x48.png</property>
                           </object>
                           <packing>
@@ -97,6 +110,7 @@
                         <child>
                           <object class="GtkLabel" id="label468">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="label" translatable="yes">_Famiglie articoli</property>
                             <property name="use_underline">True</property>
                           </object>
@@ -115,7 +129,7 @@
                 <property name="top_attach">1</property>
                 <property name="bottom_attach">2</property>
                 <property name="x_options">GTK_FILL</property>
-                <property name="y_options"></property>
+                <property name="y_options"/>
               </packing>
             </child>
             <child>
@@ -127,15 +141,18 @@
                 <child>
                   <object class="GtkAlignment" id="alignment251">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <property name="xscale">0</property>
                     <property name="yscale">0</property>
                     <child>
                       <object class="GtkHBox" id="hbox224">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="spacing">2</property>
                         <child>
                           <object class="GtkImage" id="image170">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="pixbuf">categoria_cliente48x48.png</property>
                           </object>
                           <packing>
@@ -147,6 +164,7 @@
                         <child>
                           <object class="GtkLabel" id="label469">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="label" translatable="yes">Ca_tegorie Clienti</property>
                             <property name="use_underline">True</property>
                           </object>
@@ -165,7 +183,7 @@
                 <property name="top_attach">2</property>
                 <property name="bottom_attach">3</property>
                 <property name="x_options">GTK_FILL</property>
-                <property name="y_options"></property>
+                <property name="y_options"/>
               </packing>
             </child>
             <child>
@@ -177,15 +195,18 @@
                 <child>
                   <object class="GtkAlignment" id="alignment252">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <property name="xscale">0</property>
                     <property name="yscale">0</property>
                     <child>
                       <object class="GtkHBox" id="hbox225">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="spacing">2</property>
                         <child>
                           <object class="GtkImage" id="image171">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="xalign">0.61000001430511475</property>
                             <property name="pixbuf">categoria_fornitore48x48.png</property>
                           </object>
@@ -198,6 +219,7 @@
                         <child>
                           <object class="GtkLabel" id="label470">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="label" translatable="yes">Cate_gorie Fornitori</property>
                             <property name="use_underline">True</property>
                           </object>
@@ -216,7 +238,7 @@
                 <property name="top_attach">3</property>
                 <property name="bottom_attach">4</property>
                 <property name="x_options">GTK_FILL</property>
-                <property name="y_options"></property>
+                <property name="y_options"/>
               </packing>
             </child>
             <child>
@@ -228,15 +250,18 @@
                 <child>
                   <object class="GtkAlignment" id="alignment255">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <property name="xscale">0</property>
                     <property name="yscale">0</property>
                     <child>
                       <object class="GtkHBox" id="hbox228">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="spacing">2</property>
                         <child>
                           <object class="GtkImage" id="image178">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="pixbuf">categoria_contatto48x48.png</property>
                           </object>
                           <packing>
@@ -248,6 +273,7 @@
                         <child>
                           <object class="GtkLabel" id="label473">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="label" translatable="yes">Catego_rie Contatti</property>
                             <property name="use_underline">True</property>
                           </object>
@@ -266,7 +292,7 @@
                 <property name="top_attach">4</property>
                 <property name="bottom_attach">5</property>
                 <property name="x_options">GTK_FILL</property>
-                <property name="y_options"></property>
+                <property name="y_options"/>
               </packing>
             </child>
             <child>
@@ -278,15 +304,18 @@
                 <child>
                   <object class="GtkAlignment" id="alignment246">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <property name="xscale">0</property>
                     <property name="yscale">0</property>
                     <child>
                       <object class="GtkHBox" id="hbox219">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="spacing">2</property>
                         <child>
                           <object class="GtkImage" id="image165">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="pixbuf">aliquota_iva48x48.png</property>
                           </object>
                           <packing>
@@ -298,6 +327,7 @@
                         <child>
                           <object class="GtkLabel" id="label464">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="label" translatable="yes">A_liquote IVA</property>
                             <property name="use_underline">True</property>
                           </object>
@@ -318,7 +348,7 @@
                 <property name="top_attach">4</property>
                 <property name="bottom_attach">5</property>
                 <property name="x_options">GTK_FILL</property>
-                <property name="y_options"></property>
+                <property name="y_options"/>
               </packing>
             </child>
             <child>
@@ -330,15 +360,18 @@
                 <child>
                   <object class="GtkAlignment" id="alignment253">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <property name="xscale">0</property>
                     <property name="yscale">0</property>
                     <child>
                       <object class="GtkHBox" id="hbox226">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="spacing">2</property>
                         <child>
                           <object class="GtkImage" id="image172">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="pixbuf">pagamento48x48.png</property>
                           </object>
                           <packing>
@@ -350,6 +383,7 @@
                         <child>
                           <object class="GtkLabel" id="label471">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="label" translatable="yes">_Pagamenti</property>
                             <property name="use_underline">True</property>
                           </object>
@@ -370,7 +404,7 @@
                 <property name="top_attach">3</property>
                 <property name="bottom_attach">4</property>
                 <property name="x_options">GTK_FILL</property>
-                <property name="y_options"></property>
+                <property name="y_options"/>
               </packing>
             </child>
             <child>
@@ -382,15 +416,18 @@
                 <child>
                   <object class="GtkAlignment" id="alignment254">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <property name="xscale">0</property>
                     <property name="yscale">0</property>
                     <child>
                       <object class="GtkHBox" id="hbox227">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="spacing">2</property>
                         <child>
                           <object class="GtkImage" id="image173">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="pixbuf">banca48x48.png</property>
                           </object>
                           <packing>
@@ -402,6 +439,7 @@
                         <child>
                           <object class="GtkLabel" id="label472">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="label" translatable="yes">_Banche</property>
                             <property name="use_underline">True</property>
                           </object>
@@ -422,7 +460,7 @@
                 <property name="top_attach">2</property>
                 <property name="bottom_attach">3</property>
                 <property name="x_options">GTK_FILL</property>
-                <property name="y_options"></property>
+                <property name="y_options"/>
               </packing>
             </child>
             <child>
@@ -434,15 +472,18 @@
                 <child>
                   <object class="GtkAlignment" id="alignment247">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <property name="xscale">0</property>
                     <property name="yscale">0</property>
                     <child>
                       <object class="GtkHBox" id="hbox220">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="spacing">2</property>
                         <child>
                           <object class="GtkImage" id="image166">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="pixbuf">imballaggio48x48.png</property>
                           </object>
                           <packing>
@@ -454,6 +495,7 @@
                         <child>
                           <object class="GtkLabel" id="label465">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="label" translatable="yes">_Imballaggi</property>
                             <property name="use_underline">True</property>
                           </object>
@@ -472,7 +514,7 @@
                 <property name="left_attach">1</property>
                 <property name="right_attach">2</property>
                 <property name="x_options">GTK_FILL</property>
-                <property name="y_options"></property>
+                <property name="y_options"/>
               </packing>
             </child>
             <child>
@@ -484,15 +526,18 @@
                 <child>
                   <object class="GtkAlignment" id="alignment248">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <property name="xscale">0</property>
                     <property name="yscale">0</property>
                     <child>
                       <object class="GtkHBox" id="hbox221">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="spacing">2</property>
                         <child>
                           <object class="GtkImage" id="image167">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="pixbuf">multiplo48x48.png</property>
                           </object>
                           <packing>
@@ -504,6 +549,7 @@
                         <child>
                           <object class="GtkLabel" id="label466">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="label" translatable="yes">_Multipli</property>
                             <property name="use_underline">True</property>
                           </object>
@@ -524,7 +570,7 @@
                 <property name="top_attach">1</property>
                 <property name="bottom_attach">2</property>
                 <property name="x_options">GTK_FILL</property>
-                <property name="y_options"></property>
+                <property name="y_options"/>
               </packing>
             </child>
             <child>
@@ -536,15 +582,18 @@
                 <child>
                   <object class="GtkAlignment" id="alignment1">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <property name="xscale">0</property>
                     <property name="yscale">0</property>
                     <child>
                       <object class="GtkHBox" id="hbox1">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="spacing">2</property>
                         <child>
                           <object class="GtkImage" id="image1">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="pixbuf">utenti_48.png</property>
                           </object>
                           <packing>
@@ -556,6 +605,7 @@
                         <child>
                           <object class="GtkLabel" id="utenti">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="label" translatable="yes">_Utenti</property>
                             <property name="use_underline">True</property>
                           </object>
@@ -574,7 +624,7 @@
                 <property name="left_attach">2</property>
                 <property name="right_attach">3</property>
                 <property name="x_options">GTK_FILL</property>
-                <property name="y_options"></property>
+                <property name="y_options"/>
               </packing>
             </child>
             <child>
@@ -586,15 +636,18 @@
                 <child>
                   <object class="GtkAlignment" id="alignment2">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <property name="xscale">0</property>
                     <property name="yscale">0</property>
                     <child>
                       <object class="GtkHBox" id="hbox2">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="spacing">2</property>
                         <child>
                           <object class="GtkImage" id="image2">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="pixbuf">ruori_48.png</property>
                           </object>
                           <packing>
@@ -606,6 +659,7 @@
                         <child>
                           <object class="GtkLabel" id="ruoli">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="label" translatable="yes">_Ruoli</property>
                             <property name="use_underline">True</property>
                           </object>
@@ -626,7 +680,7 @@
                 <property name="top_attach">1</property>
                 <property name="bottom_attach">2</property>
                 <property name="x_options">GTK_FILL</property>
-                <property name="y_options"></property>
+                <property name="y_options"/>
               </packing>
             </child>
             <child>
@@ -638,15 +692,18 @@
                 <child>
                   <object class="GtkAlignment" id="r">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <property name="xscale">0</property>
                     <property name="yscale">0</property>
                     <child>
                       <object class="GtkHBox" id="hbox3">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="spacing">2</property>
                         <child>
                           <object class="GtkImage" id="image3">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="pixbuf">utenti_ruoli_48.png</property>
                           </object>
                           <packing>
@@ -658,6 +715,7 @@
                         <child>
                           <object class="GtkLabel" id="ruoli_azioni">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="label" translatable="yes">_Ruoli e Azioni</property>
                             <property name="use_underline">True</property>
                           </object>
@@ -678,7 +736,7 @@
                 <property name="top_attach">2</property>
                 <property name="bottom_attach">3</property>
                 <property name="x_options">GTK_FILL</property>
-                <property name="y_options"></property>
+                <property name="y_options"/>
               </packing>
             </child>
             <child>
@@ -690,15 +748,18 @@
                 <child>
                   <object class="GtkAlignment" id="r1">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <property name="xscale">0</property>
                     <property name="yscale">0</property>
                     <child>
                       <object class="GtkHBox" id="hbox4">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="spacing">2</property>
                         <child>
                           <object class="GtkImage" id="image4">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="pixbuf">gest_commessa48X48.png</property>
                           </object>
                           <packing>
@@ -710,6 +771,7 @@
                         <child>
                           <object class="GtkLabel" id="ruoli_azioni1">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="label" translatable="yes">_Stadio Commessa</property>
                             <property name="use_underline">True</property>
                           </object>
@@ -730,11 +792,8 @@
                 <property name="top_attach">3</property>
                 <property name="bottom_attach">4</property>
                 <property name="x_options">GTK_FILL</property>
-                <property name="y_options"></property>
+                <property name="y_options"/>
               </packing>
-            </child>
-            <child>
-              <placeholder/>
             </child>
           </object>
         </child>
@@ -743,6 +802,7 @@
     <child type="label">
       <object class="GtkLabel" id="label463">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="label" translatable="yes">Parametri</property>
         <property name="use_markup">True</property>
       </object>

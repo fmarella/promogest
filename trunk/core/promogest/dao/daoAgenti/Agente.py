@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2013 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -19,24 +19,22 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-from sqlalchemy import Table, or_
-from sqlalchemy.orm import mapper, join
-from promogest.Environment import params, conf
-from promogest.dao.Dao import Dao
+from sqlalchemy import *
+from sqlalchemy.orm import *
+from promogest.Environment import *
+from promogest.dao.Dao import Dao, Base
 from promogest.dao.DaoUtils import codeIncrement
-from promogest.dao.PersonaGiuridica import t_persona_giuridica
+from promogest.dao.PersonaGiuridica import PersonaGiuridica_
 
-try:
-    t_agente = Table('agente',
-                 params['metadata'],
-                 schema=params['schema'],
-                 autoload=True)
-except:
-    from data.agente import t_agente
+from data.agente import t_agente
+from data.personaGiuridica import t_persona_giuridica
+
+agente_persona_giuridica = join(t_agente, t_persona_giuridica)
 
 
-
-class Agente(Dao):
+class Agente(Base, Dao):
+    __table__ = agente_persona_giuridica
+    id = column_property(t_agente.c.id, t_persona_giuridica.c.id)
 
     def __init__(self, req=None):
         """
@@ -49,21 +47,21 @@ class Agente(Dao):
         Creazione dei parametri del filtro
         """
         if k == 'codice':
-            dic= {k : t_persona_giuridica.c.codice.ilike("%"+v+"%")}
+            dic= {k : PersonaGiuridica_.__table__.c.codice.ilike("%"+v+"%")}
         elif k == 'ragioneSociale':
-            dic = {k:t_persona_giuridica.c.ragione_sociale.ilike("%"+v+"%")}
+            dic = {k:PersonaGiuridica_.__table__.c.ragione_sociale.ilike("%"+v+"%")}
         elif k == 'insegna':
-            dic = {k:t_persona_giuridica.c.insegna.ilike("%"+v+"%")}
+            dic = {k:PersonaGiuridica_.__table__.c.insegna.ilike("%"+v+"%")}
         elif k == 'cognomeNome':
-            dic = {k: or_(t_persona_giuridica.c.cognome.ilike("%"+v+"%"),
-                                t_persona_giuridica.c.cognome.ilike("%"+v+"%"))}
+            dic = {k: or_(PersonaGiuridica_.__table__.c.cognome.ilike("%"+v+"%"),
+                                PersonaGiuridica_.__table__.c.cognome.ilike("%"+v+"%"))}
         elif k == 'localita':
-            dic = {k:or_(t_persona_giuridica.c.sede_operativa_localita.ilike("%"+v+"%"),
-                        t_persona_giuridica.c.sede_legale_localita.ilike("%"+v+"%"))}
+            dic = {k:or_(PersonaGiuridica_.__table__.c.sede_operativa_localita.ilike("%"+v+"%"),
+                        PersonaGiuridica_.__table__.c.sede_legale_localita.ilike("%"+v+"%"))}
         elif k == 'partitaIva':
-            dic = {k:t_persona_giuridica.c.partita_iva.ilike("%"+v+"%")}
+            dic = {k:PersonaGiuridica_.__table__.c.partita_iva.ilike("%"+v+"%")}
         elif k == 'codiceFiscale':
-            dic = { k:t_persona_giuridica.c.codice_fiscale.ilike("%"+v+"%")}
+            dic = { k:PersonaGiuridica_.__table__.c.codice_fiscale.ilike("%"+v+"%")}
         return  dic[k]
 
 def getNuovoCodiceAgente():
@@ -86,12 +84,3 @@ def getNuovoCodiceAgente():
         except:
             pass
     return codice
-
-
-
-std_mapper = mapper(Agente,
-                    join(t_agente, t_persona_giuridica),
-                    properties={
-                        'id': [t_agente.c.id, t_persona_giuridica.c.id]
-                    },
-                    order_by=t_agente.c.id)

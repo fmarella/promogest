@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.18.3 -->
 <interface>
-  <requires lib="gtk+" version="2.16"/>
-  <!-- interface-requires pythonplugin 0.0 -->
-  <!-- interface-naming-policy toplevel-contextual -->
+  <requires lib="gtk+" version="3.4"/>
+  <requires lib="pythonplugin" version="0.0"/>
   <object class="GtkTable" id="anagrafica_categorie_trasporto_detail_table">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -18,19 +18,16 @@
         <property name="invisible_char">•</property>
         <property name="secondary_icon_stock">gtk-clear</property>
         <property name="primary_icon_activatable">False</property>
-        <property name="secondary_icon_activatable">True</property>
-        <property name="primary_icon_sensitive">True</property>
-        <property name="secondary_icon_sensitive">True</property>
         <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
-        <signal name="icon-press" handler="on_icon_press" swapped="no"/>
-        <signal name="focus-out-event" handler="on_entry_focus_out_event" swapped="no"/>
         <signal name="focus-in-event" handler="on_entry_focus_in_event" swapped="no"/>
+        <signal name="focus-out-event" handler="on_entry_focus_out_event" swapped="no"/>
+        <signal name="icon-press" handler="on_icon_press" swapped="no"/>
       </object>
       <packing>
         <property name="left_attach">1</property>
         <property name="right_attach">2</property>
         <property name="x_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
       </packing>
     </child>
     <child>
@@ -43,7 +40,7 @@
       </object>
       <packing>
         <property name="x_options">GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
         <property name="x_padding">10</property>
       </packing>
     </child>
@@ -61,9 +58,6 @@
             <property name="invisible_char">●</property>
             <property name="secondary_icon_stock">gtk-clear</property>
             <property name="primary_icon_activatable">False</property>
-            <property name="secondary_icon_activatable">True</property>
-            <property name="primary_icon_sensitive">True</property>
-            <property name="secondary_icon_sensitive">True</property>
           </object>
         </child>
       </object>
@@ -73,7 +67,7 @@
         <property name="top_attach">1</property>
         <property name="bottom_attach">2</property>
         <property name="x_options">GTK_SHRINK | GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
       </packing>
     </child>
     <child>
@@ -90,9 +84,6 @@
             <property name="invisible_char">●</property>
             <property name="secondary_icon_stock">gtk-clear</property>
             <property name="primary_icon_activatable">False</property>
-            <property name="secondary_icon_activatable">True</property>
-            <property name="primary_icon_sensitive">True</property>
-            <property name="secondary_icon_sensitive">True</property>
           </object>
         </child>
       </object>
@@ -102,7 +93,7 @@
         <property name="top_attach">2</property>
         <property name="bottom_attach">3</property>
         <property name="x_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
       </packing>
     </child>
     <child>
@@ -116,7 +107,7 @@
         <property name="top_attach">1</property>
         <property name="bottom_attach">2</property>
         <property name="x_options">GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
         <property name="x_padding">10</property>
       </packing>
     </child>
@@ -131,7 +122,7 @@
         <property name="top_attach">2</property>
         <property name="bottom_attach">3</property>
         <property name="x_options">GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
         <property name="x_padding">10</property>
       </packing>
     </child>
@@ -147,7 +138,7 @@
         <property name="top_attach">3</property>
         <property name="bottom_attach">4</property>
         <property name="x_options">GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
         <property name="x_padding">10</property>
       </packing>
     </child>
@@ -155,8 +146,6 @@
       <object class="GtkScrolledWindow" id="scrolledwindow1">
         <property name="visible">True</property>
         <property name="can_focus">True</property>
-        <property name="hscrollbar_policy">automatic</property>
-        <property name="vscrollbar_policy">automatic</property>
         <property name="shadow_type">out</property>
         <child>
           <object class="GtkTextView" id="note_textview">
@@ -186,18 +175,16 @@
         <property name="invisible_char">•</property>
         <property name="primary_icon_activatable">False</property>
         <property name="secondary_icon_activatable">False</property>
-        <property name="primary_icon_sensitive">True</property>
-        <property name="secondary_icon_sensitive">True</property>
         <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
-        <signal name="key-press-event" handler="on_campo_filter_entry_key_press_event" swapped="no"/>
-        <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
         <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
+        <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
+        <signal name="key-press-event" handler="on_campo_filter_entry_key_press_event" swapped="no"/>
       </object>
       <packing>
         <property name="left_attach">1</property>
         <property name="right_attach">2</property>
         <property name="x_options">GTK_SHRINK | GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
       </packing>
     </child>
     <child>
@@ -209,10 +196,22 @@
       </object>
       <packing>
         <property name="x_options">GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
         <property name="x_padding">10</property>
       </packing>
     </child>
+  </object>
+  <object class="GtkListStore" id="filter_listore">
+    <columns>
+      <!-- column-name PyObject1 -->
+      <column type="PyObject"/>
+      <!-- column-name gchararray1 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray2 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray3 -->
+      <column type="gchararray"/>
+    </columns>
   </object>
   <object class="GtkTreeView" id="anagrafica_filter_treeview">
     <property name="visible">True</property>
@@ -223,6 +222,9 @@
     <property name="reorderable">True</property>
     <property name="search_column">1</property>
     <property name="enable_grid_lines">both</property>
+    <child internal-child="selection">
+      <object class="GtkTreeSelection" id="treeview-selection1"/>
+    </child>
     <child>
       <object class="GtkTreeViewColumn" id="denominazione_column">
         <property name="resizable">True</property>
@@ -261,17 +263,5 @@
         </child>
       </object>
     </child>
-  </object>
-  <object class="GtkListStore" id="filter_listore">
-    <columns>
-      <!-- column-name PyObject1 -->
-      <column type="PyObject"/>
-      <!-- column-name gchararray1 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray2 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray3 -->
-      <column type="gchararray"/>
-    </columns>
   </object>
 </interface>

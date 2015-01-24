@@ -58,7 +58,19 @@ from promogest.lib.config import Config
 if not web:
     if preEnv.pg3_cla:
         print " USIAMO LA VERSIONE CON PYGI"
+        #try:
         from gi.repository import Gtk as gtk
+        #except:
+            #import gtk
+            #dialoggg = gtk.MessageDialog(None,
+                        #gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+                        #gtk.MESSAGE_ERROR,
+                        #gtk.RESPONSE_CANCEL)
+            #dialoggg.set_markup("E' necessario installare la nuova versione del PromoGest, \nvai sul sito e scarica il nuovo installer\n del PromoGest 3 ")
+            #response = dialoggg.run()
+            #dialoggg.destroy()
+            #sys.exit()
+
         GTK_DIALOG_MODAL = gtk.DialogFlags.MODAL
         GTK_DIALOG_DESTROY_WITH_PARENT = gtk.DialogFlags.DESTROY_WITH_PARENT
         GTK_BUTTON_OK = gtk.ButtonsType.OK
@@ -129,7 +141,10 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 #from sqlalchemy.interfaces import PoolListener
 from sqlalchemy.exc import *
-
+#from sqlalchemy.ext.declarative import DeferredReflection
+from promogest.lib.alembic.migration import MigrationContext
+from promogest.lib.alembic.operations import Operations
+from promogest.lib.alembic import op
 from promogest.EnvUtils import *
 
 PRODOTTO = "PromoTux"
@@ -179,6 +194,7 @@ magazzino_pos = None
 windowGroup = []
 view = "month"
 news = []
+req = None
 puntoA = None
 puntoB = None
 puntoP = None
@@ -200,28 +216,17 @@ cache_obj = None
 avvii = 1
 generic_counter= 0
 SRC_PATH = os.path.split(os.path.dirname(__file__))[0]
-STATIC_PATH = os.path.join(SRC_PATH, 'templates')
-STATIC_PATH_FEED = os.path.join(SRC_PATH, 'feed')
-IMAGE_PATH = os.path.join(STATIC_PATH, 'images/')
 guiDir = '.' + os.sep + 'gui' + os.sep
 subloguiDir = '.' + os.sep + 'gui_sublo' + os.sep
-
-SESSION_DIR = os.path.join("./", 'session')
-CACHE_DIR = os.path.join("./", 'cache')
-URL_CHARS = 'abcdefghijkmpqrstuvwxyzABCDEFGHIJKLMNPQRST23456789'
-COOKIENAME = "promogest_web"
-ALLOWED_SCHEMES = frozenset(['http', 'https', 'ftp', 'ftps'])
+schemi_presenti = []
+confList = []
+configDir = None
 
 modulesList = []
 
 sladir = "sladir/"
 artImagPath = ""
 languages = ""
-
-
-confList = []
-configDir = None
-
 
 def putMainconf():
     if not preEnv.web:
@@ -256,7 +261,10 @@ windowsrc = startdir() + 'windowsrc.xml'
 if preEnv.aziendaforce:
     azienda = preEnv.aziendaforce
 else:
-    azienda = main_conf.Database.azienda
+    try:
+        azienda = main_conf.Database.azienda
+    except:
+        azienda = None
 
 if preEnv.tipodbforce:
     tipodb = preEnv.tipodbforce
@@ -307,8 +315,6 @@ if preEnv.pwdforce:
 else:
     password = main_conf.Database.password
 
-
-
 preEnv.port = port
 preEnv.user = user
 preEnv.password = password
@@ -325,7 +331,8 @@ def restart_program():
     python = sys.executable
     os.execl(python, python, * sys.argv)
 print " AZIENDAAAA", azienda
-def handleEngine():
+
+def handleEngine(schema= None):
     engine = None
     print "TIPO DB",tipodb
     if tipodb == "sqlite":
@@ -353,6 +360,7 @@ def handleEngine():
             engine = psycopg2new()
         if not engine:
             engine = psycopg2old()
+
     elif tipodb =="mysql":
         from sqlalchemy.pool import NullPool
         if preEnv.buildSchema:
@@ -376,30 +384,42 @@ def handleEngine():
     engine.echo = echosa
     #engine.echo = True
     return engine
+
+
 if tipodb=="sqlite":
     azienda = None
+
 engine = handleEngine()
 tipo_eng = engine.name
-if not web:
-    Session = sessionmaker(bind=engine)
-    session = Session()
-else:
-    print " USI QUESTA SESSIONE SCOPED"
-    session = scoped_session(lambda: create_session(engine, autocommit=False))
+
+def createSession():
+    print " QUANTE VOLTE PASSI QUI" , azienda
+    if not web:
+        Session = sessionmaker(bind=engine)
+        session = Session()
+    else:
+        print " USI QUESTA SESSIONE SCOPED"
+        session = scoped_session(lambda: create_session(engine, autocommit=False))
+        #session.execute("SET search_path TO {0}".format(azienda))
+    return session
 
 # Determiniamo il nome del file pickle in base all'azienda e alla ver python.
-print " AZIENDAAAA", azienda
+
 if azienda:
     meta_pickle = azienda + "-meta.pickle"+sys.version[:1]
     promogestDir = os.path.expanduser('~') + os.sep + "promogest2" + os.sep + azienda + os.sep
+    meta_pickle_da_conf = main_conf.Database.azienda + "-meta.pickle"+sys.version[:1]
+    promogestDir_da_conf = os.path.expanduser('~') + os.sep + "promogest2" + os.sep + main_conf.Database.azienda + os.sep
 else:
     meta_pickle = None
-    #promogestDir = os.path.expanduser('~') + os.sep + "promogest2" + os.sep + "AziendaPromo" + os.sep
-meta_pickle_da_conf = main_conf.Database.azienda + "-meta.pickle"+sys.version[:1]
-promogestDir_da_conf = os.path.expanduser('~') + os.sep + "promogest2" + os.sep + main_conf.Database.azienda + os.sep
+    meta_pickle_da_conf = None
+    promogestDir_da_conf = None
+
+
+session = createSession()
 
 from pickle import load as pickle_load
-metatmp = MetaData()
+#metatmp = MetaData()
 
 def delete_pickle():
     """ Cancella il file pickle del metadata
@@ -412,7 +432,6 @@ def delete_pickle():
             os.remove(str(os.path.join(promogestDir_da_conf.replace("_",""),meta_pickle_da_conf.replace("_","")).strip()))
             print "\n\n\n\nHO CANCELLATO IL FILE PICKLE QUASI SICURAMENTE BISOGNA RILANCIARE\n\n\n\n"
             restart_program()
-            #sys.exit()
 
 def usePickleToMeta():
     if azienda and os.path.exists(str(os.path.join(promogestDir.replace("_",""),meta_pickle.replace("_","")).strip())):
@@ -421,10 +440,6 @@ def usePickleToMeta():
             try:
                 meta = pickle_load(f)
                 meta.bind = engine
-                #try:
-                    #meta.tables[azienda+".articolo"]
-                #except:
-                    #delete_pickle()
             except:
                 print "DEVO CANCELLARE IL PICKLE PERCHé NON RIESCO A TROVARLO O LEGGERLO"
                 delete_pickle()
@@ -434,35 +449,34 @@ def usePickleToMeta():
         print "USO META NORMALE"
         meta = MetaData(engine)
     return meta
-meta = usePickleToMeta()
+#meta = usePickleToMeta()
 
-#meta = MetaData(engine)
+
 preEnv.azienda = azienda
+print " AZIENDAAAAAAAAAAAA 2222222222222222", azienda
+#meta = None
+meta = MetaData(engine)
 
-if tipo_eng=="sqlite" or tipo_eng=="mysql":
-    mainSchema = None
-    schema = None
-else:
+mainSchema = None
+schema = None
+
+if tipo_eng=="postgresql":
     mainSchema = "promogest2"
     schema = azienda
-    #print "AZIENDAAAAAAAAAAAAAAAAAAAAAAAAA", azienda
 
-params = {'engine': engine,
+params = {
+        'engine': engine,
         'mainSchema': mainSchema,
         'schema': schema,
         'metadata': meta,
         'session': session,
         "tipo_db": tipodb,
-        "nomedb": database,
-        'defaultLimit': 5,
-        'bccaddr': ["assistenza@promotux.it"],
-        'objects': ["Informazioni Tecniche",
-                    "Informazioni Commerciali",
-                    "Varie"],
-        'usernameLoggedList': userdata}
+        'usernameLoggedList': userdata
+        }
 
 if params['tipo_db'] == 'postgresql':
-    fk_prefix = params['schema'] + '.'
+    if params["schema"]:
+        fk_prefix = params['schema'] + '.'
     fk_prefix_main = mainSchema  +'.'
 else:
     fk_prefix = ""
@@ -475,8 +489,6 @@ if not preEnv.web:
 def __sendmail(msg="PG"):
     msg = str(promogestDir) + " " + str(rev_locale) + "  " + str(rev_remota)
     msg = msg +"\n"
-    #for a in settaggi:
-        #msg = msg+"\n"+str(a.__dic__)
     if not web and not preEnv.pg3_cla:
         return msgDef(text=msg, azienda=azienda)
 
@@ -490,12 +502,6 @@ def hook(et, ev, eb):
         return
     if "[Errno 9] Bad file descriptor" in ev:
         return
-    #if "Handler" in str(ev):
-        #print "ATTENZIONE!!! MANCA L'HANDLER", ev
-        #pg2log.info("\n  ".join(["Error occurred: traceback follows"] + list(traceback.format_exception(et, ev, eb))))
-        #print "\n  ".join(list(traceback.format_exception(et, ev, eb)))
-        #delete_pickle()
-        #return
     if "ProgrammingError" in str(ev):
         pg2log.info("\n  ".join(["Error occurred: traceback follows"] + list(traceback.format_exception(et, ev, eb))))
         print "\n  ".join(list(traceback.format_exception(et, ev, eb)))
@@ -528,27 +534,12 @@ def hook(et, ev, eb):
         pass
     print "\n  ".join(list(traceback.format_exception(et, ev, eb)))
     __sendmail()
-#if not preEnv.web:
+
 sys.excepthook = hook
 
 # DA SPOSTARE ASSOLUTAMENTE QUANTO PRIMA
 print "SQLALCHEMY VERSION", sqlalchemy.__version__
 
-
-if os.name=="nt" and sqlalchemy.__version__ < "0.7":
-    delete_pickle()
-    from setuptools.command import easy_install
-    easy_install.main( ["-U","sqlalchemy"] )
-    sys.exit()
-
-#try:
-    #import keyring
-#except:
-    #if os.name == 'nt':
-        #from setuptools.command import easy_install
-        #easy_install.main(['-U', 'keyring'])
-    #else:
-        #pass
 if not preEnv.web:
     pg2log.info("SQLALCHEMY:" + str(sqlalchemy.__version__))
 

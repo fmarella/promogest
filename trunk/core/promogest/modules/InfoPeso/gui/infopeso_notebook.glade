@@ -1,12 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.18.3 -->
 <interface>
-  <requires lib="gtk+" version="2.16"/>
-  <!-- interface-requires pythonplugin 0.0 -->
-  <!-- interface-naming-policy project-wide -->
+  <requires lib="gtk+" version="3.4"/>
+  <requires lib="pythonplugin" version="0.0"/>
   <object class="GtkImage" id="gp_image">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="pixbuf">gp.png</property>
+  </object>
+  <object class="GtkLabel" id="infopeso_page_label">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="label" translatable="yes">INFO PESO</property>
+    <attributes>
+      <attribute name="weight" value="bold"/>
+    </attributes>
+  </object>
+  <object class="GtkListStore" id="riga_pesata_listore">
+    <columns>
+      <!-- column-name PyObject1 -->
+      <column type="PyObject"/>
+      <!-- column-name gchararray1 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray2 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray3 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray4 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray5 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray6 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray7 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray8 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray9 -->
+      <column type="gchararray"/>
+    </columns>
   </object>
   <object class="GtkFrame" id="infopeso_frame">
     <property name="visible">True</property>
@@ -125,8 +157,6 @@
                     <property name="invisible_char">●</property>
                     <property name="primary_icon_activatable">False</property>
                     <property name="secondary_icon_activatable">False</property>
-                    <property name="primary_icon_sensitive">True</property>
-                    <property name="secondary_icon_sensitive">True</property>
                   </object>
                   <packing>
                     <property name="expand">True</property>
@@ -172,10 +202,11 @@
                 <child>
                   <object class="GtkRadioButton" id="donna_radio">
                     <property name="label" translatable="yes">Donna</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
-                    <property name="use_action_appearance">False</property>
+                    <property name="xalign">0.5</property>
                     <property name="active">True</property>
                     <property name="draw_indicator">True</property>
                   </object>
@@ -188,10 +219,11 @@
                 <child>
                   <object class="GtkRadioButton" id="uomo_radio">
                     <property name="label" translatable="yes">Uomo</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
-                    <property name="use_action_appearance">False</property>
+                    <property name="xalign">0.5</property>
                     <property name="active">True</property>
                     <property name="draw_indicator">True</property>
                     <property name="group">donna_radio</property>
@@ -223,8 +255,6 @@
                     <property name="invisible_char">●</property>
                     <property name="primary_icon_activatable">False</property>
                     <property name="secondary_icon_activatable">False</property>
-                    <property name="primary_icon_sensitive">True</property>
-                    <property name="secondary_icon_sensitive">True</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -238,10 +268,11 @@
                 <child>
                   <object class="GtkCheckButton" id="privacy_check">
                     <property name="label" translatable="yes">Privacy</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
-                    <property name="use_action_appearance">False</property>
+                    <property name="xalign">0.5</property>
                     <property name="draw_indicator">True</property>
                   </object>
                   <packing>
@@ -278,8 +309,6 @@
                   <object class="GtkScrolledWindow" id="scrolledwindow2">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="hscrollbar_policy">automatic</property>
-                    <property name="vscrollbar_policy">automatic</property>
                     <property name="shadow_type">in</property>
                     <child>
                       <object class="GtkTextView" id="note_textview">
@@ -366,8 +395,6 @@
                                 <property name="invisible_char">●</property>
                                 <property name="primary_icon_activatable">False</property>
                                 <property name="secondary_icon_activatable">False</property>
-                                <property name="primary_icon_sensitive">True</property>
-                                <property name="secondary_icon_sensitive">True</property>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -430,8 +457,6 @@
                                 <property name="invisible_char">●</property>
                                 <property name="primary_icon_activatable">False</property>
                                 <property name="secondary_icon_activatable">False</property>
-                                <property name="primary_icon_sensitive">True</property>
-                                <property name="secondary_icon_sensitive">True</property>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -459,8 +484,6 @@
                                 <property name="invisible_char">●</property>
                                 <property name="primary_icon_activatable">False</property>
                                 <property name="secondary_icon_activatable">False</property>
-                                <property name="primary_icon_sensitive">True</property>
-                                <property name="secondary_icon_sensitive">True</property>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -488,8 +511,6 @@
                                 <property name="invisible_char">●</property>
                                 <property name="primary_icon_activatable">False</property>
                                 <property name="secondary_icon_activatable">False</property>
-                                <property name="primary_icon_sensitive">True</property>
-                                <property name="secondary_icon_sensitive">True</property>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -529,8 +550,6 @@
                                 <property name="height_request">50</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="hscrollbar_policy">automatic</property>
-                                <property name="vscrollbar_policy">automatic</property>
                                 <property name="shadow_type">in</property>
                                 <child>
                                   <object class="GtkTextView" id="note_riga_pesata_textview">
@@ -578,10 +597,10 @@
                 <child>
                   <object class="GtkButton" id="aggiungi_pesata_button">
                     <property name="label">gtk-add</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="use_stock">True</property>
                     <signal name="clicked" handler="on_aggiungi_pesata_button_clicked" swapped="no"/>
                   </object>
@@ -594,10 +613,10 @@
                 <child>
                   <object class="GtkButton" id="elimina_pesata_button">
                     <property name="label">gtk-remove</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="use_stock">True</property>
                     <signal name="clicked" handler="on_elimina_pesata_button_clicked" swapped="no"/>
                   </object>
@@ -610,10 +629,10 @@
                 <child>
                   <object class="GtkButton" id="stampa_infopeso_button">
                     <property name="label">gtk-print</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="use_stock">True</property>
                     <signal name="clicked" handler="on_stampa_infopeso_button_clicked" swapped="no"/>
                   </object>
@@ -626,10 +645,10 @@
                 <child>
                   <object class="GtkButton" id="grafico_button">
                     <property name="label" translatable="yes">Grafico</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="image">gp_image</property>
                     <signal name="clicked" handler="on_grafico_button_clicked" swapped="no"/>
                   </object>
@@ -656,8 +675,6 @@
                   <object class="GtkScrolledWindow" id="righe_pesata_scrolledwindow">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="hscrollbar_policy">automatic</property>
-                    <property name="vscrollbar_policy">automatic</property>
                     <property name="shadow_type">in</property>
                     <child>
                       <object class="GtkTreeView" id="righe_pesata_treeview">
@@ -668,6 +685,9 @@
                         <property name="model">riga_pesata_listore</property>
                         <property name="enable_grid_lines">both</property>
                         <signal name="row-activated" handler="on_righe_pesata_treeview_row_activated" swapped="no"/>
+                        <child internal-child="selection">
+                          <object class="GtkTreeSelection" id="treeview-selection1"/>
+                        </child>
                         <child>
                           <object class="GtkTreeViewColumn" id="treeviewcolumn1">
                             <property name="title" translatable="yes">Data Pesata</property>
@@ -796,37 +816,5 @@
         <property name="use_markup">True</property>
       </object>
     </child>
-  </object>
-  <object class="GtkLabel" id="infopeso_page_label">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="label" translatable="yes">INFO PESO</property>
-    <attributes>
-      <attribute name="weight" value="bold"/>
-    </attributes>
-  </object>
-  <object class="GtkListStore" id="riga_pesata_listore">
-    <columns>
-      <!-- column-name PyObject1 -->
-      <column type="PyObject"/>
-      <!-- column-name gchararray1 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray2 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray3 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray4 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray5 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray6 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray7 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray8 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray9 -->
-      <column type="gchararray"/>
-    </columns>
   </object>
 </interface>

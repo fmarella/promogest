@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.18.3 -->
 <interface>
-  <!-- interface-requires pythonplugin 0.0 -->
-  <requires lib="gtk+" version="2.16"/>
-  <!-- interface-naming-policy project-wide -->
+  <requires lib="gtk+" version="3.4"/>
+  <requires lib="pythonplugin" version="0.0"/>
   <object class="GtkHBox" id="anagrafica_documenti_filter_table">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -39,6 +39,7 @@
             <property name="can_focus">True</property>
             <property name="receives_default">False</property>
             <property name="use_underline">True</property>
+            <property name="xalign">0.5</property>
             <property name="draw_indicator">True</property>
             <property name="group">cliente_filter_radiobutton</property>
             <signal name="toggled" handler="on_filter_radiobutton_toggled" swapped="no"/>
@@ -58,6 +59,7 @@
             <property name="can_focus">True</property>
             <property name="receives_default">False</property>
             <property name="use_underline">True</property>
+            <property name="xalign">0.5</property>
             <property name="active">True</property>
             <property name="draw_indicator">True</property>
             <signal name="toggled" handler="on_filter_radiobutton_toggled" swapped="no"/>
@@ -164,7 +166,6 @@
           <object class="GtkExpander" id="noleggio_expander">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <property name="use_markup">True</property>
             <child>
               <object class="GtkFrame" id="noleggio_filter_frame">
                 <property name="visible">True</property>
@@ -383,12 +384,8 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="invisible_char">•</property>
-                <property name="invisible_char_set">True</property>
                 <property name="secondary_icon_stock">gtk-clear</property>
                 <property name="primary_icon_activatable">False</property>
-                <property name="secondary_icon_activatable">True</property>
-                <property name="primary_icon_sensitive">True</property>
-                <property name="secondary_icon_sensitive">True</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -415,12 +412,8 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="invisible_char">•</property>
-                <property name="invisible_char_set">True</property>
                 <property name="secondary_icon_stock">gtk-clear</property>
                 <property name="primary_icon_activatable">False</property>
-                <property name="secondary_icon_activatable">True</property>
-                <property name="primary_icon_sensitive">True</property>
-                <property name="secondary_icon_sensitive">True</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -524,6 +517,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
+                <property name="xalign">0.5</property>
                 <property name="active">True</property>
                 <property name="draw_indicator">True</property>
               </object>
@@ -539,6 +533,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
+                <property name="xalign">0.5</property>
                 <property name="active">True</property>
                 <property name="draw_indicator">True</property>
                 <property name="group">tutto_radio</property>
@@ -555,6 +550,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
+                <property name="xalign">0.5</property>
                 <property name="active">True</property>
                 <property name="draw_indicator">True</property>
                 <property name="group">tutto_radio</property>
@@ -585,10 +581,6 @@
           <object class="ClienteSearchWidget" id="id_cliente_filter_customcombobox">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <property name="primary_icon_activatable">True</property>
-            <property name="secondary_icon_activatable">True</property>
-            <property name="primary_icon_sensitive">True</property>
-            <property name="secondary_icon_sensitive">True</property>
           </object>
           <packing>
             <property name="left_attach">1</property>
@@ -602,10 +594,6 @@
           <object class="FornitoreSearchWidget" id="id_fornitore_filter_customcombobox">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <property name="primary_icon_activatable">True</property>
-            <property name="secondary_icon_activatable">True</property>
-            <property name="primary_icon_sensitive">True</property>
-            <property name="secondary_icon_sensitive">True</property>
           </object>
           <packing>
             <property name="left_attach">1</property>
@@ -650,10 +638,6 @@
             <property name="invisible_char">●</property>
             <property name="primary_icon_stock">gtk-find</property>
             <property name="secondary_icon_stock">gtk-clear</property>
-            <property name="primary_icon_activatable">True</property>
-            <property name="secondary_icon_activatable">True</property>
-            <property name="primary_icon_sensitive">True</property>
-            <property name="secondary_icon_sensitive">True</property>
           </object>
           <packing>
             <property name="left_attach">1</property>
@@ -828,10 +812,6 @@
                         <property name="invisible_char">●</property>
                         <property name="primary_icon_stock">gtk-find</property>
                         <property name="secondary_icon_stock">gtk-clear</property>
-                        <property name="primary_icon_activatable">True</property>
-                        <property name="secondary_icon_activatable">True</property>
-                        <property name="primary_icon_sensitive">True</property>
-                        <property name="secondary_icon_sensitive">True</property>
                       </object>
                       <packing>
                         <property name="expand">True</property>
@@ -904,14 +884,11 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="invisible_char">•</property>
-                        <property name="invisible_char_set">True</property>
                         <property name="primary_icon_activatable">False</property>
                         <property name="secondary_icon_activatable">False</property>
-                        <property name="primary_icon_sensitive">True</property>
-                        <property name="secondary_icon_sensitive">True</property>
-                        <signal name="key-press-event" handler="on_campo_filter_entry_key_press_event" swapped="no"/>
                         <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
                         <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
+                        <signal name="key-press-event" handler="on_campo_filter_entry_key_press_event" swapped="no"/>
                       </object>
                       <packing>
                         <property name="expand">True</property>
@@ -951,6 +928,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
+                        <property name="xalign">0.5</property>
                         <property name="draw_indicator">True</property>
                       </object>
                       <packing>
@@ -990,11 +968,8 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="invisible_char">•</property>
-                        <property name="invisible_char_set">True</property>
                         <property name="primary_icon_activatable">False</property>
                         <property name="secondary_icon_activatable">False</property>
-                        <property name="primary_icon_sensitive">True</property>
-                        <property name="secondary_icon_sensitive">True</property>
                       </object>
                       <packing>
                         <property name="expand">True</property>
@@ -1050,6 +1025,34 @@
       </packing>
     </child>
   </object>
+  <object class="GtkListStore" id="filter_listore">
+    <columns>
+      <!-- column-name PyObject1 -->
+      <column type="PyObject"/>
+      <!-- column-name gchararray1 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray2 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray3 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray4 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray5 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray6 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray7 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray8 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray9 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray10 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray11 -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
   <object class="GtkTreeView" id="anagrafica_filter_treeview">
     <property name="visible">True</property>
     <property name="can_focus">True</property>
@@ -1057,6 +1060,9 @@
     <property name="model">filter_listore</property>
     <property name="search_column">1</property>
     <property name="enable_grid_lines">both</property>
+    <child internal-child="selection">
+      <object class="GtkTreeSelection" id="treeview-selection1"/>
+    </child>
     <child>
       <object class="GtkTreeViewColumn" id="data_column">
         <property name="title" translatable="yes">Data</property>
@@ -1205,34 +1211,6 @@
         </child>
       </object>
     </child>
-  </object>
-  <object class="GtkListStore" id="filter_listore">
-    <columns>
-      <!-- column-name PyObject1 -->
-      <column type="PyObject"/>
-      <!-- column-name gchararray1 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray2 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray3 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray4 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray5 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray6 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray7 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray8 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray9 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray10 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray11 -->
-      <column type="gchararray"/>
-    </columns>
   </object>
   <object class="GtkImage" id="image1__">
     <property name="visible">True</property>

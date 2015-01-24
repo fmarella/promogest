@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2013 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Marella <francesco.marella@anche.no>
@@ -25,27 +25,29 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
-from promogest.dao.Dao import Dao
-
-try:
-    t_cliente_variazione_listino = Table('cliente_variazione_listino',
-                             params['metadata'],
-                             schema=params['schema'],
-                             autoload=True)
-except:
-    from data.clienteVariazioneListino import t_cliente_variazione_listino
+from promogest.dao.Dao import Dao, Base
 
 
-class ClienteVariazioneListino(Dao):
+class ClienteVariazioneListino(Base, Dao):
+
+    try:
+        __table__ = Table('cliente_variazione_listino',
+                                 params['metadata'],
+                                 schema=params['schema'],
+                                 autoload=True)
+    except:
+        from data.clienteVariazioneListino import t_cliente_variazione_listino
+        __table__ = t_cliente_variazione_listino
+
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
 
     def filter_values(self, k, v):
         if k == 'idCliente':
-            dic = {k: t_cliente_variazione_listino.c.id_cliente==v}
+            dic = {k: ClienteVariazioneListino.__table__.c.id_cliente==v}
         elif k == 'idVariazione':
-            dic = {k: t_cliente_variazione_listino.c.id_variazione==v}
+            dic = {k: ClienteVariazioneListino.__table__.c.id_variazione==v}
         elif k == 'idVariazioneList':
-            dic = {k: t_cliente_variazione_listino.c.id_variazione.in_(v)}
+            dic = {k: ClienteVariazioneListino.__table__.c.id_variazione.in_(v)}
         return dic[k]

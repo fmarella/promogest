@@ -23,12 +23,6 @@ START_CALL_IS_IN_THREAD = True        # False if you  do NOT want to put executi
 START_CALL = None                              # of this call in a separated Thread
 TEMPLATES = Environment.cartella_moduli+"/SchedaLavorazione/templates/"
 
-#class AssociazioniArticoli(object):
-    #VIEW_TYPE = ('anagrafica', 'Associazioni Articoli', 'associazione_articolo24x24.png')
-    #def getApplication(self):
-        #anag = AnagraficaAssociazioniArticoli()
-        #return anag
-
 class CaratteriStampa(object):
     VIEW_TYPE = ('parametro', 'Caratteri Stampa', 'caratteri_stampa24x24.png')
     def getApplication(self):
@@ -46,24 +40,3 @@ class SchedeLavorazione(object):
     def getApplication(self):
         anag = AnagraficaSchedeOrdinazioni()
         return anag
-
-##[Stampalux]
-###Questo � fondamentalmente inutilizzato. � qui solo per tradizione.
-##mod_enable = yes
-###Allarmi (data controllo e periodo preavviso scadenza)
-##target1 = data_consegna_bozza
-##target2 = data_spedizione
-##target3 = data_ordine_al_fornitore
-##soglia1 = 2
-##soglia2 = 2
-##soglia3 = 2
-##questi sono per la data di consegna
-##soglia4 = 0
-##intervallo_spedizione = 4
-###impostazioni autenticazione per recupero mail partecipazioni
-##mail_server =
-##mail_user =
-##mail_password =
-###impostazioni varie schede e modulo
-##aziende_cliche = Micart, Micart, Micart
-##company_name = partecipazioni_nozze

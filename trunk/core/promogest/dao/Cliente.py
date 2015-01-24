@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2013 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -23,26 +23,22 @@
 
 from sqlalchemy import *
 from sqlalchemy.orm import *
-from promogest.Environment import params, conf, session, delete_pickle , tipodb
+from promogest.Environment import *
 
-try:
-    t_cliente = Table('cliente',
-              params['metadata'],
-              schema=params['schema'],
-              autoload=True)
-except:
-    from data.cliente import t_cliente
-
-from promogest.dao.Dao import Dao
+from promogest.dao.Dao import Dao, Base
 from ClienteCategoriaCliente import ClienteCategoriaCliente
-from promogest.dao.PersonaGiuridica import t_persona_giuridica
+from promogest.dao.PersonaGiuridica import PersonaGiuridica_
 from promogest.dao.User import User
 from promogest.dao.DestinazioneMerce import DestinazioneMerce
 from promogest.dao.DaoUtils import codeIncrement, getRecapitiCliente, get_columns
 from promogest.dao.VariazioneListino import VariazioneListino
-from promogest.dao.ClienteVariazioneListino import t_cliente_variazione_listino
+from promogest.dao.ClienteVariazioneListino import ClienteVariazioneListino
 from promogest.lib.utils import posso, timeit
 
+
+from data.cliente import t_cliente
+from data.personaGiuridica import t_persona_giuridica
+cliente_persona_giuridica = join(t_cliente, t_persona_giuridica)
 
 def getNuovoCodiceCliente():
     """
@@ -76,10 +72,17 @@ def getNuovoCodiceCliente():
     return codice
 
 
-class Cliente(Dao):
+class Cliente(Base, Dao):
     """
     Dao Cliente
     """
+    __table__ = cliente_persona_giuridica
+    id = column_property(t_cliente.c.id, t_persona_giuridica.c.id)
+
+    cliente_categoria_cliente = relationship("ClienteCategoriaCliente",cascade="all, delete",
+                                                             backref='cliente_')
+    dm = relationship("DestinazioneMerce",cascade="all, delete")
+    vl = relationship("VariazioneListino",secondary=ClienteVariazioneListino.__table__)
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
@@ -245,74 +248,63 @@ class Cliente(Dao):
 
     def filter_values(self, k, v):
         if k == 'codice':
-            dic = {k: t_persona_giuridica.c.codice.ilike("%"+v+"%")}
+            dic = {k: PersonaGiuridica_.__table__.c.codice.ilike("%"+v+"%")}
         elif k == 'codicesatto':
-            dic = {k : t_persona_giuridica.c.codice == v}
+            dic = {k : PersonaGiuridica_.__table__.c.codice == v}
         elif k == 'idUser':
-            dic = {k : t_persona_giuridica.c.id_user == v}
+            dic = {k : PersonaGiuridica_.__table__.c.id_user == v}
         elif k == 'idPagamento':
             dic = {k : t_cliente.c.id_pagamento == v}
         elif k == 'idBanca':
             dic = {k : t_cliente.c.id_banca == v}
         elif k == 'idList':
-            dic = {k: t_persona_giuridica.c.id.in_(v)}
+            dic = {k: PersonaGiuridica_.__table__.c.id.in_(v)}
         elif k == 'ragioneSociale':
-            dic = {k: t_persona_giuridica.c.ragione_sociale.ilike("%"+v+"%")}
+            dic = {k: PersonaGiuridica_.__table__.c.ragione_sociale.ilike("%"+v+"%")}
         elif k == 'insegna':
-            dic = {k: t_persona_giuridica.c.insegna.ilike("%"+v+"%")}
+            dic = {k: PersonaGiuridica_.__table__.c.insegna.ilike("%"+v+"%")}
         elif k == 'cognomeNome':
-            dic = {k: or_(t_persona_giuridica.c.cognome.ilike("%"+v+"%"),t_persona_giuridica.c.nome.ilike("%"+v+"%"))}
+            dic = {k: or_(PersonaGiuridica_.__table__.c.cognome.ilike("%"+v+"%"),PersonaGiuridica_.__table__.c.nome.ilike("%"+v+"%"))}
         elif k == 'localita':
-            dic = {k: or_(t_persona_giuridica.c.sede_operativa_localita.ilike("%"+v+"%"), t_persona_giuridica.c.sede_legale_localita.ilike("%"+v+"%"))}
+            dic = {k: or_(PersonaGiuridica_.__table__.c.sede_operativa_localita.ilike("%"+v+"%"), PersonaGiuridica_.__table__.c.sede_legale_localita.ilike("%"+v+"%"))}
         elif k == 'indirizzo':
-            dic = {k: or_(t_persona_giuridica.c.sede_operativa_indirizzo.ilike("%"+v+"%"), t_persona_giuridica.c.sede_legale_indirizzo.ilike("%"+v+"%"))}
+            dic = {k: or_(PersonaGiuridica_.__table__.c.sede_operativa_indirizzo.ilike("%"+v+"%"), PersonaGiuridica_.__table__.c.sede_legale_indirizzo.ilike("%"+v+"%"))}
         elif k == 'cap':
-            dic = {k: or_(t_persona_giuridica.c.sede_operativa_cap.ilike("%"+v+"%"), t_persona_giuridica.c.sede_legale_cap.ilike("%"+v+"%"))}
+            dic = {k: or_(PersonaGiuridica_.__table__.c.sede_operativa_cap.ilike("%"+v+"%"), PersonaGiuridica_.__table__.c.sede_legale_cap.ilike("%"+v+"%"))}
         elif k == 'provincia':
-            dic = {k: or_(t_persona_giuridica.c.sede_operativa_provincia.ilike("%"+v+"%"), t_persona_giuridica.c.sede_legale_provincia.ilike("%"+v+"%"))}
+            dic = {k: or_(PersonaGiuridica_.__table__.c.sede_operativa_provincia.ilike("%"+v+"%"), PersonaGiuridica_.__table__.c.sede_legale_provincia.ilike("%"+v+"%"))}
         elif k == 'partitaIva':
-            dic = {k: t_persona_giuridica.c.partita_iva.ilike("%"+v+"%")}
+            dic = {k: PersonaGiuridica_.__table__.c.partita_iva.ilike("%"+v+"%")}
         elif k == 'codiceFiscale':
-            dic = {k: t_persona_giuridica.c.codice_fiscale.ilike("%"+v+"%")}
+            dic = {k: PersonaGiuridica_.__table__.c.codice_fiscale.ilike("%"+v+"%")}
         elif k == 'idCategoria':
             dic = {k:and_(Cliente.id==ClienteCategoriaCliente.id_cliente,ClienteCategoriaCliente.id_categoria_cliente==v)}
         elif k == 'cancellato':
-            dic = {k: and_(t_persona_giuridica.c.cancellato==v)}
+            dic = {k: and_(PersonaGiuridica_.__table__.c.cancellato==v)}
         return dic[k]
 
-std_mapper = mapper(Cliente,
-                    join(t_cliente, t_persona_giuridica),
-                    properties={
-                        'id': [t_cliente.c.id, t_persona_giuridica.c.id],
-                        'cliente_categoria_cliente': relation(ClienteCategoriaCliente,cascade="all, delete",
-                                                             backref='cliente_'),
-                        "dm": relation(DestinazioneMerce,cascade="all, delete"),
-                        'vl': relation(VariazioneListino,
-                            secondary=t_cliente_variazione_listino)
-                    },
-                    order_by=t_cliente.c.id)
 
-if tipodb=="sqlite":
-    from promogest.dao.Pagamento import Pagamento
-    a = session.query(Pagamento.id).all()
-    b = session.query(Cliente.id_pagamento).all()
-    fixit =  list(set(b)-set(a))
-    print "fixt-cliente-pagamento", fixit
-    for f in fixit:
-        if f[0] != "None" and f[0] != None:
-            aa = Cliente().select(idPagamento=f[0], batchSize=None)
-            for a in aa:
-                a.id_pagamento = None
-            session.add(a)
-    from promogest.dao.Banca import Banca
-    c = session.query(Banca.id).all()
-    d = session.query(Cliente.id_banca).all()
-    fixit2 =  list(set(d)-set(c))
-    print "fixt-cliente-banca", fixit2
-    for f in fixit2:
-        if f[0] != "None" and f[0] != None:
-            aa = Cliente().select(idBanca=f[0], batchSize=None)
-            for a in aa:
-                a.id_banca = None
-                session.add(a)
-    session.commit()
+#if tipodb=="sqlite":
+    #from promogest.dao.Pagamento import Pagamento
+    #a = session.query(Pagamento.id).all()
+    #b = session.query(Cliente.id_pagamento).all()
+    #fixit =  list(set(b)-set(a))
+    #print "fixt-cliente-pagamento", fixit
+    #for f in fixit:
+        #if f[0] != "None" and f[0] != None:
+            #aa = Cliente().select(idPagamento=f[0], batchSize=None)
+            #for a in aa:
+                #a.id_pagamento = None
+            #session.add(a)
+    #from promogest.dao.Banca import Banca
+    #c = session.query(Banca.id).all()
+    #d = session.query(Cliente.id_banca).all()
+    #fixit2 =  list(set(d)-set(c))
+    #print "fixt-cliente-banca", fixit2
+    #for f in fixit2:
+        #if f[0] != "None" and f[0] != None:
+            #aa = Cliente().select(idBanca=f[0], batchSize=None)
+            #for a in aa:
+                #a.id_banca = None
+                #session.add(a)
+    #session.commit()

@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Marella <francesco.marella@anche.no>
+#    Author: Francesco Meloni <francesco@promotux.it>
 
 #    This file is part of Promogest.
 
@@ -23,32 +24,32 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
-from promogest.dao.Dao import Dao
-
-try:
-    codice_classificazione = Table('codice_classificazione', params['metadata'], schema = params['schema'],autoload=True)
-
-except:
-    codice_classificazione = Table('codice_classificazione', params["metadata"],
-            Column('id',Integer, primary_key=True),
-            Column('denominazione', String(10)),
-            schema = params['schema'])
-
-    codice_classificazione.create(checkfirst=True)
+from promogest.dao.Dao import Dao, Base
 
 
-class CodiceClassificazione(Dao):
+class CodiceClassificazione(Base, Dao):
+    try:
+        __table__ = Table('codice_classificazione', params['metadata'], schema = params['schema'],autoload=True)
+
+    except:
+        __table__ = Table('codice_classificazione', params["metadata"],
+                Column('id',Integer, primary_key=True),
+                Column('denominazione', String(10)),
+                schema = params['schema'])
+
+    __mapper_args__ = {
+        'order_by' : "denominazione"
+    }
 
     def __init__(self, req= None, arg=None):
         Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):
         dic= {
-            'denominazione': codice_classificazione.c.denominazione == v,
+            'denominazione': CodiceClassificazione.__table__.c.denominazione == v,
                 }
         return  dic[k]
 
-std_mapper = mapper(CodiceClassificazione, codice_classificazione, order_by=codice_classificazione.c.denominazione)
 
 _codici = ["F", "T", "C", "D", "S",
            "SR", "W", "O", "M"]

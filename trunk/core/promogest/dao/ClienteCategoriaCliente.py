@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2013 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -23,31 +23,31 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
+from promogest.dao.Dao import Dao, Base
+from promogest.dao.CategoriaCliente import CategoriaCliente
 
-try:
-    t_cliente_categoria_cliente=Table('cliente_categoria_cliente',
+class ClienteCategoriaCliente(Base, Dao):
+    try:
+        __table__ = Table('cliente_categoria_cliente',
                         params['metadata'],
                         schema = params['schema'],
                         autoload=True)
-except:
-    from data.clienteCategoriaCliente import t_cliente_categoria_cliente
+    except:
+        from data.clienteCategoriaCliente import t_cliente_categoria_cliente
+        __table__ = t_cliente_categoria_cliente
 
-from promogest.dao.Dao import Dao
-from promogest.dao.CategoriaCliente import CategoriaCliente
+    __mapper_args__ = {
+        'order_by' : "id_cliente"
+    }
 
-class ClienteCategoriaCliente(Dao):
+    categoria_cliente = relationship("CategoriaCliente", backref="cliente_categoria_cliente")
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):
         if k =='idCliente':
-            dic= {k : t_cliente_categoria_cliente.c.id_cliente ==v}
+            dic= {k : ClienteCategoriaCliente.__table__.c.id_cliente ==v}
         elif k =='idCategoriaList':
-            dic= {k : t_cliente_categoria_cliente.c.id_categoria_cliente.in_(v)}
+            dic= {k : ClienteCategoriaCliente.__table__.c.id_categoria_cliente.in_(v)}
         return  dic[k]
-
-std_mapper =mapper(ClienteCategoriaCliente, t_cliente_categoria_cliente,
-            properties={
-                'categoria_cliente':relation(CategoriaCliente, backref='cliente_categoria_cliente'),
-            }, order_by=t_cliente_categoria_cliente.c.id_cliente)

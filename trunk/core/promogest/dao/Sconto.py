@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -25,18 +25,17 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
-from Dao import Dao
+from promogest.dao.Dao import Dao, Base
 
-try:
-    t_sconto = Table('sconto',
-                 params['metadata'],
-                 schema=params['schema'],
-                 autoload=True)
-except:
-    from data.sconto import t_sconto
+class Sconto(Base, Dao):
+    try:
+        __table__ = Table('sconto', params["metadata"],
+                            schema=params['schema'],
+                                    autoload=True,autoload_with=engine)
 
-
-class Sconto(Dao):
+    except:
+        from data.sconto import t_sconto
+        __table__ = t_sconto
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
@@ -44,6 +43,3 @@ class Sconto(Dao):
     def filter_values(self, k, v):
         dic = {}
         return dic[k]
-
-
-std_mapper = mapper(Sconto, t_sconto, order_by=t_sconto.c.id)

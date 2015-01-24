@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2013 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -23,31 +23,31 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
-from Dao import Dao
+from Dao import Dao, Base
 
-try:
-    t_faq=Table('faq', params['metadata'],schema = params['schema'],autoload=True)
-except:
-    from data.faq import t_faq
+class Faq(Base, Dao):
+    try:
+        __table__ = Table('faq', params['metadata'],schema = params['schema'],autoload=True)
+    except:
+        from data.faq import t_faq
+        __table__ = t_faq
 
-class Faq(Dao):
+    __mapper_args__ = {
+            "order_by": __table__.c.id.desc()
+    }
 
     def __init__(self, req= None,arg=None):
         Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):
         if k == "title":
-            dic= { k :t_faq.c.title == v}
+            dic= { k :Faq.__table__.c.title == v}
         elif k =="active":
-            dic= { k :t_faq.c.active == v}
+            dic= { k :Faq.__table__.c.active == v}
         elif k =="permalink":
-            dic= { k :t_faq.c.permalink == v}
+            dic= { k :Faq.__table__.c.permalink == v}
         elif k == 'searchkey':
-            dic = {k:or_(t_faq.c.title.ilike("%"+v+"%"),
-                        t_faq.c.abstract.ilike("%"+v+"%"),
-                        t_faq.c.body.ilike("%"+v+"%"))}
+            dic = {k:or_(Faq.__table__.c.title.ilike("%"+v+"%"),
+                        Faq.__table__.c.abstract.ilike("%"+v+"%"),
+                        Faq.__table__.c.body.ilike("%"+v+"%"))}
         return  dic[k]
-
-
-std_mapper = mapper(Faq, t_faq, properties={
-                }, order_by=t_faq.c.id.desc())

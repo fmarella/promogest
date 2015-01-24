@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2013 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -23,9 +23,16 @@
 from sqlalchemy import *
 from promogest.Environment import *
 
-t_agente = Table('agente', params["metadata"],
-        Column('id',Integer, ForeignKey(fk_prefix+'persona_giuridica.id', onupdate="CASCADE", ondelete="CASCADE"),primary_key=True),
-        Column('percentuale', Numeric(8,4), nullable=True),
-        schema=params["schema"]
-        )
-t_agente.create(checkfirst=True)
+
+try:
+    t_agente = Table('agente',
+                 meta,
+                 schema=params["schema"],
+                 autoload=True)
+except:
+    t_agente = Table('agente', meta,
+            Column('id',Integer, ForeignKey(fk_prefix+'persona_giuridica.id', onupdate="CASCADE", ondelete="CASCADE"),primary_key=True),
+            Column('percentuale', Numeric(8,4), nullable=True),
+            schema=params["schema"]
+            )
+    t_agente.create(checkfirst=True)

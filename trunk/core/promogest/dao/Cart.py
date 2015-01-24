@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2013 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -23,34 +23,29 @@
 
 from sqlalchemy import *
 from sqlalchemy.orm import *
-#from promogest.lib.migrate import *
 from promogest.Environment import *
-from promogest.dao.Dao import Dao
-from promogest.dao.User import User, t_utente
-try:
-    t_cart=Table('cart', params['metadata'], schema=params['schema'], autoload=True)
-except:
-    from data.cart import t_cart
+from promogest.dao.Dao import Dao, Base
+from promogest.dao.User import User
 
-class Cart(Dao):
+
+class Cart(Base, Dao):
+    try:
+        __table__ = Table('cart', params['metadata'],
+                            schema=params['schema'], autoload=True)
+    except:
+        from data.cart import t_cart
+        __table__ = t_cart
 
     def __init__(self, req=None, arg=None):
         Dao.__init__(self, entity=self)
 
     def filter_values(self, k, v):
         if k == "idArticolo":
-            dic = {k: t_cart.c.id_articolo == v}
+            dic = {k: Cart.__table__.c.id_articolo == v}
         elif k == "sessionid":
-            dic = {k: t_cart.c.sessionid == v}
+            dic = {k: Cart.__table__.c.sessionid == v}
         elif k == "idUser":
-            dic = {k: t_cart.c.id_user == v}
+            dic = {k: Cart.__table__.c.id_user == v}
         elif k == "idCliente":
-            dic = {k: t_cart.c.id_cliente == v}
+            dic = {k: Cart.__table__.c.id_cliente == v}
         return  dic[k]
-
-
-std_mapper = mapper(Cart, t_cart, properties={
-            #'user': relation(User,
-                    #primaryjoin=t_cart.c.id_utente == t_utente.c.id,
-                    #foreign_keys=[t_utente.c.id], backref="cart"),
-                }, order_by=t_cart.c.id)

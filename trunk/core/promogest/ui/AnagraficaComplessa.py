@@ -89,7 +89,7 @@ class Anagrafica(GladeWidget):
                 windowTitle[11:])
         else:
             self.anagrafica_complessa_window.set_title(windowTitle)
-        self.record_menu.get_child().set_label(recordMenuLabel)
+        self.record_menu.set_label(recordMenuLabel)
         if self.anagrafica_complessa_window not in Environment.windowGroup:
             Environment.windowGroup.append(self.anagrafica_complessa_window)
 

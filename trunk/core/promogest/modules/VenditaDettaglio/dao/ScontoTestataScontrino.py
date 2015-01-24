@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2013
+#    Copyright (C) 2005-2015
 #by Promotux di Francesco Meloni snc - http://www.promotux.it/
 
 # Author: Francesco Meloni <francesco@promotux.it>
@@ -21,33 +21,25 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 
-from sqlalchemy import Table
-from sqlalchemy.orm import mapper, join
-from promogest.Environment import params
-from promogest.dao.Dao import Dao
+from sqlalchemy import *
+from sqlalchemy.orm import *
+from promogest.Environment import *
+from promogest.dao.Dao import Dao, Base
 
-try:
-    t_sconto_testata_scontrino=Table('sconto_testata_scontrino',params['metadata'],
-                                schema = params['schema'],autoload=True)
-except:
-    from data.scontoTestataScontrino import t_sconto_testata_scontrino
+from data.scontoTestataScontrino import t_sconto_testata_scontrino
+from data.scontoScontrino import t_sconto_scontrino
+ss_srs = join(t_sconto_scontrino, t_sconto_testata_scontrino)
 
-from promogest.modules.VenditaDettaglio.dao.ScontoScontrino import t_sconto_scontrino
-
-class ScontoTestataScontrino(Dao):
+class ScontoTestataScontrino(Base, Dao):
+    __table__ = ss_srs
+    id = column_property(t_sconto_scontrino.c.id, t_sconto_testata_scontrino.c.id)
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):
         if k == 'id':
-            dic= { k :t_sconto_testata_scontrino.c.id == v}
+            dic= { k :ScontoTestataScontrino.__table__.c.id == v}
         elif k== 'idScontoTestataScontrino':
-            dic ={k:t_sconto_testata_scontrino.c.id_testata_scontrino==v}
+            dic ={k:ScontoTestataScontrino.__table__.c.id_testata_scontrino==v}
         return  dic[k]
-
-
-std_mapper = mapper(ScontoTestataScontrino,join(t_sconto_scontrino, t_sconto_testata_scontrino),
-    properties={
-    'id':[t_sconto_scontrino.c.id, t_sconto_testata_scontrino.c.id],
-    }, order_by=t_sconto_testata_scontrino.c.id)

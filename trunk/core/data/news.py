@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2013 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -23,6 +23,8 @@
 from sqlalchemy import *
 from promogest.Environment import *
 
+#session.close()
+from data.categoriaNews import t_news_category
 t_news= Table('news', params['metadata'],
         Column('id', Integer, primary_key=True),
         Column('title', String(200), nullable=False),
@@ -36,9 +38,9 @@ t_news= Table('news', params['metadata'],
         Column('clicks', Integer),
         Column("permalink", String(500), nullable=True),
         Column('active', Boolean, default=0),
-        Column('id_categoria', Integer,ForeignKey(fk_prefix+'news_category.id')),
-        Column('id_user', Integer,ForeignKey(fk_prefix_main+'utente.id')),
-        Column('id_language', Integer,ForeignKey(fk_prefix_main+'language.id')),
+        Column('id_categoria', Integer,ForeignKey(fk_prefix_main + 'news_category.id')),
+        Column('id_user', Integer,ForeignKey(fk_prefix_main + 'utente.id')),
+        Column('id_language', Integer,ForeignKey(fk_prefix_main + 'language.id')),
         schema=params['schema'],
         extend_existing=True,
         )

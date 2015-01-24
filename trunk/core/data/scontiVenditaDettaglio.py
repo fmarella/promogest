@@ -23,16 +23,22 @@
 from sqlalchemy import *
 from promogest.Environment import *
 
-t_sconti_vendita_dettaglio = Table('sconti_vendita_dettaglio', params["metadata"],
-        Column('id',Integer,ForeignKey(fk_prefix+'sconto.id',onupdate="CASCADE",ondelete="CASCADE"), primary_key=True),
-        Column('id_listino',Integer),
-        Column('id_articolo',Integer),
-        Column('data_listino_articolo',DateTime),
-        ForeignKeyConstraint(columns=("id_listino","id_articolo","data_listino_articolo"),
-                                        refcolumns=(fk_prefix+'listino_articolo.id_listino',
-                                                    fk_prefix+'listino_articolo.id_articolo',
-                                                    fk_prefix+'listino_articolo.data_listino_articolo'),
-                                        onupdate="CASCADE", ondelete="CASCADE"),
-        schema=params["schema"]
-        )
-t_sconti_vendita_dettaglio.create(checkfirst=True)
+try:
+    t_sconti_vendita_dettaglio = Table('sconti_vendita_dettaglio', params["metadata"],
+                                                                    schema=params['schema'],
+                                                                    autoload=True,
+                                                                    autoload_with=engine)
+except:
+    t_sconti_vendita_dettaglio = Table('sconti_vendita_dettaglio', params["metadata"],
+            Column('id',Integer,ForeignKey(fk_prefix+'sconto.id',onupdate="CASCADE",ondelete="CASCADE"), primary_key=True),
+            Column('id_listino',Integer),
+            Column('id_articolo',Integer),
+            Column('data_listino_articolo',DateTime),
+            ForeignKeyConstraint(columns=("id_listino","id_articolo","data_listino_articolo"),
+                                            refcolumns=(fk_prefix+'listino_articolo.id_listino',
+                                                        fk_prefix+'listino_articolo.id_articolo',
+                                                        fk_prefix+'listino_articolo.data_listino_articolo'),
+                                            onupdate="CASCADE", ondelete="CASCADE"),
+            schema=params["schema"]
+            )
+    t_sconti_vendita_dettaglio.create(checkfirst=True)

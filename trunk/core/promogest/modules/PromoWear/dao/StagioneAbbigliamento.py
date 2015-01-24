@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -22,11 +22,19 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
-from promogest.dao.Dao import Dao
+from promogest.dao.Dao import Dao, Base
 
-
-
-class StagioneAbbigliamento(Dao):
+class StagioneAbbigliamento(Base, Dao):
+    try:
+        __table__ = Table('stagione_abbigliamento',
+                        params['metadata'],
+                        schema = params['mainSchema'],
+                        autoload=True)
+    except:
+        __table__ = Table('stagione_abbigliamento', params['metadata'],
+                            Column('id', Integer, primary_key=True),
+                            Column('denominazione', String(50), nullable=False),
+                            schema=params['mainSchema'])
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
@@ -40,10 +48,9 @@ class StagioneAbbigliamento(Dao):
             dic = {k:stagioneabbigliamento.c.denominazione == v }
         return  dic[k]
 
-stagioneabbigliamento=Table('stagione_abbigliamento',
-    params['metadata'],
-    schema = params['mainSchema'],
-    autoload=True)
 
-std_mapper = mapper(StagioneAbbigliamento, stagioneabbigliamento, properties={},
-                order_by=stagioneabbigliamento.c.id)
+s= select([StagioneAbbigliamento.__table__.c.denominazione]).execute().fetchall()
+if (u'Primavera - Estate',) not in s or s==[]:
+    tipo = StagioneAbbigliamento.__table__.insert()
+    tipo.execute(denominazione='Primavera - Estate')
+    tipo.execute(denominazione='Autunno - Inverno')

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2013 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -19,51 +19,47 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-from sqlalchemy import Table, Column, String
-from sqlalchemy.orm import mapper
-from promogest.Environment import params, engine, delete_pickle, restart_program
-from Dao import Dao
+from sqlalchemy import *
+from sqlalchemy.orm import *
+from promogest.Environment import *
+from promogest.dao.Dao import Dao, Base
 
-from promogest.lib.alembic.migration import MigrationContext
-from promogest.lib.alembic.operations import Operations
-from promogest.lib.alembic import op
-from promogest.dao.DaoUtils import get_columns
-
-try:
-    t_azienda = Table('azienda', params['metadata'], autoload=True,
+class Azienda(Base, Dao):
+    try:
+        __table__ =Table('azienda', params['metadata'], autoload=True,
                                     schema=params['mainSchema'])
-except:
-    from data.azienda import t_azienda
+    except:
+        from data.azienda import t_azienda
+        __table__ = t_azienda
 
-
-c_t_azienda = get_columns(t_azienda)
-
-if "telefono" not in c_t_azienda:
-    conn = engine.connect()
-    ctx = MigrationContext.configure(conn)
-    op = Operations(ctx)
-    op.add_column('azienda', Column('telefono', String(12), nullable=True), schema=params["mainSchema"])
-
-if "progressivo_fatturapa" not in c_t_azienda:
-    conn = engine.connect()
-    ctx = MigrationContext.configure(conn)
-    op = Operations(ctx)
-    op.add_column('azienda', Column('progressivo_fatturapa', String(5), nullable=True), schema=params["mainSchema"])
-    delete_pickle()
-    restart_program()
-
-class Azienda(Dao):
 
     def __init__(self,campo=[], req=None):
         Dao.__init__(self,campo=campo, entity=self)
 
     def filter_values(self, k, v):
         if k == "schemaa":
-            dic = { 'schemaa': t_azienda.c.schemaa==v}
+            dic = { 'schemaa': Azienda.__table__.c.schemaa==v}
         elif k == "denominazione":
-            dic = { k: t_azienda.c.denominazione.ilike("%"+v+"%")}
+            dic = { k: Azienda.__tables__.c.denominazione.ilike("%"+v+"%")}
         return dic[k]
 
-std_mapper = mapper(Azienda, t_azienda,
-                properties={ },
-                order_by=t_azienda.c.schemaa)
+#PARTI DI MODIFICA ALLO SCHEMA AZIENDA
+try:
+    Azienda.__table__.c.telefono
+except:
+    conn = engine.connect()
+    ctx = MigrationContext.configure(conn)
+    op = Operations(ctx)
+    op.add_column('azienda', Column('telefono', String(12), nullable=True), schema=params["mainSchema"])
+    delete_pickle()
+    restart_program()
+
+try:
+    Azienda.__table__.c.progressivo_fatturapa
+except:
+    conn = engine.connect()
+    ctx = MigrationContext.configure(conn)
+    op = Operations(ctx)
+    op.add_column('azienda', Column('progressivo_fatturapa', String(5), nullable=True), schema=params["mainSchema"])
+    delete_pickle()
+    restart_program()

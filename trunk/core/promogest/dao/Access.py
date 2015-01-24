@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -22,22 +22,23 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
-from Dao import Dao
-
-try:
-    t_access=Table('access', params['metadata'],schema = params['schema'],autoload=True)
-except:
-    from data.access import t_access
+from promogest.dao.Dao import Dao, Base
 
 
-class Access(Dao):
+class Access(Base, Dao):
+    try:
+        __table__ = Table('access', params['metadata'],
+                                schema=params['schema'],
+                                autoload=True)
+    except:
+        from data.access import t_access
+        __table__ = t_access
+
 
     def __init__(self, req= None,arg=None):
         Dao.__init__(self, entity=self)
 
     def filter_values(self, k, v):
         if k == 'idUser':
-            dic = {k: t_access.c.id_user == v}
+            dic = {k: Access.__table__.c.id_user == v}
         return  dic[k]
-
-std_mapper = mapper(Access, t_access)

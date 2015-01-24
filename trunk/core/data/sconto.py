@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2013 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -23,11 +23,17 @@
 from sqlalchemy import *
 from promogest.Environment import *
 
-t_sconto = Table('sconto', params["metadata"],
-        Column('id',Integer,primary_key=True),
-        Column('valore',Numeric(16,4),nullable=True),
-        Column('tipo_sconto',String(50),nullable=False),
-        CheckConstraint( "tipo_sconto = 'valore' or tipo_sconto = 'percentuale'" ),
-        schema=params["schema"]
-        )
-t_sconto.create(checkfirst=True)
+try:
+    t_sconto = Table('sconto', params["metadata"],
+                            schema = params['schema'],
+                                    autoload=True,
+                                    autoload_with=engine)
+except:
+    t_sconto = Table('sconto', params["metadata"],
+            Column('id',Integer,primary_key=True),
+            Column('valore',Numeric(16,4),nullable=True),
+            Column('tipo_sconto',String(50),nullable=False),
+            CheckConstraint( "tipo_sconto = 'valore' or tipo_sconto = 'percentuale'" ),
+            schema=params["schema"]
+            )
+    t_sconto.create(checkfirst=True)

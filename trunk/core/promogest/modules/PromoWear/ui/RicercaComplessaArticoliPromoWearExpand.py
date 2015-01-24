@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -155,8 +155,9 @@ def drawGruppoTagliaTreeView(anaarti):
     renderer = gtk.CellRendererToggle()
     renderer.set_property('activatable', True)
     renderer.connect('toggled', anaarti.onColumnEdited, None, treeview)
-    renderer.set_data('model_index', 0)
-    renderer.set_data('column', 1)
+    #GTK3
+    #renderer.set_data('model_index', 0)
+    #renderer.set_data('column', 1)
     column = gtk.TreeViewColumn('Includi', renderer, active=0)
     column.connect("clicked", anaarti.columnSelectAll, treeview)
     column.set_sizing(GTK_COLUMN_GROWN_ONLY)
@@ -213,8 +214,8 @@ def drawTagliaTreeView(anaarti):
     renderer = gtk.CellRendererToggle()
     renderer.set_property('activatable', True)
     renderer.connect('toggled', anaarti.onColumnEdited, None, treeview)
-    renderer.set_data('model_index', 0)
-    renderer.set_data('column', 1)
+    renderer.model_index = 0
+    renderer.column = 1
     column = gtk.TreeViewColumn('Includi', renderer, active=0)
     column.connect("clicked", anaarti.columnSelectAll, treeview)
     column.set_sizing(GTK_COLUMN_GROWN_ONLY)
@@ -270,8 +271,8 @@ def drawColoreTreeView(anaarti):
     renderer = gtk.CellRendererToggle()
     renderer.set_property('activatable', True)
     renderer.connect('toggled', anaarti.onColumnEdited, None, treeview)
-    renderer.set_data('model_index', 0)
-    renderer.set_data('column', 1)
+    renderer.model_index = 0
+    renderer.column = 1
     column = gtk.TreeViewColumn('Includi', renderer, active=0)
     column.connect("clicked", anaarti.columnSelectAll, treeview)
     column.set_sizing(GTK_COLUMN_GROWN_ONLY)
@@ -328,8 +329,8 @@ def drawAnnoTreeView(anaarti):
     renderer = gtk.CellRendererToggle()
     renderer.set_property('activatable', True)
     renderer.connect('toggled', anaarti.onColumnEdited, None, treeview)
-    renderer.set_data('model_index', 0)
-    renderer.set_data('column', 1)
+    renderer.model_index = 0
+    renderer.column = 1
     column = gtk.TreeViewColumn('Includi', renderer, active=0)
     column.connect("clicked", anaarti.columnSelectAll, treeview)
     column.set_sizing(GTK_COLUMN_GROWN_ONLY)
@@ -381,8 +382,8 @@ def drawCutSizeTreeView(anaarti):
     renderer = gtk.CellRendererToggle()
     renderer.set_property('activatable', True)
     renderer.connect('toggled', anaarti.onColumnEdited, None, treeview)
-    renderer.set_data('model_index', 0)
-    renderer.set_data('column', 1)
+    renderer.model_index = 0
+    renderer.column = 1
     column = gtk.TreeViewColumn('Includi', renderer, active=0)
     column.connect("clicked", anaarti.columnSelectAll, treeview)
     column.set_sizing(GTK_COLUMN_GROWN_ONLY)
@@ -424,8 +425,8 @@ def drawStagioneTreeView(anaarti):
     renderer = gtk.CellRendererToggle()
     renderer.set_property('activatable', True)
     renderer.connect('toggled', anaarti.onColumnEdited, None, treeview)
-    renderer.set_data('model_index', 0)
-    renderer.set_data('column', 1)
+    renderer.model_index = 0
+    renderer.column = 1
     column = gtk.TreeViewColumn('Includi', renderer, active=0)
     column.connect("clicked", anaarti.columnSelectAll, treeview)
     column.set_sizing(GTK_COLUMN_GROWN_ONLY)
@@ -478,8 +479,8 @@ def drawGenereTreeView(anaarti):
     renderer = gtk.CellRendererToggle()
     renderer.set_property('activatable', True)
     renderer.connect('toggled', anaarti.onColumnEdited, None, treeview)
-    renderer.set_data('model_index', 0)
-    renderer.set_data('column', 1)
+    renderer.model_index = 0
+    renderer.column = 1
     column = gtk.TreeViewColumn('Includi', renderer, active=0)
     column.connect("clicked", anaarti.columnSelectAll, treeview)
     column.set_sizing(GTK_COLUMN_GROWN_ONLY)

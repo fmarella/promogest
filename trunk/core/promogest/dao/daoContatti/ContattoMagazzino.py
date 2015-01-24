@@ -20,25 +20,27 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-from sqlalchemy import Table, or_
-from sqlalchemy.orm import join, relation, mapper
-from promogest.Environment import params
+from sqlalchemy import *
+from sqlalchemy.orm import *
+from promogest.Environment import *
 
-try:
-    t_contatto_magazzino=Table('contatto_magazzino',
-        params['metadata'],
-        schema = params['schema'],
-        autoload=True)
-except:
-    from data.contattoMagazzino import t_contatto_magazzino
-
-from promogest.dao.Dao import Dao
+from promogest.dao.Dao import Dao, Base
 from promogest.dao.Magazzino import Magazzino
-from promogest.dao.daoContatti.RecapitoContatto import RecapitoContatto, t_recapito
-from promogest.dao.daoContatti.Contatto import t_contatto
+from promogest.dao.daoContatti.RecapitoContatto import RecapitoContatto
+from promogest.dao.daoContatti.Contatto import Contatto
 from promogest.dao.daoContatti.ContattoCategoriaContatto import ContattoCategoriaContatto
 
-class ContattoMagazzino(Dao):
+
+from data.contatto import t_contatto
+from data.contattoMagazzino import t_contatto_magazzino
+c_cm = join(t_contatto, t_contatto_magazzino)
+
+class ContattoMagazzino(Base, Dao):
+    __table__ = c_cm
+    id = column_property(t_contatto.c.id, t_contatto_magazzino.c.id)
+
+    magazzino = relationship("Magazzino", backref="contatto_magazzino")
+    tipo_contatto = column_property(t_contatto.c.tipo_contatto, t_contatto_magazzino.c.tipo_contatto)
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
@@ -75,28 +77,19 @@ class ContattoMagazzino(Dao):
 
     def filter_values(self,k,v):
         if k == 'idCategoria':
-            dic = {k:and_(ContattoCategoriaContatto.id_contatto==t_contatto.c.id, ContattoCategoriaContatto.id_categoria_contatto==v)}
+            dic = {k:and_(ContattoCategoriaContatto.id_contatto==Contatto.__table__.c.id, ContattoCategoriaContatto.id_categoria_contatto==v)}
         elif k == 'idMagazzino':
             dic = {k : t_contatto_magazzino.c.id_magazzino == v}
         elif k == 'idMagazzinoList':
             dic = {k : t_contatto_magazzino.c.id_magazzino.in_(v)}
         elif k == 'cognomeNome':
-            dic = {k : or_(t_contatto.c.cognome.ilike("%"+v+"%"),t_contatto.c.nome.ilike("%"+v+"%"))}
+            dic = {k : or_(Contatto.__table__.c.cognome.ilike("%"+v+"%"),Contatto.__table__.c.nome.ilike("%"+v+"%"))}
         elif k == 'ruolo':
-            dic = {k : t_contatto.c.ruolo.ilike("%"+v+"%")}
+            dic = {k : Contatto.__table__.c.ruolo.ilike("%"+v+"%")}
         elif k == "recapito":
             dic={k:and_(contattocliente.c.id==t_recapito.c.id_contatto,recapito.c.recapito.ilike("%"+v+"%"))}
         elif k == "tipoRecapito":
             dic={k:and_(contattocliente.c.id==t_recapito.c.id_contatto,t_recapito.c.tipo_recapito ==v)}
         elif k =='descrizione':
-            dic = {k : t_contatto.c.descrizione.ilike("%"+v+"%")}
-        #'recapito':
-        #'tipoRecapito':
+            dic = {k : Contatto.__table__.c.descrizione.ilike("%"+v+"%")}
         return dic[k]
-
-std_mapper = mapper(ContattoMagazzino, join(t_contatto, t_contatto_magazzino),
-            properties={
-               'id':[t_contatto.c.id, t_contatto_magazzino.c.id],
-                'tipo_contatto':[t_contatto.c.tipo_contatto, t_contatto_magazzino.c.tipo_contatto],
-                "magazzino":relation(Magazzino, backref="contatto_magazzino")},
-                order_by=t_contatto_magazzino.c.id)

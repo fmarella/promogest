@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2013 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -22,20 +22,24 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
-from promogest.dao.Dao import Dao
+from promogest.dao.Dao import Dao, Base
 
-try:
-    t_sconto_scontrino=Table('sconto_scontrino',
-            params['metadata'],
+class ScontoScontrino(Base, Dao):
+    try:
+        __table__ = Table('sconto_scontrino',
+                params['metadata'],
+                schema = params['schema'],
+                autoload=True)
+    except:
+        #pass
+        __table__ = Table('sconto_scontrino', params['metadata'],
+            Column('id',Integer,primary_key=True),
+            Column('valore',Numeric(16,4),nullable=True),
+            Column('tipo_sconto',String(50),nullable=False),
+            CheckConstraint( "tipo_sconto = 'valore' or tipo_sconto = 'percentuale'" ),
             schema = params['schema'],
-            autoload=True)
-except:
-    #pass
-    from data.scontoScontrino import t_sconto_scontrino
-
-
-
-class ScontoScontrino(Dao):
+            useexisting =True
+        )
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
@@ -43,6 +47,3 @@ class ScontoScontrino(Dao):
     def filter_values(self, k,v):
         dic= {}
         return  dic[k]
-
-
-std_mapper = mapper(ScontoScontrino, t_sconto_scontrino, order_by=t_sconto_scontrino.c.id)

@@ -40,6 +40,7 @@ t_testata_movimento = Table('testata_movimento', params["metadata"],
         Column('id_fornitore', Integer,ForeignKey(fk_prefix+'fornitore.id',onupdate="CASCADE",ondelete="RESTRICT"), nullable=True),
         UniqueConstraint('parte', 'numero', 'data_movimento'),
         CheckConstraint("parte < 4 AND parte >= 1"),
-        schema=params["schema"]
+        schema=params["schema"],
+          extend_existing=True
         )
 t_testata_movimento.create(checkfirst=True)

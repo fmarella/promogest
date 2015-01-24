@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012
+#    Copyright (C) 2005-2015
 #by Promotux di Francesco Meloni snc - http://www.promotux.it/
 
 # Author: Francesco Meloni <francesco@promotux.it>
@@ -20,43 +20,40 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-from sqlalchemy import Table, Column, Integer, ForeignKey
-from sqlalchemy.orm import mapper, relation, backref
-from promogest.Environment import params
+from sqlalchemy import *
+from sqlalchemy.orm import *
+from promogest.Environment import *
 
-try:
-    t_riga_primanota_testata_documento_scadenza = Table('riga_primanota_testata_documento_scadenza',
+from promogest.dao.Dao import Dao, Base
+from promogest.modules.Pagamenti.dao.TestataDocumentoScadenza import TestataDocumentoScadenza
+from promogest.modules.PrimaNota.dao.RigaPrimaNota import RigaPrimaNota
+
+
+
+class RigaPrimaNotaTestataDocumentoScadenza(Base, Dao):
+    try:
+        __table__ = Table('riga_primanota_testata_documento_scadenza',
                                                   params['metadata'],
                                                   schema=params['schema'],
                                                   autoload=True)
-except:
-    from data.testataDocumentoScadenza import t_testata_documento_scadenza
-    from data.rigaPrimaNotaTestataDocumentoScadenza import t_riga_primanota_testata_documento_scadenza
+    except:
+        from data.rigaPrimaNotaTestataDocumentoScadenza import t_riga_primanota_testata_documento_scadenza
+        __table__ = t_riga_primanota_testata_documento_scadenza
 
 
-from promogest.dao.Dao import Dao
-from promogest.modules.Pagamenti.dao.TestataDocumentoScadenza import TestataDocumentoScadenza
-from promogest.modules.PrimaNota.dao.RigaPrimaNota import RigaPrimaNota, t_riga_prima_nota
+    tds = relationship("TestataDocumentoScadenza", backref="rpntds")
+    _rpn_ = relationship("RigaPrimaNota")
 
-
-
-class RigaPrimaNotaTestataDocumentoScadenza(Dao):
+    __mapper_args__ = {
+        'order_by' : __table__.c.id_riga_prima_nota
+    }
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
 
     def filter_values(self, k, v):
         if k == "idRigaPrimaNota":
-            dic = {k: t_riga_primanota_testata_documento_scadenza.c.id_riga_prima_nota == v}
+            dic = {k: RigaPrimaNotaTestataDocumentoScadenza.__table__.c.id_riga_prima_nota == v}
         elif k == 'idTestataDocumentoScadenza':
-            dic = {k: t_riga_primanota_testata_documento_scadenza.c.id_testata_documento_scadenza == v}
+            dic = {k: RigaPrimaNotaTestataDocumentoScadenza.__table__.c.id_testata_documento_scadenza == v}
         return  dic[k]
-
-std_mapper = mapper(RigaPrimaNotaTestataDocumentoScadenza,
-                   t_riga_primanota_testata_documento_scadenza,
-                   properties={
-                    "tds" :relation(TestataDocumentoScadenza, backref="rpntds"),
-                    "_rpn_": relation(RigaPrimaNota,
-                        primaryjoin=t_riga_primanota_testata_documento_scadenza.c.id_riga_prima_nota==t_riga_prima_nota.c.id),
-                   },
-                   order_by=t_riga_primanota_testata_documento_scadenza.c.id_riga_prima_nota)

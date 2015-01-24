@@ -20,22 +20,23 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-from sqlalchemy import Table
-from sqlalchemy.orm import mapper, relation
-from promogest.Environment import params
-
-try:
-    t_listino_magazzino = Table('listino_magazzino',
-            params['metadata'],
-            schema = params['schema'],
-            autoload=True)
-except:
-    from data.listinoMagazzino import t_listino_magazzino
-
-from promogest.dao.Dao import Dao
+from sqlalchemy import *
+from sqlalchemy.orm import *
+from promogest.Environment import *
+from promogest.dao.Dao import Dao, Base
 from promogest.dao.Magazzino import Magazzino
 
-class ListinoMagazzino(Dao):
+class ListinoMagazzino(Base, Dao):
+    try:
+        __table__ = Table('listino_magazzino',
+                params['metadata'],
+                schema = params['schema'],
+                autoload=True)
+    except:
+        from data.listinoMagazzino import t_listino_magazzino
+        __table__ = t_listino_magazzino
+
+    magazzin = relationship("Magazzino", backref="listino_magazzino")
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
@@ -43,17 +44,11 @@ class ListinoMagazzino(Dao):
     @property
     def magazzino(self):
         if self.magazzin:
-            mag = self.magazzin.denominazione
-            return mag
+            return self.magazzin.denominazione
         else:
             return ""
 
     def filter_values(self,k,v):
-        dic= {  'idListino' : t_listino_magazzino.c.id_listino ==v,
-                'idMagazzino' : t_listino_magazzino.c.id_magazzino ==v}
+        dic= {  'idListino' : ListinoMagazzino.__table__.c.id_listino ==v,
+                'idMagazzino' : ListinoMagazzino.__table__.c.id_magazzino ==v}
         return  dic[k]
-
-
-std_mapper = mapper(ListinoMagazzino, t_listino_magazzino, properties={
-        "magazzin": relation(Magazzino, backref="listino_magazzino")
-            }, order_by=t_listino_magazzino.c.id_listino)

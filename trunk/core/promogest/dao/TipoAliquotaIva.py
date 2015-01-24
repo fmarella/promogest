@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -22,17 +22,18 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
-from promogest.dao.Dao import Dao
+from promogest.dao.Dao import Dao, Base
 
-try:
-    t_tipo_aliquota_iva=Table('tipo_aliquota_iva',
+class TipoAliquotaIva(Base, Dao):
+    try:
+        __table__ = Table('tipo_aliquota_iva',
                             params['metadata'],
                             schema = params['mainSchema'],
                             autoload=True)
-except:
-    from data.tipoAliquotaiva import t_tipo_aliquota_iva
+    except:
+        from data.tipoAliquotaiva import t_tipo_aliquota_iva
+        __table__ = t_tipo_aliquota_iva
 
-class TipoAliquotaIva(Dao):
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
@@ -40,5 +41,3 @@ class TipoAliquotaIva(Dao):
     def filter_values(self,k,v):
         dic= { }
         return  dic[k]
-
-std_mapper = mapper(TipoAliquotaIva, t_tipo_aliquota_iva, order_by=t_tipo_aliquota_iva.c.id)

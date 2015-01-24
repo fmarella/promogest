@@ -23,23 +23,35 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
-from promogest.dao.Dao import Dao
+from promogest.dao.Dao import Dao, Base
 from promogest.dao.Azienda import Azienda
-from promogest.dao.daoContatti.Contatto import Contatto, t_contatto
-from promogest.dao.daoContatti.RecapitoContatto import RecapitoContatto, t_recapito
+from promogest.dao.daoContatti.Contatto import Contatto
+from promogest.dao.daoContatti.RecapitoContatto import RecapitoContatto
 from promogest.dao.daoContatti.ContattoCategoriaContatto import ContattoCategoriaContatto
 
 
-try:
-    t_contatto_azienda=Table('contatto_azienda',
-        params['metadata'],
-        schema = params['schema'],
-        autoload=True)
-except:
-    from data.contattoAzienda import t_contatto_azienda
+#try:
+#    t_contatto_azienda=Table('contatto_azienda',
+#        params['metadata'],
+#        schema = params['schema'],
+#        autoload=True)
+#except:
+#    from data.contattoAzienda import t_contatto_azienda
 
 
-class ContattoAzienda(Dao):
+class ContattoAzienda(Base, Dao):
+    __table__ = Table('contatto_azienda', params["metadata"],
+        Column('id',Integer,primary_key=True),
+        Column('tipo_contatto',String(50),primary_key=True),
+        Column('schema_azienda',String(100),ForeignKey(fk_prefix_main+'azienda.schemaa',onupdate="CASCADE",ondelete="RESTRICT"),nullable=False),
+        ForeignKeyConstraint(['id', 'tipo_contatto'],[fk_prefix+'contatto.id', fk_prefix+'contatto.tipo_contatto'],onupdate="CASCADE", ondelete="CASCADE"),
+        CheckConstraint("tipo_contatto = 'azienda'"),
+        #extend_existing=True,
+        schema=params["schema"]
+        )
+    __mapper_args__ = {
+        'polymorphic_identity':'contatto_azienda',
+    }
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
@@ -84,10 +96,10 @@ class ContattoAzienda(Dao):
             }
         return dic[k]
 
-std_mapper = mapper(ContattoAzienda, join(t_contatto, t_contatto_azienda),
-                properties={
-                'id':[t_contatto.c.id, t_contatto_azienda.c.id],
-                'tipo_contatto':[t_contatto.c.tipo_contatto, t_contatto_azienda.c.tipo_contatto],
-                "azienda":relation(Azienda, backref="contatto_azienda")
-                },
-                order_by=t_contatto_azienda.c.id)
+#std_mapper = mapper(ContattoAzienda, join(t_contatto, t_contatto_azienda),
+                #properties={
+                #'id':[t_contatto.c.id, t_contatto_azienda.c.id],
+                #'tipo_contatto':[t_contatto.c.tipo_contatto, t_contatto_azienda.c.tipo_contatto],
+                ##"azienda":relation(Azienda, backref="contatto_azienda")
+                #},
+                #order_by=t_contatto_azienda.c.id)

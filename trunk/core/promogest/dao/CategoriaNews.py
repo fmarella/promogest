@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2013 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -19,27 +19,25 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-from sqlalchemy import Table
-from sqlalchemy.orm import mapper
-from promogest.Environment import params
-from promogest.dao.Dao import Dao
-
-#try:
-t_news_category = Table('news_category',
-                   params['metadata'],
-                   schema=params['schema'],
-                   autoload=True)
-#except:
-    #from data.categoriaNews import t_news_category
+from sqlalchemy import *
+from sqlalchemy.orm import *
+from promogest.Environment import *
+from promogest.dao.Dao import Dao, Base
 
 
-class CategoriaNews(Dao):
+class CategoriaNews(Base, Dao):
+    try:
+        __table__ = Table('news_category', params['metadata'],
+                                    schema=mainSchema,
+                                    autoload=True,
+                                    autoload_with=engine)
+    except:
+        from data.categoriaNews import t_news_category
+        __table__ = t_news_category
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
 
     def filter_values(self, k, v):
-        dic = {'denominazione': t_news_category.c.denominazione.ilike("%" + v + "%")}
+        dic = {'denominazione': CategoriaNews.__table__.c.denominazione.ilike("%" + v + "%")}
         return  dic[k]
-
-std_mapper = mapper(CategoriaNews, t_news_category, order_by=t_news_category.c.id)

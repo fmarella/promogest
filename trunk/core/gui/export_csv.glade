@@ -1,7 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.18.3 -->
 <interface>
-  <requires lib="gtk+" version="2.16"/>
-  <!-- interface-naming-policy project-wide -->
+  <requires lib="gtk+" version="3.4"/>
+  <object class="GtkImage" id="esporta_img">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-execute</property>
+  </object>
+  <object class="GtkFileFilter" id="filefilter1"/>
+  <object class="GtkListStore" id="modello_listore"/>
+  <object class="GtkListStore" id="nome_modello_listore">
+    <columns>
+      <!-- column-name gchararray1 -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
   <object class="GtkListStore" id="separatore">
     <columns>
       <!-- column-name separatore -->
@@ -36,39 +49,39 @@
       </row>
     </data>
   </object>
-  <object class="GtkListStore" id="modello_listore"/>
-  <object class="GtkListStore" id="nome_modello_listore">
-    <columns>
-      <!-- column-name gchararray1 -->
-      <column type="gchararray"/>
-    </columns>
-  </object>
   <object class="GtkWindow" id="export_csv">
     <property name="visible">True</property>
+    <property name="can_focus">False</property>
     <property name="title" translatable="yes">Export CSV</property>
     <property name="modal">True</property>
     <property name="type_hint">dialog</property>
     <child>
       <object class="GtkVBox" id="export_csv_vbox">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <child>
           <object class="GtkFrame" id="creazione_frame">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="label_xalign">0</property>
             <property name="shadow_type">none</property>
             <child>
               <object class="GtkAlignment" id="alignment2">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <property name="left_padding">12</property>
                 <child>
                   <object class="GtkVBox" id="vbox2">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <child>
                       <object class="GtkHBox" id="hbox1">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <child>
                           <object class="GtkLabel" id="modello_esportazione_label">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="label" translatable="yes">Modello esportazione</property>
                           </object>
                           <packing>
@@ -80,8 +93,9 @@
                         <child>
                           <object class="GtkComboBox" id="selezione_modello_combobox">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="model">nome_modello_listore</property>
-                            <signal name="changed" handler="on_selezione_modello_combobox_changed"/>
+                            <signal name="changed" handler="on_selezione_modello_combobox_changed" swapped="no"/>
                             <child>
                               <object class="GtkCellRendererText" id="cellrenderertext3"/>
                               <attributes>
@@ -91,6 +105,8 @@
                             </child>
                           </object>
                           <packing>
+                            <property name="expand">True</property>
+                            <property name="fill">True</property>
                             <property name="position">1</property>
                           </packing>
                         </child>
@@ -99,8 +115,12 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="invisible_char">●</property>
+                            <property name="primary_icon_activatable">False</property>
+                            <property name="secondary_icon_activatable">False</property>
                           </object>
                           <packing>
+                            <property name="expand">True</property>
+                            <property name="fill">True</property>
                             <property name="position">2</property>
                           </packing>
                         </child>
@@ -111,7 +131,7 @@
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
                             <property name="use_stock">True</property>
-                            <signal name="clicked" handler="on_nuovo_button_clicked"/>
+                            <signal name="clicked" handler="on_nuovo_button_clicked" swapped="no"/>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -130,8 +150,6 @@
                       <object class="GtkScrolledWindow" id="modello_csv_scrolledwindow">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="hscrollbar_policy">automatic</property>
-                        <property name="vscrollbar_policy">automatic</property>
                         <child>
                           <object class="GtkTreeView" id="modello_treeview">
                             <property name="visible">True</property>
@@ -141,21 +159,28 @@
                             <property name="reorderable">True</property>
                             <property name="rules_hint">True</property>
                             <property name="enable_grid_lines">both</property>
-                            <signal name="drag_begin" handler="on_modello_treeview_drag_begin"/>
-                            <signal name="drag_leave" handler="on_modello_treeview_drag_leave"/>
+                            <signal name="drag-begin" handler="on_modello_treeview_drag_begin" swapped="no"/>
+                            <signal name="drag-leave" handler="on_modello_treeview_drag_leave" swapped="no"/>
+                            <child internal-child="selection">
+                              <object class="GtkTreeSelection" id="treeview-selection1"/>
+                            </child>
                           </object>
                         </child>
                       </object>
                       <packing>
+                        <property name="expand">True</property>
+                        <property name="fill">True</property>
                         <property name="position">1</property>
                       </packing>
                     </child>
                     <child>
                       <object class="GtkHBox" id="hbox2">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <child>
                           <object class="GtkLabel" id="delimi_label">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="label" translatable="yes">Separatore</property>
                           </object>
                           <packing>
@@ -168,6 +193,7 @@
                         <child>
                           <object class="GtkComboBox" id="separatore_combobox">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="model">separatore</property>
                             <child>
                               <object class="GtkCellRendererText" id="cellrenderertext1"/>
@@ -185,6 +211,7 @@
                         <child>
                           <object class="GtkLabel" id="septesto_label">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="label" translatable="yes">Sep.testo</property>
                           </object>
                           <packing>
@@ -197,6 +224,7 @@
                         <child>
                           <object class="GtkComboBox" id="stringa_combobox">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="model">stringa</property>
                             <child>
                               <object class="GtkCellRendererText" id="cellrenderertext2"/>
@@ -217,9 +245,12 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">False</property>
+                            <property name="xalign">0.5</property>
                             <property name="draw_indicator">True</property>
                           </object>
                           <packing>
+                            <property name="expand">True</property>
+                            <property name="fill">True</property>
                             <property name="padding">2</property>
                             <property name="position">4</property>
                           </packing>
@@ -231,7 +262,7 @@
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
                             <property name="use_stock">True</property>
-                            <signal name="clicked" handler="on_ripristina_button_clicked"/>
+                            <signal name="clicked" handler="on_ripristina_button_clicked" swapped="no"/>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -246,7 +277,7 @@
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
                             <property name="use_stock">True</property>
-                            <signal name="clicked" handler="on_elimina_modello_button_clicked"/>
+                            <signal name="clicked" handler="on_elimina_modello_button_clicked" swapped="no"/>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -262,7 +293,7 @@
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
                             <property name="use_stock">True</property>
-                            <signal name="clicked" handler="on_salva_modello_button_clicked"/>
+                            <signal name="clicked" handler="on_salva_modello_button_clicked" swapped="no"/>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -285,38 +316,47 @@
             <child type="label">
               <object class="GtkLabel" id="criteri_creazione_modello_label">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <property name="label" translatable="yes">&lt;b&gt;Criteri di creazione modello &lt;/b&gt;</property>
                 <property name="use_markup">True</property>
               </object>
             </child>
           </object>
           <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
             <property name="position">0</property>
           </packing>
         </child>
         <child>
           <object class="GtkFrame" id="esportazione_frame">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="label_xalign">0</property>
             <property name="shadow_type">in</property>
             <child>
               <object class="GtkAlignment" id="alignment1">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <property name="left_padding">12</property>
                 <child>
                   <object class="GtkVBox" id="vbox3">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <child>
                       <object class="GtkRadioButton" id="selezione_radio">
                         <property name="label" translatable="yes">Solo il record selezionato</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
+                        <property name="xalign">0.5</property>
                         <property name="active">True</property>
                         <property name="draw_indicator">True</property>
                         <property name="group">tutti_radio</property>
                       </object>
                       <packing>
+                        <property name="expand">True</property>
+                        <property name="fill">True</property>
                         <property name="position">0</property>
                       </packing>
                     </child>
@@ -326,11 +366,14 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
+                        <property name="xalign">0.5</property>
                         <property name="active">True</property>
                         <property name="draw_indicator">True</property>
                         <property name="group">tutti_radio</property>
                       </object>
                       <packing>
+                        <property name="expand">True</property>
+                        <property name="fill">True</property>
                         <property name="position">1</property>
                       </packing>
                     </child>
@@ -340,10 +383,13 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
+                        <property name="xalign">0.5</property>
                         <property name="active">True</property>
                         <property name="draw_indicator">True</property>
                       </object>
                       <packing>
+                        <property name="expand">True</property>
+                        <property name="fill">True</property>
                         <property name="position">2</property>
                       </packing>
                     </child>
@@ -354,6 +400,7 @@
             <child type="label">
               <object class="GtkLabel" id="criteri_esportazione_label">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <property name="label" translatable="yes">&lt;b&gt;Criteri di esportazione&lt;/b&gt;</property>
                 <property name="use_markup">True</property>
               </object>
@@ -368,17 +415,22 @@
         <child>
           <object class="GtkHBox" id="hbox3">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <child>
               <object class="GtkProgressBar" id="generic_progressbar">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
               </object>
               <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
                 <property name="position">0</property>
               </packing>
             </child>
             <child>
               <object class="GtkHButtonBox" id="export_csv_hbuttonbox">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <property name="spacing">2</property>
                 <property name="layout_style">end</property>
                 <child>
@@ -391,7 +443,7 @@
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
                     <property name="use_stock">True</property>
-                    <signal name="clicked" handler="on_chiudi_button_clicked"/>
+                    <signal name="clicked" handler="on_chiudi_button_clicked" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -406,7 +458,7 @@
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
                     <property name="image">esporta_img</property>
-                    <signal name="clicked" handler="on_esporta_button_clicked"/>
+                    <signal name="clicked" handler="on_esporta_button_clicked" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -434,23 +486,25 @@
     </child>
   </object>
   <object class="GtkFileChooserDialog" id="salva_modello_file">
+    <property name="can_focus">False</property>
     <property name="border_width">5</property>
     <property name="window_position">center-always</property>
     <property name="type_hint">dialog</property>
     <property name="transient_for">export_csv</property>
-    <property name="has_separator">True</property>
     <property name="action">save</property>
     <property name="create_folders">False</property>
     <property name="do_overwrite_confirmation">True</property>
     <property name="filter">filefilter1</property>
     <property name="preview_widget_active">False</property>
     <child internal-child="vbox">
-      <object class="GtkVBox" id="dialog-vbox1">
+      <object class="GtkBox" id="dialog-vbox1">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="spacing">2</property>
         <child internal-child="action_area">
-          <object class="GtkHButtonBox" id="dialog-action_area1">
+          <object class="GtkButtonBox" id="dialog-action_area1">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="layout_style">end</property>
             <child>
               <object class="GtkButton" id="chiudi_file_button">
@@ -459,7 +513,7 @@
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="use_stock">True</property>
-                <signal name="clicked" handler="on_chiudi_file_button_clicked"/>
+                <signal name="clicked" handler="on_chiudi_file_button_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -474,7 +528,7 @@
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="use_stock">True</property>
-                <signal name="clicked" handler="on_salva_file_button_clicked"/>
+                <signal name="clicked" handler="on_salva_file_button_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -485,6 +539,7 @@
           </object>
           <packing>
             <property name="expand">False</property>
+            <property name="fill">True</property>
             <property name="pack_type">end</property>
             <property name="position">0</property>
           </packing>
@@ -495,10 +550,5 @@
       <action-widget response="0">chiudi_file_button</action-widget>
       <action-widget response="0">salva_file_button</action-widget>
     </action-widgets>
-  </object>
-  <object class="GtkFileFilter" id="filefilter1"/>
-  <object class="GtkImage" id="esporta_img">
-    <property name="visible">True</property>
-    <property name="stock">gtk-execute</property>
   </object>
 </interface>

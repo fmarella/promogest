@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.18.3 -->
 <interface>
-  <requires lib="gtk+" version="2.16"/>
-  <!-- interface-requires pythonplugin 0.0 -->
-  <!-- interface-naming-policy project-wide -->
+  <requires lib="gtk+" version="3.4"/>
+  <requires lib="pythonplugin" version="0.0"/>
   <object class="GtkListStore" id="scadenzario_liststore">
     <columns>
       <!-- column-name PyObject1 -->
@@ -52,7 +52,6 @@
             <child>
               <object class="GtkCheckButton" id="periodo_checkbutton">
                 <property name="label" translatable="yes">Mostrare le scadenze nel periodo:</property>
-                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
@@ -101,10 +100,10 @@
             <child>
               <object class="GtkCheckButton" id="da_pagare_checkbutton">
                 <property name="label" translatable="yes">da pagare</property>
-                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
+                <property name="xalign">0.5</property>
                 <property name="active">True</property>
                 <property name="draw_indicator">True</property>
                 <signal name="toggled" handler="on_da_pagare_checkbutton_toggled" swapped="no"/>
@@ -117,10 +116,10 @@
             <child>
               <object class="GtkCheckButton" id="da_incassare_checkbutton">
                 <property name="label" translatable="yes">da incassare</property>
-                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
+                <property name="xalign">0.5</property>
                 <property name="active">True</property>
                 <property name="draw_indicator">True</property>
                 <signal name="toggled" handler="on_da_incassare_checkbutton_toggled" swapped="no"/>
@@ -135,10 +134,10 @@
             <child>
               <object class="GtkCheckButton" id="in_scadenza_checkbutton">
                 <property name="label" translatable="yes">in scadenza</property>
-                <property name="use_action_appearance">False</property>
                 <property name="sensitive">False</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
+                <property name="xalign">0.5</property>
                 <property name="active">True</property>
                 <property name="draw_indicator">True</property>
                 <signal name="toggled" handler="on_in_scadenza_checkbutton_toggled" swapped="no"/>
@@ -151,10 +150,10 @@
             <child>
               <object class="GtkCheckButton" id="scadute_non_pagate_checkbutton">
                 <property name="label" translatable="yes">scadute e non pagate</property>
-                <property name="use_action_appearance">False</property>
                 <property name="sensitive">False</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
+                <property name="xalign">0.5</property>
                 <property name="draw_indicator">True</property>
                 <signal name="toggled" handler="on_scadute_non_pagate_checkbutton_toggled" swapped="no"/>
               </object>
@@ -196,7 +195,6 @@
             <child>
               <object class="GtkButton" id="aggiorna_button">
                 <property name="label">gtk-refresh</property>
-                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -227,8 +225,6 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                <property name="hscrollbar_policy">automatic</property>
-                <property name="vscrollbar_policy">automatic</property>
                 <property name="shadow_type">etched-in</property>
                 <child>
                   <object class="GtkTreeView" id="scadenzario_treeview">
@@ -241,6 +237,9 @@
                     <property name="search_column">1</property>
                     <property name="rubber_banding">True</property>
                     <property name="enable_grid_lines">both</property>
+                    <child internal-child="selection">
+                      <object class="GtkTreeSelection" id="treeview-selection1"/>
+                    </child>
                     <child>
                       <object class="GtkTreeViewColumn" id="ragione_sociale_column">
                         <property name="title" translatable="yes">Ragione Sociale</property>

@@ -26,6 +26,7 @@ import decimal
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from sqlalchemy.ext.serializer import loads, dumps
+from sqlalchemy.ext.declarative import declarative_base
 from promogest.Environment import *
 try:
     from promogest.ui.GtkExceptionHandler import GtkExceptionHandler
@@ -33,13 +34,15 @@ except:
     pass
 from promogest.dao.DaoUtils import ckd
 
+
+Base = declarative_base(metadata=meta)
+
 class Dao(object):
     """
     Astrazione generica di ciò˛ che fu il vecchio dao basata su sqlAlchemy
     """
     def __init__(self,campo=[], entity=None, exceptionHandler=None):
         self._session = params["session"]
-#        self._metadata = params["metadata"]
         self._numRecords = None
         self._DaoModule = entity.__class__
         self._exceptionHandler = exceptionHandler
@@ -93,6 +96,7 @@ class Dao(object):
             __filter__ = None
 
         self.record= self._session.query(self._DaoModule)
+        #print "SELLLLLLLLLLLLLLF", self.record
         if sqlalchemy.__version__ > '0.6':
             if join is not None:
                 self.record = self.record.join(join)

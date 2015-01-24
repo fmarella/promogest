@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012
+#    Copyright (C) 2005-2015
 #by Promotux di Francesco Meloni snc - http://www.promotux.it/
 
 # Author: Francesco Meloni <francesco@promotux.it>
@@ -22,34 +22,28 @@
 
 
 from sqlalchemy import Table
-from sqlalchemy.orm import mapper, join
-from promogest.Environment import params
-from promogest.dao.Dao import Dao
+from sqlalchemy.orm import *
+from promogest.Environment import *
+from promogest.dao.Dao import Dao, Base
 
 
-try:
-    t_testata_scontrino_cliente=Table('testata_scontrino_cliente',
-                                params['metadata'],
-                                schema = params['schema'],
-                                autoload=True)
-except:
-    from data.testataScontrinoCliente import t_testata_scontrino_cliente
-
-class TestataScontrinoCliente(Dao):
-
+class TestataScontrinoCliente(Base, Dao):
+    try:
+        __table__ = Table('testata_scontrino_cliente',
+                                    params['metadata'],
+                                    schema = params['schema'],
+                                    autoload=True)
+    except:
+        from data.testataScontrinoCliente import t_testata_scontrino_cliente
+        __table__ = t_testata_scontrino_cliente
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):
         if k == 'id':
-            dic= { k :t_testata_scontrino_cliente.c.id == v}
+            dic= { k :TestataScontrinoCliente.__table__.c.id == v}
         elif k== 'id_cliente':
-            dic ={k:t_testata_scontrino_cliente.c.id_cliente==v}
+            dic ={k:TestataScontrinoCliente.__table__.c.id_cliente==v}
         elif k== 'id_testata_scontrino':
-            dic ={k:t_testata_scontrino_cliente.c.id_testata_scontrino==v}
+            dic ={k:TestataScontrinoCliente.__table__.c.id_testata_scontrino==v}
         return  dic[k]
-
-
-
-std_mapper = mapper(TestataScontrinoCliente,t_testata_scontrino_cliente,
-                order_by=t_testata_scontrino_cliente.c.id)

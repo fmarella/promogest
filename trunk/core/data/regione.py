@@ -53,7 +53,7 @@ regis = [ ("01",'Piemonte'),
         ("19","Sicilia"),
         ("20","Sardegna"),]
 s= select([t_regione.c.codice]).execute().fetchall()
-if (u'01',) not in s or s==[]:
+if (u'1',) not in s or s==[]:
     unit = t_regione.insert()
     for a in regis:
         unit.execute(denominazione_breve=a[0], denominazione=a[1])

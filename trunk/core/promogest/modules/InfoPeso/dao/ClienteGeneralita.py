@@ -70,18 +70,6 @@ class ClienteGeneralita(Dao):
             dic = {k:clientegeneralita.c.id_cliente == v}
         return  dic[k]
 
-
-#    def persist(self):
-#        """ cancellazione righe associate alla testata """
-#        pg2log.info("DENTRO IL TESTATA COMMESSA")
-#        params["session"].add(self)
-#        params["session"].commit()
-#        if self.__righeCommessa:
-#            for riga in self.__righeCommessa:
-#                riga.id_testata_commessa = self.id
-#                riga.persist()
-#        self.__righeCommessa = []
-
 std_mapper = mapper(ClienteGeneralita, clientegeneralita,properties={
         "CLI": relation(Cliente,primaryjoin=
                 clientegeneralita.c.id_cliente==Cliente.id,

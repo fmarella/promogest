@@ -1,39 +1,44 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.18.3 -->
 <interface>
-  <!-- interface-requires gtk+ 2.6 -->
-  <!-- interface-naming-policy toplevel-contextual -->
+  <requires lib="gtk+" version="3.4"/>
   <object class="GtkFrame" id="utilita_select_frame">
     <property name="visible">True</property>
+    <property name="can_focus">False</property>
     <property name="label_xalign">0</property>
     <child>
       <object class="GtkAlignment" id="alignment23">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="left_padding">12</property>
         <child>
           <object class="GtkVBox" id="vbox5">
             <property name="width_request">300</property>
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="border_width">6</property>
-            <property name="orientation">vertical</property>
             <property name="homogeneous">True</property>
             <child>
               <object class="GtkToggleButton" id="ricerca_articoli_button">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <signal name="clicked" handler="on_ricerca_articolo_button_clicked"/>
+                <signal name="clicked" handler="on_ricerca_articolo_button_clicked" swapped="no"/>
                 <child>
                   <object class="GtkAlignment" id="alignment20">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <property name="xscale">0</property>
                     <property name="yscale">0</property>
                     <child>
                       <object class="GtkHBox" id="hbox34">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="spacing">2</property>
                         <child>
                           <object class="GtkImage" id="image20">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="stock">gtk-color-picker</property>
                           </object>
                           <packing>
@@ -45,6 +50,7 @@
                         <child>
                           <object class="GtkLabel" id="label42">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="label" translatable="yes">Ricerca Articoli</property>
                             <property name="use_underline">True</property>
                           </object>
@@ -70,19 +76,22 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <signal name="clicked" handler="on_ricerca_cliente_button_clicked"/>
+                <signal name="clicked" handler="on_ricerca_cliente_button_clicked" swapped="no"/>
                 <child>
                   <object class="GtkAlignment" id="alignment45">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <property name="xscale">0</property>
                     <property name="yscale">0</property>
                     <child>
                       <object class="GtkHBox" id="hbox72">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="spacing">2</property>
                         <child>
                           <object class="GtkImage" id="image42">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="stock">gtk-color-picker</property>
                           </object>
                           <packing>
@@ -94,6 +103,7 @@
                         <child>
                           <object class="GtkLabel" id="label147">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="label" translatable="yes">Ricerca Clienti</property>
                             <property name="use_underline">True</property>
                           </object>
@@ -119,19 +129,22 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <signal name="clicked" handler="on_ricerca_fornitore_button_clicked"/>
+                <signal name="clicked" handler="on_ricerca_fornitore_button_clicked" swapped="no"/>
                 <child>
                   <object class="GtkAlignment" id="alignment84">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <property name="xscale">0</property>
                     <property name="yscale">0</property>
                     <child>
                       <object class="GtkHBox" id="hbox83">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="spacing">2</property>
                         <child>
                           <object class="GtkImage" id="image49">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="stock">gtk-color-picker</property>
                           </object>
                           <packing>
@@ -143,6 +156,7 @@
                         <child>
                           <object class="GtkLabel" id="label187">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="label" translatable="yes">Ricerca Fornitori</property>
                             <property name="use_underline">True</property>
                           </object>
@@ -170,6 +184,7 @@
     <child type="label">
       <object class="GtkLabel" id="label81">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="label" translatable="yes">Utilita'</property>
         <property name="use_markup">True</property>
       </object>

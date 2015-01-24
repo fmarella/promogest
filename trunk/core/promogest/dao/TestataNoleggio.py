@@ -1,10 +1,24 @@
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 
-"""
- Promogest
- Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
-"""
+#    Copyright (C) 2005-2015 by Promotux
+#                        di Francesco Meloni snc - http://www.promotux.it/
 
+#    Author: Francesco Meloni  <francesco@promotux.it>
+
+#    This file is part of Promogest.
+
+#    Promogest is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 2 of the License, or
+#    (at your option) any later version.
+
+#    Promogest is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+
+#    You should have received a copy of the GNU General Public License
+#    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 from sqlalchemy import *
 from sqlalchemy.orm import *
@@ -68,8 +82,6 @@ class TestataNoleggio(Dao):
                 'idFornitore': self.id_fornitore == v,
                 'dataMovimento': self.data_movimento == v,
                 'registroNumerazione': self.registro_numerazione==v,
-                #'statoDocumento': testata_mov.c.stato_documento == v,
-                #'idArticolo': testata_movimento.c.id_articolo == v  ARRIVANO QUI TRAMITE RIGA - RIGA DOCUMENTO
             }
         return  dic[k]
 
@@ -96,45 +108,6 @@ class TestataNoleggio(Dao):
                     """aggiornamento forniture
                         cerca la fornitura relativa al fornitore
                         con data <= alla data del movimento"""
-
-                    # ATTENZIONE Direi che le forniture non debbano essere aggiornate
-                    #fors = Dao(Fornitura).select(idArticolo=riga.id_articolo,
-                                                            #idFornitore=self.id_fornitore,
-                                                            #daDataPrezzo=None,
-                                                            #aDataPrezzo=self.data_noleggio,
-                                                            #orderBy = 'data_prezzo DESC',
-                                                            #offset = None,
-                                                            #batchSize = None)
-                    #daoFornitura = None
-                    #if len(fors) > 0:
-                        #if fors[0].data_prezzo == self.data_noleggio:
-                            ## ha trovato una fornitura con stessa data: aggiorno questa fornitura
-                            #daoFornitura = Dao(Fornitura, id=fors[0].id).getRecord()
-                        #else:
-                            #"""creo una nuova fornitura con data_prezzo pari alla data del movimento
-                                #copio alcuni dati dalla fornitura piu' prossima"""
-                            #daoFornitura = Dao(Fornitura).getRecord()
-                            #daoFornitura.scorta_minima = fors[0].scorta_minima
-                            #daoFornitura.id_multiplo = fors[0].id_multiplo
-                            #daoFornitura.tempo_arrivo_merce = fors[0].tempo_arrivo_merce
-                            #daoFornitura.fornitore_preferenziale = fors[0].fornitore_preferenziale
-                    #else:
-                        ## nessuna fornitura utilizzabile, ne creo una nuova (alcuni dati mancheranno)
-                        #daoFornitura = Dao(Fornitura).getRecord()
-
-                    #daoFornitura.id_fornitore = self.id_fornitore
-                    #daoFornitura.id_articolo = riga.id_articolo
-                    #if daoFornitura.data_fornitura is not None:
-                        #if self.data_movimento > daoFornitura.data_fornitura:
-                            #daoFornitura.data_fornitura = self.data_movimento
-                    #else:
-                        #daoFornitura.data_fornitura = self.data_movimento
-                    #daoFornitura.data_prezzo = self.data_movimento
-                    #daoFornitura.codice_articolo_fornitore = riga.codiceArticoloFornitore
-                    #daoFornitura.prezzo_lordo = riga.valore_unitario_lordo
-                    #daoFornitura.prezzo_netto = riga.valore_unitario_netto
-                    #daoFornitura.percentuale_iva = riga.percentuale_iva
-                    #daoFornitura.applicazione_sconti = riga.applicazione_sconti
                     sconti = []
                     for s in riga.sconti:
                         daoSconto = ScontoFornitura()
@@ -159,8 +132,3 @@ std_mapper = mapper(TestataNoleggio, testata_nol,properties={
 
 sel_mapper = std_mapper
 total_mapper = std_mapper
-
-#TM.id IN (SELECT id_testata_movimento FROM v_riga_movimento WHERE id_magazzino = \' || _id_magazzino || \') \';
-
-
-

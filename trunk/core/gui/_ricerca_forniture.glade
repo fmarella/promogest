@@ -1,27 +1,30 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.18.3 -->
 <interface>
-  <requires lib="gtk+" version="2.16"/>
-  <!-- interface-requires pythonplugin 0.0 -->
-  <!-- interface-naming-policy project-wide -->
+  <requires lib="gtk+" version="3.4"/>
+  <requires lib="pythonplugin" version="0.0"/>
   <object class="GtkTable" id="anagrafica_forniture_filter_table">
     <property name="visible">True</property>
+    <property name="can_focus">False</property>
     <property name="n_rows">7</property>
     <property name="n_columns">2</property>
     <child>
       <object class="GtkLabel" id="label117">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="label" translatable="yes">Articolo</property>
       </object>
       <packing>
         <property name="x_options">GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
         <property name="x_padding">10</property>
       </packing>
     </child>
     <child>
       <object class="GtkLabel" id="label119">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="label" translatable="yes">Fornitore</property>
       </object>
@@ -29,7 +32,7 @@
         <property name="top_attach">1</property>
         <property name="bottom_attach">2</property>
         <property name="x_options">GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
         <property name="x_padding">10</property>
       </packing>
     </child>
@@ -37,14 +40,13 @@
       <object class="GtkAlignment" id="alignment139">
         <property name="width_request">120</property>
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="xscale">0</property>
         <child>
           <object class="DateWidget" id="da_data_fornitura_filter_entry">
             <property name="visible">True</property>
-            <child>
-              <placeholder/>
-            </child>
+            <property name="can_focus">False</property>
           </object>
         </child>
       </object>
@@ -54,21 +56,20 @@
         <property name="top_attach">2</property>
         <property name="bottom_attach">3</property>
         <property name="x_options">GTK_SHRINK | GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
       </packing>
     </child>
     <child>
       <object class="GtkAlignment" id="alignment140">
         <property name="width_request">120</property>
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="xscale">0</property>
         <child>
           <object class="DateWidget" id="a_data_fornitura_filter_entry">
             <property name="visible">True</property>
-            <child>
-              <placeholder/>
-            </child>
+            <property name="can_focus">False</property>
           </object>
         </child>
       </object>
@@ -78,21 +79,20 @@
         <property name="top_attach">3</property>
         <property name="bottom_attach">4</property>
         <property name="x_options">GTK_SHRINK | GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
       </packing>
     </child>
     <child>
       <object class="GtkAlignment" id="alignment141">
         <property name="width_request">120</property>
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="xscale">0</property>
         <child>
           <object class="DateWidget" id="da_data_prezzo_filter_entry">
             <property name="visible">True</property>
-            <child>
-              <placeholder/>
-            </child>
+            <property name="can_focus">False</property>
           </object>
         </child>
       </object>
@@ -102,21 +102,20 @@
         <property name="top_attach">4</property>
         <property name="bottom_attach">5</property>
         <property name="x_options">GTK_SHRINK | GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
       </packing>
     </child>
     <child>
       <object class="GtkAlignment" id="alignment142">
         <property name="width_request">120</property>
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="xscale">0</property>
         <child>
           <object class="DateWidget" id="a_data_prezzo_filter_entry">
             <property name="visible">True</property>
-            <child>
-              <placeholder/>
-            </child>
+            <property name="can_focus">False</property>
           </object>
         </child>
       </object>
@@ -126,15 +125,17 @@
         <property name="top_attach">5</property>
         <property name="bottom_attach">6</property>
         <property name="x_options">GTK_SHRINK | GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
       </packing>
     </child>
     <child>
       <object class="GtkEntry" id="codice_articolo_fornitore_filter_entry">
         <property name="visible">True</property>
         <property name="can_focus">True</property>
-        <property name="invisible_char">&#x2022;</property>
-        <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
+        <property name="invisible_char">•</property>
+        <property name="primary_icon_activatable">False</property>
+        <property name="secondary_icon_activatable">False</property>
+        <signal name="key-press-event" handler="on_campo_filter_entry_key_press_event" swapped="no"/>
       </object>
       <packing>
         <property name="left_attach">1</property>
@@ -142,19 +143,22 @@
         <property name="top_attach">6</property>
         <property name="bottom_attach">7</property>
         <property name="x_options">GTK_SHRINK | GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
       </packing>
     </child>
     <child>
       <object class="GtkAlignment" id="alignment376">
         <property name="width_request">200</property>
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="xscale">0</property>
         <child>
           <object class="ArticoloSearchWidget" id="id_articolo_filter_customcombobox">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
+            <property name="primary_icon_activatable">False</property>
+            <property name="secondary_icon_activatable">False</property>
           </object>
         </child>
       </object>
@@ -162,19 +166,22 @@
         <property name="left_attach">1</property>
         <property name="right_attach">2</property>
         <property name="x_options">GTK_SHRINK | GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
       </packing>
     </child>
     <child>
       <object class="GtkAlignment" id="alignment377">
         <property name="width_request">200</property>
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="xscale">0</property>
         <child>
           <object class="FornitoreSearchWidget" id="id_fornitore_filter_customcombobox">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
+            <property name="primary_icon_activatable">False</property>
+            <property name="secondary_icon_activatable">False</property>
           </object>
         </child>
       </object>
@@ -184,12 +191,13 @@
         <property name="top_attach">1</property>
         <property name="bottom_attach">2</property>
         <property name="x_options">GTK_SHRINK | GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
       </packing>
     </child>
     <child>
       <object class="GtkLabel" id="label191">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="yalign">0.5899999737739563</property>
         <property name="label" translatable="yes">Da data fornitura</property>
@@ -198,13 +206,14 @@
         <property name="top_attach">2</property>
         <property name="bottom_attach">3</property>
         <property name="x_options">GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
         <property name="x_padding">10</property>
       </packing>
     </child>
     <child>
       <object class="GtkLabel" id="label271">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="yalign">0.5899999737739563</property>
         <property name="label" translatable="yes">A data fornitura</property>
@@ -213,13 +222,14 @@
         <property name="top_attach">3</property>
         <property name="bottom_attach">4</property>
         <property name="x_options">GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
         <property name="x_padding">10</property>
       </packing>
     </child>
     <child>
       <object class="GtkLabel" id="label272">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="yalign">0.5899999737739563</property>
         <property name="label" translatable="yes">Da data prezzo</property>
@@ -228,13 +238,14 @@
         <property name="top_attach">4</property>
         <property name="bottom_attach">5</property>
         <property name="x_options">GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
         <property name="x_padding">10</property>
       </packing>
     </child>
     <child>
       <object class="GtkLabel" id="label273">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="yalign">0.5899999737739563</property>
         <property name="label" translatable="yes">A data prezzo</property>
@@ -243,13 +254,14 @@
         <property name="top_attach">5</property>
         <property name="bottom_attach">6</property>
         <property name="x_options">GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
         <property name="x_padding">10</property>
       </packing>
     </child>
     <child>
       <object class="GtkLabel" id="label192">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="yalign">0.5899999737739563</property>
         <property name="label" translatable="yes">Codice articolo fornitore</property>
@@ -258,7 +270,7 @@
         <property name="top_attach">6</property>
         <property name="bottom_attach">7</property>
         <property name="x_options">GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
         <property name="x_padding">10</property>
       </packing>
     </child>

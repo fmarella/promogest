@@ -77,13 +77,14 @@ class SimpleGladeWrapper:
         """
         gl = None
         prefix = ""
-        if Environment.pg3:
-            prefix = "pg3_"
+        #GTK3
+        #if Environment.pg3:
+        #    prefix = "pg3_"
 
-        from sys import platform
-        if platform == 'darwin' or platform.startswith('linux'):
-            if 'anagrafica_documenti.glade' == path or '_anagrafica_articoli_detail.glade' == path:
-                path = "".join(['alt_', path])
+        #from sys import platform
+        #if platform == 'darwin' or platform.startswith('linux'):
+        #    if 'anagrafica_documenti.glade' == path or '_anagrafica_articoli_detail.glade' == path:
+        #        path = "".join(['alt_', path])
 
         #print "PATH o NOME FILE --> ", path
         #print "ROOT --> ", root
@@ -121,8 +122,9 @@ class SimpleGladeWrapper:
         gl.set_translation_domain("promogest")
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
+            print "FILE GLADE:" + str(self.glade_path)
             gl.add_from_file(self.glade_path)
-        # print "FILE GLADE:" + str(self.glade_path)
+
 #        Environment.pg2log.info("FILE GLADE:"+str(self.glade_path))
         self.widgets = gl.get_objects()
         if root:

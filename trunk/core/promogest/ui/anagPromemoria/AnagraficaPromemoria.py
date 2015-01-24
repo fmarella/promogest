@@ -368,13 +368,20 @@ class AnagraficaPromemoriaEdit(AnagraficaEdit):
         self.dao.data_inserimento = stringToDateTime(self.data_inserimento_entry.get_text())
         self.dao.data_scadenza = stringToDateTime(self.data_scadenza_entry.get_text())
         self.dao.oggetto = self.oggetto_entry.get_text()
-        self.dao.incaricato = self.incaricato_combobox_entry.get_active_text()
-        self.dao.autore = self.autore_combobox_entry.get_active_text()
+        #GTK3 +
+        self.dao.incaricato = self.incaricato_combobox_entry.get_child().get_text()
+        self.dao.autore = self.autore_combobox_entry.get_child().get_text()
+        #GTK3 -
+        #self.dao.incaricato = self.incaricato_combobox_entry.get_active_text()
+        #self.dao.autore = self.autore_combobox_entry.get_active_text()
         textBuffer = self.descrizione_textview.get_buffer()
         self.dao.descrizione = textBuffer.get_text(textBuffer.get_start_iter(), textBuffer.get_end_iter(),True)
         textBuffer = self.annotazione_textview.get_buffer()
         self.dao.annotazione = textBuffer.get_text(textBuffer.get_start_iter(), textBuffer.get_end_iter(),True)
-        self.dao.riferimento = self.riferimento_combobox_entry.get_active_text()
+        #GTK3 +
+        self.dao.riferimento = self.riferimento_combobox_entry.get_child().get_text()
+        #GTK3 -
+        #self.dao.riferimento = self.riferimento_combobox_entry.get_active_text()
         if self.giorni_preavviso_entry.get_text() == '':
             self.giorni_preavviso_entry.set_text('0')
             self.in_scadenza_checkbutton.set_active(True)

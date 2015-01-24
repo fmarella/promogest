@@ -36,7 +36,8 @@ class AnagraficaGalleria(Anagrafica):
 
 
     def draw(self):
-        self.filter.denominazione_column.get_cells()[0].set_data('max_length', 200)
+        #GTK3
+        #self.filter.denominazione_column.get_cells()[0].set_data('max_length', 200)
         self._treeViewModel = self.filter.filter_listore
         self.refresh()
 

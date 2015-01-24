@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -23,12 +23,24 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
-from promogest.dao.Dao import Dao
+from promogest.dao.Dao import Dao, Base
 
-class AssociazioneArticolo(Dao):
+class AssociazioneArticolo(Base, Dao):
     """
     Rappresenta un raggruppamento di articoli relazionati ad un unico articolo "padre"
     """
+    try:
+        __table__ = Table('associazione_articolo',params['metadata'],schema = params['schema'],autoload=True)
+    except:
+        __table__ = Table('associazione_articolo', params['metadata'],
+                            Column('id',Integer,primary_key=True),
+                            Column('id_padre',Integer,ForeignKey(params['schema']+'.articolo.id',onupdate="CASCADE",ondelete="RESTRICT"),nullable=True),
+                            Column('id_figlio',Integer,ForeignKey(params['schema']+'.articolo.id',onupdate="CASCADE",ondelete="RESTRICT"),nullable=True),
+                            Column('quantita',Numeric),
+                            Column('posizione',Integer,nullable=True),
+                            UniqueConstraint('id_padre', 'id_figlio'),
+                            schema=params['schema'])
+
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
 
@@ -94,20 +106,11 @@ class AssociazioneArticolo(Dao):
 
     def filter_values(self,k,v):
         if k =='idFiglio':
-            dic= {k:associazionearticolo.c.id_figlio ==v}
+            dic= {k:AssociazioneArticolo.__table__.c.id_figlio ==v}
         elif k == "idPadre":
-            dic = {k:associazionearticolo.c.id_padre ==v}
+            dic = {k:AssociazioneArticolo.__table__.c.id_padre ==v}
         elif k=="codice":
-            dic = {k:and_(articolo.c.id == associazionearticolo.c.id_padre,articolo.c.codice.ilike("%"+v+"%"))}
+            dic = {k:and_(articolo.c.id == AssociazioneArticolo.__table__.c.id_padre,articolo.c.codice.ilike("%"+v+"%"))}
         elif k =="node":
-            dic={k:and_(associazionearticolo.c.id_padre == associazionearticolo.c.id_figlio)}
+            dic={k:and_(AssociazioneArticolo.__table__.c.id_padre == AssociazioneArticolo.__table__.c.id_figlio)}
         return  dic[k]
-
-
-    #def delete(self):
-        #print "che succede"
-
-articolo=Table('articolo', params['metadata'],schema = params['schema'],autoload=True)
-associazionearticolo=Table('associazione_articolo',params['metadata'],schema = params['schema'],autoload=True)
-
-std_mapper = mapper(AssociazioneArticolo, associazionearticolo, order_by=associazionearticolo.c.id)

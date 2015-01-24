@@ -1,7 +1,159 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.18.3 -->
 <interface>
-  <requires lib="gtk+" version="2.16"/>
-  <!-- interface-naming-policy toplevel-contextual -->
+  <requires lib="gtk+" version="3.4"/>
+  <object class="GtkVBox" id="anagrafica_articoli_filter_vbox">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <child>
+      <object class="GtkVBox" id="ricerca_semplice_articoli_filter_vbox">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <child>
+          <object class="GtkAlignment" id="alignment474">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="top_padding">3</property>
+            <child>
+              <object class="GtkHBox" id="ricerca_avanzata_articoli_filter_hbox">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <child>
+                  <object class="GtkHSeparator" id="hseparator35">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                  </object>
+                  <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
+                    <property name="padding">5</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="ricerca_avanzata_articoli_button">
+                    <property name="label" translatable="yes">Vai a Ricerca Avanzata Multipla</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="use_underline">True</property>
+                    <property name="focus_on_click">False</property>
+                    <signal name="clicked" handler="on_ricerca_avanzata_articoli_button_clicked" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+      </object>
+      <packing>
+        <property name="expand">True</property>
+        <property name="fill">True</property>
+        <property name="position">0</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkVBox" id="ricerca_avanzata_articoli_filter_vbox">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <child>
+          <object class="GtkHBox" id="ricerca_semplice_articoli_filter_hbox">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <child>
+              <object class="GtkHSeparator" id="hseparator33">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="padding">5</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="ricerca_semplice_articoli_button">
+                <property name="label" translatable="yes">Vai a Ricerca Semplice Singola</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_underline">True</property>
+                <signal name="clicked" handler="on_ricerca_semplice_articoli_button_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkScrolledWindow" id="scrolledwindow1">
+            <property name="height_request">500</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <child>
+              <object class="GtkViewport" id="viewport1">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="resize_mode">queue</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+      </object>
+      <packing>
+        <property name="expand">True</property>
+        <property name="fill">True</property>
+        <property name="position">1</property>
+      </packing>
+    </child>
+  </object>
+  <object class="GtkListStore" id="liststore1">
+    <columns>
+      <!-- column-name item -->
+      <column type="gchararray"/>
+    </columns>
+    <data>
+      <row>
+        <col id="0" translatable="yes">&lt; Tutti &gt;</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Solo principali</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Solo varianti</col>
+      </row>
+    </data>
+  </object>
   <object class="GtkTable" id="anagrafica_articoli_filter_table">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -13,6 +165,7 @@
         <property name="can_focus">True</property>
         <property name="receives_default">False</property>
         <property name="use_underline">True</property>
+        <property name="xalign">0.5</property>
         <property name="draw_indicator">True</property>
       </object>
       <packing>
@@ -30,13 +183,11 @@
         <property name="invisible_char">●</property>
         <property name="primary_icon_activatable">False</property>
         <property name="secondary_icon_activatable">False</property>
-        <property name="primary_icon_sensitive">True</property>
-        <property name="secondary_icon_sensitive">True</property>
         <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
         <signal name="changed" handler="on_filter_entry_changed" swapped="no"/>
-        <signal name="key-press-event" handler="on_denominazione_filter_entry_key_press_event" swapped="no"/>
-        <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
         <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
+        <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
+        <signal name="key-press-event" handler="on_denominazione_filter_entry_key_press_event" swapped="no"/>
       </object>
       <packing>
         <property name="left_attach">1</property>
@@ -121,12 +272,10 @@
         <property name="invisible_char">●</property>
         <property name="primary_icon_activatable">False</property>
         <property name="secondary_icon_activatable">False</property>
-        <property name="primary_icon_sensitive">True</property>
-        <property name="secondary_icon_sensitive">True</property>
         <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
         <signal name="changed" handler="on_filter_entry_changed" swapped="no"/>
-        <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
         <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
+        <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
       </object>
       <packing>
         <property name="left_attach">1</property>
@@ -143,12 +292,10 @@
         <property name="invisible_char">●</property>
         <property name="primary_icon_activatable">False</property>
         <property name="secondary_icon_activatable">False</property>
-        <property name="primary_icon_sensitive">True</property>
-        <property name="secondary_icon_sensitive">True</property>
         <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
         <signal name="changed" handler="on_filter_entry_changed" swapped="no"/>
-        <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
         <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
+        <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
       </object>
       <packing>
         <property name="left_attach">1</property>
@@ -165,14 +312,12 @@
         <property name="invisible_char">●</property>
         <property name="primary_icon_activatable">False</property>
         <property name="secondary_icon_activatable">False</property>
-        <property name="primary_icon_sensitive">True</property>
-        <property name="secondary_icon_sensitive">True</property>
         <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
         <signal name="changed" handler="on_codice_filter_entry_changed" after="yes" swapped="no"/>
         <signal name="changed" handler="on_filter_entry_changed" swapped="no"/>
-        <signal name="key-press-event" handler="on_codice_filter_entry_key_press_event" swapped="no"/>
-        <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
         <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
+        <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
+        <signal name="key-press-event" handler="on_codice_filter_entry_key_press_event" swapped="no"/>
       </object>
       <packing>
         <property name="left_attach">1</property>
@@ -189,12 +334,10 @@
         <property name="invisible_char">●</property>
         <property name="primary_icon_activatable">False</property>
         <property name="secondary_icon_activatable">False</property>
-        <property name="primary_icon_sensitive">True</property>
-        <property name="secondary_icon_sensitive">True</property>
         <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
         <signal name="changed" handler="on_filter_entry_changed" swapped="no"/>
-        <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
         <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
+        <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
       </object>
       <packing>
         <property name="left_attach">1</property>
@@ -320,8 +463,6 @@
             <property name="height_request">200</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <property name="hscrollbar_policy">automatic</property>
-            <property name="vscrollbar_policy">automatic</property>
             <property name="shadow_type">in</property>
             <child>
               <object class="GtkViewport" id="viewportrfr">
@@ -599,160 +740,6 @@
       </packing>
     </child>
   </object>
-  <object class="GtkVBox" id="anagrafica_articoli_filter_vbox">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <child>
-      <object class="GtkVBox" id="ricerca_semplice_articoli_filter_vbox">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <child>
-          <object class="GtkAlignment" id="alignment474">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="top_padding">3</property>
-            <child>
-              <object class="GtkHBox" id="ricerca_avanzata_articoli_filter_hbox">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <child>
-                  <object class="GtkHSeparator" id="hseparator35">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                  </object>
-                  <packing>
-                    <property name="expand">True</property>
-                    <property name="fill">True</property>
-                    <property name="padding">5</property>
-                    <property name="position">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkButton" id="ricerca_avanzata_articoli_button">
-                    <property name="label" translatable="yes">Vai a Ricerca Avanzata Multipla</property>
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">True</property>
-                    <property name="use_underline">True</property>
-                    <property name="focus_on_click">False</property>
-                    <signal name="clicked" handler="on_ricerca_avanzata_articoli_button_clicked" swapped="no"/>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">False</property>
-                    <property name="position">1</property>
-                  </packing>
-                </child>
-              </object>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">False</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-      </object>
-      <packing>
-        <property name="expand">True</property>
-        <property name="fill">True</property>
-        <property name="position">0</property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkVBox" id="ricerca_avanzata_articoli_filter_vbox">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <child>
-          <object class="GtkHBox" id="ricerca_semplice_articoli_filter_hbox">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <child>
-              <object class="GtkHSeparator" id="hseparator33">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-              </object>
-              <packing>
-                <property name="expand">True</property>
-                <property name="fill">True</property>
-                <property name="padding">5</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton" id="ricerca_semplice_articoli_button">
-                <property name="label" translatable="yes">Vai a Ricerca Semplice Singola</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="use_underline">True</property>
-                <signal name="clicked" handler="on_ricerca_semplice_articoli_button_clicked" swapped="no"/>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
-                <property name="position">1</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">False</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkScrolledWindow" id="scrolledwindow1">
-            <property name="height_request">500</property>
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="hscrollbar_policy">automatic</property>
-            <property name="vscrollbar_policy">automatic</property>
-            <child>
-              <object class="GtkViewport" id="viewport1">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="resize_mode">queue</property>
-                <child>
-                  <placeholder/>
-                </child>
-              </object>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">True</property>
-            <property name="fill">True</property>
-            <property name="position">1</property>
-          </packing>
-        </child>
-      </object>
-      <packing>
-        <property name="expand">True</property>
-        <property name="fill">True</property>
-        <property name="position">1</property>
-      </packing>
-    </child>
-  </object>
-  <object class="GtkListStore" id="liststore1">
-    <columns>
-      <!-- column-name item -->
-      <column type="gchararray"/>
-    </columns>
-    <data>
-      <row>
-        <col id="0" translatable="yes">&lt; Tutti &gt;</col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">Solo principali</col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">Solo varianti</col>
-      </row>
-    </data>
-  </object>
   <object class="GtkFrame" id="ricerca_avanzata_articoli_filter_filters_frame">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -783,8 +770,6 @@
                       <object class="GtkScrolledWindow" id="scrolledwindow43">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="hscrollbar_policy">automatic</property>
-                        <property name="vscrollbar_policy">automatic</property>
                         <property name="shadow_type">in</property>
                         <child>
                           <object class="GtkTreeView" id="descrizione_articolo_filter_treeview">
@@ -792,6 +777,9 @@
                             <property name="can_focus">True</property>
                             <signal name="cursor-changed" handler="on_descrizione_articolo_filter_treeview_cursor_changed" swapped="no"/>
                             <signal name="key-press-event" handler="on_descrizione_articolo_filter_treeview_key_press_event" swapped="no"/>
+                            <child internal-child="selection">
+                              <object class="GtkTreeSelection" id="treeview-selection1"/>
+                            </child>
                           </object>
                         </child>
                       </object>
@@ -893,8 +881,6 @@
                       <object class="GtkScrolledWindow" id="scrolledwindow44">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="hscrollbar_policy">automatic</property>
-                        <property name="vscrollbar_policy">automatic</property>
                         <property name="shadow_type">in</property>
                         <child>
                           <object class="GtkTreeView" id="produttore_articolo_filter_treeview">
@@ -902,6 +888,9 @@
                             <property name="can_focus">True</property>
                             <signal name="cursor-changed" handler="on_produttore_articolo_filter_treeview_cursor_changed" swapped="no"/>
                             <signal name="key-press-event" handler="on_produttore_articolo_filter_treeview_key_press_event" swapped="no"/>
+                            <child internal-child="selection">
+                              <object class="GtkTreeSelection" id="treeview-selection2"/>
+                            </child>
                           </object>
                         </child>
                       </object>
@@ -1003,8 +992,6 @@
                       <object class="GtkScrolledWindow" id="scrolledwindow45">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="hscrollbar_policy">automatic</property>
-                        <property name="vscrollbar_policy">automatic</property>
                         <property name="shadow_type">in</property>
                         <child>
                           <object class="GtkTreeView" id="codice_articolo_filter_treeview">
@@ -1012,6 +999,9 @@
                             <property name="can_focus">True</property>
                             <signal name="cursor-changed" handler="on_codice_articolo_filter_treeview_cursor_changed" swapped="no"/>
                             <signal name="key-press-event" handler="on_codice_articolo_filter_treeview_key_press_event" swapped="no"/>
+                            <child internal-child="selection">
+                              <object class="GtkTreeSelection" id="treeview-selection3"/>
+                            </child>
                           </object>
                         </child>
                       </object>
@@ -1113,8 +1103,6 @@
                       <object class="GtkScrolledWindow" id="scrolledwindow46">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="hscrollbar_policy">automatic</property>
-                        <property name="vscrollbar_policy">automatic</property>
                         <property name="shadow_type">in</property>
                         <child>
                           <object class="GtkTreeView" id="codice_a_barre_articolo_filter_treeview">
@@ -1122,6 +1110,9 @@
                             <property name="can_focus">True</property>
                             <signal name="cursor-changed" handler="on_codice_a_barre_articolo_filter_treeview_cursor_changed" swapped="no"/>
                             <signal name="key-press-event" handler="on_codice_a_barre_articolo_filter_treeview_key_press_event" swapped="no"/>
+                            <child internal-child="selection">
+                              <object class="GtkTreeSelection" id="treeview-selection4"/>
+                            </child>
                           </object>
                         </child>
                       </object>
@@ -1223,8 +1214,6 @@
                       <object class="GtkScrolledWindow" id="scrolledwindow47">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="hscrollbar_policy">automatic</property>
-                        <property name="vscrollbar_policy">automatic</property>
                         <property name="shadow_type">in</property>
                         <child>
                           <object class="GtkTreeView" id="codice_articolo_fornitore_articolo_filter_treeview">
@@ -1232,6 +1221,9 @@
                             <property name="can_focus">True</property>
                             <signal name="cursor-changed" handler="on_codice_articolo_fornitore_articolo_filter_treeview_cursor_changed" swapped="no"/>
                             <signal name="key-press-event" handler="on_codice_articolo_fornitore_articolo_filter_treeview_key_press_event" swapped="no"/>
+                            <child internal-child="selection">
+                              <object class="GtkTreeSelection" id="treeview-selection5"/>
+                            </child>
                           </object>
                         </child>
                       </object>
@@ -1328,13 +1320,14 @@
                   <object class="GtkScrolledWindow" id="scrolledwindow48">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="hscrollbar_policy">automatic</property>
-                    <property name="vscrollbar_policy">automatic</property>
                     <property name="shadow_type">in</property>
                     <child>
                       <object class="GtkTreeView" id="famiglia_articolo_filter_treeview">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
+                        <child internal-child="selection">
+                          <object class="GtkTreeSelection" id="treeview-selection6"/>
+                        </child>
                       </object>
                     </child>
                   </object>
@@ -1371,13 +1364,14 @@
                   <object class="GtkScrolledWindow" id="scrolledwindow49">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="hscrollbar_policy">automatic</property>
-                    <property name="vscrollbar_policy">automatic</property>
                     <property name="shadow_type">in</property>
                     <child>
                       <object class="GtkTreeView" id="categoria_articolo_filter_treeview">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
+                        <child internal-child="selection">
+                          <object class="GtkTreeSelection" id="treeview-selection7"/>
+                        </child>
                       </object>
                     </child>
                   </object>
@@ -1414,13 +1408,14 @@
                   <object class="GtkScrolledWindow" id="scrolledwindow50">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="hscrollbar_policy">automatic</property>
-                    <property name="vscrollbar_policy">automatic</property>
                     <property name="shadow_type">in</property>
                     <child>
                       <object class="GtkTreeView" id="stato_articolo_filter_treeview">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
+                        <child internal-child="selection">
+                          <object class="GtkTreeSelection" id="treeview-selection8"/>
+                        </child>
                       </object>
                     </child>
                   </object>
@@ -1457,13 +1452,14 @@
                   <object class="GtkScrolledWindow" id="scrolledwindow51">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="hscrollbar_policy">automatic</property>
-                    <property name="vscrollbar_policy">automatic</property>
                     <property name="shadow_type">in</property>
                     <child>
                       <object class="GtkTreeView" id="unita_base_articolo_filter_treeview">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
+                        <child internal-child="selection">
+                          <object class="GtkTreeSelection" id="treeview-selection9"/>
+                        </child>
                       </object>
                     </child>
                   </object>
@@ -1505,6 +1501,7 @@
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
                         <property name="use_underline">True</property>
+                        <property name="xalign">0.5</property>
                         <property name="draw_indicator">True</property>
                         <signal name="toggled" handler="on_includi_eliminati_articolo_filter_checkbutton_toggled" swapped="no"/>
                       </object>
@@ -1521,6 +1518,7 @@
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
                         <property name="use_underline">True</property>
+                        <property name="xalign">0.5</property>
                         <property name="draw_indicator">True</property>
                         <signal name="toggled" handler="on_solo_eliminati_articolo_filter_checkbutton_toggled" swapped="no"/>
                       </object>
@@ -1577,13 +1575,14 @@
                               <object class="GtkScrolledWindow" id="scrolledwindow72">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="hscrollbar_policy">automatic</property>
-                                <property name="vscrollbar_policy">automatic</property>
                                 <property name="shadow_type">in</property>
                                 <child>
                                   <object class="GtkTreeView" id="stagione_articolo_filter_treeview">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
+                                    <child internal-child="selection">
+                                      <object class="GtkTreeSelection" id="treeview-selection10"/>
+                                    </child>
                                   </object>
                                 </child>
                               </object>
@@ -1619,13 +1618,14 @@
                               <object class="GtkScrolledWindow" id="scrolledwindow70">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="hscrollbar_policy">automatic</property>
-                                <property name="vscrollbar_policy">automatic</property>
                                 <property name="shadow_type">in</property>
                                 <child>
                                   <object class="GtkTreeView" id="colore_articolo_filter_treeview">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
+                                    <child internal-child="selection">
+                                      <object class="GtkTreeSelection" id="treeview-selection11"/>
+                                    </child>
                                   </object>
                                 </child>
                               </object>
@@ -1661,13 +1661,14 @@
                               <object class="GtkScrolledWindow" id="scrolledwindow71">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="hscrollbar_policy">automatic</property>
-                                <property name="vscrollbar_policy">automatic</property>
                                 <property name="shadow_type">in</property>
                                 <child>
                                   <object class="GtkTreeView" id="anno_articolo_filter_treeview">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
+                                    <child internal-child="selection">
+                                      <object class="GtkTreeSelection" id="treeview-selection12"/>
+                                    </child>
                                   </object>
                                 </child>
                               </object>
@@ -1703,13 +1704,14 @@
                               <object class="GtkScrolledWindow" id="scrolledwindow73">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="hscrollbar_policy">automatic</property>
-                                <property name="vscrollbar_policy">automatic</property>
                                 <property name="shadow_type">in</property>
                                 <child>
                                   <object class="GtkTreeView" id="genere_articolo_filter_treeview">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
+                                    <child internal-child="selection">
+                                      <object class="GtkTreeSelection" id="treeview-selection13"/>
+                                    </child>
                                   </object>
                                 </child>
                               </object>
@@ -1747,13 +1749,14 @@
                                 <property name="height_request">150</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="hscrollbar_policy">automatic</property>
-                                <property name="vscrollbar_policy">automatic</property>
                                 <property name="shadow_type">in</property>
                                 <child>
                                   <object class="GtkTreeView" id="taglia_articolo_filter_treeview">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
+                                    <child internal-child="selection">
+                                      <object class="GtkTreeSelection" id="treeview-selection14"/>
+                                    </child>
                                   </object>
                                 </child>
                               </object>
@@ -1789,13 +1792,14 @@
                               <object class="GtkScrolledWindow" id="scrolledwindow68">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="hscrollbar_policy">automatic</property>
-                                <property name="vscrollbar_policy">automatic</property>
                                 <property name="shadow_type">in</property>
                                 <child>
                                   <object class="GtkTreeView" id="gruppo_taglia_articolo_filter_treeview">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
+                                    <child internal-child="selection">
+                                      <object class="GtkTreeSelection" id="treeview-selection15"/>
+                                    </child>
                                   </object>
                                 </child>
                               </object>
@@ -1831,13 +1835,14 @@
                               <object class="GtkScrolledWindow" id="scrolledwindow2">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="hscrollbar_policy">automatic</property>
-                                <property name="vscrollbar_policy">automatic</property>
                                 <property name="shadow_type">in</property>
                                 <child>
                                   <object class="GtkTreeView" id="cutsize_articolo_filter_treeview">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
+                                    <child internal-child="selection">
+                                      <object class="GtkTreeSelection" id="treeview-selection16"/>
+                                    </child>
                                   </object>
                                 </child>
                               </object>
@@ -1922,8 +1927,6 @@
                         <property name="height_request">100</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="hscrollbar_policy">automatic</property>
-                        <property name="vscrollbar_policy">automatic</property>
                         <property name="shadow_type">in</property>
                         <child>
                           <object class="GtkTextView" id="riepilogo_articolo_filter_textview">

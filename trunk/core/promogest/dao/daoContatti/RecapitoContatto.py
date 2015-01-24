@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012,2011 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -23,34 +23,32 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
-from promogest.dao.Dao import Dao
+from promogest.dao.Dao import Dao, Base
 from promogest.dao.daoContatti.TipoRecapito import TipoRecapito
 
-try:
-    t_recapito=Table('recapito',
-                    params['metadata'],
-                    autoload=True,
-                    schema=params['schema'])
-except:
-    from data.contatto import t_contatto
-    from data.recapito import t_recapito
 
-class RecapitoContatto(Dao):
+class RecapitoContatto(Base, Dao):
+    try:
+        __table__ = Table('recapito',
+                        params['metadata'],
+                        autoload=True,
+                        schema=params['schema'],
+                        autoload_with=engine)
+    except:
+        from data.contatto import t_contatto
+        from data.recapito import t_recapito
+        __table__ = t_recapito
+
+    tipo_reca = relationship("TipoRecapito", backref='recapito')
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
 
     def filter_values(self, k,v):
         if k =="id":
-            dic= {k:t_recapito.c.id_contatto==v}
+            dic= {k:RecapitoContatto.__table__.c.id_contatto==v}
         elif k =="idContatto":
-            dic = {k:t_recapito.c.id_contatto==v}
+            dic = {k:RecapitoContatto.__table__.c.id_contatto==v}
         elif k =="tipoRecapito":
-            dic = {k:t_recapito.c.tipo_recapito==v}
+            dic = {k:RecapitoContatto.__table__.c.tipo_recapito==v}
         return  dic[k]
-
-
-
-std_mapper = mapper(RecapitoContatto, t_recapito,properties={
-    'tipo_reca':relation(TipoRecapito, backref='recapito')
-    }, order_by=t_recapito.c.id)

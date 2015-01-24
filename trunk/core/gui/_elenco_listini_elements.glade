@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.18.3 -->
 <interface>
-  <requires lib="gtk+" version="2.16"/>
-  <!-- interface-naming-policy toplevel-contextual -->
+  <requires lib="gtk+" version="3.4"/>
   <object class="GtkFrame" id="elenco_listini_frame">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -13,17 +13,14 @@
         <property name="left_padding">5</property>
         <property name="right_padding">5</property>
         <child>
-          <object class="GtkVBox" id="vbox12">
-            <property name="width_request">680</property>
+          <object class="GtkBox" id="box1">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="spacing">5</property>
+            <property name="orientation">vertical</property>
             <child>
               <object class="GtkScrolledWindow" id="scrolledwindow14">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <property name="hscrollbar_policy">automatic</property>
-                <property name="vscrollbar_policy">automatic</property>
                 <property name="shadow_type">in</property>
                 <child>
                   <object class="GtkTreeView" id="elenco_listini_treeview">
@@ -31,10 +28,14 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="model">elenco_listini_listore</property>
+                    <property name="search_column">1</property>
                     <property name="enable_grid_lines">both</property>
                     <property name="tooltip_column">1</property>
                     <signal name="cursor-changed" handler="on_elenco_listini_treeview_cursor_changed" swapped="no"/>
                     <signal name="row-activated" handler="on_elenco_listini_treeview_row_activated" swapped="no"/>
+                    <child internal-child="selection">
+                      <object class="GtkTreeSelection" id="treeview-selection"/>
+                    </child>
                     <child>
                       <object class="GtkTreeViewColumn" id="denominazione_column">
                         <property name="title" translatable="yes">Denominazione</property>
@@ -80,10 +81,10 @@
               </packing>
             </child>
             <child>
-              <object class="GtkHBox" id="hbox117">
+              <object class="GtkBox" id="box2">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="spacing">5</property>
+                <property name="homogeneous">True</property>
                 <child>
                   <object class="GtkToggleButton" id="listini_togglebutton">
                     <property name="visible">True</property>
@@ -93,7 +94,6 @@
 Ricordiamo che nella 
 versione lite senza opzioni attivate è possibile avere un solo 
 listino di vendita </property>
-                    <property name="use_action_appearance">False</property>
                     <signal name="clicked" handler="on_listini_togglebutton_clicked" swapped="no"/>
                     <child>
                       <object class="GtkAlignment" id="alignment126">
@@ -139,7 +139,7 @@ listini</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
-                    <property name="fill">False</property>
+                    <property name="fill">True</property>
                     <property name="position">0</property>
                   </packing>
                 </child>
@@ -151,7 +151,6 @@ listini</property>
                     <property name="tooltip_text" translatable="yes">Composizione dei listini
 con l'inserimento degli 
 articoli presenti in anagrafica</property>
-                    <property name="use_action_appearance">False</property>
                     <signal name="clicked" handler="on_articoli_listino_togglebutton_clicked" swapped="no"/>
                     <child>
                       <object class="GtkAlignment" id="alignment127">
@@ -197,7 +196,7 @@ listino</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
-                    <property name="fill">False</property>
+                    <property name="fill">True</property>
                     <property name="position">1</property>
                   </packing>
                 </child>
@@ -211,7 +210,6 @@ listino</property>
 di importazione listini e creazione 
 anagrafica articolo.
 Accetta file csv</property>
-                    <property name="use_action_appearance">False</property>
                     <signal name="clicked" handler="on_importazione_listini_togglebutton_clicked" swapped="no"/>
                     <child>
                       <object class="GtkAlignment" id="alignment7">
@@ -271,7 +269,6 @@ listino</property>
 o label per la vendita, con prezzo, iva e 
 codici a barre. Serve un modulo 
 apposito per averne pieno accesso</property>
-                    <property name="use_action_appearance">False</property>
                     <signal name="clicked" handler="on_stampa_frontaline_togglebutton_clicked" swapped="no"/>
                     <child>
                       <object class="GtkAlignment" id="alignment1">
@@ -327,13 +324,12 @@ Etichette</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="use_stock">True</property>
                     <signal name="clicked" handler="on_aggiorna_listini_button_clicked" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>
-                    <property name="fill">False</property>
+                    <property name="fill">True</property>
                     <property name="position">4</property>
                   </packing>
                 </child>
@@ -343,11 +339,11 @@ Etichette</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
-                    <property name="use_action_appearance">False</property>
+                    <property name="xalign">0</property>
                     <property name="draw_indicator">True</property>
                   </object>
                   <packing>
-                    <property name="expand">True</property>
+                    <property name="expand">False</property>
                     <property name="fill">True</property>
                     <property name="position">5</property>
                   </packing>
@@ -356,7 +352,6 @@ Etichette</property>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="padding">5</property>
                 <property name="position">1</property>
               </packing>
             </child>

@@ -1,16 +1,19 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.18.3 -->
 <interface>
-  <requires lib="gtk+" version="2.16"/>
-  <!-- interface-naming-policy toplevel-contextual -->
+  <requires lib="gtk+" version="3.4"/>
   <object class="GtkWindow" id="roleaction">
+    <property name="can_focus">False</property>
     <property name="title" translatable="yes">roleaction</property>
     <property name="window_position">center</property>
     <child>
       <object class="GtkVBox" id="vbox2">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <child>
           <object class="GtkLabel" id="titolo">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="use_markup">True</property>
             <property name="justify">center</property>
           </object>
@@ -23,9 +26,11 @@
         <child>
           <object class="GtkHBox" id="hbox1">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <child>
               <object class="GtkLabel" id="label2">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <property name="xpad">11</property>
                 <property name="label" translatable="yes">Ruolo</property>
                 <property name="justify">fill</property>
@@ -40,11 +45,14 @@
             <child>
               <object class="GtkComboBox" id="id_role_filter_combobox">
                 <property name="visible">True</property>
-                <property name="tooltip_text" translatable="yes">Selezionare il ruolo e premere "abbina" 
-per poi assegnare le diverse azioni 
+                <property name="can_focus">False</property>
+                <property name="tooltip_text" translatable="yes">Selezionare il ruolo e premere "abbina"
+per poi assegnare le diverse azioni
 possibili</property>
               </object>
               <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
                 <property name="position">1</property>
               </packing>
             </child>
@@ -54,9 +62,9 @@ possibili</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="tooltip_text" translatable="yes">Riempie lo spazio sottostante 
+                <property name="tooltip_text" translatable="yes">Riempie lo spazio sottostante
 con le azioni possibili</property>
-                <signal name="clicked" handler="on_abbina_button_clicked"/>
+                <signal name="clicked" handler="on_abbina_button_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -76,8 +84,6 @@ con le azioni possibili</property>
           <object class="GtkScrolledWindow" id="scrolledwindow1">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <property name="hscrollbar_policy">automatic</property>
-            <property name="vscrollbar_policy">automatic</property>
             <property name="shadow_type">in</property>
             <child>
               <object class="GtkTreeView" id="anagrafica_treeview_role">
@@ -86,16 +92,22 @@ con le azioni possibili</property>
                 <property name="show_expanders">False</property>
                 <property name="level_indentation">2</property>
                 <property name="enable_grid_lines">both</property>
+                <child internal-child="selection">
+                  <object class="GtkTreeSelection" id="treeview-selection1"/>
+                </child>
               </object>
             </child>
           </object>
           <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
             <property name="position">2</property>
           </packing>
         </child>
         <child>
           <object class="GtkHBox" id="hbox2">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <child>
               <placeholder/>
             </child>
@@ -107,19 +119,22 @@ con le azioni possibili</property>
                 <property name="can_default">True</property>
                 <property name="has_default">True</property>
                 <property name="receives_default">False</property>
-                <signal name="clicked" handler="on_save_button_clicked"/>
+                <signal name="clicked" handler="on_save_button_clicked" swapped="no"/>
                 <child>
                   <object class="GtkAlignment" id="alignment1">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <property name="xscale">0</property>
                     <property name="yscale">0</property>
                     <child>
                       <object class="GtkHBox" id="hbox3">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="spacing">2</property>
                         <child>
                           <object class="GtkImage" id="image1">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="pixbuf">salva24x24.png</property>
                           </object>
                           <packing>
@@ -131,6 +146,7 @@ con le azioni possibili</property>
                         <child>
                           <object class="GtkLabel" id="label1">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="label">_Salva</property>
                             <property name="use_underline">True</property>
                           </object>
@@ -147,6 +163,7 @@ con le azioni possibili</property>
               </object>
               <packing>
                 <property name="expand">False</property>
+                <property name="fill">True</property>
                 <property name="padding">6</property>
                 <property name="position">1</property>
               </packing>
@@ -159,19 +176,22 @@ con le azioni possibili</property>
                 <property name="can_default">True</property>
                 <property name="has_default">True</property>
                 <property name="receives_default">False</property>
-                <signal name="clicked" handler="on_annulla_button_clicked"/>
+                <signal name="clicked" handler="on_annulla_button_clicked" swapped="no"/>
                 <child>
                   <object class="GtkAlignment" id="alignment537">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <property name="xscale">0</property>
                     <property name="yscale">0</property>
                     <child>
                       <object class="GtkHBox" id="hbox405">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="spacing">2</property>
                         <child>
                           <object class="GtkImage" id="image446">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="pixbuf">annulla2nd24x24.png</property>
                           </object>
                           <packing>
@@ -183,6 +203,7 @@ con le azioni possibili</property>
                         <child>
                           <object class="GtkLabel" id="label3492">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="label">_Annulla</property>
                             <property name="use_underline">True</property>
                           </object>
@@ -199,6 +220,7 @@ con le azioni possibili</property>
               </object>
               <packing>
                 <property name="expand">False</property>
+                <property name="fill">True</property>
                 <property name="padding">3</property>
                 <property name="position">2</property>
               </packing>

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.18.3 -->
 <interface>
-  <requires lib="gtk+" version="2.16"/>
-  <!-- interface-requires pythonplugin 0.0 -->
-  <!-- interface-naming-policy toplevel-contextual -->
+  <requires lib="gtk+" version="3.4"/>
+  <requires lib="pythonplugin" version="0.0"/>
   <object class="GtkWindow" id="fatturazione_differita_window">
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">Fatturazione differita</property>
@@ -10,8 +10,8 @@
     <property name="modal">True</property>
     <property name="window_position">center</property>
     <property name="icon">promogest.png</property>
-    <signal name="destroy-event" handler="on_duplicazione_documento_window_close" swapped="no"/>
     <signal name="delete-event" handler="on_duplicazione_documento_window_close" swapped="no"/>
+    <signal name="destroy-event" handler="on_duplicazione_documento_window_close" swapped="no"/>
     <child>
       <object class="GtkVBox" id="vbox30">
         <property name="visible">True</property>
@@ -112,10 +112,10 @@
                         <child>
                           <object class="GtkCheckButton" id="data_consegna_check">
                             <property name="label" translatable="yes">Inserisci data consegna dei singoli DDT</property>
-                            <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">False</property>
+                            <property name="xalign">0</property>
                             <property name="draw_indicator">True</property>
                           </object>
                           <packing>
@@ -127,10 +127,10 @@
                         <child>
                           <object class="GtkCheckButton" id="note_check">
                             <property name="label" translatable="yes">Inserisci Note dei singoli DDT</property>
-                            <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">False</property>
+                            <property name="xalign">0</property>
                             <property name="draw_indicator">True</property>
                           </object>
                           <packing>
@@ -142,10 +142,10 @@
                         <child>
                           <object class="GtkCheckButton" id="no_row_check">
                             <property name="label" translatable="yes">Inserisci dettaglio Righe del singolo DDT</property>
-                            <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">False</property>
+                            <property name="xalign">0</property>
                             <property name="draw_indicator">True</property>
                           </object>
                           <packing>
@@ -157,10 +157,10 @@
                         <child>
                           <object class="GtkCheckButton" id="insert_row_pointed_check">
                             <property name="label" translatable="yes">Inserisci una riga tratteggiata tra i dettagli righe DDT</property>
-                            <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">False</property>
+                            <property name="xalign">0</property>
                             <property name="draw_indicator">True</property>
                           </object>
                           <packing>
@@ -172,10 +172,10 @@
                         <child>
                           <object class="GtkCheckButton" id="insert_row_empty_check">
                             <property name="label" translatable="yes">Inserisci una riga vuota tra i dettagli righe DDT</property>
-                            <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">False</property>
+                            <property name="xalign">0</property>
                             <property name="draw_indicator">True</property>
                           </object>
                           <packing>
@@ -188,10 +188,10 @@
                           <object class="GtkCheckButton" id="no_rif_righe_cumul_check">
                             <property name="label" translatable="yes">No Rif ai DDT, righe composte da sintesi articoli
 cumulati come quantità e valore</property>
-                            <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">False</property>
+                            <property name="xalign">0</property>
                             <property name="draw_indicator">True</property>
                           </object>
                           <packing>
@@ -245,7 +245,7 @@ cumulati come quantità e valore</property>
           </object>
           <packing>
             <property name="expand">False</property>
-            <property name="fill">False</property>
+            <property name="fill">True</property>
             <property name="position">2</property>
           </packing>
         </child>
@@ -257,7 +257,7 @@ cumulati come quantità e valore</property>
           </object>
           <packing>
             <property name="expand">False</property>
-            <property name="fill">False</property>
+            <property name="fill">True</property>
             <property name="position">3</property>
           </packing>
         </child>
@@ -269,7 +269,7 @@ cumulati come quantità e valore</property>
           </object>
           <packing>
             <property name="expand">False</property>
-            <property name="fill">False</property>
+            <property name="fill">True</property>
             <property name="position">4</property>
           </packing>
         </child>
@@ -281,7 +281,6 @@ cumulati come quantità e valore</property>
             <property name="layout_style">end</property>
             <child>
               <object class="GtkButton" id="confirm_button">
-                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>

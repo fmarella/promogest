@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2013 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -20,62 +20,46 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-from sqlalchemy import Table
-from sqlalchemy.orm import mapper, relation
+import hashlib
+from sqlalchemy import *
+from sqlalchemy.orm import *
 from promogest.Environment import *
-from promogest.lib.alembic.migration import MigrationContext
-from promogest.lib.alembic.operations import Operations
-from promogest.lib.alembic import op
-from promogest.dao.DaoUtils import get_columns
-
-try:
-    t_utente = Table('utente', params['metadata'],schema = params['mainSchema'],autoload=True)
-except:
-    from data.azienda import t_azienda
-    from data.language import t_language
-    from data.role import t_role
-    from data.utente import t_utente
-
-from promogest.dao.Dao import Dao
-#from promogest.dao.Regioni import Regioni
-#from promogest.dao.Province import Province
-#from promogest.lib.migrate import *
+from promogest import Environment
+from promogest.dao.Dao import Dao, Base
 from promogest.modules.RuoliAzioni.dao.Role import Role
-from promogest.dao.DaoUtils import get_columns
 
-columns_t_utente = get_columns(t_utente)
-
-if "schemaa_azienda" not in columns_t_utente:
-    conn = engine.connect()
-    ctx = MigrationContext.configure(conn)
-    op = Operations(ctx)
-    op.add_column('utente', Column('schemaa_azienda', String(100), ForeignKey(fk_prefix_main+'azienda.schemaa'), nullable=True), schema=mainSchema)
-
-class User(Dao):
+class User(Base, Dao):
     """ User class provides to make a Users dao which include more used"""
+    try:
+        __table__ = Table('utente', meta,schema=mainSchema, autoload=True, autoload_with=engine)
+    except:
+        from data.utente import t_utente
+        __table__ = t_utente
+
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):
         if k == 'username':
-            dic = {k:t_utente.c.username == v}
+            dic = {k: User.__table__.c.username == v}
         elif k == 'password':
-            dic = {k:t_utente.c.password == v}
+            dic = {k: User.__table__.c.password == v}
         elif k == 'usern':
-            dic = {k:t_utente.c.username.ilike("%"+v+"%")}
+            dic = {k: User.__table__.c.username.ilike("%"+v+"%")}
         elif k == 'email':
-            dic = {k:t_utente.c.email.ilike("%"+v+"%")}
+            dic = {k: User.__table__.c.email.ilike("%"+v+"%")}
         elif k == 'emailEM':
-            dic = {k:t_utente.c.email == v}
+            dic = {k: User.__table__.c.email == v}
         elif k == 'active':
-            dic = {k:t_utente.c.active == v}
+            dic = {k: User.__table__.c.active == v}
         elif k == 'tipoUser':
-            dic = {k:t_utente.c.tipo_user == v}
+            dic = {k: User.__table__.c.tipo_user == v}
         elif k == 'idRole':
-            dic = {k:t_utente.c.id_role == v}
+            dic = {k: User.__table__.c.id_role == v}
+        elif k == 'schemaAzienda':
+            dic = {k: User.__table__.c.schemaa_azienda == v}
         return  dic[k]
-
 
     def delete(self):
         if self.username == "admin":
@@ -98,5 +82,30 @@ class User(Dao):
             else:
                 return ""
 
+#try:
+    #User.__table__.c.schemaa_azienda
+#except:
+    #conn = engine.connect()
+    #ctx = MigrationContext.configure(conn)
+    #op = Operations(ctx)
+    #op.add_column('utente', Column('schemaa_azienda', String(100), ForeignKey(fk_prefix_main+'azienda.schemaa'), nullable=True), schema=mainSchema)
+    #delete_pickle()
+    #restart_program()
 
-std_mapper = mapper(User, t_utente, order_by=t_utente.c.username)
+#s= select([User.__table__.c.username]).execute().fetchall()
+#for nome in schemi_presenti:
+    #if str("admin_"+str(nome)) not in str(s) and "__" not in nome and nome != "public" and nome!="promogest2" and nome !="information_schema":
+        #from promogest.dao.Azienda import Azienda
+        #aa = Azienda().getRecord(id=str(nome))
+        #if aa:
+            #user = User()
+            #username ='admin_'+str(nome)
+            #password = 'admin'
+            #user.username = username
+            #user.password =hashlib.md5(username+password).hexdigest()
+            #user.email = 'tes@tes.it'
+            #user.schemaa_azienda = str(nome)
+            #user.id_role=1
+            #user.tipo_user="WEB"
+            #user.active = True
+            #user.persist()

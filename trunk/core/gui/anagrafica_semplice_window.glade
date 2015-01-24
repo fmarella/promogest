@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.18.3 -->
 <interface>
-  <requires lib="gtk+" version="2.16"/>
-  <!-- interface-naming-policy toplevel-contextual -->
+  <requires lib="gtk+" version="3.4"/>
   <object class="GtkAccelGroup" id="accelgroup1"/>
   <object class="GtkImage" id="image1">
     <property name="visible">True</property>
@@ -20,8 +20,8 @@
     <accel-groups>
       <group name="accelgroup1"/>
     </accel-groups>
-    <signal name="destroy-event" handler="on_anagrafica_window_close" swapped="no"/>
     <signal name="delete-event" handler="on_anagrafica_window_close" swapped="no"/>
+    <signal name="destroy-event" handler="on_anagrafica_window_close" swapped="no"/>
     <child>
       <object class="GtkVBox" id="anagrafica_main_vbox">
         <property name="visible">True</property>
@@ -48,8 +48,8 @@
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <property name="accel_group">accelgroup1</property>
-                        <accelerator key="N" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                         <signal name="activate" handler="on_record_new_activate" swapped="no"/>
+                        <accelerator key="N" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                       </object>
                     </child>
                     <child>
@@ -67,8 +67,8 @@
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <property name="accel_group">accelgroup1</property>
-                        <accelerator key="M" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                         <signal name="activate" handler="on_record_edit_activate" swapped="no"/>
+                        <accelerator key="M" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                       </object>
                     </child>
                     <child>
@@ -80,8 +80,8 @@
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <property name="accel_group">accelgroup1</property>
-                        <accelerator key="E" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                         <signal name="activate" handler="on_record_delete_activate" swapped="no"/>
+                        <accelerator key="E" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                       </object>
                     </child>
                     <child>
@@ -99,8 +99,8 @@
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <property name="accel_group">accelgroup1</property>
-                        <accelerator key="S" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                         <signal name="activate" handler="on_record_save_activate" swapped="no"/>
+                        <accelerator key="S" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                       </object>
                     </child>
                     <child>
@@ -129,8 +129,8 @@
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <property name="accel_group">accelgroup1</property>
-                        <accelerator key="Z" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                         <signal name="activate" handler="on_record_undo_activate" swapped="no"/>
+                        <accelerator key="Z" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                       </object>
                     </child>
                     <child>
@@ -147,8 +147,8 @@
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <property name="accel_group">accelgroup1</property>
-                        <accelerator key="Q" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                         <signal name="activate" handler="on_anagrafica_window_close" swapped="no"/>
+                        <accelerator key="Q" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                       </object>
                     </child>
                   </object>
@@ -248,6 +248,7 @@
               </object>
               <packing>
                 <property name="expand">False</property>
+                <property name="homogeneous">False</property>
               </packing>
             </child>
             <child>
@@ -287,6 +288,7 @@
               </object>
               <packing>
                 <property name="expand">False</property>
+                <property name="homogeneous">False</property>
               </packing>
             </child>
             <child>
@@ -327,6 +329,7 @@
               </object>
               <packing>
                 <property name="expand">False</property>
+                <property name="homogeneous">False</property>
               </packing>
             </child>
             <child>
@@ -382,8 +385,6 @@
           <object class="GtkScrolledWindow" id="scrolledwindow7">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <property name="hscrollbar_policy">automatic</property>
-            <property name="vscrollbar_policy">automatic</property>
             <child>
               <object class="GtkViewport" id="anagrafica_viewport">
                 <property name="visible">True</property>

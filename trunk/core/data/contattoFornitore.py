@@ -23,12 +23,15 @@
 from sqlalchemy import *
 from promogest.Environment import *
 
-t_contatto_fornitore = Table('contatto_fornitore', params["metadata"],
-        Column('id',Integer,primary_key=True),
-        Column('tipo_contatto',String(50),primary_key=True),
-        Column('id_fornitore',Integer,ForeignKey(fk_prefix+'fornitore.id',onupdate="CASCADE",ondelete="RESTRICT"),nullable=False),
-        ForeignKeyConstraint(['id', 'tipo_contatto'],[fk_prefix+'contatto.id', fk_prefix+'contatto.tipo_contatto'],onupdate="CASCADE", ondelete="CASCADE"),
-        CheckConstraint("tipo_contatto = 'fornitore'"),
-        schema=params["schema"]
-        )
-t_contatto_fornitore.create(checkfirst=True)
+try:
+    t_contatto_fornitore=Table('contatto_fornitore',params['metadata'],schema = params['schema'],autoload=True)
+except:
+    t_contatto_fornitore = Table('contatto_fornitore', params["metadata"],
+            Column('id',Integer,primary_key=True),
+            Column('tipo_contatto',String(50),primary_key=True),
+            Column('id_fornitore',Integer,ForeignKey(fk_prefix+'fornitore.id',onupdate="CASCADE",ondelete="RESTRICT"),nullable=False),
+            ForeignKeyConstraint(['id', 'tipo_contatto'],[fk_prefix+'contatto.id', fk_prefix+'contatto.tipo_contatto'],onupdate="CASCADE", ondelete="CASCADE"),
+            CheckConstraint("tipo_contatto = 'fornitore'"),
+            schema=params["schema"]
+            )
+    t_contatto_fornitore.create(checkfirst=True)

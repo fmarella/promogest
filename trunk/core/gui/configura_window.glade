@@ -1,7 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.18.3 -->
 <interface>
-  <requires lib="gtk+" version="2.16"/>
-  <!-- interface-naming-policy toplevel-contextual -->
+  <requires lib="gtk+" version="3.4"/>
+  <object class="GtkListStore" id="liststore1">
+    <columns>
+      <!-- column-name gchararray1 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray2 -->
+      <column type="gchararray"/>
+    </columns>
+    <data>
+      <row>
+        <col id="0" translatable="yes">ogni 5 minuti</col>
+        <col id="1">300</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">ogni 10 minuti</col>
+        <col id="1">600</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">ogni 15 minuti</col>
+        <col id="1">900</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">ogni 30 minuti</col>
+        <col id="1">1800</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">ogni ora</col>
+        <col id="1">3600</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Mai</col>
+        <col id="1">0</col>
+      </row>
+    </data>
+  </object>
   <object class="GtkWindow" id="configura_window">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -9,8 +43,8 @@
     <property name="modal">True</property>
     <property name="window_position">center</property>
     <property name="icon">promogest.png</property>
-    <signal name="destroy-event" handler="on_quit" swapped="no"/>
     <signal name="delete-event" handler="on_quit" swapped="no"/>
+    <signal name="destroy-event" handler="on_quit" swapped="no"/>
     <child>
       <object class="GtkVBox" id="vbox56">
         <property name="visible">True</property>
@@ -23,8 +57,6 @@
               <object class="GtkScrolledWindow" id="setconf_scrolledwindow">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <property name="hscrollbar_policy">automatic</property>
-                <property name="vscrollbar_policy">automatic</property>
                 <child>
                   <object class="GtkViewport" id="viewport1">
                     <property name="visible">True</property>
@@ -59,10 +91,10 @@
                                 <child>
                                   <object class="GtkCheckButton" id="feed_check">
                                     <property name="label" translatable="yes">Attiva l'aggiornamento delle news del promogest dal sito</property>
-                                    <property name="use_action_appearance">False</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">False</property>
+                                    <property name="xalign">0.5</property>
                                     <property name="active">True</property>
                                     <property name="draw_indicator">True</property>
                                   </object>
@@ -114,10 +146,10 @@
                                         <child>
                                           <object class="GtkCheckButton" id="zeri_in_totali_check">
                                             <property name="label" translatable="yes">Visualizza gli zeri nei totali in fase di stampa</property>
-                                            <property name="use_action_appearance">False</property>
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="receives_default">False</property>
+                                            <property name="xalign">0.5</property>
                                             <property name="draw_indicator">True</property>
                                           </object>
                                           <packing>
@@ -140,10 +172,10 @@
                                         <child>
                                           <object class="GtkCheckButton" id="zeri_in_riga_check">
                                             <property name="label" translatable="yes">Visualizza gli zeri nelle righe documento in fase di stampa</property>
-                                            <property name="use_action_appearance">False</property>
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="receives_default">False</property>
+                                            <property name="xalign">0.5</property>
                                             <property name="draw_indicator">True</property>
                                           </object>
                                           <packing>
@@ -185,8 +217,6 @@
                                             <property name="invisible_char">•</property>
                                             <property name="primary_icon_activatable">False</property>
                                             <property name="secondary_icon_activatable">False</property>
-                                            <property name="primary_icon_sensitive">True</property>
-                                            <property name="secondary_icon_sensitive">True</property>
                                           </object>
                                           <packing>
                                             <property name="expand">True</property>
@@ -228,8 +258,6 @@
                                             <property name="invisible_char">•</property>
                                             <property name="primary_icon_activatable">False</property>
                                             <property name="secondary_icon_activatable">False</property>
-                                            <property name="primary_icon_sensitive">True</property>
-                                            <property name="secondary_icon_sensitive">True</property>
                                           </object>
                                           <packing>
                                             <property name="expand">True</property>
@@ -323,11 +351,8 @@ pdf di fatture, ddt etc..</property>
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="invisible_char">●</property>
-                                            <property name="invisible_char_set">True</property>
                                             <property name="primary_icon_activatable">False</property>
                                             <property name="secondary_icon_activatable">False</property>
-                                            <property name="primary_icon_sensitive">True</property>
-                                            <property name="secondary_icon_sensitive">True</property>
                                           </object>
                                           <packing>
                                             <property name="expand">False</property>
@@ -404,8 +429,6 @@ pdf di fatture, ddt etc..</property>
                                             <property name="invisible_char">●</property>
                                             <property name="primary_icon_activatable">False</property>
                                             <property name="secondary_icon_activatable">False</property>
-                                            <property name="primary_icon_sensitive">True</property>
-                                            <property name="secondary_icon_sensitive">True</property>
                                           </object>
                                           <packing>
                                             <property name="expand">False</property>
@@ -430,8 +453,8 @@ pdf di fatture, ddt etc..</property>
                                             <property name="visible">True</property>
                                             <property name="can_focus">False</property>
                                             <property name="xalign">0.10000000149011612</property>
-                                            <property name="label" translatable="yes">Numero di colonne nelle 
-combobox ( 3 ) 
+                                            <property name="label" translatable="yes">Numero di colonne nelle
+combobox ( 3 )
 selezionando 1 si
 avrà solo una colonna</property>
                                           </object>
@@ -448,8 +471,6 @@ avrà solo una colonna</property>
                                             <property name="invisible_char">●</property>
                                             <property name="primary_icon_activatable">False</property>
                                             <property name="secondary_icon_activatable">False</property>
-                                            <property name="primary_icon_sensitive">True</property>
-                                            <property name="secondary_icon_sensitive">True</property>
                                           </object>
                                           <packing>
                                             <property name="expand">False</property>
@@ -474,7 +495,7 @@ avrà solo una colonna</property>
                                             <property name="visible">True</property>
                                             <property name="can_focus">False</property>
                                             <property name="xalign">0.10000000149011612</property>
-                                            <property name="label" translatable="yes">Numero di righe predefinito 
+                                            <property name="label" translatable="yes">Numero di righe predefinito
 per la paginazione
 dei risultati nelle ricerche ( 15 )</property>
                                           </object>
@@ -489,11 +510,8 @@ dei risultati nelle ricerche ( 15 )</property>
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="invisible_char">●</property>
-                                            <property name="invisible_char_set">True</property>
                                             <property name="primary_icon_activatable">False</property>
                                             <property name="secondary_icon_activatable">False</property>
-                                            <property name="primary_icon_sensitive">True</property>
-                                            <property name="secondary_icon_sensitive">True</property>
                                           </object>
                                           <packing>
                                             <property name="expand">False</property>
@@ -561,10 +579,10 @@ dei risultati nelle ricerche ( 15 )</property>
                                         <child>
                                           <object class="GtkRadioButton" id="euro_radio">
                                             <property name="label" translatable="yes"> € </property>
-                                            <property name="use_action_appearance">False</property>
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="receives_default">False</property>
+                                            <property name="xalign">0.5</property>
                                             <property name="active">True</property>
                                             <property name="draw_indicator">True</property>
                                           </object>
@@ -577,10 +595,10 @@ dei risultati nelle ricerche ( 15 )</property>
                                         <child>
                                           <object class="GtkRadioButton" id="dollaro_radio">
                                             <property name="label" translatable="yes"> $ </property>
-                                            <property name="use_action_appearance">False</property>
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="receives_default">False</property>
+                                            <property name="xalign">0.5</property>
                                             <property name="active">True</property>
                                             <property name="draw_indicator">True</property>
                                             <property name="group">euro_radio</property>
@@ -594,10 +612,10 @@ dei risultati nelle ricerche ( 15 )</property>
                                         <child>
                                           <object class="GtkRadioButton" id="sterlina_radio">
                                             <property name="label" translatable="yes"> £ </property>
-                                            <property name="use_action_appearance">False</property>
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="receives_default">False</property>
+                                            <property name="xalign">0.5</property>
                                             <property name="active">True</property>
                                             <property name="draw_indicator">True</property>
                                             <property name="group">euro_radio</property>
@@ -611,10 +629,10 @@ dei risultati nelle ricerche ( 15 )</property>
                                         <child>
                                           <object class="GtkRadioButton" id="francosvizzero_radio">
                                             <property name="label" translatable="yes">CHR</property>
-                                            <property name="use_action_appearance">False</property>
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="receives_default">False</property>
+                                            <property name="xalign">0.5</property>
                                             <property name="draw_indicator">True</property>
                                             <property name="group">euro_radio</property>
                                           </object>
@@ -694,7 +712,6 @@ dei risultati nelle ricerche ( 15 )</property>
                                         </child>
                                         <child>
                                           <object class="GtkColorButton" id="colorbutton1">
-                                            <property name="use_action_appearance">False</property>
                                             <property name="visible">True</property>
                                             <property name="sensitive">False</property>
                                             <property name="can_focus">True</property>
@@ -734,7 +751,6 @@ dei risultati nelle ricerche ( 15 )</property>
                                         </child>
                                         <child>
                                           <object class="GtkColorButton" id="colorbutton2">
-                                            <property name="use_action_appearance">False</property>
                                             <property name="visible">True</property>
                                             <property name="sensitive">False</property>
                                             <property name="can_focus">True</property>
@@ -774,7 +790,6 @@ dei risultati nelle ricerche ( 15 )</property>
                                         </child>
                                         <child>
                                           <object class="GtkColorButton" id="colorbutton3">
-                                            <property name="use_action_appearance">False</property>
                                             <property name="visible">True</property>
                                             <property name="sensitive">False</property>
                                             <property name="can_focus">True</property>
@@ -852,11 +867,8 @@ VETTORE ( VE0000 )</property>
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="invisible_char">●</property>
-                                            <property name="invisible_char_set">True</property>
                                             <property name="primary_icon_activatable">False</property>
                                             <property name="secondary_icon_activatable">False</property>
-                                            <property name="primary_icon_sensitive">True</property>
-                                            <property name="secondary_icon_sensitive">True</property>
                                           </object>
                                           <packing>
                                             <property name="expand">False</property>
@@ -874,10 +886,10 @@ VETTORE ( VE0000 )</property>
                                     <child>
                                       <object class="GtkCheckButton" id="vettore_codice_upper_check">
                                         <property name="label" translatable="yes">Trasforma il codice in MAIUSCOLO</property>
-                                        <property name="use_action_appearance">False</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">False</property>
+                                        <property name="xalign">0.5</property>
                                         <property name="draw_indicator">True</property>
                                       </object>
                                       <packing>
@@ -908,10 +920,10 @@ VETTORE ( VE0000 )</property>
                         <child>
                           <object class="GtkCheckButton" id="mercatino_check">
                             <property name="label" translatable="yes">Abilita un calcolo provvigionale in uso presso mercatini usato ( consigliato lasciare non selezionato)</property>
-                            <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">False</property>
+                            <property name="xalign">0.5</property>
                             <property name="draw_indicator">True</property>
                           </object>
                           <packing>
@@ -923,10 +935,10 @@ VETTORE ( VE0000 )</property>
                         <child>
                           <object class="GtkCheckButton" id="gestione_lotti_check">
                             <property name="label" translatable="yes">Abilita la gestione dei lotti e delle scadenze</property>
-                            <property name="use_action_appearance">False</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">False</property>
+                            <property name="xalign">0.5</property>
                             <property name="draw_indicator">True</property>
                           </object>
                           <packing>
@@ -1046,7 +1058,6 @@ VETTORE ( VE0000 )</property>
             <child>
               <object class="GtkButton" id="salva_button">
                 <property name="label">gtk-save</property>
-                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
@@ -1069,39 +1080,5 @@ VETTORE ( VE0000 )</property>
         </child>
       </object>
     </child>
-  </object>
-  <object class="GtkListStore" id="liststore1">
-    <columns>
-      <!-- column-name gchararray1 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray2 -->
-      <column type="gchararray"/>
-    </columns>
-    <data>
-      <row>
-        <col id="0" translatable="yes">ogni 5 minuti</col>
-        <col id="1">300</col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">ogni 10 minuti</col>
-        <col id="1">600</col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">ogni 15 minuti</col>
-        <col id="1">900</col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">ogni 30 minuti</col>
-        <col id="1">1800</col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">ogni ora</col>
-        <col id="1">3600</col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">Mai</col>
-        <col id="1">0</col>
-      </row>
-    </data>
   </object>
 </interface>

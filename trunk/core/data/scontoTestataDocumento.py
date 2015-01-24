@@ -23,9 +23,13 @@
 from sqlalchemy import *
 from promogest.Environment import *
 
-t_sconto_testata_documento = Table('sconto_testata_documento', params["metadata"],
-        Column('id',Integer,ForeignKey(fk_prefix+'sconto.id',onupdate="CASCADE",ondelete="CASCADE"),primary_key=True),
-        Column('id_testata_documento',Integer,ForeignKey(fk_prefix+'testata_documento.id',onupdate="CASCADE",ondelete="CASCADE")),
-        schema=params["schema"]
-        )
-t_sconto_testata_documento.create(checkfirst=True)
+try:
+    t_sconto_testata_documento=Table('sconto_testata_documento',params['metadata'],schema = params['schema'],
+                                autoload=True)
+except:
+    t_sconto_testata_documento = Table('sconto_testata_documento', params["metadata"],
+            Column('id',Integer,ForeignKey(fk_prefix+'sconto.id',onupdate="CASCADE",ondelete="CASCADE"),primary_key=True),
+            Column('id_testata_documento',Integer,ForeignKey(fk_prefix+'testata_documento.id',onupdate="CASCADE",ondelete="CASCADE")),
+            schema=params["schema"]
+            )
+    t_sconto_testata_documento.create(checkfirst=True)

@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Marella <francesco.marella@anche.no>
+#    Author: Francesco Meloni <francesco@promotux.it>
 
 #    This file is part of Promogest.
 
@@ -23,46 +24,42 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
-from promogest.dao.Dao import Dao
+from promogest.dao.Dao import Dao, Base
 
-try:
-    categoriatrasporto = Table('categoria_trasporto', params['metadata'],
+class CategoriaTrasporto(Base, Dao):
+    try:
+        __table__ = Table('categoria_trasporto', params['metadata'],
                                schema=params['schema'],
                                autoload=True)
-except:
-    categoriatrasporto = Table(
-        'categoria_trasporto',
-        params['metadata'],
-        Column('id', Integer, primary_key=True),
-        Column('denominazione', String(200)),
-        Column('quantita_massima_trasportabile', Numeric(16, 4)),
-        Column('coefficiente_moltiplicazione_virtuale', Numeric(16, 4)),
-        Column('note', Text),
-        schema=params['schema'],
-        )
+    except:
+        __table__ = Table(
+            'categoria_trasporto',
+            params['metadata'],
+            Column('id', Integer, primary_key=True),
+            Column('denominazione', String(200)),
+            Column('quantita_massima_trasportabile', Numeric(16, 4)),
+            Column('coefficiente_moltiplicazione_virtuale', Numeric(16, 4)),
+            Column('note', Text),
+            schema=params['schema'],
+            )
 
-    categoriatrasporto.create(checkfirst=True)
-
-
-class CategoriaTrasporto(Dao):
+    __mapper_args__ = {
+        'order_by' : "denominazione"
+    }
 
     def __init__(self, req=None, arg=None):
         Dao.__init__(self, entity=self)
 
     def filter_values(self, k, v):
         dic = {
-            'denominazione': categoriatrasporto.c.denominazione == v,
-            'quantita_massima_trasportabile': categoriatrasporto.c.quantita_massima_trasportabile \
+            'denominazione': CategoriaTrasporto.__table__.c.denominazione == v,
+            'quantita_massima_trasportabile': CategoriaTrasporto.__table__.c.quantita_massima_trasportabile \
                 == v,
-            'coefficiente_moltiplicazione_virtuale': categoriatrasporto.c.coefficiente_moltiplicazione_virtuale \
+            'coefficiente_moltiplicazione_virtuale': CategoriaTrasporto.__table__.c.coefficiente_moltiplicazione_virtuale \
                 == v,
-            'note': categoriatrasporto.c.note == v,
+            'note': CategoriaTrasporto.__table__.c.note == v,
             }
         return dic[k]
-
-
-std_mapper = mapper(CategoriaTrasporto, categoriatrasporto,
-                    order_by=categoriatrasporto.c.denominazione)
 
 _categorie = [
     ('0',    0, 999, ''),

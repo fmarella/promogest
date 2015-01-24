@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2014 by Promotux
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -22,29 +22,25 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
-from promogest.dao.Dao import Dao
+from promogest.dao.Dao import Dao, Base
 
-try:
-    t_utente_immagine=Table('utente_immagine',
+class UtenteImmagine(Base, Dao):
+    """ RoleAction class database functions  """
+    try:
+        __table__ = Table('utente_immagine',
                 params['metadata'],
                 schema = params['schema'],
                 autoload=True)
-except:
-    from data.utenteImmagine import t_utente_immagine
-
-
-class UtenteImmagine(Dao):
-    """ RoleAction class database functions  """
+    except:
+        from data.utenteImmagine import t_utente_immagine
+        __table__ = t_utente_immagine
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):
         if k == 'id_immagine':
-            dic = {k:t_utente_immagine.c.id_immagine == v}
+            dic = {k:UtenteImmagine.__table__.c.id_immagine == v}
         elif k == 'idUtente':
-            dic = {k:t_utente_immagine.c.id_utente == v}
+            dic = {k:UtenteImmagine.__table__.c.id_utente == v}
         return  dic[k]
-
-std_mapper = mapper(UtenteImmagine, t_utente_immagine, properties={
-                }, order_by=t_utente_immagine.c.id_immagine)

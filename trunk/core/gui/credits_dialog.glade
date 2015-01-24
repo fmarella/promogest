@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.18.3 -->
 <interface>
-  <requires lib="gtk+" version="2.16"/>
-  <!-- interface-naming-policy toplevel-contextual -->
+  <requires lib="gtk+" version="3.4"/>
   <object class="GtkDialog" id="credits_dialog">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -11,20 +11,19 @@
     <property name="window_position">center-always</property>
     <property name="icon">promogest.png</property>
     <property name="type_hint">dialog</property>
-    <signal name="destroy-event" handler="gtk_widget_destroy" swapped="no"/>
     <signal name="delete-event" handler="gtk_widget_destroy" swapped="no"/>
+    <signal name="destroy-event" handler="gtk_widget_destroy" swapped="no"/>
     <child internal-child="vbox">
-      <object class="GtkVBox" id="dialog-vbox3">
+      <object class="GtkBox" id="dialog-vbox3">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <child internal-child="action_area">
-          <object class="GtkHButtonBox" id="dialog-action_area3">
+          <object class="GtkButtonBox" id="dialog-action_area3">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="layout_style">end</property>
             <child>
               <object class="GtkButton" id="ok_button">
-                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
@@ -132,7 +131,7 @@ Software di gestione azienda open source
 ©2005- 2012 PROMOTUX S.N.C.
 
 Segnalazioni assistenza@promotux.it
-		   TEL 070 8649705
+           TEL 070 8649705
 
 http://www.promogest.me
 </property>

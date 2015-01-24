@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2013 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -19,36 +19,36 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-from sqlalchemy import Table
-from sqlalchemy.orm import mapper
-from promogest.Environment import params
-from promogest.dao.Dao import Dao
+from sqlalchemy import *
+from sqlalchemy.orm import *
+from promogest.Environment import *
+from promogest.dao.Dao import Dao, Base
 
-try:
-    t_codice_barre_articolo=Table('codice_a_barre_articolo',
+
+
+class CodiceABarreArticolo(Base, Dao):
+    try:
+        __table__ = Table('codice_a_barre_articolo',
                             params['metadata'],
                             schema = params['schema'],
-                            autoload=True)
-except:
-    from data.codiceBarreArticolo import t_codice_barre_articolo
-
-class CodiceABarreArticolo(Dao):
+                            autoload=True,
+                            autoload_with=engine)
+    except:
+        from data.codiceBarreArticolo import t_codice_barre_articolo
+        __table__ = t_codice_barre_articolo
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):
         if k == 'codice':
-            dic = {k:t_codice_barre_articolo.c.codice.ilike("%"+v+"%")}
+            dic = {k: CodiceABarreArticolo.__table__.c.codice.ilike("%"+v+"%")}
         elif k == 'codiceEM':
-            dic = {k:t_codice_barre_articolo.c.codice == v}
+            dic = {k: CodiceABarreArticolo.__table__.c.codice == v}
         elif k == 'idArticolo':
-            dic = {k:t_codice_barre_articolo.c.id_articolo == v}
+            dic = {k: CodiceABarreArticolo.__table__.c.id_articolo == v}
         elif k == 'idArticoloNone':
-            dic = {k:t_codice_barre_articolo.c.id_articolo == None}
+            dic = {k: CodiceABarreArticolo.__table__.c.id_articolo == None}
         elif k == 'primario':
-            dic = {k:t_codice_barre_articolo.c.primario ==v}
+            dic = {k: CodiceABarreArticolo.__table__.c.primario ==v}
         return  dic[k]
-
-std_mapper = mapper(CodiceABarreArticolo, t_codice_barre_articolo,
-                                        order_by=t_codice_barre_articolo.c.codice)

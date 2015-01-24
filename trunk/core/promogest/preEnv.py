@@ -30,7 +30,8 @@ provenienti dal richiamo della app wsgi o web in genere, ci saranno però
 anche i dati di connessione che passeranno ad EnvUtils ....per il momento
 non trovo altra soluzione """
 
-pg3_cla = False
+#GTK False in TRUe
+pg3_cla = True
 shop = False
 web = False
 echo = False

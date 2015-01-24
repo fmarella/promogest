@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2013 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -24,19 +24,23 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
 
-try:
-    t_listino=Table('listino', params['metadata'],schema = params['schema'],autoload=True)
-except:
-    from data.listino import t_listino
-from promogest.dao.Dao import Dao
+from promogest.dao.Dao import Dao, Base
 from promogest.dao.ListinoCategoriaCliente import ListinoCategoriaCliente
 from promogest.dao.ListinoMagazzino import ListinoMagazzino
 from promogest.dao.ListinoComplessoListino import ListinoComplessoListino
-#from promogest.lib.migrate import *
 
 
+class Listino(Base, Dao):
+    try:
+        __table__ = Table('listino', params['metadata'],schema = params['schema'],autoload=True)
+    except:
+        from data.listino import t_listino
+        __table__ = t_listino
 
-class Listino(Dao):
+    listino_categoria_cliente = relationship("ListinoCategoriaCliente", backref="listino")
+    listino_magazzino = relationship("ListinoMagazzino", backref="listino")
+    listino_complesso = relationship("ListinoComplessoListino",backref="listino")
+
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
@@ -91,8 +95,7 @@ class Listino(Dao):
     #isComplex = property(_isComplex)
 
     def _sottoListiniIDD(self):
-        """
-            Return a list of Listini ID
+        """ Return a list of Listini ID
         """
         if ListinoComplessoListino().select(idListinoComplesso=self.id):
             lista = []
@@ -146,25 +149,17 @@ class Listino(Dao):
 
     def filter_values(self,k,v):
         if k=='id' or k=='idListino':
-            dic= {k:t_listino.c.id ==v}
+            dic= {k:Listino.__table__.c.id ==v}
         elif k =='listinoAttuale':
-            dic= {k:t_listino.c.listino_attuale ==v}
+            dic= {k:Listino.__table__.c.listino_attuale ==v}
         elif k=='denominazione':
-            dic= {k:t_listino.c.denominazione.ilike("%"+v+"%")}
+            dic= {k:Listino.__table__.c.denominazione.ilike("%"+v+"%")}
         elif k=='denominazioneEM':
-            dic= {k:t_listino.c.denominazione ==v}
+            dic= {k:Listino.__table__.c.denominazione ==v}
         elif k=='dataListino':
-            dic= {k:t_listino.c.data_listino ==v}
+            dic= {k:Listino.__table__.c.data_listino ==v}
         elif k=='visibileCheck':
-            dic= {k:t_listino.c.visible ==None}
+            dic= {k:Listino.__table__.c.visible ==None}
         elif k=='visibili':
-            dic= {k:t_listino.c.visible ==v}
+            dic= {k:Listino.__table__.c.visible ==v}
         return  dic[k]
-
-
-std_mapper = mapper(Listino, t_listino, properties={
-    "listino_categoria_cliente" :relation(ListinoCategoriaCliente, backref="listino"),
-    "listino_magazzino" :relation(ListinoMagazzino, backref="listino"),
-    "listino_complesso":relation(ListinoComplessoListino,primaryjoin=
-                        ListinoComplessoListino.id_listino==t_listino.c.id, backref="listino")},
-        order_by=t_listino.c.id)

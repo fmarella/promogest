@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2014 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -22,19 +22,11 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 import datetime
-from sqlalchemy import Table
-from sqlalchemy.orm import mapper, relation
+from sqlalchemy import *
+from sqlalchemy.orm import *
 from promogest.Environment import *
 
-try:
-    t_listino_articolo=Table('listino_articolo',
-                params['metadata'],
-                schema = params['schema'],
-                autoload=True)
-except:
-    from data.listinoArticolo import t_listino_articolo
-
-from promogest.dao.Dao import Dao
+from promogest.dao.Dao import Dao, Base
 from promogest.dao.DaoUtils import *
 from promogest.dao.Listino import Listino
 from promogest.dao.Articolo import Articolo
@@ -42,7 +34,32 @@ from promogest.dao.ScontoVenditaDettaglio import ScontoVenditaDettaglio
 from promogest.dao.ScontoVenditaIngrosso import ScontoVenditaIngrosso
 from promogest.lib.utils import *
 
-class ListinoArticolo(Dao):
+class ListinoArticolo(Base, Dao):
+    try:
+        __table__ =Table('listino_articolo',
+                    params['metadata'],
+                    schema = params['schema'],
+                    autoload=True)
+    except:
+        from data.listinoArticolo import t_listino_articolo
+        __table__ = t_listino_articolo
+
+    arti = relationship("Articolo",primaryjoin=and_(
+                __table__.c.id_articolo==Articolo.id,Articolo.cancellato==False), backref=backref("listinoarticolo",cascade="all, delete"))
+    SVD = relationship("ScontoVenditaDettaglio",primaryjoin=and_(
+                __table__.c.id_listino==ScontoVenditaDettaglio.id_listino,
+                __table__.c.id_articolo==ScontoVenditaDettaglio.id_articolo,
+                __table__.c.data_listino_articolo==ScontoVenditaDettaglio.data_listino_articolo))
+    SVI = relationship("ScontoVenditaIngrosso",primaryjoin=and_(
+                __table__.c.id_listino==ScontoVenditaIngrosso.id_listino,
+                __table__.c.id_articolo==ScontoVenditaIngrosso.id_articolo,
+                __table__.c.data_listino_articolo==ScontoVenditaIngrosso.data_listino_articolo))
+    listi = relationship("Listino",primaryjoin=
+                __table__.c.id_listino==Listino.id, backref="listinoarticolo")
+
+    __mapper_args__ = {
+        'order_by' : "id_listino"
+    }
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
@@ -124,58 +141,38 @@ class ListinoArticolo(Dao):
         id_articolo_padre_taglia_colore=property(_id_articolo_padre)
         id_articolo_padre = property(_id_articolo_padre)
 
-        def _id_gruppo_taglia(self):
+        @property
+        def id_gruppo_taglia(self):
             if self.arti:return self.arti.id_gruppo_taglia
-        id_gruppo_taglia=property(_id_gruppo_taglia)
-
-        def _id_genere(self):
+        @property
+        def id_genere(self):
             if self.arti:return self.arti.id_genere
-        id_genere = property(_id_genere)
-
-        def _id_stagione(self):
+        @property
+        def id_stagione(self):
             if self.arti:return self.arti.id_stagione
-        id_stagione = property(_id_stagione)
-
-        def _id_anno(self):
+        @property
+        def id_anno(self):
             if self.arti:return self.arti.id_anno
-        id_anno = property(_id_anno)
-
-        def _denominazione_taglia(self):
-            """ esempio di funzione  unita alla property """
+        @property
+        def denominazione_taglia(self):
             if self.arti:return self.arti.denominazione_taglia
-        denominazione_taglia = property(_denominazione_taglia)
-
         @property
         def denominazione_colore(self):
-            """ esempio di funzione  unita alla property """
             if self.arti:return self.arti.denominazione_colore
-
         @property
         def denominazione_modello(self):
-            """ esempio di funzione  unita alla property """
             if self.arti:return self.arti.denominazione_modello
-
         @property
         def anno(self):
-            """ esempio di funzione  unita alla property """
             if self.arti:return self.arti.anno
-
         @property
         def stagione(self):
-            """ esempio di funzione  unita alla property """
             if self.arti:return self.arti.stagione
-
         @property
         def genere(self):
-            """ esempio di funzione  unita alla property """
             if self.arti:return self.arti.genere
 
     def _getScontiVenditaDettaglio(self):
-        #self.__dbScontiVenditaDett = params['session'].\
-                        #query(ScontoVenditaDettaglio).\
-                        #filter_by(id_listino=self.id_listino,
-                        #id_articolo=self.id_articolo,
-                        #data_listino_articolo=self.data_listino_articolo).all()
         self.__dbScontiVenditaDett = self.SVD
         self.__scontiVenditaDett= self.__dbScontiVenditaDett
         return self.__scontiVenditaDett
@@ -188,9 +185,6 @@ class ListinoArticolo(Dao):
 
     def _getApplicazioneScontiDettaglio(self):
         return "scalare"
-
-##    def _setApplicazioneScontiDettaglio(self,value):
-##        return
 
     applicazione_sconti_dettaglio = property(_getApplicazioneScontiDettaglio)
 
@@ -218,43 +212,35 @@ class ListinoArticolo(Dao):
     def sconto_vendita_dettaglio_valore(self):
         if self.sconto_vendita_dettaglio:return self.sconto_vendita_dettaglio[0].valore
         else: return ""
-
-    def _getStringaScontiDettaglio(self):
+    @property
+    def stringaScontiDettaglio(self):
         (listSconti, applicazione) = getScontiFromDao(self._getScontiVenditaDettaglio(),daoApplicazione = 'scalare')
         return getStringaSconti(listSconti)
 
-    stringaScontiDettaglio = property(_getStringaScontiDettaglio)
-
-    def _getStringaScontiIngrosso(self):
+    @property
+    def stringaScontiIngrosso(self):
         (listSconti, applicazione) = getScontiFromDao(self._getScontiVenditaIngrosso(),daoApplicazione = 'scalare')
         return getStringaSconti(listSconti)
 
-    stringaScontiIngrosso = property(_getStringaScontiIngrosso)
-
-    def _getApplicazioneScontiIngrosso(self):
+    @property
+    def applicazione_sconti_ingrosso(self):
         return "scalare"
-
-##    def _setApplicazioneScontiIngrosso(self,value):
-##        self._applicazione_sconti_ingrosso = value
-
-    applicazione_sconti_ingrosso = property(_getApplicazioneScontiIngrosso)
-
 
     def filter_values(self,k,v):
         if k=="listinoAttuale":
-            dic={ k : t_listino_articolo.c.listino_attuale ==v}
+            dic={ k : ListinoArticolo.__table__.c.listino_attuale ==v}
         elif k=="idArticolo":
-            dic= { k : t_listino_articolo.c.id_articolo==v}
+            dic= { k : ListinoArticolo.__table__.c.id_articolo==v}
         elif k=='idArticoloList':
-            dic={ k :t_listino_articolo.c.id_articolo.in_(v)}
+            dic={ k :ListinoArticolo.__table__.c.id_articolo.in_(v)}
         elif k=="idListino":
-            dic={ k: t_listino_articolo.c.id_listino==v}
+            dic={ k: ListinoArticolo.__table__.c.id_listino==v}
         elif k=="idListinoList":
-            dic={ k: t_listino_articolo.c.id_listino.in_(v)}
+            dic={ k: ListinoArticolo.__table__.c.id_listino.in_(v)}
         elif k=="dataListinoArticoloList":
-            dic={ k: t_listino_articolo.c.data_listino_articolo.in_(v)}
+            dic={ k: ListinoArticolo.__table__.c.data_listino_articolo.in_(v)}
         elif k=="dataListinoArticolo":
-            dic={ k: t_listino_articolo.c.data_listino_articolo ==v}
+            dic={ k: ListinoArticolo.__table__.c.data_listino_articolo ==v}
         return  dic[k]
 
     def scontiVenditaDettaglioDel(self, idListino=None,idArticolo=None,dataListinoArticolo=None):
@@ -332,19 +318,3 @@ class ListinoArticolo(Dao):
                 pass
 
         params["session"].commit()
-
-
-std_mapper=mapper(ListinoArticolo, t_listino_articolo, properties={
-            "arti" : relation(Articolo,primaryjoin=
-                and_(t_listino_articolo.c.id_articolo==Articolo.id,Articolo.cancellato==False), backref=backref("listinoarticolo",cascade="all, delete")),
-            "SVD": relation(ScontoVenditaDettaglio,primaryjoin=and_(
-                t_listino_articolo.c.id_listino==ScontoVenditaDettaglio.id_listino,
-                t_listino_articolo.c.id_articolo==ScontoVenditaDettaglio.id_articolo,
-                t_listino_articolo.c.data_listino_articolo==ScontoVenditaDettaglio.data_listino_articolo)),
-            "SVI": relation(ScontoVenditaIngrosso,primaryjoin=and_(
-                t_listino_articolo.c.id_listino==ScontoVenditaIngrosso.id_listino,
-                t_listino_articolo.c.id_articolo==ScontoVenditaIngrosso.id_articolo,
-                t_listino_articolo.c.data_listino_articolo==ScontoVenditaIngrosso.data_listino_articolo)),
-            "listi" : relation(Listino,primaryjoin=
-                t_listino_articolo.c.id_listino==Listino.id, backref="listinoarticolo")},
-                order_by=t_listino_articolo.c.id_listino)

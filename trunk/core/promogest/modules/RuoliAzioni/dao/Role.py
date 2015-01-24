@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2013 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -23,28 +23,31 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
-from promogest.dao.Dao import Dao
+from promogest.dao.Dao import Dao, Base
 
-
-try:
-    t_role=Table('role',params['metadata'],schema = params['mainSchema'],autoload=True)
-except:
-    from data.role import t_role
-    from data.action import t_action
-    from data.roleAction import t_roleaction
-
-class Role(Dao):
+class Role(Base, Dao):
     """
     Role class provides to make a Users dao which include more used
     database functions
     """
+    try:
+        __table__ = Table('role',params['metadata'],schema = mainSchema,autoload=True,autoload_with=engine)
+    except:
+        __table__ = Table('role', params["metadata"],
+            Column('id', Integer, primary_key=True),
+            Column('name', String(50), nullable=False),
+            Column('descrizione', String(250), nullable=False),
+            Column('id_listino', Integer),
+            Column('active', Boolean, default=0),
+            schema=params["mainSchema"]
+            )
+
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):
         if k =="idRole":
-            dic= {k : t_role.c.id == v}
+            dic= {k : Role.__table__.c.id == v}
         elif k == "name":
-            dic= { k : t_role.c.name.ilike("%"+v+"%")}
+            dic= { k : Role.__table__.c.name.ilike("%"+v+"%")}
         return  dic[k]
-std_mapper = mapper(Role, t_role, order_by=t_role.c.id)

@@ -1,8 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.18.3 -->
 <interface>
-  <requires lib="gtk+" version="2.16"/>
-  <!-- interface-requires pythonplugin 0.0 -->
-  <!-- interface-naming-policy project-wide -->
+  <requires lib="gtk+" version="3.4"/>
+  <requires lib="pythonplugin" version="0.0"/>
+  <object class="GtkLabel" id="documenti_setup_page_label">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="label" translatable="yes">DOCUMENTI</property>
+  </object>
+  <object class="GtkListStore" id="incaricato_predef_liststore">
+    <columns>
+      <!-- column-name tipo -->
+      <column type="gchararray"/>
+    </columns>
+    <data>
+      <row>
+        <col id="0" translatable="yes">destinatario</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">mittente</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">vettore</col>
+      </row>
+    </data>
+  </object>
   <object class="GtkFrame" id="_anagrafica_documenti_setup_frame">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -128,8 +150,6 @@
                         <property name="can_focus">True</property>
                         <property name="primary_icon_activatable">False</property>
                         <property name="secondary_icon_activatable">False</property>
-                        <property name="primary_icon_sensitive">True</property>
-                        <property name="secondary_icon_sensitive">True</property>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -172,8 +192,6 @@
                         <property name="can_focus">True</property>
                         <property name="primary_icon_activatable">False</property>
                         <property name="secondary_icon_activatable">False</property>
-                        <property name="primary_icon_sensitive">True</property>
-                        <property name="secondary_icon_sensitive">True</property>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -212,10 +230,10 @@
                     <child>
                       <object class="GtkRadioButton" id="codice_radio">
                         <property name="label" translatable="yes">codice</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
+                        <property name="xalign">0.5</property>
                         <property name="active">True</property>
                         <property name="draw_indicator">True</property>
                       </object>
@@ -228,10 +246,10 @@
                     <child>
                       <object class="GtkRadioButton" id="codice_a_barre_radio">
                         <property name="label" translatable="yes">codice a barre</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
+                        <property name="xalign">0.5</property>
                         <property name="active">True</property>
                         <property name="draw_indicator">True</property>
                         <property name="group">codice_radio</property>
@@ -245,10 +263,10 @@
                     <child>
                       <object class="GtkRadioButton" id="descrizione_radio">
                         <property name="label" translatable="yes">descrizione</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
+                        <property name="xalign">0.5</property>
                         <property name="active">True</property>
                         <property name="draw_indicator">True</property>
                         <property name="group">codice_radio</property>
@@ -262,10 +280,10 @@
                     <child>
                       <object class="GtkRadioButton" id="codice_articolo_fornitore_radio">
                         <property name="label" translatable="yes">codice art fornitore</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
+                        <property name="xalign">0.5</property>
                         <property name="active">True</property>
                         <property name="draw_indicator">True</property>
                         <property name="group">codice_radio</property>
@@ -294,7 +312,7 @@
                         <property name="can_focus">False</property>
                         <property name="xalign">0.10000000149011612</property>
                         <property name="label" translatable="yes">Multiriga: Numero di colonne
-per ogni riga nelle descrizioni 
+per ogni riga nelle descrizioni
 dei documenti  ( 60 )</property>
                       </object>
                       <packing>
@@ -308,11 +326,8 @@ dei documenti  ( 60 )</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="invisible_char">●</property>
-                        <property name="invisible_char_set">True</property>
                         <property name="primary_icon_activatable">False</property>
                         <property name="secondary_icon_activatable">False</property>
-                        <property name="primary_icon_sensitive">True</property>
-                        <property name="secondary_icon_sensitive">True</property>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -330,10 +345,10 @@ dei documenti  ( 60 )</property>
                 <child>
                   <object class="GtkCheckButton" id="save_new_doc_check">
                     <property name="label" translatable="yes">Prepara all'inserimento di un nuovo documento dopo il salvataggio</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
+                    <property name="xalign">0.5</property>
                     <property name="draw_indicator">True</property>
                   </object>
                   <packing>
@@ -345,10 +360,10 @@ dei documenti  ( 60 )</property>
                 <child>
                   <object class="GtkCheckButton" id="lotto_temp_check">
                     <property name="label" translatable="yes">Gestione Lotti temporanei</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
+                    <property name="xalign">0.5</property>
                     <property name="draw_indicator">True</property>
                   </object>
                   <packing>
@@ -362,10 +377,10 @@ dei documenti  ( 60 )</property>
                     <property name="label" translatable="yes">Quando si seleziona "codice a barre" come criterio di ricerca
 si può decidere di non avere il menù con i risultati incrementali
 questo rende la ricerca più veloce ed evita la pressione del tasto F3</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
+                    <property name="xalign">0.5</property>
                     <property name="draw_indicator">True</property>
                   </object>
                   <packing>
@@ -378,10 +393,10 @@ questo rende la ricerca più veloce ed evita la pressione del tasto F3</property
                   <object class="GtkCheckButton" id="add_quantita_check">
                     <property name="label" translatable="yes">Unifica Quantità nei documenti
 quanto una stessa riga prodotto è già stata inserita</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
+                    <property name="xalign">0.5</property>
                     <property name="draw_indicator">True</property>
                   </object>
                   <packing>
@@ -393,10 +408,10 @@ quanto una stessa riga prodotto è già stata inserita</property>
                 <child>
                   <object class="GtkCheckButton" id="lista_componenti_articolokit_check">
                     <property name="label" translatable="yes">Visualizza in stampa la lista dei componenti articolo kit</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
+                    <property name="xalign">0.5</property>
                     <property name="draw_indicator">True</property>
                   </object>
                   <packing>
@@ -408,10 +423,10 @@ quanto una stessa riga prodotto è già stata inserita</property>
                 <child>
                   <object class="GtkCheckButton" id="costi_ddt_riga_check">
                     <property name="label" translatable="yes">Visualizza i costi in DDT riga</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
+                    <property name="xalign">0.5</property>
                     <property name="draw_indicator">True</property>
                   </object>
                   <packing>
@@ -423,10 +438,10 @@ quanto una stessa riga prodotto è già stata inserita</property>
                 <child>
                   <object class="GtkCheckButton" id="costi_ddt_totale_check">
                     <property name="label" translatable="yes">Visualizza i costi in DDT totale</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
+                    <property name="xalign">0.5</property>
                     <property name="draw_indicator">True</property>
                   </object>
                   <packing>
@@ -485,10 +500,10 @@ quanto una stessa riga prodotto è già stata inserita</property>
                 <child>
                   <object class="GtkCheckButton" id="primo_dest_merce_check">
                     <property name="label" translatable="yes">Utilizza il primo destinatario merce tra quelli disponibili</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
+                    <property name="xalign">0.5</property>
                     <property name="draw_indicator">True</property>
                   </object>
                   <packing>
@@ -521,8 +536,6 @@ quanto una stessa riga prodotto è già stata inserita</property>
                         <property name="invisible_char">●</property>
                         <property name="primary_icon_activatable">False</property>
                         <property name="secondary_icon_activatable">False</property>
-                        <property name="primary_icon_sensitive">True</property>
-                        <property name="secondary_icon_sensitive">True</property>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -552,28 +565,6 @@ quanto una stessa riga prodotto è già stata inserita</property>
         <property name="use_markup">True</property>
       </object>
     </child>
-  </object>
-  <object class="GtkLabel" id="documenti_setup_page_label">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="label" translatable="yes">DOCUMENTI</property>
-  </object>
-  <object class="GtkListStore" id="incaricato_predef_liststore">
-    <columns>
-      <!-- column-name tipo -->
-      <column type="gchararray"/>
-    </columns>
-    <data>
-      <row>
-        <col id="0" translatable="yes">destinatario</col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">mittente</col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">vettore</col>
-      </row>
-    </data>
   </object>
   <object class="GtkListStore" id="tipo_documento_predefinito_listore">
     <columns>

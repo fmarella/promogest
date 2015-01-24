@@ -1,107 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.18.3 -->
 <interface>
-  <requires lib="gtk+" version="2.16"/>
-  <!-- interface-requires pythonplugin 0.0 -->
-  <!-- interface-naming-policy project-wide -->
-  <object class="GtkTreeView" id="anagrafica_filter_treeview">
-    <property name="visible">True</property>
-    <property name="can_focus">True</property>
-    <property name="model">rows_listore</property>
-    <property name="search_column">1</property>
-    <property name="enable_grid_lines">both</property>
-    <signal name="row-activated" handler="anagrafica_filter_treeview_row_activated_cb" swapped="no"/>
-    <child>
-      <object class="GtkTreeViewColumn" id="data_column">
-        <property name="title" translatable="yes">DATA</property>
-        <property name="clickable">True</property>
-        <child>
-          <object class="GtkCellRendererText" id="cellrenderertext1"/>
-          <attributes>
-            <attribute name="text">1</attribute>
-          </attributes>
-        </child>
-      </object>
-    </child>
-    <child>
-      <object class="GtkTreeViewColumn" id="totale_column">
-        <property name="resizable">True</property>
-        <property name="title" translatable="yes">TOTALE SCONTRINO</property>
-        <property name="clickable">True</property>
-        <child>
-          <object class="GtkCellRendererText" id="totale_cellrenderertext"/>
-          <attributes>
-            <attribute name="text">2</attribute>
-          </attributes>
-        </child>
-      </object>
-    </child>
-    <child>
-      <object class="GtkTreeViewColumn" id="contanti_column">
-        <property name="title" translatable="yes">CONTANTI</property>
-        <property name="clickable">True</property>
-        <child>
-          <object class="GtkCellRendererText" id="cellrenderertext3">
-            <property name="alignment">right</property>
-          </object>
-          <attributes>
-            <attribute name="text">3</attribute>
-          </attributes>
-        </child>
-      </object>
-    </child>
-    <child>
-      <object class="GtkTreeViewColumn" id="assegni_column">
-        <property name="title" translatable="yes">ASSEGNI</property>
-        <property name="clickable">True</property>
-        <child>
-          <object class="GtkCellRendererText" id="cellrenderertext4">
-            <property name="xalign">1</property>
-            <property name="alignment">right</property>
-          </object>
-          <attributes>
-            <attribute name="text">4</attribute>
-          </attributes>
-        </child>
-      </object>
-    </child>
-    <child>
-      <object class="GtkTreeViewColumn" id="cdicredito_column">
-        <property name="title" translatable="yes">C.DI.CRE</property>
-        <property name="clickable">True</property>
-        <child>
-          <object class="GtkCellRendererText" id="cellrenderertext5">
-            <property name="xalign">1</property>
-            <property name="alignment">right</property>
-          </object>
-          <attributes>
-            <attribute name="text">5</attribute>
-          </attributes>
-        </child>
-      </object>
-    </child>
-    <child>
-      <object class="GtkTreeViewColumn" id="treeviewcolumn6">
-        <property name="title" translatable="yes">DATA MOV</property>
-        <child>
-          <object class="GtkCellRendererText" id="cellrenderertext6"/>
-          <attributes>
-            <attribute name="text">6</attribute>
-          </attributes>
-        </child>
-      </object>
-    </child>
-    <child>
-      <object class="GtkTreeViewColumn" id="treeviewcolumn7">
-        <property name="title" translatable="yes">N° MOV</property>
-        <child>
-          <object class="GtkCellRendererText" id="cellrenderertext7"/>
-          <attributes>
-            <attribute name="text">7</attribute>
-          </attributes>
-        </child>
-      </object>
-    </child>
-  </object>
+  <requires lib="gtk+" version="3.4"/>
+  <requires lib="pythonplugin" version="0.0"/>
   <object class="GtkImage" id="image1">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -144,36 +45,50 @@
       </row>
     </data>
   </object>
-  <object class="GtkListStore" id="rows_listore">
-    <columns>
-      <!-- column-name PyObject1 -->
-      <column type="PyObject"/>
-      <!-- column-name gchararray1 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray2 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray3 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray4 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray5 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray6 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray7 -->
-      <column type="gchararray"/>
-    </columns>
-  </object>
   <object class="GtkDialog" id="scontrini_emessi">
     <property name="can_focus">False</property>
     <property name="border_width">5</property>
     <property name="title" translatable="yes">Scontrini Emessi</property>
     <property name="type_hint">normal</property>
     <child internal-child="vbox">
-      <object class="GtkVBox" id="dialog-vbox1__">
+      <object class="GtkBox" id="dialog-vbox1__">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="spacing">2</property>
+        <child internal-child="action_area">
+          <object class="GtkButtonBox" id="dialog-action_area1">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="layout_style">center</property>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="pack_type">end</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
         <child>
           <object class="GtkMenuBar" id="menubar1__">
             <property name="visible">True</property>
@@ -223,7 +138,6 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="toolbar_style">both</property>
-            <property name="icon_size_set">True</property>
             <child>
               <object class="GtkToolButton" id="distinta_button">
                 <property name="visible">True</property>
@@ -330,8 +244,6 @@
                       <object class="GtkScrolledWindow" id="detail_scrolled">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="hscrollbar_policy">automatic</property>
-                        <property name="vscrollbar_policy">automatic</property>
                         <property name="shadow_type">in</property>
                         <child>
                           <placeholder/>
@@ -376,40 +288,6 @@
             <property name="position">2</property>
           </packing>
         </child>
-        <child internal-child="action_area">
-          <object class="GtkHButtonBox" id="dialog-action_area1">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="layout_style">center</property>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">False</property>
-            <property name="pack_type">end</property>
-            <property name="position">2</property>
-          </packing>
-        </child>
         <child>
           <object class="GtkHBox" id="hbox1">
             <property name="visible">True</property>
@@ -433,8 +311,6 @@
                 <property name="can_focus">True</property>
                 <property name="primary_icon_activatable">False</property>
                 <property name="secondary_icon_activatable">False</property>
-                <property name="primary_icon_sensitive">True</property>
-                <property name="secondary_icon_sensitive">True</property>
               </object>
               <packing>
                 <property name="expand">True</property>
@@ -543,6 +419,128 @@
             <property name="fill">False</property>
             <property name="position">4</property>
           </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkListStore" id="rows_listore">
+    <columns>
+      <!-- column-name PyObject1 -->
+      <column type="PyObject"/>
+      <!-- column-name gchararray1 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray2 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray3 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray4 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray5 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray6 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray7 -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
+  <object class="GtkTreeView" id="anagrafica_filter_treeview">
+    <property name="visible">True</property>
+    <property name="can_focus">True</property>
+    <property name="model">rows_listore</property>
+    <property name="search_column">1</property>
+    <property name="enable_grid_lines">both</property>
+    <signal name="row-activated" handler="anagrafica_filter_treeview_row_activated_cb" swapped="no"/>
+    <child internal-child="selection">
+      <object class="GtkTreeSelection" id="treeview-selection1"/>
+    </child>
+    <child>
+      <object class="GtkTreeViewColumn" id="data_column">
+        <property name="title" translatable="yes">DATA</property>
+        <property name="clickable">True</property>
+        <child>
+          <object class="GtkCellRendererText" id="cellrenderertext1"/>
+          <attributes>
+            <attribute name="text">1</attribute>
+          </attributes>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkTreeViewColumn" id="totale_column">
+        <property name="resizable">True</property>
+        <property name="title" translatable="yes">TOTALE SCONTRINO</property>
+        <property name="clickable">True</property>
+        <child>
+          <object class="GtkCellRendererText" id="totale_cellrenderertext"/>
+          <attributes>
+            <attribute name="text">2</attribute>
+          </attributes>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkTreeViewColumn" id="contanti_column">
+        <property name="title" translatable="yes">CONTANTI</property>
+        <property name="clickable">True</property>
+        <child>
+          <object class="GtkCellRendererText" id="cellrenderertext3">
+            <property name="alignment">right</property>
+          </object>
+          <attributes>
+            <attribute name="text">3</attribute>
+          </attributes>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkTreeViewColumn" id="assegni_column">
+        <property name="title" translatable="yes">ASSEGNI</property>
+        <property name="clickable">True</property>
+        <child>
+          <object class="GtkCellRendererText" id="cellrenderertext4">
+            <property name="xalign">1</property>
+            <property name="alignment">right</property>
+          </object>
+          <attributes>
+            <attribute name="text">4</attribute>
+          </attributes>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkTreeViewColumn" id="cdicredito_column">
+        <property name="title" translatable="yes">C.DI.CRE</property>
+        <property name="clickable">True</property>
+        <child>
+          <object class="GtkCellRendererText" id="cellrenderertext5">
+            <property name="xalign">1</property>
+            <property name="alignment">right</property>
+          </object>
+          <attributes>
+            <attribute name="text">5</attribute>
+          </attributes>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkTreeViewColumn" id="treeviewcolumn6">
+        <property name="title" translatable="yes">DATA MOV</property>
+        <child>
+          <object class="GtkCellRendererText" id="cellrenderertext6"/>
+          <attributes>
+            <attribute name="text">6</attribute>
+          </attributes>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkTreeViewColumn" id="treeviewcolumn7">
+        <property name="title" translatable="yes">N° MOV</property>
+        <child>
+          <object class="GtkCellRendererText" id="cellrenderertext7"/>
+          <attributes>
+            <attribute name="text">7</attribute>
+          </attributes>
         </child>
       </object>
     </child>

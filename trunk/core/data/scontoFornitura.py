@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2013 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -23,10 +23,15 @@
 from sqlalchemy import *
 from promogest.Environment import *
 
-
-t_sconto_fornitura = Table('sconto_fornitura', params["metadata"],
-        Column('id',Integer,ForeignKey(fk_prefix+'sconto.id',onupdate="CASCADE",ondelete="CASCADE"),primary_key=True),
-        Column('id_fornitura',Integer,ForeignKey(fk_prefix+'fornitura.id',onupdate="CASCADE",ondelete="CASCADE")),
-        schema=params["schema"]
-        )
-t_sconto_fornitura.create(checkfirst=True)
+try:
+    t_sconto_fornitura = Table("sconto_fornitura", params["metadata"],
+                schema = params['schema'],
+            autoload=True,
+            autoload_with=engine)
+except:
+    t_sconto_fornitura = Table('sconto_fornitura', params["metadata"],
+            Column('id',Integer,ForeignKey(fk_prefix+'sconto.id',onupdate="CASCADE",ondelete="CASCADE"),primary_key=True),
+            Column('id_fornitura',Integer,ForeignKey(fk_prefix+'fornitura.id',onupdate="CASCADE",ondelete="CASCADE")),
+            schema=params["schema"]
+            )
+    t_sconto_fornitura.create(checkfirst=True)

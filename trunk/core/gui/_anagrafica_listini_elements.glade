@@ -1,12 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.18.3 -->
 <interface>
-  <requires lib="gtk+" version="2.16"/>
-  <!-- interface-requires pythonplugin 0.0 -->
-  <!-- interface-naming-policy toplevel-contextual -->
+  <requires lib="gtk+" version="3.4"/>
+  <requires lib="pythonplugin" version="0.0"/>
   <object class="GtkImage" id="add_image">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="stock">gtk-add</property>
+  </object>
+  <object class="GtkListStore" id="categorie_listore">
+    <columns>
+      <!-- column-name gint1 -->
+      <column type="gint"/>
+      <!-- column-name gchararray1 -->
+      <column type="gchararray"/>
+      <!-- column-name GdkPixbuf1 -->
+      <column type="GdkPixbuf"/>
+      <!-- column-name gchararray2 -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
+  <object class="GtkListStore" id="listino_complesso_listore">
+    <columns>
+      <!-- column-name gint1 -->
+      <column type="gint"/>
+      <!-- column-name gchararray1 -->
+      <column type="gchararray"/>
+      <!-- column-name GdkPixbuf1 -->
+      <column type="GdkPixbuf"/>
+      <!-- column-name gchararray2 -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
+  <object class="GtkListStore" id="magazzino_listore">
+    <columns>
+      <!-- column-name gint1 -->
+      <column type="gint"/>
+      <!-- column-name gchararray1 -->
+      <column type="gchararray"/>
+      <!-- column-name GdkPixbuf1 -->
+      <column type="GdkPixbuf"/>
+      <!-- column-name gchararray2 -->
+      <column type="gchararray"/>
+    </columns>
   </object>
   <object class="GtkTable" id="anagrafica_listini_detail_table">
     <property name="visible">True</property>
@@ -16,19 +52,33 @@
     <property name="n_columns">3</property>
     <property name="row_spacing">6</property>
     <child>
+      <placeholder/>
+    </child>
+    <child>
+      <placeholder/>
+    </child>
+    <child>
+      <placeholder/>
+    </child>
+    <child>
+      <placeholder/>
+    </child>
+    <child>
+      <placeholder/>
+    </child>
+    <child>
       <object class="GtkToggleButton" id="check_pricelist_togglebutton">
         <property name="visible">True</property>
         <property name="can_focus">True</property>
         <property name="receives_default">True</property>
         <property name="tooltip_text" translatable="yes">Bottone di accesso ad una
-interfaccia in cui è possibile 
+interfaccia in cui è possibile
 incrociare la presenza di articoli
-in più listini e selezionare quale listino 
-far prevalere. Utile per esempio quando 
-si usa la vendita al dettaglio ed un articoli 
+in più listini e selezionare quale listino
+far prevalere. Utile per esempio quando
+si usa la vendita al dettaglio ed un articoli
 può essere presente in più listini e si deve decidere
 quale usare per la vendita</property>
-        <property name="use_action_appearance">False</property>
         <signal name="toggled" handler="on_check_pricelist_togglebutton_toggled" swapped="no"/>
         <child>
           <object class="GtkAlignment" id="alignment4">
@@ -76,7 +126,7 @@ quale usare per la vendita</property>
         <property name="right_attach">2</property>
         <property name="top_attach">12</property>
         <property name="bottom_attach">13</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
       </packing>
     </child>
     <child>
@@ -91,10 +141,9 @@ quale usare per la vendita</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
-            <property name="tooltip_text" translatable="yes">Aggiunge un listino alla composizione 
-del listino complesso: ES: il listino vendita dettaglio 
+            <property name="tooltip_text" translatable="yes">Aggiunge un listino alla composizione
+del listino complesso: ES: il listino vendita dettaglio
 può essere composto da cinque o sei listini distinti</property>
-            <property name="use_action_appearance">False</property>
             <property name="use_stock">True</property>
             <signal name="clicked" handler="on_add_row_listino_complesso_button_clicked" swapped="no"/>
           </object>
@@ -112,7 +161,6 @@ può essere composto da cinque o sei listini distinti</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="tooltip_text" translatable="yes">Rimuove un listino associato</property>
-            <property name="use_action_appearance">False</property>
             <property name="use_stock">True</property>
             <signal name="clicked" handler="on_delete_row_listino_complesso_button_clicked" swapped="no"/>
           </object>
@@ -129,9 +177,8 @@ può essere composto da cinque o sei listini distinti</property>
             <property name="sensitive">False</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
-            <property name="tooltip_text" translatable="yes">Riporta la situazione dei listini 
+            <property name="tooltip_text" translatable="yes">Riporta la situazione dei listini
 associati all'inizio</property>
-            <property name="use_action_appearance">False</property>
             <property name="use_stock">True</property>
             <signal name="clicked" handler="on_undelete_row_listino_complesso_button_clicked" swapped="no"/>
           </object>
@@ -148,7 +195,7 @@ associati all'inizio</property>
         <property name="top_attach">14</property>
         <property name="bottom_attach">15</property>
         <property name="x_options">GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
       </packing>
     </child>
     <child>
@@ -162,7 +209,7 @@ associati all'inizio</property>
         <property name="top_attach">14</property>
         <property name="bottom_attach">15</property>
         <property name="x_options">GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
         <property name="x_padding">10</property>
       </packing>
     </child>
@@ -170,8 +217,6 @@ associati all'inizio</property>
       <object class="GtkScrolledWindow" id="scrolledwindow1">
         <property name="visible">True</property>
         <property name="can_focus">True</property>
-        <property name="hscrollbar_policy">automatic</property>
-        <property name="vscrollbar_policy">automatic</property>
         <property name="shadow_type">in</property>
         <child>
           <object class="GtkTreeView" id="listino_complesso_treeview">
@@ -180,6 +225,9 @@ associati all'inizio</property>
             <property name="model">listino_complesso_listore</property>
             <property name="enable_grid_lines">both</property>
             <signal name="cursor-changed" handler="on_listino_complesso_treeview_cursor_changed" swapped="no"/>
+            <child internal-child="selection">
+              <object class="GtkTreeSelection" id="treeview-selection1"/>
+            </child>
             <child>
               <object class="GtkTreeViewColumn" id="treeviewcolumn4">
                 <property name="title" translatable="yes">Listino Associato</property>
@@ -223,7 +271,7 @@ associati all'inizio</property>
         <property name="top_attach">12</property>
         <property name="bottom_attach">13</property>
         <property name="x_options">GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
         <property name="x_padding">10</property>
       </packing>
     </child>
@@ -244,8 +292,6 @@ associati all'inizio</property>
       <object class="GtkScrolledWindow" id="scrolledwindow16">
         <property name="visible">True</property>
         <property name="can_focus">True</property>
-        <property name="hscrollbar_policy">automatic</property>
-        <property name="vscrollbar_policy">automatic</property>
         <property name="shadow_type">in</property>
         <child>
           <object class="GtkTreeView" id="categorie_treeview">
@@ -254,6 +300,9 @@ associati all'inizio</property>
             <property name="model">categorie_listore</property>
             <property name="enable_grid_lines">both</property>
             <signal name="cursor-changed" handler="on_categorie_treeview_cursor_changed" swapped="no"/>
+            <child internal-child="selection">
+              <object class="GtkTreeSelection" id="treeview-selection2"/>
+            </child>
             <child>
               <object class="GtkTreeViewColumn" id="categoria_column">
                 <property name="title" translatable="yes">Categoria</property>
@@ -290,19 +339,17 @@ associati all'inizio</property>
       <object class="GtkEntry" id="denominazione_entry">
         <property name="visible">True</property>
         <property name="can_focus">True</property>
-        <property name="tooltip_text" translatable="yes">Inserire la denominazione 
+        <property name="tooltip_text" translatable="yes">Inserire la denominazione
 del listino</property>
         <property name="invisible_char">●</property>
         <property name="primary_icon_activatable">False</property>
         <property name="secondary_icon_activatable">False</property>
-        <property name="primary_icon_sensitive">True</property>
-        <property name="secondary_icon_sensitive">True</property>
       </object>
       <packing>
         <property name="left_attach">1</property>
         <property name="right_attach">2</property>
         <property name="x_options">GTK_SHRINK | GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
       </packing>
     </child>
     <child>
@@ -328,7 +375,7 @@ del listino </property>
         <property name="top_attach">2</property>
         <property name="bottom_attach">3</property>
         <property name="x_options">GTK_SHRINK | GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
       </packing>
     </child>
     <child>
@@ -342,10 +389,9 @@ del listino </property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
-            <property name="tooltip_text" translatable="yes">Usare questo pulsante per accedere 
-alla finestra di inserimento articoli 
+            <property name="tooltip_text" translatable="yes">Usare questo pulsante per accedere
+alla finestra di inserimento articoli
 nel listino articolo appena creato</property>
-            <property name="use_action_appearance">False</property>
             <signal name="clicked" handler="on_listini_articoli_togglebutton_clicked" swapped="no"/>
             <child>
               <object class="GtkAlignment" id="alignment177">
@@ -395,7 +441,7 @@ nel listino articolo appena creato</property>
         <property name="left_attach">2</property>
         <property name="right_attach">3</property>
         <property name="x_options">GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
       </packing>
     </child>
     <child>
@@ -410,9 +456,8 @@ nel listino articolo appena creato</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
-            <property name="tooltip_text" translatable="yes">Aggiungi un magazzino 
+            <property name="tooltip_text" translatable="yes">Aggiungi un magazzino
 associato</property>
-            <property name="use_action_appearance">False</property>
             <property name="use_stock">True</property>
             <signal name="clicked" handler="on_add_row_magazzino_button_clicked" swapped="no"/>
           </object>
@@ -429,9 +474,8 @@ associato</property>
             <property name="sensitive">False</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
-            <property name="tooltip_text" translatable="yes">Elimina un Magazzino 
+            <property name="tooltip_text" translatable="yes">Elimina un Magazzino
 associato </property>
-            <property name="use_action_appearance">False</property>
             <property name="use_stock">True</property>
             <signal name="clicked" handler="on_delete_row_magazzino_button_clicked" swapped="no"/>
           </object>
@@ -448,9 +492,8 @@ associato </property>
             <property name="sensitive">False</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
-            <property name="tooltip_text" translatable="yes">Riporta la situazione 
+            <property name="tooltip_text" translatable="yes">Riporta la situazione
 dei magazzini associati all'inizio</property>
-            <property name="use_action_appearance">False</property>
             <property name="use_stock">True</property>
             <signal name="clicked" handler="on_undelete_row_magazzino_button_clicked" swapped="no"/>
           </object>
@@ -467,7 +510,7 @@ dei magazzini associati all'inizio</property>
         <property name="top_attach">10</property>
         <property name="bottom_attach">11</property>
         <property name="x_options">GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
       </packing>
     </child>
     <child>
@@ -482,11 +525,10 @@ dei magazzini associati all'inizio</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
-            <property name="tooltip_text" translatable="yes">Aggiungi abbinamento ad una categoria 
+            <property name="tooltip_text" translatable="yes">Aggiungi abbinamento ad una categoria
 cliente. Se il cliente è inserito in quella categoria
-si troverà preselezionato il listino durante 
+si troverà preselezionato il listino durante
 la creazione di un movimento o di un documento</property>
-            <property name="use_action_appearance">False</property>
             <property name="use_stock">True</property>
             <signal name="clicked" handler="on_add_row_categoria_button_clicked" swapped="no"/>
           </object>
@@ -504,7 +546,6 @@ la creazione di un movimento o di un documento</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="tooltip_text" translatable="yes">Rimuovi associazione cliente </property>
-            <property name="use_action_appearance">False</property>
             <property name="use_stock">True</property>
             <signal name="clicked" handler="on_delete_row_categoria_button_clicked" swapped="no"/>
           </object>
@@ -521,7 +562,6 @@ la creazione di un movimento o di un documento</property>
             <property name="sensitive">False</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
-            <property name="use_action_appearance">False</property>
             <property name="use_stock">True</property>
             <signal name="clicked" handler="on_undelete_row_categoria_button_clicked" swapped="no"/>
           </object>
@@ -538,7 +578,7 @@ la creazione di un movimento o di un documento</property>
         <property name="top_attach">6</property>
         <property name="bottom_attach">7</property>
         <property name="x_options">GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
       </packing>
     </child>
     <child>
@@ -553,7 +593,7 @@ la creazione di un movimento o di un documento</property>
         <property name="top_attach">2</property>
         <property name="bottom_attach">3</property>
         <property name="x_options">GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
         <property name="x_padding">10</property>
       </packing>
     </child>
@@ -567,7 +607,7 @@ la creazione di un movimento o di un documento</property>
       </object>
       <packing>
         <property name="x_options">GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
         <property name="x_padding">10</property>
       </packing>
     </child>
@@ -575,14 +615,12 @@ la creazione di un movimento o di un documento</property>
       <object class="GtkEntry" id="descrizione_entry">
         <property name="visible">True</property>
         <property name="can_focus">True</property>
-        <property name="tooltip_text" translatable="yes">Inserire la descrizione 
-dettagliata del listino 
+        <property name="tooltip_text" translatable="yes">Inserire la descrizione
+dettagliata del listino
 400 caratteri a disposizione</property>
         <property name="invisible_char">●</property>
         <property name="primary_icon_activatable">False</property>
         <property name="secondary_icon_activatable">False</property>
-        <property name="primary_icon_sensitive">True</property>
-        <property name="secondary_icon_sensitive">True</property>
       </object>
       <packing>
         <property name="left_attach">1</property>
@@ -590,7 +628,7 @@ dettagliata del listino
         <property name="top_attach">1</property>
         <property name="bottom_attach">2</property>
         <property name="x_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
       </packing>
     </child>
     <child>
@@ -604,7 +642,7 @@ dettagliata del listino
         <property name="top_attach">10</property>
         <property name="bottom_attach">11</property>
         <property name="x_options">GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
         <property name="x_padding">10</property>
       </packing>
     </child>
@@ -612,8 +650,6 @@ dettagliata del listino
       <object class="GtkScrolledWindow" id="scrolledwindow17">
         <property name="visible">True</property>
         <property name="can_focus">True</property>
-        <property name="hscrollbar_policy">automatic</property>
-        <property name="vscrollbar_policy">automatic</property>
         <property name="shadow_type">in</property>
         <child>
           <object class="GtkTreeView" id="magazzini_treeview">
@@ -622,6 +658,9 @@ dettagliata del listino
             <property name="model">magazzino_listore</property>
             <property name="enable_grid_lines">both</property>
             <signal name="cursor-changed" handler="on_magazzini_treeview_cursor_changed" swapped="no"/>
+            <child internal-child="selection">
+              <object class="GtkTreeSelection" id="treeview-selection3"/>
+            </child>
             <child>
               <object class="GtkTreeViewColumn" id="treeviewcolumn1">
                 <property name="title" translatable="yes">Magazzino</property>
@@ -665,7 +704,7 @@ dettagliata del listino
         <property name="top_attach">8</property>
         <property name="bottom_attach">9</property>
         <property name="x_options">GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
         <property name="x_padding">10</property>
       </packing>
     </child>
@@ -680,7 +719,7 @@ dettagliata del listino
         <property name="top_attach">6</property>
         <property name="bottom_attach">7</property>
         <property name="x_options">GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
         <property name="x_padding">10</property>
       </packing>
     </child>
@@ -695,7 +734,7 @@ dettagliata del listino
         <property name="top_attach">4</property>
         <property name="bottom_attach">5</property>
         <property name="x_options">GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
         <property name="x_padding">10</property>
       </packing>
     </child>
@@ -711,7 +750,7 @@ dettagliata del listino
         <property name="top_attach">1</property>
         <property name="bottom_attach">2</property>
         <property name="x_options">GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
         <property name="x_padding">10</property>
       </packing>
     </child>
@@ -745,13 +784,13 @@ dettagliata del listino
       <object class="CustomComboBoxModify" id="id_categoria_cliente_customcombobox">
         <property name="visible">True</property>
         <property name="can_focus">True</property>
-        <property name="tooltip_text" translatable="yes">Combo di aggiunta di una categoria 
-cliente da associare al listino come 
-preferenziale 
-Se il cliente sarà abbinato alla stessa categoria 
-avrà automaticamente quel listino preselezionato 
+        <property name="tooltip_text" translatable="yes">Combo di aggiunta di una categoria
+cliente da associare al listino come
+preferenziale
+Se il cliente sarà abbinato alla stessa categoria
+avrà automaticamente quel listino preselezionato
 nei documenti. Se non aveste la categoria cliente
-che volete potete aggiungerla premendo nel piccolo 
+che volete potete aggiungerla premendo nel piccolo
 pulsante di fianco</property>
       </object>
       <packing>
@@ -759,7 +798,7 @@ pulsante di fianco</property>
         <property name="right_attach">2</property>
         <property name="top_attach">6</property>
         <property name="bottom_attach">7</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
       </packing>
     </child>
     <child>
@@ -768,7 +807,7 @@ pulsante di fianco</property>
         <property name="can_focus">True</property>
         <property name="tooltip_text" translatable="yes">Selezionare un Magazzino
 Usare il piccolo pulsante di fianco
-per inserirne uno nuovo 
+per inserirne uno nuovo
 </property>
       </object>
       <packing>
@@ -776,7 +815,7 @@ per inserirne uno nuovo
         <property name="right_attach">2</property>
         <property name="top_attach">10</property>
         <property name="bottom_attach">11</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
       </packing>
     </child>
     <child>
@@ -790,7 +829,7 @@ per inserirne uno nuovo
         <property name="right_attach">2</property>
         <property name="top_attach">14</property>
         <property name="bottom_attach">15</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
       </packing>
     </child>
     <child>
@@ -806,7 +845,6 @@ per inserirne uno nuovo
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
-            <property name="use_action_appearance">False</property>
             <signal name="toggled" handler="on_variazioni_togglebutton_toggled" swapped="no"/>
           </object>
           <packing>
@@ -821,7 +859,7 @@ per inserirne uno nuovo
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">False</property>
-            <property name="use_action_appearance">False</property>
+            <property name="xalign">0.5</property>
             <property name="draw_indicator">True</property>
           </object>
           <packing>
@@ -838,60 +876,9 @@ per inserirne uno nuovo
         <property name="top_attach">2</property>
         <property name="bottom_attach">3</property>
         <property name="x_options">GTK_FILL</property>
-        <property name="y_options"></property>
+        <property name="y_options"/>
       </packing>
     </child>
-    <child>
-      <placeholder/>
-    </child>
-    <child>
-      <placeholder/>
-    </child>
-    <child>
-      <placeholder/>
-    </child>
-    <child>
-      <placeholder/>
-    </child>
-    <child>
-      <placeholder/>
-    </child>
-  </object>
-  <object class="GtkListStore" id="categorie_listore">
-    <columns>
-      <!-- column-name gint1 -->
-      <column type="gint"/>
-      <!-- column-name gchararray1 -->
-      <column type="gchararray"/>
-      <!-- column-name GdkPixbuf1 -->
-      <column type="GdkPixbuf"/>
-      <!-- column-name gchararray2 -->
-      <column type="gchararray"/>
-    </columns>
-  </object>
-  <object class="GtkListStore" id="listino_complesso_listore">
-    <columns>
-      <!-- column-name gint1 -->
-      <column type="gint"/>
-      <!-- column-name gchararray1 -->
-      <column type="gchararray"/>
-      <!-- column-name GdkPixbuf1 -->
-      <column type="GdkPixbuf"/>
-      <!-- column-name gchararray2 -->
-      <column type="gchararray"/>
-    </columns>
-  </object>
-  <object class="GtkListStore" id="magazzino_listore">
-    <columns>
-      <!-- column-name gint1 -->
-      <column type="gint"/>
-      <!-- column-name gchararray1 -->
-      <column type="gchararray"/>
-      <!-- column-name GdkPixbuf1 -->
-      <column type="GdkPixbuf"/>
-      <!-- column-name gchararray2 -->
-      <column type="gchararray"/>
-    </columns>
   </object>
   <object class="GtkImage" id="remove_image">
     <property name="visible">True</property>

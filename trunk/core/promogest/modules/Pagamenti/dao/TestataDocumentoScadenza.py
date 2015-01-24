@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012
-#    by Promotux di Francesco Meloni snc - http://www.promotux.it/
+# Copyright (C) 2005-2015 by Promotux
+# di Francesco Meloni snc - http://www.promotux.it/
 
-#    Author: Francesco Meloni <francesco@promotux.it>
-#    Author: Francesco Marella <francesco.marella@anche.no>
+# Author: Francesco Meloni <francesco@promotux.it>
 
 #    This file is part of Promogest.
 
@@ -23,7 +22,6 @@
 
 from sqlalchemy import *
 from sqlalchemy.orm import *
-#from promogest.lib.migrate import *
 from promogest.Environment import *
 
 try:
@@ -34,10 +32,27 @@ try:
 except:
     from data.testataDocumentoScadenza import t_testata_documento_scadenza
 
-from promogest.dao.Dao import Dao
-from promogest.dao.DaoUtils import get_columns
+from promogest.dao.Dao import Dao, Base
 
-class TestataDocumentoScadenza(Dao):
+class TestataDocumentoScadenza(Dao, Base):
+    try:
+        __table__ = Table('testata_documento_scadenza',
+                  params['metadata'],
+                  schema=params['schema'],
+                  autoload=True)
+    except:
+        __table__  = Table('testata_documento_scadenza', params["metadata"],
+        Column('id', Integer, primary_key=True),
+        Column('id_testata_documento', Integer,ForeignKey(fk_prefix+'testata_documento.id',onupdate="CASCADE",ondelete="CASCADE"), nullable=False),
+        Column('data',DateTime, nullable=False),
+        Column('id_banca', Integer, nullable=True),
+        Column('importo', Numeric(16,4),nullable=False),
+        Column('pagamento',String(100),nullable=False),
+        Column('note_per_primanota', String(400),nullable=True),
+        Column('data_pagamento',DateTime,nullable=True),
+        Column('numero_scadenza', Integer, nullable=False),
+        schema=params["schema"]
+        )
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
@@ -59,8 +74,3 @@ class TestataDocumentoScadenza(Dao):
 #if "note_per_primanota" not in colonne:
     #col = Column('note_per_primanota', String(400), nullable=True)
     #col.create(tesdocsca)
-
-std_mapper = mapper(TestataDocumentoScadenza,
-                    t_testata_documento_scadenza,
-                    properties={},
-                    order_by=t_testata_documento_scadenza.c.id)

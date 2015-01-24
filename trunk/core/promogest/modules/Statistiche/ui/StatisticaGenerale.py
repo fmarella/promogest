@@ -112,8 +112,9 @@ class StatisticaGenerale(GladeWidget):
 
         renderer = gtk.CellRendererText()
         renderer.set_property('editable', False)
-        renderer.set_data('column', 0)
-        renderer.set_data('max_length', 200)
+        #GTK3
+        #renderer.set_data('column', 0)
+        #renderer.set_data('max_length', 200)
         column = gtk.TreeViewColumn('Descrizione', renderer, text=2)
         column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
