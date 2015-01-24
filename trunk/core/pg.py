@@ -44,8 +44,8 @@ if pysvn:
                 dialoggg = gtk.MessageDialog(None,
                             gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
                             gtk.MESSAGE_ERROR,
-                            gtk.RESPONSE_CANCEL)
-                dialoggg.set_markup("Attezione!\n Il promogest è passato alla versione 3 per cui non è più possibile effettuare gli aggiornamenti.\n Su windows è possibile scaricare dal sito la nuova versione.\n Su linux il passaggio dovrebbe essere trasparente\nChi avesse acquistato l'assistenza potrà contattarci usando i soliti canali\n\n RIPORTO IL CODICE AL VECCHIO PROMOGEST2")
+                            gtk.RESPONSE_OK)
+                dialoggg.set_text("Attezione!\n Il promogest è passato alla versione 3 per cui non è più possibile effettuare gli aggiornamenti.\n Su windows è possibile scaricare dal sito la nuova versione.\n Su linux il passaggio dovrebbe essere trasparente\nChi avesse acquistato l'assistenza potrà contattarci usando i soliti canali\n\n RIPORTO IL CODICE AL VECCHIO PROMOGEST2 e RIAVVIO")
                 response = dialoggg.run()
                 dialoggg.destroy()
                 client = pysvn.Client()
