@@ -101,6 +101,8 @@
     </data>
   </object>
   <object class="GtkWindow" id="anagrafica_complessa_window">
+    <property name="width_request">800</property>
+    <property name="height_request">600</property>
     <property name="can_focus">False</property>
     <property name="margin_left">2</property>
     <property name="margin_right">2</property>
@@ -108,10 +110,9 @@
     <property name="margin_bottom">2</property>
     <property name="hexpand">True</property>
     <property name="vexpand">True</property>
+    <property name="border_width">2</property>
     <property name="title" translatable="yes">Anagrafica</property>
     <property name="modal">True</property>
-    <property name="default_width">801</property>
-    <property name="default_height">601</property>
     <property name="icon">promogest.png</property>
     <property name="gravity">center</property>
     <signal name="delete-event" handler="on_anagrafica_window_close" swapped="no"/>

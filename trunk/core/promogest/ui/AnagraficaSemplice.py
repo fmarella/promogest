@@ -42,7 +42,7 @@ class Anagrafica(GladeWidget):
                             path=path)
         Environment.windowGroup.append(self.anagrafica_semplice_window)
         self.anagrafica_semplice_window.set_title(windowTitle)
-        self.record_menu.get_child().set_label(recordMenuLabel)
+        self.record_menu.set_label(recordMenuLabel)
 
         self.bodyWidget = FilterWidget(owner=self, filtersElement=filterElement)
         #self.anagrafica_scrolledwindow.add(self.bodyWidget.getTopLevel())

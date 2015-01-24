@@ -198,252 +198,316 @@
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <child>
-          <object class="GtkMenuBar" id="main_menubar">
+          <object class="GtkBox" id="box3">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <child>
-              <object class="GtkMenuItem" id="file_menu">
+              <object class="GtkMenuBar" id="main_menubar">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">_Azienda</property>
-                <property name="use_underline">True</property>
-                <child type="submenu">
-                  <object class="GtkMenu" id="menu1">
+                <child>
+                  <object class="GtkMenuItem" id="file_menu">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <child>
-                      <object class="GtkMenuItem" id="dati_azienda">
+                    <property name="label" translatable="yes">_Azienda</property>
+                    <property name="use_underline">True</property>
+                    <child type="submenu">
+                      <object class="GtkMenu" id="menu1">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="tooltip_text" translatable="yes">i dati della azienda</property>
-                        <property name="label" translatable="yes">Dati Azienda</property>
-                        <property name="use_underline">True</property>
-                        <signal name="activate" handler="on_dati_azienda_activate" swapped="no"/>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkMenuItem" id="configurazione_menu">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">Preferenze</property>
-                        <property name="use_underline">True</property>
-                        <signal name="activate" handler="on_configurazione_menu_activate" swapped="no"/>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkSeparatorMenuItem" id="separatormenuitem1">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkMenuItem" id="disconnetti_menuitem">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">Disconnetti</property>
-                        <property name="use_underline">True</property>
-                        <signal name="activate" handler="on_disconnect" swapped="no"/>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkMenuItem" id="esci_menuitem">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">Esci</property>
-                        <property name="use_underline">True</property>
-                        <signal name="activate" handler="on_quit" swapped="no"/>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-              </object>
-            </child>
-            <child>
-              <object class="GtkMenuItem" id="strumenti_menu">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">_Strumenti</property>
-                <property name="use_underline">True</property>
-                <child type="submenu">
-                  <object class="GtkMenu" id="opzioni_menu_menu">
-                    <property name="can_focus">False</property>
-                    <child>
-                      <object class="GtkMenuItem" id="aggiorna">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="tooltip_text" translatable="yes">Clicca qui per aggiornare il promogest ( solo sistemi linux)</property>
-                        <property name="label" translatable="yes">Aggiorna</property>
-                        <property name="use_underline">True</property>
-                        <signal name="activate" handler="on_aggiorna_activate" swapped="no"/>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkMenuItem" id="sincro_db">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">_Sincronizzazione DB</property>
-                        <property name="use_underline">True</property>
-                        <child type="submenu">
-                          <object class="GtkMenu" id="sincro_db_menu">
+                        <child>
+                          <object class="GtkMenuItem" id="dati_azienda">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <child>
-                              <object class="GtkMenuItem" id="master_sincro_db">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="label" translatable="yes">server</property>
-                                <property name="use_underline">True</property>
-                                <signal name="activate" handler="on_master_sincro_db_activate" swapped="no"/>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="GtkMenuItem" id="client_sincro_db">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="label" translatable="yes">client</property>
-                                <property name="use_underline">True</property>
-                                <signal name="activate" handler="on_client_sincro_db_activate" swapped="no"/>
-                              </object>
-                            </child>
+                            <property name="tooltip_text" translatable="yes">i dati della azienda</property>
+                            <property name="label" translatable="yes">Dati Azienda</property>
+                            <property name="use_underline">True</property>
+                            <signal name="activate" handler="on_dati_azienda_activate" swapped="no"/>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkMenuItem" id="configurazione_menu">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="label" translatable="yes">Preferenze</property>
+                            <property name="use_underline">True</property>
+                            <signal name="activate" handler="on_configurazione_menu_activate" swapped="no"/>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkSeparatorMenuItem" id="separatormenuitem1">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkMenuItem" id="disconnetti_menuitem">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="label" translatable="yes">Disconnetti</property>
+                            <property name="use_underline">True</property>
+                            <signal name="activate" handler="on_disconnect" swapped="no"/>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkMenuItem" id="esci_menuitem">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="label" translatable="yes">Esci</property>
+                            <property name="use_underline">True</property>
+                            <signal name="activate" handler="on_quit" swapped="no"/>
                           </object>
                         </child>
                       </object>
                     </child>
-                    <child>
-                      <object class="GtkMenuItem" id="Back-Up Database">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="tooltip_text" translatable="yes">Se il Client è nello stesso pc del database è possibile effettuare una copia di sicurezza del database</property>
-                        <property name="label" translatable="yes">Backup DB</property>
-                        <property name="use_underline">True</property>
-                        <signal name="activate" handler="on_Back_up_Database_activate" swapped="no"/>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkMenuItem" id="inserimento_codice">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">Inserimento codice</property>
-                        <property name="use_underline">True</property>
-                        <signal name="activate" handler="on_inserimento_codice_activate" swapped="no"/>
-                      </object>
-                    </child>
                   </object>
                 </child>
-              </object>
-            </child>
-            <child>
-              <object class="GtkMenuItem" id="statistiche">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Statistiche</property>
-                <property name="use_underline">True</property>
-                <child type="submenu">
-                  <object class="GtkMenu" id="statistiche_menu">
+                <child>
+                  <object class="GtkMenuItem" id="strumenti_menu">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <child>
-                      <object class="GtkMenuItem" id="ricerca_lotto_menuitem">
-                        <property name="visible">True</property>
+                    <property name="label" translatable="yes">_Strumenti</property>
+                    <property name="use_underline">True</property>
+                    <child type="submenu">
+                      <object class="GtkMenu" id="opzioni_menu_menu">
                         <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">Tracciabilità lotti</property>
-                        <property name="use_underline">True</property>
-                        <signal name="activate" handler="on_ricerca_lotto_menuitem_activate" swapped="no"/>
+                        <child>
+                          <object class="GtkMenuItem" id="aggiorna">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="tooltip_text" translatable="yes">Clicca qui per aggiornare il promogest ( solo sistemi linux)</property>
+                            <property name="label" translatable="yes">Aggiorna</property>
+                            <property name="use_underline">True</property>
+                            <signal name="activate" handler="on_aggiorna_activate" swapped="no"/>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkMenuItem" id="sincro_db">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="label" translatable="yes">_Sincronizzazione DB</property>
+                            <property name="use_underline">True</property>
+                            <child type="submenu">
+                              <object class="GtkMenu" id="sincro_db_menu">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <child>
+                                  <object class="GtkMenuItem" id="master_sincro_db">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="label" translatable="yes">server</property>
+                                    <property name="use_underline">True</property>
+                                    <signal name="activate" handler="on_master_sincro_db_activate" swapped="no"/>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="GtkMenuItem" id="client_sincro_db">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="label" translatable="yes">client</property>
+                                    <property name="use_underline">True</property>
+                                    <signal name="activate" handler="on_client_sincro_db_activate" swapped="no"/>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkMenuItem" id="Back-Up Database">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="tooltip_text" translatable="yes">Se il Client è nello stesso pc del database è possibile effettuare una copia di sicurezza del database</property>
+                            <property name="label" translatable="yes">Backup DB</property>
+                            <property name="use_underline">True</property>
+                            <signal name="activate" handler="on_Back_up_Database_activate" swapped="no"/>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkMenuItem" id="inserimento_codice">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="label" translatable="yes">Inserimento codice</property>
+                            <property name="use_underline">True</property>
+                            <signal name="activate" handler="on_inserimento_codice_activate" swapped="no"/>
+                          </object>
+                        </child>
                       </object>
                     </child>
-                    <child>
-                      <object class="GtkMenuItem" id="ricmedio">
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkMenuItem" id="statistiche">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">Statistiche</property>
+                    <property name="use_underline">True</property>
+                    <child type="submenu">
+                      <object class="GtkMenu" id="statistiche_menu">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">Statistiche e Report</property>
-                        <property name="use_underline">True</property>
-                        <signal name="activate" handler="on_ricmedio_activate" swapped="no"/>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkMenuItem" id="export_magazzino">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="tooltip_text" translatable="yes">Esport una CSV abbastanza
+                        <child>
+                          <object class="GtkMenuItem" id="ricerca_lotto_menuitem">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="label" translatable="yes">Tracciabilità lotti</property>
+                            <property name="use_underline">True</property>
+                            <signal name="activate" handler="on_ricerca_lotto_menuitem_activate" swapped="no"/>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkMenuItem" id="ricmedio">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="label" translatable="yes">Statistiche e Report</property>
+                            <property name="use_underline">True</property>
+                            <signal name="activate" handler="on_ricmedio_activate" swapped="no"/>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkMenuItem" id="export_magazzino">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="tooltip_text" translatable="yes">Esport una CSV abbastanza
 generico del magazzino
 articoli per un certo </property>
-                        <property name="label" translatable="yes">Export magazzino</property>
-                        <property name="use_underline">True</property>
-                        <signal name="activate" handler="on_export_magazzino_activate" swapped="no"/>
+                            <property name="label" translatable="yes">Export magazzino</property>
+                            <property name="use_underline">True</property>
+                            <signal name="activate" handler="on_export_magazzino_activate" swapped="no"/>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkMenuItem" id="aiuto_menu">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">A_iuto</property>
+                    <property name="use_underline">True</property>
+                    <child type="submenu">
+                      <object class="GtkMenu" id="aiuto_menu_menu">
+                        <property name="can_focus">False</property>
+                        <child>
+                          <object class="GtkMenuItem" id="send_Email">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                            <property name="tooltip_text" translatable="yes">Permette di spedire una email all'asitenza con  segnalazioni bug, consigli, critiche.</property>
+                            <property name="label" translatable="yes">Spedisci email Assistenza</property>
+                            <property name="use_underline">True</property>
+                            <signal name="activate" handler="on_send_Email_activate" swapped="no"/>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkMenuItem" id="credits_menu">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="label" translatable="yes">Credits</property>
+                            <property name="use_underline">True</property>
+                            <signal name="activate" handler="on_credits_menu_activate" swapped="no"/>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkMenuItem" id="licenza_menu">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="label" translatable="yes">Licenza</property>
+                            <property name="use_underline">True</property>
+                            <signal name="activate" handler="on_licenza_menu_activate" swapped="no"/>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkMenuItem" id="seriale_menu">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="label" translatable="yes">Codice installazione...</property>
+                            <property name="use_underline">True</property>
+                            <signal name="activate" handler="on_seriale_menu_activate" swapped="no"/>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkMenuItem" id="manuale_online">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="label" translatable="yes">Manuale online</property>
+                            <property name="use_underline">True</property>
+                            <signal name="activate" handler="on_manuale_online_activate" swapped="no"/>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkMenuItem" id="menuitem1">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="label" translatable="yes">Registrati sul sito</property>
+                            <property name="use_underline">True</property>
+                            <signal name="activate-item" handler="on_registrati_button_clicked" swapped="no"/>
+                          </object>
+                        </child>
                       </object>
                     </child>
                   </object>
                 </child>
               </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
             </child>
             <child>
-              <object class="GtkMenuItem" id="aiuto_menu">
+              <object class="GtkButton" id="button_quit">
+                <property name="label">gtk-quit</property>
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">A_iuto</property>
-                <property name="use_underline">True</property>
-                <child type="submenu">
-                  <object class="GtkMenu" id="aiuto_menu_menu">
+                <property name="can_focus">True</property>
+                <property name="can_default">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_stock">True</property>
+                <signal name="clicked" handler="on_quit" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="pack_type">end</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="aggiorna_button">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <signal name="clicked" handler="on_aggiorna_activate" swapped="no"/>
+                <child>
+                  <object class="GtkImage" id="active_img">
+                    <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <child>
-                      <object class="GtkMenuItem" id="send_Email">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                        <property name="tooltip_text" translatable="yes">Permette di spedire una email all'asitenza con  segnalazioni bug, consigli, critiche.</property>
-                        <property name="label" translatable="yes">Spedisci email Assistenza</property>
-                        <property name="use_underline">True</property>
-                        <signal name="activate" handler="on_send_Email_activate" swapped="no"/>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkMenuItem" id="credits_menu">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">Credits</property>
-                        <property name="use_underline">True</property>
-                        <signal name="activate" handler="on_credits_menu_activate" swapped="no"/>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkMenuItem" id="licenza_menu">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">Licenza</property>
-                        <property name="use_underline">True</property>
-                        <signal name="activate" handler="on_licenza_menu_activate" swapped="no"/>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkMenuItem" id="seriale_menu">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">Codice installazione...</property>
-                        <property name="use_underline">True</property>
-                        <signal name="activate" handler="on_seriale_menu_activate" swapped="no"/>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkMenuItem" id="manuale_online">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">Manuale online</property>
-                        <property name="use_underline">True</property>
-                        <signal name="activate" handler="on_manuale_online_activate" swapped="no"/>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkMenuItem" id="menuitem1">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">Registrati sul sito</property>
-                        <property name="use_underline">True</property>
-                        <signal name="activate-item" handler="on_registrati_button_clicked" swapped="no"/>
-                      </object>
-                    </child>
+                    <property name="pixbuf">active_on.png</property>
                   </object>
                 </child>
               </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="pack_type">end</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="welcome_label">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="xalign">0</property>
+                <property name="label" translatable="yes">Benvenuto</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="padding">7</property>
+                <property name="pack_type">end</property>
+                <property name="position">3</property>
+              </packing>
             </child>
           </object>
           <packing>
@@ -473,28 +537,10 @@ articoli per un certo </property>
               </packing>
             </child>
             <child>
-              <object class="GtkButton" id="button_quit">
-                <property name="label">gtk-quit</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="can_default">True</property>
-                <property name="receives_default">True</property>
-                <property name="use_stock">True</property>
-                <signal name="clicked" handler="on_quit" swapped="no"/>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
-                <property name="pack_type">end</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
               <object class="GtkButton" id="button_disconnect">
                 <property name="label">gtk-disconnect</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="can_default">True</property>
+                <property name="sensitive">False</property>
+                <property name="can_focus">False</property>
                 <property name="receives_default">True</property>
                 <property name="use_stock">True</property>
                 <signal name="clicked" handler="on_disconnect" swapped="no"/>
@@ -507,17 +553,10 @@ articoli per un certo </property>
               </packing>
             </child>
             <child>
-              <object class="GtkLabel" id="welcome_label">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="xalign">0</property>
-                <property name="label" translatable="yes">Benvenuto</property>
-              </object>
-              <packing>
-                <property name="expand">True</property>
-                <property name="fill">True</property>
-                <property name="position">2</property>
-              </packing>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
             </child>
             <child>
               <object class="GtkButton" id="upgrade_iva_button">
@@ -592,25 +631,7 @@ per gli articoli secondo una logica di articoli principali
               </packing>
             </child>
             <child>
-              <object class="GtkButton" id="aggiorna_button">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="relief">half</property>
-                <signal name="clicked" handler="on_aggiorna_activate" swapped="no"/>
-                <child>
-                  <object class="GtkImage" id="active_img">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="pixbuf">active_on.png</property>
-                  </object>
-                </child>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
-                <property name="position">8</property>
-              </packing>
+              <placeholder/>
             </child>
           </object>
           <packing>
@@ -647,7 +668,7 @@ per gli articoli secondo una logica di articoli principali
               </object>
               <packing>
                 <property name="expand">False</property>
-                <property name="fill">True</property>
+                <property name="fill">False</property>
                 <property name="position">0</property>
               </packing>
             </child>
@@ -661,11 +682,9 @@ per gli articoli secondo una logica di articoli principali
                 <signal name="select-page" handler="on_main_notebook_select_page" swapped="no"/>
                 <signal name="switch-page" handler="on_main_notebook_switch_page" swapped="no"/>
                 <child>
-                  <object class="GtkHBox" id="hbox16">
-                    <property name="width_request">680</property>
+                  <object class="GtkBox" id="box4">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="spacing">5</property>
                     <child>
                       <object class="GtkBox" id="box1">
                         <property name="visible">True</property>
@@ -687,8 +706,8 @@ degli Articoli in uso nel gestionale</property>
                             <signal name="clicked" handler="on_articoli_button_clicked" swapped="no"/>
                           </object>
                           <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">False</property>
+                            <property name="expand">True</property>
+                            <property name="fill">True</property>
                             <property name="position">0</property>
                           </packing>
                         </child>
@@ -707,8 +726,8 @@ che come persona giuridica</property>
                             <signal name="clicked" handler="on_clienti_button_clicked" swapped="no"/>
                           </object>
                           <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">False</property>
+                            <property name="expand">True</property>
+                            <property name="fill">True</property>
                             <property name="position">1</property>
                           </packing>
                         </child>
@@ -723,8 +742,8 @@ che come persona giuridica</property>
                             <signal name="clicked" handler="on_fornitori_button_clicked" swapped="no"/>
                           </object>
                           <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">False</property>
+                            <property name="expand">True</property>
+                            <property name="fill">True</property>
                             <property name="position">2</property>
                           </packing>
                         </child>
@@ -739,8 +758,8 @@ che come persona giuridica</property>
                             <signal name="clicked" handler="on_vettori_button_clicked" swapped="no"/>
                           </object>
                           <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">False</property>
+                            <property name="expand">True</property>
+                            <property name="fill">True</property>
                             <property name="position">3</property>
                           </packing>
                         </child>
@@ -805,8 +824,8 @@ che come persona giuridica</property>
                             <signal name="toggled" handler="on_apri_anag_secondarie_toggle_toggled" swapped="no"/>
                           </object>
                           <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">False</property>
+                            <property name="expand">True</property>
+                            <property name="fill">True</property>
                             <property name="position">6</property>
                           </packing>
                         </child>
@@ -818,13 +837,25 @@ che come persona giuridica</property>
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkVBox" id="anagrafiche_moduli_vbox">
+                      <object class="GtkBox" id="anagrafiche_moduli_vbox">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="border_width">6</property>
-                        <property name="spacing">10</property>
+                        <property name="orientation">vertical</property>
                         <child>
                           <placeholder/>
+                        </child>
+                        <child>
+                          <object class="GtkImage" id="image11">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="pixbuf">logo_promotux_piccolo.png</property>
+                          </object>
+                          <packing>
+                            <property name="expand">True</property>
+                            <property name="fill">True</property>
+                            <property name="pack_type">end</property>
+                            <property name="position">10</property>
+                          </packing>
                         </child>
                       </object>
                       <packing>
@@ -836,35 +867,12 @@ che come persona giuridica</property>
                   </object>
                 </child>
                 <child type="tab">
-                  <object class="GtkHBox" id="hbox17">
+                  <object class="GtkLabel" id="label5">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <child>
-                      <object class="GtkImage" id="anagrafiche_image">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="pixbuf">anagrafica16X16.png</property>
-                      </object>
-                      <packing>
-                        <property name="expand">True</property>
-                        <property name="fill">True</property>
-                        <property name="position">0</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel" id="label5">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="xpad">2</property>
-                        <property name="label" translatable="yes">&lt;b&gt;ANAGRAFICHE&lt;/b&gt;</property>
-                        <property name="use_markup">True</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">False</property>
-                        <property name="position">1</property>
-                      </packing>
-                    </child>
+                    <property name="xpad">2</property>
+                    <property name="label" translatable="yes">&lt;b&gt;ANAGRAFICHE&lt;/b&gt;</property>
+                    <property name="use_markup">True</property>
                   </object>
                   <packing>
                     <property name="tab_fill">False</property>
@@ -1584,35 +1592,12 @@ che come persona giuridica</property>
                   </packing>
                 </child>
                 <child type="tab">
-                  <object class="GtkHBox" id="hbox8">
+                  <object class="GtkLabel" id="parametri_label">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <child>
-                      <object class="GtkImage" id="image11">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="pixbuf">parametri16X16.png</property>
-                      </object>
-                      <packing>
-                        <property name="expand">True</property>
-                        <property name="fill">True</property>
-                        <property name="position">0</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel" id="parametri_label">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="xpad">2</property>
-                        <property name="label" translatable="yes">&lt;b&gt;PARAMETRI&lt;/b&gt;</property>
-                        <property name="use_markup">True</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">False</property>
-                        <property name="position">1</property>
-                      </packing>
-                    </child>
+                    <property name="xpad">2</property>
+                    <property name="label" translatable="yes">&lt;b&gt;PARAMETRI&lt;/b&gt;</property>
+                    <property name="use_markup">True</property>
                   </object>
                   <packing>
                     <property name="position">1</property>

@@ -189,8 +189,8 @@ class Main(GladeWidget):
                                    #self.on_main_iconview_select, model)
 
         self.main_iconview.set_columns(1)
-        self.main_iconview.set_item_width(95)
-        self.main_iconview.set_size_request(115, -1)
+        self.main_iconview.set_item_width(65)
+        self.main_iconview.set_size_request(95, -1)
 
         if self.currentFrame is None:
 #            self.main_hbox.remove(self.box_immagini_iniziali)
@@ -248,114 +248,6 @@ class Main(GladeWidget):
             Environment.params["session"].commit()
         #pulizia_lottotemp()
 
-
-    def on_upgrade_iva_button_clicked(self, button):
-        from promogest.dao.Setconf import SetConf
-        kbb = SetConf().select(key="upgrade_iva_22", section="Articoli")
-        if kbb and kbb[0].value=="True":
-            messageInfo(msg="ATTENIONE, L'aggiornamento risuta già fatto\n si consiglia di richiudere la finestra di dialogo ")
-        fillComboboxAliquoteIva(self.iva_upgrade_combobox.combobox)
-        self.iva_upgrade_combobox.show_all()
-        self.crea_iva_radio.set_active(True)
-        self.upgrade_iva.show()
-        #self.upgrade_iva.destroy()
-
-    def on_esegui_upgrade_iva_button_clicked(self, button):
-        from promogest.dao.AliquotaIva import AliquotaIva
-        from promogest.dao.Articolo import Articolo
-        from promogest.dao.Setconf import SetConf
-        if self.scegli_iva_radio.get_active():
-            if not findIdFromCombobox(self.iva_upgrade_combobox.combobox):
-                messageError(msg= _("Selezionare l'aliquota al 22% dal menù a tendina!"))
-                return
-            else:
-                idAli = findIdFromCombobox(self.iva_upgrade_combobox.combobox)
-                ali = AliquotaIva().getRecord(id=idAli)
-                if ali.percentuale != 22:
-                    messageError(msg="ATTENZIONE, aliquota diversa da 22%")
-                    return
-
-        else:
-            ali = AliquotaIva().select(percentuale=22,idTipo=1)
-            if ali:
-                messageError(msg="Aliquota iva al 22% già presente, uso quella")
-                idAli = ali[0].id
-            else:
-                a = AliquotaIva()
-                a.denominazione = "Aliquota IVA 22%"
-                a.denominazione_breve = "22%"
-                a.id_tipo = 1
-                a.percentuale = 22
-                a.persist()
-                idAli = a.id
-
-        vecchiaIva = AliquotaIva().select(percentuale=21,idTipo=1)
-        vecchiaIdIva = None
-        if not vecchiaIva:
-            messageError(msg="NON RIESCO A TROVARE UNA ALIQUOTA IVA AL 21 NEL SISTEMA")
-            return
-        else:
-            if len(vecchiaIva) >1:
-                messageInfo(msg= "PIÙ DI UNA IVA AL 21% PRESENTE \n contattare l'assistenza")
-                return
-            else:
-                vecchiaIdIva = vecchiaIva[0].id
-        arti = Articolo().select(idAliquotaIva=vecchiaIdIva, batchSize=None)
-        if not arti:
-            messageInfo(msg="Nessun articolo con iva al 21% trovato")
-            kbb = SetConf().select(key="upgrade_iva_22", section="Articoli")
-            if not kbb:
-                kbb = SetConf()
-                kbb.key = "upgrade_iva_22"
-                kbb.value ="True"
-                kbb.section = "Articoli"
-                kbb.tipo_section = "Generico"
-                kbb.description = "upgrade_iva_22%"
-                kbb.active = True
-                kbb.tipo = "bool"
-                kbb.date = datetime.now()
-                kbb.persist()
-            else:
-                kbb[0].value="True"
-                kbb[0].persist()
-        else:
-            for a in arti:
-                a.id_aliquota_iva = idAli
-                Environment.session.add(a)
-            Environment.session.commit()
-            messageInfo(msg="PROCESSO TERMINATO!")
-            kbb = SetConf().select(key="upgrade_iva_22", section="Articoli")
-            if not kbb:
-                kbb = SetConf()
-                kbb.key = "upgrade_iva_22"
-                kbb.value ="True"
-                kbb.section = "Articoli"
-                kbb.tipo_section = "Generico"
-                kbb.description = "upgrade_iva_22%"
-                kbb.active = True
-                kbb.tipo = "bool"
-                kbb.date = datetime.now()
-                kbb.persist()
-            else:
-                kbb[0].value="True"
-                kbb[0].persist()
-
-    def on_scegli_iva_radio_toggled(self, radioButton):
-        if radioButton.get_active():
-            print "CREA"
-            self.iva_upgrade_combobox.set_sensitive(True)
-        else:
-            print "SELEZIONA"
-            self.iva_upgrade_combobox.set_sensitive(False)
-
-    def on_upgrade_iva_chiudi_button_clicked(self, button):
-        #print " MA INSMMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
-        self.upgrade_iva.hide()
-        #self.show()
-
-
-
-
    # ATTENZIONE: Tutto il codice di cambio IVA è stato spostato in __init__.py
 
     def updates(self):
@@ -408,17 +300,10 @@ class Main(GladeWidget):
         selected = icon_view.get_selected_items()
         if len(selected) == 0:
             return
-        if Environment.pg3:
-            i = selected[0]
-        else:
-            i = selected[0][0]
+        i = selected[0]
         selection = self.iconview_listore[i][0]
 
         if selection == 3:
-            #self.currentFrame = self.create_registrazioni_frame()
-            # Andrea
-            # richiamo diretto dei documenti: evita di dover premere il
-            # pulsante nel frame registrazioni
             if not hasAction(actionID=2):
                 return
             from promogest.ui.anagDocumenti.AnagraficaDocumenti import AnagraficaDocumenti
@@ -452,10 +337,7 @@ class Main(GladeWidget):
             return
 
         else:
-            if Environment.pg3:
-                i = selected[0]
-            else:
-                i = selected[0][0]
+            i = selected[0][0]
             selection = self.iconview_listore[i][0]
             module = self.iconview_listore[i][3]
 
@@ -476,7 +358,7 @@ class Main(GladeWidget):
 
     def setModulesButtons(self):
         for module in self.anagrafiche_modules.iteritems():
-            module_button = gtk.Button()
+            module_button = gtk.Button(gtk.Justification.FILL)
             module_butt_image = gtk.Image()
             module_butt_image.set_from_file(module[1]['guiDir']+'/'+module[1]['module'].VIEW_TYPE[2])
             module_button.set_image(module_butt_image)
