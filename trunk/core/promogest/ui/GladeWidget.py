@@ -132,17 +132,8 @@ class GladeWidget(SimpleGladeApp):
 
 
     def on_button_press_event(self, widget, event):
-        #if event.button == 1:
-            #print "left click"
-        #elif event.button == 2:
-            #print "middle click"
-        #elif event.button == 3:
-            #print "right click"
-
-        # was it a multiple click?
         if event.type == GDK_EVENTTYPE_BUTTON_PRESS:
             pass
-            #print "single click"
         elif event.type == GDK_EVENTTYPE_2BUTTON_PRESS:
             testo = widget.get_text()
             if testo.isupper():
@@ -150,12 +141,10 @@ class GladeWidget(SimpleGladeApp):
             else:
                 uppertext = testo.upper()
             widget.set_text(uppertext)
-            #print "double click"
         elif event.type == GDK_EVENTTYPE_3BUTTON_PRESS:
             testo = widget.get_text()
             capitalizetext = testo.capitalize()
             widget.set_text(capitalizetext)
-            #print "triple click. ouch, you hurt your user."
 
 
     def on_icon_press(self,entry,position,event):

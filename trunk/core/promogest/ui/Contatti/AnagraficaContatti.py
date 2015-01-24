@@ -54,7 +54,6 @@ class AnagraficaContatti(Anagrafica):
                                              (ownerKey is not None)):
             self._ownerKey = ownerKey
             self._ownerType = ownerType
-        print " VEDIAMO SE SONO PIENE QUESTE VARIABILI", self._ownerKey,self._ownerType
 
         Anagrafica.__init__(self,
                             windowTitle='Promogest - Anagrafica contatti',
@@ -344,7 +343,6 @@ class AnagraficaContattiFilter(AnagraficaFilter):
             #CONTATTO GENERICO
             self.generico_filter_radiobutton.set_active(True)
 #            appartenenza = prepareFilterString(self.appartenenza_filter_entry.get_text())
-#            print "APPPPPPPPPPARTENENDZA",appartenenza
             def filterCountClosure():
                 return Contatto().count(cognomeNome=cognomeNome,
                                         ruolo=ruolo,
@@ -843,7 +841,6 @@ class AnagraficaContattiEdit(AnagraficaEdit):
 
 
     def on_radiobutton_toggled(self, widget=None):
-        print " TOGGLEEEEEEEEEEEEEEEEEEEEEEEEED"
         if self.dao.id is not None:
             if self.dao.tipo_contatto == 'cliente':
                 self.cliente_radiobutton.set_active(True)

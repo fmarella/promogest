@@ -190,13 +190,11 @@ class AbbinamentoPersonaGiuridica(GladeWidget):
             p.delete()
         # QUI cancello i vecchi prima salvare di nuovo
         for m in self.abbinamento_righe_pg_listore:
-            print "ABBI", m, m[0].id
             a = PersonaGiuridicaPersonaGiuridica()
             a.id_persona_giuridica = self._dao_pg
             a.id_persona_giuridica_abbinata = m[0].id
             a.persist()
         for m in self.riferimento_righe_pg_listore:
-            print "RIFFE", m, m[0].id
             a = PersonaGiuridicaPersonaGiuridica()
             a.id_persona_giuridica = m[0].id
             a.id_persona_giuridica_abbinata = self._dao_pg

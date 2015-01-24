@@ -330,7 +330,8 @@ class Articolo(Base, Dao):
         articoloTagliaColore = property(getArticoloTagliaColore,
                                                 setArticoloTagliaColore)
 
-        def getArticoliTagliaColore(self, idGruppoTaglia=None, idTaglia=None,
+        @property
+        def articoliTagliaColore(self, idGruppoTaglia=None, idTaglia=None,
                                                     idColore=None, order=None):
             """ Restituisce una lista di Dao ArticoloTagliaColore
                 figli del Dao Articolo """
@@ -367,10 +368,8 @@ class Articolo(Base, Dao):
                         batchSize=None,
                         orderBy=orderBy)
             except:
-                #print "FOR DEBUG ONLY getArticoliTagliaColore FAILED"
                 pass
             return articoli
-        articoliTagliaColore = property(getArticoliTagliaColore)
 
         def _getArticoliVarianti(self, order=None):
             """ Restituisce una lista di Dao Articolo Varianti """

@@ -62,8 +62,13 @@ class ArticoloTagliaColore(Base, Dao):
         'order_by' : "id_taglia"
     }
 
+
+
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
+
+    def __repr__(self):
+        return '<ArticoloTagliaColore ID={0}>'.format(self.id_articolo)
 
     #@property
     #def gruppoTaglia(self):

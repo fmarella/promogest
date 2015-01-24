@@ -103,15 +103,13 @@ def articleTypeGuiManage(anagrafica, dao, new):
     gtkgui = anagrafica
     if articleType(dao) == "son":
         gtkgui.memo_wear.set_text("""ARTICOLO VARIANTE TAGLIA E COLORE""")
-
         # niente possibilita' di variare gruppo taglie, genere, anno e stagione
         gtkgui.con_taglie_colori_radiobutton.set_active(True)
         gtkgui.con_taglie_colori_radiobutton.set_sensitive(True)
         #gtkgui.on_con_taglie_colori_radiobutton_toggled(gtk.RadioButton())
         gtkgui.codici_a_barre_togglebutton.set_sensitive(True)
         gtkgui.taglie_colori_togglebutton.set_sensitive(False)
-        gtkgui.varianti_taglia_colore_label.set_sensitive(False)
-
+        #gtkgui.varianti_taglia_colore_label.set_sensitive(False)
         findComboboxRowFromId(gtkgui.id_gruppo_taglia_customcombobox.combobox, gtkgui.dao.id_gruppo_taglia)
         gtkgui.id_gruppo_taglia_customcombobox.set_property('visible', False)
         gtkgui.denominazione_gruppo_taglia_label.set_markup(
@@ -129,7 +127,6 @@ def articleTypeGuiManage(anagrafica, dao, new):
         gtkgui.denominazione_modello_label.set_markup(
                 '<span weight="bold">%s</span>' % (dao.denominazione_modello,))
         gtkgui.denominazione_modello_label.set_property('visible', True)
-
         findComboboxRowFromId(gtkgui.id_stagione_combobox, dao.id_stagione)
         gtkgui.id_stagione_combobox.set_property('visible', False)
         gtkgui.denominazione_stagione_anno_label.set_markup(
@@ -171,7 +168,6 @@ def articleTypeGuiManage(anagrafica, dao, new):
         #gtkgui.id_categoria_articolo_customcombobox.set_sensitive(False)
         gtkgui.id_unita_base_combobox.set_sensitive(False)
         gtkgui.produttore_comboboxentry.set_sensitive(False)
-
     elif articleType(dao) == "father":
         """ Articolo principale in quando id_articolo_padre è vuoto
             possibilita' di inserire gruppo taglia, genere, anno, stagione """
@@ -269,8 +265,6 @@ def articleTypeGuiManage(anagrafica, dao, new):
     else:
         messageError(msg="ATTENZIONE LA TIPOLOGIA DI ARTICOLO NON E' CONTEMPLATA",
                      transient=None)
-        return
-
 
 def clear(anaarti):
     fillComboboxGruppiTaglia(anaarti.id_gruppo_taglia_articolo_filter_combobox, True)

@@ -47,7 +47,6 @@ std_mapper = mapper(MisuraPezzo, misurapezzo, properties={
 
 #if hasattr(conf, "SuMisura") and getattr(conf.SuMisura,'mod_enable') == "yes":
     ##from promogest.modules.SuMisura.data.SuMisuraDb import *
-    ##print "CI PASSIIIIIIIIIIIIIIIIIIIIIIIIII"
     #from promogest.modules.SuMisura.dao.MisuraPezzo import MisuraPezzo
     #std_mapper.add_property("sumi",relation(MisuraPezzo,primaryjoin=
                     #MisuraPezzo.id_riga==riga.c.id,

@@ -39,7 +39,6 @@ def listino_articolo_table(soup=None, op=None, dao=None,rowLocale=None, row=None
             d = Environment.params["session"].query(ListinoArticolo).get((row.id_articolo,row.id_listino,row.data_listino_articolo))
         else:
             d = ListinoArticolo().getRecord(id=loads(row.object))
-        print "DDDDDDDDD", d
         if not d:
             d = ListinoArticolo()
             d.id_listino = record.id_listino

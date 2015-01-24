@@ -92,7 +92,6 @@ class Ricerca(GladeWidget):
         self.ricerca_window.hide()
         if self.ricerca_window in Environment.windowGroup:
             Environment.windowGroup.remove(self.ricerca_window)
-        print " SEI TU"
 
 
     def on_filter_treeview_cursor_changed(self, treeview):

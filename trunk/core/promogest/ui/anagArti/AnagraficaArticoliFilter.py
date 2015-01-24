@@ -31,7 +31,6 @@ from promogest.ui.anagArti.AnagraficaArticoliEdit import AnagraficaArticoliEdit
 import promogest.dao.Articolo
 from promogest.dao.Articolo import Articolo
 import promogest.dao.Fornitura
-
 from promogest.lib.utils import *
 from promogest.ui.utilsCombobox import *
 if posso("PW"):

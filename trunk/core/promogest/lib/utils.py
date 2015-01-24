@@ -72,7 +72,6 @@ def articleType(dao):
     @type dao: object
     """
     if dao and posso("PW"):
-        print " CREDO SIA TUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU", dao.id, dao.id_articolo_taglia_colore, dao.id_articolo_padre, dao.articoliTagliaColore
         if (dao.id) and (dao.id_articolo_taglia_colore is not None) and \
             (dao.id_articolo_padre is None) and (dao.articoliTagliaColore):
             print "ARTICOLO FATHER"
@@ -94,7 +93,6 @@ def articleType(dao):
             return "new"
         else:
             print " NON E' NESSUN TIPO DI ARTICOLO????"
-
 
 def leggiArticolo(id, full=False, idFornitore=False, data=None):
     """

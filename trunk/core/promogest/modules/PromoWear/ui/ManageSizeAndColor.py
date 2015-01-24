@@ -230,7 +230,6 @@ class ManageSizeAndColor(GladeWidget):
         self.discount_entry.set_text(str(self.formatSconti(self.articoloPadreDict['valori'])))
 
         varianti = self.articoloPadreDict["varianti"]
-#        print varianti
 
         for var in varianti:
             quantita =""
@@ -387,7 +386,6 @@ class ManageSizeAndColor(GladeWidget):
             row[3] = quantitagenerale
 
     def on_price_entry_focus_out_event(self, entry, widget):
-#        print "OPERAZIONEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE", self.TipoOperazione
         prezzogenerale = self.price_entry.get_text()
         for row in self._treeViewModel:
             if self.TipoOperazione == "acquisto":
@@ -460,17 +458,9 @@ class ManageSizeAndColor(GladeWidget):
         e li rimanda direttamente alla treeview principale di anagraficadocumentiedit
         TODO: Gestione delle quantità per ognuno delle variantiList
         """
-#        if self.TipoOperazione == "acquisto":
-#            print "PASSI QUIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII"
-#            self.articoloPadreDict['valori']['prezzoLordo']=self.price_entry.get_text()
-#        else:
-#            if self._fonteValore == "vendita_iva":
-#                self.articoloPadreDict['valori']['prezzoDettaglio']=self.price_entry.get_text()
-#            elif self._fonteValore == "vendita_senza_iva":
-#                self.articoloPadreDict['valori']['prezzoIngrosso']=self.price_entry.get_text()
+
         resultList= []
         for row in self._treeViewModel:
-#            print "ROOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO", row, row[0], row[1], row[2], row[3], row[4], row[5],row[6]
             if "quantita" in row[0]:
                 if row[0]['quantita'] == "0" or row[0]['quantita'] == "":
                     continue

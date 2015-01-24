@@ -124,13 +124,7 @@ class PersonaGiuridicaSearchWidget(CustomComboBoxSearch):
         elif self._type == 'fornitore':
             res = leggiFornitore(id)
         denominazione = res["ragioneSociale"] or (res["nome"] + ' ' + res["cognome"])
-        #if denominazione == '':
-            #denominazione = res["nome"] + ' ' + res["cognome"]
         combobox.refresh(id, denominazione, res, clear, filter)
-        #self.set_text(denominazione)
-        #print "IDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD", id
-        #self._id = id
-        #self.set_text(denominazione)
         self._container = res
 
 

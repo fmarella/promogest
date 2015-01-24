@@ -26,17 +26,17 @@ from datetime import datetime
 from promogest.ui.gtk_compat import *
 from threading import Timer
 from promogest.lib import feedparser
-try:
-    if Environment.pg3:
-        from gi.repository.WebKit import WebView
-        from gi.repository.WebKit import WebSettings
-    else:
-        from webkit import WebView
-        from webkit import WebSettings
-    WEBKIT = True
-except:
-    import gtkhtml2
-    WEBKIT = False
+#try:
+    #if Environment.pg3:
+from gi.repository.WebKit import WebView
+from gi.repository.WebKit import WebSettings
+    #else:
+        #from webkit import WebView
+        #from webkit import WebSettings
+WEBKIT = True
+#except:
+    #import gtkhtml2
+    #WEBKIT = False
 #from HtmlTextView import HtmlTextView
 import urllib2
 import webbrowser
@@ -159,7 +159,7 @@ def renderPage(feedToHtml):
             "objects" :feedToHtml,
             }
     html = renderTemplate(pageData)
-    renderHTML(Environment.htmlwidget,html)
+    renderHTML(Environment.htmlwidget,html.decode("utf-8"))
 
 def getfeedFromSite():
     string = ""
@@ -289,37 +289,37 @@ def _on_html_link_clicked(url, link):
         gobject.idle_add(linkOpen, link)
     return True
 
-if not WEBKIT:
-    """ gtkhtml23"""
-    document = gtkhtml2.Document()
-    document.connect('request_url', _on_html_request_url)
-    document.connect('link_clicked', _on_html_link_clicked)
+#if not WEBKIT:
+    #""" gtkhtml23"""
+    #document = gtkhtml2.Document()
+    #document.connect('request_url', _on_html_request_url)
+    #document.connect('link_clicked', _on_html_link_clicked)
 
 def renderHTMLTemplate(pageData):
     return renderTemplate(pageData)
 
 def renderHTML(widget, html):
 
-    if WEBKIT:
-        try:
-            c = WebSettings()
-            c.set_property('user-agent', None)
-            c.set_property("minimum_font_size", 8)
-            c.set_property("javascript-can-open-windows-automatically", True)
-            c.set_property("default-encoding", "Utf-8")
-            c.set_property("enable-file-access-from-file-uris", True)
-            c.set_property("enable-universal-access-from-file-uris", True)
-            c.set_property( "enable-site-specific-quirks", True)
+    #if WEBKIT:
+    try:
+        c = WebSettings()
+        c.set_property('user-agent', None)
+        c.set_property("minimum_font_size", 8)
+        c.set_property("javascript-can-open-windows-automatically", True)
+        c.set_property("default-encoding", "Utf-8")
+        c.set_property("enable-file-access-from-file-uris", True)
+        c.set_property("enable-universal-access-from-file-uris", True)
+        c.set_property( "enable-site-specific-quirks", True)
 
-            widget.set_settings(c)
-        except:
-            print " VERSIONE DI WEBKIT NON AGGIORNATA... KARMIC?"
-        #widget.load_string( html,"text/html", "UTF-8","file:///"+sys.path[0]+os.sep)
-        # quella qui sopra è la versione compatibile da usare in futuro
-        widget.load_html_string(html, "file:///"+sys.path[0]+os.sep)
-        widget.show()
-    else:
-        document.open_stream('text/html')
-        document.write_stream(html)
-        document.close_stream()
-        widget.set_document(document)
+        widget.set_settings(c)
+    except:
+        print " VERSIONE DI WEBKIT NON AGGIORNATA... KARMIC?"
+    #widget.load_string( html,"text/html", "UTF-8","file:///"+sys.path[0]+os.sep)
+    # quella qui sopra è la versione compatibile da usare in futuro
+    widget.load_html_string(html, "file:///"+sys.path[0]+os.sep)
+    widget.show()
+    #else:
+        #document.open_stream('text/html')
+        #document.write_stream(html)
+        #document.close_stream()
+        #widget.set_document(document)

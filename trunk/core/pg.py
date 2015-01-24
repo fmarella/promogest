@@ -126,7 +126,6 @@ i DAO, i filtri o tutto"""
         if options.configFile:
             from promogest.lib.config import Config
             conf = Config(options.configFile)
-            print conf.__dict__
             preEnv.user = preEnv.userforce = conf.Database.user
             preEnv.database = preEnv.dbforce = conf.Database.database
             preEnv.password = preEnv.pwdforce= conf.Database.password

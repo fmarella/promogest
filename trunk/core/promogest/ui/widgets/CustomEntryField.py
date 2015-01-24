@@ -59,7 +59,6 @@ class CustomEntryField(gtk.Entry):
     def on_icon_press(self, entry, position, event):
         if position.value_nick == "primary":
             pass
-            #print "CERCA"
         else:                            #secondary
             entry.set_text("")
             entry.grab_focus()

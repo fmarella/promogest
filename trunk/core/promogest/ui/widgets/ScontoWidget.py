@@ -57,7 +57,6 @@ class ScontoWidget(gtk.HBox):
 
     def do_key_press_event(self, widget, event):
         keyname = gdk_keyval_name(event.keyval)
-#        print "AHAHAAHAHAHAHAAHAH", keyname
         if keyname not in self.entry.acceptedKeys:
             return True
         if keyname == 'p' or keyname == 'P':
@@ -66,9 +65,6 @@ class ScontoWidget(gtk.HBox):
         elif keyname == 'v' or keyname == 'V':
             self.tipoSconto = 'valore'
             return True
-
-#    def do_focus_out_event(self, widget, entry):
-#        self.emit('focus_out_event', widget, entry)
 
     def _getTipoSconto(self):
         if self.buttonPerc.get_active():

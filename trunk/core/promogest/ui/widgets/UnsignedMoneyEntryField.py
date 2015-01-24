@@ -44,13 +44,8 @@ class UnsignedMoneyEntryField(CustomEntryField):
 
     def my_key_press_event(self, widget, event):
         keyname = gdk_keyval_name(event.keyval)
-#        print " PASSIAMO DI QUI"
         if keyname not in self.acceptedKeys:
             return True
-#        elif keyname in self.specialKeys:
-#            self.set_focus(self.getTopLevel())
-#            print " PASSIAMO DI QUI"
-#            return True
         s = self.get_text()
         # verifica che non sia gia' stato inserito un separatore decimale
         if (',' in s or '.' in s) and (keyname in self.delimiterKeys):

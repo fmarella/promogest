@@ -81,7 +81,6 @@ class CustomComboBoxSearch(gtk.Entry):
     def on_entry_key_press_event(self, widget, event=None):
         """ """
         keyname = widget.get_text().lstrip()
-        #print "KEYNAME PRINCIPALE", keyname, self._id
         if len(keyname) > 1:
             self.ricercaDao(keyname)
 
@@ -100,46 +99,21 @@ class CustomComboBoxSearch(gtk.Entry):
 
     def match_func(self, completion, key, iter, user_data=None):
         model = completion.get_model()
-        #self._id = None
-        #self._container = None
         if model[iter][2] and self.get_text().lower() in model[iter][2].lower():
-            #self._id = model[iter][1]
-            #self._container = model[iter][3]
-            #print "CONTAINER+ID", self._container, self._id
             try:
                 self.anaedit.on_id_articolo_customcombobox_changed()
             except:
                 pass
-            #print " QUANTO VIENI TRIGGATO", self.anaedit
             try:
                 self.anaedit.persona_giuridica_changed()
             except:
-                #print " TEST SU DOCUMENTI MODIFICA CLIENTE/LISTINO, poi togliere"
                 pass
             return model[iter][2]
-        #else:
-            #self._id = None
-            #self._container = None
-            #return None
 
     def on_completion_match_main(self, completion=None, model=None, iter=None):
-        #print "SEI L?ULTIMO STEPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP" , self.anaedit
-        #return
-        #self.articolo_matchato = model[iter][2]
-        #self.set_position(-1)
-        #model = self.completion.get_model()
         self._id = model[iter][1]
         self._container = model[iter][3]
-        #print " ARTICOLO MATCHATO", self._id, model[iter][2]
-        #try:
-            #self.anaedit.persona_giuridica_changed()
-        #except:
-            #print " TEST SU DOCUMENTI MODIFICA CLIENTE/LISTINO, poi togliere"
-            #pass
-        #if model[iter][2] and self.get_text().lower() in model[iter][2].lower():
-            #self.set_text(model[iter][2])
         self.set_position(-1)
-        #return model[iter][2]
 
     def set_active(self, data):
         self.set_text("")
@@ -150,7 +124,6 @@ class CustomComboBoxSearch(gtk.Entry):
         return
 
     def refresh(self, id=None, denominazione=None, container=None, clear=False, filter=True, idType=None, rowType='element'):
-        #print "SEI TU IL PROBLEMA"
         self._id = id
         self.set_text(denominazione or "")
         return
