@@ -41,6 +41,9 @@ class Fornitore(Base, Dao):
     id = column_property(t_fornitore.c.id, t_persona_giuridica.c.id)
     categoria_fornitore = relationship("CategoriaFornitore", backref="fornitore")
 
+    __mapper_args__ = {
+        'order_by' : t_persona_giuridica.c.codice
+    }
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)

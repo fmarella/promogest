@@ -84,6 +84,10 @@ class Cliente(Base, Dao):
     dm = relationship("DestinazioneMerce",cascade="all, delete")
     vl = relationship("VariazioneListino",secondary=ClienteVariazioneListino.__table__)
 
+    __mapper_args__ = {
+        'order_by' : t_persona_giuridica.c.codice
+    }
+
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
 

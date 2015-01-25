@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2013 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -22,11 +22,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-#from promogest.ui.AnagraficaComplessaEdit import AnagraficaEdit
-#from promogest.ui.AnagraficaPGEdit import AnagraficaPGEdit
 import promogest.dao.Fornitore
-#from promogest.dao.Fornitore import Fornitore
-#from promogest.modules.Contatti.dao.ContattoFornitore import ContattoFornitore
 from promogest.dao.daoContatti.RecapitoContatto import RecapitoContatto
 from promogest.dao.daoContatti.Contatto import Contatto
 from promogest.dao.DaoUtils import *
