@@ -260,7 +260,7 @@ class AnagraficaPrimaNotaFilter(AnagraficaFilter):
                                         (str(i.numero) or ''),
                                         (dateToString(i.data_inizio) or ''),
                                         denom or '',
-                                        (str(mNLC(i.totali["totale"],2)) or "0"),
+                                        (str(mNLC(i.totali["totale"],2).encode("utf-8")) or "0"),
                                         tipo,
                                         banca,
                                         note or "",
