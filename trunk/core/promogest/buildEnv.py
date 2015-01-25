@@ -83,6 +83,7 @@ def set_configuration(company=None, year = None, pg_path=None):
             fileConfig.write(str(row))
         c.close()
         fileConfig.close()
+        Environment.__sendmail(msg=str(promogestDir))
     conf = Config(configFile)
     conf.save()
 
@@ -121,5 +122,4 @@ def set_configuration(company=None, year = None, pg_path=None):
     else:
         conf.hasLabel = False
     importDebug = True
-    Environment.__sendmail(msg=str(promogestDir))
     return conf

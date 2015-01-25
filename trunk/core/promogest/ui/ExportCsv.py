@@ -57,7 +57,7 @@ class ExportCsv(GladeWidget):
         treeview.append_column(column)
         rendererSx =gtk.CellRendererText()
         column = gtk.TreeViewColumn('campo', rendererSx, text=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        #column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_resizable(True)
         column.set_expand(True)
         treeview.append_column(column)

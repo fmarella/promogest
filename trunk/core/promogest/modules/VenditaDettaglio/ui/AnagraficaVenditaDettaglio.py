@@ -868,7 +868,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
                     }
                 html = renderTemplate(pageData)
                 #renderHTML(self.detail,self.html)
-                f = str(html)
+                f = str(html.encode("utf-8"))
         #        f = "Hello <strong>World</strong>"
                 filename =Environment.tempDir + "ristampa.pdf"
                 g = file(filename, "wb")

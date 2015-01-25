@@ -237,7 +237,7 @@ class GestioneScontrini(GladeWidget):
             totnum += 1
         #self.filterss.label1.set_text("")
         stringa = """GENERALE:<b><span foreground="black" size="20000">%s</span></b> - NUM. SCONTRINI:<b><span foreground="black" size="18000">%s</span></b> TOT CARTA:<b>%s</b> - TOT ASSEGNI:<b>%s</b> - TOT CONT.:<b>%s</b> - TOT SCONTI:<b>%s</b> - """ %(mNLC(tot,2), totnum, mNLC(totccr,2), mNLC(totass,2), mNLC(totcont,2), mNLC(tot_sconti,2) )
-        self.filterss.info_label.set_markup(str(stringa))
+        self.filterss.info_label.set_markup(str(stringa.encode("utf-8")))
 
 
     def on_filter_treeview_cursor_changed(self, treeview):
@@ -528,7 +528,7 @@ class GestioneScontrini(GladeWidget):
     def on_stampa_button_clicked(self, button):
         from  xhtml2pdf import pisa
         if self.dao:
-            f = str(self.html)
+            f = str(self.html.encode("utf-8"))
     #        f = "Hello <strong>World</strong>"
             filename =Environment.tempDir + "ristampa.pdf"
             g = file(filename, "wb")

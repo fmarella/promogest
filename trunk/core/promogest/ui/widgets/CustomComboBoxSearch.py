@@ -63,10 +63,7 @@ class CustomComboBoxSearch(gtk.Entry):
 
         self.completion = gtk.EntryCompletion()
         self.completion.set_popup_single_match(True)
-        if Environment.pg3:
-            self.completion.set_match_func(self.match_func, None)
-        else:
-            self.completion.set_match_func(self.match_func)
+        self.completion.set_match_func(self.match_func, None)
         self.completion.connect('match-selected',
                          self.on_completion_match_main)
         self.completion.set_model(model)

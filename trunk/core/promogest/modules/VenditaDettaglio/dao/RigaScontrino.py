@@ -55,7 +55,7 @@ class RigaScontrino(Base, Dao):
         Dao.__init__(self, entity=self)
 
     def _getScontiRigaScontrino(self):
-        self.__dbScontiRigaScontrino = srs
+        self.__dbScontiRigaScontrino = self.srs
         if self.__dbScontiRigaScontrino:
             self.__scontiRigaScontrino = self.__dbScontiRigaScontrino[:]
         else:

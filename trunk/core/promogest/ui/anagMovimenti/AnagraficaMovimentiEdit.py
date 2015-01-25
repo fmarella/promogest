@@ -79,10 +79,7 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
         self.mattu = False
         self.completion = self.ricerca_articolo_entrycompletition
 
-        if Environment.pg3:
-            self.completion.set_match_func(self.match_func,None)
-        else:
-            self.completion.set_match_func(self.match_func)
+        self.completion.set_match_func(self.match_func,None)
         self.completion.set_text_column(0)
         self.articolo_entry.set_completion(self.completion)
         self.sepric = "  ~  "

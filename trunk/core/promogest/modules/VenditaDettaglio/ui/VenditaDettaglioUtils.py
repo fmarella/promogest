@@ -44,9 +44,6 @@ def fillComboboxPos(combobox, filter=False, noempty=False):
     combobox.pack_start(renderer, True)
     combobox.add_attribute(renderer, 'text', 2)
     combobox.set_model(model)
-    if not pg3:
-        if combobox.__class__ is gtk.ComboBoxEntry:
-            combobox.set_text_column(2)
 
 
 def rigaScontrinoDel(id=None):

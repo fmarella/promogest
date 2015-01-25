@@ -280,10 +280,7 @@ class Login(SimpleGladeApp):
                                             on_main_window_closed,
                                             self.login_window)
                         main.show()
-                    if Environment.pg3:
-                        glib.idle_add(mainmain)
-                    else:
-                        gobject.idle_add(mainmain)
+                    glib.idle_add(mainmain)
 
         else:
             messageInfo(msg=_('Nome utente o password errati, Riprova'))

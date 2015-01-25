@@ -453,10 +453,7 @@ class Anagrafica(GladeWidget):
         if column+1 <= columns:
             if self._tabPressed:
                 self._tabPressed = False
-            if Environment.pg3:
-                gobject.timeout_add(1, treeview.set_cursor, gtk.TreePath(str(path)), treeview.get_column(column+1), editNext)
-            else:
-                gobject.timeout_add(1, treeview.set_cursor,path, treeview.get_column(column+1), editNext)
+            gobject.timeout_add(1, treeview.set_cursor, gtk.TreePath(str(path)), treeview.get_column(column+1), editNext)
 
 
     def anagrafica_treeview_set_edit(self, flag):
@@ -476,10 +473,7 @@ class Anagrafica(GladeWidget):
             row = model[iterator]
             column = self.anagrafica_treeview.get_column(0)
             self.anagrafica_treeview.grab_focus()
-            if Environment.pg3:
-                self.anagrafica_treeview.set_cursor(row.path, column, True)
-            else:
-                self.anagrafica_treeview.set_cursor(row.path, column, start_editing=True)
+            self.anagrafica_treeview.set_cursor(row.path, column, True)
         else:
             self._rowEditingPath = None
 

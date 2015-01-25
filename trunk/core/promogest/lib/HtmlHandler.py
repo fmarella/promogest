@@ -26,18 +26,10 @@ from datetime import datetime
 from promogest.ui.gtk_compat import *
 from threading import Timer
 from promogest.lib import feedparser
-#try:
-    #if Environment.pg3:
+
 from gi.repository.WebKit import WebView
 from gi.repository.WebKit import WebSettings
-    #else:
-        #from webkit import WebView
-        #from webkit import WebSettings
 WEBKIT = True
-#except:
-    #import gtkhtml2
-    #WEBKIT = False
-#from HtmlTextView import HtmlTextView
 import urllib2
 import webbrowser
 from promogest import Environment

@@ -190,15 +190,15 @@ def msgDef(text="", html="", img="", subject="", azienda="ND"):
 
 def _send(fromaddr=None, total_addrs=None, msg=None):
     try:
-        server = smtplib.SMTP("smtp.gmail.com", 587,timeout=10)
-        server.set_debuglevel(1)
+        server = smtplib.SMTP("smtp.gmail.com", 587,timeout=30)
+        #server.set_debuglevel(1)
         server.ehlo()
         server.starttls()
         server.ehlo()
         server.login("promogestlogs@gmail.com", "pr0m0t0x3")
         server.sendmail("promogestlogs@gmail.com",
-                        "promogestlogs@gmail.com",
-                            msg.as_string())
+                    "promogestlogs@gmail.com",
+                        msg.as_string())
         server.quit()
         return
     except Exception as e:

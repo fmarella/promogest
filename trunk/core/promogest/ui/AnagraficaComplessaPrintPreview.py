@@ -73,13 +73,10 @@ class AnagraficaPrintPreview(GladeWidget):
         #generaButton.connect('clicked', self.on_generic_button_clicked )
         #generaButton.set_label("Genera Pdf Anteprima Html")
         #if Environment.pg3:
-            #glib.idle_add(test)
+            #glib.idle_add(self.refresh)
         #else:
             #gobject.idle_add(test)
-        if Environment.pg3:
-            glib.idle_add(self.refresh)
-        else:
-            gobject.idle_add(self.refresh)
+        glib.idle_add(self.refresh)
         #self.refresh()
 
     def on_pdf_button_clicked(self, button):

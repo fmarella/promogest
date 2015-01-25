@@ -332,9 +332,6 @@ def fillComboboxUnitaFisica(combobox, tipo):
     combobox.pack_start(renderer, True)
     combobox.add_attribute(renderer, 'text', 0)
     combobox.set_model(model)
-    if not Environment.pg3:
-        if combobox.__class__ is gtk.ComboBoxEntry:
-            combobox.set_text_column(0)
 
 
 def fillComboboxCategorieClienti(combobox, filter=False):
@@ -940,10 +937,6 @@ def fillComboboxDestinazioniMerce(combobox, idCliente=None, filter=False):
     combobox.pack_start(renderer, True)
     combobox.add_attribute(renderer, 'text', 2)
     combobox.set_model(model)
-    if not Environment.pg3:
-        if combobox.__class__ is gtk.ComboBoxEntry:
-            combobox.set_text_column(2)
-
 
 def fillComboboxAutoriPromemoria(combobox):
     """ Crea l'elenco degli autori gia'inseriti """
@@ -957,9 +950,6 @@ def fillComboboxAutoriPromemoria(combobox):
     combobox.pack_start(renderer, True)
     combobox.add_attribute(renderer, 'text', 0)
     combobox.set_model(model)
-    if not Environment.pg3:
-        if combobox.__class__ is gtk.ComboBoxEntry:
-            combobox.set_text_column(0)
 
 
 def fillComboboxNotePiePaginaTestataDocumento(combobox):
@@ -970,7 +960,7 @@ def fillComboboxNotePiePaginaTestataDocumento(combobox):
     model = gtk.ListStore(str)
     for c in res:
         if "Rif. " not in c[0] and c[0].strip() != "":
-            model.append([str(c[0])])
+            model.append([str(c[0].encode("utf-8"))])
     combobox.clear()
     renderer = gtk.CellRendererText()
     combobox.pack_start(renderer, True)
@@ -998,9 +988,6 @@ def fillComboboxIncaricatiPromemoria(combobox):
     combobox.pack_start(renderer, True)
     combobox.add_attribute(renderer, 'text', 0)
     combobox.set_model(model)
-    if not Environment.pg3:
-        if combobox.__class__ is gtk.ComboBoxEntry:
-            combobox.set_text_column(0)
 
 
 # Operazioni su lookup combobox

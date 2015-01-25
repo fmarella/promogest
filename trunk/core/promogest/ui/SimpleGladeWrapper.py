@@ -78,19 +78,6 @@ class SimpleGladeWrapper:
         gl = None
         prefix = ""
         #GTK3
-        #if Environment.pg3:
-        #    prefix = "pg3_"
-
-        #from sys import platform
-        #if platform == 'darwin' or platform.startswith('linux'):
-        #    if 'anagrafica_documenti.glade' == path or '_anagrafica_articoli_detail.glade' == path:
-        #        path = "".join(['alt_', path])
-
-        #print "PATH o NOME FILE --> ", path
-        #print "ROOT --> ", root
-        #print "DOMAIN --> ", domain
-        #print "CALLBACK --> ", callbacks_proxy
-        #print "ISMODULE --> ", isModule
         pp = './gui/'
         self.glade = None
         #else:
@@ -201,10 +188,7 @@ class SimpleGladeWrapper:
                 else:
                     setattr(self, widget_api_name, widget)
                     if prefixes:
-                        if Environment.pg3:
-                            widget.prefixes = prefixes
-                        else:
-                            gtk.Widget.set_data(widget, "prefixes", prefixes)
+                        widget.prefixes = prefixes
                 if widget.__gtype__.name == "UnsignedIntegerEntryField":
                     setattr(widget, "nomee",widget_api_name)
                     self.entryGlobalcb(widget)
@@ -290,10 +274,7 @@ class SimpleGladeWrapper:
         prefix_actions_d = dict( map(drop_prefix, prefix_actions_t) )
 
         for widget in self.widgets:
-            if Environment.pg3:
-                prefixes = widget.prefixes
-            else:
-                prefixes = gtk.Widget.get_data(widget, "prefixes")
+            prefixes = widget.prefixes
             if prefixes:
                 for prefix in prefixes:
                     if prefix in prefix_actions_d:
