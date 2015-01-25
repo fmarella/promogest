@@ -1028,11 +1028,14 @@ es: L'assicuratore</property>
       <object class="GtkComboBox" id="ruolo_comboboxentry">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
+        <property name="model">liststore1</property>
         <property name="has_entry">True</property>
         <property name="entry_text_column">0</property>
+        <property name="id_column">0</property>
         <child internal-child="entry">
           <object class="GtkEntry" id="combobox-entry1">
-            <property name="can_focus">False</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
           </object>
         </child>
       </object>
@@ -1047,11 +1050,16 @@ es: L'assicuratore</property>
       <object class="GtkComboBox" id="descrizione_comboboxentry">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
+        <property name="model">liststore2</property>
         <property name="has_entry">True</property>
         <property name="entry_text_column">0</property>
+        <property name="id_column">0</property>
         <child internal-child="entry">
           <object class="GtkEntry" id="combobox-entry2">
-            <property name="can_focus">False</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="can_default">True</property>
+            <property name="overwrite_mode">True</property>
           </object>
         </child>
       </object>

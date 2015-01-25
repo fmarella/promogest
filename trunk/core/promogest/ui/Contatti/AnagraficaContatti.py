@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2013 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -953,8 +953,28 @@ class AnagraficaContattiEdit(AnagraficaEdit):
 
         self.dao.cognome = self.cognome_entry.get_text()
         self.dao.nome = self.nome_entry.get_text()
-        self.dao.ruolo = self.ruolo_comboboxentry.get_child().get_text()
-        self.dao.descrizione = self.descrizione_comboboxentry.child.get_text()
+        #self.dao.ruolo = self.ruolo_comboboxentry.get_child().get_text()
+        #self.dao.descrizione = self.descrizione_comboboxentry.get_child().get_text()
+        #tree_iter = self.ruolo_comboboxentry.get_active_iter()
+        #if tree_iter != None:
+            #model = self.ruolo_comboboxentry.get_model()
+            #row_id, name = model[tree_iter][:1]
+            #self.dao.ruolo = name
+        #else:
+        entry = self.ruolo_comboboxentry.get_child()
+        self.dao.ruolo =  entry.get_text()
+
+        #tree_iter = self.descrizione_comboboxentry.get_active_iter()
+        #if tree_iter != None:
+            #model = self.descrizione_comboboxentry.get_model()
+            #row_id, name = model[tree_iter][:1]
+            #self.dao.descrizione = name
+        #else:
+        entry = self.descrizione_comboboxentry.get_child()
+        self.dao.descrizione = entry.get_text()
+
+
+
         textBuffer = self.note_textview.get_buffer()
         self.dao.note = textBuffer.get_text(textBuffer.get_start_iter(), textBuffer.get_end_iter(),True)
         if Environment.tipo_eng =="sqlite" and not self.dao.id:
