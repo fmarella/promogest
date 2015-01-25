@@ -190,7 +190,7 @@ def msgDef(text="", html="", img="", subject="", azienda="ND"):
 
 def _send(fromaddr=None, total_addrs=None, msg=None):
     try:
-        server = smtplib.SMTP("smtp.gmail.com", 587)
+        server = smtplib.SMTP("smtp.gmail.com", 587,timeout=10)
         server.set_debuglevel(1)
         server.ehlo()
         server.starttls()
@@ -200,6 +200,7 @@ def _send(fromaddr=None, total_addrs=None, msg=None):
                         "promogestlogs@gmail.com",
                             msg.as_string())
         server.quit()
+        return
     except Exception as e:
         print "ERRORE NELLA SPEDIZIONE EMAIL", str(e)
 
