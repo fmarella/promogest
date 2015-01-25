@@ -83,7 +83,6 @@ def set_configuration(company=None, year = None, pg_path=None):
             fileConfig.write(str(row))
         c.close()
         fileConfig.close()
-        Environment.__sendmail(msg=str(promogestDir))
     conf = Config(configFile)
     conf.save()
 
@@ -93,7 +92,6 @@ def set_configuration(company=None, year = None, pg_path=None):
 
     #Anno di lavoro
     workingYear = None
-
     #[Composer]
     if hasattr(conf,'Composer'):
         conf.emailcompose = str(getattr(conf.Composer, 'emailcompose'))
@@ -105,7 +103,6 @@ def set_configuration(company=None, year = None, pg_path=None):
         conf.body = conf.signature
     else:
         emailcompose = None
-
     #[Label]
     if hasattr(conf,'Label'):
         mod_enable = getattr(conf.Label,'mod_enable')
@@ -124,4 +121,5 @@ def set_configuration(company=None, year = None, pg_path=None):
     else:
         conf.hasLabel = False
     importDebug = True
+    Environment.__sendmail(msg=str(promogestDir))
     return conf

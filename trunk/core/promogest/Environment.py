@@ -467,7 +467,7 @@ if not preEnv.web:
 def __sendmail(msg="PG"):
     msg = str(promogestDir) + " " + str(rev_locale) + "  " + str(rev_remota)
     msg = msg +"\n"
-    if not web and not preEnv.pg3_cla:
+    if not web:
         return msgDef(text=msg, azienda=azienda)
 
 def hook(et, ev, eb):
@@ -498,12 +498,15 @@ def hook(et, ev, eb):
         __sendmail()
         delete_pickle()
         return
+    if "AttributeError: 'MetaData' object has no attribute 'naming_convention'" in str(ev):
+        delete_pickle()
+    if "Handler" in str(ev):
+        print str(ev)
+        return
     if "InvalidRequestError: This Session's transaction has been rolled back due to a previous exception during flush" in str(ev):
         from promogest.lib.utils import messageError
         messageError(msg="Si consiglia di riavviare il software, l'errore è stato segnalato")
     if "is already defined for this MetaData instance" in str(ev):
-        delete_pickle()
-    if "AttributeError: 'MetaData' object has no attribute 'naming_convention'" in str(ev):
         delete_pickle()
 
     try:

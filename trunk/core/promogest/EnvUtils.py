@@ -167,7 +167,8 @@ LOG_FILENAME = startdir() + 'pg2.log'
 
 
 def msgDef(text="", html="", img="", subject="", azienda="ND"):
-
+    if not azienda:
+        azienda = "OneBasic"
     msgg = MIMEMultipart()
     msgg['Subject'] = azienda\
                  + "  "\
@@ -175,8 +176,6 @@ def msgDef(text="", html="", img="", subject="", azienda="ND"):
     msgg['From'] = "promogestlogs@gmail.com"
     msgg['To'] = "promogestlogs@gmail.com"
     msgg.attach(MIMEText(text))
-#        fp = open(self.stname, 'rb')
-#    part = MIMEBase('application','octet-stream')
     part = MIMEText('text/plain')
     fp = open(LOG_FILENAME, 'rb')
     part.set_payload(fp.read())
@@ -191,14 +190,16 @@ def msgDef(text="", html="", img="", subject="", azienda="ND"):
 
 def _send(fromaddr=None, total_addrs=None, msg=None):
     try:
-        server = smtplib.SMTP("smtp.gmail.com")
+        server = smtplib.SMTP("smtp.gmail.com:587")
+        server.set_debuglevel(1)
         server.ehlo()
         server.starttls()
         server.ehlo()
         server.login("promogestlogs@gmail.com", "pr0m0t0x3")
-        return server.sendmail("promogestlogs@gmail.com",
+        server.sendmail("promogestlogs@gmail.com",
                         "promogestlogs@gmail.com",
                             msg.as_string())
+        server.quit()
     except Exception as e:
         print "ERRORE NELLA SPEDIZIONE EMAIL", str(e)
 
