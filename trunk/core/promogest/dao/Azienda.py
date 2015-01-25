@@ -52,6 +52,7 @@ except:
     op = Operations(ctx)
     op.add_column('azienda', Column('telefono', String(12), nullable=True), schema=params["mainSchema"])
     delete_pickle()
+    print "HO AGGIUNTO LA COLONNA telefono NELLA TABELLA AZIENDA E ORA RIAVVIO IL PROGRAMMA ( dao.Azienda )"
     restart_program()
 
 try:
@@ -62,4 +63,5 @@ except:
     op = Operations(ctx)
     op.add_column('azienda', Column('progressivo_fatturapa', String(5), nullable=True), schema=params["mainSchema"])
     delete_pickle()
+    print "HO AGGIUNTO LA COLONNA prograssivo_fatturapa NELLA TABELLA Azienda E ORA RIAVVIO IL PROGRAMMA ( dao.Azienda )"
     restart_program()

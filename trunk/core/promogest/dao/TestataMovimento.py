@@ -442,4 +442,5 @@ except:
     op = Operations(ctx)
     op.add_column('testata_movimento',Column('id_to_magazzino', Integer), schema=params["schema"])
     delete_pickle()
+    print "HO AGGIUNTO LA COLONNA id_to_magazzino NELLA TABELLA TESTATA MOVIMENTO E ORA RIAVVIO IL PROGRAMMA ( dao.TestataMovimento )"
     restart_program()

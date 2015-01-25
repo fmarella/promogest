@@ -85,6 +85,7 @@ except:
     op = Operations(ctx)
     op.add_column('pagamento', Column('codice', String(4), nullable=True), schema=params["schema"])
     delete_pickle()
+    print "HO AGGIUNTO LA COLONNA CODICE NELLA TABELLA PAGAMENTO E ORA RIAVVIO IL PROGRAMMA ( dao.Pagamento )"
     restart_program()
 
 

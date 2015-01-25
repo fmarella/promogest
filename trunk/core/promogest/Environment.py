@@ -306,6 +306,7 @@ def restart_program():
     Note: this function does not return. Any cleanup action (like
     saving data) must be done before calling this function."""
     python = sys.executable
+    print " STO RIAVVIANDO IL PROGRAMMA CON QUESTO ESEGUIBILE PYTHON", python
     os.execl(python, python, * sys.argv)
 print " AZIENDAAAA", azienda
 

@@ -70,6 +70,7 @@ except:
     op = Operations(ctx)
     op.add_column('setconf', Column('visible', Boolean, default=True),schema=params["schema"])
     delete_pickle()
+    print "HO AGGIUNTO LA COLONNA visibile NELLA TABELLA SetConf E ORA RIAVVIO IL PROGRAMMA ( dao.SetConf )"
     restart_program()
 
 

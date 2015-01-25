@@ -1249,6 +1249,7 @@ except:
     op = Operations(ctx)
     op.add_column('testata_documento', Column('esclusione_spese', Boolean, default=True),schema=params['schema'])
     delete_pickle()
+    print "HO AGGIUNTO LA COLONNA esclusione_spese NELLA TABELLA TestataDocumento E ORA RIAVVIO IL PROGRAMMA ( dao.TestatDocumento )"
 
 try:
     TestataDocumento.__table__.c.codice_cup
@@ -1258,6 +1259,7 @@ except:
     op = Operations(ctx)
     op.add_column('testata_documento', Column('codice_cup', String(15), nullable=True), schema=params["schema"])
     delete_pickle()
+    print "HO AGGIUNTO LA COLONNA codice_cup NELLA TABELLA TestataDocumento E ORA RIAVVIO IL PROGRAMMA ( dao.TestatDocumento )"
 
 try:
     TestataDocumento.__table__.c.codice_cig
@@ -1267,6 +1269,7 @@ except:
     op = Operations(ctx)
     op.add_column('testata_documento', Column('codice_cig', String(15), nullable=True), schema=params["schema"])
     delete_pickle()
+    print "HO AGGIUNTO LA COLONNA codice_cig NELLA TABELLA TestataDocumento E ORA RIAVVIO IL PROGRAMMA ( dao.TestatDocumento )"
     restart_program()
 
 
