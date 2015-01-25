@@ -27,7 +27,7 @@ from promogest.dao.Dao import Dao, Base
 from promogest.dao.Articolo import Articolo
 from promogest.modules.VenditaDettaglio.dao.ScontoScontrino import ScontoScontrino
 from promogest.modules.VenditaDettaglio.ui.VenditaDettaglioUtils import scontoRigaScontrinoDel
-from promogest.modules.VenditaDettaglio.dao.ScontoRigaScontrino import ScontoRigaScontrino
+from promogest.modules.VenditaDettaglio.dao.ScontoRigaScontrino import ScontoRigaScontrino, t_sconto_riga_scontrino
 
 class RigaScontrino(Base, Dao):
     try:
@@ -49,7 +49,7 @@ class RigaScontrino(Base, Dao):
                 )
 
     arti = relationship("Articolo") #serve
-    srs = relationship("ScontoRigaScontrino",cascade="all, delete") #serve
+    srs = relationship("ScontoRigaScontrino",primaryjoin=__table__.c.id ==t_sconto_riga_scontrino.c.id_riga_scontrino, cascade="all, delete") #serve
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)

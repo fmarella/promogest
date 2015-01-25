@@ -27,11 +27,11 @@ from promogest.dao.Dao import Dao, Base
 
 from data.scontoRigaScontrino import t_sconto_riga_scontrino
 from data.scontoScontrino import t_sconto_scontrino
-ss_srs = join(t_sconto_scontrino, t_sconto_riga_scontrino)
+ss_srs = join(t_sconto_riga_scontrino,t_sconto_scontrino)
 
 class ScontoRigaScontrino(Base, Dao):
     __table__ = ss_srs
-    id = column_property(t_sconto_scontrino.c.id, t_sconto_riga_scontrino.c.id)
+    id = column_property(t_sconto_riga_scontrino.c.id,t_sconto_scontrino.c.id, )
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
