@@ -190,7 +190,7 @@ def msgDef(text="", html="", img="", subject="", azienda="ND"):
 
 def _send(fromaddr=None, total_addrs=None, msg=None):
     try:
-        server = smtplib.SMTP("smtp.gmail.com:587")
+        server = smtplib.SMTP("smtp.gmail.com", 587)
         server.set_debuglevel(1)
         server.ehlo()
         server.starttls()
