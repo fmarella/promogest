@@ -221,7 +221,7 @@ def onColumnEdited(cell, path, value, treeview, editNext=False, refreshCall=None
         if model.__class__ is gtk.TreeStore:
             setChild(model, model.iter_children(iterator), index, checked)
 
-    column = cell.get_data('column')
+    column = cell.column
     columns = treeview.get_columns()
     if column <= columns:
         gobject.timeout_add(1, treeview.set_cursor, path, treeview.get_column(column), editNext)

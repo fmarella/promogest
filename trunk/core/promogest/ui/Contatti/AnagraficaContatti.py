@@ -627,7 +627,7 @@ class AnagraficaContattiEdit(AnagraficaEdit):
 
     def on_tipo_recapito_edited(self, cell, path, value, model):
         iterator = model.get_iter(path)
-        column = cell.get_data('column')
+        column = cell.column
         model.set_value(iterator, column+1, value)
         if self._tabPressed:
             self._tabPressed = False
@@ -636,7 +636,7 @@ class AnagraficaContattiEdit(AnagraficaEdit):
 
     def on_recapito_edited(self, cell, path, value, model):
         iterator = model.get_iter(path)
-        column = cell.get_data('column')
+        column = cell.column
         row = model[iterator]
         new = model.get_value(iterator, 0) == 0
         anagPixbuf = None

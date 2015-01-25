@@ -437,7 +437,7 @@ class Anagrafica(GladeWidget):
         model = treeview.get_model()
         iterator = model.get_iter(path)
         if column is None:
-            column = cell.get_data('column')
+            column = cell.column
         row = model[iterator]
         if row.path == self._rowEditingPath:
             if cell.__class__ is gtk.CellRendererText:

@@ -759,7 +759,7 @@ class AnagraficaSchedeOrdinazioniEdit(AnagraficaEdit):
         """ Gestisce l'immagazzinamento dei valori nelle celle """
         model = treeview.get_model()
         iterator = model.get_iter(path)
-        column = cell.get_data('column')
+        column = cell.column
         row = model[iterator]
         if cell.__class__ is gtk.CellRendererText:
             try:
