@@ -2,7 +2,6 @@
 <!-- Generated with glade 3.18.3 -->
 <interface>
   <requires lib="gtk+" version="3.4"/>
-  <requires lib="" version="0.0"/>
   <requires lib="pythonplugin" version="0.0"/>
   <object class="GtkImage" id="image2">
     <property name="visible">True</property>
@@ -18,6 +17,16 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="pixbuf">taglia_colore24x24.png</property>
+  </object>
+  <object class="GtkImage" id="image5">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-orientation-landscape</property>
+  </object>
+  <object class="GtkImage" id="image6">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-missing-image</property>
   </object>
   <object class="GtkGrid" id="anagrafica_articoli_detail_table">
     <property name="visible">True</property>
@@ -2027,16 +2036,6 @@ varianti di taglia e colore </property>
     <child>
       <placeholder/>
     </child>
-  </object>
-  <object class="GtkImage" id="image5">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">gtk-orientation-landscape</property>
-  </object>
-  <object class="GtkImage" id="image6">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">gtk-missing-image</property>
   </object>
   <object class="GtkImage" id="image7">
     <property name="visible">True</property>

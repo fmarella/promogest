@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2013 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -68,6 +68,10 @@ class SendEmail(GladeWidget):
         if not self.sobject:
             self.sobject = self.object_email_entry.get_text()
         self.fromm = self.from_email_entry.get_text()
+        if "@" not in self.fromm:
+            msg = """Indirizzo email non corretto"""
+            messageInfo(msg=msg)
+            return
         if not self.obj:
             self.obj = findStrFromCombobox(self.obj_combobox, 0)
         if self.bodytext == "" or self.sobject == ""  or self.fromm == "" or self.obj == "":
@@ -75,6 +79,7 @@ class SendEmail(GladeWidget):
             il form in ogni sua parte, Grazie"""
             messageInfo(msg=msg)
         else:
+            print " ARRIVI ALMENO QUI VERO"
             self.sendMailFunc()
             self.hide()
         if self.dist:

@@ -56,41 +56,18 @@ if web:
 
 from promogest.lib.config import Config
 if not web:
-    if preEnv.pg3_cla:
-        print " USIAMO LA VERSIONE CON PYGI"
-        #try:
-        from gi.repository import Gtk as gtk
-        #except:
-            #import gtk
-            #dialoggg = gtk.MessageDialog(None,
-                        #gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                        #gtk.MESSAGE_ERROR,
-                        #gtk.RESPONSE_CANCEL)
-            #dialoggg.set_markup("E' necessario installare la nuova versione del PromoGest, \nvai sul sito e scarica il nuovo installer\n del PromoGest 3 ")
-            #response = dialoggg.run()
-            #dialoggg.destroy()
-            #sys.exit()
+    print " USIAMO LA VERSIONE CON PYGI"
+    from gi.repository import Gtk as gtk
+    GTK_DIALOG_MODAL = gtk.DialogFlags.MODAL
+    GTK_DIALOG_DESTROY_WITH_PARENT = gtk.DialogFlags.DESTROY_WITH_PARENT
+    GTK_BUTTON_OK = gtk.ButtonsType.OK
+    GTK_RESPONSE_CANCEL = gtk.ResponseType.CANCEL
+    GTK_DIALOG_MESSAGE_INFO = gtk.MessageType.INFO
+    GTK_DIALOG_MESSAGE_ERROR = gtk.MessageType.ERROR
+    GTK_RESPONSE_OK = gtk.ResponseType.OK
+    settings = gtk.Settings.get_default()
+    gtk.Settings.set_long_property(settings, "gtk-button-images", 1, "main")
 
-        GTK_DIALOG_MODAL = gtk.DialogFlags.MODAL
-        GTK_DIALOG_DESTROY_WITH_PARENT = gtk.DialogFlags.DESTROY_WITH_PARENT
-        GTK_BUTTON_OK = gtk.ButtonsType.OK
-        GTK_RESPONSE_CANCEL = gtk.ResponseType.CANCEL
-        GTK_DIALOG_MESSAGE_INFO = gtk.MessageType.INFO
-        GTK_DIALOG_MESSAGE_ERROR = gtk.MessageType.ERROR
-        GTK_RESPONSE_OK = gtk.ResponseType.OK
-        settings = gtk.Settings.get_default()
-        gtk.Settings.set_long_property(settings, "gtk-button-images", 1, "main")
-    else:
-        import gtk
-        GTK_BUTTON_CANCEL = gtk.BUTTONS_CANCEL
-        GTK_DIALOG_MODAL = gtk.DIALOG_MODAL
-        GTK_DIALOG_DESTROY_WITH_PARENT = gtk.DIALOG_DESTROY_WITH_PARENT
-        GTK_BUTTON_OK = gtk.BUTTONS_OK
-        GTK_DIALOG_MESSAGE_INFO = gtk.MESSAGE_INFO
-        GTK_DIALOG_MESSAGE_ERROR = gtk.MESSAGE_ERROR
-        GTK_RESPONSE_OK = gtk.RESPONSE_OK
-        settings = gtk.settings_get_default()
-        gtk.Settings.set_long_property(settings, "gtk-button-images", 1, "main")
 import os
 import sys
 import shutil

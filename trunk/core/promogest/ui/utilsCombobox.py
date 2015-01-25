@@ -857,24 +857,17 @@ def fillComboboxCausaliTrasporto(combobox, filter=False):
     from promogest.dao.TestataDocumento import TestataDocumento
     res = Environment.params['session'].query(
                                 TestataDocumento.causale_trasporto).distinct()
-    model = gtk.ListStore(object, str)
-    #res = []
-    if not filter:
-        emptyRow = ''
-    else:
-        emptyRow = '< Tutti >'
-    model.append((None, emptyRow))
+    model = gtk.ListStore(str)
+    emptyRow = ''
+    model.append([emptyRow])
     for t in res:
-        model.append((t, (t.causale_trasporto or '')[0:30]))
-
+        if t[0].strip() != "":
+            model.append([t[0][0:30]])
     combobox.clear()
     renderer = gtk.CellRendererText()
     combobox.pack_start(renderer, True)
-    combobox.add_attribute(renderer, 'text', 1)
+    combobox.add_attribute(renderer, 'text', 0)
     combobox.set_model(model)
-    if not Environment.pg3:
-        if combobox.__class__ is gtk.ComboBoxEntry:
-            combobox.set_text_column(1)
 
 
 def fillComboboxProduttori(combobox):
@@ -895,9 +888,6 @@ def fillComboboxProduttori(combobox):
     combobox.pack_start(renderer, True)
     combobox.add_attribute(renderer, 'text', 0)
     combobox.set_model(model)
-    if not Environment.pg3:
-        if combobox.__class__ is gtk.ComboBoxEntry:
-            combobox.set_text_column(0)
 
 
 def fillComboboxAspettoEsterioreBeni(combobox, filter=False):
@@ -905,24 +895,18 @@ def fillComboboxAspettoEsterioreBeni(combobox, filter=False):
     from promogest.dao.TestataDocumento import TestataDocumento
     res = Environment.params['session'].query(
                         TestataDocumento.aspetto_esteriore_beni).distinct()
-    model = gtk.ListStore(object, str)
-    #res = []
-    if not filter:
-        emptyRow = ''
-    else:
-        emptyRow = '< Tutti >'
-    model.append((None, emptyRow))
+    model = gtk.ListStore(str)
+    emptyRow = ''
+    model.append((emptyRow))
     for t in res:
-        model.append((t, (t.aspetto_esteriore_beni or '')[0:20]))
+        if t[0].strip() != "":
+            model.append([t[0][0:20]])
 
     combobox.clear()
     renderer = gtk.CellRendererText()
     combobox.pack_start(renderer, True)
-    combobox.add_attribute(renderer, 'text', 1)
+    combobox.add_attribute(renderer, 'text', 0)
     combobox.set_model(model)
-    if not Environment.pg3:
-        if combobox.__class__ is gtk.ComboBoxEntry:
-            combobox.set_text_column(1)
 
 
 def fillComboboxPortoTrasporto(combobox):
@@ -935,9 +919,6 @@ def fillComboboxPortoTrasporto(combobox):
     combobox.pack_start(renderer, True)
     combobox.add_attribute(renderer, 'text', 1)
     combobox.set_model(model)
-    if not Environment.pg3:
-        if combobox.__class__ is gtk.ComboBoxEntry:
-            combobox.set_text_column(1)
 
 
 def fillComboboxDestinazioniMerce(combobox, idCliente=None, filter=False):
@@ -988,18 +969,13 @@ def fillComboboxNotePiePaginaTestataDocumento(combobox):
                             TestataDocumento.note_pie_pagina).distinct()
     model = gtk.ListStore(str)
     for c in res:
-        if c.note_pie_pagina:
-            if "Rif. DDT" not in c.note_pie_pagina:
-                model.append([c.note_pie_pagina])
+        if "Rif. " not in c[0] and c[0].strip() != "":
+            model.append([str(c[0])])
     combobox.clear()
     renderer = gtk.CellRendererText()
     combobox.pack_start(renderer, True)
     combobox.add_attribute(renderer, 'text', 0)
     combobox.set_model(model)
-    if not Environment.pg3:
-        if combobox.__class__ is gtk.ComboBoxEntry:
-            combobox.set_text_column(0)
-
 
 
 def fillComboboxIncaricatiPromemoria(combobox):
