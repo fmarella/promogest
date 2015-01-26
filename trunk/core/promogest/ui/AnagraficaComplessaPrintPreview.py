@@ -82,7 +82,8 @@ class AnagraficaPrintPreview(GladeWidget):
     def on_pdf_button_clicked(self, button):
         from PrintDialog import PrintDialogHandler
         from xhtml2pdf import pisa
-        f = self.html_code.replace("€","&#8364;")
+        #f = self.html_code.replace("€","&#8364;")
+        f = self.html_code.encode("utf-8")
         g = file(Environment.tempDir + ".temp.pdf", "wb")
         pbar(self.pbar, pulse=True, text="GENERAZIONE STAMPA ATTENDERE")
         pisa.CreatePDF(str(f), g)
