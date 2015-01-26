@@ -42,21 +42,21 @@ class Vettore(Base, Dao):
 
     def filter_values(self,k,v):
         if k == 'codice':
-            dic = {k: t_persona_giuridica.__table__.c.codice.ilike("%"+v+"%")}
+            dic = {k: t_persona_giuridica.c.codice.ilike("%"+v+"%")}
         elif k == 'ragioneSociale':
-            dic = {k: t_persona_giuridica.__table__.c.ragione_sociale.ilike("%"+v+"%")}
+            dic = {k: t_persona_giuridica.c.ragione_sociale.ilike("%"+v+"%")}
         elif k == 'insegna':
-            dic = {k: t_persona_giuridica.__table__.c.insegna.ilike("%"+v+"%")}
+            dic = {k: t_persona_giuridica.c.insegna.ilike("%"+v+"%")}
         elif k == 'cognomeNome':
-            dic = {k: or_(t_persona_giuridica.__table__.c.cognome.ilike("%"+v+"%"),
-                         t_persona_giuridica.__table__.c.nome.ilike("%"+v+"%"))}
+            dic = {k: or_(t_persona_giuridica.c.cognome.ilike("%"+v+"%"),
+                         t_persona_giuridica.c.nome.ilike("%"+v+"%"))}
         elif k == 'localita':
-            dic = {k: or_(t_persona_giuridica.__table__.c.sede_operativa_localita.ilike("%"+v+"%"),
-                         t_persona_giuridica.__table__.c.sede_legale_localita.ilike("%"+v+"%"))}
+            dic = {k: or_(t_persona_giuridica.c.sede_operativa_localita.ilike("%"+v+"%"),
+                         t_persona_giuridica.c.sede_legale_localita.ilike("%"+v+"%"))}
         elif k == 'partitaIva':
-            dic = {k: t_persona_giuridica.__table__.c.partita_iva.ilike("%"+v+"%")}
+            dic = {k: t_persona_giuridica.c.partita_iva.ilike("%"+v+"%")}
         elif k== 'codiceFiscale':
-            dic ={k: t_persona_giuridica.__table__.c.codice_fiscale.ilike("%"+v+"%")}
+            dic ={k: t_persona_giuridica.c.codice_fiscale.ilike("%"+v+"%")}
         return  dic[k]
 
 def getNuovoCodiceVettore():
