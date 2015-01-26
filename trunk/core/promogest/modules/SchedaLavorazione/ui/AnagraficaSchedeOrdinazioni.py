@@ -273,7 +273,7 @@ class AnagraficaSchedeOrdinazioniFilter(AnagraficaFilter):
                                         (str(t.referente) or ''),
                                         (str(t.colore_stampa) or ''),
                                         (str(t.carattere_stampa) or ''),
-                                        (str(t.note_final) or '')))
+                                        (str(t.note_final.encode("utf-8")) or '')))
 
 class AnagraficaSchedeOrdinazioniHtml(AnagraficaHtml):
     def __init__(self, anagrafica):
