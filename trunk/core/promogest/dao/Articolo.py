@@ -112,6 +112,16 @@ class Articolo(Base, Dao):
         APADR = relationship("ArticoloADR", primaryjoin=(__table__.c.id == ArticoloADR.id_articolo),uselist=False)
 
 
+    if hasattr(conf, "DistintaBase") and \
+                            getattr(conf.DistintaBase, 'mod_enable') == "yes":
+        from promogest.modules.DistintaBase.dao.AssociazioneArticolo \
+             import AssociazioneArticolo
+        AAPadre = relationship("AssociazioneArticolo",primaryjoin=(__table__.c.id == AssociazioneArticolo.__table__.c.id_padre),
+                    backref="ARTIPADRE")
+        AAFiglio = relationship("AssociazioneArticolo", primaryjoin=(__table__.c.id == AssociazioneArticolo.__table__.c.id_figlio),
+                    backref="ARTIFIGLIO")
+
+
     __mapper_args__ = {
         'order_by' : __table__.c.codice
     }
@@ -768,20 +778,6 @@ class Articolo(Base, Dao):
                 dic = {k: and_(AssociazioneArticolo.id_padre == self.__table__.c.id,
                         AssociazioneArticolo.id_figlio == self.__table__.c.id)}
         return  dic[k]
-
-
-if hasattr(conf, "DistintaBase") and \
-                        getattr(conf.DistintaBase, 'mod_enable') == "yes":
-    from promogest.modules.DistintaBase.dao.AssociazioneArticolo \
-         import AssociazioneArticolo
-    std_mapper.add_property("AAPadre",
-        relation(AssociazioneArticolo,
-            primaryjoin=(t_articolo.c.id == AssociazioneArticolo.id_padre),
-                backref="ARTIPADRE"))
-    std_mapper.add_property("AAFiglio",
-        relation(AssociazioneArticolo,
-            primaryjoin=(t_articolo.c.id == AssociazioneArticolo.id_figlio),
-                backref="ARTIFIGLIO"))
 
 
 if (hasattr(conf, "GestioneNoleggio") and \
