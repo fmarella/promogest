@@ -858,7 +858,7 @@ def fillComboboxCausaliTrasporto(combobox, filter=False):
     emptyRow = ''
     model.append([emptyRow])
     for t in res:
-        if t[0].strip() != "":
+        if t and t[0].strip() != "":
             model.append([t[0][0:30]])
     combobox.clear()
     renderer = gtk.CellRendererText()
@@ -959,7 +959,7 @@ def fillComboboxNotePiePaginaTestataDocumento(combobox):
                             TestataDocumento.note_pie_pagina).distinct()
     model = gtk.ListStore(str)
     for c in res:
-        if "Rif. " not in c[0] and c[0].strip() != "":
+        if c and "Rif. " not in c[0] and c[0].strip() != "":
             model.append([str(c[0].encode("utf-8"))])
     combobox.clear()
     renderer = gtk.CellRendererText()
