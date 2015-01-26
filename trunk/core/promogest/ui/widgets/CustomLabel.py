@@ -25,7 +25,7 @@
 from promogest.ui.gtk_compat import *
 from promogest import Environment
 
-class CustomLabel(gtk.HBox):
+class CustomLabel(gtk.Box):
 
     __gsignals__ = {'clicked' : (GOBJECT_SIGNAL_RUNLAST,
                             gobject.TYPE_OBJECT,
@@ -37,9 +37,9 @@ class CustomLabel(gtk.HBox):
         self._buttonText = buttonText or ''
         self._labelText = labelText or ''
 
-        gtk.HBox.__init__(self)
+        gtk.Box.__init__(self)
         self.button = gtk.ToggleButton()
-        hbox = gtk.HBox()
+        hbox = gtk.Box()
         self.image = gtk.Image()
         pbuf = GDK_PIXBUF_NEW_FROM_FILE(Environment.guiDir + 'modifica16x16.png')
         self.image.set_from_pixbuf(pbuf)

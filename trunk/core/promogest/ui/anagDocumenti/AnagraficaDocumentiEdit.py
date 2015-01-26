@@ -350,8 +350,9 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self.tempo_arrivo_merce_entry.set_text('')
         self.data_prezzo_datewidget.set_text('')
         self.id_iva_customcombobox.combobox.set_active(-1)
-        self.id_multiplo_customcombobox.combobox.clear()
-        self.id_listino_customcombobox.combobox.clear()
+        #RICORDA CHE é UN TRICK
+        self.id_multiplo_customcombobox.clearcombobox()
+        self.id_listino_customcombobox.clearcombobox()
         self.prezzo_lordo_entry.set_text('0')
         self.quantita_entry.set_text('1')
         self.prezzo_netto_label.set_text('0')
@@ -416,9 +417,8 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self.nuovaRiga()
 
     def refresh_combobox_listini(self):
-
         if self._righe[0]["idArticolo"] is None:
-            self.id_listino_customcombobox.combobox.clear
+            self.id_listino_customcombobox.clearcombobox()
         else:
             fillComboboxListiniFiltrati(
                         self.id_listino_customcombobox.combobox,
@@ -1953,7 +1953,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         if self._tipoPersonaGiuridica == "cliente":
             #self.id_destinazione_merce_customcombobox.set_sensitive(True)
             if self.id_persona_giuridica_customcombobox.getId() is None:
-                self.id_destinazione_merce_customcombobox.combobox.clear()
+                #self.id_destinazione_merce_customcombobox.combobox.clear()
                 self.id_destinazione_merce_customcombobox.set_sensitive(False)
             else:
                 fillComboboxDestinazioniMerce(self.id_destinazione_merce_customcombobox.combobox,
@@ -1965,7 +1965,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
 
             self.refresh_combobox_listini()
         else:
-            self.id_destinazione_merce_customcombobox.combobox.clear()
+            #self.id_destinazione_merce_customcombobox.combobox.clear()
             self.id_destinazione_merce_customcombobox.set_sensitive(False)
 
 
@@ -2026,7 +2026,6 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self._righe[0]["sconti"] = [{'valore':sconto.valore, 'tipo': sconto.tipo_sconto} for sconto in self._righe[0]["sconti"]]
         self._righe[0]["sconti"] += self._righe[0]["VL"]
         self.sconti_widget.setValues(self._righe[0]["sconti"], self._righe[0]["applicazioneSconti"], False)
-
         self.on_show_totali_riga()
 
     def on_new_row_button_clicked(self, widget):

@@ -628,9 +628,9 @@ def fillComboboxListiniFiltrati(combobox,
     Crea l'elenco dei listini
     """
     model = gtk.ListStore(object, int, str)
-    liss = listinoCandidateSel(idArticolo=idArticolo,
+    liss =  listinoCandidateSel(idArticolo=idArticolo,
                                 idMagazzino=idMagazzino,
-                                idCliente=idCliente,)
+                               idCliente=idCliente,)
     if not filter:
         emptyRow = ''
     else:
@@ -639,7 +639,6 @@ def fillComboboxListiniFiltrati(combobox,
     if liss:
         for l in liss:
             model.append((l, l.id, (l.denominazione or '')[0:20]))
-
     combobox.clear()
     renderer = gtk.CellRendererText()
     combobox.pack_start(renderer, True)

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -26,7 +26,7 @@ from promogest.ui.gtk_compat import *
 from promogest import Environment
 
 
-class CustomComboBoxModify(gtk.HBox):
+class CustomComboBoxModify(gtk.Box):
     __gtype_name__ = 'CustomComboBoxModify'
     __gsignals__ = {'clicked' : (GOBJECT_SIGNAL_RUNLAST,
                                  gobject.TYPE_OBJECT,
@@ -34,7 +34,7 @@ class CustomComboBoxModify(gtk.HBox):
 
     def __init__(self):
         from promogest.lib.utils import setconf
-        gtk.HBox.__init__(self)
+        gtk.Box.__init__(self)
         self.combobox = gtk.ComboBox()
         self.combobox.set_property("can-focus", True)
         self.button = gtk.ToggleButton()
@@ -57,6 +57,8 @@ class CustomComboBoxModify(gtk.HBox):
         self.combobox.add_attribute(renderer, 'text', 0)
         self.connect("show", self.on_show)
 
+    def clearcombobox(self):
+        self.combobox.set_active(-1)
 
     def do_button_clicked(self, button):
         self.emit('clicked', button)
@@ -86,4 +88,4 @@ class CustomComboBoxModify(gtk.HBox):
         self.combobox.set_size_request(size, -1)
 
 
-gobject.type_register(CustomComboBoxModify)
+#gobject.type_register(CustomComboBoxModify)

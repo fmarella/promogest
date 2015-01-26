@@ -27,11 +27,11 @@ import time, datetime
 from DateTimeEntryField import DateTimeEntryField
 from promogest import Environment
 
-class DateTimeWidget(gtk.HBox):
+class DateTimeWidget(gtk.Box):
 # datetimeentryfield con possibilita' di scelta dal calendario e dall'orario
     __gtype_name__ = 'DateTimeWidget'
     def __init__(self, str1=None, str2=None, int1=None, int2=None):
-        gtk.HBox.__init__(self)
+        gtk.Box.__init__(self)
         self.entry = DateTimeEntryField()
         self.button = gtk.ToggleButton()
         self.button.set_property("can-focus", False)

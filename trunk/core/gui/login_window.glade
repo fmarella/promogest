@@ -19,12 +19,12 @@
   <object class="GtkImage" id="image1">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="stock">gtk-execute</property>
+    <property name="stock">gtk-dialog-question</property>
   </object>
   <object class="GtkImage" id="image2">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="stock">gtk-connect</property>
+    <property name="stock">gtk-apply</property>
   </object>
   <object class="GtkStatusIcon" id="pg_statusbar">
     <property name="pixbuf">mask_32.png</property>
@@ -49,10 +49,10 @@
         <child internal-child="action_area">
           <object class="GtkButtonBox" id="dialog-action_area3">
             <property name="can_focus">False</property>
+            <property name="margin_right">5</property>
+            <property name="margin_bottom">5</property>
+            <property name="homogeneous">True</property>
             <property name="layout_style">end</property>
-            <child>
-              <placeholder/>
-            </child>
             <child>
               <object class="GtkButton" id="aggiorna_button">
                 <property name="label" translatable="yes">Aggiornato?</property>
@@ -65,9 +65,11 @@
               </object>
               <packing>
                 <property name="expand">False</property>
-                <property name="fill">False</property>
+                <property name="fill">True</property>
                 <property name="pack_type">end</property>
                 <property name="position">1</property>
+                <property name="secondary">True</property>
+                <property name="non_homogeneous">True</property>
               </packing>
             </child>
             <child>
@@ -82,14 +84,14 @@
               </object>
               <packing>
                 <property name="expand">False</property>
-                <property name="fill">False</property>
+                <property name="fill">True</property>
                 <property name="pack_type">end</property>
                 <property name="position">2</property>
               </packing>
             </child>
             <child>
               <object class="GtkButton" id="button_login">
-                <property name="label">Connetti (F2)</property>
+                <property name="label">Entra(F2)</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
@@ -101,16 +103,16 @@
                 <accelerator key="F2" signal="clicked"/>
               </object>
               <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
                 <property name="pack_type">end</property>
                 <property name="position">3</property>
               </packing>
             </child>
           </object>
           <packing>
-            <property name="expand">False</property>
-            <property name="fill">False</property>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
             <property name="position">0</property>
           </packing>
         </child>
@@ -137,13 +139,15 @@
             <property name="margin_top">1</property>
             <property name="margin_bottom">1</property>
             <property name="column_spacing">1</property>
+            <property name="row_homogeneous">True</property>
+            <property name="column_homogeneous">True</property>
             <child>
               <object class="GtkImage" id="logo_image">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="yalign">0</property>
                 <property name="xpad">5</property>
-                <property name="ypad">3</property>
+                <property name="ypad">5</property>
                 <property name="pixbuf">promotux_oriz.png</property>
               </object>
               <packing>
@@ -164,7 +168,7 @@
               <packing>
                 <property name="left_attach">1</property>
                 <property name="top_attach">0</property>
-                <property name="width">2</property>
+                <property name="width">3</property>
               </packing>
             </child>
             <child>
@@ -179,7 +183,7 @@
               <packing>
                 <property name="left_attach">1</property>
                 <property name="top_attach">1</property>
-                <property name="width">2</property>
+                <property name="width">3</property>
               </packing>
             </child>
             <child>
@@ -306,20 +310,12 @@
               <packing>
                 <property name="left_attach">2</property>
                 <property name="top_attach">5</property>
+                <property name="width">2</property>
               </packing>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
             </child>
           </object>
           <packing>
-            <property name="expand">False</property>
+            <property name="expand">True</property>
             <property name="fill">True</property>
             <property name="padding">2</property>
             <property name="position">2</property>
