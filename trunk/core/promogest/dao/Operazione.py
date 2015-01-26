@@ -50,7 +50,7 @@ class Operazione(Base, Dao):
         return  dic[k]
 
 def addOpDirette():
-    s= select([t_operazione.c.denominazione]).execute().fetchall()
+    s= select([Operazione.__table__.c.denominazione]).execute().fetchall()
     if (u'Ordine da cliente diretto',) not in s or s==[]:
         ope = operazione.insert()
         ope.execute(denominazione='Ordine da cliente diretto', fonte_valore='vendita_senza_iva', tipo_persona_giuridica='cliente',tipo_operazione="documento" )
