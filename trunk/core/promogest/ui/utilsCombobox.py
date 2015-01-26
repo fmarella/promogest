@@ -896,7 +896,7 @@ def fillComboboxAspettoEsterioreBeni(combobox, filter=False):
     emptyRow = ''
     model.append((emptyRow))
     for t in res:
-        if t[0].strip() != "":
+        if t and len(t) > 0 and str(t[0]).strip() != "":
             model.append([t[0][0:20]])
 
     combobox.clear()
