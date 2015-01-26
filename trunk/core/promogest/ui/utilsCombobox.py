@@ -858,8 +858,11 @@ def fillComboboxCausaliTrasporto(combobox, filter=False):
     emptyRow = ''
     model.append([emptyRow])
     for t in res:
-        if t and t[0] and str(t[0]).strip() != "":
-            model.append([t[0][0:30]])
+        try:
+            if t and str(t[0]).strip() != "":
+                model.append([t[0][0:30]])
+        except:
+            pass
     combobox.clear()
     renderer = gtk.CellRendererText()
     combobox.pack_start(renderer, True)
@@ -896,8 +899,11 @@ def fillComboboxAspettoEsterioreBeni(combobox, filter=False):
     emptyRow = ''
     model.append((emptyRow))
     for t in res:
-        if t and t[0] and str(t[0]).strip() != "":
-            model.append([t[0][0:20]])
+        try:
+            if t and t[0] and str(t[0]).strip() != "":
+                model.append([t[0][0:20]])
+        except:
+            pass
 
     combobox.clear()
     renderer = gtk.CellRendererText()
@@ -959,8 +965,11 @@ def fillComboboxNotePiePaginaTestataDocumento(combobox):
                             TestataDocumento.note_pie_pagina).distinct()
     model = gtk.ListStore(str)
     for c in res:
-        if c and "Rif. " not in c[0] and c[0].strip() != "":
-            model.append([str(c[0].encode("utf-8"))])
+        try:
+            if c and "Rif. " not in c[0] and c[0].strip() != "":
+                model.append([str(c[0].encode("utf-8"))])
+        except:
+            pass
     combobox.clear()
     renderer = gtk.CellRendererText()
     combobox.pack_start(renderer, True)
