@@ -959,7 +959,7 @@ def fillComboboxNotePiePaginaTestataDocumento(combobox):
                             TestataDocumento.note_pie_pagina).distinct()
     model = gtk.ListStore(str)
     for c in res:
-        if c and len(c) > 0 and "Rif. " not in c[0] and c[0].strip() != "":
+        if c and "Rif. " not in c[0] and c[0].strip() != "":
             model.append([str(c[0].encode("utf-8"))])
     combobox.clear()
     renderer = gtk.CellRendererText()
