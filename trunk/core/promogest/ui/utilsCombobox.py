@@ -858,7 +858,7 @@ def fillComboboxCausaliTrasporto(combobox, filter=False):
     emptyRow = ''
     model.append([emptyRow])
     for t in res:
-        if t and len(t) >0 and t[0] and str(t[0]).strip() != "":
+        if t and t[0] and str(t[0]).strip() != "":
             model.append([t[0][0:30]])
     combobox.clear()
     renderer = gtk.CellRendererText()
@@ -896,7 +896,7 @@ def fillComboboxAspettoEsterioreBeni(combobox, filter=False):
     emptyRow = ''
     model.append((emptyRow))
     for t in res:
-        if t and len(t) > 0 and t[0] and str(t[0]).strip() != "":
+        if t and t[0] and str(t[0]).strip() != "":
             model.append([t[0][0:20]])
 
     combobox.clear()
