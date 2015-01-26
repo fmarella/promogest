@@ -43,24 +43,24 @@ class AnagraficaSecondaria_(Base, Dao):
 
     def filter_values(self, k, v):
         if k == 'codice':
-            dic = {k: PersonaGiuridica_.__table__.c.codice.ilike("%" + v + "%")}
+            dic = {k: t_persona_giuridica.c.codice.ilike("%" + v + "%")}
         elif k == 'ragioneSociale':
-            dic = {k: PersonaGiuridica_.__table__.c.ragione_sociale.ilike("%" + v + "%")}
+            dic = {k: t_persona_giuridica.c.ragione_sociale.ilike("%" + v + "%")}
         elif k == 'idRole':
-            dic = {k: AnagraficaSecondaria_.__table__.c.id_ruolo == v}
+            dic = {k: t_anagrafica_secondaria.c.id_ruolo == v}
         elif k == 'idMagazzino':
-            dic = {k: AnagraficaSecondaria_.__table__.c.id_magazzino == v}
+            dic = {k: t_anagrafica_secondaria.c.id_magazzino == v}
         elif k == 'cognomeNome':
-            dic = {k: or_(PersonaGiuridica_.__table__.c.cognome.ilike("%" + v + "%"),
-                PersonaGiuridica_.__table__.c.nome.ilike("%" + v + "%"))}
+            dic = {k: or_(t_persona_giuridica.c.cognome.ilike("%" + v + "%"),
+                t_persona_giuridica.c.nome.ilike("%" + v + "%"))}
         elif k == 'localita':
             dic = {k: or_(
-            PersonaGiuridica_.__table__.c.sede_operativa_localita.ilike("%" + v + "%"),
-                PersonaGiuridica_.__table__.c.sede_legale_localita.ilike("%" + v + "%"))}
+            t_persona_giuridica.c.sede_operativa_localita.ilike("%" + v + "%"),
+                t_persona_giuridica.c.sede_legale_localita.ilike("%" + v + "%"))}
         elif k == 'partitaIva':
-            dic = {k: PersonaGiuridica_.__table__.c.partita_iva.ilike("%" + v + "%")}
+            dic = {k: t_persona_giuridica.c.partita_iva.ilike("%" + v + "%")}
         elif k == 'codiceFiscale':
-            dic = {k: PersonaGiuridica_.__table__.c.codice_fiscale.ilike("%" + v + "%")}
+            dic = {k: t_persona_giuridica.c.codice_fiscale.ilike("%" + v + "%")}
         return  dic[k]
 
     @property
