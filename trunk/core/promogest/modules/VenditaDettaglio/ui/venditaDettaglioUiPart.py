@@ -131,7 +131,7 @@ def drawPart(anag):
     column.set_clickable(True)
     column.set_resizable(True)
     column.set_expand(False)
-    column.set_min_width(50)
+    column.set_min_width(140)
     treeview.append_column(column)
 
 

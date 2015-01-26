@@ -221,7 +221,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         model = treeview.get_model()
         value=value.replace(",",".")
         value = mN(value)
-        model[path][5] = value
+        model[path][5] = str(value)
         if model[path][7] == '%':
             tipoSconto = "percentuale"
         else:
@@ -240,7 +240,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
                 prezzoscontato = mN(model[path][5]) -mN(model[path][6])
             if not prezzoscontato:
                 prezzoscontato = "0.00"
-            model[path][8] = prezzoscontato
+            model[path][8] = str(prezzoscontato)
         self.refreshTotal()
         self.on_cancel_button_clicked(self.getTopLevel)
 
