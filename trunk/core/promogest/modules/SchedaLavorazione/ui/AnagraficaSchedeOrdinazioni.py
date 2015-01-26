@@ -265,15 +265,15 @@ class AnagraficaSchedeOrdinazioniFilter(AnagraficaFilter):
             data_matrimonio = dateToString(t.data_matrimonio)
             data_presa_in_carico = dateToString(t.data_presa_in_carico)
             self._treeViewModel.append((t,
-                                        (t.numero or 0),
-                                        (t.ricevuta_associata or ''),
-                                        (t.nomi_sposi or ''),
+                                        (str(t.numero) or 0),
+                                        (str(t.ricevuta_associata) or ''),
+                                        (str(t.nomi_sposi) or ''),
                                         data_matrimonio,
                                         data_presa_in_carico,
-                                        (t.referente or ''),
-                                        (t.colore_stampa or ''),
-                                        (t.carattere_stampa or ''),
-                                        (t.note_final or '')))
+                                        (str(t.referente) or ''),
+                                        (str(t.colore_stampa) or ''),
+                                        (str(t.carattere_stampa) or ''),
+                                        (str(t.note_final) or '')))
 
 class AnagraficaSchedeOrdinazioniHtml(AnagraficaHtml):
     def __init__(self, anagrafica):
