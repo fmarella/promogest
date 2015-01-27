@@ -47,6 +47,7 @@ Password &lt;b&gt;admin&lt;/b&gt;</property>
     <property name="title" translatable="yes">PromoGest, Software di gestione Open source</property>
     <property name="resizable">False</property>
     <property name="window_position">center-always</property>
+    <property name="icon">mask_24.png</property>
     <property name="type_hint">dialog</property>
     <property name="gravity">center</property>
     <signal name="key-press-event" handler="on_login_window_key_press_event" swapped="no"/>
