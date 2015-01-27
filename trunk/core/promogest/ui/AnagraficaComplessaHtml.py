@@ -155,7 +155,7 @@ class AnagraficaHtml(object):
             from  xhtml2pdf import pisa
             f = self.hh
             g = file(Environment.tempDir + ".temp.pdf", "wb")
-            pisa.CreatePDF(str(f), g)
+            pisa.CreatePDF(f, g)
             g .close()
             g = file(Environment.tempDir + ".temp.pdf", "r")
             f = g.read()
