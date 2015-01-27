@@ -179,7 +179,12 @@ class ExportCsv(GladeWidget):
 
     def on_esporta_button_clicked(self, button):
         """Esporta il file csv dopo averlo creato"""
-        if self.selezione_modello_combobox.get_active_text() =="":
+        tree_iter = self.selezione_modello_combobox.get_active_iter()
+        if tree_iter != None:
+            modell = self.selezione_modello_combobox.get_model()
+            if modell[tree_iter][0] =="":
+                obligatoryField(self.getTopLevel(), self.selezione_modello_combobox)
+        else:
             obligatoryField(self.getTopLevel(), self.selezione_modello_combobox)
         if self.selezione_radio.get_active():
             print "SOLO SELEZIONATO"

@@ -179,7 +179,7 @@ class Sconti(GladeWidget):
             modell = self.applicazione_sconti_combobox.get_model()
             self.stringApplicazione = modell[tree_iter][0]
         else:
-            self.stringApplicazione = [] #self.applicazione_sconti_combobox.get_text()
+            self.stringApplicazione = "scalare"
         self.listSconti = []
         model = self.sconti_treeview.get_model()
         for r in model:
