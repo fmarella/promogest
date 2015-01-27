@@ -114,7 +114,7 @@ def drawPart(anag):
     #column.set_clickable(False)
     column.set_resizable(True)
     column.set_expand(False)
-    column.set_min_width(80)
+    column.set_min_width(140)
     treeview.append_column(column)
 
     cellspinsconto = gtk.CellRendererSpin()
@@ -175,7 +175,7 @@ def drawPart(anag):
     #column.set_clickable(False)
     column.set_resizable(True)
     column.set_expand(False)
-    column.set_min_width(50)
+    column.set_min_width(140)
     treeview.append_column(column)
 
     column = gtk.TreeViewColumn('Totale', rendererSx, text=12, background=10,font=11)

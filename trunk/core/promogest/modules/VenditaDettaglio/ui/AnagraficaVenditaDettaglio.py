@@ -273,8 +273,8 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         model = treeview.get_model()
         value=value.replace(",",".")
         value = mN(value)
-        model[path][9] = value
-        model[path][12] = mN(Decimal(value)* Decimal(model[path][8].replace(",",".")))
+        model[path][9] = str(value)
+        model[path][12] = str(mN(Decimal(value)* Decimal(model[path][8].replace(",","."))))
         self.refreshTotal()
         self.on_cancel_button_clicked(self.getTopLevel)
 
