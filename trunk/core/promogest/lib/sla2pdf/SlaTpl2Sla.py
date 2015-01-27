@@ -370,7 +370,7 @@ class SlaTpl2Sla(SlaParser):
                                 tmp = self.getTagToPrint(tmp,tags=tags, k=k,pageNamber =pageNamber)
                                 if tmp != "":
                                     prova = ch.replace(tmp,"")
-                                    test=  prova.encode()+" "+ tmp.encode()
+                                    test=  prova.encode("utf-8")+" "+ tmp.encode("utf-8")
                                 else:
                                     test = tmp
                                 itext.set('CH',test )
@@ -404,7 +404,7 @@ class SlaTpl2Sla(SlaParser):
                     # Replacing non-iterator tags
 
                     for itext in itexts:
-                        ch = str(itext.get('CH'))
+                        ch = itext.get('CH')
                         tags = Sla2pdfUtils.findTags(ch)
                         #print "Stampo il tag", tags
                         if tags is not None:
@@ -524,9 +524,9 @@ class SlaTpl2Sla(SlaParser):
                                     resolvedTag = self.callFunction(function, value, parameter)
                                 else:
                                     resolvedTag = str(value)
-                                ch = ch.replace(tags[k]['completeTag'], resolvedTag).encode("utf-8")
-                                if "€€" in ch.replace(" ",""):
-                                    ch = ch.replace('€', '', 1)
+                                ch = ch.replace(tags[k]['completeTag'], resolvedTag)
+                                #if "€€" in ch.replace(" ",""):
+                                    #ch = ch.replace('€', '', 1)
                                 try:
                                     itext.set('CH', ch.decode("utf-8"))
                                 except:

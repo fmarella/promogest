@@ -80,7 +80,7 @@
                 <td class="odd-detail">{{loop.index}}</td>
                 <td class="odd-detail">{{(riga.magazzino|nonone)[:15]}}</td>
                 <td class="odd-detail"><b><a href="program:/articoloId={{riga.id_articolo}}">{{riga.codice_articolo}}</a></b></td>
-                <td class="odd-detail">{{riga.descrizione|nonone}} {{riga.aggiuntalottoindescrizione}}</td>
+                <td class="odd-detail">{{riga.descrizione.decode("utf-8")|nonone}} {{riga.aggiuntalottoindescrizione}}</td>
                 <td class="odd-detail" colspan="2">{{riga.listino}}</td>
                 <td class="odd-number" colspan="2">{{utils.mNLC(riga.valore_unitario_lordo,2)}}</td>
                 <td class="odd-detail" colspan="2">{{utils.getStringaSconti(utils.getScontiFromDao(riga.sconti)[0])}}</td>
