@@ -2959,8 +2959,8 @@ def messageError(msg="Messaggio generico", transient=None):
     if Environment.web is not True:
         dialoggg = gtk.MessageDialog(transient,
                             GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
-                            gtk.MESSAGE_ERROR,
-                            gtk.BUTTONS_CANCEL)
+                            GTK_DIALOG_MESSAGE_ERROR,
+                            GTK_BUTTONS_OK)
         dialoggg.set_markup(msg)
         print "MESSAGGIO", msg
         response = dialoggg.run()
