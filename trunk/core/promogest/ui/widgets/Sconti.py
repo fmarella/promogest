@@ -174,7 +174,12 @@ class Sconti(GladeWidget):
 
 
     def on_conferma_button_clicked(self, widget):
-        self.stringApplicazione = self.applicazione_sconti_combobox.get_active_text()
+        tree_iter = self.applicazione_sconti_combobox.get_active_iter()
+        if tree_iter != None:
+            modell = self.applicazione_sconti_combobox.get_model()
+            self.stringApplicazione = modell[tree_iter][0]
+        else:
+            self.stringApplicazione = [] #self.applicazione_sconti_combobox.get_text()
         self.listSconti = []
         model = self.sconti_treeview.get_model()
         for r in model:
