@@ -208,7 +208,6 @@
   <object class="GtkEntryCompletion" id="ricerca_articolo_entrycompletition">
     <property name="model">ricerca_art_listore</property>
     <property name="minimum_key_length">2</property>
-    <property name="text_column">0</property>
     <signal name="match-selected" handler="on_completion_match" swapped="no"/>
   </object>
   <object class="GtkListStore" id="ricerca_criterio_listore">

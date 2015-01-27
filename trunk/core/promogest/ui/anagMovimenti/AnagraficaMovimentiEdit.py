@@ -63,8 +63,9 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
         # modello righe: magazzino, codice articolo,
         # descrizione, percentuale iva, unita base, multiplo, listino,
         # quantita, prezzo lordo, sconti, prezzo netto, totale
-        self.modelRiga = gtk.ListStore(str, str, str, str, str, str, str,
-                                       str, str, str, str, str)
+        #self.modelRiga = gtk.ListStore(str, str, str, str, str, str, str,
+                                       #str, str, str, str, str)
+        self.modelRiga = self.righe_movimento_listore
         # iteratore riga corrente
         self._iteratorRiga = None
         # cliente o fornitore ?
@@ -78,7 +79,6 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
         self._loading = False
         self.mattu = False
         self.completion = self.ricerca_articolo_entrycompletition
-
         self.completion.set_match_func(self.match_func,None)
         self.completion.set_text_column(0)
         self.articolo_entry.set_completion(self.completion)
@@ -175,93 +175,6 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
         Costruisce la treevew e gli altri widget dell'interfaccia
         """
         treeview = self.righe_treeview
-        rendererSx = gtk.CellRendererText()
-        rendererDx = gtk.CellRendererText()
-        rendererDx.set_property('xalign', 1)
-
-        column = gtk.TreeViewColumn('Magazzino', rendererSx, text=0)
-        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
-        column.set_clickable(False)
-        column.set_resizable(True)
-        column.set_expand(False)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Codice articolo', rendererSx, text=1)
-        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
-        column.set_clickable(False)
-        column.set_resizable(True)
-        column.set_expand(False)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Descrizione', rendererSx, text=2)
-        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
-        column.set_clickable(False)
-        column.set_resizable(True)
-        column.set_expand(True)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('% IVA', rendererDx, text=3)
-        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
-        column.set_clickable(False)
-        column.set_resizable(True)
-        column.set_expand(False)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('U.M.', rendererSx, text=4)
-        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
-        column.set_clickable(False)
-        column.set_resizable(True)
-        column.set_expand(False)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Multiplo', rendererSx, text=5)
-        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
-        column.set_clickable(False)
-        column.set_resizable(True)
-        column.set_expand(False)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Listino', rendererSx, text=6)
-        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
-        column.set_clickable(False)
-        column.set_resizable(True)
-        column.set_expand(False)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Quantita''', rendererDx, text=7)
-        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
-        column.set_clickable(False)
-        column.set_resizable(True)
-        column.set_expand(False)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Prezzo lordo', rendererDx, text=8)
-        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
-        column.set_clickable(False)
-        column.set_resizable(True)
-        column.set_expand(False)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Sconti', rendererSx, text=9)
-        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
-        column.set_clickable(False)
-        column.set_resizable(True)
-        column.set_expand(False)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Prezzo netto', rendererDx, text=10)
-        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
-        column.set_clickable(False)
-        column.set_resizable(True)
-        column.set_expand(False)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Totale', rendererDx, text=11)
-        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
-        column.set_clickable(False)
-        column.set_resizable(True)
-        column.set_expand(False)
-        treeview.append_column(column)
 
         fillComboboxOperazioni(self.id_operazione_combobox, 'movimento')
         fillComboboxMagazzini(self.id_magazzino_combobox)
@@ -1382,9 +1295,6 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
         stringa = text.get_text()
         if self.mattu:
             text.set_text(stringa.split(self.sepric)[0])
-        #model = gtk.ListStore(str,object)
-        #vediamo = self.completion.get_model()
-        #vediamo.clear()
         self.ricerca_art_listore.clear()
         art = []
         # evita la ricerca per stringhe vuote o più corte di due caratteri
@@ -1422,10 +1332,13 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
                 cb = m.codice_a_barre
                 compl_string = bloccoInformazioni+self.sepric+cb
             self.ricerca_art_listore.append([compl_string,m])
-        #self.completion.set_model(model)
+            #self.ricerca_art_listore.set_text_column(self.completion, 0)
+        #self.completion.set_model(self.ricerca_art_listore)
+        #self.completion.set_text_column(0)
+        #self.articolo_entry.set_completion(self.completion)
 
 
-    def match_func(self, completion, key, iter):
+    def match_func(self, completion, key, iter, user_data=None):
         model = self.completion.get_model()
         self.mattu = False
         self.articolo_matchato = None

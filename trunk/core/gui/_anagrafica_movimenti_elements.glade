@@ -20,7 +20,6 @@
   <object class="GtkEntryCompletion" id="ricerca_articolo_entrycompletition">
     <property name="model">ricerca_art_listore</property>
     <property name="minimum_key_length">2</property>
-    <property name="text_column">0</property>
     <signal name="match-selected" handler="on_completion_match" swapped="no"/>
   </object>
   <object class="GtkListStore" id="ricerca_criterio_listore">
@@ -42,6 +41,34 @@
         <col id="0" translatable="yes">Ricerca per COD.FORNITORE</col>
       </row>
     </data>
+  </object>
+  <object class="GtkListStore" id="righe_movimento_listore">
+    <columns>
+      <!-- column-name gchararray1 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray2 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray3 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray4 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray5 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray6 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray7 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray8 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray9 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray10 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray11 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray12 -->
+      <column type="gchararray"/>
+    </columns>
   </object>
   <object class="GtkVBox" id="anagrafica_movimenti_detail_vbox">
     <property name="visible">True</property>
@@ -421,6 +448,7 @@
                         <property name="secondary_icon_stock">gtk-clear</property>
                         <property name="primary_icon_tooltip_text">Clicca qui per la ricerca</property>
                         <property name="primary_icon_tooltip_markup">Clicca qui per la ricerca</property>
+                        <property name="completion">ricerca_articolo_entrycompletition</property>
                         <signal name="changed" handler="on_articolo_entry_insert_text" swapped="no"/>
                         <signal name="focus-in-event" handler="on_articolo_entry_focus_in_event" swapped="no"/>
                         <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
@@ -1424,10 +1452,10 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <child>
-                  <object class="GtkHButtonBox" id="hbuttonbox1">
+                  <object class="GtkBox" id="box1">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="layout_style">spread</property>
+                    <property name="homogeneous">True</property>
                     <child>
                       <object class="GtkButton" id="confirm_row_button">
                         <property name="label">gtk-apply</property>
@@ -1439,7 +1467,7 @@
                       </object>
                       <packing>
                         <property name="expand">False</property>
-                        <property name="fill">False</property>
+                        <property name="fill">True</property>
                         <property name="position">0</property>
                       </packing>
                     </child>
@@ -1454,7 +1482,7 @@
                       </object>
                       <packing>
                         <property name="expand">False</property>
-                        <property name="fill">False</property>
+                        <property name="fill">True</property>
                         <property name="position">1</property>
                       </packing>
                     </child>
@@ -1469,7 +1497,7 @@
                       </object>
                       <packing>
                         <property name="expand">False</property>
-                        <property name="fill">False</property>
+                        <property name="fill">True</property>
                         <property name="position">2</property>
                       </packing>
                     </child>
@@ -1484,16 +1512,15 @@
                       </object>
                       <packing>
                         <property name="expand">False</property>
-                        <property name="fill">False</property>
+                        <property name="fill">True</property>
                         <property name="padding">2</property>
                         <property name="position">3</property>
                       </packing>
                     </child>
                   </object>
                   <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">False</property>
-                    <property name="padding">1</property>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
                     <property name="position">0</property>
                   </packing>
                 </child>
@@ -1606,11 +1633,150 @@
                           <object class="GtkTreeView" id="righe_treeview">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
+                            <property name="model">righe_movimento_listore</property>
                             <property name="show_expanders">False</property>
                             <property name="enable_grid_lines">both</property>
                             <signal name="row-activated" handler="on_righe_treeview_row_activated" swapped="no"/>
                             <child internal-child="selection">
                               <object class="GtkTreeSelection" id="treeview-selection1"/>
+                            </child>
+                            <child>
+                              <object class="GtkTreeViewColumn" id="treeviewcolumn1">
+                                <property name="title" translatable="yes">Magazzino</property>
+                                <child>
+                                  <object class="GtkCellRendererText" id="cellrenderertext1"/>
+                                  <attributes>
+                                    <attribute name="text">0</attribute>
+                                  </attributes>
+                                </child>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkTreeViewColumn" id="treeviewcolumn2">
+                                <property name="title" translatable="yes">Codice articolo</property>
+                                <child>
+                                  <object class="GtkCellRendererText" id="cellrenderertext3"/>
+                                  <attributes>
+                                    <attribute name="text">1</attribute>
+                                  </attributes>
+                                </child>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkTreeViewColumn" id="treeviewcolumn3">
+                                <property name="resizable">True</property>
+                                <property name="title" translatable="yes">Descrizione</property>
+                                <property name="expand">True</property>
+                                <child>
+                                  <object class="GtkCellRendererText" id="cellrenderertext4"/>
+                                  <attributes>
+                                    <attribute name="text">2</attribute>
+                                  </attributes>
+                                </child>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkTreeViewColumn" id="treeviewcolumn4">
+                                <property name="title" translatable="yes">% IVA</property>
+                                <child>
+                                  <object class="GtkCellRendererText" id="cellrenderertext5"/>
+                                  <attributes>
+                                    <attribute name="text">3</attribute>
+                                  </attributes>
+                                </child>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkTreeViewColumn" id="treeviewcolumn5">
+                                <property name="title" translatable="yes">U.M.</property>
+                                <child>
+                                  <object class="GtkCellRendererText" id="cellrenderertext6"/>
+                                  <attributes>
+                                    <attribute name="text">4</attribute>
+                                  </attributes>
+                                </child>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkTreeViewColumn" id="treeviewcolumn6">
+                                <property name="title" translatable="yes">Multiplo</property>
+                                <child>
+                                  <object class="GtkCellRendererText" id="cellrenderertext7"/>
+                                  <attributes>
+                                    <attribute name="text">5</attribute>
+                                  </attributes>
+                                </child>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkTreeViewColumn" id="treeviewcolumn7">
+                                <property name="title" translatable="yes">Listino</property>
+                                <child>
+                                  <object class="GtkCellRendererText" id="cellrenderertext8"/>
+                                  <attributes>
+                                    <attribute name="text">6</attribute>
+                                  </attributes>
+                                </child>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkTreeViewColumn" id="treeviewcolumn8">
+                                <property name="title" translatable="yes">Quantita'</property>
+                                <child>
+                                  <object class="GtkCellRendererText" id="cellrenderertext9">
+                                    <property name="cell_background_rgba">rgb(255,247,213)</property>
+                                  </object>
+                                  <attributes>
+                                    <attribute name="text">7</attribute>
+                                  </attributes>
+                                </child>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkTreeViewColumn" id="treeviewcolumn9">
+                                <property name="title" translatable="yes">Prezzo lordo</property>
+                                <child>
+                                  <object class="GtkCellRendererText" id="cellrenderertext10"/>
+                                  <attributes>
+                                    <attribute name="text">8</attribute>
+                                  </attributes>
+                                </child>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkTreeViewColumn" id="treeviewcolumn10">
+                                <property name="title" translatable="yes">Sconti</property>
+                                <child>
+                                  <object class="GtkCellRendererText" id="cellrenderertext11"/>
+                                  <attributes>
+                                    <attribute name="text">9</attribute>
+                                  </attributes>
+                                </child>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkTreeViewColumn" id="treeviewcolumn11">
+                                <property name="title" translatable="yes">Prezzo netto</property>
+                                <child>
+                                  <object class="GtkCellRendererText" id="cellrenderertext12"/>
+                                  <attributes>
+                                    <attribute name="text">10</attribute>
+                                  </attributes>
+                                </child>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkTreeViewColumn" id="treeviewcolumn12">
+                                <property name="title" translatable="yes">Totale</property>
+                                <child>
+                                  <object class="GtkCellRendererText" id="cellrenderertext13">
+                                    <property name="cell_background_rgba">rgb(238,238,236)</property>
+                                  </object>
+                                  <attributes>
+                                    <attribute name="text">11</attribute>
+                                  </attributes>
+                                </child>
+                              </object>
                             </child>
                           </object>
                         </child>
@@ -1717,6 +1883,18 @@
             <property name="can_focus">False</property>
             <property name="n_rows">3</property>
             <property name="n_columns">3</property>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
             <child>
               <placeholder/>
             </child>
