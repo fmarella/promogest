@@ -42,6 +42,7 @@ class SlaParser(object):
             f = file(self.slaFileName, 'rb')
             text = f.read()
             text = text.replace('&#x5;', '\\n')
+            text = text.replace('€', '')
             f.close()
             tempFile = self.pdfFolder+"_temp"
             try:
