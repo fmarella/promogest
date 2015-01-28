@@ -368,15 +368,15 @@ class GestioneInventario(RicercaComplessaArticoli):
                           str(quantita),
                           str(valore_unitario),
                           (i.denominazione_breve_unita_base or ''),
-                          mN(valore_unitario*quantita ) or str(0) ,
+                          str(mN(valore_unitario*quantita )) or str(0) ,
                           dateTimeToString(i.data_aggiornamento),
                           (i.codice_articolo or ''),
                           (i.articolo or ''),
-                          (i.codice_a_barre or ''),
-                          (i.produttore or ''),
-                          (i.denominazione_famiglia or ''),
-                          (i.denominazione_categoria or ''),
-                          (i.codice_articolo_fornitore or '')))
+                          (str(i.codice_a_barre) or ''),
+                          (str(i.produttore) or ''),
+                          (str(i.denominazione_famiglia) or ''),
+                          (str(i.denominazione_categoria) or ''),
+                          (str(i.codice_articolo_fornitore) or '')))
         self._modifica.numero_referenze.set_text(str(self.inventariati()))
 
     def on_calcola_pezzi_button_clicked(self, button):
