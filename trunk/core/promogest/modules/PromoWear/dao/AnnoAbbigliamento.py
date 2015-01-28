@@ -53,8 +53,6 @@ s= select([AnnoAbbigliamento.__table__.c.denominazione]).execute().fetchall()
 tipo = AnnoAbbigliamento.__table__.insert()
 if (u'2014', ) not in s or s==[]:
 
-    tipo.execute(denominazione='2008')
-    tipo.execute(denominazione='2009')
     tipo.execute(denominazione='2010')
     tipo.execute(denominazione='2011')
     tipo.execute(denominazione='2012')

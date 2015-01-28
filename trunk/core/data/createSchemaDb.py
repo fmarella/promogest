@@ -27,7 +27,7 @@ from sqlalchemy.schema import CreateSchema
 
 
 def orderedInstallVenditaDettaglio():
-    print "| QUANDO VIENI CHIAMATO"
+    print "INSTALLAZIONE PROMOSHOP"
     #orderedImport()
     try:
 
@@ -43,6 +43,25 @@ def orderedInstallVenditaDettaglio():
         return True
     except:
         return False
+
+def orderedInstallPromoWear():
+    print "INSTALLAZIONE PROMOWEAR"
+    #orderedImport()
+    try:
+
+        from data.colore import t_colore #v
+        from data.annoAbbigliamento import t_anno_abbigliamento #v
+        from data.genereAbbigliamento import t_genere_abbigliamento #v
+        from data.modello import t_modello #v
+        from data.taglia import t_taglia #v
+        from data.gruppoTaglia import t_gruppo_taglia #v
+        from data.stagioneAbbigliamento import t_stagione_abbigliamento
+        from data.gruppoTagliaTaglia import t_gruppo_taglia_taglia
+        from data.articoloTagliaColore import t_articolo_taglia_colore
+        return True
+    except:
+        return False
+
 
 
 def buildAll():

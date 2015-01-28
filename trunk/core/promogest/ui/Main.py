@@ -124,12 +124,10 @@ class Main(GladeWidget):
         elif posso("SD") and \
                             Environment.conf.SincroDB.tipo == "server":
             self.client_sincro_db.destroy()
-        if Environment.tipodb == "postgresql":
-#            self.whatcant_button.destroy()
-            self.test_promowear_button.destroy()
-            self.test_promoshop_button.destroy()
         if "VenditaDettaglio" in Environment.modulesList:
             self.test_promoshop_button.destroy()
+        if "PromoWear" in Environment.modulesList:
+            self.test_promowear_button.destroy()
         try:
             self.addNoteBookPage()
         except:
@@ -875,30 +873,26 @@ promogest2 IN /HOME/NOMEUTENTE/ O IN C:/UTENTI/NOMEUTENTE""")
             showAnagrafica(self.getTopLevel(), anag)
 
     def on_test_promowear_button_clicked(self, button):
-        msg = _("""
-QUESTA FUNZIONALITÀ È STATA AGGIUNTA PER
-PROVARE IL PROMOWEAR
-QUESTO MODULO TAGLIA E COLORE SERVE A CHI DEVE GESTIRE
-UNA ATTIVITÀ CHE MOVIMENTA E VENDE ABBIGLIAMENTO E/O CALZATURE.
-L'OPERAZIONE È IRREVERSIBILE,NON CAUSA PERDITA DI DATI
-MA ATTIVATELO SOLO SE NE AVETE BISOGNO
-
-Procedo all'installazione del modulo PromoWear? """)
+        msg = _("""PROVIAMO IL MODULO DI TAGLIA E COLORE o PROMOWEAR, Procedo? """)
         if not YesNoDialog(msg=msg, transient=self.getTopLevel()):
             return
-        if not hasattr(Environment.conf,"PromoWear"):
-            Environment.conf.add_section("PromoWear")
-            Environment.conf.save()
-            Environment.conf.PromoWear.primoavvio = "yes"
-            Environment.conf.save()
-        tables = [t.name for t in Environment.params["metadata"].sorted_tables]
-        if "colore" not in tables and "taglia" not in tables:
-            from promogest.modules.PromoWear.data.PromoWearDB import *
-            messageInfo(msg=_(" MODULO ATTIVATO, RIAVVIARE IL PROGRAMMA! "))
-            Environment.delete_pickle()
-        else:
-            msg= _("MODULO GIA' ATTIVATO")
-            messageInfo(msg=msg, transient=self.getTopLevel())
+        from data.createSchemaDb import orderedInstallPromoWear
+        if orderedInstallPromoWear():
+            if not setconf("PromoWear","mod_enable",value="yes"):
+                a = SetConf()
+                a.section = "PromoWear"
+                a.tipo_section ="Modulo"
+                a.description = "Modulo Taglia e colore"
+                a.tipo = "bool"
+                a.key = "mod_enable"
+                a.value = "yes"
+                a.persist()
+        messageInfo(msg=_("RIAVVIA IL PROMOGEST"))
+        Environment.delete_pickle()
+        Environment.restart_program()
+        #else:
+            #msg= _("MODULO GIA' ATTIVATO")
+            #messageInfo(msg=msg, transient=self.getTopLevel())
 
 
     def on_test_promoshop_button_clicked(self, button):
@@ -937,6 +931,7 @@ Procedo all'installazione del modulo PromoWear? """)
             from data.createSchemaDb import orderedInstallVenditaDettaglio
             orderedInstallVenditaDettaglio()
             messageInfo(msg=_("RIAVVIA IL PROMOGEST"))
+            Environment.delete_pickle()
             Environment.restart_program()
 
         else:
