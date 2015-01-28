@@ -22,6 +22,7 @@
 
 import os
 import math
+from decimal import *
 import operator
 import xml.etree.cElementTree as ElementTree
 from promogest import Environment
@@ -496,7 +497,7 @@ class SlaTpl2Sla(SlaParser):
                                                     arraySource = self.objects[self.cycle][arrayName][arrayIndex]
 
                                                     if SHOWZERORIGA == True:
-                                                        value = str(arraySource[tagName])
+                                                        value = arraySource[tagName]
                                                     else:
                                                         value = arraySource[tagName] or ""
                                                 else:
@@ -523,7 +524,9 @@ class SlaTpl2Sla(SlaParser):
                                 if function in self.formatFunctions:
                                     resolvedTag = self.callFunction(function, value, parameter)
                                 else:
-                                    resolvedTag = str(value)
+                                    resolvedTag = value
+                                if type(resolvedTag) == type(Decimal()):
+                                    resolvedTag = str(resolvedTag).encode("utf-8")
                                 ch = ch.replace(tags[k]['completeTag'], resolvedTag)
                                 #if value.count('€') >1:
                                     #value = value.replace('€', '', 1)
