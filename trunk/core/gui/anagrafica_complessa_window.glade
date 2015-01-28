@@ -457,7 +457,7 @@ dei farmaci venduti in un determinato arco temporale</property>
           <object class="GtkToolbar" id="toolbar1">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="toolbar_style">both-horiz</property>
+            <property name="toolbar_style">icons</property>
             <child>
               <object class="GtkToolButton" id="record_new_button">
                 <property name="visible">True</property>
@@ -468,7 +468,7 @@ dei farmaci venduti in un determinato arco temporale</property>
                 <signal name="clicked" handler="on_record_new_activate" swapped="no"/>
               </object>
               <packing>
-                <property name="expand">True</property>
+                <property name="expand">False</property>
                 <property name="homogeneous">True</property>
               </packing>
             </child>
@@ -494,7 +494,7 @@ dei farmaci venduti in un determinato arco temporale</property>
                 <signal name="clicked" handler="on_record_edit_activate" swapped="no"/>
               </object>
               <packing>
-                <property name="expand">True</property>
+                <property name="expand">False</property>
                 <property name="homogeneous">True</property>
               </packing>
             </child>
@@ -509,7 +509,7 @@ dei farmaci venduti in un determinato arco temporale</property>
                 <signal name="clicked" handler="on_record_duplicate_menu_activate" swapped="no"/>
               </object>
               <packing>
-                <property name="expand">True</property>
+                <property name="expand">False</property>
                 <property name="homogeneous">True</property>
               </packing>
             </child>
@@ -525,7 +525,7 @@ dei farmaci venduti in un determinato arco temporale</property>
                 <signal name="clicked" handler="on_record_delete_activate" swapped="no"/>
               </object>
               <packing>
-                <property name="expand">True</property>
+                <property name="expand">False</property>
                 <property name="homogeneous">True</property>
               </packing>
             </child>
@@ -550,7 +550,7 @@ dei farmaci venduti in un determinato arco temporale</property>
                 <signal name="clicked" handler="on_selected_record_print_activate" swapped="no"/>
               </object>
               <packing>
-                <property name="expand">True</property>
+                <property name="expand">False</property>
                 <property name="homogeneous">True</property>
               </packing>
             </child>
@@ -565,7 +565,7 @@ dei farmaci venduti in un determinato arco temporale</property>
                 <signal name="clicked" handler="on_email_toolbutton_clicked" swapped="no"/>
               </object>
               <packing>
-                <property name="expand">True</property>
+                <property name="expand">False</property>
                 <property name="homogeneous">True</property>
               </packing>
             </child>
@@ -590,7 +590,7 @@ dei farmaci venduti in un determinato arco temporale</property>
                 <signal name="clicked" handler="on_records_print_on_screen_activate" swapped="no"/>
               </object>
               <packing>
-                <property name="expand">True</property>
+                <property name="expand">False</property>
                 <property name="homogeneous">True</property>
               </packing>
             </child>
@@ -649,7 +649,7 @@ dei farmaci venduti in un determinato arco temporale</property>
                 <signal name="clicked" handler="on_export_fatturapa_toolbutton_clicked" swapped="no"/>
               </object>
               <packing>
-                <property name="expand">True</property>
+                <property name="expand">False</property>
                 <property name="homogeneous">True</property>
               </packing>
             </child>
@@ -664,7 +664,7 @@ dei farmaci venduti in un determinato arco temporale</property>
                 <signal name="clicked" handler="on_records_file_export_clicked" swapped="no"/>
               </object>
               <packing>
-                <property name="expand">True</property>
+                <property name="expand">False</property>
                 <property name="homogeneous">True</property>
               </packing>
             </child>
@@ -680,7 +680,7 @@ dei farmaci venduti in un determinato arco temporale</property>
                 <signal name="clicked" handler="on_record_fattura_button_clicked" swapped="no"/>
               </object>
               <packing>
-                <property name="expand">True</property>
+                <property name="expand">False</property>
                 <property name="homogeneous">True</property>
               </packing>
             </child>
@@ -696,7 +696,7 @@ dei farmaci venduti in un determinato arco temporale</property>
                 <signal name="clicked" handler="on_segna_pagato_button_clicked" swapped="no"/>
               </object>
               <packing>
-                <property name="expand">True</property>
+                <property name="expand">False</property>
                 <property name="homogeneous">True</property>
               </packing>
             </child>
@@ -709,14 +709,14 @@ dei farmaci venduti in un determinato arco temporale</property>
                 <signal name="clicked" handler="on_Help_activate" swapped="no"/>
               </object>
               <packing>
-                <property name="expand">True</property>
+                <property name="expand">False</property>
                 <property name="homogeneous">True</property>
               </packing>
             </child>
           </object>
           <packing>
             <property name="expand">False</property>
-            <property name="fill">False</property>
+            <property name="fill">True</property>
             <property name="position">1</property>
           </packing>
         </child>
