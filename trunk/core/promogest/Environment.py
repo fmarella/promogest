@@ -396,6 +396,7 @@ def delete_pickle():
             restart_program()
 
 def usePickleToMeta():
+    print " AZIENDA", azienda, os.path.exists(str(os.path.join(promogestDir.replace("_",""),meta_pickle.replace("_","")).strip()))
     if azienda and os.path.exists(str(os.path.join(promogestDir.replace("_",""),meta_pickle.replace("_","")).strip())):
         print " CONTROLLO DELL'ESISTENZA DEL FILE PICKLE", str(os.path.join(promogestDir.replace("_","")))
         with open(str(os.path.join(promogestDir.replace("_",""),meta_pickle.replace("_","")).strip()), 'rb') as f:
@@ -411,13 +412,14 @@ def usePickleToMeta():
         print "USO META NORMALE"
         meta = MetaData(engine)
     return meta
-meta = usePickleToMeta()
+#meta = usePickleToMeta()
 
 
 preEnv.azienda = azienda
 print " AZIENDAAAAAAAAAAAA 2222222222222222", azienda
 #meta = None
-#meta = MetaData(engine)
+meta = MetaData(engine)
+#meta = usePickleToMeta()
 
 mainSchema = None
 schema = None
