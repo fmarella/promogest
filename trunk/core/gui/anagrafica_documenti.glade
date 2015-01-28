@@ -3,6 +3,7 @@
 <interface>
   <requires lib="gtk+" version="3.4"/>
   <requires lib="pythonplugin" version="0.0"/>
+  <object class="GtkAccelGroup" id="accelgroup1"/>
   <object class="GtkAdjustment" id="adjustment1">
     <property name="upper">100</property>
     <property name="step_increment">1</property>
@@ -272,6 +273,7 @@
   <object class="GtkGrid" id="anagrafica_documenti_detail_vbox">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
+    <signal name="key-press-event" handler="on_anagrafica_documenti_detail_vbox_key_press_event" swapped="no"/>
     <child>
       <object class="GtkGrid" id="grid1">
         <property name="visible">True</property>
@@ -361,8 +363,8 @@
         <child>
           <object class="PersonaGiuridicaSearchWidget" id="id_persona_giuridica_customcombobox">
             <property name="visible">True</property>
-            <property name="app_paintable">True</property>
             <property name="can_focus">True</property>
+            <property name="hexpand">True</property>
             <property name="primary_icon_activatable">False</property>
             <property name="secondary_icon_activatable">False</property>
           </object>
@@ -2827,7 +2829,9 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
-                            <property name="has_tooltip">True</property>
+                            <property name="events">GDK_EXPOSURE_MASK | GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_MOTION_MASK | GDK_BUTTON1_MOTION_MASK | GDK_BUTTON2_MOTION_MASK | GDK_BUTTON3_MOTION_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK | GDK_KEY_PRESS_MASK | GDK_KEY_RELEASE_MASK | GDK_ENTER_NOTIFY_MASK | GDK_LEAVE_NOTIFY_MASK | GDK_FOCUS_CHANGE_MASK | GDK_STRUCTURE_MASK | GDK_PROPERTY_CHANGE_MASK | GDK_VISIBILITY_NOTIFY_MASK | GDK_PROXIMITY_IN_MASK | GDK_PROXIMITY_OUT_MASK | GDK_SUBSTRUCTURE_MASK | GDK_SCROLL_MASK | GDK_TOUCH_MASK | GDK_SMOOTH_SCROLL_MASK</property>
+                            <property name="tooltip_text" translatable="yes">Aggiunge la riga appena composta o modificata e svuota i campi per una nuova</property>
+                            <property name="valign">start</property>
                             <signal name="clicked" handler="on_confirm_row_button_clicked" swapped="no"/>
                             <child>
                               <object class="GtkAlignment" id="alignment49">
