@@ -22,93 +22,77 @@
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="label_xalign">0</property>
-        <property name="shadow_type">in</property>
+        <property name="shadow_type">none</property>
         <child>
-          <object class="GtkAlignment" id="filter_frame_alignment">
+          <object class="GtkVBox" id="filter_frame_vbox">
             <property name="visible">True</property>
-            <property name="app_paintable">True</property>
             <property name="can_focus">False</property>
-            <property name="xalign">0</property>
-            <property name="yalign">0</property>
-            <property name="right_padding">4</property>
             <child>
-              <object class="GtkVBox" id="filter_frame_vbox">
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <object class="GtkHButtonBox" id="filter_frame_hbuttonbox">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="border_width">6</property>
+                <property name="spacing">4</property>
+                <property name="layout_style">start</property>
                 <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <object class="GtkHButtonBox" id="filter_frame_hbuttonbox">
+                  <object class="GtkToggleButton" id="altri_filtri_togglebutton">
+                    <property name="label" translatable="yes">ALTRI FILTRI</property>
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="border_width">6</property>
-                    <property name="spacing">4</property>
-                    <property name="layout_style">start</property>
-                    <child>
-                      <object class="GtkToggleButton" id="altri_filtri_togglebutton">
-                        <property name="label" translatable="yes">ALTRI FILTRI</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">True</property>
-                        <property name="image">image1__</property>
-                        <signal name="toggled" handler="on_altri_filtri_togglebutton_toggled" swapped="no"/>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">False</property>
-                        <property name="padding">2</property>
-                        <property name="pack_type">end</property>
-                        <property name="position">0</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkButton" id="filter_clear_button">
-                        <property name="label">gtk-clear</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="can_default">True</property>
-                        <property name="receives_default">True</property>
-                        <property name="tooltip_text" translatable="yes">Premi ESC per ripulire i filtri</property>
-                        <property name="use_stock">True</property>
-                        <signal name="clicked" handler="on_filter_clear_button_clicked" swapped="no"/>
-                        <accelerator key="Escape" signal="clicked"/>
-                        <accelerator key="Escape" signal="clicked"/>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">False</property>
-                        <property name="pack_type">end</property>
-                        <property name="position">1</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkButton" id="filter_search_button">
-                        <property name="label">Trova (F3)</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="can_default">True</property>
-                        <property name="has_default">True</property>
-                        <property name="receives_default">True</property>
-                        <property name="events">GDK_KEY_PRESS_MASK | GDK_STRUCTURE_MASK</property>
-                        <property name="tooltip_markup">Premi ( F3 )  o invio per avviare la ricerca</property>
-                        <property name="image">trova_image</property>
-                        <signal name="clicked" handler="on_filter_search_button_clicked" swapped="no"/>
-                        <accelerator key="Return" signal="clicked"/>
-                        <accelerator key="KP_Enter" signal="clicked"/>
-                        <accelerator key="KP_F3" signal="clicked"/>
-                        <accelerator key="F3" signal="clicked"/>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">False</property>
-                        <property name="pack_type">end</property>
-                        <property name="position">2</property>
-                      </packing>
-                    </child>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="image">image1__</property>
+                    <signal name="toggled" handler="on_altri_filtri_togglebutton_toggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="padding">2</property>
+                    <property name="pack_type">end</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="filter_clear_button">
+                    <property name="label">gtk-clear</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="can_default">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="tooltip_text" translatable="yes">Premi ESC per ripulire i filtri</property>
+                    <property name="use_stock">True</property>
+                    <signal name="clicked" handler="on_filter_clear_button_clicked" swapped="no"/>
+                    <accelerator key="Escape" signal="clicked"/>
+                    <accelerator key="Escape" signal="clicked"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="pack_type">end</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="filter_search_button">
+                    <property name="label">Trova (F3)</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="can_default">True</property>
+                    <property name="has_default">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="events">GDK_KEY_PRESS_MASK | GDK_STRUCTURE_MASK</property>
+                    <property name="tooltip_markup">Premi ( F3 )  o invio per avviare la ricerca</property>
+                    <property name="image">trova_image</property>
+                    <signal name="clicked" handler="on_filter_search_button_clicked" swapped="no"/>
+                    <accelerator key="F3" signal="clicked"/>
+                    <accelerator key="KP_F3" signal="clicked"/>
+                    <accelerator key="KP_Enter" signal="clicked"/>
+                    <accelerator key="Return" signal="clicked"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -118,17 +102,17 @@
                   </packing>
                 </child>
               </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="pack_type">end</property>
+                <property name="position">2</property>
+              </packing>
             </child>
           </object>
         </child>
-        <child type="label">
-          <object class="GtkLabel" id="filter_frame_label">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="xpad">5</property>
-            <property name="label" translatable="yes">&lt;b&gt;Ricerca&lt;/b&gt;</property>
-            <property name="use_markup">True</property>
-          </object>
+        <child type="label_item">
+          <placeholder/>
         </child>
       </object>
       <packing>

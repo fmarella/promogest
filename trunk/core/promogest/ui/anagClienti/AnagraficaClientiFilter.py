@@ -42,6 +42,7 @@ class AnagraficaClientiFilter(AnagraficaFilter):
         self.ricerca_avanzata_clienti_filter_hbox.destroy()
         self.ricerca_avanzata_clienti_filter_vbox.destroy()
         self.joinT = None
+        #print " AHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH", self.anagrafica_clienti_filter_vbox.get_size()
         #join(cliente, perso_giuri)
 
     def draw(self):

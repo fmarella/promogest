@@ -77,14 +77,8 @@ except:
 
 from promogest.dao.Setconf import SetConf
 
-try:
-    if Environment.pg3:
-        from gi.repository.WebKit import WebView
-    else:
-        from webkit import WebView
-    WEBKIT = True
-except:
-    WEBKIT = False
+from gi.repository.WebKit import WebView
+WEBKIT = True
 
 
 class Main(GladeWidget):

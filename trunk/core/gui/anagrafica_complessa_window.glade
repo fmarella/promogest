@@ -457,7 +457,7 @@ dei farmaci venduti in un determinato arco temporale</property>
           <object class="GtkToolbar" id="toolbar1">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="toolbar_style">both</property>
+            <property name="toolbar_style">both-horiz</property>
             <child>
               <object class="GtkToolButton" id="record_new_button">
                 <property name="visible">True</property>
@@ -468,7 +468,7 @@ dei farmaci venduti in un determinato arco temporale</property>
                 <signal name="clicked" handler="on_record_new_activate" swapped="no"/>
               </object>
               <packing>
-                <property name="expand">False</property>
+                <property name="expand">True</property>
                 <property name="homogeneous">True</property>
               </packing>
             </child>
@@ -494,7 +494,7 @@ dei farmaci venduti in un determinato arco temporale</property>
                 <signal name="clicked" handler="on_record_edit_activate" swapped="no"/>
               </object>
               <packing>
-                <property name="expand">False</property>
+                <property name="expand">True</property>
                 <property name="homogeneous">True</property>
               </packing>
             </child>
@@ -502,13 +502,14 @@ dei farmaci venduti in un determinato arco temporale</property>
               <object class="GtkToolButton" id="duplica_button">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="tooltip_text" translatable="yes">Duplica l'oggetto selezionato</property>
                 <property name="label" translatable="yes">Duplica</property>
                 <property name="use_underline">True</property>
                 <property name="stock_id">gtk-copy</property>
                 <signal name="clicked" handler="on_record_duplicate_menu_activate" swapped="no"/>
               </object>
               <packing>
-                <property name="expand">False</property>
+                <property name="expand">True</property>
                 <property name="homogeneous">True</property>
               </packing>
             </child>
@@ -524,7 +525,7 @@ dei farmaci venduti in un determinato arco temporale</property>
                 <signal name="clicked" handler="on_record_delete_activate" swapped="no"/>
               </object>
               <packing>
-                <property name="expand">False</property>
+                <property name="expand">True</property>
                 <property name="homogeneous">True</property>
               </packing>
             </child>
@@ -549,7 +550,7 @@ dei farmaci venduti in un determinato arco temporale</property>
                 <signal name="clicked" handler="on_selected_record_print_activate" swapped="no"/>
               </object>
               <packing>
-                <property name="expand">False</property>
+                <property name="expand">True</property>
                 <property name="homogeneous">True</property>
               </packing>
             </child>
@@ -557,13 +558,14 @@ dei farmaci venduti in un determinato arco temporale</property>
               <object class="GtkToolButton" id="email_toolbutton">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="tooltip_text" translatable="yes">Invia per email</property>
                 <property name="label" translatable="yes">Invia per email</property>
                 <property name="use_underline">True</property>
                 <property name="stock_id">gtk-redo</property>
                 <signal name="clicked" handler="on_email_toolbutton_clicked" swapped="no"/>
               </object>
               <packing>
-                <property name="expand">False</property>
+                <property name="expand">True</property>
                 <property name="homogeneous">True</property>
               </packing>
             </child>
@@ -588,7 +590,7 @@ dei farmaci venduti in un determinato arco temporale</property>
                 <signal name="clicked" handler="on_records_print_on_screen_activate" swapped="no"/>
               </object>
               <packing>
-                <property name="expand">False</property>
+                <property name="expand">True</property>
                 <property name="homogeneous">True</property>
               </packing>
             </child>
@@ -605,7 +607,7 @@ dei farmaci venduti in un determinato arco temporale</property>
                 <signal name="clicked" handler="on_records_print_activate" swapped="no"/>
               </object>
               <packing>
-                <property name="expand">False</property>
+                <property name="expand">True</property>
                 <property name="homogeneous">True</property>
               </packing>
             </child>
@@ -621,7 +623,7 @@ dei farmaci venduti in un determinato arco temporale</property>
                 <signal name="clicked" handler="on_Stampa_Frontaline_clicked" swapped="no"/>
               </object>
               <packing>
-                <property name="expand">False</property>
+                <property name="expand">True</property>
                 <property name="homogeneous">True</property>
               </packing>
             </child>
@@ -640,13 +642,14 @@ dei farmaci venduti in un determinato arco temporale</property>
               <object class="GtkToolButton" id="export_fatturapa_toolbutton">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="tooltip_text" translatable="yes">Esporta fattura PA</property>
                 <property name="label" translatable="yes">Esport Fattura PA</property>
                 <property name="use_underline">True</property>
-                <property name="stock_id">gtk-copy</property>
+                <property name="stock_id">gtk-file</property>
                 <signal name="clicked" handler="on_export_fatturapa_toolbutton_clicked" swapped="no"/>
               </object>
               <packing>
-                <property name="expand">False</property>
+                <property name="expand">True</property>
                 <property name="homogeneous">True</property>
               </packing>
             </child>
@@ -661,7 +664,7 @@ dei farmaci venduti in un determinato arco temporale</property>
                 <signal name="clicked" handler="on_records_file_export_clicked" swapped="no"/>
               </object>
               <packing>
-                <property name="expand">False</property>
+                <property name="expand">True</property>
                 <property name="homogeneous">True</property>
               </packing>
             </child>
@@ -677,7 +680,7 @@ dei farmaci venduti in un determinato arco temporale</property>
                 <signal name="clicked" handler="on_record_fattura_button_clicked" swapped="no"/>
               </object>
               <packing>
-                <property name="expand">False</property>
+                <property name="expand">True</property>
                 <property name="homogeneous">True</property>
               </packing>
             </child>
@@ -693,7 +696,7 @@ dei farmaci venduti in un determinato arco temporale</property>
                 <signal name="clicked" handler="on_segna_pagato_button_clicked" swapped="no"/>
               </object>
               <packing>
-                <property name="expand">False</property>
+                <property name="expand">True</property>
                 <property name="homogeneous">True</property>
               </packing>
             </child>
@@ -706,7 +709,7 @@ dei farmaci venduti in un determinato arco temporale</property>
                 <signal name="clicked" handler="on_Help_activate" swapped="no"/>
               </object>
               <packing>
-                <property name="expand">False</property>
+                <property name="expand">True</property>
                 <property name="homogeneous">True</property>
               </packing>
             </child>
@@ -715,6 +718,49 @@ dei farmaci venduti in un determinato arco temporale</property>
             <property name="expand">False</property>
             <property name="fill">False</property>
             <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkBox" id="box4">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="spacing">1</property>
+            <child>
+              <object class="GtkLabel" id="label3">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="xalign">0</property>
+                <property name="xpad">6</property>
+                <property name="label" translatable="yes">&lt;b&gt;Filtri ricerca&lt;/b&gt;</property>
+                <property name="use_markup">True</property>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="label1">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="xalign">0</property>
+                <property name="xpad">4</property>
+                <property name="label" translatable="yes">&lt;b&gt;Area Anteprima&lt;/b&gt;</property>
+                <property name="use_markup">True</property>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="padding">2</property>
+            <property name="position">2</property>
           </packing>
         </child>
         <child>
@@ -826,20 +872,6 @@ dei farmaci venduti in un determinato arco temporale</property>
                     <property name="can_focus">False</property>
                     <property name="orientation">vertical</property>
                     <child>
-                      <object class="GtkLabel" id="label1">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="xalign">0</property>
-                        <property name="label" translatable="yes">&lt;b&gt;Area Anteprima&lt;/b&gt;</property>
-                        <property name="use_markup">True</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">False</property>
-                        <property name="position">0</property>
-                      </packing>
-                    </child>
-                    <child>
                       <object class="GtkScrolledWindow" id="anagrafica_detail_scrolledwindow">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
@@ -851,7 +883,7 @@ dei farmaci venduti in un determinato arco temporale</property>
                       <packing>
                         <property name="expand">True</property>
                         <property name="fill">True</property>
-                        <property name="position">1</property>
+                        <property name="position">0</property>
                       </packing>
                     </child>
                     <child>
@@ -863,7 +895,7 @@ dei farmaci venduti in un determinato arco temporale</property>
                       <packing>
                         <property name="expand">False</property>
                         <property name="fill">True</property>
-                        <property name="position">2</property>
+                        <property name="position">1</property>
                       </packing>
                     </child>
                   </object>
@@ -920,7 +952,7 @@ dei farmaci venduti in un determinato arco temporale</property>
           <packing>
             <property name="expand">True</property>
             <property name="fill">True</property>
-            <property name="position">2</property>
+            <property name="position">3</property>
           </packing>
         </child>
         <child>
@@ -932,7 +964,7 @@ dei farmaci venduti in un determinato arco temporale</property>
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="position">3</property>
+            <property name="position">4</property>
           </packing>
         </child>
       </object>

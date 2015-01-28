@@ -150,7 +150,7 @@ class GestioneInventario(RicercaComplessaArticoli):
         column.connect("clicked", self.filter._changeOrderBy, (None, Inventario.quantita))
         column.set_resizable(True)
         column.set_expand(False)
-        column.set_min_width(50)
+        column.set_min_width(140)
         treeview.append_column(column)
 
 
@@ -170,7 +170,7 @@ class GestioneInventario(RicercaComplessaArticoli):
         column.connect("clicked", self.filter._changeOrderBy, (None, Inventario.valore_unitario))
         column.set_resizable(True)
         column.set_expand(False)
-        column.set_min_width(70)
+        column.set_min_width(140)
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('U/B', rendererSx, text=3)
@@ -457,11 +457,11 @@ class GestioneInventario(RicercaComplessaArticoli):
         model = treeview.get_model()
         value=value.replace(",", ".")
         value = mN(value)
-        model[path][1] = value
+        model[path][1] = str(value)
         #model[path][4] = dateToString(datetime.datetime.today().date())
         quantita = Decimal(value)
         valore_unitario = Decimal(model[path][2])
-        model[path][4] = mN(Decimal(quantita*valore_unitario).quantize(Decimal('.01')))
+        model[path][4] = str(mN(Decimal(quantita*valore_unitario).quantize(Decimal('.01'))))
         data = datetime.datetime.today().date()
         dao = Inventario().getRecord(id=self.dao.id)
         dao.anno = self.dao.anno
@@ -479,11 +479,11 @@ class GestioneInventario(RicercaComplessaArticoli):
         model = treeview.get_model()
         value=value.replace(",", ".")
         value = mN(value)
-        model[path][2] = value
+        model[path][2] = str(value)
         model[path][5] = dateToString(datetime.datetime.today().date())
         valore_unitario = Decimal(value)
         quantita= Decimal(model[path][1])
-        model[path][4] = mN(Decimal(quantita*valore_unitario).quantize(Decimal('.01')))
+        model[path][4] = str(mN(Decimal(quantita*valore_unitario).quantize(Decimal('.01'))))
         data = datetime.datetime.today().date()
         dao = Inventario().getRecord(id=self.dao.id)
         dao.anno = self.dao.anno
