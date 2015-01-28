@@ -22,6 +22,7 @@
 
 from sqlalchemy import *
 from promogest.Environment import *
+from data.rigaScontrino import t_riga_scontrino
 
 try:
     t_sconto_riga_scontrino=Table('sconto_riga_scontrino',

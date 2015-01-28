@@ -26,6 +26,25 @@ from promogest.Environment import *
 from sqlalchemy.schema import CreateSchema
 
 
+def orderedInstallVenditaDettaglio():
+    print "| QUANDO VIENI CHIAMATO"
+    #orderedImport()
+    try:
+
+        from data.pos import t_pos #v
+        from data.ccardType import t_credit_card_type #v
+        from data.scontoScontrino import t_sconto_scontrino #v
+        from data.scontoRigaScontrino import t_sconto_riga_scontrino #v
+        from data.testataScontrino import t_testata_scontrino #v
+        from data.rigaScontrino import t_riga_scontrino #v
+        from data.scontoTestataScontrino import t_sconto_testata_scontrino #v
+        from data.chiusuraFiscale import t_chiusura_fiscale #v
+        from data.testataScontrinoCliente import t_testata_scontrino_cliente #v
+        return True
+    except:
+        return False
+
+
 def buildAll():
     delete_pickle()
     if tipo_eng == "postgresql":

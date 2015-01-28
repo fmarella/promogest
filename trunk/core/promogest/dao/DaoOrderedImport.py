@@ -156,22 +156,20 @@ def orderedImport():
     #from promogest.modules.GestioneCommesse.dao.RigaCommessa import t_riga_commessa
 
 def orderedImportVenditaDettaglio():
-    print "| QUANDO VIENI CHIAMATO"
     orderedImport()
-#try:
-    from promogest.modules.VenditaDettaglio.dao.Pos import Pos #v
-    from promogest.modules.VenditaDettaglio.dao.ScontoScontrino import ScontoScontrino #v
-    from promogest.dao.CCardType import CCardType #v
-    from promogest.modules.VenditaDettaglio.dao.RigaScontrino import RigaScontrino #v
-    from promogest.modules.VenditaDettaglio.dao.ScontoRigaScontrino import ScontoRigaScontrino #v
-    from promogest.modules.VenditaDettaglio.dao.TestataScontrino import TestataScontrino #v
-    from promogest.modules.VenditaDettaglio.dao.ScontoTestataScontrino import ScontoTestataScontrino #v
-    from promogest.modules.VenditaDettaglio.dao.ChiusuraFiscale import ChiusuraFiscale #v
-    from promogest.modules.VenditaDettaglio.dao.TestataScontrinoCliente import TestataScontrinoCliente #v
-
-    print "CARICAMENTO/INSERIMENTO TABELLE VENDITA DETTAGLIO  ANDATO BENE"
-#except:
-    #print " DETTAGLIO DA SISTEARE"
+    try:
+        from promogest.modules.VenditaDettaglio.dao.Pos import Pos #v
+        from promogest.dao.CCardType import CCardType #v
+        from promogest.modules.VenditaDettaglio.dao.ScontoScontrino import ScontoScontrino #v
+        from promogest.modules.VenditaDettaglio.dao.ScontoRigaScontrino import ScontoRigaScontrino #v
+        from promogest.modules.VenditaDettaglio.dao.RigaScontrino import RigaScontrino #v
+        from promogest.modules.VenditaDettaglio.dao.TestataScontrino import TestataScontrino #v
+        from promogest.modules.VenditaDettaglio.dao.ScontoTestataScontrino import ScontoTestataScontrino #v
+        from promogest.modules.VenditaDettaglio.dao.ChiusuraFiscale import ChiusuraFiscale #v
+        from promogest.modules.VenditaDettaglio.dao.TestataScontrinoCliente import TestataScontrinoCliente #v
+        print "CARICAMENTO/INSERIMENTO TABELLE VENDITA DETTAGLIO  ANDATO BENE"
+    except:
+        print " DETTAGLIO DA SISTEARE"
 
     #from data.scontoFornitura import t_sconto_fornitura
 

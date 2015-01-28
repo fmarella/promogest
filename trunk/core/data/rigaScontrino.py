@@ -22,7 +22,7 @@
 
 from sqlalchemy import *
 from promogest.Environment import *
-
+from data.testataScontrino import t_testata_scontrino
 
 t_riga_scontrino = Table('riga_scontrino', params['metadata'],
         Column('id',Integer,primary_key=True),

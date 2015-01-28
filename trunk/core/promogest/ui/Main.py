@@ -128,6 +128,8 @@ class Main(GladeWidget):
 #            self.whatcant_button.destroy()
             self.test_promowear_button.destroy()
             self.test_promoshop_button.destroy()
+        if "VenditaDettaglio" in Environment.modulesList:
+            self.test_promoshop_button.destroy()
         try:
             self.addNoteBookPage()
         except:
@@ -932,9 +934,10 @@ Procedo all'installazione del modulo PromoWear? """)
             a.value = "True"
             a.active = True
             a.persist()
-            from promogest.dao.DaoOrderedImport import orderedImportVenditaDettaglio
-            orderedImportVenditaDettaglio()
+            from data.createSchemaDb import orderedInstallVenditaDettaglio
+            orderedInstallVenditaDettaglio()
             messageInfo(msg=_("RIAVVIA IL PROMOGEST"))
+            Environment.restart_program()
 
         else:
             messageInfo(msg=_("RISULTA GIA' ATTIVATO"))
