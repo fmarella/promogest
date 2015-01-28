@@ -37,5 +37,6 @@ t_testata_scontrino = Table('testata_scontrino', params['metadata'],
             Column('id_user',Integer),
             Column('id_testata_movimento',Integer,ForeignKey(fk_prefix + "testata_movimento.id", onupdate="CASCADE", ondelete="RESTRICT")),
             schema=params['schema'],
+                    extend_existing=True,
             )
 t_testata_scontrino.create(checkfirst=True)
