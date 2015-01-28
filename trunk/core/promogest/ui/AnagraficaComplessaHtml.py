@@ -135,7 +135,7 @@ class AnagraficaHtml(object):
         # aggiungo i dati azienda al dao in modo che si gestiscano a monte
         azienda = Azienda().getRecord(id=Environment.azienda)
         operationNameUnderscored = operationName.replace(' ', '_').lower()
-        a = Environment.templatesDir + operationNameUnderscored + '.sla'
+        a = Environment.templatesDir.decode("utf-8") + operationNameUnderscored + '.sla'
         Environment.pg2log.info(a)
         if os.path.exists(Environment.templatesDir + operationNameUnderscored \
                                                                 + '.sla'):
