@@ -411,13 +411,13 @@ def usePickleToMeta():
         print "USO META NORMALE"
         meta = MetaData(engine)
     return meta
-#meta = usePickleToMeta()
+meta = usePickleToMeta()
 
 
 preEnv.azienda = azienda
 print " AZIENDAAAAAAAAAAAA 2222222222222222", azienda
 #meta = None
-meta = MetaData(engine)
+#meta = MetaData(engine)
 
 mainSchema = None
 schema = None

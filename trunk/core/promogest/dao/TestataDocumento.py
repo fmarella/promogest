@@ -174,7 +174,7 @@ class TestataDocumento(Base, Dao):
             self.__righeDocumento = []
         if Environment.tipodb == "sqlite":
             for r in self.__righeDocumento:
-                print r , r.descrizione, type(r.descrizione)
+                #print r , r.descrizione, type(r.descrizione)
                 if type(r.descrizione) != type(u"unicode"):
                     r.descrizione = r.descrizione.decode("utf-8")
         return self.__righeDocumento
