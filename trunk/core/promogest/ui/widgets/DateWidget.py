@@ -35,6 +35,9 @@ class DateWidget(gtk.Box):
         self.futurecheck = futurecheck
         gtk.Box.__init__(self)
         self.entry = DateEntryField(str1, str2, int1, int2)
+        self.entry.set_property("secondary_icon_stock", "gtk-clear")
+        self.entry.set_property("secondary-icon-activatable", True)
+        self.entry.set_property("secondary-icon-sensitive", True)
         self.button = gtk.ToggleButton()
         self.button.set_property("can-focus", False)
         self.button2 = gtk.Button()
