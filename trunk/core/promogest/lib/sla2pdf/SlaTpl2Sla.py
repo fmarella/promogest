@@ -451,12 +451,18 @@ class SlaTpl2Sla(SlaParser):
                                 if function in self.formatFunctions:
                                     resolvedTag = self.callFunction(function, value, parameter)
                                 else:
-                                    resolvedTag = str(value)
-                                ch = ch.replace(tags[tagkey]['completeTag'], resolvedTag).encode("utf-8")
+                                    print type(value)
+                                    resolvedTag = value
+                                    if type(resolvedTag) != type(u"unicode"):
+                                        if type(resolvedTag) == type(1):
+                                            resolvedTag = str(resolvedTag)
+                                        resolvedTag = resolvedTag.encode("utf-8")
+
+                                ch = ch.replace(tags[tagkey]['completeTag'], resolvedTag)
                                   # Save itext
                                 #if value.count('€') >1:
                                     #value = value.replace('€', '', 1)
-                                itext.set('CH', ch.decode("utf-8"))
+                                itext.set('CH', ch)
 
                 else:
                     if isGroupControl == '1':

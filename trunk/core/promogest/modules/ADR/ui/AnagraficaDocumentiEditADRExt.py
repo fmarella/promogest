@@ -154,7 +154,7 @@ def sposta_sommario_in_tabella(anagrafica):
     _buffer = anagrafica.summary_adr_label.get_text()
     for linea in _buffer.splitlines():
         anagrafica.azzeraRiga()
-        anagrafica._righe[0]['descrizione'] = linea
+        anagrafica._righe[0]['descrizione'] = linea.decode("utf-8")
         anagrafica._righe[0]['quantita'] = 0
         anagrafica._righe.append(anagrafica._righe[0])
 
