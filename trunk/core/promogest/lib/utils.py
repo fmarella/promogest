@@ -3640,5 +3640,7 @@ def uu(data):
             data = str(data)
         elif type(data) == type(str("ciao")):
             data = data.decode("utf-8")
+        elif type(data) == Decimal:
+            data = str(data)
         return data.encode("utf-8")
     return data
