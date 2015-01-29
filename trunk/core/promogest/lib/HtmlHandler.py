@@ -65,6 +65,7 @@ def env(templates_dir):
     jinja_env.filters['datetimeformat'] = datetimeformat
     jinja_env.filters['nl2br'] = nl2br
     jinja_env.filters['nonone'] = noNone
+    jinja_env.filters['uu'] = noNone
     return jinja_env
 
 def datetimeformat(value, format='%d/%m/%Y %H:%M '):
@@ -86,6 +87,10 @@ def noNone(value):
         return ""
     else:
         return value
+
+def uu(value):
+    from utils import uu as uuu
+    return uuu(value)
 
 _paragraph_re = re.compile(r'(?:\r\n|\r|\n){2,}')
 

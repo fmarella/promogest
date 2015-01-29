@@ -325,16 +325,16 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
                 col = "#FFE7B8"
             self.filter_listore.append((t,
                                     dateTimeToString(t.data_documento),
-                                    (str(str(t.numero) + parte) or "0"),
-                                    (str(t.operazione) or ''),
-                                    (str(t.intestatario) or ''),
-                                    (str(t.protocollo) or ''),
-                                    (str(totaleImponibile.encode("utf-8"))),
-                                    (str(totaleImposta.encode("utf-8"))),
-                                    (str(totale.encode("utf-8"))),
-                                    (t.note_interne or ''),
+                                    uu(str(t.numero) + parte) or "0",
+                                    uu(t.operazione) or '',
+                                    uu(t.intestatario) or '',
+                                    uu(t.protocollo) or '',
+                                    uu(totaleImponibile),
+                                    uu(totaleImposta),
+                                    uu(totale),
+                                    uu(t.note_interne) or '',
                                     col,
-                                    (str(documento_saldato_filter) or '')
+                                    uu(documento_saldato_filter) or ''
                                     ))
         self.anagrafica_filter_treeview.set_model(model=self.filter_listore)
         #pbar(self._anagrafica.pbar_anag_complessa,stop=True)

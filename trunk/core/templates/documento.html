@@ -22,14 +22,14 @@
 
                 {% if dao.id_cliente %}
                 <td class="even-detail">Cliente</td>
-            <td colspan="3" style="font-size:16px;" class="odd-detail"><strong>{{dao.CLI.ragione_sociale.decode("utf-8")}}</strong></td>
+            <td colspan="3" style="font-size:16px;" class="odd-detail"><strong>{{dao.CLI.ragione_sociale|uu}}</strong></td>
                 {% endif %}
         </tr>
         <tr >
 
             {% if dao.id_fornitore %}
              <td class="even-detail">Fornitore</td>
-                <td colspan="3" style="font-size:16px;" class="odd-detail"><strong>{{dao.FORN.ragione_sociale.decode("utf-8")}}</strong></td>
+                <td colspan="3" style="font-size:16px;" class="odd-detail"><strong>{{dao.FORN.ragione_sociale|uu}}</strong></td>
             {% endif %}
         </tr>
     </table>
