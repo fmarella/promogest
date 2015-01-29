@@ -1030,7 +1030,7 @@ html contatti <b>assistenza@promotux.it</b> per informazioni.""")
     def __handleSaveResponse(self, dialog):
         fileDialog = gtk.FileChooserDialog(title='Salva il file',
                                            parent=dialog,
-                                           action=gtk.FILE_CHOOSER_ACTION_SAVE,
+                                           action=GTK_FILE_CHOOSER_ACTION_SAVE,
                                            buttons=(gtk.STOCK_CANCEL,
                                                     GTK_RESPONSE_CANCEL,
                                                     gtk.STOCK_SAVE,
