@@ -59,7 +59,7 @@ class AnagraficaCodiciABarreArticoli(Anagrafica):
         renderer = gtk.CellRendererToggle()
         renderer.set_property('activatable', False)
         renderer.connect('toggled', self.on_column_edited, None, treeview)
-        renderer.column  1
+        renderer.column = 1
         column = gtk.TreeViewColumn('Primario', renderer, active=2)
         column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
