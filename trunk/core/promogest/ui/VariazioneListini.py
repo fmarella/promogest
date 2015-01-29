@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Andrea Argiolas <andrea@promotux.it>
@@ -57,7 +57,7 @@ class VariazioneListini(GladeWidget):
         renderer = gtk.CellRendererToggle()
         renderer.set_property('activatable', True)
         renderer.connect('toggled', self.on_selected, treeview.get_model())
-        renderer.set_data('column', 1)
+        renderer.column = 1
         column = gtk.TreeViewColumn('Seleziona', renderer, active=1)
         column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
