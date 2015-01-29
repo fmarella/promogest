@@ -58,6 +58,7 @@
         <property name="height_request">500</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
         <property name="spacing">2</property>
         <child internal-child="action_area">
           <object class="GtkButtonBox" id="dialog-action_area2">
@@ -146,9 +147,6 @@
             <property name="pack_type">end</property>
             <property name="position">0</property>
           </packing>
-        </child>
-        <child>
-          <placeholder/>
         </child>
         <child>
           <object class="GtkFrame" id="frame12">
@@ -272,7 +270,6 @@
                                 <property name="invisible_char">●</property>
                                 <property name="primary_icon_stock">gtk-find</property>
                                 <property name="secondary_icon_stock">gtk-clear</property>
-                                <property name="primary_icon_activatable">False</property>
                                 <property name="primary_icon_tooltip_text">Clicca qui per la ricerca</property>
                                 <property name="primary_icon_tooltip_markup">Clicca qui per la ricerca</property>
                                 <signal name="changed" handler="on_articolo_entry_insert_text" swapped="no"/>
@@ -499,8 +496,8 @@ userà il listino classico</property>
                     <property name="receives_default">True</property>
                     <property name="use_stock">True</property>
                     <signal name="clicked" handler="on_add_button_clicked" swapped="no"/>
-                    <accelerator key="Return" signal="clicked"/>
                     <accelerator key="KP_Enter" signal="clicked"/>
+                    <accelerator key="Return" signal="clicked"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -522,7 +519,7 @@ userà il listino classico</property>
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="position">2</property>
+            <property name="position">1</property>
           </packing>
         </child>
         <child>
@@ -825,7 +822,7 @@ userà il listino classico</property>
           <packing>
             <property name="expand">True</property>
             <property name="fill">True</property>
-            <property name="position">3</property>
+            <property name="position">2</property>
           </packing>
         </child>
         <child>
@@ -952,7 +949,7 @@ userà il listino classico</property>
           <packing>
             <property name="expand">False</property>
             <property name="fill">False</property>
-            <property name="position">4</property>
+            <property name="position">3</property>
           </packing>
         </child>
       </object>

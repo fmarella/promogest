@@ -38,10 +38,20 @@
     <property name="xpad">1</property>
     <property name="pixbuf">stampa_selezione16x16.png</property>
   </object>
+  <object class="GtkImage" id="image6">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">logo_sdi_trasparente.resized.png</property>
+  </object>
   <object class="GtkImage" id="image7">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="pixbuf">report24x24.png</property>
+  </object>
+  <object class="GtkImage" id="image8">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="icon_name">go-bottom</property>
   </object>
   <object class="GtkImage" id="image9">
     <property name="visible">True</property>
@@ -640,8 +650,23 @@ dei farmaci venduti in un determinato arco temporale</property>
                 <property name="tooltip_text" translatable="yes">Esporta fattura PA</property>
                 <property name="label" translatable="yes">Esport Fattura PA</property>
                 <property name="use_underline">True</property>
-                <property name="stock_id">gtk-file</property>
+                <property name="icon_widget">image6</property>
                 <signal name="clicked" handler="on_export_fatturapa_toolbutton_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkMenuToolButton" id="records_file_export">
+                <property name="visible">True</property>
+                <property name="sensitive">False</property>
+                <property name="can_focus">False</property>
+                <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                <property name="label" translatable="yes">Esporta in CSV</property>
+                <property name="icon_widget">image8</property>
+                <signal name="clicked" handler="on_records_file_export_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -658,20 +683,6 @@ dei farmaci venduti in un determinato arco temporale</property>
                 <property name="label" translatable="yes">Fattura Differita</property>
                 <property name="icon_widget">image9</property>
                 <signal name="clicked" handler="on_record_fattura_button_clicked" swapped="no"/>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="homogeneous">True</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkToolButton" id="records_file_export">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Export CSV</property>
-                <property name="use_underline">True</property>
-                <property name="icon_name">edit-select-all</property>
-                <signal name="clicked" handler="on_records_file_export_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
