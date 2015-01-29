@@ -632,7 +632,7 @@ class Anagrafica(GladeWidget):
             for dao in daos:
                 saveDialog = gtk.FileChooserDialog("export in a file...",
                                                    None,
-                                                   gtk.FILE_CHOOSER_ACTION_SAVE,
+                                                   GTK_FILE_CHOOSER_ACTION_SAVE,
                                                    (gtk.STOCK_CANCEL,
                                                     GTK_RESPONSE_CANCEL,
                                                     gtk.STOCK_SAVE,
@@ -676,7 +676,7 @@ class Anagrafica(GladeWidget):
                 if response == GTK_RESPONSE_OK:
                     filename = saveDialog.get_filename()
                     with open(filename, 'w') as fp:
-                        fp.write(xml)
+                        fp.write(xml.encode("utf-8"))
                         # incrementa il progressivo
                         azienda.progressivo_fatturapa = ''.join([progressivo[0], str(int(progressivo[1:]) + 1).zfill(4)])
                         Environment.session.commit()

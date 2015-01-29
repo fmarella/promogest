@@ -3634,7 +3634,7 @@ def getCodicePagamento(denominazione):
 def uu(data):
     """ funzione di check e controllo dell'unicode...se non è unicode lo trasforma in tale
     se è già unicode non fa niente """
-    print "DATA", type(data), data
+    #print "DATA", type(data), data
     if type(data) != type(u"unicode"):
         if type(data) == type(1):         #intero
             data = str(data)
