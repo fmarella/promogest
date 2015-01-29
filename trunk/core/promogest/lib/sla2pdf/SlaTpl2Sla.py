@@ -767,9 +767,9 @@ class SlaTpl2Sla(SlaParser):
 
                     else:
                         value = ch
-                    if value.count('€') >1:
+                    if value.count('€'.decode("utf-8")) >1:
                         value = value.replace('€', '', 1)
-                    itext.set('CH', value.decode())
+                    itext.set('CH', value)
             else:
                 gr.append(group)
                 index += 1

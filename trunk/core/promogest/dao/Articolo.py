@@ -200,7 +200,7 @@ class Articolo(Base, Dao):
 
     @property
     def sm(self):
-        if hasattr(self, "stoccaggio"):
+        if hasattr(self, "stoccaggio") and self.stoccaggio:
             return self.stoccaggio[0].scorta_minima
         else:
             return  0
