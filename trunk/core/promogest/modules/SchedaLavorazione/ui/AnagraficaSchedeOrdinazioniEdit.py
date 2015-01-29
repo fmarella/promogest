@@ -110,8 +110,8 @@ class AnagraficaSchedeOrdinazioniEdit(AnagraficaEdit):
         treeview = self.articoli_treeview
 
         renderer = gtk.CellRendererText()
-        renderer.set_data('column', 0)
-        renderer.set_data('min_length', 150)
+        renderer.column = 0
+        renderer.min_length = 150
         column = gtk.TreeViewColumn('Codice articolo', renderer, text=2)
         column.set_sizing(GTK_COLUMN_FIXED)
         column.set_clickable(False)
@@ -125,8 +125,8 @@ class AnagraficaSchedeOrdinazioniEdit(AnagraficaEdit):
         renderer.set_property('editable', True)
         renderer.set_property('xalign', 0)
         renderer.connect('edited', self.on_column_edited, treeview, False)
-        renderer.set_data('max_length', 200)
-        renderer.set_data('column', 1)
+        renderer.max_length = 200
+        renderer.column =1
         column = gtk.TreeViewColumn('Descrizione', renderer, text=3)
         column.set_sizing(GTK_COLUMN_FIXED)
         column.set_clickable(False)
@@ -137,9 +137,9 @@ class AnagraficaSchedeOrdinazioniEdit(AnagraficaEdit):
         treeview.append_column(column)
 
         renderer = gtk.CellRendererText()
-        renderer.set_data('column', 2)
+        renderer.column = 2
         renderer.set_property('xalign', 0.5)
-        renderer.set_data('min_length', 50)
+        renderer.min_length = 50
         column = gtk.TreeViewColumn('U.M.', renderer, text=4)
         column.set_sizing(GTK_COLUMN_FIXED)
         column.set_clickable(False)
@@ -171,8 +171,8 @@ class AnagraficaSchedeOrdinazioniEdit(AnagraficaEdit):
         renderer.set_property('editable', True)
         renderer.set_property('xalign', 1)
         renderer.connect('edited', self.on_column_edited, treeview, False)
-        renderer.set_data('column', 4)
-        renderer.set_data('max_length', 200)
+        renderer.column = 4
+        renderer.max_length = 200
         column = gtk.TreeViewColumn('Prezzo lordo', renderer, text=6)
         column.set_sizing(GTK_COLUMN_FIXED)
         column.set_clickable(False)
@@ -184,8 +184,8 @@ class AnagraficaSchedeOrdinazioniEdit(AnagraficaEdit):
 
         renderer = gtk.CellRendererText()
         renderer.set_property('xalign', 1)
-        renderer.set_data('column', 5)
-        renderer.set_data('max_length', 200)
+        renderer.column = 5
+        renderer.max_length = 200
         column = gtk.TreeViewColumn('Prezzo netto', renderer, text=7)
         column.set_sizing(GTK_COLUMN_FIXED)
         column.set_clickable(False)
@@ -196,7 +196,7 @@ class AnagraficaSchedeOrdinazioniEdit(AnagraficaEdit):
         treeview.append_column(column)
 
         renderer = gtk.CellRendererText()
-        renderer.set_data('column', 6)
+        renderer.column = 6
         renderer.set_property('xalign', 1)
         column = gtk.TreeViewColumn('Totale', renderer, text=8)
         column.set_sizing(GTK_COLUMN_FIXED)
@@ -327,14 +327,14 @@ class AnagraficaSchedeOrdinazioniEdit(AnagraficaEdit):
             if row.descrizione == "Contrassegno":
                 row.quantita = 1
             self._articoliTreeviewModel.append([row,
-                                                idArticolo,
-                                                codice,
-                                                row.descrizione,
-                                                unitaBaseRiga,
-                                                row.quantita,
-                                                row.valore_unitario_lordo,
-                                                row.valore_unitario_netto,
-                                                mN(row.totaleRiga)])
+                                                uu(idArticolo),
+                                                uu(codice),
+                                                uu(row.descrizione),
+                                                uu(unitaBaseRiga),
+                                                uu(row.quantita),
+                                                uu(row.valore_unitario_lordo),
+                                                uu(row.valore_unitario_netto),
+                                                uu(mN(row.totaleRiga))])
 
         # questi dati sono a posto,
         self.data_matrimonio_entry.set_text(dateToString(self.dao.data_matrimonio))

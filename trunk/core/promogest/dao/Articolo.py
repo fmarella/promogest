@@ -111,7 +111,6 @@ class Articolo(Base, Dao):
         from promogest.modules.ADR.dao.ArticoloADR import ArticoloADR
         APADR = relationship("ArticoloADR", primaryjoin=(__table__.c.id == ArticoloADR.id_articolo),uselist=False)
 
-
     if hasattr(conf, "DistintaBase") and \
                             getattr(conf.DistintaBase, 'mod_enable') == "yes":
         from promogest.modules.DistintaBase.dao.AssociazioneArticolo \
@@ -774,9 +773,11 @@ class Articolo(Base, Dao):
                 dic = {k: and_(self.__table__.c.id == ArticoloTagliaColore.id_articolo,
                     ArticoloTagliaColore.id_genere == v)}
         elif posso("SL"):
+            from promogest.modules.DistintaBase.dao.AssociazioneArticolo import AssociazioneArticolo
+            print " QUINDI OASSI"
             if k == "node":
-                dic = {k: and_(AssociazioneArticolo.id_padre == self.__table__.c.id,
-                        AssociazioneArticolo.id_figlio == self.__table__.c.id)}
+                dic = {k: and_(AssociazioneArticolo.__table__.c.id_padre == self.__table__.c.id,
+                        AssociazioneArticolo.__table__.c.id_figlio == self.__table__.c.id)}
         return  dic[k]
 
 

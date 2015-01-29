@@ -25,6 +25,9 @@ from sqlalchemy.orm import *
 from promogest.Environment import *
 from promogest.dao.Dao import Dao, Base
 
+
+articolo=Table('articolo', params['metadata'],schema = params['schema'],autoload=True)
+
 class AssociazioneArticolo(Base, Dao):
     """
     Rappresenta un raggruppamento di articoli relazionati ad un unico articolo "padre"
@@ -110,7 +113,7 @@ class AssociazioneArticolo(Base, Dao):
         elif k == "idPadre":
             dic = {k:AssociazioneArticolo.__table__.c.id_padre ==v}
         elif k=="codice":
-            dic = {k:and_(articolo.c.id == AssociazioneArticolo.__table__.c.id_padre,articolo.c.codice.ilike("%"+v+"%"))}
+            dic = {k:and_(articolo.c.id == self.__table__.c.id_padre,articolo.c.codice.ilike("%"+v+"%"))}
         elif k =="node":
-            dic={k:and_(AssociazioneArticolo.__table__.c.id_padre == AssociazioneArticolo.__table__.c.id_figlio)}
+            dic={k:and_(self.__table__.c.id_padre == self.__table__.c.id_figlio)}
         return  dic[k]
