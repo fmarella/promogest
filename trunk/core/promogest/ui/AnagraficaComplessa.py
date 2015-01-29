@@ -101,22 +101,22 @@ class Anagrafica(GladeWidget):
         self._setEditElement(editElement)
         self._setLabelHandler(labelHandler)
         self._selectedDao = None
-        #if self.__class__.__name__ == 'AnagraficaDocumenti':
-            #from promogest.export import tracciati_disponibili
+        if self.__class__.__name__ == 'AnagraficaDocumenti':
+            from promogest.export import tracciati_disponibili
 
-            #for tracciato in tracciati_disponibili():
-                #def build_menuitem(name):
-                    #import string
+            for tracciato in tracciati_disponibili():
+                def build_menuitem(name):
+                    import string
 
-                    #labe = "Esporta " + string.capwords(name.replace('_', ' '))
-                    #mi = gtk.MenuItem(label=labe)
-                    #mi.show()
-                    #mi.connect('activate',
-                               #self.on_esporta_tracciato_menuitem_activate, (name,))
-                    #return mi
+                    labe = "Esporta " + string.capwords(name.replace('_', ' '))
+                    mi = gtk.MenuItem(label=labe)
+                    mi.show()
+                    mi.connect('activate',
+                               self.on_esporta_tracciato_menuitem_activate, (name,))
+                    return mi
 
-                #self.menu3.append(build_menuitem(tracciato))
-            #self.records_file_export.set_menu(self.menu3)
+                self.menu3.append(build_menuitem(tracciato))
+            self.records_file_export.set_menu(self.menu3)
         # Initial (in)sensitive widgets
         textStatusBar = "     *****   PromoGest - 070 8649705 -" \
                         + " www.promogest.me - assistenza@promotux.it  *****"
@@ -1035,7 +1035,7 @@ html contatti <b>assistenza@promotux.it</b> per informazioni.""")
                                                     GTK_RESPONSE_CANCEL,
                                                     gtk.STOCK_SAVE,
                                                     GTK_RESPONSE_OK),
-                                           backend=None)
+                                           )
         fileDialog.set_current_name(self._pdfName + ".pdf")
         fileDialog.set_current_folder(self._folder)
 
