@@ -89,7 +89,12 @@ class ExportCsv(GladeWidget):
                     modek.append([fname],)
 
     def on_selezione_modello_combobox_changed(self, combobox):
-        nomefile= combobox.get_active_text()
+        tree_iter = combobox.get_active_iter()
+        if tree_iter != None:
+            modell = combobox.get_model()
+            nomefile = modell[tree_iter][0] or '"'
+        else:
+            return
         pathFile = Environment.templatesDir
         d = self._loadPgxAttributes(nomefile)
         self.modello_csv_scrolledwindow.set_sensitive(True)
@@ -213,20 +218,20 @@ class ExportCsv(GladeWidget):
     def salvaFile(self):
         fileDialog = gtk.FileChooserDialog(title='Salva il file',
                                            parent=self.getTopLevel(),
-                                           action=gtk.FILE_CHOOSER_ACTION_SAVE,
+                                           action=GTK_FILE_CHOOSER_ACTION_SAVE,
                                            buttons=(gtk.STOCK_CANCEL,
-                                                    gtk.RESPONSE_CANCEL,
+                                                    GTK_RESPONSE_CANCEL,
                                                     gtk.STOCK_SAVE,
-                                                    gtk.RESPONSE_OK),
-                                           backend=None)
+                                                    GTK_RESPONSE_OK),
+                                           )
         fileDialog.set_current_name(self.dao.__class__.__name__+".csv")
         fileDialog.set_current_folder(Environment.documentsDir)
 
         response = fileDialog.run()
         # FIXME: handle errors here
-        if ( (response == gtk.RESPONSE_CANCEL) or ( response == gtk.RESPONSE_DELETE_EVENT)) :
+        if ( (response == GTK_RESPONSE_CANCEL) or ( response == GTK_RESPONSE_DELETE_EVENT)) :
             fileDialog.destroy()
-        elif response == gtk.RESPONSE_OK:
+        elif response == GTK_RESPONSE_OK:
             filename = fileDialog.get_filename()
             if not filename:
                 messageInfo(msg="Nessun nome scelto per il file")
@@ -236,16 +241,26 @@ class ExportCsv(GladeWidget):
 
     def recordToCSV(self, record):
         """ TODO: Aggiungere i campi obbligatori"""
-        if self.separatore_combobox.get_active_text() =="" or self.separatore_combobox.get_active_text() == None:
-            obligatoryField(self.getTopLevel(), self.separatore_combobox, msg="Separatatore Campo obbligatorio")
-        if self.stringa_combobox.get_active_text() =="" or self.stringa_combobox.get_active_text() ==None:
-            obligatoryField(self.getTopLevel(), self.stringa_combobox,msg="Separatatore Testo obbligatorio")
+        #if self.separatore_combobox.get_active_text() =="" or self.separatore_combobox.get_active_text() == None:
+            #obligatoryField(self.getTopLevel(), self.separatore_combobox, msg="Separatatore Campo obbligatorio")
+        #if self.stringa_combobox.get_active_text() =="" or self.stringa_combobox.get_active_text() ==None:
+            #obligatoryField(self.getTopLevel(), self.stringa_combobox,msg="Separatatore Testo obbligatorio")
         tempFileCsv = Environment.tempDir+"tempCSV"
-        separatore = self.separatore_combobox.get_active_text()
-        print("SEPARATORE: ", separatore)
+        tree_iter = self.separatore_combobox.get_active_iter()
+        if tree_iter != None:
+            modell = self.separatore_combobox.get_model()
+            if modell[tree_iter][0] =="":
+                obligatoryField(self.getTopLevel(), self.separatore_combobox)
+            else:
+                separatore = modell[tree_iter][0] or ";"
+        tree_iter = self.stringa_combobox.get_active_iter()
+        if tree_iter != None:
+            modell = self.stringa_combobox.get_model()
+            if modell[tree_iter][0] =="":
+                obligatoryField(self.getTopLevel(), self.stringa_combobox)
+            else:
+                stringa = modell[tree_iter][0] or '"'
         Environment.pg2log.info("SEPARATORE: "+ (separatore or ""))
-        stringa = self.stringa_combobox.get_active_text()
-        print("STRINGA: ", stringa)
         Environment.pg2log.info("STRINGA: "+ (stringa or ""))
         spamWriter = csv.writer(open(tempFileCsv, 'wb'), delimiter=separatore or ";",
                                 quotechar=stringa or '"', quoting=csv.QUOTE_MINIMAL)
@@ -301,16 +316,27 @@ class ExportCsv(GladeWidget):
     def _savePgxAttributes(self):
         """
         """
-        if self.separatore_combobox.get_active_text() =="":
-            obligatoryField(self.getTopLevel(), self.separatore_combobox)
-        if self.stringa_combobox.get_active_text() =="":
-            obligatoryField(self.getTopLevel(), self.stringa_combobox)
+        tree_iter = self.separatore_combobox.get_active_iter()
+        if tree_iter != None:
+            modell = self.separatore_combobox.get_model()
+            if modell[tree_iter][0] =="":
+                obligatoryField(self.getTopLevel(), self.separatore_combobox)
+            else:
+                separatore = modell[tree_iter][0] or ";"
+        tree_iter = self.stringa_combobox.get_active_iter()
+        if tree_iter != None:
+            modell = self.stringa_combobox.get_model()
+            if modell[tree_iter][0] =="":
+                obligatoryField(self.getTopLevel(), self.stringa_combobox)
+            else:
+                stringa = modell[tree_iter][0] or '"'
+
         tempFile = Environment.tempDir+"tempPGE"
         root = ET.Element("CSVOPTIONS")
         tree = ET.ElementTree(root)
-        separatore = self.separatore_combobox.get_active_text() or ";"
+
         root.set("separatore",separatore)
-        stringa = self.stringa_combobox.get_active_text() or '"'
+
         root.set("stringa",stringa)
         root.set("dao",self.dao.__class__.__name__)
         root.set("prima_riga",str(self.primariga_check.get_active()))

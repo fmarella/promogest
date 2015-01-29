@@ -298,7 +298,7 @@ class Anagrafica(GladeWidget):
         data = self.set_export_data()
         saveDialog = gtk.FileChooserDialog("export in a file...",
                                            None,
-                                           gtk.FILE_CHOOSER_ACTION_SAVE,
+                                           GTK_FILE_CHOOSER_ACTION_SAVE,
                                            (gtk.STOCK_CANCEL,
                                             GTK_RESPONSE_CANCEL,
                                             gtk.STOCK_SAVE,
