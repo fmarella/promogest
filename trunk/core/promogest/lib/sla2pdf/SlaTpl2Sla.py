@@ -26,7 +26,7 @@ from decimal import *
 import operator
 import xml.etree.cElementTree as ElementTree
 from promogest import Environment
-from promogest.lib.utils import setconf
+from promogest.lib.utils import setconf, uu
 import Sla2pdfUtils
 from SlaParser import SlaParser
 SHOWZERORIGA = False
@@ -449,19 +449,22 @@ class SlaTpl2Sla(SlaParser):
                                         value = ''
                                 # Function
                                 if function in self.formatFunctions:
-                                    resolvedTag = self.callFunction(function, value, parameter)
+                                    resolvedTag = uu(self.callFunction(function, value, parameter))
                                 else:
                                     print type(value)
-                                    resolvedTag = value
-                                    if type(resolvedTag) != type(u"unicode"):
-                                        if type(resolvedTag) == type(1):
-                                            resolvedTag = str(resolvedTag)
-                                        resolvedTag = resolvedTag.encode("utf-8")
+                                    resolvedTag = uu(value)
+                                    #if type(resolvedTag) != type(u"unicode"):
+                                        #if type(resolvedTag) == type(1):
+                                            #resolvedTag = str(resolvedTag)
+                                        #resolvedTag = resolvedTag.encode("utf-8")
 
                                 ch = ch.replace(tags[tagkey]['completeTag'], resolvedTag)
                                   # Save itext
-                                #if value.count('€') >1:
-                                    #value = value.replace('€', '', 1)
+                                try:
+                                    if value.count('€') >1:
+                                        value = value.replace('€', '', 1)
+                                except:
+                                    print "VALUE RIGA 460 DI SLATPL2SLA"
                                 itext.set('CH', ch)
 
                 else:
@@ -530,16 +533,14 @@ class SlaTpl2Sla(SlaParser):
                                 if function in self.formatFunctions:
                                     resolvedTag = self.callFunction(function, value, parameter)
                                 else:
-                                    resolvedTag = value
-                                if type(resolvedTag) == type(Decimal()):
-                                    resolvedTag = str(resolvedTag).encode("utf-8")
+                                    resolvedTag = uu(value)
                                 ch = ch.replace(tags[k]['completeTag'], resolvedTag)
-                                #if value.count('€') >1:
-                                    #value = value.replace('€', '', 1)
                                 try:
-                                    itext.set('CH', ch.decode("utf-8"))
+                                    if value.count('€') >1:
+                                        value = value.replace('€', '', 1)
                                 except:
-                                    itext.set('CH', ch)
+                                    print " Sla2pdfsla 544"
+                                itext.set('CH', ch)
             iterator += 1
 
 
