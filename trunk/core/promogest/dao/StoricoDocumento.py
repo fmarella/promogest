@@ -26,7 +26,7 @@ from sqlalchemy.orm import mapper, relation, backref
 from sqlalchemy.orm.exc import NoResultFound
 
 from promogest.Environment import params, fk_prefix, session, delete_pickle, restart_program
-from promogest.dao.Dao import Dao
+from promogest.dao.Dao import Dao , Base
 from promogest.dao.TestataDocumento import TestataDocumento
 from promogest.lib.utils import messageInfo
 from promogest.dao.Operazione import Operazione
@@ -46,30 +46,13 @@ STATO = (
     (1, "Aperto")
 )
 
-try:
-    t_storico_documento = Table('storico_documento', params['metadata'], schema=params['schema'], autoload=True)
+class StoricoDocumento(Base, Dao):
+    try:
+        __table__ = Table('storico_documento', params['metadata'], schema=params['schema'], autoload=True)
+    except:
+        from data.storicoDocumento import t_storico_documento
+        __table__ = t_storico_documento
 
-except:
-    session.close()
-    t_storico_documento = Table('storico_documento', params["metadata"],
-                                Column('id', Integer, primary_key=True),
-                                Column('padre', Integer, ForeignKey(fk_prefix + 'testata_documento.id')),
-                                Column('figlio', Integer, ForeignKey(fk_prefix + 'testata_documento.id')),
-                                Column('data_creazione', DateTime, nullable=True),
-                                Column('ultima_modifica', DateTime, nullable=True),
-                                Column('data_chiusura', DateTime, nullable=True),
-                                Column('stato', Integer, nullable=True),
-                                Column('tipo', Integer, nullable=True, default=NEUTRO),
-                                Column('note', Text, nullable=True),
-                                schema=params['schema'],
-                                extend_existing=True)
-
-    t_storico_documento.create(checkfirst=True)
-    delete_pickle()
-    messageInfo(msg="HO AGGIUNTO LA TABELLA STORICO DOCUMENTI, RIAVVIO IL PROMOGEST")
-    restart_program()
-
-class StoricoDocumento(Dao):
     def __init__(self, req=None, arg=None):
         Dao.__init__(self, entity=self)
 
@@ -83,8 +66,6 @@ class StoricoDocumento(Dao):
     def fathers(self):
         return params['session'].query(StoricoDocumento).filter(and_(StoricoDocumento.padre == None)).all()
 
-
-std_mapper = mapper(StoricoDocumento, t_storico_documento)
 
 
 def modifica_relazione(padre_id, stato=None, tipo=None):

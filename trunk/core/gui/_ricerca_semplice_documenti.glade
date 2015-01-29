@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Generated with glade 3.18.3 -->
 <interface>
-  <requires lib="gtk+" version="3.4"/>
+  <requires lib="gtk+" version="3.2"/>
   <requires lib="pythonplugin" version="0.0"/>
-  <object class="GtkHBox" id="anagrafica_documenti_filter_table">
+  <object class="GtkBox" id="anagrafica_documenti_filter_table">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <child>
@@ -39,7 +39,7 @@
             <property name="can_focus">True</property>
             <property name="receives_default">False</property>
             <property name="use_underline">True</property>
-            <property name="xalign">0.5</property>
+            <property name="xalign">0</property>
             <property name="draw_indicator">True</property>
             <property name="group">cliente_filter_radiobutton</property>
             <signal name="toggled" handler="on_filter_radiobutton_toggled" swapped="no"/>
@@ -59,7 +59,7 @@
             <property name="can_focus">True</property>
             <property name="receives_default">False</property>
             <property name="use_underline">True</property>
-            <property name="xalign">0.5</property>
+            <property name="xalign">0</property>
             <property name="active">True</property>
             <property name="draw_indicator">True</property>
             <signal name="toggled" handler="on_filter_radiobutton_toggled" swapped="no"/>
@@ -384,7 +384,6 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="invisible_char">•</property>
-                <property name="secondary_icon_stock">gtk-clear</property>
                 <property name="primary_icon_activatable">False</property>
               </object>
               <packing>
@@ -412,7 +411,6 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="invisible_char">•</property>
-                <property name="secondary_icon_stock">gtk-clear</property>
                 <property name="primary_icon_activatable">False</property>
               </object>
               <packing>
@@ -517,7 +515,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
-                <property name="xalign">0.5</property>
+                <property name="xalign">0</property>
                 <property name="active">True</property>
                 <property name="draw_indicator">True</property>
               </object>
@@ -533,8 +531,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
-                <property name="xalign">0.5</property>
-                <property name="active">True</property>
+                <property name="xalign">0</property>
                 <property name="draw_indicator">True</property>
                 <property name="group">tutto_radio</property>
               </object>
@@ -550,8 +547,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
-                <property name="xalign">0.5</property>
-                <property name="active">True</property>
+                <property name="xalign">0</property>
                 <property name="draw_indicator">True</property>
                 <property name="group">tutto_radio</property>
               </object>
@@ -636,8 +632,6 @@
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="invisible_char">●</property>
-            <property name="primary_icon_stock">gtk-find</property>
-            <property name="secondary_icon_stock">gtk-clear</property>
           </object>
           <packing>
             <property name="left_attach">1</property>
@@ -670,7 +664,7 @@
                 <property name="width_request">150</property>
                 <property name="visible">True</property>
                 <property name="app_paintable">True</property>
-                <property name="can_focus">True</property>
+                <property name="can_focus">False</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -741,281 +735,267 @@
         <property name="can_focus">False</property>
         <property name="no_show_all">True</property>
         <property name="label_xalign">0</property>
-        <property name="shadow_type">in</property>
+        <property name="shadow_type">none</property>
         <child>
-          <object class="GtkAlignment" id="alignment1">
+          <object class="GtkVBox" id="altri_filtri_vbox1">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="left_padding">12</property>
+            <property name="spacing">1</property>
             <child>
-              <object class="GtkVBox" id="altri_filtri_vbox1">
+              <object class="GtkHBox" id="altri_filtri_hbox3">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="spacing">1</property>
                 <child>
-                  <object class="GtkHBox" id="altri_filtri_hbox3">
+                  <object class="GtkLabel" id="catcli_label">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <child>
-                      <object class="GtkLabel" id="catcli_label">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="xalign">0</property>
-                        <property name="label" translatable="yes">Cat. Cliente</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">False</property>
-                        <property name="position">0</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkComboBox" id="id_categoria_cliente_filter_combobox">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                      </object>
-                      <packing>
-                        <property name="expand">True</property>
-                        <property name="fill">True</property>
-                        <property name="position">1</property>
-                      </packing>
-                    </child>
+                    <property name="xalign">0</property>
+                    <property name="label" translatable="yes">Cat. Cliente</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
-                    <property name="fill">True</property>
+                    <property name="fill">False</property>
                     <property name="position">0</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkHBox" id="altri_filtri_hbox1">
+                  <object class="GtkComboBox" id="id_categoria_cliente_filter_combobox">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <child>
-                      <object class="GtkLabel" id="label3510">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="xalign">0</property>
-                        <property name="xpad">2</property>
-                        <property name="label" translatable="yes">Agente</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">False</property>
-                        <property name="position">0</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="CustomComboBoxSearch" id="id_agente_filter_customcombobox">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="invisible_char">●</property>
-                        <property name="primary_icon_stock">gtk-find</property>
-                        <property name="secondary_icon_stock">gtk-clear</property>
-                      </object>
-                      <packing>
-                        <property name="expand">True</property>
-                        <property name="fill">True</property>
-                        <property name="position">1</property>
-                      </packing>
-                    </child>
                   </object>
                   <packing>
-                    <property name="expand">False</property>
+                    <property name="expand">True</property>
                     <property name="fill">True</property>
                     <property name="position">1</property>
                   </packing>
                 </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkHBox" id="altri_filtri_hbox1">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <child>
-                  <object class="GtkHBox" id="altri_filtri_hbox4">
+                  <object class="GtkLabel" id="label3510">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <child>
-                      <object class="GtkLabel" id="magazzino_label">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="xalign">0</property>
-                        <property name="label" translatable="yes">Magazzino</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">False</property>
-                        <property name="position">0</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkComboBox" id="id_magazzino_filter_combobox">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <signal name="key-press-event" handler="on_campo_filter_entry_key_press_event" swapped="no"/>
-                      </object>
-                      <packing>
-                        <property name="expand">True</property>
-                        <property name="fill">True</property>
-                        <property name="position">1</property>
-                      </packing>
-                    </child>
+                    <property name="xalign">0</property>
+                    <property name="xpad">2</property>
+                    <property name="label" translatable="yes">Agente</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">2</property>
+                    <property name="fill">False</property>
+                    <property name="position">0</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkHBox" id="altri_filtri_hbox5">
+                  <object class="CustomComboBoxSearch" id="id_agente_filter_customcombobox">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="invisible_char">●</property>
+                  </object>
+                  <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkHBox" id="altri_filtri_hbox4">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <child>
+                  <object class="GtkLabel" id="magazzino_label">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <child>
-                      <object class="GtkLabel" id="rif_doc_forni_label">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="xalign">0</property>
-                        <property name="label" translatable="yes">Rif. doc. Forn</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">False</property>
-                        <property name="position">0</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkEntry" id="protocollo_entry">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="invisible_char">•</property>
-                        <property name="primary_icon_activatable">False</property>
-                        <property name="secondary_icon_activatable">False</property>
-                        <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
-                        <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
-                        <signal name="key-press-event" handler="on_campo_filter_entry_key_press_event" swapped="no"/>
-                      </object>
-                      <packing>
-                        <property name="expand">True</property>
-                        <property name="fill">True</property>
-                        <property name="position">1</property>
-                      </packing>
-                    </child>
+                    <property name="xalign">0</property>
+                    <property name="label" translatable="yes">Magazzino</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">3</property>
+                    <property name="fill">False</property>
+                    <property name="position">0</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkHBox" id="altri_filtri_hbox7">
+                  <object class="GtkComboBox" id="id_magazzino_filter_combobox">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="spacing">2</property>
-                    <child>
-                      <object class="GtkLabel" id="solo_contabili_label">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="xalign">0</property>
-                        <property name="xpad">2</property>
-                        <property name="label" translatable="yes">&lt;b&gt;Solo Doc Contabili&lt;/b&gt;</property>
-                        <property name="use_markup">True</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">False</property>
-                        <property name="position">0</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkCheckButton" id="solo_contabili_check">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">False</property>
-                        <property name="xalign">0.5</property>
-                        <property name="draw_indicator">True</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">False</property>
-                        <property name="padding">1</property>
-                        <property name="position">1</property>
-                      </packing>
-                    </child>
+                    <signal name="key-press-event" handler="on_campo_filter_entry_key_press_event" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkHBox" id="altri_filtri_hbox5">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <child>
+                  <object class="GtkLabel" id="rif_doc_forni_label">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="xalign">0</property>
+                    <property name="label" translatable="yes">Rif. doc. Forn</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkEntry" id="protocollo_entry">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="invisible_char">•</property>
+                    <property name="primary_icon_activatable">False</property>
+                    <property name="secondary_icon_activatable">False</property>
+                    <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
+                    <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
+                    <signal name="key-press-event" handler="on_campo_filter_entry_key_press_event" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">3</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkHBox" id="altri_filtri_hbox7">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="spacing">2</property>
+                <child>
+                  <object class="GtkLabel" id="solo_contabili_label">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="xalign">0</property>
+                    <property name="xpad">2</property>
+                    <property name="label" translatable="yes">&lt;b&gt;Solo Doc Contabili&lt;/b&gt;</property>
+                    <property name="use_markup">True</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="solo_contabili_check">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="xalign">0</property>
+                    <property name="draw_indicator">True</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">False</property>
                     <property name="padding">1</property>
-                    <property name="position">4</property>
+                    <property name="position">1</property>
                   </packing>
                 </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="padding">1</property>
+                <property name="position">4</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkHBox" id="altri_filtri_hbox2">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <child>
-                  <object class="GtkHBox" id="altri_filtri_hbox2">
+                  <object class="GtkLabel" id="descrizione_riga_label1">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <child>
-                      <object class="GtkLabel" id="descrizione_riga_label1">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="xalign">0</property>
-                        <property name="label" translatable="yes">Descr. Riga</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">False</property>
-                        <property name="position">0</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkEntry" id="descrizione_riga_entry">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="invisible_char">•</property>
-                        <property name="primary_icon_activatable">False</property>
-                        <property name="secondary_icon_activatable">False</property>
-                      </object>
-                      <packing>
-                        <property name="expand">True</property>
-                        <property name="fill">True</property>
-                        <property name="position">1</property>
-                      </packing>
-                    </child>
+                    <property name="xalign">0</property>
+                    <property name="label" translatable="yes">Descr. Riga</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">5</property>
+                    <property name="fill">False</property>
+                    <property name="position">0</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkHBox" id="hbox1_data_pagamento">
+                  <object class="GtkEntry" id="descrizione_riga_entry">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="can_default">True</property>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
+                    <property name="invisible_char">•</property>
+                    <property name="primary_icon_activatable">False</property>
+                    <property name="secondary_icon_activatable">False</property>
                   </object>
                   <packing>
                     <property name="expand">True</property>
                     <property name="fill">True</property>
-                    <property name="position">6</property>
+                    <property name="position">1</property>
                   </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">5</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkHBox" id="hbox1_data_pagamento">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="can_default">True</property>
+                <child>
+                  <placeholder/>
                 </child>
                 <child>
                   <placeholder/>
                 </child>
               </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">6</property>
+              </packing>
+            </child>
+            <child>
+              <placeholder/>
             </child>
           </object>
         </child>
-        <child type="label">
-          <object class="GtkLabel" id="altri_filtri_label">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="label" translatable="yes">&lt;b&gt;Altri filtri&lt;/b&gt;</property>
-            <property name="use_markup">True</property>
-          </object>
+        <child type="label_item">
+          <placeholder/>
         </child>
       </object>
       <packing>
@@ -1061,7 +1041,9 @@
     <property name="search_column">1</property>
     <property name="enable_grid_lines">both</property>
     <child internal-child="selection">
-      <object class="GtkTreeSelection" id="treeview-selection1"/>
+      <object class="GtkTreeSelection" id="treeview-selection1">
+        <property name="mode">multiple</property>
+      </object>
     </child>
     <child>
       <object class="GtkTreeViewColumn" id="data_column">
@@ -1173,9 +1155,9 @@
         <property name="title" translatable="yes">Totale</property>
         <child>
           <object class="GtkCellRendererText" id="cellrenderertext9">
+            <property name="cell_background_rgba">rgb(204,0,0)</property>
             <property name="xalign">0.99000000953674316</property>
             <property name="alignment">right</property>
-            <property name="variant">small-caps</property>
           </object>
           <attributes>
             <attribute name="cell-background">10</attribute>

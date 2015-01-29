@@ -50,6 +50,8 @@ t_testata_documento = Table('testata_documento', params["metadata"],
     Column('costo_da_ripartire', Numeric(16,4), nullable=True),
     Column('ripartire_importo', Boolean, default=False),
     Column('esclusione_spese', Boolean, default=True),
+    Column('codice_cig', String(15), nullable=True),
+    Column('codice_cup', String(15), nullable=True),
     #chiavi esterne
     Column('id_cliente', Integer,ForeignKey(fk_prefix+'cliente.id',onupdate="CASCADE",ondelete="RESTRICT"), nullable=True),
     Column('id_fornitore', Integer,ForeignKey(fk_prefix+'fornitore.id',onupdate="CASCADE",ondelete="RESTRICT"), nullable=True),

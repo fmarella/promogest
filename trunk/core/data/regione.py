@@ -32,28 +32,28 @@ t_regione  = Table('regione', params["metadata"],
 t_regione.create(checkfirst=True)
 
 
-regis = [ ("01",'Piemonte'),
-        ("02","Valle D'Aosta"),
-        ("03","Lombardia"),
-        ("04","Trentino Alto Adige"),
-        ("05","Veneto"),
-        ("06","Friuli Venezia Giulia"),
-        ("07","Liguria"),
-        ("08","Emilia Romagna"),
-        ("09","Toscana"),
-        ("10","Umbria"),
-        ("11","Marche"),
-        ("12","Lazio"),
-        ("13","Abruzzo"),
-        ("14","Molise"),
-        ("15","Campania"),
-        ("16","Puglia"),
-        ("17","Basilicata"),
-        ("18","Calabria"),
-        ("19","Sicilia"),
-        ("20","Sardegna"),]
+regis = [ (1,'Piemonte'),
+        (2,"Valle D'Aosta"),
+        (3,"Lombardia"),
+        (4,"Trentino Alto Adige"),
+        (5,"Veneto"),
+        (6,"Friuli Venezia Giulia"),
+        (7,"Liguria"),
+        (8,"Emilia Romagna"),
+        (9,"Toscana"),
+        (10,"Umbria"),
+        (11,"Marche"),
+        (12,"Lazio"),
+        (13,"Abruzzo"),
+        (14,"Molise"),
+        (15,"Campania"),
+        (16,"Puglia"),
+        (17,"Basilicata"),
+        (18,"Calabria"),
+        (19,"Sicilia"),
+        (20,"Sardegna"),]
 s= select([t_regione.c.codice]).execute().fetchall()
-if (u'1',) not in s or s==[]:
+if (1,) not in s or s==[]:
     unit = t_regione.insert()
     for a in regis:
         unit.execute(denominazione_breve=a[0], denominazione=a[1])

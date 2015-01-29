@@ -160,6 +160,7 @@ def buildAll():
         from data.scontiVenditaIngrosso import t_sconti_vendita_ingrosso
         from data.rigaMovimentoFornitura import t_riga_movimento_fornitura
         from data.rigaRitenutaAcconto import t_ritenuta_acconto_riga
+        from data.storicoDocumento import t_storico_documento
 
         from data.inventario import t_inventario
         from data.anagraficaSecondaria import t_anagrafica_secondaria

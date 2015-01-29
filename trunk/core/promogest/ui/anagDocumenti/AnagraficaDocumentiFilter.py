@@ -54,8 +54,8 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         """
         Disegna colonne della Treeview per il filtro
         """
-        treeselection = self.anagrafica_filter_treeview.get_selection()
-        treeselection.set_mode(GTK_SELECTIONMODE_MULTIPLE)
+        #treeselection = self.anagrafica_filter_treeview.get_selection()
+        #treeselection.set_mode(GTK_SELECTIONMODE_MULTIPLE)
 
         fillComboboxPagamenti(self.id_pagamento_filter_combobox)
         fillComboboxOperazioni(self.id_operazione_filter_combobox, 'documento',True, extra=True)

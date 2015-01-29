@@ -510,7 +510,7 @@ dei farmaci venduti in un determinato arco temporale</property>
                 <property name="tooltip_text" translatable="yes">Duplica l'oggetto selezionato</property>
                 <property name="label" translatable="yes">Duplica</property>
                 <property name="use_underline">True</property>
-                <property name="stock_id">gtk-copy</property>
+                <property name="icon_name">emblem-documents</property>
                 <signal name="clicked" handler="on_record_duplicate_menu_activate" swapped="no"/>
               </object>
               <packing>
@@ -526,7 +526,7 @@ dei farmaci venduti in un determinato arco temporale</property>
                 <property name="tooltip_text" translatable="yes">Elimina il record selezionato</property>
                 <property name="label" translatable="yes">Elimina</property>
                 <property name="use_underline">True</property>
-                <property name="stock_id">gtk-delete</property>
+                <property name="icon_name">user-trash</property>
                 <signal name="clicked" handler="on_record_delete_activate" swapped="no"/>
               </object>
               <packing>
