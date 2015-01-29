@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -47,8 +47,8 @@ class AnagraficaCodiciABarreArticoli(Anagrafica):
         renderer = gtk.CellRendererText()
         renderer.set_property('editable', False)
         renderer.connect('edited', self.on_column_edited, treeview, False)
-        renderer.set_data('column', 0)
-        renderer.set_data('max_length', 200)
+        renderer.column = 0
+        renderer.max_length = 200
         column = gtk.TreeViewColumn('Codice a barre', renderer, text=1)
         column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
@@ -59,7 +59,7 @@ class AnagraficaCodiciABarreArticoli(Anagrafica):
         renderer = gtk.CellRendererToggle()
         renderer.set_property('activatable', False)
         renderer.connect('toggled', self.on_column_edited, None, treeview)
-        renderer.set_data('column', 1)
+        renderer.column  1
         column = gtk.TreeViewColumn('Primario', renderer, active=2)
         column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(False)
