@@ -1077,8 +1077,6 @@
                                                 <property name="can_focus">True</property>
                                                 <property name="invisible_char">●</property>
                                                 <property name="text" translatable="yes">0.000     </property>
-                                                <property name="primary_icon_activatable">False</property>
-                                                <property name="secondary_icon_activatable">False</property>
                                                 <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
                                                 <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
                                                 <signal name="focus-out-event" handler="on_show_totali_riga" swapped="no"/>
@@ -1171,8 +1169,6 @@
                                                 <property name="can_focus">True</property>
                                                 <property name="invisible_char">●</property>
                                                 <property name="text" translatable="yes">0.000     </property>
-                                                <property name="primary_icon_activatable">False</property>
-                                                <property name="secondary_icon_activatable">False</property>
                                                 <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
                                                 <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
                                                 <signal name="focus-out-event" handler="on_quantita_entry_focus_out_event" swapped="no"/>
