@@ -173,10 +173,10 @@ class TestataDocumento(Base, Dao):
             self.__righeDocumento = self.__dbRigheDocumento[:]
         else:
             self.__righeDocumento = []
-        if Environment.tipodb == "sqlite":
-            for r in self.__righeDocumento:
-                r.descrizione = uu(r.descrizione)
-                r.quantita = uu(r.quantita)
+        #if Environment.tipodb == "sqlite":
+            #for r in self.__righeDocumento:
+                #r.descrizione = uu(r.descrizione)
+                #r.quantita = uu(r.quantita)
         return self.__righeDocumento
 
     def _setRigheDocumento(self, value):
@@ -192,7 +192,7 @@ class TestataDocumento(Base, Dao):
         __quantitaTotale = 0
         if len(self.righe) > 0:
             for r in self.righe:
-                __quantitaTotale += float(float(r.quantita)*float(r.moltiplicatore))
+                __quantitaTotale += float(r.quantita*r.moltiplicatore)
         return __quantitaTotale
 
     totalConfections = property(_getDocumentTotalConfections)

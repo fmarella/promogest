@@ -116,7 +116,7 @@ i DAO, i filtri o tutto"""
         from promogest import preEnv, bindtextdomain
         bindtextdomain('promogest', locale_dir='./po/locale')
         reload(sys)
-        sys.setdefaultencoding("utf-8")
+        sys.setdefaultencoding('utf-8')
         #if options.pg3_classi == True:
             #try:
                 #import imp

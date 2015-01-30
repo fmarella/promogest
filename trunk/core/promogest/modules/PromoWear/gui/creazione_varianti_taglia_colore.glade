@@ -532,6 +532,7 @@
               <object class="GtkFrame" id="frame2">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="hexpand">True</property>
                 <property name="label_xalign">0</property>
                 <child>
                   <object class="GtkScrolledWindow" id="anteprima_scrolled">

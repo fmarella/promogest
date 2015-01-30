@@ -52,8 +52,8 @@ class RigaDocumento(Base, Dao):
 
 
     rig = relationship("Riga",primaryjoin = t_riga_documento.c.id==t_riga.c.id, backref="RD")
-    totaleRiga = column_property(Riga.__table__.c.quantita * Riga.__table__.c.moltiplicatore * Riga.__table__.c.valore_unitario_netto )
-    totaleRigaLordo = column_property(Riga.__table__.c.quantita * Riga.__table__.c.moltiplicatore * Riga.__table__.c.valore_unitario_lordo )
+    totaleRiga = column_property(t_riga.c.quantita * t_riga.c.moltiplicatore * t_riga.c.valore_unitario_netto )
+    totaleRigaLordo = column_property(t_riga.c.quantita * t_riga.c.moltiplicatore * t_riga.c.valore_unitario_lordo )
     multi = relationship("Multiplo")
     SCD = relationship("ScontoRigaDocumento", cascade="all, delete", backref="RD")
 

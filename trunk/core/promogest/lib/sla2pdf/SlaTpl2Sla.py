@@ -451,7 +451,6 @@ class SlaTpl2Sla(SlaParser):
                                 if function in self.formatFunctions:
                                     resolvedTag = uu(self.callFunction(function, value, parameter))
                                 else:
-                                    print type(value)
                                     resolvedTag = uu(value)
                                 ch = ch.replace(tags[tagkey]['completeTag'], resolvedTag)
                                   # Save itext
@@ -459,7 +458,7 @@ class SlaTpl2Sla(SlaParser):
                                     if value.count('€') >1:
                                         value = value.replace('€', '', 1)
                                 except:
-                                    print "VALUE RIGA 460 DI SLATPL2SLA"
+                                    pass
                                 itext.set('CH', ch)
 
                 else:
@@ -529,13 +528,12 @@ class SlaTpl2Sla(SlaParser):
                                     resolvedTag = uu(self.callFunction(function, value, parameter))
                                 else:
                                     resolvedTag = uu(value)
-                                print " MA CHE CAZZO", resolvedTag, type(resolvedTag)
                                 ch = ch.replace(tags[k]['completeTag'], resolvedTag)
                                 try:
                                     if value.count('€') >1:
                                         value = value.replace('€', '', 1)
                                 except:
-                                    print " Sla2pdfsla 544"
+                                    pass
                                 itext.set('CH', ch)
             iterator += 1
 
