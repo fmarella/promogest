@@ -156,8 +156,8 @@ def drawGruppoTagliaTreeView(anaarti):
     renderer.set_property('activatable', True)
     renderer.connect('toggled', anaarti.onColumnEdited, None, treeview)
     #GTK3
-    #renderer.set_data('model_index', 0)
-    #renderer.set_data('column', 1)
+    renderer.model_index = 0
+    renderer.column = 1
     column = gtk.TreeViewColumn('Includi', renderer, active=0)
     column.connect("clicked", anaarti.columnSelectAll, treeview)
     column.set_sizing(GTK_COLUMN_GROWN_ONLY)

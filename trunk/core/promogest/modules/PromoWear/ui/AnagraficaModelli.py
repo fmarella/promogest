@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -48,8 +48,8 @@ class AnagraficaModelli(Anagrafica):
         renderer.set_property('editable', False)
         renderer.connect('edited', self.on_column_edited, treeview, True)
         #GTK3
-        #renderer.set_data('column', 0)
-        #renderer.set_data('max_length', 200)
+        renderer.column = 0
+        renderer.max_length = 200
         column = gtk.TreeViewColumn('Denominazione', renderer, text=1,
                                     sensitive=3)
         column.set_sizing(GTK_COLUMN_GROWN_ONLY)
@@ -63,8 +63,8 @@ class AnagraficaModelli(Anagrafica):
         renderer.set_property('editable', False)
         renderer.connect('edited', self.on_column_edited, treeview, False)
         #GTK3
-        #renderer.set_data('column', 1)
-        #renderer.set_data('max_length', 10)
+        renderer.column = 1
+        renderer.max_length = 10
         column = gtk.TreeViewColumn('Descrizione breve', renderer, text=2,
                                     sensitive=3)
         column.set_sizing(GTK_COLUMN_GROWN_ONLY)

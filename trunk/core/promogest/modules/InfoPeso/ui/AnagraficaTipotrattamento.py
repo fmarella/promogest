@@ -43,8 +43,8 @@ class AnagraficaTipoTrattamento(Anagrafica):
         renderer.set_property('editable', False)
         renderer.connect('edited', self.on_column_edited, treeview, True)
         #GTK3
-        #renderer.set_data('column', 0)
-        #renderer.set_data('max_length', 200)
+        renderer.column = 0
+        renderer.max_length = 200
         column = gtk.TreeViewColumn('Descrizione', renderer, text=1)
         column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
