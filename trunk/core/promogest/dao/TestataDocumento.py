@@ -192,7 +192,7 @@ class TestataDocumento(Base, Dao):
         __quantitaTotale = 0
         if len(self.righe) > 0:
             for r in self.righe:
-                __quantitaTotale += float(r.quantita*r.moltiplicatore)
+                __quantitaTotale += float(float(r.quantita)*float(r.moltiplicatore))
         return __quantitaTotale
 
     totalConfections = property(_getDocumentTotalConfections)
