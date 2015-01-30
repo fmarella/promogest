@@ -823,31 +823,31 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
         if not inserisci:
             if self._iteratorRiga is None:
                 return
-            self.modelRiga.set_value(self._iteratorRiga, 0, self._righe[self._numRiga]["magazzino"])
-            self.modelRiga.set_value(self._iteratorRiga, 1, self._righe[self._numRiga]["codiceArticolo"])
-            self.modelRiga.set_value(self._iteratorRiga, 2, self._righe[self._numRiga]["descrizione"])
-            self.modelRiga.set_value(self._iteratorRiga, 3, mN(self._righe[self._numRiga]["percentualeIva"],2))
+            self.modelRiga.set_value(self._iteratorRiga, 0, uu(self._righe[self._numRiga]["magazzino"]))
+            self.modelRiga.set_value(self._iteratorRiga, 1, uu(self._righe[self._numRiga]["codiceArticolo"]))
+            self.modelRiga.set_value(self._iteratorRiga, 2, uu(self._righe[self._numRiga]["descrizione"]))
+            self.modelRiga.set_value(self._iteratorRiga, 3,uu( mN(self._righe[self._numRiga]["percentualeIva"],2)))
             self.modelRiga.set_value(self._iteratorRiga, 4, self._righe[self._numRiga]["unitaBase"])
             self.modelRiga.set_value(self._iteratorRiga, 5, self._righe[self._numRiga]["multiplo"])
             self.modelRiga.set_value(self._iteratorRiga, 6, self._righe[self._numRiga]["listino"])
-            self.modelRiga.set_value(self._iteratorRiga, 7, mN(self._righe[self._numRiga]["quantita"],3))
-            self.modelRiga.set_value(self._iteratorRiga, 8, mN(self._righe[self._numRiga]["prezzoLordo"]))
+            self.modelRiga.set_value(self._iteratorRiga, 7, uu(mN(self._righe[self._numRiga]["quantita"],3)))
+            self.modelRiga.set_value(self._iteratorRiga, 8, uu(mN(self._righe[self._numRiga]["prezzoLordo"])))
             self.modelRiga.set_value(self._iteratorRiga, 9, self._righe[self._numRiga]["applicazioneSconti"] + ' ' + getStringaSconti(self._righe[self._numRiga]["sconti"]))
-            self.modelRiga.set_value(self._iteratorRiga, 10, mN(self._righe[self._numRiga]["prezzoNetto"]))
-            self.modelRiga.set_value(self._iteratorRiga, 11, mN(self._righe[self._numRiga]["totale"],2))
+            self.modelRiga.set_value(self._iteratorRiga, 10, uu(mN(self._righe[self._numRiga]["prezzoNetto"])))
+            self.modelRiga.set_value(self._iteratorRiga, 11, uu(mN(self._righe[self._numRiga]["totale"],2)))
         else:
             self.modelRiga.append((self._righe[self._numRiga]["magazzino"],
                                    self._righe[self._numRiga]["codiceArticolo"],
                                    self._righe[self._numRiga]["descrizione"],
-                                   str(mN(self._righe[self._numRiga]["percentualeIva"],2)),
+                                   uu(mN(self._righe[self._numRiga]["percentualeIva"],2)),
                                    self._righe[self._numRiga]["unitaBase"],
                                    self._righe[self._numRiga]["multiplo"],
                                    self._righe[self._numRiga]["listino"],
-                                   str(mN(self._righe[self._numRiga]["quantita"],3)),
-                                   str(mN(self._righe[self._numRiga]["prezzoLordo"])),
+                                   uu(mN(self._righe[self._numRiga]["quantita"],3)),
+                                   uu(mN(self._righe[self._numRiga]["prezzoLordo"])),
                                    self._righe[self._numRiga]["applicazioneSconti"] + ' ' + getStringaSconti(self._righe[self._numRiga]["sconti"]),
-                                   str(mN(self._righe[self._numRiga]["prezzoNetto"])),
-                                   str(mN(self._righe[self._numRiga]["totale"],2))))
+                                   uu(mN(self._righe[self._numRiga]["prezzoNetto"])),
+                                   uu(mN(self._righe[self._numRiga]["totale"],2))))
         self.calcolaTotale()
 
         if costoVariato:
