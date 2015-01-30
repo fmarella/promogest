@@ -339,8 +339,7 @@ class Articolo(Base, Dao):
         articoloTagliaColore = property(getArticoloTagliaColore,
                                                 setArticoloTagliaColore)
 
-        @property
-        def articoliTagliaColore(self, idGruppoTaglia=None, idTaglia=None,
+        def getArticoliTagliaColore(self, idGruppoTaglia=None, idTaglia=None,
                                                     idColore=None, order=None):
             """ Restituisce una lista di Dao ArticoloTagliaColore
                 figli del Dao Articolo """
@@ -379,6 +378,7 @@ class Articolo(Base, Dao):
             except:
                 pass
             return articoli
+        articoliTagliaColore = property(getArticoliTagliaColore)
 
         def _getArticoliVarianti(self, order=None):
             """ Restituisce una lista di Dao Articolo Varianti """
