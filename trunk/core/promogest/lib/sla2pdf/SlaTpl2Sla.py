@@ -453,11 +453,6 @@ class SlaTpl2Sla(SlaParser):
                                 else:
                                     print type(value)
                                     resolvedTag = uu(value)
-                                    #if type(resolvedTag) != type(u"unicode"):
-                                        #if type(resolvedTag) == type(1):
-                                            #resolvedTag = str(resolvedTag)
-                                        #resolvedTag = resolvedTag.encode("utf-8")
-
                                 ch = ch.replace(tags[tagkey]['completeTag'], resolvedTag)
                                   # Save itext
                                 try:
@@ -531,9 +526,10 @@ class SlaTpl2Sla(SlaParser):
                                 # Function
 #                                print "FUCTION", function, value, parameter
                                 if function in self.formatFunctions:
-                                    resolvedTag = self.callFunction(function, value, parameter)
+                                    resolvedTag = uu(self.callFunction(function, value, parameter))
                                 else:
                                     resolvedTag = uu(value)
+                                print " MA CHE CAZZO", resolvedTag, type(resolvedTag)
                                 ch = ch.replace(tags[k]['completeTag'], resolvedTag)
                                 try:
                                     if value.count('€') >1:

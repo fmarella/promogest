@@ -3631,21 +3631,17 @@ def getCodicePagamento(denominazione):
     return codice
 #end fattura PA
 
-def uu(data):
+def uu(data=None):
     """ funzione di check e controllo dell'unicode...se non è unicode lo trasforma in tale
     se è già unicode non fa niente """
-    return data
-    print "DATA UU", data, type(data)
-    if data and type(data) != type(u"unicode"):
-        if type(data) == type(1):         #intero
+    #return data
+    #print "DATA UU", data, type(data) ,type(Decimal(22))
+    if type(data) != type(u"unicode"):
+        if type(data) == type(1):
             data = str(data)
         elif type(data) == type(str("ciao")):
             data = data.decode("utf-8")
-            print "FATTO 1"
-            #except:
-                #data = data.encode("utf-8")
-                #print "FATTO 2"
-        elif type(data) == Decimal:
+        elif type(data) == type(Decimal(22)):
             data = str(data)
         elif type(data) == type(datetime.datetime.now()):
             data = str(data)

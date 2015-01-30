@@ -23,11 +23,11 @@ margin: 1cm;
         <th >VALORE</th>
         <th>TIPO</th>
         <th>RIF.</th>
-    	<th>NOTE</th>
+        <th>NOTE</th>
 
         {% for riga in dao.righeprimanota %}
         <tr >
-          <td style="width:65%;font-size:14px;" class="odd-detail">{{riga.denominazione}}</td>
+          <td style="width:65%;font-size:14px;" class="odd-detail">{{riga.denominazione|uu}}</td>
             {% if riga.segno =="entrata" %}
                 <td style="color:green;width:120px;text-align:center;font-size:14px;" class="odd-detail">{{utils.mNLC(riga.valore,2)}}</td>
             {% elif riga.segno =="uscita" %}
@@ -41,7 +41,7 @@ margin: 1cm;
             <td style="color:brown;width:80px;text-align:center;font-size:14px;" class="odd-detail">{{riga.tipo}}</td>
             {% endif %}
             <td style="width:100px;font-size:10px;" class="odd-detail">{{riga.banca[0:30]}}</td>
-        <td style="width:20%;font-size:10px;" class="odd-detail">{{ riga.note_primanota|nonone }}</td>
+        <td style="width:20%;font-size:10px;" class="odd-detail">{{ riga.note_primanota|uu|nonone }}</td>
         </tr>
         {% endfor %}
                 {% if dao.righeprimanota|length==1 %}
