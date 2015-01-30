@@ -169,10 +169,22 @@ class ExportCsv(GladeWidget):
                 self.campi.append((m[1], m.path[0]))
         if self.nome_entry.get_text() =="" and self.selezione_modello_combobox.get_active_text() ==None:
             obligatoryField(self.getTopLevel(), self.nome_entry)
-        self._savePgxAttributes()
         nome = self.nome_entry.get_text()
         if not nome:
-            nome = self.selezione_modello_combobox.get_active_text().split(".")[0]
+                obligatoryField(self.getTopLevel(), self.nome_entry)
+
+        tree_iter = self.selezione_modello_combobox.get_active_iter()
+        if tree_iter != None:
+            modell = self.selezione_modello_combobox.get_model()
+            if modell[tree_iter][0] ==None:
+                obligatoryField(self.getTopLevel(), self.selezione_modello_combobox)
+            else:
+                if not nome:
+                    nome = modell[tree_iter][0].split(".")[0]
+
+
+        self._savePgxAttributes()
+
         temNome = Environment.tempDir+"tempPGE"
         copy2(temNome, Environment.templatesDir+nome+".pge")
 #        self.modello_csv_scrolledwindow.set_sensitive(False)

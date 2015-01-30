@@ -161,11 +161,7 @@ def fillComboboxFamiglieArticoli(combobox, filter=False, ignore=[]):
     Crea l'elenco delle famiglie articoli
     """
     from promogest.dao.FamigliaArticolo import FamigliaArticolo
-    #if not Environment.famiglie_articolo:
     fams = FamigliaArticolo().select(batchSize=None)
-        #Environment.famiglie_articolo = fams
-    #else:
-        #fams = Environment.famiglie_articolo
 
     model = gtk.TreeStore(object, int, str)
     if not filter:
@@ -192,6 +188,7 @@ def fillComboboxFamiglieArticoli(combobox, filter=False, ignore=[]):
 
     combobox.clear()
     renderer = gtk.CellRendererText()
+    #renderer.set_property("wrap-width",10)
     combobox.pack_start(renderer, True)
     combobox.add_attribute(renderer, 'text', 2)
     combobox.set_model(model)

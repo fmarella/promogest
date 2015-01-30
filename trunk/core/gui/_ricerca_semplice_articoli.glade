@@ -24,42 +24,6 @@
       </row>
     </data>
   </object>
-  <object class="GtkListStore" id="promowear_liststore">
-    <columns>
-      <!-- column-name PyObject1 -->
-      <column type="PyObject"/>
-      <!-- column-name gchararray1 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray2 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray3 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray4 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray5 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray6 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray7 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray8 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray9 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray10 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray11 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray12 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray13 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray14 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray15 -->
-      <column type="gchararray"/>
-    </columns>
-  </object>
   <object class="GtkBox" id="ricerca_semplice_articoli_filter_vbox">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -228,16 +192,6 @@
               </packing>
             </child>
             <child>
-              <object class="GtkComboBox" id="id_famiglia_articolo_filter_combobox">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-              </object>
-              <packing>
-                <property name="left_attach">1</property>
-                <property name="top_attach">5</property>
-              </packing>
-            </child>
-            <child>
               <object class="GtkLabel" id="label6">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
@@ -253,6 +207,7 @@
               <object class="GtkComboBox" id="id_categoria_articolo_filter_combobox">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="popup_fixed_width">False</property>
               </object>
               <packing>
                 <property name="left_attach">1</property>
@@ -297,10 +252,21 @@
               <object class="GtkComboBox" id="id_stato_articolo_filter_combobox">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="popup_fixed_width">False</property>
               </object>
               <packing>
                 <property name="left_attach">1</property>
                 <property name="top_attach">8</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkComboBox" id="id_famiglia_articolo_filter_combobox">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="top_attach">5</property>
               </packing>
             </child>
           </object>
@@ -529,7 +495,7 @@
       </object>
       <packing>
         <property name="expand">False</property>
-        <property name="fill">True</property>
+        <property name="fill">False</property>
         <property name="position">0</property>
       </packing>
     </child>
@@ -579,6 +545,42 @@
         <property name="position">1</property>
       </packing>
     </child>
+  </object>
+  <object class="GtkListStore" id="promowear_liststore">
+    <columns>
+      <!-- column-name PyObject1 -->
+      <column type="PyObject"/>
+      <!-- column-name gchararray1 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray2 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray3 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray4 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray5 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray6 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray7 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray8 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray9 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray10 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray11 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray12 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray13 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray14 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray15 -->
+      <column type="gchararray"/>
+    </columns>
   </object>
   <object class="GtkListStore" id="standard_liststore">
     <columns>

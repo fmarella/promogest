@@ -31,10 +31,10 @@ from promogest.lib.alembic import op
 
 def orderedImport():
     return
-    #from promogest.dao.Azienda import Azienda #v
-    #from promogest.dao.Language import Language #v
-    #from promogest.modules.RuoliAzioni.dao.Role import Role #v
-    #from promogest.dao.User import User #v
+    from promogest.dao.Azienda import Azienda #v
+    from promogest.dao.Language import Language #v
+    from promogest.modules.RuoliAzioni.dao.Role import Role #v
+    from promogest.dao.User import User #v
     #colonne_utente = colonne = get_columns(User.__table__)
     #print "COLONNNNE", colonne_utente,"mailing_list" not in colonne_utente
     #if "mailing_list" not in colonne_utente:
@@ -54,11 +54,11 @@ def orderedImport():
         #except:
             #delete_pickle()
     #from promogest.dao.Regioni import t_regione
-    #from promogest.modules.RuoliAzioni.dao.Action import t_action  #v
-    #from promogest.modules.RuoliAzioni.dao.RoleAction import t_roleaction #v
-    #from promogest.dao.Access import t_access #v
-    #from promogest.dao.Setting import t_setting #v
-    #from promogest.dao.Promemoria import t_promemoria #v
+    from promogest.modules.RuoliAzioni.dao.Action import Action  #v
+    from promogest.modules.RuoliAzioni.dao.RoleAction import RoleAction
+    from promogest.dao.Access import Access
+    from promogest.dao.Setting import Setting
+    from promogest.dao.Promemoria import Promemoria
     #from promogest.dao.Setconf import * #verificare
     #from promogest.dao.Pagamento import t_pagamento #v
     #from promogest.dao.Operazione import t_operazione #v
@@ -74,23 +74,23 @@ def orderedImport():
     ##from promogest.dao.Image import * # ???????????????????
     #from promogest.dao.CategoriaCliente import CategoriaCliente #v
     #from promogest.dao.CategoriaFornitore import t_categoria_fornitore #v
-    #from promogest.dao.Magazzino import t_magazzino  #v
+    from promogest.dao.Magazzino import Magazzino
     from promogest.dao.Stoccaggio import Stoccaggio #v
     #from promogest.dao.Imballaggio import t_imballaggio #v
     #from promogest.dao.Listino import t_listino #v
     from promogest.dao.Articolo import Articolo #v
     #from promogest.dao.CodiceABarreArticolo import t_codice_barre_articolo #v
     #from promogest.dao.ListinoArticolo import t_listino_articolo #v
-    #from promogest.dao.Multiplo import t_multiplo #v
+    from promogest.dao.Multiplo import Multiplo #v
 
     #from promogest.dao.ListinoComplessoListino import t_listino_complesso_listino #v
     #from promogest.dao.ListinoComplessoArticoloPrevalente import t_listino_complesso_articolo_prevalente  #v
     #from promogest.dao.VariazioneListino import t_variazione_listino #v
 
-    #from promogest.dao.daoContatti.RecapitoContatto import t_recapito #v
-    #from promogest.dao.daoContatti.CategoriaContatto import t_categoria_contatto #v
-    #from promogest.dao.daoContatti.ContattoCategoriaContatto import t_contatto_categoria_contatto #v
-    #from promogest.dao.daoContatti.Contatto import t_contatto #v
+    from promogest.dao.daoContatti.RecapitoContatto import RecapitoContatto
+    from promogest.dao.daoContatti.CategoriaContatto import CategoriaContatto
+    from promogest.dao.daoContatti.ContattoCategoriaContatto import ContattoCategoriaContatto
+    from promogest.dao.daoContatti.Contatto import Contatto #v
 
 
     from promogest.dao.Stoccaggio import Stoccaggio #v
