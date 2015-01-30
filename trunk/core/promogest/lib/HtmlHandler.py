@@ -65,7 +65,7 @@ def env(templates_dir):
     jinja_env.filters['datetimeformat'] = datetimeformat
     jinja_env.filters['nl2br'] = nl2br
     jinja_env.filters['nonone'] = noNone
-    jinja_env.filters['uu'] = noNone
+    jinja_env.filters['uu'] = uu
     return jinja_env
 
 def datetimeformat(value, format='%d/%m/%Y %H:%M '):

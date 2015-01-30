@@ -48,6 +48,7 @@ from promogest.dao.RigaMovimentoFornitura import RigaMovimentoFornitura
 from promogest.modules.Pagamenti.dao.TestataDocumentoScadenza import TestataDocumentoScadenza
 from promogest.dao.InformazioniFatturazioneDocumento import InformazioniFatturazioneDocumento
 import promogest.lib.ibanlib
+from promogest.lib.utils import uu
 
 from promogest.dao.DaoUtils import numeroRegistroGet
 from promogest.dao.CachedDaosDict import CachedDaosDict
@@ -174,9 +175,8 @@ class TestataDocumento(Base, Dao):
             self.__righeDocumento = []
         if Environment.tipodb == "sqlite":
             for r in self.__righeDocumento:
-                #print r , r.descrizione, type(r.descrizione)
-                if type(r.descrizione) != type(u"unicode"):
-                    r.descrizione = r.descrizione.decode("utf-8")
+                r.descrizione = uu(r.descrizione)
+                r.quantita = uu(r.quantita)
         return self.__righeDocumento
 
     def _setRigheDocumento(self, value):
