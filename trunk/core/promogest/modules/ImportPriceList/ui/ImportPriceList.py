@@ -203,7 +203,7 @@ del formato del file e riprovare""" % str(rowcount+1)
                                                     GTK_RESPONSE_CANCEL,
                                                     gtk.STOCK_OK,
                                                     GTK_RESPONSE_OK),
-                                           backend=None)
+                                           )
         fltr = gtk.FileFilter()
         #fltr.add_mime_type('application/csv')
         fltr.add_pattern('*.csv')

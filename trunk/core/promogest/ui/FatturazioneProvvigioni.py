@@ -48,12 +48,12 @@ class FatturazioneProvvigioni(GladeWidget):
     def on_esporta_button_clicked(self, widget):
         fileDialog = gtk.FileChooserDialog(title='Salva il file',
                                            parent=self.getTopLevel(),
-                                           action=gtk.FILE_CHOOSER_ACTION_SAVE,
+                                           action=GTK_FILE_CHOOSER_ACTION_SAVE,
                                            buttons=(gtk.STOCK_CANCEL,
-                                                    gtk.RESPONSE_CANCEL,
+                                                    GTK_RESPONSE_CANCEL,
                                                     gtk.STOCK_SAVE,
-                                                    gtk.RESPONSE_OK),
-                                           backend=None)
+                                                    GTK_RESPONSE_OK),
+                                           )
         fileDialog.set_current_name("fatturazione_provvigioni.csv")
         fileDialog.set_current_folder(Environment.documentsDir)
 

@@ -284,7 +284,7 @@ class RiBaExportWindow(GladeWidget):
                                                     GTK_RESPONSE_CANCEL,
                                                     gtk.STOCK_SAVE,
                                                     GTK_RESPONSE_OK),
-                                           backend=None)
+                                           )
         fileDialog.set_current_name(nome_file)
         fileDialog.set_current_folder(Environment.documentsDir)
 

@@ -727,7 +727,7 @@ class GestioneInventario(RicercaComplessaArticoli):
                                                     GTK_RESPONSE_CANCEL,
                                                     gtk.STOCK_SAVE,
                                                     GTK_RESPONSE_OK),
-                                           backend=None)
+                                           )
 
 
         folder = setconf("General", "cartella_predefinita") or ""

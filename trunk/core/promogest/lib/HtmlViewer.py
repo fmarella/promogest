@@ -95,7 +95,7 @@ class HtmlViewer(GladeWidget):
                                                     GTK_RESPONSE_CANCEL,
                                                     gtk.STOCK_SAVE,
                                                     GTK_RESPONSE_OK),
-                                           backend=None)
+                                           )
         folder = ''
         try:
             folder = Environment.documentsDir
