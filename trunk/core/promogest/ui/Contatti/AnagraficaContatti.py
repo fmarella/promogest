@@ -504,6 +504,7 @@ class AnagraficaContattiEdit(AnagraficaEdit):
         rendererCombo.set_property('has_entry', False)
         rendererCombo.set_property('model', fillModelTipiRecapito())
         rendererCombo.set_property('width', 200)
+        rendererCombo.column = 0
         column = gtk.TreeViewColumn('Tipo', rendererCombo, text=1)
         column.set_clickable(False)
         column.set_sizing(GTK_COLUMN_GROWN_ONLY)
@@ -515,6 +516,7 @@ class AnagraficaContattiEdit(AnagraficaEdit):
         rendererText = gtk.CellRendererText()
         rendererText.set_property('editable', True)
         rendererText.connect('edited', self.on_recapito_edited, self.recapiti_treeview.get_model())
+        rendererText.column = 1
         column = gtk.TreeViewColumn('Recapito', rendererText, text=2)
         column.set_clickable(False)
         column.set_sizing(GTK_COLUMN_GROWN_ONLY)
@@ -628,6 +630,7 @@ class AnagraficaContattiEdit(AnagraficaEdit):
     def on_tipo_recapito_edited(self, cell, path, value, model):
         iterator = model.get_iter(path)
         column = cell.column
+
         model.set_value(iterator, column+1, value)
         if self._tabPressed:
             self._tabPressed = False
