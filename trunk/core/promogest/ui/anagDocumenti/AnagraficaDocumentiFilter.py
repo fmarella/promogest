@@ -73,6 +73,8 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
             self._anagrafica.aggiornaforniture()
         except:
             pass
+        self.a_data_pagamento_filter_entry.show()
+        self.da_data_pagamento_filter_entry.show()
         self.clear()
         self.altri_filtri_frame.hide()
 
@@ -145,8 +147,8 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         #self._anagrafica.pbar_anag_complessa.show()
         self.anagrafica_filter_treeview.set_model(model=None)
         daData = stringToDate(self.da_data_filter_entry.get_text())
-        daDataPagamento = stringToDateTime(self.da_data_pagamento_filter_entry.get_text())
-        aDataPagamento = stringToDateTime(self.a_data_pagamento_filter_entry.get_text())
+        daDataPagamento = stringToDate(self.da_data_pagamento_filter_entry.get_text())
+        aDataPagamento = stringToDate(self.a_data_pagamento_filter_entry.get_text())
         if Environment.tipodb == "sqlite":
             aData = stringToDateBumped(self.a_data_filter_entry.get_text())
         else:
