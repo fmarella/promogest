@@ -127,6 +127,71 @@
       </row>
     </data>
   </object>
+  <object class="GtkImage" id="open_anag_secondaria">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-apply</property>
+  </object>
+  <object class="GtkImage" id="ordine_da_cliente_image">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">duplica24x24.png</property>
+  </object>
+  <object class="GtkImage" id="preventivo_image1">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">duplica24x24.png</property>
+  </object>
+  <object class="GtkImage" id="primanota_image">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">primanota_48X48.png</property>
+  </object>
+  <object class="GtkImage" id="promemoria_image">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">promemoria48x48.png</property>
+  </object>
+  <object class="GtkImage" id="promemoria_image1">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">promemoria24x24.png</property>
+  </object>
+  <object class="GtkImage" id="promogest_image1">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">mask_24.png</property>
+  </object>
+  <object class="GtkImage" id="promogest_image2">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">mask_24.png</property>
+  </object>
+  <object class="GtkImage" id="promotux_image1">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">mask_24.png</property>
+  </object>
+  <object class="GtkImage" id="prova_promowear_image">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">taglia_colore16x16.png</property>
+  </object>
+  <object class="GtkImage" id="prova_promowear_image1">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">taglia_colore16x16.png</property>
+  </object>
+  <object class="GtkImage" id="regstrati_image">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-edit</property>
+  </object>
+  <object class="GtkImage" id="shop_image">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">vendita24x24.png</property>
+  </object>
   <object class="GtkWindow" id="main_window">
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">PromoGest</property>
@@ -610,6 +675,7 @@ con registratore di cassa. </property>
               <object class="GtkNotebook" id="main_notebook">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
+                <property name="tab_pos">right</property>
                 <property name="scrollable">True</property>
                 <signal name="change-current-page" handler="on_main_notebook_change_current_page" swapped="no"/>
                 <signal name="select-page" handler="on_main_notebook_select_page" swapped="no"/>
@@ -1566,71 +1632,6 @@ che come persona giuridica</property>
         </child>
       </object>
     </child>
-  </object>
-  <object class="GtkImage" id="open_anag_secondaria">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">gtk-apply</property>
-  </object>
-  <object class="GtkImage" id="ordine_da_cliente_image">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="pixbuf">duplica24x24.png</property>
-  </object>
-  <object class="GtkImage" id="preventivo_image1">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="pixbuf">duplica24x24.png</property>
-  </object>
-  <object class="GtkImage" id="primanota_image">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="pixbuf">primanota_48X48.png</property>
-  </object>
-  <object class="GtkImage" id="promemoria_image">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="pixbuf">promemoria48x48.png</property>
-  </object>
-  <object class="GtkImage" id="promemoria_image1">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="pixbuf">promemoria24x24.png</property>
-  </object>
-  <object class="GtkImage" id="promogest_image1">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="pixbuf">mask_24.png</property>
-  </object>
-  <object class="GtkImage" id="promogest_image2">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="pixbuf">mask_24.png</property>
-  </object>
-  <object class="GtkImage" id="promotux_image1">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="pixbuf">mask_24.png</property>
-  </object>
-  <object class="GtkImage" id="prova_promowear_image">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="pixbuf">taglia_colore16x16.png</property>
-  </object>
-  <object class="GtkImage" id="prova_promowear_image1">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="pixbuf">taglia_colore16x16.png</property>
-  </object>
-  <object class="GtkImage" id="regstrati_image">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">gtk-edit</property>
-  </object>
-  <object class="GtkImage" id="shop_image">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="pixbuf">vendita24x24.png</property>
   </object>
   <object class="GtkDialog" id="upgrade_iva">
     <property name="width_request">600</property>

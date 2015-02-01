@@ -2,6 +2,16 @@
 <!-- Generated with glade 3.18.3 -->
 <interface>
   <requires lib="gtk+" version="3.4"/>
+  <object class="GtkListStore" id="elenco_magazzini_listore">
+    <columns>
+      <!-- column-name PyObject1 -->
+      <column type="PyObject"/>
+      <!-- column-name gchararray1 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray2 -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
   <object class="GtkFrame" id="elenco_magazzini_frame">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -67,10 +77,10 @@
               </packing>
             </child>
             <child>
-              <object class="GtkBox" id="box1">
+              <object class="GtkGrid" id="grid1">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="homogeneous">True</property>
+                <property name="column_homogeneous">True</property>
                 <child>
                   <object class="GtkToggleButton" id="magazzini_togglebutton">
                     <property name="label" translatable="yes">Anagrafica
@@ -82,9 +92,8 @@ Magazzino</property>
                     <signal name="clicked" handler="on_magazzini_togglebutton_clicked" swapped="no"/>
                   </object>
                   <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">0</property>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">0</property>
                   </packing>
                 </child>
                 <child>
@@ -98,9 +107,8 @@ Magazzino</property>
                     <signal name="clicked" handler="on_stoccaggi_togglebutton_clicked" swapped="no"/>
                   </object>
                   <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">1</property>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">0</property>
                   </packing>
                 </child>
                 <child>
@@ -114,9 +122,8 @@ Magazzino</property>
                     <signal name="clicked" handler="on_movimenti_togglebutton_clicked" swapped="no"/>
                   </object>
                   <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">2</property>
+                    <property name="left_attach">2</property>
+                    <property name="top_attach">0</property>
                   </packing>
                 </child>
                 <child>
@@ -130,9 +137,8 @@ Magazzino</property>
                     <signal name="clicked" handler="on_forniture_button_clicked" swapped="no"/>
                   </object>
                   <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">3</property>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">1</property>
                   </packing>
                 </child>
                 <child>
@@ -145,9 +151,8 @@ Magazzino</property>
                     <signal name="clicked" handler="on_inventario_togglebutton_clicked" swapped="no"/>
                   </object>
                   <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">4</property>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">1</property>
                   </packing>
                 </child>
                 <child>
@@ -160,9 +165,8 @@ Magazzino</property>
                     <signal name="clicked" handler="on_aggiorna_magazzini_button_clicked" swapped="no"/>
                   </object>
                   <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">5</property>
+                    <property name="left_attach">2</property>
+                    <property name="top_attach">1</property>
                   </packing>
                 </child>
               </object>
@@ -185,16 +189,6 @@ Magazzino</property>
         <property name="use_markup">True</property>
       </object>
     </child>
-  </object>
-  <object class="GtkListStore" id="elenco_magazzini_listore">
-    <columns>
-      <!-- column-name PyObject1 -->
-      <column type="PyObject"/>
-      <!-- column-name gchararray1 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray2 -->
-      <column type="gchararray"/>
-    </columns>
   </object>
   <object class="GtkImage" id="image1">
     <property name="visible">True</property>
