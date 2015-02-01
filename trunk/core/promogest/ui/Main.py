@@ -1020,8 +1020,8 @@ promogest2 IN /HOME/NOMEUTENTE/ O IN C:/UTENTI/NOMEUTENTE""")
 #        azioni_veloci_page_label.set_markup("<b>AZIONI VELOCI</b>")
 #        self.main_notebook.append_page(azioni_veloci_page.azioni_veloci_frame, azioni_veloci_page_label)
 
-    def on_promotux_button_clicked(self, button):
-        url ="http://www.promotux.it"
+    def on_promogest_button_clicked(self, button):
+        url ="http://www.promogest.me"
         webbrowser.open_new_tab(url)
 
     def statusBarHandler(self):
