@@ -658,11 +658,14 @@ class Anagrafica(GladeWidget):
                 filter1.add_pattern("*.xml")
                 filter1.add_pattern("*.XML")
                 saveDialog.add_filter(filter1)
-
-                if azienda.codice_fiscale:
-                    current_name = "".join(['IT', azienda.codice_fiscale, '_', progressivo, '.xml'])
+                current_name = ""
                 if azienda.partita_iva:
                     current_name = "".join(['IT', azienda.partita_iva, '_', progressivo, '.xml'])
+                if azienda.codice_fiscale:
+                    current_name = "".join(['IT', azienda.codice_fiscale, '_', progressivo, '.xml'])
+                if not current_name:
+                    messageWarning(msg="ATTENZIONE! Partita iva  o codice fiscale azienda mancanti")
+                    return
 
                 xml = to_fatturapa(dao, progressivo=progressivo)
                 if not xml:
