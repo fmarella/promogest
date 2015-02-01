@@ -6,45 +6,36 @@
 
 <table >
 <tr>
-<td style="width:120px;height:110px;text-align:left">
-    <a style="text-color:black;" href="http://www.promogest.me/promoGest/news_list">
-                <img src="gui/rss_128X128.png"  width=100 height=100 alt="Logo PromoGest" />
-    </a>
+<!--
+    <td style="width:120px;height:110px;text-align:left">
+        <a style="text-color:black;" href="http://www.promogest.me/promoGest/news_list">
+                    <img src="gui/rss_128X128.png"  width=100 height=100 alt="Logo PromoGest" />
+        </a>
+    </td>
+-->
+    <td style="width:100%;text-align:left"><p style="font-size:1.6em;"><b>Le ultime novità sul PromoGest</b>
+    {% for a in environment.news %}
+        <div><a style="text-decoration:none;font-size:1.2em;" href="http://www.promogest.me/promoGest/news_detail/{{a[1]}}">{{a[2]}} <b>{{a[0]}}</b> - clicks({{a[3]}})</a></div>
+    {% endfor %}</p>
 </td>
-<td style="width:100%;height:110px;text-align:left"><p><b>LE NEWS: Le ultime novità sul PromoGest</b> {% for a in environment.news %}
-<li><a  style="text-decoration:none" href="http://www.promogest.me/promoGest/news_detail/{{a[1]}}">{{a[2]}} <b>{{a[0]}}</b> - clicks({{a[3]}})</a></li>
-{% endfor %}</p>
-</td>
-
 </tr>
-  <tr>
-<td style="width:120px;height:110px;text-align:left">
-<a style="text-color:black;" href="http://www.facebook.com/pages/PromoGest-Software-gestionale-open-source/173754852637691"><img src="gui/facebook_logo.png" width=100 height=100 alt="Logo PromoGest" /></a> </td> <td style="width:100%;height:128px;text-align:left"><p><b>FACEBOOK: </b>Abbiamo raccolto qui tutta la produzione di notizie ed informazioni provenienti da tutti i siti di comunicazione. Troverete una o due post al giorno con gli ultimi bug corretti, o segnalati e le ultime notizie. Clicca sul "Ti Piace"</p>
-</td>  </tr>
-<tr>
-<td style="width:120px;height:110px;text-align:left">
-<a style="text-color:black;" href="https://plus.google.com/b/104073853486550857191/104073853486550857191/posts"><img src="gui/GooglePlus-512-Red.png" width=98 height=98 alt="Logo PromoGest" /></a> </td>
-<td style="width:100%;text-align:left"><p><b>GOOGLE +</b>: Altro Social di prima grandezza, abbiamo una pagina anche qui con le più importanti novità</p>
-</td>
 
-</tr>
 <tr>
+<!--
 <td style="width:120px;height:110px;text-align:left">
-<a style="text-color:black;" href="https://twitter.com/promotux"><img src="gui/twitter-logo.png" width=100 height=100 alt="Logo PromoGest" /></a> </td>
-<td style="width:100%;text-align:left"><p><b>TWITTER: </b> Non poteva mancare il cinguettio per eccellenza, tutte le novità dello sviluppo le troverai in automatico qui</p>
-</td>
-
-</tr>
-<tr>
-<td style="width:120px;height:110px;text-align:left">
+-->
+<!--
 <a style="text-color:black;" href="http://code.google.com/p/promogest/"><img src="gui/Google_Code.png" width=100 height=100 alt="Logo PromoGest" /></a> </td>
-<td style="width:100%;text-align:left"><p><b>GOOGLE CODE:</b>La pagina del wiki, dei sorgenti e della segnalazione <b>bug</b>, consulta con regolarità la sezione degli issues e segnala il tuo problema con il promoGest. Tutte le novità più tecniche dello sviluppo quotdiano, correzioni ed implementazioni</p>
+-->
+<td style="width:100%;text-align:left;font-size:1.2em;"><a style="text-color:black;" href="https://code.google.com/p/promogest/issues/list"><h3>Se trovi UN BUG segnalalo cliccando qui</h3></a>
 </td>
 </tr>
 <tr>
+<!--
 <td style="width:120px;height:110px;text-align:left">
 <a style="text-color:black;" href="https://groups.google.com/forum/?fromgroups#!forum/promogest"><img src="gui/google-groups-logo.jpeg" width=100 height=100 alt="Logo PromoGest" /></a> </td>
-<td style="width:100%;text-align:left"><p><b>GRUPPO/FORUM: </b> Abbiamo anche il gruppo su google per le segnalazioni più articolate e dialettiche.</p>
+-->
+<td style="width:100%;text-align:left;font-size:1.2em;"><a style="text-color:black;" href="https://groups.google.com/forum/?fromgroups#!forum/promogest"><h3>Qui trovi invece ilo nostro forum</h3></a>
 </td>
 </tr>
 

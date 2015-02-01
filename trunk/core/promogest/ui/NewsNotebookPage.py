@@ -2,7 +2,7 @@
 
 # Promogest
 #
-# Copyright (C) 2005-2009 by Promotux Informatica - http://www.promotux.it/
+# Copyright (C) 2005-2015 by Promotux Informatica - http://www.promotux.it/
 # Author: Francesco Meloni <francesco@promotux.it>
 #
 # This program is free software; you can redistribute it and/or
@@ -31,15 +31,9 @@ from promogest.lib import feedparser
 from promogest.ui.SendEmail import SendEmail
 from promogest.dao.TestataDocumento import TestataDocumento
 
-try:
-    if Environment.pg3:
-        from gi.repository.WebKit import WebView
-    else:
-        from webkit import WebView
-    WEBKIT = True
-except:
-    import gtkhtml2
-    WEBKIT = False
+from gi.repository.WebKit import WebView
+WEBKIT = True
+
 
 class NewsNotebookPage(GladeWidget):
     """ Widget di configurazione del codice installazione e dei parametri
@@ -195,12 +189,20 @@ class NewsNotebookPage(GladeWidget):
         anag.editElement.id_persona_giuridica_customcombobox.grab_focus()
         #findComboboxRowFromStr(anag.editElement.id_persona_giuridica_customcombobox, "Altro", 1)
 
-    def on_promotux_button_clicked(self, button):
-        url ="http://www.promotux.it"
+    #def on_promogest_button_clicked(self, button):
+        #url ="http://www.promogest.me"
+        #webbrowser.open_new_tab(url)
+
+    def on_facebook_button_clicked(self, button):
+        url ="https://www.facebook.com/pages/PromoGest-Software-gestionale-open-source/173754852637691"
         webbrowser.open_new_tab(url)
 
-    def on_promogest_button_clicked(self, button):
-        url ="http://www.promogest.me"
+    def on_twitter_button_clicked(self, button):
+        url ="https://twitter.com/promotux"
+        webbrowser.open_new_tab(url)
+
+    def on_googleplus_button_clicked(self, button):
+        url ="https://plus.google.com/+promogest"
         webbrowser.open_new_tab(url)
 
     def on_email_button_clicked(self, button):

@@ -987,7 +987,7 @@ promogest2 IN /HOME/NOMEUTENTE/ O IN C:/UTENTI/NOMEUTENTE""")
         if WEBKIT:
             self.nn = NewsNotebookPage(self, self.aziendaStr).draw()
             n = gtk.Label()
-            n.set_markup(_("<b>NEWS/A.VEL</b>"))
+            n.set_markup(_("<b>NEWS E AZIONI VEL</b>"))
             ind = self.main_notebook.append_page(self.nn.notizie_frame, n)
             self.main_notebook.set_current_page(ind)
 
@@ -1011,7 +1011,7 @@ promogest2 IN /HOME/NOMEUTENTE/ O IN C:/UTENTI/NOMEUTENTE""")
 
         self.notifica_allarmi = NotificaAllarmiNotebookPage(self, self.aziendaStr)
         notifica_allarmi_label = gtk.Label()
-        notifica_allarmi_label.set_markup(_("<b>NOTIFICA ALLARMI</b>"))
+        notifica_allarmi_label.set_markup(_("<b>ALLARMI</b>"))
         self.main_notebook.append_page(self.notifica_allarmi.notifica_allarmi_frame, notifica_allarmi_label)
 
 #        azioni_veloci_page = AzioniVelociNotebookPage(self, self.aziendaStr).draw()
@@ -1020,6 +1020,9 @@ promogest2 IN /HOME/NOMEUTENTE/ O IN C:/UTENTI/NOMEUTENTE""")
 #        azioni_veloci_page_label.set_markup("<b>AZIONI VELOCI</b>")
 #        self.main_notebook.append_page(azioni_veloci_page.azioni_veloci_frame, azioni_veloci_page_label)
 
+    def on_promotux_button_clicked(self, button):
+        url ="http://www.promotux.it"
+        webbrowser.open_new_tab(url)
 
     def statusBarHandler(self):
         if not Environment.nobrand:

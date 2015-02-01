@@ -2,7 +2,7 @@
 <!-- Generated with glade 3.18.3 -->
 <interface>
   <requires lib="gtk+" version="3.4"/>
-  <requires lib="pO" version="3.4"/>
+  <requires lib=" " version="0.0"/>
   <requires lib="pythonplugin" version="0.0"/>
   <object class="GtkImage" id="articolo_image1">
     <property name="visible">True</property>
@@ -159,6 +159,11 @@
     <property name="pixbuf">promemoria24x24.png</property>
   </object>
   <object class="GtkImage" id="promogest_image1">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">mask_24.png</property>
+  </object>
+  <object class="GtkImage" id="promogest_image2">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="pixbuf">mask_24.png</property>
@@ -524,42 +529,6 @@ articoli per un certo </property>
             <property name="border_width">2</property>
             <property name="spacing">2</property>
             <child>
-              <object class="GtkAlignment" id="alignment1">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <child>
-                  <placeholder/>
-                </child>
-              </object>
-              <packing>
-                <property name="expand">True</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton" id="button_disconnect">
-                <property name="label">gtk-disconnect</property>
-                <property name="sensitive">False</property>
-                <property name="can_focus">False</property>
-                <property name="receives_default">True</property>
-                <property name="use_stock">True</property>
-                <signal name="clicked" handler="on_disconnect" swapped="no"/>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
-                <property name="pack_type">end</property>
-                <property name="position">1</property>
-              </packing>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
               <object class="GtkButton" id="upgrade_iva_button">
                 <property name="label" translatable="yes">UPGRADE IVA 22%</property>
                 <property name="sensitive">False</property>
@@ -570,7 +539,7 @@ articoli per un certo </property>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">False</property>
-                <property name="position">4</property>
+                <property name="position">0</property>
               </packing>
             </child>
             <child>
@@ -588,7 +557,26 @@ stai usando </property>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="position">5</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <object class="GtkButton" id="button_disconnect">
+                <property name="label">gtk-disconnect</property>
+                <property name="sensitive">False</property>
+                <property name="can_focus">False</property>
+                <property name="receives_default">True</property>
+                <property name="use_stock">True</property>
+                <signal name="clicked" handler="on_disconnect" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="pack_type">end</property>
+                <property name="position">3</property>
               </packing>
             </child>
             <child>
@@ -609,6 +597,7 @@ con registratore di cassa. </property>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">False</property>
+                <property name="pack_type">end</property>
                 <property name="position">6</property>
               </packing>
             </child>
@@ -628,11 +617,25 @@ per gli articoli secondo una logica di articoli principali
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">False</property>
+                <property name="pack_type">end</property>
                 <property name="position">7</property>
               </packing>
             </child>
             <child>
-              <placeholder/>
+              <object class="GtkButton" id="promogest_button">
+                <property name="label" translatable="yes">Sito PromoGest</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="image">promogest_image2</property>
+                <signal name="clicked" handler="on_promogest_button_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="pack_type">end</property>
+                <property name="position">8</property>
+              </packing>
             </child>
           </object>
           <packing>
@@ -658,6 +661,7 @@ per gli articoli secondo una logica di articoli principali
                   <object class="GtkIconView" id="main_iconview">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
+                    <property name="margin_top">5</property>
                     <property name="margin">2</property>
                     <property name="model">iconview_listore</property>
                     <property name="row_spacing">2</property>

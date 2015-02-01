@@ -165,6 +165,7 @@ def getfeedFromSite():
     else:
         d = Environment.feedAll
     feedList = d['entries']
+    print "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO", feedList
     feedToHtml = []
     for feed in feedList[0:3]:
         try:
