@@ -13,6 +13,7 @@
                 <th style="width:70px;" class="detail">TOTALE </th>
                 <th style="width:70px;" class="detail">SOSPESO</th>
                 <th style="width:70px;" class="detail">SALDATO</th>
+                <th style="width:190px;" class="detail">RIF DOC FORNI</th>
                 <th style="width:120px;" class="detail">TIPO PAGATO</th>
                 <th style="width:140px;" class="detail">BANCA</th>
             </tr>
@@ -34,6 +35,11 @@
                         <td style="width:70px;text-align:right;font-size:10px;" class="detail">{{utils.mNLC(dao.totale_sospeso,2)}}</td>
                         <td style="width:70px;text-align:right;font-size:10px;" class="detail">{{utils.mNLC(dao.totale_pagato,2)}}</td>
                 {% endif %}
+                {% if dao.id_fornitore %}
+
+                <td style="width:190px;text-align:center;font-size:10px;" class="detail">{{dao.protocollo}}</td>
+                {% endif %}
+
                 <td style="width:120px;text-align:center;font-size:10px;" class="detail">{{dao.pagamento}}</td>
                 <td style="width:140px;text-align:center;font-size:10px;" class="detail">{{dao.banca[0:20]}}</td>
             </tr>
