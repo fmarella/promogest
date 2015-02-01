@@ -2,7 +2,6 @@
 <!-- Generated with glade 3.18.3 -->
 <interface>
   <requires lib="gtk+" version="3.4"/>
-  <requires lib=" " version="0.0"/>
   <requires lib="pythonplugin" version="0.0"/>
   <object class="GtkImage" id="articolo_image1">
     <property name="visible">True</property>
@@ -434,21 +433,21 @@ articoli per un certo </property>
                           </object>
                         </child>
                         <child>
-                          <object class="GtkMenuItem" id="manuale_online">
+                          <object class="GtkMenuItem" id="issue_menu">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="label" translatable="yes">Manuale online</property>
+                            <property name="label" translatable="yes">Segnala un bug</property>
                             <property name="use_underline">True</property>
-                            <signal name="activate" handler="on_manuale_online_activate" swapped="no"/>
+                            <signal name="activate" handler="on_issue_menu_activate" swapped="no"/>
                           </object>
                         </child>
                         <child>
-                          <object class="GtkMenuItem" id="menuitem1">
+                          <object class="GtkMenuItem" id="forum_menu">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="label" translatable="yes">Registrati sul sito</property>
+                            <property name="label" translatable="yes">Forum</property>
                             <property name="use_underline">True</property>
-                            <signal name="activate-item" handler="on_registrati_button_clicked" swapped="no"/>
+                            <signal name="activate-item" handler="on_forum_menu_activate_item" swapped="no"/>
                           </object>
                         </child>
                       </object>

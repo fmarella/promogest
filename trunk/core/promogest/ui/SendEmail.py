@@ -40,15 +40,8 @@ class SendEmail(GladeWidget):
     def __init__(self, string=None, d=False):
         GladeWidget.__init__(self, root='send_email', path='email_dialog.glade')
         self.placeWindow(self.getTopLevel())
-        self.getTopLevel().set_modal(True)
+        #self.getTopLevel().set_modal(True)
         self.getTopLevel().show_all()
-        self.title_label.set_markup("""
-    Questo semplice form ti permette di inviare
-    <b>E-mail</b> al team di sviluppo o al settore commerciale,
-    L'email verrà inviata A: <b>assistenza@promotux.it</b>
-
-    Grazie per il tuo contributo
-                                    """)
         if string != None:
             self.preSetEmailBody(string)
         self.dist = d
@@ -79,7 +72,6 @@ class SendEmail(GladeWidget):
             il form in ogni sua parte, Grazie"""
             messageInfo(msg=msg)
         else:
-            print " ARRIVI ALMENO QUI VERO"
             self.sendMailFunc()
             self.hide()
         if self.dist:
@@ -95,7 +87,7 @@ class SendEmail(GladeWidget):
             in questa funzione ci sono anche le liste per i CC e BCC oltre al TO:
         """
         self.total_addrs = []
-        self.toaddrs  = ["info@promotux.it"]
+        self.toaddrs  = ["assistenza@promogest.me"]
         msg = """
 
         %s""" %(self.bodytext)
@@ -131,6 +123,7 @@ Bcc: %s
             server.starttls()
             server.ehlo()
             server.login("promogestlogs@gmail.com", "pr0m0t0x4")
+            #print " fromADDR", fromaddr, total_addrs
             server.sendmail(fromaddr, total_addrs , msg)
             msg = """Invio della email riuscito!!!
             grazie per la segnalazione

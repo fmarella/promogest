@@ -791,8 +791,12 @@ class Main(GladeWidget):
         if response == GTK_RESPONSE_OK:
             licenzaDialog.licenza_dialog.destroy()
 
-    def on_manuale_online_activate(self, widget):
-        url ="http://help.promogest.me"
+    def on_forum_menu_activate_item(self, widget):
+        url ="https://groups.google.com/forum/?fromgroups#!forum/promogest"
+        webbrowser.open_new_tab(url)
+
+    def on_issue_menu_activate(self, widget):
+        url ="https://code.google.com/p/promogest/issues/list"
         webbrowser.open_new_tab(url)
 
     def on_aggiorna_activate(self, widget):
