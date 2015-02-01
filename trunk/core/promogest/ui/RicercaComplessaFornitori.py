@@ -1202,7 +1202,7 @@ class RicercaFornitoriFilter(GladeWidget):
         self.setRiepilogoFornitore()
 
     def on_ragione_sociale_fornitore_filter_treeview_key_press_event(self, widget, event):
-        keyname = gtk.gdk.keyval_name(event.keyval)
+        keyname = gdk_keyval_name(event.keyval)
         return analyze_treeview_key_press_event(widget,
                                                 keyname,
                                                 self.insertRagioneSociale,
@@ -1211,7 +1211,7 @@ class RicercaFornitoriFilter(GladeWidget):
 
 
     def on_insegna_fornitore_filter_treeview_key_press_event(self, widget, event):
-        keyname = gtk.gdk.keyval_name(event.keyval)
+        keyname = gdk_keyval_name(event.keyval)
         return analyze_treeview_key_press_event(widget,
                                                 keyname,
                                                 self.insertInsegna,
@@ -1220,7 +1220,7 @@ class RicercaFornitoriFilter(GladeWidget):
 
 
     def on_cognome_nome_fornitore_filter_treeview_key_press_event(self, widget, event):
-        keyname = gtk.gdk.keyval_name(event.keyval)
+        keyname = gdk_keyval_name(event.keyval)
         return analyze_treeview_key_press_event(widget,
                                                 keyname,
                                                 self.insertCognomeNome,
@@ -1229,7 +1229,7 @@ class RicercaFornitoriFilter(GladeWidget):
 
 
     def on_codice_fornitore_filter_treeview_key_press_event(self, widget, event):
-        keyname = gtk.gdk.keyval_name(event.keyval)
+        keyname = gdk_keyval_name(event.keyval)
         return analyze_treeview_key_press_event(widget,
                                                 keyname,
                                                 self.insertCodice,
@@ -1238,7 +1238,7 @@ class RicercaFornitoriFilter(GladeWidget):
 
 
     def on_localita_fornitore_filter_treeview_key_press_event(self, widget, event):
-        keyname = gtk.gdk.keyval_name(event.keyval)
+        keyname = gdk_keyval_name(event.keyval)
         return analyze_treeview_key_press_event(widget,
                                                 keyname,
                                                 self.insertLocalita,
@@ -1247,7 +1247,7 @@ class RicercaFornitoriFilter(GladeWidget):
 
 
     def on_indirizzo_fornitore_filter_treeview_key_press_event(self, widget, event):
-        keyname = gtk.gdk.keyval_name(event.keyval)
+        keyname = gdk_keyval_name(event.keyval)
         return analyze_treeview_key_press_event(widget,
                                                 keyname,
                                                 self.insertIndirizzo,
@@ -1256,7 +1256,7 @@ class RicercaFornitoriFilter(GladeWidget):
 
 
     def on_codice_fiscale_fornitore_filter_treeview_key_press_event(self, widget, event):
-        keyname = gtk.gdk.keyval_name(event.keyval)
+        keyname = gdk_keyval_name(event.keyval)
         return analyze_treeview_key_press_event(widget,
                                                 keyname,
                                                 self.insertCodiceFiscale,
@@ -1265,7 +1265,7 @@ class RicercaFornitoriFilter(GladeWidget):
 
 
     def on_partita_iva_fornitore_filter_treeview_key_press_event(self, widget, event):
-        keyname = gtk.gdk.keyval_name(event.keyval)
+        keyname = gdk_keyval_name(event.keyval)
         return analyze_treeview_key_press_event(widget,
                                                 keyname,
                                                 self.insertPartitaIva,
@@ -1374,7 +1374,7 @@ class RicercaFornitoriFilter(GladeWidget):
 
     def on_campo_filter_entry_key_press_event(self, widget, event):
         """ Conferma parametri filtro x ricerca semplice da tastiera """
-        keyname = gtk.gdk.keyval_name(event.keyval)
+        keyname = gdk_keyval_name(event.keyval)
 
         if keyname == 'Return' or keyname == 'KP_Enter':
             self._parentObject.refresh()
