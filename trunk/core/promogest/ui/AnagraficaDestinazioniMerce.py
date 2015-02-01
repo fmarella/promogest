@@ -178,7 +178,7 @@ class AnagraficaDestinazioniMerceEdit(AnagraficaEdit):
 
     def saveDao(self, tipo=None):
         if (self.denominazione_entry.get_text() == ''):
-            obligatoryField(self.dialogTopLevel, self.denominazione_entry)
+            obligatoryField(self.dialogTopLevel, self.denominazione_entry, campo="Denominazione")
 
         self.dao.id_cliente = self._anagrafica._idCliente
         self.dao.denominazione = self.denominazione_entry.get_text()

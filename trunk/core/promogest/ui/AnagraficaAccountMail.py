@@ -197,7 +197,7 @@ class AnagraficaAccountMailEdit(AnagraficaEdit):
     def saveDao(self, tipo=None):
         denominazione = self.denominazione_entry.get_text()
         if denominazione == '':
-            obligatoryField(self.dialogTopLevel, self.denominazione_entry)
+            obligatoryField(self.dialogTopLevel, self.denominazione_entry, campo="Denominazione")
         self.dao.denominazione = denominazione
         self.dao.id_azienda = env.azienda
         self.dao.indirizzo = self.indirizzo_entry.get_text()
@@ -246,4 +246,3 @@ class AnagraficaAccountMailEdit(AnagraficaEdit):
         if s:
             s.quit()
         self.result_test_label.set_text('Connessione riuscita con successo.')
-

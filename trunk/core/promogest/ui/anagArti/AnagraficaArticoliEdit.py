@@ -224,33 +224,22 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
         """
         if (self.codice_entry.get_text() == ''):
             obligatoryField(self.dialogTopLevel,
-                            self.codice_entry,
-                            msg='Campo obbligatorio !\n\nCodice')
-
+                            self.codice_entry, campo="Codice")
         if (self.denominazione_entry.get_text() == ''):
             obligatoryField(self.dialogTopLevel,
-                            self.denominazione_entry,
-                            msg='Campo obbligatorio !\n\nDenominazione')
-
+                            self.denominazione_entry,campo="Denominazione")
         if findIdFromCombobox(self.id_aliquota_iva_customcombobox.combobox) is None:
             obligatoryField(self.dialogTopLevel,
-                            self.id_aliquota_iva_customcombobox.combobox,
-                            msg='Campo obbligatorio !\n\nAliquota IVA')
-
+                            self.id_aliquota_iva_customcombobox.combobox, campo="Aliquota Iva")
         if findIdFromCombobox(self.id_famiglia_articolo_customcombobox.combobox) is None:
             obligatoryField(self.dialogTopLevel,
-                            self.id_famiglia_articolo_customcombobox.combobox,
-                            msg='Campo obbligatorio !\n\nFamiglia merceologica')
-
+                            self.id_famiglia_articolo_customcombobox.combobox, campo="Famiglia merceologica"
         if findIdFromCombobox(self.id_categoria_articolo_customcombobox.combobox) is None:
             obligatoryField(self.dialogTopLevel,
-                            self.id_categoria_articolo_customcombobox.combobox,
-                            msg='Campo obbligatorio !\n\nCategoria articolo')
-
+                            self.id_categoria_articolo_customcombobox.combobox, campo="Categoria articolo")
         if findIdFromCombobox(self.id_unita_base_combobox) is None:
             obligatoryField(self.dialogTopLevel,
-                            self.id_unita_base_combobox,
-                            msg='Campo obbligatorio !\n\nUnita\' base')
+                            self.id_unita_base_combobox, campo="Unita' base")
         pbar(self.dialog.pbar,parziale=1, totale=4)
         if posso("PW") and (articleType(self.dao) == "plus" or self.plus_radiobutton.get_active()):
             articoloTagliaColore = ArticoloTagliaColore()

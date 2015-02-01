@@ -158,17 +158,17 @@ class AnagraficaAliquoteIvaEdit(AnagraficaEdit):
 
     def saveDao(self, tipo=None):
         if (self.denominazione_entry.get_text() == ''):
-            obligatoryField(self.dialogTopLevel, self.denominazione_entry)
+            obligatoryField(self.dialogTopLevel, self.denominazione_entry, campo="Denominazione")
 
         if (self.denominazione_breve_entry.get_text() == ''):
             obligatoryField(
-                        self.dialogTopLevel, self.denominazione_breve_entry)
+                        self.dialogTopLevel, self.denominazione_breve_entry, campo="Denominazione Breve")
 
         if (self.percentuale_entry.get_text() == ''):
-            obligatoryField(self.dialogTopLevel, self.percentuale_entry)
+            obligatoryField(self.dialogTopLevel, self.percentuale_entry, campo="Percentuale")
 
         if (findIdFromCombobox(self.id_tipo_combobox) is None):
-            obligatoryField(self.dialogTopLevel, self.id_tipo_combobox)
+            obligatoryField(self.dialogTopLevel, self.id_tipo_combobox, campo="Tipo")
 
         self.dao.denominazione = self.denominazione_entry.get_text()
         self.dao.denominazione_breve = self.denominazione_breve_entry.\

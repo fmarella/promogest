@@ -96,10 +96,10 @@ class DuplicazioneMovimento(GladeWidget):
     def on_confirm_button_clicked(self, button=None):
 
         if (self.data_movimento_entry.get_text() == ''):
-            obligatoryField(self.getTopLevel(), self.data_movimento_entry)
+            obligatoryField(self.getTopLevel(), self.data_movimento_entry, campo="Data Movimento")
 
         if (findIdFromCombobox(self.id_operazione_combobox) is None):
-            obligatoryField(self.getTopLevel(), self.id_operazione_combobox)
+            obligatoryField(self.getTopLevel(), self.id_operazione_combobox, campo="Operazione")
 
         note = "Rif. " + self.dao.operazione + " n. " + str(self.dao.numero) + " del " + dateToString(self.dao.data_movimento)
 
@@ -114,7 +114,7 @@ class DuplicazioneMovimento(GladeWidget):
         newDao.id_testata_documento = self.dao.id_testata_documento
         if  self.personaGiuridicaCambiata:
             if not self.id_persona_giuridica_customcombobox.getId():
-                obligatoryField(self.getTopLevel(), self.id_persona_giuridica_customcombobox)
+                obligatoryField(self.getTopLevel(), self.id_persona_giuridica_customcombobox, campo="Persona giuridica")
             if self.id_persona_giuridica_customcombobox.getType() == "cliente":
                 newDao.id_cliente = self.id_persona_giuridica_customcombobox.getId()
                 newDao.id_fornitore = None

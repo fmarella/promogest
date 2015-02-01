@@ -253,16 +253,16 @@ class AnagraficaUtentiEdit(AnagraficaEdit):
 
     def saveDao(self, tipo=None):
         if (self.username_entry.get_text() == ''):
-            obligatoryField(self.dialogTopLevel, self.username_entry)
+            obligatoryField(self.dialogTopLevel, self.username_entry, campo="Username")
 
         if (self.email_entry.get_text() == ''):
-            obligatoryField(self.dialogTopLevel, self.email_entry)
+            obligatoryField(self.dialogTopLevel, self.email_entry, campo="Email")
 
         if (self.password_entry.get_text() == '') and not self.aggiornamento:
-            obligatoryField(self.dialogTopLevel, self.password_entry)
+            obligatoryField(self.dialogTopLevel, self.password_entry, campo="Password")
 
         if (findIdFromCombobox(self.id_role_combobox) is None):
-            obligatoryField(self.dialogTopLevel, self.id_role_combobox)
+            obligatoryField(self.dialogTopLevel, self.id_role_combobox, campo="Ruolo")
 
         username = self.username_entry.get_text()
         password = self.password_entry.get_text()

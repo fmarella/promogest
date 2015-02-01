@@ -30,6 +30,7 @@
           <object class="GtkEntry" id="ragione_sociale_filter_entry">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
+            <property name="is_focus">True</property>
             <property name="hexpand">True</property>
             <property name="invisible_char">●</property>
             <property name="caps_lock_warning">False</property>

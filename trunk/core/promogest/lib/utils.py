@@ -2057,12 +2057,12 @@ def getDateRange(string):
     return (begin_date, end_date)
 
 
-def obligatoryField(window, widget=None, msg=None):
+def obligatoryField(window, widget=None, msg=None, campo=""):
     """
     Gestisce un dialog di segnalazione campo obbligatorio
     """
     if msg is None:
-        msg = 'Campo obbligatorio !'
+        msg = 'Campo %s obbligatorio !' %(campo)
     dialog = gtk.MessageDialog(window, GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
                                GTK_DIALOG_MESSAGE_INFO, GTK_BUTTON_OK, msg)
     dialog.run()

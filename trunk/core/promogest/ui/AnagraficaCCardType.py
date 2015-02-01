@@ -153,10 +153,10 @@ class AnagraficaCCardTypeDetail(AnagraficaDetail):
         denominazioneBreve = model.get_value(iterator, 2) or ''
         if (denominazione == ''):
             obligatoryField(self._anagrafica.getTopLevel(),
-                self._anagrafica.anagrafica_treeview)
+                self._anagrafica.anagrafica_treeview, campo="Denominazione")
         if (denominazioneBreve == ''):
             obligatoryField(self._anagrafica.getTopLevel(),
-                self._anagrafica.anagrafica_treeview)
+                self._anagrafica.anagrafica_treeview, campo="Denominazione Breve")
         self.dao.denominazione = denominazione
         self.dao.denominazione_breve = denominazioneBreve
         self.dao.persist()
