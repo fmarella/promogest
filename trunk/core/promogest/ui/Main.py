@@ -991,7 +991,7 @@ promogest2 IN /HOME/NOMEUTENTE/ O IN C:/UTENTI/NOMEUTENTE""")
         if WEBKIT:
             self.nn = NewsNotebookPage(self, self.aziendaStr).draw()
             n = gtk.Label()
-            n.set_markup(_("<b>NEWS  E     \nAZIONI VELOCI</b>"))
+            n.set_markup(_("<b>NEWS E\nAZIONI VEL</b>"))
             ind = self.main_notebook.append_page(self.nn.notizie_frame, n)
             self.main_notebook.set_current_page(ind)
 
