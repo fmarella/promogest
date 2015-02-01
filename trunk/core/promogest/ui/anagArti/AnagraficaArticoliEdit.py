@@ -233,7 +233,7 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
                             self.id_aliquota_iva_customcombobox.combobox, campo="Aliquota Iva")
         if findIdFromCombobox(self.id_famiglia_articolo_customcombobox.combobox) is None:
             obligatoryField(self.dialogTopLevel,
-                            self.id_famiglia_articolo_customcombobox.combobox, campo="Famiglia merceologica"
+                            self.id_famiglia_articolo_customcombobox.combobox, campo="Famiglia merceologica")
         if findIdFromCombobox(self.id_categoria_articolo_customcombobox.combobox) is None:
             obligatoryField(self.dialogTopLevel,
                             self.id_categoria_articolo_customcombobox.combobox, campo="Categoria articolo")
