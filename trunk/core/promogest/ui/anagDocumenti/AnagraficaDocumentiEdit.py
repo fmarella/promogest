@@ -1130,7 +1130,8 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             row, pos = treeview.get_drag_dest_row()
         except:
             return
-        if self.riga_partenza != row[0]:
+        #print "tipi", type(self.riga_partenza), type( row)
+        if self.riga_partenza != row:
             duplicarighe = self._righe[:]
             if self.riga_partenza[0] > row[0]:
                 self._righe.insert(row[0]+1,duplicarighe[self.riga_partenza[0]+1])
