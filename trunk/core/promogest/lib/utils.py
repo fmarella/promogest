@@ -3497,7 +3497,10 @@ def start_viewer(filename):
     if platform == 'darwin':
         os.system('open "%s"' % filename)
     elif platform == 'win32':
-        os.startfile(filename)
+        try:
+            os.startfile(filename)
+        except:
+            messageError(msg="Non hai un Programma per visualizzare i PDF?")
     elif platform.startswith('linux'):
         subprocess.Popen(['xdg-open', filename])
     else:
