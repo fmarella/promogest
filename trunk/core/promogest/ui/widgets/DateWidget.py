@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2013 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Andrea Argiolas <andrea@promotux.it>
@@ -116,15 +116,16 @@ class DateWidget(gtk.Box):
             return
 
         window = gtk.Window()
-        window.set_size_request(300, 260)
+        window.set_size_request(300, 270)
         window.set_modal(True)
         window.set_transient_for(self.get_toplevel())
         window.set_position(GTK_WIN_POS_CENTER_ON_PARENT)
         window.set_title('Selezione data')
         window.connect("destroy", on_destroy)
-        vbox = gtk.VBox()
-
+        vbox = gtk.Box(orientation=gtk.Orientation.VERTICAL, spacing=6)
+        #CREO UN OGGETTO CALENDARIO
         self.calendar = gtk.Calendar()
+        #self.calendar.set_display_options(gtk.CalendarDisplayOptions.SHOW_DAY_NAMES)
         currentDate = self.entry.get_text()
         if not(currentDate is None or currentDate == ''):
             try:
@@ -134,9 +135,8 @@ class DateWidget(gtk.Box):
 
             except Exception:
                 pass
-
         self.calendar.connect('day-selected-double-click', confirmAction)
-        vbox.pack_start(self.calendar, True, True, 0)
+        vbox.pack_start(self.calendar, False, False, 5)
 
         separator = gtk.HSeparator()
         vbox.pack_start(separator, False, False, 5)
@@ -177,7 +177,7 @@ class DateWidget(gtk.Box):
 
 
     def setSize(self, size=None):
-        if size is None:
+       if size is None:
             size = -1
             parent = self.get_parent()
             if parent is not None:
@@ -185,7 +185,7 @@ class DateWidget(gtk.Box):
                     (width, heigth) = parent.get_size_request()
                     size = width
 
-        self.set_size_request(size, -1)
+       self.set_size_request(size, -1)
 
 
     def my_focus_out_event(self, entry, event):

@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                  di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Marella <francesco.marella@anche.no>
+#    Author: Francesco Meloni  <francesco@promotux.it>
 
 #    This file is part of Promogest.
 
@@ -39,7 +40,8 @@ class UpdateDialog(GladeWidget):
         '''
         Inizializza la finestra di aggiornamento
         '''
-        GladeWidget.__init__(self, root='update_progress_dialog', path='update_progress_dialog.glade')
+        GladeWidget.__init__(self, root='update_progress_dialog',
+                            path='update_progress_dialog.glade')
         self._parent = parent
         self._rev_locale = None
         self._rev_remota = None

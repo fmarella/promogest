@@ -159,7 +159,7 @@ class Login(SimpleGladeApp):
         #settiamo l'immagine
         self.splash_image.set_from_file(fileSplashImage)
 
-    def feddretreive(self):
+    def feddretreive(self): # NON IN USO
         """Carica il feed RSS
         WARNING: attualmente non in uso
         """
