@@ -127,71 +127,6 @@
       </row>
     </data>
   </object>
-  <object class="GtkImage" id="open_anag_secondaria">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">gtk-apply</property>
-  </object>
-  <object class="GtkImage" id="ordine_da_cliente_image">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="pixbuf">duplica24x24.png</property>
-  </object>
-  <object class="GtkImage" id="preventivo_image1">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="pixbuf">duplica24x24.png</property>
-  </object>
-  <object class="GtkImage" id="primanota_image">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="pixbuf">primanota_48X48.png</property>
-  </object>
-  <object class="GtkImage" id="promemoria_image">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="pixbuf">promemoria48x48.png</property>
-  </object>
-  <object class="GtkImage" id="promemoria_image1">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="pixbuf">promemoria24x24.png</property>
-  </object>
-  <object class="GtkImage" id="promogest_image1">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="pixbuf">mask_24.png</property>
-  </object>
-  <object class="GtkImage" id="promogest_image2">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="pixbuf">mask_24.png</property>
-  </object>
-  <object class="GtkImage" id="promotux_image1">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="pixbuf">mask_24.png</property>
-  </object>
-  <object class="GtkImage" id="prova_promowear_image">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="pixbuf">taglia_colore16x16.png</property>
-  </object>
-  <object class="GtkImage" id="prova_promowear_image1">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="pixbuf">taglia_colore16x16.png</property>
-  </object>
-  <object class="GtkImage" id="regstrati_image">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">gtk-edit</property>
-  </object>
-  <object class="GtkImage" id="shop_image">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="pixbuf">vendita24x24.png</property>
-  </object>
   <object class="GtkWindow" id="main_window">
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">PromoGest</property>
@@ -522,16 +457,14 @@ articoli per un certo </property>
           </packing>
         </child>
         <child>
-          <object class="GtkHBox" id="hbox2">
+          <object class="GtkBox" id="box5">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="border_width">2</property>
-            <property name="spacing">2</property>
             <child>
               <object class="GtkButton" id="upgrade_iva_button">
                 <property name="label" translatable="yes">UPGRADE IVA 22%</property>
                 <property name="sensitive">False</property>
-                <property name="can_focus">False</property>
+                <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
                 <signal name="clicked" handler="on_upgrade_iva_button_clicked" swapped="no"/>
               </object>
@@ -560,13 +493,10 @@ stai usando </property>
               </packing>
             </child>
             <child>
-              <placeholder/>
-            </child>
-            <child>
               <object class="GtkButton" id="button_disconnect">
                 <property name="label">gtk-disconnect</property>
                 <property name="sensitive">False</property>
-                <property name="can_focus">False</property>
+                <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="use_stock">True</property>
                 <signal name="clicked" handler="on_disconnect" swapped="no"/>
@@ -575,7 +505,46 @@ stai usando </property>
                 <property name="expand">False</property>
                 <property name="fill">False</property>
                 <property name="pack_type">end</property>
-                <property name="position">3</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <object class="GtkButton" id="promogest_button">
+                <property name="label" translatable="yes">Sito PromoGest</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="image">promogest_image2</property>
+                <signal name="clicked" handler="on_promogest_button_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="pack_type">end</property>
+                <property name="position">4</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="test_promowear_button">
+                <property name="label" translatable="yes">PROVA PromoWear</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="tooltip_text" translatable="yes">Il Modulo PromoWear aggiunge al promoGest la possibilità
+di gestire taglie e colori , stagioni, annualità, generi ed altri attributi
+per gli articoli secondo una logica di articoli principali
+( o padri)  e varianti ( o figli )</property>
+                <property name="image">prova_promowear_image</property>
+                <signal name="clicked" handler="on_test_promowear_button_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="pack_type">end</property>
+                <property name="position">5</property>
               </packing>
             </child>
             <child>
@@ -600,56 +569,17 @@ con registratore di cassa. </property>
                 <property name="position">6</property>
               </packing>
             </child>
-            <child>
-              <object class="GtkButton" id="test_promowear_button">
-                <property name="label" translatable="yes">PROVA PromoWear</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="tooltip_text" translatable="yes">Il Modulo PromoWear aggiunge al promoGest la possibilità
-di gestire taglie e colori , stagioni, annualità, generi ed altri attributi
-per gli articoli secondo una logica di articoli principali
-( o padri)  e varianti ( o figli )</property>
-                <property name="image">prova_promowear_image</property>
-                <signal name="clicked" handler="on_test_promowear_button_clicked" swapped="no"/>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
-                <property name="pack_type">end</property>
-                <property name="position">7</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton" id="promogest_button">
-                <property name="label" translatable="yes">Sito PromoGest</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="image">promogest_image2</property>
-                <signal name="clicked" handler="on_promogest_button_clicked" swapped="no"/>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
-                <property name="pack_type">end</property>
-                <property name="position">8</property>
-              </packing>
-            </child>
           </object>
           <packing>
             <property name="expand">False</property>
-            <property name="fill">False</property>
-            <property name="padding">1</property>
+            <property name="fill">True</property>
             <property name="position">1</property>
           </packing>
         </child>
         <child>
-          <object class="GtkHBox" id="main_hbox">
+          <object class="GtkBox" id="main_hbox">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="border_width">6</property>
-            <property name="spacing">3</property>
             <child>
               <object class="GtkScrolledWindow" id="scrolledwindow1">
                 <property name="visible">True</property>
@@ -681,7 +611,6 @@ per gli articoli secondo una logica di articoli principali
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="scrollable">True</property>
-                <property name="enable_popup">True</property>
                 <signal name="change-current-page" handler="on_main_notebook_change_current_page" swapped="no"/>
                 <signal name="select-page" handler="on_main_notebook_select_page" swapped="no"/>
                 <signal name="switch-page" handler="on_main_notebook_switch_page" swapped="no"/>
@@ -1637,6 +1566,71 @@ che come persona giuridica</property>
         </child>
       </object>
     </child>
+  </object>
+  <object class="GtkImage" id="open_anag_secondaria">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-apply</property>
+  </object>
+  <object class="GtkImage" id="ordine_da_cliente_image">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">duplica24x24.png</property>
+  </object>
+  <object class="GtkImage" id="preventivo_image1">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">duplica24x24.png</property>
+  </object>
+  <object class="GtkImage" id="primanota_image">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">primanota_48X48.png</property>
+  </object>
+  <object class="GtkImage" id="promemoria_image">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">promemoria48x48.png</property>
+  </object>
+  <object class="GtkImage" id="promemoria_image1">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">promemoria24x24.png</property>
+  </object>
+  <object class="GtkImage" id="promogest_image1">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">mask_24.png</property>
+  </object>
+  <object class="GtkImage" id="promogest_image2">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">mask_24.png</property>
+  </object>
+  <object class="GtkImage" id="promotux_image1">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">mask_24.png</property>
+  </object>
+  <object class="GtkImage" id="prova_promowear_image">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">taglia_colore16x16.png</property>
+  </object>
+  <object class="GtkImage" id="prova_promowear_image1">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">taglia_colore16x16.png</property>
+  </object>
+  <object class="GtkImage" id="regstrati_image">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-edit</property>
+  </object>
+  <object class="GtkImage" id="shop_image">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">vendita24x24.png</property>
   </object>
   <object class="GtkDialog" id="upgrade_iva">
     <property name="width_request">600</property>
