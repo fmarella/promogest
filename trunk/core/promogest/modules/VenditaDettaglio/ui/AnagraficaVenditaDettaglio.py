@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2013
+#    Copyright (C) 2005-2015
 #by Promotux di Francesco Meloni snc - http://www.promotux.it/
 
 # Author: Francesco Meloni <francesco@promotux.it>
@@ -664,7 +664,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         selection = self.scontrino_treeview.get_selection()
         (model, iter) = selection.get_selected()
         quantita = model.get_value(iter, 9)
-        model[iter][9]= Decimal(quantita)* -1
+        model[iter][9]= str(Decimal(quantita)* -1)
         self.refreshTotal()
         self.on_cancel_button_clicked(self.getTopLevel)
 
