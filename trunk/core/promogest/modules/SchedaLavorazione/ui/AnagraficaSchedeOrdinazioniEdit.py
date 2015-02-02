@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: JJDaNiMoTh <jjdanimoth@gmail.com>
@@ -164,7 +164,7 @@ class AnagraficaSchedeOrdinazioniEdit(AnagraficaEdit):
         column.set_resizable(False)
         column.set_expand(False)
         column.set_alignment(0.5)
-        column.set_fixed_width(80)
+        column.set_fixed_width(140)
         treeview.append_column(column)
 
         renderer = gtk.CellRendererText()
@@ -751,7 +751,7 @@ class AnagraficaSchedeOrdinazioniEdit(AnagraficaEdit):
         model = treeview.get_model()
         value=value.replace(",",".")
         value = mN(value)
-        model[path][5] = value
+        model[path][5] = str(value)
         model[path][0].quantita = value
         self._refresh()
 
