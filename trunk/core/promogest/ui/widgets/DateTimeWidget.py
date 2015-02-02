@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Andrea Argiolas <andrea@promotux.it>
@@ -35,17 +35,28 @@ class DateTimeWidget(gtk.Box):
         self.entry = DateTimeEntryField()
         self.button = gtk.ToggleButton()
         self.button.set_property("can-focus", False)
+        self.button2 = gtk.Button()
+        self.button2.set_property("can-focus", False)
         image = gtk.Image()
         #pbuf = gtk.gdk.pixbuf_new_from_file(Environment.guiDir + 'calendario16x16.png')
         pbuf = GDK_PIXBUF_NEW_FROM_FILE(Environment.guiDir + 'calendario16x16.png')
         image.set_from_pixbuf(pbuf)
+        image2 = gtk.Image()
+        pbuf2 = GDK_PIXBUF_NEW_FROM_FILE(Environment.guiDir + 'conferma12x12.png')
+        image2.set_from_pixbuf(pbuf2)
         self.button.add(image)
+        self.button2.add(image2)
         self.pack_start(self.entry, True, True, 0)
         self.pack_start(self.button, False, False, 0)
+        self.pack_start(self.button2, False, False, 0)
         self.button.connect('clicked', self.my_button_clicked)
+        self.button2.connect('clicked', self.insert_today)
         self.connect("show", self.on_show)
         #self.entry.connect('focus_out_event', self.do_focus_out_event)
 
+    def insert_today(self, button=None):
+        current = datetime.datetime.now()
+        self.entry.set_text(str(current.day) + '/' + str(current.month) + '/' + str(current.year))
 
     def my_button_clicked(self, button):
 
@@ -92,7 +103,7 @@ class DateTimeWidget(gtk.Box):
         window.set_position(GTK_WIN_POS_CENTER_ON_PARENT)
         window.set_title('Selezione data e ora')
         window.connect("destroy", on_destroy)
-        vbox = gtk.VBox()
+        vbox = gtk.Box(orientation=gtk.Orientation.VERTICAL, spacing=6)
 
         self.calendar = gtk.Calendar()
         self.spinButtonOra = gtk.SpinButton(digits=0)
@@ -127,7 +138,7 @@ class DateTimeWidget(gtk.Box):
         frame.set_label_align(0,1)
         frame.set_border_width(6)
         frame.add(alignment)
-        vbox.pack_start(frame, True, True, 3)
+        vbox.pack_start(frame, False, False, 0)
 
         separator = gtk.HSeparator()
         vbox.pack_start(separator, False, False, 0)
