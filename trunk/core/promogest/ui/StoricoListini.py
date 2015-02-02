@@ -207,6 +207,6 @@ class StoricoListiniFilter(VisualizzazioneFilter):
             self._treeViewModel.append((l,
                                         (l.denominazione or ''),
                                         dateToString(l.data_listino),
-                                        przDet, ricDett, margDett,
-                                        przIngr, ricIngr, margIngr,
-                                        (l.ultimo_costo or 0)))
+                                        str(przDet), str(ricDett), str(margDett),
+                                        str(przIngr), str(ricIngr), str(margIngr),
+                                        (str(l.ultimo_costo) or "0")))

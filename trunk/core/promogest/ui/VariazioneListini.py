@@ -199,9 +199,9 @@ class VariazioneListini(GladeWidget):
             model.append((l,
                           False,
                           (l.denominazione or ''),
-                          ultCosto,
-                          ricDett, margDett, przDett,
-                          ricIngr, margIngr, przIngr))
+                          str(ultCosto),
+                          str(ricDett), str(margDett), str(przDett),
+                          str(ricIngr), str(margIngr), str(przIngr)))
 
         self.getTopLevel().show_all()
 
