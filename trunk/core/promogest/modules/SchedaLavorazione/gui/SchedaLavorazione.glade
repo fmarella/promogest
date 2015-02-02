@@ -691,6 +691,7 @@
                                     <child internal-child="entry">
                                       <object class="GtkEntry" id="combobox-entry">
                                         <property name="can_focus">False</property>
+                                        <signal name="changed" handler="on_associazione_articoli_comboboxentry_changed" swapped="no"/>
                                       </object>
                                     </child>
                                   </object>

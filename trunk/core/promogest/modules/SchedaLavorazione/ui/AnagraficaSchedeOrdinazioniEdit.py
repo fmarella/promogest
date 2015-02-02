@@ -667,9 +667,9 @@ class AnagraficaSchedeOrdinazioniEdit(AnagraficaEdit):
         if codart:
             search_string=codart
         else:
-            search_string = combobox.child.get_text()
-        model = combobox.get_model()
-        selected = combobox.get_active()
+            search_string = combobox.get_text()
+        model = self.ass_art_liststore
+        selected = self.associazione_articoli_comboboxentry.get_active()
         if not selected:
             fillComboboxAssociazioneArticoli(self.associazione_articoli_comboboxentry, search_string, anag=self)
         else:
