@@ -25,24 +25,10 @@ from sqlalchemy.orm import *
 from promogest.Environment import *
 from promogest.dao.Dao import Dao, Base
 
-
-articolo=Table('articolo', params['metadata'],schema = params['schema'],autoload=True)
-
 class AssociazioneArticolo(Base, Dao):
     """
     Rappresenta un raggruppamento di articoli relazionati ad un unico articolo "padre"
     """
-    try:
-        __table__ = Table('associazione_articolo',params['metadata'],schema = params['schema'],autoload=True)
-    except:
-        __table__ = Table('associazione_articolo', params['metadata'],
-                            Column('id',Integer,primary_key=True),
-                            Column('id_padre',Integer,ForeignKey(params['schema']+'.articolo.id',onupdate="CASCADE",ondelete="RESTRICT"),nullable=True),
-                            Column('id_figlio',Integer,ForeignKey(params['schema']+'.articolo.id',onupdate="CASCADE",ondelete="RESTRICT"),nullable=True),
-                            Column('quantita',Numeric),
-                            Column('posizione',Integer,nullable=True),
-                            UniqueConstraint('id_padre', 'id_figlio'),
-                            schema=params['schema'])
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
@@ -53,6 +39,11 @@ class AssociazioneArticolo(Base, Dao):
         self.__codice = None
         self.__denominazione = None
 
+    try:
+        __table__ = Table('associazione_articolo',params['metadata'],schema = params['schema'],autoload=True)
+    except:
+        from data.associazioneArticolo import t_associazione_articolo
+        __table__ = t_associazione_articolo
 
     def _codicePadre(self):
         if self.ARTIPADRE: return self.ARTIPADRE.codice
@@ -108,6 +99,7 @@ class AssociazioneArticolo(Base, Dao):
     id_listino = property(_idListinoPadre)
 
     def filter_values(self,k,v):
+        articolo=Table('articolo', params['metadata'],schema = params['schema'],autoload=True)
         if k =='idFiglio':
             dic= {k:AssociazioneArticolo.__table__.c.id_figlio ==v}
         elif k == "idPadre":

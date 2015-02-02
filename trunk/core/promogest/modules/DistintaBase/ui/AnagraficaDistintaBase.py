@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -73,7 +73,6 @@ class AnagraficaDistintaBaseFilter(AnagraficaFilter):
         self.articoliprincipaliList = []
 
     def draw(self, cplx=False):
-        #self._treeViewModel = self._anagrafica.anagrafica_filter_treeview.get_model()
         self.clear()
 
     def _reOrderBy(self, column):
@@ -170,19 +169,20 @@ class AnagraficaDistintaBaseFilter(AnagraficaFilter):
         arts = self.runFilter()
         self.distinta_base_filter_listore.clear()
         for a in arts:
-            col = None
-            if a.cancellato:
-                col = 'red'
+            #col = None
+            #if a.cancellato:
+                #col = 'red'
             #if a.isNode:
-            self.distinta_base_filter_listore.append((a,
-                                        col,
-                                        (a.codice or ''),
-                                        (a.denominazione or ''),
-                                        (a.produttore or ''),
-                                        (a.codice_a_barre or ''),
-                                        (a.codice_articolo_fornitore or ''),
-                                        (a.denominazione_famiglia or ''),
-                                        (a.denominazione_categoria or '')))
+            self.distinta_base_filter_listore.append([
+                                        a,
+                                        a.codice or '',
+                                        a.denominazione or '',
+                                        a.produttore or '',
+                                        a.codice_a_barre or '',
+                                        a.codice_articolo_fornitore or '',
+                                        a.denominazione_famiglia or '',
+                                        a.denominazione_categoria or ''
+                                        ])
 
 
 
@@ -221,19 +221,17 @@ class AnagraficaDistintaBaseEdit(AnagraficaEdit):
     def draw(self, cplx=False):
         self._assTreeViewModel = self.articoli_associati_liststore
 
-    def on_column_quantita_edited(self, cell, path, value, treeview, editNext=True):
+    def on_column_quantita_edited(self, cellrenderertext, path, text, editNext=True):
         """ Function ti set the value quantita edit in the cell"""
-        model = treeview.get_model()
-        value = value.replace(",",".")
-        model[path][0].quantita = Decimal(value)
-        model[path][4] = value
+        model = self._assTreeViewModel
+        value = str(text).replace(",",".")
+        model[path][0].quantita = Decimal(text)
+        model[path][3] = str(text)
 
     def setDao(self, dao):
         if dao is None:
-            # Crea un nuovo Dao vuoto
             self.daoPadre = Articolo()
         else:
-            # Ricrea il Dao con una connessione al DBMS SQL
             self.daoPadre = Articolo().getRecord(id=dao.id)
             self.articoliAssociatiList = self.daoPadre.articoliAss
         self._refresh()
@@ -243,26 +241,19 @@ class AnagraficaDistintaBaseEdit(AnagraficaEdit):
         self.descrizione_label.set_text('')
         self.codice_label.set_text('')
         self.articoli_associati_liststore.clear()
-
         for articolo in self.articoliAssociatiList:
-            col = None
-            if articolo.cancellato:
-                col = 'red'
+            #col = ""
+            #if articolo.cancellato:
+                #col = 'red'
             codice = articolo.codice
             denominazione = articolo.denominazione
-
-            #else:
-                #if articolo.cancellato:
-                    #col = 'red'
-                #codice = articolo.codice
-                #denominazione = articolo.denominazione
             quantita = articolo.quantita or 0
-            self.articoli_associati_liststore.append([articolo,
-                                        col,
+            self.articoli_associati_liststore.append([
+                                        articolo,
                                         codice,
                                         denominazione,
-                                        quantita])
-
+                                        str(quantita)
+                                        ])
         if self.daoPadre.id is None:
             string='<b>Selezionare un articolo principale</b>'
             self.descrizione_label.set_markup(string)

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Dr astico (Pinna Marco) <zoccolodignu@gmail.com>
@@ -39,7 +39,7 @@ def fillComboboxDistintaBase(combobox, search_string=None):
     model.append((None, None, None, emptyRow))
     for l in liss:
         model.append((l, l.id_articolo,l.codice, l.denominazione))
-    
+
     combobox.clear()
     renderer = gtk.CellRendererText()
     combobox.pack_start(renderer, True)

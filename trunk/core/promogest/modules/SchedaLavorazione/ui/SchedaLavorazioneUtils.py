@@ -90,12 +90,13 @@ def fillComboboxCarattereStampa(combobox, filter=False):
 #        combobox.set_text_column(2)
 
 
-def fillComboboxAssociazioneArticoli(combobox, search_string=None):
+def fillComboboxAssociazioneArticoli(combobox, search_string=None, anag=None):
     """
     Riempie la combobox di selezione delle associazioni di articoli.
     Se la lista risultante ha un solo elemento, questo viene automaticamente selezionato.
     """
-    model = gtk.ListStore(object, str, str)
+    #model = gtk.ListStore(object, str, str)
+    model = anag.ass_art_liststore
     model.clear()
     liss = Articolo().select(node =True,
                             codiceEM=search_string,
@@ -343,7 +344,6 @@ def fillSchedaLavorazioneFromEmail(ui):
         line = line.decode('iso-8859-1', 'replace').encode('utf8')
         lista = line.split(":")
         campo = lista[0].strip()
-        #print "CAMPOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO",campo
         #valore = lista[1].strip()
         if campo == "Subject":
             if lista[1].strip() != "Form ordine partecipazioni":
@@ -505,6 +505,5 @@ def fillSchedaLavorazioneFromEmail(ui):
                 "percentualeSconto": percentualeSconto,
                 "totale":totale
 }
-
     ui.nomi_sposi_entry.set_text(cognome_sposo.upper()+" - "+cognome_sposa.upper())
     return ordine

@@ -23,7 +23,6 @@ from promogest.lib.utils import posso
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
-
 from promogest.dao.Dao import Dao, Base
 from promogest.dao.UnitaBase import UnitaBase
 from promogest.dao.Multiplo import Multiplo
@@ -55,7 +54,6 @@ if hasattr(conf, "PromoWear") and \
                                     import StagioneAbbigliamento
     from promogest.modules.PromoWear.dao.GenereAbbigliamento \
                                     import GenereAbbigliamento
-
 
 class Articolo(Base, Dao):
     try:
@@ -110,16 +108,6 @@ class Articolo(Base, Dao):
                                                     ("ADR" in modulesList):
         from promogest.modules.ADR.dao.ArticoloADR import ArticoloADR
         APADR = relationship("ArticoloADR", primaryjoin=(__table__.c.id == ArticoloADR.id_articolo),uselist=False)
-
-    if hasattr(conf, "DistintaBase") and \
-                            getattr(conf.DistintaBase, 'mod_enable') == "yes":
-        from promogest.modules.DistintaBase.dao.AssociazioneArticolo \
-             import AssociazioneArticolo
-        AAPadre = relationship("AssociazioneArticolo",primaryjoin=(__table__.c.id == AssociazioneArticolo.__table__.c.id_padre),
-                    backref="ARTIPADRE")
-        AAFiglio = relationship("AssociazioneArticolo", primaryjoin=(__table__.c.id == AssociazioneArticolo.__table__.c.id_figlio),
-                    backref="ARTIFIGLIO")
-
 
     __mapper_args__ = {
         'order_by' : __table__.c.codice
@@ -773,8 +761,6 @@ class Articolo(Base, Dao):
                 dic = {k: and_(self.__table__.c.id == ArticoloTagliaColore.id_articolo,
                     ArticoloTagliaColore.id_genere == v)}
         elif posso("SL"):
-            from promogest.modules.DistintaBase.dao.AssociazioneArticolo import AssociazioneArticolo
-            print " QUINDI OASSI"
             if k == "node":
                 dic = {k: and_(AssociazioneArticolo.__table__.c.id_padre == self.__table__.c.id,
                         AssociazioneArticolo.__table__.c.id_figlio == self.__table__.c.id)}
@@ -853,3 +839,16 @@ if tipodb=="sqlite":
         for a in aa:
             session.delete(a)
             session.commit()
+
+if hasattr(conf, "DistintaBase") and \
+                        getattr(conf.DistintaBase, 'mod_enable') == "yes":
+    from promogest.modules.DistintaBase.dao.AssociazioneArticolo \
+         import AssociazioneArticolo
+    Articolo.__mapper__.add_property("AAPadre",
+        relation(AssociazioneArticolo,
+            primaryjoin=(Articolo.__table__.c.id == AssociazioneArticolo.id_padre),
+                backref="ARTIPADRE"))
+    Articolo.__mapper__.add_property("AAFiglio",
+        relation(AssociazioneArticolo,
+            primaryjoin=(Articolo.__table__.c.id == AssociazioneArticolo.id_figlio),
+                backref="ARTIFIGLIO"))

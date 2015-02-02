@@ -3,10 +3,20 @@
 <interface>
   <requires lib="gtk+" version="3.4"/>
   <requires lib="pythonplugin" version="0.0"/>
-  <object class="GtkVBox" id="anagrafica_schede_ordinazioni_detail_vbox">
+  <object class="GtkListStore" id="ass_art_liststore">
+    <columns>
+      <!-- column-name PyObject1 -->
+      <column type="PyObject"/>
+      <!-- column-name gchararray1 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray2 -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
+  <object class="GtkBox" id="anagrafica_schede_ordinazioni_detail_vbox">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="border_width">10</property>
+    <property name="orientation">vertical</property>
     <child>
       <object class="GtkFrame" id="frame1">
         <property name="visible">True</property>
@@ -675,8 +685,9 @@
                                   <object class="GtkComboBox" id="associazione_articoli_comboboxentry">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
+                                    <property name="model">ass_art_liststore</property>
                                     <property name="has_entry">True</property>
-                                    <property name="entry_text_column">0</property>
+                                    <property name="entry_text_column">1</property>
                                     <child internal-child="entry">
                                       <object class="GtkEntry" id="combobox-entry">
                                         <property name="can_focus">False</property>
@@ -922,7 +933,7 @@
                         <signal name="cursor-changed" handler="on_articoli_treeview_cursor_changed" swapped="no"/>
                         <signal name="key-press-event" handler="on_articoli_treeview_key_press_event" swapped="no"/>
                         <child internal-child="selection">
-                          <object class="GtkTreeSelection" id="treeview-selection1"/>
+                          <object class="GtkTreeSelection" id="treeview-selection"/>
                         </child>
                       </object>
                     </child>
@@ -981,6 +992,9 @@
                       <object class="ScontiWidget" id="sconti_scheda_widget">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <child>
+                          <placeholder/>
+                        </child>
                       </object>
                       <packing>
                         <property name="expand">True</property>
@@ -1286,8 +1300,7 @@
                                     <property name="receives_default">False</property>
                                     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                                     <property name="use_underline">True</property>
-                                    <property name="xalign">1</property>
-                                    <property name="yalign">1</property>
+                                    <property name="xalign">0</property>
                                     <property name="draw_indicator">True</property>
                                     <signal name="toggled" handler="on_bomba_si_checkbutton_toggled" swapped="no"/>
                                   </object>
@@ -1304,7 +1317,7 @@
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">False</property>
                                     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                                    <property name="xalign">0.5</property>
+                                    <property name="xalign">0</property>
                                     <property name="draw_indicator">True</property>
                                     <signal name="toggled" handler="on_bomba_no_checkbutton_toggled" swapped="no"/>
                                   </object>
@@ -1442,7 +1455,7 @@
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">False</property>
                                         <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                                        <property name="xalign">0.5</property>
+                                        <property name="xalign">0</property>
                                         <property name="draw_indicator">True</property>
                                         <signal name="toggled" handler="on_materiale_disponibile_si_checkbutton_toggled" swapped="no"/>
                                       </object>
@@ -1459,7 +1472,7 @@
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">False</property>
                                         <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                                        <property name="xalign">0.5</property>
+                                        <property name="xalign">0</property>
                                         <property name="draw_indicator">True</property>
                                         <signal name="toggled" handler="on_materiale_disponibile_no_checkbutton_toggled" swapped="no"/>
                                       </object>
@@ -1847,7 +1860,7 @@
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
                                 <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                                <property name="xalign">0.5</property>
+                                <property name="xalign">0</property>
                                 <property name="draw_indicator">True</property>
                                 <signal name="toggled" handler="on_saldato_checkbutton_toggled" swapped="no"/>
                               </object>
@@ -1933,7 +1946,7 @@
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">False</property>
                                     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                                    <property name="xalign">0.5</property>
+                                    <property name="xalign">0</property>
                                     <property name="draw_indicator">True</property>
                                     <signal name="toggled" handler="on_fattura_checkbutton_toggled" swapped="no"/>
                                   </object>
@@ -1950,7 +1963,7 @@
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">False</property>
                                     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                                    <property name="xalign">0.5</property>
+                                    <property name="xalign">0</property>
                                     <property name="draw_indicator">True</property>
                                     <signal name="toggled" handler="on_ricevuta_checkbutton_toggled" swapped="no"/>
                                   </object>
@@ -3571,9 +3584,6 @@
         <property name="fill">False</property>
         <property name="position">0</property>
       </packing>
-    </child>
-    <child>
-      <placeholder/>
     </child>
   </object>
 </interface>

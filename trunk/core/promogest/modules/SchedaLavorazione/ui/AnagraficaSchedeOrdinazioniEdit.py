@@ -101,7 +101,7 @@ class AnagraficaSchedeOrdinazioniEdit(AnagraficaEdit):
         """
         fillComboboxListini(self.listino_combobox)
         fillComboboxMagazzini(self.magazzino_combobox)
-        fillComboboxAssociazioneArticoli(self.associazione_articoli_comboboxentry)
+        fillComboboxAssociazioneArticoli(self.associazione_articoli_comboboxentry, anag=self)
         self.id_cliente_customcombobox.setSingleValue()
         self.id_cliente_customcombobox.connect("changed",self.on_cliente_changed)
         self.id_cliente_customcombobox.setType(self._tipoPersonaGiuridica)
@@ -670,8 +670,8 @@ class AnagraficaSchedeOrdinazioniEdit(AnagraficaEdit):
             search_string = combobox.child.get_text()
         model = combobox.get_model()
         selected = combobox.get_active()
-        if selected < 0:
-            fillComboboxAssociazioneArticoli(self.associazione_articoli_comboboxentry, search_string)
+        if not selected:
+            fillComboboxAssociazioneArticoli(self.associazione_articoli_comboboxentry, search_string, anag=self)
         else:
             row = model[selected]
             if row[0]:
