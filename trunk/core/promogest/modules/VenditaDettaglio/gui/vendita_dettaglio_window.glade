@@ -77,6 +77,36 @@ verrà mandata la stampa
 all stampante fiscale.</property>
     <property name="stock">gtk-print</property>
   </object>
+  <object class="GtkListStore" id="righe_scontrino_liststore">
+    <columns>
+      <!-- column-name gint1 -->
+      <column type="gint"/>
+      <!-- column-name gchararray1 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray2 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray3 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray4 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray5 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray6 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray7 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray8 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray9 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray10 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray11 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray12 -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
   <object class="GtkImage" id="subtotale_img">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -1206,6 +1236,7 @@ ed un nuovo punto cassa.</property>
                       <object class="GtkTreeView" id="scontrino_treeview">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
+                        <property name="model">righe_scontrino_liststore</property>
                         <property name="enable_grid_lines">both</property>
                         <signal name="button-press-event" handler="on_scontrino_treeview_button_press_event" swapped="no"/>
                         <signal name="cursor-changed" handler="on_scontrino_treeview_cursor_changed" swapped="no"/>
@@ -2189,8 +2220,8 @@ ALT +n per annullare INVIO  per confermare</property>
                 <property name="border_width">1</property>
                 <property name="use_stock">True</property>
                 <signal name="clicked" handler="on_generico_ok_button_clicked" swapped="no"/>
-                <accelerator key="KP_Enter" signal="clicked"/>
                 <accelerator key="Return" signal="clicked"/>
+                <accelerator key="KP_Enter" signal="clicked"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -2246,8 +2277,8 @@ ALT +n per annullare INVIO  per confermare</property>
                 <property name="tooltip_markup">(+) aumenta</property>
                 <property name="image">image2_plus</property>
                 <signal name="clicked" handler="on_plus2_button_clicked" swapped="no"/>
-                <accelerator key="plus" signal="clicked"/>
                 <accelerator key="KP_Add" signal="clicked"/>
+                <accelerator key="plus" signal="clicked"/>
               </object>
               <packing>
                 <property name="expand">True</property>
@@ -2263,8 +2294,8 @@ ALT +n per annullare INVIO  per confermare</property>
                 <property name="tooltip_markup">(-) diminuisce</property>
                 <property name="image">image4_minus2</property>
                 <signal name="clicked" handler="on_minus2_button_clicked" swapped="no"/>
-                <accelerator key="minus" signal="clicked"/>
                 <accelerator key="KP_Subtract" signal="clicked"/>
+                <accelerator key="minus" signal="clicked"/>
               </object>
               <packing>
                 <property name="expand">True</property>
@@ -2325,8 +2356,8 @@ ALT +n per annullare INVIO  per confermare</property>
                 <property name="tooltip_markup">ctrl +( +) aumenta</property>
                 <property name="image">image_plus</property>
                 <signal name="clicked" handler="on_plus_button_clicked" swapped="no"/>
-                <accelerator key="plus" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
                 <accelerator key="KP_Add" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
+                <accelerator key="plus" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
               </object>
               <packing>
                 <property name="expand">True</property>
@@ -2342,8 +2373,8 @@ ALT +n per annullare INVIO  per confermare</property>
                 <property name="tooltip_markup">ctrl +( - ) diminisce</property>
                 <property name="image">image3_minus</property>
                 <signal name="clicked" handler="on_minus_button_clicked" swapped="no"/>
-                <accelerator key="minus" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
                 <accelerator key="KP_Subtract" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
+                <accelerator key="minus" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
               </object>
               <packing>
                 <property name="expand">True</property>

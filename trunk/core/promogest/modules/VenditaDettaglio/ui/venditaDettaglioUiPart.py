@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012
+#    Copyright (C) 2005-2015
 #    by Promotux di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni <francesco@promotux.it>
@@ -42,10 +42,13 @@ def drawPart(anag):
     anag.total_button.set_focus_on_click(False)
 
     # Costruisco treeview scontrino
-    anag.modelRiga = gtk.ListStore(int, str, str, str, str,
-                                            str, str, str, str, str,str,str,str)
-
+    #anag.modelRiga = gtk.ListStore(int, str, str, str, str,
+                                            #str, str, str, str, str,str,str,str)
+    anag.modelRiga = anag.righe_scontrino_liststore
     treeview = anag.scontrino_treeview
+
+
+
     rendererSx = gtk.CellRendererText()
     rendererDx = gtk.CellRendererText()
     rendererDx.set_property('xalign', 1)
