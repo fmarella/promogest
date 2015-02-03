@@ -29,6 +29,7 @@ t_contatto_azienda = Table('contatto_azienda', params["metadata"],
         Column('schema_azienda',String(100),ForeignKey(fk_prefix_main+'azienda.schemaa',onupdate="CASCADE",ondelete="RESTRICT"),nullable=False),
         ForeignKeyConstraint(['id', 'tipo_contatto'],[fk_prefix+'contatto.id', fk_prefix+'contatto.tipo_contatto'],onupdate="CASCADE", ondelete="CASCADE"),
         CheckConstraint("tipo_contatto = 'azienda'"),
-        schema=params["schema"]
+        schema=params["schema"],
+        extend_existing=True
         )
 t_contatto_azienda.create(checkfirst=True)

@@ -26,7 +26,8 @@ from promogest.Environment import *
 t_roleaction = Table('roleaction', params["metadata"],
         Column('id_role', Integer, ForeignKey(fk_prefix_main+'role.id'),primary_key=True),
         Column('id_action', Integer, ForeignKey(fk_prefix_main+'action.id'),primary_key=True),
-        schema=params["mainSchema"]
+        schema=params["mainSchema"],
+        extend_existing=True
         )
 t_roleaction.create(checkfirst=True)
 

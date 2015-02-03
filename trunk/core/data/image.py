@@ -27,5 +27,6 @@ t_image = Table('image', params["metadata"],
         Column('id', Integer, primary_key=True),
         Column('filename', String(300), nullable=True),
         Column('id_famiglia',Integer, ForeignKey(fk_prefix+'famiglia_articolo.id',onupdate="CASCADE",ondelete="RESTRICT")),
-        schema=params["schema"])
+        schema=params["schema"],
+        extend_existing=True)
 t_image.create(checkfirst=True)

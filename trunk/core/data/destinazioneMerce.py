@@ -33,6 +33,7 @@ t_destinazione_merce = Table('destinazione_merce', params["metadata"],
         Column('provincia',String(50),nullable=True),
         Column('codice', String(30)),
         Column('id_cliente',Integer,ForeignKey(fk_prefix+'cliente.id',onupdate="CASCADE",ondelete="RESTRICT")),
-        schema=params["schema"]
+        schema=params["schema"],
+        extend_existing=True
         )
 t_destinazione_merce.create(checkfirst=True)

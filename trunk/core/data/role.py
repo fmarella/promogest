@@ -31,7 +31,8 @@ t_role = Table('role', params["metadata"],
         Column('descrizione', String(250), nullable=False),
         Column('id_listino', Integer),
         Column('active', Boolean, default=0),
-        schema=params["mainSchema"]
+        schema=params["mainSchema"],
+            extend_existing=True
         )
 t_role.create(checkfirst=True)
 

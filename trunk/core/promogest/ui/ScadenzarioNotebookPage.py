@@ -38,7 +38,7 @@ class ScadenzarioNotebookPage(GladeWidget):
                              path='scadenzario_notebook.glade')
         self.maino = maino
         self.aziendaStr = azienda or ""
-        self.on_aggiorna_button_clicked(None)
+        #self.on_aggiorna_button_clicked(None)
 
     def on_aggiorna_button_clicked(self, widget):
         # Alcuni controlli sull'input

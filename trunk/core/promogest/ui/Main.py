@@ -24,6 +24,7 @@
 import sys
 import hashlib
 import os
+import glob
 from datetime import datetime, date
 import webbrowser
 from  subprocess import *
@@ -266,13 +267,15 @@ class Main(GladeWidget):
 
         def pickle_meta():
             from pickle import dump
+            #from dill import dump
             meta_pickle = self.aziendaStr + "-meta.pickle"+sys.version[:1]
-            try:
-                if not os.path.exists(str(os.path.join(Environment.promogestDir.replace("_",""),meta_pickle.replace("_","")).strip())):
-                    with open(str(os.path.join(Environment.promogestDir.replace("_",""),meta_pickle.replace("_","")).strip()), 'wb') as f:
-                        dump(Environment.meta, f)
-            except:
-                print " FALLITA CREAZIONE META"
+            #try:
+            if not os.path.exists(str(os.path.join(Environment.promogestDir.replace("_",""),meta_pickle.replace("_","")).strip())):
+                with open(str(os.path.join(Environment.promogestDir.replace("_",""),meta_pickle.replace("_","")).strip()), 'wb') as f:
+                    a = dump(Environment.meta,f)
+                    #f.write(a)
+            #except:
+                #print " FALLITA CREAZIONE META"
         pickle_meta()
 
 

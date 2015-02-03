@@ -31,7 +31,8 @@ t_operazione = Table('operazione', params["metadata"],
         Column('fonte_valore', String(50), nullable=True),
         Column('tipo_persona_giuridica', String(50), nullable=True),
         Column('tipo_operazione', String(50), nullable=True),
-        schema=params["mainSchema"]
+        schema=params["mainSchema"],
+        extend_existing=True
         )
 t_operazione.create(checkfirst=True)
 

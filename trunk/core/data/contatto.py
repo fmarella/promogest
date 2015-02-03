@@ -38,6 +38,7 @@ except:
                 Column('note',Text, nullable=True),
                 UniqueConstraint('id'),
                 CheckConstraint("(tipo_contatto = 'cliente') OR (tipo_contatto = 'fornitore') OR (tipo_contatto = 'magazzino') OR (tipo_contatto = 'azienda') OR (tipo_contatto = 'generico')"),
-                schema=params["schema"]
+                schema=params["schema"],
+                extend_existing=True
                 )
     t_contatto.create(checkfirst=True)

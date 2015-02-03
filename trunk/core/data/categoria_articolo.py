@@ -29,6 +29,7 @@ t_categoria_articolo = Table('categoria_articolo', params["metadata"],
         Column('id', Integer, primary_key=True),
         Column('denominazione', String(200), nullable=False ),
         Column('denominazione_breve', String(10), nullable=False),
-        schema=params["schema"]
+        schema=params["schema"],
+        extend_existing=True
         )
 t_categoria_articolo.create(checkfirst=True)

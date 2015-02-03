@@ -37,5 +37,7 @@ t_riga_movimento_fornitura = Table('riga_movimento_fornitura', params['metadata'
         Column('id_fornitura', Integer,
             ForeignKey(fk_prefix + 'fornitura.id'),
             nullable=False),
-        schema=params["schema"])
+        schema=params["schema"],
+        extend_existing=True
+        )
 t_riga_movimento_fornitura.create(checkfirst=True)

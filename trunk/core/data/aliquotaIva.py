@@ -37,5 +37,6 @@ t_aliquota_iva = Table('aliquota_iva', params["metadata"],
         Column('percentuale_detrazione', Numeric(8,4), nullable=True),
         Column('descrizione_detrazione', String(100), nullable=True),
         schema=params["schema"],
+        extend_existing=True
         )
 t_aliquota_iva.create(checkfirst=True)

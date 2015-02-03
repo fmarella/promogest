@@ -26,6 +26,7 @@ from promogest.Environment import *
 t_cliente_categoria_cliente = Table('cliente_categoria_cliente', params["metadata"],
         Column('id_cliente',Integer,ForeignKey(fk_prefix+'cliente.id',onupdate="CASCADE",ondelete="CASCADE"),primary_key=True),
         Column('id_categoria_cliente',Integer,ForeignKey(fk_prefix+'categoria_cliente.id',onupdate="CASCADE",ondelete="RESTRICT"),primary_key=True),
-        schema=params["schema"]
+        schema=params["schema"],
+        extend_existing=True
         )
 t_cliente_categoria_cliente.create(checkfirst=True)

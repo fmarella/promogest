@@ -38,6 +38,7 @@ t_listino = Table('listino', params["metadata"],
         Column('listino_attuale', Boolean, nullable=True),
         Column('visible', Boolean, default=0),
         schema=params["schema"],
+        extend_existing=True,
         mysql_engine='InnoDB'
         )
 if tipo_eng == "postgresql":

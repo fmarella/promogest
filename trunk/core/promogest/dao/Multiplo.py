@@ -29,15 +29,16 @@ from promogest.dao.Dao import Dao, Base
 from promogest.dao.UnitaBase import UnitaBase
 
 class Multiplo(Base, Dao):
-    try:
-        __table__ = Table('multiplo',
-                       params['metadata'],
-                       schema=params['schema'],
-                       autoload=True,
-                       autoload_with=engine)
-    except:
-        from data.multiplo import t_multiplo
-        __table__ = t_multiplo
+    #try:
+    __table__ = Table('multiplo',
+                   params['metadata'],
+                   schema=params['schema'],
+                   autoload=True,
+                   #autoload_with=engine
+                   )
+    #except:
+        #from data.multiplo import t_multiplo
+        #__table__ = t_multiplo
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)

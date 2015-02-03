@@ -30,6 +30,7 @@ t_codice_barre_articolo = Table('codice_a_barre_articolo', params["metadata"],
         Column('codice',String(50),nullable=False, unique=True),
         Column('id_articolo',Integer,ForeignKey(fk_prefix+'articolo.id', onupdate="CASCADE", ondelete="CASCADE")),
         Column('primario',Boolean,nullable=True),
-        schema=params["schema"]
+        schema=params["schema"],
+        extend_existing=True
         )
 t_codice_barre_articolo.create(checkfirst=True)

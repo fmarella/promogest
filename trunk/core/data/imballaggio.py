@@ -27,6 +27,7 @@ from promogest.Environment import *
 t_imballaggio = Table('imballaggio', params["metadata"],
     Column('id', Integer, primary_key=True),
     Column('denominazione', String(200), nullable=False, unique=True),
-    schema=params["schema"]
+    schema=params["schema"],
+    extend_existing=True
     )
 t_imballaggio.create(checkfirst=True)

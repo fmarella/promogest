@@ -31,15 +31,8 @@ class ScontoScontrino(Base, Dao):
                 schema = params['schema'],
                 autoload=True)
     except:
-        #pass
-        __table__ = Table('sconto_scontrino', params['metadata'],
-            Column('id',Integer,primary_key=True),
-            Column('valore',Numeric(16,4),nullable=True),
-            Column('tipo_sconto',String(50),nullable=False),
-            CheckConstraint( "tipo_sconto = 'valore' or tipo_sconto = 'percentuale'" ),
-            schema = params['schema'],
-            useexisting =True
-        )
+        from data.scontoScontrio import t_sconto_scontrino
+        __table__ = t_sconto_scontrino
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)

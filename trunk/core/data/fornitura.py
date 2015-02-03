@@ -45,6 +45,7 @@ t_fornitura = Table('fornitura', params["metadata"],
         Column('id_multiplo',Integer,ForeignKey(fk_prefix+'multiplo.id', onupdate="CASCADE", ondelete="RESTRICT")),
         UniqueConstraint('id_fornitore', 'id_articolo', 'data_prezzo'),
         CheckConstraint( "applicazione_sconti = 'scalare' or applicazione_sconti = 'non scalare'" ),
-        schema=params["schema"]
+        schema=params["schema"],
+        extend_existing=True
         )
 t_fornitura.create(checkfirst=True)

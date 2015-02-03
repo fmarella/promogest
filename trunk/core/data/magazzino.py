@@ -34,6 +34,7 @@ t_magazzino = Table('magazzino', params["metadata"],
         Column('nazione',String(100),nullable=True),
         Column('pvcode',String(5),nullable=True),
         Column('data_ultima_stampa_giornale',Date,nullable=True),
-        schema=params["schema"]
+        schema=params["schema"],
+        extend_existing=True
         )
 t_magazzino.create(checkfirst=True)

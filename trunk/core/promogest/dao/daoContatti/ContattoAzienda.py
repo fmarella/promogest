@@ -30,25 +30,16 @@ from promogest.dao.daoContatti.RecapitoContatto import RecapitoContatto
 from promogest.dao.daoContatti.ContattoCategoriaContatto import ContattoCategoriaContatto
 
 
-#try:
-#    t_contatto_azienda=Table('contatto_azienda',
-#        params['metadata'],
-#        schema = params['schema'],
-#        autoload=True)
-#except:
-#    from data.contattoAzienda import t_contatto_azienda
-
-
 class ContattoAzienda(Base, Dao):
-    __table__ = Table('contatto_azienda', params["metadata"],
-        Column('id',Integer,primary_key=True),
-        Column('tipo_contatto',String(50),primary_key=True),
-        Column('schema_azienda',String(100),ForeignKey(fk_prefix_main+'azienda.schemaa',onupdate="CASCADE",ondelete="RESTRICT"),nullable=False),
-        ForeignKeyConstraint(['id', 'tipo_contatto'],[fk_prefix+'contatto.id', fk_prefix+'contatto.tipo_contatto'],onupdate="CASCADE", ondelete="CASCADE"),
-        CheckConstraint("tipo_contatto = 'azienda'"),
-        #extend_existing=True,
-        schema=params["schema"]
-        )
+    try:
+        __table__ = Table('contatto_azienda',
+                params['metadata'],
+                schema = params['schema'],
+                autoload=True)
+    except:
+        from data.contattoAzienda import t_contatto_azienda
+        __table__ = t_contatto_azienda
+
     __mapper_args__ = {
         'polymorphic_identity':'contatto_azienda',
     }

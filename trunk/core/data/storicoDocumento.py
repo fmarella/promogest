@@ -24,8 +24,21 @@ import datetime
 from sqlalchemy import *
 from promogest.Environment import *
 
+NEUTRO = 0
+ASCALARE = 1
+TIPO = (
+    (0, 'Neutro'),
+    (1, 'A scalare')
+)
 
-session.close()
+CHIUSO = 0
+APERTO = 1
+STATO = (
+    (0, "Chiuso"),
+    (1, "Aperto")
+)
+
+#session.close()
 t_storico_documento = Table('storico_documento', params["metadata"],
                             Column('id', Integer, primary_key=True),
                             Column('padre', Integer, ForeignKey(fk_prefix + 'testata_documento.id')),

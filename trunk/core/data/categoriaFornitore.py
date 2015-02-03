@@ -26,6 +26,7 @@ from promogest.Environment import *
 t_categoria_fornitore = Table('categoria_fornitore', params["metadata"],
         Column('id',Integer,primary_key=True),
         Column('denominazione',String(200),nullable=False),
-        schema=params["schema"]
+        schema=params["schema"],
+        extend_existing=True
         )
 t_categoria_fornitore.create(checkfirst=True)

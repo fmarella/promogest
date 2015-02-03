@@ -266,8 +266,8 @@ class Login(SimpleGladeApp):
 
                     self.importModulesFromDir('promogest/modules')
                     #ATTENZIONE!!! RIATTIVARE!!!
-                    #from promogest.dao.DaoOrderedImport import orderedImport
-                    #orderedImport()
+                    from promogest.dao.DaoOrderedImport import orderedImport
+                    orderedImport()
                     def mainmain():
                         from Main import Main
                         main = Main(self.azienda,

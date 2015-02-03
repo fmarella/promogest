@@ -36,7 +36,8 @@ t_listino_articolo = Table('listino_articolo', params["metadata"],
         #ForeignKeyConstraint(['id_listino', 'id_articolo'],[fk_prefix+'.listino.id', fk_prefix+'.articolo.id'],onupdate="CASCADE", ondelete="CASCADE"),
         CheckConstraint("prezzo_dettaglio is not NULL OR prezzo_ingrosso is not NULL"),
         schema=params["schema"],
-        mysql_engine='InnoDB'
+        mysql_engine='InnoDB',
+        extend_existing=True
 
         )
 t_listino_articolo.create(checkfirst=True)

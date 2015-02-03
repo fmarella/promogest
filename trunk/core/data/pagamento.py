@@ -35,6 +35,7 @@ t_pagamento = Table('pagamento', params["metadata"],
         Column('tipo', String(20), default='banca'),
         Column('spese', Numeric(16, 4), nullable=True),
         Column('id_aliquota_iva', Integer, nullable=True),
-        schema=params["schema"]
+        schema=params["schema"],
+        extend_existing=True
             )
 t_pagamento.create(checkfirst=True )

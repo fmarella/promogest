@@ -45,6 +45,7 @@ t_utente = Table('utente', params["metadata"],
         Column('privacy', Boolean, default=False),
         Column('mailing_list', Boolean, default=False),
         schema=params["mainSchema"],
+        extend_existing=True
         )
 t_utente.create(checkfirst=True)
 

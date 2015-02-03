@@ -26,6 +26,7 @@ from promogest.Environment import *
 t_listino_magazzino = Table('listino_magazzino', params["metadata"],
         Column('id_listino',Integer,ForeignKey(fk_prefix+'listino.id',onupdate="CASCADE",ondelete="RESTRICT"),primary_key=True),
         Column('id_magazzino',Integer,ForeignKey(fk_prefix+'magazzino.id',onupdate="CASCADE",ondelete="RESTRICT"),primary_key=True),
-        schema=params["schema"]
+        schema=params["schema"],
+        extend_existing=True
         )
 t_listino_magazzino.create(checkfirst=True)

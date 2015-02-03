@@ -32,6 +32,7 @@ t_multiplo = Table('multiplo', params["metadata"],
         Column('moltiplicatore',Numeric(15,6),nullable=False),
         UniqueConstraint('denominazione', 'denominazione_breve'),
         CheckConstraint("id_unita_base IS NULL AND id_articolo IS NOT NULL  OR  id_unita_base IS NOT NULL  AND id_articolo IS NULL"),
-        schema=params["schema"]
+        schema=params["schema"],
+        extend_existing=True
         )
 t_multiplo.create(checkfirst=True)

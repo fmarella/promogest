@@ -27,7 +27,8 @@ from promogest.dao.Dao import Dao, Base
 from promogest.dao.Articolo import Articolo
 from promogest.modules.VenditaDettaglio.dao.ScontoScontrino import ScontoScontrino
 from promogest.modules.VenditaDettaglio.ui.VenditaDettaglioUtils import scontoRigaScontrinoDel
-from promogest.modules.VenditaDettaglio.dao.ScontoRigaScontrino import ScontoRigaScontrino, t_sconto_riga_scontrino
+from promogest.modules.VenditaDettaglio.dao.ScontoRigaScontrino import ScontoRigaScontrino
+from data.scontoRigaScontrino import t_sconto_riga_scontrino
 
 class RigaScontrino(Base, Dao):
     try:
@@ -36,17 +37,8 @@ class RigaScontrino(Base, Dao):
                 schema = params['schema'],
                 autoload=True)
     except:
-        __table__ = Table('riga_scontrino', params['metadata'],
-                Column('id',Integer,primary_key=True),
-                Column('prezzo',Numeric(16,4),nullable=True),
-                Column('prezzo_scontato',Numeric(16,4),nullable=True),
-                Column('quantita',Numeric(16,4),nullable=False),
-                Column('descrizione',String(200),nullable=False),
-                Column('id_testata_scontrino',Integer,ForeignKey(fk_prefix +"testata_scontrino.id", onupdate="CASCADE", ondelete="CASCADE"),nullable=True),
-                Column('id_articolo',Integer, ForeignKey(fk_prefix +"articolo.id", onupdate="CASCADE", ondelete="RESTRICT"),nullable=False),
-                schema=params['schema'],
-                useexisting =True
-                )
+        from data.rigaScontrino import t_riga_scontrino
+        __table__ = t_riga_scontrino
 
     arti = relationship("Articolo") #serve
     srs = relationship("ScontoRigaScontrino",primaryjoin=__table__.c.id ==t_sconto_riga_scontrino.c.id_riga_scontrino, cascade="all, delete") #serve

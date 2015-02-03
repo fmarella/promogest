@@ -28,6 +28,9 @@ t_recapito = Table('recapito', params["metadata"],
         Column('recapito', String(450), nullable=False),
         Column('tipo_recapito',String(100),ForeignKey(fk_prefix_main+'tipo_recapito.denominazione',onupdate="CASCADE",ondelete="RESTRICT"), nullable=False),
         Column('id_contatto',Integer ,ForeignKey(fk_prefix+'contatto.id',onupdate="CASCADE",ondelete="CASCADE"),nullable=False),
-        schema=params["schema"]
+        schema=params["schema"],
+        extend_existing=True
+
+
         )
 t_recapito.create(checkfirst=True)

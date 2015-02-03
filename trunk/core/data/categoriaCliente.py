@@ -28,6 +28,7 @@ t_categoria_cliente = Table('categoria_cliente', params["metadata"],
         Column('denominazione',String(200),nullable=False),
         Column('descrizione',String(200),nullable=True),
         Column('active',Boolean, default=False),
-        schema=params["schema"]
+        schema=params["schema"],
+        extend_existing=True
         )
 t_categoria_cliente.create(checkfirst=True)

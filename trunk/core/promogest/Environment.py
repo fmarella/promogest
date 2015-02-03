@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2014 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -111,7 +111,7 @@ from promogest.lib.alembic import op
 from promogest.EnvUtils import *
 
 PRODOTTO = "PromoTux"
-VERSIONE = "PromoGest 3.0.1"
+VERSIONE = "PromoGest 3.0.3"
 reportTemplatesDir = None
 imagesDir = None
 labelTemplatesDir = None
@@ -244,7 +244,7 @@ except:
 try:
     partner = main_conf.Database.partner
 except:
-    partner = "070 8649705 -- www.promogest.me -- assistenza@promotux.it"
+    partner = "070 8649705 -- www.promogest.me -- assistenza@promogest.me"
 
 if tipodb == "sqlite" and not (os.path.exists(startdir() + "db")) and not tipodbforce and not preEnv.web:
     if os.path.exists("data/db"):
@@ -292,7 +292,8 @@ def restart_program():
     python = sys.executable
     print " STO RIAVVIANDO IL PROGRAMMA CON QUESTO ESEGUIBILE PYTHON", python
     os.execl(python, python, * sys.argv)
-print " AZIENDAAAA", azienda
+
+print " ------ AZIENDA --------", azienda
 
 def handleEngine(schema= None):
     engine = None
@@ -355,12 +356,10 @@ engine = handleEngine()
 tipo_eng = engine.name
 
 def createSession():
-    print " QUANTE VOLTE PASSI QUI" , azienda
     if not web:
         Session = sessionmaker(bind=engine)
         session = Session()
     else:
-        print " USI QUESTA SESSIONE SCOPED"
         session = scoped_session(lambda: create_session(engine, autocommit=False))
         #session.execute("SET search_path TO {0}".format(azienda))
     return session
@@ -396,10 +395,13 @@ def delete_pickle():
             restart_program()
 
 def usePickleToMeta():
-    print " AZIENDA", azienda, os.path.exists(str(os.path.join(promogestDir.replace("_",""),meta_pickle.replace("_","")).strip()))
+    print " AZIENDA", azienda
+    print "PATH", str(os.path.join(promogestDir.replace("_","")))
+    print "META PICKLE", meta_pickle.replace("_","").strip()
     if azienda and os.path.exists(str(os.path.join(promogestDir.replace("_",""),meta_pickle.replace("_","")).strip())):
         print " CONTROLLO DELL'ESISTENZA DEL FILE PICKLE", str(os.path.join(promogestDir.replace("_","")))
         with open(str(os.path.join(promogestDir.replace("_",""),meta_pickle.replace("_","")).strip()), 'rb') as f:
+            #from dill import dumps
             try:
                 meta = pickle_load(f)
                 meta.bind = engine
@@ -412,14 +414,12 @@ def usePickleToMeta():
         print "USO META NORMALE"
         meta = MetaData(engine)
     return meta
-#meta = usePickleToMeta()
-
+meta = usePickleToMeta()
+#meta = MetaData(engine)
 
 preEnv.azienda = azienda
-print " AZIENDAAAAAAAAAAAA 2222222222222222", azienda
-#meta = None
-meta = MetaData(engine)
-#meta = usePickleToMeta()
+
+
 
 mainSchema = None
 schema = None

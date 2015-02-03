@@ -36,6 +36,7 @@ from data.contattoMagazzino import t_contatto_magazzino
 c_cm = join(t_contatto, t_contatto_magazzino)
 
 class ContattoMagazzino(Base, Dao):
+
     __table__ = c_cm
     id = column_property(t_contatto.c.id, t_contatto_magazzino.c.id)
 

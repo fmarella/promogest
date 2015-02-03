@@ -23,22 +23,29 @@
 from sqlalchemy import *
 from promogest.Environment import *
 
-t_anagrafica_secondaria = Table('anagrafica_secondaria', params["metadata"],
-        Column('id', Integer, ForeignKey(fk_prefix+'persona_giuridica.id',
-            onupdate="CASCADE", ondelete="CASCADE"), primary_key=True),
-        Column('id_ruolo', Integer, ForeignKey(fk_prefix_main+'role.id',
-            onupdate="CASCADE", ondelete="CASCADE")),
-        Column('id_utente', Integer, ForeignKey(fk_prefix_main+"utente.id",
-            onupdate="CASCADE", ondelete="CASCADE")),
-        Column('id_pagamento', Integer, ForeignKey(fk_prefix+"pagamento.id",
-            onupdate="CASCADE", ondelete="CASCADE")),
-        Column('id_banca', Integer, ForeignKey(fk_prefix+"banca.id",
-            onupdate="CASCADE", ondelete="CASCADE")),
-        Column('id_magazzino', Integer, ForeignKey(fk_prefix+"magazzino.id",
-            onupdate="CASCADE", ondelete="CASCADE")),
-        Column('id_listino', Integer, ForeignKey(fk_prefix+"listino.id",
-            onupdate="CASCADE", ondelete="CASCADE")),
-        schema=params["schema"],
-        useexisting=True,
-        )
-t_anagrafica_secondaria.create(checkfirst=True)
+
+try:
+    t_anagrafica_secondaria = Table('anagrafica_secondaria', params["metadata"],
+                    schema = params['schema'],
+                        autoload=True)
+except:
+
+    t_anagrafica_secondaria = Table('anagrafica_secondaria', params["metadata"],
+            Column('id', Integer, ForeignKey(fk_prefix+'persona_giuridica.id',
+                onupdate="CASCADE", ondelete="CASCADE"), primary_key=True),
+            Column('id_ruolo', Integer, ForeignKey(fk_prefix_main+'role.id',
+                onupdate="CASCADE", ondelete="CASCADE")),
+            Column('id_utente', Integer, ForeignKey(fk_prefix_main+"utente.id",
+                onupdate="CASCADE", ondelete="CASCADE")),
+            Column('id_pagamento', Integer, ForeignKey(fk_prefix+"pagamento.id",
+                onupdate="CASCADE", ondelete="CASCADE")),
+            Column('id_banca', Integer, ForeignKey(fk_prefix+"banca.id",
+                onupdate="CASCADE", ondelete="CASCADE")),
+            Column('id_magazzino', Integer, ForeignKey(fk_prefix+"magazzino.id",
+                onupdate="CASCADE", ondelete="CASCADE")),
+            Column('id_listino', Integer, ForeignKey(fk_prefix+"listino.id",
+                onupdate="CASCADE", ondelete="CASCADE")),
+            schema=params["schema"],
+            useexisting=True,
+            )
+    t_anagrafica_secondaria.create(checkfirst=True)

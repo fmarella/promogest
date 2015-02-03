@@ -27,6 +27,7 @@ from promogest.Environment import *
 t_informazioni_fatturazione_documento = Table('informazioni_fatturazione_documento',  params["metadata"],
         Column('id_fattura',Integer,ForeignKey(fk_prefix+'testata_documento.id',onupdate="CASCADE",ondelete="RESTRICT"),primary_key=True),
         Column('id_ddt',Integer,ForeignKey(fk_prefix+'testata_documento.id',onupdate="CASCADE",ondelete="RESTRICT"),primary_key=True,nullable=False),
-        schema=params["schema"]
+        schema=params["schema"],
+        extend_existing=True
         )
 t_informazioni_fatturazione_documento.create(checkfirst=True)

@@ -28,7 +28,8 @@ t_language = Table('language', params["metadata"],
         Column('id', Integer, primary_key=True),
         Column('denominazione_breve', String(50), nullable=True),
         Column('denominazione', String(200), nullable=True),
-        schema=params["mainSchema"]
+        schema=params["mainSchema"],
+        extend_existing=True
         )
 t_language.create(checkfirst=True)
 

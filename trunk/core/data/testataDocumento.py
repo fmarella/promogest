@@ -68,6 +68,7 @@ t_testata_documento = Table('testata_documento', params["metadata"],
     CheckConstraint("incaricato_trasporto = 'destinatario'  AND id_vettore IS NULL  OR incaricato_trasporto = 'mittente'  AND  id_vettore IS NULL  OR incaricato_trasporto = 'vettore'  AND  id_vettore IS NOT NULL"),
     CheckConstraint("applicazione_sconti = 'scalare'  OR applicazione_sconti = 'non scalare'"),
     UniqueConstraint('parte', 'numero', 'data_documento','id_primo_riferimento', 'id_secondo_riferimento'),
-    schema=params["schema"]
+    schema=params["schema"],
+    extend_existing=True,
         )
 t_testata_documento.create(checkfirst=True)

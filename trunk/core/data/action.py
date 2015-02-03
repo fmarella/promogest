@@ -28,7 +28,8 @@ t_action = Table('action', params["metadata"],
     Column('id', Integer, primary_key=True),
     Column('denominazione_breve', String(25), nullable=False),
     Column('denominazione', String(200), nullable=False),
-    schema=params["mainSchema"]
+    schema=params["mainSchema"],
+    extend_existing=True
     )
 t_action.create(checkfirst=True)
 

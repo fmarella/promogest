@@ -23,12 +23,20 @@
 from sqlalchemy import *
 from promogest.Environment import *
 
-t_sconto_scontrino= Table('sconto_scontrino', params['metadata'],
-            Column('id',Integer,primary_key=True),
-            Column('valore',Numeric(16,4),nullable=True),
-            Column('tipo_sconto',String(50),nullable=False),
-            CheckConstraint( "tipo_sconto = 'valore' or tipo_sconto = 'percentuale'" ),
-            schema = params['schema'],
-            useexisting =True
-        )
-t_sconto_scontrino.create(checkfirst=True)
+
+try:
+    t_sconto_scontrino = Table('sconto_scontrino',
+                params['metadata'],
+                schema = params['schema'],
+                autoload=True)
+except:
+
+    t_sconto_scontrino= Table('sconto_scontrino', params['metadata'],
+                Column('id',Integer,primary_key=True),
+                Column('valore',Numeric(16,4),nullable=True),
+                Column('tipo_sconto',String(50),nullable=False),
+                CheckConstraint( "tipo_sconto = 'valore' or tipo_sconto = 'percentuale'" ),
+                schema = params['schema'],
+                useexisting =True
+            )
+    t_sconto_scontrino.create(checkfirst=True)

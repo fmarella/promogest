@@ -29,5 +29,6 @@ t_numero_lotto_temp = Table('numero_lotto_temp', params['metadata'],
             ForeignKey(fk_prefix + 'riga_movimento.id'), nullable=False),
         Column('lotto_temp', String(50), nullable=False),
         Column('data_lotto_temp', DateTime, nullable=True),
-        schema=params["schema"])
+        schema=params["schema"],
+        extend_existing=True)
 t_numero_lotto_temp.create(checkfirst=True)

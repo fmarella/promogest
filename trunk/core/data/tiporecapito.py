@@ -26,7 +26,8 @@ from promogest.Environment import *
 
 t_tipo_recapito = Table('tipo_recapito', params["metadata"],
         Column('denominazione',String(100),primary_key=True),
-        schema=params["mainSchema"]
+        schema=params["mainSchema"],
+        extend_existing=True
         )
 t_tipo_recapito.create(checkfirst=True)
 

@@ -54,6 +54,7 @@ t_azienda = Table('azienda', params["metadata"],
     Column('percorso_immagine', String(300), nullable=True),
     Column('tipo_schemaa', String(10), nullable=True),
     schema=params["mainSchema"],
+    extend_existing=True,
         )
 t_azienda.create(checkfirst=True)
 

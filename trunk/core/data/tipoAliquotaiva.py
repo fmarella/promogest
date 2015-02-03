@@ -27,7 +27,8 @@ from promogest.Environment import *
 t_tipo_aliquota_iva = Table('tipo_aliquota_iva', params["metadata"],
         Column('id', Integer, primary_key=True),
         Column('denominazione',String(100),nullable=True, unique=True),
-        schema=params["mainSchema"]
+        schema=params["mainSchema"],
+        extend_existing=True
         )
 t_tipo_aliquota_iva.create(checkfirst=True)
 

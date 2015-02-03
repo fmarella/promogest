@@ -33,6 +33,7 @@ t_stoccaggio = Table('stoccaggio', params["metadata"],
         Column('data_prossimo_ordine', DateTime, nullable=True),
         Column('id_articolo', Integer,ForeignKey(fk_prefix+'articolo.id',onupdate="CASCADE",ondelete="CASCADE"), nullable=True),
         Column('id_magazzino', Integer, ForeignKey(fk_prefix+'magazzino.id',onupdate="CASCADE",ondelete="RESTRICT"), nullable=False),
-        schema=params["schema"]
+        schema=params["schema"],
+        extend_existing=True
         )
 t_stoccaggio.create(checkfirst=True)

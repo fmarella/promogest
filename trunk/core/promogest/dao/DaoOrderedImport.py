@@ -21,13 +21,13 @@
 
 #from sqlalchemy import *
 #from sqlalchemy.orm import *
-from promogest.Environment import *
-from promogest.dao.DaoUtils import get_columns
-from sqlalchemy import *
-from sqlalchemy.orm import *
-from promogest.lib.alembic.migration import MigrationContext
-from promogest.lib.alembic.operations import Operations
-from promogest.lib.alembic import op
+#from promogest.Environment import *
+#from promogest.dao.DaoUtils import get_columns
+#from sqlalchemy import *
+#from sqlalchemy.orm import *
+#from promogest.lib.alembic.migration import MigrationContext
+#from promogest.lib.alembic.operations import Operations
+#from promogest.lib.alembic import op
 
 def orderedImport():
     return
@@ -59,101 +59,101 @@ def orderedImport():
     from promogest.dao.Access import Access
     from promogest.dao.Setting import Setting
     from promogest.dao.Promemoria import Promemoria
-    #from promogest.dao.Setconf import * #verificare
-    #from promogest.dao.Pagamento import t_pagamento #v
-    #from promogest.dao.Operazione import t_operazione #v
-    #from promogest.dao.TipoAliquotaIva import t_tipo_aliquota_iva #v
-    #from promogest.dao.daoContatti.TipoRecapito import t_tipo_recapito #v
-    #from promogest.dao.UnitaBase import t_unita_base #v
+    from promogest.dao.Setconf import * #verificare
+    from promogest.dao.Pagamento import Pagamento #v
+    from promogest.dao.Operazione import Operazione #v
+    from promogest.dao.TipoAliquotaIva import TipoAliquotaIva #v
+    from promogest.dao.daoContatti.TipoRecapito import TipoRecapito
+    from promogest.dao.UnitaBase import UnitaBase
     from promogest.dao.StatoArticolo import StatoArticolo #v
-    #from promogest.dao.AliquotaIva import AliquotaIva #v
-    #from promogest.dao.CategoriaArticolo import CategoriaArticolo #v
-    #from promogest.dao.Banca import t_banca #v
-    #from promogest.dao.BancheAzienda import t_banche_azienda #v
-    #from promogest.dao.FamigliaArticolo import FamigliaArticolo #v
-    ##from promogest.dao.Image import * # ???????????????????
-    #from promogest.dao.CategoriaCliente import CategoriaCliente #v
-    #from promogest.dao.CategoriaFornitore import t_categoria_fornitore #v
+    from promogest.dao.AliquotaIva import AliquotaIva #v
+    from promogest.dao.CategoriaArticolo import CategoriaArticolo #v
+    from promogest.dao.Banca import Banca
+    from promogest.dao.BancheAzienda import BancheAzienda
+    from promogest.dao.FamigliaArticolo import FamigliaArticolo #v
+    #from promogest.dao.Image import * # ???????????????????
+    from promogest.dao.CategoriaCliente import CategoriaCliente #v
+    from promogest.dao.CategoriaFornitore import CategoriaFornitore
     from promogest.dao.Magazzino import Magazzino
-    from promogest.dao.Stoccaggio import Stoccaggio #v
-    #from promogest.dao.Imballaggio import t_imballaggio #v
-    #from promogest.dao.Listino import t_listino #v
+
+    from promogest.dao.Imballaggio import Imballaggio
+    from promogest.dao.Listino import Listino #v
     from promogest.dao.Articolo import Articolo #v
-    #from promogest.dao.CodiceABarreArticolo import t_codice_barre_articolo #v
-    #from promogest.dao.ListinoArticolo import t_listino_articolo #v
+    from promogest.dao.CodiceABarreArticolo import CodiceABarreArticolo
+    from promogest.dao.ListinoArticolo import ListinoArticolo
     from promogest.dao.Multiplo import Multiplo #v
 
-    #from promogest.dao.ListinoComplessoListino import t_listino_complesso_listino #v
-    #from promogest.dao.ListinoComplessoArticoloPrevalente import t_listino_complesso_articolo_prevalente  #v
-    #from promogest.dao.VariazioneListino import t_variazione_listino #v
+    from promogest.dao.ListinoComplessoListino import ListinoComplessoListino
+    from promogest.dao.ListinoComplessoArticoloPrevalente import ListinoComplessoArticoloPrevalente
+    from promogest.dao.VariazioneListino import VariazioneListino
 
     from promogest.dao.daoContatti.RecapitoContatto import RecapitoContatto
     from promogest.dao.daoContatti.CategoriaContatto import CategoriaContatto
     from promogest.dao.daoContatti.ContattoCategoriaContatto import ContattoCategoriaContatto
     from promogest.dao.daoContatti.Contatto import Contatto #v
 
-
+    from promogest.dao.Promemoria import Promemoria
     from promogest.dao.Stoccaggio import Stoccaggio #v
-    #from promogest.dao.PersonaGiuridica import t_persona_giuridica #v
-    #from promogest.dao.PersonaGiuridicaPersonaGiuridica import t_personagiuridica_personagiuridica #v
+    from promogest.dao.PersonaGiuridica import PersonaGiuridica_
+    from promogest.dao.PersonaGiuridicaPersonaGiuridica import PersonaGiuridicaPersonaGiuridica
 
 
 
-    #from promogest.dao.Vettore import t_vettore #v
-    #from promogest.dao.ListinoMagazzino import t_listino_magazzino #v
+    from promogest.dao.Vettore import Vettore #v
+    from promogest.dao.ListinoMagazzino import ListinoMagazzino
 
-    ##from promogest.dao.Cliente import Cliente #v
-    #from promogest.dao.Fornitore import t_fornitore #v
-    #from promogest.dao.Fornitura import t_fornitura  #v
-    #from promogest.dao.daoAgenti.Agente import t_agente #v
-    #from promogest.dao.ClienteCategoriaCliente import t_cliente_categoria_cliente #v
-    #from promogest.dao.ClienteVariazioneListino import t_cliente_variazione_listino #v
-    #from promogest.dao.Sconto import t_sconto
-    #from promogest.dao.daoContatti.RecapitoContatto import t_recapito
-    #from promogest.dao.daoContatti.ContattoCliente import t_contatto_cliente
-    #from promogest.dao.daoContatti.ContattoFornitore import t_contatto_fornitore
-    #from promogest.dao.daoContatti.ContattoAzienda import t_contatto_azienda
-    #from promogest.dao.daoContatti.ContattoMagazzino import t_contatto_magazzino
-    #from promogest.dao.daoContatti.ContattoCategoriaContatto import t_contatto_categoria_contatto
+    from promogest.dao.Cliente import Cliente
+    from promogest.dao.Fornitore import Fornitore
+    from promogest.dao.Fornitura import Fornitura
+    from promogest.dao.daoAgenti.Agente import Agente #v
+    from promogest.dao.ClienteCategoriaCliente import ClienteCategoriaCliente #v
+    from promogest.dao.ClienteVariazioneListino import ClienteVariazioneListino #v
+    from promogest.dao.Sconto import Sconto
+    from promogest.dao.daoContatti.RecapitoContatto import RecapitoContatto
+    from promogest.dao.daoContatti.ContattoCliente import ContattoCliente
+    from promogest.dao.daoContatti.ContattoFornitore import ContattoFornitore
+    from promogest.dao.daoContatti.ContattoAzienda import ContattoAzienda
+    from promogest.dao.daoContatti.ContattoMagazzino import ContattoMagazzino
+    from promogest.dao.daoContatti.ContattoCategoriaContatto import ContattoCategoriaContatto
 
-    #from promogest.dao.Riga import t_riga
+    from promogest.dao.Riga import Riga
     #from promogest.dao.AccountEmail import t_account_email
 
-    #from promogest.dao.TestataDocumento import t_testata_documento #v
-    #from promogest.dao.TestataMovimento import t_testata_movimento   #v
-    #from promogest.dao.RigaDocumento import t_riga_documento
-    #from promogest.dao.RigaMovimento import t_riga_movimento #v
-    #from promogest.dao.RigaMovimentoFornitura import t_riga_movimento_fornitura
-    #from promogest.modules.Pagamenti.dao.TestataDocumentoScadenza import t_testata_documento_scadenza
-    #from promogest.dao.ScontoRigaMovimento import t_sconto_riga_movimento
-    #from promogest.dao.ScontoRigaDocumento import t_sconto_riga_documento
-    #from promogest.dao.NumeroLottoTemp import t_numero_lotto_temp
-    #from promogest.dao.DestinazioneMerce import t_destinazione_merce #v
+    from promogest.dao.TestataDocumento import TestataDocumento
+    from promogest.dao.TestataMovimento import TestataMovimento
+    from promogest.dao.RigaDocumento import RigaDocumento
+    from promogest.dao.RigaMovimento import RigaMovimento
+    from promogest.dao.RigaMovimentoFornitura import RigaMovimentoFornitura
+    from promogest.modules.Pagamenti.dao.TestataDocumentoScadenza import TestataDocumentoScadenza
+    from promogest.dao.ScontoRigaMovimento import ScontoRigaMovimento
+    from promogest.dao.ScontoRigaDocumento import ScontoRigaDocumento
+    from promogest.dao.NumeroLottoTemp import NumeroLottoTemp
+    from promogest.dao.DestinazioneMerce import DestinazioneMerce #v
 
-    #from promogest.dao.StoricoDocumento import t_storico_documento #v
+    from promogest.dao.StoricoDocumento import StoricoDocumento #v
 
-    #from promogest.dao.ListinoCategoriaCliente import t_listino_categoria_cliente #v
+    from promogest.dao.ListinoCategoriaCliente import ListinoCategoriaCliente #v
 
-    #from promogest.dao.ScontoVenditaDettaglio import t_sconti_vendita_dettaglio
-    #from promogest.dao.ScontoVenditaIngrosso import t_sconti_vendita_ingrosso
-    #from promogest.dao.ScontoTestataDocumento import t_sconto_testata_documento
+    from promogest.dao.ScontoVenditaDettaglio import ScontoVenditaDettaglio
+    from promogest.dao.ScontoVenditaIngrosso import ScontoVenditaIngrosso
+    from promogest.dao.ScontoTestataDocumento import ScontoTestataDocumento
     #from promogest.dao.InformazioniFatturazioneDocumento import t_informazioni_fatturazione_documento
 
-    #from promogest.modules.PrimaNota.dao.RigaPrimaNota import t_riga_prima_nota
-    #from promogest.modules.PrimaNota.dao.TestataPrimaNota import t_testata_prima_nota
-    #from promogest.modules.PrimaNota.dao.RigaPrimaNotaTestataDocumentoScadenza import t_riga_primanota_testata_documento_scadenza
-    #from promogest.dao.RigaRitenutaAcconto import t_ritenuta_acconto_riga
+    from promogest.modules.PrimaNota.dao.RigaPrimaNota import RigaPrimaNota
+    from promogest.modules.PrimaNota.dao.TestataPrimaNota import TestataPrimaNota
+    from promogest.modules.PrimaNota.dao.RigaPrimaNotaTestataDocumentoScadenza import RigaPrimaNotaTestataDocumentoScadenza
+    from promogest.dao.RigaRitenutaAcconto import RigaRitenutaAcconto
 
-    #from promogest.dao.AnagraficaSecondaria import t_anagrafica_secondaria
-    #from promogest.modules.GestioneFile.dao.Immagine import t_immagine
-    #from promogest.dao.UtenteImmagine import t_utente_immagine
-    #from promogest.modules.GestioneFile.dao.ArticoloImmagine import t_articolo_immagine
-    #from promogest.modules.GestioneFile.dao.SlaFile import t_sla_file
-    #from promogest.dao.SlaFileImmagine import t_slafile_immagine
+    from promogest.dao.AnagraficaSecondaria import AnagraficaSecondaria_
+    from promogest.modules.GestioneFile.dao.Immagine import ImageFile
+    #from promogest.dao.UtenteImmagine import UtenteImmagine
+    from promogest.modules.GestioneFile.dao.ArticoloImmagine import ArticoloImmagine
+    #from promogest.modules.GestioneFile.dao.SlaFile import SlaFile
+    #from promogest.dao.SlaFileImmagine import SlaFileImmagine
 
-    #from promogest.modules.GestioneCommesse.dao.StadioCommessa import t_stadio_commessa
-    #from promogest.modules.GestioneCommesse.dao.TestataCommessa import t_testata_commessa
-    #from promogest.modules.GestioneCommesse.dao.RigaCommessa import t_riga_commessa
+    from promogest.modules.GestioneCommesse.dao.StadioCommessa import StadioCommessa
+    from promogest.modules.GestioneCommesse.dao.TestataCommessa import TestataCommessa
+    from promogest.modules.GestioneCommesse.dao.RigaCommessa import RigaCommessa
 
 def orderedImportVenditaDettaglio():
     orderedImport()
@@ -175,8 +175,8 @@ def orderedImportVenditaDettaglio():
 
     #from data.contattoAnagraficaSecondaria import t_contatto_anagraficasecondaria
 def orderedImportWeb():
-    from sqlalchemy import *
-    from sqlalchemy.orm import *
+    #from sqlalchemy import *
+    #from sqlalchemy.orm import *
     #try:
     """ RICORDARSI CHE È POSSIBILE CHE CART NON ABBIA ID_CLIENTE E
     STATIC PAGES NON ABBIA PERMALINK, VANNO DROPPATE E RICREATE

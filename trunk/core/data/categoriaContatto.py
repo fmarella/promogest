@@ -26,6 +26,7 @@ from promogest.Environment import *
 t_categoria_contatto = Table('categoria_contatto', params["metadata"],
         Column('id',Integer,primary_key=True),
         Column('denominazione',String(100),nullable=False),
-        schema=params["schema"]
+        schema=params["schema"],
+        extend_existing=True
         )
 t_categoria_contatto.create(checkfirst=True)

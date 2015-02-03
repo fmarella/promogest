@@ -35,7 +35,8 @@ t_testata_documento_scadenza = Table('testata_documento_scadenza', params["metad
         Column('note_per_primanota', String(400),nullable=True),
         Column('data_pagamento',DateTime,nullable=True),
         Column('numero_scadenza', Integer, nullable=False),
-        schema=params["schema"]
+        schema=params["schema"],
+        extend_existing=True
         )
 t_testata_documento_scadenza.create(checkfirst=True)
 #self.metadata.remove(testataDocumentoScadenzaTable)

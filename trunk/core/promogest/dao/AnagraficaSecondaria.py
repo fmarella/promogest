@@ -34,6 +34,7 @@ anagrafica_secondaria_persona_giuridica = join(t_anagrafica_secondaria, t_person
 
 
 class AnagraficaSecondaria_(Base, Dao):
+
     __table__ = anagrafica_secondaria_persona_giuridica
 
     id = column_property(t_anagrafica_secondaria.c.id, t_persona_giuridica.c.id)

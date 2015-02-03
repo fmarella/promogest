@@ -30,6 +30,7 @@ t_famiglia_articolo = Table('famiglia_articolo', params["metadata"],
             Column('denominazione', String(200), nullable=False),
             Column('visible', Boolean, default=0),
             Column('id_padre', Integer,ForeignKey(fk_prefix+"famiglia_articolo.id")),
-            schema = params["schema"]
+            schema = params["schema"],
+            extend_existing=True
             )
 t_famiglia_articolo.create(checkfirst=True)

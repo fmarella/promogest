@@ -57,6 +57,7 @@ t_articolo= Table('articolo', params["metadata"],
     Column('cancellato', Boolean, nullable=True, default=False),
     Column('sospeso', Boolean, nullable=True, default=False),
     Column('quantita_minima',Float),
-    schema=params["schema"]
+    schema=params["schema"],
+    extend_existing=True
         )
 t_articolo.create(checkfirst=True)
