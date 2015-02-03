@@ -35,15 +35,16 @@ from promogest.modules.VenditaDettaglio.dao.TestataScontrinoCliente import Testa
 from promogest.dao.Azienda import Azienda
 from promogest.dao.Articolo import Articolo
 from promogest.dao.Listino import Listino
+from promogest.dao.Magazzino import Magazzino
 from promogest.dao.Setconf import SetConf
 from promogest.dao.ListinoArticolo import ListinoArticolo
 from promogest.dao.DaoUtils import giacenzaArticolo
 from GestioneScontrini import GestioneScontrini
 from GestioneChiusuraFiscale import GestioneChiusuraFiscale
-from venditaDettaglioUiPart import drawPart
 from VenditaDettaglioUtils import fillComboboxPos
 from promogest.ui.PrintDialog import PrintDialogHandler
 from promogest.lib.HtmlHandler import createHtmlObj, renderTemplate, renderHTML
+from promogest.ui.utilsCombobox import fillComboboxCCardType
 
 from promogest.ui.gtk_compat import *
 AAA = False
@@ -144,7 +145,56 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         if DRIVER =="E":
 #            self.apri_cassetto_button.set_active(True)
             self.apri_cassetto_button.set_sensitive(True)
-        drawPart(self)
+        accelGroup = gtk.AccelGroup()
+        self.getTopLevel().add_accel_group(accelGroup)
+        self.contanti_radio_button.add_accelerator('clicked', accelGroup,
+                                            GDK_KEY_F1, 0, GTK_ACCEL_VISIBLE)
+        self.assegni_radio_button.add_accelerator('clicked', accelGroup,
+                                            GDK_KEY_F2, 0, GTK_ACCEL_VISIBLE)
+        self.carta_di_credito_radio_button.add_accelerator('clicked', accelGroup,
+                                            GDK_KEY_F3, 0, GTK_ACCEL_VISIBLE)
+        self.total_button.add_accelerator('grab_focus', accelGroup,
+                                            GDK_KEY_F5, 0, GTK_ACCEL_VISIBLE)
+        self.total_button.set_focus_on_click(False)
+
+        # Disabilito bottoni e text entry
+        #self.confirm_button.set_sensitive(False)
+        self.delete_button.set_sensitive(False)
+        self.rhesus_button.set_sensitive(False)
+        #self.annulling_button.set_sensitive(False)
+        self.total_button.set_sensitive(False)
+        self.subtotal_button.set_sensitive(False)
+        self.empty_button.set_sensitive(False)
+        self.sconto_hbox.set_sensitive(False)
+        self.setPagamento(enabled = False)
+
+        self.codice_a_barre_entry.grab_focus()
+        self._loading = False
+
+        # Segnali
+        treeViewSelection = self.scontrino_treeview.get_selection()
+        self.scontrino_treeview.set_property('rules-hint', True)
+        treeViewSelection.connect('changed',
+                                self.on_scontrino_treeview_selection_changed)
+        fillComboboxCCardType(self.card_type_combobox)
+        # Ricerca listino
+        self.id_listino = self.ricercaListino()
+
+        # Ricerca magazzino
+        if hasattr(Environment.conf, "VenditaDettaglio"):
+            magalist = Magazzino().select(denominazione = Environment.conf.VenditaDettaglio.magazzino,
+                                        offset = None,
+                                        batchSize = None)
+            if len(magalist) > 0:
+                self.id_magazzino = magalist[0].id
+            else:
+                self.id_magazzino = None
+        else:
+            self.id_magazzino = setconf("VenditaDettaglio", "magazzino_vendita")
+
+        # Vado in stato di ricerca
+        self._state = 'search'
+        self.empty_current_row()
 
     def on_set_pv_pos_activate(self, item):
         self.altreopzionishow()
@@ -536,7 +586,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             listinoRiga = model.get_value(self.currentIteratorRow, 1)
             idArticolo = model.get_value(self.currentIteratorRow, 0)
             self._quantita = model.get_value(self.currentIteratorRow, 9)
-            self.lsmodel.clear()
+            self.listino_liststore.clear()
             listiniList = listinoCandidateSel(idArticolo=idArticolo,
                                                 idMagazzino=self.id_magazzino)
             try:
@@ -544,11 +594,11 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             except:
                 messageInfo(msg="Non c'è un listino per la vendita dettaglio\n andare in opzioni e configurarlo")
                 return
-            self.lsmodel.append([listinoPref.id,listinoPref.denominazione])
+            self.listino_liststore.append([listinoPref.id,listinoPref.denominazione])
             if listiniList:
                 for l in listiniList:
                     if l.denominazione != listinoPref.denominazione:
-                        self.lsmodel.append([l.id,l.denominazione])
+                        self.listino_liststore.append([l.id,l.denominazione])
             self.descrizione_label.set_markup('<b><span foreground="black" size="12000">'\
                                             +model.get_value(self.currentIteratorRow, 2)\
                                             + " - " \
