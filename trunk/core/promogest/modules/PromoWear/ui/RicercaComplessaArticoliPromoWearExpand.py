@@ -112,7 +112,11 @@ def drawRicercaSemplicePromoWearPart(anaarti):
         findComboboxRowFromId(anaarti.id_colore_articolo_filter_combobox, anaarti._idColore)
     anaarti.id_anno_articolo_filter_combobox.set_active(0)
     anaarti.id_anno_articolo_filter_combobox.set_active(0)
-    anno = getattr(Environment.conf.PromoWear,'anno_default', None)
+    try:
+        anno = getattr(Environment.conf.PromoWear,'anno_default', None)
+    except:
+        anno = None
+
     if anno is not None:
         try:
             idAnno = AnnoAbbigliamento().select(denominazione = anno)[0].id
@@ -124,7 +128,7 @@ def drawRicercaSemplicePromoWearPart(anaarti):
     try:
         stagione = getattr(Environment.conf.PromoWear,'stagione_default', None)
     except:
-        stagione =1
+        stagione =None
     if stagione is not "" and stagione is not None:
         findComboboxRowFromId(anaarti.id_stagione_articolo_filter_combobox, int(stagione))
     anaarti.id_genere_articolo_filter_combobox.set_active(0)
