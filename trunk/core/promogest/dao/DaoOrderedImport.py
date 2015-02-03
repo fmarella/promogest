@@ -30,7 +30,7 @@
 #from promogest.lib.alembic import op
 
 def orderedImport():
-    return
+    #return
     from promogest.dao.Azienda import Azienda #v
     from promogest.dao.Language import Language #v
     from promogest.modules.RuoliAzioni.dao.Role import Role #v

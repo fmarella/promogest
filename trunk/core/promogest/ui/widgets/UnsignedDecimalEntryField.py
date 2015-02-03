@@ -37,7 +37,11 @@ class UnsignedDecimalEntryField(CustomEntryField):
         self._lunghezza = 10
         #self._precisione = int2
         #if self._precisione =="0":
-        self._precisione = int(setconf(key="decimals", section="Numbers"))
+        try:
+            self._precisione = int(setconf(key="decimals", section="Numbers"))
+        except:
+            self._precisione = 3
+
         self._default = str1
         self.acceptedKeys = self.controlKeys + self.numberKeys + self.delimiterKeys
 

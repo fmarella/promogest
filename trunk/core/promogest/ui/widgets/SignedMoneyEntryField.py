@@ -35,7 +35,11 @@ class SignedMoneyEntryField(CustomEntryField):
         CustomEntryField.__init__(self)
 
         self._lunghezza = 10
-        self._precisione = int(setconf(key="decimals", section="Numbers"))
+        try:
+            self._precisione = int(setconf(key="decimals", section="Numbers"))
+        except:
+            self._precisione = 3
+
         self._default = str1
         self.acceptedKeys = self.controlKeys + self.numberKeys + self.delimiterKeys+self.signKeys
 

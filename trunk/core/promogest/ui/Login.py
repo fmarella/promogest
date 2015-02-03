@@ -40,7 +40,8 @@ from promogest.ui.utilsCombobox import findComboboxRowFromStr,findStrFromCombobo
 
 Environment.pg2log.info("GTK+: " + str(GTK_VERSION))
 
-import sqlalchemy
+from sqlalchemy import *
+from sqlalchemy.orm import *
 
 from promogest.lib import feedparser
 from promogest.lib import HtmlHandler
@@ -209,6 +210,7 @@ class Login(SimpleGladeApp):
                 return
             else:
                 Environment.workingYear = str(self.anno_lavoro_spinbutton.get_value_as_int())
+                oldSchema = Environment.params["schema"]
                 Environment.azienda = self.azienda
                 for a in self.azs:
                     if a.schemaa == self.azienda:
@@ -220,6 +222,13 @@ class Login(SimpleGladeApp):
                 if Environment.tipodb == "postgresql":
                     Environment.params["schema"] = self.azienda
                     Environment.fk_prefix = Environment.params["schema"] + '.'
+                    if self.azienda not in Environment.meta._schemas:
+                        print " PICKLE NON VA BENE"
+                        #Environment.azienda = oldSchema
+                        Environment.delete_pickle()
+                        #Environment.restart_program()
+                        #Environment.meta.clear()
+                        #Environment.meta = MetaData(Environment.engine)
                 if hashlib.md5(self.azienda).hexdigest() == \
                                 "46d3e603f127254cdc30e5a397413fc7":
                     raise Exception(":P")

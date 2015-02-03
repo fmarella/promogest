@@ -23,14 +23,20 @@
 from sqlalchemy import *
 from promogest.Environment import *
 
+try:
+    t_ritenuta_acconto_riga = Table('ritenuta_acconto_riga', params['metadata'],
+                                schema=params["schema"],
+                                        autoload=True)
 
-t_ritenuta_acconto_riga = Table('ritenuta_acconto_riga', params['metadata'],
-                    Column('id',Integer,primary_key=True),
-                    Column('provvigionale', Boolean,nullable=False),
-                    Column('ritenuta_percentuale',Numeric(8,4),nullable=True),
-                    Column('rivalsa_percentuale',Numeric(8,4),nullable=True),
-                    Column('inarcassa_percentuale',Numeric(8,4),nullable=True),
-                    Column('id_riga',Integer,ForeignKey(fk_prefix+'riga.id', onupdate="CASCADE", ondelete="RESTRICT"),nullable=False),
-                    UniqueConstraint('id_riga'),
-                    schema=params['schema'])
-t_ritenuta_acconto_riga.create(checkfirst=True)
+except:
+
+    t_ritenuta_acconto_riga = Table('ritenuta_acconto_riga', params['metadata'],
+                        Column('id',Integer,primary_key=True),
+                        Column('provvigionale', Boolean,nullable=False),
+                        Column('ritenuta_percentuale',Numeric(8,4),nullable=True),
+                        Column('rivalsa_percentuale',Numeric(8,4),nullable=True),
+                        Column('inarcassa_percentuale',Numeric(8,4),nullable=True),
+                        Column('id_riga',Integer,ForeignKey(fk_prefix+'riga.id', onupdate="CASCADE", ondelete="RESTRICT"),nullable=False),
+                        UniqueConstraint('id_riga'),
+                        schema=params['schema'])
+    t_ritenuta_acconto_riga.create(checkfirst=True)

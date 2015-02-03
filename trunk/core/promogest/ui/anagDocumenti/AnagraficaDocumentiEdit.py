@@ -45,7 +45,6 @@ from promogest.dao.Operazione import Operazione
 from promogest.dao.Multiplo import Multiplo
 from promogest.dao.Pagamento import Pagamento
 from promogest.dao.Cliente import Cliente
-#from promogest.dao.RigaRitenutaAcconto import RigaRitenutaAcconto
 from promogest.ui.DettaglioGiacenzaWindow import DettaglioGiacenzaWindow
 from promogest.dao.RigaMovimentoFornitura import RigaMovimentoFornitura
 from promogest.lib.utils import *

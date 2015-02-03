@@ -365,18 +365,6 @@ def createSession():
     return session
 
 # Determiniamo il nome del file pickle in base all'azienda e alla ver python.
-
-if azienda:
-    meta_pickle = azienda + "-meta.pickle"+sys.version[:1]
-    promogestDir = os.path.expanduser('~') + os.sep + "promogest2" + os.sep + azienda + os.sep
-    meta_pickle_da_conf = main_conf.Database.azienda + "-meta.pickle"+sys.version[:1]
-    promogestDir_da_conf = os.path.expanduser('~') + os.sep + "promogest2" + os.sep + main_conf.Database.azienda + os.sep
-else:
-    meta_pickle = None
-    meta_pickle_da_conf = None
-    promogestDir_da_conf = None
-
-
 session = createSession()
 
 from pickle import load as pickle_load
@@ -386,6 +374,18 @@ def delete_pickle():
     """ Cancella il file pickle del metadata
     """
     import os
+    print " -------- AZIENDA", azienda
+    if azienda:
+        meta_pickle = azienda + "-meta.pickle"+sys.version[:1]
+        promogestDir = os.path.expanduser('~') + os.sep + "promogest2" + os.sep + azienda + os.sep
+        meta_pickle_da_conf = main_conf.Database.azienda + "-meta.pickle"+sys.version[:1]
+        promogestDir_da_conf = os.path.expanduser('~') + os.sep + "promogest2" + os.sep + main_conf.Database.azienda + os.sep
+    else:
+        meta_pickle = None
+        meta_pickle_da_conf = None
+        promogestDir_da_conf = None
+        return
+    print " META_PICKLE"
     if meta_pickle:
         if os.path.exists(str(os.path.join(promogestDir.replace("_",""),meta_pickle.replace("_","")).strip())):
             os.remove(str(os.path.join(promogestDir.replace("_",""),meta_pickle.replace("_","")).strip()))
@@ -393,8 +393,23 @@ def delete_pickle():
             os.remove(str(os.path.join(promogestDir_da_conf.replace("_",""),meta_pickle_da_conf.replace("_","")).strip()))
             print "\n\n\n\nHO CANCELLATO IL FILE PICKLE QUASI SICURAMENTE BISOGNA RILANCIARE\n\n\n\n"
             restart_program()
+    else:
+        meta_pickle = azienda + "-meta.pickle"+sys.version[:1]
+        if os.path.exists(str(os.path.join(promogestDir.replace("_",""),meta_pickle.replace("_","")).strip())):
+            os.remove(str(os.path.join(promogestDir.replace("_",""),meta_pickle.replace("_","")).strip()))
+            restart_program()
 
 def usePickleToMeta():
+    if azienda:
+        meta_pickle = azienda + "-meta.pickle"+sys.version[:1]
+        promogestDir = os.path.expanduser('~') + os.sep + "promogest2" + os.sep + azienda + os.sep
+        meta_pickle_da_conf = main_conf.Database.azienda + "-meta.pickle"+sys.version[:1]
+        promogestDir_da_conf = os.path.expanduser('~') + os.sep + "promogest2" + os.sep + main_conf.Database.azienda + os.sep
+    else:
+        meta_pickle = None
+        meta_pickle_da_conf = None
+        promogestDir_da_conf = None
+        return
     if azienda and os.path.exists(str(os.path.join(promogestDir.replace("_",""),meta_pickle.replace("_","")).strip())):
         print " CONTROLLO DELL'ESISTENZA DEL FILE PICKLE", str(os.path.join(promogestDir.replace("_","")))
         with open(str(os.path.join(promogestDir.replace("_",""),meta_pickle.replace("_","")).strip()), 'rb') as f:
@@ -406,13 +421,14 @@ def usePickleToMeta():
                 print "DEVO CANCELLARE IL PICKLE PERCHé NON RIESCO A TROVARLO O LEGGERLO"
                 delete_pickle()
             print "USO META PICKLE FAST"
-            #meta = MetaData(engine)
+            if not meta:
+                meta = MetaData(engine)
     else:
         print "USO META NORMALE"
         meta = MetaData(engine)
     return meta
-#meta = usePickleToMeta()
-meta = MetaData(engine)
+meta = usePickleToMeta()
+#meta = MetaData(engine)
 
 preEnv.azienda = azienda
 
