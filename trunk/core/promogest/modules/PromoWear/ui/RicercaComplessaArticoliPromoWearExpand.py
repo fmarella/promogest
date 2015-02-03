@@ -357,10 +357,13 @@ def drawAnnoTreeView(anaarti):
     treeview.set_search_column(3)
 
     anno = anaarti._idAnno
-    if hasattr(Environment.conf.PromoWear,'TaglieColori'):
-        default = getattr(Environment.conf.PromoWear.TaglieColori,'anno_default', None)
-        if default is not None:
-            anno = int(default)
+    try:
+        if hasattr(Environment.conf.PromoWear,'TaglieColori'):
+            default = getattr(Environment.conf.PromoWear.TaglieColori,'anno_default', None)
+            if default is not None:
+                anno = int(default)
+    except:
+        anno = None
 
 
     anns = AnnoAbbigliamento().select(offset=None, batchSize=None)
@@ -453,10 +456,13 @@ def drawStagioneTreeView(anaarti):
     treeview.set_search_column(3)
 
     stagione = anaarti._idStagione
-    if hasattr(Environment.conf,'TaglieColori'):
-        default = getattr(Environment.conf.TaglieColori,'stagione_default', None)
-        if default is not None:
-            stagione = int(default)
+    try:
+        if hasattr(Environment.conf,'TaglieColori'):
+            default = getattr(Environment.conf.TaglieColori,'stagione_default', None)
+            if default is not None:
+                stagione = int(default)
+    except:
+        stagione =None
 
     stas = StagioneAbbigliamento().select(offset=None, batchSize=None)
 
