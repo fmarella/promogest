@@ -53,141 +53,187 @@ def drawPart(anag):
     rendererDx = gtk.CellRendererText()
     rendererDx.set_property('xalign', 1)
 
+
     anag.lsmodel = gtk.ListStore(int, str)
-    cellcombo1= gtk.CellRendererCombo()
-    cellcombo1.set_property("editable", True)
-    cellcombo1.set_property("visible", True)
-    cellcombo1.set_property("text-column", 1)
-    cellcombo1.set_property("editable", True)
-    cellcombo1.set_property("has-entry", False)
-    cellcombo1.set_property("model", anag.lsmodel)
-    cellcombo1.connect('edited', anag.on_column_listinoRiga_edited,
-                                                            treeview, True)
-    column = gtk.TreeViewColumn('List.', cellcombo1, text=1, background=10,font=11)
-    column.set_sizing(GTK_COLUMN_GROWN_ONLY)
-    column.set_clickable(True)
-    column.set_resizable(True)
-    column.set_expand(False)
-    column.set_min_width(20)
-    treeview.append_column(column)
+    #anag.cellrenderercombo1.set_property("text-column", 1)
+    #anag.cellrenderercombo1.connect('edited', anag.on_column_listinoRiga_edited,
+                                                            #treeview, True)
 
-    column = gtk.TreeViewColumn('Codice a barre', rendererSx, text=2,background=10,font=11)
-    column.set_sizing(GTK_COLUMN_GROWN_ONLY)
-    column.set_clickable(False)
-    column.set_resizable(True)
-    column.set_expand(False)
-    column.set_min_width(90)
-    treeview.append_column(column)
+    #cellcombo1= gtk.CellRendererCombo()
+    #cellcombo1.set_property("editable", True)
+    #cellcombo1.set_property("visible", True)
+    #cellcombo1.set_property("text-column", 1)
+    #cellcombo1.set_property("editable", True)
+    #cellcombo1.set_property("has-entry", False)
+    #cellcombo1.set_property("model", anag.lsmodel)
+    #cellcombo1.connect('edited', anag.on_column_listinoRiga_edited,
+                                                            #treeview, True)
+    #column = gtk.TreeViewColumn('List.', cellcombo1, text=1, background=10,font=11)
+    #column.set_sizing(GTK_COLUMN_GROWN_ONLY)
+    #column.set_clickable(True)
+    #column.set_resizable(True)
+    #column.set_expand(False)
+    #column.set_min_width(20)
+    #treeview.append_column(column)
 
-    column = gtk.TreeViewColumn('Codice', rendererSx, text=3, background=10,font=11)
-    column.set_sizing(GTK_COLUMN_GROWN_ONLY)
-    column.set_clickable(False)
-    column.set_resizable(True)
-    column.set_expand(False)
-    column.set_min_width(70)
-    treeview.append_column(column)
 
-    cellrendererDescrizione = gtk.CellRendererText()
-    cellrendererDescrizione.set_property("editable", True)
-    cellrendererDescrizione.set_property("visible", True)
-    cellrendererDescrizione.connect('edited',
-                        anag.on_column_descrizione_edited, treeview, True)
-    column = gtk.TreeViewColumn('Descrizione', cellrendererDescrizione, text=4,background=10, font=11)
-    column.set_sizing(GTK_COLUMN_GROWN_ONLY)
-    column.set_clickable(True)
-    rendererSx.connect('edited', anag.on_column_descrizione_edited,
-                                                            treeview, True)
-    column.set_resizable(True)
-    column.set_expand(True)
-    column.set_min_width(50)
-    treeview.append_column(column)
 
-    cellspin = gtk.CellRendererSpin()
-    cellspin.set_property("editable", True)
-    cellspin.set_property("visible", True)
-    adjustment = gtk.Adjustment(1, 1, 1000, 0.500, 2)
-    cellspin.set_property("adjustment", adjustment)
-    cellspin.set_property("digits", 3)
-    cellspin.set_property("climb-rate", 3)
-    #cellspin.set_property("foreground", "orange")
 
-    cellspin.connect('edited', anag.on_column_prezzo_edited, treeview, True)
-    column = gtk.TreeViewColumn('Prezzo', cellspin, text=5, background=10, font=11)
-    column.set_sizing(GTK_COLUMN_GROWN_ONLY)
+
+
+
+
+
+    #column = gtk.TreeViewColumn('Codice a barre', rendererSx, text=2,background=10,font=11)
+    #column.set_sizing(GTK_COLUMN_GROWN_ONLY)
     #column.set_clickable(False)
-    column.set_resizable(True)
-    column.set_expand(False)
-    column.set_min_width(140)
-    treeview.append_column(column)
+    #column.set_resizable(True)
+    #column.set_expand(False)
+    #column.set_min_width(90)
+    #treeview.append_column(column)
 
-    cellspinsconto = gtk.CellRendererSpin()
-    cellspinsconto.set_property("editable", True)
-    cellspinsconto.set_property("visible", True)
-    adjustment = gtk.Adjustment(1, 1, 1000, 1, 2)
-    cellspinsconto.set_property("adjustment", adjustment)
-    #cellspin.set_property("digits",3)
-    #cellspin.set_property("climb-rate",3)
-    cellspinsconto.connect('edited', anag.on_column_sconto_edited,
-                                                            treeview, True)
-    column = gtk.TreeViewColumn('Sconto', cellspinsconto, text=6,background=10,font=11)
-    column.set_sizing(GTK_COLUMN_GROWN_ONLY)
-    column.set_clickable(True)
-    column.set_resizable(True)
-    column.set_expand(False)
-    column.set_min_width(140)
-    treeview.append_column(column)
-
-
-    lsmodel = gtk.ListStore(str)
-    lsmodel.append(["%"])
-    lsmodel.append(["€"])
-    cellcombo= gtk.CellRendererCombo()
-    cellcombo.set_property("editable", True)
-    cellcombo.set_property("visible", True)
-    cellcombo.set_property("text-column", 0)
-    cellcombo.set_property("editable", True)
-    cellcombo.set_property("has-entry", False)
-    cellcombo.set_property("model", lsmodel)
-    cellcombo.connect('edited', anag.on_column_tipo_edited, treeview, True)
-    column = gtk.TreeViewColumn('Tipo', cellcombo, text=7,background=10,font=11)
-    column.set_sizing(GTK_COLUMN_GROWN_ONLY)
-    column.set_clickable(True)
-    column.set_resizable(True)
-    column.set_expand(False)
-    column.set_min_width(20)
-    treeview.append_column(column)
-
-    column = gtk.TreeViewColumn('Pr.Scont', rendererDx, text=8,background=10,font=11)
-    column.set_sizing(GTK_COLUMN_GROWN_ONLY)
-    column.set_clickable(False)
-    column.set_resizable(True)
-    column.set_expand(False)
-    column.set_min_width(50)
-    treeview.append_column(column)
-
-    cellspin = gtk.CellRendererSpin()
-    cellspin.set_property("editable", True)
-    cellspin.set_property("visible", True)
-    adjustment = gtk.Adjustment(1, 1, 1000, 1, 2)
-    cellspin.set_property("adjustment", adjustment)
-    cellspin.set_property("digits", 2)
-    cellspin.set_property("climb-rate", 3)
-    cellspin.connect('edited', anag.on_column_quantita_edited, treeview, True)
-    column = gtk.TreeViewColumn('Quantità', cellspin, text=9,background=10,font=11)
-    column.set_sizing(GTK_COLUMN_GROWN_ONLY)
+    #column = gtk.TreeViewColumn('Codice', rendererSx, text=3, background=10,font=11)
+    #column.set_sizing(GTK_COLUMN_GROWN_ONLY)
     #column.set_clickable(False)
-    column.set_resizable(True)
-    column.set_expand(False)
-    column.set_min_width(140)
-    treeview.append_column(column)
+    #column.set_resizable(True)
+    #column.set_expand(False)
+    #column.set_min_width(70)
+    #treeview.append_column(column)
 
-    column = gtk.TreeViewColumn('Totale', rendererSx, text=12, background=10,font=11)
-    column.set_sizing(GTK_COLUMN_GROWN_ONLY)
-    column.set_clickable(False)
-    column.set_resizable(True)
-    column.set_expand(False)
-    column.set_min_width(70)
-    treeview.append_column(column)
+
+
+
+    #cellrendererDescrizione = gtk.CellRendererText()
+    #cellrendererDescrizione.set_property("editable", True)
+    #cellrendererDescrizione.set_property("visible", True)
+    #cellrendererDescrizione.connect('edited',
+                        #anag.on_column_descrizione_edited, treeview, True)
+    #column = gtk.TreeViewColumn('Descrizione', cellrendererDescrizione, text=4,background=10, font=11)
+    #column.set_sizing(GTK_COLUMN_GROWN_ONLY)
+    #column.set_clickable(True)
+    #rendererSx.connect('edited', anag.on_column_descrizione_edited,
+                                                            #treeview, True)
+    #column.set_resizable(True)
+    #column.set_expand(True)
+    #column.set_min_width(50)
+    #treeview.append_column(column)
+
+
+
+
+
+
+
+
+
+    #cellspin = gtk.CellRendererSpin()
+    #cellspin.set_property("editable", True)
+    #cellspin.set_property("visible", True)
+    #adjustment = gtk.Adjustment(1, 1, 1000, 0.500, 2)
+    #cellspin.set_property("adjustment", adjustment)
+    #cellspin.set_property("digits", 3)
+    #cellspin.set_property("climb-rate", 3)
+    ##cellspin.set_property("foreground", "orange")
+
+    #cellspin.connect('edited', anag.on_column_prezzo_edited, treeview, True)
+    #column = gtk.TreeViewColumn('Prezzo', cellspin, text=5, background=10, font=11)
+    #column.set_sizing(GTK_COLUMN_GROWN_ONLY)
+    ##column.set_clickable(False)
+    #column.set_resizable(True)
+    #column.set_expand(False)
+    #column.set_min_width(140)
+    #treeview.append_column(column)
+
+
+
+
+
+
+
+
+    #cellspinsconto = gtk.CellRendererSpin()
+    #cellspinsconto.set_property("editable", True)
+    #cellspinsconto.set_property("visible", True)
+    #adjustment = gtk.Adjustment(1, 1, 1000, 1, 2)
+    #cellspinsconto.set_property("adjustment", adjustment)
+    ##cellspin.set_property("digits",3)
+    ##cellspin.set_property("climb-rate",3)
+    #cellspinsconto.connect('edited', anag.on_column_sconto_edited,
+                                                            #treeview, True)
+    #column = gtk.TreeViewColumn('Sconto', cellspinsconto, text=6,background=10,font=11)
+    #column.set_sizing(GTK_COLUMN_GROWN_ONLY)
+    #column.set_clickable(True)
+    #column.set_resizable(True)
+    #column.set_expand(False)
+    #column.set_min_width(140)
+    #treeview.append_column(column)
+
+
+
+
+
+
+
+    #lsmodel = gtk.ListStore(str)
+    #lsmodel.append(["%"])
+    #lsmodel.append(["€"])
+    #cellcombo= gtk.CellRendererCombo()
+    #cellcombo.set_property("editable", True)
+    #cellcombo.set_property("visible", True)
+    #cellcombo.set_property("text-column", 0)
+    #cellcombo.set_property("editable", True)
+    #cellcombo.set_property("has-entry", False)
+    #cellcombo.set_property("model", lsmodel)
+    #cellcombo.connect('edited', anag.on_column_tipo_edited, treeview, True)
+    #column = gtk.TreeViewColumn('Tipo', cellcombo, text=7,background=10,font=11)
+    #column.set_sizing(GTK_COLUMN_GROWN_ONLY)
+    #column.set_clickable(True)
+    #column.set_resizable(True)
+    #column.set_expand(False)
+    #column.set_min_width(20)
+    #treeview.append_column(column)
+
+
+
+
+
+    #column = gtk.TreeViewColumn('Pr.Scont', rendererDx, text=8,background=10,font=11)
+    #column.set_sizing(GTK_COLUMN_GROWN_ONLY)
+    #column.set_clickable(False)
+    #column.set_resizable(True)
+    #column.set_expand(False)
+    #column.set_min_width(50)
+    #treeview.append_column(column)
+
+
+
+
+
+    #cellspin = gtk.CellRendererSpin()
+    #cellspin.set_property("editable", True)
+    #cellspin.set_property("visible", True)
+    #adjustment = gtk.Adjustment(1, 1, 1000, 1, 2)
+    #cellspin.set_property("adjustment", adjustment)
+    #cellspin.set_property("digits", 2)
+    #cellspin.set_property("climb-rate", 3)
+    #cellspin.connect('edited', anag.on_column_quantita_edited, treeview, True)
+    #column = gtk.TreeViewColumn('Quantità', cellspin, text=9,background=10,font=11)
+    #column.set_sizing(GTK_COLUMN_GROWN_ONLY)
+    ##column.set_clickable(False)
+    #column.set_resizable(True)
+    #column.set_expand(False)
+    #column.set_min_width(140)
+    #treeview.append_column(column)
+
+
+
+    #column = gtk.TreeViewColumn('Totale', rendererSx, text=12, background=10,font=11)
+    #column.set_sizing(GTK_COLUMN_GROWN_ONLY)
+    #column.set_clickable(False)
+    #column.set_resizable(True)
+    #column.set_expand(False)
+    #column.set_min_width(70)
+    #treeview.append_column(column)
 
 
     treeview.set_model(anag.modelRiga)

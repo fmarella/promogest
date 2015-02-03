@@ -216,9 +216,9 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         showAnagrafica(self.getTopLevel(), anag, item, self)
 
 
-    def on_column_prezzo_edited(self, cell, path, value, treeview, editNext=True):
+    def on_column_prezzo_edited(self, cell, path, value):
         """ Function to set the value prezzo edit in the cell"""
-        model = treeview.get_model()
+        model = self.righe_scontrino_liststore
         value=value.replace(",",".")
         value = mN(value)
         model[path][5] = str(value)
@@ -244,18 +244,19 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         self.refreshTotal()
         self.on_cancel_button_clicked(self.getTopLevel)
 
-    def on_column_sconto_edited(self, cell, path, value, treeview, editNext=True):
-        model = treeview.get_model()
-        model[path][6] = value
-        prez = model[path][5]
-        self.on_column_prezzo_edited(cell, path, prez, treeview)
+    def on_column_sconto_edited(self, cellrenderertext, path, text):
+        #model = treeview.get_model()
+        #model[path][6] = value
+        self.righe_scontrino_liststore[path][6] = text
+        prez = self.righe_scontrino_liststore[path][5]
+        self.on_column_prezzo_edited(cellrenderertext, path, prez)
 
-    def on_column_listinoRiga_edited(self, cell, path, value, treeview, editNext=True):
+    def on_column_listinoRiga_edited(self, cell, path, value):
         #rivedere assolutamente .....
-        model = treeview.get_model()
+        model = self.righe_scontrino_liststore
         model[path][1] = value
         listin = {}
-        for l in self.lsmodel:
+        for l in self.listino_liststore:
             if l[1] == value:
                 idlisti=l[0]
                 listin = leggiListino(l[0],model[path][0])
@@ -263,33 +264,31 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         prez = str(listin['prezzoDettaglio'])
         if 'scontiDettaglio' in listin:
                 if  len(listin["scontiDettaglio"]) > 0:
-                    model[path][6]= listin['scontiDettaglio'][0].valore or 0
+                    model[path][6]= str(listin['scontiDettaglio'][0].valore) or "0"
                 else:
-                    model[path][6] = 0
-        self.on_column_prezzo_edited(cell, path, prez, treeview)
+                    model[path][6] = "0"
+        self.on_column_prezzo_edited(cell, path, prez)
 
-    def on_column_quantita_edited(self, cell, path, value, treeview, editNext=True):
+    def on_column_quantita_edited(self, cell, path, value):
         """ Set the value "quantita" edit in the cell """
-        model = treeview.get_model()
+        model = self.righe_scontrino_liststore
         value=value.replace(",",".")
         value = mN(value)
         model[path][9] = str(value)
-        model[path][12] = str(mN(Decimal(value)* Decimal(model[path][8].replace(",","."))))
+        model[path][10] = str(mN(Decimal(value)* Decimal(model[path][8].replace(",",".")),2))
         self.refreshTotal()
         self.on_cancel_button_clicked(self.getTopLevel)
 
-    def on_column_descrizione_edited(self, cell, path, value, treeview, editNext=True):
+    def on_column_descrizione_edited(self, cellrenderertext, path, text):
         """ Set the value descrizione edit in the cell """
-        model = treeview.get_model()
-        model[path][4] = value
+        self.righe_scontrino_liststore[path][4] = text
         self.on_cancel_button_clicked(self.getTopLevel)
 
-    def on_column_tipo_edited(self, cell, path, value, treeview, editNext=True):
+    def on_column_tipo_edited(self, cellrenderercombo, path, treeiter):
         """ Set the value tipo_sconto edit in the cell"""
-        model = treeview.get_model()
-        model[path][7] = value
-        scont = model[path][6]
-        self.on_column_sconto_edited(cell, path, scont, treeview)
+        self.righe_scontrino_liststore[path][7] = self.sconto_riga_liststore[treeiter][0]
+        scont = self.righe_scontrino_liststore[path][6]
+        self.on_column_sconto_edited(cellrenderercombo, path, scont)
 
     def on_vendita_dettaglio_window_key_press_event(self, widget, event):
         """ jolly key è F9, richiama ed inserisce l'articolo definito nel configure"""
@@ -474,14 +473,14 @@ class AnagraficaVenditaDettaglio(GladeWidget):
     def activate_item(self, idArticolo,listinoRiga,codiceABarre,codice,denominazione,
                         prezzo,valoreSconto,tipoSconto,prezzoScontato,quantita):
         self._loading = True
-        self.lsmodel.clear()
+        self.listino_liststore.clear()
 
         listiniList= listinoCandidateSel(idArticolo=idArticolo,
                                         idMagazzino=self.id_magazzino ,
                                         idCliente=None)
         if listiniList:
             for l in listiniList:
-                self.lsmodel.append([l.id,l.denominazione])
+                self.listino_liststore.append([l.id,l.denominazione])
         if self.id_listino is not None:
             findComboboxRowFromId(self.listini_combobox, self.id_listino)
         else:
@@ -572,10 +571,12 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             #return
 
         treeview = self.scontrino_treeview
-        model = treeview.get_model()
+        #model = treeview.get_model()
+        model = self.righe_scontrino_liststore
 
         if self._state == 'search':
-            model.append((self._currentRow['idArticolo'],
+            model.append([
+                        self._currentRow['idArticolo'],
                         self._currentRow['listinoRiga'][1],
                         self._currentRow['codiceABarre'],
                         self._currentRow['codice'],
@@ -585,10 +586,11 @@ class AnagraficaVenditaDettaglio(GladeWidget):
                         self._currentRow['tipoSconto'],
                         str(mN(self._currentRow['prezzoScontato'])),
                         str(Decimal(self._currentRow['quantita'])) ,
-                        self.rowBackGround,
-                        self.rowBoldFont,
-                        str(Decimal(self._currentRow['quantita'])*Decimal(self._currentRow['prezzoScontato'])),
-            ))
+                        str(mN(Decimal(self._currentRow['quantita'])*Decimal(self._currentRow['prezzoScontato']))),
+
+            ])
+                                    #self.rowBackGround,
+                        #self.rowBoldFont,
         elif self._state == 'editing':
             model.set_value(self.currentIteratorRow, 0, self._currentRow['idArticolo'])
             model.set_value(self.currentIteratorRow, 1, self._currentRow['listinoRiga'][1])
@@ -600,7 +602,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             model.set_value(self.currentIteratorRow, 7, self._currentRow['tipoSconto'])
             model.set_value(self.currentIteratorRow, 8, str(mN(self._currentRow['prezzoScontato'])))
             model.set_value(self.currentIteratorRow, 9, str(Decimal(self._currentRow['quantita'])))
-            model.set_value(self.currentIteratorRow, 12, str(Decimal(self._currentRow['quantita'])*self._currentRow['prezzoScontato']))
+            model.set_value(self.currentIteratorRow, 10, str(mN(Decimal(self._currentRow['quantita'])*self._currentRow['prezzoScontato']),2))
 
         self.marginevalue_label.set_text('')
         self.ultimocostovalue_label.set_text('')
@@ -1162,9 +1164,10 @@ class AnagraficaVenditaDettaglio(GladeWidget):
                             str(tipoSconto),
                             str(prezzoScontato),
                             str(quantita),
-                            self.rowBackGround,
-                            self.rowBoldFont,
-                            str(mN(quantita * prezzoScontato,2))))
+                            str(mN(quantita * prezzoScontato,2)),
+                            ))
+                                                        #self.rowBackGround,
+                            #self.rowBoldFont
 
         notEmpty = (len(model) > 0)
         self.total_button.set_sensitive(notEmpty)

@@ -3,6 +3,21 @@
 <interface>
   <requires lib="gtk+" version="3.4"/>
   <requires lib="pythonplugin" version="0.0"/>
+  <object class="GtkAdjustment" id="adjustment1">
+    <property name="upper">1000000</property>
+    <property name="step_increment">0.10000000000000001</property>
+    <property name="page_increment">10</property>
+  </object>
+  <object class="GtkAdjustment" id="adjustment2">
+    <property name="upper">1000000</property>
+    <property name="step_increment">0.10000000000000001</property>
+    <property name="page_increment">10</property>
+  </object>
+  <object class="GtkAdjustment" id="adjustment3">
+    <property name="upper">1000000</property>
+    <property name="step_increment">0.10000000000000001</property>
+    <property name="page_increment">10</property>
+  </object>
   <object class="GtkImage" id="annulla_img">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -68,6 +83,15 @@
     <property name="can_focus">False</property>
     <property name="stock">gtk-add</property>
   </object>
+  <object class="GtkListStore" id="listino_liststore">
+    <columns>
+      <!-- column-name listno_int -->
+      <column type="gint"/>
+      <!-- column-name Listino_array -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
+  <object class="GtkListStore" id="liststore1"/>
   <object class="GtkImage" id="no_prinnt_image">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -101,11 +125,21 @@ all stampante fiscale.</property>
       <column type="gchararray"/>
       <!-- column-name gchararray10 -->
       <column type="gchararray"/>
-      <!-- column-name gchararray11 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray12 -->
+    </columns>
+  </object>
+  <object class="GtkListStore" id="sconto_riga_liststore">
+    <columns>
+      <!-- column-name gchararray1 -->
       <column type="gchararray"/>
     </columns>
+    <data>
+      <row>
+        <col id="0" translatable="yes">€</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">%</col>
+      </row>
+    </data>
   </object>
   <object class="GtkImage" id="subtotale_img">
     <property name="visible">True</property>
@@ -148,6 +182,7 @@ all stampante fiscale.</property>
                 <child type="submenu">
                   <object class="GtkMenu" id="operazioni_di_fine_giornata_menu">
                     <property name="can_focus">False</property>
+                    <property name="tearoff_title">Operazione di fine giornata</property>
                     <child>
                       <object class="GtkImageMenuItem" id="chiusura_fiscale">
                         <property name="visible">True</property>
@@ -1236,13 +1271,195 @@ ed un nuovo punto cassa.</property>
                       <object class="GtkTreeView" id="scontrino_treeview">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
+                        <property name="vexpand">True</property>
                         <property name="model">righe_scontrino_liststore</property>
+                        <property name="search_column">3</property>
                         <property name="enable_grid_lines">both</property>
-                        <signal name="button-press-event" handler="on_scontrino_treeview_button_press_event" swapped="no"/>
-                        <signal name="cursor-changed" handler="on_scontrino_treeview_cursor_changed" swapped="no"/>
-                        <signal name="select-cursor-row" handler="on_scontrino_treeview_row_activated" swapped="no"/>
                         <child internal-child="selection">
-                          <object class="GtkTreeSelection" id="treeview-selection"/>
+                          <object class="GtkTreeSelection" id="treeview-selection2"/>
+                        </child>
+                        <child>
+                          <object class="GtkTreeViewColumn" id="treeviewcolumn1">
+                            <property name="resizable">True</property>
+                            <property name="spacing">2</property>
+                            <property name="title" translatable="yes">Listino</property>
+                            <child>
+                              <object class="GtkCellRendererCombo" id="cellrenderercombo1">
+                                <property name="editable">True</property>
+                                <property name="has_entry">False</property>
+                                <property name="model">listino_liststore</property>
+                                <property name="text_column">1</property>
+                                <signal name="edited" handler="on_column_listinoRiga_edited" swapped="no"/>
+                              </object>
+                              <attributes>
+                                <attribute name="text">1</attribute>
+                              </attributes>
+                            </child>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkTreeViewColumn" id="treeviewcolumn2">
+                            <property name="resizable">True</property>
+                            <property name="spacing">1</property>
+                            <property name="title" translatable="yes">Codice a Barre</property>
+                            <child>
+                              <object class="GtkCellRendererText" id="cellrenderertext1"/>
+                              <attributes>
+                                <attribute name="text">2</attribute>
+                              </attributes>
+                            </child>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkTreeViewColumn" id="treeviewcolumn3">
+                            <property name="resizable">True</property>
+                            <property name="spacing">1</property>
+                            <property name="title" translatable="yes">Codice</property>
+                            <child>
+                              <object class="GtkCellRendererText" id="cellrenderertext2"/>
+                              <attributes>
+                                <attribute name="text">3</attribute>
+                              </attributes>
+                            </child>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkTreeViewColumn" id="treeviewcolumn4">
+                            <property name="resizable">True</property>
+                            <property name="spacing">1</property>
+                            <property name="title" translatable="yes">Descrizione</property>
+                            <property name="expand">True</property>
+                            <child>
+                              <object class="GtkCellRendererText" id="cellrenderertext3">
+                                <property name="height">40</property>
+                                <property name="editable">True</property>
+                                <property name="size_points">16</property>
+                                <signal name="edited" handler="on_column_descrizione_edited" swapped="no"/>
+                              </object>
+                              <attributes>
+                                <attribute name="text">4</attribute>
+                              </attributes>
+                            </child>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkTreeViewColumn" id="treeviewcolumn5">
+                            <property name="resizable">True</property>
+                            <property name="spacing">1</property>
+                            <property name="min_width">120</property>
+                            <property name="title" translatable="yes">Prezzo</property>
+                            <child>
+                              <object class="GtkCellRendererSpin" id="cellrendererspin1">
+                                <property name="xalign">0.89999997615814209</property>
+                                <property name="editable">True</property>
+                                <property name="adjustment">adjustment1</property>
+                                <property name="climb_rate">0.01</property>
+                                <property name="digits">3</property>
+                                <signal name="edited" handler="on_column_prezzo_edited" swapped="no"/>
+                              </object>
+                              <attributes>
+                                <attribute name="text">5</attribute>
+                              </attributes>
+                            </child>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkTreeViewColumn" id="treeviewcolumn6">
+                            <property name="resizable">True</property>
+                            <property name="spacing">1</property>
+                            <property name="min_width">120</property>
+                            <property name="title" translatable="yes">Sconto</property>
+                            <child>
+                              <object class="GtkCellRendererSpin" id="cellrendererspin2">
+                                <property name="editable">True</property>
+                                <property name="adjustment">adjustment2</property>
+                                <property name="climb_rate">0.01</property>
+                                <property name="digits">2</property>
+                                <signal name="edited" handler="on_column_sconto_edited" swapped="no"/>
+                              </object>
+                              <attributes>
+                                <attribute name="text">6</attribute>
+                              </attributes>
+                            </child>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkTreeViewColumn" id="treeviewcolumn7">
+                            <property name="resizable">True</property>
+                            <property name="spacing">1</property>
+                            <property name="fixed_width">70</property>
+                            <property name="title" translatable="yes">Tipo</property>
+                            <child>
+                              <object class="GtkCellRendererCombo" id="cellrenderercombo2">
+                                <property name="editable">True</property>
+                                <property name="has_entry">False</property>
+                                <property name="model">sconto_riga_liststore</property>
+                                <property name="text_column">0</property>
+                                <signal name="changed" handler="on_column_tipo_edited" swapped="no"/>
+                              </object>
+                              <attributes>
+                                <attribute name="text">7</attribute>
+                              </attributes>
+                            </child>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkTreeViewColumn" id="treeviewcolumn8">
+                            <property name="resizable">True</property>
+                            <property name="spacing">1</property>
+                            <property name="min_width">120</property>
+                            <property name="title" translatable="yes">Pr. Scontato</property>
+                            <child>
+                              <object class="GtkCellRendererText" id="cellrenderertext4">
+                                <property name="cell_background_rgba">rgba(222,250,185,0.85869565217391308)</property>
+                                <property name="xalign">0.89999997615814209</property>
+                                <property name="size_points">16</property>
+                              </object>
+                              <attributes>
+                                <attribute name="text">8</attribute>
+                              </attributes>
+                            </child>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkTreeViewColumn" id="treeviewcolumn9">
+                            <property name="resizable">True</property>
+                            <property name="spacing">1</property>
+                            <property name="min_width">120</property>
+                            <property name="title" translatable="yes">Quantità</property>
+                            <child>
+                              <object class="GtkCellRendererSpin" id="cellrendererspin3">
+                                <property name="cell_background_rgba">rgb(255,247,213)</property>
+                                <property name="xalign">0.80000001192092896</property>
+                                <property name="editable">True</property>
+                                <property name="size_points">14</property>
+                                <property name="adjustment">adjustment3</property>
+                                <property name="climb_rate">0.01</property>
+                                <property name="digits">3</property>
+                                <signal name="edited" handler="on_column_quantita_edited" swapped="no"/>
+                              </object>
+                              <attributes>
+                                <attribute name="text">9</attribute>
+                              </attributes>
+                            </child>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkTreeViewColumn" id="treeviewcolumn10">
+                            <property name="resizable">True</property>
+                            <property name="spacing">1</property>
+                            <property name="min_width">120</property>
+                            <property name="title" translatable="yes">Totale</property>
+                            <child>
+                              <object class="GtkCellRendererText" id="cellrenderertext5">
+                                <property name="cell_background_rgba">rgb(211,215,207)</property>
+                                <property name="size_points">16</property>
+                              </object>
+                              <attributes>
+                                <attribute name="text">10</attribute>
+                              </attributes>
+                            </child>
+                          </object>
                         </child>
                       </object>
                     </child>
@@ -1268,6 +1485,7 @@ ed un nuovo punto cassa.</property>
               <object class="GtkFrame" id="frame2">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="halign">start</property>
                 <property name="label_xalign">0</property>
                 <child>
                   <object class="GtkGrid" id="grid3">
@@ -1619,6 +1837,8 @@ ed un nuovo punto cassa.</property>
               <object class="GtkFrame" id="frame1">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="hexpand">True</property>
+                <property name="vexpand">False</property>
                 <property name="label_xalign">0</property>
                 <child>
                   <object class="GtkGrid" id="grid2">
@@ -2153,7 +2373,7 @@ dell'interfaccia di vendita</property>
             </child>
           </object>
           <packing>
-            <property name="expand">False</property>
+            <property name="expand">True</property>
             <property name="fill">True</property>
             <property name="position">5</property>
           </packing>
@@ -2220,8 +2440,8 @@ ALT +n per annullare INVIO  per confermare</property>
                 <property name="border_width">1</property>
                 <property name="use_stock">True</property>
                 <signal name="clicked" handler="on_generico_ok_button_clicked" swapped="no"/>
-                <accelerator key="Return" signal="clicked"/>
                 <accelerator key="KP_Enter" signal="clicked"/>
+                <accelerator key="Return" signal="clicked"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -2277,8 +2497,8 @@ ALT +n per annullare INVIO  per confermare</property>
                 <property name="tooltip_markup">(+) aumenta</property>
                 <property name="image">image2_plus</property>
                 <signal name="clicked" handler="on_plus2_button_clicked" swapped="no"/>
-                <accelerator key="KP_Add" signal="clicked"/>
                 <accelerator key="plus" signal="clicked"/>
+                <accelerator key="KP_Add" signal="clicked"/>
               </object>
               <packing>
                 <property name="expand">True</property>
@@ -2294,8 +2514,8 @@ ALT +n per annullare INVIO  per confermare</property>
                 <property name="tooltip_markup">(-) diminuisce</property>
                 <property name="image">image4_minus2</property>
                 <signal name="clicked" handler="on_minus2_button_clicked" swapped="no"/>
-                <accelerator key="KP_Subtract" signal="clicked"/>
                 <accelerator key="minus" signal="clicked"/>
+                <accelerator key="KP_Subtract" signal="clicked"/>
               </object>
               <packing>
                 <property name="expand">True</property>
@@ -2356,8 +2576,8 @@ ALT +n per annullare INVIO  per confermare</property>
                 <property name="tooltip_markup">ctrl +( +) aumenta</property>
                 <property name="image">image_plus</property>
                 <signal name="clicked" handler="on_plus_button_clicked" swapped="no"/>
-                <accelerator key="KP_Add" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
                 <accelerator key="plus" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
+                <accelerator key="KP_Add" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
               </object>
               <packing>
                 <property name="expand">True</property>
@@ -2373,8 +2593,8 @@ ALT +n per annullare INVIO  per confermare</property>
                 <property name="tooltip_markup">ctrl +( - ) diminisce</property>
                 <property name="image">image3_minus</property>
                 <signal name="clicked" handler="on_minus_button_clicked" swapped="no"/>
-                <accelerator key="KP_Subtract" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
                 <accelerator key="minus" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
+                <accelerator key="KP_Subtract" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
               </object>
               <packing>
                 <property name="expand">True</property>
