@@ -354,6 +354,7 @@ if tipodb=="sqlite":
 
 engine = handleEngine()
 tipo_eng = engine.name
+print " --- TIPO ENGINE ---" , tipo_eng
 
 def createSession():
     if not web:
@@ -409,8 +410,7 @@ def usePickleToMeta():
         meta_pickle = None
         meta_pickle_da_conf = None
         promogestDir_da_conf = None
-        return
-    if azienda and os.path.exists(str(os.path.join(promogestDir.replace("_",""),meta_pickle.replace("_","")).strip())):
+    if tipo_eng != "sqlite" and azienda and os.path.exists(str(os.path.join(promogestDir.replace("_",""),meta_pickle.replace("_","")).strip())):
         print " CONTROLLO DELL'ESISTENZA DEL FILE PICKLE", str(os.path.join(promogestDir.replace("_","")))
         with open(str(os.path.join(promogestDir.replace("_",""),meta_pickle.replace("_","")).strip()), 'rb') as f:
             #from dill import dumps

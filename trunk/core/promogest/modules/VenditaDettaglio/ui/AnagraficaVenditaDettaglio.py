@@ -240,9 +240,6 @@ class AnagraficaVenditaDettaglio(GladeWidget):
                 a.value = self.idMagazzino
                 a.active = True
                 a.persist()
-#        if not self.idPuntoCassa:
-#            obligatoryField(None, widget=None, msg="Punto Cassa Obbligatorio")
-#            return
         if not self.idMagazzino:
             obligatoryField(None, widget=None, msg="Magazzino Obbligatorio")
             return
@@ -291,6 +288,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             if not prezzoscontato:
                 prezzoscontato = "0.00"
             model[path][8] = str(prezzoscontato)
+        model[path][10] = str(mN(Decimal(model[path][9])* Decimal(model[path][8]),2))
         self.refreshTotal()
         self.on_cancel_button_clicked(self.getTopLevel)
 
