@@ -269,13 +269,13 @@ class Main(GladeWidget):
             from pickle import dump
             #from dill import dump
             meta_pickle = self.aziendaStr + "-meta.pickle"+sys.version[:1]
-            #try:
-            if not os.path.exists(str(os.path.join(Environment.promogestDir.replace("_",""),meta_pickle.replace("_","")).strip())):
-                with open(str(os.path.join(Environment.promogestDir.replace("_",""),meta_pickle.replace("_","")).strip()), 'wb') as f:
-                    a = dump(Environment.meta,f)
-                    #f.write(a)
-            #except:
-                #print " FALLITA CREAZIONE META"
+            try:
+                if not os.path.exists(str(os.path.join(Environment.promogestDir.replace("_",""),meta_pickle.replace("_","")).strip())):
+                    with open(str(os.path.join(Environment.promogestDir.replace("_",""),meta_pickle.replace("_","")).strip()), 'wb') as f:
+                        a = dump(Environment.meta,f)
+                        #f.write(a)
+            except:
+                print " FALLITA CREAZIONE META"
         pickle_meta()
 
 

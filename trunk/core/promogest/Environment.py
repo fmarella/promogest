@@ -395,9 +395,6 @@ def delete_pickle():
             restart_program()
 
 def usePickleToMeta():
-    print " AZIENDA", azienda
-    print "PATH", str(os.path.join(promogestDir.replace("_","")))
-    print "META PICKLE", meta_pickle.replace("_","").strip()
     if azienda and os.path.exists(str(os.path.join(promogestDir.replace("_",""),meta_pickle.replace("_","")).strip())):
         print " CONTROLLO DELL'ESISTENZA DEL FILE PICKLE", str(os.path.join(promogestDir.replace("_","")))
         with open(str(os.path.join(promogestDir.replace("_",""),meta_pickle.replace("_","")).strip()), 'rb') as f:
