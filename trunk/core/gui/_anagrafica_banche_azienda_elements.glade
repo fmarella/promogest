@@ -2,6 +2,7 @@
 <!-- Generated with glade 3.18.3 -->
 <interface>
   <requires lib="gtk+" version="3.4"/>
+  <requires lib="" version="0.0"/>
   <requires lib="pythonplugin" version="0.0"/>
   <object class="GtkTable" id="anagrafica_banche_azienda_detail_table">
     <property name="visible">True</property>
@@ -129,9 +130,6 @@
       <object class="CustomComboBoxModify" id="id_banca_ccb">
         <property name="visible">True</property>
         <property name="can_focus">True</property>
-        <child>
-          <placeholder/>
-        </child>
       </object>
       <packing>
         <property name="left_attach">1</property>
@@ -217,7 +215,9 @@
       <object class="GtkTreeViewColumn" id="banca_column">
         <property name="title" translatable="yes">Banca</property>
         <child>
-          <object class="GtkCellRendererText" id="cellrenderertext5"/>
+          <object class="GtkCellRendererText" id="cellrenderertext5">
+            <property name="background_rgba">rgb(255,247,213)</property>
+          </object>
           <attributes>
             <attribute name="text">1</attribute>
           </attributes>

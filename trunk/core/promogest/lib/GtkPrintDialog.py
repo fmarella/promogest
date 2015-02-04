@@ -29,14 +29,9 @@ import tempfile
 from promogest import Environment
 from promogest.ui.gtk_compat import *
 
-if not Environment.pg3:
-    try:
-        import gtkunixprint
-        gtkunixprint # pyflakes
-    except ImportError:
-        gtkunixprint = None
-else:
-    gtkunixprint = None
+import gtkunixprint
+gtkunixprint # pyflakes
+
 
 
 class GtkPrintDialog(object):
