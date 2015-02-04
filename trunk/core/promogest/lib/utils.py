@@ -3522,7 +3522,7 @@ def do_print(fileName):
         win32api.ShellExecute (0, "print", fileName, None, ".", 0)
     else:
         messageInfo(msg="QUESTA FUNZIONALITÀ È MOMENTANEAMENTE SOSPESA, SI PUÒ STAMPARE USANDO APRI")
-        RETURN
+        return
         def draw_page(self, operation=None, context=None, page_nr=None):
             print "OKOKOK", operation, context, page_nr
         pd = gtk.GtkPrintUnixDialog()
