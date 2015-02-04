@@ -109,7 +109,7 @@ class SimpleGladeWrapper:
         gl.set_translation_domain("promogest")
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
-            if os.isatty(1):
+            if os.isatty(0):
                 print "FILE GLADE:" + str(self.glade_path)
             gl.add_from_file(self.glade_path)
 
