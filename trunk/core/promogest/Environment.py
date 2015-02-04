@@ -471,8 +471,6 @@ def __sendmail(msg="PG"):
 
 def hook(et, ev, eb):
     import traceback
-    print "EV", str(ev)
-    print "'MetaData' object has no attribute 'naming_convention'" in str(ev)
     if "Operation aborted" in str(ev):
         pg2log.info("\n  ".join(["Error occurred: traceback follows"] + list(traceback.format_exception(et, ev, eb))))
         print "\n  ".join(list(traceback.format_exception(et, ev, eb)))
