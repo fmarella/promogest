@@ -3071,6 +3071,7 @@ def setconf(section, key, value=False):
         pass
     from promogest.dao.Setconf import SetConf
     #confList = Environment.confList
+    #print "CONFIDC", Environment.confDict
     if not Environment.confDict:
         confList = SetConf().select(batchSize=None)
         for d in confList:
@@ -3324,6 +3325,7 @@ def scribusVersion(slafile):
 
 def posso(mod=None):
     modulis = Environment.modulesList
+    #print " MODULIS", modulis
     if mod == "RA":
         if "RuoliAzioni"in modulis: return True
         elif "FULL" in modulis :return True
@@ -3331,7 +3333,9 @@ def posso(mod=None):
         else: return False
     if mod == "PW" or mod=="PromoWear":
         if "PromoWear" in modulis or "+W" in modulis:return True
-        else: return False
+        if setconf("PromoWear","mod_enable", value="yes") :return True
+        if setconf(mod,"mod_enable", value="yes") :return True
+        return False
     if mod == "AG":
         if "Agenti" in modulis: return True
         elif "FULL" in modulis :return True
@@ -3342,8 +3346,10 @@ def posso(mod=None):
         else: return False
     if mod == "VD" or mod=="VenditaDettaglio":
         if "VenditaDettaglio" in modulis:return True
-        elif "+S" in modulis:return True
-        else: return False
+        if setconf(mod,"mod_enable", value="yes") :return True
+        if setconf("VenditaDettaglio","mod_enable", value="yes") :return True
+        if "+S" in modulis:return True
+        return False
     if mod == "DB":
         if "DistintaBase" in modulis: return True
         else: return False

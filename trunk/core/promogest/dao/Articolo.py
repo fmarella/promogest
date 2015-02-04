@@ -41,8 +41,8 @@ from promogest.dao.ScontoVenditaDettaglio import ScontoVenditaDettaglio
 from promogest.dao.ScontoVenditaIngrosso import ScontoVenditaIngrosso
 
 
-if hasattr(conf, "PromoWear") and \
-        getattr(conf.PromoWear, 'mod_enable') == "yes":
+if (hasattr(conf, "PromoWear") and \
+        getattr(conf.PromoWear, 'mod_enable') == "yes") or posso("PW"):
     from promogest.modules.PromoWear.dao.Colore import Colore
     from promogest.modules.PromoWear.dao.Taglia import Taglia
     from promogest.modules.PromoWear.dao.ArticoloTagliaColore \
@@ -98,8 +98,8 @@ class Articolo(Base, Dao):
         #quantita_minima = deferred(t_articolo.c.quantita_minima, group='id_unita_base'),
 
 
-    if hasattr(conf, "PromoWear")\
-                and getattr(conf.PromoWear, 'mod_enable') == "yes":
+    if (hasattr(conf, "PromoWear")\
+                and getattr(conf.PromoWear, 'mod_enable') == "yes") or posso("PW"):
         from promogest.modules.PromoWear.dao.ArticoloTagliaColore \
                                                 import ArticoloTagliaColore
         ATC = relationship("ArticoloTagliaColore", primaryjoin=(__table__.c.id==ArticoloTagliaColore.__table__.c.id_articolo), backref="ARTI",uselist=False)
@@ -311,8 +311,10 @@ class Articolo(Base, Dao):
             return t
     #impegnato_su_lavorazione = property(_impegnatoSuLavorazione)
 
-    if hasattr(conf, "PromoWear") \
-            and getattr(conf.PromoWear, 'mod_enable') == "yes":
+    #if (hasattr(conf, "PromoWear") \
+            #and getattr(conf.PromoWear, 'mod_enable') == "yes"):
+    print " ---------------POSSO" , posso("PW")
+    if posso("PW"):
 
         def getArticoloTagliaColore(self):
             """ Restituisce il Dao ArticoloTagliaColore collegato
