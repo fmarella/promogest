@@ -95,13 +95,46 @@ class AnagraficaSchedeOrdinazioniEdit(AnagraficaEdit):
         self.scontiTEMP = []
         self.scontiSuTotale = []
 
+    def fillComboboxAssociazioneArticoli(self, combobox, search_string=None):
+        """
+        Riempie la combobox di selezione delle associazioni di articoli.
+        Se la lista risultante ha un solo elemento, questo viene automaticamente selezionato.
+        """
+        #model = gtk.ListStore(object, str, str)
+        model = self.ass_art_liststore
+        model.clear()
+        print " SERCH STRINGGGGGGGGGGGGGGGGGG", search_string
+        liss = Articolo().select(node =True,
+                                codiceEM=search_string,
+                                offset=None,
+                                batchSize=None)
+
+        # questa combobox mi sa che non puo' andare a finire in un filter widget
+        print " LIIIIIIIIIIIIIIIIIISSS", liss
+        emptyRow = ''
+        model.append((None, None, emptyRow))
+        for l in liss:
+            model.append([l,l.codice, l.denominazione])
+        #self.associazione_articoli_comboboxentry.clear()
+        #renderer = gtk.CellRendererText()
+        #combobox.pack_start(renderer, True)
+        #combobox.add_attribute(renderer, 'text', 1)
+        #renderer = gtk.CellRendererText()
+        #combobox.pack_start(renderer, True)
+        #combobox.add_attribute(renderer, 'text', 2)
+        #combobox.set_model(model)
+        if len(liss) == 1 and search_string is not None:
+            self.associazione_articoli_comboboxentry.set_active(1)
+        return True
+
+
     def draw(self,cplx=False):
         """
         popola le combobox della gui e imposta le colonne degli articoli nella treeview articoli
         """
         fillComboboxListini(self.listino_combobox)
         fillComboboxMagazzini(self.magazzino_combobox)
-        fillComboboxAssociazioneArticoli(self.associazione_articoli_comboboxentry, anag=self)
+        self.fillComboboxAssociazioneArticoli(self.associazione_articoli_comboboxentry)
         self.id_cliente_customcombobox.setSingleValue()
         self.id_cliente_customcombobox.connect("changed",self.on_cliente_changed)
         self.id_cliente_customcombobox.setType(self._tipoPersonaGiuridica)
@@ -421,6 +454,7 @@ class AnagraficaSchedeOrdinazioniEdit(AnagraficaEdit):
         return quantita
 
     def setRigaTreeview(self,modelRow=None,rowArticolo=None ):
+        print "QUANDO VIENI CHIAMATO", modelRow, rowArticolo
         if rowArticolo:
             idArticolo = rowArticolo[0].id
             denArticolo = rowArticolo[0].denominazione
@@ -657,6 +691,9 @@ class AnagraficaSchedeOrdinazioniEdit(AnagraficaEdit):
         #self._refresh()
         pbar(self.dialog.pbar,stop=True)
 
+
+
+
     def on_associazione_articoli_comboboxentry_changed(self, combobox=None, codart=None):
         if self._loading:
             return
@@ -669,10 +706,14 @@ class AnagraficaSchedeOrdinazioniEdit(AnagraficaEdit):
         else:
             search_string = combobox.get_text()
         model = self.ass_art_liststore
+        #model = .get_model()
         selected = self.associazione_articoli_comboboxentry.get_active()
-        if not selected:
-            fillComboboxAssociazioneArticoli(self.associazione_articoli_comboboxentry, search_string, anag=self)
+        print "SELECTED", selected
+        if selected < 0:
+            print " QUIIIIIIIIIIIIIIIIIIII"
+            self.fillComboboxAssociazioneArticoli(self.associazione_articoli_comboboxentry, search_string)
         else:
+            print " O QUIIIIIIIIIIIIIIIIIIIIIIIIIIII"
             row = model[selected]
             if row[0]:
             #this call will return a list of "AssociazioneArticoli" (In the future: "Distinta Base") Dao objects
@@ -1055,16 +1096,16 @@ class AnagraficaSchedeOrdinazioniEdit(AnagraficaEdit):
     def on_email_import_button_clicked(self, button):
         print "FILL THE DATA FROM EMAIL"
         if self.dao:
-            altriDati= fillSchedaLavorazioneFromEmail(self)
-            self.altriDati = altriDati
+            self.altriDati= fillSchedaLavorazioneFromEmail(self)
+            print " SEL ALTRI DATI", self.altriDati
         else:
             print "mettici un dialogo che avvisa"
         self.nome_contatto_entry.set_text("ANTO")
         self.stato_entry.set_text("Italia")
-        idColore = ColoreStampa().select(denominazione = altriDati["colore_stampa"])
+        idColore = ColoreStampa().select(denominazione = self.altriDati["colore_stampa"])
         if idColore:
             findComboboxRowFromId(self.colore_stampa_combobox, idColore[0].id)
-        idCarattere = CarattereStampa().select(denominazione = altriDati["carattere_stampa"])
+        idCarattere = CarattereStampa().select(denominazione = self.altriDati["carattere_stampa"])
         if idCarattere:
             findComboboxRowFromId(self.carattere_stampa_combobox, idCarattere[0].id)
         idMagazzino = Magazzino().select(denominazione = "PARTECIPAZIONI")
@@ -1073,7 +1114,8 @@ class AnagraficaSchedeOrdinazioniEdit(AnagraficaEdit):
         idListino = Listino().select(denominazione = "WEB")
         if idListino:
             findComboboxRowFromId(self.listino_combobox, idListino[0].id)
-        codart = altriDati["codParte"]
+        codart = self.altriDati["codParte"]
+        print( "codaaaaaaaaaaaaaaaaaaaaaaarts", codart)
         self.on_associazione_articoli_comboboxentry_changed(self.associazione_articoli_comboboxentry,codart=codart)
         self.materiale_disponibile_si_checkbutton.set_active(True)
         #self.on_materiale_disponibile_si_checkbutton_toggled(self.materiale_disponibile_si_checkbutton)

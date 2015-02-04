@@ -90,37 +90,6 @@ def fillComboboxCarattereStampa(combobox, filter=False):
 #        combobox.set_text_column(2)
 
 
-def fillComboboxAssociazioneArticoli(combobox, search_string=None, anag=None):
-    """
-    Riempie la combobox di selezione delle associazioni di articoli.
-    Se la lista risultante ha un solo elemento, questo viene automaticamente selezionato.
-    """
-    #model = gtk.ListStore(object, str, str)
-    model = anag.ass_art_liststore
-    model.clear()
-    liss = Articolo().select(node =True,
-                            codiceEM=search_string,
-                            offset=None,
-                            batchSize=None)
-
-    # questa combobox mi sa che non puo' andare a finire in un filter widget
-    emptyRow = ''
-    model.append((None, None, emptyRow))
-    for l in liss:
-        model.append([l,l.codice, l.denominazione])
-    combobox.clear()
-    renderer = gtk.CellRendererText()
-    combobox.pack_start(renderer, True)
-    combobox.add_attribute(renderer, 'text', 1)
-    renderer = gtk.CellRendererText()
-    combobox.pack_start(renderer, True)
-    combobox.add_attribute(renderer, 'text', 2)
-    combobox.set_model(model)
-    if len(liss) == 1 and search_string is not None:
-        combobox.set_active(1)
-    return True
-
-
 def fetch_date(string):
     """
     This should return a string indicating a date in italian format (dd/mm/YYYY)
