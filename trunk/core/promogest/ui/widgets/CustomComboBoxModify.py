@@ -51,7 +51,7 @@ class CustomComboBoxModify(gtk.Box):
         self.combobox.connect('key_press_event',
                               self.do_combobox_key_press_event)
 
-        self.combobox.set_wrap_width(int(setconf("Numbers", "combo_column")))
+        self.combobox.set_wrap_width(int(setconf("Numbers", "combo_column")) or 3)
         renderer = gtk.CellRendererText()
         self.combobox.pack_start(renderer, True)
         self.combobox.add_attribute(renderer, 'text', 0)

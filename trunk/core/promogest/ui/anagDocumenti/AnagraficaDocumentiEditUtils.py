@@ -156,7 +156,7 @@ def drawPart(anaedit):
     fillComboboxCausaliTrasporto(anaedit.causale_trasporto_comboboxentry)
     fillComboboxAspettoEsterioreBeni(anaedit.aspetto_esteriore_beni_comboboxentry)
 
-    anaedit.id_operazione_combobox.set_wrap_width(int(setconf("Numbers", "combo_column")))
+    anaedit.id_operazione_combobox.set_wrap_width(int(setconf("Numbers", "combo_column")) or 1)
 
     anaedit.porto_combobox.set_active(-1)
     anaedit.porto_combobox.set_sensitive(False)
