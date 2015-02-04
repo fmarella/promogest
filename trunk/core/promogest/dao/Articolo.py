@@ -311,10 +311,8 @@ class Articolo(Base, Dao):
             return t
     #impegnato_su_lavorazione = property(_impegnatoSuLavorazione)
 
-    #if (hasattr(conf, "PromoWear") \
-            #and getattr(conf.PromoWear, 'mod_enable') == "yes"):
-    print " ---------------POSSO" , posso("PW")
-    if posso("PW"):
+    if (hasattr(conf, "PromoWear")\
+                and getattr(conf.PromoWear, 'mod_enable') == "yes") or posso("PW"):
 
         def getArticoloTagliaColore(self):
             """ Restituisce il Dao ArticoloTagliaColore collegato
