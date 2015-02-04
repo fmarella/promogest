@@ -61,7 +61,7 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         fillComboboxOperazioni(self.id_operazione_filter_combobox, 'documento',True, extra=True)
         self.id_operazione_filter_combobox.set_active(0)
         fillComboboxMagazzini(self.id_magazzino_filter_combobox, True)
-        self.id_operazione_filter_combobox.set_wrap_width(setconf("Numbers", "combo_column"))
+        self.id_operazione_filter_combobox.set_wrap_width(setconf("Numbers", "combo_column") or 1)
 
         self.cliente_filter_radiobutton.set_active(True)
         self.on_filter_radiobutton_toggled()
