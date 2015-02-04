@@ -269,14 +269,22 @@ class Main(GladeWidget):
             from pickle import dump
             #from dill import dump
             meta_pickle = self.aziendaStr + "-meta.pickle"+sys.version[:1]
-            try:
-                if not os.path.exists(str(os.path.join(Environment.promogestDir.replace("_",""),meta_pickle.replace("_","")).strip())):
-                    with open(str(os.path.join(Environment.promogestDir.replace("_",""),meta_pickle.replace("_","")).strip()), 'wb') as f:
-                        a = dump(Environment.meta,f)
+            #try:
+            #if not os.path.exists(str(os.path.join(Environment.promogestDir.replace("_",""),meta_pickle.replace("_","")).strip())):
+            with open(str(os.path.join(Environment.promogestDir.replace("_",""),meta_pickle.replace("_","")).strip()), 'wb') as f:
+                #Environment.meta.clear()
+                Environment.meta.reflect(schema="promogest2")
+                Environment.meta.reflect()
+                dump(Environment.meta,f)
                         #f.write(a)
-            except:
-                print " FALLITA CREAZIONE META"
-        pickle_meta()
+            #except:
+                #print " FALLITA CREAZIONE META"
+        #pickle_meta()
+
+
+
+
+
 
 
     def on_ricerca_lotto_menuitem_activate(self, button):
