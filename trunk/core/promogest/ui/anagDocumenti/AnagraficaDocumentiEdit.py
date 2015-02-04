@@ -1099,7 +1099,6 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self.label_numero_righe.set_text(text)
         self.label_numero_righe.show()
         pbar(self.dialog.pbar, stop=True)
-        print " \nFINE DEL SALVATAGGIO DEL DOCUMENTO\n\n"
 
     def on_importo_da_ripartire_entry_changed(self, entry):
         """Fesseria voluta da un cliente ....alla fine non serviva
