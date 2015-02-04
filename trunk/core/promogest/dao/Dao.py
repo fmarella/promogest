@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2013 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -19,6 +19,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
+import os
 import datetime
 import hashlib
 import sqlalchemy
@@ -230,7 +231,8 @@ class Dao(object):
             message = "DELETE;"+ self.__class__.__name__
         else:
             message = "UNKNOWN ACTION;"
-        print "AZIONE SUL RECORD:", message
+        if os.isatty(0):
+            print "AZIONE SUL RECORD:", message
         return self.commit()
 
     def _resetId(self):
