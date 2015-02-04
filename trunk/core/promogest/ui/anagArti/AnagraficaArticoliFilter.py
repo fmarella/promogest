@@ -59,8 +59,8 @@ class AnagraficaArticoliFilter(AnagraficaFilter):
             self.filter_promowear.destroy()
 
         self.anagrafica_filter_treeview.set_model(self._treeViewModel)
-        self.id_famiglia_articolo_filter_combobox.set_wrap_width(int(setconf("Numbers", "combo_column")))
-        self.id_categoria_articolo_filter_combobox.set_wrap_width(int(setconf("Numbers", "combo_column")))
+        self.id_famiglia_articolo_filter_combobox.set_wrap_width(int(setconf("Numbers", "combo_column"))or 2)
+        self.id_categoria_articolo_filter_combobox.set_wrap_width(int(setconf("Numbers", "combo_column")) or 2)
 
         self.clear()
         self.altri_filtri_frame.hide()

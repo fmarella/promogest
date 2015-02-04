@@ -44,6 +44,7 @@ class AnagraficaPos(Anagrafica):
         renderer = gtk.CellRendererText()
         renderer.set_property('editable', False)
         renderer.connect('edited', self.on_column_edited, treeview, True)
+        renderer.column = 0
         column = gtk.TreeViewColumn('Descrizione', renderer, text=1)
         column.set_sizing(GTK_COLUMN_GROWN_ONLY)
         column.set_clickable(True)
@@ -54,6 +55,7 @@ class AnagraficaPos(Anagrafica):
 
         renderer = gtk.CellRendererText()
         renderer.set_property('editable', False)
+        renderer.column = 1
         renderer.connect('edited', self.on_column_edited, treeview, False)
         column = gtk.TreeViewColumn('Descrizione breve', renderer, text=2)
         column.set_sizing(GTK_COLUMN_GROWN_ONLY)

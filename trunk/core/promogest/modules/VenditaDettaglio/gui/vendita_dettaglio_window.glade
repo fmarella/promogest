@@ -283,7 +283,7 @@ all stampante fiscale.</property>
                       <object class="GtkMenuItem" id="anagrafica_tipi_carta">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">Anagrafica Tippi Carta di Credito</property>
+                        <property name="label" translatable="yes">Anagrafica Tipi Carta di Credito</property>
                         <signal name="activate" handler="on_anagrafica_tipi_carta_activate" swapped="no"/>
                       </object>
                     </child>
