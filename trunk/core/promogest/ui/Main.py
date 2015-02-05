@@ -1030,6 +1030,11 @@ promogest2 IN /HOME/NOMEUTENTE/ O IN C:/UTENTI/NOMEUTENTE""")
         notifica_allarmi_label.set_markup(_("<b>ALLARMI</b>"))
         self.main_notebook.append_page(self.notifica_allarmi.notifica_allarmi_frame, notifica_allarmi_label)
 
+    def on_main_window_delete_event(self, widget, event):
+        if YesNoDialog(msg="SICURO DI VOLER CHIUDERE?"):
+            return False
+        else:
+            return True
 
     def on_promogest_button_clicked(self, button):
         url ="http://www.promogest.me"
