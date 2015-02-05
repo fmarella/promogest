@@ -45,6 +45,7 @@ from sqlalchemy.orm import *
 
 from promogest.lib import feedparser
 from promogest.lib import HtmlHandler
+from StatusBar import Pg2StatusIcon
 
 
 class Login(SimpleGladeApp):
@@ -63,6 +64,21 @@ class Login(SimpleGladeApp):
     def draw(self):
         """Disegna la finestra di login
         """
+        #def popup_menu(icon, button, time):
+            #menu = gtk.Menu()
+
+            #menuitemAbout = gtk.MenuItem(label="About")
+            #menu.append(menuitemAbout)
+            #menuitemQuit = gtk.MenuItem(label="Quit")
+            #menu.append(menuitemQuit)
+            #menu.show_all()
+
+            #menu.popup(None, None, None, None, button, time)
+
+        #statusicon = gtk.StatusIcon()
+        #statusicon.set_from_stock(gtk.STOCK_HOME)
+        #statusicon.set_title("StatusIcon")
+        #statusicon.connect("popup-menu", popup_menu)
         self.azs = Azienda().select(batchSize=None, orderBy=Azienda.schemaa)
         ultima_azienda = None
         if Environment.nobrand:
@@ -101,6 +117,7 @@ class Login(SimpleGladeApp):
         self.username_entry.grab_focus()
         data = datetime.datetime.now()
         self.anno_lavoro_spinbutton.set_value(data.year)
+
         leggiRevisioni()
 
     def on_logo_button_clicked(self, button):

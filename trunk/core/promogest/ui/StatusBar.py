@@ -67,7 +67,7 @@ class Pg2StatusIcon(gtk.StatusIcon):
         self.manager = gtk.UIManager()
         #self.manager.insert_action_group(actionGroup, 0)
         self.manager.add_ui_from_string(menu)
-        self.menu = self.manager.get_widget('/Menubar/Menu/About').props.parent
+        #self.menu = self.manager.get_widget('/Menubar/Menu/About').props.parent
         #self.set_from_file(Environment.guiDir + 'logo_promogest_piccolo.png')
         #self.set_tooltip('Promogest, il Gestionale open source per la tua azienda')
         self.connect('activate', self.on_activate)
