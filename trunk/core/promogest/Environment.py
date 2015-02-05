@@ -358,7 +358,7 @@ print " --- TIPO ENGINE ---" , tipo_eng
 
 def createSession():
     if not web:
-        Session = sessionmaker(bind=engine,autocommit=False,autoflush=False)
+        Session = sessionmaker(bind=engine)
         session = Session()
     else:
         session = scoped_session(lambda: create_session(engine, autocommit=False))
