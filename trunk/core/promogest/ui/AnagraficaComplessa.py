@@ -970,12 +970,6 @@ class Anagrafica(GladeWidget):
         except Exception as ex:
             messageInfo(msg=str(ex))
 
-    def on_printdialog1_response(self, widget, response):
-        print "RESPONSE", widget, response , type(response)
-        if response ==-5:
-            pri = gtk.GtkPrinter()
-            print pri.get_selected_printer(widget)
-
     def on_send_email_button_clicked(self, widget):
         '''
         '''
