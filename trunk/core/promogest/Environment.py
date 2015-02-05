@@ -79,27 +79,6 @@ if "0.7.4" > sqlalchemy.__version__:
     dialoggg.destroy()
     sys.exit()
 
-try:
-    import jinja2
-    from gi.repository.WebKit import WebView
-    from gi.repository.WebKit import WebSettings
-    import reportlab
-except Exception as e:
-    if not preEnv.web:
-        dialoggg = gtk.MessageDialog(None,
-                        GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
-                        GTK_DIALOG_MESSAGE_ERROR,
-                        GTK_RESPONSE_CANCEL)
-        msg = """ Manca la libreria python indicata qui in basso,
-Su linux installarla singolarmente usando il software manager o yum o apt-get
-Su windows provare a disinstallare e reinstallare il PromoGest
-disattivando l'antivirus per qualche minuto
-
-{0}""".format(str(e))
-        dialoggg.set_markup(msg)
-        response = dialoggg.run()
-        dialoggg.destroy()
-        sys.exit()
 from sqlalchemy import *
 from sqlalchemy.orm import *
 #from sqlalchemy.interfaces import PoolListener
@@ -161,7 +140,7 @@ puntoB = None
 puntoP = None
 eta = 0
 tipo_pg = None
-workingYear = 2014
+workingYear = 2015
 cartella_moduli = 'promogest/modules'
 totale_pn_con_riporto = 0
 aaa = 648
@@ -471,13 +450,14 @@ def __sendmail(msg="PG"):
 
 def hook(et, ev, eb):
     import traceback
+    print "OOOOOOOOOOOOOOOOOOOOOOOOOOO",  str(ev)
     if "Operation aborted" in str(ev):
         pg2log.info("\n  ".join(["Error occurred: traceback follows"] + list(traceback.format_exception(et, ev, eb))))
         print "\n  ".join(list(traceback.format_exception(et, ev, eb)))
         return
     if "ATTENZIONE, TENTATIVO DI SALVATAGGIO SENZA RIGHE?????" in ev:
         return
-    if "[Errno 9] Bad file descriptor" in ev:
+    if "Bad file descriptor" in ev:
         return
     if "ProgrammingError" in str(ev):
         pg2log.info("\n  ".join(["Error occurred: traceback follows"] + list(traceback.format_exception(et, ev, eb))))
@@ -508,6 +488,10 @@ def hook(et, ev, eb):
         messageError(msg="Si consiglia di riavviare il software, l'errore è stato segnalato")
     if "is already defined for this MetaData instance" in str(ev):
         delete_pickle()
+    if "cannot import" in str(ev) or "No module" in str(ev):
+        from promogest.lib.utils import messageError
+        messageError(msg="C'è una libreria mancante il cui nome è qui sotto:\n"+str(ev) +"\nDevo chiudere il programma, contattare assistenza")
+        sys.exit()
 
     try:
         pg2log.info("\n  ".join(["Error occurred: traceback follows"] + list(traceback.format_exception(et, ev, eb))))

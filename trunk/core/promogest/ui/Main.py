@@ -71,14 +71,11 @@ from promogest.ui.UpdateDialog import UpdateDialog
 if posso("GN"):
     from promogest.modules.GestioneNoleggio.dao.TestataGestioneNoleggio \
                             import TestataGestioneNoleggio
-try:
-    from  xhtml2pdf import pisa
-except:
-    messageError(msg=_("ATTENIONE! modulo xhtml2pdf mancante,\n qualcosa non ha funzionato nell'installazione?"))
-
+from  xhtml2pdf import pisa
 from promogest.dao.Setconf import SetConf
-
 from gi.repository.WebKit import WebView
+import jinja2
+import reportlab
 WEBKIT = True
 
 
