@@ -28,8 +28,6 @@ from promogest.ui.AnagraficaComplessaHtml import AnagraficaHtml
 from promogest.ui.AnagraficaSecondariaEdit import AnagraficaSecondariaEdit
 from promogest.ui.AnagraficaSecondariaFilter import AnagraficaSecondariaFilter
 
-#from promogest.dao.daoContatti.ContattoFornitore import ContattoFornitore
-#from promogest.dao.TestataDocumento import TestataDocumento
 from promogest.dao.DaoUtils import *
 from promogest.lib.utils import *
 from promogest.ui.utilsCombobox import *
@@ -56,28 +54,6 @@ class AnagraficaSecondarie(Anagrafica):
                             editElement=AnagraficaSecondariaEdit(self,daoRole),
                             aziendaStr=aziendaStr)
         self.records_file_export.set_sensitive(True)
-        #self.duplica_button.set_sensitive(False)
-        #self.duplica_in_cliente.set_sensitive(True)
-
-    #def on_record_delete_activate(self, widget):
-        #dao = self.filter.getSelectedDao()
-        #tdoc = TestataDocumento().select(idFornitore=dao.id, batchSize=None)
-        #if tdoc:
-            #messageInfo(msg= "CI SONO DOCUMENTI LEGATI A QUESTO FORNITORE\nNON E' POSSIBILE RIMUOVERLO")
-            #return
-        #if not YesNoDialog(msg='Confermi l\'eliminazione ?', transient=self.getTopLevel()):
-            #return
-        #dao = self.filter.getSelectedDao()
-        #cnnt = ContattoFornitore().select(idFornitore=dao.id, batchSize=None)
-        #if cnnt:
-            #for c in cnnt:
-                #for l in c.recapiti:
-                    #l.delete()
-                #c.delete()
-        #dao.delete()
-        #self.filter.refresh()
-        #self.htmlHandler.setDao(None)
-        #self.setFocus()
 
 
 class AnagraficaSecondariaHtml(AnagraficaHtml):

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -66,8 +66,6 @@ class AnagraficaSecondariaFilter(AnagraficaFilter):
         self.localita_filter_entry.set_text('')
         self.codice_fiscale_filter_entry.set_text('')
         self.partita_iva_filter_entry.set_text('')
-        #fillComboboxCategorieFornitori(self.id_categoria_fornitore_filter_combobox, True)
-        #self.id_categoria_fornitore_filter_combobox.set_active(0)
         self.refresh()
 
     def on_filter_entry_changed(self, text):
@@ -88,14 +86,15 @@ class AnagraficaSecondariaFilter(AnagraficaFilter):
         #idCategoria = findIdFromCombobox(self.id_categoria_fornitore_filter_combobox)
 
         def filterCountClosure():
-            return AnagraficaSecondaria().count(codice=codice,
-                ragioneSociale=ragioneSociale,
-                insegna=insegna,
-                cognomeNome=cognomeNome,
-                localita=localita,
-                partitaIva=partitaIva,
-                idRole = self.idRole,
-                codiceFiscale=codiceFiscale,)
+            return AnagraficaSecondaria().count(
+                                        codice=codice,
+                                        ragioneSociale=ragioneSociale,
+                                        cognomeNome=cognomeNome,
+                                        localita=localita,
+                                        partitaIva=partitaIva,
+                                        idRole = self.idRole,
+                                        codiceFiscale=codiceFiscale
+                                        )
 
         self._filterCountClosure = filterCountClosure
         self.numRecords = self.countFilterResults()
@@ -103,17 +102,18 @@ class AnagraficaSecondariaFilter(AnagraficaFilter):
 
         # Let's save the current search as a closure
         def filterClosure(offset, batchSize):
-            return AnagraficaSecondaria().select(orderBy=self.orderBy,
-                codice=codice,
-                ragioneSociale=ragioneSociale,
-                insegna=insegna,
-                cognomeNome=cognomeNome,
-                localita=localita,
-                partitaIva=partitaIva,
-                idRole = self.idRole,
-                codiceFiscale=codiceFiscale,
-                offset=offset,
-                batchSize=batchSize)
+            return AnagraficaSecondaria().select(
+                                        orderBy=self.orderBy,
+                                        codice=codice,
+                                        ragioneSociale=ragioneSociale,
+                                        cognomeNome=cognomeNome,
+                                        localita=localita,
+                                        partitaIva=partitaIva,
+                                        idRole = self.idRole,
+                                        codiceFiscale=codiceFiscale,
+                                        offset=offset,
+                                        batchSize=batchSize
+                                        )
 
         self._filterClosure = filterClosure
 
@@ -124,12 +124,14 @@ class AnagraficaSecondariaFilter(AnagraficaFilter):
         for f in fors:
             pvcf = ''
             if (f.ragione_sociale or '') == '':
-                pvcf = (f.codice_fiscale or '')
+                pvcf = f.codice_fiscale or ''
             else:
-                pvcf = (f.partita_iva or '')
-            self.filter_listore.append((f,
-                (f.codice or ''),
-                (f.ragione_sociale or ''),
-                (f.cognome or '') + ' ' + (f.nome or ''),
-                (f.sede_operativa_localita or ''),
-                                        pvcf))
+                pvcf = f.partita_iva or ''
+            self.filter_listore.append([
+                                        f,
+                                        f.codice or '',
+                                        f.ragione_sociale or '',
+                                        f.cognome or '' + ' ' + f.nome or '',
+                                        f.sede_operativa_localita or '',
+                                        pvcf
+                                        ])
