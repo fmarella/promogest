@@ -824,13 +824,13 @@ promogest2 IN /HOME/NOMEUTENTE/ O IN C:/UTENTI/NOMEUTENTE""")
             messageInfo(msg= msg)
         else:
             st= Environment.startdir()
-            nameDump = "promoGest2_dump_"+self.aziendaStr+"_"+ datetime.now().strftime('%d_%m_%Y_%H_%M')
+            nameDump = "promoGest3_bkp_"+self.aziendaStr+"_"+ datetime.now().strftime('%d_%m_%Y_%H_%M')+".zip"
             msgg = _("""Il "dump" del database verrà salvato in
 
     %s
     ed avrà il nome
 
-    %s.zip
+    %s
 
     ATTENZIONE!!!! la procedura potrebbe richiedere diversi minuti.""") %(st, nameDump)
             messageInfo(msg= msgg, transient=self.getTopLevel())
@@ -838,8 +838,14 @@ promogest2 IN /HOME/NOMEUTENTE/ O IN C:/UTENTI/NOMEUTENTE""")
             st= Environment.startdir()
             stname = st+nameDump
             os.environ["PGPASSWORD"] = Environment.password
-
-            retcode = call(["pg_dump",
+            print "1111111111111111111111111111", Environment.host,Environment.port,Environment.user , Environment.password,
+            if os.name == "nt":
+                PG_DUMP_ESEC = os.path.split(os.path.dirname(__file__))[0]+"\lib\pg_dump_dir\pg_dump.exe"
+            elif os.name =="posix":
+                PG_DUMP_ESEC = "pg_dump"
+            else:
+                messageInfo(msg="SU QUESTO SISTEMA OPERATIVO NON SI PUò FARE IL BACKUP DA QUI")
+            retcode = call([PG_DUMP_ESEC,
                             "-h",Environment.host,
                             "-p",Environment.port,
                             "-U",Environment.user,
@@ -849,13 +855,11 @@ promogest2 IN /HOME/NOMEUTENTE/ O IN C:/UTENTI/NOMEUTENTE""")
 
             Environment.pg2log.info("STO EFFETTUANDO UN BACKUP DEL FILE %s" %stname)
             if not retcode:
-                #zfilename = nameDump +".zip"
-                #zout = zipfile.ZipFile(str(stname) +".zip", "w")
-                #zout.write(stname,zfilename,zipfile.ZIP_DEFLATED)
-                #zout.close()
                 Environment.pg2log.info("DUMP EFFETTUATO CON SUCCESSO")
                 #os.remove(stname)
+                messageInfo(msg="BACKUP EFFETTUATO CON SUCCESSO")
             else:
+                messageInfo(msg="BACKUP NON RIUSCITO")
                 Environment.pg2log.info("ATTENZIONE DUMP NON RIUSCITO")
 
     def on_pan_active_clicked(self, button):
