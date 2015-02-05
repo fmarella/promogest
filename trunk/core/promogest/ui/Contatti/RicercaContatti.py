@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -162,7 +162,7 @@ class RicercaContattiFilter(RicercaFilter):
         self.ruolo_filter_entry.set_text('')
         self.descrizione_filter_entry.set_text('')
         self.recapito_filter_entry.set_text('')
-        self.tipo_recapito_filter_comboboxentry.child.set_text('')
+        self.tipo_recapito_filter_comboboxentry.get_child().set_text('')
         fillComboboxCategorieContatti(self.id_categoria_contatto_filter_combobox, True)
         self.id_categoria_contatto_filter_combobox.set_active(0)
         self.refresh()
@@ -175,7 +175,7 @@ class RicercaContattiFilter(RicercaFilter):
         ruolo = prepareFilterString(self.ruolo_filter_entry.get_text())
         descrizione = prepareFilterString(self.descrizione_filter_entry.get_text())
         recapito = prepareFilterString(self.recapito_filter_entry.get_text())
-        tipoRecapito = prepareFilterString(self.tipo_recapito_filter_comboboxentry.child.get_text())
+        tipoRecapito = prepareFilterString(self.tipo_recapito_filter_comboboxentry.get_child().get_text())
         idCategoria = findIdFromCombobox(self.id_categoria_contatto_filter_combobox)
 
         if self.cliente_filter_radiobutton.get_active():
