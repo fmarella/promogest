@@ -37,6 +37,7 @@ class PrintingApp(object):
         self.operation.connect('begin-print', self.begin_print, None)
         self.operation.connect('draw-page', self.draw_page, None)
         file_uri = GLib.filename_to_uri(os.path.abspath(fileName))
+
         self.doc = Poppler.Document.new_from_file(file_uri)
 
     def begin_print(self, operation, print_ctx, print_data):

@@ -3517,15 +3517,15 @@ def do_print(fileName):
 
     L'argomento è il percorso ad un file esistente.
     """
-    #if os.name == "nt":
-        #import win32api
-        #win32api.ShellExecute (0, "print", fileName, None, ".", 0)
-    #else:
+    if os.name == "nt":
+        import win32api
+        win32api.ShellExecute (0, "print", fileName, None, ".", 0)
+    else:
         ##messageInfo(msg="QUESTA FUNZIONALITÀ È MOMENTANEAMENTE SOSPESA, SI PUÒ STAMPARE USANDO APRI")
         ##return
-    from promogest.lib.printingApp import PrintingApp
-    app = PrintingApp(fileName)
-    app.run()
+        from promogest.lib.printingApp import PrintingApp
+        app = PrintingApp(fileName)
+        app.run()
 
 def fill_treeview_with_data(treeview, data_provider, flag=False, clear=True):
     model = treeview.get_model()
