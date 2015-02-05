@@ -74,13 +74,8 @@ class SimpleGladeApp(SimpleGladeWrapper):
         Do not directly call this method in your programs.
         Use the method run() instead.
         """
-        if Environment.pg3:
-            gtk.main()
-        else:
-            gtk.gdk.threads_init()
-            gtk.gdk.threads_enter()
-            gtk.main()
-            gtk.gdk.threads_leave()
+        gtk.main()
+
 
     def on_focus_in_event(self, widget, event):
         try:
@@ -155,8 +150,7 @@ class SimpleGladeApp(SimpleGladeWrapper):
 
         Use this method for starting programs.
         """
-        try:
-            self.main()
-        except KeyboardInterrupt:
-            Environment.pg2log.info("<<<<<<<<<<  CHIUSURA PROMOGEST >>>>>>>>>>>>>")
-            self.on_keyboard_interrupt()
+        import signal
+        signal.signal(signal.SIGINT, signal.SIG_DFL)
+        self.main()
+            #Environment.pg2log.info("<<<<<<<<<<  CHIUSURA PROMOGEST >>>>>>>>>>>>>")

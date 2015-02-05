@@ -35,7 +35,7 @@ from promogest.dao.Azienda import Azienda
 #from GtkExceptionHandler import GtkExceptionHandler
 from promogest.ui.UpdateDialog import UpdateDialog
 from promogest.lib.utils import leggiRevisioni, hasAction, checkInstallation, \
-    installId, messageInfo
+    installId, messageInfo , YesNoDialog
 from promogest.ui.utilsCombobox import findComboboxRowFromStr,findStrFromCombobox
 
 Environment.pg2log.info("GTK+: " + str(GTK_VERSION))
@@ -431,6 +431,11 @@ class Login(SimpleGladeApp):
                     self.password_entry.set_text('admin')
                     self.on_button_login_clicked()
 
+    def on_login_window_delete_event(self, widget, event):
+        if YesNoDialog(msg="SICURO DI VOLER CHIUDERE?"):
+            gtk.main_quit()
+        else:
+            return True
 
 def on_main_window_closed(main_window, login_window):
     """Evento associato alla chiusura della finestra di login

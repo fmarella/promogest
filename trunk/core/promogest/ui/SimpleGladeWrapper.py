@@ -375,6 +375,7 @@ class SimpleGladeWrapper:
         Predefined callback.
         Equivalent to self.quit()
         """
+        Environment.pg2log.info("<<<<<<<<<<  CHIUSURA PROMOGEST >>>>>>>>>>>>>")
         self.quit()
 
 
@@ -383,7 +384,8 @@ class SimpleGladeWrapper:
         This method is called by the default implementation of run()
         after a program is finished by pressing Control-C.
         """
-        pass
+        Environment.pg2log.info("<<<<<<<<<<  CHIUSURA PROMOGEST >>>>>>>>>>>>>")
+        gtk.main_quit()
 
 
     def quit(self):
@@ -395,6 +397,7 @@ class SimpleGladeWrapper:
         For example, applications based on gstreamer needs to override
         this method with gst.main_quit()
         """
+        Environment.pg2log.info("<<<<<<<<<<  CHIUSURA PROMOGEST >>>>>>>>>>>>>")
         gtk.main_quit()
 
 
