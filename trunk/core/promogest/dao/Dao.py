@@ -231,7 +231,7 @@ class Dao(object):
             message = "DELETE;"+ self.__class__.__name__
         else:
             message = "UNKNOWN ACTION;"
-        if os.isatty(0):
+        if os.name =="posix":
             print "AZIONE SUL RECORD:", message
         return self.commit()
 
