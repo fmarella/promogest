@@ -46,7 +46,9 @@ Nell'anagrafica dei pagamenti inserire in corrispondenza di ciascun pagamento un
   * MP16 per domiciliazione bancaria
   * MP17 per domiciliazione postale 
   * MP18 per bollettino di c/c postale 
-  * MP19 per carta multicard
+  * MP19 per SEPA Direct Debit
+  * MP20 per SEPA Direct Debit CORE
+  * MP21 per SEPA Direct Debit B2B
 
 Per ciascun ente della PA presente in anagrafica cliente inserire le informazioni generali di ragione sociale, denominazione, partita IVA, codice fiscale, sede. Il campo *codice* deve essere valorizzato con il codice dell'ufficio dell’amministrazione dello stato destinatario della fattura, definito dall'amministrazione di appartenenza come riportato nella rubrica “Indice PA”.
 
