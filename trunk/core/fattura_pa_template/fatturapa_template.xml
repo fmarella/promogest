@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<p:FatturaElettronica versione="1.0"
+<p:FatturaElettronica versione="1.1"
 xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
-xmlns:p="http://www.fatturapa.gov.it/sdi/fatturapa/v1.0"
+xmlns:p="http://www.fatturapa.gov.it/sdi/fatturapa/v1.1"
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <FatturaElettronicaHeader>
     <DatiTrasmissione>
@@ -114,8 +114,8 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
                 <Data>{{dao.data_documento|dateformat}}</Data>
                 <Numero>{{dao.numero}}</Numero>
             </DatiGeneraliDocumento>
-			{% if pageData['ordine'] %}
-			<DatiOrdineAcquisto>
+            {% if pageData['ordine'] %}
+            <DatiOrdineAcquisto>
                 <IdDocumento>{{dao.numero}}</IdDocumento>
                 <Data>{{dao.data_documento|dateformat}}</Data>
                 {% if dao.codice_cup %}
@@ -125,7 +125,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
                 <CodiceCIG>{{dao.codice_cig}}</CodiceCIG>
                 {% endif %}
             </DatiOrdineAcquisto>
-			{% endif %}
+            {% endif %}
             {% if pageData['contratto'] %}
             <DatiContratto>
                 <RiferimentoNumeroLinea>1</RiferimentoNumeroLinea>
