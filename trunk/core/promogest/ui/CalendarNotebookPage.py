@@ -29,15 +29,8 @@ from promogest.ui.PrintDialog import PrintDialogHandler
 from promogest.dao.TestataDocumento import TestataDocumento
 from promogest.dao.Promemoria import Promemoria
 from  xhtml2pdf import pisa
-
-try:
-    if Environment.pg3:
-        from gi.repository.WebKit import WebView
-    else:
-        from webkit import WebView
-    WEBKIT = True
-except:
-    WEBKIT = False
+from gi.repository.WebKit import WebView
+WEBKIT = True
 
 class CalendarNotebookPage(GladeWidget):
     """ Widget di configurazione del codice installazione e dei parametri
