@@ -25,38 +25,6 @@
 import os
 import sys
 from optparse import OptionParser
-#try:
-    #import pysvn
-#except:
-    #pysvn = None
-    #print('Modulo pysvn non trovato: gli aggiornamenti non saranno disponibili!')
-
-#version = 0
-#if pysvn:
-    #try:
-        #version = pysvn.Client().info(".").revision.number
-        #if version > 4025:
-            #try:
-                #import gi
-            #except:
-                #print " ATTENZIONE SI DEVE RETROCEDERE e fare un rev alla 4025"
-                #import gtk
-                #dialoggg = gtk.MessageDialog(None,
-                            #gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                            #gtk.MESSAGE_ERROR,
-                            #gtk.RESPONSE_OK)
-                #dialoggg.set_markup("Attezione!\n Il promogest è passato alla versione 3 per cui non è più possibile effettuare gli aggiornamenti.\n Su windows è possibile scaricare dal sito la nuova versione.\n Su linux il passaggio dovrebbe essere trasparente\nChi avesse acquistato l'assistenza potrà contattarci usando i soliti canali\n\n RIPORTO IL CODICE AL VECCHIO PROMOGEST2 e RIAVVIO")
-                #response = dialoggg.run()
-                #dialoggg.destroy()
-                #client = pysvn.Client()
-                #client.update(".",
-                #revision=pysvn.Revision(pysvn.opt_revision_kind.number, 4025 ))
-        #else:
-            #print " OK SI PUO' PROSEGUIRE" , version
-    #except pysvn.ClientError:
-        #pass
-
-
 
 class BigBang(object):
     def __init__(self, debug=None, shop=False):
