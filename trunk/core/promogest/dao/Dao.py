@@ -97,7 +97,6 @@ class Dao(object):
             __filter__ = None
 
         self.record= self._session.query(self._DaoModule)
-        #print "SELLLLLLLLLLLLLLF", self.record
         if sqlalchemy.__version__ > '0.6':
             if join is not None:
                 self.record = self.record.join(join)
@@ -214,7 +213,7 @@ class Dao(object):
                 messageError(msg=msg)
                 pg2log.info("ERRORE IN DAO COMMIT  "+str(e))
             except:
-                print "ERRORE in dao commit", str(e)
+                print("ERRORE in dao commit", str(e))
             params["session"].rollback()
             return 0
 

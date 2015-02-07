@@ -201,7 +201,7 @@ if tipodb=="sqlite":
     a = session.query(TestataPrimaNota.id).all()
     b = session.query(RigaPrimaNota.id_testata_prima_nota).all()
     fixit =  list(set(b)-set(a))
-    print "fixt-riga-prima-nota", fixit
+    print( "fixt-riga-prima-nota", fixit)
     for f in fixit:
         if f[0] != "None" and f[0] != None:
             aa = RigaPrimaNota().select(idTestataPrimaNota=f[0], batchSize=None)

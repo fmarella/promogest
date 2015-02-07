@@ -62,7 +62,6 @@ if hasattr(Environment.conf, "VenditaDettaglio"):
     if hasattr(Environment.conf.VenditaDettaglio,"backend") and\
         Environment.conf.VenditaDettaglio.backend.upper() =="OLIVETTI":
         from promogest.modules.VenditaDettaglio.lib.olivetti import ElaExecute
-    #    print "DRIVER OLIVETTI ANCORA DA FARE"
         DRIVER = "E"
     elif hasattr(Environment.conf.VenditaDettaglio,"backend") and\
         Environment.conf.VenditaDettaglio.backend.capitalize() == "DITRON" and\
@@ -77,7 +76,7 @@ if hasattr(Environment.conf, "VenditaDettaglio"):
     elif Environment.conf.VenditaDettaglio.disabilita_stampa == 'yes':
         DRIVER = None
     else:
-        print "ERRORE NELLA DEFINIZIONE DEL BACKEND"
+        print("ERRORE NELLA DEFINIZIONE DEL BACKEND")
         from promogest.modules.VenditaDettaglio.lib.ditron import Ditron
         DRIVER = "D"
 elif setconf("VenditaDettaglio","disabilita_stampa"):

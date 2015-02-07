@@ -121,7 +121,7 @@ if tipodb=="sqlite":
     a = session.query(Contatto.id).all()
     b = session.query(RecapitoContatto.id_contatto).all()
     fixit =  list(set(b)-set(a))
-    print "fixt-contatto", fixit
+    print("fixt-contatto", fixit)
     for f in fixit:
         aa = RecapitoContatto().select(idContatto=f[0], batchSize=None)
         for a in aa:

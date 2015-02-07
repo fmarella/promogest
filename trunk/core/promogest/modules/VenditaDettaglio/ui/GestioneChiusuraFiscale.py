@@ -141,13 +141,11 @@ class GestioneChiusuraFiscale(GladeWidget):
         for k,v in dictRigheProv.iteritems():
             if len(v) ==1:
                 listRighe.append(v[0])
-                #print " QUESTO é SOLO", v[0].quantita
                 v[0].quantitaaa = v[0].quantita
             else:
                 listPrezzi = []
                 quantita = 0
                 for a in v:
-                    #print "IN COMPAGNIA", a.id_articolo, a.prezzo_scontato, a.quantita
                     quantita += a.quantita
                 v[0].quantitaaa = quantita
                 listRighe.append(v[0])

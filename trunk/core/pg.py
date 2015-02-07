@@ -24,6 +24,7 @@
 
 import os
 import sys
+import imp
 from optparse import OptionParser
 
 class BigBang(object):
@@ -83,7 +84,10 @@ i DAO, i filtri o tutto"""
         (options, args) = parser.parse_args()
         from promogest import preEnv, bindtextdomain
         bindtextdomain('promogest', locale_dir='./po/locale')
-        reload(sys)
+        try:
+            reload(sys)
+        except:
+            imp.reload(sys)
         sys.setdefaultencoding('utf-8')
         #if options.pg3_classi == True:
             #try:
@@ -122,10 +126,10 @@ i DAO, i filtri o tutto"""
         if options.web == True:
             preEnv.web = True
         if options.tipoDB and options.schema:
-            print " DOBBIAMO CREARE UN NUOVO DB CON AZIENDA " ,  options.schema
+            print(" DOBBIAMO CREARE UN NUOVO DB CON AZIENDA " ,  options.schema)
             preEnv.buildSchema = options.schema
             preEnv.aziendaforce = options.schema
-            from createSchemaDb import *
+            from createSchemaDb import buildAll
             buildAll()
             sys.exit()
         preEnv.table_to_load = ["promogest2.azienda", "promogest2.role" , "promogest2.action", "promogest2.roleaction","promogest2.utente"]

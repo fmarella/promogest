@@ -240,7 +240,7 @@ class Login(SimpleGladeApp):
                     Environment.params["schema"] = self.azienda
                     Environment.fk_prefix = Environment.params["schema"] + '.'
                     if self.azienda not in Environment.meta._schemas:
-                        print " PICKLE NON VA BENE"
+                        print(" PICKLE NON VA BENE")
                         #Environment.azienda = oldSchema
                         Environment.delete_pickle()
                         #Environment.restart_program()

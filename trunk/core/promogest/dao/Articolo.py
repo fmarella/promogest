@@ -628,7 +628,7 @@ class Articolo(Base, Dao):
                             session.add(var)
                         #self.saveToAppLog(var)
             except:
-                print "ARTICOLO NORMALE SENZA TAGLIE O COLORI"
+                print("ARTICOLO NORMALE SENZA TAGLIE O COLORI")
 
         if posso("ADR"):
             if self.articolo_adr_dao and self.id:
@@ -833,7 +833,7 @@ if tipodb=="sqlite":
     a = session.query(Articolo.id_aliquota_iva).all()
     b = session.query(AliquotaIva.id).all()
     fixit =  list(set(a)-set(b))
-    print "fixt-articolo", fixit
+    print("fixt-articolo", fixit)
     for f in fixit:
         aa = Articolo().select(idAliquotaIva=f[0], batchSize=None)
         for a in aa:

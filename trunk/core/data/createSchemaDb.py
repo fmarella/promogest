@@ -27,7 +27,7 @@ from sqlalchemy.schema import CreateSchema
 
 
 def orderedInstallVenditaDettaglio():
-    print "INSTALLAZIONE PROMOSHOP"
+    print ("INSTALLAZIONE PROMOSHOP")
     #orderedImport()
     try:
 
@@ -45,7 +45,7 @@ def orderedInstallVenditaDettaglio():
         return False
 
 def orderedInstallPromoWear():
-    print "INSTALLAZIONE PROMOWEAR"
+    print ("INSTALLAZIONE PROMOWEAR")
     #orderedImport()
     try:
 
@@ -70,13 +70,13 @@ def buildAll():
         try:
             engine.execute(CreateSchema(buildSchema))
         except:
-            print "CREAZIONE SCHEMA", buildSchema, "NON RIUSCITO O GIA ESISTENTE"
+            print("CREAZIONE SCHEMA", buildSchema, "NON RIUSCITO O GIA ESISTENTE")
 
     if tipo_eng == "postgresql":
         try:
             engine.execute(CreateSchema("promogest2"))
         except:
-            print "CREAZIONE SCHEMA promogest2 NON RIUSCITO O GIA ESISTENTE"
+            print("CREAZIONE SCHEMA promogest2 NON RIUSCITO O GIA ESISTENTE")
 
     try:
         from data.azienda import t_azienda
@@ -180,6 +180,6 @@ def buildAll():
         from data.testataPrimaNota import t_testata_prima_nota
         from data.rigaPrimaNota import t_riga_prima_nota
         from data.rigaPrimaNotaTestataDocumentoScadenza import t_riga_primanota_testata_documento_scadenza
-        print " FINITA L'AGGIUNTA DELLE TABELLE"
+        print(" FINITA L'AGGIUNTA DELLE TABELLE")
     except Exception as e:
-        print "DELLA CREAZIONE TABELLE QUALCOSA NON E' ANDATO BENE", e
+        print("DELLA CREAZIONE TABELLE QUALCOSA NON E' ANDATO BENE", e)

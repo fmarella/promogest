@@ -69,7 +69,7 @@ if tipodb=="sqlite":
     a = session.query(Banca.id).all()
     b = session.query(RigaPrimaNota.id_banca).all()
     fixit =  list(set(b)-set(a))
-    print "fixt-riga-prima-nota-banca", fixit
+    print("fixt-riga-prima-nota-banca", fixit)
     for f in fixit:
         if f[0] != "None" and f[0] != None:
             aa = RigaPrimaNota().select(idBanca=f[0], batchSize=None)
