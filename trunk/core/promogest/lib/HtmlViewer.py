@@ -32,7 +32,18 @@ from promogest.dao.DaoUtils import *
 from promogest.lib.HtmlHandler import createHtmlObj, renderTemplate, renderHTML
 from promogest.lib.html2csv import html2csv
 from promogest.ui.PrintDialog import PrintDialogHandler
-from  xhtml2pdf import pisa
+#try:
+    #import ho.pisa as pisa
+#except:
+    #print "ERRORE NELL'IMPORT DI PISA"
+    #import pisaLib.ho.pisa as pisa
+
+try:
+    from  xhtml2pdf import pisa
+except:
+    print "ERRORE NELL'IMPORT DI PISA"
+    import pisaLib.ho.pisa as pisa
+
 
 
 class HtmlViewer(GladeWidget):
