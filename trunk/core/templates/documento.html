@@ -158,13 +158,13 @@
         <tr>
             <td class="even-detail" colspan="2">Totale Sospeso</td>
             <td class="odd-detail">
-                {% if conf.hasPagamenti == True %}
+                {% if environment.hasPagamenti == True %}
                     <strong>{{utils.mNLC(dao.totale_sospeso|nonone,2)}}</strong>
                 {% endif %}
             </td>
             <td class="even-detail" colspan="2">Totale Pagato</td>
             <td class="odd-detail">
-                {% if conf.hasPagamenti == True %}
+                {% if environment.hasPagamenti == True %}
                     <strong>{{utils.mNLC(dao.totale_pagato|nonone,2)}}</strong>
                {% endif %}
             </td>
