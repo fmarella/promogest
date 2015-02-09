@@ -293,7 +293,6 @@ def giacenzaArticolo(daData=None, aData=None,year=None,
                         Operazione.segno,
                         RigaMovimento.id,
                         RigaMovimento.descrizione)\
-                .join(TestataMovimento, Operazione)\
                 .filter(TestataMovimento.data_movimento.between(
                     daData or datetime.date(int(year), 1, 1),
                     aData or datetime.date(int(year) + 1, 1, 1)))\
@@ -302,7 +301,7 @@ def giacenzaArticolo(daData=None, aData=None,year=None,
                 .filter(RigaMovimento.id_magazzino == magazzini)\
                 .filter(RigaMovimento.id_articolo == idArticolo)\
                 .all()
-
+    # .join(TestataMovimento, Operazione)\ TOLTO PERCHé SU SUBLIMA WEB DAVA ERRORE
     giacenza = 0
     piu = 0
     meno = 0
@@ -431,8 +430,8 @@ def righeDocumentoDel(id=None):
     if posso("SM"):
         from promogest.modules.SuMisura.dao.MisuraPezzo import MisuraPezzo
     row = RigaDocumento().select(idTestataDocumento=id,
-                                                offset=None,
-                                                batchSize=None)
+                                offset=None,
+                                batchSize=None)
     if row:
         for r in row:
             if posso("SM"):

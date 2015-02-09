@@ -19,21 +19,22 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-from sqlalchemy import *
-from sqlalchemy.orm import *
 from promogest.Environment import *
 from promogest.dao.Dao import Dao, Base
 
+print("SCHEMAAAAAAAAAAAAAAAAAAAAAAA", params["schema"])
+
 
 class CategoriaNews(Base, Dao):
-    try:
-        __table__ = Table('news_category', params['metadata'],
-                                    schema=mainSchema,
+    # try:
+    __table__ = Table('news_category', params['metadata'],
+                                    schema=params["schema"],
                                     autoload=True,
-                                    autoload_with=engine)
-    except:
-        from data.categoriaNews import t_news_category
-        __table__ = t_news_category
+                                    autoload_with=engine
+    )
+    # except:
+    #     from data.categoriaNews import t_news_category
+    #     __table__ = t_news_category
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)

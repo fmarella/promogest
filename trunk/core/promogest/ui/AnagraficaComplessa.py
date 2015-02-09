@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # Copyright (C) 2005-2015 by Promotux
-#                  di Francesco Meloni snc - http://www.promotux.it/
+# di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Alceste Scalas <alceste@promotux.it>
 #    Author: Andrea Argiolas <andrea@promotux.it>
@@ -23,15 +23,11 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-import time
-import os
-import threading
-import os.path
 import subprocess
 import webbrowser
 from hashlib import md5
+
 from promogest.dao.Azienda import Azienda
-from promogest.ui.gtk_compat import *
 from promogest.ui.GladeWidget import GladeWidget
 from promogest.ui.widgets.FilterWidget import FilterWidget
 from promogest.lib.utils import *
@@ -40,8 +36,8 @@ from promogest.lib.CsvGenerator import CsvFileGenerator
 from promogest import Environment
 from promogest.ui.SendEmail import SendEmail
 from promogest.lib.HtmlHandler import createHtmlObj, renderHTML
-
 from promogest.lib.DaoTransform import do_send_mail, NoAccountEmailFound, NetworkError, to_fatturapa
+
 
 def get_selected_daos(treeview):
     """Ritorna una lista di DAO selezionati.
@@ -681,7 +677,8 @@ class Anagrafica(GladeWidget):
                     with open(filename, 'w') as fp:
                         fp.write(xml.encode("utf-8"))
                         # incrementa il progressivo
-                        azienda.progressivo_fatturapa = ''.join([progressivo[0], str(int(progressivo[1:]) + 1).zfill(4)])
+                        azienda.progressivo_fatturapa = ''.join(
+                            [progressivo[0], str(int(progressivo[1:]) + 1).zfill(4)])
                         Environment.session.commit()
                     saveDialog.destroy()
                 elif response == GTK_RESPONSE_CANCEL:
@@ -891,9 +888,10 @@ class Anagrafica(GladeWidget):
     def on_report_mov_sped_menuitem_activate(self, widget):
         daos = get_selected_daos(self.anagrafica_filter_treeview)
         from .ReportMovimentiSpedizioniWindow import ReportMovimentiSpedizioniWindow
+
         anag = ReportMovimentiSpedizioniWindow(self, daos=daos)
-#        anag.placeWindow(anag.getTopLevel())
-#        anag.getTopLevel().show_all()
+        #        anag.placeWindow(anag.getTopLevel())
+        #        anag.getTopLevel().show_all()
         anagWindow = anag.getTopLevel()
         returnWindow = self.getTopLevel().get_toplevel()
         anagWindow.set_transient_for(returnWindow)
@@ -902,6 +900,7 @@ class Anagrafica(GladeWidget):
 
     def on_chiusura_ordini_menuitem_activate(self, widget):
         from .ReportMovimentiSpedizioniUtils import chiusura_ordini
+
         chiusura_ordini(self.pbar_anag_complessa)
 
     def on_records_print_progress_dialog_response(self, dialog, responseId):
@@ -914,8 +913,8 @@ class Anagrafica(GladeWidget):
                 gobject.source_remove(self.__pulseSourceTag)
 
             self.on_records_print_dialog_close(dialog)
-        #            del self.__pdfReport
-        #            del self.__pdfGenerator
+            #            del self.__pdfReport
+            #            del self.__pdfGenerator
 
 
     def on_records_print_progress_dialog_close(self, dialog, event=None):
@@ -1039,7 +1038,7 @@ html contatti <b>assistenza@promotux.it</b> per informazioni.""")
                                                     GTK_RESPONSE_CANCEL,
                                                     gtk.STOCK_SAVE,
                                                     GTK_RESPONSE_OK),
-                                           )
+        )
         fileDialog.set_current_name(self._pdfName + ".pdf")
         fileDialog.set_current_folder(self._folder)
 

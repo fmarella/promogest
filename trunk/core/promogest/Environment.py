@@ -161,7 +161,10 @@ subloguiDir = '.' + os.sep + 'gui_sublo' + os.sep
 schemi_presenti = []
 confList = []
 configDir = None
-
+SRC_PATH_PG = os.path.dirname(__file__)
+print(os.path.dirname(__file__))
+templates_dir_pg = os.path.abspath(os.path.join(SRC_PATH_PG,os.pardir, 'templates'))
+templates_dir_pg_report = os.path.abspath(os.path.join(SRC_PATH_PG, os.pardir, 'report-templates'))
 modulesList = []
 
 sladir = "sladir/"

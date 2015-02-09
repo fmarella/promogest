@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2014 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -20,14 +20,11 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-from sqlalchemy import *
 from promogest.Environment import *
-
 t_news_category = Table('news_category', params["metadata"],
         Column('id', Integer, primary_key=True),
         Column('denominazione', String(100), unique=True),
         Column('icona_categoria_news', Text, nullable=True),
-        schema=mainSchema,
+        schema=params['schema'],
         extend_existing=True,)
-
 t_news_category.create(checkfirst=True)

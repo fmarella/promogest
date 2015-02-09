@@ -22,14 +22,14 @@
 
                 {% if dao.id_cliente %}
                 <td class="even-detail">Cliente</td>
-            <td colspan="3" style="font-size:16px;" class="odd-detail"><strong>{{dao.CLI.ragione_sociale|uu}}</strong></td>
+            <td colspan="3" style="font-size:16px;" class="odd-detail"><strong>{{dao.CLI.ragione_sociale}}</strong></td>
                 {% endif %}
         </tr>
         <tr >
 
             {% if dao.id_fornitore %}
              <td class="even-detail">Fornitore</td>
-                <td colspan="3" style="font-size:16px;" class="odd-detail"><strong>{{dao.FORN.ragione_sociale|uu}}</strong></td>
+                <td colspan="3" style="font-size:16px;" class="odd-detail"><strong>{{dao.FORN.ragione_sociale}}</strong></td>
             {% endif %}
         </tr>
     </table>
@@ -92,7 +92,7 @@
                 <td class="odd-number" colspan="2"></td>
                 {% endif %}
                 <td class="odd-number" colspan="2">{{riga.percentuale_iva|int}}</td>
-                <td class="odd-number" colspan="3"><strong>{{utils.mNLC(( riga.totaleRiga ),2)}}<strong></td>
+                <td class="odd-number" colspan="3"><strong>{{utils.mNLC(( riga.totaleRiga ),2)}}</strong></td>
             </tr>
             {% endfor %}
         </table>
@@ -158,12 +158,16 @@
         <tr>
             <td class="even-detail" colspan="2">Totale Sospeso</td>
             <td class="odd-detail">
-                <strong py:if="conf.hasPagamenti == True">
-                    <strong>{{utils.mNLC(dao.totale_sospeso|nonone,2)}}</strong></strong></td>
+                {% if conf.hasPagamenti == True %}
+                    <strong>{{utils.mNLC(dao.totale_sospeso|nonone,2)}}</strong>
+                {% endif %}
+            </td>
             <td class="even-detail" colspan="2">Totale Pagato</td>
             <td class="odd-detail">
-                <strong py:if="conf.hasPagamenti == True">
-                    <strong>{{utils.mNLC(dao.totale_pagato|nonone,2)}}</strong></strong></td>
+                {% if conf.hasPagamenti == True %}
+                    <strong>{{utils.mNLC(dao.totale_pagato|nonone,2)}}</strong>
+               {% endif %}
+            </td>
         </tr>
     </table>
     <table cellpadding="0" cellspacing="0" border="0">
@@ -177,15 +181,19 @@
             <tr>
                 <td class="even-detail">Inizio trasporto</td>
                 <td class="odd-detail">
-                    <strong py:if="dao.inizio_trasporto is not None">
+                    {% if dao.inizio_trasporto %}
                         <strong>{{utils.dateTimeToString(dao.inizio_trasporto)}}</strong>
-                    </strong>
+                    {% else %}
+                        <strong></strong>
+                    {% endif %}
                 </td>
             <td class="even-detail" colspan="2">Fine trasporto</td>
                 <td class="odd-detail" colspan="2">
-                    <strong py:if="dao.fine_trasporto is not None">
+                    {% if dao.fine_trasporto %}
                         <strong>{{utils.dateTimeToString(dao.fine_trasporto)}}</strong>
-                    </strong>
+                    {% else %}
+                        <strong></strong>
+                    {% endif %}
                 </td>
             </tr>
 

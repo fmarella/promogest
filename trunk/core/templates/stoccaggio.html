@@ -2,7 +2,7 @@
 {% block body %}
     {% if dao %}
     <table cellpadding="0" cellspacing="0" border="0">
-            <tr><td colspan="5" class="table-header"><b>MAGAZZINO:</b> {{dao.magazzino}} <br/><b>ARTICOLO: CODICE:</b> {{dao.codice_articolo.decode("utf-8")}}  - <b>C/BARRE:</b> {{dao.arti.codice_a_barre}} <br /> <b>DENOM:</b> {{dao.articolo.decode("utf-8")}}</td></tr>
+            <tr><td colspan="5" class="table-header"><b>MAGAZZINO:</b> {{dao.magazzino}} <br/><b>ARTICOLO: CODICE:</b> {{dao.codice_articolo}}  - <b>C/BARRE:</b> {{dao.arti.codice_a_barre}} <br /> <b>DENOM:</b> {{dao.articolo}}</td></tr>
             <tr>
                 <td width="25%" class="odd-detail">PERIODO DA DATA</td>
                 <td width="25%" class="odd-detail"><strong>{{utils.dateToString(dao.daData)}}</strong></td>
@@ -41,7 +41,7 @@
             </tr>
             {% for item in dao._getTotaliOperazioniMovimento(daData=dao.daData,aData=dao.aData, year=environment.workingYear) %}
             <tr >
-            <td class="odd-detail" style="padding-left:5px;"><a href="program:/testataDocumentoId={{item['daoTestataDocumento'].id}}"><b>DOC:</b> N°.decode("utf-8") {{item['daoTestataDocumento'].numero}} </a>-- <a href="program:/testataMovimentoId={{item['daoTestataMovimento'].id}}"><b>MOV:</b> N°.decode("utf-8") {{item['numero']}}</a> - {{item['operazione']}} - Del: {{utils.dateToString(item['data_movimento'])}} -
+            <td class="odd-detail" style="padding-left:5px;"><a href="program:/testataDocumentoId={{item['daoTestataDocumento'].id}}"><b>DOC:</b> N° {{item['daoTestataDocumento'].numero}} </a>-- <a href="program:/testataMovimentoId={{item['daoTestataMovimento'].id}}"><b>MOV:</b> N° {{item['numero']}}</a> - {{item['operazione']}} - Del: {{utils.dateToString(item['data_movimento'])}} -
             {% if item["daoTestataMovimento"].id_cliente or item["daoTestataMovimento"].id_fornitore %}
             Rag_soc.:{{item['fornitore'][0:9]|string}}{{item['cliente'][0:9]|string}}<br>
             {% endif %}
