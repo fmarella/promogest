@@ -12,6 +12,31 @@
       <column type="gchararray"/>
     </columns>
   </object>
+  <object class="GtkImage" id="image1">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">anagrafica_magazzino24x24.png</property>
+  </object>
+  <object class="GtkImage" id="image2">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">stoccaggio24x24.png</property>
+  </object>
+  <object class="GtkImage" id="image3">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">movimenti_magazzino24x24.png</property>
+  </object>
+  <object class="GtkImage" id="image4">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">inventario24x24.png</property>
+  </object>
+  <object class="GtkImage" id="image5">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">fornitura48x48.png</property>
+  </object>
   <object class="GtkFrame" id="elenco_magazzini_frame">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -35,16 +60,20 @@
                 <child>
                   <object class="GtkTreeView" id="elenco_magazzini_treeview">
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
+                    <property name="can_focus">False</property>
                     <property name="model">elenco_magazzini_listore</property>
                     <property name="headers_clickable">False</property>
+                    <property name="enable_search">False</property>
                     <property name="search_column">1</property>
+                    <property name="show_expanders">False</property>
+                    <property name="enable_grid_lines">both</property>
                     <signal name="cursor-changed" handler="on_elenco_magazzini_treeview_cursor_changed" swapped="no"/>
                     <child internal-child="selection">
                       <object class="GtkTreeSelection" id="treeview-selection"/>
                     </child>
                     <child>
                       <object class="GtkTreeViewColumn" id="denominazione_column">
+                        <property name="resizable">True</property>
                         <property name="title" translatable="yes">Denominazione</property>
                         <property name="expand">True</property>
                         <child>
@@ -57,6 +86,7 @@
                     </child>
                     <child>
                       <object class="GtkTreeViewColumn" id="localita_column">
+                        <property name="resizable">True</property>
                         <property name="title" translatable="yes">Località</property>
                         <child>
                           <object class="GtkCellRendererText" id="cellrenderertext3"/>
@@ -189,31 +219,6 @@ Magazzino</property>
         <property name="use_markup">True</property>
       </object>
     </child>
-  </object>
-  <object class="GtkImage" id="image1">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="pixbuf">anagrafica_magazzino24x24.png</property>
-  </object>
-  <object class="GtkImage" id="image2">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="pixbuf">stoccaggio24x24.png</property>
-  </object>
-  <object class="GtkImage" id="image3">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="pixbuf">movimenti_magazzino24x24.png</property>
-  </object>
-  <object class="GtkImage" id="image4">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="pixbuf">inventario24x24.png</property>
-  </object>
-  <object class="GtkImage" id="image5">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="pixbuf">fornitura48x48.png</property>
   </object>
   <object class="GtkLabel" id="magazzini_label">
     <property name="visible">True</property>

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -52,10 +52,9 @@ class ElencoMagazzini(GladeWidget):
 
         mags = Magazzino().select(offset=None, batchSize=None)
         for m in mags:
-            self.elenco_magazzini_listore.append((m,
-                          (m.denominazione or ''),
-                          (m.localita or '')))
-
+            self.elenco_magazzini_listore.append([m,
+                          m.denominazione or '',
+                          m.localita or ''])
 
     def on_elenco_magazzini_treeview_cursor_changed(self, treeview):
         sel = treeview.get_selection()
