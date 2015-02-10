@@ -269,13 +269,7 @@ def giacenzaArticolo(daData=None, aData=None,year=None,
                 mag.append(m[0])
             magazzini = mag
         righeArticoloMovimentate = Environment.params["session"]\
-                .query(RigaMovimento.quantita,
-                        RigaMovimento.moltiplicatore,
-                        RigaMovimento.valore_unitario_netto,
-                        Operazione.segno,
-                        RigaMovimento.id,
-                        RigaMovimento.descrizione)\
-                .join(TestataMovimento, Operazione)\
+                .query(RigaMovimento)\
                 .filter(TestataMovimento.data_movimento.between(
                     daData or datetime.date(int(year), 1, 1),
                     aData or datetime.date(int(year) + 1, 1, 1)))\
@@ -287,12 +281,7 @@ def giacenzaArticolo(daData=None, aData=None,year=None,
     else:
         magazzini = idMagazzino
         righeArticoloMovimentate = Environment.params["session"]\
-                .query(RigaMovimento.quantita,
-                        RigaMovimento.moltiplicatore,
-                        RigaMovimento.valore_unitario_netto,
-                        Operazione.segno,
-                        RigaMovimento.id,
-                        RigaMovimento.descrizione)\
+                .query(RigaMovimento) \
                 .filter(TestataMovimento.data_movimento.between(
                     daData or datetime.date(int(year), 1, 1),
                     aData or datetime.date(int(year) + 1, 1, 1)))\
@@ -301,15 +290,14 @@ def giacenzaArticolo(daData=None, aData=None,year=None,
                 .filter(RigaMovimento.id_magazzino == magazzini)\
                 .filter(RigaMovimento.id_articolo == idArticolo)\
                 .all()
-    # .join(TestataMovimento, Operazione)\ TOLTO PERCHé SU SUBLIMA WEB DAVA ERRORE
     giacenza = 0
     piu = 0
     meno = 0
     for ram in righeArticoloMovimentate:
-        segno = ram[3]
-        qua = ram[0] * ram[1]
+        segno = ram.testata_movimento.opera.segno
+        qua = ram.quantita * ram.moltiplicatore
         if segno == "-":
-            if "$SSK$" in ram[5]:
+            if "$SSK$" in ram.descrizione:
                 giacenza += qua
                 piu += qua
             else:
@@ -321,8 +309,8 @@ def giacenzaArticolo(daData=None, aData=None,year=None,
             piu += abs(qua)
 
         elif segno == "=":
-            r = RigaMovimento().getRecord(id=ram[4])
-            tm = TestataMovimento().getRecord(id=r.id_testata_movimento)
+            r = ram
+            tm = ram.testata_movimento
             if tm.operazione == "Trasferimento merce magazzino":
                 if r.id_magazzino == tm.id_to_magazzino:
                     if qua >= 0:
@@ -340,7 +328,7 @@ def giacenzaArticolo(daData=None, aData=None,year=None,
                         meno += qua
 
     if len(righeArticoloMovimentate):
-        val = giacenza * ram[2]
+        val = giacenza * ram.valore_unitario_netto
     else:
         val = 0
     return (round(giacenza, 2), round(val, 2), piu, round(meno, 2))

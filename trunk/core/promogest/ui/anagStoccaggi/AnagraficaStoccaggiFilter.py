@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -71,8 +71,8 @@ class AnagraficaStoccaggiFilter(AnagraficaFilter):
             findComboboxRowFromId(self.id_magazzino_filter_combobox,
                                             self._anagrafica._idMagazzino)
             #self.id_magazzino_filter_combobox.set_sensitive(False)
-            column = self._anagrafica.anagrafica_filter_treeview.get_column(0)
-            column.set_property('visible', False)
+            # column = self._anagrafica.anagrafica_filter_treeview.get_column(0)
+            # column.set_property('visible', False)
         if posso("PW"):
             fillComboboxGruppiTaglia(
                         self.id_gruppo_taglia_articolo_filter_combobox, True)
@@ -102,10 +102,12 @@ class AnagraficaStoccaggiFilter(AnagraficaFilter):
     def _reOrderBy(self, column):
         if column.get_name() == "magazzino_column":
             return self._changeOrderBy(column, (
-                                    Magazzino, Magazzino.denominazione))
-        if column.get_name() == "ragione_sociale_column":
-            return self._changeOrderBy(column, (
-                                    None, PersonaGiuridica_.ragione_sociale))
+                                                Magazzino,
+                                                Magazzino.denominazione))
+        # if column.get_name() == "ragione_sociale_column":
+        #     return self._changeOrderBy(column, (
+        #                                         None,
+        #                                         PersonaGiuridica_.ragione_sociale))
 
     def clear(self):
         # Annullamento filtro
@@ -193,9 +195,9 @@ class AnagraficaStoccaggiFilter(AnagraficaFilter):
         for s in stos:
             setattr(s, "daData", daData)
             setattr(s,  "aData", aData)
-            self.filter_listore.append((s,
-                                        (s.magazzino or ''),
-                                        (s.codice_articolo or ''),
-                                        (s.arti.codice_a_barre or ''),
-                                        (s.articolo or ''),
-                                        (str(s.giacenza[0]) or '')))
+            self.filter_listore.append([s,
+                                        s.magazzino or '',
+                                        s.codice_articolo or '',
+                                        s.arti.codice_a_barre or '',
+                                        s.articolo or '',
+                                        str(s.giacenza[0]) or ''])

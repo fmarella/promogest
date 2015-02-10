@@ -124,9 +124,9 @@ class Stoccaggio(Base, Dao):
 
         def _impegnatoSuLavorazione(self):
             if self.arti.codice not in ["Stampa", "z-CONTR", "z-BONIFICO"]:
-                year = Environment.workingYear
+                year = workingYear
                 t = 0
-                part = Environment.params["session"]\
+                part = params["session"]\
                     .query(Riga.quantita)\
                     .filter(and_(SchedaOrdinazione.fattura != True,
                         riga.c.id == RigaSchedaOrdinazione.id,
