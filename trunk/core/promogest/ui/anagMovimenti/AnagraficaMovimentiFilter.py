@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni <francesco@promotux.it>
@@ -22,8 +22,6 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 from promogest.ui.AnagraficaComplessaFilter import AnagraficaFilter
-from promogest.ui.anagDocumenti.AnagraficaDocumentiEditUtils import *
-from promogest import Environment
 from promogest.dao.TestataMovimento import TestataMovimento
 from promogest.lib.utils import *
 from promogest.ui.utilsCombobox import *
@@ -45,61 +43,12 @@ class AnagraficaMovimentiFilter(AnagraficaFilter):
                               path='_ricerca_semplice_movimenti.glade')
         self._widgetFirstFocus = self.da_data_filter_entry
         self.orderBy = 'id'
+        self.aa = 1
 
     def draw(self, cplx=False):
         """
         FIXME
         """
-        # Colonne della Treeview per il filtro
-        treeview = self._anagrafica.anagrafica_filter_treeview
-        renderer = gtk.CellRendererText()
-
-        column = gtk.TreeViewColumn('Data movimento', renderer, text=1)
-        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
-        column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, (None, 'data_movimento'))
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(100)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Numero movimento', renderer, text=2)
-        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
-        column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, (None,'numero'))
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(100)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Causale movimento', renderer, text=3)
-        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
-        column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy,   (None, 'operazione'))
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(150)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Cliente / Fornitore', renderer, text=4)
-        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
-        column.set_clickable(False)
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(250)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Note interne', renderer, text=5)
-        column.set_sizing(GTK_COLUMN_GROWN_ONLY)
-        column.set_clickable(False)
-        column.set_resizable(True)
-        column.set_expand(True)
-        column.set_min_width(200)
-        treeview.append_column(column)
-
-        self._treeViewModel = gtk.ListStore(object, str, str, str, str, str)
-        self._anagrafica.anagrafica_filter_treeview.set_model(self._treeViewModel)
-
         fillComboboxOperazioni(self.id_operazione_filter_combobox, 'movimento',
                                True)
         self.id_operazione_filter_combobox.set_active(0)
@@ -116,6 +65,26 @@ class AnagraficaMovimentiFilter(AnagraficaFilter):
         self.cliente_filter_radiobutton.set_active(True)
         self.on_filter_radiobutton_toggled()
         self.clear()
+
+
+    def _reOrderBy(self, column):
+        if column.get_name() == "numero_column":
+            self.funzione_ordinamento = None
+            return self._changeOrderBy(column, (None, TestataMovimento.numero))
+        if column.get_name() == "data_column":
+            self.funzione_ordinamento = None
+            return self._changeOrderBy(column,
+                                       (None, TestataMovimento.data_movimento))
+        if column.get_name() == "causale_column":
+            self.funzione_ordinamento = None
+            return self._changeOrderBy(column, (None, TestataMovimento.operazione))
+        if column.get_name() == "cliente_fornitore_column":
+            self.aa = -1 * self.aa
+            self.funzione_ordinamento = "cliforn"
+            self.refresh()
+        self._anagrafica.funzione_ordinamento = self.funzione_ordinamento
+        self._anagrafica.aa = self.aa
+
 
     def clear(self):
         """ FIXME """
@@ -161,7 +130,6 @@ class AnagraficaMovimentiFilter(AnagraficaFilter):
         self._filterCountClosure = filterCountClosure
         self.numRecords = self.countFilterResults()
         self._refreshPageCount()
-
         def filterClosure(offset, batchSize):
             """
             """
@@ -179,11 +147,23 @@ class AnagraficaMovimentiFilter(AnagraficaFilter):
                                                  offset=offset,
                                                  batchSize=batchSize)
 
-        self._filterClosure = filterClosure
-        tdos = self.runFilter()
-#        self.xptDaoList = self.runFilter(offset=None, batchSize=None)
-#        self.xptDaoList =None
-        self._treeViewModel.clear()
+
+        if self.funzione_ordinamento == "cliforn":
+            self._filterClosure = filterClosure
+            tdoss = self.runFilter(batchSizeForce=True)
+            if self.aa < 0:
+                tdoss.sort(key=lambda x: x.intestatario.strip().upper())
+            else:
+                tdoss.sort(key=lambda x: x.intestatario.strip().upper(), reverse=True)
+            tdos = tdoss[self.offset:self.batchSize2 + self.offset]
+        else:
+            self._filterClosure = filterClosure
+            tdos = self.runFilter()
+        for l in self.filter_listore:
+            # print l.iter
+            self.filter_listore[l.iter][0] = None
+            # self.filter_listore.remove(l.iter)
+        self.filter_listore.clear()
         for t in tdos:
             soggetto = ''
             if t.id_cliente is not None:
@@ -194,13 +174,12 @@ class AnagraficaMovimentiFilter(AnagraficaFilter):
                 soggetto = t.ragione_sociale_fornitore or ''
                 if soggetto == '':
                     soggetto = (t.cognome_fornitore or '') + ' ' + (t.nome_fornitore or '')
-            self._treeViewModel.append((t,
+            self.filter_listore.append([t,
                                         dateToString(t.data_movimento),
-                                        (str(t.numero) or "0"),
-                                        (t.operazione or ''),
-                                        (soggetto or ''),
-                                        (t.note_interne or '')))
-
+                                        str(t.numero) or "0",
+                                        t.operazione or '',
+                                        soggetto or '',
+                                        t.note_interne or ''])
     def on_filter_radiobutton_toggled(self, widget=None):
         """ FIXME
         """

@@ -286,6 +286,8 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         else:
             self._filterClosure = filterClosure
             tdos = self.runFilter()
+        for l in self.filter_listore:
+            self.filter_listore[l.iter][0] = None
         self.filter_listore.clear()
         pa = True
         for t in tdos:

@@ -48,7 +48,6 @@ class AnagraficaHtml(object):
     def setDao(self, dao):
         """ Visualizza il Dao specificato """
         self.dao = dao
-
         self._refresh()
         if dao and Environment.debugDao:
             #FIXME: add some logging level check here

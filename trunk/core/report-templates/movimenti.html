@@ -22,11 +22,11 @@
             <tr >
                 <td>{{riga.magazzino[:20]}}</td>
                 <td>{{riga.codice_articolo}}</td>
-                <td>{{riga.descrizione[:20]}}</td>
-                <td class="number">{{utils.number_format() % riga.percentuale_iva}}</td>
-                <td class="number">{{utils.number_format() % ( riga.quantita * riga.moltiplicatore )}}</td>
-                <td class="number">{{utils.number_format() % riga.valore_unitario_netto}}</td>
-                <td class="number">{{utils.number_format() % ( riga.quantita * riga.moltiplicatore * riga.valore_unitario_netto )}}</td>
+                <td>{{riga.descrizione}}</td>
+                <td class="number">{{utils.mN(riga.percentuale_iva,0)}}</td>
+                <td class="number">{{utils.mN(riga.quantita * riga.moltiplicatore,3)}}</td>
+                <td class="number">{{utils.mNLC(riga.valore_unitario_netto,2)}}</td>
+                <td class="number">{{utils.mNLC(riga.quantita * riga.moltiplicatore * riga.valore_unitario_netto,2 )}}</td>
             </tr>
                 {% endfor %}
         </table>

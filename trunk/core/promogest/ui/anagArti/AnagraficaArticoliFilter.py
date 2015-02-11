@@ -158,6 +158,11 @@ class AnagraficaArticoliFilter(AnagraficaFilter):
         self._filterClosure = filterClosure
 
         arts = self.runFilter()
+
+
+        for l in self._treeViewModel:
+            # print l.iter
+            self._treeViewModel[l.iter][0] = None
         self._treeViewModel.clear()
         for a in arts:
             modelRowPromoWear = []

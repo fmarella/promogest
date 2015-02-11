@@ -317,4 +317,95 @@
       </packing>
     </child>
   </object>
+  <object class="GtkListStore" id="filter_listore">
+    <columns>
+      <!-- column-name PyObject1 -->
+      <column type="PyObject"/>
+      <!-- column-name gchararray1 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray2 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray3 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray4 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray5 -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
+  <object class="GtkTreeView" id="anagrafica_filter_treeview">
+    <property name="visible">True</property>
+    <property name="can_focus">True</property>
+    <property name="model">filter_listore</property>
+    <property name="enable_search">False</property>
+    <property name="show_expanders">False</property>
+    <property name="tooltip_column">1</property>
+    <child internal-child="selection">
+      <object class="GtkTreeSelection" id="treeview-selection1"/>
+    </child>
+    <child>
+      <object class="GtkTreeViewColumn" id="data_column">
+        <property name="resizable">True</property>
+        <property name="title" translatable="yes">Data</property>
+        <property name="clickable">True</property>
+        <child>
+          <object class="GtkCellRendererText" id="cellrenderertext1"/>
+          <attributes>
+            <attribute name="text">1</attribute>
+          </attributes>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkTreeViewColumn" id="numero_column">
+        <property name="resizable">True</property>
+        <property name="title" translatable="yes">Numero</property>
+        <property name="clickable">True</property>
+        <child>
+          <object class="GtkCellRendererText" id="cellrenderertext2"/>
+          <attributes>
+            <attribute name="text">2</attribute>
+          </attributes>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkTreeViewColumn" id="causale_column">
+        <property name="resizable">True</property>
+        <property name="title" translatable="yes">Causale</property>
+        <property name="clickable">True</property>
+        <child>
+          <object class="GtkCellRendererText" id="cellrenderertext3"/>
+          <attributes>
+            <attribute name="text">3</attribute>
+          </attributes>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkTreeViewColumn" id="cliente_fornitore_column">
+        <property name="resizable">True</property>
+        <property name="title" translatable="yes">Cliente / Fornitore</property>
+        <property name="clickable">True</property>
+        <child>
+          <object class="GtkCellRendererText" id="cellrenderertext4"/>
+          <attributes>
+            <attribute name="text">4</attribute>
+          </attributes>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkTreeViewColumn" id="treeviewcolumn5">
+        <property name="resizable">True</property>
+        <property name="title" translatable="yes">Note</property>
+        <child>
+          <object class="GtkCellRendererText" id="cellrenderertext5"/>
+          <attributes>
+            <attribute name="text">5</attribute>
+          </attributes>
+        </child>
+      </object>
+    </child>
+  </object>
 </interface>

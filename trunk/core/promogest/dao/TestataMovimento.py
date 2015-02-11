@@ -20,16 +20,11 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 
-from sqlalchemy import *
-from sqlalchemy.orm import *
 from promogest.Environment import *
 from promogest.dao.Dao import Dao, Base
 from promogest.dao.DaoUtils import *
 from promogest.dao.Articolo import Articolo
-from promogest.dao.Multiplo import Multiplo
-from promogest.dao.Riga import Riga
 from promogest.dao.RigaMovimento import RigaMovimento, t_riga_movimento, t_riga
-from promogest.dao.RigaDocumento import RigaDocumento
 from promogest.dao.RigaMovimentoFornitura import RigaMovimentoFornitura
 from promogest.dao.NumeroLottoTemp import NumeroLottoTemp
 from promogest.dao.Fornitore import Fornitore
@@ -49,14 +44,13 @@ class TestataMovimento(Base, Dao):
                             params['metadata'],
                             schema=params['schema'],
                             autoload=True)
-
     except:
         from data.testataMovimento import t_testata_movimento
         __table__ = t_testata_movimento
 
-    rigamov = relationship("RigaMovimento", cascade="all, delete", backref="testata_movimento")
-    forni = relationship("Fornitore", backref="testata_movimento")
-    cli = relationship("Cliente", backref="testata_movimento")
+    rigamov = relationship(RigaMovimento, cascade="all, delete", backref="testata_movimento")
+    forni = relationship(Fornitore, backref="testata_movimento")
+    cli = relationship(Cliente, backref="testata_movimento")
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
@@ -144,6 +138,25 @@ class TestataMovimento(Base, Dao):
             return a.denominazione
         else: return ""
 
+
+    @property
+    def intestatario(self):
+        """
+        Restituisce la ragione sociale o cognome + nome
+        se la ragione sociale e' vuota
+        """
+        if self.id_cliente is not None and self.cli:
+            if self.cli.ragione_sociale != "":
+                return self.cli.ragione_sociale
+            else:
+                return self.cli.cognome + ' ' + self.cli.nome
+        elif self.id_fornitore is not None and self.forni:
+            if self.forni.ragione_sociale != "":
+                return self.forni.ragione_sociale
+            else:
+                return self.forni.cognome + ' ' + self.forni.nome
+        else:
+            return ''
 
     def _getNumeroMagazzini(self):
         """

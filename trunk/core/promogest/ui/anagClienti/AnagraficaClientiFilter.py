@@ -142,6 +142,9 @@ class AnagraficaClientiFilter(AnagraficaFilter):
 
         clis = self.runFilter()
 
+        for l in self.filter_listore:
+            # print l.iter
+            self.filter_listore[l.iter][0] = None
         self.filter_listore.clear()
 
         for c in clis:

@@ -24,7 +24,6 @@
 
 import os
 import sys
-import imp
 from optparse import OptionParser
 
 class BigBang(object):
@@ -84,19 +83,8 @@ i DAO, i filtri o tutto"""
         (options, args) = parser.parse_args()
         from promogest import preEnv, bindtextdomain
         bindtextdomain('promogest', locale_dir='./po/locale')
-        try:
-            reload(sys)
-        except:
-            imp.reload(sys)
+        reload(sys)
         sys.setdefaultencoding('utf-8')
-        #if options.pg3_classi == True:
-            #try:
-                #import imp
-                #imp.reload(sys)
-            #except:
-                #reload(sys)
-                #sys.setdefaultencoding('utf-8')
-            #preEnv.pg3_cla = True
         if options.configFile:
             from promogest.lib.config import Config
             conf = Config(options.configFile)

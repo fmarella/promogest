@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni <francesco@promotux.it>
@@ -30,7 +30,6 @@ from promogest.dao.TestataDocumento import TestataDocumento
 from promogest.dao.RigaMovimento import RigaMovimento
 from promogest.dao.ScontoRigaMovimento import ScontoRigaMovimento
 from promogest.dao.Articolo import Articolo
-from promogest.dao.Fornitore import Fornitore
 from promogest.lib.utils import *
 from promogest.ui.utilsCombobox import *
 from promogest.ui.gtk_compat import *
@@ -609,7 +608,8 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
                 pass
         else:
             # Ricrea il Dao con una connessione al DBMS SQL
-            self.dao = TestataMovimento().getRecord(id=dao.id)
+            # self.dao = TestataMovimento().getRecord(id=dao)
+            self.dao = dao
         self._refresh()
         return self.dao
 

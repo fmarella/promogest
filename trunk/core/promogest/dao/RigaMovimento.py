@@ -20,21 +20,11 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 
-from sqlalchemy import *
-from sqlalchemy.orm import *
 from promogest.Environment import *
-
 from promogest.dao.Dao import Dao, Base
-from promogest.dao.Magazzino import Magazzino
-from promogest.dao.ScontoRigaMovimento import ScontoRigaMovimento
-from promogest.dao.ScontoRigaDocumento import ScontoRigaDocumento
-from promogest.dao.Articolo import Articolo
-from promogest.dao.UnitaBase import UnitaBase
-from promogest.dao.Listino import Listino
-from promogest.dao.Multiplo import Multiplo
 from promogest.dao.Stoccaggio import Stoccaggio
 from promogest.dao.Riga import Riga
-from promogest.lib.utils import getScontiFromDao, getStringaSconti, posso
+from promogest.lib.utils import getScontiFromDao, getStringaSconti
 
 if hasattr(conf, "SuMisura") and getattr(conf.SuMisura,'mod_enable') == "yes":
     from promogest.modules.SuMisura.dao.MisuraPezzo import MisuraPezzo
@@ -282,8 +272,10 @@ class RigaMovimento(Base, Dao):
             daoStoccaggio.id_articolo = self.id_articolo
             daoStoccaggio.id_magazzino = self.id_magazzino
             params["session"].add(daoStoccaggio)
-        if (hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes") or ("GestioneNoleggio" in modulesList):
-
+        if (hasattr(conf, "GestioneNoleggio") and \
+                        getattr(conf.GestioneNoleggio,'mod_enable')=="yes") or\
+                        ("GestioneNoleggio" in modulesList):
+            from promogest.modules.GestioneNoleggio.dao.NoleggioRiga import NoleggioRiga
             nr = NoleggioRiga()
             nr.coeficente = self.coeficente_noleggio
             nr.prezzo_acquisto = self.prezzo_acquisto_noleggio

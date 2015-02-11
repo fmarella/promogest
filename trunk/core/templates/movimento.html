@@ -69,7 +69,7 @@
             <td width="16%" class="odd-detail"></td>
             {% endif %}
             <td width="10%" class="odd-detail">{{riga.codice_articolo}}</td>
-            <td width="35%" class="odd-detail">{{riga.descrizione.decode("utf-8")|nonone}}</td>
+            <td width="35%" class="odd-detail">{{riga.descrizione|nonone}}</td>
             <td width="10%" class="odd-number">{{utils.number_format() % riga.percentuale_iva}}</td>
             <td width="12%" class="odd-number">{{utils.number_format() % ( riga.quantita * riga.moltiplicatore)}}</td>
             <td width="12%" class="odd-number">{{utils.number_format() % riga.valore_unitario_netto}}</td>
