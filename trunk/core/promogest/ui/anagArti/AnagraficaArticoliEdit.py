@@ -466,7 +466,9 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
                    + 'salvare l\' articolo.\n Salvare ?')
 
             if YesNoDialog(msg=msg, transient=self.dialogTopLevel):
-                self.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, GTK_RESPONSE_APPLY)
+                self.on_anagrafica_complessa_detail_dialog_response(
+                                                        self.dialogTopLevel,
+                                                        GTK_RESPONSE_APPLY)
             else:
                 toggleButton.set_active(False)
                 return

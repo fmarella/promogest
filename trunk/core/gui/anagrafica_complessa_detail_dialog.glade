@@ -3,7 +3,8 @@
 <interface>
   <requires lib="gtk+" version="3.4"/>
   <object class="GtkDialog" id="anagrafica_complessa_detail_dialog">
-    <property name="can_focus">False</property>
+    <property name="visible">True</property>
+    <property name="can_focus">True</property>
     <property name="title" translatable="yes">Detail</property>
     <property name="modal">True</property>
     <property name="destroy_with_parent">True</property>

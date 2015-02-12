@@ -2,6 +2,7 @@
 <!-- Generated with glade 3.18.3 -->
 <interface>
   <requires lib="gtk+" version="3.4"/>
+  <requires lib="" version="3.4"/>
   <requires lib="pythonplugin" version="0.0"/>
   <object class="GtkListStore" id="liststore1"/>
   <object class="GtkTextBuffer" id="sommario_textbuffer"/>
@@ -32,6 +33,7 @@
       <object class="GtkBox" id="dialog-vbox1">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
         <property name="spacing">1</property>
         <child internal-child="action_area">
           <object class="GtkButtonBox" id="dialog-action_area1">
@@ -525,6 +527,8 @@ informazioni sul numero degli acquisti ed il loro valore medio.</property>
                       <object class="GtkTextView" id="sommario_textview">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
+                        <property name="hexpand">True</property>
+                        <property name="vexpand">True</property>
                         <property name="editable">False</property>
                         <property name="wrap_mode">word</property>
                         <property name="cursor_visible">False</property>
@@ -535,7 +539,7 @@ informazioni sul numero degli acquisti ed il loro valore medio.</property>
                   </object>
                   <packing>
                     <property name="resize">True</property>
-                    <property name="shrink">True</property>
+                    <property name="shrink">False</property>
                   </packing>
                 </child>
               </object>
