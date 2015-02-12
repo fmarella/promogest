@@ -79,22 +79,6 @@ class AnagraficaPrintPreview(GladeWidget):
         glib.idle_add(self.refresh)
         #self.refresh()
 
-    def on_pdf_button_clicked(self, button):
-        from PrintDialog import PrintDialogHandler
-        from xhtml2pdf import pisa
-        #f = self.html_code.replace("€","&#8364;")
-        f = self.html_code.encode("utf-8")
-        g = file(Environment.tempDir + ".temp.pdf", "wb")
-        pbar(self.pbar, pulse=True, text="GENERAZIONE STAMPA ATTENDERE")
-        pisa.CreatePDF(str(f), g)
-        g .close()
-        pbar(self.pbar, stop=True)
-        anag = PrintDialogHandler(self, self.windowTitle)
-        anagWindow = anag.getTopLevel()
-        returnWindow = self.bodyWidget.getTopLevel().get_toplevel()
-        anagWindow.set_transient_for(returnWindow)
-        anagWindow.show_all()
-
     def on_csv_button_clicked(self, button):
         messageInfo(msg="NON ANCORA IMPLEMENTATO")
 
@@ -123,7 +107,7 @@ class AnagraficaPrintPreview(GladeWidget):
         self.bodyWidget._refreshPageCount()
 
     @timeit
-    def refresh(self):
+    def refresh(self, forprint=False):
         """ show the html page in the custom widget"""
         self.bodyWidget.orderBy = self.orderBy
         self.bodyWidget.veter = self._veter
@@ -173,13 +157,17 @@ class AnagraficaPrintPreview(GladeWidget):
             pageData = {
                     "file": self._previewTemplate[1],
                     #"dao":daos,
-                    "objects": daos
+                    "objects": daos,
+                    "forprint":forprint,
                     }
             self.html_code = renderTemplate(pageData)
         #pbar(self.pbar_report,parziale=3.75, totale=4)
         #pbar(self.pbar_report,stop=True)
         #self.pbar_dialog.hide()
-        renderHTML(self.print_on_screen_html, self.html_code)
+        if forprint:
+            return self.html_code
+        else:
+            renderHTML(self.print_on_screen_html, self.html_code)
 
     def on_print_on_screen_dialog_response(self, dialog, responseId):
         if responseId == GTK_RESPONSE_CLOSE:
@@ -187,3 +175,25 @@ class AnagraficaPrintPreview(GladeWidget):
 
     def on_print_on_screen_dialog_delete_event(self, dialog=None, event=None):
         self.destroy()
+
+
+    def on_pdf_button_clicked(self, button):
+        from PrintDialog import PrintDialogHandler
+        from xhtml2pdf import pisa
+        # from weasyprint import HTML
+
+        # f = self.html_code.encode("utf-8")
+        f = self.refresh(forprint=True)
+        g = file(Environment.tempDir + ".temp.pdf", "wb")
+
+        # f = self.html_code.replace("€","&#8364;")
+        pbar(self.pbar, pulse=True, text="GENERAZIONE STAMPA ATTENDERE")
+        # HTML(string=f).write_pdf(g)
+        pisa.CreatePDF(str(f), g)
+        g.close()
+        pbar(self.pbar, stop=True)
+        anag = PrintDialogHandler(self, self.windowTitle)
+        anagWindow = anag.getTopLevel()
+        returnWindow = self.bodyWidget.getTopLevel().get_toplevel()
+        anagWindow.set_transient_for(returnWindow)
+        anagWindow.show_all()

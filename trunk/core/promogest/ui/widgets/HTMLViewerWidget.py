@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Marella <francesco.marella@anche.no>
@@ -30,11 +30,7 @@ from promogest.lib.HtmlHandler import createHtmlObj, renderTemplate, renderHTML
 from promogest.lib.html2csv import html2csv
 from promogest.ui.PrintDialog import PrintDialogHandler
 
-try:
-    from  xhtml2pdf import pisa
-except:
-    print "ERRORE NELL'IMPORT DI PISA"
-    import pisaLib.ho.pisa as pisa
+from  xhtml2pdf import pisa
 
 class HTMLViewerWidget(GladeWidget):
     __gtype_name__ = 'HTMLViewerWidget'
@@ -58,14 +54,17 @@ class HTMLViewerWidget(GladeWidget):
     def get_viewer(self):
         return self.html_box
 
-    def renderHTML(self, pageData=None):
+    def renderHTML(self, pageData=None, forprint=False):
+        pageData["forprint"] = forprint
         self.pageData = pageData
         self.html = renderTemplate(self.pageData)
-        renderHTML(self.detail, self.html)
+        if forprint:
+            return self.html
+        else:
+            renderHTML(self.detail, self.html)
 
     def on_pdf_button_clicked(self, button):
-
-        f = self.html
+        f = self.renderHTML(pageData=self.pageData, forprint=True)
         g = file(Environment.tempDir+".temp.pdf", "wb")
         pdf = pisa.CreatePDF(str(f), g)
         g .close()

@@ -64,7 +64,7 @@ class AnagraficaHtml(object):
     def variations(self):
         return self.dao
 
-    def _refresh(self):
+    def _refresh(self, forprint=False):
         """ show the html page in the custom widget"""
         pageData = {}
         eventipreves = []
@@ -117,10 +117,15 @@ class AnagraficaHtml(object):
                 "eventipreves": eventipreves,
                 "eventiprevesAT": eventiprevesAT,
                 "calendarioDatetime": calendarioDatetime,
+                "forprint":forprint
                 }
         html = renderTemplate(pageData)
         self.hh = html
-        renderHTML(self._gtkHtml, html)
+        if forprint:
+            print "QUIQUQU", forprint
+            return html
+        else:
+            renderHTML(self._gtkHtml, html)
 
     def setObjects(self, objects):
         # FIXME: dummy function for API compatibility, refactoring(TM) needed!
@@ -152,8 +157,11 @@ class AnagraficaHtml(object):
 
         if self.dao.__class__.__name__ in Environment.fromHtmlLits:
             from  xhtml2pdf import pisa
-            f = self.hh
+            #from weasyprint import HTML
+            f = self._refresh(forprint=True)
+
             g = file(Environment.tempDir + ".temp.pdf", "wb")
+            #HTML(string=f).write_pdf(g)
             pisa.CreatePDF(f, g)
             g .close()
             g = file(Environment.tempDir + ".temp.pdf", "r")

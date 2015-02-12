@@ -3,57 +3,29 @@
 {% endif %}
 
 {% block body %}
-<div id="head">
-    <div id="testo">{{ui|replace("_"," ")|capitalize()}}</div>
-  </div>  <div id="rigaheader"></div>
-<table width="100%" cellpadding="0" cellspacing="0" border="0">
-            <tr>
-                <td class="report-header" colspan="4"><h3>Contatto: <strong>{{dao.tipo_contatto}}</strong></h3></td>
-            </tr>
-<tr><td width="60%">
-        <table cellpadding="0" cellspacing="0" border="0">
-
-            <tr><td colspan="2" class="table-header">Dati contatto</td></tr>
-            <tr>
-                <td width="120px" class="odd-detail">Cognome</td>
-                <td class="odd-detail"><strong>{{dao.cognome|nonone}}</strong></td>
-            </tr>
-            <tr>
-                <td class="even-detail">Nome</td>
-                <td class="even-detail"><strong>{{dao.nome|nonone}}</strong></td>
-            </tr>
-            <tr>
-                <td class="odd-detail">Ruolo</td>
-                <td class="odd-detail"><strong>{{dao.ruolo|nonone}}</strong></td>
-            </tr>
-            <tr>
-                <td class="even-detail">Descrizione</td>
-                <td class="even-detail"><strong>{{dao.descrizione|nonone}}</strong></td>
-            </tr>
-            <tr>
-                <td class="odd-detail">Appartenenza</td>
-                <td class="odd-detail"><strong>{{dao.appartenenza|nonone}}</strong></td>
-            </tr>
-    </table>
-</td>
-<td width="40%" rowspan="4">
-    <table  cellpadding="0" cellspacing="0" border="0">
-            <tr><td colspan="2" class="table-header">Recapiti contatto</td></tr>
-            {% for recapito in dao.recapiti %}
-            <tr >
-                <td class = "even-detail">{{recapito.tipo_recapito|nonone}}</td>
-                <td class = "even-detail"><strong>{{recapito.recapito|nonone}}</strong></td>
-            </tr>
-            {% endfor %}
-        </table>
-</td></tr>
-</table>
-    <table cellpadding="0" cellspacing="4" border="0">
-           <tr>
-            <td class="table-header">Note</td>
-       </tr>
-           <tr>
-        <td class="odd-detail"><strong>{{dao.note|nonone}}</strong></td>
-           </tr>
-    </table>
-{% endblock %}
+ <div class="row">
+     <div class="col-xs-12 col-md-12">
+<div class="panel panel-default">
+  <div class="panel-heading"><h2>Contatto: <strong>{{dao.tipo_contatto}}</strong></h2></div>
+  <div class="panel-body">
+    <h4>DATI CONTATTI: {{dao.tipo_contatto}}</h4>
+    <div class="col-sm-12">
+    <div class="col-sm-6"><span class="label label-default">Cognome</span>{{dao.cognome|nonone}}</div>
+    <div class="col-sm-6"><span class="label label-default">Nome</span>{{dao.nome|nonone}}</div>
+    <div class="col-sm-6"><span class="label label-default">Ruolo</span>{{dao.ruolo|nonone}}</div>
+    <div class="col-sm-6"><span class="label label-default">Descrizione</span>{{dao.descrizione|nonone}}</div>
+    <div class="col-sm-6"><span class="label label-default">Appartenenza</span> {{dao.appartenenza|nonone}}</div>
+         <div class="clearfix"></div>
+        <h4>RECAPITI:</h4>
+        {% for recapito in dao.recapiti %}
+        <div class="col-sm-4"><span class="label label-warning"> {{recapito.tipo_recapito|nonone}}</span> {{recapito.recapito|nonone}}</div>
+{% endfor %}
+        <div class="clearfix"></div>
+        <h4>NOTE:</h4>
+        <div class="col-sm-12">{{dao.note|nonone}}</div>
+    </div>
+</div>
+</div>
+</div>
+ </div>
+     {% endblock %}

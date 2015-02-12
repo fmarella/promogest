@@ -32,19 +32,8 @@ from promogest.dao.DaoUtils import *
 from promogest.lib.HtmlHandler import createHtmlObj, renderTemplate, renderHTML
 from promogest.lib.html2csv import html2csv
 from promogest.ui.PrintDialog import PrintDialogHandler
-#try:
-    #import ho.pisa as pisa
-#except:
-    #print "ERRORE NELL'IMPORT DI PISA"
-    #import pisaLib.ho.pisa as pisa
 
-try:
-    from  xhtml2pdf import pisa
-except:
-    print "ERRORE NELL'IMPORT DI PISA"
-    import pisaLib.ho.pisa as pisa
-
-
+from  xhtml2pdf import pisa
 
 class HtmlViewer(GladeWidget):
 
@@ -67,9 +56,11 @@ class HtmlViewer(GladeWidget):
         self.refreshHtml()
 
     def on_pdf_button_clicked(self, button):
+        # from weasyprint import HTML
 
         f = self.html
-        g = file(Environment.tempDir+".temp.pdf", "wb")
+        g = file(Environment.tempDir + ".temp.pdf", "wb")
+        # HTML(string=f).write_pdf(g)
         pdf = pisa.CreatePDF(str(f), g)
         g .close()
         anag = PrintDialogHandler(self, self.windowTitle)

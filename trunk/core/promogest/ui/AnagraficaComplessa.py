@@ -544,6 +544,7 @@ class Anagrafica(GladeWidget):
             self.email_toolbutton.set_sensitive(False)
 
     def on_record_new_activate(self, widget=None, from_other_dao=None):
+        """PRessione del pulsante NUOVO in anag complessa"""
         self.editElement.setVisible(True)
         if self.__class__.__name__ == "AnagraficaUtenti":
             self.editElement.setDao(None, from_other_dao=from_other_dao)
@@ -552,6 +553,7 @@ class Anagrafica(GladeWidget):
         self.setFocus()
 
     def on_record_delete_activate(self, widget):
+        """Gestione pulsante cancella, in anag complessa"""
         if not YesNoDialog(msg='Confermi l\'eliminazione ?',
                            transient=self.getTopLevel()):
             return
@@ -563,6 +565,7 @@ class Anagrafica(GladeWidget):
 
     def on_record_edit_activate(self, widget=None,
                                 path=None, column=None, dao=None):
+        """Gestione pulsante MODIFICA in anag complessa"""
         if not dao:
             dao = self.filter.getSelectedDao()
         self._selectedDao = dao
@@ -571,6 +574,7 @@ class Anagrafica(GladeWidget):
         self.setFocus()
 
     def on_record_duplicate_menu_activate(self, widget, path=None, column=None):
+        """Gestione pulsante DUPLICA in anag complessa"""
         dao = self.filter.getSelectedDao()
         self._selectedDao = dao
         self.duplicate(dao)
@@ -580,6 +584,7 @@ class Anagrafica(GladeWidget):
         raise NotImplementedError
 
     def on_records_print_activate(self, widget):
+        """Gestione del pulsante STAMPA in anag complessa"""
         self._handlePrinting(pdfGenerator=self.reportHandler, report=True)
 
     def on_Stampa_Frontaline_clicked(self, widget):
@@ -599,10 +604,12 @@ class Anagrafica(GladeWidget):
                 messageError(str(ex))
 
     def on_selected_record_print_activate(self, widget):
+        """Gestione delal stampa del DAO Selezionato"""
         from promogest.lib.utils import do_print
         from promogest.lib.DaoTransform import to_pdf
 
         daos = get_selected_daos(self.anagrafica_filter_treeview)
+        print("DAOS", daos)
         if len(daos) > 1:
             fileName = resolve_save_file_path()
             # conversione dei DAO in un unico documento PDF
@@ -697,6 +704,7 @@ class Anagrafica(GladeWidget):
     def _handlePrinting(self, pdfGenerator, report,
                         daos=None, label=None,
                         returnResults=None, classic=False, template_file=False):
+        """Gestione effettiva della funzione di stampa del DAO selezionato"""
         # FIXME: refactor this mess!!!
 
         # tiro su la finestrella con la progress bar
@@ -827,9 +835,11 @@ class Anagrafica(GladeWidget):
                                         '_' + \
                                         time.strftime('%d-%m-%Y')
                         operationName = "label"
+                    print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
                     self.__pdfReport = pdfGenerator.pdf(operationName,
                                                         classic=self._classic,
                                                         template_file=self._template_file)
+                    print("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB")
 
                     # When we're done, let's schedule the printing
                     # dialog (going back to the main GTK loop)
