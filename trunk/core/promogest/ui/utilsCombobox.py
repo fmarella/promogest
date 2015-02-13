@@ -174,21 +174,21 @@ def fillComboboxFamiglieArticoli(combobox, filter=False, ignore=[]):
         for s in f.children:
             figlio1 = model.append(padre, (s,
                                 (s.id),
-                                (s.denominazione or ''),
+                                (s.denominazione[0:30] or ''),
                                 ))
             recurse(figlio1, s)
     for f in fams:
         if not f.parent:
             padre = model.append(None, (f,
                                 (f.id),
-                                (f.denominazione or ''),
+                                (f.denominazione[0:30] or ''),
                                 ))
             if f.children:
                 recurse(padre, f)
 
     combobox.clear()
     renderer = gtk.CellRendererText()
-    #renderer.set_property("wrap-width",10)
+    renderer.set_property("wrap-width",30)
     combobox.pack_start(renderer, True)
     combobox.add_attribute(renderer, 'text', 2)
     combobox.set_model(model)
