@@ -459,7 +459,7 @@ def mostraArticoloPart(anaedit, id, art=None, quan=None):
                 quantita =articolo["quantita"]
                 quantita = quantita.replace(',','.')
                 anaedit._righe[0]["quantita"] = quantita
-                anaedit.quantita_entry.set_text(anaedit._righe[0]["quantita"])
+                anaedit.quantita_entry.set_value(anaedit._righe[0]["quantita"])
                 if anaedit._righe[0]["quantita"]:
                     anaedit.calcolaTotaleRiga()
             elif anaedit._fonteValore == "vendita_iva":
@@ -474,7 +474,7 @@ def mostraArticoloPart(anaedit, id, art=None, quan=None):
                 quantita =articolo["quantita"]
                 quantita = quantita.replace(',', '.')
                 anaedit._righe[0]["quantita"] = quantita
-                anaedit.quantita_entry.set_text(anaedit._righe[0]["quantita"])
+                anaedit.quantita_entry.set_value(anaedit._righe[0]["quantita"])
                 if anaedit._righe[0]["quantita"]:
                     anaedit.calcolaTotaleRiga()
                 anaedit.on_show_totali_riga()
@@ -491,7 +491,7 @@ def mostraArticoloPart(anaedit, id, art=None, quan=None):
                 quantita =articolo["quantita"]
                 quantita = quantita.replace(',','.')
                 anaedit._righe[0]["quantita"] = quantita
-                anaedit.quantita_entry.set_text(anaedit._righe[0]["quantita"])
+                anaedit.quantita_entry.set_value(anaedit._righe[0]["quantita"])
                 if anaedit._righe[0]["quantita"]:
                     anaedit.calcolaTotaleRiga()
                 anaedit.on_show_totali_riga()
@@ -578,10 +578,10 @@ def mostraArticoloPart(anaedit, id, art=None, quan=None):
         elif ((anaedit._fonteValore == "vendita_iva") or (anaedit._fonteValore == "vendita_senza_iva")):
             anaedit.refresh_combobox_listini()
         if quan:
-            anaedit.quantita_entry.set_text(str(quan))
+            anaedit.quantita_entry.set_value(quan)
             anaedit._righe[0]["quantita"] = str(quan)
         if not posso("SM") and articolo["quantita_minima"]:
-            anaedit.quantita_entry.set_text(str(articolo["quantita_minima"]))
+            anaedit.quantita_entry.set_value(articolo["quantita_minima"])
             anaedit._righe[0]["quantita"] = str(articolo["quantita_minima"])
 
     else:
@@ -599,7 +599,7 @@ def mostraArticoloPart(anaedit, id, art=None, quan=None):
         anaedit.id_multiplo_customcombobox.clearcombobox()
         anaedit.id_listino_customcombobox.clearcombobox()
         anaedit.prezzo_lordo_entry.set_text('0')
-        anaedit.quantita_entry.set_text('0')
+        anaedit.quantita_entry.set_value(0)
         anaedit.prezzo_netto_label.set_text('0')
         anaedit.sconti_widget.clearValues()
         anaedit.totale_riga_label.set_text('0')
@@ -687,7 +687,7 @@ def on_moltiplicatore_entry_focus_out_eventPart(anaedit, entry, event):
         quantita = CalcolaPerimetro(altezza, larghezza)
     if quantita:
         da_stamp = molti * float(quantita)
-        anaedit.quantita_entry.set_text(str(da_stamp))
+        anaedit.quantita_entry.set_value(da_stamp)
     on_quantita_entry_focus_out_eventPart(anaedit, anaedit.quantita_entry, event=None)
 #    anaedit.on_show_totali_riga(anaedit)
 
@@ -695,7 +695,7 @@ def on_moltiplicatore_entry_focus_out_eventPart(anaedit, entry, event):
 def on_quantita_entry_focus_out_eventPart(anaedit, entry, event=None):
     """ Funzione di controllo della quantità minima con dialog """
 
-    quantita = float(anaedit.quantita_entry.get_text())
+    quantita = float(anaedit.quantita_entry.get_value())
     id = anaedit._righe[0]["idArticolo"]
     if id is not None:
         articolo = Articolo().getRecord(id=id)
@@ -722,10 +722,10 @@ La quantità inserita:  %s è inferiore
 a %s definita come minima di default.
 Inserire comunque?""" % (str(quantita), str(quantita_minima))
         if YesNoDialog(msg=msg, transient=None):
-            anaedit.quantita_entry.set_text(str(quantita))
+            anaedit.quantita_entry.set_value(quantita)
             QMIN = False
         else:
-            anaedit.quantita_entry.set_text(str(quantita_minima))
+            anaedit.quantita_entry.set_value(quantita_minima)
             QMIN =True
     anaedit.on_show_totali_riga(anaedit)
 

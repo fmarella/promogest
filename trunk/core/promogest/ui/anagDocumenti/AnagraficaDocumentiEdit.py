@@ -153,9 +153,11 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self.noleggio_frame.destroy()
             self.noleggio = False
             self.prezzo_aquisto_entry.destroy()
+            self.prezzo_acquisto_label.destroy()
             self.X_label.destroy()
             self.GG_label.destroy()
             self.totale_periodo_label.destroy()
+            self.periodo_label.destroy()
         if not posso("ADR"):
             hideADR(self)
         self.nolottotemp = True
@@ -353,7 +355,8 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self.id_multiplo_customcombobox.clearcombobox()
         self.id_listino_customcombobox.clearcombobox()
         self.prezzo_lordo_entry.set_text('0')
-        self.quantita_entry.set_text('1')
+        # self.quantita_entry.set_text('1')
+        self.quantita_entry.set_value(1)
         self.prezzo_netto_label.set_text('0')
         self.sconti_widget.clearValues()
         self.totale_riga_label.set_text('0')
@@ -1176,7 +1179,8 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self.tempo_arrivo_merce_entry.set_text(str(self._righe[0]["tempoArrivoFornitura"] or ""))
 
         self.sconti_widget.setValues(self._righe[0]["sconti"], self._righe[0]["applicazioneSconti"], False)
-        self.quantita_entry.set_text(str(self._righe[0]["quantita"]))
+        # self.quantita_entry.set_text(str(self._righe[0]["quantita"]))
+        self.quantita_entry.set_value(self._righe[0]["quantita"])
         try:
             self.quantitaMinima_label.set_text(str(Articolo().getRecord(id=self._righe[0]["idArticolo"]).quantita_minima))
         except:
@@ -1333,7 +1337,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self.modelRiga.set_value(self._iteratorRiga, 8, str(self._righe[self._numRiga]["multiplo"]))
             self.modelRiga.set_value(self._iteratorRiga, 9, str(self._righe[self._numRiga]["listino"]))
             self.modelRiga.set_value(self._iteratorRiga, 10, str(self._righe[self._numRiga]["unitaBase"]))
-            self.modelRiga.set_value(self._iteratorRiga, 11, str(self._righe[self._numRiga]["quantita"]))
+            self.modelRiga.set_value(self._iteratorRiga, 11, str(round(self._righe[self._numRiga]["quantita"],3)))
             self.modelRiga.set_value(self._iteratorRiga, 12, str(self._righe[self._numRiga]["prezzoLordo"]))
             self.modelRiga.set_value(self._iteratorRiga, 13, self._righe[self._numRiga]["applicazioneSconti"] + (
                 ' ' + getStringaSconti(self._righe[self._numRiga]["sconti"])))
@@ -1355,7 +1359,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                             self._righe[self._numRiga]["multiplo"],
                             self._righe[self._numRiga]["listino"],
                             self._righe[self._numRiga]["unitaBase"],
-                            str(self._righe[self._numRiga]["quantita"]),
+                            str(round(self._righe[self._numRiga]["quantita"],3)),
                             str(self._righe[self._numRiga]["prezzoLordo"]),
                             str(self._righe[self._numRiga]["applicazioneSconti"]) + ' ' + str(getStringaSconti(
                             self._righe[self._numRiga]["sconti"])),
@@ -1602,7 +1606,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
 
     def on_show_totali_riga(self, widget = None, event = None):
         """ calcola il prezzo netto """
-        self._righe[0]["quantita"] = Decimal(self.quantita_entry.get_text().strip() or 0)
+        self._righe[0]["quantita"] = Decimal(self.quantita_entry.get_value() or 0)
         self._righe[0]["prezzoLordo"] = Decimal(self.prezzo_lordo_entry.get_text().strip() or 0)
         iva = findStrFromCombobox(self.id_iva_customcombobox.combobox,0)
         if iva and type(iva) != type("CIAO"):
