@@ -35,20 +35,12 @@ class ArticoloImmagine(Base, Dao):
                     schema = params['schema'],
                     autoload=True)
     except:
-        __table__ = Table('articolo_immagine', params['metadata'],
-                Column('id_immagine',Integer,
-                    ForeignKey(fk_prefix+'immagine.id',
-                        onupdate="CASCADE",
-                        ondelete="CASCADE"),
-                        primary_key=True),
-                Column('id_articolo',Integer,
-                    ForeignKey(fk_prefix+'articolo.id',
-                        onupdate="CASCADE",
-                        ondelete="CASCADE"),
-                        primary_key=True),
-                schema=params['schema'])
+        from data.articoloImmagine import t_articolo_immagine
+        __table__ = t_articolo_immagine
 
     immagine = relationship("ImageFile", backref='artima',cascade="all, delete")
+    articolo = relationship("Articolo", backref='artima',
+                            cascade="all, delete")
 
     __mapper_args__ = { 'order_by' : "id_immagine" }
 

@@ -35,26 +35,8 @@ class ImageFile(Base, Dao):
                 schema = params['schema'],
                 autoload=True)
     except:
-        try:
-            __table__ = Table('immagine', params['metadata'],
-                Column('id', Integer, primary_key=True),
-                Column('denominazione', String(200), nullable=False ),
-                Column('altezza', Numeric(16,4), nullable=True),
-                Column('larghezza', Numeric(16,4), nullable=True),
-                Column('fingerprint', String(200), nullable=False ),
-                Column('data', LargeBinary),
-                schema=params['schema'],
-                )
-        except:
-            __table__ = Table('immagine', params['metadata'],
-                Column('id', Integer, primary_key=True),
-                Column('denominazione', String(200), nullable=False ),
-                Column('altezza', Numeric(16,4), nullable=True),
-                Column('larghezza', Numeric(16,4), nullable=True),
-                Column('fingerprint', String(200), nullable=False ),
-                Column('data', Binary),
-                schema=params['schema'],
-                )
+        from data.immagine import t_immagine
+        __table__ = t_immagine
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)

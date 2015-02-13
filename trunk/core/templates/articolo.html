@@ -1,179 +1,84 @@
 {% if not environment.web %}
-
 {% extends 'index.html' %}
-
 {% endif %}
-
 {% block body %}
-    {% if dao %}
+{% if dao %}
+<div class="row">
+     <div class="col-xs-12 col-md-12">
+        <div class="panel panel-default">
+  <div class="panel-heading"><h3>Cod: {{dao.codice}} - Denom: {{dao.denominazione}}</h3></div>
+  <div class="panel-body">
+<div class="col-sm-6"><span class="label label-default">Cod Barre</span><p style="display:inline;"><strong> {{dao.codice_a_barre|nonone}}</strong></p></div>
+      <div class="col-sm-6"><span class="label label-default">Produttore</span> {{dao.produttore|nonone}}</div>
+      <div class="col-sm-6"><span class="label label-default">Famiglia</span> {{dao.denominazione_famiglia|nonone}}</div>
+      <div class="col-sm-6"><span class="label label-default">Categoria</span> {{dao.denominazione_categoria|nonone}}</div>
+      <div class="col-sm-6"><span class="label label-default">Aliquota IVA</span> {{dao.denominazione_aliquota_iva}}
+                    ( {{dao.denominazione_breve_aliquota_iva}})</div>
+      <div class="col-sm-6"><span class="label label-default">Unità di misura</span> {{dao.denominazione_unita_base}}</div>
+          {% if dao.artima %}
+{% for a in dao.artima %}
+{% if utils.osname()=="NIX" %}
+      <div class="col-xs-6 col-sm-3"><span class="label label-default">Immagine</span> <img class="img-responsive" src="data:image/png;base64,{{a.immagine.data}}"  /></div>
+{% else %}
+       <div class="col-xs-6 col-sm-3"><span class="label label-default">Immagine</span> <img class="img-responsive" src="{{utils.toTempPng(a.immagine.data)}}" width="100" /></div>
+{% endif %}
+{% endfor %}
+      {% else %}
+      <div></div>
+{% endif %}
+      <div class="col-sm-12"><span class="label label-danger">Giacenza</span><h4 style="display:inline;"><strong> {{dao.getGiacenza()|nonone or 0}}</strong></h4></div>
 
-    <div id="testo">{{ui|replace("_"," ")|capitalize()}}</div>
-  </div>  <div id="rigaheader"></div>
+      <div class="clearfix"></div>
+      <div class='col-sm-12'><hr></div>
+      <h5>Informazioni listini ed etichette</h5>
+      <div class="clearfix"></div>
+      <div class="col-sm-6"><span class="label label-success">Descrizione nel listino</span> {{dao.descrizione_listino|nonone}}</div>
+      <div class="col-sm-6"><span class="label label-success">Incluso nel listino</span> {{dao.stampa_listino|nonone}}</div>
+      <div class="col-sm-6"><span class="label label-success">Codice etichetta</span> {{dao.codice_etichetta|nonone}}</div>
+      <div class="col-sm-6"><span class="label label-success">Descrizione etichetta</span> {{dao.descrizione_etichetta|nonone}}</div>
+      <div class="col-sm-6"><span class="label label-success">Stampa etichetta</span> {{dao.stampa_etichetta|nonone}}</div>
+            <div class="clearfix"></div>
+      <div class='col-sm-12'><hr></div>
+      <h5>Caratteristiche fisiche</h5>
+      <div class="clearfix"></div>
 
-<table cellpadding="0" cellspacing="0" border="0">
-            <tr>
-                <td><h3>Articolo: {{dao.codice}}</h3></td>
-        <td ><h3>Codice a barre principale: <span style="font-size:14pt"> {{dao.codice_a_barre}}</span></h3></td>
-            </tr>
-</table>
-<table cellpadding="0" cellspacing="0" border="0">
-<tr><td width="55%">
-        <table cellpadding="0" cellspacing="0" border="0">
-            <tr>
-        <td colspan="2" class="table-header">Riepilogo</td>
-        </tr>
-            <tr>
-                <td width="130px" class="odd-detail">Descrizione</td>
-                <td class="odd-detail" style="font-size:14pt"><strong>{{dao.denominazione}}</strong></td>
-            </tr>
-            <tr>
-                <td class="even-detail">Produttore</td>
-                <td class="even-detail"><strong>{{dao.produttore|nonone}}</strong></td>
-            </tr>
-            <tr>
-                <td class="odd-detail">Famiglia</td>
-                <td class="odd-detail"><strong>{{dao.denominazione_famiglia|nonone}}</strong></td>
-            </tr>
-            <tr>
-                <td class="even-detail">Categoria</td>
-                <td class="even-detail"><strong>{{dao.denominazione_categoria|nonone}}</strong></td>
-            </tr>
-            <tr>
-                <td class="odd-detail">Aliquota IVA</td>
-                <td class="odd-detail">
-                    <strong>{{dao.denominazione_aliquota_iva}}
-                    ( {{dao.denominazione_breve_aliquota_iva}})</strong>
-                </td>
-            </tr>
-        </table></td>
-<td>
-        <table colspan="2" cellpadding="0" cellspacing="0" border="0">
-            <tr><td class="table-header" colspan="2">Informazioni listini ed etichette</td></tr>
-            <tr>
-                <td width="200px" class="odd-detail">Descrizione nel listino</td>
-                <td class="odd-detail">
-                    <strong>{{dao.descrizione_listino|nonone}}</strong>
-                </td>
-            </tr>
-            <tr>
-                <td class="even-detail">Incluso nel listino</td>
-                <td class="even-detail">
-                    <strong py:if="dao.stampa_listino is True">
-                        si
-                    </strong>
-                    <strong py:if="dao.stampa_listino is False">
-                        no
-                    </strong>
-                    <strong py:if="dao.stampa_listino is None">
-                        no
-                    </strong>
-                </td>
-            </tr>
-            <tr>
-                <td class="odd-detail">Codice etichetta</td>
-                <td class="odd-detail">
-                    <strong>{{dao.codice_etichetta|nonone}}</strong>
-                </td>
-            </tr>
-            <tr>
-                <td class="even-detail">Descrizione etichetta</td>
-                <td class="even-detail">
-                    <strong>{{dao.descrizione_etichetta|nonone}}</strong>
-                </td>
-            </tr>
-            <tr>
-                <td class="odd-detail">Stampa etichetta</td>
-                <td class="odd-detail">
-                     {{dao.stampa_etichetta|nonone}}
-                    {% if dao.stampa_etichetta == "True" %}
-                    <strong >si</strong>
-                    {% elif dao.stampa_etichetta == "False" or dao.stampa_etichetta == "None" %}
-                    <strong>no</strong>
-                    {% endif %}
-                </td>
-            </tr>
-
-        </table>
-</td></tr>
-</table>
-        <table cellpadding="0" cellspacing="0" border="0">
-            <tr><td colspan="4" class="table-header">Caratteristiche fisiche</td></tr>
-            <tr>
-                <td width="20%" class="odd-detail">Unità di misura</td>
-                <td width="30%" class="odd-detail"><strong>{{dao.denominazione_unita_base}}</strong></td>
-
-        <td width="20%" class="odd-detail">Dimensioni</td>
-                <td width="30%" colspan="2" class="odd-detail">
-            <strong>{{dao.lunghezza|nonone}}</strong> x
-            <strong>{{dao.larghezza|nonone}}</strong> x
-            <strong>{{dao.altezza|nonone}}</strong>
-            <strong>{{dao.unita_dimensioni|nonone}}</strong>
-        </td>
-            </tr>
-            <tr>
-
-            </tr>
-            <tr>
-                <td class="even-detail">Volume</td>
-        <td class="even-detail">
-            <strong>{{dao.volume|nonone}}</strong>
-            <strong>{{dao.unita_volume|nonone}}</strong>
-        </td>
-                <td class="even-detail">Peso</td>
-                <td class="even-detail">
-            <strong>{{dao.peso_lordo|nonone}}</strong>
-            <strong>{{dao.unita_peso|nonone}}</strong>
-        </td>
-            </tr>
-            <tr>
-                <td class="odd-detail">Imballaggio</td>
-                <td class="odd-detail"><strong>{{dao.imballaggio|nonone}}</strong></td>
-                <td class="odd-detail">Peso imballaggio</td>
-                <td class="odd-detail">
-        <strong>{{dao.peso_imballaggio|nonone}}</strong>
-            <strong>{{dao.unita_peso|nonone}}</strong>
-        </td>
-            </tr><tr><td></td></tr>
-            {% if dao %}
- <tr><td colspan="4"  class="odd-detail" style="font-size:16pt" ><strong>GIACENZA: {{dao.getGiacenza()|nonone or 0}}</strong>
-                </td>
-            </tr>
-                {% endif %}
-            <tr><td></td></tr>
-    <tr><td colspan="4" class="table-header">Note</td></tr>
-            <tr>
-                <td class="odd-detail"><strong>{{dao.note|nonone}}</strong>
-                </td>
-            </tr>
-                <tr><td colspan="4" class="table-header">PRESENTE NEI LISTINI:</td></tr>
-                {% for li in utils.getListiniArticolo(dao.id) %}
+      <div class="col-sm-3"><span class="label label-info">Lunghezza</span> {{dao.lunghezza|nonone}}</div>
+      <div class="col-sm-3"><span class="label label-info">Larghezza</span> {{dao.larghezza|nonone}}</div>
+      <div class="col-sm-3"><span class="label label-info">Altezza</span> {{dao.altezza|nonone}}</div>
+      <div class="col-sm-3"><span class="label label-info">Unita dimensioni</span> {{dao.unita_dimensioni|nonone}}</div>
+      <div class="col-sm-3"><span class="label label-info">Volume</span> {{dao.volume|nonone}}</div>
+      <div class="col-sm-3"><span class="label label-info">Unità volume</span> {{dao.unita_volume|nonone}}</div>
+        <div class="col-sm-3"><span class="label label-info">Peso</span> {{dao.peso_lordo|nonone}}</div>
+      <div class="col-sm-3"><span class="label label-info">Unita peso</span> {{dao.unita_peso|nonone}}</div>
+            <div class="col-sm-3"><span class="label label-info">Imballaggio</span> {{dao.imballaggio|nonone}}</div>
+      <div class="col-sm-3"><span class="label label-info">Imballaggio</span> {{dao.imballaggio|nonone}}</div>
+      <div class="col-sm-3"><span class="label label-info">Peso Imballaggio</span> {{dao.peso_imballaggio|nonone}}</div>
+            <div class="col-sm-12"><span class="label label-primary">Note</span> {{dao.note|nonone}}</div>
+                  <div class="clearfix"></div>
+      <div class='col-sm-12'><hr></div>
+      <h3>Presente nei listini</h3>
+      <div class="clearfix"></div>
+      {% for li in utils.getListiniArticolo(dao.id) %}
         {% set tmp = utils.leggiListino(li.id_listino, li.id_articolo) %}
-
-            <tr>
-          {% if tmp["denominazione"] %}
-                <td colspan="4" class="odd-detail">
-          <b>{{tmp["denominazione"]}}:</b>&nbsp;&nbsp;
-          <b>PR. DETTAGLIO:  </b>{{utils.mNLC(tmp["prezzoDettaglio"],2)}}&nbsp;
-                  <b>PR. INGROSSO:  </b>{{utils.mNLC(tmp["prezzoIngrosso"],2)}}&nbsp;
-                  <lr>
-        </td>
-        {% endif %}
+        <div class="col-sm-3">
+          <div class="panel panel-warning">
+            <div class="panel-heading">
+              <h3 class="panel-title">{{tmp["denominazione"]}}</h3>
+            </div>
+            <div class="panel-body"><div class="col-sm-12"><span class="label label-info">Prezzo Dettaglio</span> {{utils.mNLC(tmp["prezzoDettaglio"],2)}}</div>
+        <div class="col-sm-12"><span class="label label-info">Prezzo Ingrosso</span> {{utils.mNLC(tmp["prezzoIngrosso"],2)}}</div>
+            </div>
+          </div>
+  </div>
                 {% endfor %}
-            </tr>
-        </table>
-        <tr>
-            {% if dao.artima %}
-            {% for a in dao.artima %}
-            {% if utils.osname()=="NIX" %}
-            <td><img src="data:image/png;base64,{{a.immagine.data}}" width="200" />1</td>
-            {% else %}
-            <td><img src="{{utils.toTempPng(a.immagine.data)}}" width="200" />2</td>
-            {% endif %}
-            {% endfor %}
-            {% else %}
-            <td></td>
-            {% endif %}
-        </tr>
+
+  </div>
+        </div>
+    </div>
+</div>
+
+
+
         <BR /><BR />
 {% for anno in pageData["calendarioDatetime"] %}
     <div>
