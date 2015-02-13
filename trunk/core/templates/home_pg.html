@@ -1,68 +1,31 @@
 {% extends 'index.html' %}
 
 {% block body %}
-<div style="width:100%;text-align:left"><a style="text-color:black;" href="http://www.promogest.me"><img src="gui/testata_promogest2.png" alt="Logo PromoGest" width=300 /></a>
+<div class="container">
+    <div class="row">
+
+             <!--<div class="panel panel-default">-->
+                <!--<div class="panel-heading">-->
+                    <div class="col-sm-12 col-md-12">
+                    <div class="col-xs-6 col-sm-6 col-md-6">
+                        <a href="http://www.promogest.me"><img src="gui/testata_promogest2.png" alt="Logo PromoGest" width="250px" /></a>
+                    </div>
+                    <div class="col-xs-6 col-sm-6 col-md-6">
+                        <h3><i class="glyphicon glyphicon-bullhorn"></i> News</h3>
+                    </div>
+                <!--</div>-->
+                    </div>
+                <div class="panel-body">
+                    <div class="col-xs-12 col-sm-12 col-md-12">
+                        <div class="list-group">
+                            {% for a in environment.news %}
+                                 <a href="http://www.promogest.me/promoGest/news_detail/{{a[1]}}" class="list-group-item">{{a[2]}} <b>{{a[0]}}</b> - clicks({{a[3]}})</a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+             <!--</div>-->
+        <!--</div>-->
+    </div>
 </div>
-
-<table >
-<tr>
-<!--
-    <td style="width:120px;height:110px;text-align:left">
-        <a style="text-color:black;" href="http://www.promogest.me/promoGest/news_list">
-                    <img src="gui/rss_128X128.png"  width=100 height=100 alt="Logo PromoGest" />
-        </a>
-    </td>
--->
-    <td style="width:100%;text-align:left"><p style="font-size:1.6em;"><b>Le ultime novità sul PromoGest</b>
-    {% for a in environment.news %}
-        <div><a style="text-decoration:none;font-size:1.2em;" href="http://www.promogest.me/promoGest/news_detail/{{a[1]}}">{{a[2]}} <b>{{a[0]}}</b> - clicks({{a[3]}})</a></div>
-    {% endfor %}</p>
-</td>
-</tr>
-
-<!--
-<tr>
--->
-<!--
-<td style="width:120px;height:110px;text-align:left">
--->
-<!--
-<a style="text-color:black;" href="http://code.google.com/p/promogest/"><img src="gui/Google_Code.png" width=100 height=100 alt="Logo PromoGest" /></a> </td>
--->
-<!--
-<td style="width:100%;text-align:left;font-size:1.2em;"><a style="text-color:black;" href="https://code.google.com/p/promogest/issues/list"><h3>Se trovi un BUG clicca qui</h3></a>
-</td>
-</tr>
--->
-<!--
-<tr>
--->
-<!--
-<td style="width:120px;height:110px;text-align:left">
-<a style="text-color:black;" href="https://groups.google.com/forum/?fromgroups#!forum/promogest"><img src="gui/google-groups-logo.jpeg" width=100 height=100 alt="Logo PromoGest" /></a> </td>
--->
-<!--
-<td style="width:100%;text-align:left;font-size:1.2em;"><a style="text-color:black;" href="https://groups.google.com/forum/?fromgroups#!forum/promogest"><h3>Questo è il forum</h3></a>
-</td>
-</tr>
--->
-
-<!--
-<tr>
-<td style="width:120px;height:110px;text-align:left">
-<a style="text-color:black;" href="http://www.promogest.me/"><img src="gui/paypalLogo.png" width=100 height=100 alt="Logo PromoGest" /></a> </td>
-<td style="width:100%;text-align:left"><form action="https://www.paypal.com/cgi-bin/webscr" method="post">
-<input type="hidden" name="cmd" value="_s-xclick">
-<input type="hidden" name="hosted_button_id" value="7H6WJ6L6LCRZE">
-<input type="image" src="https://www.paypalobjects.com/it_IT/IT/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - Il metodo rapido, affidabile e innovativo per pagare e farsi pagare.">
-<img alt="" border="0" src="https://www.paypalobjects.com/it_IT/i/scr/pixel.gif" width="1" height="1">
-</form>
-<p>A breve ...</p>
-</td>
-
-</tr>
--->
-</table>
-
-
     {% endblock %}
