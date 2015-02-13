@@ -67,8 +67,8 @@ class NewsNotebookPage(GladeWidget):
     def create_news_frame(self):
         """ CREIAMO IL TAB DELLE NEWS"""
         if Environment.nobrand:  # Questo serve a rendere un po' anonimo il pg toglendo i rif al sito
-            self.promotux_button.hide()
-            self.email_button.hide()
+            # self.promotux_button.hide()
+            # self.email_button.hide()
             self.promogest_button.hide()
 
         glib.idle_add(self.build_news_frame)
