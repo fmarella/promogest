@@ -17,11 +17,8 @@
       <div class="col-sm-6"><span class="label label-default">Unità di misura</span> {{dao.denominazione_unita_base}}</div>
           {% if dao.artima %}
 {% for a in dao.artima %}
-{% if utils.osname()=="NIX" %}
       <div class="col-xs-6 col-sm-3"><span class="label label-default">Immagine</span> <img class="img-responsive" src="data:image/png;base64,{{a.immagine.data}}"  /></div>
-{% else %}
-       <div class="col-xs-6 col-sm-3"><span class="label label-default">Immagine</span> <img class="img-responsive" src="{{utils.toTempPng(a.immagine.data)}}" width="100" /></div>
-{% endif %}
+
 {% endfor %}
       {% else %}
       <div></div>
