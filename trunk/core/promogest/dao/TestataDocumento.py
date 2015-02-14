@@ -310,6 +310,7 @@ class TestataDocumento(Base, Dao):
         totaleEsclusoBaseImponibileRiga = 0
         totaleImponibileRiga = 0
         merca = setconf("General", "gestione_totali_mercatino")
+        self.merca = merca
         for riga in self.righe:
             # FIXME: added for supporting dumb rows when printing
             if riga is None:
