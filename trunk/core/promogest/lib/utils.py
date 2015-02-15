@@ -2693,7 +2693,7 @@ def calcolaTotali(daos, pbarr=None, onlypag=True):
     """
 
     plus = ["Fattura vendita", "DDT vendita", "Preventivo", "Vendita dettaglio",
-    "Preventivo dettaglio","Ordine a magazzino","Vendita dettaglio CORSO", "Vendita dettaglio SANTIAGO",
+    "Preventivo dettaglio","Ordine a magazzino",
 "Ordine beni strumentali","Fattura pro-forma","Fattura differita vendita",
     "Fattura accompagnatoria","Scarico venduto da cassa","Ordine da cliente",
     "Ordine a fornitore","DDT acquisto",
@@ -2723,7 +2723,7 @@ def calcolaTotali(daos, pbarr=None, onlypag=True):
 
     _cast_imponibile = {}
     _cast_imposta = {}
-
+    _cast_gen = {}
     for tot in daos:
         if onlypag:
             if tot.operazione not in Environment.hapag:
@@ -2736,12 +2736,19 @@ def calcolaTotali(daos, pbarr=None, onlypag=True):
             if str(u['aliquota']) not in _cast_imponibile:
                 _cast_imponibile[str(u['aliquota'])] = Decimal(0)
                 _cast_imposta[str(u['aliquota'])] = Decimal(0)
+                _cast_gen[str(u['aliquota'])] = [ Decimal(0),Decimal(0)]
             if tot.operazione in minus:
                 _cast_imposta[str(u['aliquota'])] -= u['imposta']
                 _cast_imponibile[str(u['aliquota'])] -= u['imponibile']
+                _cast_gen[str(u['aliquota'])][0]  -= u['imponibile']
+                _cast_gen[str(u['aliquota'])][1]  -= u['imposta']
             elif tot.operazione in plus:
                 _cast_imposta[str(u['aliquota'])] += u['imposta']
                 _cast_imponibile[str(u['aliquota'])] += u['imponibile']
+                _cast_gen[str(u['aliquota'])][0] += u['imponibile']
+                _cast_gen[str(u['aliquota'])][1] += u['imposta']
+
+
         try:
             if tot.operazione in minus:
                 totale_imponibile_non_scontato -= tot._totaleImponibile
@@ -2818,7 +2825,7 @@ def calcolaTotali(daos, pbarr=None, onlypag=True):
         except:
             pass
     if pbarr:
-        pbar(pbarr,stop=True)
+        pbar(pbarr, stop=True)
     totaliGenerali = {
         "totale_imponibile_non_scontato": totale_imponibile_non_scontato,
         "totale_imponibile_scontato": totale_imponibile_scontato,
@@ -2831,9 +2838,11 @@ def calcolaTotali(daos, pbarr=None, onlypag=True):
         "totale_sospeso": totale_sospeso,
         "imponibile_aliquote": _cast_imponibile,
         "imposta_aliquote": _cast_imposta,
+        "cast_gen" : _cast_gen,
         "numero_documenti": numero_documenti,
         "totale_sconto_imponibile": totale_imponibile_non_scontato - totale_imponibile_scontato
-                        }
+    }
+
     return totaliGenerali
 
 

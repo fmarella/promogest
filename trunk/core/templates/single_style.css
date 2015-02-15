@@ -139,5 +139,5 @@ table#calendar a:hover{color: #716F64}
 size: A4 landscape;
 margin: 1cm;
 }
-
+@media print{@page {size: landscape}}
 </style>

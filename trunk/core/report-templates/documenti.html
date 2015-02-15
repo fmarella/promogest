@@ -1,102 +1,105 @@
 {% extends 'index.html' %}
 {% block body %}
-
-        <table cellpadding="0" cellspacing="3" border="0">
-            <tr style="">
-                <th style="width:25px;">N.</th>
-                <th style="width:100px;">OPERAZIONE</th>
-                <th style="width:80px;" class="detail">DATA</th>
-                <th style="width:350px;" class="detail">RAGIONE SOCIALE</th>
-                <th style="width:150px;" class="detail">P.IVA o C.F</th>
-                <th style="width:70px;" class="detail">IMPONIBILE</th>
-                <th style="width:70px;" class="detail">IMPOSTA</th>
-                <th style="width:70px;" class="detail">TOTALE </th>
-                <th style="width:70px;" class="detail">SOSPESO</th>
-                <th style="width:70px;" class="detail">SALDATO</th>
-                <th style="width:190px;" class="detail">RIF DOC FORNI</th>
-                <th style="width:120px;" class="detail">TIPO PAGATO</th>
-                <th style="width:140px;" class="detail">BANCA</th>
-            </tr>
-           {% for dao in pageData["objects"] %}
-            {% set tota = dao.totali %}
-            <tr style="" class="row">
-                <td style="width:25px;text-align:center;font-size:10px;">{{dao.numero|string + ' ' + (dao.parte or '')|string}}</td>
-                <td style="width:100px;text-align:center;font-size:10px;">{{dao.operazione}}</td>
-                <td style="width:80px;text-align:center;font-size:10px;" class="detail">{{utils.dateToString(dao.data_documento)}}</td>
-                <td style="width:350px;text-align:left;font-size:10px;" class="detail">{{dao.intestatario}}</td>
-                <td style="width:150px;text-align:left;font-size:10px;" class="detail">{{(dao.partita_iva_cliente or dao.codice_fiscale_cliente) if dao.id_cliente }}{{dao.partita_iva_fornitore if dao.id_fornitore }}</td>
-                <td style="width:70px;text-align:right;font-size:10px;" class="detail">{{utils.mNLC(dao._totaleImponibileScontato,2)}}</td>
-                <td style="width:70px;text-align:right;font-size:10px;"class="detail">{{utils.mNLC(dao._totaleImpostaScontata,2)}}</td>
-                <td style="width:70px;text-align:right;font-size:10px;" class="detail">{{utils.mNLC(dao._totaleScontato,2)}}</td>
-                {% if dao.documento_saldato == True %}
-                    <td style="width:70px;text-align:right;font-size:10px;" class="detail">{{utils.mNLC(0,2)}}</td>
-                    <td style="width:70px;text-align:right;font-size:10px;" class="detail">{{utils.mNLC(dao._totaleScontato,2)}}</td>
-                {% else %}
-                        <td style="width:70px;text-align:right;font-size:10px;" class="detail">{{utils.mNLC(dao.totale_sospeso,2)}}</td>
-                        <td style="width:70px;text-align:right;font-size:10px;" class="detail">{{utils.mNLC(dao.totale_pagato,2)}}</td>
-                {% endif %}
-                {% if dao.id_fornitore %}
-
-                <td style="width:190px;text-align:center;font-size:10px;" class="detail">{{dao.protocollo}}</td>
-                {% endif %}
-
-                <td style="width:120px;text-align:center;font-size:10px;" class="detail">{{dao.pagamento}}</td>
-                <td style="width:140px;text-align:center;font-size:10px;" class="detail">{{dao.banca[0:20]}}</td>
-            </tr>
-            {% endfor %}
-            </table>
-            <hr></hr><h2 align="center">TOTALI</h2>
-            <table style="width:360px;">
+<div class="row">
+     <div class="col-xs-12 col-md-12">
+         <h3>Report Documenti</h3>
+<div class="table">
+  <table class="table  table-bordered table-striped table-condensed">
+   <tr>
+                <th>N.</th>
+                <th>OPERAZIONE</th>
+                <th>DATA</th>
+                <th>RAGIONE SOCIALE</th>
+                <th>P.IVA o C.F</th>
+                <th>IMPON</th>
+                <th>IMPOSTA</th>
+                <th>TOTALE </th>
+                <th>SOSPESO</th>
+                <th>SALDATO</th>
+                <th>RIF FORNI</th>
+                <th>TIPO PAG</th>
+                <th>BANCA</th>
+    </tr>
+       {% for dao in pageData["objects"] %}
+        {% set tota = dao.totali %}
+    <tr>
+        <td>{{dao.numero|string + ' ' + (dao.parte or '')|string}}</td>
+        <td>{{dao.operazione}}</td>
+        <td>{{utils.dateToString(dao.data_documento)}}</td>
+        <td>{{dao.intestatario}}</td>
+        <td>{{(dao.partita_iva_cliente or dao.codice_fiscale_cliente) if dao.id_cliente }}{{dao.partita_iva_fornitore if dao.id_fornitore }}</td>
+        <td>{{utils.mNLC(dao._totaleImponibileScontato,2)}}</td>
+        <td>{{utils.mNLC(dao._totaleImpostaScontata,2)}}</td>
+        <td>{{utils.mNLC(dao._totaleScontato,2)}}</td>
+            {% if dao.documento_saldato == True %}
+                <td>{{utils.mNLC(0,2)}}</td>
+                <td>{{utils.mNLC(dao._totaleScontato,2)}}</td>
+            {% else %}
+                    <td>{{utils.mNLC(dao.totale_sospeso,2)}}</td>
+                    <td>{{utils.mNLC(dao.totale_pagato,2)}}</td>
+            {% endif %}
+        <td>{{dao.protocollo}}</td>
+        <td>{{dao.pagamento}}</td>
+        <td>{{dao.banca[0:20]}}</td>
+    </tr>
+        {% endfor %}
+      </table>
+    </div>
+         </div>
+      <div class="clearfix"></div>
             {% set tot = utils.calcolaTotali(pageData["objects"]) %}
-            {% for k, v in tot['imponibile_aliquote'].items() %}
-                        <tr>
-                <th style="width:200px;text-align:left;font-size:12px;">Totale Sconto</th>
-                <td style="width:120px;text-align:right;font-size:12px;"><b>{{utils.mNLC(tot["totale_sconto_imponibile"],2)}}</b></td>
-            </tr>
-                <tr>
-                    <th style="width:200px;text-align:left;font-size:12px" >IMPONIBILE Aliquota {{ utils.mN(k, 0) }}%</th>
-                    <td style="width:120px;text-align:right;font-size:12px" ><b>{{utils.mNLC(v, 2)}}</b></td>
-                </tr>
-            {% endfor %}
-            <tr>
-                <th style="width:200px;text-align:left;font-size:12px" >IMPONIBILE. NON SCONTATO.</th>
-                <td style="width:120px;text-align:right;font-size:12px" ><b>{{utils.mNLC(tot["totale_imponibile_non_scontato"],2)}}</b></td>
-            </tr>
-            {% for k, v in tot['imposta_aliquote'].items() %}
-                <tr>
-                    <th style="width:200px;text-align:left;font-size:12px" >IMPOSTA Aliquota {{ utils.mN(k, 0) }}%</th>
-                    <td style="width:120px;text-align:right;font-size:12px" ><b>{{utils.mNLC(v, 2)}}</b></td>
-                </tr>
-            {% endfor %}
-            <tr>
-                <th style="width:200px;text-align:left;font-size:12px">IMPOSTA NON SCONTATA</th>
-                <td style="width:120px;text-align:right;font-size:12px"><b>{{utils.mNLC(tot["totale_imposta_non_scontata"],2)}}</b></td>
-            </tr>
-             <tr>
-                <th style="width:200px;text-align:left;font-size:12px">GENERALE NON SCONTATO </th>
-                <td style="width:120px;text-align:right;font-size:12px"><b>{{utils.mNLC(tot["totale_non_scontato"],2)}}</b></td>
-            </tr>
-                        <tr><td></td></tr>
-            <tr>
-                <th style="width:200px;text-align:left;font-size:14px;">IMPONIBILE SCONTATO</th>
-                <td style="width:120px;text-align:right;font-size:14px;"><b>{{utils.mNLC(tot["totale_imponibile_scontato"],2)}}</b></td>
-            </tr>
-            <tr>
-                <th style="width:200px;text-align:left;font-size:14px;" >IMPOSTA SCONTATA </th>
-                <td style="width:120px;text-align:right;font-size:14px;"><b>{{utils.mNLC(tot["totale_imposta_scontata"],2)}}</b></td>
-            </tr>
-            <tr>
-                <th style="width:200px;text-align:left;font-size:16px;">GENERALE SCONTATO</th>
-                <td style="width:120px;text-align:right;font-size:16px;"><b>{{utils.mNLC(tot["totale_scontato"],2)}}</b></td>
-            </tr>
-            <tr><td></td></tr>
-           <tr>
-                <th style="width:200px;text-align:left;font-size:12px">SOSPESO</th>
-                <td style="width:120px;text-align:right;font-size:12px"><b>{{utils.mNLC(tot["totale_sospeso"],2)}}</b></td>
-            </tr>
-            <tr>
-                <th style="width:200px;text-align:left;font-size:12px">PAGATO</th>
-                <td style="width:120px;text-align:right;font-size:12px"><b>{{utils.mNLC(tot["totale_pagato"],2)}}</b></td>
-            </tr>
-        </table>
+            {% for k, v in tot['cast_gen'].items() %}
+        <div class="col-sm-4">
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              <h3 class="panel-title">Aliquota {{ utils.mN(k, 0) }}%</h3>
+            </div>
+            <div class="panel-body">
+                <div class="col-sm-12"><span class="label label-primary">IMPONIBILE</span> {{utils.mNLC(v[0], 2)}}</div>
+                <div class="col-sm-12"><span class="label label-primary">IMPOSTA</span> {{utils.mNLC(v[1], 2)}}</div>
+            </div>
+          </div>
+  </div>
+                {% endfor %}
+           <div class="col-xs-12 col-md-12">
+                       <div class="col-sm-6">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">TOTALI NON SCONTATI</h3>
+            </div>
+            <div class="panel-body">
+                <div class="col-sm-12"><span class="label label-default">IMPONIBILE</span> {{utils.mNLC(tot["totale_imponibile_non_scontato"],2)}}</div>
+                <div class="col-sm-12"><span class="label label-default">IMPOSTA</span> {{utils.mNLC(tot["totale_imposta_non_scontata"],2)}}</div>
+                                <div class="col-sm-12"><span class="label label-default">GENERALE</span> {{utils.mNLC(tot["totale_non_scontato"],2)}}</div>
+            </div>
+          </div>
+  </div>
+                        <div class="col-sm-6">
+          <div class="panel panel-warning">
+            <div class="panel-heading">
+              <h3 class="panel-title">TOTALE SCONTI</h3>
+            </div>
+            <div class="panel-body">
+                <div class="col-sm-12"><span class="label label-warning">IMPONIBILE</span> {{utils.mNLC(tot["totale_imponibile_non_scontato"]-tot["totale_imponibile_scontato"],2)}}</div>
+                <div class="col-sm-12"><span class="label label-warning">IMPOSTA</span> {{utils.mNLC(tot["totale_imposta_non_scontata"]-tot["totale_imposta_scontata"],2)}}</div>
+                                <div class="col-sm-12"><span class="label label-warning">GENERALE</span> {{utils.mNLC(tot["totale_non_scontato"]-tot["totale_scontato"],2)}}</div>
+            </div>
+          </div>
+  </div>
+                          <div class="col-sm-12">
+          <div class="panel panel-danger">
+            <div class="panel-heading">
+              <h2 class="panel-title">TOTALE SCONTATO</h2>
+            </div>
+            <div class="panel-body">
+                <div class="col-sm-12"><span class="label label-danger">IMPONIBILE</span> {{utils.mNLC(tot["totale_imponibile_scontato"],2)}}</div>
+                <div class="col-sm-12"><span class="label label-danger">IMPOSTA</span> {{utils.mNLC(tot["totale_imposta_scontata"],2)}}</div>
+                                <div class="col-sm-12"><span class="label label-danger">GENERALE</span> {{utils.mNLC(tot["totale_scontato"],2)}}</div>
+            </div>
+          </div>
+  </div>
+<div class="col-sm-12"><span class="label label-info">SOSPESO</span> {{utils.mNLC(tot["totale_sospeso"],2)}}</div>
+<div class="col-sm-12"><span class="label label-success">PAGATO</span> {{utils.mNLC(tot["totale_pagato"],2)}}</div>
+         </div></div>
+
 {% endblock %}
