@@ -30,6 +30,7 @@ from promogest.ui.widgets.FilterWidget import FilterWidget
 from promogest.lib.utils import *
 from promogest import Environment
 from promogest.lib.HtmlHandler import createHtmlObj, renderTemplate, renderHTML
+from promogest.dao.Azienda import  Azienda
 
 
 class AnagraficaPrintPreview(GladeWidget):
@@ -117,6 +118,7 @@ class AnagraficaPrintPreview(GladeWidget):
                                         batchSize=None,
                                         filterClosure=self._filterClosure,
                                         )
+        azienda = Azienda().getRecord(id=Environment.azienda)
         #pbar(self.pbar_report,parziale=daos.index(ragsoc), totale=len(nomi), text=ragsoc, noeta=False)
         #pbar(self.pbar_report,parziale=1, totale=4)
         if hasattr(self._anagrafica,"funzione_ordinamento") and self._anagrafica.funzione_ordinamento == "cliforn":
@@ -158,6 +160,7 @@ class AnagraficaPrintPreview(GladeWidget):
                     "file": self._previewTemplate[1],
                     #"dao":daos,
                     "objects": daos,
+                    "azienda" : azienda,
                     "forprint":forprint,
                     }
             self.html_code = renderTemplate(pageData)
