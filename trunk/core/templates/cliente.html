@@ -4,87 +4,77 @@
 
 {% block body %}
 
-        <table cellpadding="0" cellspacing="0" border="0">
-            <tr>
-                <td class="report-header" colspan="4"><h3>Cliente: <strong>{{dao.ragione_sociale|nonone}}</strong></h3></td>
-            </tr>
-            <tr><td colspan="3" class="table-header">Dati anagrafici</td></tr>
-            <tr>
-        <td width="140px" class="odd-detail"> Codice </td>
-                <td class="odd-detail"><strong>{{dao.codice}}</strong></td>
-            </tr>
-            <tr>
-                <td class="even-detail">Ragione sociale</td>
-                <td class="even-detail"><strong>{{dao.ragione_sociale|nonone}}</strong></td>
-            </tr>
-            <tr>
-                <td class="odd-detail">Cognome</td>
-                <td class="odd-detail"><strong>{{dao.cognome|nonone}}</strong></td>
-            </tr>
-            <tr>
-                <td class="even-detail">Nome</td>
-                <td class="even-detail"><strong>{{dao.nome|nonone}}</strong></td>
-            </tr>
-            <tr>
-                <td class="odd-detail">Codice fiscale</td>
-                <td class="odd-detail"><strong>{{dao.codice_fiscale|nonone}}</strong></td>
-            </tr>
-            <tr>
-                <td class="even-detail">Partita IVA</td>
-                <td class="even-detail"><strong>{{dao.partita_iva|nonone}}</strong></td>
-            </tr>
-        </table>
+<div class="row">
+     <div class="col-xs-12 col-md-12">
+        <div class="panel panel-default">
+  <div class="panel-heading"><h3>{{dao.codice}} --- {{dao.ragione_sociale|nonone}} </h3></div>
+  <div class="panel-body">
+<div class="col-sm-12"><span class="label label-default">Cognome e Nome</span><p style="display:inline;"><strong>  {{dao.cognome|nonone}} {{dao.nome|nonone}}</strong></p></div>
+       <div class="col-sm-6"><span class="label label-default">Codice fiscale</span> {{dao.codice_fiscale|nonone}}</div>
+       <div class="col-sm-6"><span class="label label-default">Partita IVA</span> {{dao.partita_iva|nonone}}</div>
+       <div class="col-sm-12"><span class="label label-default">Categorie</span> {{dao.categorieDenominazioni}}</div>
+       <div style="margin-bottom:5px;" class="clearfix"></div>
+              <div class="col-sm-6">
+          <div class="panel panel-warning">
+            <div class="panel-heading">
+              <h3 class="panel-title">Sede operativa</h3>
+            </div>
+            <div class="panel-body">
+                <div class="col-sm-12"><span class="label label-warning">Indirizzo</span> {{dao.sede_operativa_indirizzo|nonone}}</div>
+                <div class="col-sm-12"><span class="label label-warning">Località</span> {{dao.sede_operativa_localita|nonone}}</div>
+                <div class="col-sm-9"><span class="label label-warning">Provincia</span> {{dao.sede_operativa_provincia|nonone}}</div>
+                <div class="col-sm-3"><span class="label label-warning">CAP</span> {{dao.sede_operativa_cap|nonone}}</div>
+            </div>
+          </div>
+  </div>
+              <div class="col-sm-6">
+          <div class="panel panel-warning">
+            <div class="panel-heading">
+              <h3 class="panel-title">Sede legale</h3>
+            </div>
+            <div class="panel-body">
+                <div class="col-sm-12"><span class="label label-warning">Indirizzo</span> {{dao.sede_legale_indirizzo|nonone}}</div>
+                <div class="col-sm-12"><span class="label label-warning">Località</span> {{dao.sede_legale_localita|nonone}}</div>
+                <div class="col-sm-9"><span class="label label-warning">Provincia</span> {{dao.sede_legale_provincia|nonone}}</div>
+                <div class="col-sm-3"><span class="label label-warning">CAP</span> {{dao.sede_legale_cap|nonone}}</div>
+            </div>
+          </div>
+  </div>
+       <div style="margin-bottom:5px;" class="clearfix"></div>
+              <div class="col-sm-12">
+          <div class="panel panel-info">
+            <div class="panel-heading">
+              <h3 class="panel-title">Recapiti</h3>
+            </div>
+            <div class="panel-body">
+                {% for a in daoutils.getRecapitiCliente(dao.id) %}
+                <div class="col-sm-6"><span class="label label-info">{{a.tipo_recapito|nonone}}</span> {{ a.recapito|nonone}}</div>
+               {% endfor %}
+            </div>
+          </div>
+  </div>
+             <div style="margin-bottom:5px;" class="clearfix"></div>
+ <div class="col-sm-12"><span class="label label-default">NOTE</span> {{ dao.note|nonone}}</div>
+             <div style="margin-bottom:5px;" class="clearfix"></div>
+        <div class="col-sm-12">
+          <div class="panel panel-warning">
+            <div class="panel-heading">
+              <h3 class="panel-title">Dati preferenziali</h3>
+            </div>
+            <div class="panel-body">
+                <div class="col-sm-4"><span class="label label-success">Pagamento</span> {{dao.pagamento_preferenziale|nonone}}</div>
+                <div class="col-sm-4"><span class="label label-success">Banca</span> {{dao.banca_preferenziale|nonone}}</div>
+                <div class="col-sm-4"><span class="label label-success">Magazzino</span> {{dao.magazzino_preferenziale|nonone}}</div>
+                <div class="col-sm-4"><span class="label label-success">Listino</span> {{dao.listino_preferenziale|nonone}}</div>
+                <div class="col-sm-4"><span class="label label-success">Sconto Dettaglio</span> {{dao.sconto_dettaglio_preferenziale|nonone}}</div>
+                <div class="col-sm-4"><span class="label label-success">Sconto Ingrosso</span> {{dao.sconto_ingrosso_preferenziale|nonone}}</div>
+                <div class="col-sm-4"><span class="label label-success">Aliquota Iva</span> {{dao.aliquota_iva_preferenziale|nonone}}</div>
+            </div>
+          </div>
+  </div>
 
-<table><tr><td width="50%">
-
-        <table cellpadding="0" cellspacing="0" border="0">
-            <tr><td colspan="2" class="table-header">Sede operativa</td>
-        </tr>
-            <tr>
-                <td width="140px" class="odd-detail">Indirizzo</td>
-                <td class="odd-detail"><strong>{{dao.sede_operativa_indirizzo|nonone}}</strong></td>
-            </tr>
-            <tr>
-                <td class="even-detail">Località</td>
-                <td class="even-detail"><strong>{{dao.sede_operativa_localita|nonone}}</strong></td>
-            </tr>
-            <tr>
-                <td class="odd-detail">Provincia</td>
-                <td class="odd-detail"><strong>{{dao.sede_operativa_provincia|nonone}}</strong></td>
-            </tr>
-            <tr>
-                <td class="even-detail">CAP</td>
-                <td class="even-detail"><strong>{{dao.sede_operativa_cap|nonone}}</strong></td>
-
-            </tr>
-        </table>
-</td>
-<td width="50%"><table cellpadding="0" cellspacing="0" border="0">
-        <tr><td colspan="2" class="table-header">Sede legale</td></tr>
-        <tr>
-            <td width="140px" class="odd-detail">Indirizzo</td>
-            <td class="odd-detail"><strong>{{dao.sede_legale_indirizzo|nonone}}</strong></td>
-        </tr>
-        <tr>
-            <td class="even-detail">Località</td>
-            <td class="even-detail"><strong>{{dao.sede_legale_localita|nonone}}</strong></td>
-        </tr>
-        <tr>
-            <td class="odd-detail">Provincia</td>
-            <td class="odd-detail"><strong>{{dao.sede_legale_provincia|nonone}}</strong></td>
-        </tr>
-        <tr>
-            <td class="even-detail">CAP</td>
-            <td class="even-detail"><strong>{{dao.sede_legale_cap|nonone}}</strong></td>
-        </tr>
-    </table>
-</td></tr>
-</table>
-<table>
-{% for a in daoutils.getRecapitiCliente(dao.id) %}
-<tr>
-<td><b>{{a.tipo_recapito|nonone}} : </b>{{ a.recapito|nonone}}</td>
-</tr>
-{% endfor %}
-</table>
+            </div><!-- chiude la row -->
+         </div>
+    </div>
+ </div>
 {% endblock %}

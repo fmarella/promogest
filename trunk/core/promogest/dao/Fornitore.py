@@ -53,6 +53,7 @@ class Fornitore(Base, Dao):
         if self.categoria_fornitore:
             return self.categoria_fornitore.denominazione
         else: return ""
+
     @property
     def cellulare_principale(self):
         if self.id:

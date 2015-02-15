@@ -122,7 +122,6 @@ class AnagraficaHtml(object):
         html = renderTemplate(pageData)
         self.hh = html
         if forprint:
-            print "QUIQUQU", forprint
             return html
         else:
             renderHTML(self._gtkHtml, html)

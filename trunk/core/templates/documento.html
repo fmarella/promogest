@@ -21,13 +21,13 @@
       <!--<h3>TOTALI</h3>-->
       <div class="clearfix"></div>
               <div class="col-sm-9">
-        <div class="col-sm-3"><span class="label label-danger">IMPO. LORDO:</span><h4><strong> {{utils.mNLC(dao._totaleImponibile,2)}}</strong></h4></div>
-        <div class="col-sm-3"><span class="label label-danger">SCONTO:</span><h4><strong> {{ utils.getStringaSconti(utils.getScontiFromDao(dao.sconti, dao.applicazione_sconti)[0])}}{{ utils.getScontiFromDao(dao.sconti, dao.applicazione_sconti)[1]}}</strong></h4></div>
-                      <div class="col-sm-3"><span class="label label-danger">IMPONIBILE:</span><h4><strong> {{ utils.mNLC(dao._totaleImponibileScontato,2)}}</strong></h4></div>
-                      <div class="col-sm-3"><span class="label label-danger">IMPOSTA::</span><h4><strong> {{ utils.mNLC(dao._totaleImpostaScontata,2)}}</strong></h4></div>
+        <div class="col-sm-3"><span class="label label-danger">IMPO. LORDO</span><h4><strong> {{utils.mNLC(dao._totaleImponibile,2)}}</strong></h4></div>
+        <div class="col-sm-3"><span class="label label-danger">SCONTO</span><h4><strong> {{ utils.getStringaSconti(utils.getScontiFromDao(dao.sconti, dao.applicazione_sconti)[0])}}{{ utils.getScontiFromDao(dao.sconti, dao.applicazione_sconti)[1]}}</strong></h4></div>
+                      <div class="col-sm-3"><span class="label label-danger">IMPONIBILE</span><h4><strong> {{ utils.mNLC(dao._totaleImponibileScontato,2)}}</strong></h4></div>
+                      <div class="col-sm-3"><span class="label label-danger">IMPOSTA</span><h4><strong> {{ utils.mNLC(dao._totaleImpostaScontata,2)}}</strong></h4></div>
                   </div>                   <div class="col-sm-3">
 
-<div style="margin-top:5px;margin-bottom:10px;" class="alert alert-danger col-sm-12 pull-right" role="alert"><h4 style="display:inline;">TOTALE &nbsp;</h4> <h4 class="pull-right" style="display:inline;"><strong> {{utils.mNLC(dao._totaleScontato,2)}}</strong></h4></div>
+<div style="margin-top:5px;margin-bottom:10px;" class="alert alert-danger col-sm-12 pull-right" role="alert"><h4 style="display:inline;">TOTALE &nbsp;</h4> <h4 class="pull-right" style="display:inline;"><strong><big> {{utils.mNLC(dao._totaleScontato,2)}}</big></strong></h4></div>
   </div>
       <div class="clearfix"></div>
                 <div class="panel panel-warning">

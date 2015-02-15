@@ -835,11 +835,9 @@ class Anagrafica(GladeWidget):
                                         '_' + \
                                         time.strftime('%d-%m-%Y')
                         operationName = "label"
-                    print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
                     self.__pdfReport = pdfGenerator.pdf(operationName,
                                                         classic=self._classic,
                                                         template_file=self._template_file)
-                    print("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB")
 
                     # When we're done, let's schedule the printing
                     # dialog (going back to the main GTK loop)

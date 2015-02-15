@@ -110,6 +110,17 @@ class Cliente(Base, Dao):
         self.__categorieCliente = value
     categorieCliente = property(_getCategorieCliente, _setCategorieCliente)
 
+    @property
+    def categorieDenominazioni(self):
+        aa = ""
+        if self.categorieCliente:
+
+            for a in self.categorieCliente:
+                if a.categoria_cliente:
+                    aa += a.categoria_cliente.denominazione + " - "
+        return aa
+
+
     def persist(self):
         if not self.codice:
             self.cancellato = False
