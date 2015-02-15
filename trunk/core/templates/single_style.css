@@ -1,11 +1,9 @@
 <style>
 
 
-    a {
-    color:#712905;
-    }
+    /*a {color:#712905; }*/
 
-    table { width: 100%; }
+    /*table { width: 100%; }*/
 
     td.left {text-align: left;}
 
@@ -56,12 +54,12 @@
         padding:3px;
     }
 
-    th {
+    /*th {
         font-weight: normal;
         font-size: 11px;
         border-bottom: 1px solid #404040;
         color: #404040;
-    }
+    }*/
 
 /*     th.left {font-weight: normal;} */
 
@@ -69,12 +67,12 @@
         padding-left: 4px;
     }
 
-    .table-header {
+   /* .table-header {
         color: #404040;
         font-weight : bold;
         font-size: 13px;
         background : #ECE0E0;
-    }
+    }*/
     .header {
 /*         font-style: italic; */
         color: black;

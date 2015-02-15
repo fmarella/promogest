@@ -1,9 +1,13 @@
 {% extends 'index.html' %}
-{% block body %}<br>
+{% block body %}
 
-<table>
-<tbody>
-    <tr>
+<div class="row">
+
+     <div class="col-xs-12 col-md-12">
+         <h3>Anagrafica Articoli</h3>
+<div class="table">
+  <table class="table  table-bordered table-striped table-condensed">
+   <tr>
         <th>{{ _("Codice") }}</th>
         <th>{{ _("Descrizione") }}</th>
         <th>{{ _("IVA") }}</th>
@@ -13,16 +17,19 @@
         <th>{{ _("Produttore") }}</th>
     </tr>
     {% for dao in pageData["objects"] %}
-    <tr class="row">
-    <td class="detail">{{dao.codice}}</td>
-    <td class="detail">{{dao.denominazione}}</td>
-    <td class="detail">{{utils.mN(dao.percentuale_aliquota_iva,0)}}%</td>
-    <td class="detail">{{dao.denominazione_famiglia}}</td>
-    <td class="detail">{{dao.denominazione_categoria}}</td>
-    <td class="detail">{{dao.denominazione_unita_base}}</td>
-    <td class="detail">{{dao.produttore}}</td>
-    </tr>{% endfor %}
-</tbody>
-</table>
+    <tr>
+    <td>{{dao.codice}}</td>
+    <td>{{dao.denominazione.decode("utf-8","ignore")}}</td>
+    <td>{{utils.mN(dao.percentuale_aliquota_iva,0)}}%</td>
+    <td>{{dao.denominazione_famiglia}}</td>
+    <td>{{dao.denominazione_categoria}}</td>
+    <td>{{dao.denominazione_unita_base}}</td>
+    <td>{{dao.produttore}}</td>
+    </tr>
+      {% endfor %}
+  </table>
+</div>
+         </div></div>
+
 
 {% endblock %}

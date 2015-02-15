@@ -71,7 +71,7 @@ from promogest.ui.UpdateDialog import UpdateDialog
 if posso("GN"):
     from promogest.modules.GestioneNoleggio.dao.TestataGestioneNoleggio \
                             import TestataGestioneNoleggio
-from  xhtml2pdf import pisa
+# from  xhtml2pdf import pisa
 from promogest.dao.Setconf import SetConf
 from gi.repository.WebKit import WebView
 import jinja2
@@ -713,14 +713,14 @@ class Main(GladeWidget):
                     dialog.destroy()
                     return
             elif d[1] == "modulo":
-                tipo_section = d[2] #Modulo
-                section = d[3] # Inventario
-                description = str(d[4]) or "" #Gestione inventario
-                tipo = d[5] or None # Niente o BOOLEAN o colore
-                active = bool(d[6]) or True # bool
-                visible = bool(d[7]) or True #bool
+                tipo_section = d[2]  #Modulo
+                section = d[3]  # Inventario
+                description = str(d[4]) or ""  #Gestione inventario
+                tipo = d[5] or None  # Niente o BOOLEAN o colore
+                active = bool(d[6]) or True  # bool
+                visible = bool(d[7]) or True  #bool
                 key = d[8]  # mod_enable
-                value = d[9] # yes or no
+                value = d[9]  # yes or no
                 if section not in Environment.modules_folders:
                     messageInfo(msg = _("ERRORE ATTIVAZIONE MODULO"))
                     return
@@ -883,13 +883,13 @@ promogest2 IN /HOME/NOMEUTENTE/ O IN C:/UTENTI/NOMEUTENTE""")
         messageInfo(msg= msg, transient=self.getTopLevel())
 
     def on_client_sincro_db_activate(self, widget):
-        if posso("SD") and Environment.conf.SincroDB.tipo =="client":
+        if posso("SD") and Environment.conf.SincroDB.tipo == "client":
             from promogest.modules.SincroDB.ui.SincroDB import SincroDB
             anag = SincroDB()
             showAnagrafica(self.getTopLevel(), anag)
 
     def on_test_promowear_button_clicked(self, button):
-        msg = _("""PROVIAMO IL MODULO DI TAGLIA E COLORE o PROMOWEAR, Procedo? """)
+        msg = _( """PROVIAMO IL MODULO DI TAGLIA E COLORE o PROMOWEAR, Procedo? """ )
         if not YesNoDialog(msg=msg, transient=self.getTopLevel()):
             return
         from data.createSchemaDb import orderedInstallPromoWear

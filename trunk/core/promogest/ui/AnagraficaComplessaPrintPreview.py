@@ -167,7 +167,7 @@ class AnagraficaPrintPreview(GladeWidget):
         if forprint:
             return self.html_code
         else:
-            renderHTML(self.print_on_screen_html, self.html_code)
+            renderHTML(self.print_on_screen_html, str(self.html_code))
 
     def on_print_on_screen_dialog_response(self, dialog, responseId):
         if responseId == GTK_RESPONSE_CLOSE:
@@ -179,17 +179,23 @@ class AnagraficaPrintPreview(GladeWidget):
 
     def on_pdf_button_clicked(self, button):
         from PrintDialog import PrintDialogHandler
-        from xhtml2pdf import pisa
+        # from xhtml2pdf import pisa
         # from weasyprint import HTML
-
+        operation = gtk.PrintOperation()
+        operation.set_export_filename(Environment.tempDir + ".temp.pdf")
+        p = self.print_on_screen_html.get_main_frame().print_full(operation,
+                                                      gtk.PrintOperationAction.EXPORT)
         # f = self.html_code.encode("utf-8")
-        f = self.refresh(forprint=True)
-        g = file(Environment.tempDir + ".temp.pdf", "wb")
+        # f = self.refresh(forprint=True)
+        # g = file(Environment.tempDir + ".temp.pdf", "wb")
 
         # f = self.html_code.replace("€","&#8364;")
         pbar(self.pbar, pulse=True, text="GENERAZIONE STAMPA ATTENDERE")
         # HTML(string=f).write_pdf(g)
-        pisa.CreatePDF(str(f), g)
+        # pisa.CreatePDF(str(f), g)
+        # g.close()
+        g = file(Environment.tempDir + ".temp.pdf", "rb")
+        f = g.read()
         g.close()
         pbar(self.pbar, stop=True)
         anag = PrintDialogHandler(self, self.windowTitle)

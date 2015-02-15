@@ -1,25 +1,32 @@
 {% extends 'index.html' %}
 {% block body %}
-        <table cellpadding="0" cellspacing="3" border="0">
-            <tr>
+<div class="row">
+
+     <div class="col-xs-12 col-md-12">
+         <h3>Anagrafica Articoli</h3>
+<div class="table">
+  <table class="table table-bordered table-striped table-condensed">
+   <tr>
                 <th>Codice</th>
                 <th>Rag.Sociale</th>
-                <th>Cognome/Nome</th>
+                <!--<th>Cognome/Nome</th>-->
                 <th>Indirizzo</th>
                 <th>Località</th>
                 <th>Provincia</th>
                 <th>CAP</th>
             </tr>
            {% for dao in pageData["objects"] %}
-            <tr class="row">
-                <td class="detail">{{dao.codice}}</td>
-                <td class="detail">{{dao.ragione_sociale}}</td>
-                <td class="detail">{{( dao.cognome or '' ) + ( dao.nome or '')}}</td>
-                <td class="detail">{{dao.sede_operativa_indirizzo}}</td>
-                <td class="detail">{{dao.sede_operativa_localita}}</td>
-                <td class="detail">{{dao.sede_operativa_provincia}}</td>
-                <td class="detail">{{dao.sede_operativa_cap}}</td>
+            <tr>
+                <td>{{dao.codice}}</td>
+                <td>{{dao.ragione_sociale}}</td>
+                <!--<td>{#{( dao.cognome or '' ) + ( dao.nome or '')}#}</td>-->
+                <td>{{dao.sede_operativa_indirizzo}}</td>
+                <td>{{dao.sede_operativa_localita}}</td>
+                <td>{{dao.sede_operativa_provincia}}</td>
+                <td>{{dao.sede_operativa_cap}}</td>
             </tr>
             {% endfor %}
-        </table>
+  </table>
+</div>
+         </div></div>
 {% endblock %}

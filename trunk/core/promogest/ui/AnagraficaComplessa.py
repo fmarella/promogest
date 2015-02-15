@@ -713,6 +713,7 @@ class Anagrafica(GladeWidget):
                                      path='records_print_progress_dialog.glade')
         progressDialog.getTopLevel().set_transient_for(self.getTopLevel())
         progressDialog.getTopLevel().show_all()
+        self.progressDialog = progressDialog
         pbar = progressDialog.records_print_progress_bar
         pbar.set_text('Lettura dati')
 
@@ -838,7 +839,12 @@ class Anagrafica(GladeWidget):
                     self.__pdfReport = pdfGenerator.pdf(operationName,
                                                         classic=self._classic,
                                                         template_file=self._template_file)
-
+                    if not self.__pdfReport: # inserito per una soluzione all webkit gtkprinter
+                        self.__cancelOperation = True
+                        # if self.__pulseSourceTag is not None:
+                        #     gobject.source_remove(self.__pulseSourceTag)
+                        self.progressDialog.getTopLevel().destroy()
+                        return
                     # When we're done, let's schedule the printing
                     # dialog (going back to the main GTK loop)
                     gobject.idle_add(showPrintingDialog)

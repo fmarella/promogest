@@ -155,18 +155,26 @@ class AnagraficaHtml(object):
         """ Restituisce una stringa contenente il report in formato PDF """
 
         if self.dao.__class__.__name__ in Environment.fromHtmlLits:
-            from  xhtml2pdf import pisa
+            operation = gtk.PrintOperation()
+            operation.set_export_filename(Environment.tempDir + ".temp.pdf")
+            p = self._gtkHtml.get_main_frame().print_full(operation,gtk.PrintOperationAction.EXPORT)
+            # if p == gtk.PrintOperationResult.CANCEL:
+            #     return False
+            # elif p == gtk.PrintOperationResult.APPLY:
+            #     return False
+            #from  xhtml2pdf import pisa
             #from weasyprint import HTML
-            f = self._refresh(forprint=True)
+            # f = self._refresh(forprint=True)
+            # g = file(Environment.tempDir + ".temp.pdf", "wb")
 
-            g = file(Environment.tempDir + ".temp.pdf", "wb")
             #HTML(string=f).write_pdf(g)
-            pisa.CreatePDF(f, g)
-            g .close()
-            g = file(Environment.tempDir + ".temp.pdf", "r")
+            # pisa.CreatePDF(f, g)
+            # g .close()
+            g = file(Environment.tempDir + ".temp.pdf", "rb")
             f = g.read()
             g.close()
             return f
+            # return False
         param = [self.dao.dictionary(complete=True)]
         multilinedirtywork(param)
         try:

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -48,9 +48,9 @@ class PrintDialogHandler(GladeWidget):
                 self._folder = os.environ['USERPROFILE']
         self.__pdfGenerator = pdfGenerator
         if tempFile:
-            filetemp= file(tempFile,"r")
+            filetemp= file(tempFile,"rb")
         else:
-            filetemp=file(Environment.tempDir+".temp.pdf", "r")
+            filetemp=file(Environment.tempDir+".temp.pdf", "rb")
         self.__pdfReport= filetemp.read()
         filetemp.close()
         self.records_print_dialog_size_label.set_text(str(len(self.__pdfReport) / 1024) + ' Kb')
