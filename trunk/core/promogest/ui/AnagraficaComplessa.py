@@ -159,7 +159,7 @@ class Anagrafica(GladeWidget):
         filterElement = self.bodyWidget.filter_frame
         filterElement.unparent()
         self.anagrafica_filters_viewport.add(filterElement)
-        self.anagrafica_hpaned.set_position(350)
+        # self.anagrafica_hpaned.set_position(398)
 
         resultElement = self.bodyWidget.filter_list_vbox
         resultElement.unparent()
@@ -1142,3 +1142,12 @@ html contatti <b>assistenza@promotux.it</b> per informazioni.""")
     def hideNavigator(self):
         self.bodyWidget.filter_navigation_hbox.set_no_show_all(True)
         self.bodyWidget.filter_navigation_hbox.hide()
+
+    def on_ricerca_toggle_toggled(self,button):
+        if button.get_active():
+            self.position = self.anagrafica_hpaned.get_position()
+            self.anagrafica_hpaned.set_position(
+                0)
+
+        else:
+            self.anagrafica_hpaned.set_position(self.position)
