@@ -135,18 +135,10 @@ table#calendar td{background: #DBDFEB url(gui/tdbk.png) no-repeat}
 table#calendar a{text-decoration:none;color:#4A5576;font-weight:bold}
 table#calendar a:hover{color: #716F64}
 
-@page {
-size: A4 landscape;
-margin: 1cm;
-}
-@media print{@page {size: landscape}}
-@media print and (orientation:landscape)
-</style>
-<style type="text/css" media="print">
-    @page {
-        size: landscape;
-    }
-    body {
-        writing-mode: tb-rl;
-    }
+
+<style type="text/css">
+    table { page-break-inside:auto }
+    div   { page-break-inside:avoid; } /* This is the key */
+    thead { display:table-header-group }
+    tfoot { display:table-footer-group }
 </style>

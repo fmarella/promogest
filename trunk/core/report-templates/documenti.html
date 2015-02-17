@@ -6,7 +6,7 @@
          <h3>Report Documenti</h3>
 <div class="table">
   <table class="table  table-bordered table-striped table-condensed">
-   <tr>
+   <thead>
                 <th>N.</th>
                 <th>OPERAZIONE</th>
                 <th>DATA</th>
@@ -20,7 +20,8 @@
                 <th>RIF FORNI</th>
                 <th>TIPO PAG</th>
                 <th>BANCA</th>
-    </tr>
+    </thead>
+      <tbody>
        {% for dao in pageData["objects"] %}
         {% set tota = dao.totali %}
     <tr>
@@ -44,6 +45,7 @@
         <td>{{dao.banca[0:20]}}</td>
     </tr>
         {% endfor %}
+      </tbody>
       </table>
     </div>
          </div>

@@ -260,9 +260,6 @@
                               </packing>
                             </child>
                             <child>
-                              <placeholder/>
-                            </child>
-                            <child>
                               <object class="GtkEntry" id="articolo_entry">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
@@ -328,9 +325,6 @@
                                 <property name="position">4</property>
                               </packing>
                             </child>
-                            <child>
-                              <placeholder/>
-                            </child>
                           </object>
                         </child>
                       </object>
@@ -370,23 +364,6 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkHBox" id="hbox43">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">False</property>
-                        <property name="position">1</property>
-                      </packing>
-                    </child>
-                    <child>
                       <object class="GtkEntry" id="articolo_entry1">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
@@ -416,9 +393,6 @@
                         <property name="fill">False</property>
                         <property name="position">3</property>
                       </packing>
-                    </child>
-                    <child>
-                      <placeholder/>
                     </child>
                   </object>
                   <packing>
@@ -496,8 +470,8 @@ userà il listino classico</property>
                     <property name="receives_default">True</property>
                     <property name="use_stock">True</property>
                     <signal name="clicked" handler="on_add_button_clicked" swapped="no"/>
-                    <accelerator key="KP_Enter" signal="clicked"/>
                     <accelerator key="Return" signal="clicked"/>
+                    <accelerator key="KP_Enter" signal="clicked"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>

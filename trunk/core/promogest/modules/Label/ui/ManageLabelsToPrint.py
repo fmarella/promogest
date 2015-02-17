@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012
+#    Copyright (C) 2005-2015
 #by Promotux di Francesco Meloni snc - http://www.promotux.it/
 
 # Author: Francesco Meloni <francesco@promotux.it>
@@ -196,7 +196,6 @@ class ManageLabelsToPrint(GladeWidget):
     def ricercaListino(self):
         """ check if there is a priceList like setted on configure file
         """
-
         try:
             pp = Environment.conf.VenditaDettaglio.listino
         except:
