@@ -1345,8 +1345,10 @@
                                                 <property name="digits">3</property>
                                                 <property name="numeric">True</property>
                                                 <property name="update_policy">if-valid</property>
+                                                <signal name="change-value" handler="on_quantita_entry_change_value" swapped="no"/>
                                                 <signal name="focus-out-event" handler="on_quantita_entry_focus_out_event" swapped="no"/>
                                                 <signal name="icon-press" handler="on_icon_press" swapped="no"/>
+                                                <signal name="value-changed" handler="on_quantita_entry_value_changed" swapped="no"/>
                                               </object>
                                               <packing>
                                                 <property name="left_attach">1</property>

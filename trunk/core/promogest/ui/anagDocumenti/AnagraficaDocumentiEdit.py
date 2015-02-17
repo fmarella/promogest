@@ -1990,7 +1990,8 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         anagWindow.show_all()
         toggleButton.set_active(False)
 
-
+    def on_quantita_entry_value_changed(self,spin):
+        self.on_quantita_entry_focus_out_event(entry=None,event=None)
 
     def on_id_magazzino_combobox_changed(self, combobox):
         if self._loading:
@@ -2050,7 +2051,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self.on_altezza_entry_key_press_event(entry, event)
         self.on_show_totali_riga()
 
-    def on_quantita_entry_focus_out_event(self, entry, event):
+    def on_quantita_entry_focus_out_event(self, entry=None, event=None):
         on_quantita_entry_focus_out_eventPart(self, entry, event)
 
     def on_moltiplicatore_entry_focus_out_event(self, entry, event):
