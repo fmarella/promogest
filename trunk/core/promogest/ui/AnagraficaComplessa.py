@@ -604,7 +604,7 @@ class Anagrafica(GladeWidget):
                 messageError(str(ex))
 
     def on_selected_record_print_activate(self, widget):
-        """Gestione delal stampa del DAO Selezionato"""
+        """Gestione della stampa del DAO Selezionato"""
         from promogest.lib.utils import do_print
         from promogest.lib.DaoTransform import to_pdf
 
@@ -841,8 +841,6 @@ class Anagrafica(GladeWidget):
                                                         template_file=self._template_file)
                     if not self.__pdfReport: # inserito per una soluzione all webkit gtkprinter
                         self.__cancelOperation = True
-                        # if self.__pulseSourceTag is not None:
-                        #     gobject.source_remove(self.__pulseSourceTag)
                         self.progressDialog.getTopLevel().destroy()
                         return
                     # When we're done, let's schedule the printing
@@ -979,7 +977,7 @@ class Anagrafica(GladeWidget):
         pdfFile = os.path.join(self._folder, self._pdfName + '.pdf')
         self.tryToSavePdf(pdfFile)
         try:
-            do_print(pdfFile)
+            do_print(pdfFile, tipo="singolo")
         except Exception as ex:
             messageInfo(msg=str(ex))
 

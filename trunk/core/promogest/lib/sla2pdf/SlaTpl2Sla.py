@@ -744,7 +744,7 @@ class SlaTpl2Sla(SlaParser):
                         function = tags[tagsKeys]['function']
                         parameter = tags[tagsKeys]['parameter']
                         if function == "bcview":
-                            bc = str(self.objects[index][tagsKeys])
+                            bc = self.objects[index][tagsKeys]
                             if bc == "None":
                                 bc = "0000000000000"
                             value = "bcview;%s;%s;%s" %(bc,
@@ -762,7 +762,7 @@ class SlaTpl2Sla(SlaParser):
 
                     else:
                         value = ch
-                    if value.count('€'.decode("utf-8")) >1:
+                    if value.count('€') >1:
                         value = value.replace('€', '', 1)
                     itext.set('CH', value)
             else:

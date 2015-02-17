@@ -20,9 +20,9 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
+import os
 from decimal import *
 from promogest.ui.gtk_compat import *
-import os
 from promogest import Environment
 from promogest.ui.GladeWidget import GladeWidget
 from promogest.lib.utils import *
@@ -33,7 +33,6 @@ from promogest.dao.Listino import Listino
 from promogest.dao.ListinoArticolo import ListinoArticolo
 from promogest.lib.sla2pdf.Sla2Pdf_ng import Sla2Pdf_ng
 from promogest.lib.sla2pdf.SlaTpl2Sla import SlaTpl2Sla as SlaTpl2Sla_ng
-#from promogest.lib.SlaTpl2Sla import SlaTpl2Sla
 from promogest.ui.PrintDialog import PrintDialogHandler
 
 class ManageLabelsToPrint(GladeWidget):
@@ -45,9 +44,8 @@ class ManageLabelsToPrint(GladeWidget):
         GladeWidget.__init__(self, root='label_dialog',
                         path='Label/gui/label_dialog.glade',
                         isModule=True)
-        self.revert_button.destroy()
-        self.apply_button.destroy()
         self.mainWindow = mainWindow
+
         self.completion = gtk.EntryCompletion()
         self.completion.set_match_func(self.match_func,None)
         self.completion.connect("match-selected",
@@ -70,15 +68,13 @@ class ManageLabelsToPrint(GladeWidget):
         """Creo una treeviewper la visualizzazione degli articoli che
             andranno poi in stampa
         """
-        if posso("PW"):
-            self._treeViewModel = self.label_treestore # gtk.TreeStore(object,str,str,str,str,str)
-        else:
-            self._treeViewModel = self.label_liststore # gtk.ListStore(object,str,str,str,str,str)
+        self._treeViewModel = self.label_liststore # gtk.ListStore(object,str,str,str,str,str)
         self.labels_treeview.set_model(self._treeViewModel)
         fillComboboxMagazzini(self.id_magazzino_label_combobox, True)
         if self.art:
-            self.selected_articolo_entry.set_text(self.art.denominazione)
-            fillComboboxListiniFiltrati(self.id_listino_combobox,idArticolo = self.art.id)
+            self.articoli_label.set_text(self.art.denominazione)
+            fillComboboxListiniFiltrati(self.id_listino_combobox,
+                                        idArticolo=self.art.id)
         else:
             fillComboboxListini(self.id_listino_combobox, True)
         self.id_magazzino_label_combobox.set_active(0)
@@ -121,6 +117,7 @@ class ManageLabelsToPrint(GladeWidget):
         self.resultList= []
         for row in self._treeViewModel:
             if row[5] == "0" or row[5] == "":
+                messageInfo(msg="Articolo {0} non ha quantità, considero uno".format(row[2]))
                 continue
             else:
                 for v in range(0,int(row[5])):
@@ -128,7 +125,6 @@ class ManageLabelsToPrint(GladeWidget):
         classic = False
         param = []
         for d in self.resultList:
-#            d.resolveProperties()
             a = d.dictionary(complete=True)
             a["prezzo_dettaglio"] = str(self.prezzoVenditaDettaglio(d))
             param.append(a)
@@ -157,12 +153,11 @@ class ManageLabelsToPrint(GladeWidget):
         g.write(ecco)
         g.close()
         pbar(self.pbar,stop=True)
-        anag = PrintDialogHandler(self,g)
+        anag = PrintDialogHandler(self,g, tipo="label")
 
     def refresh(self):
         # Aggiornamento TreeView
         self._treeViewModel.clear()
-        #print(dir(self.daos[0]))
         quantita ="1"
         for dao in self.daos:
             if posso("PW"):
@@ -243,10 +238,15 @@ class ManageLabelsToPrint(GladeWidget):
         print "OKOKOK"
 
     def on_add_button_clicked(self, button=None):
-        if self.articolo_entry.get_text() =="" and self.selected_articolo_entry=="":
+        """
+        Funzione di controllo del bottone " aggiungi"
+        :param button:
+        :return:
+        """
+        if self.articoli_label.get_text() == "":
             return
         idListino = findIdFromCombobox(self.id_listino_combobox)
-        self.articolo_entry.set_text("")
+        # self.articoli_label.set_text("")
         artilist=[]
         idart = None
         if self.art:
@@ -256,11 +256,15 @@ class ManageLabelsToPrint(GladeWidget):
         if idart:
             artilist = ListinoArticolo().select(idListino=idListino, idArticolo=idart)
             #self.art = None
-            self.selected_articolo_entry.set_text("")
-            if artilist:
+            self.articoli_label.set_text("")
+            if not artilist:
+                messageInfo(msg="L'articolo NON è presente in nessun Listino, non posso operare")
+                return
+            else:
                 self.daos.append(artilist[0])
-                self.articolo_matchato = None
-                self.refresh()
+            self.articolo_matchato = None
+            self.refresh()
+
 
     # Funzione utile. Gestione inserimento testo nella entry
     def on_articolo_entry_insert_text(self, text):
@@ -332,8 +336,12 @@ class ManageLabelsToPrint(GladeWidget):
     def on_column_quantita_edited(self, treeview, path, value):
         """ Function ti set the value quantita edit in the cell"""
         model = self.labels_treeview.get_model()
-        #model[path][0]["quantita"] = value
         model[path][5] = value
+
+    def on_colonna_prezzo_edited(self, treeview, path, value):
+        model = self.labels_treeview.get_model()
+        model[path][4] = value
+
 
     def on_calculate_button_clicked(self, button):
         idMagazzino = findIdFromCombobox(self.id_magazzino_label_combobox)

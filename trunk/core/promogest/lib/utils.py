@@ -3521,7 +3521,7 @@ def start_viewer(filename):
     else:
         pass
 
-def do_print(fileName):
+def do_print(fileName, tipo="None"):
     """Stampa un file.
 
     L'argomento è il percorso ad un file esistente.
@@ -3530,10 +3530,8 @@ def do_print(fileName):
         import win32api
         win32api.ShellExecute (0, "print", fileName, None, ".", 0)
     else:
-        ##messageInfo(msg="QUESTA FUNZIONALITÀ È MOMENTANEAMENTE SOSPESA, SI PUÒ STAMPARE USANDO APRI")
-        ##return
         from promogest.lib.printingApp import PrintingApp
-        app = PrintingApp(fileName)
+        app = PrintingApp(fileName, tipo=tipo)
         app.run()
 
 def fill_treeview_with_data(treeview, data_provider, flag=False, clear=True):

@@ -8,6 +8,11 @@
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
   </object>
+  <object class="GtkAdjustment" id="adjustment2">
+    <property name="upper">1000000</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
+  </object>
   <object class="GtkListStore" id="label_liststore">
     <columns>
       <!-- column-name PyObject1 -->
@@ -46,6 +51,26 @@
       <column type="gchararray"/>
     </columns>
   </object>
+  <object class="GtkListStore" id="liststore2">
+    <columns>
+      <!-- column-name gchararray1 -->
+      <column type="gchararray"/>
+    </columns>
+    <data>
+      <row>
+        <col id="0" translatable="yes">Codice</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Codice a Barre</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Descrizione</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Codice Art. Fornitore</col>
+      </row>
+    </data>
+  </object>
   <object class="GtkDialog" id="label_dialog">
     <property name="can_focus">False</property>
     <property name="border_width">5</property>
@@ -64,7 +89,8 @@
           <object class="GtkButtonBox" id="dialog-action_area2">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="layout_style">end</property>
+            <property name="homogeneous">True</property>
+            <property name="layout_style">center</property>
             <child>
               <object class="GtkProgressBar" id="pbar">
                 <property name="visible">True</property>
@@ -73,7 +99,7 @@
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">False</property>
-                <property name="position">0</property>
+                <property name="position">1</property>
               </packing>
             </child>
             <child>
@@ -89,39 +115,7 @@
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">False</property>
-                <property name="position">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton" id="revert_button">
-                <property name="label">gtk-revert-to-saved</property>
-                <property name="use_action_appearance">False</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="use_stock">True</property>
-                <signal name="clicked" handler="on_revert_button_clicked" swapped="no"/>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
                 <property name="position">2</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton" id="apply_button">
-                <property name="label">gtk-apply</property>
-                <property name="use_action_appearance">False</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="use_stock">True</property>
-                <signal name="clicked" handler="on_apply_button_clicked" swapped="no"/>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
-                <property name="position">3</property>
               </packing>
             </child>
             <child>
@@ -160,188 +154,6 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <child>
-                  <object class="GtkHBox" id="hbox245">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="spacing">5</property>
-                    <child>
-                      <object class="GtkAlignment" id="alignment301">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="yscale">0</property>
-                        <property name="left_padding">5</property>
-                        <child>
-                          <object class="GtkHBox" id="hbox241">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="border_width">3</property>
-                            <child>
-                              <object class="GtkHBox" id="hbox4">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <child>
-                                  <object class="GtkRadioButton" id="ricerca_codice_button">
-                                    <property name="label" translatable="yes">C-Art</property>
-                                    <property name="use_action_appearance">False</property>
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">True</property>
-                                    <property name="receives_default">False</property>
-                                    <property name="use_underline">True</property>
-                                    <property name="xalign">0.5</property>
-                                    <property name="draw_indicator">True</property>
-                                  </object>
-                                  <packing>
-                                    <property name="expand">False</property>
-                                    <property name="fill">False</property>
-                                    <property name="position">0</property>
-                                  </packing>
-                                </child>
-                                <child>
-                                  <object class="GtkRadioButton" id="ricerca_codice_a_barre_button">
-                                    <property name="label" translatable="yes">C-Bar</property>
-                                    <property name="use_action_appearance">False</property>
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">True</property>
-                                    <property name="receives_default">False</property>
-                                    <property name="use_underline">True</property>
-                                    <property name="xalign">0.5</property>
-                                    <property name="active">True</property>
-                                    <property name="draw_indicator">True</property>
-                                    <property name="group">ricerca_codice_button</property>
-                                  </object>
-                                  <packing>
-                                    <property name="expand">False</property>
-                                    <property name="fill">False</property>
-                                    <property name="position">1</property>
-                                  </packing>
-                                </child>
-                                <child>
-                                  <object class="GtkRadioButton" id="ricerca_descrizione_button">
-                                    <property name="label" translatable="yes">Desc</property>
-                                    <property name="use_action_appearance">False</property>
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">True</property>
-                                    <property name="receives_default">False</property>
-                                    <property name="use_underline">True</property>
-                                    <property name="xalign">0.5</property>
-                                    <property name="draw_indicator">True</property>
-                                    <property name="group">ricerca_codice_button</property>
-                                  </object>
-                                  <packing>
-                                    <property name="expand">False</property>
-                                    <property name="fill">False</property>
-                                    <property name="position">2</property>
-                                  </packing>
-                                </child>
-                                <child>
-                                  <object class="GtkRadioButton" id="ricerca_codice_articolo_fornitore_button">
-                                    <property name="label" translatable="yes">C-Forn</property>
-                                    <property name="use_action_appearance">False</property>
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">True</property>
-                                    <property name="receives_default">False</property>
-                                    <property name="use_underline">True</property>
-                                    <property name="xalign">0.5</property>
-                                    <property name="draw_indicator">True</property>
-                                    <property name="group">ricerca_codice_button</property>
-                                  </object>
-                                  <packing>
-                                    <property name="expand">False</property>
-                                    <property name="fill">False</property>
-                                    <property name="position">3</property>
-                                  </packing>
-                                </child>
-                              </object>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">False</property>
-                                <property name="padding">1</property>
-                                <property name="position">0</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkEntry" id="articolo_entry">
-                                <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="has_tooltip">True</property>
-                                <property name="invisible_char">●</property>
-                                <property name="primary_icon_stock">gtk-find</property>
-                                <property name="secondary_icon_stock">gtk-clear</property>
-                                <property name="primary_icon_tooltip_text">Clicca qui per la ricerca</property>
-                                <property name="primary_icon_tooltip_markup">Clicca qui per la ricerca</property>
-                                <signal name="changed" handler="on_articolo_entry_insert_text" swapped="no"/>
-                              </object>
-                              <packing>
-                                <property name="expand">True</property>
-                                <property name="fill">True</property>
-                                <property name="position">2</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkHBox" id="hbox77">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <child>
-                                  <object class="GtkButton" id="search_row_button">
-                                    <property name="label">gtk-find</property>
-                                    <property name="use_action_appearance">False</property>
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">True</property>
-                                    <property name="receives_default">True</property>
-                                    <property name="use_stock">True</property>
-                                    <signal name="clicked" handler="on_search_row_button_clicked" swapped="no"/>
-                                  </object>
-                                  <packing>
-                                    <property name="expand">False</property>
-                                    <property name="fill">False</property>
-                                    <property name="position">0</property>
-                                  </packing>
-                                </child>
-                              </object>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">True</property>
-                                <property name="padding">3</property>
-                                <property name="position">3</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkToggleButton" id="promowear_manager_taglia_colore_togglebutton">
-                                <property name="use_action_appearance">False</property>
-                                <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="receives_default">True</property>
-                                <child>
-                                  <object class="GtkImage" id="promowear_manager_taglia_colore_image">
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
-                                    <property name="pixbuf">taglia_colore24x24.png</property>
-                                  </object>
-                                </child>
-                              </object>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">False</property>
-                                <property name="position">4</property>
-                              </packing>
-                            </child>
-                          </object>
-                        </child>
-                      </object>
-                      <packing>
-                        <property name="expand">True</property>
-                        <property name="fill">True</property>
-                        <property name="position">0</property>
-                      </packing>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="expand">True</property>
-                    <property name="fill">True</property>
-                    <property name="position">0</property>
-                  </packing>
-                </child>
-                <child>
                   <object class="GtkHBox" id="hbox6">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
@@ -350,6 +162,7 @@
                       <object class="GtkComboBox" id="ricerca_criterio_combobox">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="model">liststore2</property>
                         <child>
                           <object class="GtkCellRendererText" id="cellrenderertext5"/>
                           <attributes>
@@ -364,7 +177,7 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkEntry" id="articolo_entry1">
+                      <object class="GtkEntry" id="articolo_entry">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="invisible_char">●</property>
@@ -380,7 +193,7 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkButton" id="search_row_button1">
+                      <object class="GtkButton" id="search_row_button">
                         <property name="label">gtk-find</property>
                         <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
@@ -398,6 +211,38 @@
                   <packing>
                     <property name="expand">True</property>
                     <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkHBox" id="hbox245">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="spacing">5</property>
+                    <child>
+                      <object class="GtkAlignment" id="alignment301">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="yscale">0</property>
+                        <property name="left_padding">5</property>
+                        <child>
+                          <object class="GtkLabel" id="articoli_label">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="label" translatable="yes">Articolo selezionato</property>
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">True</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
                     <property name="position">1</property>
                   </packing>
                 </child>
@@ -406,20 +251,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <child>
-                      <object class="GtkEntry" id="selected_articolo_entry">
-                        <property name="visible">True</property>
-                        <property name="sensitive">False</property>
-                        <property name="can_focus">True</property>
-                        <property name="editable">False</property>
-                        <property name="invisible_char">●</property>
-                        <property name="primary_icon_activatable">False</property>
-                        <property name="secondary_icon_activatable">False</property>
-                      </object>
-                      <packing>
-                        <property name="expand">True</property>
-                        <property name="fill">True</property>
-                        <property name="position">0</property>
-                      </packing>
+                      <placeholder/>
                     </child>
                     <child>
                       <object class="GtkComboBox" id="id_listino_combobox">
@@ -704,12 +536,14 @@ userà il listino classico</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="model">label_liststore</property>
+                        <property name="enable_grid_lines">both</property>
                         <signal name="button-press-event" handler="on_treeview_button_press_event" swapped="no"/>
                         <child internal-child="selection">
                           <object class="GtkTreeSelection" id="treeview-selection1"/>
                         </child>
                         <child>
                           <object class="GtkTreeViewColumn" id="treeviewcolumn1">
+                            <property name="resizable">True</property>
                             <property name="title" translatable="yes">Codice</property>
                             <child>
                               <object class="GtkCellRendererText" id="cellrenderertext1"/>
@@ -722,6 +556,7 @@ userà il listino classico</property>
                         <child>
                           <object class="GtkTreeViewColumn" id="treeviewcolumn2">
                             <property name="resizable">True</property>
+                            <property name="sizing">autosize</property>
                             <property name="title" translatable="yes">Denominazione</property>
                             <property name="expand">True</property>
                             <child>
@@ -734,6 +569,7 @@ userà il listino classico</property>
                         </child>
                         <child>
                           <object class="GtkTreeViewColumn" id="treeviewcolumn3">
+                            <property name="resizable">True</property>
                             <property name="title" translatable="yes">Codide a barre</property>
                             <child>
                               <object class="GtkCellRendererText" id="cellrenderertext3"/>
@@ -745,9 +581,17 @@ userà il listino classico</property>
                         </child>
                         <child>
                           <object class="GtkTreeViewColumn" id="treeviewcolumn4">
+                            <property name="resizable">True</property>
+                            <property name="min_width">130</property>
                             <property name="title" translatable="yes">Prezzo</property>
                             <child>
-                              <object class="GtkCellRendererText" id="cellrenderertext4"/>
+                              <object class="GtkCellRendererSpin" id="cellrenderertext4">
+                                <property name="editable">True</property>
+                                <property name="adjustment">adjustment2</property>
+                                <property name="climb_rate">0.5</property>
+                                <property name="digits">2</property>
+                                <signal name="edited" handler="on_colonna_prezzo_edited" swapped="no"/>
+                              </object>
                               <attributes>
                                 <attribute name="text">4</attribute>
                               </attributes>
@@ -756,13 +600,14 @@ userà il listino classico</property>
                         </child>
                         <child>
                           <object class="GtkTreeViewColumn" id="treeviewcolumn5">
+                            <property name="resizable">True</property>
+                            <property name="min_width">130</property>
                             <property name="title" translatable="yes">Quantità</property>
                             <child>
                               <object class="GtkCellRendererSpin" id="cellrendererspin1">
                                 <property name="editable">True</property>
                                 <property name="adjustment">adjustment1</property>
                                 <property name="climb_rate">0.5</property>
-                                <signal name="edited" handler="on_column_quantita_edited" swapped="no"/>
                                 <signal name="edited" handler="on_column_quantita_edited" swapped="no"/>
                               </object>
                               <attributes>
@@ -930,8 +775,6 @@ userà il listino classico</property>
     </child>
     <action-widgets>
       <action-widget response="0">discard_button</action-widget>
-      <action-widget response="0">revert_button</action-widget>
-      <action-widget response="0">apply_button</action-widget>
       <action-widget response="0">ok_button</action-widget>
     </action-widgets>
   </object>

@@ -156,13 +156,13 @@ class AnagraficaHtml(object):
             st = Gtk.PrintSettings()
             s = Gtk.PageSetup()
             s.set_paper_size(ps)
-            margine_fondo = float(setconf("Stampa", "singolo_margine_basso")) or 4.3
+            margine_fondo = float(setconf("Stampa", "singolo_margine_basso")or 4.3)
             s.set_bottom_margin(margine_fondo, gtk.Unit.MM)
-            margine_sinistro = float(setconf("Stampa", "singolo_margine_sinistro")) or 4.3
+            margine_sinistro = float(setconf("Stampa", "singolo_margine_sinistro")or 4.3)
             s.set_left_margin(margine_sinistro, gtk.Unit.MM)
-            margine_destro = float(setconf("Stampa", "singolo_margine_destro")) or 4.3
+            margine_destro = float(setconf("Stampa", "singolo_margine_destro")or 4.3)
             s.set_right_margin(margine_destro, gtk.Unit.MM)
-            margine_alto = float(setconf("Stampa", "singolo_margine_alto")) or 4.3
+            margine_alto = float(setconf("Stampa", "singolo_margine_alto")or 4.3)
             s.set_top_margin(margine_alto, gtk.Unit.MM)
             orientamento = str(setconf("Stampa", "singolo_ori"))
             if orientamento == "orizzontale":

@@ -33,9 +33,10 @@ from promogest.ui.GladeWidget import GladeWidget
 
 class PrintDialogHandler(GladeWidget):
 
-    def __init__(self,anacomplex,nome, pdfGenerator=None, report=None, daos=None, label=None, tempFile=None ):
+    def __init__(self,anacomplex,nome, pdfGenerator=None, report=None, daos=None, tipo=None, tempFile=None ):
         GladeWidget.__init__(self, root='records_print_dialog',
                                 path='records_print_dialog.glade')
+        self.tipo = tipo
         try:
             self._pdfName = nome.replace(" ","_").replace("\\n","_") + '_report_' + time.strftime('%d-%m-%Y')
         except:
@@ -102,7 +103,7 @@ class PrintDialogHandler(GladeWidget):
         pdfFile = os.path.join(self._folder, self._pdfName + '.pdf')
         self.tryToSavePdf(pdfFile)
         try:
-            do_print(pdfFile)
+            do_print(pdfFile, tipo=self.tipo)
         except Exception as ex:
             messageInfo(msg=str(ex))
 

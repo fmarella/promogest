@@ -189,18 +189,18 @@ class AnagraficaPrintPreview(GladeWidget):
         st = Gtk.PrintSettings()
         s = Gtk.PageSetup()
         s.set_paper_size(ps)
-        margine_fondo = float(setconf("Stampa", "report_margine_basso")) or 4.3
+        margine_fondo = float(setconf("Stampa", "report_margine_basso") or 4.3)
         s.set_bottom_margin(margine_fondo, gtk.Unit.MM)
         margine_sinistro = float(
-            setconf("Stampa", "report_margine_sinistro")) or 4.3
+            setconf("Stampa", "report_margine_sinistro") or 4.3)
         s.set_left_margin(margine_sinistro, gtk.Unit.MM)
         margine_destro = float(
-            setconf("Stampa", "report_margine_destro")) or 4.3
+            setconf("Stampa", "report_margine_destro") or 4.3)
         s.set_right_margin(margine_destro, gtk.Unit.MM)
-        margine_alto = float(setconf("Stampa", "report_margine_alto")) or 4.3
+        margine_alto = float(setconf("Stampa", "report_margine_alto") or 4.3)
         s.set_top_margin(margine_alto, gtk.Unit.MM)
         orientamento = str(setconf("Stampa", "report_ori"))
-        if orientamento == "orizzontale":
+        if not orientamento or orientamento == "orizzontale":
             s.set_orientation(Gtk.PageOrientation.LANDSCAPE)
         operation.set_default_page_setup(s)
         operation.set_export_filename(Environment.tempDir + ".temp.pdf")
@@ -208,7 +208,7 @@ class AnagraficaPrintPreview(GladeWidget):
                                                       gtk.PrintOperationAction.EXPORT)
         pbar(self.pbar, pulse=True, text="GENERAZIONE STAMPA ATTENDERE")
         pbar(self.pbar, stop=True)
-        anag = PrintDialogHandler(self, self.windowTitle)
+        anag = PrintDialogHandler(self, self.windowTitle, tipo="report")
         anagWindow = anag.getTopLevel()
         returnWindow = self.bodyWidget.getTopLevel().get_toplevel()
         anagWindow.set_transient_for(returnWindow)
