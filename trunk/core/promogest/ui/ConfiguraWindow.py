@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2013 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -96,10 +96,6 @@ class ConfiguraWindow(GladeWidget):
             self.feed_check.set_active(int(setconf("Feed", "feed")))
         except:
             self.feed_check.set_active(1)
-        try:
-            findComboboxRowFromId(self.timer_combobox, str(setconf("General", "updates_timeout")))
-        except:
-            findComboboxRowFromId(self.timer_combobox, '300')
 
         try:
             curr = setconf("Valuta", "valuta_curr")
@@ -145,16 +141,46 @@ class ConfiguraWindow(GladeWidget):
         if posso("VD"):
             self.vendita_dettaglio_setup_page._refresh()
 
+        if setconf("Stampa", "singolo_ori") == "orizzontale":
+            self.singolo_land_radio.set_active(True)
+        elif setconf("Stampa", "singolo_ori") == "verticale":
+            self.singolo_vert_radio.set_active(True)
+        else:
+            self.singolo_vert_radio.set_active(True)
+
+        self.singolo_margine_alto_entry.set_text(
+            str(setconf("Stampa", "singolo_margine_alto") or "4.3"))
+        self.singolo_margine_destro_entry.set_text(
+            str(setconf("Stampa", "singolo_margine_destro") or "4.3"))
+        self.singolo_margine_basso_entry.set_text(
+            str(setconf("Stampa", "singolo_margine_basso") or "4.3"))
+        self.singolo_margine_sinistro_entry.set_text(
+            str(setconf("Stampa", "singolo_margine_sinistro") or "4.3"))
+
+        if setconf("Stampa", "report_ori") == "orizzontale":
+            self.report_land_radio.set_active(True)
+        elif setconf("Stampa", "report_ori") == "verticale":
+            self.report_vert_radio.set_active(True)
+        else:
+            self.report_land_radio.set_active(True)
+
+        self.report_margine_alto_entry.set_text(
+            str(setconf("Stampa", "report_margine_alto") or "4.3"))
+        self.report_margine_destro_entry.set_text(
+            str(setconf("Stampa", "report_margine_destro") or "4.3"))
+        self.report_margine_basso_entry.set_text(
+            str(setconf("Stampa", "report_margine_basso") or "4.3"))
+        self.report_margine_sinistro_entry.set_text(
+            str(setconf("Stampa", "report_margine_sinistro") or "4.3"))
+
+
+
     def on_salva_button_clicked(self, button_salva):
 
         a = SetConf().select(key="feed", section="Feed")
         a[0].value= str(self.feed_check.get_active())
         a[0].tipo = "bool"
         Environment.session.add(a[0])
-
-        # a = SetConf().select(key="updates_timeout", section="General")
-        # a[0].value = str(findIdFromCombobox(self.timer_combobox))
-        # Environment.session.add(a[0])
 
         b = SetConf().select(key="zeri_in_totali", section="Stampa")
         b[0].value = str(self.zeri_in_totali_check.get_active())
@@ -243,6 +269,163 @@ class ConfiguraWindow(GladeWidget):
         g[0].tipo = "str"
         Environment.session.add(g[0])
 
+        # può bastare un bool su true su vert se è false allora sarà landscape
+        # REPORT
+        c = SetConf().select(key="report_ori", section="Stampa")
+        if not c:
+            c = SetConf()
+            c.key = "report_ori"
+            c.section = "Stampa"
+            c.tipo_section = "Generico"
+            c.description = " orientamento stampa report"
+            c.active = True
+            c.tipo = "str"
+            c.date = datetime.datetime.now()
+        else:
+            c = c[0]
+        if self.report_vert_radio.get_active():
+            c.value = "verticale"
+        else:
+            c.value = "orizzontale"
+        Environment.session.add(c)
+
+        c = SetConf().select(key="report_margine_alto", section="Stampa")
+        if not c:
+            c = SetConf()
+            c.key = "report_margine_alto"
+            c.section = "Stampa"
+            c.tipo_section = "Generico"
+            c.description = " margine report alto"
+            c.active = True
+            c.tipo = "str"
+            c.date = datetime.datetime.now()
+        else:
+            c = c[0]
+        c.value = str(self.report_margine_alto_entry.get_text())
+        Environment.session.add(c)
+
+        c = SetConf().select(key="report_margine_basso", section="Stampa")
+        if not c:
+            c = SetConf()
+            c.key = "report_margine_basso"
+            c.section = "Stampa"
+            c.tipo_section = "Generico"
+            c.description = " margine report basso"
+            c.active = True
+            c.tipo = "str"
+            c.date = datetime.datetime.now()
+        else:
+            c = c[0]
+        c.value = str(self.report_margine_basso_entry.get_text())
+        Environment.session.add(c)
+
+        c = SetConf().select(key="report_margine_destro", section="Stampa")
+        if not c:
+            c = SetConf()
+            c.key = "report_margine_destro"
+            c.section = "Stampa"
+            c.tipo_section = "Generico"
+            c.description = " margine report destro"
+            c.active = True
+            c.tipo = "str"
+            c.date = datetime.datetime.now()
+        else:
+            c = c[0]
+        c.value = str(self.report_margine_destro_entry.get_text())
+        Environment.session.add(c)
+
+        c = SetConf().select(key="report_margine_sinistro", section="Stampa")
+        if not c:
+            c = SetConf()
+            c.key = "report_margine_sinistro"
+            c.section = "Stampa"
+            c.tipo_section = "Generico"
+            c.description = " margine report sinistro"
+            c.active = True
+            c.tipo = "str"
+            c.date = datetime.datetime.now()
+        else:
+            c = c[0]
+        c.value = str(self.report_margine_sinistro_entry.get_text())
+        Environment.session.add(c)
+        # SINGOLO
+        c = SetConf().select(key="singolo_ori", section="Stampa")
+        if not c:
+            c = SetConf()
+            c.key = "singolo_ori"
+            c.section = "Stampa"
+            c.tipo_section = "Generico"
+            c.description = " orientamento stampa singolo"
+            c.active = True
+            c.tipo = "str"
+            c.date = datetime.datetime.now()
+        else:
+            c = c[0]
+        if self.singolo_vert_radio.get_active():
+            c.value = "verticale"
+        else:
+            c.value = "orizzontale"
+        Environment.session.add(c)
+
+        c = SetConf().select(key="singolo_margine_alto", section="Stampa")
+        if not c:
+            c = SetConf()
+            c.key = "singolo_margine_alto"
+            c.section = "Stampa"
+            c.tipo_section = "Generico"
+            c.description = " margine singolo alto"
+            c.active = True
+            c.tipo = "str"
+            c.date = datetime.datetime.now()
+        else:
+            c = c[0]
+        c.value = str(self.singolo_margine_alto_entry.get_text())
+        Environment.session.add(c)
+
+        c = SetConf().select(key="singolo_margine_basso", section="Stampa")
+        if not c:
+            c = SetConf()
+            c.key = "singolo_margine_basso"
+            c.section = "Stampa"
+            c.tipo_section = "Generico"
+            c.description = " margine singolo basso"
+            c.active = True
+            c.tipo = "str"
+            c.date = datetime.datetime.now()
+        else:
+            c = c[0]
+        c.value = str(self.singolo_margine_basso_entry.get_text())
+        Environment.session.add(c)
+
+        c = SetConf().select(key="singolo_margine_destro", section="Stampa")
+        if not c:
+            c = SetConf()
+            c.key = "singolo_margine_destro"
+            c.section = "Stampa"
+            c.tipo_section = "Generico"
+            c.description = " margine singolo destro"
+            c.active = True
+            c.tipo = "str"
+            c.date = datetime.datetime.now()
+        else:
+            c = c[0]
+        c.value = str(self.singolo_margine_destro_entry.get_text())
+        Environment.session.add(c)
+
+        c = SetConf().select(key="singolo_margine_sinistro", section="Stampa")
+        if not c:
+            c = SetConf()
+            c.key = "singolo_margine_sinistro"
+            c.section = "Stampa"
+            c.tipo_section = "Generico"
+            c.description = " margine singolo sinistro"
+            c.active = True
+            c.tipo = "str"
+            c.date = datetime.datetime.now()
+        else:
+            c = c[0]
+        c.value = str(self.singolo_margine_sinistro_entry.get_text())
+        Environment.session.add(c)
 
         self.documenti_setup_page._saveSetup()
         self.articoli_setup_page._saveSetup()

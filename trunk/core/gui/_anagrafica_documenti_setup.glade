@@ -2,7 +2,30 @@
 <!-- Generated with glade 3.18.3 -->
 <interface>
   <requires lib="gtk+" version="3.4"/>
+  <requires lib="" version="3.4"/>
   <requires lib="pythonplugin" version="0.0"/>
+  <object class="GtkLabel" id="documenti_setup_page_label">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="label" translatable="yes">DOCUMENTI</property>
+  </object>
+  <object class="GtkListStore" id="incaricato_predef_liststore">
+    <columns>
+      <!-- column-name tipo -->
+      <column type="gchararray"/>
+    </columns>
+    <data>
+      <row>
+        <col id="0" translatable="yes">destinatario</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">mittente</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">vettore</col>
+      </row>
+    </data>
+  </object>
   <object class="GtkFrame" id="_anagrafica_documenti_setup_frame">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -487,30 +510,6 @@
         <child>
           <placeholder/>
         </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
       </object>
     </child>
     <child type="label">
@@ -521,28 +520,6 @@
         <property name="use_markup">True</property>
       </object>
     </child>
-  </object>
-  <object class="GtkLabel" id="documenti_setup_page_label">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="label" translatable="yes">DOCUMENTI</property>
-  </object>
-  <object class="GtkListStore" id="incaricato_predef_liststore">
-    <columns>
-      <!-- column-name tipo -->
-      <column type="gchararray"/>
-    </columns>
-    <data>
-      <row>
-        <col id="0" translatable="yes">destinatario</col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">mittente</col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">vettore</col>
-      </row>
-    </data>
   </object>
   <object class="GtkListStore" id="tipo_documento_predefinito_listore">
     <columns>

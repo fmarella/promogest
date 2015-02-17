@@ -19,7 +19,7 @@
 
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
-
+import datetime
 import hashlib
 from sqlalchemy import *
 from sqlalchemy.orm import *

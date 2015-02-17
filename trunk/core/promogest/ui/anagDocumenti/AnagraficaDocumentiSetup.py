@@ -126,6 +126,7 @@ class AnagraficaDocumentiSetup(GladeWidget):
         except:
             self.primo_dest_merce_check.set_active(0)
 
+
     def _saveSetup(self):
         """ Salviamo i dati modificati in interfaccia """
         d = SetConf().select(key="multilinealimite", section="Multilinea")
@@ -370,4 +371,3 @@ class AnagraficaDocumentiSetup(GladeWidget):
         c.visible = True
         c.date = datetime.datetime.now()
         Environment.session.add(c)
-

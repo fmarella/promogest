@@ -9,8 +9,8 @@
     <property name="margin_right">4</property>
     <property name="margin_top">4</property>
     <property name="margin_bottom">4</property>
-    <property name="row_spacing">4</property>
-    <property name="column_spacing">4</property>
+    <property name="row_spacing">2</property>
+    <property name="column_spacing">2</property>
     <child>
       <object class="GtkLabel" id="articolo_struttura_codice_label">
         <property name="visible">True</property>

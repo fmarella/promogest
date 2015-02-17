@@ -64,7 +64,7 @@ class AnagraficaHtml(object):
     def variations(self):
         return self.dao
 
-    def _refresh(self, forprint=False):
+    def _refresh(self):
         """ show the html page in the custom widget"""
         pageData = {}
         eventipreves = []
@@ -117,14 +117,10 @@ class AnagraficaHtml(object):
                 "eventipreves": eventipreves,
                 "eventiprevesAT": eventiprevesAT,
                 "calendarioDatetime": calendarioDatetime,
-                "forprint":forprint
                 }
         html = renderTemplate(pageData)
         self.hh = html
-        if forprint:
-            return html
-        else:
-            renderHTML(self._gtkHtml, html)
+        renderHTML(self._gtkHtml, html)
 
     def setObjects(self, objects):
         # FIXME: dummy function for API compatibility, refactoring(TM) needed!
@@ -153,28 +149,31 @@ class AnagraficaHtml(object):
                                         + self.defaultFileName \
                                         + '.sla'
         """ Restituisce una stringa contenente il report in formato PDF """
-
         if self.dao.__class__.__name__ in Environment.fromHtmlLits:
-            operation = gtk.PrintOperation()
+            operation = Gtk.PrintOperation()
+            setting = Gtk.PageSetup()
+            ps = Gtk.PaperSize.new_custom("cc", "cc", 210, 297, gtk.Unit.MM)
+            st = Gtk.PrintSettings()
+            s = Gtk.PageSetup()
+            s.set_paper_size(ps)
+            margine_fondo = float(setconf("Stampa", "singolo_margine_basso")) or 4.3
+            s.set_bottom_margin(margine_fondo, gtk.Unit.MM)
+            margine_sinistro = float(setconf("Stampa", "singolo_margine_sinistro")) or 4.3
+            s.set_left_margin(margine_sinistro, gtk.Unit.MM)
+            margine_destro = float(setconf("Stampa", "singolo_margine_destro")) or 4.3
+            s.set_right_margin(margine_destro, gtk.Unit.MM)
+            margine_alto = float(setconf("Stampa", "singolo_margine_alto")) or 4.3
+            s.set_top_margin(margine_alto, gtk.Unit.MM)
+            orientamento = str(setconf("Stampa", "singolo_ori"))
+            if orientamento == "orizzontale":
+                s.set_orientation(Gtk.PageOrientation.LANDSCAPE)
+            operation.set_default_page_setup(s)
             operation.set_export_filename(Environment.tempDir + ".temp.pdf")
             p = self._gtkHtml.get_main_frame().print_full(operation,gtk.PrintOperationAction.EXPORT)
-            # if p == gtk.PrintOperationResult.CANCEL:
-            #     return False
-            # elif p == gtk.PrintOperationResult.APPLY:
-            #     return False
-            #from  xhtml2pdf import pisa
-            #from weasyprint import HTML
-            # f = self._refresh(forprint=True)
-            # g = file(Environment.tempDir + ".temp.pdf", "wb")
-
-            #HTML(string=f).write_pdf(g)
-            # pisa.CreatePDF(f, g)
-            # g .close()
             g = file(Environment.tempDir + ".temp.pdf", "rb")
             f = g.read()
             g.close()
             return f
-            # return False
         param = [self.dao.dictionary(complete=True)]
         multilinedirtywork(param)
         try:

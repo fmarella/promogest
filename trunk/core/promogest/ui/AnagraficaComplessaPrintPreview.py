@@ -182,24 +182,31 @@ class AnagraficaPrintPreview(GladeWidget):
 
     def on_pdf_button_clicked(self, button):
         from PrintDialog import PrintDialogHandler
-        # from xhtml2pdf import pisa
-        # from weasyprint import HTML
-        operation = gtk.PrintOperation()
+
+        operation = Gtk.PrintOperation()
+        setting = Gtk.PageSetup()
+        ps = Gtk.PaperSize.new_custom("cc", "cc", 210, 297, gtk.Unit.MM)
+        st = Gtk.PrintSettings()
+        s = Gtk.PageSetup()
+        s.set_paper_size(ps)
+        margine_fondo = float(setconf("Stampa", "report_margine_basso")) or 4.3
+        s.set_bottom_margin(margine_fondo, gtk.Unit.MM)
+        margine_sinistro = float(
+            setconf("Stampa", "report_margine_sinistro")) or 4.3
+        s.set_left_margin(margine_sinistro, gtk.Unit.MM)
+        margine_destro = float(
+            setconf("Stampa", "report_margine_destro")) or 4.3
+        s.set_right_margin(margine_destro, gtk.Unit.MM)
+        margine_alto = float(setconf("Stampa", "report_margine_alto")) or 4.3
+        s.set_top_margin(margine_alto, gtk.Unit.MM)
+        orientamento = str(setconf("Stampa", "report_ori"))
+        if orientamento == "orizzontale":
+            s.set_orientation(Gtk.PageOrientation.LANDSCAPE)
+        operation.set_default_page_setup(s)
         operation.set_export_filename(Environment.tempDir + ".temp.pdf")
         p = self.print_on_screen_html.get_main_frame().print_full(operation,
                                                       gtk.PrintOperationAction.EXPORT)
-        # f = self.html_code.encode("utf-8")
-        # f = self.refresh(forprint=True)
-        # g = file(Environment.tempDir + ".temp.pdf", "wb")
-
-        # f = self.html_code.replace("€","&#8364;")
         pbar(self.pbar, pulse=True, text="GENERAZIONE STAMPA ATTENDERE")
-        # HTML(string=f).write_pdf(g)
-        # pisa.CreatePDF(str(f), g)
-        # g.close()
-        g = file(Environment.tempDir + ".temp.pdf", "rb")
-        f = g.read()
-        g.close()
         pbar(self.pbar, stop=True)
         anag = PrintDialogHandler(self, self.windowTitle)
         anagWindow = anag.getTopLevel()

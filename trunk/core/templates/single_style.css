@@ -140,4 +140,13 @@ size: A4 landscape;
 margin: 1cm;
 }
 @media print{@page {size: landscape}}
+@media print and (orientation:landscape)
+</style>
+<style type="text/css" media="print">
+    @page {
+        size: landscape;
+    }
+    body {
+        writing-mode: tb-rl;
+    }
 </style>

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni <francesco@promotux.it
@@ -21,6 +21,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
+import datetime
 from promogest.lib.utils import *
 from promogest.dao.Setconf import SetConf
 from promogest import Environment
@@ -55,15 +56,9 @@ class AnagraficaArticoliSetup(GladeWidget):
         """
         Carichiamo i dati in interfaccia
         """
-        try:
-            self.articolo_codice_upper_check.set_active(int(setconf("Articoli", "articolo_codice_upper")))
-        except:
-            self.articolo_codice_upper_check.set_active(1)
-        try:
-            self.articolo_immagini_check.set_active(int(setconf("Articoli", "articolo_immagini")))
-        except:
-            self.articolo_immagini_check.set_active(1)
-        self.articolo_struttura_codice_entry.set_text(str(setconf("Articoli", "articolo_struttura_codice")))
+        self.articolo_codice_upper_check.set_active(int(setconf("Articoli", "articolo_codice_upper")) or 1)
+        self.articolo_immagini_check.set_active(int(setconf("Articoli", "articolo_immagini"))or 1)
+        self.articolo_struttura_codice_entry.set_text(str(setconf("Articoli", "articolo_struttura_codice")) or "ART000000")
 
     def _saveSetup(self):
         """ Salviamo i dati modificati in interfaccia """
@@ -80,3 +75,4 @@ class AnagraficaArticoliSetup(GladeWidget):
         c[0].value = str(self.articolo_immagini_check.get_active())
         c[0].tipo = "bool"
         Environment.session.add(c[0])
+
