@@ -18,12 +18,25 @@
       <column type="gchararray"/>
       <!-- column-name gchararray3 -->
       <column type="gchararray"/>
+      <!-- column-name gchararray4 -->
+      <column type="gchararray"/>
     </columns>
+  </object>
+  <object class="GtkImage" id="image1">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-print</property>
+  </object>
+  <object class="GtkImage" id="image2">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-jump-to</property>
   </object>
   <object class="GtkFrame" id="elenco_listini_frame">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="label_xalign">0</property>
+    <property name="shadow_type">none</property>
     <child>
       <object class="GtkAlignment" id="alignment125">
         <property name="visible">True</property>
@@ -88,6 +101,17 @@
                         </child>
                       </object>
                     </child>
+                    <child>
+                      <object class="GtkTreeViewColumn" id="treeviewcolumn1">
+                        <property name="title" translatable="yes">N° Art</property>
+                        <child>
+                          <object class="GtkCellRendererText" id="cellrenderertext4"/>
+                          <attributes>
+                            <attribute name="text">4</attribute>
+                          </attributes>
+                        </child>
+                      </object>
+                    </child>
                   </object>
                 </child>
               </object>
@@ -102,6 +126,9 @@
               <object class="GtkGrid" id="grid1">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="row_spacing">1</property>
+                <property name="column_spacing">1</property>
+                <property name="row_homogeneous">True</property>
                 <property name="column_homogeneous">True</property>
                 <child>
                   <object class="GtkToggleButton" id="listini_togglebutton">
@@ -220,6 +247,7 @@ listino</property>
                 </child>
                 <child>
                   <object class="GtkToggleButton" id="importazione_listini_togglebutton">
+                    <property name="label" translatable="yes">Importazione Articoli e Listini</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
@@ -228,49 +256,8 @@ listino</property>
 di importazione listini e creazione 
 anagrafica articolo.
 Accetta file csv</property>
+                    <property name="image">image2</property>
                     <signal name="clicked" handler="on_importazione_listini_togglebutton_clicked" swapped="no"/>
-                    <child>
-                      <object class="GtkAlignment" id="alignment7">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                        <child>
-                          <object class="GtkHBox" id="hbox13">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                            <child>
-                              <object class="GtkImage" id="image7">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                                <property name="pixbuf">importazione_listino24x24.png</property>
-                              </object>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">False</property>
-                                <property name="position">0</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkLabel" id="label8">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                                <property name="label" translatable="yes">Importazione
-listino</property>
-                                <property name="justify">center</property>
-                              </object>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">False</property>
-                                <property name="position">1</property>
-                              </packing>
-                            </child>
-                          </object>
-                        </child>
-                      </object>
-                    </child>
                   </object>
                   <packing>
                     <property name="left_attach">2</property>
@@ -279,6 +266,7 @@ listino</property>
                 </child>
                 <child>
                   <object class="GtkToggleButton" id="stampa_frontaline_togglebutton">
+                    <property name="label" translatable="yes">Stampa Etichette</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
@@ -287,50 +275,8 @@ listino</property>
 o label per la vendita, con prezzo, iva e 
 codici a barre. Serve un modulo 
 apposito per averne pieno accesso</property>
+                    <property name="image">image1</property>
                     <signal name="clicked" handler="on_stampa_frontaline_togglebutton_clicked" swapped="no"/>
-                    <child>
-                      <object class="GtkAlignment" id="alignment1">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                        <child>
-                          <object class="GtkHBox" id="hbox1">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                            <child>
-                              <object class="GtkImage" id="image1">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                                <property name="xpad">10</property>
-                                <property name="stock">gtk-convert</property>
-                              </object>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">False</property>
-                                <property name="position">0</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkLabel" id="label1">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                                <property name="label" translatable="yes">Stampa 
-Etichette</property>
-                                <property name="justify">center</property>
-                              </object>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">False</property>
-                                <property name="position">1</property>
-                              </packing>
-                            </child>
-                          </object>
-                        </child>
-                      </object>
-                    </child>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
@@ -401,7 +347,7 @@ Etichette</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="xpad">5</property>
-        <property name="label" translatable="yes">&lt;b&gt; Elenco listini &lt;/b&gt;</property>
+        <property name="label" translatable="yes">&lt;b&gt; Elenco  e composizione listini&lt;/b&gt;</property>
         <property name="use_markup">True</property>
       </object>
     </child>

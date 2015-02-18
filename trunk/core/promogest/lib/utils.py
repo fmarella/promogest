@@ -3013,7 +3013,6 @@ def YesNoDialog(msg="MESSAGGIO", transient=None,show_entry=False ):
             return True
         else:
             return False
-        return response
 
 def textview_insert_at_cursor(textview, string):
     _buffer = textview.get_buffer()

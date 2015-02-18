@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -66,10 +66,11 @@ class ElencoListini(GladeWidget):
                                 batchSize=None,
                                 offset=None)
         for l in liss:
-            self.elenco_listini_listore.append((l,
-                          (l.denominazione or ''),
-                          (l.descrizione or ''),
-                          dateToString(l.data_listino)))
+            self.elenco_listini_listore.append([l,
+                          l.denominazione or '',
+                          l.descrizione or '',
+                          dateToString(l.data_listino),
+                          str(len(l.listinoarticolo))])
 
     def _changeOrderBy(self, widget, campi):
         self.orderBy = campi

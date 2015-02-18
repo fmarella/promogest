@@ -2,95 +2,66 @@
 
 {% block body %}
     {% if dao %}
-<div id="head">
-    <div id="testo">{{ui|replace("_"," ")|capitalize()}}</div>
-  </div>  <div id="rigaheader"></div>
-        <table cellpadding="0" cellspacing="0" border="0">
-                <tr>
-                    <td class="report-header" colspan="2"><p> Articolo: <strong>{{dao.articolo}}</strong></p>Listino: <strong>{{dao.denominazione}}</strong><br /><br /></td>
-                </tr>
-                <tr>
-                    <td class="report-header" colspan="0"></td>
-                </tr>
-        </table>
-        <table cellpadding="0" cellspacing="0" border="0">
-                <tr>
-                    <td colspan="2" class="table-header">Dati</td></tr>
-                <tr>
-                    <td width="150px" class="odd-detail">Data prezzo</td>
-                    <td class="odd-detail">
-                        {% if dao.data_listino_articolo %}
-                        <strong>{{utils.dateToString(dao.data_listino_articolo)}}</strong>
-                    {% endif %}
-                </td>
-            </tr>
-            <tr>
-                <td class="even-detail">Ultimo costo</td>
-                <td class="even-detail"><strong>{{utils.mN(dao.ultimo_costo)}}</strong></td>
-            </tr>
-            <tr>
-                <td class="odd-detail">Ultimo costo ivato</td>
-                <td class="odd-detail">
-                {% if dao.ultimo_costo and dao.percentuale_iva %}
-                    <strong>{{utils.mN(utils.calcolaPrezzoIva(dao.ultimo_costo,dao.percentuale_iva))}}</strong>
-                                    {% endif %}
-                    </td>
-            </tr>
-</table>
-<table cellpadding="0" cellspacing="4" border="0">
+<div class="row">
+     <div class="col-xs-12 col-md-12">
+        <div class="panel panel-default">
+  <div class="panel-heading"><h3>ARTICOLO: {{dao.codice_articolo}} - {{dao.articolo}}</h3>
+             <h3>LISTINO: {{dao.denominazione}}</h3></div>
+    <span class="label label-default">Data ultimo prezzo</span><p style="display:inline;"><strong> {{utils.dateToString(dao.data_listino_articolo)}}</strong></p>
+  <div class="panel-body">
 
-<tr><td width="50%">
-    <table cellpadding="0" cellspacing="0" border="0">
-    <tr><td colspan="2" class="table-header">Vendita al dettaglio</td></tr>
-        <tr>
-                <td width="150px" class="odd-detail">Prezzo </td>
-                <td class="odd-detail"><strong>{{utils.mN(utils.calcolaPrezzoIva(dao.prezzo_dettaglio, -1*dao.percentuale_iva))}}</strong></td>
-            </tr>
-            <tr>
-                <td class="even-detail">Prezzo ivato</td>
-                <td class="even-detail"><strong>{{utils.mN(dao.prezzo_dettaglio)}}</strong></td>
-            </tr>
-                        <tr>
-                <td class="even-detail">Sconto Vendita Dettaglio</td>
-                <td class="even-detail"><strong>{{ utils.getStringaSconti(utils.getScontiFromDao(dao.sconto_vendita_dettaglio, dao.applicazione_sconti)[0])}}</strong></td>
-            </tr>
-            <tr>
-                <td class="odd-detail">Ricarico</td>
-                <td class="odd-detail"><strong>{{utils.mN(utils.calcolaRicarico(dao.ultimo_costo,dao.prezzo_dettaglio,dao.percentuale_iva),1)}}</strong> %</td>
-            </tr>
-            <tr>
-                <td class="even-detail">Margine </td>
-                <td class="even-detail"><strong>{{utils.mN(utils.calcolaMargine(dao.ultimo_costo,dao.prezzo_dettaglio,dao.percentuale_iva),1)}}</strong> %</td>
-            </tr>
-    </table>
-     </td>
-<td width="50%">
-<table cellpadding="0" cellspacing="0" border="0">
-    <tr><td colspan="2" class="table-header">Vendita con fatturazione</td></tr>
-            <tr>
-                <td width="150px" class="odd-detail">Prezzo </td>
-                <td class="odd-detail"><strong>{{utils.mN(dao.prezzo_ingrosso)}}</strong></td>
-            </tr>
-            <tr>
-                <td class="even-detail">Prezzo ivato</td>
-                <td class="even-detail"><strong>{{utils.mN(utils.calcolaPrezzoIva(dao.prezzo_ingrosso, dao.percentuale_iva))}}</strong></td>
-            </tr>
-                                    <tr>
-                <td class="even-detail">Sconto Vendita Ingrosso</td>
-                <td class="even-detail"><strong>{{ utils.getStringaSconti(utils.getScontiFromDao(dao.sconto_vendita_ingrosso, dao.applicazione_sconti)[0])}}</strong></td>
-            </tr>
-            <tr>
-                <td class="odd-detail">Ricarico </td>
-                <td class="odd-detail"><strong>{{utils.mN(utils.calcolaRicarico(dao.ultimo_costo,dao.prezzo_ingrosso),1)}}</strong> %</td>
-            </tr>
-            <tr>
-                <td class="even-detail">Margine </td>
-                <td class="even-detail"><strong>{{utils.mN(utils.calcolaMargine(dao.ultimo_costo,dao.prezzo_ingrosso),1)}}</strong> %</td>
-            </tr>
-        </table>
-</td>
-</tr>
-</table>
+                  <div style="margin-bottom:5px;" class="clearfix"></div>
+    <div class="col-sm-4">
+      <div class="panel panel-success">
+	  <div class="panel-heading">
+			<h3 class="panel-title">ULTIMO COSTO</h3>
+	  </div>
+	  <div class="panel-body">
+        <div class="col-sm-12"><span class="label label-success">IVATO</span> {{utils.mNLC(utils.calcolaPrezzoIva(dao.ultimo_costo,dao.percentuale_iva),3)}}</div>
+        <div class="col-sm-12"><span class="label label-success">NON IVATO</span> {{utils.mNLC(dao.ultimo_costo,3)}}</div>
+	  </div>
+</div>
+
+
+
+
+          </div>
+    <div class="col-sm-4">
+      <div class="panel panel-info">
+	  <div class="panel-heading">
+			<h3 class="panel-title">PREZZO AL DETTAGLIO</h3>
+	  </div>
+	  <div class="panel-body">
+        <div class="col-sm-12"><span class="label label-info">IVATO</span> {{utils.mNLC(dao.prezzo_dettaglio,3)}} </div>
+        <div class="col-sm-12"><span class="label label-info">NON IVATO</span> {{utils.mNLC(utils.calcolaPrezzoIva(dao.prezzo_dettaglio, -1*dao.percentuale_iva),3)}} </div>
+          <div class="col-sm-12"><span class="label label-info">SCONTO</span> {{ utils.getStringaSconti(utils.getScontiFromDao(dao.sconto_vendita_dettaglio, dao.applicazione_sconti)[0])}}</div>
+
+    <div class="col-sm-12"><span class="label label-info">RICARICO</span> {{utils.mN(utils.calcolaRicarico(dao.ultimo_costo,dao.prezzo_dettaglio,dao.percentuale_iva),1)}} %</div>
+      <div class="col-sm-12"><span class="label label-info">MARGINE</span> {{utils.mN(utils.calcolaMargine(dao.ultimo_costo,dao.prezzo_dettaglio,dao.percentuale_iva),1)}} %</div>
+	  </div>
+</div>
+          </div>
+          <div class="col-sm-4">
+      <div class="panel panel-warning">
+	  <div class="panel-heading">
+			<h3 class="panel-title">PREZZO INGROSSO</h3>
+	  </div>
+	  <div class="panel-body">
+        <div class="col-sm-12"><span class="label label-warning">IVATO</span> {{utils.mNLC(utils.calcolaPrezzoIva(dao.prezzo_ingrosso, dao.percentuale_iva),3)}}</div>
+        <div class="col-sm-12"><span class="label label-warning">NON IVATO</span> {{utils.mNLC(dao.prezzo_ingrosso,3)}}</div>
+          <div class="col-sm-12"><span class="label label-warning">SCONTO</span> {{ utils.getStringaSconti(utils.getScontiFromDao(dao.sconto_vendita_ingrosso, dao.applicazione_sconti)[0])}}</div>
+
+    <div class="col-sm-12"><span class="label label-warning">RICARICO</span> {{utils.mN(utils.calcolaRicarico(dao.ultimo_costo,dao.prezzo_ingrosso),1)}} %</div>
+      <div class="col-sm-12"><span class="label label-warning">MARGINE</span> {{utils.mN(utils.calcolaMargine(dao.ultimo_costo,dao.prezzo_ingrosso),1)}} %</div>
+	  </div>
+</div>
+          </div>
+
+      </div>
+            </div>
+         </div>
+    </div>
+
         {% else %}
         <p><img src= "gui/attenzione_48X48.png">ELIMINATO: Niente da visualizzare</p>
         <p><img src= "gui/testata_promogest2.png"></p>

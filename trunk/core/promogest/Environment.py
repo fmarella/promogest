@@ -549,7 +549,7 @@ fromHtmlLits = ["Promemoria", "TestataPrimaNota",
                 "Fornitura", "Contatto",
                 "Vettore", "AliquotaIva",
                 "TestataCommessa", "Stoccaggio",
-                "Agente"]
+                "Agente", "ListinoArticolo"]
 
 package = ["ONE BASIC", "ONE FULL", "ONE STANDARD",
             "PRO BASIC", "PRO STANDARD",
