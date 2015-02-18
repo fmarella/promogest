@@ -2912,8 +2912,10 @@ def get_local_version():
     if pysvn:
         try:
             version = pysvn.Client().info(".").revision.number
-        except pysvn.ClientError:
-            pass
+            Environment.pg2log.info("[Info] svn locale " + str(version))
+        except pysvn.ClientError as e:
+            Environment.pg2log.info("[Errore] svn locale " + str(e))
+            print("ERRORE NEL DEFINIRE LA REVISIONE SVN LOCALE", e)
     return version
 
 def get_remote_version():
@@ -2923,8 +2925,10 @@ def get_remote_version():
             version = pysvn.Client().info2(
                 "http://promogest.googlecode.com/svn/trunk",
                         recurse=False)[0][1]["rev"].number
-        except pysvn.ClientError:
-            pass
+            Environment.pg2log.info("[Info] svn remote " + str(version))
+        except pysvn.ClientError  as e:
+            Environment.pg2log.info("[Errore] svn remote "+ str(e))
+            print("ERRORE NEL DEFINIRE LA REVISIONE SVN REMOTA",e)
     return version
 
 def get_web_remote_version():
