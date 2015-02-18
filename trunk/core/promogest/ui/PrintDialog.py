@@ -80,10 +80,28 @@ class PrintDialogHandler(GladeWidget):
         fileName = self._pdfName +'.pdf'
         subject= "Invio: %s" %fileName
         body = Environment.conf.body %fileName
-        if self.email:
-            arghi = "xdg-email --attach '%s' --subject '%s' --body '%s' '%s'" %(str(pdfFile),subject,body,self.email)
+
+        messageInfo(msg="""Il client di posta consigliato è <b>Thunderbird</b>.
+
+        Chi avesse bisogno di un template di spedizione email più complesso anche in formato
+        html contatti <b>assistenza@promotux.it</b> per informazioni.""")
+
+        if os.name == "nt":
+            arghi = "start thunderbird -compose subject='%s',body='%s',attachment='file:///%s',to='%s'" % (
+                subject, body, str(pdfFile), self.email)
         else:
-            arghi = "xdg-email --attach '%s' --subject '%s' --body '%s'" %(str(pdfFile),subject,body)
+            clients = ('thunderbird', 'icedove')
+            flag = False
+            for client in clients:
+                if subprocess.call('which %s' % client, shell=True) == 0:
+                    arghi = "%s -compose subject='%s',body='%s',attachment='file:///%s',to='%s'" % (
+                        client, subject, body, str(pdfFile), self.email)
+                    flag = True
+                    break
+            # TODO: dividere self.email al carattere ';' e accodare ciascun indirizzo come 'a@email.com' 'b@email.com'
+            if not flag:
+                arghi = "xdg-email --utf8 --subject '%s' --body '%s' --attach '%s' '%s'" % (
+                    subject, body, str(pdfFile), self.email)
         subprocess.Popen(arghi, shell=True)
 
 
