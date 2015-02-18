@@ -173,15 +173,15 @@ def fillComboboxFamiglieArticoli(combobox, filter=False, ignore=[]):
     def recurse(padre, f):
         for s in f.children:
             figlio1 = model.append(padre, (s,
-                                (s.id),
-                                (s.denominazione[0:30] or ''),
+                                s.id,
+                                s.denominazione[0:30] or '',
                                 ))
             recurse(figlio1, s)
     for f in fams:
         if not f.parent:
             padre = model.append(None, (f,
-                                (f.id),
-                                (f.denominazione[0:30] or ''),
+                                f.id,
+                                f.denominazione[0:30] or '',
                                 ))
             if f.children:
                 recurse(padre, f)
@@ -646,7 +646,7 @@ def fillComboboxListiniFiltrati(combobox,
 def fillComboboxFornitori(combobox, filter=False, noempty=False):
     """ Crea l'elenco dei fornitori in una combo """
     from promogest.dao.Fornitore import Fornitore
-    model = gtk.ListStore(object, int, str)
+    model = Gtk.ListStore(object, int, str)
     forns = Fornitore().select(offset=None, batchSize=None)
     if not noempty:
         if not filter:
@@ -655,6 +655,7 @@ def fillComboboxFornitori(combobox, filter=False, noempty=False):
             emptyRow = '<Tutti>'
         model.append((None, 0, emptyRow))
     for f in forns:
+        print(f)
         model.append((f, f.id, (f.ragione_sociale or '')[:20]))
 
     combobox.clear()

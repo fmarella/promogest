@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Marco Pinna "Dr astico" <zoccolodignu@gmail.com>
@@ -63,27 +63,23 @@ class ImportPriceListModels(GladeWidget):
         self.refresh(first_call=True)
 
     def draw(self):
-
-        #cbe_renderer = gtk.CellRendererText()
-        #self.model_name_comboboxentry.pack_start(cbe_renderer, True)
-        #self.model_name_comboboxentry.add_attribute(cbe_renderer, 'text', 0)
-
+        return
         #Creating fields treeview
 
-        treeview = self.fields_treeview
-        renderer = gtk.CellRendererText()
-
-        column = gtk.TreeViewColumn('Campo', renderer, text=0)
-        column.set_sizing(GTK_COLUMN_FIXED)
-        column.set_clickable(True)
-        column.set_resizable(True)
-        column.set_expand(True)
-        column.set_fixed_width(300)
-        treeview.append_column(column)
-        treeview.set_search_column(0)
-
-        self._treeViewModel = gtk.ListStore(str)
-        treeview.set_model(self._treeViewModel)
+        # treeview = self.fields_treeview
+        # renderer = gtk.CellRendererText()
+        #
+        # column = gtk.TreeViewColumn('Campo', renderer, text=0)
+        # column.set_sizing(GTK_COLUMN_FIXED)
+        # column.set_clickable(True)
+        # column.set_resizable(True)
+        # column.set_expand(True)
+        # column.set_fixed_width(300)
+        # treeview.append_column(column)
+        # treeview.set_search_column(0)
+        #
+        # self._treeViewModel = gtk.ListStore(str)
+        # treeview.set_model(self._treeViewModel)
 
     def refresh(self, first_call=False):
         """fills all widgets in import_price_list_window window"""
@@ -230,8 +226,9 @@ class ImportPriceListModels(GladeWidget):
         self.draw()
 
     def on_field_checkbutton_checked(self, checkbutton):
-        if self.loading:
-            return
+        """ Funzione di gestione delle checkbox"""
+        # if self.loading:
+        #     return
         def_list = ['Aliquota iva', 'Famiglia', 'Categoria', 'Unita base']
 #        _name = checkbutton.get_name()[:-3]
         _name = gtk.Buildable.get_name(checkbutton)[:-3]
@@ -342,8 +339,7 @@ class ImportPriceListModels(GladeWidget):
             elif os.name == 'nt':
                 folder = os.environ['USERPROFILE']
         fileDialog.set_current_folder(folder)
-        #print "FDFDFDSFSDFSDFSDFSDFSDFSD", dir(self.model_name_comboboxentry)
-        f_name = self.model_name_comboboxentry.child.get_text().replace(' ', '_')
+        f_name = self.model_name_comboboxentry.get_child().get_text().replace(' ', '_')
 
         fileDialog.set_current_name(f_name+'.pgx')
 
@@ -353,7 +349,7 @@ class ImportPriceListModels(GladeWidget):
             filename = fileDialog.get_filename()
 
             self.priceListModel
-            self.priceListModel._name = self.model_name_comboboxentry.get_active_text()
+            self.priceListModel._name = self.model_name_comboboxentry.get_child().get_text()
 
             self.priceListModel._fields = []
             model = self.fields_treeview.get_model()
@@ -365,16 +361,16 @@ class ImportPriceListModels(GladeWidget):
         self.window.destroy()
 
     def getCsvModelSyntax(self):
-        self.priceListModel._fieldsSeparator = self.fields_separator_combobox.get_active_text()[0]
-        self.priceListModel._fieldsDelimiter = self.fields_delimiter_combobox.get_active_text()[0]
-        self.priceListModel._decimalSymbol = self.decimal_symbol_combobox.get_active_text()[0]
+        self.priceListModel._fieldsSeparator = self.fields_separator_liststore[self.fields_separator_combobox.get_active_iter()][0]
+        self.priceListModel._fieldsDelimiter = self.fields_delimiter_liststore[self.fields_delimiter_combobox.get_active_iter()][0]
+        self.priceListModel._decimalSymbol = self.decimal_symbol_liststore[self.decimal_symbol_combobox.get_active_iter()][0]
         self.priceListModel._skipFirstLine = self.skip_first_line_checkbutton.get_active()
         self.priceListModel._skipFirstColumn = self.skip_first_column_checkbutton.get_active()
 
     def checkObligatoryFields(self):
         """Checks if all obligatory fields have been inserted"""
 
-        if self.model_name_comboboxentry.get_active_text() == '':
+        if self.model_name_comboboxentry.get_active() == '':
             obligatoryField(self.getTopLevel(),
                             self.model_name_comboboxentry,
                             'Inserire il nome del modello')
@@ -395,17 +391,6 @@ class ImportPriceListModels(GladeWidget):
             obligatoryField(self.getTopLevel(),
                             self.fields_treeview.get_model,
                             'Inserire almeno un campo nel modello')
-
-        if self.fields_separator_combobox.get_active_text() is None:
-            self.fields_separator_combobox.get_active_text()
-            obligatoryField(self.getTopLevel(),
-                            self.fields_separator_combobox,
-                            'Selezionare il carattere di separazione dei campi del listino')
-
-        if self.decimal_symbol_combobox.get_active_text() is None:
-            obligatoryField(self.getTopLevel(),
-                            self.decimalSymbol_combobox,
-                            'Selezionare il simbolo decimale')
 
         for d in self.priceListModel._defaultAttributes.keys():
             if d == 'Aliquota Iva':
@@ -441,7 +426,7 @@ class ImportPriceListModels(GladeWidget):
 
     def on_fields_treeview_cursor_changed(self, treeview):
         if self.loading:
-            return
+             return
         """catches the fields_treeview cursor changed event"""
 
         model = self.fields_treeview.get_model()
@@ -454,10 +439,8 @@ class ImportPriceListModels(GladeWidget):
     def on_default_combobox_changed(self, combobox):
         if self.loading:
             return
-#        comboboxName = combobox.get_name()
         comboboxName = gtk.Buildable.get_name(combobox)
         value = findStrFromCombobox(combobox, 1) or ''
-
         if len(str(value)) > 0:
             if comboboxName == 'default_categoria_combobox':
                 if  'Categoria' in self.priceListModel._defaultAttributes.keys():
@@ -486,9 +469,6 @@ class ImportPriceListModels(GladeWidget):
                         self.priceListModel._defaultAttributes['Unita base'] = value
         else:
             #FIXME:
-            #we have to correct this mess
-            print """non so che sta succedendo.
-    segnalazione errori? per cosa? :D"""
             pass
 
     def on_famiglia_togglebutton_toggled(self, toggleButton):

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Marco Pinna "Dr astico" <zoccolodignu@gmail.com>
@@ -49,12 +49,8 @@ class ImportPriceList(GladeWidget):
                     path="ImportPriceList/gui/import_price_list_window.glade",
                     isModule=True)
         self._mainWindow = mainWindow
-        #self._mainWindow.hide()
-        #if self._mainWindow in Environment.windowGroup:
-            #Environment.windowGroup.remove(self._mainWindow)
         self.window = self.getTopLevel()
         self.placeWindow(self.window)
-
         self.file_name = None
         self.promoPriceList = None
         self.mod_name = None
@@ -79,11 +75,12 @@ class ImportPriceList(GladeWidget):
                                     self.promoPriceList, 1)
         else:
             self.price_list_name_combobox.set_active(0)
-        fillComboboxFornitori(self.fornitore_combobox)
-        if self.fornitore is not None:
-            findComboboxRowFromStr(self.fornitore_combobox, self.fornitore, 1)
-        else:
-            self.fornitore_combobox.set_active(0)
+        # fillComboboxFornitori(self.fornitore_combobox)
+        # if self.fornitore is not None:
+        #     findComboboxRowFromStr(self.fornitore_combobox, self.fornitore, 1)
+        # else:
+        #     self.fornitore_combobox.set_active(0)
+
 
     def on_path_file_entry_changed(self, gtkentry):
         self.file_name = self.path_file_entry.get_text()
@@ -183,11 +180,12 @@ del formato del file e riprovare""" % str(rowcount+1)
         is specified in model_combobox"""
         model = self.model_combobox.get_model()
         active = self.model_combobox.get_active()
+        print(model,active)
         if model[active] is not None:
             _path = model[active][1]
             anag = ImportPriceListModels(self.window, pathFile=_path)
         else:
-            anag = importPriceListModels(self.window, pathFile=None)
+            anag = ImportPriceListModels(self.window, pathFile=None)
         anagWindow = anag.getTopLevel()
 
         showAnagraficaRichiamata(self.window, anagWindow, button, self.refresh)
@@ -247,7 +245,7 @@ del formato del file e riprovare""" % str(rowcount+1)
                             self.path_file_entry,
                             'Inserire il file del listino da importare')
 
-        if not self.model_combobox.get_active_text():
+        if not self.model_combobox.get_active():
             obligatoryField(self.getTopLevel(),
                             self.model_combobox,
                             'Selezionare un modello')
@@ -256,8 +254,8 @@ del formato del file e riprovare""" % str(rowcount+1)
             obligatoryField(self.getTopLevel(),
                             self.price_list_name_combobox,
                             'Selezionare il listino di destinazione')
-
-        if findStrFromCombobox(self.fornitore_combobox, 1) == '':
+        if not self.id_fornitore_filter_customcombobox.getId():
+        # if findStrFromCombobox(self.fornitore_combobox, 1) == '':
             obbligatoryField(self.getTopLevel(),
                                 self.fornitore_combobox,
                                 'Selezionare un Fornitore')

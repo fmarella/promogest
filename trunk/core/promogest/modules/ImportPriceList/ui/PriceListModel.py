@@ -1,10 +1,25 @@
 # -*- coding: utf-8 -*-
 
-# Promogest
-#
-# Copyright (C) 2007 by Promotux Informatica - http://www.promotux.it/
-# Author:  Marco Pinna "Dr astico" <zoccolodignu@gmail.com>
-# Author:  Francesco Meloni  "Vete" <francesco@promotux.it.com>
+# Copyright (C) 2005-2015 by Promotux
+# di Francesco Meloni snc - http://www.promotux.it/
+
+#    Author: Francesco Marella <francesco.marella@anche.no>
+#    Author: Francesco Meloni  <francesco@promotux.it>
+
+#    This file is part of Promogest.
+
+#    Promogest is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 2 of the License, or
+#    (at your option) any later version.
+
+#    Promogest is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+
+#    You should have received a copy of the GNU General Public License
+#    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 from decimal import *
 import xml.etree.cElementTree as ElementTree
@@ -18,6 +33,7 @@ from fieldsDict import *
 
 class PriceListModel:
     """PriceListModel class manages model's structure
+        Ricarica il file pgx
     """
 
     def __init__(self, pathFile=None):
@@ -123,5 +139,5 @@ class PriceListModel:
                     try:
                         retVal = self._defaultAttributes.pop(f)
                     except:
-                        print 'ATTENZIONE! si è cercato di rimuovere un campoinesistente da un modello di importazione listini.'
+                        print 'ATTENZIONE! si è cercato di rimuovere un campo inesistente da un modello di importazione listini.'
         return self._defaultAttributes.keys()
