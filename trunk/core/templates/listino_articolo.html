@@ -5,12 +5,15 @@
 <div class="row">
      <div class="col-xs-12 col-md-12">
         <div class="panel panel-default">
-  <div class="panel-heading"><h3>ARTICOLO: {{dao.codice_articolo}} - {{dao.articolo}}</h3>
-             <h3>LISTINO: {{dao.denominazione}}</h3></div>
-    <span class="label label-default">Data ultimo prezzo</span><p style="display:inline;"><strong> {{utils.dateToString(dao.data_listino_articolo)}}</strong></p>
+  <div style="height:60px;" class="panel-heading">
+      <div class="col-md-12">
+      <h4><span  class="pull-left"><big> {{dao.codice_articolo}} - {{dao.articolo}}</big></span>
+          <span class="pull-right">LISTINO: {{dao.denominazione}}</span>
+      </h4>
+      </div>
+      </div>
+<span class="label label-default">Data ultimo prezzo</span><p style="display:inline;"><strong> {{utils.dateToString(dao.data_listino_articolo)}}</strong></p>
   <div class="panel-body">
-
-                  <div style="margin-bottom:5px;" class="clearfix"></div>
     <div class="col-sm-4">
       <div class="panel panel-success">
 	  <div class="panel-heading">

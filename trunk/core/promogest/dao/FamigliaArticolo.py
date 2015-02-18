@@ -35,7 +35,7 @@ class FamigliaArticolo(Base, Dao):
     children = relationship("FamigliaArticolo", backref=backref('parent',
                                             remote_side="FamigliaArticolo.id"))
     __mapper_args__ = {
-        "order_by":"codice"
+        "order_by" : "denominazione"
     }
 
     def __init__(self, req=None):
