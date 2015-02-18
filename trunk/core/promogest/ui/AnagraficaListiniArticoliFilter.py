@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2014 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 # Author: Andrea Argiolas <andrea@promotux.it>
@@ -48,6 +48,7 @@ class AnagraficaListiniArticoliFilter(AnagraficaFilter):
                                   root='anagrafica_listini_articoli_filter_table',
                                   path='_anagrafica_listini_articoli_elements.glade')
         self._widgetFirstFocus = self.id_listino_filter_combobox
+
 
     def draw(self, cplx=False):
         """
@@ -128,8 +129,6 @@ class AnagraficaListiniArticoliFilter(AnagraficaFilter):
         else:
             self._treeViewModel = gtk.ListStore(object, str, str, str, str, str, str, str)
         self._anagrafica.anagrafica_filter_treeview.set_model(self._treeViewModel)
-
-
         self.isComplexPriceList=None
         if self._anagrafica._idListino:
             self.isComplexPriceList = ListinoComplessoListino().select(idListinoComplesso = self._anagrafica._idListino, batchSize=None)
@@ -182,13 +181,14 @@ class AnagraficaListiniArticoliFilter(AnagraficaFilter):
         viaggia una lista di id che deve essere gestita poi in una query
         il risultato è minore pulizia ma maggiore velocità
         """
-        #if not self.isComplexPriceList:
         listcount = 0
         multilistCount = 0
         multilist = []
-
+        if type(self.orderBy) == type(None):
+            self.orderBy = Articolo.denominazione.asc()
+        if not self.join:
+            self.join = Articolo
         idArt = []
-        #idArticolo = self.id_articolo_filter_customcombobox.getId()
         articolo = self.id_articolo_filter.get_text()
         if articolo:
             idArt = [a.id for a in Articolo().select(denominazione=articolo, batchSize=None)]
@@ -221,7 +221,6 @@ class AnagraficaListiniArticoliFilter(AnagraficaFilter):
         self._filterCountClosure = filterCountClosure
         self.numRecords = self.countFilterResults()
         self._refreshPageCount()
-
         # Let's save the current search as a closure
         def filterClosure(offset, batchSize):
             return ListinoArticolo().select(orderBy=self.orderBy,
@@ -240,21 +239,21 @@ class AnagraficaListiniArticoliFilter(AnagraficaFilter):
         self._treeViewModel.clear()
         for l in self.liss:
             modelRow = [l,
-                        (l.denominazione or 'PP'),
-                        (l.codice_articolo or ''),
-                        (l.articolo or ''),
+                        l.denominazione or 'PP',
+                        l.codice_articolo or '',
+                        l.articolo or '',
                         dateToString(l.data_listino_articolo),
                         str(mN(l.prezzo_dettaglio) or 0),
                         str(mN(l.prezzo_ingrosso) or 0),
                         str(mN(l.ultimo_costo) or 0)]
 
             if posso("PW"):
-                modelRowPromoWear=[(l.denominazione_gruppo_taglia or ''),
-                                        (l.denominazione_taglia or ''),
-                                        (l.denominazione_colore or ''),
-                                        (l.anno or ''),
-                                        (l.stagione or ''),
-                                        (l.genere or '')]
+                modelRowPromoWear=[l.denominazione_gruppo_taglia or '',
+                                        l.denominazione_taglia or '',
+                                        l.denominazione_colore or '',
+                                        l.anno or '',
+                                        l.stagione or '',
+                                        l.genere or '']
 
             if modelRowPromoWear:
                 self._treeViewModel.append(modelRow +modelRowPromoWear)

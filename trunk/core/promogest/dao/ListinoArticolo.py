@@ -34,6 +34,7 @@ from promogest.dao.ScontoVenditaDettaglio import ScontoVenditaDettaglio
 from promogest.dao.ScontoVenditaIngrosso import ScontoVenditaIngrosso
 from promogest.lib.utils import *
 
+
 class ListinoArticolo(Base, Dao):
     try:
         __table__ =Table('listino_articolo',
@@ -57,9 +58,10 @@ class ListinoArticolo(Base, Dao):
     listi = relationship("Listino",primaryjoin=
                 __table__.c.id_listino==Listino.id, backref="listinoarticolo")
 
+
     __mapper_args__ = {
         'order_by' : "id_listino"
-    }
+     }
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)

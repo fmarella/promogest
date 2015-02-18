@@ -59,7 +59,6 @@ class AnagraficaFilter(GladeWidget):
         """ reindirizza alcuni campi e metodi dal filterWidget """
         self.bodyWidget = self._anagrafica.bodyWidget
         #Environment.windowGroup.append(self.bodyWidget)
-        # mapping fields and methods from bodyWidget to this class
         self._changeOrderBy = self.bodyWidget._changeOrderBy
         self.orderBy = self.bodyWidget.orderBy = None
         self.join = self.bodyWidget.join = None
@@ -141,7 +140,7 @@ class AnagraficaFilter(GladeWidget):
         """ Conta i dati """
         totale_daos = self.bodyWidget.countFilterResults(
                                                     self._filterCountClosure)
-        self._anagrafica.tot_daos_label.set_markup(" <b>" \
+        self._anagrafica.tot_daos_label.set_markup(" <b>"
                                     + str(totale_daos or "Nessuno")
                                     + "</b>")
         return totale_daos
