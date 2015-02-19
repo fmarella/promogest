@@ -68,6 +68,29 @@
           </div>
   </div>
                 {% endfor %}
+      {% if utils.posso("ADR") and dao.APADR and  (dao.APADR.numero_un or dao.APADR.percentuale_carbonio) %}
+       <div style="margin-bottom:5px;" class="clearfix"></div>
+              <div class="col-sm-12">
+          <div class="panel panel-success">
+            <div class="panel-heading">
+              <h3 class="panel-title">Aspetto beni</h3>
+            </div>
+            <div class="panel-body">
+    <div class="col-sm-6"><span class="label label-success">Numero UN</span> {{dao.APADR.numero_un}}</div>
+    <div class="col-sm-6"><span class="label label-success">Codice</span> {{dao.APADR.codice_classificazione}}</div>
+    <div class="col-sm-6"><span class="label label-success">Quantità massima trasportabile</span> {{dao.APADR.quantita_massima_trasportabile}}</div>
+    <div class="col-sm-6"><span class="label label-success">Imballaggio</span> {{dao.APADR.gruppo_imballaggio}}</div>
+        <div class="col-sm-6"><span class="label label-success">Categoria Trasporto</span> {{dao.APADR.categoria_trasporto}}</div>
+        <div class="col-sm-6"><span class="label label-success">Classe</span> {{dao.APADR.gruppo_imballaggio}}</div>
+        <div class="col-sm-6"><span class="label label-success">Galleria</span> {{dao.APADR.gruppo_imballaggio}}</div>
+        <div class="col-sm-6"><span class="label label-info">Carbonio</span> {{dao.APADR.percentuale_carbonio}}%</div>
+        <div class="col-sm-6"><span class="label label-info">COV</span> {{dao.APADR.percentuale_cov}}%</div>
+        <div class="col-sm-6"><span class="label label-info">Secco</span> {{dao.APADR.percentuale_secco}}%</div>
+            </div>
+
+          </div>
+  </div>
+      {% endif %}
 
   </div>
         </div>
@@ -105,7 +128,7 @@
 {% endfor %}
 </div>
         {% else %}
-        <p><img src= "gui/attenzione_48X48.png">ELIMINATO: Niente da visualizzare</p>
+        <!--<p><img src= "gui/attenzione_48X48.png">ELIMINATO: Niente da visualizzare</p>-->
         <p><img src= "gui/testata_promogest2.png"></p>
         {% endif %}
 {% endblock %}
