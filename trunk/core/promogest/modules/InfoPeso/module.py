@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -27,4 +27,4 @@ MODULES_FOR_EXPORT = []
 GUI_DIR = Environment.cartella_moduli+'/InfoPeso/gui/'
 START_CALL_IS_IN_THREAD = True        # False if you  do NOT want to put execution
 START_CALL = None                              # of this call in a separated Thread
-TEMPLATES = Environment.cartella_moduli+'/InfoPeso/templates/'
+#TEMPLATES = Environment.cartella_moduli+'/InfoPeso/templates/'

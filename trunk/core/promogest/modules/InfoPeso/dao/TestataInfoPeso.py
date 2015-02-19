@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 2011 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -27,7 +27,6 @@ from promogest.dao.Dao import Dao
 from promogest.dao.DaoUtils import *
 from promogest.lib.utils import *
 from promogest.dao.Cliente import Cliente
-#from promogest.lib.migrate import *
 
 
 try:
@@ -54,19 +53,6 @@ except:
             schema=params["schema"],
             useexisting=True)
     testatainfopeso.create(checkfirst=True)
-
-##if 'metodo_saved' not in [c.name for c in testatainfopeso.columns]:
-    ##col = Column('metodo_saved', Text)
-    ##col.create(testatainfopeso)
-
-##if 'metodo_data_creazione' not in [c.name for c in testatainfopeso.columns]:
-    ##col = Column('metodo_data_creazione', DateTime,
-        ##default=datetime.datetime.now())
-    ##col.create(testatainfopeso)
-
-##if 'sblocca_ordini' not in [c.name for c in testatainfopeso.columns]:
-    ##col = Column('sblocca_ordini', Boolean)
-    ##col.create(testatainfopeso)
 
 from promogest.modules.InfoPeso.dao.RigaInfoPeso import RigaInfoPeso
 
@@ -136,11 +122,12 @@ class TestataInfoPeso(Dao):
                 riga.persist()
         self.__righeInfoPeso= []
 
-std_mapper = mapper(TestataInfoPeso, testatainfopeso, properties={
+std_mapper = mapper(TestataInfoPeso, testatainfopeso,
+                    properties={
         "rigatestinfo": relation(RigaInfoPeso,
-        primaryjoin=testatainfopeso.c.id == RigaInfoPeso.id_testata_info_peso,
-        cascade="all, delete"),
+                        primaryjoin=testatainfopeso.c.id == RigaInfoPeso.id_testata_info_peso,
+                        cascade="all, delete"),
         "cliente": relation(Cliente,
-        primaryjoin=testatainfopeso.c.id_cliente == Cliente.id, backref= "tip"
-        )},
-        order_by=testatainfopeso.c.id)
+                        primaryjoin=testatainfopeso.c.id_cliente == Cliente.id, backref= "tip"
+                        )},
+                    order_by=testatainfopeso.c.id)

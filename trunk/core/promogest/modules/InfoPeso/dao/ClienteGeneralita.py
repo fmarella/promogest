@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -73,6 +73,5 @@ class ClienteGeneralita(Dao):
 std_mapper = mapper(ClienteGeneralita, clientegeneralita,properties={
         "CLI": relation(Cliente,primaryjoin=
                 clientegeneralita.c.id_cliente==Cliente.id,
-#                foreign_keys=[RigaPrimaNota.id_testata_prima_nota],
                 cascade="all, delete")},
                 order_by=clientegeneralita.c.id)

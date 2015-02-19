@@ -2,7 +2,7 @@
 
 # Promogest
 #
-# Copyright (C) 2005-2012,
+# Copyright (C) 2005-2015,
 #                         by Promotux Informatica - http://www.promotux.it/
 # Author: Francesco Meloni <francesco@promotux.it>
 #

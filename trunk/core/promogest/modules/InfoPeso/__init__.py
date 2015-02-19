@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Promogest
 #
-# Copyright (C) 2005-2011 by Promotux Informatica - http://www.promotux.it/
+# Copyright (C) 2005-2015 by Promotux Informatica - http://www.promotux.it/
 # Author: Francesco Meloni <francesco@promotux.it>
 #
 # This program is free software; you can redistribute it and/or

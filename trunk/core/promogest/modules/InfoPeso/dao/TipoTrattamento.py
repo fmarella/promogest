@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 2011 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 # Author: Francesco Meloni <francesco@promotux.it>
@@ -48,4 +48,6 @@ class TipoTrattamento(Dao):
                 }
         return  dic[k]
 
-std_mapper = mapper(TipoTrattamento, tipotrattamento,order_by=tipotrattamento.c.denominazione)
+std_mapper = mapper(TipoTrattamento,
+                    tipotrattamento,
+                    order_by=tipotrattamento.c.denominazione)
