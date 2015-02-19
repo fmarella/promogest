@@ -1991,6 +1991,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         toggleButton.set_active(False)
 
     def on_quantita_entry_value_changed(self,spin):
+        return
         self.on_quantita_entry_focus_out_event(entry=None,event=None)
 
     def on_id_magazzino_combobox_changed(self, combobox):
