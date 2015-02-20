@@ -221,7 +221,8 @@ class SimpleGladeWrapper:
 
     def virgolaAdd(self, spin, value):
         c = len(spin.get_text())
-        if value.keyval == 65454:
+        # print(value.string)
+        if value.string == ".":
             a = spin.get_text()
             spin.insert_text(",",c+1)
             spin.set_position(c+2)
