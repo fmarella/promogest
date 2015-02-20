@@ -1147,23 +1147,23 @@ class TestataDocumento(Base, Dao):
             "Nota di credito da fornitore","Fattura accompagnatoria",
              "Vendita dettaglio","Fattura differita vendita", "Fattura differita acquisto"]
         if k == 'daNumero':
-            dic = {k:TestataDocumento.__table__.c.numero >= v}
+            dic = {k: TestataDocumento.__table__.c.numero >= v}
         elif k == 'aNumero':
-            dic = {k:TestataDocumento.__table__.c.numero <= v}
+            dic = {k: TestataDocumento.__table__.c.numero <= v}
         elif k == 'numero':
-            dic = {k:TestataDocumento.__table__.c.numero == v}
+            dic = {k: TestataDocumento.__table__.c.numero == v}
         elif k == 'parte':
-            dic = {k:TestataDocumento.__table__.c.parte == v}
+            dic = {k: TestataDocumento.__table__.c.parte == v}
         elif k == 'daParte':
-            dic = {k:TestataDocumento.__table__.c.parte >= v}
+            dic = {k: TestataDocumento.__table__.c.parte >= v}
         elif k == 'aParte':
-            dic = {k:TestataDocumento.__table__.c.parte <= v}
+            dic = {k: TestataDocumento.__table__.c.parte <= v}
         elif k == 'daData':
-            dic = {k:TestataDocumento.__table__.c.data_documento >= v}
+            dic = {k: TestataDocumento.__table__.c.data_documento >= v}
         elif k== 'aData':
-            dic = {k:TestataDocumento.__table__.c.data_documento <= v}
+            dic = {k: TestataDocumento.__table__.c.data_documento <= v}
         elif k =='protocollo':
-            dic = {k:TestataDocumento.__table__.c.protocollo.ilike("%"+v+"%")}
+            dic = {k: TestataDocumento.__table__.c.protocollo.ilike("%"+v+"%")}
         elif k == 'idOperazione':
             dic = {k: TestataDocumento.__table__.c.operazione == v}
         elif k == 'idPagamento':
@@ -1179,18 +1179,18 @@ class TestataDocumento(Base, Dao):
         elif k == 'idClienteList':
             dic = {k: TestataDocumento.__table__.c.id_cliente.in_(v)}
         elif k == 'idFornitore':
-            dic = {k:TestataDocumento.__table__.c.id_fornitore == v}
+            dic = {k: TestataDocumento.__table__.c.id_fornitore == v}
         elif k == 'idAgente':
-            dic = {k:TestataDocumento.__table__.c.id_agente == v}
+            dic = {k: TestataDocumento.__table__.c.id_agente == v}
         elif k == 'statoDocumento':
-            dic = {k:TestataDocumento.__table__.c.documento_saldato == v}
+            dic = {k: TestataDocumento.__table__.c.documento_saldato == v}
         elif k =="extra":
             if v == "tutti_vendita":
-                dic = {k:TestataDocumento.__table__.c.operazione.in_(Environment.solo_vendita)}
+                dic = {k: TestataDocumento.__table__.c.operazione.in_(Environment.solo_vendita)}
             elif v == "tutti_acquisto":
-                dic = {k:TestataDocumento.__table__.c.operazione.in_(Environment.solo_acquisto)}
+                dic = {k: TestataDocumento.__table__.c.operazione.in_(Environment.solo_acquisto)}
             elif v == "tutti_acquisto_con_ddt":
-                dic = {k:TestataDocumento.__table__.c.operazione.ilike("%acquisto%")}
+                dic = {k: TestataDocumento.__table__.c.operazione.ilike("%acquisto%")}
         elif k == 'descrizioneRiga':
             dic = {k: and_(Riga.descrizione.ilike("%"+v+"%"),
                     Riga.id==RigaDocumento.id,

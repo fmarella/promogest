@@ -1342,9 +1342,9 @@ ed un nuovo punto cassa.</property>
                             <property name="expand">True</property>
                             <child>
                               <object class="GtkCellRendererText" id="cellrenderertext3">
-                                <property name="height">40</property>
+                                <property name="height">30</property>
                                 <property name="editable">True</property>
-                                <property name="size_points">16</property>
+                                <property name="size_points">14</property>
                                 <signal name="edited" handler="on_column_descrizione_edited" swapped="no"/>
                               </object>
                               <attributes>
@@ -1424,7 +1424,7 @@ ed un nuovo punto cassa.</property>
                               <object class="GtkCellRendererText" id="cellrenderertext4">
                                 <property name="cell_background_rgba">rgba(222,250,185,0.85869565217391308)</property>
                                 <property name="xalign">0.89999997615814209</property>
-                                <property name="size_points">16</property>
+                                <property name="size_points">14</property>
                               </object>
                               <attributes>
                                 <attribute name="text">8</attribute>
@@ -1464,7 +1464,7 @@ ed un nuovo punto cassa.</property>
                             <child>
                               <object class="GtkCellRendererText" id="cellrenderertext5">
                                 <property name="cell_background_rgba">rgb(211,215,207)</property>
-                                <property name="size_points">16</property>
+                                <property name="size_points">14</property>
                               </object>
                               <attributes>
                                 <attribute name="text">10</attribute>
@@ -2452,8 +2452,8 @@ ALT +n per annullare INVIO  per confermare</property>
                 <property name="border_width">1</property>
                 <property name="use_stock">True</property>
                 <signal name="clicked" handler="on_generico_ok_button_clicked" swapped="no"/>
-                <accelerator key="Return" signal="clicked"/>
                 <accelerator key="KP_Enter" signal="clicked"/>
+                <accelerator key="Return" signal="clicked"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -2509,8 +2509,8 @@ ALT +n per annullare INVIO  per confermare</property>
                 <property name="tooltip_markup">(+) aumenta</property>
                 <property name="image">image2_plus</property>
                 <signal name="clicked" handler="on_plus2_button_clicked" swapped="no"/>
-                <accelerator key="KP_Add" signal="clicked"/>
                 <accelerator key="plus" signal="clicked"/>
+                <accelerator key="KP_Add" signal="clicked"/>
               </object>
               <packing>
                 <property name="expand">True</property>
@@ -2526,8 +2526,8 @@ ALT +n per annullare INVIO  per confermare</property>
                 <property name="tooltip_markup">(-) diminuisce</property>
                 <property name="image">image4_minus2</property>
                 <signal name="clicked" handler="on_minus2_button_clicked" swapped="no"/>
-                <accelerator key="KP_Subtract" signal="clicked"/>
                 <accelerator key="minus" signal="clicked"/>
+                <accelerator key="KP_Subtract" signal="clicked"/>
               </object>
               <packing>
                 <property name="expand">True</property>
@@ -2588,8 +2588,8 @@ ALT +n per annullare INVIO  per confermare</property>
                 <property name="tooltip_markup">ctrl +( +) aumenta</property>
                 <property name="image">image_plus</property>
                 <signal name="clicked" handler="on_plus_button_clicked" swapped="no"/>
-                <accelerator key="KP_Add" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
                 <accelerator key="plus" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
+                <accelerator key="KP_Add" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
               </object>
               <packing>
                 <property name="expand">True</property>
@@ -2605,8 +2605,8 @@ ALT +n per annullare INVIO  per confermare</property>
                 <property name="tooltip_markup">ctrl +( - ) diminisce</property>
                 <property name="image">image3_minus</property>
                 <signal name="clicked" handler="on_minus_button_clicked" swapped="no"/>
-                <accelerator key="KP_Subtract" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
                 <accelerator key="minus" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
+                <accelerator key="KP_Subtract" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
               </object>
               <packing>
                 <property name="expand">True</property>
