@@ -219,19 +219,16 @@ class SimpleGladeWrapper:
     def _reOrderBy(self, column):
         pass
 
-    def colonadd(self, spin, value):
+    def virgolaAdd(self, spin, value):
         c = len(spin.get_text())
-        if value.keyval ==46:
+        if value.keyval == 65454:
             a = spin.get_text()
-            spin.set_text(a+",")
-            spin.move_cursor(c+1)
-        # print spin
+            spin.insert_text(",",c+1)
+            spin.set_position(c+2)
 
     def spinSanitaze(self, spin):
-        return
-        # print spin.get_numeric()
-        # print spin.get_digits()
-        # spin.connect("key-release-event", self.colonadd)
+        if spin.get_numeric() and spin.get_digits():
+            spin.connect("key-release-event", self.virgolaAdd)
 
     def entryGlobalcb(self,entry):
         entry.connect("icon-press", self.on_icon_press)
