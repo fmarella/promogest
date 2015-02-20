@@ -1,21 +1,16 @@
 {% extends 'index.html' %}
 {% block body %}<br>
-{% for dao in pageData["objects"] %}
 <div class="row">
+{% for dao in pageData["objects"] %}
      <div class="col-xs-12 col-md-12">
-        <div class="panel panel-default">
-              <div class="panel-heading"><h3>N° {{dao.numero}} del  {{utils.dateToString(dao.data_inizio)}}</h></div>
-  <div class="panel-body">
+              <!--<div class="panel-heading">-->
+                  <h4>N° {{dao.numero}} del  {{utils.dateToString(dao.data_inizio)}}          {% if dao.righeprimanota|length==1 %} <div class="col-sm-6 pull-right"><span class="label label-default">Note</span><h4 style="display:inline;"> {{dao.note|nonone}}</h4></div>{% endif %}</h4>
+              <!--</div>-->
 
     {% if dao.righeprimanota|length >1 %}
       <div class="col-sm-6"><span class="label label-default">Descrizione</span><h4 style="display:inline;"> {{dao.note|nonone}}</h4></div>
     {% endif %}
-      <div class="clearfix"></div>
-                <!--<div class="panel panel-primary">-->
-            <!--<div class="panel-heading">-->
-              <!--<h3 class="panel-title">Operazioni&nbsp;&nbsp; ({#{dao.righeprimanota|length}#})</h3>-->
-            <!--</div>-->
-            <!--<div class="panel-body">-->
+      <!--<div class="clearfix"></div>-->
 <div class="table-responsive">
   <table class="table  table-bordered table-striped table-condensed">
    <tr>
@@ -45,17 +40,15 @@
         </tr>
         {% endfor %}
   </table>
+
 </div>
-        {% if dao.righeprimanota|length==1 %}
-           <div class="col-sm-12"><span class="label label-default">Note</span><h4 style="display:inline;"> {{dao.note|nonone}}</h4></div>
-        {% endif %}
+
             <!--</div>-->
   <!--</div>-->
-      </div>
-        </div>
      </div>
-</div>
+    ------------------------------------------
 {% endfor %}
+</div>
 {% set tot = utils.calcolaTotaliPrimeNote(pageData["objects"]) %}
        <div class="col-sm-6">
        <div class="panel panel-warning">
@@ -80,12 +73,6 @@
               <div class="col-sm-12"><span class="label label-warning">SALDO</span><h4 style="display:inline;"><strong> {{utils.mNLC(tot["saldo_banca"],2)}}</strong></h4></div>
       	  </div>
       </div></div>
-
-
-
-
-
-
         {% for k,v in tot["tot_entrate_per_banche"].iteritems() %}
            <div class="col-sm-4">
        <div class="panel panel-default">
@@ -102,9 +89,11 @@
 
 
       	  </div>
-      </div></div>
+      </div>
+           </div>
 
         {% endfor %}
+
 
 {% if utils.setconf("PrimaNota", "saldi_periodo") %}
 {% set tot_init = utils.calcolaSaldoPeriodoPrimaNota() %}
