@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Marella <francesco.marella@anche.no>
-
+#    Author: Francesco Meloni <francesco@promotux.it>
 #    This file is part of Promogest.
 
 #    Promogest is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@ from promogest.ui.gtk_compat import *
 from promogest.lib.utils import *
 from promogest import Environment
 from promogest.ui.GladeWidget import GladeWidget
-
+from decimal import Decimal
 from promogest.modules.ADR.dao.CategoriaTrasporto import CategoriaTrasporto
 from promogest.modules.ADR.dao.CodiceClassificazione import CodiceClassificazione
 from promogest.modules.ADR.dao.GruppoImballaggio import GruppoImballaggio
@@ -70,6 +70,9 @@ class ADRNotebookPage(GladeWidget):
 
     def _clear(self):
         self.numero_un_adr_entry.set_text("")
+        self.carbonio_spinbutton.set_value(0)
+        self.cov_spinbutton.set_value(0)
+        self.secco_spinbutton.set_value(0)
         self.id_gruppo_imballaggio_adr_customcombobox.combobox.set_active(-1)
         self.id_codice_classificazione_adr_customcombobox.combobox.set_active(-1)
         self.id_categoria_trasporto_adr_customcombobox.combobox.set_active(-1)
@@ -88,6 +91,12 @@ class ADRNotebookPage(GladeWidget):
     def adr_refresh(self):
         if self.dao_articolo_adr:
             self.numero_un_adr_entry.set_text(self.dao_articolo_adr.numero_un or "")
+            self.carbonio_spinbutton.set_value(
+                self.dao_articolo_adr.percentuale_carbonio or 0)
+            self.cov_spinbutton.set_value(
+                self.dao_articolo_adr.percentuale_cov or 0)
+            self.secco_spinbutton.set_value(
+                self.dao_articolo_adr.percentuale_secco or 0)
             self.id_gruppo_imballaggio_adr_customcombobox.combobox.set_active(self.dao_articolo_adr.id_gruppo_imballaggio or -1)
             self.id_codice_classificazione_adr_customcombobox.combobox.set_active(self.dao_articolo_adr.id_codice_classificazione or -1)
             self.id_classe_pericolo_adr_customcombobox.combobox.set_active(self.dao_articolo_adr.id_classe or -1)
@@ -96,9 +105,12 @@ class ADRNotebookPage(GladeWidget):
 
     def adrSaveDao(self):
         numero_un = self.numero_un_adr_entry.get_text() or ''
-        if not numero_un:
-            return None
+        # if not numero_un:
+        #     return None
         self.dao_articolo_adr.numero_un = numero_un
+        self.dao_articolo_adr.percentuale_carbonio = Decimal(self.carbonio_spinbutton.get_value())
+        self.dao_articolo_adr.percentuale_cov = Decimal(self.cov_spinbutton.get_value())
+        self.dao_articolo_adr.percentuale_secco = Decimal(self.secco_spinbutton.get_value())
         self.dao_articolo_adr.id_gruppo_imballaggio = self.id_gruppo_imballaggio_adr_customcombobox.combobox.get_active()
         self.dao_articolo_adr.id_codice_classificazione = self.id_codice_classificazione_adr_customcombobox.combobox.get_active()
         self.dao_articolo_adr.id_classe = self.id_classe_pericolo_adr_customcombobox.combobox.get_active()

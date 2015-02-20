@@ -11,10 +11,19 @@
   <div class="panel-heading"><h3>{{dao.operazione}} N° {{dao.numero}} / {{dao.parte|nonone}} del {{utils.dateToString(dao.data_documento)}}</h></div>
   <div class="panel-body">
            {% if dao.id_cliente %}
-<div class="col-sm-6"><span class="label label-default">Cliente</span><h4 style="display:inline;"> {{dao.CLI.ragione_sociale}}</h4></div>
+<div class="col-sm-12"><span class="label label-default">Cliente</span><h4 style="display:inline;"> {{dao.CLI.ragione_sociale}}</h4>
+{% if dao.CLI.email_principale %}
+   <span class="glyphicon glyphicon-envelope" style="color:#F47414" aria-hidden="true"></span>
+    {% endif %}
+
+</div>
       {% endif %}
       {% if dao.id_fornitore %}
-      <div class="col-sm-6"><span class="label label-default">Fornitore</span><h4 style="display:inline;"> {{dao.FORN.ragione_sociale}}</h4></div>
+      <div class="col-sm-6"><span class="label label-default">Fornitore</span><h4 style="display:inline;"> {{dao.FORN.ragione_sociale}}</h4>
+      {% if dao.FORN.email_principale %}
+   <span class="glyphicon glyphicon-envelope" style="color:#F47414" aria-hidden="true"></span>
+    {% endif %}
+      </div>
       {% endif %}
                   <div class="clearfix"></div>
       <div class='col-sm-12'><hr></div>

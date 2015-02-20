@@ -5,7 +5,7 @@
   <object class="GtkImage" id="image1">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="icon_name">edit-copy</property>
+    <property name="pixbuf">invoice.png</property>
   </object>
   <object class="GtkImage" id="image10">
     <property name="visible">True</property>
@@ -15,17 +15,22 @@
   <object class="GtkImage" id="image11">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="stock">gtk-copy</property>
+    <property name="pixbuf">mail_delete.png</property>
   </object>
   <object class="GtkImage" id="image12">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="stock">gtk-copy</property>
+    <property name="pixbuf">printer.png</property>
+  </object>
+  <object class="GtkImage" id="image13">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">stock_mail.resized.png</property>
   </object>
   <object class="GtkImage" id="image2">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="icon_name">document-new</property>
+    <property name="pixbuf">edit-copy.png</property>
   </object>
   <object class="GtkImage" id="image3">
     <property name="visible">True</property>
@@ -51,17 +56,17 @@
   <object class="GtkImage" id="image7">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="pixbuf">report24x24.png</property>
+    <property name="pixbuf">reports.png</property>
   </object>
   <object class="GtkImage" id="image8">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="icon_name">go-bottom</property>
+    <property name="pixbuf">csv_text.png</property>
   </object>
   <object class="GtkImage" id="image9">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="pixbuf">duplica24x24.png</property>
+    <property name="pixbuf">invoice_2.png</property>
   </object>
   <object class="GtkLabel" id="label2">
     <property name="visible">True</property>
@@ -148,7 +153,6 @@
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
-                        <property name="image">image2</property>
                         <property name="use_stock">False</property>
                         <property name="always_show_image">True</property>
                         <signal name="activate" handler="on_record_new_activate" swapped="no"/>
@@ -161,7 +165,6 @@
                         <property name="sensitive">False</property>
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
-                        <property name="image">image1</property>
                         <property name="use_stock">False</property>
                         <property name="always_show_image">True</property>
                         <signal name="activate" handler="on_record_duplicate_menu_activate" swapped="no"/>
@@ -172,7 +175,6 @@
                         <property name="label" translatable="yes">Duplica in Fornitore</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="image">image11</property>
                         <property name="use_stock">False</property>
                         <signal name="activate" handler="on_duplica_in_fornitore_activate_item" swapped="no"/>
                       </object>
@@ -182,7 +184,6 @@
                         <property name="label" translatable="yes">Duplica in Cliente</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="image">image12</property>
                         <property name="use_stock">False</property>
                         <signal name="activate" handler="on_duplica_in_cliente_activate_item" swapped="no"/>
                       </object>
@@ -255,6 +256,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="tooltip_text" translatable="yes">Questo report riporta l'elenco in dettaglio dei movimenti di spedizione</property>
+                        <property name="label" translatable="yes">Report Movimenti spedizione</property>
                         <signal name="activate" handler="on_report_mov_sped_menuitem_activate" swapped="no"/>
                       </object>
                     </child>
@@ -264,7 +266,17 @@
                         <property name="can_focus">False</property>
                         <property name="tooltip_text" translatable="yes">Questo report riporta l'elenco in dettaglio 
 dei farmaci venduti in un determinato arco temporale</property>
+                        <property name="label" translatable="yes">Report Farmacia Veterinaria</property>
                         <signal name="activate" handler="on_report_farmacia_veterinaria_activate" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="report_massa">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Report ADR Massa</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="on_report_massa_activate" swapped="no"/>
                       </object>
                     </child>
                     <child>
@@ -464,6 +476,7 @@ dei farmaci venduti in un determinato arco temporale</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="toolbar_style">icons</property>
+            <property name="icon_size">5</property>
             <child>
               <object class="GtkToolButton" id="record_new_button">
                 <property name="visible">True</property>
@@ -511,7 +524,7 @@ dei farmaci venduti in un determinato arco temporale</property>
                 <property name="tooltip_text" translatable="yes">Duplica l'oggetto selezionato</property>
                 <property name="label" translatable="yes">Duplica</property>
                 <property name="use_underline">True</property>
-                <property name="icon_name">emblem-documents</property>
+                <property name="icon_widget">image2</property>
                 <signal name="clicked" handler="on_record_duplicate_menu_activate" swapped="no"/>
               </object>
               <packing>
@@ -527,7 +540,7 @@ dei farmaci venduti in un determinato arco temporale</property>
                 <property name="tooltip_text" translatable="yes">Elimina il record selezionato</property>
                 <property name="label" translatable="yes">Elimina</property>
                 <property name="use_underline">True</property>
-                <property name="icon_name">user-trash</property>
+                <property name="icon_widget">image11</property>
                 <signal name="clicked" handler="on_record_delete_activate" swapped="no"/>
               </object>
               <packing>
@@ -552,7 +565,7 @@ dei farmaci venduti in un determinato arco temporale</property>
                 <property name="tooltip_text" translatable="yes">Genera un file PDF con il dettaglio del record selezionato</property>
                 <property name="label" translatable="yes">Stampa</property>
                 <property name="use_underline">True</property>
-                <property name="stock_id">gtk-print</property>
+                <property name="icon_widget">image12</property>
                 <signal name="clicked" handler="on_selected_record_print_activate" swapped="no"/>
               </object>
               <packing>
@@ -561,14 +574,13 @@ dei farmaci venduti in un determinato arco temporale</property>
               </packing>
             </child>
             <child>
-              <object class="GtkToolButton" id="email_toolbutton">
+              <object class="GtkMenuToolButton" id="email_toolbutton">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="tooltip_text" translatable="yes">Invia per email</property>
                 <property name="label" translatable="yes">Invia per email</property>
                 <property name="use_underline">True</property>
-                <property name="stock_id">gtk-redo</property>
-                <signal name="clicked" handler="on_email_toolbutton_clicked" swapped="no"/>
+                <property name="icon_widget">image13</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -681,6 +693,7 @@ dei farmaci venduti in un determinato arco temporale</property>
                 <property name="app_paintable">True</property>
                 <property name="can_focus">False</property>
                 <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                <property name="tooltip_text" translatable="yes">Fatturazione differita</property>
                 <property name="label" translatable="yes">Fattura Differita</property>
                 <property name="icon_widget">image9</property>
                 <signal name="clicked" handler="on_record_fattura_button_clicked" swapped="no"/>
@@ -698,7 +711,7 @@ dei farmaci venduti in un determinato arco temporale</property>
                 <property name="tooltip_text" translatable="yes">Segna come pagato uno o più documenti.</property>
                 <property name="use_underline">True</property>
                 <property name="label_widget">label2</property>
-                <property name="stock_id">gtk-dnd-multiple</property>
+                <property name="icon_widget">image1</property>
                 <signal name="clicked" handler="on_segna_pagato_button_clicked" swapped="no"/>
               </object>
               <packing>
@@ -991,6 +1004,10 @@ dei farmaci venduti in un determinato arco temporale</property>
     </child>
   </object>
   <object class="GtkMenu" id="menu3">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+  </object>
+  <object class="GtkMenu" id="menu_emails">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
   </object>

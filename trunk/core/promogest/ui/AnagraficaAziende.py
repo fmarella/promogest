@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 #    Copyright (C) 2013 Francesco Marella <francesco.marella@anche.no>
 
@@ -184,7 +184,9 @@ class AnagraficaAziende(GladeWidget):
         self.logo_filechooserdialog.hide()
 
     def on_rimuovi_logo_clicked(self, button):
-        self.logo_azienda.set_from_file(None)
+        self.logo_azienda.set_from_file("")
+        self.dao.percorso_immagine = None
+        self.filename = None
         #self.path_label.set_text("")
 
     def resizeImgThumbnailGeneric(self, req=None, filename=None):
@@ -212,12 +214,6 @@ class AnagraficaAziende(GladeWidget):
         if save:
             self.dao.persist()
             self.getTopLevel().destroy()
-
-    def on_cancel_button_clicked(self, button):
-        self.setDao()
-
-    def on_close_button_clicked(self, button):
-        self.getTopLevel().destroy()
 
     def on_contatti_togglebutton_toggled(self, toggleButton):
         if not(toggleButton.get_active()):
@@ -250,3 +246,6 @@ class AnagraficaAziende(GladeWidget):
         returnWindow = button.get_toplevel()
         anagWindow.set_transient_for(returnWindow)
         anagWindow.show_all()
+
+    def on_chiudi_butto_clicked(self,button):
+        self.getTopLevel().destroy()

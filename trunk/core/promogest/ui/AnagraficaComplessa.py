@@ -98,6 +98,9 @@ class Anagrafica(GladeWidget):
         self._setLabelHandler(labelHandler)
         self._selectedDao = None
         if self.__class__.__name__ == 'AnagraficaDocumenti':
+            if not posso("ADR"):
+                self.report_massa.destroy()
+
             from promogest.export import tracciati_disponibili
 
             for tracciato in tracciati_disponibili():
@@ -113,6 +116,26 @@ class Anagrafica(GladeWidget):
 
                 self.menu3.append(build_menuitem(tracciato))
             self.records_file_export.set_menu(self.menu3)
+
+            from promogest.dao.AccountEmail import AccountEmail
+            emails = AccountEmail().select(batchSize=None)
+            if not emails:
+                self.email_toolbutton.connect("clicked",self.on_email_toolbutton_empty)
+            for email in emails:
+                def build_menuitem(name):
+                    import string
+
+                    labe = email.indirizzo
+                    mi = gtk.MenuItem(label=labe)
+                    mi.show()
+                    mi.connect('activate',
+                               self.on_email_toolbutton_clicked,
+                               (name,))
+                    return mi
+
+                self.menu_emails.append(build_menuitem(email.denominazione))
+            self.email_toolbutton.set_menu(self.menu_emails)
+
         # Initial (in)sensitive widgets
         textStatusBar = "     *****   PromoGest - 070 8649705 -" \
                         + " www.promogest.me - assistenza@promotux.it  *****"
@@ -140,6 +163,7 @@ class Anagrafica(GladeWidget):
             self.email_toolbutton.destroy()
             self.segna_pagato_button.destroy()
             self.export_fatturapa_toolbutton.destroy()
+            self.report_massa.destroy()
         self.placeWindow(self.anagrafica_complessa_window)
         self.filter.draw()
         self.editElement.draw(cplx=True)
@@ -594,10 +618,15 @@ class Anagrafica(GladeWidget):
         else:
             fenceDialog()
 
-    def on_email_toolbutton_clicked(self, widget):
+    def on_email_toolbutton_empty(self, widget):
+        messageInfo(msg="NESSUN INDIRZZO EMAIL CONFIGURATO PER LA TUA AZIENDA, AGGIUNGILO NELLA  SEZIONE DATI AZIENDA")
+
+    def on_email_toolbutton_clicked(self, widget, name):
         daos = get_selected_daos(self.anagrafica_filter_treeview)
         if len(daos) > 0 and YesNoDialog(
-                'Si stanno inviando i documenti selezionati tramite posta elettronica, continuare?'):
+                """Si stanno inviando TUTTI i documenti selezionati tramite posta elettronica
+                dall'indirizzo selezionato all'email preferenziale del cliente/fornitore.
+                Continuare?"""):
             try:
                 do_send_mail(daos, self, formato='pdf')
             except (NoAccountEmailFound, NetworkError) as ex:
@@ -609,7 +638,6 @@ class Anagrafica(GladeWidget):
         from promogest.lib.DaoTransform import to_pdf
 
         daos = get_selected_daos(self.anagrafica_filter_treeview)
-        print("DAOS", daos)
         if len(daos) > 1:
             fileName = resolve_save_file_path()
             # conversione dei DAO in un unico documento PDF
@@ -895,7 +923,11 @@ class Anagrafica(GladeWidget):
         self.reportHandler.buildPreviewWidget()
 
     def on_report_farmacia_veterinaria_activate(self, widget):
-        self.reportHandler.buildPreviewWidget(veter=True)
+        self.reportHandler.buildPreviewWidget(tipo="veter")
+
+
+    def on_report_massa_activate(self,widget):
+        self.reportHandler.buildPreviewWidget(tipo="massa")
 
     def on_report_mov_sped_menuitem_activate(self, widget):
         daos = get_selected_daos(self.anagrafica_filter_treeview)

@@ -37,12 +37,12 @@ class AnagraficaPrintPreview(GladeWidget):
     """ Print preview """
     # FIXME: a lot of duplicated code from AnagraficaFilter here!
 
-    def __init__(self, anagrafica, windowTitle, previewTemplate, veter=False):
+    def __init__(self, anagrafica, windowTitle, previewTemplate, tipo=None):
         GladeWidget.__init__(self, root='htmlviewer', path="htmlviewer.glade")
         self.windowTitle = windowTitle
         self.visualizzatore_html.set_title(windowTitle)
         self._anagrafica = anagrafica
-        self._veter = veter
+        self._tipo = tipo
 
         self.bodyWidget = FilterWidget(owner=self, resultsElement='html')
         self.bodyWidget.filter_navigation_hbox.destroy()
@@ -67,18 +67,7 @@ class AnagraficaPrintPreview(GladeWidget):
         self.bodyWidget.generic_button.set_property('visible', False)
         def test():
             self.html_code = "<html><body></body></html>"
-            #self.html.load_html_string(self.html_code, "file:///"+sys.path[0]+os.sep)
-            #self.html.show()
-            #renderHTML(self.print_on_screen_html, self.html_code)
-        #generaButton = self.bodyWidget.generic_button
-        #generaButton.connect('clicked', self.on_generic_button_clicked )
-        #generaButton.set_label("Genera Pdf Anteprima Html")
-        #if Environment.pg3:
-            #glib.idle_add(self.refresh)
-        #else:
-            #gobject.idle_add(test)
         glib.idle_add(self.refresh)
-        #self.refresh()
 
     def on_csv_button_clicked(self, button):
         messageInfo(msg="NON ANCORA IMPLEMENTATO")
@@ -108,18 +97,18 @@ class AnagraficaPrintPreview(GladeWidget):
         self.bodyWidget._refreshPageCount()
 
     @timeit
-    def refresh(self, forprint=False):
+    def refresh(self):
         """ show the html page in the custom widget"""
         self.bodyWidget.orderBy = self.orderBy
-        self.bodyWidget.veter = self._veter
-        #self.pbar_dialog.run()
+        self.bodyWidget.tipo = self._tipo
+        # self.pbar_dialog.run()
         #self.pbar_dialog.destroy()
         daos = self.bodyWidget.runFilter(offset=None,
                                         batchSize=None,
                                         filterClosure=self._filterClosure,
                                         )
         azienda = Azienda().getRecord(id=Environment.azienda)
-        #pbar(self.pbar_report,parziale=daos.index(ragsoc), totale=len(nomi), text=ragsoc, noeta=False)
+        # pbar(self.pbar_report,parziale=daos.index(ragsoc), totale=len(nomi), text=ragsoc, noeta=False)
         #pbar(self.pbar_report,parziale=1, totale=4)
         if hasattr(self._anagrafica,"funzione_ordinamento") and self._anagrafica.funzione_ordinamento == "cliforn":
             if self._anagrafica.aa < 0:
@@ -143,7 +132,7 @@ class AnagraficaPrintPreview(GladeWidget):
         #pbar(self.pbar_report,parziale=2, totale=4)
         pageData = {}
         self.html_code = "<html><body></body></html>"
-        if self._veter:
+        if self._tipo == "veter":
             daos = daos[:]
             da = []
             for d in daos:
@@ -154,6 +143,36 @@ class AnagraficaPrintPreview(GladeWidget):
                 if len(c)>0:
                     da.append(d)
             daos = da
+        elif self._tipo == "massa":
+            print "MASSAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+            daos=daos[:]
+            articoli_dict = {}
+            for d in daos:
+                for x in d.righe:
+                    if x.id_articolo:
+                        if x.rig.arti.APADR and (x.rig.arti.APADR.percentuale_carbonio or
+                            x.rig.arti.APADR.percentuale_cov or
+                            x.rig.arti.APADR.percentuale_secco):
+                            a_adr = x.rig.arti
+                            print(a_adr)
+                            if a_adr in articoli_dict:
+                                articoli_dict[a_adr] += ( x.quantita*x.moltiplicatore )
+                            else:
+                                articoli_dict[a_adr] = (
+                                    x.quantita * x.moltiplicatore )
+                            print("INTERNO", articoli_dict)
+            print(self._previewTemplate[1])
+            pageData = {
+                "file" : "report_massa.html",
+                "rows": articoli_dict,
+                "azienda":azienda,
+                "daos":daos,
+
+            }
+            self.html_code = renderTemplate(pageData)
+            renderHTML(self.print_on_screen_html, str(self.html_code))
+            return
+
         #pbar(self.pbar_report,parziale=2.5, totale=4)
         if daos:
             pageData = {
@@ -161,16 +180,12 @@ class AnagraficaPrintPreview(GladeWidget):
                     #"dao":daos,
                     "objects": daos,
                     "azienda" : azienda,
-                    "forprint":forprint,
                     }
             self.html_code = renderTemplate(pageData)
         #pbar(self.pbar_report,parziale=3.75, totale=4)
         #pbar(self.pbar_report,stop=True)
         #self.pbar_dialog.hide()
-        if forprint:
-            return self.html_code
-        else:
-            renderHTML(self.print_on_screen_html, str(self.html_code))
+        renderHTML(self.print_on_screen_html, str(self.html_code))
 
     def on_print_on_screen_dialog_response(self, dialog, responseId):
         if responseId == GTK_RESPONSE_CLOSE:

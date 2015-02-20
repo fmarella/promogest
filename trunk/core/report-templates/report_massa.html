@@ -1,0 +1,58 @@
+{% extends 'index.html' %}
+{% block body %}
+<div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <ul class="list-group">
+    	<li class="list-group-item"><h3 class="text-center">{{pageData["azienda"].denominazione}}</h3></li>
+    	<li class="list-group-item text-center">P.Iva: {{pageData["azienda"].partita_iva}} R.E.A. {{pageData["azienda"].codice_rea}}</li>
+    	<li class="list-group-item text-center">{{pageData["azienda"].sede_legale_indirizzo}} {{pageData["azienda"].sede_legale_localita}} {{pageData["azienda"].sede_legale_cap}} </li>
+    </ul>
+
+    </div>
+
+
+</div>
+<div class="row">
+    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 offset-3">
+ <h4>Cliente:</h4>
+    <ul class="list-group">
+    	<li class="list-group-item">Ragione Sociale:</li>
+    	<li class="list-group-item col-sm-6">Via:</li>
+    	<li class="list-group-item col-sm-6">Località:</li>
+    </ul>
+
+    </div>
+
+     <div class="col-xs-12 col-md-12">
+         <h5>Digs 152/06 Analisi dei dati riguardanti i prodotti acquistati presso {{pageData["azienda"].denominazione}} </h5>
+                  <h5>Periodo riferimento: </h5>
+<div class="table">
+  <table class="table table-bordered table-striped table-condensed">
+   <tr>
+                <th>Codice</th>
+                <th>Descrizione</th>
+                <th>Kg acquistati</th>
+                <th>Kg Carbonio</th>
+                <th>% Carbonio</th>
+                <th>Kg COV</th>
+       <th>% COV</th>
+       <th>Kg Secco</th>
+       <th>% Secco</th>
+            </tr>
+           {% for k in pageData["rows"] %}
+            <tr>
+                <td>{{k.codice}}</td>
+                <td>{{k.denominazione}}</td>
+                <td>{{ utils.mNL(pageData["rows"][k],2)}}</td>
+                <td>{{ utils.mNL((pageData["rows"][k]/100)*k.APADR.percentuale_carbonio,2)}}</td>
+                <td>{{ utils.mNL(k.APADR.percentuale_carbonio,2)}}</td>
+                                <td>{{ utils.mNL((pageData["rows"][k]/100)*k.APADR.percentuale_cov,2)}}</td>
+                <td>{{ utils.mNL(k.APADR.percentuale_cov,2)}}</td>
+                                <td>{{ utils.mNL((pageData["rows"][k]/100)*k.APADR.percentuale_secco,2)}}</td>
+                <td>{{ utils.mNL(k.APADR.percentuale_secco,2)}}</td>
+            </tr>
+            {% endfor %}
+  </table>
+</div>
+         </div></div>
+{% endblock %}

@@ -1,6 +1,12 @@
 # -*- coding: utf-8 -*-
 
+#    Copyright (C) 2005-2015 by Promotux
+#                        di Francesco Meloni snc - http://www.promotux.it/
 #    Copyright (C) 2013 Francesco Marella <francesco.marella@anche.no>
+
+#    Author: Francesco Meloni  <francesco@promotux.it>
+#    Author: Andrea Argiolas  <andrea@promotux.it>
+#    Author: Francesco Marella <francesco.marella@anche.no>
 
 #    This file is part of Promogest.
 
@@ -29,13 +35,15 @@ from promogest.dao.AccountEmail import AccountEmail
 from promogest.lib.utils import prepareFilterString, obligatoryField,\
     messageWarning, textview_get_text, textview_set_text
 
-try:
-    import keyring
-except:
-    keyring = None
-    msg = """Attenzione: la libreria "keyring" necessaria per salvare la password
-in modo sicuro non è installata."""
-    messageWarning(msg)
+# try:
+# from promogest.lib.keyring import *
+import keyring
+keyringg = True
+# except:
+#     keyringg = None
+#     msg = """Attenzione: la libreria "keyring" necessaria per salvare la password
+# in modo sicuro non è installata."""
+#     messageWarning(msg)
 
 
 class AnagraficaAccountMail(Anagrafica):
@@ -191,6 +199,10 @@ class AnagraficaAccountMailEdit(AnagraficaEdit):
         except:
             pass
         self.password_entry.set_text(password or '')
+        if password:
+            self.memo_password_checkbutton.set_active(True)
+        else:
+            self.memo_password_checkbutton.set_active(False)
         del password
         #self.memo_password_checkbutton.set_active(False)
 
@@ -212,7 +224,7 @@ class AnagraficaAccountMailEdit(AnagraficaEdit):
         #self.dao.memo_password = self.memo_password_checkbutton.get_active()
         self.dao.persist()
 
-        if keyring:
+        if keyringg:
             password = self.password_entry.get_text()
             try:
                 keyring.set_password('promogest2', self.dao.username, password)

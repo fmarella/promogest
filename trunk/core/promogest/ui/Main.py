@@ -270,8 +270,8 @@ class Main(GladeWidget):
             #if not os.path.exists(str(os.path.join(Environment.promogestDir.replace("_",""),meta_pickle.replace("_","")).strip())):
             with open(str(os.path.join(Environment.promogestDir.replace("_",""),meta_pickle.replace("_","")).strip()), 'wb') as f:
                 #Environment.meta.clear()
-                Environment.meta.reflect(schema="promogest2")
-                Environment.meta.reflect()
+                # Environment.meta.reflect(schema="promogest2")
+                # Environment.meta.reflect()
                 dump(Environment.meta,f)
                         #f.write(a)
             #except:

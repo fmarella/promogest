@@ -158,10 +158,10 @@ class AnagraficaArticoliFilter(AnagraficaFilter):
         self._filterClosure = filterClosure
 
         arts = self.runFilter()
-
-
+        adr = False
+        if posso("ADR"):
+            adr = True
         for l in self._treeViewModel:
-            # print l.iter
             self._treeViewModel[l.iter][0] = None
         self._treeViewModel.clear()
         for a in arts:
@@ -170,7 +170,8 @@ class AnagraficaArticoliFilter(AnagraficaFilter):
             col = None
             if a.cancellato:
                 col = 'red'
-
+            if adr and a.APADR and (a.APADR.numero_un or a.APADR.percentuale_carbonio):
+                col="yellow"
             modelRow = [a,col,(a.codice or ''),
                         (a.denominazione or ''),
                         (a.produttore or ''),

@@ -190,6 +190,9 @@ class SimpleGladeWrapper:
                     setattr(self, widget_api_name, widget)
                     if prefixes:
                         widget.prefixes = prefixes
+                if widget.__gtype__.name == "GtkSpinButton":
+                    print "BECCATA UNA SPIN"
+                    self.spinSanitaze(widget)
                 if widget.__gtype__.name == "UnsignedIntegerEntryField":
                     setattr(widget, "nomee",widget_api_name)
                     self.entryGlobalcb(widget)
@@ -215,6 +218,20 @@ class SimpleGladeWrapper:
 
     def _reOrderBy(self, column):
         pass
+
+    def colonadd(self, spin, value):
+        c = len(spin.get_text())
+        if value.keyval ==46:
+            a = spin.get_text()
+            spin.set_text(a+",")
+            spin.move_cursor(c+1)
+        # print spin
+
+    def spinSanitaze(self, spin):
+        return
+        # print spin.get_numeric()
+        # print spin.get_digits()
+        # spin.connect("key-release-event", self.colonadd)
 
     def entryGlobalcb(self,entry):
         entry.connect("icon-press", self.on_icon_press)

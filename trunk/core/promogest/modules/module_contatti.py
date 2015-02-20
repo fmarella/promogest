@@ -14,7 +14,7 @@ START_CALL = None                              # of this call in a separated Thr
 
 
 class Contatti(object):
-    VIEW_TYPE = ('anagrafica_diretta', 'Contatti', 'contatto48x48.png')
+    VIEW_TYPE = ('anagrafica_diretta', 'Contatti', 'address_book.png')
     def getApplication(self):
         anag = AnagraficaContatti()
         return anag

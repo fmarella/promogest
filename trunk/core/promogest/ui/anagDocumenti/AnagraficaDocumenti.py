@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2013 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -186,7 +186,8 @@ class AnagraficaDocumentiHtml(AnagraficaHtml):
 
 class AnagraficaDocumentiReport(AnagraficaReport):
     def __init__(self, anagrafica):
-        AnagraficaReport.__init__(self, anagrafica=anagrafica,
+        AnagraficaReport.__init__(self,
+                                  anagrafica=anagrafica,
                                   description=_('Elenco dei documenti'),
                                   defaultFileName='documenti',
                                   htmlTemplate='documenti',

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2014 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -30,7 +30,6 @@
 #from promogest.lib.alembic import op
 
 def orderedImport():
-    #return
     from promogest.dao.Azienda import Azienda #v
     from promogest.dao.Language import Language #v
     from promogest.modules.RuoliAzioni.dao.Role import Role #v
@@ -97,8 +96,6 @@ def orderedImport():
     from promogest.dao.PersonaGiuridica import PersonaGiuridica_
     from promogest.dao.PersonaGiuridicaPersonaGiuridica import PersonaGiuridicaPersonaGiuridica
 
-
-
     from promogest.dao.Vettore import Vettore #v
     from promogest.dao.ListinoMagazzino import ListinoMagazzino
 
@@ -156,7 +153,7 @@ def orderedImport():
     from promogest.modules.GestioneCommesse.dao.RigaCommessa import RigaCommessa
 
 def orderedImportVenditaDettaglio():
-    orderedImport()
+    # orderedImport()
     try:
         from promogest.modules.VenditaDettaglio.dao.Pos import Pos #v
         from promogest.dao.CCardType import CCardType #v
