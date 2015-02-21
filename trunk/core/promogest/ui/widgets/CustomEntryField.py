@@ -65,6 +65,7 @@ class CustomEntryField(gtk.Entry):
         pass
 
     def on_focus_in_event(self, widget, event):
+        print("PASSIQUI")
         try:
             color_base = Environment.conf.Documenti.color_base
         except:

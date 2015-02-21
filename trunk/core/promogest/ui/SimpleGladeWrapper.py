@@ -191,7 +191,6 @@ class SimpleGladeWrapper:
                     if prefixes:
                         widget.prefixes = prefixes
                 if widget.__gtype__.name == "GtkSpinButton":
-                    print "BECCATA UNA SPIN"
                     self.spinSanitaze(widget)
                 if widget.__gtype__.name == "UnsignedIntegerEntryField":
                     setattr(widget, "nomee",widget_api_name)
@@ -220,6 +219,9 @@ class SimpleGladeWrapper:
         pass
 
     def virgolaAdd(self, spin, event):
+        """Funzione che permette di usare il punto del tastierino numerico nelle
+        spinbutton di nuova generazione che accettano solo la vurgola per i de
+        cimali"""
         c = len(spin.get_text())
         # print(value.string)
         keyval = event.keyval
@@ -234,7 +236,8 @@ class SimpleGladeWrapper:
             spin.connect("key-release-event", self.virgolaAdd)
 
     def onlyDigits(self,entry, event):
-        # print(value.string)
+        """Funzione di gestione delle entry che accettano SOLO cifre
+        per cui sono la riedizione delle vecchie UnSignedIntegerEntryField"""
         controlKeys = (
             'Delete', 'KP_Delete', 'BackSpace', 'Tab', 'ISO_Left_Tab',
             'Left', 'Right', 'Down', 'Up',
@@ -249,7 +252,24 @@ class SimpleGladeWrapper:
             return True
 
 
+    def on_focus_in_event(self, widget, event):
+        color_base = "#FFFFE0"
+        color_text = "black"
+        provider = Gtk.CssProvider()
+        provider.load_from_data('.entry:focused { background:'+ color_base+"}")
+        Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),
+                                                 provider,
+                                                 Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
+        # widget.override_background_color(Gtk.StateFlags.NORMAL, Gdk.RGBA(440))
+        # widget.modify_text(GTK_STATE_NORMAL, GDK_COLOR_PARSE(color_text))
+        # provider = Gtk.CssProvider()
+        # provider.load_from_data('.entry { background: red; }')
+        # Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),
+        #                                          provider,
+        #                                          Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
+
     def entryGlobalcb(self,entry):
+        print("BAAA")
         entry.connect("icon-press", self.on_icon_press)
         entry.connect("focus-in-event", self.on_focus_in_event)
         entry.connect("focus-out-event", self.on_focus_out_event)
@@ -264,8 +284,6 @@ class SimpleGladeWrapper:
     def on_icon_press(self, widget,position,event):
         pass
 
-    def on_focus_in_event(self, widget, event):
-        pass
 
     def on_focus_out_event(self, widget, event):
         pass

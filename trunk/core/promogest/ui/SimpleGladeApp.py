@@ -77,25 +77,25 @@ class SimpleGladeApp(SimpleGladeWrapper):
         gtk.main()
 
 
-    def on_focus_in_event(self, widget, event):
-        try:
-            color_base = Environment.conf.Documenti.color_base
-        except:
-            #print "DEFINIRE NELLA SEZIONE DOCUMENTI UN COLORE PER LE ENTRY CON color_base = #FLFLFLF"
-            color_base = "#F9FBA7"
-        try:
-            color_text = Environment.conf.Documenti.color_text
-        except:
-            #print "DEFINIRE NELLA SEZIONE DOCUMENTI UN COLORE PER LE ENTRY CON color_text = #FFFFFF"
-            color_text = "black"
-        widget.modify_base(GTK_STATE_NORMAL, GDK_COLOR_PARSE(color_base))
-        widget.modify_text(GTK_STATE_NORMAL, GDK_COLOR_PARSE(color_text))
+    # def on_focus_in_event(self, widget, event):
+    #     try:
+    #         color_base = Environment.conf.Documenti.color_base
+    #     except:
+    #         #print "DEFINIRE NELLA SEZIONE DOCUMENTI UN COLORE PER LE ENTRY CON color_base = #FLFLFLF"
+    #         color_base = "#F9FBA7"
+    #     try:
+    #         color_text = Environment.conf.Documenti.color_text
+    #     except:
+    #         #print "DEFINIRE NELLA SEZIONE DOCUMENTI UN COLORE PER LE ENTRY CON color_text = #FFFFFF"
+    #         color_text = "black"
+    #     widget.modify_base(GTK_STATE_NORMAL, GDK_COLOR_PARSE(color_base))
+    #     widget.modify_text(GTK_STATE_NORMAL, GDK_COLOR_PARSE(color_text))
 
-    def on_focus_out_event(self, widget, event):
-        #widget.modify_fg(GTK_STATE_NORMAL, GDK_COLOR_PARSE("blue"))
-        #widget.modify_bg(GTK_STATE_NORMAL, GDK_COLOR_PARSE("red"))
-        widget.modify_base(GTK_STATE_NORMAL, GDK_COLOR_PARSE("white"))
-        widget.modify_text(GTK_STATE_NORMAL, GDK_COLOR_PARSE("black"))
+    # def on_focus_out_event(self, widget, event):
+    #     #widget.modify_fg(GTK_STATE_NORMAL, GDK_COLOR_PARSE("blue"))
+    #     #widget.modify_bg(GTK_STATE_NORMAL, GDK_COLOR_PARSE("red"))
+    #     widget.modify_base(GTK_STATE_NORMAL, GDK_COLOR_PARSE("white"))
+    #     widget.modify_text(GTK_STATE_NORMAL, GDK_COLOR_PARSE("black"))
 
     def insert_text_decimal(self, editable, new_text, new_text_length, position):
         """Questa funzione permette di far inserire in una entry solo

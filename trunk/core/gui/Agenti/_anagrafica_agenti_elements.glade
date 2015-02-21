@@ -51,18 +51,6 @@
       <placeholder/>
     </child>
     <child>
-      <placeholder/>
-    </child>
-    <child>
-      <placeholder/>
-    </child>
-    <child>
-      <placeholder/>
-    </child>
-    <child>
-      <placeholder/>
-    </child>
-    <child>
       <object class="GtkLabel" id="codice_label">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
@@ -200,11 +188,11 @@ Cognome Nome</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="xalign">0</property>
-        <property name="label" translatable="yes">Sede Legale o
-Domicilio</property>
+        <property name="label" translatable="yes">Sede Legale o Domicilio</property>
         <property name="use_markup">True</property>
       </object>
       <packing>
+        <property name="right_attach">2</property>
         <property name="top_attach">8</property>
         <property name="bottom_attach">9</property>
         <property name="x_options">GTK_FILL</property>
@@ -493,34 +481,6 @@ Domicilio</property>
       </packing>
     </child>
     <child>
-      <object class="GtkAlignment" id="alignment61">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="xalign">0</property>
-        <property name="xscale">0</property>
-        <child>
-          <object class="GtkEntry" id="codice_fiscale_entry">
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="max_length">16</property>
-            <property name="invisible_char">•</property>
-            <property name="primary_icon_activatable">False</property>
-            <property name="secondary_icon_activatable">False</property>
-            <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
-            <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
-          </object>
-        </child>
-      </object>
-      <packing>
-        <property name="left_attach">1</property>
-        <property name="right_attach">2</property>
-        <property name="top_attach">5</property>
-        <property name="bottom_attach">6</property>
-        <property name="x_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
-        <property name="y_options"/>
-      </packing>
-    </child>
-    <child>
       <object class="GtkEntry" id="nome_entry">
         <property name="visible">True</property>
         <property name="can_focus">True</property>
@@ -605,62 +565,6 @@ Domicilio</property>
       </packing>
     </child>
     <child>
-      <placeholder/>
-    </child>
-    <child>
-      <object class="GtkAlignment" id="alignment66">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="xalign">0</property>
-        <property name="xscale">0</property>
-        <child>
-          <object class="GtkEntry" id="codice_entry">
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="max_length">100</property>
-            <property name="invisible_char">•</property>
-            <property name="secondary_icon_stock">gtk-clear</property>
-            <property name="primary_icon_activatable">False</property>
-            <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
-            <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
-            <signal name="icon-press" handler="on_codice_entry_icon_press" swapped="no"/>
-            <signal name="icon-press" handler="on_icon_press" swapped="no"/>
-          </object>
-        </child>
-      </object>
-      <packing>
-        <property name="left_attach">1</property>
-        <property name="right_attach">2</property>
-        <property name="x_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
-        <property name="y_options"/>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkAlignment" id="alignment62">
-        <property name="width_request">100</property>
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="xalign">0</property>
-        <property name="xscale">0</property>
-        <child>
-          <object class="GtkEntry" id="partita_iva_entry">
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="max_length">11</property>
-            <property name="input_purpose">digits</property>
-          </object>
-        </child>
-      </object>
-      <packing>
-        <property name="left_attach">1</property>
-        <property name="right_attach">2</property>
-        <property name="top_attach">6</property>
-        <property name="bottom_attach">7</property>
-        <property name="x_options">GTK_SHRINK | GTK_FILL</property>
-        <property name="y_options"/>
-      </packing>
-    </child>
-    <child>
       <object class="GtkLabel" id="label1">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
@@ -723,6 +627,59 @@ Domicilio</property>
         <property name="right_attach">6</property>
         <property name="top_attach">6</property>
         <property name="bottom_attach">7</property>
+      </packing>
+    </child>
+    <child>
+      <placeholder/>
+    </child>
+    <child>
+      <object class="GtkEntry" id="codice_entry">
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="max_length">100</property>
+        <property name="invisible_char">•</property>
+        <property name="secondary_icon_stock">gtk-clear</property>
+        <property name="primary_icon_activatable">False</property>
+        <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
+        <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
+        <signal name="icon-press" handler="on_codice_entry_icon_press" swapped="no"/>
+        <signal name="icon-press" handler="on_icon_press" swapped="no"/>
+      </object>
+      <packing>
+        <property name="left_attach">1</property>
+        <property name="right_attach">3</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkEntry" id="partita_iva_entry">
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="max_length">11</property>
+        <property name="input_purpose">digits</property>
+      </object>
+      <packing>
+        <property name="left_attach">1</property>
+        <property name="right_attach">3</property>
+        <property name="top_attach">6</property>
+        <property name="bottom_attach">7</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkEntry" id="codice_fiscale_entry">
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="max_length">16</property>
+        <property name="invisible_char">•</property>
+        <property name="primary_icon_activatable">False</property>
+        <property name="secondary_icon_activatable">False</property>
+        <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
+        <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
+      </object>
+      <packing>
+        <property name="left_attach">1</property>
+        <property name="right_attach">3</property>
+        <property name="top_attach">5</property>
+        <property name="bottom_attach">6</property>
       </packing>
     </child>
   </object>
