@@ -2,7 +2,11 @@
 <!-- Generated with glade 3.18.3 -->
 <interface>
   <requires lib="gtk+" version="3.4"/>
-  <requires lib="pythonplugin" version="0.0"/>
+  <object class="GtkAdjustment" id="adjustment1">
+    <property name="upper">100</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
+  </object>
   <object class="GtkTable" id="anagrafica_agenti_detail_table">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -639,12 +643,11 @@ Domicilio</property>
         <property name="xalign">0</property>
         <property name="xscale">0</property>
         <child>
-          <object class="UnsignedIntegerEntryField" id="partita_iva_entry">
+          <object class="GtkEntry" id="partita_iva_entry">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <property name="invisible_char">•</property>
-            <property name="primary_icon_activatable">False</property>
-            <property name="secondary_icon_activatable">False</property>
+            <property name="max_length">11</property>
+            <property name="input_purpose">digits</property>
           </object>
         </child>
       </object>
@@ -673,23 +676,6 @@ Domicilio</property>
     </child>
     <child>
       <placeholder/>
-    </child>
-    <child>
-      <object class="UnsignedDecimalEntryField" id="percentuale_entry">
-        <property name="visible">True</property>
-        <property name="can_focus">True</property>
-        <property name="tooltip_text" translatable="yes">Percentuale provvigionale </property>
-        <property name="max_length">5</property>
-        <property name="invisible_char">●</property>
-        <property name="primary_icon_activatable">False</property>
-        <property name="secondary_icon_activatable">False</property>
-      </object>
-      <packing>
-        <property name="left_attach">5</property>
-        <property name="right_attach">6</property>
-        <property name="top_attach">6</property>
-        <property name="bottom_attach">7</property>
-      </packing>
     </child>
     <child>
       <placeholder/>
@@ -724,6 +710,20 @@ Domicilio</property>
     </child>
     <child>
       <placeholder/>
+    </child>
+    <child>
+      <object class="GtkSpinButton" id="percentuale_entry">
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="adjustment">adjustment1</property>
+        <property name="digits">2</property>
+      </object>
+      <packing>
+        <property name="left_attach">5</property>
+        <property name="right_attach">6</property>
+        <property name="top_attach">6</property>
+        <property name="bottom_attach">7</property>
+      </packing>
     </child>
   </object>
   <object class="GtkTable" id="anagrafica_agenti_filter_table">

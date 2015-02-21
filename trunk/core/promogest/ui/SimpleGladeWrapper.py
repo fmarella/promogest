@@ -219,10 +219,12 @@ class SimpleGladeWrapper:
     def _reOrderBy(self, column):
         pass
 
-    def virgolaAdd(self, spin, value):
+    def virgolaAdd(self, spin, event):
         c = len(spin.get_text())
         # print(value.string)
-        if value.string == ".":
+        keyval = event.keyval
+        name = Gdk.keyval_name(keyval)
+        if name == "KP_Decimal":
             a = spin.get_text()
             spin.insert_text(",",c+1)
             spin.set_position(c+2)
@@ -231,11 +233,19 @@ class SimpleGladeWrapper:
         if spin.get_numeric() and spin.get_digits():
             spin.connect("key-release-event", self.virgolaAdd)
 
-    def onlyDigits(self,entry, value):
+    def onlyDigits(self,entry, event):
         # print(value.string)
-        keyname = gdk_keyval_name(value.keyval)
-        print keyname
-        if not value.string.isdigit() and keyname != "BackSpace":
+        controlKeys = (
+            'Delete', 'KP_Delete', 'BackSpace', 'Tab', 'ISO_Left_Tab',
+            'Left', 'Right', 'Down', 'Up',
+            'KP_Left', 'KP_Right', 'KP_Down', 'KP_Up',
+            'Home', 'End', 'KP_Home', 'KP_End', 'Return', 'KP_Enter')
+        keyval = event.keyval
+        name = Gdk.keyval_name(keyval)
+        modKeys = ('Ctrl+Mod2+X','Ctrl+Mod2+C', 'Ctrl+Mod2+V')
+        mod = Gtk.accelerator_get_label(keyval, event.state)
+        # print("NAME",keyval, name, mod)
+        if not name.isdigit() and name not in controlKeys and mod not in modKeys:
             return True
 
 

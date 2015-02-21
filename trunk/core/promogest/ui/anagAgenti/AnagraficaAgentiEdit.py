@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Authors: Francesco Meloni  <francesco@promotux.it>
@@ -91,7 +91,7 @@ class AnagraficaAgentiEdit(AnagraficaEdit):
         self.provincia_sede_legale_entry.set_text(self.dao.sede_legale_provincia or '')
         self.codice_fiscale_entry.set_text(self.dao.codice_fiscale or '')
         self.partita_iva_entry.set_text(self.dao.partita_iva or '')
-        self.percentuale_entry.set_text(str(self.dao.percentuale) or '')
+        self.percentuale_entry.set_value(self.dao.percentuale or 0)
 
 
     def saveDao(self, tipo=None):
@@ -126,8 +126,8 @@ class AnagraficaAgentiEdit(AnagraficaEdit):
             partiva = checkPartIva(self.dao.partita_iva)
             if not partiva:
                 return
-        if self.percentuale_entry.get_text() and self.percentuale_entry.get_text() != "None":
-            self.dao.percentuale = float(self.percentuale_entry.get_text())
+        if self.percentuale_entry.get_value() and self.percentuale_entry.get_value() != "None":
+            self.dao.percentuale = self.percentuale_entry.get_value()
         else:
             self.dao.percentuale = float(0)
         self.dao.persist()
