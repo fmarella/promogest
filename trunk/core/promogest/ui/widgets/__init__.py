@@ -22,7 +22,6 @@ from promogest.ui.widgets.SignedDecimalEntryField import SignedDecimalEntryField
 from promogest.ui.widgets.UnsignedMoneyEntryField import UnsignedMoneyEntryField
 from promogest.ui.widgets.SignedMoneyEntryField import SignedMoneyEntryField
 from promogest.ui.widgets.UnsignedIntegerEntryField import UnsignedIntegerEntryField
-from promogest.ui.widgets.SignedIntegerEntryField import SignedIntegerEntryField
 from promogest.ui.widgets.DateEntryField import DateEntryField
 from promogest.ui.widgets.DateTimeEntryField import DateTimeEntryField
 from promogest.ui.widgets.DateWidget import DateWidget

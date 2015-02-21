@@ -43,9 +43,6 @@ class UnsignedIntegerEntryField(CustomEntryField):
             lunghezza = 11
         elif "cap" in self.nomee:
             lunghezza = 5
-#        else:
-#            lunghezza = 10
-#        self.set_max_length(lunghezza)
         return lunghezza
 
 
@@ -59,13 +56,4 @@ class UnsignedIntegerEntryField(CustomEntryField):
         """ TODO: comportamento anomalo ...da verificare per il momento
         resta disattivata"""
         return
-#        lunghezza = self.proprieta()
-#        try:
-#            i = int(self.get_text())
-#            if lunghezza > 0:
-#                f = "%0" + str(lunghezza) + "d"
-#                self.set_text(f % i)
-#            else:
-#                self.set_text(str(self.get_text()))
-#        except Exception:
-#            self.set_text('')
+

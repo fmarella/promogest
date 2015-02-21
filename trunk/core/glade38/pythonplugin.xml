@@ -6,7 +6,6 @@ domain="glade-3" depends="gtk+">
    <glade-widget-class title="DateTimeEntryField" name="DateTimeEntryField" generic-name="datetimeentryfield"/>
    <glade-widget-class title="DateTimeWidget" name="DateTimeWidget" generic-name="DateTimeWidget"/>
    <glade-widget-class title="DateWidget" name="DateWidget" generic-name="DateWidget"/>
-    <glade-widget-class title="SignedIntegerEntryField" name="SignedIntegerEntryField" generic-name="SignedIntegerEntryField"/>
     <glade-widget-class title="UnsignedIntegerEntryField" name="UnsignedIntegerEntryField" generic-name="UnsignedIntegerEntryField"/>
     <glade-widget-class title="UnsignedDecimalEntryField" name="UnsignedDecimalEntryField" generic-name="UnsignedDecimalEntryField"/>
     <glade-widget-class title="SignedDecimalEntryField" name="SignedDecimalEntryField" generic-name="SignedDecimalEntryField"/>
@@ -29,7 +28,6 @@ domain="glade-3" depends="gtk+">
     <glade-widget-class-ref name="DateTimeWidget"/>
     <glade-widget-class-ref name="DateWidget"/>
     <glade-widget-class-ref name="UnsignedIntegerEntryField"/>
-    <glade-widget-class-ref name="SignedIntegerEntryField"/>
     <glade-widget-class-ref name="UnsignedDecimalEntryField"/>
     <glade-widget-class-ref name="UnsignedMoneyEntryField"/>
     <glade-widget-class-ref name="SignedMoneyEntryField"/>
