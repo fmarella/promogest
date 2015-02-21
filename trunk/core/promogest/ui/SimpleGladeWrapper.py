@@ -231,6 +231,14 @@ class SimpleGladeWrapper:
         if spin.get_numeric() and spin.get_digits():
             spin.connect("key-release-event", self.virgolaAdd)
 
+    def onlyDigits(self,entry, value):
+        # print(value.string)
+        keyname = gdk_keyval_name(value.keyval)
+        print keyname
+        if not value.string.isdigit() and keyname != "BackSpace":
+            return True
+
+
     def entryGlobalcb(self,entry):
         entry.connect("icon-press", self.on_icon_press)
         entry.connect("focus-in-event", self.on_focus_in_event)
@@ -240,6 +248,8 @@ class SimpleGladeWrapper:
             entry.set_property("secondary_icon_stock", "gtk-clear")
             entry.set_property("secondary_icon_activatable", True)
             entry.set_property("secondary_icon_sensitive", True)
+        if entry.get_input_purpose() == Gtk.InputPurpose.DIGITS:
+            entry.connect("key-press-event", self.onlyDigits)
 
     def on_icon_press(self, widget,position,event):
         pass
