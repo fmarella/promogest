@@ -269,7 +269,6 @@ class SimpleGladeWrapper:
         #                                          Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
 
     def entryGlobalcb(self,entry):
-        print("BAAA")
         entry.connect("icon-press", self.on_icon_press)
         entry.connect("focus-in-event", self.on_focus_in_event)
         entry.connect("focus-out-event", self.on_focus_out_event)
