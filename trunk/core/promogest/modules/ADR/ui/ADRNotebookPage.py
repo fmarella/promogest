@@ -105,8 +105,17 @@ class ADRNotebookPage(GladeWidget):
 
     def adrSaveDao(self):
         numero_un = self.numero_un_adr_entry.get_text() or ''
-        # if not numero_un:
-        #     return None
+        if not numero_un and not self.carbonio_spinbutton.get_value and not self.cov_spinbutton and not self.secco_spinbutton:
+            return None
+        elif self.carbonio_spinbutton.get_value or self.cov_spinbutton or self.secco_spinbutton:
+            self.dao_articolo_adr.percentuale_carbonio = Decimal(
+                self.carbonio_spinbutton.get_value())
+            self.dao_articolo_adr.percentuale_cov = Decimal(
+                self.cov_spinbutton.get_value())
+            self.dao_articolo_adr.percentuale_secco = Decimal(
+                self.secco_spinbutton.get_value())
+            return self.dao_articolo_adr
+
         self.dao_articolo_adr.numero_un = numero_un
         self.dao_articolo_adr.percentuale_carbonio = Decimal(self.carbonio_spinbutton.get_value())
         self.dao_articolo_adr.percentuale_cov = Decimal(self.cov_spinbutton.get_value())
