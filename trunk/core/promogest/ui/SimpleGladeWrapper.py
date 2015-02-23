@@ -256,7 +256,11 @@ class SimpleGladeWrapper:
         color_base = "#FFFFE0"
         color_text = "black"
         provider = Gtk.CssProvider()
-        provider.load_from_data('.entry:focused { background:'+ color_base+"}")
+        # provider.load_from_data(".entry:focused {background: #FFFFE0;}")
+        provider.load_from_data(""".entry:focused {background:#FFFFE0}
+                                    .entry:selected {background-color: #7F7F7F;}
+
+        """)
         Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),
                                                  provider,
                                                  Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
