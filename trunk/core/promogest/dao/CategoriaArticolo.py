@@ -46,6 +46,11 @@ class CategoriaArticolo(Base,Dao):
             dic= {k: CategoriaArticolo.__table__.c.denominazione_breve.ilike("%"+v+"%")}
         elif k == "denominazioneBreveEM":
             dic= {k: CategoriaArticolo.__table__.c.denominazione_breve == v}
+        elif k == "fullsearch":
+            dic = {k: or_(CategoriaArticolo.__table__.c.denominazione.ilike("%"+v+"%"),
+            CategoriaArticolo.__table__.c.denominazione_breve.ilike("%" + v + "%")
+                                                                            )}
+
         return  dic[k]
 
     def preSave(self):

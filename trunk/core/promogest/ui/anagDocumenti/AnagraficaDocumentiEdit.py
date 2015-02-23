@@ -1180,7 +1180,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
 
         self.sconti_widget.setValues(self._righe[0]["sconti"], self._righe[0]["applicazioneSconti"], False)
         # self.quantita_entry.set_text(str(self._righe[0]["quantita"]))
-        self.quantita_entry.set_value(self._righe[0]["quantita"])
+        self.quantita_entry.set_value(float(self._righe[0]["quantita"]))
         try:
             self.quantitaMinima_label.set_text(str(Articolo().getRecord(id=self._righe[0]["idArticolo"]).quantita_minima))
         except:

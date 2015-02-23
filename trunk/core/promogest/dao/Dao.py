@@ -103,6 +103,7 @@ class Dao(object):
             if __filter__ is not None:
                 self.record = self.record.filter(__filter__)
             if orderBy is not None:
+                print("ORDERBY",orderBy)
                 self.record = self.record.order_by(orderBy)
             if batchSize is not None:
                 self.record = self.record.limit(batchSize)
