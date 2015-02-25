@@ -144,7 +144,6 @@ class AnagraficaPrintPreview(GladeWidget):
                     da.append(d)
             daos = da
         elif self._tipo == "massa":
-            print "MASSAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
             daos=daos[:]
             articoli_dict = {}
             for d in daos:
@@ -160,8 +159,6 @@ class AnagraficaPrintPreview(GladeWidget):
                             else:
                                 articoli_dict[a_adr] = (
                                     x.quantita * x.moltiplicatore )
-                            print("INTERNO", articoli_dict)
-            print(self._previewTemplate[1])
             pageData = {
                 "file" : "report_massa.html",
                 "rows": articoli_dict,
