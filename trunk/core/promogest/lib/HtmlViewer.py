@@ -55,19 +55,57 @@ class HtmlViewer(GladeWidget):
         self.html_scrolledwindow.show()
         self.refreshHtml()
 
-    def on_pdf_button_clicked(self, button):
-        # from weasyprint import HTML
+    # def on_pdf_button_clicked(self, button):
+    #     # from weasyprint import HTML
+    #
+    #     f = self.html
+    #     g = file(Environment.tempDir + ".temp.pdf", "wb")
+    #     # HTML(string=f).write_pdf(g)
+    #     pdf = pisa.CreatePDF(str(f), g)
+    #     g .close()
+    #     anag = PrintDialogHandler(self, self.windowTitle)
+    #     anagWindow = anag.getTopLevel()
+    #     returnWindow = self.getTopLevel().get_toplevel()
+    #     anagWindow.set_transient_for(returnWindow)
+    #     anagWindow.show_all()
 
-        f = self.html
-        g = file(Environment.tempDir + ".temp.pdf", "wb")
-        # HTML(string=f).write_pdf(g)
-        pdf = pisa.CreatePDF(str(f), g)
-        g .close()
-        anag = PrintDialogHandler(self, self.windowTitle)
+    def on_pdf_button_clicked(self, button):
+
+        operation = Gtk.PrintOperation()
+        setting = Gtk.PageSetup()
+        ps = Gtk.PaperSize.new_custom("cc", "cc", 210, 297, gtk.Unit.MM)
+        st = Gtk.PrintSettings()
+        s = Gtk.PageSetup()
+        s.set_paper_size(ps)
+        margine_fondo = float(
+            setconf("Stampa", "report_margine_basso") or 4.3)
+        s.set_bottom_margin(margine_fondo, gtk.Unit.MM)
+        margine_sinistro = float(
+            setconf("Stampa", "report_margine_sinistro") or 4.3)
+        s.set_left_margin(margine_sinistro, gtk.Unit.MM)
+        margine_destro = float(
+            setconf("Stampa", "report_margine_destro") or 4.3)
+        s.set_right_margin(margine_destro, gtk.Unit.MM)
+        margine_alto = float(
+            setconf("Stampa", "report_margine_alto") or 4.3)
+        s.set_top_margin(margine_alto, gtk.Unit.MM)
+        orientamento = str(setconf("Stampa", "report_ori"))
+        if not orientamento or orientamento == "orizzontale":
+            s.set_orientation(Gtk.PageOrientation.LANDSCAPE)
+        operation.set_default_page_setup(s)
+        operation.set_export_filename(Environment.tempDir + ".temp.pdf")
+        p = self.detail.get_main_frame().print_full(operation,
+                                              gtk.PrintOperationAction.EXPORT)
+        pbar(self.pbar, pulse=True, text="GENERAZIONE STAMPA ATTENDERE")
+        pbar(self.pbar, stop=True)
+        anag = PrintDialogHandler(self, self.windowTitle, tipo="report")
         anagWindow = anag.getTopLevel()
         returnWindow = self.getTopLevel().get_toplevel()
         anagWindow.set_transient_for(returnWindow)
         anagWindow.show_all()
+
+
+
 
     def refreshHtml(self, dao=None):
         self.html = renderTemplate(self.pageData)

@@ -52,101 +52,105 @@
         </TR>
     </THEAD>
     <TBODY>
-    {% for c in pageData["diz"] %}
+    {% for k,v in pageData["diz"].iteritems() %}
+    <!--k = il dao cliente-->
+    <!--v[0] = sono i totali documento-->
+    <!--v[1] = numero totale dei documenti-->
+    <!--v[2] = BOH-->
         <TR VALIGN=TOP>
             <TD WIDTH=18%>
-                <P>{{pageData["diz"][c][0].ragione_sociale}}</P>
+                <P>{{k.ragione_sociale}}</P>
             </TD>
             <TD WIDTH=14%>
-                <P>{{utils.mNLC(pageData["diz"][c][1]["totale_imponibile_scontato"],2)}}</P>
+                <P>{{utils.mNLC(v[0]["totale_imponibile_scontato"],2)}}</P>
             </TD>
                 <TD WIDTH=14%>
-                <P>{{utils.mNLC(pageData["diz"][c][1]["totale_non_base_imponibile"],2)}}</P>
+                <P>{{utils.mNLC(v[0]["totale_non_base_imponibile"],2)}}</P>
             </TD>
             <TD WIDTH=14%>
-                <P>{{utils.mNLC(pageData["diz"][c][1]["totale_imposta_scontata"],2)}}</P>
+                <P>{{utils.mNLC(v[0]["totale_imposta_scontata"],2)}}</P>
             </TD>
             <TD WIDTH=14%>
-                <P><b>{{utils.mNLC(pageData["diz"][c][1]["totale_scontato"],2)}}</b></P>
+                <P><b>{{utils.mNLC(v[0]["totale_scontato"],2)}}</b></P>
             </TD>
             <TD WIDTH=14%>
-                {%if pageData["diz"][c][2] > 0 %}
-                <P>{{utils.mNLC(pageData["diz"][c][1]["totale_scontato"]/pageData["diz"][c][2],2)}}</P>
+                {%if v[1] > 0 %}
+                <P>{{utils.mNLC(v[0]["totale_scontato"]/v[1] or 1,2)}}</P>
                 {% else %}
                  <P> </P>
                  {% endif %}
             </TD>
             <TD WIDTH=10%>
-                <P><b>{{pageData["diz"][c][1]["numero_documenti"]}}</b> di {{pageData["diz"][c][2] }}</P>
+                <P><b>{{v[0]["numero_documenti"]}}</b> di {{v[1] }}</P>
             </TD>
         </TR >
-        {% for k in pageData["diz"][c][3] %}
-                <TR VALIGN=TOP style="background:#CBFFCB">
+        {% for k in v[2] %}
+                <TR VALIGN=TOP style="background:#ddeedd">
             <TD WIDTH=18%>
                 <P>{{k}}</P>
             </TD>
             <TD WIDTH=14%>
-                <P>{{utils.mNLC(pageData["diz"][c][3][k][0],2)}}</P>
+                <P>{{utils.mNLC(v[2][k][0],2)}}</P>
             </TD>
             <TD WIDTH=14%>
-                <P></P>
-                 </TD>
-                        <TD WIDTH=14%>
-                <P></P>
-            </TD>
-            <TD WIDTH=14%>
-                <P></P>
-            </TD>
-            <TD WIDTH=14%>
-                 <P>PZ:{{utils.mN(pageData["diz"][c][3][k][1],1)}}</P>
-            </TD>
-            <TD WIDTH=10%>
-                {%if pageData["diz"][c][1]["totale_imponibile_scontato"] > 0 %}
-                <P>{{utils.mN(pageData["diz"][c][3][k][0]*100/pageData["diz"][c][1]["totale_imponibile_scontato"],1)}}%</P>
-                {% elif pageData["diz"][c][1]["totale_non_base_imponibile"] > 0 %}
-                <P>{{utils.mN(pageData["diz"][c][3][k][0]*100/pageData["diz"][c][1]["totale_non_base_imponibile"],1)}}%</P>
-                {% else %}
-                 <P> </P>
-                 {% endif %}
-            </TD>
-        </TR>
-        {% endfor %}
-                {% for k in pageData["diz"][c][4] %}
-                <TR VALIGN=TOP style="background:#CBFFFF">
-            <TD WIDTH=18%>
-                <P>{{k}}</P>
-            </TD>
-            <TD WIDTH=14%>
-                <P>{{utils.mNLC(pageData["diz"][c][4][k][0],2)}}</P>
-            </TD>
-            <TD WIDTH=14%>
-                <P></P>
-            </TD>
-                        <TD WIDTH=14%>
                 <P></P>
                  </TD>
             <TD WIDTH=14%>
                 <P></P>
             </TD>
             <TD WIDTH=14%>
-                 <P>PZ:{{utils.mN(pageData["diz"][c][4][k][1],1)}}</P>
+                <P></P>
+            </TD>
+            <TD WIDTH=14%>
+                 <P>PZ:{{utils.mN(v[2][k][1],1)}}</P>
             </TD>
             <TD WIDTH=10%>
-               {%if pageData["diz"][c][1]["totale_imponibile_scontato"] > 0 %}
-                <P>{{utils.mN(pageData["diz"][c][4][k][0]*100/pageData["diz"][c][1]["totale_imponibile_scontato"],1)}}%</P>
-                {% elif pageData["diz"][c][1]["totale_non_base_imponibile"] > 0 %}
-                <P>{{utils.mN(pageData["diz"][c][4][k][0]*100/pageData["diz"][c][1]["totale_non_base_imponibile"],1)}}%</P>
+                {%if v[0]["totale_imponibile_scontato"] > 0 %}
+                    <P>{{utils.mN(v[2][k][0]*100/v[0]["totale_imponibile_scontato"],1)}}%</P>
+                {% elif v[0]["totale_non_base_imponibile"] > 0 %}
+                    <P>{{utils.mN(v[2][k][0]*100/v[0]["totale_non_base_imponibile"],1)}}%</P>
+                {% else %}
+                    <P> </P>
+                 {% endif %}
+            </TD>
+        </TR>
+        {% endfor %}
+                {% for k in v[3] %}
+                <TR VALIGN=TOP style="background:#d9edf7">
+            <TD WIDTH=18%>
+                <P>{{k}}</P>
+            </TD>
+            <TD WIDTH=14%>
+                <P>{{utils.mNLC(v[3][k][0],2)}}</P>
+            </TD>
+            <TD WIDTH=14%>
+                <P></P>
+            </TD>
+                        <TD WIDTH=14%>
+                <P></P>
+                 </TD>
+            <TD WIDTH=14%>
+                <P></P>
+            </TD>
+            <TD WIDTH=14%>
+                 <P>PZ:{{utils.mN(v[3][k][1],1)}}</P>
+            </TD>
+            <TD WIDTH=10%>
+               {%if v[0]["totale_imponibile_scontato"] > 0 %}
+                    <P>{{utils.mN(v[3][k][0]*100/v[0]["totale_imponibile_scontato"],1)}}%</P>
+                {% elif v[0]["totale_non_base_imponibile"] > 0 %}
+                <P>{{utils.mN(v[3][k][0]*100/v[0]["totale_non_base_imponibile"],1)}}%</P>
                 {% else %}
                  <P> </P>
                  {% endif %}
             </TD>
         </TR>
         {% endfor %}
-        {% endfor %}
-
+    {% endfor %}
+        <tr>
+        <td><b>TOTALI</b></td><td>{{utils.mNLC(pageData["totali"][1],2)}}</td><td></td><td>{{utils.mNLC(pageData["totali"][2],2)}}</td><td>{{utils.mNLC(pageData["totali"][0],2)}}</td><td></td><td>{{pageData["totali"][3]}}</td>
+    </tr>
     </TBODY>
 </TABLE>
-<P STYLE="margin-bottom: 0cm"><BR>
-</P>
 </BODY>
 </HTML>

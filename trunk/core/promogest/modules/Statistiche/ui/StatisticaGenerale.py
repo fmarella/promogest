@@ -637,7 +637,6 @@ class StatisticaGenerale(GladeWidget):
         view = HtmlViewer(pageData)
 
     def controllo_fatturato_clienti(self):
-        #print "I CLIENTI", self.cliente
         clienti1 = []
 
         if self.cateCliente[3]:
@@ -648,7 +647,6 @@ class StatisticaGenerale(GladeWidget):
         clie = [x.id_cliente for x in ClienteCategoriaCliente().select(idCategoria = idcates, batchSize=None)]
         for c in clie:
             clienti1.append(Cliente().getRecord(id=c))
-
         if self.cliente[3]:
             clienti2 = Cliente().select(batchSize=None)
         else:
@@ -657,23 +655,24 @@ class StatisticaGenerale(GladeWidget):
 
         daData = stringToDate(self.da_data_entry.get_text())
         aData = stringToDate(self.a_data_entry.get_text())
-
         diz = OrderedDict()
         cache = CachedDaosDict()
         for c in clienti:
             pbar(self.pbar,parziale=clienti.index(c), totale=len(clienti),text="GEN DATI", noeta = True)
             docu = TestataDocumento().select(idCliente = c.id,daData=daData, aData=aData, batchSize=None)
             rowDiz = OrderedDict()
+            if self.only_buyer_check.get_active() and not docu:
+                continue
             for d in docu:
                 if d.operazione not in Environment.hapag:
                     continue
                 for r in d.righe:
-                    if r.id_articolo:
+                    if r.rig.arti:
                         if r.id_articolo in rowDiz:
-                            a = rowDiz[r.id_articolo]
+                            a = rowDiz[r.rig.arti]
                             a.append(r)
                         else:
-                            rowDiz[r.id_articolo] = [r]
+                            rowDiz[r.rig.arti] = [r]
 
             artCatArt = []
             dizcate = OrderedDict()
@@ -686,15 +685,15 @@ class StatisticaGenerale(GladeWidget):
                 cates = self.cateArticolo[1]
             else:
                 cates = []
-
             for cate in cates:
-                artCatArt = Articolo().select(idCategoria= cate.id, batchSize=None)
+                # artCatArt = Articolo().select(idCategoria= cate.id, batchSize=None)
+                artCatArt = cate.arti
                 idArt = [x.id for x in artCatArt]
                 pezzi = 0
                 totRiga = 0
                 for d in rowDiz:
-                    categoria = Articolo().getRecord(id=d).denominazione_categoria
-                    if d in idArt:
+                    categoria = d.denominazione_categoria
+                    if d.id in idArt:
                         for cc in rowDiz[d]:
                             if hasattr(cc,"testata_movimento") and str(cc.testata_movimento.opera.segno) == "-":
                                 if cc.testata_movimento.opera.fonte_valore == "vendita_iva":
@@ -733,7 +732,7 @@ class StatisticaGenerale(GladeWidget):
                 pezzi = 0
                 totRiga = 0
                 for d in rowDiz:
-                    if d in idArt:
+                    if d.id in idArt:
                         for cc in rowDiz[d]:
                             if hasattr(cc,"testata_movimento") and str(cc.testata_movimento.opera.segno) == "-":
                                 if cc.testata_movimento.opera.fonte_valore == "vendita_iva":
@@ -758,11 +757,23 @@ class StatisticaGenerale(GladeWidget):
                             pezzi += cc.quantita * cc.moltiplicatore
                         dizprod[prod[0]] = [totRiga,pezzi, prod[0]]
 
-            diz[c.id] = [c, calcolaTotali(docu, pbarr = self.pbarr), len(docu), dizcate, dizprod]
+            diz[c] = [calcolaTotali(docu, pbarr=self.pbarr), len(docu), dizcate, dizprod]
         pbar(self.pbar,stop=True)
+        # print(diz)
+        tot_acq = 0
+        tot_imp = 0
+        tot_iva = 0
+        num_doc = 0
+        for k,v in diz.iteritems():
+            tot_acq += v[0]["totale_scontato"]
+            tot_imp += v[0]["totale_imponibile_scontato"]
+            tot_iva += v[0]["totale_imposta_scontata"]
+            num_doc += v[0]["numero_documenti"]
+        totali = [tot_acq,tot_imp,tot_iva,num_doc]
         pageData = {
                 "file": "statistica_controllo_fatturato.html",
                 "diz": diz,
+                "totali":totali,
                 "nomestatistica":self.nome_stat,
                 "ricerca_stringa" : self.stringa.replace("\n","<br />"),
 

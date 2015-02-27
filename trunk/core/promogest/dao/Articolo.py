@@ -69,7 +69,7 @@ class Articolo(Base, Dao):
     ali_iva = relationship("AliquotaIva")
     den_famiglia = relationship("FamigliaArticolo", lazy='joined')
     cod_barre = relationship("CodiceABarreArticolo", backref="arti", cascade="all, delete", lazy='joined')
-    den_categoria = relationship("CategoriaArticolo",lazy='joined')
+    den_categoria = relationship("CategoriaArticolo", backref="arti")
     #den_unita=relation(UnitaBase, primaryjoin=t_articolo.c.id_unita_base == t_unita_base.c.id)        #image=relation(Immagine,primaryjoin= t_articolo.c.id_immagine==img.c.id, cascade="all, delete", backref="arti")
     sa = relationship("StatoArticolo")
     fornitur = relationship("Fornitura",backref="arti",lazy='dynamic')

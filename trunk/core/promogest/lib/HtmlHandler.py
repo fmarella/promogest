@@ -44,7 +44,7 @@ jinja_env = None
 
 def env(templates_dir):
     jinja_env = Env(loader=FileSystemLoader(templates_dir),
-                    extensions=['jinja2.ext.i18n'])
+                    extensions=['jinja2.ext.i18n',"jinja2.ext.do"])
 # Era un parametro della classe Env  bytecode_cache=FileSystemBytecodeCache(os.path.join(Environment.promogestDir, 'temp'), '%s.cache'),
     jinja_env.globals['environment'] = Environment
     jinja_env.globals['utils'] = utils
