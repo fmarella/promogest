@@ -146,6 +146,10 @@ class AnagraficaPrintPreview(GladeWidget):
         elif self._tipo == "massa":
             daos=daos[:]
             articoli_dict = {}
+            if daos:
+                cliente = daos[0].CLI
+            else:
+                cliente = None
             for d in daos:
                 for x in d.righe:
                     if x.id_articolo:
@@ -153,16 +157,22 @@ class AnagraficaPrintPreview(GladeWidget):
                             x.rig.arti.APADR.percentuale_cov or
                             x.rig.arti.APADR.percentuale_secco):
                             a_adr = x.rig.arti
-                            print(a_adr)
+                            # print(a_adr)
                             if a_adr in articoli_dict:
                                 articoli_dict[a_adr] += ( x.quantita*x.moltiplicatore )
                             else:
                                 articoli_dict[a_adr] = (
                                     x.quantita * x.moltiplicatore )
+            print(self._anagrafica.filter)
+            daData = self._anagrafica.filter.daData
+            aData =  self._anagrafica.filter.aData
             pageData = {
                 "file" : "report_massa.html",
                 "rows": articoli_dict,
                 "azienda":azienda,
+                "cliente":cliente,
+                "daData":daData,
+                "aData":aData,
                 "daos":daos,
 
             }

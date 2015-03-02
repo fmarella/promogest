@@ -146,13 +146,13 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         """
         #self._anagrafica.pbar_anag_complessa.show()
         self.anagrafica_filter_treeview.set_model(model=None)
-        daData = stringToDate(self.da_data_filter_entry.get_text())
+        self.daData = stringToDate(self.da_data_filter_entry.get_text())
         daDataPagamento = stringToDate(self.da_data_pagamento_filter_entry.get_text())
         aDataPagamento = stringToDate(self.a_data_pagamento_filter_entry.get_text())
         if Environment.tipodb == "sqlite":
-            aData = stringToDateBumped(self.a_data_filter_entry.get_text())
+            self.aData = stringToDateBumped(self.a_data_filter_entry.get_text())
         else:
-            aData = stringToDate(self.a_data_filter_entry.get_text())
+            self.aData = stringToDate(self.a_data_filter_entry.get_text())
         daNumero = prepareFilterString(self.da_numero_filter_entry.get_text())
         aNumero = prepareFilterString(self.a_numero_filter_entry.get_text())
         protocollo = prepareFilterString(self.protocollo_entry.get_text())
@@ -197,8 +197,8 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         #genero il dizionario dei filtri
         self.filterDict = {"daNumero":daNumero,
                             "aNumero":aNumero,
-                            "daData":daData,
-                            "aData":aData,
+                            "daData":self.daData,
+                            "aData":self.aData,
                             "daParte":None,
                             "aParte":None,
                             "protocollo":protocollo,

@@ -3,29 +3,20 @@
 <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
     <ul class="list-group">
-    	<li class="list-group-item"><h3 class="text-center">{{pageData["azienda"].denominazione}}</h3></li>
-    	<li class="list-group-item text-center">P.Iva: {{pageData["azienda"].partita_iva}} R.E.A. {{pageData["azienda"].codice_rea}}</li>
-    	<li class="list-group-item text-center">{{pageData["azienda"].sede_legale_indirizzo}} {{pageData["azienda"].sede_legale_localita}} {{pageData["azienda"].sede_legale_cap}} </li>
+    	<li class="list-group-item text-center"><h4 ><b>{{pageData["azienda"].denominazione}}</b></h4>{{pageData["azienda"].sede_legale_indirizzo}} {{pageData["azienda"].sede_legale_localita}} {{pageData["azienda"].sede_legale_cap}}<br />P.Iva: {{pageData["azienda"].partita_iva}} R.E.A. {{pageData["azienda"].codice_rea}}</li>
     </ul>
-
-    </div>
-
-
-</div>
-<div class="row">
-    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 offset-3">
  <h4>Cliente:</h4>
     <ul class="list-group">
-    	<li class="list-group-item">Ragione Sociale:</li>
-    	<li class="list-group-item col-sm-6">Via:</li>
-    	<li class="list-group-item col-sm-6">Località:</li>
+    	<li class="list-group-item">Ragione Sociale: <b>{{pageData["daos"][0].intestatario}}</b></li>
+    	<li class="list-group-item col-sm-6">Via: {{pageData["daos"][0].indirizzo_cliente}} Località:{{pageData["daos"][0].localita_cliente}}</li>
+        <li class="list-group-item col-sm-4">P.IVA:{{pageData["daos"][0].partita_iva_cliente}}</li>
     </ul>
 
     </div>
 
      <div class="col-xs-12 col-md-12">
          <h5>Digs 152/06 Analisi dei dati riguardanti i prodotti acquistati presso {{pageData["azienda"].denominazione}} </h5>
-                  <h5>Periodo riferimento: </h5>
+                  <h5>Periodo riferimento: Da {{utils.dateToString(pageData["daData"])}} a {{utils.dateToString(pageData["aData"])}}</h5>
 <div class="table">
   <table class="table table-bordered table-striped table-condensed">
    <tr>

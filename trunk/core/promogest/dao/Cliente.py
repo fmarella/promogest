@@ -132,7 +132,7 @@ class Cliente(Base, Dao):
         """
         Rimuove il cliente
         """
-        if len(self.TD) > 0:
+        if hasattr(self, "TD") and len(self.TD) > 0:
             self.cancellato = True
             session.add(self)
         else:
@@ -296,6 +296,19 @@ class Cliente(Base, Dao):
             dic = {k:and_(Cliente.id==ClienteCategoriaCliente.id_cliente,ClienteCategoriaCliente.id_categoria_cliente==v)}
         elif k == 'cancellato':
             dic = {k: and_(PersonaGiuridica_.__table__.c.cancellato==v)}
+        elif k == 'fullsearch':
+            dic = {k: or_(PersonaGiuridica_.__table__.c.codice.ilike("%"+v+"%"),
+                      PersonaGiuridica_.__table__.c.ragione_sociale.ilike( "%" + v + "%"),
+                      or_(PersonaGiuridica_.__table__.c.cognome.ilike("%"+v+"%"),
+                    PersonaGiuridica_.__table__.c.nome.ilike("%"+v+"%")),
+                      or_( PersonaGiuridica_.__table__.c.sede_operativa_localita.ilike(
+                              "%" + v + "%"),
+                           PersonaGiuridica_.__table__.c.sede_legale_localita.ilike(
+                              "%" + v + "%")),
+                      or_(PersonaGiuridica_.__table__.c.sede_operativa_indirizzo.ilike("%"+v+"%"),
+                          PersonaGiuridica_.__table__.c.sede_legale_indirizzo.ilike("%"+v+"%")),
+                      PersonaGiuridica_.__table__.c.partita_iva.ilike("%" + v + "%"),
+                      PersonaGiuridica_.__table__.c.codice_fiscale.ilike("%" + v + "%"))}
         return dic[k]
 
 
