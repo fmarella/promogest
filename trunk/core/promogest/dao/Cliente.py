@@ -27,7 +27,7 @@ from promogest.Environment import *
 
 from promogest.dao.Dao import Dao, Base
 from ClienteCategoriaCliente import ClienteCategoriaCliente
-from promogest.dao.PersonaGiuridica import PersonaGiuridica_
+# from promogest.dao.PersonaGiuridica import PersonaGiuridica_
 from promogest.dao.User import User
 from promogest.dao.DestinazioneMerce import DestinazioneMerce
 from promogest.dao.DaoUtils import codeIncrement, getRecapitiCliente, get_columns
@@ -146,11 +146,11 @@ class Cliente(Base, Dao):
                                                                  TestataInfoPeso
                 from promogest.modules.InfoPeso.dao.ClienteGeneralita import\
                                                                  ClienteGeneralita
-                cltip = TestataInfoPeso().select(idCliente=dao.id, batchSize=None)
+                cltip = TestataInfoPeso().select(idCliente=self.id, batchSize=None)
                 if cltip:
                     for l in cltip:
                         l.delete()
-                clcg = ClienteGeneralita().select(idCliente=dao.id, batchSize=None)
+                clcg = ClienteGeneralita().select(idCliente=self.id, batchSize=None)
                 if clcg:
                     for l in clcg:
                         l.delete()
@@ -263,52 +263,52 @@ class Cliente(Base, Dao):
 
     def filter_values(self, k, v):
         if k == 'codice':
-            dic = {k: PersonaGiuridica_.__table__.c.codice.ilike("%"+v+"%")}
+            dic = {k: t_persona_giuridica.c.codice.ilike("%"+v+"%")}
         elif k == 'codicesatto':
-            dic = {k : PersonaGiuridica_.__table__.c.codice == v}
+            dic = {k : t_persona_giuridica.c.codice == v}
         elif k == 'idUser':
-            dic = {k : PersonaGiuridica_.__table__.c.id_user == v}
+            dic = {k : t_persona_giuridica.c.id_user == v}
         elif k == 'idPagamento':
             dic = {k : t_cliente.c.id_pagamento == v}
         elif k == 'idBanca':
             dic = {k : t_cliente.c.id_banca == v}
         elif k == 'idList':
-            dic = {k: PersonaGiuridica_.__table__.c.id.in_(v)}
+            dic = {k: t_persona_giuridica.c.id.in_(v)}
         elif k == 'ragioneSociale':
-            dic = {k: PersonaGiuridica_.__table__.c.ragione_sociale.ilike("%"+v+"%")}
+            dic = {k: t_persona_giuridica.c.ragione_sociale.ilike("%"+v+"%")}
         elif k == 'insegna':
-            dic = {k: PersonaGiuridica_.__table__.c.insegna.ilike("%"+v+"%")}
+            dic = {k: t_persona_giuridica.c.insegna.ilike("%"+v+"%")}
         elif k == 'cognomeNome':
-            dic = {k: or_(PersonaGiuridica_.__table__.c.cognome.ilike("%"+v+"%"),PersonaGiuridica_.__table__.c.nome.ilike("%"+v+"%"))}
+            dic = {k: or_(t_persona_giuridica.c.cognome.ilike("%"+v+"%"),t_persona_giuridica.c.nome.ilike("%"+v+"%"))}
         elif k == 'localita':
-            dic = {k: or_(PersonaGiuridica_.__table__.c.sede_operativa_localita.ilike("%"+v+"%"), PersonaGiuridica_.__table__.c.sede_legale_localita.ilike("%"+v+"%"))}
+            dic = {k: or_(t_persona_giuridica.c.sede_operativa_localita.ilike("%"+v+"%"), t_persona_giuridica.c.sede_legale_localita.ilike("%"+v+"%"))}
         elif k == 'indirizzo':
-            dic = {k: or_(PersonaGiuridica_.__table__.c.sede_operativa_indirizzo.ilike("%"+v+"%"), PersonaGiuridica_.__table__.c.sede_legale_indirizzo.ilike("%"+v+"%"))}
+            dic = {k: or_(t_persona_giuridica.c.sede_operativa_indirizzo.ilike("%"+v+"%"), t_persona_giuridica.c.sede_legale_indirizzo.ilike("%"+v+"%"))}
         elif k == 'cap':
-            dic = {k: or_(PersonaGiuridica_.__table__.c.sede_operativa_cap.ilike("%"+v+"%"), PersonaGiuridica_.__table__.c.sede_legale_cap.ilike("%"+v+"%"))}
+            dic = {k: or_(t_persona_giuridica.c.sede_operativa_cap.ilike("%"+v+"%"), t_persona_giuridica.c.sede_legale_cap.ilike("%"+v+"%"))}
         elif k == 'provincia':
-            dic = {k: or_(PersonaGiuridica_.__table__.c.sede_operativa_provincia.ilike("%"+v+"%"), PersonaGiuridica_.__table__.c.sede_legale_provincia.ilike("%"+v+"%"))}
+            dic = {k: or_(t_persona_giuridica.c.sede_operativa_provincia.ilike("%"+v+"%"), t_persona_giuridica.c.sede_legale_provincia.ilike("%"+v+"%"))}
         elif k == 'partitaIva':
-            dic = {k: PersonaGiuridica_.__table__.c.partita_iva.ilike("%"+v+"%")}
+            dic = {k: t_persona_giuridica.c.partita_iva.ilike("%"+v+"%")}
         elif k == 'codiceFiscale':
-            dic = {k: PersonaGiuridica_.__table__.c.codice_fiscale.ilike("%"+v+"%")}
+            dic = {k: t_persona_giuridica.c.codice_fiscale.ilike("%"+v+"%")}
         elif k == 'idCategoria':
             dic = {k:and_(Cliente.id==ClienteCategoriaCliente.id_cliente,ClienteCategoriaCliente.id_categoria_cliente==v)}
         elif k == 'cancellato':
-            dic = {k: and_(PersonaGiuridica_.__table__.c.cancellato==v)}
+            dic = {k: and_(t_persona_giuridica.c.cancellato==v)}
         elif k == 'fullsearch':
-            dic = {k: or_(PersonaGiuridica_.__table__.c.codice.ilike("%"+v+"%"),
-                      PersonaGiuridica_.__table__.c.ragione_sociale.ilike( "%" + v + "%"),
-                      or_(PersonaGiuridica_.__table__.c.cognome.ilike("%"+v+"%"),
-                    PersonaGiuridica_.__table__.c.nome.ilike("%"+v+"%")),
-                      or_( PersonaGiuridica_.__table__.c.sede_operativa_localita.ilike(
+            dic = {k: or_(t_persona_giuridica.c.codice.ilike("%"+v+"%"),
+                      t_persona_giuridica.c.ragione_sociale.ilike( "%" + v + "%"),
+                      or_(t_persona_giuridica.c.cognome.ilike("%"+v+"%"),
+                    t_persona_giuridica.c.nome.ilike("%"+v+"%")),
+                      or_( t_persona_giuridica.c.sede_operativa_localita.ilike(
                               "%" + v + "%"),
-                           PersonaGiuridica_.__table__.c.sede_legale_localita.ilike(
+                           t_persona_giuridica.c.sede_legale_localita.ilike(
                               "%" + v + "%")),
-                      or_(PersonaGiuridica_.__table__.c.sede_operativa_indirizzo.ilike("%"+v+"%"),
-                          PersonaGiuridica_.__table__.c.sede_legale_indirizzo.ilike("%"+v+"%")),
-                      PersonaGiuridica_.__table__.c.partita_iva.ilike("%" + v + "%"),
-                      PersonaGiuridica_.__table__.c.codice_fiscale.ilike("%" + v + "%"))}
+                      or_(t_persona_giuridica.c.sede_operativa_indirizzo.ilike("%"+v+"%"),
+                          t_persona_giuridica.c.sede_legale_indirizzo.ilike("%"+v+"%")),
+                      t_persona_giuridica.c.partita_iva.ilike("%" + v + "%"),
+                      t_persona_giuridica.c.codice_fiscale.ilike("%" + v + "%"))}
         return dic[k]
 
 

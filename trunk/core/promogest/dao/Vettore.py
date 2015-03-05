@@ -57,6 +57,19 @@ class Vettore(Base, Dao):
             dic = {k: t_persona_giuridica.c.partita_iva.ilike("%"+v+"%")}
         elif k== 'codiceFiscale':
             dic ={k: t_persona_giuridica.c.codice_fiscale.ilike("%"+v+"%")}
+        elif k == 'fullsearch':
+            dic = {k: or_(t_persona_giuridica.codice.ilike("%"+v+"%"),
+                      t_persona_giuridica.ragione_sociale.ilike( "%" + v + "%"),
+                      or_(t_persona_giuridica.cognome.ilike("%"+v+"%"),
+                    t_persona_giuridica.nome.ilike("%"+v+"%")),
+                      or_( t_persona_giuridica.sede_operativa_localita.ilike(
+                              "%" + v + "%"),
+                           t_persona_giuridica.sede_legale_localita.ilike(
+                              "%" + v + "%")),
+                      or_(t_persona_giuridica.sede_operativa_indirizzo.ilike("%"+v+"%"),
+                          t_persona_giuridica.sede_legale_indirizzo.ilike("%"+v+"%")),
+                      t_persona_giuridica.partita_iva.ilike("%" + v + "%"),
+                      t_persona_giuridica.codice_fiscale.ilike("%" + v + "%"))}
         return  dic[k]
 
 def getNuovoCodiceVettore():

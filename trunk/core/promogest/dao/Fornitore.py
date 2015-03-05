@@ -24,7 +24,7 @@ from sqlalchemy.orm import *
 from promogest.Environment import *
 
 from promogest.dao.Dao import Dao, Base
-from promogest.dao.PersonaGiuridica import PersonaGiuridica_
+# from promogest.dao.PersonaGiuridica import PersonaGiuridica_
 from promogest.dao.CategoriaFornitore import CategoriaFornitore
 from promogest.dao.daoContatti.Contatto import Contatto
 from promogest.dao.DaoUtils import codeIncrement, getRecapitiFornitore
@@ -125,6 +125,19 @@ class Fornitore(Base, Dao):
             dic = {k: t_persona_giuridica.c.codice_fiscale.ilike("%"+v+"%")}
         elif k == 'idCategoria':
             dic = {k: t_fornitore.c.id_categoria_fornitore==v}
+        elif k == 'fullsearch':
+            dic = {k: or_(t_persona_giuridica.c.codice.ilike("%"+v+"%"),
+                      t_persona_giuridica.c.ragione_sociale.ilike( "%" + v + "%"),
+                      or_(t_persona_giuridica.c.cognome.ilike("%"+v+"%"),
+                    t_persona_giuridica.c.nome.ilike("%"+v+"%")),
+                      or_( t_persona_giuridica.c.sede_operativa_localita.ilike(
+                              "%" + v + "%"),
+                           t_persona_giuridica.c.sede_legale_localita.ilike(
+                              "%" + v + "%")),
+                      or_(t_persona_giuridica.c.sede_operativa_indirizzo.ilike("%"+v+"%"),
+                          t_persona_giuridica.c.sede_legale_indirizzo.ilike("%"+v+"%")),
+                      t_persona_giuridica.c.partita_iva.ilike("%" + v + "%"),
+                      t_persona_giuridica.c.codice_fiscale.ilike("%" + v + "%"))}
         return  dic[k]
 
 def getNuovoCodiceFornitore():
