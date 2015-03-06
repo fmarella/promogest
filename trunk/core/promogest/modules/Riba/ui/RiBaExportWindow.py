@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2013 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Marella <francesco.marella@anche.no>
@@ -21,6 +21,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
+from gi.repository.WebKit import WebView
 from promogest import Environment as env
 from promogest.ui.GladeWidget import GladeWidget
 from promogest.modules.Riba.lib.riba import RiBa, Creditore, Debitore
@@ -238,7 +239,6 @@ class RiBaExportWindow(GladeWidget):
         self.show_all()
 
     def __setup_webview(self):
-        from webkit import WebView
         self.view = WebView()
         self.webview_scrolledwindow.add(self.view)
 

@@ -47,6 +47,11 @@ class AliquotaIva(Base, Dao):
             dic = {k: AliquotaIva.__table__.c.percentuale == v}
         elif k == "idTipo":
             dic = {k: AliquotaIva.__table__.c.id_tipo == v}
+        elif k == 'fullsearch':
+            dic = {k: or_(AliquotaIva.__table__.c.denominazione.ilike("%" + v + "%"),
+                          AliquotaIva.__table__.c.denominazione_breve.ilike(
+                              "%" + v + "%"),
+                          AliquotaIva.__table__.c.percentuale == v)}
         return  dic[k]
 
     @property
