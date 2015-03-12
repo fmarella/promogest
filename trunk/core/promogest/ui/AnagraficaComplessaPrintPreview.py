@@ -177,7 +177,10 @@ class AnagraficaPrintPreview(GladeWidget):
 
             }
             self.html_code = renderTemplate(pageData)
-            renderHTML(self.print_on_screen_html, self.html_code)
+            try:
+                renderHTML(self.print_on_screen_html, str(self.html_code))
+            except:
+                renderHTML(self.print_on_screen_html, self.html_code)
             return
 
         #pbar(self.pbar_report,parziale=2.5, totale=4)
@@ -192,7 +195,10 @@ class AnagraficaPrintPreview(GladeWidget):
         #pbar(self.pbar_report,parziale=3.75, totale=4)
         #pbar(self.pbar_report,stop=True)
         #self.pbar_dialog.hide()
-        renderHTML(self.print_on_screen_html, self.html_code)
+        try:
+            renderHTML(self.print_on_screen_html, str(self.html_code))
+        except:
+            renderHTML(self.print_on_screen_html, self.html_code)
 
     def on_print_on_screen_dialog_response(self, dialog, responseId):
         if responseId == GTK_RESPONSE_CLOSE:
