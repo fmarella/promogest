@@ -114,7 +114,7 @@ class PGRiBa(RiBa):
             data_inizio_, data_fine = dataInizioFineMese(data_inizio)
 
         documenti = TestataDocumento().select(complexFilter=(and_(or_(TestataDocumento.operazione=='Fattura differita vendita', TestataDocumento.operazione=='Fattura accompagnatoria'), TestataDocumento.data_documento.between(data_inizio, data_fine))), batchSize=None)
-
+        print("VEDIAMO UN PO", documenti)
         if not documenti:
             messageInfo(msg="Nessun risultato.")
             return 0
@@ -135,7 +135,6 @@ class PGRiBa(RiBa):
             if ope:
                 if ope['tipoPersonaGiuridica'] != 'cliente':
                     continue
-
             banca = None
             if documento.id_banca:
                 banca = leggiBanca(documento.id_banca)
@@ -159,8 +158,9 @@ class PGRiBa(RiBa):
             debitore.CAP = documento.cap_cliente
             debitore.provincia = documento.provincia_cliente
             debitore.comune = documento.localita_cliente
-
+            print(documento)
             for scadenza in documento.scadenze:
+                print("PPPPPPPPPPPPPPPPPPPPPPP",pagamentoLookup(scadenza.pagamento))
                 if pagamentoLookup(scadenza.pagamento):
 
                     row = "%s N. %s a %s del %s \nImporto: %s data scadenza: %s" % (documento.operazione,
@@ -207,7 +207,6 @@ class PGRiBa(RiBa):
 
         if self.progressbar:
             pbar(self.progressbar, stop=True)
-
         self._buffer = buff
 
 class RiBaExportWindow(GladeWidget):

@@ -176,13 +176,6 @@ class AnagraficaHtml(object):
             return f
         param = [self.dao.dictionary(complete=True)]
         multilinedirtywork(param)
-        try:
-            if hasattr(Environment.conf.Documenti, "jnet"):
-                from promogest.modules.NumerazioneComplessa.jnet import\
-                                                             numerazioneJnet
-                param[0]["numero"] = numerazioneJnet(self.dao)
-        except:
-            pass
         if azienda:
             azidict = azienda.dictionary(complete=True)
             for a, b in azidict.items():
@@ -190,7 +183,7 @@ class AnagraficaHtml(object):
                 azidict[k] = b
                 del azidict[a]
             param[0].update(azidict)
-
+        print("PARAMS", param[0])
         if 'operazione' in param[0] and 'causale_trasporto' in param[0]:
             if (param[0]["operazione"] in ["DDT vendita", "DDT acquisto"]) \
                  and param[0]["causale_trasporto"] != "":

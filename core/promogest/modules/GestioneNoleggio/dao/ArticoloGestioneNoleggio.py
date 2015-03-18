@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni <francesco@promotux.it>
@@ -23,42 +23,30 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
-from promogest.dao.Dao import Dao
+from promogest.dao.Dao import Dao, Base
 #from promogest.modules.GestioneNoleggio.dao.DivisoreNoleggio import DivisoreNoleggio
 
 
-try:
-    articologestionenoleggio=Table('articolo_gestione_noleggio',params['metadata'],schema = params['schema'],autoload=True)
-except:
-    articolo=Table('articolo', params['metadata'],schema = params['schema'],autoload=True)
 
-    if tipodb == "sqlite":
-        articoloFK = 'articolo.id'
-    else:
-        articoloFK = params['schema']+'.articolo.id'
-    #params["session"].close()
-    conn = params["engine"].connect()
-    articologestionenoleggio = Table('articolo_gestione_noleggio', params['metadata'],
-                    Column('id_articolo',Integer,ForeignKey(articoloFK,onupdate="CASCADE",ondelete="CASCADE"),primary_key=True),
-                    Column('divisore_noleggio_value',Numeric(4), nullable=False),
-                    schema=params['schema'])
-    articologestionenoleggio.create(checkfirst=True)
-    #conn.close()
-    #Session = sessionmaker(bind=engine)
-    #session = Session()
+class ArticoloGestioneNoleggio(Base, Dao):
+    try:
+        __table__ = Table('articolo_gestione_noleggio',
+                          params['metadata'],
+                          schema=params['schema'],
+                          autoload=True)
+    except:
+        articolo = Table('articolo', params['metadata'],
+                         schema=params['schema'], autoload=True)
+        from data.articoloGestioneNoleggio import t_articolo_gestione_noleggio
+        __table__ = t_articolo_gestione_noleggio
 
-class ArticoloGestioneNoleggio(Dao):
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):
         if k =='idArticolo':
-            dic= {k:articologestionenoleggio.c.id_articolo ==v}
+            dic= {k: self.__table__.c.id_articolo ==v}
         elif k == "idDivisoreNoleggio":
-            dic = {k:articologestionenoleggio.c.id_divisore_noleggio ==v}
-
+            dic = {k:self.__table__.c.id_divisore_noleggio ==v}
         return  dic[k]
-
-std_mapper = mapper(ArticoloGestioneNoleggio, articologestionenoleggio,
-                order_by=articologestionenoleggio.c.id_articolo)

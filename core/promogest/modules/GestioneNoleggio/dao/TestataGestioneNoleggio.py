@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni <francesco@promotux.it>
@@ -23,44 +23,28 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
-from promogest.dao.Dao import Dao
+from promogest.dao.Dao import Dao, Base
 
-
-try:
-    testatadocumentonoleggio = Table('testata_documento_noleggio', params['metadata'],
-                                schema = params['schema'], autoload=True)
-except:
-    testataDocumento=Table('testata_documento', params['metadata'],schema = params['schema'],autoload=True)
-
-    if tipodb == "sqlite":
-        testatadocumentoFK = 'testata_documento.id'
-    else:
-        testatadocumentoFK = params['schema']+'.testata_documento.id'
-
-    testatadocumentonoleggio = Table('testata_documento_noleggio', params['metadata'],
-                        Column('id',Integer,primary_key=True),
-                        Column('id_testata_documento',Integer,ForeignKey(testatadocumentoFK,onupdate="CASCADE",ondelete="CASCADE"),primary_key=True),
-                        Column('data_inizio_noleggio',DateTime, nullable=False),
-                        Column('data_fine_noleggio',DateTime,nullable=False),
-                        schema=params['schema'])
-    testatadocumentonoleggio.create(checkfirst=True)
-
-
-class TestataGestioneNoleggio(Dao):
+class TestataGestioneNoleggio(Base, Dao):
+    try:
+        __table__ = Table('testata_documento_noleggio',
+                                         params['metadata'],
+                                         schema=params['schema'],
+                                         autoload=True)
+    except:
+        from data.testataGestioneNoleggio import t_testata_gestione_noleggio
+        __table__ = t_testata_gestione_noleggio
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):
         if k == 'id':
-            dic= {k:testatadocumentonoleggio.c.id ==v}
+            dic= {k:self.__table__.c.id ==v}
         elif k == 'idTestataDocumento':
-            dic= {k:testatadocumentonoleggio.c.id_testata_documento==v}
+            dic= {k:self.__table__.c.id_testata_documento==v}
         elif k == 'daData':
-            dic = {k :testatadocumentonoleggio.c.data_inizio_noleggio >= v}
+            dic = {k :self.__table__.c.data_inizio_noleggio >= v}
         elif k == 'aData':
-            dic = {k:testatadocumentonoleggio.c.data_inizio_noleggio <= v}
+            dic = {k:self.__table__.c.data_inizio_noleggio <= v}
         return  dic[k]
-
-std_mapper = mapper(TestataGestioneNoleggio, testatadocumentonoleggio,properties={
-        }, order_by=testatadocumentonoleggio.c.id)
