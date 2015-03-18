@@ -44,7 +44,7 @@ class KitMaster(GladeWidget):
     def draw(self):
         stringa = '<span size="12000">ARTICOLO: ' + b(self._articolo_master.codice + " - "+ self._articolo_master.denominazione) +"</span>"
         self.articolo_master_label.set_markup(stringa)
-        self.quantita_componente_kit_entry.set_text("1")
+        self.quantita_componente_kit_entry.set_value(1)
         self._refresh()
 
     def _refresh(self):
@@ -96,7 +96,7 @@ class KitMaster(GladeWidget):
         riga.data_inserimento = stringToDate(data_inserimento)
         note = self.note_componente_kit_entry.get_text()
         riga.note = note
-        quantita = Decimal(self.quantita_componente_kit_entry.get_text().replace(",", ".").strip() or 0)
+        quantita = self.quantita_componente_kit_entry.get_value()
         riga.quantita = quantita
         attivo = self.attivo_componente_check.get_active()
         riga.attivo = attivo
@@ -129,7 +129,7 @@ class KitMaster(GladeWidget):
 
 
     def clear(self):
-        self.quantita_componente_kit_entry.set_text("")
+        self.quantita_componente_kit_entry.set_value(1)
         self.note_componente_kit_entry.set_text("")
         self.data_aggiunta_componente_datewidget.set_text("")
         self.id_articolo_componente_customcombobox.set_active(-1)
@@ -141,7 +141,7 @@ class KitMaster(GladeWidget):
         self._editIterator = iterator
         self._editModel = model
         self.data_aggiunta_componente_datewidget.set_text(self.rigaIter[1])
-        self.quantita_componente_kit_entry.set_text(self.rigaIter[4])
+        self.quantita_componente_kit_entry.set_value(Decimal(self.rigaIter[4]))
         self.id_articolo_componente_customcombobox.setId(self.rigaIter[0].id_articolo_filler)
         self.editRiga = self.rigaIter[0]
         self.note_componente_kit_entry.set_text(self.rigaIter[6])
@@ -192,4 +192,3 @@ class KitMaster(GladeWidget):
         anag = KitMaster(articolo)
         anagWindow = anag.getTopLevel()
         anagWindow.show_all()
-        #showAnagraficaRichiamata(self.dialogTopLevel, anagWindow, toggleButton)
