@@ -113,6 +113,17 @@ class Articolo(Base, Dao):
         'order_by' : __table__.c.codice
     }
 
+    if (hasattr(conf, "GestioneNoleggio") and
+                    getattr(conf.GestioneNoleggio, 'mod_enable') == "yes") or \
+            ("GestioneNoleggio" in modulesList):
+        from promogest.modules.GestioneNoleggio.dao.ArticoloGestioneNoleggio \
+            import ArticoloGestioneNoleggio
+        APGN = relationship(ArticoloGestioneNoleggio,
+                                 primaryjoin=(
+                                     __table__.c.id == ArticoloGestioneNoleggio.id_articolo),
+                                    backref="ARTI",
+                                    uselist=False)
+
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
         self.__articoloTagliaColore = None
@@ -767,29 +778,29 @@ class Articolo(Base, Dao):
         return  dic[k]
 
 
-if (hasattr(conf, "GestioneNoleggio") and \
-            getattr(conf.GestioneNoleggio, 'mod_enable') == "yes") or\
-             ("GestioneNoleggio"in modulesList):
-    from promogest.modules.GestioneNoleggio.dao.ArticoloGestioneNoleggio \
-            import ArticoloGestioneNoleggio
-    std_mapper.add_property("APGN",
-        relation(ArticoloGestioneNoleggio,
-        primaryjoin=(t_articolo.c.id == ArticoloGestioneNoleggio.id_articolo),
-            backref="ARTI",
-                uselist=False))
+# if (hasattr(conf, "GestioneNoleggio") and \
+#             getattr(conf.GestioneNoleggio, 'mod_enable') == "yes") or\
+#              ("GestioneNoleggio"in modulesList):
+#     from promogest.modules.GestioneNoleggio.dao.ArticoloGestioneNoleggio \
+#             import ArticoloGestioneNoleggio
+#     std_mapper.add_property("APGN",
+#         relation(ArticoloGestioneNoleggio,
+#         primaryjoin=(t_articolo.c.id == ArticoloGestioneNoleggio.id_articolo),
+#             backref="ARTI",
+#                 uselist=False))
 
-if (hasattr(conf, "CSA") and getattr(conf.CSA, 'mod_enable') == "yes") or\
-                                                ("CSA" in modulesList):
-    from promogest.modules.CSA.dao.ArticoloCSA import ArticoloCSA
-    from promogest.modules.CSA.dao.ServCSA import ServCSA
-    std_mapper.add_property("APCSA",
-                    relation(ArticoloCSA,
-                    primaryjoin=(t_articolo.c.id == ArticoloCSA.id_articolo),
-                    uselist=False))
-    std_mapper.add_property("SERVCSA",
-                    relation(ServCSA,
-                    primaryjoin=(t_articolo.c.id == ServCSA.id_articolo),
-                    uselist=False, backref="arti"))
+# if (hasattr(conf, "CSA") and getattr(conf.CSA, 'mod_enable') == "yes") or\
+#                                                 ("CSA" in modulesList):
+#     from promogest.modules.CSA.dao.ArticoloCSA import ArticoloCSA
+#     from promogest.modules.CSA.dao.ServCSA import ServCSA
+#     std_mapper.add_property("APCSA",
+#                     relation(ArticoloCSA,
+#                     primaryjoin=(t_articolo.c.id == ArticoloCSA.id_articolo),
+#                     uselist=False))
+#     std_mapper.add_property("SERVCSA",
+#                     relation(ServCSA,
+#                     primaryjoin=(t_articolo.c.id == ServCSA.id_articolo),
+#                     uselist=False, backref="arti"))
 
 def isNuovoCodiceByFamiglia():
     """ Indica se un nuovo codice t_articolo dipende dalla famiglia o meno """
