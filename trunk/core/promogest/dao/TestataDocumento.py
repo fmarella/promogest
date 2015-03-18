@@ -136,7 +136,7 @@ class TestataDocumento(Base, Dao):
         self.__data_fine_noleggio = None
 
     def __repr__(self):
-        return '<Documento ID={0} operazione="{1}">'.format(self.numero, self.operazione)
+        return '<Documento ID={2} NUMERO={0} operazione="{1}">'.format(self.numero, self.operazione, self.id)
 
     def _getScadenzeDocumento(self):
         #if not self.__dbScadenzeDocumento:

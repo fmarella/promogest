@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni <francesco@promotux.it>
@@ -23,9 +23,9 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
-from promogest.dao.Dao import Dao
+from promogest.dao.Dao import Dao, Base
 
-class NoleggioRiga(Dao):
+class NoleggioRiga(Base, Dao):
     """ TABELLA:  riga_dati_noleggio,
         questo dao gestisce la tabella di integrazioen dati su riga:
         per il noleggio è necessario infatti salvare diverse informazioni :
@@ -35,36 +35,19 @@ class NoleggioRiga(Dao):
                         é il caso di salvarlo per poter incrociare i dati e perchè
                         sento che a breve sarà necessario gestire archi temporali per riga)
     """
+    try:
+        __table__ = Table('riga_dati_noleggio', params['metadata'],
+                             schema=params['schema'], autoload=True)
+    except:
+        from data.noleggioRiga import  t_riga_dati_noleggio
+        __table__ = t_riga_dati_noleggio
+
+
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):
         if k == 'id':
-            dic= {k:riganoleggio.c.id ==v}
-        return  dic[k]
+            dic= {k:self.__table__.c.id ==v}
+        return dic[k]
 
-
-try:
-    riganoleggio = Table('riga_dati_noleggio', params['metadata'],
-                                    schema = params['schema'], autoload=True)
-except:
-    rigaTable = Table('riga', params['metadata'], autoload=True, schema=params['schema'])
-
-    if tipodb == "sqlite":
-        rigaFK = 'riga.id'
-    else:
-        rigaFK = params['schema']+'.riga.id'
-
-    riganoleggio = Table('riga_dati_noleggio', params['metadata'],
-                        Column('id',Integer,primary_key=True),
-                        Column('isrent', Boolean,nullable=False),
-                        Column('prezzo_acquisto',Numeric(16,4),nullable=True),
-                        Column('coeficente',Numeric(16,4),nullable=True),
-                        Column('id_riga',Integer,ForeignKey(rigaFK, onupdate="CASCADE", ondelete="RESTRICT"),nullable=False),
-                        UniqueConstraint('id_riga'),
-                        schema=params['schema'])
-    riganoleggio.create(checkfirst=True)
-
-
-std_mapper = mapper(NoleggioRiga, riganoleggio,properties={
-                    }, order_by=riganoleggio.c.id)

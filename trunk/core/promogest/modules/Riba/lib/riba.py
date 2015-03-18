@@ -1,26 +1,25 @@
 # -*- coding: utf-8 -*-
 
-'''
-Copyright (c) 2011-2013 Francesco Marella <francesco.marella@anche.no>
+#    Copyright (C) 2005-2015 by Promotux
+#                        di Francesco Meloni snc - http://www.promotux.it/
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+#    Author: Francesco Marella <francesco.marella@anche.no>
+#    Author: Francesco Meloni  <francesco@promotux.it>
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+#    This file is part of Promogest.
 
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#    Promogest is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 2 of the License, or
+#    (at your option) any later version.
 
+#    Promogest is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
 
-Created on 09/dic/2011
-
-@author: Francesco Marella <francesco.marella@anche.no>
-'''
+#    You should have received a copy of the GNU General Public License
+#    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 __version__ = '1.0'
 
@@ -62,7 +61,7 @@ class Debitore(object):
     indirizzo = ' '
     provincia =  ' '
     comune = ' '
-    descrizione = ['','']
+    descrizione = ['', '']
     abi = ' '
     cab = ' '
 
