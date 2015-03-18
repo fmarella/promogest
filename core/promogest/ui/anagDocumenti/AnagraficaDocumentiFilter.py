@@ -97,7 +97,7 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
             self.funzione_ordinamento = "cliforn"
             self.refresh()
         if column.get_name() == "imponibile_column":
-            self.aa = -1*self.aa
+            self.aa = -1 * self.aa
             self.funzione_ordinamento = "impo"
             self.refresh()
         self._anagrafica.funzione_ordinamento = self.funzione_ordinamento
