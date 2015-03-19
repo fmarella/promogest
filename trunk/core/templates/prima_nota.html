@@ -5,16 +5,16 @@
 <div class="row">
      <div class="col-xs-12 col-md-12">
         <div class="panel panel-default">
-              <div class="panel-heading"><h3>N° {{dao.numero}} del  {{utils.dateToString(dao.data_inizio)}}</h></div>
+              <div class="panel-heading"><h4>N° {{dao.numero}} del  {{utils.dateToString(dao.data_inizio)}}</h4></div>
   <div class="panel-body">
 
     {% if dao.righeprimanota|length >1 %}
-      <div class="col-sm-6"><span class="label label-default">Descrizione</span><h4 style="display:inline;"> {{dao.note|nonone}}</h4></div>
+      <div class="col-sm-6"><span class="label label-default">Descrizione</span><p style="display:inline;"> {{dao.note|nonone}}</p></div><br/>
     {% endif %}
       <div class="clearfix"></div>
                 <div class="panel panel-primary">
             <div class="panel-heading">
-              <h3 class="panel-title">Operazioni&nbsp;&nbsp; ({{dao.righeprimanota|length}})</h3>
+              <h5 class="panel-title">Operazioni&nbsp;&nbsp; ({{dao.righeprimanota|length}})</h5>
             </div>
             <div class="panel-body">
 <div class="table-responsive">
