@@ -183,7 +183,7 @@ class AnagraficaHtml(object):
                 azidict[k] = b
                 del azidict[a]
             param[0].update(azidict)
-        print("PARAMS", param[0])
+        #print("PARAMS", param[0])
         if 'operazione' in param[0] and 'causale_trasporto' in param[0]:
             if (param[0]["operazione"] in ["DDT vendita", "DDT acquisto"]) \
                  and param[0]["causale_trasporto"] != "":
