@@ -4,11 +4,11 @@
 {% for dao in pageData["objects"] %}
      <div class="col-xs-12 col-md-12">
               <!--<div class="panel-heading">-->
-                  <h4>N° {{dao.numero}} del  {{utils.dateToString(dao.data_inizio)}}          {% if dao.righeprimanota|length==1 %} <div class="col-sm-6 pull-right"><span class="label label-default">Note</span><h4 style="display:inline;"> {{dao.note|nonone}}</h4></div>{% endif %}</h4>
+                  <h5>N° {{dao.numero}} del  {{utils.dateToString(dao.data_inizio)}}          {% if dao.righeprimanota|length==1 %} <div class="col-sm-6 pull-right"><span class="label label-default">Note</span><h4 style="display:inline;"> {{dao.note|nonone}}</h4></div>{% endif %}</h5>
               <!--</div>-->
 
     {% if dao.righeprimanota|length >1 %}
-      <div class="col-sm-6"><span class="label label-default">Descrizione</span><h4 style="display:inline;"> {{dao.note|nonone}}</h4></div>
+      <div class="col-sm-12"><span class="label label-default">Descrizione</span><p style="display:inline;"> {{dao.note|nonone}}</p></div><br/>
     {% endif %}
       <!--<div class="clearfix"></div>-->
 <div class="table-responsive">
