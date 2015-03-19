@@ -33,19 +33,23 @@ from promogest.lib.HtmlHandler import createHtmlObj, renderTemplate, renderHTML
 from promogest.lib.html2csv import html2csv
 from promogest.ui.PrintDialog import PrintDialogHandler
 
-from  xhtml2pdf import pisa
-
 class HtmlViewer(GladeWidget):
+    """
+    Riceve un paGedata e si preoccupa di farne un render html e poi
+    ha incorporato un pulsante per il pdf
+    tipo = report o singolo o label
+    """
 
-    def __init__(self, pageData=None):
+    def __init__(self, pageData=None, tipo="report", windowtitle="Statistiche"):
         self._htmlTemplate = None
 
         GladeWidget.__init__(self, root='visualizzatore_html',
                 path="htmlviewer.glade")
         self._window = self.visualizzatore_html
-        self.windowTitle = "Statistiche"
+        self.windowTitle = windowtitle
         self.placeWindow(self._window)
         self.pageData= pageData
+        self.tipo = tipo
         self.html = ""
         self.drawHtml()
 
@@ -54,20 +58,6 @@ class HtmlViewer(GladeWidget):
         self.html_scrolledwindow.add(self.detail)
         self.html_scrolledwindow.show()
         self.refreshHtml()
-
-    # def on_pdf_button_clicked(self, button):
-    #     # from weasyprint import HTML
-    #
-    #     f = self.html
-    #     g = file(Environment.tempDir + ".temp.pdf", "wb")
-    #     # HTML(string=f).write_pdf(g)
-    #     pdf = pisa.CreatePDF(str(f), g)
-    #     g .close()
-    #     anag = PrintDialogHandler(self, self.windowTitle)
-    #     anagWindow = anag.getTopLevel()
-    #     returnWindow = self.getTopLevel().get_toplevel()
-    #     anagWindow.set_transient_for(returnWindow)
-    #     anagWindow.show_all()
 
     def on_pdf_button_clicked(self, button):
 
@@ -98,13 +88,11 @@ class HtmlViewer(GladeWidget):
                                               gtk.PrintOperationAction.EXPORT)
         pbar(self.pbar, pulse=True, text="GENERAZIONE STAMPA ATTENDERE")
         pbar(self.pbar, stop=True)
-        anag = PrintDialogHandler(self, self.windowTitle, tipo="report")
+        anag = PrintDialogHandler(self, self.windowTitle, tipo=self.tipo)
         anagWindow = anag.getTopLevel()
         returnWindow = self.getTopLevel().get_toplevel()
         anagWindow.set_transient_for(returnWindow)
         anagWindow.show_all()
-
-
 
 
     def refreshHtml(self, dao=None):
