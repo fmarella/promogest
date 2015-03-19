@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -26,6 +26,7 @@ from promogest.ui.PrintDialog import PrintDialogHandler
 from promogest.lib.utils import *
 from promogest.modules.GestioneKit.dao.ArticoloKit import ArticoloKit
 from promogest.dao.Articolo import Articolo
+from promogest.lib.HtmlViewer import HtmlViewer
 
 class KitMaster(GladeWidget):
     """ Classe per la gestione degli scontrini emessi """
@@ -164,23 +165,12 @@ class KitMaster(GladeWidget):
         self.clear()
 
     def on_print_kit_clicked(self, button):
-        from  xhtml2pdf import pisa
         pageData = {"file": "articolo_kit.html",
                     "dao" : self._articolo_master,
                     "sub_kit" : self.print_sub_kit_checkbutton.get_active(),
                     "articoli_kit" : self.articoli_componenti_listore,
                     }
-        self.htmll = renderTemplate(pageData)
-        f = str(self.htmll)
-        filename =Environment.tempDir + "articolo_kit_"+str(self._articolo_master.id)+".pdf"
-        g = file(filename, "wb")
-        pdf = pisa.CreatePDF(f,g)
-        g .close()
-        anag = PrintDialogHandler(self,"Articolo kit", tempFile=filename)
-        anagWindow = anag.getTopLevel()
-        returnWindow = self.getTopLevel().get_toplevel()
-        anagWindow.set_transient_for(returnWindow)
-        anagWindow.show_all()
+        return HtmlViewer(pageData)
 
 
     def on_articolo_componente_treeview_row_activated(self, treeview, path, column):

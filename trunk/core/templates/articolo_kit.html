@@ -1,44 +1,41 @@
-<style>
-@page {
-size: A4 portrait;
-margin: 1cm;
-}
-</style>
-
-        <table cellpadding="3" cellspacing="3" border="0" align="left" valign="middle" bgcolor="#FFA500" width="50%">
-            <tr>
-                <td class="report-header" ><h2><b>Articolo principale della distinta :</b> {{dao.denominazione}}</h2></td>
-            </tr>
-        </table>
-
-<table cellpadding="3" cellspacing="1" border="0.2" align="center" valign="middle" style="border-style: dotted; ">
-        <tr style="background-color: #E5E5E5; ">
+{% extends 'index.html' %}
+{% block body %}
+<div class="row">
+     <div class="col-xs-12 col-md-12">
+         <h4>{{dao.denominazione}}</h4>
+<div class="table">
+  <table class="table table-bordered table-striped table-condensed">
+   <thead>
             <th>Data Inserimento</th>
             <th>Codice</th>
             <th>Denominazione</th>
             <th>Quantita</th>
             <th>Attivo</th>
 
-        </tr>
+        </thead>
 {% for a in pageData["articoli_kit"] %}
 <tr>
 <td align="center"width="80px" >{{utils.dateToString(a[1]|nonone)}}</td>
-				<td align="center" width="80px" >{{a[2]|nonone}}</td>
-				<td align="left" >{{a[3]|nonone}}</td>
-				<td align="center" style="background:#D0D0D0;" width="40px">{{utils.mN(a[4]|nonone,2)}}</td>
-				<td align="center" width="40px">{{a[5]|nonone}}</td>
+				<td>{{a[2]|nonone}}</td>
+				<td>{{a[3]|nonone}}</td>
+				<td>{{utils.mN(a[4]|nonone,2)}}</td>
+				<td>{{a[5]|nonone}}</td>
 </tr>
         {% if pageData["sub_kit"] == True %}
         {% for b in utils.leggiArticolo(a[0].id_articolo_filler)["daoArticolo"].articoli_kit %}
         <tr>
-                <td align="center" width="80px" >\______</td>
-				<td align="center" width="80px" >{{utils.leggiArticolo(b.id_articolo_filler)["codice"]}}</td>
-				<td align="left" >{{utils.leggiArticolo(b.id_articolo_filler)["denominazione"]}}</td>
-				<td align="center" style="background:#FFFCC1;" width="40px">{{utils.mN(b.quantita|nonone,2)}}</td>
-				<td align="center" width="40px">{{b.attivo|nonone}}</td>
+                <td>\______</td>
+				<td>{{utils.leggiArticolo(b.id_articolo_filler)["codice"]}}</td>
+				<td>{{utils.leggiArticolo(b.id_articolo_filler)["denominazione"]}}</td>
+				<td align="right">{{utils.mN(b.quantita|nonone,2)}}</td>
+				<td>{{b.attivo|nonone}}</td>
         </tr>
         {% endfor %}
         {% endif %}
 {% endfor %}
-</table>
+  </table>
+</div>
+         </div>
+</div>
+{% endblock %}
 
