@@ -33,7 +33,11 @@ Dependencies:
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 import re
-import cssSpecial
+
+try:
+    from . import cssSpecial #python 3
+except Exception:
+    import cssSpecial #python 2
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #~ Definitions
@@ -337,7 +341,7 @@ class CSSParser(object):
         i_ident = '((?:%s)(?:%s)*)' % (i_nmstart, i_nmchar)
         re_ident = re.compile(i_ident, _reflags)
         # Caution: treats all characters above 0x7f as legal for an identifier.
-        i_unicodeid = ur'([^\u0000-\u007f]+)'
+        i_unicodeid = r'([^\u0000-\u007f]+)'
         re_unicodeid = re.compile(i_unicodeid, _reflags)
         i_element_name = '((?:%s)|\*)' % (i_ident[1:-1],)
         re_element_name = re.compile(i_element_name, _reflags)
@@ -432,7 +436,7 @@ class CSSParser(object):
 
             try:
                 src, stylesheet = self._parseStylesheet(src)
-            except self.ParseError, err:
+            except self.ParseError as err:
                 err.setFullCSSSource(src)
                 raise
         finally:
@@ -448,7 +452,7 @@ class CSSParser(object):
         try:
             try:
                 src, properties = self._parseDeclarationGroup(src.strip(), braces=False)
-            except self.ParseError, err:
+            except self.ParseError as err:
                 err.setFullCSSSource(src, inline=True)
                 raise
 
@@ -475,7 +479,7 @@ class CSSParser(object):
                     src, property = self._parseDeclarationProperty(src.strip(), propertyName)
                     properties.append(property)
 
-            except self.ParseError, err:
+            except self.ParseError as err:
                 err.setFullCSSSource(src, inline=True)
                 raise
 
@@ -531,7 +535,7 @@ class CSSParser(object):
             if src.startswith('@'):
                 # @media, @page, @font-face
                 src, atResults = self._parseAtKeyword(src)
-                if atResults is not None:
+                if atResults is not None and atResults != NotImplemented:
                     stylesheetElements.extend(atResults)
             else:
                 # ruleset
@@ -1170,7 +1174,10 @@ class CSSParser(object):
         if result:
             strres = filter(None, result.groups())
             if strres:
-                strres = strres[0]
+                try:
+                    strres = strres[0]
+                except Exception:
+                    strres = result.groups()[0]
             else:
                 strres = ''
             return strres, src[result.end():]
