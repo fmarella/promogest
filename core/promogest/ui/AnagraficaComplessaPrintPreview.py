@@ -233,6 +233,16 @@ class AnagraficaPrintPreview(GladeWidget):
             s.set_orientation(Gtk.PageOrientation.LANDSCAPE)
         operation.set_default_page_setup(s)
         operation.set_export_filename(Environment.tempDir + ".temp.pdf")
+        import xhtml2pdf.pisa as pisa
+        import cStringIO
+        data=  self.print_on_screen_html.get_main_frame().get_data_source().get_data().str
+        g = open(Environment.tempDir + "ciccio.html", "w")
+        # pdf = pisa.CreatePDF(
+        #     cStringIO.StringIO(data),
+        #     g
+        # )
+        g.write(data)
+        g.close()
         p = self.print_on_screen_html.get_main_frame().print_full(operation,
                                                       gtk.PrintOperationAction.EXPORT)
         pbar(self.pbar, pulse=True, text="GENERAZIONE STAMPA ATTENDERE")

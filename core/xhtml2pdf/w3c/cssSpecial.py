@@ -37,7 +37,11 @@ Helper for complex CSS definitons like font, margin, padding and border
 Optimized for use with PISA
 """
 
-import types
+#support python 3
+#import types
+TupleType = tuple
+ListType = list
+
 import logging
 
 
@@ -45,7 +49,7 @@ log = logging.getLogger("ho.css")
 
 
 def toList(value):
-    if type(value) != types.ListType:
+    if type(value) != ListType:
         return [value]
     return value
 
@@ -156,7 +160,7 @@ def getNextPart(parts):
 
 
 def isSize(value):
-    return value and ((type(value) is types.TupleType) or value == "0")
+    return value and ((type(value) is TupleType) or value == "0")
 
 
 def splitBorder(parts):
@@ -250,7 +254,7 @@ def parseSpecialRules(declarations, debug=0):
 
             if 0:
                 part = getNextPart(parts) or oparts
-                print "~", part, parts, oparts, declarations
+                print ("~", part, parts, oparts, declarations)
                 # Color
                 if part and (not part.startswith("url")):
                     dd.append(("background-color", part, last))
@@ -414,8 +418,8 @@ def parseSpecialRules(declarations, debug=0):
         log.debug("CSS special OUT:\n%s", "\n".join([repr(d) for d in dd]))
 
     if 0: #declarations!=dd:
-        print "###", declarations
-        print "#->", dd
+        print ("###", declarations)
+        print ("#->", dd)
         # CSS MODIFY! END
     return dd
 

@@ -1,126 +1,147 @@
-{% extends 'index.html' %}
-{% block body %}<br>
-<div class="row">
-{% for dao in pageData["objects"] %}
-     <div class="col-xs-12 col-md-12">
-              <!--<div class="panel-heading">-->
-                  <h5>N° {{dao.numero}} del  {{utils.dateToString(dao.data_inizio)}}          {% if dao.righeprimanota|length==1 %} <div class="col-sm-6 pull-right"><span class="label label-default">Note</span><h4 style="display:inline;"> {{dao.note|nonone}}</h4></div>{% endif %}</h5>
-              <!--</div>-->
-
-    {% if dao.righeprimanota|length >1 %}
-      <div class="col-sm-12"><span class="label label-default">Descrizione</span><p style="display:inline;"> {{dao.note|nonone}}</p></div><br/>
-    {% endif %}
-      <!--<div class="clearfix"></div>-->
-<div class="table-responsive">
-  <table class="table  table-bordered table-striped table-condensed">
-   <tr>
-        <th><b>DESCRIZIONE</b></th>
-        <th><b>VALORE</b></th>
-        <th><b>TIPO</b></th>
-        <th><b>RIF.</b></th>
-        <th><b>NOTE</b></th>
-    </tr>
-        {% for riga in dao.righeprimanota %}
-        <tr>
-            <td>{{riga.denominazione|replace("\\n"," ")}}</td>
-            {% if riga.segno =="entrata" %}
-                <td style="color:green;">{{utils.mNLC(riga.valore,2)}}</td>
-            {% elif riga.segno =="uscita" %}
-            <td style="color:red;">-{{utils.mNLC(riga.valore,2)}}</td>
-            {% endif %}
-            {% if riga.tipo == "banca" %}
-            <td style="color:blue;">{{(riga.tipo)}}</td>
-            {% elif riga.tipo == "cassa" %}
-        	<td style="color:orange;">{{riga.tipo}}</td>
-            {% else %}
-        	<td style="color:brown;">{{riga.tipo}}</td>
-            {% endif %}
-			<td>{{riga.banca[0:30]}}</td>
-			<td>{{ riga.note_primanota|nonone }}</td>
-        </tr>
-        {% endfor %}
-  </table>
-
-</div>
-
-            <!--</div>-->
-  <!--</div>-->
-     </div>
+{#% extends 'index.html' %#}
+{#% block body %#}
+<style type="text/css" media="print">
+body {
+width: 100%;
+margin: 5px;
+padding: 5px;
+}
+table.tftable {
+page-break-before: always; // Always start new articles on a new page
+}
+table { -pdf-keep-with-next: true;}
+</style>
+<style type="text/css">
+/*table { -pdf-keep-with-next: true;}*/
+table.tftable {font-size:12px;color:#333333;width:100%;border-width: 1px;border-color: #729ea5;border-collapse: collapse;page-break-inside:avoid;}
+table.tftable th {font-size:12px;font-weight:bold;border-width: 1px;padding: 8px;border-style: solid;border-color: #729ea5;text-align:left;}
+/*table.tftable tr {background-color:#ffffff;}*/
+table.tftable td {font-size:12px;border-width: 1px;padding: 8px;border-style: solid;border-color: #729ea5;}
+</style>
+<body>
+    {% for dao in pageData["objects"] %}
+          <table class="tftable" style="page-break-inside:avoid;">
+            <tr style="page-break-inside:avoid;">
+                <th colspan="5" style="font-weight: bold" text-align="left">N° {{dao.numero}} del  {{utils.dateToString(dao.data_inizio)}} -- {{dao.note|nonone}}</th>
+                </tr>
+                {% for riga in dao.righeprimanota %}
+            <tr style="page-break-inside:avoid;">
+                <td width="70%">{{riga.denominazione|replace("\\n"," ")}}</td>
+                {% if riga.segno =="entrata" %}
+                    <td width="8%" style="color:green;">{{utils.mNLC(riga.valore,2)}}</td>
+                {% elif riga.segno =="uscita" %}
+                    <td width="8%" style="color:red;">-{{utils.mNLC(riga.valore,2)}}</td>
+                {% endif %}
+                {% if riga.tipo == "banca" %}
+                    <td width="4%" style="color:blue;">{{(riga.tipo)}}</td>
+                {% elif riga.tipo == "cassa" %}
+                    <td width="4%" style="color:orange;">{{riga.tipo}}</td>
+                {% else %}
+                    <td width="4%" style="color:brown;">{{riga.tipo}}</td>
+                {% endif %}
+                <td width="10%">{{riga.banca[0:30]}}</td>
+                <td width="6%">{{ riga.note_primanota|nonone }}</td>
+            </tr>
+                {% endfor %}
+          </table>
 {% endfor %}
-</div>
+
 {% set tot = utils.calcolaTotaliPrimeNote(pageData["objects"]) %}
-       <div class="col-sm-6">
-       <div class="panel panel-warning">
-      	  <div class="panel-heading">
-      			<h3 class="panel-title">CASSA</h3>
-      	  </div>
-      	  <div class="panel-body">
-      			        <div class="col-sm-12"><span class="label label-success">ENTRATE</span><h4 style="display:inline;"><strong> {{utils.mNLC(tot["tot_entrate_cassa"],2)}}</strong></h4></div>
-                      <div class="col-sm-12"><span class="label label-danger">USCITE</span><h4 style="display:inline;"><strong> {{utils.mNLC(tot["tot_uscite_cassa"],2)}}</strong></h4></div>
-              <div class="col-sm-12"><span class="label label-warning">SALDO</span><h4 style="display:inline;"><strong> {{utils.mNLC(tot["saldo_cassa"],2)}}</strong></h4></div>
-      	  </div>
-      </div></div>
-
-       <div class="col-sm-6">
-       <div class="panel panel-info">
-      	  <div class="panel-heading">
-      			<h3 class="panel-title">BANCA</h3>
-      	  </div>
-      	  <div class="panel-body">
-      			        <div class="col-sm-12"><span class="label label-success">ENTRATE</span><h4 style="display:inline;"><strong> {{utils.mNLC(tot["tot_entrate_banca"],2)}}</strong></h4></div>
-                      <div class="col-sm-12"><span class="label label-danger">USCITE</span><h4 style="display:inline;"><strong> {{utils.mNLC(tot["tot_uscite_banca"],2)}}</strong></h4></div>
-              <div class="col-sm-12"><span class="label label-warning">SALDO</span><h4 style="display:inline;"><strong> {{utils.mNLC(tot["saldo_banca"],2)}}</strong></h4></div>
-      	  </div>
-      </div></div>
+    <div class="col-sm-6">
+        <div class="panel panel-warning">
+        <div class="panel-heading">
+            <h3 class="panel-title">CASSA</h3>
+        </div>
+        <div class="panel-body">
+            <div class="col-sm-12">
+                <span class="label label-success">ENTRATE</span>
+                    <h4 style="display:inline;"><strong> {{utils.mNLC(tot["tot_entrate_cassa"],2)}}</strong></h4>
+            </div>
+            <div class="col-sm-12">
+                <span class="label label-danger">USCITE</span>
+                    <h4 style="display:inline;"><strong> {{utils.mNLC(tot["tot_uscite_cassa"],2)}}</strong></h4>
+            </div>
+            <div class="col-sm-12">
+                <span class="label label-warning">SALDO</span>
+                    <h4 style="display:inline;"><strong> {{utils.mNLC(tot["saldo_cassa"],2)}}</strong></h4>
+            </div>
+        </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">BANCA</h3>
+        </div>
+        <div class="panel-body">
+            <div class="col-sm-12">
+                <span class="label label-success">ENTRATE</span>
+                    <h4 style="display:inline;"><strong> {{utils.mNLC(tot["tot_entrate_banca"],2)}}</strong></h4>
+            </div>
+            <div class="col-sm-12">
+                <span class="label label-danger">USCITE</span>
+                    <h4 style="display:inline;"><strong> {{utils.mNLC(tot["tot_uscite_banca"],2)}}</strong></h4>
+            </div>
+            <div class="col-sm-12">
+                <span class="label label-warning">SALDO</span>
+                    <h4 style="display:inline;"><strong> {{utils.mNLC(tot["saldo_banca"],2)}}</strong></h4>
+            </div>
+        </div>
+        </div>
+    </div>
         {% for k,v in tot["tot_entrate_per_banche"].iteritems() %}
-           <div class="col-sm-4">
-       <div class="panel panel-default">
-      	  <div class="panel-heading">
-      			<h3 class="panel-title">{{ utils.getDenominazioneBanca(k) }}</h3>
-      	  </div>
-      	  <div class="panel-body">
-      			        <div class="col-sm-12"><span class="label label-success">ENTRATE</span><h4 style="display:inline;"><strong> {{ utils.mNLC(v, 2) }}</strong></h4></div>
-                      <div class="col-sm-12"><span class="label label-danger">USCITE</span>
-          <h4 style="display:inline;"><strong> {{utils.mNLC(tot["tot_uscite_per_banche"][k],2)}}</strong></h4></div>
-
-                            <div class="col-sm-12"><span class="label label-warning">SALDO</span><h4 style="display:inline;"><strong> {{ utils.mNLC(v+(tot["tot_uscite_per_banche"][k] or 0), 2) }}</strong></h4></div>
-
-
-
-      	  </div>
-      </div>
-           </div>
-
+        <div class="col-sm-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">{{ utils.getDenominazioneBanca(k) }}</h3>
+                </div>
+            <div class="panel-body">
+                <div class="col-sm-12">
+                    <span class="label label-success">ENTRATE</span>
+                        <h4 style="display:inline;"><strong> {{ utils.mNLC(v, 2) }}</strong></h4>
+                </div>
+                <div class="col-sm-12">
+                    <span class="label label-danger">USCITE</span>
+                        <h4 style="display:inline;"><strong> {{utils.mNLC(tot["tot_uscite_per_banche"][k],2)}}</strong></h4>
+                </div>
+                <div class="col-sm-12">
+                    <span class="label label-warning">SALDO</span>
+                        <h4 style="display:inline;"><strong> {{ utils.mNLC(v+(tot["tot_uscite_per_banche"][k] or 0), 2) }}</strong></h4>
+                </div>
+            </div>
+            </div>
+       </div>
         {% endfor %}
+    <table class="table  table-bordered table-striped table-condensed">
+        {% if utils.setconf("PrimaNota", "saldi_periodo") %}
+            {% set tot_init = utils.calcolaSaldoPeriodoPrimaNota() %}
+            {% if utils.getDataFiltroPrimaNota() != '' %}
+                {% if tot_init["saldo_cassa"] > 0 %}
+                <tr>
+                    <td style="width:120px;"><b>SALDO DI CASSA DAL 01/01</b></td>
+                    <td style="color:green;width:90px;text-align:right;font-size:12px"> {{utils.mNLC(tot_init["saldo_cassa"],2)}}</td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td style="width:120px;"><b>SALDO DI CASSA DAL 01/01</b></td>
+                    <td style="color:red;width:90px;text-align:right;font-size:12px"> {{utils.mNLC(tot_init["saldo_cassa"],2)}}</td>
+                </tr>
+                {% endif %}
+                {% if tot_init["saldo_banca"] > 0 %}
+                <tr>
+                    <td style="width:120px;"><b>SALDO DI BANCA DAL 01/01</b></td>
+                    <td style="color:green;width:90px;text-align:right;font-size:12px"> {{utils.mNLC(tot_init["saldo_banca"],2)}}</td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td style="width:120px;"><b>SALDO DI BANCA DAL 01/01</b></td>
+                    <td style="color:red;width:90px;text-align:right;font-size:12px"> {{utils.mNLC(tot_init["saldo_banca"],2)}}</td>
+                </tr>
+                {% endif %}
+            {% endif %}
+        {% endif %}
+    </table>
 
-
-{% if utils.setconf("PrimaNota", "saldi_periodo") %}
-{% set tot_init = utils.calcolaSaldoPeriodoPrimaNota() %}
-
-{% if utils.getDataFiltroPrimaNota() != '' %}
-        {% if tot_init["saldo_cassa"] > 0 %}
-<tr>
-        <td style="width:120px;"><b>SALDO DI CASSA DAL 01/01</b></td>
-        <td style="color:green;width:90px;text-align:right;font-size:12px"> {{utils.mNLC(tot_init["saldo_cassa"],2)}}</td>
-</tr>
-        {% else %}
-<tr>
-        <td style="width:120px;"><b>SALDO DI CASSA DAL 01/01</b></td>
-        <td style="color:red;width:90px;text-align:right;font-size:12px"> {{utils.mNLC(tot_init["saldo_cassa"],2)}}</td>
-</tr>
-         {% endif %}
-        {% if tot_init["saldo_banca"] > 0 %}
-<tr>
-        <td style="width:120px;"><b>SALDO DI BANCA DAL 01/01</b></td>
-        <td style="color:green;width:90px;text-align:right;font-size:12px"> {{utils.mNLC(tot_init["saldo_banca"],2)}}</td>
-</tr>
-        {% else %}
-<tr>
-        <td style="width:120px;"><b>SALDO DI BANCA DAL 01/01</b></td>
-        <td style="color:red;width:90px;text-align:right;font-size:12px"> {{utils.mNLC(tot_init["saldo_banca"],2)}}</td>
-</tr>
-         {% endif %}
-{% endif %}
-{% endif %}
-</table>
-{% endblock %}
+    </div>
+    </body>
+{#% endblock %#}

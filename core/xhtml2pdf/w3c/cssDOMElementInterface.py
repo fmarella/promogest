@@ -13,7 +13,10 @@
 #~ Imports
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-import css
+try:
+    from . import css #python 3
+except Exception:
+    import css #python 2
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #~ Definitions
@@ -68,7 +71,8 @@ class CSSDOMElementInterface(css.CSSElementInterfaceAbstract):
 
     #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    def matchesNode(self, (namespace, tagName)):
+    def matchesNode(self, namespace_tagName):
+        namespace,tagName = namespace_tagName
         if tagName not in ('*', self.domElement.tagName):
             return False
         if namespace in (None, '', '*'):

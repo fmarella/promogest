@@ -1,13 +1,3 @@
-<style>
-
-    body {
-        background-color: white;
-/*        font-family: monospace;*/
-    }
-
-    table {
-        width: 98%;
-    }
 
     tr {
         border-bottom : 1px solid black;
@@ -71,8 +61,3 @@
     th.number {
         text-align: right;
     }
-    #container {
-    width: auto;
-}
-
-</style>

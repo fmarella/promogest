@@ -3,7 +3,69 @@
 # see license.txt for license details
 # history http://www.reportlab.co.uk/cgi-bin/viewcvs.cgi/public/reportlab/trunk/reportlab/platypus/paragraph.py
 # Modifications by Dirk Holtwick, 2008
-from string import join, whitespace
+
+try:
+    join = str.join #python 3
+except Exception:
+    from string import join #python 2
+
+
+#validate version sys.version[0] == 2 -> is python 2
+#validate version sys.version[0] == 3 -> is python 3
+import sys
+"""
+Tests on functionality join
+in both versions of python
+
+Results python 3...
+>>>var1 = "hola"
+>>> var2 = "adios"
+>>> join(var1,var2)
+'aholadholaiholaoholas'
+>>> "hola".join("adios")
+'aholadholaiholaoholas'
+
+>>> join(" ","cdd")
+'c d d'
+
+
+Results python 2...
+>>> var1 = "hola"
+>>> var2 = "adios"
+>>> join(var1,var2)
+'hadiosoadiosladiosa'
+>>> "hola".join("adios")
+'aholadholaiholaoholas'
+
+>>> join("cdd")
+'c d d'
+"""
+
+###############################################################
+###############################################################
+###############################################################
+#if not python 2, the internal behavior of the join is changed
+if sys.version[0] != '2':
+    join_old = join
+    def join(var1 = None, var2 = None):
+        if var2 is None:
+            var2 = var1
+            var1 = " "
+        else:
+            aux = var1
+            var1 = var2
+            var2 = aux
+        return join_old(var1, var2)
+###############################################################
+###############################################################
+###############################################################
+
+try:
+    unicode = str #python 3
+except Exception:
+    pass #python 2
+
+from string import whitespace
 from operator import truth
 from reportlab.pdfbase.pdfmetrics import stringWidth, getAscentDescent
 from reportlab.platypus.paraparser import ParaParser
@@ -55,9 +117,15 @@ _wsc_re_split = re.compile('[%s]+' % re.escape(''.join((
 
 def split(text, delim=None):
     if type(text) is str:
-        text = text.decode('utf8')
+        try:
+            text = text.decode('utf8')
+        except Exception:
+            pass
     if type(delim) is str:
-        delim = delim.decode('utf8')
+        try:
+            delim = delim.decode('utf8')
+        except Exception:
+            pass
     elif delim is None and u'\xa0' in text:
         return [uword.encode('utf8') for uword in _wsc_re_split(text)]
     return [uword.encode('utf8') for uword in text.split(delim)]
@@ -65,7 +133,10 @@ def split(text, delim=None):
 
 def strip(text):
     if type(text) is str:
-        text = text.decode('utf8')
+        try:
+            text = text.decode('utf8')
+        except Exception:
+            pass
     return text.strip().encode('utf8')
 
 
@@ -98,7 +169,8 @@ _parser = ParaParser()
 
 
 def _lineClean(L):
-    return join(filter(truth, split(strip(L))))
+    return join( filter(truth, split(strip(L))) )
+
 
 
 def cleanBlockQuotedText(text, joiner=' '):
@@ -107,7 +179,6 @@ def cleanBlockQuotedText(text, joiner=' '):
     (hopefully) the paragraph the user intended originally."""
     L = filter(truth, map(_lineClean, split(text, '\n')))
     return join(L, joiner)
-
 
 def setXPos(tx, dx):
     if dx > 1e-6 or dx < -1e-6:
@@ -340,7 +411,10 @@ def _putFragLine(cur_x, tx, line):
                     xs.linkColor = xs.textColor
             txtlen = tx._canvas.stringWidth(text, tx._fontname, tx._fontsize)
             cur_x += txtlen
-            nSpaces += text.count(' ')
+            try:
+                nSpaces += text.count(' ')
+            except Exception:
+                nSpaces += text.decode("utf8").count(' ')
     cur_x_s = cur_x + (nSpaces - 1) * ws
 
     # XXX Modified for XHTML2PDF
@@ -978,11 +1052,11 @@ class Paragraph(Flowable):
     def wrap(self, availWidth, availHeight):
 
         if self.debug:
-            print id(self), "wrap"
+            print (id(self), "wrap")
             try:
-                print repr(self.getPlainText()[:80])
+                print (repr(self.getPlainText()[:80]))
             except:
-                print "???"
+                print ("???")
 
         # work out widths array for breaking
         self.width = availWidth
@@ -1044,7 +1118,7 @@ class Paragraph(Flowable):
     def split(self, availWidth, availHeight):
 
         if self.debug:
-            print  id(self), "split"
+            print  (id(self), "split")
 
         if len(self.frags) <= 0: return []
 
@@ -1159,7 +1233,7 @@ class Paragraph(Flowable):
         """
 
         if self.debug:
-            print id(self), "breakLines"
+            print (id(self), "breakLines")
 
         if not isinstance(width, (tuple, list)):
             maxWidths = [width]
@@ -1289,7 +1363,14 @@ class Paragraph(Flowable):
                         g.text = nText
                     else:
                         if nText != '' and nText[0] != ' ':
-                            g.text += ' ' + nText
+                            try:
+                                g.text += ' ' + nText
+                            except Exception:
+                                try:
+                                    g.text = g.text.decode("utf8")
+                                except Exception:
+                                    pass
+                                g.text += ' ' + nText.decode("utf8")
 
                     for i in w[2:]:
                         g = i[0].clone()
@@ -1378,7 +1459,7 @@ class Paragraph(Flowable):
         Cannot handle font variations."""
 
         if self.debug:
-            print id(self), "breakLinesCJK"
+            print (id(self), "breakLinesCJK")
 
         if not isinstance(width, (list, tuple)):
             maxWidths = [width]
@@ -1433,7 +1514,7 @@ class Paragraph(Flowable):
         algorithm will go infinite."""
 
         if self.debug:
-            print id(self), "drawPara", self.blPara.kind
+            print (id(self), "drawPara", self.blPara.kind)
 
         #stash the key facts locally for speed
         canvas = self.canv
@@ -1661,7 +1742,7 @@ class Paragraph(Flowable):
 
 if __name__ == '__main__':    # NORUNTESTS
     def dumpParagraphLines(P):
-        print 'dumpParagraphLines(<Paragraph @ %d>)' % id(P)
+        print ('dumpParagraphLines(<Paragraph @ %d>)') % id(P)
         lines = P.blPara.lines
         for l, line in enumerate(lines):
             line = lines[l]
@@ -1670,10 +1751,10 @@ if __name__ == '__main__':    # NORUNTESTS
             else:
                 words = line[1]
             nwords = len(words)
-            print 'line%d: %d(%s)\n  ' % (l, nwords, str(getattr(line, 'wordCount', 'Unknown'))),
+            print ('line%d: %d(%s)\n  ') % (l, nwords, str(getattr(line, 'wordCount', 'Unknown'))),
             for w in xrange(nwords):
-                print "%d:'%s'" % (w, getattr(words[w], 'text', words[w])),
-            print
+                print ("%d:'%s'") % (w, getattr(words[w], 'text', words[w])),
+            print()
 
     def fragDump(w):
         R = ["'%s'" % w[1]]
@@ -1683,26 +1764,25 @@ if __name__ == '__main__':    # NORUNTESTS
         return ', '.join(R)
 
     def dumpParagraphFrags(P):
-        print 'dumpParagraphFrags(<Paragraph @ %d>) minWidth() = %.2f' % (id(P), P.minWidth())
+        print ('dumpParagraphFrags(<Paragraph @ %d>) minWidth() = %.2f') % (id(P), P.minWidth())
         frags = P.frags
         n = len(frags)
         for l in xrange(n):
-            print "frag%d: '%s' %s" % (
+            print ("frag%d: '%s' %s") % (
             l, frags[l].text, ' '.join(['%s=%s' % (k, getattr(frags[l], k)) for k in frags[l].__dict__ if k != text]))
 
         l = 0
         cum = 0
         for W in _getFragWords(frags):
             cum += W[0]
-            print "fragword%d: cum=%3d size=%d" % (l, cum, W[0]),
+            print ("fragword%d: cum=%3d size=%d") % (l, cum, W[0]),
             for w in W[1:]:
-                print '(%s)' % fragDump(w),
-            print
+                print ('(%s)') % fragDump(w),
+            print()
             l += 1
 
     from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
     from reportlab.lib.units import cm
-    import sys
 
     TESTS = sys.argv[1:]
     if TESTS == []:
@@ -1770,12 +1850,12 @@ umfassend zu sein."""
         P = Paragraph(text, B)
         dumpParagraphFrags(P)
         w, h = P.wrap(aW, aH)
-        print 'After initial wrap', w, h
+        print ('After initial wrap', w, h)
         dumpParagraphLines(P)
         S = P.split(aW, aH)
         dumpParagraphFrags(S[0])
         w0, h0 = S[0].wrap(aW, aH)
-        print 'After split wrap', w0, h0
+        print ('After split wrap', w0, h0)
         dumpParagraphLines(S[0])
 
     if flagged(5):
@@ -1810,7 +1890,7 @@ umfassend zu sein."""
         w, h = P.wrap(6 * 72, 9.7 * 72)
         dumpParagraphLines(P)
         S = P.split(6 * 72, h / 2.0)
-        print len(S)
+        print (len(S))
         dumpParagraphLines(S[0])
         dumpParagraphLines(S[1])
 

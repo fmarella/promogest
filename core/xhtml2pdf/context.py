@@ -17,8 +17,19 @@ import logging
 import os
 import re
 import reportlab
-import types
-import urlparse
+import sys
+#support python 3
+#from types import StringTypes, TupleType, ListType
+if sys.version[0] == '2':
+    StringTypes = (str,unicode)
+else:
+    StringTypes = (str,)
+TupleType = tuple
+ListType = list
+try:
+    import urlparse
+except ImportError:
+    import urllib.parse as urlparse
 import xhtml2pdf.default
 import xhtml2pdf.parser
 
@@ -164,7 +175,7 @@ class pisaCSSBuilder(css.CSSBuilder):
         # Font weight
         fweight = str(data.get("font-weight", "normal")).lower()
         bold = fweight in ("bold", "bolder", "500", "600", "700", "800", "900")
-        if not bold and fweight <> "normal":
+        if not bold and fweight != "normal":
             log.warn(self.c.warning("@fontface, unknown value font-weight '%s'", fweight))
 
         # Font style
@@ -218,7 +229,10 @@ class pisaCSSBuilder(css.CSSBuilder):
             result = self.ruleset([self.selector('*')], declarations)
 
             if declarations:
-                data = result[0].values()[0]
+                try:
+                    data = result[0].values()[0]
+                except Exception:
+                    data = result[0].popitem()[1]
                 pageBorder = data.get("-pdf-frame-border", None)
 
         if name in c.templateList:
@@ -230,15 +244,17 @@ class pisaCSSBuilder(css.CSSBuilder):
         isLandscape = False
         if "size" in data:
             size = data["size"]
-            if type(size) is not types.ListType:
+            if type(size) is not ListType:
                 size = [size]
             sizeList = []
             for value in size:
                 valueStr = str(value).lower()
-                if type(value) is types.TupleType:
+                if type(value) is TupleType:
                     sizeList.append(getSize(value))
                 elif valueStr == "landscape":
                     isLandscape = True
+                elif valueStr == "portrait":
+                    isLandscape = False
                 elif valueStr in xhtml2pdf.default.PML_PAGESIZES:
                     c.pageSize = xhtml2pdf.default.PML_PAGESIZES[valueStr]
                 else:
@@ -358,7 +374,10 @@ class pisaCSSBuilder(css.CSSBuilder):
 
             data = result[0]
             if data:
-                data = data.values()[0]
+                try:
+                    data = data.values()[0]
+                except Exception:
+                    data = data.popitem()[1]
                 self.c.frameList.append(
                     self._pisaAddFrame(name, data, size=self.c.pageSize))
 
@@ -827,12 +846,12 @@ class pisaContext(object):
         Name of a font
         """
         # print names, self.fontList
-        if type(names) is not types.ListType:
-            if type(names) not in types.StringTypes:
+        if type(names) is not ListType:
+            if type(names) not in StringTypes:
                 names = str(names)
             names = names.strip().split(",")
         for name in names:
-            if type(name) not in types.StringTypes:
+            if type(name) not in StringTypes:
                 name = str(name)
             font = self.fontList.get(name.strip().lower(), None)
             if font is not None:
@@ -842,7 +861,7 @@ class pisaContext(object):
     def registerFont(self, fontname, alias=[]):
         self.fontList[str(fontname).lower()] = str(fontname)
         for a in alias:
-            if type(fontname) not in types.StringTypes:
+            if type(fontname) not in StringTypes:
                 fontname = str(fontname)
             self.fontList[str(a)] = fontname
 
@@ -856,7 +875,7 @@ class pisaContext(object):
 
             log.debug("Load font %r", src)
 
-            if type(names) is types.ListType:
+            if type(names) is ListType:
                 fontAlias = names
             else:
                 fontAlias = (x.lower().strip() for x in names.split(",") if x)
