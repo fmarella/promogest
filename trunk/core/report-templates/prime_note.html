@@ -3,13 +3,19 @@
 <style type="text/css" media="print">
 body {
 width: 100%;
-margin: 5px;
-padding: 5px;
+margin: 0;
+padding: 0;
 }
+div {
+               /*height: 20px;*/
+                 page-break-inside: avoid;
+             }
+.page-break	{ display: block; page-break-before: always; }
 table.tftable {
 page-break-before: always; // Always start new articles on a new page
 }
 table { -pdf-keep-with-next: true;}
+.dontsplit {page-break-inside: avoid; }
 </style>
 <style type="text/css">
 /*table { -pdf-keep-with-next: true;}*/
@@ -25,27 +31,27 @@ table.tftable td {font-size:12px;border-width: 1px;padding: 8px;border-style: so
                 <th colspan="5" style="font-weight: bold" text-align="left">N° {{dao.numero}} del  {{utils.dateToString(dao.data_inizio)}} -- {{dao.note|nonone}}</th>
                 </tr>
                 {% for riga in dao.righeprimanota %}
-            <tr style="page-break-inside:avoid;">
-                <td width="70%">{{riga.denominazione|replace("\\n"," ")}}</td>
+            <tr>
+                <td width="70%"><div class="dontsplit">{{riga.denominazione|replace("\\n"," ")}}</div></td>
                 {% if riga.segno =="entrata" %}
-                    <td width="8%" style="color:green;">{{utils.mNLC(riga.valore,2)}}</td>
+                    <td width="8%" style="color:green;"><div class="dontsplit">{{utils.mNLC(riga.valore,2)}}</div></td>
                 {% elif riga.segno =="uscita" %}
-                    <td width="8%" style="color:red;">-{{utils.mNLC(riga.valore,2)}}</td>
+                    <td width="8%" style="color:red;"><div class="dontsplit">{{utils.mNLC(riga.valore,2)}}</div></td>
                 {% endif %}
                 {% if riga.tipo == "banca" %}
-                    <td width="4%" style="color:blue;">{{(riga.tipo)}}</td>
+                    <td width="4%" style="color:blue;"><div class="dontsplit">{{(riga.tipo)}}</div></td>
                 {% elif riga.tipo == "cassa" %}
-                    <td width="4%" style="color:orange;">{{riga.tipo}}</td>
+                    <td width="4%" style="color:orange;"><div class="dontsplit">{{riga.tipo}}</div></td>
                 {% else %}
-                    <td width="4%" style="color:brown;">{{riga.tipo}}</td>
+                    <td width="4%" style="color:brown;"><div class="dontsplit">{{riga.tipo}}</div></td>
                 {% endif %}
-                <td width="10%">{{riga.banca[0:30]}}</td>
-                <td width="6%">{{ riga.note_primanota|nonone }}</td>
+                <td width="10%"><div class="dontsplit">{{riga.banca[0:30]}}</div></td>
+                <td width="6%"><div class="dontsplit">{{ riga.note_primanota|nonone }}</div></td>
             </tr>
                 {% endfor %}
           </table>
 {% endfor %}
-
+<div class="page-break"></div>
 {% set tot = utils.calcolaTotaliPrimeNote(pageData["objects"]) %}
     <div class="col-sm-6">
         <div class="panel panel-warning">

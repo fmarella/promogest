@@ -23,18 +23,14 @@ from promogest.ui.AnagraficaComplessa import Anagrafica
 from promogest.ui.AnagraficaComplessaReport import AnagraficaReport
 from promogest.ui.AnagraficaComplessaHtml import AnagraficaHtml
 
-from promogest.ui.anagFornitori.AnagraficaFornitoriEdit import AnagraficaFornitoriEdit
-from promogest.ui.anagFornitori.AnagraficaFornitoriFilter import AnagraficaFornitoriFilter
 from promogest.modules.PrimaNota.ui.\
                         AnagraficaPrimaNotaEdit import AnagraficaPrimaNotaEdit
 from promogest.modules.PrimaNota.ui.\
                     AnagraficaPrimaNotaFilter import AnagraficaPrimaNotaFilter
-#from promogest.lib.utils import *
-#from promogest.ui.utilsCombobox import *
-
 
 class AnagraficaPrimaNota(Anagrafica):
-    """ Anagrafica Variazioni Listini """
+    """ Anagrafica Prima nota
+    """
 
     def __init__(self, aziendaStr=None):
         Anagrafica.__init__(self,
@@ -45,7 +41,6 @@ class AnagraficaPrimaNota(Anagrafica):
                         reportHandler=AnagraficaPrimaNotaReport(self),
                         editElement=AnagraficaPrimaNotaEdit(self),
                         aziendaStr=aziendaStr)
-#        self.records_print_on_screen_button.set_sensitive(False)
         self.records_print_button.set_sensitive(False)
         self.records_file_export.set_sensitive(True)
         self.record_duplicate_menu.set_sensitive(False)
