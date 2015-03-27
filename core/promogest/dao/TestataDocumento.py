@@ -1193,6 +1193,7 @@ class TestataDocumento(Base, Dao):
                 dic = {k: TestataDocumento.__table__.c.operazione.ilike("%acquisto%")}
         elif k == 'descrizioneRiga':
             dic = {k: and_(t_riga.c.descrizione.ilike("%"+v+"%"),
+                    t_riga.c.id_articolo ==None,
                     t_riga.c.id==t_riga_documento.c.id,
                     t_riga_documento.c.id_testata_documento == self.__table__.c.id)}
         elif k == 'idArticoloMov' or k == "idArticolo":
