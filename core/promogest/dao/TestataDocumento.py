@@ -1192,10 +1192,9 @@ class TestataDocumento(Base, Dao):
             elif v == "tutti_acquisto_con_ddt":
                 dic = {k: TestataDocumento.__table__.c.operazione.ilike("%acquisto%")}
         elif k == 'descrizioneRiga':
-            dic = {k: and_(Riga.descrizione.ilike("%"+v+"%"),
-                    Riga.id==RigaDocumento.id,
-                    RigaDocumento.id_testata_documento == TestataDocumento.id)}
-
+            dic = {k: and_(t_riga.c.descrizione.ilike("%"+v+"%"),
+                    t_riga.c.id==t_riga_documento.c.id,
+                    t_riga_documento.c.id_testata_documento == self.__table__.c.id)}
         elif k == 'idArticoloMov' or k == "idArticolo":
             #from data.testataMovimento import t_testata_movimento
             dic = {k: and_(v ==t_riga.c.id_articolo,
