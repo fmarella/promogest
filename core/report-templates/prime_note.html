@@ -32,11 +32,11 @@ table.tftable td {font-size:12px;border-width: 1px;padding: 8px;border-style: so
                 </tr>
                 {% for riga in dao.righeprimanota %}
             <tr>
-                <td width="70%"><div class="dontsplit">{{riga.denominazione|replace("\\n"," ")}}</div></td>
+                <td width="68%"><div class="dontsplit">{{riga.denominazione|replace("\\n"," ")}}</div></td>
                 {% if riga.segno =="entrata" %}
-                    <td width="8%" style="color:green;"><div class="dontsplit">{{utils.mNLC(riga.valore,2)}}</div></td>
+                    <td width="12%" style="color:green;"><div class="dontsplit">{{utils.mNLC(riga.valore,2)}}</div></td>
                 {% elif riga.segno =="uscita" %}
-                    <td width="8%" style="color:red;"><div class="dontsplit">{{utils.mNLC(riga.valore,2)}}</div></td>
+                    <td width="12%" style="color:red;"><div class="dontsplit">-{{utils.mNLC(riga.valore,2)}}</div></td>
                 {% endif %}
                 {% if riga.tipo == "banca" %}
                     <td width="4%" style="color:blue;"><div class="dontsplit">{{(riga.tipo)}}</div></td>
@@ -45,8 +45,10 @@ table.tftable td {font-size:12px;border-width: 1px;padding: 8px;border-style: so
                 {% else %}
                     <td width="4%" style="color:brown;"><div class="dontsplit">{{riga.tipo}}</div></td>
                 {% endif %}
-                <td width="10%"><div class="dontsplit">{{riga.banca[0:30]}}</div></td>
+                <td width="15%"><div class="dontsplit">{{riga.banca[0:20]}}</div></td>
+<!--
                 <td width="6%"><div class="dontsplit">{{ riga.note_primanota|nonone }}</div></td>
+-->
             </tr>
                 {% endfor %}
           </table>
