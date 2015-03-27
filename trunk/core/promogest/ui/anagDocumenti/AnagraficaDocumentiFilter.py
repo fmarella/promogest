@@ -29,10 +29,10 @@ from promogest.ui.AnagraficaComplessaFilter import AnagraficaFilter
 from promogest.lib.utils import *
 from promogest.dao.TestataDocumento import TestataDocumento
 from promogest.dao.Cliente import Cliente
-import datetime
 from promogest.ui.Ricerca import Ricerca
 from promogest.ui.utilsCombobox import *
 from promogest import Environment
+
 
 class AnagraficaDocumentiFilter(AnagraficaFilter):
     """ Filtro per la ricerca nei documenti """
@@ -58,7 +58,7 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         #treeselection.set_mode(GTK_SELECTIONMODE_MULTIPLE)
 
         fillComboboxPagamenti(self.id_pagamento_filter_combobox)
-        fillComboboxOperazioni(self.id_operazione_filter_combobox, 'documento',True, extra=True)
+        fillComboboxOperazioni(self.id_operazione_filter_combobox, 'documento', True, extra=True)
         self.id_operazione_filter_combobox.set_active(0)
         fillComboboxMagazzini(self.id_magazzino_filter_combobox, True)
         self.id_operazione_filter_combobox.set_wrap_width(setconf("Numbers", "combo_column") or 1)
@@ -118,10 +118,10 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         self.descrizione_riga_entry.set_text("")
         self.id_pagamento_filter_combobox.set_active(-1)
         self.id_operazione_filter_combobox.set_active(0)
-        if hasattr(self._anagrafica,"_magazzinoFissato") and not self._anagrafica._magazzinoFissato:
+        if hasattr(self._anagrafica, "_magazzinoFissato") and not self._anagrafica._magazzinoFissato:
             fillComboboxMagazzini(self.id_magazzino_filter_combobox, True)
             self.id_magazzino_filter_combobox.set_active(0)
-        elif hasattr(self._anagrafica,"_magazzinoFissato"):
+        elif hasattr(self._anagrafica, "_magazzinoFissato"):
             findComboboxRowFromId(self.id_magazzino_filter_combobox,
                                   self._anagrafica._idMagazzino)
         self.id_cliente_filter_customcombobox.set_active(0)
@@ -158,7 +158,7 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         protocollo = prepareFilterString(self.protocollo_entry.get_text())
         descrizioneRiga = self.descrizione_riga_entry.get_text()
         idOperazione = prepareFilterString(findIdFromCombobox(self.id_operazione_filter_combobox))
-        stringaOpe = findStrFromCombobox(self.id_operazione_filter_combobox,2)
+        stringaOpe = findStrFromCombobox(self.id_operazione_filter_combobox, 2)
         extra = None
         if stringaOpe == "TUTTI Doc vendita":
             extra = "tutti_vendita"
@@ -179,7 +179,6 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
             if idCatClis:
                 idCliente = idCatClis
 
-
         if self.tutto_radio.get_active():
             statoDocumento = None
         elif self.saldato_radio.get_active():
@@ -190,29 +189,28 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         if self.solo_contabili_check.get_active():
             soloContabili = bool(True)
         else:
-            soloContabili=None
+            soloContabili = None
         if self.id_clienti_abbinati:
             idCliente = self.id_clienti_abbinati
         idArticolo = self.id_articolo_filter_customcombobox.getId()
         #genero il dizionario dei filtri
-        self.filterDict = {"daNumero":daNumero,
-                            "aNumero":aNumero,
-                            "daData":self.daData,
-                            "aData":self.aData,
-                            "daParte":None,
-                            "aParte":None,
-                            "protocollo":protocollo,
+        self.filterDict = {"daNumero": daNumero,
+                            "aNumero": aNumero,
+                            "daData": self.daData,
+                            "aData": self.aData,
+                            "daParte": None,
+                            "aParte": None,
+                            "protocollo": protocollo,
                             "idPagamento": idPagamento,
-                            "idOperazione":idOperazione,
-                            "idMagazzino":idMagazzino,
-                            "idCliente":idCliente,
-                            "idFornitore":idFornitore,
-                            "idAgente":idAgente,
-                            "statoDocumento":statoDocumento,
-                            "soloContabili":soloContabili,
+                            "idOperazione": idOperazione,
+                            "idMagazzino": idMagazzino,
+                            "idCliente": idCliente,
+                            "idFornitore": idFornitore,
+                            "idAgente": idAgente,
+                            "statoDocumento": loContabili,
                             "descrizioneRiga": descrizioneRiga,
-                            "daDataPagamento":daDataPagamento,
-                            "aDataPagamento":aDataPagamento,
+                            "daDataPagamento": daDataPagamento,
+                            "aDataPagamento": aDataPagamento,
                             "extra":extra}
 
         if posso("GN"):
