@@ -207,7 +207,7 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
                             "idCliente": idCliente,
                             "idFornitore": idFornitore,
                             "idAgente": idAgente,
-                            "statoDocumento": loContabili,
+                            "statoDocumento": soloContabili,
                             "descrizioneRiga": descrizioneRiga,
                             "daDataPagamento": daDataPagamento,
                             "aDataPagamento": aDataPagamento,
@@ -218,11 +218,10 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
             aDataInizioNoleggio = stringToDate(self.a_data_inizio_noleggio_filter_entry.get_text())
             daDataFineNoleggio = stringToDate(self.da_data_fine_noleggio_filter_entry.get_text())
             aDataFineNoleggio = stringToDateBumped(self.a_data_fine_noleggio_filter_entry.get_text())
-            self.filterDict.update(daDataInizioNoleggio = daDataInizioNoleggio,
-                                    aDataInizioNoleggio = aDataInizioNoleggio,
-                                    daDataFineNoleggio = daDataFineNoleggio,
-                                    aDataFineNoleggio = aDataFineNoleggio)
-
+            self.filterDict.update(daDataInizioNoleggio=daDataInizioNoleggio,
+                                    aDataInizioNoleggio=aDataInizioNoleggio,
+                                    daDataFineNoleggio=daDataFineNoleggio,
+                                    aDataFineNoleggio=aDataFineNoleggio)
 
         def filterCountClosure():
             if idArticolo:
