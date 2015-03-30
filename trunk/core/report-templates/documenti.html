@@ -1,9 +1,8 @@
 {% extends 'index.html' %}
 {% block body %}
 <div class="row">
-    <div style="margin-top:5px;margin-bottom:10px;" class="alert alert-default col-sm-12" role="alert"><h4 style="display:inline;">Azienda: &nbsp;</h4> <h4 style="display:inline;"><strong><big> {{pageData["azienda"].denominazione}}</big></strong></h4></div>
+    <div class="alert alert-default col-sm-12" role="alert"><h4 style="display:inline;">Azienda: &nbsp;</h4> <h4 style="display:inline;"><strong><big> {{pageData["azienda"].denominazione}}</big></strong></h4></div>
      <div class="col-xs-12 col-md-12">
-         <h3>Report Documenti</h3>
 <div class="table">
   <table class="table  table-bordered table-striped table-condensed">
    <thead>
@@ -55,7 +54,7 @@
         <div class="col-sm-4">
           <div class="panel panel-primary">
             <div class="panel-heading">
-              <h3 class="panel-title">Aliquota {{ utils.mN(k, 0) }}%</h3>
+              <h5 class="panel-title">Aliquota {{ utils.mN(k, 0) }}%</h5>
             </div>
             <div class="panel-body">
                 <div class="col-sm-12"><span class="label label-primary">IMPONIBILE</span> {{utils.mNLC(v[0], 2)}}</div>
@@ -68,7 +67,7 @@
                        <div class="col-sm-6">
           <div class="panel panel-default">
             <div class="panel-heading">
-              <h3 class="panel-title">TOTALI NON SCONTATI</h3>
+              <h5 class="panel-title">TOTALI NON SCONTATI</h5>
             </div>
             <div class="panel-body">
                 <div class="col-sm-12"><span class="label label-default">IMPONIBILE</span> {{utils.mNLC(tot["totale_imponibile_non_scontato"],2)}}</div>
@@ -77,10 +76,10 @@
             </div>
           </div>
   </div>
-                        <div class="col-sm-6">
+    <div class="col-sm-6">
           <div class="panel panel-warning">
             <div class="panel-heading">
-              <h3 class="panel-title">TOTALE SCONTI</h3>
+              <h5 class="panel-title">TOTALE SCONTI</h5>
             </div>
             <div class="panel-body">
                 <div class="col-sm-12"><span class="label label-warning">IMPONIBILE</span> {{utils.mNLC(tot["totale_imponibile_non_scontato"]-tot["totale_imponibile_scontato"],2)}}</div>
@@ -89,10 +88,10 @@
             </div>
           </div>
   </div>
-                          <div class="col-sm-12">
+    <div class="col-sm-6">
           <div class="panel panel-danger">
             <div class="panel-heading">
-              <h2 class="panel-title">TOTALE SCONTATO</h2>
+              <h4 class="panel-title">TOTALE SCONTATO</h4>
             </div>
             <div class="panel-body">
                 <div class="col-sm-12"><span class="label label-danger">IMPONIBILE</span> {{utils.mNLC(tot["totale_imponibile_scontato"],2)}}</div>
@@ -101,8 +100,9 @@
             </div>
           </div>
   </div>
-<div class="col-sm-12"><span class="label label-info">SOSPESO</span> {{utils.mNLC(tot["totale_sospeso"],2)}}</div>
-<div class="col-sm-12"><span class="label label-success">PAGATO</span> {{utils.mNLC(tot["totale_pagato"],2)}}</div>
-         </div></div>
+<div class="col-sm-6"><span class="label label-info">SOSPESO</span> {{utils.mNLC(tot["totale_sospeso"],2)}}</div>
+<div class="col-sm-6"><span class="label label-success">PAGATO</span> {{utils.mNLC(tot["totale_pagato"],2)}}</div>
+         </div>
+</div>
 
 {% endblock %}
