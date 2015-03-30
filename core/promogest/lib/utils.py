@@ -3646,7 +3646,7 @@ def uu(data=None):
     se è già unicode non fa niente """
     #return data
     #print "DATA UU", data, type(data) ,type(Decimal(22))
-    if type(data) != type(u"unicode"):
+    if data and type(data) != type(u"unicode"):
         if type(data) == type(1):
             data = str(data)
         elif type(data) == type(str("ciao")):

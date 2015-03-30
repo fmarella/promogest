@@ -71,7 +71,6 @@ class AnagraficaFilter(GladeWidget):
         self.offset = self.bodyWidget.offset = 0
         self.numRecords = self.bodyWidget.numRecords = 0
 
-
     def draw(self):
         """
         Disegna i contenuti del filtro anagrafica.  Metodo invocato
@@ -115,8 +114,8 @@ class AnagraficaFilter(GladeWidget):
                                                             treeSelection)
 
     def runFilter(self, offset='__default__', batchSize='__default__',
-                                      progressCB=None, progressBatchSize=0,
-                                      batchSizeForce=False):
+                  progressCB=None, progressBatchSize=0,
+                  batchSizeForce=False):
         """ Recupera i dati """
         self.bodyWidget.orderBy = self.orderBy
         if batchSize == '__default__' and \
@@ -129,20 +128,21 @@ class AnagraficaFilter(GladeWidget):
             self.batchSize2 = batchSize
             batchSize = None
 
-        return self.bodyWidget.runFilter(offset=offset,
-                                        batchSize=batchSize,
-                                        progressCB=progressCB,
-                                        progressBatchSize=progressBatchSize,
-                                        filterClosure=self._filterClosure,
-                                        batchSizeForce= batchSizeForce)
+        return self.bodyWidget.runFilter(
+            offset=offset,
+            batchSize=batchSize,
+            progressCB=progressCB,
+            progressBatchSize=progressBatchSize,
+            filterClosure=self._filterClosure,
+            batchSizeForce=batchSizeForce)
 
     def countFilterResults(self):
         """ Conta i dati """
         totale_daos = self.bodyWidget.countFilterResults(
                                                     self._filterCountClosure)
-        self._anagrafica.tot_daos_label.set_markup(" <b>"
-                                    + str(totale_daos or "Nessuno")
-                                    + "</b>")
+        self._anagrafica.tot_daos_label.set_markup(
+            " <b>" + str(totale_daos or "Nessuno") + "</b>"
+            )
         return totale_daos
 
     def _refreshPageCount(self):

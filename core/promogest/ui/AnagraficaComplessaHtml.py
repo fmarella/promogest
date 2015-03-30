@@ -50,12 +50,12 @@ class AnagraficaHtml(object):
         self.dao = dao
         self._refresh()
         if dao and Environment.debugDao:
-            #FIXME: add some logging level check here
+            # FIXME: add some logging level check here
             import pprint
             pp = pprint.PrettyPrinter(indent=4)
             print ("\n\n=== DAO object dump ===\n\n"
-                    + pp.pformat(dao.dictionary(complete=True))
-                    + "\n\n")
+                   + pp.pformat(dao.dictionary(complete=True))
+                   + "\n\n")
 
     def refresh(self):
         """ Aggiorna la vista HTML """
@@ -78,9 +78,9 @@ class AnagraficaHtml(object):
                 from promogest.dao.TestataDocumento import TestataDocumento
                 from promogest.modules.GestioneNoleggio.dao.\
                     TestataGestioneNoleggio import TestataGestioneNoleggio
-                preves = TestataDocumento().select(daData=stringToDate("1/1/" \
+                preves = TestataDocumento().select(daData=stringToDate("1/1/"
                                         + Environment.workingYear),
-                                aData=stringToDate("31/12/" \
+                                aData=stringToDate("31/12/"
                                         + Environment.workingYear),
                                                     batchSize=None,
                                 idArticolo=self.dao.id)
@@ -100,7 +100,8 @@ class AnagraficaHtml(object):
                         stopDate = a.data_fine_noleggio
                         dateList = date_range(startDate, stopDate)
                         for d in dateList:
-                            eventiprevesAT.append((d.toordinal(), {"id": p.id,
+                            eventiprevesAT.append((d.toordinal(), {
+                                            "id": p.id,
                                             "operazione": p.operazione,
                                             "short": p.ragione_sociale_cliente,
                                             "tipo": "data_documento",
@@ -112,7 +113,7 @@ class AnagraficaHtml(object):
         pageData = {
                 "file": self.defaultFileName + ".html",
                 "dao": self.dao,
-                "tipopg" :Environment.modulesList,
+                "tipopg": Environment.modulesList,
                 "objects": self.dao,
                 "eventipreves": eventipreves,
                 "eventiprevesAT": eventiprevesAT,
@@ -183,7 +184,6 @@ class AnagraficaHtml(object):
                 azidict[k] = b
                 del azidict[a]
             param[0].update(azidict)
-        #print("PARAMS", param[0])
         if 'operazione' in param[0] and 'causale_trasporto' in param[0]:
             if (param[0]["operazione"] in ["DDT vendita", "DDT acquisto"]) \
                  and param[0]["causale_trasporto"] != "":
@@ -194,13 +194,14 @@ class AnagraficaHtml(object):
         Environment.pg2log.info("VERSIONE SLA: " + str(versione))
 
         if Environment.new_print_enjine:
-            stpl2sla = SlaTpl2Sla_ng(slafile=None, label=None, report=None,
-                                    objects=param,
-                                    daos=self.dao,
-                                    slaFileName=self._slaTemplate,
-                                    pdfFolder=self._anagrafica._folder,
-                                    classic=True,
-                                    template_file=None).fileElaborated()
+            stpl2sla = SlaTpl2Sla_ng(
+                            slafile=None, label=None, report=None,
+                            objects=param,
+                            daos=self.dao,
+                            slaFileName=self._slaTemplate,
+                            pdfFolder=self._anagrafica._folder,
+                            classic=True,
+                            template_file=None).fileElaborated()
             return Sla2Pdf_ng(slafile=stpl2sla).translate()
         else:
             if self._slaTemplateObj is None:
@@ -212,7 +213,7 @@ class AnagraficaHtml(object):
                                         template_file=template_file)
             Environment.pg2log.info("DAO IN STAMPA CLASSIC: " + str(self.dao))
             return self._slaTemplateObj.serialize(param, classic=True,
-                                                        dao=self.dao)
+                                                  dao=self.dao)
 
     def cancelOperation(self):
         """ Cancel current operation """
