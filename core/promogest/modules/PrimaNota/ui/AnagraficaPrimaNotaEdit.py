@@ -182,13 +182,13 @@ class AnagraficaPrimaNotaEdit(AnagraficaEdit):
             banca = getDenominazioneBanca(riga.id_banca)
         riga.note_primanota = textview_get_text(self.note_textview)
         dati = (riga,
-                        denominazione,
-                        str(mN(valore,2)),
-                        str(come),
-                        str(banca),
-                        riferimento or "",
-                        col_valore,
-                        col_tipo)
+                denominazione,
+                str(mN(valore, 2)),
+                str(come),
+                str(banca),
+                riferimento or "",
+                col_valore,
+                col_tipo)
         if self.editRiga:
             self.rigaIter[0] = riga
             self.rigaIter[1] = denominazione

@@ -198,11 +198,11 @@ Es. chiusura a contanti / assegni con calcolo del resto:
 
 
     def serial_manager(self, filesToSend):
-        ser = serial.Serial()
+        ser = serial.Serial(timeout=1)
         try:
-            Environment.conf.VenditaDettaglio.baud
+            ser.baudrate = Environment.conf.VenditaDettaglio.baud
         except:
-            ser.baud = 9600
+            ser.baudrate = 9600
         #ser.port = '/dev/ttyUSB0'
         ser.port = Environment.conf.VenditaDettaglio.serial_device
         ser.xonxoff = True

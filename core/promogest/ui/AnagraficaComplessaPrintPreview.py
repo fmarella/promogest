@@ -103,11 +103,11 @@ class AnagraficaPrintPreview(GladeWidget):
         self.bodyWidget.orderBy = self.orderBy
         self.bodyWidget.tipo = self._tipo
         # self.pbar_dialog.run()
-        #self.pbar_dialog.destroy()
+        # self.pbar_dialog.destroy()
         daos = self.bodyWidget.runFilter(offset=None,
-                                        batchSize=None,
-                                        filterClosure=self._filterClosure,
-                                        )
+                                         batchSize=None,
+                                         filterClosure=self._filterClosure,
+                                         )
         azienda = Azienda().getRecord(id=Environment.azienda)
         # pbar(self.pbar_report,parziale=daos.index(ragsoc), totale=len(nomi), text=ragsoc, noeta=False)
         #pbar(self.pbar_report,parziale=1, totale=4)
