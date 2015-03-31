@@ -29,10 +29,10 @@ from promogest.dao.Dao import Dao, Base
 class CodiceABarreArticolo(Base, Dao):
     try:
         __table__ = Table('codice_a_barre_articolo',
-                            params['metadata'],
-                            schema = params['schema'],
-                            autoload=True,
-                            autoload_with=engine)
+                          params['metadata'],
+                          schema=params['schema'],
+                          autoload=True,
+                          autoload_with=engine)
     except:
         from data.codiceBarreArticolo import t_codice_barre_articolo
         __table__ = t_codice_barre_articolo
@@ -40,7 +40,8 @@ class CodiceABarreArticolo(Base, Dao):
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
 
-    def filter_values(self,k,v):
+    def filter_values(self, k, v):
+        dic = {}
         if k == 'codice':
             dic = {k: CodiceABarreArticolo.__table__.c.codice.ilike("%"+v+"%")}
         elif k == 'codiceEM':
@@ -50,5 +51,5 @@ class CodiceABarreArticolo(Base, Dao):
         elif k == 'idArticoloNone':
             dic = {k: CodiceABarreArticolo.__table__.c.id_articolo == None}
         elif k == 'primario':
-            dic = {k: CodiceABarreArticolo.__table__.c.primario ==v}
-        return  dic[k]
+            dic = {k: CodiceABarreArticolo.__table__.c.primario == v}
+        return dic[k]
