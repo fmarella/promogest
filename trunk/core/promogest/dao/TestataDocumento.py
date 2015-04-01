@@ -1142,10 +1142,15 @@ class TestataDocumento(Base, Dao):
         params['session'].delete(self)
         params['session'].commit()
 
-    def filter_values(self,k,v):
-        contabili = ["Fattura vendita", "Fattura acquisto","Nota di credito a cliente",
-            "Nota di credito da fornitore","Fattura accompagnatoria",
-             "Vendita dettaglio","Fattura differita vendita", "Fattura differita acquisto"]
+    def filter_values(self, k, v):
+        contabili = ["Fattura vendita",
+                     "Fattura acquisto",
+                     "Nota di credito a cliente",
+                     "Nota di credito da fornitore",
+                     "Fattura accompagnatoria",
+                     "Vendita dettaglio",
+                     "Fattura differita vendita",
+                     "Fattura differita acquisto"]
         if k == 'daNumero':
             dic = {k: TestataDocumento.__table__.c.numero >= v}
         elif k == 'aNumero':
@@ -1184,7 +1189,7 @@ class TestataDocumento(Base, Dao):
             dic = {k: TestataDocumento.__table__.c.id_agente == v}
         elif k == 'statoDocumento':
             dic = {k: TestataDocumento.__table__.c.documento_saldato == v}
-        elif k =="extra":
+        elif k == "extra":
             if v == "tutti_vendita":
                 dic = {k: TestataDocumento.__table__.c.operazione.in_(Environment.solo_vendita)}
             elif v == "tutti_acquisto":
@@ -1197,29 +1202,16 @@ class TestataDocumento(Base, Dao):
                     t_riga.c.id==t_riga_documento.c.id,
                     t_riga_documento.c.id_testata_documento == self.__table__.c.id)}
         elif k == 'idArticoloMov' or k == "idArticolo":
-            #from data.testataMovimento import t_testata_movimento
             dic = {k: and_(v ==t_riga.c.id_articolo,
                     t_riga.c.id==t_riga_movimento.c.id,
                     t_riga_movimento.c.id_testata_movimento == TestataMovimento.__table__.c.id,
                     TestataMovimento.__table__.c.id_testata_documento == self.__table__.c.id)}
-            #dic = {k: self.__table__.c.id.in_(select([t_testata_movimento.c.id_testata_documento],
-                     #and_(t_riga.c.id==t_riga_movimento.c.id,
-                     #t_riga_movimento.c.id_testata_movimento==t_testata_movimento.c.id,
-                     #t_testata_movimento.c.id_testata_documento ==self.__table__.c.id,
-                        #t_riga.c.id_articolo == v)))}
         elif k == 'idArticoloDoc':
-            #dic = {k: and_(v==t_riga.c.id_articolo,
-                    #t_riga.c.id==RigaDocumento.id,
-                    #RigaDocumento.id_testata_documento == self.__table__.c.id)}
             dic = {k: self.__table__.c.id.in_(select([t_riga_documento.c.id_testata_documento],
                      and_(t_riga.c.id==t_riga_documento.c.id,
                      t_riga_documento.c.id_testata_documento==self.__table__.c.id,
                         t_riga.c.id_articolo == v)))}
         elif k == 'idMagazzino':
-            #dic = {k:and_(v == Riga.id_magazzino,
-                    #Riga.__table__.c.id==RigaMovimento.id,
-                    #RigaMovimento.id_testata_movimento == TestataMovimento.id,
-                    #TestataMovimento.id_testata_documento == TestataDocumento.__table__.c.id)}
             dic = {k: self.__table__.c.id.in_(select([t_riga_movimento.c.id_testata_movimento],
                      and_(t_riga.c.id==t_riga_movimento.c.id,t_riga.c.id_magazzino == v)))}
 
@@ -1243,7 +1235,7 @@ class TestataDocumento(Base, Dao):
             elif k== 'aDataFineNoleggio':
                 dic = {k:and_(TestataDocumento.__table__.c.id == TestataGestioneNoleggio.id_testata_documento,
                             TestataGestioneNoleggio.data_fine_noleggio <= v)}
-        return  dic[k]
+        return dic[k]
 
 
 try:
