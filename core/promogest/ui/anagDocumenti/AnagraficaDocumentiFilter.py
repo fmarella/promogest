@@ -185,7 +185,7 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
             statoDocumento = bool(True)
         else:
             statoDocumento = bool(False)
-
+        print("STATO DOCUMENTOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO", statoDocumento)
         if self.solo_contabili_check.get_active():
             soloContabili = bool(True)
         else:
@@ -207,7 +207,8 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
                             "idCliente": idCliente,
                             "idFornitore": idFornitore,
                             "idAgente": idAgente,
-                            "statoDocumento": soloContabili,
+                            "statoDocumento":statoDocumento,
+                            "soloContabili":soloContabili,
                             "descrizioneRiga": descrizioneRiga,
                             "daDataPagamento": daDataPagamento,
                             "aDataPagamento": aDataPagamento,
