@@ -89,6 +89,10 @@ class ConfiguraWindow(GladeWidget):
         except:
             self.zeri_in_riga_check.set_active(0)
         try:
+            self.turbo_check.set_active(int(setconf("General", "turbo")))
+        except:
+            self.turbo_check.set_active(0)
+        try:
             self.zeri_in_totali_check.set_active(int(setconf("Stampa", "zeri_in_totali")))
         except:
             self.zeri_in_totali_check.set_active(0)
@@ -186,6 +190,21 @@ class ConfiguraWindow(GladeWidget):
         b[0].value = str(self.zeri_in_totali_check.get_active())
         b[0].tipo = "bool"
         Environment.session.add(b[0])
+
+        cc = SetConf().select(key="turbo", section="General")
+        if not cc:
+            cc = SetConf()
+            cc.key = "turbo"
+            cc.section = "General"
+            cc.tipo_section = "Generico"
+            cc.description = "turbo per connessioni remote"
+            cc.active = True
+            cc.tipo = "bool"
+            cc.date = datetime.datetime.now()
+        else:
+            cc = cc[0]
+        cc.value = str(self.turbo_check.get_active())
+        Environment.session.add(cc)
 
         c = SetConf().select(key="zeri_in_riga", section="Stampa")
         c[0].value = str(self.zeri_in_riga_check.get_active())
