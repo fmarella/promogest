@@ -201,7 +201,7 @@ class Main(GladeWidget):
             else:
                 self.active_img.set_from_file("gui/active_on.png")
             return True
-        #glib.timeout_add_seconds(600, update_timer)
+        # glib.timeout_add_seconds(600, update_timer)
         update_timer()
 
         def pulizia_lottotemp():
@@ -276,7 +276,7 @@ class Main(GladeWidget):
                         #f.write(a)
             #except:
                 #print " FALLITA CREAZIONE META"
-        #pickle_meta()
+        pickle_meta()
 
 
 
@@ -835,7 +835,6 @@ promogest2 IN /HOME/NOMEUTENTE/ O IN C:/UTENTI/NOMEUTENTE""")
             st= Environment.startdir()
             stname = st+nameDump
             os.environ["PGPASSWORD"] = Environment.password
-            print "1111111111111111111111111111", Environment.host,Environment.port,Environment.user , Environment.password,
             if os.name == "nt":
                 PG_DUMP_ESEC = os.path.split(os.path.dirname(__file__))[0]+"\lib\pg_dump_dir\pg_dump.exe"
             elif os.name =="posix":

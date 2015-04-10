@@ -327,7 +327,7 @@ def handleEngine(schema= None):
         raise RuntimeError("Non è stato trovato possibile creare un ENGINE per il DB")
     #if not preEnv.web:
     engine.echo = echosa
-    #engine.echo = True
+    # engine.echo = True
     return engine
 
 
@@ -344,7 +344,6 @@ def createSession():
         session = Session()
     else:
         session = scoped_session(lambda: create_session(engine, autocommit=False))
-        #session.execute("SET search_path TO {0}".format(azienda))
     return session
 
 # Determiniamo il nome del file pickle in base all'azienda e alla ver python.
@@ -408,8 +407,8 @@ def usePickleToMeta():
         print( "USO META NORMALE")
         meta = MetaData(engine)
     return meta
-#meta = usePickleToMeta()
-meta = MetaData(engine)
+meta = usePickleToMeta()
+# meta = MetaData(engine)
 
 preEnv.azienda = azienda
 

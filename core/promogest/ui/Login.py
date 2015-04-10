@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2014 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -246,6 +246,12 @@ class Login(SimpleGladeApp):
                         #Environment.restart_program()
                         #Environment.meta.clear()
                         #Environment.meta = MetaData(Environment.engine)
+                    # import pickle
+                    # cachefile = 'orm.p'
+                    # Environment.meta.create_all()
+                    # with open(cachefile, 'w') as cache:
+                    #     pickle.dump(Environment.meta, cache)
+                    #     cache.close()
                 if hashlib.md5(self.azienda).hexdigest() == \
                                 "46d3e603f127254cdc30e5a397413fc7":
                     raise Exception(":P")

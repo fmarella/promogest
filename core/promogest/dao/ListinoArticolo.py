@@ -37,30 +37,31 @@ from promogest.lib.utils import *
 
 class ListinoArticolo(Base, Dao):
     try:
-        __table__ =Table('listino_articolo',
-                    params['metadata'],
-                    schema = params['schema'],
-                    autoload=True)
+        __table__ = Table('listino_articolo',
+                          params['metadata'],
+                          schema=params['schema'],
+                          autoload=True)
     except:
         from data.listinoArticolo import t_listino_articolo
         __table__ = t_listino_articolo
 
     arti = relationship("Articolo",primaryjoin=and_(
-                __table__.c.id_articolo==Articolo.id,Articolo.cancellato==False), backref=backref("listinoarticolo",cascade="all, delete"))
-    SVD = relationship("ScontoVenditaDettaglio",primaryjoin=and_(
-                __table__.c.id_listino==ScontoVenditaDettaglio.id_listino,
-                __table__.c.id_articolo==ScontoVenditaDettaglio.id_articolo,
-                __table__.c.data_listino_articolo==ScontoVenditaDettaglio.data_listino_articolo))
-    SVI = relationship("ScontoVenditaIngrosso",primaryjoin=and_(
-                __table__.c.id_listino==ScontoVenditaIngrosso.id_listino,
-                __table__.c.id_articolo==ScontoVenditaIngrosso.id_articolo,
-                __table__.c.data_listino_articolo==ScontoVenditaIngrosso.data_listino_articolo))
-    listi = relationship("Listino",primaryjoin=
-                __table__.c.id_listino==Listino.id, backref="listinoarticolo")
+                __table__.c.id_articolo==Articolo.id, Articolo.cancellato==False), backref=backref("listinoarticolo",cascade="all, delete"))
+    SVD = relationship("ScontoVenditaDettaglio",
+                       primaryjoin=and_(
+                            __table__.c.id_listino == ScontoVenditaDettaglio.id_listino,
+                            __table__.c.id_articolo == ScontoVenditaDettaglio.id_articolo,
+                            __table__.c.data_listino_articolo == ScontoVenditaDettaglio.data_listino_articolo))
+    SVI = relationship("ScontoVenditaIngrosso", primaryjoin=and_(
+                __table__.c.id_listino == ScontoVenditaIngrosso.id_listino,
+                __table__.c.id_articolo == ScontoVenditaIngrosso.id_articolo,
+                __table__.c.data_listino_articolo == ScontoVenditaIngrosso.data_listino_articolo))
+    listi = relationship("Listino", primaryjoin=
+                __table__.c.id_listino == Listino.id, backref="listinoarticolo")
 
 
     __mapper_args__ = {
-        'order_by' : "id_listino"
+        'order_by': "id_listino"
      }
 
     def __init__(self, req=None):

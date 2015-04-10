@@ -41,6 +41,5 @@ t_testata_movimento = Table('testata_movimento', params["metadata"],
         UniqueConstraint('parte', 'numero', 'data_movimento'),
         CheckConstraint("parte < 4 AND parte >= 1"),
         schema=params["schema"],
-          extend_existing=True
         )
 t_testata_movimento.create(checkfirst=True)

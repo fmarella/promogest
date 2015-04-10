@@ -30,10 +30,10 @@
 #from promogest.lib.alembic import op
 
 def orderedImport():
-    from promogest.dao.Azienda import Azienda #v
-    from promogest.dao.Language import Language #v
-    from promogest.modules.RuoliAzioni.dao.Role import Role #v
-    from promogest.dao.User import User #v
+    from promogest.dao.Azienda import Azienda
+    from promogest.dao.Language import Language
+    from promogest.modules.RuoliAzioni.dao.Role import Role
+    from promogest.dao.User import User
     #colonne_utente = colonne = get_columns(User.__table__)
     #print "COLONNNNE", colonne_utente,"mailing_list" not in colonne_utente
     #if "mailing_list" not in colonne_utente:
@@ -53,34 +53,34 @@ def orderedImport():
         #except:
             #delete_pickle()
     #from promogest.dao.Regioni import t_regione
-    from promogest.modules.RuoliAzioni.dao.Action import Action  #v
+    from promogest.modules.RuoliAzioni.dao.Action import Action
     from promogest.modules.RuoliAzioni.dao.RoleAction import RoleAction
     from promogest.dao.Access import Access
     from promogest.dao.Setting import Setting
     from promogest.dao.Promemoria import Promemoria
-    from promogest.dao.Setconf import * #verificare
-    from promogest.dao.Pagamento import Pagamento #v
-    from promogest.dao.Operazione import Operazione #v
-    from promogest.dao.TipoAliquotaIva import TipoAliquotaIva #v
+    from promogest.dao.Setconf import *
+    from promogest.dao.Pagamento import Pagamento
+    from promogest.dao.Operazione import Operazione
+    from promogest.dao.TipoAliquotaIva import TipoAliquotaIva
     from promogest.dao.daoContatti.TipoRecapito import TipoRecapito
     from promogest.dao.UnitaBase import UnitaBase
-    from promogest.dao.StatoArticolo import StatoArticolo #v
-    from promogest.dao.AliquotaIva import AliquotaIva #v
-    from promogest.dao.CategoriaArticolo import CategoriaArticolo #v
+    from promogest.dao.StatoArticolo import StatoArticolo
+    from promogest.dao.AliquotaIva import AliquotaIva
+    from promogest.dao.CategoriaArticolo import CategoriaArticolo
     from promogest.dao.Banca import Banca
     from promogest.dao.BancheAzienda import BancheAzienda
-    from promogest.dao.FamigliaArticolo import FamigliaArticolo #v
+    from promogest.dao.FamigliaArticolo import FamigliaArticolo
     #from promogest.dao.Image import * # ???????????????????
-    from promogest.dao.CategoriaCliente import CategoriaCliente #v
+    from promogest.dao.CategoriaCliente import CategoriaCliente
     from promogest.dao.CategoriaFornitore import CategoriaFornitore
     from promogest.dao.Magazzino import Magazzino
 
     from promogest.dao.Imballaggio import Imballaggio
-    from promogest.dao.Listino import Listino #v
-    from promogest.dao.Articolo import Articolo #v
+    from promogest.dao.Listino import Listino
+    from promogest.dao.Articolo import Articolo
     from promogest.dao.CodiceABarreArticolo import CodiceABarreArticolo
     from promogest.dao.ListinoArticolo import ListinoArticolo
-    from promogest.dao.Multiplo import Multiplo #v
+    from promogest.dao.Multiplo import Multiplo
 
     from promogest.dao.ListinoComplessoListino import ListinoComplessoListino
     from promogest.dao.ListinoComplessoArticoloPrevalente import ListinoComplessoArticoloPrevalente
@@ -89,22 +89,22 @@ def orderedImport():
     from promogest.dao.daoContatti.RecapitoContatto import RecapitoContatto
     from promogest.dao.daoContatti.CategoriaContatto import CategoriaContatto
     from promogest.dao.daoContatti.ContattoCategoriaContatto import ContattoCategoriaContatto
-    from promogest.dao.daoContatti.Contatto import Contatto #v
+    from promogest.dao.daoContatti.Contatto import Contatto
 
     from promogest.dao.Promemoria import Promemoria
-    from promogest.dao.Stoccaggio import Stoccaggio #v
+    from promogest.dao.Stoccaggio import Stoccaggio
     from promogest.dao.PersonaGiuridica import PersonaGiuridica_
     from promogest.dao.PersonaGiuridicaPersonaGiuridica import PersonaGiuridicaPersonaGiuridica
 
-    from promogest.dao.Vettore import Vettore #v
+    from promogest.dao.Vettore import Vettore
     from promogest.dao.ListinoMagazzino import ListinoMagazzino
 
     from promogest.dao.Cliente import Cliente
     from promogest.dao.Fornitore import Fornitore
     from promogest.dao.Fornitura import Fornitura
-    from promogest.dao.daoAgenti.Agente import Agente #v
-    from promogest.dao.ClienteCategoriaCliente import ClienteCategoriaCliente #v
-    from promogest.dao.ClienteVariazioneListino import ClienteVariazioneListino #v
+    from promogest.dao.daoAgenti.Agente import Agente
+    from promogest.dao.ClienteCategoriaCliente import ClienteCategoriaCliente
+    from promogest.dao.ClienteVariazioneListino import ClienteVariazioneListino
     from promogest.dao.Sconto import Sconto
     from promogest.dao.daoContatti.RecapitoContatto import RecapitoContatto
     from promogest.dao.daoContatti.ContattoCliente import ContattoCliente
@@ -125,11 +125,11 @@ def orderedImport():
     from promogest.dao.ScontoRigaMovimento import ScontoRigaMovimento
     from promogest.dao.ScontoRigaDocumento import ScontoRigaDocumento
     from promogest.dao.NumeroLottoTemp import NumeroLottoTemp
-    from promogest.dao.DestinazioneMerce import DestinazioneMerce #v
+    from promogest.dao.DestinazioneMerce import DestinazioneMerce
 
-    from promogest.dao.StoricoDocumento import StoricoDocumento #v
+    from promogest.dao.StoricoDocumento import StoricoDocumento
 
-    from promogest.dao.ListinoCategoriaCliente import ListinoCategoriaCliente #v
+    from promogest.dao.ListinoCategoriaCliente import ListinoCategoriaCliente
 
     from promogest.dao.ScontoVenditaDettaglio import ScontoVenditaDettaglio
     from promogest.dao.ScontoVenditaIngrosso import ScontoVenditaIngrosso
@@ -155,15 +155,15 @@ def orderedImport():
 def orderedImportVenditaDettaglio():
     # orderedImport()
     try:
-        from promogest.modules.VenditaDettaglio.dao.Pos import Pos #v
-        from promogest.dao.CCardType import CCardType #v
-        from promogest.modules.VenditaDettaglio.dao.ScontoScontrino import ScontoScontrino #v
-        from promogest.modules.VenditaDettaglio.dao.ScontoRigaScontrino import ScontoRigaScontrino #v
-        from promogest.modules.VenditaDettaglio.dao.RigaScontrino import RigaScontrino #v
-        from promogest.modules.VenditaDettaglio.dao.TestataScontrino import TestataScontrino #v
-        from promogest.modules.VenditaDettaglio.dao.ScontoTestataScontrino import ScontoTestataScontrino #v
-        from promogest.modules.VenditaDettaglio.dao.ChiusuraFiscale import ChiusuraFiscale #v
-        from promogest.modules.VenditaDettaglio.dao.TestataScontrinoCliente import TestataScontrinoCliente #v
+        from promogest.modules.VenditaDettaglio.dao.Pos import Pos
+        from promogest.dao.CCardType import CCardType
+        from promogest.modules.VenditaDettaglio.dao.ScontoScontrino import ScontoScontrino
+        from promogest.modules.VenditaDettaglio.dao.ScontoRigaScontrino import ScontoRigaScontrino
+        from promogest.modules.VenditaDettaglio.dao.RigaScontrino import RigaScontrino
+        from promogest.modules.VenditaDettaglio.dao.TestataScontrino import TestataScontrino
+        from promogest.modules.VenditaDettaglio.dao.ScontoTestataScontrino import ScontoTestataScontrino
+        from promogest.modules.VenditaDettaglio.dao.ChiusuraFiscale import ChiusuraFiscale
+        from promogest.modules.VenditaDettaglio.dao.TestataScontrinoCliente import TestataScontrinoCliente
         print "CARICAMENTO/INSERIMENTO TABELLE VENDITA DETTAGLIO  ANDATO BENE"
     except:
         print " DETTAGLIO DA SISTEARE"
@@ -179,7 +179,7 @@ def orderedImportWeb():
     STATIC PAGES NON ABBIA PERMALINK, VANNO DROPPATE E RICREATE
     AGGIUNGERE UN CHECK QUI CHE DROPPI E RICREI"""
     from promogest.dao.CategoriaNews import CategoriaNews
-    from promogest.dao.News import News #v
+    from promogest.dao.News import News
     from promogest.dao.StaticPages import StaticPages
     from promogest.dao.Faq import Faq
     from promogest.dao.Cart import Cart
