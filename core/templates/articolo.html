@@ -23,7 +23,9 @@
       {% else %}
       <div></div>
 {% endif %}
-      <!--<div class="col-sm-12"><span class="label label-danger">Giacenza</span><h4 style="display:inline;"><strong> {#{dao.getGiacenza()|nonone or 0}#}</strong></h4></div>-->
+      {% if not utils.setconf("General", "turbo") %}
+      <div class="col-sm-12"><span class="label label-danger">Giacenza</span><h4 style="display:inline;"><strong> {{dao.getGiacenza()|nonone or 0}}</strong></h4></div>
+      {% endif %}
 
       <div class="clearfix"></div>
       <div class='col-sm-12'><hr></div>
