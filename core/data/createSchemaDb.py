@@ -46,9 +46,7 @@ def orderedInstallVenditaDettaglio():
 
 def orderedInstallPromoWear():
     print ("INSTALLAZIONE PROMOWEAR")
-    #orderedImport()
     try:
-
         from data.colore import t_colore #v
         from data.annoAbbigliamento import t_anno_abbigliamento #v
         from data.genereAbbigliamento import t_genere_abbigliamento #v
@@ -58,6 +56,7 @@ def orderedInstallPromoWear():
         from data.stagioneAbbigliamento import t_stagione_abbigliamento
         from data.gruppoTagliaTaglia import t_gruppo_taglia_taglia
         from data.articoloTagliaColore import t_articolo_taglia_colore
+        print("TUTTE LE TABELLE AGGIUNTE PER INSTALLAZIONE PROMOWEAR ")
         return True
     except:
         return False
