@@ -160,7 +160,6 @@ class PGRiBa(RiBa):
             debitore.comune = documento.localita_cliente
             print(documento)
             for scadenza in documento.scadenze:
-                print("PPPPPPPPPPPPPPPPPPPPPPP",pagamentoLookup(scadenza.pagamento))
                 if pagamentoLookup(scadenza.pagamento):
 
                     row = "%s N. %s a %s del %s \nImporto: %s data scadenza: %s" % (documento.operazione,

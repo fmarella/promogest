@@ -66,11 +66,13 @@ class ElencoListini(GladeWidget):
                                 batchSize=None,
                                 offset=None)
         for l in liss:
-            self.elenco_listini_listore.append([l,
-                          l.denominazione or '',
-                          l.descrizione or '',
-                          dateToString(l.data_listino),
-                          str(len(l.listinoarticolo))])
+            self.elenco_listini_listore.append([
+                                    l,
+                                    l.denominazione or '',
+                                    l.descrizione or '',
+                                    dateToString(l.data_listino),
+                                    str(len(l.listinoarticolo))
+                                    ])
 
     def _changeOrderBy(self, widget, campi):
         self.orderBy = campi

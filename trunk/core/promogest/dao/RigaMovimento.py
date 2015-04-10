@@ -37,10 +37,11 @@ riga_movimento_riga = join(t_riga_movimento,t_riga)
 
 class RigaMovimento(Base, Dao):
     """ User class provides to make a Users dao which include more used"""
-    __table__ = riga_movimento_riga
+    # __table__ = riga_movimento_riga
+    __table__ = t_riga_movimento.join(t_riga)
 
     id = column_property(t_riga.c.id, t_riga_movimento.c.id)
-    rigamovimento_id = t_riga_movimento.c.id
+    # rigamovimento_id = t_riga_movimento.c.id
 
 
     rig =relationship("Riga",primaryjoin = t_riga_movimento.c.id==t_riga.c.id, backref="RM")

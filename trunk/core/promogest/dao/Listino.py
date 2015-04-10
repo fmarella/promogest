@@ -32,7 +32,9 @@ from promogest.dao.ListinoComplessoListino import ListinoComplessoListino
 
 class Listino(Base, Dao):
     try:
-        __table__ = Table('listino', params['metadata'],schema = params['schema'],autoload=True)
+        __table__ = Table('listino', params['metadata'],
+                          schema=params['schema'],
+                          autoload=True)
     except:
         from data.listino import t_listino
         __table__ = t_listino

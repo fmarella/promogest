@@ -38,15 +38,15 @@ class Riga(Base, Dao):
 
     try:
         __table__ = Table('riga',
-                   params['metadata'],
-                   schema=params['schema'],
-                   autoload=True)
+                          params['metadata'],
+                          schema=params['schema'],
+                          autoload=True)
     except:
         from data.riga import t_riga
         __table__ = t_riga
 
     __mapper_args__ = {
-        'order_by' : "posizione"
+        'order_by': "posizione"
     }
 
     maga = relationship("Magazzino")
@@ -57,7 +57,7 @@ class Riga(Base, Dao):
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)
 
-    def filter_values(self,k,v):
+    def filter_values(self, k, v):
         """ Filtro del Mapper Riga"""
         if k=='descrizione':
             dic= {k: Riga.__table__.c.descrizione.ilike("%" + v + "%")}
@@ -147,24 +147,24 @@ class Riga(Base, Dao):
             if self.arti:return self.arti.denominazione_modello
 
 
-try:
-    Riga.__table__.c.posizione
-except:
-    conn = engine.connect()
-    ctx = MigrationContext.configure(conn)
-    op = Operations(ctx)
-    op.add_column('riga', Column('posizione', Integer),schema=params["schema"])
-
-if tipodb=="sqlite":
-    from promogest.dao.Multiplo import Multiplo
-    a = session.query(Multiplo.id).all()
-    b = session.query(Riga.id_multiplo).all()
-    fixit =  list(set(b)-set(a))
-    print "fixt-riga_multiplo", fixit
-    for f in fixit:
-        if f[0] != "None" and f[0] != None:
-            aa = Riga().select(idMultiplo=f[0], batchSize=None)
-            for a in aa:
-                a.id_multiplo = None
-                session.add(a)
-            session.commit()
+# try:
+#     Riga.__table__.c.posizione
+# except:
+#     conn = engine.connect()
+#     ctx = MigrationContext.configure(conn)
+#     op = Operations(ctx)
+#     op.add_column('riga', Column('posizione', Integer),schema=params["schema"])
+#
+# if tipodb=="sqlite":
+#     from promogest.dao.Multiplo import Multiplo
+#     a = session.query(Multiplo.id).all()
+#     b = session.query(Riga.id_multiplo).all()
+#     fixit =  list(set(b)-set(a))
+#     print "fixt-riga_multiplo", fixit
+#     for f in fixit:
+#         if f[0] != "None" and f[0] != None:
+#             aa = Riga().select(idMultiplo=f[0], batchSize=None)
+#             for a in aa:
+#                 a.id_multiplo = None
+#                 session.add(a)
+#             session.commit()

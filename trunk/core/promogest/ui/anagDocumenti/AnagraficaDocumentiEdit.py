@@ -51,7 +51,7 @@ from promogest.lib.utils import *
 from promogest.ui.utilsCombobox import *
 from promogest.dao.DaoUtils import giacenzaArticolo
 from promogest.dao.CachedDaosDict import CachedDaosDict
-from promogest.dao.RigaRitenutaAcconto import RigaRitenutaAcconto
+# from promogest.dao.RigaRitenutaAcconto import RigaRitenutaAcconto
 
 if posso("PW"):
     from promogest.modules.PromoWear.ui import AnagraficaDocumentiEditPromoWearExt
