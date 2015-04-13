@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -65,6 +65,7 @@ from promogest.ui.utilsCombobox import *
 
 # Letture per recuperare velocemente dati da uno o piu' dao correlati
 
+
 def articleType(dao):
     """
     Che tipo di articolo è? Necessaria principalmente per taglie e Colore
@@ -94,7 +95,8 @@ def articleType(dao):
         else:
             print " NON E' NESSUN TIPO DI ARTICOLO????"
 
-def leggiArticolo(id, full=False, idFornitore=False, data=None):
+
+def leggiArticolo(id, idFornitore=False):
     """
     Restituisce un dizionario con le informazioni sull'articolo letto
     """
@@ -137,12 +139,12 @@ def leggiArticolo(id, full=False, idFornitore=False, data=None):
                 "codice": _codice,
                 "denominazioneBreveAliquotaIva": _denominazioneBreveAliquotaIva,
                 "percentualeAliquotaIva": _percentualeAliquotaIva,
-                "idAliquotaIva":_idAliquotaIva,
+                "idAliquotaIva": _idAliquotaIva,
                 "idUnitaBase": _idUnitaBase,
                 "unitaBase": _unitaBase,
-                "quantita_minima": _quantita_minima,
-                "codicearticolofornitore":_codicearticolofornitore,
-                "daoArticolo":daoArticolo}
+                "quantita_minima":  _quantita_minima,
+                "codicearticolofornitore": _codicearticolofornitore,
+                "daoArticolo": daoArticolo}
     return artiDict
 
 
@@ -309,6 +311,7 @@ def leggiContatto(id):
             "nome": _nome,
             "cognome": _cognome,
             "email": _email}
+
 
 def leggiMagazzino(id):
     """
@@ -769,6 +772,7 @@ def on_vettore_icon_press(entry, position, event):
     else:                            #secondary
         entry.clear_entry()
 
+
 def on_vettore_customcombobox_changed(entry):
     from promogest.dao.Vettore import Vettore
     model = entry.completion.get_model()
@@ -785,6 +789,7 @@ def on_vettore_customcombobox_changed(entry):
         ricercaDao(keyname)
 
 ### --funzioni di gestione customcombobox search di tipo magazzino -- ###
+
 
 def on_combobox_magazzino_search_clicked(combobox, callName=None):
     """
@@ -2179,7 +2184,7 @@ def modificaLottiScadenze(riga):
             from promogest.dao.NumeroLottoTemp import NumeroLottoTemp
             aa = NumeroLottoTemp().select(idRigaMovimentoVenditaTemp=riga["id"])
             if aa:
-                ll+=_("\n Lotto %s") %(aa[0].lotto_temp)
+                ll += _("\n Lotto %s") %(aa[0].lotto_temp)
     return ll
 
 
@@ -3014,54 +3019,66 @@ def YesNoDialog(msg="MESSAGGIO", transient=None,show_entry=False ):
         else:
             return False
 
+
 def textview_insert_at_cursor(textview, string):
     _buffer = textview.get_buffer()
     return _buffer.insert_at_cursor(string)
+
 
 def textview_get_modified(textview):
     _buffer = textview.get_buffer()
     return _buffer.get_modified()
 
+
 def textview_get_char_count(textview):
     _buffer = textview.get_buffer()
     return _buffer.get_char_count()
+
 
 def textview_get_line_count(textview):
     _buffer = textview.get_buffer()
     return _buffer.get_line_count()
 
+
 def textview_get_text(textview):
     _buffer = textview.get_buffer()
     return _buffer.get_text(_buffer.get_start_iter(), _buffer.get_end_iter(), True) or ""
+
 
 def textview_set_text(textview, text):
     _buffer = textview.get_buffer()
     _buffer.set_text(text or "")
     textview.set_buffer(_buffer)
 
+
 def notebook_tabs_show(notebook, pages):
     for page in pages:
         _page = notebook.get_nth_page(page)
         _page.set_property('visible', True)
+
 
 def notebook_tabs_hide(notebook, pages):
     for page in pages:
         _page = notebook.get_nth_page(page)
         _page.set_property('visible', False)
 
+
 def notebook_tab_hide(notebook, page):
     _page = notebook.get_nth_page(page)
     _page.set_property('visible', False)
 
+
 def notebook_tab_show(notebook, page):
     _page = notebook.get_nth_page(page)
     _page.set_property('visible', True)
+
 
 def deaccenta(riga=None):
     """ questa funzione elimina gli accenti magari non graditi in alcuni casi"""
     nkfd_form = unicodedata.normalize('NFKD', unicode(riga))
     only_ascii = nkfd_form.encode('ASCII', 'ignore')
     return only_ascii
+
 
 def setconf(section, key, value=False):
     """ Importante funzione che "semplifica" la lettura dei dati dalla tabella
@@ -3074,7 +3091,7 @@ def setconf(section, key, value=False):
             if not hasattr(Environment.conf, "Documenti"):
                 Environment.conf.add_section("Documenti")
                 Environment.conf.save()
-            if  hasattr(Environment.conf, "Documenti") and not hasattr(Environment.conf.Documenti, "cartella_predefinita"):
+            if hasattr(Environment.conf, "Documenti") and not hasattr(Environment.conf.Documenti, "cartella_predefinita"):
                 setattr(Environment.conf.Documenti,"cartella_predefinita",Environment.documentsDir)
                 Environment.conf.save()
             if key == "cartella_predefinita":
@@ -3119,13 +3136,15 @@ def setconf(section, key, value=False):
     else:
         return ""
 
+
 def number_format():
     stringa = str('%-14.'+ str(setconf("Numbers", "decimals")) +'f')
     return stringa
 
+
 def orda(name):
-     a = "".join([str(ord(x)) for x in list(name)])
-     return a
+     return "".join([str(ord(x)) for x in list(name)])
+
 
 def checkInstallation():
     """ TODO: Aggiungere una funzione che tenga conto delle volte in cui
@@ -3207,9 +3226,11 @@ def last_day_of_month(y, m):
         raise Exception("month not in 1..12")
     return _dim[m]
 
+
 def date_range(start, end):
     r = (end+datetime.timedelta(days=1)-start).days
     return [start+datetime.timedelta(days=i) for i in range(r)]
+
 
 def dateToOrdinal(anno):
     dd = []
@@ -3218,9 +3239,10 @@ def dateToOrdinal(anno):
         for ccc in cccc:
             for cc in ccc:
                 for c in cc:
-                    if c.year==int(Environment.workingYear) and c.toordinal() not in dd:
+                    if c.year == int(Environment.workingYear) and c.toordinal() not in dd:
                         dd.append((c.toordinal(),c))
     return dd
+
 
 
 def format_sec(sec):
@@ -3229,7 +3251,8 @@ def format_sec(sec):
     hour, min_ = divmod(min_, 60)
     return '%d:%02d:%02d' % (hour, min_, sec)
 
-def pbar(pbar, parziale=1, totale=1, pulse=False, stop=False, text="", noeta= False):
+
+def pbar(pbar, parziale=1, totale=1, pulse=False, stop=False, text="", noeta=False):
     if stop:
         pbar.grab_add()
         pbar.set_fraction(0)
@@ -3290,6 +3313,7 @@ def pbar(pbar, parziale=1, totale=1, pulse=False, stop=False, text="", noeta= Fa
         pbar.grab_remove()
 
 
+
 def b(stringa):
     if stringa:
         stringa = "<b>"+stringa+"</b>"
@@ -3298,12 +3322,14 @@ def b(stringa):
     return stringa
 
 
+
 def c(stringa, color):
     if stringa:
         stringa = "<span foreground='%s' >" %(color) +stringa+"</span>"
     else:
         stringa = ""
     return stringa
+
 
 def scribusVersion(slafile):
     Environment.pg2log.info( "QUESTO E' IL FILE SLA"+ slafile)
@@ -3334,6 +3360,7 @@ def scribusVersion(slafile):
     else:
         Environment.new_print_enjine=True
         return True
+
 
 def posso(mod=None):
     modulis = Environment.modulesList
@@ -3437,6 +3464,7 @@ def posso(mod=None):
         return True
     return False
 
+
 def installId():
     from promogest.dao.Setconf import SetConf
     from random import randint as rint
@@ -3457,11 +3485,13 @@ def installId():
         kdd.date = datetime.datetime.now()
         kdd.persist()
 
+
 def getListiniArticolo(idArticolo=None):
     from promogest.dao.ListinoArticolo import ListinoArticolo
     listi = ListinoArticolo().select(idArticolo = idArticolo,
                             listinoAttuale=True, batchSize=None)
     return listi
+
 
 def fencemsg():
     msg = """OPERAZIONE NON CONSENTITA CON IL PACCHETTO
@@ -3470,6 +3500,7 @@ O ALLA "ONE FULL" OPPURE ACQUISTA IL MODULO
 DI CUI HAI BISOGNO
    GRAZIE"""
     return messageInfo(msg=msg)
+
 
 def daoTestDocu(dao):
     if dao.id_fornitore and dao.id_testata_documento:
@@ -3491,6 +3522,7 @@ def getLottoeScadenze(daoRigaMovimento, testataMovimento):
         return Fornitura().getRecord(id=idFornitura)
     else:
         return None
+
 
 def timeit(method):
 
@@ -3524,6 +3556,7 @@ def start_viewer(filename):
     else:
         pass
 
+
 def do_print(fileName, tipo="None"):
     """Stampa un file.
 
@@ -3537,6 +3570,7 @@ def do_print(fileName, tipo="None"):
         app = PrintingApp(fileName, tipo=tipo)
         app.run()
 
+
 def fill_treeview_with_data(treeview, data_provider, flag=False, clear=True):
     model = treeview.get_model()
     if clear:
@@ -3545,11 +3579,13 @@ def fill_treeview_with_data(treeview, data_provider, flag=False, clear=True):
         model.append([data, data.id, flag, data.denominazione])
     treeview.set_model(model)
 
+
 def prep2json(daos):
     return [d.jsanity() for d in daos]
 
 def resolve_save_file_path(ext='pdf'):
-    """ risoluzione della cartella di salvataggio del file e del nome del file """
+    """
+    risoluzione della cartella di salvataggio del file e del nome del file """
     cartella = setconf("General", "cartella_predefinita") or ""
     if cartella == '':
         if os.name == 'posix':
@@ -3569,6 +3605,7 @@ class DecimalEncoder(json.JSONEncoder):
         if isinstance(o, Decimal):
             return float(o)
         super(DecimalEncoder, self).default(o)
+
 
 def getPrezzoNettoInRiga(riga=None):
     """ calcola il prezzo netto dal prezzo lordo e dagli sconti
@@ -3591,6 +3628,7 @@ def getPrezzoNettoInRiga(riga=None):
 
     return prezzoNetto
 
+
 def toTempPng(png_b64text):
     import base64
     import shutil
@@ -3605,6 +3643,7 @@ def toTempPng(png_b64text):
     f.close()
     shutil.copy("atemp.png","gui/atemp.png")
     return "gui/atemp.png"
+
 
 def osname():
     if os.name=="nt":
@@ -3622,6 +3661,7 @@ TIPO_DOCUMENTO = (
     ('TD06', 'Parcella')
 )
 
+
 def tipoDocumentoFPA(operazione):
     # TODO: incrociare il nostro tipo di fattura con quello della fattura PA
     #tipo_doc_dict = {}
@@ -3630,6 +3670,7 @@ def tipoDocumentoFPA(operazione):
     #if operazione in ['Fattura vendita', 'Fattura acquisto']:
     #    return 'TD01'
     return 'TD01' # fattura
+
 
 def getCodicePagamento(denominazione):
     from promogest.dao.Pagamento import Pagamento
@@ -3640,6 +3681,7 @@ def getCodicePagamento(denominazione):
         codice = None
     return codice
 #end fattura PA
+
 
 def uu(data=None):
     """ funzione di check e controllo dell'unicode...se non è unicode lo trasforma in tale
