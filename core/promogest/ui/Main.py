@@ -266,16 +266,16 @@ class Main(GladeWidget):
             from pickle import dump
             #from dill import dump
             meta_pickle = self.aziendaStr + "-meta.pickle"+sys.version[:1]
-            #try:
-            #if not os.path.exists(str(os.path.join(Environment.promogestDir.replace("_",""),meta_pickle.replace("_","")).strip())):
-            with open(str(os.path.join(Environment.promogestDir.replace("_",""),meta_pickle.replace("_","")).strip()), 'wb') as f:
-                #Environment.meta.clear()
-                # Environment.meta.reflect(schema="promogest2")
-                # Environment.meta.reflect()
-                dump(Environment.meta,f)
-                        #f.write(a)
-            #except:
-                #print " FALLITA CREAZIONE META"
+            try:
+                #if not os.path.exists(str(os.path.join(Environment.promogestDir.replace("_",""),meta_pickle.replace("_","")).strip())):
+                with open(str(os.path.join(Environment.promogestDir.replace("_",""),meta_pickle.replace("_","")).strip()), 'wb') as f:
+                    #Environment.meta.clear()
+                    # Environment.meta.reflect(schema="promogest2")
+                    # Environment.meta.reflect()
+                    dump(Environment.meta,f)
+                            #f.write(a)
+            except:
+                print " FALLITA CREAZIONE META"
         pickle_meta()
 
 
@@ -694,37 +694,37 @@ class Main(GladeWidget):
             if d[1] == "azienda":
                 if Environment.tipodb == "sqlite":
                     from promogest.dao.Azienda import Azienda
-                    oldnomeazienda= d[2]
+                    oldnomeazienda = d[2]
                     newnameazienda = d[3]
                     aa = Azienda().select(schemaa = oldnomeazienda)
                     if aa:
                         aa[0].schemaa = newnameazienda.strip()
                         aa[0].persist()
-                        messageInfo(msg = _("NOME AZIENDA MODIFICATO"))
+                        messageInfo(msg=_("NOME AZIENDA MODIFICATO"))
                         dialog.destroy()
                         return
                     else:
-                        messageInfo(msg = _("VECCHIO NOME AZIENDA NON TROVATO"))
+                        messageInfo(msg=_("VECCHIO NOME AZIENDA NON TROVATO"))
                         dialog.destroy()
                         return
                     return
                 else:
-                    messageInfo(msg = _("POSSIBILE SOLO CON LA VERSIONE ONE"))
+                    messageInfo(msg=_("POSSIBILE SOLO CON LA VERSIONE ONE"))
                     dialog.destroy()
                     return
             elif d[1] == "modulo":
-                tipo_section = d[2]  #Modulo
+                tipo_section = d[2]  # Modulo
                 section = d[3]  # Inventario
-                description = str(d[4]) or ""  #Gestione inventario
+                description = str(d[4]) or ""  # Gestione inventario
                 tipo = d[5] or None  # Niente o BOOLEAN o colore
                 active = bool(d[6]) or True  # bool
-                visible = bool(d[7]) or True  #bool
+                visible = bool(d[7]) or True  # bool
                 key = d[8]  # mod_enable
                 value = d[9]  # yes or no
                 if section not in Environment.modules_folders:
-                    messageInfo(msg = _("ERRORE ATTIVAZIONE MODULO"))
+                    messageInfo(msg=_("ERRORE ATTIVAZIONE MODULO"))
                     return
-                dao = SetConf().select(key=key,section=section)
+                dao = SetConf().select(key=key, section=section)
                 if dao:
                     d = dao[0]
                 else:
@@ -742,7 +742,7 @@ class Main(GladeWidget):
                 messageInfo(msg=_("MODULO O OPZIONE MODIFICATO attivato o disattivato"))
                 dialog.destroy()
                 return
-            elif d[1] =="registro":
+            elif d[1] == "registro":
                 operazione = d[2].strip()+".registro"
                 registro_da_assegnare = d[3]
                 from promogest.dao.Setting import Setting
@@ -905,10 +905,6 @@ promogest2 IN /HOME/NOMEUTENTE/ O IN C:/UTENTI/NOMEUTENTE""")
         messageInfo(msg=_("RIAVVIA IL PROMOGEST"))
         Environment.delete_pickle()
         Environment.restart_program()
-        #else:
-            #msg= _("MODULO GIA' ATTIVATO")
-            #messageInfo(msg=msg, transient=self.getTopLevel())
-
 
     def on_test_promoshop_button_clicked(self, button):
         from promogest.dao.Setconf import SetConf
