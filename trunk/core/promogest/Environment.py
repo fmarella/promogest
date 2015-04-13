@@ -330,13 +330,12 @@ def handleEngine(schema= None):
     # engine.echo = True
     return engine
 
-
-if tipodb=="sqlite":
+if tipodb == "sqlite":
     azienda = None
 
 engine = handleEngine()
 tipo_eng = engine.name
-print( " --- TIPO ENGINE ---" , tipo_eng)
+print(" --- TIPO ENGINE ---", tipo_eng)
 
 def createSession():
     if not web:
@@ -350,13 +349,12 @@ def createSession():
 session = createSession()
 
 from pickle import load as pickle_load
-#metatmp = MetaData()
 
 def delete_pickle():
     """ Cancella il file pickle del metadata
     """
     import os
-    print( " -------- AZIENDA", azienda)
+    print(" -------- AZIENDA", azienda)
     if azienda:
         meta_pickle = azienda + "-meta.pickle"+sys.version[:1]
         promogestDir = os.path.expanduser('~') + os.sep + "promogest2" + os.sep + azienda + os.sep
@@ -393,7 +391,6 @@ def usePickleToMeta():
     if tipo_eng != "sqlite" and azienda and os.path.exists(str(os.path.join(promogestDir.replace("_",""),meta_pickle.replace("_","")).strip())):
         print(" CONTROLLO DELL'ESISTENZA DEL FILE PICKLE", str(os.path.join(promogestDir.replace("_",""))))
         with open(str(os.path.join(promogestDir.replace("_",""),meta_pickle.replace("_","")).strip()), 'rb') as f:
-            #from dill import dumps
             try:
                 meta = pickle_load(f)
                 meta.bind = engine
@@ -412,8 +409,6 @@ meta = usePickleToMeta()
 
 preEnv.azienda = azienda
 
-
-
 mainSchema = None
 schema = None
 
@@ -422,13 +417,13 @@ if tipo_eng=="postgresql":
     schema = azienda
 
 params = {
-        'engine': engine,
-        'mainSchema': mainSchema,
-        'schema': schema,
-        'metadata': meta,
-        'session': session,
-        "tipo_db": tipodb,
-        'usernameLoggedList': userdata
+         'engine': engine,
+         'mainSchema': mainSchema,
+         'schema': schema,
+         'metadata': meta,
+         'session': session,
+         "tipo_db": tipodb,
+         'usernameLoggedList': userdata
         }
 
 if params['tipo_db'] == 'postgresql':
@@ -439,15 +434,16 @@ else:
     fk_prefix = ""
     fk_prefix_main = ""
 
-
 if not preEnv.web:
     pg2log = pg_log()
+
 
 def __sendmail(msg="PG"):
     msg = str(promogestDir) + " " + str(rev_locale) + "  " + str(rev_remota)
     msg = msg +"\n"
     if not web:
         return msgDef(text=msg, azienda=azienda)
+
 
 def hook(et, ev, eb):
     import traceback
@@ -507,40 +503,38 @@ print("SQLALCHEMY VERSION", sqlalchemy.__version__)
 if not preEnv.web:
     pg2log.info("SQLALCHEMY:" + str(sqlalchemy.__version__))
 
-
-
 cadenza = ["MENSILE", "BIMESTRALE", "TRIMESTRALE",
-            "SEMESTRALE", "ANNUALE"]
+           "SEMESTRALE", "ANNUALE"]
 
 hapag = ["Fattura accompagnatoria",
-        "Fattura acquisto",
-        "Fattura differita acquisto",
-        "Fattura differita vendita",
-        "Fattura vendita",
-        "Ricevuta Fiscale",
-        "Vendita dettaglio",
-        "Nota di credito a cliente",
-        "Nota di credito da fornitore"]
+         "Fattura acquisto",
+         "Fattura differita acquisto",
+         "Fattura differita vendita",
+         "Fattura vendita",
+         "Ricevuta Fiscale",
+         "Vendita dettaglio",
+         "Nota di credito a cliente",
+         "Nota di credito da fornitore"]
 
 solo_vendita = ["Fattura accompagnatoria",
-        "Fattura differita vendita",
-        "Fattura vendita",
-        "Vendita dettaglio",
-        ]
+                "Fattura differita vendita",
+                "Fattura vendita",
+                "Vendita dettaglio",
+               ]
 solo_acquisto = ["Fattura acquisto",
-        "Fattura differita acquisto",
-        ]
+                 "Fattura differita acquisto",
+                ]
 solo_acquisto_con_DDT = ["Fattura acquisto",
-        "Fattura differita acquisto",
-        "DDT acquisto"
-        ]
+                         "Fattura differita acquisto",
+                         "DDT acquisto"
+                        ]
 
 solo_vendita_completo = ["Fattura accompagnatoria",
-        "Fattura differita vendita", "Fattura servizio",
-        "Fattura vendita",
-        "Vendita dettaglio","Scarico venduto da cassa",
-        "DDT vendita"
-        ]
+                         "Fattura differita vendita", "Fattura servizio",
+                         "Fattura vendita",
+                         "Vendita dettaglio","Scarico venduto da cassa",
+                         "DDT vendita"
+                        ]
 
 fromHtmlLits = ["Promemoria", "TestataPrimaNota",
                 "Articolo", "Cliente",
@@ -551,6 +545,6 @@ fromHtmlLits = ["Promemoria", "TestataPrimaNota",
                 "Agente", "ListinoArticolo"]
 
 package = ["ONE BASIC", "ONE FULL", "ONE STANDARD",
-            "PRO BASIC", "PRO STANDARD",
-            "PRO FULL", "ONE PROMOWEAR", "ONE PROMOSHOP",
-            "PRO PROMOWEAR", "PRO PROMOSHOP"]
+           "PRO BASIC", "PRO STANDARD",
+           "PRO FULL", "ONE PROMOWEAR", "ONE PROMOSHOP",
+           "PRO PROMOWEAR", "PRO PROMOSHOP"]
