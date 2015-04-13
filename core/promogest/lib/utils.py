@@ -729,6 +729,7 @@ def on_commesse_icon_press(entry, position, event):
     else:                            #secondary
         entry.clear_entry()
 
+
 def on_commesse_customcombobox_changed(entry):
     from promogest.modules.GestioneCommesse.dao.TestataCommessa import TestataCommessa
     model = entry.completion.get_model()
@@ -795,7 +796,6 @@ def on_combobox_magazzino_search_clicked(combobox, callName=None):
     """
     richiama la ricerca dei magazzini
     """
-
     def refresh_combobox_magazzino(anagWindow):
         """
         FIXME
@@ -846,7 +846,7 @@ def on_combobox_azienda_search_clicked(combobox, callName=None):
 
 
     if combobox.on_selection_changed():
-        from RicercaAziende import RicercaAziende
+        from promogest.ui.RicercaAziende import RicercaAziende
         anag = RicercaAziende()
 
         anagWindow = anag.getTopLevel()
@@ -2460,6 +2460,7 @@ def checkCodiceDuplicato(codice=None,id=None,tipo=None):
         else:
             a = False
     elif tipo =="Clienti":
+        from promogest.dao.Cliente import Cliente
         a = Cliente().select(codicesatto=codice)
     if a:
         msg = """Attenzione!
@@ -2536,16 +2537,16 @@ def mNLC(value,decimal=None, curr="€ "):
     """
     value = mN(value, decimal=decimal)
     curr = setconf("Valuta", "valuta_curr")
-    dp =","
-    sep="."
-    if curr =="$" or curr=="£":
+    dp =" ,"
+    sep = "."
+    if curr == "$" or curr == "£":
         dp="."
         sep=","
-    elif curr =="€":
+    elif curr == "€":
         curr = u"€"
         dp=","
         sep="."
-    return italianizza(value, decimal=decimal,curr=curr+" ", dp=dp, sep=sep)
+    return italianizza(value, decimal=decimal, curr=curr + " ", dp=dp, sep=sep)
 
 
 def mNL(value,decimal=None):
@@ -2583,16 +2584,16 @@ def italianizza(value, decimal=0, curr='', sep='.', dp=',',
     neg:     optional sign for negative numbers: '-', '(', space or blank
     trailneg:optional trailing minus indicator:  '-', ')', space or blank
 
-    >>> d = Decimal('-1234567.8901')
-    >>> moneyfmt(d, curr='$')
+    d = Decimal('-1234567.8901')
+    moneyfmt(d, curr='$')
     '-$1,234,567.89'
-    >>> moneyfmt(d, places=0, sep='.', dp='', neg='', trailneg='-')
+    moneyfmt(d, places=0, sep='.', dp='', neg='', trailneg='-')
     '1.234.568-'
-    >>> moneyfmt(d, curr='$', neg='(', trailneg=')')
+    moneyfmt(d, curr='$', neg='(', trailneg=')')
     '($1,234,567.89)'
-    >>> moneyfmt(Decimal(123456789), sep=' ')
-    '123 456 789.00'
-    >>> moneyfmt(Decimal('-0.02'), neg='<', trailneg='>')
+    moneyfmt(Decimal(123456789), sep=' ')
+    3 456 789.00'
+    moneyfmt(Decimal('-0.02'), neg='<', trailneg='>')
     '<0.02>'
     ATTENZIONE: se si vuole che arrotondi si deve mettere
     un due ma si deve dare anche
@@ -2647,11 +2648,11 @@ def generateRandomBarCode(ean=13):
             for a in xrange(10):
                 code.append(random.sample(
                                     [1, 2, 3, 4, 5, 6, 7, 8, 9, 0], 1)[0])
-            dispari = (code[1] \
-                        + code[3] \
-                        + code[5] \
-                        + code[7] \
-                        + code[9] \
+            dispari = (code[1]
+                        + code[3]
+                        + code[5]
+                        + code[7]
+                        + code[9]
                         + code[11]) * 3
             pari = code[0] + code[2] + code[4] + code[6] + code[8] + code[10]
         elif ean == 8:
