@@ -219,9 +219,9 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
             daDataFineNoleggio = stringToDate(self.da_data_fine_noleggio_filter_entry.get_text())
             aDataFineNoleggio = stringToDateBumped(self.a_data_fine_noleggio_filter_entry.get_text())
             self.filterDict.update(daDataInizioNoleggio=daDataInizioNoleggio,
-                                    aDataInizioNoleggio=aDataInizioNoleggio,
-                                    daDataFineNoleggio=daDataFineNoleggio,
-                                    aDataFineNoleggio=aDataFineNoleggio)
+                                   aDataInizioNoleggio=aDataInizioNoleggio,
+                                   daDataFineNoleggio=daDataFineNoleggio,
+                                   aDataFineNoleggio=aDataFineNoleggio)
 
         def filterCountClosure():
             if idArticolo:
@@ -244,15 +244,15 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
             self.batchSize = batchSize
             if idArticolo:
                 a = TestataDocumento().select(orderBy=self.orderBy,
-                                                offset=offset,
-                                                idArticoloMov=idArticolo,
-                                                batchSize=batchSize,
-                                                filterDict = self.filterDict) or []
+                                              offset=offset,
+                                              idArticoloMov=idArticolo,
+                                              batchSize=batchSize,
+                                              filterDict = self.filterDict) or []
                 b = TestataDocumento().select(orderBy=self.orderBy,
-                                                offset=offset,
-                                                idArticoloDoc=idArticolo,
-                                                batchSize=batchSize,
-                                                filterDict = self.filterDict) or []
+                                              offset=offset,
+                                              idArticoloDoc=idArticolo,
+                                              batchSize=batchSize,
+                                              filterDict = self.filterDict) or []
                 return a+b
             return TestataDocumento().select(orderBy=self.orderBy,
                                                 offset=offset,
@@ -278,7 +278,7 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
             if self.aa < 0:
                 tdoss.sort(key=lambda x: x._totaleImponibileScontato)
             else:
-                tdoss.sort(key=lambda x: x._totaleImponibileScontato,reverse=True)
+                tdoss.sort(key=lambda x: x._totaleImponibileScontato, reverse=True)
             tdos = tdoss[self.offset:self.batchSize2+self.offset]
         else:
             self._filterClosure = filterClosure
@@ -368,7 +368,7 @@ class RicercaDocumenti(Ricerca):
             self.filter.refresh()
             self.filter.ragione_sociale_filter_entry.grab_focus()
 
-        from promogest.ui.AnagDocumenti.AnagraficaDocumenti import AnagraficaDocumenti
+        from promogest.ui.anagDocumenti.AnagraficaDocumenti import AnagraficaDocumenti
         anag = AnagraficaDocumenti()
         anagWindow = anag.getTopLevel()
         showAnagraficaRichiamata(returnWindow, anagWindow, toggleButton, refresh)
