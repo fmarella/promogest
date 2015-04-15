@@ -1683,11 +1683,11 @@ def calcolaListinoDaMargine(costo=0, margine=0, iva=0):
     sel gli argomenti sono tutti oggetti Decimal, lo è anche il valore di ritorno
     TODO: C'è da verificare la coerenza in caso di iva a zero o margine a zero
     """
-    if type(costo)==type("stringa") or costo is None:
+    if type(costo) == type("stringa") or costo is None:
         costo = Decimal(sanitizer(costo) or 0)
-    if type(margine)==type("stringa") or margine is None:
+    if type(margine) == type("stringa") or margine is None:
         margine = Decimal(sanitizer(margine) or 0)
-    if type(iva)==type("stringa") or iva is None:
+    if type(iva) == type("stringa") or iva is None:
         iva = Decimal(sanitizer(iva) or 0)
 
     if costo.__class__ == Decimal and margine.__class__ == Decimal and iva.__class__ == Decimal:
@@ -1701,11 +1701,11 @@ def calcolaMargine(costo=0, listino=0, iva=0):
     Calcola il margine a partire dal costo, dal prezzo di vendita e dall'iva
     sel gli argomenti sono tutti oggetti Decimal, lo è anche il valore di ritorno
     """
-    if type(costo)==type("stringa") or costo is None:
+    if type(costo) == type("stringa") or costo is None:
         costo = Decimal(sanitizer(costo) or 0)
-    if type(listino)==type("stringa") or listino is None:
+    if type(listino) == type("stringa") or listino is None:
         listino = Decimal(sanitizer(listino) or 1)
-    if type(iva)==type("stringa") or iva is None:
+    if type(iva) == type("stringa") or iva is None:
         iva = Decimal(sanitizer(iva) or 0)
     if costo.__class__ == Decimal and listino.__class__ == Decimal and iva.__class__ == Decimal:
         if listino == 0:
@@ -1724,9 +1724,11 @@ def calcolaCostoUltimodaDettaglio(dettaglio=0, ricarico=0, iva=0):
     costo_ultimo = float(imponibile)/(1+float(ricarico)/100)
     return costo_ultimo
 
+
 def calcolaCostoUltimodaIngrosso(ingrosso=0, ricarico=0):
     costo_ultimo = float(ingrosso)/(1+float(ricarico)/100)
     return costo_ultimo
+
 
 def calcolaMargineDaRicarico(ricarico=0):
     """
@@ -1840,6 +1842,7 @@ def stringToDateBumped(stringa, giorni=1):
     else:
         return None
 
+
 def dateTimeToString(data):
     """
     Converte una data + ora in stringa
@@ -1850,16 +1853,16 @@ def dateTimeToString(data):
         return data
     else:
         try:
-            if string.zfill(str(data.month),2) and string.zfill(str(data.minute),2) != "00":
-                s = string.zfill(str(data.day), 2) +\
-                '/' + string.zfill(str(data.month),2) +\
-                '/' + string.zfill(str(data.year),4) + \
-                ' ' + string.zfill(str(data.hour),2) + \
-                ':' + string.zfill(str(data.minute),2)
+            if string.zfill(str(data.month), 2) and string.zfill(str(data.minute), 2) != "00":
+                s = string.zfill(str(data.day), 2) \
+                + '/' + string.zfill(str(data.month), 2) \
+                + '/' + string.zfill(str(data.year), 4) \
+                + ' ' + string.zfill(str(data.hour), 2) \
+                + ':' + string.zfill(str(data.minute), 2)
             else:
-                s = string.zfill(str(data.day), 2) +\
-                '/' + string.zfill(str(data.month),2) +\
-                '/' + string.zfill(str(data.year),4)
+                s = string.zfill(str(data.day), 2) \
+                + '/' + string.zfill(str(data.month), 2) \
+                + '/' + string.zfill(str(data.year), 4) 
         except Exception:
             s = ''
         return s
@@ -1884,9 +1887,9 @@ def stringToDateTime(stringa):
                 data=None
         return data
 
+
 def controllaDateFestivi(data):
     """Controlla se una data è festiva
-
     Arguments:
     - `stringa`: la data da controllare
     """
@@ -1897,11 +1900,13 @@ def controllaDateFestivi(data):
         data = data[:4]
     return data in festivi
 
+
 def get_data_mese_precedente(data=None):
     from datetime import timedelta
     if not data:
         data = datetime.datetime.utcnow()
     return data.replace(day=1) - timedelta(days=1)
+
 
 def dataInizioFineMese(data):
     import calendar
@@ -1909,6 +1914,7 @@ def dataInizioFineMese(data):
     anno = data.year
     giorni = calendar.monthrange(anno, mese)
     return (datetime.date(anno, mese, 1), datetime.date(anno, mese, giorni[1]))
+
 
 def getScadenza(data_documento, ngiorniscad, FM = True):
     """
@@ -2034,7 +2040,6 @@ def showAnagraficaRichiamata(returnWindow, anagWindow, button=None, callName=Non
         """ """
         if anagWindow in Environment.windowGroup:
             Environment.windowGroup.remove(anagWindow)
-##        Login.windowGroup.append(anagReturn)
         if button is not None:
             if isinstance(button, gtk.ToggleButton):
                 button.set_active(False)
@@ -2045,7 +2050,6 @@ def showAnagraficaRichiamata(returnWindow, anagWindow, button=None, callName=Non
     anagWindow.connect("destroy",
                        on_anagrafica_richiamata_destroy)
     anagWindow.set_transient_for(anagReturn)
-##    Login.windowGroup.remove(anagReturn)
     if anagWindow not in Environment.windowGroup:
         Environment.windowGroup.append(anagWindow)
     anagWindow.show_all()
@@ -2087,7 +2091,8 @@ def showComplexQuestion(parentWindow, message):
                         GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
                         None)
     hbox = gtk.HBox()
-    image = GTK_IMAGE_NEW_FROM_STOCK(gtk.STOCK_DIALOG_QUESTION, GTK_ICON_SIZE_DIALOG)
+    image = GTK_IMAGE_NEW_FROM_STOCK(gtk.STOCK_DIALOG_QUESTION,
+                                     GTK_ICON_SIZE_DIALOG)
     image.set_padding(10,10)
     label = gtk.Label(message)
     label.set_justify(GTK_JUSTIFICATION_LEFT)

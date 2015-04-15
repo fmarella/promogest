@@ -43,110 +43,9 @@ if posso("ADR"):
 
 def drawPart(anaedit):
     treeview = anaedit.righe_treeview
-    #rendererSx = gtk.CellRendererText()
-    #rendererDx = gtk.CellRendererText()
-    #rendererDx.set_property('xalign', 1)
-
-    #column = gtk.TreeViewColumn(_('N°'), rendererSx, text=0)
-    #column.set_sizing(GTK_COLUMN_GROWN_ONLY)
-    #column.set_clickable(False)
-    #column.set_resizable(True)
-    #column.set_expand(False)
-    #treeview.append_column(column)
-
-    #column = gtk.TreeViewColumn(_('Magazzino'), rendererSx, text=1)
-    #column.set_sizing(GTK_COLUMN_GROWN_ONLY)
-    #column.set_clickable(False)
-    #column.set_resizable(True)
-    #column.set_expand(False)
-    #treeview.append_column(column)
-
-    #column = gtk.TreeViewColumn(_('Codice articolo'), rendererSx, text=2)
-    #column.set_sizing(GTK_COLUMN_GROWN_ONLY)
-    #column.set_clickable(False)
-    #column.set_resizable(True)
-    #column.set_expand(False)
-    #treeview.append_column(column)
-
-    #column = gtk.TreeViewColumn(_('Descrizione'), rendererSx, text=3)
-    #column.set_sizing(GTK_COLUMN_GROWN_ONLY)
-    #column.set_clickable(False)
-    #column.set_resizable(True)
-    #column.set_expand(True)
-    #treeview.append_column(column)
-
-    #column = gtk.TreeViewColumn(_('% IVA'), rendererDx, text=4)
-    #column.set_sizing(GTK_COLUMN_GROWN_ONLY)
-    #column.set_clickable(False)
-    #column.set_resizable(True)
-    #column.set_expand(False)
-    #treeview.append_column(column)
-    ##treeview.set_reorderable(True)
-    #if posso("SM"):
-        #AnagraficaDocumentiEditSuMisuraExt.setTreeview(treeview, rendererSx)
-
-    #column = gtk.TreeViewColumn(_('Multiplo'), rendererSx, text=8)
-    #column.set_sizing(GTK_COLUMN_GROWN_ONLY)
-    #column.set_clickable(False)
-    #column.set_resizable(True)
-    #column.set_expand(False)
-    #treeview.append_column(column)
-
-    #column = gtk.TreeViewColumn(_('Listino'), rendererSx, text=9)
-    #column.set_sizing(GTK_COLUMN_GROWN_ONLY)
-    #column.set_clickable(False)
-    #column.set_resizable(True)
-    #column.set_expand(False)
-    #treeview.append_column(column)
-
-    #column = gtk.TreeViewColumn(_('U.M.'), rendererSx, text=10)
-    #column.set_sizing(GTK_COLUMN_GROWN_ONLY)
-    #column.set_clickable(False)
-    #column.set_resizable(True)
-    #column.set_expand(False)
-    #treeview.append_column(column)
-
-    #column = gtk.TreeViewColumn(_("Quantita'"), rendererDx, text=11)
-    #column.set_sizing(GTK_COLUMN_GROWN_ONLY)
-    #column.set_clickable(False)
-    #column.set_resizable(True)
-    #column.set_expand(False)
-    #treeview.append_column(column)
-
-    #column = gtk.TreeViewColumn(_('Prezzo lordo'), rendererDx, text=12)
-    #column.set_sizing(GTK_COLUMN_GROWN_ONLY)
-    #column.set_clickable(False)
-    #column.set_resizable(True)
-    #column.set_expand(False)
-    #treeview.append_column(column)
-
-    #column = gtk.TreeViewColumn(_('Sconti'), rendererSx, text=13)
-    #column.set_sizing(GTK_COLUMN_GROWN_ONLY)
-    #column.set_clickable(False)
-    #column.set_resizable(True)
-    #column.set_expand(False)
-    #treeview.append_column(column)
-
-    #column = gtk.TreeViewColumn(_('Prezzo netto'), rendererDx, text=14)
-    #column.set_sizing(GTK_COLUMN_GROWN_ONLY)
-    #column.set_clickable(False)
-    #column.set_resizable(True)
-    #column.set_expand(False)
-    #treeview.append_column(column)
-
     if posso("GN"):
-        #AnagraficaDocumentiEditGestioneNoleggioExt.setTreeview(treeview, rendererSx)
-
         colonna = treeview.get_column(12)
         colonna.set_visible(True)
-    #column = gtk.TreeViewColumn(_('Totale'), rendererDx, text=16)
-    #column.set_sizing(GTK_COLUMN_GROWN_ONLY)
-    #column.set_clickable(False)
-    #column.set_resizable(True)
-    #column.set_expand(False)
-    #treeview.append_column(column)
-    ##treeview.set_reorderable(True)
-
     fillComboboxAliquoteIva(anaedit.id_iva_customcombobox.combobox)
     anaedit.id_iva_customcombobox.connect('clicked',
                               on_id_aliquota_iva_customcombobox_clicked)
@@ -634,7 +533,9 @@ def mostraArticoloPart(anaedit, id, art=None, quan=None):
 
 def on_multi_line_button_clickedPart(anaedit, widget):
     """ widget per l'inserimento di righe "multiriga" """
-    mleditor = GladeWidget(root='multi_linea_editor', path='multi_linea_editor.glade', callbacks_proxy=anaedit)
+    mleditor = GladeWidget(root='multi_linea_editor',
+                           path='multi_linea_editor.glade',
+                           callbacks_proxy=anaedit)
     mleditor.multi_linea_editor.set_modal(modal=True)#
     #mleditor.multi_linea_editor.set_transient_for(self)
     #self.placeWindow(mleditor.multi_linea_editor)
