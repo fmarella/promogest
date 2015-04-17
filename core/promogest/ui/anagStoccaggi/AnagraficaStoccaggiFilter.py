@@ -70,9 +70,6 @@ class AnagraficaStoccaggiFilter(AnagraficaFilter):
         if self._anagrafica._magazzinoFissato:
             findComboboxRowFromId(self.id_magazzino_filter_combobox,
                                             self._anagrafica._idMagazzino)
-            #self.id_magazzino_filter_combobox.set_sensitive(False)
-            # column = self._anagrafica.anagrafica_filter_treeview.get_column(0)
-            # column.set_property('visible', False)
         if posso("PW"):
             fillComboboxGruppiTaglia(
                         self.id_gruppo_taglia_articolo_filter_combobox, True)
@@ -85,7 +82,7 @@ class AnagraficaStoccaggiFilter(AnagraficaFilter):
             self.id_modello_filter_combobox.set_active(0)
 
             fillComboboxAnniAbbigliamento(
-                        self.id_anno_articolo_filter_combobox, True)
+                self.id_anno_articolo_filter_combobox, True)
             self.id_anno_articolo_filter_combobox.set_active(0)
 
             fillComboboxStagioniAbbigliamento(
@@ -93,7 +90,7 @@ class AnagraficaStoccaggiFilter(AnagraficaFilter):
             self.id_stagione_articolo_filter_combobox.set_active(0)
 
             fillComboboxGeneriAbbigliamento(
-                        self.id_genere_articolo_filter_combobox, True)
+                self.id_genere_articolo_filter_combobox, True)
             self.id_genere_articolo_filter_combobox.set_active(0)
         else:
             self.promowear_expander_semplice.destroy()
@@ -102,12 +99,8 @@ class AnagraficaStoccaggiFilter(AnagraficaFilter):
     def _reOrderBy(self, column):
         if column.get_name() == "magazzino_column":
             return self._changeOrderBy(column, (
-                                                Magazzino,
-                                                Magazzino.denominazione))
-        # if column.get_name() == "ragione_sociale_column":
-        #     return self._changeOrderBy(column, (
-        #                                         None,
-        #                                         PersonaGiuridica_.ragione_sociale))
+                Magazzino,
+                Magazzino.denominazione))
 
     def clear(self):
         # Annullamento filtro
@@ -137,46 +130,41 @@ class AnagraficaStoccaggiFilter(AnagraficaFilter):
         idArticolo = self.id_articolo_filter_customcombobox.getId()
         idMagazzino = findIdFromCombobox(self.id_magazzino_filter_combobox)
         denominazione = prepareFilterString(
-                    self.denominazione_filter_entry.get_text())
+            self.denominazione_filter_entry.get_text())
         produttore = prepareFilterString(
-                    self.produttore_filter_entry.get_text())
+            self.produttore_filter_entry.get_text())
         codice = prepareFilterString(self.codice_filter_entry.get_text())
         codiceABarre = prepareFilterString(
-                    self.codice_a_barre_filter_entry.get_text())
+            self.codice_a_barre_filter_entry.get_text())
         codiceArticoloFornitore = prepareFilterString(
-                    self.codice_articolo_fornitore_filter_entry.get_text())
+            self.codice_articolo_fornitore_filter_entry.get_text())
         idFamiglia = findIdFromCombobox(
-                    self.id_famiglia_articolo_filter_combobox)
+            self.id_famiglia_articolo_filter_combobox)
         idCategoria = findIdFromCombobox(
-                    self.id_categoria_articolo_filter_combobox)
+            self.id_categoria_articolo_filter_combobox)
         idStato = findIdFromCombobox(self.id_stato_articolo_filter_combobox)
         if self.cancellato_filter_checkbutton.get_active():
             cancellato = False
         else:
             cancellato = True
         self.filterDict = {"articolo": denominazione,
-                            "codice": codice,
-                            "codiceABarre": codiceABarre,
-                            "codiceArticoloFornitore": codiceArticoloFornitore,
-                            "produttore": produttore,
-                            "idFamiglia": idFamiglia,
-                            "idCategoria": idCategoria,
-                            "idStato": idStato,
-                            "cancellato": cancellato
-                            }
+                           "codice": codice,
+                           "codiceABarre": codiceABarre,
+                           "codiceArticoloFornitore": codiceArticoloFornitore,
+                           "produttore": produttore,
+                           "idFamiglia": idFamiglia,
+                           "idCategoria": idCategoria,
+                           "idStato": idStato,
+                           "cancellato": cancellato
+                           }
 
-#        if posso("PW"):
-#            AnagraficaArticoliPromoWearExpand.refresh(self)
 
         def filterCountClosure():
             return Stoccaggio().count(idMagazzino=idMagazzino,
                                     idArticolo=idArticolo,
                                     filterDict=self.filterDict)
-
         self._filterCountClosure = filterCountClosure
-
         self.numRecords = self.countFilterResults()
-
         self._refreshPageCount()
 
         def filterClosure(offset, batchSize):
@@ -187,11 +175,8 @@ class AnagraficaStoccaggiFilter(AnagraficaFilter):
                                        batchSize=batchSize,
                                        filterDict=self.filterDict)
         self._filterClosure = filterClosure
-
         stos = self.runFilter()
-
         self.filter_listore.clear()
-
         for s in stos:
             setattr(s, "daData", daData)
             setattr(s,  "aData", aData)

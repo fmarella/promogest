@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -34,8 +34,8 @@ SHOWZEROTOTALI = False
 
 try:
     from promogest.lib.utils import pbar, setconf
-    SHOWZEROTOTALI = setconf( "Stampa","zeri_in_totali")
-    SHOWZERORIGA = setconf( "Stampa","zeri_in_riga")
+    SHOWZEROTOTALI = setconf("Stampa", "zeri_in_totali")
+    SHOWZERORIGA = setconf("Stampa", "zeri_in_riga")
 except:
     pass
 
@@ -45,14 +45,14 @@ class SlaTpl2Sla(SlaParser):
     object and sequence of objects
     """
 
-    def __init__(self,slafile=None,label=None, report=None, objects=None,
-                    daos=None, slaFileName=None, pdfFolder=None, classic=None,
-                    template_file=None, pbar=None):
+    def __init__(self, slafile=None, label=None, report=None, objects=None,
+                 daos=None, slaFileName=None, pdfFolder=None, classic=None,
+                 template_file=None, pbar=None):
 
 
         SlaParser.__init__(self, slaFileName=slaFileName,
-                                    pdfFolder=pdfFolder,
-                                    slafile=slafile)
+                           pdfFolder=pdfFolder,
+                           slafile=slafile)
         self.slaFileName = slaFileName
         self.report = report
         self.classic = classic
@@ -61,19 +61,21 @@ class SlaTpl2Sla(SlaParser):
         self.objects = objects
         self.pbar = pbar
         self.label = label
-        self.formatFunctions = ['trunc','approx','itformat','itformatdataora','itformatdata', 'bcview',"approxit"]
-        self.timeTags = ['date','time','datetime']
-        self.positionTags = ['first','last']
-        self.pageTags = ['currentPage','totalPage']
+        self.formatFunctions = ['trunc', 'approx', 'itformat',
+                                'itformatdataora', 'itformatdata',
+                                'bcview', "approxit"]
+        self.timeTags = ['date','time', 'datetime']
+        self.positionTags = ['first', 'last']
+        self.pageTags = ['currentPage', 'totalPage']
         self.cycle = 0
         # in slaparser in quanto server anche dopo per sla2pdf
 #        self.findTablesAndTags()
         #questa è una funzione chiave .....
         self.tableProperties = self.findTablesProperties()
         for l in self.pageObjects:
-            if l.get("ANNAME") =="LOGO_AZIENDA":
-                if l.get("PFILE") =="":
-                    if "azi_percorso_immagine" in objects[0] and objects[0]["azi_percorso_immagine"] !=""\
+            if l.get("ANNAME") == "LOGO_AZIENDA":
+                if l.get("PFILE") == "":
+                    if "azi_percorso_immagine" in objects[0] and objects[0]["azi_percorso_immagine"] != ""\
                     and objects[0]["azi_percorso_immagine"]:
                         try:
                             log_path = objects[0]["azi_percorso_immagine"]
@@ -95,7 +97,6 @@ class SlaTpl2Sla(SlaParser):
             self.duplicateElement(self.pagesNumber)
             #self.duplicateTags()
             self.labelSla()
-
 
 #        self.fillDocument()
         self.doc.write(self.pdfFolder+"_temppp.sla")

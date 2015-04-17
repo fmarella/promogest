@@ -1,13 +1,24 @@
 # -*- coding: utf-8 -*-
 
-# Promogest
-#
-# Copyright (C) 2007 by Promotux Informatica - http://www.promotux.it/
-# Author: Simone Cossu <simone@promotux.it>
-# Author: Andrea Argiolas <andrea@promotux.it>
-# Author: Francesco Meloni  <francesco@promotux.it>
-# Copyright (C) 2008-2009 by Promotux Informatica - http://www.promotux.it/
-# Author: Francesco Meloni  <francesco@promotux.it>
+#    Copyright (C) 2005-2015 by Promotux
+#                        di Francesco Meloni snc - http://www.promotux.it/
+
+#    Author: Francesco Meloni  <francesco@promotux.it>
+
+#    This file is part of Promogest.
+
+#    Promogest is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 2 of the License, or
+#    (at your option) any later version.
+
+#    Promogest is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+
+#    You should have received a copy of the GNU General Public License
+#    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 import sys
 import os
@@ -53,7 +64,7 @@ class Sla2Pdf(object):
 
     def __init__(self, slaFileName=None,pdfFolder=None, report=False,
                         label=False, slafile=None):
-        print "SLAFILENAME" , slaFileName
+        print "SLAFILENAME", slaFileName
         print "PDF_FOLDER", pdfFolder
         print "SLAFILE", slafile
 
@@ -66,7 +77,6 @@ class Sla2Pdf(object):
     def createPDF(self, daos=None,objects=None, classic=None, template_file=None):
         self.objects = objects
         self.daos = daos
-#        print "SELF DAOSSSS", objects, daos
         if self.objects or self.daos:
             from promogest import Environment
             self._classic = classic
@@ -74,13 +84,14 @@ class Sla2Pdf(object):
             if template_file:
                 self.slaFileName = Environment.labelTemplatesDir+template_file
             version = SlaParser(slaFileName=self.slaFileName,
-                                    pdfFolder=self.pdfFolder,
-                                    slafile=self.slafile).scribusVersion()
+                                pdfFolder=self.pdfFolder,
+                                slafile=self.slafile).scribusVersion()
             if not version:
                 from Sla2Pdf_classic import Sla2Pdf_classic
-                slatopdf = Sla2Pdf_classic(pdfFolder = self.pdfFolder,
-                                    slaFileName = self.slaFileName,
-                                    report = self.report).serialize(objects, dao=daos)
+                slatopdf = Sla2Pdf_classic(pdfFolder=self.pdfFolder,
+                                           slaFileName=self.slaFileName,
+                                           report=self.report).serialize(
+                                                objects, dao=daos)
                 result = None
                 filename = self.pdfFolder+"_temp.pdf"
                 print "FILENAME FINALEEEEE", filename
@@ -105,27 +116,23 @@ class Sla2Pdf(object):
             self.toPdf()
 
     def toPdf(self):
-        #if version ==True:
         from Sla2Pdf_ng import Sla2Pdf_ng
         slatopdf = Sla2Pdf_ng(slafile=self.slafile).translate()
         return slatopdf
-        #else:
-
 
     def slaToSla(self, objects=None, daos=None):
-
         """ Model parsing, values substitution and pdf creation """
         print "QUESTO DEVE PASSARE PER SLATPL2SLA"
         from SlaTpl2Sla import SlaTpl2Sla
-        self.slatpl = SlaTpl2Sla(   slafile = self.slafile,
-                                    label =self.label,
-                                    objects = objects,
-                                    daos=daos,
-                                    report = self.report,
-                                    slaFileName = self.slaFileName,
-                                    pdfFolder =self.pdfFolder,
-                                    classic=self._classic,
-                                    template_file=self._template_file
+        self.slatpl = SlaTpl2Sla(slafile=self.slafile,
+                                 label=self.label,
+                                 objects=objects,
+                                 daos=daos,
+                                 report=self.report,
+                                 slaFileName=self.slaFileName,
+                                 pdfFolder=self.pdfFolder,
+                                 classic=self._classic,
+                                 template_file=self._template_file
                                 )
 
 
@@ -139,17 +146,17 @@ class runSla2pdf(object):
                 """
         parser = OptionParser(usage=usage)
         parser.add_option("-i", "--input",
-                            #action="store_true",
-                            help="Per visualizzare con delle print i dizionari dao",
-                            default="False",
-                            type="string",
-                            dest="Input")
+                          # action="store_true",
+                          help="Per visualizzare con delle print i dizionari dao",
+                          default="False",
+                          type="string",
+                          dest="Input")
         parser.add_option("-o", "--output",
-                            #action="store_true",
-                            help="Per mettere il debug al massimo",
-                            default="",
-                            #type="string",
-                            dest="Output")
+                          # action="store_true",
+                          help="Per mettere il debug al massimo",
+                          default="",
+                          # type="string",
+                          dest="Output")
 
         (options, args) = parser.parse_args()
         if options.Input:
@@ -157,7 +164,7 @@ class runSla2pdf(object):
         if options.Output:
             slaout = slafile
         sla22 = Sla2Pdf(slafile=slafile).createPDF()
-        #login.run()
+        # login.run()
 
 if __name__ == '__main__':
     runSla2pdf()

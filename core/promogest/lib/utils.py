@@ -1470,13 +1470,7 @@ def on_id_fornitura_customcombobox_clicked(widget, button, idArticolo, idFornito
     """
 
     def on_anagrafica_forniture_destroyed(window):
-        """
-        FIXME
-        @param window:
-        @type window:
-        """
         widget.button.set_active(False)
-
 
     if widget.button.get_property('active') is False:
         return
@@ -1551,7 +1545,6 @@ def on_id_destinazione_merce_customcombobox_clicked(widget, button, idCliente):
     """
     richiama l'anagrafica delle destinazioni merce
     """
-
     def on_anagrafica_destinazioni_merce_destroyed(window):
         """
         all'uscita dall'anagrafica richiamata, aggiorna l'elenco associato
@@ -1560,7 +1553,6 @@ def on_id_destinazione_merce_customcombobox_clicked(widget, button, idCliente):
         id = findIdFromCombobox(widget.combobox)
         fillComboboxDestinazioniMerce(widget.combobox, idCliente)
         findComboboxRowFromId(widget.combobox, id)
-
 
     if widget.button.get_property('active') is False:
         return
@@ -1575,11 +1567,7 @@ def on_id_destinazione_merce_customcombobox_clicked(widget, button, idCliente):
     anagWindow.connect("destroy",
                         on_anagrafica_destinazioni_merce_destroyed)
 
-#
-
-
 # Usate nel custom widget CustomComboBoxSearch
-
 
 def insertComboboxSearchArticolo(combobox, idArticolo, clear=False, filter=True):
     """    """
@@ -1602,7 +1590,8 @@ def insertComboboxSearchCliente(combobox, idCliente, clear=False, filter=True):
     if res["ragioneSociale"] != '':
         combobox.refresh(idCliente, res["ragioneSociale"], res, clear, filter)
     else:
-        combobox.refresh(idCliente, res["cognome"] + ' ' + res["nome"], res, clear, filter)
+        combobox.refresh(idCliente, res["cognome"] + ' ' + res["nome"], res,
+                         clear, filter)
 
 
 def insertComboboxSearchVettore(combobox, idVettore, clear=False, filter=True):
@@ -1611,7 +1600,8 @@ def insertComboboxSearchVettore(combobox, idVettore, clear=False, filter=True):
     if res["ragioneSociale"] != '':
         combobox.refresh(idVettore, res["ragioneSociale"], res, clear, filter)
     else:
-        combobox.refresh(idVettore, res["cognome"] + ' ' + res["nome"], res, clear, filter)
+        combobox.refresh(idVettore, res["cognome"] + ' ' + res["nome"], res,
+                         clear, filter)
 
 
 def insertComboboxSearchMagazzino(combobox, idMagazzino, clear=False, filter=True):
@@ -1624,7 +1614,6 @@ def insertComboboxSearchAzienda(combobox, schemaAzienda, clear=False, filter=Tru
     """    """
     res = leggiAzienda(schemaAzienda)
     combobox.refresh(schemaAzienda, res["denominazione"], res, clear, filter)
-
 
 
 def insertComboboxSearchAgente(combobox, idAgente, clear=False, filter=True):
@@ -1699,7 +1688,7 @@ def calcolaListinoDaMargine(costo=0, margine=0, iva=0):
 def calcolaMargine(costo=0, listino=0, iva=0):
     """
     Calcola il margine a partire dal costo, dal prezzo di vendita e dall'iva
-    sel gli argomenti sono tutti oggetti Decimal, lo è anche il valore di ritorno
+    sel gli argomenti sono tutti oggetti Decimal,lo è anche il valore di ritorno
     """
     if type(costo) == type("stringa") or costo is None:
         costo = Decimal(sanitizer(costo) or 0)
@@ -1758,7 +1747,8 @@ def calcolaRicaricoDaMargine(margine=0):
 def calcolaPrezzoIva(prezzo=0, iva=0):
     """
     Calcola un prezzo ivato (iva > 0) o scorpora l'iva da un prezzo (iva < 0)
-    sel gli argomenti sono tutti oggetti Decimal, lo è anche il valore di ritorno
+    sel gli argomenti sono tutti oggetti Decimal,
+    lo è anche il valore di ritorno
     """
     if type(prezzo)==type("stringa") or prezzo is None:
         prezzo = Decimal(sanitizer(prezzo) or 0)
@@ -1789,7 +1779,8 @@ def emptyStringToNone(string):
 def prepareFilterString(string=None):
     """
     Tratta una stringa prima di essere passata come parametro in un filtro:
-    Restituisce None se la stringa e' nulla e sostituisce un apice con la relativa sequenza di escape
+    Restituisce None se la stringa e' nulla e sostituisce un apice con la
+    relativa sequenza di escape
     """
     if (string or '') == '':
         return ""
@@ -1807,7 +1798,9 @@ def dateToString(data):
         return data
     else:
         try:
-            s = string.zfill(str(data.day),2) + '/' + string.zfill(str(data.month),2) + '/' + string.zfill(str(data.year),4)
+            s = string.zfill(str(data.day), 2) \
+                + '/' + string.zfill(str(data.month), 2) \
+                + '/' + string.zfill(str(data.year), 4)
         except Exception:
             s = ''
         return s
@@ -1855,14 +1848,14 @@ def dateTimeToString(data):
         try:
             if string.zfill(str(data.month), 2) and string.zfill(str(data.minute), 2) != "00":
                 s = string.zfill(str(data.day), 2) \
-                + '/' + string.zfill(str(data.month), 2) \
-                + '/' + string.zfill(str(data.year), 4) \
-                + ' ' + string.zfill(str(data.hour), 2) \
-                + ':' + string.zfill(str(data.minute), 2)
+                    + '/' + string.zfill(str(data.month), 2) \
+                    + '/' + string.zfill(str(data.year), 4) \
+                    + ' ' + string.zfill(str(data.hour), 2) \
+                    + ':' + string.zfill(str(data.minute), 2)
             else:
                 s = string.zfill(str(data.day), 2) \
-                + '/' + string.zfill(str(data.month), 2) \
-                + '/' + string.zfill(str(data.year), 4) 
+                    + '/' + string.zfill(str(data.month), 2) \
+                    + '/' + string.zfill(str(data.year), 4)
         except Exception:
             s = ''
         return s
@@ -1916,7 +1909,7 @@ def dataInizioFineMese(data):
     return (datetime.date(anno, mese, 1), datetime.date(anno, mese, giorni[1]))
 
 
-def getScadenza(data_documento, ngiorniscad, FM = True):
+def getScadenza(data_documento, ngiorniscad, FM=True):
     """
     Ritorna la data di scadenza in base alla data del documento, al numero di giorni
     della scadenza e se la scadenza e` da considerarsi fine mese.
@@ -1937,7 +1930,7 @@ def getScadenza(data_documento, ngiorniscad, FM = True):
         data_scadenza = data_documento + datetime.timedelta(ngiorniscad)
         return data_scadenza
 
-def getScontiFromDao(daoSconti = [], daoApplicazione = 'scalare', jsonn=False):
+def getScontiFromDao(daoSconti=[], daoApplicazione='scalare', jsonn=False):
     """
     """
     applicazione = 'scalare'
@@ -1952,13 +1945,14 @@ def getScontiFromDao(daoSconti = [], daoApplicazione = 'scalare', jsonn=False):
         sconti = json.dumps(sconti,cls=DecimalEncoder)
     return (sconti, applicazione)
 
-def getMisureFromRiga(daoMisura = []):
+def getMisureFromRiga(daoMisura=[]):
     """
     """
     misura = []
 
     for s in daoMisura:
-        misura.append({"altezza": s.altezza, "larghezza": s.larghezza, "pezzi_moltiplicatore": s.moltiplicatore})
+        misura.append({"altezza": s.altezza, "larghezza": s.larghezza,
+                       "pezzi_moltiplicatore": s.moltiplicatore})
 
     return (misura)
 
