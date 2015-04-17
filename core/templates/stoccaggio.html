@@ -34,9 +34,9 @@
             </thead>
             {% for item in dao._getTotaliOperazioniMovimento(daData=dao.daData,aData=dao.aData, year=environment.workingYear) %}
             <tr >
-            <td class="odd-detail" style="padding-left:5px;"><a href="program:/testataDocumentoId={{item['daoTestataDocumento'].id}}"><b>DOC:</b> N° {{item['daoTestataDocumento'].numero}} </a>-- <a href="program:/testataMovimentoId={{item['daoTestataMovimento'].id}}"><b>MOV:</b> N° {{item['numero']}}</a> - {{item['operazione']}} - Del: {{utils.dateToString(item['data_movimento'])}} -
+            <td class="odd-detail" style="padding-left:5px;">{{item['operazione']}} - con - <a href="program:/testataDocumentoId={{item['daoTestataDocumento'].id}}"><b>DOC:</b> {{item['daoTestataDocumento'].numero}} </a> e/o <a href="program:/testataMovimentoId={{item['daoTestataMovimento'].id}}"><b>MOV:</b> {{item['numero']}}</a> - Del: <strong>{{utils.dateToString(item['data_movimento'])}}</strong> -
             {% if item["daoTestataMovimento"].id_cliente or item["daoTestataMovimento"].id_fornitore %}
-            Rag_soc.:{{item['fornitore'][0:9]|string}}{{item['cliente'][0:9]|string}}<br>
+            {{item['fornitore'][0:15]|string}}{{item['cliente'][0:15]|string}}<br>
             {% endif %}
             {% if item["daoTestataMovimento"].operazione == "Trasferimento merce magazzino" %}
             <br>&nbsp;&nbsp;DA {{item['magazzino']}} - A -{{item['daoTestataMovimento'].tomagazzino}}
