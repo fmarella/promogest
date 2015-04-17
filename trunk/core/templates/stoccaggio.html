@@ -1,44 +1,37 @@
-{% include 'single_style.css' with context %}
+{% if not environment.web %}
+{% extends 'index.html' %}
+{% endif %}
 {% block body %}
     {% if dao %}
-    <table cellpadding="0" cellspacing="0" border="0">
-            <tr><td colspan="5" class="table-header"><b>MAGAZZINO:</b> {{dao.magazzino}} <br/><b>ARTICOLO: CODICE:</b> {{dao.codice_articolo}}  - <b>C/BARRE:</b> {{dao.arti.codice_a_barre}} <br /> <b>DENOM:</b> {{dao.articolo}}</td></tr>
-            <tr>
-                <td width="25%" class="odd-detail">PERIODO DA DATA</td>
-                <td width="25%" class="odd-detail"><strong>{{utils.dateToString(dao.daData)}}</strong></td>
-                <td width="25%" class="odd-detail">A DATA </td>
-                <td width="25%" class="odd-detail"><strong>{{utils.dateToString(dao.aData)}}</strong></td>
-            </tr>
-            <tr>
-                <td width="25%" class="odd-detail">Scorta minima</td>
-                <td width="25%" class="odd-detail"><strong>{{dao.scorta_minima|nonone}}</strong></td>
-                <td width="25%" class="odd-detail">Livello riordino</td>
-                <td width="25%" class="odd-detail"><strong>{{dao.livello_riordino|nonone}}</strong></td>
-            </tr>
-            <tr>
-                <td width="20%" class="even-detail" >Data fine scorte</td>
-                <td class="even-detail">
-                    {% if dao.data_fine_scorte %}
-                        <strong>{{utils.dateToString(dao.data_fine_scorte)}}</strong>
-                    {% endif %}
-                </td>
-                <td width="20%" class="even-detail" >Data prossimo ordine</td>
-                <td class="even-detail">
-                     {% if dao.data_prossimo_ordine %}
-                        <strong>{{utils.dateToString(dao.data_prossimo_ordine)}}</strong>
-                    {% endif %}
-                </td>
-            </tr>
-</table><br />
-
-<table cellpadding="0" cellspacing="0" border="0", width="100%">
-            <tr><td colspan="3" class="table-header">Situazione magazzino</td></tr>
-            <tr class="even-detail">
-                <td class="even-number" style="text-align:center;" width="75%" style="padding-left:20px;" > INFO DOCUMENTO E MOVIMENTO </td>
-                <td class="even-number" style="text-align:center;" width="17%">Quantità</td>
-                <td class="even-number" style="text-align:center;" width="15%">Valore</td>
-
-            </tr>
+<div class="row">
+     <div class="col-xs-12 col-md-12">
+        <div class="panel panel-default">
+  <div class="panel-heading"><h3>Mag: {{dao.magazzino}} - Cod: {{dao.codice_articolo}} - Denom: {{dao.articolo}}</h3></div>
+  <div class="panel-body">
+<div class="col-sm-6"><span class="label label-default">Cod Barre</span><p style="display:inline;"><strong> {{dao.arti.codice_a_barre|nonone}}</strong></p></div>
+            {% if not utils.setconf("General", "turbo") %}
+      <div class="col-sm-6"><span class="label label-danger">Giacenza Generale in tutti i Magazzini</span><h4 style="display:inline;"><strong>  {{dao.arti.getGiacenza()|nonone or 0}}</strong></h4></div>
+      {% endif %}
+      <div class="col-sm-6"><span class="label label-default">Da data</span> {{utils.dateToString(dao.daData)}}</div>
+      <div class="col-sm-6"><span class="label label-default">A Data</span> {{utils.dateToString(dao.aData)}}</div>
+      <div class="col-sm-6"><span class="label label-default">Scorta minima</span> {{dao.scorta_minima|nonone}}</div>
+      <div class="col-sm-6"><span class="label label-default">Livello Riordino</span>{{dao.livello_riordino|nonone}}</div>
+      <div class="col-sm-6"><span class="label label-default">Unità di misura</span> {{dao.denominazione_unita_base}}</div>
+<div class="col-sm-6"><span class="label label-default">Data fine scorte</span> {{utils.dateToString(dao.data_fine_scorte)|nonone}}</div>
+      <div class="col-sm-6"><span class="label label-default">Data prossimo ordine</span>{{utils.dateToString(dao.data_prossimo_ordine|nonone)}}</div>
+<div style="margin-bottom: 5px" class="clearfix"></div>
+                <div class="panel panel-info">
+            <div class="panel-heading">
+              <h5 class="panel-title">Storico dei movimenti articolo &nbsp;&nbsp;</h5>
+            </div>
+            <div class="panel-body">
+<div class="table-responsive">
+  <table class="table  table-bordered table-striped table-condensed">
+            <thead>
+                <th> INFO DOCUMENTO E MOVIMENTO </th>
+                <th>Quantità</th>
+                <th>Valore</th>
+            </thead>
             {% for item in dao._getTotaliOperazioniMovimento(daData=dao.daData,aData=dao.aData, year=environment.workingYear) %}
             <tr >
             <td class="odd-detail" style="padding-left:5px;"><a href="program:/testataDocumentoId={{item['daoTestataDocumento'].id}}"><b>DOC:</b> N° {{item['daoTestataDocumento'].numero}} </a>-- <a href="program:/testataMovimentoId={{item['daoTestataMovimento'].id}}"><b>MOV:</b> N° {{item['numero']}}</a> - {{item['operazione']}} - Del: {{utils.dateToString(item['data_movimento'])}} -
@@ -55,14 +48,18 @@
             </tr>
             {% endfor %}
             <tr>
-                <td class="totale-detail"><strong>TOTALI</strong></td>
-                <td colspan="2", class="totale-number" style="text-align:right;"><strong>A MAGAZZINO:{{'%14.1f' % (dao.giacenza[0], )}} <br/> ACQUISTATI:{{'%14.1f' % (dao.giacenza[2], )}} <br /> VENDUTI:{{'%14.1f' % (dao.giacenza[3], )}}&nbsp;</strong></td>
-                <td class="totale-number" style="text-align:center;"><strong>{#{utils.mNLC(dao.giacenza[1],2)}#}</strong></td>
+                <td colspan="3" class="totale-number" style="text-align:right;">GIACENZA A MAGAZZINO: <strong>{{'%14.1f' % (dao.giacenza[0], )}}</strong> <br/> TOTALE PEZZI ACQUISTATI: <strong>{{'%14.1f' % (dao.giacenza[2], )}}</strong> <br /> TOTALE PEZZI VENDUTI: <strong>{{'%14.1f' % (dao.giacenza[3], )}}&nbsp;</strong></td>
             </tr>
-            <tr><td colspan="3"><br /><br />GIACENZA GENERALE IN TUTTI I MAGAZZINI: {{dao.arti.getGiacenza()|nonone or 0}}</td></tr>
 </table>
+            </div>
+         </div>
+                    </div>
+      </div>
+            </div>
+         </div>
         {% else %}
         <p><img src= "gui/attenzione_48X48.png">ELIMINATO: Niente da visualizzare</p>
         <p><img src= "gui/testata_promogest2.png"></p>
         {% endif %}
+
 {% endblock %}

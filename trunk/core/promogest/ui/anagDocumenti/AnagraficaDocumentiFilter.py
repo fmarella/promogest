@@ -54,19 +54,13 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         """
         Disegna colonne della Treeview per il filtro
         """
-        #treeselection = self.anagrafica_filter_treeview.get_selection()
-        #treeselection.set_mode(GTK_SELECTIONMODE_MULTIPLE)
-
         fillComboboxPagamenti(self.id_pagamento_filter_combobox)
         fillComboboxOperazioni(self.id_operazione_filter_combobox, 'documento', True, extra=True)
         self.id_operazione_filter_combobox.set_active(0)
         fillComboboxMagazzini(self.id_magazzino_filter_combobox, True)
         self.id_operazione_filter_combobox.set_wrap_width(setconf("Numbers", "combo_column") or 1)
-
         self.cliente_filter_radiobutton.set_active(True)
         self.on_filter_radiobutton_toggled()
-        #idHandler = self.id_agente_filter_customcombobox.connect('changed',
-                                                                #on_combobox_agente_search_clicked)
         self.id_agente_filter_customcombobox.setHandler("agente")
         try:
             self._anagrafica.info_anag_complessa_label.destroy()
@@ -82,16 +76,21 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
 
         if column.get_name() == "numero_column":
             self.funzione_ordinamento = None
-            return self._changeOrderBy(column,(None,TestataDocumento.numero))
+            return self._changeOrderBy(column,
+                                       (None,TestataDocumento.numero))
         if column.get_name() == "data_column":
             self.funzione_ordinamento = None
-            return self._changeOrderBy(column,(None,TestataDocumento.data_documento))
+            return self._changeOrderBy(column,
+                                       (None,TestataDocumento.data_documento))
         if column.get_name() == "tipo_documento_column":
             self.funzione_ordinamento = None
-            return self._changeOrderBy(column,(None,TestataDocumento.operazione))
+            return self._changeOrderBy(column,
+                                       (None,TestataDocumento.operazione))
         if column.get_name() == "saldato_column":
             self.funzione_ordinamento = None
-            return self._changeOrderBy(column,(None,TestataDocumento.documento_saldato))
+            return self._changeOrderBy(column,
+                                       (None,
+                                        TestataDocumento.documento_saldato))
         if column.get_name() == "cliente_fornitore_column":
             self.aa = -1*self.aa
             self.funzione_ordinamento = "cliforn"
@@ -118,7 +117,8 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         self.descrizione_riga_entry.set_text("")
         self.id_pagamento_filter_combobox.set_active(-1)
         self.id_operazione_filter_combobox.set_active(0)
-        if hasattr(self._anagrafica, "_magazzinoFissato") and not self._anagrafica._magazzinoFissato:
+        if hasattr(self._anagrafica, "_magazzinoFissato") and not\
+                self._anagrafica._magazzinoFissato:
             fillComboboxMagazzini(self.id_magazzino_filter_combobox, True)
             self.id_magazzino_filter_combobox.set_active(0)
         elif hasattr(self._anagrafica, "_magazzinoFissato"):
@@ -136,7 +136,7 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
             self.da_data_fine_noleggio_filter_entry.set_text('')
         self.id_articolo_filter_customcombobox.set_active(0)
         fillComboboxCategorieClienti(
-                        self.id_categoria_cliente_filter_combobox, True)
+            self.id_categoria_cliente_filter_combobox, True)
         self.id_categoria_cliente_filter_combobox.set_active(0)
         self.refresh()
 
@@ -194,24 +194,24 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         idArticolo = self.id_articolo_filter_customcombobox.getId()
         #genero il dizionario dei filtri
         self.filterDict = {"daNumero": daNumero,
-                            "aNumero": aNumero,
-                            "daData": self.daData,
-                            "aData": self.aData,
-                            "daParte": None,
-                            "aParte": None,
-                            "protocollo": protocollo,
-                            "idPagamento": idPagamento,
-                            "idOperazione": idOperazione,
-                            "idMagazzino": idMagazzino,
-                            "idCliente": idCliente,
-                            "idFornitore": idFornitore,
-                            "idAgente": idAgente,
-                            "statoDocumento":statoDocumento,
-                            "soloContabili":soloContabili,
-                            "descrizioneRiga": descrizioneRiga,
-                            "daDataPagamento": daDataPagamento,
-                            "aDataPagamento": aDataPagamento,
-                            "extra":extra}
+                           "aNumero": aNumero,
+                           "daData": self.daData,
+                           "aData": self.aData,
+                           "daParte": None,
+                           "aParte": None,
+                           "protocollo": protocollo,
+                           "idPagamento": idPagamento,
+                           "idOperazione": idOperazione,
+                           "idMagazzino": idMagazzino,
+                           "idCliente": idCliente,
+                           "idFornitore": idFornitore,
+                           "idAgente": idAgente,
+                           "statoDocumento": statoDocumento,
+                           "soloContabili": soloContabili,
+                           "descrizioneRiga": descrizioneRiga,
+                           "daDataPagamento": daDataPagamento,
+                           "aDataPagamento": aDataPagamento,
+                           "extra": extra}
 
         if posso("GN"):
             daDataInizioNoleggio = stringToDate(self.da_data_inizio_noleggio_filter_entry.get_text())
@@ -225,10 +225,10 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
 
         def filterCountClosure():
             if idArticolo:
-                a = TestataDocumento().count(filterDict = self.filterDict, idArticoloMov=idArticolo) or 0
-                b = TestataDocumento().count(filterDict = self.filterDict, idArticoloDoc=idArticolo) or 0
+                a = TestataDocumento().count(filterDict=self.filterDict, idArticoloMov=idArticolo) or 0
+                b = TestataDocumento().count(filterDict=self.filterDict, idArticoloDoc=idArticolo) or 0
                 return a+b
-            return TestataDocumento().count(filterDict = self.filterDict)
+            return TestataDocumento().count(filterDict=self.filterDict)
 
         self._filterCountClosure = filterCountClosure
         self.numRecords = self.countFilterResults()
@@ -247,17 +247,17 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
                                               offset=offset,
                                               idArticoloMov=idArticolo,
                                               batchSize=batchSize,
-                                              filterDict = self.filterDict) or []
+                                              filterDict=self.filterDict) or []
                 b = TestataDocumento().select(orderBy=self.orderBy,
                                               offset=offset,
                                               idArticoloDoc=idArticolo,
                                               batchSize=batchSize,
-                                              filterDict = self.filterDict) or []
+                                              filterDict=self.filterDict) or []
                 return a+b
             return TestataDocumento().select(orderBy=self.orderBy,
-                                                offset=offset,
-                                                batchSize=batchSize,
-                                                filterDict = self.filterDict)
+                                             offset=offset,
+                                             batchSize=batchSize,
+                                             filterDict=self.filterDict)
         if self.funzione_ordinamento == "cliforn":
             self._filterClosure = filterClosure
             tdoss = self.runFilter(batchSizeForce=True)
@@ -270,7 +270,7 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
             self._filterClosure = filterClosure
             tdoss = self.runFilter(batchSizeForce=True)
             for t in tdoss:
-                #pbar(self._anagrafica.pbar_anag_complessa, parziale=tdoss.index(t), totale=len(tdoss), text="CALCOLO TOTALI DEI DOC   ", noeta=False)
+                # pbar(self._anagrafica.pbar_anag_complessa, parziale=tdoss.index(t), totale=len(tdoss), text="CALCOLO TOTALI DEI DOC   ", noeta=False)
                 try:
                     t._totaleImponibileScontato
                 except:
@@ -288,16 +288,16 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         self.filter_listore.clear()
         pa = True
         for t in tdos:
-            #pbar(self._anagrafica.pbar_anag_complessa, parziale=tdos.index(t), totale=len(tdos), text="", noeta=False)
+            # pbar(self._anagrafica.pbar_anag_complessa, parziale=tdos.index(t), totale=len(tdos), text="", noeta=False)
             if len(tdos) <=99:
-                #if self.batchSize <= 99:
+                # if self.batchSize <= 99:
                 totali = t.totali
             try:
                 totaleImponibile = mNLC(t._totaleImponibileScontato,2) or 0
                 totaleImposta = mNLC(t._totaleImpostaScontata,2) or 0
                 totale = mNLC(t._totaleScontato,2) or 0
             except:
-                #totali = "#"
+                # totali = "#"
                 totaleImponibile = "#"
                 totaleImposta = "#"
                 totale = "#"
@@ -316,8 +316,8 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
                     col = None
             else:
                 documento_saldato_filter = ''
-            if t.parte and t.parte > 0 :
-                parte = " / "+ str(t.parte)
+            if t.parte and t.parte > 0:
+                parte = " / " + str(t.parte)
             else:
                 parte = ""
             if "Preventivo" in t.operazione:
@@ -325,21 +325,21 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
             if "DDT" in t.operazione and t.IFDDDT:
                 col = "#FFE7B8"
             self.filter_listore.append((t,
-                                    dateTimeToString(t.data_documento),
-                                    uu(str(t.numero) + parte) or "0",
-                                    uu(t.operazione) or '',
-                                    uu(t.intestatario) or '',
-                                    uu(t.protocollo) or '',
-                                    uu(totaleImponibile),
-                                    uu(totaleImposta),
-                                    uu(totale),
-                                    uu(t.note_interne) or '',
-                                    col,
-                                    uu(documento_saldato_filter) or ''
+                                        dateTimeToString(t.data_documento),
+                                        uu(str(t.numero) + parte) or "0",
+                                        uu(t.operazione) or '',
+                                        uu(t.intestatario) or '',
+                                        uu(t.protocollo) or '',
+                                        uu(totaleImponibile),
+                                        uu(totaleImposta),
+                                        uu(totale),
+                                        uu(t.note_interne) or '',
+                                        col,
+                                        uu(documento_saldato_filter) or ''
                                     ))
         self.anagrafica_filter_treeview.set_model(model=self.filter_listore)
-        #pbar(self._anagrafica.pbar_anag_complessa,stop=True)
-        #self._anagrafica.pbar_anag_complessa.set_property("visible",False)
+        # pbar(self._anagrafica.pbar_anag_complessa,stop=True)
+        # self._anagrafica.pbar_anag_complessa.set_property("visible",False)
 
 
     def on_filter_radiobutton_toggled(self, widget=None):
@@ -360,7 +360,6 @@ class RicercaDocumenti(Ricerca):
     def __init__(self):
         Ricerca.__init__(self, 'Promogest - Ricerca documenti',
                          AnagraficaDocumentiFilter(self))
-        #self.filter.ricerca_avanzata_documenti_filter_vbox.destroy()
 
     def insert(self, toggleButton, returnWindow):
 

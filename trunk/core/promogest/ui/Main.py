@@ -73,10 +73,6 @@ if posso("GN"):
                             import TestataGestioneNoleggio
 # from  xhtml2pdf import pisa
 from promogest.dao.Setconf import SetConf
-from gi.repository.WebKit import WebView
-import jinja2
-import reportlab
-WEBKIT = True
 
 
 class Main(GladeWidget):
@@ -135,19 +131,19 @@ class Main(GladeWidget):
     def show(self):
         """ show the main windows program
         """
-        #documenti_image = self.documenti_image.get_image()
+        # documenti_image = self.documenti_image.get_image()
         model = self.iconview_listore
         model.append([3, _("Documenti\n(Fatture,DDT\nPreventivi)"),
-                        self.documenti_image.get_pixbuf(), None])
+                           self.documenti_image.get_pixbuf(), None])
         model.append([4, _("Prima Nota"),
-                        self.primanota_image.get_pixbuf(), None])
+                           self.primanota_image.get_pixbuf(), None])
         model.append([5, _("Promemoria"),
-                        self.promemoria_image.get_pixbuf(), None])
+                           self.promemoria_image.get_pixbuf(), None])
         model.append([10, _("Gestione\nCommesse"),
-                        self.gest_commesse_image.get_pixbuf(), None])
+                            self.gest_commesse_image.get_pixbuf(), None])
 
         # right vertical icon list  adding modules
-#        model_right = gtk.ListStore(int, str, gtk.gdk.Pixbuf, object)
+        # model_right = gtk.ListStore(int, str, gtk.gdk.Pixbuf, object)
         ind = 6
         for mod in self.anagrafiche_dirette_modules:
             currModule = self.anagrafiche_dirette_modules[mod]
@@ -157,7 +153,7 @@ class Main(GladeWidget):
                 anag = currModule["module"].getApplication()
                 from promogest.modules.VenditaDettaglio.ui.AnagraficaVenditaDettaglio import showAnagrafica
                 showAnagrafica(self.getTopLevel(), anag, mainClass=self)
-                #icon_view.unselect_all()
+                # icon_view.unselect_all()
                 return
             pbuf = GDK_PIXBUF_NEW_FROM_FILE(currModule['guiDir'] \
                                     + currModule['module'].VIEW_TYPE[2])
@@ -177,15 +173,11 @@ class Main(GladeWidget):
         self.main_iconview.set_model(model)
         self.main_iconview.set_text_column(1)
         self.main_iconview.set_pixbuf_column(2)
-        #self.main_iconview.connect('selection-changed',
-                                   #self.on_main_iconview_select, model)
-
         self.main_iconview.set_columns(1)
         self.main_iconview.set_item_width(65)
         self.main_iconview.set_size_request(95, -1)
 
         if self.currentFrame is None:
-#            self.main_hbox.remove(self.box_immagini_iniziali)
             self._refresh()
         self.setModulesButtons()
         self.placeWindow(self.main_window)
@@ -252,11 +244,8 @@ class Main(GladeWidget):
         if posso("PR"):
             glib.timeout_add_seconds(20, updateScadenzePromemoria)
 
-
-
     def _refresh(self):
         """ Update the window, setting the appropriate frame
-
         """
         self.main_iconview.unselect_all()
         self.main_hbox.show_all()
@@ -277,12 +266,6 @@ class Main(GladeWidget):
             except:
                 print " FALLITA CREAZIONE META"
         pickle_meta()
-
-
-
-
-
-
 
     def on_ricerca_lotto_menuitem_activate(self, button):
         from promogest.ui.RicercaLottiWindow import RicercaLottiWindow
@@ -434,7 +417,7 @@ class Main(GladeWidget):
         iterator = self.anag_minori_combobox.get_active_iter()
         if iterator is not None:
             dao = model.get_value(iterator, 0)
-        anag = AnagraficaSecondarie(aziendaStr=self.aziendaStr, daoRole= dao)
+        anag = AnagraficaSecondarie(aziendaStr=self.aziendaStr, daoRole=dao)
         showAnagrafica(self.getTopLevel(), anag, toggleButton, mainClass=self)
 
 
@@ -800,11 +783,11 @@ class Main(GladeWidget):
             licenzaDialog.licenza_dialog.destroy()
 
     def on_forum_menu_activate_item(self, widget):
-        url ="https://groups.google.com/forum/?fromgroups#!forum/promogest"
+        url = "https://groups.google.com/forum/?fromgroups#!forum/promogest"
         webbrowser.open_new_tab(url)
 
     def on_issue_menu_activate(self, widget):
-        url ="https://code.google.com/p/promogest/issues/list"
+        url = "https://code.google.com/p/promogest/issues/list"
         webbrowser.open_new_tab(url)
 
     def on_aggiorna_activate(self, widget):
@@ -820,7 +803,7 @@ EFFETTUA COPIANDO IL FILE db CHE SI TROVA NELLA CARTELLA
 promogest2 IN /HOME/NOMEUTENTE/ O IN C:/UTENTI/NOMEUTENTE""")
             messageInfo(msg= msg)
         else:
-            st= Environment.startdir()
+            st = Environment.startdir()
             nameDump = "promoGest3_bkp_"+self.aziendaStr+"_"+ datetime.now().strftime('%d_%m_%Y_%H_%M')+".zip"
             msgg = _("""Il "dump" del database verrà salvato in
 
@@ -832,7 +815,7 @@ promogest2 IN /HOME/NOMEUTENTE/ O IN C:/UTENTI/NOMEUTENTE""")
     ATTENZIONE!!!! la procedura potrebbe richiedere diversi minuti.""") %(st, nameDump)
             messageInfo(msg= msgg, transient=self.getTopLevel())
             #if response == gtk.RESPONSE_OK:
-            st= Environment.startdir()
+            st = Environment.startdir()
             stname = st+nameDump
             os.environ["PGPASSWORD"] = Environment.password
             if os.name == "nt":
@@ -852,7 +835,6 @@ promogest2 IN /HOME/NOMEUTENTE/ O IN C:/UTENTI/NOMEUTENTE""")
             Environment.pg2log.info("STO EFFETTUANDO UN BACKUP DEL FILE %s" %stname)
             if not retcode:
                 Environment.pg2log.info("DUMP EFFETTUATO CON SUCCESSO")
-                #os.remove(stname)
                 messageInfo(msg="BACKUP EFFETTUATO CON SUCCESSO")
             else:
                 messageInfo(msg="BACKUP NON RIUSCITO")
@@ -995,12 +977,11 @@ promogest2 IN /HOME/NOMEUTENTE/ O IN C:/UTENTI/NOMEUTENTE""")
 
     def addNoteBookPage(self):
 
-        if WEBKIT:
-            self.nn = NewsNotebookPage(self, self.aziendaStr).draw()
-            n = gtk.Label()
-            n.set_markup(_("<b>NEWS E AZIONI VEL</b>"))
-            ind = self.main_notebook.append_page(self.nn.notizie_frame, n)
-            self.main_notebook.set_current_page(ind)
+        self.nn = NewsNotebookPage(self, self.aziendaStr).draw()
+        n = gtk.Label()
+        n.set_markup(_("<b>NEWS E AZIONI VEL</b>"))
+        ind = self.main_notebook.append_page(self.nn.notizie_frame, n)
+        self.main_notebook.set_current_page(ind)
 
         self.pp = checkPan(self)
 

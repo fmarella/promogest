@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 # Author: Simone Cossu <simone@promotux.it>
@@ -288,19 +288,15 @@ class Sla2Pdf_ng(SlaParser):
                     n_cells = int(tabpro['n_cells'])
                     # Closing pages (elements of the same page must be near)
                     if "noGroup" in group and tabpro["pfile"] != "" :
-#                        print "IMMAGINEEEEEEEEEEEEEEE", group
                         self.drawImage(group=group, tabpro=tabpro) # IMMAGINE
                     elif "noGroup" in group  and tabpro["pfile"] == "":
-#                        print "MONOCELLAAAAAAA", group
                         self.drawTable(group =group, monocell=True, tabpro=tabpro)# MONOCELLA
                     else:
-#                        print "TABELLAAAAAAAA", group, reiter
                         self.drawTable(group =group, reiter = reiter, tabpro = tabpro) # TABELLA
             self.canvas.saveState()
             self.canvas.showPage()
         self.canvas.save()
         # temporary pdf file is removed immediately
-#        filename = self.pdfFolder + self.pdfFileName + '.pdf'
         filename = self.slafile + '.pdf'
 
         f = file(filename, 'rb')

@@ -223,7 +223,6 @@ class Login(SimpleGladeApp):
         if len(users) == 1:
             if users[0].active == False:
                 messageInfo(msg=_('Utente Presente Ma non ATTIVO'))
-                dialog.destroy()
                 return
             else:
                 Environment.workingYear = str(self.anno_lavoro_spinbutton.get_value_as_int())
@@ -243,9 +242,6 @@ class Login(SimpleGladeApp):
                         print(" PICKLE NON VA BENE")
                         #Environment.azienda = oldSchema
                         Environment.delete_pickle()
-                        #Environment.restart_program()
-                        #Environment.meta.clear()
-                        #Environment.meta = MetaData(Environment.engine)
                     # import pickle
                     # cachefile = 'orm.p'
                     # Environment.meta.create_all()
@@ -259,7 +255,7 @@ class Login(SimpleGladeApp):
 # Lancio la funzione di generazione della dir di configurazione
                 from promogest.buildEnv import set_configuration
                 Environment.conf = set_configuration(Environment.azienda,
-                                                Environment.workingYear)
+                                                     Environment.workingYear)
 #                    if setconf("Feed","feed"):
 #                    if True == True:
 #                        thread = threading.Thread(target=self.feddretreive)
@@ -284,7 +280,7 @@ class Login(SimpleGladeApp):
                     Environment.pg2log.info(
                         "LOGIN  id, user, role azienda: %s, %s" % (
                             repr(Environment.params['usernameLoggedList']),
-                                self.azienda))
+                                 self.azienda))
                     checkInstallation()
                     from promogest.dao.Setconf import SetConf
                     avv = SetConf().select(key="avvii")
@@ -292,12 +288,14 @@ class Login(SimpleGladeApp):
                         avv[0].value = int(avv[0].value)+1
                         Environment.avvii = int(avv[0].value)+1
                         avv[0].persist()
-                    Environment.settaggi = Environment.session.query(SetConf.key,SetConf.value).all()
+                    Environment.settaggi = Environment.session.query(
+                        SetConf.key,
+                        SetConf.value).all()
                     Environment.pg2log.info(
                         "SETAGGI: %s" % (str(Environment.settaggi)))
 
                     self.importModulesFromDir('promogest/modules')
-                    #ATTENZIONE!!! RIATTIVARE!!!
+                    # ATTENZIONE!!! RIATTIVARE!!!
                     from promogest.dao.DaoOrderedImport import orderedImport
                     orderedImport()
                     def mainmain():
@@ -309,8 +307,8 @@ class Login(SimpleGladeApp):
                                     self.frame_modules,
                                     self.permanent_frames)
                         main.getTopLevel().connect("destroy",
-                                            on_main_window_closed,
-                                            self.login_window)
+                                                   on_main_window_closed,
+                                                   self.login_window)
                         main.show()
                     glib.idle_add(mainmain)
 

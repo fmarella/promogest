@@ -233,21 +233,21 @@ def articoloStatistiche(arti=None, righe=None):
                     giacenza=giacenza)
     else:
         arti.update(prezzo_ultima_vendita=0,
-                data_ultima_vendita=data_ultima_vendita,
-                prezzo_ultimo_acquisto=0,
-                data_ultimo_acquisto=data_ultimo_acquisto,
-                media_acquisto=0,
-                media_vendita=0,
-                quantita_venduta=0,
-                quantita_acquistata=0,
-                giacenza=0)
+                    data_ultima_vendita=data_ultima_vendita,
+                    prezzo_ultimo_acquisto=0,
+                    data_ultimo_acquisto=data_ultimo_acquisto,
+                    media_acquisto=0,
+                    media_vendita=0,
+                    quantita_venduta=0,
+                    quantita_acquistata=0,
+                    giacenza=0)
     return arti
 
 
-def giacenzaArticolo(daData=None, aData=None,year=None,
-                                        idMagazzino=None,
-                                        idArticolo=None,
-                                                allMag=None):
+def giacenzaArticolo(daData=None, aData=None, year=None,
+                     idMagazzino=None,
+                     idArticolo=None,
+                     allMag=None):
     """
     Calcola la quantità di oggetti presenti in magazzino
     """
@@ -340,14 +340,14 @@ def TotaleAnnualeCliente(id_cliente=None):
     """
     from promogest.dao.TestataDocumento import TestataDocumento
     documentiCliente = TestataDocumento().select(idCliente=id_cliente,
-                                                batchSize=None)
+                                                 batchSize=None)
     totale = 0
     for doc in documentiCliente:
         if doc.operazione in ["Fattura vendita",
-                                'Fattura differita vendita',
-                                'Fattura accompagnatoria',
-                                'Vendita dettaglio',
-                                'Nota di credito a cliente']:
+                              'Fattura differita vendita',
+                              'Fattura accompagnatoria',
+                              'Vendita dettaglio',
+                              'Nota di credito a cliente']:
             if not doc.totale_pagato:
                 doc.totale_pagato = 0
             if not doc.totale_sospeso:
@@ -362,14 +362,14 @@ def TotaleClienteAperto(id_cliente=None):
     """
     from promogest.dao.TestataDocumento import TestataDocumento
     documentiCliente = TestataDocumento().select(idCliente=id_cliente,
-                                                    batchSize=None)
+                                                 batchSize=None)
     totale = 0
     for doc in documentiCliente:
         if doc.operazione in ["Fattura vendita",
-                            'Fattura differita vendita',
-                            'Fattura accompagnatoria',
-                            'Vendita dettaglio',
-                            'Nota di credito a cliente']:
+                              'Fattura differita vendita',
+                              'Fattura accompagnatoria',
+                              'Vendita dettaglio',
+                              'Nota di credito a cliente']:
             totale += doc.totale_sospeso
     return totale
 
@@ -380,7 +380,7 @@ def TotaleAnnualeFornitore(id_fornitore=None):
     """
     from promogest.dao.TestataDocumento import TestataDocumento
     documentiFornitore = TestataDocumento().select(idFornitore=id_fornitore,
-                                                    batchSize=None)
+                                                   batchSize=None)
     totale = 0
     for doc in documentiFornitore:
         if doc.operazione in ['Fattura acquisto',
@@ -415,19 +415,11 @@ def righeDocumentoDel(id=None):
     Cancella le righe associate ad un documento
     """
     from promogest.dao.RigaDocumento import RigaDocumento
-    if posso("SM"):
-        from promogest.modules.SuMisura.dao.MisuraPezzo import MisuraPezzo
     row = RigaDocumento().select(idTestataDocumento=id,
                                 offset=None,
                                 batchSize=None)
     if row:
         for r in row:
-            if posso("SM"):
-                mp = MisuraPezzo().select(idRiga=r.id)
-                if mp:
-                    for m in mp:
-                        Environment.params['session'].delete(m)
-                    Environment.params["session"].commit()
             Environment.params['session'].delete(r)
         Environment.params["session"].commit()
         return True
@@ -444,14 +436,7 @@ def righeMovimentoDel(id=None):
                                 offset=None,
                                 batchSize=None)
     if row:
-        sm = posso("SM")
         for r in row:
-            if sm:
-                mp = MisuraPezzo().select(idRiga=r.id)
-                if mp:
-                    for m in mp:
-                        Environment.params['session'].delete(m)
-                    Environment.params["session"].commit()
             Environment.params['session'].delete(r)
         Environment.params["session"].commit()
         return True
@@ -473,18 +458,19 @@ def scontiTestataDocumentoDel(id=None):
 
 
 def scontiVenditaDettaglioDel(idListino=None,
-                                    idArticolo=None,
-                                    dataListinoArticolo=None):
+                              idArticolo=None,
+                              dataListinoArticolo=None):
     """
     cancella gli sconti associati al listino articolo
     """
     from promogest.dao.ScontoVenditaDettaglio import ScontoVenditaDettaglio
-    row = ScontoVenditaDettaglio().select(idListino=idListino,
-                                    idArticolo=idArticolo,
-                                    dataListinoArticolo=dataListinoArticolo,
-                                    offset=None,
-                                    batchSize=None,
-                                    orderBy=ScontoVenditaDettaglio.id_listino)
+    row = ScontoVenditaDettaglio().select(
+        idListino=idListino,
+        idArticolo=idArticolo,
+        dataListinoArticolo=dataListinoArticolo,
+        offset=None,
+        batchSize=None,
+        orderBy=ScontoVenditaDettaglio.id_listino)
     if row:
         for r in row:
             Environment.params['session'].delete(r)

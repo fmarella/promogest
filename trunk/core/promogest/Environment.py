@@ -163,8 +163,10 @@ confList = []
 configDir = None
 SRC_PATH_PG = os.path.dirname(__file__)
 print(os.path.dirname(__file__))
-templates_dir_pg = os.path.abspath(os.path.join(SRC_PATH_PG,os.pardir, 'templates'))
-templates_dir_pg_report = os.path.abspath(os.path.join(SRC_PATH_PG, os.pardir, 'report-templates'))
+templates_dir_pg = os.path.abspath(os.path.join(SRC_PATH_PG,os.pardir,
+                                                'templates'))
+templates_dir_pg_report = os.path.abspath(os.path.join(SRC_PATH_PG, os.pardir,
+                                                       'report-templates'))
 modulesList = []
 
 sladir = "sladir/"
@@ -275,7 +277,7 @@ def restart_program():
     print(" STO RIAVVIANDO IL PROGRAMMA CON QUESTO ESEGUIBILE PYTHON", python)
     os.execl(python, python, * sys.argv)
 
-print( " ------ AZIENDA --------", azienda)
+print(" ------ AZIENDA --------", azienda)
 
 def handleEngine(schema= None):
     engine = None
