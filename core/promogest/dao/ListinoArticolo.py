@@ -115,17 +115,17 @@ class ListinoArticolo(Base, Dao):
 
     @property
     def aliquota_iva(self):
-        if self.arti:return self.arti.denominazione_aliquota_iva
+        if self.arti: return self.arti.denominazione_aliquota_iva
         else: return ""
 
     @property
     def percentuale_iva(self):
-        if self.arti:return self.arti.percentuale_aliquota_iva
+        if self.arti: return self.arti.percentuale_aliquota_iva
         else: return ""
 
     @property
     def id_aliquota_iva(self):
-        if self.arti:return self.arti.id_aliquota_iva
+        if self.arti: return self.arti.id_aliquota_iva
         else: return ""
 
     @property
@@ -133,11 +133,12 @@ class ListinoArticolo(Base, Dao):
         if self.arti:return self.arti.codice_a_barre
         else: return ""
 
-    if hasattr(conf, "PromoWear") and getattr(conf.PromoWear,'mod_enable')=="yes":
-
+    if (hasattr(conf, "PromoWear") and getattr(conf.PromoWear, 'mod_enable') == "yes") or posso("PW"):
+        print"PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP"
         @property
         def denominazione_gruppo_taglia(self):
-            if self.arti:return self.arti.denominazione_gruppo_taglia
+            if self.arti:
+                return self.arti.denominazione_gruppo_taglia
 
         def _id_articolo_padre(self):
             if self.arti:return self.arti.id_articolo_padre
