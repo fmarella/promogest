@@ -45,26 +45,29 @@ class ListinoArticolo(Base, Dao):
         from data.listinoArticolo import t_listino_articolo
         __table__ = t_listino_articolo
 
-    arti = relationship("Articolo",primaryjoin=and_(
-                __table__.c.id_articolo==Articolo.id, Articolo.cancellato==False), backref=backref("listinoarticolo",cascade="all, delete"))
+    arti = relationship("Articolo", primaryjoin=and_(
+                __table__.c.id_articolo == Articolo.id,
+                Articolo.cancellato==False),
+                        backref=backref("listinoarticolo",
+                                        cascade="all, delete"))
     SVD = relationship("ScontoVenditaDettaglio",
                        primaryjoin=and_(
-                            __table__.c.id_listino == ScontoVenditaDettaglio.id_listino,
-                            __table__.c.id_articolo == ScontoVenditaDettaglio.id_articolo,
-                            __table__.c.data_listino_articolo == ScontoVenditaDettaglio.data_listino_articolo))
+                           __table__.c.id_listino == ScontoVenditaDettaglio.id_listino,
+                           __table__.c.id_articolo == ScontoVenditaDettaglio.id_articolo,
+                           __table__.c.data_listino_articolo == ScontoVenditaDettaglio.data_listino_articolo))
     SVI = relationship("ScontoVenditaIngrosso", primaryjoin=and_(
-                __table__.c.id_listino == ScontoVenditaIngrosso.id_listino,
-                __table__.c.id_articolo == ScontoVenditaIngrosso.id_articolo,
-                __table__.c.data_listino_articolo == ScontoVenditaIngrosso.data_listino_articolo))
-    listi = relationship("Listino", primaryjoin=
-                __table__.c.id_listino == Listino.id, backref="listinoarticolo")
-
+        __table__.c.id_listino == ScontoVenditaIngrosso.id_listino,
+        __table__.c.id_articolo == ScontoVenditaIngrosso.id_articolo,
+        __table__.c.data_listino_articolo == ScontoVenditaIngrosso.data_listino_articolo))
+    listi = relationship("Listino",
+                         primaryjoin= __table__.c.id_listino == Listino.id,
+                         backref="listinoarticolo")
 
     __mapper_args__ = {
         'order_by': "id_listino"
-     }
+    }
 
-    def __init__(self, req=None):
+    def __init__(self):
         Dao.__init__(self, entity=self)
         self.__scontiVenditaDett = None
         self.__scontiVenditaIngr = None
@@ -85,107 +88,149 @@ class ListinoArticolo(Base, Dao):
 
     @property
     def denominazione(self):
-        if self.listi:return self.listi.denominazione
-        else: return ""
+        if self.listi:
+            return self.listi.denominazione
+        else:
+            return ""
 
     @property
     def data_listino(self):
-        if self.listi:return self.listi.data_listino
-        else: return ""
+        if self.listi:
+            return self.listi.data_listino
+        else:
+            return ""
 
     @property
     def codice_articolo(self):
-        if self.arti:return self.arti.codice
-        else: return ""
+        if self.arti:
+            return self.arti.codice
+        else:
+            return ""
 
     @property
     def articolo_famiglia(self):
-        if self.arti:return self.arti.denominazione_famiglia
-        else: return ""
+        if self.arti:
+            return self.arti.denominazione_famiglia
+        else:
+            return ""
 
     @property
     def articolo_categoria(self):
-        if self.arti:return self.arti.denominazione_categoria
-        else: return ""
+        if self.arti:
+            return self.arti.denominazione_categoria
+        else:
+            return ""
 
     @property
     def articolo(self):
-        if self.arti:return self.arti.denominazione
-        else: return ""
+        if self.arti:
+            return self.arti.denominazione
+        else:
+            return ""
 
     @property
     def aliquota_iva(self):
-        if self.arti: return self.arti.denominazione_aliquota_iva
-        else: return ""
+        if self.arti:
+            return self.arti.denominazione_aliquota_iva
+        else:
+            return ""
 
     @property
     def percentuale_iva(self):
-        if self.arti: return self.arti.percentuale_aliquota_iva
-        else: return ""
+        if self.arti:
+            return self.arti.percentuale_aliquota_iva
+        else:
+            return ""
 
     @property
     def id_aliquota_iva(self):
-        if self.arti: return self.arti.id_aliquota_iva
-        else: return ""
+        if self.arti:
+            return self.arti.id_aliquota_iva
+        else:
+            return ""
 
     @property
     def codice_a_barre(self):
-        if self.arti:return self.arti.codice_a_barre
-        else: return ""
+        if self.arti:
+            return self.arti.codice_a_barre
+        else:
+            return ""
 
-    if (hasattr(conf, "PromoWear") and getattr(conf.PromoWear, 'mod_enable') == "yes") or posso("PW"):
-        print"PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP"
+    if (hasattr(conf, "PromoWear") and getattr(conf.PromoWear,
+                                               'mod_enable') == "yes") or \
+            posso("PW"):
         @property
         def denominazione_gruppo_taglia(self):
             if self.arti:
                 return self.arti.denominazione_gruppo_taglia
 
         def _id_articolo_padre(self):
-            if self.arti:return self.arti.id_articolo_padre
-        id_articolo_padre_taglia_colore=property(_id_articolo_padre)
+            if self.arti:
+                return self.arti.id_articolo_padre
+
+        id_articolo_padre_taglia_colore = property(_id_articolo_padre)
         id_articolo_padre = property(_id_articolo_padre)
 
         @property
         def id_gruppo_taglia(self):
-            if self.arti:return self.arti.id_gruppo_taglia
+            if self.arti:
+                return self.arti.id_gruppo_taglia
+
         @property
         def id_genere(self):
-            if self.arti:return self.arti.id_genere
+            if self.arti:
+                return self.arti.id_genere
+
         @property
         def id_stagione(self):
-            if self.arti:return self.arti.id_stagione
+            if self.arti:
+                return self.arti.id_stagione
+
         @property
         def id_anno(self):
-            if self.arti:return self.arti.id_anno
+            if self.arti:
+                return self.arti.id_anno
+
         @property
         def denominazione_taglia(self):
-            if self.arti:return self.arti.denominazione_taglia
+            if self.arti:
+                return self.arti.denominazione_taglia
+
         @property
         def denominazione_colore(self):
-            if self.arti:return self.arti.denominazione_colore
+            if self.arti:
+                return self.arti.denominazione_colore
+
         @property
         def denominazione_modello(self):
-            if self.arti:return self.arti.denominazione_modello
+            if self.arti:
+                return self.arti.denominazione_modello
+
         @property
         def anno(self):
-            if self.arti:return self.arti.anno
+            if self.arti:
+                return self.arti.anno
+
         @property
         def stagione(self):
-            if self.arti:return self.arti.stagione
+            if self.arti:
+                return self.arti.stagione
+
         @property
         def genere(self):
-            if self.arti:return self.arti.genere
+            if self.arti:
+                return self.arti.genere
 
     def _getScontiVenditaDettaglio(self):
         self.__dbScontiVenditaDett = self.SVD
-        self.__scontiVenditaDett= self.__dbScontiVenditaDett
+        self.__scontiVenditaDett = self.__dbScontiVenditaDett
         return self.__scontiVenditaDett
 
-    def _setScontiVenditaDettaglio(self,value):
+    def _setScontiVenditaDettaglio(self, value):
          self.__scontiVenditaDett = value
 
     sconto_vendita_dettaglio = property(_getScontiVenditaDettaglio,
-                                                 _setScontiVenditaDettaglio)
+                                        _setScontiVenditaDettaglio)
 
     def _getApplicazioneScontiDettaglio(self):
         return "scalare"
@@ -196,8 +241,8 @@ class ListinoArticolo(Base, Dao):
         self.__dbScontiVenditaIngr = params['session'].\
                         query(ScontoVenditaIngrosso).\
                         filter_by(id_listino=self.id_listino,
-                        id_articolo=self.id_articolo,
-                        data_listino_articolo=self.data_listino_articolo).all()
+                                  id_articolo=self.id_articolo,
+                                  data_listino_articolo=self.data_listino_articolo).all()
         self.__dbScontiVenditaIngr = self.SVI
         self.__scontiVenditaIngr= self.__dbScontiVenditaIngr
         return self.__scontiVenditaIngr
@@ -205,49 +250,57 @@ class ListinoArticolo(Base, Dao):
     def _setScontiVenditaIngrosso(self,value):
         self.__scontiVenditaIngr = value
 
-    sconto_vendita_ingrosso = property(_getScontiVenditaIngrosso, _setScontiVenditaIngrosso)
+    sconto_vendita_ingrosso = property(_getScontiVenditaIngrosso,
+                                       _setScontiVenditaIngrosso)
 
     @property
     def sconto_vendita_ingrosso_valore(self):
-        if self.sconto_vendita_ingrosso:return self.sconto_vendita_ingrosso[0].valore
-        else: return ""
+        if self.sconto_vendita_ingrosso:
+            return self.sconto_vendita_ingrosso[0].valore
+        else:
+            return ""
 
     @property
     def sconto_vendita_dettaglio_valore(self):
-        if self.sconto_vendita_dettaglio:return self.sconto_vendita_dettaglio[0].valore
-        else: return ""
+        if self.sconto_vendita_dettaglio:
+            return self.sconto_vendita_dettaglio[0].valore
+        else:
+            return ""
+
     @property
     def stringaScontiDettaglio(self):
-        (listSconti, applicazione) = getScontiFromDao(self._getScontiVenditaDettaglio(),daoApplicazione = 'scalare')
+        (listSconti, applicazione) = getScontiFromDao(self._getScontiVenditaDettaglio(),
+                                                      daoApplicazione='scalare')
         return getStringaSconti(listSconti)
 
     @property
     def stringaScontiIngrosso(self):
-        (listSconti, applicazione) = getScontiFromDao(self._getScontiVenditaIngrosso(),daoApplicazione = 'scalare')
+        (listSconti, applicazione) = getScontiFromDao(self._getScontiVenditaIngrosso(),
+                                                      daoApplicazione='scalare')
         return getStringaSconti(listSconti)
 
     @property
     def applicazione_sconti_ingrosso(self):
         return "scalare"
 
-    def filter_values(self,k,v):
-        if k=="listinoAttuale":
-            dic={ k : ListinoArticolo.__table__.c.listino_attuale ==v}
-        elif k=="idArticolo":
-            dic= { k : ListinoArticolo.__table__.c.id_articolo==v}
-        elif k=='idArticoloList':
-            dic={ k :ListinoArticolo.__table__.c.id_articolo.in_(v)}
-        elif k=="idListino":
-            dic={ k: ListinoArticolo.__table__.c.id_listino==v}
-        elif k=="idListinoList":
-            dic={ k: ListinoArticolo.__table__.c.id_listino.in_(v)}
-        elif k=="dataListinoArticoloList":
-            dic={ k: ListinoArticolo.__table__.c.data_listino_articolo.in_(v)}
-        elif k=="dataListinoArticolo":
-            dic={ k: ListinoArticolo.__table__.c.data_listino_articolo ==v}
+    def filter_values(self, k, v):
+        if k == "listinoAttuale":
+            dic ={k: ListinoArticolo.__table__.c.listino_attuale == v}
+        elif k == "idArticolo":
+            dic = {k: ListinoArticolo.__table__.c.id_articolo == v}
+        elif k == 'idArticoloList':
+            dic = {k: ListinoArticolo.__table__.c.id_articolo.in_(v)}
+        elif k == "idListino":
+            dic = {k: ListinoArticolo.__table__.c.id_listino == v}
+        elif k == "idListinoList":
+            dic = {k: ListinoArticolo.__table__.c.id_listino.in_(v)}
+        elif k == "dataListinoArticoloList":
+            dic = {k: ListinoArticolo.__table__.c.data_listino_articolo.in_(v)}
+        elif k == "dataListinoArticolo":
+            dic = {k: ListinoArticolo.__table__.c.data_listino_articolo == v}
         return  dic[k]
 
-    def scontiVenditaDettaglioDel(self, idListino=None,idArticolo=None,dataListinoArticolo=None):
+    def scontiVenditaDettaglioDel(self):
         """
         cancella gli sconti associati al listino articolo
         """
@@ -257,7 +310,7 @@ class ListinoArticolo(Base, Dao):
             params["session"].commit()
             return True
 
-    def scontiVenditaIngrossoDel(self, idListino=None,idArticolo=None,dataListinoArticolo=None):
+    def scontiVenditaIngrossoDel(self):
         """
         cancella gli sconti associati al listino articolo
         """
