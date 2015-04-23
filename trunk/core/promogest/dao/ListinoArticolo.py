@@ -156,9 +156,7 @@ class ListinoArticolo(Base, Dao):
         else:
             return ""
 
-    if (hasattr(conf, "PromoWear") and getattr(conf.PromoWear,
-                                               'mod_enable') == "yes") or \
-            posso("PW"):
+    if (hasattr(conf, "PromoWear") and getattr(conf.PromoWear, 'mod_enable') == "yes"):
         @property
         def denominazione_gruppo_taglia(self):
             if self.arti:
