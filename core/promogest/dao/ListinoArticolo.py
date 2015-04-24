@@ -156,7 +156,9 @@ class ListinoArticolo(Base, Dao):
         else:
             return ""
 
-    if (hasattr(conf, "PromoWear") and getattr(conf.PromoWear, 'mod_enable') == "yes") or "PromoWear" in Environment.modulesList:
+    if (hasattr(conf, "PromoWear") and
+                getattr(conf.PromoWear, 'mod_enable') == "yes") or\
+                    "PromoWear" in Environment.modulesList:
         @property
         def denominazione_gruppo_taglia(self):
             if self.arti:
@@ -333,12 +335,8 @@ class ListinoArticolo(Base, Dao):
             self.listino_attuale = True
         params["session"].add(self)
 
-        self.scontiVenditaDettaglioDel(idListino=self.id_listino,
-                                    idArticolo=self.id_articolo,
-                                    dataListinoArticolo=self.data_listino_articolo)
-        self.scontiVenditaIngrossoDel(idListino=self.id_listino,
-                                    idArticolo=self.id_articolo,
-                                    dataListinoArticolo=self.data_listino_articolo)
+        self.scontiVenditaDettaglioDel()
+        self.scontiVenditaIngrossoDel()
         if sconti:
             for key,value in sconti.items():
                 if (key=="dettaglio") and (value):

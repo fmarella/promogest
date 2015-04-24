@@ -37,7 +37,8 @@ class AnagraficaStoccaggiFilter(AnagraficaFilter):
     """ Filtro per la ricerca nell'anagrafica stoccaggi """
 
     def __init__(self, anagrafica):
-        AnagraficaFilter.__init__(self,
+        AnagraficaFilter.__init__(
+            self,
             anagrafica,
             root='anagrafica_stoccaggi_filter_table',
             path='_anagrafica_stoccaggi_articoli_elements.glade')
@@ -47,19 +48,19 @@ class AnagraficaStoccaggiFilter(AnagraficaFilter):
     def draw(self, cplx=False):
 
         # Colonne della Treeview per il filtro
-        #TODO: FARE GLI ORDINAMENTI COLONNA
+        # TODO: FARE GLI ORDINAMENTI COLONNA
 
         fillComboboxMagazzini(self.id_magazzino_filter_combobox, True)
         fillComboboxFamiglieArticoli(
-                        self.id_famiglia_articolo_filter_combobox, True)
+            self.id_famiglia_articolo_filter_combobox, True)
         self.id_famiglia_articolo_filter_combobox.set_active(0)
         fillComboboxCategorieArticoli(
-                        self.id_categoria_articolo_filter_combobox, True)
+            self.id_categoria_articolo_filter_combobox, True)
         self.id_categoria_articolo_filter_combobox.set_active(0)
 
         if self._anagrafica._articoloFissato:
             self.id_articolo_filter_customcombobox.setId(
-                                                self._anagrafica._idArticolo)
+                self._anagrafica._idArticolo)
             self.id_articolo_filter_customcombobox.set_sensitive(False)
             column = self._anagrafica.anagrafica_filter_treeview.get_column(1)
             column.set_property('visible', False)
@@ -69,10 +70,10 @@ class AnagraficaStoccaggiFilter(AnagraficaFilter):
             column.set_property('visible', False)
         if self._anagrafica._magazzinoFissato:
             findComboboxRowFromId(self.id_magazzino_filter_combobox,
-                                            self._anagrafica._idMagazzino)
+                                  self._anagrafica._idMagazzino)
         if posso("PW"):
             fillComboboxGruppiTaglia(
-                        self.id_gruppo_taglia_articolo_filter_combobox, True)
+                self.id_gruppo_taglia_articolo_filter_combobox, True)
             self.id_gruppo_taglia_articolo_filter_combobox.set_active(0)
             fillComboboxTaglie(self.id_taglia_articolo_filter_combobox)
             self.id_taglia_articolo_filter_combobox.set_active(0)
@@ -86,7 +87,7 @@ class AnagraficaStoccaggiFilter(AnagraficaFilter):
             self.id_anno_articolo_filter_combobox.set_active(0)
 
             fillComboboxStagioniAbbigliamento(
-                        self.id_stagione_articolo_filter_combobox, True)
+                self.id_stagione_articolo_filter_combobox, True)
             self.id_stagione_articolo_filter_combobox.set_active(0)
 
             fillComboboxGeneriAbbigliamento(
@@ -104,10 +105,10 @@ class AnagraficaStoccaggiFilter(AnagraficaFilter):
 
     def clear(self):
         # Annullamento filtro
-        if not(self._anagrafica._magazzinoFissato):
+        if not self._anagrafica._magazzinoFissato:
             fillComboboxMagazzini(self.id_magazzino_filter_combobox, True)
             self.id_magazzino_filter_combobox.set_active(0)
-        if not(self._anagrafica._articoloFissato):
+        if not self._anagrafica._articoloFissato:
             self.id_articolo_filter_customcombobox.set_active(0)
         self.id_famiglia_articolo_filter_combobox.set_active(0)
         self.id_categoria_articolo_filter_combobox.set_active(0)
@@ -158,11 +159,10 @@ class AnagraficaStoccaggiFilter(AnagraficaFilter):
                            "cancellato": cancellato
                            }
 
-
         def filterCountClosure():
             return Stoccaggio().count(idMagazzino=idMagazzino,
-                                    idArticolo=idArticolo,
-                                    filterDict=self.filterDict)
+                                      idArticolo=idArticolo,
+                                      filterDict=self.filterDict)
         self._filterCountClosure = filterCountClosure
         self.numRecords = self.countFilterResults()
         self._refreshPageCount()

@@ -55,14 +55,13 @@ class AnagraficaDocumenti(Anagrafica):
         self.funzione_ordinamento = None
         self.aa = None
 
-
     def aggiornaforniture(self):
         gl = setconf("General", "gestione_lotti")
         if gl:
             from promogest.dao.Setconf import SetConf
             a = SetConf().select(key="fix_riga_movimento", section="General")
             if a and a[0].value =="False":
-                messageInfo(msg = "SI EFFETTUERA' ADESSO UN AGGIORNAMENTO PER I LOTTI\n ATTENDERE ANCHE QUALCHE MINUTO\n\n GRAZIE")
+                messageInfo(msg="SI EFFETTUERA' ADESSO UN AGGIORNAMENTO PER I LOTTI\n ATTENDERE ANCHE QUALCHE MINUTO\n\n GRAZIE")
                 self.pbar_anag_complessa.show()
                 from scripts.fixRigaMovForniture import fixRigaMovimentoTable
                 fixRigaMovimentoTable(pbar_wid=self.pbar_anag_complessa)
@@ -84,14 +83,12 @@ class AnagraficaDocumenti(Anagrafica):
             fencemsg()
 
     def on_importa_ordine_json_activate(self, widget):
-        #if posso('GRB'):
         from promogest.ui.ImportJsonDocumenti import ImportJsonDocumenti
         anag = ImportJsonDocumenti(self)
-        showAnagraficaRichiamata(self.getTopLevel(), anag.getTopLevel(),
-                                                None, self.filter.refresh)
-        #else:
-            #fencemsg()
-
+        showAnagraficaRichiamata(self.getTopLevel(),
+                                 anag.getTopLevel(),
+                                 None,
+                                 self.filter.refresh)
 
     def duplicate(self, dao):
         """
@@ -136,24 +133,20 @@ class AnagraficaDocumentiHtml(AnagraficaHtml):
             if self.dao:
                 for r in self.dao.righe:
                     l = ""
-                    #setattr(r, "aggiuntalottoindescrizione",l)
                     if self.dao.id_fornitore and r.id_articolo:
                         aa = RigaMovimentoFornitura().select(
-                                    idRigaMovimentoAcquisto=r.id, batchSize=None)
-                        #aa = r.rmfac
+                            idRigaMovimentoAcquisto=r.id, batchSize=None)
                     else:
                         aa = RigaMovimentoFornitura().select(
-                                      idRigaMovimentoVendita=r.id, batchSize=None)
-                        #aa = r.rmfve
-                    #ll = r.descrizione
+                            idRigaMovimentoVendita=r.id, batchSize=None)
                     if aa:
                         lotti = []
                         scadenze = []
                         for a in aa:
                             lottostr = ""
                             scadstr = ""
-                            if a.forni and a.forni.numero_lotto \
-                                                and a.forni.numero_lotto != "":
+                            if a.forni and a.forni.numero_lotto and\
+                                            a.forni.numero_lotto != "":
                                 lotto = a.forni.numero_lotto
                                 if lotto in lotti:
                                     continue
@@ -177,7 +170,6 @@ class AnagraficaDocumentiHtml(AnagraficaHtml):
                             aa = NumeroLottoTemp().select(
                                             idRigaMovimentoVenditaTemp=r.id,
                                                 batchSize=None)
-                            #aa = r.NLT
                         if aa:
                             l += _("<br /> Lotto %s") % (aa[0].lotto_temp)
                     setattr(r, "aggiuntalottoindescrizione", l)

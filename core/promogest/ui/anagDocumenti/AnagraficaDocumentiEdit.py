@@ -78,7 +78,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                                 'Dati Documento',
                                 root='anagrafica_documenti_detail_vbox',
                                 path='anagrafica_documenti.glade')
-        #self.placeWindow(self.getTopLevel())
+        # self.placeWindow(self.getTopLevel())
         self._widgetFirstFocus = self.data_documento_entry
         self._righe = []
         self._righe.append({})

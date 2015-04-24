@@ -26,24 +26,28 @@ from sqlalchemy.orm import *
 from promogest.Environment import *
 from promogest.dao.Dao import Dao, Base
 
+
 class Pos(Base, Dao):
     try:
-        __table__ = Table('pos',
-                params['metadata'],
-                schema = params['schema'],
-                autoload=True)
+        __table__ = Table(
+            'pos',
+            params['metadata'],
+            schema=params['schema'],
+            autoload=True)
     except:
-        __table__ =Table('pos', params['metadata'],
+        __table__ = Table(
+            'pos',
+            params['metadata'],
             Column('id', Integer, primary_key=True),
-            Column('denominazione', String(200), nullable=False ),
+            Column('denominazione', String(200), nullable=False),
             Column('denominazione_breve', String(10), nullable=False),
             schema=params['schema'],
-            useexisting =True
+            useexisting=True
             )
 
-    def __init__(self, req=None):
+    def __init__(self):
         Dao.__init__(self, entity=self)
 
-    def filter_values(self,k,v):
-        dic= {  'denominazione' : Pos.__table__.c.denominazione.ilike("%"+v+"%")}
-        return  dic[k]
+    def filter_values(self, k, v):
+        dic = {'denominazione': Pos.__table__.c.denominazione.ilike("%"+v+"%")}
+        return dic[k]

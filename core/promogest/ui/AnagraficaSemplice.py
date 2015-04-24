@@ -87,7 +87,6 @@ class Anagrafica(GladeWidget):
         self._treeViewModel = self.filter.filter_listore
         self.refresh()
 
-
     def show_all(self):
         """ Visualizza/aggiorna tutta la struttura dell'anagrafica """
         self.anagrafica_semplice_window.show_all()
@@ -125,18 +124,6 @@ class Anagrafica(GladeWidget):
         if response == GTK_RESPONSE_OK:
             licenzaDialog.licenza_dialog.destroy()
 
-
-    def on_seriale_menu_activate(self, widget):
-        try:
-            fileName = Environment.guiDir + 'logo_promogest.png'
-            f = open(fileName,'rb')
-            content = f.read()
-            f.close()
-            msg = 'Codice installazione:\n\n' + str(md5.new(content).hexdigest().upper())
-        except:
-            msg = 'Impossibile generare il codice !!!'
-        messageInfo(msg=msg)
-
     def on_record_new_activate(self, widget,codice=None):
         """ Nuovo record """
         if codice:
@@ -169,7 +156,6 @@ class Anagrafica(GladeWidget):
         self.record_delete_button.set_sensitive(False)
         self.record_delete_menu.set_sensitive(False)
 
-
     def on_record_delete_activate(self, widget):
         """ Eliminazione record """
         if not YesNoDialog(msg='Confermi l\'eliminazione ?', transient=None):
@@ -201,7 +187,6 @@ class Anagrafica(GladeWidget):
         self.record_delete_menu.set_sensitive(False)
 
         self.setFocus()
-
 
     def on_record_save_activate(self, widget, path=None, column=None):
         """ Salvataggio record """
@@ -237,7 +222,6 @@ class Anagrafica(GladeWidget):
         self.record_delete_menu.set_sensitive(False)
 
         self.setFocus()
-
 
     def on_record_cancel_activate(self, widget):
         """ Annullamento modifiche record """
@@ -292,7 +276,6 @@ class Anagrafica(GladeWidget):
         dao=None
         return
 
-
     def on_record_undo_activate(self, widget):
         """ Rilettura record """
         if self._rowEditingPath is None:
@@ -337,7 +320,6 @@ class Anagrafica(GladeWidget):
         self.record_edit_button.set_sensitive(False)
         self.record_edit_menu.set_sensitive(False)
 
-
     def on_record_edit_activate(self, widget):
         """ Modifica record """
         self.detail.updateDao()
@@ -370,7 +352,6 @@ class Anagrafica(GladeWidget):
         self.record_edit_button.set_sensitive(False)
         self.record_edit_menu.set_sensitive(False)
 
-
     def setFocus(self, widget=None):
         """ Da il fuoco al widget indicato o al primo widget """
         if widget is None:
@@ -378,12 +359,10 @@ class Anagrafica(GladeWidget):
         else:
             widget.grab_focus()
 
-
     def on_filter_treeview_row_activated(self, treeview, path, column):
         """ Gestisce la conferma della riga """
         if self._rowEditingPath is None:
             self.on_record_edit_activate(self.record_edit_button)
-
 
     def on_filter_treeview_cursor_changed(self, treeview):
         """ Gestisce lo spostamento tra le righe """
@@ -432,7 +411,7 @@ class Anagrafica(GladeWidget):
             self._tabPressed = True
 
 
-    def on_column_edited(self, cell, path, value, treeview, editNext=True, column = None):
+    def on_column_edited(self, cell, path, value, treeview, editNext=True, column=None):
         """ Gestisce l'immagazzinamento dei valori nelle celle """
         model = treeview.get_model()
         iterator = model.get_iter(path)
@@ -453,7 +432,9 @@ class Anagrafica(GladeWidget):
         if column+1 <= columns:
             if self._tabPressed:
                 self._tabPressed = False
-            gobject.timeout_add(1, treeview.set_cursor, gtk.TreePath(str(path)), treeview.get_column(column+1), editNext)
+            gobject.timeout_add(1,
+                                treeview.set_cursor, gtk.TreePath(str(path)),
+                                treeview.get_column(column+1), editNext)
 
 
     def anagrafica_treeview_set_edit(self, flag):

@@ -29,26 +29,32 @@ class ChiusuraFiscale(Base, Dao):
     try:
         __table__ = Table('chiusura_fiscale',
                     params['metadata'],
-                    schema = params['schema'],
+                    schema=params['schema'],
                     autoload=True)
     except:
-        __table__ = Table('chiusura_fiscale', params['metadata'],
-            Column('id',Integer,primary_key=True),
-            Column('data_chiusura',DateTime,nullable=False),
-            Column('id_magazzino',Integer,ForeignKey(fk_prefix+'magazzino.id', onupdate="CASCADE", ondelete="RESTRICT")),
-            Column('id_pos',Integer,ForeignKey(fk_prefix+"pos.id", onupdate="CASCADE", ondelete="RESTRICT")),
+        __table__ = Table(
+            'chiusura_fiscale',
+            params['metadata'],
+            Column('id', Integer, primary_key=True),
+            Column('data_chiusura', DateTime,nullable=False),
+            Column('id_magazzino', Integer, ForeignKey(fk_prefix+'magazzino.id',
+                                                       onupdate="CASCADE",
+                                                       ondelete="RESTRICT")),
+            Column('id_pos', Integer, ForeignKey(fk_prefix+"pos.id",
+                                                 onupdate="CASCADE",
+                                                 ondelete="RESTRICT")),
             schema=params['schema'],
-            useexisting =True
+            useexisting=True
             )
 
-    def __init__(self, req=None):
+    def __init__(self):
         Dao.__init__(self, entity=self)
 
-    def filter_values(self,k,v):
+    def filter_values(self, k, v):
         if k == 'dataChiusura':
-            dic= {k: ChiusuraFiscale.__table__.c.data_chiusura ==v}
+            dic = {k: ChiusuraFiscale.__table__.c.data_chiusura == v}
         elif k == 'idMagazzino':
             dic = {k: ChiusuraFiscale.__table__.c.id_magazzino == v}
         elif k == 'idPuntoCassa':
             dic = {k: ChiusuraFiscale.__table__.c.id_pos == v}
-        return  dic[k]
+        return dic[k]
